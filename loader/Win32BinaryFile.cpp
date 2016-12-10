@@ -119,15 +119,15 @@ void Win32BinaryFile::Close()
 	UnLoad();
 }
 
-std::list<SectionInfo *> &Win32BinaryFile::GetEntryPoints(const char *pEntry)
+std::list<SectionInfo *> &Win32BinaryFile::getEntryPoints(const char *pEntry)
 {
-	fprintf(stderr, "really don't know how to implement GetEntryPoints\n");
+	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
 	exit(0);
 	static std::list<SectionInfo *> l;
 	return l;
 }
 
-ADDRESS Win32BinaryFile::GetEntryPoint()
+ADDRESS Win32BinaryFile::getEntryPoint()
 {
 	return (ADDRESS)(LMMH(m_pPEHeader->EntrypointRVA)
 	               + LMMH(m_pPEHeader->Imagebase));
@@ -136,7 +136,7 @@ ADDRESS Win32BinaryFile::GetEntryPoint()
 // This is a bit of a hack, but no more than the rest of Windows :-O  The pattern is to look for an indirect call (FF 15
 // opcode) to exit; within 10 instructions before that should be the call to WinMain (with no other calls inbetween).
 // This pattern should work for "old style" and "new style" PE executables, as well as console mode PE files.
-ADDRESS Win32BinaryFile::GetMainEntryPoint()
+ADDRESS Win32BinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = GetAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
@@ -503,7 +503,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 
 
 	// Give the entry point a symbol
-	ADDRESS entry = GetMainEntryPoint();
+	ADDRESS entry = getMainEntryPoint();
 	if (entry != NO_ADDRESS) {
 		std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(entry);
 		if (it == dlprocptrs.end())
@@ -512,7 +512,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 
 	// Give a name to any jumps you find to these import entries
 	// NOTE: VERY early MSVC specific!! Temporary till we can think of a better way.
-	ADDRESS start = GetEntryPoint();
+	ADDRESS start = getEntryPoint();
 	findJumps(start);
 
 	fclose(fp);

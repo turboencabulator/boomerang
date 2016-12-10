@@ -1491,7 +1491,7 @@ SparcFrontEnd::~SparcFrontEnd()
 }
 
 /*==============================================================================
- * FUNCTION:    GetMainEntryPoint
+ * FUNCTION:    getMainEntryPoint
  * OVERVIEW:    Locate the starting address of "main" in the code section
  * PARAMETERS:  None
  * RETURNS:     Native pointer if found; NO_ADDRESS if not
@@ -1499,10 +1499,10 @@ SparcFrontEnd::~SparcFrontEnd()
 ADDRESS SparcFrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
-	ADDRESS start = pBF->GetMainEntryPoint();
+	ADDRESS start = pBF->getMainEntryPoint();
 	if (start != NO_ADDRESS) return start;
 
-	start = pBF->GetEntryPoint();
+	start = pBF->getEntryPoint();
 	gotMain = false;
 	if (start == NO_ADDRESS) return NO_ADDRESS;
 

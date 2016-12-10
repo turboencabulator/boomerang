@@ -60,20 +60,20 @@ void DOS4GWBinaryFile::Close()
 	UnLoad();
 }
 
-std::list<SectionInfo *> &DOS4GWBinaryFile::GetEntryPoints(const char *pEntry)
+std::list<SectionInfo *> &DOS4GWBinaryFile::getEntryPoints(const char *pEntry)
 {
-	fprintf(stderr, "really don't know how to implement GetEntryPoints\n");
+	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
 	exit(0);
 	static std::list<SectionInfo *> l;
 	return l;
 }
 
-ADDRESS DOS4GWBinaryFile::GetEntryPoint()
+ADDRESS DOS4GWBinaryFile::getEntryPoint()
 {
 	return (ADDRESS)(LMMH(m_pLXObjects[LMMH(m_pLXHeader->eipobjectnum)].RelocBaseAddr) + LMMH(m_pLXHeader->eip));
 }
 
-ADDRESS DOS4GWBinaryFile::GetMainEntryPoint()
+ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = GetAddressByName("main", true);
 	if (aMain != NO_ADDRESS)

@@ -42,9 +42,9 @@ public:
 	virtual ADDRESS     getImageBase();
 	virtual size_t      getImageSize();
 
-	virtual ADDRESS     GetMainEntryPoint();
-	virtual ADDRESS     GetEntryPoint();
-	virtual std::list<SectionInfo *> &GetEntryPoints(const char *pEntry = "main");
+	virtual ADDRESS     getMainEntryPoint();
+	virtual ADDRESS     getEntryPoint();
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 
 	virtual const char *SymbolByAddress(ADDRESS uNative);
 	// Lookup the name, return the address. If not found, return NO_ADDRESS

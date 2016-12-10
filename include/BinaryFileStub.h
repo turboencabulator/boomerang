@@ -31,9 +31,9 @@ public:
 	virtual bool        DisplayDetails(const char *fileName, FILE *f = stdout);
 
 	// Analysis functions
-	virtual std::list<SectionInfo *> &GetEntryPoints(const char *pEntry = "main");
-	virtual ADDRESS     GetMainEntryPoint();
-	virtual ADDRESS     GetEntryPoint();
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
+	virtual ADDRESS     getMainEntryPoint();
+	virtual ADDRESS     getEntryPoint();
 
 	// Get a map from ADDRESS to const char*. This map contains the native
 	// addresses and symbolic names of global data items (if any) which are

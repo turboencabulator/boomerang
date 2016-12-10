@@ -278,13 +278,13 @@ public:
 	virtual bool        IsDynamicLinkedProcPointer(ADDRESS uNative);
 	virtual ADDRESS     IsJumpToAnotherAddr(ADDRESS uNative);
 	virtual const char *GetDynamicProcName(ADDRESS uNative);
-	virtual std::list<SectionInfo *> &GetEntryPoints(const char *pEntry = "main") = 0;
-	virtual ADDRESS     GetMainEntryPoint() = 0;
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main") = 0;
+	virtual ADDRESS     getMainEntryPoint() = 0;
 
 	/*
 	 * Return the "real" entry point, ie where execution of the program begins
 	 */
-	virtual ADDRESS     GetEntryPoint() = 0;
+	virtual ADDRESS     getEntryPoint() = 0;
 	// Find section index given name, or -1 if not found
 	        int         GetSectionIndexByName(const char *sName);
 

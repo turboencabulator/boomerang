@@ -151,9 +151,9 @@ public:
 	virtual ADDRESS     getImageBase();
 	virtual size_t      getImageSize();
 
-	virtual std::list<SectionInfo *> &GetEntryPoints(const char *pEntry = "main");
-	virtual ADDRESS     GetMainEntryPoint();
-	virtual ADDRESS     GetEntryPoint();
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
+	virtual ADDRESS     getMainEntryPoint();
+	virtual ADDRESS     getEntryPoint();
 	        DWord       getDelta();
 
 	virtual const char *SymbolByAddress(ADDRESS dwAddr);  // Get sym from addr

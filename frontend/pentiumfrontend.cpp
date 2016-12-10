@@ -566,7 +566,7 @@ PentiumFrontEnd::~PentiumFrontEnd()
 }
 
 /*==============================================================================
- * FUNCTION:    GetMainEntryPoint
+ * FUNCTION:    getMainEntryPoint
  * OVERVIEW:    Locate the starting address of "main" in the code section
  * PARAMETERS:  None
  * RETURNS:     Native pointer if found; NO_ADDRESS if not
@@ -574,11 +574,11 @@ PentiumFrontEnd::~PentiumFrontEnd()
 ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
-	ADDRESS start = pBF->GetMainEntryPoint();
+	ADDRESS start = pBF->getMainEntryPoint();
 	if (start != NO_ADDRESS) return start;
 
 	gotMain = false;
-	start = pBF->GetEntryPoint();
+	start = pBF->getEntryPoint();
 	if (start == 0 || start == NO_ADDRESS)
 		return NO_ADDRESS;
 

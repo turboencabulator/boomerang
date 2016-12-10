@@ -67,20 +67,20 @@ void MachOBinaryFile::Close()
 	UnLoad();
 }
 
-std::list<SectionInfo *> &MachOBinaryFile::GetEntryPoints(const char *pEntry)
+std::list<SectionInfo *> &MachOBinaryFile::getEntryPoints(const char *pEntry)
 {
-	fprintf(stderr, "really don't know how to implement GetEntryPoints\n");
+	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
 	exit(0);
 	static std::list<SectionInfo *> l;
 	return l;
 }
 
-ADDRESS MachOBinaryFile::GetEntryPoint()
+ADDRESS MachOBinaryFile::getEntryPoint()
 {
 	return entrypoint;
 }
 
-ADDRESS MachOBinaryFile::GetMainEntryPoint()
+ADDRESS MachOBinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = GetAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
@@ -371,8 +371,8 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	}
 
 	// Give the entry point a symbol
-	//ADDRESS entry = GetMainEntryPoint();
-	entrypoint = GetMainEntryPoint();
+	//ADDRESS entry = getMainEntryPoint();
+	entrypoint = getMainEntryPoint();
 
 	fclose(fp);
 	return true;

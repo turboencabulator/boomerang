@@ -183,7 +183,7 @@ void ExeBinaryFile::UnLoad()
 
 const char *ExeBinaryFile::SymbolByAddr(ADDRESS dwAddr)
 {
-	if (dwAddr == GetMainEntryPoint())
+	if (dwAddr == getMainEntryPoint())
 		return "main";
 
 	// No symbol table handled at present
@@ -232,19 +232,19 @@ size_t ExeBinaryFile::getImageSize()
 }
 
 // Should be doing a search for this
-ADDRESS ExeBinaryFile::GetMainEntryPoint()
+ADDRESS ExeBinaryFile::getMainEntryPoint()
 {
 	return NO_ADDRESS;
 }
 
-ADDRESS ExeBinaryFile::GetEntryPoint()
+ADDRESS ExeBinaryFile::getEntryPoint()
 {
 	// Check this...
 	return (ADDRESS)((LH(&m_pHeader->initCS) << 4) + LH(&m_pHeader->initIP));
 }
 
 // This is provided for completeness only...
-std::list<SectionInfo *> &ExeBinaryFile::GetEntryPoints(const char *pEntry /* = "main"*/)
+std::list<SectionInfo *> &ExeBinaryFile::getEntryPoints(const char *pEntry /* = "main"*/)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
 #if 0  // Copied from PalmBinaryFile.cc

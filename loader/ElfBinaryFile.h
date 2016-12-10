@@ -214,9 +214,9 @@ public:
 
 
 	// Analysis functions
-	virtual std::list<SectionInfo *> &GetEntryPoints(const char *pEntry = "main");
-	virtual ADDRESS     GetMainEntryPoint();
-	virtual ADDRESS     GetEntryPoint();
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
+	virtual ADDRESS     getMainEntryPoint();
+	virtual ADDRESS     getEntryPoint();
 
 	virtual bool        IsDynamicLinkedProc(ADDRESS wNative);
 	        ADDRESS     NativeToHostAddress(ADDRESS uNative);

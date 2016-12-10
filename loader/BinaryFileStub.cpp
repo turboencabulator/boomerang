@@ -256,17 +256,17 @@ bool BinaryFileStub::DisplayDetails(const char *fileName, FILE *f)
 	return false;
 }
 
-std::list<SectionInfo *> &BinaryFileStub::GetEntryPoints(const char *pEntry)
+std::list<SectionInfo *> &BinaryFileStub::getEntryPoints(const char *pEntry)
 {
 	return *new std::list<SectionInfo *>;
 }
 
-ADDRESS BinaryFileStub::GetMainEntryPoint()
+ADDRESS BinaryFileStub::getMainEntryPoint()
 {
 	return 0x8048918;
 }
 
-ADDRESS BinaryFileStub::GetEntryPoint()
+ADDRESS BinaryFileStub::getEntryPoint()
 {
 	return 0;
 }

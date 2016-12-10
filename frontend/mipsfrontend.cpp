@@ -58,10 +58,10 @@ std::vector<Exp *> &MIPSFrontEnd::getDefaultReturns()
 ADDRESS MIPSFrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
-	ADDRESS start = pBF->GetMainEntryPoint();
+	ADDRESS start = pBF->getMainEntryPoint();
 	if (start != NO_ADDRESS) return start;
 
-	start = pBF->GetEntryPoint();
+	start = pBF->getEntryPoint();
 	gotMain = false;
 	if (start == NO_ADDRESS) return NO_ADDRESS;
 

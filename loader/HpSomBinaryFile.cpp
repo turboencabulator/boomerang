@@ -401,14 +401,14 @@ void HpSomBinaryFile::UnLoad()
 	}
 }
 
-ADDRESS HpSomBinaryFile::GetEntryPoint()
+ADDRESS HpSomBinaryFile::getEntryPoint()
 {
 	assert(0); /* FIXME: Someone who understands this file please implement */
 	return 0;
 }
 
 // This is provided for completeness only...
-std::list<SectionInfo *> &HpSomBinaryFile::GetEntryPoints(const char *pEntry /* = "main" */)
+std::list<SectionInfo *> &HpSomBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
 	SectionInfo *pSect = getSectionInfoByName("code1");
@@ -559,7 +559,7 @@ std::map<ADDRESS, const char *> *HpSomBinaryFile::GetDynamicGlobalMap()
 	return ret;
 }
 
-ADDRESS HpSomBinaryFile::GetMainEntryPoint()
+ADDRESS HpSomBinaryFile::getMainEntryPoint()
 {
 	return symbols.find("main");
 #if 0

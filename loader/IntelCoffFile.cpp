@@ -337,35 +337,35 @@ size_t IntelCoffFile::getImageSize()
 	return 0;
 }
 
-ADDRESS IntelCoffFile::GetMainEntryPoint()
+ADDRESS IntelCoffFile::getMainEntryPoint()
 {
-	printf("IntelCoffFile::GetMainEntryPoint called\n");
+	printf("IntelCoffFile::getMainEntryPoint called\n");
 	// There is no such thing, but we need to deliver one since the first entry point might
-	// be zero and this is skipped when returned by GetEntryPoint().
+	// be zero and this is skipped when returned by getEntryPoint().
 	//return NO_ADDRESS;
-	return GetEntryPoint();
+	return getEntryPoint();
 }
 
-ADDRESS IntelCoffFile::GetEntryPoint()
+ADDRESS IntelCoffFile::getEntryPoint()
 {
-	printf("IntelCoffFile::GetEntryPoint called\n");
+	printf("IntelCoffFile::getEntryPoint called\n");
 	// There is no such thing, but we have to deliver one
 	if (m_EntryPoints.empty())
 		return NO_ADDRESS;
 
-	printf("IntelCoffFile::GetEntryPoint atleast one entry point exists\n");
+	printf("IntelCoffFile::getEntryPoint atleast one entry point exists\n");
 	std::list<SectionInfo *>::iterator it = m_EntryPoints.begin();
 	if (!*it)
 		return NO_ADDRESS;
 
-	printf("IntelCoffFile::GetEntryPoint returning %08x\n", (*it)->uNativeAddr);
+	printf("IntelCoffFile::getEntryPoint returning %08x\n", (*it)->uNativeAddr);
 	return (*it)->uNativeAddr;
 }
 
-std::list<SectionInfo *> &IntelCoffFile::GetEntryPoints(const char *pEntry)
+std::list<SectionInfo *> &IntelCoffFile::getEntryPoints(const char *pEntry)
 {
 	//unused(pEntry);
-	printf("IntelCoffFile::GetEntryPoints called\n");
+	printf("IntelCoffFile::getEntryPoints called\n");
 	// TODO: Provide a list of all code exported public. We can return the list already
 	//       but it needs to be filled while loading!
 	return m_EntryPoints;

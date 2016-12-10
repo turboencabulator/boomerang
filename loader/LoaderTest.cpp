@@ -174,7 +174,7 @@ void LoaderTest::testWinLoad()
 	std::string actual(ost.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
-	ADDRESS addr = pBF->GetMainEntryPoint();
+	ADDRESS addr = pBF->getMainEntryPoint();
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	// Test symbol table (imports)
@@ -195,7 +195,7 @@ void LoaderTest::testWinLoad()
 	// Test loading the "new style" exes, as found in winXP etc
 	pBF = bff.Load(CALC_WINXP);
 	CPPUNIT_ASSERT(pBF != NULL);
-	addr = pBF->GetMainEntryPoint();
+	addr = pBF->getMainEntryPoint();
 	std::ostringstream ost1;
 	ost1 << std::hex << addr;
 	actual = ost1.str();
@@ -208,7 +208,7 @@ void LoaderTest::testWinLoad()
 	pBF = bff.Load(CALC_WIN2000);
 	CPPUNIT_ASSERT(pBF != NULL);
 	expected = "1001680";
-	addr = pBF->GetMainEntryPoint();
+	addr = pBF->getMainEntryPoint();
 	std::ostringstream ost2;
 	ost2 << std::hex << addr;
 	actual = ost2.str();
@@ -219,7 +219,7 @@ void LoaderTest::testWinLoad()
 	// Test loading the lpq.exe program - console mode PE file
 	pBF = bff.Load(LPQ_WINDOWS);
 	CPPUNIT_ASSERT(pBF != NULL);
-	addr = pBF->GetMainEntryPoint();
+	addr = pBF->getMainEntryPoint();
 	std::ostringstream ost3;
 	ost3 << std::hex << addr;
 	actual = ost3.str();
@@ -233,7 +233,7 @@ void LoaderTest::testWinLoad()
 	BinaryFileFactory bff;
 	BinaryFile *pBF = bff.Load(SWITCH_BORLAND);
 	CPPUNIT_ASSERT(pBF != NULL);
-	ADDRESS addr = pBF->GetMainEntryPoint();
+	ADDRESS addr = pBF->getMainEntryPoint();
 	std::ostringstream ost4;
 	ost4 << std::hex << addr;
 	std::string actual(ost4.str());

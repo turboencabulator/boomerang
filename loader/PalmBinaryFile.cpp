@@ -243,7 +243,7 @@ void PalmBinaryFile::UnLoad()
 }
 
 // This is provided for completeness only...
-std::list<SectionInfo *> &PalmBinaryFile::GetEntryPoints(const char *pEntry /* = "main" */)
+std::list<SectionInfo *> &PalmBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
 	SectionInfo *pSect = getSectionInfoByName("code1");
@@ -253,7 +253,7 @@ std::list<SectionInfo *> &PalmBinaryFile::GetEntryPoints(const char *pEntry /* =
 	return *ret;
 }
 
-ADDRESS PalmBinaryFile::GetEntryPoint()
+ADDRESS PalmBinaryFile::getEntryPoint()
 {
 	assert(0); /* FIXME: Need to be implemented */
 	return 0;
@@ -305,7 +305,7 @@ const char *PalmBinaryFile::SymbolByAddress(ADDRESS dwAddr)
 		else
 			return 0;
 	}
-	if (dwAddr == GetMainEntryPoint())
+	if (dwAddr == getMainEntryPoint())
 		return "PilotMain";
 	else return 0;
 }
@@ -401,7 +401,7 @@ SWord *findPattern(SWord *start, const SWord *patt, int pattSize, int max)
 
 // Find the native address for the start of the main entry function.
 // For Palm binaries, this is PilotMain.
-ADDRESS PalmBinaryFile::GetMainEntryPoint()
+ADDRESS PalmBinaryFile::getMainEntryPoint()
 {
 	SectionInfo *pSect = getSectionInfoByName("code1");
 	if (pSect == 0)
