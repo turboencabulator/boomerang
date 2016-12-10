@@ -752,7 +752,7 @@ void ElfBinaryFile::Close()
 	UnLoad();
 }
 
-MACHINE ElfBinaryFile::GetMachine() const
+MACHINE ElfBinaryFile::getMachine() const
 {
 	int machine = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_machine);
 	if ((machine == EM_SPARC) || (machine == EM_SPARC32PLUS)) return MACHINE_SPARC;
@@ -763,11 +763,11 @@ MACHINE ElfBinaryFile::GetMachine() const
 	else if (machine == EM_ST20)    return MACHINE_ST20;
 	else if (machine == EM_MIPS)    return MACHINE_MIPS;
 	else if (machine == EM_X86_64) {
-		std::cerr << "Error: ElfBinaryFile::GetMachine: The AMD x86-64 architecture is not supported yet\n";
+		std::cerr << "Error: ElfBinaryFile::getMachine: The AMD x86-64 architecture is not supported yet\n";
 		return (MACHINE)-1;
 	}
 	// An unknown machine type
-	std::cerr << "Error: ElfBinaryFile::GetMachine: Unsupported machine type: "
+	std::cerr << "Error: ElfBinaryFile::getMachine: Unsupported machine type: "
 	          << machine << " (0x" << std::hex << machine << ")\n";
 	std::cerr << "(Please add a description for this type, thanks!)\n";
 	return (MACHINE)-1;

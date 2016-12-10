@@ -9,8 +9,8 @@ public:
 	virtual bool        Open(const char *sName) { return false; }  // Open for r/w; pv
 	virtual void        Close() { }               // Close file opened with Open()
 	virtual void        UnLoad() { }              // Unload the image
-	virtual LOAD_FMT    GetFormat() const;        // Get format (e.g. LOADFMT_ELF)
-	virtual MACHINE     GetMachine() const;       // Get machine (e.g. MACHINE_SPARC)
+	virtual LOADFMT     getFormat() const;        // Get format (e.g. LOADFMT_ELF)
+	virtual MACHINE     getMachine() const;       // Get machine (e.g. MACHINE_SPARC)
 	virtual const char *getFilename() const { return m_pFileName; }
 
 	virtual bool        isLibrary() const;

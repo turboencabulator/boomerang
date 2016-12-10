@@ -137,7 +137,7 @@ typedef BinaryFile *(*get_library_callback_t)(char *name);
 
 // This enum allows a sort of run time type identification, without using
 // compiler specific features
-enum LOAD_FMT {
+enum LOADFMT {
 	LOADFMT_ELF,
 	LOADFMT_PE,
 	LOADFMT_PALM,
@@ -187,9 +187,9 @@ public:
 	// Unload the file. Pure virtual
 	virtual void        UnLoad() = 0;
 	// Get the format (e.g. LOADFMT_ELF)
-	virtual LOAD_FMT    GetFormat() const = 0;
+	virtual LOADFMT     getFormat() const = 0;
 	// Get the expected machine (e.g. MACHINE_PENTIUM)
-	virtual MACHINE     GetMachine() const = 0;
+	virtual MACHINE     getMachine() const = 0;
 	virtual const char *getFilename() const = 0;
 
 	// Return whether or not the object is a library file.

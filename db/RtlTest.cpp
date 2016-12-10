@@ -166,7 +166,7 @@ void RtlTest::testIsCompare()
 	BinaryFileFactory bff;
 	BinaryFile *pBF = bff.Load(SWITCH_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -194,7 +194,7 @@ void RtlTest::testIsCompare()
 	delete pFE;
 	pBF = bff.Load(SWITCH_PENT);
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_PENTIUM);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	pFE = new PentiumFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
 

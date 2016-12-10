@@ -118,8 +118,8 @@ public:
 	virtual bool        Open(const char *sName);  // Open the file for r/w; ???
 	virtual void        Close();                  // Close file opened with Open()
 	virtual void        UnLoad();                 // Unload the image
-	virtual LOAD_FMT    GetFormat() const { return LOADFMT_LX; }
-	virtual MACHINE     GetMachine() const { return MACHINE_PENTIUM; }
+	virtual LOADFMT     getFormat() const { return LOADFMT_LX; }
+	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
 	virtual const char *getFilename() const { return m_pFilename; }
 
 	virtual bool        isLibrary() const;

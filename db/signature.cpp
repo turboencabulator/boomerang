@@ -1582,7 +1582,7 @@ Exp *Signature::getFirstArgLoc(Prog *prog)
 // This is very very hacky! (trent)
 /*static*/ Exp *Signature::getReturnExp2(BinaryFile *pBF)
 {
-	switch (pBF->GetMachine()) {
+	switch (pBF->getMachine()) {
 	case MACHINE_SPARC:
 		return Location::regOf(8);
 	case MACHINE_PENTIUM:

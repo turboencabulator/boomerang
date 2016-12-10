@@ -32,7 +32,7 @@ void FrontPentTest::test1()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_PENTIUM);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -78,7 +78,7 @@ void FrontPentTest::test2()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_PENTIUM);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -117,7 +117,7 @@ void FrontPentTest::test3()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_PENTIUM);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -154,7 +154,7 @@ void FrontPentTest::testBranch()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_PENTIUM);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);

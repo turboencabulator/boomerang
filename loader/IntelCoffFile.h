@@ -33,8 +33,8 @@ public:
 	virtual bool PostLoad(void *);
 	virtual void Close();
 
-	virtual LOAD_FMT    GetFormat() const { return LOADFMT_COFF; }
-	virtual MACHINE     GetMachine() const { return MACHINE_PENTIUM; }
+	virtual LOADFMT     getFormat() const { return LOADFMT_COFF; }
+	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
 	virtual const char *getFilename() const { return m_pFilename; }
 
 	virtual bool        isLibrary() const;

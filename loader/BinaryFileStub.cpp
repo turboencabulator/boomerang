@@ -210,12 +210,12 @@ BinaryFileStub::BinaryFileStub()
 	getTextLimits();
 }
 
-LOAD_FMT BinaryFileStub::GetFormat() const
+LOADFMT BinaryFileStub::getFormat() const
 {
 	return LOADFMT_ELF;
 }
 
-MACHINE BinaryFileStub::GetMachine() const
+MACHINE BinaryFileStub::getMachine() const
 {
 	return MACHINE_PENTIUM;
 }

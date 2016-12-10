@@ -61,7 +61,7 @@ FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : pBF(p
 // Static function to instantiate an appropriate concrete front end
 FrontEnd *FrontEnd::instantiate(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff)
 {
-	switch (pBF->GetMachine()) {
+	switch (pBF->getMachine()) {
 	case MACHINE_PENTIUM:
 		return new PentiumFrontEnd(pBF, prog, pbff);
 	case MACHINE_SPARC:
@@ -112,7 +112,7 @@ int FrontEnd::getRegSize(int idx)
 
 bool FrontEnd::isWin32()
 {
-	return pBF->GetFormat() == LOADFMT_PE;
+	return pBF->getFormat() == LOADFMT_PE;
 }
 
 bool FrontEnd::noReturnCallDest(const char *name)

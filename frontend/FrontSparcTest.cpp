@@ -30,7 +30,7 @@ void FrontSparcTest::test1()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();  // fallback on stub
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -100,7 +100,7 @@ void FrontSparcTest::test2()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();  // fallback on stub
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -148,7 +148,7 @@ void FrontSparcTest::test3()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();  // fallback on stub
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -213,7 +213,7 @@ void FrontSparcTest::testBranch()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();  // fallback on stub
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);
@@ -254,7 +254,7 @@ void FrontSparcTest::testDelaySlot()
 	if (pBF == NULL)
 		pBF = new BinaryFileStub();  // fallback on stub
 	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->GetMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	Prog *prog = new Prog;
 	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
 	prog->setFrontEnd(pFE);

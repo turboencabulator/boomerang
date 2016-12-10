@@ -230,7 +230,7 @@ public:
 	        double      getFloatConstant(ADDRESS uaddr, bool &ok, int bits = 64);
 
 	// Hacks for Mike
-	        MACHINE     getMachine() { return pBF->GetMachine(); }  // Get a code for the machine e.g. MACHINE_SPARC
+	        MACHINE     getMachine() { return pBF->getMachine(); }  // Get a code for the machine e.g. MACHINE_SPARC
 	        const char *symbolByAddress(ADDRESS dest) { return pBF->SymbolByAddress(dest); }  // Get a symbol from an address
 	        SectionInfo *getSectionInfoByAddr(ADDRESS a) { return pBF->GetSectionInfoByAddr(a); }
 	        ADDRESS     getLimitTextLow() { return pBF->getLimitTextLow(); }
