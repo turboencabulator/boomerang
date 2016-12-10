@@ -6,4 +6,5 @@ noinst_LTLIBRARIES = \
 	libutil.la
 
 libutil_la_SOURCES = \
+	log.cpp \
 	util.cpp

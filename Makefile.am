@@ -21,8 +21,7 @@ pkglib_LTLIBRARIES = \
 	libboomerang.la
 
 libboomerang_la_SOURCES = \
-	boomerang.cpp \
-	log.cpp
+	boomerang.cpp
 libboomerang_la_LIBADD = \
 	$(top_builddir)/db/libdb.la \
 	$(top_builddir)/db/libxmlprogparser.la \
