@@ -43,21 +43,12 @@ AC_PATH_PROG([UNGENERATE],[ungenerate],,
 	[$PATH:$HOME/install:$HOME/bin:/home/02/binary/u0.luna.tools/NJ/base])
 
 # Checks for libraries.
-PKG_CHECK_MODULES([EXPAT],[expat],
-	[],
-	[AC_MSG_ERROR([cannot find expat])])
-
-PKG_CHECK_MODULES([GC],[bdw-gc],
-	[],
-	[AC_MSG_ERROR([cannot find gc])])
-
-PKG_CHECK_MODULES([QTGUI],[QtGui],
-	[],
-	[AC_MSG_ERROR([cannot find QtGui])])
-
+PKG_CHECK_MODULES([EXPAT],[expat])
+PKG_CHECK_MODULES([GC],[bdw-gc])
+PKG_CHECK_MODULES([QTGUI],[QtGui])
 PKG_CHECK_MODULES([CPPUNIT],[cppunit],
 	[],
-	[AC_MSG_WARN([cannot find cppunit, needed only for testing])])
+	[AC_MSG_WARN([$CPPUNIT_PKG_ERRORS, needed only for testing])])
 
 # Checks for header files.
 #AC_HEADER_STDC
