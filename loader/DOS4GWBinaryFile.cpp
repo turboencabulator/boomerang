@@ -91,9 +91,9 @@ ADDRESS DOS4GWBinaryFile::GetMainEntryPoint()
 	bool gotSubEbp = false;         // True if see sub ebp, ebp
 	bool lastWasCall = false;       // True if the last instruction was a call
 
-	SectionInfo *si = GetSectionInfoByName("seg0");     // Assume the first section is text
-	if (si == NULL) si = GetSectionInfoByName(".text");
-	if (si == NULL) si = GetSectionInfoByName("CODE");
+	SectionInfo *si = getSectionInfoByName("seg0");     // Assume the first section is text
+	if (si == NULL) si = getSectionInfoByName(".text");
+	if (si == NULL) si = getSectionInfoByName("CODE");
 	assert(si);
 	ADDRESS nativeOrigin = si->uNativeAddr;
 	unsigned textSize = si->uSectionSize;
@@ -435,9 +435,9 @@ int DOS4GWBinaryFile::dos4gwRead4(int *pi) const
 // Read 2 bytes from given native address
 int DOS4GWBinaryFile::readNative1(ADDRESS nat)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0)
-		si = GetSectionInfo(0);
+		si = getSectionInfo(0);
 	char *host = (char *)(si->uHostAddr - si->uNativeAddr + nat);
 	return *host;
 }
@@ -445,7 +445,7 @@ int DOS4GWBinaryFile::readNative1(ADDRESS nat)
 // Read 2 bytes from given native address
 int DOS4GWBinaryFile::readNative2(ADDRESS nat)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	int n = dos4gwRead2((short *)host);
@@ -455,7 +455,7 @@ int DOS4GWBinaryFile::readNative2(ADDRESS nat)
 // Read 4 bytes from given native address
 int DOS4GWBinaryFile::readNative4(ADDRESS nat)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	int n = dos4gwRead4((int *)host);

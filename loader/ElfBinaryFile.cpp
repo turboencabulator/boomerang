@@ -237,14 +237,14 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 	}
 
 	// Save the relocation to symbol table info
-	SectionInfo *pRel = GetSectionInfoByName(".rela.text");
+	SectionInfo *pRel = getSectionInfoByName(".rela.text");
 	if (pRel) {
 		m_bAddend = true;               // Remember its a relA table
 		m_pReloc = (Elf32_Rel *)pRel->uHostAddr;     // Save pointer to reloc table
 		//SetRelocInfo(pRel);
 	} else {
 		m_bAddend = false;
-		pRel = GetSectionInfoByName(".rel.text");
+		pRel = getSectionInfoByName(".rel.text");
 		if (pRel) {
 			//SetRelocInfo(pRel);
 			m_pReloc = (Elf32_Rel *)pRel->uHostAddr;     // Save pointer to reloc table
@@ -252,7 +252,7 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 	}
 
 	// Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
-	SectionInfo *pPlt = GetSectionInfoByName(".plt");
+	SectionInfo *pPlt = getSectionInfoByName(".plt");
 	if (pPlt) {
 		m_uPltMin = pPlt->uNativeAddr;
 		m_uPltMax = pPlt->uNativeAddr + pPlt->uSectionSize;
@@ -323,12 +323,12 @@ void ElfBinaryFile::AddSyms(int secIndex)
 	m_pSym = (Elf32_Sym *)pSect->uHostAddr;  // Pointer to symbols
 	int strIdx = m_sh_link[secIndex];        // sh_link points to the string table
 
-	SectionInfo *siPlt = GetSectionInfoByName(".plt");
+	SectionInfo *siPlt = getSectionInfoByName(".plt");
 	ADDRESS addrPlt = siPlt ? siPlt->uNativeAddr : 0;
-	SectionInfo *siRelPlt = GetSectionInfoByName(".rel.plt");
+	SectionInfo *siRelPlt = getSectionInfoByName(".rel.plt");
 	int sizeRelPlt = 8;  // Size of each entry in the .rel.plt table
 	if (siRelPlt == NULL) {
-		siRelPlt = GetSectionInfoByName(".rela.plt");
+		siRelPlt = getSectionInfoByName(".rela.plt");
 		sizeRelPlt = 12;  // Size of each entry in the .rela.plt table is 12 bytes
 	}
 	ADDRESS addrRelPlt = 0;
@@ -361,7 +361,7 @@ void ElfBinaryFile::AddSyms(int secIndex)
 			} else if (e_type == E_REL) {
 				int nsec = elfRead2(&m_pSym[i].st_shndx);
 				if (nsec >= 0 && nsec < m_iNumSections)
-					val += GetSectionInfo(nsec)->uNativeAddr;
+					val += getSectionInfo(nsec)->uNativeAddr;
 			}
 
 #define ECHO_SYMS 0
@@ -418,7 +418,7 @@ std::vector<ADDRESS> ElfBinaryFile::GetExportedAddresses(bool funcsOnly)
 				if (e_type == E_REL) {
 					int nsec = elfRead2(&m_pSym[i].st_shndx);
 					if (nsec >= 0 && nsec < m_iNumSections)
-						val += GetSectionInfo(nsec)->uNativeAddr;
+						val += getSectionInfo(nsec)->uNativeAddr;
 				}
 				exported.push_back(val);
 			}
@@ -450,7 +450,7 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 			// Lookup the value of the symbol table entry
 			ADDRESS a = elfRead4((int *)&m_pSym[symIndex].st_value);
 			if (m_pSym[symIndex].st_info & STT_SECTION)
-				a = GetSectionInfo(elfRead2(&m_pSym[symIndex].st_shndx))->uNativeAddr;
+				a = getSectionInfo(elfRead2(&m_pSym[symIndex].st_shndx))->uNativeAddr;
 			// Overwrite the relocation value... ?
 			writeNative4(val, a);
 			continue;
@@ -498,7 +498,7 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 	int iStr;                   // Section index of the string table
 	SectionInfo *pSect;
 
-	pSect = GetSectionInfoByName(".dynsym");
+	pSect = getSectionInfoByName(".dynsym");
 	if (pSect == 0) {
 		// We have a file with no .dynsym section, and hence no .hash section (from my understanding - MVE).
 		// It seems that the only alternative is to linearly search the symbol tables.
@@ -508,7 +508,7 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 	}
 	pSym = (Elf32_Sym *)pSect->uHostAddr;
 	if (pSym == 0) return false;
-	pSect = GetSectionInfoByName(".hash");
+	pSect = getSectionInfoByName(".hash");
 	if (pSect == 0) return false;
 	pHash = (int *)pSect->uHostAddr;
 	iStr = GetSectionIndexByName(".dynstr");
@@ -542,7 +542,7 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 		if (e_type == E_REL) {
 			int nsec = elfRead2(&pSym[y].st_shndx);
 			if (nsec >= 0 && nsec < m_iNumSections)
-				pVal->uSymAddr += GetSectionInfo(nsec)->uNativeAddr;
+				pVal->uSymAddr += getSectionInfo(nsec)->uNativeAddr;
 		}
 		pVal->iSymSize = elfRead4(&pSym[y].st_size);
 		return true;
@@ -559,9 +559,9 @@ bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const c
 	// Note: this assumes .symtab. Many files don't have this section!!!
 	SectionInfo *pSect, *pStrSect;
 
-	pSect = GetSectionInfoByName(pSectName);
+	pSect = getSectionInfoByName(pSectName);
 	if (pSect == 0) return false;
-	pStrSect = GetSectionInfoByName(pStrName);
+	pStrSect = getSectionInfoByName(pStrName);
 	if (pStrSect == 0) return false;
 	const char *pStr = (const char *)pStrSect->uHostAddr;
 	// Find number of symbols
@@ -577,7 +577,7 @@ bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const c
 			if (e_type == E_REL) {
 				int nsec = elfRead2(&pSym[i].st_shndx);
 				if (nsec >= 0 && nsec < m_iNumSections)
-					pVal->uSymAddr += GetSectionInfo(nsec)->uNativeAddr;
+					pVal->uSymAddr += getSectionInfo(nsec)->uNativeAddr;
 			}
 			pVal->iSymSize = elfRead4(&pSym[i].st_size);
 			return true;
@@ -633,7 +633,7 @@ int ElfBinaryFile::GetDistanceByName(const char *sName, const char *pSectName)
 	if (value == 0) return 0;  // Symbol doesn't even exist!
 
 	SectionInfo *pSect;
-	pSect = GetSectionInfoByName(pSectName);
+	pSect = getSectionInfoByName(pSectName);
 	if (pSect == 0) return 0;
 	// Find number of symbols
 	int n = pSect->uSectionSize / pSect->uSectionEntrySize;
@@ -649,7 +649,7 @@ int ElfBinaryFile::GetDistanceByName(const char *sName, const char *pSectName)
 	}
 	if (idx == -1) return 0;
 	// Do some checks on the symbol's value; it might be at the end of the .text section
-	pSect = GetSectionInfoByName(".text");
+	pSect = getSectionInfoByName(".text");
 	ADDRESS low = pSect->uNativeAddr;
 	ADDRESS hi = low + pSect->uSectionSize;
 	if ((value >= low) && (value < hi)) {
@@ -684,7 +684,7 @@ bool ElfBinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
 //
 std::list<SectionInfo *> &ElfBinaryFile::GetEntryPoints(const char *pEntry /* = "main" */)
 {
-	SectionInfo *pSect = GetSectionInfoByName(".text");
+	SectionInfo *pSect = getSectionInfoByName(".text");
 	ADDRESS uMain = GetAddressByName(pEntry, true);
 	ADDRESS delta = uMain - pSect->uNativeAddr;
 	pSect->uNativeAddr += delta;
@@ -693,9 +693,9 @@ std::list<SectionInfo *> &ElfBinaryFile::GetEntryPoints(const char *pEntry /* = 
 	pSect->uSectionSize -= delta;
 	m_EntryPoint.push_back(pSect);
 	// .init and .fini sections
-	pSect = GetSectionInfoByName(".init");
+	pSect = getSectionInfoByName(".init");
 	m_EntryPoint.push_back(pSect);
-	pSect = GetSectionInfoByName(".fini");
+	pSect = getSectionInfoByName(".fini");
 	m_EntryPoint.push_back(pSect);
 	return m_EntryPoint;
 }
@@ -783,7 +783,7 @@ std::list<const char *> ElfBinaryFile::getDependencyList()
 {
 	std::list<const char *> result;
 	ADDRESS stringtab = NO_ADDRESS;
-	SectionInfo *dynsect = GetSectionInfoByName(".dynamic");
+	SectionInfo *dynsect = getSectionInfoByName(".dynamic");
 	if (dynsect == NULL)
 		return result; /* no dynamic section = statically linked */
 
@@ -877,16 +877,16 @@ ADDRESS *ElfBinaryFile::GetImportStubs(int &numImports)
 std::map<ADDRESS, const char *> *ElfBinaryFile::GetDynamicGlobalMap()
 {
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
-	SectionInfo *pSect = GetSectionInfoByName(".rel.bss");
+	SectionInfo *pSect = getSectionInfoByName(".rel.bss");
 	if (pSect == 0)
-		pSect = GetSectionInfoByName(".rela.bss");
+		pSect = getSectionInfoByName(".rela.bss");
 	if (pSect == 0) {
 		// This could easily mean that this file has no dynamic globals, and
 		// that is fine.
 		return ret;
 	}
 	int numEnt = pSect->uSectionSize / pSect->uSectionEntrySize;
-	SectionInfo *sym = GetSectionInfoByName(".dynsym");
+	SectionInfo *sym = getSectionInfoByName(".dynsym");
 	if (sym == 0) {
 		fprintf(stderr, "Could not find section .dynsym in source binary file");
 		return ret;
@@ -958,9 +958,9 @@ void ElfBinaryFile::elfWrite4(int *pi, int val)
 
 int ElfBinaryFile::readNative1(ADDRESS nat)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) {
-		si = GetSectionInfo(0);
+		si = getSectionInfo(0);
 	}
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	return *(char *)host;
@@ -969,7 +969,7 @@ int ElfBinaryFile::readNative1(ADDRESS nat)
 // Read 2 bytes from given native address
 int ElfBinaryFile::readNative2(ADDRESS nat)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	return elfRead2((short *)host);
@@ -978,7 +978,7 @@ int ElfBinaryFile::readNative2(ADDRESS nat)
 // Read 4 bytes from given native address
 int ElfBinaryFile::readNative4(ADDRESS nat)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	return elfRead4((int *)host);
@@ -986,7 +986,7 @@ int ElfBinaryFile::readNative4(ADDRESS nat)
 
 void ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 {
-	SectionInfo *si = GetSectionInfoByAddr(nat);
+	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	if (m_elfEndianness) {
@@ -1105,7 +1105,7 @@ void ElfBinaryFile::applyRelocations()
 						if (e_type == E_REL)
 							pRelWord = ((int *)(destHostOrigin + r_offset));
 						else {
-							SectionInfo *destSec = GetSectionInfoByAddr(r_offset);
+							SectionInfo *destSec = getSectionInfoByAddr(r_offset);
 							pRelWord = (int *)(destSec->uHostAddr - destSec->uNativeAddr + r_offset);
 							destNatOrigin = 0;
 						}
@@ -1119,7 +1119,7 @@ void ElfBinaryFile::applyRelocations()
 							if (e_type == E_REL) {
 								nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
 								if (nsec >= 0 && nsec < m_iNumSections)
-									S += GetSectionInfo(nsec)->uNativeAddr;
+									S += getSectionInfo(nsec)->uNativeAddr;
 							}
 							A = elfRead4(pRelWord);
 							elfWrite4(pRelWord, S + A);
@@ -1128,7 +1128,7 @@ void ElfBinaryFile::applyRelocations()
 							if (ELF32_ST_TYPE(symOrigin[symTabIndex].st_info) == STT_SECTION) {
 								nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
 								if (nsec >= 0 && nsec < m_iNumSections)
-									S = GetSectionInfo(nsec)->uNativeAddr;
+									S = getSectionInfo(nsec)->uNativeAddr;
 							} else {
 								S = elfRead4((int *)&symOrigin[symTabIndex].st_value);
 								if (S == 0) {
@@ -1149,7 +1149,7 @@ void ElfBinaryFile::applyRelocations()
 								} else if (e_type == E_REL) {
 									nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
 									if (nsec >= 0 && nsec < m_iNumSections)
-										S += GetSectionInfo(nsec)->uNativeAddr;
+										S += getSectionInfo(nsec)->uNativeAddr;
 								}
 							}
 							A = elfRead4(pRelWord);
@@ -1216,7 +1216,7 @@ bool ElfBinaryFile::IsRelocationAt(ADDRESS uNative)
 						if (e_type == E_REL)
 							pRelWord = destNatOrigin + r_offset;
 						else {
-							SectionInfo *destSec = GetSectionInfoByAddr(r_offset);
+							SectionInfo *destSec = getSectionInfoByAddr(r_offset);
 							pRelWord = destSec->uNativeAddr + r_offset;
 							destNatOrigin = 0;
 						}

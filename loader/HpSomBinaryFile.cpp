@@ -218,7 +218,7 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	m_pSections[0].uHostAddr = (ADDRESS)m_pImage;
 	//m_pSections[0].uSectionSize = AUXHDR(4);
 	// There is nothing that appears in memory space here; to give this a size
-	// is to invite GetSectionInfoByAddr to return this section!
+	// is to invite getSectionInfoByAddr to return this section!
 	m_pSections[0].uSectionSize = 0;
 
 	m_pSections[0].uSectionEntrySize = 1;   // Not applicable
@@ -411,7 +411,7 @@ ADDRESS HpSomBinaryFile::GetEntryPoint()
 std::list<SectionInfo *> &HpSomBinaryFile::GetEntryPoints(const char *pEntry /* = "main" */)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
-	SectionInfo *pSect = GetSectionInfoByName("code1");
+	SectionInfo *pSect = getSectionInfoByName("code1");
 	if (pSect == 0)
 		return *ret;  // Failed
 	ret->push_back(pSect);

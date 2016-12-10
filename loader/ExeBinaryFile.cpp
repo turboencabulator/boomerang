@@ -248,7 +248,7 @@ std::list<SectionInfo *> &ExeBinaryFile::GetEntryPoints(const char *pEntry /* = 
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
 #if 0  // Copied from PalmBinaryFile.cc
-	SectionInfo *pSect = GetSectionInfoByName("code1");
+	SectionInfo *pSect = getSectionInfoByName("code1");
 	if (pSect == 0)
 		return *ret;  // Failed
 	ret->push_back(pSect);

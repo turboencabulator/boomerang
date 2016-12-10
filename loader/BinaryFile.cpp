@@ -45,12 +45,12 @@ SectionInfo::SectionInfo() :
 SectionInfo::~SectionInfo()
 {}
 
-int BinaryFile::GetNumSections() const
+int BinaryFile::getNumSections() const
 {
 	return m_iNumSections;
 }
 
-SectionInfo *BinaryFile::GetSectionInfo(int idx) const
+SectionInfo *BinaryFile::getSectionInfo(int idx) const
 {
 	return m_pSections + idx;
 }
@@ -65,7 +65,7 @@ int BinaryFile::GetSectionIndexByName(const char *sName)
 	return -1;
 }
 
-SectionInfo *BinaryFile::GetSectionInfoByAddr(ADDRESS uEntry) const
+SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
 	SectionInfo *pSect;
 	for (int i = 0; i < m_iNumSections; i++) {
@@ -80,7 +80,7 @@ SectionInfo *BinaryFile::GetSectionInfoByAddr(ADDRESS uEntry) const
 	return NULL;
 }
 
-SectionInfo *BinaryFile::GetSectionInfoByName(const char *sName)
+SectionInfo *BinaryFile::getSectionInfoByName(const char *sName)
 {
 	int i = GetSectionIndexByName(sName);
 	if (i == -1) return 0;
@@ -167,12 +167,12 @@ ADDRESS *BinaryFile::GetImportStubs(int &numExports)
 
 void BinaryFile::getTextLimits()
 {
-	int n = GetNumSections();
+	int n = getNumSections();
 	limitTextLow = 0xFFFFFFFF;
 	limitTextHigh = 0;
 	textDelta = 0;
 	for (int i = 0; i < n; i++) {
-		SectionInfo *pSect = GetSectionInfo(i);
+		SectionInfo *pSect = getSectionInfo(i);
 		if (pSect->bCode) {
 			// The .plt section is an anomaly. It's code, but we never want to
 			// decode it, and in Sparc ELF files, it's actually in the data

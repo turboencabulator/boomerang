@@ -77,7 +77,7 @@
   ( ((unsigned)((Byte *)(&x))[1]     ) \
   + ((unsigned)((Byte *)(&x))[0] << 8) )
 
-// SectionInfo structure. GetSectionInfo returns a pointer to an array of
+// SectionInfo structure. getSectionInfo returns a pointer to an array of
 // these structs. All information about the sections is contained in these
 // structures.
 
@@ -207,15 +207,15 @@ public:
 	virtual size_t      getImageSize() = 0;
 
 	// Section functions
-	        int         GetNumSections() const;  // Return number of sections
-	        SectionInfo *GetSectionInfo(int idx) const;  // Return section struct
+	        int         getNumSections() const;  // Return number of sections
+	        SectionInfo *getSectionInfo(int idx) const;  // Return section struct
 	        // Find section info given name, or 0 if not found
-	        SectionInfo *GetSectionInfoByName(const char *sName);
+	        SectionInfo *getSectionInfoByName(const char *sName);
 	        // Find the end of a section, given an address in the section
-	        SectionInfo *GetSectionInfoByAddr(ADDRESS uEntry) const;
+	        SectionInfo *getSectionInfoByAddr(ADDRESS uEntry) const;
 
 	// returns true if the given address is in a read only section
-	        bool        isReadOnly(ADDRESS uEntry) { SectionInfo *p = GetSectionInfoByAddr(uEntry); return p && p->bReadOnly; }
+	        bool        isReadOnly(ADDRESS uEntry) { SectionInfo *p = getSectionInfoByAddr(uEntry); return p && p->bReadOnly; }
 	virtual int         readNative1(ADDRESS a) { return 0; }
 	// Read 2 bytes from given native address a; considers endianness
 	virtual int         readNative2(ADDRESS a) { return 0; }

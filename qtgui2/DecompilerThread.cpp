@@ -140,8 +140,8 @@ void Decompiler::load()
 		emit newEntrypoint(entrypoints[i], fe->getBinaryFile()->SymbolByAddress(entrypoints[i]));
 	}
 
-	for (int i = 1; i < fe->getBinaryFile()->GetNumSections(); i++) {
-		SectionInfo *section = fe->getBinaryFile()->GetSectionInfo(i);
+	for (int i = 1; i < fe->getBinaryFile()->getNumSections(); i++) {
+		SectionInfo *section = fe->getBinaryFile()->getSectionInfo(i);
 		emit newSection(section->pSectionName, section->uNativeAddr, section->uNativeAddr + section->uSectionSize);
 	}
 

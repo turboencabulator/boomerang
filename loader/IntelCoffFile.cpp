@@ -133,7 +133,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 			sidx = m_iNumSections;
 			psi = AddSection(&si);
 		} else {
-			psi = GetSectionInfo(sidx);
+			psi = getSectionInfo(sidx);
 		}
 
 		psh[iSection].sch_virtaddr = psi->uSectionSize;
@@ -145,7 +145,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 
 	ADDRESS a = 0x40000000;
 	for (int sidx = 0; sidx < m_iNumSections; sidx++) {
-		SectionInfo *psi = GetSectionInfo(sidx);
+		SectionInfo *psi = getSectionInfo(sidx);
 		if (psi->uSectionSize > 0) {
 			void *pData = malloc(psi->uSectionSize);
 			if (!pData)
@@ -160,7 +160,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
 		printf("Loading section %d of %hd\n", iSection + 1, m_Header.coff_sections);
 
-		SectionInfo *psi = GetSectionInfo(psh[iSection].sch_physaddr);
+		SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
 
 		if (fseek(m_fd, psh[iSection].sch_sectptr, SEEK_SET) != 0)
 			return false;
@@ -203,7 +203,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 
 		if (!(pSymbols[iSym].csym_loadclass & 0x60) && (pSymbols[iSym].csym_sectnum <= m_Header.coff_sections)) {
 			if (pSymbols[iSym].csym_sectnum > 0) {
-				SectionInfo *psi = GetSectionInfo(psh[pSymbols[iSym].csym_sectnum - 1].sch_physaddr);
+				SectionInfo *psi = getSectionInfo(psh[pSymbols[iSym].csym_sectnum - 1].sch_physaddr);
 				pSymbols[iSym].csym_value += psh[pSymbols[iSym].csym_sectnum - 1].sch_virtaddr + psi->uNativeAddr;
 				if (strcmp(name, ".strip."))
 					m_Symbols.Add(pSymbols[iSym].csym_value, name);
@@ -238,7 +238,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 
 	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
 		//printf("Relocating section %d of %hd\n", iSection + 1, m_Header.coff_sections);
-		SectionInfo *psi = GetSectionInfo(psh[iSection].sch_physaddr);
+		SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
 		char *pData = (char *)psi->uHostAddr + psh[iSection].sch_virtaddr;
 
 		if (!psh[iSection].sch_nreloc) continue;
@@ -412,7 +412,7 @@ std::map<ADDRESS, std::string> &IntelCoffFile::getSymbols()
 unsigned char *IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range)
 {
 	for (int iSection = 0; iSection < m_iNumSections; iSection++) {
-		SectionInfo *psi = GetSectionInfo(iSection);
+		SectionInfo *psi = getSectionInfo(iSection);
 		if (a >= psi->uNativeAddr && (a + range) < (psi->uNativeAddr + psi->uSectionSize)) {
 			return (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));
 		}
@@ -439,7 +439,7 @@ int IntelCoffFile::readNative4(ADDRESS a)
 	return readNative(a, 4);
 #if 0
 	for (int iSection = 0; iSection < m_iNumSections; iSection++) {
-		SectionInfo *psi = GetSectionInfo(iSection);
+		SectionInfo *psi = getSectionInfo(iSection);
 		if (a >= psi->uNativeAddr && (a + 3) < (psi->uNativeAddr + psi->uSectionSize)) {
 			unsigned long tmp;
 			unsigned char *buf = (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));

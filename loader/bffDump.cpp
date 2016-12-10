@@ -61,9 +61,9 @@ int main(int argc, char *argv[])
 	// This is an alternative way of displaying binary-file information
 	// by using individual sections.  The above approach is more general.
 	/*
-	printf("%d sections:\n", pbf->GetNumSections());
-	for (int i = 0; i < pbf->GetNumSections(); ++i) {
-		SectionInfo *pSect = pbf->GetSectionInfo(i);
+	printf("%d sections:\n", pbf->getNumSections());
+	for (int i = 0; i < pbf->getNumSections(); ++i) {
+		SectionInfo *pSect = pbf->getSectionInfo(i);
 		printf("  Section %s at %X\n", pSect->pSectionName, pSect->uNativeAddr);
 	}
 	printf("\n");
@@ -73,8 +73,8 @@ int main(int argc, char *argv[])
 	// Note: this is traditionally the ".text" section in Elf binaries.
 	// In the case of Prc files (Palm), the code section is named "code0".
 
-	for (int i = 0; i < pbf->GetNumSections(); ++i) {
-		SectionInfo *pSect = pbf->GetSectionInfo(i);
+	for (int i = 0; i < pbf->getNumSections(); ++i) {
+		SectionInfo *pSect = pbf->getSectionInfo(i);
 		if (pSect->bCode) {
 			printf("  Code section:\n");
 			print_section(pSect);
@@ -84,8 +84,8 @@ int main(int argc, char *argv[])
 
 	// Display the data section(s) in raw hexadecimal notation
 
-	for (int i = 0; i < pbf->GetNumSections(); ++i) {
-		SectionInfo *pSect = pbf->GetSectionInfo(i);
+	for (int i = 0; i < pbf->getNumSections(); ++i) {
+		SectionInfo *pSect = pbf->getSectionInfo(i);
 		if (pSect->bData) {
 			printf("  Data section: %s\n", pSect->pSectionName);
 			print_section(pSect);

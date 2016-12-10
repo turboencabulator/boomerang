@@ -169,7 +169,7 @@ void Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 				for (int j = 0; sections[j]; j++) {
 					std::string str = ".";
 					str += sections[j];
-					SectionInfo *info = pBF->GetSectionInfoByName(str.c_str());
+					SectionInfo *info = pBF->getSectionInfoByName(str.c_str());
 					str = "start_";
 					str += sections[j];
 					code->AddGlobal(str.c_str(), new IntegerType(32, -1), new Const(info ? info->uNativeAddr : (unsigned int)-1));
@@ -717,7 +717,7 @@ bool Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 		}
 	}
 
-	if (pBF->GetSectionInfoByAddr(uaddr) == NULL) {
+	if (pBF->getSectionInfoByAddr(uaddr) == NULL) {
 		if (VERBOSE)
 			LOG << "refusing to create a global at address that is in no known section of the binary: " << uaddr << "\n";
 		return false;
@@ -825,7 +825,7 @@ void Prog::setGlobalType(const char *nam, Type *ty)
 // if knownString, it is already known to be a char*
 const char *Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */)
 {
-	const SectionInfo *si = pBF->GetSectionInfoByAddr(uaddr);
+	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
 	// Too many compilers put constants, including string constants, into read/write sections
 	//if (si && si->bReadOnly)
 	if (si && !si->isAddressBss(uaddr)) {
@@ -855,7 +855,7 @@ const char *Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false *
 double Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits)
 {
 	ok = true;
-	SectionInfo *si = pBF->GetSectionInfoByAddr(uaddr);
+	SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
 	if (si && si->bReadOnly) {
 		if (bits == 64) {
 			return pBF->readNativeFloat8(uaddr);
@@ -1013,11 +1013,11 @@ const void *Prog::getCodeInfo(ADDRESS uAddr, const char *&last, int &delta)
 {
 	delta = 0;
 	last = 0;
-	int n = pBF->GetNumSections();
+	int n = pBF->getNumSections();
 	int i;
 	// Search all code and read-only sections
 	for (i = 0; i < n; i++) {
-		SectionInfo *pSect = pBF->GetSectionInfo(i);
+		SectionInfo *pSect = pBF->getSectionInfo(i);
 		if ((!pSect->bCode) && (!pSect->bReadOnly))
 			continue;
 		if ((uAddr < pSect->uNativeAddr) || (uAddr >= pSect->uNativeAddr + pSect->uSectionSize))

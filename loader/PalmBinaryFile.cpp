@@ -131,13 +131,13 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	m_pSections[m_iNumSections - 1].uSectionSize = size - off;
 
 	// Create a separate, uncompressed, initialised data section
-	SectionInfo *pData = GetSectionInfoByName("data0");
+	SectionInfo *pData = getSectionInfoByName("data0");
 	if (pData == 0) {
 		fprintf(stderr, "No data section!\n");
 		return false;
 	}
 
-	SectionInfo *pCode0 = GetSectionInfoByName("code0");
+	SectionInfo *pCode0 = getSectionInfoByName("code0");
 	if (pCode0 == 0) {
 		fprintf(stderr, "No code 0 section!\n");
 		return false;
@@ -246,7 +246,7 @@ void PalmBinaryFile::UnLoad()
 std::list<SectionInfo *> &PalmBinaryFile::GetEntryPoints(const char *pEntry /* = "main" */)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
-	SectionInfo *pSect = GetSectionInfoByName("code1");
+	SectionInfo *pSect = getSectionInfoByName("code1");
 	if (pSect == 0)
 		return *ret;  // Failed
 	ret->push_back(pSect);
@@ -324,7 +324,7 @@ bool PalmBinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
 std::pair<unsigned, unsigned> PalmBinaryFile::GetGlobalPointerInfo()
 {
 	unsigned agp = 0;
-	const SectionInfo *ps = GetSectionInfoByName("data0");
+	const SectionInfo *ps = getSectionInfoByName("data0");
 	if (ps) agp = ps->uNativeAddr;
 	std::pair<unsigned, unsigned> ret(agp, m_SizeBelowA5);
 	return ret;
@@ -403,7 +403,7 @@ SWord *findPattern(SWord *start, const SWord *patt, int pattSize, int max)
 // For Palm binaries, this is PilotMain.
 ADDRESS PalmBinaryFile::GetMainEntryPoint()
 {
-	SectionInfo *pSect = GetSectionInfoByName("code1");
+	SectionInfo *pSect = getSectionInfoByName("code1");
 	if (pSect == 0)
 		return 0;  // Failed
 	// Return the start of the code1 section

@@ -375,7 +375,7 @@ void FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 
 DecodeResult &FrontEnd::decodeInstruction(ADDRESS pc)
 {
-	if (pBF->GetSectionInfoByAddr(pc) == NULL) {
+	if (pBF->getSectionInfoByAddr(pc) == NULL) {
 		LOG << "ERROR: attempted to decode outside any known segment " << pc << "\n";
 		static DecodeResult invalid;
 		invalid.reset();

@@ -45,12 +45,12 @@ void LoaderTest::testSparcLoad()
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
-	n = pBF->GetNumSections();
+	n = pBF->getNumSections();
 	ost << "Number of sections = " << std::dec << n << "\r\n\t";
 	// Just use the first (real one) and last sections
-	si = pBF->GetSectionInfo(1);
+	si = pBF->getSectionInfo(1);
 	ost << si->pSectionName << "\t";
-	si = pBF->GetSectionInfo(n - 1);
+	si = pBF->getSectionInfo(n - 1);
 	ost << si->pSectionName;
 	pBF->UnLoad();
 	// Note: the string below needs to have embedded tabs. Edit with caution!
@@ -74,11 +74,11 @@ void LoaderTest::testPentiumLoad()
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
-	n = pBF->GetNumSections();
+	n = pBF->getNumSections();
 	ost << "Number of sections = " << std::dec << n << "\r\n\t";
-	si = pBF->GetSectionInfo(1);
+	si = pBF->getSectionInfo(1);
 	ost << si->pSectionName << "\t";
-	si = pBF->GetSectionInfo(n - 1);
+	si = pBF->getSectionInfo(n - 1);
 	ost << si->pSectionName;
 	pBF->UnLoad();
 	// Note: the string below needs to have embedded tabs. Edit with caution!
@@ -103,10 +103,10 @@ void LoaderTest::testHppaLoad()
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
-	n = pBF->GetNumSections();
+	n = pBF->getNumSections();
 	ost << "Number of sections = " << std::dec << n << "\r\n";
 	for (int i = 0; i < n; i++) {
-		si = pBF->GetSectionInfo(i);
+		si = pBF->getSectionInfo(i);
 		ost << si->pSectionName << "\t";
 	}
 	pBF->UnLoad();
@@ -131,10 +131,10 @@ void LoaderTest::testPalmLoad()
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
-	n = pBF->GetNumSections();
+	n = pBF->getNumSections();
 	ost << "Number of sections = " << std::dec << n << "\r\n";
 	for (int i = 0; i < n; i++) {
-		si = pBF->GetSectionInfo(i);
+		si = pBF->getSectionInfo(i);
 		ost << si->pSectionName << "\t";
 	}
 	pBF->UnLoad();
@@ -161,10 +161,10 @@ void LoaderTest::testWinLoad()
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
-	n = pBF->GetNumSections();
+	n = pBF->getNumSections();
 	ost << "Number of sections = " << std::dec << n << "\r\n";
 	for (int i = 0; i < n; i++) {
-		si = pBF->GetSectionInfo(i);
+		si = pBF->getSectionInfo(i);
 		ost << si->pSectionName << "\t";
 	}
 
