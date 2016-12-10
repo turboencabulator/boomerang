@@ -115,7 +115,6 @@ void Boomerang::usage()
  */
 void Boomerang::helpcmd()
 {
-	// Column 98 of this source file is column 80 of output (don't use tabs)
 	//            ____.____1____.____2____.____3____.____4____.____5____.____6____.____7____.____8
 	std::cout << "Available commands (for use with -k):\n";
 	std::cout << "  decode                             : Loads and decodes the specified binary.\n";
@@ -283,7 +282,7 @@ int Boomerang::splitLine(char *line, char ***pargv)
  * \return A value indicating what happened.
  *
  * \retval 0 Success
- * \retval 1 Faillure
+ * \retval 1 Failure
  * \retval 2 The user exited with \a quit or \a exit
  */
 int Boomerang::parseCmd(int argc, const char *argv[])
@@ -651,7 +650,7 @@ int Boomerang::cmdLine()
 /**
  * The main function for the command line mode. Parses switches and runs decompile(filename).
  *
- * \return Zero on success, nonzero on faillure.
+ * \return Zero on success, nonzero on failure.
  */
 int Boomerang::commandLine(int argc, const char *argv[])
 {
@@ -1067,13 +1066,13 @@ void stopProcess(int n)
 }
 
 /**
- * The program will be subsequently be loaded, decoded, decompiled and written to a source file.
+ * The program will subsequently be loaded, decoded, decompiled and written to a source file.
  * After decompilation the elapsed time is printed to std::cerr.
  *
  * \param fname The name of the file to load.
  * \param pname The name that will be given to the Proc.
  *
- * \return Zero on success, nonzero on faillure.
+ * \return Zero on success, nonzero on failure.
  */
 int Boomerang::decompile(const char *fname, const char *pname)
 {
