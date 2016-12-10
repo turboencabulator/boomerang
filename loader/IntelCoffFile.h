@@ -51,7 +51,7 @@ public:
 	//virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
 	//virtual void        AddSymbol(ADDRESS uNative, const char *pName) { }
 	virtual bool isDynamicLinkedProc(ADDRESS uNative);
-	virtual bool IsRelocationAt(ADDRESS uNative);
+	virtual bool isRelocationAt(ADDRESS uNative);
 	virtual std::map<ADDRESS, std::string> &getSymbols();
 
 	virtual int readNative4(ADDRESS a);

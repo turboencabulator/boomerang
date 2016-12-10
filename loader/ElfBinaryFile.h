@@ -191,12 +191,12 @@ public:
 
 
 	// Relocation functions
-	        bool        IsAddressRelocatable(ADDRESS uNative);
-	        ADDRESS     GetRelocatedAddress(ADDRESS uNative);
-	        //ADDRESS     ApplyRelocation(ADDRESS uNative, ADDRESS uWord);
+	        bool        isAddressRelocatable(ADDRESS uNative);
+	        ADDRESS     getRelocatedAddress(ADDRESS uNative);
+	        //ADDRESS     applyRelocation(ADDRESS uNative, ADDRESS uWord);
 	// Get symbol associated with relocation at address, if any
-	        //const char *GetRelocSym(ADDRESS uNative, ADDRESS *a = NULL, unsigned int *sz = NULL);
-	virtual bool        IsRelocationAt(ADDRESS uNative);
+	        //const char *getRelocSym(ADDRESS uNative, ADDRESS *a = NULL, unsigned int *sz = NULL);
+	virtual bool        isRelocationAt(ADDRESS uNative);
 	virtual const char *getFilenameSymbolFor(const char *sym);
 
 	// Write an ELF object file for a given procedure

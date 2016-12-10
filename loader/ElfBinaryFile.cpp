@@ -722,7 +722,7 @@ ADDRESS ElfBinaryFile::NativeToHostAddress(ADDRESS uNative)
 	return m_pSections[1].uHostAddr - m_pSections[1].uNativeAddr + uNative;
 }
 
-ADDRESS ElfBinaryFile::GetRelocatedAddress(ADDRESS uNative)
+ADDRESS ElfBinaryFile::getRelocatedAddress(ADDRESS uNative)
 {
 	// Not implemented yet. But we need the function to make it all link
 	return 0;
@@ -1172,7 +1172,7 @@ void ElfBinaryFile::applyRelocations()
 	}
 }
 
-bool ElfBinaryFile::IsRelocationAt(ADDRESS uNative)
+bool ElfBinaryFile::isRelocationAt(ADDRESS uNative)
 {
 	//int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
 	if (m_pImage == 0) return false;  // No file loaded

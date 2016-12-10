@@ -1856,7 +1856,7 @@ Exp *Prog::addReloc(Exp *e, ADDRESS lc)
 	// relocation for this lc then we should be able to replace the constant
 	// with a symbol.
 
-	if (pBF->IsRelocationAt(lc)) {
+	if (pBF->isRelocationAt(lc)) {
 		std::map<ADDRESS, std::string> &symbols = pBF->getSymbols();
 		if (symbols.find(c->getInt()) != symbols.end()) {
 			const char *n = symbols[c->getInt()].c_str();

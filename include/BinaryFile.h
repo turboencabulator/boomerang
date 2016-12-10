@@ -243,12 +243,12 @@ public:
 	virtual std::vector<ADDRESS> GetExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
 
 	// Relocation table functions
-	//virtual bool        IsAddressRelocatable(ADDRESS uNative);
-	//virtual ADDRESS     GetRelocatedAddress(ADDRESS uNative);
-	//virtual ADDRESS     ApplyRelocation(ADDRESS uNative, ADDRESS uWord);
+	//virtual bool        isAddressRelocatable(ADDRESS uNative);
+	//virtual ADDRESS     getRelocatedAddress(ADDRESS uNative);
+	//virtual ADDRESS     applyRelocation(ADDRESS uNative, ADDRESS uWord);
 	// Get symbol associated with relocation at address, if any
-	//virtual const char *GetRelocSym(ADDRESS uNative, ADDRESS *a = NULL, unsigned int *sz = NULL) { return NULL; }
-	virtual bool        IsRelocationAt(ADDRESS uNative) { return false; }
+	//virtual const char *getRelocSym(ADDRESS uNative, ADDRESS *a = NULL, unsigned int *sz = NULL) { return NULL; }
+	virtual bool        isRelocationAt(ADDRESS uNative) { return false; }
 
 	// Specific to BinaryFile objects that implement a "global pointer"
 	// Gets a pair of unsigned integers representing the address of the
