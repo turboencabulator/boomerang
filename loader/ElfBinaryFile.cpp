@@ -251,7 +251,7 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 		}
 	}
 
-	// Find the PLT limits. Required for IsDynamicLinkedProc(), e.g.
+	// Find the PLT limits. Required for isDynamicLinkedProc(), e.g.
 	SectionInfo *pPlt = getSectionInfoByName(".plt");
 	if (pPlt) {
 		m_uPltMin = pPlt->uNativeAddr;
@@ -666,7 +666,7 @@ int ElfBinaryFile::GetDistanceByName(const char *sName)
 	return GetDistanceByName(sName, ".dynsym");
 }
 
-bool ElfBinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
+bool ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	if (uNative > (unsigned)-1024 && uNative != (unsigned)-1)
 		return true;  // Say yes for fake library functions

@@ -220,7 +220,7 @@ void Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		if (a_rhs->isMemOf() && a_rhs->getSubExp1()->isIntConst()) {
 			ADDRESS c = ((Const *)a_rhs->getSubExp1())->getInt();
 			if (proc->getProg()->isDynamicLinkedProcPointer(c)) {
-				const char *nam = proc->getProg()->GetDynamicProcName(c);
+				const char *nam = proc->getProg()->getDynamicProcName(c);
 				if (nam) {
 					a_rhs = new Const(nam);
 					if (VERBOSE && DEBUG_RANGE_ANALYSIS)

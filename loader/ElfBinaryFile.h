@@ -218,7 +218,7 @@ public:
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 
-	virtual bool        IsDynamicLinkedProc(ADDRESS wNative);
+	virtual bool        isDynamicLinkedProc(ADDRESS wNative);
 	        ADDRESS     NativeToHostAddress(ADDRESS uNative);
 	// Get a map from ADDRESS to const char*. This map contains the native addresses and symbolic names of global
 	// data items (if any) which are shared with dynamically linked libraries. Example: __iob (basis for stdout).

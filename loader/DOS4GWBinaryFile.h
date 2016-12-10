@@ -156,9 +156,9 @@ public:
 	virtual float       readNativeFloat4(ADDRESS a);  // Read 4 bytes as float
 	virtual double      readNativeFloat8(ADDRESS a);  // Read 8 bytes as float
 
-	virtual bool        IsDynamicLinkedProcPointer(ADDRESS uNative);
-	virtual bool        IsDynamicLinkedProc(ADDRESS uNative);
-	virtual const char *GetDynamicProcName(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
+	virtual const char *getDynamicProcName(ADDRESS uNative);
 
 	virtual std::map<ADDRESS, std::string> &getSymbols() { return dlprocptrs; }
 

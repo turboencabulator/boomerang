@@ -108,27 +108,27 @@ int BinaryFile::GetSizeByName(const char *pName, bool bNoTypeOK)
 	return 0;
 }
 
-bool BinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
+bool BinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	return false;
 }
 
-bool BinaryFile::IsStaticLinkedLibProc(ADDRESS uNative)
+bool BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 {
 	return false;
 }
 
-bool BinaryFile::IsDynamicLinkedProcPointer(ADDRESS uNative)
+bool BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
 	return false;
 }
 
-ADDRESS BinaryFile::IsJumpToAnotherAddr(ADDRESS uNative)
+ADDRESS BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
 {
 	return NO_ADDRESS;
 }
 
-const char *BinaryFile::GetDynamicProcName(ADDRESS uNative)
+const char *BinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return "dynamic";
 }

@@ -273,11 +273,11 @@ public:
 	virtual bool        DisplayDetails(const char *fileName, FILE *f = stdout);
 
 	// Analysis functions
-	virtual bool        IsDynamicLinkedProc(ADDRESS uNative);
-	virtual bool        IsStaticLinkedLibProc(ADDRESS uNative);
-	virtual bool        IsDynamicLinkedProcPointer(ADDRESS uNative);
-	virtual ADDRESS     IsJumpToAnotherAddr(ADDRESS uNative);
-	virtual const char *GetDynamicProcName(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
+	virtual bool        isStaticLinkedLibProc(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
+	virtual ADDRESS     isJumpToAnotherAddr(ADDRESS uNative);
+	virtual const char *getDynamicProcName(ADDRESS uNative);
 	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main") = 0;
 	virtual ADDRESS     getMainEntryPoint() = 0;
 

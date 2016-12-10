@@ -17,7 +17,7 @@
 #include "BinaryFile.h"
 #include "frontend.h"
 #include "mipsfrontend.h"
-#include "BinaryFile.h"     // E.g. IsDynamicallyLinkedProc
+#include "BinaryFile.h"     // E.g. isDynamicLinkedProc
 #include "boomerang.h"
 #include "signature.h"
 

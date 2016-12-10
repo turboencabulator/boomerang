@@ -97,7 +97,7 @@ public:
 	// Lookup the name, return the address
 	virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
 	// Return true if the address matches the convention for A-line system calls
-	virtual bool        IsDynamicLinkedProc(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
 
 	// Specific to BinaryFile objects that implement a "global pointer"
 	// Gets a pair of unsigned integers representing the address of %agp (first)
@@ -123,7 +123,7 @@ public:
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 
-	        //bool        IsDynamicLinkedProc(ADDRESS wNative);
+	        //bool        isDynamicLinkedProc(ADDRESS wNative);
 	        //ADDRESS     NativeToHostAddress(ADDRESS uNative);
 
 protected:

@@ -50,7 +50,7 @@ public:
 	// Lookup the name, return the address. If not found, return NO_ADDRESS
 	//virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
 	//virtual void        AddSymbol(ADDRESS uNative, const char *pName) { }
-	virtual bool IsDynamicLinkedProc(ADDRESS uNative);
+	virtual bool isDynamicLinkedProc(ADDRESS uNative);
 	virtual bool IsRelocationAt(ADDRESS uNative);
 	virtual std::map<ADDRESS, std::string> &getSymbols();
 

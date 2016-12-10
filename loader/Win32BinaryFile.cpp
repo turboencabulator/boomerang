@@ -567,15 +567,15 @@ const char *Win32BinaryFile::SymbolByAddress(ADDRESS dwAddr)
 	 && LMMH(m_pPEHeader->EntrypointRVA) + LMMH(m_pPEHeader->Imagebase) == dwAddr)
 		return "DriverEntry";
 
-	if (IsMinGWsAllocStack(dwAddr))
+	if (isMinGWsAllocStack(dwAddr))
 		return "__mingw_allocstack";
-	if (IsMinGWsFrameInit(dwAddr))
+	if (isMinGWsFrameInit(dwAddr))
 		return "__mingw_frame_init";
-	if (IsMinGWsFrameEnd(dwAddr))
+	if (isMinGWsFrameEnd(dwAddr))
 		return "__mingw_frame_end";
-	if (IsMinGWsCleanupSetup(dwAddr))
+	if (isMinGWsCleanupSetup(dwAddr))
 		return "__mingw_cleanup_setup";
-	if (IsMinGWsMalloc(dwAddr))
+	if (isMinGWsMalloc(dwAddr))
 		return "malloc";
 
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
@@ -694,25 +694,25 @@ double Win32BinaryFile::readNativeFloat8(ADDRESS nat) {
 	return *(double *)raw;
 }
 
-bool Win32BinaryFile::IsDynamicLinkedProcPointer(ADDRESS uNative)
+bool Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
 	if (dlprocptrs.find(uNative) != dlprocptrs.end())
 		return true;
 	return false;
 }
 
-bool Win32BinaryFile::IsStaticLinkedLibProc(ADDRESS uNative)
+bool Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 {
-	if (IsMinGWsAllocStack(uNative)
-	 || IsMinGWsFrameInit(uNative)
-	 || IsMinGWsFrameEnd(uNative)
-	 || IsMinGWsCleanupSetup(uNative)
-	 || IsMinGWsMalloc(uNative))
+	if (isMinGWsAllocStack(uNative)
+	 || isMinGWsFrameInit(uNative)
+	 || isMinGWsFrameEnd(uNative)
+	 || isMinGWsCleanupSetup(uNative)
+	 || isMinGWsMalloc(uNative))
 		return true;
 	return false;
 }
 
-bool Win32BinaryFile::IsMinGWsAllocStack(ADDRESS uNative)
+bool Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
 {
 	if (mingw_main) {
 		SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -734,7 +734,7 @@ bool Win32BinaryFile::IsMinGWsAllocStack(ADDRESS uNative)
 	return false;
 }
 
-bool Win32BinaryFile::IsMinGWsFrameInit(ADDRESS uNative)
+bool Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
 {
 	if (mingw_main) {
 		SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -762,7 +762,7 @@ bool Win32BinaryFile::IsMinGWsFrameInit(ADDRESS uNative)
 	return false;
 }
 
-bool Win32BinaryFile::IsMinGWsFrameEnd(ADDRESS uNative)
+bool Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
 {
 	if (mingw_main) {
 		SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -786,7 +786,7 @@ bool Win32BinaryFile::IsMinGWsFrameEnd(ADDRESS uNative)
 	return false;
 }
 
-bool Win32BinaryFile::IsMinGWsCleanupSetup(ADDRESS uNative)
+bool Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
 {
 	if (mingw_main) {
 		SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -814,7 +814,7 @@ bool Win32BinaryFile::IsMinGWsCleanupSetup(ADDRESS uNative)
 	return false;
 }
 
-bool Win32BinaryFile::IsMinGWsMalloc(ADDRESS uNative)
+bool Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative)
 {
 	if (mingw_main) {
 		SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -837,14 +837,14 @@ bool Win32BinaryFile::IsMinGWsMalloc(ADDRESS uNative)
 	return false;
 }
 
-ADDRESS Win32BinaryFile::IsJumpToAnotherAddr(ADDRESS uNative)
+ADDRESS Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
 {
 	if ((readNative1(uNative) & 0xff) != 0xe9)
 		return NO_ADDRESS;
 	return readNative4(uNative + 1) + uNative + 5;
 }
 
-const char *Win32BinaryFile::GetDynamicProcName(ADDRESS uNative)
+const char *Win32BinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return dlprocptrs[uNative].c_str();
 }

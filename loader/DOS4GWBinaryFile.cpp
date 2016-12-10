@@ -364,7 +364,7 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
-bool DOS4GWBinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
+bool DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	if (dlprocptrs.find(uNative) != dlprocptrs.end()
 	 && dlprocptrs[uNative] != "main"
@@ -503,14 +503,14 @@ double DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat)
 	return *(double *)raw;
 }
 
-bool DOS4GWBinaryFile::IsDynamicLinkedProcPointer(ADDRESS uNative)
+bool DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
 	if (dlprocptrs.find(uNative) != dlprocptrs.end())
 		return true;
 	return false;
 }
 
-const char *DOS4GWBinaryFile::GetDynamicProcName(ADDRESS uNative)
+const char *DOS4GWBinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return dlprocptrs[uNative].c_str();
 }

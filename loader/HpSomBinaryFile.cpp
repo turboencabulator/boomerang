@@ -311,7 +311,7 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	for (; u < numImports; u++, v++) {
 		//cout << "Importing " << (pDlStrings+import_list[u].name) << endl;
 		symbols.Add(PLTs[v].value, pDlStrings + UINT4(&import_list[u].name));
-		// Add it to the set of imports; needed by IsDynamicLinkedProc()
+		// Add it to the set of imports; needed by isDynamicLinkedProc()
 		imports.insert(PLTs[v].value);
 		//cout << "Added import sym " << (import_list[u].name + pDlStrings) << ", value " << hex << PLTs[v].value << endl;
 	}
@@ -473,7 +473,7 @@ ADDRESS HpSomBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* =
 	return res;
 }
 
-bool HpSomBinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
+bool HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	// Look up the address in the set of imports
 	return imports.find(uNative) != imports.end();

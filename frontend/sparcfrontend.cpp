@@ -33,7 +33,7 @@
 #include "BinaryFile.h"
 #include "frontend.h"
 #include "sparcfrontend.h"
-#include "BinaryFile.h"     // E.g. IsDynamicallyLinkedProc
+#include "BinaryFile.h"     // E.g. isDynamicLinkedProc
 #include "boomerang.h"
 #include "signature.h"
 #include "log.h"
@@ -250,7 +250,7 @@ bool SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult
 		// First check for helper functions
 		ADDRESS dest = call_stmt->getFixedDest();
 		// Special check for calls to weird PLT entries which don't have symbols
-		if ((pBF->IsDynamicLinkedProc(dest)) && (pBF->SymbolByAddress(dest) == NULL)) {
+		if ((pBF->isDynamicLinkedProc(dest)) && (pBF->SymbolByAddress(dest) == NULL)) {
 			// This is one of those. Flag this as an invalid instruction
 			inst.valid = false;
 		}
@@ -1169,7 +1169,7 @@ bool SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &
 		ADDRESS dest = (*it)->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically linked
 		// ones (in the .plt)
-		if (pBF->IsDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
+		if (pBF->isDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
 			cfg->addCall(*it);
 			// Don't visit the destination of a register call
 			//if (dest != NO_ADDRESS) newProc(proc->getProg(), dest);
@@ -1260,7 +1260,7 @@ void SparcFrontEnd::quadOperation(ADDRESS addr, std::list<RTL *> *lrtl, OPER op)
 // Determine if this is a helper function, e.g. .mul. If so, append the appropriate RTLs to lrtl, and return true
 bool SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 {
-	if (!pBF->IsDynamicLinkedProc(dest)) return false;
+	if (!pBF->isDynamicLinkedProc(dest)) return false;
 	const char *p = pBF->SymbolByAddress(dest);
 	if (p == NULL) {
 		std::cerr << "Error: Can't find symbol for PLT address " << std::hex << dest << std::endl;

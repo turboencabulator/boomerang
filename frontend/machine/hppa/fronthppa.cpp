@@ -1329,7 +1329,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
         ADDRESS dest = (*it)->getFixedDest();
         // Don't speculatively decode procs that are outside of the main text
         // section, apart from dynamically linked ones (in the .plt)
-        if (prog.pBF->IsDynamicLinkedProc(dest) || !spec || (dest < uUpper)) {
+        if (prog.pBF->isDynamicLinkedProc(dest) || !spec || (dest < uUpper)) {
             cfg->addCall(*it);
             // Don't visit the destination of a register call
             if (dest != NO_ADDRESS) prog.visitProc(dest);
@@ -1416,7 +1416,7 @@ bool helperFunc(ADDRESS dest, ADDRESS addr, HRTLList* lrtl)
 {
     // Helper functions are millicode, and don't seem to appear in the imports
     // section. So they don't appear to be dynamically linked
-//  if (!prog.pBF->IsDynamicLinkedProc(dest)) return false;
+//  if (!prog.pBF->isDynamicLinkedProc(dest)) return false;
     const char* pName =  prog.pBF->SymbolByAddress(dest);
     if (pName == 0) return false;
     string name(pName);

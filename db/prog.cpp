@@ -468,11 +468,11 @@ Proc *Prog::setNewProc(ADDRESS uAddr)
 	if (pProc)
 		// Yes, we are done
 		return pProc;
-	ADDRESS other = pBF->IsJumpToAnotherAddr(uAddr);
+	ADDRESS other = pBF->isJumpToAnotherAddr(uAddr);
 	if (other != NO_ADDRESS)
 		uAddr = other;
 	const char *pName = pBF->SymbolByAddress(uAddr);
-	bool bLib = pBF->IsDynamicLinkedProc(uAddr) | pBF->IsStaticLinkedLibProc(uAddr);
+	bool bLib = pBF->isDynamicLinkedProc(uAddr) | pBF->isStaticLinkedLibProc(uAddr);
 	if (pName == NULL) {
 		// No name. Give it a numbered name
 		std::ostringstream ost;
@@ -1446,7 +1446,7 @@ void Prog::readSymbolFile(const char *fname)
 	for (std::list<Symbol *>::iterator it = par->symbols.begin(); it != par->symbols.end(); it++) {
 		if ((*it)->sig) {
 			Proc *p = newProc((*it)->sig->getName(), (*it)->addr,
-			                  pBF->IsDynamicLinkedProcPointer((*it)->addr)
+			                  pBF->isDynamicLinkedProcPointer((*it)->addr)
 			                  // NODECODE isn't really the right modifier; perhaps we should have a LIB modifier,
 			                  // to specifically specify that this function obeys library calling conventions
 			               || (*it)->mods->noDecode);

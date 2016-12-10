@@ -311,7 +311,7 @@ const char *PalmBinaryFile::SymbolByAddress(ADDRESS dwAddr)
 }
 
 // Not really dynamically linked, but the closest thing
-bool PalmBinaryFile::IsDynamicLinkedProc(ADDRESS uNative)
+bool PalmBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	return ((uNative & 0xFFFFF000) == 0xAAAAA000);
 }

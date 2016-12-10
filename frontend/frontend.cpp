@@ -610,7 +610,7 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 					if (dest != NO_ADDRESS) {
 						proc = prog->findProc(dest);
 						if (proc == NULL) {
-							if (pBF->IsDynamicLinkedProc(dest))
+							if (pBF->isDynamicLinkedProc(dest))
 								proc = prog->setNewProc(dest);
 						}
 						if (proc != NULL && proc != (Proc *)-1) {
@@ -678,12 +678,12 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 						if (pDest
 						 && pDest->getOper() == opMemOf
 						 && pDest->getSubExp1()->getOper() == opIntConst
-						 && pBF->IsDynamicLinkedProcPointer(((Const *)pDest->getSubExp1())->getAddr())) {
+						 && pBF->isDynamicLinkedProcPointer(((Const *)pDest->getSubExp1())->getAddr())) {
 							if (VERBOSE)
 								LOG << "jump to a library function: " << stmt_jump << ", replacing with a call/ret.\n";
 							// jump to a library function
 							// replace with a call ret
-							std::string func = pBF->GetDynamicProcName(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr());
+							std::string func = pBF->getDynamicProcName(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr());
 							CallStatement *call = new CallStatement;
 							call->setDest(stmt_jump->getDest()->clone());
 							LibProc *lp = pProc->getProg()->getLibraryProc(func.c_str());
@@ -775,9 +775,9 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 						// Check for a dynamic linked library function
 						if (call->getDest()->getOper() == opMemOf
 						 && call->getDest()->getSubExp1()->getOper() == opIntConst
-						 && pBF->IsDynamicLinkedProcPointer(((Const *)call->getDest()->getSubExp1())->getAddr())) {
+						 && pBF->isDynamicLinkedProcPointer(((Const *)call->getDest()->getSubExp1())->getAddr())) {
 							// Dynamic linked proc pointers are treated as static.
-							const char *nam = pBF->GetDynamicProcName(((Const *)call->getDest()->getSubExp1())->getAddr());
+							const char *nam = pBF->getDynamicProcName(((Const *)call->getDest()->getSubExp1())->getAddr());
 							Proc *p = pProc->getProg()->getLibraryProc(nam);
 							call->setDestProc(p);
 							call->setIsComputed(false);
@@ -805,10 +805,10 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 										if (first_statement->getKind() == STMT_CASE
 										 && stmt_jump->getDest()->getOper() == opMemOf
 										 && stmt_jump->getDest()->getSubExp1()->getOper() == opIntConst
-										 && pBF->IsDynamicLinkedProcPointer(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr())) {  // Is it an "DynamicLinkedProcPointer"?
+										 && pBF->isDynamicLinkedProcPointer(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr())) {  // Is it an "DynamicLinkedProcPointer"?
 											// Yes, it's a library function. Look up it's name.
 											ADDRESS a = ((Const *)stmt_jump->getDest()->getSubExp1())->getAddr();
-											const char *nam = pBF->GetDynamicProcName(a);
+											const char *nam = pBF->getDynamicProcName(a);
 											// Assign the proc to the call
 											Proc *p = pProc->getProg()->getLibraryProc(nam);
 											if (call->getDestProc()) {
@@ -876,8 +876,8 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 							 && call->getDest()->isMemOf()
 							 && call->getDest()->getSubExp1()->isIntConst()) {
 								ADDRESS a = ((Const *)call->getDest()->getSubExp1())->getInt();
-								if (pBF->IsDynamicLinkedProcPointer(a))
-									name = pBF->GetDynamicProcName(a);
+								if (pBF->isDynamicLinkedProcPointer(a))
+									name = pBF->getDynamicProcName(a);
 							}
 							if (name && noReturnCallDest(name)) {
 								// Make sure it has a return appended (so there is only one exit from the function)
@@ -1005,7 +1005,7 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 		ADDRESS dest = (*it)->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically
 		// linked ones (in the .plt)
-		if (pBF->IsDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
+		if (pBF->isDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
 			pCfg->addCall(*it);
 			// Don't visit the destination of a register call
 			Proc *np = (*it)->getDestProc();

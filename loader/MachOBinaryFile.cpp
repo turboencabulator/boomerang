@@ -564,7 +564,7 @@ double MachOBinaryFile::readNativeFloat8(ADDRESS nat)
 	return *(double *)raw;
 }
 
-const char *MachOBinaryFile::GetDynamicProcName(ADDRESS uNative)
+const char *MachOBinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return dlprocs[uNative].c_str();
 }

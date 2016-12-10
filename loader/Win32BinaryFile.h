@@ -181,16 +181,16 @@ public:
 	virtual float       readNativeFloat4(ADDRESS a);  // Read 4 bytes as float
 	virtual double      readNativeFloat8(ADDRESS a);  // Read 8 bytes as float
 
-	virtual bool        IsDynamicLinkedProcPointer(ADDRESS uNative);
-	virtual bool        IsStaticLinkedLibProc(ADDRESS uNative);
-	virtual ADDRESS     IsJumpToAnotherAddr(ADDRESS uNative);
-	virtual const char *GetDynamicProcName(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
+	virtual bool        isStaticLinkedLibProc(ADDRESS uNative);
+	virtual ADDRESS     isJumpToAnotherAddr(ADDRESS uNative);
+	virtual const char *getDynamicProcName(ADDRESS uNative);
 
-	        bool        IsMinGWsAllocStack(ADDRESS uNative);
-	        bool        IsMinGWsFrameInit(ADDRESS uNative);
-	        bool        IsMinGWsFrameEnd(ADDRESS uNative);
-	        bool        IsMinGWsCleanupSetup(ADDRESS uNative);
-	        bool        IsMinGWsMalloc(ADDRESS uNative);
+	        bool        isMinGWsAllocStack(ADDRESS uNative);
+	        bool        isMinGWsFrameInit(ADDRESS uNative);
+	        bool        isMinGWsFrameEnd(ADDRESS uNative);
+	        bool        isMinGWsCleanupSetup(ADDRESS uNative);
+	        bool        isMinGWsMalloc(ADDRESS uNative);
 
 	virtual std::map<ADDRESS, std::string> &getSymbols() { return dlprocptrs; }
 

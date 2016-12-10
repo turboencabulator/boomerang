@@ -246,8 +246,8 @@ public:
 	        Exp        *readNativeAs(ADDRESS uaddr, Type *type);
 	        int         getTextDelta() { return pBF->getTextDelta(); }
 
-	        bool        isDynamicLinkedProcPointer(ADDRESS dest) { return pBF->IsDynamicLinkedProcPointer(dest); }
-	        const char *GetDynamicProcName(ADDRESS uNative) { return pBF->GetDynamicProcName(uNative); }
+	        bool        isDynamicLinkedProcPointer(ADDRESS dest) { return pBF->isDynamicLinkedProcPointer(dest); }
+	        const char *getDynamicProcName(ADDRESS uNative) { return pBF->getDynamicProcName(uNative); }
 
 	        bool        processProc(int addr, UserProc *proc) { std::ofstream os; return pFE->processProc((unsigned)addr, proc, os); }  // Decode a proc
 
