@@ -26,7 +26,7 @@
 #include "decoder.h"
 #include "mipsdecoder.h"
 #include "rtl.h"
-#include "BinaryFile.h"		// For SymbolByAddress()
+#include "BinaryFile.h"		// For getSymbolByAddress()
 #include "boomerang.h"
 #include "statement.h"
 #include <iostream>

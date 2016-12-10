@@ -74,7 +74,7 @@ void Decompiler::setNoDecodeChildren(bool d)
 void Decompiler::addEntryPoint(ADDRESS a, const char *nam)
 {
 	user_entrypoints.push_back(a);
-	fe->AddSymbol(a, nam);
+	fe->addSymbol(a, nam);
 }
 
 void Decompiler::removeEntryPoint(ADDRESS a)
@@ -137,7 +137,7 @@ void Decompiler::load()
 	std::vector<ADDRESS> entrypoints = fe->getEntryPoints();
 	for (unsigned int i = 0; i < entrypoints.size(); i++) {
 		user_entrypoints.push_back(entrypoints[i]);
-		emit newEntrypoint(entrypoints[i], fe->getBinaryFile()->SymbolByAddress(entrypoints[i]));
+		emit newEntrypoint(entrypoints[i], fe->getBinaryFile()->getSymbolByAddress(entrypoints[i]));
 	}
 
 	for (int i = 1; i < fe->getBinaryFile()->getNumSections(); i++) {

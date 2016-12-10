@@ -125,7 +125,7 @@ public:
 	static FrontEnd *Load(const char *fname, Prog *prog);
 
 	// Add a symbol to the loader
-	void AddSymbol(ADDRESS addr, const char *nam) { pBF->AddSymbol(addr, nam); }
+	void addSymbol(ADDRESS addr, const char *nam) { pBF->addSymbol(addr, nam); }
 
 	// Add a "hint" that an instruction at the given address references a named global
 	void addRefHint(ADDRESS addr, const char *nam) { refHints[addr] = nam; }

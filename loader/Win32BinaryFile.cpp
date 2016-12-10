@@ -138,10 +138,10 @@ ADDRESS Win32BinaryFile::getEntryPoint()
 // This pattern should work for "old style" and "new style" PE executables, as well as console mode PE files.
 ADDRESS Win32BinaryFile::getMainEntryPoint()
 {
-	ADDRESS aMain = GetAddressByName("main", true);
+	ADDRESS aMain = getAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
 		return aMain;
-	aMain = GetAddressByName("_main", true);  // Example: MinGW
+	aMain = getAddressByName("_main", true);  // Example: MinGW
 	if (aMain != NO_ADDRESS)
 		return aMain;
 
@@ -369,7 +369,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 		}
 		if (op1 == 0xE8 && gotGMHA) {  // CALL opcode
 			unsigned int dest = p + 5 + LMMH(*(p + base + 1));
-			AddSymbol(dest + LMMH(m_pPEHeader->Imagebase), "WinMain");
+			addSymbol(dest + LMMH(m_pPEHeader->Imagebase), "WinMain");
 			return dest + LMMH(m_pPEHeader->Imagebase);
 		}
 		if (op1 == 0xc3)   // ret ends search
@@ -561,7 +561,7 @@ bool Win32BinaryFile::PostLoad(void *handle)
 	return false;
 }
 
-const char *Win32BinaryFile::SymbolByAddress(ADDRESS dwAddr)
+const char *Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if (m_pPEHeader->Subsystem == 1  // native
 	 && LMMH(m_pPEHeader->EntrypointRVA) + LMMH(m_pPEHeader->Imagebase) == dwAddr)
@@ -584,7 +584,7 @@ const char *Win32BinaryFile::SymbolByAddress(ADDRESS dwAddr)
 	return it->second.c_str();
 }
 
-ADDRESS Win32BinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.begin();
@@ -597,7 +597,7 @@ ADDRESS Win32BinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* =
 	return NO_ADDRESS;
 }
 
-void Win32BinaryFile::AddSymbol(ADDRESS uNative, const char *pName)
+void Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	dlprocptrs[uNative] = pName;
 }

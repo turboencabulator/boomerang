@@ -75,10 +75,10 @@ ADDRESS DOS4GWBinaryFile::getEntryPoint()
 
 ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 {
-	ADDRESS aMain = GetAddressByName("main", true);
+	ADDRESS aMain = getAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
 		return aMain;
-	aMain = GetAddressByName("__CMain", true);
+	aMain = getAddressByName("__CMain", true);
 	if (aMain != NO_ADDRESS)
 		return aMain;
 
@@ -383,7 +383,7 @@ bool DOS4GWBinaryFile::PostLoad(void *handle)
 	return false;
 }
 
-const char *DOS4GWBinaryFile::SymbolByAddress(ADDRESS dwAddr)
+const char *DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
 	if (it == dlprocptrs.end())
@@ -391,7 +391,7 @@ const char *DOS4GWBinaryFile::SymbolByAddress(ADDRESS dwAddr)
 	return it->second.c_str();
 }
 
-ADDRESS DOS4GWBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search
@@ -405,7 +405,7 @@ ADDRESS DOS4GWBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* 
 	return NO_ADDRESS;
 }
 
-void DOS4GWBinaryFile::AddSymbol(ADDRESS uNative, const char *pName)
+void DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	dlprocptrs[uNative] = pName;
 }

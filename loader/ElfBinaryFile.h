@@ -147,7 +147,7 @@ public:
 	                    ElfBinaryFile(bool bArchive = false);
 	virtual            ~ElfBinaryFile();
 
-	        bool        GetNextMember();          // Load next member of archive
+	        bool        getNextMember();          // Load next member of archive
 	virtual bool        Open(const char *sName);  // Open the file for r/w; pv
 	virtual void        Close();                  // Close file opened with Open()
 	virtual void        UnLoad();                 // Unload the image
@@ -161,8 +161,8 @@ public:
 	virtual size_t      getImageSize();
 
 	// Header functions
-	//virtual ADDRESS     GetFirstHeaderAddress();  // Get ADDRESS of main header
-	//        ADDRESS     GetNextHeaderAddress();   // Get any other headers
+	//virtual ADDRESS     getFirstHeaderAddress();  // Get ADDRESS of main header
+	//        ADDRESS     getNextHeaderAddress();   // Get any other headers
 
 	virtual int         readNative1(ADDRESS a);       // Read 1 bytes from native addr
 	virtual int         readNative2(ADDRESS a);       // Read 2 bytes from native addr
@@ -174,20 +174,20 @@ public:
 	        void        writeNative4(ADDRESS nat, unsigned int n);
 
 	// Symbol functions
-	virtual const char *SymbolByAddress(ADDRESS uAddr); // Get name of symbol
+	virtual const char *getSymbolByAddress(ADDRESS uAddr); // Get name of symbol
 	// Get value of symbol, if any
-	virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
+	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
 	// Get the size associated with the symbol
-	virtual int         GetSizeByName(const char *pName, bool bNoTypeOK = false);
+	virtual int         getSizeByName(const char *pName, bool bNoTypeOK = false);
 	// Get the size associated with the symbol; guess if necessary
-	        int         GetDistanceByName(const char *pName);
-	        int         GetDistanceByName(const char *pName, const char *pSectName);
+	        int         getDistanceByName(const char *pName);
+	        int         getDistanceByName(const char *pName, const char *pSectName);
 	// Add an extra symbol
-	virtual void        AddSymbol(ADDRESS uNative, const char *pName);
+	virtual void        addSymbol(ADDRESS uNative, const char *pName);
 	        void        dumpSymbols();  // For debugging
 
-	virtual ADDRESS    *GetImportStubs(int &numImports);
-	virtual std::vector<ADDRESS> GetExportedAddresses(bool funcsOnly = true);
+	virtual ADDRESS    *getImportStubs(int &numImports);
+	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true);
 
 
 	// Relocation functions
@@ -223,17 +223,17 @@ public:
 	// Get a map from ADDRESS to const char*. This map contains the native addresses and symbolic names of global
 	// data items (if any) which are shared with dynamically linked libraries. Example: __iob (basis for stdout).
 	// The ADDRESS is the native address of a pointer to the real dynamic data object.
-	virtual std::map<ADDRESS, const char *> *GetDynamicGlobalMap();
+	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 
 	virtual std::map<ADDRESS, std::string> &getSymbols() { return m_SymTab; }
 
 	// Not meant to be used externally, but sometimes you just have to have it.
-	        const char *GetStrPtr(int idx, int offset);  // Calc string pointer
+	        const char *getStrPtr(int idx, int offset);  // Calc string pointer
 
 	// Similarly here; sometimes you just need to change a section's link and info fields
 	// idx is the section index; link and info are indices to other
 	// sections that will be idx's sh_link and sh_info respectively
-	        void        SetLinkAndInfo(int idx, int link, int info);
+	        void        setLinkAndInfo(int idx, int link, int info);
 
 	        const char *m_pFilename;  // Pointer to input file name
 protected:

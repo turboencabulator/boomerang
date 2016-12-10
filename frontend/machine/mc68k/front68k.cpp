@@ -24,7 +24,7 @@
 #include "prog.h"           // For findProc()
 #include "proc.h"
 #include "options.h"
-#include "BinaryFile.h"     // For SymbolByAddress()
+#include "BinaryFile.h"     // For getSymbolByAddress()
 #include "csr.h"            // For class CalleeEpilogue
 
 /*==============================================================================
@@ -343,7 +343,7 @@ void processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc* pProc,
 
                     // Check if this is the _exit function. May prevent us from
                     // attempting to decode invalid instructions.
-                    char* name = prog.pBF->SymbolByAddress(uNewAddr);
+                    char* name = prog.pBF->getSymbolByAddress(uNewAddr);
                     if (name && strcmp(name, "_exit") == 0) {
                         // Create the new basic block
                         pBB = pCfg->newBB(BB_rtls, CALL, 0);

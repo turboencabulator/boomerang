@@ -38,23 +38,23 @@ public:
 	virtual size_t      getImageSize();
 
 	// Get a symbol given an address
-	virtual const char *SymbolByAddress(ADDRESS dwAddr);
+	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
 	// Return true if the address matches the convention for A-line system calls
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
 
 	// Specific to BinaryFile objects that implement a "global pointer"
 	// Gets a pair of unsigned integers representing the address of %agp (first)
 	// and the value for GLOBALOFFSET (second)
-	virtual std::pair<unsigned, unsigned> GetGlobalPointerInfo();
+	virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();
 
 	// Palm specific calls
 
 	// Get the ID number for this application. It's possible that the app uses
 	// this number internally, so this needs to be used in the final make
-	        int         GetAppID() const;
+	        int         getAppID() const;
 
 	// Generate binary files for non code and data sections
-	        void        GenerateBinFiles(const std::string &path) const;
+	        void        generateBinFiles(const std::string &path) const;
 
 //
 //  --  --  --  --  --  --  --  --  --  --  --

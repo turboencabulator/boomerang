@@ -93,8 +93,8 @@ bool ElfArchiveFile::Load(const char *pName)
 
 	// Now we know the correct size for the vector of members.
 	// Ugh - can't call constructor any more
-	//m_Members.vector(GetNumMembers(), (BinaryFile *)0);
-	m_Members.reserve(GetNumMembers());
+	//m_Members.vector(getNumMembers(), (BinaryFile *)0);
+	m_Members.reserve(getNumMembers());
 
 	return true;
 }
@@ -111,7 +111,7 @@ void ElfArchiveFile::UnLoad()
 	}
 }
 
-BinaryFile *ElfArchiveFile::GetMember(int i)
+BinaryFile *ElfArchiveFile::getMember(int i)
 {
 	// Sanity checks on the index
 	if (i < 0) return 0;

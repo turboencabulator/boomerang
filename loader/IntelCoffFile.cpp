@@ -121,7 +121,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 		sectname[sizeof psh->sch_sectname] = '\0';
 
 		SectionInfo *psi = NULL;
-		int sidx = GetSectionIndexByName(sectname);
+		int sidx = getSectionIndexByName(sectname);
 		if (-1 == sidx) {
 			SectionInfo si;
 			si.bCode = 0 != (psh[iSection].sch_flags & 0x20);
@@ -384,7 +384,7 @@ extern "C" {
 	}
 }
 
-const char *IntelCoffFile::SymbolByAddress(const ADDRESS dwAddr)
+const char *IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
 	return m_Symbols.find(dwAddr);
 }

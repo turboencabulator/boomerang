@@ -46,10 +46,10 @@ public:
 	virtual ADDRESS     getEntryPoint();
 	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 
-	virtual const char *SymbolByAddress(ADDRESS uNative);
+	virtual const char *getSymbolByAddress(ADDRESS uNative);
 	// Lookup the name, return the address. If not found, return NO_ADDRESS
-	//virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
-	//virtual void        AddSymbol(ADDRESS uNative, const char *pName) { }
+	//virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
+	//virtual void        addSymbol(ADDRESS uNative, const char *pName) { }
 	virtual bool isDynamicLinkedProc(ADDRESS uNative);
 	virtual bool isRelocationAt(ADDRESS uNative);
 	virtual std::map<ADDRESS, std::string> &getSymbols();

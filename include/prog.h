@@ -231,7 +231,7 @@ public:
 
 	// Hacks for Mike
 	        MACHINE     getMachine() { return pBF->getMachine(); }  // Get a code for the machine e.g. MACHINE_SPARC
-	        const char *symbolByAddress(ADDRESS dest) { return pBF->SymbolByAddress(dest); }  // Get a symbol from an address
+	        const char *getSymbolByAddress(ADDRESS dest) { return pBF->getSymbolByAddress(dest); }  // Get a symbol from an address
 	        SectionInfo *getSectionInfoByAddr(ADDRESS a) { return pBF->getSectionInfoByAddr(a); }
 	        ADDRESS     getLimitTextLow() { return pBF->getLimitTextLow(); }
 	        ADDRESS     getLimitTextHigh() { return pBF->getLimitTextHigh(); }

@@ -486,7 +486,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
             dis_c_null(nulli);
             // Get the actual destination and its symbol (if possible)
             ADDRESS dest = ubr_target + hostPC - delta;
-            const char* dsym = pBF->SymbolByAddress(dest);
+            const char* dsym = pBF->getSymbolByAddress(dest);
             char hexsym[128];
             if (dsym == 0) sprintf(hexsym, "0x%x", dest);
             astr += sprintf(astr, "%s, %s", (dsym ? dsym : hexsym), t_06_names[t_06]);

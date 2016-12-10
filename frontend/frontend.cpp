@@ -202,7 +202,7 @@ std::vector<ADDRESS> FrontEnd::getEntryPoints()
 				strcpy(name, p);
 				name[strlen(name) - 6] = 0;
 				strcat(name, "ModuleData");
-				ADDRESS a = pBF->GetAddressByName(name, true);
+				ADDRESS a = pBF->getAddressByName(name, true);
 				if (a != NO_ADDRESS) {
 					ADDRESS vers, setup, teardown;
 					vers = pBF->readNative4(a);
@@ -214,7 +214,7 @@ std::vector<ADDRESS> FrontEnd::getEntryPoints()
 						UserProc *proc = (UserProc *)prog->setNewProc(setup);
 						assert(proc);
 						Signature *sig = ty->asFunc()->getSignature()->clone();
-						const char *sym = pBF->SymbolByAddress(setup);
+						const char *sym = pBF->getSymbolByAddress(setup);
 						if (sym)
 							sig->setName(sym);
 						sig->setForced(true);
@@ -227,7 +227,7 @@ std::vector<ADDRESS> FrontEnd::getEntryPoints()
 						UserProc *proc = (UserProc *)prog->setNewProc(teardown);
 						assert(proc);
 						Signature *sig = ty->asFunc()->getSignature()->clone();
-						const char *sym = pBF->SymbolByAddress(teardown);
+						const char *sym = pBF->getSymbolByAddress(teardown);
 						if (sym)
 							sig->setName(sym);
 						sig->setForced(true);
@@ -239,10 +239,10 @@ std::vector<ADDRESS> FrontEnd::getEntryPoints()
 		}
 		// Linux kernel module
 		if (!strcmp(fname + strlen(fname) - 3, ".ko")) {
-			a = pBF->GetAddressByName("init_module");
+			a = pBF->getAddressByName("init_module");
 			if (a != NO_ADDRESS)
 				entrypoints.push_back(a);
-			a = pBF->GetAddressByName("cleanup_module");
+			a = pBF->getAddressByName("cleanup_module");
 			if (a != NO_ADDRESS)
 				entrypoints.push_back(a);
 		}
@@ -276,7 +276,7 @@ void FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 
 	if (gotMain) {
 		static const char *mainName[] = { "main", "WinMain", "DriverEntry" };
-		const char *name = pBF->SymbolByAddress(a);
+		const char *name = pBF->getSymbolByAddress(a);
 		if (name == NULL)
 			name = mainName[0];
 		for (size_t i = 0; i < sizeof mainName / sizeof *mainName; i++) {
@@ -871,7 +871,7 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 
 							// Check if this is the _exit or exit function. May prevent us from attempting to decode
 							// invalid instructions, and getting invalid stack height errors
-							const char *name = pBF->SymbolByAddress(uNewAddr);
+							const char *name = pBF->getSymbolByAddress(uNewAddr);
 							if (name == NULL
 							 && call->getDest()->isMemOf()
 							 && call->getDest()->getSubExp1()->isIntConst()) {

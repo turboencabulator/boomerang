@@ -1006,7 +1006,7 @@ Prog *Boomerang::loadAndDecode(const char *fname, const char *pname)
 
 	// Add symbols from -s switch(es)
 	for (std::map<ADDRESS, std::string>::iterator it = symbols.begin(); it != symbols.end(); it++) {
-		fe->AddSymbol((*it).first, (*it).second.c_str());
+		fe->addSymbol((*it).first, (*it).second.c_str());
 	}
 	fe->readLibraryCatalog();  // Needed before readSymbolFile()
 

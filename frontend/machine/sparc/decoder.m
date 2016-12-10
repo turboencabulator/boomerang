@@ -26,7 +26,7 @@
 #include "proc.h"
 #include "sparcdecoder.h"
 #include "rtl.h"
-#include "BinaryFile.h"		// For SymbolByAddress()
+#include "BinaryFile.h"		// For getSymbolByAddress()
 #include "boomerang.h"
 
 #define DIS_ROI		(dis_RegImm(roi))

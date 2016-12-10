@@ -5,7 +5,7 @@ public:
 	                    BinaryFileStub();
 	virtual            ~BinaryFileStub() { }
 
-	        bool        GetNextMember() { return false; }  // Load next member of archive
+	        bool        getNextMember() { return false; }  // Load next member of archive
 	virtual bool        Open(const char *sName) { return false; }  // Open for r/w; pv
 	virtual void        Close() { }               // Close file opened with Open()
 	virtual void        UnLoad() { }              // Unload the image
@@ -19,8 +19,8 @@ public:
 	virtual size_t      getImageSize();
 
 	// Header functions
-	virtual ADDRESS     GetFirstHeaderAddress();  // Get ADDRESS of main header
-	virtual ADDRESS    *GetImportStubs(int &numImports);
+	virtual ADDRESS     getFirstHeaderAddress();  // Get ADDRESS of main header
+	virtual ADDRESS    *getImportStubs(int &numImports);
 
 //
 //  --  --  --  --  --  --  --  --  --  --  --
@@ -41,17 +41,17 @@ public:
 	// stdout).The ADDRESS is the native address of a pointer to the real
 	// dynamic data object.
 	// The caller should delete the returned map.
-	virtual std::map<ADDRESS, const char *> *GetDynamicGlobalMap();
+	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 
 	// Not meant to be used externally, but sometimes you just
 	// have to have it.
-	        const char *GetStrPtr(int idx, int offset);  // Calc string pointer
+	        const char *getStrPtr(int idx, int offset);  // Calc string pointer
 
 	// Similarly here; sometimes you just need to change a section's
 	// link and info fields
 	// idx is the section index; link and info are indices to other
 	// sections that will be idx's sh_link and sh_info respectively
-	        void        SetLinkAndInfo(int idx, int link, int info);
+	        void        setLinkAndInfo(int idx, int link, int info);
 
 	        const char *m_pFileName;  // Pointer to input file name
 

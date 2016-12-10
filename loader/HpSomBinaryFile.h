@@ -93,22 +93,22 @@ public:
 	virtual size_t      getImageSize();
 
 	// Get a symbol given an address
-	virtual const char *SymbolByAddress(ADDRESS dwAddr);
+	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
 	// Lookup the name, return the address
-	virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
+	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
 	// Return true if the address matches the convention for A-line system calls
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
 
 	// Specific to BinaryFile objects that implement a "global pointer"
 	// Gets a pair of unsigned integers representing the address of %agp (first)
 	// and the value for GLOBALOFFSET (unused for pa-risc)
-	virtual std::pair<unsigned, unsigned> GetGlobalPointerInfo();
+	virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();
 
 	// Get a map from ADDRESS to const char*. This map contains the native
 	// addresses and symbolic names of global data items (if any) which are
 	// shared with dynamically linked libraries. Example: __iob (basis for
 	// stdout).The ADDRESS is the native address of a pointer to the real dynamic data object.
-	virtual std::map<ADDRESS, const char *> *GetDynamicGlobalMap();
+	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 
 //
 //  --  --  --  --  --  --  --  --  --  --  --

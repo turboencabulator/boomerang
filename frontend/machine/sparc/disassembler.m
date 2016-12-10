@@ -16,7 +16,7 @@
 #include "global.h"
 #include "decoder.h"
 #include "sparc-names.h"
-#include "BinaryFile.h"         // For SymbolByAddress()
+#include "BinaryFile.h"         // For getSymbolByAddress()
 
 // Globals in driver disasm.cc file
 extern  char _assembly[81];
@@ -207,7 +207,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         // Get the actual destination
         ADDRESS dest = tgt - delta;
         // Get a symbol for it, if possible
-        const char* dsym = pBF->SymbolByAddress(dest);
+        const char* dsym = pBF->getSymbolByAddress(dest);
         char hexsym[128];
         if (dsym == 0)
             sprintf(hexsym, "0x%x", dest);

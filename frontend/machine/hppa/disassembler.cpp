@@ -3544,7 +3544,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 
                   ADDRESS dest = ubr_target + hostPC - delta;
 
-                  const char* dsym = pBF->SymbolByAddress(dest);
+                  const char* dsym = pBF->getSymbolByAddress(dest);
 
                   char hexsym[128];
 

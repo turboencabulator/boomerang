@@ -241,12 +241,12 @@ size_t BinaryFileStub::getImageSize()
 	return 0;
 }
 
-ADDRESS BinaryFileStub::GetFirstHeaderAddress()
+ADDRESS BinaryFileStub::getFirstHeaderAddress()
 {
 	return 0;
 }
 
-ADDRESS *BinaryFileStub::GetImportStubs(int &numImports)
+ADDRESS *BinaryFileStub::getImportStubs(int &numImports)
 {
 	return NULL;
 }
@@ -271,17 +271,17 @@ ADDRESS BinaryFileStub::getEntryPoint()
 	return 0;
 }
 
-std::map<ADDRESS, const char *> *BinaryFileStub::GetDynamicGlobalMap()
+std::map<ADDRESS, const char *> *BinaryFileStub::getDynamicGlobalMap()
 {
 	return new std::map<ADDRESS, const char *>;
 }
 
-const char *BinaryFileStub::GetStrPtr(int idx, int offset)
+const char *BinaryFileStub::getStrPtr(int idx, int offset)
 {
 	return NULL;
 }
 
-void BinaryFileStub::SetLinkAndInfo(int idx, int link, int info)
+void BinaryFileStub::setLinkAndInfo(int idx, int link, int info)
 {
 	assert(false);
 }

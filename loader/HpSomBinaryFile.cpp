@@ -458,12 +458,12 @@ size_t HpSomBinaryFile::getImageSize()
 }
 
 // We at least need to be able to name the main function and system calls
-const char *HpSomBinaryFile::SymbolByAddress(ADDRESS a)
+const char *HpSomBinaryFile::getSymbolByAddress(ADDRESS a)
 {
 	return symbols.find(a);
 }
 
-ADDRESS HpSomBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// For now, we ignore the symbol table and do a linear search of our
 	// SymTab table
@@ -506,7 +506,7 @@ std::pair<ADDRESS, int> HpSomBinaryFile::getSubspaceInfo(const char *ssname)
 // (first) and the value for GLOBALOFFSET (unused for ra-risc)
 // The understanding at present is that the global data pointer (%r27 for
 // pa-risc) points just past the end of the $GLOBAL$ subspace.
-std::pair<unsigned, unsigned> HpSomBinaryFile::GetGlobalPointerInfo()
+std::pair<unsigned, unsigned> HpSomBinaryFile::getGlobalPointerInfo()
 {
 	std::pair<unsigned, unsigned> ret(0, 0);
 	// Search the subspace names for "$GLOBAL$
@@ -518,7 +518,7 @@ std::pair<unsigned, unsigned> HpSomBinaryFile::GetGlobalPointerInfo()
 }
 
 /*==============================================================================
- * FUNCTION:    HpSomBinaryFile::GetDynamicGlobalMap
+ * FUNCTION:    HpSomBinaryFile::getDynamicGlobalMap
  * OVERVIEW:    Get a map from ADDRESS to const char*. This map contains the
  *                native addresses and symbolic names of global data items
  *                (if any) which are shared with dynamically linked libraries.
@@ -528,7 +528,7 @@ std::pair<unsigned, unsigned> HpSomBinaryFile::GetGlobalPointerInfo()
  * PARAMETERS:  None
  * RETURNS:     Pointer to a new map with the info
  *============================================================================*/
-std::map<ADDRESS, const char *> *HpSomBinaryFile::GetDynamicGlobalMap()
+std::map<ADDRESS, const char *> *HpSomBinaryFile::getDynamicGlobalMap()
 {
 	// Find the DL Table, if it exists
 	// The DL table (Dynamic Link info) is supposed to be at the start of

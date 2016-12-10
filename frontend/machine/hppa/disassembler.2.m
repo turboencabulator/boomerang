@@ -430,7 +430,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
             // Get the actual destination
             ADDRESS dest = ubr_target + hostPC - delta;
             // Get a symbol for it, if possible
-            const char* dsym = pBF->SymbolByAddress(dest);
+            const char* dsym = pBF->getSymbolByAddress(dest);
             char hexsym[128];
             if (dsym == 0)
                  sprintf(hexsym, "0x%x", dest);

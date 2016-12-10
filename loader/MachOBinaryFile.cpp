@@ -82,10 +82,10 @@ ADDRESS MachOBinaryFile::getEntryPoint()
 
 ADDRESS MachOBinaryFile::getMainEntryPoint()
 {
-	ADDRESS aMain = GetAddressByName("main", true);
+	ADDRESS aMain = getAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
 		return aMain;
-	aMain = GetAddressByName("_main", true);
+	aMain = getAddressByName("_main", true);
 	if (aMain != NO_ADDRESS)
 		return aMain;
 
@@ -388,14 +388,14 @@ bool MachOBinaryFile::PostLoad(void *handle)
 	return false;
 }
 
-const char *MachOBinaryFile::SymbolByAddress(ADDRESS dwAddr) {
+const char *MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr) {
 	std::map<ADDRESS, std::string>::iterator it = m_SymA.find(dwAddr);
 	if (it == m_SymA.end())
 		return 0;
 	return it->second.c_str();
 }
 
-ADDRESS MachOBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search
@@ -409,7 +409,7 @@ ADDRESS MachOBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* =
 	return NO_ADDRESS;
 }
 
-void MachOBinaryFile::AddSymbol(ADDRESS uNative, const char *pName)
+void MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	m_SymA[uNative] = pName;
 }

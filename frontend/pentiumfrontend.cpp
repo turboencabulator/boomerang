@@ -29,7 +29,7 @@
 #include "proc.h"
 #include "signature.h"
 #include "prog.h"           // For findProc()
-#include "BinaryFile.h"     // For SymbolByAddress()
+#include "BinaryFile.h"     // For getSymbolByAddress()
 #include "boomerang.h"
 #include "log.h"
 
@@ -477,7 +477,7 @@ bool PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *l
 {
 	if (dest == NO_ADDRESS) return false;
 
-	const char *p = pBF->SymbolByAddress(dest);
+	const char *p = pBF->getSymbolByAddress(dest);
 	if (p == NULL) return false;
 	std::string name(p);
 	// I believe that __xtol is for gcc, _ftol for earlier MSVC compilers, _ftol2 for MSVC V7
@@ -620,7 +620,7 @@ ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 					if (inst.rtl->getList().size()) {
 						CallStatement *toMain = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
 						if (toMain && toMain->getFixedDest() != NO_ADDRESS) {
-							pBF->AddSymbol(toMain->getFixedDest(), "WinMain");
+							pBF->addSymbol(toMain->getFixedDest(), "WinMain");
 							gotMain = true;
 							return toMain->getFixedDest();
 						}
@@ -634,8 +634,8 @@ ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 				gotMain = true;
 				return cs->getFixedDest();
 			}
-			if (pBF->SymbolByAddress(dest)
-			 && strcmp(pBF->SymbolByAddress(dest), "__libc_start_main") == 0) {
+			if (pBF->getSymbolByAddress(dest)
+			 && strcmp(pBF->getSymbolByAddress(dest), "__libc_start_main") == 0) {
 				// This is a gcc 3 pattern. The first parameter will be a pointer to main.
 				// Assume it's the 5 byte push immediately preceeding this instruction
 				// Note: the RTL changed recently from esp = esp-4; m[esp] = K tp m[esp-4] = K; esp = esp-4
@@ -660,13 +660,13 @@ ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	} while (--instCount);
 
 	// Last chance check: look for _main (e.g. Borland programs)
-	ADDRESS umain = pBF->GetAddressByName("_main");
+	ADDRESS umain = pBF->getAddressByName("_main");
 	if (umain != NO_ADDRESS) return umain;
 
 	// Not ideal; we must return start
 	std::cerr << "main function not found\n";
 
-	this->AddSymbol(start, "_start");
+	this->addSymbol(start, "_start");
 
 	return start;
 }

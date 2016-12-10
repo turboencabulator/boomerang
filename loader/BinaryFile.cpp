@@ -55,7 +55,7 @@ SectionInfo *BinaryFile::getSectionInfo(int idx) const
 	return m_pSections + idx;
 }
 
-int BinaryFile::GetSectionIndexByName(const char *sName)
+int BinaryFile::getSectionIndexByName(const char *sName)
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
@@ -82,7 +82,7 @@ SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 
 SectionInfo *BinaryFile::getSectionInfoByName(const char *sName)
 {
-	int i = GetSectionIndexByName(sName);
+	int i = getSectionIndexByName(sName);
 	if (i == -1) return 0;
 	return &m_pSections[i];
 }
@@ -93,17 +93,17 @@ SectionInfo *BinaryFile::getSectionInfoByName(const char *sName)
 // Overridden if reqd//
 ///////////////////////
 
-const char *BinaryFile::SymbolByAddress(ADDRESS uNative)
+const char *BinaryFile::getSymbolByAddress(ADDRESS uNative)
 {
 	return 0;  // Overridden by subclasses that support syms
 }
 
-ADDRESS BinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK)
+ADDRESS BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK)
 {
 	return 0;
 }
 
-int BinaryFile::GetSizeByName(const char *pName, bool bNoTypeOK)
+int BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK)
 {
 	return 0;
 }
@@ -145,7 +145,7 @@ bool BinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
 // Gets a pair of unsigned integers representing the address of %agp, and
 // a machine specific value (GLOBALOFFSET)
 // This is a stub routine that should be overridden if required
-std::pair<unsigned, unsigned> BinaryFile::GetGlobalPointerInfo()
+std::pair<unsigned, unsigned> BinaryFile::getGlobalPointerInfo()
 {
 	return std::pair<unsigned, unsigned>(0, 0);
 }
@@ -153,13 +153,13 @@ std::pair<unsigned, unsigned> BinaryFile::GetGlobalPointerInfo()
 // Get a pointer to a new map of dynamic global data items.
 // If the derived class doesn't implement this function, return an empty map
 // Caller should delete the returned map
-std::map<ADDRESS, const char *> *BinaryFile::GetDynamicGlobalMap()
+std::map<ADDRESS, const char *> *BinaryFile::getDynamicGlobalMap()
 {
 	return new std::map<ADDRESS, const char *>;
 }
 
 // Get an array of exported function stub addresses. Normally overridden.
-ADDRESS *BinaryFile::GetImportStubs(int &numExports)
+ADDRESS *BinaryFile::getImportStubs(int &numExports)
 {
 	numExports = 0;
 	return NULL;

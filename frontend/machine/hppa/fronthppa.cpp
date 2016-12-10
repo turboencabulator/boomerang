@@ -357,7 +357,7 @@ bool case_CALL_NCT(ADDRESS& address, DecodeResult& inst,
             bool ret = true;
             // Check for _exit; probably should check for other "never return"
             // functions
-            const char* name = prog.pBF->SymbolByAddress(dest);
+            const char* name = prog.pBF->getSymbolByAddress(dest);
             if (name && strcmp(name, "_exit") == 0) {
                 // Don't keep decoding after this call
                 ret = false;
@@ -1417,7 +1417,7 @@ bool helperFunc(ADDRESS dest, ADDRESS addr, HRTLList* lrtl)
     // Helper functions are millicode, and don't seem to appear in the imports
     // section. So they don't appear to be dynamically linked
 //  if (!prog.pBF->isDynamicLinkedProc(dest)) return false;
-    const char* pName =  prog.pBF->SymbolByAddress(dest);
+    const char* pName =  prog.pBF->getSymbolByAddress(dest);
     if (pName == 0) return false;
     string name(pName);
 //    if (progOptions.fastInstr == false)

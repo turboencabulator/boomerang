@@ -273,11 +273,11 @@ void ElfBinaryFile::UnLoad()
 }
 
 // Like a replacement for elf_strptr()
-const char *ElfBinaryFile::GetStrPtr(int idx, int offset)
+const char *ElfBinaryFile::getStrPtr(int idx, int offset)
 {
 	if (idx < 0) {
-		// Most commonly, this will be an index of -1, because a call to GetSectionIndexByName() failed
-		fprintf(stderr, "Error! GetStrPtr passed index of %d\n", idx);
+		// Most commonly, this will be an index of -1, because a call to getSectionIndexByName() failed
+		fprintf(stderr, "Error! getStrPtr passed index of %d\n", idx);
 		return "Error!";
 	}
 	// Get a pointer to the start of the string table
@@ -344,7 +344,7 @@ void ElfBinaryFile::AddSyms(int secIndex)
 		ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
 		int name = elfRead4(&m_pSym[i].st_name);
 		if (name == 0)  /* Silly symbols with no names */ continue;
-		std::string str(GetStrPtr(strIdx, name));
+		std::string str(getStrPtr(strIdx, name));
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -380,7 +380,7 @@ void ElfBinaryFile::AddSyms(int secIndex)
 	return;
 }
 
-std::vector<ADDRESS> ElfBinaryFile::GetExportedAddresses(bool funcsOnly)
+std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 {
 	std::vector<ADDRESS> exported;
 
@@ -408,7 +408,7 @@ std::vector<ADDRESS> ElfBinaryFile::GetExportedAddresses(bool funcsOnly)
 		ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
 		int name = elfRead4(&m_pSym[i].st_name);
 		if (name == 0)  /* Silly symbols with no names */ continue;
-		std::string str(GetStrPtr(strIdx, name));
+		std::string str(getStrPtr(strIdx, name));
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -458,7 +458,7 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 		if ((flags & R_386_PC32) == 0)
 			continue;
 		if (symIndex == 0)  /* Silly symbols with no names */ continue;
-		std::string str(GetStrPtr(strSecIdx, elfRead4(&m_pSym[symIndex].st_name)));
+		std::string str(getStrPtr(strSecIdx, elfRead4(&m_pSym[symIndex].st_name)));
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -479,8 +479,8 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 	return;
 }
 
-// Note: this function overrides a simple "return 0" function in the base class (i.e. BinaryFile::SymbolByAddress())
-const char *ElfBinaryFile::SymbolByAddress(const ADDRESS dwAddr)
+// Note: this function overrides a simple "return 0" function in the base class (i.e. BinaryFile::getSymbolByAddress())
+const char *ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(dwAddr);
 	if (aa == m_SymTab.end())
@@ -511,7 +511,7 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 	pSect = getSectionInfoByName(".hash");
 	if (pSect == 0) return false;
 	pHash = (int *)pSect->uHostAddr;
-	iStr = GetSectionIndexByName(".dynstr");
+	iStr = getSectionIndexByName(".dynstr");
 
 	// First organise the hash table
 	numBucket = elfRead4(&pHash[0]);
@@ -526,7 +526,7 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 	// In that case, set found to false.
 	found = (y != 0);
 	if (y) {
-		while (strcmp(pName, GetStrPtr(iStr, elfRead4(&pSym[y].st_name))) != 0) {
+		while (strcmp(pName, getStrPtr(iStr, elfRead4(&pSym[y].st_name))) != 0) {
 			y = elfRead4(&pChains[y]);
 			if (y == 0) {
 				found = false;
@@ -596,7 +596,7 @@ bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal)
 }
 
 
-ADDRESS ElfBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	SymValue Val;
 	bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
@@ -608,7 +608,7 @@ ADDRESS ElfBinaryFile::GetAddressByName(const char *pName, bool bNoTypeOK /* = f
 	else return NO_ADDRESS;
 }
 
-int ElfBinaryFile::GetSizeByName(const char *pName, bool bNoTypeOK /* = false */)
+int ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	SymValue Val;
 	bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
@@ -622,14 +622,14 @@ int ElfBinaryFile::GetSizeByName(const char *pName, bool bNoTypeOK /* = false */
 
 // Guess the size of a function by finding the next symbol after it, and subtracting the distance.
 // This function is NOT efficient; it has to compare the closeness of ALL symbols in the symbol table
-int ElfBinaryFile::GetDistanceByName(const char *sName, const char *pSectName)
+int ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 {
-	int size = GetSizeByName(sName);
+	int size = getSizeByName(sName);
 	if (size) return size;  // No need to guess!
 	// No need to guess, but if there are fillers, then subtracting labels will give a better answer for coverage
 	// purposes. For example, switch_cc. But some programs (e.g. switch_ps) have the switch tables between the
 	// end of _start and main! So we are better off overall not trying to guess the size of _start
-	unsigned value = GetAddressByName(sName);
+	unsigned value = getAddressByName(sName);
 	if (value == 0) return 0;  // Symbol doesn't even exist!
 
 	SectionInfo *pSect;
@@ -659,11 +659,11 @@ int ElfBinaryFile::GetDistanceByName(const char *sName, const char *pSectName)
 	return closest - value;
 }
 
-int ElfBinaryFile::GetDistanceByName(const char *sName)
+int ElfBinaryFile::getDistanceByName(const char *sName)
 {
-	int val = GetDistanceByName(sName, ".symtab");
+	int val = getDistanceByName(sName, ".symtab");
 	if (val) return val;
-	return GetDistanceByName(sName, ".dynsym");
+	return getDistanceByName(sName, ".dynsym");
 }
 
 bool ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
@@ -685,7 +685,7 @@ bool ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 std::list<SectionInfo *> &ElfBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
 {
 	SectionInfo *pSect = getSectionInfoByName(".text");
-	ADDRESS uMain = GetAddressByName(pEntry, true);
+	ADDRESS uMain = getAddressByName(pEntry, true);
 	ADDRESS delta = uMain - pSect->uNativeAddr;
 	pSect->uNativeAddr += delta;
 	pSect->uHostAddr += delta;
@@ -707,7 +707,7 @@ std::list<SectionInfo *> &ElfBinaryFile::getEntryPoints(const char *pEntry /* = 
 //
 ADDRESS ElfBinaryFile::getMainEntryPoint()
 {
-	return GetAddressByName("main", true);
+	return getAddressByName("main", true);
 }
 
 ADDRESS ElfBinaryFile::getEntryPoint()
@@ -820,14 +820,14 @@ size_t ElfBinaryFile::getImageSize()
 }
 
 /*==============================================================================
- * FUNCTION:      ElfBinaryFile::GetImportStubs
+ * FUNCTION:      ElfBinaryFile::getImportStubs
  * OVERVIEW:      Get an array of addresses of imported function stubs
  *                  This function relies on the fact that the symbols are sorted by address, and that Elf PLT
  *                  entries have successive addresses beginning soon after m_PltMin
  * PARAMETERS:    numImports - reference to integer set to the number of these
  * RETURNS:       An array of native ADDRESSes
  *============================================================================*/
-ADDRESS *ElfBinaryFile::GetImportStubs(int &numImports)
+ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
 {
 	ADDRESS a = m_uPltMin;
 	int n = 0;
@@ -864,7 +864,7 @@ ADDRESS *ElfBinaryFile::GetImportStubs(int &numImports)
 }
 
 /*==============================================================================
- * FUNCTION:    ElfBinaryFile::GetDynamicGlobalMap
+ * FUNCTION:    ElfBinaryFile::getDynamicGlobalMap
  * OVERVIEW:    Get a map from ADDRESS to const char*. This map contains the native addresses
  *                  and symbolic names of global data items (if any) which are shared with dynamically
  *                  linked libraries.
@@ -874,7 +874,7 @@ ADDRESS *ElfBinaryFile::GetImportStubs(int &numImports)
  * PARAMETERS:  None
  * RETURNS:     Pointer to a new map with the info, or 0 if none
  *============================================================================*/
-std::map<ADDRESS, const char *> *ElfBinaryFile::GetDynamicGlobalMap()
+std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
 {
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
 	SectionInfo *pSect = getSectionInfoByName(".rel.bss");
@@ -892,7 +892,7 @@ std::map<ADDRESS, const char *> *ElfBinaryFile::GetDynamicGlobalMap()
 		return ret;
 	}
 	Elf32_Sym *pSym = (Elf32_Sym *)sym->uHostAddr;
-	int idxStr = GetSectionIndexByName(".dynstr");
+	int idxStr = getSectionIndexByName(".dynstr");
 	if (idxStr == -1) {
 		fprintf(stderr, "Could not find section .dynstr in source binary file");
 		return ret;
@@ -903,7 +903,7 @@ std::map<ADDRESS, const char *> *ElfBinaryFile::GetDynamicGlobalMap()
 		// The ugly p[1] below is because it p might point to an Elf32_Rela struct, or an Elf32_Rel struct
 		int sym = ELF32_R_SYM(((int *)p)[1]);
 		int name = pSym[sym].st_name;  // Index into string table
-		const char *s = GetStrPtr(idxStr, name);
+		const char *s = getStrPtr(idxStr, name);
 		ADDRESS val = ((int *)p)[0];
 		(*ret)[val] = s;  // Add the (val, s) mapping to ret
 		p += pSect->uSectionEntrySize;
@@ -1141,10 +1141,10 @@ void ElfBinaryFile::applyRelocations()
 									int nameOffset = elfRead4((int *)&symOrigin[symTabIndex].st_name);
 									const char *pName = pStrSection + nameOffset;
 									// this is too slow, I'm just going to assume it is 0
-									//S = GetAddressByName(pName);
+									//S = getAddressByName(pName);
 									//if (S == (e_type == E_REL ? 0x8000000 : 0)) {
 										S = nextFakeLibAddr--;  // Allocate a new fake address
-										AddSymbol(S, pName);
+										addSymbol(S, pName);
 									//}
 								} else if (e_type == E_REL) {
 									nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
@@ -1260,7 +1260,7 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 		//ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
 		int name = elfRead4(&m_pSym[i].st_name);
 		if (name == 0)  /* Silly symbols with no names */ continue;
-		std::string str(GetStrPtr(strIdx, name));
+		std::string str(getStrPtr(strIdx, name));
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -1279,7 +1279,7 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 }
 
 // A map for extra symbols, those not in the usual Elf symbol tables
-void ElfBinaryFile::AddSymbol(ADDRESS uNative, const char *pName)
+void ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	m_SymTab[uNative] = pName;
 }

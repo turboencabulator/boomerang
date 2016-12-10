@@ -230,17 +230,17 @@ public:
 
 	// Symbol table functions
 	// Lookup the address, return the name, or 0 if not found
-	virtual const char *SymbolByAddress(ADDRESS uNative);
+	virtual const char *getSymbolByAddress(ADDRESS uNative);
 	// Lookup the name, return the address. If not found, return NO_ADDRESS
-	virtual ADDRESS     GetAddressByName(const char *pName, bool bNoTypeOK = false);
-	virtual void        AddSymbol(ADDRESS uNative, const char *pName) { }
+	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
+	virtual void        addSymbol(ADDRESS uNative, const char *pName) { }
 	// Lookup the name, return the size
-	virtual int         GetSizeByName(const char *pName, bool bTypeOK = false);
+	virtual int         getSizeByName(const char *pName, bool bTypeOK = false);
 	// Get an array of addresses of imported function stubs
 	// Set number of these to numImports
-	virtual ADDRESS    *GetImportStubs(int &numImports);
+	virtual ADDRESS    *getImportStubs(int &numImports);
 	virtual const char *getFilenameSymbolFor(const char *sym) { return NULL; }
-	virtual std::vector<ADDRESS> GetExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
+	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
 
 	// Relocation table functions
 	//virtual bool        isAddressRelocatable(ADDRESS uNative);
@@ -257,12 +257,12 @@ public:
 	// the latter is only used by the Palm machine, to represent the space
 	// allocated below the %a5 register (i.e. the difference between %a5 and
 	// %agp). This value could possibly be used for other purposes.
-	virtual std::pair<unsigned, unsigned> GetGlobalPointerInfo();
+	virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();
 
 	// Get a map from ADDRESS to const char*. This map contains the native addresses and symbolic names of global
 	// data items (if any) which are shared with dynamically linked libraries. Example: __iob (basis for stdout).
 	// The ADDRESS is the native address of a pointer to the real dynamic data object.
-	virtual std::map<ADDRESS, const char *> *GetDynamicGlobalMap();
+	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 
 //
 //  --  --  --  --  --  --  --  --  --  --  --
@@ -286,7 +286,7 @@ public:
 	 */
 	virtual ADDRESS     getEntryPoint() = 0;
 	// Find section index given name, or -1 if not found
-	        int         GetSectionIndexByName(const char *sName);
+	        int         getSectionIndexByName(const char *sName);
 
 
 	virtual bool        RealLoad(const char *sName) = 0;

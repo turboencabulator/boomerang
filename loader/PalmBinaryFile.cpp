@@ -295,7 +295,7 @@ size_t PalmBinaryFile::getImageSize()
 }
 
 // We at least need to be able to name the main function and system calls
-const char *PalmBinaryFile::SymbolByAddress(ADDRESS dwAddr)
+const char *PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if ((dwAddr & 0xFFFFF000) == 0xAAAAA000) {
 		// This is the convention used to indicate an A-line system call
@@ -321,7 +321,7 @@ bool PalmBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 // and the value for GLOBALOFFSET. For Palm, the latter is the amount of
 // space allocated below %a5, i.e. the difference between %a5 and %agp
 // (%agp points to the bottom of the global data area).
-std::pair<unsigned, unsigned> PalmBinaryFile::GetGlobalPointerInfo()
+std::pair<unsigned, unsigned> PalmBinaryFile::getGlobalPointerInfo()
 {
 	unsigned agp = 0;
 	const SectionInfo *ps = getSectionInfoByName("data0");
@@ -334,7 +334,7 @@ std::pair<unsigned, unsigned> PalmBinaryFile::GetGlobalPointerInfo()
 //  Specific for Palm   //
 //  //  //  //  //  //  //
 
-int PalmBinaryFile::GetAppID() const
+int PalmBinaryFile::getAppID() const
 {
 	// The answer is in the header. Return 0 if file not loaded
 	if (m_pImage == 0)
@@ -440,7 +440,7 @@ ADDRESS PalmBinaryFile::getMainEntryPoint()
 	return 0;
 }
 
-void PalmBinaryFile::GenerateBinFiles(const std::string &path) const
+void PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		SectionInfo *pSect = m_pSections + i;

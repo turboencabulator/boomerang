@@ -178,7 +178,7 @@ void LoaderTest::testWinLoad()
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	// Test symbol table (imports)
-	const char *s = pBF->SymbolByAddress(0x1292060U);
+	const char *s = pBF->getSymbolByAddress(0x1292060U);
 	if (s == 0)
 		actual = "<not found>";
 	else
@@ -186,7 +186,7 @@ void LoaderTest::testWinLoad()
 	expected = std::string("SetEvent");
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
-	ADDRESS a = pBF->GetAddressByName("SetEvent");
+	ADDRESS a = pBF->getAddressByName("SetEvent");
 	ADDRESS expectedAddr = 0x1292060;
 	CPPUNIT_ASSERT_EQUAL(expectedAddr, a);
 	pBF->UnLoad();

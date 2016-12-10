@@ -471,7 +471,7 @@ Proc *Prog::setNewProc(ADDRESS uAddr)
 	ADDRESS other = pBF->isJumpToAnotherAddr(uAddr);
 	if (other != NO_ADDRESS)
 		uAddr = other;
-	const char *pName = pBF->SymbolByAddress(uAddr);
+	const char *pName = pBF->getSymbolByAddress(uAddr);
 	bool bLib = pBF->isDynamicLinkedProc(uAddr) | pBF->isStaticLinkedLibProc(uAddr);
 	if (pName == NULL) {
 		// No name. Give it a numbered name
@@ -673,7 +673,7 @@ const char *Prog::getGlobalName(ADDRESS uaddr)
 			return (*it)->getName();
 	}
 	if (pBF)
-		return pBF->SymbolByAddress(uaddr);
+		return pBF->getSymbolByAddress(uaddr);
 	return NULL;
 }
 
@@ -691,7 +691,7 @@ ADDRESS Prog::getGlobalAddr(const char *nam)
 		if (!strcmp((*it)->getName(), nam))
 			return (*it)->getAddress();
 	}
-	return pBF->GetAddressByName(nam);
+	return pBF->getAddressByName(nam);
 }
 
 Global *Prog::getGlobal(const char *nam)
@@ -731,7 +731,7 @@ bool Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 			Type *baseType = ty->asArray()->getBaseType();
 			int baseSize = 0;
 			if (baseType) baseSize = baseType->getSize() / 8;  // Size in bytes
-			int sz = pBF->GetSizeByName(nam);
+			int sz = pBF->getSizeByName(nam);
 			if (sz && baseSize)
 				// Note: since ty is a pointer and has not been cloned, this will also set the type for knownType
 				ty->asArray()->setLength(sz / baseSize);
@@ -760,7 +760,7 @@ std::map<ADDRESS, std::string> &Prog::getSymbols()
 ArrayType *Prog::makeArrayType(ADDRESS u, Type *t)
 {
 	const char *nam = newGlobalName(u);
-	int sz = pBF->GetSizeByName(nam);
+	int sz = pBF->getSizeByName(nam);
 	if (sz == 0)
 		return new ArrayType(t);  // An "unbounded" array
 	int n = t->getSize() / 8;
@@ -770,7 +770,7 @@ ArrayType *Prog::makeArrayType(ADDRESS u, Type *t)
 
 Type *Prog::guessGlobalType(const char *nam, ADDRESS u)
 {
-	int sz = pBF->GetSizeByName(nam);
+	int sz = pBF->getSizeByName(nam);
 	if (sz == 0) {
 		// Check if it might be a string
 		const char *str = getStringConstant(u);
@@ -1554,7 +1554,7 @@ Exp *Prog::readNativeAs(ADDRESS uaddr, Type *type)
 		const char *nam = getGlobalName(uaddr);
 		int base_sz = type->asArray()->getBaseType()->getSize() / 8;
 		if (nam != NULL)
-			nelems = pBF->GetSizeByName(nam) / base_sz;
+			nelems = pBF->getSizeByName(nam) / base_sz;
 		Exp *n = e = new Terminal(opNil);
 		for (int i = 0; nelems == -1 || i < nelems; i++) {
 			Exp *v = readNativeAs(uaddr + i * base_sz, type->asArray()->getBaseType());
@@ -1861,7 +1861,7 @@ Exp *Prog::addReloc(Exp *e, ADDRESS lc)
 		if (symbols.find(c->getInt()) != symbols.end()) {
 			const char *n = symbols[c->getInt()].c_str();
 			ADDRESS a = c->getInt();
-			unsigned int sz = pBF->GetSizeByName(n);
+			unsigned int sz = pBF->getSizeByName(n);
 			if (getGlobal(n) == NULL) {
 				Global *global = new Global(new SizeType(sz * 8), a, n);
 				globals.insert(global);
@@ -1875,7 +1875,7 @@ Exp *Prog::addReloc(Exp *e, ADDRESS lc)
 				// check for accesses into the middle of symbols
 				for (std::map<ADDRESS, std::string>::iterator it = symbols.begin(); it != symbols.end(); it++) {
 					if ((*it).first < (ADDRESS)c->getInt()
-					 && (*it).first + pBF->GetSizeByName((*it).second.c_str()) > (ADDRESS)c->getInt()) {
+					 && (*it).first + pBF->getSizeByName((*it).second.c_str()) > (ADDRESS)c->getInt()) {
 						int off = c->getInt() - (*it).first;
 						e = new Binary(opPlus,
 						               new Unary(opAddrOf, Location::global((*it).second.c_str(), NULL)),
