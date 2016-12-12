@@ -99,10 +99,10 @@ private:
 	         * So: Document all functions at the point of implementation (in the .c file)
 	         */
 
-	        void        usage();
-	        void        help();
-	        void        helpcmd();
-	        int         splitLine(char *line, char ***pargv);
+	static  void        usage();
+	static  void        help();
+	static  void        helpcmd();
+	static  int         splitLine(char *line, char ***pargv);
 	        int         parseCmd(int argc, const char *argv[]);
 	        int         cmdLine();
 
