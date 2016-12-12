@@ -4,7 +4,9 @@
  *        the BinaryFile and derived classes.
  */
 
+#ifndef TESTDIR
 #define TESTDIR         "../test/"
+#endif
 
 #define HELLO_SPARC     TESTDIR "sparc/hello"
 #define HELLO_PENTIUM   TESTDIR "pentium/hello"

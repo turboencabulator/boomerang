@@ -73,6 +73,9 @@ check_LTLIBRARIES = \
 libLoaderTest_la_SOURCES = \
 	LoaderTest.cpp \
 	LoaderTest.h
+libLoaderTest_la_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	-DTESTDIR=\"$(top_srcdir)/test/\"
 
 libBinaryFileStub_la_SOURCES = \
 	BinaryFileStub.cpp \
