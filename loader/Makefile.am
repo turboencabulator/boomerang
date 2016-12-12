@@ -1,13 +1,19 @@
-AM_CPPFLAGS = -I$(top_srcdir)/include
+AM_CPPFLAGS = \
+	-I$(top_srcdir)/include
 
 
 noinst_LTLIBRARIES = \
 	libmicroX86dis.la \
 	libBinaryFile.la
 
-libmicroX86dis_la_SOURCES = microX86dis.c
+libmicroX86dis_la_SOURCES = \
+	microX86dis.c
 
-libBinaryFile_la_SOURCES = BinaryFile.cpp SymTab.cpp
+libBinaryFile_la_SOURCES = \
+	BinaryFile.cpp \
+	$(top_srcdir)/include/BinaryFile.h \
+	SymTab.cpp \
+	SymTab.h
 
 
 pkglib_LTLIBRARIES = \
@@ -25,14 +31,14 @@ libBinaryFileFactory_la_SOURCES = BinaryFileFactory.cpp
 libBinaryFileFactory_la_LIBADD = libBinaryFile.la -ldl
 libBinaryFileFactory_la_LDFLAGS = -no-undefined -avoid-version
 
-DOS4GWBinaryFile_la_SOURCES = DOS4GWBinaryFile.cpp
-ElfBinaryFile_la_SOURCES    = ElfBinaryFile.cpp
-ExeBinaryFile_la_SOURCES    = ExeBinaryFile.cpp
-HpSomBinaryFile_la_SOURCES  = HpSomBinaryFile.cpp
-IntelCoffFile_la_SOURCES    = IntelCoffFile.cpp
-MachOBinaryFile_la_SOURCES  = MachOBinaryFile.cpp
-PalmBinaryFile_la_SOURCES   = PalmBinaryFile.cpp
-Win32BinaryFile_la_SOURCES  = Win32BinaryFile.cpp
+DOS4GWBinaryFile_la_SOURCES = DOS4GWBinaryFile.cpp DOS4GWBinaryFile.h
+ElfBinaryFile_la_SOURCES    = ElfBinaryFile.cpp    ElfBinaryFile.h
+ExeBinaryFile_la_SOURCES    = ExeBinaryFile.cpp    ExeBinaryFile.h
+HpSomBinaryFile_la_SOURCES  = HpSomBinaryFile.cpp  HpSomBinaryFile.h
+IntelCoffFile_la_SOURCES    = IntelCoffFile.cpp    IntelCoffFile.h
+MachOBinaryFile_la_SOURCES  = MachOBinaryFile.cpp  MachOBinaryFile.h
+PalmBinaryFile_la_SOURCES   = PalmBinaryFile.cpp   PalmBinaryFile.h
+Win32BinaryFile_la_SOURCES  = Win32BinaryFile.cpp  Win32BinaryFile.h
 
 DOS4GWBinaryFile_la_LIBADD = libBinaryFile.la libmicroX86dis.la
 ElfBinaryFile_la_LIBADD    = libBinaryFile.la
@@ -69,7 +75,8 @@ libLoaderTest_la_SOURCES = \
 	LoaderTest.h
 
 libBinaryFileStub_la_SOURCES = \
-	BinaryFileStub.cpp
+	BinaryFileStub.cpp \
+	$(top_srcdir)/include/BinaryFileStub.h
 
 
 TESTS = $(check_PROGRAMS)
@@ -86,3 +93,15 @@ testLoader_LDADD = \
 testLoader_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
+
+
+noinst_HEADERS = \
+	macho-apple.h \
+	nlist.h \
+	palmsystraps.h \
+	syself.h
+
+EXTRA_DIST = \
+	ArchiveFile.cpp \
+	ElfArchiveFile.cpp \
+	objc

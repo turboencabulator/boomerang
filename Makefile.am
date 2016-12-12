@@ -12,16 +12,13 @@ SUBDIRS = \
 	. \
 	qtgui2
 
-AM_CPPFLAGS = \
-	-DDATADIR='"$(pkgdatadir)"' \
-	$(GC_CFLAGS)
-
 
 pkglib_LTLIBRARIES = \
 	libboomerang.la
 
 libboomerang_la_SOURCES = \
-	boomerang.cpp
+	boomerang.cpp \
+	$(top_srcdir)/include/boomerang.h
 libboomerang_la_LIBADD = \
 	$(top_builddir)/db/libdb.la \
 	$(top_builddir)/db/libxmlprogparser.la \
@@ -33,6 +30,10 @@ libboomerang_la_LIBADD = \
 	$(top_builddir)/loader/libBinaryFileFactory.la \
 	$(top_builddir)/transform/libtransform.la \
 	$(GC_LIBS)
+libboomerang_la_CPPFLAGS = \
+	-I$(top_srcdir)/include \
+	-DDATADIR=\"$(pkgdatadir)\" \
+	$(GC_CFLAGS)
 libboomerang_la_LDFLAGS = -no-undefined -avoid-version
 
 
@@ -44,6 +45,9 @@ boomerang_SOURCES = \
 boomerang_LDADD = \
 	libboomerang.la \
 	$(GC_LIBS)
+boomerang_CPPFLAGS = \
+	-I$(top_srcdir)/include \
+	$(GC_CFLAGS)
 
 
 TESTS = $(check_PROGRAMS)
@@ -69,8 +73,26 @@ testAll_LDADD = \
 	libboomerang.la \
 	$(CPPUNIT_LIBS)
 testAll_CPPFLAGS = \
+	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/db \
 	-I$(top_srcdir)/type \
 	-I$(top_srcdir)/frontend \
 	-I$(top_srcdir)/c \
 	-I$(top_srcdir)/util
+
+
+dist_check_SCRIPTS = \
+	functest.sh \
+	makeExpPent \
+	makeExpSparc \
+	testOne.sh \
+	testPent \
+	testSparc
+
+
+EXTRA_DIST = \
+	doc \
+	test \
+	xslt \
+	output/boomerang.h \
+	dbl_shared.cpp

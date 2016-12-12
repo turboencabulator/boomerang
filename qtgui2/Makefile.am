@@ -3,21 +3,26 @@ AM_CPPFLAGS = \
 	$(QTGUI_CFLAGS) \
 	$(GC_CFLAGS)
 
+
 bin_PROGRAMS = \
 	boomerang-gui
 
 boomerang_gui_SOURCES = \
-	moc_DecompilerThread.cpp \
 	DecompilerThread.cpp \
 	DecompilerThread.h \
 	main.cpp \
-	moc_mainwindow.cpp \
 	mainwindow.cpp \
 	mainwindow.h \
 	mypthread.cpp \
-	moc_rtleditor.cpp \
 	rtleditor.cpp \
 	rtleditor.h \
+	about.ui \
+	boomerang.ui \
+	boomerang.qrc
+nodist_boomerang_gui_SOURCES = \
+	moc_DecompilerThread.cpp \
+	moc_mainwindow.cpp \
+	moc_rtleditor.cpp \
 	qrc_boomerang.cpp
 boomerang_gui_LDADD = \
 	$(top_builddir)/libboomerang.la \
@@ -43,8 +48,14 @@ RESOURCES = \
 	images/load1.png \
 	images/rarrow.png
 qrc_boomerang.cpp: $(RESOURCES)
+dist_noinst_DATA = $(RESOURCES)
 
 CLEANFILES = \
 	moc_* \
 	ui_* \
 	qrc_*
+
+EXTRA_DIST = \
+	qtgui2-mingw.pro \
+	qtgui2-unx.pro \
+	qtgui2.pro

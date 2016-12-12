@@ -9,7 +9,8 @@ noinst_LTLIBRARIES = \
 	libdb.la
 
 libxmlprogparser_la_SOURCES = \
-	xmlprogparser.cpp
+	xmlprogparser.cpp \
+	$(top_srcdir)/include/xmlprogparser.h
 libxmlprogparser_la_LIBADD = \
 	$(EXPAT_LIBS)
 libxmlprogparser_la_CPPFLAGS = \
@@ -18,27 +19,46 @@ libxmlprogparser_la_CPPFLAGS = \
 
 libdb_la_SOURCES = \
 	basicblock.cpp \
+	$(top_srcdir)/include/basicblock.h \
 	cfg.cpp \
+	$(top_srcdir)/include/cfg.h \
 	dataflow.cpp \
+	$(top_srcdir)/include/dataflow.h \
 	exp.cpp \
+	$(top_srcdir)/include/exp.h \
 	insnameelem.cpp \
 	insnameelem.h \
 	managed.cpp \
-	operstrings.h \
+	$(top_srcdir)/include/managed.h \
 	proc.cpp \
+	$(top_srcdir)/include/proc.h \
 	prog.cpp \
+	$(top_srcdir)/include/prog.h \
 	register.cpp \
+	$(top_srcdir)/include/register.h \
 	rtl.cpp \
+	$(top_srcdir)/include/rtl.h \
 	signature.cpp \
+	$(top_srcdir)/include/signature.h \
 	sslinst.cpp \
 	sslparser.ypp \
 	sslparser.h \
 	sslscanner.lpp \
 	sslscanner.h \
 	statement.cpp \
+	$(top_srcdir)/include/statement.h \
 	table.cpp \
 	table.h \
-	visitor.cpp
+	visitor.cpp \
+	$(top_srcdir)/include/visitor.h
+noinst_HEADERS = \
+	$(top_srcdir)/include/cluster.h \
+	$(top_srcdir)/include/exphelp.h \
+	$(top_srcdir)/include/memo.h \
+	$(top_srcdir)/include/operator.h \
+	operstrings.h \
+	$(top_srcdir)/include/sigenum.h \
+	$(top_srcdir)/include/types.h
 libdb_la_LIBADD = \
 	$(GC_LIBS)
 
@@ -180,3 +200,15 @@ BUILT_SOURCES = \
 	sslscanner.h
 
 CLEANFILES = *.output
+
+EXTRA_DIST = \
+	signatureStubs.cpp \
+	testDbase.cpp \
+	testExp.cpp \
+	testExpStubs.cpp \
+	testRtl.cpp \
+	testRtlStubs.cpp \
+	testStmt.cpp \
+	testStmtStubs.cpp \
+	typeStubs.cpp \
+	utilStubs.cpp

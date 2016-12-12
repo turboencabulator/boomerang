@@ -1,4 +1,5 @@
 AM_CPPFLAGS = \
+	-I$(top_srcdir)/include \
 	$(GC_CFLAGS)
 
 
@@ -7,8 +8,10 @@ noinst_LTLIBRARIES = \
 
 libtype_la_SOURCES = \
 	constraint.cpp \
+	$(top_srcdir)/include/constraint.h \
 	dfa.cpp \
-	type.cpp
+	type.cpp \
+	$(top_srcdir)/include/type.h
 libtype_la_LIBADD = \
 	$(GC_LIBS)
 

@@ -7,4 +7,6 @@ noinst_LTLIBRARIES = \
 
 libutil_la_SOURCES = \
 	log.cpp \
-	util.cpp
+	$(top_srcdir)/include/log.h \
+	util.cpp \
+	$(top_srcdir)/include/util.h

@@ -1,8 +1,13 @@
+AM_CPPFLAGS = \
+	-I$(top_srcdir)/include
+
+
 noinst_LTLIBRARIES = \
 	libtransform.la
 
 libtransform_la_SOURCES = \
 	transformer.cpp \
+	$(top_srcdir)/include/transformer.h \
 	rdi.cpp \
 	rdi.h \
 	generic.cpp \

@@ -1,7 +1,7 @@
 signaturesdir = \
 	$(pkgdatadir)/signatures
 
-signatures_DATA = \
+dist_signatures_DATA = \
 	common.hs \
 		stdio.h \
 		glu.h \
@@ -40,3 +40,6 @@ signatures_DATA = \
 		mfc.h \
 		ntddk.h \
 		ntifs.h
+
+EXTRA_DIST = \
+	common.hs.old

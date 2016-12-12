@@ -5,7 +5,7 @@ AM_CPPFLAGS = \
 frontenddir = \
 	$(pkgdatadir)/frontend
 
-nobase_frontend_DATA = \
+nobase_dist_frontend_DATA = \
 	machine/mips/mips.ssl \
 	machine/pentium/pentium.ssl \
 	machine/ppc/ppc.ssl \
@@ -23,7 +23,9 @@ noinst_LTLIBRARIES = \
 
 libfrontend_la_SOURCES = \
 	frontend.cpp \
-	njmcDecoder.cpp
+	$(top_srcdir)/include/frontend.h \
+	njmcDecoder.cpp \
+	$(top_srcdir)/include/decoder.h
 libfrontend_la_LIBADD = \
 	libfrontsparc.la \
 	libfrontpentium.la \
@@ -86,3 +88,7 @@ libFrontSparcTest_la_LIBADD = \
 libFrontSparcTest_la_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
+
+
+EXTRA_DIST = \
+	machine
