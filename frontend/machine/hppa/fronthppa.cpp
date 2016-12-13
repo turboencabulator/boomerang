@@ -1226,7 +1226,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
 
             case NCTA: {
                 // These instructions have been identified as anulling the
-                // following instuction. First we decode the following instr
+                // following instruction. First we decode the following instr
                 BB_rtls->push_back(rtl);        // Add the jump
                 DecodeResult follow_inst = 
                     decoder.decodeInstruction(address+4,delta, proc);

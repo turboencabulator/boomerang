@@ -2406,7 +2406,7 @@ void genBSFR(ADDRESS pc, Exp* dest, Exp* modrm, int init, int size,
 		// Let the number of bytes be 1. This is important at least for setting the fallthrough address for the branch
 		// (in the first RTL), which should point to the next RTL
 		result.numBytes = 1;
-		result.reDecode = true;		// Decode this instuction again
+		result.reDecode = true;		// Decode this instruction again
 	} else {
 		result.numBytes = numBytes;
 		result.reDecode = false;

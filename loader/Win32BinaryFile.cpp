@@ -266,7 +266,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 		}
 	}
 
-	// For VS.NET, need an old favourite: find a call with three pushes in the first 100 instuctions
+	// For VS.NET, need an old favourite: find a call with three pushes in the first 100 instructions
 	int count = 100;
 	int pushes = 0;
 	p = LMMH(m_pPEHeader->EntrypointRVA);
