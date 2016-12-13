@@ -10,6 +10,8 @@
  * Copyright (C) 2001, Sun Microsystems, Inc
  * \authors
  * Copyright (C) 2001, The University of Queensland
+ * \authors
+ * Copyright (C) 2014-2016, Kyle Guinn
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -23,9 +25,9 @@ static void print_section(SectionInfo *pSect)
 	ADDRESS a = pSect->uNativeAddr;
 	unsigned char *p = (unsigned char *)pSect->uHostAddr;
 	for (unsigned off = 0; off < pSect->uSectionSize;) {
-		printf("%04X:", a);
+		printf("%04x:", a);
 		for (int j = 0; (j < 16) && (off < pSect->uSectionSize); ++j) {
-			printf(" %02X", *p++);
+			printf(" %02x", *p++);
 			a++;
 			off++;
 		}
@@ -43,9 +45,8 @@ int main(int argc, char *argv[])
 	}
 
 	// Load the file
-	BinaryFile *pbf = NULL;
 	BinaryFileFactory bff;
-	pbf = bff.Load(argv[1]);
+	BinaryFile *pbf = bff.Load(argv[1]);
 
 	if (pbf == NULL) {
 		return 2;
@@ -76,7 +77,7 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < pbf->getNumSections(); ++i) {
 		SectionInfo *pSect = pbf->getSectionInfo(i);
 		if (pSect->bCode) {
-			printf("  Code section:\n");
+			printf("  Code section: %s\n", pSect->pSectionName);
 			print_section(pSect);
 			printf("\n");
 		}
