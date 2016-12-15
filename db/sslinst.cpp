@@ -13,6 +13,8 @@
  * Copyright (C) 2001, Sun Microsystems, Inc
  * \authors
  * Copyright (C) 2002, Trent Waddington
+ * \authors
+ * Copyright (C) 2014-2016, Kyle Guinn
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -37,6 +39,7 @@
 #include "boomerang.h"
 
 #include <algorithm>  // For remove()
+#include <fstream>
 
 #include <cstring>
 #include <cassert>
@@ -173,18 +176,22 @@ bool RTLInstDict::readSSLFile(const std::string &SSLFileName)
 	reset();
 
 	// Attempt to Parse the SSL file
+	std::ifstream ssl(SSLFileName.c_str());
+	if (!ssl) {
+		std::cerr << "can't open `" << SSLFileName << "' for reading\n";
+		return false;
+	}
 #ifdef DEBUG_SSLPARSER
-	SSLParser theParser(SSLFileName, true);
+	SSLParser theParser(ssl, true);
 #else
-	SSLParser theParser(SSLFileName, false);
+	SSLParser theParser(ssl, false);
 #endif
 
-	if (theParser.theScanner == NULL)
-		return false;
 	addRegister("%CTI", -1, 1, false);
 	addRegister("%NEXT", -1, 32, false);
 
 	theParser.yyparse(*this);
+	ssl.close();
 
 	fixupParams();
 
