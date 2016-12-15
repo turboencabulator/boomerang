@@ -59,7 +59,7 @@ Boomerang *Boomerang::boomerang = NULL;
  * - The path to the executable is "./"
  * - The output directory is "./output/"
  */
-Boomerang::Boomerang() : logger(NULL), vFlag(false), printRtl(false),
+Boomerang::Boomerang() : progPath(DATADIR "/"), outputPath(OUTPUTDIR "/"), logger(NULL), vFlag(false), printRtl(false),
 	noBranchSimplify(false), noRemoveNull(false), noLocals(false),
 	noRemoveLabels(false), noDataflow(false), noDecompile(false), stopBeforeDecompile(false),
 	traceDecoder(false), dotFile(NULL), numToPropagate(-1),
@@ -73,8 +73,6 @@ Boomerang::Boomerang() : logger(NULL), vFlag(false), printRtl(false),
 	propMaxDepth(3), generateCallGraph(false), generateSymbols(false), noGlobals(false), assumeABI(false),
 	experimental(false), minsToStopAfter(0)
 {
-	progPath = DATADIR "/";
-	outputPath = OUTPUTDIR "/";
 }
 
 /**
