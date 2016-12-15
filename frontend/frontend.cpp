@@ -124,22 +124,6 @@ bool FrontEnd::noReturnCallDest(const char *name)
 	     || strcmp(name, "_assert") == 0);
 }
 
-// FIXME: Is this ever used? Need to pass a real pbff?
-FrontEnd *FrontEnd::createById(std::string &str, BinaryFile *pBF, Prog *prog)
-{
-	if (str == "pentium")
-		return new PentiumFrontEnd(pBF, prog, NULL);
-	if (str == "sparc")
-		return new SparcFrontEnd(pBF, prog, NULL);
-	if (str == "ppc")
-		return new PPCFrontEnd(pBF, prog, NULL);
-	if (str == "mips")
-		return new MIPSFrontEnd(pBF, prog, NULL);
-	if (str == "st20")
-		return new ST20FrontEnd(pBF, prog, NULL);
-	return NULL;
-}
-
 void FrontEnd::readLibraryCatalog(const char *sPath)
 {
 	std::ifstream inf(sPath);

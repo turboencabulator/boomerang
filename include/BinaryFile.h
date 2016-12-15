@@ -128,13 +128,6 @@ public:
 	std::map<std::string, ObjcClass> classes;
 };
 
-/*
- * callback function, which when given the name of a library, should return
- * a pointer to an opened BinaryFile, or NULL if the name cannot be resolved.
- */
-class BinaryFile;
-typedef BinaryFile *(*get_library_callback_t)(char *name);
-
 // This enum allows a sort of run time type identification, without using
 // compiler specific features
 enum LOADFMT {
@@ -158,6 +151,7 @@ enum MACHINE {
 	MACHINE_MIPS,
 };
 
+class BinaryFile;
 class BinaryFileFactory {
 	void *handle;         // Needed for UnLoading the library
 public:
