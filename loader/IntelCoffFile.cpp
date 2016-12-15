@@ -377,11 +377,15 @@ std::list<const char *> IntelCoffFile::getDependencyList()
 	return dummy;  // TODO: How ever return this is ought to work out
 }
 
-extern "C" {
-	BinaryFile *construct()
-	{
-		return new IntelCoffFile();
-	}
+/**
+ * This function is called via dlopen/dlsym; it returns a new BinaryFile
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" BinaryFile *construct()
+{
+	return new IntelCoffFile();
 }
 
 const char *IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)

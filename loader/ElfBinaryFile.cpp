@@ -58,27 +58,26 @@ void ElfBinaryFile::Init()
 }
 
 // Hand decompiled from sparc library function
-extern "C" {  // So we can call this with dlopen()
-	unsigned elf_hash(const char *o0)
-	{
-		int o3 = *o0;
-		const char *g1 = o0;
-		unsigned o4 = 0;
-		while (o3 != 0) {
-			o4 <<= 4;
-			o3 += o4;
-			g1++;
-			o4 = o3 & 0xf0000000;
-			if (o4 != 0) {
-				int o2 = (int)((unsigned)o4 >> 24);
-				o3 = o3 ^ o2;
-			}
-			o4 = o3 & ~o4;
-			o3 = *g1;
+// C linkage so we can call this with dlopen()
+extern "C" unsigned elf_hash(const char *o0)
+{
+	int o3 = *o0;
+	const char *g1 = o0;
+	unsigned o4 = 0;
+	while (o3 != 0) {
+		o4 <<= 4;
+		o3 += o4;
+		g1++;
+		o4 = o3 & 0xf0000000;
+		if (o4 != 0) {
+			int o2 = (int)((unsigned)o4 >> 24);
+			o3 = o3 ^ o2;
 		}
-		return o4;
+		o4 = o3 & ~o4;
+		o3 = *g1;
 	}
-}  // extern "C"
+	return o4;
+}
 
 // Return true for a good load
 bool ElfBinaryFile::RealLoad(const char *sName)
@@ -1053,13 +1052,15 @@ double ElfBinaryFile::readNativeFloat8(ADDRESS nat)
 	return *(double *)raw;
 }
 
-// This function is called via dlopen/dlsym; it returns a new BinaryFile derived concrete object.
-// After this object is returned, the virtual function call mechanism will call the rest of the code
-// in this library. It needs to be C linkage so that it its name is not mangled
-extern "C" {
-	BinaryFile *construct() {
-		return new ElfBinaryFile;
-	}
+/**
+ * This function is called via dlopen/dlsym; it returns a new BinaryFile
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" BinaryFile *construct()
+{
+	return new ElfBinaryFile;
 }
 
 void ElfBinaryFile::applyRelocations()

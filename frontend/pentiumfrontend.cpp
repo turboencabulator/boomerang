@@ -538,13 +538,11 @@ bool PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *l
  * RETURNS:       <nothing>
  *============================================================================*/
 #ifdef DYNAMIC
-extern "C" {
-	PentiumFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
-	{
-		PentiumFrontEnd *fe = new PentiumFrontEnd(prog);
-		*decoder = fe->getDecoder();
-		return fe;
-	}
+extern "C" PentiumFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
+{
+	PentiumFrontEnd *fe = new PentiumFrontEnd(prog);
+	*decoder = fe->getDecoder();
+	return fe;
 }
 #endif
 

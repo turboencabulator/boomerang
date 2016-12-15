@@ -465,13 +465,13 @@ void PalmBinaryFile::generateBinFiles(const std::string &path) const
 	}
 }
 
-// This function is called via dlopen/dlsym; it returns a new BinaryFile
-// derived concrete object. After this object is returned, the virtual function
-// call mechanism will call the rest of the code in this library
-// It needs to be C linkage so that it its name is not mangled
-extern "C" {
-	BinaryFile *construct()
-	{
-		return new PalmBinaryFile;
-	}
+/**
+ * This function is called via dlopen/dlsym; it returns a new BinaryFile
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" BinaryFile *construct()
+{
+	return new PalmBinaryFile;
 }

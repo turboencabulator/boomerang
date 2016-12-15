@@ -249,9 +249,7 @@ void LoaderTest::testWinLoad()
  * FUNCTION:        LoaderTest::testMicroDis
  * OVERVIEW:        Test the micro disassembler
  *============================================================================*/
-extern "C" {
-	int microX86Dis(void *p);
-}
+extern "C" int microX86Dis(void *p);
 
 // The below lengths were derived from a quick and dirty program (called
 // quick.c) which used the output from a disassembly to find the lengths.

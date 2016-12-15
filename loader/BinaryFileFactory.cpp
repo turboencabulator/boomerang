@@ -107,7 +107,7 @@ static const char *get_libname(const char *name)
 }
 
 // Declare a pointer to a constructor function; returns a BinaryFile*
-typedef BinaryFile *(constructFcn)();
+typedef BinaryFile *(*constructFcn)();
 
 BinaryFile *BinaryFileFactory::getInstanceFor(const char *libname)
 {
@@ -121,14 +121,14 @@ BinaryFile *BinaryFileFactory::getInstanceFor(const char *libname)
 	// Use the handle to find the "construct" function
 	char *error;
 	dlerror();
-	constructFcn *construct = (constructFcn *)dlsym(handle, "construct");
+	constructFcn construct = (constructFcn)dlsym(handle, "construct");
 	if ((error = dlerror()) != NULL) {
 		fprintf(stderr, "%s\n", error);
 		return NULL;
 	}
 
 	// Call the construct function
-	return (*construct)();
+	return construct();
 }
 
 BinaryFile *BinaryFileFactory::Load(const char *name)

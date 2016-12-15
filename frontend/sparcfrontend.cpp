@@ -1461,13 +1461,11 @@ bool SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> 
  * RETURNS:       <nothing>
  *============================================================================*/
 #ifdef DYNAMIC
-extern "C" {
-	SparcFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
-	{
-		SparcFrontEnd *fe = new SparcFrontEnd(prog);
-		*decoder = fe->getDecoder();
-		return fe;
-	}
+extern "C" SparcFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
+{
+	SparcFrontEnd *fe = new SparcFrontEnd(prog);
+	*decoder = fe->getDecoder();
+	return fe;
 }
 #endif
 
