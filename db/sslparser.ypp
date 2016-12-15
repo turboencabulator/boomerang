@@ -979,6 +979,7 @@ SSLParser::~SSLParser()
  *============================================================================*/
 void SSLParser::yyerror(const char* msg)
 {
+	// TODO:  Replace "ssl" with the filename.
 	std::cerr << "ssl:" << theScanner->theLine << ": " << msg << "\n";
 }
 

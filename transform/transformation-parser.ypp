@@ -140,6 +140,7 @@ int TransformationParser::yylex()
 
 void TransformationParser::yyerror(const char *s)
 {
+	// TODO:  Print the filename.
 	fprintf(stderr, "%s on line %i\n", s, theScanner->theLine);
 	fprintf(stderr, "%s\n", theScanner->lineBuf.c_str());
 	fprintf(stderr, "%*s\n", theScanner->column, "^");
