@@ -418,17 +418,6 @@ std::list<SectionInfo *> &HpSomBinaryFile::getEntryPoints(const char *pEntry /* 
 	return *ret;
 }
 
-
-bool HpSomBinaryFile::Open(const char *sName)
-{
-	// Not implemented yet
-	return false;
-}
-void HpSomBinaryFile::Close()
-{
-	// Not implemented yet
-	return;
-}
 bool HpSomBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only

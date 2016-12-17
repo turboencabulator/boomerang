@@ -68,8 +68,6 @@ class ExeBinaryFile : public BinaryFile {
 public:
 	                    ExeBinaryFile();
 
-	virtual bool        Open(const char *sName);  // Open the file for r/w; pv
-	virtual void        Close();                  // Close file opened with Open()
 	virtual void        UnLoad();                 // Unload the image
 	virtual bool        PostLoad(void *handle);   // For archive files only
 	virtual LOADFMT     getFormat() const { return LOADFMT_EXE; }

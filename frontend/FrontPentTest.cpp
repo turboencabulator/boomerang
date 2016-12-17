@@ -202,7 +202,7 @@ void FrontPentTest::testFindMain()
 	ADDRESS addr = pFE->getMainEntryPoint(found);
 	ADDRESS expected = 0x8048b10;
 	CPPUNIT_ASSERT_EQUAL(expected, addr);
-	pBF->Close();
+	pBF->UnLoad();
 	bff.UnLoad();
 
 	pBF = bff.Load(FEDORA3_TRUE);
@@ -213,7 +213,7 @@ void FrontPentTest::testFindMain()
 	addr = pFE->getMainEntryPoint(found);
 	expected = 0x8048c4a;
 	CPPUNIT_ASSERT_EQUAL(expected, addr);
-	pBF->Close();
+	pBF->UnLoad();
 	bff.UnLoad();
 
 	pBF = bff.Load(SUSE_TRUE);
@@ -224,7 +224,7 @@ void FrontPentTest::testFindMain()
 	addr = pFE->getMainEntryPoint(found);
 	expected = 0x8048b60;
 	CPPUNIT_ASSERT_EQUAL(expected, addr);
-	pBF->Close();
+	pBF->UnLoad();
 
 	delete pFE;
 }

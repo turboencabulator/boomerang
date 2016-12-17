@@ -47,17 +47,6 @@ DOS4GWBinaryFile::~DOS4GWBinaryFile()
 #endif
 }
 
-bool DOS4GWBinaryFile::Open(const char *sName)
-{
-	//return Load(sName) != 0;
-	return false;
-}
-
-void DOS4GWBinaryFile::Close()
-{
-	UnLoad();
-}
-
 std::list<SectionInfo *> &DOS4GWBinaryFile::getEntryPoints(const char *pEntry)
 {
 	fprintf(stderr, "really don't know how to implement getEntryPoints\n");

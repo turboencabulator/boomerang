@@ -28,10 +28,8 @@ public:
 
 	virtual void UnLoad();
 
-	virtual bool Open(const char *sName);
 	virtual bool RealLoad(const char *);
 	virtual bool PostLoad(void *);
-	virtual void Close();
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_COFF; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }

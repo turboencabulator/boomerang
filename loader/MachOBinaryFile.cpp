@@ -56,17 +56,6 @@ MachOBinaryFile::~MachOBinaryFile()
 	if (m_pSections) delete [] m_pSections;
 }
 
-bool MachOBinaryFile::Open(const char *sName)
-{
-	//return Load(sName) != 0;
-	return false;
-}
-
-void MachOBinaryFile::Close()
-{
-	UnLoad();
-}
-
 std::list<SectionInfo *> &MachOBinaryFile::getEntryPoints(const char *pEntry)
 {
 	fprintf(stderr, "really don't know how to implement getEntryPoints\n");

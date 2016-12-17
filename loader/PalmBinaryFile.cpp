@@ -259,16 +259,6 @@ ADDRESS PalmBinaryFile::getEntryPoint()
 	return 0;
 }
 
-bool PalmBinaryFile::Open(const char *sName)
-{
-	// Not implemented yet
-	return false;
-}
-void PalmBinaryFile::Close()
-{
-	// Not implemented yet
-	return;
-}
 bool PalmBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only

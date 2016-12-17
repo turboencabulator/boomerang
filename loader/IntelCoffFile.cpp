@@ -76,12 +76,6 @@ IntelCoffFile::~IntelCoffFile()
 	if (m_fd) fclose(m_fd);
 }
 
-bool IntelCoffFile::Open(const char *sName)
-{
-	printf("IntelCoffFile::Open called\n");
-	return false;
-}
-
 bool IntelCoffFile::RealLoad(const char *sName)
 {
 	printf("IntelCoffFile::RealLoad('%s') called\n", sName);
@@ -305,11 +299,6 @@ bool IntelCoffFile::PostLoad(void *)
 	// There seems to be no need to implement this since one file is loaded ever.
 	printf("IntelCoffFile::PostLoad called\n");
 	return false;
-}
-
-void IntelCoffFile::Close()
-{
-	printf("IntelCoffFile::Close called\n");
 }
 
 bool IntelCoffFile::isLibrary() const

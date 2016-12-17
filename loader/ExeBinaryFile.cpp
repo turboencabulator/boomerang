@@ -195,16 +195,6 @@ bool ExeBinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
 	return false;
 }
 
-bool ExeBinaryFile::Open(const char *sName)
-{
-	// Not implemented yet
-	return false;
-}
-void ExeBinaryFile::Close()
-{
-	// Not implemented yet
-	return;
-}
 bool ExeBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only

@@ -738,19 +738,6 @@ bool ElfBinaryFile::PostLoad(void *handle)
 	return false;
 }
 
-
-// Open this binaryfile for reading AND writing
-bool ElfBinaryFile::Open(const char *sName)
-{
-	return false;
-}
-
-
-void ElfBinaryFile::Close()
-{
-	UnLoad();
-}
-
 MACHINE ElfBinaryFile::getMachine() const
 {
 	int machine = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_machine);

@@ -115,8 +115,6 @@ public:
 	                    DOS4GWBinaryFile();
 	virtual            ~DOS4GWBinaryFile();
 
-	virtual bool        Open(const char *sName);  // Open the file for r/w; ???
-	virtual void        Close();                  // Close file opened with Open()
 	virtual void        UnLoad();                 // Unload the image
 	virtual LOADFMT     getFormat() const { return LOADFMT_LX; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }

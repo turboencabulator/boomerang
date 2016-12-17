@@ -148,8 +148,6 @@ public:
 	virtual            ~ElfBinaryFile();
 
 	        bool        getNextMember();          // Load next member of archive
-	virtual bool        Open(const char *sName);  // Open the file for r/w; pv
-	virtual void        Close();                  // Close file opened with Open()
 	virtual void        UnLoad();                 // Unload the image
 	virtual LOADFMT     getFormat() const { return LOADFMT_ELF; }
 	virtual MACHINE     getMachine() const;       // Get machine (e.g. MACHINE_SPARC)

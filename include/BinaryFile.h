@@ -174,10 +174,6 @@ public:
 	virtual            ~BinaryFile() { }
 
 	// General loader functions
-	// Open the file for r/w; pure virt
-	virtual bool        Open(const char *sName) = 0;
-	// Close file opened with Open()
-	virtual void        Close() = 0;
 	// Unload the file. Pure virtual
 	virtual void        UnLoad() = 0;
 	// Get the format (e.g. LOADFMT_ELF)

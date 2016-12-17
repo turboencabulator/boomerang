@@ -107,16 +107,6 @@ Win32BinaryFile::~Win32BinaryFile()
 	if (m_pSections) delete [] m_pSections;
 }
 
-bool Win32BinaryFile::Open(const char *sName) {
-	//return Load(sName) != 0;
-	return false;
-}
-
-void Win32BinaryFile::Close()
-{
-	UnLoad();
-}
-
 std::list<SectionInfo *> &Win32BinaryFile::getEntryPoints(const char *pEntry)
 {
 	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
