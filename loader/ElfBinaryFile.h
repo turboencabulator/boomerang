@@ -13,10 +13,6 @@
 #ifndef ELFBINARYFILE_H
 #define ELFBINARYFILE_H
 
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
-
 #include "BinaryFile.h"
 #include "SymTab.h"  // For SymTab (probably unused)
 

@@ -1,3 +1,6 @@
+#ifndef DECOMPILERTHREAD_H
+#define DECOMPILERTHREAD_H
+
 #include "boomerang.h"
 
 #include <QThread>
@@ -102,3 +105,5 @@ protected:
 
 	Decompiler *decompiler;
 };
+
+#endif

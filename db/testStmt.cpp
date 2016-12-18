@@ -3,6 +3,10 @@
  * \brief Command line test of the Statement class.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "StatementTest.h"
 
 #include <cppunit/ui/text/TestRunner.h>

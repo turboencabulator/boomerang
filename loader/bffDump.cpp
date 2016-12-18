@@ -18,6 +18,10 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "BinaryFile.h"
 
 static void print_section(SectionInfo *pSect)

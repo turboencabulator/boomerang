@@ -4,6 +4,10 @@
  *        Exp and derived classes.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define FRONTIER_PENTIUM        "test/pentium/frontier"
 #define SEMI_PENTIUM            "test/pentium/semi"
 #define IFTHEN_PENTIUM          "test/pentium/ifthen"

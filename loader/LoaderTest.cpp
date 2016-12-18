@@ -4,6 +4,10 @@
  *        the BinaryFile and derived classes.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #ifndef TESTDIR
 #define TESTDIR         "../test/"
 #endif

@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "types.h"
 #include "cfg.h"
 #include "proc.h"

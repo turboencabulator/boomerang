@@ -6,8 +6,8 @@
  * Markus Gothe <nietzsche@lysator.liu.se>
  */
 
-#ifndef MIPSDECODER
-#define MIPSDECODER
+#ifndef MIPSDECODER_H
+#define MIPSDECODER_H
 
 class Prog;
 class NJMCDecoder;

@@ -7,6 +7,10 @@
  * same number added.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "operstrings.h"
 #include "operator.h"
 

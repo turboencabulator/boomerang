@@ -13,8 +13,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef _CHLLCODE_H_
-#define _CHLLCODE_H_
+#ifndef CHLLCODE_H
+#define CHLLCODE_H
 
 #include <string>
 #include <sstream>

@@ -9,6 +9,10 @@
  * Note that the function could return Not Handled (NH, 0x40).
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define MODRM  0x10
 #define OPSIZE 0x20
 #define NH     0x40

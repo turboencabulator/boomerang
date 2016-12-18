@@ -12,8 +12,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef PPCDECODER
-#define PPCDECODER
+#ifndef PPCDECODER_H
+#define PPCDECODER_H
 
 class Prog;
 class NJMCDecoder;

@@ -21,6 +21,12 @@
 
 %name SSLParser
 
+%{
+	#ifdef HAVE_CONFIG_H
+	#include <config.h>
+	#endif
+%}
+
 %header{
 	#include "types.h"
 	#include "operator.h"

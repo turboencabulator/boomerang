@@ -3,6 +3,10 @@
  * \brief Command line test of the Exp class.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "ExpTest.h"
 
 #include <cppunit/ui/text/TestRunner.h>

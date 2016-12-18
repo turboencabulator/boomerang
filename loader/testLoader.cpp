@@ -3,6 +3,10 @@
  * \brief Command line test of the BinaryFile and related classes.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "LoaderTest.h"
 
 #include <cppunit/ui/text/TestRunner.h>

@@ -4,6 +4,10 @@
  *        tests the sparc front end.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define HELLO_SPARC     "test/sparc/hello"
 #define BRANCH_SPARC    "test/sparc/branch"
 

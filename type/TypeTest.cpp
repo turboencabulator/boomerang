@@ -4,6 +4,10 @@
  *        Type class and some utility functions.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define HELLO_WINDOWS       "test/windows/hello.exe"
 
 #include "TypeTest.h"

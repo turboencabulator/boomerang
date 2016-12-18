@@ -13,10 +13,6 @@
 #ifndef HPSOMBINARYFILE_H
 #define HPSOMBINARYFILE_H
 
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
-
 #include "BinaryFile.h"
 #include "SymTab.h"
 

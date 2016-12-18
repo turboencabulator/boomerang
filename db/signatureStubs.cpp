@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "signature.h"
 
 std::list<Exp *> *Signature::getCallerSave(Prog *prog) { return NULL; }

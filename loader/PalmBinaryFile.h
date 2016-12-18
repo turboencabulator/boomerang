@@ -13,10 +13,6 @@
 #ifndef PALMBINARYFILE_H
 #define PALMBINARYFILE_H
 
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
-
 #include "BinaryFile.h"
 
 class PalmBinaryFile : public BinaryFile {

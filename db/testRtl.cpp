@@ -3,6 +3,10 @@
  * \brief Command line test of the Rtl class.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "RtlTest.h"
 
 #include <cppunit/ui/text/TestRunner.h>

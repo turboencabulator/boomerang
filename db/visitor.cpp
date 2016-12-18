@@ -7,6 +7,10 @@
  * Copyright (C) 2004-2006, Mike Van Emmerik and Trent Waddington
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "visitor.h"
 #include "exp.h"
 #include "statement.h"

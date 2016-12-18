@@ -12,8 +12,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef SPARCDECODER
-#define SPARCDECODER
+#ifndef SPARCDECODER_H
+#define SPARCDECODER_H
 
 class Prog;
 class NJMCDecoder;

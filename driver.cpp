@@ -17,6 +17,10 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "boomerang.h"
 
 //#define GC_DEBUG 1  // Uncomment to debug the garbage collector

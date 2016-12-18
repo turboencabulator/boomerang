@@ -6,6 +6,10 @@
  * Markus Gothe <nietzsche@lysator.liu.se>
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "exp.h"
 #include "register.h"
 #include "rtl.h"

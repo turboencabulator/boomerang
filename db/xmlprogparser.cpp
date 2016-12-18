@@ -8,6 +8,10 @@
  * Copyright (C) 2016, Kyle Guinn
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "type.h"
 #include "cluster.h"
 #include "prog.h"

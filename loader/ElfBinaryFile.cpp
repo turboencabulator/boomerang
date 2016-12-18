@@ -10,12 +10,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
-
 #ifdef HAVE_CONFIG_H
-#include "config.h"
+#include <config.h>
 #endif
 
 #include "ElfBinaryFile.h"

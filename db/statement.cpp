@@ -11,9 +11,9 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 #include "statement.h"
 #include "exp.h"

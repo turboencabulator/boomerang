@@ -17,7 +17,6 @@
 #ifndef SYSTRAPS_H
 #define SYSTRAPS_H
 
-
 #define sysTrapBase         0xA000
 #define numTrapStrings      (sizeof trapNames / sizeof *trapNames)
 

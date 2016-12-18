@@ -4,6 +4,10 @@
  *        RTL and derived classes.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "RtlTest.h"
 #include "statement.h"
 #include "exp.h"

@@ -4,6 +4,10 @@
  *        the sslparser.y etc.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define SPARC_SSL       "frontend/machine/sparc/sparc.ssl"
 
 #include "ParserTest.h"

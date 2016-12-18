@@ -10,6 +10,9 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
+#ifndef CONSTRAINT_H
+#define CONSTRAINT_H
+
 #include "statement.h"
 #include "exp.h"
 
@@ -158,3 +161,5 @@ private:
 	// the extra constraint that alpha3 == alpha4)
 	bool unify(Exp *x, Exp *y, ConstraintMap &extra);
 };
+
+#endif

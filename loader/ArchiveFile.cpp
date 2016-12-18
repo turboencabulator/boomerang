@@ -10,7 +10,9 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "global.h"
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
 
 ArchiveFile::ArchiveFile()
 {

@@ -17,14 +17,20 @@
 
 %name SSLScanner
 
+%{
+	#ifdef HAVE_CONFIG_H
+	#include <config.h>
+	#endif
+%}
+
 %header{
 	#include "sslparser.h"
 	#define MAX_LINE 1024      // the longest SSL spec line
 %}
 
 %{
-#include <cstdlib>
-#include <cstring>
+	#include <cstdlib>
+	#include <cstring>
 %}
 
 %define IOSTREAM

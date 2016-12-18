@@ -12,8 +12,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef PENTDECODER
-#define PENTDECODER
+#ifndef PENTIUMDECODER_H
+#define PENTIUMDECODER_H
 
 class Prog;
 class NJMCDecoder;

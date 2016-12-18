@@ -17,10 +17,6 @@
 #ifndef BINARYFILE_H
 #define BINARYFILE_H
 
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
-
 #include "types.h"
 //#include "SymTab.h"  // Was used for relocaton stuff
 

@@ -4,6 +4,10 @@
  *        Exp and derived classes.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "ExpTest.h"
 #include "statement.h"
 #include "visitor.h"

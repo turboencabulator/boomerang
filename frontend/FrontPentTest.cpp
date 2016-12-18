@@ -4,6 +4,10 @@
  *        the pentium front end.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define HELLO_PENT      "test/pentium/hello"
 #define BRANCH_PENT     "test/pentium/branch"
 #define FEDORA2_TRUE    "test/pentium/fedora2_true"

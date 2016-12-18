@@ -5,6 +5,12 @@
 
 %name AnsiCParser
 
+%{
+	#ifdef HAVE_CONFIG_H
+	#include <config.h>
+	#endif
+%}
+
 %header{
 	#include "exp.h"
 	#include "type.h"

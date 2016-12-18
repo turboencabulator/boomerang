@@ -13,6 +13,10 @@
  *				etc. Ordinary instructions are processed in decoder_low.m
  *============================================================================*/ 
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <assert.h>
 #include <cstring>
 

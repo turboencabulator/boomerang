@@ -6,6 +6,10 @@
  * Copyright (C) 2002-2006 Mike Van Emmerik and Trent Waddington
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "types.h"
 #include "statement.h"
 #include "cfg.h"

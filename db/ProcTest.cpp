@@ -4,6 +4,10 @@
  *        Proc class.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define HELLO_PENTIUM       "test/pentium/hello"
 
 #include "ProcTest.h"

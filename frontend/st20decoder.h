@@ -10,8 +10,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef ST20DECODER
-#define ST20DECODER
+#ifndef ST20DECODER_H
+#define ST20DECODER_H
 
 class Prog;
 class NJMCDecoder;

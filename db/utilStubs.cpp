@@ -1,3 +1,7 @@
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include "util.h"
 
 void loadValue(std::istream &is, bool &b, bool wantlen) { }

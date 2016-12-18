@@ -16,6 +16,10 @@
  * OVERVIEW:   This file contains the high level decoding functionality, for matching ST-20 instructions.
  *============================================================================*/ 
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <assert.h>
 
 #include "rtl.h"

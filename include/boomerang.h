@@ -23,7 +23,6 @@
  * http://boomerang.sourceforge.net.
  */
 
-
 #ifndef BOOMERANG_H
 #define BOOMERANG_H
 

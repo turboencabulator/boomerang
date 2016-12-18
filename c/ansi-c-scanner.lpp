@@ -5,6 +5,12 @@
 
 %name AnsiCScanner
 
+%{
+	#ifdef HAVE_CONFIG_H
+	#include <config.h>
+	#endif
+%}
+
 %header{
 	#include "ansi-c-parser.h"
 	#include <string>

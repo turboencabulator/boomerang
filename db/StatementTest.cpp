@@ -4,6 +4,10 @@
  *        the dataflow subsystems.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #define HELLO_PENTIUM      "test/pentium/hello"
 #define GLOBAL1_PENTIUM    "test/pentium/global1"
 
