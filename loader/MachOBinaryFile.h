@@ -39,7 +39,6 @@ public:
 	                    MachOBinaryFile();
 	virtual            ~MachOBinaryFile();
 
-	virtual void        UnLoad();                 // Unload the image
 	virtual LOADFMT     getFormat() const { return LOADFMT_MACHO; }
 	virtual MACHINE     getMachine() const { return machine; }
 	virtual const char *getFilename() const { return m_pFilename; }

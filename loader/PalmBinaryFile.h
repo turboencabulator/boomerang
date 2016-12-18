@@ -24,7 +24,6 @@ public:
 	                    PalmBinaryFile();
 	virtual            ~PalmBinaryFile();
 
-	virtual void        UnLoad();                 // Unload the image
 	virtual bool        PostLoad(void *handle);   // For archive files only
 	virtual LOADFMT     getFormat() const { return LOADFMT_PALM; }
 	virtual MACHINE     getMachine() const { return MACHINE_PALM; }

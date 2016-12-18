@@ -65,10 +65,11 @@ SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
 	return ps + idxSect;
 }
 
-IntelCoffFile::IntelCoffFile() : BinaryFile(false)
+IntelCoffFile::IntelCoffFile() :
+	BinaryFile(false),
+	m_pFilename(NULL),
+	m_fd(NULL)
 {
-	m_pFilename = NULL;
-	m_fd = NULL;
 }
 
 IntelCoffFile::~IntelCoffFile()
@@ -82,7 +83,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 
 	m_pFilename = sName;
 	m_fd = fopen(sName, "rb");
-	if (m_fd == NULL) return 0;
+	if (m_fd == NULL) return false;
 
 	printf("IntelCoffFile opened successful.\n");
 
@@ -307,12 +308,6 @@ bool IntelCoffFile::isLibrary() const
 	return false;
 }
 
-void IntelCoffFile::UnLoad()
-{
-	printf("IntelCoffFile::Unload called\n");
-	// TODO: Implement when we know what is going on.
-}
-
 ADDRESS IntelCoffFile::getImageBase()
 {
 	// TODO: Do they really always start at 0?
@@ -364,17 +359,6 @@ std::list<const char *> IntelCoffFile::getDependencyList()
 {
 	std::list<const char *> dummy;
 	return dummy;  // TODO: How ever return this is ought to work out
-}
-
-/**
- * This function is called via dlopen/dlsym; it returns a new BinaryFile
- * derived concrete object.  After this object is returned, the virtual
- * function call mechanism will call the rest of the code in this library.
- * It needs to be C linkage so that its name is not mangled.
- */
-extern "C" BinaryFile *construct()
-{
-	return new IntelCoffFile();
 }
 
 const char *IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
@@ -455,4 +439,19 @@ int IntelCoffFile::readNative2(ADDRESS a)
 int IntelCoffFile::readNative1(ADDRESS a)
 {
 	return readNative(a, 1);
+}
+
+/**
+ * This function is called via dlopen/dlsym; it returns a new BinaryFile
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" BinaryFile *construct()
+{
+	return new IntelCoffFile();
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }

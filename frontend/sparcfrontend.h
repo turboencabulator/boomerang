@@ -20,7 +20,7 @@ public:
 	/*
 	 * Constructor. Takes some parameters to save passing these around a lot
 	 */
-	SparcFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff);
+	SparcFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~SparcFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_SPARC; }

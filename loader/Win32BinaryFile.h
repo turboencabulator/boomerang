@@ -139,7 +139,6 @@ public:
 	                    Win32BinaryFile();
 	virtual            ~Win32BinaryFile();
 
-	virtual void        UnLoad();                 // Unload the image
 	virtual LOADFMT     getFormat() const { return LOADFMT_PE; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
 	virtual const char *getFilename() const { return m_pFilename; }

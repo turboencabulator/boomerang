@@ -15,8 +15,18 @@
 
 #include "ExeBinaryFile.h"
 
-ExeBinaryFile::ExeBinaryFile()
+ExeBinaryFile::ExeBinaryFile() :
+	m_pHeader(NULL),
+	m_pImage(NULL),
+	m_pRelocTable(NULL)
 {
+}
+
+ExeBinaryFile::~ExeBinaryFile()
+{
+	delete m_pHeader;
+	delete [] m_pImage;
+	delete [] m_pRelocTable;
 }
 
 bool ExeBinaryFile::RealLoad(const char *sName)
@@ -173,14 +183,6 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
-// Clean up and unload the binary image
-void ExeBinaryFile::UnLoad()
-{
-	if (m_pHeader) delete m_pHeader;
-	if (m_pImage) delete [] m_pImage;
-	if (m_pRelocTable) delete [] m_pRelocTable;
-}
-
 const char *ExeBinaryFile::SymbolByAddr(ADDRESS dwAddr)
 {
 	if (dwAddr == getMainEntryPoint())
@@ -255,4 +257,8 @@ std::list<SectionInfo *> &ExeBinaryFile::getEntryPoints(const char *pEntry /* = 
 extern "C" BinaryFile *construct()
 {
 	return new ExeBinaryFile;
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }

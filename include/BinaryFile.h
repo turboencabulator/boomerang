@@ -151,31 +151,18 @@ enum MACHINE {
 	MACHINE_MIPS,
 };
 
-class BinaryFile;
-class BinaryFileFactory {
-	void *handle;         // Needed for UnLoading the library
-public:
-	BinaryFile *Load(const char *name);
-	void UnLoad();
-private:
-	/*
-	 * Return an instance of the appropriate subclass.
-	 */
-	BinaryFile *getInstanceFor(const char *libname);
-};
-
-
 class BinaryFile {
 	friend class ArchiveFile;        // So can use the protected Load()
-	friend class BinaryFileFactory;  // So can use getTextLimits
 
 public:
 	                    BinaryFile(bool bArchive = false);
 	virtual            ~BinaryFile() { }
 
-	// General loader functions
-	// Unload the file. Pure virtual
-	virtual void        UnLoad() = 0;
+	// Creates and returns an instance of the appropriate subclass.
+	static  BinaryFile *open(const char *name);
+	// Destroys an instance created by open() or new.
+	static  void        close(BinaryFile *bf);
+
 	// Get the format (e.g. LOADFMT_ELF)
 	virtual LOADFMT     getFormat() const = 0;
 	// Get the expected machine (e.g. MACHINE_PENTIUM)
@@ -320,6 +307,13 @@ protected:
 	// At this stage, we are assuming that the difference is the same for all
 	// text sections of the BinaryFile image
 	        int         textDelta;
+
+private:
+	// Needed by BinaryFile::close to destroy an instance and unload its library.
+	typedef BinaryFile *(*constructFcn)();
+	typedef void        (*destructFcn)(BinaryFile *bf);
+	        void       *dlHandle;
+	        destructFcn destruct;
 };
 
 #endif

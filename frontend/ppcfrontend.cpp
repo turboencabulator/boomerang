@@ -39,7 +39,8 @@
 #include <iomanip>          // For setfill etc
 #include <sstream>
 
-PPCFrontEnd::PPCFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : FrontEnd(pBF, prog, pbff)
+PPCFrontEnd::PPCFrontEnd(BinaryFile *pBF, Prog *prog) :
+	FrontEnd(pBF, prog)
 {
 	decoder = new PPCDecoder(prog);
 }

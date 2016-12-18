@@ -1475,7 +1475,8 @@ extern "C" SparcFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
  * PARAMETERS:    Same as the FrontEnd constructor
  * RETURNS:       <N/A>
  *============================================================================*/
-SparcFrontEnd::SparcFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : FrontEnd(pBF, prog, pbff)
+SparcFrontEnd::SparcFrontEnd(BinaryFile *pBF, Prog *prog) :
+	FrontEnd(pBF, prog)
 {
 	decoder = new SparcDecoder(prog);
 	nop_inst.numBytes = 0;  // So won't disturb coverage

@@ -56,6 +56,3 @@ void Cfg::setEntryBB(PBB bb) { }
 //Misc
 Boomerang::Boomerang() { }
 Boomerang *Boomerang::boomerang = NULL;
-
-// loader
-BinaryFile *BinaryFile::Load(const char *sName) { return 0; }

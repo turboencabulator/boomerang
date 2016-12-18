@@ -67,8 +67,8 @@ typedef struct {
 class ExeBinaryFile : public BinaryFile {
 public:
 	                    ExeBinaryFile();
+	virtual            ~ExeBinaryFile();
 
-	virtual void        UnLoad();                 // Unload the image
 	virtual bool        PostLoad(void *handle);   // For archive files only
 	virtual LOADFMT     getFormat() const { return LOADFMT_EXE; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }

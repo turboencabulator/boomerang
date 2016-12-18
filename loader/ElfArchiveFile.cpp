@@ -18,6 +18,8 @@ ElfArchiveFile::ElfArchiveFile()
 
 ElfArchiveFile::~ElfArchiveFile()
 {
+for (unsigned u = 0; u < m_Members.size(); u++)
+	delete m_Members[u];
 }
 
 bool ElfArchiveFile::Load(const char *pName)
@@ -97,18 +99,6 @@ bool ElfArchiveFile::Load(const char *pName)
 	m_Members.reserve(getNumMembers());
 
 	return true;
-}
-
-void ElfArchiveFile::UnLoad()
-{
-	for (unsigned u = 0; u < m_Members.size(); u++) {
-		if (m_Members[u]) {  // Has this member been created?
-			// Free the object
-			delete m_Members[u];
-		}
-		//m_Members.clear();  // Slack gcc is missing this function
-		m_Members.erase(m_Members.begin(), m_Members.end());
-	}
 }
 
 BinaryFile *ElfArchiveFile::getMember(int i)

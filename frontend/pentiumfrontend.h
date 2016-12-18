@@ -16,7 +16,7 @@ public:
 	/*
 	 * Constructor. Takes some parameters to save passing these around a lot
 	 */
-	PentiumFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff);
+	PentiumFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~PentiumFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_PENTIUM; }

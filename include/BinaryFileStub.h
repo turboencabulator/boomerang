@@ -6,7 +6,6 @@ public:
 	virtual            ~BinaryFileStub() { }
 
 	        bool        getNextMember() { return false; }  // Load next member of archive
-	virtual void        UnLoad() { }              // Unload the image
 	virtual LOADFMT     getFormat() const;        // Get format (e.g. LOADFMT_ELF)
 	virtual MACHINE     getMachine() const;       // Get machine (e.g. MACHINE_SPARC)
 	virtual const char *getFilename() const { return m_pFileName; }

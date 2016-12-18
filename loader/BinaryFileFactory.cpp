@@ -1,10 +1,14 @@
 /**
  * \file
  * \brief Contains the implementation of the factory function
- *        BinaryFile::getInstanceFor(), and also BinaryFile::Load().
+ *        BinaryFile::open(), and also BinaryFile::close().
  *
- * This function determines the type of a binary and loads the appropriate
- * loader class dynamically.
+ * \authors
+ * Copyright (C) 2014-2016, Kyle Guinn
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifdef HAVE_CONFIG_H
@@ -106,54 +110,72 @@ static const char *get_libname(const char *name)
 	return libname;
 }
 
-// Declare a pointer to a constructor function; returns a BinaryFile*
-typedef BinaryFile *(*constructFcn)();
-
-BinaryFile *BinaryFileFactory::getInstanceFor(const char *libname)
-{
-	// Load the specific loader library
-	handle = dlopen(libname, RTLD_LAZY);
-	if (handle == NULL) {
-		fprintf(stderr, "%s\n", dlerror());
-		return NULL;
-	}
-
-	// Use the handle to find the "construct" function
-	char *error;
-	dlerror();
-	constructFcn construct = (constructFcn)dlsym(handle, "construct");
-	if ((error = dlerror()) != NULL) {
-		fprintf(stderr, "%s\n", error);
-		return NULL;
-	}
-
-	// Call the construct function
-	return construct();
-}
-
-BinaryFile *BinaryFileFactory::Load(const char *name)
+/**
+ * This function determines the type of a binary and loads the appropriate
+ * loader class dynamically.
+ */
+BinaryFile *BinaryFile::open(const char *name)
 {
 	const char *libname = get_libname(name);
 	if (libname == NULL) {
 		return NULL;
 	}
 
-	BinaryFile *pBF = getInstanceFor(libname);
-	if (pBF == NULL) {
+	// Load the specific loader library
+	void *handle = dlopen(libname, RTLD_LAZY);
+	if (handle == NULL) {
+		fprintf(stderr, "cannot load library: %s\n", dlerror());
 		return NULL;
 	}
 
-	if (pBF->RealLoad(name) == 0) {
+	// Reset errors
+	const char *error = dlerror();
+
+	// Use the handle to find symbols
+	const char *symbol = "construct";
+	constructFcn construct = (constructFcn)dlsym(handle, symbol);
+	if ((error = dlerror()) != NULL) {
+		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
+		dlclose(handle);
+		return NULL;
+	}
+	symbol = "destruct";
+	destructFcn destruct = (destructFcn)dlsym(handle, symbol);
+	if ((error = dlerror()) != NULL) {
+		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
+		dlclose(handle);
+		return NULL;
+	}
+
+	// Call the construct function
+	BinaryFile *bf = construct();
+
+	// Stash pointers in the constructed object, for use by BinaryFile::close
+	bf->dlHandle = handle;
+	bf->destruct = destruct;
+
+	if (!bf->RealLoad(name)) {
 		fprintf(stderr, "Loading '%s' failed\n", name);
-		delete pBF; pBF = NULL;
+		BinaryFile::close(bf); bf = NULL;
 		return NULL;
 	}
 
-	pBF->getTextLimits();
-	return pBF;
+	bf->getTextLimits();
+	return bf;
 }
 
-void BinaryFileFactory::UnLoad()
+void BinaryFile::close(BinaryFile *bf)
 {
-	dlclose(handle);
+	// Retrieve the stashed pointers
+	void *handle = bf->dlHandle;
+	destructFcn destruct = bf->destruct;
+
+	// Destruct in an appropriate way.
+	// The C++ dlopen mini HOWTO says to always use a matching
+	// construct/destruct pair in case of new/delete overloading.
+	if (handle != NULL) {
+		destruct(bf);
+		dlclose(handle);
+	} else
+		delete bf;
 }

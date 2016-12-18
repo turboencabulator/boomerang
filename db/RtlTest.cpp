@@ -163,12 +163,11 @@ void RtlTest::testVisitor()
  *============================================================================*/
 void RtlTest::testIsCompare()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(SWITCH_SPARC);
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(SWITCH_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	Prog *prog = new Prog;
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
+	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 
 	// Decode second instruction: "sub      %i0, 2, %o1"
@@ -188,14 +187,13 @@ void RtlTest::testIsCompare()
 	eOperand->print(ost1);
 	std::string actual(ost1.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	delete prog;
 
-	pBF->UnLoad();
-	delete pBF;
-	delete pFE;
-	pBF = bff.Load(SWITCH_PENT);
+	prog = new Prog;
+	pBF = BinaryFile::open(SWITCH_PENT);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	pFE = new PentiumFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 
 	// Decode fifth instruction: "cmp   $0x5,%eax"
@@ -212,8 +210,7 @@ void RtlTest::testIsCompare()
 	inst = pFE->decodeInstruction(0x804890c);
 	CPPUNIT_ASSERT(inst.rtl != NULL);
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand) == false);
-	pBF->UnLoad();
-	delete pFE;
+	delete prog;
 }
 
 void RtlTest::testSetConscripts()

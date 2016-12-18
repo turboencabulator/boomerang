@@ -17,7 +17,7 @@ class CallStatement;
 
 class PPCFrontEnd : public FrontEnd {
 public:
-	PPCFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff);
+	PPCFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~PPCFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_PPC; }

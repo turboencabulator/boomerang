@@ -51,27 +51,28 @@
  * OVERVIEW:      Construct the FrontEnd object
  * PARAMETERS:    pBF: pointer to the BinaryFile object (loader)
  *                prog: program being decoded
- *                pbff: pointer to a BinaryFileFactory object (so the library can be unloaded)
  * RETURNS:       <N/a>
  *============================================================================*/
-FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : pBF(pBF), pbff(pbff), prog(prog)
+FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog) :
+	pBF(pBF),
+	prog(prog)
 {
 }
 
 // Static function to instantiate an appropriate concrete front end
-FrontEnd *FrontEnd::instantiate(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff)
+FrontEnd *FrontEnd::instantiate(BinaryFile *pBF, Prog *prog)
 {
 	switch (pBF->getMachine()) {
 	case MACHINE_PENTIUM:
-		return new PentiumFrontEnd(pBF, prog, pbff);
+		return new PentiumFrontEnd(pBF, prog);
 	case MACHINE_SPARC:
-		return new SparcFrontEnd(pBF, prog, pbff);
+		return new SparcFrontEnd(pBF, prog);
 	case MACHINE_PPC:
-		return new PPCFrontEnd(pBF, prog, pbff);
+		return new PPCFrontEnd(pBF, prog);
 	case MACHINE_MIPS:
-		return new MIPSFrontEnd(pBF, prog, pbff);
+		return new MIPSFrontEnd(pBF, prog);
 	case MACHINE_ST20:
-		return new ST20FrontEnd(pBF, prog, pbff);
+		return new ST20FrontEnd(pBF, prog);
 	default:
 		std::cerr << "Machine architecture not supported!\n";
 		return NULL;
@@ -80,18 +81,14 @@ FrontEnd *FrontEnd::instantiate(BinaryFile *pBF, Prog *prog, BinaryFileFactory *
 
 FrontEnd *FrontEnd::Load(const char *fname, Prog *prog)
 {
-	BinaryFileFactory *pbff = new BinaryFileFactory;
-	if (pbff == NULL) return NULL;
-	BinaryFile *pBF = pbff->Load(fname);
+	BinaryFile *pBF = BinaryFile::open(fname);
 	if (pBF == NULL) return NULL;
-	return instantiate(pBF, prog, pbff);
+	return instantiate(pBF, prog);
 }
 
 // destructor
 FrontEnd::~FrontEnd()
 {
-	if (pbff)
-		pbff->UnLoad();  // Unload the BinaryFile library with dlclose() or FreeLibrary()
 }
 
 const char *FrontEnd::getRegName(int idx)

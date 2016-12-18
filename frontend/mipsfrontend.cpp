@@ -24,7 +24,8 @@
 #include <iomanip>          // For setfill etc
 #include <sstream>
 
-MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : FrontEnd(pBF, prog, pbff)
+MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog) :
+	FrontEnd(pBF, prog)
 {
 	decoder = new MIPSDecoder(prog);
 }

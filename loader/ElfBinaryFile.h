@@ -148,7 +148,6 @@ public:
 	virtual            ~ElfBinaryFile();
 
 	        bool        getNextMember();          // Load next member of archive
-	virtual void        UnLoad();                 // Unload the image
 	virtual LOADFMT     getFormat() const { return LOADFMT_ELF; }
 	virtual MACHINE     getMachine() const;       // Get machine (e.g. MACHINE_SPARC)
 	virtual const char *getFilename() const { return m_pFilename; }
@@ -238,7 +237,6 @@ protected:
 	virtual bool        RealLoad(const char *sName);  // Load the file; pure virtual
 
 private:
-	        void        Init();                 // Initialise most member variables
 	        int         ProcessElfFile();       // Does most of the work
 	        void        AddSyms(int secIndex);
 	        void        AddRelocsAsSyms(int secIndex);

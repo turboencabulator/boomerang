@@ -26,8 +26,6 @@ public:
 	IntelCoffFile();
 	virtual ~IntelCoffFile();
 
-	virtual void UnLoad();
-
 	virtual bool RealLoad(const char *);
 	virtual bool PostLoad(void *);
 

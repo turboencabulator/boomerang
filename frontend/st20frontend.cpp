@@ -39,7 +39,8 @@
 #include <iomanip>          // For setfill etc
 #include <sstream>
 
-ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : FrontEnd(pBF, prog, pbff)
+ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :
+	FrontEnd(pBF, prog)
 {
 	decoder = new ST20Decoder();
 }

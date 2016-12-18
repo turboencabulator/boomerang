@@ -45,10 +45,9 @@ int main(int argc, char *argv[])
 	}
 
 	// Load the file
-	BinaryFileFactory bff;
-	BinaryFile *pbf = bff.Load(argv[1]);
+	BinaryFile *bf = BinaryFile::open(argv[1]);
 
-	if (pbf == NULL) {
+	if (bf == NULL) {
 		return 2;
 	}
 
@@ -57,14 +56,14 @@ int main(int argc, char *argv[])
 	// in the derived class (ElfBinaryFile in this case), then
 	// uncomment the commented code below to display section information.
 
-	pbf->DisplayDetails(argv[0]);
+	bf->DisplayDetails(argv[0]);
 
 	// This is an alternative way of displaying binary-file information
 	// by using individual sections.  The above approach is more general.
 	/*
-	printf("%d sections:\n", pbf->getNumSections());
-	for (int i = 0; i < pbf->getNumSections(); ++i) {
-		SectionInfo *pSect = pbf->getSectionInfo(i);
+	printf("%d sections:\n", bf->getNumSections());
+	for (int i = 0; i < bf->getNumSections(); ++i) {
+		SectionInfo *pSect = bf->getSectionInfo(i);
 		printf("  Section %s at %X\n", pSect->pSectionName, pSect->uNativeAddr);
 	}
 	printf("\n");
@@ -74,8 +73,8 @@ int main(int argc, char *argv[])
 	// Note: this is traditionally the ".text" section in Elf binaries.
 	// In the case of Prc files (Palm), the code section is named "code0".
 
-	for (int i = 0; i < pbf->getNumSections(); ++i) {
-		SectionInfo *pSect = pbf->getSectionInfo(i);
+	for (int i = 0; i < bf->getNumSections(); ++i) {
+		SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bCode) {
 			printf("  Code section: %s\n", pSect->pSectionName);
 			print_section(pSect);
@@ -85,8 +84,8 @@ int main(int argc, char *argv[])
 
 	// Display the data section(s) in raw hexadecimal notation
 
-	for (int i = 0; i < pbf->getNumSections(); ++i) {
-		SectionInfo *pSect = pbf->getSectionInfo(i);
+	for (int i = 0; i < bf->getNumSections(); ++i) {
+		SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bData) {
 			printf("  Data section: %s\n", pSect->pSectionName);
 			print_section(pSect);
@@ -94,6 +93,6 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	pbf->UnLoad();
+	BinaryFile::close(bf);
 	return 0;
 }

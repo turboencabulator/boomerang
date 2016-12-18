@@ -25,16 +25,14 @@
 	+ (UC(p)[2] <<  8) \
 	+  UC(p)[3])
 
-HpSomBinaryFile::HpSomBinaryFile()
-	: m_pImage(0)
+HpSomBinaryFile::HpSomBinaryFile() :
+	m_pImage(NULL)
 {
 }
 
 HpSomBinaryFile::~HpSomBinaryFile()
 {
-	if (m_pImage) {
-		delete m_pImage;
-	}
+	delete [] m_pImage;
 }
 
 // Functions to recognise various instruction patterns
@@ -184,10 +182,7 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	m_iNumSections = 4;
 	if (m_pSections == 0) {
 		fprintf(stderr, "Could not allocate section info array of 4 items\n");
-		if (m_pImage) {
-			delete m_pImage;
-			m_pImage = 0;
-		}
+		delete [] m_pImage; m_pImage = NULL;
 		return false;
 	}
 
@@ -222,10 +217,10 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	m_pSections[0].uSectionSize = 0;
 
 	m_pSections[0].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[0].bCode = 0;
-	m_pSections[0].bData = 0;
-	m_pSections[0].bBss = 0;
-	m_pSections[0].bReadOnly = 0;
+	m_pSections[0].bCode = false;
+	m_pSections[0].bData = false;
+	m_pSections[0].bBss = false;
+	m_pSections[0].bReadOnly = false;
 
 	// Section 1: text (code)
 	m_pSections[1].pSectionName = "$TEXT$";
@@ -233,10 +228,10 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	m_pSections[1].uHostAddr = (ADDRESS)m_pImage + AUXHDR(4);
 	m_pSections[1].uSectionSize = AUXHDR(2);
 	m_pSections[1].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[1].bCode = 1;
-	m_pSections[1].bData = 0;
-	m_pSections[1].bBss = 0;
-	m_pSections[1].bReadOnly = 1;
+	m_pSections[1].bCode = true;
+	m_pSections[1].bData = false;
+	m_pSections[1].bBss = false;
+	m_pSections[1].bReadOnly = true;
 
 	// Section 2: initialised data
 	m_pSections[2].pSectionName = "$DATA$";
@@ -244,10 +239,10 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	m_pSections[2].uHostAddr = (ADDRESS)m_pImage + AUXHDR(7);
 	m_pSections[2].uSectionSize = AUXHDR(5);
 	m_pSections[2].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[2].bCode = 0;
-	m_pSections[2].bData = 1;
-	m_pSections[2].bBss = 0;
-	m_pSections[2].bReadOnly = 0;
+	m_pSections[2].bCode = false;
+	m_pSections[2].bData = true;
+	m_pSections[2].bBss = false;
+	m_pSections[2].bReadOnly = false;
 
 	// Section 3: BSS
 	m_pSections[3].pSectionName = "$BSS$";
@@ -256,10 +251,10 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	m_pSections[3].uHostAddr = 0;           // Not applicable
 	m_pSections[3].uSectionSize = AUXHDR(8);
 	m_pSections[3].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[3].bCode = 0;
-	m_pSections[3].bData = 0;
-	m_pSections[3].bBss = 1;
-	m_pSections[3].bReadOnly = 0;
+	m_pSections[3].bCode = false;
+	m_pSections[3].bData = false;
+	m_pSections[3].bBss = true;
+	m_pSections[3].bReadOnly = false;
 
 	// Work through the imports, and find those for which there are stubs using that import entry.
 	// Add the addresses of any such stubs.
@@ -391,14 +386,6 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	}  // if (numSym)
 
 	return true;
-}
-
-void HpSomBinaryFile::UnLoad()
-{
-	if (m_pImage) {
-		delete [] m_pImage;
-		m_pImage = 0;
-	}
 }
 
 ADDRESS HpSomBinaryFile::getEntryPoint()
@@ -602,4 +589,8 @@ ADDRESS HpSomBinaryFile::getMainEntryPoint()
 extern "C" BinaryFile *construct()
 {
 	return new HpSomBinaryFile;
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }

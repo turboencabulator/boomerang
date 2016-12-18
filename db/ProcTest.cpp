@@ -32,13 +32,11 @@ void ProcTest::tearDown()
  *============================================================================*/
 void ProcTest::testName()
 {
-	Prog *prog = new Prog();
-	BinaryFile *pBF = new BinaryFileStub();
-	CPPUNIT_ASSERT(pBF != 0);
+	Prog *prog = new Prog;
 	std::string nm("default name");
-	BinaryFileFactory bff;
-	pBF = bff.Load(HELLO_PENTIUM);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	BinaryFile *pBF = BinaryFile::open(HELLO_PENTIUM);
+	CPPUNIT_ASSERT(pBF != 0);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
 	CPPUNIT_ASSERT(pFE != 0);
 	prog->setFrontEnd(pFE);
 	CPPUNIT_ASSERT(prog);
@@ -60,5 +58,4 @@ void ProcTest::testName()
 	CPPUNIT_ASSERT_EQUAL(expected, a);
 
 	delete prog;
-	//delete pFE;  // No! Deleting the prog deletes the pFE already (which deletes the BinaryFileFactory)
 }

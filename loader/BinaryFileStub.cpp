@@ -202,10 +202,10 @@ BinaryFileStub::BinaryFileStub()
 	text->uSectionSize = sizeof pent_hello_text;
 	text->uSectionEntrySize = 0;
 	text->uType = 0;
-	text->bCode = 1;
-	text->bData = 0;
-	text->bBss = 0;
-	text->bReadOnly = 1;
+	text->bCode = true;
+	text->bData = false;
+	text->bBss = false;
+	text->bReadOnly = true;
 	m_pSections = text;
 	getTextLimits();
 }

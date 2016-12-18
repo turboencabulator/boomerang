@@ -25,14 +25,11 @@ void FrontSparcTest::test1()
 {
 	std::ostringstream ost;
 
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_SPARC);
-	if (pBF == NULL)
-		pBF = new BinaryFileStub();  // fallback on stub
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	Prog *prog = new Prog;
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
+	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 
 	bool gotMain;
@@ -86,8 +83,7 @@ void FrontSparcTest::test1()
 	expected = std::string("0001068c    0 *32* r8 := r8 | 848\n");
 	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
 
-	delete pFE;
-	//delete pBF;
+	delete prog;
 }
 
 void FrontSparcTest::test2()
@@ -95,14 +91,11 @@ void FrontSparcTest::test2()
 	DecodeResult inst;
 	std::string expected;
 
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_SPARC);
-	if (pBF == NULL)
-		pBF = new BinaryFileStub();  // fallback on stub
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	Prog *prog = new Prog;
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
+	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 
 	std::ostringstream o1;
@@ -134,8 +127,7 @@ void FrontSparcTest::test2()
 	expected = std::string("0001069c    0 *32* r24 := r8\n");
 	CPPUNIT_ASSERT_EQUAL(expected, std::string(o4.str()));
 
-	delete pFE;
-	//delete pBF;
+	delete prog;
 }
 
 void FrontSparcTest::test3()
@@ -143,14 +135,11 @@ void FrontSparcTest::test3()
 	DecodeResult inst;
 	std::string expected;
 
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_SPARC);
-	if (pBF == NULL)
-		pBF = new BinaryFileStub();  // fallback on stub
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	Prog *prog = new Prog;
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
+	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 
 	std::ostringstream o1;
@@ -199,8 +188,7 @@ void FrontSparcTest::test3()
 	                       "            0 *32* r0 := tmp\n");
 	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
 
-	delete pFE;
-	//delete pBF;
+	delete prog;
 }
 
 void FrontSparcTest::testBranch()
@@ -208,14 +196,11 @@ void FrontSparcTest::testBranch()
 	DecodeResult inst;
 	std::string expected;
 
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(BRANCH_SPARC);
-	if (pBF == NULL)
-		pBF = new BinaryFileStub();  // fallback on stub
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	Prog *prog = new Prog;
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
+	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 
 	// bne
@@ -243,20 +228,16 @@ void FrontSparcTest::testBranch()
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
 
-	delete pFE;
-	//delete pBF;
+	delete prog;
 }
 
 void FrontSparcTest::testDelaySlot()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(BRANCH_SPARC);
-	if (pBF == NULL)
-		pBF = new BinaryFileStub();  // fallback on stub
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	Prog *prog = new Prog;
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog, &bff);
+	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
 	prog->setFrontEnd(pFE);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared
 	Type::clearNamedTypes();

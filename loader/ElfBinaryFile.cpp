@@ -26,35 +26,29 @@
 
 typedef std::map<std::string, int, std::less<std::string> > StrIntMap;
 
-ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */)
-	: BinaryFile(bArchive), next_extern(0)
+ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
+	BinaryFile(bArchive),
+	m_pFilename(NULL),
+	m_fd(NULL),
+	m_pImage(NULL),
+	m_pPhdrs(NULL),  // No program headers
+	m_pShdrs(NULL),  // No section headers
+	m_pStrings(NULL),// No strings
+	m_pReloc(NULL),
+	m_pSym(NULL),
+	m_iLastSize(0),
+	m_uPltMin(0),    // No PLT limits
+	m_uPltMax(0),
+	m_pImportStubs(NULL),
+	next_extern(0)
 {
-	m_fd = 0;
-	m_pFilename = NULL;
-	Init();  // Initialise all the common stuff
 }
 
 ElfBinaryFile::~ElfBinaryFile()
 {
-	if (m_pImportStubs)
-		// Delete the array of import stubs
-		delete [] m_pImportStubs;
-}
-
-// Reset internal state, except for those that keep track of which member
-// we're up to
-void ElfBinaryFile::Init()
-{
-	m_pImage = 0;
-	m_pPhdrs = 0;    // No program headers
-	m_pShdrs = 0;    // No section headers
-	m_pStrings = 0;  // No strings
-	m_pReloc = 0;
-	m_pSym = 0;
-	m_uPltMin = 0;   // No PLT limits
-	m_uPltMax = 0;
-	m_iLastSize = 0;
-	m_pImportStubs = 0;
+	if (m_fd) fclose(m_fd);
+	delete [] m_pImage;
+	delete [] m_pImportStubs;
 }
 
 // Hand decompiled from sparc library function
@@ -91,7 +85,7 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 
 	m_pFilename = sName;
 	m_fd = fopen(sName, "rb");
-	if (m_fd == NULL) return 0;
+	if (m_fd == NULL) return false;
 
 	// Determine file size
 	if (fseek(m_fd, 0, SEEK_END) != 0) {
@@ -119,11 +113,11 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 		fprintf(stderr, "Incorrect header: %02X %02X %02X %02X\n",
 		        pHeader->e_ident[0], pHeader->e_ident[1], pHeader->e_ident[2],
 		        pHeader->e_ident[3]);
-		return 0;
+		return false;
 	}
 	if ((pHeader->endianness != 1) && (pHeader->endianness != 2)) {
 		fprintf(stderr, "Unknown endianness %02X\n", pHeader->endianness);
-		return 0;
+		return false;
 	}
 	// Needed for elfRead4 to work:
 	m_elfEndianness = pHeader->endianness - 1;
@@ -261,14 +255,6 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 	applyRelocations();
 
 	return true;  // Success
-}
-
-// Clean up and unload the binary image
-void ElfBinaryFile::UnLoad()
-{
-	if (m_pImage) delete [] m_pImage;
-	fclose(m_fd);
-	Init();  // Set all internal state to 0
 }
 
 // Like a replacement for elf_strptr()
@@ -1039,17 +1025,6 @@ double ElfBinaryFile::readNativeFloat8(ADDRESS nat)
 	return *(double *)raw;
 }
 
-/**
- * This function is called via dlopen/dlsym; it returns a new BinaryFile
- * derived concrete object.  After this object is returned, the virtual
- * function call mechanism will call the rest of the code in this library.
- * It needs to be C linkage so that its name is not mangled.
- */
-extern "C" BinaryFile *construct()
-{
-	return new ElfBinaryFile;
-}
-
 void ElfBinaryFile::applyRelocations()
 {
 	int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
@@ -1279,4 +1254,19 @@ void ElfBinaryFile::dumpSymbols()
 	for (it = m_SymTab.begin(); it != m_SymTab.end(); ++it)
 		std::cerr << "0x" << it->first << " " << it->second << "        ";
 	std::cerr << std::dec << "\n";
+}
+
+/**
+ * This function is called via dlopen/dlsym; it returns a new BinaryFile
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" BinaryFile *construct()
+{
+	return new ElfBinaryFile;
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }

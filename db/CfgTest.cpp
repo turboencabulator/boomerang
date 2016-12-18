@@ -42,11 +42,10 @@ void CfgTest::setUp()
 
 void CfgTest::testDominators()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(FRONTIER_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
 	Prog *prog = new Prog;
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	BinaryFile *pBF = BinaryFile::open(FRONTIER_PENTIUM);
+	CPPUNIT_ASSERT(pBF != 0);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
 	Type::clearNamedTypes();
 	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
@@ -87,9 +86,7 @@ void CfgTest::testDominators()
 	for (ii = DFset.begin(); ii != DFset.end(); ii++)
 		actual << std::hex << (unsigned)df->nodeToBB(*ii)->getLowAddr() << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
-
-	pBF->UnLoad();
-	delete pFE;
+	delete prog;
 }
 
 /*==============================================================================
@@ -104,11 +101,10 @@ void CfgTest::testDominators()
 
 void CfgTest::testSemiDominators()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(SEMI_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
 	Prog *prog = new Prog;
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	BinaryFile *pBF = BinaryFile::open(SEMI_PENTIUM);
+	CPPUNIT_ASSERT(pBF != 0);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
 	Type::clearNamedTypes();
 	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
@@ -149,7 +145,7 @@ void CfgTest::testSemiDominators()
 	for (ii = DFset.begin(); ii != DFset.end(); ii++)
 		actual << std::hex << (unsigned)df->nodeToBB(*ii)->getLowAddr() << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
-	delete pFE;
+	delete prog;
 }
 
 /*==============================================================================
@@ -158,11 +154,10 @@ void CfgTest::testSemiDominators()
  *============================================================================*/
 void CfgTest::testPlacePhi()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(FRONTIER_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
 	Prog *prog = new Prog;
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	BinaryFile *pBF = BinaryFile::open(FRONTIER_PENTIUM);
+	CPPUNIT_ASSERT(pBF != 0);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
 	Type::clearNamedTypes();
 	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
@@ -191,7 +186,7 @@ void CfgTest::testPlacePhi()
 		ost << *ii << " ";
 	std::string expected("7 8 10 15 20 21 ");
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
-	delete pFE;
+	delete prog;
 }
 
 /*==============================================================================
@@ -200,11 +195,10 @@ void CfgTest::testPlacePhi()
  *============================================================================*/
 void CfgTest::testPlacePhi2()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(IFTHEN_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
 	Prog *prog = new Prog;
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	BinaryFile *pBF = BinaryFile::open(IFTHEN_PENTIUM);
+	CPPUNIT_ASSERT(pBF != 0);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
 	Type::clearNamedTypes();
 	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
@@ -252,7 +246,7 @@ void CfgTest::testPlacePhi2()
 		actual2 << *pp << " ";
 	CPPUNIT_ASSERT_EQUAL(expected, actual2.str());
 	delete e;
-	delete pFE;
+	delete prog;
 }
 
 /*==============================================================================
@@ -261,11 +255,10 @@ void CfgTest::testPlacePhi2()
  *============================================================================*/
 void CfgTest::testRenameVars()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(FRONTIER_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
 	Prog *prog = new Prog;
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog, &bff);
+	BinaryFile *pBF = BinaryFile::open(FRONTIER_PENTIUM);
+	CPPUNIT_ASSERT(pBF != 0);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
 	Type::clearNamedTypes();
 	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
@@ -284,5 +277,5 @@ void CfgTest::testRenameVars()
 
 	// MIKE: something missing here?
 
-	delete pFE;
+	delete prog;
 }

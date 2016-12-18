@@ -42,8 +42,7 @@ void LoaderTest::testSparcLoad()
 	std::ostringstream ost;
 
 	// Load SPARC hello world
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_SPARC);
+	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
@@ -54,12 +53,11 @@ void LoaderTest::testSparcLoad()
 	ost << si->pSectionName << "\t";
 	si = pBF->getSectionInfo(n - 1);
 	ost << si->pSectionName;
-	pBF->UnLoad();
+	BinaryFile::close(pBF);
 	// Note: the string below needs to have embedded tabs. Edit with caution!
 	std::string expected("Number of sections = 29\r\n"
 	                     "\t.interp\t.stab.indexstr");
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
-	bff.UnLoad();
 }
 
 /*==============================================================================
@@ -71,8 +69,7 @@ void LoaderTest::testPentiumLoad()
 	std::ostringstream ost;
 
 	// Load Pentium hello world
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_PENTIUM);
+	BinaryFile *pBF = BinaryFile::open(HELLO_PENTIUM);
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
@@ -82,13 +79,12 @@ void LoaderTest::testPentiumLoad()
 	ost << si->pSectionName << "\t";
 	si = pBF->getSectionInfo(n - 1);
 	ost << si->pSectionName;
-	pBF->UnLoad();
+	BinaryFile::close(pBF);
 	// Note: the string below needs to have embedded tabs. Edit with caution!
 	// (And slightly different string to the sparc test, e.g. rel vs rela)
 	std::string expected("Number of sections = 34\r\n"
 	                     "\t.interp\t.strtab");
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
-	bff.UnLoad();
 }
 
 /*==============================================================================
@@ -100,8 +96,7 @@ void LoaderTest::testHppaLoad()
 	std::ostringstream ost;
 
 	// Load HPPA hello world
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_HPPA);
+	BinaryFile *pBF = BinaryFile::open(HELLO_HPPA);
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
@@ -111,12 +106,11 @@ void LoaderTest::testHppaLoad()
 		si = pBF->getSectionInfo(i);
 		ost << si->pSectionName << "\t";
 	}
-	pBF->UnLoad();
+	BinaryFile::close(pBF);
 	// Note: the string below needs to have embedded tabs. Edit with caution!
 	std::string expected("Number of sections = 4\r\n"
 	                     "$HEADER$\t$TEXT$\t$DATA$\t$BSS$\t");
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
-	bff.UnLoad();
 }
 
 /*==============================================================================
@@ -128,8 +122,7 @@ void LoaderTest::testPalmLoad()
 	std::ostringstream ost;
 
 	// Load Palm Starter.prc
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(STARTER_PALM);
+	BinaryFile *pBF = BinaryFile::open(STARTER_PALM);
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
@@ -139,13 +132,12 @@ void LoaderTest::testPalmLoad()
 		si = pBF->getSectionInfo(i);
 		ost << si->pSectionName << "\t";
 	}
-	pBF->UnLoad();
+	BinaryFile::close(pBF);
 	// Note: the string below needs to have embedded tabs. Edit with caution!
 	std::string expected("Number of sections = 8\r\n"
 	                     "code1\tMBAR1000\ttFRM1000\tTalt1001\t"
 	                     "data0\tcode0\ttAIN1000\ttver1000\t");
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
-	bff.UnLoad();
 }
 
 /*==============================================================================
@@ -158,8 +150,7 @@ void LoaderTest::testWinLoad()
 
 #if 0 /* FIXME: these tests should use non-proprietary programs */
 	// Load Windows program calc.exe
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(CALC_WINDOWS);
+	BinaryFile *pBF = BinaryFile::open(CALC_WINDOWS);
 	CPPUNIT_ASSERT(pBF != NULL);
 	int n;
 	SectionInfo *si;
@@ -191,11 +182,10 @@ void LoaderTest::testWinLoad()
 	ADDRESS a = pBF->getAddressByName("SetEvent");
 	ADDRESS expectedAddr = 0x1292060;
 	CPPUNIT_ASSERT_EQUAL(expectedAddr, a);
-	pBF->UnLoad();
-	bff.UnLoad();
+	BinaryFile::close(pBF);
 
 	// Test loading the "new style" exes, as found in winXP etc
-	pBF = bff.Load(CALC_WINXP);
+	pBF = BinaryFile::open(CALC_WINXP);
 	CPPUNIT_ASSERT(pBF != NULL);
 	addr = pBF->getMainEntryPoint();
 	std::ostringstream ost1;
@@ -203,11 +193,10 @@ void LoaderTest::testWinLoad()
 	actual = ost1.str();
 	expected = "1001f51";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
-	pBF->UnLoad();
-	bff.UnLoad();
+	BinaryFile::close(pBF);
 
 	// Test loading the calc.exe found in Windows 2000 (more NT based)
-	pBF = bff.Load(CALC_WIN2000);
+	pBF = BinaryFile::open(CALC_WIN2000);
 	CPPUNIT_ASSERT(pBF != NULL);
 	expected = "1001680";
 	addr = pBF->getMainEntryPoint();
@@ -215,11 +204,10 @@ void LoaderTest::testWinLoad()
 	ost2 << std::hex << addr;
 	actual = ost2.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
-	pBF->UnLoad();
-	bff.UnLoad();
+	BinaryFile::close(pBF);
 
 	// Test loading the lpq.exe program - console mode PE file
-	pBF = bff.Load(LPQ_WINDOWS);
+	pBF = BinaryFile::open(LPQ_WINDOWS);
 	CPPUNIT_ASSERT(pBF != NULL);
 	addr = pBF->getMainEntryPoint();
 	std::ostringstream ost3;
@@ -227,13 +215,11 @@ void LoaderTest::testWinLoad()
 	actual = ost3.str();
 	expected = "18c1000";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
-	pBF->UnLoad();
-	bff.UnLoad();
+	BinaryFile::close(pBF);
 #endif
 
 	// Borland
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(SWITCH_BORLAND);
+	BinaryFile *pBF = BinaryFile::open(SWITCH_BORLAND);
 	CPPUNIT_ASSERT(pBF != NULL);
 	ADDRESS addr = pBF->getMainEntryPoint();
 	std::ostringstream ost4;
@@ -241,8 +227,7 @@ void LoaderTest::testWinLoad()
 	std::string actual(ost4.str());
 	std::string expected("401150");
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
-	pBF->UnLoad();
-	bff.UnLoad();
+	BinaryFile::close(pBF);
 }
 
 /*==============================================================================

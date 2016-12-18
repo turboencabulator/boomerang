@@ -86,8 +86,8 @@ Prog::Prog(const char *name) :
 
 Prog::~Prog()
 {
-	if (pBF) delete pBF;
 	if (pFE) delete pFE;
+	if (pBF) BinaryFile::close(pBF);
 	for (std::list<Proc *>::iterator it = m_procs.begin(); it != m_procs.end(); it++) {
 		if (*it)
 			delete *it;
@@ -426,23 +426,6 @@ void Prog::print(std::ostream &out)
 		// decoded userproc.. print it
 		p->print(out);
 	}
-}
-
-// clear the current project
-void Prog::clear()
-{
-	m_name = std::string("");
-	for (std::list<Proc *>::iterator it = m_procs.begin(); it != m_procs.end(); it++)
-		if (*it)
-			delete *it;
-	m_procs.clear();
-	m_procLabels.clear();
-	if (pBF)
-		delete pBF;
-	pBF = NULL;
-	if (pFE)
-		delete pFE;
-	pFE = NULL;
 }
 
 /*==============================================================================

@@ -79,7 +79,6 @@ public:
 	                    HpSomBinaryFile();
 	virtual            ~HpSomBinaryFile();
 
-	virtual void        UnLoad();                 // Unload the image
 	virtual bool        PostLoad(void *handle);   // For archive files only
 	virtual LOADFMT     getFormat() const { return LOADFMT_PAR; }
 	virtual MACHINE     getMachine() const { return MACHINE_HPRISC; }

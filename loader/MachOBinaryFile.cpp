@@ -41,19 +41,18 @@
 //#define DEBUG_MACHO_LOADER
 //#define DEBUG_MACHO_LOADER_OBJC
 
-MachOBinaryFile::MachOBinaryFile() : m_pFilename(NULL)
+MachOBinaryFile::MachOBinaryFile() :
+	m_pFilename(NULL),
+	machine(MACHINE_PPC),
+	swap_bytes(false)
 {
-	machine = MACHINE_PPC;
-	swap_bytes = false;
 }
 
 MachOBinaryFile::~MachOBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; i++) {
-		if (m_pSections[i].pSectionName)
-			delete [] m_pSections[i].pSectionName;
-	}
-	if (m_pSections) delete [] m_pSections;
+	for (int i = 0; i < m_iNumSections; i++)
+		delete [] m_pSections[i].pSectionName;
+	delete [] m_pSections;
 }
 
 std::list<SectionInfo *> &MachOBinaryFile::getEntryPoints(const char *pEntry)
@@ -267,9 +266,9 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 
 		unsigned long l = BMMH(segments[i].initprot);
 		m_pSections[i].bBss      = false; // TODO
-		m_pSections[i].bCode     =   l & VM_PROT_EXECUTE ? 1 : 0;
-		m_pSections[i].bData     =   l & VM_PROT_READ    ? 1 : 0;
-		m_pSections[i].bReadOnly = ~(l & VM_PROT_WRITE)  ? 0 : 1;
+		m_pSections[i].bCode     =  (l & VM_PROT_EXECUTE) != 0;
+		m_pSections[i].bData     =  (l & VM_PROT_READ)    != 0;
+		m_pSections[i].bReadOnly = ~(l & VM_PROT_WRITE)   == 0;  // FIXME: This is always false.
 	}
 
 	// process stubs_sects
@@ -365,11 +364,6 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 
 	fclose(fp);
 	return true;
-}
-
-// Clean up and unload the binary image
-void MachOBinaryFile::UnLoad()
-{
 }
 
 bool MachOBinaryFile::PostLoad(void *handle)
@@ -595,4 +589,8 @@ DWord MachOBinaryFile::getDelta()
 extern "C" BinaryFile *construct()
 {
 	return new MachOBinaryFile;
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }

@@ -115,7 +115,6 @@ public:
 	                    DOS4GWBinaryFile();
 	virtual            ~DOS4GWBinaryFile();
 
-	virtual void        UnLoad();                 // Unload the image
 	virtual LOADFMT     getFormat() const { return LOADFMT_LX; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
 	virtual const char *getFilename() const { return m_pFilename; }

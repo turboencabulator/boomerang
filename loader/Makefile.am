@@ -27,6 +27,9 @@ pkglib_LTLIBRARIES = \
 	PalmBinaryFile.la \
 	Win32BinaryFile.la
 
+# Installing libBinaryFileFactory.so in the same directory as the modules
+# has a side-effect of adding an RPATH to this directory for everything
+# that links against libBinaryFileFactory.so.
 libBinaryFileFactory_la_SOURCES = BinaryFileFactory.cpp
 libBinaryFileFactory_la_LIBADD = libBinaryFile.la -ldl
 libBinaryFileFactory_la_LDFLAGS = -no-undefined -avoid-version
@@ -40,14 +43,8 @@ MachOBinaryFile_la_SOURCES  = MachOBinaryFile.cpp  MachOBinaryFile.h
 PalmBinaryFile_la_SOURCES   = PalmBinaryFile.cpp   PalmBinaryFile.h
 Win32BinaryFile_la_SOURCES  = Win32BinaryFile.cpp  Win32BinaryFile.h
 
-DOS4GWBinaryFile_la_LIBADD = libBinaryFile.la libmicroX86dis.la
-ElfBinaryFile_la_LIBADD    = libBinaryFile.la
-ExeBinaryFile_la_LIBADD    = libBinaryFile.la
-HpSomBinaryFile_la_LIBADD  = libBinaryFile.la
-IntelCoffFile_la_LIBADD    = libBinaryFile.la
-MachOBinaryFile_la_LIBADD  = libBinaryFile.la
-PalmBinaryFile_la_LIBADD   = libBinaryFile.la
-Win32BinaryFile_la_LIBADD  = libBinaryFile.la libmicroX86dis.la
+DOS4GWBinaryFile_la_LIBADD = libmicroX86dis.la
+Win32BinaryFile_la_LIBADD  = libmicroX86dis.la
 
 DOS4GWBinaryFile_la_LDFLAGS = -no-undefined -avoid-version -module -shared
 ElfBinaryFile_la_LDFLAGS    = -no-undefined -avoid-version -module -shared

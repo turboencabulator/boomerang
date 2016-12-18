@@ -94,17 +94,17 @@ typedef char ct_failure[sizeof (SectionInfo) == sizeof (PESectionInfo) ? 1 : -1]
 }
 
 
-Win32BinaryFile::Win32BinaryFile() : m_pFilename(NULL), mingw_main(false)
+Win32BinaryFile::Win32BinaryFile() :
+	m_pFilename(NULL),
+	mingw_main(false)
 {
 }
 
 Win32BinaryFile::~Win32BinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; i++) {
-		if (m_pSections[i].pSectionName)
-			delete [] m_pSections[i].pSectionName;
-	}
-	if (m_pSections) delete [] m_pSections;
+	for (int i = 0; i < m_iNumSections; i++)
+		delete [] m_pSections[i].pSectionName;
+	delete [] m_pSections;
 }
 
 std::list<SectionInfo *> &Win32BinaryFile::getEntryPoints(const char *pEntry)
@@ -434,10 +434,10 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 		sect.uHostAddr = (ADDRESS)(LMMH(o->RVA) + base);
 		sect.uSectionSize = LMMH(o->VirtualSize);
 		DWord Flags = LMMH(o->Flags);
-		sect.bBss      = Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA ? 1 : 0;
-		sect.bCode     = Flags & IMAGE_SCN_CNT_CODE               ? 1 : 0;
-		sect.bData     = Flags & IMAGE_SCN_CNT_INITIALIZED_DATA   ? 1 : 0;
-		sect.bReadOnly = Flags & IMAGE_SCN_MEM_WRITE              ? 0 : 1;
+		sect.bBss      = (Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA) != 0;
+		sect.bCode     = (Flags & IMAGE_SCN_CNT_CODE)               != 0;
+		sect.bData     = (Flags & IMAGE_SCN_CNT_INITIALIZED_DATA)   != 0;
+		sect.bReadOnly = (Flags & IMAGE_SCN_MEM_WRITE)              == 0;
 		// TODO: Check for unreadable sections (!IMAGE_SCN_MEM_READ)?
 		fseek(fp, LMMH(o->PhysicalOffset), SEEK_SET);
 		memset(base + LMMH(o->RVA), 0, LMMH(o->VirtualSize));
@@ -535,11 +535,6 @@ void Win32BinaryFile::findJumps(ADDRESS curr)
 		curr -= 4;  // Next match is at least 4+2 bytes away
 		cnt = 0;
 	}
-}
-
-// Clean up and unload the binary image
-void Win32BinaryFile::UnLoad()
-{
 }
 
 bool Win32BinaryFile::PostLoad(void *handle)
@@ -863,6 +858,15 @@ DWord Win32BinaryFile::getDelta()
 	return (DWord)base - (DWord)m_pPEHeader->Imagebase;
 }
 
+void Win32BinaryFile::dumpSymbols()
+{
+	std::map<ADDRESS, std::string>::iterator it;
+	std::cerr << std::hex;
+	for (it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it)
+		std::cerr << "0x" << it->first << " " << it->second << "        ";
+	std::cerr << std::dec << "\n";
+}
+
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -873,12 +877,7 @@ extern "C" BinaryFile *construct()
 {
 	return new Win32BinaryFile;
 }
-
-void Win32BinaryFile::dumpSymbols()
+extern "C" void destruct(BinaryFile *bf)
 {
-	std::map<ADDRESS, std::string>::iterator it;
-	std::cerr << std::hex;
-	for (it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it)
-		std::cerr << "0x" << it->first << " " << it->second << "        ";
-	std::cerr << std::dec << "\n";
+	delete bf;
 }

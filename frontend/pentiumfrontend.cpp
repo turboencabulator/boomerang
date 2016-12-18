@@ -554,7 +554,9 @@ extern "C" PentiumFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
  * PARAMETERS:    Same as the FrontEnd constructor
  * RETURNS:       <N/A>
  *============================================================================*/
-PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog, BinaryFileFactory *pbff) : FrontEnd(pBF, prog, pbff), idPF(-1)
+PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
+	FrontEnd(pBF, prog),
+	idPF(-1)
 {
 	decoder = new PentiumDecoder(prog);
 }

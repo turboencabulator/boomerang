@@ -48,9 +48,10 @@ void TypeTest::testNotEqual()
  *============================================================================*/
 void TypeTest::testCompound()
 {
-	BinaryFileFactory bff;
-	BinaryFile *pBF = bff.Load(HELLO_WINDOWS);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, new Prog, &bff);
+	Prog *prog = new Prog;
+	BinaryFile *pBF = BinaryFile::open(HELLO_WINDOWS);
+	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	prog->setFrontEnd(pFE);
 	Boomerang::get()->setLogger(new FileLogger());  // May try to output some messages to LOG
 	pFE->readLibraryCatalog();  // Read definitions
 
@@ -104,7 +105,7 @@ void TypeTest::testCompound()
 	actual = p;
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
-	delete pFE;
+	delete prog;
 }
 
 /*==============================================================================
@@ -191,6 +192,7 @@ void TypeTest::testDataInterval()
 	expected = "float1";
 	actual = ctc1.u.memberName;
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	delete prog;
 }
 
 /*==============================================================================
@@ -285,4 +287,5 @@ void TypeTest::testDataIntervalOverlaps()
 	unsigned ue = 0;  // Expect NULL
 	unsigned ua = (unsigned)pdie;
 	CPPUNIT_ASSERT_EQUAL(ue, ua);
+	delete prog;
 }

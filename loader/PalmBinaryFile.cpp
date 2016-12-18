@@ -24,22 +24,18 @@
 #define UINT4(p) ((UC(p)[0] << 24) + (UC(p)[1] << 16) + (UC(p)[2] << 8) + \
     UC(p)[3])
 
-PalmBinaryFile::PalmBinaryFile()
-	: m_pImage(0), m_pData(0)
+PalmBinaryFile::PalmBinaryFile() :
+	m_pImage(NULL),
+	m_pData(NULL)
 {
 }
 
 PalmBinaryFile::~PalmBinaryFile()
 {
 	for (int i = 0; i < m_iNumSections; i++)
-		if (m_pSections[i].pSectionName != 0)
-			delete [] m_pSections[i].pSectionName;
-	if (m_pImage) {
-		delete [] m_pImage;
-	}
-	if (m_pData) {
-		delete [] m_pData;
-	}
+		delete [] m_pSections[i].pSectionName;
+	delete [] m_pImage;
+	delete [] m_pData;
 }
 
 bool PalmBinaryFile::RealLoad(const char *sName)
@@ -87,10 +83,7 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	m_pSections = new SectionInfo[m_iNumSections];
 	if (m_pSections == 0) {
 		fprintf(stderr, "Could not allocate section info array of %d items\n", m_iNumSections);
-		if (m_pImage) {
-			delete m_pImage;
-			m_pImage = 0;
-		}
+		delete [] m_pImage; m_pImage = NULL;
 	}
 
 	// Iterate through the resource headers (generating section info structs)
@@ -232,14 +225,6 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	pData->uNativeAddr = 0;
 
 	return true;
-}
-
-void PalmBinaryFile::UnLoad()
-{
-	if (m_pImage) {
-		delete [] m_pImage;
-		m_pImage = 0;
-	}
 }
 
 // This is provided for completeness only...
@@ -464,4 +449,8 @@ void PalmBinaryFile::generateBinFiles(const std::string &path) const
 extern "C" BinaryFile *construct()
 {
 	return new PalmBinaryFile;
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }

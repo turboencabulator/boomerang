@@ -32,18 +32,17 @@
 
 extern "C" int microX86Dis(void *p);  // From microX86dis.c
 
-DOS4GWBinaryFile::DOS4GWBinaryFile() : m_pFilename(NULL)
+DOS4GWBinaryFile::DOS4GWBinaryFile() :
+	m_pFilename(NULL)
 {
 }
 
 DOS4GWBinaryFile::~DOS4GWBinaryFile()
 {
 #if 0
-	for (int i = 0; i < m_iNumSections; i++) {
-		if (m_pSections[i].pSectionName)
-			delete [] m_pSections[i].pSectionName;
-	}
-	if (m_pSections) delete [] m_pSections;
+	for (int i = 0; i < m_iNumSections; i++)
+		delete [] m_pSections[i].pSectionName;
+	delete [] m_pSections;
 #endif
 }
 
@@ -205,10 +204,10 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 			m_pSections[n].uHostAddr = (ADDRESS)(LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr) + base);
 			m_pSections[n].uSectionSize = LMMH(m_pLXObjects[n].VirtualSize);
 			DWord Flags = LMMH(m_pLXObjects[n].ObjectFlags);
-			m_pSections[n].bBss      = 0; // TODO
-			m_pSections[n].bCode     = Flags & 0x4 ? 1 : 0;
-			m_pSections[n].bData     = Flags & 0x4 ? 0 : 1;
-			m_pSections[n].bReadOnly = Flags & 0x1 ? 0 : 1;
+			m_pSections[n].bBss      = false; // TODO
+			m_pSections[n].bCode     = (Flags & 0x4) != 0;
+			m_pSections[n].bData     = (Flags & 0x4) == 0;
+			m_pSections[n].bReadOnly = (Flags & 0x1) == 0;
 
 			fseek(fp, m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize), SEEK_SET);
 			char *p = base + LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr);
@@ -358,11 +357,6 @@ bool DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 	 && dlprocptrs[uNative] != "_start")
 		return true;
 	return false;
-}
-
-// Clean up and unload the binary image
-void DOS4GWBinaryFile::UnLoad()
-{
 }
 
 bool DOS4GWBinaryFile::PostLoad(void *handle)
@@ -539,4 +533,8 @@ DWord DOS4GWBinaryFile::getDelta()
 extern "C" BinaryFile *construct()
 {
 	return new DOS4GWBinaryFile;
+}
+extern "C" void destruct(BinaryFile *bf)
+{
+	delete bf;
 }
