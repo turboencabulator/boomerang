@@ -541,10 +541,10 @@ bool PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *l
  * PARAMETERS:    Same as the FrontEnd constructor, except decoder is **
  * RETURNS:       <nothing>
  *============================================================================*/
-#ifdef DYNAMIC
-extern "C" PentiumFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
+#if 0 //#ifdef DYNAMIC
+extern "C" PentiumFrontEnd *construct(BinaryFile *pBF, Prog *prog, NJMCDecoder **decoder)
 {
-	PentiumFrontEnd *fe = new PentiumFrontEnd(prog);
+	PentiumFrontEnd *fe = new PentiumFrontEnd(pBF, prog);
 	*decoder = fe->getDecoder();
 	return fe;
 }

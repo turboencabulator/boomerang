@@ -1252,6 +1252,7 @@ void ElfBinaryFile::dumpSymbols()
 	std::cerr << std::dec << "\n";
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -1260,9 +1261,10 @@ void ElfBinaryFile::dumpSymbols()
  */
 extern "C" BinaryFile *construct()
 {
-	return new ElfBinaryFile;
+	return new ElfBinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

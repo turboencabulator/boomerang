@@ -17,7 +17,20 @@
 
 #include "BinaryFile.h"
 
+#ifdef DYNAMIC
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
+#endif
+#else
+#include    "ElfBinaryFile.h"
+#include  "Win32BinaryFile.h"
+#include   "PalmBinaryFile.h"
+#include  "HpSomBinaryFile.h"
+#include    "ExeBinaryFile.h"
+#include  "MachOBinaryFile.h"
+#include "DOS4GWBinaryFile.h"
+#include    "IntelCoffFile.h"
+#endif
 
 #include <cstdio>
 #include <cstring>
@@ -33,27 +46,15 @@
   && buf[off+2] == c \
   && buf[off+3] == d )
 
-#define LIBPREFIX       ""
-#define LIBSUFFIX       ".so"
-
-#define ELFBINFILE      LIBPREFIX    "ElfBinaryFile" LIBSUFFIX
-#define WIN32BINFILE    LIBPREFIX  "Win32BinaryFile" LIBSUFFIX
-#define DOS4GWBINFILE   LIBPREFIX "DOS4GWBinaryFile" LIBSUFFIX
-#define EXEBINFILE      LIBPREFIX    "ExeBinaryFile" LIBSUFFIX
-#define PALMBINFILE     LIBPREFIX   "PalmBinaryFile" LIBSUFFIX
-#define MACHOBINFILE    LIBPREFIX  "MachOBinaryFile" LIBSUFFIX
-#define HPSOMBINFILE    LIBPREFIX  "HpSomBinaryFile" LIBSUFFIX
-#define INTELCOFFFILE   LIBPREFIX    "IntelCoffFile" LIBSUFFIX
-
-// Detect the file type and return the library name
-static const char *detect_libname(FILE *f)
+// Detect the file type and return the loader format
+static LOADFMT magic(FILE *f)
 {
 	unsigned char buf[64];
 
 	fread(buf, sizeof buf, 1, f);
 	if (TESTMAGIC4(buf, 0, '\177', 'E', 'L', 'F')) {
 		/* ELF Binary */
-		return ELFBINFILE;
+		return LOADFMT_ELF;
 	} else if (TESTMAGIC2(buf, 0, 'M', 'Z')) {
 		/* DOS-based file */
 		int peoff = LMMH(buf[0x3c]);
@@ -61,53 +62,50 @@ static const char *detect_libname(FILE *f)
 			fread(buf, 4, 1, f);
 			if (TESTMAGIC4(buf, 0, 'P', 'E', 0, 0)) {
 				/* Win32 Binary */
-				return WIN32BINFILE;
+				return LOADFMT_PE;
 			} else if (TESTMAGIC2(buf, 0, 'N', 'E')) {
 				/* Win16 / Old OS/2 Binary */
 			} else if (TESTMAGIC2(buf, 0, 'L', 'E')) {
 				/* Win32 VxD (Linear Executable) or DOS4GW app */
-				return DOS4GWBINFILE;
+				return LOADFMT_LX;
 			} else if (TESTMAGIC2(buf, 0, 'L', 'X')) {
 				/* New OS/2 Binary */
 			}
 		}
 		/* Assume MS-DOS Real-mode binary. */
-		return EXEBINFILE;
+		return LOADFMT_EXE;
 	} else if (TESTMAGIC4(buf, 0x3c, 'a', 'p', 'p', 'l')
 	        || TESTMAGIC4(buf, 0x3c, 'p', 'a', 'n', 'l')) {
 		/* PRC Palm-pilot binary */
-		return PALMBINFILE;
+		return LOADFMT_PALM;
 	} else if (TESTMAGIC4(buf, 0, 0xfe, 0xed, 0xfa, 0xce)
 	        || TESTMAGIC4(buf, 0, 0xce, 0xfa, 0xed, 0xfe)) {
 		/* Mach-O Mac OS-X binary */
-		return MACHOBINFILE;
+		return LOADFMT_MACHO;
 	} else if (buf[0] == 0x02
 	        && buf[2] == 0x01
 	        && (buf[1] == 0x10 || buf[1] == 0x0b)
 	        && (buf[3] == 0x07 || buf[3] == 0x08 || buf[4] == 0x0b)) {
 		/* HP Som binary (last as it's not really particularly good magic) */
-		return HPSOMBINFILE;
+		return LOADFMT_PAR;
 	} else if (TESTMAGIC2(buf, 0, 0x4c, 0x01)) {
-		return INTELCOFFFILE;
+		return LOADFMT_COFF;
 	}
-	return NULL;
+	return LOADFMT_UNKNOWN;
 }
 
-static const char *get_libname(const char *name)
+static LOADFMT magic(const char *name)
 {
 	FILE *f = fopen(name, "rb");
 	if (f == NULL) {
 		fprintf(stderr, "%s: fopen: %s\n", name, strerror(errno));
-		return NULL;
+		return LOADFMT_UNKNOWN;
 	}
 
-	const char *libname = detect_libname(f);
-	if (libname == NULL) {
-		fprintf(stderr, "%s: unrecognised binary file\n", name);
-	}
+	LOADFMT format = magic(f);
 
 	fclose(f);
-	return libname;
+	return format;
 }
 
 /**
@@ -116,9 +114,26 @@ static const char *get_libname(const char *name)
  */
 BinaryFile *BinaryFile::open(const char *name)
 {
-	const char *libname = get_libname(name);
-	if (libname == NULL) {
+	LOADFMT format = magic(name);
+	if (format == LOADFMT_UNKNOWN) {
+		fprintf(stderr, "%s: unrecognised binary file\n", name);
 		return NULL;
+	}
+
+#ifdef DYNAMIC
+#define LIBPREFIX       ""
+#define LIBSUFFIX       ".so"
+	const char *libname;
+	switch (format) {
+	case LOADFMT_ELF:   libname = LIBPREFIX    "ElfBinaryFile" LIBSUFFIX; break;
+	case LOADFMT_PE:    libname = LIBPREFIX  "Win32BinaryFile" LIBSUFFIX; break;
+	case LOADFMT_PALM:  libname = LIBPREFIX   "PalmBinaryFile" LIBSUFFIX; break;
+	case LOADFMT_PAR:   libname = LIBPREFIX  "HpSomBinaryFile" LIBSUFFIX; break;
+	case LOADFMT_EXE:   libname = LIBPREFIX    "ExeBinaryFile" LIBSUFFIX; break;
+	case LOADFMT_MACHO: libname = LIBPREFIX  "MachOBinaryFile" LIBSUFFIX; break;
+	case LOADFMT_LX:    libname = LIBPREFIX "DOS4GWBinaryFile" LIBSUFFIX; break;
+	case LOADFMT_COFF:  libname = LIBPREFIX    "IntelCoffFile" LIBSUFFIX; break;
+	default:            return NULL;
 	}
 
 	// Load the specific loader library
@@ -154,6 +169,21 @@ BinaryFile *BinaryFile::open(const char *name)
 	bf->dlHandle = handle;
 	bf->destruct = destruct;
 
+#else
+	BinaryFile *bf;
+	switch (format) {
+	case LOADFMT_ELF:   bf = new    ElfBinaryFile; break;
+	case LOADFMT_PE:    bf = new  Win32BinaryFile; break;
+	case LOADFMT_PALM:  bf = new   PalmBinaryFile; break;
+	case LOADFMT_PAR:   bf = new  HpSomBinaryFile; break;
+	case LOADFMT_EXE:   bf = new    ExeBinaryFile; break;
+	case LOADFMT_MACHO: bf = new  MachOBinaryFile; break;
+	case LOADFMT_LX:    bf = new DOS4GWBinaryFile; break;
+	case LOADFMT_COFF:  bf = new    IntelCoffFile; break;
+	default:            return NULL;
+	}
+#endif
+
 	if (!bf->RealLoad(name)) {
 		fprintf(stderr, "Loading '%s' failed\n", name);
 		BinaryFile::close(bf); bf = NULL;
@@ -166,6 +196,7 @@ BinaryFile *BinaryFile::open(const char *name)
 
 void BinaryFile::close(BinaryFile *bf)
 {
+#ifdef DYNAMIC
 	// Retrieve the stashed pointers
 	void *handle = bf->dlHandle;
 	destructFcn destruct = bf->destruct;
@@ -177,5 +208,6 @@ void BinaryFile::close(BinaryFile *bf)
 		destruct(bf);
 		dlclose(handle);
 	} else
+#endif
 		delete bf;
 }

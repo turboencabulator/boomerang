@@ -135,6 +135,8 @@ enum LOADFMT {
 	LOADFMT_MACHO,
 	LOADFMT_LX,
 	LOADFMT_COFF,
+
+	LOADFMT_UNKNOWN,
 };
 
 enum MACHINE {
@@ -304,12 +306,14 @@ protected:
 	// text sections of the BinaryFile image
 	        int         textDelta;
 
+#ifdef DYNAMIC
 private:
 	// Needed by BinaryFile::close to destroy an instance and unload its library.
 	typedef BinaryFile *(*constructFcn)();
 	typedef void        (*destructFcn)(BinaryFile *bf);
 	        void       *dlHandle;
 	        destructFcn destruct;
+#endif
 };
 
 #endif

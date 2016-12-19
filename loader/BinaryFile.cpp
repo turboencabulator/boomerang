@@ -31,8 +31,12 @@
 BinaryFile::BinaryFile(bool bArch /*= false*/) :
 	m_bArchive(bArch),  // Remember whether an archive member
 	m_iNumSections(0),  // No sections yet
-	m_pSections(NULL),  // No section data yet
-	dlHandle(NULL)
+	m_pSections(NULL)   // No section data yet
+#ifdef DYNAMIC
+	,
+	dlHandle(NULL),
+	destruct(NULL)
+#endif
 {
 }
 

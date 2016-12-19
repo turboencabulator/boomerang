@@ -1460,10 +1460,10 @@ bool SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> 
  * PARAMETERS:    Same as the FrontEnd constructor, except decoder is **
  * RETURNS:       <nothing>
  *============================================================================*/
-#ifdef DYNAMIC
-extern "C" SparcFrontEnd *construct(Prog *prog, NJMCDecoder **decoder)
+#if 0 //#ifdef DYNAMIC
+extern "C" SparcFrontEnd *construct(BinaryFile *pBF, Prog *prog, NJMCDecoder **decoder)
 {
-	SparcFrontEnd *fe = new SparcFrontEnd(prog);
+	SparcFrontEnd *fe = new SparcFrontEnd(pBF, prog);
 	*decoder = fe->getDecoder();
 	return fe;
 }

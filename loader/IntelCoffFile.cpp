@@ -441,6 +441,7 @@ int IntelCoffFile::readNative1(ADDRESS a)
 	return readNative(a, 1);
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -455,3 +456,4 @@ extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

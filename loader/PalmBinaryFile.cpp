@@ -444,6 +444,7 @@ void PalmBinaryFile::generateBinFiles(const std::string &path) const
 	}
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -452,9 +453,10 @@ void PalmBinaryFile::generateBinFiles(const std::string &path) const
  */
 extern "C" BinaryFile *construct()
 {
-	return new PalmBinaryFile;
+	return new PalmBinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

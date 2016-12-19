@@ -584,6 +584,7 @@ ADDRESS HpSomBinaryFile::getMainEntryPoint()
 #endif
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -592,9 +593,10 @@ ADDRESS HpSomBinaryFile::getMainEntryPoint()
  */
 extern "C" BinaryFile *construct()
 {
-	return new HpSomBinaryFile;
+	return new HpSomBinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

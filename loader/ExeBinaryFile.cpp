@@ -252,6 +252,7 @@ std::list<SectionInfo *> &ExeBinaryFile::getEntryPoints(const char *pEntry /* = 
 	return *ret;
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -260,9 +261,10 @@ std::list<SectionInfo *> &ExeBinaryFile::getEntryPoints(const char *pEntry /* = 
  */
 extern "C" BinaryFile *construct()
 {
-	return new ExeBinaryFile;
+	return new ExeBinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

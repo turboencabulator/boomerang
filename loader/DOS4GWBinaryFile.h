@@ -30,11 +30,13 @@
 
 #define PACKED __attribute__((packed))
 
+#if 0
 /* exe file header, just the signature really */
 typedef struct {
 	Byte sigLo;  /* .EXE signature: 0x4D 0x5A */
 	Byte sigHi;
 } Header;
+#endif
 
 typedef struct PACKED {
 	Byte  sigLo;
@@ -165,7 +167,7 @@ protected:
 private:
 	virtual bool        PostLoad(void *handle);  // Called after archive member loaded
 
-	        Header     *m_pHeader;      // Pointer to header
+	        //Header     *m_pHeader;      // Pointer to header
 	        LXHeader   *m_pLXHeader;    // Pointer to lx header
 	        LXObject   *m_pLXObjects;   // Pointer to lx objects
 	        LXPage     *m_pLXPages;     // Pointer to lx pages

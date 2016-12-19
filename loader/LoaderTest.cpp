@@ -24,15 +24,17 @@
 #endif
 #define SWITCH_BORLAND  TESTDIR "windows/switch_borland.exe"
 
-#define LIBPREFIX       ""
-#define LIBSUFFIX       ".so"
-
-#define ELFBINFILE      LIBPREFIX "ElfBinaryFile" LIBSUFFIX
-
 #include "LoaderTest.h"
 //#include "util.h"           // For str()
 
+#ifdef DYNAMIC
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>          // dlopen, dlsym
+#endif
+#define LIBPREFIX       ""
+#define LIBSUFFIX       ".so"
+#define ELFBINFILE      LIBPREFIX "ElfBinaryFile" LIBSUFFIX
+#endif
 
 #include <iostream>         // For cout
 #include <string>
@@ -544,14 +546,19 @@ void LoaderTest::testMicroDis2()
 }
 
 typedef unsigned (*elfHashFcn)(const char *);
+extern "C" unsigned elf_hash(const char *);
 void LoaderTest::testElfHash()
 {
+#ifdef DYNAMIC
 	void *dlHandle = dlopen(ELFBINFILE, RTLD_LAZY);
 	CPPUNIT_ASSERT(dlHandle);
 	// Use the handle to find the "elf_hash" function
-	elfHashFcn pFcn = (elfHashFcn) dlsym(dlHandle, "elf_hash");
+	elfHashFcn pFcn = (elfHashFcn)dlsym(dlHandle, "elf_hash");
+#else
+	elfHashFcn pFcn = elf_hash;
+#endif
 	CPPUNIT_ASSERT(pFcn);
-	// Call the function with the string "main
+	// Call the function with the string "main"
 	unsigned act = (*pFcn)("main");
 	unsigned exp = 0x737fe;
 	CPPUNIT_ASSERT_EQUAL(exp, act);

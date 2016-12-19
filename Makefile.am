@@ -27,7 +27,7 @@ libboomerang_la_LIBADD = \
 	$(top_builddir)/util/libutil.la \
 	$(top_builddir)/frontend/libfrontend.la \
 	$(top_builddir)/type/libtype.la \
-	$(top_builddir)/loader/libBinaryFileFactory.la \
+	$(top_builddir)/loader/libloader.la \
 	$(top_builddir)/transform/libtransform.la \
 	$(GC_LIBS)
 libboomerang_la_CPPFLAGS = \

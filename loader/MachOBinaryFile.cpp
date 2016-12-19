@@ -580,6 +580,7 @@ DWord MachOBinaryFile::getDelta()
 	return (DWord)base - (DWord)loaded_addr;
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -588,9 +589,10 @@ DWord MachOBinaryFile::getDelta()
  */
 extern "C" BinaryFile *construct()
 {
-	return new MachOBinaryFile;
+	return new MachOBinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

@@ -524,6 +524,7 @@ DWord DOS4GWBinaryFile::getDelta()
 	return (DWord)base - (DWord)m_pLXObjects[0].RelocBaseAddr;
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -532,9 +533,10 @@ DWord DOS4GWBinaryFile::getDelta()
  */
 extern "C" BinaryFile *construct()
 {
-	return new DOS4GWBinaryFile;
+	return new DOS4GWBinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif

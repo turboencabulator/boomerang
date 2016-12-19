@@ -867,6 +867,7 @@ void Win32BinaryFile::dumpSymbols()
 	std::cerr << std::dec << "\n";
 }
 
+#ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
  * derived concrete object.  After this object is returned, the virtual
@@ -875,9 +876,10 @@ void Win32BinaryFile::dumpSymbols()
  */
 extern "C" BinaryFile *construct()
 {
-	return new Win32BinaryFile;
+	return new Win32BinaryFile();
 }
 extern "C" void destruct(BinaryFile *bf)
 {
 	delete bf;
 }
+#endif
