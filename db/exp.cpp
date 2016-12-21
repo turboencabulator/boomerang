@@ -3395,7 +3395,7 @@ Exp *Const::genConstraints(Exp *result)
 		t = new FloatType();  // size is not known. Assume double for now
 		break;
 	default:
-		return false;
+		return NULL;
 	}
 	TypeVal *tv = new TypeVal(t);
 	Exp *e = new Binary(opEquals, result->clone(), tv);
