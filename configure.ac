@@ -72,6 +72,8 @@ AC_ARG_ENABLE([modules],
 AM_CONDITIONAL([DYNAMIC], [test "x$enable_modules" = "xyes"])
 AS_IF([test "x$enable_modules" = "xyes"], [
 	AC_DEFINE([DYNAMIC], [1], [Define to 1 to enable support for modules (requires dlopen)])
+	AC_DEFINE([MODPREFIX], [""], [Define to the module name prefix])
+	AC_DEFINE([MODSUFFIX], [".so"], [Define to the module name suffix])
 ])
 
 AC_CONFIG_FILES([

@@ -15,11 +15,10 @@
 #include "FrontSparcTest.h"
 #include "proc.h"
 #include "prog.h"
+#include "decoder.h"
 #include "frontend.h"
-#include "sparcfrontend.h"
 #include "cfg.h"
 #include "BinaryFile.h"
-#include "BinaryFileStub.h"
 
 /*==============================================================================
  * FUNCTION:        FrontSparcTest::test1
@@ -33,8 +32,7 @@ void FrontSparcTest::test1()
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -99,8 +97,7 @@ void FrontSparcTest::test2()
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x10690);
@@ -143,8 +140,7 @@ void FrontSparcTest::test3()
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x106a0);
@@ -204,8 +200,7 @@ void FrontSparcTest::testBranch()
 	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	// bne
 	std::ostringstream o1;
@@ -241,8 +236,7 @@ void FrontSparcTest::testDelaySlot()
 	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared
 	Type::clearNamedTypes();
 	pFE->decode(prog);

@@ -121,18 +121,16 @@ BinaryFile *BinaryFile::open(const char *name)
 	}
 
 #ifdef DYNAMIC
-#define LIBPREFIX       ""
-#define LIBSUFFIX       ".so"
 	const char *libname;
 	switch (format) {
-	case LOADFMT_ELF:   libname = LIBPREFIX    "ElfBinaryFile" LIBSUFFIX; break;
-	case LOADFMT_PE:    libname = LIBPREFIX  "Win32BinaryFile" LIBSUFFIX; break;
-	case LOADFMT_PALM:  libname = LIBPREFIX   "PalmBinaryFile" LIBSUFFIX; break;
-	case LOADFMT_PAR:   libname = LIBPREFIX  "HpSomBinaryFile" LIBSUFFIX; break;
-	case LOADFMT_EXE:   libname = LIBPREFIX    "ExeBinaryFile" LIBSUFFIX; break;
-	case LOADFMT_MACHO: libname = LIBPREFIX  "MachOBinaryFile" LIBSUFFIX; break;
-	case LOADFMT_LX:    libname = LIBPREFIX "DOS4GWBinaryFile" LIBSUFFIX; break;
-	case LOADFMT_COFF:  libname = LIBPREFIX    "IntelCoffFile" LIBSUFFIX; break;
+	case LOADFMT_ELF:   libname = MODPREFIX    "ElfBinaryFile" MODSUFFIX; break;
+	case LOADFMT_PE:    libname = MODPREFIX  "Win32BinaryFile" MODSUFFIX; break;
+	case LOADFMT_PALM:  libname = MODPREFIX   "PalmBinaryFile" MODSUFFIX; break;
+	case LOADFMT_PAR:   libname = MODPREFIX  "HpSomBinaryFile" MODSUFFIX; break;
+	case LOADFMT_EXE:   libname = MODPREFIX    "ExeBinaryFile" MODSUFFIX; break;
+	case LOADFMT_MACHO: libname = MODPREFIX  "MachOBinaryFile" MODSUFFIX; break;
+	case LOADFMT_LX:    libname = MODPREFIX "DOS4GWBinaryFile" MODSUFFIX; break;
+	case LOADFMT_COFF:  libname = MODPREFIX    "IntelCoffFile" MODSUFFIX; break;
 	default:            return NULL;
 	}
 

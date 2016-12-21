@@ -11,9 +11,7 @@
 #define HELLO_PENTIUM       "test/pentium/hello"
 
 #include "ProcTest.h"
-#include "BinaryFile.h"
-#include "BinaryFileStub.h"
-#include "pentiumfrontend.h"
+#include "frontend.h"
 
 #include <sstream>
 #include <map>
@@ -38,12 +36,8 @@ void ProcTest::testName()
 {
 	Prog *prog = new Prog;
 	std::string nm("default name");
-	BinaryFile *pBF = BinaryFile::open(HELLO_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE != 0);
-	prog->setFrontEnd(pFE);
-	CPPUNIT_ASSERT(prog);
 	pFE->readLibraryCatalog();              // Since we are not decoding
 	m_proc = new UserProc(prog, nm, 20000); // Will print in decimal if error
 	std::string actual(m_proc->getName());

@@ -9,62 +9,84 @@ nobase_dist_frontend_DATA = \
 	machine/mips/mips.ssl \
 	machine/pentium/pentium.ssl \
 	machine/ppc/ppc.ssl \
-	machine/st20/st20.ssl \
-	machine/sparc/sparc.ssl
+	machine/sparc/sparc.ssl \
+	machine/st20/st20.ssl
 
 
-noinst_LTLIBRARIES = \
-	libfrontend.la \
-	libfrontsparc.la \
-	libfrontpentium.la \
-	libfrontst20.la \
-	libfrontppc.la \
-	libfrontmips.la
+# Installing libfrontend.so in the same directory as the modules
+# has a side-effect of adding an RPATH to this directory for
+# everything that links against libfrontend.so.
+pkglib_LTLIBRARIES = \
+	libfrontend.la
 
 libfrontend_la_SOURCES = \
 	frontend.cpp \
 	$(top_srcdir)/include/frontend.h \
 	njmcDecoder.cpp \
 	$(top_srcdir)/include/decoder.h
-libfrontend_la_LIBADD = \
-	libfrontsparc.la \
-	libfrontpentium.la \
-	libfrontst20.la \
-	libfrontppc.la \
-	libfrontmips.la
 libfrontend_la_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
 	-I$(top_srcdir)/c
+libfrontend_la_LDFLAGS = -no-undefined -avoid-version
 
-libfrontsparc_la_SOURCES = \
-	sparcdecoder.cpp \
-	sparcdecoder.h \
-	sparcfrontend.cpp \
-	sparcfrontend.h
+if DYNAMIC
+libfrontend_la_LIBADD = -ldl
 
-libfrontpentium_la_SOURCES = \
+pkglib_LTLIBRARIES += \
+	mipsfrontend.la \
+	pentiumfrontend.la \
+	ppcfrontend.la \
+	sparcfrontend.la \
+	st20frontend.la
+
+mipsfrontend_la_SOURCES = \
+	mipsdecoder.cpp \
+	mipsdecoder.h \
+	mipsfrontend.cpp \
+	mipsfrontend.h
+
+pentiumfrontend_la_SOURCES = \
 	pentiumdecoder.cpp \
 	pentiumdecoder.h \
 	pentiumfrontend.cpp \
 	pentiumfrontend.h
 
-libfrontst20_la_SOURCES = \
-	st20decoder.cpp \
-	st20decoder.h \
-	st20frontend.cpp \
-	st20frontend.h
-
-libfrontppc_la_SOURCES = \
+ppcfrontend_la_SOURCES = \
 	ppcdecoder.cpp \
 	ppcdecoder.h \
 	ppcfrontend.cpp \
 	ppcfrontend.h
 
-libfrontmips_la_SOURCES = \
+sparcfrontend_la_SOURCES = \
+	sparcdecoder.cpp \
+	sparcdecoder.h \
+	sparcfrontend.cpp \
+	sparcfrontend.h
+
+st20frontend_la_SOURCES = \
+	st20decoder.cpp \
+	st20decoder.h \
+	st20frontend.cpp \
+	st20frontend.h
+
+mipsfrontend_la_LDFLAGS    = -no-undefined -avoid-version -module -shared
+pentiumfrontend_la_LDFLAGS = -no-undefined -avoid-version -module -shared
+ppcfrontend_la_LDFLAGS     = -no-undefined -avoid-version -module -shared
+sparcfrontend_la_LDFLAGS   = -no-undefined -avoid-version -module -shared
+st20frontend_la_LDFLAGS    = -no-undefined -avoid-version -module -shared
+else
+libfrontend_la_SOURCES += \
 	mipsdecoder.cpp \
-	mipsdecoder.h \
 	mipsfrontend.cpp \
-	mipsfrontend.h
+	pentiumdecoder.cpp \
+	pentiumfrontend.cpp \
+	ppcdecoder.cpp \
+	ppcfrontend.cpp \
+	sparcdecoder.cpp \
+	sparcfrontend.cpp \
+	st20decoder.cpp \
+	st20frontend.cpp
+endif
 
 
 check_LTLIBRARIES = \

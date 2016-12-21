@@ -11,8 +11,7 @@
 #define HELLO_WINDOWS       "test/windows/hello.exe"
 
 #include "TypeTest.h"
-#include "BinaryFile.h"         // Ugh - needed before frontend.h
-#include "pentiumfrontend.h"
+#include "frontend.h"
 #include "signature.h"
 #include "boomerang.h"
 #include "log.h"
@@ -53,9 +52,7 @@ void TypeTest::testNotEqual()
 void TypeTest::testCompound()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_WINDOWS);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(HELLO_WINDOWS, prog);
 	Boomerang::get()->setLogger(new FileLogger());  // May try to output some messages to LOG
 	pFE->readLibraryCatalog();  // Read definitions
 

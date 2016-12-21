@@ -11,8 +11,7 @@
 #define HELLO_PENTIUM       "test/pentium/hello"
 
 #include "ProgTest.h"
-#include "BinaryFile.h"
-#include "pentiumfrontend.h"
+#include "frontend.h"
 
 #include <map>
 #include <sstream>
@@ -36,10 +35,8 @@ void ProgTest::setUp()
 void ProgTest::testName()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_PENTIUM);  // Don't actually use it
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 	// We need a Prog object with a pBF (for getEarlyParamExp())
-	prog->setFrontEnd(pFE);
 	std::string actual(prog->getName());
 	std::string expected(HELLO_PENTIUM);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);

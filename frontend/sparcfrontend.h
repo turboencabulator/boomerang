@@ -10,9 +10,7 @@
 
 #include <set>
 
-class FrontEnd;
 class SparcDecoder;
-struct DecodeResult;
 class CallStatement;
 
 class SparcFrontEnd : public FrontEnd {

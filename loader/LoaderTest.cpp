@@ -31,9 +31,7 @@
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>          // dlopen, dlsym
 #endif
-#define LIBPREFIX       ""
-#define LIBSUFFIX       ".so"
-#define ELFBINFILE      LIBPREFIX "ElfBinaryFile" LIBSUFFIX
+#define ELFBINFILE      MODPREFIX "ElfBinaryFile" MODSUFFIX
 #endif
 
 #include <iostream>         // For cout

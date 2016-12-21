@@ -13,12 +13,10 @@
 #define IFTHEN_PENTIUM          "test/pentium/ifthen"
 
 #include "CfgTest.h"
-#include "BinaryFile.h"
 #include "frontend.h"
 #include "proc.h"
 #include "prog.h"
 #include "dataflow.h"
-#include "pentiumfrontend.h"
 
 #include <sstream>
 #include <string>
@@ -47,11 +45,9 @@ void CfgTest::setUp()
 void CfgTest::testDominators()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(FRONTIER_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
+	CPPUNIT_ASSERT(pFE != 0);
 	Type::clearNamedTypes();
-	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
 
 	bool gotMain;
@@ -106,11 +102,9 @@ void CfgTest::testDominators()
 void CfgTest::testSemiDominators()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(SEMI_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(SEMI_PENTIUM, prog);
+	CPPUNIT_ASSERT(pFE != 0);
 	Type::clearNamedTypes();
-	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
 
 	bool gotMain;
@@ -159,11 +153,9 @@ void CfgTest::testSemiDominators()
 void CfgTest::testPlacePhi()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(FRONTIER_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
+	CPPUNIT_ASSERT(pFE != 0);
 	Type::clearNamedTypes();
-	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
@@ -200,11 +192,9 @@ void CfgTest::testPlacePhi()
 void CfgTest::testPlacePhi2()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(IFTHEN_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
+	CPPUNIT_ASSERT(pFE != 0);
 	Type::clearNamedTypes();
-	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
@@ -260,11 +250,9 @@ void CfgTest::testPlacePhi2()
 void CfgTest::testRenameVars()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(FRONTIER_PENTIUM);
-	CPPUNIT_ASSERT(pBF != 0);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
+	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
+	CPPUNIT_ASSERT(pFE != 0);
 	Type::clearNamedTypes();
-	prog->setFrontEnd(pFE);
 	pFE->decode(prog);
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);

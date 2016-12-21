@@ -29,10 +29,8 @@
 #include "prog.h"
 #include "decoder.h"
 #include "ppcdecoder.h"
-#include "BinaryFile.h"
 #include "frontend.h"
 #include "ppcfrontend.h"
-#include "BinaryFile.h"     // E.g. isDynamicLinkedProc
 #include "boomerang.h"
 #include "signature.h"
 
@@ -95,3 +93,20 @@ bool PPCFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os,
 
 	return true;
 }
+
+#ifdef DYNAMIC
+/**
+ * This function is called via dlopen/dlsym; it returns a new FrontEnd
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
+{
+	return new PPCFrontEnd(bf, prog);
+}
+extern "C" void destruct(FrontEnd *fe)
+{
+	delete fe;
+}
+#endif

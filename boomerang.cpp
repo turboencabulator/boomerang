@@ -22,7 +22,6 @@
 
 #include "prog.h"
 #include "proc.h"
-#include "BinaryFile.h"
 #include "frontend.h"
 #include "hllcode.h"
 #include "codegen/chllcode.h"
@@ -995,12 +994,11 @@ Prog *Boomerang::loadAndDecode(const char *fname, const char *pname)
 {
 	std::cout << "loading...\n";
 	Prog *prog = new Prog();
-	FrontEnd *fe = FrontEnd::Load(fname, prog);
+	FrontEnd *fe = FrontEnd::open(fname, prog);
 	if (fe == NULL) {
 		std::cerr << "failed.\n";
 		return NULL;
 	}
-	prog->setFrontEnd(fe);
 
 	// Add symbols from -s switch(es)
 	for (std::map<ADDRESS, std::string>::iterator it = symbols.begin(); it != symbols.end(); it++) {

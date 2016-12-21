@@ -4,16 +4,7 @@
 // Class PPCFrontEnd: derived from FrontEnd, with source machine specific
 // behaviour
 
-#include "decoder.h"
-#include "exp.h"            // Ugh... just for enum OPER
 #include "frontend.h"       // In case included bare, e.g. ProcTest.cpp
-
-#include <set>
-
-class FrontEnd;
-class PPCDecoder;
-struct DecodeResult;
-class CallStatement;
 
 class PPCFrontEnd : public FrontEnd {
 public:

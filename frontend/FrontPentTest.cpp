@@ -19,7 +19,6 @@
 #include "FrontPentTest.h"
 #include "prog.h"
 #include "frontend.h"
-#include "pentiumfrontend.h"
 #include "BinaryFile.h"
 #include "BinaryFileStub.h"
 
@@ -37,8 +36,7 @@ void FrontPentTest::test1()
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -81,8 +79,7 @@ void FrontPentTest::test2()
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x8048345);
@@ -118,8 +115,7 @@ void FrontPentTest::test3()
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x804834d);
@@ -153,8 +149,7 @@ void FrontPentTest::testBranch()
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF != 0);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	// jne
 	std::ostringstream o1;
@@ -190,8 +185,7 @@ void FrontPentTest::testFindMain()
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(FEDORA2_TRUE);
 	CPPUNIT_ASSERT(pBF != NULL);
-	FrontEnd *pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 	CPPUNIT_ASSERT(pFE != NULL);
 	bool found;
 	ADDRESS addr = pFE->getMainEntryPoint(found);
@@ -202,8 +196,7 @@ void FrontPentTest::testFindMain()
 	prog = new Prog;
 	pBF = BinaryFile::open(FEDORA3_TRUE);
 	CPPUNIT_ASSERT(pBF != NULL);
-	pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	pFE = FrontEnd::open(pBF, prog);
 	CPPUNIT_ASSERT(pFE != NULL);
 	addr = pFE->getMainEntryPoint(found);
 	expected = 0x8048c4a;
@@ -213,8 +206,7 @@ void FrontPentTest::testFindMain()
 	prog = new Prog;
 	pBF = BinaryFile::open(SUSE_TRUE);
 	CPPUNIT_ASSERT(pBF != NULL);
-	pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	pFE = FrontEnd::open(pBF, prog);
 	CPPUNIT_ASSERT(pFE != NULL);
 	addr = pFE->getMainEntryPoint(found);
 	expected = 0x8048b60;

@@ -20,7 +20,6 @@
 #endif
 
 #include "types.h"
-#include "BinaryFile.h"
 #include "frontend.h"
 #include "pentiumfrontend.h"
 #include "rtl.h"
@@ -33,7 +32,6 @@
 #include "proc.h"
 #include "signature.h"
 #include "prog.h"           // For findProc()
-#include "BinaryFile.h"     // For getSymbolByAddress()
 #include "boomerang.h"
 #include "log.h"
 
@@ -534,21 +532,6 @@ bool PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *l
 	}
 	return false;
 }
-
-/*==============================================================================
- * FUNCTION:      construct
- * OVERVIEW:      Construct a new instance of PentiumFrontEnd
- * PARAMETERS:    Same as the FrontEnd constructor, except decoder is **
- * RETURNS:       <nothing>
- *============================================================================*/
-#if 0 //#ifdef DYNAMIC
-extern "C" PentiumFrontEnd *construct(BinaryFile *pBF, Prog *prog, NJMCDecoder **decoder)
-{
-	PentiumFrontEnd *fe = new PentiumFrontEnd(pBF, prog);
-	*decoder = fe->getDecoder();
-	return fe;
-}
-#endif
 
 /*==============================================================================
  * FUNCTION:      PentiumFrontEnd::PentiumFrontEnd
@@ -1157,3 +1140,20 @@ void PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB
 		}
 	}
 }
+
+#ifdef DYNAMIC
+/**
+ * This function is called via dlopen/dlsym; it returns a new FrontEnd
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
+{
+	return new PentiumFrontEnd(bf, prog);
+}
+extern "C" void destruct(FrontEnd *fe)
+{
+	delete fe;
+}
+#endif

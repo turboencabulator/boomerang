@@ -23,6 +23,18 @@
 
 #include "frontend.h"
 
+#ifdef DYNAMIC
+#ifdef HAVE_DLFCN_H
+#include <dlfcn.h>
+#endif
+#else
+#include "mipsfrontend.h"
+#include "pentiumfrontend.h"
+#include "ppcfrontend.h"
+#include "sparcfrontend.h"
+#include "st20frontend.h"
+#endif
+
 #include "types.h"
 #include "exp.h"
 #include "cfg.h"
@@ -31,11 +43,6 @@
 #include "rtl.h"
 #include "BinaryFile.h"
 #include "decoder.h"
-#include "sparcfrontend.h"
-#include "pentiumfrontend.h"
-#include "ppcfrontend.h"
-#include "st20frontend.h"
-#include "mipsfrontend.h"
 #include "prog.h"
 #include "signature.h"
 #include "boomerang.h"
@@ -58,41 +65,112 @@
  * RETURNS:       <N/a>
  *============================================================================*/
 FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog) :
+#ifdef DYNAMIC
+	dlHandle(NULL),
+	destruct(NULL),
+#endif
 	pBF(pBF),
 	prog(prog)
 {
 }
 
-// Static function to instantiate an appropriate concrete front end
-FrontEnd *FrontEnd::instantiate(BinaryFile *pBF, Prog *prog)
+FrontEnd::~FrontEnd()
 {
-	switch (pBF->getMachine()) {
-	case MACHINE_PENTIUM:
-		return new PentiumFrontEnd(pBF, prog);
-	case MACHINE_SPARC:
-		return new SparcFrontEnd(pBF, prog);
-	case MACHINE_PPC:
-		return new PPCFrontEnd(pBF, prog);
-	case MACHINE_MIPS:
-		return new MIPSFrontEnd(pBF, prog);
-	case MACHINE_ST20:
-		return new ST20FrontEnd(pBF, prog);
+}
+
+FrontEnd *FrontEnd::open(const char *name, Prog *prog)
+{
+	BinaryFile *bf = BinaryFile::open(name);
+	if (!bf) return NULL;
+	FrontEnd *fe = FrontEnd::open(bf, prog);
+	if (!fe) BinaryFile::close(bf);
+	return fe;
+}
+
+FrontEnd *FrontEnd::open(BinaryFile *bf, Prog *prog)
+{
+	MACHINE machine = bf->getMachine();
+
+#ifdef DYNAMIC
+	const char *libname;
+	switch (machine) {
+	case MACHINE_PENTIUM: libname = MODPREFIX "pentiumfrontend" MODSUFFIX; break;
+	case MACHINE_SPARC:   libname = MODPREFIX   "sparcfrontend" MODSUFFIX; break;
+	case MACHINE_PPC:     libname = MODPREFIX     "ppcfrontend" MODSUFFIX; break;
+	case MACHINE_ST20:    libname = MODPREFIX    "st20frontend" MODSUFFIX; break;
+	case MACHINE_MIPS:    libname = MODPREFIX    "mipsfrontend" MODSUFFIX; break;
 	default:
 		std::cerr << "Machine architecture not supported!\n";
 		return NULL;
 	}
+
+	// Load the specific frontend library
+	void *handle = dlopen(libname, RTLD_LAZY);
+	if (handle == NULL) {
+		std::cout << "cannot load library: " << dlerror() << "\n";
+		return NULL;
+	}
+
+	// Reset errors
+	const char *error = dlerror();
+
+	// Use the handle to find symbols
+	const char *symbol = "construct";
+	constructFcn construct = (constructFcn)dlsym(handle, symbol);
+	if ((error = dlerror()) != NULL) {
+		std::cerr << "cannot load symbol '" << symbol << "': " << error << "\n";
+		dlclose(handle);
+		return NULL;
+	}
+	symbol = "destruct";
+	destructFcn destruct = (destructFcn)dlsym(handle, symbol);
+	if ((error = dlerror()) != NULL) {
+		std::cerr << "cannot load symbol '" << symbol << "': " << error << "\n";
+		dlclose(handle);
+		return NULL;
+	}
+
+	// Call the construct function
+	FrontEnd *fe = construct(bf, prog);
+
+	// Stash pointers in the constructed object, for use by FrontEnd::close
+	fe->dlHandle = handle;
+	fe->destruct = destruct;
+
+#else
+	FrontEnd *fe;
+	switch (machine) {
+	case MACHINE_PENTIUM: fe = new PentiumFrontEnd(bf, prog); break;
+	case MACHINE_SPARC:   fe = new   SparcFrontEnd(bf, prog); break;
+	case MACHINE_PPC:     fe = new     PPCFrontEnd(bf, prog); break;
+	case MACHINE_ST20:    fe = new    ST20FrontEnd(bf, prog); break;
+	case MACHINE_MIPS:    fe = new    MIPSFrontEnd(bf, prog); break;
+	default:
+		std::cerr << "Machine architecture not supported!\n";
+		return NULL;
+	}
+#endif
+
+	prog->setFrontEnd(fe);
+	return fe;
 }
 
-FrontEnd *FrontEnd::Load(const char *fname, Prog *prog)
+void FrontEnd::close(FrontEnd *fe)
 {
-	BinaryFile *pBF = BinaryFile::open(fname);
-	if (pBF == NULL) return NULL;
-	return instantiate(pBF, prog);
-}
+#ifdef DYNAMIC
+	// Retrieve the stashed pointers
+	void *handle = fe->dlHandle;
+	destructFcn destruct = fe->destruct;
 
-// destructor
-FrontEnd::~FrontEnd()
-{
+	// Destruct in an appropriate way.
+	// The C++ dlopen mini HOWTO says to always use a matching
+	// construct/destruct pair in case of new/delete overloading.
+	if (handle != NULL) {
+		destruct(fe);
+		dlclose(handle);
+	} else
+#endif
+		delete fe;
 }
 
 const char *FrontEnd::getRegName(int idx)

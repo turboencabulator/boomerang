@@ -99,6 +99,15 @@ public:
 typedef bool (*PHELPER)(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl);
 
 class FrontEnd {
+#ifdef DYNAMIC
+private:
+	// Needed by FrontEnd::close to destroy an instance and unload its library.
+	typedef FrontEnd *(*constructFcn)(BinaryFile *bf, Prog *prog);
+	typedef void (*destructFcn)(FrontEnd *fe);
+	void *dlHandle;
+	destructFcn destruct;
+#endif
+
 protected:
 	//const int NOP_SIZE;         // Size of a no-op instruction (in bytes)
 	//const int NOP_INST;         // No-op pattern
@@ -118,21 +127,21 @@ public:
 	 * Constructor. Takes some parameters to save passing these around a lot
 	 */
 	FrontEnd(BinaryFile *pBF, Prog *prog);
-	// Create from a binary file
-	static FrontEnd *instantiate(BinaryFile *pBF, Prog *prog);
-	// Load a binary
-	static FrontEnd *Load(const char *fname, Prog *prog);
+
+	virtual ~FrontEnd();
+
+	// Creates and returns an instance of the appropriate subclass.
+	static FrontEnd *open(const char *name, Prog *prog);
+	static FrontEnd *open(BinaryFile *bf, Prog *prog);
+
+	// Destroys an instance created by open() or new.
+	static void close(FrontEnd *fe);
 
 	// Add a symbol to the loader
 	void addSymbol(ADDRESS addr, const char *nam) { pBF->addSymbol(addr, nam); }
 
 	// Add a "hint" that an instruction at the given address references a named global
 	void addRefHint(ADDRESS addr, const char *nam) { refHints[addr] = nam; }
-
-	/**
-	 * Destructor. Virtual to mute a warning
-	 */
-	virtual ~FrontEnd();
 
 	// returns a symbolic name for a register index
 	const char *getRegName(int idx);

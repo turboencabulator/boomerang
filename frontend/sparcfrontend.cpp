@@ -30,10 +30,8 @@
 #include "prog.h"
 #include "decoder.h"
 #include "sparcdecoder.h"
-#include "BinaryFile.h"
 #include "frontend.h"
 #include "sparcfrontend.h"
-#include "BinaryFile.h"     // E.g. isDynamicLinkedProc
 #include "boomerang.h"
 #include "signature.h"
 #include "log.h"
@@ -1453,22 +1451,6 @@ bool SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> 
 	return true;
 }
 
-
-/*==============================================================================
- * FUNCTION:      construct
- * OVERVIEW:      Construct a new instance of SparcFrontEnd
- * PARAMETERS:    Same as the FrontEnd constructor, except decoder is **
- * RETURNS:       <nothing>
- *============================================================================*/
-#if 0 //#ifdef DYNAMIC
-extern "C" SparcFrontEnd *construct(BinaryFile *pBF, Prog *prog, NJMCDecoder **decoder)
-{
-	SparcFrontEnd *fe = new SparcFrontEnd(pBF, prog);
-	*decoder = fe->getDecoder();
-	return fe;
-}
-#endif
-
 /*==============================================================================
  * FUNCTION:      SparcFrontEnd::SparcFrontEnd
  * OVERVIEW:      SparcFrontEnd constructor
@@ -1508,3 +1490,20 @@ ADDRESS SparcFrontEnd::getMainEntryPoint(bool &gotMain)
 	gotMain = true;
 	return start;
 }
+
+#ifdef DYNAMIC
+/**
+ * This function is called via dlopen/dlsym; it returns a new FrontEnd
+ * derived concrete object.  After this object is returned, the virtual
+ * function call mechanism will call the rest of the code in this library.
+ * It needs to be C linkage so that its name is not mangled.
+ */
+extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
+{
+	return new SparcFrontEnd(bf, prog);
+}
+extern "C" void destruct(FrontEnd *fe)
+{
+	delete fe;
+}
+#endif

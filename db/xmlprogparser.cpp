@@ -236,9 +236,8 @@ Prog *XMLProgParser::parse(const char *filename)
 	}
 	if (prog == NULL)
 		return NULL;
-	//FrontEnd *pFE = FrontEnd::Load(prog->getPath(), prog);  // Path is usually empty!?
-	FrontEnd *pFE = FrontEnd::Load(prog->getPathAndName(), prog);
-	prog->setFrontEnd(pFE);
+	//FrontEnd *pFE = FrontEnd::open(prog->getPath(), prog);  // Path is usually empty!?
+	FrontEnd *pFE = FrontEnd::open(prog->getPathAndName(), prog);
 	return prog;
 }
 

@@ -11,10 +11,7 @@
 #include "RtlTest.h"
 #include "statement.h"
 #include "exp.h"
-#include "BinaryFile.h"
 #include "frontend.h"
-#include "sparcfrontend.h"
-#include "pentiumfrontend.h"
 #include "decoder.h"
 #include "proc.h"
 #include "prog.h"
@@ -168,11 +165,9 @@ void RtlTest::testVisitor()
 void RtlTest::testIsCompare()
 {
 	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(SWITCH_SPARC);
-	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = new SparcFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	FrontEnd *pFE = FrontEnd::open(SWITCH_SPARC, prog);
+	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_SPARC);
 
 	// Decode second instruction: "sub      %i0, 2, %o1"
 	int iReg;
@@ -194,11 +189,9 @@ void RtlTest::testIsCompare()
 	delete prog;
 
 	prog = new Prog;
-	pBF = BinaryFile::open(SWITCH_PENT);
-	CPPUNIT_ASSERT(pBF != 0);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	pFE = new PentiumFrontEnd(pBF, prog);
-	prog->setFrontEnd(pFE);
+	pFE = FrontEnd::open(SWITCH_PENT, prog);
+	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_PENTIUM);
 
 	// Decode fifth instruction: "cmp   $0x5,%eax"
 	inst = pFE->decodeInstruction(0x80488fb);
