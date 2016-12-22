@@ -152,74 +152,108 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	if (m_pData == 0) {
 		fprintf(stderr, "Could not allocate %u bytes for data section\n", sizeData);
 	}
+	// Assume anything not filled in is 0?
+	memset(m_pData, 0, sizeData);
 
-	// Uncompress the data. Skip first long (offset of CODE1 "xrefs")
+	// Skip first long (offset of CODE1 "xrefs")
 	p = (unsigned char *)(pData->uHostAddr + 4);
-	int start = (int) UINT4(p);
-	p += 4;
-	unsigned char *q = (m_pData + m_SizeBelowA5 + start);
-	bool done = false;
-	while (!done && (p < (unsigned char *)(pData->uHostAddr + pData->uSectionSize))) {
-		unsigned char rle = *p++;
-		if (rle == 0) {
-			done = true;
-			break;
+	unsigned in = pData->uSectionSize - 4;
+
+	// Next are 3 global initializers, each a 32-bit offset from A5
+	// followed by a compressed stream.  Uncompress into that offset.
+	//
+	// Let p := input data,  in  := input bytes remaining,
+	//     q := output data, out := bytes to end of output buffer.
+	// Break out of the loops with done == false to indicate error.
+	bool done;
+	for (int i = 0; i < 3; ++i) {
+		done = false;
+		if (in < 4) break;
+		int start = (int)UINT4(p);
+		p += 4; in -= 4;
+		start += m_SizeBelowA5;
+		if (start < 0 || start >= sizeData) break;
+		unsigned char *q = m_pData + start;
+		unsigned out = sizeData - start;
+
+		while (in) {
+			unsigned char rle = *p++; in--;
+			if (rle >= 0x80) {
+				// (0x80 + n) b_0 b_1 ... b_n
+				// => n+1 bytes of literal data (n <= 127)
+				rle -= 0x7f;
+				if (in < rle || out < rle) break;
+				in -= rle; out -= rle;
+				for (int k = 0; k < rle; ++k)
+					*q++ = *p++;
+			} else if (rle >= 0x40) {
+				// (0x40 + n)
+				// => n+1 repetitions of 0x00 (n <= 63)
+				rle -= 0x3f;
+				if (out < rle) break;
+				out -= rle;
+				for (int k = 0; k < rle; ++k)
+					*q++ = 0x00;
+			} else if (rle >= 0x20) {
+				// (0x20 + n) b
+				// => n+2 repetitions of b (n <= 31)
+				rle -= 0x1e;
+				if (in < 1 || out < rle) break;
+				in -= 1; out -= rle;
+				unsigned char b = *p++;
+				for (int k = 0; k < rle; ++k)
+					*q++ = b;
+			} else if (rle >= 0x10) {
+				// (0x10 + n)
+				// => n+1 repetitions of 0xff (n <= 15)
+				rle -= 0x0f;
+				if (out < rle) break;
+				out -= rle;
+				for (int k = 0; k < rle; ++k)
+					*q++ = 0xff;
+			} else if (rle == 1) {
+				// 0x01 b_0 b_1
+				// => 0x00 0x00 0x00 0x00 0xff 0xff b_0 b_1
+				if (in < 2 || out < 8) break;
+				in -= 2; out -= 8;
+				*q++ = 0x00; *q++ = 0x00; *q++ = 0x00; *q++ = 0x00;
+				*q++ = 0xff; *q++ = 0xff; *q++ = *p++; *q++ = *p++;
+			} else if (rle == 2) {
+				// 0x02 b_0 b_1 b_2
+				// => 0x00 0x00 0x00 0x00 0xff b_0 b_1 b_2
+				if (in < 3 || out < 8) break;
+				in -= 3; out -= 8;
+				*q++ = 0x00; *q++ = 0x00; *q++ = 0x00; *q++ = 0x00;
+				*q++ = 0xff; *q++ = *p++; *q++ = *p++; *q++ = *p++;
+			} else if (rle == 3) {
+				// 0x03 b_0 b_1 b_2
+				// => 0xa9 0xf0 0x00 0x00 b_0 b_1 0x00 b_2
+				if (in < 3 || out < 8) break;
+				in -= 3; out -= 8;
+				*q++ = 0xa9; *q++ = 0xf0; *q++ = 0x00; *q++ = 0x00;
+				*q++ = *p++; *q++ = *p++; *q++ = 0x00; *q++ = *p++;
+			} else if (rle == 4) {
+				// 0x04 b_0 b_1 b_2 b_3
+				// => 0xA9 0xF0 0x00 b_0 b_1 b_2 0x00 b_3
+				if (in < 4 || out < 8) break;
+				in -= 4; out -= 8;
+				*q++ = 0xa9; *q++ = 0xf0; *q++ = 0x00; *q++ = *p++;
+				*q++ = *p++; *q++ = *p++; *q++ = 0x00; *q++ = *p++;
+			} else if (rle == 0) {
+				done = true;
+				break;
+			} else {
+				// 5-0xf are invalid.
+				assert(0);
+			}
 		}
-		else if (rle == 1) {
-			// 0x01 b_0 b_1
-			// => 0x00 0x00 0x00 0x00 0xFF 0xFF b_0 b_1
-			*q++ = 0x00; *q++ = 0x00; *q++ = 0x00; *q++ = 0x00;
-			*q++ = 0xFF; *q++ = 0xFF; *q++ = *p++; *q++ = *p++;
-		}
-		else if (rle == 2) {
-			// 0x02 b_0 b_1 b_2
-			// => 0x00 0x00 0x00 0x00 0xFF b_0 b_1 b_2
-			*q++ = 0x00; *q++ = 0x00; *q++ = 0x00; *q++ = 0x00;
-			*q++ = 0xFF; *q++ = *p++; *q++ = *p++; *q++ = *p++;
-		}
-		else if (rle == 3) {
-			// 0x03 b_0 b_1 b_2
-			// => 0xA9 0xF0 0x00 0x00 b_0 b_1 0x00 b_2
-			*q++ = 0xA9; *q++ = 0xF0; *q++ = 0x00; *q++ = 0x00;
-			*q++ = *p++; *q++ = *p++; *q++ = 0x00; *q++ = *p++;
-		}
-		else if (rle == 4) {
-			// 0x04 b_0 b_1 b_2 b_3
-			// => 0xA9 axF0 0x00 b_0 b_1 b_3 0x00 b_3
-			*q++ = 0xA9; *q++ = 0xF0; *q++ = 0x00; *q++ = *p++;
-			*q++ = *p++; *q++ = *p++; *q++ = 0x00; *q++ = *p++;
-		}
-		else if (rle < 0x10) {
-			// 5-0xF are invalid.
-			assert(0);
-		}
-		else if (rle >= 0x80) {
-			// n+1 bytes of literal data
-			for (int k = 0; k <= (rle - 0x80); k++)
-				*q++ = *p++;
-		}
-		else if (rle >= 40) {
-			// n+1 repetitions of 0
-			for (int k = 0; k <= (rle - 0x40); k++)
-				*q++ = 0;
-		}
-		else if (rle >= 20) {
-			// n+2 repetitions of b
-			unsigned char b = *p++;
-			for (int k = 0; k < (rle - 0x20 + 2); k++)
-				*q++ = b;
-		}
-		else {
-			// 0x10: n+1 repetitions of 0xFF
-			for (int k = 0; k <= (rle - 0x10); k++)
-				*q++ = 0xFF;
-		}
+		if (!done) break;
 	}
 
 	if (!done)
 		fprintf(stderr, "Warning! Compressed data section premature end\n");
 	//printf("Used %u bytes of %u in decompressing data section\n",
-	//p-(unsigned char*)pData->uHostAddr, pData->uSectionSize);
+	//       pData->uSectionSize - in, pData->uSectionSize);
 
 	// Replace the data pointer and size with the uncompressed versions
 	pData->uHostAddr = (ADDRESS)m_pData;
