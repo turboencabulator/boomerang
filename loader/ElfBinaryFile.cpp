@@ -36,15 +36,20 @@ ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
 	m_uPltMin(0),    // No PLT limits
 	m_uPltMax(0),
 	m_pImportStubs(NULL),
-	next_extern(0)
+	next_extern(0),
+	m_sh_link(NULL),
+	m_sh_info(NULL)
 {
 }
 
 ElfBinaryFile::~ElfBinaryFile()
 {
 	if (m_fd) fclose(m_fd);
+	delete [] m_pSections;
 	delete [] m_pImage;
 	delete [] m_pImportStubs;
+	delete [] m_sh_link;
+	delete [] m_sh_info;
 }
 
 // Hand decompiled from sparc library function

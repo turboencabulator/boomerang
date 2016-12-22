@@ -42,6 +42,8 @@
 //#define DEBUG_MACHO_LOADER_OBJC
 
 MachOBinaryFile::MachOBinaryFile() :
+	header(NULL),
+	base(NULL),
 	m_pFilename(NULL),
 	machine(MACHINE_PPC),
 	swap_bytes(false)
@@ -53,6 +55,8 @@ MachOBinaryFile::~MachOBinaryFile()
 	for (int i = 0; i < m_iNumSections; i++)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
+	delete    header;
+	delete [] base;
 }
 
 std::list<SectionInfo *> &MachOBinaryFile::getEntryPoints(const char *pEntry)
@@ -234,7 +238,7 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	loaded_addr = BMMH(lowest->vmaddr);
 	loaded_size = BMMH(highest->vmaddr) - BMMH(lowest->vmaddr) + BMMH(highest->vmsize);
 
-	base = (char *)malloc(loaded_size);
+	base = new char[loaded_size];
 
 	if (!base) {
 		fclose(fp);

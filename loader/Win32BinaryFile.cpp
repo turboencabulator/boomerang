@@ -95,6 +95,7 @@ typedef char ct_failure[sizeof (SectionInfo) == sizeof (PESectionInfo) ? 1 : -1]
 
 
 Win32BinaryFile::Win32BinaryFile() :
+	base(NULL),
 	m_pFilename(NULL),
 	mingw_main(false)
 {
@@ -105,6 +106,7 @@ Win32BinaryFile::~Win32BinaryFile()
 	for (int i = 0; i < m_iNumSections; i++)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
+	delete [] base;
 }
 
 std::list<SectionInfo *> &Win32BinaryFile::getEntryPoints(const char *pEntry)
@@ -390,7 +392,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	fread(&tmphdr, sizeof tmphdr, 1, fp);
 	// Note: all tmphdr fields will be little endian
 
-	base = (char *)malloc(LMMH(tmphdr.ImageSize));
+	base = new char[LMMH(tmphdr.ImageSize)];
 
 	if (!base) {
 		fprintf(stderr, "Cannot allocate memory for copy of image\n");

@@ -28,7 +28,8 @@ ExeBinaryFile::ExeBinaryFile() :
 
 ExeBinaryFile::~ExeBinaryFile()
 {
-	delete m_pHeader;
+	delete [] m_pSections;
+	delete    m_pHeader;
 	delete [] m_pImage;
 	delete [] m_pRelocTable;
 }

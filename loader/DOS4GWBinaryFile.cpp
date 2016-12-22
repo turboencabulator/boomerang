@@ -33,17 +33,23 @@
 extern "C" int microX86Dis(void *p);  // From microX86dis.c
 
 DOS4GWBinaryFile::DOS4GWBinaryFile() :
+	m_pLXHeader(NULL),
+	m_pLXObjects(NULL),
+	m_pLXPages(NULL),
+	base(NULL),
 	m_pFilename(NULL)
 {
 }
 
 DOS4GWBinaryFile::~DOS4GWBinaryFile()
 {
-#if 0
 	for (int i = 0; i < m_iNumSections; i++)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
-#endif
+	delete    m_pLXHeader;
+	delete [] m_pLXObjects;
+	delete [] m_pLXPages;
+	delete [] base;
 }
 
 std::list<SectionInfo *> &DOS4GWBinaryFile::getEntryPoints(const char *pEntry)
@@ -184,7 +190,7 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 
 	m_cbImage -= LMMH(m_pLXObjects[0].RelocBaseAddr);
 
-	base = (char *)malloc(m_cbImage);
+	base = new char[m_cbImage];
 
 	m_iNumSections = LMMH(m_pLXHeader->numobjsinmodule);
 	m_pSections = new SectionInfo[m_iNumSections];

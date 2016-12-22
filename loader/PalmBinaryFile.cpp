@@ -38,6 +38,7 @@ PalmBinaryFile::~PalmBinaryFile()
 {
 	for (int i = 0; i < m_iNumSections; i++)
 		delete [] m_pSections[i].pSectionName;
+	delete [] m_pSections;
 	delete [] m_pImage;
 	delete [] m_pData;
 }

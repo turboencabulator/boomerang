@@ -36,6 +36,7 @@ HpSomBinaryFile::HpSomBinaryFile() :
 
 HpSomBinaryFile::~HpSomBinaryFile()
 {
+	delete [] m_pSections;
 	delete [] m_pImage;
 }
 
