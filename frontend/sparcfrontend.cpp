@@ -30,7 +30,6 @@
 #include "prog.h"
 #include "decoder.h"
 #include "sparcdecoder.h"
-#include "frontend.h"
 #include "sparcfrontend.h"
 #include "boomerang.h"
 #include "signature.h"

@@ -20,7 +20,6 @@
 #endif
 
 #include "types.h"
-#include "frontend.h"
 #include "pentiumfrontend.h"
 #include "rtl.h"
 #include "decoder.h"        // prototype for decodeInstruction()

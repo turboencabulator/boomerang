@@ -29,7 +29,6 @@
 #include "prog.h"
 #include "decoder.h"
 #include "ppcdecoder.h"
-#include "frontend.h"
 #include "ppcfrontend.h"
 #include "boomerang.h"
 #include "signature.h"

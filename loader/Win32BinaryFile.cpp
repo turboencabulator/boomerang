@@ -21,7 +21,6 @@
 #include <config.h>
 #endif
 
-#include "BinaryFile.h"
 #include "Win32BinaryFile.h"
 
 #include <iostream>

@@ -18,7 +18,6 @@
 #include "prog.h"
 #include "decoder.h"
 #include "mipsdecoder.h"
-#include "frontend.h"
 #include "mipsfrontend.h"
 #include "boomerang.h"
 #include "signature.h"

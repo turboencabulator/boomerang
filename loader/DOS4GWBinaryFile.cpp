@@ -21,7 +21,6 @@
 #include <config.h>
 #endif
 
-#include "BinaryFile.h"
 #include "DOS4GWBinaryFile.h"
 
 #include <iostream>

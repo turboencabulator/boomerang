@@ -29,7 +29,6 @@
 #include "prog.h"
 #include "decoder.h"
 #include "st20decoder.h"
-#include "frontend.h"
 #include "st20frontend.h"
 #include "boomerang.h"
 #include "signature.h"
