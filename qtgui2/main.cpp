@@ -4,19 +4,22 @@
 
 #include "mainwindow.h"
 
-#include "gc.h"
-
 #include <QApplication>
 
-void init_dfa();         // Prototypes for
-void init_sslparser();   // various initialisation functions
-void init_basicblock();  // for garbage collection safety
+#ifdef GARBAGE_COLLECTOR
+// Prototypes for various initialisation functions for garbage collection safety
+void init_dfa();
+void init_sslparser();
+void init_basicblock();
+#endif
 
 int main(int argc, char *argv[])
 {
+#ifdef GARBAGE_COLLECTOR
 	init_dfa();
 	init_sslparser();
 	init_basicblock();
+#endif
 
 	QApplication app(argc, argv);
 	MainWindow mainWindow;

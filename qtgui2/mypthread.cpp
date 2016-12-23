@@ -26,7 +26,9 @@
 #include <config.h>
 #endif
 
+#ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
+#endif
 
 #include <cstdlib>
 #include <cstdio>

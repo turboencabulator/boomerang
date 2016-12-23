@@ -23,27 +23,32 @@
 
 #include "boomerang.h"
 
+#ifdef GARBAGE_COLLECTOR
 //#define GC_DEBUG 1  // Uncomment to debug the garbage collector
-#include "gc.h"
+#include <gc/gc.h>
 
-void init_dfa();         // Prototypes for
-void init_sslparser();   // various initialisation functions
-void init_basicblock();  // for garbage collection safety
+// Prototypes for various initialisation functions for garbage collection safety
+void init_dfa();
+void init_sslparser();
+void init_basicblock();
+#endif
 
 #ifndef NO_CMDLINE_MAIN
 int main(int argc, const char *argv[])
 {
+#ifdef GARBAGE_COLLECTOR
 	// Call the various initialisation functions for safe garbage collection
 	init_dfa();
 	init_sslparser();
 	init_basicblock();
+#endif
 
 	return Boomerang::get()->commandLine(argc, argv);
 }
 #endif
 
+#ifdef GARBAGE_COLLECTOR
 #ifndef NO_NEW_OR_DELETE_OPERATORS
-#ifndef NO_GARBAGE_COLLECTOR
 /* This makes sure that the garbage collector sees all allocations, even those
     that we can't be bothered collecting, especially standard STL objects */
 void *operator new(size_t n)

@@ -31,7 +31,9 @@
 #endif
 
 // For the -nG switch to disable the garbage collector
-#include "gc.h"
+#ifdef GARBAGE_COLLECTOR
+#include <gc/gc.h>
+#endif
 
 #include <sys/stat.h>       // For mkdir
 #include <sys/types.h>
@@ -766,7 +768,7 @@ int Boomerang::commandLine(int argc, const char *argv[])
 				noGlobals = true;
 				break;
 			case 'G':
-#ifndef NO_GARBAGE_COLLECTOR
+#ifdef GARBAGE_COLLECTOR
 				GC_disable();
 #endif
 				break;

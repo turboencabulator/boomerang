@@ -13,12 +13,15 @@ boomerang_gui_SOURCES = \
 	main.cpp \
 	mainwindow.cpp \
 	mainwindow.h \
-	mypthread.cpp \
 	rtleditor.cpp \
 	rtleditor.h \
 	about.ui \
 	boomerang.ui \
 	boomerang.qrc
+if GC
+boomerang_gui_SOURCES += \
+	mypthread.cpp
+endif
 nodist_boomerang_gui_SOURCES = \
 	moc_DecompilerThread.cpp \
 	moc_mainwindow.cpp \

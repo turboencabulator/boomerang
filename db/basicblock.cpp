@@ -33,7 +33,9 @@
 #include "log.h"
 #include "visitor.h"
 
-#include "gc.h"
+#ifdef GARBAGE_COLLECTOR
+#include <gc/gc.h>
+#endif
 
 #include <sstream>
 
@@ -1912,9 +1914,9 @@ static Exp *formr = new Binary(opPlus,
 static Exp *hlForms[] = { forma, formA, formo, formO, formR, formr };
 static char chForms[] = {   'a',   'A',   'o',   'O',   'R',   'r' };
 
+#ifdef GARBAGE_COLLECTOR
 void init_basicblock()
 {
-#ifndef NO_GARBAGE_COLLECTOR
 	Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(6 * sizeof *gc_pointers);
 	gc_pointers[0] = forma;
 	gc_pointers[1] = formA;
@@ -1922,8 +1924,8 @@ void init_basicblock()
 	gc_pointers[3] = formO;
 	gc_pointers[4] = formR;
 	gc_pointers[5] = formr;
-#endif
 }
+#endif
 
 // Vcall high level patterns
 // Pattern 0: global<wild>[0]

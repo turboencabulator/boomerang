@@ -25,7 +25,9 @@
 #include "log.h"
 #include "proc.h"
 
-#include "gc.h"
+#ifdef GARBAGE_COLLECTOR
+#include <gc/gc.h>
+#endif
 
 #include <sstream>
 
@@ -52,16 +54,21 @@ static Exp *unscaledArrayPat = new Binary(opPlus,
                                           new Terminal(opWild),
                                           new Terminal(opWildIntConst));
 
-// The purpose of this funciton and others like it is to establish safe static roots for garbage collection purposes
-// This is particularly important for OS X where it is known that the collector can't see global variables, but it is
-// suspected that this is actually important for other architectures as well
-void init_dfa() {
-#ifndef NO_GARBAGE_COLLECTOR
+#ifdef GARBAGE_COLLECTOR
+/**
+ * The purpose of this function and others like it is to establish safe static
+ * roots for garbage collection purposes.  This is particularly important for
+ * OS X where it is known that the collector can't see global variables, but
+ * it is suspected that this is actually important for other architectures as
+ * well.
+ */
+void init_dfa()
+{
 	static Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(2 * sizeof *gc_pointers);
 	gc_pointers[0] = scaledArrayPat;
 	gc_pointers[1] = unscaledArrayPat;
-#endif
 }
+#endif
 
 
 static int progress = 0;

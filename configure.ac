@@ -29,6 +29,13 @@ AC_ARG_WITH([expat],
 	[],
 	[AS_VAR_SET([with_expat], [yes])])
 
+AC_ARG_WITH([gc],
+	[AS_HELP_STRING(
+		[--without-gc],
+		[disable the garbage collector])],
+	[],
+	[AS_VAR_SET([with_gc], [yes])])
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
@@ -70,7 +77,9 @@ AC_PATH_PROG([UNGENERATE],[ungenerate],,
 AS_IF([test "x$with_expat" = "xyes"], [
 	PKG_CHECK_MODULES([EXPAT],[expat])
 ])
-PKG_CHECK_MODULES([GC],[bdw-gc])
+AS_IF([test "x$with_gc" = "xyes"], [
+	PKG_CHECK_MODULES([GC],[bdw-gc])
+])
 AS_IF([test "x$enable_gui" = "xyes"], [
 	PKG_CHECK_MODULES([QTGUI],[QtGui])
 ])
@@ -94,6 +103,7 @@ AC_C_BIGENDIAN
 AM_CONDITIONAL([DYNAMIC], [test "x$enable_modules" = "xyes"])
 AM_CONDITIONAL([GUI], [test "x$enable_gui" = "xyes"])
 AM_CONDITIONAL([XML], [test "x$with_expat" = "xyes"])
+AM_CONDITIONAL([GC], [test "x$with_gc" = "xyes"])
 
 AS_IF([test "x$enable_modules" = "xyes"], [
 	AC_DEFINE([DYNAMIC], [1], [Define to 1 to enable support for modules (requires dlopen)])
@@ -102,6 +112,9 @@ AS_IF([test "x$enable_modules" = "xyes"], [
 ])
 AS_IF([test "x$with_expat" = "xyes"], [
 	AC_DEFINE([USE_XML], [1], [Define to 1 to enable XML loading and saving (requires expat)])
+])
+AS_IF([test "x$with_gc" = "xyes"], [
+	AC_DEFINE([GARBAGE_COLLECTOR], [1], [Define to 1 to enable garbage collection (requires gc)])
 ])
 
 AC_CONFIG_FILES([

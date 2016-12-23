@@ -12,7 +12,9 @@
 #include "signature.h"
 #include "cluster.h"
 
-#include "gc.h"
+#ifdef GARBAGE_COLLECTOR
+#include <gc/gc.h>
+#endif
 
 #include <QtGui>
 #include <QtCore>
@@ -22,7 +24,8 @@
 
 #include <sstream>
 
-Qt::HANDLE threadToCollect = 0;
+#ifdef GARBAGE_COLLECTOR
+static Qt::HANDLE threadToCollect = 0;
 
 void *operator new(size_t n)
 {
@@ -39,10 +42,13 @@ void operator delete(void *p)
 	if (curThreadId != threadToCollect)
 		GC_free(p); // Important to call this if you call GC_malloc_uncollectable
 }
+#endif
 
 void DecompilerThread::run()
 {
+#ifdef GARBAGE_COLLECTOR
 	threadToCollect = QThread::currentThreadId();
+#endif
 
 	Boomerang::get()->setOutputDirectory("./output/");
 	//Boomerang::get()->vFlag = true;
