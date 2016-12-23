@@ -18,8 +18,6 @@
 #define OUTPUTDIR "./output"
 #endif
 
-#define USE_XML 1           // Set to 0 to not use the expat library for XML loading and saving
-
 #include "prog.h"
 #include "proc.h"
 #include "frontend.h"
@@ -28,7 +26,7 @@
 //#include "transformer.h"
 #include "boomerang.h"
 #include "log.h"
-#if USE_XML
+#ifdef USE_XML
 #include "xmlprogparser.h"
 #endif
 
@@ -67,7 +65,9 @@ Boomerang::Boomerang() : progPath(DATADIR "/"), outputPath(OUTPUTDIR "/"), logge
 	stopAtDebugPoints(false), debugTA(false), decodeMain(true), printAST(false), dumpXML(false),
 	noRemoveReturns(false), debugDecoder(false), decodeThruIndCall(false), ofsIndCallReport(NULL),
 	noDecodeChildren(false), debugProof(false), debugUnused(false),
+#ifdef USE_XML
 	loadBeforeDecompile(false), saveBeforeDecompile(false),
+#endif
 	noProve(false), noChangeSignatures(false), conTypeAnalysis(false), dfaTypeAnalysis(true),
 	propMaxDepth(3), generateCallGraph(false), generateSymbols(false), noGlobals(false), assumeABI(false),
 	experimental(false), minsToStopAfter(0)
@@ -152,7 +152,7 @@ void Boomerang::help()
 	std::cout << "  -t               : Trace (print address of) every instruction decoded\n";
 	std::cout << "  -Tc              : Use old constraint-based type analysis\n";
 	std::cout << "  -Td              : Use data-flow-based type analysis\n";
-#if USE_XML
+#ifdef USE_XML
 	std::cout << "  -LD              : Load before decompile (<program> becomes xml input file)\n";
 	std::cout << "  -SD              : Save before decompile\n";
 #endif
@@ -297,7 +297,7 @@ int Boomerang::parseCmd(int argc, const char *argv[])
 			return 1;
 		}
 		prog = p;
-#if USE_XML
+#ifdef USE_XML
 	} else if (!strcmp(argv[0], "load")) {
 		if (argc <= 1) {
 			std::cerr << "not enough arguments for cmd\n";
@@ -875,18 +875,18 @@ int Boomerang::commandLine(int argc, const char *argv[])
 			break;
 		case 'L':
 			if (argv[i][2] == 'D')
-#if USE_XML
+#ifdef USE_XML
 				loadBeforeDecompile = true;
 #else
-				std::cerr << "LD command not enabled since compiled without USE_XML\n";
+				std::cerr << "LD command not enabled\n";
 #endif
 			break;
 		case 'S':
 			if (argv[i][2] == 'D')
-#if USE_XML
+#ifdef USE_XML
 				saveBeforeDecompile = true;
 #else
-				std::cerr << "SD command not enabled since compiled without USE_XML\n";
+				std::cerr << "SD command not enabled\n";
 #endif
 			else {
 				sscanf(argv[++i], "%i", &minsToStopAfter);
@@ -1085,7 +1085,7 @@ int Boomerang::decompile(const char *fname, const char *pname)
 	//std::cout << "setting up transformers...\n";
 	//ExpTransformer::loadAll();
 
-#if USE_XML
+#ifdef USE_XML
 	if (loadBeforeDecompile) {
 		std::cout << "loading persisted state...\n";
 		prog = loadFromXML(fname);
@@ -1097,7 +1097,7 @@ int Boomerang::decompile(const char *fname, const char *pname)
 			return 1;
 	}
 
-#if USE_XML
+#ifdef USE_XML
 	if (saveBeforeDecompile) {
 		std::cout << "saving persistable state...\n";
 		persistToXML(prog);
@@ -1147,7 +1147,7 @@ int Boomerang::decompile(const char *fname, const char *pname)
 	return 0;
 }
 
-#if USE_XML
+#ifdef USE_XML
 /**
  * Saves the state of the Prog object to a XML file.
  * \param prog The Prog object to save.

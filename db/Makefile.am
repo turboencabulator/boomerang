@@ -5,17 +5,7 @@ AM_CPPFLAGS = \
 
 
 noinst_LTLIBRARIES = \
-	libxmlprogparser.la \
 	libdb.la
-
-libxmlprogparser_la_SOURCES = \
-	xmlprogparser.cpp \
-	$(top_srcdir)/include/xmlprogparser.h
-libxmlprogparser_la_LIBADD = \
-	$(EXPAT_LIBS)
-libxmlprogparser_la_CPPFLAGS = \
-	$(AM_CPPFLAGS) \
-	$(EXPAT_CFLAGS)
 
 libdb_la_SOURCES = \
 	basicblock.cpp \
@@ -61,6 +51,21 @@ noinst_HEADERS = \
 	$(top_srcdir)/include/types.h
 libdb_la_LIBADD = \
 	$(GC_LIBS)
+
+
+if XML
+noinst_LTLIBRARIES += \
+	libxmlprogparser.la
+
+libxmlprogparser_la_SOURCES = \
+	xmlprogparser.cpp \
+	$(top_srcdir)/include/xmlprogparser.h
+libxmlprogparser_la_LIBADD = \
+	$(EXPAT_LIBS)
+libxmlprogparser_la_CPPFLAGS = \
+	$(AM_CPPFLAGS) \
+	$(EXPAT_CFLAGS)
+endif
 
 
 check_LTLIBRARIES = \

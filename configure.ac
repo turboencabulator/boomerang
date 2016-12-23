@@ -22,6 +22,13 @@ AC_ARG_ENABLE([gui],
 	[],
 	[AS_VAR_SET([enable_gui], [yes])])
 
+AC_ARG_WITH([expat],
+	[AS_HELP_STRING(
+		[--without-expat],
+		[disable XML loading and saving])],
+	[],
+	[AS_VAR_SET([with_expat], [yes])])
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
@@ -60,7 +67,9 @@ AC_PATH_PROG([UNGENERATE],[ungenerate],,
 	[$PATH:$HOME/install:$HOME/bin:/home/02/binary/u0.luna.tools/NJ/base])
 
 # Checks for libraries.
-PKG_CHECK_MODULES([EXPAT],[expat])
+AS_IF([test "x$with_expat" = "xyes"], [
+	PKG_CHECK_MODULES([EXPAT],[expat])
+])
 PKG_CHECK_MODULES([GC],[bdw-gc])
 AS_IF([test "x$enable_gui" = "xyes"], [
 	PKG_CHECK_MODULES([QTGUI],[QtGui])
@@ -84,11 +93,15 @@ AC_C_BIGENDIAN
 
 AM_CONDITIONAL([DYNAMIC], [test "x$enable_modules" = "xyes"])
 AM_CONDITIONAL([GUI], [test "x$enable_gui" = "xyes"])
+AM_CONDITIONAL([XML], [test "x$with_expat" = "xyes"])
 
 AS_IF([test "x$enable_modules" = "xyes"], [
 	AC_DEFINE([DYNAMIC], [1], [Define to 1 to enable support for modules (requires dlopen)])
 	AC_DEFINE([MODPREFIX], [""], [Define to the module name prefix])
 	AC_DEFINE([MODSUFFIX], [".so"], [Define to the module name suffix])
+])
+AS_IF([test "x$with_expat" = "xyes"], [
+	AC_DEFINE([USE_XML], [1], [Define to 1 to enable XML loading and saving (requires expat)])
 ])
 
 AC_CONFIG_FILES([

@@ -140,8 +140,11 @@ public:
 	        int         decompile(const char *fname, const char *pname = NULL);
 	        /// Add a Watcher to the set of Watchers for this Boomerang object.
 	        void        addWatcher(Watcher *watcher) { watchers.insert(watcher); }
-	        void        persistToXML(Prog *prog);
-	        Prog       *loadFromXML(const char *fname);
+
+#ifdef USE_XML
+	static  void        persistToXML(Prog *prog);
+	static  Prog       *loadFromXML(const char *fname);
+#endif
 
 	        void        objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog);
 
@@ -276,8 +279,10 @@ public:
 	        bool        noDecodeChildren;
 	        bool        debugProof;
 	        bool        debugUnused;
+#ifdef USE_XML
 	        bool        loadBeforeDecompile;
 	        bool        saveBeforeDecompile;
+#endif
 	        bool        noProve;
 	        bool        noChangeSignatures;
 	        bool        conTypeAnalysis;

@@ -25,9 +25,7 @@
 #include "log.h"
 #include "frontend.h"
 
-extern "C" {
-#include "expat.h"
-}
+#include <expat.h>
 
 #include <cctype>
 #include <cstdio>

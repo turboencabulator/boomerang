@@ -24,7 +24,6 @@ libboomerang_la_SOURCES = \
 	$(top_srcdir)/include/boomerang.h
 libboomerang_la_LIBADD = \
 	$(top_builddir)/db/libdb.la \
-	$(top_builddir)/db/libxmlprogparser.la \
 	$(top_builddir)/c/libansi-c.la \
 	$(top_builddir)/codegen/libcodegen.la \
 	$(top_builddir)/util/libutil.la \
@@ -33,6 +32,10 @@ libboomerang_la_LIBADD = \
 	$(top_builddir)/loader/libloader.la \
 	$(top_builddir)/transform/libtransform.la \
 	$(GC_LIBS)
+if XML
+libboomerang_la_LIBADD += \
+	$(top_builddir)/db/libxmlprogparser.la
+endif
 libboomerang_la_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-DDATADIR=\"$(pkgdatadir)\" \
