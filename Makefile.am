@@ -9,8 +9,11 @@ SUBDIRS = \
 	db \
 	frontend \
 	signatures \
-	. \
-	qtgui2
+	.
+
+if GUI
+SUBDIRS += qtgui2
+endif
 
 
 pkglib_LTLIBRARIES = \

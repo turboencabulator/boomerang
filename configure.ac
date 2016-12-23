@@ -8,6 +8,20 @@ AC_CONFIG_HEADERS([include/config.h])
 AM_INIT_AUTOMAKE([foreign])
 LT_INIT([dlopen disable-static])
 
+AC_ARG_ENABLE([modules],
+	[AS_HELP_STRING(
+		[--disable-modules],
+		[disable loadable modules, create a monolithic executable])],
+	[],
+	[AS_VAR_SET([enable_modules], [yes])])
+
+AC_ARG_ENABLE([gui],
+	[AS_HELP_STRING(
+		[--disable-gui],
+		[do not build the GUI])],
+	[],
+	[AS_VAR_SET([enable_gui], [yes])])
+
 # Checks for programs.
 AC_PROG_CXX
 AC_PROG_CC
@@ -20,12 +34,15 @@ AC_PATH_PROG([FLEXPP],[flex++])
 AC_SUBST([FLEXPP])
 AC_PATH_PROG([M4],[m4])
 AC_SUBST([M4])
-AC_PATH_PROG([MOC],[moc])
-AC_SUBST([MOC])
-AC_PATH_PROG([UIC],[uic])
-AC_SUBST([UIC])
-AC_PATH_PROG([RCC],[rcc])
-AC_SUBST([RCC])
+
+AS_IF([test "x$enable_gui" = "xyes"], [
+	AC_PATH_PROG([MOC],[moc])
+	AC_SUBST([MOC])
+	AC_PATH_PROG([UIC],[uic])
+	AC_SUBST([UIC])
+	AC_PATH_PROG([RCC],[rcc])
+	AC_SUBST([RCC])
+])
 
 # Three paths for frontend/mltk.sh. No longer give a "value-if-not-found", so can avoid errors when not installed
 AC_PATH_PROG([TKML],[.run-sml],,
@@ -45,7 +62,9 @@ AC_PATH_PROG([UNGENERATE],[ungenerate],,
 # Checks for libraries.
 PKG_CHECK_MODULES([EXPAT],[expat])
 PKG_CHECK_MODULES([GC],[bdw-gc])
-PKG_CHECK_MODULES([QTGUI],[QtGui])
+AS_IF([test "x$enable_gui" = "xyes"], [
+	PKG_CHECK_MODULES([QTGUI],[QtGui])
+])
 PKG_CHECK_MODULES([CPPUNIT],[cppunit],
 	[],
 	[AC_MSG_WARN([$CPPUNIT_PKG_ERRORS, needed only for testing])])
@@ -63,13 +82,9 @@ AC_C_BIGENDIAN
 # Checks for library functions.
 #AC_CHECK_FUNCS(mkdir rmdir)
 
-AC_ARG_ENABLE([modules],
-	[AS_HELP_STRING(
-		[--disable-modules],
-		[disable loadable modules, create a monolithic executable])],
-	[],
-	[AS_VAR_SET([enable_modules], [yes])])
 AM_CONDITIONAL([DYNAMIC], [test "x$enable_modules" = "xyes"])
+AM_CONDITIONAL([GUI], [test "x$enable_gui" = "xyes"])
+
 AS_IF([test "x$enable_modules" = "xyes"], [
 	AC_DEFINE([DYNAMIC], [1], [Define to 1 to enable support for modules (requires dlopen)])
 	AC_DEFINE([MODPREFIX], [""], [Define to the module name prefix])
