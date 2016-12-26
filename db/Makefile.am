@@ -85,7 +85,6 @@ libCfgTest_la_SOURCES = \
 libCfgTest_la_LIBADD = \
 	$(CPPUNIT_LIBS)
 libCfgTest_la_CPPFLAGS = \
-	-I$(top_srcdir)/frontend \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
 
@@ -122,7 +121,6 @@ libProcTest_la_SOURCES = \
 libProcTest_la_LIBADD = \
 	$(CPPUNIT_LIBS)
 libProcTest_la_CPPFLAGS = \
-	-I$(top_srcdir)/frontend \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
 
@@ -132,7 +130,6 @@ libProgTest_la_SOURCES = \
 libProgTest_la_LIBADD = \
 	$(CPPUNIT_LIBS)
 libProgTest_la_CPPFLAGS = \
-	-I$(top_srcdir)/frontend \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
 
@@ -142,7 +139,6 @@ libRtlTest_la_SOURCES = \
 libRtlTest_la_LIBADD = \
 	$(CPPUNIT_LIBS)
 libRtlTest_la_CPPFLAGS = \
-	-I$(top_srcdir)/frontend \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
 
@@ -152,7 +148,6 @@ libStatementTest_la_SOURCES = \
 libStatementTest_la_LIBADD = \
 	$(CPPUNIT_LIBS)
 libStatementTest_la_CPPFLAGS = \
-	-I$(top_srcdir)/frontend \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)
 

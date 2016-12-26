@@ -23,8 +23,8 @@ libTypeTest_la_SOURCES = \
 	TypeTest.cpp \
 	TypeTest.h
 libTypeTest_la_LIBADD = \
+	$(top_builddir)/frontend/libfrontend.la \
 	$(CPPUNIT_LIBS)
 libTypeTest_la_CPPFLAGS = \
-	-I$(top_srcdir)/frontend \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS)

@@ -1,6 +1,5 @@
 AM_CPPFLAGS = \
-	-I$(top_srcdir)/include \
-	-I$(top_srcdir)/db
+	-I$(top_srcdir)/include
 
 
 noinst_LTLIBRARIES = \

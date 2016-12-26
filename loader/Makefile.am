@@ -99,6 +99,8 @@ libLoaderTest_la_CPPFLAGS = \
 libBinaryFileStub_la_SOURCES = \
 	BinaryFileStub.cpp \
 	$(top_srcdir)/include/BinaryFileStub.h
+libBinaryFileStub_la_LIBADD = \
+	$(top_builddir)/loader/libloader.la
 
 
 TESTS = $(check_PROGRAMS)

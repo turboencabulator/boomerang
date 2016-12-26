@@ -1,7 +1,6 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
-	$(QTGUI_CFLAGS) \
-	$(GC_CFLAGS)
+	$(QTGUI_CFLAGS)
 
 
 bin_PROGRAMS = \
@@ -18,10 +17,6 @@ boomerang_gui_SOURCES = \
 	about.ui \
 	boomerang.ui \
 	boomerang.qrc
-if GC
-boomerang_gui_SOURCES += \
-	mypthread.cpp
-endif
 nodist_boomerang_gui_SOURCES = \
 	moc_DecompilerThread.cpp \
 	moc_mainwindow.cpp \
@@ -29,8 +24,19 @@ nodist_boomerang_gui_SOURCES = \
 	qrc_boomerang.cpp
 boomerang_gui_LDADD = \
 	$(top_builddir)/libboomerang.la \
-	$(QTGUI_LIBS) \
-	$(GC_LIBS)
+	$(top_builddir)/frontend/libfrontend.la \
+	$(top_builddir)/loader/libloader.la \
+	$(QTGUI_LIBS)
+
+if GC
+AM_CPPFLAGS += \
+	$(GC_CFLAGS)
+boomerang_gui_SOURCES += \
+	mypthread.cpp
+boomerang_gui_LDADD += \
+	$(GC_LIBS) \
+	-ldl
+endif
 
 moc_%.cpp: %.h
 	$(MOC) $(QTGUI_CFLAGS) -o $@ $<
