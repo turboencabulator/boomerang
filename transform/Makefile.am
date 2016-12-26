@@ -48,9 +48,9 @@ AM_LFLAGS = -v
 
 SUFFIXES = .cpp .h .ypp .lpp
 %.cpp %.h: %.ypp
-	$(YACCCOMPILE) -o $*.cpp -d $<
+	$(AM_V_YACC)$(YACCCOMPILE) -o $*.cpp -d $<
 %.cpp %.h: %.lpp
-	$(LEXCOMPILE) -o$*.cpp -h $<
+	$(AM_V_LEX)$(LEXCOMPILE) -o$*.cpp -h $<
 
 BUILT_SOURCES = \
 	transformation-parser.h \

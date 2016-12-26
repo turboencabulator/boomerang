@@ -39,11 +39,11 @@ boomerang_gui_LDADD += \
 endif
 
 moc_%.cpp: %.h
-	$(MOC) $(QTGUI_CFLAGS) -o $@ $<
+	$(AM_V_GEN)$(MOC) $(QTGUI_CFLAGS) -o $@ $<
 ui_%.h: %.ui
-	$(UIC) -o $@ $<
+	$(AM_V_GEN)$(UIC) -o $@ $<
 qrc_%.cpp: %.qrc
-	$(RCC) -name $* -o $@ $<
+	$(AM_V_GEN)$(RCC) -name $* -o $@ $<
 
 BUILT_SOURCES = \
 	ui_boomerang.h \
