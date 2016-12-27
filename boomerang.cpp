@@ -104,8 +104,11 @@ HLLCode *Boomerang::getHLLCode(UserProc *p)
  */
 void Boomerang::usage()
 {
-	std::cout << "Usage: boomerang [ switches ] <program>" << std::endl;
-	std::cout << "boomerang -h for switch help" << std::endl;
+	static const char str[] =
+		"Usage: boomerang [ switches ] <program>\n"
+		"boomerang -h for switch help\n"
+	;
+	std::cout << str;
 	exit(1);
 }
 
@@ -114,27 +117,30 @@ void Boomerang::usage()
  */
 void Boomerang::helpcmd()
 {
-	//            ____.____1____.____2____.____3____.____4____.____5____.____6____.____7____.____8
-	std::cout << "Available commands (for use with -k):\n";
-	std::cout << "  decode                             : Loads and decodes the specified binary.\n";
-	std::cout << "  decompile [proc]                   : Decompiles the program or specified proc.\n";
-	std::cout << "  codegen [cluster]                  : Generates code for the program or a\n";
-	std::cout << "                                       specified cluster.\n";
-	std::cout << "  move proc <proc> <cluster>         : Moves the specified proc to the specified\n";
-	std::cout << "                                       cluster.\n";
-	std::cout << "  move cluster <cluster> <parent>    : Moves the specified cluster to the\n";
-	std::cout << "                                       specified parent cluster.\n";
-	std::cout << "  add cluster <cluster> [parent]     : Adds a new cluster to the root/specified\n";
-	std::cout << "                                       cluster.\n";
-	std::cout << "  delete cluster <cluster>           : Deletes an empty cluster.\n";
-	std::cout << "  rename proc <proc> <newname>       : Renames the specified proc.\n";
-	std::cout << "  rename cluster <cluster> <newname> : Renames the specified cluster.\n";
-	std::cout << "  info prog                          : Print info about the program.\n";
-	std::cout << "  info cluster <cluster>             : Print info about a cluster.\n";
-	std::cout << "  info proc <proc>                   : Print info about a proc.\n";
-	std::cout << "  print <proc>                       : Print the RTL for a proc.\n";
-	std::cout << "  help                               : This help.\n";
-	std::cout << "  exit                               : Quit the shell.\n";
+	static const char str[] =
+		//___.____1____.____2____.____3____.____4____.____5____.____6____.____7____.____8
+		"Available commands (for use with -k):\n"
+		"  decode                             : Loads and decodes the specified binary.\n"
+		"  decompile [proc]                   : Decompiles the program or specified proc.\n"
+		"  codegen [cluster]                  : Generates code for the program or a\n"
+		"                                       specified cluster.\n"
+		"  move proc <proc> <cluster>         : Moves the specified proc to the specified\n"
+		"                                       cluster.\n"
+		"  move cluster <cluster> <parent>    : Moves the specified cluster to the\n"
+		"                                       specified parent cluster.\n"
+		"  add cluster <cluster> [parent]     : Adds a new cluster to the root/specified\n"
+		"                                       cluster.\n"
+		"  delete cluster <cluster>           : Deletes an empty cluster.\n"
+		"  rename proc <proc> <newname>       : Renames the specified proc.\n"
+		"  rename cluster <cluster> <newname> : Renames the specified cluster.\n"
+		"  info prog                          : Print info about the program.\n"
+		"  info cluster <cluster>             : Print info about a cluster.\n"
+		"  info proc <proc>                   : Print info about a proc.\n"
+		"  print <proc>                       : Print the RTL for a proc.\n"
+		"  help                               : This help.\n"
+		"  exit                               : Quit the shell.\n"
+	;
+	std::cout << str;
 }
 
 /**
@@ -142,68 +148,79 @@ void Boomerang::helpcmd()
  */
 void Boomerang::help()
 {
-	std::cout << "Symbols\n";
-	std::cout << "  -s <addr> <name> : Define a symbol\n";
-	std::cout << "  -sf <filename>   : Read a symbol/signature file\n";
-	std::cout << "Decoding/decompilation options\n";
-	std::cout << "  -e <addr>        : Decode the procedure beginning at addr, and callees\n";
-	std::cout << "  -E <addr>        : Decode the procedure at addr, no callees\n";
-	std::cout << "                     Use -e and -E repeatedly for multiple entry points\n";
-	std::cout << "  -ic              : Decode through type 0 Indirect Calls\n";
-	std::cout << "  -S <min>         : Stop decompilation after specified number of minutes\n";
-	std::cout << "  -t               : Trace (print address of) every instruction decoded\n";
-	std::cout << "  -Tc              : Use old constraint-based type analysis\n";
-	std::cout << "  -Td              : Use data-flow-based type analysis\n";
+	static const char str[] =
+		"Symbols\n"
+		"  -s <addr> <name> : Define a symbol\n"
+		"  -sf <filename>   : Read a symbol/signature file\n"
+		"\n"
+		"Decoding/decompilation options\n"
+		"  -e <addr>        : Decode the procedure beginning at addr, and callees\n"
+		"  -E <addr>        : Decode the procedure at addr, no callees\n"
+		"                     Use -e and -E repeatedly for multiple entry points\n"
+		"  -ic              : Decode through type 0 Indirect Calls\n"
+		"  -S <min>         : Stop decompilation after specified number of minutes\n"
+		"  -t               : Trace (print address of) every instruction decoded\n"
+		"  -Tc              : Use old constraint-based type analysis\n"
+		"  -Td              : Use data-flow-based type analysis\n"
 #ifdef USE_XML
-	std::cout << "  -LD              : Load before decompile (<program> becomes xml input file)\n";
-	std::cout << "  -SD              : Save before decompile\n";
+		"  -LD              : Load before decompile (<program> becomes xml input file)\n"
+		"  -SD              : Save before decompile\n"
 #endif
-	std::cout << "  -a               : Assume ABI compliance\n";
-	std::cout << "  -W               : Windows specific decompilation mode (requires pdb information)\n";
-	//std::cout << "  -pa              : only propagate if can propagate to all\n";
-	std::cout << "Output\n";
-	std::cout << "  -v               : Verbose\n";
-	std::cout << "  -h               : This help\n";
-	std::cout << "  -o <output path> : Where to generate output (defaults to ./output)\n";
-	std::cout << "  -x               : Dump XML files\n";
-	std::cout << "  -r               : Print RTL for each proc to log before code generation\n";
-	std::cout << "  -gd <dot file>   : Generate a dotty graph of the program's CFG and DFG\n";
-	std::cout << "  -gc              : Generate a call graph (callgraph.out and callgraph.dot)\n";
-	std::cout << "  -gs              : Generate a symbol file (symbols.h)\n";
-	std::cout << "  -iw              : Write indirect call report to output/indirect.txt\n";
-	std::cout << "Misc.\n";
-	std::cout << "  -k               : Command mode, for available commands see -h cmd\n";
-	std::cout << "  -P <path>        : Path to Boomerang files\n";
-	std::cout << "  -X               : activate eXperimental code; errors likely\n";
-	std::cout << "  --               : No effect (used for testing)\n";
-	std::cout << "Debug\n";
-	std::cout << "  -da              : Print AST before code generation\n";
-	std::cout << "  -dc              : Debug switch (Case) analysis\n";
-	std::cout << "  -dd              : Debug decoder to stdout\n";
-	std::cout << "  -dg              : Debug code Generation\n";
-	std::cout << "  -dl              : Debug liveness (from SSA) code\n";
-	std::cout << "  -dp              : Debug proof engine\n";
-	std::cout << "  -ds              : Stop at debug points for keypress\n";
-	std::cout << "  -dt              : Debug type analysis\n";
-	std::cout << "  -du              : Debug removing unused statements etc\n";
-	std::cout << "Restrictions\n";
-	std::cout << "  -nb              : No simplifications for branches\n";
-	std::cout << "  -nc              : No decode children in the call graph (callees)\n";
-	std::cout << "  -nd              : No (reduced) dataflow analysis\n";
-	std::cout << "  -nD              : No decompilation (at all!)\n";
-	std::cout << "  -nl              : No creation of local variables\n";
-	//std::cout << "  -nm              : No decoding of the 'main' procedure\n";
-	std::cout << "  -ng              : No replacement of expressions with Globals\n";
-	std::cout << "  -nG              : No garbage collection\n";
-	std::cout << "  -nn              : No removal of NULL and unused statements\n";
-	std::cout << "  -np              : No replacement of expressions with Parameter names\n";
-	std::cout << "  -nP              : No promotion of signatures (other than main/WinMain/\n";
-	std::cout << "                     DriverMain)\n";
-	std::cout << "  -nr              : No removal of unneeded labels\n";
-	std::cout << "  -nR              : No removal of unused Returns\n";
-	std::cout << "  -l <depth>       : Limit multi-propagations to expressions with depth <depth>\n";
-	std::cout << "  -p <num>         : Only do num propagations\n";
-	std::cout << "  -m <num>         : Max memory depth\n";
+		"  -a               : Assume ABI compliance\n"
+		"  -W               : Windows specific decompilation mode\n"
+		"                     (requires pdb information)\n"
+		//"  -pa              : only propagate if can propagate to all\n"
+		"\n"
+		"Output\n"
+		"  -v               : Verbose\n"
+		"  -h               : This help\n"
+		"  -o <output path> : Where to generate output (defaults to ./output)\n"
+		"  -x               : Dump XML files\n"
+		"  -r               : Print RTL for each proc to log before code generation\n"
+		"  -gd <dot file>   : Generate a dotty graph of the program's CFG and DFG\n"
+		"  -gc              : Generate a call graph (callgraph.out and callgraph.dot)\n"
+		"  -gs              : Generate a symbol file (symbols.h)\n"
+		"  -iw              : Write indirect call report to output/indirect.txt\n"
+		"\n"
+		"Misc.\n"
+		"  -k               : Command mode, for available commands see -h cmd\n"
+		"  -P <path>        : Path to Boomerang files\n"
+		"  -X               : activate eXperimental code; errors likely\n"
+		"  --               : No effect (used for testing)\n"
+		"\n"
+		"Debug\n"
+		"  -da              : Print AST before code generation\n"
+		"  -dc              : Debug switch (Case) analysis\n"
+		"  -dd              : Debug decoder to stdout\n"
+		"  -dg              : Debug code Generation\n"
+		"  -dl              : Debug liveness (from SSA) code\n"
+		"  -dp              : Debug proof engine\n"
+		"  -ds              : Stop at debug points for keypress\n"
+		"  -dt              : Debug type analysis\n"
+		"  -du              : Debug removing unused statements etc\n"
+		"\n"
+		"Restrictions\n"
+		"  -nb              : No simplifications for branches\n"
+		"  -nc              : No decode children in the call graph (callees)\n"
+		"  -nd              : No (reduced) dataflow analysis\n"
+		"  -nD              : No decompilation (at all!)\n"
+		"  -nl              : No creation of local variables\n"
+		//"  -nm              : No decoding of the 'main' procedure\n"
+		"  -ng              : No replacement of expressions with Globals\n"
+#ifdef GARBAGE_COLLECTOR
+		"  -nG              : No garbage collection\n"
+#endif
+		"  -nn              : No removal of NULL and unused statements\n"
+		"  -np              : No replacement of expressions with Parameter names\n"
+		"  -nP              : No promotion of signatures\n"
+		"                     (other than main/WinMain/DriverMain)\n"
+		"  -nr              : No removal of unneeded labels\n"
+		"  -nR              : No removal of unused Returns\n"
+		"  -l <depth>       : Limit multi-propagations to expressions with depth <depth>\n"
+		"  -p <num>         : Only do num propagations\n"
+		"  -m <num>         : Max memory depth\n"
+	;
+	std::cout << str;
 	exit(1);
 }
 
