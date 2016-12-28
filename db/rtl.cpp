@@ -23,13 +23,8 @@
 #include "statement.h"
 #include "exp.h"
 #include "type.h"
-#include "register.h"
-#include "cfg.h"
-#include "proc.h"  // For printing proc names
 #include "rtl.h"
-#include "prog.h"
 #include "hllcode.h"
-#include "util.h"
 #include "boomerang.h"
 #include "visitor.h"
 #include "log.h"

@@ -21,11 +21,8 @@
 #include "rtl.h"
 #include "decoder.h"
 #include "exp.h"
-#include "register.h"
-#include "cfg.h"
 #include "proc.h"
 #include "prog.h"
-#include "BinaryFile.h"
 #include "boomerang.h"
 
 #include <cstdarg>  // For varargs

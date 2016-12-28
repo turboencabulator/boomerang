@@ -20,7 +20,6 @@
 #include "exp.h"
 #include "boomerang.h"
 #include "visitor.h"
-#include "log.h"
 #include "frontend.h"
 
 #include <sstream>

@@ -9,8 +9,6 @@ class Statement;
 // Class PentiumFrontEnd: derived from FrontEnd, with source machine specific
 // behaviour
 
-class PentiumDecoder;
-
 class PentiumFrontEnd : public FrontEnd {
 public:
 	/*

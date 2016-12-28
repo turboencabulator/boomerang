@@ -22,18 +22,12 @@
 #endif
 
 #include "exp.h"
-#include "register.h"
-#include "rtl.h"
-#include "cfg.h"
 #include "proc.h"
 #include "prog.h"
 #include "decoder.h"
 #include "st20decoder.h"
 #include "st20frontend.h"
-#include "boomerang.h"
-#include "signature.h"
 
-#include <iomanip>          // For setfill etc
 #include <sstream>
 
 ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :

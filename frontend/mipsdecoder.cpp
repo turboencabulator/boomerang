@@ -24,13 +24,10 @@
 
 #include <assert.h>
 
-#include "exp.h"
 #include "prog.h"
-#include "proc.h"
 #include "decoder.h"
 #include "mipsdecoder.h"
 #include "rtl.h"
-#include "BinaryFile.h"		// For getSymbolByAddress()
 #include "boomerang.h"
 #include "statement.h"
 #include <iostream>

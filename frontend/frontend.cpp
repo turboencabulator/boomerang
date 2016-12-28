@@ -53,7 +53,6 @@
 #include <sstream>
 
 #include <cstdlib>
-#include <cstdarg>  // For varargs
 #include <cstring>
 #include <cassert>
 

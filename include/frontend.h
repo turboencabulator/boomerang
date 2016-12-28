@@ -31,18 +31,15 @@
 #include <fstream>
 
 class UserProc;
-class Proc;
 class RTL;
 class NJMCDecoder;
 class BasicBlock;
 typedef BasicBlock *PBB;
 class Exp;
-class TypedExp;
 class Cfg;
 class Prog;
 struct DecodeResult;
 class Signature;
-class Statement;
 class CallStatement;
 
 // Control flow types

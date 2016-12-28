@@ -23,7 +23,6 @@
 #endif
 
 #include "exp.h"
-#include "register.h"
 #include "rtl.h"
 #include "cfg.h"
 #include "proc.h"
@@ -32,7 +31,6 @@
 #include "sparcdecoder.h"
 #include "sparcfrontend.h"
 #include "boomerang.h"
-#include "signature.h"
 #include "log.h"
 
 #include <iomanip>          // For setfill etc

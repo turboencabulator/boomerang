@@ -24,7 +24,6 @@
 #include "rtl.h"
 #include "decoder.h"        // prototype for decodeInstruction()
 #include "pentiumdecoder.h"
-#include "register.h"
 #include "type.h"
 #include "cfg.h"
 #include "exp.h"

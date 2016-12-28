@@ -17,7 +17,6 @@
 #include <config.h>
 #endif
 
-#include "cfg.h"
 #include "statement.h"
 #include "exp.h"
 #include "proc.h"

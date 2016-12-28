@@ -7,7 +7,6 @@
 #include <QString>
 #include <QTableWidget>
 
-class MainWindow;
 class FrontEnd;
 class Proc;
 class UserProc;

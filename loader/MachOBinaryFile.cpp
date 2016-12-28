@@ -30,9 +30,6 @@
 #include <cstdarg>  // For va_list for MinGW at least
 #include "objc/objc-runtime.h"
 
-#include <iostream>
-#include <sstream>
-
 #include <cstdlib>
 #include <cstring>
 #include <cassert>

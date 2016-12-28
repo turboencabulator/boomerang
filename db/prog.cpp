@@ -27,8 +27,6 @@
 #include "cfg.h"
 #include "proc.h"
 #include "util.h"  // For lockFileWrite etc
-#include "register.h"
-#include "rtl.h"
 #include "BinaryFile.h"
 #include "frontend.h"
 #include "prog.h"

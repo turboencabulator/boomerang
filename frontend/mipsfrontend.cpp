@@ -11,18 +11,12 @@
 #endif
 
 #include "exp.h"
-#include "register.h"
-#include "rtl.h"
-#include "cfg.h"
 #include "proc.h"
 #include "prog.h"
 #include "decoder.h"
 #include "mipsdecoder.h"
 #include "mipsfrontend.h"
-#include "boomerang.h"
-#include "signature.h"
 
-#include <iomanip>          // For setfill etc
 #include <sstream>
 
 MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog) :

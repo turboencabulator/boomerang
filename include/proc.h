@@ -23,7 +23,6 @@
 #include "exp.h"  // For lessExpStar
 #include "cfg.h"  // For cfg->simplify()
 #include "hllcode.h"
-#include "memo.h"
 #include "dataflow.h"   // For class UseCollector
 #include "statement.h"  // For embedded ReturnStatement pointer, etc
 #include "boomerang.h"  // For USE_DOMINANCE_NUMS etc
@@ -38,18 +37,11 @@
 
 class Prog;
 class UserProc;
-class Cfg;
 class BasicBlock;
 typedef BasicBlock *PBB;
-class Exp;
 class TypedExp;
-class lessTI;
 class Type;
-class RTL;
 class HLLCode;
-class HLCall;
-class Parameter;
-class Argument;
 class Signature;
 class Cluster;
 class XMLProgParser;

@@ -20,8 +20,6 @@
 #include "signature.h"
 #include "prog.h"
 
-#include <sstream>
-
 // FixProcVisitor class
 
 bool FixProcVisitor::visit(Location *l, bool &override)

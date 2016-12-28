@@ -22,7 +22,6 @@
 #include "decoder.h"
 #include "st20decoder.h"
 #include "exp.h"
-#include "proc.h"
 #include "boomerang.h"
 #include "statement.h"
 

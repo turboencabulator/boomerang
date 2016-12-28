@@ -19,11 +19,9 @@
 #include <string>
 #include <sstream>
 
-class BasicBlock;
 class Exp;
 class Proc;
 class Assign;
-class LocationSet;
 
 // Operator precedence
 /*

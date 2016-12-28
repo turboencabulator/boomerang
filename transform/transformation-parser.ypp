@@ -14,9 +14,6 @@
 %header{
 	#include "exp.h"
 	#include "type.h"
-	#include "cfg.h"
-	#include "proc.h"
-	#include "signature.h"
 	#include "transformer.h"
 	#include "generic.h"
 

@@ -25,11 +25,9 @@
 class Cfg;
 class BasicBlock;
 class Exp;
-class RefExp;
 class Statement;
 class UserProc;
 class PhiAssign;
-class Type;
 
 typedef BasicBlock *PBB;
 

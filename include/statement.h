@@ -23,7 +23,6 @@
 #define STATEMENT_H
 
 //#include "exp.h"  // No! This is (almost) the bottom of the #include hierarchy
-#include "memo.h"
 #include "exphelp.h"  // For lessExpStar, lessAssignment etc
 #include "types.h"
 #include "managed.h"
@@ -49,7 +48,6 @@ class Const;
 class RefExp;
 class Cfg;
 class Type;
-class Statement;
 class Signature;
 class StmtVisitor;
 class StmtExpVisitor;
@@ -57,7 +55,6 @@ class StmtModifier;
 class StmtPartModifier;
 class HLLCode;
 class Assign;
-class RTL;
 class XMLProgParser;
 class ReturnStatement;
 

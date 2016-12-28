@@ -20,16 +20,12 @@
 #include "signature.h"
 #include "exp.h"
 #include "prog.h"
-#include "util.h"
-#include "visitor.h"
 #include "log.h"
 #include "proc.h"
 
 #ifdef GARBAGE_COLLECTOR
 #include <gc/gc.h>
 #endif
-
-#include <sstream>
 
 #include <cstring>
 

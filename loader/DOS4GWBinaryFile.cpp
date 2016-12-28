@@ -23,9 +23,6 @@
 
 #include "DOS4GWBinaryFile.h"
 
-#include <iostream>
-#include <sstream>
-
 #include <cstdlib>
 #include <cassert>
 

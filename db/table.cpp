@@ -17,9 +17,7 @@
 #include <config.h>
 #endif
 
-#include "types.h"
 #include "table.h"
-#include "statement.h"
 #include "exp.h"
 
 Table::Table(TABLE_TYPE t) :

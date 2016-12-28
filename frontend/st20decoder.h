@@ -13,7 +13,6 @@
 #ifndef ST20DECODER_H
 #define ST20DECODER_H
 
-class Prog;
 class NJMCDecoder;
 struct DecodeResult;
 

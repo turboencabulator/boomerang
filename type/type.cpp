@@ -20,7 +20,6 @@
 
 #include "types.h"
 #include "type.h"
-#include "util.h"
 #include "exp.h"
 #include "cfg.h"
 #include "proc.h"

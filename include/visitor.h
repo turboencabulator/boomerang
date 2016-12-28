@@ -46,8 +46,6 @@ class RTL;
 class UserProc;
 class Cfg;
 class Prog;
-class BasicBlock;
-typedef BasicBlock *PBB;
 
 class LocationSet;
 

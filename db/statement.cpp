@@ -22,7 +22,6 @@
 #include "prog.h"
 #include "boomerang.h"
 #include "rtl.h"  // For debugging code
-#include "util.h"
 #include "signature.h"
 #include "visitor.h"
 #include "dataflow.h"

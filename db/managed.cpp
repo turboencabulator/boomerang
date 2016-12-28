@@ -15,7 +15,6 @@
 #include <config.h>
 #endif
 
-#include "types.h"
 #include "managed.h"
 #include "statement.h"
 #include "exp.h"

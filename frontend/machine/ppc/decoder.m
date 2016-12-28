@@ -24,7 +24,6 @@
 #include "decoder.h"
 #include "ppcdecoder.h"
 #include "rtl.h"
-#include "BinaryFile.h"		// For getSymbolByAddress()
 #include "boomerang.h"
 #include <iostream>
 

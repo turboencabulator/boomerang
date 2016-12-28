@@ -8,9 +8,6 @@
 #include "exp.h"            // Ugh... just for enum OPER
 #include "frontend.h"       // In case included bare, e.g. ProcTest.cpp
 
-#include <set>
-
-class SparcDecoder;
 class CallStatement;
 
 class SparcFrontEnd : public FrontEnd {

@@ -22,18 +22,12 @@
 #endif
 
 #include "exp.h"
-#include "register.h"
-#include "rtl.h"
-#include "cfg.h"
 #include "proc.h"
 #include "prog.h"
 #include "decoder.h"
 #include "ppcdecoder.h"
 #include "ppcfrontend.h"
-#include "boomerang.h"
-#include "signature.h"
 
-#include <iomanip>          // For setfill etc
 #include <sstream>
 
 PPCFrontEnd::PPCFrontEnd(BinaryFile *pBF, Prog *prog) :
