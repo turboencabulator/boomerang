@@ -124,7 +124,7 @@ public:
 	        bool        setOutputDirectory(const char *path);
 
 	        /// \return The HLLCode for the specified UserProc.
-	        HLLCode    *getHLLCode(UserProc *p = NULL);
+	static  HLLCode    *getHLLCode(UserProc *p = NULL);
 
 	        int         commandLine(int argc, const char *argv[]);
 	        /// Set the path to the %Boomerang executable.
@@ -146,7 +146,7 @@ public:
 	static  Prog       *loadFromXML(const char *fname);
 #endif
 
-	        void        objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog);
+	static  void        objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog);
 
 	        /// Alert the watchers that decompilation has completed.
 	        void        alert_complete() {

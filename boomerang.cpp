@@ -232,7 +232,7 @@ void Boomerang::help()
  * \retval true The directory is valid.
  * \retval false The directory is invalid.
  */
-bool createDirectory(std::string dir)
+static bool createDirectory(std::string dir)
 {
 	std::string remainder(dir);
 	std::string path;
@@ -1074,7 +1074,7 @@ Prog *Boomerang::loadAndDecode(const char *fname, const char *pname)
 	return prog;
 }
 
-void stopProcess(int n)
+static void stopProcess(int n)
 {
 	std::cerr << "\n\n Stopping process, timeout.\n";
 	exit(1);
