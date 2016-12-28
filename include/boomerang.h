@@ -303,7 +303,7 @@ public:
 #define DEBUG_LIVENESS      (Boomerang::get()->debugLiveness)
 #define DFA_TYPE_ANALYSIS   (Boomerang::get()->dfaTypeAnalysis)
 #define CON_TYPE_ANALYSIS   (Boomerang::get()->conTypeAnalysis)
-#define ADHOC_TYPE_ANALYSIS (!Boomerang::get()->dfaTypeAnalysis && !Boomerang::get()->conTypeAnalysis)
+#define ADHOC_TYPE_ANALYSIS (!DFA_TYPE_ANALYSIS && !CON_TYPE_ANALYSIS)
 #define DEBUG_GEN           (Boomerang::get()->debugGen)
 #define DUMP_XML            (Boomerang::get()->dumpXML)
 #define DEBUG_SWITCH        (Boomerang::get()->debugSwitch)

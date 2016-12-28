@@ -2414,7 +2414,7 @@ void BasicBlock::processSwitch(UserProc *proc)
 	CaseStatement *lastStmt = (CaseStatement *)last->getHlStmt();
 	SWITCH_INFO *si = lastStmt->getSwitchInfo();
 
-	if (Boomerang::get()->debugSwitch) {
+	if (DEBUG_SWITCH) {
 		LOG << "processing switch statement type " << si->chForm << " with table at 0x" << si->uTable << ", ";
 		if (si->iNumTable)
 			LOG << si->iNumTable << " entries, ";

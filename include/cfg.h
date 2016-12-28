@@ -31,8 +31,6 @@
 
 #include <cstdio>  // For FILE
 
-#define DEBUG_LIVENESS (Boomerang::get()->debugLiveness)
-
 class Proc;
 class Prog;
 class UserProc;

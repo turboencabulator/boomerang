@@ -1084,9 +1084,9 @@ void Prog::decompile()
 	}
 
 	// Type analysis, if requested
-	if (Boomerang::get()->conTypeAnalysis && Boomerang::get()->dfaTypeAnalysis) {
+	if (CON_TYPE_ANALYSIS && DFA_TYPE_ANALYSIS) {
 		std::cerr << "can't use two types of type analysis at once!\n";
-		Boomerang::get()->conTypeAnalysis = false;
+		CON_TYPE_ANALYSIS = false;
 	}
 	globalTypeAnalysis();
 
@@ -1212,7 +1212,7 @@ void Prog::fromSSAform()
 	for (pp = m_procs.begin(); pp != m_procs.end(); pp++) {
 		UserProc *proc = (UserProc *)(*pp);
 		if (proc->isLib()) continue;
-		if (Boomerang::get()->vFlag) {
+		if (VERBOSE) {
 			LOG << "===== before transformation from SSA form for " << proc->getName() << " =====\n";
 			proc->printToLog();
 			LOG << "===== end before transformation from SSA for " << proc->getName() << " =====\n\n";
@@ -1220,7 +1220,7 @@ void Prog::fromSSAform()
 				proc->printDFG();
 		}
 		proc->fromSSAform();
-		if (Boomerang::get()->vFlag) {
+		if (VERBOSE) {
 			LOG << "===== after transformation from SSA form for " << proc->getName() << " =====\n";
 			proc->printToLog();
 			LOG << "===== end after transformation from SSA for " << proc->getName() << " =====\n\n";
@@ -1381,7 +1381,7 @@ void Prog::printSymbolsToFile()
 
 void Prog::printCallGraphXML()
 {
-	if (!Boomerang::get()->dumpXML)
+	if (!DUMP_XML)
 		return;
 	std::list<Proc *>::iterator it;
 	for (it = m_procs.begin(); it != m_procs.end(); it++)
