@@ -2,6 +2,10 @@
  * \file
  * \brief Provides the implementation for the TypeTest class, which tests the
  *        Type class and some utility functions.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifdef HAVE_CONFIG_H

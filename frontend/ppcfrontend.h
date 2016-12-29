@@ -1,3 +1,11 @@
+/**
+ * \file
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ */
+
 #ifndef PPCFRONTEND_H
 #define PPCFRONTEND_H
 

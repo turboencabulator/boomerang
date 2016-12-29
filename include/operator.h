@@ -2,6 +2,10 @@
  * \file
  * \brief Declares the enum OPER, which is used within class Exp to denote
  *        what the top level operator is.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifndef OPERATOR_H

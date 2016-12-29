@@ -1,6 +1,10 @@
 /**
  * \file
  * \brief Some often-used basic type definitions.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifndef TYPES_H

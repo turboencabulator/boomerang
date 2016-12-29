@@ -1,17 +1,16 @@
-/*
+/**
+ * \file
+ * \brief Contains the high level decoding functionality, for example matching
+ *        logues, calls, branches, etc.  Ordinary instructions are processed
+ *        in decoder_low.m
+ *
+ * \authors
  * Copyright (C) 1998-2001, The University of Queensland
  *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
-
-/*==============================================================================
- * FILE:	   decoder.m
- * OVERVIEW:   This file contains the high level decoding functionality, for example matching logues, calls, branches,
- *				etc. Ordinary instructions are processed in decoder_low.m
- *============================================================================*/ 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

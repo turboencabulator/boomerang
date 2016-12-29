@@ -13,6 +13,10 @@
  *
  * \authors
  * Copyright (C) 2002-2006, Trent Waddington and Mike Van Emmerik
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifndef EXP_H

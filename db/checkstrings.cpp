@@ -5,6 +5,10 @@
  *
  * Could say "all is well" when not, if some operators are deleted and the
  * same number added.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifdef HAVE_CONFIG_H

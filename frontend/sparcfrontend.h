@@ -1,3 +1,11 @@
+/**
+ * \file
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ */
+
 #ifndef SPARCFRONTEND_H
 #define SPARCFRONTEND_H
 

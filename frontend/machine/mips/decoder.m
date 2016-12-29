@@ -1,18 +1,14 @@
-/****************************************************************
-*
-* FILENAME
-*
-*   \file decoder.m
-*
-* PURPOSE 
-*
-* Decoding MIPS
-*
-* AUTHOR 
-*
-*   \author Markus Gothe, nietzsche@lysator.liu.se
-*
-*****************************************************************/
+/**
+ * \file
+ * \brief Decoding MIPS
+ *
+ * \authors
+ * Copyright (C) 2007, Markus Gothe <nietzsche@lysator.liu.se>
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ */
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

@@ -2,19 +2,18 @@
 #include <assert.h>
 
 #line 1 "frontend/machine/st20/decoder.m"
-/*
+/**
+ * \file
+ * \brief Contains the high level decoding functionality, for matching ST-20
+ *        instructions.
+ *
+ * \authors
  * Copyright (C) 2005 Mike Van Emmerik
  *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
-
-/*==============================================================================
- * FILE:	   decoder.m
- * OVERVIEW:   This file contains the high level decoding functionality, for matching ST-20 instructions.
- *============================================================================*/ 
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

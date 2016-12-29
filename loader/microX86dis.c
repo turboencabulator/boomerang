@@ -7,6 +7,10 @@
  * Assumes a seg32 segment; ignores the address size override.
  *
  * Note that the function could return Not Handled (NH, 0x40).
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifdef HAVE_CONFIG_H

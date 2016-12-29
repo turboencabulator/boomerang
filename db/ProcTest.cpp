@@ -2,6 +2,10 @@
  * \file
  * \brief Provides the implementation for the ProcTest class, which tests the
  *        Proc class.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifdef HAVE_CONFIG_H

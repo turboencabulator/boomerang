@@ -6,6 +6,10 @@
  *
  * Only needed for the dotty file (a debugging nicety) so don't be surprised
  * if the strings become out of date.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 const char *operStrings[] = {

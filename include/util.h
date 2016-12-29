@@ -2,6 +2,10 @@
  * \file
  * \brief Provides the definition for the miscellaneous bits and pieces
  *        implemented in the util.so library.
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifndef UTIL_H

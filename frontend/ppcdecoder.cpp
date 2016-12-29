@@ -2,19 +2,17 @@
 #include <assert.h>
 
 #line 0 "frontend/machine/ppc/decoder.m"
-/*
+/**
+ * \file
+ * \brief Implementation of the PPC specific parts of the PPCDecoder class.
+ *
+ * \authors
  * Copyright (C) 2004, The University of Queensland
  *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
-
-/*==============================================================================
- * FILE:	   decoder.m
- * OVERVIEW:   Implementation of the PPC specific parts of the PPCDecoder class.
- *============================================================================*/
 
 #ifdef HAVE_CONFIG_H
 #include <config.h>

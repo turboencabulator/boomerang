@@ -20,6 +20,10 @@
  *
  * \authors
  * Copyright (C) 2004-2006, Mike Van Emmerik and Trent Waddington
+ *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
 #ifndef VISITOR_H
