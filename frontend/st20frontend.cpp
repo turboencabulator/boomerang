@@ -33,7 +33,7 @@
 ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :
 	FrontEnd(pBF, prog)
 {
-	decoder = new ST20Decoder();
+	decoder = new ST20Decoder(prog);
 }
 
 ST20FrontEnd::~ST20FrontEnd()

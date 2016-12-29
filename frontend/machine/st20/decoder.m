@@ -338,7 +338,7 @@ DWord ST20Decoder::getDword (unsigned lc)
  * PARAMETERS:	   None
  * RETURNS:		   N/A
  *============================================================================*/
-ST20Decoder::ST20Decoder() : NJMCDecoder(prog)
+ST20Decoder::ST20Decoder(Prog *prog) : NJMCDecoder(prog)
 {
 	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/st20/st20.ssl";
 	RTLDict.readSSLFile(file.c_str());

@@ -13,12 +13,13 @@
 #ifndef ST20DECODER_H
 #define ST20DECODER_H
 
+class Prog;
 class NJMCDecoder;
 struct DecodeResult;
 
 class ST20Decoder : public NJMCDecoder {
 public:
-	ST20Decoder();
+	ST20Decoder(Prog *prog);
 
 	/**
 	 * Decodes the machine instruction at pc and returns an RTL instance for
