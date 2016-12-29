@@ -7,8 +7,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef SIGENUM
-#define SIGENUM
+#ifndef SIGENUM_H
+#define SIGENUM_H
 
 enum platform {
 	PLAT_PENTIUM,

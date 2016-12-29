@@ -14,8 +14,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef SYSTRAPS_H
-#define SYSTRAPS_H
+#ifndef PALMSYSTRAPS_H
+#define PALMSYSTRAPS_H
 
 #define sysTrapBase         0xA000
 #define numTrapStrings      (sizeof trapNames / sizeof *trapNames)

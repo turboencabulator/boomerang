@@ -10,8 +10,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef REG_H
-#define REG_H
+#ifndef REGISTER_H
+#define REGISTER_H
 
 class Type;
 

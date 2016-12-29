@@ -10,8 +10,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef GENERIC_EXP_TRANSFORMER_H
-#define GENERIC_EXP_TRANSFORMER_H
+#ifndef GENERIC_H
+#define GENERIC_H
 
 class GenericExpTransformer : public ExpTransformer
 {

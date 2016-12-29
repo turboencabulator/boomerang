@@ -6,8 +6,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef PENTFRONTEND_H
-#define PENTFRONTEND_H
+#ifndef PENTIUMFRONTEND_H
+#define PENTIUMFRONTEND_H
 
 #include "frontend.h"           // In case included bare, e.g. ProcTest.cpp
 

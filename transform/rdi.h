@@ -11,8 +11,8 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#ifndef REMOVE_DOUBLE_INDIRECTION_H
-#define REMOVE_DOUBLE_INDIRECTION_H
+#ifndef RDI_H
+#define RDI_H
 
 class RDIExpTransformer : public ExpTransformer
 {
