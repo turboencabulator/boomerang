@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTest
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -15,6 +16,10 @@ class SparcFrontEnd;
 class NJMCDecoder;
 class Prog;
 
+/**
+ * \ingroup UnitTest
+ * \brief Tests the SPARC front end.
+ */
 class FrontSparcTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(FrontSparcTest);
 	CPPUNIT_TEST(test1);

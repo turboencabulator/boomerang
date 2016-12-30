@@ -1,10 +1,13 @@
 /**
  * \file
+ * \ingroup UnitTest
+ *
+ * Compares selected members of the OPER enum against the operStrings table.
  *
  * To use, remove the binary, then `make checkstrings`.
  *
- * Could say "all is well" when not, if some operators are deleted and the
- * same number added.
+ * \note Could say "All is correct" when not, if some operators are deleted
+ * and the same number added.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of

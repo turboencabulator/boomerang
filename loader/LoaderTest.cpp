@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the LoaderTest class, which tests
- *        the BinaryFile and derived classes.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the LoaderTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -41,10 +41,9 @@
 #include <iostream>         // For cout
 #include <string>
 
-/*==============================================================================
- * FUNCTION:        LoaderTest::testSparcLoad
- * OVERVIEW:        Test loading the sparc hello world program
- *============================================================================*/
+/**
+ * Test loading the SPARC hello world program.
+ */
 void LoaderTest::testSparcLoad()
 {
 	std::ostringstream ost;
@@ -68,10 +67,9 @@ void LoaderTest::testSparcLoad()
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
 }
 
-/*==============================================================================
- * FUNCTION:        LoaderTest::testPentiumLoad
- * OVERVIEW:        Test loading the pentium (Solaris) hello world program
- *============================================================================*/
+/**
+ * Test loading the Pentium (Solaris) hello world program.
+ */
 void LoaderTest::testPentiumLoad()
 {
 	std::ostringstream ost;
@@ -95,10 +93,9 @@ void LoaderTest::testPentiumLoad()
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
 }
 
-/*==============================================================================
- * FUNCTION:        LoaderTest::testHppaLoad
- * OVERVIEW:        Test loading the sparc hello world program
- *============================================================================*/
+/**
+ * Test loading the HPPA hello world program.
+ */
 void LoaderTest::testHppaLoad()
 {
 	std::ostringstream ost;
@@ -121,10 +118,9 @@ void LoaderTest::testHppaLoad()
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
 }
 
-/*==============================================================================
- * FUNCTION:        LoaderTest::testPalmLoad
- * OVERVIEW:        Test loading the Palm 68328 Starter.prc program
- *============================================================================*/
+/**
+ * Test loading the Palm 68328 Starter.prc program.
+ */
 void LoaderTest::testPalmLoad()
 {
 	std::ostringstream ost;
@@ -148,10 +144,9 @@ void LoaderTest::testPalmLoad()
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
 }
 
-/*==============================================================================
- * FUNCTION:        LoaderTest::testWinLoad
- * OVERVIEW:        Test loading Windows programs
- *============================================================================*/
+/**
+ * Test loading Windows programs.
+ */
 void LoaderTest::testWinLoad()
 {
 	std::ostringstream ost;
@@ -238,10 +233,6 @@ void LoaderTest::testWinLoad()
 	BinaryFile::close(pBF);
 }
 
-/*==============================================================================
- * FUNCTION:        LoaderTest::testMicroDis
- * OVERVIEW:        Test the micro disassembler
- *============================================================================*/
 extern "C" int microX86Dis(void *p);
 
 // The below lengths were derived from a quick and dirty program (called
@@ -498,6 +489,10 @@ static char pent_hello_text[] = {
 	0x00, 0x5b, 0x81, 0xc3, 0x73, 0x10, 0x00, 0x00, 0x8b, 0x5d, 0xfc, 0xc9, 0xc3
 };
 
+/**
+ * Test the micro disassembler.
+ */
+/// \{
 void LoaderTest::testMicroDis1()
 {
 	std::ostringstream ost;
@@ -546,6 +541,7 @@ void LoaderTest::testMicroDis2()
 	size = microX86Dis(movswl);
 	CPPUNIT_ASSERT_EQUAL(3, size);
 }
+/// \}
 
 typedef unsigned (*elfHashFcn)(const char *);
 extern "C" unsigned elf_hash(const char *);

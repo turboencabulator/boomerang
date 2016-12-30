@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the FrontPentTest class, which tests
- *        the pentium front end.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the FrontPentTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -26,10 +26,10 @@
 #include "BinaryFile.h"
 #include "BinaryFileStub.h"
 
-/*==============================================================================
- * FUNCTION:        FrontPentTest::test1
- * OVERVIEW:        Test decoding some pentium instructions
- *============================================================================*/
+/**
+ * Test decoding some Pentium instructions.
+ */
+/// \{
 void FrontPentTest::test1()
 {
 	std::ostringstream ost;
@@ -141,6 +141,7 @@ void FrontPentTest::test3()
 
 	delete prog;
 }
+/// \}
 
 void FrontPentTest::testBranch()
 {
@@ -182,10 +183,12 @@ void FrontPentTest::testBranch()
 	delete prog;
 }
 
+/**
+ * Test the algorithm for finding main, when there is a call to
+ * __libc_start_main.  Also tests the loader hack.
+ */
 void FrontPentTest::testFindMain()
 {
-	// Test the algorithm for finding main, when there is a call to __libc_start_main
-	// Also tests the loader hack
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(FEDORA2_TRUE);
 	CPPUNIT_ASSERT(pBF != NULL);

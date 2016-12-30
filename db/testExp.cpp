@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTest
  * \brief Command line test of the Exp class.
  *
  * \copyright

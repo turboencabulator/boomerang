@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTest
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -11,6 +12,10 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+/**
+ * \ingroup UnitTest
+ * \brief Tests the Type class and some utility functions.
+ */
 class TypeTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(TypeTest);
 	CPPUNIT_TEST(testTypeLong);

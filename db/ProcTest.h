@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the interface for the ProcTest class, which tests the Proc
- *        class.
+ * \ingroup UnitTest
+ * \brief Provides the interface for the ProcTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -13,6 +13,10 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+/**
+ * \ingroup UnitTest
+ * \brief Tests the Proc class.
+ */
 class ProcTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(ProcTest);
 	CPPUNIT_TEST(testName);

@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the TypeTest class, which tests the
- *        Type class and some utility functions.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the TypeTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -24,10 +24,9 @@
 
 #include <iostream>
 
-/*==============================================================================
- * FUNCTION:        TypeTest::testTypeLong
- * OVERVIEW:        Test type unsigned long
- *============================================================================*/
+/**
+ * Test type unsigned long.
+ */
 void TypeTest::testTypeLong()
 {
 	std::string expected("unsigned long long");
@@ -36,10 +35,9 @@ void TypeTest::testTypeLong()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
-/*==============================================================================
- * FUNCTION:        TypeTest::testNotEqual
- * OVERVIEW:        Test type inequality
- *============================================================================*/
+/**
+ * Test type inequality.
+ */
 void TypeTest::testNotEqual()
 {
 	IntegerType t1(32, -1);
@@ -49,10 +47,6 @@ void TypeTest::testNotEqual()
 	CPPUNIT_ASSERT(t2 != t3);
 }
 
-/*==============================================================================
- * FUNCTION:        TypeTest::testNotEqual
- * OVERVIEW:        Test type inequality
- *============================================================================*/
 void TypeTest::testCompound()
 {
 	Prog *prog = new Prog;
@@ -113,10 +107,9 @@ void TypeTest::testCompound()
 	delete prog;
 }
 
-/*==============================================================================
- * FUNCTION:        TypeTest::testDataInterval
- * OVERVIEW:        Test the DataIntervalMap class
- *============================================================================*/
+/**
+ * Test the DataIntervalMap class.
+ */
 void TypeTest::testDataInterval()
 {
 	DataIntervalMap dim;
@@ -200,10 +193,9 @@ void TypeTest::testDataInterval()
 	delete prog;
 }
 
-/*==============================================================================
- * FUNCTION:        TypeTest::testDataIntervalOverlaps
- * OVERVIEW:        Test the DataIntervalMap class with overlapping addItems
- *============================================================================*/
+/**
+ * Test the DataIntervalMap class with overlapping addItems.
+ */
 void TypeTest::testDataIntervalOverlaps()
 {
 	DataIntervalMap dim;

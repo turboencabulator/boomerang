@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the ProcTest class, which tests the
- *        Proc class.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the ProcTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -20,22 +20,19 @@
 #include <sstream>
 #include <map>
 
-/*==============================================================================
- * FUNCTION:        ProcTest::tearDown
- * OVERVIEW:        Delete expressions created in setUp
- * NOTE:            Called after all tests
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * Delete expressions created in setUp.
+ *
+ * \note Called after all tests.
+ */
 void ProcTest::tearDown()
 {
 	delete m_proc;
 }
 
-/*==============================================================================
- * FUNCTION:        ProcTest::testName
- * OVERVIEW:        Test setting and reading name, constructor, native address
- *============================================================================*/
+/**
+ * Test setting and reading name, constructor, native address.
+ */
 void ProcTest::testName()
 {
 	Prog *prog = new Prog;

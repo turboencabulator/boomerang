@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTest
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -10,6 +11,10 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+/**
+ * \ingroup UnitTest
+ * \brief Tests the BinaryFile and derived classes.
+ */
 class LoaderTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(LoaderTest);
 	CPPUNIT_TEST(testSparcLoad);

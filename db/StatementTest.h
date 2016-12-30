@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the interface for the StatementTest class, which tests the
- *        dataflow subsystems.
+ * \ingroup UnitTest
+ * \brief Provides the interface for the StatementTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -13,6 +13,10 @@
 
 #include <cppunit/extensions/HelperMacros.h>
 
+/**
+ * \ingroup UnitTest
+ * \brief Tests the dataflow subsystems.
+ */
 class StatementTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(StatementTest);
 	CPPUNIT_TEST(testLocationSet);

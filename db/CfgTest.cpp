@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the CfgTest class, which tests the
- *        Exp and derived classes.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the CfgTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -25,29 +25,26 @@
 #include <sstream>
 #include <string>
 
-/*==============================================================================
- * FUNCTION:        CfgTest::setUp
- * OVERVIEW:        Set up some expressions for use with all the tests
- * NOTE:            Called before any tests
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * Set up some expressions for use with all the tests.
+ *
+ * \note Called before any tests.
+ */
 void CfgTest::setUp()
 {
 	//prog.setName("default name");
 }
 
-/*==============================================================================
- * FUNCTION:        CfgTest::testDominators
- * OVERVIEW:        Test the dominator frontier code
- *============================================================================*/
+/**
+ * Test the dominator frontier code.
+ */
+void CfgTest::testDominators()
+{
 #define FRONTIER_FOUR     0x08048347
 #define FRONTIER_FIVE     0x08048351
 #define FRONTIER_TWELVE   0x080483b2
 #define FRONTIER_THIRTEEN 0x080483b9
 
-void CfgTest::testDominators()
-{
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE != 0);
@@ -93,18 +90,17 @@ void CfgTest::testDominators()
 	delete prog;
 }
 
-/*==============================================================================
- * FUNCTION:        CfgTest::testSemiDominators
- * OVERVIEW:        Test a case where semi dominators are different to dominators
- *============================================================================*/
+/**
+ * Test a case where semi dominators are different to dominators.
+ */
+void CfgTest::testSemiDominators()
+{
 #define SEMI_L  0x80483b0
 #define SEMI_M  0x80483e2
 #define SEMI_B  0x8048345
 #define SEMI_D  0x8048354
 #define SEMI_M  0x80483e2
 
-void CfgTest::testSemiDominators()
-{
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(SEMI_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE != 0);
@@ -150,10 +146,9 @@ void CfgTest::testSemiDominators()
 	delete prog;
 }
 
-/*==============================================================================
- * FUNCTION:        CfgTest::testPlacePhi
- * OVERVIEW:        Test the placing of phi functions
- *============================================================================*/
+/**
+ * Test the placing of phi functions.
+ */
 void CfgTest::testPlacePhi()
 {
 	Prog *prog = new Prog;
@@ -189,10 +184,9 @@ void CfgTest::testPlacePhi()
 	delete prog;
 }
 
-/*==============================================================================
- * FUNCTION:        CfgTest::testPlacePhi2
- * OVERVIEW:        Test a case where a phi function is not needed
- *============================================================================*/
+/**
+ * Test a case where a phi function is not needed.
+ */
 void CfgTest::testPlacePhi2()
 {
 	Prog *prog = new Prog;
@@ -247,10 +241,9 @@ void CfgTest::testPlacePhi2()
 	delete prog;
 }
 
-/*==============================================================================
- * FUNCTION:        CfgTest::testRenameVars
- * OVERVIEW:        Test the renaming of variables
- *============================================================================*/
+/**
+ * Test the renaming of variables.
+ */
 void CfgTest::testRenameVars()
 {
 	Prog *prog = new Prog;

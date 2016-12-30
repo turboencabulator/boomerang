@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the DfaTest class, which tests the
- *        data flow based type analysis code.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the DfaTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -27,10 +27,9 @@ public:
 	virtual ~ErrLogger() { };
 };
 
-/*==============================================================================
- * FUNCTION:        DfaTest::testMeetInt
- * OVERVIEW:        Test meeting IntegerTypes with various other types
- *============================================================================*/
+/**
+ * Test meeting IntegerTypes with various other types.
+ */
 void DfaTest::testMeetInt()
 {
 	IntegerType i32(32, 1);
@@ -118,10 +117,9 @@ void DfaTest::testMeetInt()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
-/*==============================================================================
- * FUNCTION:        DfaTest::testMeetSize
- * OVERVIEW:        Test meeting IntegerTypes with various other types
- *============================================================================*/
+/**
+ * Test meeting SizeTypes with various other types.
+ */
 void DfaTest::testMeetSize()
 {
 	IntegerType i32(32, 1);
@@ -166,10 +164,9 @@ void DfaTest::testMeetSize()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
-/*==============================================================================
- * FUNCTION:        DfaTest::testMeetPointer
- * OVERVIEW:        Test meeting IntegerTypes with various other types
- *============================================================================*/
+/**
+ * Test meeting PointerTypes with various other types.
+ */
 void DfaTest::testMeetPointer()
 {
 	IntegerType i32(32, 1);
@@ -205,10 +202,9 @@ void DfaTest::testMeetPointer()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
-/*==============================================================================
- * FUNCTION:        DfaTest::testMeetUnion
- * OVERVIEW:        Test meeting IntegerTypes with various other types
- *============================================================================*/
+/**
+ * Test meeting UnionTypes with various other types.
+ */
 void DfaTest::testMeetUnion()
 {
 	UnionType u1;

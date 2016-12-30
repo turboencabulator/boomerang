@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the ProgTest class, which tests the
- *        Exp and derived classes.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the ProgTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -20,22 +20,19 @@
 #include <map>
 #include <sstream>
 
-/*==============================================================================
- * FUNCTION:        ProgTest::setUp
- * OVERVIEW:        Set up some expressions for use with all the tests
- * NOTE:            Called before any tests
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * Set up some expressions for use with all the tests.
+ *
+ * \note Called before any tests.
+ */
 void ProgTest::setUp()
 {
 	//prog.setName("default name");
 }
 
-/*==============================================================================
- * FUNCTION:        ProgTest::testName
- * OVERVIEW:        Test setting and reading name
- *============================================================================*/
+/**
+ * Test setting and reading name.
+ */
 void ProgTest::testName()
 {
 	Prog *prog = new Prog;

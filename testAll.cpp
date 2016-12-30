@@ -1,10 +1,20 @@
 /**
  * \file
+ * \ingroup UnitTest
  * \brief Command line test of all of Boomerang.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
+ */
+
+/**
+ * \defgroup UnitTest Unit Testing
+ */
+
+/**
+ * \defgroup UnitTestStub Unit Testing Stubs
+ * \ingroup UnitTest
  */
 
 #ifdef HAVE_CONFIG_H

@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTest
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -14,6 +15,10 @@
 class FrontEnd;
 class PentiumFrontEnd;
 
+/**
+ * \ingroup UnitTest
+ * \brief Tests the Pentium front end.
+ */
 class FrontPentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(FrontPentTest);
 	CPPUNIT_TEST(test1);

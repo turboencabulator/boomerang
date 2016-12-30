@@ -1,6 +1,7 @@
 /**
  * \file
- * \brief Command line test of the Rtl class.
+ * \ingroup UnitTest
+ * \brief Command line test of the RTL class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of

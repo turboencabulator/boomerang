@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the ParserTest class, which tests
- *        the sslparser.y etc.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the ParserTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -19,20 +19,18 @@
 
 #include <sstream>
 
-/*==============================================================================
- * FUNCTION:        ParserTest::testRead
- * OVERVIEW:        Test reading the SSL file
- *============================================================================*/
+/**
+ * Test reading the SSL file.
+ */
 void ParserTest::testRead()
 {
 	RTLInstDict d;
 	CPPUNIT_ASSERT(d.readSSLFile(SPARC_SSL));
 }
 
-/*==============================================================================
- * FUNCTION:        ParserTest::testExp
- * OVERVIEW:        Test parsing an expression
- *============================================================================*/
+/**
+ * Test parsing an expression.
+ */
 void ParserTest::testExp()
 {
 	std::string s("*i32* r0 := 5 + 6");

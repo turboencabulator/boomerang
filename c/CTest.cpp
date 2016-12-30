@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the CTest class, which tests the C
- *        parser.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the CTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -17,12 +17,6 @@
 
 #include <sstream>
 
-/*==============================================================================
- * FUNCTION:        CTest::testSignature
- * OVERVIEW:        Test
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
- *============================================================================*/
 void CTest::testSignature()
 {
 	std::istringstream os("int printf(char *fmt, ...);");

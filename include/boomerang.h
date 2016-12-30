@@ -14,10 +14,12 @@
  * \mainpage Introduction
  * \section Introduction
  *
- * Welcome to the Doxygen generated documentation for the
- * %Boomerang decompiler. Not all classes and functions have been documented
- * yet, but eventually they will. If you have figured out what a function is doing
- * please update the documentation and submit it as a patch.
+ * Welcome to the Doxygen generated documentation for the %Boomerang
+ * decompiler.  Not all classes and functions have been documented yet, but
+ * eventually they will.  If you have figured out what a function is doing
+ * please update the documentation and submit it as a patch.  Documentation
+ * about a function should be at one place only, so document all functions at
+ * the point of implementation (in the .c file).
  *
  * More information on the %Boomerang decompiler can be found at
  * http://boomerang.sourceforge.net.
@@ -92,11 +94,6 @@ private:
 	        Log        *logger;
 	        /// The watchers which are interested in this decompilation.
 	        std::set<Watcher *> watchers;
-
-
-	        /* Documentation about a function should be at one place only
-	         * So: Document all functions at the point of implementation (in the .c file)
-	         */
 
 	static  void        usage();
 	static  void        help();

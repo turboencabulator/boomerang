@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the RtlTest class, which tests the
- *        RTL and derived classes.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the RtlTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -26,10 +26,9 @@
 #define SWITCH_SPARC        "test/sparc/switch_cc"
 #define SWITCH_PENT         "test/pentium/switch_cc"
 
-/*==============================================================================
- * FUNCTION:        RtlTest::testAppend
- * OVERVIEW:        Test appendExp and printing of RTLs
- *============================================================================*/
+/**
+ * Test appendExp and printing of RTLs.
+ */
 void RtlTest::testAppend()
 {
 	Assign *a = new Assign(Location::regOf(8),
@@ -47,10 +46,9 @@ void RtlTest::testAppend()
 	//delete a;
 }
 
-/*==============================================================================
- * FUNCTION:        RtlTest::testClone
- * OVERVIEW:        Test constructor from list of expressions; cloning of RTLs
- *============================================================================*/
+/**
+ * Test constructor from list of expressions; cloning of RTLs.
+ */
 void RtlTest::testClone()
 {
 	Assign *a1 = new Assign(Location::regOf(8),
@@ -77,12 +75,10 @@ void RtlTest::testClone()
 	CPPUNIT_ASSERT_EQUAL(expected, act2);
 }
 
-/*==============================================================================
- * FUNCTION:        RtlTest::testVisitor
- * OVERVIEW:        Test the accept function for correct visiting behaviour.
- * NOTES:           Stub class to test.
- *============================================================================*/
-
+/**
+ * \ingroup UnitTestStub
+ * \brief Stub class to test.
+ */
 class StmtVisitorStub : public StmtVisitor {
 public:
 	bool a, b, c, d, e, f, g, h;
@@ -100,6 +96,9 @@ public:
 	virtual bool visit(         Assign *s) { h = true; return false; }
 };
 
+/**
+ * Test the accept function for correct visiting behaviour.
+ */
 void RtlTest::testVisitor()
 {
 	StmtVisitorStub *visitor = new StmtVisitorStub();
@@ -162,10 +161,9 @@ void RtlTest::testVisitor()
 	delete visitor;
 }
 
-/*==============================================================================
- * FUNCTION:        RtlTest::testIsCompare
- * OVERVIEW:        Test the isCompare function
- *============================================================================*/
+/**
+ * Test the isCompare function.
+ */
 void RtlTest::testIsCompare()
 {
 	Prog *prog = new Prog;

@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTest
  * \brief Command line test of the Statement class.
  *
  * \copyright

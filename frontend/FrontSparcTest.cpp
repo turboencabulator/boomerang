@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation for the FrontSparcTest class, which
- *        tests the sparc front end.
+ * \ingroup UnitTest
+ * \brief Provides the implementation for the FrontSparcTest class.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -24,10 +24,10 @@
 #include "cfg.h"
 #include "BinaryFile.h"
 
-/*==============================================================================
- * FUNCTION:        FrontSparcTest::test1
- * OVERVIEW:        Test decoding some sparc instructions
- *============================================================================*/
+/**
+ * Test decoding some SPARC instructions.
+ */
+/// \{
 void FrontSparcTest::test1()
 {
 	std::ostringstream ost;
@@ -194,6 +194,7 @@ void FrontSparcTest::test3()
 
 	delete prog;
 }
+/// \}
 
 void FrontSparcTest::testBranch()
 {

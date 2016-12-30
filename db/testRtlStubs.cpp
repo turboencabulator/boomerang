@@ -1,5 +1,6 @@
 /**
  * \file
+ * \ingroup UnitTestStub
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
