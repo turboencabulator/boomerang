@@ -16,8 +16,8 @@
 
 #include "operator.h"
 
-#include <string>
 #include <deque>
+#include <string>
 
 // Kinds of SSL specification tables
 enum TABLE_TYPE {

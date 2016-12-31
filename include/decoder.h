@@ -17,14 +17,13 @@
 #ifndef DECODER_H
 #define DECODER_H
 
-#include "types.h"
 #include "rtl.h"
+#include "types.h"
 
+#include <iostream>
 #include <list>
 
 class Exp;
-class RTL;
-class BinaryFile;
 class Prog;
 
 // These are the instruction classes defined in "A Transformational Approach to

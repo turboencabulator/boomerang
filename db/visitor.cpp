@@ -16,13 +16,14 @@
 #endif
 
 #include "visitor.h"
+
+#include "boomerang.h"  // For EXPERIMENTAL
 #include "exp.h"
-#include "statement.h"
 #include "log.h"
-#include "boomerang.h"  // For VERBOSE
 #include "proc.h"
-#include "signature.h"
 #include "prog.h"
+#include "signature.h"
+#include "statement.h"
 
 // FixProcVisitor class
 

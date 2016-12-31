@@ -15,8 +15,8 @@
 #ifndef INSNAMEELEM_H
 #define INSNAMEELEM_H
 
-#include <string>
 #include <map>
+#include <string>
 
 class Table;
 

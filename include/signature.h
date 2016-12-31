@@ -14,17 +14,21 @@
 #define SIGNATURE_H
 
 #include "exp.h"
-#include "type.h"
 #include "sigenum.h"  // For enums platform and cc
-#include "memo.h"
-#include "statement.h"  // For class Return
+#include "type.h"
 
+#include <ostream>
+#include <exception>
 #include <string>
+#include <vector>
 
+class Assignment;
+class BinaryFile;
+class Cfg;
+class Prog;
 class Statement;
 class StatementList;
-class BinaryFile;
-class XMLProgParser;
+class UserProc;
 
 class Parameter {
 private:

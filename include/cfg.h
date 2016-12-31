@@ -17,36 +17,31 @@
 #ifndef CFG_H
 #define CFG_H
 
-#include "types.h"
-#include "exphelp.h"     // For lessExpStar
 #include "basicblock.h"  // For the BB nodes
 #include "dataflow.h"    // For embedded class DataFlow
+#include "exphelp.h"     // For lessExpStar
+#include "types.h"
 
+#include <fstream>
+#include <ostream>
+#include <exception>
+#include <functional>
 #include <list>
-#include <vector>
-#include <set>
 #include <map>
-#include <iostream>
-#include <string>
+#include <set>
+#include <vector>
 
-#include <cstdio>  // For FILE
-
-class Proc;
-class Prog;
-class UserProc;
-class UseSet;
-class LocationSet;
-class SSACounts;
-class BinaryFile;
-class BasicBlock;
-class HLLCode;
-class CallStatement;
 class BranchStatement;
-class RTL;
-struct DOM;
-class XMLProgParser;
+class CallStatement;
+class ConnectionGraph;
+class Exp;
 class Global;
+class HLLCode;
 class Parameter;
+class Prog;
+class RTL;
+class Statement;
+class UserProc;
 
 #define BTHEN 0
 #define BELSE 1

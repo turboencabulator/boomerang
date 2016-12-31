@@ -28,12 +28,14 @@
 %}
 
 %header{
-	#include "types.h"
+	#include "exp.h"
+	#include "insnameelem.h"
 	#include "operator.h"
 	#include "rtl.h"
-	#include "table.h"
-	#include "insnameelem.h"
 	#include "statement.h"
+	#include "table.h"
+	#include "type.h"
+	#include "types.h"
 
 	class SSLScanner;
 %}

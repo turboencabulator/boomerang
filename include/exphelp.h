@@ -13,11 +13,11 @@
 #ifndef EXPHELP_H
 #define EXPHELP_H
 
-#include <map>
+#include <functional>
 
-class Exp;
 class Assign;
 class Assignment;
+class Exp;
 
 /*
  * A class for comparing Exp*s (comparing the actual expressions)

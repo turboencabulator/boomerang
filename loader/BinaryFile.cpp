@@ -25,7 +25,6 @@
 
 #include <iostream>
 
-#include <cstdio>
 #include <cstring>
 
 BinaryFile::BinaryFile(bool bArch /*= false*/) :

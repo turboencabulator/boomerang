@@ -14,9 +14,9 @@
 #include <config.h>
 #endif
 
-#include "exp.h"
-#include "transformer.h"
 #include "rdi.h"
+
+#include "exp.h"
 
 Exp *RDIExpTransformer::applyTo(Exp *e, bool &bMod)
 {

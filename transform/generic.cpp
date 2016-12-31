@@ -14,11 +14,12 @@
 #include <config.h>
 #endif
 
-#include "exp.h"
-#include "boomerang.h"
-#include "transformer.h"
 #include "generic.h"
+
+#include "boomerang.h"
+#include "exp.h"
 #include "log.h"
+#include "type.h"
 
 #include <cassert>
 

@@ -8,10 +8,9 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "proc.h"
-#include "prog.h"
-
 #include <cppunit/extensions/HelperMacros.h>
+
+class Proc;
 
 /**
  * \ingroup UnitTest

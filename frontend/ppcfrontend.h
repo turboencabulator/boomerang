@@ -9,11 +9,10 @@
 #ifndef PPCFRONTEND_H
 #define PPCFRONTEND_H
 
+#include "frontend.h"
+
 // Class PPCFrontEnd: derived from FrontEnd, with source machine specific
 // behaviour
-
-#include "frontend.h"       // In case included bare, e.g. ProcTest.cpp
-
 class PPCFrontEnd : public FrontEnd {
 public:
 	PPCFrontEnd(BinaryFile *pBF, Prog *prog);

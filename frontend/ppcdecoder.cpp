@@ -18,17 +18,19 @@
 #include <config.h>
 #endif
 
-#include <assert.h>
-#include <cstring>
+#include "ppcdecoder.h"
 
+#include "boomerang.h"
 #include "exp.h"
 #include "prog.h"
-#include "proc.h"
-#include "decoder.h"
-#include "ppcdecoder.h"
 #include "rtl.h"
-#include "boomerang.h"
+#include "statement.h"
+
 #include <iostream>
+
+#include <cstring>
+
+class Proc;
 
 Exp*	crBit(int bitNum);	// Get an expression for a CR bit access
 

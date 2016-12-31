@@ -18,11 +18,11 @@
 #define BINARYFILE_H
 
 #include "types.h"
-//#include "SymTab.h"  // Was used for relocaton stuff
 
 #include <list>
 #include <map>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include <cstdio>  // For FILE

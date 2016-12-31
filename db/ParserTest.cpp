@@ -12,12 +12,14 @@
 #include <config.h>
 #endif
 
-#define SPARC_SSL       "frontend/machine/sparc/sparc.ssl"
-
 #include "ParserTest.h"
+
 #include "sslparser.h"
 
 #include <sstream>
+#include <string>
+
+#define SPARC_SSL       "frontend/machine/sparc/sparc.ssl"
 
 /**
  * Test reading the SSL file.

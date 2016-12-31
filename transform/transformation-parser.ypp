@@ -17,9 +17,8 @@
 
 %header{
 	#include "exp.h"
-	#include "type.h"
-	#include "transformer.h"
 	#include "generic.h"
+	#include "type.h"
 
 	class TransformationScanner;
 %}

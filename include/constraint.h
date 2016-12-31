@@ -13,10 +13,13 @@
 #ifndef CONSTRAINT_H
 #define CONSTRAINT_H
 
-#include "statement.h"
 #include "exp.h"
+#include "exphelp.h"
+#include "managed.h"
 
-#include <sstream>
+#include <ostream>
+#include <list>
+#include <map>
 
 // This class represents fixed constraints (e.g. Ta = <int>, Tb = <alpha2*>),
 // but also "tentative" constraints resulting from disjunctions of constraints

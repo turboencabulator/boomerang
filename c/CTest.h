@@ -7,11 +7,6 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "util.h"
-#include "type.h"
-
-#include "ansi-c-parser.h"
-
 #include <cppunit/extensions/HelperMacros.h>
 
 /**

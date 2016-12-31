@@ -19,28 +19,22 @@
 #include <config.h>
 #endif
 
-#include "types.h"
 #include "pentiumfrontend.h"
-#include "rtl.h"
-#include "decoder.h"        // prototype for decodeInstruction()
 #include "pentiumdecoder.h"
-#include "type.h"
+
+#include "boomerang.h"
 #include "cfg.h"
 #include "exp.h"
-#include "proc.h"
-#include "signature.h"
-#include "prog.h"           // For findProc()
-#include "boomerang.h"
 #include "log.h"
-
-#include <sstream>
+#include "proc.h"
+#include "prog.h"
+#include "rtl.h"
+#include "signature.h"
+#include "type.h"
+#include "types.h"
 
 #include <cstring>
 #include <cassert>
-
-/*==============================================================================
- * Forward declarations.
- *============================================================================*/
 
 #define FSW 40  // Numeric registers
 #define AH 12

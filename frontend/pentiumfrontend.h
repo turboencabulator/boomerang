@@ -9,14 +9,14 @@
 #ifndef PENTIUMFRONTEND_H
 #define PENTIUMFRONTEND_H
 
-#include "frontend.h"           // In case included bare, e.g. ProcTest.cpp
+#include "frontend.h"
+
+#include <list>
 
 class Statement;
 
-
 // Class PentiumFrontEnd: derived from FrontEnd, with source machine specific
 // behaviour
-
 class PentiumFrontEnd : public FrontEnd {
 public:
 	/*

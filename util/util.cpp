@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include <iomanip>          // For setw
+#include <iomanip>      // For std::setw, std::setfill
 #include <string>
 #include <sstream>
 

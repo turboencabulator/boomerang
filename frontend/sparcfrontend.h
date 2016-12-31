@@ -9,15 +9,19 @@
 #ifndef SPARCFRONTEND_H
 #define SPARCFRONTEND_H
 
-// Class SparcFrontEnd: derived from FrontEnd, with source machine specific
-// behaviour
+#include "frontend.h"
 
 #include "decoder.h"
-#include "exp.h"            // Ugh... just for enum OPER
-#include "frontend.h"       // In case included bare, e.g. ProcTest.cpp
+#include "operator.h"
+
+#include <fstream>
+#include <list>
+#include <string>
 
 class CallStatement;
 
+// Class SparcFrontEnd: derived from FrontEnd, with source machine specific
+// behaviour
 class SparcFrontEnd : public FrontEnd {
 public:
 	/*

@@ -25,8 +25,6 @@
 
 #include "BinaryFile.h"
 
-#include <string>
-
 #define PACKED __attribute__((packed))
 
 /* exe file header, just the signature really */

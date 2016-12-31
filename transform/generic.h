@@ -13,6 +13,10 @@
 #ifndef GENERIC_H
 #define GENERIC_H
 
+#include "transformer.h"
+
+class Exp;
+
 class GenericExpTransformer : public ExpTransformer
 {
 protected:

@@ -15,27 +15,23 @@
 #include <config.h>
 #endif
 
-#include "type.h"
 #include "boomerang.h"
-#include "signature.h"
 #include "exp.h"
-#include "prog.h"
 #include "log.h"
 #include "proc.h"
+#include "prog.h"
+#include "signature.h"
+#include "type.h"
 
 #ifdef GARBAGE_COLLECTOR
 #include <gc/gc.h>
 #endif
 
+#include <algorithm>    // For std::max()
+
 #include <cstring>
 
 static int nextUnionNumber = 0;
-
-#ifndef max
-int max(int a, int b) {  // Faster to write than to find the #include for
-	return a > b ? a : b;
-}
-#endif
 
 #define DFA_ITER_LIMIT 20
 
@@ -403,7 +399,7 @@ Type *IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		ch |= ((signedness < 0) != (oldSignedness < 0));  // Changed from unsigned to not necessarily unsigned
 		// Size. Assume 0 indicates unknown size
 		unsigned oldSize = size;
-		size = max(size, otherInt->size);
+		size = std::max(size, otherInt->size);
 		ch |= (size != oldSize);
 		return this;
 	}
@@ -415,7 +411,7 @@ Type *IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		if (size == ((SizeType *)other)->getSize()) return this;
 		LOG << "integer size " << size << " meet with SizeType size " << ((SizeType *)other)->getSize() << "!\n";
 		unsigned oldSize = size;
-		size = max(size, ((SizeType *)other)->getSize());
+		size = std::max(size, ((SizeType *)other)->getSize());
 		ch = size != oldSize;
 		return this;
 	}
@@ -428,14 +424,14 @@ Type *FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToFloat()) {
 		FloatType *otherFlt = other->asFloat();
 		unsigned oldSize = size;
-		size = max(size, otherFlt->size);
+		size = std::max(size, otherFlt->size);
 		ch |= size != oldSize;
 		return this;
 	}
 	if (other->resolvesToSize()) {
 		unsigned otherSize = other->getSize();
 		ch |= size != otherSize;
-		size = max(size, otherSize);
+		size = std::max(size, otherSize);
 		return this;
 	}
 	return createUnion(other, ch, bHighestPtr);
@@ -636,7 +632,7 @@ Type *SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		if (((SizeType *)other)->size != size) {
 			LOG << "size " << size << " meet with size " << ((SizeType *)other)->size << "!\n";
 			unsigned oldSize = size;
-			size = max(size, ((SizeType *)other)->size);
+			size = std::max(size, ((SizeType *)other)->size);
 			ch = size != oldSize;
 		}
 		return this;

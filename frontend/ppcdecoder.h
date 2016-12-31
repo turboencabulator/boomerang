@@ -15,9 +15,9 @@
 #ifndef PPCDECODER_H
 #define PPCDECODER_H
 
-class Prog;
-class NJMCDecoder;
-struct DecodeResult;
+#include "decoder.h"
+
+#include <list>
 
 class PPCDecoder : public NJMCDecoder {
 public:

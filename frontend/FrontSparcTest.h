@@ -7,14 +7,7 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "BinaryFile.h"
-
 #include <cppunit/extensions/HelperMacros.h>
-
-class FrontEnd;
-class SparcFrontEnd;
-class NJMCDecoder;
-class Prog;
 
 /**
  * \ingroup UnitTest

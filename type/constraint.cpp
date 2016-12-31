@@ -15,10 +15,12 @@
 #endif
 
 #include "constraint.h"
-#include "managed.h"
-#include "exp.h"
+
 #include "boomerang.h"
+#include "exp.h"
 #include "log.h"
+#include "managed.h"
+#include "type.h"
 
 #include <sstream>
 

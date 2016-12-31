@@ -18,8 +18,8 @@
 #include <config.h>
 #endif
 
-#include "operstrings.h"
 #include "operator.h"
+#include "operstrings.h"
 
 #include <cstdio>
 #include <cstring>

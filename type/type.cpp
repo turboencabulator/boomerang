@@ -18,14 +18,15 @@
 #include <config.h>
 #endif
 
-#include "types.h"
 #include "type.h"
-#include "exp.h"
+
+#include "boomerang.h"
 #include "cfg.h"
+#include "exp.h"
+#include "log.h"
 #include "proc.h"
 #include "signature.h"
-#include "boomerang.h"
-#include "log.h"
+#include "types.h"
 
 #include <sstream>
 

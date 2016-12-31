@@ -21,26 +21,28 @@
 #ifndef FRONTEND_H
 #define FRONTEND_H
 
-#include "types.h"
-#include "sigenum.h"   // For enums platform and cc
 #include "BinaryFile.h"
+#include "sigenum.h"   // For enums platform and cc
+#include "types.h"
 
+#include <fstream>
 #include <list>
 #include <map>
 #include <queue>
-#include <fstream>
+#include <string>
+#include <vector>
 
-class UserProc;
-class RTL;
-class NJMCDecoder;
 class BasicBlock;
-typedef BasicBlock *PBB;
-class Exp;
-class Cfg;
-class Prog;
-struct DecodeResult;
-class Signature;
 class CallStatement;
+class Cfg;
+struct DecodeResult;
+class Exp;
+class NJMCDecoder;
+class Prog;
+class RTL;
+class Signature;
+class UserProc;
+typedef BasicBlock *PBB;
 
 // Control flow types
 enum INSTTYPE {
@@ -294,6 +296,5 @@ RTL *decodeRtl(ADDRESS address, int delta, NJMCDecoder *decoder);
  * out)
  */
 bool decodeProc(ADDRESS uAddr, FrontEnd &fe, bool keep = true, bool spec = false);
-
 
 #endif

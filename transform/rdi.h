@@ -14,6 +14,8 @@
 #ifndef RDI_H
 #define RDI_H
 
+#include "transformer.h"
+
 class RDIExpTransformer : public ExpTransformer
 {
 public:

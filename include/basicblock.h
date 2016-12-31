@@ -19,14 +19,21 @@
 #define BASICBLOCK_H
 
 #include "managed.h"  // For LocationSet etc
+#include "types.h"
 
-class Location;
-class HLLCode;
+#include <ostream>
+#include <exception>
+#include <list>
+#include <string>
+#include <vector>
+
 class BasicBlock;
-class RTL;
+class Exp;
+class HLLCode;
 class Proc;
+class RTL;
+class Statement;
 class UserProc;
-struct SWITCH_INFO;  // Declared in include/statement.h
 
 typedef BasicBlock *PBB;
 

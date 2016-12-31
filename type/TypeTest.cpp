@@ -12,17 +12,19 @@
 #include <config.h>
 #endif
 
-#define HELLO_WINDOWS       "test/windows/hello.exe"
-
 #include "TypeTest.h"
-#include "frontend.h"
-#include "signature.h"
-#include "boomerang.h"
-#include "log.h"
-#include "prog.h"
-#include "proc.h"
 
-#include <iostream>
+#include "boomerang.h"
+#include "frontend.h"
+#include "log.h"
+#include "proc.h"
+#include "prog.h"
+#include "signature.h"
+#include "type.h"
+
+#include <string>
+
+#define HELLO_WINDOWS       "test/windows/hello.exe"
 
 /**
  * Test type unsigned long.

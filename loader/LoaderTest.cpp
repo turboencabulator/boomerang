@@ -12,10 +12,24 @@
 #include <config.h>
 #endif
 
+#include "LoaderTest.h"
+
+#include "BinaryFile.h"
+
+#include <iostream>     // For std::cout
+#include <sstream>
+#include <string>
+
+#ifdef DYNAMIC
+#ifdef HAVE_DLFCN_H
+#include <dlfcn.h>      // dlopen, dlsym
+#endif
+#define ELFBINFILE      MODPREFIX "ElfBinaryFile" MODSUFFIX
+#endif
+
 #ifndef TESTDIR
 #define TESTDIR         "../test/"
 #endif
-
 #define HELLO_SPARC     TESTDIR "sparc/hello"
 #define HELLO_PENTIUM   TESTDIR "pentium/hello"
 #define HELLO_HPPA      TESTDIR "hppa/hello"
@@ -27,19 +41,6 @@
 #define LPQ_WINDOWS     TESTDIR "windows/lpq.exe"
 #endif
 #define SWITCH_BORLAND  TESTDIR "windows/switch_borland.exe"
-
-#include "LoaderTest.h"
-//#include "util.h"           // For str()
-
-#ifdef DYNAMIC
-#ifdef HAVE_DLFCN_H
-#include <dlfcn.h>          // dlopen, dlsym
-#endif
-#define ELFBINFILE      MODPREFIX "ElfBinaryFile" MODSUFFIX
-#endif
-
-#include <iostream>         // For cout
-#include <string>
 
 /**
  * Test loading the SPARC hello world program.

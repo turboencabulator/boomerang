@@ -23,28 +23,26 @@
 #ifndef RTL_H
 #define RTL_H
 
-#include "exp.h"
 #include "register.h"
+#include "type.h"
+#include "types.h"
 
+#include <iostream>
+#include <ostream>
+#include <functional>
 #include <list>
-#include <vector>
 #include <map>
 #include <set>
-#include <iostream>
+#include <string>
+#include <utility>
+#include <vector>
 
 class BasicBlock;
-class HLLCode;
-typedef BasicBlock *PBB;
 class Exp;
-class TypedExp;
-class DefSet;
-class UseSet;
-class Type;
-class Register;
-class Proc;
-class XMLProgParser;
+class HLLCode;
+class Statement;
 class StmtVisitor;
-
+typedef BasicBlock *PBB;
 
 /*==============================================================================
  * Class RTL: describes low level register transfer lists (actually lists of statements).

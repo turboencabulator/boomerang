@@ -10,12 +10,15 @@
 #include <config.h>
 #endif
 
-#include "exp.h"
 #include "hllcode.h"
-#include "cfg.h"
 
+#include "basicblock.h"
+#include "exp.h"
+#include "operator.h"
+
+#include <iostream>
 #include <fstream>
-#include <iomanip>          // For setfill etc
+#include <iomanip>      // For std::setw
 
 #include <cstdlib>
 

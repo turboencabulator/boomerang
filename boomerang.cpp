@@ -14,22 +14,15 @@
 #include <config.h>
 #endif
 
-#ifndef DATADIR
-#define DATADIR "."
-#endif
-
-#ifndef OUTPUTDIR
-#define OUTPUTDIR "./output"
-#endif
-
-#include "prog.h"
-#include "proc.h"
-#include "frontend.h"
-#include "hllcode.h"
-#include "codegen/chllcode.h"
-//#include "transformer.h"
 #include "boomerang.h"
+
+#include "cluster.h"
+#include "codegen/chllcode.h"
+#include "frontend.h"
 #include "log.h"
+#include "proc.h"
+#include "prog.h"
+//#include "transformer.h"
 #ifdef USE_XML
 #include "xmlprogparser.h"
 #endif
@@ -39,19 +32,30 @@
 #include <gc/gc.h>
 #endif
 
-#include <sys/stat.h>       // For mkdir
+#include <sys/stat.h>   // For mkdir
 #include <sys/types.h>
-#include <unistd.h>         // For unlink
+#include <unistd.h>     // For unlink
 
 #include <iostream>
 #include <fstream>
+#include <set>
+#include <string>
 
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <csignal>
 #include <ctime>
 
 Boomerang *Boomerang::boomerang = NULL;
+
+#ifndef DATADIR
+#define DATADIR "."
+#endif
+
+#ifndef OUTPUTDIR
+#define OUTPUTDIR "./output"
+#endif
 
 /**
  * Initializes the Boomerang object.

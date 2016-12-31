@@ -12,23 +12,14 @@
 #include <config.h>
 #endif
 
-#define HELLO_PENTIUM       "test/pentium/hello"
-
 #include "ProgTest.h"
+
 #include "frontend.h"
+#include "prog.h"
 
-#include <map>
-#include <sstream>
+#include <string>
 
-/**
- * Set up some expressions for use with all the tests.
- *
- * \note Called before any tests.
- */
-void ProgTest::setUp()
-{
-	//prog.setName("default name");
-}
+#define HELLO_PENTIUM       "test/pentium/hello"
 
 /**
  * Test setting and reading name.

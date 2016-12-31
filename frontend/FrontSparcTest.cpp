@@ -12,17 +12,21 @@
 #include <config.h>
 #endif
 
-#define HELLO_SPARC     "test/sparc/hello"
-#define BRANCH_SPARC    "test/sparc/branch"
-
-#include "types.h"
 #include "FrontSparcTest.h"
-#include "proc.h"
-#include "prog.h"
+
+#include "BinaryFile.h"
+#include "cfg.h"
 #include "decoder.h"
 #include "frontend.h"
-#include "cfg.h"
-#include "BinaryFile.h"
+#include "proc.h"
+#include "prog.h"
+#include "types.h"
+
+#include <sstream>
+#include <string>
+
+#define HELLO_SPARC     "test/sparc/hello"
+#define BRANCH_SPARC    "test/sparc/branch"
 
 /**
  * Test decoding some SPARC instructions.

@@ -12,21 +12,26 @@
 #include <config.h>
 #endif
 
-#define HELLO_PENTIUM      "test/pentium/hello"
-#define GLOBAL1_PENTIUM    "test/pentium/global1"
-
 #include "StatementTest.h"
-#include "cfg.h"
-#include "rtl.h"
-#include "frontend.h"
+
 #include "boomerang.h"
+#include "cfg.h"
 #include "exp.h"
-#include "managed.h"
+#include "frontend.h"
 #include "log.h"
+#include "managed.h"
+#include "proc.h"
+#include "prog.h"
+#include "rtl.h"
 #include "signature.h"
 
+#include <iostream>
 #include <sstream>
-#include <map>
+#include <list>
+#include <string>
+
+#define HELLO_PENTIUM      "test/pentium/hello"
+#define GLOBAL1_PENTIUM    "test/pentium/global1"
 
 class NullLogger : public Log {
 public:

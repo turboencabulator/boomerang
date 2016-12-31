@@ -13,11 +13,17 @@
 #endif
 
 #include "ExpTest.h"
+
+#include "exp.h"
 #include "statement.h"
+#include "type.h"
 #include "visitor.h"
 
+#include <sstream>
+#include <list>
 #include <map>
-#include <sstream>      // Gcc >= 3.0 needed
+#include <string>
+#include <vector>
 
 /**
  * Set up some expressions for use with all the tests.

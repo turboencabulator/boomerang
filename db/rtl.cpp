@@ -19,21 +19,21 @@
 #include <config.h>
 #endif
 
-#include "types.h"
-#include "statement.h"
-#include "exp.h"
-#include "type.h"
 #include "rtl.h"
-#include "hllcode.h"
-#include "boomerang.h"
-#include "visitor.h"
-#include "log.h"
 
-#include <iomanip>  // For setfill
+#include "boomerang.h"
+#include "exp.h"
+#include "log.h"
+#include "statement.h"
+#include "type.h"
+#include "types.h"
+#include "visitor.h"
+
+#include <iomanip>      // For std::setw, std::setfill
 #include <sstream>
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 /******************************************************************************
  * RTL methods.

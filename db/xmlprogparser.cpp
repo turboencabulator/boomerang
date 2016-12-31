@@ -16,18 +16,19 @@
 #include <config.h>
 #endif
 
-#include "type.h"
+#include "xmlprogparser.h"
+
+#include "boomerang.h"
 #include "cluster.h"
-#include "prog.h"
+#include "frontend.h"
+#include "log.h"
 #include "proc.h"
+#include "prog.h"
 #include "rtl.h"
-#include "statement.h"
 #include "sigenum.h"
 #include "signature.h"
-#include "xmlprogparser.h"
-#include "boomerang.h"
-#include "log.h"
-#include "frontend.h"
+#include "statement.h"
+#include "type.h"
 
 #include <expat.h>
 

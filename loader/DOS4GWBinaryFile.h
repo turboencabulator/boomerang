@@ -26,6 +26,7 @@
 
 #include "BinaryFile.h"
 
+#include <map>
 #include <string>
 
 #define PACKED __attribute__((packed))

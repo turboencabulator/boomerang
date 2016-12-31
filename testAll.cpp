@@ -21,22 +21,18 @@
 #include <config.h>
 #endif
 
-#include "exp.h"
-
 #include "ExpTest.h"
 #include "ProgTest.h"
 #include "ProcTest.h"
-#include "StatementTest.h"
 #include "RtlTest.h"
-#include "DfaTest.h"
 #include "ParserTest.h"
 #include "TypeTest.h"
 #include "FrontSparcTest.h"
 #include "FrontPentTest.h"
 #include "CTest.h"
+#include "StatementTest.h"
 #include "CfgTest.h"
-
-#include "prog.h"
+#include "DfaTest.h"
 
 #include <cppunit/ui/text/TestRunner.h>
 

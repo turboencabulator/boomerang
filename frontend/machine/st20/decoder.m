@@ -15,18 +15,12 @@
 #include <config.h>
 #endif
 
-#include <assert.h>
-
-#include "rtl.h"
-#include "decoder.h"
 #include "st20decoder.h"
-#include "exp.h"
-#include "boomerang.h"
-#include "statement.h"
 
-/**********************************
- * ST20Decoder methods.
- **********************************/   
+#include "boomerang.h"
+#include "exp.h"
+#include "rtl.h"
+#include "statement.h"
 
 /*==============================================================================
  * FUNCTION:	   unused

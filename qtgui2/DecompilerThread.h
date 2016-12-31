@@ -10,10 +10,13 @@
 #define DECOMPILERTHREAD_H
 
 #include "boomerang.h"
+#include "types.h"
 
 #include <QThread>
 #include <QString>
 #include <QTableWidget>
+
+#include <vector>
 
 class FrontEnd;
 class Proc;

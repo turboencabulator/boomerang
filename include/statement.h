@@ -22,41 +22,41 @@
 #ifndef STATEMENT_H
 #define STATEMENT_H
 
-//#include "exp.h"  // No! This is (almost) the bottom of the #include hierarchy
-#include "exphelp.h"  // For lessExpStar, lessAssignment etc
-#include "types.h"
-#include "managed.h"
-#include "dataflow.h"  // For embedded objects DefCollector and UseCollector
 #include "boomerang.h"  // For USE_DOMINANCE_NUMS etc
+#include "dataflow.h"   // For embedded objects DefCollector and UseCollector
+#include "managed.h"
+#include "types.h"
 
-#include <vector>
-#include <set>
+#include <iostream>     // For std::cout, std::dec
+#include <ostream>
+#include <memory>
 #include <list>
 #include <map>
-#include <ostream>
-#include <iostream>  // For std::cerr
+#include <set>
+#include <string>
+#include <vector>
 
 #include <cassert>
 
+class Assign;
 class BasicBlock;
-typedef BasicBlock *PBB;
-class Prog;
-class Proc;
-class UserProc;
-class Exp;
+//class Cfg;
 class Const;
+class Exp;
+class HLLCode;
+class Proc;
+class Prog;
 class RefExp;
-class Cfg;
-class Type;
+class ReturnStatement;
 class Signature;
-class StmtVisitor;
 class StmtExpVisitor;
 class StmtModifier;
 class StmtPartModifier;
-class HLLCode;
-class Assign;
-class XMLProgParser;
-class ReturnStatement;
+class StmtVisitor;
+class Type;
+class UserProc;
+class lessExpStar;
+typedef BasicBlock *PBB;
 
 typedef std::set<UserProc *> CycleSet;
 

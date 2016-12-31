@@ -19,8 +19,9 @@
 #include <config.h>
 #endif
 
-#include "table.h"
 #include "insnameelem.h"
+
+#include "table.h"
 
 InsNameElem::InsNameElem(const char *name) :
 	nextelem(NULL),

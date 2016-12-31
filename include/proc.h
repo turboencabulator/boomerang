@@ -20,31 +20,29 @@
 #ifndef PROC_H
 #define PROC_H
 
-#include "exp.h"  // For lessExpStar
-#include "cfg.h"  // For cfg->simplify()
-#include "hllcode.h"
-#include "dataflow.h"   // For class UseCollector
-#include "statement.h"  // For embedded ReturnStatement pointer, etc
 #include "boomerang.h"  // For USE_DOMINANCE_NUMS etc
+#include "cfg.h"        // For cfg->simplify()
+#include "dataflow.h"   // For class UseCollector
+#include "exp.h"        // For lessExpStar
+#include "statement.h"  // For embedded ReturnStatement pointer, etc
+#include "type.h"
 
+#include <ostream>
 #include <list>
-#include <vector>
 #include <map>
 #include <set>
 #include <string>
 
 #include <cassert>
 
-class Prog;
-class UserProc;
 class BasicBlock;
-typedef BasicBlock *PBB;
-class TypedExp;
-class Type;
-class HLLCode;
-class Signature;
 class Cluster;
-class XMLProgParser;
+class HLLCode;
+class Prog;
+class Signature;
+class SyntaxNode;
+class UserProc;
+typedef BasicBlock *PBB;
 
 /*==============================================================================
  * Procedure class.

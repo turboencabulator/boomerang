@@ -23,6 +23,20 @@
 
 #include "frontend.h"
 
+#include "BinaryFile.h"
+#include "ansi-c-parser.h"
+#include "boomerang.h"
+#include "cfg.h"
+#include "decoder.h"
+#include "exp.h"
+#include "log.h"
+#include "proc.h"
+#include "prog.h"
+#include "register.h"
+#include "rtl.h"
+#include "signature.h"
+#include "types.h"
+
 #ifdef DYNAMIC
 #ifdef HAVE_DLFCN_H
 #include <dlfcn.h>
@@ -34,20 +48,6 @@
 #include "sparcfrontend.h"
 #include "st20frontend.h"
 #endif
-
-#include "types.h"
-#include "exp.h"
-#include "cfg.h"
-#include "proc.h"
-#include "register.h"
-#include "rtl.h"
-#include "BinaryFile.h"
-#include "decoder.h"
-#include "prog.h"
-#include "signature.h"
-#include "boomerang.h"
-#include "log.h"
-#include "ansi-c-parser.h"
 
 #include <queue>
 #include <sstream>

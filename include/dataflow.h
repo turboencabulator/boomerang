@@ -13,21 +13,22 @@
 #ifndef DATAFLOW_H
 #define DATAFLOW_H
 
+#include "boomerang.h"  // For USE_DOMINANCE_NUMS etc
 #include "exphelp.h"    // For lessExpStar, etc
 #include "managed.h"    // For LocationSet
-#include "boomerang.h"  // For USE_DOMINANCE_NUMS etc
 
-#include <vector>
+#include <ostream>
 #include <map>
 #include <set>
 #include <stack>
+#include <vector>
 
-class Cfg;
 class BasicBlock;
+class Cfg;
 class Exp;
+class PhiAssign;
 class Statement;
 class UserProc;
-class PhiAssign;
 
 typedef BasicBlock *PBB;
 

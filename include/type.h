@@ -18,20 +18,17 @@
 #ifndef TYPE_H
 #define TYPE_H
 
-#include "memo.h"
 #include "types.h"          // For STD_SIZE
 
-#include <string>
-#include <map>
-#include <functional>       // For binary_function
-#include <vector>
+#include <ostream>
 #include <list>
-#include <fstream>
+#include <map>
+#include <string>
+#include <utility>
+#include <vector>
 
 #include <cassert>
 
-class Signature;
-class UserProc;
 class VoidType;
 class FuncType;
 class BooleanType;
@@ -46,9 +43,11 @@ class UnionType;
 class SizeType;
 class UpperType;
 class LowerType;
-class Exp;
-class XMLProgParser;
+
 class DataIntervalMap;
+class Exp;
+class Signature;
+class UserProc;
 
 enum eType {
 	eVoid, eFunc, eBoolean, eChar, eInteger, eFloat, ePointer, eArray, eNamed, eCompound, eUnion, eSize,

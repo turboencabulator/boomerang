@@ -14,16 +14,12 @@
 #include <config.h>
 #endif
 
-#include <assert.h>
-
-#include "prog.h"
-#include "decoder.h"
 #include "mipsdecoder.h"
-#include "rtl.h"
-#include "boomerang.h"
-#include "statement.h"
-#include <iostream>
 
+#include "boomerang.h"
+#include "rtl.h"
+
+class Statement;
 
 /********************************************************************************
  * FUNCTION:	   unused

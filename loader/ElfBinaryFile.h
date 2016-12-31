@@ -16,6 +16,10 @@
 #include "BinaryFile.h"
 #include "SymTab.h"  // For SymTab (probably unused)
 
+#include <functional>
+#include <map>
+#include <string>
+
 typedef std::map<ADDRESS, std::string, std::less<ADDRESS> > RelocMap;
 
 typedef struct {

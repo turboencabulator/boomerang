@@ -13,7 +13,10 @@
 #endif
 
 #include "CTest.h"
+
+#include "ansi-c-parser.h"
 #include "sigenum.h"
+#include "type.h"
 
 #include <sstream>
 

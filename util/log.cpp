@@ -11,11 +11,13 @@
 #endif
 
 #include "log.h"
-#include "statement.h"
-#include "rtl.h"
+
 #include "exp.h"
 #include "managed.h"
+#include "rtl.h"
+#include "statement.h"
 
+#include <iostream>
 #include <sstream>
 
 Log &Log::operator<<(Statement *s)

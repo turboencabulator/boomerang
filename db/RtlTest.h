@@ -7,8 +7,6 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "rtl.h"
-
 #include <cppunit/extensions/HelperMacros.h>
 
 /**

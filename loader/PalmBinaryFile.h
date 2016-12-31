@@ -15,6 +15,8 @@
 
 #include "BinaryFile.h"
 
+#include <string>
+
 class PalmBinaryFile : public BinaryFile {
 public:
 	                    PalmBinaryFile();

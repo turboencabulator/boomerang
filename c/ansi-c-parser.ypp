@@ -17,8 +17,8 @@
 
 %header{
 	#include "exp.h"
-	#include "type.h"
 	#include "signature.h"
+	#include "type.h"
 
 	#include <list>
 	#include <string>

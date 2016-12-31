@@ -12,8 +12,6 @@
 #include <config.h>
 #endif
 
-#include "exp.h"
-
 #include "ExpTest.h"
 #include "ProgTest.h"
 #include "ProcTest.h"

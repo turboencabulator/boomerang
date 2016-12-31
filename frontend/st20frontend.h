@@ -9,11 +9,10 @@
 #ifndef ST20FRONTEND_H
 #define ST20FRONTEND_H
 
+#include "frontend.h"
+
 // Class ST20FrontEnd: derived from FrontEnd, with source machine specific
 // behaviour
-
-#include "frontend.h"       // In case included bare, e.g. ProcTest.cpp
-
 class ST20FrontEnd : public FrontEnd {
 public:
 	ST20FrontEnd(BinaryFile *pBF, Prog *prog);

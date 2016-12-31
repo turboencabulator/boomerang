@@ -20,10 +20,11 @@
 #endif
 
 #include "register.h"
+
 #include "type.h"
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 /*==============================================================================
  * FUNCTION:      Register::Register

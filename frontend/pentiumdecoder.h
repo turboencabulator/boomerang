@@ -15,9 +15,7 @@
 #ifndef PENTIUMDECODER_H
 #define PENTIUMDECODER_H
 
-class Prog;
-class NJMCDecoder;
-struct DecodeResult;
+#include "decoder.h"
 
 class PentiumDecoder : public NJMCDecoder {
 public:

@@ -17,17 +17,12 @@
 #ifndef CLUSTER_H
 #define CLUSTER_H
 
-#include "memo.h"
+#include "type.h"
 
-#include <list>
-#include <vector>
-#include <map>
-#include <set>
-#include <string>
 #include <fstream>
-
-class XMLProgParser;
-class Cluster;
+#include <ostream>
+#include <string>
+#include <vector>
 
 class Cluster {
 protected:

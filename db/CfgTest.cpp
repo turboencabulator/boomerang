@@ -12,28 +12,20 @@
 #include <config.h>
 #endif
 
-#define FRONTIER_PENTIUM        "test/pentium/frontier"
-#define SEMI_PENTIUM            "test/pentium/semi"
-#define IFTHEN_PENTIUM          "test/pentium/ifthen"
-
 #include "CfgTest.h"
+
+#include "cfg.h"
+#include "dataflow.h"
 #include "frontend.h"
 #include "proc.h"
 #include "prog.h"
-#include "dataflow.h"
 
 #include <sstream>
 #include <string>
 
-/**
- * Set up some expressions for use with all the tests.
- *
- * \note Called before any tests.
- */
-void CfgTest::setUp()
-{
-	//prog.setName("default name");
-}
+#define FRONTIER_PENTIUM        "test/pentium/frontier"
+#define SEMI_PENTIUM            "test/pentium/semi"
+#define IFTHEN_PENTIUM          "test/pentium/ifthen"
 
 /**
  * Test the dominator frontier code.

@@ -22,18 +22,18 @@
 #include <config.h>
 #endif
 
-#include "exp.h"
-#include "rtl.h"
+#include "sparcfrontend.h"
+#include "sparcdecoder.h"
+
+#include "boomerang.h"
 #include "cfg.h"
+#include "exp.h"
+#include "log.h"
 #include "proc.h"
 #include "prog.h"
-#include "decoder.h"
-#include "sparcdecoder.h"
-#include "sparcfrontend.h"
-#include "boomerang.h"
-#include "log.h"
+#include "rtl.h"
 
-#include <iomanip>          // For setfill etc
+#include <iomanip>      // For std::setw, std::setfill
 #include <sstream>
 
 #include <cstring>

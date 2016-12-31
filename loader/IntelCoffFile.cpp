@@ -12,9 +12,9 @@
 
 #include "IntelCoffFile.h"
 
+#include <cassert>
 #include <cstdlib>
 #include <cstring>
-#include <cassert>
 
 struct PACKED struc_coff_sect {  // segment information, 40 bytes
 	char     sch_sectname[8];

@@ -16,12 +16,14 @@
 #endif
 
 #include "managed.h"
-#include "statement.h"
+
+#include "boomerang.h"
 #include "exp.h"
 #include "log.h"
-#include "boomerang.h"
 #include "proc.h"
+#include "statement.h"
 
+#include <algorithm>    // For std::min(), std::max()
 #include <sstream>
 
 #include <cstring>

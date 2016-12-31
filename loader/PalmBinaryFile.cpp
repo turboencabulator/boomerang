@@ -17,11 +17,12 @@
 #endif
 
 #include "PalmBinaryFile.h"
+
 #include "palmsystraps.h"
 
+#include <cassert>
 #include <cstdlib>
 #include <cstring>
-#include <cassert>
 
 // Macro to convert a pointer to a Big Endian integer into a host integer
 #define UC(p) ((unsigned char*)p)

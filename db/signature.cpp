@@ -14,21 +14,21 @@
 #include <config.h>
 #endif
 
-#include "type.h"
 #include "signature.h"
-#include "exp.h"
-#include "prog.h"
+
 #include "BinaryFile.h"
-#include "signature.h"
-#include "proc.h"
 #include "boomerang.h"
+#include "exp.h"
 #include "log.h"
 #include "managed.h"
+#include "proc.h"
+#include "prog.h"
+#include "type.h"
 
 #include <sstream>
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 extern char debug_buffer[];  // For prints()
 

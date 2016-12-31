@@ -12,13 +12,14 @@
 #include "types.h"
 
 #include <fstream>
+#include <string>
 
-class Statement;
 class Exp;
 class LocationSet;
 class RTL;
 class Range;
 class RangeMap;
+class Statement;
 class Type;
 
 class Log {

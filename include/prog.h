@@ -18,21 +18,25 @@
 #define PROG_H
 
 #include "BinaryFile.h"
+#include "cluster.h"
 #include "frontend.h"
 #include "type.h"
-#include "cluster.h"
 
+#include <fstream>
+#include <ostream>
+#include <functional>
+#include <list>
 #include <map>
+#include <set>
+#include <string>
+#include <vector>
 
-class RTLInstDict;
-class Proc;
-class UserProc;
 class LibProc;
+class Proc;
 class Signature;
 class Statement;
 class StatementSet;
-class Cluster;
-class XMLProgParser;
+class UserProc;
 
 typedef std::map<ADDRESS, Proc *, std::less<ADDRESS> > PROGMAP;
 

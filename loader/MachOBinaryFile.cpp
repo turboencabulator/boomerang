@@ -30,9 +30,9 @@
 #include <cstdarg>  // For va_list for MinGW at least
 #include "objc/objc-runtime.h"
 
+#include <cassert>
 #include <cstdlib>
 #include <cstring>
-#include <cassert>
 
 //#define DEBUG_MACHO_LOADER
 //#define DEBUG_MACHO_LOADER_OBJC

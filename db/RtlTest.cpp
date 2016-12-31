@@ -13,15 +13,19 @@
 #endif
 
 #include "RtlTest.h"
-#include "statement.h"
+
+#include "decoder.h"
 #include "exp.h"
 #include "frontend.h"
-#include "decoder.h"
 #include "proc.h"
 #include "prog.h"
+#include "rtl.h"
+#include "statement.h"
 #include "visitor.h"
 
 #include <sstream>
+#include <list>
+#include <string>
 
 #define SWITCH_SPARC        "test/sparc/switch_cc"
 #define SWITCH_PENT         "test/pentium/switch_cc"

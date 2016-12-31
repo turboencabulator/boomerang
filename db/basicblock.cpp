@@ -18,17 +18,19 @@
 #include <config.h>
 #endif
 
-#include "types.h"
-#include "statement.h"
-#include "exp.h"
+#include "basicblock.h"
+
+#include "boomerang.h"
 #include "cfg.h"
-#include "rtl.h"
+#include "exp.h"
 #include "hllcode.h"
+#include "log.h"
 #include "proc.h"
 #include "prog.h"
-#include "boomerang.h"
+#include "rtl.h"
+#include "statement.h"
 #include "type.h"
-#include "log.h"
+#include "types.h"
 #include "visitor.h"
 
 #ifdef GARBAGE_COLLECTOR
@@ -37,12 +39,8 @@
 
 #include <sstream>
 
-#include <cstring>
 #include <cassert>
-
-/**********************************
- * BasicBlock methods
- **********************************/
+#include <cstring>
 
 /*==============================================================================
  * FUNCTION:        BasicBlock::BasicBlock

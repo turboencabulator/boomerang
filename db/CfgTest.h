@@ -7,8 +7,6 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "cfg.h"
-
 #include <cppunit/extensions/HelperMacros.h>
 
 /**
@@ -25,13 +23,8 @@ class CfgTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST(testRenameVars);
 	CPPUNIT_TEST_SUITE_END();
 
-protected:
-	Cfg *m_prog;
-
 public:
 	CfgTest() { }
-
-	void setUp();
 
 	void testDominators();
 	void testSemiDominators();

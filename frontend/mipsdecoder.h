@@ -13,9 +13,7 @@
 #ifndef MIPSDECODER_H
 #define MIPSDECODER_H
 
-class Prog;
-class NJMCDecoder;
-struct DecodeResult;
+#include "decoder.h"
 
 class MIPSDecoder : public NJMCDecoder {
 public:

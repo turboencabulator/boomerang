@@ -14,23 +14,18 @@
 #include <config.h>
 #endif
 
-#include "types.h"
-#include "statement.h"
-#include "cfg.h"
-#include "exp.h"
-#include "register.h"
-#include "rtl.h"
-#include "proc.h"
-#include "boomerang.h"
 #include "transformer.h"
-#include "rdi.h"
+
+#include "boomerang.h"
+#include "exp.h"
 #include "log.h"
 #include "transformation-parser.h"
 
-#include <numeric>          // For accumulate
-#include <algorithm>        // For std::max()
-#include <map>              // In decideType()
-#include <sstream>          // Need gcc 3.0 or better
+#include <fstream>
+#include <iostream>
+#include <string>
+
+#include <cstdlib>
 
 std::list<ExpTransformer *> ExpTransformer::transformers;
 

@@ -22,22 +22,23 @@
 #endif
 
 #include "proc.h"
-#include "types.h"
-#include "type.h"
-#include "cluster.h"
-#include "statement.h"
-#include "rtl.h"
-#include "prog.h"
-#include "frontend.h"
-#include "util.h"
-#include "signature.h"
-#include "boomerang.h"
-#include "constraint.h"
-#include "visitor.h"
-#include "log.h"
 
-#include <algorithm>  // For find()
-#include <iomanip>    // For std::setw etc
+#include "boomerang.h"
+#include "cluster.h"
+#include "constraint.h"
+#include "frontend.h"
+#include "hllcode.h"
+#include "log.h"
+#include "prog.h"
+#include "rtl.h"
+#include "signature.h"
+#include "statement.h"
+#include "type.h"
+#include "types.h"
+#include "util.h"
+#include "visitor.h"
+
+#include <iomanip>      // For std::setw
 #include <sstream>
 
 #include <cstring>
@@ -45,10 +46,6 @@
 typedef std::map<Statement *, int> RefCounter;
 
 extern char debug_buffer[];  // Defined in basicblock.cpp, size DEBUG_BUFSIZE
-
-/************************
- * Proc methods.
- ***********************/
 
 Proc::~Proc()
 {
@@ -350,10 +347,6 @@ Proc *Proc::getFirstCaller()
 	return m_firstCaller;
 }
 
-/**********************
- * LibProc methods.
- *********************/
-
 /*==============================================================================
  * FUNCTION:        LibProc::LibProc
  * OVERVIEW:        Constructor with name, native address.
@@ -395,10 +388,6 @@ bool LibProc::isPreserved(Exp *e)
 {
 	return signature->isPreserved(e);
 }
-
-/**********************
- * UserProc methods.
- *********************/
 
 /*==============================================================================
  * FUNCTION:        UserProc::UserProc

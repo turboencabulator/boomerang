@@ -17,6 +17,7 @@
 #include "SymTab.h"
 
 #include <set>
+#include <utility>
 
 struct import_entry {
 	int         name;

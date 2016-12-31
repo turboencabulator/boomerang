@@ -33,18 +33,18 @@
 
 #include "types.h"
 
-#include <iostream>
-#include <string>
-#include <set>
-#include <vector>
+#include <fstream>
 #include <map>
+#include <set>
+#include <string>
+#include <vector>
 
-class Log;
-class Prog;
-class Proc;
-class UserProc;
 class HLLCode;
+class Log;
 class ObjcModule;
+class Proc;
+class Prog;
+class UserProc;
 
 #define LOG Boomerang::get()->log()
 #define LOGTAIL Boomerang::get()->logTail()

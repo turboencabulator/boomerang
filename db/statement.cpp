@@ -16,23 +16,24 @@
 #endif
 
 #include "statement.h"
-#include "exp.h"
+
+#include "boomerang.h"
 #include "cfg.h"
+#include "dataflow.h"
+#include "exp.h"
+#include "hllcode.h"
+#include "log.h"
 #include "proc.h"
 #include "prog.h"
-#include "boomerang.h"
-#include "rtl.h"  // For debugging code
+#include "rtl.h"        // For debugging code
 #include "signature.h"
 #include "visitor.h"
-#include "dataflow.h"
-#include "log.h"
 
-#include <iomanip>  // For setfill etc
+#include <iomanip>      // For std::setw
 #include <sstream>
-#include <algorithm>
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 extern char debug_buffer[];  // For prints functions
 

@@ -13,12 +13,12 @@
 #include "DecompilerThread.h"
 
 #include "boomerang.h"
-#include "log.h"
-#include "prog.h"
-#include "frontend.h"
-#include "proc.h"
-#include "signature.h"
 #include "cluster.h"
+#include "frontend.h"
+#include "log.h"
+#include "proc.h"
+#include "prog.h"
+#include "signature.h"
 
 #ifdef GARBAGE_COLLECTOR
 #include <gc/gc.h>

@@ -21,14 +21,11 @@
 #include <config.h>
 #endif
 
+#include "ppcfrontend.h"
+#include "ppcdecoder.h"
+
 #include "exp.h"
 #include "proc.h"
-#include "prog.h"
-#include "decoder.h"
-#include "ppcdecoder.h"
-#include "ppcfrontend.h"
-
-#include <sstream>
 
 PPCFrontEnd::PPCFrontEnd(BinaryFile *pBF, Prog *prog) :
 	FrontEnd(pBF, prog)

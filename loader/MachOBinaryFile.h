@@ -23,9 +23,6 @@
 
 #include "BinaryFile.h"
 
-#include <string>
-#include <vector>
-
 #ifndef _MACH_MACHINE_H_                // On OS X, this is already defined
 typedef unsigned long cpu_type_t;       // I guessed
 typedef unsigned long cpu_subtype_t;    // I guessed

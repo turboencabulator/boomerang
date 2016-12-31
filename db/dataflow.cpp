@@ -15,15 +15,17 @@
 #endif
 
 #include "dataflow.h"
-#include "cfg.h"
-#include "proc.h"
-#include "exp.h"
+
 #include "boomerang.h"
-#include "visitor.h"
+#include "cfg.h"
+#include "exp.h"
 #include "frontend.h"
+#include "proc.h"
+#include "visitor.h"
 
 #include <sstream>
 
+#include <cassert>
 #include <cstring>
 
 extern char debug_buffer[];  // For prints functions

@@ -7,9 +7,10 @@
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
 
-#include "exp.h"
-
 #include <cppunit/extensions/HelperMacros.h>
+
+class Const;
+class Location;
 
 /**
  * \ingroup UnitTest

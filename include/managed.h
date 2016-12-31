@@ -25,17 +25,19 @@
 
 #include "exphelp.h"  // For lessExpStar
 
+#include <ostream>
 #include <list>
+#include <map>
 #include <set>
 #include <vector>
-#include <ostream>
 
-class Statement;
 class Assign;
+class Assignment;
+//class Cfg;
 class Exp;
-class RefExp;
-class Cfg;
 class LocationSet;
+class RefExp;
+class Statement;
 
 // A class to implement sets of statements
 class StatementSet {

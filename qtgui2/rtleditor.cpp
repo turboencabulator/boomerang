@@ -11,6 +11,7 @@
 #endif
 
 #include "rtleditor.h"
+
 #include "DecompilerThread.h"
 
 #include <QtGui>

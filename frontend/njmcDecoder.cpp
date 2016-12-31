@@ -18,19 +18,14 @@
 #include <config.h>
 #endif
 
-#include "rtl.h"
+#include "boomerang.h"
 #include "decoder.h"
 #include "exp.h"
-#include "proc.h"
-#include "prog.h"
-#include "boomerang.h"
+#include "rtl.h"
+#include "statement.h"
 
 #include <cstdarg>  // For varargs
 #include <cassert>
-
-/**********************************
- * NJMCDecoder methods.
- **********************************/
 
 /*==============================================================================
  * FUNCTION:       NJMCDecoder::NJMCDecoder

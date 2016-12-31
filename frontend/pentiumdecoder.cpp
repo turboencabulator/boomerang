@@ -20,17 +20,17 @@
 #include <config.h>
 #endif
 
-#include <assert.h>
-#include <cstring>
-
-#include "rtl.h"
-#include "decoder.h"
 #include "pentiumdecoder.h"
-#include "prog.h"
-#include "exp.h"
-#include "proc.h"
+
 #include "boomerang.h"
+#include "exp.h"
+#include "prog.h"
+#include "rtl.h"
 #include "statement.h"
+
+#include <cassert>
+
+class Proc;
 
 #define DIS_R8	  (dis_Reg(r8+8))
 #define DIS_R16	  (dis_Reg(r16+0))
@@ -62,10 +62,6 @@
 // Reverse)
 void genBSFR(ADDRESS pc, Exp* reg, Exp* modrm, int init, int size, OPER incdec,
 	int numBytes);
-
-/**********************************
- * PentiumDecoder methods.
- **********************************/   
 
 /*==============================================================================
  * FUNCTION:	   unused

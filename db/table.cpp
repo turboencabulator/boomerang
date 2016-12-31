@@ -18,6 +18,7 @@
 #endif
 
 #include "table.h"
+
 #include "exp.h"
 
 Table::Table(TABLE_TYPE t) :

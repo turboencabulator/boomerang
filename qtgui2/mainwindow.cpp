@@ -11,6 +11,7 @@
 #endif
 
 #include "mainwindow.h"
+
 #include "DecompilerThread.h"
 #include "rtleditor.h"
 

@@ -19,16 +19,17 @@
 #include <config.h>
 #endif
 
-#include <assert.h>
-#include <cstring>
+#include "sparcdecoder.h"
 
-#include "decoder.h"
+#include "boomerang.h"
 #include "exp.h"
 #include "prog.h"
-#include "proc.h"
-#include "sparcdecoder.h"
 #include "rtl.h"
-#include "boomerang.h"
+#include "statement.h"
+
+#include <cstring>
+
+class Proc;
 
 #define DIS_ROI		(dis_RegImm(roi))
 #define DIS_ADDR	(dis_Eaddr(addr))

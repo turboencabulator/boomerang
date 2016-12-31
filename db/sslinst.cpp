@@ -25,21 +25,22 @@
 #include <config.h>
 #endif
 
-#include "types.h"
-#include "statement.h"
+#include "rtl.h"
+
+#include "boomerang.h"
 #include "exp.h"
 #include "register.h"
-#include "type.h"
-#include "rtl.h"
 #include "sslparser.h"
+#include "statement.h"
+#include "type.h"
+#include "types.h"
 #include "util.h"
-#include "boomerang.h"
 
-#include <algorithm>  // For remove()
+#include <algorithm>    // For std::remove()
 #include <fstream>
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 //#define DEBUG_SSLPARSER 1
 

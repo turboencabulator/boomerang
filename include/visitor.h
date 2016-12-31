@@ -31,6 +31,9 @@
 
 #include "exp.h"  // Needs to know class hierarchy, e.g. so that can convert Unary* to Exp* in return of ExpModifier::preVisit()
 
+#include <list>
+#include <map>
+
 #include <cstddef>
 
 class Statement;
@@ -46,12 +49,14 @@ class GotoStatement;
 class BranchStatement;
 class ImpRefStatement;
 
-class RTL;
-class UserProc;
 class Cfg;
-class Prog;
-
 class LocationSet;
+class Prog;
+class RTL;
+class Signature;
+class Type;
+class UserProc;
+class lessExpStar;
 
 /*
  * The ExpVisitor class is used to iterate over all subexpressions in an expression.

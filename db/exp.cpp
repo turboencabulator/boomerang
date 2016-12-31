@@ -14,30 +14,29 @@
 #include <config.h>
 #endif
 
-#include "types.h"
-#include "statement.h"
-#include "cfg.h"
 #include "exp.h"
-#include "register.h"
-#include "rtl.h"        // E.g. class ParamEntry in decideType()
-#include "proc.h"
-#include "signature.h"
-#include "prog.h"
-#include "operstrings.h"// Defines a large array of strings for the createDotFile etc. functions. Needs -I. to find it
-#include "util.h"
+
 #include "boomerang.h"
-//#include "transformer.h"
-#include "visitor.h"
 #include "log.h"
+#include "operstrings.h"
+#include "proc.h"
+#include "prog.h"
+#include "rtl.h"
+#include "statement.h"
+//#include "transformer.h"
+#include "types.h"
+#include "visitor.h"
 
-#include <numeric>      // For accumulate
-#include <algorithm>    // For std::max()
-#include <map>          // In decideType()
-#include <sstream>      // Need gcc 3.0 or better
-#include <iomanip>      // For std::setw etc
+#include <iostream>     // For std::cout, std::cerr
+#include <sstream>      // For std::ostringstream
+#include <iomanip>      // For std::setw
+#include <numeric>      // For std::accumulate()
+#include <list>
+#include <string>
 
-#include <cstring>
 #include <cassert>
+#include <cstdlib>
+#include <cstring>
 
 extern char debug_buffer[];      ///< For prints functions
 

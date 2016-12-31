@@ -14,14 +14,11 @@
 #include <config.h>
 #endif
 
+#include "mipsfrontend.h"
+#include "mipsdecoder.h"
+
 #include "exp.h"
 #include "proc.h"
-#include "prog.h"
-#include "decoder.h"
-#include "mipsdecoder.h"
-#include "mipsfrontend.h"
-
-#include <sstream>
 
 MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog) :
 	FrontEnd(pBF, prog)

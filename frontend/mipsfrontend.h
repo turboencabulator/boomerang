@@ -13,11 +13,10 @@
 #ifndef MIPSFRONTEND_H
 #define MIPSFRONTEND_H
 
+#include "frontend.h"
+
 // Class MIPSFrontEnd: derived from FrontEnd, with source machine specific
 // behaviour
-
-#include "frontend.h"       // In case included bare, e.g. ProcTest.cpp
-
 class MIPSFrontEnd : public FrontEnd {
 public:
 	MIPSFrontEnd(BinaryFile *pBF, Prog *prog);

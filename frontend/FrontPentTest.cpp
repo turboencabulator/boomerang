@@ -12,19 +12,24 @@
 #include <config.h>
 #endif
 
+#include "FrontPentTest.h"
+
+#include "BinaryFile.h"
+#include "BinaryFileStub.h"
+#include "decoder.h"
+#include "frontend.h"
+#include "prog.h"
+#include "rtl.h"
+#include "types.h"
+
+#include <sstream>
+#include <string>
+
 #define HELLO_PENT      "test/pentium/hello"
 #define BRANCH_PENT     "test/pentium/branch"
 #define FEDORA2_TRUE    "test/pentium/fedora2_true"
 #define FEDORA3_TRUE    "test/pentium/fedora3_true"
 #define SUSE_TRUE       "test/pentium/suse_true"
-
-#include "types.h"
-#include "rtl.h"
-#include "FrontPentTest.h"
-#include "prog.h"
-#include "frontend.h"
-#include "BinaryFile.h"
-#include "BinaryFileStub.h"
 
 /**
  * Test decoding some Pentium instructions.

@@ -19,25 +19,23 @@
 #ifndef HLLCODE_H
 #define HLLCODE_H
 
-#include "statement.h"  // For CallStatement::RetLocs
-
-#include <iostream>
+#include <ostream>
 #include <vector>
 
 #include <cassert>
 
-class BasicBlock;
-typedef BasicBlock *PBB;
-class Exp;
-class UserProc;
-class Proc;
-class Type;
-class Signature;
 class Assign;
-class LocationSet;
+class BasicBlock;
 class CallStatement;
-//class CallStatement::RetLocs;
+class Exp;
+class LocationSet;
+class Proc;
 class ReturnStatement;
+class Signature;
+class StatementList;
+class Type;
+class UserProc;
+typedef BasicBlock *PBB;
 
 class HLLCode {
 protected:

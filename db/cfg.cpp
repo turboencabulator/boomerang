@@ -18,33 +18,26 @@
 #include <config.h>
 #endif
 
-#include "types.h"
-#include "statement.h"
-#include "signature.h"
-#include "exp.h"
 #include "cfg.h"
-#include "register.h"
-#include "rtl.h"
-#include "proc.h"  // For Proc::setTailCaller()
-#include "prog.h"  // For findProc()
-#include "util.h"
-#include "hllcode.h"
-#include "boomerang.h"
-#include "log.h"
 
-#include <algorithm>  // For find()
-#include <fstream>
+#include "boomerang.h"
+#include "exp.h"
+#include "hllcode.h"
+#include "log.h"
+#include "proc.h"
+#include "rtl.h"
+#include "signature.h"
+#include "statement.h"
+#include "types.h"
+
+#include <algorithm>    // For std::find()
 #include <sstream>
 
-#include <cstring>
 #include <cassert>
+#include <cstring>
 
 void delete_lrtls(std::list<RTL *> *pLrtl);
 void erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end);
-
-/**********************************
- * Cfg methods.
- **********************************/
 
 /*==============================================================================
  * FUNCTION:        Cfg::Cfg

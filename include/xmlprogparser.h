@@ -15,22 +15,26 @@
 #ifndef XMLPROGPARSER_H
 #define XMLPROGPARSER_H
 
-class Global;
-class Cluster;
-class Prog;
-class Proc;
-class UserProc;
-class LibProc;
-class Signature;
-class StatementSet;
+#include <ostream>
+#include <map>
+#include <stack>
+
+class BasicBlock;
+class Cfg;
 class Cluster;
 class Context;
-class Type;
 class Exp;
-class Cfg;
-class BasicBlock;
+class Global;
+class LibProc;
+class Proc;
+class Prog;
 class RTL;
+class Signature;
+class Statement;
+class Type;
+class UserProc;
 
+class XMLProgParser;
 typedef struct {
 	const char *tag;
 	void (XMLProgParser::*start)(Context *node, const char **attr);

@@ -13,10 +13,14 @@
 #endif
 
 #include "DfaTest.h"
+
+//#include "boomerang.h"
 #include "log.h"
-#include "boomerang.h"
+#include "type.h"
 
 #include <iostream>     // For std::cerr
+#include <sstream>
+#include <string>
 
 class ErrLogger : public Log {
 public:

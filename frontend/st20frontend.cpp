@@ -21,14 +21,11 @@
 #include <config.h>
 #endif
 
+#include "st20frontend.h"
+#include "st20decoder.h"
+
 #include "exp.h"
 #include "proc.h"
-#include "prog.h"
-#include "decoder.h"
-#include "st20decoder.h"
-#include "st20frontend.h"
-
-#include <sstream>
 
 ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :
 	FrontEnd(pBF, prog)

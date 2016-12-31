@@ -16,12 +16,18 @@
 #ifndef CHLLCODE_H
 #define CHLLCODE_H
 
-#include <string>
-#include <sstream>
+#include "hllcode.h"
 
+#include <ostream>
+#include <sstream>
+#include <list>
+#include <map>
+#include <set>
+#include <string>
+
+class Assign;
 class Exp;
 class Proc;
-class Assign;
 
 // Operator precedence
 /*
@@ -68,8 +74,6 @@ enum PREC {
 	PREC_PRIM,              ///< Primary
 	PREC_SCOPE              ///< Primary scope resolution
 };
-
-
 
 /// Outputs C code.
 class CHLLCode : public HLLCode {

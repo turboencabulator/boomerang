@@ -12,13 +12,15 @@
 #include <config.h>
 #endif
 
-#define HELLO_PENTIUM       "test/pentium/hello"
-
 #include "ProcTest.h"
-#include "frontend.h"
 
-#include <sstream>
-#include <map>
+#include "frontend.h"
+#include "proc.h"
+#include "prog.h"
+
+#include <string>
+
+#define HELLO_PENTIUM       "test/pentium/hello"
 
 /**
  * Delete expressions created in setUp.

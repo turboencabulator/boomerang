@@ -23,8 +23,8 @@
 
 #include "DOS4GWBinaryFile.h"
 
-#include <cstdlib>
 #include <cassert>
+#include <cstdlib>
 
 extern "C" int microX86Dis(void *p);  // From microX86dis.c
 

@@ -15,6 +15,8 @@
 
 #include <list>
 
+class Exp;
+
 class ExpTransformer {
 protected:
 	static std::list<ExpTransformer *> transformers;
