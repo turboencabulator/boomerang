@@ -168,7 +168,7 @@ public:
 	        void        rangeAnalysis();
 
 	// Generate dotty file
-	        void        generateDotFile();
+	        void        generateDot(std::ostream &os);
 
 	// Generate code
 	        void        generateCode(std::ostream &os);

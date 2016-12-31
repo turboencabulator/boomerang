@@ -22,7 +22,6 @@
 #include "exphelp.h"     // For lessExpStar
 #include "types.h"
 
-#include <fstream>
 #include <ostream>
 #include <exception>
 #include <functional>
@@ -428,7 +427,7 @@ public:
 	void        tagNodesInLoop(BasicBlock *header, bool *&loopNodes);
 
 	void        removeUnneededLabels(HLLCode *hll);
-	void        generateDotFile(std::ofstream &of);
+	void        generateDot(std::ostream &os);
 
 
 	/*

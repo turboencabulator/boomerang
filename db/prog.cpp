@@ -125,11 +125,9 @@ void Prog::finishDecode()
 	}
 }
 
-void Prog::generateDotFile()
+void Prog::generateDot(std::ostream &os)
 {
-	assert(Boomerang::get()->dotFile);
-	std::ofstream of(Boomerang::get()->dotFile);
-	of << "digraph Cfg {" << std::endl;
+	os << "digraph Cfg {\n";
 
 	for (std::list<Proc *>::iterator it = m_procs.begin(); it != m_procs.end(); it++) {
 		Proc *pProc = *it;
@@ -137,13 +135,13 @@ void Prog::generateDotFile()
 		UserProc *p = (UserProc *)pProc;
 		if (!p->isDecoded()) continue;
 		// Subgraph for the proc name
-		of << "\nsubgraph cluster_" << p->getName() << " {\n"
-		   << "\t   color=gray;\n\tlabel=" << p->getName() << ";\n";
+		os << "\n\tsubgraph cluster_" << p->getName() << " {\n"
+		   << "\t\tcolor=gray;\n\t\tlabel=\"" << p->getName() << "\";\n";
 		// Generate dotty CFG for this proc
-		p->getCFG()->generateDotFile(of);
+		p->getCFG()->generateDot(os);
 	}
-	of << "}";
-	of.close();
+
+	os << "}\n";
 }
 
 void Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)

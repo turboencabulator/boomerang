@@ -1606,95 +1606,93 @@ void Cfg::removeUnneededLabels(HLLCode *hll)
 
 #define BBINDEX 0     // Non zero to print <index>: before <statement number>
 #define BACK_EDGES 0  // Non zero to generate green back edges
-void Cfg::generateDotFile(std::ofstream &of)
+void Cfg::generateDot(std::ostream &os)
 {
 	ADDRESS aret = NO_ADDRESS;
+
 	// The nodes
 	std::list<BasicBlock *>::iterator it;
 	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
-		of << "\t   " << "bb" << std::hex << (*it)->getLowAddr() << " [" << "label=\"";
-		char *p = (*it)->getStmtNumber();
+		os << "\t\tbb" << std::hex << (*it)->getLowAddr()
+		   << " [label=\"";
+		const char *p = (*it)->getStmtNumber();
 #if BBINDEX
-		of << std::dec << indices[*it];
+		os << std::dec << indices[*it];
 		if (p[0] != 'b')
 			// If starts with 'b', no statements (something like bb8101c3c).
-			of << ":";
+			os << ":";
 #endif
-		of << p << " ";
+		os << p << " ";
 		switch ((*it)->getType()) {
-		case ONEWAY: of << "oneway"; break;
 		case TWOWAY:
+			os << "twoway";
 			if ((*it)->getCond()) {
-				of << "\\n";
-				(*it)->getCond()->print(of);
-				of << "\" shape=diamond];\n";
+				os << "\\n";
+				(*it)->getCond()->print(os);
+				os << "\",shape=diamond];\n";
 				continue;
-			} else
-				of << "twoway";
+			}
 			break;
 		case NWAY:
+			os << "nway";
 			{
-				of << "nway";
 				Exp *de = (*it)->getDest();
-				if (de) {
-					of << "\\n";
-					of << de;
-				}
-				of << "\" shape=trapezium];\n";
+				if (de) os << "\\n" << de;
+				os << "\",shape=trapezium];\n";
 			}
 			continue;
 		case CALL:
+			os << "call";
 			{
-				of << "call";
 				Proc *dest = (*it)->getDestProc();
-				if (dest) of << "\\n" << dest->getName();
+				if (dest) os << "\\n" << dest->getName();
 			}
 			break;
 		case RET:
-			{
-				of << "ret\" shape=triangle];\n";
-				// Remember the (unbique) return BB's address
-				aret = (*it)->getLowAddr();
-			}
+			os << "ret\",shape=triangle];\n";
+			// Remember the (unbique) return BB's address
+			aret = (*it)->getLowAddr();
 			continue;
-		case FALL: of << "fall"; break;
-		case COMPJUMP: of << "compjump"; break;
-		case COMPCALL: of << "compcall"; break;
-		case INVALID: of << "invalid"; break;
+		case ONEWAY:   os << "oneway";   break;
+		case FALL:     os << "fall";     break;
+		case COMPJUMP: os << "compjump"; break;
+		case COMPCALL: os << "compcall"; break;
+		case INVALID:  os << "invalid";  break;
 		}
-		of << "\"];\n";
+		os << "\"];\n";
 	}
 
-	// Force the one return node to be at the bottom (max rank). Otherwise, with all its in-edges, it will end up in the
-	// middle
+	// Force the one return node to be at the bottom (max rank).
+	// Otherwise, with all its in-edges, it will end up in the middle.
 	if (aret)
-		of << "{rank=max; bb" << std::hex << aret << "}\n";
+		os << "\t\t{rank=max; bb" << std::hex << aret << "}\n";
 
 	// Close the subgraph
-	of << "}\n";
+	os << "\t}\n";
 
 	// Now the edges
 	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		std::vector<BasicBlock *> &outEdges = (*it)->getOutEdges();
 		for (unsigned int j = 0; j < outEdges.size(); j++) {
-			of << "\t   " << "bb" << std::hex << (*it)->getLowAddr() << " -> ";
-			of << "bb" << std::hex << outEdges[j]->getLowAddr();
+			os << "\tbb" << std::hex << (*it)->getLowAddr()
+			   << " -> bb" << std::hex << outEdges[j]->getLowAddr()
+			   << " [color=blue";
 			if ((*it)->getType() == TWOWAY) {
 				if (j == 0)
-					of << " [label=\"true\"]";
+					os << ",label=\"true\"";
 				else
-					of << " [label=\"false\"]";
+					os << ",label=\"false\"";
 			}
-			of << " [color = \"blue\"];\n";
+			os << "];\n";
 		}
 	}
 #if BACK_EDGES
 	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		std::vector<BasicBlock *> &inEdges = (*it)->getInEdges();
 		for (unsigned int j = 0; j < inEdges.size(); j++) {
-			of << "\t   " << "bb" << std::hex << (*it)->getLowAddr() << " -> ";
-			of << "bb" << std::hex << inEdges[j]->getLowAddr();
-			of << " [color = \"green\"];\n";
+			os << "\tbb" << std::hex << (*it)->getLowAddr()
+			   << " -> bb" << std::hex << inEdges[j]->getLowAddr()
+			   << " [color=green];\n";
 		}
 	}
 #endif

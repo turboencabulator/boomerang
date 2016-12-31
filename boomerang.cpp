@@ -1137,8 +1137,11 @@ int Boomerang::decompile(const char *fname, const char *pname)
 	std::cout << "decompiling...\n";
 	prog->decompile();
 
-	if (dotFile)
-		prog->generateDotFile();
+	if (dotFile) {
+		std::ofstream of(dotFile);
+		prog->generateDot(of);
+		of.close();
+	}
 
 	if (printAST) {
 		std::cout << "printing AST...\n";

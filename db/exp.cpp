@@ -1120,145 +1120,144 @@ void Exp::dump()
 }
 
 /*==============================================================================
- * FUNCTION:        Exp::createDotFile etc
+ * FUNCTION:        Exp::createDot etc
  * OVERVIEW:        Create a dotty file (use dotty to display the file; search the web for "graphviz").
  *                  Mainly for debugging
- * PARAMETERS:      Name of the file to create
- * RETURNS:         <nothing>
+ * PARAMETERS:      The stream to write
  *============================================================================*/
-void Exp::createDotFile(const char *name)
+void Exp::createDot(std::ostream &os)
 {
-	std::ofstream of;
-	of.open(name);
-	if (!of) {
-		LOG << "Could not open " << name << " to write dotty file\n";
-		return;
-	}
-	of << "digraph Exp {\n";
-	appendDotFile(of);
-	of << "}";
-	of.close();
+	os << "digraph Exp {\n";
+	appendDot(os);
+	os << "}\n";
 }
 
 //  //  //  //
 //  Const   //
 //  //  //  //
-void Const::appendDotFile(std::ofstream &of)
+void Const::appendDot(std::ostream &os)
 {
 	// We define a unique name for each node as "e123456" if the address of "this" == 0x123456
-	of << "e" << std::hex << (int)this << " [shape=record,label=\"{";
-	of << operStrings[op] << "\\n0x" << std::hex << (int)this << " | ";
+	os << "\te" << std::hex << (int)this
+	   << " [shape=record,label=\"{ " << operStrings[op]
+	   << "\\n0x" << std::hex << (int)this
+	   << " | ";
 	switch (op) {
-	case opIntConst:  of << std::dec << u.i; break;
-	case opFltConst:  of << u.d; break;
-	case opStrConst:  of << "\\\"" << u.p << "\\\""; break;
+	case opIntConst:  os << std::dec << u.i; break;
+	case opFltConst:  os << u.d; break;
+	case opStrConst:  os << "\\\"" << u.p << "\\\""; break;
 	// Might want to distinguish this better, e.g. "(func *)myProc"
-	case opFuncConst: of << u.pp->getName(); break;
+	case opFuncConst: os << u.pp->getName(); break;
 	default:
 		break;
 	}
-	of << " }\"];\n";
+	os << " }\"];\n";
 }
 
 //  //  //  //
 // Terminal //
 //  //  //  //
-void Terminal::appendDotFile(std::ofstream &of)
+void Terminal::appendDot(std::ostream &os)
 {
-	of << "e" << std::hex << (int)this << " [shape=parallelogram,label=\"";
-	if (op == opWild)
-		// Note: value is -1, so can't index array
-		of << "WILD";
-	else
-		of << operStrings[op];
-	of << "\\n0x" << std::hex << (int)this;
-	of << "\"];\n";
+	os << "\te" << std::hex << (int)this
+	// Note: opWild value is -1, so can't index array
+	   << " [shape=parallelogram,label=\"" << (op == opWild ? "WILD" : operStrings[op])
+	   << "\\n0x" << std::hex << (int)this
+	   << "\"];\n";
 }
 
 //  //  //  //
 //  Unary   //
 //  //  //  //
-void Unary::appendDotFile(std::ofstream &of)
+void Unary::appendDot(std::ostream &os)
 {
 	// First a node for this Unary object
-	of << "e" << std::hex << (int)this << " [shape=record,label=\"{";
-	// The (int) cast is to print the address, not the expression!
-	of << operStrings[op] << "\\n0x" << std::hex << (int)this << " | ";
-	of << "<p1>";
-	of << " }\"];\n";
+	os << "\te" << std::hex << (int)this
+	   << " [shape=record,label=\"{ " << operStrings[op]
+	   << "\\n0x" << std::hex << (int)this
+	   << " | <p1> }\"];\n";
 
 	// Now recurse to the subexpression.
-	subExp1->appendDotFile(of);
+	subExp1->appendDot(os);
 
 	// Finally an edge for the subexpression
-	of << "e" << std::hex << (int)this << "->e" << (int)subExp1 << ";\n";
+	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
 }
 
 //  //  //  //
 //  Binary  //
 //  //  //  //
-void Binary::appendDotFile(std::ofstream &of)
+void Binary::appendDot(std::ostream &os)
 {
 	// First a node for this Binary object
-	of << "e" << std::hex << (int)this << " [shape=record,label=\"{";
-	of << operStrings[op] << "\\n0x" << std::hex << (int)this << " | ";
-	of << "{<p1> | <p2>}";
-	of << " }\"];\n";
-	subExp1->appendDotFile(of);
-	subExp2->appendDotFile(of);
+	os << "\te" << std::hex << (int)this
+	   << " [shape=record,label=\"{ " << operStrings[op]
+	   << "\\n0x" << std::hex << (int)this
+	   << " | {<p1> | <p2>} }\"];\n";
+
+	subExp1->appendDot(os);
+	subExp2->appendDot(os);
+
 	// Now an edge for each subexpression
-	of << "e" << std::hex << (int)this << ":p1->e" << (int)subExp1 << ";\n";
-	of << "e" << std::hex << (int)this << ":p2->e" << (int)subExp2 << ";\n";
+	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
+	os << "\te" << std::hex << (int)this << ":p2 -> e" << (int)subExp2 << ";\n";
 }
 
 //  //  //  //
 //  Ternary //
 //  //  //  //
-void Ternary::appendDotFile(std::ofstream &of)
+void Ternary::appendDot(std::ostream &os)
 {
 	// First a node for this Ternary object
-	of << "e" << std::hex << (int)this << " [shape=record,label=\"{";
-	of << operStrings[op] << "\\n0x" << std::hex << (int)this << " | ";
-	of << "{<p1> | <p2> | <p3>}";
-	of << " }\"];\n";
-	subExp1->appendDotFile(of);
-	subExp2->appendDotFile(of);
-	subExp3->appendDotFile(of);
+	os << "\te" << std::hex << (int)this
+	   << " [shape=record,label=\"{ " << operStrings[op]
+	   << "\\n0x" << std::hex << (int)this
+	   << " | {<p1> | <p2> | <p3>} }\"];\n";
+
+	subExp1->appendDot(os);
+	subExp2->appendDot(os);
+	subExp3->appendDot(os);
+
 	// Now an edge for each subexpression
-	of << "e" << std::hex << (int)this << ":p1->e" << (int)subExp1 << ";\n";
-	of << "e" << std::hex << (int)this << ":p2->e" << (int)subExp2 << ";\n";
-	of << "e" << std::hex << (int)this << ":p3->e" << (int)subExp3 << ";\n";
+	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
+	os << "\te" << std::hex << (int)this << ":p2 -> e" << (int)subExp2 << ";\n";
+	os << "\te" << std::hex << (int)this << ":p3 -> e" << (int)subExp3 << ";\n";
 }
 
 //  //  //  //
 // TypedExp //
 //  //  //  //
-void TypedExp::appendDotFile(std::ofstream &of)
+void TypedExp::appendDot(std::ostream &os)
 {
-	of << "e" << std::hex << (int)this << " [shape=record,label=\"{";
-	of << "opTypedExp\\n0x" << std::hex << (int)this << " | ";
+	os << "\te" << std::hex << (int)this
+	   << " [shape=record,label=\"{ " << "opTypedExp"
+	   << "\\n0x" << std::hex << (int)this
 	// Just display the C type for now
-	of << type->getCtype() << " | <p1>";
-	of << " }\"];\n";
-	subExp1->appendDotFile(of);
-	of << "e" << std::hex << (int)this << ":p1->e" << (int)subExp1 << ";\n";
+	   << " | " << type->getCtype() << " | <p1> }\"];\n";
+
+	subExp1->appendDot(os);
+
+	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
 }
 
 //  //  //  //
 //  FlagDef //
 //  //  //  //
-void FlagDef::appendDotFile(std::ofstream &of)
+void FlagDef::appendDot(std::ostream &os)
 {
-	of << "e" << std::hex << (int)this << " [shape=record,label=\"{";
-	of << "opFlagDef \\n0x" << std::hex << (int)this << "| ";
-	// Display the RTL as "RTL <r1> <r2>..." vertically (curly brackets)
-	of << "{ RTL ";
+	os << "\te" << std::hex << (int)this
+	   << " [shape=record,label=\"{ " << "opFlagDef"
+	   << "\\n0x" << std::hex << (int)this
+	// Display the RTL as "RTL <r0> <r1>..." vertically (curly brackets)
+	   << " | { RTL ";
 	int n = rtl->getNumStmt();
 	for (int i = 0; i < n; i++)
-		of << "| <r" << std::dec << i << "> ";
-	of << "} | <p1> }\"];\n";
-	subExp1->appendDotFile(of);
-	of << "e" << std::hex << (int)this << ":p1->e" << (int)subExp1 << ";\n";
+		os << "| <r" << std::dec << i << "> ";
+	os << "} | <p1> }\"];\n";
+
+	subExp1->appendDot(os);
+
+	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
 }
 
 /*==============================================================================

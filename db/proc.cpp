@@ -729,17 +729,18 @@ void UserProc::printDFG()
 	for (it = stmts.begin(); it != stmts.end(); it++) {
 		Statement *s = *it;
 		if (s->isPhi())
-			out << s->getNumber() << " [shape=\"triangle\"];\n";
+			out << "\t" << s->getNumber() << " [shape=triangle];\n";
 		if (s->isCall())
-			out << s->getNumber() << " [shape=\"box\"];\n";
+			out << "\t" << s->getNumber() << " [shape=box];\n";
 		if (s->isBranch())
-			out << s->getNumber() << " [shape=\"diamond\"];\n";
+			out << "\t" << s->getNumber() << " [shape=diamond];\n";
 		LocationSet refs;
 		s->addUsedLocs(refs);
 		LocationSet::iterator rr;
 		for (rr = refs.begin(); rr != refs.end(); rr++) {
 			RefExp *r = dynamic_cast<RefExp *>(*rr);
 			if (r) {
+				out << "\t";
 				if (r->getDef())
 					out << r->getDef()->getNumber();
 				else

@@ -27,7 +27,6 @@
 
 #include <iostream>     // For std::cout
 #include <ostream>      // For std::ostream
-#include <fstream>      // For std::ofstream
 #include <list>
 #include <map>
 #include <string>
@@ -94,8 +93,8 @@ public:
 	virtual void        printx(int ind) = 0;
 
 	// Display as a dotty graph
-	        void        createDotFile(const char *name);
-	virtual void        appendDotFile(std::ofstream &os) = 0;
+	        void        createDot(std::ostream &os);
+	virtual void        appendDot(std::ostream &os) = 0;
 
 	// Clone (make copy of self that can be deleted without affecting self)
 	virtual Exp        *clone() = 0;
@@ -413,7 +412,7 @@ public:
 	        void        printNoQuotes(std::ostream &os);
 	virtual void        printx(int ind);
 
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	virtual Exp        *genConstraints(Exp *restrictTo);
 
 	// Visitation
@@ -450,7 +449,7 @@ public:
 	virtual bool        operator*=(Exp &o);
 
 	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	virtual void        printx(int ind);
 
 	virtual bool        isTerminal() { return true; }
@@ -499,7 +498,7 @@ public:
 
 	// Print
 	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	virtual void        printx(int ind);
 
 	// Set first subexpression
@@ -569,7 +568,7 @@ public:
 	// Print
 	virtual void        print(std::ostream &os, bool html = false);
 	virtual void        printr(std::ostream &os, bool html = false);
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	virtual void        printx(int ind);
 
 	// Set second subexpression
@@ -642,7 +641,7 @@ public:
 	// Print
 	virtual void        print(std::ostream &os, bool html = false);
 	virtual void        printr(std::ostream &os, bool html = false);
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	virtual void        printx(int ind);
 
 	// Set third subexpression
@@ -703,7 +702,7 @@ public:
 
 
 	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	virtual void        printx(int ind);
 
 	// Get and set the type
@@ -732,7 +731,7 @@ class FlagDef : public Unary {
 public:
 	                    FlagDef(Exp *params, RTL *rtl);  // Constructor
 	virtual            ~FlagDef();                       // Destructor
-	virtual void        appendDotFile(std::ofstream &of);
+	virtual void        appendDot(std::ostream &os);
 	        RTL        *getRtl() { return rtl; }
 	        void        setRtl(RTL *r) { rtl = r; }
 

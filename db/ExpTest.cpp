@@ -19,6 +19,7 @@
 #include "type.h"
 #include "visitor.h"
 
+//#include <fstream>
 #include <sstream>
 #include <list>
 #include <map>
@@ -916,7 +917,9 @@ void ExpTest::testParen()
 	std::string expected("   0 *v* r[rd] := r[rs1] & ((0 - reg_or_imm) - 1)");
 	std::ostringstream o;
 	a.print(o);
-	// a.createDotFile("andn.dot");
+	//std::ofstream of("andn.dot");
+	//a.getRight()->createDot(of);
+	//of.close();
 	std::string actual(o.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
