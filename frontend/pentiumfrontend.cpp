@@ -230,7 +230,7 @@ std::vector<Exp *> &PentiumFrontEnd::getDefaultReturns()
 void PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 {
 	BB_IT it;
-	for (PBB pBB = pCfg->getFirstBB(it); pBB; pBB = pCfg->getNextBB(it)) {
+	for (BasicBlock *pBB = pCfg->getFirstBB(it); pBB; pBB = pCfg->getNextBB(it)) {
 		std::list<RTL *>::iterator rit;
 		Statement *st;
 
@@ -329,7 +329,7 @@ void PentiumFrontEnd::processFloatCode(Cfg *pCfg)
  *                  reset to 0 for calls, so that if a function returns a float, then it will always appear in r[32]
  * RETURNS:       <nothing>
  *============================================================================*/
-void PentiumFrontEnd::processFloatCode(PBB pBB, int &tos, Cfg *pCfg)
+void PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 {
 	std::list<RTL *>::iterator rit;
 	Statement *st;
@@ -423,12 +423,12 @@ void PentiumFrontEnd::processFloatCode(PBB pBB, int &tos, Cfg *pCfg)
 	pBB->setTraversed(true);
 
 	// Now recurse to process my out edges, if not already processed
-	const std::vector<PBB> &outs = pBB->getOutEdges();
+	const std::vector<BasicBlock *> &outs = pBB->getOutEdges();
 	unsigned n;
 	do {
 		n = outs.size();
 		for (unsigned o = 0; o < n; o++) {
-			PBB anOut = outs[o];
+			BasicBlock *anOut = outs[o];
 			if (!anOut->isTraversed()) {
 				processFloatCode(anOut, tos, pCfg);
 				if (outs.size() != n)
@@ -650,7 +650,7 @@ ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	return start;
 }
 
-void toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, PBB bb, BB_IT &it)
+void toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &it)
 {
 	BranchStatement *br1 = new BranchStatement;
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
@@ -677,7 +677,7 @@ void PentiumFrontEnd::processStringInst(UserProc *proc)
 	// For each BB this proc
 	for (it = cfg->begin(); it != cfg->end(); /* no increment! */) {
 		bool noinc = false;
-		PBB bb = *it;
+		BasicBlock *bb = *it;
 		std::list<RTL *> *rtls = bb->getRTLs();
 		if (rtls == NULL)
 			break;
@@ -732,7 +732,7 @@ void PentiumFrontEnd::processOverlapped(UserProc *proc)
 		}
 	}
 
-	std::set<PBB> bbs;
+	std::set<BasicBlock *> bbs;
 
 	// For each statement, we are looking for assignments to registers in
 	//   these ranges:
@@ -952,7 +952,7 @@ void PentiumFrontEnd::processOverlapped(UserProc *proc)
 	}
 
 	// set a flag for every BB we've processed so we don't do them again
-	for (std::set<PBB>::iterator bit = bbs.begin(); bit != bbs.end(); bit++)
+	for (std::set<BasicBlock *>::iterator bit = bbs.begin(); bit != bbs.end(); bit++)
 		(*bit)->overlappedRegProcessingDone = true;
 }
 

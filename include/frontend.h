@@ -42,7 +42,6 @@ class Prog;
 class RTL;
 class Signature;
 class UserProc;
-typedef BasicBlock *PBB;
 
 // Control flow types
 enum INSTTYPE {
@@ -73,7 +72,7 @@ public:
 	 *              (i.e. the BB has to be split)
 	 * RETURNS:     <nothing>
 	 */
-	void visit(Cfg *pCfg, ADDRESS uNewAddr, PBB &pNewBB);
+	void visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB);
 	/*
 	 * Provide an initial address (can call several times if there are several entry points)
 	 */
@@ -250,7 +249,7 @@ public:
 	 *              pRtl: pointer to the current RTL with the semantics for the return statement (including a
 	 *                  ReturnStatement as the last statement)
 	 */
-	PBB createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl);
+	BasicBlock *createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl);
 
 	/*
 	 * Add a synthetic return instruction and basic block (or a branch to the existing return instruction).
@@ -258,7 +257,7 @@ public:
 	 *              pProc: pointer to the enclosing UserProc
 	 *              pRtl: pointer to the current RTL with the call instruction
 	 */
-	void appendSyntheticReturn(PBB pCallBB, UserProc *pProc, RTL *pRtl);
+	void appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl);
 
 	/*
 	 * Add an RTL to the map from native address to previously-decoded-RTLs. Used to restore case statements and

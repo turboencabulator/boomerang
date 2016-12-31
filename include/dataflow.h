@@ -30,14 +30,12 @@ class PhiAssign;
 class Statement;
 class UserProc;
 
-typedef BasicBlock *PBB;
-
 class DataFlow {
 	/******************** Dominance Frontier Data *******************/
 
-	/* These first two are not from Appel; they map PBBs to indices */
-	std::vector<PBB> BBs;               // Pointers to BBs from indices
-	std::map<PBB, int> indices;         // Indices from pointers to BBs
+	/* These first two are not from Appel; they map BasicBlock*s to indices */
+	std::vector<BasicBlock *> BBs;        // Pointers to BBs from indices
+	std::map<BasicBlock *, int> indices;  // Indices from pointers to BBs
 	/*
 	 * Calculating the dominance frontier
 	 */
@@ -108,9 +106,9 @@ public:
 	void        clearA_phi() { A_phi.clear(); }
 
 	// For testing:
-	int         pbbToNode(PBB bb) { return indices[bb]; }
+	int         pbbToNode(BasicBlock *bb) { return indices[bb]; }
 	std::set<int> &getDF(int node) { return DF[node]; }
-	PBB         nodeToBB(int node) { return BBs[node]; }
+	BasicBlock *nodeToBB(int node) { return BBs[node]; }
 	int         getIdom(int node) { return idom[node]; }
 	int         getSemi(int node) { return semi[node]; }
 	std::set<int> &getA_phi(Exp *e) { return A_phi[e]; }

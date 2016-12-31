@@ -116,7 +116,7 @@ bool UserProc::isNoReturn()
 	if (!this->isDecoded())
 		return false;
 
-	PBB exitbb = cfg->getExitBB();
+	BasicBlock *exitbb = cfg->getExitBB();
 	if (exitbb == NULL)
 		return true;
 	if (exitbb->getNumInEdges() == 1) {
@@ -137,7 +137,7 @@ bool UserProc::isNoReturn()
 bool UserProc::containsAddr(ADDRESS uAddr)
 {
 	BB_IT it;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
 		if (bb->getRTLs() && bb->getLowAddr() <= uAddr && bb->getHiAddr() >= uAddr)
 			return true;
 	return false;
@@ -448,7 +448,7 @@ SyntaxNode *UserProc::getAST()
 	int numBBs = 0;
 	BlockSyntaxNode *init = new BlockSyntaxNode();
 	BB_IT it;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		BlockSyntaxNode *b = new BlockSyntaxNode();
 		b->setBB(bb);
 		init->addStatement(b);
@@ -555,7 +555,7 @@ void UserProc::unDecode()
  * PARAMETERS:
  * RETURNS:     Pointer to the entry point BB, or NULL if not found
  *============================================================================*/
-PBB UserProc::getEntryBB()
+BasicBlock *UserProc::getEntryBB()
 {
 	return cfg->getEntryBB();
 }
@@ -568,8 +568,8 @@ PBB UserProc::getEntryBB()
  *============================================================================*/
 void UserProc::setEntryBB()
 {
-	std::list<PBB>::iterator bbit;
-	PBB pBB = cfg->getFirstBB(bbit);  // Get an iterator to the first BB
+	std::list<BasicBlock *>::iterator bbit;
+	BasicBlock *pBB = cfg->getFirstBB(bbit);  // Get an iterator to the first BB
 	// Usually, but not always, this will be the first BB, or at least in the first few
 	while (pBB && address != pBB->getLowAddr()) {
 		pBB = cfg->getNextBB(bbit);
@@ -628,7 +628,7 @@ void UserProc::generateCode(HLLCode *hll)
 			hll->AddCallStatement(1, NULL, "SPARCSETUP", args, &results);
 	}
 
-	std::list<PBB> followSet, gotoSet;
+	std::list<BasicBlock *> followSet, gotoSet;
 	getEntryBB()->generateCode(hll, 1, NULL, followSet, gotoSet, this);
 
 	hll->AddProcEnd();
@@ -763,7 +763,7 @@ void UserProc::initStatements()
 	BB_IT it;
 	BasicBlock::rtlit rit;
 	StatementList::iterator sit;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			s->setProc(this);
 			s->setBB(bb);
@@ -773,7 +773,7 @@ void UserProc::initStatements()
 				if (call->getDestProc()
 				 && call->getDestProc()->isNoReturn()
 				 && bb->getNumOutEdges() == 1) {
-					PBB out = bb->getOutEdge(0);
+					BasicBlock *out = bb->getOutEdge(0);
 					if (out != cfg->getExitBB() || cfg->getExitBB()->getNumInEdges() != 1) {
 						out->deleteInEdge(bb);
 						bb->getOutEdges().clear();
@@ -789,7 +789,7 @@ void UserProc::numberStatements()
 	BB_IT it;
 	BasicBlock::rtlit rit;
 	StatementList::iterator sit;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit))
 			if (!s->isImplicit()      // Don't renumber implicits (remain number 0)
 			 && s->getNumber() == 0)  // Don't renumber existing (or waste numbers)
@@ -802,7 +802,7 @@ void UserProc::numberStatements()
 void UserProc::getStatements(StatementList &stmts)
 {
 	BB_IT it;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
 		bb->getStatements(stmts);
 
 	for (StatementList::iterator it = stmts.begin(); it != stmts.end(); it++)
@@ -840,7 +840,7 @@ void UserProc::removeStatement(Statement *stmt)
 	}
 
 	// remove from BB/RTL
-	PBB bb = stmt->getBB();  // Get our enclosing BB
+	BasicBlock *bb = stmt->getBB();  // Get our enclosing BB
 	std::list<RTL *> *rtls = bb->getRTLs();
 	for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
 		std::list<Statement *> &stmts = (*rit)->getList();
@@ -859,14 +859,14 @@ void UserProc::insertAssignAfter(Statement *s, Exp *left, Exp *right)
 	std::list<Statement *> *stmts;
 	if (s == NULL) {
 		// This means right is supposed to be a parameter. We can insert the assignment at the start of the entryBB
-		PBB entryBB = cfg->getEntryBB();
+		BasicBlock *entryBB = cfg->getEntryBB();
 		std::list<RTL *> *rtls = entryBB->getRTLs();
 		assert(rtls->size());  // Entry BB should have at least 1 RTL
 		stmts = &rtls->front()->getList();
 		it = stmts->begin();
 	} else {
 		// An ordinary definition; put the assignment at the end of s's BB
-		PBB bb = s->getBB();  // Get the enclosing BB for s
+		BasicBlock *bb = s->getBB();  // Get the enclosing BB for s
 		std::list<RTL *> *rtls = bb->getRTLs();
 		assert(rtls->size());  // If s is defined here, there should be at least 1 RTL
 		stmts = &rtls->back()->getList();
@@ -984,7 +984,7 @@ ProcSet *UserProc::decompile(ProcList *path, int &indent)
 		// Recurse to children first, to perform a depth first search
 		BB_IT it;
 		// Look at each call, to do the DFS
-		for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+		for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 			if (bb->getType() == CALL) {
 				// The call Statement will be in the last RTL in this BB
 				CallStatement *call = (CallStatement *)bb->getRTLs()->back()->getHlStmt();
@@ -2067,8 +2067,8 @@ void UserProc::removeMatchingAssignsIfPossible(Exp *e)
  */
 void UserProc::assignProcsToCalls()
 {
-	std::list<PBB>::iterator it;
-	PBB pBB = cfg->getFirstBB(it);
+	std::list<BasicBlock *>::iterator it;
+	BasicBlock *pBB = cfg->getFirstBB(it);
 	while (pBB) {
 		std::list<RTL *> *rtls = pBB->getRTLs();
 		if (rtls == NULL) {
@@ -2100,8 +2100,8 @@ void UserProc::assignProcsToCalls()
  */
 void UserProc::finalSimplify()
 {
-	std::list<PBB>::iterator it;
-	PBB pBB = cfg->getFirstBB(it);
+	std::list<BasicBlock *>::iterator it;
+	BasicBlock *pBB = cfg->getFirstBB(it);
 	while (pBB) {
 		std::list<RTL *> *pRtls = pBB->getRTLs();
 		if (pRtls == NULL) {
@@ -4537,7 +4537,7 @@ void UserProc::markAsNonChildless(ProcSet *cs)
 	BasicBlock::rtlrit rrit;
 	StatementList::reverse_iterator srit;
 	BB_IT it;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		CallStatement *c = (CallStatement *)bb->getLastStmt(rrit, srit);
 		if (c && c->isCall() && c->isChildless()) {
 			UserProc *dest = (UserProc *)c->getDestProc();
@@ -5025,7 +5025,7 @@ void UserProc::updateForUseChange(std::set<UserProc *> &removeRetSet)
 	BasicBlock::rtlrit rrit;
 	StatementList::reverse_iterator srit;
 	BB_IT it;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		CallStatement *c = (CallStatement *)bb->getLastStmt(rrit, srit);
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (c == NULL || !c->isCall()) continue;
@@ -5246,7 +5246,7 @@ void UserProc::processDecodedICTs()
 	BB_IT it;
 	BasicBlock::rtlrit rrit;
 	StatementList::reverse_iterator srit;
-	for (PBB bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		Statement *last = bb->getLastStmt(rrit, srit);
 		if (last == NULL) continue;  // e.g. a BB with just a NOP in it
 		if (!last->isHL_ICT()) continue;
@@ -5266,7 +5266,7 @@ void UserProc::processDecodedICTs()
 // Meet types if necessary
 void UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 {
-	PBB bb = s->getBB();  // Get s' enclosing BB
+	BasicBlock *bb = s->getBB();  // Get s' enclosing BB
 	std::list<RTL *> *rtls = bb->getRTLs();
 	for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
 		std::list<Statement *> &stmts = (*rit)->getList();

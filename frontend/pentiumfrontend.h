@@ -45,7 +45,7 @@ private:
 	/*
 	 * Process an F(n)STSW instruction.
 	 */
-	bool processStsw(std::list<RTL *>::iterator &rit, std::list<RTL *> *pRtls, PBB pBB, Cfg *pCfg);
+	bool processStsw(std::list<RTL *>::iterator &rit, std::list<RTL *> *pRtls, BasicBlock *pBB, Cfg *pCfg);
 
 	/*
 	 * Emit a set instruction.
@@ -68,7 +68,7 @@ private:
 	/*
 	 * Process a BB and its successors for floating point code
 	 */
-	void processFloatCode(PBB pBB, int &tos, Cfg *pCfg);
+	void processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg);
 
 	/*
 	 * Process away %rpt and %skip in string instructions

@@ -42,7 +42,6 @@ class Prog;
 class Signature;
 class SyntaxNode;
 class UserProc;
-typedef BasicBlock *PBB;
 
 /*==============================================================================
  * Procedure class.
@@ -760,7 +759,7 @@ public:
 	/**
 	 * Get the BB that is the entry point (not always the first BB)
 	 */
-	        PBB         getEntryBB();
+	        BasicBlock *getEntryBB();
 
 	/*
 	 * Prints this procedure to an output stream.

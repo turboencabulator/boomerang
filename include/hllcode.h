@@ -35,7 +35,6 @@ class Signature;
 class StatementList;
 class Type;
 class UserProc;
-typedef BasicBlock *PBB;
 
 class HLLCode {
 protected:
@@ -122,7 +121,7 @@ public:
 
 class SyntaxNode {
 protected:
-	        PBB     pbb;
+	        BasicBlock *pbb;
 	        int     nodenum;
 	        int     score;
 	        SyntaxNode *correspond; // corresponding node in previous state
@@ -141,8 +140,8 @@ public:
 
 	virtual int     getNumber() { return nodenum; }
 
-	        PBB     getBB() { return pbb; }
-	        void    setBB(PBB bb) { pbb = bb; }
+	        BasicBlock *getBB() { return pbb; }
+	        void    setBB(BasicBlock *bb) { pbb = bb; }
 
 	virtual int     getNumOutEdges() = 0;
 	virtual SyntaxNode *getOutEdge(SyntaxNode *root, int n) = 0;
@@ -160,7 +159,7 @@ public:
 	virtual SyntaxNode *replace(SyntaxNode *from, SyntaxNode *to) = 0;
 	        SyntaxNode *getCorrespond() { return correspond; }
 
-	virtual SyntaxNode *findNodeFor(PBB bb) = 0;
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb) = 0;
 	virtual void    printAST(SyntaxNode *root, std::ostream &os) = 0;
 	virtual int     evaluate(SyntaxNode *root) = 0;
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors) { }
@@ -229,7 +228,7 @@ public:
 	virtual SyntaxNode *clone();
 	virtual SyntaxNode *replace(SyntaxNode *from, SyntaxNode *to);
 
-	virtual SyntaxNode *findNodeFor(PBB bb);
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb);
 	virtual void    printAST(SyntaxNode *root, std::ostream &os);
 	virtual int     evaluate(SyntaxNode *root);
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors);
@@ -263,7 +262,7 @@ public:
 	        Exp    *getCond() { return cond; }
 	        void    setThen(SyntaxNode *n) { pThen = n; }
 
-	virtual SyntaxNode *findNodeFor(PBB bb);
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb);
 	virtual void    printAST(SyntaxNode *root, std::ostream &os);
 	virtual int     evaluate(SyntaxNode *root);
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors);
@@ -303,7 +302,7 @@ public:
 	        void    setThen(SyntaxNode *n) { pThen = n; }
 	        void    setElse(SyntaxNode *n) { pElse = n; }
 
-	virtual SyntaxNode *findNodeFor(PBB bb);
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb);
 	virtual void    printAST(SyntaxNode *root, std::ostream &os);
 	virtual int     evaluate(SyntaxNode *root);
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors);
@@ -334,7 +333,7 @@ public:
 	        void    setCond(Exp *e) { cond = e; }
 	        void    setBody(SyntaxNode *n) { pBody = n; }
 
-	virtual SyntaxNode *findNodeFor(PBB bb);
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb);
 	virtual void    printAST(SyntaxNode *root, std::ostream &os);
 	virtual int     evaluate(SyntaxNode *root);
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors);
@@ -365,7 +364,7 @@ public:
 	        void    setCond(Exp *e) { cond = e; }
 	        void    setBody(SyntaxNode *n) { pBody = n; }
 
-	virtual SyntaxNode *findNodeFor(PBB bb);
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb);
 	virtual void    printAST(SyntaxNode *root, std::ostream &os);
 	virtual int     evaluate(SyntaxNode *root);
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors);
@@ -394,7 +393,7 @@ public:
 
 	        void    setBody(SyntaxNode *n) { pBody = n; }
 
-	virtual SyntaxNode *findNodeFor(PBB bb);
+	virtual SyntaxNode *findNodeFor(BasicBlock *bb);
 	virtual void    printAST(SyntaxNode *root, std::ostream &os);
 	virtual int     evaluate(SyntaxNode *root);
 	virtual void    addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors);

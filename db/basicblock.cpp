@@ -385,7 +385,7 @@ void BasicBlock::print(std::ostream &os, bool html)
 			os << "<br>";
 		os << "Synthetic out edge(s) to ";
 		for (int i = 0; i < m_iNumOutEdges; i++) {
-			PBB outEdge = m_OutEdges[i];
+			BasicBlock *outEdge = m_OutEdges[i];
 			if (outEdge && outEdge->m_iLabelNum)
 				os << "L" << std::dec << outEdge->m_iLabelNum << " ";
 		}
@@ -402,12 +402,12 @@ void BasicBlock::printToLog()
 
 bool BasicBlock::isBackEdge(int inEdge)
 {
-	PBB in = m_InEdges[inEdge];
+	BasicBlock *in = m_InEdges[inEdge];
 	return this == in || (m_DFTfirst < in->m_DFTfirst && m_DFTlast > in->m_DFTlast);
 }
 
 // Another attempt at printing BBs that gdb doesn't like to print
-void printBB(PBB bb)
+void printBB(BasicBlock *bb)
 {
 	bb->print(std::cerr);
 }
@@ -482,7 +482,7 @@ RTL *BasicBlock::getRTLWithStatement(Statement *stmt)
  * PARAMETERS:      <none>
  * RETURNS:         a constant reference to the vector of in edges
  *============================================================================*/
-std::vector<PBB> &BasicBlock::getInEdges()
+std::vector<BasicBlock *> &BasicBlock::getInEdges()
 {
 	return m_InEdges;
 }
@@ -493,7 +493,7 @@ std::vector<PBB> &BasicBlock::getInEdges()
  * PARAMETERS:      <none>
  * RETURNS:         a constant reference to the vector of out edges
  *============================================================================*/
-std::vector<PBB> &BasicBlock::getOutEdges()
+std::vector<BasicBlock *> &BasicBlock::getOutEdges()
 {
 	return m_OutEdges;
 }
@@ -506,7 +506,7 @@ std::vector<PBB> &BasicBlock::getOutEdges()
  *                  pNewInEdge: pointer to BB that will be a new parent
  * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setInEdge(int i, PBB pNewInEdge)
+void BasicBlock::setInEdge(int i, BasicBlock *pNewInEdge)
 {
 	m_InEdges[i] = pNewInEdge;
 }
@@ -520,7 +520,7 @@ void BasicBlock::setInEdge(int i, PBB pNewInEdge)
  *                  pNewOutEdge: pointer to BB that will be the new successor
  * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setOutEdge(int i, PBB pNewOutEdge)
+void BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
 {
 	if (m_OutEdges.size() == 0) {
 		assert(i == 0);
@@ -538,7 +538,7 @@ void BasicBlock::setOutEdge(int i, PBB pNewOutEdge)
  * PARAMETERS:      i: index (0 based) of the desired out edge
  * RETURNS:         the i-th out edge; 0 if there is no such out edge
  *============================================================================*/
-PBB BasicBlock::getOutEdge(unsigned int i)
+BasicBlock *BasicBlock::getOutEdge(unsigned int i)
 {
 	if (i < m_OutEdges.size()) return m_OutEdges[i];
 	else return 0;
@@ -553,9 +553,9 @@ PBB BasicBlock::getOutEdge(unsigned int i)
  * RETURNS:
  *============================================================================*/
 
-PBB BasicBlock::getCorrectOutEdge(ADDRESS a)
+BasicBlock *BasicBlock::getCorrectOutEdge(ADDRESS a)
 {
-	std::vector<PBB>::iterator it;
+	std::vector<BasicBlock *>::iterator it;
 	for (it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
 		if ((*it)->getLowAddr() == a) return *it;
 	}
@@ -569,7 +569,7 @@ PBB BasicBlock::getCorrectOutEdge(ADDRESS a)
  * PARAMETERS:      pNewInEdge: pointer to BB that will be a new parent
  * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::addInEdge(PBB pNewInEdge)
+void BasicBlock::addInEdge(BasicBlock *pNewInEdge)
 {
 	m_InEdges.push_back(pNewInEdge);
 	m_iNumInEdges++;
@@ -585,15 +585,15 @@ void BasicBlock::addInEdge(PBB pNewInEdge)
  *                      if (pred) deleteInEdge(it) else it++;
  * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::deleteInEdge(std::vector<PBB>::iterator &it)
+void BasicBlock::deleteInEdge(std::vector<BasicBlock *>::iterator &it)
 {
 	it = m_InEdges.erase(it);
 	m_iNumInEdges--;
 }
 
-void BasicBlock::deleteInEdge(PBB edge)
+void BasicBlock::deleteInEdge(BasicBlock *edge)
 {
-	for (std::vector<PBB>::iterator it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
+	for (std::vector<BasicBlock *>::iterator it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
 		if (*it == edge) {
 			deleteInEdge(it);
 			break;
@@ -601,10 +601,10 @@ void BasicBlock::deleteInEdge(PBB edge)
 	}
 }
 
-void BasicBlock::deleteEdge(PBB edge)
+void BasicBlock::deleteEdge(BasicBlock *edge)
 {
 	edge->deleteInEdge(this);
-	for (std::vector<PBB>::iterator it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
+	for (std::vector<BasicBlock *>::iterator it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
 		if (*it == edge) {
 			m_OutEdges.erase(it);
 			m_iNumOutEdges--;
@@ -629,8 +629,8 @@ unsigned BasicBlock::DFTOrder(int &first, int &last)
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (std::vector<PBB>::iterator it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
-		PBB child = *it;
+	for (std::vector<BasicBlock *>::iterator it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
+		BasicBlock *child = *it;
 		if (child->m_iTraversed == false)
 			numTraversed = numTraversed + child->DFTOrder(first, last);
 	}
@@ -657,8 +657,8 @@ unsigned BasicBlock::RevDFTOrder(int &first, int &last)
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (std::vector<PBB>::iterator it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
-		PBB parent = *it;
+	for (std::vector<BasicBlock *>::iterator it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
+		BasicBlock *parent = *it;
 		if (parent->m_iTraversed == false)
 			numTraversed = numTraversed + parent->RevDFTOrder(first, last);
 	}
@@ -676,7 +676,7 @@ unsigned BasicBlock::RevDFTOrder(int &first, int &last)
  *                  bb2 - last BB
  * RETURNS:         bb1.address < bb2.address
  *============================================================================*/
-bool BasicBlock::lessAddress(PBB bb1, PBB bb2)
+bool BasicBlock::lessAddress(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->getLowAddr() < bb2->getLowAddr();
 }
@@ -689,7 +689,7 @@ bool BasicBlock::lessAddress(PBB bb1, PBB bb2)
  *                  bb2 - last BB
  * RETURNS:         bb1.first_DFS < bb2.first_DFS
  *============================================================================*/
-bool BasicBlock::lessFirstDFT(PBB bb1, PBB bb2)
+bool BasicBlock::lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->m_DFTfirst < bb2->m_DFTfirst;
 }
@@ -703,7 +703,7 @@ bool BasicBlock::lessFirstDFT(PBB bb1, PBB bb2)
  *                  bb2 - last BB
  * RETURNS:         bb1.last_DFS < bb2.last_DFS
  *============================================================================*/
-bool BasicBlock::lessLastDFT(PBB bb1, PBB bb2)
+bool BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->m_DFTlast < bb2->m_DFTlast;
 }
@@ -919,7 +919,7 @@ void BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 }
 
 /* Check for branch if equal relation */
-bool BasicBlock::isJmpZ(PBB dest)
+bool BasicBlock::isJmpZ(BasicBlock *dest)
 {
 	// The condition will be in the last rtl
 	assert(m_pRtls);
@@ -932,11 +932,11 @@ bool BasicBlock::isJmpZ(PBB dest)
 		if ((*it)->getKind() == STMT_BRANCH) {
 			BRANCH_TYPE jt = ((BranchStatement *)(*it))->getCond();
 			if ((jt != BRANCH_JE) && (jt != BRANCH_JNE)) return false;
-			PBB trueEdge = m_OutEdges[0];
+			BasicBlock *trueEdge = m_OutEdges[0];
 			if (jt == BRANCH_JE)
 				return dest == trueEdge;
 			else {
-				PBB falseEdge = m_OutEdges[1];
+				BasicBlock *falseEdge = m_OutEdges[1];
 				return dest == falseEdge;
 			}
 		}
@@ -994,13 +994,13 @@ void BasicBlock::simplify()
 				    << m_OutEdges[0]->getLowAddr() << " "
 				    << m_OutEdges[1]->getLowAddr() << "\n";
 			}
-			PBB redundant = m_OutEdges[0];
+			BasicBlock *redundant = m_OutEdges[0];
 			m_OutEdges[0] = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
-			std::vector<PBB> rinedges = redundant->m_InEdges;
+			std::vector<BasicBlock *> rinedges = redundant->m_InEdges;
 			redundant->m_InEdges.clear();
 			for (unsigned i = 0; i < rinedges.size(); i++) {
 				if (VERBOSE)
@@ -1025,12 +1025,12 @@ void BasicBlock::simplify()
 				    << m_OutEdges[0]->getLowAddr() << " "
 				    << m_OutEdges[1]->getLowAddr() << "\n";
 			}
-			PBB redundant = m_OutEdges[1];
+			BasicBlock *redundant = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
-			std::vector<PBB> rinedges = redundant->m_InEdges;
+			std::vector<BasicBlock *> rinedges = redundant->m_InEdges;
 			redundant->m_InEdges.clear();
 			for (unsigned i = 0; i < rinedges.size(); i++) {
 				if (VERBOSE)
@@ -1072,7 +1072,7 @@ bool BasicBlock::allParentsGenerated()
 // just before the destination code if it isn't already there.  If the goto is to the return block, it would be nice to
 // emit a 'return' instead (but would have to duplicate the other code in that return BB).  Also, 'continue' and 'break'
 // statements are used instead if possible
-void BasicBlock::emitGotoAndLabel(HLLCode *hll, int indLevel, PBB dest)
+void BasicBlock::emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest)
 {
 	if (loopHead && (loopHead == dest || loopHead->loopFollow == dest)) {
 		if (loopHead == dest)
@@ -1110,11 +1110,11 @@ void BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 	indentLevel = indLevel;
 }
 
-void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<PBB> &followSet, std::list<PBB> &gotoSet, UserProc *proc)
+void BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::list<BasicBlock *> &followSet, std::list<BasicBlock *> &gotoSet, UserProc *proc)
 {
 	// If this is the follow for the most nested enclosing conditional, then don't generate anything. Otherwise if it is
 	// in the follow set generate a goto to the follow
-	PBB enclFollow = followSet.size() == 0 ? NULL : followSet.back();
+	BasicBlock *enclFollow = followSet.size() == 0 ? NULL : followSet.back();
 
 	if (isIn(gotoSet, this) && !isLatchNode()
 	 && ((latch && latch->loopHead && this == latch->loopHead->loopFollow)
@@ -1154,7 +1154,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 		}
 	}
 
-	PBB child = NULL;
+	BasicBlock *child = NULL;
 	switch (sType) {
 	case Loop:
 	case LoopCond:
@@ -1177,7 +1177,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 			hll->AddPretestedLoopHeader(indLevel, cond);
 
 			// write the code for the body of the loop
-			PBB loopBody = (m_OutEdges[BELSE] == loopFollow) ? m_OutEdges[BTHEN] : m_OutEdges[BELSE];
+			BasicBlock *loopBody = (m_OutEdges[BELSE] == loopFollow) ? m_OutEdges[BTHEN] : m_OutEdges[BELSE];
 			loopBody->generateCode(hll, indLevel + 1, latchNode, followSet, gotoSet, proc);
 
 			// if code has not been generated for the latch node, generate it now
@@ -1259,7 +1259,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 
 			// for 2 way conditional headers that are effectively jumps into
 			// or out of a loop or case body, we will need a new follow node
-			PBB tmpCondFollow = NULL;
+			BasicBlock *tmpCondFollow = NULL;
 
 			// keep track of how many nodes were added to the goto set so that
 			// the correct number are removed
@@ -1282,7 +1282,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 				else {
 					if (usType == JumpInOutLoop) {
 						// define the loop header to be compared against
-						PBB myLoopHead = (sType == LoopCond ? this : loopHead);
+						BasicBlock *myLoopHead = (sType == LoopCond ? this : loopHead);
 						gotoSet.push_back(condFollow);
 						gotoTotal++;
 
@@ -1337,7 +1337,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 
 			// write code for the body of the conditional
 			if (cType != Case) {
-				PBB succ = (cType == IfElse ? m_OutEdges[BELSE] : m_OutEdges[BTHEN]);
+				BasicBlock *succ = (cType == IfElse ? m_OutEdges[BELSE] : m_OutEdges[BTHEN]);
 
 				// emit a goto statement if the first clause has already been
 				// generated or it is the follow of this node's enclosing loop
@@ -1382,7 +1382,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 					hll->AddCaseCondOption(indLevel, &caseVal);
 
 					// generate code for the current outedge
-					PBB succ = m_OutEdges[i];
+					BasicBlock *succ = m_OutEdges[i];
 					//assert(succ->caseHead == this || succ == condFollow || HasBackEdgeTo(succ));
 					if (succ->traversed == DFS_CODEGEN)
 						emitGotoAndLabel(hll, indLevel + 1, succ);
@@ -1448,7 +1448,7 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<P
 
 		child = m_OutEdges[0];
 		if (m_OutEdges.size() != 1) {
-			PBB other = m_OutEdges[1];
+			BasicBlock *other = m_OutEdges[1];
 			LOG << "found seq with more than one outedge!\n";
 			if (getDest()->isIntConst()
 			 && ((Const *)getDest())->getInt() == (int)child->getLowAddr()) {
@@ -1505,7 +1505,7 @@ Proc *BasicBlock::getDestProc()
 	return proc;
 }
 
-void BasicBlock::setLoopStamps(int &time, std::vector<PBB> &order)
+void BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 {
 	// timestamp the current node with the current time and set its traversed
 	// flag
@@ -1548,7 +1548,7 @@ void BasicBlock::setRevLoopStamps(int &time)
 	revLoopStamps[1] = ++time;
 }
 
-void BasicBlock::setRevOrder(std::vector<PBB> &order)
+void BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
 {
 	// Set this node as having been traversed during the post domimator DFS ordering traversal
 	traversed = DFS_PDOM;
@@ -1564,7 +1564,7 @@ void BasicBlock::setRevOrder(std::vector<PBB> &order)
 	order.push_back(this);
 }
 
-void BasicBlock::setCaseHead(PBB head, PBB follow)
+void BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 {
 	assert(!caseHead);
 
@@ -1650,7 +1650,7 @@ condType BasicBlock::getCondType()
 	return cType;
 }
 
-bool BasicBlock::inLoop(PBB header, PBB latch)
+bool BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch)
 {
 	assert(header->latchNode == latch);
 	assert(header == latch
@@ -1797,7 +1797,7 @@ void BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 {
 	liveout.clear();
 	for (unsigned i = 0; i < m_OutEdges.size(); i++) {
-		PBB currBB = m_OutEdges[i];
+		BasicBlock *currBB = m_OutEdges[i];
 		// First add the non-phi liveness
 		liveout.makeUnion(currBB->liveIn);
 		int j = currBB->whichPred(this);
@@ -1825,7 +1825,7 @@ void BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 
 // Basically the "whichPred" function as per Briggs, Cooper, et al (and presumably "Cryton, Ferante, Rosen, Wegman, and
 // Zadek").  Return -1 if not found
-int BasicBlock::whichPred(PBB pred)
+int BasicBlock::whichPred(BasicBlock *pred)
 {
 	int n = m_InEdges.size();
 	for (int i = 0; i < n; i++) {
@@ -2057,7 +2057,7 @@ void findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 // code pointers.
 int BasicBlock::findNumCases()
 {
-	std::vector<PBB>::iterator it;
+	std::vector<BasicBlock *>::iterator it;
 	for (it = m_InEdges.begin(); it != m_InEdges.end(); it++) {  // For each in-edge
 		if ((*it)->m_nodeType != TWOWAY)  // look for a two-way BB
 			continue;  // Ignore all others

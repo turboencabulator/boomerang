@@ -35,8 +35,6 @@ class RTL;
 class Statement;
 class UserProc;
 
-typedef BasicBlock *PBB;
-
 /*  *   *   *   *   *   *   *   *   *   *   *   *   *   *   *\
 *                                                            *
 *   e n u m s   u s e d   i n   C f g . h   a n d   h e r e  *
@@ -119,7 +117,7 @@ enum SBBTYPE {
 	CASE            // case statement (switch)
 };
 
-typedef std::list<PBB>::iterator BB_IT;
+typedef std::list<BasicBlock *>::iterator BB_IT;
 
 /*==============================================================================
  * BasicBlock class. <more comments>
@@ -217,48 +215,48 @@ public:
 	/*
 	 * Get the set of in edges.
 	 */
-	        std::vector<PBB> &getInEdges();
+	        std::vector<BasicBlock *> &getInEdges();
 
 	        int         getNumInEdges() { return m_iNumInEdges; }
 
 	/*
 	 * Get the set of out edges.
 	 */
-	        std::vector<PBB> &getOutEdges();
+	        std::vector<BasicBlock *> &getOutEdges();
 
 	/*
 	 * Set an in edge to a new value; same number of in edges as before
 	 */
-	        void        setInEdge(int i, PBB newIn);
+	        void        setInEdge(int i, BasicBlock *newIn);
 
 	/*
 	 * Set an out edge to a new value; same number of out edges as before
 	 */
-	        void        setOutEdge(int i, PBB newInEdge);
+	        void        setOutEdge(int i, BasicBlock *newInEdge);
 
 	/*
 	 * Get the n-th out edge or 0 if it does not exist
 	 */
-	        PBB         getOutEdge(unsigned int i);
+	        BasicBlock *getOutEdge(unsigned int i);
 
 	        int         getNumOutEdges() { return m_iNumOutEdges; }
 
 	/*
 	 * Get the index of my in-edges is BB pred
 	 */
-	        int         whichPred(PBB pred);
+	        int         whichPred(BasicBlock *pred);
 
 	/*
 	 * Add an in-edge
 	 */
-	        void        addInEdge(PBB newInEdge);
-	        void        deleteEdge(PBB edge);
+	        void        addInEdge(BasicBlock *newInEdge);
+	        void        deleteEdge(BasicBlock *edge);
 
 	/*
 	 * Delete an in-edge
 	 */
-	        void        deleteInEdge(std::vector<PBB>::iterator &it);
-	        void        deleteInEdge(PBB edge);
+	        void        deleteInEdge(std::vector<BasicBlock *>::iterator &it);
+	        void        deleteInEdge(BasicBlock *edge);
 
 	/*
 	 * If this is a call BB, find the fixed destination (if any).  Returns -1 otherwise
@@ -283,17 +281,17 @@ public:
 	/*
 	 * Static comparison function that returns true if the first BB has an address less than the second BB.
 	 */
-	static  bool        lessAddress(PBB bb1, PBB bb2);
+	static  bool        lessAddress(BasicBlock *bb1, BasicBlock *bb2);
 
 	/*
 	 * Static comparison function that returns true if the first BB has an DFT first number less than the second BB.
 	 */
-	static  bool        lessFirstDFT(PBB bb1, PBB bb2);
+	static  bool        lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2);
 
 	/*
 	 * Static comparison function that returns true if the first BB has an DFT last less than the second BB.
 	 */
-	static  bool        lessLastDFT(PBB bb1, PBB bb2);
+	static  bool        lessLastDFT(BasicBlock *bb1, BasicBlock *bb2);
 
 	/*
 	 * Resets the DFA sets of this BB.
@@ -320,7 +318,7 @@ public:
 	        Exp        *getDest() throw (LastStatementNotAGotoError);
 
 	/* Check if there is a jump if equals relation */
-	        bool        isJmpZ(PBB dest);
+	        bool        isJmpZ(BasicBlock *dest);
 
 	/* get the loop body */
 	        BasicBlock *getLoopBody();
@@ -333,7 +331,7 @@ public:
 	/*
 	 * given an address, returns the outedge which corresponds to that address or 0 if there was no such outedge
 	 */
-	        PBB         getCorrectOutEdge(ADDRESS a);
+	        BasicBlock *getCorrectOutEdge(ADDRESS a);
 
 	/*
 	 * Depth first traversal of all bbs, numbering as we go and as we come back, forward and reverse passes.
@@ -365,11 +363,11 @@ public:
 	/* high level structuring */
 	        SBBTYPE     m_structType;   // structured type of this node
 	        SBBTYPE     m_loopCondType; // type of conditional to treat this loop header as (if any)
-	        PBB         m_loopHead;     // head of the most nested enclosing loop
-	        PBB         m_caseHead;     // head of the most nested enclosing case
-	        PBB         m_condFollow;   // follow of a conditional header
-	        PBB         m_loopFollow;   // follow of a loop header
-	        PBB         m_latchNode;    // latch node of a loop header
+	        BasicBlock *m_loopHead;     // head of the most nested enclosing loop
+	        BasicBlock *m_caseHead;     // head of the most nested enclosing case
+	        BasicBlock *m_condFollow;   // follow of a conditional header
+	        BasicBlock *m_loopFollow;   // follow of a loop header
+	        BasicBlock *m_latchNode;    // latch node of a loop header
 
 protected:
 	/* general basic block information */
@@ -382,8 +380,8 @@ protected:
 	        bool        m_bJumpReqd;    // True if jump required for "fall through"
 
 	/* in-edges and out-edges */
-	        std::vector<PBB> m_InEdges; // Vector of in-edges
-	        std::vector<PBB> m_OutEdges;// Vector of out-edges
+	        std::vector<BasicBlock *> m_InEdges; // Vector of in-edges
+	        std::vector<BasicBlock *> m_OutEdges;// Vector of out-edges
 	        int         m_iNumInEdges;  // We need these two because GCC doesn't
 	        int         m_iNumOutEdges; // support resize() of vectors!
 
@@ -396,7 +394,7 @@ protected:
 public:
 
 	        bool        isPostCall();
-	static  void        doAvail(StatementSet &s, PBB inEdge);
+	static  void        doAvail(StatementSet &s, BasicBlock *inEdge);
 	        Proc       *getDestProc();
 
 	/**
@@ -438,12 +436,12 @@ protected:
 	        int         indentLevel; // the indentation level of this node in the final code
 
 	// analysis information
-	        PBB         immPDom; // immediate post dominator
-	        PBB         loopHead; // head of the most nested enclosing loop
-	        PBB         caseHead; // head of the most nested enclosing case
-	        PBB         condFollow; // follow of a conditional header
-	        PBB         loopFollow; // follow of a loop header
-	        PBB         latchNode; // latching node of a loop header
+	        BasicBlock *immPDom; // immediate post dominator
+	        BasicBlock *loopHead; // head of the most nested enclosing loop
+	        BasicBlock *caseHead; // head of the most nested enclosing case
+	        BasicBlock *condFollow; // follow of a conditional header
+	        BasicBlock *loopFollow; // follow of a loop header
+	        BasicBlock *latchNode; // latching node of a loop header
 
 	// Structured type of the node
 	        structType  sType; // the structuring class (Loop, Cond , etc)
@@ -451,17 +449,17 @@ protected:
 	        loopType    lType; // the loop type of a loop header
 	        condType    cType; // the conditional type of a conditional header
 
-	        void        setLoopStamps(int &time, std::vector<PBB> &order);
+	        void        setLoopStamps(int &time, std::vector<BasicBlock *> &order);
 	        void        setRevLoopStamps(int &time);
-	        void        setRevOrder(std::vector<PBB> &order);
+	        void        setRevOrder(std::vector<BasicBlock *> &order);
 
-	        void        setLoopHead(PBB head) { loopHead = head; }
-	        PBB         getLoopHead() { return loopHead; }
-	        void        setLatchNode(PBB latch) { latchNode = latch; }
+	        void        setLoopHead(BasicBlock *head) { loopHead = head; }
+	        BasicBlock *getLoopHead() { return loopHead; }
+	        void        setLatchNode(BasicBlock *latch) { latchNode = latch; }
 	        bool        isLatchNode() { return loopHead && loopHead->latchNode == this; }
-	        PBB         getLatchNode() { return latchNode; }
-	        PBB         getCaseHead() { return caseHead; }
-	        void        setCaseHead(PBB head, PBB follow);
+	        BasicBlock *getLatchNode() { return latchNode; }
+	        BasicBlock *getCaseHead() { return caseHead; }
+	        void        setCaseHead(BasicBlock *head, BasicBlock *follow);
 
 	        structType  getStructType() { return sType; }
 	        void        setStructType(structType s);
@@ -475,11 +473,11 @@ protected:
 	        condType    getCondType();
 	        void        setCondType(condType l);
 
-	        void        setLoopFollow(PBB other) { loopFollow = other; }
-	        PBB         getLoopFollow() { return loopFollow; }
+	        void        setLoopFollow(BasicBlock *other) { loopFollow = other; }
+	        BasicBlock *getLoopFollow() { return loopFollow; }
 
-	        void        setCondFollow(PBB other) { condFollow = other; }
-	        PBB         getCondFollow() { return condFollow; }
+	        void        setCondFollow(BasicBlock *other) { condFollow = other; }
+	        BasicBlock *getCondFollow() { return condFollow; }
 
 	// establish if this bb has a back edge to the given destination
 	        bool        hasBackEdgeTo(BasicBlock *dest);
@@ -499,21 +497,21 @@ protected:
 	// establish if this bb is an ancestor of another BB
 	        bool        isAncestorOf(BasicBlock *other);
 
-	        bool        inLoop(PBB header, PBB latch);
+	        bool        inLoop(BasicBlock *header, BasicBlock *latch);
 
-	        bool        isIn(std::list<PBB> &set, PBB bb) {
-		                    for (std::list<PBB>::iterator it = set.begin(); it != set.end(); it++)
+	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) {
+		                    for (std::list<BasicBlock *>::iterator it = set.begin(); it != set.end(); it++)
 			                    if (*it == bb) return true;
 		                    return false;
 	                    }
 
 	        char       *indent(int indLevel, int extra = 0);
 	        bool        allParentsGenerated();
-	        void        emitGotoAndLabel(HLLCode *hll, int indLevel, PBB dest);
+	        void        emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest);
 	        void        WriteBB(HLLCode *hll, int indLevel);
 
 public:
-	        void        generateCode(HLLCode *hll, int indLevel, PBB latch, std::list<PBB> &followSet, std::list<PBB> &gotoSet, UserProc *proc);
+	        void        generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::list<BasicBlock *> &followSet, std::list<BasicBlock *> &gotoSet, UserProc *proc);
 	// For prepending phi functions
 	        void        prependStmt(Statement *s, UserProc *proc);
 
@@ -537,7 +535,7 @@ public:
 
 protected:
 	friend class XMLProgParser;
-	        void        addOutEdge(PBB bb) { m_OutEdges.push_back(bb); }
+	        void        addOutEdge(BasicBlock *bb) { m_OutEdges.push_back(bb); }
 	        void        addRTL(RTL *rtl) {
 		                    if (m_pRtls == NULL)
 			                    m_pRtls = new std::list<RTL *>;

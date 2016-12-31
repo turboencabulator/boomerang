@@ -136,7 +136,7 @@ bool FrontEndSrc::processProc(ADDRESS uAddr, UserProc* pProc, ofstream &os,
 void processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc* pProc,
     NJMCDecoder& decoder)
 {
-    PBB pBB;                    // Pointer to the current basic block
+    BasicBlock *pBB;            // Pointer to the current basic block
     INSTTYPE type;              // Cfg type of instruction (e.g. IRET)
 
     // Declare a queue of targets not yet processed yet. This has to be
@@ -433,7 +433,7 @@ void processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc* pProc,
             if (sequentialDecode && pCfg->existsBB(uAddr)) {
                 // Create the fallthrough BB, if there are any RTLs at all
                 if (BB_rtls) {
-                    PBB pBB = pCfg->newBB(BB_rtls, FALL, 1);
+                    BasicBlock *pBB = pCfg->newBB(BB_rtls, FALL, 1);
                     // Add an out edge to this address
                     if (pBB) {
                         pCfg->addOutEdge(pBB, uAddr);

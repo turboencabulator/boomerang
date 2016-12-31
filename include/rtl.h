@@ -42,7 +42,6 @@ class Exp;
 class HLLCode;
 class Statement;
 class StmtVisitor;
-typedef BasicBlock *PBB;
 
 /*==============================================================================
  * Class RTL: describes low level register transfer lists (actually lists of statements).

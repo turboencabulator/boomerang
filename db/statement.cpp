@@ -145,7 +145,7 @@ RangeMap Statement::getInputRanges()
 		input.addRange(Location::regOf(31), ra31);
 		input.addRange(new Terminal(opPC), rpc);
 	} else {
-		PBB pred = pbb->getInEdges()[0];
+		BasicBlock *pred = pbb->getInEdges()[0];
 		Statement *last = pred->getLastStmt();
 		assert(last);
 		if (pred->getNumOutEdges() != 2) {
@@ -529,7 +529,7 @@ void CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				} else
 					eq = NULL;
 			}
-			PBB retbb = p->getCFG()->findRetNode();
+			BasicBlock *retbb = p->getCFG()->findRetNode();
 			if (retbb && eq == NULL) {
 				Statement *last = retbb->getLastStmt();
 				assert(last);
@@ -582,7 +582,7 @@ bool JunctionStatement::isLoopJunction()
 	return false;
 }
 
-RangeMap &BranchStatement::getRangesForOutEdgeTo(PBB out)
+RangeMap &BranchStatement::getRangesForOutEdgeTo(BasicBlock *out)
 {
 	assert(this->getFixedDest() != NO_ADDRESS);
 	if (out->getLowAddr() == this->getFixedDest())
@@ -1400,7 +1400,7 @@ void BranchStatement::setCondExpr(Exp *e)
 	pCond = e;
 }
 
-PBB BranchStatement::getFallBB()
+BasicBlock *BranchStatement::getFallBB()
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1415,7 +1415,7 @@ PBB BranchStatement::getFallBB()
 }
 
 // not that if you set the taken BB or fixed dest first, you will not be able to set the fall BB
-void BranchStatement::setFallBB(PBB bb)
+void BranchStatement::setFallBB(BasicBlock *bb)
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1435,7 +1435,7 @@ void BranchStatement::setFallBB(PBB bb)
 	}
 }
 
-PBB BranchStatement::getTakenBB()
+BasicBlock *BranchStatement::getTakenBB()
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1449,7 +1449,7 @@ PBB BranchStatement::getTakenBB()
 	return pbb->getOutEdge(1);
 }
 
-void BranchStatement::setTakenBB(PBB bb)
+void BranchStatement::setTakenBB(BasicBlock *bb)
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -4399,7 +4399,7 @@ void PhiAssign::convertToAssign(Exp *rhs)
 	// Thanks to tamlin for this cleaner way of implementing this hack
 	assert(sizeof (Assign) <= sizeof (PhiAssign));
 	int n = number;  // These items disappear with the destructor below
-	PBB bb = pbb;
+	BasicBlock *bb = pbb;
 	UserProc *p = proc;
 	Exp *lhs_ = lhs;
 	Exp *rhs_ = rhs;

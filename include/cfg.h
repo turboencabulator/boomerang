@@ -49,7 +49,7 @@ class UserProc;
 
 
 // A type for the ADDRESS to BB map
-typedef std::map<ADDRESS, PBB, std::less<ADDRESS> > MAPBB;
+typedef std::map<ADDRESS, BasicBlock *, std::less<ADDRESS> > MAPBB;
 
 /*==============================================================================
  * Control Flow Graph class. Contains all the BasicBlock objects for a procedure.  These BBs contain all the RTLs for
@@ -64,16 +64,16 @@ class Cfg {
 	/*
 	 * The list of pointers to BBs.
 	 */
-	std::list<PBB> m_listBB;
+	std::list<BasicBlock *> m_listBB;
 
 	/*
 	 * Ordering of BBs for control flow structuring
 	 */
-	std::vector<PBB> Ordering;
-	std::vector<PBB> revOrdering;
+	std::vector<BasicBlock *> Ordering;
+	std::vector<BasicBlock *> revOrdering;
 
 	/*
-	 * The ADDRESS to PBB map.
+	 * The ADDRESS to BasicBlock* map.
 	 */
 	MAPBB       m_mapBB;
 
@@ -140,8 +140,8 @@ public:
 
 	class BBAlreadyExistsError : public std::exception {
 	public:
-		PBB pBB;
-		BBAlreadyExistsError(PBB pBB) : pBB(pBB) { }
+		BasicBlock *pBB;
+		BBAlreadyExistsError(BasicBlock *pBB) : pBB(pBB) { }
 	};
 
 	/*
@@ -156,13 +156,13 @@ public:
 	 * Returns NULL if not successful, or if there already exists a completed BB at this address (this can happen
 	 * with certain kinds of forward branches).
 	 */
-	PBB         newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError);
+	BasicBlock *newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError);
 
 	/*
 	 * Allocates space for a new, incomplete BB, and the given address is added to the map. This BB will have to be
 	 * completed before calling WellFormCfg. This function will commonly be called via AddOutEdge()
 	 */
-	PBB         newIncompleteBB(ADDRESS addr);
+	BasicBlock *newIncompleteBB(ADDRESS addr);
 
 	/*
 	 * Remove the incomplete BB at uAddr, if any. Was used when dealing with the SKIP instruction, but no longer.
@@ -174,30 +174,30 @@ public:
 	 * given here; the out edge will be filled in as a pointer to a BB. An incomplete BB will be created if
 	 * required. If bSetLabel is true, the destination BB will have its "label required" bit set.
 	 */
-	void        addOutEdge(PBB pBB, ADDRESS adr, bool bSetLabel = false);
+	void        addOutEdge(BasicBlock *pBB, ADDRESS adr, bool bSetLabel = false);
 
 	/*
 	 * Adds an out-edge to the basic block pBB by filling in the first slot that is empty.  Note: a pointer to a BB
 	 * is given here.
 	 */
-	void        addOutEdge(PBB pBB, PBB pDestBB, bool bSetLabel = false);
+	void        addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel = false);
 
 	/*
 	 * Add a label for the given basicblock. The label number must be a non-zero integer
 	 */
-	void        setLabel(PBB pBB);
+	void        setLabel(BasicBlock *pBB);
 
 	/*
 	 * Gets a pointer to the first BB this cfg. Also initialises `it' so that calling GetNextBB will return the
 	 * second BB, etc.  Also, *it is the first BB.  Returns 0 if there are no BBs this CFG.
 	 */
-	PBB         getFirstBB(BB_IT &it);
+	BasicBlock *getFirstBB(BB_IT &it);
 
 	/*
 	 * Gets a pointer to the next BB this cfg. `it' must be from a call to GetFirstBB(), or from a subsequent call
 	 * to GetNextBB().  Also, *it is the current BB.  Returns 0 if there are no more BBs this CFG.
 	 */
-	PBB         getNextBB(BB_IT &it);
+	BasicBlock *getNextBB(BB_IT &it);
 
 	/*
 	 * An alternative to the above is to use begin() and end():
@@ -216,7 +216,7 @@ public:
 	 * of the split BB.
 	 * Returns true if the native address is that of an explicit or non explicit label, false otherwise.
 	 */
-	bool        label(ADDRESS uNativeAddr, PBB &pNewBB);
+	bool        label(ADDRESS uNativeAddr, BasicBlock *&pNewBB);
 
 	/*
 	 * Checks whether the given native address is in the map. If not, returns false. If so, returns true if it is
@@ -260,7 +260,7 @@ public:
 	 * these edges correspond to each other.
 	 * Returns true if the blocks are merged.
 	 */
-	bool        mergeBBs(PBB pb1, PBB pb2);
+	bool        mergeBBs(BasicBlock *pb1, BasicBlock *pb2);
 
 
 	/*
@@ -291,7 +291,7 @@ public:
 	 * Given a pointer to a basic block, return an index (e.g. 0 for the first basic block, 1 for the next, ... n-1
 	 * for the last BB.
 	 */
-	int         pbbToIndex(PBB pBB);
+	int         pbbToIndex(BasicBlock *pBB);
 
 	/*
 	 * Reset all the traversed flags.
@@ -315,12 +315,12 @@ public:
 	 * The joined BB becomes the type of the successor.
 	 * Returns true if succeeds.
 	 */
-	bool        joinBB(PBB pb1, PBB pb2);
+	bool        joinBB(BasicBlock *pb1, BasicBlock *pb2);
 
 	/*
 	 * Completely remove a BB from the CFG.
 	 */
-	void        removeBB(PBB bb);
+	void        removeBB(BasicBlock *bb);
 
 	/*
 	 * Resets the DFA sets of all the BBs.
@@ -372,7 +372,7 @@ public:
 	void        virtualFunctionCalls(Prog *prog);
 
 	/* return a bb given an address */
-	PBB         bbForAddr(ADDRESS addr) { return m_mapBB[addr]; }
+	BasicBlock *bbForAddr(ADDRESS addr) { return m_mapBB[addr]; }
 
 	/* Simplify all the expressions in the CFG
 	 */
@@ -394,13 +394,13 @@ private:
 	 * BB to not overlap the existing one.
 	 * Returns a pointer to the "bottom" (new) part of the BB.
 	 */
-	PBB         splitBB(PBB pBB, ADDRESS uNativeAddr, PBB pNewBB = 0, bool bDelRtls = false);
+	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB = 0, bool bDelRtls = false);
 
 	/*
 	 * Completes the merge of pb1 and pb2 by adjusting out edges. No checks are made that the merge is valid
 	 * (hence this is a private function) Deletes pb1 if bDelete is true
 	 */
-	void        completeMerge(PBB pb1, PBB pb2, bool bDelete);
+	void        completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete);
 
 	/*
 	 * checkEntryBB: emit error message if this pointer is null
@@ -412,20 +412,20 @@ public:
 	 * Split the given BB at the RTL given, and turn it into the BranchStatement given. Sort out all the in and out
 	 * edges.
 	 */
-	PBB         splitForBranch(PBB pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, BB_IT &it);
+	BasicBlock *splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, BB_IT &it);
 
 	/*
 	 * Control flow analysis stuff, lifted from Doug Simon's honours thesis.
 	 */
 	void        setTimeStamps();
-	PBB         commonPDom(PBB curImmPDom, PBB succImmPDom);
+	BasicBlock *commonPDom(BasicBlock *curImmPDom, BasicBlock *succImmPDom);
 	void        findImmedPDom();
 	void        structConds();
 	void        structLoops();
 	void        checkConds();
-	void        determineLoopType(PBB header, bool *&loopNodes);
-	void        findLoopFollow(PBB header, bool *&loopNodes);
-	void        tagNodesInLoop(PBB header, bool *&loopNodes);
+	void        determineLoopType(BasicBlock *header, bool *&loopNodes);
+	void        findLoopFollow(BasicBlock *header, bool *&loopNodes);
+	void        tagNodesInLoop(BasicBlock *header, bool *&loopNodes);
 
 	void        removeUnneededLabels(HLLCode *hll);
 	void        generateDotFile(std::ofstream &of);
@@ -434,21 +434,21 @@ public:
 	/*
 	 * Get the entry-point or exit BB
 	 */
-	PBB         getEntryBB() { return entryBB; }
-	PBB         getExitBB()  { return exitBB; }
+	BasicBlock *getEntryBB() { return entryBB; }
+	BasicBlock *getExitBB()  { return exitBB; }
 
 	/*
 	 * Set the entry-point BB (and exit BB as well)
 	 */
-	void        setEntryBB(PBB bb);
-	void        setExitBB(PBB bb);
+	void        setEntryBB(BasicBlock *bb);
+	void        setExitBB(BasicBlock *bb);
 
-	PBB         findRetNode();
+	BasicBlock *findRetNode();
 
 	/*
 	 * Set an additional new out edge to a given value
 	 */
-	void        addNewOutEdge(PBB fromBB, PBB newOutEdge);
+	void        addNewOutEdge(BasicBlock *fromBB, BasicBlock *newOutEdge);
 
 	/*
 	 * print this cfg, mainly for debugging
@@ -474,12 +474,12 @@ public:
 	void        setImplicitsDone() { bImplicitsDone = true; }  // Call when implicits have been created
 
 	void        findInterferences(ConnectionGraph &ig);
-	void        appendBBs(std::list<PBB> &worklist, std::set<PBB> &workset);
+	void        appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workset);
 
 	void        removeUsedGlobals(std::set<Global *> &unusedGlobals);
 
 protected:
-	void        addBB(PBB bb) { m_listBB.push_back(bb); }
+	void        addBB(BasicBlock *bb) { m_listBB.push_back(bb); }
 	friend class XMLProgParser;
 };
 

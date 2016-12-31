@@ -262,7 +262,7 @@ void FrontSparcTest::testDelaySlot()
 	CPPUNIT_ASSERT(res == 1);
 	Cfg *cfg = pProc->getCFG();
 	BB_IT it;
-	PBB bb = cfg->getFirstBB(it);
+	BasicBlock *bb = cfg->getFirstBB(it);
 	std::ostringstream o1;
 	bb->print(o1);
 	std::string expected("Call BB:\n"

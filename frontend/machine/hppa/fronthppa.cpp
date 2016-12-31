@@ -442,7 +442,7 @@ void case_SD_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
     BB_rtls->push_back(SD_rtl);
 
     // Add the one-way branch BB
-    PBB pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+    BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
     if (pBB == 0) { BB_rtls = NULL; return; }
 
     // Visit the destination, and add the out-edge
@@ -624,7 +624,7 @@ bool case_SCD_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
         // following next. Assumes the first instruction of the pattern is
         // not used in the true leg
         BB_rtls->push_back(inst.rtl);
-        PBB pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+        BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
         if (pBB == 0)  return false;
         handleBranch(uDest, hiAddress, pBB, cfg, targets);
         // Add the "false" leg
@@ -652,7 +652,7 @@ bool case_SCD_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
         }
         // Now emit the branch
         BB_rtls->push_back(inst.rtl);
-        PBB pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+        BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
         if (pBB == 0)  return false;
         handleBranch(uDest, hiAddress, pBB, cfg, targets);
         // Add the "false" leg; skips the NCT
@@ -666,7 +666,7 @@ bool case_SCD_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
         rtl_jump->adjustFixedDest(-4);
         // Now emit the branch
         BB_rtls->push_back(inst.rtl);
-        PBB pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+        BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
         if (pBB == 0) return false;
         handleBranch(uDest-4, hiAddress, pBB, cfg, targets);
         // Add the "false" leg: point to the delay inst
@@ -681,7 +681,7 @@ bool case_SCD_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
         BB_rtls->push_back(inst.rtl);
         // Make a BB for the current list of RTLs
         // We want to do this first, else ordering can go silly
-        PBB pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+        BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
         if (pBB == 0) return false;
         // Visit the target of the branch
         visit(cfg, uDest, targets, pBB);
@@ -701,7 +701,7 @@ bool case_SCD_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
         // Again, we can't even give the jumps a special address like 1, since
         // then the BB would have this getLowAddr.
         pOrphan->push_back(new HLJump(0, uDest));
-        PBB pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
+        BasicBlock *pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
         // Add an out edge from the orphan as well
         cfg->addOutEdge(pOrBB, uDest, true);
         // Add an out edge from the current RTL to
@@ -754,7 +754,7 @@ bool case_SCDAN_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
     // relative fields.
     HLJump*   rtl_jump   = static_cast<HLJump*>(inst.rtl);
     ADDRESS uDest = rtl_jump->getFixedDest();
-    PBB pBB;
+    BasicBlock *pBB;
     if (optimise_DelayCopy(address, uDest, delta, hiAddress)) {
         // Adjust the destination of the branch
         rtl_jump->adjustFixedDest(-4);
@@ -784,7 +784,7 @@ bool case_SCDAN_NCT(ADDRESS& address, int delta, ADDRESS hiAddress,
         delay_inst.rtl->updateAddress(0);
         // Add a branch from the orphan instruction to the dest of the branch
         pOrphan->push_back(new HLJump(0, uDest));
-        PBB pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
+        BasicBlock *pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
         // Add an out edge from the orphan as well. Set a label there.
         cfg->addOutEdge(pOrBB, uDest, true);
         // Add an out edge from the current RTL to
@@ -955,7 +955,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
 
                 // Construct the new basic block and save its destination
                 // address if it hasn't been visited already
-                PBB pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+                BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
                 handleBranch(address+8, uUpper, pBB, cfg, targets);
 
                 // There is no fall through branch.
@@ -973,7 +973,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
                       callList, os);
                 } else {
                     BB_rtls->push_back(rtl_jump);
-                    PBB pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+                    BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
                     handleBranch(rtl_jump->getFixedDest(), uUpper, pBB, cfg,
                       targets);
                     address += inst.numBytes;    // Update address for coverage
@@ -1059,7 +1059,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
                         callList.push_back((HLCall*)inst.rtl);
                     }
                     else {
-                        PBB pBB = cfg->newBB(BB_rtls,ONEWAY, 1);
+                        BasicBlock *pBB = cfg->newBB(BB_rtls,ONEWAY, 1);
                         handleBranch(dest, uUpper, pBB, cfg, targets);
 
                         // There is no fall through branch.
@@ -1180,7 +1180,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
                     // Add the branch to the list of RTLs for this BB
                     BB_rtls->push_back(rtl);
                     // Create the BB and add it to the CFG
-                    PBB pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+                    BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
                     if (pBB == 0) {
                         sequentialDecode = false; break;
                     }
@@ -1215,7 +1215,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
                 // out-edges
                 BB_rtls->push_back(rtl);        // Add the jump
                 ADDRESS uDest = ((HLJump*)rtl)->getFixedDest();
-                PBB pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+                BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
                 if (pBB == 0) { BB_rtls = NULL; continue;}
                 handleBranch(uDest, uUpper, pBB, cfg, targets);
                 address += 4;           // "Delay slot" instruction is next
@@ -1270,7 +1270,7 @@ bool FrontEndSrc::processProc(ADDRESS address, UserProc* proc, ofstream &os,
             if (sequentialDecode && cfg->existsBB(address)) {
                 // Create the fallthrough BB, if there are any RTLs at all
                 if (BB_rtls) {
-                    PBB pBB = cfg->newBB(BB_rtls, FALL, 1);
+                    BasicBlock *pBB = cfg->newBB(BB_rtls, FALL, 1);
                     // Add an out edge to this address
                     if (pBB) {
                         cfg->addOutEdge(pBB, address);

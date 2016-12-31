@@ -29,8 +29,8 @@ class Prog;
 #include "utilStubs.cpp"
 
 // basicblock
-void BasicBlock::setOutEdge(int i, PBB pNewOutEdge) { }
-void BasicBlock::addInEdge(PBB pNewInEdge) { }
+void BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge) { }
+void BasicBlock::addInEdge(BasicBlock *pNewInEdge) { }
 
 // type
 #include "typeStubs.cpp"
@@ -62,9 +62,9 @@ Prog *FrontEnd::decode() { return 0; }
 bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool spec /* = false */, PHELPER helperFunc) { return false; }
 
 // cfg
-PBB Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) { return 0; }
+BasicBlock *Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) { return 0; }
 void Cfg::print(std::ostream &out, bool withDF) { }
-void Cfg::setEntryBB(PBB bb) { }
+void Cfg::setEntryBB(BasicBlock *bb) { }
 
 //Misc
 Boomerang::Boomerang() { }

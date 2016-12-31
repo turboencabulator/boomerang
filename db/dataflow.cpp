@@ -41,9 +41,9 @@ void DataFlow::DFS(int p, int n)
 		dfnum[n] = N; vertex[N] = n; parent[n] = p;
 		N++;
 		// For each successor w of n
-		PBB bb = BBs[n];
-		std::vector<PBB> &outEdges = bb->getOutEdges();
-		std::vector<PBB>::iterator oo;
+		BasicBlock *bb = BBs[n];
+		std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
+		std::vector<BasicBlock *>::iterator oo;
 		for (oo = outEdges.begin(); oo != outEdges.end(); oo++) {
 			DFS(n, indices[*oo]);
 		}
@@ -53,9 +53,9 @@ void DataFlow::DFS(int p, int n)
 // Essentially Algorithm 19.9 of Appel's "modern compiler implementation in Java" 2nd ed 2002
 void DataFlow::dominators(Cfg *cfg)
 {
-	PBB r = cfg->getEntryBB();
+	BasicBlock *r = cfg->getEntryBB();
 	unsigned numBB = cfg->getNumBBs();
-	BBs.resize(numBB, (PBB)-1);
+	BBs.resize(numBB, (BasicBlock *)-1);
 	N = 0; BBs[0] = r;
 	indices.clear();  // In case restart decompilation due to switch statements
 	indices[r] = 0;
@@ -72,10 +72,10 @@ void DataFlow::dominators(Cfg *cfg)
 	DF.resize(numBB);
 	// Set up the BBs and indices vectors. Do this here because sometimes a BB can be unreachable (so relying on
 	// in-edges doesn't work)
-	std::list<PBB>::iterator ii;
+	std::list<BasicBlock *>::iterator ii;
 	int idx = 1;
 	for (ii = cfg->begin(); ii != cfg->end(); ii++) {
-		PBB bb = *ii;
+		BasicBlock *bb = *ii;
 		if (bb != r) {  // Entry BB r already done
 			indices[bb] = idx;
 			BBs[idx++] = bb;
@@ -87,9 +87,9 @@ void DataFlow::dominators(Cfg *cfg)
 		int n = vertex[i]; int p = parent[n]; int s = p;
 		/* These lines calculate the semi-dominator of n, based on the Semidominator Theorem */
 		// for each predecessor v of n
-		PBB bb = BBs[n];
-		std::vector<PBB> &inEdges = bb->getInEdges();
-		std::vector<PBB>::iterator it;
+		BasicBlock *bb = BBs[n];
+		std::vector<BasicBlock *> &inEdges = bb->getInEdges();
+		std::vector<BasicBlock *>::iterator it;
 		for (it = inEdges.begin(); it != inEdges.end(); it++) {
 			if (indices.find(*it) == indices.end()) {
 				std::cerr << "BB not in indices: "; (*it)->print(std::cerr);
@@ -167,9 +167,9 @@ void DataFlow::computeDF(int n)
 	std::set<int> S;
 	/* THis loop computes DF_local[n] */
 	// for each node y in succ(n)
-	PBB bb = BBs[n];
-	std::vector<PBB> &outEdges = bb->getOutEdges();
-	std::vector<PBB>::iterator it;
+	BasicBlock *bb = BBs[n];
+	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
+	std::vector<BasicBlock *>::iterator it;
 	for (it = outEdges.begin(); it != outEdges.end(); it++) {
 		int y = indices[*it];
 		if (idom[y] != n)
@@ -264,7 +264,7 @@ bool DataFlow::placePhiFunctions(UserProc *proc)
 	unsigned n;
 	for (n = 0; n < numBB; n++) {
 		BasicBlock::rtlit rit; StatementList::iterator sit;
-		PBB bb = BBs[n];
+		BasicBlock *bb = BBs[n];
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			LocationSet ls;
 			LocationSet::iterator it;
@@ -320,7 +320,7 @@ bool DataFlow::placePhiFunctions(UserProc *proc)
 					// Insert trivial phi function for a at top of block y: a := phi()
 					change = true;
 					Statement *as = new PhiAssign(a->clone());
-					PBB Ybb = BBs[y];
+					BasicBlock *Ybb = BBs[y];
 					Ybb->prependStmt(as, proc);
 					// A_phi[a] <- A_phi[a] U {y}
 					s.insert(y);
@@ -365,7 +365,7 @@ bool DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = fals
 
 	// For each statement S in block n
 	BasicBlock::rtlit rit; StatementList::iterator sit;
-	PBB bb = BBs[n];
+	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
 		// if S is not a phi function (per Appel)
@@ -490,10 +490,10 @@ bool DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = fals
 	}
 
 	// For each successor Y of block n
-	std::vector<PBB> &outEdges = bb->getOutEdges();
+	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
 	unsigned numSucc = outEdges.size();
 	for (unsigned succ = 0; succ < numSucc; succ++) {
-		PBB Ybb = outEdges[succ];
+		BasicBlock *Ybb = outEdges[succ];
 		// Suppose n is the jth predecessor of Y
 		int j = Ybb->whichPred(bb);
 		// For each phi-function in Y
@@ -818,7 +818,7 @@ void DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &u
 {
 	// For each statement this BB
 	BasicBlock::rtlit rit; StatementList::iterator sit;
-	PBB bb = BBs[n];
+	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
 		if (S->isPhi()) {
@@ -874,7 +874,7 @@ void DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &u
 void DataFlow::setDominanceNums(int n, int &currNum)
 {
 	BasicBlock::rtlit rit; StatementList::iterator sit;
-	PBB bb = BBs[n];
+	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit))
 		S->setDomNumber(currNum++);
