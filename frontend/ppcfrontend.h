@@ -11,8 +11,9 @@
 
 #include "frontend.h"
 
-// Class PPCFrontEnd: derived from FrontEnd, with source machine specific
-// behaviour
+/**
+ * \brief PPC specific FrontEnd behaviour.
+ */
 class PPCFrontEnd : public FrontEnd {
 public:
 	PPCFrontEnd(BinaryFile *pBF, Prog *prog);
@@ -20,10 +21,10 @@ public:
 
 	virtual platform getFrontEndId() { return PLAT_PPC; }
 
-	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
-
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();
+
+	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
 
 	virtual ADDRESS getMainEntryPoint(bool &gotMain);
 };

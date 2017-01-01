@@ -39,13 +39,24 @@
 #define FSW 40  // Numeric registers
 #define AH 12
 
-/*==============================================================================
- * FUNCTION:      isStoreFsw
- * OVERVIEW:      Return true if the given Statement is an assignment that stores the FSW (Floating point Status Word)
- *                  reg
- * PARAMETERS:    s - Ptr to the given Statement
- * RETURNS:       True if it is
- *============================================================================*/
+PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
+	FrontEnd(pBF, prog),
+	idPF(-1)
+{
+	decoder = new PentiumDecoder(prog);
+}
+
+PentiumFrontEnd::~PentiumFrontEnd()
+{
+}
+
+/**
+ * Return true if the given Statement is an assignment that stores the FSW
+ * (Floating point Status Word) reg.
+ *
+ * \param s  Ptr to the given Statement.
+ * \returns  true if it is.
+ */
 bool PentiumFrontEnd::isStoreFsw(Statement *s)
 {
 	if (!s->isAssign()) return false;
@@ -55,12 +66,12 @@ bool PentiumFrontEnd::isStoreFsw(Statement *s)
 	return res;
 }
 
-/*==============================================================================
- * FUNCTION:      isDecAh
- * OVERVIEW:      Return true if the given RTL is a decrement of register AH
- * PARAMETERS:    r - Ptr to the given RTL
- * RETURNS:       True if it is
- *============================================================================*/
+/**
+ * Return true if the given RTL is a decrement of register AH.
+ *
+ * \param r  Ptr to the given RTL.
+ * \returns  true if it is.
+ */
 bool PentiumFrontEnd::isDecAh(RTL *r)
 {
 	// Check for decrement; RHS of middle Exp will be r[12]{8} - 1
@@ -77,12 +88,12 @@ bool PentiumFrontEnd::isDecAh(RTL *r)
 	return *rhs == ahm1;
 }
 
-/*==============================================================================
- * FUNCTION:      isSetX
- * OVERVIEW:      Return true if the given Statement is a setX instruction
- * PARAMETERS:    s - Ptr to the given Statement
- * RETURNS:       True if it is
- *============================================================================*/
+/**
+ * Return true if the given Statement is a setX instruction.
+ *
+ * \param s  Ptr to the given Statement.
+ * \returns  true if it is.
+ */
 bool PentiumFrontEnd::isSetX(Statement *s)
 {
 	// Check for SETX, i.e. <exp> ? 1 : 0
@@ -100,12 +111,13 @@ bool PentiumFrontEnd::isSetX(Statement *s)
 	return ((Const *)s2)->getInt() == 1 && ((Const *)s3)->getInt() == 0;
 }
 
-/*==============================================================================
- * FUNCTION:      isAssignFromTern
- * OVERVIEW:      Return true if the given Statement is an expression whose RHS is a ?: ternary
- * PARAMETERS:    e - Ptr to the given Statement
- * RETURNS:       True if it is
- *============================================================================*/
+/**
+ * Return true if the given Statement is an expression whose RHS is a
+ * ?: ternary.
+ *
+ * \param s  Ptr to the given Statement.
+ * \returns  true if it is.
+ */
 bool PentiumFrontEnd::isAssignFromTern(Statement *s)
 {
 	if (!s->isAssign()) return false;
@@ -114,20 +126,22 @@ bool PentiumFrontEnd::isAssignFromTern(Statement *s)
 	return rhs->getOper() == opTern;
 }
 
-/*==============================================================================
- * FUNCTION:        PentiumFrontEnd::bumpRegisterAll
- * OVERVIEW:        Finds a subexpression within this expression of the form
- *                    r[ int x] where min <= x <= max, and replaces it with
- *                    r[ int y] where y = min + (x - min + delta & mask)
- * PARAMETERS:      e: Expression to modify
- *                  min, max: minimum and maximum register numbers before any change is considered
- *                  delta: amount to bump up the register number by
- *                  mask: see above
- * APPLICATION:     Used to "flatten" stack floating point arithmetic (e.g. Pentium floating point code)
- *                    If registers are not replaced "all at once" like this, there can be subtle errors from
- *                    re-replacing already replaced registers
- * RETURNS:         Nothing
- *============================================================================*/
+/**
+ * Finds a subexpression within this expression of the form
+ * r[ int x] where min <= x <= max, and replaces it with
+ * r[ int y] where y = min + (x - min + delta & mask).
+ *
+ * \param e      Expression to modify.
+ * \param min    Minimum register number before any change is considered.
+ * \param max    Maximum register number before any change is considered.
+ * \param delta  Amount to bump up the register number by.
+ * \param mask   See above.
+ *
+ * \par Application
+ * Used to "flatten" stack floating point arithmetic (e.g. Pentium floating
+ * point code).  If registers are not replaced "all at once" like this, there
+ * can be subtle errors from re-replacing already replaced registers.
+ */
 void PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 {
 	std::list<Exp **> li;
@@ -147,16 +161,6 @@ void PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int m
 	}
 }
 
-/*==============================================================================
- * FUNCTION:      PentiumFrontEnd::processProc
- * OVERVIEW:      Process a procedure, given a native (source machine) address.
- * PARAMETERS:    address - the address at which the procedure starts
- *                pProc - the procedure object
- *                os - output stream for rtl output
- *                frag - true if decoding only a fragment of the proc
- *                spec - true if a speculative decode
- * RETURNS:       True if successful decode
- *============================================================================*/
 bool PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
 	// Call the base class to do most of the work
@@ -227,6 +231,9 @@ std::vector<Exp *> &PentiumFrontEnd::getDefaultReturns()
 	return returns;
 }
 
+/**
+ * Little simpler, just replaces FPUSH and FPOP with more complex semantics.
+ */
 void PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 {
 	BB_IT it;
@@ -317,18 +324,21 @@ void PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 	}
 }
 
-/*==============================================================================
- * FUNCTION:      processFloatCode
- * OVERVIEW:      Process a basic block, and all its successors, for floating point code.
- *                  Remove FPUSH/FPOP, instead decrementing or incrementing respectively the tos value to be used from
- *                  here down. Note: tos has to be a parameter, not a global, to get the right value at any point in
- *                  the call tree
- * PARAMETERS:    pBB: pointer to the current BB
- *                tos: reference to the value of the "top of stack" pointer currently. Starts at zero, and is
- *                  decremented to 7 with the first load, so r[39] should be used first, then r[38] etc. However, it is
- *                  reset to 0 for calls, so that if a function returns a float, then it will always appear in r[32]
- * RETURNS:       <nothing>
- *============================================================================*/
+/**
+ * Process a basic block, and all its successors, for floating point code.
+ * Remove FPUSH/FPOP, instead decrementing or incrementing respectively the
+ * tos value to be used from here down.
+ *
+ * \note tos has to be a parameter, not a global, to get the right value at
+ * any point in the call tree.
+ *
+ * \param pBB  Pointer to the current BB.
+ * \param tos  Reference to the value of the "top of stack" pointer currently.
+ *             Starts at zero, and is decremented to 7 with the first load, so
+ *             r[39] should be used first, then r[38] etc.  However, it is
+ *             reset to 0 for calls, so that if a function returns a float,
+ *             then it will always appear in r[32].
+ */
 void PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 {
 	std::list<RTL *>::iterator rit;
@@ -440,10 +450,12 @@ void PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 	} while (outs.size() != n);
 }
 
-
-
-// Emit Rtl of the form *8* lhs = [cond ? 1 : 0]
-// Insert before rit
+/**
+ * \brief Emit a set instruction.
+ *
+ * Emit Rtl of the form *8* lhs = [cond ? 1 : 0].
+ * Insert before rit.
+ */
 void PentiumFrontEnd::emitSet(std::list<RTL *> *BB_rtls, std::list<RTL *>::iterator &rit, ADDRESS uAddr, Exp *lhs, Exp *cond)
 {
 	Statement *asgn = new Assign(lhs,
@@ -458,15 +470,21 @@ void PentiumFrontEnd::emitSet(std::list<RTL *> *BB_rtls, std::list<RTL *>::itera
 	BB_rtls->insert(rit, pRtl);
 }
 
-/*==============================================================================
- * FUNCTION:        helperFunc
- * OVERVIEW:        Checks for pentium specific helper functions like __xtol which have specific sematics.
- * NOTE:            This needs to be handled in a resourcable way.
- * PARAMETERS:      dest - the native destination of this call
- *                  addr - the native address of this call instruction
- *                  lrtl - pointer to a list of RTL pointers for this BB
- * RETURNS:         true if a helper function is converted; false otherwise
- *============================================================================*/
+/**
+ * \brief Checks for pentium specific helper functions like __xtol which have
+ * specific sematics.
+ *
+ * Check a HLCall for a helper function, and replace with appropriate
+ * semantics if possible.
+ *
+ * \note This needs to be handled in a resourcable way.
+ *
+ * \param dest  The native destination of this call.
+ * \param addr  The native address of this call instruction.
+ * \param lrtl  Pointer to a list of RTL pointers for this BB.
+ *
+ * \returns true if a helper function is converted; false otherwise.
+ */
 bool PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 {
 	if (dest == NO_ADDRESS) return false;
@@ -525,31 +543,6 @@ bool PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *l
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:      PentiumFrontEnd::PentiumFrontEnd
- * OVERVIEW:      PentiumFrontEnd constructor
- * NOTE:          Seems to be necessary to put this here; forces the vtable
- *                  entries to point to this dynamic linked library
- * PARAMETERS:    Same as the FrontEnd constructor
- * RETURNS:       <N/A>
- *============================================================================*/
-PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog),
-	idPF(-1)
-{
-	decoder = new PentiumDecoder(prog);
-}
-
-PentiumFrontEnd::~PentiumFrontEnd()
-{
-}
-
-/*==============================================================================
- * FUNCTION:    getMainEntryPoint
- * OVERVIEW:    Locate the starting address of "main" in the code section
- * PARAMETERS:  None
- * RETURNS:     Native pointer if found; NO_ADDRESS if not
- *============================================================================*/
 ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
@@ -650,7 +643,7 @@ ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	return start;
 }
 
-void toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &it)
+static void toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &it)
 {
 	BranchStatement *br1 = new BranchStatement;
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
@@ -670,6 +663,9 @@ void toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_
 	cfg->splitForBranch(bb, rtl, br1, br2, it);
 }
 
+/**
+ * \brief Process away %rpt and %skip in string instructions.
+ */
 void PentiumFrontEnd::processStringInst(UserProc *proc)
 {
 	Cfg::iterator it;
@@ -712,6 +708,9 @@ void PentiumFrontEnd::processStringInst(UserProc *proc)
 	}
 }
 
+/**
+ * \brief Process for overlapped registers.
+ */
 void PentiumFrontEnd::processOverlapped(UserProc *proc)
 {
 	// first, lets look for any uses of the registers
@@ -993,7 +992,10 @@ DecodeResult &PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 	return FrontEnd::decodeInstruction(pc);
 }
 
-// EXPERIMENTAL: can we find function pointers in arguments to calls this early?
+/**
+ * \par EXPERIMENTAL
+ * Can we find function pointers in arguments to calls this early?
+ */
 void PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls)
 {
 	if (call->getDestProc()) {

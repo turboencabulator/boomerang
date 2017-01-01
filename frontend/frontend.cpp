@@ -56,13 +56,12 @@
 #include <cstring>
 #include <cassert>
 
-/*==============================================================================
- * FUNCTION:      FrontEnd::FrontEnd
- * OVERVIEW:      Construct the FrontEnd object
- * PARAMETERS:    pBF: pointer to the BinaryFile object (loader)
- *                prog: program being decoded
- * RETURNS:       <N/a>
- *============================================================================*/
+/**
+ * Takes some parameters to save passing these around a lot.
+ *
+ * \param pBF   Pointer to the BinaryFile object (loader).
+ * \param prog  Program being decoded.
+ */
 FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog) :
 #ifdef DYNAMIC
 	dlHandle(NULL),
@@ -77,6 +76,19 @@ FrontEnd::~FrontEnd()
 {
 }
 
+/**
+ * \brief Creates and returns an instance of the appropriate subclass.
+ *
+ * Get an instance of a class derived from FrontEnd, returning a pointer to
+ * the object of that class.  Do this by guessing the machine for the binary
+ * file whose name is name, loading the appropriate library using
+ * dlopen/dlsym, running the "construct" function in that library, and
+ * returning the result.
+ *
+ * \param name  Name of the file (BinaryFile) to open.
+ * \param prog  Passed to the constructor.
+ * \returns     A new FrontEnd subclass instance.  Use close() to destroy it.
+ */
 FrontEnd *FrontEnd::open(const char *name, Prog *prog)
 {
 	BinaryFile *bf = BinaryFile::open(name);
@@ -86,6 +98,13 @@ FrontEnd *FrontEnd::open(const char *name, Prog *prog)
 	return fe;
 }
 
+/**
+ * \brief Creates and returns an instance of the appropriate subclass.
+ *
+ * \param bf    Passed to the constructor.
+ * \param prog  Passed to the constructor.
+ * \returns     A new FrontEnd subclass instance.  Use close() to destroy it.
+ */
 FrontEnd *FrontEnd::open(BinaryFile *bf, Prog *prog)
 {
 	MACHINE machine = bf->getMachine();
@@ -154,6 +173,9 @@ FrontEnd *FrontEnd::open(BinaryFile *bf, Prog *prog)
 	return fe;
 }
 
+/**
+ * \brief Destroys an instance created by open() or new.
+ */
 void FrontEnd::close(FrontEnd *fe)
 {
 #ifdef DYNAMIC
@@ -172,6 +194,9 @@ void FrontEnd::close(FrontEnd *fe)
 		delete fe;
 }
 
+/**
+ * \brief Returns a symbolic name for a register index.
+ */
 const char *FrontEnd::getRegName(int idx)
 {
 	std::map<std::string, int, std::less<std::string> >::iterator it;
@@ -188,6 +213,9 @@ int FrontEnd::getRegSize(int idx)
 	return decoder->getRTLDict().DetRegMap[idx].g_size();
 }
 
+/**
+ * \brief Is this a win32 frontend?
+ */
 bool FrontEnd::isWin32()
 {
 	return pBF->getFormat() == LOADFMT_PE;
@@ -202,6 +230,9 @@ bool FrontEnd::noReturnCallDest(const char *name)
 	     || strcmp(name, "_assert") == 0);
 }
 
+/**
+ * \brief Read library signatures from a catalog.
+ */
 void FrontEnd::readLibraryCatalog(const char *sPath)
 {
 	std::ifstream inf(sPath);
@@ -230,6 +261,9 @@ void FrontEnd::readLibraryCatalog(const char *sPath)
 	inf.close();
 }
 
+/**
+ * \brief Read library signatures from the default catalog.
+ */
 void FrontEnd::readLibraryCatalog()
 {
 	librarySignatures.clear();
@@ -244,6 +278,9 @@ void FrontEnd::readLibraryCatalog()
 	}
 }
 
+/**
+ * \brief Returns a list of all available entrypoints.
+ */
 std::vector<ADDRESS> FrontEnd::getEntryPoints()
 {
 	std::vector<ADDRESS> entrypoints;
@@ -312,6 +349,10 @@ std::vector<ADDRESS> FrontEnd::getEntryPoints()
 	return entrypoints;
 }
 
+/**
+ * \brief Decode all undecoded procedures and return a new program containing
+ * them.
+ */
 void FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 {
 	if (pname)
@@ -365,7 +406,11 @@ void FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 	return;
 }
 
-// Somehow, a == NO_ADDRESS has come to mean decode anything not already decoded
+/**
+ * \brief Decode all procs starting at a given address in a given program.
+ *
+ * Somehow, a == NO_ADDRESS has come to mean decode anything not already decoded.
+ */
 void FrontEnd::decode(Prog *prog, ADDRESS a)
 {
 	if (a != NO_ADDRESS) {
@@ -415,7 +460,11 @@ void FrontEnd::decode(Prog *prog, ADDRESS a)
 	prog->wellForm();
 }
 
-// a should be the address of a UserProc
+/**
+ * \brief Decode one proc starting at a given address in a given program.
+ *
+ * \param a  Should be the address of a UserProc.
+ */
 void FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
 {
 	UserProc *p = (UserProc *)prog->setNewProc(a);
@@ -426,7 +475,10 @@ void FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
 	prog->wellForm();
 }
 
-
+/**
+ * \brief Decode a fragment of a procedure, e.g. for each destination of a
+ * switch statement.
+ */
 void FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 {
 	if (Boomerang::get()->traceDecoder)
@@ -447,13 +499,12 @@ DecodeResult &FrontEnd::decodeInstruction(ADDRESS pc)
 	return decoder->decodeInstruction(pc, pBF->getTextDelta());
 }
 
-/*==============================================================================
- * FUNCTION:       FrontEnd::readLibrarySignatures
- * OVERVIEW:       Read the library signatures from a file
- * PARAMETERS:     sPath: The file to read from
- *                 cc: the calling convention assumed
- * RETURNS:        <nothing>
- *============================================================================*/
+/**
+ * \brief Read the library signatures from a file.
+ *
+ * \param sPath  The file to read from.
+ * \param cc     The calling convention assumed.
+ */
 void FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 {
 	std::ifstream ifs;
@@ -482,6 +533,9 @@ void FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 	ifs.close();
 }
 
+/**
+ * \brief Return a signature that matches the architecture best.
+ */
 Signature *FrontEnd::getDefaultSignature(const char *name)
 {
 	Signature *signature = NULL;
@@ -494,7 +548,9 @@ Signature *FrontEnd::getDefaultSignature(const char *name)
 	return signature;
 }
 
-// get a library signature by name
+/**
+ * \brief Lookup a library signature by name.
+ */
 Signature *FrontEnd::getLibSignature(const char *name)
 {
 	Signature *signature;
@@ -512,18 +568,26 @@ Signature *FrontEnd::getLibSignature(const char *name)
 	return signature;
 }
 
-/*==============================================================================
- * FUNCTION:      FrontEnd::processProc
- * OVERVIEW:      Process a procedure, given a native (source machine) address.
- * PARAMETERS:    address - the address at which the procedure starts
- *                pProc - the procedure object
- *                frag - if true, this is just a fragment of a procedure
- *                spec - if true, this is a speculative decode
- *                os - the output stream for .rtl output
- * NOTE:          This is a sort of generic front end. For many processors, this will be overridden
- *                  in the FrontEnd derived class, sometimes calling this function to do most of the work
- * RETURNS:       true for a good decode (no illegal instructions)
- *============================================================================*/
+/**
+ * \brief Process a procedure, given a native (source machine) address.
+ *
+ * This is the main function for decoding a procedure.  It is usually
+ * overridden in the derived class to do source machine specific things.
+ *
+ * \param uAddr  The address at which the procedure starts.
+ * \param pProc  The procedure object.
+ * \param os     The output stream for .rtl output.
+ * \param frag   If true, we are decoding only a fragment of a procedure
+ *               (e.g. each arm of a switch statement is decoded).
+ * \param spec   If true, this is a speculative decode
+ *               (so give up on any invalid instruction).
+ *
+ * \note This is a sort of generic front end.  For many processors, this will
+ * be overridden in the FrontEnd derived class, sometimes calling this
+ * function to do most of the work.  Sparc is an exception.
+ *
+ * \returns true on a good decode (no illegal instructions).
+ */
 bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
 	BasicBlock *pBB;  // Pointer to the current basic block
@@ -1090,32 +1154,38 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 	return true;
 }
 
-/*==============================================================================
- * FUNCTION:    FrontEnd::getInst
- * OVERVIEW:    Fetch the smallest (nop-sized) instruction, in an endianness independent manner
- * NOTE:        Frequently overridden
- * PARAMETERS:  addr - host address to getch from
- * RETURNS:     An integer with the instruction in it
- *============================================================================*/
+/**
+ * \brief Function to fetch the smallest machine instruction.
+ *
+ * Fetch the smallest (nop-sized) instruction, in an endianness independent manner.
+ *
+ * \note Frequently overridden.
+ *
+ * \param addr  Host address to fetch from.
+ * \returns     An integer with the instruction in it.
+ */
 int FrontEnd::getInst(int addr)
 {
 	return (int)(*(unsigned char *)addr);
 }
 
-
-/*==============================================================================
- * FUNCTION:    TargetQueue::visit
- * OVERVIEW:    Visit a destination as a label, i.e. check whether we need to queue it as a new BB to create later.
- *              Note: at present, it is important to visit an address BEFORE an out edge is added to that address.
- *              This is because adding an out edge enters the address into the Cfg's BB map, and it looks like the
- *              BB has already been visited, and it gets overlooked. It would be better to have a scheme whereby
- *              the order of calling these functions (i.e. visit() and AddOutEdge()) did not matter.
- * PARAMETERS:  pCfg - the enclosing CFG
- *              uNewAddr - the address to be checked
- *              pNewBB - set to the lower part of the BB if the address
- *              already exists as a non explicit label (BB has to be split)
- * RETURNS:     <nothing>
- *============================================================================*/
+/**
+ * \brief Visit a destination as a label, i.e. check whether we need to queue
+ * it as a new BB to create later.
+ *
+ * \note At present, it is important to visit an address BEFORE an out edge is
+ * added to that address.  This is because adding an out edge enters the
+ * address into the Cfg's BB map, and it looks like the BB has already been
+ * visited, and it gets overlooked. It would be better to have a scheme
+ * whereby the order of calling these functions (i.e. visit() and
+ * AddOutEdge()) did not matter.
+ *
+ * \param pCfg      The enclosing CFG.
+ * \param uNewAddr  The address to be checked.
+ * \param pNewBB    Set to the lower part of the BB if the address already
+ *                  exists as a non explicit label
+ *                  (i.e. the BB has to be split).
+ */
 void TargetQueue::visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB)
 {
 	// Find out if we've already parsed the destination
@@ -1129,26 +1199,28 @@ void TargetQueue::visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB)
 	}
 }
 
-/*==============================================================================
- * FUNCTION:    TargetQueue::initial
- * OVERVIEW:    Seed the queue with an initial address
- * NOTE:        Can be some targets already in the queue now
- * PARAMETERS:  uAddr: Native address to seed the queue with
- * RETURNS:     <nothing>
- *============================================================================*/
+/**
+ * \brief Seed the queue with an initial address.
+ *
+ * Provide an initial address (can call several times if there are several
+ * entry points).
+ *
+ * \note Can be some targets already in the queue now.
+ *
+ * \param uAddr  Native address to seed the queue with.
+ */
 void TargetQueue::initial(ADDRESS uAddr)
 {
 	targets.push(uAddr);
 }
 
-/*==============================================================================
- * FUNCTION:          TergetQueue::nextAddress
- * OVERVIEW:          Return the next target from the queue of non-processed
- *                    targets.
- * PARAMETERS:        cfg - the enclosing CFG
- * RETURNS:           The next address to process, or NO_ADDRESS if none
- *                      (targets is empty)
- *============================================================================*/
+/**
+ * \brief Return the next target from the queue of non-processed targets.
+ *
+ * \param cfg  The enclosing CFG.
+ * \returns    The next address to process,
+ *             or NO_ADDRESS if none (queue is empty).
+ */
 ADDRESS TargetQueue::nextAddress(Cfg *cfg)
 {
 	while (!targets.empty()) {
@@ -1164,6 +1236,9 @@ ADDRESS TargetQueue::nextAddress(Cfg *cfg)
 	return NO_ADDRESS;
 }
 
+/**
+ * \brief Print (for debugging)
+ */
 void TargetQueue::dump()
 {
 	std::queue<ADDRESS> copy(targets);
@@ -1175,16 +1250,18 @@ void TargetQueue::dump()
 	std::cerr << std::dec << "\n";
 }
 
-
-/*==============================================================================
- * FUNCTION:      decodeRtl
- * OVERVIEW:      Decode the RTL at the given address
- * PARAMETERS:    address - native address of the instruction
- *                delta - difference between host and native addresses
- *                decoder - decoder object
- * NOTE:          Only called from findCoverage()
- * RETURNS:       a pointer to the decoded RTL
- *============================================================================*/
+#if 0 // Cruft?
+/**
+ * \brief Decode the RTL at the given address.
+ *
+ * \param address  Native address of the instruction.
+ * \param delta    Difference between host and native addresses.
+ * \param decoder  Decoder object.
+ *
+ * \note Only called from findCoverage().
+ *
+ * \returns A pointer to the decoded RTL.
+ */
 RTL *decodeRtl(ADDRESS address, int delta, NJMCDecoder *decoder)
 {
 	DecodeResult inst = decoder->decodeInstruction(address, delta);
@@ -1193,27 +1270,28 @@ RTL *decodeRtl(ADDRESS address, int delta, NJMCDecoder *decoder)
 
 	return rtl;
 }
+#endif
 
-/*==============================================================================
- * FUNCTION:    FrontEnd::getProg
- * OVERVIEW:    Get a Prog object (mainly for testing and not decoding)
- * PARAMETERS:  None
- * RETURNS:     Pointer to a Prog object (with pFE and pBF filled in)
- *============================================================================*/
+/**
+ * \brief Get a Prog object (mainly for testing and not decoding).
+ *
+ * \returns Pointer to a Prog object (with pFE and pBF filled in).
+ */
 Prog *FrontEnd::getProg()
 {
 	return prog;
 }
 
-/*==============================================================================
- * FUNCTION:    createReturnBlock
- * OVERVIEW:    Create a Return or a Oneway BB if a return statement already exists
- * PARAMETERS:  pProc: pointer to enclosing UserProc
- *              BB_rtls: list of RTLs for the current BB (not including pRtl)
- *              pRtl: pointer to the current RTL with the semantics for the return statement (including a
- *                  ReturnStatement as the last statement)
- * RETURNS:     Pointer to the newly created BB
- *============================================================================*/
+/**
+ * \brief Create a Return or a Oneway BB if a return statement already exists.
+ *
+ * \param pProc    Pointer to enclosing UserProc.
+ * \param BB_rtls  List of RTLs for the current BB (not including pRtl).
+ * \param pRtl     Pointer to the current RTL with the semantics for the
+ *                 return statement (including a ReturnStatement as the last
+ *                 statement)
+ * \returns        Pointer to the newly created BB.
+ */
 BasicBlock *FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl)
 {
 	Cfg *pCfg = pProc->getCFG();
@@ -1259,8 +1337,18 @@ BasicBlock *FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rt
 	return pBB;
 }
 
-// Add a synthetic return instruction (or branch to the existing return instruction).
-// NOTE: the call BB should be created with one out edge (the return or branch BB)
+/*
+ * \brief Add a synthetic return instruction and basic block (or a branch to
+ * the existing return instruction).
+ *
+ * \param pCallBB  A pointer to the call BB that will be followed by the
+ *                 return or jump.
+ * \param pProc    Pointer to the enclosing UserProc.
+ * \param pRtl     Pointer to the current RTL with the call instruction.
+ *
+ * \note The call BB should be created with one out edge (the return or branch
+ * BB).
+ */
 void FrontEnd::appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl)
 {
 	ReturnStatement *ret = new ReturnStatement();

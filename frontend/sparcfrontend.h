@@ -20,32 +20,20 @@
 
 class CallStatement;
 
-// Class SparcFrontEnd: derived from FrontEnd, with source machine specific
-// behaviour
+/**
+ * \brief SPARC specific FrontEnd behaviour.
+ */
 class SparcFrontEnd : public FrontEnd {
 public:
-	/*
-	 * Constructor. Takes some parameters to save passing these around a lot
-	 */
 	SparcFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~SparcFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_SPARC; }
 
-	/*
-	 * processProc. This is the main function for decoding a procedure.
-	 * This overrides the base class processProc to do source machine
-	 * specific things (but often calls the base class to do most of the
-	 * work. Sparc is an exception)
-	 * If frag is true, we are decoding only a fragment of the proc
-	 * If spec is true, this is a speculative decode (so give up on any invalid
-	 * instruction)
-	 * Returns true on a good decode
-	 */
-	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
-
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();
+
+	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
 
 	virtual ADDRESS getMainEntryPoint(bool &gotMain);
 
@@ -77,7 +65,6 @@ private:
 
 	void emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr);
 	void emitCopyPC(std::list<RTL *> *pRtls, ADDRESS uAddr);
-	unsigned fetch4(unsigned char *ptr);
 	void appendAssignment(Exp *lhs, Exp *rhs, Type *type, ADDRESS addr, std::list<RTL *> *lrtl);
 	void quadOperation(ADDRESS addr, std::list<RTL *> *lrtl, OPER op);
 
@@ -86,7 +73,10 @@ private:
 	bool helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl, std::string &name);
 	//void setReturnLocations(CalleeEpilogue *epilogue, int iReg);
 
-	// This struct represents a single nop instruction. Used as a substitute delay slot instruction
+	/**
+	 * This struct represents a single nop instruction.
+	 * Used as a substitute delay slot instruction.
+	 */
 	DecodeResult nop_inst;
 };
 

@@ -15,8 +15,9 @@
 
 #include "frontend.h"
 
-// Class MIPSFrontEnd: derived from FrontEnd, with source machine specific
-// behaviour
+/**
+ * \brief MIPS specific FrontEnd behaviour.
+ */
 class MIPSFrontEnd : public FrontEnd {
 public:
 	MIPSFrontEnd(BinaryFile *pBF, Prog *prog);
@@ -24,10 +25,10 @@ public:
 
 	virtual platform getFrontEndId() { return PLAT_MIPS; }
 
-	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
-
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();
+
+	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
 
 	virtual ADDRESS getMainEntryPoint(bool &gotMain);
 };
