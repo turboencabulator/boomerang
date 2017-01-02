@@ -507,30 +507,24 @@ DecodeResult &FrontEnd::decodeInstruction(ADDRESS pc)
  */
 void FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 {
-	std::ifstream ifs;
-
-	ifs.open(sPath);
-
+	std::ifstream ifs(sPath);
 	if (!ifs.good()) {
 		std::cerr << "can't open `" << sPath << "'\n";
 		exit(1);
 	}
 
-	AnsiCParser *p = new AnsiCParser(ifs, false);
-
+	AnsiCParser p(ifs, false);
 	platform plat = getFrontEndId();
-	p->yyparse(plat, cc);
+	p.yyparse(plat, cc);
+	ifs.close();
 
-	for (std::list<Signature *>::iterator it = p->signatures.begin(); it != p->signatures.end(); it++) {
+	for (std::list<Signature *>::iterator it = p.signatures.begin(); it != p.signatures.end(); it++) {
 #if 0
 		std::cerr << "readLibrarySignatures from " << sPath << ": " << (*it)->getName() << "\n";
 #endif
 		librarySignatures[(*it)->getName()] = *it;
 		(*it)->setSigFile(sPath);
 	}
-
-	delete p;
-	ifs.close();
 }
 
 /**

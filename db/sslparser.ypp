@@ -123,10 +123,12 @@
 		 */ \
 		bool bFloat;
 
-%define CONSTRUCTOR_PARAM std::istream &in, bool trace
-%define CONSTRUCTOR_INIT : bFloat(false)
+%define CONSTRUCTOR_PARAM \
+	std::istream &in, bool trace
+%define CONSTRUCTOR_INIT \
+	: theScanner(new SSLScanner(in, trace)) \
+	, bFloat(false)
 %define CONSTRUCTOR_CODE \
-	theScanner = new SSLScanner(in, trace); \
 	if (trace) yydebug = 1; else yydebug = 0;
 
 %define PARSE_PARAM RTLInstDict &Dict
@@ -974,10 +976,8 @@ Statement *SSLParser::parseExp(const char *str)
  *============================================================================*/
 SSLParser::~SSLParser()
 {
-	std::map<std::string, Table *>::iterator loc;
-	if (theScanner != NULL)
-		delete theScanner;
-	for (loc = TableDict.begin(); loc != TableDict.end(); loc++)
+	delete theScanner;
+	for (std::map<std::string, Table *>::iterator loc = TableDict.begin(); loc != TableDict.end(); loc++)
 		delete loc->second;
 }
 

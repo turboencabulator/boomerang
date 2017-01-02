@@ -81,10 +81,7 @@ Exp *ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 void ExpTransformer::loadAll()
 {
 	std::string sPath = Boomerang::get()->getProgPath() + "transformations/exp.ts";
-
-	std::ifstream ifs;
-	ifs.open(sPath.c_str());
-
+	std::ifstream ifs(sPath.c_str());
 	if (!ifs.good()) {
 		std::cerr << "can't open `" << sPath.c_str() << "'\n";
 		exit(1);
@@ -99,15 +96,16 @@ void ExpTransformer::loadAll()
 		if (sFile.size() > 0 && sFile[sFile.size() - 1] == '\n')
 			sFile.erase(sFile.size() - 1);
 		if (sFile.empty()) continue;
-		std::ifstream ifs1;
+
 		std::string sPath1 = Boomerang::get()->getProgPath() + "transformations/" + sFile;
-		ifs1.open(sPath1.c_str());
+		std::ifstream ifs1(sPath1.c_str());
 		if (!ifs1.good()) {
 			LOG << "can't open `" << sPath1.c_str() << "'\n";
 			exit(1);
 		}
-		TransformationParser *p = new TransformationParser(ifs1, false);
-		p->yyparse();
+
+		TransformationParser p(ifs1, false);
+		p.yyparse();
 		ifs1.close();
 	}
 	ifs.close();

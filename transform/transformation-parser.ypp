@@ -42,10 +42,11 @@
 	public: \
 		virtual ~TransformationParser();
 
-%define CONSTRUCTOR_PARAM std::istream &in, bool trace
-%define CONSTRUCTOR_INIT
+%define CONSTRUCTOR_PARAM \
+	std::istream &in, bool trace
+%define CONSTRUCTOR_INIT \
+	: theScanner(new TransformationScanner(in, trace))
 %define CONSTRUCTOR_CODE \
-	theScanner = new TransformationScanner(in, trace); \
 	if (trace) yydebug = 1; else yydebug = 0;
 
 %define PARSE_PARAM
@@ -154,5 +155,5 @@ void TransformationParser::yyerror(const char *s)
 
 TransformationParser::~TransformationParser()
 {
-	// Suppress warnings from gcc about lack of virtual destructor
+	delete theScanner;
 }

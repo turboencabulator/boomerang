@@ -1404,22 +1404,20 @@ void Prog::printCallGraphXML()
 
 void Prog::readSymbolFile(const char *fname)
 {
-	std::ifstream ifs;
-
-	ifs.open(fname);
-
+	std::ifstream ifs(fname);
 	if (!ifs.good()) {
 		LOG << "can't open `" << fname << "'\n";
 		exit(1);
 	}
 
-	AnsiCParser *par = new AnsiCParser(ifs, false);
+	AnsiCParser par(ifs, false);
 	platform plat = getFrontEndId();
 	callconv cc = CONV_C;
 	if (isWin32()) cc = CONV_PASCAL;
-	par->yyparse(plat, cc);
+	par.yyparse(plat, cc);
+	ifs.close();
 
-	for (std::list<Symbol *>::iterator it = par->symbols.begin(); it != par->symbols.end(); it++) {
+	for (std::list<Symbol *>::iterator it = par.symbols.begin(); it != par.symbols.end(); it++) {
 		if ((*it)->sig) {
 			Proc *p = newProc((*it)->sig->getName(), (*it)->addr,
 			                  pBF->isDynamicLinkedProcPointer((*it)->addr)
@@ -1443,12 +1441,9 @@ void Prog::readSymbolFile(const char *fname)
 		}
 	}
 
-	for (std::list<SymbolRef *>::iterator it2 = par->refs.begin(); it2 != par->refs.end(); it2++) {
+	for (std::list<SymbolRef *>::iterator it2 = par.refs.begin(); it2 != par.refs.end(); it2++) {
 		pFE->addRefHint((*it2)->addr, (*it2)->nam.c_str());
 	}
-
-	delete par;
-	ifs.close();
 }
 
 Global::~Global()

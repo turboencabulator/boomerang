@@ -107,10 +107,11 @@
 		std::list<SymbolRef *> refs; \
 		virtual ~AnsiCParser();
 
-%define CONSTRUCTOR_PARAM std::istream &in, bool trace
-%define CONSTRUCTOR_INIT
+%define CONSTRUCTOR_PARAM \
+	std::istream &in, bool trace
+%define CONSTRUCTOR_INIT \
+	: theScanner(new AnsiCScanner(in, trace))
 %define CONSTRUCTOR_CODE \
-	theScanner = new AnsiCScanner(in, trace); \
 	if (trace) yydebug = 1; else yydebug = 0;
 
 %define PARSE_PARAM platform plat, callconv cc
@@ -482,5 +483,5 @@ void AnsiCParser::yyerror(const char *s)
 
 AnsiCParser::~AnsiCParser()
 {
-	// Suppress warnings from gcc about lack of virtual destructor
+	delete theScanner;
 }

@@ -161,26 +161,24 @@ int RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
  */
 bool RTLInstDict::readSSLFile(const std::string &SSLFileName)
 {
-	// emptying the rtl dictionary
-	idict.erase(idict.begin(), idict.end());
 	// Clear all state
 	reset();
 
-	// Attempt to Parse the SSL file
+	addRegister("%CTI", -1, 1, false);
+	addRegister("%NEXT", -1, 32, false);
+
+	// Attempt to parse the SSL file
 	std::ifstream ssl(SSLFileName.c_str());
 	if (!ssl) {
 		std::cerr << "can't open `" << SSLFileName << "' for reading\n";
 		return false;
 	}
+
 #ifdef DEBUG_SSLPARSER
 	SSLParser theParser(ssl, true);
 #else
 	SSLParser theParser(ssl, false);
 #endif
-
-	addRegister("%CTI", -1, 1, false);
-	addRegister("%NEXT", -1, 32, false);
-
 	theParser.yyparse(*this);
 	ssl.close();
 
