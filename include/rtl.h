@@ -56,15 +56,15 @@ public:
 	                    RTL();
 	                    RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt = NULL);
 	                    RTL(const RTL &other);
-	virtual            ~RTL();
+	                   ~RTL();
 
 	typedef std::list<Statement *>::iterator iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 
-	virtual RTL        *clone();
+	        RTL        *clone();
 	        RTL        &operator=(RTL &other);
 
-	virtual bool        accept(StmtVisitor *visitor);
+	        bool        accept(StmtVisitor *visitor);
 
 	/**
 	 * \name Common enquiry methods
@@ -104,7 +104,7 @@ public:
 
 	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
 
-	virtual void        print(std::ostream &os = std::cout, bool html = false);
+	        void        print(std::ostream &os = std::cout, bool html = false);
 	        void        dump();
 
 	        void        updateAddress(ADDRESS addr);
@@ -130,12 +130,12 @@ public:
 	        void        insertAssign(Exp *ssLhs, Exp *ssRhs, bool prep, Type *type = NULL);
 	        void        insertAfterTemps(Exp *ssLhs, Exp *ssRhs, Type *type = NULL);
 
-	virtual bool        searchAndReplace(Exp *search, Exp *replace);
-	virtual bool        searchAll(Exp *search, std::list<Exp *> &result);
+	        bool        searchAndReplace(Exp *search, Exp *replace);
+	        bool        searchAll(Exp *search, std::list<Exp *> &result);
 
-	virtual void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel);
+	        void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel);
 
-	virtual void        simplify();
+	        void        simplify();
 
 	        bool        isGoto();
 	        bool        isCall();
