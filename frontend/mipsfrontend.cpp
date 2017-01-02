@@ -15,15 +15,14 @@
 #endif
 
 #include "mipsfrontend.h"
-#include "mipsdecoder.h"
 
 #include "exp.h"
 #include "proc.h"
 
 MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog)
+	FrontEnd(pBF, prog),
+	decoder(prog)
 {
-	decoder = new MIPSDecoder(prog);
 }
 
 MIPSFrontEnd::~MIPSFrontEnd()

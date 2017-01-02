@@ -20,7 +20,6 @@
 #endif
 
 #include "pentiumfrontend.h"
-#include "pentiumdecoder.h"
 
 #include "boomerang.h"
 #include "cfg.h"
@@ -41,9 +40,9 @@
 
 PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
 	FrontEnd(pBF, prog),
+	decoder(prog),
 	idPF(-1)
 {
-	decoder = new PentiumDecoder(prog);
 }
 
 PentiumFrontEnd::~PentiumFrontEnd()
@@ -967,8 +966,8 @@ DecodeResult &PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 		r.type = NCT;
 		r.reDecode = false;
 		r.rtl = new RTL(pc);
-		Exp *dx = Location::regOf(decoder->getRTLDict().RegMap["%dx"]);
-		Exp *al = Location::regOf(decoder->getRTLDict().RegMap["%al"]);
+		Exp *dx = Location::regOf(decoder.getRTLDict().RegMap["%dx"]);
+		Exp *al = Location::regOf(decoder.getRTLDict().RegMap["%al"]);
 		CallStatement *call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("outp"));
 		call->setArgumentExp(0, dx);

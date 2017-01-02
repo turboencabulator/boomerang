@@ -11,15 +11,20 @@
 
 #include "frontend.h"
 
+#include "st20decoder.h"
+
 /**
  * \brief ST20 specific FrontEnd behaviour.
  */
 class ST20FrontEnd : public FrontEnd {
+	ST20Decoder decoder;
+
 public:
 	ST20FrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~ST20FrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_ST20; }
+	virtual NJMCDecoder &getDecoder() { return decoder; }
 
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();

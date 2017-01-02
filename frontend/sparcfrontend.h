@@ -11,8 +11,8 @@
 
 #include "frontend.h"
 
-#include "decoder.h"
 #include "operator.h"
+#include "sparcdecoder.h"
 
 #include <fstream>
 #include <list>
@@ -24,11 +24,14 @@ class CallStatement;
  * \brief SPARC specific FrontEnd behaviour.
  */
 class SparcFrontEnd : public FrontEnd {
+	SparcDecoder decoder;
+
 public:
 	SparcFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~SparcFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_SPARC; }
+	virtual NJMCDecoder &getDecoder() { return decoder; }
 
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();

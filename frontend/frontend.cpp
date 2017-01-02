@@ -200,7 +200,7 @@ void FrontEnd::close(FrontEnd *fe)
 const char *FrontEnd::getRegName(int idx)
 {
 	std::map<std::string, int, std::less<std::string> >::iterator it;
-	for (it = decoder->getRTLDict().RegMap.begin(); it != decoder->getRTLDict().RegMap.end(); it++)
+	for (it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); it++)
 		if ((*it).second == idx)
 			return (*it).first.c_str();
 	return NULL;
@@ -208,9 +208,9 @@ const char *FrontEnd::getRegName(int idx)
 
 int FrontEnd::getRegSize(int idx)
 {
-	if (decoder->getRTLDict().DetRegMap.find(idx) == decoder->getRTLDict().DetRegMap.end())
+	if (getDecoder().getRTLDict().DetRegMap.find(idx) == getDecoder().getRTLDict().DetRegMap.end())
 		return 32;
-	return decoder->getRTLDict().DetRegMap[idx].g_size();
+	return getDecoder().getRTLDict().DetRegMap[idx].g_size();
 }
 
 /**
@@ -496,7 +496,7 @@ DecodeResult &FrontEnd::decodeInstruction(ADDRESS pc)
 		invalid.valid = false;
 		return invalid;
 	}
-	return decoder->decodeInstruction(pc, pBF->getTextDelta());
+	return getDecoder().decodeInstruction(pc, pBF->getTextDelta());
 }
 
 /**
@@ -615,7 +615,7 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
 	targetQueue.initial(uAddr);
 
 	// Clear the pointer used by the caller prologue code to access the last call rtl of this procedure
-	//decoder.resetLastCall();
+	//getDecoder().resetLastCall();
 
 	// ADDRESS initAddr = uAddr;
 	int nTotalBytes = 0;
@@ -1249,28 +1249,6 @@ void TargetQueue::dump()
 	}
 	std::cerr << std::dec << "\n";
 }
-
-#if 0 // Cruft?
-/**
- * \brief Decode the RTL at the given address.
- *
- * \param address  Native address of the instruction.
- * \param delta    Difference between host and native addresses.
- * \param decoder  Decoder object.
- *
- * \note Only called from findCoverage().
- *
- * \returns A pointer to the decoded RTL.
- */
-RTL *decodeRtl(ADDRESS address, int delta, NJMCDecoder *decoder)
-{
-	DecodeResult inst = decoder->decodeInstruction(address, delta);
-
-	RTL *rtl = inst.rtl;
-
-	return rtl;
-}
-#endif
 
 /**
  * \brief Get a Prog object (mainly for testing and not decoding).

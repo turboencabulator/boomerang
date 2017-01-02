@@ -11,15 +11,20 @@
 
 #include "frontend.h"
 
+#include "ppcdecoder.h"
+
 /**
  * \brief PPC specific FrontEnd behaviour.
  */
 class PPCFrontEnd : public FrontEnd {
+	PPCDecoder decoder;
+
 public:
 	PPCFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~PPCFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_PPC; }
+	virtual NJMCDecoder &getDecoder() { return decoder; }
 
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();

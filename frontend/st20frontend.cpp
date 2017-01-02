@@ -22,15 +22,14 @@
 #endif
 
 #include "st20frontend.h"
-#include "st20decoder.h"
 
 #include "exp.h"
 #include "proc.h"
 
 ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog)
+	FrontEnd(pBF, prog),
+	decoder(prog)
 {
-	decoder = new ST20Decoder(prog);
 }
 
 ST20FrontEnd::~ST20FrontEnd()

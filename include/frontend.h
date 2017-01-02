@@ -96,7 +96,6 @@ private:
 protected:
 	//const int NOP_SIZE;         ///< Size of a no-op instruction (in bytes)
 	//const int NOP_INST;         ///< No-op pattern
-	NJMCDecoder *decoder;       ///< The decoder.
 	BinaryFile *pBF;            ///< The binary file.
 	Prog *prog;                 ///< The Prog object.
 
@@ -122,6 +121,9 @@ public:
 	/// Returns an enum identifer for this frontend's platform.
 	virtual platform getFrontEndId() = 0;
 
+	/// Accessor function to get the decoder.
+	virtual NJMCDecoder &getDecoder() = 0;
+
 	bool isWin32();
 
 	static bool noReturnCallDest(const char *name);
@@ -132,9 +134,6 @@ public:
 
 	virtual DecodeResult &decodeInstruction(ADDRESS pc);
 	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
-
-	/// Accessor function to get the decoder.
-	NJMCDecoder *getDecoder() { return decoder; }
 
 	void readLibrarySignatures(const char *sPath, callconv cc);
 	void readLibraryCatalog(const char *sPath);
@@ -200,8 +199,6 @@ public:
  * Intialise the procedure decoder and analyser.
  */
 void initFront();
-
-RTL *decodeRtl(ADDRESS address, int delta, NJMCDecoder *decoder);
 
 /*
  * This decodes a given procedure. It performs the analysis to recover switch statements, call

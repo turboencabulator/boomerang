@@ -11,6 +11,8 @@
 
 #include "frontend.h"
 
+#include "pentiumdecoder.h"
+
 #include <list>
 
 class Statement;
@@ -19,11 +21,14 @@ class Statement;
  * \brief Pentium specific FrontEnd behaviour.
  */
 class PentiumFrontEnd : public FrontEnd {
+	PentiumDecoder decoder;
+
 public:
 	PentiumFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~PentiumFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_PENTIUM; }
+	virtual NJMCDecoder &getDecoder() { return decoder; }
 
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();

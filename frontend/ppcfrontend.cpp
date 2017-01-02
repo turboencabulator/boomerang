@@ -22,15 +22,14 @@
 #endif
 
 #include "ppcfrontend.h"
-#include "ppcdecoder.h"
 
 #include "exp.h"
 #include "proc.h"
 
 PPCFrontEnd::PPCFrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog)
+	FrontEnd(pBF, prog),
+	decoder(prog)
 {
-	decoder = new PPCDecoder(prog);
 }
 
 PPCFrontEnd::~PPCFrontEnd()

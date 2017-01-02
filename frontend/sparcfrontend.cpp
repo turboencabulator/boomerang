@@ -23,7 +23,6 @@
 #endif
 
 #include "sparcfrontend.h"
-#include "sparcdecoder.h"
 
 #include "boomerang.h"
 #include "cfg.h"
@@ -40,9 +39,9 @@
 #include <cassert>
 
 SparcFrontEnd::SparcFrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog)
+	FrontEnd(pBF, prog),
+	decoder(prog)
 {
-	decoder = new SparcDecoder(prog);
 	nop_inst.numBytes = 0;  // So won't disturb coverage
 	nop_inst.type = NOP;
 	nop_inst.valid = true;
@@ -931,7 +930,7 @@ bool SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &
 						// e.g.
 						// 142c8:  40 00 5b 91        call         exit
 						// 142cc:  91 e8 3f ff        restore      %g0, -1, %o0
-						if (((SparcDecoder *)decoder)->isRestore(address + 4 + pBF->getTextDelta())) {
+						if (decoder.isRestore(address + 4 + pBF->getTextDelta())) {
 							// Give the address of the call; I think that this is actually important, if faintly annoying
 							delay_inst.rtl->updateAddress(address);
 							BB_rtls->push_back(delay_inst.rtl);

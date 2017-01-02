@@ -15,15 +15,20 @@
 
 #include "frontend.h"
 
+#include "mipsdecoder.h"
+
 /**
  * \brief MIPS specific FrontEnd behaviour.
  */
 class MIPSFrontEnd : public FrontEnd {
+	MIPSDecoder decoder;
+
 public:
 	MIPSFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~MIPSFrontEnd();
 
 	virtual platform getFrontEndId() { return PLAT_MIPS; }
+	virtual NJMCDecoder &getDecoder() { return decoder; }
 
 	virtual std::vector<Exp *> &getDefaultParams();
 	virtual std::vector<Exp *> &getDefaultReturns();
