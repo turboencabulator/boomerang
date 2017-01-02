@@ -1,6 +1,5 @@
 /**
  * \file
- * \brief Skeleton for MIPS disassembly.
  *
  * \authors
  * Copyright (C) 2007, Markus Gothe <nietzsche@lysator.liu.se>
@@ -15,20 +14,14 @@
 
 #include "decoder.h"
 
+/**
+ * \brief Instruction decoder for MIPS.
+ */
 class MIPSDecoder : public NJMCDecoder {
 public:
 	MIPSDecoder(Prog *prog);
 
-	/*
-	 * Decodes the machine instruction at pc and returns an RTL instance for
-	 * the instruction.
-	 */
 	virtual DecodeResult &decodeInstruction(ADDRESS pc, int delta);
-
-	/*
-	 * Disassembles the machine instruction at pc and returns the number of
-	 * bytes disassembled. Assembler output goes to global _assembly
-	 */
 	virtual int decodeAssemblyInstruction(ADDRESS pc, int delta);
 
 private:

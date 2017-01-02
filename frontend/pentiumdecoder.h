@@ -1,6 +1,5 @@
 /**
  * \file
- * \brief The implementation of the instruction decoder for Pentium.
  *
  * \authors
  * Copyright (C) 1996-2001, The University of Queensland
@@ -17,20 +16,14 @@
 
 #include "decoder.h"
 
+/**
+ * \brief Instruction decoder for Pentium.
+ */
 class PentiumDecoder : public NJMCDecoder {
 public:
 	PentiumDecoder(Prog *prog);
 
-	/*
-	 * Decodes the machine instruction at pc and returns an RTL instance for
-	 * the instruction.
-	 */
 	virtual DecodeResult &decodeInstruction(ADDRESS pc, int delta);
-
-	/*
-	 * Disassembles the machine instruction at pc and returns the number of
-	 * bytes disassembled. Assembler output goes to global _assembly
-	 */
 	virtual int decodeAssemblyInstruction(ADDRESS pc, int delta);
 
 private:

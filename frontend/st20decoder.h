@@ -1,6 +1,5 @@
 /**
  * \file
- * \brief The definition of the instruction decoder for ST20.
  *
  * \authors
  * Copyright (C) 2005, Mike Van Emmerik
@@ -17,20 +16,14 @@
 
 #include <list>
 
+/**
+ * \brief Instruction decoder for ST20.
+ */
 class ST20Decoder : public NJMCDecoder {
 public:
 	ST20Decoder(Prog *prog);
 
-	/**
-	 * Decodes the machine instruction at pc and returns an RTL instance for
-	 * the instruction.
-	 */
 	virtual DecodeResult &decodeInstruction(ADDRESS pc, int delta);
-
-	/*
-	 * Disassembles the machine instruction at pc and returns the number of
-	 * bytes disassembled. Assembler output goes to global _assembly
-	 */
 	virtual int decodeAssemblyInstruction(ADDRESS pc, int delta);
 
 private:
