@@ -62,8 +62,7 @@ RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= NULL*/) :
 RTL::RTL(const RTL &other) :
 	nativeAddr(other.nativeAddr)
 {
-	std::list<Statement *>::const_iterator it;
-	for (it = other.stmtList.begin(); it != other.stmtList.end(); it++) {
+	for (std::list<Statement *>::const_iterator it = other.stmtList.begin(); it != other.stmtList.end(); it++) {
 		stmtList.push_back((*it)->clone());
 	}
 }
@@ -83,8 +82,7 @@ RTL &RTL::operator=(RTL &other)
 {
 	if (this != &other) {
 		// Do a deep copy always
-		iterator it;
-		for (it = other.stmtList.begin(); it != other.stmtList.end(); it++)
+		for (iterator it = other.stmtList.begin(); it != other.stmtList.end(); it++)
 			stmtList.push_back((*it)->clone());
 
 		nativeAddr = other.nativeAddr;
@@ -102,9 +100,8 @@ RTL &RTL::operator=(RTL &other)
 RTL *RTL::clone()
 {
 	std::list<Statement *> le;
-	iterator it;
 
-	for (it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		le.push_back((*it)->clone());
 	}
 
@@ -121,8 +118,7 @@ bool RTL::accept(StmtVisitor *visitor)
 {
 	// Might want to do something at the RTL level:
 	if (!visitor->visit(this)) return false;
-	iterator it;
-	for (it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		if (!(*it)->accept(visitor)) return false;
 	}
 	return true;
@@ -137,9 +133,7 @@ bool RTL::accept(StmtVisitor *visitor)
  */
 void RTL::deepCopyList(std::list<Statement *> &dest)
 {
-	std::list<Statement *>::iterator it;
-
-	for (it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		dest.push_back((*it)->clone());
 	}
 }
@@ -193,8 +187,7 @@ void RTL::prependStmt(Statement *s)
  */
 void RTL::appendListStmt(std::list<Statement *> &le)
 {
-	iterator it;
-	for (it = le.begin(); it != le.end(); it++) {
+	for (iterator it = le.begin(); it != le.end(); it++) {
 		stmtList.insert(stmtList.end(), (*it)->clone());
 	}
 }
@@ -360,8 +353,7 @@ void RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
 	// Print the statements
 	// First line has 8 extra chars as above
 	bool bFirst = true;
-	iterator ss;
-	for (ss = stmtList.begin(); ss != stmtList.end(); ss++) {
+	for (iterator ss = stmtList.begin(); ss != stmtList.end(); ss++) {
 		Statement *stmt = *ss;
 		if (html) {
 			if (!bFirst) os << "<tr><td></td>";
@@ -571,8 +563,7 @@ void RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* NULL */)
  */
 Type *RTL::getType()
 {
-	iterator it;
-	for (it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		Statement *e = *it;
 		if (e->isAssign())
 			return ((Assign *)e)->getType();
@@ -735,8 +726,7 @@ bool RTL::isCall()
  */
 Statement *RTL::getHlStmt()
 {
-	reverse_iterator rit;
-	for (rit = stmtList.rbegin(); rit != stmtList.rend(); rit++) {
+	for (reverse_iterator rit = stmtList.rbegin(); rit != stmtList.rend(); rit++) {
 		if ((*rit)->getKind() != STMT_ASSIGN)
 			return *rit;
 	}
