@@ -31,7 +31,13 @@
 		std::string nam;
 	};
 
-	class SymbolMods;
+	class SymbolMods {
+	public:
+		bool noDecode;
+		bool incomplete;
+
+		SymbolMods() : noDecode(false), incomplete(false) {}
+	};
 
 	class Symbol {
 	public:
@@ -42,14 +48,6 @@
 		SymbolMods *mods;
 
 		Symbol(ADDRESS a) : addr(a), nam(""), ty(NULL), sig(NULL), mods(NULL) {}
-	};
-
-	class SymbolMods {
-	public:
-		bool noDecode;
-		bool incomplete;
-
-		SymbolMods() : noDecode(false), incomplete(false) {}
 	};
 
 	class CustomOptions {
