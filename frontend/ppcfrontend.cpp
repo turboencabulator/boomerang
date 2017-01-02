@@ -96,6 +96,6 @@ extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
 }
 extern "C" void destruct(FrontEnd *fe)
 {
-	delete fe;
+	delete (PPCFrontEnd *)fe;
 }
 #endif
