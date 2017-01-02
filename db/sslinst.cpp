@@ -44,61 +44,44 @@
 
 //#define DEBUG_SSLPARSER 1
 
-/*==============================================================================
- * FUNCTION:        TableEntry::TableEntry
- * OVERVIEW:        Constructor
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
- *============================================================================*/
-TableEntry::TableEntry()
+TableEntry::TableEntry() :
+	flags(0)
 {
-	flags = 0;
 }
 
-/*==============================================================================
- * FUNCTION:        TableEntry::TableEntry
- * OVERVIEW:        Constructor
- * PARAMETERS:      p -
- *                  r - reference to a RTL
- * RETURNS:         <nothing>
- *============================================================================*/
 TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
-	rtl(r)
+	rtl(r),
+	flags(0)
 {
 	for (std::list<std::string>::iterator it = p.begin(); it != p.end(); it++)
 		params.push_back(*it);
-	flags = 0;
 }
 
-/*==============================================================================
- * FUNCTION:        TableEntry::setParam
- * OVERVIEW:        Set the parameter list.
- * PARAMETERS:      p - a list of strings
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * \brief Set the parameter list.
+ */
 void TableEntry::setParam(std::list<std::string> &p)
 {
 	params = p;
 }
 
-/*==============================================================================
- * FUNCTION:        TableEntry::setRTL
- * OVERVIEW:        Set the RTL.
- * PARAMETERS:      r - a RTL
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * \brief Set the RTL.
+ */
 void TableEntry::setRTL(RTL &r)
 {
 	rtl = r;
 }
 
-/*==============================================================================
- * FUNCTION:        TableEntry::operator=
- * OVERVIEW:        Sets the contents of this object with a deepcopy from another TableEntry object.  Note that this is
- *                  different from the semantics of operator= for an RTL which only does a shallow copy!
- * PARAMETERS:      other - the object to copy
- * RETURNS:         a reference to this object
- *============================================================================*/
+/**
+ * Sets the contents of this object with a deepcopy from another TableEntry
+ * object.  Note that this is different from the semantics of operator= for an
+ * RTL which only does a shallow copy!
+ *
+ * \param other  The object to copy.
+ *
+ * \returns A reference to this object.
+ */
 const TableEntry &TableEntry::operator=(const TableEntry &other)
 {
 	for (std::list<std::string>::const_iterator it = other.params.begin(); it != other.params.end(); it++)
@@ -107,13 +90,14 @@ const TableEntry &TableEntry::operator=(const TableEntry &other)
 	return *this;
 }
 
-/*==============================================================================
- * FUNCTION:        TableEntry::appendRTL
- * OVERVIEW:        Appends an RTL to an exising TableEntry
- * PARAMETERS:      p: reference to list of formal parameters (as strings)
- *                  r: reference to RTL with list of Exps to append
- * RETURNS:         0 for success
- *============================================================================*/
+/**
+ * \brief Appends an RTL to an exising TableEntry.
+ *
+ * \param p  Reference to list of formal parameters (as strings).
+ * \param r  Reference to RTL with list of Exps to append.
+ *
+ * \returns 0 for success, non-zero for failure.
+ */
 int TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
 {
 	bool match = (p.size() == params.size());
@@ -126,14 +110,26 @@ int TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
 	return -1;
 }
 
-/*==============================================================================
- * FUNCTION:        RTLInstDict::appendToDict
- * OVERVIEW:        Appends one RTL to the dictionary
- * PARAMETERS:      n: name of the instruction to add to
- *                  p: list of formal parameters (as strings) for the RTL to add
- *                  r: reference to the RTL to add
- * RETURNS:         0 for success
- *============================================================================*/
+RTLInstDict::RTLInstDict()
+{
+}
+
+RTLInstDict::~RTLInstDict()
+{
+}
+
+/**
+ * \brief Appends one RTL to the dictionary.
+ *
+ * Appends an RTL to an idict entry, or adds it to idict if an entry does not
+ * already exist.
+ *
+ * \param n  Name of the instruction to add to.
+ * \param p  List of formal parameters (as strings) for the RTL to add.
+ * \param r  Reference to the RTL to add.
+ *
+ * \returns 0 for success, non-zero for failure.
+ */
 int RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
 {
 	char *opcode = new char[n.size() + 1];
@@ -151,21 +147,18 @@ int RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
 	return 0;
 }
 
-RTLInstDict::RTLInstDict()
-{
-}
-
-RTLInstDict::~RTLInstDict()
-{
-}
-
-/*==============================================================================
- * FUNCTION:        RTLInstDict::readSSLFile
- * OVERVIEW:        Read and parse the SSL file, and initialise the expanded instruction dictionary (this object).
- *                  This also reads and sets up the register map and flag functions.
- * PARAMETERS:      SSLFileName - the name of the file containing the SSL specification.
- * RETURNS:         the file was successfully read
- *============================================================================*/
+/**
+ * \brief Parse a file containing a list of instructions definitions in SSL
+ * format and build the contents of this dictionary.
+ *
+ * Read and parse the SSL file, and initialise the expanded instruction
+ * dictionary (this object).  This also reads and sets up the register map and
+ * flag functions.
+ *
+ * \param SSLFileName  The name of the file containing the SSL specification.
+ *
+ * \returns The file was successfully read.
+ */
 bool RTLInstDict::readSSLFile(const std::string &SSLFileName)
 {
 	// emptying the rtl dictionary
@@ -202,12 +195,11 @@ bool RTLInstDict::readSSLFile(const std::string &SSLFileName)
 	return true;
 }
 
-/*==============================================================================
- * FUNCTION:        RTLInstDict::addRegister
- * OVERVIEW:        Add a new register definition to the dictionary
- * PARAMETERS:
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * \brief Add a new register to the machine.
+ *
+ * Add a new register definition to the dictionary.
+ */
 void RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
 {
 	RegMap[name] = id;
@@ -228,12 +220,11 @@ void RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
 	}
 }
 
-/*==============================================================================
- * FUNCTION:        RTLInstDict::print
- * OVERVIEW:        Print a textual representation of the dictionary.
- * PARAMETERS:      std::cout - stream used for printing
- * RETURNS:         <nothing>
- *============================================================================*/
+/**
+ * Print a textual representation of the dictionary.
+ *
+ * \param os  Stream used for printing.
+ */
 void RTLInstDict::print(std::ostream &os /*= std::cout*/)
 {
 	for (std::map<std::string, TableEntry>::iterator p = idict.begin(); p != idict.end(); p++) {
@@ -272,13 +263,12 @@ void RTLInstDict::print(std::ostream &os /*= std::cout*/)
 #endif
 }
 
-/*==============================================================================
- * FUNCTION:         RTLInstDict::fixupParams
- * OVERVIEW:         Runs after the ssl file is parsed to fix up variant params
- *                   where the arms are lambdas.
- * PARAMETERS:       None
- * RETURNS:          Nothing
- *============================================================================*/
+/**
+ * \brief Go through the params and fixup any lambda functions.
+ *
+ * Runs after the ssl file is parsed to fix up variant params where the arms
+ * are lambdas.
+ */
 void RTLInstDict::fixupParams()
 {
 	std::map<std::string, ParamEntry>::iterator param;
@@ -348,12 +338,11 @@ void RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcPara
 	param.funcParams = funcParams;
 }
 
-/*==============================================================================
- * FUNCTION:         RTLInstDict::getNumOperands
- * OVERVIEW:         Returns the signature of the given instruction.
- * PARAMETERS:       name -
- * RETURNS:          the signature (name + number of operands)
- *============================================================================*/
+/**
+ * \brief Returns the signature of the given instruction.
+ *
+ * \returns The signature (name + number of operands).
+ */
 std::pair<std::string, unsigned> RTLInstDict::getSignature(const char *name)
 {
 	// Take the argument, convert it to upper case and remove any _'s and .'s
@@ -375,15 +364,20 @@ std::pair<std::string, unsigned> RTLInstDict::getSignature(const char *name)
 	return ret;
 }
 
-/*==============================================================================
- * FUNCTION:         RTLInstDict::partialType
- * OVERVIEW:         Scan the Exp* pointed to by exp; if its top level operator indicates even a partial type, then set
- *                      the expression's type, and return true
- * NOTE:             This version only inspects one expression
- * PARAMETERS:       exp - points to a Exp* to be scanned
- *                   ty - ref to a Type object to put the partial type into
- * RETURNS:          True if a partial type is found
- *============================================================================*/
+/**
+ * \brief If the top level operator of the given expression indicates any kind
+ * of type, update ty to match.
+ *
+ * Scan the Exp* pointed to by exp; if its top level operator indicates even a
+ * partial type, then set the expression's type, and return true.
+ *
+ * \note This version only inspects one expression.
+ *
+ * \param exp  Points to a Exp* to be scanned.
+ * \param ty   Ref to a Type object to put the partial type into.
+ *
+ * \returns true if a partial type is found.
+ */
 bool RTLInstDict::partialType(Exp *exp, Type &ty)
 {
 	if (exp->isSizeCast()) {
@@ -397,14 +391,19 @@ bool RTLInstDict::partialType(Exp *exp, Type &ty)
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:         RTLInstDict::instantiateRTL
- * OVERVIEW:         Returns an instance of a register transfer list for the instruction named 'name' with the actuals
- *                   given as the second parameter.
- * PARAMETERS:       name - the name of the instruction (must correspond to one defined in the SSL file).
- *                   actuals - the actual values
- * RETURNS:          the instantiated list of Exps
- *============================================================================*/
+/**
+ * \brief Given an instruction name and list of actual parameters, return an
+ * instantiated RTL for the corresponding instruction entry.
+ *
+ * Returns an instance of a register transfer list for the instruction named
+ * 'name' with the actuals given as the second parameter.
+ *
+ * \param name     The name of the instruction
+ *                 (must correspond to one defined in the SSL file).
+ * \param actuals  The actual values.
+ *
+ * \returns The instantiated list of Exps.
+ */
 std::list<Statement *> *RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *> &actuals)
 {
 	// If -f is in force, use the fast (but not as precise) name instead
@@ -426,15 +425,20 @@ std::list<Statement *> *RTLInstDict::instantiateRTL(std::string &name, ADDRESS n
 	return instantiateRTL(entry.rtl, natPC, entry.params, actuals);
 }
 
-/*==============================================================================
- * FUNCTION:         RTLInstDict::instantiateRTL
- * OVERVIEW:         Returns an instance of a register transfer list for the parameterized rtlist with the given formals
- *                   replaced with the actuals given as the third parameter.
- * PARAMETERS:       rtl - a register transfer list
- *                   params - a list of formal parameters
- *                   actuals - the actual parameter values
- * RETURNS:          the instantiated list of Exps
- *============================================================================*/
+/**
+ * \brief As above, but takes an RTL & param list directly rather than doing a
+ * table lookup by name.
+ *
+ * Returns an instance of a register transfer list for the parameterized
+ * rtlist with the given formals replaced with the actuals given as the third
+ * parameter.
+ *
+ * \param rtl      A register transfer list.
+ * \param params   A list of formal parameters.
+ * \param actuals  The actual parameter values.
+ *
+ * \returns The instantiated list of Exps.
+ */
 std::list<Statement *> *RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &params, std::vector<Exp *> &actuals)
 {
 	assert(params.size() == actuals.size());
@@ -470,27 +474,37 @@ std::list<Statement *> *RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std
 	return newList;
 }
 
-/* Small struct for transformPostVars */
+/**
+ * Small struct for RTLInstDict::transformPostVars()
+ */
 class transPost {
 public:
-	bool used;      // If the base expression (e.g. r[0]) is used
-	                // Important because if not, we don't have to make any
-	                // substitutions at all
-	bool isNew;     // Not sure (MVE)
-	Exp *tmp;       // The temp to replace r[0]' with
-	Exp *post;      // The whole postvar expression. e.g. r[0]'
-	Exp *base;      // The base expression (e.g. r[0])
-	Type *type;     // The type of the temporary (needed for the final assign)
+	bool used;      ///< If the base expression (e.g. r[0]) is used.
+	                /**< Important because if not, we don't have to make any substitutions at all. */
+	bool isNew;     ///< Not sure (MVE)
+	Exp *tmp;       ///< The temp to replace r[0]' with.
+	Exp *post;      ///< The whole postvar expression. e.g. r[0]'.
+	Exp *base;      ///< The base expression (e.g. r[0]).
+	Type *type;     ///< The type of the temporary (needed for the final assign).
 };
 
-/*
- * Transform an RTL to eliminate any uses of post-variables. Note that the algorithm used expects to deal with simple
- * expressions as post vars, ie r[22], m[r[1]], generally things which aren't parameterized at a higher level. This is
- * ok for the translator (we do substitution first anyway), but may miss some optimizations for the emulator.
- * For the emulator, if parameters are detected within a postvar, we just force the temporary, which is always safe to
- * do.  (The parameter optimise is set to false for the emulator to achieve this).
+/**
+ * Transform the given list into another list which doesn't have
+ * post-variables, by either adding temporaries or just removing them where
+ * possible.  Modifies the list passed, and also returns a pointer to it.
+ * Second parameter indicates whether the routine should attempt to optimize
+ * the resulting output, i.e. to minimize the number of temporaries.  This is
+ * recommended for fully expanded expressions (i.e. within uqbt), but unsafe
+ * otherwise.
+ *
+ * Note that the algorithm used expects to deal with simple expressions as
+ * post vars, i.e.  r[22], m[r[1]], generally things which aren't
+ * parameterized at a higher level.  This is ok for the translator (we do
+ * substitution first anyway), but may miss some optimizations for the
+ * emulator.  For the emulator, if parameters are detected within a postvar,
+ * we just force the temporary, which is always safe to do.  (The parameter
+ * optimise is set to false for the emulator to achieve this.)
  */
-
 std::list<Statement *> *RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 {
 	std::list<Statement *>::iterator rt;
@@ -632,7 +646,11 @@ std::list<Statement *> *RTLInstDict::transformPostVars(std::list<Statement *> *r
 	return rts;
 }
 
-// Call from test code if (e.g.) want to call readSSLFile() twice
+/**
+ * \brief Reset the object to "undo" a readSSLFile().
+ *
+ * Call from test code if (e.g.) want to call readSSLFile() twice.
+ */
 void RTLInstDict::reset()
 {
 	RegMap.clear();
