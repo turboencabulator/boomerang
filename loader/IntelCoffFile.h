@@ -38,7 +38,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_COFF; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -82,7 +81,6 @@ protected:
 	//virtual bool        PostLoad(void *);
 
 private:
-	const char *m_pFilename;
 	FILE *m_fd;
 	std::list<SectionInfo *> m_EntryPoints;
 	std::list<ADDRESS> m_Relocations;

@@ -29,8 +29,7 @@ DOS4GWBinaryFile::DOS4GWBinaryFile() :
 	m_pLXHeader(NULL),
 	m_pLXObjects(NULL),
 	m_pLXPages(NULL),
-	base(NULL),
-	m_pFilename(NULL)
+	base(NULL)
 {
 }
 
@@ -131,7 +130,6 @@ ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 
 bool DOS4GWBinaryFile::RealLoad(const char *sName)
 {
-	m_pFilename = sName;
 	FILE *fp = fopen(sName, "rb");
 
 	DWord lxoffLE, lxoff;

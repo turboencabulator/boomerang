@@ -77,7 +77,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_EXE; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -110,7 +109,6 @@ private:
 	        int         m_cbImage;      ///< Size of image.
 	        int         m_cReloc;       ///< Number of relocation entries.
 	        DWord      *m_pRelocTable;  ///< The relocation table.
-	        const char *m_pFilename;
 };
 
 #endif

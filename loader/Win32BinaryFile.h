@@ -145,7 +145,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_PE; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -210,7 +209,6 @@ private:
 	        DWord      *m_pRelocTable;  ///< The relocation table.
 	        char       *base;           ///< Beginning of the loaded image.
 	        std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.
-	        const char *m_pFilename;
 	//        bool        haveDebugInfo;
 	        bool        mingw_main;
 };

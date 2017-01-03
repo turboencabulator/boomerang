@@ -187,7 +187,7 @@ public:
 	virtual LOADFMT     getFormat() const = 0;
 	/// Get the expected machine (e.g. MACHINE_PENTIUM).
 	virtual MACHINE     getMachine() const = 0;
-	virtual const char *getFilename() const = 0;
+	        const char *getFilename() const { return m_pFilename; }
 	/// Return a list of library names which the binary file depends on.
 	virtual std::list<const char *> getDependencyList() = 0;
 
@@ -315,6 +315,7 @@ protected:
 
 	        void        getTextLimits();
 
+	        const char *m_pFilename;     ///< Input file name.
 	        bool        m_bArchive;      ///< True if archive member.
 	        int         m_iNumSections;  ///< Number of sections.
 	        SectionInfo *m_pSections;    ///< The section info.

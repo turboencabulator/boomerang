@@ -39,7 +39,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_MACHO; }
 	virtual MACHINE     getMachine() const { return machine; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -96,7 +95,6 @@ protected:
 private:
 	        struct mach_header *header;      ///< The Mach-O header
 	        char       *base;                ///< Beginning of the loaded image
-	        const char *m_pFilename;
 	        ADDRESS     entrypoint, loaded_addr;
 	        unsigned    loaded_size;
 	        MACHINE     machine;

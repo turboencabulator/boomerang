@@ -37,7 +37,6 @@
 MachOBinaryFile::MachOBinaryFile() :
 	header(NULL),
 	base(NULL),
-	m_pFilename(NULL),
 	machine(MACHINE_PPC),
 	swap_bytes(false)
 {
@@ -79,7 +78,6 @@ ADDRESS MachOBinaryFile::getMainEntryPoint()
 
 bool MachOBinaryFile::RealLoad(const char *sName)
 {
-	m_pFilename = sName;
 	FILE *fp = fopen(sName, "rb");
 
 	header = new struct mach_header;

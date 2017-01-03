@@ -194,6 +194,7 @@ BinaryFile *BinaryFile::open(const char *name)
 	}
 #endif
 
+	bf->m_pFilename = name;
 	if (!bf->RealLoad(name)) {
 		fprintf(stderr, "Loading '%s' failed\n", name);
 		BinaryFile::close(bf); bf = NULL;

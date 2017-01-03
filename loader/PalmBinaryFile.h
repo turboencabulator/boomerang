@@ -27,7 +27,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_PALM; }
 	virtual MACHINE     getMachine() const { return MACHINE_PALM; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -64,7 +63,6 @@ private:
 	        unsigned char *m_pImage;     ///< Points to loaded image.
 	        unsigned char *m_pData;      ///< Points to data.
 	        unsigned int m_SizeBelowA5;  ///< Offset from start of data to where a5 should be initialised to.
-	        const char *m_pFilename;
 };
 
 #endif

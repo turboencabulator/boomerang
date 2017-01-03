@@ -81,7 +81,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_PAR; }
 	virtual MACHINE     getMachine() const { return MACHINE_HPRISC; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -120,7 +119,6 @@ private:
 	        SymTab      symbols;        ///< Symbol table object.
 	        //ADDRESS     mainExport;     ///< Export entry for "main".
 	        std::set<ADDRESS> imports;  ///< Set of imported proc addr's.
-	        const char *m_pFilename;
 };
 
 #endif

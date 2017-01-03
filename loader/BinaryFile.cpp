@@ -51,6 +51,7 @@ BinaryFile::BinaryFile(bool bArch /*= false*/) :
 	dlHandle(NULL),
 	destruct(NULL),
 #endif
+	m_pFilename(NULL),
 	m_bArchive(bArch),  // Remember whether an archive member
 	m_iNumSections(0),  // No sections yet
 	m_pSections(NULL)   // No section data yet

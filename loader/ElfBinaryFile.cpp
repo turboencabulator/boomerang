@@ -24,7 +24,6 @@ typedef std::map<std::string, int, std::less<std::string> > StrIntMap;
 
 ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
 	BinaryFile(bArchive),
-	m_pFilename(NULL),
 	m_fd(NULL),
 	m_pImage(NULL),
 	m_pPhdrs(NULL),  // No program headers
@@ -86,7 +85,6 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 		return false;
 	}
 
-	m_pFilename = sName;
 	m_fd = fopen(sName, "rb");
 	if (m_fd == NULL) return false;
 

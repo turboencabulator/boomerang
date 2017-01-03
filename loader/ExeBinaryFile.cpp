@@ -36,8 +36,6 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	FILE *fp;
 	int cb;
 
-	m_pFilename = sName;
-
 	// Always just 3 sections
 	m_iNumSections = 3;
 	m_pSections = new SectionInfo[m_iNumSections];

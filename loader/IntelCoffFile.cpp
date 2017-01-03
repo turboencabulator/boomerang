@@ -70,7 +70,6 @@ struct PACKED struct_coff_rel {
 
 IntelCoffFile::IntelCoffFile() :
 	BinaryFile(false),
-	m_pFilename(NULL),
 	m_fd(NULL)
 {
 }
@@ -96,7 +95,6 @@ bool IntelCoffFile::RealLoad(const char *sName)
 {
 	printf("IntelCoffFile::RealLoad('%s') called\n", sName);
 
-	m_pFilename = sName;
 	m_fd = fopen(sName, "rb");
 	if (m_fd == NULL) return false;
 

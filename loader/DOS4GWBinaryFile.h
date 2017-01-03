@@ -122,7 +122,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_LX; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -179,7 +178,6 @@ private:
 
 	/// Map from address of dynamic pointers to library procedure names.
 	        std::map<ADDRESS, std::string> dlprocptrs;
-	        const char *m_pFilename;
 };
 
 #endif

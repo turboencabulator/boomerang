@@ -178,7 +178,6 @@ public:
 
 	virtual LOADFMT     getFormat() const { return LOADFMT_ELF; }
 	virtual MACHINE     getMachine() const;
-	virtual const char *getFilename() const { return m_pFilename; }
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
@@ -305,7 +304,6 @@ private:
 	        ADDRESS     next_extern;                ///< Where the next extern will be placed.
 	        int        *m_sh_link;                  ///< Pointer to array of sh_link values.
 	        int        *m_sh_info;                  ///< Pointer to array of sh_info values.
-	        const char *m_pFilename;                ///< Pointer to input file name.
 };
 
 #endif
