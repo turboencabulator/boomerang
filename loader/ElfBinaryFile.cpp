@@ -816,12 +816,12 @@ std::list<const char *> ElfBinaryFile::getDependencyList()
 	return result;
 }
 
-ADDRESS ElfBinaryFile::getImageBase()
+ADDRESS ElfBinaryFile::getImageBase() const
 {
 	return m_uBaseAddr;
 }
 
-size_t ElfBinaryFile::getImageSize()
+size_t ElfBinaryFile::getImageSize() const
 {
 	return m_uImageSize;
 }
@@ -976,7 +976,7 @@ void ElfBinaryFile::elfWrite4(int *pi, int val)
 	}
 }
 
-int ElfBinaryFile::readNative1(ADDRESS nat)
+int ElfBinaryFile::readNative1(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) {
@@ -986,7 +986,7 @@ int ElfBinaryFile::readNative1(ADDRESS nat)
 	return *(char *)host;
 }
 
-int ElfBinaryFile::readNative2(ADDRESS nat)
+int ElfBinaryFile::readNative2(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
@@ -994,7 +994,7 @@ int ElfBinaryFile::readNative2(ADDRESS nat)
 	return elfRead2((short *)host);
 }
 
-int ElfBinaryFile::readNative4(ADDRESS nat)
+int ElfBinaryFile::readNative4(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
@@ -1022,7 +1022,7 @@ void ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 }
 #endif
 
-QWord ElfBinaryFile::readNative8(ADDRESS nat)
+QWord ElfBinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -1042,7 +1042,7 @@ QWord ElfBinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-float ElfBinaryFile::readNativeFloat4(ADDRESS nat)
+float ElfBinaryFile::readNativeFloat4(ADDRESS nat) const
 {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -1050,7 +1050,7 @@ float ElfBinaryFile::readNativeFloat4(ADDRESS nat)
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double ElfBinaryFile::readNativeFloat8(ADDRESS nat)
+double ElfBinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine

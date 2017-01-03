@@ -323,13 +323,13 @@ bool IntelCoffFile::isLibrary() const
 	return false;
 }
 
-ADDRESS IntelCoffFile::getImageBase()
+ADDRESS IntelCoffFile::getImageBase() const
 {
 	// TODO: Do they really always start at 0?
 	return (ADDRESS)0;
 }
 
-size_t IntelCoffFile::getImageSize()
+size_t IntelCoffFile::getImageSize() const
 {
 	printf("IntelCoffFile::getImageSize called\n");
 	// TODO: Implement it. We will have to load complete before knowing the size
@@ -401,7 +401,7 @@ std::map<ADDRESS, std::string> &IntelCoffFile::getSymbols()
 	return m_Symbols.getAll();
 }
 
-unsigned char *IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range)
+unsigned char *IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 {
 	for (int iSection = 0; iSection < m_iNumSections; iSection++) {
 		SectionInfo *psi = getSectionInfo(iSection);
@@ -412,7 +412,7 @@ unsigned char *IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range)
 	return 0;
 }
 
-int IntelCoffFile::readNative(ADDRESS a, unsigned short n)
+int IntelCoffFile::readNative(ADDRESS a, unsigned short n) const
 {
 	unsigned char *buf = getAddrPtr(a, (ADDRESS)n);
 	if (!a) return 0;
@@ -426,7 +426,7 @@ int IntelCoffFile::readNative(ADDRESS a, unsigned short n)
 	return tmp;
 }
 
-int IntelCoffFile::readNative4(ADDRESS a)
+int IntelCoffFile::readNative4(ADDRESS a) const
 {
 	return readNative(a, 4);
 #if 0
@@ -446,12 +446,12 @@ int IntelCoffFile::readNative4(ADDRESS a)
 #endif
 }
 
-int IntelCoffFile::readNative2(ADDRESS a)
+int IntelCoffFile::readNative2(ADDRESS a) const
 {
 	return readNative(a, 2);
 }
 
-int IntelCoffFile::readNative1(ADDRESS a)
+int IntelCoffFile::readNative1(ADDRESS a) const
 {
 	return readNative(a, 1);
 }

@@ -625,7 +625,7 @@ int Win32BinaryFile::win32Read4(int *pi) const
 	return n;
 }
 
-int Win32BinaryFile::readNative1(ADDRESS nat)
+int Win32BinaryFile::readNative1(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0)
@@ -634,25 +634,23 @@ int Win32BinaryFile::readNative1(ADDRESS nat)
 	return *(char *)host;
 }
 
-int Win32BinaryFile::readNative2(ADDRESS nat)
+int Win32BinaryFile::readNative2(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	int n = win32Read2((short *)host);
-	return n;
+	return win32Read2((short *)host);
 }
 
-int Win32BinaryFile::readNative4(ADDRESS nat)
+int Win32BinaryFile::readNative4(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	int n = win32Read4((int *)host);
-	return n;
+	return win32Read4((int *)host);
 }
 
-QWord Win32BinaryFile::readNative8(ADDRESS nat)
+QWord Win32BinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -667,14 +665,16 @@ QWord Win32BinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-float Win32BinaryFile::readNativeFloat4(ADDRESS nat) {
+float Win32BinaryFile::readNativeFloat4(ADDRESS nat) const
+{
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
 	//return reinterpret_cast<float>(raw);  // Note: cast, not convert!!
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double Win32BinaryFile::readNativeFloat8(ADDRESS nat) {
+double Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
+{
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
 	// Source and host are different endianness
@@ -849,12 +849,12 @@ bool Win32BinaryFile::isLibrary() const
 	return (m_pPEHeader->Flags & 0x2000) != 0;
 }
 
-ADDRESS Win32BinaryFile::getImageBase()
+ADDRESS Win32BinaryFile::getImageBase() const
 {
 	return m_pPEHeader->Imagebase;
 }
 
-size_t Win32BinaryFile::getImageSize()
+size_t Win32BinaryFile::getImageSize() const
 {
 	return m_pPEHeader->ImageSize;
 }

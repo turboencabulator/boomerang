@@ -206,33 +206,33 @@ public:
 	 * loaded.  For position independent / relocatable code this should be
 	 * NO_ADDRESS.
 	 */
-	virtual ADDRESS     getImageBase() = 0;
+	virtual ADDRESS     getImageBase() const = 0;
 	/**
 	 * Return the total size of the loaded image.
 	 */
-	virtual size_t      getImageSize() = 0;
-	        ADDRESS     getLimitTextLow() { return limitTextLow; }
-	        ADDRESS     getLimitTextHigh() { return limitTextHigh; }
-	        int         getTextDelta() { return textDelta; }
+	virtual size_t      getImageSize() const = 0;
+	        ADDRESS     getLimitTextLow() const { return limitTextLow; }
+	        ADDRESS     getLimitTextHigh() const { return limitTextHigh; }
+	        int         getTextDelta() const { return textDelta; }
 
 
-	virtual int         readNative1(ADDRESS a);
-	virtual int         readNative2(ADDRESS a);
-	virtual int         readNative4(ADDRESS a);
-	virtual QWord       readNative8(ADDRESS a);
-	virtual float       readNativeFloat4(ADDRESS a);
-	virtual double      readNativeFloat8(ADDRESS a);
+	virtual int         readNative1(ADDRESS a) const;
+	virtual int         readNative2(ADDRESS a) const;
+	virtual int         readNative4(ADDRESS a) const;
+	virtual QWord       readNative8(ADDRESS a) const;
+	virtual float       readNativeFloat4(ADDRESS a) const;
+	virtual double      readNativeFloat8(ADDRESS a) const;
 
 	/**
 	 * \name Section functions
 	 * \{
 	 */
 	        int         getNumSections() const;
-	        int         getSectionIndexByName(const char *sName);
+	        int         getSectionIndexByName(const char *sName) const;
 	        SectionInfo *getSectionInfo(int idx) const;
-	        SectionInfo *getSectionInfoByName(const char *sName);
+	        SectionInfo *getSectionInfoByName(const char *sName) const;
 	        SectionInfo *getSectionInfoByAddr(ADDRESS uEntry) const;
-	        bool        isReadOnly(ADDRESS uEntry);
+	        bool        isReadOnly(ADDRESS uEntry) const;
 	/** \} */
 
 	/**

@@ -413,7 +413,7 @@ int DOS4GWBinaryFile::dos4gwRead4(int *pi) const
 	return n;
 }
 
-int DOS4GWBinaryFile::readNative1(ADDRESS nat)
+int DOS4GWBinaryFile::readNative1(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0)
@@ -422,25 +422,23 @@ int DOS4GWBinaryFile::readNative1(ADDRESS nat)
 	return *host;
 }
 
-int DOS4GWBinaryFile::readNative2(ADDRESS nat)
+int DOS4GWBinaryFile::readNative2(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	int n = dos4gwRead2((short *)host);
-	return n;
+	return dos4gwRead2((short *)host);
 }
 
-int DOS4GWBinaryFile::readNative4(ADDRESS nat)
+int DOS4GWBinaryFile::readNative4(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	int n = dos4gwRead4((int *)host);
-	return n;
+	return dos4gwRead4((int *)host);
 }
 
-QWord DOS4GWBinaryFile::readNative8(ADDRESS nat)
+QWord DOS4GWBinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -455,14 +453,15 @@ QWord DOS4GWBinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-float DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) {
+float DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) const
+{
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
 	//return reinterpret_cast<float>(raw);  // Note: cast, not convert!!
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat)
+double DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -495,12 +494,12 @@ bool DOS4GWBinaryFile::isLibrary() const
 	return false; // TODO
 }
 
-ADDRESS DOS4GWBinaryFile::getImageBase()
+ADDRESS DOS4GWBinaryFile::getImageBase() const
 {
 	return m_pLXObjects[0].RelocBaseAddr;
 }
 
-size_t DOS4GWBinaryFile::getImageSize()
+size_t DOS4GWBinaryFile::getImageSize() const
 {
 	return 0; // TODO
 }

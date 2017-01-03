@@ -19,8 +19,8 @@ public:
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase();
-	virtual size_t      getImageSize();
+	virtual ADDRESS     getImageBase() const;
+	virtual size_t      getImageSize() const;
 
 	/**
 	 * \name Analysis functions
@@ -33,5 +33,5 @@ public:
 
 protected:
 	virtual bool        RealLoad(const char *sName);
-	virtual bool        PostLoad(void *handle);
+	//virtual bool        PostLoad(void *handle);
 };

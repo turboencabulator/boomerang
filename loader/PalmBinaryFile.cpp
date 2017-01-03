@@ -302,12 +302,12 @@ std::list<const char *> PalmBinaryFile::getDependencyList()
 	return std::list<const char *>(); /* doesn't really exist on palm */
 }
 
-ADDRESS PalmBinaryFile::getImageBase()
+ADDRESS PalmBinaryFile::getImageBase() const
 {
 	return 0; /* FIXME */
 }
 
-size_t PalmBinaryFile::getImageSize()
+size_t PalmBinaryFile::getImageSize() const
 {
 	return 0; /* FIXME */
 }

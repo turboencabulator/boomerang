@@ -73,7 +73,7 @@ int BinaryFile::getNumSections() const
 /**
  * \brief Find section index given name, or -1 if not found.
  */
-int BinaryFile::getSectionIndexByName(const char *sName)
+int BinaryFile::getSectionIndexByName(const char *sName) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
@@ -112,7 +112,7 @@ SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 /**
  * \brief Find section info given name, or 0 if not found.
  */
-SectionInfo *BinaryFile::getSectionInfoByName(const char *sName)
+SectionInfo *BinaryFile::getSectionInfoByName(const char *sName) const
 {
 	int i = getSectionIndexByName(sName);
 	if (i == -1) return 0;
@@ -122,7 +122,7 @@ SectionInfo *BinaryFile::getSectionInfoByName(const char *sName)
 /**
  * \brief Returns true if the given address is in a read only section.
  */
-bool BinaryFile::isReadOnly(ADDRESS uEntry)
+bool BinaryFile::isReadOnly(ADDRESS uEntry) const
 {
 	SectionInfo *p = getSectionInfoByAddr(uEntry);
 	return p && p->bReadOnly;
@@ -136,7 +136,7 @@ bool BinaryFile::isReadOnly(ADDRESS uEntry)
 /**
  * \brief Read 1 byte from given native address a; considers endianness.
  */
-int BinaryFile::readNative1(ADDRESS a)
+int BinaryFile::readNative1(ADDRESS a) const
 {
 	return 0;
 }
@@ -144,7 +144,7 @@ int BinaryFile::readNative1(ADDRESS a)
 /**
  * \brief Read 2 bytes from given native address a; considers endianness.
  */
-int BinaryFile::readNative2(ADDRESS a)
+int BinaryFile::readNative2(ADDRESS a) const
 {
 	return 0;
 }
@@ -152,7 +152,7 @@ int BinaryFile::readNative2(ADDRESS a)
 /**
  * \brief Read 4 bytes from given native address a; considers endianness.
  */
-int BinaryFile::readNative4(ADDRESS a)
+int BinaryFile::readNative4(ADDRESS a) const
 {
 	return 0;
 }
@@ -160,7 +160,7 @@ int BinaryFile::readNative4(ADDRESS a)
 /**
  * \brief Read 8 bytes from given native address a; considers endianness.
  */
-QWord BinaryFile::readNative8(ADDRESS a)
+QWord BinaryFile::readNative8(ADDRESS a) const
 {
 	return 0;
 }
@@ -168,7 +168,7 @@ QWord BinaryFile::readNative8(ADDRESS a)
 /**
  * \brief Read 4 bytes as a float; considers endianness.
  */
-float BinaryFile::readNativeFloat4(ADDRESS a)
+float BinaryFile::readNativeFloat4(ADDRESS a) const
 {
 	return 0.;
 }
@@ -176,7 +176,7 @@ float BinaryFile::readNativeFloat4(ADDRESS a)
 /**
  * \brief Read 8 bytes as a float; considers endianness.
  */
-double BinaryFile::readNativeFloat8(ADDRESS a)
+double BinaryFile::readNativeFloat8(ADDRESS a) const
 {
 	return 0.;
 }

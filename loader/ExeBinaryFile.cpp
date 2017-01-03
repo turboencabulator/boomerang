@@ -210,12 +210,12 @@ std::list<const char *> ExeBinaryFile::getDependencyList()
 	return std::list<const char *>(); /* for now */
 }
 
-ADDRESS ExeBinaryFile::getImageBase()
+ADDRESS ExeBinaryFile::getImageBase() const
 {
 	return 0; /* FIXME */
 }
 
-size_t ExeBinaryFile::getImageSize()
+size_t ExeBinaryFile::getImageSize() const
 {
 	return 0; /* FIXME */
 }

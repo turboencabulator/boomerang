@@ -80,8 +80,8 @@ public:
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase();
-	virtual size_t      getImageSize();
+	virtual ADDRESS     getImageBase() const;
+	virtual size_t      getImageSize() const;
 
 	/**
 	 * \name Symbol table functions

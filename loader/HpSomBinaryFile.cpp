@@ -428,12 +428,12 @@ std::list<const char *> HpSomBinaryFile::getDependencyList()
 	return std::list<const char *>(); /* FIXME */
 }
 
-ADDRESS HpSomBinaryFile::getImageBase()
+ADDRESS HpSomBinaryFile::getImageBase() const
 {
 	return 0; /* FIXME */
 }
 
-size_t HpSomBinaryFile::getImageSize()
+size_t HpSomBinaryFile::getImageSize() const
 {
 	return UINT4(m_pImage + 0x24);
 }

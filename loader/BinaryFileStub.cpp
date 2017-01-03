@@ -252,12 +252,12 @@ bool BinaryFileStub::isLibrary() const
 	return false;
 }
 
-ADDRESS BinaryFileStub::getImageBase()
+ADDRESS BinaryFileStub::getImageBase() const
 {
 	return 0;
 }
 
-size_t BinaryFileStub::getImageSize()
+size_t BinaryFileStub::getImageSize() const
 {
 	return 0;
 }
@@ -282,7 +282,9 @@ bool BinaryFileStub::RealLoad(const char *sName)
 	return false;
 }
 
+#if 0 // Cruft?
 bool BinaryFileStub::PostLoad(void *handle)
 {
 	return false;
 }
+#endif

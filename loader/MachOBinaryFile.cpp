@@ -473,7 +473,7 @@ unsigned short MachOBinaryFile::BMMHW(unsigned short x)
 	else return x;
 }
 
-int MachOBinaryFile::readNative1(ADDRESS nat)
+int MachOBinaryFile::readNative1(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0)
@@ -482,25 +482,23 @@ int MachOBinaryFile::readNative1(ADDRESS nat)
 	return *(char *)host;
 }
 
-int MachOBinaryFile::readNative2(ADDRESS nat)
+int MachOBinaryFile::readNative2(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	int n = machORead2((short *)host);
-	return n;
+	return machORead2((short *)host);
 }
 
-int MachOBinaryFile::readNative4(ADDRESS nat)
+int MachOBinaryFile::readNative4(ADDRESS nat) const
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	int n = machORead4((int *)host);
-	return n;
+	return machORead4((int *)host);
 }
 
-QWord MachOBinaryFile::readNative8(ADDRESS nat)
+QWord MachOBinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -515,7 +513,7 @@ QWord MachOBinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-float MachOBinaryFile::readNativeFloat4(ADDRESS nat)
+float MachOBinaryFile::readNativeFloat4(ADDRESS nat) const
 {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -523,7 +521,7 @@ float MachOBinaryFile::readNativeFloat4(ADDRESS nat)
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double MachOBinaryFile::readNativeFloat8(ADDRESS nat)
+double MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -549,12 +547,12 @@ bool MachOBinaryFile::isLibrary() const
 	return false;
 }
 
-ADDRESS MachOBinaryFile::getImageBase()
+ADDRESS MachOBinaryFile::getImageBase() const
 {
 	return loaded_addr;
 }
 
-size_t MachOBinaryFile::getImageSize()
+size_t MachOBinaryFile::getImageSize() const
 {
 	return loaded_size;
 }

@@ -41,15 +41,16 @@ public:
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase();
-	virtual size_t      getImageSize();
+	virtual ADDRESS     getImageBase() const;
+	virtual size_t      getImageSize() const;
 
 private:
-	        int         readNative(ADDRESS a, unsigned short n);
+	        unsigned char *getAddrPtr(ADDRESS a, ADDRESS range) const;
+	        int         readNative(ADDRESS a, unsigned short n) const;
 public:
-	virtual int         readNative1(ADDRESS a);
-	virtual int         readNative2(ADDRESS a);
-	virtual int         readNative4(ADDRESS a);
+	virtual int         readNative1(ADDRESS a) const;
+	virtual int         readNative2(ADDRESS a) const;
+	virtual int         readNative4(ADDRESS a) const;
 
 	/**
 	 * \name Symbol table functions
@@ -87,7 +88,6 @@ private:
 	struct coff_header m_Header;
 
 	SectionInfo *AddSection(SectionInfo *);
-	unsigned char *getAddrPtr(ADDRESS a, ADDRESS range);
 
 	SymTab m_Symbols;
 };

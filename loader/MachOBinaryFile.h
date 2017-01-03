@@ -42,8 +42,8 @@ public:
 	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase();
-	virtual size_t      getImageSize();
+	virtual ADDRESS     getImageBase() const;
+	virtual size_t      getImageSize() const;
 
 private:
 	        int         machORead2(short *ps) const;
@@ -58,12 +58,12 @@ private:
 	        unsigned int   BMMH(unsigned int x);
 	        unsigned short BMMHW(unsigned short x);
 public:
-	virtual int         readNative1(ADDRESS a);
-	virtual int         readNative2(ADDRESS a);
-	virtual int         readNative4(ADDRESS a);
-	virtual QWord       readNative8(ADDRESS a);
-	virtual float       readNativeFloat4(ADDRESS a);
-	virtual double      readNativeFloat8(ADDRESS a);
+	virtual int         readNative1(ADDRESS a) const;
+	virtual int         readNative2(ADDRESS a) const;
+	virtual int         readNative4(ADDRESS a) const;
+	virtual QWord       readNative8(ADDRESS a) const;
+	virtual float       readNativeFloat4(ADDRESS a) const;
+	virtual double      readNativeFloat8(ADDRESS a) const;
 
 	/**
 	 * \name Symbol table functions
