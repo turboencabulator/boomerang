@@ -87,7 +87,8 @@ FrontEnd::~FrontEnd()
  *
  * \param name  Name of the file (BinaryFile) to open.
  * \param prog  Passed to the constructor.
- * \returns     A new FrontEnd subclass instance.  Use close() to destroy it.
+ *
+ * \returns A new FrontEnd subclass instance.  Use close() to destroy it.
  */
 FrontEnd *FrontEnd::open(const char *name, Prog *prog)
 {
@@ -99,11 +100,9 @@ FrontEnd *FrontEnd::open(const char *name, Prog *prog)
 }
 
 /**
- * \brief Creates and returns an instance of the appropriate subclass.
- *
+ * \overload
  * \param bf    Passed to the constructor.
  * \param prog  Passed to the constructor.
- * \returns     A new FrontEnd subclass instance.  Use close() to destroy it.
  */
 FrontEnd *FrontEnd::open(BinaryFile *bf, Prog *prog)
 {

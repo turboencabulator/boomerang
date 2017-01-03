@@ -15,7 +15,9 @@
 
 #include <cassert>
 
-// text segment of hello pentium
+/**
+ * Text segment of hello pentium
+ */
 static char pent_hello_text[] = {
 	0x6a, 0x00, 0x6a, 0x00, 0x8b, 0xec, 0x52, 0xb8, 0x80, 0x87, 0x04, 0x08, 0x85, 0xc0, 0x74, 0x0d,
 	0x68, 0x80, 0x87, 0x04, 0x08, 0xe8, 0x66, 0xff, 0xff, 0xff, 0x83, 0xc4, 0x04, 0xb8, 0x44, 0xa4,
@@ -208,19 +210,25 @@ static char pent_hello_text[] = {
 BinaryFileStub::BinaryFileStub()
 {
 	m_iNumSections = 1;
-	SectionInfo *text = new SectionInfo();
-	text->pSectionName = ".text";
-	text->uNativeAddr = 0x8048810;
-	text->uHostAddr = (ADDRESS)pent_hello_text;
-	text->uSectionSize = sizeof pent_hello_text;
-	text->uSectionEntrySize = 0;
-	text->uType = 0;
-	text->bCode = true;
-	text->bData = false;
-	text->bBss = false;
-	text->bReadOnly = true;
-	m_pSections = text;
+	m_pSections = new SectionInfo[m_iNumSections];
+
+	m_pSections[0].pSectionName = ".text";
+	m_pSections[0].uNativeAddr = 0x8048810;
+	m_pSections[0].uHostAddr = (ADDRESS)pent_hello_text;
+	m_pSections[0].uSectionSize = sizeof pent_hello_text;
+	m_pSections[0].uSectionEntrySize = 0;
+	m_pSections[0].uType = 0;
+	m_pSections[0].bCode = true;
+	m_pSections[0].bData = false;
+	m_pSections[0].bBss = false;
+	m_pSections[0].bReadOnly = true;
+
 	getTextLimits();
+}
+
+BinaryFileStub::~BinaryFileStub()
+{
+	delete [] m_pSections;
 }
 
 LOADFMT BinaryFileStub::getFormat() const
@@ -233,15 +241,20 @@ MACHINE BinaryFileStub::getMachine() const
 	return MACHINE_PENTIUM;
 }
 
-bool BinaryFileStub::isLibrary() const
+const char *BinaryFileStub::getFilename() const
 {
-	return false;
+	return NULL;
 }
 
 std::list<const char *> BinaryFileStub::getDependencyList()
 {
 	assert(false);
 	return std::list<const char *>();
+}
+
+bool BinaryFileStub::isLibrary() const
+{
+	return false;
 }
 
 ADDRESS BinaryFileStub::getImageBase()
@@ -252,21 +265,6 @@ ADDRESS BinaryFileStub::getImageBase()
 size_t BinaryFileStub::getImageSize()
 {
 	return 0;
-}
-
-ADDRESS BinaryFileStub::getFirstHeaderAddress()
-{
-	return 0;
-}
-
-ADDRESS *BinaryFileStub::getImportStubs(int &numImports)
-{
-	return NULL;
-}
-
-bool BinaryFileStub::DisplayDetails(const char *fileName, FILE *f)
-{
-	return false;
 }
 
 std::list<SectionInfo *> &BinaryFileStub::getEntryPoints(const char *pEntry)
@@ -282,21 +280,6 @@ ADDRESS BinaryFileStub::getMainEntryPoint()
 ADDRESS BinaryFileStub::getEntryPoint()
 {
 	return 0;
-}
-
-std::map<ADDRESS, const char *> *BinaryFileStub::getDynamicGlobalMap()
-{
-	return new std::map<ADDRESS, const char *>;
-}
-
-const char *BinaryFileStub::getStrPtr(int idx, int offset)
-{
-	return NULL;
-}
-
-void BinaryFileStub::setLinkAndInfo(int idx, int link, int info)
-{
-	assert(false);
 }
 
 bool BinaryFileStub::RealLoad(const char *sName)

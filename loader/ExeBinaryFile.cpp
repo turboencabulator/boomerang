@@ -2,9 +2,6 @@
  * \file
  * \brief Contains the implementation of the class ExeBinaryFile.
  *
- * This file implements the class ExeBinaryFile, derived from class
- * BinaryFile.  See ExeBinaryFile.h and BinaryFile.h for details.
- *
  * \authors
  * Copyright (C) 1997,2001, The University of Queensland
  *
@@ -188,7 +185,7 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
-const char *ExeBinaryFile::SymbolByAddr(ADDRESS dwAddr)
+const char *ExeBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if (dwAddr == getMainEntryPoint())
 		return "main";
@@ -197,16 +194,13 @@ const char *ExeBinaryFile::SymbolByAddr(ADDRESS dwAddr)
 	return 0;
 }
 
-bool ExeBinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
-{
-	return false;
-}
-
+#if 0 // Cruft?
 bool ExeBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only
 	return false;
 }
+#endif
 
 bool ExeBinaryFile::isLibrary() const
 {
@@ -228,7 +222,9 @@ size_t ExeBinaryFile::getImageSize()
 	return 0; /* FIXME */
 }
 
-// Should be doing a search for this
+/**
+ * Should be doing a search for this.
+ */
 ADDRESS ExeBinaryFile::getMainEntryPoint()
 {
 	return NO_ADDRESS;
@@ -240,7 +236,9 @@ ADDRESS ExeBinaryFile::getEntryPoint()
 	return (ADDRESS)((LH(&m_pHeader->initCS) << 4) + LH(&m_pHeader->initIP));
 }
 
-// This is provided for completeness only...
+/**
+ * This is provided for completeness only...
+ */
 std::list<SectionInfo *> &ExeBinaryFile::getEntryPoints(const char *pEntry /* = "main"*/)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
@@ -266,6 +264,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (ExeBinaryFile *)bf;
 }
 #endif

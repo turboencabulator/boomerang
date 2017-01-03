@@ -32,9 +32,9 @@
 #define SUSE_TRUE       "test/pentium/suse_true"
 
 /**
- * Test decoding some Pentium instructions.
+ * \name Test decoding some Pentium instructions.
+ * \{
  */
-/// \{
 void FrontPentTest::test1()
 {
 	std::ostringstream ost;
@@ -146,7 +146,7 @@ void FrontPentTest::test3()
 
 	delete prog;
 }
-/// \}
+/** \} */
 
 void FrontPentTest::testBranch()
 {

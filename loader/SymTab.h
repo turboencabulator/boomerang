@@ -1,15 +1,6 @@
 /**
  * \file
- * \brief Contains the definition of the class SymTab, a simple class to
- *        implement a symbol table that can be looked up by address or by
- *        name.
- *
- * NOTE:  Can't readily use operator[] overloaded for address and string
- * parameters.  The main problem is that when you do symtab[0x100] = "main",
- * the string map doesn't see the string.  If you have one of the maps be a
- * pointer to the other string and use a special comparison operator, then if
- * the strings are ever changed, then the map's internal rb-tree becomes
- * invalid.
+ * \brief Contains the definition of the class SymTab.
  *
  * \authors
  * Copyright (C) 2005, Mike Van Emmerik
@@ -27,19 +18,30 @@
 #include <map>
 #include <string>
 
+/**
+ * A simple class to implement a symbol table that can be looked up by address
+ * or by name.
+ *
+ * \note Can't readily use operator[] overloaded for address and string
+ * parameters.  The main problem is that when you do symtab[0x100] = "main",
+ * the string map doesn't see the string.  If you have one of the maps be a
+ * pointer to the other string and use a special comparison operator, then if
+ * the strings are ever changed, then the map's internal rb-tree becomes
+ * invalid.
+ */
 class SymTab {
-	// The map indexed by address.
+	/// The map indexed by address.
 	std::map<ADDRESS, std::string> amap;
-	// The map indexed by string. Note that the strings are stored twice.
+	/// The map indexed by string. Note that the strings are stored twice.
 	std::map<std::string, ADDRESS> smap;
 
 public:
-	            SymTab();                       // Constructor
-	           ~SymTab();                       // Destructor
+	            SymTab();
+	           ~SymTab();
 
-	void        Add(ADDRESS a, const char *s);  // Add a new entry
-	const char *find(ADDRESS a);                // Find an entry by address; NULL if none
-	ADDRESS     find(const char *s);            // Find an entry by name; NO_ADDRESS if none
+	void        Add(ADDRESS a, const char *s);
+	const char *find(ADDRESS a);
+	ADDRESS     find(const char *s);
 #if 0
 	char       *FindAfter(ADDRESS &dwAddr);     // Find entry with >= given value
 	char       *FindNext(ADDRESS &dwAddr);      // Find next entry (after a Find())

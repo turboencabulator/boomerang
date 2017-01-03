@@ -1,8 +1,6 @@
 /**
  * \file
- * \brief Contains the implementation of the class HpSomBinaryFile, for
- *        decoding PA/RISC SOM executable files.  Derived from class
- *        BinaryFile.
+ * \brief Contains the implementation of the class HpSomBinaryFile,
  *
  * \authors
  * Copyright (C) 2000-2001, The University of Queensland
@@ -399,7 +397,9 @@ ADDRESS HpSomBinaryFile::getEntryPoint()
 	return 0;
 }
 
-// This is provided for completeness only...
+/**
+ * This is provided for completeness only...
+ */
 std::list<SectionInfo *> &HpSomBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
@@ -410,11 +410,13 @@ std::list<SectionInfo *> &HpSomBinaryFile::getEntryPoints(const char *pEntry /* 
 	return *ret;
 }
 
+#if 0 // Cruft?
 bool HpSomBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only
 	return false;
 }
+#endif
 
 bool HpSomBinaryFile::isLibrary() const
 {
@@ -438,7 +440,9 @@ size_t HpSomBinaryFile::getImageSize()
 	return UINT4(m_pImage + 0x24);
 }
 
-// We at least need to be able to name the main function and system calls
+/**
+ * We at least need to be able to name the main function and system calls.
+ */
 const char *HpSomBinaryFile::getSymbolByAddress(ADDRESS a)
 {
 	return symbols.find(a);
@@ -454,12 +458,19 @@ ADDRESS HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* =
 	return res;
 }
 
+/**
+ * \returns true if the address matches the convention for A-line system
+ * calls.
+ */
 bool HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	// Look up the address in the set of imports
 	return imports.find(uNative) != imports.end();
 }
 
+/**
+ * Get the start and length of a given subspace.
+ */
 std::pair<ADDRESS, int> HpSomBinaryFile::getSubspaceInfo(const char *ssname)
 {
 	std::pair<ADDRESS, int> ret(0, 0);
@@ -482,11 +493,15 @@ std::pair<ADDRESS, int> HpSomBinaryFile::getSubspaceInfo(const char *ssname)
 	return ret;
 }
 
-// Specific to BinaryFile objects that implement a "global pointer"
-// Gets a pair of unsigned integers representing the address of %agp
-// (first) and the value for GLOBALOFFSET (unused for ra-risc)
-// The understanding at present is that the global data pointer (%r27 for
-// pa-risc) points just past the end of the $GLOBAL$ subspace.
+#if 0 // Cruft?
+/**
+ * Specific to BinaryFile objects that implement a "global pointer".  Gets a
+ * pair of unsigned integers representing the address of %agp (first) and the
+ * value for GLOBALOFFSET (unused for pa-risc).
+ *
+ * The understanding at present is that the global data pointer (%r27 for
+ * pa-risc) points just past the end of the $GLOBAL$ subspace.
+ */
 std::pair<unsigned, unsigned> HpSomBinaryFile::getGlobalPointerInfo()
 {
 	std::pair<unsigned, unsigned> ret(0, 0);
@@ -497,18 +512,8 @@ std::pair<unsigned, unsigned> HpSomBinaryFile::getGlobalPointerInfo()
 	ret.first = info.first + info.second;
 	return ret;
 }
+#endif
 
-/*==============================================================================
- * FUNCTION:    HpSomBinaryFile::getDynamicGlobalMap
- * OVERVIEW:    Get a map from ADDRESS to const char*. This map contains the
- *                native addresses and symbolic names of global data items
- *                (if any) which are shared with dynamically linked libraries.
- *                Example: __iob (basis for stdout). The ADDRESS is the native
- *                address of a pointer to the real dynamic data object.
- * NOTE:        The caller should delete the returned map.
- * PARAMETERS:  None
- * RETURNS:     Pointer to a new map with the info
- *============================================================================*/
 std::map<ADDRESS, const char *> *HpSomBinaryFile::getDynamicGlobalMap()
 {
 	// Find the DL Table, if it exists
@@ -598,6 +603,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (HpSomBinaryFile *)bf;
 }
 #endif

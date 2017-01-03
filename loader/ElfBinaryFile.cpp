@@ -52,8 +52,11 @@ ElfBinaryFile::~ElfBinaryFile()
 	delete [] m_sh_info;
 }
 
-// Hand decompiled from sparc library function
-// C linkage so we can call this with dlopen()
+/**
+ * Hand decompiled from sparc library function.
+ *
+ * C linkage so we can call this with dlopen().
+ */
 extern "C" unsigned elf_hash(const char *o0)
 {
 	int o3 = *o0;
@@ -74,7 +77,6 @@ extern "C" unsigned elf_hash(const char *o0)
 	return o4;
 }
 
-// Return true for a good load
 bool ElfBinaryFile::RealLoad(const char *sName)
 {
 	int i;
@@ -252,13 +254,16 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 		m_uPltMax = pPlt->uNativeAddr + pPlt->uSectionSize;
 	}
 
-	// Apply relocations; important when the input program is not compiled with -fPIC
 	applyRelocations();
 
 	return true;  // Success
 }
 
-// Like a replacement for elf_strptr()
+/**
+ * \brief Calc string pointer.
+ *
+ * Like a replacement for elf_strptr().
+ */
 const char *ElfBinaryFile::getStrPtr(int idx, int offset)
 {
 	if (idx < 0) {
@@ -272,10 +277,14 @@ const char *ElfBinaryFile::getStrPtr(int idx, int offset)
 	return pSym + offset;
 }
 
-// Search the .rel[a].plt section for an entry with symbol table index i.
-// If found, return the native address of the associated PLT entry.
-// A linear search will be needed. However, starting at offset i and searching backwards with wraparound should
-// typically minimise the number of entries to search
+/**
+ * Search the .rel[a].plt section for an entry with symbol table index i.
+ * If found, return the native address of the associated PLT entry.
+ *
+ * A linear search will be needed.  However, starting at offset i and
+ * searching backwards with wraparound should typically minimise the number of
+ * entries to search.
+ */
 ADDRESS ElfBinaryFile::findRelPltOffset(int i, ADDRESS addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt)
 {
 	int first = i;
@@ -299,7 +308,11 @@ ADDRESS ElfBinaryFile::findRelPltOffset(int i, ADDRESS addrRelPlt, int sizeRelPl
 	return 0;                 // Exit if this happens
 }
 
-// Add appropriate symbols to the symbol table.  secIndex is the section index of the symbol table.
+/**
+ * Add appropriate symbols to the symbol table.
+ *
+ * \param secIndex  The section index of the symbol table.
+ */
 void ElfBinaryFile::AddSyms(int secIndex)
 {
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
@@ -413,10 +426,12 @@ std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 	return exported;
 }
 
-
-// FIXME: this function is way off the rails. It seems to always overwrite the relocation entry with the 32 bit value
-// from the symbol table. Totally invalid for SPARC, and most X86 relocations!
-// So currently not called
+#if 0 // Cruft?
+/**
+ * FIXME:  This function is way off the rails.  It seems to always overwrite
+ * the relocation entry with the 32 bit value from the symbol table.  Totally
+ * invalid for SPARC, and most X86 relocations!  So currently not called.
+ */
 void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 {
 	SectionInfo *pSect = &m_pSections[relSecIdx];
@@ -464,8 +479,12 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 	}
 	return;
 }
+#endif
 
-// Note: this function overrides a simple "return 0" function in the base class (i.e. BinaryFile::getSymbolByAddress())
+/**
+ * \note This function overrides a simple "return 0" function in the base
+ * class (i.e. BinaryFile::getSymbolByAddress())
+ */
 const char *ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(dwAddr);
@@ -539,7 +558,10 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 	}
 }
 
-// Lookup the symbol table using linear searching. See comments above for why this appears to be needed.
+/**
+ * Lookup the symbol table using linear searching.
+ * See comments above for why this appears to be needed.
+ */
 bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName)
 {
 	// Note: this assumes .symtab. Many files don't have this section!!!
@@ -572,8 +594,10 @@ bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const c
 	return false;  // Not found (this table)
 }
 
-// Search for the given symbol. First search .symtab (if present); if not found or the table has been stripped,
-// search .dynstr
+/**
+ * Search for the given symbol.  First search .symtab (if present); if not
+ * found or the table has been stripped, search .dynstr.
+ */
 bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal)
 {
 	if (SearchValueByName(pName, pVal, ".symtab", ".strtab"))
@@ -606,8 +630,15 @@ int ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */
 		return 0;
 }
 
-// Guess the size of a function by finding the next symbol after it, and subtracting the distance.
-// This function is NOT efficient; it has to compare the closeness of ALL symbols in the symbol table
+/**
+ * \brief Get the size associated with the symbol; guess if necessary.
+ *
+ * Guess the size of a function by finding the next symbol after it, and
+ * subtracting the distance.
+ *
+ * \note This function is NOT efficient; it has to compare the closeness of
+ * ALL symbols in the symbol table.
+ */
 int ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 {
 	int size = getSizeByName(sName);
@@ -645,6 +676,9 @@ int ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 	return closest - value;
 }
 
+/**
+ * \overload
+ */
 int ElfBinaryFile::getDistanceByName(const char *sName)
 {
 	int val = getDistanceByName(sName, ".symtab");
@@ -662,12 +696,9 @@ bool ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 	return (uNative >= m_uPltMin) && (uNative < m_uPltMax);  // Yes if a call to the PLT (false otherwise)
 }
 
-
-//
-// getEntryPoints()
-// Returns a list of pointers to SectionInfo structs representing entry points to the program
-// Item 0 is the main() function; items 1 and 2 are .init and .fini
-//
+/**
+ * Item 0 is the main() function; items 1 and 2 are .init and .fini.
+ */
 std::list<SectionInfo *> &ElfBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
 {
 	SectionInfo *pSect = getSectionInfoByName(".text");
@@ -686,11 +717,10 @@ std::list<SectionInfo *> &ElfBinaryFile::getEntryPoints(const char *pEntry /* = 
 	return m_EntryPoint;
 }
 
-
-//
-// getMainEntryPoint()
-// Returns the entry point to main (this should be a label in elf binaries generated by compilers).
-//
+/**
+ * Returns the entry point to main
+ * (this should be a label in elf binaries generated by compilers).
+ */
 ADDRESS ElfBinaryFile::getMainEntryPoint()
 {
 	return getAddressByName("main", true);
@@ -701,19 +731,24 @@ ADDRESS ElfBinaryFile::getEntryPoint()
 	return (ADDRESS)elfRead4(&((Elf32_Ehdr *)m_pImage)->e_entry);
 }
 
-// FIXME: the below assumes a fixed delta
+/**
+ * FIXME:  The below assumes a fixed delta.
+ */
 ADDRESS ElfBinaryFile::NativeToHostAddress(ADDRESS uNative)
 {
 	if (m_iNumSections == 0) return 0;
 	return m_pSections[1].uHostAddr - m_pSections[1].uNativeAddr + uNative;
 }
 
+#if 0 // Cruft?
 ADDRESS ElfBinaryFile::getRelocatedAddress(ADDRESS uNative)
 {
 	// Not implemented yet. But we need the function to make it all link
 	return 0;
 }
+#endif
 
+#if 0 // Cruft?
 bool ElfBinaryFile::PostLoad(void *handle)
 {
 	// This function is called after an archive member has been loaded by ElfArchiveFile
@@ -724,6 +759,7 @@ bool ElfBinaryFile::PostLoad(void *handle)
 	//return ProcessElfFile();
 	return false;
 }
+#endif
 
 MACHINE ElfBinaryFile::getMachine() const
 {
@@ -792,14 +828,17 @@ size_t ElfBinaryFile::getImageSize()
 	return m_uImageSize;
 }
 
-/*==============================================================================
- * FUNCTION:      ElfBinaryFile::getImportStubs
- * OVERVIEW:      Get an array of addresses of imported function stubs
- *                  This function relies on the fact that the symbols are sorted by address, and that Elf PLT
- *                  entries have successive addresses beginning soon after m_PltMin
- * PARAMETERS:    numImports - reference to integer set to the number of these
- * RETURNS:       An array of native ADDRESSes
- *============================================================================*/
+/**
+ * \brief Get an array of addresses of imported function stubs.
+ *
+ * This function relies on the fact that the symbols are sorted by address,
+ * and that Elf PLT entries have successive addresses beginning soon after
+ * m_PltMin.
+ *
+ * \param numImports  Reference to integer set to the number of these.
+ *
+ * \returns An array of native ADDRESSes.
+ */
 ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
 {
 	ADDRESS a = m_uPltMin;
@@ -836,17 +875,6 @@ ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
 	return m_pImportStubs;
 }
 
-/*==============================================================================
- * FUNCTION:    ElfBinaryFile::getDynamicGlobalMap
- * OVERVIEW:    Get a map from ADDRESS to const char*. This map contains the native addresses
- *                  and symbolic names of global data items (if any) which are shared with dynamically
- *                  linked libraries.
- *                  Example: __iob (basis for stdout). The ADDRESS is the native address of a pointer
- *                  to the real dynamic data object.
- * NOTE:        The caller should delete the returned map.
- * PARAMETERS:  None
- * RETURNS:     Pointer to a new map with the info, or 0 if none
- *============================================================================*/
 std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
 {
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
@@ -885,13 +913,18 @@ std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
 	return ret;
 }
 
-/*==============================================================================
- * FUNCTION:    ElfBinaryFile::elfRead2 and elfRead4
- * OVERVIEW:    Read a 2 or 4 byte quantity from host address (C pointer) p
- * NOTE:        Takes care of reading the correct endianness, set early on into m_elfEndianness
- * PARAMETERS:  ps or pi: host pointer to the data
- * RETURNS:     An integer representing the data
- *============================================================================*/
+/**
+ * \brief Read a short with endianness care.
+ *
+ * Read a 2 byte quantity from host address (C pointer) p.
+ *
+ * \note Takes care of reading the correct endianness, set early on into
+ * m_elfEndianness.
+ *
+ * \param ps  Host pointer to the data.
+ *
+ * \returns An integer representing the data.
+ */
 int ElfBinaryFile::elfRead2(short *ps) const
 {
 	unsigned char *p = (unsigned char *)ps;
@@ -903,6 +936,19 @@ int ElfBinaryFile::elfRead2(short *ps) const
 		return (int)(p[0] + (p[1] << 8));
 	}
 }
+
+/**
+ * \brief Read an int with endianness care.
+ *
+ * Read a 4 byte quantity from host address (C pointer) p
+ *
+ * \note Takes care of reading the correct endianness, set early on into
+ * m_elfEndianness.
+ *
+ * \param pi  Host pointer to the data.
+ *
+ * \returns An integer representing the data.
+ */
 int ElfBinaryFile::elfRead4(int *pi) const
 {
 	short *p = (short *)pi;
@@ -912,6 +958,9 @@ int ElfBinaryFile::elfRead4(int *pi) const
 		return (int)(elfRead2(p) + (elfRead2(p + 1) << 16));
 }
 
+/**
+ * \brief Write an int with endianness care.
+ */
 void ElfBinaryFile::elfWrite4(int *pi, int val)
 {
 	char *p = (char *)pi;
@@ -939,7 +988,6 @@ int ElfBinaryFile::readNative1(ADDRESS nat)
 	return *(char *)host;
 }
 
-// Read 2 bytes from given native address
 int ElfBinaryFile::readNative2(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -948,7 +996,6 @@ int ElfBinaryFile::readNative2(ADDRESS nat)
 	return elfRead2((short *)host);
 }
 
-// Read 4 bytes from given native address
 int ElfBinaryFile::readNative4(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -957,6 +1004,7 @@ int ElfBinaryFile::readNative4(ADDRESS nat)
 	return elfRead4((int *)host);
 }
 
+#if 0 // Cruft?
 void ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -974,8 +1022,8 @@ void ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 		*(unsigned char *)host       =  n        & 0xff;
 	}
 }
+#endif
 
-// Read 8 bytes from given native address
 QWord ElfBinaryFile::readNative8(ADDRESS nat)
 {
 	int raw[2];
@@ -996,7 +1044,6 @@ QWord ElfBinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-// Read 4 bytes as a float
 float ElfBinaryFile::readNativeFloat4(ADDRESS nat)
 {
 	int raw = readNative4(nat);
@@ -1005,7 +1052,6 @@ float ElfBinaryFile::readNativeFloat4(ADDRESS nat)
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-// Read 8 bytes as a float
 double ElfBinaryFile::readNativeFloat8(ADDRESS nat)
 {
 	int raw[2];
@@ -1026,6 +1072,10 @@ double ElfBinaryFile::readNativeFloat8(ADDRESS nat)
 	return *(double *)raw;
 }
 
+/**
+ * Apply relocations; important when the input program
+ * is not compiled with -fPIC.
+ */
 void ElfBinaryFile::applyRelocations()
 {
 	int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
@@ -1242,12 +1292,17 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 	return NULL;
 }
 
-// A map for extra symbols, those not in the usual Elf symbol tables
+/**
+ * A map for extra symbols, those not in the usual Elf symbol tables.
+ */
 void ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	m_SymTab[uNative] = pName;
 }
 
+/**
+ * \brief For debugging.
+ */
 void ElfBinaryFile::dumpSymbols()
 {
 	std::map<ADDRESS, std::string>::iterator it;
@@ -1270,6 +1325,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (ElfBinaryFile *)bf;
 }
 #endif

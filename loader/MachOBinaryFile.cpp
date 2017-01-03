@@ -2,9 +2,6 @@
  * \file
  * \brief Contains the implementation of the class MachOBinaryFile.
  *
- * This file implements the class MachOBinaryFile, derived from class
- * BinaryFile.  See MachOBinaryFile.h and BinaryFile.h for details.
- *
  * \authors
  * Copyright (C) 2000, The University of Queensland
  * \authors
@@ -366,10 +363,12 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
+#if 0 // Cruft?
 bool MachOBinaryFile::PostLoad(void *handle)
 {
 	return false;
 }
+#endif
 
 const char *MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr) {
 	std::map<ADDRESS, std::string>::iterator it = m_SymA.find(dwAddr);
@@ -397,11 +396,9 @@ void MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 	m_SymA[uNative] = pName;
 }
 
-bool MachOBinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
-{
-	return false;
-}
-
+/**
+ * \brief Read 2 bytes from native addr.
+ */
 int MachOBinaryFile::machORead2(short *ps) const
 {
 	unsigned char *p = (unsigned char *)ps;
@@ -410,6 +407,9 @@ int MachOBinaryFile::machORead2(short *ps) const
 	return n;
 }
 
+/**
+ * \brief Read 4 bytes from native addr.
+ */
 int MachOBinaryFile::machORead4(int *pi) const
 {
 	short *p = (short *)pi;
@@ -475,7 +475,6 @@ unsigned short MachOBinaryFile::BMMHW(unsigned short x)
 	else return x;
 }
 
-// Read 2 bytes from given native address
 int MachOBinaryFile::readNative1(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -485,7 +484,6 @@ int MachOBinaryFile::readNative1(ADDRESS nat)
 	return *(char *)host;
 }
 
-// Read 2 bytes from given native address
 int MachOBinaryFile::readNative2(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -495,7 +493,6 @@ int MachOBinaryFile::readNative2(ADDRESS nat)
 	return n;
 }
 
-// Read 4 bytes from given native address
 int MachOBinaryFile::readNative4(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -505,7 +502,6 @@ int MachOBinaryFile::readNative4(ADDRESS nat)
 	return n;
 }
 
-// Read 8 bytes from given native address
 QWord MachOBinaryFile::readNative8(ADDRESS nat)
 {
 	int raw[2];
@@ -521,7 +517,6 @@ QWord MachOBinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-// Read 4 bytes as a float
 float MachOBinaryFile::readNativeFloat4(ADDRESS nat)
 {
 	int raw = readNative4(nat);
@@ -530,7 +525,6 @@ float MachOBinaryFile::readNativeFloat4(ADDRESS nat)
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-// Read 8 bytes as a float
 double MachOBinaryFile::readNativeFloat8(ADDRESS nat)
 {
 	int raw[2];
@@ -572,6 +566,7 @@ std::list<const char *> MachOBinaryFile::getDependencyList()
 	return std::list<const char *>(); /* FIXME */
 }
 
+#if 0 // Cruft?
 DWord MachOBinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
@@ -579,6 +574,7 @@ DWord MachOBinaryFile::getDelta()
 	//return (DWord)base - LMMH(m_pPEHeader->Imagebase);
 	return (DWord)base - (DWord)loaded_addr;
 }
+#endif
 
 #ifdef DYNAMIC
 /**
@@ -593,6 +589,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (MachOBinaryFile *)bf;
 }
 #endif

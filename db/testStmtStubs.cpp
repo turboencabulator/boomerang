@@ -57,7 +57,6 @@ FrontEnd::~FrontEnd() { }
 int FrontEnd::getInst(int addr) { return 0; }
 bool PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool spec /* = false */, PHELPER helperFunc /* = NULL */) { return false; }
 ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain) { return 0; }
-FrontEnd *FrontEnd::Load(const char *fname) { return 0; }
 Prog *FrontEnd::decode() { return 0; }
 bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool spec /* = false */, PHELPER helperFunc) { return false; }
 

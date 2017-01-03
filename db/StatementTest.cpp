@@ -872,9 +872,9 @@ void StatementTest::testIsFlagAssgn()
 }
 
 /**
- * Test the finding of locations used by this statement.
+ * \name Test the finding of locations used by this statement.
+ * \{
  */
-/// \{
 void StatementTest::testAddUsedLocsAssign()
 {
 	// m[r28-4] := m[r28-8] * r26
@@ -1041,7 +1041,7 @@ void StatementTest::testAddUsedLocsBool()
 	expected = "r28{-}";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
-/// \}
+/** \} */
 
 /**
  * Test the subscripting of locations in Statements.

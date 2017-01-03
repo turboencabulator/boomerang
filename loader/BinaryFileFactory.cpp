@@ -46,7 +46,11 @@
   && buf[off+2] == c \
   && buf[off+3] == d )
 
-// Detect the file type and return the loader format
+/**
+ * Detect the file type and return the loader format.
+ *
+ * \param f  Opened file to perform detection on.
+ */
 static LOADFMT magic(FILE *f)
 {
 	unsigned char buf[64];
@@ -94,6 +98,10 @@ static LOADFMT magic(FILE *f)
 	return LOADFMT_UNKNOWN;
 }
 
+/**
+ * \overload
+ * \param name  Name of file to perform detection on.
+ */
 static LOADFMT magic(const char *name)
 {
 	FILE *f = fopen(name, "rb");
@@ -109,8 +117,12 @@ static LOADFMT magic(const char *name)
 }
 
 /**
- * This function determines the type of a binary and loads the appropriate
- * loader class dynamically.
+ * Determines the type of a binary and loads the appropriate loader class
+ * dynamically.
+ *
+ * \param name  Name of the file to open.
+ *
+ * \returns A new BinaryFile subclass instance.  Use close() to destroy it.
  */
 BinaryFile *BinaryFile::open(const char *name)
 {
@@ -192,6 +204,9 @@ BinaryFile *BinaryFile::open(const char *name)
 	return bf;
 }
 
+/**
+ * \brief Destroys an instance created by open() or new.
+ */
 void BinaryFile::close(BinaryFile *bf)
 {
 #ifdef DYNAMIC

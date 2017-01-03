@@ -185,9 +185,9 @@ void ExpTest::testIsAfpTerm()
 }
 
 /**
- * Test the operator== function.
+ * \name Test the operator== function.
+ * \{
  */
-/// \{
 void ExpTest::testCompare1()
 {
 	CPPUNIT_ASSERT(!(*m_99 == *m_rof2));
@@ -219,12 +219,12 @@ void ExpTest::testCompare6()
 	Binary two(opMult, m_99->clone(), m_rof2->clone());
 	CPPUNIT_ASSERT(one == two);
 }
-/// \}
+/** \} */
 
 /**
- * Test the searchReplace function.
+ * \name Test the searchReplace function.
+ * \{
  */
-/// \{
 void ExpTest::testSearchReplace1()
 {
 	// Null test: should not replace. Also tests Ternary class
@@ -291,12 +291,12 @@ void ExpTest::testSearchReplace4()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 	delete p;
 }
-/// \}
+/** \} */
 
 /**
- * Test the search function, including wildcards.
+ * \name Test the search function, including wildcards.
+ * \{
  */
-/// \{
 void ExpTest::testSearch1()
 {
 	Const two(2);
@@ -371,7 +371,7 @@ void ExpTest::testSearchAll()
 	Location rof8(opRegOf, new Const(8), NULL);
 	CPPUNIT_ASSERT(*result.back() == rof8);
 }
-/// \}
+/** \} */
 
 /**
  * Test the Accumulate function.
@@ -516,9 +516,9 @@ void ExpTest::testSimplifyArith()
 }
 
 /**
- * Test the simplify function.
+ * \name Test the simplify function.
+ * \{
  */
-/// \{
 void ExpTest::testSimplifyUnary()
 {
 	// Unaries with integer constant argument
@@ -693,7 +693,7 @@ void ExpTest::testSimplifyBinary()
 	CPPUNIT_ASSERT_EQUAL(expected, ost4.str());
 	delete e;
 }
-/// \}
+/** \} */
 
 /**
  * Test the simplifyAddr function.

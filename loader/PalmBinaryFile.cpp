@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Loads a Palm Pilot .prc file.  Derived from class BinaryFile.
+ * \brief Contains the implementation of the class PalmBinaryFile.
  *
  * \authors
  * Copyright (C) 2000, The University of Queensland
@@ -267,7 +267,9 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
-// This is provided for completeness only...
+/**
+ * This is provided for completeness only...
+ */
 std::list<SectionInfo *> &PalmBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
 {
 	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
@@ -284,16 +286,19 @@ ADDRESS PalmBinaryFile::getEntryPoint()
 	return 0;
 }
 
+#if 0 // Cruft?
 bool PalmBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only
 	return false;
 }
+#endif
 
 bool PalmBinaryFile::isLibrary() const
 {
 	return strncmp((char *)(m_pImage + 0x3C), "libr", 4) == 0;
 }
+
 std::list<const char *> PalmBinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* doesn't really exist on palm */
@@ -309,7 +314,9 @@ size_t PalmBinaryFile::getImageSize()
 	return 0; /* FIXME */
 }
 
-// We at least need to be able to name the main function and system calls
+/**
+ * We at least need to be able to name the main function and system calls.
+ */
 const char *PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if ((dwAddr & 0xFFFFF000) == 0xAAAAA000) {
@@ -325,17 +332,27 @@ const char *PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 	else return 0;
 }
 
-// Not really dynamically linked, but the closest thing
+/**
+ * \returns true if the address matches the convention for A-line system
+ * calls.
+ *
+ * Not really dynamically linked, but the closest thing.
+ */
 bool PalmBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	return ((uNative & 0xFFFFF000) == 0xAAAAA000);
 }
 
-// Specific to BinaryFile objects that implement a "global pointer"
-// Gets a pair of unsigned integers representing the address of %agp,
-// and the value for GLOBALOFFSET. For Palm, the latter is the amount of
-// space allocated below %a5, i.e. the difference between %a5 and %agp
-// (%agp points to the bottom of the global data area).
+#if 0 // Cruft?
+/**
+ * Specific to BinaryFile objects that implement a "global pointer".  Gets a
+ * pair of unsigned integers representing the address of %agp, and the value
+ * for GLOBALOFFSET.
+ *
+ * For Palm, the latter is the amount of space allocated below %a5, i.e. the
+ * difference between %a5 and %agp (%agp points to the bottom of the global
+ * data area).
+ */
 std::pair<unsigned, unsigned> PalmBinaryFile::getGlobalPointerInfo()
 {
 	unsigned agp = 0;
@@ -344,11 +361,12 @@ std::pair<unsigned, unsigned> PalmBinaryFile::getGlobalPointerInfo()
 	std::pair<unsigned, unsigned> ret(agp, m_SizeBelowA5);
 	return ret;
 }
+#endif
 
-//  //  //  //  //  //  //
-//  Specific for Palm   //
-//  //  //  //  //  //  //
-
+/**
+ * Get the ID number for this application.  It's possible that the app uses
+ * this number internally, so this needs to be used in the final make.
+ */
 int PalmBinaryFile::getAppID() const
 {
 	// The answer is in the header. Return 0 if file not loaded
@@ -385,16 +403,17 @@ static SWord GccCallMain[] = {
 	0x6100, WILD        // bsr PilotMain
 };
 
-/*==============================================================================
- * FUNCTION:      findPattern
- * OVERVIEW:      Try to find a pattern
- * PARAMETERS:    start - pointer to code to start searching
- *                patt - pattern to look for
- *                pattSize - size of the pattern (in SWords)
- *                max - max number of SWords to search
- * RETURNS:       0 if no match; pointer to start of match if found
- *============================================================================*/
-SWord *findPattern(SWord *start, const SWord *patt, int pattSize, int max)
+/**
+ * Try to find a pattern.
+ *
+ * \param start     Pointer to code to start searching.
+ * \param patt      Pattern to look for.
+ * \param pattSize  Size of the pattern (in SWords).
+ * \param max       Max number of SWords to search.
+ *
+ * \returns 0 if no match; pointer to start of match if found.
+ */
+static SWord *findPattern(SWord *start, const SWord *patt, int pattSize, int max)
 {
 	const SWord *last = start + max;
 	for (; start < last; start++) {
@@ -414,8 +433,10 @@ SWord *findPattern(SWord *start, const SWord *patt, int pattSize, int max)
 	return 0;
 }
 
-// Find the native address for the start of the main entry function.
-// For Palm binaries, this is PilotMain.
+/**
+ * Find the native address for the start of the main entry function.
+ * For Palm binaries, this is PilotMain.
+ */
 ADDRESS PalmBinaryFile::getMainEntryPoint()
 {
 	SectionInfo *pSect = getSectionInfoByName("code1");
@@ -455,6 +476,9 @@ ADDRESS PalmBinaryFile::getMainEntryPoint()
 	return 0;
 }
 
+/**
+ * Generate binary files for non code and data sections.
+ */
 void PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
@@ -493,6 +517,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (PalmBinaryFile *)bf;
 }
 #endif

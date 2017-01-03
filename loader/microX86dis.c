@@ -1,13 +1,6 @@
 /**
  * \file
  *
- * Tiny X86 disassembler, capable only of finding the number of bytes of a
- * given instruction.  In other words, a surface engine.
- *
- * Assumes a seg32 segment; ignores the address size override.
- *
- * Note that the function could return Not Handled (NH, 0x40).
- *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
  * this file, and for a DISCLAIMER OF ALL WARRANTIES.
@@ -135,6 +128,15 @@ static unsigned char op0Fmap[256] = {
 	NH, NH, NH, NH, NH, NH, NH, NH, NH, NH, NH, NH, NH, NH, NH, NH
 };
 
+
+/**
+ * Tiny X86 disassembler, capable only of finding the number of bytes of a
+ * given instruction.  In other words, a surface engine.
+ *
+ * Assumes a seg32 segment; ignores the address size override.
+ *
+ * Note that the function could return Not Handled (NH, 0x40).
+ */
 int microX86Dis(unsigned char *pCode) {
 	int opsize = 4;             /* Operand size override will change to 2 */
 	int size = 0;

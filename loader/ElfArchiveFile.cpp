@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Contains the implementation of the ElfArchiveFile class.
+ * \brief Contains the implementation of the class ElfArchiveFile.
  *
  * \authors
  * Copyright (C) 1998, The University of Queensland

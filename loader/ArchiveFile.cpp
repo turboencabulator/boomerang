@@ -1,6 +1,6 @@
 /**
  * \file
- * \brief Contains the implementation of the ArchiveFile class.
+ * \brief Contains the implementation of the class ArchiveFile.
  *
  * \authors
  * Copyright (C) 1998, The University of Queensland

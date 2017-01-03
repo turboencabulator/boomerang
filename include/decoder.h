@@ -196,7 +196,7 @@ bool isFuncPrologue(ADDRESS hostPC);
 	jump->setCondType(cond); \
 	SHOW_ASM(name << " " << relocd)
 
-// This one is X86 specific
+/// This one is X86 specific.
 #define SETS(name, dest, cond) \
 	BoolAssign *bs = new BoolAssign(8); \
 	bs->setLeftFromList(stmts); \

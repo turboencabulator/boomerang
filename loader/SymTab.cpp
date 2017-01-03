@@ -1,8 +1,6 @@
 /**
  * \file
- * \brief Contains the implementation of the class SymTab, a simple class to
- *        maintain a pair of maps so that symbols can be accessed by symbol or
- *        by name.
+ * \brief Contains the implementation of the class SymTab.
  *
  * \authors
  * Copyright (C) 2005, Mike Van Emmerik
@@ -26,12 +24,18 @@ SymTab::~SymTab()
 {
 }
 
+/**
+ * \brief Add a new entry.
+ */
 void SymTab::Add(ADDRESS a, const char *s)
 {
 	amap[a] = s;
 	smap[s] = a;
 }
 
+/**
+ * \brief Find an entry by address; NULL if none.
+ */
 const char *SymTab::find(ADDRESS a)
 {
 	std::map<ADDRESS, std::string>::iterator ff;
@@ -41,6 +45,9 @@ const char *SymTab::find(ADDRESS a)
 	return ff->second.c_str();
 }
 
+/**
+ * \brief Find an entry by name; NO_ADDRESS if none.
+ */
 ADDRESS SymTab::find(const char *s)
 {
 	std::map<std::string, ADDRESS>::iterator ff;

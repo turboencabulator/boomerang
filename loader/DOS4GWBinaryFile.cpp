@@ -2,9 +2,6 @@
  * \file
  * \brief Contains the implementation of the class DOS4GWBinaryFile.
  *
- * This file implements the class DOS4GWBinaryFile, derived from class
- * BinaryFile.  See DOS4GWBinaryFile.h and BinaryFile.h for details.
- *
  * \authors
  * Copyright (C) 2000, The University of Queensland
  * \authors
@@ -361,10 +358,12 @@ bool DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 	return false;
 }
 
+#if 0 // Cruft?
 bool DOS4GWBinaryFile::PostLoad(void *handle)
 {
 	return false;
 }
+#endif
 
 const char *DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
@@ -393,11 +392,9 @@ void DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 	dlprocptrs[uNative] = pName;
 }
 
-bool DOS4GWBinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
-{
-	return false;
-}
-
+/**
+ * \brief Read 2 bytes from native addr.
+ */
 int DOS4GWBinaryFile::dos4gwRead2(short *ps) const
 {
 	unsigned char *p = (unsigned char *)ps;
@@ -406,6 +403,9 @@ int DOS4GWBinaryFile::dos4gwRead2(short *ps) const
 	return n;
 }
 
+/**
+ * \brief Read 4 bytes from native addr.
+ */
 int DOS4GWBinaryFile::dos4gwRead4(int *pi) const
 {
 	short *p = (short *)pi;
@@ -415,7 +415,6 @@ int DOS4GWBinaryFile::dos4gwRead4(int *pi) const
 	return n;
 }
 
-// Read 2 bytes from given native address
 int DOS4GWBinaryFile::readNative1(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -425,7 +424,6 @@ int DOS4GWBinaryFile::readNative1(ADDRESS nat)
 	return *host;
 }
 
-// Read 2 bytes from given native address
 int DOS4GWBinaryFile::readNative2(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -435,7 +433,6 @@ int DOS4GWBinaryFile::readNative2(ADDRESS nat)
 	return n;
 }
 
-// Read 4 bytes from given native address
 int DOS4GWBinaryFile::readNative4(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -445,7 +442,6 @@ int DOS4GWBinaryFile::readNative4(ADDRESS nat)
 	return n;
 }
 
-// Read 8 bytes from given native address
 QWord DOS4GWBinaryFile::readNative8(ADDRESS nat)
 {
 	int raw[2];
@@ -461,7 +457,6 @@ QWord DOS4GWBinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-// Read 4 bytes as a float
 float DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -469,7 +464,6 @@ float DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) {
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-// Read 8 bytes as a float
 double DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat)
 {
 	int raw[2];
@@ -518,6 +512,7 @@ std::list<const char *> DOS4GWBinaryFile::getDependencyList()
 	return std::list<const char *>(); /* FIXME */
 }
 
+#if 0 // Cruft?
 DWord DOS4GWBinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
@@ -525,6 +520,7 @@ DWord DOS4GWBinaryFile::getDelta()
 	//return (DWord)base - LMMH(m_pPEHeader->Imagebase);
 	return (DWord)base - (DWord)m_pLXObjects[0].RelocBaseAddr;
 }
+#endif
 
 #ifdef DYNAMIC
 /**
@@ -539,6 +535,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (DOS4GWBinaryFile *)bf;
 }
 #endif

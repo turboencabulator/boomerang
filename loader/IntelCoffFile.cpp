@@ -1,5 +1,6 @@
 /**
  * \file
+ * \brief Contains the implementation of the class IntelCoffFile.
  *
  * \copyright
  * See the file "LICENSE.TERMS" for information on usage and redistribution of
@@ -16,7 +17,10 @@
 #include <cstdlib>
 #include <cstring>
 
-struct PACKED struc_coff_sect {  // segment information, 40 bytes
+/**
+ * Segment information, 40 bytes
+ */
+struct PACKED struc_coff_sect {
 	char     sch_sectname[8];
 	uint32_t sch_physaddr;
 	uint32_t sch_virtaddr;
@@ -29,7 +33,10 @@ struct PACKED struc_coff_sect {  // segment information, 40 bytes
 	uint32_t sch_flags;
 };
 
-struct PACKED coff_symbol {  // symbol information, 18 bytes
+/**
+ * Symbol information, 18 bytes
+ */
+struct PACKED coff_symbol {
 	union {
 		struct {
 			uint32_t zeros;
@@ -61,18 +68,6 @@ struct PACKED struct_coff_rel {
 };
 
 
-SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
-{
-	int idxSect = m_iNumSections++;
-	SectionInfo *ps = new SectionInfo[m_iNumSections];
-	for (int i = 0; i < idxSect; i++)
-		ps[i] = m_pSections[i];
-	ps[idxSect] = *psi;
-	delete[] m_pSections;
-	m_pSections = ps;
-	return ps + idxSect;
-}
-
 IntelCoffFile::IntelCoffFile() :
 	BinaryFile(false),
 	m_pFilename(NULL),
@@ -83,6 +78,18 @@ IntelCoffFile::IntelCoffFile() :
 IntelCoffFile::~IntelCoffFile()
 {
 	if (m_fd) fclose(m_fd);
+}
+
+SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
+{
+	int idxSect = m_iNumSections++;
+	SectionInfo *ps = new SectionInfo[m_iNumSections];
+	for (int i = 0; i < idxSect; i++)
+		ps[i] = m_pSections[i];
+	ps[idxSect] = *psi;
+	delete[] m_pSections;
+	m_pSections = ps;
+	return ps + idxSect;
 }
 
 bool IntelCoffFile::RealLoad(const char *sName)
@@ -303,12 +310,14 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	return true;
 }
 
+#if 0 // Cruft?
 bool IntelCoffFile::PostLoad(void *)
 {
 	// There seems to be no need to implement this since one file is loaded ever.
 	printf("IntelCoffFile::PostLoad called\n");
 	return false;
 }
+#endif
 
 bool IntelCoffFile::isLibrary() const
 {
@@ -462,6 +471,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (IntelCoffFile *)bf;
 }
 #endif

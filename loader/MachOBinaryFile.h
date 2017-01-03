@@ -1,12 +1,7 @@
 /**
  * \file
- * \brief Contains the definition of the class MachOBinaryFile.
- *
- * This file contains the definition of the MachOBinaryFile class, and some
- * other definitions specific to the Mac OS-X version of the BinaryFile
- * object.
- *
- * This is my bare bones implementation of a Mac OS-X binary loader.
+ * \brief Contains the definition of the class MachOBinaryFile, and some other
+ * definitions specific to the Mac OS-X version of the BinaryFile object.
  *
  * \authors
  * Copyright (C) 2000, The University of Queensland
@@ -31,6 +26,12 @@ typedef unsigned long vm_prot_t;        // I guessed
 
 struct mach_header;
 
+
+/**
+ * \brief Loader for Mach-O executable files.
+ *
+ * This is my bare bones implementation of a Mac OS-X binary loader.
+ */
 class MachOBinaryFile : public BinaryFile {
 public:
 	                    MachOBinaryFile();
@@ -39,33 +40,15 @@ public:
 	virtual LOADFMT     getFormat() const { return LOADFMT_MACHO; }
 	virtual MACHINE     getMachine() const { return machine; }
 	virtual const char *getFilename() const { return m_pFilename; }
+	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
-	virtual std::list<const char *> getDependencyList();
 	virtual ADDRESS     getImageBase();
 	virtual size_t      getImageSize();
 
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
-	        DWord       getDelta();
-
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);  // Get sym from addr
-	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);  // Find addr given name
-	virtual void        addSymbol(ADDRESS uNative, const char *pName);
-
-//
-//      --      --      --      --      --      --      --      --      --
-//
-
-	// Internal information
-	// Dump headers, etc
-	virtual bool        DisplayDetails(const char *fileName, FILE *f = stdout);
-
-protected:
-	        int         machORead2(short *ps) const;  // Read 2 bytes from native addr
-	        int         machORead4(int *pi) const;    // Read 4 bytes from native addr
-
+private:
+	        int         machORead2(short *ps) const;
+	        int         machORead4(int *pi) const;
 	        //void          *BMMH(void *x);
 	        char          *BMMH(char *x);
 	        const char    *BMMH(const char *x);
@@ -75,30 +58,44 @@ protected:
 	          signed int   BMMH(signed int x);
 	        unsigned int   BMMH(unsigned int x);
 	        unsigned short BMMHW(unsigned short x);
-
 public:
-	virtual int         readNative1(ADDRESS a);       // Read 1 bytes from native addr
-	virtual int         readNative2(ADDRESS a);       // Read 2 bytes from native addr
-	virtual int         readNative4(ADDRESS a);       // Read 4 bytes from native addr
-	virtual QWord       readNative8(ADDRESS a);       // Read 8 bytes from native addr
-	virtual float       readNativeFloat4(ADDRESS a);  // Read 4 bytes as float
-	virtual double      readNativeFloat8(ADDRESS a);  // Read 8 bytes as float
+	virtual int         readNative1(ADDRESS a);
+	virtual int         readNative2(ADDRESS a);
+	virtual int         readNative4(ADDRESS a);
+	virtual QWord       readNative8(ADDRESS a);
+	virtual float       readNativeFloat4(ADDRESS a);
+	virtual double      readNativeFloat8(ADDRESS a);
 
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative) { return dlprocs.find(uNative) != dlprocs.end(); }
-	virtual const char *getDynamicProcName(ADDRESS uNative);
-
+	/**
+	 * \name Symbol table functions
+	 * \{
+	 */
+	virtual void        addSymbol(ADDRESS uNative, const char *pName);
+	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
+	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);
 	virtual std::map<ADDRESS, std::string> &getSymbols() { return m_SymA; }
 	virtual std::map<std::string, ObjcModule> &getObjcModules() { return modules; }
+	/** \} */
+
+	/**
+	 * \name Analysis functions
+	 * \{
+	 */
+	virtual bool        isDynamicLinkedProc(ADDRESS uNative) { return dlprocs.find(uNative) != dlprocs.end(); }
+	virtual const char *getDynamicProcName(ADDRESS uNative);
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
+	virtual ADDRESS     getMainEntryPoint();
+	virtual ADDRESS     getEntryPoint();
+	//        DWord       getDelta();
+	/** \} */
 
 protected:
-	virtual bool        RealLoad(const char *sName); // Load the file; pure virtual
+	virtual bool        RealLoad(const char *sName);
+	//virtual bool        PostLoad(void *handle);
 
 private:
-	virtual bool        PostLoad(void *handle);  // Called after archive member loaded
-	        void        findJumps(ADDRESS curr);  // Find names for jumps to IATs
-
-	        struct mach_header *header;      // The Mach-O header
-	        char       *base;                // Beginning of the loaded image
+	        struct mach_header *header;      ///< The Mach-O header
+	        char       *base;                ///< Beginning of the loaded image
 	        const char *m_pFilename;
 	        ADDRESS     entrypoint, loaded_addr;
 	        unsigned    loaded_size;

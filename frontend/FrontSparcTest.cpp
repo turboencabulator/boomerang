@@ -29,9 +29,9 @@
 #define BRANCH_SPARC    "test/sparc/branch"
 
 /**
- * Test decoding some SPARC instructions.
+ * \name Test decoding some SPARC instructions.
+ * \{
  */
-/// \{
 void FrontSparcTest::test1()
 {
 	std::ostringstream ost;
@@ -198,7 +198,7 @@ void FrontSparcTest::test3()
 
 	delete prog;
 }
-/// \}
+/** \} */
 
 void FrontSparcTest::testBranch()
 {

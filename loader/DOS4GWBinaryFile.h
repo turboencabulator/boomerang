@@ -1,15 +1,7 @@
 /**
  * \file
- * \brief Contains the definition of the class DOS4GWBinaryFile.
- *
- * This file contains the definition of the DOS4GWBinaryFile class, and some
+ * \brief Contains the definition of the class DOS4GWBinaryFile, and some
  * other definitions specific to the exe version of the BinaryFile object.
- *
- * At present, this loader supports the OS2 file format (also known as the
- * Linear eXecutable format) as much as I've found necessary to inspect old
- * DOS4GW apps.  This loader could also be used for decompiling Win9x VxD
- * files or, of course, OS2 binaries, but you're probably better off making a
- * specific loader for each of these.
  *
  * \authors
  * Copyright (C) 2000, The University of Queensland
@@ -113,6 +105,16 @@ typedef struct PACKED {
 	//unsigned short trgoff;
 } LXFixup;
 
+
+/**
+ * \brief Loader for OS2 LX (DOS4GW) executable files.
+ *
+ * At present, this loader supports the OS2 file format (also known as the
+ * Linear eXecutable format) as much as I've found necessary to inspect old
+ * DOS4GW apps.  This loader could also be used for decompiling Win9x VxD
+ * files or, of course, OS2 binaries, but you're probably better off making a
+ * specific loader for each of these.
+ */
 class DOS4GWBinaryFile : public BinaryFile {
 public:
 	                    DOS4GWBinaryFile();
@@ -121,62 +123,61 @@ public:
 	virtual LOADFMT     getFormat() const { return LOADFMT_LX; }
 	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
 	virtual const char *getFilename() const { return m_pFilename; }
+	virtual std::list<const char *> getDependencyList();
 
 	virtual bool        isLibrary() const;
-	virtual std::list<const char *> getDependencyList();
 	virtual ADDRESS     getImageBase();
 	virtual size_t      getImageSize();
 
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
-	        DWord       getDelta();
-
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);  // Get sym from addr
-	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);  // Find addr given name
-	virtual void        addSymbol(ADDRESS uNative, const char *pName);
-
-//
-//      --      --      --      --      --      --      --      --      --
-//
-
-	// Internal information
-	// Dump headers, etc
-	virtual bool        DisplayDetails(const char *fileName, FILE *f = stdout);
-
-protected:
-	        int         dos4gwRead2(short *ps) const;  // Read 2 bytes from native addr
-	        int         dos4gwRead4(int *pi) const;    // Read 4 bytes from native addr
-
+private:
+	        int         dos4gwRead2(short *ps) const;
+	        int         dos4gwRead4(int *pi) const;
 public:
-	virtual int         readNative1(ADDRESS a);       // Read 1 bytes from native addr
-	virtual int         readNative2(ADDRESS a);       // Read 2 bytes from native addr
-	virtual int         readNative4(ADDRESS a);       // Read 4 bytes from native addr
-	virtual QWord       readNative8(ADDRESS a);       // Read 8 bytes from native addr
-	virtual float       readNativeFloat4(ADDRESS a);  // Read 4 bytes as float
-	virtual double      readNativeFloat8(ADDRESS a);  // Read 8 bytes as float
+	virtual int         readNative1(ADDRESS a);
+	virtual int         readNative2(ADDRESS a);
+	virtual int         readNative4(ADDRESS a);
+	virtual QWord       readNative8(ADDRESS a);
+	virtual float       readNativeFloat4(ADDRESS a);
+	virtual double      readNativeFloat8(ADDRESS a);
 
+	/**
+	 * \name Symbol table functions
+	 * \{
+	 */
+	virtual void        addSymbol(ADDRESS uNative, const char *pName);
+	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
+	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);
+	virtual std::map<ADDRESS, std::string> &getSymbols() { return dlprocptrs; }
+	/** \} */
+
+	/**
+	 * \name Analysis functions
+	 * \{
+	 */
 	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
 	virtual const char *getDynamicProcName(ADDRESS uNative);
-
-	virtual std::map<ADDRESS, std::string> &getSymbols() { return dlprocptrs; }
+	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
+	virtual ADDRESS     getMainEntryPoint();
+	virtual ADDRESS     getEntryPoint();
+	//        DWord       getDelta();
+	/** \} */
 
 protected:
-	virtual bool        RealLoad(const char *sName);  // Load the file; pure virtual
+	virtual bool        RealLoad(const char *sName);
+	//virtual bool        PostLoad(void *handle);
 
 private:
-	virtual bool        PostLoad(void *handle);  // Called after archive member loaded
+	        //Header     *m_pHeader;      ///< Pointer to header.
+	        LXHeader   *m_pLXHeader;    ///< Pointer to lx header.
+	        LXObject   *m_pLXObjects;   ///< Pointer to lx objects.
+	        LXPage     *m_pLXPages;     ///< Pointer to lx pages.
+	        int         m_cbImage;      ///< Size of image.
+	        //int         m_cReloc;       ///< Number of relocation entries.
+	        //DWord      *m_pRelocTable;  ///< The relocation table.
+	        char       *base;           ///< Beginning of the loaded image.
 
-	        //Header     *m_pHeader;      // Pointer to header
-	        LXHeader   *m_pLXHeader;    // Pointer to lx header
-	        LXObject   *m_pLXObjects;   // Pointer to lx objects
-	        LXPage     *m_pLXPages;     // Pointer to lx pages
-	        int         m_cbImage;      // Size of image
-	        //int         m_cReloc;       // Number of relocation entries
-	        //DWord      *m_pRelocTable;  // The relocation table
-	        char       *base;           // Beginning of the loaded image
-	// Map from address of dynamic pointers to library procedure names:
+	/// Map from address of dynamic pointers to library procedure names.
 	        std::map<ADDRESS, std::string> dlprocptrs;
 	        const char *m_pFilename;
 };

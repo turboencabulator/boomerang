@@ -2,9 +2,6 @@
  * \file
  * \brief Contains the implementation of the class Win32BinaryFile.
  *
- * This file implements the class Win32BinaryFile, derived from class
- * BinaryFile.  See Win32BinaryFile.h and BinaryFile.h for details.
- *
  * \authors
  * Copyright (C) 2000, The University of Queensland
  * \authors
@@ -44,19 +41,25 @@ extern "C" int microX86Dis(void *p);  // From microX86dis.c
 
 namespace {
 
-// Due to the current rigid design, where BinaryFile holds a C-style array of
-// SectionInfo's, we can't extend a subclass of SectionInfo with the data required
-// to express the semantics of a PE section. We therefore need this external mapping
-// from SectionInfo's to PEObject's, that contain the info we need.
-// TODO: Refactor BinaryFile to not expose its private parts in public. Design both
-// a protected (for subclasses) and public (for users) interface.
+/**
+ * Due to the current rigid design, where BinaryFile holds a C-style array of
+ * SectionInfo's, we can't extend a subclass of SectionInfo with the data
+ * required to express the semantics of a PE section. We therefore need this
+ * external mapping from SectionInfo's to PEObject's, that contain the info we
+ * need.
+ *
+ * \todo Refactor BinaryFile to not expose its private parts in public. Design
+ * both a protected (for subclasses) and public (for users) interface.
+ */
 typedef std::map<const class PESectionInfo *, const PEObject *> SectionObjectMap;
 
 SectionObjectMap s_sectionObjects;
 
 
-// Note that PESectionInfo currently must be the exact same size as
-// SectionInfo due to the already mentioned array held by BinaryFile.
+/**
+ * Note that PESectionInfo currently must be the exact same size as
+ * SectionInfo due to the already mentioned array held by BinaryFile.
+ */
 class PESectionInfo : public SectionInfo {
 	virtual bool isAddressBss(ADDRESS a) const
 	{
@@ -122,9 +125,14 @@ ADDRESS Win32BinaryFile::getEntryPoint()
 	               + LMMH(m_pPEHeader->Imagebase));
 }
 
-// This is a bit of a hack, but no more than the rest of Windows :-O  The pattern is to look for an indirect call (FF 15
-// opcode) to exit; within 10 instructions before that should be the call to WinMain (with no other calls inbetween).
-// This pattern should work for "old style" and "new style" PE executables, as well as console mode PE files.
+/**
+ * This is a bit of a hack, but no more than the rest of Windows :-O
+ *
+ * The pattern is to look for an indirect call (FF 15 opcode) to exit; within
+ * 10 instructions before that should be the call to WinMain (with no other
+ * calls inbetween).  This pattern should work for "old style" and "new style"
+ * PE executables, as well as console mode PE files.
+ */
 ADDRESS Win32BinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = getAddressByName("main", true);
@@ -506,13 +514,23 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
-// Used above for a hack to find jump instructions pointing to IATs.
-// Heuristic: start just before the "start" entry point looking for FF 25 opcodes followed by a pointer to an import
-// entry.  E.g. FF 25 58 44 40 00  where 00404458 is the IAT for _ftol.
-// Note: some are on 0x10 byte boundaries, some on 2 byte boundaries (6 byte jumps packed), and there are often up to
-// 0x30 bytes of statically linked library code (e.g. _atexit, __onexit) with sometimes two static libs in a row.
-// So keep going until there is about 0x60 bytes with no match.
-// Note: slight chance of coming across a misaligned match; probability is about 1/65536 times dozens in 2^32 ~= 10^-13
+/**
+ * \brief Find names for jumps to IATs.
+ *
+ * Used above for a hack to find jump instructions pointing to IATs.
+ *
+ * Heuristic: start just before the "start" entry point looking for FF 25
+ * opcodes followed by a pointer to an import entry.  E.g. FF 25 58 44 40 00
+ * where 00404458 is the IAT for _ftol.
+ *
+ * \note Some are on 0x10 byte boundaries, some on 2 byte boundaries (6 byte
+ * jumps packed), and there are often up to 0x30 bytes of statically linked
+ * library code (e.g. _atexit, __onexit) with sometimes two static libs in a
+ * row.  So keep going until there is about 0x60 bytes with no match.
+ *
+ * \note Slight chance of coming across a misaligned match; probability is
+ * about 1/65536 times dozens in 2^32 ~= 10^-13.
+ */
 void Win32BinaryFile::findJumps(ADDRESS curr)
 {
 	int cnt = 0;  // Count of bytes with no match
@@ -538,10 +556,12 @@ void Win32BinaryFile::findJumps(ADDRESS curr)
 	}
 }
 
+#if 0 // Cruft?
 bool Win32BinaryFile::PostLoad(void *handle)
 {
 	return false;
 }
+#endif
 
 const char *Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
@@ -584,11 +604,9 @@ void Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 	dlprocptrs[uNative] = pName;
 }
 
-bool Win32BinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
-{
-	return false;
-}
-
+/**
+ * \brief Read 2 bytes from native addr.
+ */
 int Win32BinaryFile::win32Read2(short *ps) const
 {
 	unsigned char *p = (unsigned char *)ps;
@@ -597,6 +615,9 @@ int Win32BinaryFile::win32Read2(short *ps) const
 	return n;
 }
 
+/**
+ * \brief Read 4 bytes from native addr.
+ */
 int Win32BinaryFile::win32Read4(int *pi) const
 {
 	short *p = (short *)pi;
@@ -606,7 +627,6 @@ int Win32BinaryFile::win32Read4(int *pi) const
 	return n;
 }
 
-// Read 2 bytes from given native address
 int Win32BinaryFile::readNative1(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -616,7 +636,6 @@ int Win32BinaryFile::readNative1(ADDRESS nat)
 	return *(char *)host;
 }
 
-// Read 2 bytes from given native address
 int Win32BinaryFile::readNative2(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -626,7 +645,6 @@ int Win32BinaryFile::readNative2(ADDRESS nat)
 	return n;
 }
 
-// Read 4 bytes from given native address
 int Win32BinaryFile::readNative4(ADDRESS nat)
 {
 	SectionInfo *si = getSectionInfoByAddr(nat);
@@ -636,7 +654,6 @@ int Win32BinaryFile::readNative4(ADDRESS nat)
 	return n;
 }
 
-// Read 8 bytes from given native address
 QWord Win32BinaryFile::readNative8(ADDRESS nat)
 {
 	int raw[2];
@@ -652,7 +669,6 @@ QWord Win32BinaryFile::readNative8(ADDRESS nat)
 	return *(QWord *)raw;
 }
 
-// Read 4 bytes as a float
 float Win32BinaryFile::readNativeFloat4(ADDRESS nat) {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -660,7 +676,6 @@ float Win32BinaryFile::readNativeFloat4(ADDRESS nat) {
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-// Read 8 bytes as a float
 double Win32BinaryFile::readNativeFloat8(ADDRESS nat) {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -851,6 +866,7 @@ std::list<const char *> Win32BinaryFile::getDependencyList()
 	return std::list<const char *>(); /* FIXME */
 }
 
+#if 0 // Cruft?
 DWord Win32BinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
@@ -858,7 +874,11 @@ DWord Win32BinaryFile::getDelta()
 	//return (DWord)base - LMMH(m_pPEHeader->Imagebase);
 	return (DWord)base - (DWord)m_pPEHeader->Imagebase;
 }
+#endif
 
+/**
+ * \brief For debugging.
+ */
 void Win32BinaryFile::dumpSymbols()
 {
 	std::map<ADDRESS, std::string>::iterator it;
@@ -881,6 +901,6 @@ extern "C" BinaryFile *construct()
 }
 extern "C" void destruct(BinaryFile *bf)
 {
-	delete bf;
+	delete (Win32BinaryFile *)bf;
 }
 #endif

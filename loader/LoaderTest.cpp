@@ -491,9 +491,9 @@ static char pent_hello_text[] = {
 };
 
 /**
- * Test the micro disassembler.
+ * \name Test the micro disassembler.
+ * \{
  */
-/// \{
 void LoaderTest::testMicroDis1()
 {
 	std::ostringstream ost;
@@ -542,7 +542,7 @@ void LoaderTest::testMicroDis2()
 	size = microX86Dis(movswl);
 	CPPUNIT_ASSERT_EQUAL(3, size);
 }
-/// \}
+/** \} */
 
 typedef unsigned (*elfHashFcn)(const char *);
 extern "C" unsigned elf_hash(const char *);
