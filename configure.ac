@@ -6,14 +6,15 @@ AC_INIT([Boomerang],[0.3.1])
 AC_CONFIG_SRCDIR([boomerang.cpp])
 AC_CONFIG_HEADERS([include/config.h])
 AM_INIT_AUTOMAKE([foreign])
+AM_SILENT_RULES([yes])
 LT_INIT([dlopen disable-static])
 
 AC_ARG_ENABLE([modules],
 	[AS_HELP_STRING(
-		[--disable-modules],
-		[disable loadable modules, create a monolithic executable])],
+		[--enable-modules],
+		[enable loadable modules for the loader and frontend])],
 	[],
-	[AS_VAR_SET([enable_modules], [yes])])
+	[AS_VAR_SET([enable_modules], [no])])
 
 AC_ARG_ENABLE([gui],
 	[AS_HELP_STRING(
@@ -24,17 +25,17 @@ AC_ARG_ENABLE([gui],
 
 AC_ARG_WITH([expat],
 	[AS_HELP_STRING(
-		[--without-expat],
-		[disable XML loading and saving])],
+		[--with-expat],
+		[enable XML loading and saving])],
 	[],
-	[AS_VAR_SET([with_expat], [yes])])
+	[AS_VAR_SET([with_expat], [no])])
 
 AC_ARG_WITH([gc],
 	[AS_HELP_STRING(
-		[--without-gc],
-		[disable the garbage collector])],
+		[--with-gc],
+		[enable the garbage collector])],
 	[],
-	[AS_VAR_SET([with_gc], [yes])])
+	[AS_VAR_SET([with_gc], [no])])
 
 # Checks for programs.
 AC_PROG_CXX
