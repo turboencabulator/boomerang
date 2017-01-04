@@ -395,19 +395,6 @@ ADDRESS HpSomBinaryFile::getEntryPoint()
 	return 0;
 }
 
-/**
- * This is provided for completeness only...
- */
-std::list<SectionInfo *> &HpSomBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
-{
-	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
-	SectionInfo *pSect = getSectionInfoByName("code1");
-	if (pSect == 0)
-		return *ret;  // Failed
-	ret->push_back(pSect);
-	return *ret;
-}
-
 #if 0 // Cruft?
 bool HpSomBinaryFile::PostLoad(void *handle)
 {

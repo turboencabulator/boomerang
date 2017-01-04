@@ -181,7 +181,6 @@ public:
 	virtual bool        isStaticLinkedLibProc(ADDRESS uNative);
 	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
 	virtual const char *getDynamicProcName(ADDRESS uNative);
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 	//        DWord       getDelta();

@@ -234,21 +234,6 @@ ADDRESS ExeBinaryFile::getEntryPoint()
 	return (ADDRESS)((LH(&m_pHeader->initCS) << 4) + LH(&m_pHeader->initIP));
 }
 
-/**
- * This is provided for completeness only...
- */
-std::list<SectionInfo *> &ExeBinaryFile::getEntryPoints(const char *pEntry /* = "main"*/)
-{
-	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
-#if 0  // Copied from PalmBinaryFile.cc
-	SectionInfo *pSect = getSectionInfoByName("code1");
-	if (pSect == 0)
-		return *ret;  // Failed
-	ret->push_back(pSect);
-#endif
-	return *ret;
-}
-
 #ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile

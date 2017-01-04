@@ -277,11 +277,6 @@ public:
 	virtual const char *getDynamicProcName(ADDRESS uNative);
 
 	/**
-	 * Returns a list of pointers to SectionInfo structs representing
-	 * entry points to the program.
-	 */
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main") = 0;
-	/**
 	 * Returns the entry point to main.
 	 */
 	virtual ADDRESS     getMainEntryPoint() = 0;

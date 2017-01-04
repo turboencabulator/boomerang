@@ -232,7 +232,6 @@ public:
 	 * \{
 	 */
 	virtual bool        isDynamicLinkedProc(ADDRESS wNative);
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 	/** \} */
@@ -296,7 +295,6 @@ private:
 	        int         m_iLastSize;                ///< Size associated with that name.
 	        ADDRESS     m_uPltMin;                  ///< Min address of PLT table.
 	        ADDRESS     m_uPltMax;                  ///< Max address (1 past last) of PLT.
-	        std::list<SectionInfo *> m_EntryPoint;  ///< A list of one entry point.
 	        ADDRESS    *m_pImportStubs;             ///< An array of import stubs.
 	        ADDRESS     m_uBaseAddr;                ///< Base image virtual address.
 	        size_t      m_uImageSize;               ///< Total image size (bytes).

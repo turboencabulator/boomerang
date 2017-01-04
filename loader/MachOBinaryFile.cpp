@@ -28,7 +28,6 @@
 #include "objc/objc-runtime.h"
 
 #include <cassert>
-#include <cstdlib>
 #include <cstring>
 
 //#define DEBUG_MACHO_LOADER
@@ -49,14 +48,6 @@ MachOBinaryFile::~MachOBinaryFile()
 	delete [] m_pSections;
 	delete    header;
 	delete [] base;
-}
-
-std::list<SectionInfo *> &MachOBinaryFile::getEntryPoints(const char *pEntry)
-{
-	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
-	exit(0);
-	static std::list<SectionInfo *> l;
-	return l;
 }
 
 ADDRESS MachOBinaryFile::getEntryPoint()

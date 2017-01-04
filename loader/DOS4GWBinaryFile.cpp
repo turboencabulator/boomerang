@@ -21,7 +21,6 @@
 #include "DOS4GWBinaryFile.h"
 
 #include <cassert>
-#include <cstdlib>
 
 extern "C" int microX86Dis(void *p);  // From microX86dis.c
 
@@ -42,14 +41,6 @@ DOS4GWBinaryFile::~DOS4GWBinaryFile()
 	delete [] m_pLXObjects;
 	delete [] m_pLXPages;
 	delete [] base;
-}
-
-std::list<SectionInfo *> &DOS4GWBinaryFile::getEntryPoints(const char *pEntry)
-{
-	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
-	exit(0);
-	static std::list<SectionInfo *> l;
-	return l;
 }
 
 ADDRESS DOS4GWBinaryFile::getEntryPoint()

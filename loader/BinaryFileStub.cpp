@@ -262,11 +262,6 @@ size_t BinaryFileStub::getImageSize() const
 	return 0;
 }
 
-std::list<SectionInfo *> &BinaryFileStub::getEntryPoints(const char *pEntry)
-{
-	return *new std::list<SectionInfo *>;
-}
-
 ADDRESS BinaryFileStub::getMainEntryPoint()
 {
 	return 0x8048918;

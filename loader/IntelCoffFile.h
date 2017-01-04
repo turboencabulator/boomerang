@@ -72,7 +72,6 @@ public:
 	 * \{
 	 */
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 	/** \} */
@@ -83,7 +82,7 @@ protected:
 
 private:
 	FILE *m_fd;
-	std::list<SectionInfo *> m_EntryPoints;
+	std::list<ADDRESS> m_EntryPoints;
 	std::list<ADDRESS> m_Relocations;
 	struct coff_header m_Header;
 

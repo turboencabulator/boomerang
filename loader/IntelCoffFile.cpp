@@ -216,14 +216,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 				if (strcmp(name, ".strip."))
 					m_Symbols.Add(pSymbols[iSym].csym_value, name);
 				if (pSymbols[iSym].csym_type & 0x20 && psi->bCode) {
-					SectionInfo *si = new SectionInfo();
-					*si = *psi;
-					si->uNativeAddr = pSymbols[iSym].csym_value;
-					si->uHostAddr = psi->uHostAddr + psh[pSymbols[iSym].csym_sectnum - 1].sch_virtaddr;
-					//si->uSectionSize -= pSymbols[iSym].csym_value - psi->uNativeAddr;
-					//si->uSectionSize = 1;
-					si->uSectionSize = 0x10000;
-					m_EntryPoints.push_back(si);
+					m_EntryPoints.push_back(pSymbols[iSym].csym_value);
 					//printf("Made '%s' an entry point.\n", name);
 				}
 			} else {
@@ -353,21 +346,8 @@ ADDRESS IntelCoffFile::getEntryPoint()
 		return NO_ADDRESS;
 
 	printf("IntelCoffFile::getEntryPoint atleast one entry point exists\n");
-	std::list<SectionInfo *>::iterator it = m_EntryPoints.begin();
-	if (!*it)
-		return NO_ADDRESS;
-
-	printf("IntelCoffFile::getEntryPoint returning %08x\n", (*it)->uNativeAddr);
-	return (*it)->uNativeAddr;
-}
-
-std::list<SectionInfo *> &IntelCoffFile::getEntryPoints(const char *pEntry)
-{
-	//unused(pEntry);
-	printf("IntelCoffFile::getEntryPoints called\n");
-	// TODO: Provide a list of all code exported public. We can return the list already
-	//       but it needs to be filled while loading!
-	return m_EntryPoints;
+	printf("IntelCoffFile::getEntryPoint returning %08x\n", m_EntryPoints.front());
+	return m_EntryPoints.front();
 }
 
 std::list<const char *> IntelCoffFile::getDependencyList()

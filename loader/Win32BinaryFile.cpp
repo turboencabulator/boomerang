@@ -24,7 +24,6 @@
 #include <sstream>
 
 #include <cassert>
-#include <cstdlib>
 #include <cstring>
 
 extern "C" int microX86Dis(void *p);  // From microX86dis.c
@@ -108,14 +107,6 @@ Win32BinaryFile::~Win32BinaryFile()
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] base;
-}
-
-std::list<SectionInfo *> &Win32BinaryFile::getEntryPoints(const char *pEntry)
-{
-	fprintf(stderr, "really don't know how to implement getEntryPoints\n");
-	exit(0);
-	static std::list<SectionInfo *> l;
-	return l;
 }
 
 ADDRESS Win32BinaryFile::getEntryPoint()

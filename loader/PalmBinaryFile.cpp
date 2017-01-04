@@ -265,19 +265,6 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	return true;
 }
 
-/**
- * This is provided for completeness only...
- */
-std::list<SectionInfo *> &PalmBinaryFile::getEntryPoints(const char *pEntry /* = "main" */)
-{
-	std::list<SectionInfo *> *ret = new std::list<SectionInfo *>;
-	SectionInfo *pSect = getSectionInfoByName("code1");
-	if (pSect == 0)
-		return *ret;  // Failed
-	ret->push_back(pSect);
-	return *ret;
-}
-
 ADDRESS PalmBinaryFile::getEntryPoint()
 {
 	assert(0); /* FIXME: Need to be implemented */

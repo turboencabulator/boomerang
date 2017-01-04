@@ -82,7 +82,6 @@ public:
 	 */
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative) { return dlprocs.find(uNative) != dlprocs.end(); }
 	virtual const char *getDynamicProcName(ADDRESS uNative);
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 	//        DWord       getDelta();

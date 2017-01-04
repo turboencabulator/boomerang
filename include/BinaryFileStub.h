@@ -26,7 +26,6 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual std::list<SectionInfo *> &getEntryPoints(const char *pEntry = "main");
 	virtual ADDRESS     getMainEntryPoint();
 	virtual ADDRESS     getEntryPoint();
 	/** \} */
