@@ -63,8 +63,3 @@ CLEANFILES = \
 	moc_* \
 	ui_* \
 	qrc_*
-
-EXTRA_DIST = \
-	qtgui2-mingw.pro \
-	qtgui2-unx.pro \
-	qtgui2.pro
