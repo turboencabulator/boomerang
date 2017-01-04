@@ -243,19 +243,6 @@ const char *BinaryFile::getDynamicProcName(ADDRESS uNative)
 	return "dynamic";
 }
 
-/**
- * \brief Dump headers, etc.
- *
- * Should always be overridden.
- *
- * Should display file header, program headers and section headers, as well as
- * contents of each of the sections.
- */
-bool BinaryFile::DisplayDetails(const char *fileName, FILE *f /* = stdout */)
-{
-	return false;
-}
-
 #if 0 // Cruft?
 /**
  * Specific to BinaryFile objects that implement a "global pointer".  Gets a

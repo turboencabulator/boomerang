@@ -294,8 +294,6 @@ public:
 
 	//virtual bool        hasDebugInfo() { return false; }
 
-	virtual bool        DisplayDetails(const char *fileName, FILE *f = stdout);
-
 protected:
 	/**
 	 * \brief Load the file.

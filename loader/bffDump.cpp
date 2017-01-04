@@ -50,33 +50,13 @@ int main(int argc, char *argv[])
 
 	// Load the file
 	BinaryFile *bf = BinaryFile::open(argv[1]);
-
 	if (bf == NULL) {
 		return 2;
 	}
 
-	// Display program and section information
-	// If the DisplayDetails() function has not been implemented
-	// in the derived class (ElfBinaryFile in this case), then
-	// uncomment the commented code below to display section information.
-
-	bf->DisplayDetails(argv[0]);
-
-	// This is an alternative way of displaying binary-file information
-	// by using individual sections.  The above approach is more general.
-	/*
-	printf("%d sections:\n", bf->getNumSections());
-	for (int i = 0; i < bf->getNumSections(); ++i) {
-		SectionInfo *pSect = bf->getSectionInfo(i);
-		printf("  Section %s at %X\n", pSect->pSectionName, pSect->uNativeAddr);
-	}
-	printf("\n");
-	*/
-
-	// Display the code section in raw hexadecimal notation
+	// Display the code section(s) in raw hexadecimal notation.
 	// Note: this is traditionally the ".text" section in Elf binaries.
 	// In the case of Prc files (Palm), the code section is named "code0".
-
 	for (int i = 0; i < bf->getNumSections(); ++i) {
 		SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bCode) {
@@ -86,8 +66,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	// Display the data section(s) in raw hexadecimal notation
-
+	// Display the data section(s) in raw hexadecimal notation.
 	for (int i = 0; i < bf->getNumSections(); ++i) {
 		SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bData) {
