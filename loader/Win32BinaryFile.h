@@ -186,8 +186,6 @@ public:
 	//        DWord       getDelta();
 	/** \} */
 
-	//virtual bool        hasDebugInfo() { return haveDebugInfo; }
-
 protected:
 	virtual bool        RealLoad(const char *sName);
 	//virtual bool        PostLoad(void *handle);
@@ -208,7 +206,6 @@ private:
 	        DWord      *m_pRelocTable;  ///< The relocation table.
 	        char       *base;           ///< Beginning of the loaded image.
 	        std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.
-	//        bool        haveDebugInfo;
 	        bool        mingw_main;
 };
 

@@ -287,8 +287,6 @@ public:
 	virtual ADDRESS     getEntryPoint() = 0;
 	/** \} */
 
-	//virtual bool        hasDebugInfo() { return false; }
-
 protected:
 	/**
 	 * \brief Load the file.

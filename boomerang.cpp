@@ -175,8 +175,6 @@ void Boomerang::help()
 		"  -SD              : Save before decompile\n"
 #endif
 		"  -a               : Assume ABI compliance\n"
-		"  -W               : Windows specific decompilation mode\n"
-		"                     (requires pdb information)\n"
 		//"  -pa              : only propagate if can propagate to all\n"
 		"\n"
 		"Output\n"
