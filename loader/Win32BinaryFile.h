@@ -204,7 +204,7 @@ private:
 	        int         m_cbImage;      ///< Size of image.
 	        int         m_cReloc;       ///< Number of relocation entries.
 	        DWord      *m_pRelocTable;  ///< The relocation table.
-	        char       *base;           ///< Beginning of the loaded image.
+	        unsigned char *base;        ///< Beginning of the loaded image.
 	        std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.
 	        bool        mingw_main;
 };

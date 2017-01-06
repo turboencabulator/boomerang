@@ -10,11 +10,13 @@
 #include <config.h>
 #endif
 
+#include <stddef.h>
+
 #define MODRM  0x10
 #define OPSIZE 0x20
 #define NH     0x40
 
-static unsigned char opmap[256] = {
+static const unsigned char opmap[256] = {
 	/* 00-07 */
 	MODRM+1, MODRM+1, MODRM+1, MODRM+1, 2, OPSIZE+1, 1, 1,
 	/* 08-0F */
@@ -76,7 +78,7 @@ static unsigned char opmap[256] = {
 };
 
 /* Secondary map for when first opcode is 0F */
-static unsigned char op0Fmap[256] = {
+static const unsigned char op0Fmap[256] = {
 	/* 00-07 */
 	MODRM+1, MODRM+1, MODRM+1, MODRM+1, NH, NH, 2, NH,
 	/* 08-0F */
@@ -137,9 +139,9 @@ static unsigned char op0Fmap[256] = {
  *
  * Note that the function could return Not Handled (NH, 0x40).
  */
-int microX86Dis(unsigned char *pCode) {
-	int opsize = 4;             /* Operand size override will change to 2 */
-	int size = 0;
+size_t microX86Dis(const unsigned char *pCode) {
+	size_t opsize = 4;          /* Operand size override will change to 2 */
+	size_t size = 0;
 	unsigned char modrm, mod, op2, sib;
 	unsigned char op = *pCode++;
 	int prefix = 1;

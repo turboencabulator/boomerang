@@ -22,7 +22,7 @@
 
 #include <cassert>
 
-extern "C" int microX86Dis(void *p);  // From microX86dis.c
+extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
 
 DOS4GWBinaryFile::DOS4GWBinaryFile() :
 	m_pLXHeader(NULL),
@@ -76,8 +76,8 @@ ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 		lim = p + textSize;
 
 	while (p < lim) {
-		op1 = *(unsigned char *)(p + base);
-		op2 = *(unsigned char *)(p + base + 1);
+		op1 = *(p + base);
+		op2 = *(p + base + 1);
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:
@@ -109,7 +109,7 @@ ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 			p += op2 + 2;  // +2 for the instruction itself, and op2 for the displacement
 			continue;      // Don't break, we have the new "pc" set already
 		}
-		int size = microX86Dis(p + base);
+		size_t size = microX86Dis(p + base);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -172,7 +172,7 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 
 	m_cbImage -= LMMH(m_pLXObjects[0].RelocBaseAddr);
 
-	base = new char[m_cbImage];
+	base = new unsigned char[m_cbImage];
 
 	m_iNumSections = LMMH(m_pLXHeader->numobjsinmodule);
 	m_pSections = new SectionInfo[m_iNumSections];
@@ -198,7 +198,7 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 			m_pSections[n].bReadOnly = (Flags & 0x1) == 0;
 
 			fseek(fp, m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize), SEEK_SET);
-			char *p = base + LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr);
+			unsigned char *p = base + LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr);
 			fread(p, LMMH(m_pLXHeader->pagesize), LMMH(m_pLXObjects[n].NumPageTblEntries), fp);
 		}
 

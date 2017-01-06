@@ -26,7 +26,7 @@
 #include <cassert>
 #include <cstring>
 
-extern "C" int microX86Dis(void *p);  // From microX86dis.c
+extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
 
 
 #ifndef IMAGE_SCN_CNT_CODE // Assume that if one is not defined, the rest isn't either.
@@ -152,8 +152,8 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 
 	gap = 0xF0000000;  // Large positive number (in case no ordinary calls)
 	while (p < lim) {
-		op1 = *(unsigned char *)(p + base);
-		op2 = *(unsigned char *)(p + base + 1);
+		op1 = *(p + base);
+		op2 = *(p + base + 1);
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:
@@ -223,7 +223,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 			borlandState = 0;
 			break;
 		}
-		int size = microX86Dis(p + base);
+		size_t size = microX86Dis(p + base);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -234,17 +234,17 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 
 	// VS.NET release console mode pattern
 	p = LMMH(m_pPEHeader->EntrypointRVA);
-	if (*(unsigned char *)(p + base + 0x20) == 0xff
-	 && *(unsigned char *)(p + base + 0x21) == 0x15) {
+	if (*(p + base + 0x20) == 0xff
+	 && *(p + base + 0x21) == 0x15) {
 		unsigned int desti = LMMH(*(p + base + 0x22));
 		if (dlprocptrs.find(desti) != dlprocptrs.end()
 		 && dlprocptrs[desti] == "GetVersionExA") {
-			if (*(unsigned char *)(p + base + 0x6d) == 0xff
-			 && *(unsigned char *)(p + base + 0x6e) == 0x15) {
+			if (*(p + base + 0x6d) == 0xff
+			 && *(p + base + 0x6e) == 0x15) {
 				desti = LMMH(*(p + base + 0x6f));
 				if (dlprocptrs.find(desti) != dlprocptrs.end()
 				 && dlprocptrs[desti] == "GetModuleHandleA") {
-					if (*(unsigned char *)(p + base + 0x16e) == 0xe8) {
+					if (*(p + base + 0x16e) == 0xe8) {
 						unsigned int dest = p + 0x16e + 5 + LMMH(*(p + base + 0x16f));
 						return dest + LMMH(m_pPEHeader->Imagebase);
 					}
@@ -259,14 +259,14 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 	p = LMMH(m_pPEHeader->EntrypointRVA);
 	while (count > 0) {
 		count--;
-		op1 = *(unsigned char *)(p + base);
+		op1 = *(p + base);
 		if (op1 == 0xE8) {  // CALL opcode
 			if (pushes == 3) {
 				// Get the offset
 				int off = LMMH(*(p + base + 1));
 				unsigned dest = (unsigned)p + 5 + off;
 				// Check for a jump there
-				op1 = *(unsigned char *)(dest + base);
+				op1 = *(dest + base);
 				if (op1 == 0xE9) {
 					// Follow that jump
 					off = LMMH(*(dest + base + 1));
@@ -279,7 +279,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 			pushes++;
 		} else if (op1 == 0xFF) {
 			// FF 35 is push m[K]
-			op2 = *(unsigned char *)(p + 1 + base);
+			op2 = *(p + 1 + base);
 			if (op2 == 0x35)
 				pushes++;
 		} else if (op1 == 0xE9) {
@@ -290,7 +290,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 		}
 
 
-		int size = microX86Dis(p + base);
+		size_t size = microX86Dis(p + base);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -305,12 +305,12 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 	bool in_mingw_CRTStartup = false;
 	unsigned int lastcall = 0, lastlastcall = 0;
 	while (1) {
-		op1 = *(unsigned char *)(p + base);
+		op1 = *(p + base);
 		if (op1 == 0xE8) {  // CALL opcode
 			unsigned int dest = p + 5 + LMMH(*(p + base + 1));
 			if (in_mingw_CRTStartup) {
-				op2 = *(unsigned char *)(dest + base);
-				unsigned char op2a = *(unsigned char *)(dest + base + 1);
+				op2 = *(dest + base);
+				unsigned char op2a = *(dest + base + 1);
 				unsigned int desti = LMMH(*(dest + base + 2));
 				// skip all the call statements until we hit a call to an indirect call to ExitProcess
 				// main is the 2nd call before this one
@@ -329,7 +329,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 			}
 		}
 
-		int size = microX86Dis(p + base);
+		size_t size = microX86Dis(p + base);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -343,8 +343,8 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 	p = LMMH(m_pPEHeader->EntrypointRVA);
 	bool gotGMHA = false;
 	while (1) {
-		op1 = *(unsigned char *)(p + base);
-		op2 = *(unsigned char *)(p + base + 1);
+		op1 = *(p + base);
+		op2 = *(p + base + 1);
 		if (op1 == 0xFF && op2 == 0x15) { // indirect CALL opcode
 			unsigned int desti = LMMH(*(p + base + 2));
 			if (dlprocptrs.find(desti) != dlprocptrs.end()
@@ -360,7 +360,7 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 		if (op1 == 0xc3)   // ret ends search
 			break;
 
-		int size = microX86Dis(p + base);
+		size_t size = microX86Dis(p + base);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -388,7 +388,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	fread(&tmphdr, sizeof tmphdr, 1, fp);
 	// Note: all tmphdr fields will be little endian
 
-	base = new char[LMMH(tmphdr.ImageSize)];
+	base = new unsigned char[LMMH(tmphdr.ImageSize)];
 
 	if (!base) {
 		fprintf(stderr, "Cannot allocate memory for copy of image\n");
@@ -447,7 +447,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	PEImportDtor *id = (PEImportDtor *)(LMMH(m_pPEHeader->ImportTableRVA) + base);
 	if (m_pPEHeader->ImportTableRVA) {  // If any import table entry exists
 		while (id->name != 0) {
-			char *dllName = LMMH(id->name) + base;
+			char *dllName = LMMH(id->name) + (char *)base;
 			unsigned thunk = id->originalFirstThunk ? id->originalFirstThunk : id->firstThunk;
 			unsigned *iat = (unsigned *)(LMMH(thunk) + base);
 			unsigned iatEntry = LMMH(*iat);

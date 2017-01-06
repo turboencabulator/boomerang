@@ -250,13 +250,13 @@ void LoaderTest::testWinLoad()
 	}
 }
 
-extern "C" int microX86Dis(void *p);
+extern "C" size_t microX86Dis(const unsigned char *p);
 
 // The below lengths were derived from a quick and dirty program (called
 // quick.c) which used the output from a disassembly to find the lengths.
 // Best way to test, but of course this array is very dependent on the
 // exact booked in test program
-static char lengths[] = {
+static const unsigned char lengths[] = {
 	2, 2, 2, 1, 5, 2, 2, 5, 5, 3, 5, 2, 2, 5, 5, 5, 3, 4, 6, 1,
 	3, 1, 1, 5, 5, 5, 3, 1, 5, 2, 5, 7, 1, 1, 1, 2, 1, 5, 1, 6,
 	2, 1, 1, 3, 6, 2, 2, 6, 3, 2, 6, 1, 5, 3, 1, 1, 1, 1, 1, 1,
@@ -317,7 +317,7 @@ static char lengths[] = {
 };
 
 // text segment of hello pentium
-static unsigned char pent_hello_text[] = {
+static const unsigned char pent_hello_text[] = {
 	0x6a, 0x00, 0x6a, 0x00, 0x8b, 0xec, 0x52, 0xb8, 0x80, 0x87, 0x04, 0x08, 0x85, 0xc0, 0x74, 0x0d,
 	0x68, 0x80, 0x87, 0x04, 0x08, 0xe8, 0x66, 0xff, 0xff, 0xff, 0x83, 0xc4, 0x04, 0xb8, 0x44, 0xa4,
 	0x04, 0x08, 0x85, 0xc0, 0x74, 0x05, 0xe8, 0x55, 0xff, 0xff, 0xff, 0x68, 0xe0, 0x93, 0x04, 0x08,
@@ -512,19 +512,19 @@ static unsigned char pent_hello_text[] = {
  */
 void LoaderTest::testMicroDis1()
 {
-	unsigned char *p = pent_hello_text;
+	const unsigned char *p = pent_hello_text;
 	size_t n = sizeof pent_hello_text;
 	size_t i = 0;
 	size_t totalSize = 0;
 	while (totalSize < n) {
-		int size = microX86Dis(p);
+		size_t size = microX86Dis(p);
 		if (size >= 0x40) {
 			std::cout << "Not handled instruction at offset 0x" << std::hex
 			          << (ADDRESS)p - (ADDRESS)pent_hello_text << std::endl;
 			CPPUNIT_ASSERT(size != 0x40);
 			return;
 		}
-		int expected = lengths[i++];
+		size_t expected = lengths[i++];
 		if (expected != size) {
 			std::cout << "At offset 0x" << std::hex
 			          << (ADDRESS)p - (ADDRESS)pent_hello_text << " ("
@@ -548,12 +548,12 @@ void LoaderTest::testMicroDis2()
 	// 8048910:  0f be 00           movsbl (%eax),%eax
 	// 8048913:  0f bf 00           movswl (%eax),%eax
 
-	unsigned char movsbl[3] = { 0x0f, 0xbe, 0x00 };
-	unsigned char movswl[3] = { 0x0f, 0xbf, 0x00 };
-	int size = microX86Dis(movsbl);
-	CPPUNIT_ASSERT_EQUAL(3, size);
+	const unsigned char movsbl[3] = { 0x0f, 0xbe, 0x00 };
+	const unsigned char movswl[3] = { 0x0f, 0xbf, 0x00 };
+	size_t size = microX86Dis(movsbl);
+	CPPUNIT_ASSERT_EQUAL((size_t)3, size);
 	size = microX86Dis(movswl);
-	CPPUNIT_ASSERT_EQUAL(3, size);
+	CPPUNIT_ASSERT_EQUAL((size_t)3, size);
 }
 /** \} */
 
