@@ -14,7 +14,6 @@
 #include "IntelCoffFile.h"
 
 #include <cassert>
-#include <cstdlib>
 #include <cstring>
 
 /**
@@ -112,12 +111,12 @@ bool IntelCoffFile::RealLoad(const char *sName)
 			return false;
 	}
 
-	struct struc_coff_sect *psh = (struct struc_coff_sect *)malloc(m_Header.coff_sections * sizeof *psh);
+	struct struc_coff_sect *psh = new struct struc_coff_sect[m_Header.coff_sections];
 	if (!psh)
 		return false;
 
 	if (fread(psh, sizeof *psh, m_Header.coff_sections, m_fd) != m_Header.coff_sections) {
-		free(psh);
+		delete [] psh;
 		return false;
 	}
 	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
@@ -155,7 +154,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	for (int sidx = 0; sidx < m_iNumSections; sidx++) {
 		SectionInfo *psi = getSectionInfo(sidx);
 		if (psi->uSectionSize > 0) {
-			void *pData = malloc(psi->uSectionSize);
+			char *pData = new char[psi->uSectionSize];
 			if (!pData)
 				return false;
 			psi->uHostAddr = (ADDRESS)pData;
@@ -184,14 +183,14 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	printf("Load symbol table\n");
 	if (fseek(m_fd, m_Header.coff_symtab_ofs, SEEK_SET) != 0)
 		return false;
-	struct coff_symbol *pSymbols = (struct coff_symbol *)malloc(m_Header.coff_num_syment * sizeof *pSymbols);
+	struct coff_symbol *pSymbols = new struct coff_symbol[m_Header.coff_num_syment];
 	if (!pSymbols)
 		return false;
 	if (fread(pSymbols, sizeof *pSymbols, m_Header.coff_num_syment, m_fd) != m_Header.coff_num_syment)
 		return false;
 
 	// TODO: Groesse des Abschnittes vorher bestimmen
-	char *pStrings = (char *)malloc(0x8000);
+	char *pStrings = new char[0x8000];
 	fread(pStrings, sizeof *pStrings, 0x8000, m_fd);
 
 
@@ -248,7 +247,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 		if (fseek(m_fd, psh[iSection].sch_relptr, SEEK_SET) != 0)
 			return false;
 
-		struct struct_coff_rel *pRel = (struct struct_coff_rel *)malloc(psh[iSection].sch_nreloc * sizeof *pRel);
+		struct struct_coff_rel *pRel = new struct struct_coff_rel[psh[iSection].sch_nreloc];
 		if (!pRel)
 			return false;
 
@@ -281,7 +280,7 @@ bool IntelCoffFile::RealLoad(const char *sName)
 			}
 		}
 
-		free(pRel);
+		delete [] pRel;
 
 #if 0
 		if (iSection == 0) {
