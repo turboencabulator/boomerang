@@ -852,6 +852,7 @@ ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
 	return m_pImportStubs;
 }
 
+#if 0 // Cruft?
 std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
 {
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
@@ -889,6 +890,7 @@ std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
 
 	return ret;
 }
+#endif
 
 /**
  * \brief Read a short with endianness care.

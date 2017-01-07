@@ -211,7 +211,7 @@ public:
 	        int         getDistanceByName(const char *pName);
 	virtual ADDRESS    *getImportStubs(int &numImports);
 	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true);
-	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
+	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 	virtual std::map<ADDRESS, std::string> &getSymbols() { return m_SymTab; }
 	/** \} */
 

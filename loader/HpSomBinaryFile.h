@@ -93,7 +93,7 @@ public:
 	 */
 	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
 	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
-	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
+	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 	/** \} */
 
 	//virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();

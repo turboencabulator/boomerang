@@ -262,6 +262,7 @@ std::pair<unsigned, unsigned> BinaryFile::getGlobalPointerInfo()
 }
 #endif
 
+#if 0 // Cruft?
 /**
  * \brief Get a pointer to a new map of dynamic global data items.
  *
@@ -282,6 +283,7 @@ std::map<ADDRESS, const char *> *BinaryFile::getDynamicGlobalMap()
 {
 	return new std::map<ADDRESS, const char *>;
 }
+#endif
 
 /**
  * \brief Get an array of exported function stub addresses.

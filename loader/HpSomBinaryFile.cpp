@@ -499,6 +499,7 @@ std::pair<unsigned, unsigned> HpSomBinaryFile::getGlobalPointerInfo()
 }
 #endif
 
+#if 0 // Cruft?
 std::map<ADDRESS, const char *> *HpSomBinaryFile::getDynamicGlobalMap()
 {
 	// Find the DL Table, if it exists
@@ -529,6 +530,7 @@ std::map<ADDRESS, const char *> *HpSomBinaryFile::getDynamicGlobalMap()
 	}
 	return ret;
 }
+#endif
 
 ADDRESS HpSomBinaryFile::getMainEntryPoint()
 {

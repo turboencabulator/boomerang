@@ -246,7 +246,7 @@ public:
 	virtual const char *getFilenameSymbolFor(const char *sym) { return NULL; }
 	virtual ADDRESS    *getImportStubs(int &numImports);
 	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
-	virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
+	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 	virtual std::map<ADDRESS, std::string> &getFuncSymbols() { return *new std::map<ADDRESS, std::string>(); }
 	virtual std::map<ADDRESS, std::string> &getSymbols() { return *new std::map<ADDRESS, std::string>(); }
 	virtual std::map<std::string, ObjcModule> &getObjcModules() { return *new std::map<std::string, ObjcModule>(); }
