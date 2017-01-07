@@ -130,7 +130,6 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 
 	fseek(fp, lxoff, SEEK_SET);
 	m_pLXHeader = new LXHeader;
-
 	fread(m_pLXHeader, sizeof *m_pLXHeader, 1, fp);
 
 	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {

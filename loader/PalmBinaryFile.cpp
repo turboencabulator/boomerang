@@ -58,10 +58,6 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 
 	// Allocate a buffer for the image
 	m_pImage = new unsigned char[size];
-	if (m_pImage == 0) {
-		fprintf(stderr, "Could not allocate %ld bytes for image\n", size);
-		return false;
-	}
 	memset(m_pImage, 0, size);
 
 	fseek(fp, 0, SEEK_SET);
@@ -85,10 +81,6 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 
 	// Allocate the section information
 	m_pSections = new SectionInfo[m_iNumSections];
-	if (m_pSections == 0) {
-		fprintf(stderr, "Could not allocate section info array of %d items\n", m_iNumSections);
-		delete [] m_pImage; m_pImage = NULL;
-	}
 
 	// Iterate through the resource headers (generating section info structs)
 	unsigned char *p = m_pImage + 0x4E;          // First resource header
@@ -149,9 +141,6 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 
 	// Allocate a new data section
 	m_pData = new unsigned char[sizeData];
-	if (m_pData == 0) {
-		fprintf(stderr, "Could not allocate %u bytes for data section\n", sizeData);
-	}
 	// Assume anything not filled in is 0?
 	memset(m_pData, 0, sizeData);
 

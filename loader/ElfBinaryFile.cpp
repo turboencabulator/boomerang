@@ -97,10 +97,6 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 
 	// Allocate memory to hold the file
 	m_pImage = new char[m_lImageSize];
-	if (m_pImage == 0) {
-		fprintf(stderr, "Could not allocate %ld bytes for program image\n", m_lImageSize);
-		return false;
-	}
 	Elf32_Ehdr *pHeader = (Elf32_Ehdr *)m_pImage;  // Save a lot of casts
 
 	// Read the whole file in
@@ -145,7 +141,6 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 
 	// Allocate room for all the Elf sections (including the silly first one)
 	m_pSections = new SectionInfo[m_iNumSections];
-	if (m_pSections == 0) return false;     // Failed!
 
 	// Set up the m_sh_link and m_sh_info arrays
 	m_sh_link = new int[m_iNumSections];

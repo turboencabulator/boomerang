@@ -114,7 +114,6 @@ BinaryFile *ElfArchiveFile::getMember(int i)
 		// Now we have to create one. We set the constructor argument
 		// bArchive to true, so it knows it's an archive member
 		BinaryFile *pBF = new ElfBinaryFile(true);
-		if (pBF == 0) return 0;
 		// Load the file for the user. First find the offset
 		int iOffset = m_Offsets[i];
 		if (iOffset == 0) return 0;

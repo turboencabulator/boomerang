@@ -125,10 +125,6 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 
 	// Allocate a buffer for the image
 	m_pImage = new unsigned char[size];
-	if (m_pImage == 0) {
-		fprintf(stderr, "Could not allocate %ld bytes for image\n", size);
-		return false;
-	}
 	memset(m_pImage, 0, size);
 
 	fseek(fp, 0, SEEK_SET);
@@ -179,13 +175,8 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 
 	// Allocate the section information. There will be just four entries:
 	// one for the header, one for text, one for initialised data, one for BSS
-	m_pSections = new SectionInfo[4];
 	m_iNumSections = 4;
-	if (m_pSections == 0) {
-		fprintf(stderr, "Could not allocate section info array of 4 items\n");
-		delete [] m_pImage; m_pImage = NULL;
-		return false;
-	}
+	m_pSections = new SectionInfo[m_iNumSections];
 
 	// Find the main symbol table, if it exists
 	ADDRESS symPtr = (ADDRESS)m_pImage + UINT4(m_pImage + 0x5C);

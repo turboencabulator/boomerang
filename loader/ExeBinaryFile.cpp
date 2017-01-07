@@ -39,15 +39,7 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	// Always just 3 sections
 	m_iNumSections = 3;
 	m_pSections = new SectionInfo[m_iNumSections];
-	if (m_pSections == 0) {
-		fprintf(stderr, "Could not allocate section information\n");
-		return false;
-	}
 	m_pHeader = new exeHeader;
-	if (m_pHeader == 0) {
-		fprintf(stderr, "Could not allocate header memory\n");
-		return false;
-	}
 
 	/* Open the input file */
 	if ((fp = fopen(sName, "rb")) == NULL) {
@@ -100,10 +92,6 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 		/* Allocate the relocation table */
 		if (m_cReloc) {
 			m_pRelocTable = new dword[m_cReloc];
-			if (m_pRelocTable == 0) {
-				fprintf(stderr, "Could not allocate relocation table (%d entries)\n", m_cReloc);
-				return false;
-			}
 			fseek(fp, LH(&m_pHeader->relocTabOffset), SEEK_SET);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */

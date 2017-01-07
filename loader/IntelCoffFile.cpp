@@ -112,9 +112,6 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	}
 
 	struct struc_coff_sect *psh = new struct struc_coff_sect[m_Header.coff_sections];
-	if (!psh)
-		return false;
-
 	if (fread(psh, sizeof *psh, m_Header.coff_sections, m_fd) != m_Header.coff_sections) {
 		delete [] psh;
 		return false;
@@ -155,8 +152,6 @@ bool IntelCoffFile::RealLoad(const char *sName)
 		SectionInfo *psi = getSectionInfo(sidx);
 		if (psi->uSectionSize > 0) {
 			char *pData = new char[psi->uSectionSize];
-			if (!pData)
-				return false;
 			psi->uHostAddr = (ADDRESS)pData;
 			psi->uNativeAddr = a;
 			a += psi->uSectionSize;
@@ -184,8 +179,6 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	if (fseek(m_fd, m_Header.coff_symtab_ofs, SEEK_SET) != 0)
 		return false;
 	struct coff_symbol *pSymbols = new struct coff_symbol[m_Header.coff_num_syment];
-	if (!pSymbols)
-		return false;
 	if (fread(pSymbols, sizeof *pSymbols, m_Header.coff_num_syment, m_fd) != m_Header.coff_num_syment)
 		return false;
 
@@ -248,9 +241,6 @@ bool IntelCoffFile::RealLoad(const char *sName)
 			return false;
 
 		struct struct_coff_rel *pRel = new struct struct_coff_rel[psh[iSection].sch_nreloc];
-		if (!pRel)
-			return false;
-
 		if (fread(pRel, sizeof *pRel, psh[iSection].sch_nreloc, m_fd) != psh[iSection].sch_nreloc)
 			return false;
 

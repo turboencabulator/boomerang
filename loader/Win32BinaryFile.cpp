@@ -389,14 +389,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	// Note: all tmphdr fields will be little endian
 
 	base = new unsigned char[LMMH(tmphdr.ImageSize)];
-
-	if (!base) {
-		fprintf(stderr, "Cannot allocate memory for copy of image\n");
-		return false;
-	}
-
 	fseek(fp, 0, SEEK_SET);
-
 	fread(base, LMMH(tmphdr.HeaderSize), 1, fp);
 
 	m_pHeader = (Header *)base;
