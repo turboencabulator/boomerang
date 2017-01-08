@@ -13,8 +13,6 @@
 #include "BinaryFile.h"
 #include "SymTab.h"
 
-#include <fstream>
-
 #include <stdint.h>
 
 #define PACKED __attribute__((packed))
@@ -79,11 +77,10 @@ public:
 	/** \} */
 
 protected:
-	virtual bool        RealLoad(const char *);
+	virtual bool        load(std::istream &);
 	//virtual bool        PostLoad(void *);
 
 private:
-	std::ifstream ifs;
 	std::list<ADDRESS> m_EntryPoints;
 	std::list<ADDRESS> m_Relocations;
 	struct coff_header m_Header;

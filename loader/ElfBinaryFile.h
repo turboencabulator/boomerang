@@ -16,7 +16,6 @@
 #include "BinaryFile.h"
 #include "SymTab.h"  // For SymTab (probably unused)
 
-#include <fstream>
 #include <functional>
 #include <map>
 #include <string>
@@ -238,7 +237,7 @@ public:
 	/** \} */
 
 protected:
-	virtual bool        RealLoad(const char *sName);
+	virtual bool        load(std::istream &);
 	//virtual bool        PostLoad(void *handle);
 
 private:
@@ -272,7 +271,6 @@ private:
 	        bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName);
 	        ADDRESS     findRelPltOffset(int i, ADDRESS addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
 
-	        std::ifstream ifs;                      ///< File stream.
 	        char       *m_pImage;                   ///< Pointer to the loaded image.
 	        Elf32_Phdr *m_pPhdrs;                   ///< Pointer to program headers.
 	        Elf32_Shdr *m_pShdrs;                   ///< Array of section header structs.

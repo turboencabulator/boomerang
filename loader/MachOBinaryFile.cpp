@@ -27,9 +27,8 @@
 #include <cstdarg>  // For va_list for MinGW at least
 #include "objc/objc-runtime.h"
 
-#include <fstream>
-
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 
 //#define DEBUG_MACHO_LOADER
@@ -69,17 +68,13 @@ ADDRESS MachOBinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
-bool MachOBinaryFile::RealLoad(const char *sName)
+bool MachOBinaryFile::load(std::istream &ifs)
 {
-	std::ifstream ifs;
-	ifs.open(sName, ifs.binary);
-
 	header = new struct mach_header;
 	ifs.read((char *)header, sizeof *header);
 
 	if ((header->magic != MH_MAGIC) && (_BMMH(header->magic) != MH_MAGIC)) {
-		ifs.close();
-		fprintf(stderr, "error loading file %s, bad Mach-O magic\n", sName);
+		fprintf(stderr, "error loading file %s, bad Mach-O magic\n", getFilename());
 		return false;
 	}
 
@@ -225,12 +220,6 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 
 	base = new char[loaded_size];
 
-	if (!base) {
-		ifs.close();
-		fprintf(stderr, "Cannot allocate memory for copy of image\n");
-		return false;
-	}
-
 	m_iNumSections = segments.size();
 	m_pSections = new SectionInfo[m_iNumSections];
 
@@ -351,7 +340,6 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	//ADDRESS entry = getMainEntryPoint();
 	entrypoint = getMainEntryPoint();
 
-	ifs.close();
 	return true;
 }
 

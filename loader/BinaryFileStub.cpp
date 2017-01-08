@@ -272,7 +272,7 @@ ADDRESS BinaryFileStub::getEntryPoint()
 	return 0;
 }
 
-bool BinaryFileStub::RealLoad(const char *sName)
+bool BinaryFileStub::load(std::istream &ifs)
 {
 	return false;
 }

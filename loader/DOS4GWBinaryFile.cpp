@@ -20,9 +20,8 @@
 
 #include "DOS4GWBinaryFile.h"
 
-#include <fstream>
-
 #include <cassert>
+#include <cstdio>
 
 extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
 
@@ -121,11 +120,8 @@ ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
-bool DOS4GWBinaryFile::RealLoad(const char *sName)
+bool DOS4GWBinaryFile::load(std::istream &ifs)
 {
-	std::ifstream ifs;
-	ifs.open(sName, ifs.binary);
-
 	DWord lxoffLE, lxoff;
 	ifs.seekg(0x3c);
 	ifs.read((char *)&lxoffLE, sizeof lxoffLE);  // Note: peoffLE will be in Little Endian
@@ -136,7 +132,7 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
 
 	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {
-		fprintf(stderr, "error loading file %s, bad LE/LX magic\n", sName);
+		fprintf(stderr, "error loading file %s, bad LE/LX magic\n", getFilename());
 		return false;
 	}
 
@@ -336,7 +332,6 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 			srcpage++;
 	} while (srcpage < npages);
 
-	ifs.close();
 	return true;
 }
 

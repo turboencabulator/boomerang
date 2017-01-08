@@ -16,7 +16,7 @@
 
 #include "ExeBinaryFile.h"
 
-#include <fstream>
+#include <cstdio>
 
 ExeBinaryFile::ExeBinaryFile() :
 	m_pHeader(NULL),
@@ -33,7 +33,7 @@ ExeBinaryFile::~ExeBinaryFile()
 	delete [] m_pRelocTable;
 }
 
-bool ExeBinaryFile::RealLoad(const char *sName)
+bool ExeBinaryFile::load(std::istream &ifs)
 {
 	std::streamsize cb;
 
@@ -42,18 +42,10 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	m_pSections = new SectionInfo[m_iNumSections];
 	m_pHeader = new exeHeader;
 
-	/* Open the input file */
-	std::ifstream ifs;
-	ifs.open(sName, ifs.binary);
-	if (!ifs.good()) {
-		fprintf(stderr, "Could not open file %s\n", sName);
-		return false;
-	}
-
 	/* Read in first 2 bytes to check EXE signature */
 	ifs.read((char *)m_pHeader, 2);
 	if (!ifs.good()) {
-		fprintf(stderr, "Cannot read file %s\n", sName);
+		fprintf(stderr, "Cannot read file %s\n", getFilename());
 		return false;
 	}
 
@@ -63,7 +55,7 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 		ifs.seekg(0);
 		ifs.read((char *)m_pHeader, sizeof *m_pHeader);
 		if (!ifs.good()) {
-			fprintf(stderr, "Cannot read file %s\n", sName);
+			fprintf(stderr, "Cannot read file %s\n", getFilename());
 			return false;
 		}
 
@@ -137,11 +129,9 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 
 	ifs.read((char *)m_pImage, cb);
 	if (!ifs.good()) {
-		fprintf(stderr, "Cannot read file %s\n", sName);
+		fprintf(stderr, "Cannot read file %s\n", getFilename());
 		return false;
 	}
-
-	ifs.close();
 
 	/* Relocate segment constants */
 	for (int i = 0; i < m_cReloc; i++) {

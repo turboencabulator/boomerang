@@ -20,11 +20,11 @@
 
 #include "Win32BinaryFile.h"
 
-#include <fstream>
 #include <iostream>
 #include <sstream>
 
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 
 extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
@@ -374,11 +374,8 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
-bool Win32BinaryFile::RealLoad(const char *sName)
+bool Win32BinaryFile::load(std::istream &ifs)
 {
-	std::ifstream ifs;
-	ifs.open(sName, ifs.binary);
-
 	DWord peoffLE, peoff;
 	ifs.seekg(0x3c);
 	ifs.read((char *)&peoffLE, sizeof peoffLE);  // Note: peoffLE will be in Little Endian
@@ -396,13 +393,13 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 
 	m_pHeader = (Header *)base;
 	if (m_pHeader->sigLo != 'M' || m_pHeader->sigHi != 'Z') {
-		fprintf(stderr, "error loading file %s, bad magic\n", sName);
+		fprintf(stderr, "error loading file %s, bad magic\n", getFilename());
 		return false;
 	}
 
 	m_pPEHeader = (PEHeader *)(base + peoff);
 	if (m_pPEHeader->sigLo != 'P' || m_pPEHeader->sigHi != 'E') {
-		fprintf(stderr, "error loading file %s, bad PE magic\n", sName);
+		fprintf(stderr, "error loading file %s, bad PE magic\n", getFilename());
 		return false;
 	}
 
@@ -494,7 +491,6 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	ADDRESS start = getEntryPoint();
 	findJumps(start);
 
-	ifs.close();
 	return true;
 }
 

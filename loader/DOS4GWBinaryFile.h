@@ -162,7 +162,7 @@ public:
 	/** \} */
 
 protected:
-	virtual bool        RealLoad(const char *sName);
+	virtual bool        load(std::istream &);
 	//virtual bool        PostLoad(void *handle);
 
 private:

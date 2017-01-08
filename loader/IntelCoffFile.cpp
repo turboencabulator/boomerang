@@ -14,6 +14,7 @@
 #include "IntelCoffFile.h"
 
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 
 /**
@@ -74,7 +75,6 @@ IntelCoffFile::IntelCoffFile() :
 
 IntelCoffFile::~IntelCoffFile()
 {
-	if (ifs.is_open()) ifs.close();
 }
 
 SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
@@ -89,14 +89,9 @@ SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
 	return ps + idxSect;
 }
 
-bool IntelCoffFile::RealLoad(const char *sName)
+bool IntelCoffFile::load(std::istream &ifs)
 {
-	printf("IntelCoffFile::RealLoad('%s') called\n", sName);
-
-	ifs.open(sName, ifs.binary);
-	if (!ifs.good()) return false;
-
-	printf("IntelCoffFile opened successful.\n");
+	printf("IntelCoffFile::load() called\n");
 
 	ifs.read((char *)&m_Header, sizeof m_Header);
 	if (!ifs.good())

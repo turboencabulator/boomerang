@@ -16,9 +16,8 @@
 
 #include "HpSomBinaryFile.h"
 
-#include <fstream>
-
 #include <cassert>
+#include <cstdio>
 #include <cstring>
 
 // Macro to convert a pointer to a Big Endian integer into a host integer
@@ -113,15 +112,8 @@ bool isStub(ADDRESS hostAddr, int &offset)
 #endif
 
 
-bool HpSomBinaryFile::RealLoad(const char *sName)
+bool HpSomBinaryFile::load(std::istream &ifs)
 {
-	std::ifstream ifs;
-	ifs.open(sName, ifs.binary);
-	if (!ifs.good()) {
-		fprintf(stderr, "Could not open binary file %s\n", sName);
-		return false;
-	}
-
 	ifs.seekg(0, ifs.end);
 	std::streamsize size = ifs.tellg();
 
@@ -132,11 +124,9 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	ifs.seekg(0, ifs.beg);
 	ifs.read((char *)m_pImage, size);
 	if (!ifs.good()) {
-		fprintf(stderr, "Error reading binary file %s\n", sName);
+		fprintf(stderr, "Error reading binary file %s\n", getFilename());
 		return false;
 	}
-
-	ifs.close();
 
 	// Check type at offset 0x0; should be 0x0210 or 0x20B then
 	// 0107, 0108, or 010B
@@ -146,7 +136,7 @@ bool HpSomBinaryFile::RealLoad(const char *sName)
 	if (((system_id != 0x210) && (system_id != 0x20B))
 	 || ((a_magic != 0x107) && (a_magic != 0x108) && (a_magic != 0x10B))) {
 		fprintf(stderr, "%s is not a standard PA/RISC executable file, with "
-		        "system ID %X and magic number %X\n", sName, system_id, a_magic);
+		        "system ID %X and magic number %X\n", getFilename(), system_id, a_magic);
 		return false;
 	}
 

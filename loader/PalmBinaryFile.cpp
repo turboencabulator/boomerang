@@ -20,9 +20,8 @@
 
 #include "palmsystraps.h"
 
-#include <fstream>
-
 #include <cassert>
+#include <cstdio>
 #include <cstdlib>
 #include <cstring>
 
@@ -46,15 +45,8 @@ PalmBinaryFile::~PalmBinaryFile()
 	delete [] m_pData;
 }
 
-bool PalmBinaryFile::RealLoad(const char *sName)
+bool PalmBinaryFile::load(std::istream &ifs)
 {
-	std::ifstream ifs;
-	ifs.open(sName, ifs.binary);
-	if (!ifs.good()) {
-		fprintf(stderr, "Could not open binary file %s\n", sName);
-		return false;
-	}
-
 	ifs.seekg(0, ifs.end);
 	std::streamsize size = ifs.tellg();
 
@@ -65,17 +57,15 @@ bool PalmBinaryFile::RealLoad(const char *sName)
 	ifs.seekg(0, ifs.beg);
 	ifs.read((char *)m_pImage, size);
 	if (!ifs.good()) {
-		fprintf(stderr, "Error reading binary file %s\n", sName);
+		fprintf(stderr, "Error reading binary file %s\n", getFilename());
 		return false;
 	}
-
-	ifs.close();
 
 	// Check type at offset 0x3C; should be "appl" (or "palm"; ugh!)
 	if (strncmp((char *)(m_pImage + 0x3C), "appl", 4) != 0
 	 && strncmp((char *)(m_pImage + 0x3C), "panl", 4) != 0
 	 && strncmp((char *)(m_pImage + 0x3C), "libr", 4) != 0) {
-		fprintf(stderr, "%s is not a standard .prc file\n", sName);
+		fprintf(stderr, "%s is not a standard .prc file\n", getFilename());
 		return false;
 	}
 

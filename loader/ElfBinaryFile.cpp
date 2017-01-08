@@ -18,6 +18,7 @@
 
 #include <iostream>
 
+#include <cstdio>
 #include <cstring>
 
 typedef std::map<std::string, int, std::less<std::string> > StrIntMap;
@@ -42,7 +43,6 @@ ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
 
 ElfBinaryFile::~ElfBinaryFile()
 {
-	if (ifs.is_open()) ifs.close();
 	delete [] m_pSections;
 	delete [] m_pImage;
 	delete [] m_pImportStubs;
@@ -75,7 +75,7 @@ extern "C" unsigned elf_hash(const char *o0)
 	return o4;
 }
 
-bool ElfBinaryFile::RealLoad(const char *sName)
+bool ElfBinaryFile::load(std::istream &ifs)
 {
 	int i;
 
@@ -83,9 +83,6 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 		// This is a member of an archive. Should not be using this function at all
 		return false;
 	}
-
-	ifs.open(sName, ifs.binary);
-	if (!ifs.good()) return false;
 
 	// Determine file size
 	ifs.seekg(0, ifs.end);

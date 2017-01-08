@@ -32,6 +32,9 @@
 #include    "IntelCoffFile.h"
 #endif
 
+#include <fstream>
+
+#include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <cerrno>
@@ -49,22 +52,23 @@
 /**
  * Detect the file type and return the loader format.
  *
- * \param f  Opened file to perform detection on.
+ * \param ifs  Opened stream to perform detection on.
  */
-static LOADFMT magic(FILE *f)
+static LOADFMT magic(std::istream &ifs)
 {
-	unsigned char buf[64];
+	char buf[0x40];
+	ifs.read(buf, sizeof buf);
+	if (!ifs.good()) return LOADFMT_UNKNOWN;
 
-	fread(buf, sizeof buf, 1, f);
-	if (TESTMAGIC4(buf, 0, '\177', 'E', 'L', 'F')) {
+	if (TESTMAGIC4(buf, 0, '\x7f', 'E', 'L', 'F')) {
 		/* ELF Binary */
 		return LOADFMT_ELF;
 	} else if (TESTMAGIC2(buf, 0, 'M', 'Z')) {
 		/* DOS-based file */
 		int peoff = LMMH(buf[0x3c]);
-		if (peoff != 0 && fseek(f, peoff, SEEK_SET) == 0) {
-			fread(buf, 4, 1, f);
-			if (TESTMAGIC4(buf, 0, 'P', 'E', 0, 0)) {
+		if (peoff != 0
+		 && ifs.seekg(peoff).read(buf, 4).good()) {
+			if (TESTMAGIC4(buf, 0, 'P', 'E', '\0', '\0')) {
 				/* Win32 Binary */
 				return LOADFMT_PE;
 			} else if (TESTMAGIC2(buf, 0, 'N', 'E')) {
@@ -82,38 +86,20 @@ static LOADFMT magic(FILE *f)
 	        || TESTMAGIC4(buf, 0x3c, 'p', 'a', 'n', 'l')) {
 		/* PRC Palm-pilot binary */
 		return LOADFMT_PALM;
-	} else if (TESTMAGIC4(buf, 0, 0xfe, 0xed, 0xfa, 0xce)
-	        || TESTMAGIC4(buf, 0, 0xce, 0xfa, 0xed, 0xfe)) {
+	} else if (TESTMAGIC4(buf, 0, '\xfe', '\xed', '\xfa', '\xce')
+	        || TESTMAGIC4(buf, 0, '\xce', '\xfa', '\xed', '\xfe')) {
 		/* Mach-O Mac OS-X binary */
 		return LOADFMT_MACHO;
-	} else if (buf[0] == 0x02
-	        && buf[2] == 0x01
-	        && (buf[1] == 0x10 || buf[1] == 0x0b)
-	        && (buf[3] == 0x07 || buf[3] == 0x08 || buf[4] == 0x0b)) {
+	} else if (buf[0] == '\x02'
+	        && buf[2] == '\x01'
+	        && (buf[1] == '\x10' || buf[1] == '\x0b')
+	        && (buf[3] == '\x07' || buf[3] == '\x08' || buf[4] == '\x0b')) {
 		/* HP Som binary (last as it's not really particularly good magic) */
 		return LOADFMT_PAR;
-	} else if (TESTMAGIC2(buf, 0, 0x4c, 0x01)) {
+	} else if (TESTMAGIC2(buf, 0, '\x4c', '\x01')) {
 		return LOADFMT_COFF;
 	}
 	return LOADFMT_UNKNOWN;
-}
-
-/**
- * \overload
- * \param name  Name of file to perform detection on.
- */
-static LOADFMT magic(const char *name)
-{
-	FILE *f = fopen(name, "rb");
-	if (f == NULL) {
-		fprintf(stderr, "%s: fopen: %s\n", name, strerror(errno));
-		return LOADFMT_UNKNOWN;
-	}
-
-	LOADFMT format = magic(f);
-
-	fclose(f);
-	return format;
 }
 
 /**
@@ -126,11 +112,20 @@ static LOADFMT magic(const char *name)
  */
 BinaryFile *BinaryFile::open(const char *name)
 {
-	LOADFMT format = magic(name);
-	if (format == LOADFMT_UNKNOWN) {
-		fprintf(stderr, "%s: unrecognised binary file\n", name);
+	std::ifstream ifs;
+	ifs.open(name, ifs.binary);
+	if (!ifs.good()) {
+		fprintf(stderr, "%s: opening failed\n", name);
 		return NULL;
 	}
+
+	LOADFMT format = magic(ifs);
+	if (format == LOADFMT_UNKNOWN) {
+		fprintf(stderr, "%s: unrecognised binary file\n", name);
+		ifs.close();
+		return NULL;
+	}
+	ifs.seekg(0);
 
 #ifdef DYNAMIC
 	const char *libname;
@@ -143,13 +138,14 @@ BinaryFile *BinaryFile::open(const char *name)
 	case LOADFMT_MACHO: libname = MODPREFIX  "MachOBinaryFile" MODSUFFIX; break;
 	case LOADFMT_LX:    libname = MODPREFIX "DOS4GWBinaryFile" MODSUFFIX; break;
 	case LOADFMT_COFF:  libname = MODPREFIX    "IntelCoffFile" MODSUFFIX; break;
-	default:            return NULL;
+	default:            libname = NULL; assert(0);  // found a LOADFMT not listed above
 	}
 
 	// Load the specific loader library
 	void *handle = dlopen(libname, RTLD_LAZY);
 	if (handle == NULL) {
 		fprintf(stderr, "cannot load library: %s\n", dlerror());
+		ifs.close();
 		return NULL;
 	}
 
@@ -162,6 +158,7 @@ BinaryFile *BinaryFile::open(const char *name)
 	if ((error = dlerror()) != NULL) {
 		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
 		dlclose(handle);
+		ifs.close();
 		return NULL;
 	}
 	symbol = "destruct";
@@ -169,6 +166,7 @@ BinaryFile *BinaryFile::open(const char *name)
 	if ((error = dlerror()) != NULL) {
 		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
 		dlclose(handle);
+		ifs.close();
 		return NULL;
 	}
 
@@ -190,18 +188,19 @@ BinaryFile *BinaryFile::open(const char *name)
 	case LOADFMT_MACHO: bf = new  MachOBinaryFile; break;
 	case LOADFMT_LX:    bf = new DOS4GWBinaryFile; break;
 	case LOADFMT_COFF:  bf = new    IntelCoffFile; break;
-	default:            return NULL;
+	default:            bf = NULL; assert(0);  // found a LOADFMT not listed above
 	}
 #endif
 
 	bf->m_pFilename = name;
-	if (!bf->RealLoad(name)) {
-		fprintf(stderr, "Loading '%s' failed\n", name);
-		BinaryFile::close(bf); bf = NULL;
-		return NULL;
-	}
 
-	bf->getTextLimits();
+	if (!bf->load(ifs)) {
+		fprintf(stderr, "%s: loading failed\n", name);
+		BinaryFile::close(bf); bf = NULL;
+	}
+	ifs.close();
+
+	if (bf) bf->getTextLimits();
 	return bf;
 }
 

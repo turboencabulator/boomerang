@@ -19,6 +19,7 @@
 
 #include "types.h"
 
+#include <istream>
 #include <list>
 #include <map>
 #include <string>
@@ -291,7 +292,7 @@ protected:
 	 *
 	 * \returns true for a good load.
 	 */
-	virtual bool        RealLoad(const char *sName) = 0;
+	virtual bool        load(std::istream &) = 0;
 #if 0 // Cruft?
 	/**
 	 * \brief Special load function for archive members.
