@@ -94,7 +94,7 @@ SectionInfo *BinaryFile::getSectionInfo(int idx) const
 /**
  * \brief Find the end of a section, given an address in the section.
  */
-SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
+const SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
 	SectionInfo *pSect;
 	for (int i = 0; i < m_iNumSections; i++) {
@@ -124,7 +124,7 @@ SectionInfo *BinaryFile::getSectionInfoByName(const char *sName) const
  */
 bool BinaryFile::isReadOnly(ADDRESS uEntry) const
 {
-	SectionInfo *p = getSectionInfoByAddr(uEntry);
+	const SectionInfo *p = getSectionInfoByAddr(uEntry);
 	return p && p->bReadOnly;
 }
 
@@ -308,7 +308,7 @@ void BinaryFile::getTextLimits()
 	limitTextHigh = 0;
 	textDelta = 0;
 	for (int i = 0; i < n; i++) {
-		SectionInfo *pSect = getSectionInfo(i);
+		const SectionInfo *pSect = getSectionInfo(i);
 		if (pSect->bCode) {
 			// The .plt section is an anomaly. It's code, but we never want to
 			// decode it, and in Sparc ELF files, it's actually in the data

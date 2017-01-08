@@ -119,7 +119,7 @@ bool PalmBinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
-	SectionInfo *pCode0 = getSectionInfoByName("code0");
+	const SectionInfo *pCode0 = getSectionInfoByName("code0");
 	if (pCode0 == 0) {
 		fprintf(stderr, "No code 0 section!\n");
 		return false;

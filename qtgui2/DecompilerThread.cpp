@@ -158,7 +158,7 @@ void Decompiler::load()
 	}
 
 	for (int i = 1; i < fe->getBinaryFile()->getNumSections(); i++) {
-		SectionInfo *section = fe->getBinaryFile()->getSectionInfo(i);
+		const SectionInfo *section = fe->getBinaryFile()->getSectionInfo(i);
 		emit newSection(section->pSectionName, section->uNativeAddr, section->uNativeAddr + section->uSectionSize);
 	}
 

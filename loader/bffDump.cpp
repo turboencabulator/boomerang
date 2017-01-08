@@ -26,7 +26,7 @@
 
 #include <cstdio>
 
-static void print_section(SectionInfo *pSect)
+static void print_section(const SectionInfo *pSect)
 {
 	ADDRESS a = pSect->uNativeAddr;
 	unsigned char *p = (unsigned char *)pSect->uHostAddr;
@@ -60,7 +60,7 @@ int main(int argc, char *argv[])
 	// Note: this is traditionally the ".text" section in Elf binaries.
 	// In the case of Prc files (Palm), the code section is named "code0".
 	for (int i = 0; i < bf->getNumSections(); ++i) {
-		SectionInfo *pSect = bf->getSectionInfo(i);
+		const SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bCode) {
 			printf("  Code section: %s\n", pSect->pSectionName);
 			print_section(pSect);
@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
 
 	// Display the data section(s) in raw hexadecimal notation.
 	for (int i = 0; i < bf->getNumSections(); ++i) {
-		SectionInfo *pSect = bf->getSectionInfo(i);
+		const SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bData) {
 			printf("  Data section: %s\n", pSect->pSectionName);
 			print_section(pSect);

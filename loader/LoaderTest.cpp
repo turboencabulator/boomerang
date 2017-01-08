@@ -55,7 +55,7 @@ void LoaderTest::testSparcLoad()
 	CPPUNIT_ASSERT_EQUAL(29, n);
 
 	// Just use the first (real one) and last sections
-	SectionInfo *si;
+	const SectionInfo *si;
 	std::ostringstream actual;
 	si = bf->getSectionInfo(1);
 	actual << si->pSectionName << "\n";
@@ -79,7 +79,7 @@ void LoaderTest::testPentiumLoad()
 	int n = bf->getNumSections();
 	CPPUNIT_ASSERT_EQUAL(34, n);
 
-	SectionInfo *si;
+	const SectionInfo *si;
 	std::ostringstream actual;
 	si = bf->getSectionInfo(1);
 	actual << si->pSectionName << "\n";
@@ -104,7 +104,7 @@ void LoaderTest::testHppaLoad()
 	int n = bf->getNumSections();
 	CPPUNIT_ASSERT_EQUAL(4, n);
 
-	SectionInfo *si;
+	const SectionInfo *si;
 	std::ostringstream actual;
 	for (int i = 0; i < n; i++) {
 		si = bf->getSectionInfo(i);
@@ -128,7 +128,7 @@ void LoaderTest::testPalmLoad()
 	int n = bf->getNumSections();
 	CPPUNIT_ASSERT_EQUAL(8, n);
 
-	SectionInfo *si;
+	const SectionInfo *si;
 	std::ostringstream actual;
 	for (int i = 0; i < n; i++) {
 		si = bf->getSectionInfo(i);
@@ -156,7 +156,7 @@ void LoaderTest::testWinLoad()
 		CPPUNIT_ASSERT_EQUAL(5, n);
 
 		{
-			SectionInfo *si;
+			const SectionInfo *si;
 			std::ostringstream actual;
 			for (int i = 0; i < n; i++) {
 				si = bf->getSectionInfo(i);

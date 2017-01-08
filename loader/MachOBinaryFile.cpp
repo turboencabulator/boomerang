@@ -456,7 +456,7 @@ unsigned short MachOBinaryFile::BMMHW(unsigned short x)
 
 int MachOBinaryFile::readNative1(ADDRESS nat) const
 {
-	SectionInfo *si = getSectionInfoByAddr(nat);
+	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0)
 		si = getSectionInfo(0);
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
@@ -465,7 +465,7 @@ int MachOBinaryFile::readNative1(ADDRESS nat) const
 
 int MachOBinaryFile::readNative2(ADDRESS nat) const
 {
-	SectionInfo *si = getSectionInfoByAddr(nat);
+	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	return machORead2((short *)host);
@@ -473,7 +473,7 @@ int MachOBinaryFile::readNative2(ADDRESS nat) const
 
 int MachOBinaryFile::readNative4(ADDRESS nat) const
 {
-	SectionInfo *si = getSectionInfoByAddr(nat);
+	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
 	return machORead4((int *)host);

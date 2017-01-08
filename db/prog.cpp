@@ -162,7 +162,7 @@ void Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 				for (int j = 0; sections[j]; j++) {
 					std::string str = ".";
 					str += sections[j];
-					SectionInfo *info = pBF->getSectionInfoByName(str.c_str());
+					const SectionInfo *info = pBF->getSectionInfoByName(str.c_str());
 					str = "start_";
 					str += sections[j];
 					code->AddGlobal(str.c_str(), new IntegerType(32, -1), new Const(info ? info->uNativeAddr : (unsigned int)-1));
@@ -831,7 +831,7 @@ const char *Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false *
 double Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits)
 {
 	ok = true;
-	SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
+	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
 	if (si && si->bReadOnly) {
 		if (bits == 64) {
 			return pBF->readNativeFloat8(uaddr);
@@ -993,7 +993,7 @@ const void *Prog::getCodeInfo(ADDRESS uAddr, const char *&last, int &delta)
 	int i;
 	// Search all code and read-only sections
 	for (i = 0; i < n; i++) {
-		SectionInfo *pSect = pBF->getSectionInfo(i);
+		const SectionInfo *pSect = pBF->getSectionInfo(i);
 		if ((!pSect->bCode) && (!pSect->bReadOnly))
 			continue;
 		if ((uAddr < pSect->uNativeAddr) || (uAddr >= pSect->uNativeAddr + pSect->uSectionSize))
@@ -1454,7 +1454,7 @@ Global::~Global()
 Exp *Global::getInitialValue(Prog *prog)
 {
 	Exp *e = NULL;
-	SectionInfo *si = prog->getSectionInfoByAddr(uaddr);
+	const SectionInfo *si = prog->getSectionInfoByAddr(uaddr);
 	if (si && si->isAddressBss(uaddr))
 		// This global is in the BSS, so it can't be initialised
 		return NULL;
@@ -1474,7 +1474,7 @@ void Global::print(std::ostream &os, Prog *prog)
 Exp *Prog::readNativeAs(ADDRESS uaddr, Type *type)
 {
 	Exp *e = NULL;
-	SectionInfo *si = getSectionInfoByAddr(uaddr);
+	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
 	if (si == NULL)
 		return NULL;
 	if (type->resolvesToPointer()) {
