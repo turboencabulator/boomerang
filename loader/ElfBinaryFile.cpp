@@ -24,7 +24,6 @@ typedef std::map<std::string, int, std::less<std::string> > StrIntMap;
 
 ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
 	BinaryFile(bArchive),
-	m_fd(NULL),
 	m_pImage(NULL),
 	m_pPhdrs(NULL),  // No program headers
 	m_pShdrs(NULL),  // No section headers
@@ -43,7 +42,7 @@ ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
 
 ElfBinaryFile::~ElfBinaryFile()
 {
-	if (m_fd) fclose(m_fd);
+	if (ifs.is_open()) ifs.close();
 	delete [] m_pSections;
 	delete [] m_pImage;
 	delete [] m_pImportStubs;
@@ -85,25 +84,26 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 		return false;
 	}
 
-	m_fd = fopen(sName, "rb");
-	if (m_fd == NULL) return false;
+	ifs.open(sName, ifs.binary);
+	if (!ifs.good()) return false;
 
 	// Determine file size
-	if (fseek(m_fd, 0, SEEK_END) != 0) {
+	ifs.seekg(0, ifs.end);
+	if (!ifs.good()) {
 		fprintf(stderr, "Error seeking to end of binary file\n");
 		return false;
 	}
-	m_lImageSize = ftell(m_fd);
+	std::streamsize size = ifs.tellg();
 
 	// Allocate memory to hold the file
-	m_pImage = new char[m_lImageSize];
+	m_pImage = new char[size];
 	Elf32_Ehdr *pHeader = (Elf32_Ehdr *)m_pImage;  // Save a lot of casts
 
 	// Read the whole file in
-	fseek(m_fd, 0, SEEK_SET);
-	size_t size = fread(m_pImage, 1, m_lImageSize, m_fd);
-	if (size != (size_t)m_lImageSize)
-		fprintf(stderr, "WARNING! Only read %ud of %ld bytes of binary file!\n", size, m_lImageSize);
+	ifs.seekg(0, ifs.beg);
+	ifs.read(m_pImage, size);
+	if (!ifs.good())
+		fprintf(stderr, "WARNING! Only read %ld of %ld bytes of binary file!\n", ifs.gcount(), size);
 
 	// Basic checks
 	if (strncmp(m_pImage, "\x7F""ELF", 4) != 0) {
@@ -152,12 +152,12 @@ bool ElfBinaryFile::RealLoad(const char *sName)
 	for (i = 0; i < m_iNumSections; i++) {
 		// Get section information.
 		Elf32_Shdr *pShdr = m_pShdrs + i;
-		if ((char *)pShdr > m_pImage + m_lImageSize) {
+		if ((char *)pShdr > m_pImage + size) {
 			std::cerr << "section " << i << " header is outside the image size\n";
 			return false;
 		}
 		pName = m_pStrings + elfRead4(&pShdr->sh_name);
-		if (pName > m_pImage + m_lImageSize) {
+		if (pName > m_pImage + size) {
 			std::cerr << "name for section " << i << " is outside the image size\n";
 			return false;
 		}

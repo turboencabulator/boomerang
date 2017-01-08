@@ -24,6 +24,8 @@
 
 #include "BinaryFile.h"
 
+#include <cstdio>
+
 static void print_section(SectionInfo *pSect)
 {
 	ADDRESS a = pSect->uNativeAddr;

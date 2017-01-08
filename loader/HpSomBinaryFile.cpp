@@ -16,6 +16,8 @@
 
 #include "HpSomBinaryFile.h"
 
+#include <fstream>
+
 #include <cassert>
 #include <cstring>
 
@@ -113,27 +115,28 @@ bool isStub(ADDRESS hostAddr, int &offset)
 
 bool HpSomBinaryFile::RealLoad(const char *sName)
 {
-	FILE *fp;
-
-	if ((fp = fopen(sName, "rb")) == NULL) {
+	std::ifstream ifs;
+	ifs.open(sName, ifs.binary);
+	if (!ifs.good()) {
 		fprintf(stderr, "Could not open binary file %s\n", sName);
 		return false;
 	}
 
-	fseek(fp, 0, SEEK_END);
-	long size = ftell(fp);
+	ifs.seekg(0, ifs.end);
+	std::streamsize size = ifs.tellg();
 
 	// Allocate a buffer for the image
 	m_pImage = new unsigned char[size];
 	memset(m_pImage, 0, size);
 
-	fseek(fp, 0, SEEK_SET);
-	if (fread(m_pImage, 1, size, fp) != (unsigned)size) {
+	ifs.seekg(0, ifs.beg);
+	ifs.read((char *)m_pImage, size);
+	if (!ifs.good()) {
 		fprintf(stderr, "Error reading binary file %s\n", sName);
 		return false;
 	}
 
-	fclose(fp);
+	ifs.close();
 
 	// Check type at offset 0x0; should be 0x0210 or 0x20B then
 	// 0107, 0108, or 010B

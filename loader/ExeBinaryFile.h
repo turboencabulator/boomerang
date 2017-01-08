@@ -105,7 +105,6 @@ protected:
 private:
 	        exeHeader  *m_pHeader;      ///< Pointer to header.
 	        Byte       *m_pImage;       ///< Pointer to image.
-	        int         m_cbImage;      ///< Size of image.
 	        int         m_cReloc;       ///< Number of relocation entries.
 	        DWord      *m_pRelocTable;  ///< The relocation table.
 };

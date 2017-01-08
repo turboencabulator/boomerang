@@ -20,6 +20,7 @@
 
 #include "Win32BinaryFile.h"
 
+#include <fstream>
 #include <iostream>
 #include <sstream>
 
@@ -375,22 +376,23 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 
 bool Win32BinaryFile::RealLoad(const char *sName)
 {
-	FILE *fp = fopen(sName, "rb");
+	std::ifstream ifs;
+	ifs.open(sName, ifs.binary);
 
 	DWord peoffLE, peoff;
-	fseek(fp, 0x3c, SEEK_SET);
-	fread(&peoffLE, sizeof peoffLE, 1, fp);  // Note: peoffLE will be in Little Endian
+	ifs.seekg(0x3c);
+	ifs.read((char *)&peoffLE, sizeof peoffLE);  // Note: peoffLE will be in Little Endian
 	peoff = LMMH(peoffLE);
 
 	PEHeader tmphdr;
 
-	fseek(fp, peoff, SEEK_SET);
-	fread(&tmphdr, sizeof tmphdr, 1, fp);
+	ifs.seekg(peoff);
+	ifs.read((char *)&tmphdr, sizeof tmphdr);
 	// Note: all tmphdr fields will be little endian
 
 	base = new unsigned char[LMMH(tmphdr.ImageSize)];
-	fseek(fp, 0, SEEK_SET);
-	fread(base, LMMH(tmphdr.HeaderSize), 1, fp);
+	ifs.seekg(0);
+	ifs.read((char *)base, LMMH(tmphdr.HeaderSize));
 
 	m_pHeader = (Header *)base;
 	if (m_pHeader->sigLo != 'M' || m_pHeader->sigHi != 'Z') {
@@ -430,9 +432,9 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 		sect.bData     = (Flags & IMAGE_SCN_CNT_INITIALIZED_DATA)   != 0;
 		sect.bReadOnly = (Flags & IMAGE_SCN_MEM_WRITE)              == 0;
 		// TODO: Check for unreadable sections (!IMAGE_SCN_MEM_READ)?
-		fseek(fp, LMMH(o->PhysicalOffset), SEEK_SET);
+		ifs.seekg(LMMH(o->PhysicalOffset));
 		memset(base + LMMH(o->RVA), 0, LMMH(o->VirtualSize));
-		fread(base + LMMH(o->RVA), LMMH(o->PhysicalSize), 1, fp);
+		ifs.read((char *)(base + LMMH(o->RVA)), LMMH(o->PhysicalSize));
 		s_sectionObjects[static_cast<const PESectionInfo *>(&sect)] = o;
 	}
 
@@ -492,7 +494,7 @@ bool Win32BinaryFile::RealLoad(const char *sName)
 	ADDRESS start = getEntryPoint();
 	findJumps(start);
 
-	fclose(fp);
+	ifs.close();
 	return true;
 }
 

@@ -20,6 +20,8 @@
 
 #include "DOS4GWBinaryFile.h"
 
+#include <fstream>
+
 #include <cassert>
 
 extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
@@ -121,25 +123,26 @@ ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 
 bool DOS4GWBinaryFile::RealLoad(const char *sName)
 {
-	FILE *fp = fopen(sName, "rb");
+	std::ifstream ifs;
+	ifs.open(sName, ifs.binary);
 
 	DWord lxoffLE, lxoff;
-	fseek(fp, 0x3c, SEEK_SET);
-	fread(&lxoffLE, sizeof lxoffLE, 1, fp);  // Note: peoffLE will be in Little Endian
+	ifs.seekg(0x3c);
+	ifs.read((char *)&lxoffLE, sizeof lxoffLE);  // Note: peoffLE will be in Little Endian
 	lxoff = LMMH(lxoffLE);
 
-	fseek(fp, lxoff, SEEK_SET);
+	ifs.seekg(lxoff);
 	m_pLXHeader = new LXHeader;
-	fread(m_pLXHeader, sizeof *m_pLXHeader, 1, fp);
+	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
 
 	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {
 		fprintf(stderr, "error loading file %s, bad LE/LX magic\n", sName);
 		return false;
 	}
 
-	fseek(fp, lxoff + LMMH(m_pLXHeader->objtbloffset), SEEK_SET);
+	ifs.seekg(lxoff + LMMH(m_pLXHeader->objtbloffset));
 	m_pLXObjects = new LXObject[LMMH(m_pLXHeader->numobjsinmodule)];
-	fread(m_pLXObjects, sizeof *m_pLXObjects, LMMH(m_pLXHeader->numobjsinmodule), fp);
+	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * LMMH(m_pLXHeader->numobjsinmodule));
 
 	// at this point we're supposed to read in the page table and fuss around with it
 	// but I'm just going to assume the file is flat.
@@ -155,9 +158,9 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 	}
 	m_cbImage -= LMMH(m_pLXObjects[0].RelocBaseAddr);
 
-	fseek(fp, lxoff + LMMH(m_pLXHeader->objpagetbloffset), SEEK_SET);
+	ifs.seekg(lxoff + LMMH(m_pLXHeader->objpagetbloffset));
 	m_pLXPages = new LXPage[npagetblentries];
-	fread(m_pLXPages, sizeof *m_pLXPages, npagetblentries, fp);
+	ifs.read((char *)m_pLXPages, sizeof *m_pLXPages * npagetblentries);
 #endif
 
 	unsigned npages = 0;
@@ -196,9 +199,9 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 			m_pSections[n].bData     = (Flags & 0x4) == 0;
 			m_pSections[n].bReadOnly = (Flags & 0x1) == 0;
 
-			fseek(fp, m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize), SEEK_SET);
+			ifs.seekg(m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize));
 			unsigned char *p = base + LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr);
-			fread(p, LMMH(m_pLXHeader->pagesize), LMMH(m_pLXObjects[n].NumPageTblEntries), fp);
+			ifs.read((char *)p, LMMH(m_pLXHeader->pagesize) * LMMH(m_pLXObjects[n].NumPageTblEntries));
 		}
 
 	// TODO: decode entry tables
@@ -294,9 +297,9 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 #endif
 
 	// fixups
-	fseek(fp, LMMH(m_pLXHeader->fixuppagetbloffset) + lxoff, SEEK_SET);
+	ifs.seekg(LMMH(m_pLXHeader->fixuppagetbloffset) + lxoff);
 	unsigned int *fixuppagetbl = new unsigned int[npages + 1];
-	fread(fixuppagetbl, sizeof *fixuppagetbl, npages + 1, fp);
+	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
 
 #if 0
 	for (unsigned n = 0; n < npages; n++)
@@ -304,11 +307,11 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 	printf("offset to end of fixup rec: %x\n", fixuppagetbl[npages]);
 #endif
 
-	fseek(fp, LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff, SEEK_SET);
+	ifs.seekg(LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff);
 	LXFixup fixup;
 	unsigned srcpage = 0;
 	do {
-		fread(&fixup, sizeof fixup, 1, fp);
+		ifs.read((char *)&fixup, sizeof fixup);
 		if (fixup.src != 7 || (fixup.flags & ~0x50)) {
 			fprintf(stderr, "unknown fixup type %02x %02x\n", fixup.src, fixup.flags);
 			return false;
@@ -317,23 +320,23 @@ bool DOS4GWBinaryFile::RealLoad(const char *sName)
 		unsigned long src = srcpage * LMMH(m_pLXHeader->pagesize) + (short)LMMHw(fixup.srcoff);
 		unsigned short object = 0;
 		if (fixup.flags & 0x40)
-			fread(&object, 2, 1, fp);
+			ifs.read((char *)&object, 2);
 		else
-			fread(&object, 1, 1, fp);
+			ifs.read((char *)&object, 1);
 		unsigned int trgoff = 0;
 		if (fixup.flags & 0x10)
-			fread(&trgoff, 4, 1, fp);
+			ifs.read((char *)&trgoff, 4);
 		else
-			fread(&trgoff, 2, 1, fp);
+			ifs.read((char *)&trgoff, 2);
 		unsigned long target = LMMH(m_pLXObjects[object - 1].RelocBaseAddr) + LMMHw(trgoff);
 		//printf("relocate dword at %x to point to %x\n", src, target);
 		*(unsigned int *)(base + src) = target;
 
-		while (ftell(fp) - (LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff) >= LMMH(fixuppagetbl[srcpage + 1]))
+		while ((std::streamsize)ifs.tellg() - (LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff) >= LMMH(fixuppagetbl[srcpage + 1]))
 			srcpage++;
 	} while (srcpage < npages);
 
-	fclose(fp);
+	ifs.close();
 	return true;
 }
 

@@ -16,6 +16,8 @@
 
 #include "ExeBinaryFile.h"
 
+#include <fstream>
+
 ExeBinaryFile::ExeBinaryFile() :
 	m_pHeader(NULL),
 	m_pImage(NULL),
@@ -33,8 +35,7 @@ ExeBinaryFile::~ExeBinaryFile()
 
 bool ExeBinaryFile::RealLoad(const char *sName)
 {
-	FILE *fp;
-	int cb;
+	std::streamsize cb;
 
 	// Always just 3 sections
 	m_iNumSections = 3;
@@ -42,13 +43,16 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	m_pHeader = new exeHeader;
 
 	/* Open the input file */
-	if ((fp = fopen(sName, "rb")) == NULL) {
+	std::ifstream ifs;
+	ifs.open(sName, ifs.binary);
+	if (!ifs.good()) {
 		fprintf(stderr, "Could not open file %s\n", sName);
 		return false;
 	}
 
 	/* Read in first 2 bytes to check EXE signature */
-	if (fread(m_pHeader, 1, 2, fp) != 2) {
+	ifs.read((char *)m_pHeader, 2);
+	if (!ifs.good()) {
 		fprintf(stderr, "Cannot read file %s\n", sName);
 		return false;
 	}
@@ -56,8 +60,9 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	// Check for the "MZ" exe header
 	if (m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z') {
 		/* Read rest of m_pHeader */
-		fseek(fp, 0, SEEK_SET);
-		if (fread(m_pHeader, sizeof *m_pHeader, 1, fp) != 1) {
+		ifs.seekg(0);
+		ifs.read((char *)m_pHeader, sizeof *m_pHeader);
+		if (!ifs.good()) {
 			fprintf(stderr, "Cannot read file %s\n", sName);
 			return false;
 		}
@@ -92,18 +97,18 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 		/* Allocate the relocation table */
 		if (m_cReloc) {
 			m_pRelocTable = new dword[m_cReloc];
-			fseek(fp, LH(&m_pHeader->relocTabOffset), SEEK_SET);
+			ifs.seekg(LH(&m_pHeader->relocTabOffset));
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
 			for (int i = 0; i < m_cReloc; i++) {
 				Byte buf[4];
-				fread(buf, sizeof *buf, 4, fp);
+				ifs.read((char *)buf, 4);
 				m_pRelocTable[i] = LH(buf) + (((int)LH(buf + 2)) << 4);
 			}
 		}
 
 		/* Seek to start of image */
-		fseek(fp, (int)LH(&m_pHeader->numParaHeader) * 16, SEEK_SET);
+		ifs.seekg((int)LH(&m_pHeader->numParaHeader) * 16);
 
 		// Initial PC and SP. Note that we fake the seg:offset by putting
 		// the segment in the top half, and offset in the bottom
@@ -113,8 +118,8 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 		/* COM file
 		 * In this case the load module size is just the file length
 		 */
-		fseek(fp, 0, SEEK_END);
-		cb = ftell(fp);
+		ifs.seekg(0, ifs.end);
+		cb = ifs.tellg();
 
 		/* COM programs start off with an ORG 100H (to leave room for a PSP)
 		 * This is also the implied start address so if we load the image
@@ -124,19 +129,19 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 		m_uInitSP = 0xFFFE;
 		m_cReloc = 0;
 
-		fseek(fp, 0, SEEK_SET);
+		ifs.seekg(0, ifs.beg);
 	}
 
 	/* Allocate a block of memory for the image. */
-	m_cbImage = cb;
 	m_pImage  = new Byte[cb];
 
-	if (cb != (int)fread(m_pImage, sizeof *m_pImage, cb, fp)) {
+	ifs.read((char *)m_pImage, cb);
+	if (!ifs.good()) {
 		fprintf(stderr, "Cannot read file %s\n", sName);
 		return false;
 	}
 
-	fclose(fp);
+	ifs.close();
 
 	/* Relocate segment constants */
 	for (int i = 0; i < m_cReloc; i++) {
@@ -158,7 +163,7 @@ bool ExeBinaryFile::RealLoad(const char *sName)
 	m_pSections[1].bData = true;
 	m_pSections[1].uNativeAddr = 0;
 	m_pSections[1].uHostAddr = (DWord)m_pImage;
-	m_pSections[1].uSectionSize = m_cbImage;
+	m_pSections[1].uSectionSize = cb;
 	m_pSections[1].uSectionEntrySize = 1;  // Not applicable
 
 	m_pSections[2].pSectionName = "$RELOC";  // Special relocation section

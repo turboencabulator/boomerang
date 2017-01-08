@@ -20,6 +20,8 @@
 
 #include "palmsystraps.h"
 
+#include <fstream>
+
 #include <cassert>
 #include <cstdlib>
 #include <cstring>
@@ -46,27 +48,28 @@ PalmBinaryFile::~PalmBinaryFile()
 
 bool PalmBinaryFile::RealLoad(const char *sName)
 {
-	FILE *fp;
-
-	if ((fp = fopen(sName, "rb")) == NULL) {
+	std::ifstream ifs;
+	ifs.open(sName, ifs.binary);
+	if (!ifs.good()) {
 		fprintf(stderr, "Could not open binary file %s\n", sName);
 		return false;
 	}
 
-	fseek(fp, 0, SEEK_END);
-	long size = ftell(fp);
+	ifs.seekg(0, ifs.end);
+	std::streamsize size = ifs.tellg();
 
 	// Allocate a buffer for the image
 	m_pImage = new unsigned char[size];
 	memset(m_pImage, 0, size);
 
-	fseek(fp, 0, SEEK_SET);
-	if (fread(m_pImage, 1, size, fp) != (unsigned)size) {
+	ifs.seekg(0, ifs.beg);
+	ifs.read((char *)m_pImage, size);
+	if (!ifs.good()) {
 		fprintf(stderr, "Error reading binary file %s\n", sName);
 		return false;
 	}
 
-	fclose(fp);
+	ifs.close();
 
 	// Check type at offset 0x3C; should be "appl" (or "palm"; ugh!)
 	if (strncmp((char *)(m_pImage + 0x3C), "appl", 4) != 0

@@ -68,14 +68,13 @@ struct PACKED struct_coff_rel {
 
 
 IntelCoffFile::IntelCoffFile() :
-	BinaryFile(false),
-	m_fd(NULL)
+	BinaryFile(false)
 {
 }
 
 IntelCoffFile::~IntelCoffFile()
 {
-	if (m_fd) fclose(m_fd);
+	if (ifs.is_open()) ifs.close();
 }
 
 SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
@@ -94,12 +93,13 @@ bool IntelCoffFile::RealLoad(const char *sName)
 {
 	printf("IntelCoffFile::RealLoad('%s') called\n", sName);
 
-	m_fd = fopen(sName, "rb");
-	if (m_fd == NULL) return false;
+	ifs.open(sName, ifs.binary);
+	if (!ifs.good()) return false;
 
 	printf("IntelCoffFile opened successful.\n");
 
-	if (!fread(&m_Header, sizeof m_Header, 1, m_fd))
+	ifs.read((char *)&m_Header, sizeof m_Header);
+	if (!ifs.good())
 		return false;
 
 	printf("Read COFF header\n");
@@ -107,12 +107,14 @@ bool IntelCoffFile::RealLoad(const char *sName)
 	// Skip the optional header, if present
 	if (m_Header.coff_opthead_size) {
 		printf("Skipping optional header of %d bytes.\n", (int)m_Header.coff_opthead_size);
-		if (fseek(m_fd, m_Header.coff_opthead_size, SEEK_CUR) != 0)
+		ifs.seekg(m_Header.coff_opthead_size, ifs.cur);
+		if (!ifs.good())
 			return false;
 	}
 
 	struct struc_coff_sect *psh = new struct struc_coff_sect[m_Header.coff_sections];
-	if (fread(psh, sizeof *psh, m_Header.coff_sections, m_fd) != m_Header.coff_sections) {
+	ifs.read((char *)psh, sizeof *psh * m_Header.coff_sections);
+	if (!ifs.good()) {
 		delete [] psh;
 		return false;
 	}
@@ -164,27 +166,31 @@ bool IntelCoffFile::RealLoad(const char *sName)
 
 		SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
 
-		if (fseek(m_fd, psh[iSection].sch_sectptr, SEEK_SET) != 0)
+		ifs.seekg(psh[iSection].sch_sectptr);
+		if (!ifs.good())
 			return false;
 
 		char *pData = (char *)psi->uHostAddr + psh[iSection].sch_virtaddr;
 		if (!(psh[iSection].sch_flags & 0x80)) {
-			if (fread(pData, sizeof *pData, psh[iSection].sch_sectsize, m_fd) != psh[iSection].sch_sectsize)
+			ifs.read(pData, psh[iSection].sch_sectsize);
+			if (!ifs.good())
 				return false;
 		}
 	}
 
 	// Load the symbol table
 	printf("Load symbol table\n");
-	if (fseek(m_fd, m_Header.coff_symtab_ofs, SEEK_SET) != 0)
+	ifs.seekg(m_Header.coff_symtab_ofs);
+	if (!ifs.good())
 		return false;
 	struct coff_symbol *pSymbols = new struct coff_symbol[m_Header.coff_num_syment];
-	if (fread(pSymbols, sizeof *pSymbols, m_Header.coff_num_syment, m_fd) != m_Header.coff_num_syment)
+	ifs.read((char *)pSymbols, sizeof *pSymbols * m_Header.coff_num_syment);
+	if (!ifs.good())
 		return false;
 
 	// TODO: Groesse des Abschnittes vorher bestimmen
 	char *pStrings = new char[0x8000];
-	fread(pStrings, sizeof *pStrings, 0x8000, m_fd);
+	ifs.read(pStrings, 0x8000);
 
 
 	// Run the symbol table
@@ -237,11 +243,13 @@ bool IntelCoffFile::RealLoad(const char *sName)
 		if (!psh[iSection].sch_nreloc) continue;
 
 		//printf("Relocation table at %08lx\n", psh[iSection].sch_relptr);
-		if (fseek(m_fd, psh[iSection].sch_relptr, SEEK_SET) != 0)
+		ifs.seekg(psh[iSection].sch_relptr);
+		if (!ifs.good())
 			return false;
 
 		struct struct_coff_rel *pRel = new struct struct_coff_rel[psh[iSection].sch_nreloc];
-		if (fread(pRel, sizeof *pRel, psh[iSection].sch_nreloc, m_fd) != psh[iSection].sch_nreloc)
+		ifs.read((char *)pRel, sizeof *pRel * psh[iSection].sch_nreloc);
+		if (!ifs.good())
 			return false;
 
 		for (int iReloc = 0; iReloc < psh[iSection].sch_nreloc; iReloc++) {

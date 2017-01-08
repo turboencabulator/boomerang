@@ -27,6 +27,8 @@
 #include <cstdarg>  // For va_list for MinGW at least
 #include "objc/objc-runtime.h"
 
+#include <fstream>
+
 #include <cassert>
 #include <cstring>
 
@@ -69,13 +71,14 @@ ADDRESS MachOBinaryFile::getMainEntryPoint()
 
 bool MachOBinaryFile::RealLoad(const char *sName)
 {
-	FILE *fp = fopen(sName, "rb");
+	std::ifstream ifs;
+	ifs.open(sName, ifs.binary);
 
 	header = new struct mach_header;
-	fread(header, sizeof *header, 1, fp);
+	ifs.read((char *)header, sizeof *header);
 
 	if ((header->magic != MH_MAGIC) && (_BMMH(header->magic) != MH_MAGIC)) {
-		fclose(fp);
+		ifs.close();
 		fprintf(stderr, "error loading file %s, bad Mach-O magic\n", sName);
 		return false;
 	}
@@ -98,25 +101,25 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
 
-	fseek(fp, sizeof *header, SEEK_SET);
+	ifs.seekg(sizeof *header);
 	for (unsigned i = 0; i < BMMH(header->ncmds); i++) {
 		struct load_command cmd;
-		long pos = ftell(fp);
-		fread(&cmd, sizeof cmd, 1, fp);
+		std::streamsize pos = ifs.tellg();
+		ifs.read((char *)&cmd, sizeof cmd);
 
-		fseek(fp, pos, SEEK_SET);
+		ifs.seekg(pos);
 		switch (BMMH(cmd.cmd)) {
 		case LC_SEGMENT:
 			{
 				struct segment_command seg;
-				fread(&seg, sizeof seg, 1, fp);
+				ifs.read((char *)&seg, sizeof seg);
 				segments.push_back(seg);
 #ifdef DEBUG_MACHO_LOADER
 				fprintf(stdout, "seg addr %x size %i fileoff %x filesize %i flags %x\n", BMMH(seg.vmaddr), BMMH(seg.vmsize), BMMH(seg.fileoff), BMMH(seg.filesize), BMMH(seg.flags));
 #endif
 				for (unsigned n = 0; n < BMMH(seg.nsects); n++) {
 					struct section sect;
-					fread(&sect, sizeof sect, 1, fp);
+					ifs.read((char *)&sect, sizeof sect);
 #ifdef DEBUG_MACHO_LOADER
 					fprintf(stdout, "    sectname %s segname %s addr %x size %i flags %x\n", sect.sectname, sect.segname, BMMH(sect.addr), BMMH(sect.size), BMMH(sect.flags));
 #endif
@@ -149,14 +152,14 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 		case LC_SYMTAB:
 			{
 				struct symtab_command syms;
-				fread(&syms, sizeof syms, 1, fp);
-				fseek(fp, BMMH(syms.stroff), SEEK_SET);
+				ifs.read((char *)&syms, sizeof syms);
+				ifs.seekg(BMMH(syms.stroff));
 				strtbl = new char[BMMH(syms.strsize)];
-				fread(strtbl, sizeof *strtbl, BMMH(syms.strsize), fp);
-				fseek(fp, BMMH(syms.symoff), SEEK_SET);
+				ifs.read(strtbl, BMMH(syms.strsize));
+				ifs.seekg(BMMH(syms.symoff));
 				for (unsigned n = 0; n < BMMH(syms.nsyms); n++) {
 					struct nlist sym;
-					fread(&sym, sizeof sym, 1, fp);
+					ifs.read((char *)&sym, sizeof sym);
 					symbols.push_back(sym);
 #ifdef DEBUG_MACHO_LOADER
 					//fprintf(stdout, "got sym %s flags %x value %x\n", strtbl + BMMH(sym.n_un.n_strx), sym.n_type, BMMH(sym.n_value));
@@ -170,7 +173,7 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 		case LC_DYSYMTAB:
 			{
 				struct dysymtab_command syms;
-				fread(&syms, sizeof syms, 1, fp);
+				ifs.read((char *)&syms, sizeof syms);
 #ifdef DEBUG_MACHO_LOADER
 				fprintf(stdout, "dysymtab local %i %i defext %i %i undef %i %i\n",
 				        BMMH(syms.ilocalsym), BMMH(syms.nlocalsym),
@@ -188,8 +191,8 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 				fprintf(stdout, "dysymtab has %i indirect symbols: ", BMMH(syms.nindirectsyms));
 #endif
 				indirectsymtbl = new unsigned[BMMH(syms.nindirectsyms)];
-				fseek(fp, BMMH(syms.indirectsymoff), SEEK_SET);
-				fread(indirectsymtbl, sizeof *indirectsymtbl, BMMH(syms.nindirectsyms), fp);
+				ifs.seekg(BMMH(syms.indirectsymoff));
+				ifs.read((char *)indirectsymtbl, sizeof *indirectsymtbl * BMMH(syms.nindirectsyms));
 #ifdef DEBUG_MACHO_LOADER
 				for (unsigned j = 0; j < BMMH(syms.nindirectsyms); j++) {
 					fprintf(stdout, "%i ", BMMH(indirectsymtbl[j]));
@@ -206,7 +209,7 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 			break;
 		}
 
-		fseek(fp, pos + BMMH(cmd.cmdsize), SEEK_SET);
+		ifs.seekg(pos + BMMH(cmd.cmdsize));
 	}
 
 	struct segment_command *lowest = &segments[0], *highest = &segments[0];
@@ -223,7 +226,7 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	base = new char[loaded_size];
 
 	if (!base) {
-		fclose(fp);
+		ifs.close();
 		fprintf(stderr, "Cannot allocate memory for copy of image\n");
 		return false;
 	}
@@ -232,12 +235,12 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	m_pSections = new SectionInfo[m_iNumSections];
 
 	for (unsigned i = 0; i < segments.size(); i++) {
-		fseek(fp, BMMH(segments[i].fileoff), SEEK_SET);
+		ifs.seekg(BMMH(segments[i].fileoff));
 		ADDRESS a = BMMH(segments[i].vmaddr);
 		unsigned sz = BMMH(segments[i].vmsize);
 		unsigned fsz = BMMH(segments[i].filesize);
 		memset(base + a - loaded_addr, 0, sz);
-		fread(base + a - loaded_addr, 1, fsz, fp);
+		ifs.read(base + a - loaded_addr, fsz);
 #ifdef DEBUG_MACHO_LOADER
 		fprintf(stderr, "loaded segment %x %i in mem %i in file\n", a, sz, fsz);
 #endif
@@ -348,7 +351,7 @@ bool MachOBinaryFile::RealLoad(const char *sName)
 	//ADDRESS entry = getMainEntryPoint();
 	entrypoint = getMainEntryPoint();
 
-	fclose(fp);
+	ifs.close();
 	return true;
 }
 

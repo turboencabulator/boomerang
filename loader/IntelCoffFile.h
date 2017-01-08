@@ -13,6 +13,8 @@
 #include "BinaryFile.h"
 #include "SymTab.h"
 
+#include <fstream>
+
 #include <stdint.h>
 
 #define PACKED __attribute__((packed))
@@ -81,7 +83,7 @@ protected:
 	//virtual bool        PostLoad(void *);
 
 private:
-	FILE *m_fd;
+	std::ifstream ifs;
 	std::list<ADDRESS> m_EntryPoints;
 	std::list<ADDRESS> m_Relocations;
 	struct coff_header m_Header;
