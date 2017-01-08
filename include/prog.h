@@ -232,18 +232,14 @@ public:
 
 	// Hacks for Mike
 	        MACHINE     getMachine() { return pBF->getMachine(); }  // Get a code for the machine e.g. MACHINE_SPARC
-	        const char *getSymbolByAddress(ADDRESS dest) { return pBF->getSymbolByAddress(dest); }  // Get a symbol from an address
 	        const SectionInfo *getSectionInfoByAddr(ADDRESS a) { return pBF->getSectionInfoByAddr(a); }
 	        ADDRESS     getLimitTextLow() { return pBF->getLimitTextLow(); }
 	        ADDRESS     getLimitTextHigh() { return pBF->getLimitTextHigh(); }
 	        bool        isReadOnly(ADDRESS a) { return pBF->isReadOnly(a); }
-	// Read 2, 4, or 8 bytes given a native address
+	// Read 1, 2, or 4 bytes given a native address
 	        int         readNative1(ADDRESS a) { return pBF->readNative1(a); }
 	        int         readNative2(ADDRESS a) { return pBF->readNative2(a); }
 	        int         readNative4(ADDRESS a) { return pBF->readNative4(a); }
-	        float       readNativeFloat4(ADDRESS a) { return pBF->readNativeFloat4(a); }
-	        double      readNativeFloat8(ADDRESS a) { return pBF->readNativeFloat8(a); }
-	        QWord       readNative8(ADDRESS a) { return pBF->readNative8(a); }
 	        Exp        *readNativeAs(ADDRESS uaddr, Type *type);
 	        int         getTextDelta() { return pBF->getTextDelta(); }
 
@@ -253,8 +249,6 @@ public:
 	        bool        processProc(int addr, UserProc *proc) { std::ofstream os; return pFE->processProc((unsigned)addr, proc, os); }  // Decode a proc
 
 	        void        readSymbolFile(const char *fname);
-	        unsigned    getImageSize() { return pBF->getImageSize(); }
-	        ADDRESS     getImageBase() { return pBF->getImageBase(); }
 
 	// Public booleans that are set if and when a register jump or call is
 	// found, respectively

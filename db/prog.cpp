@@ -1478,7 +1478,7 @@ Exp *Prog::readNativeAs(ADDRESS uaddr, Type *type)
 	if (si == NULL)
 		return NULL;
 	if (type->resolvesToPointer()) {
-		ADDRESS init = readNative4(uaddr);
+		ADDRESS init = pBF->readNative4(uaddr);
 		if (init == 0)
 			return new Const(0);
 		const char *nam = getGlobalName(init);
@@ -1556,23 +1556,23 @@ Exp *Prog::readNativeAs(ADDRESS uaddr, Type *type)
 			break;
 		case 16:
 			// Note: must respect endianness
-			e = new Const(readNative2(uaddr));
+			e = new Const(pBF->readNative2(uaddr));
 			break;
 		case 32:
-			e = new Const(readNative4(uaddr));
+			e = new Const(pBF->readNative4(uaddr));
 			break;
 		case 64:
-			e = new Const(readNative8(uaddr));
+			e = new Const(pBF->readNative8(uaddr));
 			break;
 		}
 	}
 	if (type->resolvesToFloat()) {
 		switch (type->asFloat()->getSize()) {
 		case 32:
-			e = new Const(readNativeFloat4(uaddr));
+			e = new Const(pBF->readNativeFloat4(uaddr));
 			break;
 		case 64:
-			e = new Const(readNativeFloat8(uaddr));
+			e = new Const(pBF->readNativeFloat8(uaddr));
 			break;
 		}
 	}
