@@ -321,6 +321,7 @@ int Boomerang::parseCmd(int argc, const char *argv[])
 			std::cerr << "failed to load " << fname << "\n";
 			return 1;
 		}
+		delete prog;
 		prog = p;
 #ifdef USE_XML
 	} else if (!strcmp(argv[0], "load")) {
@@ -330,14 +331,12 @@ int Boomerang::parseCmd(int argc, const char *argv[])
 		}
 		const char *fname = argv[1];
 		Prog *p = loadFromXML(fname);
+		if (p == NULL) p = loadFromXML((outputPath + fname + "/" + fname + ".xml").c_str());  // try guessing
 		if (p == NULL) {
-			// try guessing
-			p = loadFromXML((outputPath + fname + "/" + fname + ".xml").c_str());
-			if (p == NULL) {
-				std::cerr << "failed to read xml " << fname << "\n";
-				return 1;
-			}
+			std::cerr << "failed to read xml " << fname << "\n";
+			return 1;
 		}
+		delete prog;
 		prog = p;
 	} else if (!strcmp(argv[0], "save")) {
 		if (prog == NULL) {
@@ -1097,7 +1096,7 @@ static void stopProcess(int n)
  */
 int Boomerang::decompile(const char *fname, const char *pname)
 {
-	Prog *prog;
+	Prog *prog = NULL;
 	time_t start;
 	time(&start);
 
@@ -1157,6 +1156,7 @@ int Boomerang::decompile(const char *fname, const char *pname)
 
 	std::cout << "output written to " << outputPath << prog->getRootCluster()->getName() << "\n";
 
+	delete prog;
 	if (Boomerang::get()->ofsIndCallReport)
 		ofsIndCallReport->close();
 
