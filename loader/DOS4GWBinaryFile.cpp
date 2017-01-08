@@ -127,8 +127,8 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 	ifs.read((char *)&lxoffLE, sizeof lxoffLE);  // Note: peoffLE will be in Little Endian
 	lxoff = LMMH(lxoffLE);
 
-	ifs.seekg(lxoff);
 	m_pLXHeader = new LXHeader;
+	ifs.seekg(lxoff);
 	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
 
 	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {
@@ -136,8 +136,8 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
-	ifs.seekg(lxoff + LMMH(m_pLXHeader->objtbloffset));
 	m_pLXObjects = new LXObject[LMMH(m_pLXHeader->numobjsinmodule)];
+	ifs.seekg(lxoff + LMMH(m_pLXHeader->objtbloffset));
 	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * LMMH(m_pLXHeader->numobjsinmodule));
 
 	// at this point we're supposed to read in the page table and fuss around with it
@@ -154,8 +154,8 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 	}
 	m_cbImage -= LMMH(m_pLXObjects[0].RelocBaseAddr);
 
-	ifs.seekg(lxoff + LMMH(m_pLXHeader->objpagetbloffset));
 	m_pLXPages = new LXPage[npagetblentries];
+	ifs.seekg(lxoff + LMMH(m_pLXHeader->objpagetbloffset));
 	ifs.read((char *)m_pLXPages, sizeof *m_pLXPages * npagetblentries);
 #endif
 
@@ -195,8 +195,8 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 			m_pSections[n].bData     = (Flags & 0x4) == 0;
 			m_pSections[n].bReadOnly = (Flags & 0x1) == 0;
 
-			ifs.seekg(m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize));
 			unsigned char *p = base + LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr);
+			ifs.seekg(m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize));
 			ifs.read((char *)p, LMMH(m_pLXHeader->pagesize) * LMMH(m_pLXObjects[n].NumPageTblEntries));
 		}
 
@@ -293,8 +293,8 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 #endif
 
 	// fixups
-	ifs.seekg(LMMH(m_pLXHeader->fixuppagetbloffset) + lxoff);
 	unsigned int *fixuppagetbl = new unsigned int[npages + 1];
+	ifs.seekg(LMMH(m_pLXHeader->fixuppagetbloffset) + lxoff);
 	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
 
 #if 0

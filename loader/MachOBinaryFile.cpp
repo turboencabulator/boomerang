@@ -96,7 +96,6 @@ bool MachOBinaryFile::load(std::istream &ifs)
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
 
-	ifs.seekg(sizeof *header);
 	for (unsigned i = 0; i < BMMH(header->ncmds); i++) {
 		struct load_command cmd;
 		std::streamsize pos = ifs.tellg();

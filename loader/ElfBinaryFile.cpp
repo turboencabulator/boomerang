@@ -91,13 +91,13 @@ bool ElfBinaryFile::load(std::istream &ifs)
 		return false;
 	}
 	std::streamsize size = ifs.tellg();
+	ifs.seekg(0, ifs.beg);
 
 	// Allocate memory to hold the file
 	m_pImage = new char[size];
 	Elf32_Ehdr *pHeader = (Elf32_Ehdr *)m_pImage;  // Save a lot of casts
 
 	// Read the whole file in
-	ifs.seekg(0, ifs.beg);
 	ifs.read(m_pImage, size);
 	if (!ifs.good())
 		fprintf(stderr, "WARNING! Only read %ld of %ld bytes of binary file!\n", ifs.gcount(), size);

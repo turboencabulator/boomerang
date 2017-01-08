@@ -100,12 +100,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 	printf("Read COFF header\n");
 
 	// Skip the optional header, if present
-	if (m_Header.coff_opthead_size) {
-		printf("Skipping optional header of %d bytes.\n", (int)m_Header.coff_opthead_size);
-		ifs.seekg(m_Header.coff_opthead_size, ifs.cur);
-		if (!ifs.good())
-			return false;
-	}
+	ifs.seekg(m_Header.coff_opthead_size, ifs.cur);
 
 	struct struc_coff_sect *psh = new struct struc_coff_sect[m_Header.coff_sections];
 	ifs.read((char *)psh, sizeof *psh * m_Header.coff_sections);
@@ -161,12 +156,9 @@ bool IntelCoffFile::load(std::istream &ifs)
 
 		SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
 
-		ifs.seekg(psh[iSection].sch_sectptr);
-		if (!ifs.good())
-			return false;
-
 		char *pData = (char *)psi->uHostAddr + psh[iSection].sch_virtaddr;
 		if (!(psh[iSection].sch_flags & 0x80)) {
+			ifs.seekg(psh[iSection].sch_sectptr);
 			ifs.read(pData, psh[iSection].sch_sectsize);
 			if (!ifs.good())
 				return false;
@@ -175,10 +167,8 @@ bool IntelCoffFile::load(std::istream &ifs)
 
 	// Load the symbol table
 	printf("Load symbol table\n");
-	ifs.seekg(m_Header.coff_symtab_ofs);
-	if (!ifs.good())
-		return false;
 	struct coff_symbol *pSymbols = new struct coff_symbol[m_Header.coff_num_syment];
+	ifs.seekg(m_Header.coff_symtab_ofs);
 	ifs.read((char *)pSymbols, sizeof *pSymbols * m_Header.coff_num_syment);
 	if (!ifs.good())
 		return false;
@@ -238,11 +228,8 @@ bool IntelCoffFile::load(std::istream &ifs)
 		if (!psh[iSection].sch_nreloc) continue;
 
 		//printf("Relocation table at %08lx\n", psh[iSection].sch_relptr);
-		ifs.seekg(psh[iSection].sch_relptr);
-		if (!ifs.good())
-			return false;
-
 		struct struct_coff_rel *pRel = new struct struct_coff_rel[psh[iSection].sch_nreloc];
+		ifs.seekg(psh[iSection].sch_relptr);
 		ifs.read((char *)pRel, sizeof *pRel * psh[iSection].sch_nreloc);
 		if (!ifs.good())
 			return false;
