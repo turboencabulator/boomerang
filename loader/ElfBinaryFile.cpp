@@ -336,11 +336,13 @@ void ElfBinaryFile::AddSyms(int secIndex)
 		ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
 		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
-		std::string str(name);
+
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
-		unsigned pos;
-		if ((pos = str.find("@@")) != std::string::npos)
+		std::string str(name);
+		std::string::size_type pos = str.find("@@");
+		if (pos != std::string::npos)
 			str.erase(pos);
+
 		std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(val);
 		// Ensure no overwriting (except functions)
 		if (aa == m_SymTab.end() || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
@@ -400,11 +402,13 @@ std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 		ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
 		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
-		std::string str(name);
+
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
-		unsigned pos;
-		if ((pos = str.find("@@")) != std::string::npos)
+		std::string str(name);
+		std::string::size_type pos = str.find("@@");
+		if (pos != std::string::npos)
 			str.erase(pos);
+
 		if (ELF32_ST_BIND(m_pSym[i].st_info) == STB_GLOBAL || ELF32_ST_BIND(m_pSym[i].st_info) == STB_WEAK) {
 			if (funcsOnly == false || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
 				if (e_type == E_REL) {
@@ -453,11 +457,13 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 			continue;
 		const char *name = getStrPtr(strSecIdx, elfRead4(&m_pSym[symIndex].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
-		std::string str(name);
+
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
-		unsigned pos;
-		if ((pos = str.find("@@")) != std::string::npos)
+		std::string str(name);
+		std::string::size_type pos = str.find("@@");
+		if (pos != std::string::npos)
 			str.erase(pos);
+
 		std::map<ADDRESS, std::string>::iterator it;
 		// Linear search!
 		for (it = m_SymTab.begin(); it != m_SymTab.end(); it++)
@@ -1217,6 +1223,15 @@ bool ElfBinaryFile::isRelocationAt(ADDRESS uNative)
 	return false;
 }
 
+/**
+ * Given a symbol by name, try to find the corresponding symbol of the source
+ * code file name.
+ *
+ * \param sym  Symbol name.
+ *
+ * \returns Pointer into a string table, pointing to a filename, or NULL if
+ * not found or if it is a zero-length string.
+ */
 const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 {
 	int i;
@@ -1238,27 +1253,27 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 	m_pSym = (Elf32_Sym *)pSect->uHostAddr;  // Pointer to symbols
 	int strIdx = m_sh_link[secIndex];        // sh_link points to the string table
 
-	std::string filename;
+	const char *filename = NULL;
 
 	// Index 0 is a dummy entry
 	for (int i = 1; i < nSyms; i++) {
 		//ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
 		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
-		std::string str(name);
-		// Hack off the "@@GLIBC_2.0" of Linux, if present
-		unsigned pos;
-		if ((pos = str.find("@@")) != std::string::npos)
-			str.erase(pos);
+
 		if (ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FILE) {
-			filename = str;
+			filename = name;
 			continue;
 		}
-		if (str == sym) {
-			if (filename.length())
-				return strdup(filename.c_str());
-			return NULL;
-		}
+
+		// Hack off the "@@GLIBC_2.0" of Linux, if present
+		std::string str(name);
+		std::string::size_type pos = str.find("@@");
+		if (pos != std::string::npos)
+			str.erase(pos);
+
+		if (str == sym)
+			return filename;
 	}
 	return NULL;
 }
