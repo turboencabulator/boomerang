@@ -106,10 +106,11 @@ typedef struct {
 /** \} */
 
 /** \{ */
+#define SHT_SYMTAB      2  ///< Symbol table
+#define SHT_STRTAB      3  ///< String table
+#define SHT_RELA        4  ///< Relocation table (with addend, e.g. RISC)
 #define SHT_NOBITS      8  ///< Bss
 #define SHT_REL         9  ///< Relocation table (no addend)
-#define SHT_RELA        4  ///< Relocation table (with addend, e.g. RISC)
-#define SHT_SYMTAB      2  ///< Symbol table
 #define SHT_DYNSYM     11  ///< Dynamic symbol table
 /** \} */
 

@@ -250,16 +250,19 @@ bool ElfBinaryFile::load(std::istream &ifs)
 }
 
 /**
- * \brief Calc string pointer.
+ * \brief Get string table entry.
  *
- * Like a replacement for elf_strptr().
+ * \param idx     Section index.  Section should be of type SHT_STRTAB.
+ * \param offset  Offset (bytes) within section.
+ *
+ * \returns Pointer into the string table, or NULL on error.
  */
 const char *ElfBinaryFile::getStrPtr(int idx, int offset)
 {
 	if (idx < 0) {
 		// Most commonly, this will be an index of -1, because a call to getSectionIndexByName() failed
 		fprintf(stderr, "Error! getStrPtr passed index of %d\n", idx);
-		return "Error!";
+		return NULL;
 	}
 	// Get a pointer to the start of the string table
 	const char *pSym = (const char *)m_pSections[idx].uHostAddr;
@@ -331,9 +334,9 @@ void ElfBinaryFile::AddSyms(int secIndex)
 	// Index 0 is a dummy entry
 	for (int i = 1; i < nSyms; i++) {
 		ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
-		int name = elfRead4(&m_pSym[i].st_name);
-		if (name == 0)  /* Silly symbols with no names */ continue;
-		std::string str(getStrPtr(strIdx, name));
+		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
+		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
+		std::string str(name);
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -395,9 +398,9 @@ std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 	// Index 0 is a dummy entry
 	for (int i = 1; i < nSyms; i++) {
 		ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
-		int name = elfRead4(&m_pSym[i].st_name);
-		if (name == 0)  /* Silly symbols with no names */ continue;
-		std::string str(getStrPtr(strIdx, name));
+		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
+		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
+		std::string str(name);
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -448,8 +451,9 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 		}
 		if ((flags & R_386_PC32) == 0)
 			continue;
-		if (symIndex == 0)  /* Silly symbols with no names */ continue;
-		std::string str(getStrPtr(strSecIdx, elfRead4(&m_pSym[symIndex].st_name)));
+		const char *name = getStrPtr(strSecIdx, elfRead4(&m_pSym[symIndex].st_name));
+		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
+		std::string str(name);
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
@@ -487,7 +491,6 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 {
 	int hash, numBucket, numChain, y;
 	int *pBuckets, *pChains;    // For symbol table work
-	int found;
 	int *pHash;                 // Pointer to hash table
 	Elf32_Sym *pSym;            // Pointer to the symbol table
 	int iStr;                   // Section index of the string table
@@ -518,15 +521,14 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
 	y = elfRead4(&pBuckets[hash]);  // Look it up in the bucket list
 	// Beware of symbol tables with 0 in the buckets, e.g. libstdc++.
 	// In that case, set found to false.
-	found = (y != 0);
-	if (y) {
-		while (strcmp(pName, getStrPtr(iStr, elfRead4(&pSym[y].st_name))) != 0) {
-			y = elfRead4(&pChains[y]);
-			if (y == 0) {
-				found = false;
-				break;
-			}
+	bool found = false;
+	while (y) {
+		const char *name = getStrPtr(iStr, elfRead4(&pSym[y].st_name));
+		if (name && strcmp(pName, name) == 0) {
+			found = true;
+			break;
 		}
+		y = elfRead4(&pChains[y]);
 	}
 	// Beware of symbols with STT_NOTYPE, e.g. "open" in libstdc++ !
 	// But sometimes "main" has the STT_NOTYPE attribute, so if bNoTypeOK is passed as true, return true
@@ -845,33 +847,34 @@ ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
 std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
 {
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
+
 	const SectionInfo *pSect = getSectionInfoByName(".rel.bss");
-	if (pSect == 0)
-		pSect = getSectionInfoByName(".rela.bss");
+	if (pSect == 0) pSect = getSectionInfoByName(".rela.bss");
 	if (pSect == 0) {
 		// This could easily mean that this file has no dynamic globals, and
 		// that is fine.
 		return ret;
 	}
+	unsigned p = pSect->uHostAddr;
 	int numEnt = pSect->uSectionSize / pSect->uSectionEntrySize;
+
 	const SectionInfo *sym = getSectionInfoByName(".dynsym");
 	if (sym == 0) {
 		fprintf(stderr, "Could not find section .dynsym in source binary file");
 		return ret;
 	}
 	Elf32_Sym *pSym = (Elf32_Sym *)sym->uHostAddr;
+
 	int idxStr = getSectionIndexByName(".dynstr");
 	if (idxStr == -1) {
 		fprintf(stderr, "Could not find section .dynstr in source binary file");
 		return ret;
 	}
 
-	unsigned p = pSect->uHostAddr;
 	for (int i = 0; i < numEnt; i++) {
 		// The ugly p[1] below is because it p might point to an Elf32_Rela struct, or an Elf32_Rel struct
 		int sym = ELF32_R_SYM(((int *)p)[1]);
-		int name = pSym[sym].st_name;  // Index into string table
-		const char *s = getStrPtr(idxStr, name);
+		const char *s = getStrPtr(idxStr, pSym[sym].st_name);
 		ADDRESS val = ((int *)p)[0];
 		(*ret)[val] = s;  // Add the (val, s) mapping to ret
 		p += pSect->uSectionEntrySize;
@@ -1240,9 +1243,9 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 	// Index 0 is a dummy entry
 	for (int i = 1; i < nSyms; i++) {
 		//ADDRESS val = (ADDRESS)elfRead4((int *)&m_pSym[i].st_value);
-		int name = elfRead4(&m_pSym[i].st_name);
-		if (name == 0)  /* Silly symbols with no names */ continue;
-		std::string str(getStrPtr(strIdx, name));
+		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
+		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
+		std::string str(name);
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		unsigned pos;
 		if ((pos = str.find("@@")) != std::string::npos)
