@@ -242,8 +242,8 @@ static bool createDirectory(std::string dir)
 {
 	std::string remainder(dir);
 	std::string path;
-	unsigned i;
-	while ((i = remainder.find('/')) != std::string::npos) {
+	std::string::size_type i;
+	while ((i = remainder.find('/')) != remainder.npos) {
 		path += remainder.substr(0, i + 1);
 		remainder = remainder.substr(i + 1);
 		mkdir(path.c_str(), 0777);  // Doesn't matter if already exists

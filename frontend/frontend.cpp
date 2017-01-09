@@ -243,11 +243,11 @@ void FrontEnd::readLibraryCatalog(const char *sPath)
 	while (!inf.eof()) {
 		std::string sFile;
 		std::getline(inf, sFile);
-		size_t j = sFile.find('#');
-		if (j != std::string::npos)
+		std::string::size_type j = sFile.find('#');
+		if (j != sFile.npos)
 			sFile.erase(j);
 		j = sFile.find_last_not_of(" \t\n\v\f\r");
-		if (j != std::string::npos)
+		if (j != sFile.npos)
 			sFile.erase(j + 1);
 		else
 			continue;

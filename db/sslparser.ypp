@@ -531,23 +531,22 @@ instr
 instr_name
 	: instr_elem { $$ = $1; }
 	| instr_name DECOR {
-		unsigned i;
-		InsNameElem *temp;
 		std::string nm = $2;
+		std::string::size_type i;
 
 		if (nm[0] == '^')
-			nm.replace(0, 1, "");
+			nm.erase(0, 1);
 
 		// remove all " and _, from the decoration
-		while ((i = nm.find("\"")) != nm.npos)
-			nm.replace(i, 1, "");
+		while ((i = nm.find('"')) != nm.npos)
+			nm.erase(i, 1);
 		// replace all '.' with '_'s from the decoration
-		while ((i = nm.find(".")) != nm.npos)
-			nm.replace(i, 1, "_");
-		while ((i = nm.find("_")) != nm.npos)
-			nm.replace(i, 1, "");
+		while ((i = nm.find('.')) != nm.npos)
+			nm[i] = '_';
+		while ((i = nm.find('_')) != nm.npos)
+			nm.erase(i, 1);
 
-		temp = new InsNameElem(nm.c_str());
+		InsNameElem *temp = new InsNameElem(nm.c_str());
 		$$ = $1;
 		$$->append(temp);
 	  }

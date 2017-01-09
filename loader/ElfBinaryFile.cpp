@@ -340,7 +340,7 @@ void ElfBinaryFile::AddSyms(int secIndex)
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		std::string str(name);
 		std::string::size_type pos = str.find("@@");
-		if (pos != std::string::npos)
+		if (pos != str.npos)
 			str.erase(pos);
 
 		std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(val);
@@ -406,7 +406,7 @@ std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		std::string str(name);
 		std::string::size_type pos = str.find("@@");
-		if (pos != std::string::npos)
+		if (pos != str.npos)
 			str.erase(pos);
 
 		if (ELF32_ST_BIND(m_pSym[i].st_info) == STB_GLOBAL || ELF32_ST_BIND(m_pSym[i].st_info) == STB_WEAK) {
@@ -461,7 +461,7 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		std::string str(name);
 		std::string::size_type pos = str.find("@@");
-		if (pos != std::string::npos)
+		if (pos != str.npos)
 			str.erase(pos);
 
 		std::map<ADDRESS, std::string>::iterator it;
@@ -1269,7 +1269,7 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 		// Hack off the "@@GLIBC_2.0" of Linux, if present
 		std::string str(name);
 		std::string::size_type pos = str.find("@@");
-		if (pos != std::string::npos)
+		if (pos != str.npos)
 			str.erase(pos);
 
 		if (str == sym)

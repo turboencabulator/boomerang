@@ -167,7 +167,7 @@ void CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool u
 			ost << c->getFlt();
 			std::string s = ost.str();
 			str << s;
-			if (s.find('.') == std::string::npos)
+			if (s.find('.') == s.npos)
 				str << ".";  // Show that it is a float
 		}
 		break;

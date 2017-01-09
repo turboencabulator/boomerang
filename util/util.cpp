@@ -69,14 +69,13 @@ std::string initCapital(const std::string &s)
  */
 bool hasExt(const std::string &s, const char *ext)
 {
-	std::string tailStr = std::string(".") + std::string(ext);
-	size_t i = s.rfind(tailStr);
-	if (i == std::string::npos) {
+	std::string tailStr(".");
+	tailStr.append(ext);
+	std::string::size_type i = s.rfind(tailStr);
+	if (i == s.npos) {
 		return false;
 	} else {
-		size_t sLen = s.length();
-		size_t tailStrLen = tailStr.length();
-		return ((i + tailStrLen) == sLen);
+		return ((i + tailStr.length()) == s.length());
 	}
 }
 
@@ -89,8 +88,8 @@ bool hasExt(const std::string &s, const char *ext)
  */
 std::string changeExt(const std::string &s, const char *ext)
 {
-	size_t i = s.rfind(".");
-	if (i == std::string::npos) {
+	std::string::size_type i = s.rfind('.');
+	if (i == s.npos) {
 		return s + ext;
 	} else {
 		return s.substr(0, i) + ext;
@@ -109,8 +108,8 @@ std::string searchAndReplace(const std::string &in, const std::string &match,
                              const std::string &rep)
 {
 	std::string result;
-	size_t l, n = 0;
-	while ((l = in.find(match, n)) != std::string::npos) {
+	std::string::size_type l, n = 0;
+	while ((l = in.find(match, n)) != in.npos) {
 		result.append(in.substr(n, l - n));
 		result.append(rep);
 		l += match.length();
@@ -170,9 +169,9 @@ void escapeXMLChars(std::string &s)
 {
 	std::string bad = "<>&";
 	const char *replace[] = { "&lt;", "&gt;", "&amp;" };
-	for (size_t i = 0; i < s.size(); ++i) {
-		size_t n = bad.find(s[i]);
-		if (n != std::string::npos) {
+	for (std::string::size_type i = 0; i < s.size(); ++i) {
+		std::string::size_type n = bad.find(s[i]);
+		if (n != bad.npos) {
 			s.replace(i, 1, replace[n]);
 		}
 	}
