@@ -119,7 +119,6 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 
 	// Allocate a buffer for the image
 	m_pImage = new unsigned char[size];
-	memset(m_pImage, 0, size);
 
 	ifs.seekg(0, ifs.beg);
 	ifs.read((char *)m_pImage, size);
