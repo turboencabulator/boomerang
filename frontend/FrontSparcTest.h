@@ -16,10 +16,10 @@
 class FrontSparcTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE(FrontSparcTest);
 	CPPUNIT_TEST(test1);
-	CPPUNIT_TEST(test2);
+	//CPPUNIT_TEST(test2);
 	CPPUNIT_TEST(test3);
 	CPPUNIT_TEST(testBranch);
-	CPPUNIT_TEST(testDelaySlot);
+	//CPPUNIT_TEST(testDelaySlot);
 	CPPUNIT_TEST_SUITE_END();
 
 public:

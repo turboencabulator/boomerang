@@ -19,7 +19,7 @@ class FrontPentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST(test2);
 	CPPUNIT_TEST(test3);
 	CPPUNIT_TEST(testBranch);
-	CPPUNIT_TEST(testFindMain);
+	//CPPUNIT_TEST(testFindMain);
 	CPPUNIT_TEST_SUITE_END();
 
 public:
