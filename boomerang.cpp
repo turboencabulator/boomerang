@@ -272,24 +272,21 @@ void Cluster::printTree(std::ostream &out)
 		children[i]->printTree(out);
 }
 
-typedef char *crazy_vc_bug;
-
 /**
  * Splits a string up in different words.
  * use like: argc = splitLine(line, &argv);
  *
  * \param[in] line      the string to parse
- * \param[out] pargv    &argv
+ * \param[out] argv     argv array to fill
  *
  * \return The number of words found (argc).
  */
-int Boomerang::splitLine(char *line, char ***pargv)
+int Boomerang::splitLine(char *line, const char *argv[])
 {
 	int argc = 0;
-	*pargv = new crazy_vc_bug[100];
 	char *p = strtok(line, " \r\n");
 	while (p) {
-		(*pargv)[argc++] = p;
+		argv[argc++] = p;
 		p = strtok(NULL, " \r\n");
 	}
 	return argc;
@@ -658,9 +655,9 @@ int Boomerang::cmdLine()
 	printf("boomerang: ");
 	fflush(stdout);
 	while (fgets(line, sizeof line, stdin)) {
-		char **argv;
-		int argc = splitLine(line, &argv);
-		if (parseCmd(argc, (const char **)argv) == 2)
+		const char *argv[100];
+		int argc = splitLine(line, argv);
+		if (parseCmd(argc, argv) == 2)
 			return 2;
 		printf("boomerang: ");
 		fflush(stdout);

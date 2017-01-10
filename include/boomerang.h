@@ -98,7 +98,7 @@ private:
 	static  void        usage();
 	static  void        help();
 	static  void        helpcmd();
-	static  int         splitLine(char *line, char ***pargv);
+	static  int         splitLine(char *line, const char *argv[]);
 	        int         parseCmd(int argc, const char *argv[]);
 	        int         cmdLine();
 
