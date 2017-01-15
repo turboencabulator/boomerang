@@ -23,6 +23,8 @@
 #include <iostream>
 #include <list>
 
+#include <cstddef>
+
 class Exp;
 class Prog;
 
@@ -111,13 +113,13 @@ public:
 	 * Decodes the machine instruction at pc and returns an RTL instance
 	 * for the instruction.
 	 */
-	virtual DecodeResult &decodeInstruction(ADDRESS pc, int delta) = 0;
+	virtual DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) = 0;
 
 	/**
 	 * Disassembles the machine instruction at pc and returns the number
 	 * of bytes disassembled.  Assembler output goes to global _assembly.
 	 */
-	virtual int decodeAssemblyInstruction(ADDRESS pc, int delta) = 0;
+	virtual int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) = 0;
 
 	RTLInstDict &getRTLDict() { return RTLDict; }
 	Prog *getProg() { return prog; }
@@ -127,7 +129,7 @@ protected:
 	Exp *instantiateNamedParam(const char *name, ...);
 	void substituteCallArgs(const char *name, Exp *&exp, ...);
 
-	void unconditionalJump(const char *name, int size, ADDRESS relocd, int delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	void unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 	void computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 	void computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 

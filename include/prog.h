@@ -241,7 +241,7 @@ public:
 	        int         readNative2(ADDRESS a) { return pBF->readNative2(a); }
 	        int         readNative4(ADDRESS a) { return pBF->readNative4(a); }
 	        Exp        *readNativeAs(ADDRESS uaddr, Type *type);
-	        int         getTextDelta() { return pBF->getTextDelta(); }
+	        ptrdiff_t   getTextDelta() { return pBF->getTextDelta(); }
 
 	        bool        isDynamicLinkedProcPointer(ADDRESS dest) { return pBF->isDynamicLinkedProcPointer(dest); }
 	        const char *getDynamicProcName(ADDRESS uNative) { return pBF->getDynamicProcName(uNative); }

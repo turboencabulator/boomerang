@@ -83,7 +83,7 @@ void PentiumDecoder::unused(int x)
  * RETURNS:		   a DecodeResult structure containing all the information gathered during decoding
  *============================================================================*/
 static DecodeResult result;
-DecodeResult& PentiumDecoder::decodeInstruction (ADDRESS pc, int delta)
+DecodeResult &PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	ADDRESS hostPC = pc + delta;
 
@@ -2310,7 +2310,7 @@ PentiumDecoder::PentiumDecoder(Prog* prog) : NJMCDecoder(prog)
 }
 
 // For now...
-int PentiumDecoder::decodeAssemblyInstruction(unsigned, int)
+int PentiumDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 { return 0; }
 
 /*==============================================================================

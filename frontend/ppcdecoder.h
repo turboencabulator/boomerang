@@ -25,8 +25,8 @@ class PPCDecoder : public NJMCDecoder {
 public:
 	PPCDecoder(Prog *prog);
 
-	virtual DecodeResult &decodeInstruction(ADDRESS pc, int delta);
-	virtual int decodeAssemblyInstruction(ADDRESS pc, int delta);
+	virtual DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta);
+	virtual int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta);
 
 private:
 	/*

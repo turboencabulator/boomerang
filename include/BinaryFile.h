@@ -25,6 +25,8 @@
 #include <string>
 #include <vector>
 
+#include <cstddef>
+
 // Given a pointer p, returns the 16 bits (halfword) in the two bytes
 // starting at p.
 #define LH(p) \
@@ -212,7 +214,7 @@ public:
 	virtual size_t      getImageSize() const = 0;
 	        ADDRESS     getLimitTextLow() const { return limitTextLow; }
 	        ADDRESS     getLimitTextHigh() const { return limitTextHigh; }
-	        int         getTextDelta() const { return textDelta; }
+	        ptrdiff_t   getTextDelta() const { return textDelta; }
 
 
 	virtual int         readNative1(ADDRESS a) const;
@@ -320,7 +322,7 @@ protected:
 	 * At this stage, we are assuming that the difference is the same for
 	 * all text sections of the BinaryFile image.
 	 */
-	        int         textDelta;
+	        ptrdiff_t   textDelta;
 };
 
 #endif

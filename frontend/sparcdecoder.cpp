@@ -187,7 +187,8 @@ RTL* SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement*>* stmts, con
  *					interpreter
  * RETURNS:		   a DecodeResult structure containing all the information gathered during decoding
  *============================================================================*/
-DecodeResult& SparcDecoder::decodeInstruction (ADDRESS pc, int delta) { 
+DecodeResult &SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+{
 	static DecodeResult result;
 	ADDRESS hostPC = pc+delta;
 
@@ -3013,7 +3014,7 @@ SparcDecoder::SparcDecoder(Prog* prog) : NJMCDecoder(prog)
 }
 
 // For now...
-int SparcDecoder::decodeAssemblyInstruction(unsigned, int)
+int SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 { return 0; }
 
 

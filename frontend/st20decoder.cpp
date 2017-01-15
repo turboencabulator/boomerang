@@ -46,7 +46,8 @@ void ST20Decoder::unused(int x)
  * RETURNS:		   a DecodeResult structure containing all the information gathered during decoding
  *============================================================================*/
 static	DecodeResult result;
-DecodeResult& ST20Decoder::decodeInstruction (ADDRESS pc, int delta) {
+DecodeResult &ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+{
 	result.reset();							// Clear the result structure (numBytes = 0 etc)
 	ADDRESS hostPC = pc + delta;
 	std::list<Statement*>* stmts = NULL; 	// The actual list of instantiated Statements
@@ -668,7 +669,7 @@ ST20Decoder::ST20Decoder(Prog *prog) : NJMCDecoder(prog)
 }
 
 // For now...
-int ST20Decoder::decodeAssemblyInstruction(unsigned, int)
+int ST20Decoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 { return 0; }
 
 

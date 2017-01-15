@@ -211,7 +211,7 @@ Exp *NJMCDecoder::dis_Num(unsigned num)
  * \note This used to be the UNCOND_JUMP macro; it's extended to handle jumps
  * to other procedures.
  */
-void NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, int delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+void NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;

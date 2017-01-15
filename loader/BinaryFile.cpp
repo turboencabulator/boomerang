@@ -324,7 +324,7 @@ void BinaryFile::getTextLimits()
 			if (textDelta == 0)
 				textDelta = pSect->uHostAddr - pSect->uNativeAddr;
 			else {
-				if (textDelta != (int)(pSect->uHostAddr - pSect->uNativeAddr))
+				if (textDelta != (ptrdiff_t)(pSect->uHostAddr - pSect->uNativeAddr))
 					std::cerr << "warning: textDelta different for section "
 					          << pSect->pSectionName
 					          << " (ignoring).\n";
