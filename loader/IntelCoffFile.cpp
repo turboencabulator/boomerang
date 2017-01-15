@@ -129,6 +129,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 			sidx = m_iNumSections;
 			psi = AddSection(&si);
 		} else {
+			delete [] sectname;
 			psi = getSectionInfo(sidx);
 		}
 
