@@ -152,8 +152,8 @@ public:
 	virtual size_t      getImageSize() const;
 
 protected:
-	        int         win32Read2(short *ps) const;
-	        int         win32Read4(int *pi) const;
+	        int         win32Read2(const short *ps) const;
+	        int         win32Read4(const int *pi) const;
 public:
 	virtual int         readNative1(ADDRESS a) const;
 	virtual int         readNative2(ADDRESS a) const;

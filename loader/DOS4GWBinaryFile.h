@@ -129,8 +129,8 @@ public:
 	virtual size_t      getImageSize() const;
 
 private:
-	        int         dos4gwRead2(short *ps) const;
-	        int         dos4gwRead4(int *pi) const;
+	        int         dos4gwRead2(const short *ps) const;
+	        int         dos4gwRead4(const int *pi) const;
 public:
 	virtual int         readNative1(ADDRESS a) const;
 	virtual int         readNative2(ADDRESS a) const;

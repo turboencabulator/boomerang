@@ -381,9 +381,9 @@ void DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Read 2 bytes from native addr.
  */
-int DOS4GWBinaryFile::dos4gwRead2(short *ps) const
+int DOS4GWBinaryFile::dos4gwRead2(const short *ps) const
 {
-	unsigned char *p = (unsigned char *)ps;
+	const unsigned char *p = (const unsigned char *)ps;
 	// Little endian
 	int n = (int)(p[0] + (p[1] << 8));
 	return n;
@@ -392,9 +392,9 @@ int DOS4GWBinaryFile::dos4gwRead2(short *ps) const
 /**
  * \brief Read 4 bytes from native addr.
  */
-int DOS4GWBinaryFile::dos4gwRead4(int *pi) const
+int DOS4GWBinaryFile::dos4gwRead4(const int *pi) const
 {
-	short *p = (short *)pi;
+	const short *p = (const short *)pi;
 	int n1 = dos4gwRead2(p);
 	int n2 = dos4gwRead2(p + 1);
 	int n = (int)(n1 | (n2 << 16));
@@ -415,7 +415,7 @@ int DOS4GWBinaryFile::readNative2(ADDRESS nat) const
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return dos4gwRead2((short *)host);
+	return dos4gwRead2((const short *)host);
 }
 
 int DOS4GWBinaryFile::readNative4(ADDRESS nat) const
@@ -423,7 +423,7 @@ int DOS4GWBinaryFile::readNative4(ADDRESS nat) const
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return dos4gwRead4((int *)host);
+	return dos4gwRead4((const int *)host);
 }
 
 QWord DOS4GWBinaryFile::readNative8(ADDRESS nat) const

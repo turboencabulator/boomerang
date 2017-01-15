@@ -186,8 +186,8 @@ public:
 	virtual size_t      getImageSize() const;
 
 private:
-	        int         elfRead2(short *ps) const;
-	        int         elfRead4(int *pi) const;
+	        int         elfRead2(const short *ps) const;
+	        int         elfRead4(const int *pi) const;
 	        void        elfWrite4(int *pi, int val);
 	        ADDRESS     NativeToHostAddress(ADDRESS uNative);
 public:

@@ -587,9 +587,9 @@ void Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Read 2 bytes from native addr.
  */
-int Win32BinaryFile::win32Read2(short *ps) const
+int Win32BinaryFile::win32Read2(const short *ps) const
 {
-	unsigned char *p = (unsigned char *)ps;
+	const unsigned char *p = (const unsigned char *)ps;
 	// Little endian
 	int n = (int)(p[0] + (p[1] << 8));
 	return n;
@@ -598,9 +598,9 @@ int Win32BinaryFile::win32Read2(short *ps) const
 /**
  * \brief Read 4 bytes from native addr.
  */
-int Win32BinaryFile::win32Read4(int *pi) const
+int Win32BinaryFile::win32Read4(const int *pi) const
 {
-	short *p = (short *)pi;
+	const short *p = (const short *)pi;
 	int n1 = win32Read2(p);
 	int n2 = win32Read2(p + 1);
 	int n = (int)(n1 | (n2 << 16));
@@ -621,7 +621,7 @@ int Win32BinaryFile::readNative2(ADDRESS nat) const
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return win32Read2((short *)host);
+	return win32Read2((const short *)host);
 }
 
 int Win32BinaryFile::readNative4(ADDRESS nat) const
@@ -629,7 +629,7 @@ int Win32BinaryFile::readNative4(ADDRESS nat) const
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return win32Read4((int *)host);
+	return win32Read4((const int *)host);
 }
 
 QWord Win32BinaryFile::readNative8(ADDRESS nat) const

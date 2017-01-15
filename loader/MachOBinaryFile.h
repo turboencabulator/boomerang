@@ -46,8 +46,8 @@ public:
 	virtual size_t      getImageSize() const;
 
 private:
-	        int         machORead2(short *ps) const;
-	        int         machORead4(int *pi) const;
+	        int         machORead2(const short *ps) const;
+	        int         machORead4(const int *pi) const;
 	        //void          *BMMH(void *x);
 	        char          *BMMH(char *x);
 	        const char    *BMMH(const char *x);

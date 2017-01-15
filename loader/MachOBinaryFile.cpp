@@ -378,9 +378,9 @@ void MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Read 2 bytes from native addr.
  */
-int MachOBinaryFile::machORead2(short *ps) const
+int MachOBinaryFile::machORead2(const short *ps) const
 {
-	unsigned char *p = (unsigned char *)ps;
+	const unsigned char *p = (const unsigned char *)ps;
 	// Big endian
 	int n = (int)(p[1] + (p[0] << 8));
 	return n;
@@ -389,9 +389,9 @@ int MachOBinaryFile::machORead2(short *ps) const
 /**
  * \brief Read 4 bytes from native addr.
  */
-int MachOBinaryFile::machORead4(int *pi) const
+int MachOBinaryFile::machORead4(const int *pi) const
 {
-	short *p = (short *)pi;
+	const short *p = (const short *)pi;
 	int n1 = machORead2(p);
 	int n2 = machORead2(p + 1);
 	int n = (int)(n2 | (n1 << 16));
@@ -468,7 +468,7 @@ int MachOBinaryFile::readNative2(ADDRESS nat) const
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return machORead2((short *)host);
+	return machORead2((const short *)host);
 }
 
 int MachOBinaryFile::readNative4(ADDRESS nat) const
@@ -476,7 +476,7 @@ int MachOBinaryFile::readNative4(ADDRESS nat) const
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (si == 0) return 0;
 	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return machORead4((int *)host);
+	return machORead4((const int *)host);
 }
 
 QWord MachOBinaryFile::readNative8(ADDRESS nat) const
