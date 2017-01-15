@@ -673,145 +673,140 @@ double Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
 
 bool Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
-	if (dlprocptrs.find(uNative) != dlprocptrs.end())
-		return true;
-	return false;
+	return dlprocptrs.find(uNative) != dlprocptrs.end();
 }
 
 bool Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 {
-	if (isMinGWsAllocStack(uNative)
-	 || isMinGWsFrameInit(uNative)
-	 || isMinGWsFrameEnd(uNative)
-	 || isMinGWsCleanupSetup(uNative)
-	 || isMinGWsMalloc(uNative))
-		return true;
-	return false;
+	return isMinGWsAllocStack(uNative)
+	    || isMinGWsFrameInit(uNative)
+	    || isMinGWsFrameEnd(uNative)
+	    || isMinGWsCleanupSetup(uNative)
+	    || isMinGWsMalloc(uNative);
 }
 
 bool Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
 {
-	if (mingw_main) {
-		const SectionInfo *si = getSectionInfoByAddr(uNative);
-		if (si) {
-			ADDRESS host = si->uHostAddr - si->uNativeAddr + uNative;
-			unsigned char pat[] = {
-				0x51, 0x89, 0xE1, 0x83, 0xC1, 0x08, 0x3D, 0x00,
-				0x10, 0x00, 0x00, 0x72, 0x10, 0x81, 0xE9, 0x00,
-				0x10, 0x00, 0x00, 0x83, 0x09, 0x00, 0x2D, 0x00,
-				0x10, 0x00, 0x00, 0xEB, 0xE9, 0x29, 0xC1, 0x83,
-				0x09, 0x00, 0x89, 0xE0, 0x89, 0xCC, 0x8B, 0x08,
-				0x8B, 0x40, 0x04, 0xFF, 0xE0
-			};
-			if (memcmp((void *)host, pat, sizeof pat) == 0) {
-				return true;
-			}
-		}
-	}
-	return false;
+	if (!mingw_main) return false;
+	const SectionInfo *si = getSectionInfoByAddr(uNative);
+	if (!si) return false;
+
+	const char *host = (const char *)si->uHostAddr - si->uNativeAddr + uNative;
+	const unsigned char pat[] = {
+		0x51, 0x89, 0xe1, 0x83, 0xc1, 0x08, 0x3d, 0x00,
+		0x10, 0x00, 0x00, 0x72, 0x10, 0x81, 0xe9, 0x00,
+		0x10, 0x00, 0x00, 0x83, 0x09, 0x00, 0x2d, 0x00,
+		0x10, 0x00, 0x00, 0xeb, 0xe9, 0x29, 0xc1, 0x83,
+		0x09, 0x00, 0x89, 0xe0, 0x89, 0xcc, 0x8b, 0x08,
+		0x8b, 0x40, 0x04, 0xff, 0xe0,
+	};
+	if (memcmp(host, pat, sizeof pat)) return false;
+
+	return true;
 }
 
 bool Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
 {
-	if (mingw_main) {
-		const SectionInfo *si = getSectionInfoByAddr(uNative);
-		if (si) {
-			ADDRESS host = si->uHostAddr - si->uNativeAddr + uNative;
-			unsigned char pat1[] = {
-				0x55, 0x89, 0xE5, 0x83, 0xEC, 0x18, 0x89, 0x7D,
-				0xFC, 0x8B, 0x7D, 0x08, 0x89, 0x5D, 0xF4, 0x89,
-				0x75, 0xF8
-			};
-			if (memcmp((void *)host, pat1, sizeof pat1) == 0) {
-				unsigned char pat2[] = {
-					0x85, 0xD2, 0x74, 0x24, 0x8B, 0x42, 0x2C, 0x85,
-					0xC0, 0x78, 0x3D, 0x8B, 0x42, 0x2C, 0x85, 0xC0,
-					0x75, 0x56, 0x8B, 0x42, 0x28, 0x89, 0x07, 0x89,
-					0x7A, 0x28, 0x8B, 0x5D, 0xF4, 0x8B, 0x75, 0xF8,
-					0x8B, 0x7D, 0xFC, 0x89, 0xEC, 0x5D, 0xC3
-				};
-				if (memcmp((void *)(host + sizeof pat1 + 6), pat2, sizeof pat2) == 0) {
-					return true;
-				}
-			}
-		}
-	}
-	return false;
+	if (!mingw_main) return false;
+	const SectionInfo *si = getSectionInfoByAddr(uNative);
+	if (!si) return false;
+
+	const char *host = (const char *)si->uHostAddr - si->uNativeAddr + uNative;
+	const unsigned char pat1[] = {
+		0x55, 0x89, 0xe5, 0x83, 0xec, 0x18, 0x89, 0x7d,
+		0xfc, 0x8b, 0x7d, 0x08, 0x89, 0x5d, 0xf4, 0x89,
+		0x75, 0xf8,
+	};
+	if (memcmp(host, pat1, sizeof pat1)) return false;
+
+	host += sizeof pat1 + 6;
+	const unsigned char pat2[] = {
+		0x85, 0xd2, 0x74, 0x24, 0x8b, 0x42, 0x2c, 0x85,
+		0xc0, 0x78, 0x3d, 0x8b, 0x42, 0x2c, 0x85, 0xc0,
+		0x75, 0x56, 0x8b, 0x42, 0x28, 0x89, 0x07, 0x89,
+		0x7a, 0x28, 0x8b, 0x5d, 0xf4, 0x8b, 0x75, 0xf8,
+		0x8b, 0x7d, 0xfc, 0x89, 0xec, 0x5d, 0xc3,
+	};
+	if (memcmp(host, pat2, sizeof pat2)) return false;
+
+	return true;
 }
 
 bool Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
 {
-	if (mingw_main) {
-		const SectionInfo *si = getSectionInfoByAddr(uNative);
-		if (si) {
-			ADDRESS host = si->uHostAddr - si->uNativeAddr + uNative;
-			unsigned char pat1[] = {
-				0x55, 0x89, 0xE5, 0x53, 0x83, 0xEC, 0x14, 0x8B, 0x45, 0x08, 0x8B, 0x18
-			};
-			if (memcmp((void *)host, pat1, sizeof pat1) == 0) {
-				unsigned char pat2[] = {
-					0x85, 0xC0, 0x74, 0x1B, 0x8B, 0x48, 0x2C, 0x85, 0xC9, 0x78, 0x34, 0x8B,
-					0x50, 0x2C, 0x85, 0xD2, 0x75, 0x4D, 0x89, 0x58, 0x28, 0x8B, 0x5D, 0xFC,
-					0xC9, 0xC3
-				};
-				if (memcmp((void *)(host + sizeof pat1 + 5), pat2, sizeof pat2) == 0) {
-					return true;
-				}
-			}
-		}
-	}
-	return false;
+	if (!mingw_main) return false;
+	const SectionInfo *si = getSectionInfoByAddr(uNative);
+	if (!si) return false;
+
+	const char *host = (const char *)si->uHostAddr - si->uNativeAddr + uNative;
+	const unsigned char pat1[] = {
+		0x55, 0x89, 0xe5, 0x53, 0x83, 0xec, 0x14, 0x8b,
+		0x45, 0x08, 0x8b, 0x18,
+	};
+	if (memcmp(host, pat1, sizeof pat1)) return false;
+
+	host += sizeof pat1 + 5;
+	const unsigned char pat2[] = {
+		0x85, 0xc0, 0x74, 0x1b, 0x8b, 0x48, 0x2c, 0x85,
+		0xc9, 0x78, 0x34, 0x8b, 0x50, 0x2c, 0x85, 0xd2,
+		0x75, 0x4d, 0x89, 0x58, 0x28, 0x8b, 0x5d, 0xfc,
+		0xc9, 0xc3,
+	};
+	if (memcmp(host, pat2, sizeof pat2)) return false;
+
+	return true;
 }
 
 bool Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
 {
-	if (mingw_main) {
-		const SectionInfo *si = getSectionInfoByAddr(uNative);
-		if (si) {
-			ADDRESS host = si->uHostAddr - si->uNativeAddr + uNative;
-			unsigned char pat1[] = {
-				0x55, 0x89, 0xE5, 0x53, 0x83, 0xEC, 0x04
-			};
-			if (memcmp((void *)host, pat1, sizeof pat1) == 0) {
-				unsigned char pat2[] = {
-					0x85, 0xDB, 0x75, 0x35
-				};
-				if (memcmp((void *)(host + sizeof pat1 + 6), pat2, sizeof pat2) == 0) {
-					unsigned char pat3[] = {
-						0x83, 0xF8, 0xFF, 0x74, 0x24, 0x85, 0xC0, 0x89, 0xC3, 0x74, 0x0E,
-						0x8D, 0x74, 0x26, 0x00
-					};
-					if (memcmp((void *)(host + sizeof pat1 + 6 + sizeof pat2 + 16), pat3, sizeof pat3) == 0) {
-						return true;
-					}
-				}
-			}
-		}
-	}
-	return false;
+	if (!mingw_main) return false;
+	const SectionInfo *si = getSectionInfoByAddr(uNative);
+	if (!si) return false;
+
+	const char *host = (const char *)si->uHostAddr - si->uNativeAddr + uNative;
+	const unsigned char pat1[] = {
+		0x55, 0x89, 0xe5, 0x53, 0x83, 0xec, 0x04,
+	};
+	if (memcmp(host, pat1, sizeof pat1)) return false;
+
+	host += sizeof pat1 + 6;
+	const unsigned char pat2[] = {
+		0x85, 0xdb, 0x75, 0x35,
+	};
+	if (memcmp(host, pat2, sizeof pat2)) return false;
+
+	host += sizeof pat2 + 16;
+	const unsigned char pat3[] = {
+		0x83, 0xf8, 0xff, 0x74, 0x24, 0x85, 0xc0, 0x89,
+		0xc3, 0x74, 0x0e, 0x8d, 0x74, 0x26, 0x00,
+	};
+	if (memcmp(host, pat3, sizeof pat3)) return false;
+
+	return true;
 }
 
 bool Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative)
 {
-	if (mingw_main) {
-		const SectionInfo *si = getSectionInfoByAddr(uNative);
-		if (si) {
-			ADDRESS host = si->uHostAddr - si->uNativeAddr + uNative;
-			unsigned char pat1[] = {
-				0x55, 0x89, 0xE5, 0x8D, 0x45, 0xF4, 0x83, 0xEC, 0x58, 0x89, 0x45, 0xE0, 0x8D, 0x45, 0xC0, 0x89,
-				0x04, 0x24, 0x89, 0x5D, 0xF4, 0x89, 0x75, 0xF8, 0x89, 0x7D, 0xFC
-			};
-			if (memcmp((void *)host, pat1, sizeof pat1) == 0) {
-				unsigned char pat2[] = {
-					0x89, 0x65, 0xE8
-				};
-				if (memcmp((void *)(host + sizeof pat1 + 0x15), pat2, sizeof pat2) == 0) {
-					return true;
-				}
-			}
-		}
-	}
-	return false;
+	if (!mingw_main) return false;
+	const SectionInfo *si = getSectionInfoByAddr(uNative);
+	if (!si) return false;
+
+	const char *host = (const char *)si->uHostAddr - si->uNativeAddr + uNative;
+	const unsigned char pat1[] = {
+		0x55, 0x89, 0xe5, 0x8d, 0x45, 0xf4, 0x83, 0xec,
+		0x58, 0x89, 0x45, 0xe0, 0x8d, 0x45, 0xc0, 0x89,
+		0x04, 0x24, 0x89, 0x5d, 0xf4, 0x89, 0x75, 0xf8,
+		0x89, 0x7d, 0xfc,
+	};
+	if (memcmp(host, pat1, sizeof pat1)) return false;
+
+	host += sizeof pat1 + 0x15;
+	const unsigned char pat2[] = {
+		0x89, 0x65, 0xe8,
+	};
+	if (memcmp(host, pat2, sizeof pat2)) return false;
+
+	return true;
 }
 
 ADDRESS Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
