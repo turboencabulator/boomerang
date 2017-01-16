@@ -230,8 +230,8 @@ public:
 	 */
 	        int         getNumSections() const;
 	        int         getSectionIndexByName(const char *sName) const;
-	        SectionInfo *getSectionInfo(int idx) const;
-	        SectionInfo *getSectionInfoByName(const char *sName) const;
+	        const SectionInfo *getSectionInfo(int idx) const;
+	        const SectionInfo *getSectionInfoByName(const char *sName) const;
 	        const SectionInfo *getSectionInfoByAddr(ADDRESS uEntry) const;
 	        bool        isReadOnly(ADDRESS uEntry) const;
 	/** \} */

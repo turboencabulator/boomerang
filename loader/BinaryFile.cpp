@@ -86,37 +86,40 @@ int BinaryFile::getSectionIndexByName(const char *sName) const
 /**
  * \brief Return section struct.
  */
-SectionInfo *BinaryFile::getSectionInfo(int idx) const
+const SectionInfo *BinaryFile::getSectionInfo(int idx) const
 {
-	return m_pSections + idx;
-}
-
-/**
- * \brief Find the end of a section, given an address in the section.
- */
-const SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
-{
-	SectionInfo *pSect;
-	for (int i = 0; i < m_iNumSections; i++) {
-		pSect = &m_pSections[i];
-		if ((uEntry >= pSect->uNativeAddr)
-		 && (uEntry <  pSect->uNativeAddr + pSect->uSectionSize)) {
-			// We have the right section
-			return pSect;
-		}
+	if (idx < m_iNumSections) {
+		return &m_pSections[idx];
 	}
-	// Failed to find the address
 	return NULL;
 }
 
 /**
- * \brief Find section info given name, or 0 if not found.
+ * \brief Find section info given an address in the section.
  */
-SectionInfo *BinaryFile::getSectionInfoByName(const char *sName) const
+const SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
-	int i = getSectionIndexByName(sName);
-	if (i == -1) return 0;
-	return &m_pSections[i];
+	for (int i = 0; i < m_iNumSections; i++) {
+		const SectionInfo *pSect = &m_pSections[i];
+		if ((uEntry >= pSect->uNativeAddr)
+		 && (uEntry <  pSect->uNativeAddr + pSect->uSectionSize)) {
+			return pSect;
+		}
+	}
+	return NULL;
+}
+
+/**
+ * \brief Find section info given name, or NULL if not found.
+ */
+const SectionInfo *BinaryFile::getSectionInfoByName(const char *sName) const
+{
+	for (int i = 0; i < m_iNumSections; i++) {
+		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
+			return &m_pSections[i];
+		}
+	}
+	return NULL;
 }
 
 /**

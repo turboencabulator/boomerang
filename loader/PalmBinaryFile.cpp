@@ -73,6 +73,8 @@ bool PalmBinaryFile::load(std::istream &ifs)
 
 	// Allocate the section information
 	m_pSections = new SectionInfo[m_iNumSections];
+	SectionInfo *pData = NULL;
+	const SectionInfo *pCode0 = NULL;
 
 	// Iterate through the resource headers (generating section info structs)
 	unsigned char *p = m_pImage + 0x4E;          // First resource header
@@ -88,9 +90,18 @@ bool PalmBinaryFile::load(std::istream &ifs)
 		unsigned id = (p[0] << 8) + p[1];
 		p += 2;
 
-		// Decide if code or data; note that code0 is a special case (not code)
-		m_pSections[i].bCode = strcmp(name, "code") == 0 && id != 0;
+		// Decide if code or data
+		m_pSections[i].bCode = strcmp(name, "code") == 0;
 		m_pSections[i].bData = strcmp(name, "data") == 0;
+
+		if (m_pSections[i].bCode && id == 0) {
+			// Note that code0 is a special case (not code)
+			m_pSections[i].bCode = false;
+			pCode0 = &m_pSections[i];
+		}
+		if (m_pSections[i].bData && id == 0) {
+			pData = &m_pSections[i];
+		}
 
 		// Join the id to the name, e.g. code0, data12
 		snprintf(name + 4, 6, "%u", id);
@@ -112,14 +123,11 @@ bool PalmBinaryFile::load(std::istream &ifs)
 	m_pSections[m_iNumSections - 1].uSectionSize = size - off;
 
 	// Create a separate, uncompressed, initialised data section
-	SectionInfo *pData = getSectionInfoByName("data0");
-	if (pData == 0) {
+	if (!pData) {
 		fprintf(stderr, "No data section!\n");
 		return false;
 	}
-
-	const SectionInfo *pCode0 = getSectionInfoByName("code0");
-	if (pCode0 == 0) {
+	if (!pCode0) {
 		fprintf(stderr, "No code 0 section!\n");
 		return false;
 	}
@@ -405,7 +413,7 @@ static SWord *findPattern(SWord *start, const SWord *patt, int pattSize, int max
  */
 ADDRESS PalmBinaryFile::getMainEntryPoint()
 {
-	SectionInfo *pSect = getSectionInfoByName("code1");
+	const SectionInfo *pSect = getSectionInfoByName("code1");
 	if (pSect == 0)
 		return 0;  // Failed
 	// Return the start of the code1 section

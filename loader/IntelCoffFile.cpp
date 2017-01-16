@@ -130,7 +130,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 			psi = AddSection(&si);
 		} else {
 			delete [] sectname;
-			psi = getSectionInfo(sidx);
+			psi = &m_pSections[sidx];
 		}
 
 		psh[iSection].sch_virtaddr = psi->uSectionSize;
@@ -142,7 +142,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 
 	ADDRESS a = 0x40000000;
 	for (int sidx = 0; sidx < m_iNumSections; sidx++) {
-		SectionInfo *psi = getSectionInfo(sidx);
+		SectionInfo *psi = &m_pSections[sidx];
 		if (psi->uSectionSize > 0) {
 			char *pData = new char[psi->uSectionSize];
 			psi->uHostAddr = (ADDRESS)pData;
