@@ -63,6 +63,8 @@ static LOADFMT magic(std::istream &ifs)
 	if (TESTMAGIC4(buf, 0, '\x7f', 'E', 'L', 'F')) {
 		/* ELF Binary */
 		return LOADFMT_ELF;
+	} else if (TESTMAGIC2(buf, 0, '\x4c', '\x01')) {
+		return LOADFMT_COFF;
 	} else if (TESTMAGIC2(buf, 0, 'M', 'Z')) {
 		/* DOS-based file */
 		int peoff = LMMH(buf[0x3c]);
@@ -90,14 +92,12 @@ static LOADFMT magic(std::istream &ifs)
 	        || TESTMAGIC4(buf, 0, '\xce', '\xfa', '\xed', '\xfe')) {
 		/* Mach-O Mac OS-X binary */
 		return LOADFMT_MACHO;
-	} else if (buf[0] == '\x02'
-	        && buf[2] == '\x01'
+	} else if ((buf[0] == '\x02')
 	        && (buf[1] == '\x10' || buf[1] == '\x0b')
-	        && (buf[3] == '\x07' || buf[3] == '\x08' || buf[4] == '\x0b')) {
+	        && (buf[2] == '\x01')
+	        && (buf[3] == '\x07' || buf[3] == '\x08' || buf[3] == '\x0b')) {
 		/* HP Som binary (last as it's not really particularly good magic) */
 		return LOADFMT_PAR;
-	} else if (TESTMAGIC2(buf, 0, '\x4c', '\x01')) {
-		return LOADFMT_COFF;
 	}
 	return LOADFMT_UNKNOWN;
 }
