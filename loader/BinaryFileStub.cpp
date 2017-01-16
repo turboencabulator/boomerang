@@ -214,7 +214,7 @@ BinaryFileStub::BinaryFileStub()
 
 	m_pSections[0].pSectionName = ".text";
 	m_pSections[0].uNativeAddr = 0x8048810;
-	m_pSections[0].uHostAddr = (ADDRESS)pent_hello_text;
+	m_pSections[0].uHostAddr = pent_hello_text;
 	m_pSections[0].uSectionSize = sizeof pent_hello_text;
 	m_pSections[0].uSectionEntrySize = 0;
 	m_pSections[0].uType = 0;

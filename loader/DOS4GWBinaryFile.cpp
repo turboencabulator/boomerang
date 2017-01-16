@@ -187,7 +187,7 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 			snprintf(name, sizeof (char[9]), "seg%i", n);  // no section names in LX
 			m_pSections[n].pSectionName = name;
 			m_pSections[n].uNativeAddr = (ADDRESS)LMMH(m_pLXObjects[n].RelocBaseAddr);
-			m_pSections[n].uHostAddr = (ADDRESS)(LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr) + base);
+			m_pSections[n].uHostAddr = (char *)(LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr) + base);
 			m_pSections[n].uSectionSize = LMMH(m_pLXObjects[n].VirtualSize);
 			DWord Flags = LMMH(m_pLXObjects[n].ObjectFlags);
 			m_pSections[n].bBss      = false; // TODO
@@ -404,26 +404,22 @@ int DOS4GWBinaryFile::dos4gwRead4(const int *pi) const
 int DOS4GWBinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (si == 0)
-		si = getSectionInfo(0);
-	char *host = (char *)(si->uHostAddr - si->uNativeAddr + nat);
-	return *host;
+	if (!si) si = getSectionInfo(0);
+	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
 int DOS4GWBinaryFile::readNative2(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (si == 0) return 0;
-	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return dos4gwRead2((const short *)host);
+	if (!si) return 0;
+	return dos4gwRead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
 int DOS4GWBinaryFile::readNative4(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (si == 0) return 0;
-	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return dos4gwRead4((const int *)host);
+	if (!si) return 0;
+	return dos4gwRead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
 QWord DOS4GWBinaryFile::readNative8(ADDRESS nat) const

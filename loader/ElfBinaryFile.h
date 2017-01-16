@@ -189,7 +189,7 @@ private:
 	        int         elfRead2(const short *ps) const;
 	        int         elfRead4(const int *pi) const;
 	        void        elfWrite4(int *pi, int val);
-	        ADDRESS     NativeToHostAddress(ADDRESS uNative);
+	        const char *NativeToHostAddress(ADDRESS uNative);
 public:
 	virtual int         readNative1(ADDRESS a) const;
 	virtual int         readNative2(ADDRESS a) const;
@@ -270,7 +270,7 @@ private:
 	        bool        ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK = false);
 	        bool        SearchValueByName(const char *pName, SymValue *pVal);
 	        bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName);
-	        ADDRESS     findRelPltOffset(int i, ADDRESS addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
+	        ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
 
 	        char       *m_pImage;                   ///< Pointer to the loaded image.
 	        Elf32_Phdr *m_pPhdrs;                   ///< Pointer to program headers.

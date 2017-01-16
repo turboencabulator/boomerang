@@ -108,7 +108,7 @@ public:
 
 	// Lookup the given native address in the code section, returning a host pointer corresponding to the same
 	// address
-	        const void *getCodeInfo(ADDRESS uAddr, const char *&last, int &delta);
+	        const void *getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta);
 
 	        const char *getRegName(int idx) { return pFE->getRegName(idx); }
 	        int         getRegSize(int idx) { return pFE->getRegSize(idx); }

@@ -145,7 +145,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 		SectionInfo *psi = &m_pSections[sidx];
 		if (psi->uSectionSize > 0) {
 			char *pData = new char[psi->uSectionSize];
-			psi->uHostAddr = (ADDRESS)pData;
+			psi->uHostAddr = pData;
 			psi->uNativeAddr = a;
 			a += psi->uSectionSize;
 		}
@@ -157,7 +157,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 
 		const SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
 
-		char *pData = (char *)psi->uHostAddr + psh[iSection].sch_virtaddr;
+		char *pData = psi->uHostAddr + psh[iSection].sch_virtaddr;
 		if (!(psh[iSection].sch_flags & 0x80)) {
 			ifs.seekg(psh[iSection].sch_sectptr);
 			ifs.read(pData, psh[iSection].sch_sectsize);
@@ -224,7 +224,7 @@ bool IntelCoffFile::load(std::istream &ifs)
 	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
 		//printf("Relocating section %d of %hd\n", iSection + 1, m_Header.coff_sections);
 		const SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
-		char *pData = (char *)psi->uHostAddr + psh[iSection].sch_virtaddr;
+		char *pData = psi->uHostAddr + psh[iSection].sch_virtaddr;
 
 		if (!psh[iSection].sch_nreloc) continue;
 

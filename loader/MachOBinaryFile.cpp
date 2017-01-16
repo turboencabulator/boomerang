@@ -238,7 +238,7 @@ bool MachOBinaryFile::load(std::istream &ifs)
 		name[16] = '\0';
 		m_pSections[i].pSectionName = name;
 		m_pSections[i].uNativeAddr = BMMH(segments[i].vmaddr);
-		m_pSections[i].uHostAddr = (ADDRESS)base + BMMH(segments[i].vmaddr) - loaded_addr;
+		m_pSections[i].uHostAddr = base + BMMH(segments[i].vmaddr) - loaded_addr;
 		m_pSections[i].uSectionSize = BMMH(segments[i].vmsize);
 
 		unsigned long l = BMMH(segments[i].initprot);
@@ -457,26 +457,22 @@ unsigned short MachOBinaryFile::BMMHW(unsigned short x)
 int MachOBinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (si == 0)
-		si = getSectionInfo(0);
-	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return *(char *)host;
+	if (!si) si = getSectionInfo(0);
+	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
 int MachOBinaryFile::readNative2(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (si == 0) return 0;
-	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return machORead2((const short *)host);
+	if (!si) return 0;
+	return machORead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
 int MachOBinaryFile::readNative4(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (si == 0) return 0;
-	ADDRESS host = si->uHostAddr - si->uNativeAddr + nat;
-	return machORead4((const int *)host);
+	if (!si) return 0;
+	return machORead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
 QWord MachOBinaryFile::readNative8(ADDRESS nat) const

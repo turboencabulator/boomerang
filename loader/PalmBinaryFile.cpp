@@ -110,7 +110,7 @@ bool PalmBinaryFile::load(std::istream &ifs)
 		off = UINT4(p);
 		p += 4;
 		m_pSections[i].uNativeAddr = off;
-		m_pSections[i].uHostAddr = off + (ADDRESS)m_pImage;
+		m_pSections[i].uHostAddr = (char *)m_pImage + off;
 
 		// Guess the length
 		if (i > 0) {
@@ -245,7 +245,7 @@ bool PalmBinaryFile::load(std::istream &ifs)
 	//       pData->uSectionSize - in, pData->uSectionSize);
 
 	// Replace the data pointer and size with the uncompressed versions
-	pData->uHostAddr = (ADDRESS)m_pData;
+	pData->uHostAddr = (char *)m_pData;
 	pData->uSectionSize = sizeData;
 	// May as well make the native address zero; certainly the offset in the
 	// file is no longer appropriate (and is confusing)
@@ -418,7 +418,7 @@ ADDRESS PalmBinaryFile::getMainEntryPoint()
 		return 0;  // Failed
 	// Return the start of the code1 section
 	SWord *startCode = (SWord *)pSect->uHostAddr;
-	int delta = pSect->uHostAddr - pSect->uNativeAddr;
+	ptrdiff_t delta = pSect->uHostAddr - (char *)pSect->uNativeAddr;
 
 	// First try the CW first jump pattern
 	SWord *res = findPattern(startCode, CWFirstJump, sizeof CWFirstJump / sizeof *CWFirstJump, 1);
@@ -472,7 +472,7 @@ void PalmBinaryFile::generateBinFiles(const std::string &path) const
 				fprintf(stderr, "Could not open %s for writing binary file\n", fullName.c_str());
 				return;
 			}
-			fwrite((void *)pSect->uHostAddr, pSect->uSectionSize, 1, f);
+			fwrite(pSect->uHostAddr, pSect->uSectionSize, 1, f);
 			fclose(f);
 		}
 	}

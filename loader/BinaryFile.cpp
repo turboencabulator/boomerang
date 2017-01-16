@@ -30,8 +30,8 @@
  */
 SectionInfo::SectionInfo() :
 	pSectionName(NULL),
+	uHostAddr(NULL),
 	uNativeAddr(0),
-	uHostAddr(0),
 	uSectionSize(0),
 	uSectionEntrySize(0),
 	uType(0),
@@ -325,9 +325,9 @@ void BinaryFile::getTextLimits()
 			if (hiAddress > limitTextHigh)
 				limitTextHigh = hiAddress;
 			if (textDelta == 0)
-				textDelta = pSect->uHostAddr - pSect->uNativeAddr;
+				textDelta = pSect->uHostAddr - (char *)pSect->uNativeAddr;
 			else {
-				if (textDelta != (ptrdiff_t)(pSect->uHostAddr - pSect->uNativeAddr))
+				if (textDelta != pSect->uHostAddr - (char *)pSect->uNativeAddr)
 					std::cerr << "warning: textDelta different for section "
 					          << pSect->pSectionName
 					          << " (ignoring).\n";

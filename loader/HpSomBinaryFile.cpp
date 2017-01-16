@@ -81,7 +81,7 @@ bool isSTW(unsigned instr)
 	return (instr == 0x6bc23fd1);
 }
 
-bool isStub(ADDRESS hostAddr, int &offset)
+bool isStub(const char *hostAddr, int &offset)
 {
 	// Looking for this pattern:
 	// 2600: 4b753f91  LDW         -56(%s0,%r27),%r21
@@ -194,7 +194,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	// Section 0: header
 	m_pSections[0].pSectionName = "$HEADER$";
 	m_pSections[0].uNativeAddr = 0;         // Not applicable
-	m_pSections[0].uHostAddr = (ADDRESS)m_pImage;
+	m_pSections[0].uHostAddr = (char *)m_pImage;
 	//m_pSections[0].uSectionSize = AUXHDR(4);
 	// There is nothing that appears in memory space here; to give this a size
 	// is to invite getSectionInfoByAddr to return this section!
@@ -209,7 +209,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	// Section 1: text (code)
 	m_pSections[1].pSectionName = "$TEXT$";
 	m_pSections[1].uNativeAddr = AUXHDR(3);
-	m_pSections[1].uHostAddr = (ADDRESS)m_pImage + AUXHDR(4);
+	m_pSections[1].uHostAddr = (char *)m_pImage + AUXHDR(4);
 	m_pSections[1].uSectionSize = AUXHDR(2);
 	m_pSections[1].uSectionEntrySize = 1;   // Not applicable
 	m_pSections[1].bCode = true;
@@ -220,7 +220,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	// Section 2: initialised data
 	m_pSections[2].pSectionName = "$DATA$";
 	m_pSections[2].uNativeAddr = AUXHDR(6);
-	m_pSections[2].uHostAddr = (ADDRESS)m_pImage + AUXHDR(7);
+	m_pSections[2].uHostAddr = (char *)m_pImage + AUXHDR(7);
 	m_pSections[2].uSectionSize = AUXHDR(5);
 	m_pSections[2].uSectionEntrySize = 1;   // Not applicable
 	m_pSections[2].bCode = false;
@@ -242,8 +242,8 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 
 	// Work through the imports, and find those for which there are stubs using that import entry.
 	// Add the addresses of any such stubs.
-	int deltaText = m_pSections[1].uHostAddr - m_pSections[1].uNativeAddr;
-	int deltaData = m_pSections[2].uHostAddr - m_pSections[2].uNativeAddr;
+	ptrdiff_t deltaText = m_pSections[1].uHostAddr - (char *)m_pSections[1].uNativeAddr;
+	ptrdiff_t deltaData = m_pSections[2].uHostAddr - (char *)m_pSections[2].uNativeAddr;
 	// The "end of data" where r27 points is not necessarily the same as
 	// the end of the $DATA$ space. So we have to call getSubSpaceInfo
 	std::pair<unsigned, int> pr = getSubspaceInfo("$GLOBAL$");
@@ -261,9 +261,9 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	// This code was for pattern patching the BOR (Bind On Reference, or library call stub) routines. It appears to be
 	// unnecessary, since as they appear in the file, the PLT entries point to the BORs
 #if 0
-	ADDRESS startText = m_pSections[1].uHostAddr;
-	ADDRESS endText = startText + m_pSections[1].uSectionSize - 0x10;
-	ADDRESS host;
+	const char *startText = m_pSections[1].uHostAddr;
+	const char *endText = startText + m_pSections[1].uSectionSize - 0x10;
+	const char *host;
 	for (host = startText; host != endText; host += 4) {
 		// Test this location for a BOR (library stub)
 		int offset;

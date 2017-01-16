@@ -92,8 +92,8 @@ struct SectionInfo {
 	virtual bool isAddressBss(ADDRESS a) const { return bBss != 0; }
 
 	const char *pSectionName;       ///< Name of section.
+	char       *uHostAddr;          ///< Host or actual address of data.
 	ADDRESS     uNativeAddr;        ///< Logical or native load address.
-	ADDRESS     uHostAddr;          ///< Host or actual address of data.
 	ADDRESS     uSectionSize;       ///< Size of section in bytes.
 	ADDRESS     uSectionEntrySize;  ///< Size of one section entry (if applic).
 	unsigned    uType;              ///< Type of section (format dependent).

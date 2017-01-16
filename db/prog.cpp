@@ -807,7 +807,7 @@ const char *Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false *
 	if (si && !si->isAddressBss(uaddr)) {
 		// At this stage, only support ascii, null terminated, non unicode strings.
 		// At least 4 of the first 6 chars should be printable ascii
-		const char *p = (const char *)(uaddr + si->uHostAddr - si->uNativeAddr);
+		const char *p = &si->uHostAddr[uaddr - si->uNativeAddr];
 		if (knownString)
 			// No need to guess... this is hopefully a known string
 			return p;
@@ -982,23 +982,21 @@ UserProc *Prog::getNextUserProc(std::list<Proc *>::iterator &it)
  * RETURNS:     Host pointer if in range; NULL if not
  *              Also sets 2 reference parameters (see above)
  *============================================================================*/
-const void *Prog::getCodeInfo(ADDRESS uAddr, const char *&last, int &delta)
+const void *Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta)
 {
 	delta = 0;
 	last = 0;
 	int n = pBF->getNumSections();
-	int i;
 	// Search all code and read-only sections
-	for (i = 0; i < n; i++) {
+	for (int i = 0; i < n; i++) {
 		const SectionInfo *pSect = pBF->getSectionInfo(i);
 		if ((!pSect->bCode) && (!pSect->bReadOnly))
 			continue;
 		if ((uAddr < pSect->uNativeAddr) || (uAddr >= pSect->uNativeAddr + pSect->uSectionSize))
 			continue;  // Try the next section
-		delta = pSect->uHostAddr - pSect->uNativeAddr;
-		last = (const char *)(pSect->uHostAddr + pSect->uSectionSize);
-		const char *p = (const char *)(uAddr + delta);
-		return p;
+		delta = pSect->uHostAddr - (char *)pSect->uNativeAddr;
+		last = pSect->uHostAddr + pSect->uSectionSize;
+		return (const void *)(uAddr + delta);
 	}
 	return NULL;
 }
@@ -1549,7 +1547,7 @@ Exp *Prog::readNativeAs(ADDRESS uaddr, Type *type)
 			size = type->asSize()->getSize();
 		switch (size) {
 		case 8:
-			e = new Const((int)*(char *)(uaddr + si->uHostAddr - si->uNativeAddr));
+			e = new Const((int)si->uHostAddr[uaddr - si->uNativeAddr]);
 			break;
 		case 16:
 			// Note: must respect endianness
