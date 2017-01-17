@@ -171,7 +171,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	m_pSections = new SectionInfo[m_iNumSections];
 
 	// Find the main symbol table, if it exists
-	ADDRESS symPtr = (ADDRESS)m_pImage + UINT4(m_pImage + 0x5C);
+	const char *symPtr = (const char *)m_pImage + UINT4(m_pImage + 0x5C);
 	unsigned numSym = UINT4(m_pImage + 0x60);
 
 	// Find the DL Table, if it exists
