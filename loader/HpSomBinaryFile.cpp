@@ -142,13 +142,13 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	// Find the array of aux headers
 	unsigned *auxHeaders = (unsigned *)UINT4(m_pImage + 0x1c);
 	if (auxHeaders == 0) {
-		fprintf(stderr, "Error: auxilliary header array is not present\n");
+		fprintf(stderr, "Error: auxiliary header array is not present\n");
 		return false;
 	}
 	// Get the size of the aux headers
 	unsigned sizeAux = UINT4(m_pImage + 0x20);
-	// Search through the auxillary headers. There should be one of type 4
-	// ("Exec Auxilliary Header")
+	// Search through the auxiliary headers.
+	// There should be one of type 4 ("Exec Auxiliary Header").
 	bool found = false;
 	unsigned *maxAux = auxHeaders + sizeAux;
 	while (auxHeaders < maxAux) {
@@ -161,7 +161,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 		auxHeaders += (UINT4((UC(auxHeaders + 1)))) >> 2;
 	}
 	if (!found) {
-		fprintf(stderr, "Error: Exec auxilliary header not found\n");
+		fprintf(stderr, "Error: Exec auxiliary header not found\n");
 		return false;
 	}
 
@@ -187,7 +187,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	unsigned numExports = UINT4(DLTable + 0x24);    // Number of export strings
 	export_entry *export_list = (export_entry *)(DLTable + UINT4(DLTable + 0x20));
 
-// A convenient macro for accessing the fields (0-11) of the auxilliary header
+// A convenient macro for accessing the fields (0-11) of the auxiliary header
 // Fields 0, 1 are the header (flags, aux header type, and size)
 #define AUXHDR(idx) (UINT4(m_pImage + (int)(auxHeaders + idx)))
 
@@ -254,7 +254,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	ADDRESS pltStart = pr.first;
 	//cout << "Offset limits are " << dec << minPLT << " and " << maxPLT << endl;
 	// Note: DLT entries come before PLT entries in the import array, but
-	// the $DLT$ subsection is not necessarilly just before the $PLT$
+	// the $DLT$ subsection is not necessarily just before the $PLT$
 	// subsection in memory.
 	int numDLT = UINT4(DLTable + 0x40);
 
