@@ -140,25 +140,25 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	}
 
 	// Find the array of aux headers
-	unsigned *auxHeaders = (unsigned *)UINT4(m_pImage + 0x1c);
-	if (auxHeaders == 0) {
+	unsigned auxHeaders = UINT4(m_pImage + 0x1c);
+	// Get the size of the aux headers
+	unsigned sizeAux = UINT4(m_pImage + 0x20);
+	if (!auxHeaders || !sizeAux) {
 		fprintf(stderr, "Error: auxiliary header array is not present\n");
 		return false;
 	}
-	// Get the size of the aux headers
-	unsigned sizeAux = UINT4(m_pImage + 0x20);
 	// Search through the auxiliary headers.
 	// There should be one of type 4 ("Exec Auxiliary Header").
 	bool found = false;
-	unsigned *maxAux = auxHeaders + sizeAux;
+	unsigned maxAux = auxHeaders + sizeAux;
 	while (auxHeaders < maxAux) {
-		if ((UINT4(m_pImage + (int)auxHeaders) & 0xFFFF) == 0x0004) {
+		if ((UINT4(m_pImage + auxHeaders) & 0xFFFF) == 0x0004) {
 			found = true;
 			break;
 		}
-		// Skip this one; length is at the second word. Rightshift by 2 for
-		// sizeof(unsigned).
-		auxHeaders += (UINT4((UC(auxHeaders + 1)))) >> 2;
+		// Skip this one; length is at the second word and does NOT include
+		// the 2-word header.  Round the length up to the next word boundary.
+		auxHeaders += (UINT4(m_pImage + auxHeaders + 4) + 11) & ~3;
 	}
 	if (!found) {
 		fprintf(stderr, "Error: Exec auxiliary header not found\n");
@@ -189,7 +189,7 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 
 // A convenient macro for accessing the fields (0-11) of the auxiliary header
 // Fields 0, 1 are the header (flags, aux header type, and size)
-#define AUXHDR(idx) (UINT4(m_pImage + (int)(auxHeaders + idx)))
+#define AUXHDR(idx) (UINT4(m_pImage + auxHeaders + 4*idx))
 
 	// Section 0: header
 	m_pSections[0].pSectionName = "$HEADER$";
