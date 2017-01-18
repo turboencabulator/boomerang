@@ -436,34 +436,34 @@ bool Win32BinaryFile::load(std::istream &ifs)
 	}
 
 	// Add the Import Address Table entries to the symbol table
-	PEImportDtor *id = (PEImportDtor *)(LMMH(m_pPEHeader->ImportTableRVA) + base);
 	if (m_pPEHeader->ImportTableRVA) {  // If any import table entry exists
+		const PEImportDtor *id = (const PEImportDtor *)(base + LMMH(m_pPEHeader->ImportTableRVA));
 		while (id->name != 0) {
-			char *dllName = LMMH(id->name) + (char *)base;
+			const char *dllName = (const char *)(base + LMMH(id->name));
 			unsigned thunk = id->originalFirstThunk ? id->originalFirstThunk : id->firstThunk;
-			unsigned *iat = (unsigned *)(LMMH(thunk) + base);
+			const unsigned *iat = (const unsigned *)(base + LMMH(thunk));
 			unsigned iatEntry = LMMH(*iat);
-			ADDRESS paddr = LMMH(id->firstThunk) + LMMH(m_pPEHeader->Imagebase);
+			ADDRESS paddr = LMMH(m_pPEHeader->Imagebase) + LMMH(id->firstThunk);
 			while (iatEntry) {
 				if (iatEntry >> 31) {
 					// This is an ordinal number (stupid idea)
-					std::ostringstream ost;
 					std::string nodots(dllName);
-					int len = nodots.size();
-					for (int j = 0; j < len; j++)
-						if (nodots[j] == '.')
-							nodots[j] = '_';  // Dots can't be in identifiers
+					for (std::string::iterator it = nodots.begin(); it != nodots.end(); ++it)
+						if (*it == '.')
+							*it = '_';  // Dots can't be in identifiers
+					std::ostringstream ost;
 					ost << nodots << "_" << (iatEntry & 0x7FFFFFFF);
 					dlprocptrs[paddr] = ost.str();
 					// printf("Added symbol %s value %x\n", ost.str().c_str(), paddr);
 				} else {
 					// Normal case (IMAGE_IMPORT_BY_NAME). Skip the useless hint (2 bytes)
-					std::string name((const char *)(iatEntry + 2 + base));
+					std::string name((const char *)(base + iatEntry + 2));
 					dlprocptrs[paddr] = name;
-					if ((unsigned)paddr != (unsigned)iat - (unsigned)base + LMMH(m_pPEHeader->Imagebase))
-						dlprocptrs[(unsigned)iat - (unsigned)base + LMMH(m_pPEHeader->Imagebase)] = std::string("old_") + name; // add both possibilities
 					//printf("Added symbol %s value %x\n", name.c_str(), paddr);
-					//printf("Also added old_%s value %x\n", name.c_str(), (int)iat - (int)base + LMMH(m_pPEHeader->Imagebase));
+					if (paddr != LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base)) {
+						dlprocptrs[LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base)] = name.insert(0, "old_"); // add both possibilities
+						//printf("Also added %s value %x\n", name.c_str(), LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base));
+					}
 				}
 				iat++;
 				iatEntry = LMMH(*iat);
