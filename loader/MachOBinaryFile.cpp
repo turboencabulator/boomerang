@@ -24,7 +24,6 @@
 #include "macho-apple.h"
 
 #include "objc/objc-class.h"
-#include <cstdarg>  // For va_list for MinGW at least
 #include "objc/objc-runtime.h"
 
 #include <cassert>
