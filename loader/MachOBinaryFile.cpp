@@ -23,8 +23,83 @@
 #include "nlist.h"
 #include "macho-apple.h"
 
+#if 0
 #include "objc/objc-class.h"
 #include "objc/objc-runtime.h"
+#else
+typedef struct objc_class *Class;
+
+typedef struct objc_object {
+	Class isa;
+} *id;
+
+typedef struct objc_selector *SEL;
+typedef id (*IMP)(id, SEL, ...);
+
+struct objc_class {
+	struct objc_class *isa;
+	struct objc_class *super_class;
+	const char *name;
+	long version;
+	long info;
+	long instance_size;
+	struct objc_ivar_list *ivars;
+
+	struct objc_method_list **methodLists;
+
+	struct objc_cache *cache;
+	struct objc_protocol_list *protocols;
+};
+
+struct objc_ivar {
+	char *ivar_name;
+	char *ivar_type;
+	int ivar_offset;
+#ifdef __alpha__
+	int space;
+#endif
+};
+
+struct objc_ivar_list {
+	int ivar_count;
+#ifdef __alpha__
+	int space;
+#endif
+	struct objc_ivar ivar_list[1];  /* variable length structure */
+};
+
+struct objc_method {
+	SEL method_name;
+	char *method_types;
+	IMP method_imp;
+};
+
+struct objc_method_list {
+	struct objc_method_list *obsolete;
+
+	int method_count;
+#ifdef __alpha__
+	int space;
+#endif
+	struct objc_method method_list[1];  /* variable length structure */
+};
+
+typedef struct objc_symtab *Symtab;
+struct objc_symtab {
+	unsigned long sel_ref_cnt;
+	SEL *refs;
+	unsigned short cls_def_cnt;
+	unsigned short cat_def_cnt;
+	void *defs[1];  /* variable size */
+};
+
+struct objc_module {
+	unsigned long version;
+	unsigned long size;
+	const char *name;
+	Symtab symtab;
+};
+#endif
 
 #include <cassert>
 #include <cstdio>
