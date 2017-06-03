@@ -18,15 +18,6 @@
 
 #include "BinaryFile.h"
 
-#ifndef _MACH_MACHINE_H_                // On OS X, this is already defined
-typedef unsigned long cpu_type_t;       // I guessed
-typedef unsigned long cpu_subtype_t;    // I guessed
-typedef unsigned long vm_prot_t;        // I guessed
-#endif
-
-struct mach_header;
-
-
 /**
  * \brief Loader for Mach-O executable files.
  *
@@ -48,14 +39,11 @@ public:
 private:
 	        int         machORead2(const short *ps) const;
 	        int         machORead4(const int *pi) const;
-	        //void          *BMMH(void *x);
-	        char          *BMMH(char *x);
-	        const char    *BMMH(const char *x);
-	        unsigned int   BMMH(long int &x);
-	        unsigned int   BMMH(void *x);
+	        unsigned int   BMMH(const void *x);
 	        unsigned int   BMMH(unsigned long x);
-	          signed int   BMMH(signed int x);
+	        unsigned int   BMMH(signed long x);
 	        unsigned int   BMMH(unsigned int x);
+	        unsigned int   BMMH(signed int x);
 	        unsigned short BMMHW(unsigned short x);
 public:
 	virtual int         readNative1(ADDRESS a) const;

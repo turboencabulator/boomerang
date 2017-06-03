@@ -20,6 +20,12 @@
 
 #include "MachOBinaryFile.h"
 
+#ifndef _MACH_MACHINE_H_                // On OS X, this is already defined
+typedef unsigned long cpu_type_t;       // I guessed
+typedef unsigned long cpu_subtype_t;    // I guessed
+typedef unsigned long vm_prot_t;        // I guessed
+#endif
+
 #include "nlist.h"
 #include "macho-apple.h"
 
@@ -364,8 +370,8 @@ bool MachOBinaryFile::load(std::istream &ifs)
 		ADDRESS a = segments[i].vmaddr;
 		unsigned sz = segments[i].vmsize;
 		unsigned fsz = segments[i].filesize;
-		memset(base + a - loaded_addr, 0, sz);
-		ifs.read(base + a - loaded_addr, fsz);
+		memset(&base[a - loaded_addr], 0, sz);
+		ifs.read(&base[a - loaded_addr], fsz);
 #ifdef DEBUG_MACHO_LOADER
 		fprintf(stderr, "loaded segment %x %i in mem %i in file\n", a, sz, fsz);
 #endif
@@ -374,9 +380,9 @@ bool MachOBinaryFile::load(std::istream &ifs)
 		strncpy(name, segments[i].segname, 16);
 		name[16] = '\0';
 		m_pSections[i].pSectionName = name;
-		m_pSections[i].uNativeAddr = segments[i].vmaddr;
-		m_pSections[i].uHostAddr = base + segments[i].vmaddr - loaded_addr;
-		m_pSections[i].uSectionSize = segments[i].vmsize;
+		m_pSections[i].uNativeAddr = a;
+		m_pSections[i].uHostAddr = &base[a - loaded_addr];
+		m_pSections[i].uSectionSize = sz;
 
 		unsigned long l = segments[i].initprot;
 		m_pSections[i].bBss      = false; // TODO
@@ -387,14 +393,14 @@ bool MachOBinaryFile::load(std::istream &ifs)
 
 	// process stubs_sects
 	for (unsigned j = 0; j < stubs_sects.size(); j++) {
+		unsigned startidx = stubs_sects[j].reserved1;
 		for (unsigned i = 0; i < stubs_sects[j].size / stubs_sects[j].reserved2; i++) {
-			unsigned startidx = stubs_sects[j].reserved1;
 			unsigned symbol = indirectsymtbl[startidx + i];
 			ADDRESS addr = stubs_sects[j].addr + i * stubs_sects[j].reserved2;
-#ifdef DEBUG_MACHO_LOADER
-			fprintf(stdout, "stub for %s at %x\n", strtbl + symbols[symbol].n_un.n_strx, addr);
-#endif
 			const char *name = strtbl + symbols[symbol].n_un.n_strx;
+#ifdef DEBUG_MACHO_LOADER
+			fprintf(stdout, "stub for %s at %x\n", name, addr);
+#endif
 			if (*name == '_')  // we want printf not _printf
 				name++;
 			m_SymA[addr] = name;
@@ -424,27 +430,27 @@ bool MachOBinaryFile::load(std::istream &ifs)
 		fprintf(stdout, "processing objective-c section\n");
 #endif
 		for (unsigned i = 0; i < objc_modules_size;) {
-			struct objc_module *module = (struct objc_module *)((ADDRESS)base + objc_modules - loaded_addr + i);
-			const char *name = (const char *)((ADDRESS)base + BMMH(module->name) - loaded_addr);
-			Symtab symtab = (Symtab)((ADDRESS)base + BMMH(module->symtab) - loaded_addr);
+			struct objc_module *module = (struct objc_module *)&base[objc_modules - loaded_addr];
+			const char *name = (const char *)&base[BMMH(module->name) - loaded_addr];
+			Symtab symtab = (Symtab)&base[BMMH(module->symtab) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
 			fprintf(stdout, "module %s (%i classes)\n", name, BMMHW(symtab->cls_def_cnt));
 #endif
 			ObjcModule *m = &modules[name];
 			m->name = name;
 			for (unsigned j = 0; j < BMMHW(symtab->cls_def_cnt); j++) {
-				struct objc_class *def = (struct objc_class *)((ADDRESS)base + BMMH(symtab->defs[j]) - loaded_addr);
-				const char *name = (const char *)((ADDRESS)base + BMMH(def->name) - loaded_addr);
+				struct objc_class *def = (struct objc_class *)&base[BMMH(symtab->defs[j]) - loaded_addr];
+				const char *name = (const char *)&base[BMMH(def->name) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
 				fprintf(stdout, "  class %s\n", name);
 #endif
 				ObjcClass *cl = &m->classes[name];
 				cl->name = name;
-				struct objc_ivar_list *ivars = (struct objc_ivar_list *)((ADDRESS)base + BMMH(def->ivars) - loaded_addr);
-				for (unsigned k = 0; k < static_cast<unsigned int>(BMMH(ivars->ivar_count)); k++) {
+				struct objc_ivar_list *ivars = (struct objc_ivar_list *)&base[BMMH(def->ivars) - loaded_addr];
+				for (unsigned k = 0; k < BMMH(ivars->ivar_count); k++) {
 					struct objc_ivar *ivar = &ivars->ivar_list[k];
-					const char *name = (const char *)((ADDRESS)base + BMMH(ivar->ivar_name) - loaded_addr);
-					const char *types = (const char *)((ADDRESS)base + BMMH(ivar->ivar_type) - loaded_addr);
+					const char *name = (const char *)&base[BMMH(ivar->ivar_name) - loaded_addr];
+					const char *types = (const char *)&base[BMMH(ivar->ivar_type) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
 					fprintf(stdout, "    ivar %s %s %x\n", name, types, BMMH(ivar->ivar_offset));
 #endif
@@ -454,11 +460,11 @@ bool MachOBinaryFile::load(std::istream &ifs)
 					iv->offset = BMMH(ivar->ivar_offset);
 				}
 				// this is weird, why is it defined as a ** in the struct but used as a * in otool?
-				struct objc_method_list *methods = (struct objc_method_list *)((ADDRESS)base + BMMH(def->methodLists) - loaded_addr);
-				for (unsigned k = 0; k < static_cast<unsigned int>(BMMH(methods->method_count)); k++) {
+				struct objc_method_list *methods = (struct objc_method_list *)&base[BMMH(def->methodLists) - loaded_addr];
+				for (unsigned k = 0; k < BMMH(methods->method_count); k++) {
 					struct objc_method *method = &methods->method_list[k];
-					const char *name = (const char *)((ADDRESS)base + BMMH(method->method_name) - loaded_addr);
-					const char *types = (const char *)((ADDRESS)base + BMMH(method->method_types) - loaded_addr);
+					const char *name = (const char *)&base[BMMH(method->method_name) - loaded_addr];
+					const char *types = (const char *)&base[BMMH(method->method_types) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
 					fprintf(stdout, "    method %s %s %x\n", name, types, BMMH((void *)method->method_imp));
 #endif
@@ -468,6 +474,7 @@ bool MachOBinaryFile::load(std::istream &ifs)
 					me->addr = BMMH((void *)method->method_imp);
 				}
 			}
+			objc_modules += BMMH(module->size);
 			i += BMMH(module->size);
 		}
 	}
@@ -535,30 +542,10 @@ int MachOBinaryFile::machORead4(const int *pi) const
 	return n;
 }
 
-#if 0
-void *MachOBinaryFile::BMMH(void *x)
-{
-	if (swap_bytes) return _BMMH(x);
-	else return x;
-}
-#endif
-
-char *MachOBinaryFile::BMMH(char *x)
-{
-	if (swap_bytes) return (char *)_BMMH(x);
-	else return x;
-}
-
-unsigned int MachOBinaryFile::BMMH(void *x)
+unsigned int MachOBinaryFile::BMMH(const void *x)
 {
 	if (swap_bytes) return (unsigned int)_BMMH(x);
 	else return (unsigned int)x;
-}
-
-const char *MachOBinaryFile::BMMH(const char *x)
-{
-	if (swap_bytes) return (const char *)_BMMH(x);
-	else return x;
 }
 
 unsigned int MachOBinaryFile::BMMH(unsigned long x)
@@ -567,19 +554,19 @@ unsigned int MachOBinaryFile::BMMH(unsigned long x)
 	else return x;
 }
 
-unsigned int MachOBinaryFile::BMMH(long int &x)
-{
-	if (swap_bytes) return _BMMH(x);
-	else return x;
-}
-
-signed int MachOBinaryFile::BMMH(signed int x)
+unsigned int MachOBinaryFile::BMMH(signed long x)
 {
 	if (swap_bytes) return _BMMH(x);
 	else return x;
 }
 
 unsigned int MachOBinaryFile::BMMH(unsigned int x)
+{
+	if (swap_bytes) return _BMMH(x);
+	else return x;
+}
+
+unsigned int MachOBinaryFile::BMMH(signed int x)
 {
 	if (swap_bytes) return _BMMH(x);
 	else return x;
