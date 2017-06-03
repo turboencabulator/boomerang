@@ -92,7 +92,6 @@ protected:
 	//virtual bool        PostLoad(void *handle);
 
 private:
-	        struct mach_header *header;      ///< The Mach-O header
 	        char       *base;                ///< Beginning of the loaded image
 	        ADDRESS     entrypoint, loaded_addr;
 	        unsigned    loaded_size;

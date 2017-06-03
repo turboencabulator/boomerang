@@ -34,7 +34,6 @@
 //#define DEBUG_MACHO_LOADER_OBJC
 
 MachOBinaryFile::MachOBinaryFile() :
-	header(NULL),
 	base(NULL),
 	machine(MACHINE_PPC),
 	swap_bytes(false)
@@ -46,7 +45,6 @@ MachOBinaryFile::~MachOBinaryFile()
 	for (int i = 0; i < m_iNumSections; i++)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
-	delete    header;
 	delete [] base;
 }
 
@@ -69,19 +67,29 @@ ADDRESS MachOBinaryFile::getMainEntryPoint()
 
 bool MachOBinaryFile::load(std::istream &ifs)
 {
-	header = new struct mach_header;
-	ifs.read((char *)header, sizeof *header);
+	struct mach_header header;
+	ifs.read((char *)&header, sizeof header);
 
-	if ((header->magic != MH_MAGIC) && (_BMMH(header->magic) != MH_MAGIC)) {
+	// check for swapped bytes
+	if (header.magic == MH_MAGIC) {
+		swap_bytes = false;
+	} else if (_BMMH(header.magic) == MH_MAGIC) {
+		swap_bytes = true;
+	} else {
 		fprintf(stderr, "error loading file %s, bad Mach-O magic\n", getFilename());
 		return false;
 	}
 
-	// check for swapped bytes
-	swap_bytes = (_BMMH(header->magic) == MH_MAGIC);
+	header.magic      = BMMH(header.magic);
+	header.cputype    = BMMH(header.cputype);
+	header.cpusubtype = BMMH(header.cpusubtype);
+	header.filetype   = BMMH(header.filetype);
+	header.ncmds      = BMMH(header.ncmds);
+	header.sizeofcmds = BMMH(header.sizeofcmds);
+	header.flags      = BMMH(header.flags);
 
 	// Determine CPU type
-	if (BMMH(header->cputype) == 0x07)
+	if (header.cputype == 0x07)
 		machine = MACHINE_PENTIUM;
 	else
 		machine = MACHINE_PPC;
@@ -94,117 +102,182 @@ bool MachOBinaryFile::load(std::istream &ifs)
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
 
-	for (unsigned i = 0; i < BMMH(header->ncmds); i++) {
-		struct load_command cmd;
+	for (unsigned i = 0; i < header.ncmds; i++) {
 		std::streamsize pos = ifs.tellg();
+
+		struct load_command cmd;
 		ifs.read((char *)&cmd, sizeof cmd);
+		cmd.cmd     = BMMH(cmd.cmd);
+		cmd.cmdsize = BMMH(cmd.cmdsize);
 
 		ifs.seekg(pos);
-		switch (BMMH(cmd.cmd)) {
+		switch (cmd.cmd) {
 		case LC_SEGMENT:
 			{
 				struct segment_command seg;
 				ifs.read((char *)&seg, sizeof seg);
+				seg.cmd      = BMMH(seg.cmd);
+				seg.cmdsize  = BMMH(seg.cmdsize);
+				seg.vmaddr   = BMMH(seg.vmaddr);
+				seg.vmsize   = BMMH(seg.vmsize);
+				seg.fileoff  = BMMH(seg.fileoff);
+				seg.filesize = BMMH(seg.filesize);
+				seg.maxprot  = BMMH(seg.maxprot);
+				seg.initprot = BMMH(seg.initprot);
+				seg.nsects   = BMMH(seg.nsects);
+				seg.flags    = BMMH(seg.flags);
 				segments.push_back(seg);
+
 #ifdef DEBUG_MACHO_LOADER
-				fprintf(stdout, "seg addr %x size %i fileoff %x filesize %i flags %x\n", BMMH(seg.vmaddr), BMMH(seg.vmsize), BMMH(seg.fileoff), BMMH(seg.filesize), BMMH(seg.flags));
+				fprintf(stdout, "seg addr %x size %i fileoff %x filesize %i flags %x\n", seg.vmaddr, seg.vmsize, seg.fileoff, seg.filesize, seg.flags);
 #endif
-				for (unsigned n = 0; n < BMMH(seg.nsects); n++) {
+				for (unsigned n = 0; n < seg.nsects; n++) {
 					struct section sect;
 					ifs.read((char *)&sect, sizeof sect);
+					sect.addr      = BMMH(sect.addr);
+					sect.size      = BMMH(sect.size);
+					sect.offset    = BMMH(sect.offset);
+					sect.align     = BMMH(sect.align);
+					sect.reloff    = BMMH(sect.reloff);
+					sect.nreloc    = BMMH(sect.nreloc);
+					sect.flags     = BMMH(sect.flags);
+					sect.reserved1 = BMMH(sect.reserved1);
+					sect.reserved2 = BMMH(sect.reserved2);
+
 #ifdef DEBUG_MACHO_LOADER
-					fprintf(stdout, "    sectname %s segname %s addr %x size %i flags %x\n", sect.sectname, sect.segname, BMMH(sect.addr), BMMH(sect.size), BMMH(sect.flags));
+					fprintf(stdout, "    sectname %s segname %s addr %x size %i flags %x\n", sect.sectname, sect.segname, sect.addr, sect.size, sect.flags);
 #endif
-					if ((BMMH(sect.flags) & SECTION_TYPE) == S_SYMBOL_STUBS) {
+					if ((sect.flags & SECTION_TYPE) == S_SYMBOL_STUBS) {
 						stubs_sects.push_back(sect);
 #ifdef DEBUG_MACHO_LOADER
-						fprintf(stdout, "        symbol stubs section, start index %i, stub size %i\n", BMMH(sect.reserved1), BMMH(sect.reserved2));
+						fprintf(stdout, "        symbol stubs section, start index %i, stub size %i\n", sect.reserved1, sect.reserved2);
 #endif
 					}
 					if (!strcmp(sect.sectname, SECT_OBJC_SYMBOLS)) {
 						assert(objc_symbols == NO_ADDRESS);
-						objc_symbols = BMMH(sect.addr);
+						objc_symbols = sect.addr;
 					}
 					if (!strcmp(sect.sectname, SECT_OBJC_MODULES)) {
 						assert(objc_modules == NO_ADDRESS);
-						objc_modules = BMMH(sect.addr);
-						objc_modules_size = BMMH(sect.size);
+						objc_modules = sect.addr;
+						objc_modules_size = sect.size;
 					}
 					if (!strcmp(sect.sectname, SECT_OBJC_STRINGS)) {
 						assert(objc_strings == NO_ADDRESS);
-						objc_strings = BMMH(sect.addr);
+						objc_strings = sect.addr;
 					}
 					if (!strcmp(sect.sectname, SECT_OBJC_REFS)) {
 						assert(objc_refs == NO_ADDRESS);
-						objc_refs = BMMH(sect.addr);
+						objc_refs = sect.addr;
 					}
 				}
 			}
 			break;
+
 		case LC_SYMTAB:
 			{
 				struct symtab_command syms;
 				ifs.read((char *)&syms, sizeof syms);
-				ifs.seekg(BMMH(syms.stroff));
-				strtbl = new char[BMMH(syms.strsize)];
-				ifs.read(strtbl, BMMH(syms.strsize));
-				ifs.seekg(BMMH(syms.symoff));
-				for (unsigned n = 0; n < BMMH(syms.nsyms); n++) {
+				syms.cmd     = BMMH(syms.cmd);
+				syms.cmdsize = BMMH(syms.cmdsize);
+				syms.symoff  = BMMH(syms.symoff);
+				syms.nsyms   = BMMH(syms.nsyms);
+				syms.stroff  = BMMH(syms.stroff);
+				syms.strsize = BMMH(syms.strsize);
+
+				ifs.seekg(syms.stroff);
+				strtbl = new char[syms.strsize];
+				ifs.read(strtbl, syms.strsize);
+
+				ifs.seekg(syms.symoff);
+				for (unsigned n = 0; n < syms.nsyms; n++) {
 					struct nlist sym;
 					ifs.read((char *)&sym, sizeof sym);
+					sym.n_un.n_strx = BMMH(sym.n_un.n_strx);
+					//sym.n_type      = BMMH(sym.n_type);
+					//sym.n_sect      = BMMH(sym.n_sect);
+					//sym.n_desc      = BMMH(sym.n_desc);
+					sym.n_value     = BMMH(sym.n_value);
 					symbols.push_back(sym);
+
 #ifdef DEBUG_MACHO_LOADER
-					//fprintf(stdout, "got sym %s flags %x value %x\n", strtbl + BMMH(sym.n_un.n_strx), sym.n_type, BMMH(sym.n_value));
+					//fprintf(stdout, "got sym %s flags %x value %x\n", strtbl + sym.n_un.n_strx, sym.n_type, sym.n_value);
 #endif
 				}
 #ifdef DEBUG_MACHO_LOADER
-				fprintf(stdout, "symtab contains %i symbols\n", BMMH(syms.nsyms));
+				fprintf(stdout, "symtab contains %i symbols\n", syms.nsyms);
 #endif
 			}
 			break;
+
 		case LC_DYSYMTAB:
 			{
 				struct dysymtab_command syms;
 				ifs.read((char *)&syms, sizeof syms);
+				syms.cmd            = BMMH(syms.cmd);
+				syms.cmdsize        = BMMH(syms.cmdsize);
+				syms.ilocalsym      = BMMH(syms.ilocalsym);
+				syms.nlocalsym      = BMMH(syms.nlocalsym);
+				syms.iextdefsym     = BMMH(syms.iextdefsym);
+				syms.nextdefsym     = BMMH(syms.nextdefsym);
+				syms.iundefsym      = BMMH(syms.iundefsym);
+				syms.nundefsym      = BMMH(syms.nundefsym);
+				syms.tocoff         = BMMH(syms.tocoff);
+				syms.ntoc           = BMMH(syms.ntoc);
+				syms.modtaboff      = BMMH(syms.modtaboff);
+				syms.nmodtab        = BMMH(syms.nmodtab);
+				syms.extrefsymoff   = BMMH(syms.extrefsymoff);
+				syms.nextrefsyms    = BMMH(syms.nextrefsyms);
+				syms.indirectsymoff = BMMH(syms.indirectsymoff);
+				syms.nindirectsyms  = BMMH(syms.nindirectsyms);
+				syms.extreloff      = BMMH(syms.extreloff);
+				syms.nextrel        = BMMH(syms.nextrel);
+				syms.locreloff      = BMMH(syms.locreloff);
+				syms.nlocrel        = BMMH(syms.nlocrel);
+
 #ifdef DEBUG_MACHO_LOADER
 				fprintf(stdout, "dysymtab local %i %i defext %i %i undef %i %i\n",
-				        BMMH(syms.ilocalsym), BMMH(syms.nlocalsym),
-				        BMMH(syms.iextdefsym), BMMH(syms.nextdefsym),
-				        BMMH(syms.iundefsym), BMMH(syms.nundefsym));
-				fprintf(stdout, "dysymtab has %i indirect symbols: ", BMMH(syms.nindirectsyms));
+				        syms.ilocalsym, syms.nlocalsym,
+				        syms.iextdefsym, syms.nextdefsym,
+				        syms.iundefsym, syms.nundefsym);
+				fprintf(stdout, "dysymtab has %i indirect symbols: ", syms.nindirectsyms);
 #endif
-				indirectsymtbl = new unsigned[BMMH(syms.nindirectsyms)];
-				ifs.seekg(BMMH(syms.indirectsymoff));
-				ifs.read((char *)indirectsymtbl, sizeof *indirectsymtbl * BMMH(syms.nindirectsyms));
+				ifs.seekg(syms.indirectsymoff);
+				indirectsymtbl = new unsigned[syms.nindirectsyms];
+				ifs.read((char *)indirectsymtbl, sizeof *indirectsymtbl * syms.nindirectsyms);
+				for (unsigned j = 0; j < syms.nindirectsyms; j++) {
+					indirectsymtbl[j] = BMMH(indirectsymtbl[j]);
+				}
 #ifdef DEBUG_MACHO_LOADER
-				for (unsigned j = 0; j < BMMH(syms.nindirectsyms); j++) {
-					fprintf(stdout, "%i ", BMMH(indirectsymtbl[j]));
+				for (unsigned j = 0; j < syms.nindirectsyms; j++) {
+					fprintf(stdout, "%i ", indirectsymtbl[j]);
 				}
 				fprintf(stdout, "\n");
 #endif
 			}
 			break;
+
 		default:
 #ifdef DEBUG_MACHO_LOADER
-			fprintf(stderr, "not handled load command %x\n", BMMH(cmd.cmd));
+			fprintf(stderr, "not handled load command %x\n", cmd.cmd);
 #endif
 			// yep, there's lots of em
 			break;
 		}
 
-		ifs.seekg(pos + BMMH(cmd.cmdsize));
+		ifs.seekg(pos + cmd.cmdsize);
 	}
 
 	struct segment_command *lowest = &segments[0], *highest = &segments[0];
 	for (unsigned i = 1; i < segments.size(); i++) {
-		if (BMMH(segments[i].vmaddr) < BMMH(lowest->vmaddr))
+		if (segments[i].vmaddr < lowest->vmaddr)
 			lowest = &segments[i];
-		if (BMMH(segments[i].vmaddr) > BMMH(highest->vmaddr))
+		if (segments[i].vmaddr > highest->vmaddr)
 			highest = &segments[i];
 	}
 
-	loaded_addr = BMMH(lowest->vmaddr);
-	loaded_size = BMMH(highest->vmaddr) - BMMH(lowest->vmaddr) + BMMH(highest->vmsize);
+	loaded_addr = lowest->vmaddr;
+	loaded_size = highest->vmaddr - lowest->vmaddr + highest->vmsize;
 
 	base = new char[loaded_size];
 
@@ -212,10 +285,10 @@ bool MachOBinaryFile::load(std::istream &ifs)
 	m_pSections = new SectionInfo[m_iNumSections];
 
 	for (unsigned i = 0; i < segments.size(); i++) {
-		ifs.seekg(BMMH(segments[i].fileoff));
-		ADDRESS a = BMMH(segments[i].vmaddr);
-		unsigned sz = BMMH(segments[i].vmsize);
-		unsigned fsz = BMMH(segments[i].filesize);
+		ifs.seekg(segments[i].fileoff);
+		ADDRESS a = segments[i].vmaddr;
+		unsigned sz = segments[i].vmsize;
+		unsigned fsz = segments[i].filesize;
 		memset(base + a - loaded_addr, 0, sz);
 		ifs.read(base + a - loaded_addr, fsz);
 #ifdef DEBUG_MACHO_LOADER
@@ -226,11 +299,11 @@ bool MachOBinaryFile::load(std::istream &ifs)
 		strncpy(name, segments[i].segname, 16);
 		name[16] = '\0';
 		m_pSections[i].pSectionName = name;
-		m_pSections[i].uNativeAddr = BMMH(segments[i].vmaddr);
-		m_pSections[i].uHostAddr = base + BMMH(segments[i].vmaddr) - loaded_addr;
-		m_pSections[i].uSectionSize = BMMH(segments[i].vmsize);
+		m_pSections[i].uNativeAddr = segments[i].vmaddr;
+		m_pSections[i].uHostAddr = base + segments[i].vmaddr - loaded_addr;
+		m_pSections[i].uSectionSize = segments[i].vmsize;
 
-		unsigned long l = BMMH(segments[i].initprot);
+		unsigned long l = segments[i].initprot;
 		m_pSections[i].bBss      = false; // TODO
 		m_pSections[i].bCode     =  (l & VM_PROT_EXECUTE) != 0;
 		m_pSections[i].bData     =  (l & VM_PROT_READ)    != 0;
@@ -239,14 +312,14 @@ bool MachOBinaryFile::load(std::istream &ifs)
 
 	// process stubs_sects
 	for (unsigned j = 0; j < stubs_sects.size(); j++) {
-		for (unsigned i = 0; i < BMMH(stubs_sects[j].size) / BMMH(stubs_sects[j].reserved2); i++) {
-			unsigned startidx = BMMH(stubs_sects[j].reserved1);
-			unsigned symbol = BMMH(indirectsymtbl[startidx + i]);
-			ADDRESS addr = BMMH(stubs_sects[j].addr) + i * BMMH(stubs_sects[j].reserved2);
+		for (unsigned i = 0; i < stubs_sects[j].size / stubs_sects[j].reserved2; i++) {
+			unsigned startidx = stubs_sects[j].reserved1;
+			unsigned symbol = indirectsymtbl[startidx + i];
+			ADDRESS addr = stubs_sects[j].addr + i * stubs_sects[j].reserved2;
 #ifdef DEBUG_MACHO_LOADER
-			fprintf(stdout, "stub for %s at %x\n", strtbl + BMMH(symbols[symbol].n_un.n_strx), addr);
+			fprintf(stdout, "stub for %s at %x\n", strtbl + symbols[symbol].n_un.n_strx, addr);
 #endif
-			const char *name = strtbl + BMMH(symbols[symbol].n_un.n_strx);
+			const char *name = strtbl + symbols[symbol].n_un.n_strx;
 			if (*name == '_')  // we want printf not _printf
 				name++;
 			m_SymA[addr] = name;
@@ -256,17 +329,17 @@ bool MachOBinaryFile::load(std::istream &ifs)
 
 	// process the remaining symbols
 	for (unsigned i = 0; i < symbols.size(); i++) {
-		const char *name = strtbl + BMMH(symbols[i].n_un.n_strx);
-		if (BMMH(symbols[i].n_un.n_strx) != 0 && BMMH(symbols[i].n_value) != 0 && *name != 0) {
+		const char *name = strtbl + symbols[i].n_un.n_strx;
+		if (symbols[i].n_un.n_strx != 0 && symbols[i].n_value != 0 && *name != 0) {
 
 #ifdef DEBUG_MACHO_LOADER
 			fprintf(stdout, "symbol %s at %x type %x\n", name,
-			        BMMH(symbols[i].n_value),
-			        BMMH(symbols[i].n_type) & N_TYPE);
+			        symbols[i].n_value,
+			        symbols[i].n_type & N_TYPE);
 #endif
 			if (*name == '_')  // we want main not _main
 				name++;
-			m_SymA[BMMH(symbols[i].n_value)] = name;
+			m_SymA[symbols[i].n_value] = name;
 		}
 	}
 
