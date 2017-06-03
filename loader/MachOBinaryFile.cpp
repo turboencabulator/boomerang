@@ -24,8 +24,8 @@
 #include "macho-apple.h"
 
 #if 0
-#include "objc/objc-class.h"
-#include "objc/objc-runtime.h"
+#include <objc/objc-class.h>
+#include <objc/objc-runtime.h>
 #else
 typedef struct objc_class *Class;
 
