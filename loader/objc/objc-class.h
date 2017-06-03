@@ -29,7 +29,7 @@
 #ifndef _OBJC_CLASS_H_
 #define _OBJC_CLASS_H_
 
-#include "objc/objc.h"
+#import <objc/objc.h>
 /* 
  *	Class Template
  */
@@ -168,8 +168,7 @@ struct objc_method_list {
 
 /* Protocol support */
 
-//@class Protocol;
-struct Protocol;
+@class Protocol;
 
 struct objc_protocol_list {
 	struct objc_protocol_list *next;

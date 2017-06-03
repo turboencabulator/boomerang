@@ -29,9 +29,9 @@
 #ifndef _OBJC_RUNTIME_H_
 #define _OBJC_RUNTIME_H_
 
-#include <stdarg.h>
-#include "objc/objc.h"
-#include "objc/objc-class.h"
+#import <stdarg.h>
+#import <objc/objc.h>
+#import <objc/objc-class.h>
 
 typedef struct objc_symtab *Symtab;
 
@@ -54,8 +54,7 @@ struct objc_module {
 
 struct objc_super {
 	id receiver;
-	//Class class;
-    Class pclass;
+	Class class;
 };
 
 /* kernel operations */

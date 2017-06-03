@@ -29,7 +29,7 @@
 #ifndef _OBJC_OBJC_H_
 #define _OBJC_OBJC_H_
 
-#include "objc/objc-api.h"		// for OBJC_EXPORT
+#import <objc/objc-api.h>		// for OBJC_EXPORT
 
 typedef struct objc_class *Class;
 
@@ -38,10 +38,8 @@ typedef struct objc_object {
 } *id;
 
 typedef struct objc_selector 	*SEL;    
-typedef id 			(*IMP)(id, SEL, ...);
-#ifndef BOOL
+typedef id 			(*IMP)(id, SEL, ...); 
 typedef char			BOOL;
-#endif
 
 #define YES             (BOOL)1
 #define NO              (BOOL)0
