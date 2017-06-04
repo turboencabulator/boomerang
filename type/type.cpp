@@ -972,7 +972,6 @@ void Type::addNamedType(const char *name, Type *type)
 		if (!(*type == *namedTypes[name])) {
 			//LOG << "addNamedType: name " << name << " type " << type->getCtype() << " != "
 			//    << namedTypes[name]->getCtype() << "\n";// << std::flush;
-			//LOGTAIL;
 			std::cerr << "Warning: Type::addNamedType: Redefinition of type " << name << "\n";
 			std::cerr << " type     = " << type->prints() << "\n";
 			std::cerr << " previous = " << namedTypes[name]->prints() << "\n";

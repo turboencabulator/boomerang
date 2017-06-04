@@ -17,7 +17,6 @@
 #include "rtl.h"
 #include "statement.h"
 
-#include <iostream>
 #include <sstream>
 
 Log &Log::operator<<(Statement *s)
@@ -125,13 +124,3 @@ Log &Log::operator<<(size_t s)
 	return *this;
 }
 #endif
-
-void Log::tail()
-{
-}
-
-void FileLogger::tail()
-{
-	out.seekp(-200, std::ios::end);
-	std::cerr << out;
-}

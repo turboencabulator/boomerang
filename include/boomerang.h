@@ -47,7 +47,6 @@ class Prog;
 class UserProc;
 
 #define LOG Boomerang::get()->log()
-#define LOGTAIL Boomerang::get()->logTail()
 
 #define DEBUG_RANGE_ANALYSIS 0
 
@@ -232,8 +231,6 @@ public:
 			                    (*it)->alert_decompiling(p);
 	                    }
 	virtual void        alert_decompile_debug_point(UserProc *p, const char *description);
-
-	        void        logTail();
 
 	        // Command line flags
 	        bool        vFlag;

@@ -43,7 +43,6 @@ public:
 	Log &operator<<(std::string &s) {
 		return operator<<(s.c_str());
 	}
-	virtual void tail();
 };
 
 class FileLogger : public Log {
@@ -53,7 +52,6 @@ public:
 	FileLogger();  // Implemented in boomerang.cpp
 	virtual ~FileLogger() { }
 
-	void tail();
 	virtual Log &operator<<(const char *str) {
 		out << str << std::flush;
 		return *this;

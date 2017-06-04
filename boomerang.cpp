@@ -1195,14 +1195,6 @@ Prog *Boomerang::loadFromXML(const char *fname)
 }
 #endif
 
-/**
- * Prints the last lines of the log file.
- */
-void Boomerang::logTail()
-{
-	logger->tail();
-}
-
 void Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 {
 	if (stopAtDebugPoints) {
