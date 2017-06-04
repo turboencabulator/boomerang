@@ -125,4 +125,5 @@ noinst_HEADERS = \
 
 EXTRA_DIST = \
 	ArchiveFile.cpp \
-	ElfArchiveFile.cpp
+	ElfArchiveFile.cpp \
+	mach-o
