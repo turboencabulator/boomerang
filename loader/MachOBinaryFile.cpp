@@ -42,50 +42,50 @@ typedef uint32_t vm_prot_t;
 #include "mach-o/nlist.h"
 
 #if 0
-#include <objc/objc-class.h>
-#include <objc/objc-runtime.h>
+#include <objc/runtime.h>
 #else
 typedef struct objc_class *Class;
-
-typedef struct objc_object {
-	Class isa;
-} *id;
-
-typedef struct objc_selector *SEL;
-typedef id (*IMP)(id, SEL, ...);
-
 struct objc_class {
-	struct objc_class *isa;
-	struct objc_class *super_class;
+	Class isa;
+	Class super_class;
 	const char *name;
 	long version;
 	long info;
 	long instance_size;
 	struct objc_ivar_list *ivars;
-
 	struct objc_method_list **methodLists;
-
 	struct objc_cache *cache;
 	struct objc_protocol_list *protocols;
 };
 
+struct objc_object {
+	Class isa;
+};
+
+typedef struct objc_object *id;
+typedef struct objc_selector *SEL;
+typedef id (*IMP)(id, SEL, ...);
+
+typedef struct objc_ivar *Ivar;
 struct objc_ivar {
 	char *ivar_name;
 	char *ivar_type;
 	int ivar_offset;
-#ifdef __alpha__
+#ifdef __LP64__
 	int space;
 #endif
 };
 
 struct objc_ivar_list {
 	int ivar_count;
-#ifdef __alpha__
+#ifdef __LP64__
 	int space;
 #endif
-	struct objc_ivar ivar_list[1];  /* variable length structure */
+	/* variable length structure */
+	struct objc_ivar ivar_list[1];
 };
 
+typedef struct objc_method *Method;
 struct objc_method {
 	SEL method_name;
 	char *method_types;
@@ -94,12 +94,12 @@ struct objc_method {
 
 struct objc_method_list {
 	struct objc_method_list *obsolete;
-
 	int method_count;
-#ifdef __alpha__
+#ifdef __LP64__
 	int space;
 #endif
-	struct objc_method method_list[1];  /* variable length structure */
+	/* variable length structure */
+	struct objc_method method_list[1];
 };
 
 typedef struct objc_symtab *Symtab;
@@ -111,6 +111,7 @@ struct objc_symtab {
 	void *defs[1];  /* variable size */
 };
 
+typedef struct objc_module *Module;
 struct objc_module {
 	unsigned long version;
 	unsigned long size;
