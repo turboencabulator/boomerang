@@ -273,9 +273,9 @@ private:
 	        ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
 
 	        char       *m_pImage;                   ///< Pointer to the loaded image.
-	        Elf32_Phdr *m_pPhdrs;                   ///< Pointer to program headers.
-	        Elf32_Shdr *m_pShdrs;                   ///< Array of section header structs.
-	        char       *m_pStrings;                 ///< Pointer to the string section.
+	        const Elf32_Phdr *m_pPhdrs;             ///< Pointer to program headers.
+	        const Elf32_Shdr *m_pShdrs;             ///< Array of section header structs.
+	        const char *m_pStrings;                 ///< Pointer to the string section.
 	        char        m_elfEndianness;            ///< 1 = Big Endian.
 
 	/**
@@ -287,8 +287,8 @@ private:
 	        std::map<ADDRESS, std::string> m_SymTab;
 
 	        SymTab      m_Reloc;                    ///< Object to store the reloc syms.
-	        Elf32_Rel  *m_pReloc;                   ///< Pointer to the relocation section.
-	        Elf32_Sym  *m_pSym;                     ///< Pointer to loaded symbol section.
+	        const Elf32_Rel *m_pReloc;              ///< Pointer to the relocation section.
+	        const Elf32_Sym *m_pSym;                ///< Pointer to loaded symbol section.
 	        bool        m_bAddend;                  ///< true if reloc table has addend.
 	        ADDRESS     m_uLastAddr;                ///< Save last address looked up.
 	        int         m_iLastSize;                ///< Size associated with that name.
