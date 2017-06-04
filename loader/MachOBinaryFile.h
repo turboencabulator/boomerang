@@ -40,10 +40,7 @@ private:
 	        int         machORead2(const short *ps) const;
 	        int         machORead4(const int *pi) const;
 	        unsigned int   BMMH(const void *x);
-	        unsigned int   BMMH(unsigned long x);
-	        unsigned int   BMMH(signed long x);
-	        unsigned int   BMMH(unsigned int x);
-	        unsigned int   BMMH(signed int x);
+	        uint32_t       BMMH(uint32_t x);
 	        unsigned short BMMHW(unsigned short x);
 public:
 	virtual int         readNative1(ADDRESS a) const;

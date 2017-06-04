@@ -124,6 +124,7 @@ FILE_PATTERNS          = *.c \
                          *.m
 RECURSIVE              = YES
 EXCLUDE                = frontend/machine/ \
+                         loader/mach-o/ \
                          output/ \
                          signatures/ \
                          test/ \

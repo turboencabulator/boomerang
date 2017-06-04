@@ -118,8 +118,6 @@ testLoader_CPPFLAGS = \
 
 
 noinst_HEADERS = \
-	macho-apple.h \
-	nlist.h \
 	palmsystraps.h \
 	syself.h
 

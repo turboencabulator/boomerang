@@ -20,14 +20,26 @@
 
 #include "MachOBinaryFile.h"
 
-#ifndef _MACH_MACHINE_H_                // On OS X, this is already defined
-typedef unsigned long cpu_type_t;       // I guessed
-typedef unsigned long cpu_subtype_t;    // I guessed
-typedef unsigned long vm_prot_t;        // I guessed
-#endif
 
-#include "nlist.h"
-#include "macho-apple.h"
+#if 0
+#include <mach/machine.h>
+#else
+typedef uint32_t cpu_type_t;
+typedef uint32_t cpu_subtype_t;
+#endif // Needed before mach-o/loader.h
+
+#if 0
+#include <mach/vm_prot.h>
+#else
+typedef uint32_t vm_prot_t;
+#define VM_PROT_NONE    ((vm_prot_t) 0x00)
+#define VM_PROT_READ    ((vm_prot_t) 0x01)      /* read permission */
+#define VM_PROT_WRITE   ((vm_prot_t) 0x02)      /* write permission */
+#define VM_PROT_EXECUTE ((vm_prot_t) 0x04)      /* execute permission */
+#endif // Needed before mach-o/loader.h
+
+#include "mach-o/loader.h"
+#include "mach-o/nlist.h"
 
 #if 0
 #include <objc/objc-class.h>
@@ -154,7 +166,7 @@ bool MachOBinaryFile::load(std::istream &ifs)
 	// check for swapped bytes
 	if (header.magic == MH_MAGIC) {
 		swap_bytes = false;
-	} else if (_BMMH(header.magic) == MH_MAGIC) {
+	} else if (header.magic == MH_CIGAM) {
 		swap_bytes = true;
 	} else {
 		fprintf(stderr, "error loading file %s, bad Mach-O magic\n", getFilename());
@@ -548,25 +560,7 @@ unsigned int MachOBinaryFile::BMMH(const void *x)
 	else return (unsigned int)x;
 }
 
-unsigned int MachOBinaryFile::BMMH(unsigned long x)
-{
-	if (swap_bytes) return _BMMH(x);
-	else return x;
-}
-
-unsigned int MachOBinaryFile::BMMH(signed long x)
-{
-	if (swap_bytes) return _BMMH(x);
-	else return x;
-}
-
-unsigned int MachOBinaryFile::BMMH(unsigned int x)
-{
-	if (swap_bytes) return _BMMH(x);
-	else return x;
-}
-
-unsigned int MachOBinaryFile::BMMH(signed int x)
+uint32_t MachOBinaryFile::BMMH(uint32_t x)
 {
 	if (swap_bytes) return _BMMH(x);
 	else return x;
