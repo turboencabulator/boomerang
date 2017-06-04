@@ -91,16 +91,16 @@ struct SectionInfo {
 	 */
 	virtual bool isAddressBss(ADDRESS a) const { return bBss != 0; }
 
-	const char *pSectionName;       ///< Name of section.
-	char       *uHostAddr;          ///< Host or actual address of data.
-	ADDRESS     uNativeAddr;        ///< Logical or native load address.
-	ADDRESS     uSectionSize;       ///< Size of section in bytes.
-	ADDRESS     uSectionEntrySize;  ///< Size of one section entry (if applic).
-	unsigned    uType;              ///< Type of section (format dependent).
-	unsigned    bCode     : 1;      ///< Set if section contains instructions.
-	unsigned    bData     : 1;      ///< Set if section contains data.
-	unsigned    bBss      : 1;      ///< Set if section is BSS (allocated only).
-	unsigned    bReadOnly : 1;      ///< Set if this is a read only section.
+	const char *pSectionName = NULL;    ///< Name of section.
+	char       *uHostAddr = NULL;       ///< Host or actual address of data.
+	ADDRESS     uNativeAddr = 0;        ///< Logical or native load address.
+	ADDRESS     uSectionSize = 0;       ///< Size of section in bytes.
+	ADDRESS     uSectionEntrySize = 0;  ///< Size of one section entry (if applic).
+	unsigned    uType = 0;              ///< Type of section (format dependent).
+	unsigned    bCode     : 1;          ///< Set if section contains instructions.
+	unsigned    bData     : 1;          ///< Set if section contains data.
+	unsigned    bBss      : 1;          ///< Set if section is BSS (allocated only).
+	unsigned    bReadOnly : 1;          ///< Set if this is a read only section.
 };
 
 
@@ -179,8 +179,8 @@ private:
 	// Needed by BinaryFile::close to destroy an instance and unload its library.
 	typedef BinaryFile *(*constructFcn)();
 	typedef void        (*destructFcn)(BinaryFile *bf);
-	        void       *dlHandle;
-	        destructFcn destruct;
+	        void       *dlHandle = NULL;
+	        destructFcn destruct = NULL;
 #endif
 
 public:
@@ -307,15 +307,15 @@ protected:
 
 	        void        getTextLimits();
 
-	        const char *m_pFilename;     ///< Input file name.
-	        bool        m_bArchive;      ///< True if archive member.
-	        int         m_iNumSections;  ///< Number of sections.
-	        SectionInfo *m_pSections;    ///< The section info.
-	        ADDRESS     m_uInitPC;       ///< Initial program counter.
-	        ADDRESS     m_uInitSP;       ///< Initial stack pointer.
+	        const char *m_pFilename = NULL;   ///< Input file name.
+	        bool        m_bArchive;           ///< True if archive member.
+	        int         m_iNumSections = 0;   ///< Number of sections.
+	        SectionInfo *m_pSections = NULL;  ///< The section info.
+	        ADDRESS     m_uInitPC;            ///< Initial program counter.
+	        ADDRESS     m_uInitSP;            ///< Initial stack pointer.
 
-	        ADDRESS     limitTextLow;    ///< Lowest used native address (inclusive) in the text segment.
-	        ADDRESS     limitTextHigh;   ///< Highest used native address (not inclusive) in the text segment.
+	        ADDRESS     limitTextLow;         ///< Lowest used native address (inclusive) in the text segment.
+	        ADDRESS     limitTextHigh;        ///< Highest used native address (not inclusive) in the text segment.
 
 	/**
 	 * Difference between the host and native addresses (host - native).

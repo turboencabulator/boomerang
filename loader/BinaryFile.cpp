@@ -29,12 +29,6 @@
  * the virtual table (if compiled under gcc and possibly others).
  */
 SectionInfo::SectionInfo() :
-	pSectionName(NULL),
-	uHostAddr(NULL),
-	uNativeAddr(0),
-	uSectionSize(0),
-	uSectionEntrySize(0),
-	uType(0),
 	bCode(false),
 	bData(false),
 	bBss(false),
@@ -47,14 +41,7 @@ SectionInfo::~SectionInfo()
 }
 
 BinaryFile::BinaryFile(bool bArch /*= false*/) :
-#ifdef DYNAMIC
-	dlHandle(NULL),
-	destruct(NULL),
-#endif
-	m_pFilename(NULL),
-	m_bArchive(bArch),  // Remember whether an archive member
-	m_iNumSections(0),  // No sections yet
-	m_pSections(NULL)   // No section data yet
+	m_bArchive(bArch)  // Remember whether an archive member
 {
 }
 

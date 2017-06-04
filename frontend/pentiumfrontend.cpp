@@ -40,8 +40,7 @@
 
 PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
 	FrontEnd(pBF, prog),
-	decoder(prog),
-	idPF(-1)
+	decoder(prog)
 {
 }
 

@@ -49,13 +49,13 @@ extern char debug_buffer[];      ///< For prints functions
 
 // Derived class constructors
 
-Const::Const(int i)         : Exp(opIntConst),  conscript(0), type(new VoidType) { u.i  = i;  }
-Const::Const(QWord ll)      : Exp(opLongConst), conscript(0), type(new VoidType) { u.ll = ll; }
-Const::Const(double d)      : Exp(opFltConst),  conscript(0), type(new VoidType) { u.d  = d;  }
-Const::Const(const char *p) : Exp(opStrConst),  conscript(0), type(new VoidType) { u.p  = p;  }
-Const::Const(Proc *pp)      : Exp(opFuncConst), conscript(0), type(new VoidType) { u.pp = pp; }
+Const::Const(int i)         : Exp(opIntConst),  type(new VoidType) { u.i  = i;  }
+Const::Const(QWord ll)      : Exp(opLongConst), type(new VoidType) { u.ll = ll; }
+Const::Const(double d)      : Exp(opFltConst),  type(new VoidType) { u.d  = d;  }
+Const::Const(const char *p) : Exp(opStrConst),  type(new VoidType) { u.p  = p;  }
+Const::Const(Proc *pp)      : Exp(opFuncConst), type(new VoidType) { u.pp = pp; }
 /// \remark This is bad. We need a way of constructing true unsigned constants
-Const::Const(ADDRESS a)     : Exp(opIntConst),  conscript(0), type(new VoidType) { u.a  = a;  }
+Const::Const(ADDRESS a)     : Exp(opIntConst),  type(new VoidType) { u.a  = a;  }
 
 // Copy constructor
 Const::Const(Const &o) : Exp(o.op) { u = o.u; conscript = o.conscript; type = o.type; }
@@ -112,8 +112,8 @@ Ternary::Ternary(Ternary &o) : Binary(o.op)
 	assert(subExp1 && subExp2 && subExp3);
 }
 
-TypedExp::TypedExp() : Unary(opTypedExp), type(NULL) { }
-TypedExp::TypedExp(Exp *e1) : Unary(opTypedExp, e1), type(NULL) { }
+TypedExp::TypedExp() : Unary(opTypedExp) { }
+TypedExp::TypedExp(Exp *e1) : Unary(opTypedExp, e1) { }
 TypedExp::TypedExp(Type *ty, Exp *e1) : Unary(opTypedExp, e1), type(ty) { }
 TypedExp::TypedExp(TypedExp &o) : Unary(opTypedExp)
 {

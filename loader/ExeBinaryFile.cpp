@@ -18,10 +18,7 @@
 
 #include <cstdio>
 
-ExeBinaryFile::ExeBinaryFile() :
-	m_pHeader(NULL),
-	m_pImage(NULL),
-	m_pRelocTable(NULL)
+ExeBinaryFile::ExeBinaryFile()
 {
 }
 

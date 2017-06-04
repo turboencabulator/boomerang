@@ -272,10 +272,10 @@ private:
 	        bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName);
 	        ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
 
-	        char       *m_pImage;                   ///< Pointer to the loaded image.
-	        const Elf32_Phdr *m_pPhdrs;             ///< Pointer to program headers.
-	        const Elf32_Shdr *m_pShdrs;             ///< Array of section header structs.
-	        const char *m_pStrings;                 ///< Pointer to the string section.
+	        char       *m_pImage = NULL;            ///< Pointer to the loaded image.
+	        const Elf32_Phdr *m_pPhdrs = NULL;      ///< Pointer to program headers.
+	        const Elf32_Shdr *m_pShdrs = NULL;      ///< Array of section header structs.
+	        const char *m_pStrings = NULL;          ///< Pointer to the string section.
 	        char        m_elfEndianness;            ///< 1 = Big Endian.
 
 	/**
@@ -287,20 +287,20 @@ private:
 	        std::map<ADDRESS, std::string> m_SymTab;
 
 	        SymTab      m_Reloc;                    ///< Object to store the reloc syms.
-	        const Elf32_Rel *m_pReloc;              ///< Pointer to the relocation section.
-	        const Elf32_Sym *m_pSym;                ///< Pointer to loaded symbol section.
+	        const Elf32_Rel *m_pReloc = NULL;       ///< Pointer to the relocation section.
+	        const Elf32_Sym *m_pSym = NULL;         ///< Pointer to loaded symbol section.
 	        bool        m_bAddend;                  ///< true if reloc table has addend.
 	        ADDRESS     m_uLastAddr;                ///< Save last address looked up.
-	        int         m_iLastSize;                ///< Size associated with that name.
-	        ADDRESS     m_uPltMin;                  ///< Min address of PLT table.
-	        ADDRESS     m_uPltMax;                  ///< Max address (1 past last) of PLT.
-	        ADDRESS    *m_pImportStubs;             ///< An array of import stubs.
+	        int         m_iLastSize = 0;            ///< Size associated with that name.
+	        ADDRESS     m_uPltMin = 0;              ///< Min address of PLT table.
+	        ADDRESS     m_uPltMax = 0;              ///< Max address (1 past last) of PLT.
+	        ADDRESS    *m_pImportStubs = NULL;      ///< An array of import stubs.
 	        ADDRESS     m_uBaseAddr;                ///< Base image virtual address.
 	        size_t      m_uImageSize;               ///< Total image size (bytes).
 	        ADDRESS     first_extern;               ///< Where the first extern will be placed.
-	        ADDRESS     next_extern;                ///< Where the next extern will be placed.
-	        int        *m_sh_link;                  ///< Pointer to array of sh_link values.
-	        int        *m_sh_info;                  ///< Pointer to array of sh_info values.
+	        ADDRESS     next_extern = 0;            ///< Where the next extern will be placed.
+	        int        *m_sh_link = NULL;           ///< Pointer to array of sh_link values.
+	        int        *m_sh_info = NULL;           ///< Pointer to array of sh_info values.
 };
 
 #endif

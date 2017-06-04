@@ -1102,11 +1102,7 @@ Exp *CallingConvention::StdC::SparcLibSignature::getProven(Exp *left)
 }
 
 Signature::Signature(const char *nam) :
-	rettype(new VoidType()),
-	ellipsis(false),
-	unknown(true),
-	forced(false),
-	preferedReturn(NULL)
+	rettype(new VoidType())
 {
 	if (nam == NULL)
 		name = "<ANON>";
@@ -1115,8 +1111,7 @@ Signature::Signature(const char *nam) :
 }
 
 CustomSignature::CustomSignature(const char *nam) :
-	Signature(nam),
-	sp(0)
+	Signature(nam)
 {
 }
 

@@ -18,9 +18,7 @@
 #include <QtGui>
 
 MainWindow::MainWindow(QWidget *parent) :
-	QMainWindow(parent),
-	decompilerThread(NULL),
-	step(NULL)
+	QMainWindow(parent)
 {
 	ui.setupUi(this);
 

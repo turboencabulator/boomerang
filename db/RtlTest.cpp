@@ -85,10 +85,17 @@ void RtlTest::testClone()
  */
 class StmtVisitorStub : public StmtVisitor {
 public:
-	bool a, b, c, d, e, f, g, h;
+	bool a = false,
+	     b = false,
+	     c = false,
+	     d = false,
+	     e = false,
+	     f = false,
+	     g = false,
+	     h = false;
 
 	void clear() { a = b = c = d = e = f = g = h = false; }
-	StmtVisitorStub() { clear(); }
+	StmtVisitorStub() { }
 	virtual ~StmtVisitorStub() { }
 	virtual bool visit(            RTL *s) { a = true; return false; }
 	virtual bool visit(  GotoStatement *s) { b = true; return false; }

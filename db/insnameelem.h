@@ -36,9 +36,9 @@ public:
 	int getvalue(void);
 
 protected:
-	InsNameElem *nextelem;
+	InsNameElem *nextelem = NULL;
 	std::string elemname;
-	int value;
+	int value = 0;
 };
 
 class InsOptionElem : public InsNameElem {

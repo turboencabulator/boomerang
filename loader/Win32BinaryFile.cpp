@@ -96,9 +96,7 @@ typedef char ct_failure[sizeof (SectionInfo) == sizeof (PESectionInfo) ? 1 : -1]
 }
 
 
-Win32BinaryFile::Win32BinaryFile() :
-	base(NULL),
-	mingw_main(false)
+Win32BinaryFile::Win32BinaryFile()
 {
 }
 

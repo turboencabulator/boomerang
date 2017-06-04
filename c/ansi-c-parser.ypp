@@ -33,29 +33,29 @@
 
 	class SymbolMods {
 	public:
-		bool noDecode;
-		bool incomplete;
+		bool noDecode = false;
+		bool incomplete = false;
 
-		SymbolMods() : noDecode(false), incomplete(false) {}
+		SymbolMods() {}
 	};
 
 	class Symbol {
 	public:
 		ADDRESS addr;
-		std::string nam;
-		Type *ty;
-		Signature *sig;
-		SymbolMods *mods;
+		std::string nam = "";
+		Type *ty = NULL;
+		Signature *sig = NULL;
+		SymbolMods *mods = NULL;
 
-		Symbol(ADDRESS a) : addr(a), nam(""), ty(NULL), sig(NULL), mods(NULL) {}
+		Symbol(ADDRESS a) : addr(a) {}
 	};
 
 	class CustomOptions {
 	public:
-		Exp *exp;
-		int sp;
+		Exp *exp = NULL;
+		int sp = 0;
 
-		CustomOptions() : exp(NULL), sp(0) {}
+		CustomOptions() {}
 	};
 
 	class SymbolRef {

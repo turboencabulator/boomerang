@@ -42,9 +42,9 @@ typedef std::map<ADDRESS, Proc *, std::less<ADDRESS> > PROGMAP;
 
 class Global {
 private:
-	        Type       *type;
-	        ADDRESS     uaddr;
-	        std::string nam;
+	        Type       *type = NULL;
+	        ADDRESS     uaddr = 0;
+	        std::string nam = "";
 
 public:
 	                    Global(Type *type, ADDRESS uaddr, const char *nam) : type(type), uaddr(uaddr), nam(nam) { }
@@ -59,7 +59,7 @@ public:
 	        void        print(std::ostream &os, Prog *prog);  // Print to stream os
 
 protected:
-	                    Global() : type(NULL), uaddr(0), nam("") { }
+	                    Global() { }
 	friend class XMLProgParser;
 };
 
@@ -272,8 +272,8 @@ public:
 	        Exp        *addReloc(Exp *e, ADDRESS lc);
 
 protected:
-	        BinaryFile *pBF;                // Pointer to the BinaryFile object for the program
-	        FrontEnd   *pFE;                // Pointer to the FrontEnd object for the project
+	        BinaryFile *pBF = NULL;         // Pointer to the BinaryFile object for the program
+	        FrontEnd   *pFE = NULL;         // Pointer to the FrontEnd object for the project
 
 	/* Persistent state */
 	        std::string m_name, m_path;     // name of the program and its full path
@@ -283,7 +283,7 @@ protected:
 	        std::set<Global *> globals;     // globals to print at code generation time
 	        //std::map<ADDRESS, const char *> *globalMap; // Map of addresses to global symbols
 	        DataIntervalMap globalMap;      // Map from address to DataInterval (has size, name, type)
-	        int         m_iNumberedProc;    // Next numbered proc will use this
+	        int         m_iNumberedProc = 1;// Next numbered proc will use this
 	        Cluster    *m_rootCluster;      // Root of the cluster tree
 
 	friend class XMLProgParser;

@@ -35,8 +35,7 @@
 #include <cassert>
 #include <cstring>
 
-RTL::RTL() :
-	nativeAddr(0)
+RTL::RTL()
 {
 }
 

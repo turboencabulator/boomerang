@@ -209,9 +209,9 @@ public:
 
 protected:
 
-	        bool        visited;  ///< For printCallGraphXML
+	        bool        visited = false;  ///< For printCallGraphXML
 
-	        Prog       *prog;  ///< Program containing this procedure.
+	        Prog       *prog = NULL;  ///< Program containing this procedure.
 
 	/**
 	 * The formal signature of this procedure. This information is determined
@@ -220,12 +220,12 @@ protected:
 	 * NOTE: This belongs in the CALL, because the same procedure can have different signatures if it happens to
 	 * have varargs. Temporarily here till it can be permanently moved.
 	 */
-	        Signature  *signature;
+	        Signature  *signature = NULL;
 
 	/** Persistent state */
-	        ADDRESS     address;            ///< Procedure's address.
-	        Proc       *m_firstCaller;      ///< first procedure to call this procedure.
-	        ADDRESS     m_firstCallerAddr;  ///< can only be used once.
+	        ADDRESS     address = 0;           ///< Procedure's address.
+	        Proc       *m_firstCaller = NULL;  ///< first procedure to call this procedure.
+	        ADDRESS     m_firstCallerAddr = 0; ///< can only be used once.
 	/// All the expressions that have been proven true. (Could perhaps do with a list of some that are proven false)
 	// FIXME: shouldn't this be in UserProc, with logic associated with the signature doing the equivalent thing
 	// for LibProcs?
@@ -238,10 +238,10 @@ protected:
 	        std::map<Exp *, Exp *, lessExpStar> recurPremises;
 
 	        std::set<CallStatement *> callerSet;  ///< Set of callers (CallStatements that call this procedure).
-	        Cluster    *cluster;                  ///< Cluster this procedure is contained within.
+	        Cluster    *cluster = NULL;           ///< Cluster this procedure is contained within.
 
 	friend class XMLProgParser;
-	                    Proc() : visited(false), prog(NULL), signature(NULL), address(0), m_firstCaller(NULL), m_firstCallerAddr(0), cluster(NULL) { }
+	                    Proc() { }
 
 };
 
@@ -273,7 +273,7 @@ public:
 protected:
 
 	friend class XMLProgParser;
-	                    LibProc() : Proc() { }
+	                    LibProc() { }
 };
 
 enum ProcStatus {
@@ -300,13 +300,13 @@ class UserProc : public Proc {
 	/**
 	 * The control flow graph.
 	 */
-	        Cfg        *cfg;
+	        Cfg        *cfg = NULL;
 
 	/**
 	 * The status of this user procedure.
 	 * Status: undecoded .. final decompiled
 	 */
-	        ProcStatus  status;
+	        ProcStatus  status = PROC_UNDECODED;
 
 	/*
 	 * Somewhat DEPRECATED now. Eventually use the localTable.
@@ -318,8 +318,8 @@ class UserProc : public Proc {
 	 */
 	        std::map<std::string, Type *> locals;
 
-	        int         nextLocal;  // Number of the next local. Can't use locals.size() because some get deleted
-	        int         nextParam;  // Number for param1, param2, etc
+	        int         nextLocal = 0;  // Number of the next local. Can't use locals.size() because some get deleted
+	        int         nextParam = 0;  // Number for param1, param2, etc
 
 	/**
 	 * A map between machine dependent locations and their corresponding symbolic, machine independent
@@ -384,7 +384,7 @@ private:
 	 * E.g. in test/source/recursion.c, there is a cycle with f and g, while another is being built up (it only
 	 * has c, d, and e at the point where the f-g cycle is found).
 	 */
-	        ProcSet    *cycleGrp;
+	        ProcSet    *cycleGrp = NULL;
 
 	/**
 	 * A map of stack locations (negative values) to types.  This is currently
@@ -833,8 +833,8 @@ public:
 private:
 	/// We ensure that there is only one return statement now. See code in frontend/frontend.cpp handling case
 	/// STMT_RET. If no return statement, this will be NULL.
-	        ReturnStatement *theReturnStatement;
-	        int         DFGcount;
+	        ReturnStatement *theReturnStatement = NULL;
+	        int         DFGcount = 0;
 public:
 	        ADDRESS     getTheReturnAddr() { return theReturnStatement == NULL ? NO_ADDRESS : theReturnStatement->getRetAddr(); }
 	        void        setTheReturnAddr(ReturnStatement *s, ADDRESS r) {

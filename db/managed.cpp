@@ -735,12 +735,16 @@ void LocationSet::diff(LocationSet *o)
 		std::cerr << "\n";
 }
 
-Range::Range() : stride(1), lowerBound(MIN), upperBound(MAX)
+Range::Range()
 {
 	base = new Const(0);
 }
 
-Range::Range(int stride, int lowerBound, int upperBound, Exp *base) : stride(stride), lowerBound(lowerBound), upperBound(upperBound), base(base)
+Range::Range(int stride, int lowerBound, int upperBound, Exp *base) :
+	stride(stride),
+	lowerBound(lowerBound),
+	upperBound(upperBound),
+	base(base)
 {
 	if (lowerBound == upperBound
 	 && lowerBound == 0

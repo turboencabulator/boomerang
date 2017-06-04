@@ -1018,9 +1018,7 @@ bool Statement::isFpop()
  *                    to serve as the initial list of statements
  * RETURNS:         N/a
  *============================================================================*/
-GotoStatement::GotoStatement() :
-	pDest(NULL),
-	m_isComputed(false)
+GotoStatement::GotoStatement()
 {
 	kind = STMT_GOTO;
 }
@@ -1031,8 +1029,7 @@ GotoStatement::GotoStatement() :
  * PARAMETERS:      uDest: native address of destination
  * RETURNS:         N/a
  *============================================================================*/
-GotoStatement::GotoStatement(ADDRESS uDest) :
-	m_isComputed(false)
+GotoStatement::GotoStatement(ADDRESS uDest)
 {
 	kind = STMT_GOTO;
 	pDest = new Const(uDest);
@@ -1261,11 +1258,7 @@ void GotoStatement::simplify()
  * PARAMETERS:      None
  * RETURNS:         N/a
  *============================================================================*/
-BranchStatement::BranchStatement() :
-	jtCond((BRANCH_TYPE)0),
-	pCond(NULL),
-	bFloat(false),
-	size(0)
+BranchStatement::BranchStatement()
 {
 	kind = STMT_BRANCH;
 }
@@ -1869,8 +1862,7 @@ void BranchStatement::simplify()
  * PARAMETERS:      None
  * RETURNS:         N/a
  *============================================================================*/
-CaseStatement::CaseStatement() :
-	pSwitchInfo(NULL)
+CaseStatement::CaseStatement()
 {
 	kind = STMT_CASE;
 }
@@ -2028,13 +2020,9 @@ void CaseStatement::simplify()
  * PARAMETERS:       None
  * RETURNS:          <nothing>
  *============================================================================*/
-CallStatement::CallStatement() :
-	returnAfterCall(false),
-	calleeReturn(NULL)
+CallStatement::CallStatement()
 {
 	kind = STMT_CALL;
-	procDest = NULL;
-	signature = NULL;
 }
 
 /*==============================================================================
@@ -2929,8 +2917,7 @@ void CallStatement::addSigParam(Type *ty, bool isScanf)
  * PARAMETERS:       None
  * RETURNS:          <nothing>
  *============================================================================*/
-ReturnStatement::ReturnStatement() :
-	retAddr(NO_ADDRESS)
+ReturnStatement::ReturnStatement()
 {
 	kind = STMT_RET;
 }
@@ -3075,9 +3062,6 @@ bool ReturnStatement::usesExp(Exp *e)
  *============================================================================*/
 BoolAssign::BoolAssign(int sz) :
 	Assignment(NULL),
-	jtCond((BRANCH_TYPE)0),
-	pCond(NULL),
-	bFloat(false),
 	size(sz)
 {
 	kind = STMT_BOOLASSIGN;
@@ -3292,7 +3276,9 @@ void BoolAssign::setLeftFromList(std::list<Statement *> *stmts)
 // Assign //
 //  //  //  //
 
-Assignment::Assignment(Exp *lhs) : TypingStatement(new VoidType), lhs(lhs)
+Assignment::Assignment(Exp *lhs) :
+	TypingStatement(new VoidType),
+	lhs(lhs)
 {
 	if (lhs && lhs->isRegOf()) {
 		int n = ((Const *)lhs->getSubExp1())->getInt();

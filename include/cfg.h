@@ -79,13 +79,13 @@ class Cfg {
 	/*
 	 * The entry and exit BBs.
 	 */
-	BasicBlock *entryBB;
-	BasicBlock *exitBB;
+	BasicBlock *entryBB = NULL;
+	BasicBlock *exitBB = NULL;
 
 	/*
 	 * True if well formed.
 	 */
-	bool        m_bWellFormed, structured;
+	bool        m_bWellFormed = false, structured = false;
 
 	/*
 	 * Set of the call instructions in this procedure.
@@ -95,7 +95,7 @@ class Cfg {
 	/*
 	 * Last label (positive integer) used by any BB this Cfg
 	 */
-	int         lastLabel;
+	int         lastLabel = 0;
 
 	/*
 	 * Map from expression to implicit assignment. The purpose is to prevent multiple implicit assignments for
@@ -103,8 +103,8 @@ class Cfg {
 	 */
 	std::map<Exp *, Statement *, lessExpStar> implicitMap;
 
-	bool        bImplicitsDone;  // True when the implicits are done; they can cause problems (e.g. with
-	                             // ad-hoc global assignment)
+	bool        bImplicitsDone = false;  // True when the implicits are done; they can cause problems (e.g. with
+	                                     // ad-hoc global assignment)
 
 public:
 	/*

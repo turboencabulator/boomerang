@@ -48,43 +48,7 @@
  * PARAMETERS:      <none>
  * RETURNS:         <nothing>
  *============================================================================*/
-BasicBlock::BasicBlock() :
-	m_DFTfirst(0),
-	m_DFTlast(0),
-	m_structType(NONE),
-	m_loopCondType(NONE),
-	m_loopHead(NULL),
-	m_caseHead(NULL),
-	m_condFollow(NULL),
-	m_loopFollow(NULL),
-	m_latchNode(NULL),
-	m_nodeType(INVALID),
-	m_pRtls(NULL),
-	m_iLabelNum(0),
-	m_labelneeded(false),
-	m_bIncomplete(true),
-	m_bJumpReqd(false),
-	m_iNumInEdges(0),
-	m_iNumOutEdges(0),
-	m_iTraversed(false),
-// From Doug's code
-	ord(-1),
-	revOrd(-1),
-	inEdgesVisited(0),
-	numForwardInEdges(-1),
-	traversed(UNTRAVERSED),
-	hllLabel(false),
-	indentLevel(0),
-	immPDom(NULL),
-	loopHead(NULL),
-	caseHead(NULL),
-	condFollow(NULL),
-	loopFollow(NULL),
-	latchNode(NULL),
-	sType(Seq),
-	usType(Structured),
-// Others
-	overlappedRegProcessingDone(false)
+BasicBlock::BasicBlock()
 {
 }
 
@@ -117,8 +81,6 @@ BasicBlock::~BasicBlock()
  * RETURNS:         <nothing>
  *============================================================================*/
 BasicBlock::BasicBlock(const BasicBlock &bb) :
-	m_DFTfirst(0),
-	m_DFTlast(0),
 	m_structType(bb.m_structType),
 	m_loopCondType(bb.m_loopCondType),
 	m_loopHead(bb.m_loopHead),
@@ -127,16 +89,13 @@ BasicBlock::BasicBlock(const BasicBlock &bb) :
 	m_loopFollow(bb.m_loopFollow),
 	m_latchNode(bb.m_latchNode),
 	m_nodeType(bb.m_nodeType),
-	m_pRtls(NULL),
 	m_iLabelNum(bb.m_iLabelNum),
-	m_labelneeded(false),
 	m_bIncomplete(bb.m_bIncomplete),
 	m_bJumpReqd(bb.m_bJumpReqd),
 	m_InEdges(bb.m_InEdges),
 	m_OutEdges(bb.m_OutEdges),
 	m_iNumInEdges(bb.m_iNumInEdges),
 	m_iNumOutEdges(bb.m_iNumOutEdges),
-	m_iTraversed(false),
 // From Doug's code
 	ord(bb.ord),
 	revOrd(bb.revOrd),
@@ -166,40 +125,9 @@ BasicBlock::BasicBlock(const BasicBlock &bb) :
  * RETURNS:         <nothing>
  *============================================================================*/
 BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) :
-	m_DFTfirst(0),
-	m_DFTlast(0),
-	m_structType(NONE),
-	m_loopCondType(NONE),
-	m_loopHead(NULL),
-	m_caseHead(NULL),
-	m_condFollow(NULL),
-	m_loopFollow(NULL),
-	m_latchNode(NULL),
 	m_nodeType(bbType),
-	m_pRtls(NULL),
-	m_iLabelNum(0),
-	m_labelneeded(false),
 	m_bIncomplete(false),
-	m_bJumpReqd(false),
-	m_iNumInEdges(0),
-	m_iNumOutEdges(iNumOutEdges),
-	m_iTraversed(false),
-// From Doug's code
-	ord(-1),
-	revOrd(-1),
-	inEdgesVisited(0),
-	numForwardInEdges(-1),
-	traversed(UNTRAVERSED),
-	hllLabel(false),
-	indentLevel(0),
-	immPDom(NULL),
-	loopHead(NULL),
-	caseHead(NULL),
-	condFollow(NULL),
-	loopFollow(NULL),
-	latchNode(NULL),
-	sType(Seq),
-	usType(Structured)
+	m_iNumOutEdges(iNumOutEdges)
 {
 	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with AddOutEdge()
 

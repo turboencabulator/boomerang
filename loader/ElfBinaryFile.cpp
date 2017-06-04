@@ -24,20 +24,7 @@
 typedef std::map<std::string, int, std::less<std::string> > StrIntMap;
 
 ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
-	BinaryFile(bArchive),
-	m_pImage(NULL),
-	m_pPhdrs(NULL),  // No program headers
-	m_pShdrs(NULL),  // No section headers
-	m_pStrings(NULL),// No strings
-	m_pReloc(NULL),
-	m_pSym(NULL),
-	m_iLastSize(0),
-	m_uPltMin(0),    // No PLT limits
-	m_uPltMax(0),
-	m_pImportStubs(NULL),
-	next_extern(0),
-	m_sh_link(NULL),
-	m_sh_info(NULL)
+	BinaryFile(bArchive)
 {
 }
 

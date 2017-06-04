@@ -112,9 +112,9 @@ enum BRANCH_TYPE {
  */
 class Statement {
 protected:
-	        BasicBlock *pbb;            // contains a pointer to the enclosing BB
-	        UserProc   *proc;           // procedure containing this statement
-	        int         number;         // Statement number for printing
+	        BasicBlock *pbb = NULL;     // contains a pointer to the enclosing BB
+	        UserProc   *proc = NULL;    // procedure containing this statement
+	        int         number = 0;     // Statement number for printing
 #if USE_DOMINANCE_NUMS
 	        int         dominanceNum;   // Like a statement number, but has dominance properties
 public:
@@ -123,7 +123,7 @@ public:
 protected:
 #endif
 	        STMT_KIND   kind;           // Statement kind (e.g. STMT_BRANCH)
-	        Statement  *parent;         // The statement that contains this one
+	        Statement  *parent = NULL;  // The statement that contains this one
 	        RangeMap    ranges;         // overestimation of ranges of locations
 	        RangeMap    savedInputRanges;  // saved overestimation of ranges of locations
 
@@ -131,7 +131,7 @@ protected:
 
 public:
 
-	                    Statement() : pbb(NULL), proc(NULL), number(0), parent(NULL) { }
+	                    Statement() { }
 	virtual            ~Statement() { }
 
 	// get/set the enclosing BB, etc
@@ -452,8 +452,8 @@ public:
 
 // Assign: an ordinary assignment with left and right sides
 class Assign : public Assignment {
-	        Exp        *rhs;
-	        Exp        *guard;
+	        Exp        *rhs = NULL;
+	        Exp        *guard = NULL;
 
 public:
 	// Constructor, subexpressions
@@ -461,7 +461,7 @@ public:
 	// Constructor, type and subexpressions
 	                    Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard = NULL);
 	// Default constructor, for XML parser
-	                    Assign() : Assignment(NULL), rhs(NULL), guard(NULL) { }
+	                    Assign() : Assignment(NULL) { }
 	// Copy constructor
 	                    Assign(Assign &o);
 	// Destructor
@@ -547,9 +547,9 @@ public:
 struct PhiInfo {
 	// A default constructor is required because CFG changes (?) can cause access to elements of the vector that
 	// are beyond the current end, creating gaps which have to be initialised to zeroes so that they can be skipped
-	                    PhiInfo() : def(0), e(0) { }
-	        Statement  *def;  // The defining statement
-	        Exp        *e;    // The expression for the thing being defined (never subscripted)
+	                    PhiInfo() { }
+	        Statement  *def = NULL;  // The defining statement
+	        Exp        *e = NULL;    // The expression for the thing being defined (never subscripted)
 };
 class PhiAssign : public Assignment {
 public:
@@ -669,11 +669,11 @@ public:
  * condition codes. It has a condition Exp, similar to the BranchStatement class.
  * *==========================================================================*/
 class BoolAssign: public Assignment {
-	        BRANCH_TYPE jtCond;  // the condition for setting true
-	        Exp        *pCond;   // Exp representation of the high level
-	                             // condition: e.g. r[8] == 5
-	        bool        bFloat;  // True if condition uses floating point CC
-	        int         size;    // The size of the dest
+	        BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // the condition for setting true
+	        Exp        *pCond = NULL;    // Exp representation of the high level
+	                                     // condition: e.g. r[8] == 5
+	        bool        bFloat = false;  // True if condition uses floating point CC
+	        int         size;            // The size of the dest
 public:
 	                    BoolAssign(int size);
 	virtual            ~BoolAssign();
@@ -767,11 +767,11 @@ public:
  *===========================================================================*/
 class GotoStatement: public Statement {
 protected:
-	        Exp        *pDest;          // Destination of a jump or call. This is the absolute destination for both static
-	                                    // and dynamic CTIs.
-	        bool        m_isComputed;   // True if this is a CTI with a computed destination address.
-	                                    // NOTE: This should be removed, once CaseStatement and HLNwayCall are implemented
-	                                    // properly.
+	        Exp        *pDest = NULL;          // Destination of a jump or call. This is the absolute destination for both static
+	                                           // and dynamic CTIs.
+	        bool        m_isComputed = false;  // True if this is a CTI with a computed destination address.
+	                                           // NOTE: This should be removed, once CaseStatement and HLNwayCall are implemented
+	                                           // properly.
 public:
 	                    GotoStatement();
 	                    GotoStatement(ADDRESS jumpDest);
@@ -868,13 +868,13 @@ public:
  * BranchStatement has a condition Exp in addition to the destination of the jump.
  *==============================================================================*/
 class BranchStatement: public GotoStatement {
-	        BRANCH_TYPE jtCond;         // The condition for jumping
-	        Exp        *pCond;          // The Exp representation of the high level condition: e.g., r[8] == 5
-	        bool        bFloat;         // True if uses floating point CC
+	        BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // The condition for jumping
+	        Exp        *pCond = NULL;    // The Exp representation of the high level condition: e.g., r[8] == 5
+	        bool        bFloat = false;  // True if uses floating point CC
 	        // jtCond seems to be mainly needed for the Pentium weirdness.
 	        // Perhaps bFloat, jtCond, and size could one day be merged into a type
-	        int         size;           // Size of the operands, in bits
-	        RangeMap    ranges2;        // ranges for the not taken edge
+	        int         size = 0;        // Size of the operands, in bits
+	        RangeMap    ranges2;         // ranges for the not taken edge
 
 public:
 	                    BranchStatement();
@@ -964,7 +964,7 @@ struct SWITCH_INFO {
 };
 
 class CaseStatement: public GotoStatement {
-	        SWITCH_INFO *pSwitchInfo;  // Ptr to struct with info about the switch
+	        SWITCH_INFO *pSwitchInfo = NULL;  // Ptr to struct with info about the switch
 public:
 	                    CaseStatement();
 	virtual            ~CaseStatement();
@@ -1008,7 +1008,7 @@ public:
  * CallStatement: represents a high level call. Information about parameters and the like are stored here.
  *============================================================================*/
 class CallStatement: public GotoStatement {
-	        bool        returnAfterCall;// True if call is effectively followed by a return.
+	        bool        returnAfterCall = false;// True if call is effectively followed by a return.
 
 	// The list of arguments passed by this call, actually a list of Assign statements (location := expr)
 	        StatementList arguments;
@@ -1021,11 +1021,11 @@ class CallStatement: public GotoStatement {
 	// Destination of call. In the case of an analysed indirect call, this will be ONE target's return statement.
 	// For an unanalysed indirect call, or a call whose callee is not yet sufficiently decompiled due to recursion,
 	// this will be NULL
-	        Proc       *procDest;
+	        Proc       *procDest = NULL;
 
 	// The signature for this call. NOTE: this used to be stored in the Proc, but this does not make sense when
 	// the proc happens to have varargs
-	        Signature  *signature;
+	        Signature  *signature = NULL;
 
 	// A UseCollector object to collect the live variables at this call. Used as part of the calculation of
 	// results
@@ -1038,7 +1038,7 @@ class CallStatement: public GotoStatement {
 	// Pointer to the callee ReturnStatement. If the callee is unanlysed, this will be a special ReturnStatement
 	// with ImplicitAssigns. Callee could be unanalysed because of an unanalysed indirect call, or a "recursion
 	// break".
-	        ReturnStatement *calleeReturn;
+	        ReturnStatement *calleeReturn = NULL;
 
 public:
 	                    CallStatement();
@@ -1189,7 +1189,7 @@ protected:
 class ReturnStatement : public Statement {
 protected:
 	// Native address of the (only) return instruction. Needed for branching to this only return statement
-	        ADDRESS     retAddr;
+	        ADDRESS     retAddr = NO_ADDRESS;
 
 	/**
 	 * The progression of return information is as follows:

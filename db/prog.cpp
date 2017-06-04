@@ -50,9 +50,6 @@
 #include <cstring>
 
 Prog::Prog() :
-	pBF(NULL),
-	pFE(NULL),
-	m_iNumberedProc(1),
 	m_rootCluster(new Cluster("prog"))
 {
 	// Default constructor
@@ -69,10 +66,7 @@ void Prog::setFrontEnd(FrontEnd *pFE)
 }
 
 Prog::Prog(const char *name) :
-	pBF(NULL),
-	pFE(NULL),
 	m_name(name),
-	m_iNumberedProc(1),
 	m_rootCluster(new Cluster(getNameNoPathNoExt().c_str()))
 {
 	// Constructor taking a name. Technically, the allocation of the space for the name could fail, but this is unlikely

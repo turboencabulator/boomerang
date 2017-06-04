@@ -32,12 +32,7 @@
  * PARAMETERS:    <none>
  * RETURNS:       N/A
  *============================================================================*/
-Register::Register() :
-	name(NULL),
-	address(NULL),
-	mappedIndex(-1),
-	mappedOffset(-1),
-	flt(false)
+Register::Register()
 {
 }
 
@@ -48,7 +43,6 @@ Register::Register() :
  * RETURNS:       N/A
  *============================================================================*/
 Register::Register(const Register &r) :
-	name(NULL),
 	size(r.size),
 	address(r.address),
 	mappedIndex(r.mappedIndex),

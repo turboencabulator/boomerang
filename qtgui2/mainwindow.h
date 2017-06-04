@@ -101,9 +101,9 @@ protected:
 
 private:
 	Ui::MainWindow ui;
-	DecompilerThread *decompilerThread;
+	DecompilerThread *decompilerThread = NULL;
 
-	QToolButton *step;
+	QToolButton *step = NULL;
 
 	int decompiledCount, codeGenCount;
 	std::map<QWidget *, QString> openFiles;

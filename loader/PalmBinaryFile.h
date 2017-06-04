@@ -59,9 +59,9 @@ private:
 	        int         getAppID() const;
 	        void        generateBinFiles(const std::string &path) const;
 
-	        unsigned char *m_pImage;     ///< Points to loaded image.
-	        unsigned char *m_pData;      ///< Points to data.
-	        unsigned int m_SizeBelowA5;  ///< Offset from start of data to where a5 should be initialised to.
+	        unsigned char *m_pImage = NULL;  ///< Points to loaded image.
+	        unsigned char *m_pData = NULL;   ///< Points to data.
+	        unsigned int m_SizeBelowA5;      ///< Offset from start of data to where a5 should be initialised to.
 };
 
 #endif

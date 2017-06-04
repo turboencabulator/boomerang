@@ -1188,7 +1188,6 @@ DfaLocalMapper::DfaLocalMapper(UserProc *proc) :
 {
 	sig = proc->getSignature();
 	prog = proc->getProg();
-	change = false;
 }
 
 // Common processing for the two main cases (visiting a Location or a Binary)

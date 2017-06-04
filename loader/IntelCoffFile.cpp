@@ -68,8 +68,7 @@ struct PACKED struct_coff_rel {
 };
 
 
-IntelCoffFile::IntelCoffFile() :
-	BinaryFile(false)
+IntelCoffFile::IntelCoffFile()
 {
 }
 

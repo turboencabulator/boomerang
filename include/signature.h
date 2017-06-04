@@ -32,9 +32,9 @@ class UserProc;
 
 class Parameter {
 private:
-	        Type       *type;
-	        std::string name;
-	        Exp        *exp;
+	        Type       *type = NULL;
+	        std::string name = "";
+	        Exp        *exp = NULL;
 	        std::string boundMax;
 
 public:
@@ -56,20 +56,20 @@ public:
 
 protected:
 	friend class XMLProgParser;
-	                    Parameter() : type(NULL), name(""), exp(NULL) { }
+	                    Parameter() { }
 };
 
 class Return {
 public:
-	        Type       *type;
-	        Exp        *exp;
+	        Type       *type = NULL;
+	        Exp        *exp = NULL;
 
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
 	virtual            ~Return() { }
 	        bool        operator==(Return &other);
 	        Return     *clone();
 
-	                    Return() : type(NULL), exp(NULL) { }
+	                    Return() { }
 	friend class XMLProgParser;
 };
 
@@ -78,19 +78,19 @@ typedef std::vector<Return *> Returns;
 
 class Signature {
 protected:
-	        std::string name;  // name of procedure
+	        std::string name = "";  // name of procedure
 	        std::string sigFile;  // signature file this signature was read from (for libprocs)
 	        std::vector<Parameter *> params;
 	        //std::vector<ImplicitParameter *> implicitParams;
 	        Returns     returns;
-	        Type       *rettype;
-	        bool        ellipsis;
-	        bool        unknown;
+	        Type       *rettype = NULL;
+	        bool        ellipsis = false;
+	        bool        unknown = true;
 	        //bool        bFullSig;  // True if have a full signature from a signature file etc
 	        // True if the signature is forced with a -sf entry, or is otherwise known, e.g. WinMain
-	        bool        forced;
-	        Type       *preferedReturn;
-	        std::string preferedName;
+	        bool        forced = false;
+	        Type       *preferedReturn = NULL;
+	        std::string preferedName = "";
 	        std::vector<int> preferedParams;
 
 	        //void        updateParams(UserProc *p, Statement *stmt, bool checkreach = true);
@@ -251,7 +251,7 @@ public:
 
 protected:
 	friend class XMLProgParser;
-	                    Signature() : name(""), rettype(NULL), ellipsis(false), preferedReturn(NULL), preferedName("") { }
+	                    Signature() { }
 	        void        appendParameter(Parameter *p) { params.push_back(p); }
 	        //void        appendImplicitParameter(ImplicitParameter *p) { implicitParams.push_back(p); }
 	        void        appendReturn(Return *r) { returns.push_back(r); }
@@ -259,7 +259,7 @@ protected:
 
 class CustomSignature : public Signature {
 protected:
-	        int         sp;
+	        int         sp = 0;
 public:
 	                    CustomSignature(const char *nam);
 	virtual            ~CustomSignature() { }

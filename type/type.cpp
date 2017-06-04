@@ -123,7 +123,7 @@ void ArrayType::setBaseType(Type *b)
 NamedType::NamedType(const char *name) : Type(eNamed), name(name)
 {}
 
-CompoundType::CompoundType(bool generic /* = false */) : Type(eCompound), nextGenericMemberNum(1), generic(generic)
+CompoundType::CompoundType(bool generic /* = false */) : Type(eCompound), generic(generic)
 {}
 
 UnionType::UnionType() : Type(eUnion)

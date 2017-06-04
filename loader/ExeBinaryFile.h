@@ -103,10 +103,10 @@ protected:
 	//virtual bool        PostLoad(void *handle);
 
 private:
-	        exeHeader  *m_pHeader;      ///< Pointer to header.
-	        Byte       *m_pImage;       ///< Pointer to image.
-	        int         m_cReloc;       ///< Number of relocation entries.
-	        DWord      *m_pRelocTable;  ///< The relocation table.
+	        exeHeader  *m_pHeader = NULL;      ///< Pointer to header.
+	        Byte       *m_pImage = NULL;       ///< Pointer to image.
+	        int         m_cReloc;              ///< Number of relocation entries.
+	        DWord      *m_pRelocTable = NULL;  ///< The relocation table.
 };
 
 #endif

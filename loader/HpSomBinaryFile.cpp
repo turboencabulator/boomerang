@@ -28,8 +28,7 @@
 	+ (UC(p)[2] <<  8) \
 	+  UC(p)[3])
 
-HpSomBinaryFile::HpSomBinaryFile() :
-	m_pImage(NULL)
+HpSomBinaryFile::HpSomBinaryFile()
 {
 }
 

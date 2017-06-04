@@ -89,8 +89,8 @@ private:
 	// Needed by FrontEnd::close to destroy an instance and unload its library.
 	typedef FrontEnd *(*constructFcn)(BinaryFile *bf, Prog *prog);
 	typedef void (*destructFcn)(FrontEnd *fe);
-	void *dlHandle;
-	destructFcn destruct;
+	void *dlHandle = NULL;
+	destructFcn destruct = NULL;
 #endif
 
 protected:

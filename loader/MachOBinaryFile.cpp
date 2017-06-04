@@ -127,10 +127,7 @@ struct objc_module {
 //#define DEBUG_MACHO_LOADER
 //#define DEBUG_MACHO_LOADER_OBJC
 
-MachOBinaryFile::MachOBinaryFile() :
-	base(NULL),
-	machine(MACHINE_PPC),
-	swap_bytes(false)
+MachOBinaryFile::MachOBinaryFile()
 {
 }
 

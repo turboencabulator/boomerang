@@ -57,7 +57,10 @@ Proc::~Proc()
  * PARAMETERS:      uNative - Native address of entry point of procedure
  * RETURNS:         <nothing>
  *============================================================================*/
-Proc::Proc(Prog *prog, ADDRESS uNative, Signature *sig) : prog(prog), signature(sig), address(uNative), m_firstCaller(NULL)
+Proc::Proc(Prog *prog, ADDRESS uNative, Signature *sig) :
+	prog(prog),
+	signature(sig),
+	address(uNative)
 {
 	if (sig)
 		cluster = prog->getDefaultCluster(sig->getName());
@@ -354,7 +357,8 @@ Proc *Proc::getFirstCaller()
  *                  uNative - Native address of entry point of procedure
  * RETURNS:         <nothing>
  *============================================================================*/
-LibProc::LibProc(Prog *prog, std::string &name, ADDRESS uNative) : Proc(prog, uNative, NULL)
+LibProc::LibProc(Prog *prog, std::string &name, ADDRESS uNative) :
+	Proc(prog, uNative, NULL)
 {
 	Signature *sig = prog->getLibSignature(name.c_str());
 	signature = sig;
@@ -396,10 +400,7 @@ bool LibProc::isPreserved(Exp *e)
  *                  uNative - Native address of entry point of procedure
  * RETURNS:         <nothing>
  *============================================================================*/
-UserProc::UserProc() : Proc(), cfg(NULL), status(PROC_UNDECODED),
-	// decoded(false), analysed(false),
-	nextLocal(0), nextParam(0),// decompileSeen(false), decompiled(false), isRecursive(false),
-	cycleGrp(NULL), theReturnStatement(NULL)
+UserProc::UserProc()
 {
 	localTable.setProc(this);
 }
@@ -408,9 +409,7 @@ UserProc::UserProc(Prog *prog, std::string &name, ADDRESS uNative) :
 	// Not quite ready for the below fix:
 	// Proc(prog, uNative, prog->getDefaultSignature(name.c_str())),
 	Proc(prog, uNative, new Signature(name.c_str())),
-	cfg(new Cfg()), status(PROC_UNDECODED),
-	nextLocal(0), nextParam(0),// decompileSeen(false), decompiled(false), isRecursive(false),
-	cycleGrp(NULL), theReturnStatement(NULL), DFGcount(0)
+	cfg(new Cfg())
 {
 	cfg->setProc(this);  // Initialise cfg.myProc
 	localTable.setProc(this);

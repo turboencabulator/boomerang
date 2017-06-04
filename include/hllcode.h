@@ -121,11 +121,11 @@ public:
 
 class SyntaxNode {
 protected:
-	        BasicBlock *pbb;
+	        BasicBlock *pbb = NULL;
 	        int     nodenum;
-	        int     score;
-	        SyntaxNode *correspond; // corresponding node in previous state
-	        bool    notGoto;
+	        int     score = -1;
+	        SyntaxNode *correspond = NULL; // corresponding node in previous state
+	        bool    notGoto = false;
 	        int     depth;
 
 public:
@@ -236,8 +236,8 @@ public:
 
 class IfThenSyntaxNode : public SyntaxNode {
 protected:
-	        SyntaxNode *pThen;
-	        Exp    *cond;
+	        SyntaxNode *pThen = NULL;
+	        Exp    *cond = NULL;
 
 public:
 	                IfThenSyntaxNode();
@@ -270,9 +270,9 @@ public:
 
 class IfThenElseSyntaxNode : public SyntaxNode {
 protected:
-	        SyntaxNode *pThen;
-	        SyntaxNode *pElse;
-	        Exp    *cond;
+	        SyntaxNode *pThen = NULL;
+	        SyntaxNode *pElse = NULL;
+	        Exp    *cond = NULL;
 
 public:
 	                IfThenElseSyntaxNode();
@@ -310,8 +310,8 @@ public:
 
 class PretestedLoopSyntaxNode : public SyntaxNode {
 protected:
-	        SyntaxNode *pBody;
-	        Exp    *cond;
+	        SyntaxNode *pBody = NULL;
+	        Exp    *cond = NULL;
 
 public:
 	                PretestedLoopSyntaxNode();
@@ -341,8 +341,8 @@ public:
 
 class PostTestedLoopSyntaxNode : public SyntaxNode {
 protected:
-	        SyntaxNode *pBody;
-	        Exp    *cond;
+	        SyntaxNode *pBody = NULL;
+	        Exp    *cond = NULL;
 
 public:
 	                PostTestedLoopSyntaxNode();
@@ -372,7 +372,7 @@ public:
 
 class InfiniteLoopSyntaxNode : public SyntaxNode {
 protected:
-	        SyntaxNode *pBody;
+	        SyntaxNode *pBody = NULL;
 
 public:
 	                InfiniteLoopSyntaxNode();

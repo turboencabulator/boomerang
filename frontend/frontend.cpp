@@ -63,10 +63,6 @@
  * \param prog  Program being decoded.
  */
 FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog) :
-#ifdef DYNAMIC
-	dlHandle(NULL),
-	destruct(NULL),
-#endif
 	pBF(pBF),
 	prog(prog)
 {

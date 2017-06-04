@@ -95,10 +95,10 @@ public:
 
 // This class is more or less the opposite of the above. It finds a proc by visiting the whole expression if necessary
 class GetProcVisitor : public ExpVisitor {
-	        UserProc   *proc;  // The result (or NULL)
+	        UserProc   *proc = NULL;  // The result (or NULL)
 
 public:
-	                    GetProcVisitor() { proc = NULL; }  // Constructor
+	                    GetProcVisitor() { }  // Constructor
 	        UserProc   *getProc() { return proc; }
 	virtual bool        visit(Location *e, bool &override);
 	// All others inherit and visit their children
@@ -107,10 +107,10 @@ public:
 // This class visits subexpressions, and if a Const, sets or clears a new conscript
 class SetConscripts : public ExpVisitor {
 	        int         curConscript;
-	        bool        bInLocalGlobal;  // True when inside a local or global
-	        bool        bClear;          // True when clearing, not setting
+	        bool        bInLocalGlobal = false;  // True when inside a local or global
+	        bool        bClear;                  // True when clearing, not setting
 public:
-	                    SetConscripts(int n, bool bClear) : bInLocalGlobal(false), bClear(bClear) { curConscript = n; }
+	                    SetConscripts(int n, bool bClear) : curConscript(n), bClear(bClear) { }
 	        int         getLast() { return curConscript; }
 	virtual bool        visit(Const    *e);
 	virtual bool        visit(Location *e, bool &override);
@@ -125,9 +125,9 @@ public:
  */
 class ExpModifier {
 protected:
-	        bool        mod;  // Set if there is any change. Don't have to implement
+	        bool        mod = false;  // Set if there is any change. Don't have to implement
 public:
-	                    ExpModifier() { mod = false; }
+	                    ExpModifier() { }
 	virtual            ~ExpModifier() { }
 	        bool        isMod() { return mod; }
 	        void        clearMod() { mod = false; }
@@ -276,9 +276,9 @@ public:
 };
 
 class PhiStripper : public StmtModifier {
-	        bool        del;  // Set true if this statment is to be deleted
+	        bool        del = false;  // Set true if this statment is to be deleted
 public:
-	                    PhiStripper(ExpModifier *em) : StmtModifier(em) { del = false; }
+	                    PhiStripper(ExpModifier *em) : StmtModifier(em) { }
 	virtual void        visit(PhiAssign *stmt, bool &recur);
 	        bool        getDelete() { return del; }
 };
@@ -290,10 +290,10 @@ protected:
 	// If the mask overflows, it goes to zero, and from then on the child is reported as always changing.
 	// (That's why it's an "unchanged" set of flags, instead of a "changed" set).
 	// This is used to avoid calling simplify in most cases where it is not necessary.
-	        unsigned    mask;
-	        unsigned    unchanged;
+	        unsigned    mask = 1;
+	        unsigned    unchanged = (unsigned)-1;
 public:
-	                    SimpExpModifier() { mask = 1; unchanged = (unsigned)-1; }
+	                    SimpExpModifier() { }
 	        unsigned    getUnchanged() { return unchanged; }
 	        bool        isTopChanged() { return !(unchanged & mask); }
 	virtual Exp        *preVisit(Unary     *e, bool &recur) { recur = true; mask <<= 1; return e; }
@@ -353,11 +353,11 @@ public:
 //  2) it does not recurse inside the memof (thus finding the stack pointer as a local)
 //  3) only used after fromSSA, so no RefExps to visit
 class UsedLocalFinder : public ExpVisitor {
-	        LocationSet *used;  // Set of used locals' names
-	        UserProc   *proc;   // Enclosing proc
-	        bool        all;    // True if see opDefineAll
+	        LocationSet *used;        // Set of used locals' names
+	        UserProc   *proc;         // Enclosing proc
+	        bool        all = false;  // True if see opDefineAll
 public:
-	                    UsedLocalFinder(LocationSet &used, UserProc *proc) : used(&used), proc(proc), all(false) { }
+	                    UsedLocalFinder(LocationSet &used, UserProc *proc) : used(&used), proc(proc) { }
 	                   ~UsedLocalFinder() { }
 
 	        LocationSet *getLocSet() { return used; }
@@ -422,9 +422,9 @@ public:
 class ExpConstCaster: public ExpModifier {
 	        int         num;
 	        Type       *ty;
-	        bool        changed;
+	        bool        changed = false;
 public:
-	                    ExpConstCaster(int num, Type *ty) : num(num), ty(ty), changed(false) { }
+	                    ExpConstCaster(int num, Type *ty) : num(num), ty(ty) { }
 	virtual            ~ExpConstCaster() { }
 	        bool        isChanged() { return changed; }
 
@@ -455,7 +455,7 @@ class DfaLocalMapper : public ExpModifier {
 	        Signature  *sig;  // Look up once (from proc) for speed
 	        bool        processExp(Exp *e);  // Common processing here
 public:
-	        bool        change;  // True if changed this statement
+	        bool        change = false;  // True if changed this statement
 
 	                    DfaLocalMapper(UserProc *proc);
 
@@ -512,10 +512,10 @@ public:
 
 
 class ComplexityFinder : public ExpVisitor {
-	        int         count;
+	        int         count = 0;
 	        UserProc   *proc;
 public:
-	                    ComplexityFinder(UserProc *p) : count(0), proc(p) { }
+	                    ComplexityFinder(UserProc *p) : proc(p) { }
 	        int         getDepth() { return count; }
 
 	virtual bool        visit(Unary    *e, bool &override);
@@ -526,9 +526,9 @@ public:
 
 // Used by range analysis
 class MemDepthFinder : public ExpVisitor {
-	        int         depth;
+	        int         depth = 0;
 public:
-	                    MemDepthFinder() : depth(0) { }
+	                    MemDepthFinder() { }
 	virtual bool        visit(Location *e, bool &override);
 	        int         getDepth() { return depth; }
 };
@@ -537,9 +537,9 @@ public:
 // A class to propagate everything, regardless, to this expression. Does not consider memory expressions and whether
 // the address expression is primitive. Use with caution; mostly Statement::propagateTo() should be used.
 class ExpPropagator : public SimpExpModifier {
-	        bool        change;
+	        bool        change = false;
 public:
-	                    ExpPropagator() : change(false) { }
+	                    ExpPropagator() { }
 	        bool        isChanged() { return change; }
 	        void        clearChanged() { change = false; }
 	        Exp        *postVisit(RefExp *e);
@@ -548,9 +548,9 @@ public:
 // Test an address expression (operand of a memOf) for primitiveness (i.e. if it is possible to SSA rename the memOf
 // without problems). Note that the PrimitiveTester is not used with the memOf expression, only its address expression
 class PrimitiveTester : public ExpVisitor {
-	        bool        result;
+	        bool        result = true;
 public:
-	                    PrimitiveTester() : result(true) { }  // Initialise result true: need AND of all components
+	                    PrimitiveTester() { }  // Initialise result true: need AND of all components
 	        bool        getResult() { return result; }
 	        bool        visit(Location *e, bool &override);
 	        bool        visit(RefExp   *e, bool &override);
@@ -559,10 +559,10 @@ public:
 // Test if an expression (usually the RHS on an assignment) contains memory expressions. If so, it may not be safe to
 // propagate the assignment. NO LONGER USED.
 class ExpHasMemofTester : public ExpVisitor {
-	        bool        result;
+	        bool        result = false;
 	        UserProc   *proc;
 public:
-	                    ExpHasMemofTester(UserProc *proc) : result(false), proc(proc) { }
+	                    ExpHasMemofTester(UserProc *proc) : proc(proc) { }
 	        bool        getResult() { return result; }
 	        bool        visit(Location *e, bool &override);
 };
@@ -619,9 +619,9 @@ public:
 
 // Search an expression for flags calls, e.g. SETFFLAGS(...) & 0x45
 class FlagsFinder : public ExpVisitor {
-	        bool        found;
+	        bool        found = false;
 public:
-	                    FlagsFinder() : found(false) { }
+	                    FlagsFinder() { }
 	        bool        isFound() { return found; }
 private:
 	virtual bool        visit(Binary *e, bool &override);
@@ -629,10 +629,10 @@ private:
 
 // Search an expression for a bad memof (non subscripted or not linked with a symbol, i.e. local or parameter)
 class BadMemofFinder : public ExpVisitor {
-	        bool        found;
+	        bool        found = false;
 	        UserProc   *proc;
 public:
-	                    BadMemofFinder(UserProc *proc) : found(false), proc(proc) { }
+	                    BadMemofFinder(UserProc *proc) : proc(proc) { }
 	        bool        isFound() { return found; }
 private:
 	virtual bool        visit(Location *e, bool &override);

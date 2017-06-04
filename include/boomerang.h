@@ -90,7 +90,7 @@ private:
 	        /// The path where all output files are created.
 	        std::string outputPath;
 	        /// Takes care of the log messages.
-	        Log        *logger;
+	        Log        *logger = NULL;
 	        /// The watchers which are interested in this decompilation.
 	        std::set<Watcher *> watchers;
 
@@ -233,28 +233,28 @@ public:
 	virtual void        alert_decompile_debug_point(UserProc *p, const char *description);
 
 	        // Command line flags
-	        bool        vFlag;
-	        bool        printRtl;
-	        bool        noBranchSimplify;
-	        bool        noRemoveNull;
-	        bool        noLocals;
-	        bool        noRemoveLabels;
-	        bool        noDataflow;
-	        bool        noDecompile;
-	        bool        stopBeforeDecompile;
-	        bool        traceDecoder;
+	        bool        vFlag = false;
+	        bool        printRtl = false;
+	        bool        noBranchSimplify = false;
+	        bool        noRemoveNull = false;
+	        bool        noLocals = false;
+	        bool        noRemoveLabels = false;
+	        bool        noDataflow = false;
+	        bool        noDecompile = false;
+	        bool        stopBeforeDecompile = false;
+	        bool        traceDecoder = false;
 	        /// The file in which the dotty graph is saved
-	        const char *dotFile;
-	        int         numToPropagate;
-	        bool        noPromote;
-	        bool        propOnlyToAll;
-	        bool        debugGen;
-	        int         maxMemDepth;
-	        bool        debugSwitch;
-	        bool        noParameterNames;
-	        bool        debugLiveness;
-	        bool        stopAtDebugPoints;
-	        bool        debugTA;
+	        const char *dotFile = NULL;
+	        int         numToPropagate = -1;
+	        bool        noPromote = false;
+	        bool        propOnlyToAll = false;
+	        bool        debugGen = false;
+	        int         maxMemDepth = 99;
+	        bool        debugSwitch = false;
+	        bool        noParameterNames = false;
+	        bool        debugLiveness = false;
+	        bool        stopAtDebugPoints = false;
+	        bool        debugTA = false;
 	        /// A vector which contains all know entrypoints for the Prog.
 	        std::vector<ADDRESS> entrypoints;
 	        /// A vector containing the names off all symbolfiles to load.
@@ -263,31 +263,31 @@ public:
 	        std::map<ADDRESS, std::string> symbols;
 	        /// When true, attempt to decode main, all children, and all procs.
 	        /// \a decodeMain is set when there are no -e or -E switches given
-	        bool        decodeMain;
-	        bool        printAST;
-	        bool        dumpXML;
-	        bool        noRemoveReturns;
-	        bool        debugDecoder;
-	        bool        decodeThruIndCall;
-	        std::ofstream *ofsIndCallReport;
-	        bool        noDecodeChildren;
-	        bool        debugProof;
-	        bool        debugUnused;
+	        bool        decodeMain = true;
+	        bool        printAST = false;
+	        bool        dumpXML = false;
+	        bool        noRemoveReturns = false;
+	        bool        debugDecoder = false;
+	        bool        decodeThruIndCall = false;
+	        std::ofstream *ofsIndCallReport = NULL;
+	        bool        noDecodeChildren = false;
+	        bool        debugProof = false;
+	        bool        debugUnused = false;
 #ifdef USE_XML
-	        bool        loadBeforeDecompile;
-	        bool        saveBeforeDecompile;
+	        bool        loadBeforeDecompile = false;
+	        bool        saveBeforeDecompile = false;
 #endif
-	        bool        noProve;
-	        bool        noChangeSignatures;
-	        bool        conTypeAnalysis;
-	        bool        dfaTypeAnalysis;
-	        int         propMaxDepth;       ///< Max depth of expression that will be propagated to more than one dest
-	        bool        generateCallGraph;
-	        bool        generateSymbols;
-	        bool        noGlobals;
-	        bool        assumeABI;          ///< Assume ABI compliance
-	        bool        experimental;       ///< Activate experimental code. Caution!
-	        int         minsToStopAfter;
+	        bool        noProve = false;
+	        bool        noChangeSignatures = false;
+	        bool        conTypeAnalysis = false;
+	        bool        dfaTypeAnalysis = true;
+	        int         propMaxDepth = 3;      ///< Max depth of expression that will be propagated to more than one dest
+	        bool        generateCallGraph = false;
+	        bool        generateSymbols = false;
+	        bool        noGlobals = false;
+	        bool        assumeABI = false;     ///< Assume ABI compliance
+	        bool        experimental = false;  ///< Activate experimental code. Caution!
+	        int         minsToStopAfter = 0;
 };
 
 #define VERBOSE             (Boomerang::get()->vFlag)

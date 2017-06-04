@@ -132,23 +132,23 @@ public:
 	int tag;
 	int n;
 	std::string str;
-	Prog *prog;
+	Prog *prog = NULL;
 	Global *global;
 	Cluster *cluster;
-	Proc *proc;
-	Signature *signature;
-	Cfg *cfg;
-	BasicBlock *bb;
-	RTL *rtl;
-	Statement *stmt;
-	Parameter *param;
-	// ImplicitParameter *implicitParam;
-	Return *ret;
-	Type *type;
-	Exp *exp, *symbol;
+	Proc *proc = NULL;
+	Signature *signature = NULL;
+	Cfg *cfg = NULL;
+	BasicBlock *bb = NULL;
+	RTL *rtl = NULL;
+	Statement *stmt = NULL;
+	Parameter *param = NULL;
+	// ImplicitParameter *implicitParam = NULL;
+	Return *ret = NULL;
+	Type *type = NULL;
+	Exp *exp = NULL, *symbol;
 	std::list<Proc *> procs;
 
-	Context(int tag) : tag(tag), prog(NULL), proc(NULL), signature(NULL), cfg(NULL), bb(NULL), rtl(NULL), stmt(NULL), param(NULL), /*implicitParam(NULL),*/ ret(NULL), type(NULL), exp(NULL) { }
+	Context(int tag) : tag(tag) { }
 };
 
 static void XMLCALL

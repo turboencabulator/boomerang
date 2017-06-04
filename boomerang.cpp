@@ -66,21 +66,9 @@ Boomerang *Boomerang::boomerang = NULL;
  * - The path to the executable is "./"
  * - The output directory is "./output/"
  */
-Boomerang::Boomerang() : progPath(DATADIR "/"), outputPath(OUTPUTDIR "/"), logger(NULL), vFlag(false), printRtl(false),
-	noBranchSimplify(false), noRemoveNull(false), noLocals(false),
-	noRemoveLabels(false), noDataflow(false), noDecompile(false), stopBeforeDecompile(false),
-	traceDecoder(false), dotFile(NULL), numToPropagate(-1),
-	noPromote(false), propOnlyToAll(false), debugGen(false),
-	maxMemDepth(99), debugSwitch(false), noParameterNames(false), debugLiveness(false),
-	stopAtDebugPoints(false), debugTA(false), decodeMain(true), printAST(false), dumpXML(false),
-	noRemoveReturns(false), debugDecoder(false), decodeThruIndCall(false), ofsIndCallReport(NULL),
-	noDecodeChildren(false), debugProof(false), debugUnused(false),
-#ifdef USE_XML
-	loadBeforeDecompile(false), saveBeforeDecompile(false),
-#endif
-	noProve(false), noChangeSignatures(false), conTypeAnalysis(false), dfaTypeAnalysis(true),
-	propMaxDepth(3), generateCallGraph(false), generateSymbols(false), noGlobals(false), assumeABI(false),
-	experimental(false), minsToStopAfter(0)
+Boomerang::Boomerang() :
+	progPath(DATADIR "/"),
+	outputPath(OUTPUTDIR "/")
 {
 }
 
@@ -95,7 +83,8 @@ Log &Boomerang::log()
 /**
  * Sets the outputfile to be the file "log" in the default output directory.
  */
-FileLogger::FileLogger() : out((Boomerang::get()->getOutputPath() + "log").c_str())
+FileLogger::FileLogger() :
+	out((Boomerang::get()->getOutputPath() + "log").c_str())
 {
 }
 

@@ -65,12 +65,12 @@ public:
 	bool isFloat() const { return flt; }
 
 private:
-	char *name;
+	char *name = nullptr;
 	short size;
-	void *address;
-	int mappedIndex;
-	int mappedOffset;
-	bool flt;  // True if this is a floating point register
+	void *address = nullptr;
+	int mappedIndex = -1;
+	int mappedOffset = -1;
+	bool flt = false;  // True if this is a floating point register
 };
 
 #endif

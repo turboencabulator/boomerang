@@ -54,7 +54,7 @@ private:
 	void State25(Exp *pLHS, Exp *pRHS, std::list<RTL *> *pRtls, std::list<RTL *>::iterator &rit, ADDRESS uAddr);
 #endif
 
-	int idPF;  ///< Parity flag.
+	int idPF = -1;  ///< Parity flag.
 
 	void processFloatCode(Cfg *pCfg);
 	void processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg);

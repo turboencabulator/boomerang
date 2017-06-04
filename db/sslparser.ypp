@@ -121,13 +121,12 @@
 		 * True when FLOAT keyword seen; false when INTEGER keyword seen \
 		 * (in @REGISTER section) \
 		 */ \
-		bool bFloat;
+		bool bFloat = false;
 
 %define CONSTRUCTOR_PARAM \
 	std::istream &in, bool trace
 %define CONSTRUCTOR_INIT \
-	: theScanner(new SSLScanner(in, trace)) \
-	, bFloat(false)
+	: theScanner(new SSLScanner(in, trace))
 %define CONSTRUCTOR_CODE \
 	if (trace) yydebug = 1; else yydebug = 0;
 

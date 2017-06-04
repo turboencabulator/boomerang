@@ -38,8 +38,8 @@
 
 extern const char *operStrings[];
 
-/// Empty constructor, calls HLLCode()
-CHLLCode::CHLLCode() : HLLCode()
+/// Empty constructor
+CHLLCode::CHLLCode()
 {
 }
 

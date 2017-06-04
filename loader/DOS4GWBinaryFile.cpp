@@ -25,11 +25,7 @@
 
 extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
 
-DOS4GWBinaryFile::DOS4GWBinaryFile() :
-	m_pLXHeader(NULL),
-	m_pLXObjects(NULL),
-	m_pLXPages(NULL),
-	base(NULL)
+DOS4GWBinaryFile::DOS4GWBinaryFile()
 {
 }
 

@@ -414,8 +414,8 @@ protected:
 
 class ArrayType : public Type {
 private:
-	        Type       *base_type;
-	        unsigned    length;
+	        Type       *base_type = NULL;
+	        unsigned    length = 0;
 
 public:
 	                    ArrayType(Type *p, unsigned length);
@@ -446,7 +446,7 @@ public:
 
 protected:
 	friend class XMLProgParser;
-	                    ArrayType() : Type(eArray), base_type(NULL), length(0) { }
+	                    ArrayType() : Type(eArray) { }
 };
 
 class NamedType : public Type {
@@ -486,7 +486,7 @@ class CompoundType : public Type {
 private:
 	        std::vector<Type *> types;
 	        std::vector<std::string> names;
-	        int         nextGenericMemberNum;
+	        int         nextGenericMemberNum = 1;
 	        bool        generic;
 public:
 	                    CompoundType(bool generic = false);

@@ -24,9 +24,7 @@
 #include "table.h"
 
 InsNameElem::InsNameElem(const char *name) :
-	nextelem(NULL),
-	elemname(name),
-	value(0)
+	elemname(name)
 {
 }
 

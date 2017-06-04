@@ -337,8 +337,8 @@ public:
 	 * Depth first traversal of all bbs, numbering as we go and as we come back, forward and reverse passes.
 	 * Use Cfg::establishDFTOrder() and CFG::establishRevDFTOrder to create these values.
 	 */
-	        int         m_DFTfirst;     // depth-first traversal first visit
-	        int         m_DFTlast;      // depth-first traversal last visit
+	        int         m_DFTfirst = 0; // depth-first traversal first visit
+	        int         m_DFTlast = 0;  // depth-first traversal last visit
 	        int         m_DFTrevfirst;  // reverse depth-first traversal first visit
 	        int         m_DFTrevlast;   // reverse depth-first traversal last visit
 
@@ -361,32 +361,32 @@ public:
 	        void        generateBodyCode(HLLCode &hll, bool dup = false);
 
 	/* high level structuring */
-	        SBBTYPE     m_structType;   // structured type of this node
-	        SBBTYPE     m_loopCondType; // type of conditional to treat this loop header as (if any)
-	        BasicBlock *m_loopHead;     // head of the most nested enclosing loop
-	        BasicBlock *m_caseHead;     // head of the most nested enclosing case
-	        BasicBlock *m_condFollow;   // follow of a conditional header
-	        BasicBlock *m_loopFollow;   // follow of a loop header
-	        BasicBlock *m_latchNode;    // latch node of a loop header
+	        SBBTYPE     m_structType = NONE;    // structured type of this node
+	        SBBTYPE     m_loopCondType = NONE;  // type of conditional to treat this loop header as (if any)
+	        BasicBlock *m_loopHead = NULL;      // head of the most nested enclosing loop
+	        BasicBlock *m_caseHead = NULL;      // head of the most nested enclosing case
+	        BasicBlock *m_condFollow = NULL;    // follow of a conditional header
+	        BasicBlock *m_loopFollow = NULL;    // follow of a loop header
+	        BasicBlock *m_latchNode = NULL;     // latch node of a loop header
 
 protected:
 	/* general basic block information */
-	        BBTYPE      m_nodeType;     // type of basic block
-	        std::list<RTL *> *m_pRtls;  // Ptr to list of RTLs
-	        int         m_iLabelNum;    // Nonzero if start of BB needs label
-	        std::string m_labelStr;     // string label of this bb.
-	        bool        m_labelneeded;
-	        bool        m_bIncomplete;  // True if not yet complete
-	        bool        m_bJumpReqd;    // True if jump required for "fall through"
+	        BBTYPE      m_nodeType = INVALID;   // type of basic block
+	        std::list<RTL *> *m_pRtls = NULL;   // Ptr to list of RTLs
+	        int         m_iLabelNum = 0;        // Nonzero if start of BB needs label
+	        std::string m_labelStr;             // string label of this bb.
+	        bool        m_labelneeded = false;
+	        bool        m_bIncomplete = true;   // True if not yet complete
+	        bool        m_bJumpReqd = false;    // True if jump required for "fall through"
 
 	/* in-edges and out-edges */
 	        std::vector<BasicBlock *> m_InEdges; // Vector of in-edges
 	        std::vector<BasicBlock *> m_OutEdges;// Vector of out-edges
-	        int         m_iNumInEdges;  // We need these two because GCC doesn't
-	        int         m_iNumOutEdges; // support resize() of vectors!
+	        int         m_iNumInEdges = 0;  // We need these two because GCC doesn't
+	        int         m_iNumOutEdges = 0; // support resize() of vectors!
 
 	/* for traversal */
-	        bool        m_iTraversed;   // traversal marker
+	        bool        m_iTraversed = false;  // traversal marker
 
 	/* Liveness */
 	        LocationSet liveIn;         // Set of locations live at BB start
@@ -425,27 +425,27 @@ public:
 protected:
 	/* Control flow analysis stuff, lifted from Doug Simon's honours thesis.
 	 */
-	        int         ord;     // node's position within the ordering structure
-	        int         revOrd;  // position within ordering structure for the reverse graph
-	        int         inEdgesVisited; // counts the number of in edges visited during a DFS
-	        int         numForwardInEdges; // inedges to this node that aren't back edges
+	        int         ord = -1;     // node's position within the ordering structure
+	        int         revOrd = -1;  // position within ordering structure for the reverse graph
+	        int         inEdgesVisited = 0; // counts the number of in edges visited during a DFS
+	        int         numForwardInEdges = -1; // inedges to this node that aren't back edges
 	        int         loopStamps[2], revLoopStamps[2]; // used for structuring analysis
-	        travType    traversed; // traversal flag for the numerous DFS's
-	        bool        hllLabel; // emit a label for this node when generating HL code?
+	        travType    traversed = UNTRAVERSED; // traversal flag for the numerous DFS's
+	        bool        hllLabel = false; // emit a label for this node when generating HL code?
 	        char       *labelStr; // the high level label for this node (if needed)
-	        int         indentLevel; // the indentation level of this node in the final code
+	        int         indentLevel = 0; // the indentation level of this node in the final code
 
 	// analysis information
-	        BasicBlock *immPDom; // immediate post dominator
-	        BasicBlock *loopHead; // head of the most nested enclosing loop
-	        BasicBlock *caseHead; // head of the most nested enclosing case
-	        BasicBlock *condFollow; // follow of a conditional header
-	        BasicBlock *loopFollow; // follow of a loop header
-	        BasicBlock *latchNode; // latching node of a loop header
+	        BasicBlock *immPDom = NULL; // immediate post dominator
+	        BasicBlock *loopHead = NULL; // head of the most nested enclosing loop
+	        BasicBlock *caseHead = NULL; // head of the most nested enclosing case
+	        BasicBlock *condFollow = NULL; // follow of a conditional header
+	        BasicBlock *loopFollow = NULL; // follow of a loop header
+	        BasicBlock *latchNode = NULL; // latching node of a loop header
 
 	// Structured type of the node
-	        structType  sType; // the structuring class (Loop, Cond , etc)
-	        unstructType usType; // the restructured type of a conditional header
+	        structType  sType = Seq; // the structuring class (Loop, Cond , etc)
+	        unstructType usType = Structured; // the restructured type of a conditional header
 	        loopType    lType; // the loop type of a loop header
 	        condType    cType; // the conditional type of a conditional header
 
@@ -531,7 +531,7 @@ public:
 
 	// true if processing for overlapped registers on statements in this BB
 	// has been completed.
-	        bool        overlappedRegProcessingDone;
+	        bool        overlappedRegProcessingDone = false;
 
 protected:
 	friend class XMLProgParser;

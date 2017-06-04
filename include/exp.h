@@ -365,8 +365,8 @@ class Const : public Exp {
 		                    // Don't store string: function could be renamed
 		Proc       *pp;     // Pointer to function
 	} u;
-	        int         conscript;  // like a subscript for constants
-	        Type       *type;       // Constants need types during type analysis
+	        int         conscript = 0;  // like a subscript for constants
+	        Type       *type;           // Constants need types during type analysis
 public:
 	// Special constructors overloaded for the various constants
 	                    Const(int i);
@@ -678,7 +678,7 @@ protected:
  * TypedExp is a subclass of Unary, holding one subexpression and a Type
  *============================================================================*/
 class TypedExp : public Unary {
-	        Type       *type;
+	        Type       *type = NULL;
 public:
 	// Constructor
 	                    TypedExp();
@@ -750,7 +750,7 @@ protected:
  * The integer is really a pointer to the definig statement, printed as the statement number for compactness.
  *============================================================================*/
 class RefExp : public Unary {
-	        Statement  *def;  // The defining statement
+	        Statement  *def = NULL;  // The defining statement
 
 public:
 	// Constructor with expression (e) and statement defining it (def)
@@ -786,7 +786,7 @@ public:
 	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
 
 protected:
-	                    RefExp() : Unary(opSubscript), def(NULL) { }
+	                    RefExp() : Unary(opSubscript) { }
 	friend class XMLProgParser;
 };
 
@@ -821,7 +821,7 @@ protected:
 
 class Location : public Unary {
 protected:
-	        UserProc   *proc;
+	        UserProc   *proc = NULL;
 
 public:
 	// Constructor with ID, subexpression, and UserProc*
@@ -852,7 +852,7 @@ public:
 
 protected:
 	friend class XMLProgParser;
-	                    Location(OPER op) : Unary(op), proc(NULL) { }
+	                    Location(OPER op) : Unary(op) { }
 };
 
 #endif

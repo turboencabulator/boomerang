@@ -77,10 +77,10 @@ class DataFlow {
 	// Initially false, meaning that locals and parameters are not renamed and hence not propagated.
 	// When true, locals and parameters can be renamed if their address does not escape the local procedure.
 	// See Mike's thesis for details.
-	bool        renameLocalsAndParams;
+	bool        renameLocalsAndParams = false;
 
 public:
-	            DataFlow() : renameLocalsAndParams(false) { }  // Constructor
+	            DataFlow() { }  // Constructor
 	/*
 	 * Dominance frontier and SSA code
 	 */
@@ -134,7 +134,7 @@ class DefCollector {
 	 * True if initialised. When not initialised, callees should not subscript parameters inserted into the
 	 * associated CallStatement
 	 */
-	bool        initialised;
+	bool        initialised = false;
 	/**
 	 * The set of definitions.
 	 */
@@ -143,7 +143,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	            DefCollector() : initialised(false) { }
+	            DefCollector() { }
 
 	/**
 	 * makeCloneOf(): clone the given Collector into this one
@@ -211,7 +211,7 @@ class UseCollector {
 	 * True if initialised. When not initialised, callees should not subscript parameters inserted into the
 	 * associated CallStatement
 	 */
-	bool        initialised;
+	bool        initialised = false;
 	/**
 	 * The set of locations. Use lessExpStar to compare properly
 	 */
@@ -220,7 +220,7 @@ public:
 	/**
 	 * Constructor
 	 */
-	            UseCollector() : initialised(false) { }
+	            UseCollector() { }
 
 	/**
 	 * makeCloneOf(): clone the given Collector into this one

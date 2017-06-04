@@ -50,7 +50,7 @@ class StmtVisitor;
  * Statements that mark the current native address.
  */
 class RTL {
-	        ADDRESS     nativeAddr;           ///< RTL's source program instruction address.
+	        ADDRESS     nativeAddr = 0;           ///< RTL's source program instruction address.
 	        std::list<Statement *> stmtList;  ///< List of expressions in this RTL.
 public:
 	                    RTL();
@@ -175,7 +175,7 @@ public:
 	RTL rtl;
 
 #define TEF_NEXTPC 1
-	int flags;  // aka required capabilities. Init. to 0
+	int flags = 0;  // aka required capabilities
 };
 
 
@@ -186,15 +186,7 @@ typedef enum { PARAM_SIMPLE, PARAM_ASGN, PARAM_LAMBDA, PARAM_VARIANT } ParamKind
  */
 class ParamEntry {
 public:
-	ParamEntry() :
-		asgn(NULL),
-		lhs(false),
-		kind(PARAM_SIMPLE),
-		type(NULL),
-		regType(NULL),
-		mark(0)
-	{
-	}
+	ParamEntry() { }
 	~ParamEntry()
 	{
 		delete type;
@@ -203,13 +195,13 @@ public:
 
 	std::list<std::string> params;      ///< PARAM_VARIANT & PARAM_ASGN only.
 	std::list<std::string> funcParams;  ///< PARAM_LAMBDA - late bound params.
-	Statement  *asgn;                   ///< PARAM_ASGN only.
-	bool        lhs;                    ///< True if this param ever appears on the LHS of an expression.
-	ParamKind   kind;
-	Type       *type;
-	Type       *regType;                ///< Type of r[this], if any (void otherwise).
+	Statement  *asgn = NULL;            ///< PARAM_ASGN only.
+	bool        lhs = false;            ///< True if this param ever appears on the LHS of an expression.
+	ParamKind   kind = PARAM_SIMPLE;
+	Type       *type = NULL;
+	Type       *regType = NULL;         ///< Type of r[this], if any (void otherwise).
 	std::set<int> regIdx;               ///< Values this param can take as an r[param].
-	int         mark;                   ///< Traversal mark. (free temporary use, basically)
+	int         mark = 0;               ///< Traversal mark. (free temporary use, basically)
 };
 
 

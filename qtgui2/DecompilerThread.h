@@ -30,7 +30,7 @@ class Decompiler : public QObject, public Watcher {
 	Q_OBJECT
 
 public:
-	Decompiler() : QObject(), debugging(false), waiting(false) { }
+	Decompiler() { }
 
 	virtual void alert_decompile_debug_point(UserProc *p, const char *description);
 	virtual void alert_considering(Proc *parent, Proc *p);
@@ -89,7 +89,7 @@ signals:
 
 protected:
 
-	bool debugging, waiting;
+	bool debugging = false, waiting = false;
 
 	FrontEnd *fe;
 	Prog *prog;
@@ -106,14 +106,14 @@ class DecompilerThread : public QThread {
 	Q_OBJECT
 
 public:
-	DecompilerThread() : QThread(), decompiler(NULL) { }
+	DecompilerThread() { }
 
 	Decompiler *getDecompiler();
 
 protected:
 	void run();
 
-	Decompiler *decompiler;
+	Decompiler *decompiler = NULL;
 };
 
 #endif

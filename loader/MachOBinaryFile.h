@@ -77,11 +77,11 @@ protected:
 	//virtual bool        PostLoad(void *handle);
 
 private:
-	        char       *base;                ///< Beginning of the loaded image
+	        char       *base = NULL;         ///< Beginning of the loaded image
 	        ADDRESS     entrypoint, loaded_addr;
 	        unsigned    loaded_size;
-	        MACHINE     machine;
-	        bool        swap_bytes;
+	        MACHINE     machine = MACHINE_PPC;
+	        bool        swap_bytes = false;
 	        std::map<ADDRESS, std::string> m_SymA, dlprocs;
 	        std::map<std::string, ObjcModule> modules;
 };

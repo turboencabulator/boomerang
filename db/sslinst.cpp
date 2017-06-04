@@ -44,14 +44,12 @@
 
 //#define DEBUG_SSLPARSER 1
 
-TableEntry::TableEntry() :
-	flags(0)
+TableEntry::TableEntry()
 {
 }
 
 TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
-	rtl(r),
-	flags(0)
+	rtl(r)
 {
 	for (std::list<std::string>::iterator it = p.begin(); it != p.end(); it++)
 		params.push_back(*it);

@@ -38,7 +38,7 @@ static int nodecount = 1000;
 	of1.close(); \
 	exit(0);
 
-SyntaxNode::SyntaxNode() : pbb(NULL), score(-1), correspond(NULL), notGoto(false)
+SyntaxNode::SyntaxNode()
 {
 	nodenum = nodecount++;
 }
@@ -414,7 +414,7 @@ SyntaxNode *BlockSyntaxNode::replace(SyntaxNode *from, SyntaxNode *to)
 	return this;
 }
 
-IfThenSyntaxNode::IfThenSyntaxNode() : pThen(NULL), cond(NULL)
+IfThenSyntaxNode::IfThenSyntaxNode()
 {
 }
 
@@ -484,7 +484,7 @@ void IfThenSyntaxNode::printAST(SyntaxNode *root, std::ostream &os)
 	os << " -> " << follows->getNumber() << " [style=dotted];" << std::endl;
 }
 
-IfThenElseSyntaxNode::IfThenElseSyntaxNode() : pThen(NULL), pElse(NULL), cond(NULL)
+IfThenElseSyntaxNode::IfThenElseSyntaxNode()
 {
 }
 
@@ -583,7 +583,7 @@ void IfThenElseSyntaxNode::printAST(SyntaxNode *root, std::ostream &os)
 }
 
 
-PretestedLoopSyntaxNode::PretestedLoopSyntaxNode() : pBody(NULL), cond(NULL)
+PretestedLoopSyntaxNode::PretestedLoopSyntaxNode()
 {
 }
 
@@ -666,7 +666,7 @@ void PretestedLoopSyntaxNode::printAST(SyntaxNode *root, std::ostream &os)
 	   << " [style=dotted];" << std::endl;
 }
 
-PostTestedLoopSyntaxNode::PostTestedLoopSyntaxNode() : pBody(NULL), cond(NULL)
+PostTestedLoopSyntaxNode::PostTestedLoopSyntaxNode()
 {
 }
 
@@ -751,7 +751,7 @@ void PostTestedLoopSyntaxNode::printAST(SyntaxNode *root, std::ostream &os)
 	   << " [style=dotted];" << std::endl;
 }
 
-InfiniteLoopSyntaxNode::InfiniteLoopSyntaxNode() : pBody(NULL)
+InfiniteLoopSyntaxNode::InfiniteLoopSyntaxNode()
 {
 }
 

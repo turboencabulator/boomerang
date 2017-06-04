@@ -26,15 +26,15 @@
 
 class Cluster {
 protected:
-	        std::string name;
+	        std::string name = "";
 	        std::vector<Cluster *> children;
-	        Cluster    *parent;
+	        Cluster    *parent = NULL;
 	        std::ofstream out;
 	        std::string stream_ext;
 
 public:
-	                    Cluster() : name(""), parent(NULL) { }
-	                    Cluster(const char *name) : name(name), parent(NULL) { }
+	                    Cluster() { }
+	                    Cluster(const char *name) : name(name) { }
 	virtual            ~Cluster() { }
 	        const char *getName() { return name.c_str(); }
 	        void        setName(const char *nam) { name = nam; }

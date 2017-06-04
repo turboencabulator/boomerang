@@ -30,9 +30,7 @@
 #define UINT4(p) ((UC(p)[0] << 24) + (UC(p)[1] << 16) + (UC(p)[2] << 8) + \
     UC(p)[3])
 
-PalmBinaryFile::PalmBinaryFile() :
-	m_pImage(NULL),
-	m_pData(NULL)
+PalmBinaryFile::PalmBinaryFile()
 {
 }
 
