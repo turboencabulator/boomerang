@@ -42,7 +42,8 @@ extern "C" void *GC_pthread_create(void *, void *, void *, void *);
 void *pthread_lib = NULL;
 pthread_create_type *orig = NULL;
 
-extern "C" void *pthread_create(void *a, void *b, void *c, void *d)
+extern "C" void *
+pthread_create(void *a, void *b, void *c, void *d)
 {
 	if (c != (void *)GC_start_routine)
 		return GC_pthread_create(a, b, c, d);

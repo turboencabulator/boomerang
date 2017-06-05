@@ -35,7 +35,8 @@
 #ifdef GARBAGE_COLLECTOR
 static Qt::HANDLE threadToCollect = 0;
 
-void *operator new(size_t n)
+void *
+operator new(size_t n)
 {
 	Qt::HANDLE curThreadId = QThread::currentThreadId();
 	if (curThreadId == threadToCollect)
@@ -44,7 +45,8 @@ void *operator new(size_t n)
 		return GC_malloc_uncollectable(n);  // Don't collect, but mark
 }
 
-void operator delete(void *p)
+void
+operator delete(void *p)
 {
 	Qt::HANDLE curThreadId = QThread::currentThreadId();
 	if (curThreadId != threadToCollect)
@@ -52,7 +54,8 @@ void operator delete(void *p)
 }
 #endif
 
-void DecompilerThread::run()
+void
+DecompilerThread::run()
 {
 #ifdef GARBAGE_COLLECTOR
 	threadToCollect = QThread::currentThreadId();
@@ -72,30 +75,35 @@ void DecompilerThread::run()
 	exec();
 }
 
-Decompiler *DecompilerThread::getDecompiler()
+Decompiler *
+DecompilerThread::getDecompiler()
 {
 	while (decompiler == NULL)
 		msleep(10);
 	return decompiler;
 }
 
-void Decompiler::setUseDFTA(bool d)
+void
+Decompiler::setUseDFTA(bool d)
 {
 	Boomerang::get()->dfaTypeAnalysis = d;
 }
 
-void Decompiler::setNoDecodeChildren(bool d)
+void
+Decompiler::setNoDecodeChildren(bool d)
 {
 	Boomerang::get()->noDecodeChildren = d;
 }
 
-void Decompiler::addEntryPoint(ADDRESS a, const char *nam)
+void
+Decompiler::addEntryPoint(ADDRESS a, const char *nam)
 {
 	user_entrypoints.push_back(a);
 	fe->addSymbol(a, nam);
 }
 
-void Decompiler::removeEntryPoint(ADDRESS a)
+void
+Decompiler::removeEntryPoint(ADDRESS a)
 {
 	for (std::vector<ADDRESS>::iterator it = user_entrypoints.begin(); it != user_entrypoints.end(); it++)
 		if (*it == a) {
@@ -104,17 +112,20 @@ void Decompiler::removeEntryPoint(ADDRESS a)
 		}
 }
 
-void Decompiler::changeInputFile(const QString &f)
+void
+Decompiler::changeInputFile(const QString &f)
 {
 	filename = f;
 }
 
-void Decompiler::changeOutputPath(const QString &path)
+void
+Decompiler::changeOutputPath(const QString &path)
 {
 	Boomerang::get()->setOutputDirectory((const char *)path.toAscii());
 }
 
-void Decompiler::load()
+void
+Decompiler::load()
 {
 	emit loading();
 
@@ -165,7 +176,8 @@ void Decompiler::load()
 	emit loadCompleted();
 }
 
-void Decompiler::decode()
+void
+Decompiler::decode()
 {
 	emit decoding();
 
@@ -191,7 +203,8 @@ void Decompiler::decode()
 	emit decodeCompleted();
 }
 
-void Decompiler::decompile()
+void
+Decompiler::decompile()
 {
 	emit decompiling();
 
@@ -200,14 +213,16 @@ void Decompiler::decompile()
 	emit decompileCompleted();
 }
 
-void Decompiler::emitClusterAndChildren(Cluster *root)
+void
+Decompiler::emitClusterAndChildren(Cluster *root)
 {
 	emit newCluster(QString(root->getName()));
 	for (unsigned int i = 0; i < root->getNumChildren(); i++)
 		emitClusterAndChildren(root->getChild(i));
 }
 
-void Decompiler::generateCode()
+void
+Decompiler::generateCode()
 {
 	emit generatingCode();
 
@@ -224,7 +239,8 @@ void Decompiler::generateCode()
 	emit generateCodeCompleted();
 }
 
-const char *Decompiler::procStatus(UserProc *p)
+const char *
+Decompiler::procStatus(UserProc *p)
 {
 	switch (p->getStatus()) {
 	case PROC_UNDECODED:
@@ -249,17 +265,20 @@ const char *Decompiler::procStatus(UserProc *p)
 	return "unknown";
 }
 
-void Decompiler::alert_considering(Proc *parent, Proc *p)
+void
+Decompiler::alert_considering(Proc *parent, Proc *p)
 {
 	emit consideringProc(QString(parent ? parent->getName() : ""), QString(p->getName()));
 }
 
-void Decompiler::alert_decompiling(UserProc *p)
+void
+Decompiler::alert_decompiling(UserProc *p)
 {
 	emit decompilingProc(QString(p->getName()));
 }
 
-void Decompiler::alert_new(Proc *p)
+void
+Decompiler::alert_new(Proc *p)
 {
 	if (p->isLib()) {
 		QString params;
@@ -281,7 +300,8 @@ void Decompiler::alert_new(Proc *p)
 	}
 }
 
-void Decompiler::alert_remove(Proc *p)
+void
+Decompiler::alert_remove(Proc *p)
 {
 	if (p->isLib()) {
 		emit removeLibProc(QString(p->getName()));
@@ -290,12 +310,14 @@ void Decompiler::alert_remove(Proc *p)
 	}
 }
 
-void Decompiler::alert_update_signature(Proc *p)
+void
+Decompiler::alert_update_signature(Proc *p)
 {
 	alert_new(p);
 }
 
-bool Decompiler::getRtlForProc(const QString &name, QString &rtl)
+bool
+Decompiler::getRtlForProc(const QString &name, QString &rtl)
 {
 	Proc *p = prog->findProc((const char *)name.toAscii());
 	if (p->isLib())
@@ -307,7 +329,8 @@ bool Decompiler::getRtlForProc(const QString &name, QString &rtl)
 	return true;
 }
 
-void Decompiler::alert_decompile_debug_point(UserProc *p, const char *description)
+void
+Decompiler::alert_decompile_debug_point(UserProc *p, const char *description)
 {
 	LOG << p->getName() << ": " << description << "\n";
 	if (debugging) {
@@ -319,12 +342,14 @@ void Decompiler::alert_decompile_debug_point(UserProc *p, const char *descriptio
 	}
 }
 
-void Decompiler::stopWaiting()
+void
+Decompiler::stopWaiting()
 {
 	waiting = false;
 }
 
-const char *Decompiler::getSigFile(const QString &name)
+const char *
+Decompiler::getSigFile(const QString &name)
 {
 	Proc *p = prog->findProc((const char *)name.toAscii());
 	if (p == NULL || !p->isLib() || p->getSignature() == NULL)
@@ -332,7 +357,8 @@ const char *Decompiler::getSigFile(const QString &name)
 	return p->getSignature()->getSigFile();
 }
 
-const char *Decompiler::getClusterFile(const QString &name)
+const char *
+Decompiler::getClusterFile(const QString &name)
 {
 	Cluster *c = prog->findCluster((const char *)name.toAscii());
 	if (c == NULL)
@@ -340,19 +366,22 @@ const char *Decompiler::getClusterFile(const QString &name)
 	return c->getOutPath("c");
 }
 
-void Decompiler::rereadLibSignatures()
+void
+Decompiler::rereadLibSignatures()
 {
 	prog->rereadLibSignatures();
 }
 
-void Decompiler::renameProc(const QString &oldName, const QString &newName)
+void
+Decompiler::renameProc(const QString &oldName, const QString &newName)
 {
 	Proc *p = prog->findProc((const char *)oldName.toAscii());
 	if (p)
 		p->setName((const char *)newName.toAscii());
 }
 
-void Decompiler::getCompoundMembers(const QString &name, QTableWidget *tbl)
+void
+Decompiler::getCompoundMembers(const QString &name, QTableWidget *tbl)
 {
 	Type *ty = NamedType::getNamedType((const char *)name.toAscii());
 	tbl->setRowCount(0);

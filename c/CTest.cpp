@@ -20,7 +20,8 @@
 
 #include <sstream>
 
-void CTest::testSignature()
+void
+CTest::testSignature()
 {
 	std::istringstream os("int printf(char *fmt, ...);");
 	AnsiCParser p(os, false);

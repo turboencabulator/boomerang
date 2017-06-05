@@ -38,7 +38,8 @@
  * \param[in] i     The integer whose ascii representation is to be appended.
  * \returns         A copy of the modified string.
  */
-std::string operator+(const std::string &s, int i)
+std::string
+operator +(const std::string &s, int i)
 {
 	static char buf[50];
 	std::string ret(s);
@@ -53,7 +54,8 @@ std::string operator+(const std::string &s, int i)
  * \param[in] s     The string to capitalise.
  * \returns         A copy of the modified string.
  */
-std::string initCapital(const std::string &s)
+std::string
+initCapital(const std::string &s)
 {
 	std::string res(s);
 	res[0] = toupper(res[0]);
@@ -67,7 +69,8 @@ std::string initCapital(const std::string &s)
  * \retval true     The file name has the extension.
  * \retval false    Otherwise.
  */
-bool hasExt(const std::string &s, const char *ext)
+bool
+hasExt(const std::string &s, const char *ext)
 {
 	std::string tailStr(".");
 	tailStr.append(ext);
@@ -86,7 +89,8 @@ bool hasExt(const std::string &s, const char *ext)
  * \param[in] ext   The new extension (e.g. ".o").
  * \returns         The converted string (e.g. "foo.o").
  */
-std::string changeExt(const std::string &s, const char *ext)
+std::string
+changeExt(const std::string &s, const char *ext)
 {
 	std::string::size_type i = s.rfind('.');
 	if (i == s.npos) {
@@ -104,8 +108,10 @@ std::string changeExt(const std::string &s, const char *ext)
  * \param[in] rep   The string to replace match with.
  * \returns         The updated string.
  */
-std::string searchAndReplace(const std::string &in, const std::string &match,
-                             const std::string &rep)
+std::string
+searchAndReplace(const std::string &in,
+                 const std::string &match,
+                 const std::string &rep)
 {
 	std::string result;
 	std::string::size_type l, n = 0;
@@ -124,14 +130,16 @@ std::string searchAndReplace(const std::string &in, const std::string &match,
  * \param[in] s     The string to start with.
  * \param[out] d    The string to write to (can be the same string).
  */
-void upperStr(const char *s, char *d)
+void
+upperStr(const char *s, char *d)
 {
 	while (*s)
 		*d++ = toupper(*s++);
 	*d = '\0';
 }
 
-int lockFileRead(const char *fname)
+int
+lockFileRead(const char *fname)
 {
 	int fd = open(fname, O_RDONLY);  /* get the file descriptor */
 	struct flock fl;
@@ -144,7 +152,8 @@ int lockFileRead(const char *fname)
 	return fd;
 }
 
-int lockFileWrite(const char *fname)
+int
+lockFileWrite(const char *fname)
 {
 	int fd = open(fname, O_WRONLY);  /* get the file descriptor */
 	struct flock fl;
@@ -157,7 +166,8 @@ int lockFileWrite(const char *fname)
 	return fd;
 }
 
-void unlockFile(int fd)
+void
+unlockFile(int fd)
 {
 	struct flock fl;
 	fl.l_type   = F_UNLCK;  /* tell it to unlock the region */
@@ -165,7 +175,8 @@ void unlockFile(int fd)
 	close(fd);
 }
 
-void escapeXMLChars(std::string &s)
+void
+escapeXMLChars(std::string &s)
 {
 	std::string bad = "<>&";
 	const char *replace[] = { "&lt;", "&gt;", "&amp;" };
@@ -181,7 +192,8 @@ void escapeXMLChars(std::string &s)
  * \brief           Turn things like newline, return, tab into \\n, \\r, \\t etc.
  * \note            Assumes a C or C++ back end...
  */
-char *escapeStr(const char *str)
+char *
+escapeStr(const char *str)
 {
 	std::ostringstream out;
 	const char unescaped[] = "ntvbrfa\"";

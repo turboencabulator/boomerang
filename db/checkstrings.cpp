@@ -41,7 +41,8 @@ static const struct {
 	checkpoint(opAnull),
 };
 
-int main()
+int
+main()
 {
 	if (sizeof operStrings / sizeof *operStrings == opNumOf) {
 		printf("All is correct\n");

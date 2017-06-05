@@ -138,7 +138,7 @@ public:
 	        BasicBlock *getBB() { return pbb; }
 	        void        setBB(BasicBlock *bb) { pbb = bb; }
 
-	        //bool        operator==(Statement &o);
+	        //bool        operator ==(Statement &o);
 	// Get and set *enclosing* proc (not destination proc)
 	        void        setProc(UserProc *p);
 	        UserProc   *getProc() { return proc; }
@@ -354,9 +354,9 @@ public:
 };
 
 // Print the Statement (etc) poited to by p
-std::ostream &operator<<(std::ostream &os, Statement *p);
-std::ostream &operator<<(std::ostream &os, StatementSet *p);
-std::ostream &operator<<(std::ostream &os, LocationSet *p);
+std::ostream &operator <<(std::ostream &os, Statement *p);
+std::ostream &operator <<(std::ostream &os, StatementSet *p);
+std::ostream &operator <<(std::ostream &os, LocationSet *p);
 
 /*==============================================================================
  * TypingStatement is an abstract subclass of Statement. It has a type, representing the type of a reference or an
@@ -392,10 +392,10 @@ public:
 	// Clone
 	virtual Statement  *clone() = 0;
 
-	// We also want operator< for assignments. For example, we want ReturnStatement to contain a set of (pointers
+	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated
 	// Assume that we won't want sets of assignments differing by anything other than LHSs
-	        bool        operator<(const Assignment &o) { return lhs < o.lhs; }
+	        bool        operator <(const Assignment &o) { return lhs < o.lhs; }
 
 	// Accept a visitor to this Statement
 	virtual bool        accept(StmtVisitor *visitor) = 0;

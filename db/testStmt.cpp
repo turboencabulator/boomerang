@@ -18,7 +18,8 @@
 
 #include <cstdlib>
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 	CppUnit::TextUi::TestRunner runner;
 

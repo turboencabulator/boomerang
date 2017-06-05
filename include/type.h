@@ -51,7 +51,7 @@ class UserProc;
 
 enum eType {
 	eVoid, eFunc, eBoolean, eChar, eInteger, eFloat, ePointer, eArray, eNamed, eCompound, eUnion, eSize,
-	eUpper, eLower        // For operator< mostly
+	eUpper, eLower        // For operator < mostly
 };
 
 // The following two are for Type::compForAddress()
@@ -139,12 +139,12 @@ public:
 	virtual Type       *clone() const = 0;
 
 	// Comparisons
-	virtual bool        operator==(const Type &other) const = 0;    // Considers sign
-	virtual bool        operator!=(const Type &other) const;        // Considers sign
-	//virtual bool        operator-=(const Type &other) const = 0;    // Ignores sign
-	virtual bool        operator<(const Type &other) const = 0;     // Considers sign
-	        bool        operator*=(const Type &other) const {       // Consider only
-		                    return id == other.id;                  // broad type
+	virtual bool        operator ==(const Type &other) const = 0;    // Considers sign
+	virtual bool        operator !=(const Type &other) const;        // Considers sign
+	//virtual bool        operator -=(const Type &other) const = 0;    // Ignores sign
+	virtual bool        operator <(const Type &other) const = 0;     // Considers sign
+	        bool        operator *=(const Type &other) const {       // Consider only broad type
+		                    return id == other.id;
 	                    }
 	virtual Exp        *match(Type *pattern);
 	// Constraint-based TA: merge one type with another, e.g. size16 with integer-of-size-0 -> int16
@@ -209,9 +209,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -238,9 +238,9 @@ public:
 	        Signature  *getSignature() { return signature; }
 	        void        setSignature(Signature *sig) { signature = sig; }
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -270,9 +270,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Type       *mergeWith(Type *other);
 	virtual Exp        *match(Type *pattern);
 
@@ -311,9 +311,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -338,9 +338,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -362,9 +362,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -395,9 +395,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -431,9 +431,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -465,9 +465,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -516,9 +516,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -561,9 +561,9 @@ public:
 
 	virtual Type       *clone() const;
 
-	virtual bool        operator==(const Type &other) const;
-	//virtual bool        operator-=(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	//virtual bool        operator -=(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	virtual Exp        *match(Type *pattern);
 
 	virtual unsigned    getSize() const;
@@ -590,8 +590,8 @@ public:
 	                    SizeType(unsigned sz) : Type(eSize), size(sz) { }
 	virtual            ~SizeType() { }
 	virtual Type       *clone() const;
-	virtual bool        operator==(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	//virtual Exp        *match(Type *pattern);
 	virtual Type       *mergeWith(Type *other);
 
@@ -615,8 +615,8 @@ public:
 	                    UpperType(Type *base) : Type(eUpper), base_type(base) { }
 	virtual            ~UpperType() { }
 	virtual Type       *clone() const;
-	virtual bool        operator==(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	//virtual Exp        *match(Type *pattern);
 	virtual Type       *mergeWith(Type *other);
 	        Type       *getBaseType() { return base_type; }
@@ -640,8 +640,8 @@ public:
 	                    LowerType(Type *base) : Type(eUpper), base_type(base) { }
 	virtual            ~LowerType() { }
 	virtual Type       *clone() const;
-	virtual bool        operator==(const Type &other) const;
-	virtual bool        operator<(const Type &other) const;
+	virtual bool        operator ==(const Type &other) const;
+	virtual bool        operator <(const Type &other) const;
 	//virtual Exp        *match(Type *pattern);
 	virtual Type       *mergeWith(Type *other);
 	        Type       *getBaseType() { return base_type; }
@@ -700,6 +700,6 @@ private:
 };
 
 // Not part of the Type class, but logically belongs with it:
-std::ostream &operator<<(std::ostream &os, Type *t);  // Print the Type pointed to by t
+std::ostream &operator <<(std::ostream &os, Type *t);  // Print the Type pointed to by t
 
 #endif

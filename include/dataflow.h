@@ -268,7 +268,7 @@ public:
 	void        remove(Exp *loc) { locs.remove(loc); }        // Remove the given location
 	void        remove(iterator it) { locs.remove(it); }      // Remove the current location
 	void        fromSSAform(UserProc *proc, Statement *def);  // Translate out of SSA form
-	bool        operator==(UseCollector &other);
+	bool        operator ==(UseCollector &other);
 };
 
 #endif

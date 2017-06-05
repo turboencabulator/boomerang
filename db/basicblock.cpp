@@ -45,8 +45,6 @@
 /*==============================================================================
  * FUNCTION:        BasicBlock::BasicBlock
  * OVERVIEW:        Constructor.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
 BasicBlock::BasicBlock()
 {
@@ -55,8 +53,6 @@ BasicBlock::BasicBlock()
 /*==============================================================================
  * FUNCTION:        BasicBlock::~BasicBlock
  * OVERVIEW:        Destructor.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
 BasicBlock::~BasicBlock()
 {
@@ -78,7 +74,6 @@ BasicBlock::~BasicBlock()
  * FUNCTION:        BasicBlock::BasicBlock
  * OVERVIEW:        Copy constructor.
  * PARAMETERS:      bb - the BB to copy from
- * RETURNS:         <nothing>
  *============================================================================*/
 BasicBlock::BasicBlock(const BasicBlock &bb) :
 	m_structType(bb.m_structType),
@@ -122,7 +117,6 @@ BasicBlock::BasicBlock(const BasicBlock &bb) :
  * PARAMETERS:      pRtls -
  *                  bbType -
  *                  iNumOutEdges -
- * RETURNS:         <nothing>
  *============================================================================*/
 BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) :
 	m_nodeType(bbType),
@@ -139,15 +133,16 @@ BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges)
  * FUNCTION:        BasicBlock::getLabel
  * OVERVIEW:        Returns nonzero if this BB has a label, in the sense that a label is required in the translated
  *                      source code
- * PARAMETERS:      <none>
  * RETURNS:         An integer unique to this BB, or zero
  *============================================================================*/
-int BasicBlock::getLabel()
+int
+BasicBlock::getLabel()
 {
 	return m_iLabelNum;
 }
 
-bool BasicBlock::isCaseOption()
+bool
+BasicBlock::isCaseOption()
 {
 	if (caseHead)
 		for (unsigned int i = 0; i < caseHead->getOutEdges().size() - 1; i++)
@@ -159,10 +154,10 @@ bool BasicBlock::isCaseOption()
 /*==============================================================================
  * FUNCTION:        BasicBlock::isTraversed
  * OVERVIEW:        Returns nonzero if this BB has been traversed
- * PARAMETERS:      <none>
  * RETURNS:         True if traversed
  *============================================================================*/
-bool BasicBlock::isTraversed()
+bool
+BasicBlock::isTraversed()
 {
 	return m_iTraversed;
 }
@@ -171,9 +166,9 @@ bool BasicBlock::isTraversed()
  * FUNCTION:        BasicBlock::setTraversed
  * OVERVIEW:        Sets the traversed flag
  * PARAMETERS:      bTraversed: true to set this BB to traversed
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setTraversed(bool bTraversed)
+void
+BasicBlock::setTraversed(bool bTraversed)
 {
 	m_iTraversed = bTraversed;
 }
@@ -183,9 +178,9 @@ void BasicBlock::setTraversed(bool bTraversed)
  * OVERVIEW:        Sets the RTLs for a basic block. This is the only place that the RTLs for a block must be set as we
  *                      need to add the back link for a call instruction to its enclosing BB.
  * PARAMETERS:      rtls - a list of RTLs
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setRTLs(std::list<RTL *> *rtls)
+void
+BasicBlock::setRTLs(std::list<RTL *> *rtls)
 {
 	// should we delete old ones here?  breaks some things - trent
 	m_pRtls = rtls;
@@ -196,10 +191,10 @@ void BasicBlock::setRTLs(std::list<RTL *> *rtls)
 /*==============================================================================
  * FUNCTION:        BasicBlock::getType
  * OVERVIEW:        Return the type of the basic block.
- * PARAMETERS:      <none>
  * RETURNS:         the type of the basic block
  *============================================================================*/
-BBTYPE BasicBlock::getType()
+BBTYPE
+BasicBlock::getType()
 {
 	return m_nodeType;
 }
@@ -210,9 +205,9 @@ BBTYPE BasicBlock::getType()
  *                      NWAY when a switch idiom is discovered.
  * PARAMETERS:      bbType - the new type
  *                  iNumOutEdges - new number of inedges
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::updateType(BBTYPE bbType, int iNumOutEdges)
+void
+BasicBlock::updateType(BBTYPE bbType, int iNumOutEdges)
 {
 	m_nodeType = bbType;
 	m_iNumOutEdges = iNumOutEdges;
@@ -223,10 +218,9 @@ void BasicBlock::updateType(BBTYPE bbType, int iNumOutEdges)
  * FUNCTION:        BasicBlock::setJumpReqd
  * OVERVIEW:        Sets the "jump required" bit. This means that this BB is an orphan (not generated from input code),
  *                      and that the "fall through" out edge needs to be implemented as a jump
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setJumpReqd()
+void
+BasicBlock::setJumpReqd()
 {
 	m_bJumpReqd = true;
 }
@@ -234,10 +228,10 @@ void BasicBlock::setJumpReqd()
 /*==============================================================================
  * FUNCTION:        BasicBlock::isJumpReqd
  * OVERVIEW:        Returns the "jump required" bit. See above for details
- * PARAMETERS:      <none>
  * RETURNS:         True if a jump is required
  *============================================================================*/
-bool BasicBlock::isJumpReqd()
+bool
+BasicBlock::isJumpReqd()
 {
 	return m_bJumpReqd;
 }
@@ -245,12 +239,12 @@ bool BasicBlock::isJumpReqd()
 /*==============================================================================
  * FUNCTION:        BasicBlock::prints
  * OVERVIEW:        Print to a static string (for debugging)
- * PARAMETERS:      <none>
  * RETURNS:         Address of the static buffer
  *============================================================================*/
 char debug_buffer[DEBUG_BUFSIZE];
 
-char *BasicBlock::prints()
+char *
+BasicBlock::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -261,7 +255,8 @@ char *BasicBlock::prints()
 	return debug_buffer;
 }
 
-void BasicBlock::dump()
+void
+BasicBlock::dump()
 {
 	print(std::cerr);
 }
@@ -271,9 +266,9 @@ void BasicBlock::dump()
  * OVERVIEW:        Display the whole BB to the given stream
  *                  Used for "-R" option, and handy for debugging
  * PARAMETERS:      os - stream to output to
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::print(std::ostream &os, bool html)
+void
+BasicBlock::print(std::ostream &os, bool html)
 {
 	if (html)
 		os << "<br>";
@@ -321,21 +316,24 @@ void BasicBlock::print(std::ostream &os, bool html)
 	}
 }
 
-void BasicBlock::printToLog()
+void
+BasicBlock::printToLog()
 {
 	std::ostringstream ost;
 	print(ost);
 	LOG << ost.str().c_str();
 }
 
-bool BasicBlock::isBackEdge(int inEdge)
+bool
+BasicBlock::isBackEdge(int inEdge)
 {
 	BasicBlock *in = m_InEdges[inEdge];
 	return this == in || (m_DFTfirst < in->m_DFTfirst && m_DFTlast > in->m_DFTlast);
 }
 
 // Another attempt at printing BBs that gdb doesn't like to print
-void printBB(BasicBlock *bb)
+void
+printBB(BasicBlock *bb)
 {
 	bb->print(std::cerr);
 }
@@ -347,10 +345,10 @@ void printBB(BasicBlock *bb)
  *                      and the delay instruction for the branch does not affect the branch, so the delay instruction is
  *                      copied in front of the branch instruction. Its address will be UpdateAddress()d to 0, since it
  *                      is "not really there", so the low address for this BB will be the address of the branch.
- * PARAMETERS:      <none>
  * RETURNS:         the lowest real address associated with this BB
  *============================================================================*/
-ADDRESS BasicBlock::getLowAddr()
+ADDRESS
+BasicBlock::getLowAddr()
 {
 	if (m_pRtls == NULL || m_pRtls->size() == 0) return 0;
 	ADDRESS a = m_pRtls->front()->getAddress();
@@ -371,10 +369,9 @@ ADDRESS BasicBlock::getLowAddr()
  * FUNCTION:        BasicBlock::getHiAddr
  * OVERVIEW:        Get the highest address associated with this BB. This is
  *                  always the address associated with the last RTL.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
-ADDRESS BasicBlock::getHiAddr()
+ADDRESS
+BasicBlock::getHiAddr()
 {
 	assert(m_pRtls != NULL);
 	return m_pRtls->back()->getAddress();
@@ -383,10 +380,9 @@ ADDRESS BasicBlock::getHiAddr()
 /*==============================================================================
  * FUNCTION:        BasicBlock::getRTLs
  * OVERVIEW:        Get pointer to the list of RTL*.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
-std::list<RTL *> *BasicBlock::getRTLs()
+std::list<RTL *> *
+BasicBlock::getRTLs()
 {
 	return m_pRtls;
 }
@@ -407,10 +403,10 @@ RTL *BasicBlock::getRTLWithStatement(Statement *stmt)
 /*==============================================================================
  * FUNCTION:        BasicBlock::getInEdges
  * OVERVIEW:        Get a constant reference to the vector of in edges.
- * PARAMETERS:      <none>
  * RETURNS:         a constant reference to the vector of in edges
  *============================================================================*/
-std::vector<BasicBlock *> &BasicBlock::getInEdges()
+std::vector<BasicBlock *> &
+BasicBlock::getInEdges()
 {
 	return m_InEdges;
 }
@@ -418,10 +414,10 @@ std::vector<BasicBlock *> &BasicBlock::getInEdges()
 /*==============================================================================
  * FUNCTION:        BasicBlock::getOutEdges
  * OVERVIEW:        Get a constant reference to the vector of out edges.
- * PARAMETERS:      <none>
  * RETURNS:         a constant reference to the vector of out edges
  *============================================================================*/
-std::vector<BasicBlock *> &BasicBlock::getOutEdges()
+std::vector<BasicBlock *> &
+BasicBlock::getOutEdges()
 {
 	return m_OutEdges;
 }
@@ -432,9 +428,9 @@ std::vector<BasicBlock *> &BasicBlock::getOutEdges()
  *                  Needed for example when duplicating BBs
  * PARAMETERS:      i: index (0 based) of in-edge to change
  *                  pNewInEdge: pointer to BB that will be a new parent
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setInEdge(int i, BasicBlock *pNewInEdge)
+void
+BasicBlock::setInEdge(int i, BasicBlock *pNewInEdge)
 {
 	m_InEdges[i] = pNewInEdge;
 }
@@ -446,9 +442,9 @@ void BasicBlock::setInEdge(int i, BasicBlock *pNewInEdge)
  * NOTE:            Cannot add an additional out-edge with this function; use addOutEdge for this rare case
  * PARAMETERS:      i: index (0 based) of out-edge to change
  *                  pNewOutEdge: pointer to BB that will be the new successor
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
+void
+BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
 {
 	if (m_OutEdges.size() == 0) {
 		assert(i == 0);
@@ -462,11 +458,11 @@ void BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
 /*==============================================================================
  * FUNCTION:        BasicBlock::getOutEdge
  * OVERVIEW:        Returns the i-th out edge of this BB; counting starts at 0
- * NOTE:
  * PARAMETERS:      i: index (0 based) of the desired out edge
  * RETURNS:         the i-th out edge; 0 if there is no such out edge
  *============================================================================*/
-BasicBlock *BasicBlock::getOutEdge(unsigned int i)
+BasicBlock *
+BasicBlock::getOutEdge(unsigned int i)
 {
 	if (i < m_OutEdges.size()) return m_OutEdges[i];
 	else return 0;
@@ -476,12 +472,10 @@ BasicBlock *BasicBlock::getOutEdge(unsigned int i)
  * FUNCTION:        BasicBlock::getCorrectOutEdge
  * OVERVIEW:        given an address this method returns the corresponding
  *                  out edge
- * NOTE:
  * PARAMETERS:      a: the address
- * RETURNS:
  *============================================================================*/
-
-BasicBlock *BasicBlock::getCorrectOutEdge(ADDRESS a)
+BasicBlock *
+BasicBlock::getCorrectOutEdge(ADDRESS a)
 {
 	std::vector<BasicBlock *>::iterator it;
 	for (it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
@@ -495,9 +489,9 @@ BasicBlock *BasicBlock::getCorrectOutEdge(ADDRESS a)
  * OVERVIEW:        Add the given in-edge
  *                  Needed for example when duplicating BBs
  * PARAMETERS:      pNewInEdge: pointer to BB that will be a new parent
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::addInEdge(BasicBlock *pNewInEdge)
+void
+BasicBlock::addInEdge(BasicBlock *pNewInEdge)
 {
 	m_InEdges.push_back(pNewInEdge);
 	m_iNumInEdges++;
@@ -511,15 +505,16 @@ void BasicBlock::addInEdge(BasicBlock *pNewInEdge)
  * SIDE EFFECTS:    The iterator argument is incremented.
  * USAGE:           It should be used like this:
  *                      if (pred) deleteInEdge(it) else it++;
- * RETURNS:         <nothing>
  *============================================================================*/
-void BasicBlock::deleteInEdge(std::vector<BasicBlock *>::iterator &it)
+void
+BasicBlock::deleteInEdge(std::vector<BasicBlock *>::iterator &it)
 {
 	it = m_InEdges.erase(it);
 	m_iNumInEdges--;
 }
 
-void BasicBlock::deleteInEdge(BasicBlock *edge)
+void
+BasicBlock::deleteInEdge(BasicBlock *edge)
 {
 	for (std::vector<BasicBlock *>::iterator it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
 		if (*it == edge) {
@@ -529,7 +524,8 @@ void BasicBlock::deleteInEdge(BasicBlock *edge)
 	}
 }
 
-void BasicBlock::deleteEdge(BasicBlock *edge)
+void
+BasicBlock::deleteEdge(BasicBlock *edge)
 {
 	edge->deleteInEdge(this);
 	for (std::vector<BasicBlock *>::iterator it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
@@ -549,7 +545,8 @@ void BasicBlock::deleteEdge(BasicBlock *edge)
  *                  last - the number of nodes that have been visited for the last time during this traversal
  * RETURNS:         the number of nodes (including this one) that were traversed from this node
  *============================================================================*/
-unsigned BasicBlock::DFTOrder(int &first, int &last)
+unsigned
+BasicBlock::DFTOrder(int &first, int &last)
 {
 	first++;
 	m_DFTfirst = first;
@@ -577,7 +574,8 @@ unsigned BasicBlock::DFTOrder(int &first, int &last)
  *              last - the number of nodes that have been visited for the last time during this traversal
  * RETURNS:     the number of nodes (including this one) that were traversed from this node
  *============================================================================*/
-unsigned BasicBlock::RevDFTOrder(int &first, int &last)
+unsigned
+BasicBlock::RevDFTOrder(int &first, int &last)
 {
 	first++;
 	m_DFTrevfirst = first;
@@ -604,7 +602,8 @@ unsigned BasicBlock::RevDFTOrder(int &first, int &last)
  *                  bb2 - last BB
  * RETURNS:         bb1.address < bb2.address
  *============================================================================*/
-bool BasicBlock::lessAddress(BasicBlock *bb1, BasicBlock *bb2)
+bool
+BasicBlock::lessAddress(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->getLowAddr() < bb2->getLowAddr();
 }
@@ -617,7 +616,8 @@ bool BasicBlock::lessAddress(BasicBlock *bb1, BasicBlock *bb2)
  *                  bb2 - last BB
  * RETURNS:         bb1.first_DFS < bb2.first_DFS
  *============================================================================*/
-bool BasicBlock::lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2)
+bool
+BasicBlock::lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->m_DFTfirst < bb2->m_DFTfirst;
 }
@@ -631,7 +631,8 @@ bool BasicBlock::lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2)
  *                  bb2 - last BB
  * RETURNS:         bb1.last_DFS < bb2.last_DFS
  *============================================================================*/
-bool BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
+bool
+BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->m_DFTlast < bb2->m_DFTlast;
 }
@@ -640,10 +641,10 @@ bool BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
  * FUNCTION:        BasicBlock::getCallDest
  * OVERVIEW:        Get the destination of the call, if this is a CALL BB with
  *                      a fixed dest. Otherwise, return -1
- * PARAMETERS:      <none>
  * RETURNS:         Native destination of the call, or -1
  *============================================================================*/
-ADDRESS BasicBlock::getCallDest()
+ADDRESS
+BasicBlock::getCallDest()
 {
 	if (m_nodeType != CALL)
 		return (ADDRESS)-1;
@@ -659,7 +660,8 @@ ADDRESS BasicBlock::getCallDest()
 	return (ADDRESS)-1;
 }
 
-Proc *BasicBlock::getCallDestProc()
+Proc *
+BasicBlock::getCallDestProc()
 {
 	if (m_nodeType != CALL)
 		return 0;
@@ -678,7 +680,8 @@ Proc *BasicBlock::getCallDestProc()
 //
 // Get First/Next Statement in a BB
 //
-Statement *BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
+Statement *
+BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 {
 	if (m_pRtls == NULL) return NULL;
 	rit = m_pRtls->begin();
@@ -692,7 +695,8 @@ Statement *BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 	return NULL;
 }
 
-Statement *BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
+Statement *
+BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
 {
 	if (++sit != (*rit)->getList().end())
 		return *sit;  // End of current RTL not reached, so return next
@@ -705,7 +709,8 @@ Statement *BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
 	return *sit;                      // Return first statement
 }
 
-Statement *BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
+Statement *
+BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 {
 	if (++sit != (*rit)->getList().rend())
 		return *sit;  // Beginning of current RTL not reached, so return next
@@ -718,7 +723,8 @@ Statement *BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator 
 	return *sit;                       // Return last statement
 }
 
-Statement *BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
+Statement *
+BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 {
 	if (m_pRtls == NULL) return NULL;
 	rit = m_pRtls->rbegin();
@@ -732,7 +738,8 @@ Statement *BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator 
 	return NULL;
 }
 
-Statement *BasicBlock::getFirstStmt()
+Statement *
+BasicBlock::getFirstStmt()
 {
 	rtlit rit;
 	StatementList::iterator sit;
@@ -748,7 +755,8 @@ Statement *BasicBlock::getFirstStmt()
 	return NULL;
 }
 
-Statement *BasicBlock::getLastStmt()
+Statement *
+BasicBlock::getLastStmt()
 {
 	rtlrit rit;
 	StatementList::reverse_iterator sit;
@@ -764,7 +772,8 @@ Statement *BasicBlock::getLastStmt()
 	return NULL;
 }
 
-void BasicBlock::getStatements(StatementList &stmts)
+void
+BasicBlock::getStatements(StatementList &stmts)
 {
 	std::list<RTL *> *rtls = getRTLs();
 	if (rtls) {
@@ -790,7 +799,8 @@ void BasicBlock::getStatements(StatementList &stmts)
  */
 
 /* Get the condition */
-Exp *BasicBlock::getCond() throw (LastStatementNotABranchError)
+Exp *
+BasicBlock::getCond() throw (LastStatementNotABranchError)
 {
 	// the condition will be in the last rtl
 	assert(m_pRtls);
@@ -805,7 +815,8 @@ Exp *BasicBlock::getCond() throw (LastStatementNotABranchError)
 }
 
 /* Get the destiantion, if any */
-Exp *BasicBlock::getDest() throw (LastStatementNotAGotoError)
+Exp *
+BasicBlock::getDest() throw (LastStatementNotAGotoError)
 {
 	// The destianation will be in the last rtl
 	assert(m_pRtls);
@@ -828,7 +839,8 @@ Exp *BasicBlock::getDest() throw (LastStatementNotAGotoError)
 	throw LastStatementNotAGotoError(lastStmt);
 }
 
-void BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
+void
+BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 {
 	// the condition will be in the last rtl
 	assert(m_pRtls);
@@ -847,7 +859,8 @@ void BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 }
 
 /* Check for branch if equal relation */
-bool BasicBlock::isJmpZ(BasicBlock *dest)
+bool
+BasicBlock::isJmpZ(BasicBlock *dest)
 {
 	// The condition will be in the last rtl
 	assert(m_pRtls);
@@ -874,7 +887,8 @@ bool BasicBlock::isJmpZ(BasicBlock *dest)
 }
 
 /* Get the loop body */
-BasicBlock *BasicBlock::getLoopBody()
+BasicBlock *
+BasicBlock::getLoopBody()
 {
 	assert(m_structType == PRETESTLOOP || m_structType == POSTTESTLOOP || m_structType == ENDLESSLOOP);
 	assert(m_iNumOutEdges == 2);
@@ -883,7 +897,8 @@ BasicBlock *BasicBlock::getLoopBody()
 	return m_OutEdges[1];
 }
 
-bool BasicBlock::isAncestorOf(BasicBlock *other)
+bool
+BasicBlock::isAncestorOf(BasicBlock *other)
 {
 	return ((loopStamps[0] < other->loopStamps[0]
 	      && loopStamps[1] > other->loopStamps[1])
@@ -897,7 +912,8 @@ bool BasicBlock::isAncestorOf(BasicBlock *other)
 #endif
 }
 
-void BasicBlock::simplify()
+void
+BasicBlock::simplify()
 {
 	if (m_pRtls)
 		for (std::list<RTL *>::iterator it = m_pRtls->begin(); it != m_pRtls->end(); it++)
@@ -979,7 +995,8 @@ void BasicBlock::simplify()
 	}
 }
 
-bool BasicBlock::hasBackEdgeTo(BasicBlock *dest)
+bool
+BasicBlock::hasBackEdgeTo(BasicBlock *dest)
 {
 	//assert(HasEdgeTo(dest) || dest == this);
 	return dest == this || dest->isAncestorOf(this);
@@ -987,7 +1004,8 @@ bool BasicBlock::hasBackEdgeTo(BasicBlock *dest)
 
 // Return true if every parent (i.e. forward in edge source) of this node has
 // had its code generated
-bool BasicBlock::allParentsGenerated()
+bool
+BasicBlock::allParentsGenerated()
 {
 	for (unsigned int i = 0; i < m_InEdges.size(); i++)
 		if (!m_InEdges[i]->hasBackEdgeTo(this)
@@ -1000,7 +1018,8 @@ bool BasicBlock::allParentsGenerated()
 // just before the destination code if it isn't already there.  If the goto is to the return block, it would be nice to
 // emit a 'return' instead (but would have to duplicate the other code in that return BB).  Also, 'continue' and 'break'
 // statements are used instead if possible
-void BasicBlock::emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest)
+void
+BasicBlock::emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest)
 {
 	if (loopHead && (loopHead == dest || loopHead->loopFollow == dest)) {
 		if (loopHead == dest)
@@ -1015,7 +1034,8 @@ void BasicBlock::emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest)
 }
 
 // Generates code for each non CTI (except procedure calls) statement within the block.
-void BasicBlock::WriteBB(HLLCode *hll, int indLevel)
+void
+BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 {
 	if (DEBUG_GEN)
 		LOG << "Generating code for BB at " << getLowAddr() << "\n";
@@ -1038,7 +1058,8 @@ void BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 	indentLevel = indLevel;
 }
 
-void BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::list<BasicBlock *> &followSet, std::list<BasicBlock *> &gotoSet, UserProc *proc)
+void
+BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::list<BasicBlock *> &followSet, std::list<BasicBlock *> &gotoSet, UserProc *proc)
 {
 	// If this is the follow for the most nested enclosing conditional, then don't generate anything. Otherwise if it is
 	// in the follow set generate a goto to the follow
@@ -1420,7 +1441,8 @@ void BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std
 
 // Get the destination proc
 // Note: this must be a call BB!
-Proc *BasicBlock::getDestProc()
+Proc *
+BasicBlock::getDestProc()
 {
 	// The last Statement of the last RTL should be a CallStatement
 	CallStatement *call = (CallStatement *)(m_pRtls->back()->getHlStmt());
@@ -1433,7 +1455,8 @@ Proc *BasicBlock::getDestProc()
 	return proc;
 }
 
-void BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
+void
+BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 {
 	// timestamp the current node with the current time and set its traversed
 	// flag
@@ -1459,7 +1482,8 @@ void BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 	order.push_back(this);
 }
 
-void BasicBlock::setRevLoopStamps(int &time)
+void
+BasicBlock::setRevLoopStamps(int &time)
 {
 	// timestamp the current node with the current time and set its traversed flag
 	traversed = DFS_RNUM;
@@ -1476,7 +1500,8 @@ void BasicBlock::setRevLoopStamps(int &time)
 	revLoopStamps[1] = ++time;
 }
 
-void BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
+void
+BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
 {
 	// Set this node as having been traversed during the post domimator DFS ordering traversal
 	traversed = DFS_PDOM;
@@ -1492,7 +1517,8 @@ void BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
 	order.push_back(this);
 }
 
-void BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
+void
+BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 {
 	assert(!caseHead);
 
@@ -1519,7 +1545,8 @@ void BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 				m_OutEdges[i]->setCaseHead(head, follow);
 }
 
-void BasicBlock::setStructType(structType s)
+void
+BasicBlock::setStructType(structType s)
 {
 	// if this is a conditional header, determine exactly which type of conditional header it is (i.e. switch, if-then,
 	// if-then-else etc.)
@@ -1537,19 +1564,22 @@ void BasicBlock::setStructType(structType s)
 	sType = s;
 }
 
-void BasicBlock::setUnstructType(unstructType us)
+void
+BasicBlock::setUnstructType(unstructType us)
 {
 	assert((sType == Cond || sType == LoopCond) && cType != Case);
 	usType = us;
 }
 
-unstructType BasicBlock::getUnstructType()
+unstructType
+BasicBlock::getUnstructType()
 {
 	assert((sType == Cond || sType == LoopCond) && cType != Case);
 	return usType;
 }
 
-void BasicBlock::setLoopType(loopType l)
+void
+BasicBlock::setLoopType(loopType l)
 {
 	assert(sType == Loop || sType == LoopCond);
 	lType = l;
@@ -1560,25 +1590,29 @@ void BasicBlock::setLoopType(loopType l)
 		sType = Loop;
 }
 
-loopType BasicBlock::getLoopType()
+loopType
+BasicBlock::getLoopType()
 {
 	assert(sType == Loop || sType == LoopCond);
 	return lType;
 }
 
-void BasicBlock::setCondType(condType c)
+void
+BasicBlock::setCondType(condType c)
 {
 	assert(sType == Cond || sType == LoopCond);
 	cType = c;
 }
 
-condType BasicBlock::getCondType()
+condType
+BasicBlock::getCondType()
 {
 	assert(sType == Cond || sType == LoopCond);
 	return cType;
 }
 
-bool BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch)
+bool
+BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch)
 {
 	assert(header->latchNode == latch);
 	assert(header == latch
@@ -1596,7 +1630,8 @@ bool BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch)
 
 // Return the first statement number as a string.
 // Used in dotty file generation
-char *BasicBlock::getStmtNumber()
+char *
+BasicBlock::getStmtNumber()
 {
 	static char ret[12];
 	rtlit rit; StatementList::iterator sit;
@@ -1610,7 +1645,8 @@ char *BasicBlock::getStmtNumber()
 
 // Prepend an assignment (usually a PhiAssign or ImplicitAssign)
 // Proc is the enclosing Proc
-void BasicBlock::prependStmt(Statement *s, UserProc *proc)
+void
+BasicBlock::prependStmt(Statement *s, UserProc *proc)
 {
 	// Check the first RTL (if any)
 	s->setBB(this);
@@ -1635,7 +1671,8 @@ void BasicBlock::prependStmt(Statement *s, UserProc *proc)
 // Check for overlap of liveness between the currently live locations (liveLocs) and the set of locations in ls
 // Also check for type conflicts if DFA_TYPE_ANALYSIS
 // This is a helper function that is not directly declated in the BasicBlock class
-void checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, UserProc *proc)
+void
+checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, UserProc *proc)
 {
 	// For each location to be considered
 	LocationSet::iterator uu;
@@ -1657,7 +1694,8 @@ void checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig
 	}
 }
 
-bool BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
+bool
+BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 {
 	// Start with the liveness at the bottom of the BB
 	LocationSet liveLocs, phiLocs;
@@ -1721,7 +1759,8 @@ bool BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 // successors
 // liveout gets all the livenesses, and phiLocs gets a subset of these, which are due to phi statements at the top of
 // successors
-void BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
+void
+BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 {
 	liveout.clear();
 	for (unsigned i = 0; i < m_OutEdges.size(); i++) {
@@ -1753,7 +1792,8 @@ void BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 
 // Basically the "whichPred" function as per Briggs, Cooper, et al (and presumably "Cryton, Ferante, Rosen, Wegman, and
 // Zadek").  Return -1 if not found
-int BasicBlock::whichPred(BasicBlock *pred)
+int
+BasicBlock::whichPred(BasicBlock *pred)
 {
 	int n = m_InEdges.size();
 	for (int i = 0; i < n; i++) {
@@ -1839,7 +1879,8 @@ static Exp *hlForms[] = { forma, formA, formo, formO, formR, formr };
 static char chForms[] = {   'a',   'A',   'o',   'O',   'R',   'r' };
 
 #ifdef GARBAGE_COLLECTOR
-void init_basicblock()
+void
+init_basicblock()
 {
 	Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(6 * sizeof *gc_pointers);
 	gc_pointers[0] = forma;
@@ -1889,7 +1930,8 @@ Location *vfc_none = Location::memOf(
 
 static Exp *hlVfc[] = { vfc_funcptr, vfc_both, vfc_vto, vfc_vfo, vfc_none };
 
-void findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
+void
+findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 {
 	switch (form) {
 	case 'a':
@@ -1983,7 +2025,8 @@ void findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 // TMN: It also needs to check for and handle the double indirect case; where there is one array (of e.g. ubyte)
 // that is indexed by the actual switch value, then the value from that array is used as an index into the array of
 // code pointers.
-int BasicBlock::findNumCases()
+int
+BasicBlock::findNumCases()
 {
 	std::vector<BasicBlock *>::iterator it;
 	for (it = m_InEdges.begin(); it != m_InEdges.end(); it++) {  // For each in-edge
@@ -2013,7 +2056,8 @@ int BasicBlock::findNumCases()
 }
 
 // Find all the possible constant values that the location defined by s could be assigned with
-void findConstantValues(Statement *s, std::list<int> &dests)
+void
+findConstantValues(Statement *s, std::list<int> &dests)
 {
 	if (s == NULL) return;
 	if (s->isPhi()) {
@@ -2030,7 +2074,8 @@ void findConstantValues(Statement *s, std::list<int> &dests)
 }
 
 // Find any BBs of type COMPJUMP or COMPCALL. If found, analyse, and if possible decode extra code and return true
-bool BasicBlock::decodeIndirectJmp(UserProc *proc)
+bool
+BasicBlock::decodeIndirectJmp(UserProc *proc)
 {
 #define CHECK_REAL_PHI_LOOPS 0
 #if CHECK_REAL_PHI_LOOPS
@@ -2330,9 +2375,9 @@ bool BasicBlock::decodeIndirectJmp(UserProc *proc)
  *              BBs (statements not numbered, locations not SSA renamed etc) to appear in the CFG. This caused problems
  *              when there were nested switch statements. Now only called when re-decoding a switch statement
  * PARAMETERS:  proc - Pointer to the UserProc object for this code
- * RETURNS:     <nothing>
  *============================================================================*/
-void BasicBlock::processSwitch(UserProc *proc)
+void
+BasicBlock::processSwitch(UserProc *proc)
 {
 	RTL *last = m_pRtls->back();
 	CaseStatement *lastStmt = (CaseStatement *)last->getHlStmt();
@@ -2419,7 +2464,8 @@ void BasicBlock::processSwitch(UserProc *proc)
 }
 
 // Change the BB enclosing stmt from type COMPCALL to CALL
-bool BasicBlock::undoComputedBB(Statement *stmt)
+bool
+BasicBlock::undoComputedBB(Statement *stmt)
 {
 	RTL *last = m_pRtls->back();
 	std::list<Statement *> &list = last->getList();

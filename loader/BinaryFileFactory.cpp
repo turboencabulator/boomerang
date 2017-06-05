@@ -54,7 +54,8 @@
  *
  * \param ifs  Opened stream to perform detection on.
  */
-static LOADFMT magic(std::istream &ifs)
+static LOADFMT
+magic(std::istream &ifs)
 {
 	char buf[0x40];
 	ifs.read(buf, sizeof buf);
@@ -110,7 +111,8 @@ static LOADFMT magic(std::istream &ifs)
  *
  * \returns A new BinaryFile subclass instance.  Use close() to destroy it.
  */
-BinaryFile *BinaryFile::open(const char *name)
+BinaryFile *
+BinaryFile::open(const char *name)
 {
 	std::ifstream ifs;
 	ifs.open(name, ifs.binary);
@@ -207,7 +209,8 @@ BinaryFile *BinaryFile::open(const char *name)
 /**
  * \brief Destroys an instance created by open() or new.
  */
-void BinaryFile::close(BinaryFile *bf)
+void
+BinaryFile::close(BinaryFile *bf)
 {
 #ifdef DYNAMIC
 	// Retrieve the stashed pointers

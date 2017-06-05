@@ -54,7 +54,8 @@ static Exp *unscaledArrayPat = new Binary(opPlus,
  * it is suspected that this is actually important for other architectures as
  * well.
  */
-void init_dfa()
+void
+init_dfa()
 {
 	static Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(2 * sizeof *gc_pointers);
 	gc_pointers[0] = scaledArrayPat;
@@ -64,7 +65,8 @@ void init_dfa()
 
 
 static int progress = 0;
-void UserProc::dfaTypeAnalysis()
+void
+UserProc::dfaTypeAnalysis()
 {
 	Boomerang::get()->alert_decompile_debug_point(this, "before dfa type analysis");
 
@@ -370,21 +372,24 @@ void UserProc::dfaTypeAnalysis()
 
 // ch set true if any change
 
-Type *VoidType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+VoidType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	// void meet x = x
 	ch |= !other->resolvesToVoid();
 	return other->clone();
 }
 
-Type *FuncType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+FuncType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (*this == *other) return this;  // NOTE: at present, compares names as well as types and num parameters
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToInteger()) {
@@ -418,7 +423,8 @@ Type *IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToFloat()) {
@@ -437,7 +443,8 @@ Type *FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToBoolean())
@@ -445,7 +452,8 @@ Type *BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToChar()) return this;
@@ -459,7 +467,8 @@ Type *CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == STD_SIZE) return this;
@@ -512,7 +521,8 @@ Type *PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToArray()) {
@@ -534,7 +544,8 @@ Type *ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	Type *rt = resolvesTo();
 	if (rt) {
@@ -548,7 +559,8 @@ Type *NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (!other->resolvesToCompound()) {
@@ -579,7 +591,8 @@ Type *CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 unsigned unionCount = 0;
 #endif
 
-Type *UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	std::list<UnionElement>::iterator it;
@@ -625,7 +638,8 @@ Type *UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return this;
 }
 
-Type *SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToSize()) {
@@ -653,7 +667,8 @@ Type *SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToUpper()) {
@@ -669,7 +684,8 @@ Type *UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
+Type *
+LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
 	if (other->resolvesToUpper()) {
@@ -685,7 +701,8 @@ Type *LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
-Type *Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
+Type *
+Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
 {
 	bool thisCh = false;
 	Type *newType = getTypeFor(e)->meetWith(ty, thisCh);
@@ -696,7 +713,8 @@ Type *Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
 	return newType;
 }
 
-Type *Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
+Type *
+Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 {
 
 	assert(!resolvesToUnion());  // `this' should not be a UnionType
@@ -738,8 +756,8 @@ Type *Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 	return u;
 }
 
-
-void CallStatement::dfaTypeAnalysis(bool &ch)
+void
+CallStatement::dfaTypeAnalysis(bool &ch)
 {
 	// Iterate through the arguments
 	StatementList::iterator aa;
@@ -776,7 +794,8 @@ void CallStatement::dfaTypeAnalysis(bool &ch)
 	}
 }
 
-void ReturnStatement::dfaTypeAnalysis(bool &ch)
+void
+ReturnStatement::dfaTypeAnalysis(bool &ch)
 {
 	StatementList::iterator mm, rr;
 	for (mm = modifieds.begin(); mm != modifieds.end(); ++mm) {
@@ -792,7 +811,8 @@ void ReturnStatement::dfaTypeAnalysis(bool &ch)
 // Tx1 := Tx1 meet Tx0
 // Tx2 := Tx2 meet Tx0
 // ...
-void PhiAssign::dfaTypeAnalysis(bool &ch)
+void
+PhiAssign::dfaTypeAnalysis(bool &ch)
 {
 	iterator it = defVec.begin();
 	while (it->e == NULL && it != defVec.end())
@@ -813,7 +833,8 @@ void PhiAssign::dfaTypeAnalysis(bool &ch)
 	Assignment::dfaTypeAnalysis(ch);  // Handle the LHS
 }
 
-void Assign::dfaTypeAnalysis(bool &ch)
+void
+Assign::dfaTypeAnalysis(bool &ch)
 {
 	Type *tr = rhs->ascendType();
 	type = type->meetWith(tr, ch, true);    // Note: bHighestPtr is set true, since the lhs could have a greater type
@@ -822,7 +843,8 @@ void Assign::dfaTypeAnalysis(bool &ch)
 	Assignment::dfaTypeAnalysis(ch);        // Handle the LHS wrt m[] operands
 }
 
-void Assignment::dfaTypeAnalysis(bool &ch)
+void
+Assignment::dfaTypeAnalysis(bool &ch)
 {
 	Signature *sig = proc->getSignature();
 	// Don't do this for the common case of an ordinary local, since it generates hundreds of implicit references,
@@ -843,19 +865,22 @@ void Assignment::dfaTypeAnalysis(bool &ch)
 	}
 }
 
-void BranchStatement::dfaTypeAnalysis(bool &ch)
+void
+BranchStatement::dfaTypeAnalysis(bool &ch)
 {
 	if (pCond)
 		pCond->descendType(new BooleanType(), ch, this);
 	// Not fully implemented yet?
 }
 
-void ImplicitAssign::dfaTypeAnalysis(bool &ch)
+void
+ImplicitAssign::dfaTypeAnalysis(bool &ch)
 {
 	Assignment::dfaTypeAnalysis(ch);
 }
 
-void BoolAssign::dfaTypeAnalysis(bool &ch)
+void
+BoolAssign::dfaTypeAnalysis(bool &ch)
 {
 	// Not properly implemented yet
 	Assignment::dfaTypeAnalysis(ch);
@@ -867,7 +892,8 @@ void BoolAssign::dfaTypeAnalysis(bool &ch)
 // beta*    bottom  void*   void*
 // int      void*   int     pi
 // pi       void*   pi      pi
-Type *sigmaSum(Type *ta, Type *tb)
+Type *
+sigmaSum(Type *ta, Type *tb)
 {
 	bool ch;
 	if (ta->resolvesToPointer()) {
@@ -891,7 +917,8 @@ Type *sigmaSum(Type *ta, Type *tb)
 // alpha*   int     bottom  int
 // int      void*   int     pi
 // pi       pi      pi      pi
-Type *sigmaAddend(Type *tc, Type *to)
+Type *
+sigmaAddend(Type *tc, Type *to)
 {
 	bool ch;
 	if (tc->resolvesToPointer()) {
@@ -916,7 +943,8 @@ Type *sigmaAddend(Type *tc, Type *to)
 // alpha*   bottom  void*   void*
 // int      void*   int     pi
 // pi       void*   int     pi
-Type *deltaMinuend(Type *tc, Type *tb)
+Type *
+deltaMinuend(Type *tc, Type *tb)
 {
 	bool ch;
 	if (tc->resolvesToPointer()) {
@@ -939,7 +967,8 @@ Type *deltaMinuend(Type *tc, Type *tb)
 // alpha*   int     void*   pi
 // int      bottom  int     int
 // pi       int     pi      pi
-Type *deltaSubtrahend(Type *tc, Type *ta)
+Type *
+deltaSubtrahend(Type *tc, Type *ta)
 {
 	bool ch;
 	if (tc->resolvesToPointer()) {
@@ -963,7 +992,8 @@ Type *deltaSubtrahend(Type *tc, Type *ta)
 // beta*    int     bottom  int
 // int      void*   int     pi
 // pi       pi      int     pi
-Type *deltaDifference(Type *ta, Type *tb)
+Type *
+deltaDifference(Type *ta, Type *tb)
 {
 	bool ch;
 	if (ta->resolvesToPointer()) {
@@ -990,7 +1020,8 @@ Type *deltaDifference(Type *ta, Type *tb)
 //                                      //
 //  //  //  //  //  //  //  //  //  //  //
 
-Type *Binary::ascendType()
+Type *
+Binary::ascendType()
 {
 	if (op == opFlagCall) return new VoidType;
 	Type *ta = subExp1->ascendType();
@@ -1030,7 +1061,8 @@ Type *Binary::ascendType()
 }
 
 // Constants and subscripted locations are at the leaves of the expression tree. Just return their stored types.
-Type *RefExp::ascendType()
+Type *
+RefExp::ascendType()
 {
 	if (def == NULL) {
 		std::cerr << "Warning! Null reference in " << this << "\n";
@@ -1039,7 +1071,8 @@ Type *RefExp::ascendType()
 	return def->getTypeFor(subExp1);
 }
 
-Type *Const::ascendType()
+Type *
+Const::ascendType()
 {
 	if (type->resolvesToVoid()) {
 		switch (op) {
@@ -1073,7 +1106,8 @@ Type *Const::ascendType()
 }
 
 // Can also find various terminals at the leaves of an expression tree
-Type *Terminal::ascendType()
+Type *
+Terminal::ascendType()
 {
 	switch (op) {
 	case opPC:
@@ -1091,7 +1125,8 @@ Type *Terminal::ascendType()
 	}
 }
 
-Type *Unary::ascendType()
+Type *
+Unary::ascendType()
 {
 	Type *ta = subExp1->ascendType();
 	switch (op) {
@@ -1106,7 +1141,8 @@ Type *Unary::ascendType()
 	return new VoidType;
 }
 
-Type *Ternary::ascendType()
+Type *
+Ternary::ascendType()
 {
 	switch (op) {
 	case opFsize:
@@ -1121,7 +1157,8 @@ Type *Ternary::ascendType()
 	return new VoidType;
 }
 
-Type *TypedExp::ascendType()
+Type *
+TypedExp::ascendType()
 {
 	return type;
 }
@@ -1134,7 +1171,8 @@ Type *TypedExp::ascendType()
 //                                      //
 //  //  //  //  //  //  //  //  //  //  //
 
-void Binary::descendType(Type *parentType, bool &ch, Statement *s)
+void
+Binary::descendType(Type *parentType, bool &ch, Statement *s)
 {
 	if (op == opFlagCall) return;
 	Type *ta = subExp1->ascendType();
@@ -1244,14 +1282,16 @@ void Binary::descendType(Type *parentType, bool &ch, Statement *s)
 	}
 }
 
-void RefExp::descendType(Type *parentType, bool &ch, Statement *s)
+void
+RefExp::descendType(Type *parentType, bool &ch, Statement *s)
 {
 	Type *newType = def->meetWithFor(parentType, subExp1, ch);
 	// In case subExp1 is a m[...]
 	subExp1->descendType(newType, ch, s);
 }
 
-void Const::descendType(Type *parentType, bool &ch, Statement *s)
+void
+Const::descendType(Type *parentType, bool &ch, Statement *s)
 {
 	bool thisCh;
 	type = type->meetWith(parentType, thisCh);
@@ -1276,7 +1316,8 @@ void Const::descendType(Type *parentType, bool &ch, Statement *s)
 	}
 }
 
-void Unary::descendType(Type *parentType, bool &ch, Statement *s)
+void
+Unary::descendType(Type *parentType, bool &ch, Statement *s)
 {
 	switch (op) {
 	case opMemOf:
@@ -1350,7 +1391,8 @@ void Unary::descendType(Type *parentType, bool &ch, Statement *s)
 	}
 }
 
-void Ternary::descendType(Type *parentType, bool &ch, Statement *s)
+void
+Ternary::descendType(Type *parentType, bool &ch, Statement *s)
 {
 	switch (op) {
 	case opFsize:
@@ -1368,13 +1410,18 @@ void Ternary::descendType(Type *parentType, bool &ch, Statement *s)
 	}
 }
 
-void TypedExp::descendType(Type *parentType, bool &ch, Statement *s)
-{}
+void
+TypedExp::descendType(Type *parentType, bool &ch, Statement *s)
+{
+}
 
-void Terminal::descendType(Type *parentType, bool &ch, Statement *s)
-{}
+void
+Terminal::descendType(Type *parentType, bool &ch, Statement *s)
+{
+}
 
-bool Signature::dfaTypeAnalysis(Cfg *cfg)
+bool
+Signature::dfaTypeAnalysis(Cfg *cfg)
 {
 	bool ch = false;
 	std::vector<Parameter *>::iterator it;
@@ -1397,7 +1444,8 @@ bool Signature::dfaTypeAnalysis(Cfg *cfg)
 
 // Note: to prevent infinite recursion, CompoundType, ArrayType, and UnionType implement this function as a delegation
 // to isCompatible()
-bool Type::isCompatibleWith(Type *other, bool all /* = false */)
+bool
+Type::isCompatibleWith(Type *other, bool all /* = false */)
 {
 	if (other->resolvesToCompound()
 	 || other->resolvesToArray()
@@ -1406,12 +1454,14 @@ bool Type::isCompatibleWith(Type *other, bool all /* = false */)
 	return isCompatible(other, all);
 }
 
-bool VoidType::isCompatible(Type *other, bool all)
+bool
+VoidType::isCompatible(Type *other, bool all)
 {
 	return true;  // Void is compatible with any type
 }
 
-bool SizeType::isCompatible(Type *other, bool all)
+bool
+SizeType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	unsigned otherSize = other->getSize();
@@ -1425,7 +1475,8 @@ bool SizeType::isCompatible(Type *other, bool all)
 	return true;
 }
 
-bool IntegerType::isCompatible(Type *other, bool all)
+bool
+IntegerType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToInteger()) return true;
@@ -1435,7 +1486,8 @@ bool IntegerType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool FloatType::isCompatible(Type *other, bool all)
+bool
+FloatType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToFloat()) return true;
@@ -1445,7 +1497,8 @@ bool FloatType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool CharType::isCompatible(Type *other, bool all)
+bool
+CharType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToChar()) return true;
@@ -1456,7 +1509,8 @@ bool CharType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool BooleanType::isCompatible(Type *other, bool all)
+bool
+BooleanType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToBoolean()) return true;
@@ -1465,7 +1519,8 @@ bool BooleanType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool FuncType::isCompatible(Type *other, bool all)
+bool
+FuncType::isCompatible(Type *other, bool all)
 {
 	assert(signature);
 	if (other->resolvesToVoid()) return true;
@@ -1479,7 +1534,8 @@ bool FuncType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool PointerType::isCompatible(Type *other, bool all)
+bool
+PointerType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
@@ -1488,7 +1544,8 @@ bool PointerType::isCompatible(Type *other, bool all)
 	return points_to->isCompatibleWith(other->asPointer()->points_to);
 }
 
-bool NamedType::isCompatible(Type *other, bool all)
+bool
+NamedType::isCompatible(Type *other, bool all)
 {
 	if (other->isNamed() && name == ((NamedType *)other)->getName())
 		return true;
@@ -1499,7 +1556,8 @@ bool NamedType::isCompatible(Type *other, bool all)
 	return (*this == *other);
 }
 
-bool ArrayType::isCompatible(Type *other, bool all)
+bool
+ArrayType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToArray() && base_type->isCompatibleWith(other->asArray()->base_type)) return true;
@@ -1508,7 +1566,8 @@ bool ArrayType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool UnionType::isCompatible(Type *other, bool all)
+bool
+UnionType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	std::list<UnionElement>::iterator it;
@@ -1533,7 +1592,8 @@ bool UnionType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool CompoundType::isCompatible(Type *other, bool all)
+bool
+CompoundType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
@@ -1548,7 +1608,8 @@ bool CompoundType::isCompatible(Type *other, bool all)
 	return true;
 }
 
-bool UpperType::isCompatible(Type *other, bool all)
+bool
+UpperType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToUpper() && base_type->isCompatibleWith(other->asUpper()->base_type)) return true;
@@ -1556,7 +1617,8 @@ bool UpperType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool LowerType::isCompatible(Type *other, bool all)
+bool
+LowerType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToLower() && base_type->isCompatibleWith(other->asLower()->base_type)) return true;
@@ -1564,7 +1626,8 @@ bool LowerType::isCompatible(Type *other, bool all)
 	return false;
 }
 
-bool Type::isSubTypeOrEqual(Type *other)
+bool
+Type::isSubTypeOrEqual(Type *other)
 {
 	if (resolvesToVoid()) return true;
 	if (*this == *other) return true;
@@ -1574,7 +1637,8 @@ bool Type::isSubTypeOrEqual(Type *other)
 	return false;
 }
 
-Type *Type::dereference()
+Type *
+Type::dereference()
 {
 	if (resolvesToPointer())
 		return asPointer()->getPointsTo();
@@ -1585,7 +1649,8 @@ Type *Type::dereference()
 
 // Dereference this union. If it is a union of pointers, return a union of the dereferenced items. Else return VoidType
 // (note: should probably be bottom)
-Type *UnionType::dereferenceUnion()
+Type *
+UnionType::dereferenceUnion()
 {
 	UnionType *ret = new UnionType;
 	char name[20];

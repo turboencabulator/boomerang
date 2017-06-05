@@ -43,7 +43,8 @@ PalmBinaryFile::~PalmBinaryFile()
 	delete [] m_pData;
 }
 
-bool PalmBinaryFile::load(std::istream &ifs)
+bool
+PalmBinaryFile::load(std::istream &ifs)
 {
 	ifs.seekg(0, ifs.end);
 	std::streamsize size = ifs.tellg();
@@ -252,36 +253,42 @@ bool PalmBinaryFile::load(std::istream &ifs)
 	return true;
 }
 
-ADDRESS PalmBinaryFile::getEntryPoint()
+ADDRESS
+PalmBinaryFile::getEntryPoint()
 {
 	assert(0); /* FIXME: Need to be implemented */
 	return 0;
 }
 
 #if 0 // Cruft?
-bool PalmBinaryFile::PostLoad(void *handle)
+bool
+PalmBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only
 	return false;
 }
 #endif
 
-bool PalmBinaryFile::isLibrary() const
+bool
+PalmBinaryFile::isLibrary() const
 {
 	return strncmp((char *)(m_pImage + 0x3C), "libr", 4) == 0;
 }
 
-std::list<const char *> PalmBinaryFile::getDependencyList()
+std::list<const char *>
+PalmBinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* doesn't really exist on palm */
 }
 
-ADDRESS PalmBinaryFile::getImageBase() const
+ADDRESS
+PalmBinaryFile::getImageBase() const
 {
 	return 0; /* FIXME */
 }
 
-size_t PalmBinaryFile::getImageSize() const
+size_t
+PalmBinaryFile::getImageSize() const
 {
 	return 0; /* FIXME */
 }
@@ -289,7 +296,8 @@ size_t PalmBinaryFile::getImageSize() const
 /**
  * We at least need to be able to name the main function and system calls.
  */
-const char *PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
+const char *
+PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if ((dwAddr & 0xFFFFF000) == 0xAAAAA000) {
 		// This is the convention used to indicate an A-line system call
@@ -310,7 +318,8 @@ const char *PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
  *
  * Not really dynamically linked, but the closest thing.
  */
-bool PalmBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+bool
+PalmBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	return ((uNative & 0xFFFFF000) == 0xAAAAA000);
 }
@@ -325,7 +334,8 @@ bool PalmBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
  * difference between %a5 and %agp (%agp points to the bottom of the global
  * data area).
  */
-std::pair<unsigned, unsigned> PalmBinaryFile::getGlobalPointerInfo()
+std::pair<unsigned, unsigned>
+PalmBinaryFile::getGlobalPointerInfo()
 {
 	unsigned agp = 0;
 	const SectionInfo *ps = getSectionInfoByName("data0");
@@ -339,7 +349,8 @@ std::pair<unsigned, unsigned> PalmBinaryFile::getGlobalPointerInfo()
  * Get the ID number for this application.  It's possible that the app uses
  * this number internally, so this needs to be used in the final make.
  */
-int PalmBinaryFile::getAppID() const
+int
+PalmBinaryFile::getAppID() const
 {
 	// The answer is in the header. Return 0 if file not loaded
 	if (m_pImage == 0)
@@ -385,7 +396,8 @@ static const SWord GccCallMain[] = {
  *
  * \returns 0 if no match; pointer to start of match if found.
  */
-static const SWord *findPattern(const SWord *start, const SWord *patt, size_t pattSize, ptrdiff_t max)
+static const SWord *
+findPattern(const SWord *start, const SWord *patt, size_t pattSize, ptrdiff_t max)
 {
 	const SWord *last = start + max;
 	for (; start < last; ++start) {
@@ -409,7 +421,8 @@ static const SWord *findPattern(const SWord *start, const SWord *patt, size_t pa
  * Find the native address for the start of the main entry function.
  * For Palm binaries, this is PilotMain.
  */
-ADDRESS PalmBinaryFile::getMainEntryPoint()
+ADDRESS
+PalmBinaryFile::getMainEntryPoint()
 {
 	const SectionInfo *pSect = getSectionInfoByName("code1");
 	if (!pSect) return NO_ADDRESS;
@@ -448,7 +461,8 @@ ADDRESS PalmBinaryFile::getMainEntryPoint()
 /**
  * Generate binary files for non code and data sections.
  */
-void PalmBinaryFile::generateBinFiles(const std::string &path) const
+void
+PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		SectionInfo *pSect = m_pSections + i;
@@ -480,11 +494,13 @@ void PalmBinaryFile::generateBinFiles(const std::string &path) const
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new PalmBinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (PalmBinaryFile *)bf;
 }

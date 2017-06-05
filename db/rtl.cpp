@@ -77,7 +77,8 @@ RTL::~RTL()
  *
  * \returns A reference to this object.
  */
-RTL &RTL::operator=(RTL &other)
+RTL &
+RTL::operator =(RTL &other)
 {
 	if (this != &other) {
 		// Do a deep copy always
@@ -96,7 +97,8 @@ RTL &RTL::operator=(RTL &other)
  *
  * \returns Pointer to a new RTL that is a clone of this one.
  */
-RTL *RTL::clone()
+RTL *
+RTL::clone()
 {
 	std::list<Statement *> le;
 
@@ -113,7 +115,8 @@ RTL *RTL::clone()
  *
  * Visit this RTL, and all its Statements.
  */
-bool RTL::accept(StmtVisitor *visitor)
+bool
+RTL::accept(StmtVisitor *visitor)
 {
 	// Might want to do something at the RTL level:
 	if (!visitor->visit(this)) return false;
@@ -130,7 +133,8 @@ bool RTL::accept(StmtVisitor *visitor)
  *
  * \param dest  Ref to empty list to copy to.
  */
-void RTL::deepCopyList(std::list<Statement *> &dest)
+void
+RTL::deepCopyList(std::list<Statement *> &dest)
 {
 	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		dest.push_back((*it)->clone());
@@ -149,7 +153,8 @@ void RTL::deepCopyList(std::list<Statement *> &dest)
  *
  * \param s  Pointer to Statement to append.
  */
-void RTL::appendStmt(Statement *s)
+void
+RTL::appendStmt(Statement *s)
 {
 	if (stmtList.size()) {
 		if (stmtList.back()->isFlagAssgn()) {
@@ -170,7 +175,8 @@ void RTL::appendStmt(Statement *s)
  *
  * \param s  Ptr to Statement to prepend.
  */
-void RTL::prependStmt(Statement *s)
+void
+RTL::prependStmt(Statement *s)
 {
 	stmtList.push_front(s);
 }
@@ -184,7 +190,8 @@ void RTL::prependStmt(Statement *s)
  *
  * \param le  List of Exps to insert.
  */
-void RTL::appendListStmt(std::list<Statement *> &le)
+void
+RTL::appendListStmt(std::list<Statement *> &le)
 {
 	for (iterator it = le.begin(); it != le.end(); it++) {
 		stmtList.insert(stmtList.end(), (*it)->clone());
@@ -200,7 +207,8 @@ void RTL::appendListStmt(std::list<Statement *> &le)
  *
  * \param r  Reference to RTL whose Exps we are to insert.
  */
-void RTL::appendRTL(RTL &r)
+void
+RTL::appendRTL(RTL &r)
 {
 	appendListStmt(r.stmtList);
 }
@@ -215,7 +223,8 @@ void RTL::appendRTL(RTL &r)
  * \param s  Pointer to the Statement to insert.
  * \param i  Position to insert before (0 = first).
  */
-void RTL::insertStmt(Statement *s, unsigned i)
+void
+RTL::insertStmt(Statement *s, unsigned i)
 {
 	// Check that position i is not out of bounds
 	assert(i < stmtList.size() || stmtList.size() == 0);
@@ -231,7 +240,8 @@ void RTL::insertStmt(Statement *s, unsigned i)
 /**
  * \brief Insert s before iterator it.
  */
-void RTL::insertStmt(Statement *s, iterator it)
+void
+RTL::insertStmt(Statement *s, iterator it)
 {
 	stmtList.insert(it, s);
 }
@@ -244,7 +254,8 @@ void RTL::insertStmt(Statement *s, iterator it)
  * \param s  Pointer to the new Exp.
  * \param i  Index of Exp position (0 = first).
  */
-void RTL::updateStmt(Statement *s, unsigned i)
+void
+RTL::updateStmt(Statement *s, unsigned i)
 {
 	// Check that position i is not out of bounds
 	assert(i < stmtList.size());
@@ -267,7 +278,8 @@ void RTL::updateStmt(Statement *s, unsigned i)
 /**
  * \brief Delete expression at position i.
  */
-void RTL::deleteStmt(unsigned i)
+void
+RTL::deleteStmt(unsigned i)
 {
 	// check that position i is not out of bounds
 	assert(i < stmtList.size());
@@ -283,7 +295,8 @@ void RTL::deleteStmt(unsigned i)
 /**
  * \brief Delete the last statement.
  */
-void RTL::deleteLastStmt()
+void
+RTL::deleteLastStmt()
 {
 	assert(stmtList.size());
 	stmtList.erase(--stmtList.end());
@@ -292,7 +305,8 @@ void RTL::deleteLastStmt()
 /**
  * \brief Replace the last Statement.
  */
-void RTL::replaceLastStmt(Statement *repl)
+void
+RTL::replaceLastStmt(Statement *repl)
 {
 	assert(stmtList.size());
 	Statement *&last = stmtList.back();
@@ -306,7 +320,8 @@ void RTL::replaceLastStmt(Statement *repl)
  *
  * \returns Integer number of Statements.
  */
-int RTL::getNumStmt()
+int
+RTL::getNumStmt()
 {
 	return stmtList.size();
 }
@@ -314,7 +329,7 @@ int RTL::getNumStmt()
 /**
  * \brief Return the i'th element in RTL.
  *
- * Provides indexing on a list.  Changed from operator[] so that we keep in
+ * Provides indexing on a list.  Changed from operator [] so that we keep in
  * mind it is linear in its execution time.
  *
  * \param i  The index of the element we want (0 = first).
@@ -322,7 +337,8 @@ int RTL::getNumStmt()
  * \returns The element at the given index
  *          or NULL if the index is out of bounds.
  */
-Statement *RTL::elementAt(unsigned i)
+Statement *
+RTL::elementAt(unsigned i)
 {
 	iterator it;
 	for (it = stmtList.begin(); i > 0 && it != stmtList.end(); i--, it++);
@@ -339,7 +355,8 @@ Statement *RTL::elementAt(unsigned i)
  *
  * \param os  Stream to output to (often cout or cerr).
  */
-void RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
+void
+RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
 {
 	if (html)
 		os << "<tr><td>";
@@ -372,7 +389,8 @@ void RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
 	if (stmtList.empty()) os << std::endl;  // New line for NOP
 }
 
-void RTL::dump()
+void
+RTL::dump()
 {
 	print(std::cerr);
 }
@@ -382,7 +400,8 @@ extern char debug_buffer[];
 /**
  * \brief Print to a string (mainly for debugging).
  */
-char *RTL::prints()
+char *
+RTL::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -401,7 +420,8 @@ char *RTL::prints()
  *
  * \returns Copy of os (for concatenation).
  */
-std::ostream &operator<<(std::ostream &os, RTL *r)
+std::ostream &
+operator <<(std::ostream &os, RTL *r)
 {
 	if (r == NULL) {
 		os << "NULL ";
@@ -418,7 +438,8 @@ std::ostream &operator<<(std::ostream &os, RTL *r)
  *
  * \param addr  Native address.
  */
-void RTL::updateAddress(ADDRESS addr)
+void
+RTL::updateAddress(ADDRESS addr)
 {
 	nativeAddr = addr;
 }
@@ -429,7 +450,8 @@ void RTL::updateAddress(ADDRESS addr)
  * \param search   Ptr to an expression to search for.
  * \param replace  Ptr to the expression with which to replace it.
  */
-bool RTL::searchAndReplace(Exp *search, Exp *replace)
+bool
+RTL::searchAndReplace(Exp *search, Exp *replace)
 {
 	bool ch = false;
 	for (iterator it = stmtList.begin(); it != stmtList.end(); it++)
@@ -448,7 +470,8 @@ bool RTL::searchAndReplace(Exp *search, Exp *replace)
  *
  * \returns true if there were any matches.
  */
-bool RTL::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+RTL::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
 	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
@@ -467,7 +490,8 @@ bool RTL::searchAll(Exp *search, std::list<Exp *> &result)
  *
  * Remove all statements from this RTL.
  */
-void RTL::clear()
+void
+RTL::clear()
 {
 	stmtList.clear();
 }
@@ -490,7 +514,8 @@ void RTL::clear()
  * \param prep  true if prepend (else append).
  * \param type  Type of the transfer, or NULL.
  */
-void RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= NULL */)
+void
+RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= NULL */)
 {
 	// Generate the assignment expression
 	Assign *asgn = new Assign(type, pLhs, pRhs);
@@ -519,7 +544,8 @@ void RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= NULL */)
  * \param pRhs  Ptr to Exp to place on RHS.
  * \param type  Type of the transfer, or NULL.
  */
-void RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* NULL */)
+void
+RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* NULL */)
 {
 	iterator it;
 	// First skip all assignments with temps on LHS
@@ -560,7 +586,8 @@ void RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* NULL */)
  *
  * \returns A pointer to the type.
  */
-Type *RTL::getType()
+Type *
+RTL::getType()
 {
 	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		Statement *e = *it;
@@ -579,7 +606,8 @@ Type *RTL::getType()
  *
  * \returns Boolean as above.
  */
-bool RTL::areFlagsAffected()
+bool
+RTL::areFlagsAffected()
 {
 	if (stmtList.size() == 0) return false;
 	// Get an iterator to the last RT
@@ -595,7 +623,8 @@ bool RTL::areFlagsAffected()
 /**
  * \brief Code generation.
  */
-void RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
 		(*it)->generateCode(hll, pbb, indLevel);
@@ -605,7 +634,8 @@ void RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 /**
  * \brief Simplify all the uses/defs in this RTL.
  */
-void RTL::simplify()
+void
+RTL::simplify()
 {
 	for (iterator it = stmtList.begin(); it != stmtList.end(); /*it++*/) {
 		Statement *s = *it;
@@ -655,7 +685,8 @@ void RTL::simplify()
  *
  * \returns true if found.
  */
-bool RTL::isCompare(int &iReg, Exp *&expOperand)
+bool
+RTL::isCompare(int &iReg, Exp *&expOperand)
 {
 	// Expect to see a subtract, then a setting of the flags
 	// Dest of subtract should be a register (could be the always zero register)
@@ -690,7 +721,8 @@ bool RTL::isCompare(int &iReg, Exp *&expOperand)
 /**
  * \brief True if this RTL ends in a GotoStatement.
  */
-bool RTL::isGoto()
+bool
+RTL::isGoto()
 {
 	if (stmtList.empty()) return false;
 	Statement *last = stmtList.back();
@@ -700,7 +732,8 @@ bool RTL::isGoto()
 /**
  * \brief Is this RTL a branch instruction?
  */
-bool RTL::isBranch()
+bool
+RTL::isBranch()
 {
 	if (stmtList.empty()) return false;
 	Statement *last = stmtList.back();
@@ -710,7 +743,8 @@ bool RTL::isBranch()
 /**
  * \brief Is this RTL a call instruction?
  */
-bool RTL::isCall()
+bool
+RTL::isCall()
 {
 	if (stmtList.empty()) return false;
 	Statement *last = stmtList.back();
@@ -723,7 +757,8 @@ bool RTL::isCall()
  * Use this slow function when you can't be sure that the HL Statement is
  * last.
  */
-Statement *RTL::getHlStmt()
+Statement *
+RTL::getHlStmt()
 {
 	for (reverse_iterator rit = stmtList.rbegin(); rit != stmtList.rend(); rit++) {
 		if ((*rit)->getKind() != STMT_ASSIGN)
@@ -735,7 +770,8 @@ Statement *RTL::getHlStmt()
 /**
  * \brief Set or clear all the "constant subscripts" (conscripts) in this RTL.
  */
-int RTL::setConscripts(int n, bool bClear)
+int
+RTL::setConscripts(int n, bool bClear)
 {
 	StmtConscriptSetter ssc(n, bClear);
 	accept(&ssc);

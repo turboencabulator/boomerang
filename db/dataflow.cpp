@@ -35,7 +35,8 @@ extern char debug_buffer[];  // For prints functions
  * Dominator frontier code largely as per Appel 2002 ("Modern Compiler Implementation in Java")
  */
 
-void DataFlow::DFS(int p, int n)
+void
+DataFlow::DFS(int p, int n)
 {
 	if (dfnum[n] == 0) {
 		dfnum[n] = N; vertex[N] = n; parent[n] = p;
@@ -51,7 +52,8 @@ void DataFlow::DFS(int p, int n)
 }
 
 // Essentially Algorithm 19.9 of Appel's "modern compiler implementation in Java" 2nd ed 2002
-void DataFlow::dominators(Cfg *cfg)
+void
+DataFlow::dominators(Cfg *cfg)
 {
 	BasicBlock *r = cfg->getEntryBB();
 	unsigned numBB = cfg->getNumBBs();
@@ -134,7 +136,8 @@ void DataFlow::dominators(Cfg *cfg)
 
 // Basically algorithm 19.10b of Appel 2002 (uses path compression for O(log N) amortised time per operation
 // (overall O(N log N))
-int DataFlow::ancestorWithLowestSemi(int v)
+int
+DataFlow::ancestorWithLowestSemi(int v)
 {
 	int a = ancestor[v];
 	if (ancestor[a] != -1) {
@@ -146,13 +149,15 @@ int DataFlow::ancestorWithLowestSemi(int v)
 	return best[v];
 }
 
-void DataFlow::Link(int p, int n)
+void
+DataFlow::Link(int p, int n)
 {
 	ancestor[n] = p; best[n] = n;
 }
 
 // Return true if n dominates w
-bool DataFlow::doesDominate(int n, int w)
+bool
+DataFlow::doesDominate(int n, int w)
 {
 	while (idom[w] != -1) {
 		if (idom[w] == n)
@@ -162,7 +167,8 @@ bool DataFlow::doesDominate(int n, int w)
 	return false;
 }
 
-void DataFlow::computeDF(int n)
+void
+DataFlow::computeDF(int n)
 {
 	std::set<int> S;
 	/* THis loop computes DF_local[n] */
@@ -197,7 +203,8 @@ void DataFlow::computeDF(int n)
 }
 
 
-bool DataFlow::canRename(Exp *e, UserProc *proc)
+bool
+DataFlow::canRename(Exp *e, UserProc *proc)
 {
 	if (e->isSubscript()) e = ((RefExp *)e)->getSubExp1();  // Look inside refs
 	if (e->isRegOf())    return true;   // Always rename registers
@@ -219,7 +226,8 @@ bool DataFlow::canRename(Exp *e, UserProc *proc)
 }
 
 // For debugging
-void DataFlow::dumpA_phi()
+void
+DataFlow::dumpA_phi()
 {
 	std::map<Exp *, std::set<int>, lessExpStar>::iterator zz;
 	std::cerr << "A_phi:\n";
@@ -235,7 +243,8 @@ void DataFlow::dumpA_phi()
 }
 
 
-bool DataFlow::placePhiFunctions(UserProc *proc)
+bool
+DataFlow::placePhiFunctions(UserProc *proc)
 {
 	// First free some memory no longer needed
 	dfnum.resize(0);
@@ -351,7 +360,8 @@ static Exp *defineAll = new Terminal(opDefineAll);  // An expression representin
 
 // Subscript dataflow variables
 static int progress = 0;
-bool DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
+bool
+DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 {
 	if (++progress > 200) {
 		std::cerr << 'r' << std::flush;
@@ -561,7 +571,8 @@ bool DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = fals
 	return changed;
 }
 
-void DataFlow::dumpStacks()
+void
+DataFlow::dumpStacks()
 {
 	std::cerr << "Stacks: " << Stacks.size() << " entries\n";
 	std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator zz;
@@ -575,7 +586,8 @@ void DataFlow::dumpStacks()
 	}
 }
 
-void DataFlow::dumpDefsites()
+void
+DataFlow::dumpDefsites()
 {
 	std::map<Exp *, std::set<int>, lessExpStar>::iterator dd;
 	for (dd = defsites.begin(); dd != defsites.end(); ++dd) {
@@ -588,7 +600,8 @@ void DataFlow::dumpDefsites()
 	}
 }
 
-void DataFlow::dumpA_orig()
+void
+DataFlow::dumpA_orig()
 {
 	int n = A_orig.size();
 	for (int i = 0; i < n; ++i) {
@@ -601,7 +614,8 @@ void DataFlow::dumpA_orig()
 	}
 }
 
-void DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc)
+void
+DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc)
 {
 	std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator it;
 	for (it = Stacks.begin(); it != Stacks.end(); it++) {
@@ -617,7 +631,8 @@ void DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpSt
 }
 
 // Find the definition for e that reaches this Collector. If none reaches here, return NULL
-Exp *DefCollector::findDefFor(Exp *e)
+Exp *
+DefCollector::findDefFor(Exp *e)
 {
 	iterator it;
 	for (it = defs.begin(); it != defs.end(); ++it) {
@@ -628,7 +643,8 @@ Exp *DefCollector::findDefFor(Exp *e)
 	return NULL;  // Not explicitly defined here
 }
 
-void UseCollector::print(std::ostream &os, bool html)
+void
+UseCollector::print(std::ostream &os, bool html)
 {
 	LocationSet::iterator it;
 	bool first = true;
@@ -642,7 +658,8 @@ void UseCollector::print(std::ostream &os, bool html)
 }
 
 #define DEFCOL_COLS 120
-void DefCollector::print(std::ostream &os, bool html)
+void
+DefCollector::print(std::ostream &os, bool html)
 {
 	iterator it;
 	unsigned col = 36;
@@ -668,7 +685,8 @@ void DefCollector::print(std::ostream &os, bool html)
 	}
 }
 
-char *UseCollector::prints()
+char *
+UseCollector::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -677,7 +695,8 @@ char *UseCollector::prints()
 	return debug_buffer;
 }
 
-char *DefCollector::prints()
+char *
+DefCollector::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -686,21 +705,24 @@ char *DefCollector::prints()
 	return debug_buffer;
 }
 
-void UseCollector::dump()
+void
+UseCollector::dump()
 {
 	std::ostringstream ost;
 	print(ost);
 	std::cerr << ost.str();
 }
 
-void DefCollector::dump()
+void
+DefCollector::dump()
 {
 	std::ostringstream ost;
 	print(ost);
 	std::cerr << ost.str();
 }
 
-void UseCollector::makeCloneOf(UseCollector &other)
+void
+UseCollector::makeCloneOf(UseCollector &other)
 {
 	initialised = other.initialised;
 	locs.clear();
@@ -708,7 +730,8 @@ void UseCollector::makeCloneOf(UseCollector &other)
 		locs.insert((*it)->clone());
 }
 
-void DefCollector::makeCloneOf(DefCollector &other)
+void
+DefCollector::makeCloneOf(DefCollector &other)
 {
 	initialised = other.initialised;
 	defs.clear();
@@ -716,7 +739,8 @@ void DefCollector::makeCloneOf(DefCollector &other)
 		defs.insert((Assign *)(*it)->clone());
 }
 
-void DefCollector::searchReplaceAll(Exp *from, Exp *to, bool &change)
+void
+DefCollector::searchReplaceAll(Exp *from, Exp *to, bool &change)
 {
 	iterator it;
 	for (it = defs.begin(); it != defs.end(); ++it)
@@ -724,7 +748,8 @@ void DefCollector::searchReplaceAll(Exp *from, Exp *to, bool &change)
 }
 
 // Called from CallStatement::fromSSAform. The UserProc is needed for the symbol map
-void UseCollector::fromSSAform(UserProc *proc, Statement *def)
+void
+UseCollector::fromSSAform(UserProc *proc, Statement *def)
 {
 	LocationSet removes, inserts;
 	iterator it;
@@ -745,7 +770,8 @@ void UseCollector::fromSSAform(UserProc *proc, Statement *def)
 		locs.insert(*it);
 }
 
-bool UseCollector::operator==(UseCollector &other)
+bool
+UseCollector::operator ==(UseCollector &other)
 {
 	if (other.initialised != initialised) return false;
 	iterator it1, it2;
@@ -755,14 +781,16 @@ bool UseCollector::operator==(UseCollector &other)
 	return true;
 }
 
-void DefCollector::insert(Assign *a)
+void
+DefCollector::insert(Assign *a)
 {
 	Exp *l = a->getLeft();
 	if (existsOnLeft(l)) return;
 	defs.insert(a);
 }
 
-void DataFlow::convertImplicits(Cfg *cfg)
+void
+DataFlow::convertImplicits(Cfg *cfg)
 {
 	// Convert statements in A_phi from m[...]{-} to m[...]{0}
 	std::map<Exp *, std::set<int>, lessExpStar> A_phi_copy = A_phi;  // Object copy
@@ -814,7 +842,8 @@ void DataFlow::convertImplicits(Cfg *cfg)
 // For locations defined before they are used in a phi parameter, there will be no entry in usedByDomPhi, so we ignore
 // it. Remember that each location is defined only once, so that's the time to decide if it is dominated by a phi use or
 // not.
-void DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedByDomPhi0, std::map<Exp *, PhiAssign *, lessExpStar> &defdByPhi)
+void
+DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedByDomPhi0, std::map<Exp *, PhiAssign *, lessExpStar> &defdByPhi)
 {
 	// For each statement this BB
 	BasicBlock::rtlit rit; StatementList::iterator sit;
@@ -871,7 +900,8 @@ void DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &u
 }
 
 #if USE_DOMINANCE_NUMS
-void DataFlow::setDominanceNums(int n, int &currNum)
+void
+DataFlow::setDominanceNums(int n, int &currNum)
 {
 	BasicBlock::rtlit rit; StatementList::iterator sit;
 	BasicBlock *bb = BBs[n];

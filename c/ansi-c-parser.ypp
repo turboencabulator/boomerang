@@ -36,7 +36,7 @@
 		bool noDecode = false;
 		bool incomplete = false;
 
-		SymbolMods() {}
+		SymbolMods() { }
 	};
 
 	class Symbol {
@@ -47,7 +47,7 @@
 		Signature *sig = NULL;
 		SymbolMods *mods = NULL;
 
-		Symbol(ADDRESS a) : addr(a) {}
+		Symbol(ADDRESS a) : addr(a) { }
 	};
 
 	class CustomOptions {
@@ -55,7 +55,7 @@
 		Exp *exp = NULL;
 		int sp = 0;
 
-		CustomOptions() {}
+		CustomOptions() { }
 	};
 
 	class SymbolRef {
@@ -63,7 +63,7 @@
 		ADDRESS addr;
 		std::string nam;
 
-		SymbolRef(ADDRESS a, const char *nam) : addr(a), nam(nam) {}
+		SymbolRef(ADDRESS a, const char *nam) : addr(a), nam(nam) { }
 	};
 
 	class Bound {
@@ -71,7 +71,7 @@
 		int kind;
 		std::string nam;
 
-		Bound(int kind, const char *nam) : kind(kind), nam(nam) {}
+		Bound(int kind, const char *nam) : kind(kind), nam(nam) { }
 	};
 %}
 
@@ -467,13 +467,15 @@ type
 
 #include <stdio.h>
 
-int AnsiCParser::yylex()
+int
+AnsiCParser::yylex()
 {
 	int token = theScanner->yylex(yylval);
 	return token;
 }
 
-void AnsiCParser::yyerror(const char *s)
+void
+AnsiCParser::yyerror(const char *s)
 {
 	// TODO:  Print the filename.
 	fprintf(stderr, "%s on line %i\n", s, theScanner->theLine);

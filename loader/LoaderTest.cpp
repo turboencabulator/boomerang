@@ -45,7 +45,8 @@
 /**
  * Test loading the SPARC hello world program.
  */
-void LoaderTest::testSparcLoad()
+void
+LoaderTest::testSparcLoad()
 {
 	// Load SPARC hello world
 	BinaryFile *bf = BinaryFile::open(HELLO_SPARC);
@@ -70,7 +71,8 @@ void LoaderTest::testSparcLoad()
 /**
  * Test loading the Pentium (Solaris) hello world program.
  */
-void LoaderTest::testPentiumLoad()
+void
+LoaderTest::testPentiumLoad()
 {
 	// Load Pentium hello world
 	BinaryFile *bf = BinaryFile::open(HELLO_PENTIUM);
@@ -95,7 +97,8 @@ void LoaderTest::testPentiumLoad()
 /**
  * Test loading the HPPA hello world program.
  */
-void LoaderTest::testHppaLoad()
+void
+LoaderTest::testHppaLoad()
 {
 	// Load HPPA hello world
 	BinaryFile *bf = BinaryFile::open(HELLO_HPPA);
@@ -119,7 +122,8 @@ void LoaderTest::testHppaLoad()
 /**
  * Test loading the Palm 68328 Starter.prc program.
  */
-void LoaderTest::testPalmLoad()
+void
+LoaderTest::testPalmLoad()
 {
 	// Load Palm Starter.prc
 	BinaryFile *bf = BinaryFile::open(STARTER_PALM);
@@ -144,7 +148,8 @@ void LoaderTest::testPalmLoad()
 /**
  * Test loading Windows programs.
  */
-void LoaderTest::testWinLoad()
+void
+LoaderTest::testWinLoad()
 {
 #if 0 /* FIXME: these tests should use non-proprietary programs */
 	{
@@ -510,7 +515,8 @@ static const unsigned char pent_hello_text[] = {
  * \name Test the micro disassembler.
  * \{
  */
-void LoaderTest::testMicroDis1()
+void
+LoaderTest::testMicroDis1()
 {
 	const unsigned char *p = pent_hello_text;
 	size_t n = sizeof pent_hello_text;
@@ -542,7 +548,8 @@ void LoaderTest::testMicroDis1()
 	CPPUNIT_ASSERT_EQUAL(n, totalSize);
 }
 
-void LoaderTest::testMicroDis2()
+void
+LoaderTest::testMicroDis2()
 {
 	// Now a special test:
 	// 8048910:  0f be 00           movsbl (%eax),%eax
@@ -559,7 +566,8 @@ void LoaderTest::testMicroDis2()
 
 typedef unsigned (*elfHashFcn)(const char *);
 extern "C" unsigned elf_hash(const char *);
-void LoaderTest::testElfHash()
+void
+LoaderTest::testElfHash()
 {
 #ifdef DYNAMIC
 	void *dlHandle = dlopen(ELFBINFILE, RTLD_LAZY);

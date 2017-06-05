@@ -44,7 +44,8 @@ CHLLCode::CHLLCode()
 }
 
 /// Empty constructor, calls HLLCode(p)
-CHLLCode::CHLLCode(UserProc *p) : HLLCode(p)
+CHLLCode::CHLLCode(UserProc *p) :
+	HLLCode(p)
 {
 }
 
@@ -54,7 +55,8 @@ CHLLCode::~CHLLCode()
 }
 
 /// Output \a indLevel tabs to \a str
-void CHLLCode::indent(std::ostringstream &str, int indLevel)
+void
+CHLLCode::indent(std::ostringstream &str, int indLevel)
 {
 	// Can probably do more efficiently
 	for (int i = 0; i < indLevel; i++)
@@ -72,7 +74,8 @@ void CHLLCode::indent(std::ostringstream &str, int indLevel)
  * \todo This function is 800+ lines, and should possibly be split up.
  */
 static int progress = 0;
-void CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /* = false */)
+void
+CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /* = false */)
 {
 	if (exp == NULL) return;  // ?
 
@@ -922,7 +925,8 @@ void CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool u
 }
 
 /// Print the type represented by \a typ to \a str.
-void CHLLCode::appendType(std::ostringstream &str, Type *typ)
+void
+CHLLCode::appendType(std::ostringstream &str, Type *typ)
 {
 	if (typ == NULL) {
 		str << "int";  // Default type for C
@@ -941,7 +945,8 @@ void CHLLCode::appendType(std::ostringstream &str, Type *typ)
 /**
  * Print the indented type to \a str.
  */
-void CHLLCode::appendTypeIdent(std::ostringstream &str, Type *typ, const char *ident)
+void
+CHLLCode::appendTypeIdent(std::ostringstream &str, Type *typ, const char *ident)
 {
 	if (typ == NULL) return;
 	if (typ->isPointer() && typ->asPointer()->getPointsTo()->isArray()) {
@@ -974,13 +979,15 @@ void CHLLCode::appendTypeIdent(std::ostringstream &str, Type *typ, const char *i
 }
 
 /// Remove all generated code.
-void CHLLCode::reset()
+void
+CHLLCode::reset()
 {
 	lines.clear();
 }
 
 /// Adds: while( \a cond) {
-void CHLLCode::AddPretestedLoopHeader(int indLevel, Exp *cond)
+void
+CHLLCode::AddPretestedLoopHeader(int indLevel, Exp *cond)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -994,7 +1001,8 @@ void CHLLCode::AddPretestedLoopHeader(int indLevel, Exp *cond)
 }
 
 /// Adds: }
-void CHLLCode::AddPretestedLoopEnd(int indLevel)
+void
+CHLLCode::AddPretestedLoopEnd(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1003,7 +1011,8 @@ void CHLLCode::AddPretestedLoopEnd(int indLevel)
 }
 
 /// Adds: for(;;) {
-void CHLLCode::AddEndlessLoopHeader(int indLevel)
+void
+CHLLCode::AddEndlessLoopHeader(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1012,7 +1021,8 @@ void CHLLCode::AddEndlessLoopHeader(int indLevel)
 }
 
 /// Adds: }
-void CHLLCode::AddEndlessLoopEnd(int indLevel)
+void
+CHLLCode::AddEndlessLoopEnd(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1021,7 +1031,8 @@ void CHLLCode::AddEndlessLoopEnd(int indLevel)
 }
 
 /// Adds: do {
-void CHLLCode::AddPosttestedLoopHeader(int indLevel)
+void
+CHLLCode::AddPosttestedLoopHeader(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1030,7 +1041,8 @@ void CHLLCode::AddPosttestedLoopHeader(int indLevel)
 }
 
 /// Adds: } while (\a cond);
-void CHLLCode::AddPosttestedLoopEnd(int indLevel, Exp *cond)
+void
+CHLLCode::AddPosttestedLoopEnd(int indLevel, Exp *cond)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1041,7 +1053,8 @@ void CHLLCode::AddPosttestedLoopEnd(int indLevel, Exp *cond)
 }
 
 /// Adds: switch(\a cond) {
-void CHLLCode::AddCaseCondHeader(int indLevel, Exp *cond)
+void
+CHLLCode::AddCaseCondHeader(int indLevel, Exp *cond)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1052,7 +1065,8 @@ void CHLLCode::AddCaseCondHeader(int indLevel, Exp *cond)
 }
 
 /// Adds: case \a opt :
-void CHLLCode::AddCaseCondOption(int indLevel, Exp *opt)
+void
+CHLLCode::AddCaseCondOption(int indLevel, Exp *opt)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1063,7 +1077,8 @@ void CHLLCode::AddCaseCondOption(int indLevel, Exp *opt)
 }
 
 /// Adds: break;
-void CHLLCode::AddCaseCondOptionEnd(int indLevel)
+void
+CHLLCode::AddCaseCondOptionEnd(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1072,7 +1087,8 @@ void CHLLCode::AddCaseCondOptionEnd(int indLevel)
 }
 
 /// Adds: default:
-void CHLLCode::AddCaseCondElse(int indLevel)
+void
+CHLLCode::AddCaseCondElse(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1081,7 +1097,8 @@ void CHLLCode::AddCaseCondElse(int indLevel)
 }
 
 /// Adds: }
-void CHLLCode::AddCaseCondEnd(int indLevel)
+void
+CHLLCode::AddCaseCondEnd(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1090,7 +1107,8 @@ void CHLLCode::AddCaseCondEnd(int indLevel)
 }
 
 /// Adds: if(\a cond) {
-void CHLLCode::AddIfCondHeader(int indLevel, Exp *cond)
+void
+CHLLCode::AddIfCondHeader(int indLevel, Exp *cond)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1101,7 +1119,8 @@ void CHLLCode::AddIfCondHeader(int indLevel, Exp *cond)
 }
 
 /// Adds: }
-void CHLLCode::AddIfCondEnd(int indLevel)
+void
+CHLLCode::AddIfCondEnd(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1110,7 +1129,8 @@ void CHLLCode::AddIfCondEnd(int indLevel)
 }
 
 /// Adds: if(\a cond) {
-void CHLLCode::AddIfElseCondHeader(int indLevel, Exp *cond)
+void
+CHLLCode::AddIfElseCondHeader(int indLevel, Exp *cond)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1121,7 +1141,8 @@ void CHLLCode::AddIfElseCondHeader(int indLevel, Exp *cond)
 }
 
 /// Adds: } else {
-void CHLLCode::AddIfElseCondOption(int indLevel)
+void
+CHLLCode::AddIfElseCondOption(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1130,7 +1151,8 @@ void CHLLCode::AddIfElseCondOption(int indLevel)
 }
 
 /// Adds: }
-void CHLLCode::AddIfElseCondEnd(int indLevel)
+void
+CHLLCode::AddIfElseCondEnd(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1139,7 +1161,8 @@ void CHLLCode::AddIfElseCondEnd(int indLevel)
 }
 
 /// Adds: goto L \em ord
-void CHLLCode::AddGoto(int indLevel, int ord)
+void
+CHLLCode::AddGoto(int indLevel, int ord)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1152,7 +1175,8 @@ void CHLLCode::AddGoto(int indLevel, int ord)
  * Removes labels from the code which are not in usedLabels.
  * \param maxOrd UNUSED
  */
-void CHLLCode::RemoveUnusedLabels(int maxOrd)
+void
+CHLLCode::RemoveUnusedLabels(int maxOrd)
 {
 	for (std::list<char *>::iterator it = lines.begin(); it != lines.end();) {
 		if ((*it)[0] == 'L' && strchr(*it, ':')) {
@@ -1169,7 +1193,8 @@ void CHLLCode::RemoveUnusedLabels(int maxOrd)
 }
 
 /// Adds: continue;
-void CHLLCode::AddContinue(int indLevel)
+void
+CHLLCode::AddContinue(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1178,7 +1203,8 @@ void CHLLCode::AddContinue(int indLevel)
 }
 
 /// Adds: break;
-void CHLLCode::AddBreak(int indLevel)
+void
+CHLLCode::AddBreak(int indLevel)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1187,7 +1213,8 @@ void CHLLCode::AddBreak(int indLevel)
 }
 
 /// Adds: L \a ord :
-void CHLLCode::AddLabel(int indLevel, int ord)
+void
+CHLLCode::AddLabel(int indLevel, int ord)
 {
 	std::ostringstream s;
 	s << "L" << std::dec << ord << ":";
@@ -1195,7 +1222,8 @@ void CHLLCode::AddLabel(int indLevel, int ord)
 }
 
 /// Search for the label L \a ord and remove it from the generated code.
-void CHLLCode::RemoveLabel(int ord)
+void
+CHLLCode::RemoveLabel(int ord)
 {
 	std::ostringstream s;
 	s << "L" << std::dec << ord << ":";
@@ -1208,7 +1236,8 @@ void CHLLCode::RemoveLabel(int ord)
 }
 
 
-bool isBareMemof(Exp *e, UserProc *proc)
+bool
+isBareMemof(Exp *e, UserProc *proc)
 {
 	if (!e->isMemOf()) return false;
 #if SYMS_IN_BACK_END
@@ -1223,7 +1252,8 @@ bool isBareMemof(Exp *e, UserProc *proc)
 }
 
 /// Prints an assignment expression.
-void CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
+void
+CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 {
 	// Gerard: shouldn't these  3 types of statements be removed earlier?
 	if (asgn->getLeft()->getOper() == opPC)
@@ -1354,7 +1384,8 @@ void CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
  * \todo                Remove the \a name parameter and use Proc::getName()
  * \todo                Add assingment for when the function returns a struct.
  */
-void CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results)
+void
+CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1420,7 +1451,8 @@ void CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, Stat
  * \todo Add the use of \a results like AddCallStatement.
  */
 // Ugh - almost the same as the above, but it needs to take an expression, // not a Proc*
-void CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results)
+void
+CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results)
 {
 	// FIXME: Need to use 'results', since we can infer some defines...
 	std::ostringstream s;
@@ -1447,7 +1479,8 @@ void CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, 
  * Adds a return statement and returns the first expression in \a rets.
  * \todo This should be returning a struct if more than one real return value.
  */
-void CHLLCode::AddReturnStatement(int indLevel, StatementList *rets)
+void
+CHLLCode::AddReturnStatement(int indLevel, StatementList *rets)
 {
 	// FIXME: should be returning a struct of more than one real return */
 	// The stack pointer is wanted as a define in calls, and so appears in returns, but needs to be removed here
@@ -1488,7 +1521,8 @@ void CHLLCode::AddReturnStatement(int indLevel, StatementList *rets)
 /**
  * Print the start of a function, and also as a comment its address.
  */
-void CHLLCode::AddProcStart(UserProc *proc)
+void
+CHLLCode::AddProcStart(UserProc *proc)
 {
 	std::ostringstream s;
 	s << "/* address: 0x" << std::hex << proc->getNativeAddress() << std::dec << " */";
@@ -1497,7 +1531,8 @@ void CHLLCode::AddProcStart(UserProc *proc)
 }
 
 /// Add a prototype (for forward declaration)
-void CHLLCode::AddPrototype(UserProc *proc)
+void
+CHLLCode::AddPrototype(UserProc *proc)
 {
 	AddProcDec(proc, false);
 }
@@ -1506,7 +1541,8 @@ void CHLLCode::AddPrototype(UserProc *proc)
  * Print the declaration of a function.
  * \param open  False if this is just a prototype and ";" should be printed instead of "{"
  */
-void CHLLCode::AddProcDec(UserProc *proc, bool open)
+void
+CHLLCode::AddProcDec(UserProc *proc, bool open)
 {
 	std::ostringstream s;
 	ReturnStatement *returns = proc->getTheReturnStatement();
@@ -1588,7 +1624,8 @@ void CHLLCode::AddProcDec(UserProc *proc, bool open)
 }
 
 /// Adds: }
-void CHLLCode::AddProcEnd()
+void
+CHLLCode::AddProcEnd()
 {
 	appendLine("}");
 	appendLine("");
@@ -1598,7 +1635,8 @@ void CHLLCode::AddProcEnd()
  * Declare a local variable.
  * \param last  true if an empty line should be added.
  */
-void CHLLCode::AddLocal(const char *name, Type *type, bool last)
+void
+CHLLCode::AddLocal(const char *name, Type *type, bool last)
 {
 	std::ostringstream s;
 	indent(s, 1);
@@ -1630,7 +1668,8 @@ void CHLLCode::AddLocal(const char *name, Type *type, bool last)
  * Add the declaration for a global.
  * \param init  The initial value of the global.
  */
-void CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
+void
+CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 {
 	std::ostringstream s;
 	// Check for array types. These are declared differently in C than
@@ -1666,7 +1705,8 @@ void CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 }
 
 /// Dump all generated code to \a os.
-void CHLLCode::print(std::ostream &os)
+void
+CHLLCode::print(std::ostream &os)
 {
 	for (std::list<char *>::iterator it = lines.begin(); it != lines.end(); it++)
 		os << *it << std::endl;
@@ -1675,7 +1715,8 @@ void CHLLCode::print(std::ostream &os)
 }
 
 /// Adds one line of comment to the code.
-void CHLLCode::AddLineComment(const char *cmt)
+void
+CHLLCode::AddLineComment(const char *cmt)
 {
 	std::ostringstream s;
 	s << "/* " << cmt << "*/";
@@ -1684,12 +1725,14 @@ void CHLLCode::AddLineComment(const char *cmt)
 
 // Private helper functions, to reduce redundant code, and
 // have a single place to put a breakpoint on.
-void CHLLCode::appendLine(const std::ostringstream &ostr)
+void
+CHLLCode::appendLine(const std::ostringstream &ostr)
 {
 	appendLine(ostr.str());
 }
 
-void CHLLCode::appendLine(const std::string &s)
+void
+CHLLCode::appendLine(const std::string &s)
 {
 	lines.push_back(strdup(s.c_str()));
 }

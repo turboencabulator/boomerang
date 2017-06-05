@@ -62,7 +62,7 @@ public:
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 
 	        RTL        *clone();
-	        RTL        &operator=(RTL &other);
+	        RTL        &operator =(RTL &other);
 
 	        bool        accept(StmtVisitor *visitor);
 
@@ -163,7 +163,7 @@ public:
 	TableEntry();
 	TableEntry(std::list<std::string> &p, RTL &rtl);
 
-	const TableEntry &operator=(const TableEntry &other);
+	const TableEntry &operator =(const TableEntry &other);
 
 	void setParam(std::list<std::string> &p);
 	void setRTL(RTL &rtl);

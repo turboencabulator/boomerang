@@ -26,7 +26,8 @@
 
 #include <cstdio>
 
-static void print_section(const SectionInfo *pSect)
+static void
+print_section(const SectionInfo *pSect)
 {
 	ADDRESS a = pSect->uNativeAddr;
 	unsigned char *p = (unsigned char *)pSect->uHostAddr;
@@ -41,7 +42,8 @@ static void print_section(const SectionInfo *pSect)
 	}
 }
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 	// Usage
 	if (argc != 2) {

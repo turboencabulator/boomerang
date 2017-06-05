@@ -32,7 +32,8 @@
  * \name Test decoding some SPARC instructions.
  * \{
  */
-void FrontSparcTest::test1()
+void
+FrontSparcTest::test1()
 {
 	std::ostringstream ost;
 
@@ -96,7 +97,8 @@ void FrontSparcTest::test1()
 	delete prog;
 }
 
-void FrontSparcTest::test2()
+void
+FrontSparcTest::test2()
 {
 	DecodeResult inst;
 	std::string expected;
@@ -139,7 +141,8 @@ void FrontSparcTest::test2()
 	delete prog;
 }
 
-void FrontSparcTest::test3()
+void
+FrontSparcTest::test3()
 {
 	DecodeResult inst;
 	std::string expected;
@@ -200,7 +203,8 @@ void FrontSparcTest::test3()
 }
 /** \} */
 
-void FrontSparcTest::testBranch()
+void
+FrontSparcTest::testBranch()
 {
 	DecodeResult inst;
 	std::string expected;
@@ -239,7 +243,8 @@ void FrontSparcTest::testBranch()
 	delete prog;
 }
 
-void FrontSparcTest::testDelaySlot()
+void
+FrontSparcTest::testDelaySlot()
 {
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);

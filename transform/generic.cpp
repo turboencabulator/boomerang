@@ -25,7 +25,8 @@
 
 extern const char *operStrings[];
 
-Exp *GenericExpTransformer::applyFuncs(Exp *rhs)
+Exp *
+GenericExpTransformer::applyFuncs(Exp *rhs)
 {
 	Exp *call, *callw = new Binary(opFlagCall, new Const("memberAtOffset"), new Terminal(opWild));
 	if (rhs->search(callw, call)) {
@@ -107,7 +108,8 @@ Exp *GenericExpTransformer::applyFuncs(Exp *rhs)
 	return rhs;
 }
 
-bool GenericExpTransformer::checkCond(Exp *cond, Exp *bindings)
+bool
+GenericExpTransformer::checkCond(Exp *cond, Exp *bindings)
 {
 	switch (cond->getOper()) {
 	case opAnd:
@@ -209,7 +211,8 @@ bool GenericExpTransformer::checkCond(Exp *cond, Exp *bindings)
 	return false;
 }
 
-Exp *GenericExpTransformer::applyTo(Exp *e, bool &bMod)
+Exp *
+GenericExpTransformer::applyTo(Exp *e, bool &bMod)
 {
 	bool change;
 	Exp *bindings = e->match(match);

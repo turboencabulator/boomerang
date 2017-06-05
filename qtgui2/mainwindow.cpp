@@ -101,7 +101,8 @@ MainWindow::MainWindow(QWidget *parent) :
 	loadingSettings = false;
 }
 
-void MainWindow::saveSettings()
+void
+MainWindow::saveSettings()
 {
 	if (loadingSettings)
 		return;
@@ -120,7 +121,8 @@ void MainWindow::saveSettings()
 	settings.setValue("outputpath", ui.outputPathComboBox->itemText(ui.outputPathComboBox->currentIndex()));
 }
 
-void MainWindow::on_inputFileBrowseButton_clicked()
+void
+MainWindow::on_inputFileBrowseButton_clicked()
 {
 	QString s = QFileDialog::getOpenFileName(this, tr("Select a file to decompile..."), "test", "Windows Binaries (*.exe *.dll *.scr *.sys);;Other Binaries (*.*)");
 	if (!s.isEmpty()) {
@@ -135,7 +137,8 @@ void MainWindow::on_inputFileBrowseButton_clicked()
 	}
 }
 
-void MainWindow::on_outputPathBrowseButton_clicked()
+void
+MainWindow::on_outputPathBrowseButton_clicked()
 {
 	QString s = QFileDialog::getExistingDirectory(this, tr("Select a location to write output..."), "output");
 	if (!s.isEmpty()) {
@@ -149,7 +152,8 @@ void MainWindow::on_outputPathBrowseButton_clicked()
 	}
 }
 
-void MainWindow::on_inputFileComboBox_editTextChanged(const QString &text)
+void
+MainWindow::on_inputFileComboBox_editTextChanged(const QString &text)
 {
 	decompilerThread->getDecompiler()->changeInputFile(text);
 	if (ui.inputFileComboBox->findText(text) == -1) {
@@ -161,13 +165,15 @@ void MainWindow::on_inputFileComboBox_editTextChanged(const QString &text)
 		ui.toLoadButton->setDisabled(false);
 }
 
-void MainWindow::on_inputFileComboBox_currentIndexChanged(const QString &text)
+void
+MainWindow::on_inputFileComboBox_currentIndexChanged(const QString &text)
 {
 	decompilerThread->getDecompiler()->changeInputFile(text);
 	saveSettings();
 }
 
-void MainWindow::on_outputPathComboBox_editTextChanged(QString &text)
+void
+MainWindow::on_outputPathComboBox_editTextChanged(QString &text)
 {
 	decompilerThread->getDecompiler()->changeOutputPath(text);
 	ui.outputPathComboBox->addItem(text);
@@ -176,7 +182,8 @@ void MainWindow::on_outputPathComboBox_editTextChanged(QString &text)
 		ui.toLoadButton->setDisabled(false);
 }
 
-void MainWindow::closeCurrentTab()
+void
+MainWindow::closeCurrentTab()
 {
 	if (openFiles.find(ui.tabWidget->currentWidget()) != openFiles.end())
 		on_actionClose_activated();
@@ -184,14 +191,16 @@ void MainWindow::closeCurrentTab()
 		ui.tabWidget->removeTab(ui.tabWidget->currentIndex());
 }
 
-void MainWindow::currentTabTextChanged()
+void
+MainWindow::currentTabTextChanged()
 {
 	QString text = ui.tabWidget->tabText(ui.tabWidget->currentIndex());
 	if (text.right(1) != "*")
 		ui.tabWidget->setTabText(ui.tabWidget->currentIndex(), text.append("*"));
 }
 
-void MainWindow::on_actionOpen_activated()
+void
+MainWindow::on_actionOpen_activated()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Select a file to open..."));
 	if (!filename.isEmpty()) {
@@ -214,7 +223,8 @@ void MainWindow::on_actionOpen_activated()
 	}
 }
 
-void MainWindow::on_actionSave_activated()
+void
+MainWindow::on_actionSave_activated()
 {
 	if (openFiles.find(ui.tabWidget->currentWidget()) != openFiles.end()) {
 		QString filename = openFiles[ui.tabWidget->currentWidget()];
@@ -233,7 +243,8 @@ void MainWindow::on_actionSave_activated()
 	}
 }
 
-void MainWindow::on_actionClose_activated()
+void
+MainWindow::on_actionClose_activated()
 {
 	if (openFiles.find(ui.tabWidget->currentWidget()) != openFiles.end()) {
 		on_actionSave_activated();
@@ -243,17 +254,20 @@ void MainWindow::on_actionClose_activated()
 	}
 }
 
-void MainWindow::on_tabWidget_currentChanged(int index)
+void
+MainWindow::on_tabWidget_currentChanged(int index)
 {
 	ui.actionSave->setEnabled(openFiles.find(ui.tabWidget->widget(index)) != openFiles.end());
 	ui.actionClose->setEnabled(openFiles.find(ui.tabWidget->widget(index)) != openFiles.end());
 }
 
-void MainWindow::errorLoadingFile()
+void
+MainWindow::errorLoadingFile()
 {
 }
 
-void MainWindow::showInitPage()
+void
+MainWindow::showInitPage()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -277,7 +291,8 @@ void MainWindow::showInitPage()
 	ui.actionGenerate_Code->setDisabled(true);
 }
 
-void MainWindow::showLoadPage()
+void
+MainWindow::showLoadPage()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(false);
@@ -289,7 +304,8 @@ void MainWindow::showLoadPage()
 	ui.actionLoad->setDisabled(false);
 }
 
-void MainWindow::showDecodePage()
+void
+MainWindow::showDecodePage()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -309,7 +325,8 @@ void MainWindow::showDecodePage()
 	ui.actionDecode->setDisabled(false);
 }
 
-void MainWindow::showDecompilePage()
+void
+MainWindow::showDecompilePage()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -322,7 +339,8 @@ void MainWindow::showDecompilePage()
 	ui.actionDecompile->setDisabled(false);
 }
 
-void MainWindow::showGenerateCodePage()
+void
+MainWindow::showGenerateCodePage()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -334,7 +352,8 @@ void MainWindow::showGenerateCodePage()
 	ui.actionGenerate_Code->setDisabled(false);
 }
 
-void MainWindow::loadComplete()
+void
+MainWindow::loadComplete()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(false);
@@ -347,12 +366,14 @@ void MainWindow::loadComplete()
 	ui.stackedWidget->setCurrentIndex(1);
 }
 
-void MainWindow::showMachineType(const QString &machine)
+void
+MainWindow::showMachineType(const QString &machine)
 {
 	ui.machineTypeLabel->setText(machine);
 }
 
-void MainWindow::showNewEntrypoint(unsigned int addr, const QString &name)
+void
+MainWindow::showNewEntrypoint(unsigned int addr, const QString &name)
 {
 	int nrows = ui.entrypoints->rowCount();
 	ui.entrypoints->setRowCount(nrows + 1);
@@ -362,7 +383,8 @@ void MainWindow::showNewEntrypoint(unsigned int addr, const QString &name)
 	ui.entrypoints->resizeRowsToContents();
 }
 
-void MainWindow::decodeComplete()
+void
+MainWindow::decodeComplete()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -375,7 +397,8 @@ void MainWindow::decodeComplete()
 	ui.stackedWidget->setCurrentIndex(2);
 }
 
-void MainWindow::decompileComplete()
+void
+MainWindow::decompileComplete()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -388,7 +411,8 @@ void MainWindow::decompileComplete()
 	ui.stackedWidget->setCurrentIndex(3);
 }
 
-void MainWindow::generateCodeComplete()
+void
+MainWindow::generateCodeComplete()
 {
 	ui.toLoadButton->setDisabled(true);
 	ui.loadButton->setDisabled(true);
@@ -401,7 +425,8 @@ void MainWindow::generateCodeComplete()
 	ui.stackedWidget->setCurrentIndex(4);
 }
 
-void MainWindow::showConsideringProc(const QString &parent, const QString &name)
+void
+MainWindow::showConsideringProc(const QString &parent, const QString &name)
 {
 	QList<QTreeWidgetItem *> foundit = ui.decompileProcsTreeWidget->findItems(name, Qt::MatchExactly | Qt::MatchRecursive);
 	if (foundit.isEmpty()) {
@@ -421,7 +446,8 @@ void MainWindow::showConsideringProc(const QString &parent, const QString &name)
 	}
 }
 
-void MainWindow::showDecompilingProc(const QString &name)
+void
+MainWindow::showDecompilingProc(const QString &name)
 {
 	QList<QTreeWidgetItem *> foundit = ui.decompileProcsTreeWidget->findItems(name, Qt::MatchExactly | Qt::MatchRecursive);
 	if (!foundit.isEmpty()) {
@@ -433,7 +459,8 @@ void MainWindow::showDecompilingProc(const QString &name)
 	ui.progressDecompile->setValue(decompiledCount);
 }
 
-void MainWindow::showNewUserProc(const QString &name, unsigned int addr)
+void
+MainWindow::showNewUserProc(const QString &name, unsigned int addr)
 {
 	QString s = tr("%1").arg(addr, 8, 16, QChar('0'));
 	int nrows = ui.userProcs->rowCount();
@@ -456,7 +483,8 @@ void MainWindow::showNewUserProc(const QString &name, unsigned int addr)
 	ui.userProcs->resizeRowsToContents();
 }
 
-void MainWindow::showNewLibProc(const QString &name, const QString &params)
+void
+MainWindow::showNewLibProc(const QString &name, const QString &params)
 {
 	int nrows = ui.libProcs->rowCount();
 	for (int i = 0; i < nrows; i++)
@@ -471,7 +499,8 @@ void MainWindow::showNewLibProc(const QString &name, const QString &params)
 	ui.libProcs->resizeRowsToContents();
 }
 
-void MainWindow::showRemoveUserProc(const QString &name, unsigned int addr)
+void
+MainWindow::showRemoveUserProc(const QString &name, unsigned int addr)
 {
 	QString s = tr("%1").arg(addr, 8, 16, QChar('0'));
 	int nrows = ui.userProcs->rowCount();
@@ -484,7 +513,8 @@ void MainWindow::showRemoveUserProc(const QString &name, unsigned int addr)
 	ui.userProcs->resizeRowsToContents();
 }
 
-void MainWindow::showRemoveLibProc(const QString &name)
+void
+MainWindow::showRemoveLibProc(const QString &name)
 {
 	int nrows = ui.libProcs->rowCount();
 	for (int i = 0; i < nrows; i++)
@@ -496,7 +526,8 @@ void MainWindow::showRemoveLibProc(const QString &name)
 	ui.libProcs->resizeRowsToContents();
 }
 
-void MainWindow::showNewSection(const QString &name, unsigned int start, unsigned int end)
+void
+MainWindow::showNewSection(const QString &name, unsigned int start, unsigned int end)
 {
 	int nrows = ui.sections->rowCount();
 	ui.sections->setRowCount(nrows + 1);
@@ -508,7 +539,8 @@ void MainWindow::showNewSection(const QString &name, unsigned int start, unsigne
 	ui.sections->resizeRowsToContents();
 }
 
-void MainWindow::showNewCluster(const QString &name)
+void
+MainWindow::showNewCluster(const QString &name)
 {
 	QString cname = name;
 	cname = cname.append(".c");
@@ -517,7 +549,8 @@ void MainWindow::showNewCluster(const QString &name)
 	ui.clusters->expandItem(n);
 }
 
-void MainWindow::showNewProcInCluster(const QString &name, const QString &cluster)
+void
+MainWindow::showNewProcInCluster(const QString &name, const QString &cluster)
 {
 	QString cname = cluster;
 	cname = cname.append(".c");
@@ -533,7 +566,8 @@ void MainWindow::showNewProcInCluster(const QString &name, const QString &cluste
 	ui.progressGenerateCode->setValue(codeGenCount);
 }
 
-void MainWindow::showDebuggingPoint(const QString &name, const QString &description)
+void
+MainWindow::showDebuggingPoint(const QString &name, const QString &description)
 {
 	QString msg = "debugging ";
 	msg.append(name);
@@ -551,7 +585,8 @@ void MainWindow::showDebuggingPoint(const QString &name, const QString &descript
 	showRTLEditor(name);
 }
 
-void MainWindow::showRTLEditor(const QString &name)
+void
+MainWindow::showRTLEditor(const QString &name)
 {
 	RTLEditor *n = NULL;
 	for (int i = 0; i < ui.tabWidget->count(); i++)
@@ -567,12 +602,14 @@ void MainWindow::showRTLEditor(const QString &name)
 	ui.tabWidget->setCurrentWidget(n);
 }
 
-void MainWindow::on_userProcs_cellDoubleClicked(int row, int column)
+void
+MainWindow::on_userProcs_cellDoubleClicked(int row, int column)
 {
 	showRTLEditor(ui.userProcs->item(row, 1)->text());
 }
 
-void MainWindow::on_userProcs_cellChanged(int row, int column)
+void
+MainWindow::on_userProcs_cellChanged(int row, int column)
 {
 	if (column == 0) {
 		// TODO: should we allow the user to change the address of a proc?
@@ -584,7 +621,8 @@ void MainWindow::on_userProcs_cellChanged(int row, int column)
 	}
 }
 
-void MainWindow::on_clusters_itemDoubleClicked(QTreeWidgetItem *item, int column)
+void
+MainWindow::on_clusters_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
 	QTreeWidgetItem *top = item;
 	while (top->parent())
@@ -614,12 +652,14 @@ void MainWindow::on_clusters_itemDoubleClicked(QTreeWidgetItem *item, int column
 	ui.tabWidget->setCurrentWidget(n);
 }
 
-void MainWindow::on_decompileProcsTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
+void
+MainWindow::on_decompileProcsTreeWidget_itemDoubleClicked(QTreeWidgetItem *item, int column)
 {
 	showRTLEditor(item->text(0));
 }
 
-void MainWindow::on_actionEnable_toggled(bool b)
+void
+MainWindow::on_actionEnable_toggled(bool b)
 {
 	decompilerThread->getDecompiler()->setDebugging(b);
 	decompilerThread->getDecompiler()->stopWaiting();
@@ -639,13 +679,15 @@ void MainWindow::on_actionEnable_toggled(bool b)
 	}
 }
 
-void MainWindow::on_actionStep_activated()
+void
+MainWindow::on_actionStep_activated()
 {
 	ui.actionStep->setEnabled(false);
 	decompilerThread->getDecompiler()->stopWaiting();
 }
 
-void MainWindow::on_userProcs_horizontalHeader_sectionClicked(int logicalIndex)
+void
+MainWindow::on_userProcs_horizontalHeader_sectionClicked(int logicalIndex)
 {
 	if (logicalIndex == 2) {
 		for (int i = 0; i < ui.userProcs->rowCount(); i++) {
@@ -658,7 +700,8 @@ void MainWindow::on_userProcs_horizontalHeader_sectionClicked(int logicalIndex)
 	}
 }
 
-void MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
+void
+MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 {
 	QString name = "";
 	QString sigFile;
@@ -723,7 +766,8 @@ void MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 	}
 }
 
-void MainWindow::on_actionCut_activated()
+void
+MainWindow::on_actionCut_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
 		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
@@ -732,7 +776,8 @@ void MainWindow::on_actionCut_activated()
 	}
 }
 
-void MainWindow::on_actionCopy_activated()
+void
+MainWindow::on_actionCopy_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
 		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
@@ -741,7 +786,8 @@ void MainWindow::on_actionCopy_activated()
 	}
 }
 
-void MainWindow::on_actionPaste_activated()
+void
+MainWindow::on_actionPaste_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
 		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
@@ -750,7 +796,8 @@ void MainWindow::on_actionPaste_activated()
 	}
 }
 
-void MainWindow::on_actionDelete_activated()
+void
+MainWindow::on_actionDelete_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
 		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
@@ -759,19 +806,23 @@ void MainWindow::on_actionDelete_activated()
 	}
 }
 
-void MainWindow::on_actionFind_activated()
+void
+MainWindow::on_actionFind_activated()
 {
 }
 
-void MainWindow::on_actionFind_Next_activated()
+void
+MainWindow::on_actionFind_Next_activated()
 {
 }
 
-void MainWindow::on_actionGo_To_activated()
+void
+MainWindow::on_actionGo_To_activated()
 {
 }
 
-void MainWindow::on_actionSelect_All_activated()
+void
+MainWindow::on_actionSelect_All_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
 		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
@@ -780,27 +831,32 @@ void MainWindow::on_actionSelect_All_activated()
 	}
 }
 
-void MainWindow::on_actionLoad_activated()
+void
+MainWindow::on_actionLoad_activated()
 {
 	showLoadPage();
 }
 
-void MainWindow::on_actionDecode_activated()
+void
+MainWindow::on_actionDecode_activated()
 {
 	showDecodePage();
 }
 
-void MainWindow::on_actionDecompile_activated()
+void
+MainWindow::on_actionDecompile_activated()
 {
 	showDecompilePage();
 }
 
-void MainWindow::on_actionGenerate_Code_activated()
+void
+MainWindow::on_actionGenerate_Code_activated()
 {
 	showGenerateCodePage();
 }
 
-void MainWindow::on_actionStructs_activated()
+void
+MainWindow::on_actionStructs_activated()
 {
 	for (int i = 0; i < ui.tabWidget->count(); i++)
 		if (ui.tabWidget->widget(i) == structs)
@@ -809,12 +865,14 @@ void MainWindow::on_actionStructs_activated()
 	ui.tabWidget->setCurrentWidget(structs);
 }
 
-void MainWindow::on_structName_returnPressed()
+void
+MainWindow::on_structName_returnPressed()
 {
 	decompilerThread->getDecompiler()->getCompoundMembers(ui.structName->text(), ui.structMembers);
 }
 
-void MainWindow::on_actionAbout_activated()
+void
+MainWindow::on_actionAbout_activated()
 {
 	QDialog *dlg = new QDialog;
 	Ui::AboutDialog ui;
@@ -823,27 +881,32 @@ void MainWindow::on_actionAbout_activated()
 	dlg->show();
 }
 
-void MainWindow::on_actionAboutQt_activated()
+void
+MainWindow::on_actionAboutQt_activated()
 {
 	QApplication::aboutQt();
 }
 
-void MainWindow::on_enableDFTAcheckBox_toggled(bool b)
+void
+MainWindow::on_enableDFTAcheckBox_toggled(bool b)
 {
 	decompilerThread->getDecompiler()->setUseDFTA(b);
 }
 
-void MainWindow::on_enableNoDecodeChildren_toggled(bool b)
+void
+MainWindow::on_enableNoDecodeChildren_toggled(bool b)
 {
 	decompilerThread->getDecompiler()->setNoDecodeChildren(b);
 }
 
-void MainWindow::on_entrypoints_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
+void
+MainWindow::on_entrypoints_currentItemChanged(QTableWidgetItem *current, QTableWidgetItem *previous)
 {
 	ui.removeButton->setEnabled(true);
 }
 
-void MainWindow::on_addButton_pressed()
+void
+MainWindow::on_addButton_pressed()
 {
 	if (ui.addressEdit->text() == "" || ui.nameEdit->text() == "")
 		return;
@@ -860,7 +923,8 @@ void MainWindow::on_addButton_pressed()
 	ui.nameEdit->clear();
 }
 
-void MainWindow::on_removeButton_pressed()
+void
+MainWindow::on_removeButton_pressed()
 {
 	bool ok;
 	ADDRESS a = ui.entrypoints->item(ui.entrypoints->currentRow(), 0)->text().toInt(&ok, 16);

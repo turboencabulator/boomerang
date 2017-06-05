@@ -52,7 +52,8 @@ BinaryFile::~BinaryFile()
 /**
  * \brief Return number of sections.
  */
-int BinaryFile::getNumSections() const
+int
+BinaryFile::getNumSections() const
 {
 	return m_iNumSections;
 }
@@ -60,7 +61,8 @@ int BinaryFile::getNumSections() const
 /**
  * \brief Find section index given name, or -1 if not found.
  */
-int BinaryFile::getSectionIndexByName(const char *sName) const
+int
+BinaryFile::getSectionIndexByName(const char *sName) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
@@ -73,7 +75,8 @@ int BinaryFile::getSectionIndexByName(const char *sName) const
 /**
  * \brief Return section struct.
  */
-const SectionInfo *BinaryFile::getSectionInfo(int idx) const
+const SectionInfo *
+BinaryFile::getSectionInfo(int idx) const
 {
 	if (idx < m_iNumSections) {
 		return &m_pSections[idx];
@@ -84,7 +87,8 @@ const SectionInfo *BinaryFile::getSectionInfo(int idx) const
 /**
  * \brief Find section info given an address in the section.
  */
-const SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
+const SectionInfo *
+BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		const SectionInfo *pSect = &m_pSections[i];
@@ -99,7 +103,8 @@ const SectionInfo *BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 /**
  * \brief Find section info given name, or NULL if not found.
  */
-const SectionInfo *BinaryFile::getSectionInfoByName(const char *sName) const
+const SectionInfo *
+BinaryFile::getSectionInfoByName(const char *sName) const
 {
 	for (int i = 0; i < m_iNumSections; i++) {
 		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
@@ -112,7 +117,8 @@ const SectionInfo *BinaryFile::getSectionInfoByName(const char *sName) const
 /**
  * \brief Returns true if the given address is in a read only section.
  */
-bool BinaryFile::isReadOnly(ADDRESS uEntry) const
+bool
+BinaryFile::isReadOnly(ADDRESS uEntry) const
 {
 	const SectionInfo *p = getSectionInfoByAddr(uEntry);
 	return p && p->bReadOnly;
@@ -126,7 +132,8 @@ bool BinaryFile::isReadOnly(ADDRESS uEntry) const
 /**
  * \brief Read 1 byte from given native address a; considers endianness.
  */
-int BinaryFile::readNative1(ADDRESS a) const
+int
+BinaryFile::readNative1(ADDRESS a) const
 {
 	return 0;
 }
@@ -134,7 +141,8 @@ int BinaryFile::readNative1(ADDRESS a) const
 /**
  * \brief Read 2 bytes from given native address a; considers endianness.
  */
-int BinaryFile::readNative2(ADDRESS a) const
+int
+BinaryFile::readNative2(ADDRESS a) const
 {
 	return 0;
 }
@@ -142,7 +150,8 @@ int BinaryFile::readNative2(ADDRESS a) const
 /**
  * \brief Read 4 bytes from given native address a; considers endianness.
  */
-int BinaryFile::readNative4(ADDRESS a) const
+int
+BinaryFile::readNative4(ADDRESS a) const
 {
 	return 0;
 }
@@ -150,7 +159,8 @@ int BinaryFile::readNative4(ADDRESS a) const
 /**
  * \brief Read 8 bytes from given native address a; considers endianness.
  */
-QWord BinaryFile::readNative8(ADDRESS a) const
+QWord
+BinaryFile::readNative8(ADDRESS a) const
 {
 	return 0;
 }
@@ -158,7 +168,8 @@ QWord BinaryFile::readNative8(ADDRESS a) const
 /**
  * \brief Read 4 bytes as a float; considers endianness.
  */
-float BinaryFile::readNativeFloat4(ADDRESS a) const
+float
+BinaryFile::readNativeFloat4(ADDRESS a) const
 {
 	return 0.;
 }
@@ -166,7 +177,8 @@ float BinaryFile::readNativeFloat4(ADDRESS a) const
 /**
  * \brief Read 8 bytes as a float; considers endianness.
  */
-double BinaryFile::readNativeFloat8(ADDRESS a) const
+double
+BinaryFile::readNativeFloat8(ADDRESS a) const
 {
 	return 0.;
 }
@@ -174,7 +186,8 @@ double BinaryFile::readNativeFloat8(ADDRESS a) const
 /**
  * \brief Add an extra symbol.
  */
-void BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+void
+BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 }
 
@@ -185,7 +198,8 @@ void BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
  *
  * Overridden by subclasses that support syms.
  */
-const char *BinaryFile::getSymbolByAddress(ADDRESS uNative)
+const char *
+BinaryFile::getSymbolByAddress(ADDRESS uNative)
 {
 	return 0;
 }
@@ -195,7 +209,8 @@ const char *BinaryFile::getSymbolByAddress(ADDRESS uNative)
  *
  * \returns NO_ADDRESS if not found.
  */
-ADDRESS BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK)
+ADDRESS
+BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK)
 {
 	return 0;
 }
@@ -203,32 +218,38 @@ ADDRESS BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK)
 /**
  * \brief Get the size associated with the symbol.
  */
-int BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK)
+int
+BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK)
 {
 	return 0;
 }
 
-bool BinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+bool
+BinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	return false;
 }
 
-bool BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
+bool
+BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 {
 	return false;
 }
 
-bool BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
+bool
+BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
 	return false;
 }
 
-ADDRESS BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
+ADDRESS
+BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
 {
 	return NO_ADDRESS;
 }
 
-const char *BinaryFile::getDynamicProcName(ADDRESS uNative)
+const char *
+BinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return "dynamic";
 }
@@ -246,7 +267,8 @@ const char *BinaryFile::getDynamicProcName(ADDRESS uNative)
  *
  * \note This is a stub routine that should be overridden if required.
  */
-std::pair<unsigned, unsigned> BinaryFile::getGlobalPointerInfo()
+std::pair<unsigned, unsigned>
+BinaryFile::getGlobalPointerInfo()
 {
 	return std::pair<unsigned, unsigned>(0, 0);
 }
@@ -269,7 +291,8 @@ std::pair<unsigned, unsigned> BinaryFile::getGlobalPointerInfo()
  *
  * \returns Pointer to a new map with the info, or 0 if none.
  */
-std::map<ADDRESS, const char *> *BinaryFile::getDynamicGlobalMap()
+std::map<ADDRESS, const char *> *
+BinaryFile::getDynamicGlobalMap()
 {
 	return new std::map<ADDRESS, const char *>;
 }
@@ -282,7 +305,8 @@ std::map<ADDRESS, const char *> *BinaryFile::getDynamicGlobalMap()
  * Get an array of addresses of imported function stubs.
  * \param[out] numImports  Number of array elements.
  */
-ADDRESS *BinaryFile::getImportStubs(int &numImports)
+ADDRESS *
+BinaryFile::getImportStubs(int &numImports)
 {
 	numImports = 0;
 	return NULL;
@@ -291,7 +315,8 @@ ADDRESS *BinaryFile::getImportStubs(int &numImports)
 /**
  * \brief Get the lower and upper limits of the text segment.
  */
-void BinaryFile::getTextLimits()
+void
+BinaryFile::getTextLimits()
 {
 	int n = getNumSections();
 	limitTextLow = 0xFFFFFFFF;

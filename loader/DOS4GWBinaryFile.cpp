@@ -40,12 +40,14 @@ DOS4GWBinaryFile::~DOS4GWBinaryFile()
 	delete [] base;
 }
 
-ADDRESS DOS4GWBinaryFile::getEntryPoint()
+ADDRESS
+DOS4GWBinaryFile::getEntryPoint()
 {
 	return (ADDRESS)(LMMH(m_pLXObjects[LMMH(m_pLXHeader->eipobjectnum)].RelocBaseAddr) + LMMH(m_pLXHeader->eip));
 }
 
-ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
+ADDRESS
+DOS4GWBinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = getAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
@@ -116,7 +118,8 @@ ADDRESS DOS4GWBinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
-bool DOS4GWBinaryFile::load(std::istream &ifs)
+bool
+DOS4GWBinaryFile::load(std::istream &ifs)
 {
 	DWord lxoffLE, lxoff;
 	ifs.seekg(0x3c);
@@ -331,7 +334,8 @@ bool DOS4GWBinaryFile::load(std::istream &ifs)
 	return true;
 }
 
-bool DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+bool
+DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	if (dlprocptrs.find(uNative) != dlprocptrs.end()
 	 && dlprocptrs[uNative] != "main"
@@ -341,13 +345,15 @@ bool DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 }
 
 #if 0 // Cruft?
-bool DOS4GWBinaryFile::PostLoad(void *handle)
+bool
+DOS4GWBinaryFile::PostLoad(void *handle)
 {
 	return false;
 }
 #endif
 
-const char *DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
+const char *
+DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
 	if (it == dlprocptrs.end())
@@ -355,7 +361,8 @@ const char *DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 	return it->second.c_str();
 }
 
-ADDRESS DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS
+DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search
@@ -369,7 +376,8 @@ ADDRESS DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* 
 	return NO_ADDRESS;
 }
 
-void DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+void
+DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	dlprocptrs[uNative] = pName;
 }
@@ -377,7 +385,8 @@ void DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Read 2 bytes from native addr.
  */
-int DOS4GWBinaryFile::dos4gwRead2(const short *ps) const
+int
+DOS4GWBinaryFile::dos4gwRead2(const short *ps) const
 {
 	const unsigned char *p = (const unsigned char *)ps;
 	// Little endian
@@ -388,7 +397,8 @@ int DOS4GWBinaryFile::dos4gwRead2(const short *ps) const
 /**
  * \brief Read 4 bytes from native addr.
  */
-int DOS4GWBinaryFile::dos4gwRead4(const int *pi) const
+int
+DOS4GWBinaryFile::dos4gwRead4(const int *pi) const
 {
 	const short *p = (const short *)pi;
 	int n1 = dos4gwRead2(p);
@@ -397,28 +407,32 @@ int DOS4GWBinaryFile::dos4gwRead4(const int *pi) const
 	return n;
 }
 
-int DOS4GWBinaryFile::readNative1(ADDRESS nat) const
+int
+DOS4GWBinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) si = getSectionInfo(0);
 	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
-int DOS4GWBinaryFile::readNative2(ADDRESS nat) const
+int
+DOS4GWBinaryFile::readNative2(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return dos4gwRead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-int DOS4GWBinaryFile::readNative4(ADDRESS nat) const
+int
+DOS4GWBinaryFile::readNative4(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return dos4gwRead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-QWord DOS4GWBinaryFile::readNative8(ADDRESS nat) const
+QWord
+DOS4GWBinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -433,7 +447,8 @@ QWord DOS4GWBinaryFile::readNative8(ADDRESS nat) const
 	return *(QWord *)raw;
 }
 
-float DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) const
+float
+DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) const
 {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -441,7 +456,8 @@ float DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) const
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
+double
+DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -457,40 +473,47 @@ double DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
 	return *(double *)raw;
 }
 
-bool DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
+bool
+DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
 	if (dlprocptrs.find(uNative) != dlprocptrs.end())
 		return true;
 	return false;
 }
 
-const char *DOS4GWBinaryFile::getDynamicProcName(ADDRESS uNative)
+const char *
+DOS4GWBinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return dlprocptrs[uNative].c_str();
 }
 
-bool DOS4GWBinaryFile::isLibrary() const
+bool
+DOS4GWBinaryFile::isLibrary() const
 {
 	return false; // TODO
 }
 
-ADDRESS DOS4GWBinaryFile::getImageBase() const
+ADDRESS
+DOS4GWBinaryFile::getImageBase() const
 {
 	return m_pLXObjects[0].RelocBaseAddr;
 }
 
-size_t DOS4GWBinaryFile::getImageSize() const
+size_t
+DOS4GWBinaryFile::getImageSize() const
 {
 	return 0; // TODO
 }
 
-std::list<const char *> DOS4GWBinaryFile::getDependencyList()
+std::list<const char *>
+DOS4GWBinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* FIXME */
 }
 
 #if 0 // Cruft?
-DWord DOS4GWBinaryFile::getDelta()
+DWord
+DOS4GWBinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
 	// This should work for the header only
@@ -506,11 +529,13 @@ DWord DOS4GWBinaryFile::getDelta()
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new DOS4GWBinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (DOS4GWBinaryFile *)bf;
 }

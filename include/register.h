@@ -30,9 +30,9 @@ public:
 
 	Register();  // needed for use in stl classes.
 	Register(const Register &);
-	Register operator=(const Register &r2);
-	bool operator==(const Register &r2) const;
-	bool operator<(const Register &r2) const;
+	Register operator =(const Register &r2);
+	bool operator ==(const Register &r2) const;
+	bool operator <(const Register &r2) const;
 
 	// access and set functins
 	void s_name(const char *);

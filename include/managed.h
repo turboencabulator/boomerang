@@ -64,8 +64,8 @@ public:
 	bool        definesLoc(Exp *loc);                     // Search; returns true if any
 	                                                      // statement defines loc
 	void        clear() { sset.clear(); }                 // Clear the set
-	bool        operator==(const StatementSet &o) const { return sset == o.sset; }  // Compare if equal
-	bool        operator<(const StatementSet &o) const;   // Compare if less
+	bool        operator ==(const StatementSet &o) const { return sset == o.sset; }  // Compare if equal
+	bool        operator <(const StatementSet &o) const;  // Compare if less
 	void        print(std::ostream &os);                  // Print to os
 	void        printNums(std::ostream &os);              // Print statements as numbers
 	char       *prints();                                 // Print to string (for debug)
@@ -101,8 +101,8 @@ public:
 	Assign     *lookupLoc(Exp *loc);                   // Search for loc on LHS, return ptr to Assign if found
 
 	void        clear() { aset.clear(); }              // Clear the set
-	bool        operator==(const AssignSet &o) const { return aset == o.aset; }  // Compare if equal
-	bool        operator<(const AssignSet &o) const;   // Compare if less
+	bool        operator ==(const AssignSet &o) const { return aset == o.aset; }  // Compare if equal
+	bool        operator <(const AssignSet &o) const;  // Compare if less
 	void        print(std::ostream &os);               // Print to os
 	void        printNums(std::ostream &os);           // Print statements as numbers
 	char       *prints();                              // Print to string (for debug)
@@ -159,15 +159,15 @@ public:
 	reverse_iterator rbegin() { return svec.rbegin(); }
 	reverse_iterator rend()   { return svec.rend(); }
 	// Get/put at position idx (0 based)
-	Statement  *operator[](int idx) { return svec[idx]; }
+	Statement  *operator [](int idx) { return svec[idx]; }
 	void        putAt(int idx, Statement *s);
 	iterator    remove(iterator it);
 	char       *prints();                           // Print to string (for debugging)
 	void        dump();                             // Print to standard error for debugging
 	void        printNums(std::ostream &os);
 	void        clear() { svec.clear(); }
-	bool        operator==(const StatementVec &o) const { return svec == o.svec;}   // Compare if equal
-	bool        operator<(const StatementVec &o) const { return svec < o.svec;}     // Compare if less
+	bool        operator ==(const StatementVec &o) const { return svec == o.svec; }  // Compare if equal
+	bool        operator <(const StatementVec &o) const { return svec < o.svec; }    // Compare if less
 	void        append(Statement *s) { svec.push_back(s); }
 	void        erase(iterator it) { svec.erase(it); }
 };
@@ -184,7 +184,7 @@ public:
 	            LocationSet() { }                       // Default constructor
 	           ~LocationSet() { }                       // virtual destructor kills warning
 	            LocationSet(const LocationSet &o);      // Copy constructor
-	LocationSet &operator=(const LocationSet &o);       // Assignment
+	LocationSet &operator =(const LocationSet &o);      // Assignment
 	void        makeUnion(LocationSet &other);          // Set union
 	void        makeDiff (LocationSet &other);          // Set difference
 	void        clear() { lset.clear(); }               // Clear the set
@@ -195,7 +195,7 @@ public:
 	void        remove(iterator ll) { lset.erase(ll); } // Remove location, given iterator
 	void        removeIfDefines(StatementSet &given);   // Remove locs defined in given
 	unsigned    size() const { return lset.size(); }    // Number of elements
-	bool        operator==(const LocationSet &o) const; // Compare
+	bool        operator ==(const LocationSet &o) const;// Compare
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
 	void        print(std::ostream &os);                // Print to os
 	char       *prints();                               // Print to string for debugging
@@ -234,7 +234,7 @@ public:
 	void        unionWith(Range &r);
 	void        widenWith(Range &r);
 	void        print(std::ostream &os);
-	bool        operator==(Range &other);
+	bool        operator ==(Range &other);
 };
 
 class RangeMap {

@@ -40,7 +40,7 @@ private:
 public:
 	                    Parameter(Type *type, const char *name, Exp *exp = NULL, const char *boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
-	        bool        operator==(Parameter &other);
+	        bool        operator ==(Parameter &other);
 	        Parameter  *clone();
 
 	        Type       *getType() { return type; }
@@ -66,7 +66,7 @@ public:
 
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
 	virtual            ~Return() { }
-	        bool        operator==(Return &other);
+	        bool        operator ==(Return &other);
 	        Return     *clone();
 
 	                    Return() { }
@@ -106,7 +106,7 @@ public:
 	static  Signature  *instantiate(platform plat, callconv cc, const char *nam);
 	virtual            ~Signature() { }
 
-	virtual bool        operator==(Signature &other);
+	virtual bool        operator ==(Signature &other);
 
 	// clone this signature
 	virtual Signature  *clone();
@@ -114,8 +114,8 @@ public:
 	        bool        isUnknown() { return unknown; }
 	        void        setUnknown(bool b) { unknown = b; }
 	        //void        setFullSig(bool full) { bFullSig = full; }
-	        bool        isForced() {return forced; }
-	        void        setForced(bool f) {forced = f; }
+	        bool        isForced() { return forced; }
+	        void        setForced(bool f) { forced = f; }
 
 	// get the return location
 	virtual void        addReturn(Type *type, Exp *e = NULL);

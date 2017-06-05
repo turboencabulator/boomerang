@@ -46,13 +46,16 @@ public:
 	virtual     ~T()   { t1 = -1; }
 };
 
-void fred()
+void
+fred()
 {
 	T *t = new T();
 	delete t;
 }
 
-int main() {
+int
+main()
+{
 	T *t = new T();
 	t->pea();
 	t->ah();

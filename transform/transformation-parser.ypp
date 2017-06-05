@@ -139,13 +139,15 @@ type
 #include <cstdio>
 #include <cstring>
 
-int TransformationParser::yylex()
+int
+TransformationParser::yylex()
 {
 	int token = theScanner->yylex(yylval);
 	return token;
 }
 
-void TransformationParser::yyerror(const char *s)
+void
+TransformationParser::yyerror(const char *s)
 {
 	// TODO:  Print the filename.
 	fprintf(stderr, "%s on line %i\n", s, theScanner->theLine);

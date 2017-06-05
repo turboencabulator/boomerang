@@ -101,13 +101,13 @@ public:
 
 	// Comparison
 	// Type sensitive equality
-	virtual bool        operator==(const Exp &o) const = 0;
+	virtual bool        operator ==(const Exp &o) const = 0;
 	// Type sensitive less than
-	virtual bool        operator<(const Exp &o)  const = 0;
+	virtual bool        operator < (const Exp &o) const = 0;
 	// Type insensitive less than. Class TypedExp overrides
-	virtual bool        operator<<(const Exp &o) const { return (*this < o); }
+	virtual bool        operator <<(const Exp &o) const { return (*this < o); }
 	// Comparison ignoring subscripts
-	virtual bool        operator*=(Exp &o) = 0;
+	virtual bool        operator *=(Exp &o) = 0;
 
 	// Return the number of subexpressions. This is only needed in rare cases.
 	// Could use polymorphism for all those cases, but this is easier
@@ -348,7 +348,7 @@ protected:
 };
 
 // Not part of the Exp class, but logically belongs with it:
-std::ostream &operator<<(std::ostream &os, Exp *p);  // Print the Exp poited to by p
+std::ostream &operator <<(std::ostream &os, Exp *p);  // Print the Exp poited to by p
 
 /*==============================================================================
  * Const is a subclass of Exp, and holds either an integer, floating point, string, or address constant
@@ -384,9 +384,9 @@ public:
 	virtual Exp        *clone();
 
 	// Compare
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 	// Get the constant
 	        int         getInt()  { return u.i;  }
@@ -444,9 +444,9 @@ public:
 	virtual Exp        *clone();
 
 	// Compare
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 	virtual void        print(std::ostream &os, bool html = false);
 	virtual void        appendDot(std::ostream &os);
@@ -486,9 +486,9 @@ public:
 	virtual Exp        *clone();
 
 	// Compare
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 	// Destructor
 	virtual            ~Unary();
@@ -555,9 +555,9 @@ public:
 	virtual Exp        *clone();
 
 	// Compare
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 	// Destructor
 	virtual            ~Binary();
@@ -628,9 +628,9 @@ public:
 	virtual Exp        *clone();
 
 	// Compare
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 	// Destructor
 	virtual            ~Ternary();
@@ -695,10 +695,10 @@ public:
 	virtual Exp        *clone();
 
 	// Compare
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator<<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator <<(const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 
 	virtual void        print(std::ostream &os, bool html = false);
@@ -758,9 +758,9 @@ public:
 	                    //RefExp(Exp *e);
 	                    //RefExp(RefExp &o);
 	virtual Exp        *clone();
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 
 	virtual void        print(std::ostream &os, bool html = false);
 	virtual void        printx(int ind);
@@ -803,9 +803,9 @@ public:
 	virtual Type       *getType() { return val; }
 	virtual void        setType(Type *t) { val = t; }
 	virtual Exp        *clone();
-	virtual bool        operator==(const Exp &o) const;
-	virtual bool        operator<(const Exp &o) const;
-	virtual bool        operator*=(Exp &o);
+	virtual bool        operator ==(const Exp &o) const;
+	virtual bool        operator < (const Exp &o) const;
+	virtual bool        operator *=(Exp &o);
 	virtual void        print(std::ostream &os, bool html = false);
 	virtual void        printx(int ind);
 	virtual Exp        *genConstraints(Exp *restrictTo) { assert(0); return NULL; }  // Should not be constraining constraints

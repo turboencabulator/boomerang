@@ -135,7 +135,7 @@ public:
 	/*
 	 * Equality operator.
 	 */
-	const Cfg  &operator=(const Cfg &other); /* Copy constructor */
+	const Cfg  &operator =(const Cfg &other); /* Copy constructor */
 
 	class BBAlreadyExistsError : public std::exception {
 	public:

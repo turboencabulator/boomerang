@@ -61,8 +61,7 @@ SectionObjectMap s_sectionObjects;
  * SectionInfo due to the already mentioned array held by BinaryFile.
  */
 class PESectionInfo : public SectionInfo {
-	virtual bool isAddressBss(ADDRESS a) const
-	{
+	virtual bool isAddressBss(ADDRESS a) const {
 		if (a < uNativeAddr || a >= uNativeAddr + uSectionSize) {
 			return false; // not even within this section
 		}
@@ -108,7 +107,8 @@ Win32BinaryFile::~Win32BinaryFile()
 	delete [] base;
 }
 
-ADDRESS Win32BinaryFile::getEntryPoint()
+ADDRESS
+Win32BinaryFile::getEntryPoint()
 {
 	return (ADDRESS)(LMMH(m_pPEHeader->EntrypointRVA)
 	               + LMMH(m_pPEHeader->Imagebase));
@@ -122,7 +122,8 @@ ADDRESS Win32BinaryFile::getEntryPoint()
  * calls inbetween).  This pattern should work for "old style" and "new style"
  * PE executables, as well as console mode PE files.
  */
-ADDRESS Win32BinaryFile::getMainEntryPoint()
+ADDRESS
+Win32BinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = getAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
@@ -372,7 +373,8 @@ ADDRESS Win32BinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
-bool Win32BinaryFile::load(std::istream &ifs)
+bool
+Win32BinaryFile::load(std::istream &ifs)
 {
 	DWord peoffLE, peoff;
 	ifs.seekg(0x3c);
@@ -509,7 +511,8 @@ bool Win32BinaryFile::load(std::istream &ifs)
  * \note Slight chance of coming across a misaligned match; probability is
  * about 1/65536 times dozens in 2^32 ~= 10^-13.
  */
-void Win32BinaryFile::findJumps(ADDRESS curr)
+void
+Win32BinaryFile::findJumps(ADDRESS curr)
 {
 	int cnt = 0;  // Count of bytes with no match
 	const SectionInfo *sec = getSectionInfoByName(".text");
@@ -535,13 +538,15 @@ void Win32BinaryFile::findJumps(ADDRESS curr)
 }
 
 #if 0 // Cruft?
-bool Win32BinaryFile::PostLoad(void *handle)
+bool
+Win32BinaryFile::PostLoad(void *handle)
 {
 	return false;
 }
 #endif
 
-const char *Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
+const char *
+Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if (m_pPEHeader->Subsystem == 1  // native
 	 && LMMH(m_pPEHeader->EntrypointRVA) + LMMH(m_pPEHeader->Imagebase) == dwAddr)
@@ -564,7 +569,8 @@ const char *Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 	return it->second.c_str();
 }
 
-ADDRESS Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS
+Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.begin();
@@ -577,7 +583,8 @@ ADDRESS Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* =
 	return NO_ADDRESS;
 }
 
-void Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+void
+Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	dlprocptrs[uNative] = pName;
 }
@@ -585,7 +592,8 @@ void Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Read 2 bytes from native addr.
  */
-int Win32BinaryFile::win32Read2(const short *ps) const
+int
+Win32BinaryFile::win32Read2(const short *ps) const
 {
 	const unsigned char *p = (const unsigned char *)ps;
 	// Little endian
@@ -596,7 +604,8 @@ int Win32BinaryFile::win32Read2(const short *ps) const
 /**
  * \brief Read 4 bytes from native addr.
  */
-int Win32BinaryFile::win32Read4(const int *pi) const
+int
+Win32BinaryFile::win32Read4(const int *pi) const
 {
 	const short *p = (const short *)pi;
 	int n1 = win32Read2(p);
@@ -605,28 +614,32 @@ int Win32BinaryFile::win32Read4(const int *pi) const
 	return n;
 }
 
-int Win32BinaryFile::readNative1(ADDRESS nat) const
+int
+Win32BinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return -1;
 	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
-int Win32BinaryFile::readNative2(ADDRESS nat) const
+int
+Win32BinaryFile::readNative2(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return win32Read2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-int Win32BinaryFile::readNative4(ADDRESS nat) const
+int
+Win32BinaryFile::readNative4(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return win32Read4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-QWord Win32BinaryFile::readNative8(ADDRESS nat) const
+QWord
+Win32BinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -641,7 +654,8 @@ QWord Win32BinaryFile::readNative8(ADDRESS nat) const
 	return *(QWord *)raw;
 }
 
-float Win32BinaryFile::readNativeFloat4(ADDRESS nat) const
+float
+Win32BinaryFile::readNativeFloat4(ADDRESS nat) const
 {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -649,7 +663,8 @@ float Win32BinaryFile::readNativeFloat4(ADDRESS nat) const
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
+double
+Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -665,12 +680,14 @@ double Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
 	return *(double *)raw;
 }
 
-bool Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
+bool
+Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
 	return dlprocptrs.find(uNative) != dlprocptrs.end();
 }
 
-bool Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
+bool
+Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 {
 	return isMinGWsAllocStack(uNative)
 	    || isMinGWsFrameInit(uNative)
@@ -679,7 +696,8 @@ bool Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 	    || isMinGWsMalloc(uNative);
 }
 
-bool Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
+bool
+Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -699,7 +717,8 @@ bool Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
 	return true;
 }
 
-bool Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
+bool
+Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -726,7 +745,8 @@ bool Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
 	return true;
 }
 
-bool Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
+bool
+Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -751,7 +771,8 @@ bool Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
 	return true;
 }
 
-bool Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
+bool
+Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -779,7 +800,8 @@ bool Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
 	return true;
 }
 
-bool Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative)
+bool
+Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative)
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -803,40 +825,47 @@ bool Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative)
 	return true;
 }
 
-ADDRESS Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
+ADDRESS
+Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
 {
 	if ((readNative1(uNative) & 0xff) != 0xe9)
 		return NO_ADDRESS;
 	return readNative4(uNative + 1) + uNative + 5;
 }
 
-const char *Win32BinaryFile::getDynamicProcName(ADDRESS uNative)
+const char *
+Win32BinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return dlprocptrs[uNative].c_str();
 }
 
-bool Win32BinaryFile::isLibrary() const
+bool
+Win32BinaryFile::isLibrary() const
 {
 	return (m_pPEHeader->Flags & 0x2000) != 0;
 }
 
-ADDRESS Win32BinaryFile::getImageBase() const
+ADDRESS
+Win32BinaryFile::getImageBase() const
 {
 	return m_pPEHeader->Imagebase;
 }
 
-size_t Win32BinaryFile::getImageSize() const
+size_t
+Win32BinaryFile::getImageSize() const
 {
 	return m_pPEHeader->ImageSize;
 }
 
-std::list<const char *> Win32BinaryFile::getDependencyList()
+std::list<const char *>
+Win32BinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* FIXME */
 }
 
 #if 0 // Cruft?
-DWord Win32BinaryFile::getDelta()
+DWord
+Win32BinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
 	// This should work for the header only
@@ -848,7 +877,8 @@ DWord Win32BinaryFile::getDelta()
 /**
  * \brief For debugging.
  */
-void Win32BinaryFile::dumpSymbols()
+void
+Win32BinaryFile::dumpSymbols()
 {
 	std::map<ADDRESS, std::string>::iterator it;
 	std::cerr << std::hex;
@@ -864,11 +894,13 @@ void Win32BinaryFile::dumpSymbols()
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new Win32BinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (Win32BinaryFile *)bf;
 }

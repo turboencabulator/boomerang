@@ -26,7 +26,8 @@
 
 #include <cstring>
 
-void ConstraintMap::print(std::ostream &os)
+void
+ConstraintMap::print(std::ostream &os)
 {
 	iterator kk;
 	bool first = true;
@@ -39,7 +40,8 @@ void ConstraintMap::print(std::ostream &os)
 }
 
 extern char debug_buffer[];
-char *ConstraintMap::prints()
+char *
+ConstraintMap::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -48,7 +50,8 @@ char *ConstraintMap::prints()
 	return debug_buffer;
 }
 
-void ConstraintMap::makeUnion(ConstraintMap &o)
+void
+ConstraintMap::makeUnion(ConstraintMap &o)
 {
 	std::map<Exp *, Exp *, lessExpStar>::iterator it;
 	std::pair<std::map<Exp *, Exp *, lessExpStar>::iterator, bool> ret;
@@ -72,7 +75,8 @@ void ConstraintMap::makeUnion(ConstraintMap &o)
 	}
 }
 
-void ConstraintMap::insert(Exp *term)
+void
+ConstraintMap::insert(Exp *term)
 {
 	assert(term->isEquality());
 	Exp *lhs = ((Binary *)term)->getSubExp1();
@@ -81,7 +85,8 @@ void ConstraintMap::insert(Exp *term)
 }
 
 
-void EquateMap::print(std::ostream &os)
+void
+EquateMap::print(std::ostream &os)
 {
 	iterator ee;
 	for (ee = emap.begin(); ee != emap.end(); ee++) {
@@ -90,7 +95,8 @@ void EquateMap::print(std::ostream &os)
 	os << "\n";
 }
 
-char *EquateMap::prints()
+char *
+EquateMap::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -100,7 +106,8 @@ char *EquateMap::prints()
 }
 
 // Substitute the given constraints into this map
-void ConstraintMap::substitute(ConstraintMap &other)
+void
+ConstraintMap::substitute(ConstraintMap &other)
 {
 	std::map<Exp *, Exp *, lessExpStar>::iterator oo, cc;
 	for (oo = other.cmap.begin(); oo != other.cmap.end(); oo++) {
@@ -127,7 +134,8 @@ void ConstraintMap::substitute(ConstraintMap &other)
 	}
 }
 
-void ConstraintMap::substAlpha()
+void
+ConstraintMap::substAlpha()
 {
 	ConstraintMap alphaDefs;
 	std::map<Exp *, Exp *, lessExpStar>::iterator cc;
@@ -169,7 +177,8 @@ Constraints::~Constraints()
 }
 
 
-void Constraints::substIntoDisjuncts(ConstraintMap &in)
+void
+Constraints::substIntoDisjuncts(ConstraintMap &in)
 {
 	ConstraintMap::iterator kk;
 	for (kk = in.begin(); kk != in.end(); kk++) {
@@ -186,7 +195,8 @@ void Constraints::substIntoDisjuncts(ConstraintMap &in)
 	alphaSubst();
 }
 
-void Constraints::substIntoEquates(ConstraintMap &in)
+void
+Constraints::substIntoEquates(ConstraintMap &in)
 {
 	// Substitute the fixed types into the equates. This may generate more
 	// fixed types
@@ -242,7 +252,8 @@ void Constraints::substIntoEquates(ConstraintMap &in)
 // But NOT (a or b) or (c or d)
 // Could also be just a (a conjunction, or a single constraint)
 // Note: remainder is changed by this function
-Exp *nextDisjunct(Exp *&remainder)
+Exp *
+nextDisjunct(Exp *&remainder)
 {
 	if (remainder == NULL) return NULL;
 	if (remainder->isDisjunction()) {
@@ -261,7 +272,8 @@ Exp *nextDisjunct(Exp *&remainder)
 	return ret;
 }
 
-Exp *nextConjunct(Exp *&remainder)
+Exp *
+nextConjunct(Exp *&remainder)
 {
 	if (remainder == NULL) return NULL;
 	if (remainder->isConjunction()) {
@@ -280,7 +292,8 @@ Exp *nextConjunct(Exp *&remainder)
 	return ret;
 }
 
-bool Constraints::solve(std::list<ConstraintMap> &solns)
+bool
+Constraints::solve(std::list<ConstraintMap> &solns)
 {
 	LOG << conSet.size() << " constraints:";
 	std::ostringstream os;
@@ -415,7 +428,8 @@ static int level = 0;
 // Constraints up to but not including iterator it have been unified.
 // The current solution is soln
 // The set of all solutions is in solns
-bool Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::list<ConstraintMap> &solns)
+bool
+Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::list<ConstraintMap> &solns)
 {
 	LOG << "Begin doSolve at level " << ++level << "\n";
 	LOG << "Soln now: " << soln.prints() << "\n";
@@ -491,7 +505,8 @@ bool Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, st
 	return anyUnified;
 }
 
-bool Constraints::unify(Exp *x, Exp *y, ConstraintMap &extra)
+bool
+Constraints::unify(Exp *x, Exp *y, ConstraintMap &extra)
 {
 	LOG << "Unifying " << x << " with " << y << " result ";
 	assert(x->isTypeVal());
@@ -536,7 +551,9 @@ bool Constraints::unify(Exp *x, Exp *y, ConstraintMap &extra)
 	return *xtype == *ytype;
 }
 
-void Constraints::alphaSubst() {
+void
+Constraints::alphaSubst()
+{
 	std::list<Exp *>::iterator it;
 	for (it = disjunctions.begin(); it != disjunctions.end(); it++) {
 		// This should be a conjuction of terms
@@ -586,7 +603,8 @@ void Constraints::alphaSubst() {
 	}
 }
 
-void Constraints::print(std::ostream &os)
+void
+Constraints::print(std::ostream &os)
 {
 	os << "\n" << std::dec << (int)disjunctions.size() << " disjunctions: ";
 	std::list<Exp *>::iterator dd;
@@ -599,7 +617,8 @@ void Constraints::print(std::ostream &os)
 	equates.print(os);
 }
 
-char *Constraints::prints()
+char *
+Constraints::prints()
 {
 	std::ostringstream ost;
 	print(ost);

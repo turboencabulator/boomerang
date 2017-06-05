@@ -36,7 +36,8 @@ ExpTransformer::ExpTransformer()
 
 std::list<Exp *> cache;
 
-Exp *ExpTransformer::applyAllTo(Exp *p, bool &bMod)
+Exp *
+ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 {
 	for (std::list<Exp *>::iterator it = cache.begin(); it != cache.end(); it++)
 		if (*(*it)->getSubExp1() == *p)
@@ -78,7 +79,8 @@ Exp *ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 	return e;
 }
 
-void ExpTransformer::loadAll()
+void
+ExpTransformer::loadAll()
 {
 	std::string sPath = Boomerang::get()->getProgPath() + "transformations/exp.ts";
 	std::ifstream ifs(sPath.c_str());

@@ -75,7 +75,8 @@ Boomerang::Boomerang() :
 /**
  * Returns the Log object associated with the object.
  */
-Log &Boomerang::log()
+Log &
+Boomerang::log()
 {
 	return *logger;
 }
@@ -91,7 +92,8 @@ FileLogger::FileLogger() :
 /**
  * Returns the HLLCode for the given proc.
  */
-HLLCode *Boomerang::getHLLCode(UserProc *p)
+HLLCode *
+Boomerang::getHLLCode(UserProc *p)
 {
 	return new CHLLCode(p);
 }
@@ -99,7 +101,8 @@ HLLCode *Boomerang::getHLLCode(UserProc *p)
 /**
  * Prints a short usage statement.
  */
-void Boomerang::usage()
+void
+Boomerang::usage()
 {
 	static const char str[] =
 		"Usage: boomerang [ switches ] <program>\n"
@@ -112,7 +115,8 @@ void Boomerang::usage()
 /**
  * Prints help for the interactive mode.
  */
-void Boomerang::helpcmd()
+void
+Boomerang::helpcmd()
 {
 	static const char str[] =
 		//___.____1____.____2____.____3____.____4____.____5____.____6____.____7____.____8
@@ -143,7 +147,8 @@ void Boomerang::helpcmd()
 /**
  * Prints help about the command line switches.
  */
-void Boomerang::help()
+void
+Boomerang::help()
 {
 	static const char str[] =
 		"Symbols\n"
@@ -227,7 +232,8 @@ void Boomerang::help()
  * \retval true The directory is valid.
  * \retval false The directory is invalid.
  */
-static bool createDirectory(std::string dir)
+static bool
+createDirectory(std::string dir)
 {
 	std::string remainder(dir);
 	std::string path;
@@ -254,7 +260,8 @@ static bool createDirectory(std::string dir)
 /**
  * Prints a tree graph.
  */
-void Cluster::printTree(std::ostream &out)
+void
+Cluster::printTree(std::ostream &out)
 {
 	out << "\t\t" << name << "\n";
 	for (unsigned i = 0; i < children.size(); i++)
@@ -270,7 +277,8 @@ void Cluster::printTree(std::ostream &out)
  *
  * \return The number of words found (argc).
  */
-int Boomerang::splitLine(char *line, const char *argv[])
+int
+Boomerang::splitLine(char *line, const char *argv[])
 {
 	int argc = 0;
 	char *p = strtok(line, " \r\n");
@@ -293,7 +301,8 @@ int Boomerang::splitLine(char *line, const char *argv[])
  * \retval 1 Failure
  * \retval 2 The user exited with \a quit or \a exit
  */
-int Boomerang::parseCmd(int argc, const char *argv[])
+int
+Boomerang::parseCmd(int argc, const char *argv[])
 {
 	static Prog *prog = NULL;
 	if (!strcmp(argv[0], "decode")) {
@@ -638,7 +647,8 @@ int Boomerang::parseCmd(int argc, const char *argv[])
  * \retval 0 stdin was closed.
  * \retval 2 The user typed exit or quit.
  */
-int Boomerang::cmdLine()
+int
+Boomerang::cmdLine()
 {
 	char line[1024];
 	printf("boomerang: ");
@@ -659,7 +669,8 @@ int Boomerang::cmdLine()
  *
  * \return Zero on success, nonzero on failure.
  */
-int Boomerang::commandLine(int argc, const char *argv[])
+int
+Boomerang::commandLine(int argc, const char *argv[])
 {
 	printf("%s\n", PACKAGE_STRING);
 	if (argc < 2) usage();
@@ -941,7 +952,8 @@ int Boomerang::commandLine(int argc, const char *argv[])
  * \retval true Success.
  * \retval false The directory could not be created.
  */
-bool Boomerang::setOutputDirectory(const char *path)
+bool
+Boomerang::setOutputDirectory(const char *path)
 {
 	outputPath = path;
 	// Create the output directory, if needed
@@ -960,7 +972,8 @@ bool Boomerang::setOutputDirectory(const char *path)
  * \param modules A map from name to the Objective-C modules.
  * \param prog The Prog object to add the information to.
  */
-void Boomerang::objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog)
+void
+Boomerang::objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog)
 {
 	if (VERBOSE)
 		LOG << "Adding Objective-C information to Prog.\n";
@@ -1000,7 +1013,8 @@ void Boomerang::objcDecode(std::map<std::string, ObjcModule> &modules, Prog *pro
  *
  * \returns A Prog object.
  */
-Prog *Boomerang::loadAndDecode(const char *fname, const char *pname)
+Prog *
+Boomerang::loadAndDecode(const char *fname, const char *pname)
 {
 	std::cout << "loading...\n";
 	Prog *prog = new Prog();
@@ -1065,7 +1079,8 @@ Prog *Boomerang::loadAndDecode(const char *fname, const char *pname)
 	return prog;
 }
 
-static void stopProcess(int n)
+static void
+stopProcess(int n)
 {
 	std::cerr << "\n\n Stopping process, timeout.\n";
 	exit(1);
@@ -1080,7 +1095,8 @@ static void stopProcess(int n)
  *
  * \return Zero on success, nonzero on failure.
  */
-int Boomerang::decompile(const char *fname, const char *pname)
+int
+Boomerang::decompile(const char *fname, const char *pname)
 {
 	Prog *prog = NULL;
 	time_t start;
@@ -1166,7 +1182,8 @@ int Boomerang::decompile(const char *fname, const char *pname)
  * Saves the state of the Prog object to a XML file.
  * \param prog The Prog object to save.
  */
-void Boomerang::persistToXML(Prog *prog)
+void
+Boomerang::persistToXML(Prog *prog)
 {
 	LOG << "saving persistable state...\n";
 	XMLProgParser::persistToXML(prog);
@@ -1176,7 +1193,8 @@ void Boomerang::persistToXML(Prog *prog)
  * \param fname The name of the XML file.
  * \return The loaded Prog object.
  */
-Prog *Boomerang::loadFromXML(const char *fname)
+Prog *
+Boomerang::loadFromXML(const char *fname)
 {
 	LOG << "loading persisted state...\n";
 	XMLProgParser p;
@@ -1184,7 +1202,8 @@ Prog *Boomerang::loadFromXML(const char *fname)
 }
 #endif
 
-void Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
+void
+Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 {
 	if (stopAtDebugPoints) {
 		std::cout << "decompiling " << p->getName() << ": " << description << "\n";
@@ -1233,7 +1252,8 @@ void Boomerang::alert_decompile_debug_point(UserProc *p, const char *description
 		(*it)->alert_decompile_debug_point(p, description);
 }
 
-const char *Boomerang::getVersionStr()
+const char *
+Boomerang::getVersionStr()
 {
 	return VERSION;
 }

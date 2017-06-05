@@ -36,7 +36,8 @@ ST20FrontEnd::~ST20FrontEnd()
 {
 }
 
-std::vector<Exp *> &ST20FrontEnd::getDefaultParams()
+std::vector<Exp *> &
+ST20FrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
 	if (params.size() == 0) {
@@ -50,7 +51,8 @@ std::vector<Exp *> &ST20FrontEnd::getDefaultParams()
 	return params;
 }
 
-std::vector<Exp *> &ST20FrontEnd::getDefaultReturns()
+std::vector<Exp *> &
+ST20FrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
 	if (returns.size() == 0) {
@@ -61,7 +63,8 @@ std::vector<Exp *> &ST20FrontEnd::getDefaultReturns()
 	return returns;
 }
 
-ADDRESS ST20FrontEnd::getMainEntryPoint(bool &gotMain)
+ADDRESS
+ST20FrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
 	ADDRESS start = pBF->getMainEntryPoint();
@@ -75,7 +78,8 @@ ADDRESS ST20FrontEnd::getMainEntryPoint(bool &gotMain)
 	return start;
 }
 
-bool ST20FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
+bool
+ST20FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
 	// Call the base class to do most of the work
 	if (!FrontEnd::processProc(uAddr, pProc, os, frag, spec))
@@ -93,11 +97,13 @@ bool ST20FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
+extern "C" FrontEnd *
+construct(BinaryFile *bf, Prog *prog)
 {
 	return new ST20FrontEnd(bf, prog);
 }
-extern "C" void destruct(FrontEnd *fe)
+extern "C" void
+destruct(FrontEnd *fe)
 {
 	delete (ST20FrontEnd *)fe;
 }

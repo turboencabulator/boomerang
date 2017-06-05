@@ -25,7 +25,7 @@ protected:
 	bool checkCond(Exp *cond, Exp *bindings);
 	Exp *applyFuncs(Exp *rhs);
 public:
-	GenericExpTransformer(Exp *match, Exp *where, Exp *become) : match(match), where(where), become(become) {}
+	GenericExpTransformer(Exp *match, Exp *where, Exp *become) : match(match), where(where), become(become) { }
 	virtual Exp *applyTo(Exp *e, bool &bMod);
 };
 

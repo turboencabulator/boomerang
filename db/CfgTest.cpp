@@ -30,7 +30,8 @@
 /**
  * Test the dominator frontier code.
  */
-void CfgTest::testDominators()
+void
+CfgTest::testDominators()
 {
 #define FRONTIER_FOUR     0x08048347
 #define FRONTIER_FIVE     0x08048351
@@ -85,7 +86,8 @@ void CfgTest::testDominators()
 /**
  * Test a case where semi dominators are different to dominators.
  */
-void CfgTest::testSemiDominators()
+void
+CfgTest::testSemiDominators()
 {
 #define SEMI_L  0x80483b0
 #define SEMI_M  0x80483e2
@@ -141,7 +143,8 @@ void CfgTest::testSemiDominators()
 /**
  * Test the placing of phi functions.
  */
-void CfgTest::testPlacePhi()
+void
+CfgTest::testPlacePhi()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
@@ -179,7 +182,8 @@ void CfgTest::testPlacePhi()
 /**
  * Test a case where a phi function is not needed.
  */
-void CfgTest::testPlacePhi2()
+void
+CfgTest::testPlacePhi2()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
@@ -236,7 +240,8 @@ void CfgTest::testPlacePhi2()
 /**
  * Test the renaming of variables.
  */
-void CfgTest::testRenameVars()
+void
+CfgTest::testRenameVars()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);

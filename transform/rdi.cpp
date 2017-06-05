@@ -18,7 +18,8 @@
 
 #include "exp.h"
 
-Exp *RDIExpTransformer::applyTo(Exp *e, bool &bMod)
+Exp *
+RDIExpTransformer::applyTo(Exp *e, bool &bMod)
 {
 	if (e->getOper() == opAddrOf && e->getSubExp1()->getOper() == opMemOf) {
 		e = e->getSubExp1()->getSubExp1()->clone();

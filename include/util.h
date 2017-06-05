@@ -16,7 +16,7 @@
 // Upper case a C string: s is source, d is dest
 void upperStr(const char *s, char *d);
 // Add string and integer
-std::string operator+(const std::string &s, int i);
+std::string operator +(const std::string &s, int i);
 
 void escapeXMLChars(std::string &s);
 char *escapeStr(const char *str);

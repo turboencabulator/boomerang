@@ -24,7 +24,7 @@
 
 class ErrLogger : public Log {
 public:
-	virtual Log &operator<<(const char *str) {
+	virtual Log & operator <<(const char *str) {
 		std::cerr << str;
 		return *this;
 	}
@@ -34,7 +34,8 @@ public:
 /**
  * Test meeting IntegerTypes with various other types.
  */
-void DfaTest::testMeetInt()
+void
+DfaTest::testMeetInt()
 {
 	IntegerType i32(32, 1);
 	IntegerType j32(32, 0);
@@ -124,7 +125,8 @@ void DfaTest::testMeetInt()
 /**
  * Test meeting SizeTypes with various other types.
  */
-void DfaTest::testMeetSize()
+void
+DfaTest::testMeetSize()
 {
 	IntegerType i32(32, 1);
 	SizeType s32(32);
@@ -171,7 +173,8 @@ void DfaTest::testMeetSize()
 /**
  * Test meeting PointerTypes with various other types.
  */
-void DfaTest::testMeetPointer()
+void
+DfaTest::testMeetPointer()
 {
 	IntegerType i32(32, 1);
 	IntegerType u32(32, -1);
@@ -209,7 +212,8 @@ void DfaTest::testMeetPointer()
 /**
  * Test meeting UnionTypes with various other types.
  */
-void DfaTest::testMeetUnion()
+void
+DfaTest::testMeetUnion()
 {
 	UnionType u1;
 	IntegerType i32(32, 1);

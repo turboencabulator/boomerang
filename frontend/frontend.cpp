@@ -86,7 +86,8 @@ FrontEnd::~FrontEnd()
  *
  * \returns A new FrontEnd subclass instance.  Use close() to destroy it.
  */
-FrontEnd *FrontEnd::open(const char *name, Prog *prog)
+FrontEnd *
+FrontEnd::open(const char *name, Prog *prog)
 {
 	BinaryFile *bf = BinaryFile::open(name);
 	if (!bf) return NULL;
@@ -100,7 +101,8 @@ FrontEnd *FrontEnd::open(const char *name, Prog *prog)
  * \param bf    Passed to the constructor.
  * \param prog  Passed to the constructor.
  */
-FrontEnd *FrontEnd::open(BinaryFile *bf, Prog *prog)
+FrontEnd *
+FrontEnd::open(BinaryFile *bf, Prog *prog)
 {
 	MACHINE machine = bf->getMachine();
 
@@ -171,7 +173,8 @@ FrontEnd *FrontEnd::open(BinaryFile *bf, Prog *prog)
 /**
  * \brief Destroys an instance created by open() or new.
  */
-void FrontEnd::close(FrontEnd *fe)
+void
+FrontEnd::close(FrontEnd *fe)
 {
 #ifdef DYNAMIC
 	// Retrieve the stashed pointers
@@ -192,7 +195,8 @@ void FrontEnd::close(FrontEnd *fe)
 /**
  * \brief Returns a symbolic name for a register index.
  */
-const char *FrontEnd::getRegName(int idx)
+const char *
+FrontEnd::getRegName(int idx)
 {
 	std::map<std::string, int, std::less<std::string> >::iterator it;
 	for (it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); it++)
@@ -201,7 +205,8 @@ const char *FrontEnd::getRegName(int idx)
 	return NULL;
 }
 
-int FrontEnd::getRegSize(int idx)
+int
+FrontEnd::getRegSize(int idx)
 {
 	if (getDecoder().getRTLDict().DetRegMap.find(idx) == getDecoder().getRTLDict().DetRegMap.end())
 		return 32;
@@ -211,12 +216,14 @@ int FrontEnd::getRegSize(int idx)
 /**
  * \brief Is this a win32 frontend?
  */
-bool FrontEnd::isWin32()
+bool
+FrontEnd::isWin32()
 {
 	return pBF->getFormat() == LOADFMT_PE;
 }
 
-bool FrontEnd::noReturnCallDest(const char *name)
+bool
+FrontEnd::noReturnCallDest(const char *name)
 {
 	return (strcmp(name, "_exit") == 0
 	     || strcmp(name, "exit") == 0
@@ -228,7 +235,8 @@ bool FrontEnd::noReturnCallDest(const char *name)
 /**
  * \brief Read library signatures from a catalog.
  */
-void FrontEnd::readLibraryCatalog(const char *sPath)
+void
+FrontEnd::readLibraryCatalog(const char *sPath)
 {
 	std::ifstream inf(sPath);
 	if (!inf.good()) {
@@ -259,7 +267,8 @@ void FrontEnd::readLibraryCatalog(const char *sPath)
 /**
  * \brief Read library signatures from the default catalog.
  */
-void FrontEnd::readLibraryCatalog()
+void
+FrontEnd::readLibraryCatalog()
 {
 	librarySignatures.clear();
 	std::string sList = Boomerang::get()->getProgPath() + "signatures/common.hs";
@@ -276,7 +285,8 @@ void FrontEnd::readLibraryCatalog()
 /**
  * \brief Returns a list of all available entrypoints.
  */
-std::vector<ADDRESS> FrontEnd::getEntryPoints()
+std::vector<ADDRESS>
+FrontEnd::getEntryPoints()
 {
 	std::vector<ADDRESS> entrypoints;
 	bool gotMain = false;
@@ -348,7 +358,8 @@ std::vector<ADDRESS> FrontEnd::getEntryPoints()
  * \brief Decode all undecoded procedures and return a new program containing
  * them.
  */
-void FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
+void
+FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 {
 	if (pname)
 		prog->setName(pname);
@@ -406,7 +417,8 @@ void FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
  *
  * Somehow, a == NO_ADDRESS has come to mean decode anything not already decoded.
  */
-void FrontEnd::decode(Prog *prog, ADDRESS a)
+void
+FrontEnd::decode(Prog *prog, ADDRESS a)
 {
 	if (a != NO_ADDRESS) {
 		prog->setNewProc(a);
@@ -460,7 +472,8 @@ void FrontEnd::decode(Prog *prog, ADDRESS a)
  *
  * \param a  Should be the address of a UserProc.
  */
-void FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
+void
+FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
 {
 	UserProc *p = (UserProc *)prog->setNewProc(a);
 	assert(!p->isLib());
@@ -474,7 +487,8 @@ void FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
  * \brief Decode a fragment of a procedure, e.g. for each destination of a
  * switch statement.
  */
-void FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
+void
+FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 {
 	if (Boomerang::get()->traceDecoder)
 		LOG << "decoding fragment at 0x" << a << "\n";
@@ -482,7 +496,8 @@ void FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 	processProc(a, proc, os, true);
 }
 
-DecodeResult &FrontEnd::decodeInstruction(ADDRESS pc)
+DecodeResult &
+FrontEnd::decodeInstruction(ADDRESS pc)
 {
 	if (pBF->getSectionInfoByAddr(pc) == NULL) {
 		LOG << "ERROR: attempted to decode outside any known segment " << pc << "\n";
@@ -500,7 +515,8 @@ DecodeResult &FrontEnd::decodeInstruction(ADDRESS pc)
  * \param sPath  The file to read from.
  * \param cc     The calling convention assumed.
  */
-void FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
+void
+FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 {
 	std::ifstream ifs(sPath);
 	if (!ifs.good()) {
@@ -525,7 +541,8 @@ void FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 /**
  * \brief Return a signature that matches the architecture best.
  */
-Signature *FrontEnd::getDefaultSignature(const char *name)
+Signature *
+FrontEnd::getDefaultSignature(const char *name)
 {
 	Signature *signature = NULL;
 	// Get a default library signature
@@ -540,7 +557,8 @@ Signature *FrontEnd::getDefaultSignature(const char *name)
 /**
  * \brief Lookup a library signature by name.
  */
-Signature *FrontEnd::getLibSignature(const char *name)
+Signature *
+FrontEnd::getLibSignature(const char *name)
 {
 	Signature *signature;
 	// Look up the name in the librarySignatures map
@@ -577,7 +595,8 @@ Signature *FrontEnd::getLibSignature(const char *name)
  *
  * \returns true on a good decode (no illegal instructions).
  */
-bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
+bool
+FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
 	BasicBlock *pBB;  // Pointer to the current basic block
 
@@ -1153,7 +1172,8 @@ bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bo
  * \param addr  Host address to fetch from.
  * \returns     An integer with the instruction in it.
  */
-int FrontEnd::getInst(int addr)
+int
+FrontEnd::getInst(int addr)
 {
 	return (int)(*(unsigned char *)addr);
 }
@@ -1175,7 +1195,8 @@ int FrontEnd::getInst(int addr)
  *                  exists as a non explicit label
  *                  (i.e. the BB has to be split).
  */
-void TargetQueue::visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB)
+void
+TargetQueue::visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB)
 {
 	// Find out if we've already parsed the destination
 	bool bParsed = pCfg->label(uNewAddr, pNewBB);
@@ -1198,7 +1219,8 @@ void TargetQueue::visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB)
  *
  * \param uAddr  Native address to seed the queue with.
  */
-void TargetQueue::initial(ADDRESS uAddr)
+void
+TargetQueue::initial(ADDRESS uAddr)
 {
 	targets.push(uAddr);
 }
@@ -1210,7 +1232,8 @@ void TargetQueue::initial(ADDRESS uAddr)
  * \returns    The next address to process,
  *             or NO_ADDRESS if none (queue is empty).
  */
-ADDRESS TargetQueue::nextAddress(Cfg *cfg)
+ADDRESS
+TargetQueue::nextAddress(Cfg *cfg)
 {
 	while (!targets.empty()) {
 		ADDRESS address = targets.front();
@@ -1228,7 +1251,8 @@ ADDRESS TargetQueue::nextAddress(Cfg *cfg)
 /**
  * \brief Print (for debugging)
  */
-void TargetQueue::dump()
+void
+TargetQueue::dump()
 {
 	std::queue<ADDRESS> copy(targets);
 	while (!copy.empty()) {
@@ -1244,7 +1268,8 @@ void TargetQueue::dump()
  *
  * \returns Pointer to a Prog object (with pFE and pBF filled in).
  */
-Prog *FrontEnd::getProg()
+Prog *
+FrontEnd::getProg()
 {
 	return prog;
 }
@@ -1259,7 +1284,8 @@ Prog *FrontEnd::getProg()
  *                 statement)
  * \returns        Pointer to the newly created BB.
  */
-BasicBlock *FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl)
+BasicBlock *
+FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl)
 {
 	Cfg *pCfg = pProc->getCFG();
 	BasicBlock *pBB;
@@ -1316,7 +1342,8 @@ BasicBlock *FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rt
  * \note The call BB should be created with one out edge (the return or branch
  * BB).
  */
-void FrontEnd::appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl)
+void
+FrontEnd::appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl)
 {
 	ReturnStatement *ret = new ReturnStatement();
 	std::list<RTL *> *ret_rtls = new std::list<RTL *>();

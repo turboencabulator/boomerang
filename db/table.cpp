@@ -32,7 +32,8 @@ Table::Table(std::deque<std::string> &recs, TABLE_TYPE t /* = NAMETABLE */) :
 {
 }
 
-TABLE_TYPE Table::getType() const
+TABLE_TYPE
+Table::getType() const
 {
 	return type;
 }

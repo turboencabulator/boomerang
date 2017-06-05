@@ -45,7 +45,8 @@ NJMCDecoder::NJMCDecoder(Prog *prog) :
  *
  * \returns An instantiated list of Exps.
  */
-std::list<Statement *> *NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
+std::list<Statement *> *
+NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 {
 	// Get the signature of the instruction and extract its parts
 	std::pair<std::string, unsigned> sig = RTLDict.getSignature(name);
@@ -95,7 +96,8 @@ std::list<Statement *> *NJMCDecoder::instantiate(ADDRESS pc, const char *name, .
  *
  * \returns An instantiated list of Exps.
  */
-Exp *NJMCDecoder::instantiateNamedParam(const char *name, ...)
+Exp *
+NJMCDecoder::instantiateNamedParam(const char *name, ...)
 {
 	if (RTLDict.ParamSet.find(name) == RTLDict.ParamSet.end()) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
@@ -138,7 +140,8 @@ Exp *NJMCDecoder::instantiateNamedParam(const char *name, ...)
  *
  * \returns an instantiated list of Exps.
  */
-void NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
+void
+NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 {
 	if (RTLDict.ParamSet.find(name) == RTLDict.ParamSet.end()) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
@@ -166,7 +169,8 @@ void NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 /**
  * Resets the fields of a DecodeResult to their default values.
  */
-void DecodeResult::reset()
+void
+DecodeResult::reset()
 {
 	numBytes = 0;
 	type = NCT;
@@ -184,7 +188,8 @@ void DecodeResult::reset()
  * \param regNum  The register number, e.g. 0 for eax.
  * \returns       The Exp* for the register NUMBER (e.g. "int 36" for %f4).
  */
-Exp *NJMCDecoder::dis_Reg(int regNum)
+Exp *
+NJMCDecoder::dis_Reg(int regNum)
 {
 	Exp *expr = Location::regOf(regNum);
 	return expr;
@@ -198,7 +203,8 @@ Exp *NJMCDecoder::dis_Reg(int regNum)
  * \param num  A number.
  * \returns    The Exp* representation of the given number.
  */
-Exp *NJMCDecoder::dis_Num(unsigned num)
+Exp *
+NJMCDecoder::dis_Num(unsigned num)
 {
 	Exp *expr = new Const((int)num);
 	return expr;
@@ -211,7 +217,8 @@ Exp *NJMCDecoder::dis_Num(unsigned num)
  * \note This used to be the UNCOND_JUMP macro; it's extended to handle jumps
  * to other procedures.
  */
-void NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+void
+NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;
@@ -231,7 +238,8 @@ void NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, 
  * \param stmts   List of statements (?)
  * \param result  Ref to decoder result object.
  */
-void NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+void
+NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;
@@ -252,7 +260,8 @@ void NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc
  * \param stmts   List of statements (?)
  * \param result  Ref to decoder result object.
  */
-void NJMCDecoder::computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+void
+NJMCDecoder::computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;

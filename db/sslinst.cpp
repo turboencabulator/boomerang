@@ -58,7 +58,8 @@ TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
 /**
  * \brief Set the parameter list.
  */
-void TableEntry::setParam(std::list<std::string> &p)
+void
+TableEntry::setParam(std::list<std::string> &p)
 {
 	params = p;
 }
@@ -66,21 +67,23 @@ void TableEntry::setParam(std::list<std::string> &p)
 /**
  * \brief Set the RTL.
  */
-void TableEntry::setRTL(RTL &r)
+void
+TableEntry::setRTL(RTL &r)
 {
 	rtl = r;
 }
 
 /**
  * Sets the contents of this object with a deepcopy from another TableEntry
- * object.  Note that this is different from the semantics of operator= for an
+ * object.  Note that this is different from the semantics of operator = for an
  * RTL which only does a shallow copy!
  *
  * \param other  The object to copy.
  *
  * \returns A reference to this object.
  */
-const TableEntry &TableEntry::operator=(const TableEntry &other)
+const TableEntry &
+TableEntry::operator =(const TableEntry &other)
 {
 	for (std::list<std::string>::const_iterator it = other.params.begin(); it != other.params.end(); it++)
 		params.push_back(*it);
@@ -96,7 +99,8 @@ const TableEntry &TableEntry::operator=(const TableEntry &other)
  *
  * \returns 0 for success, non-zero for failure.
  */
-int TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
+int
+TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
 {
 	bool match = (p.size() == params.size());
 	std::list<std::string>::iterator a, b;
@@ -128,7 +132,8 @@ RTLInstDict::~RTLInstDict()
  *
  * \returns 0 for success, non-zero for failure.
  */
-int RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
+int
+RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
 {
 	char *opcode = new char[n.size() + 1];
 	strcpy(opcode, n.c_str());
@@ -157,7 +162,8 @@ int RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
  *
  * \returns The file was successfully read.
  */
-bool RTLInstDict::readSSLFile(const std::string &SSLFileName)
+bool
+RTLInstDict::readSSLFile(const std::string &SSLFileName)
 {
 	// Clear all state
 	reset();
@@ -196,7 +202,8 @@ bool RTLInstDict::readSSLFile(const std::string &SSLFileName)
  *
  * Add a new register definition to the dictionary.
  */
-void RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
+void
+RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
 {
 	RegMap[name] = id;
 	if (id == -1) {
@@ -221,7 +228,8 @@ void RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
  *
  * \param os  Stream used for printing.
  */
-void RTLInstDict::print(std::ostream &os /*= std::cout*/)
+void
+RTLInstDict::print(std::ostream &os /*= std::cout*/)
 {
 	for (std::map<std::string, TableEntry>::iterator p = idict.begin(); p != idict.end(); p++) {
 		// print the instruction name
@@ -265,7 +273,8 @@ void RTLInstDict::print(std::ostream &os /*= std::cout*/)
  * Runs after the ssl file is parsed to fix up variant params where the arms
  * are lambdas.
  */
-void RTLInstDict::fixupParams()
+void
+RTLInstDict::fixupParams()
 {
 	std::map<std::string, ParamEntry>::iterator param;
 	int mark = 1;
@@ -281,7 +290,8 @@ void RTLInstDict::fixupParams()
 	}
 }
 
-void RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark)
+void
+RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark)
 {
 	ParamEntry &param = DetParamMap[s];
 
@@ -339,7 +349,8 @@ void RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcPara
  *
  * \returns The signature (name + number of operands).
  */
-std::pair<std::string, unsigned> RTLInstDict::getSignature(const char *name)
+std::pair<std::string, unsigned>
+RTLInstDict::getSignature(const char *name)
 {
 	// Take the argument, convert it to upper case and remove any _'s and .'s
 	char *opcode = new char[strlen(name) + 1];
@@ -374,7 +385,8 @@ std::pair<std::string, unsigned> RTLInstDict::getSignature(const char *name)
  *
  * \returns true if a partial type is found.
  */
-bool RTLInstDict::partialType(Exp *exp, Type &ty)
+bool
+RTLInstDict::partialType(Exp *exp, Type &ty)
 {
 	if (exp->isSizeCast()) {
 		ty = IntegerType(((Const *)((Binary *)exp)->getSubExp1())->getInt());
@@ -400,7 +412,8 @@ bool RTLInstDict::partialType(Exp *exp, Type &ty)
  *
  * \returns The instantiated list of Exps.
  */
-std::list<Statement *> *RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *> &actuals)
+std::list<Statement *> *
+RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *> &actuals)
 {
 	// If -f is in force, use the fast (but not as precise) name instead
 	const std::string *lname = &name;
@@ -435,7 +448,8 @@ std::list<Statement *> *RTLInstDict::instantiateRTL(std::string &name, ADDRESS n
  *
  * \returns The instantiated list of Exps.
  */
-std::list<Statement *> *RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &params, std::vector<Exp *> &actuals)
+std::list<Statement *> *
+RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &params, std::vector<Exp *> &actuals)
 {
 	assert(params.size() == actuals.size());
 
@@ -501,7 +515,8 @@ public:
  * we just force the temporary, which is always safe to do.  (The parameter
  * optimise is set to false for the emulator to achieve this.)
  */
-std::list<Statement *> *RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
+std::list<Statement *> *
+RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 {
 	std::list<Statement *>::iterator rt;
 
@@ -647,7 +662,8 @@ std::list<Statement *> *RTLInstDict::transformPostVars(std::list<Statement *> *r
  *
  * Call from test code if (e.g.) want to call readSSLFile() twice.
  */
-void RTLInstDict::reset()
+void
+RTLInstDict::reset()
 {
 	RegMap.clear();
 	DetRegMap.clear();

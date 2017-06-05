@@ -35,7 +35,8 @@
  * \name Test decoding some Pentium instructions.
  * \{
  */
-void FrontPentTest::test1()
+void
+FrontPentTest::test1()
 {
 	std::ostringstream ost;
 
@@ -77,7 +78,8 @@ void FrontPentTest::test1()
 	delete prog;
 }
 
-void FrontPentTest::test2()
+void
+FrontPentTest::test2()
 {
 	DecodeResult inst;
 	std::string expected;
@@ -113,7 +115,8 @@ void FrontPentTest::test2()
 	delete prog;
 }
 
-void FrontPentTest::test3()
+void
+FrontPentTest::test3()
 {
 	DecodeResult inst;
 	std::string expected;
@@ -148,7 +151,8 @@ void FrontPentTest::test3()
 }
 /** \} */
 
-void FrontPentTest::testBranch()
+void
+FrontPentTest::testBranch()
 {
 	DecodeResult inst;
 	std::string expected;
@@ -192,7 +196,8 @@ void FrontPentTest::testBranch()
  * Test the algorithm for finding main, when there is a call to
  * __libc_start_main.  Also tests the loader hack.
  */
-void FrontPentTest::testFindMain()
+void
+FrontPentTest::testFindMain()
 {
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(FEDORA2_TRUE);

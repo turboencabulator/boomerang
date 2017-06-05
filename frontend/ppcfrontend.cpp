@@ -36,7 +36,8 @@ PPCFrontEnd::~PPCFrontEnd()
 {
 }
 
-std::vector<Exp *> &PPCFrontEnd::getDefaultParams()
+std::vector<Exp *> &
+PPCFrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
 	if (params.size() == 0) {
@@ -47,7 +48,8 @@ std::vector<Exp *> &PPCFrontEnd::getDefaultParams()
 	return params;
 }
 
-std::vector<Exp *> &PPCFrontEnd::getDefaultReturns()
+std::vector<Exp *> &
+PPCFrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
 	if (returns.size() == 0) {
@@ -58,7 +60,8 @@ std::vector<Exp *> &PPCFrontEnd::getDefaultReturns()
 	return returns;
 }
 
-ADDRESS PPCFrontEnd::getMainEntryPoint(bool &gotMain)
+ADDRESS
+PPCFrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
 	ADDRESS start = pBF->getMainEntryPoint();
@@ -72,7 +75,8 @@ ADDRESS PPCFrontEnd::getMainEntryPoint(bool &gotMain)
 	return start;
 }
 
-bool PPCFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
+bool
+PPCFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
 	// Call the base class to do most of the work
 	if (!FrontEnd::processProc(uAddr, pProc, os, frag, spec))
@@ -90,11 +94,13 @@ bool PPCFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os,
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
+extern "C" FrontEnd *
+construct(BinaryFile *bf, Prog *prog)
 {
 	return new PPCFrontEnd(bf, prog);
 }
-extern "C" void destruct(FrontEnd *fe)
+extern "C" void
+destruct(FrontEnd *fe)
 {
 	delete (PPCFrontEnd *)fe;
 }

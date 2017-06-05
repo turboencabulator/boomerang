@@ -76,7 +76,8 @@ IntelCoffFile::~IntelCoffFile()
 {
 }
 
-SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
+SectionInfo *
+IntelCoffFile::AddSection(SectionInfo *psi)
 {
 	int idxSect = m_iNumSections++;
 	SectionInfo *ps = new SectionInfo[m_iNumSections];
@@ -88,7 +89,8 @@ SectionInfo *IntelCoffFile::AddSection(SectionInfo *psi)
 	return ps + idxSect;
 }
 
-bool IntelCoffFile::load(std::istream &ifs)
+bool
+IntelCoffFile::load(std::istream &ifs)
 {
 	printf("IntelCoffFile::load() called\n");
 
@@ -281,7 +283,8 @@ bool IntelCoffFile::load(std::istream &ifs)
 }
 
 #if 0 // Cruft?
-bool IntelCoffFile::PostLoad(void *)
+bool
+IntelCoffFile::PostLoad(void *)
 {
 	// There seems to be no need to implement this since one file is loaded ever.
 	printf("IntelCoffFile::PostLoad called\n");
@@ -289,26 +292,30 @@ bool IntelCoffFile::PostLoad(void *)
 }
 #endif
 
-bool IntelCoffFile::isLibrary() const
+bool
+IntelCoffFile::isLibrary() const
 {
 	printf("IntelCoffFile::isLibrary called\n");
 	return false;
 }
 
-ADDRESS IntelCoffFile::getImageBase() const
+ADDRESS
+IntelCoffFile::getImageBase() const
 {
 	// TODO: Do they really always start at 0?
 	return (ADDRESS)0;
 }
 
-size_t IntelCoffFile::getImageSize() const
+size_t
+IntelCoffFile::getImageSize() const
 {
 	printf("IntelCoffFile::getImageSize called\n");
 	// TODO: Implement it. We will have to load complete before knowing the size
 	return 0;
 }
 
-ADDRESS IntelCoffFile::getMainEntryPoint()
+ADDRESS
+IntelCoffFile::getMainEntryPoint()
 {
 	printf("IntelCoffFile::getMainEntryPoint called\n");
 	// There is no such thing, but we need to deliver one since the first entry point might
@@ -317,7 +324,8 @@ ADDRESS IntelCoffFile::getMainEntryPoint()
 	return getEntryPoint();
 }
 
-ADDRESS IntelCoffFile::getEntryPoint()
+ADDRESS
+IntelCoffFile::getEntryPoint()
 {
 	printf("IntelCoffFile::getEntryPoint called\n");
 	// There is no such thing, but we have to deliver one
@@ -329,25 +337,29 @@ ADDRESS IntelCoffFile::getEntryPoint()
 	return m_EntryPoints.front();
 }
 
-std::list<const char *> IntelCoffFile::getDependencyList()
+std::list<const char *>
+IntelCoffFile::getDependencyList()
 {
 	std::list<const char *> dummy;
 	return dummy;  // TODO: How ever return this is ought to work out
 }
 
-const char *IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
+const char *
+IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
 	return m_Symbols.find(dwAddr);
 }
 
-bool IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative)
+bool
+IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	if (uNative >= (unsigned)0xc0000000)
 		return true;  // Say yes for fake library functions
 	return false;
 }
 
-bool IntelCoffFile::isRelocationAt(ADDRESS uNative)
+bool
+IntelCoffFile::isRelocationAt(ADDRESS uNative)
 {
 	for (std::list<ADDRESS>::iterator it = m_Relocations.begin(); it != m_Relocations.end(); it++) {
 		if (*it == uNative) return true;
@@ -355,12 +367,14 @@ bool IntelCoffFile::isRelocationAt(ADDRESS uNative)
 	return false;
 }
 
-std::map<ADDRESS, std::string> &IntelCoffFile::getSymbols()
+std::map<ADDRESS, std::string> &
+IntelCoffFile::getSymbols()
 {
 	return m_Symbols.getAll();
 }
 
-unsigned char *IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
+unsigned char *
+IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 {
 	for (int iSection = 0; iSection < m_iNumSections; iSection++) {
 		const SectionInfo *psi = getSectionInfo(iSection);
@@ -371,7 +385,8 @@ unsigned char *IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 	return 0;
 }
 
-int IntelCoffFile::readNative(ADDRESS a, unsigned short n) const
+int
+IntelCoffFile::readNative(ADDRESS a, unsigned short n) const
 {
 	unsigned char *buf = getAddrPtr(a, (ADDRESS)n);
 	if (!a) return 0;
@@ -385,7 +400,8 @@ int IntelCoffFile::readNative(ADDRESS a, unsigned short n) const
 	return tmp;
 }
 
-int IntelCoffFile::readNative4(ADDRESS a) const
+int
+IntelCoffFile::readNative4(ADDRESS a) const
 {
 	return readNative(a, 4);
 #if 0
@@ -405,12 +421,14 @@ int IntelCoffFile::readNative4(ADDRESS a) const
 #endif
 }
 
-int IntelCoffFile::readNative2(ADDRESS a) const
+int
+IntelCoffFile::readNative2(ADDRESS a) const
 {
 	return readNative(a, 2);
 }
 
-int IntelCoffFile::readNative1(ADDRESS a) const
+int
+IntelCoffFile::readNative1(ADDRESS a) const
 {
 	return readNative(a, 1);
 }
@@ -422,11 +440,13 @@ int IntelCoffFile::readNative1(ADDRESS a) const
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new IntelCoffFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (IntelCoffFile *)bf;
 }

@@ -37,7 +37,8 @@
 
 extern char debug_buffer[];  // For prints functions
 
-void Statement::setProc(UserProc *p)
+void
+Statement::setProc(UserProc *p)
 {
 	proc = p;
 	LocationSet exps;
@@ -54,12 +55,14 @@ void Statement::setProc(UserProc *p)
 	}
 }
 
-Exp *Statement::getExpAtLex(unsigned int begin, unsigned int end)
+Exp *
+Statement::getExpAtLex(unsigned int begin, unsigned int end)
 {
 	return NULL;
 }
 
-bool Statement::mayAlias(Exp *e1, Exp *e2, int size)
+bool
+Statement::mayAlias(Exp *e1, Exp *e2, int size)
 {
 	if (*e1 == *e2) return true;
 	// Pass the expressions both ways. Saves checking things like m[exp] vs m[exp+K] and m[exp+K] vs m[exp] explicitly
@@ -72,7 +75,8 @@ bool Statement::mayAlias(Exp *e1, Exp *e2, int size)
 }
 
 // returns true if e1 may alias e2
-bool Statement::calcMayAlias(Exp *e1, Exp *e2, int size)
+bool
+Statement::calcMayAlias(Exp *e1, Exp *e2, int size)
 {
 	// currently only considers memory aliasing..
 	if (!e1->isMemOf() || !e2->isMemOf()) {
@@ -115,7 +119,8 @@ bool Statement::calcMayAlias(Exp *e1, Exp *e2, int size)
 	return true;
 }
 
-RangeMap Statement::getInputRanges()
+RangeMap
+Statement::getInputRanges()
 {
 	if (!isFirstStatementInBB()) {
 		savedInputRanges = getPreviousStatementInBB()->getRanges();
@@ -162,7 +167,8 @@ RangeMap Statement::getInputRanges()
 	return input;
 }
 
-void Statement::updateRanges(RangeMap &output, std::list<Statement *> &execution_paths, bool notTaken)
+void
+Statement::updateRanges(RangeMap &output, std::list<Statement *> &execution_paths, bool notTaken)
 {
 	if (!output.isSubset(notTaken ? ((BranchStatement *)this)->getRanges2Ref() : ranges)) {
 		if (notTaken)
@@ -185,13 +191,15 @@ void Statement::updateRanges(RangeMap &output, std::list<Statement *> &execution
 	}
 }
 
-void Statement::rangeAnalysis(std::list<Statement *> &execution_paths)
+void
+Statement::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap output = getInputRanges();
 	updateRanges(output, execution_paths);
 }
 
-void Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
+void
+Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap output = getInputRanges();
 	Exp *a_lhs = lhs->clone();
@@ -291,7 +299,8 @@ void Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		LOG << this << "\n";
 }
 
-void BranchStatement::limitOutputWithCondition(RangeMap &output, Exp *e)
+void
+BranchStatement::limitOutputWithCondition(RangeMap &output, Exp *e)
 {
 	assert(e);
 	if (output.hasRange(e->getSubExp1())) {
@@ -361,7 +370,8 @@ void BranchStatement::limitOutputWithCondition(RangeMap &output, Exp *e)
 	}
 }
 
-void BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
+void
+BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap output = getInputRanges();
 
@@ -402,7 +412,8 @@ void BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 		LOG << this << "\n";
 }
 
-void JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
+void
+JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap input;
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
@@ -453,7 +464,8 @@ void JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 		LOG << this << "\n";
 }
 
-void CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
+void
+CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap output = getInputRanges();
 
@@ -574,7 +586,8 @@ void CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	updateRanges(output, execution_paths);
 }
 
-bool JunctionStatement::isLoopJunction()
+bool
+JunctionStatement::isLoopJunction()
 {
 	for (int i = 0; i < pbb->getNumInEdges(); i++)
 		if (pbb->isBackEdge(i))
@@ -582,7 +595,8 @@ bool JunctionStatement::isLoopJunction()
 	return false;
 }
 
-RangeMap &BranchStatement::getRangesForOutEdgeTo(BasicBlock *out)
+RangeMap &
+BranchStatement::getRangesForOutEdgeTo(BasicBlock *out)
 {
 	assert(this->getFixedDest() != NO_ADDRESS);
 	if (out->getLowAddr() == this->getFixedDest())
@@ -590,7 +604,8 @@ RangeMap &BranchStatement::getRangesForOutEdgeTo(BasicBlock *out)
 	return ranges2;
 }
 
-bool Statement::isFirstStatementInBB()
+bool
+Statement::isFirstStatementInBB()
 {
 	assert(pbb);
 	assert(pbb->getRTLs());
@@ -600,13 +615,15 @@ bool Statement::isFirstStatementInBB()
 	return this == pbb->getRTLs()->front()->getList().front();
 }
 
-bool Statement::isLastStatementInBB()
+bool
+Statement::isLastStatementInBB()
 {
 	assert(pbb);
 	return this == pbb->getLastStmt();
 }
 
-Statement *Statement::getPreviousStatementInBB()
+Statement *
+Statement::getPreviousStatementInBB()
 {
 	assert(pbb);
 	std::list<RTL *> *rtls = pbb->getRTLs();
@@ -623,7 +640,8 @@ Statement *Statement::getPreviousStatementInBB()
 	return NULL;
 }
 
-Statement *Statement::getNextStatementInBB()
+Statement *
+Statement::getNextStatementInBB()
 {
 	assert(pbb);
 	std::list<RTL *> *rtls = pbb->getRTLs();
@@ -642,14 +660,15 @@ Statement *Statement::getNextStatementInBB()
 }
 
 /*==============================================================================
- * FUNCTION:        operator<<
+ * FUNCTION:        operator <<
  * OVERVIEW:        Output operator for Statement*
  *                  Just makes it easier to use e.g. std::cerr << myStmtStar
  * PARAMETERS:      os: output stream to send to
  *                  p: ptr to Statement to print to the stream
  * RETURNS:         copy of os (for concatenation)
  *============================================================================*/
-std::ostream &operator<<(std::ostream &os, Statement *s)
+std::ostream &
+operator <<(std::ostream &os, Statement *s)
 {
 	if (s == NULL) {
 		os << "NULL ";
@@ -659,7 +678,8 @@ std::ostream &operator<<(std::ostream &os, Statement *s)
 	return os;
 }
 
-bool Statement::isFlagAssgn()
+bool
+Statement::isFlagAssgn()
 {
 	if (kind != STMT_ASSIGN)
 		return false;
@@ -667,7 +687,8 @@ bool Statement::isFlagAssgn()
 	return (op == opFlagCall);
 }
 
-char *Statement::prints()
+char *
+Statement::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -677,7 +698,8 @@ char *Statement::prints()
 }
 
 // This version prints much better in gdb
-void Statement::dump()
+void
+Statement::dump()
 {
 	print(std::cerr);
 	std::cerr << "\n";
@@ -691,7 +713,8 @@ void Statement::dump()
    (SETFFLAGS(...) & 0x45) ^ 0x40
    FIXME: this may not be needed any more...
 */
-bool hasSetFlags(Exp *e)
+bool
+hasSetFlags(Exp *e)
 {
 	if (e->isFlagCall()) return true;
 	OPER op = e->getOper();
@@ -718,7 +741,8 @@ bool hasSetFlags(Exp *e)
 // Note: does not consider whether e is able to be renamed (from a memory Primitive point of view), only if the
 // definition can be propagated TO this stmt
 // Note: static member function
-bool Statement::canPropagateToExp(Exp *e)
+bool
+Statement::canPropagateToExp(Exp *e)
 {
 	if (!e->isSubscript()) return false;
 	if (((RefExp *)e)->isImplicitDef())
@@ -747,7 +771,8 @@ bool Statement::canPropagateToExp(Exp *e)
 // destCounts is a set of maps from location to number of times it is used this proc
 // usedByDomPhi is a set of subscripted locations used in phi statements
 static int progress = 0;
-bool Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts /* = NULL */, LocationSet *usedByDomPhi /* = NULL */, bool force /* = false */)
+bool
+Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts /* = NULL */, LocationSet *usedByDomPhi /* = NULL */, bool force /* = false */)
 {
 	if (++progress > 1000) {
 		std::cerr << 'p' << std::flush;
@@ -867,7 +892,8 @@ bool Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *de
 }
 
 // Experimental: may want to propagate flags first, without tests about complexity or the propagation limiting heuristic
-bool Statement::propagateFlagsTo()
+bool
+Statement::propagateFlagsTo()
 {
 	bool change = false, convert;
 	int changes = 0;
@@ -890,13 +916,13 @@ bool Statement::propagateFlagsTo()
 	return change;
 }
 
-
 // Parameter convert is set true if an indirect call is converted to direct
 // Return true if a change made
 // Note: this procedure does not control what part of this statement is propagated to
 // Propagate to e from definition statement def.
 // Set convert to true if convert a call from indirect to direct.
-bool Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
+bool
+Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 {
 	// Respect the -p N switch
 	if (Boomerang::get()->numToPropagate >= 0) {
@@ -918,7 +944,8 @@ bool Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 
 // replace a use of def->getLeft() by def->getRight() in this statement
 // return true if change
-bool Statement::replaceRef(Exp *e, Assign *def, bool &convert)
+bool
+Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 {
 	Exp *rhs = def->getRight();
 	assert(rhs);
@@ -977,7 +1004,8 @@ bool Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 	return ret;
 }
 
-bool Statement::isNullStatement()
+bool
+Statement::isNullStatement()
 {
 	if (kind != STMT_ASSIGN) return false;
 	Exp *right = ((Assign *)this)->getRight();
@@ -989,12 +1017,14 @@ bool Statement::isNullStatement()
 		return *((Assign *)this)->getLeft() == *right;
 }
 
-bool Statement::isFpush()
+bool
+Statement::isFpush()
 {
 	if (kind != STMT_ASSIGN) return false;
 	return ((Assign *)this)->getRight()->getOper() == opFpush;
 }
-bool Statement::isFpop()
+bool
+Statement::isFpop()
 {
 	if (kind != STMT_ASSIGN) return false;
 	return ((Assign *)this)->getRight()->getOper() == opFpop;
@@ -1016,7 +1046,6 @@ bool Statement::isFpop()
  * OVERVIEW:        Constructor.
  * PARAMETERS:      listStmt: a list of Statements (not the same as an RTL)
  *                    to serve as the initial list of statements
- * RETURNS:         N/a
  *============================================================================*/
 GotoStatement::GotoStatement()
 {
@@ -1027,7 +1056,6 @@ GotoStatement::GotoStatement()
  * FUNCTION:        GotoStatement::GotoStatement
  * OVERVIEW:        Construct a jump to a fixed address
  * PARAMETERS:      uDest: native address of destination
- * RETURNS:         N/a
  *============================================================================*/
 GotoStatement::GotoStatement(ADDRESS uDest)
 {
@@ -1038,8 +1066,6 @@ GotoStatement::GotoStatement(ADDRESS uDest)
 /*==============================================================================
  * FUNCTION:        GotoStatement::~GotoStatement
  * OVERVIEW:        Destructor
- * PARAMETERS:      None
- * RETURNS:         N/a
  *============================================================================*/
 GotoStatement::~GotoStatement()
 {
@@ -1053,10 +1079,10 @@ GotoStatement::~GotoStatement()
  *                  simplication has already been done so that a fixed dest will
  *                  be of the Exp form:
  *                     opIntConst dest
- * PARAMETERS:      <none>
  * RETURNS:         Fixed dest or NO_ADDRESS if there isn't one
  *============================================================================*/
-ADDRESS GotoStatement::getFixedDest()
+ADDRESS
+GotoStatement::getFixedDest()
 {
 	if (pDest->getOper() != opIntConst) return NO_ADDRESS;
 	return ((Const *)pDest)->getAddr();
@@ -1066,9 +1092,9 @@ ADDRESS GotoStatement::getFixedDest()
  * FUNCTION:        GotoStatement::setDest
  * OVERVIEW:        Set the destination of this jump to be a given expression.
  * PARAMETERS:      addr - the new fixed address
- * RETURNS:         Nothing
  *============================================================================*/
-void GotoStatement::setDest(Exp *pd)
+void
+GotoStatement::setDest(Exp *pd)
 {
 	pDest = pd;
 }
@@ -1077,9 +1103,9 @@ void GotoStatement::setDest(Exp *pd)
  * FUNCTION:        GotoStatement::setDest
  * OVERVIEW:        Set the destination of this jump to be a given fixed address.
  * PARAMETERS:      addr - the new fixed address
- * RETURNS:         <nothing>
  *============================================================================*/
-void GotoStatement::setDest(ADDRESS addr)
+void
+GotoStatement::setDest(ADDRESS addr)
 {
 	// This fails in FrontSparcTest, do you really want it to Mike? -trent
 	//assert(addr >= prog.limitTextLow && addr < prog.limitTextHigh);
@@ -1093,10 +1119,10 @@ void GotoStatement::setDest(ADDRESS addr)
 /*==============================================================================
  * FUNCTION:        GotoStatement::getDest
  * OVERVIEW:        Returns the destination of this CTI.
- * PARAMETERS:      None
  * RETURNS:         Pointer to the SS representing the dest of this jump
  *============================================================================*/
-Exp *GotoStatement::getDest()
+Exp *
+GotoStatement::getDest()
 {
 	return pDest;
 }
@@ -1108,9 +1134,9 @@ Exp *GotoStatement::getDest()
  *                  (i.e. a constant offset).
  * PARAMETERS:      delta - the amount to add to the destination (can be
  *                  negative)
- * RETURNS:         <nothing>
  *============================================================================*/
-void GotoStatement::adjustFixedDest(int delta)
+void
+GotoStatement::adjustFixedDest(int delta)
 {
 	// Ensure that the destination is fixed.
 	if (pDest == 0 || pDest->getOper() != opIntConst)
@@ -1120,7 +1146,8 @@ void GotoStatement::adjustFixedDest(int delta)
 	((Const *)pDest)->setAddr(dest + delta);
 }
 
-bool GotoStatement::search(Exp *search, Exp *&result)
+bool
+GotoStatement::search(Exp *search, Exp *&result)
 {
 	result = NULL;
 	if (pDest)
@@ -1136,7 +1163,8 @@ bool GotoStatement::search(Exp *search, Exp *&result)
  *                  cc - ignored
  * RETURNS:         True if any change
  *============================================================================*/
-bool GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change = false;
 	if (pDest) {
@@ -1153,7 +1181,8 @@ bool GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
  *                           appended to it
  * RETURNS:         true if there were any matches
  *============================================================================*/
-bool GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	if (pDest) return pDest->searchAll(search, result);
 	return false;
@@ -1165,9 +1194,9 @@ bool GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * NOTE:            Usually called from RTL::print, in which case the first 9
  *                    chars of the print have already been output to os
  * PARAMETERS:      os: stream to write to
- * RETURNS:         Nothing
  *============================================================================*/
-void GotoStatement::print(std::ostream &os, bool html)
+void
+GotoStatement::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -1190,10 +1219,9 @@ void GotoStatement::print(std::ostream &os, bool html)
  * OVERVIEW:      Sets the fact that this call is computed.
  * NOTE:          This should really be removed, once CaseStatement and
  *                  HLNwayCall are implemented properly
- * PARAMETERS:    <none>
- * RETURNS:       <nothing>
  *============================================================================*/
-void GotoStatement::setIsComputed(bool b)
+void
+GotoStatement::setIsComputed(bool b)
 {
 	m_isComputed = b;
 }
@@ -1203,10 +1231,10 @@ void GotoStatement::setIsComputed(bool b)
  * OVERVIEW:      Returns whether or not this call is computed.
  * NOTE:          This should really be removed, once CaseStatement and HLNwayCall
  *                  are implemented properly
- * PARAMETERS:    <none>
  * RETURNS:       this call is computed
  *============================================================================*/
-bool GotoStatement::isComputed()
+bool
+GotoStatement::isComputed()
 {
 	return m_isComputed;
 }
@@ -1214,10 +1242,10 @@ bool GotoStatement::isComputed()
 /*==============================================================================
  * FUNCTION:        GotoStatement::clone
  * OVERVIEW:        Deep copy clone
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to a new Statement, a clone of this GotoStatement
  *============================================================================*/
-Statement *GotoStatement::clone()
+Statement *
+GotoStatement::clone()
 {
 	GotoStatement *ret = new GotoStatement();
 	ret->pDest = pDest->clone();
@@ -1230,17 +1258,20 @@ Statement *GotoStatement::clone()
 }
 
 // visit this Statement in the RTL
-bool GotoStatement::accept(StmtVisitor *visitor)
+bool
+GotoStatement::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-void GotoStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+GotoStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	// dont generate any code for jumps, they will be handled by the BB
 }
 
-void GotoStatement::simplify()
+void
+GotoStatement::simplify()
 {
 	if (isComputed()) {
 		pDest = pDest->simplifyArith();
@@ -1255,8 +1286,6 @@ void GotoStatement::simplify()
 /*==============================================================================
  * FUNCTION:        BranchStatement::BranchStatement
  * OVERVIEW:        Constructor.
- * PARAMETERS:      None
- * RETURNS:         N/a
  *============================================================================*/
 BranchStatement::BranchStatement()
 {
@@ -1266,8 +1295,6 @@ BranchStatement::BranchStatement()
 /*==============================================================================
  * FUNCTION:        BranchStatement::~BranchStatement
  * OVERVIEW:        Destructor
- * PARAMETERS:      None
- * RETURNS:         N/a
  *============================================================================*/
 BranchStatement::~BranchStatement()
 {
@@ -1285,7 +1312,8 @@ BranchStatement::~BranchStatement()
  *                    condition codes
  * RETURNS:         a semantic string
  *============================================================================*/
-void BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
+void
+BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 {
 	jtCond = cond;
 	bFloat = usesFloat;
@@ -1353,10 +1381,9 @@ void BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 /*==============================================================================
  * FUNCTION:        BranchStatement::makeSigned
  * OVERVIEW:        Change this from an unsigned to a signed branch
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
-void BranchStatement::makeSigned()
+void
+BranchStatement::makeSigned()
 {
 	// Make this into a signed branch
 	switch (jtCond) {
@@ -1373,10 +1400,10 @@ void BranchStatement::makeSigned()
 /*==============================================================================
  * FUNCTION:        BranchStatement::getCondExpr
  * OVERVIEW:        Return the SemStr expression containing the HL condition.
- * PARAMETERS:      <none>
  * RETURNS:         ptr to an expression
  *============================================================================*/
-Exp *BranchStatement::getCondExpr()
+Exp *
+BranchStatement::getCondExpr()
 {
 	return pCond;
 }
@@ -1385,15 +1412,16 @@ Exp *BranchStatement::getCondExpr()
  * FUNCTION:        BranchStatement::setCondExpr
  * OVERVIEW:        Set the SemStr expression containing the HL condition.
  * PARAMETERS:      Pointer to Exp to set
- * RETURNS:         <nothing>
  *============================================================================*/
-void BranchStatement::setCondExpr(Exp *e)
+void
+BranchStatement::setCondExpr(Exp *e)
 {
 	if (pCond) ;//delete pCond;
 	pCond = e;
 }
 
-BasicBlock *BranchStatement::getFallBB()
+BasicBlock *
+BranchStatement::getFallBB()
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1408,7 +1436,8 @@ BasicBlock *BranchStatement::getFallBB()
 }
 
 // not that if you set the taken BB or fixed dest first, you will not be able to set the fall BB
-void BranchStatement::setFallBB(BasicBlock *bb)
+void
+BranchStatement::setFallBB(BasicBlock *bb)
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1428,7 +1457,8 @@ void BranchStatement::setFallBB(BasicBlock *bb)
 	}
 }
 
-BasicBlock *BranchStatement::getTakenBB()
+BasicBlock *
+BranchStatement::getTakenBB()
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1442,7 +1472,8 @@ BasicBlock *BranchStatement::getTakenBB()
 	return pbb->getOutEdge(1);
 }
 
-void BranchStatement::setTakenBB(BasicBlock *bb)
+void
+BranchStatement::setTakenBB(BasicBlock *bb)
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1462,7 +1493,8 @@ void BranchStatement::setTakenBB(BasicBlock *bb)
 	}
 }
 
-bool BranchStatement::search(Exp *search, Exp *&result)
+bool
+BranchStatement::search(Exp *search, Exp *&result)
 {
 	if (pCond) return pCond->search(search, result);
 	result = NULL;
@@ -1477,7 +1509,8 @@ bool BranchStatement::search(Exp *search, Exp *&result)
  *                  cc - ignored
  * RETURNS:         True if any change
  *============================================================================*/
-bool BranchStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+BranchStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	GotoStatement::searchAndReplace(search, replace, cc);
 	bool change = false;
@@ -1494,7 +1527,8 @@ bool BranchStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
  *                           appended to it
  * RETURNS:         true if there were any matches
  *============================================================================*/
-bool BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	if (pCond) return pCond->searchAll(search, result);
 	return false;
@@ -1505,9 +1539,9 @@ bool BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * FUNCTION:        BranchStatement::print
  * OVERVIEW:        Write a text representation to the given stream
  * PARAMETERS:      os: stream
- * RETURNS:         Nothing
  *============================================================================*/
-void BranchStatement::print(std::ostream &os, bool html)
+void
+BranchStatement::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -1556,10 +1590,10 @@ void BranchStatement::print(std::ostream &os, bool html)
 /*==============================================================================
  * FUNCTION:        BranchStatement::clone
  * OVERVIEW:        Deep copy clone
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to a new Statement, a clone of this BranchStatement
  *============================================================================*/
-Statement *BranchStatement::clone()
+Statement *
+BranchStatement::clone()
 {
 	BranchStatement *ret = new BranchStatement();
 	ret->pDest = pDest->clone();
@@ -1576,17 +1610,20 @@ Statement *BranchStatement::clone()
 }
 
 // visit this stmt
-bool BranchStatement::accept(StmtVisitor *visitor)
+bool
+BranchStatement::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-void BranchStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+BranchStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	// dont generate any code for jconds, they will be handled by the bb
 }
 
-bool BranchStatement::usesExp(Exp *e)
+bool
+BranchStatement::usesExp(Exp *e)
 {
 	Exp *tmp;
 	return pCond && pCond->search(e, tmp);
@@ -1595,7 +1632,8 @@ bool BranchStatement::usesExp(Exp *e)
 
 // Common to BranchStatement and BoolAssign
 // Return true if this is now a floating point Branch
-bool condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
+bool
+condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 {
 	pCond = pCond->simplifyArith()->simplify();
 
@@ -1844,8 +1882,8 @@ bool condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 	return false;
 }
 
-
-void BranchStatement::simplify()
+void
+BranchStatement::simplify()
 {
 	if (pCond) {
 		if (condToRelational(pCond, jtCond))
@@ -1859,8 +1897,6 @@ void BranchStatement::simplify()
 /*==============================================================================
  * FUNCTION:        CaseStatement::CaseStatement
  * OVERVIEW:        Constructor.
- * PARAMETERS:      None
- * RETURNS:         N/a
  *============================================================================*/
 CaseStatement::CaseStatement()
 {
@@ -1871,8 +1907,6 @@ CaseStatement::CaseStatement()
  * FUNCTION:        CaseStatement::~CaseStatement
  * OVERVIEW:        Destructor
  * NOTE:            Don't delete the pSwitchVar; it's always a copy of something else (so don't delete twice)
- * PARAMETERS:      None
- * RETURNS:         N/a
  *============================================================================*/
 CaseStatement::~CaseStatement()
 {
@@ -1883,10 +1917,10 @@ CaseStatement::~CaseStatement()
 /*==============================================================================
  * FUNCTION:        CaseStatement::getSwitchInfo
  * OVERVIEW:        Return a pointer to a struct with switch information in it
- * PARAMETERS:      <none>
  * RETURNS:         a semantic string
  *============================================================================*/
-SWITCH_INFO *CaseStatement::getSwitchInfo()
+SWITCH_INFO *
+CaseStatement::getSwitchInfo()
 {
 	return pSwitchInfo;
 }
@@ -1895,9 +1929,9 @@ SWITCH_INFO *CaseStatement::getSwitchInfo()
  * FUNCTION:        CaseStatement::setSwitchInfo
  * OVERVIEW:        Set a pointer to a SWITCH_INFO struct
  * PARAMETERS:      Pointer to SWITCH_INFO struct
- * RETURNS:         <nothing>
  *============================================================================*/
-void CaseStatement::setSwitchInfo(SWITCH_INFO *psi)
+void
+CaseStatement::setSwitchInfo(SWITCH_INFO *psi)
 {
 	pSwitchInfo = psi;
 }
@@ -1910,7 +1944,8 @@ void CaseStatement::setSwitchInfo(SWITCH_INFO *psi)
  *                  cc - ignored
  * RETURNS:         True if any change
  *============================================================================*/
-bool CaseStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+CaseStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool ch = GotoStatement::searchAndReplace(search, replace, cc);
 	bool ch2 = false;
@@ -1927,7 +1962,8 @@ bool CaseStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
  * NOTES:           search can't easily be made const
  * RETURNS:         true if there were any matches
  *============================================================================*/
-bool CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	return GotoStatement::searchAll(search, result)
 	    || (pSwitchInfo && pSwitchInfo->pSwitchVar && pSwitchInfo->pSwitchVar->searchAll(search, result));
@@ -1938,9 +1974,9 @@ bool CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * OVERVIEW:        Write a text representation to the given stream
  * PARAMETERS:      os: stream
  *                  indent: number of columns to skip
- * RETURNS:         Nothing
  *============================================================================*/
-void CaseStatement::print(std::ostream &os, bool html)
+void
+CaseStatement::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -1962,10 +1998,10 @@ void CaseStatement::print(std::ostream &os, bool html)
 /*==============================================================================
  * FUNCTION:        CaseStatement::clone
  * OVERVIEW:        Deep copy clone
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to a new Statement that is a clone of this one
  *============================================================================*/
-Statement *CaseStatement::clone()
+Statement *
+CaseStatement::clone()
 {
 	CaseStatement *ret = new CaseStatement();
 	ret->pDest = pDest->clone();
@@ -1981,17 +2017,20 @@ Statement *CaseStatement::clone()
 }
 
 // visit this stmt
-bool CaseStatement::accept(StmtVisitor *visitor)
+bool
+CaseStatement::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-void CaseStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+CaseStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	// dont generate any code for switches, they will be handled by the bb
 }
 
-bool CaseStatement::usesExp(Exp *e)
+bool
+CaseStatement::usesExp(Exp *e)
 {
 	// Before a switch statement is recognised, pDest is non null
 	if (pDest)
@@ -2002,7 +2041,8 @@ bool CaseStatement::usesExp(Exp *e)
 	return false;
 }
 
-void CaseStatement::simplify()
+void
+CaseStatement::simplify()
 {
 	if (pDest)
 		pDest = pDest->simplify();
@@ -2017,8 +2057,6 @@ void CaseStatement::simplify()
 /*==============================================================================
  * FUNCTION:         CallStatement::CallStatement
  * OVERVIEW:         Constructor for a call
- * PARAMETERS:       None
- * RETURNS:          <nothing>
  *============================================================================*/
 CallStatement::CallStatement()
 {
@@ -2028,15 +2066,14 @@ CallStatement::CallStatement()
 /*==============================================================================
  * FUNCTION:      CallStatement::~CallStatement
  * OVERVIEW:      Destructor
- * PARAMETERS:    BB - the enclosing basic block of this call
- * RETURNS:       <nothing>
  *============================================================================*/
 CallStatement::~CallStatement()
 {
 }
 
 // Temporarily needed for ad-hoc type analysis
-int CallStatement::findDefine(Exp *e)
+int
+CallStatement::findDefine(Exp *e)
 {
 	StatementList::iterator rr;
 	int i = 0;
@@ -2048,7 +2085,8 @@ int CallStatement::findDefine(Exp *e)
 	return -1;
 }
 
-Exp *CallStatement::getProven(Exp *e)
+Exp *
+CallStatement::getProven(Exp *e)
 {
 	if (procDest)
 		return procDest->getProven(e);
@@ -2056,7 +2094,8 @@ Exp *CallStatement::getProven(Exp *e)
 }
 
 // Localise only components of e, i.e. xxx if e is m[xxx]
-void CallStatement::localiseComp(Exp *e)
+void
+CallStatement::localiseComp(Exp *e)
 {
 	if (e->isMemOf()) {
 		((Location *)e)->setSubExp1(localiseExp(((Location *)e)->getSubExp1()));
@@ -2065,7 +2104,8 @@ void CallStatement::localiseComp(Exp *e)
 // Substitute the various components of expression e with the appropriate reaching definitions.
 // Used in e.g. fixCallBypass (via the CallBypasser). Locations defined in this call are replaced with their proven
 // values, which are in terms of the initial values at the start of the call (reaching definitions at the call)
-Exp *CallStatement::localiseExp(Exp *e)
+Exp *
+CallStatement::localiseExp(Exp *e)
 {
 	if (!defCol.isInitialised()) return e;  // Don't attempt to subscript if the data flow not started yet
 	Localiser l(this);
@@ -2077,12 +2117,14 @@ Exp *CallStatement::localiseExp(Exp *e)
 // Find the definition for the given expression, using the embedded Collector object
 // Was called findArgument(), and used implicit arguments and signature parameters
 // Note: must only operator on unsubscripted locations, otherwise it is invalid
-Exp *CallStatement::findDefFor(Exp *e)
+Exp *
+CallStatement::findDefFor(Exp *e)
 {
 	return defCol.findDefFor(e);
 }
 
-Type *CallStatement::getArgumentType(int i)
+Type *
+CallStatement::getArgumentType(int i)
 {
 	assert(i < (int)arguments.size());
 	StatementList::iterator aa = arguments.begin();
@@ -2094,9 +2136,9 @@ Type *CallStatement::getArgumentType(int i)
  * FUNCTION:      CallStatement::setArguments
  * OVERVIEW:      Set the arguments of this call.
  * PARAMETERS:    arguments - the list of locations to set the arguments to (for testing)
- * RETURNS:       <nothing>
  *============================================================================*/
-void CallStatement::setArguments(StatementList &args)
+void
+CallStatement::setArguments(StatementList &args)
 {
 	arguments.clear();
 	arguments.append(args);
@@ -2111,10 +2153,9 @@ void CallStatement::setArguments(StatementList &args)
  * FUNCTION:      CallStatement::setSigArguments
  * OVERVIEW:      Set the arguments of this call based on signature info
  * NOTE:          Should only be called for calls to library functions
- * PARAMETERS:    None
- * RETURNS:       <nothing>
  *============================================================================*/
-void CallStatement::setSigArguments()
+void
+CallStatement::setSigArguments()
 {
 	if (signature) return;  // Already done
 	if (procDest == NULL)
@@ -2148,7 +2189,8 @@ void CallStatement::setSigArguments()
 	// FIXME: anything needed here?
 }
 
-bool CallStatement::search(Exp *search, Exp *&result)
+bool
+CallStatement::search(Exp *search, Exp *&result)
 {
 	bool found = GotoStatement::search(search, result);
 	if (found) return true;
@@ -2172,7 +2214,8 @@ bool CallStatement::search(Exp *search, Exp *&result)
  *                  cc - true to replace in collectors
  * RETURNS:         True if any change
  *============================================================================*/
-bool CallStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+CallStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change = GotoStatement::searchAndReplace(search, replace, cc);
 	StatementList::iterator ss;
@@ -2196,7 +2239,8 @@ bool CallStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
  *                  result - a list which will have any matching exprs appended to it
  * RETURNS:         true if there were any matches
  *============================================================================*/
-bool CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = GotoStatement::searchAll(search, result);
 	StatementList::iterator ss;
@@ -2215,9 +2259,9 @@ bool CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * FUNCTION:        CallStatement::print
  * OVERVIEW:        Write a text representation of this RTL to the given stream
  * PARAMETERS:      os: stream to write to
- * RETURNS:         Nothing
  *============================================================================*/
-void CallStatement::print(std::ostream &os, bool html)
+void
+CallStatement::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -2304,9 +2348,9 @@ void CallStatement::print(std::ostream &os, bool html)
  * OVERVIEW:         Sets a bit that says that this call is effectively followed by a return. This happens e.g. on
  *                      Sparc when there is a restore in the delay slot of the call
  * PARAMETERS:       b: true if this is to be set; false to clear the bit
- * RETURNS:          <nothing>
  *============================================================================*/
-void CallStatement::setReturnAfterCall(bool b)
+void
+CallStatement::setReturnAfterCall(bool b)
 {
 	returnAfterCall = b;
 }
@@ -2315,10 +2359,10 @@ void CallStatement::setReturnAfterCall(bool b)
  * FUNCTION:         CallStatement::isReturnAfterCall
  * OVERVIEW:         Tests a bit that says that this call is effectively followed by a return. This happens e.g. on
  *                      Sparc when there is a restore in the delay slot of the call
- * PARAMETERS:       none
  * RETURNS:          True if this call is effectively followed by a return
  *============================================================================*/
-bool CallStatement::isReturnAfterCall()
+bool
+CallStatement::isReturnAfterCall()
 {
 	return returnAfterCall;
 }
@@ -2326,10 +2370,10 @@ bool CallStatement::isReturnAfterCall()
 /*==============================================================================
  * FUNCTION:        CallStatement::clone
  * OVERVIEW:        Deep copy clone
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to a new Statement, a clone of this CallStatement
  *============================================================================*/
-Statement *CallStatement::clone()
+Statement *
+CallStatement::clone()
 {
 	CallStatement *ret = new CallStatement();
 	ret->pDest = pDest->clone();
@@ -2347,24 +2391,28 @@ Statement *CallStatement::clone()
 }
 
 // visit this stmt
-bool CallStatement::accept(StmtVisitor *visitor)
+bool
+CallStatement::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-Proc *CallStatement::getDestProc()
+Proc *
+CallStatement::getDestProc()
 {
 	return procDest;
 }
 
-void CallStatement::setDestProc(Proc *dest)
+void
+CallStatement::setDestProc(Proc *dest)
 {
 	assert(dest);
 	// assert(procDest == NULL);  // No: not convenient for unit testing
 	procDest = dest;
 }
 
-void CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	Proc *p = getDestProc();
 
@@ -2411,7 +2459,8 @@ void CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 		hll->AddCallStatement(indLevel, p, p->getName(), arguments, results);
 }
 
-void CallStatement::simplify()
+void
+CallStatement::simplify()
 {
 	GotoStatement::simplify();
 	StatementList::iterator ss;
@@ -2421,13 +2470,15 @@ void CallStatement::simplify()
 		(*ss)->simplify();
 }
 
-bool GotoStatement::usesExp(Exp *e)
+bool
+GotoStatement::usesExp(Exp *e)
 {
 	Exp *where;
 	return (pDest->search(e, where));
 }
 
-bool CallStatement::usesExp(Exp *e)
+bool
+CallStatement::usesExp(Exp *e)
 {
 	if (GotoStatement::usesExp(e)) return true;
 	StatementList::iterator ss;
@@ -2438,7 +2489,8 @@ bool CallStatement::usesExp(Exp *e)
 	return false;
 }
 
-void CallStatement::getDefinitions(LocationSet &defs)
+void
+CallStatement::getDefinitions(LocationSet &defs)
 {
 	StatementList::iterator dd;
 	for (dd = defines.begin(); dd != defines.end(); ++dd)
@@ -2452,7 +2504,8 @@ void CallStatement::getDefinitions(LocationSet &defs)
 // Attempt to convert this call, if indirect, to a direct call.
 // NOTE: at present, we igore the possibility that some other statement will modify the global. This is a serious
 // limitation!!
-bool CallStatement::convertToDirect()
+bool
+CallStatement::convertToDirect()
 {
 	if (!m_isComputed)
 		return false;
@@ -2559,7 +2612,8 @@ bool CallStatement::convertToDirect()
 	return convertIndirect;
 }
 
-Exp *CallStatement::getArgumentExp(int i)
+Exp *
+CallStatement::getArgumentExp(int i)
 {
 	assert(i < (int)arguments.size());
 	StatementList::iterator aa = arguments.begin();
@@ -2567,7 +2621,8 @@ Exp *CallStatement::getArgumentExp(int i)
 	return ((Assign *)*aa)->getRight();
 }
 
-void CallStatement::setArgumentExp(int i, Exp *e)
+void
+CallStatement::setArgumentExp(int i, Exp *e)
 {
 	assert(i < (int)arguments.size());
 	StatementList::iterator aa = arguments.begin();
@@ -2576,12 +2631,14 @@ void CallStatement::setArgumentExp(int i, Exp *e)
 	a = e->clone();
 }
 
-int CallStatement::getNumArguments()
+int
+CallStatement::getNumArguments()
 {
 	return arguments.size();
 }
 
-void CallStatement::setNumArguments(int n)
+void
+CallStatement::setNumArguments(int n)
 {
 	int oldSize = arguments.size();
 	if (oldSize > n) {
@@ -2604,7 +2661,8 @@ void CallStatement::setNumArguments(int n)
 	}
 }
 
-void CallStatement::removeArgument(int i)
+void
+CallStatement::removeArgument(int i)
 {
 	StatementList::iterator aa = arguments.begin();
 	advance(aa, i);
@@ -2612,7 +2670,8 @@ void CallStatement::removeArgument(int i)
 }
 
 // Processes each argument of a CallStatement, and the RHS of an Assign. Ad-hoc type analysis only.
-Exp *processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
+Exp *
+processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 {
 	if (t == NULL) return e;
 	NamedType *nt = NULL;
@@ -2681,13 +2740,15 @@ Exp *processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 	return e;
 }
 
-Type *Assignment::getTypeFor(Exp *e)
+Type *
+Assignment::getTypeFor(Exp *e)
 {
 	// assert(*lhs == *e);  // No: local vs base expression
 	return type;
 }
 
-void Assignment::setTypeFor(Exp *e, Type *ty)
+void
+Assignment::setTypeFor(Exp *e, Type *ty)
 {
 	// assert(*lhs == *e);
 	Type *oldType = type;
@@ -2697,7 +2758,8 @@ void Assignment::setTypeFor(Exp *e, Type *ty)
 }
 
 // Scan the returns for e. If found, return the type associated with that return
-Type *CallStatement::getTypeFor(Exp *e)
+Type *
+CallStatement::getTypeFor(Exp *e)
 {
 	// The defines "cache" what the destination proc is defining
 	Assignment *as = defines.findOnLeft(e);
@@ -2709,7 +2771,8 @@ Type *CallStatement::getTypeFor(Exp *e)
 	return new VoidType;
 }
 
-void CallStatement::setTypeFor(Exp *e, Type *ty)
+void
+CallStatement::setTypeFor(Exp *e, Type *ty)
 {
 	Assignment *as = defines.findOnLeft(e);
 	if (as != NULL)
@@ -2725,7 +2788,8 @@ void CallStatement::setTypeFor(Exp *e, Type *ty)
 // This function has two jobs. One is to truncate the list of arguments based on the format string.
 // The second is to add parameter types to the signature.
 // If -Td is used, type analysis will be rerun with these changes.
-bool CallStatement::ellipsisProcessing(Prog *prog)
+bool
+CallStatement::ellipsisProcessing(Prog *prog)
 {
 	// if (getDestProc() == NULL || !getDestProc()->getSignature()->hasEllipsis())
 	if (getDestProc() == NULL || !signature->hasEllipsis())
@@ -2875,7 +2939,8 @@ bool CallStatement::ellipsisProcessing(Prog *prog)
 }
 
 // Make an assign suitable for use as an argument from a callee context expression
-Assign *CallStatement::makeArgAssign(Type *ty, Exp *e)
+Assign *
+CallStatement::makeArgAssign(Type *ty, Exp *e)
 {
 	Exp *lhs = e->clone();
 	localiseComp(lhs);  // Localise the components of lhs (if needed)
@@ -2894,7 +2959,8 @@ Assign *CallStatement::makeArgAssign(Type *ty, Exp *e)
 }
 
 // Helper function for the above
-void CallStatement::addSigParam(Type *ty, bool isScanf)
+void
+CallStatement::addSigParam(Type *ty, bool isScanf)
 {
 	if (isScanf) ty = new PointerType(ty);
 	signature->addParameter(ty);
@@ -2914,8 +2980,6 @@ void CallStatement::addSigParam(Type *ty, bool isScanf)
 /*==============================================================================
  * FUNCTION:         ReturnStatement::ReturnStatement
  * OVERVIEW:         Constructor.
- * PARAMETERS:       None
- * RETURNS:          <nothing>
  *============================================================================*/
 ReturnStatement::ReturnStatement()
 {
@@ -2925,8 +2989,6 @@ ReturnStatement::ReturnStatement()
 /*==============================================================================
  * FUNCTION:         ReturnStatement::~ReturnStatement
  * OVERVIEW:         Destructor.
- * PARAMETERS:       <none>
- * RETURNS:          <nothing>
  *============================================================================*/
 ReturnStatement::~ReturnStatement()
 {
@@ -2935,10 +2997,10 @@ ReturnStatement::~ReturnStatement()
 /*==============================================================================
  * FUNCTION:        ReturnStatement::clone
  * OVERVIEW:        Deep copy clone
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to a new Statement, a clone of this ReturnStatement
  *============================================================================*/
-Statement *ReturnStatement::clone()
+Statement *
+ReturnStatement::clone()
 {
 	ReturnStatement *ret = new ReturnStatement();
 	iterator rr;
@@ -2956,17 +3018,20 @@ Statement *ReturnStatement::clone()
 }
 
 // visit this stmt
-bool ReturnStatement::accept(StmtVisitor *visitor)
+bool
+ReturnStatement::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-void ReturnStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+ReturnStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	hll->AddReturnStatement(indLevel, &getReturns());
 }
 
-void ReturnStatement::simplify()
+void
+ReturnStatement::simplify()
 {
 	iterator it;
 	for (it = modifieds.begin(); it != modifieds.end(); it++)
@@ -2976,7 +3041,8 @@ void ReturnStatement::simplify()
 }
 
 // Remove the return (if any) related to loc. Loc may or may not be subscripted
-void ReturnStatement::removeReturn(Exp *loc)
+void
+ReturnStatement::removeReturn(Exp *loc)
 {
 	if (loc->isSubscript())
 		loc = ((Location *)loc)->getSubExp1();
@@ -2989,12 +3055,14 @@ void ReturnStatement::removeReturn(Exp *loc)
 	}
 }
 
-void ReturnStatement::addReturn(Assignment *a)
+void
+ReturnStatement::addReturn(Assignment *a)
 {
 	returns.append(a);
 }
 
-bool ReturnStatement::search(Exp *search, Exp *&result)
+bool
+ReturnStatement::search(Exp *search, Exp *&result)
 {
 	result = NULL;
 	ReturnStatement::iterator rr;
@@ -3005,7 +3073,8 @@ bool ReturnStatement::search(Exp *search, Exp *&result)
 	return false;
 }
 
-bool ReturnStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+ReturnStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change = false;
 	ReturnStatement::iterator rr;
@@ -3019,7 +3088,8 @@ bool ReturnStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return change;
 }
 
-bool ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
 	ReturnStatement::iterator rr;
@@ -3030,14 +3100,16 @@ bool ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
 	return found;
 }
 
-bool CallStatement::isDefinition()
+bool
+CallStatement::isDefinition()
 {
 	LocationSet defs;
 	getDefinitions(defs);
 	return defs.size() != 0;
 }
 
-bool ReturnStatement::usesExp(Exp *e)
+bool
+ReturnStatement::usesExp(Exp *e)
 {
 	Exp *where;
 	ReturnStatement::iterator rr;
@@ -3058,7 +3130,6 @@ bool ReturnStatement::usesExp(Exp *e)
  * FUNCTION:         BoolAssign::BoolAssign
  * OVERVIEW:         Constructor.
  * PARAMETERS:       sz: size of the assignment
- * RETURNS:          <N/a>
  *============================================================================*/
 BoolAssign::BoolAssign(int sz) :
 	Assignment(NULL),
@@ -3070,8 +3141,6 @@ BoolAssign::BoolAssign(int sz) :
 /*==============================================================================
  * FUNCTION:        BoolAssign::~BoolAssign
  * OVERVIEW:        Destructor
- * PARAMETERS:      None
- * RETURNS:         N/a
  *============================================================================*/
 BoolAssign::~BoolAssign()
 {
@@ -3089,7 +3158,8 @@ BoolAssign::~BoolAssign()
  *                    condition codes
  * RETURNS:         a semantic string
  *============================================================================*/
-void BoolAssign::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
+void
+BoolAssign::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 {
 	jtCond = cond;
 	bFloat = usesFloat;
@@ -3100,10 +3170,9 @@ void BoolAssign::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
  * FUNCTION:        BoolAssign::makeSigned
  * OVERVIEW:        Change this from an unsigned to a signed branch
  * NOTE:            Not sure if this is ever going to be used
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
-void BoolAssign::makeSigned()
+void
+BoolAssign::makeSigned()
 {
 	// Make this into a signed branch
 	switch (jtCond) {
@@ -3120,10 +3189,10 @@ void BoolAssign::makeSigned()
 /*==============================================================================
  * FUNCTION:        BoolAssign::getCondExpr
  * OVERVIEW:        Return the Exp expression containing the HL condition.
- * PARAMETERS:      <none>
  * RETURNS:         a semantic string
  *============================================================================*/
-Exp *BoolAssign::getCondExpr()
+Exp *
+BoolAssign::getCondExpr()
 {
 	return pCond;
 }
@@ -3132,9 +3201,9 @@ Exp *BoolAssign::getCondExpr()
  * FUNCTION:        BoolAssign::setCondExpr
  * OVERVIEW:        Set the Exp expression containing the HL condition.
  * PARAMETERS:      Pointer to semantic string to set
- * RETURNS:         <nothing>
  *============================================================================*/
-void BoolAssign::setCondExpr(Exp *pss)
+void
+BoolAssign::setCondExpr(Exp *pss)
 {
 	if (pCond) ;//delete pCond;
 	pCond = pss;
@@ -3144,9 +3213,9 @@ void BoolAssign::setCondExpr(Exp *pss)
  * FUNCTION:        BoolAssign::print
  * OVERVIEW:        Write a text representation to the given stream
  * PARAMETERS:      os: stream
- * RETURNS:         <Nothing>
  *============================================================================*/
-void BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html)
+void
+BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html)
 {
 	os << "BOOL ";
 	lhs->print(os);
@@ -3185,10 +3254,10 @@ void BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html)
 /*==============================================================================
  * FUNCTION:        BoolAssign::clone
  * OVERVIEW:        Deep copy clone
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to a new Statement, a clone of this BoolAssign
  *============================================================================*/
-Statement *BoolAssign::clone()
+Statement *
+BoolAssign::clone()
 {
 	BoolAssign *ret = new BoolAssign(size);
 	ret->jtCond = jtCond;
@@ -3204,12 +3273,14 @@ Statement *BoolAssign::clone()
 }
 
 // visit this Statement
-bool BoolAssign::accept(StmtVisitor *visitor)
+bool
+BoolAssign::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-void BoolAssign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+BoolAssign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	assert(lhs);
 	assert(pCond);
@@ -3218,25 +3289,29 @@ void BoolAssign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	hll->AddAssignmentStatement(indLevel, &as);
 }
 
-void BoolAssign::simplify()
+void
+BoolAssign::simplify()
 {
 	if (pCond)
 		condToRelational(pCond, jtCond);
 }
 
-void BoolAssign::getDefinitions(LocationSet &defs)
+void
+BoolAssign::getDefinitions(LocationSet &defs)
 {
 	defs.insert(getLeft());
 }
 
-bool BoolAssign::usesExp(Exp *e)
+bool
+BoolAssign::usesExp(Exp *e)
 {
 	assert(lhs && pCond);
 	Exp *where = 0;
 	return (pCond->search(e, where) || (lhs->isMemOf() && ((Unary *)lhs)->getSubExp1()->search(e, where)));
 }
 
-bool BoolAssign::search(Exp *search, Exp *&result)
+bool
+BoolAssign::search(Exp *search, Exp *&result)
 {
 	assert(lhs);
 	if (lhs->search(search, result)) return true;
@@ -3244,7 +3319,8 @@ bool BoolAssign::search(Exp *search, Exp *&result)
 	return pCond->search(search, result);
 }
 
-bool BoolAssign::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+BoolAssign::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool ch = false;
 	assert(lhs);
@@ -3253,7 +3329,8 @@ bool BoolAssign::searchAll(Exp *search, std::list<Exp *> &result)
 	return pCond->searchAll(search, result) || ch;
 }
 
-bool BoolAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+BoolAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool chl, chr;
 	assert(pCond);
@@ -3264,7 +3341,8 @@ bool BoolAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 }
 
 // This is for setting up SETcc instructions; see include/decoder.h macro SETS
-void BoolAssign::setLeftFromList(std::list<Statement *> *stmts)
+void
+BoolAssign::setLeftFromList(std::list<Statement *> *stmts)
 {
 	assert(stmts->size() == 1);
 	Assign *first = (Assign *)stmts->front();
@@ -3348,7 +3426,8 @@ ImplicitAssign::~ImplicitAssign()
 {
 }
 
-Statement *Assign::clone()
+Statement *
+Assign::clone()
 {
 	Assign *a = new Assign(type == NULL ? NULL : type->clone(), lhs->clone(), rhs->clone(), guard == NULL ? NULL : guard->clone());
 	// Statement members
@@ -3357,7 +3436,8 @@ Statement *Assign::clone()
 	a->number = number;
 	return a;
 }
-Statement *PhiAssign::clone()
+Statement *
+PhiAssign::clone()
 {
 	PhiAssign *pa = new PhiAssign(type, lhs);
 	Definitions::iterator dd;
@@ -3369,27 +3449,32 @@ Statement *PhiAssign::clone()
 	}
 	return pa;
 }
-Statement *ImplicitAssign::clone()
+Statement *
+ImplicitAssign::clone()
 {
 	ImplicitAssign *ia = new ImplicitAssign(type, lhs);
 	return ia;
 }
 
 // visit this Statement
-bool Assign::accept(StmtVisitor *visitor)
+bool
+Assign::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
-bool PhiAssign::accept(StmtVisitor *visitor)
+bool
+PhiAssign::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
-bool ImplicitAssign::accept(StmtVisitor *visitor)
+bool
+ImplicitAssign::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-void Assign::simplify()
+void
+Assign::simplify()
 {
 	// simplify arithmetic of assignment
 	OPER leftop = lhs->getOper();
@@ -3467,24 +3552,28 @@ void Assign::simplify()
 #endif
 }
 
-void Assign::simplifyAddr()
+void
+Assign::simplifyAddr()
 {
 	lhs = lhs->simplifyAddr();
 	rhs = rhs->simplifyAddr();
 }
 
-void Assignment::simplifyAddr()
+void
+Assignment::simplifyAddr()
 {
 	lhs = lhs->simplifyAddr();
 }
 
-void Assign::fixSuccessor()
+void
+Assign::fixSuccessor()
 {
 	lhs = lhs->fixSuccessor();
 	rhs = rhs->fixSuccessor();
 }
 
-void Assignment::print(std::ostream &os, bool html)
+void
+Assignment::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -3500,7 +3589,8 @@ void Assignment::print(std::ostream &os, bool html)
 	}
 }
 
-void Assign::printCompact(std::ostream &os, bool html)
+void
+Assign::printCompact(std::ostream &os, bool html)
 {
 	os << "*" << type << "* ";
 	if (guard)
@@ -3510,7 +3600,8 @@ void Assign::printCompact(std::ostream &os, bool html)
 	if (rhs) rhs->print(os, html);
 }
 
-void PhiAssign::printCompact(std::ostream &os, bool html)
+void
+PhiAssign::printCompact(std::ostream &os, bool html)
 {
 	os << "*" << type << "* ";
 	if (lhs) lhs->print(os, html);
@@ -3566,7 +3657,8 @@ void PhiAssign::printCompact(std::ostream &os, bool html)
 	}
 }
 
-void ImplicitAssign::printCompact(std::ostream &os, bool html)
+void
+ImplicitAssign::printCompact(std::ostream &os, bool html)
 {
 	os << "*" << type << "* ";
 	if (lhs) lhs->print(os, html);
@@ -3574,7 +3666,8 @@ void ImplicitAssign::printCompact(std::ostream &os, bool html)
 }
 
 // All the Assignment-derived classes have the same definitions: the lhs
-void Assignment::getDefinitions(LocationSet &defs)
+void
+Assignment::getDefinitions(LocationSet &defs)
 {
 	if (lhs->getOper() == opAt)  // foo@[m:n] really only defines foo
 		defs.insert(((Ternary *)lhs)->getSubExp1());
@@ -3587,13 +3680,15 @@ void Assignment::getDefinitions(LocationSet &defs)
 	}
 }
 
-bool Assign::search(Exp *search, Exp *&result)
+bool
+Assign::search(Exp *search, Exp *&result)
 {
 	if (lhs->search(search, result))
 		return true;
 	return rhs->search(search, result);
 }
-bool PhiAssign::search(Exp *search, Exp *&result)
+bool
+PhiAssign::search(Exp *search, Exp *&result)
 {
 	if (lhs->search(search, result))
 		return true;
@@ -3606,12 +3701,14 @@ bool PhiAssign::search(Exp *search, Exp *&result)
 	}
 	return false;
 }
-bool ImplicitAssign::search(Exp *search, Exp *&result)
+bool
+ImplicitAssign::search(Exp *search, Exp *&result)
 {
 	return lhs->search(search, result);
 }
 
-bool Assign::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+Assign::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool res;
 	std::list<Exp *> leftResult;
@@ -3624,16 +3721,19 @@ bool Assign::searchAll(Exp *search, std::list<Exp *> &result)
 	return res;
 }
 // FIXME: is this the right semantics for searching a phi statement, disregarding the RHS?
-bool PhiAssign::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+PhiAssign::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	return lhs->searchAll(search, result);
 }
-bool ImplicitAssign::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+ImplicitAssign::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	return lhs->searchAll(search, result);
 }
 
-bool Assign::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+Assign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool chl, chr, chg = false;
 	lhs = lhs->searchReplaceAll(search, replace, chl);
@@ -3642,7 +3742,8 @@ bool Assign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 		guard = guard->searchReplaceAll(search, replace, chg);
 	return chl | chr | chg;
 }
-bool PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change;
 	lhs = lhs->searchReplaceAll(search, replace, change);
@@ -3656,19 +3757,22 @@ bool PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	}
 	return change;
 }
-bool ImplicitAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+ImplicitAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change;
 	lhs = lhs->searchReplaceAll(search, replace, change);
 	return change;
 }
 
-void Assign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+void
+Assign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	hll->AddAssignmentStatement(indLevel, this);
 }
 
-int Assign::getMemDepth()
+int
+Assign::getMemDepth()
 {
 	int d1 = lhs->getMemDepth();
 	int d2 = rhs->getMemDepth();
@@ -3677,20 +3781,23 @@ int Assign::getMemDepth()
 }
 
 // PhiExp and ImplicitExp:
-bool Assignment::usesExp(Exp *e)
+bool
+Assignment::usesExp(Exp *e)
 {
 	Exp *where = 0;
 	return (lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where);
 }
 
-bool Assign::usesExp(Exp *e)
+bool
+Assign::usesExp(Exp *e)
 {
 	Exp *where = 0;
 	return (rhs->search(e, where) || ((lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where)));
 }
 
 #if 0
-bool Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (strstr(pattern, ":=") == NULL)
 		return false;
@@ -3711,7 +3818,8 @@ bool Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 
 void addPhiReferences(StatementSet &stmts, Statement *def);
 
-void addSimpleCopyReferences(StatementSet &stmts, Statement *def)
+void
+addSimpleCopyReferences(StatementSet &stmts, Statement *def)
 {
 	if (!(*((Assign *)def)->getLeft() == *((Assign *)def)->getRight()->getSubExp1()))
 		return;
@@ -3725,7 +3833,8 @@ void addSimpleCopyReferences(StatementSet &stmts, Statement *def)
 	}
 }
 
-void addPhiReferences(StatementSet &stmts, Statement *def)
+void
+addPhiReferences(StatementSet &stmts, Statement *def)
 {
 	PhiAssign *p = (PhiAssign *)def;
 	for (PhiAssign::iterator it = p->begin(); it != p->end(); it++) {
@@ -3741,7 +3850,8 @@ void addPhiReferences(StatementSet &stmts, Statement *def)
 }
 #endif
 
-void Assignment::genConstraints(LocationSet &cons)
+void
+Assignment::genConstraints(LocationSet &cons)
 {
 	// Almost every assignment has at least a size from decoding
 	// MVE: do/will PhiAssign's have a valid type? Why not?
@@ -3752,14 +3862,16 @@ void Assignment::genConstraints(LocationSet &cons)
 }
 
 // generate constraints
-void Assign::genConstraints(LocationSet &cons)
+void
+Assign::genConstraints(LocationSet &cons)
 {
 	Assignment::genConstraints(cons);  // Gen constraint for the LHS
 	Exp *con = rhs->genConstraints(new Unary(opTypeOf, new RefExp(lhs->clone(), this)));
 	if (con) cons.insert(con);
 }
 
-void PhiAssign::genConstraints(LocationSet &cons)
+void
+PhiAssign::genConstraints(LocationSet &cons)
 {
 	// Generate a constraints st that all the phi's have to be the same type as
 	// result
@@ -3773,7 +3885,8 @@ void PhiAssign::genConstraints(LocationSet &cons)
 	}
 }
 
-void CallStatement::genConstraints(LocationSet &cons)
+void
+CallStatement::genConstraints(LocationSet &cons)
 {
 	Proc *dest = getDestProc();
 	if (dest == NULL) return;
@@ -3877,7 +3990,8 @@ void CallStatement::genConstraints(LocationSet &cons)
 	}
 }
 
-void BranchStatement::genConstraints(LocationSet &cons)
+void
+BranchStatement::genConstraints(LocationSet &cons)
 {
 	if (pCond == NULL && VERBOSE) {
 		LOG << "Warning: BranchStatment " << number << " has no condition expression!\n";
@@ -3923,21 +4037,24 @@ void BranchStatement::genConstraints(LocationSet &cons)
 	cons.insert(con);
 }
 
-int Statement::setConscripts(int n)
+int
+Statement::setConscripts(int n)
 {
 	StmtConscriptSetter scs(n, false);
 	accept(&scs);
 	return scs.getLast();
 }
 
-void Statement::clearConscripts()
+void
+Statement::clearConscripts()
 {
 	StmtConscriptSetter scs(0, true);
 	accept(&scs);
 }
 
 // Cast the constant num to be of type ty. Return true if a change made
-bool Statement::castConst(int num, Type *ty)
+bool
+Statement::castConst(int num, Type *ty)
 {
 	ExpConstCaster ecc(num, ty);
 	StmtModifier scc(&ecc);
@@ -3945,7 +4062,8 @@ bool Statement::castConst(int num, Type *ty)
 	return ecc.isChanged();
 }
 
-void Statement::stripSizes()
+void
+Statement::stripSizes()
 {
 	SizeStripper ss;
 	StmtModifier sm(&ss);
@@ -3954,7 +4072,8 @@ void Statement::stripSizes()
 
 // Visiting from class StmtExpVisitor
 // Visit all the various expressions in a statement
-bool Assign::accept(StmtExpVisitor *v)
+bool
+Assign::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -3967,7 +4086,8 @@ bool Assign::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool PhiAssign::accept(StmtExpVisitor *v)
+bool
+PhiAssign::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -3983,7 +4103,8 @@ bool PhiAssign::accept(StmtExpVisitor *v)
 	return true;
 }
 
-bool ImplicitAssign::accept(StmtExpVisitor *v)
+bool
+ImplicitAssign::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -3992,7 +4113,8 @@ bool ImplicitAssign::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool GotoStatement::accept(StmtExpVisitor *v)
+bool
+GotoStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -4002,7 +4124,8 @@ bool GotoStatement::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool BranchStatement::accept(StmtExpVisitor *v)
+bool
+BranchStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -4015,7 +4138,8 @@ bool BranchStatement::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool CaseStatement::accept(StmtExpVisitor *v)
+bool
+CaseStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -4027,7 +4151,8 @@ bool CaseStatement::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool CallStatement::accept(StmtExpVisitor *v)
+bool
+CallStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -4048,7 +4173,8 @@ bool CallStatement::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool ReturnStatement::accept(StmtExpVisitor *v)
+bool
+ReturnStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
 	ReturnStatement::iterator rr;
@@ -4073,7 +4199,8 @@ bool ReturnStatement::accept(StmtExpVisitor *v)
 	return true;
 }
 
-bool BoolAssign::accept(StmtExpVisitor *v)
+bool
+BoolAssign::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -4085,7 +4212,8 @@ bool BoolAssign::accept(StmtExpVisitor *v)
 
 // Visiting from class StmtModifier
 // Modify all the various expressions in a statement
-bool Assign::accept(StmtModifier *v)
+bool
+Assign::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4096,7 +4224,8 @@ bool Assign::accept(StmtModifier *v)
 		LOG << "Assignment changed: now " << this << "\n";
 	return true;
 }
-bool PhiAssign::accept(StmtModifier *v)
+bool
+PhiAssign::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4106,7 +4235,8 @@ bool PhiAssign::accept(StmtModifier *v)
 		LOG << "PhiAssign changed: now " << this << "\n";
 	return true;
 }
-bool ImplicitAssign::accept(StmtModifier *v)
+bool
+ImplicitAssign::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4116,7 +4246,8 @@ bool ImplicitAssign::accept(StmtModifier *v)
 		LOG << "ImplicitAssign changed: now " << this << "\n";
 	return true;
 }
-bool BoolAssign::accept(StmtModifier *v)
+bool
+BoolAssign::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4128,7 +4259,8 @@ bool BoolAssign::accept(StmtModifier *v)
 	return true;
 }
 
-bool GotoStatement::accept(StmtModifier *v)
+bool
+GotoStatement::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4137,7 +4269,8 @@ bool GotoStatement::accept(StmtModifier *v)
 	return true;
 }
 
-bool BranchStatement::accept(StmtModifier *v)
+bool
+BranchStatement::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4148,7 +4281,8 @@ bool BranchStatement::accept(StmtModifier *v)
 	return true;
 }
 
-bool CaseStatement::accept(StmtModifier *v)
+bool
+CaseStatement::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4159,7 +4293,8 @@ bool CaseStatement::accept(StmtModifier *v)
 	return true;
 }
 
-bool CallStatement::accept(StmtModifier *v)
+bool
+CallStatement::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4185,7 +4320,8 @@ bool CallStatement::accept(StmtModifier *v)
 	return true;
 }
 
-bool ReturnStatement::accept(StmtModifier *v)
+bool
+ReturnStatement::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4208,7 +4344,8 @@ bool ReturnStatement::accept(StmtModifier *v)
 
 // Visiting from class StmtPartModifier
 // Modify all the various expressions in a statement, except for the top level of the LHS of assignments
-bool Assign::accept(StmtPartModifier *v)
+bool
+Assign::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4221,7 +4358,8 @@ bool Assign::accept(StmtPartModifier *v)
 		LOG << "Assignment changed: now " << this << "\n";
 	return true;
 }
-bool PhiAssign::accept(StmtPartModifier *v)
+bool
+PhiAssign::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4234,7 +4372,8 @@ bool PhiAssign::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool ImplicitAssign::accept(StmtPartModifier *v)
+bool
+ImplicitAssign::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4247,7 +4386,8 @@ bool ImplicitAssign::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool GotoStatement::accept(StmtPartModifier *v)
+bool
+GotoStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4256,7 +4396,8 @@ bool GotoStatement::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool BranchStatement::accept(StmtPartModifier *v)
+bool
+BranchStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4267,7 +4408,8 @@ bool BranchStatement::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool CaseStatement::accept(StmtPartModifier *v)
+bool
+CaseStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4278,7 +4420,8 @@ bool CaseStatement::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool CallStatement::accept(StmtPartModifier *v)
+bool
+CallStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4306,7 +4449,8 @@ bool CallStatement::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool ReturnStatement::accept(StmtPartModifier *v)
+bool
+ReturnStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4320,7 +4464,8 @@ bool ReturnStatement::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool BoolAssign::accept(StmtPartModifier *v)
+bool
+BoolAssign::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -4332,7 +4477,8 @@ bool BoolAssign::accept(StmtPartModifier *v)
 }
 
 // Fix references to the returns of call statements
-void Statement::bypass()
+void
+Statement::bypass()
 {
 	CallBypasser cb(this);
 	StmtPartModifier sm(&cb);  // Use the Part modifier so we don't change the top level of LHS of assigns etc
@@ -4344,14 +4490,16 @@ void Statement::bypass()
 // Find the locations used by expressions in this Statement.
 // Use the StmtExpVisitor and UsedLocsFinder visitor classes
 // cc = count collectors
-void Statement::addUsedLocs(LocationSet &used, bool cc /* = false */, bool memOnly /*= false */)
+void
+Statement::addUsedLocs(LocationSet &used, bool cc /* = false */, bool memOnly /*= false */)
 {
 	UsedLocsFinder ulf(used, memOnly);
 	UsedLocsVisitor ulv(&ulf, cc);
 	accept(&ulv);
 }
 
-bool Statement::addUsedLocals(LocationSet &used)
+bool
+Statement::addUsedLocals(LocationSet &used)
 {
 	UsedLocalFinder ulf(used, proc);
 	UsedLocsVisitor ulv(&ulf, false);
@@ -4360,7 +4508,8 @@ bool Statement::addUsedLocals(LocationSet &used)
 }
 
 // For all expressions in this Statement, replace any e with e{def}
-void Statement::subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */)
+void
+Statement::subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */)
 {
 	ExpSubscripter es(e, def /*, cfg*/);
 	StmtSubscripter ss(&es);
@@ -4368,7 +4517,8 @@ void Statement::subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */)
 }
 
 // Find all constants in this Statement
-void Statement::findConstants(std::list<Const *> &lc)
+void
+Statement::findConstants(std::list<Const *> &lc)
 {
 	ConstFinder cf(lc);
 	StmtConstFinder scf(&cf);
@@ -4378,7 +4528,8 @@ void Statement::findConstants(std::list<Const *> &lc)
 // Convert this PhiAssignment to an ordinary Assignment.  Hopefully, this is the only place that Statements change from
 // one class to another.  All throughout the code, we assume that the addresses of Statement objects do not change,
 // so we need this slight hack to overwrite one object with another
-void PhiAssign::convertToAssign(Exp *rhs)
+void
+PhiAssign::convertToAssign(Exp *rhs)
 {
 	// I believe we always want to propagate to these ex-phi's; check!:
 	rhs = rhs->propagateAll();
@@ -4402,7 +4553,8 @@ void PhiAssign::convertToAssign(Exp *rhs)
 #endif
 }
 
-void PhiAssign::simplify()
+void
+PhiAssign::simplify()
 {
 	lhs = lhs->simplify();
 
@@ -4445,7 +4597,8 @@ void PhiAssign::simplify()
 	}
 }
 
-void PhiAssign::putAt(int i, Statement *def, Exp *e)
+void
+PhiAssign::putAt(int i, Statement *def, Exp *e)
 {
 	assert(e); // should be something surely
 	if (i >= (int)defVec.size())
@@ -4454,20 +4607,23 @@ void PhiAssign::putAt(int i, Statement *def, Exp *e)
 	defVec[i].e = e;
 }
 
-void CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
+void
+CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
 {
 	std::cerr << "! Attempt to setLeftFor this call statement! forExp is " << forExp << ", newExp is " << newExp << "\n";
 	assert(0);
 }
 
-bool Assignment::definesLoc(Exp *loc)
+bool
+Assignment::definesLoc(Exp *loc)
 {
 	if (lhs->getOper() == opAt)  // For foo@[x:y], match of foo==loc OR whole thing == loc
 		if (*((Ternary *)lhs)->getSubExp1() == *loc) return true;
 	return *lhs == *loc;
 }
 
-bool CallStatement::definesLoc(Exp *loc)
+bool
+CallStatement::definesLoc(Exp *loc)
 {
 	StatementList::iterator dd;
 	for (dd = defines.begin(); dd != defines.end(); ++dd) {
@@ -4482,7 +4638,8 @@ bool CallStatement::definesLoc(Exp *loc)
 // However, nothing comes after the return statement, so it doesn't hurt to pretend it does, and this is a place to
 // store the return type(s) for example.
 // FIXME: seems it would be cleaner to say that Return Statements don't define anything.
-bool ReturnStatement::definesLoc(Exp *loc)
+bool
+ReturnStatement::definesLoc(Exp *loc)
 {
 	iterator it;
 	for (it = modifieds.begin(); it != modifieds.end(); it++) {
@@ -4493,14 +4650,16 @@ bool ReturnStatement::definesLoc(Exp *loc)
 }
 
 // FIXME: see above
-void ReturnStatement::getDefinitions(LocationSet &ls)
+void
+ReturnStatement::getDefinitions(LocationSet &ls)
 {
 	iterator rr;
 	for (rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		(*rr)->getDefinitions(ls);
 }
 
-Type *ReturnStatement::getTypeFor(Exp *e)
+Type *
+ReturnStatement::getTypeFor(Exp *e)
 {
 	ReturnStatement::iterator rr;
 	for (rr = modifieds.begin(); rr != modifieds.end(); rr++) {
@@ -4510,7 +4669,8 @@ Type *ReturnStatement::getTypeFor(Exp *e)
 	return NULL;
 }
 
-void ReturnStatement::setTypeFor(Exp *e, Type *ty)
+void
+ReturnStatement::setTypeFor(Exp *e, Type *ty)
 {
 	ReturnStatement::iterator rr;
 	for (rr = modifieds.begin(); rr != modifieds.end(); rr++) {
@@ -4528,7 +4688,8 @@ void ReturnStatement::setTypeFor(Exp *e, Type *ty)
 }
 
 #define RETSTMT_COLS 120
-void ReturnStatement::print(std::ostream &os, bool html)
+void
+ReturnStatement::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -4597,7 +4758,8 @@ void ReturnStatement::print(std::ostream &os, bool html)
 }
 
 // A helper class for comparing Assignment*'s sensibly
-bool lessAssignment::operator()(const Assignment *x, const Assignment *y) const
+bool
+lessAssignment::operator ()(const Assignment *x, const Assignment *y) const
 {
 	Assignment *xx = const_cast<Assignment *>(x);
 	Assignment *yy = const_cast<Assignment *>(y);
@@ -4605,7 +4767,8 @@ bool lessAssignment::operator()(const Assignment *x, const Assignment *y) const
 }
 
 // Repeat the above for Assign's; sometimes the compiler doesn't (yet) understand that Assign's are Assignment's
-bool lessAssign::operator()(const Assign *x, const Assign *y) const
+bool
+lessAssign::operator ()(const Assign *x, const Assign *y) const
 {
 	Assign *xx = const_cast<Assign *>(x);
 	Assign *yy = const_cast<Assign *>(y);
@@ -4614,7 +4777,8 @@ bool lessAssign::operator()(const Assign *x, const Assign *y) const
 
 // Update the modifieds, in case the signature and hence ordering and filtering has changed, or the locations in the
 // collector have changed. Does NOT remove preserveds (deferred until updating returns).
-void ReturnStatement::updateModifieds()
+void
+ReturnStatement::updateModifieds()
 {
 	Signature *sig = proc->getSignature();
 	StatementList oldMods(modifieds);  // Copy the old modifieds
@@ -4680,7 +4844,8 @@ void ReturnStatement::updateModifieds()
 
 // Update the returns, in case the signature and hence ordering and filtering has changed, or the locations in the
 // modifieds list
-void ReturnStatement::updateReturns()
+void
+ReturnStatement::updateReturns()
 {
 	Signature *sig = proc->getSignature();
 	int sp = sig->getStackRegister();
@@ -4749,7 +4914,8 @@ void ReturnStatement::updateReturns()
 }
 
 // Set the defines to the set of locations modified by the callee, or if no callee, to all variables live at this call
-void CallStatement::updateDefines()
+void
+CallStatement::updateDefines()
 {
 	Signature *sig;
 	if (procDest)
@@ -4834,7 +5000,7 @@ void CallStatement::updateDefines()
 // A helper class for updateArguments. It just dishes out a new argument from one of the three sources: the signature,
 // the callee parameters, or the defCollector in the call
 class ArgSourceProvider {
-	enum Src {SRC_LIB, SRC_CALLEE, SRC_COL};
+	enum Src { SRC_LIB, SRC_CALLEE, SRC_COL };
 	Src src;
 	CallStatement *call;
 	int i, n;                    // For SRC_LIB
@@ -4881,7 +5047,8 @@ ArgSourceProvider::ArgSourceProvider(CallStatement *call) :
 	}
 }
 
-Exp *ArgSourceProvider::nextArgLoc()
+Exp *
+ArgSourceProvider::nextArgLoc()
 {
 	Exp *s;
 	bool allZero;
@@ -4906,7 +5073,8 @@ Exp *ArgSourceProvider::nextArgLoc()
 	return NULL;  // Suppress warning
 }
 
-Exp *ArgSourceProvider::localise(Exp *e)
+Exp *
+ArgSourceProvider::localise(Exp *e)
 {
 	if (src == SRC_COL) {
 		// Provide the RHS of the current assignment
@@ -4918,7 +5086,8 @@ Exp *ArgSourceProvider::localise(Exp *e)
 	return call->localiseExp(e);
 }
 
-Type *ArgSourceProvider::curType(Exp *e)
+Type *
+ArgSourceProvider::curType(Exp *e)
 {
 	switch (src) {
 	case SRC_LIB:
@@ -4940,7 +5109,8 @@ Type *ArgSourceProvider::curType(Exp *e)
 	return NULL;  // Suppress warning
 }
 
-bool ArgSourceProvider::exists(Exp *e)
+bool
+ArgSourceProvider::exists(Exp *e)
 {
 	bool allZero;
 	switch (src) {
@@ -4971,7 +5141,8 @@ bool ArgSourceProvider::exists(Exp *e)
 	return false;  // Suppress warning
 }
 
-void CallStatement::updateArguments()
+void
+CallStatement::updateArguments()
 {
 	/*
 		If this is a library call, source = signature
@@ -5063,7 +5234,8 @@ void CallStatement::updateArguments()
 // Calculate results(this) = defines(this) isect live(this)
 // Note: could use a LocationList for this, but then there is nowhere to store the types (for DFA based TA)
 // So the RHS is just ignored
-StatementList *CallStatement::calcResults()
+StatementList *
+CallStatement::calcResults()
 {
 	StatementList *ret = new StatementList;
 	if (procDest) {
@@ -5125,13 +5297,15 @@ StatementList *CallStatement::calcResults()
 }
 
 #if 0
-void TypingStatement::setType(Type *ty)
+void
+TypingStatement::setType(Type *ty)
 {
 	type = ty;
 }
 #endif
 
-void CallStatement::removeDefine(Exp *e)
+void
+CallStatement::removeDefine(Exp *e)
 {
 	StatementList::iterator ss;
 	for (ss = defines.begin(); ss != defines.end(); ++ss) {
@@ -5144,7 +5318,8 @@ void CallStatement::removeDefine(Exp *e)
 	LOG << "WARNING: could not remove define " << e << " from call " << this << "\n";
 }
 
-bool CallStatement::isChildless()
+bool
+CallStatement::isChildless()
 {
 	if (procDest == NULL) return true;
 	if (procDest->isLib()) return false;
@@ -5154,7 +5329,8 @@ bool CallStatement::isChildless()
 	return calleeReturn == NULL;
 }
 
-Exp *CallStatement::bypassRef(RefExp *r, bool &ch)
+Exp *
+CallStatement::bypassRef(RefExp *r, bool &ch)
 {
 	Exp *base = r->getSubExp1();
 	Exp *proven;
@@ -5195,13 +5371,15 @@ Exp *CallStatement::bypassRef(RefExp *r, bool &ch)
 	return proven;
 }
 
-void ReturnStatement::removeModified(Exp *loc)
+void
+ReturnStatement::removeModified(Exp *loc)
 {
 	modifieds.removeDefOf(loc);
 	returns.removeDefOf(loc);
 }
 
-void CallStatement::addDefine(ImplicitAssign *as)
+void
+CallStatement::addDefine(ImplicitAssign *as)
 {
 	defines.append(as);
 }
@@ -5212,7 +5390,8 @@ TypingStatement::TypingStatement(Type *ty) :
 }
 
 // NOTE: ImpRefStatement not yet used
-void ImpRefStatement::print(std::ostream &os, bool html)
+void
+ImpRefStatement::print(std::ostream &os, bool html)
 {
 	os << "     *";  // No statement number
 	if (html) {
@@ -5224,22 +5403,26 @@ void ImpRefStatement::print(std::ostream &os, bool html)
 		os << "</a></td>";
 }
 
-void ImpRefStatement::meetWith(Type *ty, bool &ch)
+void
+ImpRefStatement::meetWith(Type *ty, bool &ch)
 {
 	type = type->meetWith(ty, ch);
 }
 
-Statement *ImpRefStatement::clone()
+Statement *
+ImpRefStatement::clone()
 {
 	return new ImpRefStatement(type->clone(), addressExp->clone());
 }
 
-bool ImpRefStatement::accept(StmtVisitor *visitor)
+bool
+ImpRefStatement::accept(StmtVisitor *visitor)
 {
 	return visitor->visit(this);
 }
 
-bool ImpRefStatement::accept(StmtExpVisitor *v)
+bool
+ImpRefStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
 	bool ret = v->visit(this, override);
@@ -5249,7 +5432,8 @@ bool ImpRefStatement::accept(StmtExpVisitor *v)
 	return ret;
 }
 
-bool ImpRefStatement::accept(StmtModifier *v)
+bool
+ImpRefStatement::accept(StmtModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -5260,7 +5444,8 @@ bool ImpRefStatement::accept(StmtModifier *v)
 	return true;
 }
 
-bool ImpRefStatement::accept(StmtPartModifier *v)
+bool
+ImpRefStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
@@ -5271,30 +5456,35 @@ bool ImpRefStatement::accept(StmtPartModifier *v)
 	return true;
 }
 
-bool ImpRefStatement::search(Exp *search, Exp *&result)
+bool
+ImpRefStatement::search(Exp *search, Exp *&result)
 {
 	result = NULL;
 	return addressExp->search(search, result);
 }
 
-bool ImpRefStatement::searchAll(Exp *search, std::list<Exp *, std::allocator<Exp *> > &result)
+bool
+ImpRefStatement::searchAll(Exp *search, std::list<Exp *, std::allocator<Exp *> > &result)
 {
 	return addressExp->searchAll(search, result);
 }
 
-bool ImpRefStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
+bool
+ImpRefStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change;
 	addressExp = addressExp->searchReplaceAll(search, replace, change);
 	return change;
 }
 
-void ImpRefStatement::simplify()
+void
+ImpRefStatement::simplify()
 {
 	addressExp = addressExp->simplify();
 }
 
-void CallStatement::eliminateDuplicateArgs()
+void
+CallStatement::eliminateDuplicateArgs()
 {
 	StatementList::iterator it;
 	LocationSet ls;
@@ -5310,7 +5500,8 @@ void CallStatement::eliminateDuplicateArgs()
 	}
 }
 
-void PhiAssign::enumerateParams(std::list<Exp *> &le)
+void
+PhiAssign::enumerateParams(std::list<Exp *> &le)
 {
 	iterator it;
 	for (it = begin(); it != end(); ++it) {
@@ -5321,7 +5512,8 @@ void PhiAssign::enumerateParams(std::list<Exp *> &le)
 }
 
 // For debugging
-void dumpDestCounts(std::map<Exp *, int, lessExpStar> *destCounts)
+void
+dumpDestCounts(std::map<Exp *, int, lessExpStar> *destCounts)
 {
 	std::map<Exp *, int, lessExpStar>::iterator it;
 	for (it = destCounts->begin(); it != destCounts->end(); ++it) {
@@ -5329,27 +5521,32 @@ void dumpDestCounts(std::map<Exp *, int, lessExpStar> *destCounts)
 	}
 }
 
-bool JunctionStatement::accept(StmtVisitor *visitor)
+bool
+JunctionStatement::accept(StmtVisitor *visitor)
 {
 	return true;
 }
 
-bool JunctionStatement::accept(StmtExpVisitor *visitor)
+bool
+JunctionStatement::accept(StmtExpVisitor *visitor)
 {
 	return true;
 }
 
-bool JunctionStatement::accept(StmtModifier *visitor)
+bool
+JunctionStatement::accept(StmtModifier *visitor)
 {
 	return true;
 }
 
-bool JunctionStatement::accept(StmtPartModifier *visitor)
+bool
+JunctionStatement::accept(StmtPartModifier *visitor)
 {
 	return true;
 }
 
-void JunctionStatement::print(std::ostream &os, bool html)
+void
+JunctionStatement::print(std::ostream &os, bool html)
 {
 	os << std::setw(4) << std::dec << number << " ";
 	if (html) {
@@ -5372,14 +5569,16 @@ void JunctionStatement::print(std::ostream &os, bool html)
 }
 
 // Map registers and temporaries to locals
-void Statement::mapRegistersToLocals()
+void
+Statement::mapRegistersToLocals()
 {
 	ExpRegMapper erm(proc);
 	StmtRegMapper srm(&erm);
 	accept(&srm);
 }
 
-void Statement::insertCasts()
+void
+Statement::insertCasts()
 {
 	// First we postvisit expressions using a StmtModifier and an ExpCastInserter
 	ExpCastInserter eci(proc);
@@ -5390,14 +5589,16 @@ void Statement::insertCasts()
 	accept(&sci);
 }
 
-void Statement::replaceSubscriptsWithLocals()
+void
+Statement::replaceSubscriptsWithLocals()
 {
 	ExpSsaXformer esx(proc);
 	StmtSsaXformer ssx(&esx, proc);
 	accept(&ssx);
 }
 
-void Statement::dfaMapLocals()
+void
+Statement::dfaMapLocals()
 {
 	DfaLocalMapper dlm(proc);
 	StmtModifier sm(&dlm, true);  // True to ignore def collector in return statement
@@ -5406,7 +5607,8 @@ void Statement::dfaMapLocals()
 		LOG << "statement mapped with new local(s): " << number << "\n";
 }
 
-void CallStatement::setNumber(int num)
+void
+CallStatement::setNumber(int num)
 {
 	number = num;
 	// Also number any existing arguments. Important for library procedures, since these have arguments set by the front

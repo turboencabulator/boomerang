@@ -27,7 +27,8 @@
  *
  * \note Called after all tests.
  */
-void ProcTest::tearDown()
+void
+ProcTest::tearDown()
 {
 	delete m_proc;
 }
@@ -35,7 +36,8 @@ void ProcTest::tearDown()
 /**
  * Test setting and reading name, constructor, native address.
  */
-void ProcTest::testName()
+void
+ProcTest::testName()
 {
 	Prog *prog = new Prog;
 	std::string nm("default name");

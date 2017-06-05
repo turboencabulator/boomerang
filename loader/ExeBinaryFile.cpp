@@ -30,7 +30,8 @@ ExeBinaryFile::~ExeBinaryFile()
 	delete [] m_pRelocTable;
 }
 
-bool ExeBinaryFile::load(std::istream &ifs)
+bool
+ExeBinaryFile::load(std::istream &ifs)
 {
 	std::streamsize cb;
 
@@ -163,7 +164,8 @@ bool ExeBinaryFile::load(std::istream &ifs)
 	return true;
 }
 
-const char *ExeBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
+const char *
+ExeBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if (dwAddr == getMainEntryPoint())
 		return "main";
@@ -173,29 +175,34 @@ const char *ExeBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 #if 0 // Cruft?
-bool ExeBinaryFile::PostLoad(void *handle)
+bool
+ExeBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only
 	return false;
 }
 #endif
 
-bool ExeBinaryFile::isLibrary() const
+bool
+ExeBinaryFile::isLibrary() const
 {
 	return false;
 }
 
-std::list<const char *> ExeBinaryFile::getDependencyList()
+std::list<const char *>
+ExeBinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* for now */
 }
 
-ADDRESS ExeBinaryFile::getImageBase() const
+ADDRESS
+ExeBinaryFile::getImageBase() const
 {
 	return 0; /* FIXME */
 }
 
-size_t ExeBinaryFile::getImageSize() const
+size_t
+ExeBinaryFile::getImageSize() const
 {
 	return 0; /* FIXME */
 }
@@ -203,12 +210,14 @@ size_t ExeBinaryFile::getImageSize() const
 /**
  * Should be doing a search for this.
  */
-ADDRESS ExeBinaryFile::getMainEntryPoint()
+ADDRESS
+ExeBinaryFile::getMainEntryPoint()
 {
 	return NO_ADDRESS;
 }
 
-ADDRESS ExeBinaryFile::getEntryPoint()
+ADDRESS
+ExeBinaryFile::getEntryPoint()
 {
 	// Check this...
 	return (ADDRESS)((LH(&m_pHeader->initCS) << 4) + LH(&m_pHeader->initIP));
@@ -221,11 +230,13 @@ ADDRESS ExeBinaryFile::getEntryPoint()
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new ExeBinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (ExeBinaryFile *)bf;
 }

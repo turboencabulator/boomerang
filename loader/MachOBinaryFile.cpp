@@ -139,12 +139,14 @@ MachOBinaryFile::~MachOBinaryFile()
 	delete [] base;
 }
 
-ADDRESS MachOBinaryFile::getEntryPoint()
+ADDRESS
+MachOBinaryFile::getEntryPoint()
 {
 	return entrypoint;
 }
 
-ADDRESS MachOBinaryFile::getMainEntryPoint()
+ADDRESS
+MachOBinaryFile::getMainEntryPoint()
 {
 	ADDRESS aMain = getAddressByName("main", true);
 	if (aMain != NO_ADDRESS)
@@ -156,7 +158,8 @@ ADDRESS MachOBinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
-bool MachOBinaryFile::load(std::istream &ifs)
+bool
+MachOBinaryFile::load(std::istream &ifs)
 {
 	struct mach_header header;
 	ifs.read((char *)&header, sizeof header);
@@ -497,20 +500,24 @@ bool MachOBinaryFile::load(std::istream &ifs)
 }
 
 #if 0 // Cruft?
-bool MachOBinaryFile::PostLoad(void *handle)
+bool
+MachOBinaryFile::PostLoad(void *handle)
 {
 	return false;
 }
 #endif
 
-const char *MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr) {
+const char *
+MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
+{
 	std::map<ADDRESS, std::string>::iterator it = m_SymA.find(dwAddr);
 	if (it == m_SymA.end())
 		return 0;
 	return it->second.c_str();
 }
 
-ADDRESS MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS
+MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search
@@ -524,7 +531,8 @@ ADDRESS MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* =
 	return NO_ADDRESS;
 }
 
-void MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+void
+MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	m_SymA[uNative] = pName;
 }
@@ -532,7 +540,8 @@ void MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Read 2 bytes from native addr.
  */
-int MachOBinaryFile::machORead2(const short *ps) const
+int
+MachOBinaryFile::machORead2(const short *ps) const
 {
 	const unsigned char *p = (const unsigned char *)ps;
 	// Big endian
@@ -543,7 +552,8 @@ int MachOBinaryFile::machORead2(const short *ps) const
 /**
  * \brief Read 4 bytes from native addr.
  */
-int MachOBinaryFile::machORead4(const int *pi) const
+int
+MachOBinaryFile::machORead4(const int *pi) const
 {
 	const short *p = (const short *)pi;
 	int n1 = machORead2(p);
@@ -552,46 +562,53 @@ int MachOBinaryFile::machORead4(const int *pi) const
 	return n;
 }
 
-unsigned int MachOBinaryFile::BMMH(const void *x)
+unsigned int
+MachOBinaryFile::BMMH(const void *x)
 {
 	if (swap_bytes) return (unsigned int)_BMMH(x);
 	else return (unsigned int)x;
 }
 
-uint32_t MachOBinaryFile::BMMH(uint32_t x)
+uint32_t
+MachOBinaryFile::BMMH(uint32_t x)
 {
 	if (swap_bytes) return _BMMH(x);
 	else return x;
 }
 
-unsigned short MachOBinaryFile::BMMHW(unsigned short x)
+unsigned short
+MachOBinaryFile::BMMHW(unsigned short x)
 {
 	if (swap_bytes) return _BMMHW(x);
 	else return x;
 }
 
-int MachOBinaryFile::readNative1(ADDRESS nat) const
+int
+MachOBinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) si = getSectionInfo(0);
 	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
-int MachOBinaryFile::readNative2(ADDRESS nat) const
+int
+MachOBinaryFile::readNative2(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return machORead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-int MachOBinaryFile::readNative4(ADDRESS nat) const
+int
+MachOBinaryFile::readNative4(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return machORead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-QWord MachOBinaryFile::readNative8(ADDRESS nat) const
+QWord
+MachOBinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -606,7 +623,8 @@ QWord MachOBinaryFile::readNative8(ADDRESS nat) const
 	return *(QWord *)raw;
 }
 
-float MachOBinaryFile::readNativeFloat4(ADDRESS nat) const
+float
+MachOBinaryFile::readNativeFloat4(ADDRESS nat) const
 {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -614,7 +632,8 @@ float MachOBinaryFile::readNativeFloat4(ADDRESS nat) const
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
+double
+MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -630,33 +649,39 @@ double MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
 	return *(double *)raw;
 }
 
-const char *MachOBinaryFile::getDynamicProcName(ADDRESS uNative)
+const char *
+MachOBinaryFile::getDynamicProcName(ADDRESS uNative)
 {
 	return dlprocs[uNative].c_str();
 }
 
-bool MachOBinaryFile::isLibrary() const
+bool
+MachOBinaryFile::isLibrary() const
 {
 	return false;
 }
 
-ADDRESS MachOBinaryFile::getImageBase() const
+ADDRESS
+MachOBinaryFile::getImageBase() const
 {
 	return loaded_addr;
 }
 
-size_t MachOBinaryFile::getImageSize() const
+size_t
+MachOBinaryFile::getImageSize() const
 {
 	return loaded_size;
 }
 
-std::list<const char *> MachOBinaryFile::getDependencyList()
+std::list<const char *>
+MachOBinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* FIXME */
 }
 
 #if 0 // Cruft?
-DWord MachOBinaryFile::getDelta()
+DWord
+MachOBinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
 	// This should work for the header only
@@ -672,11 +697,13 @@ DWord MachOBinaryFile::getDelta()
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new MachOBinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (MachOBinaryFile *)bf;
 }

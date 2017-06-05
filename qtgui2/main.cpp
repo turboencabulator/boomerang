@@ -21,7 +21,8 @@ void init_sslparser();
 void init_basicblock();
 #endif
 
-int main(int argc, char *argv[])
+int
+main(int argc, char *argv[])
 {
 #ifdef GARBAGE_COLLECTOR
 	init_dfa();

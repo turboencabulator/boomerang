@@ -37,7 +37,7 @@ public:
 		return cmap.find(e);
 	}
 	// Lookup a given left hand side Exp (e.g. given Tlocal1, return <char*>)
-	Exp *&operator[](Exp *e) {
+	Exp *&operator [](Exp *e) {
 		return cmap[e];
 	}
 	// Return the number of constraints in the map

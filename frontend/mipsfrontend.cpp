@@ -29,7 +29,8 @@ MIPSFrontEnd::~MIPSFrontEnd()
 {
 }
 
-std::vector<Exp *> &MIPSFrontEnd::getDefaultParams()
+std::vector<Exp *> &
+MIPSFrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
 	if (params.size() == 0) {
@@ -40,7 +41,8 @@ std::vector<Exp *> &MIPSFrontEnd::getDefaultParams()
 	return params;
 }
 
-std::vector<Exp *> &MIPSFrontEnd::getDefaultReturns()
+std::vector<Exp *> &
+MIPSFrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
 	if (returns.size() == 0) {
@@ -51,7 +53,8 @@ std::vector<Exp *> &MIPSFrontEnd::getDefaultReturns()
 	return returns;
 }
 
-ADDRESS MIPSFrontEnd::getMainEntryPoint(bool &gotMain)
+ADDRESS
+MIPSFrontEnd::getMainEntryPoint(bool &gotMain)
 {
 	gotMain = true;
 	ADDRESS start = pBF->getMainEntryPoint();
@@ -65,7 +68,8 @@ ADDRESS MIPSFrontEnd::getMainEntryPoint(bool &gotMain)
 	return start;
 }
 
-bool MIPSFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
+bool
+MIPSFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
 	// Call the base class to do most of the work
 	if (!FrontEnd::processProc(uAddr, pProc, os, frag, spec))
@@ -83,11 +87,13 @@ bool MIPSFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" FrontEnd *construct(BinaryFile *bf, Prog *prog)
+extern "C" FrontEnd *
+construct(BinaryFile *bf, Prog *prog)
 {
 	return new MIPSFrontEnd(bf, prog);
 }
-extern "C" void destruct(FrontEnd *fe)
+extern "C" void
+destruct(FrontEnd *fe)
 {
 	delete (MIPSFrontEnd *)fe;
 }

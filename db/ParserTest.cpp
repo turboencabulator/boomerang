@@ -24,7 +24,8 @@
 /**
  * Test reading the SSL file.
  */
-void ParserTest::testRead()
+void
+ParserTest::testRead()
 {
 	RTLInstDict d;
 	CPPUNIT_ASSERT(d.readSSLFile(SPARC_SSL));
@@ -33,7 +34,8 @@ void ParserTest::testRead()
 /**
  * Test parsing an expression.
  */
-void ParserTest::testExp()
+void
+ParserTest::testExp()
 {
 	std::string s("*i32* r0 := 5 + 6");
 	Statement *a = SSLParser::parseExp(s.c_str());

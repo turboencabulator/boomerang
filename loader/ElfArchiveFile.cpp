@@ -20,11 +20,12 @@ ElfArchiveFile::ElfArchiveFile()
 
 ElfArchiveFile::~ElfArchiveFile()
 {
-for (unsigned u = 0; u < m_Members.size(); u++)
-	delete m_Members[u];
+	for (unsigned u = 0; u < m_Members.size(); u++)
+		delete m_Members[u];
 }
 
-bool ElfArchiveFile::Load(const char *pName)
+bool
+ElfArchiveFile::Load(const char *pName)
 {
 	// Load the elf file
 	Elf *elf;
@@ -103,7 +104,8 @@ bool ElfArchiveFile::Load(const char *pName)
 	return true;
 }
 
-BinaryFile *ElfArchiveFile::getMember(int i)
+BinaryFile *
+ElfArchiveFile::getMember(int i)
 {
 	// Sanity checks on the index
 	if (i < 0) return 0;

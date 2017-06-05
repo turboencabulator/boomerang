@@ -231,54 +231,64 @@ BinaryFileStub::~BinaryFileStub()
 	delete [] m_pSections;
 }
 
-LOADFMT BinaryFileStub::getFormat() const
+LOADFMT
+BinaryFileStub::getFormat() const
 {
 	return LOADFMT_ELF;
 }
 
-MACHINE BinaryFileStub::getMachine() const
+MACHINE
+BinaryFileStub::getMachine() const
 {
 	return MACHINE_PENTIUM;
 }
 
-std::list<const char *> BinaryFileStub::getDependencyList()
+std::list<const char *>
+BinaryFileStub::getDependencyList()
 {
 	assert(false);
 	return std::list<const char *>();
 }
 
-bool BinaryFileStub::isLibrary() const
+bool
+BinaryFileStub::isLibrary() const
 {
 	return false;
 }
 
-ADDRESS BinaryFileStub::getImageBase() const
+ADDRESS
+BinaryFileStub::getImageBase() const
 {
 	return 0;
 }
 
-size_t BinaryFileStub::getImageSize() const
+size_t
+BinaryFileStub::getImageSize() const
 {
 	return 0;
 }
 
-ADDRESS BinaryFileStub::getMainEntryPoint()
+ADDRESS
+BinaryFileStub::getMainEntryPoint()
 {
 	return 0x8048918;
 }
 
-ADDRESS BinaryFileStub::getEntryPoint()
+ADDRESS
+BinaryFileStub::getEntryPoint()
 {
 	return 0;
 }
 
-bool BinaryFileStub::load(std::istream &ifs)
+bool
+BinaryFileStub::load(std::istream &ifs)
 {
 	return false;
 }
 
 #if 0 // Cruft?
-bool BinaryFileStub::PostLoad(void *handle)
+bool
+BinaryFileStub::PostLoad(void *handle)
 {
 	return false;
 }

@@ -29,8 +29,6 @@
 /*==============================================================================
  * FUNCTION:      Register::Register
  * OVERVIEW:      Constructor.
- * PARAMETERS:    <none>
- * RETURNS:       N/A
  *============================================================================*/
 Register::Register()
 {
@@ -40,7 +38,6 @@ Register::Register()
  * FUNCTION:      Register::Register
  * OVERVIEW:      Copy constructor.
  * PARAMETERS:    Reference to another Register object to construct from
- * RETURNS:       N/A
  *============================================================================*/
 Register::Register(const Register &r) :
 	size(r.size),
@@ -54,12 +51,13 @@ Register::Register(const Register &r) :
 }
 
 /*==============================================================================
- * FUNCTION:      Register::operator=
+ * FUNCTION:      Register::operator =
  * OVERVIEW:      Copy operator
  * PARAMETERS:    Reference to another Register object (to be copied)
  * RETURNS:       This object
  *============================================================================*/
-Register Register::operator=(const Register &r2)
+Register
+Register::operator =(const Register &r2)
 {
 	// copy operator
 
@@ -77,12 +75,13 @@ Register Register::operator=(const Register &r2)
 }
 
 /*==============================================================================
- * FUNCTION:      Register::operator==
+ * FUNCTION:      Register::operator ==
  * OVERVIEW:      Equality operator
  * PARAMETERS:    Reference to another Register object
  * RETURNS:       True if the same
  *============================================================================*/
-bool Register::operator==(const Register &r2) const
+bool
+Register::operator ==(const Register &r2) const
 {
 	// compare on name
 	assert(name != NULL && r2.name != NULL);
@@ -92,12 +91,13 @@ bool Register::operator==(const Register &r2) const
 }
 
 /*==============================================================================
- * FUNCTION:      Register::operator<
+ * FUNCTION:      Register::operator <
  * OVERVIEW:      Comparison operator (to establish an ordering)
  * PARAMETERS:    Reference to another Register object
  * RETURNS:       true if this name is less than the given Register's name
  *============================================================================*/
-bool Register::operator<(const Register &r2) const
+bool
+Register::operator <(const Register &r2) const
 {
 	assert(name != NULL && r2.name != NULL);
 
@@ -111,9 +111,9 @@ bool Register::operator<(const Register &r2) const
  * FUNCTION:      Register::s_name
  * OVERVIEW:      Set the name for this register
  * PARAMETERS:    s: name to set it to
- * RETURNS:       <nothing>
  *============================================================================*/
-void Register::s_name(const char *s)
+void
+Register::s_name(const char *s)
 {
 	assert(s != NULL);
 
@@ -125,10 +125,10 @@ void Register::s_name(const char *s)
 /*==============================================================================
  * FUNCTION:      Register::g_name
  * OVERVIEW:      Get the name for this register
- * PARAMETERS:    <none>
  * RETURNS:       The name as a character string
  *============================================================================*/
-char *Register::g_name() const
+char *
+Register::g_name() const
 {
 	static char outname[100];
 
@@ -140,10 +140,10 @@ char *Register::g_name() const
 /*==============================================================================
  * FUNCTION:      Register::g_type
  * OVERVIEW:      Get the type for this register
- * PARAMETERS:    <none>
  * RETURNS:       The type as a pointer to a Type object
  *============================================================================*/
-Type *Register::g_type() const
+Type *
+Register::g_type() const
 {
 	if (flt)
 		return new FloatType(size);

@@ -139,7 +139,9 @@ static const unsigned char op0Fmap[256] = {
  *
  * Note that the function could return Not Handled (NH, 0x40).
  */
-size_t microX86Dis(const unsigned char *pCode) {
+size_t
+microX86Dis(const unsigned char *pCode)
+{
 	size_t opsize = 4;          /* Operand size override will change to 2 */
 	size_t size = 0;
 	unsigned char modrm, mod, op2, sib;

@@ -44,7 +44,6 @@ extern char debug_buffer[];      ///< For prints functions
  * FUNCTION:        Const::Const etc
  * OVERVIEW:        Constructors
  * PARAMETERS:      As required
- * RETURNS:         <nothing>
  *============================================================================*/
 
 // Derived class constructors
@@ -63,48 +62,57 @@ Const::Const(Const &o) : Exp(o.op) { u = o.u; conscript = o.conscript; type = o.
 Terminal::Terminal(OPER op) : Exp(op) { }
 Terminal::Terminal(Terminal &o) : Exp(o.op) { }  // Copy constructor
 
-Unary::Unary(OPER op) : Exp(op)
+Unary::Unary(OPER op) :
+	Exp(op)
 {
 	subExp1 = 0;  // Initialise the pointer
 	//assert(op != opRegOf);
 }
-Unary::Unary(OPER op, Exp *e) : Exp(op)
+Unary::Unary(OPER op, Exp *e) :
+	Exp(op)
 {
 	subExp1 = e;  // Initialise the pointer
 	assert(subExp1);
 }
-Unary::Unary(Unary &o) : Exp(o.op)
+Unary::Unary(Unary &o) :
+	Exp(o.op)
 {
 	subExp1 = o.subExp1->clone();
 	assert(subExp1);
 }
 
-Binary::Binary(OPER op) : Unary(op)
+Binary::Binary(OPER op) :
+	Unary(op)
 {
 	subExp2 = 0;  // Initialise the 2nd pointer. The first pointer is initialised in the Unary constructor
 }
-Binary::Binary(OPER op, Exp *e1, Exp *e2) : Unary(op, e1)
+Binary::Binary(OPER op, Exp *e1, Exp *e2) :
+	Unary(op, e1)
 {
 	subExp2 = e2;  // Initialise the 2nd pointer
 	assert(subExp1 && subExp2);
 }
-Binary::Binary(Binary &o) : Unary(op)
+Binary::Binary(Binary &o) :
+	Unary(op)  // FIXME:  should be o.op?
 {
 	setSubExp1(subExp1->clone());
 	subExp2 = o.subExp2->clone();
 	assert(subExp1 && subExp2);
 }
 
-Ternary::Ternary(OPER op) : Binary(op)
+Ternary::Ternary(OPER op) :
+	Binary(op)
 {
 	subExp3 = 0;
 }
-Ternary::Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3) : Binary(op, e1, e2)
+Ternary::Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3) :
+	Binary(op, e1, e2)
 {
 	subExp3 = e3;
 	assert(subExp1 && subExp2 && subExp3);
 }
-Ternary::Ternary(Ternary &o) : Binary(o.op)
+Ternary::Ternary(Ternary &o) :
+	Binary(o.op)
 {
 	subExp1 = o.subExp1->clone();
 	subExp2 = o.subExp2->clone();
@@ -115,7 +123,8 @@ Ternary::Ternary(Ternary &o) : Binary(o.op)
 TypedExp::TypedExp() : Unary(opTypedExp) { }
 TypedExp::TypedExp(Exp *e1) : Unary(opTypedExp, e1) { }
 TypedExp::TypedExp(Type *ty, Exp *e1) : Unary(opTypedExp, e1), type(ty) { }
-TypedExp::TypedExp(TypedExp &o) : Unary(opTypedExp)
+TypedExp::TypedExp(TypedExp &o) :
+	Unary(opTypedExp)
 {
 	subExp1 = o.subExp1->clone();
 	type = o.type->clone();
@@ -123,7 +132,9 @@ TypedExp::TypedExp(TypedExp &o) : Unary(opTypedExp)
 
 FlagDef::FlagDef(Exp *params, RTL *rtl) : Unary(opFlagDef, params), rtl(rtl) { }
 
-RefExp::RefExp(Exp *e, Statement *d) : Unary(opSubscript, e), def(d)
+RefExp::RefExp(Exp *e, Statement *d) :
+	Unary(opSubscript, e),
+	def(d)
 {
 	assert(e);
 }
@@ -134,7 +145,9 @@ TypeVal::TypeVal(Type *ty) : Terminal(opTypeVal), val(ty) { }
  * Create a new Location expression.
  * \param op Should be \opRegOf, opMemOf, opLocal, opGlobal, opParam or opTemp.
  */
-Location::Location(OPER op, Exp *exp, UserProc *proc) : Unary(op, exp), proc(proc)
+Location::Location(OPER op, Exp *exp, UserProc *proc) :
+	Unary(op, exp),
+	proc(proc)
 {
 	assert(op == opRegOf || op == opMemOf || op == opLocal || op == opGlobal || op == opParam || op == opTemp);
 	if (proc == NULL) {
@@ -165,15 +178,15 @@ Location::Location(OPER op, Exp *exp, UserProc *proc) : Unary(op, exp), proc(pro
 	}
 }
 
-Location::Location(Location &o) : Unary(o.op, o.subExp1->clone()), proc(o.proc)
+Location::Location(Location &o) :
+	Unary(o.op, o.subExp1->clone()),
+	proc(o.proc)
 {
 }
 
 /*==============================================================================
  * FUNCTION:        Unary::~Unary etc
  * OVERVIEW:        Destructors.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
 Unary::~Unary()
 {
@@ -203,21 +216,23 @@ TypeVal::~TypeVal()
  * OVERVIEW:        Set requested subexpression; 1 is first
  * PARAMETERS:      Pointer to subexpression to set
  * NOTE:            If an expression already exists, it is ;//deleted
- * RETURNS:         <nothing>
  *============================================================================*/
-void Unary::setSubExp1(Exp *e)
+void
+Unary::setSubExp1(Exp *e)
 {
 	if (subExp1 != 0) ;//delete subExp1;
 	subExp1 = e;
 	assert(subExp1);
 }
-void Binary::setSubExp2(Exp *e)
+void
+Binary::setSubExp2(Exp *e)
 {
 	if (subExp2 != 0) ;//delete subExp2;
 	subExp2 = e;
 	assert(subExp1 && subExp2);
 }
-void Ternary::setSubExp3(Exp *e)
+void
+Ternary::setSubExp3(Exp *e)
 {
 	if (subExp3 != 0) ;//delete subExp3;
 	subExp3 = e;
@@ -226,35 +241,40 @@ void Ternary::setSubExp3(Exp *e)
 /*==============================================================================
  * FUNCTION:        Unary::getSubExp1 etc
  * OVERVIEW:        Get subexpression
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to the requested subexpression
  *============================================================================*/
-Exp *Unary::getSubExp1()
+Exp *
+Unary::getSubExp1()
 {
 	assert(subExp1);
 	return subExp1;
 }
-Exp *&Unary::refSubExp1()
+Exp *&
+Unary::refSubExp1()
 {
 	assert(subExp1);
 	return subExp1;
 }
-Exp *Binary::getSubExp2()
+Exp *
+Binary::getSubExp2()
 {
 	assert(subExp1 && subExp2);
 	return subExp2;
 }
-Exp *&Binary::refSubExp2()
+Exp *&
+Binary::refSubExp2()
 {
 	assert(subExp1 && subExp2);
 	return subExp2;
 }
-Exp *Ternary::getSubExp3()
+Exp *
+Ternary::getSubExp3()
 {
 	assert(subExp1 && subExp2 && subExp3);
 	return subExp3;
 }
-Exp *&Ternary::refSubExp3()
+Exp *&
+Ternary::refSubExp3()
 {
 	assert(subExp1 && subExp2 && subExp3);
 	return subExp3;
@@ -270,11 +290,10 @@ Exp *&Exp::refSubExp3() { return dummy; }
 /*==============================================================================
  * FUNCTION:        Binary::commute
  * OVERVIEW:        Swap the two subexpressions
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
 /// Swap the two subexpressions.
-void Binary::commute()
+void
+Binary::commute()
 {
 	Exp *t = subExp1;
 	subExp1 = subExp2;
@@ -288,26 +307,29 @@ void Binary::commute()
  *                   a new Exp with the same contents as myself, but not sharing
  *                   any memory. Deleting the clone will not affect this object.
  *                   Pointers to subexpressions are not copied, but also cloned.
- * PARAMETERS:      <none>
  * RETURNS:         Pointer to cloned object
  *============================================================================*/
-Exp *Const::clone()
+Exp *
+Const::clone()
 {
 	// Note: not actually cloning the Type* type pointer. Probably doesn't matter with GC
 	return new Const(*this);
 }
-Exp *Terminal::clone()
+Exp *
+Terminal::clone()
 {
 	return new Terminal(*this);
 }
-Exp *Unary::clone()
+Exp *
+Unary::clone()
 {
 	assert(subExp1);
 	Unary *c = new Unary(op);
 	c->subExp1 = subExp1->clone();
 	return c;
 }
-Exp *Binary::clone()
+Exp *
+Binary::clone()
 {
 	assert(subExp1 && subExp2);
 	Binary *c = new Binary(op);
@@ -315,7 +337,8 @@ Exp *Binary::clone()
 	c->subExp2 = subExp2->clone();
 	return c;
 }
-Exp *Ternary::clone()
+Exp *
+Ternary::clone()
 {
 	assert(subExp1 && subExp2 && subExp3);
 	Ternary *c = new Ternary(op);
@@ -324,35 +347,40 @@ Exp *Ternary::clone()
 	c->subExp3 = subExp3->clone();
 	return c;
 }
-Exp *TypedExp::clone()
+Exp *
+TypedExp::clone()
 {
 	TypedExp *c = new TypedExp(type, subExp1->clone());
 	return c;
 }
-Exp *RefExp::clone()
+Exp *
+RefExp::clone()
 {
 	RefExp *c = new RefExp(subExp1->clone(), def);
 	return c;
 }
-Exp *TypeVal::clone()
+Exp *
+TypeVal::clone()
 {
 	TypeVal *c = new TypeVal(val->clone());
 	return c;
 }
-Exp *Location::clone()
+Exp *
+Location::clone()
 {
 	Location *c = new Location(op, subExp1->clone(), proc);
 	return c;
 }
 
 /*==============================================================================
- * FUNCTION:        Const::operator==() etc
+ * FUNCTION:        Const::operator ==() etc
  * OVERVIEW:        Virtual function to compare myself for equality with
  *                  another Exp
  * PARAMETERS:      Ref to other Exp
  * RETURNS:         True if equal
  *============================================================================*/
-bool Const::operator==(const Exp &o) const
+bool
+Const::operator ==(const Exp &o) const
 {
 	// Note: the casts of o to Const& are needed, else op is protected! Duh.
 	if (((Const &)o).op == opWild) return true;
@@ -366,12 +394,13 @@ bool Const::operator==(const Exp &o) const
 	case opFltConst: return u.d == ((Const &)o).u.d;
 	case opStrConst: return (strcmp(u.p, ((Const &)o).u.p) == 0);
 	default:
-		LOG << "Operator== invalid operator " << operStrings[op] << "\n";
+		LOG << "operator == invalid operator " << operStrings[op] << "\n";
 		assert(0);
 	}
 	return false;
 }
-bool Unary::operator==(const Exp &o) const
+bool
+Unary::operator ==(const Exp &o) const
 {
 	if (((Unary &)o).op == opWild) return true;
 	if (((Unary &)o).op == opWildRegOf && op == opRegOf) return true;
@@ -380,7 +409,8 @@ bool Unary::operator==(const Exp &o) const
 	if (op != ((Unary &)o).op) return false;
 	return *subExp1 == *((Unary &)o).getSubExp1();
 }
-bool Binary::operator==(const Exp &o) const
+bool
+Binary::operator ==(const Exp &o) const
 {
 	assert(subExp1 && subExp2);
 	if (((Binary &)o).op == opWild) return true;
@@ -388,7 +418,8 @@ bool Binary::operator==(const Exp &o) const
 	if (!( *subExp1 == *((Binary &)o).getSubExp1())) return false;
 	return *subExp2 == *((Binary &)o).getSubExp2();
 }
-bool Ternary::operator==(const Exp &o) const
+bool
+Ternary::operator ==(const Exp &o) const
 {
 	if (((Ternary &)o).op == opWild) return true;
 	if (op != ((Ternary &)o).op) return false;
@@ -396,7 +427,8 @@ bool Ternary::operator==(const Exp &o) const
 	if (!( *subExp2 == *((Ternary &)o).getSubExp2())) return false;
 	return *subExp3 == *((Ternary &)o).getSubExp3();
 }
-bool Terminal::operator==(const Exp &o) const
+bool
+Terminal::operator ==(const Exp &o) const
 {
 	if (op == opWildIntConst) return ((Terminal &)o).op == opIntConst;
 	if (op == opWildStrConst) return ((Terminal &)o).op == opStrConst;
@@ -407,7 +439,8 @@ bool Terminal::operator==(const Exp &o) const
 	     || (((Terminal &)o).op == opWild)
 	     || (op == ((Terminal &)o).op));
 }
-bool TypedExp::operator==(const Exp &o) const
+bool
+TypedExp::operator ==(const Exp &o) const
 {
 	if (((TypedExp &)o).op == opWild) return true;
 	if (((TypedExp &)o).op != opTypedExp) return false;
@@ -415,7 +448,8 @@ bool TypedExp::operator==(const Exp &o) const
 	if (*type != *((TypedExp &)o).type) return false;
 	return *((Unary *)this)->getSubExp1() == *((Unary &)o).getSubExp1();
 }
-bool RefExp::operator==(const Exp &o) const
+bool
+RefExp::operator ==(const Exp &o) const
 {
 	if (((RefExp &)o).op == opWild) return true;
 	if (((RefExp &)o).op != opSubscript) return false;
@@ -428,7 +462,8 @@ bool RefExp::operator==(const Exp &o) const
 	if (((RefExp &)o).def == NULL && def && def->isImplicit()) return true;
 	return def == ((RefExp &)o).def;
 }
-bool TypeVal::operator==(const Exp &o) const
+bool
+TypeVal::operator ==(const Exp &o) const
 {
 	if (((TypeVal &)o).op == opWild) return true;
 	if (((TypeVal &)o).op != opTypeVal) return false;
@@ -436,14 +471,15 @@ bool TypeVal::operator==(const Exp &o) const
 }
 
 /*==============================================================================
- * FUNCTION:        Const::operator<() etc
+ * FUNCTION:        Const::operator <() etc
  * OVERVIEW:        Virtual function to compare myself with another Exp
  * NOTE:            The test for a wildcard is only with this object, not the other object (o).
  *                  So when searching and there could be wildcards, use search == *this not *this == search
  * PARAMETERS:      Ref to other Exp
  * RETURNS:         True if equal
  *============================================================================*/
-bool Const::operator<(const Exp &o) const
+bool
+Const::operator <(const Exp &o) const
 {
 	if (op < o.getOper()) return true;
 	if (op > o.getOper()) return false;
@@ -459,22 +495,25 @@ bool Const::operator<(const Exp &o) const
 	case opStrConst:
 		return strcmp(u.p, ((Const &)o).u.p) < 0;
 	default:
-		LOG << "Operator< invalid operator " << operStrings[op] << "\n";
+		LOG << "operator < invalid operator " << operStrings[op] << "\n";
 		assert(0);
 	}
 	return false;
 }
-bool Terminal::operator<(const Exp &o) const
+bool
+Terminal::operator <(const Exp &o) const
 {
 	return (op < o.getOper());
 }
-bool Unary::operator<(const Exp &o) const
+bool
+Unary::operator <(const Exp &o) const
 {
 	if (op < o.getOper()) return true;
 	if (op > o.getOper()) return false;
 	return *subExp1 < *((Unary &)o).getSubExp1();
 }
-bool Binary::operator<(const Exp &o) const
+bool
+Binary::operator <(const Exp &o) const
 {
 	assert(subExp1 && subExp2);
 	if (op < o.getOper()) return true;
@@ -483,7 +522,8 @@ bool Binary::operator<(const Exp &o) const
 	if (*((Binary &)o).getSubExp1() < *subExp1) return false;
 	return *subExp2 < *((Binary &)o).getSubExp2();
 }
-bool Ternary::operator<(const Exp &o) const
+bool
+Ternary::operator <(const Exp &o) const
 {
 	if (op < o.getOper()) return true;
 	if (op > o.getOper()) return false;
@@ -493,13 +533,15 @@ bool Ternary::operator<(const Exp &o) const
 	if (*((Ternary &)o).getSubExp2() < *subExp2) return false;
 	return *subExp3 < *((Ternary &)o).getSubExp3();
 }
-bool TypedExp::operator<<(const Exp &o) const  // Type insensitive
+bool
+TypedExp::operator <<(const Exp &o) const  // Type insensitive
 {
 	if (op < o.getOper()) return true;
 	if (op > o.getOper()) return false;
 	return *subExp1 << *((Unary &)o).getSubExp1();
 }
-bool TypedExp::operator<(const Exp &o) const  // Type sensitive
+bool
+TypedExp::operator <(const Exp &o) const  // Type sensitive
 {
 	if (op < o.getOper()) return true;
 	if (op > o.getOper()) return false;
@@ -507,7 +549,8 @@ bool TypedExp::operator<(const Exp &o) const  // Type sensitive
 	if (*((TypedExp &)o).type < *type) return false;
 	return *subExp1 < *((Unary &)o).getSubExp1();
 }
-bool RefExp::operator<(const Exp &o) const
+bool
+RefExp::operator <(const Exp &o) const
 {
 	if (opSubscript < o.getOper()) return true;
 	if (opSubscript > o.getOper()) return false;
@@ -518,7 +561,8 @@ bool RefExp::operator<(const Exp &o) const
 	if (((RefExp &)o).def == (Statement *)-1) return false;
 	return def < ((RefExp &)o).def;
 }
-bool TypeVal::operator<(const Exp &o) const
+bool
+TypeVal::operator <(const Exp &o) const
 {
 	if (opTypeVal < o.getOper()) return true;
 	if (opTypeVal > o.getOper()) return false;
@@ -526,18 +570,20 @@ bool TypeVal::operator<(const Exp &o) const
 }
 
 /*==============================================================================
- * FUNCTION:        Const::operator*=() etc
+ * FUNCTION:        Const::operator *=() etc
  * OVERVIEW:        Virtual function to compare myself for equality with another Exp, *ignoring subscripts*
  * PARAMETERS:      Ref to other Exp
  * RETURNS:         True if equal
  *============================================================================*/
-bool Const::operator*=(Exp &o)
+bool
+Const::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
 	return *this == *other;
 }
-bool Unary::operator*=(Exp &o)
+bool
+Unary::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
@@ -548,7 +594,8 @@ bool Unary::operator*=(Exp &o)
 	if (op != ((Unary *)other)->op) return false;
 	return *subExp1 *= *((Unary *)other)->getSubExp1();
 }
-bool Binary::operator*=(Exp &o)
+bool
+Binary::operator *=(Exp &o)
 {
 	assert(subExp1 && subExp2);
 	Exp *other = &o;
@@ -558,7 +605,8 @@ bool Binary::operator*=(Exp &o)
 	if (!( *subExp1 *= *((Binary *)other)->getSubExp1())) return false;
 	return *subExp2 *= *((Binary *)other)->getSubExp2();
 }
-bool Ternary::operator*=(Exp &o)
+bool
+Ternary::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
@@ -568,13 +616,15 @@ bool Ternary::operator*=(Exp &o)
 	if (!( *subExp2 *= *((Ternary *)other)->getSubExp2())) return false;
 	return *subExp3 *= *((Ternary *)other)->getSubExp3();
 }
-bool Terminal::operator*=(Exp &o)
+bool
+Terminal::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
 	return *this == *other;
 }
-bool TypedExp::operator*=(Exp &o)
+bool
+TypedExp::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
@@ -584,13 +634,15 @@ bool TypedExp::operator*=(Exp &o)
 	if (*type != *((TypedExp *)other)->type) return false;
 	return *((Unary *)this)->getSubExp1() *= *((Unary *)other)->getSubExp1();
 }
-bool RefExp::operator*=(Exp &o)
+bool
+RefExp::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
 	return *subExp1 *= *other;
 }
-bool TypeVal::operator*=(Exp &o)
+bool
+TypeVal::operator *=(Exp &o)
 {
 	Exp *other = &o;
 	if (o.getOper() == opSubscript) other = o.getSubExp1();
@@ -602,13 +654,13 @@ bool TypeVal::operator*=(Exp &o)
  * OVERVIEW:        "Print" in infix notation the expression to a stream.
  *                  Mainly for debugging, or maybe some low level windows
  * PARAMETERS:      Ref to an output stream
- * RETURNS:         <nothing>
  *============================================================================*/
 
 //  //  //  //
 //  Const   //
 //  //  //  //
-void Const::print(std::ostream &os, bool html)
+void
+Const::print(std::ostream &os, bool html)
 {
 	setLexBegin(os.tellp());
 	switch (op) {
@@ -641,7 +693,8 @@ void Const::print(std::ostream &os, bool html)
 	setLexEnd(os.tellp());
 }
 
-void Const::printNoQuotes(std::ostream &os)
+void
+Const::printNoQuotes(std::ostream &os)
 {
 	if (op == opStrConst)
 		os << u.p;
@@ -652,7 +705,8 @@ void Const::printNoQuotes(std::ostream &os)
 //  //  //  //
 //  Binary  //
 //  //  //  //
-void Binary::printr(std::ostream &os, bool html)
+void
+Binary::printr(std::ostream &os, bool html)
 {
 	assert(subExp1 && subExp2);
 	// The "r" is for recursive: the idea is that we don't want parentheses at the outer level, but a subexpression
@@ -668,13 +722,14 @@ void Binary::printr(std::ostream &os, bool html)
 		break;
 	}
 	// Normal case: we want the parens
-	// std::ostream::operator<< uses print(), which does not have the parens
+	// std::ostream::operator << uses print(), which does not have the parens
 	os << "(";
 	this->print(os, html);
 	os << ")";
 }
 
-void Binary::print(std::ostream &os, bool html)
+void
+Binary::print(std::ostream &os, bool html)
 {
 	assert(subExp1 && subExp2);
 	Exp *p1 = ((Binary *)this)->getSubExp1();
@@ -790,7 +845,8 @@ void Binary::print(std::ostream &os, bool html)
 //  //  //  //  //
 //   Terminal   //
 //  //  //  //  //
-void Terminal::print(std::ostream &os, bool html)
+void
+Terminal::print(std::ostream &os, bool html)
 {
 	switch (op) {
 	case opPC:           os << "%pc";     break;
@@ -825,7 +881,8 @@ void Terminal::print(std::ostream &os, bool html)
 //  //  //  //
 //   Unary  //
 //  //  //  //
-void Unary::print(std::ostream &os, bool html)
+void
+Unary::print(std::ostream &os, bool html)
 {
 	Exp *p1 = ((Unary *)this)->getSubExp1();
 	switch (op) {
@@ -969,7 +1026,8 @@ void Unary::print(std::ostream &os, bool html)
 //  //  //  //
 //  Ternary //
 //  //  //  //
-void Ternary::printr(std::ostream &os, bool html)
+void
+Ternary::printr(std::ostream &os, bool html)
 {
 	// The function-like operators don't need parentheses
 	switch (op) {
@@ -994,7 +1052,8 @@ void Ternary::printr(std::ostream &os, bool html)
 	os << "(" << this << ")";
 }
 
-void Ternary::print(std::ostream &os, bool html)
+void
+Ternary::print(std::ostream &os, bool html)
 {
 	Exp *p1 = ((Ternary *)this)->getSubExp1();
 	Exp *p2 = ((Ternary *)this)->getSubExp2();
@@ -1054,7 +1113,8 @@ void Ternary::print(std::ostream &os, bool html)
 //  //  //  //
 // TypedExp //
 //  //  //  //
-void TypedExp::print(std::ostream &os, bool html)
+void
+TypedExp::print(std::ostream &os, bool html)
 {
 	os << " ";
 	type->starPrint(os);
@@ -1065,7 +1125,8 @@ void TypedExp::print(std::ostream &os, bool html)
 //  //  //  //
 //  RefExp  //
 //  //  //  //
-void RefExp::print(std::ostream &os, bool html)
+void
+RefExp::print(std::ostream &os, bool html)
 {
 	if (subExp1) subExp1->print(os, html);
 	else os << "<NULL>";
@@ -1091,7 +1152,8 @@ void RefExp::print(std::ostream &os, bool html)
 //  //  //  //
 // TypeVal  //
 //  //  //  //
-void TypeVal::print(std::ostream &os, bool html)
+void
+TypeVal::print(std::ostream &os, bool html)
 {
 	if (val)
 		os << "<" << val->getCtype() << ">";
@@ -1102,10 +1164,10 @@ void TypeVal::print(std::ostream &os, bool html)
 /*==============================================================================
  * FUNCTION:        Exp::prints
  * OVERVIEW:        Print to a static string (for debugging)
- * PARAMETERS:      <none>
  * RETURNS:         Address of the static buffer
  *============================================================================*/
-char *Exp::prints()
+char *
+Exp::prints()
 {
 	std::ostringstream ost;
 	print(ost);
@@ -1114,7 +1176,8 @@ char *Exp::prints()
 	return debug_buffer;
 }
 
-void Exp::dump()
+void
+Exp::dump()
 {
 	print(std::cerr);
 }
@@ -1125,7 +1188,8 @@ void Exp::dump()
  *                  Mainly for debugging
  * PARAMETERS:      The stream to write
  *============================================================================*/
-void Exp::createDot(std::ostream &os)
+void
+Exp::createDot(std::ostream &os)
 {
 	os << "digraph Exp {\n";
 	appendDot(os);
@@ -1135,7 +1199,8 @@ void Exp::createDot(std::ostream &os)
 //  //  //  //
 //  Const   //
 //  //  //  //
-void Const::appendDot(std::ostream &os)
+void
+Const::appendDot(std::ostream &os)
 {
 	// We define a unique name for each node as "e123456" if the address of "this" == 0x123456
 	os << "\te" << std::hex << (int)this
@@ -1157,7 +1222,8 @@ void Const::appendDot(std::ostream &os)
 //  //  //  //
 // Terminal //
 //  //  //  //
-void Terminal::appendDot(std::ostream &os)
+void
+Terminal::appendDot(std::ostream &os)
 {
 	os << "\te" << std::hex << (int)this
 	// Note: opWild value is -1, so can't index array
@@ -1169,7 +1235,8 @@ void Terminal::appendDot(std::ostream &os)
 //  //  //  //
 //  Unary   //
 //  //  //  //
-void Unary::appendDot(std::ostream &os)
+void
+Unary::appendDot(std::ostream &os)
 {
 	// First a node for this Unary object
 	os << "\te" << std::hex << (int)this
@@ -1187,7 +1254,8 @@ void Unary::appendDot(std::ostream &os)
 //  //  //  //
 //  Binary  //
 //  //  //  //
-void Binary::appendDot(std::ostream &os)
+void
+Binary::appendDot(std::ostream &os)
 {
 	// First a node for this Binary object
 	os << "\te" << std::hex << (int)this
@@ -1206,7 +1274,8 @@ void Binary::appendDot(std::ostream &os)
 //  //  //  //
 //  Ternary //
 //  //  //  //
-void Ternary::appendDot(std::ostream &os)
+void
+Ternary::appendDot(std::ostream &os)
 {
 	// First a node for this Ternary object
 	os << "\te" << std::hex << (int)this
@@ -1227,7 +1296,8 @@ void Ternary::appendDot(std::ostream &os)
 //  //  //  //
 // TypedExp //
 //  //  //  //
-void TypedExp::appendDot(std::ostream &os)
+void
+TypedExp::appendDot(std::ostream &os)
 {
 	os << "\te" << std::hex << (int)this
 	   << " [shape=record,label=\"{ " << "opTypedExp"
@@ -1243,7 +1313,8 @@ void TypedExp::appendDot(std::ostream &os)
 //  //  //  //
 //  FlagDef //
 //  //  //  //
-void FlagDef::appendDot(std::ostream &os)
+void
+FlagDef::appendDot(std::ostream &os)
 {
 	os << "\te" << std::hex << (int)this
 	   << " [shape=record,label=\"{ " << "opFlagDef"
@@ -1263,10 +1334,10 @@ void FlagDef::appendDot(std::ostream &os)
 /*==============================================================================
  * FUNCTION:        Exp::isRegOfK
  * OVERVIEW:        Returns true if the expression is r[K] where K is int const
- * PARAMETERS:      <none>
  * RETURNS:         True if matches
  *============================================================================*/
-bool Exp::isRegOfK()
+bool
+Exp::isRegOfK()
 {
 	if (op != opRegOf) return false;
 	return ((Unary *)this)->getSubExp1()->getOper() == opIntConst;
@@ -1278,7 +1349,8 @@ bool Exp::isRegOfK()
  * PARAMETERS:      N: the specific register to be tested for
  * RETURNS:         True if matches
  *============================================================================*/
-bool Exp::isRegN(int N)
+bool
+Exp::isRegN(int N)
 {
 	if (op != opRegOf) return false;
 	Exp *sub = ((Unary *)this)->getSubExp1();
@@ -1288,10 +1360,10 @@ bool Exp::isRegN(int N)
 /*==============================================================================
  * FUNCTION:        Exp::isAfpTerm
  * OVERVIEW:        Returns true if is %afp, %afp+k, %afp-k, or a[m[<any of these]]
- * PARAMETERS:      <none>
  * RETURNS:         True if found
  *============================================================================*/
-bool Exp::isAfpTerm()
+bool
+Exp::isAfpTerm()
 {
 	Exp *cur = this;
 	if (op == opTypedExp)
@@ -1312,10 +1384,10 @@ bool Exp::isAfpTerm()
 /*==============================================================================
  * FUNCTION:        Exp::getVarIndex
  * OVERVIEW:        Returns the index for this var, e.g. if v[2], return 2
- * PARAMETERS:      <none>
  * RETURNS:         The index
  *============================================================================*/
-int Exp::getVarIndex()
+int
+Exp::getVarIndex()
 {
 	assert(op == opVar);
 	Exp *sub = ((Unary *)this)->getSubExp1();
@@ -1325,10 +1397,10 @@ int Exp::getVarIndex()
 /*==============================================================================
  * FUNCTION:        Exp::getGuard
  * OVERVIEW:        Returns a ptr to the guard exression, or 0 if none
- * PARAMETERS:      <none>
  * RETURNS:         Ptr to the guard, or 0
  *============================================================================*/
-Exp *Exp::getGuard()
+Exp *
+Exp::getGuard()
 {
 	if (op == opGuard) return ((Unary *)this)->getSubExp1();
 	return NULL;
@@ -1340,7 +1412,8 @@ Exp *Exp::getGuard()
  * PARAMETERS:      pattern to match
  * RETURNS:         list of variable bindings, or NULL if matching fails
  *============================================================================*/
-Exp *Exp::match(Exp *pattern)
+Exp *
+Exp::match(Exp *pattern)
 {
 	if (*this == *pattern)
 		return new Terminal(opNil);
@@ -1351,7 +1424,8 @@ Exp *Exp::match(Exp *pattern)
 	}
 	return NULL;
 }
-Exp *Unary::match(Exp *pattern)
+Exp *
+Unary::match(Exp *pattern)
 {
 	assert(subExp1);
 	if (op == pattern->getOper()) {
@@ -1359,7 +1433,8 @@ Exp *Unary::match(Exp *pattern)
 	}
 	return Exp::match(pattern);
 }
-Exp *Binary::match(Exp *pattern)
+Exp *
+Binary::match(Exp *pattern)
 {
 	assert(subExp1 && subExp2);
 	if (op == pattern->getOper()) {
@@ -1394,7 +1469,8 @@ Exp *Binary::match(Exp *pattern)
 	}
 	return Exp::match(pattern);
 }
-Exp *RefExp::match(Exp *pattern)
+Exp *
+RefExp::match(Exp *pattern)
 {
 	Exp *r = Unary::match(pattern);
 #if 0
@@ -1412,7 +1488,8 @@ Exp *RefExp::match(Exp *pattern)
 #endif
 }
 #if 0  // Suspect ADHOC TA only
-Exp *TypeVal::match(Exp *pattern)
+Exp *
+TypeVal::match(Exp *pattern)
 {
 	if (op == pattern->getOper()) {
 		return val->match(pattern->getType());
@@ -1424,7 +1501,8 @@ Exp *TypeVal::match(Exp *pattern)
 #define ISVARIABLE(x) (strspn((x), "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") == strlen((x)))
 //#define DEBUG_MATCH
 
-const char *tlstrchr(const char *str, char ch)
+const char *
+tlstrchr(const char *str, char ch)
 {
 	while (str && *str) {
 		if (*str == ch)
@@ -1450,7 +1528,8 @@ const char *tlstrchr(const char *str, char ch)
  * PARAMETERS:      pattern to match, map of bindings
  * RETURNS:         true if match, false otherwise
  *============================================================================*/
-bool Exp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Exp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	// most obvious
 	std::ostringstream ostr;
@@ -1467,7 +1546,8 @@ bool Exp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	// no, fail
 	return false;
 }
-bool Unary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Unary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1482,7 +1562,8 @@ bool Unary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	}
 	return false;
 }
-bool Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1537,7 +1618,8 @@ bool Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	}
 	return false;
 }
-bool Ternary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Ternary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1546,7 +1628,8 @@ bool Ternary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 #endif
 	return false;
 }
-bool RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1572,7 +1655,8 @@ bool RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	}
 	return false;
 }
-bool Const::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Const::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1581,7 +1665,8 @@ bool Const::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 #endif
 	return false;
 }
-bool Terminal::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Terminal::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1590,7 +1675,8 @@ bool Terminal::match(const char *pattern, std::map<std::string, Exp *> &bindings
 #endif
 	return false;
 }
-bool Location::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+bool
+Location::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1623,9 +1709,9 @@ bool Location::match(const char *pattern, std::map<std::string, Exp *> &bindings
  *                  to effect a replacement. So we need to append &pSrc in the list. Can't append &this!
  *                  li: list of Exp** where pointers to the matches are found once: true if not all occurrences to be
  *                    found, false for all
- * RETURNS:         <nothing>
  *============================================================================*/
-void Exp::doSearch(Exp *search, Exp *&pSrc, std::list<Exp **> &li, bool once)
+void
+Exp::doSearch(Exp *search, Exp *&pSrc, std::list<Exp **> &li, bool once)
 {
 	bool compare;
 	compare = (*search == *pSrc);
@@ -1648,25 +1734,28 @@ void Exp::doSearch(Exp *search, Exp *&pSrc, std::list<Exp **> &li, bool once)
  * PARAMETERS:      search: ptr to Exp we are searching for
  *                  li: list of Exp** where pointers to the matches are found
  *                  once: true if not all occurrences to be found, false for all
- * RETURNS:         <nothing>
  *============================================================================*/
-void Exp::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
+void
+Exp::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
 {
 	return;  // Const and Terminal do not override this
 }
-void Unary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
+void
+Unary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
 {
 	if (op != opInitValueOf)  // don't search child
 		doSearch(search, subExp1, li, once);
 }
-void Binary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
+void
+Binary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
 {
 	assert(subExp1 && subExp2);
 	doSearch(search, subExp1, li, once);
 	if (once && li.size()) return;
 	doSearch(search, subExp2, li, once);
 }
-void Ternary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
+void
+Ternary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
 {
 	doSearch(search, subExp1, li, once);
 	if (once && li.size()) return;
@@ -1684,7 +1773,8 @@ void Ternary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
  *                  change: ref to boolean, set true if a change made (else cleared)
  * RETURNS:         True if a change made
  *============================================================================*/
-Exp *Exp::searchReplace(Exp *search, Exp *replace, bool &change)
+Exp *
+Exp::searchReplace(Exp *search, Exp *replace, bool &change)
 {
 	return searchReplaceAll(search, replace, change, true);
 }
@@ -1702,7 +1792,8 @@ Exp *Exp::searchReplace(Exp *search, Exp *replace, bool &change)
  * NOTE:            change is ALWAYS assigned. No need to clear beforehand.
  * RETURNS:         the result (often this, but possibly changed)
  *============================================================================*/
-Exp *Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = false */)
+Exp *
+Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = false */)
 {
 	std::list<Exp **> li;
 	Exp *top = this;  // top may change; that's why we have to return it
@@ -1730,7 +1821,8 @@ Exp *Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /*
  *                  result:  ref to ptr to Exp that matched
  * RETURNS:         True if a match was found
  *============================================================================*/
-bool Exp::search(Exp *search, Exp *&result)
+bool
+Exp::search(Exp *search, Exp *&result)
 {
 	std::list<Exp **> li;
 	result = 0;  // In case it fails; don't leave it unassigned
@@ -1753,7 +1845,8 @@ bool Exp::search(Exp *search, Exp *&result)
  *                  results:  ref to list of Exp that matched
  * RETURNS:         True if a match was found
  *============================================================================*/
-bool Exp::searchAll(Exp *search, std::list<Exp *> &result)
+bool
+Exp::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	std::list<Exp **> li;
 	//result.clear();  // No! Useful when searching for more than one thing
@@ -1788,9 +1881,9 @@ bool Exp::searchAll(Exp *search, std::list<Exp *> &result)
  *                  integers - the vector of integer terms
  *                  negate - determines whether or not to negate the whole expression, i.e. we are on the RHS of an
  *                  opMinus
- * RETURNS:         <nothing>
  *============================================================================*/
-void Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate)
+void
+Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate)
 {
 	Exp *p1, *p2;
 	switch (op) {
@@ -1834,10 +1927,10 @@ void Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negative
  *                  (%sp + 100) - (%sp + 92) will be simplified to 8.
  * NOTE:            Any expression can be so simplified
  * NOTE:            User must ;//delete result
- * PARAMETERS:      <none>
  * RETURNS:         Ptr to the simplified expression
  *============================================================================*/
-Exp *Unary::simplifyArith()
+Exp *
+Unary::simplifyArith()
 {
 	if (op == opMemOf || op == opRegOf || op == opAddrOf || op == opSubscript) {
 		// assume we want to simplify the subexpression
@@ -1846,7 +1939,8 @@ Exp *Unary::simplifyArith()
 	return this;  // Else, do nothing
 }
 
-Exp *Ternary::simplifyArith()
+Exp *
+Ternary::simplifyArith()
 {
 	subExp1 = subExp1->simplifyArith();
 	subExp2 = subExp2->simplifyArith();
@@ -1854,7 +1948,8 @@ Exp *Ternary::simplifyArith()
 	return this;
 }
 
-Exp *Binary::simplifyArith()
+Exp *
+Binary::simplifyArith()
 {
 	assert(subExp1 && subExp2);
 	subExp1 = subExp1->simplifyArith();  // FIXME: does this make sense?
@@ -1949,7 +2044,8 @@ Exp *Binary::simplifyArith()
  * PARAMETERS:      exprs - a list of expressions
  * RETURNS:         a new Exp with the accumulation
  *============================================================================*/
-Exp *Exp::Accumulate(std::list<Exp *> exprs)
+Exp *
+Exp::Accumulate(std::list<Exp *> exprs)
 {
 	int n = exprs.size();
 	if (n == 0)
@@ -1971,7 +2067,6 @@ Exp *Exp::Accumulate(std::list<Exp *> exprs)
  *                  positive constants, etc.  Changes << k to a multiply
  * NOTE:            User must ;//delete result
  * NOTE:            Address simplification (a[ m[ x ]] == x) is done separately
- * PARAMETERS:      <none>
  * RETURNS:         Ptr to the simplified expression
  *
  * This code is so big, so weird and so lame it's not funny.  What this boils down to is the process of unification.
@@ -1980,7 +2075,8 @@ Exp *Exp::Accumulate(std::list<Exp *> exprs)
  * rely on this code to do anything critical. - trent 8/7/2002
  *============================================================================*/
 #define DEBUG_SIMP 0  // Set to 1 to print every change
-Exp *Exp::simplify()
+Exp *
+Exp::simplify()
 {
 #if DEBUG_SIMP
 	Exp *save = clone();
@@ -2016,10 +2112,10 @@ Exp *Exp::simplify()
  * OVERVIEW:        Do the work of simplification
  * NOTE:            User must ;//delete result
  * NOTE:            Address simplification (a[ m[ x ]] == x) is done separately
- * PARAMETERS:      <none>
  * RETURNS:         Ptr to the simplified expression
  *============================================================================*/
-Exp *Unary::polySimplify(bool &bMod)
+Exp *
+Unary::polySimplify(bool &bMod)
 {
 	Exp *res = this;
 	subExp1 = subExp1->polySimplify(bMod);
@@ -2136,7 +2232,8 @@ Exp *Unary::polySimplify(bool &bMod)
 	return res;
 }
 
-Exp *Binary::polySimplify(bool &bMod)
+Exp *
+Binary::polySimplify(bool &bMod)
 {
 	assert(subExp1 && subExp2);
 
@@ -2888,7 +2985,8 @@ Exp *Binary::polySimplify(bool &bMod)
 	return res;
 }
 
-Exp *Ternary::polySimplify(bool &bMod)
+Exp *
+Ternary::polySimplify(bool &bMod)
 {
 	Exp *res = this;
 
@@ -3022,7 +3120,8 @@ Exp *Ternary::polySimplify(bool &bMod)
 	return res;
 }
 
-Exp *TypedExp::polySimplify(bool &bMod)
+Exp *
+TypedExp::polySimplify(bool &bMod)
 {
 	Exp *res = this;
 
@@ -3037,7 +3136,8 @@ Exp *TypedExp::polySimplify(bool &bMod)
 	return res;
 }
 
-Exp *RefExp::polySimplify(bool &bMod)
+Exp *
+RefExp::polySimplify(bool &bMod)
 {
 	Exp *res = this;
 
@@ -3077,10 +3177,10 @@ Exp *RefExp::polySimplify(bool &bMod)
  * OVERVIEW:        Just do addressof simplification: a[ m[ any ]] == any, m[ a[ any ]] = any, and also
  *                    a[ size m[ any ]] == any
  * TODO:            Replace with a visitor some day
- * PARAMETERS:      <none>
  * RETURNS:         Ptr to the simplified expression
  *============================================================================*/
-Exp *Unary::simplifyAddr()
+Exp *
+Unary::simplifyAddr()
 {
 	Exp *sub;
 	if (op == opMemOf && subExp1->isAddrOf()) {
@@ -3113,7 +3213,8 @@ Exp *Unary::simplifyAddr()
 	return this;
 }
 
-Exp *Binary::simplifyAddr()
+Exp *
+Binary::simplifyAddr()
 {
 	assert(subExp1 && subExp2);
 
@@ -3122,7 +3223,8 @@ Exp *Binary::simplifyAddr()
 	return this;
 }
 
-Exp *Ternary::simplifyAddr()
+Exp *
+Ternary::simplifyAddr()
 {
 	subExp1 = subExp1->simplifyAddr();
 	subExp2 = subExp2->simplifyAddr();
@@ -3135,9 +3237,9 @@ Exp *Ternary::simplifyAddr()
  * OVERVIEW:        Print an infix representation of the object to the given file stream, with its type in <angle
  *                    brackets>.
  * PARAMETERS:      Output stream to send the output to
- * RETURNS:         <nothing>
  *============================================================================*/
-void Exp::printt(std::ostream &os /*= cout*/)
+void
+Exp::printt(std::ostream &os /*= cout*/)
 {
 	print(os);
 	if (op != opTypedExp) return;
@@ -3167,11 +3269,11 @@ void Exp::printt(std::ostream &os /*= cout*/)
  * OVERVIEW:        Print an infix representation of the object to the given file stream, but convert r[10] to r10 and
  *                    v[5] to v5
  * NOTE:            Never modify this function to emit debugging info; the back ends rely on this being clean to emit
- *                    correct C.  If debugging is desired, use operator<<
+ *                    correct C.  If debugging is desired, use operator <<
  * PARAMETERS:      Output stream to send the output to
- * RETURNS:         <nothing>
  *============================================================================*/
-void Exp::printAsHL(std::ostream &os /*= cout*/)
+void
+Exp::printAsHL(std::ostream &os /*= cout*/)
 {
 	std::ostringstream ost;
 	ost << this;  // Print to the string stream
@@ -3185,13 +3287,14 @@ void Exp::printAsHL(std::ostream &os /*= cout*/)
 }
 
 /*==============================================================================
- * FUNCTION:        operator<<
+ * FUNCTION:        operator <<
  * OVERVIEW:        Output operator for Exp*
  * PARAMETERS:      os: output stream to send to
  *                  p: ptr to Exp to print to the stream
  * RETURNS:         copy of os (for concatenation)
  *============================================================================*/
-std::ostream &operator<<(std::ostream &os, Exp *p)
+std::ostream &
+operator <<(std::ostream &os, Exp *p)
 {
 #if 1
 	// Useful for debugging, but can clutter the output
@@ -3206,10 +3309,10 @@ std::ostream &operator<<(std::ostream &os, Exp *p)
  * FUNCTION:        Unary::fixSuccessor
  * OVERVIEW:        Replace succ(r[k]) by r[k+1]
  * NOTE:            Could change top level expression
- * PARAMETERS:      None
  * RETURNS:         Fixed expression
  *============================================================================*/
-Exp *Exp::fixSuccessor()
+Exp *
+Exp::fixSuccessor()
 {
 	bool change;
 	Exp *result;
@@ -3239,12 +3342,12 @@ Exp *Exp::fixSuccessor()
  * OVERVIEW:        Remove size operations such as zero fill, sign extend
  * NOTE:            Could change top level expression
  * NOTE:            Does not handle truncation at present
- * PARAMETERS:      None
  * RETURNS:         Fixed expression
  *============================================================================*/
 static Ternary srch1(opZfill, new Terminal(opWild), new Terminal(opWild), new Terminal(opWild));
 static Ternary srch2(opSgnEx, new Terminal(opWild), new Terminal(opWild), new Terminal(opWild));
-Exp *Exp::killFill()
+Exp *
+Exp::killFill()
 {
 	Exp *res = this;
 	std::list<Exp **> result;
@@ -3258,7 +3361,8 @@ Exp *Exp::killFill()
 	return res;
 }
 
-bool Exp::isTemp()
+bool
+Exp::isTemp()
 {
 	if (op == opTemp) return true;
 	if (op != opRegOf) return false;
@@ -3268,7 +3372,8 @@ bool Exp::isTemp()
 }
 
 // allZero is set if all subscripts in the whole expression are null or implicit; otherwise cleared
-Exp *Exp::removeSubscripts(bool &allZero)
+Exp *
+Exp::removeSubscripts(bool &allZero)
 {
 	Exp *e = this;
 	LocationSet locs;
@@ -3291,19 +3396,22 @@ Exp *Exp::removeSubscripts(bool &allZero)
 
 // FIXME: if the wrapped expression does not convert to a location, the result is subscripted, which is probably not
 // what is wanted!
-Exp *Exp::fromSSAleft(UserProc *proc, Statement *d)
+Exp *
+Exp::fromSSAleft(UserProc *proc, Statement *d)
 {
 	RefExp *r = new RefExp(this, d);  // "Wrap" in a ref
 	return r->accept(new ExpSsaXformer(proc));
 }
 
 // A helper class for comparing Exp*'s sensibly
-bool lessExpStar::operator()(const Exp *x, const Exp *y) const
+bool
+lessExpStar::operator ()(const Exp *x, const Exp *y) const
 {
 	return (*x < *y);  // Compare the actual Exps
 }
 
-bool lessTI::operator()(const Exp *x, const Exp *y) const
+bool
+lessTI::operator ()(const Exp *x, const Exp *y) const
 {
 	return (*x << *y);  // Compare the actual Exps
 }
@@ -3312,13 +3420,15 @@ bool lessTI::operator()(const Exp *x, const Exp *y) const
 //  genConstraints  //
 //  //  //  //  //  //
 
-Exp *Exp::genConstraints(Exp *result)
+Exp *
+Exp::genConstraints(Exp *result)
 {
 	// Default case, no constraints -> return true
 	return new Terminal(opTrue);
 }
 
-Exp *Const::genConstraints(Exp *result)
+Exp *
+Const::genConstraints(Exp *result)
 {
 	if (result->isTypeVal()) {
 		// result is a constant type, or possibly a partial type such as ptr(alpha)
@@ -3404,7 +3514,8 @@ Exp *Const::genConstraints(Exp *result)
 	return e;
 }
 
-Exp *Unary::genConstraints(Exp *result)
+Exp *
+Unary::genConstraints(Exp *result)
 {
 	if (result->isTypeVal()) {
 		// TODO: need to check for conflicts
@@ -3425,7 +3536,8 @@ Exp *Unary::genConstraints(Exp *result)
 	return new Terminal(opTrue);
 }
 
-Exp *Ternary::genConstraints(Exp *result)
+Exp *
+Ternary::genConstraints(Exp *result)
 {
 	Type *argHasToBe = NULL;
 	Type *retHasToBe = NULL;
@@ -3492,7 +3604,8 @@ Exp *Ternary::genConstraints(Exp *result)
 	return res;
 }
 
-Exp *RefExp::genConstraints(Exp *result)
+Exp *
+RefExp::genConstraints(Exp *result)
 {
 	OPER subOp = subExp1->getOper();
 	switch (subOp) {
@@ -3510,7 +3623,8 @@ Exp *RefExp::genConstraints(Exp *result)
 }
 
 // Return a constraint that my subexpressions have to be of type typeval1 and typeval2 respectively
-Exp *Binary::constrainSub(TypeVal *typeVal1, TypeVal *typeVal2)
+Exp *
+Binary::constrainSub(TypeVal *typeVal1, TypeVal *typeVal2)
 {
 	assert(subExp1 && subExp2);
 
@@ -3519,7 +3633,8 @@ Exp *Binary::constrainSub(TypeVal *typeVal1, TypeVal *typeVal2)
 	return new Binary(opAnd, con1, con2);
 }
 
-Exp *Binary::genConstraints(Exp *result)
+Exp *
+Binary::genConstraints(Exp *result)
 {
 	assert(subExp1 && subExp2);
 
@@ -3689,7 +3804,8 @@ Exp *Binary::genConstraints(Exp *result)
 	return new Terminal(opTrue);
 }
 
-Exp *Location::polySimplify(bool &bMod)
+Exp *
+Location::polySimplify(bool &bMod)
 {
 	Exp *res = Unary::polySimplify(bMod);
 
@@ -3713,7 +3829,8 @@ Exp *Location::polySimplify(bool &bMod)
 	return res;
 }
 
-void Location::getDefinitions(LocationSet &defs)
+void
+Location::getDefinitions(LocationSet &defs)
 {
 	// This is a hack to fix aliasing (replace with something general)
 	// FIXME! This is x86 specific too. Use -O for overlapped registers!
@@ -3722,18 +3839,21 @@ void Location::getDefinitions(LocationSet &defs)
 	}
 }
 
-const char *Const::getFuncName()
+const char *
+Const::getFuncName()
 {
 	return u.pp->getName();
 }
 
-Exp *Unary::simplifyConstraint()
+Exp *
+Unary::simplifyConstraint()
 {
 	subExp1 = subExp1->simplifyConstraint();
 	return this;
 }
 
-Exp *Binary::simplifyConstraint()
+Exp *
+Binary::simplifyConstraint()
 {
 	assert(subExp1 && subExp2);
 
@@ -3772,14 +3892,16 @@ Exp *Binary::simplifyConstraint()
 //     V i s i t i n g      //
 //                          //
 //  //  //  //  //  //  //  //
-bool Unary::accept(ExpVisitor *v)
+bool
+Unary::accept(ExpVisitor *v)
 {
 	bool override, ret = v->visit(this, override);
 	if (override) return ret;  // Override the rest of the accept logic
 	if (ret) ret = subExp1->accept(v);
 	return ret;
 }
-bool Binary::accept(ExpVisitor *v)
+bool
+Binary::accept(ExpVisitor *v)
 {
 	assert(subExp1 && subExp2);
 
@@ -3789,7 +3911,8 @@ bool Binary::accept(ExpVisitor *v)
 	if (ret) ret = subExp2->accept(v);
 	return ret;
 }
-bool Ternary::accept(ExpVisitor *v)
+bool
+Ternary::accept(ExpVisitor *v)
 {
 	bool override, ret = v->visit(this, override);
 	if (override) return ret;
@@ -3801,28 +3924,32 @@ bool Ternary::accept(ExpVisitor *v)
 
 // All the Unary derived accept functions look the same, but they have to be repeated because the particular visitor
 // function called each time is different for each class (because "this" is different each time)
-bool TypedExp::accept(ExpVisitor *v)
+bool
+TypedExp::accept(ExpVisitor *v)
 {
 	bool override, ret = v->visit(this, override);
 	if (override) return ret;
 	if (ret) ret = subExp1->accept(v);
 	return ret;
 }
-bool FlagDef::accept(ExpVisitor *v)
+bool
+FlagDef::accept(ExpVisitor *v)
 {
 	bool override, ret = v->visit(this, override);
 	if (override) return ret;
 	if (ret) ret = subExp1->accept(v);
 	return ret;
 }
-bool RefExp::accept(ExpVisitor *v)
+bool
+RefExp::accept(ExpVisitor *v)
 {
 	bool override, ret = v->visit(this, override);
 	if (override) return ret;
 	if (ret) ret = subExp1->accept(v);
 	return ret;
 }
-bool Location::accept(ExpVisitor *v)
+bool
+Location::accept(ExpVisitor *v)
 {
 	bool override = false, ret = v->visit(this, override);
 	if (override) return ret;
@@ -3831,13 +3958,14 @@ bool Location::accept(ExpVisitor *v)
 }
 
 // The following are similar, but don't have children that have to accept visitors
-bool Terminal::accept(ExpVisitor *v) {return v->visit(this);}
-bool    Const::accept(ExpVisitor *v) {return v->visit(this);}
-bool  TypeVal::accept(ExpVisitor *v) {return v->visit(this);}
+bool Terminal::accept(ExpVisitor *v) { return v->visit(this); }
+bool    Const::accept(ExpVisitor *v) { return v->visit(this); }
+bool  TypeVal::accept(ExpVisitor *v) { return v->visit(this); }
 
 // FixProcVisitor class
 
-void Exp::fixLocationProc(UserProc *p)
+void
+Exp::fixLocationProc(UserProc *p)
 {
 	// All locations are supposed to have a pointer to the enclosing UserProc that they are a location of. Sometimes,
 	// you have an arbitrary expression that may not have all its procs set. This function fixes the procs for all
@@ -3849,27 +3977,31 @@ void Exp::fixLocationProc(UserProc *p)
 
 // GetProcVisitor class
 
-UserProc *Exp::findProc()
+UserProc *
+Exp::findProc()
 {
 	GetProcVisitor gpv;
 	accept(&gpv);
 	return gpv.getProc();
 }
 
-void Exp::setConscripts(int n, bool bClear)
+void
+Exp::setConscripts(int n, bool bClear)
 {
 	SetConscripts sc(n, bClear);
 	accept(&sc);
 }
 
 // Strip size casts from an Exp
-Exp *Exp::stripSizes()
+Exp *
+Exp::stripSizes()
 {
 	SizeStripper ss;
 	return accept(&ss);
 }
 
-Exp *Unary::accept(ExpModifier *v)
+Exp *
+Unary::accept(ExpModifier *v)
 {
 	// This Unary will be changed in *either* the pre or the post visit. If it's changed in the preVisit step, then
 	// postVisit doesn't care about the type of ret. So let's call it a Unary, and the type system is happy
@@ -3878,7 +4010,8 @@ Exp *Unary::accept(ExpModifier *v)
 	if (recur) subExp1 = subExp1->accept(v);
 	return v->postVisit(ret);
 }
-Exp *Binary::accept(ExpModifier *v)
+Exp *
+Binary::accept(ExpModifier *v)
 {
 	assert(subExp1 && subExp2);
 
@@ -3888,7 +4021,8 @@ Exp *Binary::accept(ExpModifier *v)
 	if (recur) subExp2 = subExp2->accept(v);
 	return v->postVisit(ret);
 }
-Exp *Ternary::accept(ExpModifier *v)
+Exp *
+Ternary::accept(ExpModifier *v)
 {
 	bool recur;
 	Ternary *ret = (Ternary *)v->preVisit(this, recur);
@@ -3897,7 +4031,8 @@ Exp *Ternary::accept(ExpModifier *v)
 	if (recur) subExp3 = subExp3->accept(v);
 	return v->postVisit(ret);
 }
-Exp *Location::accept(ExpModifier *v)
+Exp *
+Location::accept(ExpModifier *v)
 {
 	// This looks to be the same source code as Unary::accept, but the type of "this" is different, which is all
 	// important here!  (it makes a call to a different visitor member function).
@@ -3906,42 +4041,49 @@ Exp *Location::accept(ExpModifier *v)
 	if (recur) subExp1 = subExp1->accept(v);
 	return v->postVisit(ret);
 }
-Exp *RefExp::accept(ExpModifier *v)
+Exp *
+RefExp::accept(ExpModifier *v)
 {
 	bool recur;
 	RefExp *ret = (RefExp *)v->preVisit(this, recur);
 	if (recur) subExp1 = subExp1->accept(v);
 	return v->postVisit(ret);
 }
-Exp *FlagDef::accept(ExpModifier *v)
+Exp *
+FlagDef::accept(ExpModifier *v)
 {
 	bool recur;
 	FlagDef *ret = (FlagDef *)v->preVisit(this, recur);
 	if (recur) subExp1 = subExp1->accept(v);
 	return v->postVisit(ret);
 }
-Exp *TypedExp::accept(ExpModifier *v)
+Exp *
+TypedExp::accept(ExpModifier *v)
 {
 	bool recur;
 	TypedExp *ret = (TypedExp *)v->preVisit(this, recur);
 	if (recur) subExp1 = subExp1->accept(v);
 	return v->postVisit(ret);
 }
-Exp *Terminal::accept(ExpModifier *v)
+Exp *
+Terminal::accept(ExpModifier *v)
 {
 	// This is important if we need to modify terminals
 	return v->postVisit((Terminal *)v->preVisit(this));
 }
-Exp *Const::accept(ExpModifier *v)
+Exp *
+Const::accept(ExpModifier *v)
 {
 	return v->postVisit((Const *)v->preVisit(this));
 }
-Exp *TypeVal::accept(ExpModifier *v)
+Exp *
+TypeVal::accept(ExpModifier *v)
 {
 	return v->postVisit((TypeVal *)v->preVisit(this));
 }
 
-void child(Exp *e, int ind)
+void
+child(Exp *e, int ind)
 {
 	if (e == NULL) {
 		std::cerr << std::setw(ind + 4) << " " << "<NULL>\n" << std::flush;
@@ -3955,12 +4097,14 @@ void child(Exp *e, int ind)
 	e->printx(ind + 4);
 }
 
-void Unary::printx(int ind)
+void
+Unary::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
 	child(subExp1, ind);
 }
-void Binary::printx(int ind)
+void
+Binary::printx(int ind)
 {
 	assert(subExp1 && subExp2);
 
@@ -3968,14 +4112,16 @@ void Binary::printx(int ind)
 	child(subExp1, ind);
 	child(subExp2, ind);
 }
-void Ternary::printx(int ind)
+void
+Ternary::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
 	child(subExp1, ind);
 	child(subExp2, ind);
 	child(subExp3, ind);
 }
-void Const::printx(int ind)
+void
+Const::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	switch (op) {
@@ -3998,22 +4144,26 @@ void Const::printx(int ind)
 		std::cerr << " \\" << std::dec << conscript << "\\";
 	std::cerr << std::flush << "\n";
 }
-void TypeVal::printx(int ind)
+void
+TypeVal::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << val->getCtype() << std::flush << "\n";
 }
-void TypedExp::printx(int ind)
+void
+TypedExp::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << type->getCtype() << std::flush << "\n";
 	child(subExp1, ind);
 }
-void Terminal::printx(int ind)
+void
+Terminal::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
 }
-void RefExp::printx(int ind)
+void
+RefExp::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << "{";
@@ -4023,7 +4173,8 @@ void RefExp::printx(int ind)
 	child(subExp1, ind);
 }
 
-const char *Exp::getAnyStrConst()
+const char *
+Exp::getAnyStrConst()
 {
 	Exp *e = this;
 	if (op == opAddrOf) {
@@ -4039,14 +4190,16 @@ const char *Exp::getAnyStrConst()
 
 // Find the locations used by this expression. Use the UsedLocsFinder visitor class
 // If memOnly is true, only look inside m[...]
-void Exp::addUsedLocs(LocationSet &used, bool memOnly)
+void
+Exp::addUsedLocs(LocationSet &used, bool memOnly)
 {
 	UsedLocsFinder ulf(used, memOnly);
 	accept(&ulf);
 }
 
 // Subscript any occurrences of e with e{def} in this expression
-Exp *Exp::expSubscriptVar(Exp *e, Statement *def)
+Exp *
+Exp::expSubscriptVar(Exp *e, Statement *def)
 {
 	ExpSubscripter es(e, def);
 	return accept(&es);
@@ -4054,48 +4207,56 @@ Exp *Exp::expSubscriptVar(Exp *e, Statement *def)
 
 // Subscript any occurrences of e with e{-} in this expression Note: subscript with NULL, not implicit assignments as
 // above
-Exp *Exp::expSubscriptValNull(Exp *e)
+Exp *
+Exp::expSubscriptValNull(Exp *e)
 {
 	return expSubscriptVar(e, NULL);
 }
 
 // Subscript all locations in this expression with their implicit assignments
-Exp *Exp::expSubscriptAllNull(/*Cfg *cfg*/)
+Exp *
+Exp::expSubscriptAllNull(/*Cfg *cfg*/)
 {
 	return expSubscriptVar(new Terminal(opWild), NULL /* was NULL, NULL, cfg */);
 }
 
-Location *Location::local(const char *nam, UserProc *p)
+Location *
+Location::local(const char *nam, UserProc *p)
 {
 	return new Location(opLocal, new Const(nam), p);
 }
 
 // Don't put in exp.h, as this would require statement.h including before exp.h
-bool RefExp::isImplicitDef()
+bool
+RefExp::isImplicitDef()
 {
 	return def == NULL || def->getKind() == STMT_IMPASSIGN;
 }
 
-Exp *Exp::bypass()
+Exp *
+Exp::bypass()
 {
 	CallBypasser cb(NULL);
 	return accept(&cb);
 }
 
-void Exp::bypassComp()
+void
+Exp::bypassComp()
 {
 	if (op != opMemOf) return;
 	((Location *)this)->setSubExp1(((Location *)this)->getSubExp1()->bypass());
 }
 
-int Exp::getComplexityDepth(UserProc *proc)
+int
+Exp::getComplexityDepth(UserProc *proc)
 {
 	ComplexityFinder cf(proc);
 	accept(&cf);
 	return cf.getDepth();
 }
 
-int Exp::getMemDepth()
+int
+Exp::getMemDepth()
 {
 	MemDepthFinder mdf;
 	accept(&mdf);
@@ -4103,14 +4264,16 @@ int Exp::getMemDepth()
 }
 
 // Propagate all possible statements to this expression
-Exp *Exp::propagateAll()
+Exp *
+Exp::propagateAll()
 {
 	ExpPropagator ep;
 	return accept(&ep);
 }
 
 // Propagate all possible statements to this expression, and repeat until there is no further change
-Exp *Exp::propagateAllRpt(bool &changed)
+Exp *
+Exp::propagateAllRpt(bool &changed)
 {
 	ExpPropagator ep;
 	changed = false;
@@ -4126,7 +4289,8 @@ Exp *Exp::propagateAllRpt(bool &changed)
 	return ret;
 }
 
-bool Exp::containsFlags()
+bool
+Exp::containsFlags()
 {
 	FlagsFinder ff;
 	accept(&ff);
@@ -4135,7 +4299,8 @@ bool Exp::containsFlags()
 
 // Check if this expression contains a bare memof (no subscripts) or one that has no symbol (i.e. is not a local
 // variable or a parameter)
-bool Exp::containsBadMemof(UserProc *proc)
+bool
+Exp::containsBadMemof(UserProc *proc)
 {
 	BadMemofFinder bmf(proc);
 	accept(&bmf);
@@ -4143,7 +4308,8 @@ bool Exp::containsBadMemof(UserProc *proc)
 }
 
 // No longer used
-bool Exp::containsMemof(UserProc *proc)
+bool
+Exp::containsMemof(UserProc *proc)
 {
 	ExpHasMemofTester ehmt(proc);
 	accept(&ehmt);
@@ -4166,7 +4332,8 @@ public:
 	int conscript;
 };
 
-Memo *Const::makeMemo(int mId)
+Memo *
+Const::makeMemo(int mId)
 {
 	ConstMemo *m = new ConstMemo(mId);
 	memcpy(&m->u, &u, sizeof u);
@@ -4174,7 +4341,8 @@ Memo *Const::makeMemo(int mId)
 	return m;
 }
 
-void Const::readMemo(Memo *mm, bool dec)
+void
+Const::readMemo(Memo *mm, bool dec)
 {
 	ConstMemo *m = dynamic_cast<ConstMemo *>(mm);
 	memcpy(&u, &m->u, sizeof u);
@@ -4186,13 +4354,15 @@ public:
 	TerminalMemo(int m) : Memo(m) { }
 };
 
-Memo *Terminal::makeMemo(int mId)
+Memo *
+Terminal::makeMemo(int mId)
 {
 	TerminalMemo *m = new TerminalMemo(mId);
 	return m;
 }
 
-void Terminal::readMemo(Memo *mm, bool dec)
+void
+Terminal::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// TerminalMemo *m = dynamic_cast<TerminalMemo *>(mm);
@@ -4203,13 +4373,15 @@ public:
 	UnaryMemo(int m) : Memo(m) { }
 };
 
-Memo *Unary::makeMemo(int mId)
+Memo *
+Unary::makeMemo(int mId)
 {
 	UnaryMemo *m = new UnaryMemo(mId);
 	return m;
 }
 
-void Unary::readMemo(Memo *mm, bool dec)
+void
+Unary::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// UnaryMemo *m = dynamic_cast<UnaryMemo *>(mm);
@@ -4220,13 +4392,15 @@ public:
 	BinaryMemo(int m) : Memo(m) { }
 };
 
-Memo *Binary::makeMemo(int mId)
+Memo *
+Binary::makeMemo(int mId)
 {
 	BinaryMemo *m = new BinaryMemo(mId);
 	return m;
 }
 
-void Binary::readMemo(Memo *mm, bool dec)
+void
+Binary::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// BinaryMemo *m = dynamic_cast<BinaryMemo *>(mm);
@@ -4237,13 +4411,15 @@ public:
 	TernaryMemo(int m) : Memo(m) { }
 };
 
-Memo *Ternary::makeMemo(int mId)
+Memo *
+Ternary::makeMemo(int mId)
 {
 	TernaryMemo *m = new TernaryMemo(mId);
 	return m;
 }
 
-void Ternary::readMemo(Memo *mm, bool dec)
+void
+Ternary::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// TernaryMemo *m = dynamic_cast<TernaryMemo *>(mm);
@@ -4254,13 +4430,15 @@ public:
 	TypedExpMemo(int m) : Memo(m) { }
 };
 
-Memo *TypedExp::makeMemo(int mId)
+Memo *
+TypedExp::makeMemo(int mId)
 {
 	TypedExpMemo *m = new TypedExpMemo(mId);
 	return m;
 }
 
-void TypedExp::readMemo(Memo *mm, bool dec)
+void
+TypedExp::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// TypedExpMemo *m = dynamic_cast<TypedExpMemo *>(mm);
@@ -4271,13 +4449,15 @@ public:
 	FlagDefMemo(int m) : Memo(m) { }
 };
 
-Memo *FlagDef::makeMemo(int mId)
+Memo *
+FlagDef::makeMemo(int mId)
 {
 	FlagDefMemo *m = new FlagDefMemo(mId);
 	return m;
 }
 
-void FlagDef::readMemo(Memo *mm, bool dec)
+void
+FlagDef::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// FlagDefMemo *m = dynamic_cast<FlagDefMemo *>(mm);
@@ -4288,13 +4468,15 @@ public:
 	RefExpMemo(int m) : Memo(m) { }
 };
 
-Memo *RefExp::makeMemo(int mId)
+Memo *
+RefExp::makeMemo(int mId)
 {
 	RefExpMemo *m = new RefExpMemo(mId);
 	return m;
 }
 
-void RefExp::readMemo(Memo *mm, bool dec)
+void
+RefExp::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// RefExpMemo *m = dynamic_cast<RefExpMemo *>(mm);
@@ -4305,13 +4487,15 @@ public:
 	TypeValMemo(int m) : Memo(m) { }
 };
 
-Memo *TypeVal::makeMemo(int mId)
+Memo *
+TypeVal::makeMemo(int mId)
 {
 	TypeValMemo *m = new TypeValMemo(mId);
 	return m;
 }
 
-void TypeVal::readMemo(Memo *mm, bool dec)
+void
+TypeVal::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// TypeValMemo *m = dynamic_cast<TypeValMemo *>(mm);
@@ -4322,13 +4506,15 @@ public:
 	LocationMemo(int m) : Memo(m) { }
 };
 
-Memo *Location::makeMemo(int mId)
+Memo *
+Location::makeMemo(int mId)
 {
 	LocationMemo *m = new LocationMemo(mId);
 	return m;
 }
 
-void Location::readMemo(Memo *mm, bool dec)
+void
+Location::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
 	// LocationMemo *m = dynamic_cast<LocationMemo *>(mm);

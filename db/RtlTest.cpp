@@ -33,7 +33,8 @@
 /**
  * Test appendExp and printing of RTLs.
  */
-void RtlTest::testAppend()
+void
+RtlTest::testAppend()
 {
 	Assign *a = new Assign(Location::regOf(8),
 	                       new Binary(opPlus, Location::regOf(9), new Const(99)));
@@ -53,7 +54,8 @@ void RtlTest::testAppend()
 /**
  * Test constructor from list of expressions; cloning of RTLs.
  */
-void RtlTest::testClone()
+void
+RtlTest::testClone()
 {
 	Assign *a1 = new Assign(Location::regOf(8),
 	                        new Binary(opPlus, Location::regOf(9), new Const(99)));
@@ -110,7 +112,8 @@ public:
 /**
  * Test the accept function for correct visiting behaviour.
  */
-void RtlTest::testVisitor()
+void
+RtlTest::testVisitor()
 {
 	StmtVisitorStub *visitor = new StmtVisitorStub();
 
@@ -175,7 +178,8 @@ void RtlTest::testVisitor()
 /**
  * Test the isCompare function.
  */
-void RtlTest::testIsCompare()
+void
+RtlTest::testIsCompare()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(SWITCH_SPARC, prog);
@@ -223,7 +227,8 @@ void RtlTest::testIsCompare()
 	delete prog;
 }
 
-void RtlTest::testSetConscripts()
+void
+RtlTest::testSetConscripts()
 {
 	// m[1000] = m[1000] + 1000
 	Statement *s1 = new Assign(Location::memOf(new Const(1000), 0),

@@ -42,7 +42,8 @@ ElfBinaryFile::~ElfBinaryFile()
  *
  * C linkage so we can call this with dlopen().
  */
-extern "C" unsigned elf_hash(const char *o0)
+extern "C" unsigned
+elf_hash(const char *o0)
 {
 	int o3 = *o0;
 	const char *g1 = o0;
@@ -62,7 +63,8 @@ extern "C" unsigned elf_hash(const char *o0)
 	return o4;
 }
 
-bool ElfBinaryFile::load(std::istream &ifs)
+bool
+ElfBinaryFile::load(std::istream &ifs)
 {
 	int i;
 
@@ -244,7 +246,8 @@ bool ElfBinaryFile::load(std::istream &ifs)
  *
  * \returns Pointer into the string table, or NULL on error.
  */
-const char *ElfBinaryFile::getStrPtr(int idx, int offset)
+const char *
+ElfBinaryFile::getStrPtr(int idx, int offset)
 {
 	if (idx < 0) {
 		// Most commonly, this will be an index of -1, because a call to getSectionIndexByName() failed
@@ -265,7 +268,8 @@ const char *ElfBinaryFile::getStrPtr(int idx, int offset)
  * searching backwards with wraparound should typically minimise the number of
  * entries to search.
  */
-ADDRESS ElfBinaryFile::findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt)
+ADDRESS
+ElfBinaryFile::findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt)
 {
 	int first = i;
 	if (first >= numRelPlt)
@@ -293,7 +297,8 @@ ADDRESS ElfBinaryFile::findRelPltOffset(int i, const char *addrRelPlt, int sizeR
  *
  * \param secIndex  The section index of the symbol table.
  */
-void ElfBinaryFile::AddSyms(int secIndex)
+void
+ElfBinaryFile::AddSyms(int secIndex)
 {
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	SectionInfo *pSect = &m_pSections[secIndex];
@@ -361,7 +366,8 @@ void ElfBinaryFile::AddSyms(int secIndex)
 	return;
 }
 
-std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
+std::vector<ADDRESS>
+ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 {
 	std::vector<ADDRESS> exported;
 
@@ -416,7 +422,8 @@ std::vector<ADDRESS> ElfBinaryFile::getExportedAddresses(bool funcsOnly)
  * the relocation entry with the 32 bit value from the symbol table.  Totally
  * invalid for SPARC, and most X86 relocations!  So currently not called.
  */
-void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
+void
+ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 {
 	SectionInfo *pSect = &m_pSections[relSecIdx];
 	if (pSect == 0) return;
@@ -472,7 +479,8 @@ void ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
  * \note This function overrides a simple "return 0" function in the base
  * class (i.e. BinaryFile::getSymbolByAddress())
  */
-const char *ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
+const char *
+ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(dwAddr);
 	if (aa == m_SymTab.end())
@@ -480,7 +488,8 @@ const char *ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 	return aa->second.c_str();
 }
 
-bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* = false */)
+bool
+ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* = false */)
 {
 	int hash, numBucket, numChain, y;
 	const int *pBuckets, *pChains;  // For symbol table work
@@ -546,7 +555,8 @@ bool ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeO
  * Lookup the symbol table using linear searching.
  * See comments above for why this appears to be needed.
  */
-bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName)
+bool
+ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName)
 {
 	// Note: this assumes .symtab. Many files don't have this section!!!
 
@@ -581,7 +591,8 @@ bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const c
  * Search for the given symbol.  First search .symtab (if present); if not
  * found or the table has been stripped, search .dynstr.
  */
-bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal)
+bool
+ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal)
 {
 	if (SearchValueByName(pName, pVal, ".symtab", ".strtab"))
 		return true;
@@ -589,7 +600,8 @@ bool ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal)
 }
 
 
-ADDRESS ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS
+ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	SymValue Val;
 	bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
@@ -601,7 +613,8 @@ ADDRESS ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = f
 	else return NO_ADDRESS;
 }
 
-int ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */)
+int
+ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	SymValue Val;
 	bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
@@ -622,7 +635,8 @@ int ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */
  * \note This function is NOT efficient; it has to compare the closeness of
  * ALL symbols in the symbol table.
  */
-int ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
+int
+ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 {
 	int size = getSizeByName(sName);
 	if (size) return size;  // No need to guess!
@@ -661,14 +675,16 @@ int ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 /**
  * \overload
  */
-int ElfBinaryFile::getDistanceByName(const char *sName)
+int
+ElfBinaryFile::getDistanceByName(const char *sName)
 {
 	int val = getDistanceByName(sName, ".symtab");
 	if (val) return val;
 	return getDistanceByName(sName, ".dynsym");
 }
 
-bool ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+bool
+ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	if (uNative > (unsigned)-1024 && uNative != (unsigned)-1)
 		return true;  // Say yes for fake library functions
@@ -682,12 +698,14 @@ bool ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
  * Returns the entry point to main
  * (this should be a label in elf binaries generated by compilers).
  */
-ADDRESS ElfBinaryFile::getMainEntryPoint()
+ADDRESS
+ElfBinaryFile::getMainEntryPoint()
 {
 	return getAddressByName("main", true);
 }
 
-ADDRESS ElfBinaryFile::getEntryPoint()
+ADDRESS
+ElfBinaryFile::getEntryPoint()
 {
 	return (ADDRESS)elfRead4(&((Elf32_Ehdr *)m_pImage)->e_entry);
 }
@@ -695,14 +713,16 @@ ADDRESS ElfBinaryFile::getEntryPoint()
 /**
  * FIXME:  The below assumes a fixed delta.
  */
-const char *ElfBinaryFile::NativeToHostAddress(ADDRESS uNative)
+const char *
+ElfBinaryFile::NativeToHostAddress(ADDRESS uNative)
 {
 	if (m_iNumSections == 0) return 0;
 	return &m_pSections[1].uHostAddr[uNative - m_pSections[1].uNativeAddr];
 }
 
 #if 0 // Cruft?
-ADDRESS ElfBinaryFile::getRelocatedAddress(ADDRESS uNative)
+ADDRESS
+ElfBinaryFile::getRelocatedAddress(ADDRESS uNative)
 {
 	// Not implemented yet. But we need the function to make it all link
 	return 0;
@@ -710,7 +730,8 @@ ADDRESS ElfBinaryFile::getRelocatedAddress(ADDRESS uNative)
 #endif
 
 #if 0 // Cruft?
-bool ElfBinaryFile::PostLoad(void *handle)
+bool
+ElfBinaryFile::PostLoad(void *handle)
 {
 	// This function is called after an archive member has been loaded by ElfArchiveFile
 
@@ -722,7 +743,8 @@ bool ElfBinaryFile::PostLoad(void *handle)
 }
 #endif
 
-MACHINE ElfBinaryFile::getMachine() const
+MACHINE
+ElfBinaryFile::getMachine() const
 {
 	int machine = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_machine);
 	if ((machine == EM_SPARC) || (machine == EM_SPARC32PLUS)) return MACHINE_SPARC;
@@ -743,13 +765,15 @@ MACHINE ElfBinaryFile::getMachine() const
 	return (MACHINE)-1;
 }
 
-bool ElfBinaryFile::isLibrary() const
+bool
+ElfBinaryFile::isLibrary() const
 {
 	int type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	return (type == ET_DYN);
 }
 
-std::list<const char *> ElfBinaryFile::getDependencyList()
+std::list<const char *>
+ElfBinaryFile::getDependencyList()
 {
 	std::list<const char *> result;
 	const SectionInfo *dynsect = getSectionInfoByName(".dynamic");
@@ -778,12 +802,14 @@ std::list<const char *> ElfBinaryFile::getDependencyList()
 	return result;
 }
 
-ADDRESS ElfBinaryFile::getImageBase() const
+ADDRESS
+ElfBinaryFile::getImageBase() const
 {
 	return m_uBaseAddr;
 }
 
-size_t ElfBinaryFile::getImageSize() const
+size_t
+ElfBinaryFile::getImageSize() const
 {
 	return m_uImageSize;
 }
@@ -799,7 +825,8 @@ size_t ElfBinaryFile::getImageSize() const
  *
  * \returns An array of native ADDRESSes.
  */
-ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
+ADDRESS *
+ElfBinaryFile::getImportStubs(int &numImports)
 {
 	ADDRESS a = m_uPltMin;
 	int n = 0;
@@ -836,7 +863,8 @@ ADDRESS *ElfBinaryFile::getImportStubs(int &numImports)
 }
 
 #if 0 // Cruft?
-std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
+std::map<ADDRESS, const char *> *
+ElfBinaryFile::getDynamicGlobalMap()
 {
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
 
@@ -888,7 +916,8 @@ std::map<ADDRESS, const char *> *ElfBinaryFile::getDynamicGlobalMap()
  *
  * \returns An integer representing the data.
  */
-int ElfBinaryFile::elfRead2(const short *ps) const
+int
+ElfBinaryFile::elfRead2(const short *ps) const
 {
 	const unsigned char *p = (const unsigned char *)ps;
 	if (m_elfEndianness) {
@@ -912,7 +941,8 @@ int ElfBinaryFile::elfRead2(const short *ps) const
  *
  * \returns An integer representing the data.
  */
-int ElfBinaryFile::elfRead4(const int *pi) const
+int
+ElfBinaryFile::elfRead4(const int *pi) const
 {
 	const short *p = (const short *)pi;
 	if (m_elfEndianness) {
@@ -924,7 +954,8 @@ int ElfBinaryFile::elfRead4(const int *pi) const
 /**
  * \brief Write an int with endianness care.
  */
-void ElfBinaryFile::elfWrite4(int *pi, int val)
+void
+ElfBinaryFile::elfWrite4(int *pi, int val)
 {
 	char *p = (char *)pi;
 	if (m_elfEndianness) {
@@ -941,21 +972,24 @@ void ElfBinaryFile::elfWrite4(int *pi, int val)
 	}
 }
 
-int ElfBinaryFile::readNative1(ADDRESS nat) const
+int
+ElfBinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) si = getSectionInfo(0);
 	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
-int ElfBinaryFile::readNative2(ADDRESS nat) const
+int
+ElfBinaryFile::readNative2(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
 	return elfRead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
 }
 
-int ElfBinaryFile::readNative4(ADDRESS nat) const
+int
+ElfBinaryFile::readNative4(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return 0;
@@ -963,7 +997,8 @@ int ElfBinaryFile::readNative4(ADDRESS nat) const
 }
 
 #if 0 // Cruft?
-void ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
+void
+ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return;
@@ -982,7 +1017,8 @@ void ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 }
 #endif
 
-QWord ElfBinaryFile::readNative8(ADDRESS nat) const
+QWord
+ElfBinaryFile::readNative8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -1002,7 +1038,8 @@ QWord ElfBinaryFile::readNative8(ADDRESS nat) const
 	return *(QWord *)raw;
 }
 
-float ElfBinaryFile::readNativeFloat4(ADDRESS nat) const
+float
+ElfBinaryFile::readNativeFloat4(ADDRESS nat) const
 {
 	int raw = readNative4(nat);
 	// Ugh! gcc says that reinterpreting from int to float is invalid!!
@@ -1010,7 +1047,8 @@ float ElfBinaryFile::readNativeFloat4(ADDRESS nat) const
 	return *(float *)&raw;  // Note: cast, not convert
 }
 
-double ElfBinaryFile::readNativeFloat8(ADDRESS nat) const
+double
+ElfBinaryFile::readNativeFloat8(ADDRESS nat) const
 {
 	int raw[2];
 #ifdef WORDS_BIGENDIAN  // This tests the host machine
@@ -1034,7 +1072,8 @@ double ElfBinaryFile::readNativeFloat8(ADDRESS nat) const
  * Apply relocations; important when the input program
  * is not compiled with -fPIC.
  */
-void ElfBinaryFile::applyRelocations()
+void
+ElfBinaryFile::applyRelocations()
 {
 	int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
 	if (m_pImage == 0) return;  // No file loaded
@@ -1145,7 +1184,8 @@ void ElfBinaryFile::applyRelocations()
 	}
 }
 
-bool ElfBinaryFile::isRelocationAt(ADDRESS uNative)
+bool
+ElfBinaryFile::isRelocationAt(ADDRESS uNative)
 {
 	//int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
 	if (m_pImage == 0) return false;  // No file loaded
@@ -1215,7 +1255,8 @@ bool ElfBinaryFile::isRelocationAt(ADDRESS uNative)
  * \returns Pointer into a string table, pointing to a filename, or NULL if
  * not found or if it is a zero-length string.
  */
-const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
+const char *
+ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 {
 	int i;
 	int secIndex = 0;
@@ -1264,7 +1305,8 @@ const char *ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 /**
  * A map for extra symbols, those not in the usual Elf symbol tables.
  */
-void ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+void
+ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	m_SymTab[uNative] = pName;
 }
@@ -1272,7 +1314,8 @@ void ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief For debugging.
  */
-void ElfBinaryFile::dumpSymbols()
+void
+ElfBinaryFile::dumpSymbols()
 {
 	std::map<ADDRESS, std::string>::iterator it;
 	std::cerr << std::hex;
@@ -1288,11 +1331,13 @@ void ElfBinaryFile::dumpSymbols()
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new ElfBinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (ElfBinaryFile *)bf;
 }

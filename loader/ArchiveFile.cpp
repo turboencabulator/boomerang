@@ -22,17 +22,20 @@ ArchiveFile::~ArchiveFile()
 {
 }
 
-int ArchiveFile::getNumMembers() const
+int
+ArchiveFile::getNumMembers() const
 {
 	return m_FileMap.size();
 }
 
-const char *ArchiveFile::getMemberFileName(int i) const
+const char *
+ArchiveFile::getMemberFileName(int i) const
 {
 	return m_FileNames[i];
 }
 
-BinaryFile *ArchiveFile::getMemberByProcName(const string &sSym)
+BinaryFile *
+ArchiveFile::getMemberByProcName(const string &sSym)
 {
 	// Get the index
 	int idx = m_SymMap[sSym];
@@ -40,7 +43,8 @@ BinaryFile *ArchiveFile::getMemberByProcName(const string &sSym)
 	return getMember(idx);
 }
 
-BinaryFile *ArchiveFile::getMemberByFileName(const string &sFile)
+BinaryFile *
+ArchiveFile::getMemberByFileName(const string &sFile)
 {
 	// Get the index
 	int idx = m_FileMap[sFile];
@@ -48,7 +52,8 @@ BinaryFile *ArchiveFile::getMemberByFileName(const string &sFile)
 	return getMember(idx);
 }
 
-bool ArchiveFile::PostLoadMember(BinaryFile *pBF, void *handle)
+bool
+ArchiveFile::PostLoadMember(BinaryFile *pBF, void *handle)
 {
 	return pBF->PostLoad(handle);
 }

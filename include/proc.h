@@ -169,7 +169,7 @@ public:
 	/**
 	 * OutPut operator for a Proc object.
 	 */
-	friend  std::ostream &operator<<(std::ostream &os, Proc &proc);
+	friend  std::ostream &operator <<(std::ostream &os, Proc &proc);
 
 	virtual Exp        *getProven(Exp *left) = 0;    // Get the RHS, if any, that is proven for left
 	virtual Exp        *getPremised(Exp *left) = 0;  // Get the RHS, if any, that is premised for left

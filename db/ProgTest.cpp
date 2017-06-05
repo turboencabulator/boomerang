@@ -24,7 +24,8 @@
 /**
  * Test setting and reading name.
  */
-void ProgTest::testName()
+void
+ProgTest::testName()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it

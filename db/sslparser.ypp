@@ -957,7 +957,8 @@ fastentry
  * PARAMETERS:      the string
  * RETURNS:         an Assignment or NULL.
  *============================================================================*/
-Statement *SSLParser::parseExp(const char *str)
+Statement *
+SSLParser::parseExp(const char *str)
 {
 	std::istringstream ss(str);
 	SSLParser p(ss, false);  // Second arg true for debugging
@@ -969,8 +970,6 @@ Statement *SSLParser::parseExp(const char *str)
 /*==============================================================================
  * FUNCTION:        SSLParser::~SSLParser
  * OVERVIEW:        Destructor.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
  *============================================================================*/
 SSLParser::~SSLParser()
 {
@@ -983,9 +982,9 @@ SSLParser::~SSLParser()
  * FUNCTION:        SSLParser::yyerror
  * OVERVIEW:        Display an error message and exit.
  * PARAMETERS:      msg - an error message
- * RETURNS:         <nothing>
  *============================================================================*/
-void SSLParser::yyerror(const char* msg)
+void
+SSLParser::yyerror(const char* msg)
 {
 	// TODO:  Replace "ssl" with the filename.
 	std::cerr << "ssl:" << theScanner->theLine << ": " << msg << "\n";
@@ -994,16 +993,17 @@ void SSLParser::yyerror(const char* msg)
 /*==============================================================================
  * FUNCTION:        SSLParser::yylex
  * OVERVIEW:        The scanner driver than returns the next token.
- * PARAMETERS:      <none>
  * RETURNS:         the next token
  *============================================================================*/
-int SSLParser::yylex()
+int
+SSLParser::yylex()
 {
 	int token = theScanner->yylex(yylval);
 	return token;
 }
 
-OPER strToTerm(const char *s)
+OPER
+strToTerm(const char *s)
 {
 	// s could be %pc, %afp, %agp, %CF, %ZF, %OF, %NF, %DF, %flags, %fflags
 	if (s[2] == 'F') {
@@ -1035,7 +1035,8 @@ OPER strToTerm(const char *s)
  * PARAMETERS:      le: the list of expressions
  * RETURNS:         The opList Expression
  *============================================================================*/
-Exp *listExpToExp(std::list<Exp *> *le)
+Exp *
+listExpToExp(std::list<Exp *> *le)
 {
 	Exp *e;
 	Exp **cur = &e;
@@ -1057,7 +1058,8 @@ Exp *listExpToExp(std::list<Exp *> *le)
  * PARAMETERS:      ls - the list of strings
  * RETURNS:         The opList expression
  *============================================================================*/
-Exp *listStrToExp(std::list<std::string> *ls)
+Exp *
+listStrToExp(std::list<std::string> *ls)
 {
 	Exp *e;
 	Exp **cur = &e;
@@ -1070,16 +1072,6 @@ Exp *listStrToExp(std::list<std::string> *ls)
 	return e;
 }
 
-/*==============================================================================
- * FUNCTION:        SSLParser::expandTables
- * OVERVIEW:        Expand tables in an RTL and save to dictionary
- * NOTE:            This may generate many entries
- * PARAMETERS:      iname: Parser object representing the instruction name
- *                  params: Parser object representing the instruction params
- *                  o_rtlist: Original rtlist object (before expanding)
- *                  Dict: Ref to the dictionary that will contain the results of the parse
- * RETURNS:         <nothing>
- *============================================================================*/
 static Exp *srchExpr = new Binary(opExpTable,
                                   new Terminal(opWild),
                                   new Terminal(opWild));
@@ -1088,7 +1080,8 @@ static Exp *srchOp = new Ternary(opOpTable,
                                  new Terminal(opWild),
                                  new Terminal(opWild));
 #ifdef GARBAGE_COLLECTOR
-void init_sslparser()
+void
+init_sslparser()
 {
 	static Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(2 * sizeof *gc_pointers);
 	gc_pointers[0] = srchExpr;
@@ -1096,7 +1089,17 @@ void init_sslparser()
 }
 #endif
 
-void SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL *o_rtlist, RTLInstDict &Dict)
+/*==============================================================================
+ * FUNCTION:        SSLParser::expandTables
+ * OVERVIEW:        Expand tables in an RTL and save to dictionary
+ * NOTE:            This may generate many entries
+ * PARAMETERS:      iname: Parser object representing the instruction name
+ *                  params: Parser object representing the instruction params
+ *                  o_rtlist: Original rtlist object (before expanding)
+ *                  Dict: Ref to the dictionary that will contain the results of the parse
+ *============================================================================*/
+void
+SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL *o_rtlist, RTLInstDict &Dict)
 {
 	int i, m;
 	std::string nam;
@@ -1166,7 +1169,8 @@ void SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params,
  * PARAMETERS:      The expression to find the successor of
  * RETURNS:         The modified expression
  *============================================================================*/
-Exp *SSLParser::makeSuccessor(Exp *e)
+Exp *
+SSLParser::makeSuccessor(Exp *e)
 {
 	return new Unary(opSuccessor, e);
 }

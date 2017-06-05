@@ -22,7 +22,7 @@
  * A simple class to implement a symbol table that can be looked up by address
  * or by name.
  *
- * \note Can't readily use operator[] overloaded for address and string
+ * \note Can't readily use operator [] overloaded for address and string
  * parameters.  The main problem is that when you do symtab[0x100] = "main",
  * the string map doesn't see the string.  If you have one of the maps be a
  * pointer to the other string and use a special comparison operator, then if

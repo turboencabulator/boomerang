@@ -29,7 +29,8 @@
 /**
  * Test type unsigned long.
  */
-void TypeTest::testTypeLong()
+void
+TypeTest::testTypeLong()
 {
 	std::string expected("unsigned long long");
 	IntegerType t(64, -1);
@@ -40,7 +41,8 @@ void TypeTest::testTypeLong()
 /**
  * Test type inequality.
  */
-void TypeTest::testNotEqual()
+void
+TypeTest::testNotEqual()
 {
 	IntegerType t1(32, -1);
 	IntegerType t2(32, -1);
@@ -49,7 +51,8 @@ void TypeTest::testNotEqual()
 	CPPUNIT_ASSERT(t2 != t3);
 }
 
-void TypeTest::testCompound()
+void
+TypeTest::testCompound()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_WINDOWS, prog);
@@ -112,7 +115,8 @@ void TypeTest::testCompound()
 /**
  * Test the DataIntervalMap class.
  */
-void TypeTest::testDataInterval()
+void
+TypeTest::testDataInterval()
 {
 	DataIntervalMap dim;
 
@@ -198,7 +202,8 @@ void TypeTest::testDataInterval()
 /**
  * Test the DataIntervalMap class with overlapping addItems.
  */
-void TypeTest::testDataIntervalOverlaps()
+void
+TypeTest::testDataIntervalOverlaps()
 {
 	DataIntervalMap dim;
 

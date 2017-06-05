@@ -43,7 +43,8 @@ HpSomBinaryFile::~HpSomBinaryFile()
 // that addresses in the PLT do not always point to the BOR (Bind On Reference,
 // a kind of stub)
 #if 0
-bool isLDW(unsigned instr, int &offset, unsigned dest)
+bool
+isLDW(unsigned instr, int &offset, unsigned dest)
 {
 	if (((instr >> 26) == 0x12)                 // Opcode
 	 && (instr & 1)                             // Offset is neg
@@ -56,31 +57,36 @@ bool isLDW(unsigned instr, int &offset, unsigned dest)
 		return false;
 }
 
-bool isLDSID(unsigned instr)
+bool
+isLDSID(unsigned instr)
 {
 	// Looking for LDSID       (%s0,%r21),%r1
 	return (instr == 0x02a010a1);
 }
 
-bool isMSTP(unsigned instr)
+bool
+isMSTP(unsigned instr)
 {
 	// Looking for MTSP        %r1,%s0
 	return (instr == 0x00011820);
 }
 
-bool isBE(unsigned instr)
+bool
+isBE(unsigned instr)
 {
 	// Looking for BE          0(%s0,%r21)
 	return (instr == 0xe2a00000);
 }
 
-bool isSTW(unsigned instr)
+bool
+isSTW(unsigned instr)
 {
 	// Looking for STW         %r2,-24(%s0,%r30)
 	return (instr == 0x6bc23fd1);
 }
 
-bool isStub(const char *hostAddr, int &offset)
+bool
+isStub(const char *hostAddr, int &offset)
 {
 	// Looking for this pattern:
 	// 2600: 4b753f91  LDW         -56(%s0,%r27),%r21
@@ -111,7 +117,8 @@ bool isStub(const char *hostAddr, int &offset)
 #endif
 
 
-bool HpSomBinaryFile::load(std::istream &ifs)
+bool
+HpSomBinaryFile::load(std::istream &ifs)
 {
 	ifs.seekg(0, ifs.end);
 	std::streamsize size = ifs.tellg();
@@ -371,38 +378,44 @@ bool HpSomBinaryFile::load(std::istream &ifs)
 	return true;
 }
 
-ADDRESS HpSomBinaryFile::getEntryPoint()
+ADDRESS
+HpSomBinaryFile::getEntryPoint()
 {
 	assert(0); /* FIXME: Someone who understands this file please implement */
 	return 0;
 }
 
 #if 0 // Cruft?
-bool HpSomBinaryFile::PostLoad(void *handle)
+bool
+HpSomBinaryFile::PostLoad(void *handle)
 {
 	// Not needed: for archives only
 	return false;
 }
 #endif
 
-bool HpSomBinaryFile::isLibrary() const
+bool
+HpSomBinaryFile::isLibrary() const
 {
 	int type =  UINT4(m_pImage) & 0xFFFF;
 	return type == 0x0104 || type == 0x010D
 	    || type == 0x010E || type == 0x0619;
 }
 
-std::list<const char *> HpSomBinaryFile::getDependencyList()
+std::list<const char *>
+HpSomBinaryFile::getDependencyList()
 {
 	return std::list<const char *>(); /* FIXME */
 }
 
-ADDRESS HpSomBinaryFile::getImageBase() const
+ADDRESS
+HpSomBinaryFile::getImageBase() const
 {
 	return 0; /* FIXME */
 }
 
-size_t HpSomBinaryFile::getImageSize() const
+size_t
+HpSomBinaryFile::getImageSize() const
 {
 	return UINT4(m_pImage + 0x24);
 }
@@ -410,12 +423,14 @@ size_t HpSomBinaryFile::getImageSize() const
 /**
  * We at least need to be able to name the main function and system calls.
  */
-const char *HpSomBinaryFile::getSymbolByAddress(ADDRESS a)
+const char *
+HpSomBinaryFile::getSymbolByAddress(ADDRESS a)
 {
 	return symbols.find(a);
 }
 
-ADDRESS HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ADDRESS
+HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// For now, we ignore the symbol table and do a linear search of our
 	// SymTab table
@@ -429,7 +444,8 @@ ADDRESS HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* =
  * \returns true if the address matches the convention for A-line system
  * calls.
  */
-bool HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+bool
+HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
 	// Look up the address in the set of imports
 	return imports.find(uNative) != imports.end();
@@ -438,7 +454,8 @@ bool HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 /**
  * Get the start and length of a given subspace.
  */
-std::pair<ADDRESS, int> HpSomBinaryFile::getSubspaceInfo(const char *ssname)
+std::pair<ADDRESS, int>
+HpSomBinaryFile::getSubspaceInfo(const char *ssname)
 {
 	std::pair<ADDRESS, int> ret(0, 0);
 	// Get the start and length of the subspace with the given name
@@ -469,7 +486,8 @@ std::pair<ADDRESS, int> HpSomBinaryFile::getSubspaceInfo(const char *ssname)
  * The understanding at present is that the global data pointer (%r27 for
  * pa-risc) points just past the end of the $GLOBAL$ subspace.
  */
-std::pair<unsigned, unsigned> HpSomBinaryFile::getGlobalPointerInfo()
+std::pair<unsigned, unsigned>
+HpSomBinaryFile::getGlobalPointerInfo()
 {
 	std::pair<unsigned, unsigned> ret(0, 0);
 	// Search the subspace names for "$GLOBAL$
@@ -482,7 +500,8 @@ std::pair<unsigned, unsigned> HpSomBinaryFile::getGlobalPointerInfo()
 #endif
 
 #if 0 // Cruft?
-std::map<ADDRESS, const char *> *HpSomBinaryFile::getDynamicGlobalMap()
+std::map<ADDRESS, const char *> *
+HpSomBinaryFile::getDynamicGlobalMap()
 {
 	// Find the DL Table, if it exists
 	// The DL table (Dynamic Link info) is supposed to be at the start of
@@ -514,7 +533,8 @@ std::map<ADDRESS, const char *> *HpSomBinaryFile::getDynamicGlobalMap()
 }
 #endif
 
-ADDRESS HpSomBinaryFile::getMainEntryPoint()
+ADDRESS
+HpSomBinaryFile::getMainEntryPoint()
 {
 	return symbols.find("main");
 #if 0
@@ -566,11 +586,13 @@ ADDRESS HpSomBinaryFile::getMainEntryPoint()
  * function call mechanism will call the rest of the code in this library.
  * It needs to be C linkage so that its name is not mangled.
  */
-extern "C" BinaryFile *construct()
+extern "C" BinaryFile *
+construct()
 {
 	return new HpSomBinaryFile();
 }
-extern "C" void destruct(BinaryFile *bf)
+extern "C" void
+destruct(BinaryFile *bf)
 {
 	delete (HpSomBinaryFile *)bf;
 }

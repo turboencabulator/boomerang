@@ -27,7 +27,8 @@ SymTab::~SymTab()
 /**
  * \brief Add a new entry.
  */
-void SymTab::Add(ADDRESS a, const char *s)
+void
+SymTab::Add(ADDRESS a, const char *s)
 {
 	amap[a] = s;
 	smap[s] = a;
@@ -36,7 +37,8 @@ void SymTab::Add(ADDRESS a, const char *s)
 /**
  * \brief Find an entry by address; NULL if none.
  */
-const char *SymTab::find(ADDRESS a)
+const char *
+SymTab::find(ADDRESS a)
 {
 	std::map<ADDRESS, std::string>::iterator ff;
 	ff = amap.find(a);
@@ -48,7 +50,8 @@ const char *SymTab::find(ADDRESS a)
 /**
  * \brief Find an entry by name; NO_ADDRESS if none.
  */
-ADDRESS SymTab::find(const char *s)
+ADDRESS
+SymTab::find(const char *s)
 {
 	std::map<std::string, ADDRESS>::iterator ff;
 	ff = smap.find(s);

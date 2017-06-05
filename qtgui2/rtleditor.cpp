@@ -25,7 +25,8 @@ RTLEditor::RTLEditor(Decompiler *decompiler, const QString &name) :
 	setReadOnly(true);
 }
 
-void RTLEditor::updateContents()
+void
+RTLEditor::updateContents()
 {
 	QString rtl;
 	decompiler->getRtlForProc(name, rtl);
@@ -34,7 +35,8 @@ void RTLEditor::updateContents()
 	verticalScrollBar()->setValue(n);
 }
 
-void RTLEditor::mouseMoveEvent(QMouseEvent *event)
+void
+RTLEditor::mouseMoveEvent(QMouseEvent *event)
 {
 	QString name = anchorAt(event->pos());
 	if (!name.isEmpty())
@@ -43,7 +45,8 @@ void RTLEditor::mouseMoveEvent(QMouseEvent *event)
 		QApplication::restoreOverrideCursor();
 }
 
-void RTLEditor::mousePressEvent(QMouseEvent *event)
+void
+RTLEditor::mousePressEvent(QMouseEvent *event)
 {
 	// allow clicking on subscripts
 	QString name = anchorAt(event->pos());
