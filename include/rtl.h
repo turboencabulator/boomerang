@@ -187,8 +187,7 @@ typedef enum { PARAM_SIMPLE, PARAM_ASGN, PARAM_LAMBDA, PARAM_VARIANT } ParamKind
 class ParamEntry {
 public:
 	ParamEntry() { }
-	~ParamEntry()
-	{
+	~ParamEntry() {
 		delete type;
 		delete regType;
 	}

@@ -65,7 +65,6 @@ Terminal::Terminal(Terminal &o) : Exp(o.op) { }  // Copy constructor
 Unary::Unary(OPER op) :
 	Exp(op)
 {
-	subExp1 = 0;  // Initialise the pointer
 	//assert(op != opRegOf);
 }
 Unary::Unary(OPER op, Exp *e) :
@@ -84,7 +83,6 @@ Unary::Unary(Unary &o) :
 Binary::Binary(OPER op) :
 	Unary(op)
 {
-	subExp2 = 0;  // Initialise the 2nd pointer. The first pointer is initialised in the Unary constructor
 }
 Binary::Binary(OPER op, Exp *e1, Exp *e2) :
 	Unary(op, e1)
@@ -103,7 +101,6 @@ Binary::Binary(Binary &o) :
 Ternary::Ternary(OPER op) :
 	Binary(op)
 {
-	subExp3 = 0;
 }
 Ternary::Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3) :
 	Binary(op, e1, e2)
@@ -191,16 +188,16 @@ Location::Location(Location &o) :
 Unary::~Unary()
 {
 	// Remember to ;//delete all children
-	if (subExp1 != 0) ;//delete subExp1;
+	;//delete subExp1;
 }
 Binary::~Binary()
 {
-	if (subExp2 != 0) ;//delete subExp2;
+	;//delete subExp2;
 	// Note that the first pointer is destructed in the Exp1 destructor
 }
 Ternary::~Ternary()
 {
-	if (subExp3 != 0) ;//delete subExp3;
+	;//delete subExp3;
 }
 FlagDef::~FlagDef()
 {
@@ -220,21 +217,21 @@ TypeVal::~TypeVal()
 void
 Unary::setSubExp1(Exp *e)
 {
-	if (subExp1 != 0) ;//delete subExp1;
+	;//delete subExp1;
 	subExp1 = e;
 	assert(subExp1);
 }
 void
 Binary::setSubExp2(Exp *e)
 {
-	if (subExp2 != 0) ;//delete subExp2;
+	;//delete subExp2;
 	subExp2 = e;
 	assert(subExp1 && subExp2);
 }
 void
 Ternary::setSubExp3(Exp *e)
 {
-	if (subExp3 != 0) ;//delete subExp3;
+	;//delete subExp3;
 	subExp3 = e;
 	assert(subExp1 && subExp2 && subExp3);
 }
@@ -1801,7 +1798,7 @@ Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = fa
 	std::list<Exp **>::iterator it;
 	for (it = li.begin(); it != li.end(); it++) {
 		Exp **pp = *it;
-		//if (*pp) //delete *pp;  // Delete any existing
+		;//delete *pp;  // Delete any existing
 		*pp = replace->clone();  // Do the replacement
 		if (once) {
 			change = true;

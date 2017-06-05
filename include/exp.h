@@ -472,7 +472,7 @@ protected:
  *============================================================================*/
 class Unary : public Exp {
 protected:
-	        Exp        *subExp1;  // One subexpression pointer
+	        Exp        *subExp1 = nullptr;  // One subexpression pointer
 
 	// Constructor, with just ID
 	                    Unary(OPER op);
@@ -540,7 +540,7 @@ protected:
  *============================================================================*/
 class Binary : public Unary {
 protected:
-	        Exp        *subExp2;  // Second subexpression pointer
+	        Exp        *subExp2 = nullptr;  // Second subexpression pointer
 
 	// Constructor, with ID
 	                    Binary(OPER op);
@@ -613,7 +613,7 @@ protected:
  * Ternary is a subclass of Binary, holding three subexpressions
  *============================================================================*/
 class Ternary : public Binary {
-	        Exp        *subExp3;  // Third subexpression pointer
+	        Exp        *subExp3 = nullptr;  // Third subexpression pointer
 
 	// Constructor, with operator
 	                    Ternary(OPER op);

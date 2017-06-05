@@ -270,7 +270,7 @@ RTL::updateStmt(Statement *s, unsigned i)
 	// statement (because it's also the one we are updating!)
 	if (*pp != s) {
 		// Do the update
-		if (*pp) ;//delete *pp;
+		;//delete *pp;
 		*pp = s;
 	}
 }

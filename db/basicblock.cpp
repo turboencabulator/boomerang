@@ -56,18 +56,15 @@ BasicBlock::BasicBlock()
  *============================================================================*/
 BasicBlock::~BasicBlock()
 {
+	// Delete the RTLs
 	if (m_pRtls) {
-		// Delete the RTLs
 		for (std::list<RTL *>::iterator it = m_pRtls->begin(); it != m_pRtls->end(); it++) {
-			if (*it) {
-				delete *it;
-			}
+			delete *it;
 		}
-
-		// and delete the list
-		delete m_pRtls;
-		m_pRtls = NULL;
 	}
+
+	// and delete the list
+	delete m_pRtls;
 }
 
 /*==============================================================================

@@ -432,8 +432,7 @@ IfThenSyntaxNode::IfThenSyntaxNode()
 
 IfThenSyntaxNode::~IfThenSyntaxNode()
 {
-	if (pThen)
-		delete pThen;
+	delete pThen;
 }
 
 SyntaxNode *
@@ -508,10 +507,8 @@ IfThenElseSyntaxNode::IfThenElseSyntaxNode()
 
 IfThenElseSyntaxNode::~IfThenElseSyntaxNode()
 {
-	if (pThen)
-		delete pThen;
-	if (pElse)
-		delete pElse;
+	delete pThen;
+	delete pElse;
 }
 
 int
@@ -613,10 +610,8 @@ PretestedLoopSyntaxNode::PretestedLoopSyntaxNode()
 
 PretestedLoopSyntaxNode::~PretestedLoopSyntaxNode()
 {
-	if (pBody)
-		delete pBody;
-	if (cond)
-		delete cond;
+	delete pBody;
+	delete cond;
 }
 
 SyntaxNode *
@@ -703,10 +698,8 @@ PostTestedLoopSyntaxNode::PostTestedLoopSyntaxNode()
 
 PostTestedLoopSyntaxNode::~PostTestedLoopSyntaxNode()
 {
-	if (pBody)
-		delete pBody;
-	if (cond)
-		delete cond;
+	delete pBody;
+	delete cond;
 }
 
 SyntaxNode *
@@ -795,8 +788,7 @@ InfiniteLoopSyntaxNode::InfiniteLoopSyntaxNode()
 
 InfiniteLoopSyntaxNode::~InfiniteLoopSyntaxNode()
 {
-	if (pBody)
-		delete pBody;
+	delete pBody;
 }
 
 int

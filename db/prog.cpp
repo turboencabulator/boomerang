@@ -79,8 +79,7 @@ Prog::~Prog()
 	if (pFE) FrontEnd::close(pFE);
 	if (pBF) BinaryFile::close(pBF);
 	for (std::list<Proc *>::iterator it = m_procs.begin(); it != m_procs.end(); it++) {
-		if (*it)
-			delete *it;
+		delete *it;
 	}
 	m_procs.clear();
 }

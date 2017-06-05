@@ -436,8 +436,7 @@ UserProc::UserProc(Prog *prog, std::string &name, ADDRESS uNative) :
 
 UserProc::~UserProc()
 {
-	if (cfg)
-		delete cfg;
+	delete cfg;
 }
 
 /*==============================================================================

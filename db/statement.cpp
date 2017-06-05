@@ -1069,8 +1069,7 @@ GotoStatement::GotoStatement(ADDRESS uDest)
  *============================================================================*/
 GotoStatement::~GotoStatement()
 {
-	if (pDest)
-		;//delete pDest;
+	;//delete pDest;
 }
 
 /*==============================================================================
@@ -1110,8 +1109,7 @@ GotoStatement::setDest(ADDRESS addr)
 	// This fails in FrontSparcTest, do you really want it to Mike? -trent
 	//assert(addr >= prog.limitTextLow && addr < prog.limitTextHigh);
 	// Delete the old destination if there is one
-	if (pDest != NULL)
-		;//delete pDest;
+	;//delete pDest;
 
 	pDest = new Const(addr);
 }
@@ -1298,8 +1296,7 @@ BranchStatement::BranchStatement()
  *============================================================================*/
 BranchStatement::~BranchStatement()
 {
-	if (pCond)
-		;//delete pCond;
+	;//delete pCond;
 }
 
 /*==============================================================================
@@ -1416,7 +1413,7 @@ BranchStatement::getCondExpr()
 void
 BranchStatement::setCondExpr(Exp *e)
 {
-	if (pCond) ;//delete pCond;
+	;//delete pCond;
 	pCond = e;
 }
 
@@ -1910,8 +1907,7 @@ CaseStatement::CaseStatement()
  *============================================================================*/
 CaseStatement::~CaseStatement()
 {
-	if (pSwitchInfo)
-		;//delete pSwitchInfo;
+	;//delete pSwitchInfo;
 }
 
 /*==============================================================================
@@ -3144,8 +3140,7 @@ BoolAssign::BoolAssign(int sz) :
  *============================================================================*/
 BoolAssign::~BoolAssign()
 {
-	if (pCond)
-		;//delete pCond;
+	;//delete pCond;
 }
 
 /*==============================================================================
@@ -3205,7 +3200,7 @@ BoolAssign::getCondExpr()
 void
 BoolAssign::setCondExpr(Exp *pss)
 {
-	if (pCond) ;//delete pCond;
+	;//delete pCond;
 	pCond = pss;
 }
 

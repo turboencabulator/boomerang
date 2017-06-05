@@ -54,5 +54,5 @@ ExprTable::~ExprTable(void)
 {
 	std::deque<Exp *>::iterator loc;
 	for (loc = expressions.begin(); loc != expressions.end(); loc++)
-		delete (*loc);
+		delete *loc;
 }

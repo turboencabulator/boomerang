@@ -56,9 +56,7 @@ Cfg::~Cfg()
 	// Delete the BBs
 	BB_IT it;
 	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
-		if (*it) {
-			delete *it;
-		}
+		delete *it;
 	}
 }
 
@@ -1052,7 +1050,7 @@ delete_lrtls(std::list<RTL *> *pLrtl)
 {
 	std::list<RTL *>::iterator it;
 	for (it = pLrtl->begin(); it != pLrtl->end(); it++) {
-		delete (*it);
+		delete *it;
 	}
 }
 
@@ -1068,7 +1066,7 @@ erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list
 {
 	std::list<RTL *>::iterator it;
 	for (it = begin; it != end; it++) {
-		delete (*it);
+		delete *it;
 	}
 	pLrtl->erase(begin, end);
 }
