@@ -697,7 +697,7 @@ Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
 }
 
 bool
-Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
+Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative) const
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -718,7 +718,7 @@ Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative)
 }
 
 bool
-Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
+Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative) const
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -746,7 +746,7 @@ Win32BinaryFile::isMinGWsFrameInit(ADDRESS uNative)
 }
 
 bool
-Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
+Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative) const
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -772,7 +772,7 @@ Win32BinaryFile::isMinGWsFrameEnd(ADDRESS uNative)
 }
 
 bool
-Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
+Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative) const
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);
@@ -801,7 +801,7 @@ Win32BinaryFile::isMinGWsCleanupSetup(ADDRESS uNative)
 }
 
 bool
-Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative)
+Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative) const
 {
 	if (!mingw_main) return false;
 	const SectionInfo *si = getSectionInfoByAddr(uNative);

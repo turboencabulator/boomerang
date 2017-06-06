@@ -191,11 +191,11 @@ protected:
 	//virtual bool        PostLoad(void *handle);
 
 private:
-	        bool        isMinGWsAllocStack(ADDRESS uNative);
-	        bool        isMinGWsFrameInit(ADDRESS uNative);
-	        bool        isMinGWsFrameEnd(ADDRESS uNative);
-	        bool        isMinGWsCleanupSetup(ADDRESS uNative);
-	        bool        isMinGWsMalloc(ADDRESS uNative);
+	        bool        isMinGWsAllocStack(ADDRESS uNative) const;
+	        bool        isMinGWsFrameInit(ADDRESS uNative) const;
+	        bool        isMinGWsFrameEnd(ADDRESS uNative) const;
+	        bool        isMinGWsCleanupSetup(ADDRESS uNative) const;
+	        bool        isMinGWsMalloc(ADDRESS uNative) const;
 
 	        void        findJumps(ADDRESS curr);
 
