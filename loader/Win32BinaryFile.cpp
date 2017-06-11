@@ -88,9 +88,7 @@ class PESectionInfo : public SectionInfo {
 	}
 };
 
-// attempt at a compile-time assert for the size requirement.
-// If the sizes differs, this statement will try to define a negative-sized array, which is invalid.
-typedef char ct_failure[sizeof (SectionInfo) == sizeof (PESectionInfo) ? 1 : -1];
+static_assert(sizeof (SectionInfo) == sizeof (PESectionInfo), "PESectionInfo size mismatch");
 
 }
 
