@@ -48,7 +48,7 @@ class Exp;
 class ExprTable : public Table {
 public:
 	ExprTable(std::deque<Exp *> &exprs);
-	~ExprTable(void);
+	~ExprTable();
 	std::deque<Exp *> expressions;
 };
 

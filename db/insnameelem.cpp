@@ -28,19 +28,19 @@ InsNameElem::InsNameElem(const char *name) :
 {
 }
 
-InsNameElem::~InsNameElem(void)
+InsNameElem::~InsNameElem()
 {
 	//delete nextelem;
 }
 
 int
-InsNameElem::ntokens(void)
+InsNameElem::ntokens()
 {
 	return 1;
 }
 
 std::string
-InsNameElem::getinstruction(void)
+InsNameElem::getinstruction()
 {
 	return (nextelem != NULL)
 	       ? (elemname + nextelem->getinstruction())
@@ -48,7 +48,7 @@ InsNameElem::getinstruction(void)
 }
 
 std::string
-InsNameElem::getinspattern(void)
+InsNameElem::getinspattern()
 {
 	return (nextelem != NULL)
 	       ? (elemname + nextelem->getinspattern())
@@ -65,7 +65,7 @@ InsNameElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 }
 
 int
-InsNameElem::ninstructions(void)
+InsNameElem::ninstructions()
 {
 	return (nextelem != NULL)
 	       ? (nextelem->ninstructions() * ntokens())
@@ -82,7 +82,7 @@ InsNameElem::append(InsNameElem *next)
 }
 
 bool
-InsNameElem::increment(void)
+InsNameElem::increment()
 {
 	if ((nextelem == NULL) || nextelem->increment())
 		value++;
@@ -94,14 +94,14 @@ InsNameElem::increment(void)
 }
 
 void
-InsNameElem::reset(void)
+InsNameElem::reset()
 {
 	value = 0;
 	if (nextelem != NULL) nextelem->reset();
 }
 
 int
-InsNameElem::getvalue(void)
+InsNameElem::getvalue()
 {
 	return value;
 }
@@ -112,13 +112,13 @@ InsOptionElem::InsOptionElem(const char *name) :
 }
 
 int
-InsOptionElem::ntokens(void)
+InsOptionElem::ntokens()
 {
 	return 2;
 }
 
 std::string
-InsOptionElem::getinstruction(void)
+InsOptionElem::getinstruction()
 {
 	std::string s = (nextelem != NULL)
 	                ? ((getvalue() == 0)
@@ -131,7 +131,7 @@ InsOptionElem::getinstruction(void)
 }
 
 std::string
-InsOptionElem::getinspattern(void)
+InsOptionElem::getinspattern()
 {
 	return (nextelem != NULL)
 	       ? ('\'' + elemname + '\'' + nextelem->getinspattern())
@@ -146,13 +146,13 @@ InsListElem::InsListElem(const char *name, Table *t, const char *idx) :
 }
 
 int
-InsListElem::ntokens(void)
+InsListElem::ntokens()
 {
 	return thetable->records.size();
 }
 
 std::string
-InsListElem::getinstruction(void)
+InsListElem::getinstruction()
 {
 	return (nextelem != NULL)
 	       ? (thetable->records[getvalue()] + nextelem->getinstruction())
@@ -160,7 +160,7 @@ InsListElem::getinstruction(void)
 }
 
 std::string
-InsListElem::getinspattern(void)
+InsListElem::getinspattern()
 {
 	return (nextelem != NULL)
 	       ? (elemname + '[' + indexname + ']' + nextelem->getinspattern())
@@ -180,7 +180,7 @@ InsListElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 }
 
 std::string
-InsListElem::getindex(void)
+InsListElem::getindex()
 {
 	return indexname;
 }

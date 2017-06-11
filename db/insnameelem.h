@@ -23,17 +23,17 @@ class Table;
 class InsNameElem {
 public:
 	InsNameElem(const char *name);
-	virtual ~InsNameElem(void);
-	virtual int ntokens(void);
-	virtual std::string getinstruction(void);
-	virtual std::string getinspattern(void);
+	virtual ~InsNameElem();
+	virtual int ntokens();
+	virtual std::string getinstruction();
+	virtual std::string getinspattern();
 	virtual void getrefmap(std::map<std::string, InsNameElem *> &m);
 
-	int ninstructions(void);
+	int ninstructions();
 	void append(InsNameElem *next);
-	bool increment(void);
-	void reset(void);
-	int getvalue(void);
+	bool increment();
+	void reset();
+	int getvalue();
 
 protected:
 	InsNameElem *nextelem = NULL;
@@ -44,20 +44,20 @@ protected:
 class InsOptionElem : public InsNameElem {
 public:
 	InsOptionElem(const char *name);
-	int ntokens(void) override;
-	std::string getinstruction(void) override;
-	std::string getinspattern(void) override;
+	int ntokens() override;
+	std::string getinstruction() override;
+	std::string getinspattern() override;
 };
 
 class InsListElem : public InsNameElem {
 public:
 	InsListElem(const char *name, Table *t, const char *idx);
-	int ntokens(void) override;
-	std::string getinstruction(void) override;
-	std::string getinspattern(void) override;
+	int ntokens() override;
+	std::string getinstruction() override;
+	std::string getinspattern() override;
 	void getrefmap(std::map<std::string, InsNameElem *> &m) override;
 
-	std::string getindex(void);
+	std::string getindex();
 
 protected:
 	std::string indexname;

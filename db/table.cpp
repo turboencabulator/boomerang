@@ -50,7 +50,7 @@ ExprTable::ExprTable(std::deque<Exp *> &exprs) :
 {
 }
 
-ExprTable::~ExprTable(void)
+ExprTable::~ExprTable()
 {
 	std::deque<Exp *>::iterator loc;
 	for (loc = expressions.begin(); loc != expressions.end(); loc++)
