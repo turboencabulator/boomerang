@@ -25,65 +25,65 @@
  */
 class MachOBinaryFile : public BinaryFile {
 public:
-	                    MachOBinaryFile();
-	virtual            ~MachOBinaryFile();
+	            MachOBinaryFile();
+	virtual    ~MachOBinaryFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_MACHO; }
-	virtual MACHINE     getMachine() const { return machine; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_MACHO; }
+	MACHINE     getMachine() const override { return machine; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 private:
-	        int         machORead2(const short *ps) const;
-	        int         machORead4(const int *pi) const;
-	        unsigned int   BMMH(const void *x);
-	        uint32_t       BMMH(uint32_t x);
-	        unsigned short BMMHW(unsigned short x);
+	int         machORead2(const short *ps) const;
+	int         machORead4(const int *pi) const;
+	unsigned int   BMMH(const void *x);
+	uint32_t       BMMH(uint32_t x);
+	unsigned short BMMHW(unsigned short x);
 public:
-	virtual int         readNative1(ADDRESS a) const;
-	virtual int         readNative2(ADDRESS a) const;
-	virtual int         readNative4(ADDRESS a) const;
-	virtual QWord       readNative8(ADDRESS a) const;
-	virtual float       readNativeFloat4(ADDRESS a) const;
-	virtual double      readNativeFloat8(ADDRESS a) const;
+	int         readNative1(ADDRESS a) const override;
+	int         readNative2(ADDRESS a) const override;
+	int         readNative4(ADDRESS a) const override;
+	QWord       readNative8(ADDRESS a) const override;
+	float       readNativeFloat4(ADDRESS a) const override;
+	double      readNativeFloat8(ADDRESS a) const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual void        addSymbol(ADDRESS uNative, const char *pName);
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
-	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);
-	virtual std::map<ADDRESS, std::string> &getSymbols() { return m_SymA; }
-	virtual std::map<std::string, ObjcModule> &getObjcModules() { return modules; }
+	void        addSymbol(ADDRESS uNative, const char *pName) override;
+	const char *getSymbolByAddress(ADDRESS dwAddr) override;
+	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
+	std::map<ADDRESS, std::string> &getSymbols() override { return m_SymA; }
+	std::map<std::string, ObjcModule> &getObjcModules() override { return modules; }
 	/** \} */
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative) { return dlprocs.find(uNative) != dlprocs.end(); }
-	virtual const char *getDynamicProcName(ADDRESS uNative);
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
-	//        DWord       getDelta();
+	bool        isDynamicLinkedProc(ADDRESS uNative) override { return dlprocs.find(uNative) != dlprocs.end(); }
+	const char *getDynamicProcName(ADDRESS uNative) override;
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
+	//DWord       getDelta();
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 
 private:
-	        char       *base = NULL;         ///< Beginning of the loaded image
-	        ADDRESS     entrypoint, loaded_addr;
-	        unsigned    loaded_size;
-	        MACHINE     machine = MACHINE_PPC;
-	        bool        swap_bytes = false;
-	        std::map<ADDRESS, std::string> m_SymA, dlprocs;
-	        std::map<std::string, ObjcModule> modules;
+	char       *base = NULL;         ///< Beginning of the loaded image
+	ADDRESS     entrypoint, loaded_addr;
+	unsigned    loaded_size;
+	MACHINE     machine = MACHINE_PPC;
+	bool        swap_bytes = false;
+	std::map<ADDRESS, std::string> m_SymA, dlprocs;
+	std::map<std::string, ObjcModule> modules;
 };
 
 #endif

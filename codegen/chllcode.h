@@ -112,73 +112,73 @@ public:
 	virtual ~CHLLCode();
 
 	// clear this class, calls the base
-	virtual void reset();
+	void reset() override;
 
 	/*
 	 * Functions to add new code
 	 */
 
 	// pretested loops (cond is optional because it is in the bb [somewhere])
-	virtual void AddPretestedLoopHeader(int indLevel, Exp *cond);
-	virtual void AddPretestedLoopEnd(int indLevel);
+	void AddPretestedLoopHeader(int indLevel, Exp *cond) override;
+	void AddPretestedLoopEnd(int indLevel) override;
 
 	// endless loops
-	virtual void AddEndlessLoopHeader(int indLevel);
-	virtual void AddEndlessLoopEnd(int indLevel);
+	void AddEndlessLoopHeader(int indLevel) override;
+	void AddEndlessLoopEnd(int indLevel) override;
 
 	// posttested loops
-	virtual void AddPosttestedLoopHeader(int indLevel);
-	virtual void AddPosttestedLoopEnd(int indLevel, Exp *cond);
+	void AddPosttestedLoopHeader(int indLevel) override;
+	void AddPosttestedLoopEnd(int indLevel, Exp *cond) override;
 
 	// case conditionals "nways"
-	virtual void AddCaseCondHeader(int indLevel, Exp *cond);
-	virtual void AddCaseCondOption(int indLevel, Exp *opt);
-	virtual void AddCaseCondOptionEnd(int indLevel);
-	virtual void AddCaseCondElse(int indLevel);
-	virtual void AddCaseCondEnd(int indLevel);
+	void AddCaseCondHeader(int indLevel, Exp *cond) override;
+	void AddCaseCondOption(int indLevel, Exp *opt) override;
+	void AddCaseCondOptionEnd(int indLevel) override;
+	void AddCaseCondElse(int indLevel) override;
+	void AddCaseCondEnd(int indLevel) override;
 
 	// if conditions
-	virtual void AddIfCondHeader(int indLevel, Exp *cond);
-	virtual void AddIfCondEnd(int indLevel);
+	void AddIfCondHeader(int indLevel, Exp *cond) override;
+	void AddIfCondEnd(int indLevel) override;
 
 	// if else conditions
-	virtual void AddIfElseCondHeader(int indLevel, Exp *cond);
-	virtual void AddIfElseCondOption(int indLevel);
-	virtual void AddIfElseCondEnd(int indLevel);
+	void AddIfElseCondHeader(int indLevel, Exp *cond) override;
+	void AddIfElseCondOption(int indLevel) override;
+	void AddIfElseCondEnd(int indLevel) override;
 
 	// goto, break, continue, etc
-	virtual void AddGoto(int indLevel, int ord);
-	virtual void AddContinue(int indLevel);
-	virtual void AddBreak(int indLevel);
+	void AddGoto(int indLevel, int ord) override;
+	void AddBreak(int indLevel) override;
+	void AddContinue(int indLevel) override;
 
 	// labels
-	virtual void AddLabel(int indLevel, int ord);
-	virtual void RemoveLabel(int ord);
-	virtual void RemoveUnusedLabels(int maxOrd);
+	void AddLabel(int indLevel, int ord) override;
+	void RemoveLabel(int ord) override;
+	void RemoveUnusedLabels(int maxOrd) override;
 
 	// sequential statements
-	virtual void AddAssignmentStatement(int indLevel, Assign *asgn);
-	virtual void AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results);
-	virtual void AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results);
-	virtual void AddReturnStatement(int indLevel, StatementList *rets);
+	void AddAssignmentStatement(int indLevel, Assign *asgn) override;
+	void AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results) override;
+	void AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results) override;
+	void AddReturnStatement(int indLevel, StatementList *rets) override;
 
 	// proc related
-	virtual void AddProcStart(UserProc *proc);
-	virtual void AddProcEnd();
-	virtual void AddLocal(const char *name, Type *type, bool last = false);
-	virtual void AddGlobal(const char *name, Type *type, Exp *init = NULL);
-	virtual void AddPrototype(UserProc *proc);
+	void AddProcStart(UserProc *proc) override;
+	void AddProcEnd() override;
+	void AddLocal(const char *name, Type *type, bool last = false) override;
+	void AddGlobal(const char *name, Type *type, Exp *init = NULL) override;
+	void AddPrototype(UserProc *proc) override;
 private:
-	        void AddProcDec(UserProc *proc, bool open);  // Implement AddProcStart and AddPrototype
+	void AddProcDec(UserProc *proc, bool open);  // Implement AddProcStart and AddPrototype
 public:
 
 	// comments
-	virtual void AddLineComment(const char *cmt);
+	void AddLineComment(const char *cmt) override;
 
 	/*
 	 * output functions
 	 */
-	virtual void print(std::ostream &os);
+	void print(std::ostream &os) override;
 };
 
 #endif

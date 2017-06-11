@@ -22,46 +22,46 @@
  */
 class PalmBinaryFile : public BinaryFile {
 public:
-	                    PalmBinaryFile();
-	virtual            ~PalmBinaryFile();
+	            PalmBinaryFile();
+	virtual    ~PalmBinaryFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_PALM; }
-	virtual MACHINE     getMachine() const { return MACHINE_PALM; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_PALM; }
+	MACHINE     getMachine() const override { return MACHINE_PALM; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
+	const char *getSymbolByAddress(ADDRESS dwAddr) override;
 	/** \} */
 
-	//virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();
+	//std::pair<unsigned, unsigned> getGlobalPointerInfo() override;
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
+	bool        isDynamicLinkedProc(ADDRESS uNative) override;
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 
 private:
-	        int         getAppID() const;
-	        void        generateBinFiles(const std::string &path) const;
+	int         getAppID() const;
+	void        generateBinFiles(const std::string &path) const;
 
-	        unsigned char *m_pImage = NULL;  ///< Points to loaded image.
-	        unsigned char *m_pData = NULL;   ///< Points to data.
-	        unsigned int m_SizeBelowA5;      ///< Offset from start of data to where a5 should be initialised to.
+	unsigned char *m_pImage = NULL;  ///< Points to loaded image.
+	unsigned char *m_pData = NULL;   ///< Points to data.
+	unsigned int m_SizeBelowA5;      ///< Offset from start of data to where a5 should be initialised to.
 };
 
 #endif

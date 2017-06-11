@@ -140,73 +140,73 @@ typedef struct PACKED {
  */
 class Win32BinaryFile : public BinaryFile {
 public:
-	                    Win32BinaryFile();
-	virtual            ~Win32BinaryFile();
+	            Win32BinaryFile();
+	virtual    ~Win32BinaryFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_PE; }
-	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_PE; }
+	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 protected:
-	        int         win32Read2(const short *ps) const;
-	        int         win32Read4(const int *pi) const;
+	int         win32Read2(const short *ps) const;
+	int         win32Read4(const int *pi) const;
 public:
-	virtual int         readNative1(ADDRESS a) const;
-	virtual int         readNative2(ADDRESS a) const;
-	virtual int         readNative4(ADDRESS a) const;
-	virtual QWord       readNative8(ADDRESS a) const;
-	virtual float       readNativeFloat4(ADDRESS a) const;
-	virtual double      readNativeFloat8(ADDRESS a) const;
+	int         readNative1(ADDRESS a) const override;
+	int         readNative2(ADDRESS a) const override;
+	int         readNative4(ADDRESS a) const override;
+	QWord       readNative8(ADDRESS a) const override;
+	float       readNativeFloat4(ADDRESS a) const override;
+	double      readNativeFloat8(ADDRESS a) const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual void        addSymbol(ADDRESS uNative, const char *pName);
-	        void        dumpSymbols();
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
-	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);
-	virtual std::map<ADDRESS, std::string> &getSymbols() { return dlprocptrs; }
+	void        addSymbol(ADDRESS uNative, const char *pName) override;
+	void        dumpSymbols();
+	const char *getSymbolByAddress(ADDRESS dwAddr) override;
+	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
+	std::map<ADDRESS, std::string> &getSymbols() override { return dlprocptrs; }
 	/** \} */
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual ADDRESS     isJumpToAnotherAddr(ADDRESS uNative);
-	virtual bool        isStaticLinkedLibProc(ADDRESS uNative);
-	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
-	virtual const char *getDynamicProcName(ADDRESS uNative);
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
-	//        DWord       getDelta();
+	ADDRESS     isJumpToAnotherAddr(ADDRESS uNative) override;
+	bool        isStaticLinkedLibProc(ADDRESS uNative) override;
+	bool        isDynamicLinkedProcPointer(ADDRESS uNative) override;
+	const char *getDynamicProcName(ADDRESS uNative) override;
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
+	//DWord       getDelta();
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 
 private:
-	        bool        isMinGWsAllocStack(ADDRESS uNative) const;
-	        bool        isMinGWsFrameInit(ADDRESS uNative) const;
-	        bool        isMinGWsFrameEnd(ADDRESS uNative) const;
-	        bool        isMinGWsCleanupSetup(ADDRESS uNative) const;
-	        bool        isMinGWsMalloc(ADDRESS uNative) const;
+	bool        isMinGWsAllocStack(ADDRESS uNative) const;
+	bool        isMinGWsFrameInit(ADDRESS uNative) const;
+	bool        isMinGWsFrameEnd(ADDRESS uNative) const;
+	bool        isMinGWsCleanupSetup(ADDRESS uNative) const;
+	bool        isMinGWsMalloc(ADDRESS uNative) const;
 
-	        void        findJumps(ADDRESS curr);
+	void        findJumps(ADDRESS curr);
 
-	        Header     *m_pHeader;      ///< Pointer to header.
-	        PEHeader   *m_pPEHeader;    ///< Pointer to pe header.
-	        int         m_cbImage;      ///< Size of image.
-	        int         m_cReloc;       ///< Number of relocation entries.
-	        DWord      *m_pRelocTable;  ///< The relocation table.
-	        unsigned char *base = NULL; ///< Beginning of the loaded image.
-	        std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.
-	        bool        mingw_main = false;
+	Header     *m_pHeader;      ///< Pointer to header.
+	PEHeader   *m_pPEHeader;    ///< Pointer to pe header.
+	int         m_cbImage;      ///< Size of image.
+	int         m_cReloc;       ///< Number of relocation entries.
+	DWord      *m_pRelocTable;  ///< The relocation table.
+	unsigned char *base = NULL; ///< Beginning of the loaded image.
+	std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.
+	bool        mingw_main = false;
 };
 
 #endif

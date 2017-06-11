@@ -23,15 +23,15 @@ public:
 	ST20FrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~ST20FrontEnd();
 
-	virtual platform getFrontEndId() { return PLAT_ST20; }
-	virtual NJMCDecoder &getDecoder() { return decoder; }
+	platform getFrontEndId() override { return PLAT_ST20; }
+	NJMCDecoder &getDecoder() override { return decoder; }
 
-	virtual std::vector<Exp *> &getDefaultParams();
-	virtual std::vector<Exp *> &getDefaultReturns();
+	std::vector<Exp *> &getDefaultParams() override;
+	std::vector<Exp *> &getDefaultReturns() override;
 
-	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
+	bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false) override;
 
-	virtual ADDRESS getMainEntryPoint(bool &gotMain);
+	ADDRESS getMainEntryPoint(bool &gotMain) override;
 };
 
 #endif

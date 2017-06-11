@@ -11,26 +11,26 @@
 
 class BinaryFileStub : public BinaryFile {
 public:
-	                    BinaryFileStub();
-	virtual            ~BinaryFileStub();
+	            BinaryFileStub();
+	virtual    ~BinaryFileStub();
 
-	virtual LOADFMT     getFormat() const;
-	virtual MACHINE     getMachine() const;
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override;
+	MACHINE     getMachine() const override;
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 };

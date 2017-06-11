@@ -61,7 +61,7 @@ SectionObjectMap s_sectionObjects;
  * SectionInfo due to the already mentioned array held by BinaryFile.
  */
 class PESectionInfo : public SectionInfo {
-	virtual bool isAddressBss(ADDRESS a) const {
+	bool isAddressBss(ADDRESS a) const override {
 		if (a < uNativeAddr || a >= uNativeAddr + uSectionSize) {
 			return false; // not even within this section
 		}

@@ -72,41 +72,41 @@ typedef struct {
  */
 class ExeBinaryFile : public BinaryFile {
 public:
-	                    ExeBinaryFile();
-	virtual            ~ExeBinaryFile();
+	            ExeBinaryFile();
+	virtual    ~ExeBinaryFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_EXE; }
-	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_EXE; }
+	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual const char *getSymbolByAddress(ADDRESS a);
+	const char *getSymbolByAddress(ADDRESS a) override;
 	/** \} */
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 
 private:
-	        exeHeader  *m_pHeader = NULL;      ///< Pointer to header.
-	        Byte       *m_pImage = NULL;       ///< Pointer to image.
-	        int         m_cReloc;              ///< Number of relocation entries.
-	        DWord      *m_pRelocTable = NULL;  ///< The relocation table.
+	exeHeader  *m_pHeader = NULL;      ///< Pointer to header.
+	Byte       *m_pImage = NULL;       ///< Pointer to image.
+	int         m_cReloc;              ///< Number of relocation entries.
+	DWord      *m_pRelocTable = NULL;  ///< The relocation table.
 };
 
 #endif

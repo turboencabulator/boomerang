@@ -52,7 +52,7 @@ public:
 	FileLogger();  // Implemented in boomerang.cpp
 	virtual ~FileLogger() { }
 
-	virtual Log &operator <<(const char *str) {
+	Log &operator <<(const char *str) override {
 		out << str << std::flush;
 		return *this;
 	}

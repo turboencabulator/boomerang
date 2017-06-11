@@ -33,52 +33,52 @@ struct PACKED coff_header {
  */
 class IntelCoffFile : public BinaryFile {
 public:
-	                    IntelCoffFile();
-	virtual            ~IntelCoffFile();
+	            IntelCoffFile();
+	virtual    ~IntelCoffFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_COFF; }
-	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_COFF; }
+	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 private:
-	        unsigned char *getAddrPtr(ADDRESS a, ADDRESS range) const;
-	        int         readNative(ADDRESS a, unsigned short n) const;
+	unsigned char *getAddrPtr(ADDRESS a, ADDRESS range) const;
+	int         readNative(ADDRESS a, unsigned short n) const;
 public:
-	virtual int         readNative1(ADDRESS a) const;
-	virtual int         readNative2(ADDRESS a) const;
-	virtual int         readNative4(ADDRESS a) const;
+	int         readNative1(ADDRESS a) const override;
+	int         readNative2(ADDRESS a) const override;
+	int         readNative4(ADDRESS a) const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual const char *getSymbolByAddress(ADDRESS uNative);
-	virtual std::map<ADDRESS, std::string> &getSymbols();
+	const char *getSymbolByAddress(ADDRESS uNative) override;
+	std::map<ADDRESS, std::string> &getSymbols() override;
 	/** \} */
 
 	/**
 	 * \name Relocation table functions
 	 * \{
 	 */
-	virtual bool        isRelocationAt(ADDRESS uNative);
+	bool        isRelocationAt(ADDRESS uNative) override;
 	/** \} */
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
+	bool        isDynamicLinkedProc(ADDRESS uNative) override;
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *) override;
 
 private:
 	std::list<ADDRESS> m_EntryPoints;

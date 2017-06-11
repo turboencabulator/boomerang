@@ -63,171 +63,171 @@ namespace CallingConvention {
 	// Win32Signature is for non-thiscall signatures: all parameters pushed
 	class Win32Signature : public Signature {
 	public:
-		                    Win32Signature(const char *nam);
-		                    Win32Signature(Signature &old);
-		virtual            ~Win32Signature() { }
-		virtual Signature  *clone();
-		virtual bool        operator ==(Signature &other);
-		static  bool        qualified(UserProc *p, Signature &candidate);
+		            Win32Signature(const char *nam);
+		            Win32Signature(Signature &old);
+		virtual    ~Win32Signature() { }
+		Signature  *clone() override;
+		bool        operator ==(Signature &other) override;
+		static bool qualified(UserProc *p, Signature &candidate);
 
-		virtual void        addReturn(Type *type, Exp *e = NULL);
-		virtual void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "");
-		virtual Exp        *getArgumentExp(int n);
+		void        addReturn(Type *type, Exp *e = NULL) override;
+		void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "") override;
+		Exp        *getArgumentExp(int n) override;
 
-		virtual Signature  *promote(UserProc *p);
-		virtual Exp        *getStackWildcard();
-		virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return 28; }
-		virtual Exp        *getProven(Exp *left);
-		virtual bool        isPreserved(Exp *e);  // Return whether e is preserved by this proc
-		virtual void        setLibraryDefines(StatementList *defs);  // Set list of locations def'd by library calls
+		Signature  *promote(UserProc *p) override;
+		Exp        *getStackWildcard() override;
+		int         getStackRegister() throw (StackRegisterNotDefinedException) override { return 28; }
+		Exp        *getProven(Exp *left) override;
+		bool        isPreserved(Exp *e) override;  // Return whether e is preserved by this proc
+		void        setLibraryDefines(StatementList *defs) override;  // Set list of locations def'd by library calls
 
-		virtual bool        isPromoted() { return true; }
-		virtual platform    getPlatform() { return PLAT_PENTIUM; }
-		virtual callconv    getConvention() { return CONV_PASCAL; }
+		bool        isPromoted() override { return true; }
+		platform    getPlatform() override { return PLAT_PENTIUM; }
+		callconv    getConvention() override { return CONV_PASCAL; }
 	};
 
 	// Win32TcSignature is for "thiscall" signatures, i.e. those that have register ecx as the first parameter
 	// Only needs to override a few member functions; the rest can inherit from Win32Signature
 	class Win32TcSignature : public Win32Signature {
 	public:
-		                    Win32TcSignature(const char *nam);
-		                    Win32TcSignature(Signature &old);
-		virtual Exp        *getArgumentExp(int n);
-		virtual Exp        *getProven(Exp *left);
-		virtual Signature  *clone();
-		virtual platform    getPlatform() { return PLAT_PENTIUM; }
-		virtual callconv    getConvention() { return CONV_THISCALL; }
+		            Win32TcSignature(const char *nam);
+		            Win32TcSignature(Signature &old);
+		Exp        *getArgumentExp(int n) override;
+		Exp        *getProven(Exp *left) override;
+		Signature  *clone() override;
+		platform    getPlatform() override { return PLAT_PENTIUM; }
+		callconv    getConvention() override { return CONV_THISCALL; }
 	};
 
 
 	namespace StdC {
 		class PentiumSignature : public Signature {
 		public:
-			                    PentiumSignature(const char *nam);
-			                    PentiumSignature(Signature &old);
-			virtual            ~PentiumSignature() { }
-			virtual Signature  *clone();
-			virtual bool        operator ==(Signature &other);
-			static  bool        qualified(UserProc *p, Signature &candidate);
+			            PentiumSignature(const char *nam);
+			            PentiumSignature(Signature &old);
+			virtual    ~PentiumSignature() { }
+			Signature  *clone() override;
+			bool        operator ==(Signature &other) override;
+			static bool qualified(UserProc *p, Signature &candidate);
 
-			virtual void        addReturn(Type *type, Exp *e = NULL);
-			virtual void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "");
-			virtual Exp        *getArgumentExp(int n);
+			void        addReturn(Type *type, Exp *e = NULL) override;
+			void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "") override;
+			Exp        *getArgumentExp(int n) override;
 
-			virtual Signature  *promote(UserProc *p);
-			virtual Exp        *getStackWildcard();
-			virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return 28; }
-			virtual Exp        *getProven(Exp *left);
-			virtual bool        isPreserved(Exp *e);  // Return whether e is preserved by this proc
-			virtual void        setLibraryDefines(StatementList *defs);  // Set list of locations def'd by library calls
-			virtual bool        isPromoted() { return true; }
-			virtual platform    getPlatform() { return PLAT_PENTIUM; }
-			virtual callconv    getConvention() { return CONV_C; }
-			virtual bool        returnCompare(Assignment &a, Assignment &b);
-			virtual bool        argumentCompare(Assignment &a, Assignment &b);
+			Signature  *promote(UserProc *p) override;
+			Exp        *getStackWildcard() override;
+			int         getStackRegister() throw (StackRegisterNotDefinedException) override { return 28; }
+			Exp        *getProven(Exp *left) override;
+			bool        isPreserved(Exp *e) override;  // Return whether e is preserved by this proc
+			void        setLibraryDefines(StatementList *defs) override;  // Set list of locations def'd by library calls
+			bool        isPromoted() override { return true; }
+			platform    getPlatform() override { return PLAT_PENTIUM; }
+			callconv    getConvention() override { return CONV_C; }
+			bool        returnCompare(Assignment &a, Assignment &b) override;
+			bool        argumentCompare(Assignment &a, Assignment &b) override;
 		};
 
 		class SparcSignature : public Signature {
 		public:
-			                    SparcSignature(const char *nam);
-			                    SparcSignature(Signature &old);
-			virtual            ~SparcSignature() { }
-			virtual Signature  *clone();
-			virtual bool        operator ==(Signature &other);
-			static  bool        qualified(UserProc *p, Signature &candidate);
+			            SparcSignature(const char *nam);
+			            SparcSignature(Signature &old);
+			virtual    ~SparcSignature() { }
+			Signature  *clone() override;
+			bool        operator ==(Signature &other) override;
+			static bool qualified(UserProc *p, Signature &candidate);
 
-			virtual void        addReturn(Type *type, Exp *e = NULL);
-			virtual void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "");
-			virtual Exp        *getArgumentExp(int n);
+			void        addReturn(Type *type, Exp *e = NULL) override;
+			void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "") override;
+			Exp        *getArgumentExp(int n) override;
 
-			virtual Signature  *promote(UserProc *p);
-			virtual Exp        *getStackWildcard();
-			virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return 14; }
-			virtual Exp        *getProven(Exp *left);
-			virtual bool        isPreserved(Exp *e);  // Return whether e is preserved by this proc
-			virtual void        setLibraryDefines(StatementList *defs);  // Set list of locations def'd by library calls
+			Signature  *promote(UserProc *p) override;
+			Exp        *getStackWildcard() override;
+			int         getStackRegister() throw (StackRegisterNotDefinedException) override { return 14; }
+			Exp        *getProven(Exp *left) override;
+			bool        isPreserved(Exp *e) override;  // Return whether e is preserved by this proc
+			void        setLibraryDefines(StatementList *defs) override;  // Set list of locations def'd by library calls
 			// Stack offsets can be negative (inherited) or positive:
-			virtual bool        isLocalOffsetPositive() { return true; }
+			bool        isLocalOffsetPositive() override { return true; }
 			// An override for testing locals
-			virtual bool        isAddrOfStackLocal(Prog *prog, Exp *e);
-			virtual bool        isPromoted() { return true; }
-			virtual platform    getPlatform() { return PLAT_SPARC; }
-			virtual callconv    getConvention() { return CONV_C; }
-			virtual bool        returnCompare(Assignment &a, Assignment &b);
-			virtual bool        argumentCompare(Assignment &a, Assignment &b);
+			bool        isAddrOfStackLocal(Prog *prog, Exp *e) override;
+			bool        isPromoted() override { return true; }
+			platform    getPlatform() override { return PLAT_SPARC; }
+			callconv    getConvention() override { return CONV_C; }
+			bool        returnCompare(Assignment &a, Assignment &b) override;
+			bool        argumentCompare(Assignment &a, Assignment &b) override;
 		};
 
 		class SparcLibSignature : public SparcSignature {
 		public:
-			                    SparcLibSignature(const char *nam) : SparcSignature(nam) { }
-			                    SparcLibSignature(Signature &old);
-			virtual Signature  *clone();
-			virtual Exp        *getProven(Exp *left);
+			            SparcLibSignature(const char *nam) : SparcSignature(nam) { }
+			            SparcLibSignature(Signature &old);
+			Signature  *clone() override;
+			Exp        *getProven(Exp *left) override;
 		};
 
 		class PPCSignature : public Signature {
 		public:
-			                    PPCSignature(const char *name);
-			                    PPCSignature(Signature &old);
-			virtual            ~PPCSignature() { }
-			virtual Signature  *clone();
-			static  bool        qualified(UserProc *p, Signature &candidate);
-			virtual void        addReturn(Type *type, Exp *e = NULL);
-			virtual Exp        *getArgumentExp(int n);
-			virtual void        addParameter(Type *type, const char *nam /*= NULL*/, Exp *e /*= NULL*/, const char *boundMax /*= ""*/);
-			virtual Exp        *getStackWildcard();
-			virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return 1; }
-			virtual Exp        *getProven(Exp *left);
-			virtual bool        isPreserved(Exp *e);  // Return whether e is preserved by this proc
-			virtual void        setLibraryDefines(StatementList *defs);  // Set list of locations def'd by library calls
-			virtual bool        isLocalOffsetPositive() { return true; }
-			virtual bool        isPromoted() { return true; }
-			virtual platform    getPlatform() { return PLAT_PPC; }
-			virtual callconv    getConvention() { return CONV_C; }
+			            PPCSignature(const char *name);
+			            PPCSignature(Signature &old);
+			virtual    ~PPCSignature() { }
+			Signature  *clone() override;
+			static bool qualified(UserProc *p, Signature &candidate);
+			void        addReturn(Type *type, Exp *e = NULL) override;
+			Exp        *getArgumentExp(int n) override;
+			void        addParameter(Type *type, const char *nam /*= NULL*/, Exp *e /*= NULL*/, const char *boundMax /*= ""*/) override;
+			Exp        *getStackWildcard() override;
+			int         getStackRegister() throw (StackRegisterNotDefinedException) override { return 1; }
+			Exp        *getProven(Exp *left) override;
+			bool        isPreserved(Exp *e) override;  // Return whether e is preserved by this proc
+			void        setLibraryDefines(StatementList *defs) override;  // Set list of locations def'd by library calls
+			bool        isLocalOffsetPositive() override { return true; }
+			bool        isPromoted() override { return true; }
+			platform    getPlatform() override { return PLAT_PPC; }
+			callconv    getConvention() override { return CONV_C; }
 		};
 
 		class MIPSSignature : public Signature {
 		public:
-			                    MIPSSignature(const char *name);
-			                    MIPSSignature(Signature &old);
-			virtual            ~MIPSSignature() { }
-			virtual Signature  *clone();
-			static  bool        qualified(UserProc *p, Signature &candidate);
-			virtual void        addReturn(Type *type, Exp *e = NULL);
-			virtual Exp        *getArgumentExp(int n);
-			virtual void        addParameter(Type *type, const char *nam /*= NULL*/, Exp *e /*= NULL*/, const char *boundMax /*= ""*/);
-			virtual Exp        *getStackWildcard();
-			virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return 1; }
-			virtual Exp        *getProven(Exp *left);
-			virtual bool        isPreserved(Exp *e);  // Return whether e is preserved by this proc
-			virtual void        setLibraryDefines(StatementList *defs);  // Set list of locations def'd by library calls
-			virtual bool        isLocalOffsetPositive() { return true; }
-			virtual bool        isPromoted() { return true; }
-			virtual platform    getPlatform() { return PLAT_MIPS; }
-			virtual callconv    getConvention() { return CONV_C; }
+			            MIPSSignature(const char *name);
+			            MIPSSignature(Signature &old);
+			virtual    ~MIPSSignature() { }
+			Signature  *clone() override;
+			static bool qualified(UserProc *p, Signature &candidate);
+			void        addReturn(Type *type, Exp *e = NULL) override;
+			Exp        *getArgumentExp(int n) override;
+			void        addParameter(Type *type, const char *nam /*= NULL*/, Exp *e /*= NULL*/, const char *boundMax /*= ""*/) override;
+			Exp        *getStackWildcard() override;
+			int         getStackRegister() throw (StackRegisterNotDefinedException) override { return 1; }
+			Exp        *getProven(Exp *left) override;
+			bool        isPreserved(Exp *e) override;  // Return whether e is preserved by this proc
+			void        setLibraryDefines(StatementList *defs) override;  // Set list of locations def'd by library calls
+			bool        isLocalOffsetPositive() override { return true; }
+			bool        isPromoted() override { return true; }
+			platform    getPlatform() override { return PLAT_MIPS; }
+			callconv    getConvention() override { return CONV_C; }
 		};
 
 		class ST20Signature : public Signature {
 		public:
-			                    ST20Signature(const char *name);
-			                    ST20Signature(Signature &old);
-			virtual            ~ST20Signature() { }
-			        Signature  *clone();
-			virtual bool        operator ==(Signature &other);
-			static  bool        qualified(UserProc *p, Signature &candidate);
+			            ST20Signature(const char *name);
+			            ST20Signature(Signature &old);
+			virtual    ~ST20Signature() { }
+			Signature  *clone() override;
+			bool        operator ==(Signature &other) override;
+			static bool qualified(UserProc *p, Signature &candidate);
 
-			virtual void        addReturn(Type *type, Exp *e = NULL);
-			        void        addParameter(Type *type, const char *nam /*= NULL*/, Exp *e /*= NULL*/, const char *boundMax /*= ""*/);
-			        Exp        *getArgumentExp(int n);
+			void        addReturn(Type *type, Exp *e = NULL) override;
+			void        addParameter(Type *type, const char *nam /*= NULL*/, Exp *e /*= NULL*/, const char *boundMax /*= ""*/) override;
+			Exp        *getArgumentExp(int n) override;
 
-			virtual Signature  *promote(UserProc *p);
-			virtual Exp        *getStackWildcard();
-			virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return 3; }
-			virtual Exp        *getProven(Exp *left);
-			virtual bool        isPromoted() { return true; }
-			//virtual bool        isLocalOffsetPositive() { return true; }
-			virtual platform    getPlatform() { return PLAT_ST20; }
-			virtual callconv    getConvention() { return CONV_C; }
+			Signature  *promote(UserProc *p) override;
+			Exp        *getStackWildcard() override;
+			int         getStackRegister() throw (StackRegisterNotDefinedException) override { return 3; }
+			Exp        *getProven(Exp *left) override;
+			bool        isPromoted() override { return true; }
+			//bool        isLocalOffsetPositive() override { return true; }
+			platform    getPlatform() override { return PLAT_ST20; }
+			callconv    getConvention() override { return CONV_C; }
 		};
 	}
 }

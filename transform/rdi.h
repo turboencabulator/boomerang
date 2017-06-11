@@ -20,7 +20,7 @@ class RDIExpTransformer : public ExpTransformer
 {
 public:
 	RDIExpTransformer() { }
-	virtual Exp *applyTo(Exp *e, bool &bMod);
+	Exp *applyTo(Exp *e, bool &bMod) override;
 };
 
 #endif

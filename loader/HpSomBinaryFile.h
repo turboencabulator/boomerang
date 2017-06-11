@@ -76,48 +76,48 @@ struct symElem {
  */
 class HpSomBinaryFile : public BinaryFile {
 public:
-	                    HpSomBinaryFile();
-	virtual            ~HpSomBinaryFile();
+	            HpSomBinaryFile();
+	virtual    ~HpSomBinaryFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_PAR; }
-	virtual MACHINE     getMachine() const { return MACHINE_HPRISC; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_PAR; }
+	MACHINE     getMachine() const override { return MACHINE_HPRISC; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
-	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
-	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
+	const char *getSymbolByAddress(ADDRESS dwAddr) override;
+	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) override;
+	//std::map<ADDRESS, const char *> *getDynamicGlobalMap() override;
 	/** \} */
 
-	//virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();
+	//std::pair<unsigned, unsigned> getGlobalPointerInfo() override;
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
+	bool        isDynamicLinkedProc(ADDRESS uNative) override;
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 
 private:
-	        std::pair<ADDRESS, int> getSubspaceInfo(const char *ssname);
+	std::pair<ADDRESS, int> getSubspaceInfo(const char *ssname);
 
-	        unsigned char *m_pImage = NULL;  ///< Points to loaded image.
-	        SymTab      symbols;             ///< Symbol table object.
-	        //ADDRESS     mainExport;          ///< Export entry for "main".
-	        std::set<ADDRESS> imports;       ///< Set of imported proc addr's.
+	unsigned char *m_pImage = NULL;  ///< Points to loaded image.
+	SymTab      symbols;             ///< Symbol table object.
+	//ADDRESS     mainExport;          ///< Export entry for "main".
+	std::set<ADDRESS> imports;       ///< Set of imported proc addr's.
 };
 
 #endif

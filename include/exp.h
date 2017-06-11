@@ -365,67 +365,67 @@ class Const : public Exp {
 		                    // Don't store string: function could be renamed
 		Proc       *pp;     // Pointer to function
 	} u;
-	        int         conscript = 0;  // like a subscript for constants
-	        Type       *type;           // Constants need types during type analysis
+	int         conscript = 0;  // like a subscript for constants
+	Type       *type;           // Constants need types during type analysis
 public:
 	// Special constructors overloaded for the various constants
-	                    Const(int i);
-	                    Const(QWord ll);
-	                    Const(ADDRESS a);
-	                    Const(double d);
-	                    Const(const char *p);
-	                    Const(Proc *pp);
+	            Const(int i);
+	            Const(QWord ll);
+	            Const(ADDRESS a);
+	            Const(double d);
+	            Const(const char *p);
+	            Const(Proc *pp);
 	// Copy constructor
-	                    Const(Const &o);
+	            Const(Const &o);
 
 	// Nothing to destruct: Don't deallocate the string passed to constructor
 
 	// Clone
-	virtual Exp        *clone();
+	Exp        *clone() override;
 
 	// Compare
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
 	// Get the constant
-	        int         getInt()  { return u.i;  }
-	        QWord       getLong() { return u.ll; }
-	        double      getFlt()  { return u.d;  }
-	        const char *getStr()  { return u.p;  }
-	        ADDRESS     getAddr() { return u.a;  }
-	        const char *getFuncName();
+	int         getInt()  { return u.i;  }
+	QWord       getLong() { return u.ll; }
+	double      getFlt()  { return u.d;  }
+	const char *getStr()  { return u.p;  }
+	ADDRESS     getAddr() { return u.a;  }
+	const char *getFuncName();
 
 	// Set the constant
-	        void        setInt(int i)         { u.i  = i;  }
-	        void        setLong(QWord ll)     { u.ll = ll; }
-	        void        setFlt(double d)      { u.d  = d;  }
-	        void        setStr(const char *p) { u.p  = p;  }
-	        void        setAddr(ADDRESS a)    { u.a  = a;  }
+	void        setInt(int i)         { u.i  = i;  }
+	void        setLong(QWord ll)     { u.ll = ll; }
+	void        setFlt(double d)      { u.d  = d;  }
+	void        setStr(const char *p) { u.p  = p;  }
+	void        setAddr(ADDRESS a)    { u.a  = a;  }
 
 	// Get and set the type
-	        Type       *getType() { return type; }
-	        void        setType(Type *ty) { type = ty; }
+	Type       *getType() { return type; }
+	void        setType(Type *ty) { type = ty; }
 
-	virtual void        print(std::ostream &os, bool html = false);
+	void        print(std::ostream &os, bool html = false) override;
 	// Print "recursive" (extra parens not wanted at outer levels)
-	        void        printNoQuotes(std::ostream &os);
-	virtual void        printx(int ind);
+	void        printNoQuotes(std::ostream &os);
+	void        printx(int ind) override;
 
-	virtual void        appendDot(std::ostream &os);
-	virtual Exp        *genConstraints(Exp *restrictTo);
+	void        appendDot(std::ostream &os) override;
+	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
-	        int         getConscript() { return conscript; }
-	        void        setConscript(int cs) { conscript = cs; }
+	int         getConscript() { return conscript; }
+	void        setConscript(int cs) { conscript = cs; }
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 protected:
 	friend class XMLProgParser;
@@ -437,31 +437,31 @@ protected:
 class Terminal : public Exp {
 public:
 	// Constructors
-	                    Terminal(OPER op);
-	                    Terminal(Terminal &o);  // Copy constructor
+	            Terminal(OPER op);
+	            Terminal(Terminal &o);  // Copy constructor
 
 	// Clone
-	virtual Exp        *clone();
+	Exp        *clone() override;
 
 	// Compare
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        appendDot(std::ostream &os);
-	virtual void        printx(int ind);
+	void        print(std::ostream &os, bool html = false) override;
+	void        appendDot(std::ostream &os) override;
+	void        printx(int ind) override;
 
-	virtual bool        isTerminal() { return true; }
+	bool        isTerminal() override { return true; }
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
 protected:
 	friend class XMLProgParser;
@@ -472,64 +472,64 @@ protected:
  *============================================================================*/
 class Unary : public Exp {
 protected:
-	        Exp        *subExp1 = nullptr;  // One subexpression pointer
+	Exp        *subExp1 = nullptr;  // One subexpression pointer
 
 	// Constructor, with just ID
-	                    Unary(OPER op);
+	            Unary(OPER op);
 public:
 	// Constructor, with ID and subexpression
-	                    Unary(OPER op, Exp *e);
+	            Unary(OPER op, Exp *e);
 	// Copy constructor
-	                    Unary(Unary &o);
-
-	// Clone
-	virtual Exp        *clone();
-
-	// Compare
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	            Unary(Unary &o);
 
 	// Destructor
-	virtual            ~Unary();
+	virtual    ~Unary();
+
+	// Clone
+	Exp        *clone() override;
+
+	// Compare
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
 	// Arity
-	virtual int         getArity() { return 1; }
+	int         getArity() override { return 1; }
 
 	// Print
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        appendDot(std::ostream &os);
-	virtual void        printx(int ind);
+	void        print(std::ostream &os, bool html = false) override;
+	void        appendDot(std::ostream &os) override;
+	void        printx(int ind) override;
 
 	// Set first subexpression
-	        void        setSubExp1(Exp *e);
-	        void        setSubExp1ND(Exp *e) { subExp1 = e; }
+	void        setSubExp1(Exp *e) override;
+	void        setSubExp1ND(Exp *e) { subExp1 = e; }
 	// Get first subexpression
-	        Exp        *getSubExp1();
+	Exp        *getSubExp1() override;
 	// Get a reference to subexpression 1
-	        Exp       *&refSubExp1();
+	Exp       *&refSubExp1() override;
 
-	virtual Exp        *match(Exp *pattern);
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	Exp        *match(Exp *pattern) override;
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
 	// Search children
-	        void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once);
+	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
 	// Do the work of simplifying this expression
-	virtual Exp        *polySimplify(bool &bMod);
-	        Exp        *simplifyArith();
-	        Exp        *simplifyAddr();
-	virtual Exp        *simplifyConstraint();
+	Exp        *polySimplify(bool &bMod) override;
+	Exp        *simplifyArith() override;
+	Exp        *simplifyAddr() override;
+	Exp        *simplifyConstraint() override;
 
 	// Type analysis
-	virtual Exp        *genConstraints(Exp *restrictTo);
+	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 protected:
 	friend class XMLProgParser;
@@ -540,70 +540,70 @@ protected:
  *============================================================================*/
 class Binary : public Unary {
 protected:
-	        Exp        *subExp2 = nullptr;  // Second subexpression pointer
+	Exp        *subExp2 = nullptr;  // Second subexpression pointer
 
 	// Constructor, with ID
-	                    Binary(OPER op);
+	            Binary(OPER op);
 
 public:
 	// Constructor, with ID and subexpressions
-	                    Binary(OPER op, Exp *e1, Exp *e2);
+	            Binary(OPER op, Exp *e1, Exp *e2);
 	// Copy constructor
-	                    Binary(Binary &o);
-
-	// Clone
-	virtual Exp        *clone();
-
-	// Compare
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	            Binary(Binary &o);
 
 	// Destructor
-	virtual            ~Binary();
+	virtual    ~Binary();
+
+	// Clone
+	Exp        *clone() override;
+
+	// Compare
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
 	// Arity
-	        int         getArity() { return 2; }
+	int         getArity() override { return 2; }
 
 	// Print
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        printr(std::ostream &os, bool html = false);
-	virtual void        appendDot(std::ostream &os);
-	virtual void        printx(int ind);
+	void        print(std::ostream &os, bool html = false) override;
+	void        printr(std::ostream &os, bool html = false) override;
+	void        appendDot(std::ostream &os) override;
+	void        printx(int ind) override;
 
 	// Set second subexpression
-	        void        setSubExp2(Exp *e);
+	void        setSubExp2(Exp *e) override;
 	// Get second subexpression
-	        Exp        *getSubExp2();
+	Exp        *getSubExp2() override;
 	// Commute the two operands
-	        void        commute();
+	void        commute();
 	// Get a reference to subexpression 2
-	        Exp       *&refSubExp2();
+	Exp       *&refSubExp2() override;
 
-	virtual Exp        *match(Exp *pattern);
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	Exp        *match(Exp *pattern) override;
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
 	// Search children
-	        void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once);
+	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
 	// Do the work of simplifying this expression
-	virtual Exp        *polySimplify(bool &bMod);
-	        Exp        *simplifyArith();
-	        Exp        *simplifyAddr();
-	virtual Exp        *simplifyConstraint();
+	Exp        *polySimplify(bool &bMod) override;
+	Exp        *simplifyArith() override;
+	Exp        *simplifyAddr() override;
+	Exp        *simplifyConstraint() override;
 
 	// Type analysis
-	virtual Exp        *genConstraints(Exp *restrictTo);
+	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 private:
-	        Exp        *constrainSub(TypeVal *typeVal1, TypeVal *typeVal2);
+	Exp        *constrainSub(TypeVal *typeVal1, TypeVal *typeVal2);
 
 protected:
 	friend class XMLProgParser;
@@ -613,62 +613,62 @@ protected:
  * Ternary is a subclass of Binary, holding three subexpressions
  *============================================================================*/
 class Ternary : public Binary {
-	        Exp        *subExp3 = nullptr;  // Third subexpression pointer
+	Exp        *subExp3 = nullptr;  // Third subexpression pointer
 
 	// Constructor, with operator
-	                    Ternary(OPER op);
+	            Ternary(OPER op);
 
 public:
 	// Constructor, with operator and subexpressions
-	                    Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3);
+	            Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3);
 	// Copy constructor
-	                    Ternary(Ternary &o);
-
-	// Clone
-	virtual Exp        *clone();
-
-	// Compare
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	            Ternary(Ternary &o);
 
 	// Destructor
-	virtual            ~Ternary();
+	virtual    ~Ternary();
+
+	// Clone
+	Exp        *clone() override;
+
+	// Compare
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
 	// Arity
-	        int         getArity() { return 3; }
+	int         getArity() override { return 3; }
 
 	// Print
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        printr(std::ostream &os, bool html = false);
-	virtual void        appendDot(std::ostream &os);
-	virtual void        printx(int ind);
+	void        print(std::ostream &os, bool html = false) override;
+	void        printr(std::ostream &os, bool html = false) override;
+	void        appendDot(std::ostream &os) override;
+	void        printx(int ind) override;
 
 	// Set third subexpression
-	        void        setSubExp3(Exp *e);
+	void        setSubExp3(Exp *e) override;
 	// Get third subexpression
-	        Exp        *getSubExp3();
+	Exp        *getSubExp3() override;
 	// Get a reference to subexpression 3
-	        Exp       *&refSubExp3();
+	Exp       *&refSubExp3() override;
 
 	// Search children
-	        void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once);
+	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
 
-	virtual Exp        *polySimplify(bool &bMod);
-	        Exp        *simplifyArith();
-	        Exp        *simplifyAddr();
+	Exp        *polySimplify(bool &bMod) override;
+	Exp        *simplifyArith() override;
+	Exp        *simplifyAddr() override;
 
 	// Type analysis
-	virtual Exp        *genConstraints(Exp *restrictTo);
+	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 protected:
 	friend class XMLProgParser;
@@ -678,46 +678,46 @@ protected:
  * TypedExp is a subclass of Unary, holding one subexpression and a Type
  *============================================================================*/
 class TypedExp : public Unary {
-	        Type       *type = NULL;
+	Type       *type = NULL;
 public:
 	// Constructor
-	                    TypedExp();
+	            TypedExp();
 	// Constructor, subexpression
-	                    TypedExp(Exp *e1);
+	            TypedExp(Exp *e1);
 	// Constructor, type, and subexpression.
 	// A rare const parameter allows the common case of providing a temporary,
 	// e.g. foo = new TypedExp(Type(INTEGER), ...);
-	                    TypedExp(Type *ty, Exp *e1);
+	            TypedExp(Type *ty, Exp *e1);
 	// Copy constructor
-	                    TypedExp(TypedExp &o);
+	            TypedExp(TypedExp &o);
 
 	// Clone
-	virtual Exp        *clone();
+	Exp        *clone() override;
 
 	// Compare
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator <<(const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator <<(const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
 
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        appendDot(std::ostream &os);
-	virtual void        printx(int ind);
+	void        print(std::ostream &os, bool html = false) override;
+	void        appendDot(std::ostream &os) override;
+	void        printx(int ind) override;
 
 	// Get and set the type
-	virtual Type       *getType() { return type; }
-	virtual void        setType(Type *ty) { type = ty; }
+	virtual Type *getType() { return type; }
+	virtual void setType(Type *ty) { type = ty; }
 
 	// polySimplify
-	virtual Exp        *polySimplify(bool &bMod);
+	Exp        *polySimplify(bool &bMod) override;
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 protected:
 	friend class XMLProgParser;
@@ -727,17 +727,17 @@ protected:
  * FlagDef is a subclass of Unary, and holds a list of parameters (in the subexpression), and a pointer to an RTL
  *============================================================================*/
 class FlagDef : public Unary {
-	        RTL        *rtl;
+	RTL        *rtl;
 public:
-	                    FlagDef(Exp *params, RTL *rtl);  // Constructor
-	virtual            ~FlagDef();                       // Destructor
-	virtual void        appendDot(std::ostream &os);
-	        RTL        *getRtl() { return rtl; }
-	        void        setRtl(RTL *r) { rtl = r; }
+	            FlagDef(Exp *params, RTL *rtl);  // Constructor
+	virtual    ~FlagDef();                       // Destructor
+	void        appendDot(std::ostream &os) override;
+	RTL        *getRtl() { return rtl; }
+	void        setRtl(RTL *r) { rtl = r; }
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
 protected:
 	friend class XMLProgParser;
@@ -750,43 +750,43 @@ protected:
  * The integer is really a pointer to the definig statement, printed as the statement number for compactness.
  *============================================================================*/
 class RefExp : public Unary {
-	        Statement  *def = NULL;  // The defining statement
+	Statement  *def = NULL;  // The defining statement
 
 public:
 	// Constructor with expression (e) and statement defining it (def)
-	                    RefExp(Exp *e, Statement *def);
-	                    //RefExp(Exp *e);
-	                    //RefExp(RefExp &o);
-	virtual Exp        *clone();
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
+	            RefExp(Exp *e, Statement *def);
+	            //RefExp(Exp *e);
+	            //RefExp(RefExp &o);
+	Exp        *clone() override;
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
 
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        printx(int ind);
-	//virtual int         getNumRefs() { return 1; }
-	        Statement  *getDef() { return def; }  // Ugh was called getRef()
-	        Exp        *addSubscript(Statement *def) { this->def = def; return this; }
-	        void        setDef(Statement *def) { this->def = def; }
-	virtual Exp        *genConstraints(Exp *restrictTo);
-	        bool        references(Statement *s) { return def == s; }
-	virtual Exp        *polySimplify(bool &bMod);
-	virtual Exp        *match(Exp *pattern);
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	void        print(std::ostream &os, bool html = false) override;
+	void        printx(int ind) override;
+	//int         getNumRefs() override { return 1; }
+	Statement  *getDef() { return def; }  // Ugh was called getRef()
+	Exp        *addSubscript(Statement *def) { this->def = def; return this; }
+	void        setDef(Statement *def) { this->def = def; }
+	Exp        *genConstraints(Exp *restrictTo) override;
+	bool        references(Statement *s) { return def == s; }
+	Exp        *polySimplify(bool &bMod) override;
+	Exp        *match(Exp *pattern) override;
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
 	// Before type analysis, implicit definitions are NULL.  During and after TA, they point to an implicit
 	// assignment statement.  Don't implement here, since it would require #including of statement.h
-	        bool        isImplicitDef();
+	bool        isImplicitDef();
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
-	virtual Type       *ascendType();
-	virtual void        descendType(Type *parentType, bool &ch, Statement *s);
+	Type       *ascendType() override;
+	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 protected:
-	                    RefExp() : Unary(opSubscript) { }
+	            RefExp() : Unary(opSubscript) { }
 	friend class XMLProgParser;
 };
 
@@ -794,26 +794,26 @@ protected:
 class TypeVal. Just a Terminal with a Type. Used for type values in constraints
 ==============================================================================*/
 class TypeVal : public Terminal {
-	        Type       *val;
+	Type       *val;
 
 public:
-	                    TypeVal(Type *ty);
-	                   ~TypeVal();
+	            TypeVal(Type *ty);
+	           ~TypeVal();
 
-	virtual Type       *getType() { return val; }
-	virtual void        setType(Type *t) { val = t; }
-	virtual Exp        *clone();
-	virtual bool        operator ==(const Exp &o) const;
-	virtual bool        operator < (const Exp &o) const;
-	virtual bool        operator *=(Exp &o);
-	virtual void        print(std::ostream &os, bool html = false);
-	virtual void        printx(int ind);
-	virtual Exp        *genConstraints(Exp *restrictTo) { assert(0); return NULL; }  // Should not be constraining constraints
-	//virtual Exp        *match(Exp *pattern);
+	virtual Type *getType() { return val; }
+	virtual void setType(Type *t) { val = t; }
+	Exp        *clone() override;
+	bool        operator ==(const Exp &o) const override;
+	bool        operator < (const Exp &o) const override;
+	bool        operator *=(Exp &o) override;
+	void        print(std::ostream &os, bool html = false) override;
+	void        printx(int ind) override;
+	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return NULL; }  // Should not be constraining constraints
+	//Exp        *match(Exp *pattern) override;
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
 
 protected:
 	friend class XMLProgParser;
@@ -821,38 +821,38 @@ protected:
 
 class Location : public Unary {
 protected:
-	        UserProc   *proc = NULL;
+	UserProc   *proc = NULL;
 
 public:
 	// Constructor with ID, subexpression, and UserProc*
-	                    Location(OPER op, Exp *e, UserProc *proc);
+	            Location(OPER op, Exp *e, UserProc *proc);
 	// Copy constructor
-	                    Location(Location &o);
+	            Location(Location &o);
 	// Custom constructor
-	static  Location   *regOf(int r) { return new Location(opRegOf, new Const(r), NULL); }
-	static  Location   *regOf(Exp *e) { return new Location(opRegOf, e, NULL); }
-	static  Location   *memOf(Exp *e, UserProc *p = NULL) { return new Location(opMemOf, e, p); }
-	static  Location   *tempOf(Exp *e) { return new Location(opTemp, e, NULL); }
-	static  Location   *global(const char *nam, UserProc *p) { return new Location(opGlobal, new Const(nam), p); }
-	static  Location   *local(const char *nam, UserProc *p);
-	static  Location   *param(const char *nam, UserProc *p = NULL) { return new Location(opParam, new Const(nam), p); }
+	static  Location *regOf(int r) { return new Location(opRegOf, new Const(r), NULL); }
+	static  Location *regOf(Exp *e) { return new Location(opRegOf, e, NULL); }
+	static  Location *memOf(Exp *e, UserProc *p = NULL) { return new Location(opMemOf, e, p); }
+	static  Location *tempOf(Exp *e) { return new Location(opTemp, e, NULL); }
+	static  Location *global(const char *nam, UserProc *p) { return new Location(opGlobal, new Const(nam), p); }
+	static  Location *local(const char *nam, UserProc *p);
+	static  Location *param(const char *nam, UserProc *p = NULL) { return new Location(opParam, new Const(nam), p); }
 	// Clone
-	virtual Exp        *clone();
+	Exp        *clone() override;
 
-	        void        setProc(UserProc *p) { proc = p; }
-	        UserProc   *getProc() { return proc; }
+	void        setProc(UserProc *p) { proc = p; }
+	UserProc   *getProc() { return proc; }
 
-	virtual Exp        *polySimplify(bool &bMod);
-	virtual void        getDefinitions(LocationSet &defs);
+	Exp        *polySimplify(bool &bMod) override;
+	virtual void getDefinitions(LocationSet &defs);
 
 	// Visitation
-	virtual bool        accept(ExpVisitor *v);
-	virtual Exp        *accept(ExpModifier *v);
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	bool        accept(ExpVisitor *v) override;
+	Exp        *accept(ExpModifier *v) override;
+	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
 protected:
 	friend class XMLProgParser;
-	                    Location(OPER op) : Unary(op) { }
+	            Location(OPER op) : Unary(op) { }
 };
 
 #endif

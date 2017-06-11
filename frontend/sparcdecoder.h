@@ -25,8 +25,8 @@ class SparcDecoder : public NJMCDecoder {
 public:
 	SparcDecoder(Prog *prog);
 
-	virtual DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta);
-	virtual int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta);
+	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 	/*
 	 * Indicates whether the instruction at the given address is a restore instruction.

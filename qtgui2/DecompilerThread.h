@@ -32,12 +32,12 @@ class Decompiler : public QObject, public Watcher {
 public:
 	Decompiler() { }
 
-	virtual void alert_decompile_debug_point(UserProc *p, const char *description);
-	virtual void alert_considering(Proc *parent, Proc *p);
-	virtual void alert_decompiling(UserProc *p);
-	virtual void alert_new(Proc *p);
-	virtual void alert_remove(Proc *p);
-	virtual void alert_update_signature(Proc *p);
+	void alert_decompile_debug_point(UserProc *p, const char *description) override;
+	void alert_considering(Proc *parent, Proc *p) override;
+	void alert_decompiling(UserProc *p) override;
+	void alert_new(Proc *p) override;
+	void alert_remove(Proc *p) override;
+	void alert_update_signature(Proc *p) override;
 
 	bool getRtlForProc(const QString &name, QString &rtl);
 	const char *getSigFile(const QString &name);

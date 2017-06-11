@@ -117,66 +117,66 @@ typedef struct PACKED {
  */
 class DOS4GWBinaryFile : public BinaryFile {
 public:
-	                    DOS4GWBinaryFile();
-	virtual            ~DOS4GWBinaryFile();
+	            DOS4GWBinaryFile();
+	virtual    ~DOS4GWBinaryFile();
 
-	virtual LOADFMT     getFormat() const { return LOADFMT_LX; }
-	virtual MACHINE     getMachine() const { return MACHINE_PENTIUM; }
-	virtual std::list<const char *> getDependencyList();
+	LOADFMT     getFormat() const override { return LOADFMT_LX; }
+	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }
+	std::list<const char *> getDependencyList() override;
 
-	virtual bool        isLibrary() const;
-	virtual ADDRESS     getImageBase() const;
-	virtual size_t      getImageSize() const;
+	bool        isLibrary() const override;
+	ADDRESS     getImageBase() const override;
+	size_t      getImageSize() const override;
 
 private:
-	        int         dos4gwRead2(const short *ps) const;
-	        int         dos4gwRead4(const int *pi) const;
+	int         dos4gwRead2(const short *ps) const;
+	int         dos4gwRead4(const int *pi) const;
 public:
-	virtual int         readNative1(ADDRESS a) const;
-	virtual int         readNative2(ADDRESS a) const;
-	virtual int         readNative4(ADDRESS a) const;
-	virtual QWord       readNative8(ADDRESS a) const;
-	virtual float       readNativeFloat4(ADDRESS a) const;
-	virtual double      readNativeFloat8(ADDRESS a) const;
+	int         readNative1(ADDRESS a) const override;
+	int         readNative2(ADDRESS a) const override;
+	int         readNative4(ADDRESS a) const override;
+	QWord       readNative8(ADDRESS a) const override;
+	float       readNativeFloat4(ADDRESS a) const override;
+	double      readNativeFloat8(ADDRESS a) const override;
 
 	/**
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual void        addSymbol(ADDRESS uNative, const char *pName);
-	virtual const char *getSymbolByAddress(ADDRESS dwAddr);
-	virtual ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false);
-	virtual std::map<ADDRESS, std::string> &getSymbols() { return dlprocptrs; }
+	void        addSymbol(ADDRESS uNative, const char *pName) override;
+	const char *getSymbolByAddress(ADDRESS dwAddr) override;
+	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
+	std::map<ADDRESS, std::string> &getSymbols() override { return dlprocptrs; }
 	/** \} */
 
 	/**
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
-	virtual const char *getDynamicProcName(ADDRESS uNative);
-	virtual ADDRESS     getMainEntryPoint();
-	virtual ADDRESS     getEntryPoint();
-	//        DWord       getDelta();
+	bool        isDynamicLinkedProc(ADDRESS uNative) override;
+	bool        isDynamicLinkedProcPointer(ADDRESS uNative) override;
+	const char *getDynamicProcName(ADDRESS uNative) override;
+	ADDRESS     getMainEntryPoint() override;
+	ADDRESS     getEntryPoint() override;
+	//DWord       getDelta();
 	/** \} */
 
 protected:
-	virtual bool        load(std::istream &);
-	//virtual bool        PostLoad(void *handle);
+	bool        load(std::istream &) override;
+	//bool        PostLoad(void *handle) override;
 
 private:
-	        //Header     *m_pHeader;             ///< Pointer to header.
-	        LXHeader   *m_pLXHeader = NULL;    ///< Pointer to lx header.
-	        LXObject   *m_pLXObjects = NULL;   ///< Pointer to lx objects.
-	        LXPage     *m_pLXPages = NULL;     ///< Pointer to lx pages.
-	        int         m_cbImage;             ///< Size of image.
-	        //int         m_cReloc;              ///< Number of relocation entries.
-	        //DWord      *m_pRelocTable;         ///< The relocation table.
-	        unsigned char *base = NULL;        ///< Beginning of the loaded image.
+	//Header     *m_pHeader;             ///< Pointer to header.
+	LXHeader   *m_pLXHeader = NULL;    ///< Pointer to lx header.
+	LXObject   *m_pLXObjects = NULL;   ///< Pointer to lx objects.
+	LXPage     *m_pLXPages = NULL;     ///< Pointer to lx pages.
+	int         m_cbImage;             ///< Size of image.
+	//int         m_cReloc;              ///< Number of relocation entries.
+	//DWord      *m_pRelocTable;         ///< The relocation table.
+	unsigned char *base = NULL;        ///< Beginning of the loaded image.
 
 	/// Map from address of dynamic pointers to library procedure names.
-	        std::map<ADDRESS, std::string> dlprocptrs;
+	std::map<ADDRESS, std::string> dlprocptrs;
 };
 
 #endif

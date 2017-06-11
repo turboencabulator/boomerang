@@ -35,7 +35,7 @@
 
 class NullLogger : public Log {
 public:
-	virtual Log & operator <<(const char *str) {
+	Log & operator <<(const char *str) override {
 		// std::cerr << str;
 		return *this;
 	}

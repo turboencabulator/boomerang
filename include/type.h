@@ -142,7 +142,7 @@ public:
 	virtual bool        operator ==(const Type &other) const = 0;    // Considers sign
 	virtual bool        operator !=(const Type &other) const;        // Considers sign
 	//virtual bool        operator -=(const Type &other) const = 0;    // Ignores sign
-	virtual bool        operator <(const Type &other) const = 0;     // Considers sign
+	virtual bool        operator < (const Type &other) const = 0;    // Considers sign
 	        bool        operator *=(const Type &other) const {       // Consider only broad type
 		                    return id == other.id;
 	                    }
@@ -203,23 +203,23 @@ protected:
 
 class VoidType : public Type {
 public:
-	                    VoidType();
-	virtual            ~VoidType();
-	virtual bool        isVoid() const { return true; }
+	            VoidType();
+	virtual    ~VoidType();
+	bool        isVoid() const override { return true; }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -227,31 +227,31 @@ protected:
 
 class FuncType : public Type {
 private:
-	        Signature  *signature;
+	Signature  *signature;
 public:
-	                    FuncType(Signature *sig = NULL);
-	virtual            ~FuncType();
-	virtual bool        isFunc() const { return true; }
+	            FuncType(Signature *sig = NULL);
+	virtual    ~FuncType();
+	bool        isFunc() const override { return true; }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	        Signature  *getSignature() { return signature; }
-	        void        setSignature(Signature *sig) { signature = sig; }
+	Signature  *getSignature() { return signature; }
+	void        setSignature(Signature *sig) { signature = sig; }
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
 	// Split the C type into return and parameter parts
-	        void        getReturnAndParam(const char *&ret, const char *&param);
+	void        getReturnAndParam(const char *&ret, const char *&param);
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -259,42 +259,42 @@ protected:
 
 class IntegerType : public Type {
 private:
-	        unsigned    size;           // Size in bits, e.g. 16
-	        int         signedness;     // pos=signed, neg=unsigned, 0=unknown or evenly matched
+	unsigned    size;           // Size in bits, e.g. 16
+	int         signedness;     // pos=signed, neg=unsigned, 0=unknown or evenly matched
 
 public:
-	                    IntegerType(int sz = STD_SIZE, int sign = 0);
-	virtual            ~IntegerType();
-	virtual bool        isInteger() const { return true; }
-	virtual bool        isComplete() { return signedness != 0 && size != 0; }
+	            IntegerType(int sz = STD_SIZE, int sign = 0);
+	virtual    ~IntegerType();
+	bool        isInteger() const override { return true; }
+	bool        isComplete() override { return signedness != 0 && size != 0; }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Type       *mergeWith(Type *other);
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Type       *mergeWith(Type *other) override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;            // Get size in bits
-	virtual void        setSize(int sz) { size = sz; }
+	unsigned    getSize() const override;            // Get size in bits
+	void        setSize(int sz) override { size = sz; }
 	// Is it signed? 0=unknown, pos=yes, neg = no
-	        bool        isSigned()   { return signedness >= 0; }    // True if not unsigned
-	        bool        isUnsigned() { return signedness <= 0; }    // True if not definately signed
+	bool        isSigned()   { return signedness >= 0; }    // True if not unsigned
+	bool        isUnsigned() { return signedness <= 0; }    // True if not definately signed
 	// A hint for signedness
-	        void        bumpSigned(int sg) { signedness += sg; }
+	void        bumpSigned(int sg) { signedness += sg; }
 	// Set absolute signedness
-	        void        setSigned(int sg)  { signedness = sg; }
+	void        setSigned(int sg)  { signedness = sg; }
 	// Get the signedness
-	        int         getSignedness()    { return signedness; }
+	int         getSignedness()    { return signedness; }
 
 	// Get the C type as a string. If full, output comments re the lack of sign information (in IntegerTypes).
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual std::string getTempName() const;
+	std::string getTempName() const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -302,29 +302,29 @@ protected:
 
 class FloatType : public Type {
 private:
-	        unsigned    size;               // Size in bits, e.g. 64
+	unsigned    size;               // Size in bits, e.g. 64
 
 public:
-	                    FloatType(int sz = 64);
-	virtual            ~FloatType();
-	virtual bool        isFloat() const { return true; }
+	            FloatType(int sz = 64);
+	virtual    ~FloatType();
+	bool        isFloat() const override { return true; }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
-	virtual void        setSize(int sz) { size = sz; }
+	unsigned    getSize() const override;
+	void        setSize(int sz) override { size = sz; }
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual std::string getTempName() const;
+	std::string getTempName() const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -332,23 +332,23 @@ protected:
 
 class BooleanType : public Type {
 public:
-	                    BooleanType();
-	virtual            ~BooleanType();
-	virtual bool        isBoolean() const { return true; }
+	            BooleanType();
+	virtual    ~BooleanType();
+	bool        isBoolean() const override { return true; }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -356,23 +356,23 @@ protected:
 
 class CharType : public Type {
 public:
-	                    CharType();
-	virtual            ~CharType();
-	virtual bool        isChar() const { return true; }
+	            CharType();
+	virtual    ~CharType();
+	bool        isChar() const override { return true; }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -380,33 +380,33 @@ protected:
 
 class PointerType : public Type {
 private:
-	        Type        *points_to;
+	Type        *points_to;
 
 public:
-	                    PointerType(Type *p);
-	virtual            ~PointerType();
-	virtual bool        isPointer() const { return true; }
-	        void        setPointsTo(Type *p);
-	        Type       *getPointsTo() { return points_to; }
-	static  PointerType *newPtrAlpha();
-	        bool        pointsToAlpha();
-	        int         pointerDepth();     // Return 2 for **x
-	        Type       *getFinalPointsTo(); // Return x for **x
+	            PointerType(Type *p);
+	virtual    ~PointerType();
+	bool        isPointer() const override { return true; }
+	void        setPointsTo(Type *p);
+	Type       *getPointsTo() { return points_to; }
+	static PointerType *newPtrAlpha();
+	bool        pointsToAlpha();
+	int         pointerDepth();     // Return 2 for **x
+	Type       *getFinalPointsTo(); // Return x for **x
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
-	virtual void        setSize(int sz) { assert(sz == STD_SIZE); }
+	unsigned    getSize() const override;
+	void        setSize(int sz) override { assert(sz == STD_SIZE); }
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -414,68 +414,68 @@ protected:
 
 class ArrayType : public Type {
 private:
-	        Type       *base_type = NULL;
-	        unsigned    length = 0;
+	Type       *base_type = NULL;
+	unsigned    length = 0;
 
 public:
-	                    ArrayType(Type *p, unsigned length);
-	                    ArrayType(Type *p);
-	virtual            ~ArrayType();
-	virtual bool        isArray() const { return true; }
-	        Type       *getBaseType() { return base_type; }
-	        void        setBaseType(Type *b);
-	        void        fixBaseType(Type *b);
-	        unsigned    getLength() { return length; }
-	        void        setLength(unsigned n) { length = n; }
-	        bool        isUnbounded() const;
+	            ArrayType(Type *p, unsigned length);
+	            ArrayType(Type *p);
+	virtual    ~ArrayType();
+	bool        isArray() const override { return true; }
+	Type       *getBaseType() { return base_type; }
+	void        setBaseType(Type *b);
+	void        fixBaseType(Type *b);
+	unsigned    getLength() { return length; }
+	void        setLength(unsigned n) { length = n; }
+	bool        isUnbounded() const;
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatibleWith(Type *other, bool all = false) { return isCompatible(other, all); }
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
-	                    ArrayType() : Type(eArray) { }
+	            ArrayType() : Type(eArray) { }
 };
 
 class NamedType : public Type {
 private:
-	        std::string name;
-	static  int         nextAlpha;
+	std::string name;
+	static int  nextAlpha;
 
 public:
-	                    NamedType(const char *name);
-	virtual            ~NamedType();
-	virtual bool        isNamed() const { return true; }
-	        const char *getName() { return name.c_str(); }
-	        Type       *resolvesTo() const;
+	            NamedType(const char *name);
+	virtual    ~NamedType();
+	bool        isNamed() const override { return true; }
+	const char *getName() { return name.c_str(); }
+	Type       *resolvesTo() const;
 	// Get a new type variable, e.g. alpha0, alpha55
-	static  NamedType  *getAlpha();
+	static NamedType *getAlpha();
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -484,53 +484,53 @@ protected:
 // The compound type represents structures, not unions
 class CompoundType : public Type {
 private:
-	        std::vector<Type *> types;
-	        std::vector<std::string> names;
-	        int         nextGenericMemberNum = 1;
-	        bool        generic;
+	std::vector<Type *> types;
+	std::vector<std::string> names;
+	int         nextGenericMemberNum = 1;
+	bool        generic;
 public:
-	                    CompoundType(bool generic = false);
-	virtual            ~CompoundType();
-	virtual bool        isCompound() const { return true; }
+	            CompoundType(bool generic = false);
+	virtual    ~CompoundType();
+	bool        isCompound() const override { return true; }
 
-	        void        addType(Type *n, const char *str) {
-		                    // check if it is a user defined type (typedef)
-		                    Type *t = getNamedType(n->getCtype());
-		                    if (t) n = t;
-		                    types.push_back(n);
-		                    names.push_back(str);
-	                    }
-	        unsigned    getNumTypes() { return types.size(); }
-	        Type       *getType(unsigned n) { assert(n < getNumTypes()); return types[n]; }
-	        Type       *getType(const char *nam);
-	        const char *getName(unsigned n) { assert(n < getNumTypes()); return names[n].c_str(); }
-	        void        setTypeAtOffset(unsigned n, Type *ty);
-	        Type       *getTypeAtOffset(unsigned n);
-	        void        setNameAtOffset(unsigned n, const char *nam);
-	        const char *getNameAtOffset(unsigned n);
-	        bool        isGeneric() { return generic; }
-	        void        updateGenericMember(int off, Type *ty, bool &ch);   // Add a new generic member if necessary
-	        unsigned    getOffsetTo(unsigned n);
-	        unsigned    getOffsetTo(const char *member);
-	        unsigned    getOffsetRemainder(unsigned n);
+	void        addType(Type *n, const char *str) {
+		            // check if it is a user defined type (typedef)
+		            Type *t = getNamedType(n->getCtype());
+		            if (t) n = t;
+		            types.push_back(n);
+		            names.push_back(str);
+	            }
+	unsigned    getNumTypes() { return types.size(); }
+	Type       *getType(unsigned n) { assert(n < getNumTypes()); return types[n]; }
+	Type       *getType(const char *nam);
+	const char *getName(unsigned n) { assert(n < getNumTypes()); return names[n].c_str(); }
+	void        setTypeAtOffset(unsigned n, Type *ty);
+	Type       *getTypeAtOffset(unsigned n);
+	void        setNameAtOffset(unsigned n, const char *nam);
+	const char *getNameAtOffset(unsigned n);
+	bool        isGeneric() { return generic; }
+	void        updateGenericMember(int off, Type *ty, bool &ch);   // Add a new generic member if necessary
+	unsigned    getOffsetTo(unsigned n);
+	unsigned    getOffsetTo(const char *member);
+	unsigned    getOffsetRemainder(unsigned n);
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	        bool        isSuperStructOf(Type *other);       // True if this is is a superstructure of other
-	        bool        isSubStructOf(Type *other);         // True if this is is a substructure of other
+	bool        isSuperStructOf(Type *other);       // True if this is is a superstructure of other
+	bool        isSubStructOf(Type *other);         // True if this is is a substructure of other
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatibleWith(Type *other, bool all = false) { return isCompatible(other, all); }
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
+	bool        isCompatible(Type *other, bool all) override;
 
 protected:
 	friend class XMLProgParser;
@@ -538,43 +538,43 @@ protected:
 
 // The union type represents the union of any number of any other types
 struct UnionElement {
-	        Type       *type;
-	        std::string name;
+	Type       *type;
+	std::string name;
 };
 class UnionType : public Type {
 private:
 	// Note: list, not vector, as it is occasionally desirable to insert elements without affecting iterators
 	// (e.g. meetWith(another Union))
-	        std::list<UnionElement> li;
+	std::list<UnionElement> li;
 
 public:
-	                    UnionType();
-	virtual            ~UnionType();
-	virtual bool        isUnion() const { return true; }
+	            UnionType();
+	virtual    ~UnionType();
+	bool        isUnion() const override { return true; }
 
-	        void        addType(Type *n, const char *str);
-	        int         getNumTypes() const { return li.size(); }
-	        bool        findType(Type *ty);             // Return true if ty is already in the union
-	        //Type       *getType(int n) { assert(n < getNumTypes()); return types[n]; }
-	        //Type       *getType(const char *nam);
-	        //const char *getName(int n) { assert(n < getNumTypes()); return names[n].c_str(); }
+	void        addType(Type *n, const char *str);
+	int         getNumTypes() const { return li.size(); }
+	bool        findType(Type *ty);             // Return true if ty is already in the union
+	//Type       *getType(int n) { assert(n < getNumTypes()); return types[n]; }
+	//Type       *getType(const char *nam);
+	//const char *getName(int n) { assert(n < getNumTypes()); return names[n].c_str(); }
 
-	virtual Type       *clone() const;
+	Type       *clone() const override;
 
-	virtual bool        operator ==(const Type &other) const;
-	//virtual bool        operator -=(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	virtual Exp        *match(Type *pattern);
+	bool        operator ==(const Type &other) const override;
+	//bool        operator -=(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	Exp        *match(Type *pattern) override;
 
-	virtual unsigned    getSize() const;
+	unsigned    getSize() const override;
 
-	virtual const char *getCtype(bool final = false) const;
+	const char *getCtype(bool final = false) const override;
 
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatibleWith(Type *other, bool all) { return isCompatible(other, all); }
-	virtual bool        isCompatible(Type *other, bool all);
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatibleWith(Type *other, bool all) override { return isCompatible(other, all); }
+	bool        isCompatible(Type *other, bool all) override;
 	// if this is a union of pointer types, get the union of things they point to. In dfa.cpp
-	        Type       *dereferenceUnion();
+	Type       *dereferenceUnion();
 
 protected:
 	friend class XMLProgParser;
@@ -584,24 +584,24 @@ protected:
 // width of a register or memory transfer)
 class SizeType : public Type {
 private:
-	        unsigned    size;               // Size in bits, e.g. 16
+	unsigned    size;               // Size in bits, e.g. 16
 public:
-	                    SizeType() : Type(eSize) { }
-	                    SizeType(unsigned sz) : Type(eSize), size(sz) { }
-	virtual            ~SizeType() { }
-	virtual Type       *clone() const;
-	virtual bool        operator ==(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	//virtual Exp        *match(Type *pattern);
-	virtual Type       *mergeWith(Type *other);
+	            SizeType() : Type(eSize) { }
+	            SizeType(unsigned sz) : Type(eSize), size(sz) { }
+	virtual    ~SizeType() { }
+	Type       *clone() const override;
+	bool        operator ==(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	//Exp        *match(Type *pattern) override;
+	Type       *mergeWith(Type *other) override;
 
-	virtual unsigned    getSize() const;
-	virtual void        setSize(unsigned sz) { size = sz; }
-	virtual bool        isSize() const { return true; }
-	virtual bool        isComplete() { return false; }    // Basic type is unknown
-	virtual const char *getCtype(bool final = false) const;
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
+	unsigned    getSize() const override;
+	void        setSize(unsigned sz) /* override */ { size = sz; }  // FIXME: different parameter type
+	bool        isSize() const override { return true; }
+	bool        isComplete() override { return false; }    // Basic type is unknown
+	const char *getCtype(bool final = false) const override;
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 
 	friend class XMLProgParser;
 };
@@ -609,52 +609,50 @@ public:
 // This class represents the upper half of its base type
 // Mainly needed to represent the upper and lower half for type double
 class UpperType : public Type {
-	        Type       *base_type;
+	Type       *base_type;
 
 public:
-	                    UpperType(Type *base) : Type(eUpper), base_type(base) { }
-	virtual            ~UpperType() { }
-	virtual Type       *clone() const;
-	virtual bool        operator ==(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	//virtual Exp        *match(Type *pattern);
-	virtual Type       *mergeWith(Type *other);
-	        Type       *getBaseType() { return base_type; }
-	        void        setBaseType(Type *b) { base_type = b; }
+	            UpperType(Type *base) : Type(eUpper), base_type(base) { }
+	virtual    ~UpperType() { }
+	Type       *clone() const override;
+	bool        operator ==(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	//Exp        *match(Type *pattern) override;
+	Type       *mergeWith(Type *other) override;
+	Type       *getBaseType() { return base_type; }
+	void        setBaseType(Type *b) { base_type = b; }
 
-	virtual unsigned    getSize() const { return base_type->getSize() / 2; }
-	virtual void        setSize(int sz);        // Does this make sense?
-	virtual bool        isUpper() const { return true; }
-	virtual bool        isComplete() { return base_type->isComplete(); }
-	virtual const char *getCtype(bool final = false) const;
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
-
+	unsigned    getSize() const override { return base_type->getSize() / 2; }
+	void        setSize(int sz) override;        // Does this make sense?
+	bool        isUpper() const override { return true; }
+	bool        isComplete() override { return base_type->isComplete(); }
+	const char *getCtype(bool final = false) const override;
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 };
 
 // As above, but stores the lower half
 class LowerType : public Type {
-	        Type       *base_type;
+	Type       *base_type;
 
 public:
-	                    LowerType(Type *base) : Type(eUpper), base_type(base) { }
-	virtual            ~LowerType() { }
-	virtual Type       *clone() const;
-	virtual bool        operator ==(const Type &other) const;
-	virtual bool        operator <(const Type &other) const;
-	//virtual Exp        *match(Type *pattern);
-	virtual Type       *mergeWith(Type *other);
-	        Type       *getBaseType() { return base_type; }
-	        void        setBaseType(Type *b) { base_type = b; }
+	            LowerType(Type *base) : Type(eUpper), base_type(base) { }
+	virtual    ~LowerType() { }
+	Type       *clone() const override;
+	bool        operator ==(const Type &other) const override;
+	bool        operator < (const Type &other) const override;
+	//Exp        *match(Type *pattern) override;
+	Type       *mergeWith(Type *other) override;
+	Type       *getBaseType() { return base_type; }
+	void        setBaseType(Type *b) { base_type = b; }
 
-	virtual unsigned    getSize() const { return base_type->getSize() / 2; }
-	virtual void        setSize(int sz);        // Does this make sense?
-	virtual bool        isLower() const { return true; }
-	virtual bool        isComplete() { return base_type->isComplete(); }
-	virtual const char *getCtype(bool final = false) const;
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr);
-	virtual bool        isCompatible(Type *other, bool all);
-
+	unsigned    getSize() const override { return base_type->getSize() / 2; }
+	void        setSize(int sz) override;        // Does this make sense?
+	bool        isLower() const override { return true; }
+	bool        isComplete() override { return base_type->isComplete(); }
+	const char *getCtype(bool final = false) const override;
+	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isCompatible(Type *other, bool all) override;
 };
 
 
@@ -669,34 +667,34 @@ public:
  */
 
 struct DataInterval {
-	        unsigned    size;               // The size of this type in bytes
-	        std::string name;               // The name of the variable
-	        Type       *type;               // The type of the variable
+	unsigned    size;               // The size of this type in bytes
+	std::string name;               // The name of the variable
+	Type       *type;               // The type of the variable
 };
 
 typedef std::pair<const ADDRESS, DataInterval> DataIntervalEntry;       // For result of find() below
 
 class DataIntervalMap {
-	        std::map<ADDRESS, DataInterval> dimap;
-	        UserProc   *proc;                             // If used for locals, has ptr to UserProc, else NULL
+	std::map<ADDRESS, DataInterval> dimap;
+	UserProc   *proc;                             // If used for locals, has ptr to UserProc, else NULL
 public:
-	                    DataIntervalMap() { }
+	            DataIntervalMap() { }
 	typedef std::map<ADDRESS, DataInterval>::iterator iterator;
-	        void        setProc(UserProc *p) { proc = p; }// Initialise the proc pointer
-	        DataIntervalEntry *find(ADDRESS addr);        // Find the DataInterval at address addr, or NULL if none
-	        iterator    find_it(ADDRESS addr);            // Return an iterator to the entry for it, or end() if none
-	        bool        isClear(ADDRESS addr, unsigned size);       // True if from addr for size bytes is clear
-	        // Add a new data item
-	        void        addItem(ADDRESS addr, const char *name, Type *ty, bool forced = false);
-	        void        deleteItem(ADDRESS addr);       // Mainly for testing?
-	        void        expandItem(ADDRESS addr, unsigned size);
-	        char       *prints();                       // For test and debug
-	        void        dump();                         // For debug
+	void        setProc(UserProc *p) { proc = p; }// Initialise the proc pointer
+	DataIntervalEntry *find(ADDRESS addr);        // Find the DataInterval at address addr, or NULL if none
+	iterator    find_it(ADDRESS addr);            // Return an iterator to the entry for it, or end() if none
+	bool        isClear(ADDRESS addr, unsigned size);       // True if from addr for size bytes is clear
+	// Add a new data item
+	void        addItem(ADDRESS addr, const char *name, Type *ty, bool forced = false);
+	void        deleteItem(ADDRESS addr);       // Mainly for testing?
+	void        expandItem(ADDRESS addr, unsigned size);
+	char       *prints();                       // For test and debug
+	void        dump();                         // For debug
 
 private:
-	        void        enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
-	        void        replaceComponents(ADDRESS addr, const char *name, Type *ty, bool forced);
-	        void        checkMatching(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
+	void        enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
+	void        replaceComponents(ADDRESS addr, const char *name, Type *ty, bool forced);
+	void        checkMatching(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
 };
 
 // Not part of the Type class, but logically belongs with it:

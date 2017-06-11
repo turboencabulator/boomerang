@@ -99,14 +99,14 @@ public:
 	void clear() { a = b = c = d = e = f = g = h = false; }
 	StmtVisitorStub() { }
 	virtual ~StmtVisitorStub() { }
-	virtual bool visit(            RTL *s) { a = true; return false; }
-	virtual bool visit(  GotoStatement *s) { b = true; return false; }
-	virtual bool visit(BranchStatement *s) { c = true; return false; }
-	virtual bool visit(  CaseStatement *s) { d = true; return false; }
-	virtual bool visit(  CallStatement *s) { e = true; return false; }
-	virtual bool visit(ReturnStatement *s) { f = true; return false; }
-	virtual bool visit(     BoolAssign *s) { g = true; return false; }
-	virtual bool visit(         Assign *s) { h = true; return false; }
+	bool visit(            RTL *s) override { a = true; return false; }
+	bool visit(  GotoStatement *s) override { b = true; return false; }
+	bool visit(BranchStatement *s) override { c = true; return false; }
+	bool visit(  CaseStatement *s) override { d = true; return false; }
+	bool visit(  CallStatement *s) override { e = true; return false; }
+	bool visit(ReturnStatement *s) override { f = true; return false; }
+	bool visit(     BoolAssign *s) override { g = true; return false; }
+	bool visit(         Assign *s) override { h = true; return false; }
 };
 
 /**

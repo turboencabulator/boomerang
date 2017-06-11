@@ -44,18 +44,18 @@ protected:
 class InsOptionElem : public InsNameElem {
 public:
 	InsOptionElem(const char *name);
-	virtual int ntokens(void);
-	virtual std::string getinstruction(void);
-	virtual std::string getinspattern(void);
+	int ntokens(void) override;
+	std::string getinstruction(void) override;
+	std::string getinspattern(void) override;
 };
 
 class InsListElem : public InsNameElem {
 public:
 	InsListElem(const char *name, Table *t, const char *idx);
-	virtual int ntokens(void);
-	virtual std::string getinstruction(void);
-	virtual std::string getinspattern(void);
-	virtual void getrefmap(std::map<std::string, InsNameElem *> &m);
+	int ntokens(void) override;
+	std::string getinstruction(void) override;
+	std::string getinspattern(void) override;
+	void getrefmap(std::map<std::string, InsNameElem *> &m) override;
 
 	std::string getindex(void);
 

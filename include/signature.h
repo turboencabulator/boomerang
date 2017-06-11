@@ -259,14 +259,14 @@ protected:
 
 class CustomSignature : public Signature {
 protected:
-	        int         sp = 0;
+	int         sp = 0;
 public:
-	                    CustomSignature(const char *nam);
-	virtual            ~CustomSignature() { }
-	virtual bool        isPromoted() { return true; }
-	virtual Signature  *clone();
-	        void        setSP(int nsp);
-	virtual int         getStackRegister() throw (StackRegisterNotDefinedException) { return sp; };
+	            CustomSignature(const char *nam);
+	virtual    ~CustomSignature() { }
+	bool        isPromoted() override { return true; }
+	Signature  *clone() override;
+	void        setSP(int nsp);
+	int         getStackRegister() throw (StackRegisterNotDefinedException) override { return sp; };
 };
 
 #endif
