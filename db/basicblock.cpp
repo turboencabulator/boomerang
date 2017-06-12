@@ -347,7 +347,7 @@ printBB(BasicBlock *bb)
 ADDRESS
 BasicBlock::getLowAddr()
 {
-	if (m_pRtls == NULL || m_pRtls->size() == 0) return 0;
+	if (m_pRtls == NULL || m_pRtls->empty()) return 0;
 	ADDRESS a = m_pRtls->front()->getAddress();
 	if ((a == 0) && (m_pRtls->size() > 1)) {
 		std::list<RTL *>::iterator it = m_pRtls->begin();
@@ -443,7 +443,7 @@ BasicBlock::setInEdge(int i, BasicBlock *pNewInEdge)
 void
 BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
 {
-	if (m_OutEdges.size() == 0) {
+	if (m_OutEdges.empty()) {
 		assert(i == 0);
 		m_OutEdges.push_back(pNewOutEdge);
 	} else {
@@ -645,7 +645,7 @@ BasicBlock::getCallDest()
 {
 	if (m_nodeType != CALL)
 		return (ADDRESS)-1;
-	if (m_pRtls->size() == 0)
+	if (m_pRtls->empty())
 		return (ADDRESS)-1;
 	RTL *lastRtl = m_pRtls->back();
 	RTL::reverse_iterator rit;
@@ -662,7 +662,7 @@ BasicBlock::getCallDestProc()
 {
 	if (m_nodeType != CALL)
 		return 0;
-	if (m_pRtls->size() == 0)
+	if (m_pRtls->empty())
 		return 0;
 	RTL *lastRtl = m_pRtls->back();
 	RTL::reverse_iterator it;
@@ -845,7 +845,7 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 	// it should contain a BranchStatement
 	std::list<Statement *> &sl = last->getList();
 	RTL::reverse_iterator it;
-	assert(sl.size());
+	assert(!sl.empty());
 	for (it = sl.rbegin(); it != sl.rend(); it++) {
 		if ((*it)->getKind() == STMT_BRANCH) {
 			((BranchStatement *)(*it))->setCondExpr(e);
@@ -865,7 +865,7 @@ BasicBlock::isJmpZ(BasicBlock *dest)
 	// it should contain a BranchStatement
 	std::list<Statement *> &sl = last->getList();
 	std::list<Statement *>::reverse_iterator it;
-	assert(sl.size());
+	assert(!sl.empty());
 	for (it = sl.rbegin(); it != sl.rend(); it++) {
 		if ((*it)->getKind() == STMT_BRANCH) {
 			BRANCH_TYPE jt = ((BranchStatement *)(*it))->getCond();
@@ -916,7 +916,7 @@ BasicBlock::simplify()
 		for (std::list<RTL *>::iterator it = m_pRtls->begin(); it != m_pRtls->end(); it++)
 			(*it)->simplify();
 	if (m_nodeType == TWOWAY) {
-		if (m_pRtls == NULL || m_pRtls->size() == 0) {
+		if (m_pRtls == NULL || m_pRtls->empty()) {
 			m_nodeType = FALL;
 		} else {
 			RTL *last = m_pRtls->back();
@@ -1060,7 +1060,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 {
 	// If this is the follow for the most nested enclosing conditional, then don't generate anything. Otherwise if it is
 	// in the follow set generate a goto to the follow
-	BasicBlock *enclFollow = followSet.size() == 0 ? NULL : followSet.back();
+	BasicBlock *enclFollow = followSet.empty() ? NULL : followSet.back();
 
 	if (isIn(gotoSet, this) && !isLatchNode()
 	 && ((latch && latch->loopHead && this == latch->loopHead->loopFollow)
@@ -1376,13 +1376,13 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		}
 
 		// return if this doesn't have any out edges (emit a warning)
-		if (m_OutEdges.size() == 0) {
+		if (m_OutEdges.empty()) {
 			std::cerr << "WARNING: no out edge for this BB in " << proc->getName() << ":\n";
 			this->print(std::cerr);
 			std::cerr << std::endl;
 			if (m_nodeType == COMPJUMP) {
 				std::ostringstream ost;
-				assert(m_pRtls->size());
+				assert(!m_pRtls->empty());
 				RTL *lastRTL = m_pRtls->back();
 				assert(lastRTL->getNumStmt());
 				GotoStatement *gs = (GotoStatement *)lastRTL->elementAt(lastRTL->getNumStmt() - 1);
@@ -1648,7 +1648,7 @@ BasicBlock::prependStmt(Statement *s, UserProc *proc)
 	// Check the first RTL (if any)
 	s->setBB(this);
 	s->setProc(proc);
-	if (m_pRtls->size()) {
+	if (!m_pRtls->empty()) {
 		RTL *rtl = m_pRtls->front();
 		if (rtl->getAddress() == 0) {
 			// Append to this RTL
@@ -1766,7 +1766,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 		liveout.makeUnion(currBB->liveIn);
 		int j = currBB->whichPred(this);
 		// The first RTL will have the phi functions, if any
-		if (currBB->m_pRtls == NULL || currBB->m_pRtls->size() == 0)
+		if (currBB->m_pRtls == NULL || currBB->m_pRtls->empty())
 			continue;
 		RTL *phiRtl = currBB->m_pRtls->front();
 		std::list<Statement *> &stmts = phiRtl->getList();
@@ -2029,7 +2029,7 @@ BasicBlock::findNumCases()
 	for (it = m_InEdges.begin(); it != m_InEdges.end(); it++) {  // For each in-edge
 		if ((*it)->m_nodeType != TWOWAY)  // look for a two-way BB
 			continue;  // Ignore all others
-		assert((*it)->m_pRtls->size());
+		assert(!(*it)->m_pRtls->empty());
 		RTL *lastRtl = (*it)->m_pRtls->back();
 		assert(lastRtl->getNumStmt() >= 1);
 		BranchStatement *lastStmt = (BranchStatement *)lastRtl->elementAt(lastRtl->getNumStmt() - 1);
@@ -2099,12 +2099,12 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 					seenSet.insert(it->def);
 				}
 			}
-		} while (workSet.size());
+		} while (!workSet.empty());
 	}
 #endif
 
 	if (m_nodeType == COMPJUMP) {
-		assert(m_pRtls->size());
+		assert(!m_pRtls->empty());
 		RTL *lastRtl = m_pRtls->back();
 		if (DEBUG_SWITCH)
 			LOG << "decodeIndirectJmp: " << lastRtl->prints();
@@ -2201,7 +2201,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		}
 		return false;
 	} else if (m_nodeType == COMPCALL) {
-		assert(m_pRtls->size());
+		assert(!m_pRtls->empty());
 		RTL *lastRtl = m_pRtls->back();
 		if (DEBUG_SWITCH)
 			LOG << "decodeIndirectJmp: COMPCALL:\n" << lastRtl->prints() << "\n";

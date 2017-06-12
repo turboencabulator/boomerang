@@ -1191,12 +1191,12 @@ ExpTest::testAddUsedLocs()
 	Exp *e = new Terminal(opNil);
 	LocationSet l;
 	e->addUsedLocs(l);
-	CPPUNIT_ASSERT(l.size() == 0);
+	CPPUNIT_ASSERT(l.empty());
 
 	// Const: "foo"
 	e = new Const("foo");
 	e->addUsedLocs(l);
-	CPPUNIT_ASSERT(l.size() == 0);
+	CPPUNIT_ASSERT(l.empty());
 
 	// Simple terminal: %pc
 	e = new Terminal(opPC);

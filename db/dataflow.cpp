@@ -314,7 +314,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 		// W <- defsites[a];
 		std::set<int> W = defsites[a];  // set copy
 		// While W not empty
-		while (W.size()) {
+		while (!W.empty()) {
 			// Remove some node n from W
 			int n = *W.begin();  // Copy first element
 			W.erase(W.begin());  // Remove first element
@@ -619,7 +619,7 @@ DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &
 {
 	std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator it;
 	for (it = Stacks.begin(); it != Stacks.end(); it++) {
-		if (it->second.size() == 0)
+		if (it->second.empty())
 			continue;  // This variable's definition doesn't reach here
 		// Create an assignment of the form loc := loc{def}
 		RefExp *re = new RefExp(it->first->clone(), it->second.top());

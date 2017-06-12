@@ -44,6 +44,9 @@ public:
 	int size() {
 		return cmap.size();
 	}
+	bool empty() const {
+		return cmap.empty();
+	}
 	// Empty the map
 	void clear() {
 		cmap.clear();

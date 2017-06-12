@@ -82,7 +82,7 @@ BlockSyntaxNode::getNumOutEdges()
 {
 	if (pbb)
 		return pbb->getNumOutEdges();
-	if (statements.size() == 0)
+	if (statements.empty())
 		return 0;
 	return statements[statements.size() - 1]->getNumOutEdges();
 }
@@ -92,7 +92,7 @@ BlockSyntaxNode::getOutEdge(SyntaxNode *root, int n)
 {
 	if (pbb)
 		return root->findNodeFor(pbb->getOutEdge(n));
-	if (statements.size() == 0)
+	if (statements.empty())
 		return NULL;
 	return statements[statements.size() - 1]->getOutEdge(root, n);
 }

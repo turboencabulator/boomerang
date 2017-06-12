@@ -384,7 +384,7 @@ CallingConvention::Win32Signature::getArgumentExp(int n)
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
-	if (params.size() != 0 && *params[0]->getExp() == *esp)
+	if (!params.empty() && *params[0]->getExp() == *esp)
 		n--;
 	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 	return e;
@@ -396,7 +396,7 @@ CallingConvention::Win32TcSignature::getArgumentExp(int n)
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
-	if (params.size() != 0 && *params[0]->getExp() == *esp)
+	if (!params.empty() && *params[0]->getExp() == *esp)
 		n--;
 	if (n == 0)
 		// It's the first parameter, register ecx
@@ -474,7 +474,7 @@ CallingConvention::Win32Signature::isPreserved(Exp *e)
 void
 CallingConvention::Win32Signature::setLibraryDefines(StatementList *defs)
 {
-	if (defs->size()) return;  // Do only once
+	if (!defs->empty()) return;  // Do only once
 	Location *r24 = Location::regOf(24);  // eax
 	Type *ty = new SizeType(32);
 	if (returns.size() > 1) {  // Ugh - note the stack pointer is the first return still
@@ -623,7 +623,7 @@ CallingConvention::StdC::PentiumSignature::getArgumentExp(int n)
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
-	if (params.size() != 0 && *params[0]->getExp() == *esp)
+	if (!params.empty() && *params[0]->getExp() == *esp)
 		n--;
 	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 	return e;
@@ -685,7 +685,7 @@ CallingConvention::StdC::PentiumSignature::isPreserved(Exp *e)
 void
 CallingConvention::StdC::PentiumSignature::setLibraryDefines(StatementList *defs)
 {
-	if (defs->size()) return;  // Do only once
+	if (!defs->empty()) return;  // Do only once
 	Location *r24 = Location::regOf(24);  // eax
 	Type *ty = new SizeType(32);
 	if (returns.size() > 1) {  // Ugh - note the stack pointer is the first return still
@@ -803,7 +803,7 @@ CallingConvention::StdC::PPCSignature::isPreserved(Exp *e)
 void
 CallingConvention::StdC::PPCSignature::setLibraryDefines(StatementList *defs)
 {
-	if (defs->size()) return;  // Do only once
+	if (!defs->empty()) return;  // Do only once
 	for (int r = 3; r <= 12; ++r)
 		defs->append(new ImplicitAssign(Location::regOf(r)));  // Registers 3-12 are volatile (caller save)
 }
@@ -851,7 +851,7 @@ CallingConvention::StdC::ST20Signature::getArgumentExp(int n)
 		return Signature::getArgumentExp(n);
 	// m[%sp+4], etc.
 	Exp *sp = Location::regOf(3);
-	if (params.size() != 0 && *params[0]->getExp() == *sp)
+	if (!params.empty() && *params[0]->getExp() == *sp)
 		n--;
 	Exp *e = Location::memOf(new Binary(opPlus, sp, new Const((n + 1) * 4)));
 	return e;
@@ -1132,7 +1132,7 @@ CallingConvention::StdC::SparcSignature::isPreserved(Exp *e)
 void
 CallingConvention::StdC::SparcSignature::setLibraryDefines(StatementList *defs)
 {
-	if (defs->size()) return;  // Do only once
+	if (!defs->empty()) return;  // Do only once
 	for (int r = 8; r <= 15; ++r)
 		defs->append(new ImplicitAssign(Location::regOf(r)));  // o0-o7 (r8-r15) modified
 }
@@ -1564,7 +1564,7 @@ Signature::print(std::ostream &out, bool html)
 {
 	if (isForced())
 		out << "*forced* ";
-	if (returns.size() > 0) {
+	if (!returns.empty()) {
 		out << "{ ";
 		unsigned n = 0;
 		for (Returns::iterator rr = returns.begin(); rr != returns.end(); rr++, n++) {
@@ -1695,7 +1695,7 @@ Signature::getReturnExp2(BinaryFile *pBF)
 void
 Signature::setABIdefines(Prog *prog, StatementList *defs)
 {
-	if (defs->size()) return;  // Do only once
+	if (!defs->empty()) return;  // Do only once
 	MACHINE mach = prog->getMachine();
 	switch (mach) {
 	case MACHINE_PENTIUM:

@@ -256,7 +256,7 @@ operand
 		param.asgn = asgn;
 		param.kind = PARAM_ASGN;
 
-		if (param.funcParams.size() != 0)
+		if (!param.funcParams.empty())
 			param.kind = PARAM_LAMBDA;
 		//delete $2;
 		//delete $3;

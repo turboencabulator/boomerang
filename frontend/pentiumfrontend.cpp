@@ -197,7 +197,7 @@ std::vector<Exp *> &
 PentiumFrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
-	if (params.size() == 0) {
+	if (params.empty()) {
 		params.push_back(Location::regOf(24/*eax*/));
 		params.push_back(Location::regOf(25/*ecx*/));
 		params.push_back(Location::regOf(26/*edx*/));
@@ -215,7 +215,7 @@ std::vector<Exp *> &
 PentiumFrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
-	if (returns.size() == 0) {
+	if (returns.empty()) {
 		returns.push_back(Location::regOf(24/*eax*/));
 		returns.push_back(Location::regOf(25/*ecx*/));
 		returns.push_back(Location::regOf(26/*edx*/));
@@ -579,7 +579,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 			// Must have gotten out of step
 			break;
 		CallStatement *cs = NULL;
-		if (inst.rtl->getList().size())
+		if (!inst.rtl->getList().empty())
 			cs = (CallStatement *)(inst.rtl->getList().back());
 		if (cs
 		 && cs->getKind() == STMT_CALL
@@ -600,7 +600,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 					std::cerr << "is followed by push eax.. " << "good" << std::endl;
 #endif
 					inst = decodeInstruction(addr + oNumBytes + inst.numBytes);
-					if (inst.rtl->getList().size()) {
+					if (!inst.rtl->getList().empty()) {
 						CallStatement *toMain = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
 						if (toMain && toMain->getFixedDest() != NO_ADDRESS) {
 							pBF->addSymbol(toMain->getFixedDest(), "WinMain");
@@ -697,7 +697,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 			RTL *rtl = *rit;
 			prev = addr;
 			addr = rtl->getAddress();
-			if (rtl->getList().size()) {
+			if (!rtl->getList().empty()) {
 				Statement *firstStmt = *rtl->getList().begin();
 				if (firstStmt->isAssign()) {
 					Exp *lhs = ((Assign *)firstStmt)->getLeft();

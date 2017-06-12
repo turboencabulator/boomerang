@@ -295,7 +295,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 {
 	ParamEntry &param = DetParamMap[s];
 
-	if (param.params.size() == 0) {
+	if (param.params.empty()) {
 		std::cerr << "Error in SSL File: Variant operand " << s << " has no branches. Well that's really useful...\n";
 		return;
 	}

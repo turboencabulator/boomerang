@@ -1097,7 +1097,7 @@ Prog::decodeEverythingUndecoded()
 void
 Prog::decompile()
 {
-	assert(m_procs.size());
+	assert(!m_procs.empty());
 
 	if (VERBOSE)
 		LOG << (int)m_procs.size() << " procedures\n";
@@ -1243,7 +1243,7 @@ Prog::removeUnusedReturns()
 	// down the call tree (no caller uses potential returns for child), and sometimes up the call tree (removal of
 	// returns and/or dead code removes parameters, which affects all callers).
 	std::set<UserProc *>::iterator it;
-	while (removeRetSet.size()) {
+	while (!removeRetSet.empty()) {
 		it = removeRetSet.begin();  // Pick the first element of the set
 		change |= (*it)->removeRedundantReturns(removeRetSet);
 		// Note: removing the currently processed item here should prevent unnecessary reprocessing of self recursive
@@ -1345,7 +1345,7 @@ Prog::printCallGraph()
 	for (pp = entryProcs.begin(); pp != entryProcs.end(); ++pp)
 		procList.push_back(*pp);
 	spaces[procList.front()] = 0;
-	while (procList.size()) {
+	while (!procList.empty()) {
 		Proc *p = procList.front();
 		procList.erase(procList.begin());
 		if ((unsigned)p == NO_ADDRESS)

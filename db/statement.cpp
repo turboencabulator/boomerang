@@ -609,9 +609,9 @@ Statement::isFirstStatementInBB()
 {
 	assert(pbb);
 	assert(pbb->getRTLs());
-	assert(pbb->getRTLs()->size());
+	assert(!pbb->getRTLs()->empty());
 	assert(pbb->getRTLs()->front());
-	assert(pbb->getRTLs()->front()->getList().size());
+	assert(!pbb->getRTLs()->front()->getList().empty());
 	return this == pbb->getRTLs()->front()->getList().front();
 }
 
@@ -2266,7 +2266,7 @@ CallStatement::print(std::ostream &os, bool html)
 	}
 
 	// Define(s), if any
-	if (defines.size()) {
+	if (!defines.empty()) {
 		if (defines.size() > 1) os << "{";
 		StatementList::iterator rr;
 		bool first = true;

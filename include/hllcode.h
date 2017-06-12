@@ -177,7 +177,7 @@ public:
 
 	void ignoreGoto() override {
 		if (pbb) notGoto = true;
-		else if (statements.size() > 0)
+		else if (!statements.empty())
 			statements[statements.size() - 1]->ignoreGoto();
 	}
 
@@ -209,12 +209,12 @@ public:
 	bool endsWithGoto() override {
 		if (pbb) return isGoto();
 		bool last = false;
-		if (statements.size() > 0)
+		if (!statements.empty())
 			last = statements[statements.size() - 1]->endsWithGoto();
 		return last;
 	}
 	bool startsWith(SyntaxNode *node) override {
-		return this == node || (statements.size() > 0 && statements[0]->startsWith(node));
+		return this == node || (!statements.empty() && statements[0]->startsWith(node));
 	}
 	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
 		if (this == pFor) return cur;

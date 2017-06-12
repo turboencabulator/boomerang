@@ -1748,16 +1748,16 @@ Binary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
 {
 	assert(subExp1 && subExp2);
 	doSearch(search, subExp1, li, once);
-	if (once && li.size()) return;
+	if (once && !li.empty()) return;
 	doSearch(search, subExp2, li, once);
 }
 void
 Ternary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
 {
 	doSearch(search, subExp1, li, once);
-	if (once && li.size()) return;
+	if (once && !li.empty()) return;
 	doSearch(search, subExp2, li, once);
-	if (once && li.size()) return;
+	if (once && !li.empty()) return;
 	doSearch(search, subExp3, li, once);
 }
 
@@ -1805,7 +1805,7 @@ Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = fa
 			return top;
 		}
 	}
-	change = (li.size() != 0);
+	change = !li.empty();
 	return top;
 }
 
@@ -1827,7 +1827,7 @@ Exp::search(Exp *search, Exp *&result)
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *top = this;
 	doSearch(search, top, li, false);
-	if (li.size()) {
+	if (!li.empty()) {
 		result = *li.front();
 		return true;
 	}
@@ -1857,7 +1857,7 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
 		// li is list of Exp**; result is list of Exp*
 		result.push_back(**it);
 	}
-	return li.size() != 0;
+	return !li.empty();
 }
 
 // These simplifying functions don't really belong in class Exp, but they know too much about how Exps work
@@ -1987,8 +1987,8 @@ Binary::simplifyArith()
 	int sum = std::accumulate(integers.begin(), integers.end(), 0);
 
 	// Now put all these elements back together and return the result
-	if (positives.size() == 0) {
-		if (negatives.size() == 0) {
+	if (positives.empty()) {
+		if (negatives.empty()) {
 			return new Const(sum);
 		} else
 			// No positives, some negatives. sum - Acc
@@ -1996,7 +1996,7 @@ Binary::simplifyArith()
 			                  new Const(sum),
 			                  Exp::Accumulate(negatives));
 	}
-	if (negatives.size() == 0) {
+	if (negatives.empty()) {
 		// Positives + sum
 		if (sum == 0) {
 			// Just positives

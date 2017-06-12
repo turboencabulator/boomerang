@@ -95,7 +95,7 @@ ExpTransformer::loadAll()
 		std::string::size_type j = sFile.find('#');
 		if (j != sFile.npos)
 			sFile.erase(j);
-		if (sFile.size() > 0 && sFile[sFile.size() - 1] == '\n')
+		if (!sFile.empty() && sFile[sFile.size() - 1] == '\n')
 			sFile.erase(sFile.size() - 1);
 		if (sFile.empty()) continue;
 

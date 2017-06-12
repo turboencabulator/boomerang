@@ -726,7 +726,7 @@ std::vector<Exp *> &
 SparcFrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
-	if (params.size() == 0) {
+	if (params.empty()) {
 		// init arguments and return set to be all 31 machine registers
 		// Important: because o registers are save in i registers, and
 		// i registers have higher register numbers (e.g. i1=r25, o1=r9)
@@ -745,7 +745,7 @@ std::vector<Exp *> &
 SparcFrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
-	if (returns.size() == 0) {
+	if (returns.empty()) {
 		returns.push_back(Location::regOf(30));
 		returns.push_back(Location::regOf(31));
 		for (int r = 29; r > 0; r--) {
@@ -849,7 +849,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 			GotoStatement *stmt_jump = NULL;
 			Statement *last = NULL;
 			std::list<Statement *> &slist = rtl->getList();
-			if (slist.size()) {
+			if (!slist.empty()) {
 				last = slist.back();
 				stmt_jump = static_cast<GotoStatement *>(last);
 			}

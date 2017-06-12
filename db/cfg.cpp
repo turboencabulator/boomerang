@@ -1737,7 +1737,7 @@ static int progress = 0;
 void
 Cfg::findInterferences(ConnectionGraph &cg)
 {
-	if (m_listBB.size() == 0) return;
+	if (m_listBB.empty()) return;
 
 	std::list<BasicBlock *> workList;  // List of BBs still to be processed
 	// Set of the same; used for quick membership test
@@ -1746,7 +1746,7 @@ Cfg::findInterferences(ConnectionGraph &cg)
 
 	bool change;
 	int count = 0;
-	while (workList.size() && count < 100000) {
+	while (!workList.empty() && count < 100000) {
 		count++;  // prevent infinite loop
 		if (++progress > 20) {
 			std::cout << "i" << std::flush;
@@ -1761,10 +1761,10 @@ Cfg::findInterferences(ConnectionGraph &cg)
 			if (DEBUG_LIVENESS) {
 				LOG << "Revisiting BB ending with stmt ";
 				Statement *last = NULL;
-				if (currBB->m_pRtls->size()) {
+				if (!currBB->m_pRtls->empty()) {
 					RTL *lastRtl = currBB->m_pRtls->back();
 					std::list<Statement *> &lst = lastRtl->getList();
-					if (lst.size()) last = lst.back();
+					if (!lst.empty()) last = lst.back();
 				}
 				if (last)
 					LOG << last->getNumber();

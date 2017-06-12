@@ -52,9 +52,10 @@ public:
 	void        makeIsect(StatementSet &other);   // Set intersection
 	bool        isSubSetOf(StatementSet &other);  // Subset relation
 
-	unsigned    size()  { return sset.size(); }   // Number of elements
-	iterator    begin() { return sset.begin(); }
-	iterator    end()   { return sset.end(); }
+	unsigned    size()        { return sset.size(); }   // Number of elements
+	bool        empty() const { return sset.empty(); }
+	iterator    begin()       { return sset.begin(); }
+	iterator    end()         { return sset.end(); }
 
 	void        insert(Statement *s) { sset.insert(s); }  // Insertion
 	bool        remove(Statement *s);                     // Removal; rets false if not found
@@ -117,9 +118,10 @@ public:
 	typedef std::list<Statement *>::iterator iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 	           ~StatementList() { }
-	unsigned    size()  { return slist.size(); }   // Number of elements
-	iterator    begin() { return slist.begin(); }
-	iterator    end()   { return slist.end(); }
+	unsigned    size()        { return slist.size(); }   // Number of elements
+	bool        empty() const { return slist.empty(); }
+	iterator    begin()       { return slist.begin(); }
+	iterator    end()         { return slist.end(); }
 	reverse_iterator rbegin() { return slist.rbegin(); }
 	reverse_iterator rend()   { return slist.rend(); }
 
@@ -194,7 +196,8 @@ public:
 	void        remove(Exp *loc);                       // Remove the given location
 	void        remove(iterator ll) { lset.erase(ll); } // Remove location, given iterator
 	void        removeIfDefines(StatementSet &given);   // Remove locs defined in given
-	unsigned    size() const { return lset.size(); }    // Number of elements
+	unsigned    size() const  { return lset.size(); }   // Number of elements
+	bool        empty() const { return lset.empty(); }
 	bool        operator ==(const LocationSet &o) const;// Compare
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
 	void        print(std::ostream &os);                // Print to os

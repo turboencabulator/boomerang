@@ -743,7 +743,7 @@ StatementList::removeDefOf(Exp *loc)
 Assignment *
 StatementList::findOnLeft(Exp *loc)
 {
-	if (slist.size() == 0)
+	if (slist.empty())
 		return NULL;
 	for (iterator it = slist.begin(); it != slist.end(); it++) {
 		Exp *left = ((Assignment *)*it)->getLeft();

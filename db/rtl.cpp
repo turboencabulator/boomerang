@@ -156,7 +156,7 @@ RTL::deepCopyList(std::list<Statement *> &dest)
 void
 RTL::appendStmt(Statement *s)
 {
-	if (stmtList.size()) {
+	if (!stmtList.empty()) {
 		if (stmtList.back()->isFlagAssgn()) {
 			iterator it = stmtList.end();
 			stmtList.insert(--it, s);
@@ -227,7 +227,7 @@ void
 RTL::insertStmt(Statement *s, unsigned i)
 {
 	// Check that position i is not out of bounds
-	assert(i < stmtList.size() || stmtList.size() == 0);
+	assert(i < stmtList.size() || stmtList.empty());
 
 	// Find the position
 	iterator pp = stmtList.begin();
@@ -298,7 +298,7 @@ RTL::deleteStmt(unsigned i)
 void
 RTL::deleteLastStmt()
 {
-	assert(stmtList.size());
+	assert(!stmtList.empty());
 	stmtList.erase(--stmtList.end());
 }
 
@@ -308,7 +308,7 @@ RTL::deleteLastStmt()
 void
 RTL::replaceLastStmt(Statement *repl)
 {
-	assert(stmtList.size());
+	assert(!stmtList.empty());
 	Statement *&last = stmtList.back();
 	last = repl;
 }
@@ -609,7 +609,7 @@ RTL::getType()
 bool
 RTL::areFlagsAffected()
 {
-	if (stmtList.size() == 0) return false;
+	if (stmtList.empty()) return false;
 	// Get an iterator to the last RT
 	iterator it = stmtList.end();
 	if (it == stmtList.begin())

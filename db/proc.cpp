@@ -478,7 +478,7 @@ UserProc::getAST()
 	SyntaxNode *best = init;
 	int best_score = init->getScore();
 	int count = 0;
-	while (ASTs.size()) {
+	while (!ASTs.empty()) {
 		if (best_score < numBBs * 2) {
 			LOG << "exit early: " << best_score << "\n";
 			break;
@@ -515,7 +515,7 @@ UserProc::getAST()
 	}
 
 	// clean up memory
-	while (ASTs.size()) {
+	while (!ASTs.empty()) {
 		SyntaxNode *top = ASTs.top();
 		ASTs.pop();
 		if (top != best)
@@ -627,7 +627,7 @@ UserProc::generateCode(HLLCode *hll)
 
 	// Local variables; print everything in the locals map
 	std::map<std::string, Type *>::iterator last = locals.end();
-	if (locals.size()) last--;
+	if (!locals.empty()) last--;
 	for (std::map<std::string, Type *>::iterator it = locals.begin(); it != locals.end(); it++) {
 		Type *locType = it->second;
 		if (locType == NULL || locType->isVoid())
@@ -889,14 +889,14 @@ UserProc::insertAssignAfter(Statement *s, Exp *left, Exp *right)
 		// This means right is supposed to be a parameter. We can insert the assignment at the start of the entryBB
 		BasicBlock *entryBB = cfg->getEntryBB();
 		std::list<RTL *> *rtls = entryBB->getRTLs();
-		assert(rtls->size());  // Entry BB should have at least 1 RTL
+		assert(!rtls->empty());  // Entry BB should have at least 1 RTL
 		stmts = &rtls->front()->getList();
 		it = stmts->begin();
 	} else {
 		// An ordinary definition; put the assignment at the end of s's BB
 		BasicBlock *bb = s->getBB();  // Get the enclosing BB for s
 		std::list<RTL *> *rtls = bb->getRTLs();
-		assert(rtls->size());  // If s is defined here, there should be at least 1 RTL
+		assert(!rtls->empty());  // If s is defined here, there should be at least 1 RTL
 		stmts = &rtls->back()->getList();
 		it = stmts->end();  // Insert before the end
 	}
@@ -1083,7 +1083,7 @@ UserProc::decompile(ProcList *path, int &indent)
 					child->insert(tmp->begin(), tmp->end());
 					// Child has at least done middleDecompile(), possibly more
 					call->setCalleeReturn(c->getTheReturnStatement());
-					if (tmp->size() > 0) {
+					if (!tmp->empty()) {
 						setStatus(PROC_INCYCLE);
 					}
 				}
@@ -1093,7 +1093,7 @@ UserProc::decompile(ProcList *path, int &indent)
 
 
 	// if child is empty, i.e. no child involved in recursion
-	if (child->size() == 0) {
+	if (child->empty()) {
 		Boomerang::get()->alert_decompiling(this);
 		std::cout << std::setw(indent) << " " << "decompiling " << getName() << "\n";
 		initialiseDecompile();  // Sort the CFG, number statements, etc
@@ -1101,11 +1101,11 @@ UserProc::decompile(ProcList *path, int &indent)
 		child = middleDecompile(path, indent);
 		// If there is a switch statement, middleDecompile could contribute some cycles. If so, we need to test for
 		// the recursion logic again
-		if (child->size() != 0)
+		if (!child->empty())
 			// We've just come back out of decompile(), so we've lost the current proc from the path.
 			path->push_back(this);
 	}
-	if (child->size() == 0) {
+	if (child->empty()) {
 		remUnusedStmtEtc();  // Do the whole works
 		setStatus(PROC_FINAL);
 		Boomerang::get()->alert_end_decompile(this);
@@ -1128,7 +1128,7 @@ UserProc::decompile(ProcList *path, int &indent)
 
 	// Remove last element (= this) from path
 	// The if should not be neccesary, but nestedswitch needs it
-	if (path->size())
+	if (!path->empty())
 		path->erase(--path->end());
 	else
 		LOG << "WARNING: UserProc::decompile: empty path when trying to remove last proc\n";
@@ -3079,7 +3079,7 @@ UserProc::removeUnusedLocals()
 	for (it = locals.begin(); it != locals.end(); it++) {
 		std::string &name = const_cast<std::string &>(it->first);
 		// LOG << "Considering local " << name << "\n";
-		if (VERBOSE && all && removes.size())
+		if (VERBOSE && all && !removes.empty())
 			LOG << "WARNING: defineall seen in procedure " << name.c_str()
 			    << " so not removing " << (int)removes.size() << " locals\n";
 		if (usedLocals.find(name) == usedLocals.end() && !all) {
@@ -3908,7 +3908,7 @@ UserProc::conTypeAnalysis()
 
 	// Just use the first solution, if there is one
 	Prog *prog = getProg();
-	if (solns.size()) {
+	if (!solns.empty()) {
 		ConstraintMap &cm = *solns.begin();
 		for (cc = cm.begin(); cc != cm.end(); cc++) {
 			// Ick. A workaround for now (see test/pentium/sumarray-O4)
@@ -4917,9 +4917,9 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 			}
 		}
 		else if (s->isReturn()) {
-			if (cycleGrp && cycleGrp->size())  // If this function is involved in recursion
+			if (cycleGrp && !cycleGrp->empty())  // If this function is involved in recursion
 				continue;  //  then ignore this return statement
-		} else if (s->isPhi() && theReturnStatement != NULL && cycleGrp && cycleGrp->size()) {
+		} else if (s->isPhi() && theReturnStatement != NULL && cycleGrp && !cycleGrp->empty()) {
 			Exp *phiLeft = ((PhiAssign *)s)->getLeft();
 			RefExp *refPhi = new RefExp(phiLeft, s);
 			ReturnStatement::iterator rr;
@@ -5117,7 +5117,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 
 		// Update any other procs that need updating
 		updateSet.erase(this);  // Already done this proc
-		while (updateSet.size()) {
+		while (!updateSet.empty()) {
 			UserProc *proc = *updateSet.begin();
 			updateSet.erase(proc);
 			proc->updateForUseChange(removeRetSet);
@@ -5299,8 +5299,8 @@ UserProc::rangeAnalysis()
 
 	int watchdog = 0;
 
-	while (execution_paths.size()) {
-		while (execution_paths.size()) {
+	while (!execution_paths.empty()) {
+		while (!execution_paths.empty()) {
 			Statement *stmt = execution_paths.front();
 			execution_paths.pop_front();
 			if (stmt == NULL)
@@ -5312,7 +5312,7 @@ UserProc::rangeAnalysis()
 		}
 		if (watchdog > 45)
 			LOG << "processing execution paths resulted in " << (int)junctions.size() << " junctions to process\n";
-		while (junctions.size()) {
+		while (!junctions.empty()) {
 			Statement *junction = junctions.front();
 			junctions.pop_front();
 			if (watchdog > 45)

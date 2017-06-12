@@ -1036,7 +1036,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	}
 
 	std::map<std::string, ObjcModule> &objcmodules = fe->getBinaryFile()->getObjcModules();
-	if (objcmodules.size())
+	if (!objcmodules.empty())
 		objcDecode(objcmodules, prog);
 
 	// Entry points from -e (and -E) switch(es)
@@ -1045,7 +1045,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 		prog->decodeEntryPoint(entrypoints[i]);
 	}
 
-	if (entrypoints.size() == 0) {  // no -e or -E given
+	if (entrypoints.empty()) {  // no -e or -E given
 		if (decodeMain)
 			std::cout << "decoding entry point...\n";
 		fe->decode(prog, decodeMain, pname);

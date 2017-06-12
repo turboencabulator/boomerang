@@ -202,7 +202,7 @@ Constraints::substIntoEquates(ConstraintMap &in)
 	// fixed types
 	ConstraintMap extra;
 	ConstraintMap cur = in;
-	while (cur.size()) {
+	while (!cur.empty()) {
 		extra.clear();
 		ConstraintMap::iterator kk;
 		for (kk = cur.begin(); kk != cur.end(); kk++) {
@@ -436,7 +436,7 @@ Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::li
 	if (it == disjunctions.end()) {
 		// We have gotten to the end with no unification failures
 		// Copy the current set of constraints as a solution
-		//if (soln.size() == 0)
+		//if (soln.empty())
 			// Awkward. There is a trivial solution, but we have no constraints
 			// So make a constraint of always-true
 			//soln.insert(new Terminal(opTrue));

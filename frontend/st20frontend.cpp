@@ -40,7 +40,7 @@ std::vector<Exp *> &
 ST20FrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
-	if (params.size() == 0) {
+	if (params.empty()) {
 #if 0
 		for (int r = 0; r <= 2; r++) {
 			params.push_back(Location::regOf(r));
@@ -55,7 +55,7 @@ std::vector<Exp *> &
 ST20FrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
-	if (returns.size() == 0) {
+	if (returns.empty()) {
 		returns.push_back(Location::regOf(0));
 		returns.push_back(Location::regOf(3));
 		//returns.push_back(new Terminal(opPC));

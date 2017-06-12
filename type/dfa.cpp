@@ -109,7 +109,7 @@ UserProc::dfaTypeAnalysis()
 			std::list<Const *> lc;
 			std::list<Const *>::iterator cc;
 			s->findConstants(lc);
-			if (lc.size()) {
+			if (!lc.empty()) {
 				LOG << "       ";
 				for (cc = lc.begin(); cc != lc.end(); cc++)
 					LOG << (*cc)->getType()->getCtype() << " " << *cc << "  ";

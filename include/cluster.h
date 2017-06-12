@@ -43,7 +43,7 @@ public:
 	        void        addChild(Cluster *n);
 	        void        removeChild(Cluster *n);
 	        Cluster    *getParent() { return parent; }
-	        bool        hasChildren() { return children.size() > 0; }
+	        bool        hasChildren() { return !children.empty(); }
 	        void        openStream(const char *ext);
 	        void        openStreams(const char *ext);
 	        void        closeStreams();
