@@ -917,9 +917,7 @@ Prog::findContainingProc(ADDRESS uAddr) const
 bool
 Prog::isProcLabel(ADDRESS addr)
 {
-	if (m_procLabels[addr] == 0)
-		return false;
-	return true;
+	return m_procLabels[addr] != 0;
 }
 
 /*==============================================================================

@@ -4093,7 +4093,7 @@ PhiAssign::accept(StmtExpVisitor *v)
 		if (it->e == NULL) continue;
 		RefExp *re = new RefExp(it->e, it->def);
 		ret = re->accept(v->ev);
-		if (ret == false) return false;
+		if (!ret) return false;
 	}
 	return true;
 }

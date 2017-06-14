@@ -191,12 +191,12 @@ RtlTest::testIsCompare()
 	Exp *eOperand = NULL;
 	DecodeResult inst = pFE->decodeInstruction(0x10910);
 	CPPUNIT_ASSERT(inst.rtl != NULL);
-	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand) == false);
+	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
 
 	// Decode fifth instruction: "cmp       %o1, 5"
 	inst = pFE->decodeInstruction(0x1091c);
 	CPPUNIT_ASSERT(inst.rtl != NULL);
-	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand) == true);
+	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(9, iReg);
 	std::string expected("5");
 	std::ostringstream ost1;
@@ -213,7 +213,7 @@ RtlTest::testIsCompare()
 	// Decode fifth instruction: "cmp   $0x5,%eax"
 	inst = pFE->decodeInstruction(0x80488fb);
 	CPPUNIT_ASSERT(inst.rtl != NULL);
-	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand) == true);
+	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(24, iReg);
 	std::ostringstream ost2;
 	eOperand->print(ost2);
@@ -223,7 +223,7 @@ RtlTest::testIsCompare()
 	// Decode instruction: "add     $0x4,%esp"
 	inst = pFE->decodeInstruction(0x804890c);
 	CPPUNIT_ASSERT(inst.rtl != NULL);
-	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand) == false);
+	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
 	delete prog;
 }
 

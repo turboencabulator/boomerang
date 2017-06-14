@@ -553,7 +553,7 @@ BasicBlock::DFTOrder(int &first, int &last)
 
 	for (std::vector<BasicBlock *>::iterator it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
 		BasicBlock *child = *it;
-		if (child->m_iTraversed == false)
+		if (!child->m_iTraversed)
 			numTraversed = numTraversed + child->DFTOrder(first, last);
 	}
 
@@ -582,7 +582,7 @@ BasicBlock::RevDFTOrder(int &first, int &last)
 
 	for (std::vector<BasicBlock *>::iterator it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
 		BasicBlock *parent = *it;
-		if (parent->m_iTraversed == false)
+		if (!parent->m_iTraversed)
 			numTraversed = numTraversed + parent->RevDFTOrder(first, last);
 	}
 

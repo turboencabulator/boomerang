@@ -226,7 +226,7 @@ GenericExpTransformer::applyTo(Exp *e, bool &bMod)
 
 	if (where) {
 		Exp *cond = where->clone();
-		if (checkCond(cond, bindings) == false)
+		if (!checkCond(cond, bindings))
 			return e;
 	}
 

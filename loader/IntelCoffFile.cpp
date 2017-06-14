@@ -353,9 +353,8 @@ IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
 bool
 IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative)
 {
-	if (uNative >= (unsigned)0xc0000000)
-		return true;  // Say yes for fake library functions
-	return false;
+	// Say yes for fake library functions
+	return uNative >= (unsigned)0xc0000000;
 }
 
 bool

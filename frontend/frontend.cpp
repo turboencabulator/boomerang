@@ -656,7 +656,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 				BB_rtls = new std::list<RTL *>();
 
 			RTL *pRtl = inst.rtl;
-			if (inst.valid == false) {
+			if (!inst.valid) {
 				// Alert the watchers to the problem
 				Boomerang::get()->alert_baddecode(uAddr);
 

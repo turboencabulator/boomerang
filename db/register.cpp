@@ -85,9 +85,7 @@ Register::operator ==(const Register &r2) const
 {
 	// compare on name
 	assert(name != NULL && r2.name != NULL);
-	if (strcmp(name, r2.name) != 0)
-		return false;
-	return true;
+	return strcmp(name, r2.name) == 0;
 }
 
 /*==============================================================================
@@ -99,12 +97,9 @@ Register::operator ==(const Register &r2) const
 bool
 Register::operator <(const Register &r2) const
 {
-	assert(name != NULL && r2.name != NULL);
-
 	// compare on name
-	if (strcmp(name, r2.name) < 0)
-		return true;
-	return false;
+	assert(name != NULL && r2.name != NULL);
+	return strcmp(name, r2.name) < 0;
 }
 
 /*==============================================================================

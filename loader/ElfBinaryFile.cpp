@@ -403,7 +403,7 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 			str.erase(pos);
 
 		if (ELF32_ST_BIND(m_pSym[i].st_info) == STB_GLOBAL || ELF32_ST_BIND(m_pSym[i].st_info) == STB_WEAK) {
-			if (funcsOnly == false || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
+			if (!funcsOnly || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
 				if (e_type == E_REL) {
 					int nsec = elfRead2(&m_pSym[i].st_shndx);
 					if (nsec >= 0 && nsec < m_iNumSections)

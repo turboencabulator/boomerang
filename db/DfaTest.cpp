@@ -50,7 +50,7 @@ DfaTest::testMeetInt()
 
 	bool ch = false;
 	i32.meetWith(&i32, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost1;
 	ost1 << &i32;
 	std::string actual(ost1.str());
@@ -58,9 +58,9 @@ DfaTest::testMeetInt()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	i32.meetWith(&j32, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	j32.meetWith(&i32, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost2;
 	ost2 << &i32;
 	actual = ost2.str();
@@ -70,7 +70,7 @@ DfaTest::testMeetInt()
 	ch = false;
 	j32.setSigned(0);
 	j32.meetWith(&v, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost2a;
 	ost2a << &j32;
 	actual = ost2a.str();
@@ -79,7 +79,7 @@ DfaTest::testMeetInt()
 
 	ch = false;
 	j32.meetWith(&u32, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost3;
 	ost3 << &j32;
 	actual = ost3.str();
@@ -88,7 +88,7 @@ DfaTest::testMeetInt()
 
 	ch = false;
 	u32.meetWith(&s32, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost4;
 	ost4 << &u32;
 	actual = ost4.str();
@@ -96,7 +96,7 @@ DfaTest::testMeetInt()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	u32.meetWith(&s64, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost5;
 	ost5 << &u32;
 	actual = ost5.str();
@@ -105,7 +105,7 @@ DfaTest::testMeetInt()
 
 	ch = false;
 	Type *res = i32.meetWith(&flt, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost6;
 	ost6 << res;
 	actual = ost6.str();
@@ -114,7 +114,7 @@ DfaTest::testMeetInt()
 
 	ch = false;
 	res = i32.meetWith(&pt, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost7;
 	ost7 << res;
 	actual = ost7.str();
@@ -136,7 +136,7 @@ DfaTest::testMeetSize()
 
 	bool ch = false;
 	Type *res = s32.meetWith(&i32, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost1;
 	ost1 << res;
 	std::string actual(ost1.str());
@@ -145,14 +145,14 @@ DfaTest::testMeetSize()
 
 	ch = false;
 	res = s32.meetWith(&s16, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 
 #if 0
 	// There is a known failure here; to show the warning, use ErrLogger
 	Boomerang::get()->setLogger(new ErrLogger);
 
 	res = s16.meetWith(&flt, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost2;
 	ost2 << res;
 	actual = ost2.str();
@@ -162,7 +162,7 @@ DfaTest::testMeetSize()
 
 	ch = false;
 	res = s16.meetWith(&v, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost3;
 	ost3 << res;
 	actual = ost3.str();
@@ -190,7 +190,7 @@ DfaTest::testMeetPointer()
 
 	bool ch = false;
 	Type *res = pi32.meetWith(&pu32, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost2;
 	ost2 << res->getCtype();
 	actual = ost2.str();
@@ -199,7 +199,7 @@ DfaTest::testMeetPointer()
 
 	ch = false;
 	res = pi32.meetWith(&v, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 
 	res = pi32.meetWith(&i32, ch, false);
 	std::ostringstream ost3;
@@ -231,7 +231,7 @@ DfaTest::testMeetUnion()
 
 	bool ch = false;
 	Type *res = u1.meetWith(&j32, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost2;
 	ost2 << res->getCtype();
 	actual = ost2.str();
@@ -239,7 +239,7 @@ DfaTest::testMeetUnion()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	res = u1.meetWith(&j32, ch, false);
-	CPPUNIT_ASSERT(ch == false);
+	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost3;
 	ost3 << u1.getCtype();
 	actual = ost3.str();
@@ -248,7 +248,7 @@ DfaTest::testMeetUnion()
 
 	// Note: this test relies on the int in the union having signedness 1
 	res = u1.meetWith(&u32, ch, false);
-	CPPUNIT_ASSERT(ch == true);
+	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost4;
 	ost4 << u1.getCtype();
 	actual = ost4.str();

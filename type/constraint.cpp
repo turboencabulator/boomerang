@@ -60,7 +60,7 @@ ConstraintMap::makeUnion(ConstraintMap &o)
 		ret = cmap.insert(*it);
 		// If an insertion occured, ret will be std::pair<where, true>
 		// If no insertion occured, ret will be std::pair<where, false>
-		if (ret.second == false) {
+		if (!ret.second) {
 //std::cerr << "ConstraintMap::makeUnion: want to overwrite " << ret.first->first
 // << " -> " << ret.first->second << " with " << it->first << " -> " << it->second << "\n";
 			TypeVal *Tret = (TypeVal *)ret.first->second;

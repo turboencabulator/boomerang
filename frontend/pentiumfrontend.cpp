@@ -1037,7 +1037,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 					}
 				}
 			}
-			if (paramIsFuncPointer == false && paramIsCompoundWithFuncPointers == false)
+			if (!paramIsFuncPointer && !paramIsCompoundWithFuncPointers)
 				continue;
 
 			// count pushes backwards to find arg

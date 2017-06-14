@@ -1014,7 +1014,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 								// There is no fall through branch.
 								sequentialDecode = false;
 							}
-							if (spec && (inst.valid == false))
+							if (spec && !inst.valid)
 								return false;
 						}
 						break;

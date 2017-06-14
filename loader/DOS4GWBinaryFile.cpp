@@ -337,11 +337,9 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 bool
 DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
 {
-	if (dlprocptrs.find(uNative) != dlprocptrs.end()
-	 && dlprocptrs[uNative] != "main"
-	 && dlprocptrs[uNative] != "_start")
-		return true;
-	return false;
+	return dlprocptrs.find(uNative) != dlprocptrs.end()
+	    && dlprocptrs[uNative] != "main"
+	    && dlprocptrs[uNative] != "_start";
 }
 
 #if 0 // Cruft?
@@ -476,9 +474,7 @@ DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
 bool
 DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 {
-	if (dlprocptrs.find(uNative) != dlprocptrs.end())
-		return true;
-	return false;
+	return dlprocptrs.find(uNative) != dlprocptrs.end();
 }
 
 const char *
