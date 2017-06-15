@@ -133,8 +133,7 @@ Win32BinaryFile::getMainEntryPoint()
 	// Start at program entry point
 	unsigned p = LMMH(m_pPEHeader->EntrypointRVA);
 	unsigned lim = p + 0x200;
-	unsigned char op1, op2;
-	unsigned addr, lastOrdCall = 0;
+	unsigned lastOrdCall = 0;
 	int gap;               // Number of instructions from the last ordinary call
 	int borlandState = 0;  // State machine for Borland
 
@@ -150,8 +149,8 @@ Win32BinaryFile::getMainEntryPoint()
 
 	gap = 0xF0000000;  // Large positive number (in case no ordinary calls)
 	while (p < lim) {
-		op1 = *(p + base);
-		op2 = *(p + base + 1);
+		unsigned char op1 = *(p + base);
+		unsigned char op2 = *(p + base + 1);
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:
@@ -168,7 +167,7 @@ Win32BinaryFile::getMainEntryPoint()
 		case 0xFF:
 			if (op2 == 0x15) {  // Opcode FF 15 is indirect call
 				// Get the 4 byte address from the instruction
-				addr = LMMH(*(p + base + 2));
+				unsigned addr = LMMH(*(p + base + 2));
 				//const char *c = dlprocptrs[addr].c_str();
 				//printf("Checking %x finding %s\n", addr, c);
 				if (dlprocptrs[addr] == "exit") {
@@ -257,7 +256,7 @@ Win32BinaryFile::getMainEntryPoint()
 	p = LMMH(m_pPEHeader->EntrypointRVA);
 	while (count > 0) {
 		count--;
-		op1 = *(p + base);
+		unsigned char op1 = *(p + base);
 		if (op1 == 0xE8) {  // CALL opcode
 			if (pushes == 3) {
 				// Get the offset
@@ -277,7 +276,7 @@ Win32BinaryFile::getMainEntryPoint()
 			pushes++;
 		} else if (op1 == 0xFF) {
 			// FF 35 is push m[K]
-			op2 = *(p + 1 + base);
+			unsigned char op2 = *(p + 1 + base);
 			if (op2 == 0x35)
 				pushes++;
 		} else if (op1 == 0xE9) {
@@ -303,11 +302,11 @@ Win32BinaryFile::getMainEntryPoint()
 	bool in_mingw_CRTStartup = false;
 	unsigned int lastcall = 0, lastlastcall = 0;
 	while (1) {
-		op1 = *(p + base);
+		unsigned char op1 = *(p + base);
 		if (op1 == 0xE8) {  // CALL opcode
 			unsigned int dest = p + 5 + LMMH(*(p + base + 1));
 			if (in_mingw_CRTStartup) {
-				op2 = *(dest + base);
+				unsigned char op2 = *(dest + base);
 				unsigned char op2a = *(dest + base + 1);
 				unsigned int desti = LMMH(*(dest + base + 2));
 				// skip all the call statements until we hit a call to an indirect call to ExitProcess
@@ -341,8 +340,8 @@ Win32BinaryFile::getMainEntryPoint()
 	p = LMMH(m_pPEHeader->EntrypointRVA);
 	bool gotGMHA = false;
 	while (1) {
-		op1 = *(p + base);
-		op2 = *(p + base + 1);
+		unsigned char op1 = *(p + base);
+		unsigned char op2 = *(p + base + 1);
 		if (op1 == 0xFF && op2 == 0x15) { // indirect CALL opcode
 			unsigned int desti = LMMH(*(p + base + 2));
 			if (dlprocptrs.find(desti) != dlprocptrs.end()

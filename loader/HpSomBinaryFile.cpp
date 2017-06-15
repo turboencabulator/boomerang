@@ -269,8 +269,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 #if 0
 	const char *startText = m_pSections[1].uHostAddr;
 	const char *endText = startText + m_pSections[1].uSectionSize - 0x10;
-	const char *host;
-	for (host = startText; host != endText; host += 4) {
+	for (const char *host = startText; host != endText; host += 4) {
 		// Test this location for a BOR (library stub)
 		int offset;
 		if (isStub(host, offset)) {

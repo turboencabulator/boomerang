@@ -28,8 +28,6 @@ bool
 ElfArchiveFile::Load(const char *pName)
 {
 	// Load the elf file
-	Elf *elf;
-
 	m_filedes = open(pName, O_RDONLY);
 	if (m_filedes == -1) {
 		printf("Could not open %s\n", pName);
@@ -52,8 +50,7 @@ ElfArchiveFile::Load(const char *pName)
 	unsigned int uNumSyms;
 	int iIndex = -1;  // 0,1,2... for 1st,2nd,3rd... member
 
-	Elf_Arsym *asym;
-	asym = elf_getarsym(m_arf, &uNumSyms);
+	Elf_Arsym *asym = elf_getarsym(m_arf, &uNumSyms);
 	uNumSyms--;
 	if (asym == 0) {
 		printf("Get archive symbol table failed\n");
@@ -74,12 +71,12 @@ ElfArchiveFile::Load(const char *pName)
 				printf("Could not seek to offset %d\n", iOffset);
 				return false;
 			}
-			if ((elf = elf_begin(m_filedes, ELF_C_READ, m_arf)) == 0) {
+			Elf *elf = elf_begin(m_filedes, ELF_C_READ, m_arf);
+			if (elf == 0) {
 				printf("Could not begin member at offset %d\n", iOffset);
 				return false;
 			}
-			Elf_Arhdr *ahdr;
-			ahdr = elf_getarhdr(elf);
+			Elf_Arhdr *ahdr = elf_getarhdr(elf);
 			if (ahdr == 0) {
 				printf("Could not get header information for member at offset %d\n", iOffset);
 				return false;
@@ -120,8 +117,8 @@ ElfArchiveFile::getMember(int i)
 		int iOffset = m_Offsets[i];
 		if (iOffset == 0) return 0;
 		if (elf_rand(m_arf, iOffset) != iOffset) return 0;
-		Elf *elf;  // Elf handle for the new member
-		if ((elf = elf_begin(m_filedes, ELF_C_READ, m_arf)) == 0) return 0;
+		Elf *elf = elf_begin(m_filedes, ELF_C_READ, m_arf);  // Elf handle for the new member
+		if (elf == 0) return 0;
 		// We have to get our father to load the file, since he is a
 		// friend of class BinaryFile, but we aren't
 		if (PostLoadMember(pBF, elf) == 0) return 0;

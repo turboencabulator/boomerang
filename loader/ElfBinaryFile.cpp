@@ -66,8 +66,6 @@ elf_hash(const char *o0)
 bool
 ElfBinaryFile::load(std::istream &ifs)
 {
-	int i;
-
 	if (m_bArchive) {
 		// This is a member of an archive. Should not be using this function at all
 		return false;
@@ -106,7 +104,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	m_elfEndianness = pHeader->endianness - 1;
 
 	// Set up program header pointer (in case needed)
-	i = elfRead4(&pHeader->e_phoff);
+	int i = elfRead4(&pHeader->e_phoff);
 	if (i) m_pPhdrs = (const Elf32_Phdr *)(m_pImage + i);
 
 	// Set up section header pointer
@@ -120,7 +118,6 @@ ElfBinaryFile::load(std::istream &ifs)
 	if (i) m_pStrings = m_pImage + elfRead4(&m_pShdrs[i].sh_offset);
 
 	i = 1;              // counter - # sects. Start @ 1, total m_iNumSections
-	const char *pName;  // Section's name
 
 	// Number of sections
 	m_iNumSections = elfRead2(&pHeader->e_shnum);
@@ -142,7 +139,7 @@ ElfBinaryFile::load(std::istream &ifs)
 			std::cerr << "section " << i << " header is outside the image size\n";
 			return false;
 		}
-		pName = m_pStrings + elfRead4(&pShdr->sh_name);
+		const char *pName = m_pStrings + elfRead4(&pShdr->sh_name);
 		if (pName > m_pImage + size) {
 			std::cerr << "name for section " << i << " is outside the image size\n";
 			return false;
@@ -371,9 +368,8 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 {
 	std::vector<ADDRESS> exported;
 
-	int i;
 	int secIndex = 0;
-	for (i = 1; i < m_iNumSections; ++i) {
+	for (int i = 1; i < m_iNumSections; ++i) {
 		unsigned uType = m_pSections[i].uType;
 		if (uType == SHT_SYMTAB) {
 			secIndex = i;
@@ -780,9 +776,8 @@ ElfBinaryFile::getDependencyList()
 	if (dynsect == NULL)
 		return result; /* no dynamic section = statically linked */
 
-	const Elf32_Dyn *dyn;
 	ADDRESS strtab = NO_ADDRESS;
-	for (dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
+	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
 		if (dyn->d_tag == DT_STRTAB) {
 			strtab = (ADDRESS)dyn->d_un.d_ptr;
 			break;
@@ -792,7 +787,7 @@ ElfBinaryFile::getDependencyList()
 		return result;
 
 	const char *stringtab = NativeToHostAddress(strtab);
-	for (dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
+	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
 		if (dyn->d_tag == DT_NEEDED) {
 			const char *need = stringtab + dyn->d_un.d_val;
 			if (need != NULL)
@@ -1258,9 +1253,8 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative)
 const char *
 ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 {
-	int i;
 	int secIndex = 0;
-	for (i = 1; i < m_iNumSections; ++i) {
+	for (int i = 1; i < m_iNumSections; ++i) {
 		unsigned uType = m_pSections[i].uType;
 		if (uType == SHT_SYMTAB) {
 			secIndex = i;

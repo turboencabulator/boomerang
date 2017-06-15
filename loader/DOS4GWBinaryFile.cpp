@@ -60,8 +60,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 	// Start at program entry point
 	unsigned p = LMMH(m_pLXHeader->eip);
 	unsigned lim = p + 0x300;
-	unsigned char op1, op2;
-	unsigned addr, lastOrdCall = 0;
+	unsigned lastOrdCall = 0;
 	bool gotSubEbp = false;         // True if see sub ebp, ebp
 	bool lastWasCall = false;       // True if the last instruction was a call
 
@@ -75,8 +74,8 @@ DOS4GWBinaryFile::getMainEntryPoint()
 		lim = p + textSize;
 
 	while (p < lim) {
-		op1 = *(p + base);
-		op2 = *(p + base + 1);
+		unsigned char op1 = *(p + base);
+		unsigned char op2 = *(p + base + 1);
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:
@@ -84,7 +83,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 				// An ordinary call
 				if (gotSubEbp) {
 					// This is the call we want. Get the offset from the call instruction
-					addr = nativeOrigin + p + 5 + LMMH(*(p + base + 1));
+					unsigned addr = nativeOrigin + p + 5 + LMMH(*(p + base + 1));
 					// std::cerr << "__CMain at " << std::hex << addr << "\n";
 					return addr;
 				}
@@ -121,10 +120,10 @@ DOS4GWBinaryFile::getMainEntryPoint()
 bool
 DOS4GWBinaryFile::load(std::istream &ifs)
 {
-	DWord lxoffLE, lxoff;
+	DWord lxoff;
 	ifs.seekg(0x3c);
-	ifs.read((char *)&lxoffLE, sizeof lxoffLE);  // Note: peoffLE will be in Little Endian
-	lxoff = LMMH(lxoffLE);
+	ifs.read((char *)&lxoff, sizeof lxoff);
+	lxoff = LMMH(lxoff);
 
 	m_pLXHeader = new LXHeader;
 	ifs.seekg(lxoff);
@@ -303,9 +302,9 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 #endif
 
 	ifs.seekg(LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff);
-	LXFixup fixup;
 	unsigned srcpage = 0;
 	do {
+		LXFixup fixup;
 		ifs.read((char *)&fixup, sizeof fixup);
 		if (fixup.src != 7 || (fixup.flags & ~0x50)) {
 			fprintf(stderr, "unknown fixup type %02x %02x\n", fixup.src, fixup.flags);
