@@ -36,6 +36,8 @@ ExeBinaryFile::load(std::istream &ifs)
 	std::streamsize cb;
 
 	// Always just 3 sections
+	// FIXME:  Should $HEADER and $RELOC be sections?
+	//         We've converted them to host endianness.
 	m_iNumSections = 3;
 	m_pSections = new SectionInfo[m_iNumSections];
 	m_pHeader = new exeHeader;
@@ -56,9 +58,22 @@ ExeBinaryFile::load(std::istream &ifs)
 			fprintf(stderr, "Cannot read file %s\n", getFilename());
 			return false;
 		}
+		m_pHeader->lastPageSize   = LH(&m_pHeader->lastPageSize);
+		m_pHeader->numPages       = LH(&m_pHeader->numPages);
+		m_pHeader->numReloc       = LH(&m_pHeader->numReloc);
+		m_pHeader->numParaHeader  = LH(&m_pHeader->numParaHeader);
+		m_pHeader->minAlloc       = LH(&m_pHeader->minAlloc);
+		m_pHeader->maxAlloc       = LH(&m_pHeader->maxAlloc);
+		m_pHeader->initSS         = LH(&m_pHeader->initSS);
+		m_pHeader->initSP         = LH(&m_pHeader->initSP);
+		m_pHeader->checkSum       = LH(&m_pHeader->checkSum);
+		m_pHeader->initIP         = LH(&m_pHeader->initIP);
+		m_pHeader->initCS         = LH(&m_pHeader->initCS);
+		m_pHeader->relocTabOffset = LH(&m_pHeader->relocTabOffset);
+		m_pHeader->overlayNum     = LH(&m_pHeader->overlayNum);
 
 		/* This is a typical DOS kludge! */
-		if (LH(&m_pHeader->relocTabOffset) == 0x40) {
+		if (m_pHeader->relocTabOffset == 0x40) {
 			fprintf(stderr, "Error - NE format executable\n");
 			return false;
 		}
@@ -68,10 +83,10 @@ ExeBinaryFile::load(std::istream &ifs)
 		 * less the length of the m_pHeader and reloc table
 		 * less the number of bytes unused on last page
 		 */
-		cb = (dword)LH(&m_pHeader->numPages) * 512
-		   - (dword)LH(&m_pHeader->numParaHeader) * 16;
+		cb = m_pHeader->numPages * 512
+		   - m_pHeader->numParaHeader * 16;
 		if (m_pHeader->lastPageSize) {
-			cb -= 512 - LH(&m_pHeader->lastPageSize);
+			cb -= 512 - m_pHeader->lastPageSize;
 		}
 
 		/* We quietly ignore minAlloc and maxAlloc since for our
@@ -82,28 +97,28 @@ ExeBinaryFile::load(std::istream &ifs)
 		 * to have to load DS from a constant so it'll be pretty
 		 * obvious.
 		 */
-		m_cReloc = (SWord)LH(&m_pHeader->numReloc);
+		m_cReloc = m_pHeader->numReloc;
 
 		/* Allocate the relocation table */
 		if (m_cReloc) {
 			m_pRelocTable = new dword[m_cReloc];
-			ifs.seekg(LH(&m_pHeader->relocTabOffset));
+			ifs.seekg(m_pHeader->relocTabOffset);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
 			for (int i = 0; i < m_cReloc; i++) {
 				Byte buf[4];
 				ifs.read((char *)buf, 4);
-				m_pRelocTable[i] = LH(buf) + (((int)LH(buf + 2)) << 4);
+				m_pRelocTable[i] = LH(buf) + ((int)LH(buf + 2) << 4);
 			}
 		}
 
 		/* Seek to start of image */
-		ifs.seekg((int)LH(&m_pHeader->numParaHeader) * 16);
+		ifs.seekg(m_pHeader->numParaHeader * 16);
 
 		// Initial PC and SP. Note that we fake the seg:offset by putting
 		// the segment in the top half, and offset in the bottom
-		m_uInitPC = ((LH(&m_pHeader->initCS)) << 16) + LH(&m_pHeader->initIP);
-		m_uInitSP = ((LH(&m_pHeader->initSS)) << 16) + LH(&m_pHeader->initSP);
+		m_uInitPC = (m_pHeader->initCS << 16) + m_pHeader->initIP;
+		m_uInitSP = (m_pHeader->initSS << 16) + m_pHeader->initSP;
 	} else {
 		/* COM file
 		 * In this case the load module size is just the file length
@@ -220,7 +235,7 @@ ADDRESS
 ExeBinaryFile::getEntryPoint()
 {
 	// Check this...
-	return (ADDRESS)((LH(&m_pHeader->initCS) << 4) + LH(&m_pHeader->initIP));
+	return (ADDRESS)((m_pHeader->initCS << 4) + m_pHeader->initIP);
 }
 
 #ifdef DYNAMIC
