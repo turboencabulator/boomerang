@@ -43,7 +43,7 @@ DOS4GWBinaryFile::~DOS4GWBinaryFile()
 ADDRESS
 DOS4GWBinaryFile::getEntryPoint()
 {
-	return (ADDRESS)(LMMH(m_pLXObjects[LMMH(m_pLXHeader->eipobjectnum)].RelocBaseAddr) + LMMH(m_pLXHeader->eip));
+	return (ADDRESS)(m_pLXObjects[m_pLXHeader->eipobjectnum].RelocBaseAddr + m_pLXHeader->eip);
 }
 
 ADDRESS
@@ -58,7 +58,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 
 	// Search with this crude pattern: call, sub ebp, ebp, call __Cmain in the first 0x300 bytes
 	// Start at program entry point
-	unsigned p = LMMH(m_pLXHeader->eip);
+	unsigned p = m_pLXHeader->eip;
 	unsigned lim = p + 0x300;
 	unsigned lastOrdCall = 0;
 	bool gotSubEbp = false;         // True if see sub ebp, ebp
@@ -78,18 +78,15 @@ DOS4GWBinaryFile::getMainEntryPoint()
 		unsigned char op2 = *(p + base + 1);
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
-		case 0xE8:
-			{
-				// An ordinary call
-				if (gotSubEbp) {
-					// This is the call we want. Get the offset from the call instruction
-					unsigned addr = nativeOrigin + p + 5 + LMMH(*(p + base + 1));
-					// std::cerr << "__CMain at " << std::hex << addr << "\n";
-					return addr;
-				}
-				lastOrdCall = p;
-				lastWasCall = true;
+		case 0xE8:  // An ordinary call
+			if (gotSubEbp) {
+				// This is the call we want. Get the offset from the call instruction
+				unsigned addr = nativeOrigin + p + 5 + LMMH(*(p + base + 1));
+				// std::cerr << "__CMain at " << std::hex << addr << "\n";
+				return addr;
 			}
+			lastOrdCall = p;
+			lastWasCall = true;
 			break;
 		case 0x2B:  // 0x2B 0xED is sub ebp,ebp
 			if (op2 == 0xED && lastWasCall)
@@ -128,74 +125,124 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	m_pLXHeader = new LXHeader;
 	ifs.seekg(lxoff);
 	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
+	m_pLXHeader->formatlvl               = LMMH(m_pLXHeader->formatlvl);
+	m_pLXHeader->cputype                 = LMMH(m_pLXHeader->cputype);
+	m_pLXHeader->ostype                  = LMMH(m_pLXHeader->ostype);
+	m_pLXHeader->modulever               = LMMH(m_pLXHeader->modulever);
+	m_pLXHeader->moduleflags             = LMMH(m_pLXHeader->moduleflags);
+	m_pLXHeader->modulenumpages          = LMMH(m_pLXHeader->modulenumpages);
+	m_pLXHeader->eipobjectnum            = LMMH(m_pLXHeader->eipobjectnum);
+	m_pLXHeader->eip                     = LMMH(m_pLXHeader->eip);
+	m_pLXHeader->espobjectnum            = LMMH(m_pLXHeader->espobjectnum);
+	m_pLXHeader->esp                     = LMMH(m_pLXHeader->esp);
+	m_pLXHeader->pagesize                = LMMH(m_pLXHeader->pagesize);
+	m_pLXHeader->pageoffsetshift         = LMMH(m_pLXHeader->pageoffsetshift);
+	m_pLXHeader->fixupsectionsize        = LMMH(m_pLXHeader->fixupsectionsize);
+	m_pLXHeader->fixupsectionchksum      = LMMH(m_pLXHeader->fixupsectionchksum);
+	m_pLXHeader->loadersectionsize       = LMMH(m_pLXHeader->loadersectionsize);
+	m_pLXHeader->loadersectionchksum     = LMMH(m_pLXHeader->loadersectionchksum);
+	m_pLXHeader->objtbloffset            = LMMH(m_pLXHeader->objtbloffset);
+	m_pLXHeader->numobjsinmodule         = LMMH(m_pLXHeader->numobjsinmodule);
+	m_pLXHeader->objpagetbloffset        = LMMH(m_pLXHeader->objpagetbloffset);
+	m_pLXHeader->objiterpagesoffset      = LMMH(m_pLXHeader->objiterpagesoffset);
+	m_pLXHeader->resourcetbloffset       = LMMH(m_pLXHeader->resourcetbloffset);
+	m_pLXHeader->numresourcetblentries   = LMMH(m_pLXHeader->numresourcetblentries);
+	m_pLXHeader->residentnametbloffset   = LMMH(m_pLXHeader->residentnametbloffset);
+	m_pLXHeader->entrytbloffset          = LMMH(m_pLXHeader->entrytbloffset);
+	m_pLXHeader->moduledirectivesoffset  = LMMH(m_pLXHeader->moduledirectivesoffset);
+	m_pLXHeader->nummoduledirectives     = LMMH(m_pLXHeader->nummoduledirectives);
+	m_pLXHeader->fixuppagetbloffset      = LMMH(m_pLXHeader->fixuppagetbloffset);
+	m_pLXHeader->fixuprecordtbloffset    = LMMH(m_pLXHeader->fixuprecordtbloffset);
+	m_pLXHeader->importtbloffset         = LMMH(m_pLXHeader->importtbloffset);
+	m_pLXHeader->numimportmoduleentries  = LMMH(m_pLXHeader->numimportmoduleentries);
+	m_pLXHeader->importproctbloffset     = LMMH(m_pLXHeader->importproctbloffset);
+	m_pLXHeader->perpagechksumoffset     = LMMH(m_pLXHeader->perpagechksumoffset);
+	m_pLXHeader->datapagesoffset         = LMMH(m_pLXHeader->datapagesoffset);
+	m_pLXHeader->numpreloadpages         = LMMH(m_pLXHeader->numpreloadpages);
+	m_pLXHeader->nonresnametbloffset     = LMMH(m_pLXHeader->nonresnametbloffset);
+	m_pLXHeader->nonresnametbllen        = LMMH(m_pLXHeader->nonresnametbllen);
+	m_pLXHeader->nonresnametblchksum     = LMMH(m_pLXHeader->nonresnametblchksum);
+	m_pLXHeader->autodsobjectnum         = LMMH(m_pLXHeader->autodsobjectnum);
+	m_pLXHeader->debuginfooffset         = LMMH(m_pLXHeader->debuginfooffset);
+	m_pLXHeader->debuginfolen            = LMMH(m_pLXHeader->debuginfolen);
+	m_pLXHeader->numinstancepreload      = LMMH(m_pLXHeader->numinstancepreload);
+	m_pLXHeader->numinstancedemand       = LMMH(m_pLXHeader->numinstancedemand);
+	m_pLXHeader->heapsize                = LMMH(m_pLXHeader->heapsize);
 
 	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {
 		fprintf(stderr, "error loading file %s, bad LE/LX magic\n", getFilename());
 		return false;
 	}
 
-	m_pLXObjects = new LXObject[LMMH(m_pLXHeader->numobjsinmodule)];
-	ifs.seekg(lxoff + LMMH(m_pLXHeader->objtbloffset));
-	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * LMMH(m_pLXHeader->numobjsinmodule));
+	m_pLXObjects = new LXObject[m_pLXHeader->numobjsinmodule];
+	ifs.seekg(lxoff + m_pLXHeader->objtbloffset);
+	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * m_pLXHeader->numobjsinmodule);
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++) {
+		m_pLXObjects[n].VirtualSize       = LMMH(m_pLXObjects[n].VirtualSize);
+		m_pLXObjects[n].RelocBaseAddr     = LMMH(m_pLXObjects[n].RelocBaseAddr);
+		m_pLXObjects[n].ObjectFlags       = LMMH(m_pLXObjects[n].ObjectFlags);
+		m_pLXObjects[n].PageTblIdx        = LMMH(m_pLXObjects[n].PageTblIdx);
+		m_pLXObjects[n].NumPageTblEntries = LMMH(m_pLXObjects[n].NumPageTblEntries);
+		m_pLXObjects[n].Reserved1         = LMMH(m_pLXObjects[n].Reserved1);
+	}
 
 	// at this point we're supposed to read in the page table and fuss around with it
 	// but I'm just going to assume the file is flat.
 #if 0
 	unsigned npagetblentries = 0;
 	m_cbImage = 0;
-	for (unsigned n = 0; n < LMMH(m_pLXHeader->numobjsinmodule); n++) {
-		if (LMMH(m_pLXObjects[n].PageTblIdx) + LMMH(m_pLXObjects[n].NumPageTblEntries) - 1 > npagetblentries)
-			npagetblentries = LMMH(m_pLXObjects[n].PageTblIdx) + LMMH(m_pLXObjects[n].NumPageTblEntries) - 1;
-		if (LMMH(m_pLXObjects[n].ObjectFlags) & 0x40)
-			if (LMMH(m_pLXObjects[n].RelocBaseAddr) + LMMH(m_pLXObjects[n].VirtualSize) > m_cbImage)
-				m_cbImage = LMMH(m_pLXObjects[n].RelocBaseAddr) + LMMH(m_pLXObjects[n].VirtualSize);
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++) {
+		if (npagetblentries < m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1)
+			npagetblentries = m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1;
+		if (m_pLXObjects[n].ObjectFlags & 0x40)
+			if (m_cbImage < m_pLXObjects[n].RelocBaseAddr + m_pLXObjects[n].VirtualSize)
+				m_cbImage = m_pLXObjects[n].RelocBaseAddr + m_pLXObjects[n].VirtualSize;
 	}
-	m_cbImage -= LMMH(m_pLXObjects[0].RelocBaseAddr);
+	m_cbImage -= m_pLXObjects[0].RelocBaseAddr;
 
 	m_pLXPages = new LXPage[npagetblentries];
-	ifs.seekg(lxoff + LMMH(m_pLXHeader->objpagetbloffset));
+	ifs.seekg(lxoff + m_pLXHeader->objpagetbloffset);
 	ifs.read((char *)m_pLXPages, sizeof *m_pLXPages * npagetblentries);
 #endif
 
 	unsigned npages = 0;
 	m_cbImage = 0;
-	for (unsigned n = 0; n < LMMH(m_pLXHeader->numobjsinmodule); n++)
-		if (LMMH(m_pLXObjects[n].ObjectFlags) & 0x40) {
-			if (LMMH(m_pLXObjects[n].PageTblIdx) + LMMH(m_pLXObjects[n].NumPageTblEntries) - 1 > npages)
-				npages = LMMH(m_pLXObjects[n].PageTblIdx) + LMMH(m_pLXObjects[n].NumPageTblEntries) - 1;
-			m_cbImage = LMMH(m_pLXObjects[n].RelocBaseAddr) + LMMH(m_pLXObjects[n].VirtualSize);
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++)
+		if (m_pLXObjects[n].ObjectFlags & 0x40) {
+			if (npages < m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1)
+				npages = m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1;
+			m_cbImage = m_pLXObjects[n].RelocBaseAddr + m_pLXObjects[n].VirtualSize;
 		}
 
-	m_cbImage -= LMMH(m_pLXObjects[0].RelocBaseAddr);
+	m_cbImage -= m_pLXObjects[0].RelocBaseAddr;
 
 	base = new unsigned char[m_cbImage];
 
-	m_iNumSections = LMMH(m_pLXHeader->numobjsinmodule);
+	m_iNumSections = m_pLXHeader->numobjsinmodule;
 	m_pSections = new SectionInfo[m_iNumSections];
-	for (unsigned n = 0; n < LMMH(m_pLXHeader->numobjsinmodule); n++)
-		if (LMMH(m_pLXObjects[n].ObjectFlags) & 0x40) {
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++)
+		if (m_pLXObjects[n].ObjectFlags & 0x40) {
 			printf("vsize %x reloc %x flags %x page %i npage %i\n",
-			       LMMH(m_pLXObjects[n].VirtualSize),
-			       LMMH(m_pLXObjects[n].RelocBaseAddr),
-			       LMMH(m_pLXObjects[n].ObjectFlags),
-			       LMMH(m_pLXObjects[n].PageTblIdx),
-			       LMMH(m_pLXObjects[n].NumPageTblEntries));
+			       m_pLXObjects[n].VirtualSize,
+			       m_pLXObjects[n].RelocBaseAddr,
+			       m_pLXObjects[n].ObjectFlags,
+			       m_pLXObjects[n].PageTblIdx,
+			       m_pLXObjects[n].NumPageTblEntries);
 
 			char *name = new char[9];
 			snprintf(name, sizeof (char[9]), "seg%i", n);  // no section names in LX
 			m_pSections[n].pSectionName = name;
-			m_pSections[n].uNativeAddr = (ADDRESS)LMMH(m_pLXObjects[n].RelocBaseAddr);
-			m_pSections[n].uHostAddr = (char *)(LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr) + base);
-			m_pSections[n].uSectionSize = LMMH(m_pLXObjects[n].VirtualSize);
-			DWord Flags = LMMH(m_pLXObjects[n].ObjectFlags);
+			m_pSections[n].uNativeAddr = (ADDRESS)m_pLXObjects[n].RelocBaseAddr;
+			m_pSections[n].uHostAddr = (char *)(m_pLXObjects[n].RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr + base);
+			m_pSections[n].uSectionSize = m_pLXObjects[n].VirtualSize;
+			DWord Flags = m_pLXObjects[n].ObjectFlags;
 			m_pSections[n].bBss      = false; // TODO
 			m_pSections[n].bCode     = (Flags & 0x4) != 0;
 			m_pSections[n].bData     = (Flags & 0x4) == 0;
 			m_pSections[n].bReadOnly = (Flags & 0x1) == 0;
 
-			unsigned char *p = base + LMMH(m_pLXObjects[n].RelocBaseAddr) - LMMH(m_pLXObjects[0].RelocBaseAddr);
-			ifs.seekg(m_pLXHeader->datapagesoffset + (LMMH(m_pLXObjects[n].PageTblIdx) - 1) * LMMH(m_pLXHeader->pagesize));
-			ifs.read((char *)p, LMMH(m_pLXHeader->pagesize) * LMMH(m_pLXObjects[n].NumPageTblEntries));
+			ifs.seekg(m_pLXHeader->datapagesoffset + (m_pLXObjects[n].PageTblIdx - 1) * m_pLXHeader->pagesize);
+			ifs.read(m_pSections[n].uHostAddr, m_pLXHeader->pagesize * m_pLXObjects[n].NumPageTblEntries);
 		}
 
 	// TODO: decode entry tables
@@ -292,8 +339,11 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	// fixups
 	unsigned int *fixuppagetbl = new unsigned int[npages + 1];
-	ifs.seekg(LMMH(m_pLXHeader->fixuppagetbloffset) + lxoff);
+	ifs.seekg(m_pLXHeader->fixuppagetbloffset + lxoff);
 	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
+	for (unsigned n = 0; n < npages + 1; n++) {
+		fixuppagetbl[n] = LMMH(fixuppagetbl[n]);
+	}
 
 #if 0
 	for (unsigned n = 0; n < npages; n++)
@@ -301,17 +351,19 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	printf("offset to end of fixup rec: %x\n", fixuppagetbl[npages]);
 #endif
 
-	ifs.seekg(LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff);
+	ifs.seekg(m_pLXHeader->fixuprecordtbloffset + lxoff);
 	unsigned srcpage = 0;
 	do {
 		LXFixup fixup;
 		ifs.read((char *)&fixup, sizeof fixup);
+		fixup.srcoff = LMMHw(fixup.srcoff);
+
 		if (fixup.src != 7 || (fixup.flags & ~0x50)) {
 			fprintf(stderr, "unknown fixup type %02x %02x\n", fixup.src, fixup.flags);
 			return false;
 		}
 		//printf("srcpage = %i srcoff = %x object = %02x trgoff = %x\n", srcpage + 1, fixup.srcoff, fixup.object, fixup.trgoff);
-		unsigned long src = srcpage * LMMH(m_pLXHeader->pagesize) + (short)LMMHw(fixup.srcoff);
+		unsigned long src = srcpage * m_pLXHeader->pagesize + fixup.srcoff;
 		unsigned short object = 0;
 		if (fixup.flags & 0x40)
 			ifs.read((char *)&object, 2);
@@ -322,11 +374,11 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			ifs.read((char *)&trgoff, 4);
 		else
 			ifs.read((char *)&trgoff, 2);
-		unsigned long target = LMMH(m_pLXObjects[object - 1].RelocBaseAddr) + LMMHw(trgoff);
+		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + LMMHw(trgoff);
 		//printf("relocate dword at %x to point to %x\n", src, target);
 		*(unsigned int *)(base + src) = target;
 
-		while ((std::streamsize)ifs.tellg() - (LMMH(m_pLXHeader->fixuprecordtbloffset) + lxoff) >= LMMH(fixuppagetbl[srcpage + 1]))
+		while ((std::streamsize)ifs.tellg() - (m_pLXHeader->fixuprecordtbloffset + lxoff) >= fixuppagetbl[srcpage + 1])
 			srcpage++;
 	} while (srcpage < npages);
 
