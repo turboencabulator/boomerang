@@ -15,9 +15,7 @@
 
 #include <stdint.h>
 
-#define PACKED __attribute__((packed))
-
-struct PACKED coff_header {
+struct __attribute__((packed)) coff_header {
 	uint16_t coff_magic;
 	uint16_t coff_sections;
 	uint32_t coff_timestamp;

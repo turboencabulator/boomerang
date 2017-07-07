@@ -18,8 +18,6 @@
 
 #include "BinaryFile.h"
 
-#define PACKED __attribute__((packed))
-
 /**
  * \brief EXE file header, just the signature really.
  */
@@ -28,7 +26,7 @@ typedef struct {
 	Byte sigHi;
 } Header;
 
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	Byte  sigLo;
 	Byte  sigHi;
 	SWord sigver;
@@ -94,7 +92,7 @@ typedef struct PACKED {
 /**
  * The real Win32 name of this struct is IMAGE_SECTION_HEADER.
  */
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	char  ObjectName[8];  ///< Name
 	DWord VirtualSize;
 	DWord RVA;            ///< VirtualAddress
@@ -106,7 +104,7 @@ typedef struct PACKED {
 	DWord Flags;          ///< Characteristics
 } PEObject;
 
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	DWord originalFirstThunk; ///< 0 for end of array; also ptr to hintNameArray
 	DWord preSnapDate;    ///< Time and date the import data was pre-snapped or zero if not pre-snapped
 	SWord verMajor;       ///< Major version number of dll being ref'd
@@ -115,7 +113,7 @@ typedef struct PACKED {
 	DWord firstThunk;     ///< RVA of start of import address table (IAT)
 } PEImportDtor;
 
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	DWord flags;          ///< Reserved; 0
 	DWord stamp;          ///< Time/date stamp export data was created
 	SWord verMajor;       ///< Version number can be ...

@@ -20,7 +20,7 @@
 /**
  * Segment information, 40 bytes
  */
-struct PACKED struc_coff_sect {
+struct __attribute__((packed)) struc_coff_sect {
 	char     sch_sectname[8];
 	uint32_t sch_physaddr;
 	uint32_t sch_virtaddr;
@@ -36,7 +36,7 @@ struct PACKED struc_coff_sect {
 /**
  * Symbol information, 18 bytes
  */
-struct PACKED coff_symbol {
+struct __attribute__((packed)) coff_symbol {
 	union {
 		struct {
 			uint32_t zeros;
@@ -59,7 +59,7 @@ struct PACKED coff_symbol {
 	unsigned char csym_numaux;
 };
 
-struct PACKED struct_coff_rel {
+struct __attribute__((packed)) struct_coff_rel {
 	uint32_t r_vaddr;
 	uint32_t r_symndx;
 	uint16_t r_type;

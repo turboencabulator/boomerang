@@ -21,8 +21,6 @@
 #include <map>
 #include <string>
 
-#define PACKED __attribute__((packed))
-
 #if 0
 /* exe file header, just the signature really */
 typedef struct {
@@ -31,7 +29,7 @@ typedef struct {
 } Header;
 #endif
 
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	Byte  sigLo;
 	Byte  sigHi;
 	Byte  byteord;
@@ -81,7 +79,7 @@ typedef struct PACKED {
 	DWord heapsize;
 } LXHeader;
 
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	DWord VirtualSize;
 	DWord RelocBaseAddr;
 	DWord ObjectFlags;
@@ -90,14 +88,14 @@ typedef struct PACKED {
 	DWord Reserved1;
 } LXObject;
 
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	DWord pagedataoffset;
 	SWord datasize;
 	SWord flags;
 } LXPage;
 
 // this is correct for internal fixups only
-typedef struct PACKED {
+typedef struct __attribute__((packed)) {
 	unsigned char src;
 	unsigned char flags;
 	short srcoff;
