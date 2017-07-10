@@ -1224,12 +1224,10 @@ Signature::operator ==(Signature &other)
 	//if (name != other.name) return false;  // MVE: should the name be significant? I'm thinking no
 	if (params.size() != other.params.size()) return false;
 	// Only care about the first return location (at present)
-	std::vector<Parameter *>::iterator it1, it2;
-	for (it1 = params.begin(), it2 = other.params.begin(); it1 != params.end(); it1++, it2++)
+	for (auto it1 = params.begin(), it2 = other.params.begin(); it1 != params.end(); it1++, it2++)
 		if (!(**it1 == **it2)) return false;
 	if (returns.size() != other.returns.size()) return false;
-	std::vector<Return *>::iterator rr1, rr2;
-	for (rr1 = returns.begin(), rr2 = other.returns.begin(); rr1 != returns.end(); ++rr1, ++rr2)
+	for (auto rr1 = returns.begin(), rr2 = other.returns.begin(); rr1 != returns.end(); ++rr1, ++rr2)
 		if (!(**rr1 == **rr2)) return false;
 	return true;
 }
@@ -1567,7 +1565,7 @@ Signature::print(std::ostream &out, bool html)
 	if (!returns.empty()) {
 		out << "{ ";
 		unsigned n = 0;
-		for (Returns::iterator rr = returns.begin(); rr != returns.end(); rr++, n++) {
+		for (auto rr = returns.begin(); rr != returns.end(); rr++, n++) {
 			out << (*rr)->type->getCtype() << " " << (*rr)->exp;
 			if (n != returns.size() - 1)
 				out << ", ";
@@ -1620,8 +1618,7 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 			bool ok = true;
 			if (checkreach) {
 				bool hasDef = false;
-				StatementSet::iterator it1;
-				for (it1 = reachin.begin(); it1 != reachin.end(); it1++) {
+				for (auto it1 = reachin.begin(); it1 != reachin.end(); it1++) {
 					Assignment *as = (Assignment *)*it1;
 					if (as->isAssignment() && *as->getLeft() == *getParamExp(i)) {
 						hasDef = true;
@@ -1932,13 +1929,13 @@ Signature::makeMemo(int mId)
 	m->preferedName = preferedName;
 	m->preferedParams = preferedParams;
 
-	for (std::vector<Parameter *>::iterator it = params.begin(); it != params.end(); it++)
+	for (auto it = params.begin(); it != params.end(); it++)
 		(*it)->takeMemo(mId);
 #if 0
-	for (std::vector<ImplicitParameter *>::iterator it = implicitParams.begin(); it != implicitParams.end(); it++)
+	for (auto it = implicitParams.begin(); it != implicitParams.end(); it++)
 		(*it)->takeMemo(mId);
 #endif
-	for (Returns::iterator it = returns.begin(); it != returns.end(); it++)
+	for (auto it = returns.begin(); it != returns.end(); it++)
 		(*it)->takeMemo(mId);
 	if (rettype)
 		rettype->takeMemo(mId);
@@ -1962,13 +1959,13 @@ Signature::readMemo(Memo *mm, bool dec)
 	preferedName = m->preferedName;
 	preferedParams = m->preferedParams;
 
-	for (std::vector<Parameter *>::iterator it = params.begin(); it != params.end(); it++)
+	for (auto it = params.begin(); it != params.end(); it++)
 		(*it)->restoreMemo(m->mId, dec);
 #if 0
-	for (std::vector<ImplicitParameter *>::iterator it = implicitParams.begin(); it != implicitParams.end(); it++)
+	for (auto it = implicitParams.begin(); it != implicitParams.end(); it++)
 		(*it)->restoreMemo(m->mId, dec);
 #endif
-	for (Returns::iterator it = returns.begin(); it != returns.end(); it++)
+	for (auto it = returns.begin(); it != returns.end(); it++)
 		(*it)->restoreMemo(m->mId, dec);
 	if (rettype)
 		rettype->restoreMemo(m->mId, dec);

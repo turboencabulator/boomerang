@@ -39,7 +39,7 @@ std::list<Exp *> cache;
 Exp *
 ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 {
-	for (std::list<Exp *>::iterator it = cache.begin(); it != cache.end(); it++)
+	for (auto it = cache.begin(); it != cache.end(); it++)
 		if (*(*it)->getSubExp1() == *p)
 			return (*it)->getSubExp2()->clone();
 
@@ -69,7 +69,7 @@ ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 	bool mod;
 	//do {
 		mod = false;
-		for (std::list<ExpTransformer *>::iterator it = transformers.begin(); it != transformers.end(); it++) {
+		for (auto it = transformers.begin(); it != transformers.end(); it++) {
 			e = (*it)->applyTo(e, mod);
 			bMod |= mod;
 		}

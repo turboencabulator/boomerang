@@ -119,8 +119,7 @@ StmtConscriptSetter::visit(CallStatement *stmt)
 {
 	SetConscripts sc(curConscript, bClear);
 	StatementList &args = stmt->getArguments();
-	StatementList::iterator ss;
-	for (ss = args.begin(); ss != args.end(); ++ss)
+	for (auto ss = args.begin(); ss != args.end(); ++ss)
 		(*ss)->accept(this);
 	curConscript = sc.getLast();
 	return true;
@@ -142,8 +141,7 @@ bool
 StmtConscriptSetter::visit(ReturnStatement *stmt)
 {
 	SetConscripts sc(curConscript, bClear);
-	ReturnStatement::iterator rr;
-	for (rr = stmt->begin(); rr != stmt->end(); ++rr)
+	for (auto rr = stmt->begin(); rr != stmt->end(); ++rr)
 		(*rr)->accept(this);
 	curConscript = sc.getLast();
 	return true;
@@ -462,8 +460,7 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
 		subExp2->accept(ev);
 	}
-	PhiAssign::iterator uu;
-	for (uu = s->begin(); uu != s->end(); uu++) {
+	for (auto uu = s->begin(); uu != s->end(); uu++) {
 		// Note: don't make the RefExp based on lhs, since it is possible that the lhs was renamed in fromSSA()
 		// Use the actual expression in the PhiAssign
 		// Also note that it's possible for uu->e to be nullptr. Suppose variable a can be assigned to along in-edges
@@ -507,16 +504,14 @@ UsedLocsVisitor::visit(CallStatement *s, bool &override)
 	Exp *pDest = s->getDest();
 	if (pDest)
 		pDest->accept(ev);
-	StatementList::iterator it;
 	StatementList &arguments = s->getArguments();
-	for (it = arguments.begin(); it != arguments.end(); it++) {
+	for (auto it = arguments.begin(); it != arguments.end(); it++) {
 		// Don't want to ever collect anything from the lhs
 		((Assign *)*it)->getRight()->accept(ev);
 	}
 	if (countCol) {
-		DefCollector::iterator dd;
 		DefCollector *col = s->getDefCollector();
-		for (dd = col->begin(); dd != col->end(); ++dd)
+		for (auto dd = col->begin(); dd != col->end(); ++dd)
 			(*dd)->accept(this);
 	}
 	override = true;  // Don't do the normal accept logic
@@ -527,15 +522,13 @@ bool
 UsedLocsVisitor::visit(ReturnStatement *s, bool &override)
 {
 	// For the final pass, only consider the first return
-	ReturnStatement::iterator rr;
-	for (rr = s->begin(); rr != s->end(); ++rr)
+	for (auto rr = s->begin(); rr != s->end(); ++rr)
 		(*rr)->accept(this);
 	// Also consider the reaching definitions to be uses, so when they are the only non-empty component of this
 	// ReturnStatement, they can get propagated to.
 	if (countCol) {  // But we need to ignore these "uses" unless propagating
-		DefCollector::iterator dd;
 		DefCollector *col = s->getCollector();
-		for (dd = col->begin(); dd != col->end(); ++dd)
+		for (auto dd = col->begin(); dd != col->end(); ++dd)
 			(*dd)->accept(this);
 	}
 
@@ -665,8 +658,7 @@ StmtSubscripter::visit(CallStatement *s, bool &recur)
 		s->setDest(pDest->accept(mod));
 	// Subscript the ordinary arguments
 	StatementList &arguments = s->getArguments();
-	StatementList::iterator ss;
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss)
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
 		(*ss)->accept(this);
 	// Returns are like the LHS of an assignment; don't subscript them directly (only if m[x], and then only subscript
 	// the x's)
@@ -729,8 +721,7 @@ StmtImplicitConverter::visit(PhiAssign *s, bool &recur)
 {
 	// The LHS could be a m[x] where x has a null subscript; must do first
 	s->setLeft(s->getLeft()->accept(mod));
-	PhiAssign::iterator uu;
-	for (uu = s->begin(); uu != s->end(); uu++) {
+	for (auto uu = s->begin(); uu != s->end(); uu++) {
 		if (!uu->e) continue;
 		if (!uu->def)
 			uu->def = cfg->findImplicitAssign(uu->e);
@@ -1209,9 +1200,8 @@ void
 StmtSsaXformer::visit(PhiAssign *s, bool &recur)
 {
 	commonLhs(s);
-	PhiAssign::iterator it;
 	UserProc *proc = ((ExpSsaXformer *)mod)->getProc();
-	for (it = s->begin(); it != s->end(); it++) {
+	for (auto it = s->begin(); it != s->end(); it++) {
 		if (!it->e) continue;
 		RefExp *r = new RefExp(it->e, it->def);
 		const char *sym = proc->lookupSymFromRefAny(r);
@@ -1229,14 +1219,13 @@ StmtSsaXformer::visit(CallStatement *s, bool &recur)
 		s->setDest(pDest);
 	}
 	StatementList &arguments = s->getArguments();
-	StatementList::iterator ss;
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss)
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
 		(*ss)->accept(this);
 	// Note that defines have statements (assignments) within a statement (this call). The fromSSA logic, which needs
 	// to subscript definitions on the left with the statement pointer, won't work if we just call the assignment's
 	// fromSSA() function
 	StatementList &defines = s->getDefines();
-	for (ss = defines.begin(); ss != defines.end(); ++ss) {
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss) {
 		Assignment *as = ((Assignment *)*ss);
 		// FIXME: use of fromSSAleft is deprecated
 		Exp *e = as->getLeft()->fromSSAleft(((ExpSsaXformer *)mod)->getProc(), s);

@@ -44,8 +44,7 @@ DataFlow::DFS(int p, int n)
 		// For each successor w of n
 		BasicBlock *bb = BBs[n];
 		std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-		std::vector<BasicBlock *>::iterator oo;
-		for (oo = outEdges.begin(); oo != outEdges.end(); oo++) {
+		for (auto oo = outEdges.begin(); oo != outEdges.end(); oo++) {
 			DFS(n, indices[*oo]);
 		}
 	}
@@ -74,9 +73,8 @@ DataFlow::dominators(Cfg *cfg)
 	DF.resize(numBB);
 	// Set up the BBs and indices vectors. Do this here because sometimes a BB can be unreachable (so relying on
 	// in-edges doesn't work)
-	std::list<BasicBlock *>::iterator ii;
 	int idx = 1;
-	for (ii = cfg->begin(); ii != cfg->end(); ii++) {
+	for (auto ii = cfg->begin(); ii != cfg->end(); ii++) {
 		BasicBlock *bb = *ii;
 		if (bb != r) {  // Entry BB r already done
 			indices[bb] = idx;
@@ -91,8 +89,7 @@ DataFlow::dominators(Cfg *cfg)
 		// for each predecessor v of n
 		BasicBlock *bb = BBs[n];
 		std::vector<BasicBlock *> &inEdges = bb->getInEdges();
-		std::vector<BasicBlock *>::iterator it;
-		for (it = inEdges.begin(); it != inEdges.end(); it++) {
+		for (auto it = inEdges.begin(); it != inEdges.end(); it++) {
 			if (indices.find(*it) == indices.end()) {
 				std::cerr << "BB not in indices: "; (*it)->print(std::cerr);
 				assert(false);
@@ -110,8 +107,7 @@ DataFlow::dominators(Cfg *cfg)
 		bucket[s].insert(n);
 		Link(p, n);
 		// for each v in bucket[p]
-		std::set<int>::iterator jj;
-		for (jj = bucket[p].begin(); jj != bucket[p].end(); jj++) {
+		for (auto jj = bucket[p].begin(); jj != bucket[p].end(); jj++) {
 			int v = *jj;
 			/* Now that the path from p to v has been linked into the spanning forest, these lines calculate the
 				dominator of v, based on the first clause of the Dominator Theorem, or else defer the calculation until
@@ -175,8 +171,7 @@ DataFlow::computeDF(int n)
 	// for each node y in succ(n)
 	BasicBlock *bb = BBs[n];
 	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-	std::vector<BasicBlock *>::iterator it;
-	for (it = outEdges.begin(); it != outEdges.end(); it++) {
+	for (auto it = outEdges.begin(); it != outEdges.end(); it++) {
 		int y = indices[*it];
 		if (idom[y] != n)
 			S.insert(y);
@@ -190,8 +185,7 @@ DataFlow::computeDF(int n)
 		/* This loop computes DF_up[c] */
 		// for each element w of DF[c]
 		std::set<int> &s = DF[c];
-		std::set<int>::iterator ww;
-		for (ww = s.begin(); ww != s.end(); ww++) {
+		for (auto ww = s.begin(); ww != s.end(); ww++) {
 			int w = *ww;
 			// if n does not dominate w, or if n = w
 			if (n == w || !doesDominate(n, w)) {
@@ -229,13 +223,11 @@ DataFlow::canRename(Exp *e, UserProc *proc)
 void
 DataFlow::dumpA_phi()
 {
-	std::map<Exp *, std::set<int>, lessExpStar>::iterator zz;
 	std::cerr << "A_phi:\n";
-	for (zz = A_phi.begin(); zz != A_phi.end(); ++zz) {
+	for (auto zz = A_phi.begin(); zz != A_phi.end(); ++zz) {
 		std::cerr << zz->first << " -> ";
 		std::set<int> &si = zz->second;
-		std::set<int>::iterator qq;
-		for (qq = si.begin(); qq != si.end(); ++qq)
+		for (auto qq = si.begin(); qq != si.end(); ++qq)
 			std::cerr << *qq << ", ";
 		std::cerr << "\n";
 	}
@@ -272,15 +264,15 @@ DataFlow::placePhiFunctions(UserProc *proc)
 	// Recreate each call because propagation and other changes make old data invalid
 	unsigned n;
 	for (n = 0; n < numBB; n++) {
-		BasicBlock::rtlit rit; StatementList::iterator sit;
+		BasicBlock::rtlit rit;
+		StatementList::iterator sit;
 		BasicBlock *bb = BBs[n];
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			LocationSet ls;
-			LocationSet::iterator it;
 			s->getDefinitions(ls);
 			if (s->isCall() && ((CallStatement *)s)->isChildless())  // If this is a childless call
 				defallsites.insert(n);  // then this block defines every variable
-			for (it = ls.begin(); it != ls.end(); it++) {
+			for (auto it = ls.begin(); it != ls.end(); it++) {
 				if (canRename(*it, proc)) {
 					A_orig[n].insert((*it)->clone());
 					defStmts[*it] = s;
@@ -293,22 +285,19 @@ DataFlow::placePhiFunctions(UserProc *proc)
 	for (n = 0; n < numBB; n++) {
 		// For each variable a in A_orig[n]
 		std::set<Exp *, lessExpStar> &s = A_orig[n];
-		std::set<Exp *, lessExpStar>::iterator aa;
-		for (aa = s.begin(); aa != s.end(); aa++) {
+		for (auto aa = s.begin(); aa != s.end(); aa++) {
 			Exp *a = *aa;
 			defsites[a].insert(n);
 		}
 	}
 
 	// For each variable a (in defsites, i.e. defined anywhere)
-	std::map<Exp *, std::set<int>, lessExpStar>::iterator mm;
-	for (mm = defsites.begin(); mm != defsites.end(); mm++) {
-		Exp *a = (*mm).first;  // *mm is pair<Exp *, set<int>>
+	for (auto mm = defsites.begin(); mm != defsites.end(); mm++) {
+		Exp *a = mm->first;  // *mm is pair<Exp *, set<int>>
 
 		// Special processing for define-alls
 		// for each n in defallsites
-		std::set<int>::iterator da;
-		for (da = defallsites.begin(); da != defallsites.end(); ++da)
+		for (auto da = defallsites.begin(); da != defallsites.end(); ++da)
 			defsites[a].insert(*da);
 
 		// W <- defsites[a];
@@ -319,9 +308,8 @@ DataFlow::placePhiFunctions(UserProc *proc)
 			int n = *W.begin();  // Copy first element
 			W.erase(W.begin());  // Remove first element
 			// for each y in DF[n]
-			std::set<int>::iterator yy;
 			std::set<int> &DFn = DF[n];
-			for (yy = DFn.begin(); yy != DFn.end(); yy++) {
+			for (auto yy = DFn.begin(); yy != DFn.end(); yy++) {
 				int y = *yy;
 				// if y not element of A_phi[a]
 				std::set<int> &s = A_phi[a];
@@ -374,7 +362,8 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 	if (clearStacks) Stacks.clear();
 
 	// For each statement S in block n
-	BasicBlock::rtlit rit; StatementList::iterator sit;
+	BasicBlock::rtlit rit;
+	StatementList::iterator sit;
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
@@ -389,8 +378,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 					phiLeft->getSubExp1()->addUsedLocs(locs);
 				// A phi statement may use a location defined in a childless call, in which case its use collector
 				// needs updating
-				PhiAssign::iterator pp;
-				for (pp = pa->begin(); pp != pa->end(); ++pp) {
+				for (auto pp = pa->begin(); pp != pa->end(); ++pp) {
 					Statement *def = pp->def;
 					if (def && def->isCall())
 						((CallStatement *)def)->useBeforeDefine(phiLeft->clone());
@@ -398,8 +386,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 			} else {  // Not a phi assignment
 				S->addUsedLocs(locs);
 			}
-			LocationSet::iterator xx;
-			for (xx = locs.begin(); xx != locs.end(); xx++) {
+			for (auto xx = locs.begin(); xx != locs.end(); xx++) {
 				Exp *x = *xx;
 				// Don't rename memOfs that are not renamable according to the current policy
 				if (!canRename(x, proc)) continue;
@@ -462,8 +449,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// For each definition of some variable a in S
 		LocationSet defs;
 		S->getDefinitions(defs);
-		LocationSet::iterator dd;
-		for (dd = defs.begin(); dd != defs.end(); dd++) {
+		for (auto dd = defs.begin(); dd != defs.end(); dd++) {
 			Exp *a = *dd;
 			// Don't consider a if it cannot be renamed
 			bool suitable = canRename(a, proc);
@@ -491,8 +477,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		if (S->isCall() && ((CallStatement *)S)->isChildless() && !Boomerang::get()->assumeABI) {
 			// S is a childless call (and we're not assuming ABI compliance)
 			Stacks[defineAll];  // Ensure that there is an entry for defineAll
-			std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator dd;
-			for (dd = Stacks.begin(); dd != Stacks.end(); ++dd) {
+			for (auto dd = Stacks.begin(); dd != Stacks.end(); ++dd) {
 				//if (dd->first->isMemDepth(memDepth))
 					dd->second.push(S);  // Add a definition for all vars
 			}
@@ -541,16 +526,16 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 	// NOTE: Because of the need to pop childless calls from the Stacks, it is important in my algorithm to process the
 	// statments in the BB *backwards*. (It is not important in Appel's algorithm, since he always pushes a definition
 	// for every variable defined on the Stacks).
-	BasicBlock::rtlrit rrit; StatementList::reverse_iterator srit;
+	BasicBlock::rtlrit rrit;
+	StatementList::reverse_iterator srit;
 	for (S = bb->getLastStmt(rrit, srit); S; S = bb->getPrevStmt(rrit, srit)) {
 		// For each definition of some variable a in S
 		LocationSet defs;
 		S->getDefinitions(defs);
-		LocationSet::iterator dd;
-		for (dd = defs.begin(); dd != defs.end(); dd++) {
+		for (auto dd = defs.begin(); dd != defs.end(); dd++) {
 			if (canRename(*dd, proc)) {
 				// if ((*dd)->getMemDepth() == memDepth)
-				std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator ss = Stacks.find(*dd);
+				auto ss = Stacks.find(*dd);
 				if (ss == Stacks.end()) {
 					std::cerr << "Tried to pop " << *dd << " from Stacks; does not exist\n";
 					assert(0);
@@ -560,8 +545,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		}
 		// Pop all defs due to childless calls
 		if (S->isCall() && ((CallStatement *)S)->isChildless()) {
-			std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator sss;
-			for (sss = Stacks.begin(); sss != Stacks.end(); ++sss) {
+			for (auto sss = Stacks.begin(); sss != Stacks.end(); ++sss) {
 				if (!sss->second.empty() && sss->second.top() == S) {
 					sss->second.pop();
 				}
@@ -575,8 +559,7 @@ void
 DataFlow::dumpStacks()
 {
 	std::cerr << "Stacks: " << Stacks.size() << " entries\n";
-	std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator zz;
-	for (zz = Stacks.begin(); zz != Stacks.end(); zz++) {
+	for (auto zz = Stacks.begin(); zz != Stacks.end(); zz++) {
 		std::cerr << "Var " << zz->first << " [ ";
 		std::stack<Statement *>tt = zz->second;               // Copy the stack!
 		while (!tt.empty()) {
@@ -589,12 +572,10 @@ DataFlow::dumpStacks()
 void
 DataFlow::dumpDefsites()
 {
-	std::map<Exp *, std::set<int>, lessExpStar>::iterator dd;
-	for (dd = defsites.begin(); dd != defsites.end(); ++dd) {
+	for (auto dd = defsites.begin(); dd != defsites.end(); ++dd) {
 		std::cerr << dd->first;
-		std::set<int>::iterator ii;
 		std::set<int> &si = dd->second;
-		for (ii = si.begin(); ii != si.end(); ++ii)
+		for (auto ii = si.begin(); ii != si.end(); ++ii)
 			std::cerr << " " << *ii;
 		std::cerr << "\n";
 	}
@@ -606,9 +587,8 @@ DataFlow::dumpA_orig()
 	int n = A_orig.size();
 	for (int i = 0; i < n; ++i) {
 		std::cerr << i;
-		std::set<Exp *, lessExpStar>::iterator ee;
 		std::set<Exp *, lessExpStar> &se = A_orig[i];
-		for (ee = se.begin(); ee != se.end(); ++ee)
+		for (auto ee = se.begin(); ee != se.end(); ++ee)
 			std::cerr << " " << *ee;
 		std::cerr << "\n";
 	}
@@ -617,8 +597,7 @@ DataFlow::dumpA_orig()
 void
 DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc)
 {
-	std::map<Exp *, std::stack<Statement *>, lessExpStar>::iterator it;
-	for (it = Stacks.begin(); it != Stacks.end(); it++) {
+	for (auto it = Stacks.begin(); it != Stacks.end(); it++) {
 		if (it->second.empty())
 			continue;  // This variable's definition doesn't reach here
 		// Create an assignment of the form loc := loc{def}
@@ -634,8 +613,7 @@ DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &
 Exp *
 DefCollector::findDefFor(Exp *e)
 {
-	iterator it;
-	for (it = defs.begin(); it != defs.end(); ++it) {
+	for (auto it = defs.begin(); it != defs.end(); ++it) {
 		Exp *lhs = (*it)->getLeft();
 		if (*lhs == *e)
 			return (*it)->getRight();
@@ -646,9 +624,8 @@ DefCollector::findDefFor(Exp *e)
 void
 UseCollector::print(std::ostream &os, bool html)
 {
-	LocationSet::iterator it;
 	bool first = true;
-	for (it = locs.begin(); it != locs.end(); ++it) {
+	for (auto it = locs.begin(); it != locs.end(); ++it) {
 		if (first)
 			first = false;
 		else
@@ -661,10 +638,9 @@ UseCollector::print(std::ostream &os, bool html)
 void
 DefCollector::print(std::ostream &os, bool html)
 {
-	iterator it;
 	unsigned col = 36;
 	bool first = true;
-	for (it = defs.begin(); it != defs.end(); ++it) {
+	for (auto it = defs.begin(); it != defs.end(); ++it) {
 		std::ostringstream ost;
 		(*it)->getLeft()->print(ost, html);
 		ost << "=";
@@ -726,7 +702,7 @@ UseCollector::makeCloneOf(UseCollector &other)
 {
 	initialised = other.initialised;
 	locs.clear();
-	for (iterator it = other.begin(); it != other.end(); ++it)
+	for (auto it = other.begin(); it != other.end(); ++it)
 		locs.insert((*it)->clone());
 }
 
@@ -735,15 +711,14 @@ DefCollector::makeCloneOf(DefCollector &other)
 {
 	initialised = other.initialised;
 	defs.clear();
-	for (iterator it = other.begin(); it != other.end(); ++it)
+	for (auto it = other.begin(); it != other.end(); ++it)
 		defs.insert((Assign *)(*it)->clone());
 }
 
 void
 DefCollector::searchReplaceAll(Exp *from, Exp *to, bool &change)
 {
-	iterator it;
-	for (it = defs.begin(); it != defs.end(); ++it)
+	for (auto it = defs.begin(); it != defs.end(); ++it)
 		(*it)->searchAndReplace(from, to);
 }
 
@@ -752,9 +727,8 @@ void
 UseCollector::fromSSAform(UserProc *proc, Statement *def)
 {
 	LocationSet removes, inserts;
-	iterator it;
 	ExpSsaXformer esx(proc);
-	for (it = locs.begin(); it != locs.end(); ++it) {
+	for (auto it = locs.begin(); it != locs.end(); ++it) {
 		RefExp *ref = new RefExp(*it, def);  // Wrap it in a def
 		Exp *ret = ref->accept(&esx);
 		// If there is no change, ret will equal *it again (i.e. fromSSAform just removed the subscript)
@@ -764,9 +738,9 @@ UseCollector::fromSSAform(UserProc *proc, Statement *def)
 			inserts.insert(ret);
 		}
 	}
-	for (it = removes.begin(); it != removes.end(); ++it)
+	for (auto it = removes.begin(); it != removes.end(); ++it)
 		locs.remove(*it);
-	for (it = inserts.begin(); it != inserts.end(); ++it)
+	for (auto it = inserts.begin(); it != inserts.end(); ++it)
 		locs.insert(*it);
 }
 
@@ -774,9 +748,8 @@ bool
 UseCollector::operator ==(UseCollector &other)
 {
 	if (other.initialised != initialised) return false;
-	iterator it1, it2;
 	if (other.locs.size() != locs.size()) return false;
-	for (it1 = locs.begin(), it2 = other.locs.begin(); it1 != locs.end(); ++it1, ++it2)
+	for (auto it1 = locs.begin(), it2 = other.locs.begin(); it1 != locs.end(); ++it1, ++it2)
 		if (!(**it1 == **it2)) return false;
 	return true;
 }
@@ -794,32 +767,28 @@ DataFlow::convertImplicits(Cfg *cfg)
 {
 	// Convert statements in A_phi from m[...]{-} to m[...]{0}
 	std::map<Exp *, std::set<int>, lessExpStar> A_phi_copy = A_phi;  // Object copy
-	std::map<Exp *, std::set<int>, lessExpStar>::iterator it;
 	ImplicitConverter ic(cfg);
 	A_phi.clear();
-	for (it = A_phi_copy.begin(); it != A_phi_copy.end(); ++it) {
+	for (auto it = A_phi_copy.begin(); it != A_phi_copy.end(); ++it) {
 		Exp *e = it->first->clone();
 		e = e->accept(&ic);
 		A_phi[e] = it->second;  // Copy the set (doesn't have to be deep)
 	}
 
 	std::map<Exp *, std::set<int>, lessExpStar> defsites_copy = defsites;  // Object copy
-	std::map<Exp *, std::set<int>, lessExpStar>::iterator dd;
 	defsites.clear();
-	for (dd = A_phi_copy.begin(); dd != A_phi_copy.end(); ++dd) {
+	for (auto dd = A_phi_copy.begin(); dd != A_phi_copy.end(); ++dd) {
 		Exp *e = dd->first->clone();
 		e = e->accept(&ic);
 		defsites[e] = dd->second;  // Copy the set (doesn't have to be deep)
 	}
 
 	std::vector<std::set<Exp *, lessExpStar> > A_orig_copy;
-	std::vector<std::set<Exp *, lessExpStar> >::iterator oo;
 	A_orig.clear();
-	for (oo = A_orig_copy.begin(); oo != A_orig_copy.end(); ++oo) {
+	for (auto oo = A_orig_copy.begin(); oo != A_orig_copy.end(); ++oo) {
 		std::set<Exp *, lessExpStar> &se = *oo;
 		std::set<Exp *, lessExpStar> se_new;
-		std::set<Exp *, lessExpStar>::iterator ee;
-		for (ee = se.begin(); ee != se.end(); ++ee) {
+		for (auto ee = se.begin(); ee != se.end(); ++ee) {
 			Exp *e = (*ee)->clone();
 			e = e->accept(&ic);
 			se_new.insert(e);
@@ -846,15 +815,15 @@ void
 DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedByDomPhi0, std::map<Exp *, PhiAssign *, lessExpStar> &defdByPhi)
 {
 	// For each statement this BB
-	BasicBlock::rtlit rit; StatementList::iterator sit;
+	BasicBlock::rtlit rit;
+	StatementList::iterator sit;
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
 		if (S->isPhi()) {
 			// For each phi parameter, insert an entry into usedByDomPhi0
 			PhiAssign *pa = (PhiAssign *)S;
-			PhiAssign::iterator it;
-			for (it = pa->begin(); it != pa->end(); ++it) {
+			for (auto it = pa->begin(); it != pa->end(); ++it) {
 				if (it->e) {
 					RefExp *re = new RefExp(it->e, it->def);
 					usedByDomPhi0.insert(re);
@@ -868,15 +837,14 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 		LocationSet ls;
 		S->addUsedLocs(ls);
 		// Consider uses of this statement
-		LocationSet::iterator it;
-		for (it = ls.begin(); it != ls.end(); ++it) {
+		for (auto it = ls.begin(); it != ls.end(); ++it) {
 			// Remove this entry from the map, since it is not unused
 			defdByPhi.erase(*it);
 		}
 		// Now process any definitions
 		ls.clear();
 		S->getDefinitions(ls);
-		for (it = ls.begin(); it != ls.end(); ++it) {
+		for (auto it = ls.begin(); it != ls.end(); ++it) {
 			RefExp *wrappedDef = new RefExp(*it, S);
 			// If this definition is in the usedByDomPhi0 set, then it is in fact dominated by a phi use, so move it to
 			// the final usedByDomPhi set
@@ -903,7 +871,8 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 void
 DataFlow::setDominanceNums(int n, int &currNum)
 {
-	BasicBlock::rtlit rit; StatementList::iterator sit;
+	BasicBlock::rtlit rit;
+	StatementList::iterator sit;
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit))

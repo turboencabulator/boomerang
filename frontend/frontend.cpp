@@ -200,10 +200,9 @@ FrontEnd::close(FrontEnd *fe)
 const char *
 FrontEnd::getRegName(int idx)
 {
-	std::map<std::string, int, std::less<std::string> >::iterator it;
-	for (it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); it++)
-		if ((*it).second == idx)
-			return (*it).first.c_str();
+	for (auto it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); it++)
+		if (it->second == idx)
+			return it->first.c_str();
 	return nullptr;
 }
 
@@ -377,7 +376,7 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 		LOG << "start: " << a << " gotmain: " << (gotMain ? "true" : "false") << "\n";
 	if (a == NO_ADDRESS) {
 		std::vector<ADDRESS> entrypoints = getEntryPoints();
-		for (std::vector<ADDRESS>::iterator it = entrypoints.begin(); it != entrypoints.end(); it++)
+		for (auto it = entrypoints.begin(); it != entrypoints.end(); it++)
 			decode(prog, *it);
 		return;
 	}
@@ -531,7 +530,7 @@ FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 	p.yyparse(plat, cc);
 	ifs.close();
 
-	for (std::list<Signature *>::iterator it = p.signatures.begin(); it != p.signatures.end(); it++) {
+	for (auto it = p.signatures.begin(); it != p.signatures.end(); it++) {
 #if 0
 		std::cerr << "readLibrarySignatures from " << sPath << ": " << (*it)->getName() << "\n";
 #endif
@@ -561,14 +560,13 @@ FrontEnd::getLibSignature(const char *name)
 {
 	Signature *signature;
 	// Look up the name in the librarySignatures map
-	std::map<std::string, Signature *>::iterator it;
-	it = librarySignatures.find(name);
+	auto it = librarySignatures.find(name);
 	if (it == librarySignatures.end()) {
 		LOG << "Unknown library function " << name << "\n";
 		signature = getDefaultSignature(name);
 	} else {
 		// Don't clone here; cloned in CallStatement::setSigArguments
-		signature = (*it).second;
+		signature = it->second;
 		signature->setUnknown(false);
 	}
 	return signature;
@@ -681,7 +679,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 			// Check if this is an already decoded jump instruction (from a previous pass with propagation etc)
 			// If so, we throw away the just decoded RTL (but we still may have needed to calculate the number
 			// of bytes.. ick.)
-			std::map<ADDRESS, RTL *>::iterator ff = previouslyDecoded.find(uAddr);
+			auto ff = previouslyDecoded.find(uAddr);
 			if (ff != previouslyDecoded.end())
 				pRtl = ff->second;
 
@@ -713,14 +711,13 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 			// Statements to mark the start of instructions (and their native address).
 			// FIXME: However, this workaround breaks logic below where a GOTO is changed to a CALL followed by a return
 			// if it points to the start of a known procedure
-			std::list<Statement *>::iterator ss;
 #if 1
-			for (ss = sl.begin(); ss != sl.end(); ss++) { // }
+			for (auto ss = sl.begin(); ss != sl.end(); ss++) { // }
 #else
 			// The counter is introduced because ss != sl.end() does not work as it should
 			// FIXME: why? Does this really fix the problem?
 			int counter = sl.size();
-			for (ss = sl.begin(); counter > 0; ss++, counter--) {
+			for (auto ss = sl.begin(); counter > 0; ss++, counter--) {
 #endif
 				Statement *s = *ss;
 				s->setProc(pProc);  // let's do this really early!
@@ -753,7 +750,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 							call->setDestProc(proc);
 							call->setReturnAfterCall(true);
 							// also need to change it in the actual RTL
-							std::list<Statement *>::iterator ss1 = ss;
+							auto ss1 = ss;
 							ss1++;
 							assert(ss1 == sl.end());
 							pRtl->replaceLastStmt(s);
@@ -1133,8 +1130,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 #endif
 
 	// Add the callees to the set of CallStatements, and also to the Prog object
-	std::list<CallStatement *>::iterator it;
-	for (it = callList.begin(); it != callList.end(); it++) {
+	for (auto it = callList.begin(); it != callList.end(); it++) {
 		ADDRESS dest = (*it)->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically
 		// linked ones (in the .plt)

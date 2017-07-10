@@ -404,7 +404,7 @@ DOS4GWBinaryFile::PostLoad(void *handle)
 const char *
 DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
-	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
+	auto it = dlprocptrs.find(dwAddr);
 	if (it == dlprocptrs.end())
 		return nullptr;
 	return it->second.c_str();
@@ -415,7 +415,7 @@ DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false 
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search
-	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.begin();
+	auto it = dlprocptrs.begin();
 	while (it != dlprocptrs.end()) {
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)

@@ -61,7 +61,7 @@ RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= nullptr*/)
 RTL::RTL(const RTL &other) :
 	nativeAddr(other.nativeAddr)
 {
-	for (std::list<Statement *>::const_iterator it = other.stmtList.begin(); it != other.stmtList.end(); it++) {
+	for (auto it = other.stmtList.cbegin(); it != other.stmtList.cend(); it++) {
 		stmtList.push_back((*it)->clone());
 	}
 }
@@ -82,7 +82,7 @@ RTL::operator =(RTL &other)
 {
 	if (this != &other) {
 		// Do a deep copy always
-		for (iterator it = other.stmtList.begin(); it != other.stmtList.end(); it++)
+		for (auto it = other.stmtList.begin(); it != other.stmtList.end(); it++)
 			stmtList.push_back((*it)->clone());
 
 		nativeAddr = other.nativeAddr;
@@ -102,7 +102,7 @@ RTL::clone()
 {
 	std::list<Statement *> le;
 
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
 		le.push_back((*it)->clone());
 	}
 
@@ -120,7 +120,7 @@ RTL::accept(StmtVisitor *visitor)
 {
 	// Might want to do something at the RTL level:
 	if (!visitor->visit(this)) return false;
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
 		if (!(*it)->accept(visitor)) return false;
 	}
 	return true;
@@ -136,7 +136,7 @@ RTL::accept(StmtVisitor *visitor)
 void
 RTL::deepCopyList(std::list<Statement *> &dest)
 {
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
 		dest.push_back((*it)->clone());
 	}
 }
@@ -158,7 +158,7 @@ RTL::appendStmt(Statement *s)
 {
 	if (!stmtList.empty()) {
 		if (stmtList.back()->isFlagAssgn()) {
-			iterator it = stmtList.end();
+			auto it = stmtList.end();
 			stmtList.insert(--it, s);
 			return;
 		}
@@ -193,7 +193,7 @@ RTL::prependStmt(Statement *s)
 void
 RTL::appendListStmt(std::list<Statement *> &le)
 {
-	for (iterator it = le.begin(); it != le.end(); it++) {
+	for (auto it = le.begin(); it != le.end(); it++) {
 		stmtList.insert(stmtList.end(), (*it)->clone());
 	}
 }
@@ -230,7 +230,7 @@ RTL::insertStmt(Statement *s, unsigned i)
 	assert(i < stmtList.size() || stmtList.empty());
 
 	// Find the position
-	iterator pp = stmtList.begin();
+	auto pp = stmtList.begin();
 	for (; i > 0; i--, pp++);
 
 	// Do the insertion
@@ -261,7 +261,7 @@ RTL::updateStmt(Statement *s, unsigned i)
 	assert(i < stmtList.size());
 
 	// Find the position
-	iterator pp = stmtList.begin();
+	auto pp = stmtList.begin();
 	for (; i > 0; i--, pp++);
 
 	// Note that sometimes we might update even when we don't know if it's
@@ -285,7 +285,7 @@ RTL::deleteStmt(unsigned i)
 	assert(i < stmtList.size());
 
 	// find the position
-	iterator pp = stmtList.begin();
+	auto pp = stmtList.begin();
 	for (; i > 0; i--, pp++);
 
 	// do the delete
@@ -340,8 +340,8 @@ RTL::getNumStmt()
 Statement *
 RTL::elementAt(unsigned i)
 {
-	iterator it;
-	for (it = stmtList.begin(); i > 0 && it != stmtList.end(); i--, it++);
+	auto it = stmtList.begin();
+	for (; i > 0 && it != stmtList.end(); i--, it++);
 	if (it == stmtList.end()) {
 		return nullptr;
 	}
@@ -369,7 +369,7 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
 	// Print the statements
 	// First line has 8 extra chars as above
 	bool bFirst = true;
-	for (iterator ss = stmtList.begin(); ss != stmtList.end(); ss++) {
+	for (auto ss = stmtList.begin(); ss != stmtList.end(); ss++) {
 		Statement *stmt = *ss;
 		if (html) {
 			if (!bFirst) os << "<tr><td></td>";
@@ -454,7 +454,7 @@ bool
 RTL::searchAndReplace(Exp *search, Exp *replace)
 {
 	bool ch = false;
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++)
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++)
 		ch |= (*it)->searchAndReplace(search, replace);
 	return ch;
 }
@@ -474,7 +474,7 @@ bool
 RTL::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
 		Statement *e = *it;
 		Exp *res;
 		if (e->search(search, res)) {
@@ -547,9 +547,9 @@ RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= nullptr */)
 void
 RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 {
-	iterator it;
 	// First skip all assignments with temps on LHS
-	for (it = stmtList.begin(); it != stmtList.end(); it++) {
+	auto it = stmtList.begin();
+	for (; it != stmtList.end(); it++) {
 		Statement *s = *it;
 		if (!s->isAssign())
 			break;
@@ -589,7 +589,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 Type *
 RTL::getType()
 {
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
 		Statement *e = *it;
 		if (e->isAssign())
 			return ((Assign *)e)->getType();
@@ -611,7 +611,7 @@ RTL::areFlagsAffected()
 {
 	if (stmtList.empty()) return false;
 	// Get an iterator to the last RT
-	iterator it = stmtList.end();
+	auto it = stmtList.end();
 	if (it == stmtList.begin())
 		return false;  // Not expressions at all
 	it--;  // Will now point to the end of the list
@@ -626,7 +626,7 @@ RTL::areFlagsAffected()
 void
 RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
-	for (iterator it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
 		(*it)->generateCode(hll, pbb, indLevel);
 	}
 }
@@ -637,7 +637,7 @@ RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 void
 RTL::simplify()
 {
-	for (iterator it = stmtList.begin(); it != stmtList.end(); /*it++*/) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); /*it++*/) {
 		Statement *s = *it;
 		s->simplify();
 		if (s->isBranch()) {
@@ -760,7 +760,7 @@ RTL::isCall()
 Statement *
 RTL::getHlStmt()
 {
-	for (reverse_iterator rit = stmtList.rbegin(); rit != stmtList.rend(); rit++) {
+	for (auto rit = stmtList.rbegin(); rit != stmtList.rend(); rit++) {
 		if ((*rit)->getKind() != STMT_ASSIGN)
 			return *rit;
 	}

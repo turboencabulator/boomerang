@@ -978,20 +978,20 @@ Boomerang::objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog)
 	if (VERBOSE)
 		LOG << "Adding Objective-C information to Prog.\n";
 	Cluster *root = prog->getRootCluster();
-	for (std::map<std::string, ObjcModule>::iterator it = modules.begin(); it != modules.end(); it++) {
-		ObjcModule &mod = (*it).second;
+	for (auto it = modules.begin(); it != modules.end(); it++) {
+		ObjcModule &mod = it->second;
 		Module *module = new Module(mod.name.c_str());
 		root->addChild(module);
 		if (VERBOSE)
 			LOG << "\tModule: " << mod.name.c_str() << "\n";
-		for (std::map<std::string, ObjcClass>::iterator it1 = mod.classes.begin(); it1 != mod.classes.end(); it1++) {
-			ObjcClass &c = (*it1).second;
+		for (auto it1 = mod.classes.begin(); it1 != mod.classes.end(); it1++) {
+			ObjcClass &c = it1->second;
 			Class *cl = new Class(c.name.c_str());
 			root->addChild(cl);
 			if (VERBOSE)
 				LOG << "\t\tClass: " << c.name.c_str() << "\n";
-			for (std::map<std::string, ObjcMethod>::iterator it2 = c.methods.begin(); it2 != c.methods.end(); it2++) {
-				ObjcMethod &m = (*it2).second;
+			for (auto it2 = c.methods.begin(); it2 != c.methods.end(); it2++) {
+				ObjcMethod &m = it2->second;
 				// TODO: parse :'s in names
 				Proc *p = prog->newProc(m.name.c_str(), m.addr);
 				p->setCluster(cl);
@@ -1025,8 +1025,8 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	}
 
 	// Add symbols from -s switch(es)
-	for (std::map<ADDRESS, std::string>::iterator it = symbols.begin(); it != symbols.end(); it++) {
-		fe->addSymbol((*it).first, (*it).second.c_str());
+	for (auto it = symbols.begin(); it != symbols.end(); it++) {
+		fe->addSymbol(it->first, it->second.c_str());
 	}
 	fe->readLibraryCatalog();  // Needed before readSymbolFile()
 
@@ -1211,7 +1211,7 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 		static std::set<Statement *> watches;
 		if (!stopAt || !strcmp(p->getName(), stopAt)) {
 			// This is a mini command line debugger.  Feel free to expand it.
-			for (std::set<Statement *>::iterator it = watches.begin(); it != watches.end(); it++) {
+			for (auto it = watches.begin(); it != watches.end(); it++) {
 				(*it)->print(std::cout);
 				std::cout << "\n";
 			}
@@ -1237,8 +1237,7 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 					int n = atoi(line + 6);
 					StatementList stmts;
 					p->getStatements(stmts);
-					StatementList::iterator it;
-					for (it = stmts.begin(); it != stmts.end(); it++)
+					for (auto it = stmts.begin(); it != stmts.end(); it++)
 						if ((*it)->getNumber() == n) {
 							watches.insert(*it);
 							std::cout << "watching " << *it << "\n";
@@ -1248,7 +1247,7 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 			}
 		}
 	}
-	for (std::set<Watcher *>::iterator it = watchers.begin(); it != watchers.end(); it++)
+	for (auto it = watchers.begin(); it != watchers.end(); it++)
 		(*it)->alert_decompile_debug_point(p, description);
 }
 

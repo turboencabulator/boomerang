@@ -332,7 +332,7 @@ ElfBinaryFile::AddSyms(int secIndex)
 		if (pos != str.npos)
 			str.erase(pos);
 
-		std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(val);
+		auto aa = m_SymTab.find(val);
 		// Ensure no overwriting (except functions)
 		if (aa == m_SymTab.end() || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
 			if (val == 0 && siPlt) { //&& i < max_i_for_hack) {
@@ -454,10 +454,10 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 		if (pos != str.npos)
 			str.erase(pos);
 
-		std::map<ADDRESS, std::string>::iterator it;
 		// Linear search!
-		for (it = m_SymTab.begin(); it != m_SymTab.end(); it++)
-			if ((*it).second == str)
+		auto it = m_SymTab.begin();
+		for (; it != m_SymTab.end(); it++)
+			if (it->second == str)
 				break;
 		// Add new extern
 		if (it == m_SymTab.end()) {
@@ -465,7 +465,7 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 			it = m_SymTab.find(next_extern);
 			next_extern += 4;
 		}
-		writeNative4(val, (*it).first - val - 4);
+		writeNative4(val, it->first - val - 4);
 	}
 	return;
 }
@@ -478,7 +478,7 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 const char *
 ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
-	std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(dwAddr);
+	auto aa = m_SymTab.find(dwAddr);
 	if (aa == m_SymTab.end())
 		return nullptr;
 	return aa->second.c_str();
@@ -825,8 +825,8 @@ ElfBinaryFile::getImportStubs(int &numImports)
 {
 	ADDRESS a = m_uPltMin;
 	int n = 0;
-	std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(a);
-	std::map<ADDRESS, std::string>::iterator ff = aa;
+	auto aa = m_SymTab.find(a);
+	auto ff = aa;
 	bool delDummy = false;
 	if (aa == m_SymTab.end()) {
 		// Need to insert a dummy entry at m_uPltMin
@@ -1311,9 +1311,8 @@ ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 void
 ElfBinaryFile::dumpSymbols()
 {
-	std::map<ADDRESS, std::string>::iterator it;
 	std::cerr << std::hex;
-	for (it = m_SymTab.begin(); it != m_SymTab.end(); ++it)
+	for (auto it = m_SymTab.begin(); it != m_SymTab.end(); ++it)
 		std::cerr << "0x" << it->first << " " << it->second << "        ";
 	std::cerr << std::dec << "\n";
 }

@@ -52,7 +52,6 @@ ExprTable::ExprTable(std::deque<Exp *> &exprs) :
 
 ExprTable::~ExprTable()
 {
-	std::deque<Exp *>::iterator loc;
-	for (loc = expressions.begin(); loc != expressions.end(); loc++)
+	for (auto loc = expressions.begin(); loc != expressions.end(); loc++)
 		delete *loc;
 }

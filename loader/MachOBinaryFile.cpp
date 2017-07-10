@@ -510,7 +510,7 @@ MachOBinaryFile::PostLoad(void *handle)
 const char *
 MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
-	std::map<ADDRESS, std::string>::iterator it = m_SymA.find(dwAddr);
+	auto it = m_SymA.find(dwAddr);
 	if (it == m_SymA.end())
 		return nullptr;
 	return it->second.c_str();
@@ -521,7 +521,7 @@ MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false *
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search
-	std::map<ADDRESS, std::string>::iterator it = m_SymA.begin();
+	auto it = m_SymA.begin();
 	while (it != m_SymA.end()) {
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)

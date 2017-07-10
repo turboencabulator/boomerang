@@ -1795,8 +1795,7 @@ Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = fa
 	std::list<Exp **> li;
 	Exp *top = this;  // top may change; that's why we have to return it
 	doSearch(search, top, li, false);
-	std::list<Exp **>::iterator it;
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); it++) {
 		Exp **pp = *it;
 		;//delete *pp;  // Delete any existing
 		*pp = replace->clone();  // Do the replacement
@@ -1852,8 +1851,7 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *pSrc = this;
 	doSearch(search, pSrc, li, false);
-	std::list<Exp **>::iterator it;
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); it++) {
 		// li is list of Exp**; result is list of Exp*
 		result.push_back(**it);
 	}
@@ -1965,8 +1963,8 @@ Binary::simplifyArith()
 	// Note: can't improve this algorithm using multisets, since can't instantiate multisets of type Exp (only Exp*).
 	// The Exp* in the multisets would be sorted by address, not by value of the expression.
 	// So they would be unsorted, same as lists!
-	std::list<Exp *>::iterator pp = positives.begin();
-	std::list<Exp *>::iterator nn = negatives.begin();
+	auto pp = positives.begin();
+	auto nn = negatives.begin();
 	while (pp != positives.end()) {
 		bool inc = true;
 		while (nn != negatives.end()) {
@@ -3350,8 +3348,7 @@ Exp::killFill()
 	std::list<Exp **> result;
 	doSearch(&srch1, res, result, false);
 	doSearch(&srch2, res, result, false);
-	std::list<Exp **>::iterator it;
-	for (it = result.begin(); it != result.end(); it++) {
+	for (auto it = result.begin(); it != result.end(); it++) {
 		// Kill the sign extend bits
 		**it = ((Ternary *)(**it))->getSubExp3();
 	}
@@ -3375,9 +3372,8 @@ Exp::removeSubscripts(bool &allZero)
 	Exp *e = this;
 	LocationSet locs;
 	e->addUsedLocs(locs);
-	LocationSet::iterator xx;
 	allZero = true;
-	for (xx = locs.begin(); xx != locs.end(); xx++) {
+	for (auto xx = locs.begin(); xx != locs.end(); xx++) {
 		if ((*xx)->getOper() == opSubscript) {
 			RefExp *r1 = (RefExp *)*xx;
 			Statement *def = r1->getDef();

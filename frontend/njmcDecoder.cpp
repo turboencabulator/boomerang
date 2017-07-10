@@ -64,7 +64,7 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 	if (DEBUG_DECODER) {
 		// Display a disassembly of this instruction if requested
 		std::cout << std::hex << pc << std::dec << ": " << name << " ";
-		for (std::vector<Exp *>::iterator itd = actuals.begin(); itd != actuals.end(); itd++) {
+		for (auto itd = actuals.begin(); itd != actuals.end(); itd++) {
 			if ((*itd)->isIntConst()) {
 				int val = ((Const *)(*itd))->getInt();
 				if (val > 100 || val < -100)
@@ -115,7 +115,7 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
 
 	va_list args;
 	va_start(args, name);
-	for (std::list<std::string>::iterator it = ent.params.begin(); it != ent.params.end(); it++) {
+	for (auto it = ent.params.begin(); it != ent.params.end(); it++) {
 		Exp *formal = new Location(opParam, new Const(it->c_str()), nullptr);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
@@ -157,7 +157,7 @@ NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 
 	va_list args;
 	va_start(args, exp);
-	for (std::list<std::string>::iterator it = ent.funcParams.begin(); it != ent.funcParams.end(); it++) {
+	for (auto it = ent.funcParams.begin(); it != ent.funcParams.end(); it++) {
 		Exp *formal = new Location(opParam, new Const(it->c_str()), nullptr);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;

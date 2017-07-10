@@ -813,7 +813,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 			// Check if this is an already decoded jump instruction (from a previous pass with propagation etc)
 			// If so, we don't need to decode this instruction
-			std::map<ADDRESS, RTL *>::iterator ff = previouslyDecoded.find(address);
+			auto ff = previouslyDecoded.find(address);
 			if (ff != previouslyDecoded.end()) {
 				inst.rtl = ff->second;
 				inst.valid = true;
@@ -1220,7 +1220,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 
 	// Add the callees to the set of CallStatements to proces for parameter recovery, and also to the Prog object
-	for (std::list<CallStatement *>::iterator it = callList.begin(); it != callList.end(); it++) {
+	for (auto it = callList.begin(); it != callList.end(); it++) {
 		ADDRESS dest = (*it)->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically linked
 		// ones (in the .plt)

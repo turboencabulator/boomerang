@@ -360,7 +360,7 @@ IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative)
 bool
 IntelCoffFile::isRelocationAt(ADDRESS uNative)
 {
-	for (std::list<ADDRESS>::iterator it = m_Relocations.begin(); it != m_Relocations.end(); it++) {
+	for (auto it = m_Relocations.begin(); it != m_Relocations.end(); it++) {
 		if (*it == uNative) return true;
 	}
 	return false;

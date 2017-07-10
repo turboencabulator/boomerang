@@ -238,7 +238,7 @@ param
 	| type '(' '*' IDENTIFIER ')' '(' param_list ')' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($1);
-		for (std::list<Parameter *>::iterator it = $7->begin(); it != $7->end(); it++)
+		for (auto it = $7->begin(); it != $7->end(); it++)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
 			else {
@@ -260,7 +260,7 @@ type_decl
 	| TYPEDEF type '(' '*' IDENTIFIER ')' '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($2);
-		for (std::list<Parameter *>::iterator it = $8->begin(); it != $8->end(); it++)
+		for (auto it = $8->begin(); it != $8->end(); it++)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
 			else {
@@ -273,7 +273,7 @@ type_decl
 	| TYPEDEF type_ident '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, $2->nam.c_str());
 		sig->addReturn($2->ty);
-		for (std::list<Parameter *>::iterator it = $4->begin(); it != $4->end(); it++)
+		for (auto it = $4->begin(); it != $4->end(); it++)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
 			else {
@@ -285,7 +285,7 @@ type_decl
 	  }
 	| STRUCT IDENTIFIER '{' type_ident_list '}' ';' {
 		CompoundType *t = new CompoundType();
-		for (std::list<TypeIdent *>::iterator it = $4->begin(); it != $4->end(); it++) {
+		for (auto it = $4->begin(); it != $4->end(); it++) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
 		char tmp[1024];
@@ -301,7 +301,7 @@ func_decl
 	| signature PREFER type_ident '(' num_list ')' ';' {
 		$1->setPreferedReturn($3->ty);
 		$1->setPreferedName($3->nam.c_str());
-		for (std::list<int>::iterator it = $5->begin(); it != $5->end(); it++)
+		for (auto it = $5->begin(); it != $5->end(); it++)
 			$1->addPreferedParameter(*it - 1);
 		delete $5;
 		signatures.push_back($1);
@@ -313,7 +313,7 @@ signature
 		/* Use the passed calling convention (cc) */
 		Signature *sig = Signature::instantiate(plat, cc, $1->nam.c_str());
 		sig->addReturn($1->ty);
-		for (std::list<Parameter *>::iterator it = $3->begin(); it != $3->end(); it++)
+		for (auto it = $3->begin(); it != $3->end(); it++)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
 			else {
@@ -326,7 +326,7 @@ signature
 	| convention type_ident '(' param_list ')' {
 		Signature *sig = Signature::instantiate(plat, $1, $2->nam.c_str());
 		sig->addReturn($2->ty);
-		for (std::list<Parameter *>::iterator it = $4->begin(); it != $4->end(); it++)
+		for (auto it = $4->begin(); it != $4->end(); it++)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
 			else {
@@ -342,7 +342,7 @@ signature
 			sig->addReturn($3->ty, $2->exp);
 		if ($2->sp)
 			sig->setSP($2->sp);
-		for (std::list<Parameter *>::iterator it = $5->begin(); it != $5->end(); it++)
+		for (auto it = $5->begin(); it != $5->end(); it++)
 			if (std::string((*it)->getName()) != "...") {
 				sig->addParameter(*it);
 			} else {
@@ -456,7 +456,7 @@ type
 	  }
 	| STRUCT '{' type_ident_list '}' {
 		CompoundType *t = new CompoundType();
-		for (std::list<TypeIdent *>::iterator it = $3->begin(); it != $3->end(); it++) {
+		for (auto it = $3->begin(); it != $3->end(); it++) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
 		$$ = t;

@@ -566,7 +566,6 @@ StatementTest::testLocationSet()
 	Location rof(opRegOf, new Const(12), nullptr);  // r12
 	Const &theReg = *(Const *)rof.getSubExp1();
 	LocationSet ls;
-	LocationSet::iterator ii;
 	ls.insert(rof.clone());                         // ls has r12
 	theReg.setInt(8);
 	ls.insert(rof.clone());                         // ls has r8 r12
@@ -579,7 +578,7 @@ StatementTest::testLocationSet()
 	int size = (int)ls.size();
 	CPPUNIT_ASSERT_EQUAL(4, size);
 	theReg.setInt(8);
-	ii = ls.begin();
+	auto ii = ls.begin();
 	CPPUNIT_ASSERT(rof == **ii);                    // First element should be r8
 	theReg.setInt(12);
 	Exp *e;
@@ -1251,7 +1250,7 @@ StatementTest::testBypass()
 	// Find various needed statements
 	StatementList stmts;
 	proc->getStatements(stmts);
-	StatementList::iterator it = stmts.begin();
+	auto it = stmts.begin();
 	while (!(*it)->isCall())
 		it++;
 	CallStatement *call = (CallStatement *)*it; // Statement 18, a call to printf
@@ -1323,9 +1322,8 @@ StatementTest::testFindConstants()
 	Statement *a = new Assign(Location::regOf(24), new Binary(opPlus, new Const(3), new Const(4)));
 	std::list<Const *> lc;
 	a->findConstants(lc);
-	std::list<Const *>::iterator it;
 	std::ostringstream ost1;
-	for (it = lc.begin(); it != lc.end();) {
+	for (auto it = lc.begin(); it != lc.end();) {
 		ost1 << *it;
 		if (++it != lc.end())
 			ost1 << ", ";

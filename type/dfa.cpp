@@ -75,11 +75,10 @@ UserProc::dfaTypeAnalysis()
 	bool ch = signature->dfaTypeAnalysis(cfg);
 	StatementList stmts;
 	getStatements(stmts);
-	StatementList::iterator it;
 	int iter;
 	for (iter = 1; iter <= DFA_ITER_LIMIT; iter++) {
 		ch = false;
-		for (it = stmts.begin(); it != stmts.end(); it++) {
+		for (auto it = stmts.begin(); it != stmts.end(); it++) {
 			if (++progress >= 2000) {
 				progress = 0;
 				std::cerr << "t" << std::flush;
@@ -102,16 +101,15 @@ UserProc::dfaTypeAnalysis()
 	if (DEBUG_TA) {
 		LOG << "\n ### results for data flow based type analysis for " << getName() << " ###\n";
 		LOG << iter << " iterations\n";
-		for (it = stmts.begin(); it != stmts.end(); it++) {
+		for (auto it = stmts.begin(); it != stmts.end(); it++) {
 			Statement *s = *it;
 			LOG << s << "\n";  // Print the statement; has dest type
 			// Now print type for each constant in this Statement
 			std::list<Const *> lc;
-			std::list<Const *>::iterator cc;
 			s->findConstants(lc);
 			if (!lc.empty()) {
 				LOG << "       ";
-				for (cc = lc.begin(); cc != lc.end(); cc++)
+				for (auto cc = lc.begin(); cc != lc.end(); cc++)
 					LOG << (*cc)->getType()->getCtype() << " " << *cc << "  ";
 				LOG << "\n";
 			}
@@ -121,9 +119,8 @@ UserProc::dfaTypeAnalysis()
 				ReturnStatement *rs = call->getCalleeReturn();
 				if (!rs) continue;
 				UseCollector *uc = call->getUseCollector();
-				ReturnStatement::iterator rr;
 				bool first = true;
-				for (rr = rs->begin(); rr != rs->end(); ++rr) {
+				for (auto rr = rs->begin(); rr != rs->end(); ++rr) {
 					// Intersect the callee's returns with the live locations at the call, i.e. make sure that they
 					// exist in *uc
 					Exp *lhs = ((Assignment *)*rr)->getLeft();
@@ -146,7 +143,7 @@ UserProc::dfaTypeAnalysis()
 	Boomerang::get()->alert_decompile_debug_point(this, "before mapping locals from dfa type analysis");
 	if (DEBUG_TA)
 		LOG << " ### mapping expressions to local variables for " << getName() << " ###\n";
-	for (it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); it++) {
 		Statement *s = *it;
 		s->dfaMapLocals();
 	}
@@ -157,14 +154,13 @@ UserProc::dfaTypeAnalysis()
 	Boomerang::get()->alert_decompile_debug_point(this, "before other uses of dfa type analysis");
 
 	Prog *prog = getProg();
-	for (it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); it++) {
 		Statement *s = *it;
 
 		// 1) constants
-		std::list<Const *>lc;
+		std::list<Const *> lc;
 		s->findConstants(lc);
-		std::list<Const *>::iterator cc;
-		for (cc = lc.begin(); cc != lc.end(); cc++) {
+		for (auto cc = lc.begin(); cc != lc.end(); cc++) {
 			Const *con = (Const *)*cc;
 			Type *t = con->getType();
 			int val = con->getInt();
@@ -215,7 +211,7 @@ UserProc::dfaTypeAnalysis()
 					// of con, but we can find it with the pattern unscaledArrayPat.
 					std::list<Exp *> result;
 					s->searchAll(unscaledArrayPat, result);
-					for (std::list<Exp *>::iterator rr = result.begin(); rr != result.end(); rr++) {
+					for (auto rr = result.begin(); rr != result.end(); rr++) {
 						// idx + K
 						Const *constK = (Const *)((Binary *)*rr)->getSubExp2();
 						// Note: keep searching till we find the pattern with this constant, since other constants may
@@ -260,7 +256,7 @@ UserProc::dfaTypeAnalysis()
 		// 2) Search for the scaled array pattern and replace it with an array use m[idx*K1 + K2]
 		std::list<Exp *> result;
 		s->searchAll(scaledArrayPat, result);
-		for (std::list<Exp *>::iterator rr = result.begin(); rr != result.end(); rr++) {
+		for (auto rr = result.begin(); rr != result.end(); rr++) {
 			//Type* ty = s->getTypeFor(*rr);
 			// FIXME: should check that we use with array type...
 			// Find idx and K2
@@ -595,7 +591,6 @@ Type *
 UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid()) return this;
-	std::list<UnionElement>::iterator it;
 	if (other->resolvesToUnion()) {
 		if (this == other)  // Note: pointer comparison
 			return this;  // Avoid infinite recursion
@@ -603,7 +598,7 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		UnionType *otherUnion = (UnionType *)other;
 		// Always return this, never other, (even if other is larger than this) because otherwise iterators can become
 		// invalid below
-		for (it = otherUnion->li.begin(); it != otherUnion->li.end(); it++) {
+		for (auto it = otherUnion->li.begin(); it != otherUnion->li.end(); it++) {
 			meetWith(it->type, ch, bHighestPtr);
 			return this;
 		}
@@ -614,7 +609,7 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		LOG << "WARNING! attempt to union " << getCtype() << " with pointer to self!\n";
 		return this;
 	}
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); it++) {
 		Type *curr = it->type->clone();
 		if (curr->isCompatibleWith(other)) {
 			it->type = curr->meetWith(other, ch, bHighestPtr);
@@ -760,18 +755,16 @@ void
 CallStatement::dfaTypeAnalysis(bool &ch)
 {
 	// Iterate through the arguments
-	StatementList::iterator aa;
 	int n = 0;
-	for (aa = arguments.begin(); aa != arguments.end(); ++aa, ++n) {
+	for (auto aa = arguments.begin(); aa != arguments.end(); ++aa, ++n) {
 		if (procDest
 		 && procDest->getSignature()->getParamBoundMax(n)
 		 && ((Assign *)*aa)->getRight()->isIntConst()) {
 			Assign *a = (Assign *)*aa;
 			std::string boundmax = procDest->getSignature()->getParamBoundMax(n);
 			assert(a->getType()->resolvesToInteger());
-			StatementList::iterator aat;
 			int nt = 0;
-			for (aat = arguments.begin(); aat != arguments.end(); ++aat, ++nt)
+			for (auto aat = arguments.begin(); aat != arguments.end(); ++aat, ++nt)
 				if (boundmax == procDest->getSignature()->getParamName(nt)) {
 					Type *tyt = ((Assign *)*aat)->getType();
 					if (tyt->resolvesToPointer()
@@ -797,11 +790,10 @@ CallStatement::dfaTypeAnalysis(bool &ch)
 void
 ReturnStatement::dfaTypeAnalysis(bool &ch)
 {
-	StatementList::iterator mm, rr;
-	for (mm = modifieds.begin(); mm != modifieds.end(); ++mm) {
+	for (auto mm = modifieds.begin(); mm != modifieds.end(); ++mm) {
 		((Assign *)*mm)->dfaTypeAnalysis(ch);
 	}
-	for (rr = returns.begin(); rr != returns.end(); ++rr) {
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr) {
 		((Assign *)*rr)->dfaTypeAnalysis(ch);
 	}
 }
@@ -814,7 +806,7 @@ ReturnStatement::dfaTypeAnalysis(bool &ch)
 void
 PhiAssign::dfaTypeAnalysis(bool &ch)
 {
-	iterator it = defVec.begin();
+	auto it = defVec.begin();
 	while (!it->e && it != defVec.end())
 		++it;
 	assert(it != defVec.end());
@@ -1424,8 +1416,7 @@ bool
 Signature::dfaTypeAnalysis(Cfg *cfg)
 {
 	bool ch = false;
-	std::vector<Parameter *>::iterator it;
-	for (it = params.begin(); it != params.end(); it++) {
+	for (auto it = params.begin(); it != params.end(); it++) {
 		// Parameters should be defined in an implicit assignment
 		Statement *def = cfg->findImplicitParamAssign(*it);
 		if (def) {  // But sometimes they are not used, and hence have no implicit definition
@@ -1570,24 +1561,22 @@ bool
 UnionType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
-	std::list<UnionElement>::iterator it;
 	if (other->resolvesToUnion()) {
 		if (this == other)  // Note: pointer comparison
 			return true;  // Avoid infinite recursion
 		UnionType *otherUnion = (UnionType *)other;
 		// Unions are compatible if one is a subset of the other
 		if (li.size() < otherUnion->li.size()) {
-			for (it = li.begin(); it != li.end(); it++)
+			for (auto it = li.begin(); it != li.end(); it++)
 				if (!otherUnion->isCompatible(it->type, all)) return false;
-		}
-		else {
-			for (it = otherUnion->li.begin(); it != otherUnion->li.end(); it++)
+		} else {
+			for (auto it = otherUnion->li.begin(); it != otherUnion->li.end(); it++)
 				if (!isCompatible(it->type, all)) return false;
 		}
 		return true;
 	}
 	// Other is not a UnionType
-	for (it = li.begin(); it != li.end(); it++)
+	for (auto it = li.begin(); it != li.end(); it++)
 		if (other->isCompatibleWith(it->type), all) return true;
 	return false;
 }
@@ -1654,8 +1643,7 @@ UnionType::dereferenceUnion()
 {
 	UnionType *ret = new UnionType;
 	char name[20];
-	std::list<UnionElement>::iterator it;
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); it++) {
 		Type *elem = it->type->dereference();
 		if (elem->resolvesToVoid())
 			return elem;  // Return void for the whole thing

@@ -355,7 +355,7 @@ a_reglist
 			std::cerr << "size of register array does not match mapping to r[" << $8 << ".." << $10 << "]\n";
 			exit(1);
 		} else {
-			std::list<std::string>::iterator loc = $2->begin();
+			auto loc = $2->begin();
 			for (int x = $8; x <= $10; x++, loc++) {
 				if (Dict.RegMap.find(*loc) != Dict.RegMap.end())
 					yyerror("Name reglist declared twice");
@@ -366,7 +366,7 @@ a_reglist
 	  }
 
 	| '[' reg_table ']' '[' NUM ']' INDEX NUM {
-		std::list<std::string>::iterator loc = $2->begin();
+		auto loc = $2->begin();
 		for (; loc != $2->end(); loc++) {
 			if (Dict.RegMap.find(*loc) != Dict.RegMap.end())
 				yyerror("Name reglist declared twice");
@@ -422,10 +422,9 @@ table_expr
 str_expr
 	: str_expr str_term {
 		// cross-product of two str_expr's
-		std::deque<std::string>::iterator i, j;
 		$$ = new std::deque<std::string>;
-		for (i = $1->begin(); i != $1->end(); i++)
-			for (j = $2->begin(); j != $2->end(); j++)
+		for (auto i = $1->begin(); i != $1->end(); i++)
+			for (auto j = $2->begin(); j != $2->end(); j++)
 				$$->push_back((*i) + (*j));
 		//delete $1;
 		//delete $2;
@@ -843,8 +842,8 @@ location
 	 * (machine specific feature) representing that register. */
 	: REG_ID {
 		bool isFlag = !!strstr($1, "flags");
-		std::map<std::string, int>::const_iterator it = Dict.RegMap.find($1);
-		if (it == Dict.RegMap.end() && !isFlag) {
+		auto it = Dict.RegMap.find($1);
+		if (it == Dict.RegMap.cend() && !isFlag) {
 			std::ostringstream o;
 			o << "Register `" << $1 << "' is undefined";
 			yyerror(o.str().c_str());
@@ -871,7 +870,7 @@ location
 	| NAME {
 		// This is a mixture of the param: PARM {} match and the value_op: NAME {} match
 		Exp *s;
-		std::set<std::string>::iterator it = Dict.ParamSet.find($1);
+		auto it = Dict.ParamSet.find($1);
 		if (it != Dict.ParamSet.end()) {
 			s = new Location(opParam, new Const($1), nullptr);
 		} else if (ConstTable.find($1) != ConstTable.end()) {
@@ -974,7 +973,7 @@ SSLParser::parseExp(const char *str)
 SSLParser::~SSLParser()
 {
 	delete theScanner;
-	for (std::map<std::string, Table *>::iterator loc = TableDict.begin(); loc != TableDict.end(); loc++)
+	for (auto loc = TableDict.begin(); loc != TableDict.end(); loc++)
 		delete loc->second;
 }
 
@@ -1041,7 +1040,7 @@ listExpToExp(std::list<Exp *> *le)
 	Exp *e;
 	Exp **cur = &e;
 	Exp *end = new Terminal(opNil);  // Terminate the chain
-	for (std::list<Exp *>::iterator it = le->begin(); it != le->end(); it++) {
+	for (auto it = le->begin(); it != le->end(); it++) {
 		*cur = new Binary(opList, *it, end);
 		// cur becomes the address of the address of the second subexpression
 		// In other words, cur becomes a reference to the second subexp ptr
@@ -1064,8 +1063,8 @@ listStrToExp(std::list<std::string> *ls)
 	Exp *e;
 	Exp **cur = &e;
 	Exp *end = new Terminal(opNil);  // Terminate the chain
-	for (std::list<std::string>::iterator it = ls->begin(); it != ls->end(); it++) {
-		*cur = new Binary(opList, new Location(opParam, new Const((*it).c_str()), nullptr), end);
+	for (auto it = ls->begin(); it != ls->end(); it++) {
+		*cur = new Binary(opList, new Location(opParam, new Const(it->c_str()), nullptr), end);
 		cur = &(*cur)->refSubExp2();
 	}
 	*cur = new Terminal(opNil);  // Terminate the chain
@@ -1117,7 +1116,7 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 			// Expression tables
 			assert(s->getKind() == STMT_ASSIGN);
 			if (((Assign *)s)->searchAll(srchExpr, le)) {
-				for (std::list<Exp *>::iterator it = le.begin(); it != le.end(); it++) {
+				for (auto it = le.begin(); it != le.end(); it++) {
 					const char *tbl = ((Const *)((Binary *)*it)->getSubExp1())->getStr();
 					const char *idx = ((Const *)((Binary *)*it)->getSubExp2())->getStr();
 					Exp *repl =((ExprTable *)(TableDict[tbl]))->expressions[indexrefmap[idx]->getvalue()];

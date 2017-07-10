@@ -40,8 +40,7 @@ SymTab::Add(ADDRESS a, const char *s)
 const char *
 SymTab::find(ADDRESS a)
 {
-	std::map<ADDRESS, std::string>::iterator ff;
-	ff = amap.find(a);
+	auto ff = amap.find(a);
 	if (ff == amap.end())
 		return nullptr;
 	return ff->second.c_str();
@@ -53,8 +52,7 @@ SymTab::find(ADDRESS a)
 ADDRESS
 SymTab::find(const char *s)
 {
-	std::map<std::string, ADDRESS>::iterator ff;
-	ff = smap.find(s);
+	auto ff = smap.find(s);
 	if (ff == smap.end())
 		return NO_ADDRESS;
 	return ff->second;

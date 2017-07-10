@@ -225,8 +225,7 @@ Type *
 UnionType::clone() const
 {
 	UnionType *u = new UnionType();
-	std::list<UnionElement>::const_iterator it;
-	for (it = li.begin(); it != li.end(); it++)
+	for (auto it = li.cbegin(); it != li.cend(); it++)
 		u->addType(it->type, it->name.c_str());
 	return u;
 }
@@ -322,8 +321,7 @@ unsigned
 UnionType::getSize() const
 {
 	int max = 0;
-	std::list<UnionElement>::const_iterator it;
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.cbegin(); it != li.cend(); it++) {
 		int sz = it->type->getSize();
 		if (sz > max) max = sz;
 	}
@@ -560,9 +558,8 @@ bool
 UnionType::operator ==(const Type &other) const
 {
 	const UnionType &uother = (UnionType &)other;
-	std::list<UnionElement>::const_iterator it1, it2;
 	if (other.isUnion() && uother.li.size() == li.size()) {
-		for (it1 = li.begin(), it2 = uother.li.begin(); it1 != li.end(); it1++, it2++)
+		for (auto it1 = li.cbegin(), it2 = uother.li.cbegin(); it1 != li.cend(); it1++, it2++)
 			if (!(*it1->type == *it2->type))
 				return false;
 		return true;
@@ -998,8 +995,7 @@ const char *
 UnionType::getCtype(bool final) const
 {
 	std::string &tmp = *(new std::string("union { "));
-	std::list<UnionElement>::const_iterator it;
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.cbegin(); it != li.cend(); it++) {
 		tmp += it->type->getCtype(final);
 		if (it->name != "") {
 			tmp += " ";
@@ -1087,8 +1083,7 @@ Type::getNamedType(const char *name)
 void
 Type::dumpNames()
 {
-	std::map<std::string, Type *>::iterator it;
-	for (it = namedTypes.begin(); it != namedTypes.end(); ++it)
+	for (auto it = namedTypes.begin(); it != namedTypes.end(); ++it)
 		std::cerr << it->first << " -> " << it->second->getCtype() << "\n";
 }
 
@@ -1398,8 +1393,7 @@ CompoundType::isSubStructOf(Type *other)
 bool
 UnionType::findType(Type *ty)
 {
-	std::list<UnionElement>::iterator it;
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); it++) {
 		if (*it->type == *ty)
 			return true;
 	}
@@ -1435,7 +1429,7 @@ Type::newIntegerLikeType(int size, int signedness)
 DataIntervalMap::iterator
 DataIntervalMap::find_it(ADDRESS addr)
 {
-	iterator it = dimap.upper_bound(addr);  // Find the first item strictly greater than addr
+	auto it = dimap.upper_bound(addr);  // Find the first item strictly greater than addr
 	if (it == dimap.begin())
 		return dimap.end();  // None <= this address, so no overlap possible
 	it--;  // If any item overlaps, it is this one
@@ -1448,7 +1442,7 @@ DataIntervalMap::find_it(ADDRESS addr)
 DataIntervalEntry *
 DataIntervalMap::find(ADDRESS addr)
 {
-	iterator it = find_it(addr);
+	auto it = find_it(addr);
 	if (it == dimap.end())
 		return nullptr;
 	return &*it;
@@ -1457,7 +1451,7 @@ DataIntervalMap::find(ADDRESS addr)
 bool
 DataIntervalMap::isClear(ADDRESS addr, unsigned size)
 {
-	iterator it = dimap.upper_bound(addr + size - 1); // Find the first item strictly greater than address of last byte
+	auto it = dimap.upper_bound(addr + size - 1); // Find the first item strictly greater than address of last byte
 	if (it == dimap.begin())
 		return true;  // None <= this address, so no overlap possible
 	it--;  // If any item overlaps, it is this one
@@ -1553,14 +1547,13 @@ DataIntervalMap::enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const cha
 void
 DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, bool forced)
 {
-	iterator it;
 	unsigned pastLast = addr + ty->getSize() / 8; // This is the byte address just past the type to be inserted
 	// First check that the new entry will be compatible with everything it will overlap
 	if (ty->resolvesToCompound()) {
-		iterator it1 = dimap.lower_bound(addr);  // Iterator to the first overlapping item (could be end(), but
-		                                         // if so, it2 will also be end())
-		iterator it2 = dimap.upper_bound(pastLast - 1); // Iterator to the first item that starts too late
-		for (it = it1; it != it2; ++it) {
+		auto it1 = dimap.lower_bound(addr);  // Iterator to the first overlapping item (could be end(), but
+		                                     // if so, it2 will also be end())
+		auto it2 = dimap.upper_bound(pastLast - 1); // Iterator to the first item that starts too late
+		for (auto it = it1; it != it2; ++it) {
 			unsigned bitOffset = (it->first - addr) * 8;
 			Type *memberType = ty->asCompound()->getTypeAtOffset(bitOffset);
 			if (memberType->isCompatibleWith(it->second.type, true)) {
@@ -1575,9 +1568,9 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 		}
 	} else if (ty->resolvesToArray()) {
 		Type *memberType = ty->asArray()->getBaseType();
-		iterator it1 = dimap.lower_bound(addr);
-		iterator it2 = dimap.upper_bound(pastLast - 1);
-		for (it = it1; it != it2; ++it) {
+		auto it1 = dimap.lower_bound(addr);
+		auto it2 = dimap.upper_bound(pastLast - 1);
+		for (auto it = it1; it != it2; ++it) {
 			if (memberType->isCompatibleWith(it->second.type, true)) {
 				bool ch;
 				memberType = memberType->meetWith(it->second.type, ch);
@@ -1598,14 +1591,14 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 	}
 
 	// The compound or array type is compatible. Remove the items that it will overlap with
-	iterator it1 = dimap.lower_bound(addr);
-	iterator it2 = dimap.upper_bound(pastLast - 1);
+	auto it1 = dimap.lower_bound(addr);
+	auto it2 = dimap.upper_bound(pastLast - 1);
 
 	// Check for existing locals that need to be updated
 	if (ty->resolvesToCompound() || ty->resolvesToArray()) {
 		Exp *rsp = Location::regOf(proc->getSignature()->getStackRegister());
 		RefExp *rsp0 = new RefExp(rsp, proc->getCFG()->findTheImplicitAssign(rsp));  // sp{0}
-		for (it = it1; it != it2; ++it) {
+		for (auto it = it1; it != it2; ++it) {
 			// Check if there is an existing local here
 			Exp *locl = Location::memOf(new Binary(opPlus,
 			                                       rsp0->clone(),
@@ -1636,7 +1629,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 		}
 	}
 
-	for (it = it1; it != it2 && it != dimap.end();)
+	for (auto it = it1; it != it2 && it != dimap.end();)
 		// I believe that it is a conforming extension for map::erase() to return the iterator, but it is not portable
 		// to use it. In particular, gcc considers using the return value as an error
 		// The postincrement operator seems to be the definitive way to do this
@@ -1665,7 +1658,7 @@ DataIntervalMap::checkMatching(DataIntervalEntry *pdie, ADDRESS addr, const char
 void
 DataIntervalMap::deleteItem(ADDRESS addr)
 {
-	iterator it = dimap.find(addr);
+	auto it = dimap.find(addr);
 	if (it == dimap.end())
 		return;
 	dimap.erase(it);
@@ -1680,9 +1673,8 @@ DataIntervalMap::dump()
 char *
 DataIntervalMap::prints()
 {
-	iterator it;
 	std::ostringstream ost;
-	for (it = dimap.begin(); it != dimap.end(); ++it)
+	for (auto it = dimap.begin(); it != dimap.end(); ++it)
 		ost << std::hex << "0x" << it->first << std::dec << " " << it->second.name << " " << it->second.type->getCtype() << "\n";
 	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
 	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
@@ -1926,7 +1918,7 @@ CompoundType::makeMemo(int mId)
 	m->types = types;
 	m->names = names;
 
-	for (std::vector<Type *>::iterator it = types.begin(); it != types.end(); it++)
+	for (auto it = types.begin(); it != types.end(); it++)
 		(*it)->takeMemo(mId);
 	return m;
 }
@@ -1938,7 +1930,7 @@ CompoundType::readMemo(Memo *mm, bool dec)
 	types = m->types;
 	names = m->names;
 
-	for (std::vector<Type *>::iterator it = types.begin(); it != types.end(); it++)
+	for (auto it = types.begin(); it != types.end(); it++)
 		(*it)->restoreMemo(m->mId, dec);
 }
 
@@ -1954,7 +1946,7 @@ UnionType::makeMemo(int mId)
 	UnionTypeMemo *m = new UnionTypeMemo(mId);
 	m->li = li;
 
-	for (std::list<UnionElement>::iterator it = li.begin(); it != li.end(); it++)
+	for (auto it = li.begin(); it != li.end(); it++)
 		it->type->takeMemo(mId);  // Is this right? What about the names? MVE
 	return m;
 }
@@ -1965,7 +1957,7 @@ UnionType::readMemo(Memo *mm, bool dec)
 	UnionTypeMemo *m = dynamic_cast<UnionTypeMemo *>(mm);
 	li = m->li;
 
-	for (std::list<UnionElement>::iterator it = li.begin(); it != li.end(); it++)
+	for (auto it = li.begin(); it != li.end(); it++)
 		it->type->restoreMemo(m->mId, dec);
 }
 

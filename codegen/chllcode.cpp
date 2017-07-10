@@ -1178,7 +1178,7 @@ CHLLCode::AddGoto(int indLevel, int ord)
 void
 CHLLCode::RemoveUnusedLabels(int maxOrd)
 {
-	for (std::list<char *>::iterator it = lines.begin(); it != lines.end();) {
+	for (auto it = lines.begin(); it != lines.end();) {
 		if ((*it)[0] == 'L' && strchr(*it, ':')) {
 			char *s = strdup(*it);
 			*strchr(s, ':') = 0;
@@ -1227,7 +1227,7 @@ CHLLCode::RemoveLabel(int ord)
 {
 	std::ostringstream s;
 	s << "L" << std::dec << ord << ":";
-	for (std::list<char *>::iterator it = lines.begin(); it != lines.end(); it++) {
+	for (auto it = lines.begin(); it != lines.end(); it++) {
 		if (!strcmp(*it, s.str().c_str())) {
 			lines.erase(it);
 			break;
@@ -1396,10 +1396,9 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, Statement
 		s << " = ";
 	}
 	s << name << "(";
-	StatementList::iterator ss;
 	bool first = true;
 	int n = 0;
-	for (ss = args.begin(); ss != args.end(); ++ss, ++n) {
+	for (auto ss = args.begin(); ss != args.end(); ++ss, ++n) {
 		if (first)
 			first = false;
 		else
@@ -1431,7 +1430,7 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, Statement
 	if (results->size() > 1) {
 		bool first = true;
 		s << " /* Warning: also results in ";
-		for (ss = ++results->begin(); ss != results->end(); ++ss) {
+		for (auto ss = ++results->begin(); ss != results->end(); ++ss) {
 			if (first)
 				first = false;
 			else
@@ -1460,9 +1459,8 @@ CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, State
 	s << "(*";
 	appendExp(s, exp, PREC_NONE);
 	s << ")(";
-	StatementList::iterator ss;
 	bool first = true;
-	for (ss = args.begin(); ss != args.end(); ++ss) {
+	for (auto ss = args.begin(); ss != args.end(); ++ss) {
 		if (first)
 			first = false;
 		else
@@ -1484,7 +1482,6 @@ CHLLCode::AddReturnStatement(int indLevel, StatementList *rets)
 {
 	// FIXME: should be returning a struct of more than one real return */
 	// The stack pointer is wanted as a define in calls, and so appears in returns, but needs to be removed here
-	StatementList::iterator rr;
 	std::ostringstream s;
 	indent(s, indLevel);
 	s << "return";
@@ -1503,7 +1500,7 @@ CHLLCode::AddReturnStatement(int indLevel, StatementList *rets)
 		if (n > 1)
 			s << " /* WARNING: Also returning: ";
 		bool first = true;
-		for (rr = ++rets->begin(); rr != rets->end(); ++rr) {
+		for (auto rr = ++rets->begin(); rr != rets->end(); ++rr) {
 			if (first)
 				first = false;
 			else
@@ -1576,7 +1573,6 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 	}
 	s << proc->getName() << "(";
 	StatementList &parameters = proc->getParameters();
-	StatementList::iterator pp;
 
 	if (parameters.size() > 10 && open) {
 		LOG << "Warning: CHLLCode::AddProcDec: Proc " << proc->getName()
@@ -1584,7 +1580,7 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 	}
 
 	bool first = true;
-	for (pp = parameters.begin(); pp != parameters.end(); ++pp) {
+	for (auto pp = parameters.begin(); pp != parameters.end(); ++pp) {
 		if (first)
 			first = false;
 		else
@@ -1708,7 +1704,7 @@ CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 void
 CHLLCode::print(std::ostream &os)
 {
-	for (std::list<char *>::iterator it = lines.begin(); it != lines.end(); it++)
+	for (auto it = lines.begin(); it != lines.end(); it++)
 		os << *it << std::endl;
 	if (!m_proc)
 		os << std::endl;

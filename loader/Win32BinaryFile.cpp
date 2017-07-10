@@ -72,7 +72,7 @@ class PESectionInfo : public SectionInfo {
 			return false; // R/O BSS makes no sense.
 		}
 		// Don't check for bData here. So long as the section has slack at end, that space can contain BSS.
-		const SectionObjectMap::iterator it = s_sectionObjects.find(this);
+		auto it = s_sectionObjects.find(this);
 		assert(it != s_sectionObjects.end());
 		assert(it->second);
 		assert(this == it->first);
@@ -445,7 +445,7 @@ Win32BinaryFile::load(std::istream &ifs)
 				if (iatEntry >> 31) {
 					// This is an ordinal number (stupid idea)
 					std::string nodots(dllName);
-					for (std::string::iterator it = nodots.begin(); it != nodots.end(); ++it)
+					for (auto it = nodots.begin(); it != nodots.end(); ++it)
 						if (*it == '.')
 							*it = '_';  // Dots can't be in identifiers
 					std::ostringstream ost;
@@ -478,7 +478,7 @@ Win32BinaryFile::load(std::istream &ifs)
 	// Give the entry point a symbol
 	ADDRESS entry = getMainEntryPoint();
 	if (entry != NO_ADDRESS) {
-		std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(entry);
+		auto it = dlprocptrs.find(entry);
 		if (it == dlprocptrs.end())
 			dlprocptrs[entry] = "main";
 	}
@@ -522,8 +522,7 @@ Win32BinaryFile::findJumps(ADDRESS curr)
 		cnt += 2;
 		if (LH(delta + curr) != 0xFF + (0x25 << 8)) continue;
 		ADDRESS operand = LMMH2(delta + curr + 2);
-		std::map<ADDRESS, std::string>::iterator it;
-		it = dlprocptrs.find(operand);
+		auto it = dlprocptrs.find(operand);
 		if (it == dlprocptrs.end()) continue;
 		std::string sym = it->second;
 		dlprocptrs[operand] = "__imp_" + sym;
@@ -560,7 +559,7 @@ Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 	if (isMinGWsMalloc(dwAddr))
 		return "malloc";
 
-	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
+	auto it = dlprocptrs.find(dwAddr);
 	if (it == dlprocptrs.end())
 		return nullptr;
 	return it->second.c_str();
@@ -570,7 +569,7 @@ ADDRESS
 Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
-	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.begin();
+	auto it = dlprocptrs.begin();
 	while (it != dlprocptrs.end()) {
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)
@@ -877,9 +876,8 @@ Win32BinaryFile::getDelta()
 void
 Win32BinaryFile::dumpSymbols()
 {
-	std::map<ADDRESS, std::string>::iterator it;
 	std::cerr << std::hex;
-	for (it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it)
+	for (auto it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it)
 		std::cerr << "0x" << it->first << " " << it->second << "        ";
 	std::cerr << std::dec << "\n";
 }

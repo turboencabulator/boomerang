@@ -51,7 +51,7 @@ TableEntry::TableEntry()
 TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
 	rtl(r)
 {
-	for (std::list<std::string>::iterator it = p.begin(); it != p.end(); it++)
+	for (auto it = p.begin(); it != p.end(); it++)
 		params.push_back(*it);
 }
 
@@ -85,7 +85,7 @@ TableEntry::setRTL(RTL &r)
 const TableEntry &
 TableEntry::operator =(const TableEntry &other)
 {
-	for (std::list<std::string>::const_iterator it = other.params.begin(); it != other.params.end(); it++)
+	for (auto it = other.params.cbegin(); it != other.params.cend(); it++)
 		params.push_back(*it);
 	rtl = *(new RTL(other.rtl));
 	return *this;
@@ -103,8 +103,7 @@ int
 TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
 {
 	bool match = (p.size() == params.size());
-	std::list<std::string>::iterator a, b;
-	for (a = params.begin(), b = p.begin(); match && (a != params.end()) && (b != p.end()); match = (*a == *b), a++, b++);
+	for (auto a = params.begin(), b = p.begin(); match && (a != params.end()) && (b != p.end()); match = (*a == *b), a++, b++);
 	if (match) {
 		rtl.appendRTL(r);
 		return 0;
@@ -231,19 +230,19 @@ RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
 void
 RTLInstDict::print(std::ostream &os /*= std::cout*/)
 {
-	for (std::map<std::string, TableEntry>::iterator p = idict.begin(); p != idict.end(); p++) {
+	for (auto p = idict.begin(); p != idict.end(); p++) {
 		// print the instruction name
-		os << (*p).first << "  ";
+		os << p->first << "  ";
 
 		// print the parameters
-		std::list<std::string> &params = (*p).second.params;
+		std::list<std::string> &params = p->second.params;
 		int i = params.size();
-		for (std::list<std::string>::iterator s = params.begin(); s != params.end(); s++, i--)
+		for (auto s = params.begin(); s != params.end(); s++, i--)
 			os << *s << (i != 1 ? "," : "");
 		os << "\n";
 
 		// print the RTL
-		RTL &rtlist = (*p).second.rtl;
+		RTL &rtlist = p->second.rtl;
 		rtlist.print(os);
 		os << "\n";
 	}
@@ -251,8 +250,7 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/)
 #if 0
 	// Detailed register map
 	os << "\nDetailed register map\n";
-	std::map<int, Register, std::less<int> >::iterator rr;
-	for (rr = DetRegMap.begin(); rr != DetRegMap.end(); rr++) {
+	for (auto rr = DetRegMap.begin(); rr != DetRegMap.end(); rr++) {
 		int n = rr->first;
 		Register *pr = &rr->second;
 		os << "number " << n
@@ -276,12 +274,11 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/)
 void
 RTLInstDict::fixupParams()
 {
-	std::map<std::string, ParamEntry>::iterator param;
 	int mark = 1;
-	for (param = DetParamMap.begin(); param != DetParamMap.end(); param++) {
+	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); param++) {
 		param->second.mark = 0;
 	}
-	for (param = DetParamMap.begin(); param != DetParamMap.end(); param++) {
+	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); param++) {
 		std::list<std::string> funcParams;
 		bool haveCount = false;
 		if (param->second.kind == PARAM_VARIANT) {
@@ -304,7 +301,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 
 	param.mark = mark;
 
-	for (std::list<std::string>::iterator it = param.params.begin(); it != param.params.end(); it++) {
+	for (auto it = param.params.begin(); it != param.params.end(); it++) {
 		ParamEntry &sub = DetParamMap[*it];
 		if (sub.kind == PARAM_VARIANT) {
 			fixupParamsSub(*it, funcParams, haveCount, mark);
@@ -327,8 +324,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 			          << " has " << sub.funcParams.size() << ".\n";
 		} else if (funcParams != sub.funcParams && sub.asgn) {
 			/* Rename so all the parameter names match */
-			std::list<std::string>::iterator i, j;
-			for (i = funcParams.begin(), j = sub.funcParams.begin(); i != funcParams.end(); i++, j++) {
+			for (auto i = funcParams.begin(), j = sub.funcParams.begin(); i != funcParams.end(); i++, j++) {
 				Exp *match = Location::param(j->c_str());
 				Exp *replace = Location::param(i->c_str());
 				sub.asgn->searchAndReplace(match, replace);
@@ -359,7 +355,7 @@ RTLInstDict::getSignature(const char *name)
 	std::remove(opcode, opcode + strlen(opcode) + 1, '.');
 
 	// Look up the dictionary
-	std::map<std::string, TableEntry>::iterator it = idict.find(opcode);
+	auto it = idict.find(opcode);
 	if (it == idict.end()) {
 		std::cerr << "Error: no entry for `" << name << "' in RTL dictionary\n";
 		it = idict.find("NOP");  // At least, don't cause segfault
@@ -420,7 +416,7 @@ RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *>
 	// FIXME: settings
 	//if (progOptions.fastInstr) {
 	if (0) {
-		std::map<std::string, std::string>::iterator itf = fastMap.find(name);
+		auto itf = fastMap.find(name);
 		if (itf != fastMap.end())
 			lname = &itf->second;
 	}
@@ -458,11 +454,10 @@ RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &par
 	rtl.deepCopyList(*newList);
 
 	// Iterate through each Statement of the new list of stmts
-	std::list<Statement *>::iterator ss;
-	for (ss = newList->begin(); ss != newList->end(); ss++) {
+	for (auto ss = newList->begin(); ss != newList->end(); ss++) {
 		// Search for the formals and replace them with the actuals
-		std::list<std::string>::iterator param = params.begin();
-		std::vector<Exp *>::const_iterator actual = actuals.begin();
+		auto param = params.begin();
+		auto actual = actuals.cbegin();
 		for (; param != params.end(); param++, actual++) {
 			/* Simple parameter - just construct the formal to search for */
 			Exp *formal = Location::param(param->c_str());
@@ -477,7 +472,7 @@ RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &par
 	transformPostVars(newList, true);
 
 	// Perform simplifications, e.g. *1 in Pentium addressing modes
-	for (ss = newList->begin(); ss != newList->end(); ss++) {
+	for (auto ss = newList->begin(); ss != newList->end(); ss++) {
 		(*ss)->simplify();
 	}
 
@@ -518,8 +513,6 @@ public:
 std::list<Statement *> *
 RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 {
-	std::list<Statement *>::iterator rt;
-
 	// Map from var (could be any expression really) to details
 	std::map<Exp *, transPost, lessExpStar> vars;
 	int tmpcount = 1;  // For making temp names unique
@@ -535,7 +528,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 #endif
 
 	// First pass: Scan for post-variables and usages of their referents
-	for (rt = rts->begin(); rt != rts->end(); rt++) {
+	for (auto rt = rts->begin(); rt != rts->end(); rt++) {
 		// ss appears to be a list of expressions to be searched
 		// It is either the LHS and RHS of an assignment, or it's the parameters of a flag call
 		Binary *ss;
@@ -591,7 +584,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 		 * Can't really use this with Exps, so we search twice; once for the base, and once for the post, and if we
 		 * get more with the former, then we have a use of the base (consider r[0] + r[0]')
 		 */
-		for (std::map<Exp *, transPost, lessExpStar>::iterator sr = vars.begin(); sr != vars.end(); sr++) {
+		for (auto sr = vars.begin(); sr != vars.end(); sr++) {
 			if (sr->second.isNew) {
 				// Make sure we don't match a var in its defining statement
 				sr->second.isNew = false;
@@ -619,8 +612,8 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	}
 
 	// Second pass: Replace post-variables with temporaries where needed
-	for (rt = rts->begin(); rt != rts->end(); rt++) {
-		for (std::map<Exp *, transPost, lessExpStar>::iterator sr = vars.begin(); sr != vars.end(); sr++) {
+	for (auto rt = rts->begin(); rt != rts->end(); rt++) {
+		for (auto sr = vars.begin(); sr != vars.end(); sr++) {
 			if (sr->second.used) {
 				(*rt)->searchAndReplace(sr->first, sr->second.tmp);
 			} else {
@@ -632,7 +625,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	// Finally: Append assignments where needed from temps to base vars
 	// Example: esp' = esp-4; m[esp'] = modrm; FLAG(esp)
 	// all the esp' are replaced with say tmp1, you need a "esp = tmp1" at the end to actually make the change
-	for (std::map<Exp *, transPost, lessExpStar>::iterator sr = vars.begin(); sr != vars.end(); sr++) {
+	for (auto sr = vars.begin(); sr != vars.end(); sr++) {
 		if (sr->second.used) {
 			Assign *te = new Assign(sr->second.type,
 			                        sr->second.base->clone(),
@@ -646,7 +639,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "\nTo =>\n";
-	for (std::list<Exp *>::iterator p = rts->begin(); p != rts->end(); p++) {
+	for (auto p = rts->begin(); p != rts->end(); p++) {
 		std::cout << setw(8) << " ";
 		(*p)->print(std::cout);
 		std::cout << "\n";

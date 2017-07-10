@@ -171,8 +171,7 @@ bool isFuncPrologue(ADDRESS hostPC);
 #define DEBUG_STMTS \
 	std::list<Statement *> &lst = result.rtl->getList(); \
 	if (DEBUG_DECODER) { \
-		std::list<Statement *>::iterator ii; \
-		for (ii = lst.begin(); ii != lst.end(); ii++) \
+		for (auto ii = lst.begin(); ii != lst.end(); ii++) \
 			std::cout << "\t\t\t" << *ii << "\n"; \
 	}
 /** \} */

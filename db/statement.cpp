@@ -46,8 +46,7 @@ Statement::setProc(UserProc *p)
 	LocationSet defs;
 	getDefinitions(defs);
 	exps.makeUnion(defs);
-	LocationSet::iterator ll;
-	for (ll = exps.begin(); ll != exps.end(); ll++) {
+	for (auto ll = exps.begin(); ll != exps.end(); ll++) {
 		Location *l = dynamic_cast<Location *>(*ll);
 		if (l) {
 			l->setProc(p);
@@ -629,9 +628,9 @@ Statement::getPreviousStatementInBB()
 	std::list<RTL *> *rtls = pbb->getRTLs();
 	assert(rtls);
 	Statement *previous = nullptr;
-	for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
+	for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
 		RTL *rtl = *rit;
-		for (RTL::iterator it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
+		for (auto it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
 			if (*it == this)
 				return previous;
 			previous = *it;
@@ -647,9 +646,9 @@ Statement::getNextStatementInBB()
 	std::list<RTL *> *rtls = pbb->getRTLs();
 	assert(rtls);
 	bool wantNext = false;
-	for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
+	for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
 		RTL *rtl = *rit;
-		for (RTL::iterator it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
+		for (auto it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
 			if (wantNext)
 				return *it;
 			if (*it == this)
@@ -788,11 +787,10 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 		addUsedLocs(exps, true);  // True to also add uses from collectors. For example, want to propagate into
 		                          // the reaching definitions of calls. Third parameter defaults to false, to
 		                          // find all locations, not just those inside m[...]
-		LocationSet::iterator ll;
 		change = false;           // True if changed this iteration of the do/while loop
 		// Example: m[r24{10}] := r25{20} + m[r26{30}]
 		// exps has r24{10}, r25{30}, m[r26{30}], r26{30}
-		for (ll = exps.begin(); ll != exps.end(); ll++) {
+		for (auto ll = exps.begin(); ll != exps.end(); ll++) {
 			Exp *e = *ll;
 			if (!canPropagateToExp(e))
 				continue;
@@ -829,9 +827,8 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 				if (usedByDomPhi) {
 					LocationSet rhsComps;
 					rhs->addUsedLocs(rhsComps);
-					LocationSet::iterator rcit;
 					bool doNotPropagate = false;
-					for (rcit = rhsComps.begin(); rcit != rhsComps.end(); ++rcit) {
+					for (auto rcit = rhsComps.begin(); rcit != rhsComps.end(); ++rcit) {
 						if (!(*rcit)->isSubscript()) continue;  // Sometimes %pc sneaks in
 						Exp *rhsBase = ((RefExp *)*rcit)->getSubExp1();
 						// We don't know the statement number for the one definition in usedInDomPhi that might exist,
@@ -843,9 +840,8 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 							Exp *lhsOWdef = ((Assign *)OWdef)->getLeft();
 							LocationSet OWcomps;
 							def->addUsedLocs(OWcomps);
-							LocationSet::iterator cc;
 							bool isOverwrite = false;
-							for (cc = OWcomps.begin(); cc != OWcomps.end(); ++cc) {
+							for (auto cc = OWcomps.begin(); cc != OWcomps.end(); ++cc) {
 								if (**cc *= *lhsOWdef) {
 									isOverwrite = true;
 									break;
@@ -874,7 +870,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 
 			// Check if the -l flag (propMaxDepth) prevents this propagation
 			if (destCounts && !lhs->isFlags()) {  // Always propagate to %flags
-				std::map<Exp *, int, lessExpStar>::iterator ff = destCounts->find(e);
+				auto ff = destCounts->find(e);
 				if (ff != destCounts->end() && ff->second > 1 && rhs->getComplexityDepth(proc) >= propMaxDepth) {
 					if (!def->getRight()->containsFlags()) {
 						// This propagation is prevented by the -l limit
@@ -900,8 +896,7 @@ Statement::propagateFlagsTo()
 	do {
 		LocationSet exps;
 		addUsedLocs(exps, true);
-		LocationSet::iterator ll;
-		for (ll = exps.begin(); ll != exps.end(); ll++) {
+		for (auto ll = exps.begin(); ll != exps.end(); ll++) {
 			Exp *e = *ll;
 			if (!e->isSubscript()) continue;  // e.g. %pc
 			Assign *def = (Assign *)((RefExp *)e)->getDef();
@@ -2071,9 +2066,8 @@ CallStatement::~CallStatement()
 int
 CallStatement::findDefine(Exp *e)
 {
-	StatementList::iterator rr;
 	int i = 0;
-	for (rr = defines.begin(); rr != defines.end(); ++rr, ++i) {
+	for (auto rr = defines.begin(); rr != defines.end(); ++rr, ++i) {
 		Exp *ret = ((Assignment *)*rr)->getLeft();
 		if (*ret == *e)
 			return i;
@@ -2123,7 +2117,7 @@ Type *
 CallStatement::getArgumentType(int i)
 {
 	assert(i < (int)arguments.size());
-	StatementList::iterator aa = arguments.begin();
+	auto aa = arguments.begin();
 	advance(aa, i);
 	return ((Assign *)(*aa))->getType();
 }
@@ -2138,8 +2132,7 @@ CallStatement::setArguments(StatementList &args)
 {
 	arguments.clear();
 	arguments.append(args);
-	StatementList::iterator ll;
-	for (ll = arguments.begin(); ll != arguments.end(); ++ll) {
+	for (auto ll = arguments.begin(); ll != arguments.end(); ++ll) {
 		((Assign *)*ll)->setProc(proc);
 		((Assign *)*ll)->setBB(pbb);
 	}
@@ -2190,12 +2183,11 @@ CallStatement::search(Exp *search, Exp *&result)
 {
 	bool found = GotoStatement::search(search, result);
 	if (found) return true;
-	StatementList::iterator ss;
-	for (ss = defines.begin(); ss != defines.end(); ++ss) {
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss) {
 		if ((*ss)->search(search, result))
 			return true;
 	}
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss) {
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss) {
 		if ((*ss)->search(search, result))
 			return true;
 	}
@@ -2214,15 +2206,13 @@ bool
 CallStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change = GotoStatement::searchAndReplace(search, replace, cc);
-	StatementList::iterator ss;
 	// FIXME: MVE: Check if we ever want to change the LHS of arguments or defines...
-	for (ss = defines.begin(); ss != defines.end(); ++ss)
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss)
 		change |= (*ss)->searchAndReplace(search, replace, cc);
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss)
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
 		change |= (*ss)->searchAndReplace(search, replace, cc);
 	if (cc) {
-		DefCollector::iterator dd;
-		for (dd = defCol.begin(); dd != defCol.end(); ++dd)
+		for (auto dd = defCol.begin(); dd != defCol.end(); ++dd)
 			change |= (*dd)->searchAndReplace(search, replace, cc);
 	}
 	return change;
@@ -2239,12 +2229,11 @@ bool
 CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = GotoStatement::searchAll(search, result);
-	StatementList::iterator ss;
-	for (ss = defines.begin(); ss != defines.end(); ++ss) {
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss) {
 		if ((*ss)->searchAll(search, result))
 			found = true;
 	}
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss) {
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss) {
 		if ((*ss)->searchAll(search, result))
 			found = true;
 	}
@@ -2268,9 +2257,8 @@ CallStatement::print(std::ostream &os, bool html)
 	// Define(s), if any
 	if (!defines.empty()) {
 		if (defines.size() > 1) os << "{";
-		StatementList::iterator rr;
 		bool first = true;
-		for (rr = defines.begin(); rr != defines.end(); ++rr) {
+		for (auto rr = defines.begin(); rr != defines.end(); ++rr) {
 			assert((*rr)->isAssignment());
 			Assignment *as = (Assignment *)*rr;
 			if (first)
@@ -2310,8 +2298,7 @@ CallStatement::print(std::ostream &os, bool html)
 			os << "(<all>)";
 	} else {
 		os << "(\n";
-		StatementList::iterator aa;
-		for (aa = arguments.begin(); aa != arguments.end(); ++aa) {
+		for (auto aa = arguments.begin(); aa != arguments.end(); ++aa) {
 			os << "                ";
 			((Assignment *)*aa)->printCompact(os, html);
 			os << "\n";
@@ -2374,10 +2361,9 @@ CallStatement::clone()
 	CallStatement *ret = new CallStatement();
 	ret->pDest = pDest->clone();
 	ret->m_isComputed = m_isComputed;
-	StatementList::iterator ss;
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss)
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
 		ret->arguments.append((*ss)->clone());
-	for (ss = defines.begin(); ss != defines.end(); ++ss)
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss)
 		ret->defines.append((*ss)->clone());
 	// Statement members
 	ret->pbb = pbb;
@@ -2459,10 +2445,9 @@ void
 CallStatement::simplify()
 {
 	GotoStatement::simplify();
-	StatementList::iterator ss;
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss)
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
 		(*ss)->simplify();
-	for (ss = defines.begin(); ss != defines.end(); ++ss)
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss)
 		(*ss)->simplify();
 }
 
@@ -2477,10 +2462,9 @@ bool
 CallStatement::usesExp(Exp *e)
 {
 	if (GotoStatement::usesExp(e)) return true;
-	StatementList::iterator ss;
-	for (ss = arguments.begin(); ss != arguments.end(); ++ss)
+	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
 		if ((*ss)->usesExp(e)) return true;
-	for (ss = defines.begin(); ss != defines.end(); ++ss)
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss)
 		if ((*ss)->usesExp(e)) return true;
 	return false;
 }
@@ -2488,8 +2472,7 @@ CallStatement::usesExp(Exp *e)
 void
 CallStatement::getDefinitions(LocationSet &defs)
 {
-	StatementList::iterator dd;
-	for (dd = defines.begin(); dd != defines.end(); ++dd)
+	for (auto dd = defines.begin(); dd != defines.end(); ++dd)
 		defs.insert(((Assignment *)*dd)->getLeft());
 	// Childless calls are supposed to define everything. In practice they don't really define things like %pc, so we
 	// need some extra logic in getTypeFor()
@@ -2583,8 +2566,7 @@ CallStatement::convertToDirect()
 	}
 	// std::cerr << "Step 3a: arguments now: ";
 #if 0
-	StatementList::iterator xx;
-	for (xx = arguments.begin(); xx != arguments.end(); ++xx) {
+	for (auto xx = arguments.begin(); xx != arguments.end(); ++xx) {
 		((Assignment *)*xx)->printCompact(std::cerr);
 		std::cerr << ", ";
 	}
@@ -2612,7 +2594,7 @@ Exp *
 CallStatement::getArgumentExp(int i)
 {
 	assert(i < (int)arguments.size());
-	StatementList::iterator aa = arguments.begin();
+	auto aa = arguments.begin();
 	advance(aa, i);
 	return ((Assign *)*aa)->getRight();
 }
@@ -2621,7 +2603,7 @@ void
 CallStatement::setArgumentExp(int i, Exp *e)
 {
 	assert(i < (int)arguments.size());
-	StatementList::iterator aa = arguments.begin();
+	auto aa = arguments.begin();
 	advance(aa, i);
 	Exp *&a = ((Assign *)*aa)->getRightRef();
 	a = e->clone();
@@ -2638,7 +2620,7 @@ CallStatement::setNumArguments(int n)
 {
 	int oldSize = arguments.size();
 	if (oldSize > n) {
-		StatementList::iterator aa = arguments.begin();
+		auto aa = arguments.begin();
 		advance(aa, n);
 		arguments.erase(aa, arguments.end());
 	}
@@ -2660,7 +2642,7 @@ CallStatement::setNumArguments(int n)
 void
 CallStatement::removeArgument(int i)
 {
-	StatementList::iterator aa = arguments.begin();
+	auto aa = arguments.begin();
 	advance(aa, i);
 	arguments.erase(aa);
 }
@@ -2999,10 +2981,9 @@ Statement *
 ReturnStatement::clone()
 {
 	ReturnStatement *ret = new ReturnStatement();
-	iterator rr;
-	for (rr = modifieds.begin(); rr != modifieds.end(); ++rr)
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		ret->modifieds.append((ImplicitAssign *)(*rr)->clone());
-	for (rr = returns.begin(); rr != returns.end(); ++rr)
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr)
 		ret->returns.append((Assignment *)(*rr)->clone());
 	ret->retAddr = retAddr;
 	ret->col.makeCloneOf(col);
@@ -3029,10 +3010,9 @@ ReturnStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 void
 ReturnStatement::simplify()
 {
-	iterator it;
-	for (it = modifieds.begin(); it != modifieds.end(); it++)
+	for (auto it = modifieds.begin(); it != modifieds.end(); it++)
 		(*it)->simplify();
-	for (it = returns.begin(); it != returns.end(); it++)
+	for (auto it = returns.begin(); it != returns.end(); it++)
 		(*it)->simplify();
 }
 
@@ -3042,8 +3022,7 @@ ReturnStatement::removeReturn(Exp *loc)
 {
 	if (loc->isSubscript())
 		loc = ((Location *)loc)->getSubExp1();
-	iterator rr;
-	for (rr = returns.begin(); rr != returns.end(); ++rr) {
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *loc) {
 			returns.erase(rr);
 			return;  // Assume only one definition
@@ -3061,8 +3040,7 @@ bool
 ReturnStatement::search(Exp *search, Exp *&result)
 {
 	result = nullptr;
-	ReturnStatement::iterator rr;
-	for (rr = begin(); rr != end(); ++rr) {
+	for (auto rr = begin(); rr != end(); ++rr) {
 		if ((*rr)->search(search, result))
 			return true;
 	}
@@ -3073,12 +3051,10 @@ bool
 ReturnStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change = false;
-	ReturnStatement::iterator rr;
-	for (rr = begin(); rr != end(); ++rr)
+	for (auto rr = begin(); rr != end(); ++rr)
 		change |= (*rr)->searchAndReplace(search, replace, cc);
 	if (cc) {
-		DefCollector::iterator dd;
-		for (dd = col.begin(); dd != col.end(); ++dd)
+		for (auto dd = col.begin(); dd != col.end(); ++dd)
 			change |= (*dd)->searchAndReplace(search, replace);
 	}
 	return change;
@@ -3088,8 +3064,7 @@ bool
 ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
-	ReturnStatement::iterator rr;
-	for (rr = begin(); rr != end(); ++rr) {
+	for (auto rr = begin(); rr != end(); ++rr) {
 		if ((*rr)->searchAll(search, result))
 			found = true;
 	}
@@ -3108,8 +3083,7 @@ bool
 ReturnStatement::usesExp(Exp *e)
 {
 	Exp *where;
-	ReturnStatement::iterator rr;
-	for (rr = begin(); rr != end(); ++rr) {
+	for (auto rr = begin(); rr != end(); ++rr) {
 		if ((*rr)->search(e, where))
 			return true;
 	}
@@ -3435,8 +3409,7 @@ Statement *
 PhiAssign::clone()
 {
 	PhiAssign *pa = new PhiAssign(type, lhs);
-	Definitions::iterator dd;
-	for (dd = defVec.begin(); dd != defVec.end(); dd++) {
+	for (auto dd = defVec.begin(); dd != defVec.end(); dd++) {
 		PhiInfo pi;
 		pi.def = dd->def;       // Don't clone the Statement pointer (never moves)
 		pi.e = dd->e->clone();  // Do clone the expression pointer
@@ -3616,10 +3589,9 @@ PhiAssign::printCompact(std::ostream &os, bool html)
 			}
 		}
 	}
-	iterator it;
 	if (simple) {
 		os << "{" << std::dec;
-		for (it = defVec.begin(); it != defVec.end(); /* no increment */) {
+		for (auto it = defVec.begin(); it != defVec.end(); /* no increment */) {
 			if (it->def) {
 				if (html)
 					os << "<a href=\"#stmt" << std::dec << it->def->getNumber() << "\">";
@@ -3634,7 +3606,7 @@ PhiAssign::printCompact(std::ostream &os, bool html)
 		os << "}";
 	} else {
 		os << "(";
-		for (it = defVec.begin(); it != defVec.end(); /* no increment */) {
+		for (auto it = defVec.begin(); it != defVec.end(); /* no increment */) {
 			Exp *e = it->e;
 			if (!e)
 				os << "NULL{";
@@ -3687,8 +3659,7 @@ PhiAssign::search(Exp *search, Exp *&result)
 {
 	if (lhs->search(search, result))
 		return true;
-	iterator it;
-	for (it = defVec.begin(); it != defVec.end(); ++it) {
+	for (auto it = defVec.begin(); it != defVec.end(); ++it) {
 		if (!it->e) continue;  // Note: can't match foo{-} because of this
 		RefExp *re = new RefExp(it->e, it->def);
 		if (re->search(search, result))
@@ -3707,11 +3678,10 @@ Assign::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool res;
 	std::list<Exp *> leftResult;
-	std::list<Exp *>::iterator it;
 	res = lhs->searchAll(search, leftResult);
 	// Ugh: searchAll clears the list!
 	res |= rhs->searchAll(search, result);
-	for (it = leftResult.begin(); it != leftResult.end(); it++)
+	for (auto it = leftResult.begin(); it != leftResult.end(); it++)
 		result.push_back(*it);
 	return res;
 }
@@ -3742,8 +3712,7 @@ PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change;
 	lhs = lhs->searchReplaceAll(search, replace, change);
-	std::vector<PhiInfo>::iterator it;
-	for (it = defVec.begin(); it != defVec.end(); it++) {
+	for (auto it = defVec.begin(); it != defVec.end(); it++) {
 		if (!it->e) continue;
 		bool ch;
 		// Assume that the definitions will also be replaced
@@ -3832,15 +3801,15 @@ void
 addPhiReferences(StatementSet &stmts, Statement *def)
 {
 	PhiAssign *p = (PhiAssign *)def;
-	for (PhiAssign::iterator it = p->begin(); it != p->end(); it++) {
-		if ((*it).def->isPhi() && !stmts.exists((*it).def)) {
-			stmts.insert((*it).def);
-			addPhiReferences(stmts, (*it).def);
-		} else if ((*it).def->isAssign() && ((Assign *)(*it).def)->getRight()->isSubscript()) {
-			stmts.insert((*it).def);
-			addSimpleCopyReferences(stmts, (*it).def);
+	for (auto it = p->begin(); it != p->end(); it++) {
+		if (it->def->isPhi() && !stmts.exists(it->def)) {
+			stmts.insert(it->def);
+			addPhiReferences(stmts, it->def);
+		} else if (it->def->isAssign() && ((Assign *)it->def)->getRight()->isSubscript()) {
+			stmts.insert(it->def);
+			addSimpleCopyReferences(stmts, it->def);
 		} else
-			stmts.insert((*it).def);
+			stmts.insert(it->def);
 	}
 }
 #endif
@@ -3871,8 +3840,7 @@ PhiAssign::genConstraints(LocationSet &cons)
 	// Generate a constraints st that all the phi's have to be the same type as
 	// result
 	Exp *result = new Unary(opTypeOf, new RefExp(lhs, this));
-	Definitions::iterator uu;
-	for (uu = defVec.begin(); uu != defVec.end(); uu++) {
+	for (auto uu = defVec.begin(); uu != defVec.end(); uu++) {
 		Exp *conjunct = new Binary(opEquals,
 		                           result,
 		                           new Unary(opTypeOf, new RefExp(uu->e, uu->def)));
@@ -3888,9 +3856,8 @@ CallStatement::genConstraints(LocationSet &cons)
 	Signature *destSig = dest->getSignature();
 	// Generate a constraint for the type of each actual argument to be equal to the type of each formal parameter
 	// (hopefully, these are already calculated correctly; if not, we need repeat till no change)
-	StatementList::iterator aa;
 	int p = 0;
-	for (aa = arguments.begin(); aa != arguments.end(); ++aa, ++p) {
+	for (auto aa = arguments.begin(); aa != arguments.end(); ++aa, ++p) {
 		Exp *arg = ((Assign *)*aa)->getRight();
 		// Handle a[m[x]]
 		if (arg->isAddrOf()) {
@@ -3973,7 +3940,7 @@ CallStatement::genConstraints(LocationSet &cons)
 						t = new PointerType(t);
 					// Generate a constraint for the parameter
 					TypeVal *tv = new TypeVal(t);
-					StatementList::iterator aa = arguments.begin();
+					auto aa = arguments.begin();
 					advance(aa, n);
 					Exp *argn = ((Assign *)*aa)->getRight();
 					Exp *con = argn->genConstraints(tv);
@@ -4088,8 +4055,7 @@ PhiAssign::accept(StmtExpVisitor *v)
 	bool ret = v->visit(this, override);
 	if (override) return ret;
 	if (ret && lhs) ret = lhs->accept(v->ev);
-	iterator it;
-	for (it = defVec.begin(); it != defVec.end(); ++it) {
+	for (auto it = defVec.begin(); it != defVec.end(); ++it) {
 		if (!it->e) continue;
 		RefExp *re = new RefExp(it->e, it->def);
 		ret = re->accept(v->ev);
@@ -4154,13 +4120,11 @@ CallStatement::accept(StmtExpVisitor *v)
 	if (override) return ret;
 	if (ret && pDest)
 		ret = pDest->accept(v->ev);
-	StatementList::iterator it;
-	for (it = arguments.begin(); ret && it != arguments.end(); it++)
+	for (auto it = arguments.begin(); ret && it != arguments.end(); it++)
 		ret = (*it)->accept(v);
 	// FIXME: why aren't defines counted?
 #if 0  // Do we want to accept visits to the defines? Not sure now...
-	std::vector<ReturnInfo>::iterator rr;
-	for (rr = defines.begin(); ret && rr != defines.end(); rr++)
+	for (auto rr = defines.begin(); ret && rr != defines.end(); rr++)
 		if (rr->e)  // Can be nullptr now to line up with other returns
 			ret = rr->e->accept(v->ev);
 #endif
@@ -4172,23 +4136,21 @@ bool
 ReturnStatement::accept(StmtExpVisitor *v)
 {
 	bool override;
-	ReturnStatement::iterator rr;
 	if (!v->visit(this, override))
 		return false;
 	if (override) return true;
 	if (!v->isIgnoreCol()) {
-		DefCollector::iterator dd;
-		for (dd = col.begin(); dd != col.end(); ++dd)
+		for (auto dd = col.begin(); dd != col.end(); ++dd)
 			if (!(*dd)->accept(v))
 				return false;
 		// EXPERIMENTAL: for now, count the modifieds as if they are a collector (so most, if not all of the time,
 		// ignore them). This is so that we can detect better when a definition is used only once, and therefore
 		// propagate anything to it
-		for (rr = modifieds.begin(); rr != modifieds.end(); ++rr)
+		for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 			if (!(*rr)->accept(v))
 				return false;
 	}
-	for (rr = returns.begin(); rr != returns.end(); ++rr)
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr)
 		if (!(*rr)->accept(v))
 			return false;
 	return true;
@@ -4296,8 +4258,7 @@ CallStatement::accept(StmtModifier *v)
 	if (!recur) return true;
 	if (pDest)
 		pDest = pDest->accept(v->mod);
-	StatementList::iterator it;
-	for (it = arguments.begin(); recur && it != arguments.end(); it++)
+	for (auto it = arguments.begin(); recur && it != arguments.end(); it++)
 		(*it)->accept(v);
 	// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
 	// adjusted
@@ -4305,12 +4266,10 @@ CallStatement::accept(StmtModifier *v)
 	// collectors as the rename logic set it
 	// Well, sort it out with ignoreCollector()
 	if (!v->ignoreCollector()) {
-		DefCollector::iterator cc;
-		for (cc = defCol.begin(); cc != defCol.end(); cc++)
+		for (auto cc = defCol.begin(); cc != defCol.end(); cc++)
 			(*cc)->accept(v);
 	}
-	StatementList::iterator dd;
-	for (dd = defines.begin(); recur && dd != defines.end(); ++dd)
+	for (auto dd = defines.begin(); recur && dd != defines.end(); ++dd)
 		(*dd)->accept(v);
 	return true;
 }
@@ -4322,16 +4281,14 @@ ReturnStatement::accept(StmtModifier *v)
 	v->visit(this, recur);
 	if (!recur) return true;
 	if (!v->ignoreCollector()) {
-		DefCollector::iterator dd;
-		for (dd = col.begin(); dd != col.end(); ++dd)
+		for (auto dd = col.begin(); dd != col.end(); ++dd)
 			if (!(*dd)->accept(v))
 				return false;
 	}
-	ReturnStatement::iterator rr;
-	for (rr = modifieds.begin(); rr != modifieds.end(); ++rr)
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		if (!(*rr)->accept(v))
 			return false;
-	for (rr = returns.begin(); rr != returns.end(); ++rr)
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr)
 		if (!(*rr)->accept(v))
 			return false;
 	return true;
@@ -4422,24 +4379,20 @@ CallStatement::accept(StmtPartModifier *v)
 	v->visit(this, recur);
 	if (pDest && recur)
 		pDest = pDest->accept(v->mod);
-	StatementList::iterator it;
-	for (it = arguments.begin(); recur && it != arguments.end(); it++)
+	for (auto it = arguments.begin(); recur && it != arguments.end(); it++)
 		(*it)->accept(v);
 	// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
 	// adjusted
 	// But now I'm thinking no, the bypass and propagate while possible logic should take care of it.
 	// Then again, what about the use collectors in calls? Best to do it.
 	if (!v->ignoreCollector()) {
-		DefCollector::iterator dd;
-		for (dd = defCol.begin(); dd != defCol.end(); dd++)
+		for (auto dd = defCol.begin(); dd != defCol.end(); dd++)
 			(*dd)->accept(v);
-		UseCollector::iterator uu;
-		for (uu = useCol.begin(); uu != useCol.end(); ++uu)
+		for (auto uu = useCol.begin(); uu != useCol.end(); ++uu)
 			// I believe that these should never change at the top level, e.g. m[esp{30} + 4] -> m[esp{-} - 20]
 			(*uu)->accept(v->mod);
 	}
-	StatementList::iterator dd;
-	for (dd = defines.begin(); recur && dd != defines.end(); dd++)
+	for (auto dd = defines.begin(); recur && dd != defines.end(); dd++)
 		(*dd)->accept(v);
 	return true;
 }
@@ -4449,11 +4402,10 @@ ReturnStatement::accept(StmtPartModifier *v)
 {
 	bool recur;
 	v->visit(this, recur);
-	ReturnStatement::iterator rr;
-	for (rr = modifieds.begin(); rr != modifieds.end(); ++rr)
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		if (!(*rr)->accept(v))
 			return false;
-	for (rr = returns.begin(); rr != returns.end(); ++rr)
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr)
 		if (!(*rr)->accept(v))
 			return false;
 	return true;
@@ -4554,9 +4506,8 @@ PhiAssign::simplify()
 	lhs = lhs->simplify();
 
 	if (defVec.begin() != defVec.end()) {
-		Definitions::iterator uu;
 		bool allSame = true;
-		uu = defVec.begin();
+		auto uu = defVec.begin();
 		Statement *first;
 		for (first = (uu++)->def; uu != defVec.end(); uu++) {
 			if (uu->def != first) {
@@ -4620,8 +4571,7 @@ Assignment::definesLoc(Exp *loc)
 bool
 CallStatement::definesLoc(Exp *loc)
 {
-	StatementList::iterator dd;
-	for (dd = defines.begin(); dd != defines.end(); ++dd) {
+	for (auto dd = defines.begin(); dd != defines.end(); ++dd) {
 		Exp *lhs = ((Assign *)*dd)->getLeft();
 		if (*lhs == *loc)
 			return true;
@@ -4636,8 +4586,7 @@ CallStatement::definesLoc(Exp *loc)
 bool
 ReturnStatement::definesLoc(Exp *loc)
 {
-	iterator it;
-	for (it = modifieds.begin(); it != modifieds.end(); it++) {
+	for (auto it = modifieds.begin(); it != modifieds.end(); it++) {
 		if ((*it)->definesLoc(loc))
 			return true;
 	}
@@ -4648,16 +4597,14 @@ ReturnStatement::definesLoc(Exp *loc)
 void
 ReturnStatement::getDefinitions(LocationSet &ls)
 {
-	iterator rr;
-	for (rr = modifieds.begin(); rr != modifieds.end(); ++rr)
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		(*rr)->getDefinitions(ls);
 }
 
 Type *
 ReturnStatement::getTypeFor(Exp *e)
 {
-	ReturnStatement::iterator rr;
-	for (rr = modifieds.begin(); rr != modifieds.end(); rr++) {
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); rr++) {
 		if (*((Assignment *)*rr)->getLeft() == *e)
 			return ((Assignment *)*rr)->getType();
 	}
@@ -4667,14 +4614,13 @@ ReturnStatement::getTypeFor(Exp *e)
 void
 ReturnStatement::setTypeFor(Exp *e, Type *ty)
 {
-	ReturnStatement::iterator rr;
-	for (rr = modifieds.begin(); rr != modifieds.end(); rr++) {
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); rr++) {
 		if (*((Assignment *)*rr)->getLeft() == *e) {
 			((Assignment *)*rr)->setType(ty);
 			break;
 		}
 	}
-	for (rr = returns.begin(); rr != returns.end(); rr++) {
+	for (auto rr = returns.begin(); rr != returns.end(); rr++) {
 		if (*((Assignment *)*rr)->getLeft() == *e) {
 			((Assignment *)*rr)->setType(ty);
 			return;
@@ -4692,10 +4638,9 @@ ReturnStatement::print(std::ostream &os, bool html)
 		os << "<a name=\"stmt" << std::dec << number << "\">";
 	}
 	os << "RET";
-	iterator it;
 	bool first = true;
 	unsigned column = 19;
-	for (it = returns.begin(); it != returns.end(); ++it) {
+	for (auto it = returns.begin(); it != returns.end(); ++it) {
 		std::ostringstream ost;
 		((Assignment *)*it)->printCompact(ost, html);
 		unsigned len = ost.str().length();
@@ -4720,7 +4665,7 @@ ReturnStatement::print(std::ostream &os, bool html)
 	os << "Modifieds: ";
 	first = true;
 	column = 25;
-	for (it = modifieds.begin(); it != modifieds.end(); ++it) {
+	for (auto it = modifieds.begin(); it != modifieds.end(); ++it) {
 		std::ostringstream ost;
 		Assign *as = (Assign *)*it;
 		Type *ty = as->getType();
@@ -4787,15 +4732,13 @@ ReturnStatement::updateModifieds()
 	// For each location in the collector, make sure that there is an assignment in the old modifieds, which will
 	// be filtered and sorted to become the new modifieds
 	// Ick... O(N*M) (N existing modifeds, M collected locations)
-	DefCollector::iterator ll;
-	StatementList::iterator it;
-	for (ll = col.begin(); ll != col.end(); ++ll) {
+	for (auto ll = col.begin(); ll != col.end(); ++ll) {
 		bool found = false;
 		Assign *as = (Assign *)*ll;
 		Exp *colLhs = as->getLeft();
 		if (proc->filterReturns(colLhs))
 			continue;  // Filtered out
-		for (it = oldMods.begin(); it != oldMods.end(); it++) {
+		for (auto it = oldMods.begin(); it != oldMods.end(); it++) {
 			Exp *lhs = ((Assign *)*it)->getLeft();
 			if (*lhs == *colLhs) {
 				found = true;
@@ -4812,7 +4755,7 @@ ReturnStatement::updateModifieds()
 
 	// Mostly the old modifications will be in the correct order, and inserting will be fastest near the start of the
 	// new list. So read the old modifications in reverse order
-	for (it = oldMods.end(); it != oldMods.begin(); ) {
+	for (auto it = oldMods.end(); it != oldMods.begin(); ) {
 		--it;  // Becuase we are using a forwards iterator backwards
 		// Make sure the LHS is still in the collector
 		Assign *as = (Assign *)*it;
@@ -4823,9 +4766,8 @@ ReturnStatement::updateModifieds()
 			continue;  // Filtered out: delete it
 
 		// Insert as, in order, into the existing set of modifications
-		StatementList::iterator nn;
 		bool inserted = false;
-		for (nn = modifieds.begin(); nn != modifieds.end(); ++nn) {
+		for (auto nn = modifieds.begin(); nn != modifieds.end(); ++nn) {
 			if (sig->returnCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
 				nn = modifieds.insert(nn, as);  // then insert before this position
 				inserted = true;
@@ -4849,8 +4791,7 @@ ReturnStatement::updateReturns()
 	// For each location in the modifieds, make sure that there is an assignment in the old returns, which will
 	// be filtered and sorted to become the new returns
 	// Ick... O(N*M) (N existing returns, M modifieds locations)
-	StatementList::iterator dd, it;
-	for (dd = modifieds.begin(); dd != modifieds.end(); ++dd) {
+	for (auto dd = modifieds.begin(); dd != modifieds.end(); ++dd) {
 		bool found = false;
 		Exp *loc = ((Assignment *)*dd)->getLeft();
 		if (proc->filterReturns(loc))
@@ -4858,7 +4799,7 @@ ReturnStatement::updateReturns()
 		// Special case for the stack pointer: it has to be a modified (otherwise, the changes will bypass the calls),
 		// but it is not wanted as a return
 		if (loc->isRegN(sp)) continue;
-		for (it = oldRets.begin(); it != oldRets.end(); it++) {
+		for (auto it = oldRets.begin(); it != oldRets.end(); it++) {
 			Exp *lhs = ((Assign *)*it)->getLeft();
 			if (*lhs == *loc) {
 				found = true;
@@ -4876,7 +4817,7 @@ ReturnStatement::updateReturns()
 
 	// Mostly the old returns will be in the correct order, and inserting will be fastest near the start of the
 	// new list. So read the old returns in reverse order
-	for (it = oldRets.end(); it != oldRets.begin(); ) {
+	for (auto it = oldRets.end(); it != oldRets.begin(); ) {
 		--it;  // Becuase we are using a forwards iterator backwards
 		// Make sure the LHS is still in the modifieds
 		Assign *as = (Assign *)*it;
@@ -4894,9 +4835,8 @@ ReturnStatement::updateReturns()
 #endif
 
 		// Insert as, in order, into the existing set of returns
-		StatementList::iterator nn;
 		bool inserted = false;
-		for (nn = returns.begin(); nn != returns.end(); ++nn) {
+		for (auto nn = returns.begin(); nn != returns.end(); ++nn) {
 			if (sig->returnCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
 				nn = returns.insert(nn, as);  // then insert before this position
 				inserted = true;
@@ -4931,13 +4871,11 @@ CallStatement::updateDefines()
 
 	// Move the defines to a temporary list
 	StatementList oldDefines(defines);  // Copy the old defines
-	StatementList::iterator it;
 	defines.clear();
 
 	if (procDest && calleeReturn) {
-		StatementList::iterator mm;
 		StatementList &modifieds = ((UserProc *)procDest)->getModifieds();
-		for (mm = modifieds.begin(); mm != modifieds.end(); ++mm) {
+		for (auto mm = modifieds.begin(); mm != modifieds.end(); ++mm) {
 			Assign *as = (Assign *)*mm;
 			Exp *loc = as->getLeft();
 			if (proc->filterReturns(loc))
@@ -4948,8 +4886,7 @@ CallStatement::updateDefines()
 		}
 	} else {
 		// Ensure that everything in the UseCollector has an entry in oldDefines
-		LocationSet::iterator ll;
-		for (ll = useCol.begin(); ll != useCol.end(); ++ll) {
+		for (auto ll = useCol.begin(); ll != useCol.end(); ++ll) {
 			Exp *loc = *ll;
 			if (proc->filterReturns(loc))
 				continue;  // Filtered out
@@ -4962,7 +4899,7 @@ CallStatement::updateDefines()
 		}
 	}
 
-	for (it = oldDefines.end(); it != oldDefines.begin(); ) {
+	for (auto it = oldDefines.end(); it != oldDefines.begin(); ) {
 		--it;  // Becuase we are using a forwards iterator backwards
 		// Make sure the LHS is still in the return or collector
 		Assign *as = (Assign *)*it;
@@ -4978,9 +4915,8 @@ CallStatement::updateDefines()
 			continue;  // Filtered out: delete it
 
 		// Insert as, in order, into the existing set of definitions
-		StatementList::iterator nn;
 		bool inserted = false;
-		for (nn = defines.begin(); nn != defines.end(); ++nn) {
+		for (auto nn = defines.begin(); nn != defines.end(); ++nn) {
 			if (sig->returnCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
 				nn = defines.insert(nn, as);  // then insert before this position
 				inserted = true;
@@ -5170,8 +5106,7 @@ CallStatement::updateArguments()
 	arguments.clear();
 	if (EXPERIMENTAL) {
 		// I don't really know why this is needed, but I was seeing r28 := ((((((r28{-}-4)-4)-4)-8)-4)-4)-4:
-		DefCollector::iterator dd;
-		for (dd = defCol.begin(); dd != defCol.end(); ++dd)
+		for (auto dd = defCol.begin(); dd != defCol.end(); ++dd)
 			(*dd)->simplify();
 	}
 
@@ -5201,8 +5136,7 @@ CallStatement::updateArguments()
 		}
 	}
 
-	StatementList::iterator it;
-	for (it = oldArguments.end(); it != oldArguments.begin(); ) {
+	for (auto it = oldArguments.end(); it != oldArguments.begin(); ) {
 		--it;  // Becuase we are using a forwards iterator backwards
 		// Make sure the LHS is still in the callee signature / callee parameters / use collector
 		Assign *as = (Assign *)*it;
@@ -5212,9 +5146,8 @@ CallStatement::updateArguments()
 			continue;  // Filtered out: delete it
 
 		// Insert as, in order, into the existing set of definitions
-		StatementList::iterator nn;
 		bool inserted = false;
-		for (nn = arguments.begin(); nn != arguments.end(); ++nn) {
+		for (auto nn = arguments.begin(); nn != arguments.end(); ++nn) {
 			if (sig->argumentCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
 				nn = arguments.insert(nn, as);  // then insert before this position
 				inserted = true;
@@ -5254,8 +5187,7 @@ CallStatement::calcResults()
 			}
 		} else {
 			Exp *rsp = Location::regOf(proc->getSignature()->getStackRegister(proc->getProg()));
-			StatementList::iterator dd;
-			for (dd = defines.begin(); dd != defines.end(); ++dd) {
+			for (auto dd = defines.begin(); dd != defines.end(); ++dd) {
 				Exp *lhs = ((Assign *)*dd)->getLeft();
 				// The stack pointer is allowed as a define, so remove it here as a special case non result
 				if (*lhs == *rsp) continue;
@@ -5266,17 +5198,15 @@ CallStatement::calcResults()
 	} else {
 		// For a call with no destination at this late stage, use everything live at the call except for the stack
 		// pointer register. Needs to be sorted
-		UseCollector::iterator rr;   // Iterates through reaching definitions
-		StatementList::iterator nn;  // Iterates through new results
 		Signature *sig = proc->getSignature();
 		int sp = sig->getStackRegister();
-		for (rr = useCol.begin(); rr != useCol.end(); ++rr) {
+		for (auto rr = useCol.begin(); rr != useCol.end(); ++rr) {  // Iterates through reaching definitions
 			Exp *loc = *rr;
 			if (proc->filterReturns(loc)) continue;        // Ignore filtered locations
 			if (loc->isRegN(sp)) continue;                 // Ignore the stack pointer
 			ImplicitAssign *as = new ImplicitAssign(loc);  // Create an implicit assignment
 			bool inserted = false;
-			for (nn = ret->begin(); nn != ret->end(); ++nn) {
+			for (auto nn = ret->begin(); nn != ret->end(); ++nn) {  // Iterates through new results
 				// If the new assignment is less than the current one,
 				if (sig->returnCompare(*as, *(Assignment *)*nn)) {
 					nn = ret->insert(nn, as);  // then insert before this position
@@ -5302,8 +5232,7 @@ TypingStatement::setType(Type *ty)
 void
 CallStatement::removeDefine(Exp *e)
 {
-	StatementList::iterator ss;
-	for (ss = defines.begin(); ss != defines.end(); ++ss) {
+	for (auto ss = defines.begin(); ss != defines.end(); ++ss) {
 		Assign *as = ((Assign *)*ss);
 		if (*as->getLeft() == *e) {
 			defines.erase(ss);
@@ -5481,9 +5410,8 @@ ImpRefStatement::simplify()
 void
 CallStatement::eliminateDuplicateArgs()
 {
-	StatementList::iterator it;
 	LocationSet ls;
-	for (it = arguments.begin(); it != arguments.end(); ) {
+	for (auto it = arguments.begin(); it != arguments.end(); ) {
 		Exp *lhs = ((Assignment *)*it)->getLeft();
 		if (ls.exists(lhs)) {
 			// This is a duplicate
@@ -5498,8 +5426,7 @@ CallStatement::eliminateDuplicateArgs()
 void
 PhiAssign::enumerateParams(std::list<Exp *> &le)
 {
-	iterator it;
-	for (it = begin(); it != end(); ++it) {
+	for (auto it = begin(); it != end(); ++it) {
 		if (!it->e) continue;
 		RefExp *r = new RefExp(it->e, it->def);
 		le.push_back(r);
@@ -5510,8 +5437,7 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 void
 dumpDestCounts(std::map<Exp *, int, lessExpStar> *destCounts)
 {
-	std::map<Exp *, int, lessExpStar>::iterator it;
-	for (it = destCounts->begin(); it != destCounts->end(); ++it) {
+	for (auto it = destCounts->begin(); it != destCounts->end(); ++it) {
 		std::cerr << std::setw(4) << std::dec << it->second << " " << it->first << "\n";
 	}
 }
@@ -5608,7 +5534,6 @@ CallStatement::setNumber(int num)
 	number = num;
 	// Also number any existing arguments. Important for library procedures, since these have arguments set by the front
 	// end based in their signature
-	StatementList::iterator aa;
-	for (aa = arguments.begin(); aa != arguments.end(); ++aa)
+	for (auto aa = arguments.begin(); aa != arguments.end(); ++aa)
 		(*aa)->setNumber(num);
 }

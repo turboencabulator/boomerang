@@ -105,7 +105,7 @@ Decompiler::addEntryPoint(ADDRESS a, const char *nam)
 void
 Decompiler::removeEntryPoint(ADDRESS a)
 {
-	for (std::vector<ADDRESS>::iterator it = user_entrypoints.begin(); it != user_entrypoints.end(); it++)
+	for (auto it = user_entrypoints.begin(); it != user_entrypoints.end(); it++)
 		if (*it == a) {
 			user_entrypoints.erase(it);
 			break;

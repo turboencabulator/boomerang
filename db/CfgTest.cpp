@@ -75,9 +75,8 @@ CfgTest::testDominators()
 	         << FRONTIER_TWELVE << " "
 	         << FRONTIER_FIVE << " ";
 	int n5 = df->pbbToNode(bb);
-	std::set<int>::iterator ii;
 	std::set<int> &DFset = df->getDF(n5);
-	for (ii = DFset.begin(); ii != DFset.end(); ii++)
+	for (auto ii = DFset.begin(); ii != DFset.end(); ii++)
 		actual << std::hex << (unsigned)df->nodeToBB(*ii)->getLowAddr() << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
 	delete prog;
@@ -132,9 +131,8 @@ CfgTest::testSemiDominators()
 	expected << std::hex << SEMI_M << " " << SEMI_B << " ";
 #endif
 	expected << std::hex << SEMI_B << " " << SEMI_M << " ";
-	std::set<int>::iterator ii;
 	std::set<int> &DFset = df->getDF(nL);
-	for (ii = DFset.begin(); ii != DFset.end(); ii++)
+	for (auto ii = DFset.begin(); ii != DFset.end(); ii++)
 		actual << std::hex << (unsigned)df->nodeToBB(*ii)->getLowAddr() << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
 	delete prog;
@@ -170,9 +168,8 @@ CfgTest::testPlacePhi()
 
 	// A_phi[x] should be the set {7 8 10 15 20 21} (all the join points)
 	std::ostringstream ost;
-	std::set<int>::iterator ii;
 	std::set<int> &A_phi = df->getA_phi(e);
-	for (ii = A_phi.begin(); ii != A_phi.end(); ++ii)
+	for (auto ii = A_phi.begin(); ii != A_phi.end(); ++ii)
 		ost << *ii << " ";
 	std::string expected("7 8 10 15 20 21 ");
 	CPPUNIT_ASSERT_EQUAL(expected, ost.str());
@@ -215,8 +212,7 @@ CfgTest::testPlacePhi2()
 	        Location::regOf(29),
 	        new Const(8)));
 	std::set<int> &s = df->getA_phi(e);
-	std::set<int>::iterator pp;
-	for (pp = s.begin(); pp != s.end(); pp++)
+	for (auto pp = s.begin(); pp != s.end(); pp++)
 		actual << *pp << " ";
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 	delete e;
@@ -230,7 +226,7 @@ CfgTest::testPlacePhi2()
 	        new Const(12)));
 
 	std::set<int> &s2 = df->getA_phi(e);
-	for (pp = s2.begin(); pp != s2.end(); pp++)
+	for (auto pp = s2.begin(); pp != s2.end(); pp++)
 		actual2 << *pp << " ";
 	CPPUNIT_ASSERT_EQUAL(expected, actual2.str());
 	delete e;

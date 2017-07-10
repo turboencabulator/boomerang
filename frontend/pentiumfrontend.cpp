@@ -148,12 +148,11 @@ void
 PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 {
 	std::list<Exp **> li;
-	std::list<Exp **>::iterator it;
 	Exp *exp = e;
 	// Use doSearch, which is normally an internal method of Exp, to avoid problems of replacing the wrong
 	// subexpression (in some odd cases)
 	Exp::doSearch(Location::regOf(new Terminal(opWild)), exp, li, false);
-	for (it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); it++) {
 		int reg = ((Const *)((Unary *)**it)->getSubExp1())->getInt();
 		if ((min <= reg) && (reg <= max)) {
 			// Replace the K in r[ K] with a new K
@@ -245,7 +244,6 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 {
 	BB_IT it;
 	for (BasicBlock *pBB = pCfg->getFirstBB(it); pBB; pBB = pCfg->getNextBB(it)) {
-		std::list<RTL *>::iterator rit;
 		Statement *st;
 
 		// Loop through each RTL this BB
@@ -254,7 +252,7 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 			// For example, incomplete BB
 			return;
 		}
-		rit = BB_rtls->begin();
+		auto rit = BB_rtls->begin();
 		while (rit != BB_rtls->end()) {
 			for (int i = 0; i < (*rit)->getNumStmt(); i++) {
 				// Get the current Exp
@@ -349,7 +347,6 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 void
 PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 {
-	std::list<RTL *>::iterator rit;
 	Statement *st;
 
 	// Loop through each RTL this BB
@@ -358,7 +355,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 		// For example, incomplete BB
 		return;
 	}
-	rit = BB_rtls->begin();
+	auto rit = BB_rtls->begin();
 	while (rit != BB_rtls->end()) {
 		// Check for call.
 		if ((*rit)->isCall()) {
@@ -681,10 +678,9 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &i
 void
 PentiumFrontEnd::processStringInst(UserProc *proc)
 {
-	Cfg::iterator it;
 	Cfg *cfg = proc->getCFG();
 	// For each BB this proc
-	for (it = cfg->begin(); it != cfg->end(); /* no increment! */) {
+	for (auto it = cfg->begin(); it != cfg->end(); /* no increment! */) {
 		bool noinc = false;
 		BasicBlock *bb = *it;
 		std::list<RTL *> *rtls = bb->getRTLs();
@@ -693,7 +689,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 		ADDRESS prev, addr = 0;
 		bool lastRtl = true;
 		// For each RTL this BB
-		for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
+		for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
 			RTL *rtl = *rit;
 			prev = addr;
 			addr = rtl->getAddress();
@@ -731,12 +727,11 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 	std::set<int> usedRegs;
 	StatementList stmts;
 	proc->getStatements(stmts);
-	StatementList::iterator it;
-	for (it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); it++) {
 		Statement *s = *it;
 		LocationSet locs;
 		s->addUsedLocs(locs);
-		for (LocationSet::iterator li = locs.begin(); li != locs.end(); li++) {
+		for (auto li = locs.begin(); li != locs.end(); li++) {
 			Exp *l = *li;
 			if (!l->isRegOfK())
 				continue;
@@ -761,7 +756,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 	// ebp (29)  bp (5)
 	// esi (30)  si (6)
 	// edi (31)  di (7)
-	for (it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); it++) {
 		Statement *s = *it;
 		if (s->getBB()->overlappedRegProcessingDone)   // never redo processing
 			continue;
@@ -965,7 +960,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 	}
 
 	// set a flag for every BB we've processed so we don't do them again
-	for (std::set<BasicBlock *>::iterator bit = bbs.begin(); bit != bbs.end(); bit++)
+	for (auto bit = bbs.begin(); bit != bbs.end(); bit++)
 		(*bit)->overlappedRegProcessingDone = true;
 }
 
@@ -1042,9 +1037,8 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 
 			// count pushes backwards to find arg
 			Exp *found = nullptr;
-			std::list<RTL *>::reverse_iterator itr;
 			unsigned int pushcount = 0;
-			for (itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
+			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
 				RTL *rtl = *itr;
 				for (int n = rtl->getNumStmt() - 1; n >= 0; n--) {
 					Statement *stmt = rtl->elementAt(n);
@@ -1118,9 +1112,8 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 		if (calledSig->hasEllipsis()) {
 			// count pushes backwards to find a push of 0
 			bool found = false;
-			std::list<RTL *>::reverse_iterator itr;
 			int pushcount = 0;
-			for (itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
+			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
 				RTL *rtl = *itr;
 				for (int n = rtl->getNumStmt() - 1; n >= 0; n--) {
 					Statement *stmt = rtl->elementAt(n);

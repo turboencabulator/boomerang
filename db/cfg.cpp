@@ -54,8 +54,7 @@ Cfg::Cfg()
 Cfg::~Cfg()
 {
 	// Delete the BBs
-	BB_IT it;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		delete *it;
 	}
 }
@@ -81,7 +80,7 @@ Cfg::clear()
 	// Don't delete the BBs; this will delete any CaseStatements we want to save for the re-decode. Just let the garbage
 	// collection take care of it.
 #if 0
-	for (std::list<BasicBlock *>::iterator it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
 		delete *it;
 #endif
 	m_listBB.clear();
@@ -116,9 +115,8 @@ Cfg::operator =(const Cfg &other)
 void
 Cfg::setEntryBB(BasicBlock *bb)
 {
-	BB_IT it;
 	entryBB = bb;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		if ((*it)->getType() == RET) {
 			exitBB = *it;
 			return;
@@ -177,7 +175,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 	// Note that orphaned BBs (for which we must compute addr here to to be 0) must not be added to the map, but they
 	// have no RTLs with a non zero address.
 	if ((addr == 0) && (pRtls->size() > 1)) {
-		std::list<RTL *>::iterator next = pRtls->begin();
+		auto next = pRtls->begin();
 		addr = (*++next)->getAddress();
 	}
 
@@ -186,8 +184,8 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 	bool bDone = false;
 	if (addr != 0) {
 		mi = m_mapBB.find(addr);
-		if (mi != m_mapBB.end() && (*mi).second) {
-			pBB = (*mi).second;
+		if (mi != m_mapBB.end() && mi->second) {
+			pBB = mi->second;
 			// It should be incomplete, or the pBB there should be zero (we have called Label but not yet created the BB
 			// for it).  Else we have duplicated BBs. Note: this can happen with forward jumps into the middle of a
 			// loop, so not error
@@ -236,8 +234,8 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we want to return nullptr, since
 		// the out edges are already created.
 		if (++mi != m_mapBB.end()) {
-			BasicBlock *pNextBB = (*mi).second;
-			ADDRESS uNext = (*mi).first;
+			BasicBlock *pNextBB = mi->second;
+			ADDRESS uNext = mi->first;
 			bool bIncomplete = pNextBB->m_bIncomplete;
 			if (uNext <= pRtls->back()->getAddress()) {
 				// Need to truncate the current BB. We use splitBB(), but pass it pNextBB so it doesn't create a new BB
@@ -318,11 +316,11 @@ void
 Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel /* = false */)
 {
 	// Check to see if the address is in the map, i.e. we already have a BB for this address
-	MAPBB::iterator it = m_mapBB.find(addr);
 	BasicBlock *pDestBB;
-	if (it != m_mapBB.end() && (*it).second) {
+	auto it = m_mapBB.find(addr);
+	if (it != m_mapBB.end() && it->second) {
 		// Just add this BasicBlock* to the list of out edges
-		pDestBB = (*it).second;
+		pDestBB = it->second;
 	} else {
 		// Else, create a new incomplete BB, add that to the map, and add the new BB as the out edge
 		pDestBB = newIncompleteBB(addr);
@@ -341,9 +339,8 @@ Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel /* = false */)
 bool
 Cfg::existsBB(ADDRESS uNativeAddr)
 {
-	MAPBB::iterator mi;
-	mi = m_mapBB.find(uNativeAddr);
-	return (mi != m_mapBB.end() && (*mi).second);
+	auto mi = m_mapBB.find(uNativeAddr);
+	return (mi != m_mapBB.end() && mi->second);
 }
 
 /*==============================================================================
@@ -364,11 +361,10 @@ Cfg::existsBB(ADDRESS uNativeAddr)
 BasicBlock *
 Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullptr */, bool bDelRtls /* = false */)
 {
-	std::list<RTL *>::iterator ri;
-
 	// First find which RTL has the split address; note that this could fail (e.g. label in the middle of an
 	// instruction, or some weird delay slot effects)
-	for (ri = pBB->m_pRtls->begin(); ri != pBB->m_pRtls->end(); ri++) {
+	auto ri = pBB->m_pRtls->begin();
+	for (; ri != pBB->m_pRtls->end(); ri++) {
 		if ((*ri)->getAddress() == uNativeAddr)
 			break;
 	}
@@ -492,11 +488,8 @@ Cfg::getNextBB(BB_IT &it)
 bool
 Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 {
-	MAPBB::iterator mi, newi;
-
 	// check if the native address is in the map already (explicit label)
-	mi = m_mapBB.find(uNativeAddr);
-
+	auto mi = m_mapBB.find(uNativeAddr);
 	if (mi == m_mapBB.end()) {  // not in the map
 		// If not an explicit label, temporarily add the address to the map
 		m_mapBB[uNativeAddr] = (BasicBlock *)0;  // no BasicBlock* yet
@@ -506,7 +499,7 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 		// previous BB.
 		mi = m_mapBB.find(uNativeAddr);
 
-		newi = mi;
+		auto newi = mi;
 		bool bSplit = false;
 		BasicBlock *pPrevBB = nullptr;
 		if (newi != m_mapBB.begin()) {
@@ -534,7 +527,7 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 			return false;  // was not already parsed
 		}
 	} else {  // We already have uNativeAddr in the map
-		if ((*mi).second && !(*mi).second->m_bIncomplete) {
+		if (mi->second && !mi->second->m_bIncomplete) {
 			// There is a complete BB here. Return true.
 			return true;
 		}
@@ -542,7 +535,7 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 		// We are finalising an incomplete BB. Still need to check previous map entry to see if there is a complete BB
 		// overlapping
 		bool bSplit = false;
-		BasicBlock *pPrevBB, *pBB = (*mi).second;
+		BasicBlock *pPrevBB, *pBB = mi->second;
 		if (mi != m_mapBB.begin()) {
 			pPrevBB = (*--mi).second;
 			if (!pPrevBB->m_bIncomplete
@@ -571,12 +564,12 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 bool
 Cfg::isIncomplete(ADDRESS uAddr)
 {
-	MAPBB::iterator mi = m_mapBB.find(uAddr);
+	auto mi = m_mapBB.find(uAddr);
 	if (mi == m_mapBB.end())
 		// No entry at all
 		return false;
 	// Else, there is a BB there. If it's incomplete, return true
-	BasicBlock *pBB = (*mi).second;
+	BasicBlock *pBB = mi->second;
 	return pBB->m_bIncomplete;
 }
 
@@ -621,18 +614,18 @@ bool
 Cfg::wellFormCfg()
 {
 	m_bWellFormed = true;
-	for (BB_IT it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		// it iterates through all BBs in the list
 		// Check that it's complete
 		if ((*it)->m_bIncomplete) {
 			m_bWellFormed = false;
-			MAPBB::iterator itm;
-			for (itm = m_mapBB.begin(); itm != m_mapBB.end(); itm++)
-				if ((*itm).second == *it) break;
+			auto itm = m_mapBB.begin();
+			for (; itm != m_mapBB.end(); itm++)
+				if (itm->second == *it) break;
 			if (itm == m_mapBB.end())
 				std::cerr << "WellFormCfg: incomplete BB not even in map!\n";
 			else {
-				std::cerr << "WellFormCfg: BB with native address " << std::hex << (*itm).first
+				std::cerr << "WellFormCfg: BB with native address " << std::hex << itm->first
 				          << " is incomplete\n";
 			}
 		} else {
@@ -654,8 +647,8 @@ Cfg::wellFormCfg()
 					} else {
 						// Check that there is a corresponding in edge from the
 						// child to here
-						std::vector<BasicBlock *>::iterator ii;
-						for (ii = pBB->m_InEdges.begin(); ii != pBB->m_InEdges.end(); ii++)
+						auto ii = pBB->m_InEdges.begin();
+						for (; ii != pBB->m_InEdges.end(); ii++)
 							if (*ii == *it) break;
 						if (ii == pBB->m_InEdges.end()) {
 							std::cerr << "WellFormCfg: No in edge to BB at " << std::hex << (*it)->getLowAddr()
@@ -668,10 +661,9 @@ Cfg::wellFormCfg()
 			// Also check that each in edge has a corresponding out edge to here (could have an extra in-edge, for
 			// example)
 			assert((int)(*it)->m_InEdges.size() == (*it)->m_iNumInEdges);
-			std::vector<BasicBlock *>::iterator ii;
-			for (ii = (*it)->m_InEdges.begin(); ii != (*it)->m_InEdges.end(); ii++) {
-				std::vector<BasicBlock *>::iterator oo;
-				for (oo = (*ii)->m_OutEdges.begin(); oo != (*ii)->m_OutEdges.end(); oo++)
+			for (auto ii = (*it)->m_InEdges.begin(); ii != (*it)->m_InEdges.end(); ii++) {
+				auto oo = (*ii)->m_OutEdges.begin();
+				for (; oo != (*ii)->m_OutEdges.end(); oo++)
 					if (*oo == *it) break;
 				if (oo == (*ii)->m_OutEdges.end()) {
 					std::cerr << "WellFormCfg: No out edge to BB at " << std::hex << (*it)->getLowAddr()
@@ -732,7 +724,7 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 		// Finally, we delete pb1 from the BB list. Note: remove(pb1) should also work, but it would involve member
 		// comparison (not implemented), and also would attempt to remove ALL elements of the list with this value (so
 		// it has to search the whole list, instead of an average of half the list as we have here).
-		for (BB_IT it = m_listBB.begin(); it != m_listBB.end(); it++) {
+		for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 			if (*it == pb1) {
 				m_listBB.erase(it);
 				break;
@@ -757,14 +749,13 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 		return false;
 	// Prepend the RTLs for pb1 to those of pb2. Since they will be pushed to the front of pb2, push them in reverse
 	// order
-	std::list<RTL *>::reverse_iterator it;
-	for (it = pb1->m_pRtls->rbegin(); it != pb1->m_pRtls->rend(); it++) {
+	for (auto it = pb1->m_pRtls->rbegin(); it != pb1->m_pRtls->rend(); it++) {
 		pb2->m_pRtls->push_front(*it);
 	}
 	completeMerge(pb1, pb2);  // Mash them together
 	// pb1 no longer needed. Remove it from the list of BBs.  This will also delete *pb1. It will be a shallow delete,
 	// but that's good because we only did shallow copies to *pb2
-	BB_IT bbit = std::find(m_listBB.begin(), m_listBB.end(), pb1);
+	auto bbit = std::find(m_listBB.begin(), m_listBB.end(), pb1);
 	m_listBB.erase(bbit);
 	return true;
 }
@@ -772,7 +763,7 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 void
 Cfg::removeBB(BasicBlock *bb)
 {
-	BB_IT bbit = std::find(m_listBB.begin(), m_listBB.end(), bb);
+	auto bbit = std::find(m_listBB.begin(), m_listBB.end(), bb);
 	m_listBB.erase(bbit);
 }
 
@@ -796,8 +787,8 @@ Cfg::compressCfg()
 
 	// Find A -> J -> B where J is a BB that is only a jump
 	// Then A -> B
-	for (BB_IT it = m_listBB.begin(); it != m_listBB.end(); it++) {
-		for (std::vector<BasicBlock *>::iterator it1 = (*it)->m_OutEdges.begin(); it1 != (*it)->m_OutEdges.end(); it1++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+		for (auto it1 = (*it)->m_OutEdges.begin(); it1 != (*it)->m_OutEdges.end(); it1++) {
 			BasicBlock *pSucc = (*it1);  // Pointer to J
 			BasicBlock *bb = (*it);      // Pointer to A
 			if (pSucc->m_InEdges.size() == 1
@@ -818,13 +809,13 @@ Cfg::compressCfg()
 				bb->m_bJumpReqd = true;
 				setLabel(*it1);
 				// Find the in-edge from B to J; replace this with an in-edge to A
-				std::vector<BasicBlock *>::iterator it2;
-				for (it2 = (*it1)->m_InEdges.begin(); it2 != (*it1)->m_InEdges.end(); it2++) {
+				for (auto it2 = (*it1)->m_InEdges.begin(); it2 != (*it1)->m_InEdges.end(); it2++) {
 					if (*it2 == pSucc)
 						*it2 = bb;  // Point to A
 				}
 				// Remove the in-edge from J to A. First find the in-edge
-				for (it2 = pSucc->m_InEdges.begin(); it2 != pSucc->m_InEdges.end(); it2++) {
+				auto it2 = pSucc->m_InEdges.begin();
+				for (; it2 != pSucc->m_InEdges.end(); it2++) {
 					if (*it2 == bb)
 						break;
 				}
@@ -832,7 +823,7 @@ Cfg::compressCfg()
 				pSucc->deleteInEdge(it2);
 				// If nothing else uses this BB (J), remove it from the CFG
 				if (pSucc->m_iNumInEdges == 0) {
-					for (BB_IT it3 = m_listBB.begin(); it3 != m_listBB.end(); it3++) {
+					for (auto it3 = m_listBB.begin(); it3 != m_listBB.end(); it3++) {
 						if (*it3 == pSucc) {
 							m_listBB.erase(it3);
 							// And delete the BB
@@ -854,7 +845,7 @@ Cfg::compressCfg()
 void
 Cfg::unTraverse()
 {
-	for (BB_IT it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		(*it)->m_iTraversed = false;
 		(*it)->traversed = UNTRAVERSED;
 	}
@@ -894,7 +885,7 @@ BasicBlock *
 Cfg::findRetNode()
 {
 	BasicBlock *retNode = nullptr;
-	for (std::list<BasicBlock *>::iterator it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		if ((*it)->getType() == RET) {
 			retNode = *it;
 			break;
@@ -957,12 +948,12 @@ Cfg::isWellFormed()
 bool
 Cfg::isOrphan(ADDRESS uAddr)
 {
-	MAPBB::iterator mi = m_mapBB.find(uAddr);
+	auto mi = m_mapBB.find(uAddr);
 	if (mi == m_mapBB.end())
 		// No entry at all
 		return false;
 	// Return true if the first RTL at this address has an address set to 0
-	BasicBlock *pBB = (*mi).second;
+	BasicBlock *pBB = mi->second;
 	// If it's incomplete, it can't be an orphan
 	if (pBB->m_bIncomplete) return false;
 	return pBB->m_pRtls->front()->getAddress() == 0;
@@ -977,8 +968,8 @@ Cfg::isOrphan(ADDRESS uAddr)
 int
 Cfg::pbbToIndex(BasicBlock *pBB)
 {
-	BB_IT it = m_listBB.begin();
 	int i = 0;
+	auto it = m_listBB.begin();
 	while (it != m_listBB.end()) {
 		if (*it++ == pBB) return i;
 		i++;
@@ -1017,9 +1008,9 @@ Cfg::getCalls()
 void
 Cfg::searchAndReplace(Exp *search, Exp *replace)
 {
-	for (BB_IT bb_it = m_listBB.begin(); bb_it != m_listBB.end(); bb_it++) {
+	for (auto bb_it = m_listBB.begin(); bb_it != m_listBB.end(); bb_it++) {
 		std::list<RTL *> &rtls = *((*bb_it)->getRTLs());
-		for (std::list<RTL *>::iterator rtl_it = rtls.begin(); rtl_it != rtls.end(); rtl_it++) {
+		for (auto rtl_it = rtls.begin(); rtl_it != rtls.end(); rtl_it++) {
 			RTL &rtl = **rtl_it;
 			rtl.searchAndReplace(search, replace);
 		}
@@ -1030,9 +1021,9 @@ bool
 Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool ch = false;
-	for (BB_IT bb_it = m_listBB.begin(); bb_it != m_listBB.end(); bb_it++) {
+	for (auto bb_it = m_listBB.begin(); bb_it != m_listBB.end(); bb_it++) {
 		std::list<RTL *> &rtls = *((*bb_it)->getRTLs());
-		for (std::list<RTL *>::iterator rtl_it = rtls.begin(); rtl_it != rtls.end(); rtl_it++) {
+		for (auto rtl_it = rtls.begin(); rtl_it != rtls.end(); rtl_it++) {
 			RTL &rtl = **rtl_it;
 			ch |= rtl.searchAll(search, result);
 		}
@@ -1048,8 +1039,7 @@ Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 void
 delete_lrtls(std::list<RTL *> *pLrtl)
 {
-	std::list<RTL *>::iterator it;
-	for (it = pLrtl->begin(); it != pLrtl->end(); it++) {
+	for (auto it = pLrtl->begin(); it != pLrtl->end(); it++) {
 		delete *it;
 	}
 }
@@ -1064,8 +1054,7 @@ delete_lrtls(std::list<RTL *> *pLrtl)
 void
 erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end)
 {
-	std::list<RTL *>::iterator it;
-	for (it = begin; it != end; it++) {
+	for (auto it = begin; it != end; it++) {
 		delete *it;
 	}
 	pLrtl->erase(begin, end);
@@ -1110,7 +1099,7 @@ Cfg::simplify()
 {
 	if (VERBOSE)
 		LOG << "simplifying...\n";
-	for (std::list<BasicBlock *>::iterator it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
 		(*it)->simplify();
 }
 
@@ -1118,7 +1107,7 @@ Cfg::simplify()
 void
 Cfg::print(std::ostream &out, bool html)
 {
-	for (std::list<BasicBlock *>::iterator it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
 		(*it)->print(out, html);
 	out << std::endl;
 }
@@ -1132,8 +1121,7 @@ Cfg::dump()
 void
 Cfg::dumpImplicitMap()
 {
-	std::map<Exp *, Statement *, lessExpStar>::iterator it;
-	for (it = implicitMap.begin(); it != implicitMap.end(); ++it) {
+	for (auto it = implicitMap.begin(); it != implicitMap.end(); ++it) {
 		std::cerr << it->first << " -> " << it->second << "\n";
 	}
 }
@@ -1150,7 +1138,7 @@ void
 Cfg::setTimeStamps()
 {
 	// set DFS tag
-	for (std::list<BasicBlock *>::iterator it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
 		(*it)->traversed = DFS_TAG;
 
 	// set the parenthesis for the nodes as well as setting the post-order ordering between the nodes
@@ -1586,8 +1574,7 @@ Cfg::structure()
 void
 Cfg::addJunctionStatements()
 {
-	std::list<BasicBlock *>::iterator it;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		BasicBlock *pbb = *it;
 		if (pbb->getNumInEdges() > 1 && (!pbb->getFirstStmt() || !pbb->getFirstStmt()->isJunction())) {
 			assert(pbb->getRTLs());
@@ -1601,8 +1588,7 @@ Cfg::addJunctionStatements()
 void
 Cfg::removeJunctionStatements()
 {
-	std::list<BasicBlock *>::iterator it;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		BasicBlock *pbb = *it;
 		if (pbb->getFirstStmt() && pbb->getFirstStmt()->isJunction()) {
 			assert(pbb->getRTLs());
@@ -1625,8 +1611,7 @@ Cfg::generateDot(std::ostream &os)
 	ADDRESS aret = NO_ADDRESS;
 
 	// The nodes
-	std::list<BasicBlock *>::iterator it;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		os << "\t\tbb" << std::hex << (*it)->getLowAddr()
 		   << " [label=\"";
 		const char *p = (*it)->getStmtNumber();
@@ -1685,7 +1670,7 @@ Cfg::generateDot(std::ostream &os)
 	os << "\t}\n";
 
 	// Now the edges
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		std::vector<BasicBlock *> &outEdges = (*it)->getOutEdges();
 		for (unsigned int j = 0; j < outEdges.size(); j++) {
 			os << "\tbb" << std::hex << (*it)->getLowAddr()
@@ -1701,7 +1686,7 @@ Cfg::generateDot(std::ostream &os)
 		}
 	}
 #if BACK_EDGES
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		std::vector<BasicBlock *> &inEdges = (*it)->getInEdges();
 		for (unsigned int j = 0; j < inEdges.size(); j++) {
 			os << "\tbb" << std::hex << (*it)->getLowAddr()
@@ -1783,8 +1768,7 @@ Cfg::appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workse
 	// Append my list of BBs to the worklist
 	worklist.insert(worklist.end(), m_listBB.begin(), m_listBB.end());
 	// Do the same for the workset
-	std::list<BasicBlock *>::iterator it;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
 		workset.insert(*it);
 }
 
@@ -1837,9 +1821,9 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 #endif
 
 	unsigned i, j;
-	std::list<RTL *>::iterator ri;
 	// First find which RTL has the split address
-	for (ri = pBB->m_pRtls->begin(); ri != pBB->m_pRtls->end(); ri++) {
+	auto ri = pBB->m_pRtls->begin();
+	for (; ri != pBB->m_pRtls->end(); ri++) {
 		if ((*ri) == rtl)
 			break;
 	}
@@ -1883,7 +1867,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	assert(li.size() >= 4);
 	li.erase(li.begin());
 	// Replace the last statement with br2
-	std::list<Statement *>::iterator ll = --li.end();
+	auto ll = --li.end();
 	li.erase(ll);
 	li.push_back(br2);
 
@@ -1991,9 +1975,8 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 bool
 Cfg::decodeIndirectJmp(UserProc *proc)
 {
-	std::list<BasicBlock *>::iterator it;
 	bool res = false;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		res |= (*it)->decodeIndirectJmp(proc);
 	}
 	return res;
@@ -2002,8 +1985,7 @@ Cfg::decodeIndirectJmp(UserProc *proc)
 void
 Cfg::undoComputedBB(Statement *stmt)
 {
-	std::list<BasicBlock *>::iterator it;
-	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		if ((*it)->undoComputedBB(stmt))
 			break;
 	}
@@ -2013,7 +1995,7 @@ Statement *
 Cfg::findImplicitAssign(Exp *x)
 {
 	Statement *def;
-	std::map<Exp *, Statement *, lessExpStar>::iterator it = implicitMap.find(x);
+	auto it = implicitMap.find(x);
 	if (it == implicitMap.end()) {
 		// A use with no explicit definition. Create a new implicit assignment
 		x = x->clone();  // In case the original gets changed
@@ -2034,7 +2016,7 @@ Statement *
 Cfg::findTheImplicitAssign(Exp *x)
 {
 	// As per the above, but don't create an implicit if it doesn't already exist
-	std::map<Exp *, Statement *, lessExpStar>::iterator it = implicitMap.find(x);
+	auto it = implicitMap.find(x);
 	if (it == implicitMap.end())
 		return nullptr;
 	return it->second;
@@ -2044,7 +2026,7 @@ Statement *
 Cfg::findImplicitParamAssign(Parameter *param)
 {
 	// As per the above, but for parameters (signatures don't get updated with opParams)
-	std::map<Exp *, Statement *, lessExpStar>::iterator it = implicitMap.find(param->getExp());
+	auto it = implicitMap.find(param->getExp());
 	if (it == implicitMap.end()) {
 		Exp *eParam = Location::param(param->getName());
 		it = implicitMap.find(eParam);
@@ -2057,7 +2039,7 @@ Cfg::findImplicitParamAssign(Parameter *param)
 void
 Cfg::removeImplicitAssign(Exp *x)
 {
-	std::map<Exp *, Statement *, lessExpStar>::iterator it = implicitMap.find(x);
+	auto it = implicitMap.find(x);
 	assert(it != implicitMap.end());
 	Statement *ia = it->second;
 	implicitMap.erase(it);        // Delete the mapping

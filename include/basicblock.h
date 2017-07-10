@@ -404,7 +404,6 @@ public:
 	 */
 	typedef std::list<RTL *>::iterator rtlit;
 	typedef std::list<RTL *>::reverse_iterator rtlrit;
-	typedef std::list<Exp *>::iterator elit;
 	        Statement  *getFirstStmt(rtlit &rit, StatementList::iterator &sit);
 	        Statement  *getNextStmt(rtlit &rit, StatementList::iterator &sit);
 	        Statement  *getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit);
@@ -500,7 +499,7 @@ protected:
 	        bool        inLoop(BasicBlock *header, BasicBlock *latch);
 
 	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) {
-		                    for (std::list<BasicBlock *>::iterator it = set.begin(); it != set.end(); it++)
+		                    for (auto it = set.begin(); it != set.end(); it++)
 			                    if (*it == bb) return true;
 		                    return false;
 	                    }
