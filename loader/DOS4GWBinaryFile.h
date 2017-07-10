@@ -164,14 +164,14 @@ protected:
 	//bool        PostLoad(void *handle) override;
 
 private:
-	//Header     *m_pHeader;             ///< Pointer to header.
-	LXHeader   *m_pLXHeader = NULL;    ///< Pointer to lx header.
-	LXObject   *m_pLXObjects = NULL;   ///< Pointer to lx objects.
-	LXPage     *m_pLXPages = NULL;     ///< Pointer to lx pages.
-	int         m_cbImage;             ///< Size of image.
-	//int         m_cReloc;              ///< Number of relocation entries.
-	//DWord      *m_pRelocTable;         ///< The relocation table.
-	unsigned char *base = NULL;        ///< Beginning of the loaded image.
+	//Header     *m_pHeader;               ///< Pointer to header.
+	LXHeader   *m_pLXHeader = nullptr;   ///< Pointer to lx header.
+	LXObject   *m_pLXObjects = nullptr;  ///< Pointer to lx objects.
+	LXPage     *m_pLXPages = nullptr;    ///< Pointer to lx pages.
+	int         m_cbImage;               ///< Size of image.
+	//int         m_cReloc;                ///< Number of relocation entries.
+	//DWord      *m_pRelocTable;           ///< The relocation table.
+	unsigned char *base = nullptr;       ///< Beginning of the loaded image.
 
 	/// Map from address of dynamic pointers to library procedure names.
 	std::map<ADDRESS, std::string> dlprocptrs;

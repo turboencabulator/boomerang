@@ -39,7 +39,7 @@ FrontSparcTest::test1()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -49,7 +49,7 @@ FrontSparcTest::test1()
 
 	// Decode first instruction
 	DecodeResult inst = pFE->decodeInstruction(addr);
-	CPPUNIT_ASSERT(inst.rtl != NULL);
+	CPPUNIT_ASSERT(inst.rtl);
 	inst.rtl->print(ost);
 
 	std::string expected("00010684    0 *32* tmp := r14 - 112\n"
@@ -105,7 +105,7 @@ FrontSparcTest::test2()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -149,7 +149,7 @@ FrontSparcTest::test3()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -211,7 +211,7 @@ FrontSparcTest::testBranch()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -248,7 +248,7 @@ FrontSparcTest::testDelaySlot()
 {
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared

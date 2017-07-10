@@ -166,7 +166,7 @@ public:
 	void AddProcStart(UserProc *proc) override;
 	void AddProcEnd() override;
 	void AddLocal(const char *name, Type *type, bool last = false) override;
-	void AddGlobal(const char *name, Type *type, Exp *init = NULL) override;
+	void AddGlobal(const char *name, Type *type, Exp *init = nullptr) override;
 	void AddPrototype(UserProc *proc) override;
 private:
 	void AddProcDec(UserProc *proc, bool open);  // Implement AddProcStart and AddPrototype

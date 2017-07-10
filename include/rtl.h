@@ -54,7 +54,7 @@ class RTL {
 	        std::list<Statement *> stmtList;  ///< List of expressions in this RTL.
 public:
 	                    RTL();
-	                    RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt = NULL);
+	                    RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt = nullptr);
 	                    RTL(const RTL &other);
 	                   ~RTL();
 
@@ -127,8 +127,8 @@ public:
 	        void        forwardSubs();
 #endif
 
-	        void        insertAssign(Exp *ssLhs, Exp *ssRhs, bool prep, Type *type = NULL);
-	        void        insertAfterTemps(Exp *ssLhs, Exp *ssRhs, Type *type = NULL);
+	        void        insertAssign(Exp *ssLhs, Exp *ssRhs, bool prep, Type *type = nullptr);
+	        void        insertAfterTemps(Exp *ssLhs, Exp *ssRhs, Type *type = nullptr);
 
 	        bool        searchAndReplace(Exp *search, Exp *replace);
 	        bool        searchAll(Exp *search, std::list<Exp *> &result);
@@ -194,11 +194,11 @@ public:
 
 	std::list<std::string> params;      ///< PARAM_VARIANT & PARAM_ASGN only.
 	std::list<std::string> funcParams;  ///< PARAM_LAMBDA - late bound params.
-	Statement  *asgn = NULL;            ///< PARAM_ASGN only.
+	Statement  *asgn = nullptr;         ///< PARAM_ASGN only.
 	bool        lhs = false;            ///< True if this param ever appears on the LHS of an expression.
 	ParamKind   kind = PARAM_SIMPLE;
-	Type       *type = NULL;
-	Type       *regType = NULL;         ///< Type of r[this], if any (void otherwise).
+	Type       *type = nullptr;
+	Type       *regType = nullptr;      ///< Type of r[this], if any (void otherwise).
 	std::set<int> regIdx;               ///< Values this param can take as an r[param].
 	int         mark = 0;               ///< Traversal mark. (free temporary use, basically)
 };

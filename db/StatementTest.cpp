@@ -563,7 +563,7 @@ StatementTest::testEndlessLoop()
 void
 StatementTest::testLocationSet()
 {
-	Location rof(opRegOf, new Const(12), NULL);     // r12
+	Location rof(opRegOf, new Const(12), nullptr);  // r12
 	Const &theReg = *(Const *)rof.getSubExp1();
 	LocationSet ls;
 	LocationSet::iterator ii;
@@ -588,7 +588,7 @@ StatementTest::testLocationSet()
 	e = *(++ii); CPPUNIT_ASSERT(rof == *e);         // Next should be r24
 	theReg.setInt(31);
 	e = *(++ii); CPPUNIT_ASSERT(rof == *e);         // Last should be r31
-	Location mof(opMemOf, new Binary(opPlus, Location::regOf(14), new Const(4)), NULL);  // m[r14 + 4]
+	Location mof(opMemOf, new Binary(opPlus, Location::regOf(14), new Const(4)), nullptr);  // m[r14 + 4]
 	ls.insert(mof.clone());                         // ls should be r8 r12 r24 r31 m[r14 + 4]
 	ls.insert(mof.clone());
 	size = (int)ls.size();
@@ -620,7 +620,7 @@ StatementTest::testLocationSet()
 	Exp *r8 = Location::regOf(8);
 	CPPUNIT_ASSERT(!ls.existsImplicit(r8));
 
-	RefExp r3(Location::regOf(8), NULL);
+	RefExp r3(Location::regOf(8), nullptr);
 	ls.insert(&r3);
 	std::cerr << ls.prints() << "\n";
 	CPPUNIT_ASSERT(ls.existsImplicit(r8));
@@ -637,17 +637,17 @@ StatementTest::testLocationSet()
 void
 StatementTest::testWildLocationSet()
 {
-	Location rof12(opRegOf, new Const(12), NULL);
-	Location rof13(opRegOf, new Const(13), NULL);
+	Location rof12(opRegOf, new Const(12), nullptr);
+	Location rof13(opRegOf, new Const(13), nullptr);
 	Assign a10, a20;
 	a10.setNumber(10);
 	a20.setNumber(20);
 	RefExp r12_10(rof12.clone(), &a10);
 	RefExp r12_20(rof12.clone(), &a20);
-	RefExp r12_0 (rof12.clone(), NULL);
+	RefExp r12_0 (rof12.clone(), nullptr);
 	RefExp r13_10(rof13.clone(), &a10);
 	RefExp r13_20(rof13.clone(), &a20);
-	RefExp r13_0 (rof13.clone(), NULL);
+	RefExp r13_0 (rof13.clone(), nullptr);
 	RefExp r11_10(Location::regOf(11), &a10);
 	RefExp r22_10(Location::regOf(22), &a10);
 	LocationSet ls;
@@ -811,11 +811,11 @@ StatementTest::testClone()
 	                                   Location::regOf(9),
 	                                   new Const(99)));
 	Assign *a2 = new Assign(new IntegerType(16, 1),
-	                        new Location(opParam, new Const("x"), NULL),
-	                        new Location(opParam, new Const("y"), NULL));
+	                        new Location(opParam, new Const("x"), nullptr),
+	                        new Location(opParam, new Const("y"), nullptr));
 	Assign *a3 = new Assign(new IntegerType(16, -1),
-	                        new Location(opParam, new Const("z"), NULL),
-	                        new Location(opParam, new Const("q"), NULL));
+	                        new Location(opParam, new Const("z"), nullptr),
+	                        new Location(opParam, new Const("q"), nullptr));
 	Statement *c1 = a1->clone();
 	Statement *c2 = a2->clone();
 	Statement *c3 = a3->clone();
@@ -1038,11 +1038,11 @@ StatementTest::testAddUsedLocsBool()
 
 	// m[local21 + 16] := phi{0, 372}
 	l.clear();
-	Exp *base = Location::memOf(new Binary(opPlus, Location::local("local21", NULL), new Const(16)));
+	Exp *base = Location::memOf(new Binary(opPlus, Location::local("local21", nullptr), new Const(16)));
 	Assign s372(base, new Const(0));
 	s372.setNumber(372);
 	PhiAssign *pa = new PhiAssign(base);
-	pa->putAt(0, NULL, base);
+	pa->putAt(0, nullptr, base);
 	pa->putAt(1, &s372, base);
 	pa->addUsedLocs(l);
 	// Note: phis were not considered to use blah if they ref m[blah], so local21 was not considered used
@@ -1054,7 +1054,7 @@ StatementTest::testAddUsedLocsBool()
 
 	// m[r28{-} - 4] := -
 	l.clear();
-	ImplicitAssign *ia = new ImplicitAssign(Location::memOf(new Binary(opMinus, new RefExp(Location::regOf(28), NULL), new Const(4))));
+	ImplicitAssign *ia = new ImplicitAssign(Location::memOf(new Binary(opMinus, new RefExp(Location::regOf(28), nullptr), new Const(4))));
 	std::ostringstream ost9;
 	ia->addUsedLocs(l);
 	l.print(ost9);
@@ -1126,9 +1126,9 @@ StatementTest::testSubscriptVars()
 	actual = ost4.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
-	// CaseStatement (before recog) with pDest = r28, switchVar is NULL
+	// CaseStatement (before recog) with pDest = r28, switchVar is nullptr
 	c->setDest(Location::regOf(28));
-	c->setSwitchInfo(NULL);
+	c->setSwitchInfo(nullptr);
 	std::ostringstream ost4a;
 	c->subscriptVar(srch, &s9);
 	ost4a << c;
@@ -1301,8 +1301,8 @@ StatementTest::testStripSizes()
 	                                                                       new Ternary(opZfill,
 	                                                                                   new Const(8),
 	                                                                                   new Const(32),
-	                                                                                   Location::local("local5", NULL)),
-	                                                                       Location::local("param6", NULL))))),
+	                                                                                   Location::local("local5", nullptr)),
+	                                                                       Location::local("param6", nullptr))))),
 	                      new Const(16));
 	Statement *s = new Assign(lhs, rhs);
 	s->stripSizes();

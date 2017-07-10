@@ -65,8 +65,8 @@ DOS4GWBinaryFile::getMainEntryPoint()
 	bool lastWasCall = false;       // True if the last instruction was a call
 
 	const SectionInfo *si = getSectionInfoByName("seg0");     // Assume the first section is text
-	if (si == NULL) si = getSectionInfoByName(".text");
-	if (si == NULL) si = getSectionInfoByName("CODE");
+	if (!si) si = getSectionInfoByName(".text");
+	if (!si) si = getSectionInfoByName("CODE");
 	assert(si);
 	ADDRESS nativeOrigin = si->uNativeAddr;
 	unsigned textSize = si->uSectionSize;
@@ -406,7 +406,7 @@ DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
 	if (it == dlprocptrs.end())
-		return 0;
+		return nullptr;
 	return it->second.c_str();
 }
 

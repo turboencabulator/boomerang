@@ -60,8 +60,8 @@ RtlTest::testClone()
 	Assign *a1 = new Assign(Location::regOf(8),
 	                        new Binary(opPlus, Location::regOf(9), new Const(99)));
 	Assign *a2 = new Assign(new IntegerType(16),
-	                        new Location(opParam, new Const("x"), NULL),
-	                        new Location(opParam, new Const("y"), NULL));
+	                        new Location(opParam, new Const("x"), nullptr),
+	                        new Location(opParam, new Const("y"), nullptr));
 	std::list<Statement *> ls;
 	ls.push_back(a1);
 	ls.push_back(a2);
@@ -183,19 +183,19 @@ RtlTest::testIsCompare()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(SWITCH_SPARC, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_SPARC);
 
 	// Decode second instruction: "sub      %i0, 2, %o1"
 	int iReg;
-	Exp *eOperand = NULL;
+	Exp *eOperand = nullptr;
 	DecodeResult inst = pFE->decodeInstruction(0x10910);
-	CPPUNIT_ASSERT(inst.rtl != NULL);
+	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
 
 	// Decode fifth instruction: "cmp       %o1, 5"
 	inst = pFE->decodeInstruction(0x1091c);
-	CPPUNIT_ASSERT(inst.rtl != NULL);
+	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(9, iReg);
 	std::string expected("5");
@@ -207,12 +207,12 @@ RtlTest::testIsCompare()
 
 	prog = new Prog;
 	pFE = FrontEnd::open(SWITCH_PENT, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_PENTIUM);
 
 	// Decode fifth instruction: "cmp   $0x5,%eax"
 	inst = pFE->decodeInstruction(0x80488fb);
-	CPPUNIT_ASSERT(inst.rtl != NULL);
+	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(24, iReg);
 	std::ostringstream ost2;
@@ -222,7 +222,7 @@ RtlTest::testIsCompare()
 
 	// Decode instruction: "add     $0x4,%esp"
 	inst = pFE->decodeInstruction(0x804890c);
-	CPPUNIT_ASSERT(inst.rtl != NULL);
+	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
 	delete prog;
 }
@@ -233,7 +233,7 @@ RtlTest::testSetConscripts()
 	// m[1000] = m[1000] + 1000
 	Statement *s1 = new Assign(Location::memOf(new Const(1000), 0),
 	                           new Binary(opPlus,
-	                                      Location::memOf(new Const(1000), NULL),
+	                                      Location::memOf(new Const(1000), nullptr),
 	                                      new Const(1000)));
 
 	// "printf("max is %d", (local0 > 0) ? local0 : global1)
@@ -245,10 +245,10 @@ RtlTest::testSetConscripts()
 	Exp *e1 = new Const("max is %d");
 	Exp *e2 = new Ternary(opTern,
 	                      new Binary(opGtr,
-	                                 Location::local("local0", NULL),
+	                                 Location::local("local0", nullptr),
 	                                 new Const(0)),
-	                      Location::local("local0", NULL),
-	                      Location::global("global1", NULL));
+	                      Location::local("local0", nullptr),
+	                      Location::global("global1", nullptr));
 	StatementList args;
 	args.append(new Assign(Location::regOf(8), e1));
 	args.append(new Assign(Location::regOf(9), e2));

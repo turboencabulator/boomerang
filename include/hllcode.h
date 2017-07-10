@@ -107,7 +107,7 @@ public:
 	virtual void    AddProcStart(UserProc *proc) = 0;
 	virtual void    AddProcEnd() = 0;
 	virtual void    AddLocal(const char *name, Type *type, bool last = false) = 0;
-	virtual void    AddGlobal(const char *name, Type *type, Exp *init = NULL) = 0;
+	virtual void    AddGlobal(const char *name, Type *type, Exp *init = nullptr) = 0;
 	virtual void    AddPrototype(UserProc *proc) = 0;
 
 	// comments
@@ -121,10 +121,10 @@ public:
 
 class SyntaxNode {
 protected:
-	        BasicBlock *pbb = NULL;
+	        BasicBlock *pbb = nullptr;
 	        int     nodenum;
 	        int     score = -1;
-	        SyntaxNode *correspond = NULL; // corresponding node in previous state
+	        SyntaxNode *correspond = nullptr; // corresponding node in previous state
 	        bool    notGoto = false;
 	        int     depth;
 
@@ -148,7 +148,7 @@ public:
 	virtual bool    endsWithGoto() = 0;
 	virtual bool    startsWith(SyntaxNode *node) { return this == node; }
 
-	virtual SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) = 0;
+	virtual SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) = 0;
 
 	        int     getScore();
 	        void    addToScore(int n) { score = getScore() + n; }
@@ -173,7 +173,7 @@ public:
 	BlockSyntaxNode();
 	virtual ~BlockSyntaxNode();
 
-	bool isBlock() override { return pbb == NULL; }
+	bool isBlock() override { return !pbb; }
 
 	void ignoreGoto() override {
 		if (pbb) notGoto = true;
@@ -185,22 +185,22 @@ public:
 		return pbb ? 0 : statements.size();
 	}
 	SyntaxNode *getStatement(int n) {
-		assert(pbb == NULL);
+		assert(!pbb);
 		return statements[n];
 	}
 	void prependStatement(SyntaxNode *n) {
-		assert(pbb == NULL);
+		assert(!pbb);
 		statements.resize(statements.size() + 1);
 		for (int i = statements.size() - 1; i > 0; i--)
 			statements[i] = statements[i - 1];
 		statements[0] = n;
 	}
 	void addStatement(SyntaxNode *n) {
-		assert(pbb == NULL);
+		assert(!pbb);
 		statements.push_back(n);
 	}
 	void setStatement(int i, SyntaxNode *n) {
-		assert(pbb == NULL);
+		assert(!pbb);
 		statements[i] = n;
 	}
 
@@ -216,13 +216,13 @@ public:
 	bool startsWith(SyntaxNode *node) override {
 		return this == node || (!statements.empty() && statements[0]->startsWith(node));
 	}
-	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
+	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
 		for (unsigned i = 0; i < statements.size(); i++) {
 			SyntaxNode *n = statements[i]->getEnclosingLoop(pFor, cur);
 			if (n) return n;
 		}
-		return NULL;
+		return nullptr;
 	}
 
 	SyntaxNode *clone() override;
@@ -236,8 +236,8 @@ public:
 
 class IfThenSyntaxNode : public SyntaxNode {
 protected:
-	SyntaxNode *pThen = NULL;
-	Exp *cond = NULL;
+	SyntaxNode *pThen = nullptr;
+	Exp *cond = nullptr;
 
 public:
 	IfThenSyntaxNode();
@@ -253,7 +253,7 @@ public:
 	SyntaxNode *clone() override;
 	SyntaxNode *replace(SyntaxNode *from, SyntaxNode *to) override;
 
-	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
+	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
 		return pThen->getEnclosingLoop(pFor, cur);
 	}
@@ -270,9 +270,9 @@ public:
 
 class IfThenElseSyntaxNode : public SyntaxNode {
 protected:
-	SyntaxNode *pThen = NULL;
-	SyntaxNode *pElse = NULL;
-	Exp *cond = NULL;
+	SyntaxNode *pThen = nullptr;
+	SyntaxNode *pElse = nullptr;
+	Exp *cond = nullptr;
 
 public:
 	IfThenElseSyntaxNode();
@@ -289,7 +289,7 @@ public:
 	}
 	bool    endsWithGoto() override { return false; }
 
-	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
+	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
 		SyntaxNode *n = pThen->getEnclosingLoop(pFor, cur);
 		if (n) return n;
@@ -311,8 +311,8 @@ public:
 
 class PretestedLoopSyntaxNode : public SyntaxNode {
 protected:
-	SyntaxNode *pBody = NULL;
-	Exp *cond = NULL;
+	SyntaxNode *pBody = nullptr;
+	Exp *cond = nullptr;
 
 public:
 	PretestedLoopSyntaxNode();
@@ -324,7 +324,7 @@ public:
 	int     getNumOutEdges() override { return 1; }
 	SyntaxNode *getOutEdge(SyntaxNode *root, int n) override;
 	bool    endsWithGoto() override { return false; }
-	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
+	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
 		return pBody->getEnclosingLoop(pFor, this);
 	}
@@ -343,8 +343,8 @@ public:
 
 class PostTestedLoopSyntaxNode : public SyntaxNode {
 protected:
-	SyntaxNode *pBody = NULL;
-	Exp *cond = NULL;
+	SyntaxNode *pBody = nullptr;
+	Exp *cond = nullptr;
 
 public:
 	PostTestedLoopSyntaxNode();
@@ -356,7 +356,7 @@ public:
 	int     getNumOutEdges() override { return 1; }
 	SyntaxNode *getOutEdge(SyntaxNode *root, int n) override;
 	bool    endsWithGoto() override { return false; }
-	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
+	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
 		return pBody->getEnclosingLoop(pFor, this);
 	}
@@ -375,7 +375,7 @@ public:
 
 class InfiniteLoopSyntaxNode : public SyntaxNode {
 protected:
-	SyntaxNode *pBody = NULL;
+	SyntaxNode *pBody = nullptr;
 
 public:
 	InfiniteLoopSyntaxNode();
@@ -385,9 +385,9 @@ public:
 	bool    isBranch() override { return false; }
 
 	int     getNumOutEdges() override { return 0; }
-	SyntaxNode *getOutEdge(SyntaxNode *root, int n) override { return NULL; }
+	SyntaxNode *getOutEdge(SyntaxNode *root, int n) override { return nullptr; }
 	bool    endsWithGoto() override { return false; }
-	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = NULL) override {
+	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
 		return pBody->getEnclosingLoop(pFor, this);
 	}

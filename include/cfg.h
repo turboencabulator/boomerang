@@ -79,8 +79,8 @@ class Cfg {
 	/*
 	 * The entry and exit BBs.
 	 */
-	BasicBlock *entryBB = NULL;
-	BasicBlock *exitBB = NULL;
+	BasicBlock *entryBB = nullptr;
+	BasicBlock *exitBB = nullptr;
 
 	/*
 	 * True if well formed.
@@ -152,7 +152,7 @@ public:
 	 * NOTE: You cannot assume that the returned BB will have the RTL associated with pStart as its first RTL, since
 	 * the BB could be split. You can however assume that the returned BB is suitable for adding out edges (i.e. if
 	 * the BB is split, you get the "bottom" part of the BB, not the "top" (with lower addresses at the "top").
-	 * Returns NULL if not successful, or if there already exists a completed BB at this address (this can happen
+	 * Returns nullptr if not successful, or if there already exists a completed BB at this address (this can happen
 	 * with certain kinds of forward branches).
 	 */
 	BasicBlock *newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError);
@@ -393,7 +393,7 @@ private:
 	 * BB to not overlap the existing one.
 	 * Returns a pointer to the "bottom" (new) part of the BB.
 	 */
-	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB = 0, bool bDelRtls = false);
+	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB = nullptr, bool bDelRtls = false);
 
 	/*
 	 * Completes the merge of pb1 and pb2 by adjusting out edges. No checks are made that the merge is valid

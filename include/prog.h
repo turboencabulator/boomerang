@@ -42,7 +42,7 @@ typedef std::map<ADDRESS, Proc *, std::less<ADDRESS> > PROGMAP;
 
 class Global {
 private:
-	        Type       *type = NULL;
+	        Type       *type = nullptr;
 	        ADDRESS     uaddr = 0;
 	        std::string nam = "";
 
@@ -55,7 +55,7 @@ public:
 	        void        meetType(Type *ty);
 	        ADDRESS     getAddress() { return uaddr; }
 	        const char *getName() { return nam.c_str(); }
-	        Exp        *getInitialValue(Prog *prog);  // Get the initial value as an expression (or NULL if not initialised)
+	        Exp        *getInitialValue(Prog *prog);  // Get the initial value as an expression (or nullptr if not initialised)
 	        void        print(std::ostream &os, Prog *prog);  // Print to stream os
 
 protected:
@@ -81,7 +81,7 @@ public:
 	        int         getNumProcs();                  // # of procedures stored in prog
 	        int         getNumUserProcs();              // # of user procedures stored in prog
 	        Proc       *getProc(int i) const;           // returns pointer to indexed proc
-	// Find the Proc with given address, NULL if none, -1 if deleted
+	// Find the Proc with given address, nullptr if none, -1 if deleted
 	        Proc       *findProc(ADDRESS uAddr) const;
 	// Find the Proc with the given name
 	        Proc       *findProc(const char *name) const;
@@ -172,8 +172,8 @@ public:
 
 	// Generate code
 	        void        generateCode(std::ostream &os);
-	        void        generateCode(Cluster *cluster = NULL, UserProc *proc = NULL, bool intermixRTL = false);
-	        void        generateRTL(Cluster *cluster = NULL, UserProc *proc = NULL);
+	        void        generateCode(Cluster *cluster = nullptr, UserProc *proc = nullptr, bool intermixRTL = false);
+	        void        generateRTL(Cluster *cluster = nullptr, UserProc *proc = nullptr);
 
 	// Print this program (primarily for debugging)
 	        void        print(std::ostream &out);
@@ -215,7 +215,7 @@ public:
 	        ArrayType  *makeArrayType(ADDRESS u, Type *t);
 
 	// Indicate that a given global has been seen used in the program.
-	        bool        globalUsed(ADDRESS uaddr, Type *knownType = NULL);
+	        bool        globalUsed(ADDRESS uaddr, Type *knownType = nullptr);
 
 	// Get the type of a global variable
 	        Type       *getGlobalType(const char *nam);
@@ -272,8 +272,8 @@ public:
 	        Exp        *addReloc(Exp *e, ADDRESS lc);
 
 protected:
-	        BinaryFile *pBF = NULL;         // Pointer to the BinaryFile object for the program
-	        FrontEnd   *pFE = NULL;         // Pointer to the FrontEnd object for the project
+	        BinaryFile *pBF = nullptr;      // Pointer to the BinaryFile object for the program
+	        FrontEnd   *pFE = nullptr;      // Pointer to the FrontEnd object for the project
 
 	/* Persistent state */
 	        std::string m_name, m_path;     // name of the program and its full path

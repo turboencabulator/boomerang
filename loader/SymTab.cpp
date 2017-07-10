@@ -35,7 +35,7 @@ SymTab::Add(ADDRESS a, const char *s)
 }
 
 /**
- * \brief Find an entry by address; NULL if none.
+ * \brief Find an entry by address; nullptr if none.
  */
 const char *
 SymTab::find(ADDRESS a)
@@ -43,7 +43,7 @@ SymTab::find(ADDRESS a)
 	std::map<ADDRESS, std::string>::iterator ff;
 	ff = amap.find(a);
 	if (ff == amap.end())
-		return NULL;
+		return nullptr;
 	return ff->second.c_str();
 }
 

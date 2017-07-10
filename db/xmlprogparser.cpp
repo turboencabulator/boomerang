@@ -132,20 +132,20 @@ public:
 	int tag;
 	int n;
 	std::string str;
-	Prog *prog = NULL;
+	Prog *prog = nullptr;
 	Global *global;
 	Cluster *cluster;
-	Proc *proc = NULL;
-	Signature *signature = NULL;
-	Cfg *cfg = NULL;
-	BasicBlock *bb = NULL;
-	RTL *rtl = NULL;
-	Statement *stmt = NULL;
-	Parameter *param = NULL;
-	// ImplicitParameter *implicitParam = NULL;
-	Return *ret = NULL;
-	Type *type = NULL;
-	Exp *exp = NULL, *symbol;
+	Proc *proc = nullptr;
+	Signature *signature = nullptr;
+	Cfg *cfg = nullptr;
+	BasicBlock *bb = nullptr;
+	RTL *rtl = nullptr;
+	Statement *stmt = nullptr;
+	Parameter *param = nullptr;
+	// ImplicitParameter *implicitParam = nullptr;
+	Return *ret = nullptr;
+	Type *type = nullptr;
+	Exp *exp = nullptr, *symbol;
 	std::list<Proc *> procs;
 
 	Context(int tag) : tag(tag) { }
@@ -182,7 +182,7 @@ XMLProgParser::getAttr(const char **attr, const char *name)
 	for (int i = 0; attr[i]; i += 2)
 		if (!strcmp(attr[i], name))
 			return attr[i + 1];
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -228,13 +228,13 @@ Prog *
 XMLProgParser::parse(const char *filename)
 {
 	FILE *f = fopen(filename, "r");
-	if (f == NULL)
-		return NULL;
+	if (!f)
+		return nullptr;
 	fclose(f);
 
 	while (!stack.empty())
 		stack.pop();
-	Prog *prog = NULL;
+	Prog *prog = nullptr;
 	for (phase = 0; phase < 2; phase++) {
 		parseFile(filename);
 		if (stack.top()->prog) {
@@ -242,8 +242,8 @@ XMLProgParser::parse(const char *filename)
 			parseChildren(prog->getRootCluster());
 		}
 	}
-	if (prog == NULL)
-		return NULL;
+	if (!prog)
+		return nullptr;
 	//FrontEnd *pFE = FrontEnd::open(prog->getPath(), prog);  // Path is usually empty!?
 	FrontEnd *pFE = FrontEnd::open(prog->getPathAndName(), prog);
 	return prog;
@@ -253,9 +253,9 @@ void
 XMLProgParser::parseFile(const char *filename)
 {
 	FILE *f = fopen(filename, "r");
-	if (f == NULL)
+	if (!f)
 		return;
-	XML_Parser p = XML_ParserCreate(NULL);
+	XML_Parser p = XML_ParserCreate(nullptr);
 	if (!p) {
 		fprintf(stderr, "Couldn't allocate memory for parser\n");
 		return;
@@ -327,16 +327,16 @@ XMLProgParser::addId(const char **attr, void *x)
 void *
 XMLProgParser::findId(const char *id) const
 {
-	if (id == NULL)
-		return NULL;
+	if (!id)
+		return nullptr;
 	int n = atoi(id);
 	if (n == 0)
-		return NULL;
+		return nullptr;
 	std::map<int, void *>::const_iterator it = idToX.find(n);
 	if (it == idToX.end()) {
 		std::cerr << "findId could not find \"" << id << "\"\n";
 		assert(false);
-		return NULL;
+		return nullptr;
 	}
 	return it->second;
 }
@@ -1156,7 +1156,7 @@ XMLProgParser::start_inedge(Context *node, const char **attr)
 	if (phase == 1)
 		node->bb = (BasicBlock *)findId(getAttr(attr, "bb"));
 	else
-		node->bb = NULL;
+		node->bb = nullptr;
 }
 
 void
@@ -1175,7 +1175,7 @@ XMLProgParser::start_outedge(Context *node, const char **attr)
 	if (phase == 1)
 		node->bb = (BasicBlock *)findId(getAttr(attr, "bb"));
 	else
-		node->bb = NULL;
+		node->bb = nullptr;
 }
 
 void
@@ -1205,7 +1205,7 @@ XMLProgParser::start_order(Context *node, const char **attr)
 	if (phase == 1)
 		node->bb = (BasicBlock *)findId(getAttr(attr, "bb"));
 	else
-		node->bb = NULL;
+		node->bb = nullptr;
 }
 
 void
@@ -1224,7 +1224,7 @@ XMLProgParser::start_revorder(Context *node, const char **attr)
 	if (phase == 1)
 		node->bb = (BasicBlock *)findId(getAttr(attr, "bb"));
 	else
-		node->bb = NULL;
+		node->bb = nullptr;
 }
 
 void
@@ -1422,7 +1422,7 @@ XMLProgParser::addChildTo_callstmt(Context *node, const Context *child) const
 		}
 		return;
 	}
-	Exp *returnExp = NULL;
+	Exp *returnExp = nullptr;
 	switch (child->tag) {
 	case e_dest:
 		call->setDest(child->exp);
@@ -1829,7 +1829,7 @@ XMLProgParser::start_pointertype(Context *node, const char **attr)
 		node->type = (Type *)findId(getAttr(attr, "id"));
 		return;
 	}
-	node->type = new PointerType(NULL);
+	node->type = new PointerType(nullptr);
 	addId(attr, node->type);
 }
 

@@ -205,7 +205,7 @@ public:
 	void        dump();
 	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
 	bool        exists(Exp *e);                         // Return true if the location exists in the set
-	Exp        *findNS(Exp *e);                         // Find location e (no subscripts); NULL if not found
+	Exp        *findNS(Exp *e);                         // Find location e (no subscripts); nullptr if not found
 	bool        existsImplicit(Exp *e);                 // Search for location e{-} or e{0} (e has no subscripts)
 	// Return an iterator to the found item (or end() if not). Only really makes sense if e has a wildcard
 	iterator    find(Exp *e) { return lset.find(e); }
@@ -252,7 +252,7 @@ public:
 	void        unionwith(RangeMap &other);
 	void        widenwith(RangeMap &other);
 	void        print(std::ostream &os);
-	Exp        *substInto(Exp *e, std::set<Exp *, lessExpStar> *only = NULL);
+	Exp        *substInto(Exp *e, std::set<Exp *, lessExpStar> *only = nullptr);
 	void        killAllMemOfs();
 	void        clear() { ranges.clear(); }
 	bool        isSubset(RangeMap &other);

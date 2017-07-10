@@ -191,7 +191,7 @@ public:
 	void        updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc);
 
 	/**
-	 * Find the definition for a location. If not found, return NULL
+	 * Find the definition for a location.  If not found, return nullptr.
 	 */
 	Exp        *findDefFor(Exp *e);
 

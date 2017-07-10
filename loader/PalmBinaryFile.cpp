@@ -72,8 +72,8 @@ PalmBinaryFile::load(std::istream &ifs)
 
 	// Allocate the section information
 	m_pSections = new SectionInfo[m_iNumSections];
-	SectionInfo *pData = NULL;
-	const SectionInfo *pCode0 = NULL;
+	SectionInfo *pData = nullptr;
+	const SectionInfo *pCode0 = nullptr;
 
 	// Iterate through the resource headers (generating section info structs)
 	unsigned char *p = m_pImage + 0x4E;          // First resource header
@@ -305,11 +305,12 @@ PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 		if (offset < numTrapStrings)
 			return trapNames[offset];
 		else
-			return 0;
+			return nullptr;
 	}
 	if (dwAddr == getMainEntryPoint())
 		return "PilotMain";
-	else return 0;
+	else
+		return nullptr;
 }
 
 /**
@@ -353,7 +354,7 @@ int
 PalmBinaryFile::getAppID() const
 {
 	// The answer is in the header. Return 0 if file not loaded
-	if (m_pImage == 0)
+	if (!m_pImage)
 		return 0;
 	// Beware the endianness (large)
 #define OFFSET_ID 0x40
@@ -394,7 +395,7 @@ static const SWord GccCallMain[] = {
  * \param pattSize  Size of the pattern (in SWords).
  * \param max       Max number of SWords to search.
  *
- * \returns 0 if no match; pointer to start of match if found.
+ * \returns nullptr if no match; pointer to start of match if found.
  */
 static const SWord *
 findPattern(const SWord *start, const SWord *patt, size_t pattSize, ptrdiff_t max)
@@ -414,7 +415,7 @@ findPattern(const SWord *start, const SWord *patt, size_t pattSize, ptrdiff_t ma
 			return start;
 	}
 	// Each start position failed
-	return 0;
+	return nullptr;
 }
 
 /**
@@ -477,7 +478,7 @@ PalmBinaryFile::generateBinFiles(const std::string &path) const
 			fullName += name;
 			// Create the file
 			FILE *f = fopen(fullName.c_str(), "w");
-			if (f == NULL) {
+			if (!f) {
 				fprintf(stderr, "Could not open %s for writing binary file\n", fullName.c_str());
 				return;
 			}

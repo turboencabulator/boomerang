@@ -88,7 +88,7 @@ transformation
 	;
 
 optional_where_clause
-	: /* empty */ { $$ = NULL; }
+	: /* empty */ { $$ = nullptr; }
 	| WHERE exp   { $$ = $2; }
 	;
 

@@ -40,7 +40,7 @@ CfgTest::testDominators()
 
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
 
@@ -97,7 +97,7 @@ CfgTest::testSemiDominators()
 
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(SEMI_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
 
@@ -148,7 +148,7 @@ CfgTest::testPlacePhi()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
 
@@ -187,7 +187,7 @@ CfgTest::testPlacePhi2()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
 
@@ -245,7 +245,7 @@ CfgTest::testRenameVars()
 {
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE != 0);
+	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
 

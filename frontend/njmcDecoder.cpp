@@ -101,13 +101,13 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
 {
 	if (RTLDict.ParamSet.find(name) == RTLDict.ParamSet.end()) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
-		return 0;
+		return nullptr;
 	}
 	assert(RTLDict.DetParamMap.find(name) != RTLDict.DetParamMap.end());
 	ParamEntry &ent = RTLDict.DetParamMap[name];
 	if (ent.kind != PARAM_ASGN && ent.kind != PARAM_LAMBDA) {
 		std::cerr << "Attempt to instantiate expressionless parameter '" << name << "'\n";
-		return 0;
+		return nullptr;
 	}
 	// Start with the RHS
 	assert(ent.asgn->getKind() == STMT_ASSIGN);
@@ -116,7 +116,7 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
 	va_list args;
 	va_start(args, name);
 	for (std::list<std::string>::iterator it = ent.params.begin(); it != ent.params.end(); it++) {
-		Exp *formal = new Location(opParam, new Const(it->c_str()), NULL);
+		Exp *formal = new Location(opParam, new Const(it->c_str()), nullptr);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
 		result = result->searchReplaceAll(formal, actual, change);
@@ -158,7 +158,7 @@ NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 	va_list args;
 	va_start(args, exp);
 	for (std::list<std::string>::iterator it = ent.funcParams.begin(); it != ent.funcParams.end(); it++) {
-		Exp *formal = new Location(opParam, new Const(it->c_str()), NULL);
+		Exp *formal = new Location(opParam, new Const(it->c_str()), nullptr);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
 		exp = exp->searchReplaceAll(formal, actual, change);
@@ -175,7 +175,7 @@ DecodeResult::reset()
 	numBytes = 0;
 	type = NCT;
 	valid = true;
-	rtl = NULL;
+	rtl = nullptr;
 	reDecode = false;
 	forceOutEdge = 0;
 }

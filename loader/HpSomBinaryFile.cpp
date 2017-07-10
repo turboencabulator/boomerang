@@ -238,7 +238,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	m_pSections[3].pSectionName = "$BSS$";
 	// For now, assume that BSS starts at the end of the initialised data
 	m_pSections[3].uNativeAddr = AUXHDR(6) + AUXHDR(5);
-	m_pSections[3].uHostAddr = 0;           // Not applicable
+	m_pSections[3].uHostAddr = nullptr;     // Not applicable
 	m_pSections[3].uSectionSize = AUXHDR(8);
 	m_pSections[3].uSectionEntrySize = 1;   // Not applicable
 	m_pSections[3].bCode = false;

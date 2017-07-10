@@ -54,7 +54,7 @@ main(int argc, char *argv[])
 
 	// Load the file
 	BinaryFile *bf = BinaryFile::open(argv[1]);
-	if (bf == NULL) {
+	if (!bf) {
 		return 2;
 	}
 

@@ -147,12 +147,12 @@ Location::Location(OPER op, Exp *exp, UserProc *proc) :
 	proc(proc)
 {
 	assert(op == opRegOf || op == opMemOf || op == opLocal || op == opGlobal || op == opParam || op == opTemp);
-	if (proc == NULL) {
+	if (!proc) {
 		// eep.. this almost always causes problems
 		Exp *e = exp;
 		if (e) {
 			bool giveUp = false;
-			while (this->proc == NULL && !giveUp) {
+			while (!this->proc && !giveUp) {
 				switch (e->getOper()) {
 				case opRegOf:
 				case opMemOf:
@@ -453,10 +453,10 @@ RefExp::operator ==(const Exp &o) const
 	if (!(*subExp1 == *((RefExp &)o).subExp1)) return false;
 	// Allow a def of (Statement *)-1 as a wild card
 	if ((int)def == -1) return true;
-	// Allow a def of NULL to match a def of an implicit assignment
+	// Allow a def of nullptr to match a def of an implicit assignment
 	if ((int)((RefExp &)o).def == -1) return true;
-	if (def == NULL && ((RefExp &)o).isImplicitDef()) return true;
-	if (((RefExp &)o).def == NULL && def && def->isImplicit()) return true;
+	if (!def && ((RefExp &)o).isImplicitDef()) return true;
+	if (!((RefExp &)o).def && def && def->isImplicit()) return true;
 	return def == ((RefExp &)o).def;
 }
 bool
@@ -784,7 +784,7 @@ Binary::print(std::ostream &os, bool html)
 	}
 
 	// Ordinary infix operators. Emit parens around the binary
-	if (p1 == NULL)
+	if (!p1)
 		os << "<NULL>";
 	else
 		p1->printr(os, html);
@@ -833,7 +833,7 @@ Binary::print(std::ostream &os, bool html)
 		assert(0);
 	}
 
-	if (p2 == NULL)
+	if (!p2)
 		os << "<NULL>";
 	else
 		p2->printr(os, html);
@@ -1400,14 +1400,14 @@ Exp *
 Exp::getGuard()
 {
 	if (op == opGuard) return ((Unary *)this)->getSubExp1();
-	return NULL;
+	return nullptr;
 }
 
 /*==============================================================================
  * FUNCTION:        Exp::match
  * OVERVIEW:        Matches this expression to the given patten
  * PARAMETERS:      pattern to match
- * RETURNS:         list of variable bindings, or NULL if matching fails
+ * RETURNS:         list of variable bindings, or nullptr if matching fails
  *============================================================================*/
 Exp *
 Exp::match(Exp *pattern)
@@ -1419,7 +1419,7 @@ Exp::match(Exp *pattern)
 		                  new Binary(opEquals, pattern->clone(), this->clone()),
 		                  new Terminal(opNil));
 	}
-	return NULL;
+	return nullptr;
 }
 Exp *
 Unary::match(Exp *pattern)
@@ -1436,11 +1436,11 @@ Binary::match(Exp *pattern)
 	assert(subExp1 && subExp2);
 	if (op == pattern->getOper()) {
 		Exp *b_lhs = subExp1->match(pattern->getSubExp1());
-		if (b_lhs == NULL)
-			return NULL;
+		if (!b_lhs)
+			return nullptr;
 		Exp *b_rhs = subExp2->match(pattern->getSubExp2());
-		if (b_rhs == NULL)
-			return NULL;
+		if (!b_rhs)
+			return nullptr;
 		if (b_lhs->getOper() == opNil)
 			return b_rhs;
 		if (b_rhs->getOper() == opNil)
@@ -1457,7 +1457,7 @@ Binary::match(Exp *pattern)
 					LOG << "disagreement in match: " << l->getSubExp1()->getSubExp2()
 					    << " != " << r->getSubExp1()->getSubExp2() << "\n";
 #endif
-					return NULL;  // must be agreement between LHS and RHS
+					return nullptr;  // must be agreement between LHS and RHS
 				} else
 					result = new Binary(opList, l->getSubExp1()->clone(), result);
 		for (Exp *r = b_rhs; r->getOper() != opNil; r = r->getSubExp2())
@@ -1516,7 +1516,7 @@ tlstrchr(const char *str, char ch)
 		if (*str)
 			str++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -1636,7 +1636,7 @@ RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	const char *end = pattern + strlen(pattern) - 1;
 	if (end > pattern && *end == '}') {
 		end--;
-		if (*end == '-' && def == NULL) {
+		if (*end == '-' && !def) {
 			char *sub = strdup(pattern);
 			*(sub + (end - 1 - pattern)) = 0;
 			return subExp1->match(sub, bindings);
@@ -1822,7 +1822,7 @@ bool
 Exp::search(Exp *search, Exp *&result)
 {
 	std::list<Exp **> li;
-	result = 0;  // In case it fails; don't leave it unassigned
+	result = nullptr;  // In case it fails; don't leave it unassigned
 	// The search requires a reference to a pointer to this object.
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *top = this;
@@ -2548,9 +2548,9 @@ Binary::polySimplify(bool &bMod)
 		;//delete subExp2;
 		Binary *b = (Binary *)subExp1;
 		subExp2 = b->subExp2;
-		b->subExp2 = 0;
+		b->subExp2 = nullptr;
 		subExp1 = b->subExp1;
-		b->subExp1 = 0;
+		b->subExp1 = nullptr;
 		;//delete b;
 		subExp2 = new Unary(opNeg, subExp2);
 		bMod = true;
@@ -2566,9 +2566,9 @@ Binary::polySimplify(bool &bMod)
 		;//delete subExp2;
 		Binary *b = (Binary *)subExp1;
 		subExp2 = b->subExp2;
-		b->subExp2 = 0;
+		b->subExp2 = nullptr;
 		subExp1 = b->subExp1;
-		b->subExp1 = 0;
+		b->subExp1 = nullptr;
 		;//delete b;
 		bMod = true;
 		return res;
@@ -2586,9 +2586,9 @@ Binary::polySimplify(bool &bMod)
 			;//delete subExp2;
 			subExp2 = b->subExp2;
 			((Const *)subExp2)->setInt(-((Const *)subExp2)->getInt());
-			b->subExp2 = 0;
+			b->subExp2 = nullptr;
 			subExp1 = b->subExp1;
-			b->subExp1 = 0;
+			b->subExp1 = nullptr;
 			;//delete b;
 			bMod = true;
 			return res;
@@ -2603,9 +2603,9 @@ Binary::polySimplify(bool &bMod)
 		;//delete subExp2;
 		Binary *b = (Binary *)subExp1;
 		subExp2 = b->subExp2;
-		b->subExp2 = 0;
+		b->subExp2 = nullptr;
 		subExp1 = b->subExp1;
-		b->subExp1 = 0;
+		b->subExp1 = nullptr;
 		;//delete b;
 		bMod = true;
 		res->setOper(opNotEqual);
@@ -2620,9 +2620,9 @@ Binary::polySimplify(bool &bMod)
 		;//delete subExp2;
 		Binary *b = (Binary *)subExp1;
 		subExp2 = b->subExp2;
-		b->subExp2 = 0;
+		b->subExp2 = nullptr;
 		subExp1 = b->subExp1;
-		b->subExp1 = 0;
+		b->subExp1 = nullptr;
 		;//delete b;
 		bMod = true;
 		res->setOper(opNotEqual);
@@ -2659,9 +2659,9 @@ Binary::polySimplify(bool &bMod)
 		;//delete subExp2;
 		Binary *b = (Binary *)subExp1;
 		subExp2 = b->subExp2;
-		b->subExp2 = 0;
+		b->subExp2 = nullptr;
 		subExp1 = b->subExp1;
-		b->subExp1 = 0;
+		b->subExp1 = nullptr;
 		;//delete b;
 		bMod = true;
 		res->setOper(opLessEq);
@@ -2676,9 +2676,9 @@ Binary::polySimplify(bool &bMod)
 		;//delete subExp2;
 		Binary *b = (Binary *)subExp1;
 		subExp2 = b->subExp2;
-		b->subExp2 = 0;
+		b->subExp2 = nullptr;
 		subExp1 = b->subExp1;
-		b->subExp1 = 0;
+		b->subExp1 = nullptr;
 		;//delete b;
 		bMod = true;
 		res->setOper(opLessEqUns);
@@ -2774,7 +2774,7 @@ Binary::polySimplify(bool &bMod)
 	// FIXME: suspect this was only needed for ADHOC TA
 	// check for exp + n where exp is a pointer to a compound type
 	// becomes &m[exp].m + r where m is the member at offset n and r is n - the offset to member m
-	Type *ty = NULL;  // Type of subExp1
+	Type *ty = nullptr;  // Type of subExp1
 	if (subExp1->isSubscript()) {
 		Statement *def = ((RefExp *)subExp1)->getDef();
 		if (def)
@@ -2791,7 +2791,7 @@ Binary::polySimplify(bool &bMod)
 			unsigned r = c->getOffsetRemainder(n * 8);
 			assert((r % 8) == 0);
 			const char *nam = c->getNameAtOffset(n * 8);
-			if (nam != NULL && std::string("pad") != nam) {
+			if (nam && std::string("pad") != nam) {
 				Location *l = Location::memOf(subExp1);
 				//l->setType(c);
 				res = new Binary(opPlus,
@@ -2969,7 +2969,7 @@ Binary::polySimplify(bool &bMod)
 		Location *loc = (Location *)subExp2;
 		unsigned n = (unsigned)((Const *)subExp1)->getInt();
 		Type *ty = loc->getType();
-		if (ty == NULL)
+		if (!ty)
 			loc->setType(new SizeType(n));
 		else if (ty->getSize() != n)
 			ty->setSize(n);
@@ -3147,7 +3147,7 @@ RefExp::polySimplify(bool &bMod)
 	/* This is a nasty hack.  We assume that %DF{0} is 0.  This happens when string instructions are used without first
 	 * clearing the direction flag.  By convention, the direction flag is assumed to be clear on entry to a procedure.
 	 */
-	if (subExp1->getOper() == opDF && def == NULL) {
+	if (subExp1->getOper() == opDF && !def) {
 		res = new Const(0);
 		bMod = true;
 		return res;
@@ -3381,7 +3381,7 @@ Exp::removeSubscripts(bool &allZero)
 		if ((*xx)->getOper() == opSubscript) {
 			RefExp *r1 = (RefExp *)*xx;
 			Statement *def = r1->getDef();
-			if (!(def == NULL || def->getNumber() == 0)) {
+			if (!(!def || def->getNumber() == 0)) {
 				allZero = false;
 			}
 			bool change;
@@ -3504,7 +3504,7 @@ Const::genConstraints(Exp *result)
 		t = new FloatType();  // size is not known. Assume double for now
 		break;
 	default:
-		return NULL;
+		return nullptr;
 	}
 	TypeVal *tv = new TypeVal(t);
 	Exp *e = new Binary(opEquals, result->clone(), tv);
@@ -3536,8 +3536,8 @@ Unary::genConstraints(Exp *result)
 Exp *
 Ternary::genConstraints(Exp *result)
 {
-	Type *argHasToBe = NULL;
-	Type *retHasToBe = NULL;
+	Type *argHasToBe = nullptr;
+	Type *retHasToBe = nullptr;
 	switch (op) {
 	case opFsize:
 	case opItof:
@@ -3573,7 +3573,7 @@ Ternary::genConstraints(Exp *result)
 	default:
 		break;
 	}
-	Exp *res = NULL;
+	Exp *res = nullptr;
 	if (retHasToBe) {
 		if (result->isTypeVal()) {
 			// result is a constant type, or possibly a partial type such as
@@ -3596,7 +3596,7 @@ Ternary::genConstraints(Exp *result)
 		if (res) res = new Binary(opAnd, res, con);
 		else res = con;
 	}
-	if (res == NULL)
+	if (!res)
 		return new Terminal(opTrue);
 	return res;
 }
@@ -3635,10 +3635,10 @@ Binary::genConstraints(Exp *result)
 {
 	assert(subExp1 && subExp2);
 
-	Type *restrictTo = NULL;
+	Type *restrictTo = nullptr;
 	if (result->isTypeVal())
 		restrictTo = ((TypeVal *)result)->getType();
-	Exp *res = NULL;
+	Exp *res = nullptr;
 	IntegerType *intType = new IntegerType(0);  // Wild size (=0)
 	TypeVal intVal(intType);
 	switch (op) {
@@ -4082,12 +4082,12 @@ TypeVal::accept(ExpModifier *v)
 void
 child(Exp *e, int ind)
 {
-	if (e == NULL) {
+	if (!e) {
 		std::cerr << std::setw(ind + 4) << " " << "<NULL>\n" << std::flush;
 		return;
 	}
 	void *vt = *(void **)e;
-	if (vt == NULL) {
+	if (!vt) {
 		std::cerr << std::setw(ind + 4) << " " << "<NULL VT>\n" << std::flush;
 		return;
 	}
@@ -4164,7 +4164,7 @@ RefExp::printx(int ind)
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << "{";
-	if (def == 0) std::cerr << "NULL";
+	if (!def) std::cerr << "NULL";
 	else std::cerr << std::hex << (unsigned)def << "=" << std::dec << def->getNumber();
 	std::cerr << "}\n" << std::flush;
 	child(subExp1, ind);
@@ -4181,7 +4181,7 @@ Exp::getAnyStrConst()
 		if (e->op == opMemOf)
 			e = ((Location *)e)->getSubExp1();
 	}
-	if (e->op != opStrConst) return NULL;
+	if (e->op != opStrConst) return nullptr;
 	return ((Const *)e)->getStr();
 }
 
@@ -4202,19 +4202,19 @@ Exp::expSubscriptVar(Exp *e, Statement *def)
 	return accept(&es);
 }
 
-// Subscript any occurrences of e with e{-} in this expression Note: subscript with NULL, not implicit assignments as
+// Subscript any occurrences of e with e{-} in this expression Note: subscript with nullptr, not implicit assignments as
 // above
 Exp *
 Exp::expSubscriptValNull(Exp *e)
 {
-	return expSubscriptVar(e, NULL);
+	return expSubscriptVar(e, nullptr);
 }
 
 // Subscript all locations in this expression with their implicit assignments
 Exp *
 Exp::expSubscriptAllNull(/*Cfg *cfg*/)
 {
-	return expSubscriptVar(new Terminal(opWild), NULL /* was NULL, NULL, cfg */);
+	return expSubscriptVar(new Terminal(opWild), nullptr /* was nullptr, nullptr, cfg */);
 }
 
 Location *
@@ -4227,13 +4227,13 @@ Location::local(const char *nam, UserProc *p)
 bool
 RefExp::isImplicitDef()
 {
-	return def == NULL || def->getKind() == STMT_IMPASSIGN;
+	return !def || def->getKind() == STMT_IMPASSIGN;
 }
 
 Exp *
 Exp::bypass()
 {
-	CallBypasser cb(NULL);
+	CallBypasser cb(nullptr);
 	return accept(&cb);
 }
 

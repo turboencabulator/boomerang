@@ -22,7 +22,7 @@ class MainWindow : public QMainWindow {
 	Q_OBJECT
 
 public:
-	MainWindow(QWidget *parent = 0);
+	MainWindow(QWidget *parent = nullptr);
 
 	void errorLoadingFile();
 
@@ -101,9 +101,9 @@ protected:
 
 private:
 	Ui::MainWindow ui;
-	DecompilerThread *decompilerThread = NULL;
+	DecompilerThread *decompilerThread = nullptr;
 
-	QToolButton *step = NULL;
+	QToolButton *step = nullptr;
 
 	int decompiledCount, codeGenCount;
 	std::map<QWidget *, QString> openFiles;

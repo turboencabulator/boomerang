@@ -138,7 +138,7 @@ Win32BinaryFile::getMainEntryPoint()
 	int borlandState = 0;  // State machine for Borland
 
 	const SectionInfo *si = getSectionInfoByName(".text");
-	if (si == NULL) si = getSectionInfoByName("CODE");
+	if (!si) si = getSectionInfoByName("CODE");
 	assert(si);
 	unsigned textSize = si->uSectionSize;
 	if (textSize < 0x200)
@@ -405,7 +405,7 @@ Win32BinaryFile::load(std::istream &ifs)
 	const PEObject *o = (PEObject *)(((char *)m_pPEHeader) + LH(&m_pPEHeader->NtHdrSize) + 24);
 	m_iNumSections = LH(&m_pPEHeader->numObjects);
 	m_pSections = new PESectionInfo[m_iNumSections];
-	//SectionInfo *reloc = NULL;
+	//SectionInfo *reloc = nullptr;
 	for (int i = 0; i < m_iNumSections; i++, o++) {
 		SectionInfo &sect = m_pSections[i];
 		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", (char*)o->ObjectName, LMMH(o->RVA), LMMH(o->PhysicalOffset), LMMH(o->VirtualSize));
@@ -513,7 +513,7 @@ Win32BinaryFile::findJumps(ADDRESS curr)
 {
 	int cnt = 0;  // Count of bytes with no match
 	const SectionInfo *sec = getSectionInfoByName(".text");
-	if (sec == NULL) sec = getSectionInfoByName("CODE");
+	if (!sec) sec = getSectionInfoByName("CODE");
 	assert(sec);
 	// Add to native addr to get host:
 	ptrdiff_t delta = sec->uHostAddr - (char *)sec->uNativeAddr;
@@ -562,7 +562,7 @@ Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 
 	std::map<ADDRESS, std::string>::iterator it = dlprocptrs.find(dwAddr);
 	if (it == dlprocptrs.end())
-		return 0;
+		return nullptr;
 	return it->second.c_str();
 }
 

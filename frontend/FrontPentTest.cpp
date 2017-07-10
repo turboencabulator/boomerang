@@ -42,9 +42,9 @@ FrontPentTest::test1()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_PENT);
-	if (pBF == NULL)
+	if (!pBF)
 		pBF = new BinaryFileStub();
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -86,9 +86,9 @@ FrontPentTest::test2()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_PENT);
-	if (pBF == NULL)
+	if (!pBF)
 		pBF = new BinaryFileStub();
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -123,9 +123,9 @@ FrontPentTest::test3()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_PENT);
-	if (pBF == NULL)
+	if (!pBF)
 		pBF = new BinaryFileStub();
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -159,9 +159,9 @@ FrontPentTest::testBranch()
 
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(BRANCH_PENT);
-	if (pBF == NULL)
+	if (!pBF)
 		pBF = new BinaryFileStub();
-	CPPUNIT_ASSERT(pBF != 0);
+	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
@@ -201,9 +201,9 @@ FrontPentTest::testFindMain()
 {
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(FEDORA2_TRUE);
-	CPPUNIT_ASSERT(pBF != NULL);
+	CPPUNIT_ASSERT(pBF);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
-	CPPUNIT_ASSERT(pFE != NULL);
+	CPPUNIT_ASSERT(pFE);
 	bool found;
 	ADDRESS addr = pFE->getMainEntryPoint(found);
 	ADDRESS expected = 0x8048b10;
@@ -212,9 +212,9 @@ FrontPentTest::testFindMain()
 
 	prog = new Prog;
 	pBF = BinaryFile::open(FEDORA3_TRUE);
-	CPPUNIT_ASSERT(pBF != NULL);
+	CPPUNIT_ASSERT(pBF);
 	pFE = FrontEnd::open(pBF, prog);
-	CPPUNIT_ASSERT(pFE != NULL);
+	CPPUNIT_ASSERT(pFE);
 	addr = pFE->getMainEntryPoint(found);
 	expected = 0x8048c4a;
 	CPPUNIT_ASSERT_EQUAL(expected, addr);
@@ -222,9 +222,9 @@ FrontPentTest::testFindMain()
 
 	prog = new Prog;
 	pBF = BinaryFile::open(SUSE_TRUE);
-	CPPUNIT_ASSERT(pBF != NULL);
+	CPPUNIT_ASSERT(pBF);
 	pFE = FrontEnd::open(pBF, prog);
-	CPPUNIT_ASSERT(pFE != NULL);
+	CPPUNIT_ASSERT(pFE);
 	addr = pFE->getMainEntryPoint(found);
 	expected = 0x8048b60;
 	CPPUNIT_ASSERT_EQUAL(expected, addr);

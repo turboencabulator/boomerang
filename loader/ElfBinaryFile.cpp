@@ -241,7 +241,7 @@ ElfBinaryFile::load(std::istream &ifs)
  * \param idx     Section index.  Section should be of type SHT_STRTAB.
  * \param offset  Offset (bytes) within section.
  *
- * \returns Pointer into the string table, or NULL on error.
+ * \returns Pointer into the string table, or nullptr on error.
  */
 const char *
 ElfBinaryFile::getStrPtr(int idx, int offset)
@@ -249,7 +249,7 @@ ElfBinaryFile::getStrPtr(int idx, int offset)
 	if (idx < 0) {
 		// Most commonly, this will be an index of -1, because a call to getSectionIndexByName() failed
 		fprintf(stderr, "Error! getStrPtr passed index of %d\n", idx);
-		return NULL;
+		return nullptr;
 	}
 	// Get a pointer to the start of the string table
 	const char *pSym = m_pSections[idx].uHostAddr;
@@ -308,11 +308,11 @@ ElfBinaryFile::AddSyms(int secIndex)
 	ADDRESS addrPlt = siPlt ? siPlt->uNativeAddr : 0;
 	const SectionInfo *siRelPlt = getSectionInfoByName(".rel.plt");
 	int sizeRelPlt = 8;  // Size of each entry in the .rel.plt table
-	if (siRelPlt == NULL) {
+	if (!siRelPlt) {
 		siRelPlt = getSectionInfoByName(".rela.plt");
 		sizeRelPlt = 12;  // Size of each entry in the .rela.plt table is 12 bytes
 	}
-	const char *addrRelPlt = NULL;
+	const char *addrRelPlt = nullptr;
 	int numRelPlt = 0;
 	if (siRelPlt) {
 		addrRelPlt = siRelPlt->uHostAddr;
@@ -422,7 +422,7 @@ void
 ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 {
 	SectionInfo *pSect = &m_pSections[relSecIdx];
-	if (pSect == 0) return;
+	if (!pSect) return;
 	// Calc number of relocations
 	int nRelocs = pSect->uSectionSize / pSect->uSectionEntrySize;
 	m_pReloc = (const Elf32_Rel *)pSect->uHostAddr;  // Pointer to symbols
@@ -472,15 +472,15 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 #endif
 
 /**
- * \note This function overrides a simple "return 0" function in the base
- * class (i.e. BinaryFile::getSymbolByAddress())
+ * \note This function overrides a simple "return nullptr" function in the
+ * base class (i.e. BinaryFile::getSymbolByAddress())
  */
 const char *
 ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator aa = m_SymTab.find(dwAddr);
 	if (aa == m_SymTab.end())
-		return 0;
+		return nullptr;
 	return aa->second.c_str();
 }
 
@@ -494,7 +494,7 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
 	int iStr;                       // Section index of the string table
 
 	const SectionInfo *pSect = getSectionInfoByName(".dynsym");
-	if (pSect == 0) {
+	if (!pSect) {
 		// We have a file with no .dynsym section, and hence no .hash section (from my understanding - MVE).
 		// It seems that the only alternative is to linearly search the symbol tables.
 		// This must be one of the big reasons that linking is so slow! (at least, for statically linked files)
@@ -502,9 +502,9 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
 		return SearchValueByName(pName, pVal);
 	}
 	pSym = (const Elf32_Sym *)pSect->uHostAddr;
-	if (pSym == 0) return false;
+	if (!pSym) return false;
 	pSect = getSectionInfoByName(".hash");
-	if (pSect == 0) return false;
+	if (!pSect) return false;
 	pHash = (const int *)pSect->uHostAddr;
 	iStr = getSectionIndexByName(".dynstr");
 
@@ -557,9 +557,9 @@ ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *
 	// Note: this assumes .symtab. Many files don't have this section!!!
 
 	const SectionInfo *pSect = getSectionInfoByName(pSectName);
-	if (pSect == 0) return false;
+	if (!pSect) return false;
 	const SectionInfo *pStrSect = getSectionInfoByName(pStrName);
-	if (pStrSect == 0) return false;
+	if (!pStrSect) return false;
 	const char *pStr = pStrSect->uHostAddr;
 	// Find number of symbols
 	int n = pSect->uSectionSize / pSect->uSectionEntrySize;
@@ -643,7 +643,7 @@ ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 	if (value == 0) return 0;  // Symbol doesn't even exist!
 
 	const SectionInfo *pSect = getSectionInfoByName(pSectName);
-	if (pSect == 0) return 0;
+	if (!pSect) return 0;
 	// Find number of symbols
 	int n = pSect->uSectionSize / pSect->uSectionEntrySize;
 	const Elf32_Sym *pSym = (const Elf32_Sym *)pSect->uHostAddr;
@@ -712,7 +712,7 @@ ElfBinaryFile::getEntryPoint()
 const char *
 ElfBinaryFile::NativeToHostAddress(ADDRESS uNative)
 {
-	if (m_iNumSections == 0) return 0;
+	if (m_iNumSections == 0) return nullptr;
 	return &m_pSections[1].uHostAddr[uNative - m_pSections[1].uNativeAddr];
 }
 
@@ -773,7 +773,7 @@ ElfBinaryFile::getDependencyList()
 {
 	std::list<const char *> result;
 	const SectionInfo *dynsect = getSectionInfoByName(".dynamic");
-	if (dynsect == NULL)
+	if (!dynsect)
 		return result; /* no dynamic section = statically linked */
 
 	ADDRESS strtab = NO_ADDRESS;
@@ -790,7 +790,7 @@ ElfBinaryFile::getDependencyList()
 	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
 		if (dyn->d_tag == DT_NEEDED) {
 			const char *need = stringtab + dyn->d_un.d_val;
-			if (need != NULL)
+			if (need)
 				result.push_back(need);
 		}
 	}
@@ -864,8 +864,8 @@ ElfBinaryFile::getDynamicGlobalMap()
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
 
 	const SectionInfo *pSect = getSectionInfoByName(".rel.bss");
-	if (pSect == 0) pSect = getSectionInfoByName(".rela.bss");
-	if (pSect == 0) {
+	if (!pSect) pSect = getSectionInfoByName(".rela.bss");
+	if (!pSect) {
 		// This could easily mean that this file has no dynamic globals, and
 		// that is fine.
 		return ret;
@@ -874,7 +874,7 @@ ElfBinaryFile::getDynamicGlobalMap()
 	int numEnt = pSect->uSectionSize / pSect->uSectionEntrySize;
 
 	const SectionInfo *sym = getSectionInfoByName(".dynsym");
-	if (sym == 0) {
+	if (!sym) {
 		fprintf(stderr, "Could not find section .dynsym in source binary file");
 		return ret;
 	}
@@ -1071,7 +1071,7 @@ void
 ElfBinaryFile::applyRelocations()
 {
 	int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
-	if (m_pImage == 0) return;  // No file loaded
+	if (!m_pImage) return;  // No file loaded
 	int machine = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_machine);
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	switch (machine) {
@@ -1093,7 +1093,7 @@ ElfBinaryFile::applyRelocations()
 					// NOTE: the r_offset is different for .o files (E_REL in the e_type header field) than for exe's
 					// and shared objects!
 					ADDRESS destNatOrigin = 0;
-					char *destHostOrigin = 0;
+					char *destHostOrigin = nullptr;
 					if (e_type == E_REL) {
 						int destSection = m_sh_info[i];
 						destNatOrigin  = m_pSections[destSection].uNativeAddr;
@@ -1183,7 +1183,7 @@ bool
 ElfBinaryFile::isRelocationAt(ADDRESS uNative)
 {
 	//int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
-	if (m_pImage == 0) return false;  // No file loaded
+	if (!m_pImage) return false;  // No file loaded
 	int machine = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_machine);
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	switch (machine) {
@@ -1247,7 +1247,7 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative)
  *
  * \param sym  Symbol name.
  *
- * \returns Pointer into a string table, pointing to a filename, or NULL if
+ * \returns Pointer into a string table, pointing to a filename, or nullptr if
  * not found or if it is a zero-length string.
  */
 const char *
@@ -1262,7 +1262,7 @@ ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 		}
 	}
 	if (secIndex == 0)
-		return NULL;
+		return nullptr;
 
 	//int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	SectionInfo *pSect = &m_pSections[secIndex];
@@ -1271,7 +1271,7 @@ ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 	m_pSym = (const Elf32_Sym *)pSect->uHostAddr;  // Pointer to symbols
 	int strIdx = m_sh_link[secIndex];  // sh_link points to the string table
 
-	const char *filename = NULL;
+	const char *filename = nullptr;
 
 	// Index 0 is a dummy entry
 	for (int i = 1; i < nSyms; i++) {
@@ -1293,7 +1293,7 @@ ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 		if (str == sym)
 			return filename;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /**

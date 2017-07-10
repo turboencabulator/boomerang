@@ -117,7 +117,7 @@ IntelCoffFile::load(std::istream &ifs)
 		strncpy(sectname, psh[iSection].sch_sectname, sizeof psh->sch_sectname);
 		sectname[sizeof psh->sch_sectname] = '\0';
 
-		SectionInfo *psi = NULL;
+		SectionInfo *psi = nullptr;
 		int sidx = getSectionIndexByName(sectname);
 		if (-1 == sidx) {
 			SectionInfo si;
@@ -381,7 +381,7 @@ IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 			return (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));
 		}
 	}
-	return 0;
+	return nullptr;
 }
 
 int

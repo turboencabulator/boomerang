@@ -93,7 +93,7 @@ BlockSyntaxNode::getOutEdge(SyntaxNode *root, int n)
 	if (pbb)
 		return root->findNodeFor(pbb->getOutEdge(n));
 	if (statements.empty())
-		return NULL;
+		return nullptr;
 	return statements[statements.size() - 1]->getOutEdge(root, n);
 }
 
@@ -102,10 +102,10 @@ BlockSyntaxNode::findNodeFor(BasicBlock *bb)
 {
 	if (pbb == bb)
 		return this;
-	SyntaxNode *n = NULL;
+	SyntaxNode *n = nullptr;
 	for (unsigned i = 0; i < statements.size(); i++) {
 		n = statements[i]->findNodeFor(bb);
-		if (n != NULL)
+		if (n)
 			break;
 	}
 	if (n && n == statements[0])
@@ -172,7 +172,7 @@ BlockSyntaxNode::evaluate(SyntaxNode *root)
 	int n = 1;
 	if (statements.size() == 1) {
 		SyntaxNode *out = statements[0]->getOutEdge(root, 0);
-		if (out->getBB() != NULL && out->getBB()->getNumInEdges() > 1) {
+		if (out->getBB() && out->getBB()->getNumInEdges() > 1) {
 #if DEBUG_EVAL
 			std::cerr << "add 15" << std::endl;
 #endif
@@ -252,7 +252,7 @@ BlockSyntaxNode::addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &succ
 				n->setDepth(root->getDepth() + 1);
 				BlockSyntaxNode *b1 = (BlockSyntaxNode *)this->clone();
 				BlockSyntaxNode *nb = (BlockSyntaxNode *)b1->getStatement(i);
-				b1 = (BlockSyntaxNode *)b1->replace(statements[i - 1], NULL);
+				b1 = (BlockSyntaxNode *)b1->replace(statements[i - 1], nullptr);
 				nb->prependStatement(statements[i - 1]->clone());
 				n = n->replace(this, b1);
 				successors.push_back(n);
@@ -279,7 +279,7 @@ BlockSyntaxNode::addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &succ
 			  || statements[i + 1]->endsWithGoto())) {
 				std::cerr << "successor: jump over style if then" << std::endl;
 				BlockSyntaxNode *b1 = (BlockSyntaxNode *)this->clone();
-				b1 = (BlockSyntaxNode *)b1->replace(statements[i + 1], NULL);
+				b1 = (BlockSyntaxNode *)b1->replace(statements[i + 1], nullptr);
 				IfThenSyntaxNode *nif = new IfThenSyntaxNode();
 				Exp *cond = b->getBB()->getCond();
 				cond = new Unary(opLNot, cond->clone());
@@ -311,8 +311,8 @@ BlockSyntaxNode::addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &succ
 					std::cerr << "successor: if then else" << std::endl;
 					SyntaxNode *n = root->clone();
 					n->setDepth(root->getDepth() + 1);
-					n = n->replace(tThen, NULL);
-					n = n->replace(tElse, NULL);
+					n = n->replace(tThen, nullptr);
+					n = n->replace(tElse, nullptr);
 					IfThenElseSyntaxNode *nif = new IfThenElseSyntaxNode();
 					nif->setCond(statements[i]->getBB()->getCond()->clone());
 					nif->setBB(statements[i]->getBB());
@@ -337,7 +337,7 @@ BlockSyntaxNode::addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &succ
 				std::cerr << "successor: pretested loop" << std::endl;
 				SyntaxNode *n = root->clone();
 				n->setDepth(root->getDepth() + 1);
-				n = n->replace(tBody, NULL);
+				n = n->replace(tBody, nullptr);
 				PretestedLoopSyntaxNode *nloop = new PretestedLoopSyntaxNode();
 				nloop->setCond(statements[i]->getBB()->getCond()->clone());
 				nloop->setBB(statements[i]->getBB());
@@ -360,7 +360,7 @@ BlockSyntaxNode::addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &succ
 				std::cerr << "successor: posttested loop" << std::endl;
 				SyntaxNode *n = root->clone();
 				n->setDepth(root->getDepth() + 1);
-				n = n->replace(tBody, NULL);
+				n = n->replace(tBody, nullptr);
 				PostTestedLoopSyntaxNode *nloop = new PostTestedLoopSyntaxNode();
 				nloop->setCond(statements[i]->getBB()->getCond()->clone());
 				nloop->setBB(statements[i]->getBB());
@@ -407,7 +407,7 @@ BlockSyntaxNode::replace(SyntaxNode *from, SyntaxNode *to)
 	if (correspond == from)
 		return to;
 
-	if (pbb == NULL) {
+	if (!pbb) {
 		std::vector<SyntaxNode *> news;
 		for (unsigned i = 0; i < statements.size(); i++) {
 			SyntaxNode *n = statements[i];
@@ -585,7 +585,7 @@ IfThenElseSyntaxNode::findNodeFor(BasicBlock *bb)
 	if (pbb == bb)
 		return this;
 	SyntaxNode *n = pThen->findNodeFor(bb);
-	if (n == NULL)
+	if (!n)
 		n = pElse->findNodeFor(bb);
 	return n;
 }

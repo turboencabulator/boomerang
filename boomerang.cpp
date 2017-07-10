@@ -47,7 +47,7 @@
 #include <csignal>
 #include <ctime>
 
-Boomerang *Boomerang::boomerang = NULL;
+Boomerang *Boomerang::boomerang = nullptr;
 
 #ifndef DATADIR
 #define DATADIR "."
@@ -284,7 +284,7 @@ Boomerang::splitLine(char *line, const char *argv[])
 	char *p = strtok(line, " \r\n");
 	while (p) {
 		argv[argc++] = p;
-		p = strtok(NULL, " \r\n");
+		p = strtok(nullptr, " \r\n");
 	}
 	return argc;
 }
@@ -304,7 +304,7 @@ Boomerang::splitLine(char *line, const char *argv[])
 int
 Boomerang::parseCmd(int argc, const char *argv[])
 {
-	static Prog *prog = NULL;
+	static Prog *prog = nullptr;
 	if (!strcmp(argv[0], "decode")) {
 		if (argc <= 1) {
 			std::cerr << "not enough arguments for cmd\n";
@@ -312,7 +312,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		}
 		const char *fname = argv[1];
 		Prog *p = loadAndDecode(fname);
-		if (p == NULL) {
+		if (!p) {
 			std::cerr << "failed to load " << fname << "\n";
 			return 1;
 		}
@@ -326,15 +326,15 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		}
 		const char *fname = argv[1];
 		Prog *p = loadFromXML(fname);
-		if (p == NULL) p = loadFromXML((outputPath + fname + "/" + fname + ".xml").c_str());  // try guessing
-		if (p == NULL) {
+		if (!p) p = loadFromXML((outputPath + fname + "/" + fname + ".xml").c_str());  // try guessing
+		if (!p) {
 			std::cerr << "failed to read xml " << fname << "\n";
 			return 1;
 		}
 		delete prog;
 		prog = p;
 	} else if (!strcmp(argv[0], "save")) {
-		if (prog == NULL) {
+		if (!prog) {
 			std::cerr << "need to load or decode before save!\n";
 			return 1;
 		}
@@ -343,7 +343,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 	} else if (!strcmp(argv[0], "decompile")) {
 		if (argc > 1) {
 			Proc *proc = prog->findProc(argv[1]);
-			if (proc == NULL) {
+			if (!proc) {
 				std::cerr << "cannot find proc " << argv[1] << "\n";
 				return 1;
 			}
@@ -359,7 +359,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 	} else if (!strcmp(argv[0], "codegen")) {
 		if (argc > 1) {
 			Cluster *cluster = prog->findCluster(argv[1]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot find cluster " << argv[1] << "\n";
 				return 1;
 			}
@@ -379,13 +379,13 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Proc *proc = prog->findProc(argv[2]);
-			if (proc == NULL) {
+			if (!proc) {
 				std::cerr << "cannot find proc " << argv[2] << "\n";
 				return 1;
 			}
 
 			Cluster *cluster = prog->findCluster(argv[3]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot find cluster " << argv[3] << "\n";
 				return 1;
 			}
@@ -397,13 +397,13 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Cluster *cluster = prog->findCluster(argv[2]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot find cluster " << argv[2] << "\n";
 				return 1;
 			}
 
 			Cluster *parent = prog->findCluster(argv[3]);
-			if (parent == NULL) {
+			if (!parent) {
 				std::cerr << "cannot find cluster " << argv[3] << "\n";
 				return 1;
 			}
@@ -425,7 +425,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Cluster *cluster = new Cluster(argv[2]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot create cluster " << argv[2] << "\n";
 				return 1;
 			}
@@ -433,7 +433,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			Cluster *parent = prog->getRootCluster();
 			if (argc > 3) {
 				parent = prog->findCluster(argv[3]);
-				if (cluster == NULL) {
+				if (!cluster) {
 					std::cerr << "cannot find cluster " << argv[3] << "\n";
 					return 1;
 				}
@@ -456,7 +456,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Cluster *cluster = prog->findCluster(argv[2]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot find cluster " << argv[2] << "\n";
 				return 1;
 			}
@@ -491,13 +491,13 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Proc *proc = prog->findProc(argv[2]);
-			if (proc == NULL) {
+			if (!proc) {
 				std::cerr << "cannot find proc " << argv[2] << "\n";
 				return 1;
 			}
 
 			Proc *nproc = prog->findProc(argv[3]);
-			if (nproc != NULL) {
+			if (nproc) {
 				std::cerr << "proc " << argv[3] << " already exists\n";
 				return 1;
 			}
@@ -510,13 +510,13 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Cluster *cluster = prog->findCluster(argv[2]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot find cluster " << argv[2] << "\n";
 				return 1;
 			}
 
 			Cluster *ncluster = prog->findCluster(argv[3]);
-			if (ncluster == NULL) {
+			if (!ncluster) {
 				std::cerr << "cluster " << argv[3] << " already exists\n";
 				return 1;
 			}
@@ -555,7 +555,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Cluster *cluster = prog->findCluster(argv[2]);
-			if (cluster == NULL) {
+			if (!cluster) {
 				std::cerr << "cannot find cluster " << argv[2] << "\n";
 				return 1;
 			}
@@ -580,7 +580,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			}
 
 			Proc *proc = prog->findProc(argv[2]);
-			if (proc == NULL) {
+			if (!proc) {
 				std::cerr << "cannot find proc " << argv[2] << "\n";
 				return 1;
 			}
@@ -614,7 +614,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		}
 
 		Proc *proc = prog->findProc(argv[1]);
-		if (proc == NULL) {
+		if (!proc) {
 			std::cerr << "cannot find proc " << argv[1] << "\n";
 			return 1;
 		}
@@ -961,7 +961,7 @@ Boomerang::setOutputDirectory(const char *path)
 		std::cerr << "Warning! Could not create path " << outputPath << "!\n";
 		return false;
 	}
-	if (logger == NULL)
+	if (!logger)
 		setLogger(new FileLogger());
 	return true;
 }
@@ -1019,9 +1019,9 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	std::cout << "loading...\n";
 	Prog *prog = new Prog();
 	FrontEnd *fe = FrontEnd::open(fname, prog);
-	if (fe == NULL) {
+	if (!fe) {
 		std::cerr << "failed.\n";
-		return NULL;
+		return nullptr;
 	}
 
 	// Add symbols from -s switch(es)
@@ -1098,7 +1098,7 @@ stopProcess(int n)
 int
 Boomerang::decompile(const char *fname, const char *pname)
 {
-	Prog *prog = NULL;
+	Prog *prog = nullptr;
 	time_t start;
 	time(&start);
 
@@ -1119,7 +1119,7 @@ Boomerang::decompile(const char *fname, const char *pname)
 #endif
 	{
 		prog = loadAndDecode(fname, pname);
-		if (prog == NULL)
+		if (!prog)
 			return 1;
 	}
 
@@ -1207,9 +1207,9 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 {
 	if (stopAtDebugPoints) {
 		std::cout << "decompiling " << p->getName() << ": " << description << "\n";
-		static char *stopAt = NULL;
+		static char *stopAt = nullptr;
 		static std::set<Statement *> watches;
-		if (stopAt == NULL || !strcmp(p->getName(), stopAt)) {
+		if (!stopAt || !strcmp(p->getName(), stopAt)) {
 			// This is a mini command line debugger.  Feel free to expand it.
 			for (std::set<Statement *>::iterator it = watches.begin(); it != watches.end(); it++) {
 				(*it)->print(std::cout);

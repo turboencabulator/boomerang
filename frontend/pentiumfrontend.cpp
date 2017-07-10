@@ -250,7 +250,7 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 
 		// Loop through each RTL this BB
 		std::list<RTL *> *BB_rtls = pBB->getRTLs();
-		if (BB_rtls == 0) {
+		if (!BB_rtls) {
 			// For example, incomplete BB
 			return;
 		}
@@ -354,7 +354,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 
 	// Loop through each RTL this BB
 	std::list<RTL *> *BB_rtls = pBB->getRTLs();
-	if (BB_rtls == 0) {
+	if (!BB_rtls) {
 		// For example, incomplete BB
 		return;
 	}
@@ -500,7 +500,7 @@ PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 	if (dest == NO_ADDRESS) return false;
 
 	const char *p = pBF->getSymbolByAddress(dest);
-	if (p == NULL) return false;
+	if (!p) return false;
 	std::string name(p);
 	// I believe that __xtol is for gcc, _ftol for earlier MSVC compilers, _ftol2 for MSVC V7
 	if (name == "__xtol" || name == "_ftol" || name == "_ftol2") {
@@ -575,10 +575,10 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	ADDRESS dest;
 	do {
 		DecodeResult inst = decodeInstruction(addr);
-		if (inst.rtl == NULL)
+		if (!inst.rtl)
 			// Must have gotten out of step
 			break;
-		CallStatement *cs = NULL;
+		CallStatement *cs = nullptr;
 		if (!inst.rtl->getList().empty())
 			cs = (CallStatement *)(inst.rtl->getList().back());
 		if (cs
@@ -664,13 +664,13 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &i
 	if (s1->isAssign())
 		br1->setCondExpr(((Assign *)s1)->getRight());
 	else
-		br1->setCondExpr(NULL);
+		br1->setCondExpr(nullptr);
 	br1->setDest(a + 2);
 	BranchStatement *br2 = new BranchStatement;
 	if (s6->isAssign())
 		br2->setCondExpr(((Assign *)s6)->getRight());
 	else
-		br2->setCondExpr(NULL);
+		br2->setCondExpr(nullptr);
 	br2->setDest(a);
 	cfg->splitForBranch(bb, rtl, br1, br2, it);
 }
@@ -688,7 +688,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 		bool noinc = false;
 		BasicBlock *bb = *it;
 		std::list<RTL *> *rtls = bb->getRTLs();
-		if (rtls == NULL)
+		if (!rtls)
 			break;
 		ADDRESS prev, addr = 0;
 		bool lastRtl = true;
@@ -1022,7 +1022,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 			// check param type
 			Type *paramType = calledSig->getParamType(i);
 			Type *points_to;
-			CompoundType *compound = NULL;
+			CompoundType *compound = nullptr;
 			bool paramIsFuncPointer = false, paramIsCompoundWithFuncPointers = false;
 			if (paramType->resolvesToPointer()) {
 				points_to = paramType->asPointer()->getPointsTo();
@@ -1041,7 +1041,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				continue;
 
 			// count pushes backwards to find arg
-			Exp *found = NULL;
+			Exp *found = nullptr;
 			std::list<RTL *>::reverse_iterator itr;
 			unsigned int pushcount = 0;
 			for (itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
@@ -1063,7 +1063,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 					}
 				}
 			}
-			if (found == NULL)
+			if (!found)
 				continue;
 
 			ADDRESS a;
@@ -1071,7 +1071,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				a = ((Const *)found)->getInt();
 			else if (found->isAddrOf() && found->getSubExp1()->isGlobal()) {
 				const char *name = ((Const *)found->getSubExp1()->getSubExp1())->getStr();
-				if (prog->getGlobal(name) == NULL)
+				if (!prog->getGlobal(name))
 					continue;
 				a = prog->getGlobalAddr(name);
 			} else

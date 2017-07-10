@@ -87,8 +87,8 @@ Cfg::clear()
 	m_listBB.clear();
 	m_mapBB.clear();
 	implicitMap.clear();
-	entryBB = NULL;
-	exitBB = NULL;
+	entryBB = nullptr;
+	exitBB = nullptr;
 	m_bWellFormed = false;
 	callSites.clear();
 	lastLabel = 0;
@@ -142,7 +142,7 @@ Cfg::setExitBB(BasicBlock *bb)
 bool
 Cfg::checkEntryBB()
 {
-	if (entryBB == NULL) {
+	if (!entryBB) {
 		std::cerr << "No entry BB for ";
 		if (myProc)
 			std::cerr << myProc->getName() << std::endl;
@@ -233,7 +233,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		// We still want to do this even if the new BB overlaps with an incomplete BB, though in this case,
 		// splitBB needs to fill in the details for the "bottom" BB of the split.
 		// Also, in this case, we return a pointer to the newly completed BB, so it will get out edges added
-		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we want to return 0, since
+		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we want to return nullptr, since
 		// the out edges are already created.
 		if (++mi != m_mapBB.end()) {
 			BasicBlock *pNextBB = (*mi).second;
@@ -248,7 +248,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 				if (bIncomplete) {
 					return pNextBB;
 				}
-				// However, if the overlapping BB was already complete, return 0, so out edges won't be added twice
+				// However, if the overlapping BB was already complete, return nullptr, so out edges won't be added twice
 				throw BBAlreadyExistsError(pNextBB);
 			}
 		}
@@ -362,7 +362,7 @@ Cfg::existsBB(ADDRESS uNativeAddr)
  * RETURNS:     Returns a pointer to the "bottom" (new) part of the split BB.
  *============================================================================*/
 BasicBlock *
-Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = 0 */, bool bDelRtls /* = false */)
+Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullptr */, bool bDelRtls /* = false */)
 {
 	std::list<RTL *>::iterator ri;
 
@@ -378,7 +378,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = 0 */,
 	}
 
 	// If necessary, set up a new basic block with information from the original bb
-	if (pNewBB == NULL) {
+	if (!pNewBB) {
 		pNewBB = new BasicBlock(*pBB);
 		// But we don't want the top BB's in edges; our only in-edge should be the out edge from the top BB
 		pNewBB->m_iNumInEdges = 0;
@@ -449,12 +449,12 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = 0 */,
  * FUNCTION:        Cfg::getFirstBB
  * OVERVIEW:        Get the first BB of this cfg
  * PARAMETERS:      it: set to an value that must be passed to getNextBB
- * RETURNS:         Pointer to the first BB this cfg, or NULL if none
+ * RETURNS:         Pointer to the first BB this cfg, or nullptr if none
  *============================================================================*/
 BasicBlock *
 Cfg::getFirstBB(BB_IT &it)
 {
-	if ((it = m_listBB.begin()) == m_listBB.end()) return 0;
+	if ((it = m_listBB.begin()) == m_listBB.end()) return nullptr;
 	return *it;
 }
 
@@ -462,12 +462,12 @@ Cfg::getFirstBB(BB_IT &it)
  * FUNCTION:        Cfg::getNextBB
  * OVERVIEW:        Get the next BB this cfg. Basically increments the given iterator and returns it
  * PARAMETERS:      iterator from a call to getFirstBB or getNextBB
- * RETURNS:         pointer to the BB, or NULL if no more
+ * RETURNS:         pointer to the BB, or nullptr if no more
  *============================================================================*/
 BasicBlock *
 Cfg::getNextBB(BB_IT &it)
 {
-	if (++it == m_listBB.end()) return 0;
+	if (++it == m_listBB.end()) return nullptr;
 	return *it;
 }
 
@@ -508,7 +508,7 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 
 		newi = mi;
 		bool bSplit = false;
-		BasicBlock *pPrevBB = NULL;
+		BasicBlock *pPrevBB = nullptr;
 		if (newi != m_mapBB.begin()) {
 			pPrevBB = (*--mi).second;
 			if (!pPrevBB->m_bIncomplete
@@ -646,7 +646,7 @@ Cfg::wellFormCfg()
 					BasicBlock *pBB = (*it)->m_OutEdges[i];
 
 					// Check that the out edge has been written (i.e. nonzero)
-					if (pBB == NULL) {
+					if (!pBB) {
 						m_bWellFormed = false;  // At least one problem
 						ADDRESS addr = (*it)->getLowAddr();
 						std::cerr << "WellFormCfg: BB with native address " << std::hex << addr
@@ -893,7 +893,7 @@ Cfg::establishDFTOrder()
 BasicBlock *
 Cfg::findRetNode()
 {
-	BasicBlock *retNode = NULL;
+	BasicBlock *retNode = nullptr;
 	for (std::list<BasicBlock *>::iterator it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		if ((*it)->getType() == RET) {
 			retNode = *it;
@@ -926,7 +926,7 @@ Cfg::establishRevDFTOrder()
 
 	BasicBlock *retNode = findRetNode();
 
-	if (retNode == NULL) return false;
+	if (!retNode) return false;
 
 	// Reset all the traversed flags
 	unTraverse();
@@ -1338,7 +1338,7 @@ Cfg::findLoopFollow(BasicBlock *header, bool *&loopNodes)
 		else
 			header->setLoopFollow(latch->getOutEdges()[0]);
 	} else { // endless loop
-		BasicBlock *follow = NULL;
+		BasicBlock *follow = nullptr;
 
 		// traverse the ordering array between the header and latch nodes.
 		BasicBlock *latch = header->getLatchNode();
@@ -1364,7 +1364,7 @@ Cfg::findLoopFollow(BasicBlock *header, bool *&loopNodes)
 						if (!loopNodes[desc->getOutEdges()[1]->ord])
 							succ = desc->getOutEdges()[1];
 						else
-							succ = NULL;
+							succ = nullptr;
 					}
 					// if a potential follow was found, compare its ordering with the currently found follow
 					if (succ && (!follow || succ->ord > follow->ord))
@@ -1412,7 +1412,7 @@ Cfg::structLoops()
 {
 	for (int i = Ordering.size() - 1; i >= 0; i--) {
 		BasicBlock *curNode = Ordering[i];  // the current node under investigation
-		BasicBlock *latch = NULL;           // the latching node of the loop
+		BasicBlock *latch = nullptr;        // the latching node of the loop
 
 		// If the current node has at least one back edge into it, it is a loop header. If there are numerous back edges
 		// into the header, determine which one comes form the proper latching node.
@@ -1571,7 +1571,7 @@ Cfg::structure()
 		unTraverse();
 		return;
 	}
-	if (findRetNode() == NULL)
+	if (!findRetNode())
 		return;
 	setTimeStamps();
 	findImmedPDom();
@@ -1589,7 +1589,7 @@ Cfg::addJunctionStatements()
 	std::list<BasicBlock *>::iterator it;
 	for (it = m_listBB.begin(); it != m_listBB.end(); it++) {
 		BasicBlock *pbb = *it;
-		if (pbb->getNumInEdges() > 1 && (pbb->getFirstStmt() == NULL || !pbb->getFirstStmt()->isJunction())) {
+		if (pbb->getNumInEdges() > 1 && (!pbb->getFirstStmt() || !pbb->getFirstStmt()->isJunction())) {
 			assert(pbb->getRTLs());
 			JunctionStatement *j = new JunctionStatement();
 			j->setBB(pbb);
@@ -1760,7 +1760,7 @@ Cfg::findInterferences(ConnectionGraph &cg)
 		if (change) {
 			if (DEBUG_LIVENESS) {
 				LOG << "Revisiting BB ending with stmt ";
-				Statement *last = NULL;
+				Statement *last = nullptr;
 				if (!currBB->m_pRtls->empty()) {
 					RTL *lastRtl = currBB->m_pRtls->back();
 					std::list<Statement *> &lst = lastRtl->getList();
@@ -1973,7 +1973,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 
 		// Must delete pBB. Note that this effectively "increments" iterator it
 		it = m_listBB.erase(it);
-		pBB = NULL;
+		pBB = nullptr;
 	} else
 		it++;
 
@@ -2036,7 +2036,7 @@ Cfg::findTheImplicitAssign(Exp *x)
 	// As per the above, but don't create an implicit if it doesn't already exist
 	std::map<Exp *, Statement *, lessExpStar>::iterator it = implicitMap.find(x);
 	if (it == implicitMap.end())
-		return NULL;
+		return nullptr;
 	return it->second;
 }
 
@@ -2050,7 +2050,7 @@ Cfg::findImplicitParamAssign(Parameter *param)
 		it = implicitMap.find(eParam);
 	}
 	if (it == implicitMap.end())
-		return NULL;
+		return nullptr;
 	return it->second;
 }
 

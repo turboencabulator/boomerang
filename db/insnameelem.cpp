@@ -42,23 +42,23 @@ InsNameElem::ntokens()
 std::string
 InsNameElem::getinstruction()
 {
-	return (nextelem != NULL)
-	       ? (elemname + nextelem->getinstruction())
-	       : elemname;
+	return nextelem
+	     ? (elemname + nextelem->getinstruction())
+	     : elemname;
 }
 
 std::string
 InsNameElem::getinspattern()
 {
-	return (nextelem != NULL)
-	       ? (elemname + nextelem->getinspattern())
-	       : elemname;
+	return nextelem
+	     ? (elemname + nextelem->getinspattern())
+	     : elemname;
 }
 
 void
 InsNameElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 {
-	if (nextelem != NULL)
+	if (nextelem)
 		nextelem->getrefmap(m);
 	else
 		m.clear();
@@ -67,15 +67,15 @@ InsNameElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 int
 InsNameElem::ninstructions()
 {
-	return (nextelem != NULL)
-	       ? (nextelem->ninstructions() * ntokens())
-	       : ntokens();
+	return nextelem
+	     ? (nextelem->ninstructions() * ntokens())
+	     : ntokens();
 }
 
 void
 InsNameElem::append(InsNameElem *next)
 {
-	if (nextelem == NULL)
+	if (!nextelem)
 		nextelem = next;
 	else
 		nextelem->append(next);
@@ -84,7 +84,7 @@ InsNameElem::append(InsNameElem *next)
 bool
 InsNameElem::increment()
 {
-	if ((nextelem == NULL) || nextelem->increment())
+	if (!nextelem || nextelem->increment())
 		value++;
 	if (value >= ntokens()) {
 		value = 0;
@@ -97,7 +97,7 @@ void
 InsNameElem::reset()
 {
 	value = 0;
-	if (nextelem != NULL) nextelem->reset();
+	if (nextelem) nextelem->reset();
 }
 
 int
@@ -120,22 +120,22 @@ InsOptionElem::ntokens()
 std::string
 InsOptionElem::getinstruction()
 {
-	std::string s = (nextelem != NULL)
-	                ? ((getvalue() == 0)
-	                   ? (elemname + nextelem->getinstruction())
-	                   : nextelem->getinstruction())
-	                : ((getvalue() == 0)
-	                   ? elemname
-	                   : "");
+	std::string s = nextelem
+	              ? ((getvalue() == 0)
+	               ? (elemname + nextelem->getinstruction())
+	               : nextelem->getinstruction())
+	              : ((getvalue() == 0)
+	               ? elemname
+	               : "");
 	return s;
 }
 
 std::string
 InsOptionElem::getinspattern()
 {
-	return (nextelem != NULL)
-	       ? ('\'' + elemname + '\'' + nextelem->getinspattern())
-	       : ('\'' + elemname + '\'');
+	return nextelem
+	     ? ('\'' + elemname + '\'' + nextelem->getinspattern())
+	     : ('\'' + elemname + '\'');
 }
 
 InsListElem::InsListElem(const char *name, Table *t, const char *idx) :
@@ -154,23 +154,23 @@ InsListElem::ntokens()
 std::string
 InsListElem::getinstruction()
 {
-	return (nextelem != NULL)
-	       ? (thetable->records[getvalue()] + nextelem->getinstruction())
-	       : thetable->records[getvalue()];
+	return nextelem
+	     ? (thetable->records[getvalue()] + nextelem->getinstruction())
+	     : thetable->records[getvalue()];
 }
 
 std::string
 InsListElem::getinspattern()
 {
-	return (nextelem != NULL)
-	       ? (elemname + '[' + indexname + ']' + nextelem->getinspattern())
-	       : (elemname + '[' + indexname + ']');
+	return nextelem
+	     ? (elemname + '[' + indexname + ']' + nextelem->getinspattern())
+	     : (elemname + '[' + indexname + ']');
 }
 
 void
 InsListElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 {
-	if (nextelem != NULL)
+	if (nextelem)
 		nextelem->getrefmap(m);
 	else
 		m.clear();

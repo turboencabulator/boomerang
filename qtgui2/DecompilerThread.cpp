@@ -78,7 +78,7 @@ DecompilerThread::run()
 Decompiler *
 DecompilerThread::getDecompiler()
 {
-	while (decompiler == NULL)
+	while (!decompiler)
 		msleep(10);
 	return decompiler;
 }
@@ -131,7 +131,7 @@ Decompiler::load()
 
 	prog = new Prog();
 	fe = FrontEnd::open(strdup(filename.toAscii()), prog);
-	if (fe == NULL) {
+	if (!fe) {
 		emit machineType(QString("unavailable: Load Failed!"));
 		return;
 	}
@@ -185,7 +185,7 @@ Decompiler::decode()
 	ADDRESS a = fe->getMainEntryPoint(gotMain);
 	for (unsigned int i = 0; i < user_entrypoints.size(); i++)
 		if (user_entrypoints[i] == a) {
-			fe->decode(prog, true, NULL);
+			fe->decode(prog, true, nullptr);
 			break;
 		}
 
@@ -282,7 +282,7 @@ Decompiler::alert_new(Proc *p)
 {
 	if (p->isLib()) {
 		QString params;
-		if (p->getSignature() == NULL || p->getSignature()->isUnknown())
+		if (!p->getSignature() || p->getSignature()->isUnknown())
 			params = "<unknown>";
 		else {
 			for (unsigned int i = 0; i < p->getSignature()->getNumParams(); i++) {
@@ -352,8 +352,8 @@ const char *
 Decompiler::getSigFile(const QString &name)
 {
 	Proc *p = prog->findProc((const char *)name.toAscii());
-	if (p == NULL || !p->isLib() || p->getSignature() == NULL)
-		return NULL;
+	if (!p || !p->isLib() || !p->getSignature())
+		return nullptr;
 	return p->getSignature()->getSigFile();
 }
 
@@ -361,8 +361,8 @@ const char *
 Decompiler::getClusterFile(const QString &name)
 {
 	Cluster *c = prog->findCluster((const char *)name.toAscii());
-	if (c == NULL)
-		return NULL;
+	if (!c)
+		return nullptr;
 	return c->getOutPath("c");
 }
 
@@ -385,7 +385,7 @@ Decompiler::getCompoundMembers(const QString &name, QTableWidget *tbl)
 {
 	Type *ty = NamedType::getNamedType((const char *)name.toAscii());
 	tbl->setRowCount(0);
-	if (ty == NULL || !ty->resolvesToCompound())
+	if (!ty || !ty->resolvesToCompound())
 		return;
 	CompoundType *c = ty->asCompound();
 	for (unsigned int i = 0; i < c->getNumTypes(); i++) {

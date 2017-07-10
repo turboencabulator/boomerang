@@ -28,7 +28,7 @@ class Cluster {
 protected:
 	        std::string name = "";
 	        std::vector<Cluster *> children;
-	        Cluster    *parent = NULL;
+	        Cluster    *parent = nullptr;
 	        std::ofstream out;
 	        std::string stream_ext;
 

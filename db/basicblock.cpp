@@ -347,7 +347,7 @@ printBB(BasicBlock *bb)
 ADDRESS
 BasicBlock::getLowAddr()
 {
-	if (m_pRtls == NULL || m_pRtls->empty()) return 0;
+	if (!m_pRtls || m_pRtls->empty()) return 0;
 	ADDRESS a = m_pRtls->front()->getAddress();
 	if ((a == 0) && (m_pRtls->size() > 1)) {
 		std::list<RTL *>::iterator it = m_pRtls->begin();
@@ -370,7 +370,7 @@ BasicBlock::getLowAddr()
 ADDRESS
 BasicBlock::getHiAddr()
 {
-	assert(m_pRtls != NULL);
+	assert(m_pRtls);
 	return m_pRtls->back()->getAddress();
 }
 
@@ -384,17 +384,18 @@ BasicBlock::getRTLs()
 	return m_pRtls;
 }
 
-RTL *BasicBlock::getRTLWithStatement(Statement *stmt)
+RTL *
+BasicBlock::getRTLWithStatement(Statement *stmt)
 {
-	if (m_pRtls == NULL)
-		return NULL;
+	if (!m_pRtls)
+		return nullptr;
 	for (std::list<RTL *>::iterator it = m_pRtls->begin(); it != m_pRtls->end(); it++) {
 		RTL *rtl = *it;
 		for (std::list<Statement *>::iterator it1 = rtl->getList().begin(); it1 != rtl->getList().end(); it1++)
 			if (*it1 == stmt)
 				return rtl;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -462,7 +463,7 @@ BasicBlock *
 BasicBlock::getOutEdge(unsigned int i)
 {
 	if (i < m_OutEdges.size()) return m_OutEdges[i];
-	else return 0;
+	else return nullptr;
 }
 
 /*==============================================================================
@@ -478,7 +479,7 @@ BasicBlock::getCorrectOutEdge(ADDRESS a)
 	for (it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
 		if ((*it)->getLowAddr() == a) return *it;
 	}
-	return 0;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -661,9 +662,9 @@ Proc *
 BasicBlock::getCallDestProc()
 {
 	if (m_nodeType != CALL)
-		return 0;
+		return nullptr;
 	if (m_pRtls->empty())
-		return 0;
+		return nullptr;
 	RTL *lastRtl = m_pRtls->back();
 	RTL::reverse_iterator it;
 	std::list<Statement *> &sl = lastRtl->getList();
@@ -671,7 +672,7 @@ BasicBlock::getCallDestProc()
 		if ((*it)->getKind() == STMT_CALL)
 			return ((CallStatement *)(*it))->getDestProc();
 	}
-	return 0;
+	return nullptr;
 }
 
 //
@@ -680,7 +681,7 @@ BasicBlock::getCallDestProc()
 Statement *
 BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 {
-	if (m_pRtls == NULL) return NULL;
+	if (!m_pRtls) return nullptr;
 	rit = m_pRtls->begin();
 	while (rit != m_pRtls->end()) {
 		RTL *rtl = *rit;
@@ -689,7 +690,7 @@ BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 			return *sit;
 		rit++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 Statement *
@@ -700,7 +701,7 @@ BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
 	// Else, find next non-empty RTL & return its first statement
 	do {
 		if (++rit == m_pRtls->end())
-			return NULL;  // End of all RTLs reached, return null Statement
+			return nullptr;  // End of all RTLs reached, return null Statement
 	} while ((*rit)->getNumStmt() == 0);  // Ignore all RTLs with no statements
 	sit = (*rit)->getList().begin();  // Point to 1st statement at start of next RTL
 	return *sit;                      // Return first statement
@@ -714,7 +715,7 @@ BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 	// Else, find prev non-empty RTL & return its last statement
 	do {
 		if (++rit == m_pRtls->rend())
-			return NULL;  // End of all RTLs reached, return null Statement
+			return nullptr;  // End of all RTLs reached, return null Statement
 	} while ((*rit)->getNumStmt() == 0);  // Ignore all RTLs with no statements
 	sit = (*rit)->getList().rbegin();  // Point to last statement at end of prev RTL
 	return *sit;                       // Return last statement
@@ -723,7 +724,7 @@ BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 Statement *
 BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 {
-	if (m_pRtls == NULL) return NULL;
+	if (!m_pRtls) return nullptr;
 	rit = m_pRtls->rbegin();
 	while (rit != m_pRtls->rend()) {
 		RTL *rtl = *rit;
@@ -732,7 +733,7 @@ BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 			return *sit;
 		rit++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 Statement *
@@ -740,7 +741,7 @@ BasicBlock::getFirstStmt()
 {
 	rtlit rit;
 	StatementList::iterator sit;
-	if (m_pRtls == NULL) return NULL;
+	if (!m_pRtls) return nullptr;
 	rit = m_pRtls->begin();
 	while (rit != m_pRtls->end()) {
 		RTL *rtl = *rit;
@@ -749,7 +750,7 @@ BasicBlock::getFirstStmt()
 			return *sit;
 		rit++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 Statement *
@@ -757,7 +758,7 @@ BasicBlock::getLastStmt()
 {
 	rtlrit rit;
 	StatementList::reverse_iterator sit;
-	if (m_pRtls == NULL) return NULL;
+	if (!m_pRtls) return nullptr;
 	rit = m_pRtls->rbegin();
 	while (rit != m_pRtls->rend()) {
 		RTL *rtl = *rit;
@@ -766,7 +767,7 @@ BasicBlock::getLastStmt()
 			return *sit;
 		rit++;
 	}
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -777,7 +778,7 @@ BasicBlock::getStatements(StatementList &stmts)
 		for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
 			RTL *rtl = *rit;
 			for (RTL::iterator it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
-				if ((*it)->getBB() == NULL)
+				if (!(*it)->getBB())
 					(*it)->setBB(this);
 				stmts.append(*it);
 			}
@@ -852,7 +853,7 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 			return;
 		}
 	}
-	throw LastStatementNotABranchError(NULL);
+	throw LastStatementNotABranchError(nullptr);
 }
 
 /* Check for branch if equal relation */
@@ -916,7 +917,7 @@ BasicBlock::simplify()
 		for (std::list<RTL *>::iterator it = m_pRtls->begin(); it != m_pRtls->end(); it++)
 			(*it)->simplify();
 	if (m_nodeType == TWOWAY) {
-		if (m_pRtls == NULL || m_pRtls->empty()) {
+		if (!m_pRtls || m_pRtls->empty()) {
 			m_nodeType = FALL;
 		} else {
 			RTL *last = m_pRtls->back();
@@ -1060,7 +1061,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 {
 	// If this is the follow for the most nested enclosing conditional, then don't generate anything. Otherwise if it is
 	// in the follow set generate a goto to the follow
-	BasicBlock *enclFollow = followSet.empty() ? NULL : followSet.back();
+	BasicBlock *enclFollow = followSet.empty() ? nullptr : followSet.back();
 
 	if (isIn(gotoSet, this) && !isLatchNode()
 	 && ((latch && latch->loopHead && this == latch->loopHead->loopFollow)
@@ -1078,7 +1079,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 	if (traversed == DFS_CODEGEN) {
 		// this should only occur for a loop over a single block
 		// FIXME: is this true? Perl_list (0x8068028) in the SPEC 2000 perlbmk seems to have a case with sType = Cond,
-		// lType == PreTested, and latchNod == 0
+		// lType == PreTested, and latchNode == nullptr
 		//assert(sType == Loop && lType == PostTested && latchNode == this);
 		return;
 	} else
@@ -1100,7 +1101,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		}
 	}
 
-	BasicBlock *child = NULL;
+	BasicBlock *child = nullptr;
 	switch (sType) {
 	case Loop:
 	case LoopCond:
@@ -1205,7 +1206,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 
 			// for 2 way conditional headers that are effectively jumps into
 			// or out of a loop or case body, we will need a new follow node
-			BasicBlock *tmpCondFollow = NULL;
+			BasicBlock *tmpCondFollow = nullptr;
 
 			// keep track of how many nodes were added to the goto set so that
 			// the correct number are removed
@@ -1259,7 +1260,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 			WriteBB(hll, indLevel);
 
 			// write the conditional header
-			SWITCH_INFO *psi = NULL;  // Init to NULL to suppress a warning
+			SWITCH_INFO *psi = nullptr;  // Init to nullptr to suppress a warning
 			if (cType == Case) {
 				// The CaseStatement will be in the last RTL this BB
 				RTL *last = m_pRtls->back();
@@ -1269,7 +1270,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 				hll->AddCaseCondHeader(indLevel, psi->pSwitchVar);
 			} else {
 				Exp *cond = getCond();
-				if (cond == NULL)
+				if (!cond)
 					cond = new Const(0xfeedface);  // hack, but better than a crash
 				if (cType == IfElse) {
 					cond = new Unary(opNot, cond->clone());
@@ -1427,7 +1428,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 			if (caseHead && child == caseHead->condFollow) {
 				// generate the 'break' statement
 				hll->AddCaseCondOptionEnd(indLevel);
-			} else if (caseHead == NULL || caseHead != child->caseHead || !child->isCaseOption())
+			} else if (!caseHead || caseHead != child->caseHead || !child->isCaseOption())
 				child->generateCode(hll, indLevel, latch, followSet, gotoSet, proc);
 		}
 		break;
@@ -1445,7 +1446,7 @@ BasicBlock::getDestProc()
 	CallStatement *call = (CallStatement *)(m_pRtls->back()->getHlStmt());
 	assert(call->getKind() == STMT_CALL);
 	Proc *proc = call->getDestProc();
-	if (proc == NULL) {
+	if (!proc) {
 		std::cerr << "Indirect calls not handled yet\n";
 		assert(0);
 	}
@@ -1702,7 +1703,7 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 	checkForOverlap(liveLocs, phiLocs, ig, myProc);
 	// For each RTL in this BB
 	std::list<RTL *>::reverse_iterator rit;
-	if (m_pRtls)  // this can be NULL
+	if (m_pRtls)  // this can be nullptr
 		for (rit = m_pRtls->rbegin(); rit != m_pRtls->rend(); rit++) {
 			std::list<Statement *> &stmts = (*rit)->getList();
 			std::list<Statement *>::reverse_iterator sit;
@@ -1766,7 +1767,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 		liveout.makeUnion(currBB->liveIn);
 		int j = currBB->whichPred(this);
 		// The first RTL will have the phi functions, if any
-		if (currBB->m_pRtls == NULL || currBB->m_pRtls->empty())
+		if (!currBB->m_pRtls || currBB->m_pRtls->empty())
 			continue;
 		RTL *phiRtl = currBB->m_pRtls->front();
 		std::list<Statement *> &stmts = phiRtl->getList();
@@ -1893,7 +1894,7 @@ init_basicblock()
 // Pattern 0: global<wild>[0]
 static Binary *vfc_funcptr = new Binary(opArrayIndex,
     new Location(opGlobal,
-        new Terminal(opWildStrConst), NULL),
+        new Terminal(opWildStrConst), nullptr),
     new Const(0));
 
 // Pattern 1: m[ m[ <expr> + K1 ] + K2 ]
@@ -2010,7 +2011,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 		}
 		break;
 	default:
-		expr = NULL;
+		expr = nullptr;
 		T = NO_ADDRESS;
 	}
 }
@@ -2056,7 +2057,7 @@ BasicBlock::findNumCases()
 void
 findConstantValues(Statement *s, std::list<int> &dests)
 {
-	if (s == NULL) return;
+	if (!s) return;
 	if (s->isPhi()) {
 		// For each definition, recurse
 		PhiAssign::Definitions::iterator it;
@@ -2089,7 +2090,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			workSet.remove(pi);
 			PhiAssign::Definitions::iterator it;
 			for (it = pi->begin(); it != pi->end(); it++) {
-				if (it->def == NULL) continue;
+				if (!it->def) continue;
 				if (!it->def->isPhi()) continue;
 				if (seenSet.exists(it->def)) {
 					std::cerr << "Real phi loop involving statements " << originalPhi->getNumber() << " and " << pi->getNumber() << "\n";
@@ -2115,7 +2116,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		// because of the alias safety issue. Eventually, we should use an alias-safe incremental propagation, but for
 		// now we'll assume no alias problems and force the propagation
 		bool convert;
-		lastStmt->propagateTo(convert, NULL, NULL, true /* force */);
+		lastStmt->propagateTo(convert, nullptr, nullptr, true /* force */);
 		Exp *e = lastStmt->getDest();
 		int n = sizeof hlForms / sizeof *hlForms;
 		char form = 0;
@@ -2164,7 +2165,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 				} else
 					swi->iLower = 0;
 				swi->pSwitchVar = expr;
-				lastStmt->setDest((Exp *)NULL);
+				lastStmt->setDest((Exp *)nullptr);
 				lastStmt->setSwitchInfo(swi);
 				return swi->iNumTable != 0;
 			}
@@ -2192,7 +2193,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 						swi->iNumTable = n;
 						swi->iLower = 1;  // Not used, except to compute
 						swi->iUpper = n;  // the number of options
-						lastStmt->setDest((Exp *)NULL);
+						lastStmt->setDest((Exp *)nullptr);
 						lastStmt->setSwitchInfo(swi);
 						return true;
 					}
@@ -2350,7 +2351,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		if (decodeThru && vtExp && vtExp->isIntConst()) {
 			int addr = ((Const *)vtExp)->getInt();
 			ADDRESS pfunc = prog->readNative4(addr);
-			if (prog->findProc(pfunc) == NULL) {
+			if (!prog->findProc(pfunc)) {
 				// A new, undecoded procedure
 				if (Boomerang::get()->noDecodeChildren)
 					return false;

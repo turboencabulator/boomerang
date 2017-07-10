@@ -118,14 +118,14 @@ BinaryFile::open(const char *name)
 	ifs.open(name, ifs.binary);
 	if (!ifs.good()) {
 		fprintf(stderr, "%s: opening failed\n", name);
-		return NULL;
+		return nullptr;
 	}
 
 	LOADFMT format = magic(ifs);
 	if (format == LOADFMT_UNKNOWN) {
 		fprintf(stderr, "%s: unrecognised binary file\n", name);
 		ifs.close();
-		return NULL;
+		return nullptr;
 	}
 	ifs.seekg(0);
 
@@ -140,15 +140,15 @@ BinaryFile::open(const char *name)
 	case LOADFMT_MACHO: libname = MODPREFIX  "MachOBinaryFile" MODSUFFIX; break;
 	case LOADFMT_LX:    libname = MODPREFIX "DOS4GWBinaryFile" MODSUFFIX; break;
 	case LOADFMT_COFF:  libname = MODPREFIX    "IntelCoffFile" MODSUFFIX; break;
-	default:            libname = NULL; assert(0);  // found a LOADFMT not listed above
+	default:            libname = nullptr; assert(0);  // found a LOADFMT not listed above
 	}
 
 	// Load the specific loader library
 	void *handle = dlopen(libname, RTLD_LAZY);
-	if (handle == NULL) {
+	if (!handle) {
 		fprintf(stderr, "cannot load library: %s\n", dlerror());
 		ifs.close();
-		return NULL;
+		return nullptr;
 	}
 
 	// Reset errors
@@ -157,19 +157,21 @@ BinaryFile::open(const char *name)
 	// Use the handle to find symbols
 	const char *symbol = "construct";
 	constructFcn construct = (constructFcn)dlsym(handle, symbol);
-	if ((error = dlerror()) != NULL) {
+	error = dlerror();
+	if (error) {
 		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
 		dlclose(handle);
 		ifs.close();
-		return NULL;
+		return nullptr;
 	}
 	symbol = "destruct";
 	destructFcn destruct = (destructFcn)dlsym(handle, symbol);
-	if ((error = dlerror()) != NULL) {
+	error = dlerror();
+	if (error) {
 		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
 		dlclose(handle);
 		ifs.close();
-		return NULL;
+		return nullptr;
 	}
 
 	// Call the construct function
@@ -190,7 +192,7 @@ BinaryFile::open(const char *name)
 	case LOADFMT_MACHO: bf = new  MachOBinaryFile; break;
 	case LOADFMT_LX:    bf = new DOS4GWBinaryFile; break;
 	case LOADFMT_COFF:  bf = new    IntelCoffFile; break;
-	default:            bf = NULL; assert(0);  // found a LOADFMT not listed above
+	default:            bf = nullptr; assert(0);  // found a LOADFMT not listed above
 	}
 #endif
 
@@ -198,7 +200,7 @@ BinaryFile::open(const char *name)
 
 	if (!bf->load(ifs)) {
 		fprintf(stderr, "%s: loading failed\n", name);
-		BinaryFile::close(bf); bf = NULL;
+		BinaryFile::close(bf); bf = nullptr;
 	}
 	ifs.close();
 
@@ -220,7 +222,7 @@ BinaryFile::close(BinaryFile *bf)
 	// Destruct in an appropriate way.
 	// The C++ dlopen mini HOWTO says to always use a matching
 	// construct/destruct pair in case of new/delete overloading.
-	if (handle != NULL) {
+	if (handle) {
 		destruct(bf);
 		dlclose(handle);
 	} else

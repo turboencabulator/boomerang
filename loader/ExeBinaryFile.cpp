@@ -186,7 +186,7 @@ ExeBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 		return "main";
 
 	// No symbol table handled at present
-	return 0;
+	return nullptr;
 }
 
 #if 0 // Cruft?

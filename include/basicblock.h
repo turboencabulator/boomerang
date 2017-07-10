@@ -363,16 +363,16 @@ public:
 	/* high level structuring */
 	        SBBTYPE     m_structType = NONE;    // structured type of this node
 	        SBBTYPE     m_loopCondType = NONE;  // type of conditional to treat this loop header as (if any)
-	        BasicBlock *m_loopHead = NULL;      // head of the most nested enclosing loop
-	        BasicBlock *m_caseHead = NULL;      // head of the most nested enclosing case
-	        BasicBlock *m_condFollow = NULL;    // follow of a conditional header
-	        BasicBlock *m_loopFollow = NULL;    // follow of a loop header
-	        BasicBlock *m_latchNode = NULL;     // latch node of a loop header
+	        BasicBlock *m_loopHead = nullptr;   // head of the most nested enclosing loop
+	        BasicBlock *m_caseHead = nullptr;   // head of the most nested enclosing case
+	        BasicBlock *m_condFollow = nullptr; // follow of a conditional header
+	        BasicBlock *m_loopFollow = nullptr; // follow of a loop header
+	        BasicBlock *m_latchNode = nullptr;  // latch node of a loop header
 
 protected:
 	/* general basic block information */
 	        BBTYPE      m_nodeType = INVALID;   // type of basic block
-	        std::list<RTL *> *m_pRtls = NULL;   // Ptr to list of RTLs
+	        std::list<RTL *> *m_pRtls = nullptr;// Ptr to list of RTLs
 	        int         m_iLabelNum = 0;        // Nonzero if start of BB needs label
 	        std::string m_labelStr;             // string label of this bb.
 	        bool        m_labelneeded = false;
@@ -436,12 +436,12 @@ protected:
 	        int         indentLevel = 0; // the indentation level of this node in the final code
 
 	// analysis information
-	        BasicBlock *immPDom = NULL; // immediate post dominator
-	        BasicBlock *loopHead = NULL; // head of the most nested enclosing loop
-	        BasicBlock *caseHead = NULL; // head of the most nested enclosing case
-	        BasicBlock *condFollow = NULL; // follow of a conditional header
-	        BasicBlock *loopFollow = NULL; // follow of a loop header
-	        BasicBlock *latchNode = NULL; // latching node of a loop header
+	        BasicBlock *immPDom = nullptr; // immediate post dominator
+	        BasicBlock *loopHead = nullptr; // head of the most nested enclosing loop
+	        BasicBlock *caseHead = nullptr; // head of the most nested enclosing case
+	        BasicBlock *condFollow = nullptr; // follow of a conditional header
+	        BasicBlock *loopFollow = nullptr; // follow of a loop header
+	        BasicBlock *latchNode = nullptr; // latching node of a loop header
 
 	// Structured type of the node
 	        structType  sType = Seq; // the structuring class (Loop, Cond , etc)
@@ -537,7 +537,7 @@ protected:
 	friend class XMLProgParser;
 	        void        addOutEdge(BasicBlock *bb) { m_OutEdges.push_back(bb); }
 	        void        addRTL(RTL *rtl) {
-		                    if (m_pRtls == NULL)
+		                    if (!m_pRtls)
 			                    m_pRtls = new std::list<RTL *>;
 		                    m_pRtls->push_back(rtl);
 	                    }

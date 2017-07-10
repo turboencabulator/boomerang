@@ -95,7 +95,7 @@ public:
 
 // This class is more or less the opposite of the above. It finds a proc by visiting the whole expression if necessary
 class GetProcVisitor : public ExpVisitor {
-	UserProc   *proc = NULL;  // The result (or NULL)
+	UserProc   *proc = nullptr;  // The result (or nullptr)
 
 public:
 	            GetProcVisitor() { }  // Constructor

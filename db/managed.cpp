@@ -174,7 +174,7 @@ StatementSet::printNums(std::ostream &os)
 		if (*it)
 			(*it)->printNum(os);
 		else
-			os << "-";  // Special case for NULL definition
+			os << "-";  // Special case for nullptr definition
 		if (++it != sset.end())
 			os << " ";
 	}
@@ -278,7 +278,7 @@ AssignSet::lookupLoc(Exp *loc)
 {
 	Assign *as = new Assign(loc, new Terminal(opWild));
 	iterator ff = aset.find(as);
-	if (ff == aset.end()) return NULL;
+	if (ff == aset.end()) return nullptr;
 	return *ff;
 }
 
@@ -324,7 +324,7 @@ AssignSet::printNums(std::ostream &os)
 		if (*it)
 			(*it)->printNum(os);
 		else
-			os << "-";  // Special case for NULL definition
+			os << "-";  // Special case for nullptr definition
 		if (++it != aset.end())
 			os << " ";
 	}
@@ -471,24 +471,24 @@ Exp *
 LocationSet::findNS(Exp *e)
 {
 	// Note: can't search with a wildcard, since it doesn't have the weak ordering required (I think)
-	RefExp r(e, NULL);
-	// Note: the below assumes that NULL is less than any other pointer
+	RefExp r(e, nullptr);
+	// Note: the below assumes that nullptr is less than any other pointer
 	iterator it = lset.lower_bound(&r);
 	if (it == lset.end())
-		return NULL;
+		return nullptr;
 	if ((*((RefExp *)*it)->getSubExp1() == *e))
 		return *it;
 	else
-		return NULL;
+		return nullptr;
 }
 
 // Given an unsubscripted location e, return true if e{-} or e{0} exists in the set
 bool
 LocationSet::existsImplicit(Exp *e)
 {
-	RefExp r(e, NULL);
+	RefExp r(e, nullptr);
 	iterator it = lset.lower_bound(&r);  // First element >= r
-	// Note: the below relies on the fact that NULL is less than any other pointer. Try later entries in the set:
+	// Note: the below relies on the fact that nullptr is less than any other pointer. Try later entries in the set:
 	while (it != lset.end()) {
 		if (!(*it)->isSubscript()) return false;        // Looking for e{something} (could be e.g. %pc)
 		if (!(*((RefExp *)*it)->getSubExp1() == *e))    // Gone past e{anything}?
@@ -541,9 +541,9 @@ void
 LocationSet::substitute(Assign &a)
 {
 	Exp *lhs = a.getLeft();
-	if (lhs == NULL) return;
+	if (!lhs) return;
 	Exp *rhs = a.getRight();
-	if (rhs == NULL) return;  // ? Will this ever happen?
+	if (!rhs) return;  // ? Will this ever happen?
 	std::set<Exp *, lessExpStar>::iterator it;
 	// Note: it's important not to change the pointer in the set of pointers to expressions, without removing and
 	// inserting again. Otherwise, the set becomes out of order, and operations such as set comparison fail!
@@ -646,7 +646,7 @@ void
 StatementVec::putAt(int idx, Statement *s)
 {
 	if (idx >= (int)svec.size())
-		svec.resize(idx + 1, NULL);
+		svec.resize(idx + 1, nullptr);
 	svec[idx] = s;
 }
 
@@ -744,7 +744,7 @@ Assignment *
 StatementList::findOnLeft(Exp *loc)
 {
 	if (slist.empty())
-		return NULL;
+		return nullptr;
 	for (iterator it = slist.begin(); it != slist.end(); it++) {
 		Exp *left = ((Assignment *)*it)->getLeft();
 		if (*left == *loc)
@@ -757,7 +757,7 @@ StatementList::findOnLeft(Exp *loc)
 			}
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -813,7 +813,7 @@ Range::Range(int stride, int lowerBound, int upperBound, Exp *base) :
 		this->upperBound = this->lowerBound;
 		this->base = base->getSubExp1();
 	} else {
-		if (base == NULL)
+		if (!base)
 			base = new Const(0);
 		if (lowerBound > upperBound)
 			this->upperBound = lowerBound;

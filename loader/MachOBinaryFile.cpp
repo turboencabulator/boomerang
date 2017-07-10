@@ -191,8 +191,8 @@ MachOBinaryFile::load(std::istream &ifs)
 	std::vector<struct segment_command> segments;
 	std::vector<struct nlist> symbols;
 	std::vector<struct section> stubs_sects;
-	char *strtbl = NULL;
-	unsigned *indirectsymtbl = NULL;
+	char *strtbl = nullptr;
+	unsigned *indirectsymtbl = nullptr;
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
 
@@ -512,7 +512,7 @@ MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	std::map<ADDRESS, std::string>::iterator it = m_SymA.find(dwAddr);
 	if (it == m_SymA.end())
-		return 0;
+		return nullptr;
 	return it->second.c_str();
 }
 

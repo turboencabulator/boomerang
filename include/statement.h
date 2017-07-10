@@ -112,19 +112,19 @@ enum BRANCH_TYPE {
  */
 class Statement {
 protected:
-	        BasicBlock *pbb = NULL;     // contains a pointer to the enclosing BB
-	        UserProc   *proc = NULL;    // procedure containing this statement
-	        int         number = 0;     // Statement number for printing
+	        BasicBlock *pbb = nullptr;     // contains a pointer to the enclosing BB
+	        UserProc   *proc = nullptr;    // procedure containing this statement
+	        int         number = 0;        // Statement number for printing
 #if USE_DOMINANCE_NUMS
-	        int         dominanceNum;   // Like a statement number, but has dominance properties
+	        int         dominanceNum;      // Like a statement number, but has dominance properties
 public:
 	        int         getDomNumber() { return dominanceNum; }
 	        void        setDomNumber(int dn) { dominanceNum = dn; }
 protected:
 #endif
-	        STMT_KIND   kind;           // Statement kind (e.g. STMT_BRANCH)
-	        Statement  *parent = NULL;  // The statement that contains this one
-	        RangeMap    ranges;         // overestimation of ranges of locations
+	        STMT_KIND   kind;              // Statement kind (e.g. STMT_BRANCH)
+	        Statement  *parent = nullptr;  // The statement that contains this one
+	        RangeMap    ranges;            // overestimation of ranges of locations
 	        RangeMap    savedInputRanges;  // saved overestimation of ranges of locations
 
 	        unsigned int lexBegin, lexEnd;
@@ -248,7 +248,7 @@ public:
 	// dnp is a StatementSet with statements that should not be propagated
 	// Set convert if an indirect call is changed to direct (otherwise, no change)
 	// Set force to true to propagate even memofs (for switch analysis)
-	        bool        propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts = NULL, LocationSet *usedByDomPhi = NULL, bool force = false);
+	        bool        propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts = nullptr, LocationSet *usedByDomPhi = nullptr, bool force = false);
 	        bool        propagateFlagsTo();
 
 	// code generation
@@ -339,11 +339,11 @@ public:
 
 	// Get the type for the definition, if any, for expression e in this statement
 	// Overridden only by Assignment and CallStatement, and ReturnStatement.
-	virtual Type       *getTypeFor(Exp *e) { return NULL; }
+	virtual Type       *getTypeFor(Exp *e) { return nullptr; }
 	// Set the type for the definition of e in this Statement
 	virtual void        setTypeFor(Exp *e, Type *ty) { assert(0); }
 
-	//virtual Type       *getType() { return NULL; }       // Assignment, ReturnStatement and
+	//virtual Type       *getType() { return nullptr; }    // Assignment, ReturnStatement and
 	//virtual void        setType(Type *t) { assert(0); }  // CallStatement override
 
 	        bool        doPropagateTo(Exp *e, Assign *def, bool &convert);
@@ -452,16 +452,16 @@ public:
 
 // Assign: an ordinary assignment with left and right sides
 class Assign : public Assignment {
-	Exp        *rhs = NULL;
-	Exp        *guard = NULL;
+	Exp        *rhs = nullptr;
+	Exp        *guard = nullptr;
 
 public:
 	// Constructor, subexpressions
-	            Assign(Exp *lhs, Exp *rhs, Exp *guard = NULL);
+	            Assign(Exp *lhs, Exp *rhs, Exp *guard = nullptr);
 	// Constructor, type and subexpressions
-	            Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard = NULL);
+	            Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard = nullptr);
 	// Default constructor, for XML parser
-	            Assign() : Assignment(NULL) { }
+	            Assign() : Assignment(nullptr) { }
 	// Copy constructor
 	            Assign(Assign &o);
 	// Destructor
@@ -490,7 +490,7 @@ public:
 	// Guard
 	void        setGuard(Exp *g) { guard = g; }
 	Exp        *getGuard() { return guard; }
-	bool        isGuarded() { return guard != NULL; }
+	bool        isGuarded() { return !!guard; }
 
 	bool        usesExp(Exp *e) override;
 	bool        isDefinition() override { return true; }
@@ -548,8 +548,8 @@ struct PhiInfo {
 	// A default constructor is required because CFG changes (?) can cause access to elements of the vector that
 	// are beyond the current end, creating gaps which have to be initialised to zeroes so that they can be skipped
 	            PhiInfo() { }
-	Statement  *def = NULL;  // The defining statement
-	Exp        *e = NULL;    // The expression for the thing being defined (never subscripted)
+	Statement  *def = nullptr;  // The defining statement
+	Exp        *e = nullptr;    // The expression for the thing being defined (never subscripted)
 };
 class PhiAssign : public Assignment {
 public:
@@ -571,7 +571,7 @@ public:
 	Statement  *clone() override;
 
 	// get how to replace this statement in a use
-	virtual Exp *getRight() { return NULL; }
+	virtual Exp *getRight() { return nullptr; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor *visitor) override;
@@ -654,7 +654,7 @@ public:
 	void        printCompact(std::ostream &os, bool html = false) override;
 
 	// Statement and Assignment functions
-	virtual Exp *getRight() { return NULL; }
+	virtual Exp *getRight() { return nullptr; }
 	void        simplify() override { }
 
 	// Visitation
@@ -670,7 +670,7 @@ public:
  * *==========================================================================*/
 class BoolAssign: public Assignment {
 	BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // the condition for setting true
-	Exp        *pCond = NULL;    // Exp representation of the high level
+	Exp        *pCond = nullptr; // Exp representation of the high level
 	                             // condition: e.g. r[8] == 5
 	bool        bFloat = false;  // True if condition uses floating point CC
 	int         size;            // The size of the dest
@@ -767,7 +767,7 @@ public:
  *===========================================================================*/
 class GotoStatement: public Statement {
 protected:
-	Exp        *pDest = NULL;          // Destination of a jump or call. This is the absolute destination for both static
+	Exp        *pDest = nullptr;       // Destination of a jump or call. This is the absolute destination for both static
 	                                   // and dynamic CTIs.
 	bool        m_isComputed = false;  // True if this is a CTI with a computed destination address.
 	                                   // NOTE: This should be removed, once CaseStatement and HLNwayCall are implemented
@@ -869,7 +869,7 @@ public:
  *==============================================================================*/
 class BranchStatement: public GotoStatement {
 	BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // The condition for jumping
-	Exp        *pCond = NULL;    // The Exp representation of the high level condition: e.g., r[8] == 5
+	Exp        *pCond = nullptr; // The Exp representation of the high level condition: e.g., r[8] == 5
 	bool        bFloat = false;  // True if uses floating point CC
 	// jtCond seems to be mainly needed for the Pentium weirdness.
 	// Perhaps bFloat, jtCond, and size could one day be merged into a type
@@ -964,7 +964,7 @@ struct SWITCH_INFO {
 };
 
 class CaseStatement: public GotoStatement {
-	SWITCH_INFO *pSwitchInfo = NULL;  // Ptr to struct with info about the switch
+	SWITCH_INFO *pSwitchInfo = nullptr;  // Ptr to struct with info about the switch
 public:
 	            CaseStatement();
 	virtual    ~CaseStatement();
@@ -1020,12 +1020,12 @@ class CallStatement: public GotoStatement {
 
 	// Destination of call. In the case of an analysed indirect call, this will be ONE target's return statement.
 	// For an unanalysed indirect call, or a call whose callee is not yet sufficiently decompiled due to recursion,
-	// this will be NULL
-	Proc       *procDest = NULL;
+	// this will be nullptr
+	Proc       *procDest = nullptr;
 
 	// The signature for this call. NOTE: this used to be stored in the Proc, but this does not make sense when
 	// the proc happens to have varargs
-	Signature  *signature = NULL;
+	Signature  *signature = nullptr;
 
 	// A UseCollector object to collect the live variables at this call. Used as part of the calculation of
 	// results
@@ -1038,7 +1038,7 @@ class CallStatement: public GotoStatement {
 	// Pointer to the callee ReturnStatement. If the callee is unanlysed, this will be a special ReturnStatement
 	// with ImplicitAssigns. Callee could be unanalysed because of an unanalysed indirect call, or a "recursion
 	// break".
-	ReturnStatement *calleeReturn = NULL;
+	ReturnStatement *calleeReturn = nullptr;
 
 public:
 	            CallStatement();
@@ -1067,7 +1067,7 @@ public:
 	void        addDefine(ImplicitAssign *as);  // For testing
 	//void        ignoreReturn(Exp *e);
 	//void        ignoreReturn(int n);
-	//void        addReturn(Exp *e, Type *ty = NULL);
+	//void        addReturn(Exp *e, Type *ty = nullptr);
 	void        updateDefines();  // Update the defines based on a callee change
 	StatementList *calcResults();  // Calculate defines(this) isect live(this)
 	ReturnStatement *getCalleeReturn() { return calleeReturn; }
@@ -1144,7 +1144,7 @@ public:
 	bool        definesLoc(Exp *loc) override;  // True if this Statement defines loc
 	void        setLeftFor(Exp *forExp, Exp *newExp) override;
 	// get how to replace this statement in a use
-	//virtual Exp *getRight() { return NULL; }
+	//virtual Exp *getRight() { return nullptr; }
 
 	// simplify all the uses/defs in this Statement
 	void        simplify() override;

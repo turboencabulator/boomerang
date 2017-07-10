@@ -89,8 +89,8 @@ private:
 	// Needed by FrontEnd::close to destroy an instance and unload its library.
 	typedef FrontEnd *(*constructFcn)(BinaryFile *bf, Prog *prog);
 	typedef void (*destructFcn)(FrontEnd *fe);
-	void *dlHandle = NULL;
-	destructFcn destruct = NULL;
+	void *dlHandle = nullptr;
+	destructFcn destruct = nullptr;
 #endif
 
 protected:
@@ -145,7 +145,7 @@ public:
 	virtual std::vector<Exp *> &getDefaultParams() = 0;
 	virtual std::vector<Exp *> &getDefaultReturns() = 0;
 
-	void decode(Prog *prog, bool decodeMain = true, const char *pname = NULL);
+	void decode(Prog *prog, bool decodeMain = true, const char *pname = nullptr);
 	void decode(Prog *prog, ADDRESS a);
 	void decodeOnly(Prog *prog, ADDRESS a);
 	void decodeFragment(UserProc *proc, ADDRESS a);

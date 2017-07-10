@@ -343,7 +343,7 @@ CompoundType::getType(const char *nam)
 	for (unsigned i = 0; i < types.size(); i++)
 		if (names[i] == nam)
 			return types[i];
-	return NULL;
+	return nullptr;
 }
 
 // Note: n is a BIT offset
@@ -356,7 +356,7 @@ CompoundType::getTypeAtOffset(unsigned n)
 			return types[i];
 		offset += types[i]->getSize();
 	}
-	return NULL;
+	return nullptr;
 }
 
 // Note: n is a BIT offset
@@ -409,7 +409,7 @@ CompoundType::getNameAtOffset(unsigned n)
 			return names[i].c_str();
 		offset += types[i]->getSize();
 	}
-	return NULL;
+	return nullptr;
 }
 
 unsigned
@@ -456,7 +456,7 @@ CompoundType::getOffsetRemainder(unsigned n)
 Type *
 Type::parseType(const char *str)
 {
-	return NULL;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -510,7 +510,7 @@ FuncType::operator ==(const Type &other) const
 {
 	if (!other.isFunc()) return false;
 	// Note: some functions don't have a signature (e.g. indirect calls that have not yet been successfully analysed)
-	if (signature == NULL) return ((FuncType &)other).signature == NULL;
+	if (!signature) return !((FuncType &)other).signature;
 	return *signature == *((FuncType &)other).signature;
 }
 
@@ -750,7 +750,7 @@ LowerType::operator <(const Type &other) const
  * FUNCTION:        *Type::match
  * OVERVIEW:        Match operation.
  * PARAMETERS:      pattern - Type to match
- * RETURNS:         Exp list of bindings if match or NULL
+ * RETURNS:         Exp list of bindings if match, or nullptr
  *============================================================================*/
 Exp *
 Type::match(Type *pattern)
@@ -764,7 +764,7 @@ Type::match(Type *pattern)
 		                             new TypeVal(this->clone())),
 		                  new Terminal(opNil));
 	}
-	return NULL;
+	return nullptr;
 }
 
 Exp *
@@ -855,7 +855,7 @@ VoidType::getCtype(bool final) const
 const char *
 FuncType::getCtype(bool final) const
 {
-	if (signature == NULL)
+	if (!signature)
 		return "void (void)";
 	std::string s;
 	if (signature->getNumReturns() == 0)
@@ -875,7 +875,7 @@ FuncType::getCtype(bool final) const
 void
 FuncType::getReturnAndParam(const char *&ret, const char *&param)
 {
-	if (signature == NULL) {
+	if (!signature) {
 		ret = "void";
 		param = "(void)";
 		return;
@@ -1081,7 +1081,7 @@ Type::getNamedType(const char *name)
 {
 	if (namedTypes.find(name) != namedTypes.end())
 		return namedTypes[name];
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -1217,7 +1217,7 @@ Type *NamedType::resolvesTo() const
 void
 ArrayType::fixBaseType(Type *b)
 {
-	if (base_type == NULL)
+	if (!base_type)
 		base_type = b;
 	else {
 		assert(base_type->isArray());
@@ -1303,7 +1303,7 @@ Type::starPrint(std::ostream &os)
 std::ostream &
 operator <<(std::ostream &os, Type *t)
 {
-	if (t == NULL) return os << '0';
+	if (!t) return os << '0';
 	switch (t->getId()) {
 	case eInteger:
 		{
@@ -1337,7 +1337,7 @@ Type *
 IntegerType::mergeWith(Type *other)
 {
 	if (*this == *other) return this;
-	if (!other->isInteger()) return NULL;  // Can you merge with a pointer?
+	if (!other->isInteger()) return nullptr;  // Can you merge with a pointer?
 	IntegerType *oth = (IntegerType *)other;
 	IntegerType *ret = (IntegerType *)this->clone();
 	if (size == 0) ret->setSize(oth->getSize());
@@ -1450,7 +1450,7 @@ DataIntervalMap::find(ADDRESS addr)
 {
 	iterator it = find_it(addr);
 	if (it == dimap.end())
-		return NULL;
+		return nullptr;
 	return &*it;
 }
 
@@ -1482,10 +1482,10 @@ DataIntervalMap::isClear(ADDRESS addr, unsigned size)
 void
 DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /* = false */)
 {
-	if (name == NULL)
+	if (!name)
 		name = "<noname>";
 	DataIntervalEntry *pdie = find(addr);
-	if (pdie == NULL) {
+	if (!pdie) {
 		// Check that this new item is compatible with any items it overlaps with, and insert it
 		replaceComponents(addr, name, ty, forced);
 		return;
@@ -1694,7 +1694,7 @@ Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 {
 	DataIntervalEntry *pdie = dim.find(addr);
 	ComplexTypeCompList *res = new ComplexTypeCompList;
-	if (pdie == NULL) return *res;
+	if (!pdie) return *res;
 	ADDRESS startCurrent = pdie->first;
 	Type *curType = pdie->second.type;
 	while (startCurrent < addr) {

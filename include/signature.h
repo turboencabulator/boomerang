@@ -32,13 +32,13 @@ class UserProc;
 
 class Parameter {
 private:
-	        Type       *type = NULL;
+	        Type       *type = nullptr;
 	        std::string name = "";
-	        Exp        *exp = NULL;
+	        Exp        *exp = nullptr;
 	        std::string boundMax;
 
 public:
-	                    Parameter(Type *type, const char *name, Exp *exp = NULL, const char *boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
+	                    Parameter(Type *type, const char *name, Exp *exp = nullptr, const char *boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
 	        bool        operator ==(Parameter &other);
 	        Parameter  *clone();
@@ -61,8 +61,8 @@ protected:
 
 class Return {
 public:
-	        Type       *type = NULL;
-	        Exp        *exp = NULL;
+	        Type       *type = nullptr;
+	        Exp        *exp = nullptr;
 
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
 	virtual            ~Return() { }
@@ -83,13 +83,13 @@ protected:
 	        std::vector<Parameter *> params;
 	        //std::vector<ImplicitParameter *> implicitParams;
 	        Returns     returns;
-	        Type       *rettype = NULL;
+	        Type       *rettype = nullptr;
 	        bool        ellipsis = false;
 	        bool        unknown = true;
 	        //bool        bFullSig;  // True if have a full signature from a signature file etc
 	        // True if the signature is forced with a -sf entry, or is otherwise known, e.g. WinMain
 	        bool        forced = false;
-	        Type       *preferedReturn = NULL;
+	        Type       *preferedReturn = nullptr;
 	        std::string preferedName = "";
 	        std::vector<int> preferedParams;
 
@@ -118,7 +118,7 @@ public:
 	        void        setForced(bool f) { forced = f; }
 
 	// get the return location
-	virtual void        addReturn(Type *type, Exp *e = NULL);
+	virtual void        addReturn(Type *type, Exp *e = nullptr);
 	virtual void        addReturn(Exp *e);
 	virtual void        addReturn(Return *ret) { returns.push_back(ret); }
 	virtual void        removeReturn(Exp *e);
@@ -141,8 +141,8 @@ public:
 	        void        setSigFile(const char *nam) { sigFile = nam; }
 
 	// add a new parameter to this signature
-	virtual void        addParameter(const char *nam = NULL);
-	virtual void        addParameter(Type *type, const char *nam = NULL, Exp *e = NULL, const char *boundMax = "");
+	virtual void        addParameter(const char *nam = nullptr);
+	virtual void        addParameter(Type *type, const char *nam = nullptr, Exp *e = nullptr, const char *boundMax = "");
 	virtual void        addParameter(Exp *e, Type *ty);
 	virtual void        addParameter(Parameter *param);
 	        void        addEllipsis() { ellipsis = true; }
@@ -192,7 +192,7 @@ public:
 	        Exp        *getEarlyParamExp(int n, Prog *prog);
 
 	// Get a wildcard to find stack locations
-	virtual Exp        *getStackWildcard() { return NULL; }
+	virtual Exp        *getStackWildcard() { return nullptr; }
 	class StackRegisterNotDefinedException : public std::exception {
 	public:
 		StackRegisterNotDefinedException() { }
@@ -218,7 +218,7 @@ public:
 	static  StatementList &getStdRetStmt(Prog *prog);
 
 	// get anything that can be proven as a result of the signature
-	virtual Exp        *getProven(Exp *left) { return NULL; }
+	virtual Exp        *getProven(Exp *left) { return nullptr; }
 	virtual bool        isPreserved(Exp *e) { return false; }  // Return whether e is preserved by this proc
 	virtual void        setLibraryDefines(StatementList *defs) { }  // Set the locations defined by library calls
 	static  void        setABIdefines(Prog *prog, StatementList *defs);

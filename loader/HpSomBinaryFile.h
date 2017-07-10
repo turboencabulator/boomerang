@@ -114,10 +114,10 @@ protected:
 private:
 	std::pair<ADDRESS, int> getSubspaceInfo(const char *ssname);
 
-	unsigned char *m_pImage = NULL;  ///< Points to loaded image.
-	SymTab      symbols;             ///< Symbol table object.
-	//ADDRESS     mainExport;          ///< Export entry for "main".
-	std::set<ADDRESS> imports;       ///< Set of imported proc addr's.
+	unsigned char *m_pImage = nullptr;  ///< Points to loaded image.
+	SymTab      symbols;                ///< Symbol table object.
+	//ADDRESS     mainExport;             ///< Export entry for "main".
+	std::set<ADDRESS> imports;          ///< Set of imported proc addr's.
 };
 
 #endif

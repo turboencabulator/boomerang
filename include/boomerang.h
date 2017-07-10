@@ -90,7 +90,7 @@ private:
 	        /// The path where all output files are created.
 	        std::string outputPath;
 	        /// Takes care of the log messages.
-	        Log        *logger = NULL;
+	        Log        *logger = nullptr;
 	        /// The watchers which are interested in this decompilation.
 	        std::set<Watcher *> watchers;
 
@@ -120,7 +120,7 @@ public:
 	        bool        setOutputDirectory(const char *path);
 
 	        /// \return The HLLCode for the specified UserProc.
-	static  HLLCode    *getHLLCode(UserProc *p = NULL);
+	static  HLLCode    *getHLLCode(UserProc *p = nullptr);
 
 	        int         commandLine(int argc, const char *argv[]);
 	        /// Set the path to the %Boomerang executable.
@@ -132,8 +132,8 @@ public:
 	        /// Returns the path to where the output files are saved.
 	        const std::string &getOutputPath() { return outputPath; }
 
-	        Prog       *loadAndDecode(const char *fname, const char *pname = NULL);
-	        int         decompile(const char *fname, const char *pname = NULL);
+	        Prog       *loadAndDecode(const char *fname, const char *pname = nullptr);
+	        int         decompile(const char *fname, const char *pname = nullptr);
 	        /// Add a Watcher to the set of Watchers for this Boomerang object.
 	        void        addWatcher(Watcher *watcher) { watchers.insert(watcher); }
 
@@ -244,7 +244,7 @@ public:
 	        bool        stopBeforeDecompile = false;
 	        bool        traceDecoder = false;
 	        /// The file in which the dotty graph is saved
-	        const char *dotFile = NULL;
+	        const char *dotFile = nullptr;
 	        int         numToPropagate = -1;
 	        bool        noPromote = false;
 	        bool        propOnlyToAll = false;
@@ -269,7 +269,7 @@ public:
 	        bool        noRemoveReturns = false;
 	        bool        debugDecoder = false;
 	        bool        decodeThruIndCall = false;
-	        std::ofstream *ofsIndCallReport = NULL;
+	        std::ofstream *ofsIndCallReport = nullptr;
 	        bool        noDecodeChildren = false;
 	        bool        debugProof = false;
 	        bool        debugUnused = false;

@@ -36,7 +36,7 @@ public:
 	int getvalue();
 
 protected:
-	InsNameElem *nextelem = NULL;
+	InsNameElem *nextelem = nullptr;
 	std::string elemname;
 	int value = 0;
 };

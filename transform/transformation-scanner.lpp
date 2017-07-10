@@ -81,7 +81,7 @@ IS                      (u|U|l|L)*
 
 0[xX]{H}+{IS}?          |
 0{D}+{IS}?              |
-{D}+{IS}?               { yylval.ival = strtol(yytext, NULL, 0); return TransformationParser::CONSTANT; }
+{D}+{IS}?               { yylval.ival = strtol(yytext, nullptr, 0); return TransformationParser::CONSTANT; }
 L?'(\\.|[^\\'])+'       { return TransformationParser::CONSTANT; }
 
 {D}+{E}{FS}?            |

@@ -91,8 +91,8 @@ struct SectionInfo {
 	 */
 	virtual bool isAddressBss(ADDRESS a) const { return bBss != 0; }
 
-	const char *pSectionName = NULL;    ///< Name of section.
-	char       *uHostAddr = NULL;       ///< Host or actual address of data.
+	const char *pSectionName = nullptr; ///< Name of section.
+	char       *uHostAddr = nullptr;    ///< Host or actual address of data.
 	ADDRESS     uNativeAddr = 0;        ///< Logical or native load address.
 	ADDRESS     uSectionSize = 0;       ///< Size of section in bytes.
 	ADDRESS     uSectionEntrySize = 0;  ///< Size of one section entry (if applic).
@@ -179,8 +179,8 @@ private:
 	// Needed by BinaryFile::close to destroy an instance and unload its library.
 	typedef BinaryFile *(*constructFcn)();
 	typedef void        (*destructFcn)(BinaryFile *bf);
-	        void       *dlHandle = NULL;
-	        destructFcn destruct = NULL;
+	        void       *dlHandle = nullptr;
+	        destructFcn destruct = nullptr;
 #endif
 
 public:
@@ -244,7 +244,7 @@ public:
 	virtual const char *getSymbolByAddress(ADDRESS uNative);
 	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
 	virtual int         getSizeByName(const char *pName, bool bTypeOK = false);
-	virtual const char *getFilenameSymbolFor(const char *sym) { return NULL; }
+	virtual const char *getFilenameSymbolFor(const char *sym) { return nullptr; }
 	virtual ADDRESS    *getImportStubs(int &numImports);
 	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
 	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
@@ -261,7 +261,7 @@ public:
 	//virtual ADDRESS     getRelocatedAddress(ADDRESS uNative);
 	//virtual ADDRESS     applyRelocation(ADDRESS uNative, ADDRESS uWord);
 	// Get symbol associated with relocation at address, if any
-	//virtual const char *getRelocSym(ADDRESS uNative, ADDRESS *a = NULL, unsigned int *sz = NULL) { return NULL; }
+	//virtual const char *getRelocSym(ADDRESS uNative, ADDRESS *a = nullptr, unsigned int *sz = nullptr) { return nullptr; }
 	virtual bool        isRelocationAt(ADDRESS uNative) { return false; }
 	/** \} */
 
@@ -307,15 +307,15 @@ protected:
 
 	        void        getTextLimits();
 
-	        const char *m_pFilename = NULL;   ///< Input file name.
-	        bool        m_bArchive;           ///< True if archive member.
-	        int         m_iNumSections = 0;   ///< Number of sections.
-	        SectionInfo *m_pSections = NULL;  ///< The section info.
-	        ADDRESS     m_uInitPC;            ///< Initial program counter.
-	        ADDRESS     m_uInitSP;            ///< Initial stack pointer.
+	        const char *m_pFilename = nullptr;   ///< Input file name.
+	        bool        m_bArchive;              ///< True if archive member.
+	        int         m_iNumSections = 0;      ///< Number of sections.
+	        SectionInfo *m_pSections = nullptr;  ///< The section info.
+	        ADDRESS     m_uInitPC;               ///< Initial program counter.
+	        ADDRESS     m_uInitSP;               ///< Initial stack pointer.
 
-	        ADDRESS     limitTextLow;         ///< Lowest used native address (inclusive) in the text segment.
-	        ADDRESS     limitTextHigh;        ///< Highest used native address (not inclusive) in the text segment.
+	        ADDRESS     limitTextLow;            ///< Lowest used native address (inclusive) in the text segment.
+	        ADDRESS     limitTextHigh;           ///< Highest used native address (not inclusive) in the text segment.
 
 	/**
 	 * Difference between the host and native addresses (host - native).

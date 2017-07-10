@@ -46,7 +46,7 @@ Register::Register(const Register &r) :
 	mappedOffset(r.mappedOffset),
 	flt(r.flt)
 {
-	if (r.name != NULL)
+	if (r.name)
 		name = strdup(r.name);
 }
 
@@ -61,7 +61,7 @@ Register::operator =(const Register &r2)
 {
 	// copy operator
 
-	//if (name != NULL)
+	//if (name)
 		//free(name);
 	name = r2.name;
 	size = r2.size;
@@ -84,7 +84,7 @@ bool
 Register::operator ==(const Register &r2) const
 {
 	// compare on name
-	assert(name != NULL && r2.name != NULL);
+	assert(name && r2.name);
 	return strcmp(name, r2.name) == 0;
 }
 
@@ -98,7 +98,7 @@ bool
 Register::operator <(const Register &r2) const
 {
 	// compare on name
-	assert(name != NULL && r2.name != NULL);
+	assert(name && r2.name);
 	return strcmp(name, r2.name) < 0;
 }
 
@@ -110,9 +110,9 @@ Register::operator <(const Register &r2) const
 void
 Register::s_name(const char *s)
 {
-	assert(s != NULL);
+	assert(s);
 
-	//if (name != NULL)
+	//if (name)
 		//free(name);
 	name = strdup(s);
 }

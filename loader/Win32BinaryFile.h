@@ -197,12 +197,12 @@ private:
 
 	void        findJumps(ADDRESS curr);
 
-	Header     *m_pHeader;      ///< Pointer to header.
-	PEHeader   *m_pPEHeader;    ///< Pointer to pe header.
-	int         m_cbImage;      ///< Size of image.
-	int         m_cReloc;       ///< Number of relocation entries.
-	DWord      *m_pRelocTable;  ///< The relocation table.
-	unsigned char *base = NULL; ///< Beginning of the loaded image.
+	Header     *m_pHeader;          ///< Pointer to header.
+	PEHeader   *m_pPEHeader;        ///< Pointer to pe header.
+	int         m_cbImage;          ///< Size of image.
+	int         m_cReloc;           ///< Number of relocation entries.
+	DWord      *m_pRelocTable;      ///< The relocation table.
+	unsigned char *base = nullptr;  ///< Beginning of the loaded image.
 	std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.
 	bool        mingw_main = false;
 };

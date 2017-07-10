@@ -81,7 +81,7 @@ BinaryFile::getSectionInfo(int idx) const
 	if (idx < m_iNumSections) {
 		return &m_pSections[idx];
 	}
-	return NULL;
+	return nullptr;
 }
 
 /**
@@ -97,11 +97,11 @@ BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 			return pSect;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 /**
- * \brief Find section info given name, or NULL if not found.
+ * \brief Find section info given name, or nullptr if not found.
  */
 const SectionInfo *
 BinaryFile::getSectionInfoByName(const char *sName) const
@@ -111,7 +111,7 @@ BinaryFile::getSectionInfoByName(const char *sName) const
 			return &m_pSections[i];
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 /**
@@ -194,14 +194,14 @@ BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 /**
  * \brief Get name of symbol.
  *
- * Lookup the address, return the name, or 0 if not found.
+ * Lookup the address, return the name, or nullptr if not found.
  *
  * Overridden by subclasses that support syms.
  */
 const char *
 BinaryFile::getSymbolByAddress(ADDRESS uNative)
 {
-	return 0;
+	return nullptr;
 }
 
 /**
@@ -309,7 +309,7 @@ ADDRESS *
 BinaryFile::getImportStubs(int &numImports)
 {
 	numImports = 0;
-	return NULL;
+	return nullptr;
 }
 
 /**

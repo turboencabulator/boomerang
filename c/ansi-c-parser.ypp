@@ -43,16 +43,16 @@
 	public:
 		ADDRESS addr;
 		std::string nam = "";
-		Type *ty = NULL;
-		Signature *sig = NULL;
-		SymbolMods *mods = NULL;
+		Type *ty = nullptr;
+		Signature *sig = nullptr;
+		SymbolMods *mods = nullptr;
 
 		Symbol(ADDRESS a) : addr(a) { }
 	};
 
 	class CustomOptions {
 	public:
-		Exp *exp = NULL;
+		Exp *exp = nullptr;
 		int sp = 0;
 
 		CustomOptions() { }
@@ -236,7 +236,7 @@ param
 		}
 	  }
 	| type '(' '*' IDENTIFIER ')' '(' param_list ')' {
-		Signature *sig = Signature::instantiate(plat, cc, NULL);
+		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($1);
 		for (std::list<Parameter *>::iterator it = $7->begin(); it != $7->end(); it++)
 			if (std::string((*it)->getName()) != "...")
@@ -258,7 +258,7 @@ type_decl
 		Type::addNamedType($2->nam.c_str(), $2->ty);
 	  }
 	| TYPEDEF type '(' '*' IDENTIFIER ')' '(' param_list ')' ';' {
-		Signature *sig = Signature::instantiate(plat, cc, NULL);
+		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($2);
 		for (std::list<Parameter *>::iterator it = $8->begin(); it != $8->end(); it++)
 			if (std::string((*it)->getName()) != "...")
@@ -396,8 +396,8 @@ custom_options
 	;
 
 array_modifier
-	: '[' CONSTANT ']'                { $$ = new ArrayType(NULL, $2); }
-	| '[' ']'                         { $$ = new ArrayType(NULL); }
+	: '[' CONSTANT ']'                { $$ = new ArrayType(nullptr, $2); }
+	| '[' ']'                         { $$ = new ArrayType(nullptr); }
 	| array_modifier '[' CONSTANT ']' { $$ = new ArrayType($1, $3); }
 	| array_modifier '[' ']'          { $$ = new ArrayType($1); }
 	;
@@ -446,7 +446,7 @@ type
 
 	| IDENTIFIER {
 		//$$ = Type::getNamedType($1);
-		//if ($$ == NULL)
+		//if (!$$)
 		$$ = new NamedType($1);
 	  }
 	| STRUCT IDENTIFIER {

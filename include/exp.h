@@ -211,7 +211,7 @@ public:
 
 	// FIXME: are these used?
 	// Matches this expression to the pattern, if successful returns a list of variable bindings, otherwise returns
-	// NULL
+	// nullptr
 	virtual Exp        *match(Exp *pattern);
 
 	// match a string pattern
@@ -252,9 +252,9 @@ public:
 	// These are here so we can (optionally) prevent code clutter.
 	// Using a *Exp (that is known to be a Binary* say), you can just directly call getSubExp2.
 	// However, you can still choose to cast from Exp* to Binary* etc. and avoid the virtual call
-	virtual Exp        *getSubExp1() { return 0; }
-	virtual Exp        *getSubExp2() { return 0; }
-	virtual Exp        *getSubExp3() { return 0; }
+	virtual Exp        *getSubExp1() { return nullptr; }
+	virtual Exp        *getSubExp2() { return nullptr; }
+	virtual Exp        *getSubExp3() { return nullptr; }
 	virtual Exp       *&refSubExp1();
 	virtual Exp       *&refSubExp2();
 	virtual Exp       *&refSubExp3();
@@ -339,7 +339,7 @@ public:
 
 	// Data flow based type analysis (implemented in type/dfa.cpp)
 	// Pull type information up the expression tree
-	virtual Type       *ascendType() { assert(0); return 0; }
+	virtual Type       *ascendType() { assert(0); return nullptr; }
 	// Push type information down the expression tree
 	virtual void        descendType(Type *parentType, bool &ch, Statement *s) { assert(0); }
 
@@ -678,7 +678,7 @@ protected:
  * TypedExp is a subclass of Unary, holding one subexpression and a Type
  *============================================================================*/
 class TypedExp : public Unary {
-	Type       *type = NULL;
+	Type       *type = nullptr;
 public:
 	// Constructor
 	            TypedExp();
@@ -750,7 +750,7 @@ protected:
  * The integer is really a pointer to the definig statement, printed as the statement number for compactness.
  *============================================================================*/
 class RefExp : public Unary {
-	Statement  *def = NULL;  // The defining statement
+	Statement  *def = nullptr;  // The defining statement
 
 public:
 	// Constructor with expression (e) and statement defining it (def)
@@ -774,7 +774,7 @@ public:
 	Exp        *match(Exp *pattern) override;
 	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
-	// Before type analysis, implicit definitions are NULL.  During and after TA, they point to an implicit
+	// Before type analysis, implicit definitions are nullptr.  During and after TA, they point to an implicit
 	// assignment statement.  Don't implement here, since it would require #including of statement.h
 	bool        isImplicitDef();
 
@@ -808,7 +808,7 @@ public:
 	bool        operator *=(Exp &o) override;
 	void        print(std::ostream &os, bool html = false) override;
 	void        printx(int ind) override;
-	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return NULL; }  // Should not be constraining constraints
+	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return nullptr; }  // Should not be constraining constraints
 	//Exp        *match(Exp *pattern) override;
 
 	// Visitation
@@ -821,7 +821,7 @@ protected:
 
 class Location : public Unary {
 protected:
-	UserProc   *proc = NULL;
+	UserProc   *proc = nullptr;
 
 public:
 	// Constructor with ID, subexpression, and UserProc*
@@ -829,13 +829,13 @@ public:
 	// Copy constructor
 	            Location(Location &o);
 	// Custom constructor
-	static  Location *regOf(int r) { return new Location(opRegOf, new Const(r), NULL); }
-	static  Location *regOf(Exp *e) { return new Location(opRegOf, e, NULL); }
-	static  Location *memOf(Exp *e, UserProc *p = NULL) { return new Location(opMemOf, e, p); }
-	static  Location *tempOf(Exp *e) { return new Location(opTemp, e, NULL); }
+	static  Location *regOf(int r) { return new Location(opRegOf, new Const(r), nullptr); }
+	static  Location *regOf(Exp *e) { return new Location(opRegOf, e, nullptr); }
+	static  Location *memOf(Exp *e, UserProc *p = nullptr) { return new Location(opMemOf, e, p); }
+	static  Location *tempOf(Exp *e) { return new Location(opTemp, e, nullptr); }
 	static  Location *global(const char *nam, UserProc *p) { return new Location(opGlobal, new Const(nam), p); }
 	static  Location *local(const char *nam, UserProc *p);
-	static  Location *param(const char *nam, UserProc *p = NULL) { return new Location(opParam, new Const(nam), p); }
+	static  Location *param(const char *nam, UserProc *p = nullptr) { return new Location(opParam, new Const(nam), p); }
 	// Clone
 	Exp        *clone() override;
 

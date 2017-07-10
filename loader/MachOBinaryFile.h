@@ -77,7 +77,7 @@ protected:
 	//bool        PostLoad(void *handle) override;
 
 private:
-	char       *base = NULL;         ///< Beginning of the loaded image
+	char       *base = nullptr;      ///< Beginning of the loaded image
 	ADDRESS     entrypoint, loaded_addr;
 	unsigned    loaded_size;
 	MACHINE     machine = MACHINE_PPC;

@@ -87,7 +87,7 @@ public:
 	 * Get/Set the first procedure that calls this procedure (or null for main/start).
 	 */
 	        Proc       *getFirstCaller();
-	        void        setFirstCaller(Proc *p) { if (m_firstCaller == NULL) m_firstCaller = p; }
+	        void        setFirstCaller(Proc *p) { if (!m_firstCaller) m_firstCaller = p; }
 
 	/**
 	 * Returns a pointer to the Signature
@@ -211,7 +211,7 @@ protected:
 
 	        bool        visited = false;  ///< For printCallGraphXML
 
-	        Prog       *prog = NULL;  ///< Program containing this procedure.
+	        Prog       *prog = nullptr;  ///< Program containing this procedure.
 
 	/**
 	 * The formal signature of this procedure. This information is determined
@@ -220,12 +220,12 @@ protected:
 	 * NOTE: This belongs in the CALL, because the same procedure can have different signatures if it happens to
 	 * have varargs. Temporarily here till it can be permanently moved.
 	 */
-	        Signature  *signature = NULL;
+	        Signature  *signature = nullptr;
 
 	/** Persistent state */
-	        ADDRESS     address = 0;           ///< Procedure's address.
-	        Proc       *m_firstCaller = NULL;  ///< first procedure to call this procedure.
-	        ADDRESS     m_firstCallerAddr = 0; ///< can only be used once.
+	        ADDRESS     address = 0;              ///< Procedure's address.
+	        Proc       *m_firstCaller = nullptr;  ///< first procedure to call this procedure.
+	        ADDRESS     m_firstCallerAddr = 0;    ///< can only be used once.
 	/// All the expressions that have been proven true. (Could perhaps do with a list of some that are proven false)
 	// FIXME: shouldn't this be in UserProc, with logic associated with the signature doing the equivalent thing
 	// for LibProcs?
@@ -238,7 +238,7 @@ protected:
 	        std::map<Exp *, Exp *, lessExpStar> recurPremises;
 
 	        std::set<CallStatement *> callerSet;  ///< Set of callers (CallStatements that call this procedure).
-	        Cluster    *cluster = NULL;           ///< Cluster this procedure is contained within.
+	        Cluster    *cluster = nullptr;        ///< Cluster this procedure is contained within.
 
 	friend class XMLProgParser;
 	                    Proc() { }
@@ -260,9 +260,9 @@ public:
 
 	bool        isNoReturn() override;
 
-	Exp        *getProven(Exp *left) override;                    // Get the RHS that is proven for left
-	Exp        *getPremised(Exp *left) override { return NULL; }  // Get the RHS that is premised for left
-	bool        isPreserved(Exp *e) override;                     ///< Return whether e is preserved by this proc
+	Exp        *getProven(Exp *left) override;                       // Get the RHS that is proven for left
+	Exp        *getPremised(Exp *left) override { return nullptr; }  // Get the RHS that is premised for left
+	bool        isPreserved(Exp *e) override;                        ///< Return whether e is preserved by this proc
 
 	/*
 	 * Prints this procedure to an output stream.
@@ -300,7 +300,7 @@ class UserProc : public Proc {
 	/**
 	 * The control flow graph.
 	 */
-	Cfg        *cfg = NULL;
+	Cfg        *cfg = nullptr;
 
 	/**
 	 * The status of this user procedure.
@@ -384,7 +384,7 @@ private:
 	 * E.g. in test/source/recursion.c, there is a cycle with f and g, while another is being built up (it only
 	 * has c, d, and e at the point where the f-g cycle is found).
 	 */
-	ProcSet    *cycleGrp = NULL;
+	ProcSet    *cycleGrp = nullptr;
 
 	/**
 	 * A map of stack locations (negative values) to types.  This is currently
@@ -434,14 +434,14 @@ public:
 	 */
 	SyntaxNode *getAST();
 	// print it to a file
-	void        printAST(SyntaxNode *a = NULL);
+	void        printAST(SyntaxNode *a = nullptr);
 
 	/**
 	 * Returns whether or not this procedure can be decoded (i.e. has it already been decoded).
 	 */
 	bool        isDecoded() { return status >= PROC_DECODED; }
 	bool        isDecompiled() { return status >= PROC_FINAL; }
-	bool        isEarlyRecursive() { return cycleGrp != NULL && status <= PROC_INCYCLE; }
+	bool        isEarlyRecursive() { return cycleGrp && status <= PROC_INCYCLE; }
 	bool        doesRecurseTo(UserProc *p) { return cycleGrp && cycleGrp->find(p) != cycleGrp->end(); }
 
 	bool        isSorted() { return status >= PROC_SORTED; }
@@ -641,7 +641,7 @@ public:
 	/// be conditional on premises stored in other procedures
 	bool        prove(Exp *query, bool conditional = false);
 	/// helper function, should be private
-	bool        prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign *, Exp *> &cache, Exp *original, PhiAssign *lastPhi = NULL);
+	bool        prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign *, Exp *> &cache, Exp *original, PhiAssign *lastPhi = nullptr);
 
 	/// promote the signature if possible
 	void        promoteSignature();
@@ -690,7 +690,7 @@ public:
 	/**
 	 * Return an expression that is equivilent to e in terms of local variables.  Creates new locals as needed.
 	 */
-	Exp        *getSymbolExp(Exp *le, Type *ty = NULL, bool lastPass = false);
+	Exp        *getSymbolExp(Exp *le, Type *ty = nullptr, bool lastPass = false);
 
 
 	/**
@@ -707,7 +707,7 @@ public:
 	 * Return the next available local variable; make it the given type. Note: was returning TypedExp*.
 	 * If nam is non null, use that name
 	 */
-	Exp        *newLocal(Type *ty, Exp *e, const char *nam = NULL);
+	Exp        *newLocal(Type *ty, Exp *e, const char *nam = nullptr);
 
 	/**
 	 * Add a new local supplying all needed information.
@@ -727,7 +727,7 @@ public:
 	/// As above but with replacement
 	void        mapSymbolToRepl(Exp *from, Exp *oldTo, Exp *newTo);
 	void        removeSymbolMapping(Exp *from, Exp *to);  /// Remove this mapping
-	/// Lookup the expression in the symbol map. Return NULL or a C string with the symbol. Use the Type* ty to
+	/// Lookup the expression in the symbol map. Return nullptr or a C string with the symbol. Use the Type* ty to
 	/// select from several names in the multimap; the name corresponding to the first compatible type is returned
 	Exp        *getSymbolFor(Exp *e, Type *ty);  /// Lookup the symbol map considering type
 	const char *lookupSym(Exp *e, Type *ty);
@@ -737,7 +737,7 @@ public:
 	void        checkLocalFor(RefExp *r);        // Check if r is already mapped to a local, else add one
 	Type       *getTypeForLocation(Exp *e);      // Find the type of the local or parameter e
 	/// Determine whether e is a local, either as a true opLocal (e.g. generated by fromSSA), or if it is in the
-	/// symbol map and the name is in the locals map. If it is a local, return its name, else NULL
+	/// symbol map and the name is in the locals map. If it is a local, return its name, else nullptr
 	const char *findLocal(Exp *e, Type *ty);
 	const char *findLocalFromRef(RefExp *r);
 	const char *findFirstSymbol(Exp *e);
@@ -832,13 +832,13 @@ public:
 
 private:
 	/// We ensure that there is only one return statement now. See code in frontend/frontend.cpp handling case
-	/// STMT_RET. If no return statement, this will be NULL.
-	ReturnStatement *theReturnStatement = NULL;
+	/// STMT_RET. If no return statement, this will be nullptr.
+	ReturnStatement *theReturnStatement = nullptr;
 	int         DFGcount = 0;
 public:
-	ADDRESS     getTheReturnAddr() { return theReturnStatement == NULL ? NO_ADDRESS : theReturnStatement->getRetAddr(); }
+	ADDRESS     getTheReturnAddr() { return !theReturnStatement ? NO_ADDRESS : theReturnStatement->getRetAddr(); }
 	void        setTheReturnAddr(ReturnStatement *s, ADDRESS r) {
-		            assert(theReturnStatement == NULL);
+		            assert(!theReturnStatement);
 		            theReturnStatement = s;
 		            theReturnStatement->setRetAddr(r);
 	}

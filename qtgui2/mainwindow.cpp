@@ -588,13 +588,13 @@ MainWindow::showDebuggingPoint(const QString &name, const QString &description)
 void
 MainWindow::showRTLEditor(const QString &name)
 {
-	RTLEditor *n = NULL;
+	RTLEditor *n = nullptr;
 	for (int i = 0; i < ui.tabWidget->count(); i++)
 		if (ui.tabWidget->tabText(i) == name) {
 			n = dynamic_cast<RTLEditor *>(ui.tabWidget->widget(i));
 			break;
 		}
-	if (n == NULL) {
+	if (!n) {
 		n = new RTLEditor(decompilerThread->getDecompiler(), name);
 		ui.tabWidget->addTab(n, name);
 	} else
@@ -627,13 +627,13 @@ MainWindow::on_clusters_itemDoubleClicked(QTreeWidgetItem *item, int column)
 	QTreeWidgetItem *top = item;
 	while (top->parent())
 		top = top->parent();
-	QTextEdit *n = NULL;
+	QTextEdit *n = nullptr;
 	for (int i = 0; i < ui.tabWidget->count(); i++)
 		if (ui.tabWidget->tabText(i) == top->text(0)) {
 			n = dynamic_cast<QTextEdit *>(ui.tabWidget->widget(i));
 			break;
 		}
-	if (n == NULL) {
+	if (!n) {
 		n = new QTextEdit();
 		QString name = top->text(0);
 		name = name.left(name.lastIndexOf("."));
@@ -665,7 +665,7 @@ MainWindow::on_actionEnable_toggled(bool b)
 	decompilerThread->getDecompiler()->stopWaiting();
 	if (b) {
 		statusBar()->show();
-		if (step == NULL) {
+		if (!step) {
 			step = new QToolButton();
 			step->setToolButtonStyle(Qt::ToolButtonTextOnly);
 			step->setText("Step");
@@ -691,7 +691,7 @@ MainWindow::on_userProcs_horizontalHeader_sectionClicked(int logicalIndex)
 {
 	if (logicalIndex == 2) {
 		for (int i = 0; i < ui.userProcs->rowCount(); i++) {
-			if (ui.userProcs->item(i, 2) == NULL) {
+			if (!ui.userProcs->item(i, 2)) {
 				ui.userProcs->setItem(i, 2, new QTableWidgetItem(""));
 			}
 			Qt::CheckState state = ui.userProcs->item(i, 2)->checkState();
@@ -731,13 +731,13 @@ MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 	QString sigFileStar = sigFile;
 	sigFileStar.append("*");
 
-	QTextEdit *n = NULL;
+	QTextEdit *n = nullptr;
 	for (int i = 0; i < ui.tabWidget->count(); i++)
 		if (ui.tabWidget->tabText(i) == sigFile || ui.tabWidget->tabText(i) == sigFileStar) {
 			n = dynamic_cast<QTextEdit *>(ui.tabWidget->widget(i));
 			break;
 		}
-	if (n == NULL) {
+	if (!n) {
 		n = new QTextEdit();
 		QFile file(filename);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))

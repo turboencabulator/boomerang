@@ -39,8 +39,8 @@ typedef void *pthread_create_type(void *a, void *b, void *c, void *d);
 
 extern "C" void *GC_pthread_create(void *, void *, void *, void *);
 
-void *pthread_lib = NULL;
-pthread_create_type *orig = NULL;
+void *pthread_lib = nullptr;
+pthread_create_type *orig = nullptr;
 
 extern "C" void *
 pthread_create(void *a, void *b, void *c, void *d)
@@ -48,14 +48,14 @@ pthread_create(void *a, void *b, void *c, void *d)
 	if (c != (void *)GC_start_routine)
 		return GC_pthread_create(a, b, c, d);
 	else {
-		if (pthread_lib == NULL) {
+		if (!pthread_lib) {
 			pthread_lib = dlopen("libpthread.so.0", RTLD_LAZY);
-			if (pthread_lib == NULL) {
+			if (!pthread_lib) {
 				printf("cannot dynamically open pthreads %s.\n", dlerror());
 				exit(1);
 			}
 			orig = (pthread_create_type *)dlsym(pthread_lib, "pthread_create");
-			if (orig == NULL) {
+			if (!orig) {
 				printf("cannot find symbol pthread_create %s.\n", dlerror());
 				exit(1);
 			}

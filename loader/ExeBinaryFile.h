@@ -103,10 +103,10 @@ protected:
 	//bool        PostLoad(void *handle) override;
 
 private:
-	exeHeader  *m_pHeader = NULL;      ///< Pointer to header.
-	Byte       *m_pImage = NULL;       ///< Pointer to image.
-	int         m_cReloc;              ///< Number of relocation entries.
-	DWord      *m_pRelocTable = NULL;  ///< The relocation table.
+	exeHeader  *m_pHeader = nullptr;      ///< Pointer to header.
+	Byte       *m_pImage = nullptr;       ///< Pointer to image.
+	int         m_cReloc;                 ///< Number of relocation entries.
+	DWord      *m_pRelocTable = nullptr;  ///< The relocation table.
 };
 
 #endif

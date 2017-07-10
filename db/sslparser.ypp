@@ -300,7 +300,7 @@ a_reglist
 			yyerror("Index used for more than one register");
 		Dict.DetRegMap[$6].s_name($1);
 		Dict.DetRegMap[$6].s_size($3);
-		Dict.DetRegMap[$6].s_address(NULL);
+		Dict.DetRegMap[$6].s_address(nullptr);
 		// check range is legitimate for size. 8,10
 		if ((Dict.RegMap.find($8)  == Dict.RegMap.end())
 		 || (Dict.RegMap.find($10) == Dict.RegMap.end()))
@@ -336,7 +336,7 @@ a_reglist
 			yyerror("Index used for more than one register");
 		Dict.DetRegMap[$6].s_name($1);
 		Dict.DetRegMap[$6].s_size($3);
-		Dict.DetRegMap[$6].s_address(NULL);
+		Dict.DetRegMap[$6].s_address(nullptr);
 		// Do checks
 		if ($3 != ($13 - $11) + 1)
 			yyerror("Size does not equal range");
@@ -609,15 +609,15 @@ name_contract
 rt_list
 	: rt_list rt {
 		// append any automatically generated register transfers and clear the list they were stored in.
-		// Do nothing for a NOP (i.e. $2 = 0)
-		if ($2 != NULL) {
+		// Do nothing for a NOP (i.e. $2 == nullptr)
+		if ($2) {
 			$1->appendStmt($2);
 		}
 		$$ = $1;
 	  }
 	| rt {
 		$$ = new RTL(STMT_ASSIGN);
-		if ($1 != NULL)
+		if ($1)
 			$$->appendStmt($1);
 	  }
 	;
@@ -641,11 +641,11 @@ rt
 		}
 	  }
 
-	| FLAGMACRO flag_list ')' { $$ = 0; }
+	| FLAGMACRO flag_list ')' { $$ = nullptr; }
 
 	/* E.g. undefineflags() (but we don't handle this yet... flags are changed, but not in a way we support) */
-	| FLAGMACRO ')' { $$ = 0; }
-	| '_'           { $$ = NULL; }
+	| FLAGMACRO ')' { $$ = nullptr; }
+	| '_'           { $$ = nullptr; }
 	;
 
 flag_list
@@ -654,20 +654,20 @@ flag_list
 		/*Location *pFlag = Location::regOf(Dict.RegMap[$3]);
 		$1->push_back(pFlag);
 		$$ = $1;*/
-		$$ = 0;
+		$$ = nullptr;
 	  }
 	| REG_ID {
 		/*std::list<Exp *> *tmp = new std::list<Exp *>;
 		Unary *pFlag = new Unary(opIdRegOf, Dict.RegMap[$1]);
 		tmp->push_back(pFlag);
 		$$ = tmp;*/
-		$$ = 0;
+		$$ = nullptr;
 	  }
 	;
 
 /* Note: this list is a list of strings (other code needs this) */
 list_parameter
-	: list_parameter ',' param    { assert($3 != 0); $1->push_back($3); $$ = $1; }
+	: list_parameter ',' param    { assert($3); $1->push_back($3); $$ = $1; }
 	| param       { $$ = new std::list<std::string>; $$->push_back($1); }
 	| /* empty */ { $$ = new std::list<std::string>; }
 	;
@@ -703,7 +703,7 @@ assign_rt
 	| FPOP  { $$ = new Assign(new Terminal(opNil), new Terminal($1)); }
 
 	/* Just a RHS? Is this used? Note: flag calls are handled at the rt: level */
-	| assigntype exp { $$ = new Assign($1, NULL, $2); }
+	| assigntype exp { $$ = new Assign($1, nullptr, $2); }
 	;
 
 exp_term
@@ -842,7 +842,7 @@ location
 	 * is -1. If so, the equivalent of a special register is generated, i.e. a Terminal or opMachFtr
 	 * (machine specific feature) representing that register. */
 	: REG_ID {
-		bool isFlag = strstr($1, "flags") != 0;
+		bool isFlag = !!strstr($1, "flags");
 		std::map<std::string, int>::const_iterator it = Dict.RegMap.find($1);
 		if (it == Dict.RegMap.end() && !isFlag) {
 			std::ostringstream o;
@@ -873,7 +873,7 @@ location
 		Exp *s;
 		std::set<std::string>::iterator it = Dict.ParamSet.find($1);
 		if (it != Dict.ParamSet.end()) {
-			s = new Location(opParam, new Const($1), NULL);
+			s = new Location(opParam, new Const($1), nullptr);
 		} else if (ConstTable.find($1) != ConstTable.end()) {
 			s = new Const(ConstTable[$1]);
 		} else {
@@ -955,7 +955,7 @@ fastentry
  * FUNCTION:        SSLParser::parseExp
  * OVERVIEW:        Parses an assignment from a string.
  * PARAMETERS:      the string
- * RETURNS:         an Assignment or NULL.
+ * RETURNS:         an Assignment or nullptr.
  *============================================================================*/
 Statement *
 SSLParser::parseExp(const char *str)
@@ -1065,7 +1065,7 @@ listStrToExp(std::list<std::string> *ls)
 	Exp **cur = &e;
 	Exp *end = new Terminal(opNil);  // Terminate the chain
 	for (std::list<std::string>::iterator it = ls->begin(); it != ls->end(); it++) {
-		*cur = new Binary(opList, new Location(opParam, new Const((*it).c_str()), NULL), end);
+		*cur = new Binary(opList, new Location(opParam, new Const((*it).c_str()), nullptr), end);
 		cur = &(*cur)->refSubExp2();
 	}
 	*cur = new Terminal(opNil);  // Terminate the chain

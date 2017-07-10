@@ -58,7 +58,7 @@ Statement::setProc(UserProc *p)
 Exp *
 Statement::getExpAtLex(unsigned int begin, unsigned int end)
 {
-	return NULL;
+	return nullptr;
 }
 
 bool
@@ -375,7 +375,7 @@ BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap output = getInputRanges();
 
-	Exp *e = NULL;
+	Exp *e = nullptr;
 	// try to hack up a useful expression for this branch
 	OPER op = pCond->getOper();
 	if (op == opLess
@@ -427,7 +427,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 		} else {
 			if (last->isCall()) {
 				Proc *d = ((CallStatement *)last)->getDestProc();
-				if (d && !d->isLib() && ((UserProc *)d)->getCFG()->findRetNode() == NULL) {
+				if (d && !d->isLib() && !((UserProc *)d)->getCFG()->findRetNode()) {
 					if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 						LOG << "ignoring ranges from call to proc with no ret node\n";
 				} else
@@ -469,7 +469,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 {
 	RangeMap output = getInputRanges();
 
-	if (this->procDest == NULL) {
+	if (!this->procDest) {
 		// note this assumes the call is only to one proc.. could be bad.
 		Exp *d = output.substInto(getDest()->clone());
 		if (d->isIntConst() || d->isStrConst()) {
@@ -502,7 +502,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	if (output.hasRange(Location::regOf(28))) {
 		Range &r = output.getRange(Location::regOf(28));
 		int c = 4;
-		if (procDest == NULL) {
+		if (!procDest) {
 			LOG << "using push count hack to guess number of params\n";
 			Statement *prev = this->getPreviousStatementInBB();
 			while (prev) {
@@ -539,17 +539,17 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				 && eq->getSubExp2()->isIntConst()) {
 					c = ((Const *)eq->getSubExp2())->getInt();
 				} else
-					eq = NULL;
+					eq = nullptr;
 			}
 			BasicBlock *retbb = p->getCFG()->findRetNode();
-			if (retbb && eq == NULL) {
+			if (retbb && !eq) {
 				Statement *last = retbb->getLastStmt();
 				assert(last);
 				if (last->isReturn()) {
 					last->setBB(retbb);
 					last = last->getPreviousStatementInBB();
 				}
-				if (last == NULL) {
+				if (!last) {
 					// call followed by a ret, sigh
 					for (int i = 0; i < retbb->getNumInEdges(); i++) {
 						last = retbb->getInEdges()[i]->getLastStmt();
@@ -561,7 +561,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 						if (d && d->getSignature()->getConvention() == CONV_PASCAL)
 							c += d->getSignature()->getNumParams() * 4;
 					}
-					last = NULL;
+					last = nullptr;
 				}
 				if (last && last->isAssign()) {
 					//LOG << "checking last statement " << last << " for number of bytes popped\n";
@@ -628,7 +628,7 @@ Statement::getPreviousStatementInBB()
 	assert(pbb);
 	std::list<RTL *> *rtls = pbb->getRTLs();
 	assert(rtls);
-	Statement *previous = NULL;
+	Statement *previous = nullptr;
 	for (std::list<RTL *>::iterator rit = rtls->begin(); rit != rtls->end(); rit++) {
 		RTL *rtl = *rit;
 		for (RTL::iterator it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
@@ -637,7 +637,7 @@ Statement::getPreviousStatementInBB()
 			previous = *it;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 Statement *
@@ -656,7 +656,7 @@ Statement::getNextStatementInBB()
 				wantNext = true;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -670,7 +670,7 @@ Statement::getNextStatementInBB()
 std::ostream &
 operator <<(std::ostream &os, Statement *s)
 {
-	if (s == NULL) {
+	if (!s) {
 		os << "NULL ";
 		return os;
 	}
@@ -772,7 +772,7 @@ Statement::canPropagateToExp(Exp *e)
 // usedByDomPhi is a set of subscripted locations used in phi statements
 static int progress = 0;
 bool
-Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts /* = NULL */, LocationSet *usedByDomPhi /* = NULL */, bool force /* = false */)
+Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts /* = nullptr */, LocationSet *usedByDomPhi /* = nullptr */, bool force /* = false */)
 {
 	if (++progress > 1000) {
 		std::cerr << 'p' << std::flush;
@@ -905,7 +905,7 @@ Statement::propagateFlagsTo()
 			Exp *e = *ll;
 			if (!e->isSubscript()) continue;  // e.g. %pc
 			Assign *def = (Assign *)((RefExp *)e)->getDef();
-			if (def == NULL || !def->isAssign()) continue;
+			if (!def || !def->isAssign()) continue;
 			Exp *base = ((RefExp *)e)->getSubExp1();
 			if (base->isFlags() || base->isMainFlag()) {
 				change |= doPropagateTo(e, def, convert);
@@ -1137,7 +1137,7 @@ void
 GotoStatement::adjustFixedDest(int delta)
 {
 	// Ensure that the destination is fixed.
-	if (pDest == 0 || pDest->getOper() != opIntConst)
+	if (!pDest || pDest->getOper() != opIntConst)
 		LOG << "Can't adjust destination of non-static CTI\n";
 
 	ADDRESS dest = ((Const *)pDest)->getAddr();
@@ -1147,7 +1147,7 @@ GotoStatement::adjustFixedDest(int delta)
 bool
 GotoStatement::search(Exp *search, Exp *&result)
 {
-	result = NULL;
+	result = nullptr;
 	if (pDest)
 		return pDest->search(search, result);
 	return false;
@@ -1202,7 +1202,7 @@ GotoStatement::print(std::ostream &os, bool html)
 		os << "<a name=\"stmt" << std::dec << number << "\">";
 	}
 	os << "GOTO ";
-	if (pDest == NULL)
+	if (!pDest)
 		os << "*no dest*";
 	else if (pDest->getOper() != opIntConst)
 		pDest->print(os);
@@ -1316,7 +1316,7 @@ BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 	bFloat = usesFloat;
 
 	// set pCond to a high level representation of this type
-	Exp *p = NULL;
+	Exp *p = nullptr;
 	switch (cond) {
 	case BRANCH_JE:
 		p = new Binary(opEquals, new Terminal(opFlags), new Const(0));
@@ -1422,11 +1422,11 @@ BranchStatement::getFallBB()
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
-		return NULL;
-	if (pbb == NULL)
-		return NULL;
+		return nullptr;
+	if (!pbb)
+		return nullptr;
 	if (pbb->getNumOutEdges() != 2)
-		return NULL;
+		return nullptr;
 	if (pbb->getOutEdge(0)->getLowAddr() == a)
 		return pbb->getOutEdge(1);
 	return pbb->getOutEdge(0);
@@ -1439,7 +1439,7 @@ BranchStatement::setFallBB(BasicBlock *bb)
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
 		return;
-	if (pbb == NULL)
+	if (!pbb)
 		return;
 	if (pbb->getNumOutEdges() != 2)
 		return;
@@ -1459,11 +1459,11 @@ BranchStatement::getTakenBB()
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
-		return NULL;
-	if (pbb == NULL)
-		return NULL;
+		return nullptr;
+	if (!pbb)
+		return nullptr;
 	if (pbb->getNumOutEdges() != 2)
-		return NULL;
+		return nullptr;
 	if (pbb->getOutEdge(0)->getLowAddr() == a)
 		return pbb->getOutEdge(0);
 	return pbb->getOutEdge(1);
@@ -1475,7 +1475,7 @@ BranchStatement::setTakenBB(BasicBlock *bb)
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
 		return;
-	if (pbb == NULL)
+	if (!pbb)
 		return;
 	if (pbb->getNumOutEdges() != 2)
 		return;
@@ -1494,7 +1494,7 @@ bool
 BranchStatement::search(Exp *search, Exp *&result)
 {
 	if (pCond) return pCond->search(search, result);
-	result = NULL;
+	result = nullptr;
 	return false;
 }
 
@@ -1546,7 +1546,7 @@ BranchStatement::print(std::ostream &os, bool html)
 		os << "<a name=\"stmt" << std::dec << number << "\">";
 	}
 	os << "BRANCH ";
-	if (pDest == NULL)
+	if (!pDest)
 		os << "*no dest*";
 	else if (!pDest->isIntConst())
 		os << pDest;
@@ -1597,7 +1597,7 @@ BranchStatement::clone()
 	ret->m_isComputed = m_isComputed;
 	ret->jtCond = jtCond;
 	if (pCond) ret->pCond = pCond->clone();
-	else ret->pCond = NULL;
+	else ret->pCond = nullptr;
 	ret->bFloat = bFloat;
 	// Statement members
 	ret->pbb = pbb;
@@ -1979,9 +1979,9 @@ CaseStatement::print(std::ostream &os, bool html)
 		os << "</td><td>";
 		os << "<a name=\"stmt" << std::dec << number << "\">";
 	}
-	if (pSwitchInfo == NULL) {
+	if (!pSwitchInfo) {
 		os << "CASE [";
-		if (pDest == NULL)
+		if (!pDest)
 			os << "*no dest*";
 		else os << pDest;
 		os << "]";
@@ -2086,7 +2086,7 @@ CallStatement::getProven(Exp *e)
 {
 	if (procDest)
 		return procDest->getProven(e);
-	return NULL;
+	return nullptr;
 }
 
 // Localise only components of e, i.e. xxx if e is m[xxx]
@@ -2154,7 +2154,7 @@ void
 CallStatement::setSigArguments()
 {
 	if (signature) return;  // Already done
-	if (procDest == NULL)
+	if (!procDest)
 		// FIXME: Need to check this
 		return;
 	// Clone here because each call to procDest could have a different signature, modified by ellipsisProcessing
@@ -2293,7 +2293,7 @@ CallStatement::print(std::ostream &os, bool html)
 	os << "CALL ";
 	if (procDest)
 		os << procDest->getName();
-	else if (pDest == NULL)
+	else if (!pDest)
 		os << "*no dest*";
 	else {
 		if (pDest->isIntConst())
@@ -2403,7 +2403,7 @@ void
 CallStatement::setDestProc(Proc *dest)
 {
 	assert(dest);
-	// assert(procDest == NULL);  // No: not convenient for unit testing
+	// assert(!procDest);  // No: not convenient for unit testing
 	procDest = dest;
 }
 
@@ -2412,7 +2412,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
 	Proc *p = getDestProc();
 
-	if (p == NULL && isComputed()) {
+	if (!p && isComputed()) {
 		hll->AddIndCallStatement(indLevel, pDest, arguments, calcResults());
 		return;
 	}
@@ -2533,7 +2533,7 @@ CallStatement::convertToDirect()
 			proc->getProg()->globalUsed(u);
 			const char *nam = proc->getProg()->getGlobalName(u);
 			e = Location::global(nam, proc);
-			pDest = new RefExp(e, NULL);
+			pDest = new RefExp(e, nullptr);
 		}
 	}
 	if (!e->isGlobal()) {
@@ -2548,7 +2548,7 @@ CallStatement::convertToDirect()
 	if (dest < prog->getLimitTextLow() || dest > prog->getLimitTextHigh())
 		return false;  // Not a valid proc pointer
 	Proc *p = prog->findProc(nam);
-	bool bNewProc = p == NULL;
+	bool bNewProc = !p;
 	if (bNewProc)
 		p = prog->setNewProc(dest);
 	if (VERBOSE)
@@ -2646,9 +2646,9 @@ CallStatement::setNumArguments(int n)
 	for (int i = oldSize; i < n; i++) {
 		Exp *a = procDest->getSignature()->getArgumentExp(i);
 		Type *ty = procDest->getSignature()->getParamType(i);
-		if (ty == NULL && oldSize)
+		if (!ty && oldSize)
 			ty = procDest->getSignature()->getParamType(oldSize - 1);
-		if (ty == NULL)
+		if (!ty)
 			ty = new VoidType();
 		Assign *as = new Assign(ty, a->clone(), a->clone());
 		as->setProc(proc);
@@ -2669,13 +2669,13 @@ CallStatement::removeArgument(int i)
 Exp *
 processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 {
-	if (t == NULL) return e;
-	NamedType *nt = NULL;
+	if (!t) return e;
+	NamedType *nt = nullptr;
 	if (t->isNamed()) {
 		nt = (NamedType *)t;
 		t = ((NamedType *)t)->resolvesTo();
 	}
-	if (t == NULL) return e;
+	if (!t) return e;
 	// char* and a constant
 	if (e->isIntConst()) {
 		if (nt && (nt->getName() == static_cast<std::string>("LPCWSTR"))) {
@@ -2715,10 +2715,10 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 					Proc *p = prog->findProc(a);
 					if (p) {
 						Signature *sig = points_to->asFunc()->getSignature()->clone();
-						if (sig->getName() == NULL
+						if (!sig->getName()
 						 || strlen(sig->getName()) == 0
 						 || !strcmp(sig->getName(), "<ANON>")
-						 || prog->findProc(sig->getName()) != NULL)
+						 || prog->findProc(sig->getName()))
 							sig->setName(p->getName());
 						else
 							p->setName(sig->getName());
@@ -2759,7 +2759,7 @@ CallStatement::getTypeFor(Exp *e)
 {
 	// The defines "cache" what the destination proc is defining
 	Assignment *as = defines.findOnLeft(e);
-	if (as != NULL)
+	if (as)
 		return as->getType();
 	if (e->isPC())
 		// Special case: just return void*
@@ -2771,13 +2771,13 @@ void
 CallStatement::setTypeFor(Exp *e, Type *ty)
 {
 	Assignment *as = defines.findOnLeft(e);
-	if (as != NULL)
+	if (as)
 		return as->setType(ty);
 	// See if it is in our reaching definitions
 	Exp *ref = defCol.findDefFor(e);
-	if (ref == NULL || !ref->isSubscript()) return;
+	if (!ref || !ref->isSubscript()) return;
 	Statement *def = ((RefExp *)ref)->getDef();
-	if (def == NULL) return;
+	if (!def) return;
 	def->setTypeFor(e, ty);
 }
 
@@ -2787,8 +2787,8 @@ CallStatement::setTypeFor(Exp *e, Type *ty)
 bool
 CallStatement::ellipsisProcessing(Prog *prog)
 {
-	// if (getDestProc() == NULL || !getDestProc()->getSignature()->hasEllipsis())
-	if (getDestProc() == NULL || !signature->hasEllipsis())
+	// if (!getDestProc() || !getDestProc()->getSignature()->hasEllipsis())
+	if (!getDestProc() || !signature->hasEllipsis())
 		return false;
 	// functions like printf almost always have too many args
 	std::string name(getDestProc()->getName());
@@ -2802,7 +2802,7 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	else return false;
 	if (VERBOSE)
 		LOG << "ellipsis processing for " << name << "\n";
-	const char *formatStr = NULL;
+	const char *formatStr = nullptr;
 	Exp *formatExp = getArgumentExp(format);
 	// We sometimes see a[m[blah{...}]]
 	if (formatExp->isAddrOf()) {
@@ -2815,11 +2815,11 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	if (formatExp->isSubscript()) {
 		// Maybe it's defined to be a Const string
 		Statement *def = ((RefExp *)formatExp)->getDef();
-		if (def == NULL) return false;  // Not all NULL refs get converted to implicits
+		if (!def) return false;  // Not all nullptr refs get converted to implicits
 		if (def->isAssign()) {
 			// This would be unusual; propagation would normally take care of this
 			Exp *rhs = ((Assign *)def)->getRight();
-			if (rhs == NULL || !rhs->isStrConst()) return false;
+			if (!rhs || !rhs->isStrConst()) return false;
 			formatStr = ((Const *)rhs)->getStr();
 		} else if (def->isPhi()) {
 			// More likely. Example: switch_gcc. Only need ONE candidate format string
@@ -2827,14 +2827,14 @@ CallStatement::ellipsisProcessing(Prog *prog)
 			int n = pa->getNumDefs();
 			for (int i = 0; i < n; i++) {
 				def = pa->getStmtAt(i);
-				if (def == NULL) continue;
+				if (!def) continue;
 				if (!def->isAssign()) continue;
 				Exp *rhs = ((Assign *)def)->getRight();
-				if (rhs == NULL || !rhs->isStrConst()) continue;
+				if (!rhs || !rhs->isStrConst()) continue;
 				formatStr = ((Const *)rhs)->getStr();
 				break;
 			}
-			if (formatStr == NULL) return false;
+			if (!formatStr) return false;
 		} else return false;
 	} else if (formatExp->isStrConst()) {
 		formatStr = ((Const *)formatExp)->getStr();
@@ -3060,7 +3060,7 @@ ReturnStatement::addReturn(Assignment *a)
 bool
 ReturnStatement::search(Exp *search, Exp *&result)
 {
-	result = NULL;
+	result = nullptr;
 	ReturnStatement::iterator rr;
 	for (rr = begin(); rr != end(); ++rr) {
 		if ((*rr)->search(search, result))
@@ -3128,7 +3128,7 @@ ReturnStatement::usesExp(Exp *e)
  * PARAMETERS:       sz: size of the assignment
  *============================================================================*/
 BoolAssign::BoolAssign(int sz) :
-	Assignment(NULL),
+	Assignment(nullptr),
 	size(sz)
 {
 	kind = STMT_BOOLASSIGN;
@@ -3257,7 +3257,7 @@ BoolAssign::clone()
 	BoolAssign *ret = new BoolAssign(size);
 	ret->jtCond = jtCond;
 	if (pCond) ret->pCond = pCond->clone();
-	else ret->pCond = NULL;
+	else ret->pCond = nullptr;
 	ret->bFloat = bFloat;
 	ret->size = size;
 	// Statement members
@@ -3301,7 +3301,7 @@ bool
 BoolAssign::usesExp(Exp *e)
 {
 	assert(lhs && pCond);
-	Exp *where = 0;
+	Exp *where = nullptr;
 	return (pCond->search(e, where) || (lhs->isMemOf() && ((Unary *)lhs)->getSubExp1()->search(e, where)));
 }
 
@@ -3392,8 +3392,8 @@ Assign::Assign(Assign &o) :
 {
 	kind = STMT_ASSIGN;
 	rhs = o.rhs->clone();
-	if (o.type)  type  = o.type->clone();  else type  = NULL;
-	if (o.guard) guard = o.guard->clone(); else guard = NULL;
+	if (o.type)  type  = o.type->clone();  else type  = nullptr;
+	if (o.guard) guard = o.guard->clone(); else guard = nullptr;
 }
 
 // Implicit Assignment
@@ -3411,7 +3411,7 @@ ImplicitAssign::ImplicitAssign(Type *ty, Exp *lhs) :
 }
 
 ImplicitAssign::ImplicitAssign(ImplicitAssign &o) :
-	Assignment(type ? type->clone() : NULL, lhs->clone())
+	Assignment(type ? type->clone() : nullptr, lhs->clone())
 {
 	kind = STMT_IMPASSIGN;
 }
@@ -3424,7 +3424,7 @@ ImplicitAssign::~ImplicitAssign()
 Statement *
 Assign::clone()
 {
-	Assign *a = new Assign(type == NULL ? NULL : type->clone(), lhs->clone(), rhs->clone(), guard == NULL ? NULL : guard->clone());
+	Assign *a = new Assign(!type ? nullptr : type->clone(), lhs->clone(), rhs->clone(), !guard ? nullptr : guard->clone());
 	// Statement members
 	a->pbb = pbb;
 	a->proc = proc;
@@ -3488,7 +3488,7 @@ Assign::simplify()
 
 	// Perhaps the guard can go away
 	if (guard && (guard->isTrue() || (guard->isIntConst() && ((Const *)guard)->getInt() == 1)))
-		guard = NULL;  // No longer a guarded assignment
+		guard = nullptr;  // No longer a guarded assignment
 
 	if (lhs->getOper() == opMemOf) {
 		lhs->setSubExp1(lhs->getSubExp1()->simplifyArith());
@@ -3500,7 +3500,7 @@ Assign::simplify()
 	if (lhs->getOper() == opMemOf && lhs->getSubExp1()->getOper() == opSubscript) {
 		RefExp *ref = (RefExp *)lhs->getSubExp1();
 		Statement *phist = ref->getDef();
-		PhiAssign *phi = NULL;
+		PhiAssign *phi = nullptr;
 		if (phist /* && phist->getRight() */)  // ?
 			phi = dynamic_cast<PhiAssign *>(phist);
 		for (int i = 0; phi && i < phi->getNumDefs(); i++) {
@@ -3607,8 +3607,8 @@ PhiAssign::printCompact(std::ostream &os, bool html)
 	int i, n = defVec.size();
 	if (n != 0) {
 		for (i = 0; i < n; i++) {
-			// If e is NULL assume it is meant to match lhs
-			if (defVec[i].e == NULL) continue;
+			// If e is nullptr assume it is meant to match lhs
+			if (!defVec[i].e) continue;
 			if (!(*defVec[i].e == *lhs)) {
 				// One of the phi parameters has a different base expression to lhs. Use non simple print.
 				simple = false;
@@ -3636,7 +3636,7 @@ PhiAssign::printCompact(std::ostream &os, bool html)
 		os << "(";
 		for (it = defVec.begin(); it != defVec.end(); /* no increment */) {
 			Exp *e = it->e;
-			if (e == NULL)
+			if (!e)
 				os << "NULL{";
 			else
 				os << e << "{";
@@ -3689,7 +3689,7 @@ PhiAssign::search(Exp *search, Exp *&result)
 		return true;
 	iterator it;
 	for (it = defVec.begin(); it != defVec.end(); ++it) {
-		if (it->e == NULL) continue;  // Note: can't match foo{-} because of this
+		if (!it->e) continue;  // Note: can't match foo{-} because of this
 		RefExp *re = new RefExp(it->e, it->def);
 		if (re->search(search, result))
 			return true;
@@ -3744,7 +3744,7 @@ PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	lhs = lhs->searchReplaceAll(search, replace, change);
 	std::vector<PhiInfo>::iterator it;
 	for (it = defVec.begin(); it != defVec.end(); it++) {
-		if (it->e == NULL) continue;
+		if (!it->e) continue;
 		bool ch;
 		// Assume that the definitions will also be replaced
 		it->e = it->e->searchReplaceAll(search, replace, ch);
@@ -3779,14 +3779,14 @@ Assign::getMemDepth()
 bool
 Assignment::usesExp(Exp *e)
 {
-	Exp *where = 0;
+	Exp *where = nullptr;
 	return (lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where);
 }
 
 bool
 Assign::usesExp(Exp *e)
 {
-	Exp *where = 0;
+	Exp *where = nullptr;
 	return (rhs->search(e, where) || ((lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where)));
 }
 
@@ -3794,7 +3794,7 @@ Assign::usesExp(Exp *e)
 bool
 Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
-	if (strstr(pattern, ":=") == NULL)
+	if (!strstr(pattern, ":="))
 		return false;
 	char *left = strdup(pattern);
 	char *right = strstr(left, ":=");
@@ -3884,7 +3884,7 @@ void
 CallStatement::genConstraints(LocationSet &cons)
 {
 	Proc *dest = getDestProc();
-	if (dest == NULL) return;
+	if (!dest) return;
 	Signature *destSig = dest->getSignature();
 	// Generate a constraint for the type of each actual argument to be equal to the type of each formal parameter
 	// (hopefully, these are already calculated correctly; if not, we need repeat till no change)
@@ -3915,13 +3915,13 @@ CallStatement::genConstraints(LocationSet &cons)
 		// string
 		const char *str;
 		Exp *arg0 = ((Assign *)*arguments.begin())->getRight();
-		if ((name == "printf" || name == "scanf") && (str = arg0->getAnyStrConst()) != NULL) {
+		if ((name == "printf" || name == "scanf") && !!(str = arg0->getAnyStrConst())) {
 			// actually have to parse it
 			int n = 1;  // Number of %s plus 1 = number of args
 			const char *p = str;
 			while ((p = strchr(p, '%'))) {
 				p++;
-				Type *t = NULL;
+				Type *t = nullptr;
 				int longness = 0;
 				bool sign = true;
 				bool cont;
@@ -3988,7 +3988,7 @@ CallStatement::genConstraints(LocationSet &cons)
 void
 BranchStatement::genConstraints(LocationSet &cons)
 {
-	if (pCond == NULL && VERBOSE) {
+	if (!pCond && VERBOSE) {
 		LOG << "Warning: BranchStatment " << number << " has no condition expression!\n";
 		return;
 	}
@@ -4090,7 +4090,7 @@ PhiAssign::accept(StmtExpVisitor *v)
 	if (ret && lhs) ret = lhs->accept(v->ev);
 	iterator it;
 	for (it = defVec.begin(); it != defVec.end(); ++it) {
-		if (it->e == NULL) continue;
+		if (!it->e) continue;
 		RefExp *re = new RefExp(it->e, it->def);
 		ret = re->accept(v->ev);
 		if (!ret) return false;
@@ -4161,7 +4161,7 @@ CallStatement::accept(StmtExpVisitor *v)
 #if 0  // Do we want to accept visits to the defines? Not sure now...
 	std::vector<ReturnInfo>::iterator rr;
 	for (rr = defines.begin(); ret && rr != defines.end(); rr++)
-		if (rr->e)  // Can be NULL now to line up with other returns
+		if (rr->e)  // Can be nullptr now to line up with other returns
 			ret = rr->e->accept(v->ev);
 #endif
 	// FIXME: surely collectors should be counted?
@@ -4575,7 +4575,7 @@ PhiAssign::simplify()
 		bool onlyOneNotThis = true;
 		Statement *notthis = (Statement *)-1;
 		for (uu = defVec.begin(); uu != defVec.end(); uu++) {
-			if (uu->def == NULL || uu->def->isImplicit() || !uu->def->isPhi() || uu->def != this) {
+			if (!uu->def || uu->def->isImplicit() || !uu->def->isPhi() || uu->def != this) {
 				if (notthis != (Statement *)-1) {
 					onlyOneNotThis = false;
 					break;
@@ -4661,7 +4661,7 @@ ReturnStatement::getTypeFor(Exp *e)
 		if (*((Assignment *)*rr)->getLeft() == *e)
 			return ((Assignment *)*rr)->getType();
 	}
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -5021,12 +5021,12 @@ ArgSourceProvider::ArgSourceProvider(CallStatement *call) :
 		callSig = call->getSignature();
 		n = callSig->getNumParams();
 		i = 0;
-	} else if (call->getCalleeReturn() != NULL) {
+	} else if (call->getCalleeReturn()) {
 		src = SRC_CALLEE;
 		calleeParams = &((UserProc *)procDest)->getParameters();
 		pp = calleeParams->begin();
 	} else {
-		Signature *destSig = NULL;
+		Signature *destSig = nullptr;
 		if (procDest)
 			destSig = procDest->getSignature();
 		if (destSig && destSig->isForced()) {
@@ -5049,23 +5049,23 @@ ArgSourceProvider::nextArgLoc()
 	bool allZero;
 	switch (src) {
 	case SRC_LIB:
-		if (i == n) return NULL;
+		if (i == n) return nullptr;
 		s = callSig->getParamExp(i++)->clone();
 		s->removeSubscripts(allZero);  // e.g. m[sp{-} + 4] -> m[sp + 4]
 		call->localiseComp(s);
 		return s;
 	case SRC_CALLEE:
-		if (pp == calleeParams->end()) return NULL;
+		if (pp == calleeParams->end()) return nullptr;
 		s = ((Assignment *)*pp++)->getLeft()->clone();
 		s->removeSubscripts(allZero);
 		call->localiseComp(s);  // Localise the components. Has the effect of translating into the contect of this caller
 		return s;
 	case SRC_COL:
-		if (cc == defCol->end()) return NULL;
+		if (cc == defCol->end()) return nullptr;
 		// Give the location, i.e. the left hand side of the assignment
 		return ((Assign *)*cc++)->getLeft();
 	}
-	return NULL;  // Suppress warning
+	return nullptr;  // Suppress warning
 }
 
 Exp *
@@ -5101,7 +5101,7 @@ ArgSourceProvider::curType(Exp *e)
 			return ty;
 		}
 	}
-	return NULL;  // Suppress warning
+	return nullptr;  // Suppress warning
 }
 
 bool
@@ -5180,7 +5180,7 @@ CallStatement::updateArguments()
 	// or the def collector if not,  exists in oldArguments
 	ArgSourceProvider asp(this);
 	Exp *loc;
-	while ((loc = asp.nextArgLoc()) != NULL) {
+	while (!!(loc = asp.nextArgLoc())) {
 		if (proc->filterParams(loc))
 			continue;
 		if (!oldArguments.existsOnLeft(loc)) {
@@ -5316,12 +5316,12 @@ CallStatement::removeDefine(Exp *e)
 bool
 CallStatement::isChildless()
 {
-	if (procDest == NULL) return true;
+	if (!procDest) return true;
 	if (procDest->isLib()) return false;
 	// Early in the decompile process, recursive calls are treated as childless, so they use and define all
 	if (((UserProc *)procDest)->isEarlyRecursive())
 		return true;
-	return calleeReturn == NULL;
+	return !calleeReturn;
 }
 
 Exp *
@@ -5333,7 +5333,7 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 	if (procDest && procDest->isLib()) {
 		Signature *sig = procDest->getSignature();
 		proven = sig->getProven(base);
-		if (proven == NULL) {  // Not (known to be) preserved
+		if (!proven) {  // Not (known to be) preserved
 			if (sig->findReturn(base) != -1)
 				return r;  // Definately defined, it's the return
 			// Otherwise, not all that sure. Assume that library calls pass things like local variables
@@ -5341,7 +5341,7 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 	} else {
 		// Was using the defines to decide if something is preserved, but consider sp+4 for stack based machines
 		// Have to use the proven information for the callee (if any)
-		if (procDest == NULL)
+		if (!procDest)
 			return r;  // Childless callees transmit nothing
 		//if (procDest->isLocal(base))  // ICK! Need to prove locals and parameters through calls...
 		// FIXME: temporary HACK! Ignores alias issues.
@@ -5355,7 +5355,7 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 
 		proven = procDest->getProven(base);  // e.g. r28+4
 	}
-	if (proven == NULL)
+	if (!proven)
 		return r;  // Can't bypass, since nothing proven
 	Exp *to = localiseExp(base);  // e.g. r28{17}
 	assert(to);
@@ -5454,7 +5454,7 @@ ImpRefStatement::accept(StmtPartModifier *v)
 bool
 ImpRefStatement::search(Exp *search, Exp *&result)
 {
-	result = NULL;
+	result = nullptr;
 	return addressExp->search(search, result);
 }
 
@@ -5500,7 +5500,7 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 {
 	iterator it;
 	for (it = begin(); it != end(); ++it) {
-		if (it->e == NULL) continue;
+		if (!it->e) continue;
 		RefExp *r = new RefExp(it->e, it->def);
 		le.push_back(r);
 	}

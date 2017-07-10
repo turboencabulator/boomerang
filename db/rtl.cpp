@@ -43,7 +43,7 @@ RTL::RTL()
  * \param instNativeAddr  The native address of the instruction.
  * \param listExp         Ptr to existing list of Exps.
  */
-RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= NULL*/) :
+RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= nullptr*/) :
 	nativeAddr(instNativeAddr)
 {
 	if (listStmt)
@@ -335,7 +335,7 @@ RTL::getNumStmt()
  * \param i  The index of the element we want (0 = first).
  *
  * \returns The element at the given index
- *          or NULL if the index is out of bounds.
+ *          or nullptr if the index is out of bounds.
  */
 Statement *
 RTL::elementAt(unsigned i)
@@ -343,7 +343,7 @@ RTL::elementAt(unsigned i)
 	iterator it;
 	for (it = stmtList.begin(); i > 0 && it != stmtList.end(); i--, it++);
 	if (it == stmtList.end()) {
-		return NULL;
+		return nullptr;
 	}
 	return *it;
 }
@@ -423,7 +423,7 @@ RTL::prints()
 std::ostream &
 operator <<(std::ostream &os, RTL *r)
 {
-	if (r == NULL) {
+	if (!r) {
 		os << "NULL ";
 		return os;
 	}
@@ -512,10 +512,10 @@ RTL::clear()
  * \param pLhs  Ptr to Exp to place on LHS.
  * \param pRhs  Ptr to Exp to place on RHS.
  * \param prep  true if prepend (else append).
- * \param type  Type of the transfer, or NULL.
+ * \param type  Type of the transfer, or nullptr.
  */
 void
-RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= NULL */)
+RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= nullptr */)
 {
 	// Generate the assignment expression
 	Assign *asgn = new Assign(type, pLhs, pRhs);
@@ -535,17 +535,17 @@ RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= NULL */)
  * \pre Assumes that pLhs and pRhs are "new" Exp's that are not part of other
  * Exps.  (Otherwise, there will be problems when deleting this Exp.)
  *
- * \pre If type == NULL, assumes there is already at least one assignment in
- * this RTL (?)
+ * \pre If type == nullptr, assumes there is already at least one assignment
+ * in this RTL (?)
  *
  * \note Hopefully this is only a temporary measure.
  *
  * \param pLhs  Ptr to Exp to place on LHS.
  * \param pRhs  Ptr to Exp to place on RHS.
- * \param type  Type of the transfer, or NULL.
+ * \param type  Type of the transfer, or nullptr.
  */
 void
-RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* NULL */)
+RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 {
 	iterator it;
 	// First skip all assignments with temps on LHS
@@ -566,7 +566,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* NULL */)
 			it--;
 	}
 
-	if (type == NULL)
+	if (!type)
 		type = getType();
 
 	// Generate the assignment expression
@@ -752,7 +752,7 @@ RTL::isCall()
 }
 
 /**
- * \brief Get the "special" (High Level) Statement this RTL (else NULL).
+ * \brief Get the "special" (High Level) Statement this RTL (else nullptr).
  *
  * Use this slow function when you can't be sure that the HL Statement is
  * last.
@@ -764,7 +764,7 @@ RTL::getHlStmt()
 		if ((*rit)->getKind() != STMT_ASSIGN)
 			return *rit;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /**

@@ -113,7 +113,7 @@ public:
 protected:
 	void run();
 
-	Decompiler *decompiler = NULL;
+	Decompiler *decompiler = nullptr;
 };
 
 #endif

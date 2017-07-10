@@ -151,9 +151,9 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 		cluster->openStream("c");
 		cluster->closeStreams();
 	}
-	if (cluster == NULL || cluster == m_rootCluster) {
+	if (!cluster || cluster == m_rootCluster) {
 		os.open(m_rootCluster->getOutPath("c"));
-		if (proc == NULL) {
+		if (!proc) {
 			HLLCode *code = Boomerang::get()->getHLLCode();
 			bool global = false;
 			if (Boomerang::get()->noDecompile) {
@@ -183,7 +183,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 			}
 			for (std::set<Global *>::iterator it1 = globals.begin(); it1 != globals.end(); it1++) {
 				// Check for an initial value
-				Exp *e = NULL;
+				Exp *e = nullptr;
 				e = (*it1)->getInitialValue(this);
 				//if (e) {
 					code->AddGlobal((*it1)->getName(), (*it1)->getType(), e);
@@ -207,10 +207,10 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 		UserProc *up = (UserProc *)*it;
 		HLLCode *code = Boomerang::get()->getHLLCode(up);
 		code->AddPrototype(up);  // May be the wrong signature if up has ellipsis
-		if (cluster == NULL || cluster == m_rootCluster)
+		if (!cluster || cluster == m_rootCluster)
 			code->print(os);
 	}
-	if ((proto && cluster == NULL) || cluster == m_rootCluster)
+	if ((proto && !cluster) || cluster == m_rootCluster)
 		os << "\n";  // Separate prototype(s) from first proc
 
 	for (it = m_procs.begin(); it != m_procs.end(); it++) {
@@ -218,16 +218,16 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 		if (pProc->isLib()) continue;
 		UserProc *up = (UserProc *)pProc;
 		if (!up->isDecoded()) continue;
-		if (proc != NULL && up != proc)
+		if (proc && up != proc)
 			continue;
 		up->getCFG()->compressCfg();
 		HLLCode *code = Boomerang::get()->getHLLCode(up);
 		up->generateCode(code);
 		if (up->getCluster() == m_rootCluster) {
-			if (cluster == NULL || cluster == m_rootCluster)
+			if (!cluster || cluster == m_rootCluster)
 				code->print(os);
 		} else {
-			if (cluster == NULL || cluster == up->getCluster()) {
+			if (!cluster || cluster == up->getCluster()) {
 				up->getCluster()->openStream("c");
 				code->print(up->getCluster()->getStream());
 			}
@@ -245,9 +245,9 @@ Prog::generateRTL(Cluster *cluster, UserProc *proc)
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
 		if (!p->isDecoded()) continue;
-		if (proc != NULL && p != proc)
+		if (proc && p != proc)
 			continue;
-		if (cluster != NULL && p->getCluster() != cluster)
+		if (cluster && p->getCluster() != cluster)
 			continue;
 
 		p->getCluster()->openStream("rtl");
@@ -264,7 +264,7 @@ Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end)
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
 		if (!p->isDecoded()) continue;
-		if (cluster != NULL && p->getCluster() != cluster)
+		if (cluster && p->getCluster() != cluster)
 			continue;
 
 		if (p->getCluster() == cluster) {
@@ -273,7 +273,7 @@ Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end)
 				return s;
 		}
 	}
-	return NULL;
+	return nullptr;
 }
 
 const char *
@@ -284,7 +284,7 @@ Cluster::makeDirs()
 		path = parent->makeDirs();
 	else
 		path = Boomerang::get()->getOutputPath();
-	if (getNumChildren() > 0 || parent == NULL) {
+	if (getNumChildren() > 0 || !parent) {
 		path = path + "/" + name;
 		mkdir(path.c_str(), 0777);
 	}
@@ -321,7 +321,7 @@ Cluster::find(const char *nam)
 		if (c)
 			return c;
 	}
-	return NULL;
+	return nullptr;
 }
 
 const char *
@@ -341,7 +341,7 @@ Cluster::openStream(const char *ext)
 	stream_ext = ext;
 	if (!strcmp(ext, "xml")) {
 		out << "<?xml version=\"1.0\"?>\n";
-		if (parent != NULL)
+		if (parent)
 			out << "<procs>\n";
 	}
 }
@@ -376,9 +376,9 @@ Prog::clusterUsed(Cluster *c)
 Cluster *
 Prog::getDefaultCluster(const char *name)
 {
-	const char *cfname = NULL;
+	const char *cfname = nullptr;
 	if (pBF) cfname = pBF->getFilenameSymbolFor(name);
-	if (cfname == NULL)
+	if (!cfname)
 		return m_rootCluster;
 	if (strcmp(cfname + strlen(cfname) - 2, ".c"))
 		return m_rootCluster;
@@ -386,7 +386,7 @@ Prog::getDefaultCluster(const char *name)
 	char *fname = strdup(cfname);
 	fname[strlen(fname) - 2] = 0;
 	Cluster *c = findCluster(fname);
-	if (c == NULL) {
+	if (!c) {
 		c = new Cluster(fname);
 		m_rootCluster->addChild(c);
 	}
@@ -399,7 +399,7 @@ Prog::generateCode(std::ostream &os)
 	HLLCode *code = Boomerang::get()->getHLLCode();
 	for (std::set<Global *>::iterator it1 = globals.begin(); it1 != globals.end(); it1++) {
 		// Check for an initial value
-		Exp *e = NULL;
+		Exp *e = nullptr;
 		e = (*it1)->getInitialValue(this);
 		if (e)
 			code->AddGlobal((*it1)->getName(), (*it1)->getType(), e);
@@ -442,7 +442,7 @@ Prog::print(std::ostream &out)
  *                that can be displayed in the dot file, etc. If we assign it
  *                a number now, then it will retain this number always
  * PARAMETERS:  uAddr - Native address of the procedure entry point
- * RETURNS:     Pointer to the Proc object, or 0 if this is a deleted (not to
+ * RETURNS:     Pointer to the Proc object, or nullptr if this is a deleted (not to
  *                be decoded) address
  *============================================================================*/
 Proc *
@@ -454,7 +454,7 @@ Prog::setNewProc(ADDRESS uAddr)
 	// Check if we already have this proc
 	Proc *pProc = findProc(uAddr);
 	if (pProc == (Proc *)-1)  // Already decoded and deleted?
-		return 0;  // Yes, exit with 0
+		return nullptr;  // Yes, exit with nullptr
 	if (pProc)
 		// Yes, we are done
 		return pProc;
@@ -463,7 +463,7 @@ Prog::setNewProc(ADDRESS uAddr)
 		uAddr = other;
 	const char *pName = pBF->getSymbolByAddress(uAddr);
 	bool bLib = pBF->isDynamicLinkedProc(uAddr) | pBF->isStaticLinkedLibProc(uAddr);
-	if (pName == NULL) {
+	if (!pName) {
 		// No name. Give it a numbered name
 		std::ostringstream ost;
 		ost << "proc" << m_iNumberedProc++;
@@ -562,14 +562,14 @@ Prog::getNumUserProcs()
  * FUNCTION:    Prog::getProc
  * OVERVIEW:    Return a pointer to the indexed Proc object
  * PARAMETERS:  Index of the proc
- * RETURNS:     Pointer to the Proc object, or 0 if index invalid
+ * RETURNS:     Pointer to the Proc object, or nullptr if index invalid
  *============================================================================*/
 Proc *
 Prog::getProc(int idx) const
 {
 	// Return the indexed procedure. If this is used often, we should use a vector instead of a list
-	// If index is invalid, result will be 0
-	if ((idx < 0) || (idx >= (int)m_procs.size())) return 0;
+	// If index is invalid, result will be nullptr
+	if ((idx < 0) || (idx >= (int)m_procs.size())) return nullptr;
 	std::list<Proc *>::const_iterator it;
 	it = m_procs.begin();
 	for (int i = 0; i < idx; i++)
@@ -579,7 +579,7 @@ Prog::getProc(int idx) const
 
 /*==============================================================================
  * FUNCTION:    Prog::findProc
- * OVERVIEW:    Return a pointer to the associated Proc object, or NULL if none
+ * OVERVIEW:    Return a pointer to the associated Proc object, or nullptr if none
  * NOTE:        Could return -1 for a deleted Proc
  * PARAMETERS:  Native address of the procedure entry point
  * RETURNS:     Pointer to the Proc object, or 0 if none, or -1 if deleted
@@ -590,7 +590,7 @@ Prog::findProc(ADDRESS uAddr) const
 	PROGMAP::const_iterator it;
 	it = m_procLabels.find(uAddr);
 	if (it == m_procLabels.end())
-		return NULL;
+		return nullptr;
 	else
 		return (*it).second;
 }
@@ -602,7 +602,7 @@ Prog::findProc(const char *name) const
 	for (it = m_procs.begin(); it != m_procs.end(); it++)
 		if (!strcmp((*it)->getName(), name))
 			return *it;
-	return NULL;
+	return nullptr;
 }
 
 // get a library procedure by name; create if does not exist
@@ -679,7 +679,7 @@ Prog::getGlobalName(ADDRESS uaddr)
 	}
 	if (pBF)
 		return pBF->getSymbolByAddress(uaddr);
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -708,7 +708,7 @@ Prog::getGlobal(const char *nam)
 		if (!strcmp((*it)->getName(), nam))
 			return *it;
 	}
-	return NULL;
+	return nullptr;
 }
 
 bool
@@ -726,7 +726,7 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 		}
 	}
 
-	if (pBF->getSectionInfoByAddr(uaddr) == NULL) {
+	if (!pBF->getSectionInfoByAddr(uaddr)) {
 		if (VERBOSE)
 			LOG << "refusing to create a global at address that is in no known section of the binary: " << uaddr << "\n";
 		return false;
@@ -805,7 +805,7 @@ const char *
 Prog::newGlobalName(ADDRESS uaddr)
 {
 	const char *nam = getGlobalName(uaddr);
-	if (nam == NULL) {
+	if (!nam) {
 		std::ostringstream os;
 		os << "global" << globals.size();
 		nam = strdup(os.str().c_str());
@@ -821,7 +821,7 @@ Prog::getGlobalType(const char *nam)
 	for (std::set<Global *>::iterator it = globals.begin(); it != globals.end(); it++)
 		if (!strcmp((*it)->getName(), nam))
 			return (*it)->getType();
-	return NULL;
+	return nullptr;
 }
 
 void
@@ -865,7 +865,7 @@ Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */)
 		if (last == '\n' && printable >= 2)
 			return p;
 	}
-	return NULL;
+	return nullptr;
 }
 
 double
@@ -905,7 +905,7 @@ Prog::findContainingProc(ADDRESS uAddr) const
 		if (u->containsAddr(uAddr))
 			return p;
 	}
-	return NULL;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -917,7 +917,7 @@ Prog::findContainingProc(ADDRESS uAddr) const
 bool
 Prog::isProcLabel(ADDRESS addr)
 {
-	return m_procLabels[addr] != 0;
+	return !!m_procLabels[addr];
 }
 
 /*==============================================================================
@@ -960,7 +960,7 @@ Prog::getFirstProc(PROGMAP::const_iterator &it)
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
 		it++;
 	if (it == m_procLabels.end())
-		return 0;
+		return nullptr;
 	return it->second;
 }
 
@@ -978,7 +978,7 @@ Prog::getNextProc(PROGMAP::const_iterator &it)
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
 		it++;
 	if (it == m_procLabels.end())
-		return 0;
+		return nullptr;
 	return it->second;
 }
 
@@ -996,7 +996,7 @@ Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 	while (it != m_procs.end() && (*it)->isLib())
 		it++;
 	if (it == m_procs.end())
-		return 0;
+		return nullptr;
 	return (UserProc *)*it;
 }
 
@@ -1015,7 +1015,7 @@ Prog::getNextUserProc(std::list<Proc *>::iterator &it)
 	while (it != m_procs.end() && (*it)->isLib())
 		it++;
 	if (it == m_procs.end())
-		return 0;
+		return nullptr;
 	return (UserProc *)*it;
 }
 
@@ -1026,14 +1026,14 @@ Prog::getNextUserProc(std::list<Proc *>::iterator &it)
  * PARAMETERS:  uNative: Native address of the candidate string or constant
  *              last: will be set to one past end of the code section (host)
  *              delta: will be set to the difference between the host and native addresses
- * RETURNS:     Host pointer if in range; NULL if not
+ * RETURNS:     Host pointer if in range; nullptr if not
  *              Also sets 2 reference parameters (see above)
  *============================================================================*/
 const void *
 Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta)
 {
 	delta = 0;
-	last = 0;
+	last = nullptr;
 	int n = pBF->getNumSections();
 	// Search all code and read-only sections
 	for (int i = 0; i < n; i++) {
@@ -1046,14 +1046,14 @@ Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta)
 		last = pSect->uHostAddr + pSect->uSectionSize;
 		return (const void *)(uAddr + delta);
 	}
-	return NULL;
+	return nullptr;
 }
 
 void
 Prog::decodeEntryPoint(ADDRESS a)
 {
 	Proc *p = (UserProc *)findProc(a);
-	if (p == NULL || (!p->isLib() && !((UserProc *)p)->isDecoded())) {
+	if (!p || (!p->isLib() && !((UserProc *)p)->isDecoded())) {
 		if (a < pBF->getLimitTextLow() || a >= pBF->getLimitTextHigh()) {
 			std::cerr << "attempt to decode entrypoint at address outside text area, addr=" << a << "\n";
 			if (VERBOSE)
@@ -1063,7 +1063,7 @@ Prog::decodeEntryPoint(ADDRESS a)
 		pFE->decode(this, a);
 		finishDecode();
 	}
-	if (p == NULL)
+	if (!p)
 		p = findProc(a);
 	assert(p);
 	if (!p->isLib())  // -sf procs marked as __nodecode are treated as library procs (?)
@@ -1074,7 +1074,7 @@ void
 Prog::setEntryPoint(ADDRESS a)
 {
 	Proc *p = (UserProc *)findProc(a);
-	if (p != NULL && !p->isLib())
+	if (p && !p->isLib())
 		entryProcs.push_back((UserProc *)p);
 }
 
@@ -1084,7 +1084,7 @@ Prog::decodeEverythingUndecoded()
 	std::list<Proc *>::iterator pp;
 	for (pp = m_procs.begin(); pp != m_procs.end(); pp++) {
 		UserProc *up = (UserProc *)*pp;
-		if (up == NULL) continue;  // Probably not needed
+		if (!up) continue;  // Probably not needed
 		if (up->isLib()) continue;
 		if (up->isDecoded()) continue;
 		pFE->decode(this, up->getNativeAddress());
@@ -1492,7 +1492,7 @@ Prog::readSymbolFile(const char *fname)
 				nam = newGlobalName((*it)->addr);
 			}
 			Type *ty = (*it)->ty;
-			if (ty == NULL) {
+			if (!ty) {
 				ty = guessGlobalType(nam, (*it)->addr);
 			}
 			globals.insert(new Global(ty, (*it)->addr, nam));
@@ -1512,13 +1512,13 @@ Global::~Global()
 Exp *
 Global::getInitialValue(Prog *prog)
 {
-	Exp *e = NULL;
+	Exp *e = nullptr;
 	const SectionInfo *si = prog->getSectionInfoByAddr(uaddr);
 	if (si && si->isAddressBss(uaddr))
 		// This global is in the BSS, so it can't be initialised
-		return NULL;
-	if (si == NULL)
-		return NULL;
+		return nullptr;
+	if (!si)
+		return nullptr;
 	e = prog->readNativeAs(uaddr, type);
 	return e;
 }
@@ -1534,21 +1534,21 @@ Global::print(std::ostream &os, Prog *prog)
 Exp *
 Prog::readNativeAs(ADDRESS uaddr, Type *type)
 {
-	Exp *e = NULL;
+	Exp *e = nullptr;
 	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
-	if (si == NULL)
-		return NULL;
+	if (!si)
+		return nullptr;
 	if (type->resolvesToPointer()) {
 		ADDRESS init = pBF->readNative4(uaddr);
 		if (init == 0)
 			return new Const(0);
 		const char *nam = getGlobalName(init);
-		if (nam != NULL)
+		if (nam)
 			// TODO: typecast?
-			return Location::global(nam, NULL);
+			return Location::global(nam, nullptr);
 		if (type->asPointer()->getPointsTo()->resolvesToChar()) {
 			const char *str = getStringConstant(init);
-			if (str != NULL)
+			if (str)
 				return new Const(str);
 		}
 	}
@@ -1559,7 +1559,7 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type)
 			ADDRESS addr = uaddr + c->getOffsetTo(i) / 8;
 			Type *t = c->getType(i);
 			Exp *v = readNativeAs(addr, t);
-			if (v == NULL) {
+			if (!v) {
 				LOG << "unable to read native address " << addr << " as type " << t->getCtype() << "\n";
 				v = new Const(-1);
 			}
@@ -1585,12 +1585,12 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type)
 		int nelems = -1;
 		const char *nam = getGlobalName(uaddr);
 		int base_sz = type->asArray()->getBaseType()->getSize() / 8;
-		if (nam != NULL)
+		if (nam)
 			nelems = pBF->getSizeByName(nam) / base_sz;
 		Exp *n = e = new Terminal(opNil);
 		for (int i = 0; nelems == -1 || i < nelems; i++) {
 			Exp *v = readNativeAs(uaddr + i * base_sz, type->asArray()->getBaseType());
-			if (v == NULL)
+			if (!v)
 				break;
 			if (n->isNil()) {
 				n = new Binary(opList, v, n);
@@ -1909,11 +1909,11 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 			const char *n = symbols[c->getInt()].c_str();
 			ADDRESS a = c->getInt();
 			unsigned int sz = pBF->getSizeByName(n);
-			if (getGlobal(n) == NULL) {
+			if (!getGlobal(n)) {
 				Global *global = new Global(new SizeType(sz * 8), a, n);
 				globals.insert(global);
 			}
-			e = new Unary(opAddrOf, Location::global(n, NULL));
+			e = new Unary(opAddrOf, Location::global(n, nullptr));
 		} else {
 			const char *str = getStringConstant(c->getInt());
 			if (str)
@@ -1925,7 +1925,7 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 					 && (*it).first + pBF->getSizeByName((*it).second.c_str()) > (ADDRESS)c->getInt()) {
 						int off = c->getInt() - (*it).first;
 						e = new Binary(opPlus,
-						               new Unary(opAddrOf, Location::global((*it).second.c_str(), NULL)),
+						               new Unary(opAddrOf, Location::global((*it).second.c_str(), nullptr)),
 						               new Const(off));
 						break;
 					}
