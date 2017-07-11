@@ -20,7 +20,7 @@ ElfArchiveFile::ElfArchiveFile()
 
 ElfArchiveFile::~ElfArchiveFile()
 {
-	for (unsigned u = 0; u < m_Members.size(); u++)
+	for (unsigned u = 0; u < m_Members.size(); ++u)
 		delete m_Members[u];
 }
 
@@ -51,19 +51,19 @@ ElfArchiveFile::Load(const char *pName)
 	int iIndex = -1;  // 0,1,2... for 1st,2nd,3rd... member
 
 	Elf_Arsym *asym = elf_getarsym(m_arf, &uNumSyms);
-	uNumSyms--;
+	--uNumSyms;
 	if (!asym) {
 		printf("Get archive symbol table failed\n");
 		return false;
 	}
 
-	for (unsigned u = 0; u < uNumSyms; u++) {
+	for (unsigned u = 0; u < uNumSyms; ++u) {
 		iOffset = asym[u].as_off;
 		// Last entry is null, but should never see it
 		if (iOffset == 0) break;
 		if (iOffset != iLastOffset) {
 			// This is a new member. Use a new index
-			iIndex++;
+			++iIndex;
 			iLastOffset = iOffset;
 
 			// Seek to that member

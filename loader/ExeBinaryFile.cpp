@@ -105,7 +105,7 @@ ExeBinaryFile::load(std::istream &ifs)
 			ifs.seekg(m_pHeader->relocTabOffset);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
-			for (int i = 0; i < m_cReloc; i++) {
+			for (int i = 0; i < m_cReloc; ++i) {
 				Byte buf[4];
 				ifs.read((char *)buf, 4);
 				m_pRelocTable[i] = LH(buf) + ((int)LH(buf + 2) << 4);
@@ -147,7 +147,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	}
 
 	/* Relocate segment constants */
-	for (int i = 0; i < m_cReloc; i++) {
+	for (int i = 0; i < m_cReloc; ++i) {
 		Byte *p = &m_pImage[m_pRelocTable[i]];
 		SWord w = (SWord)LH(p);
 		*p++    = (Byte)(w & 0x00FF);

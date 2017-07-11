@@ -54,7 +54,7 @@ Cfg::Cfg()
 Cfg::~Cfg()
 {
 	// Delete the BBs
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		delete *it;
 	}
 }
@@ -80,7 +80,7 @@ Cfg::clear()
 	// Don't delete the BBs; this will delete any CaseStatements we want to save for the re-decode. Just let the garbage
 	// collection take care of it.
 #if 0
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it)
 		delete *it;
 #endif
 	m_listBB.clear();
@@ -116,7 +116,7 @@ void
 Cfg::setEntryBB(BasicBlock *bb)
 {
 	entryBB = bb;
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		if ((*it)->getType() == RET) {
 			exitBB = *it;
 			return;
@@ -298,7 +298,7 @@ Cfg::addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel /* = false 
 	// Note that the number of out edges is set at constructor time, not incremented here.
 	// Add the in edge to the destination BB
 	pDestBB->m_InEdges.push_back(pBB);
-	pDestBB->m_iNumInEdges++;           // Inc the count
+	++pDestBB->m_iNumInEdges;           // Inc the count
 	if (bSetLabel) setLabel(pDestBB);   // Indicate "label required"
 }
 
@@ -364,7 +364,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 	// First find which RTL has the split address; note that this could fail (e.g. label in the middle of an
 	// instruction, or some weird delay slot effects)
 	auto ri = pBB->m_pRtls->begin();
-	for (; ri != pBB->m_pRtls->end(); ri++) {
+	for (; ri != pBB->m_pRtls->end(); ++ri) {
 		if ((*ri)->getAddress() == uNativeAddr)
 			break;
 	}
@@ -412,11 +412,11 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 	pBB->m_nodeType = FALL;
 	// Fix the in-edges of pBB's descendants. They are now pNewBB
 	// Note: you can't believe m_iNumOutEdges at the time that this function may get called
-	for (unsigned j = 0; j < pBB->m_OutEdges.size(); j++) {
+	for (unsigned j = 0; j < pBB->m_OutEdges.size(); ++j) {
 		BasicBlock *pDescendant = pBB->m_OutEdges[j];
 		// Search through the in edges for pBB (old ancestor)
 		unsigned k;
-		for (k = 0; k < pDescendant->m_InEdges.size(); k++) {
+		for (k = 0; k < pDescendant->m_InEdges.size(); ++k) {
 			if (pDescendant->m_InEdges[k] == pBB) {
 				// Replace with a pointer to the new ancestor
 				pDescendant->m_InEdges[k] = pNewBB;
@@ -614,13 +614,13 @@ bool
 Cfg::wellFormCfg()
 {
 	m_bWellFormed = true;
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		// it iterates through all BBs in the list
 		// Check that it's complete
 		if ((*it)->m_bIncomplete) {
 			m_bWellFormed = false;
 			auto itm = m_mapBB.begin();
-			for (; itm != m_mapBB.end(); itm++)
+			for (; itm != m_mapBB.end(); ++itm)
 				if (itm->second == *it) break;
 			if (itm == m_mapBB.end())
 				std::cerr << "WellFormCfg: incomplete BB not even in map!\n";
@@ -631,7 +631,7 @@ Cfg::wellFormCfg()
 		} else {
 			// Complete. Test the out edges
 			assert((int)(*it)->m_OutEdges.size() == (*it)->m_iNumOutEdges);
-			for (int i = 0; i < (*it)->m_iNumOutEdges; i++) {
+			for (int i = 0; i < (*it)->m_iNumOutEdges; ++i) {
 				// check if address is interprocedural
 				//if ((*it)->m_OutEdgeInterProc[i] == false)
 				{
@@ -648,7 +648,7 @@ Cfg::wellFormCfg()
 						// Check that there is a corresponding in edge from the
 						// child to here
 						auto ii = pBB->m_InEdges.begin();
-						for (; ii != pBB->m_InEdges.end(); ii++)
+						for (; ii != pBB->m_InEdges.end(); ++ii)
 							if (*ii == *it) break;
 						if (ii == pBB->m_InEdges.end()) {
 							std::cerr << "WellFormCfg: No in edge to BB at " << std::hex << (*it)->getLowAddr()
@@ -661,9 +661,9 @@ Cfg::wellFormCfg()
 			// Also check that each in edge has a corresponding out edge to here (could have an extra in-edge, for
 			// example)
 			assert((int)(*it)->m_InEdges.size() == (*it)->m_iNumInEdges);
-			for (auto ii = (*it)->m_InEdges.begin(); ii != (*it)->m_InEdges.end(); ii++) {
+			for (auto ii = (*it)->m_InEdges.begin(); ii != (*it)->m_InEdges.end(); ++ii) {
 				auto oo = (*ii)->m_OutEdges.begin();
-				for (; oo != (*ii)->m_OutEdges.end(); oo++)
+				for (; oo != (*ii)->m_OutEdges.end(); ++oo)
 					if (*oo == *it) break;
 				if (oo == (*ii)->m_OutEdges.end()) {
 					std::cerr << "WellFormCfg: No out edge to BB at " << std::hex << (*it)->getLowAddr()
@@ -708,9 +708,9 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 {
 	// First we replace all of pb1's predecessors' out edges that used to point to pb1 (usually only one of these) with
 	// pb2
-	for (int i = 0; i < pb1->m_iNumInEdges; i++) {
+	for (int i = 0; i < pb1->m_iNumInEdges; ++i) {
 		BasicBlock *pPred = pb1->m_InEdges[i];
-		for (int j = 0; j < pPred->m_iNumOutEdges; j++) {
+		for (int j = 0; j < pPred->m_iNumOutEdges; ++j) {
 			if (pPred->m_OutEdges[j] == pb1)
 				pPred->m_OutEdges[j] = pb2;
 		}
@@ -724,7 +724,7 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 		// Finally, we delete pb1 from the BB list. Note: remove(pb1) should also work, but it would involve member
 		// comparison (not implemented), and also would attempt to remove ALL elements of the list with this value (so
 		// it has to search the whole list, instead of an average of half the list as we have here).
-		for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+		for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 			if (*it == pb1) {
 				m_listBB.erase(it);
 				break;
@@ -749,7 +749,7 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 		return false;
 	// Prepend the RTLs for pb1 to those of pb2. Since they will be pushed to the front of pb2, push them in reverse
 	// order
-	for (auto it = pb1->m_pRtls->rbegin(); it != pb1->m_pRtls->rend(); it++) {
+	for (auto it = pb1->m_pRtls->rbegin(); it != pb1->m_pRtls->rend(); ++it) {
 		pb2->m_pRtls->push_front(*it);
 	}
 	completeMerge(pb1, pb2);  // Mash them together
@@ -787,8 +787,8 @@ Cfg::compressCfg()
 
 	// Find A -> J -> B where J is a BB that is only a jump
 	// Then A -> B
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
-		for (auto it1 = (*it)->m_OutEdges.begin(); it1 != (*it)->m_OutEdges.end(); it1++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
+		for (auto it1 = (*it)->m_OutEdges.begin(); it1 != (*it)->m_OutEdges.end(); ++it1) {
 			BasicBlock *pSucc = (*it1);  // Pointer to J
 			BasicBlock *bb = (*it);      // Pointer to A
 			if (pSucc->m_InEdges.size() == 1
@@ -809,13 +809,13 @@ Cfg::compressCfg()
 				bb->m_bJumpReqd = true;
 				setLabel(*it1);
 				// Find the in-edge from B to J; replace this with an in-edge to A
-				for (auto it2 = (*it1)->m_InEdges.begin(); it2 != (*it1)->m_InEdges.end(); it2++) {
+				for (auto it2 = (*it1)->m_InEdges.begin(); it2 != (*it1)->m_InEdges.end(); ++it2) {
 					if (*it2 == pSucc)
 						*it2 = bb;  // Point to A
 				}
 				// Remove the in-edge from J to A. First find the in-edge
 				auto it2 = pSucc->m_InEdges.begin();
-				for (; it2 != pSucc->m_InEdges.end(); it2++) {
+				for (; it2 != pSucc->m_InEdges.end(); ++it2) {
 					if (*it2 == bb)
 						break;
 				}
@@ -823,7 +823,7 @@ Cfg::compressCfg()
 				pSucc->deleteInEdge(it2);
 				// If nothing else uses this BB (J), remove it from the CFG
 				if (pSucc->m_iNumInEdges == 0) {
-					for (auto it3 = m_listBB.begin(); it3 != m_listBB.end(); it3++) {
+					for (auto it3 = m_listBB.begin(); it3 != m_listBB.end(); ++it3) {
 						if (*it3 == pSucc) {
 							m_listBB.erase(it3);
 							// And delete the BB
@@ -845,7 +845,7 @@ Cfg::compressCfg()
 void
 Cfg::unTraverse()
 {
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		(*it)->m_iTraversed = false;
 		(*it)->traversed = UNTRAVERSED;
 	}
@@ -885,7 +885,7 @@ BasicBlock *
 Cfg::findRetNode()
 {
 	BasicBlock *retNode = nullptr;
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		if ((*it)->getType() == RET) {
 			retNode = *it;
 			break;
@@ -972,7 +972,7 @@ Cfg::pbbToIndex(BasicBlock *pBB)
 	auto it = m_listBB.begin();
 	while (it != m_listBB.end()) {
 		if (*it++ == pBB) return i;
-		i++;
+		++i;
 	}
 	return -1;
 }
@@ -1008,9 +1008,9 @@ Cfg::getCalls()
 void
 Cfg::searchAndReplace(Exp *search, Exp *replace)
 {
-	for (auto bb_it = m_listBB.begin(); bb_it != m_listBB.end(); bb_it++) {
+	for (auto bb_it = m_listBB.begin(); bb_it != m_listBB.end(); ++bb_it) {
 		std::list<RTL *> &rtls = *((*bb_it)->getRTLs());
-		for (auto rtl_it = rtls.begin(); rtl_it != rtls.end(); rtl_it++) {
+		for (auto rtl_it = rtls.begin(); rtl_it != rtls.end(); ++rtl_it) {
 			RTL &rtl = **rtl_it;
 			rtl.searchAndReplace(search, replace);
 		}
@@ -1021,9 +1021,9 @@ bool
 Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool ch = false;
-	for (auto bb_it = m_listBB.begin(); bb_it != m_listBB.end(); bb_it++) {
+	for (auto bb_it = m_listBB.begin(); bb_it != m_listBB.end(); ++bb_it) {
 		std::list<RTL *> &rtls = *((*bb_it)->getRTLs());
-		for (auto rtl_it = rtls.begin(); rtl_it != rtls.end(); rtl_it++) {
+		for (auto rtl_it = rtls.begin(); rtl_it != rtls.end(); ++rtl_it) {
 			RTL &rtl = **rtl_it;
 			ch |= rtl.searchAll(search, result);
 		}
@@ -1039,7 +1039,7 @@ Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 void
 delete_lrtls(std::list<RTL *> *pLrtl)
 {
-	for (auto it = pLrtl->begin(); it != pLrtl->end(); it++) {
+	for (auto it = pLrtl->begin(); it != pLrtl->end(); ++it) {
 		delete *it;
 	}
 }
@@ -1054,7 +1054,7 @@ delete_lrtls(std::list<RTL *> *pLrtl)
 void
 erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end)
 {
-	for (auto it = begin; it != end; it++) {
+	for (auto it = begin; it != end; ++it) {
 		delete *it;
 	}
 	pLrtl->erase(begin, end);
@@ -1087,7 +1087,7 @@ void
 Cfg::addNewOutEdge(BasicBlock *pFromBB, BasicBlock *pNewOutEdge)
 {
 	pFromBB->m_OutEdges.push_back(pNewOutEdge);
-	pFromBB->m_iNumOutEdges++;
+	++pFromBB->m_iNumOutEdges;
 	// Since this is a new out-edge, set the "jump required" flag
 	pFromBB->m_bJumpReqd = true;
 	// Make sure that there is a label there
@@ -1099,7 +1099,7 @@ Cfg::simplify()
 {
 	if (VERBOSE)
 		LOG << "simplifying...\n";
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it)
 		(*it)->simplify();
 }
 
@@ -1107,7 +1107,7 @@ Cfg::simplify()
 void
 Cfg::print(std::ostream &out, bool html)
 {
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it)
 		(*it)->print(out, html);
 	out << std::endl;
 }
@@ -1138,7 +1138,7 @@ void
 Cfg::setTimeStamps()
 {
 	// set DFS tag
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it)
 		(*it)->traversed = DFS_TAG;
 
 	// set the parenthesis for the nodes as well as setting the post-order ordering between the nodes
@@ -1177,7 +1177,7 @@ Cfg::commonPDom(BasicBlock *curImmPDom, BasicBlock *succImmPDom)
 			succImmPDom = succImmPDom->immPDom;
 		else
 			curImmPDom = curImmPDom->immPDom;
-		giveup++;
+		++giveup;
 	}
 
 	if (giveup >= GIVEUP) {
@@ -1200,10 +1200,10 @@ Cfg::findImmedPDom()
 
 	// traverse the nodes in order (i.e from the bottom up)
 	int i;
-	for (i = revOrdering.size() - 1; i >= 0; i--) {
+	for (i = revOrdering.size() - 1; i >= 0; --i) {
 		curNode = revOrdering[i];
 		std::vector<BasicBlock *> &oEdges = curNode->getOutEdges();
-		for (unsigned int j = 0; j < oEdges.size(); j++) {
+		for (unsigned int j = 0; j < oEdges.size(); ++j) {
 			succNode = oEdges[j];
 			if (succNode->revOrd > curNode->revOrd)
 				curNode->immPDom = commonPDom(curNode->immPDom, succNode);
@@ -1212,22 +1212,22 @@ Cfg::findImmedPDom()
 
 	// make a second pass but consider the original CFG ordering this time
 	unsigned u;
-	for (u = 0; u < Ordering.size(); u++) {
+	for (u = 0; u < Ordering.size(); ++u) {
 		curNode = Ordering[u];
 		std::vector<BasicBlock *> &oEdges = curNode->getOutEdges();
 		if (oEdges.size() > 1)
-			for (unsigned int j = 0; j < oEdges.size(); j++) {
+			for (unsigned int j = 0; j < oEdges.size(); ++j) {
 				succNode = oEdges[j];
 				curNode->immPDom = commonPDom(curNode->immPDom, succNode);
 			}
 	}
 
 	// one final pass to fix up nodes involved in a loop
-	for (u = 0; u < Ordering.size(); u++) {
+	for (u = 0; u < Ordering.size(); ++u) {
 		curNode = Ordering[u];
 		std::vector<BasicBlock *> &oEdges = curNode->getOutEdges();
 		if (oEdges.size() > 1)
-			for (unsigned int j = 0; j < oEdges.size(); j++) {
+			for (unsigned int j = 0; j < oEdges.size(); ++j) {
 				succNode = oEdges[j];
 				if (curNode->hasBackEdgeTo(succNode)
 				 && curNode->getOutEdges().size() > 1
@@ -1245,7 +1245,7 @@ void
 Cfg::structConds()
 {
 	// Process the nodes in order
-	for (unsigned int i = 0; i < Ordering.size(); i++) {
+	for (unsigned int i = 0; i < Ordering.size(); ++i) {
 		BasicBlock *curNode = Ordering[i];
 
 		// does the current node have more than one out edge?
@@ -1330,7 +1330,7 @@ Cfg::findLoopFollow(BasicBlock *header, bool *&loopNodes)
 
 		// traverse the ordering array between the header and latch nodes.
 		BasicBlock *latch = header->getLatchNode();
-		for (int i = header->ord - 1; i > latch->ord; i--) {
+		for (int i = header->ord - 1; i > latch->ord; --i) {
 			BasicBlock *&desc = Ordering[i];
 			// the follow for an endless loop will have the following properties:
 			//   i) it will have a parent that is a conditional header inside the loop whose follow is outside the loop
@@ -1383,7 +1383,7 @@ Cfg::tagNodesInLoop(BasicBlock *header, bool *&loopNodes)
 	//  iii) curNode is the latch node
 
 	BasicBlock *latch = header->getLatchNode();
-	for (int i = header->ord - 1; i >= latch->ord; i--)
+	for (int i = header->ord - 1; i >= latch->ord; --i)
 		if (Ordering[i]->inLoop(header, latch)) {
 			// update the membership map to reflect that this node is within the loop
 			loopNodes[i] = true;
@@ -1398,7 +1398,7 @@ Cfg::tagNodesInLoop(BasicBlock *header, bool *&loopNodes)
 void
 Cfg::structLoops()
 {
-	for (int i = Ordering.size() - 1; i >= 0; i--) {
+	for (int i = Ordering.size() - 1; i >= 0; --i) {
 		BasicBlock *curNode = Ordering[i];  // the current node under investigation
 		BasicBlock *latch = nullptr;        // the latching node of the loop
 
@@ -1414,7 +1414,7 @@ Cfg::structLoops()
 		// If no nodes meet the above criteria, then the current node is not a loop header
 
 		std::vector<BasicBlock *> &iEdges = curNode->getInEdges();
-		for (unsigned int j = 0; j < iEdges.size(); j++) {
+		for (unsigned int j = 0; j < iEdges.size(); ++j) {
 			BasicBlock *pred = iEdges[j];
 			if (pred->getCaseHead() == curNode->getCaseHead()  // ii)
 			 && pred->getLoopHead() == curNode->getLoopHead()  // iii)
@@ -1429,7 +1429,7 @@ Cfg::structLoops()
 		if (latch) {
 			// define the map that maps each node to whether or not it is within the current loop
 			bool *loopNodes = new bool[Ordering.size()];
-			for (unsigned int j = 0; j < Ordering.size(); j++)
+			for (unsigned int j = 0; j < Ordering.size(); ++j)
 				loopNodes[j] = false;
 
 			curNode->setLatchNode(latch);
@@ -1464,7 +1464,7 @@ Cfg::structLoops()
 void
 Cfg::checkConds()
 {
-	for (unsigned int i = 0; i < Ordering.size(); i++) {
+	for (unsigned int i = 0; i < Ordering.size(); ++i) {
 		BasicBlock *curNode = Ordering[i];
 		std::vector<BasicBlock *> &oEdges = curNode->getOutEdges();
 
@@ -1574,7 +1574,7 @@ Cfg::structure()
 void
 Cfg::addJunctionStatements()
 {
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		BasicBlock *pbb = *it;
 		if (pbb->getNumInEdges() > 1 && (!pbb->getFirstStmt() || !pbb->getFirstStmt()->isJunction())) {
 			assert(pbb->getRTLs());
@@ -1588,7 +1588,7 @@ Cfg::addJunctionStatements()
 void
 Cfg::removeJunctionStatements()
 {
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		BasicBlock *pbb = *it;
 		if (pbb->getFirstStmt() && pbb->getFirstStmt()->isJunction()) {
 			assert(pbb->getRTLs());
@@ -1611,7 +1611,7 @@ Cfg::generateDot(std::ostream &os)
 	ADDRESS aret = NO_ADDRESS;
 
 	// The nodes
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		os << "\t\tbb" << std::hex << (*it)->getLowAddr()
 		   << " [label=\"";
 		const char *p = (*it)->getStmtNumber();
@@ -1670,9 +1670,9 @@ Cfg::generateDot(std::ostream &os)
 	os << "\t}\n";
 
 	// Now the edges
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		std::vector<BasicBlock *> &outEdges = (*it)->getOutEdges();
-		for (unsigned int j = 0; j < outEdges.size(); j++) {
+		for (unsigned int j = 0; j < outEdges.size(); ++j) {
 			os << "\tbb" << std::hex << (*it)->getLowAddr()
 			   << " -> bb" << std::hex << outEdges[j]->getLowAddr()
 			   << " [color=blue";
@@ -1686,9 +1686,9 @@ Cfg::generateDot(std::ostream &os)
 		}
 	}
 #if BACK_EDGES
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		std::vector<BasicBlock *> &inEdges = (*it)->getInEdges();
-		for (unsigned int j = 0; j < inEdges.size(); j++) {
+		for (unsigned int j = 0; j < inEdges.size(); ++j) {
 			os << "\tbb" << std::hex << (*it)->getLowAddr()
 			   << " -> bb" << std::hex << inEdges[j]->getLowAddr()
 			   << " [color=green];\n";
@@ -1709,7 +1709,7 @@ updateWorkListRev(BasicBlock *currBB, std::list<BasicBlock *> &workList, std::se
 	// Insert inedges of currBB into the worklist, unless already there
 	std::vector<BasicBlock *> &ins = currBB->getInEdges();
 	int n = ins.size();
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		BasicBlock *currIn = ins[i];
 		if (workSet.find(currIn) == workSet.end()) {
 			workList.push_front(currIn);
@@ -1732,7 +1732,7 @@ Cfg::findInterferences(ConnectionGraph &cg)
 	bool change;
 	int count = 0;
 	while (!workList.empty() && count < 100000) {
-		count++;  // prevent infinite loop
+		++count;  // prevent infinite loop
 		if (++progress > 20) {
 			std::cout << "i" << std::flush;
 			progress = 0;
@@ -1768,7 +1768,7 @@ Cfg::appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workse
 	// Append my list of BBs to the worklist
 	worklist.insert(worklist.end(), m_listBB.begin(), m_listBB.end());
 	// Do the same for the workset
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++)
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it)
 		workset.insert(*it);
 }
 
@@ -1780,11 +1780,11 @@ dumpBB(BasicBlock *bb)
 	std::vector<BasicBlock *> ins = bb->getInEdges();
 	std::vector<BasicBlock *> outs = bb->getOutEdges();
 	n = ins.size();
-	for (i = 0; i < n; i++)
+	for (i = 0; i < n; ++i)
 		std::cerr << ins[i] << " ";
 	std::cerr << "\nOut Edges: ";
 	n = outs.size();
-	for (i = 0; i < n; i++)
+	for (i = 0; i < n; ++i)
 		std::cerr << outs[i] << " ";
 	std::cerr << "\n";
 }
@@ -1823,7 +1823,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	unsigned i, j;
 	// First find which RTL has the split address
 	auto ri = pBB->m_pRtls->begin();
-	for (; ri != pBB->m_pRtls->end(); ri++) {
+	for (; ri != pBB->m_pRtls->end(); ++ri) {
 		if ((*ri) == rtl)
 			break;
 	}
@@ -1849,9 +1849,9 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 		// Address addr now refers to the splitBB
 		m_mapBB[addr] = skipBB;
 		// Fix all predecessors of pBB to point to splitBB instead
-		for (unsigned i = 0; i < pBB->m_InEdges.size(); i++) {
+		for (unsigned i = 0; i < pBB->m_InEdges.size(); ++i) {
 			BasicBlock *pred = pBB->m_InEdges[i];
-			for (unsigned j = 0; j < pred->m_OutEdges.size(); j++) {
+			for (unsigned j = 0; j < pred->m_OutEdges.size(); ++j) {
 				BasicBlock *succ = pred->m_OutEdges[j];
 				if (succ == pBB) {
 					pred->m_OutEdges[j] = skipBB;
@@ -1890,7 +1890,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 		oldOutEdges = pBB->getNumOutEdges();
 		newBb = newBB(pRtls, pBB->getType(), oldOutEdges);
 		// Transfer the out edges from A to B (pBB to newBb)
-		for (i = 0; i < oldOutEdges; i++)
+		for (i = 0; i < oldOutEdges; ++i)
 			// Don't use addOutEdge, since it will also add in-edges back to pBB
 			newBb->m_OutEdges.push_back(pBB->getOutEdge(i));
 			//addOutEdge(newBb, pBB->getOutEdge(i));
@@ -1915,9 +1915,9 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 
 	// For each out edge of newBb, change any in-edges from pBB to instead come from newBb
 	if (haveB) {
-		for (i = 0; i < oldOutEdges; i++) {
+		for (i = 0; i < oldOutEdges; ++i) {
 			BasicBlock *succ = newBb->m_OutEdges[i];
-			for (j = 0; j < succ->m_InEdges.size(); j++) {
+			for (j = 0; j < succ->m_InEdges.size(); ++j) {
 				BasicBlock *pred = succ->m_InEdges[j];
 				if (pred == pBB) {
 					succ->m_InEdges[j] = newBb;
@@ -1927,7 +1927,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 		}
 	} else {
 		// There is no "B" bb (newBb is just the successor of pBB) Fix that one out-edge to point to rptBB
-		for (j = 0; j < newBb->m_InEdges.size(); j++) {
+		for (j = 0; j < newBb->m_InEdges.size(); ++j) {
 			BasicBlock *pred = newBb->m_InEdges[j];
 			if (pred == pBB) {
 				newBb->m_InEdges[j] = rptBB;
@@ -1939,7 +1939,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 		// There is no A any more. All A's in-edges have been copied to the skipBB. It is possible that the original BB
 		// had a self edge (branch to start of self). If so, this edge, now in to skipBB, must now come from newBb (if
 		// there is a B) or rptBB if none.  Both of these will already exist, so delete it.
-		for (j = 0; j < skipBB->m_InEdges.size(); j++) {
+		for (j = 0; j < skipBB->m_InEdges.size(); ++j) {
 			BasicBlock *pred = skipBB->m_InEdges[j];
 			if (pred == pBB) {
 				skipBB->deleteInEdge(pBB);
@@ -1959,7 +1959,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 		it = m_listBB.erase(it);
 		pBB = nullptr;
 	} else
-		it++;
+		++it;
 
 #if 0
 	std::cerr << "splitForBranch after:\n";
@@ -1976,7 +1976,7 @@ bool
 Cfg::decodeIndirectJmp(UserProc *proc)
 {
 	bool res = false;
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		res |= (*it)->decodeIndirectJmp(proc);
 	}
 	return res;
@@ -1985,7 +1985,7 @@ Cfg::decodeIndirectJmp(UserProc *proc)
 void
 Cfg::undoComputedBB(Statement *stmt)
 {
-	for (auto it = m_listBB.begin(); it != m_listBB.end(); it++) {
+	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
 		if ((*it)->undoComputedBB(stmt))
 			break;
 	}

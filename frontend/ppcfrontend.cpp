@@ -41,7 +41,7 @@ PPCFrontEnd::getDefaultParams()
 {
 	static std::vector<Exp *> params;
 	if (params.empty()) {
-		for (int r = 31; r >= 0; r--) {
+		for (int r = 31; r >= 0; --r) {
 			params.push_back(Location::regOf(r));
 		}
 	}
@@ -53,7 +53,7 @@ PPCFrontEnd::getDefaultReturns()
 {
 	static std::vector<Exp *> returns;
 	if (returns.empty()) {
-		for (int r = 31; r >= 0; r--) {
+		for (int r = 31; r >= 0; --r) {
 			returns.push_back(Location::regOf(r));
 		}
 	}

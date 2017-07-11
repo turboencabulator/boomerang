@@ -58,7 +58,7 @@ BasicBlock::~BasicBlock()
 {
 	// Delete the RTLs
 	if (m_pRtls) {
-		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); it++) {
+		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it) {
 			delete *it;
 		}
 	}
@@ -142,7 +142,7 @@ bool
 BasicBlock::isCaseOption()
 {
 	if (caseHead)
-		for (unsigned int i = 0; i < caseHead->getOutEdges().size() - 1; i++)
+		for (unsigned int i = 0; i < caseHead->getOutEdges().size() - 1; ++i)
 			if (caseHead->getOutEdge(i) == this)
 				return true;
 	return false;
@@ -283,17 +283,17 @@ BasicBlock::print(std::ostream &os, bool html)
 	}
 	os << ":\n";
 	os << "in edges: ";
-	for (unsigned int i = 0; i < m_InEdges.size(); i++)
+	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
 		os << std::hex << m_InEdges[i]->getHiAddr() << " ";
 	os << std::dec << "\n";
 	os << "out edges: ";
-	for (unsigned int i = 0; i < m_OutEdges.size(); i++)
+	for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
 		os << std::hex << m_OutEdges[i]->getLowAddr() << " ";
 	os << std::dec << "\n";
 	if (m_pRtls) {  // Can be zero if e.g. INVALID
 		if (html)
 			os << "<table>\n";
-		for (auto rit = m_pRtls->begin(); rit != m_pRtls->end(); rit++) {
+		for (auto rit = m_pRtls->begin(); rit != m_pRtls->end(); ++rit) {
 			(*rit)->print(os, html);
 		}
 		if (html)
@@ -303,7 +303,7 @@ BasicBlock::print(std::ostream &os, bool html)
 		if (html)
 			os << "<br>";
 		os << "Synthetic out edge(s) to ";
-		for (int i = 0; i < m_iNumOutEdges; i++) {
+		for (int i = 0; i < m_iNumOutEdges; ++i) {
 			BasicBlock *outEdge = m_OutEdges[i];
 			if (outEdge && outEdge->m_iLabelNum)
 				os << "L" << std::dec << outEdge->m_iLabelNum << " ";
@@ -388,9 +388,9 @@ BasicBlock::getRTLWithStatement(Statement *stmt)
 {
 	if (!m_pRtls)
 		return nullptr;
-	for (auto it = m_pRtls->begin(); it != m_pRtls->end(); it++) {
+	for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it) {
 		RTL *rtl = *it;
-		for (auto it1 = rtl->getList().begin(); it1 != rtl->getList().end(); it1++)
+		for (auto it1 = rtl->getList().begin(); it1 != rtl->getList().end(); ++it1)
 			if (*it1 == stmt)
 				return rtl;
 	}
@@ -474,7 +474,7 @@ BasicBlock::getOutEdge(unsigned int i)
 BasicBlock *
 BasicBlock::getCorrectOutEdge(ADDRESS a)
 {
-	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
+	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
 		if ((*it)->getLowAddr() == a) return *it;
 	}
 	return nullptr;
@@ -490,7 +490,7 @@ void
 BasicBlock::addInEdge(BasicBlock *pNewInEdge)
 {
 	m_InEdges.push_back(pNewInEdge);
-	m_iNumInEdges++;
+	++m_iNumInEdges;
 }
 
 /*==============================================================================
@@ -500,19 +500,19 @@ BasicBlock::addInEdge(BasicBlock *pNewInEdge)
  * PARAMETERS:      it: iterator to BB that will no longer be a parent
  * SIDE EFFECTS:    The iterator argument is incremented.
  * USAGE:           It should be used like this:
- *                      if (pred) deleteInEdge(it) else it++;
+ *                      if (pred) deleteInEdge(it) else ++it;
  *============================================================================*/
 void
 BasicBlock::deleteInEdge(std::vector<BasicBlock *>::iterator &it)
 {
 	it = m_InEdges.erase(it);
-	m_iNumInEdges--;
+	--m_iNumInEdges;
 }
 
 void
 BasicBlock::deleteInEdge(BasicBlock *edge)
 {
-	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
+	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {
 		if (*it == edge) {
 			deleteInEdge(it);
 			break;
@@ -524,10 +524,10 @@ void
 BasicBlock::deleteEdge(BasicBlock *edge)
 {
 	edge->deleteInEdge(this);
-	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
+	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
 		if (*it == edge) {
 			m_OutEdges.erase(it);
-			m_iNumOutEdges--;
+			--m_iNumOutEdges;
 			break;
 		}
 	}
@@ -544,19 +544,19 @@ BasicBlock::deleteEdge(BasicBlock *edge)
 unsigned
 BasicBlock::DFTOrder(int &first, int &last)
 {
-	first++;
+	++first;
 	m_DFTfirst = first;
 
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); it++) {
+	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
 		BasicBlock *child = *it;
 		if (!child->m_iTraversed)
 			numTraversed = numTraversed + child->DFTOrder(first, last);
 	}
 
-	last++;
+	++last;
 	m_DFTlast = last;
 
 	return numTraversed;
@@ -573,19 +573,19 @@ BasicBlock::DFTOrder(int &first, int &last)
 unsigned
 BasicBlock::RevDFTOrder(int &first, int &last)
 {
-	first++;
+	++first;
 	m_DFTrevfirst = first;
 
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); it++) {
+	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {
 		BasicBlock *parent = *it;
 		if (!parent->m_iTraversed)
 			numTraversed = numTraversed + parent->RevDFTOrder(first, last);
 	}
 
-	last++;
+	++last;
 	m_DFTrevlast = last;
 
 	return numTraversed;
@@ -648,7 +648,7 @@ BasicBlock::getCallDest()
 		return (ADDRESS)-1;
 	RTL *lastRtl = m_pRtls->back();
 	std::list<Statement *> &sl = lastRtl->getList();
-	for (auto rit = sl.rbegin(); rit != sl.rend(); rit++) {
+	for (auto rit = sl.rbegin(); rit != sl.rend(); ++rit) {
 		if ((*rit)->getKind() == STMT_CALL)
 			return ((CallStatement *)(*rit))->getFixedDest();
 	}
@@ -664,7 +664,7 @@ BasicBlock::getCallDestProc()
 		return nullptr;
 	RTL *lastRtl = m_pRtls->back();
 	std::list<Statement *> &sl = lastRtl->getList();
-	for (auto it = sl.rbegin(); it != sl.rend(); it++) {
+	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
 		if ((*it)->getKind() == STMT_CALL)
 			return ((CallStatement *)(*it))->getDestProc();
 	}
@@ -684,7 +684,7 @@ BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 		sit = rtl->getList().begin();
 		if (sit != rtl->getList().end())
 			return *sit;
-		rit++;
+		++rit;
 	}
 	return nullptr;
 }
@@ -727,7 +727,7 @@ BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 		sit = rtl->getList().rbegin();
 		if (sit != rtl->getList().rend())
 			return *sit;
-		rit++;
+		++rit;
 	}
 	return nullptr;
 }
@@ -742,7 +742,7 @@ BasicBlock::getFirstStmt()
 		auto sit = rtl->getList().begin();
 		if (sit != rtl->getList().end())
 			return *sit;
-		rit++;
+		++rit;
 	}
 	return nullptr;
 }
@@ -757,7 +757,7 @@ BasicBlock::getLastStmt()
 		auto sit = rtl->getList().rbegin();
 		if (sit != rtl->getList().rend())
 			return *sit;
-		rit++;
+		++rit;
 	}
 	return nullptr;
 }
@@ -767,9 +767,9 @@ BasicBlock::getStatements(StatementList &stmts)
 {
 	std::list<RTL *> *rtls = getRTLs();
 	if (rtls) {
-		for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
+		for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
 			RTL *rtl = *rit;
-			for (auto it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
+			for (auto it = rtl->getList().begin(); it != rtl->getList().end(); ++it) {
 				if (!(*it)->getBB())
 					(*it)->setBB(this);
 				stmts.append(*it);
@@ -838,7 +838,7 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 	// it should contain a BranchStatement
 	std::list<Statement *> &sl = last->getList();
 	assert(!sl.empty());
-	for (auto it = sl.rbegin(); it != sl.rend(); it++) {
+	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
 		if ((*it)->getKind() == STMT_BRANCH) {
 			((BranchStatement *)(*it))->setCondExpr(e);
 			return;
@@ -857,7 +857,7 @@ BasicBlock::isJmpZ(BasicBlock *dest)
 	// it should contain a BranchStatement
 	std::list<Statement *> &sl = last->getList();
 	assert(!sl.empty());
-	for (auto it = sl.rbegin(); it != sl.rend(); it++) {
+	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
 		if ((*it)->getKind() == STMT_BRANCH) {
 			BRANCH_TYPE jt = ((BranchStatement *)(*it))->getCond();
 			if ((jt != BRANCH_JE) && (jt != BRANCH_JNE)) return false;
@@ -904,7 +904,7 @@ void
 BasicBlock::simplify()
 {
 	if (m_pRtls)
-		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); it++)
+		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it)
 			(*it)->simplify();
 	if (m_nodeType == TWOWAY) {
 		if (!m_pRtls || m_pRtls->empty()) {
@@ -934,7 +934,7 @@ BasicBlock::simplify()
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
 			std::vector<BasicBlock *> rinedges = redundant->m_InEdges;
 			redundant->m_InEdges.clear();
-			for (unsigned i = 0; i < rinedges.size(); i++) {
+			for (unsigned i = 0; i < rinedges.size(); ++i) {
 				if (VERBOSE)
 					LOG << rinedges[i]->getLowAddr() << " ";
 				if (rinedges[i] != this)
@@ -964,7 +964,7 @@ BasicBlock::simplify()
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
 			std::vector<BasicBlock *> rinedges = redundant->m_InEdges;
 			redundant->m_InEdges.clear();
-			for (unsigned i = 0; i < rinedges.size(); i++) {
+			for (unsigned i = 0; i < rinedges.size(); ++i) {
 				if (VERBOSE)
 					LOG << rinedges[i]->getLowAddr() << " ";
 				if (rinedges[i] != this)
@@ -995,7 +995,7 @@ BasicBlock::hasBackEdgeTo(BasicBlock *dest)
 bool
 BasicBlock::allParentsGenerated()
 {
-	for (unsigned int i = 0; i < m_InEdges.size(); i++)
+	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
 		if (!m_InEdges[i]->hasBackEdgeTo(this)
 		 &&  m_InEdges[i]->traversed != DFS_CODEGEN)
 			return false;
@@ -1033,7 +1033,7 @@ BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 	hll->AddLabel(indLevel, ord);
 
 	if (m_pRtls) {
-		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); it++) {
+		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it) {
 			if (DEBUG_GEN)
 				LOG << (*it)->getAddress() << "\t";
 			(*it)->generateCode(hll, this, indLevel);
@@ -1221,17 +1221,17 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 						// define the loop header to be compared against
 						BasicBlock *myLoopHead = (sType == LoopCond ? this : loopHead);
 						gotoSet.push_back(condFollow);
-						gotoTotal++;
+						++gotoTotal;
 
 						// also add the current latch node, and the loop header of the follow if they exist
 						if (latch) {
 							gotoSet.push_back(latch);
-							gotoTotal++;
+							++gotoTotal;
 						}
 
 						if (condFollow->loopHead && condFollow->loopHead != myLoopHead) {
 							gotoSet.push_back(condFollow->loopHead);
-							gotoTotal++;
+							++gotoTotal;
 						}
 					}
 
@@ -1307,7 +1307,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 				// TODO: linearly emitting each branch of the switch does not result
 				//       in optimal fall-through.
 				// generate code for each out branch
-				for (unsigned int i = 0; i < m_OutEdges.size(); i++) {
+				for (unsigned int i = 0; i < m_OutEdges.size(); ++i) {
 					// emit a case label
 					// FIXME: Not valid for all switch types
 					Const caseVal(0);
@@ -1340,7 +1340,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 					assert(gotoTotal == 0);
 					followSet.resize(followSet.size() - 1);
 				} else // remove all the nodes added to the goto set
-					for (int i = 0; i < gotoTotal; i++)
+					for (int i = 0; i < gotoTotal; ++i)
 						gotoSet.resize(gotoSet.size() - 1);
 
 				// do the code generation (or goto emitting) for the new conditional follow if it exists, otherwise do
@@ -1452,7 +1452,7 @@ BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 	loopStamps[0] = time;
 
 	// recurse on unvisited children and set inedges for all children
-	for (unsigned int i = 0; i < m_OutEdges.size(); i++) {
+	for (unsigned int i = 0; i < m_OutEdges.size(); ++i) {
 		// set the in edge from this child to its parent (the current node)
 		// (not done here, might be a problem)
 		// outEdges[i]->inEdges.Add(this);
@@ -1478,7 +1478,7 @@ BasicBlock::setRevLoopStamps(int &time)
 	revLoopStamps[0] = time;
 
 	// recurse on the unvisited children in reverse order
-	for (int i = m_OutEdges.size() - 1; i >= 0; i--) {
+	for (int i = m_OutEdges.size() - 1; i >= 0; --i) {
 		// recurse on this child if it hasn't already been visited
 		if (m_OutEdges[i]->traversed != DFS_RNUM)
 			m_OutEdges[i]->setRevLoopStamps(++time);
@@ -1495,7 +1495,7 @@ BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
 	traversed = DFS_PDOM;
 
 	// recurse on unvisited children
-	for (unsigned int i = 0; i < m_InEdges.size(); i++)
+	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
 		if (m_InEdges[i]->traversed != DFS_PDOM)
 			m_InEdges[i]->setRevOrder(order);
 
@@ -1526,7 +1526,7 @@ BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 		//   i) isn't on a back-edge,
 		//  ii) hasn't already been traversed in a case tagging traversal and,
 		// iii) isn't the follow node.
-		for (unsigned int i = 0; i < m_OutEdges.size(); i++)
+		for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
 			if (!hasBackEdgeTo(m_OutEdges[i])
 			 && m_OutEdges[i]->traversed != DFS_CASE
 			 && m_OutEdges[i] != follow)
@@ -1664,7 +1664,7 @@ void
 checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, UserProc *proc)
 {
 	// For each location to be considered
-	for (auto uu = ls.begin(); uu != ls.end(); uu++) {
+	for (auto uu = ls.begin(); uu != ls.end(); ++uu) {
 		Exp *u = (Exp *)*uu;
 		if (!u->isSubscript()) continue;  // Only interested in subscripted vars
 		RefExp *r = (RefExp *)u;
@@ -1693,10 +1693,10 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 	checkForOverlap(liveLocs, phiLocs, ig, myProc);
 	// For each RTL in this BB
 	if (m_pRtls)  // this can be nullptr
-		for (auto rit = m_pRtls->rbegin(); rit != m_pRtls->rend(); rit++) {
+		for (auto rit = m_pRtls->rbegin(); rit != m_pRtls->rend(); ++rit) {
 			std::list<Statement *> &stmts = (*rit)->getList();
 			// For each statement this RTL
-			for (auto sit = stmts.rbegin(); sit != stmts.rend(); sit++) {
+			for (auto sit = stmts.rbegin(); sit != stmts.rend(); ++sit) {
 				Statement *s = *sit;
 				LocationSet defs;
 				s->getDefinitions(defs);
@@ -1749,7 +1749,7 @@ void
 BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 {
 	liveout.clear();
-	for (unsigned i = 0; i < m_OutEdges.size(); i++) {
+	for (unsigned i = 0; i < m_OutEdges.size(); ++i) {
 		BasicBlock *currBB = m_OutEdges[i];
 		// First add the non-phi liveness
 		liveout.makeUnion(currBB->liveIn);
@@ -1759,7 +1759,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 			continue;
 		RTL *phiRtl = currBB->m_pRtls->front();
 		std::list<Statement *> &stmts = phiRtl->getList();
-		for (auto it = stmts.begin(); it != stmts.end(); it++) {
+		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 			// Only interested in phi assignments. Note that it is possible that some phi assignments have been
 			// converted to ordinary assignments. So the below is a continue, not a break.
 			if (!(*it)->isPhi()) continue;
@@ -1781,7 +1781,7 @@ int
 BasicBlock::whichPred(BasicBlock *pred)
 {
 	int n = m_InEdges.size();
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		if (m_InEdges[i] == pred)
 			return i;
 	}
@@ -2013,7 +2013,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 int
 BasicBlock::findNumCases()
 {
-	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); it++) {  // For each in-edge
+	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {  // For each in-edge
 		if ((*it)->m_nodeType != TWOWAY)  // look for a two-way BB
 			continue;  // Ignore all others
 		assert(!(*it)->m_pRtls->empty());
@@ -2046,7 +2046,7 @@ findConstantValues(Statement *s, std::list<int> &dests)
 	if (!s) return;
 	if (s->isPhi()) {
 		// For each definition, recurse
-		for (auto it = ((PhiAssign *)s)->begin(); it != ((PhiAssign *)s)->end(); it++)
+		for (auto it = ((PhiAssign *)s)->begin(); it != ((PhiAssign *)s)->end(); ++it)
 			findConstantValues(it->def, dests);
 	}
 	else if (s->isAssign()) {
@@ -2074,7 +2074,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		do {
 			PhiAssign *pi = (PhiAssign *)*workSet.begin();
 			workSet.remove(pi);
-			for (auto it = pi->begin(); it != pi->end(); it++) {
+			for (auto it = pi->begin(); it != pi->end(); ++it) {
 				if (!it->def) continue;
 				if (!it->def->isPhi()) continue;
 				if (seenSet.exists(it->def)) {
@@ -2105,7 +2105,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		Exp *e = lastStmt->getDest();
 		int n = sizeof hlForms / sizeof *hlForms;
 		char form = 0;
-		for (int i = 0; i < n; i++) {
+		for (int i = 0; i < n; ++i) {
 			if (*e *= *hlForms[i]) {  // *= compare ignores subscripts
 				form = chForms[i];
 				if (DEBUG_SWITCH)
@@ -2169,7 +2169,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 					if (n) {
 						int *destArray = new int[n];
 						auto ii = dests.begin();
-						for (int i = 0; i < n; i++)
+						for (int i = 0; i < n; ++i)
 							destArray[i] = *ii++;
 						SWITCH_INFO *swi = new SWITCH_INFO;
 						swi->chForm = 'F';  // The "Fortran" form
@@ -2212,7 +2212,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		int n = sizeof hlVfc / sizeof *hlVfc;
 		bool recognised = false;
 		int i;
-		for (i = 0; i < n; i++) {
+		for (i = 0; i < n; ++i) {
 			if (*e *= *hlVfc[i]) {  // *= compare ignores subscripts
 				recognised = true;
 				if (DEBUG_SWITCH)
@@ -2393,7 +2393,7 @@ BasicBlock::processSwitch(UserProc *proc)
 	// for the ith zero-based case. It may be that the code for case 5 above will be a goto to the code for case 3,
 	// but a smarter back end could group them
 	std::list<ADDRESS> dests;
-	for (int i = 0; i < iNum; i++) {
+	for (int i = 0; i < iNum; ++i) {
 		// Get the destination address from the switch table.
 		if (si->chForm == 'H') {
 			int iValue = prog->readNative4(si->uTable + i*2);
@@ -2429,8 +2429,8 @@ BasicBlock::processSwitch(UserProc *proc)
 			m_iNumOutEdges -= (iNum - i);
 			break;
 #else
-			iNumOut--;
-			m_iNumOutEdges--;  // FIXME: where is this set?
+			--iNumOut;
+			--m_iNumOutEdges;  // FIXME: where is this set?
 #endif
 		}
 	}
@@ -2438,7 +2438,7 @@ BasicBlock::processSwitch(UserProc *proc)
 	int count = 0;
 	for (auto dd = dests.begin(); dd != dests.end(); ++dd) {
 		char tmp[1024];
-		count++;
+		++count;
 		sprintf(tmp, "before decoding fragment %i of %i (%x)", count, dests.size(), *dd);
 		Boomerang::get()->alert_decompile_debug_point(proc, tmp);
 		prog->decodeFragment(proc, *dd);
@@ -2451,7 +2451,7 @@ BasicBlock::undoComputedBB(Statement *stmt)
 {
 	RTL *last = m_pRtls->back();
 	std::list<Statement *> &list = last->getList();
-	for (auto rr = list.rbegin(); rr != list.rend(); rr++) {
+	for (auto rr = list.rbegin(); rr != list.rend(); ++rr) {
 		if (*rr == stmt) {
 			m_nodeType = CALL;
 			LOG << "undoComputedBB for statement " << stmt << "\n";

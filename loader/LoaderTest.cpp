@@ -109,7 +109,7 @@ LoaderTest::testHppaLoad()
 
 	const SectionInfo *si;
 	std::ostringstream actual;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		si = bf->getSectionInfo(i);
 		actual << si->pSectionName << "\n";
 	}
@@ -134,7 +134,7 @@ LoaderTest::testPalmLoad()
 
 	const SectionInfo *si;
 	std::ostringstream actual;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		si = bf->getSectionInfo(i);
 		actual << si->pSectionName << "\n";
 	}
@@ -163,7 +163,7 @@ LoaderTest::testWinLoad()
 		{
 			const SectionInfo *si;
 			std::ostringstream actual;
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < n; ++i) {
 				si = bf->getSectionInfo(i);
 				actual << si->pSectionName << "\n";
 			}

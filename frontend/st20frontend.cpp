@@ -42,7 +42,7 @@ ST20FrontEnd::getDefaultParams()
 	static std::vector<Exp *> params;
 	if (params.empty()) {
 #if 0
-		for (int r = 0; r <= 2; r++) {
+		for (int r = 0; r <= 2; ++r) {
 			params.push_back(Location::regOf(r));
 		}
 #endif

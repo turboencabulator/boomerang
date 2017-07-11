@@ -76,7 +76,7 @@ CfgTest::testDominators()
 	         << FRONTIER_FIVE << " ";
 	int n5 = df->pbbToNode(bb);
 	std::set<int> &DFset = df->getDF(n5);
-	for (auto ii = DFset.begin(); ii != DFset.end(); ii++)
+	for (auto ii = DFset.begin(); ii != DFset.end(); ++ii)
 		actual << std::hex << (unsigned)df->nodeToBB(*ii)->getLowAddr() << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
 	delete prog;
@@ -132,7 +132,7 @@ CfgTest::testSemiDominators()
 #endif
 	expected << std::hex << SEMI_B << " " << SEMI_M << " ";
 	std::set<int> &DFset = df->getDF(nL);
-	for (auto ii = DFset.begin(); ii != DFset.end(); ii++)
+	for (auto ii = DFset.begin(); ii != DFset.end(); ++ii)
 		actual << std::hex << (unsigned)df->nodeToBB(*ii)->getLowAddr() << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
 	delete prog;
@@ -212,7 +212,7 @@ CfgTest::testPlacePhi2()
 	        Location::regOf(29),
 	        new Const(8)));
 	std::set<int> &s = df->getA_phi(e);
-	for (auto pp = s.begin(); pp != s.end(); pp++)
+	for (auto pp = s.begin(); pp != s.end(); ++pp)
 		actual << *pp << " ";
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 	delete e;
@@ -226,7 +226,7 @@ CfgTest::testPlacePhi2()
 	        new Const(12)));
 
 	std::set<int> &s2 = df->getA_phi(e);
-	for (auto pp = s2.begin(); pp != s2.end(); pp++)
+	for (auto pp = s2.begin(); pp != s2.end(); ++pp)
 		actual2 << *pp << " ";
 	CPPUNIT_ASSERT_EQUAL(expected, actual2.str());
 	delete e;

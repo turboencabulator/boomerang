@@ -81,7 +81,7 @@ IntelCoffFile::AddSection(SectionInfo *psi)
 {
 	int idxSect = m_iNumSections++;
 	SectionInfo *ps = new SectionInfo[m_iNumSections];
-	for (int i = 0; i < idxSect; i++)
+	for (int i = 0; i < idxSect; ++i)
 		ps[i] = m_pSections[i];
 	ps[idxSect] = *psi;
 	delete[] m_pSections;
@@ -109,7 +109,7 @@ IntelCoffFile::load(std::istream &ifs)
 		delete [] psh;
 		return false;
 	}
-	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
+	for (int iSection = 0; iSection < m_Header.coff_sections; ++iSection) {
 		//assert(0 == psh[iSection].sch_virtaddr);
 		//assert(0 == psh[iSection].sch_physaddr);
 
@@ -142,7 +142,7 @@ IntelCoffFile::load(std::istream &ifs)
 	printf("Loaded %d section headers\n", (int)m_Header.coff_sections);
 
 	ADDRESS a = 0x40000000;
-	for (int sidx = 0; sidx < m_iNumSections; sidx++) {
+	for (int sidx = 0; sidx < m_iNumSections; ++sidx) {
 		SectionInfo *psi = &m_pSections[sidx];
 		if (psi->uSectionSize > 0) {
 			char *pData = new char[psi->uSectionSize];
@@ -153,7 +153,7 @@ IntelCoffFile::load(std::istream &ifs)
 	}
 	printf("Allocated %d segments. a=%08x", m_iNumSections, a);
 
-	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
+	for (int iSection = 0; iSection < m_Header.coff_sections; ++iSection) {
 		printf("Loading section %d of %hd\n", iSection + 1, m_Header.coff_sections);
 
 		const SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
@@ -222,7 +222,7 @@ IntelCoffFile::load(std::istream &ifs)
 		printf("Symbol %d: %s %08lx\n", iSym, name, pSymbols[iSym].csym_value);
 	}
 
-	for (int iSection = 0; iSection < m_Header.coff_sections; iSection++) {
+	for (int iSection = 0; iSection < m_Header.coff_sections; ++iSection) {
 		//printf("Relocating section %d of %hd\n", iSection + 1, m_Header.coff_sections);
 		const SectionInfo *psi = getSectionInfo(psh[iSection].sch_physaddr);
 		char *pData = psi->uHostAddr + psh[iSection].sch_virtaddr;
@@ -236,7 +236,7 @@ IntelCoffFile::load(std::istream &ifs)
 		if (!ifs.good())
 			return false;
 
-		for (int iReloc = 0; iReloc < psh[iSection].sch_nreloc; iReloc++) {
+		for (int iReloc = 0; iReloc < psh[iSection].sch_nreloc; ++iReloc) {
 			struct struct_coff_rel *tRel = pRel + iReloc;
 			struct coff_symbol *pSym = pSymbols + tRel->r_symndx;
 			uint32_t *pPatch = (uint32_t *)(pData + tRel->r_vaddr);
@@ -268,7 +268,7 @@ IntelCoffFile::load(std::istream &ifs)
 		if (iSection == 0) {
 			for (int i = 0; i < psh[iSection].sch_sectsize; i += 8) {
 				printf("%08x", i);
-				for (int j = 0; j < 8; j++)
+				for (int j = 0; j < 8; ++j)
 					printf(" %02x", pData[i + j] & 0xff);
 				printf("\n");
 			}
@@ -360,7 +360,7 @@ IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative)
 bool
 IntelCoffFile::isRelocationAt(ADDRESS uNative)
 {
-	for (auto it = m_Relocations.begin(); it != m_Relocations.end(); it++) {
+	for (auto it = m_Relocations.begin(); it != m_Relocations.end(); ++it) {
 		if (*it == uNative) return true;
 	}
 	return false;
@@ -375,7 +375,7 @@ IntelCoffFile::getSymbols()
 unsigned char *
 IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 {
-	for (int iSection = 0; iSection < m_iNumSections; iSection++) {
+	for (int iSection = 0; iSection < m_iNumSections; ++iSection) {
 		const SectionInfo *psi = getSectionInfo(iSection);
 		if (a >= psi->uNativeAddr && (a + range) < (psi->uNativeAddr + psi->uSectionSize)) {
 			return (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));
@@ -392,7 +392,7 @@ IntelCoffFile::readNative(ADDRESS a, unsigned short n) const
 
 	unsigned long tmp = 0;
 	unsigned long mult = 1;
-	for (unsigned short o = 0; o < n; o++) {
+	for (unsigned short o = 0; o < n; ++o) {
 		tmp += (unsigned long)(*buf++) * mult;
 		mult *= 256;
 	}
@@ -404,7 +404,7 @@ IntelCoffFile::readNative4(ADDRESS a) const
 {
 	return readNative(a, 4);
 #if 0
-	for (int iSection = 0; iSection < m_iNumSections; iSection++) {
+	for (int iSection = 0; iSection < m_iNumSections; ++iSection) {
 		const SectionInfo *psi = getSectionInfo(iSection);
 		if (a >= psi->uNativeAddr && (a + 3) < (psi->uNativeAddr + psi->uSectionSize)) {
 			unsigned long tmp;

@@ -734,7 +734,7 @@ SparcFrontEnd::getDefaultParams()
 		// But do r30 first (%i6, saves %o6, the stack pointer)
 		params.push_back(Location::regOf(30));
 		params.push_back(Location::regOf(31));
-		for (int r = 29; r > 0; r--) {
+		for (int r = 29; r > 0; --r) {
 			params.push_back(Location::regOf(r));
 		}
 	}
@@ -748,7 +748,7 @@ SparcFrontEnd::getDefaultReturns()
 	if (returns.empty()) {
 		returns.push_back(Location::regOf(30));
 		returns.push_back(Location::regOf(31));
-		for (int r = 29; r > 0; r--) {
+		for (int r = 29; r > 0; --r) {
 			returns.push_back(Location::regOf(r));
 		}
 	}
@@ -830,7 +830,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 				std::cerr << "Invalid instruction at " << std::hex << address << ": ";
 				std::cerr << std::setfill('0') << std::setw(2);
 				ptrdiff_t delta = pBF->getTextDelta();
-				for (int j = 0; j < inst.numBytes; j++)
+				for (int j = 0; j < inst.numBytes; ++j)
 					std::cerr << std::setfill('0') << std::setw(2) << (unsigned)*(unsigned char *)(address + delta + j)
 					          << " " << std::setfill(' ') << std::setw(0) << "\n";
 				return false;
@@ -1220,7 +1220,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 
 	// Add the callees to the set of CallStatements to proces for parameter recovery, and also to the Prog object
-	for (auto it = callList.begin(); it != callList.end(); it++) {
+	for (auto it = callList.begin(); it != callList.end(); ++it) {
 		ADDRESS dest = (*it)->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically linked
 		// ones (in the .plt)

@@ -460,7 +460,7 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
 		subExp2->accept(ev);
 	}
-	for (auto uu = s->begin(); uu != s->end(); uu++) {
+	for (auto uu = s->begin(); uu != s->end(); ++uu) {
 		// Note: don't make the RefExp based on lhs, since it is possible that the lhs was renamed in fromSSA()
 		// Use the actual expression in the PhiAssign
 		// Also note that it's possible for uu->e to be nullptr. Suppose variable a can be assigned to along in-edges
@@ -505,7 +505,7 @@ UsedLocsVisitor::visit(CallStatement *s, bool &override)
 	if (pDest)
 		pDest->accept(ev);
 	StatementList &arguments = s->getArguments();
-	for (auto it = arguments.begin(); it != arguments.end(); it++) {
+	for (auto it = arguments.begin(); it != arguments.end(); ++it) {
 		// Don't want to ever collect anything from the lhs
 		((Assign *)*it)->getRight()->accept(ev);
 	}
@@ -721,7 +721,7 @@ StmtImplicitConverter::visit(PhiAssign *s, bool &recur)
 {
 	// The LHS could be a m[x] where x has a null subscript; must do first
 	s->setLeft(s->getLeft()->accept(mod));
-	for (auto uu = s->begin(); uu != s->end(); uu++) {
+	for (auto uu = s->begin(); uu != s->end(); ++uu) {
 		if (!uu->e) continue;
 		if (!uu->def)
 			uu->def = cfg->findImplicitAssign(uu->e);
@@ -796,13 +796,13 @@ ComplexityFinder::visit(Location *e, bool &override)
 		return true;
 	}
 	if (e->isMemOf() || e->isArrayIndex())
-		count++;  // Count the more complex unaries
+		++count;  // Count the more complex unaries
 	override = false;
 	return true;
 }
-bool ComplexityFinder::visit(Unary *e,   bool &override) { count++; override = false; return true; }
-bool ComplexityFinder::visit(Binary *e,  bool &override) { count++; override = false; return true; }
-bool ComplexityFinder::visit(Ternary *e, bool &override) { count++; override = false; return true; }
+bool ComplexityFinder::visit(Unary *e,   bool &override) { ++count; override = false; return true; }
+bool ComplexityFinder::visit(Binary *e,  bool &override) { ++count; override = false; return true; }
+bool ComplexityFinder::visit(Ternary *e, bool &override) { ++count; override = false; return true; }
 
 bool
 MemDepthFinder::visit(Location *e, bool &override)
@@ -977,7 +977,7 @@ bool
 ExpDestCounter::visit(RefExp *e, bool &override)
 {
 	if (Statement::canPropagateToExp(e))
-		destCounts[e]++;
+		++destCounts[e];
 	override = false;  // Continue searching my children
 	return true;       // Continue visiting the rest of Exp *e
 }
@@ -1201,7 +1201,7 @@ StmtSsaXformer::visit(PhiAssign *s, bool &recur)
 {
 	commonLhs(s);
 	UserProc *proc = ((ExpSsaXformer *)mod)->getProc();
-	for (auto it = s->begin(); it != s->end(); it++) {
+	for (auto it = s->begin(); it != s->end(); ++it) {
 		if (!it->e) continue;
 		RefExp *r = new RefExp(it->e, it->def);
 		const char *sym = proc->lookupSymFromRefAny(r);

@@ -51,7 +51,7 @@ elf_hash(const char *o0)
 	while (o3 != 0) {
 		o4 <<= 4;
 		o3 += o4;
-		g1++;
+		++g1;
 		o4 = o3 & 0xf0000000;
 		if (o4 != 0) {
 			int o2 = (int)((unsigned)o4 >> 24);
@@ -132,7 +132,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	// Number of elf sections
 	bool bGotCode = false;                  // True when have seen a code sect
 	ADDRESS arbitaryLoadAddr = 0x08000000;
-	for (i = 0; i < m_iNumSections; i++) {
+	for (i = 0; i < m_iNumSections; ++i) {
 		// Get section information.
 		const Elf32_Shdr *pShdr = m_pShdrs + i;
 		if ((const char *)pShdr > m_pImage + size) {
@@ -190,7 +190,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	}  // for each section
 
 	// assign arbitary addresses to .rel.* sections too
-	for (i = 0; i < m_iNumSections; i++)
+	for (i = 0; i < m_iNumSections; ++i)
 		if (m_pSections[i].uNativeAddr == 0 && !strncmp(m_pSections[i].pSectionName, ".rel", 4)) {
 			m_pSections[i].uNativeAddr = arbitaryLoadAddr;
 			arbitaryLoadAddr += m_pSections[i].uSectionSize;
@@ -321,7 +321,7 @@ ElfBinaryFile::AddSyms(int secIndex)
 	// Number of entries in the PLT:
 	// int max_i_for_hack = siPlt ? (int)siPlt->uSectionSize / 0x10 : 0;
 	// Index 0 is a dummy entry
-	for (int i = 1; i < nSyms; i++) {
+	for (int i = 1; i < nSyms; ++i) {
 		ADDRESS val = (ADDRESS)elfRead4((const int *)&m_pSym[i].st_value);
 		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
@@ -387,7 +387,7 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 	int strIdx = m_sh_link[secIndex];  // sh_link points to the string table
 
 	// Index 0 is a dummy entry
-	for (int i = 1; i < nSyms; i++) {
+	for (int i = 1; i < nSyms; ++i) {
 		ADDRESS val = (ADDRESS)elfRead4((const int *)&m_pSym[i].st_value);
 		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names
@@ -430,7 +430,7 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 	int strSecIdx = m_sh_link[symSecIdx];
 
 	// Index 0 is a dummy entry
-	for (int i = 1; i < nRelocs; i++) {
+	for (int i = 1; i < nRelocs; ++i) {
 		ADDRESS val = (ADDRESS)elfRead4((const int *)&m_pReloc[i].r_offset);
 		int symIndex = elfRead4(&m_pReloc[i].r_info) >> 8;
 		int flags = elfRead4(&m_pReloc[i].r_info);
@@ -456,7 +456,7 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 
 		// Linear search!
 		auto it = m_SymTab.begin();
-		for (; it != m_SymTab.end(); it++)
+		for (; it != m_SymTab.end(); ++it)
 			if (it->second == str)
 				break;
 		// Add new extern
@@ -565,7 +565,7 @@ ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *
 	int n = pSect->uSectionSize / pSect->uSectionEntrySize;
 	const Elf32_Sym *pSym = (const Elf32_Sym *)pSect->uHostAddr;
 	// Search all the symbols. It may be possible to start later than index 0
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		int idx = elfRead4(&pSym[i].st_name);
 		if (strcmp(pName, pStr + idx) == 0) {
 			// We have found the symbol
@@ -650,7 +650,7 @@ ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 	// Search all the symbols. It may be possible to start later than index 0
 	unsigned closest = 0xFFFFFFFF;
 	int idx = -1;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		if ((pSym[i].st_value > value) && (pSym[i].st_value < closest)) {
 			idx = i;
 			closest = pSym[i].st_value;
@@ -777,7 +777,7 @@ ElfBinaryFile::getDependencyList()
 		return result; /* no dynamic section = statically linked */
 
 	ADDRESS strtab = NO_ADDRESS;
-	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
+	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; ++dyn) {
 		if (dyn->d_tag == DT_STRTAB) {
 			strtab = (ADDRESS)dyn->d_un.d_ptr;
 			break;
@@ -787,7 +787,7 @@ ElfBinaryFile::getDependencyList()
 		return result;
 
 	const char *stringtab = NativeToHostAddress(strtab);
-	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; dyn++) {
+	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; ++dyn) {
 		if (dyn->d_tag == DT_NEEDED) {
 			const char *need = stringtab + dyn->d_un.d_val;
 			if (need)
@@ -834,12 +834,12 @@ ElfBinaryFile::getImportStubs(int &numImports)
 		m_SymTab[a] = std::string();
 		ff = m_SymTab.find(a);
 		aa = ff;
-		aa++;
+		++aa;
 	}
 	while ((aa != m_SymTab.end()) && (a < m_uPltMax)) {
-		n++;
+		++n;
 		a = aa->first;
-		aa++;
+		++aa;
 	}
 	// Allocate an array of ADDRESSESes
 	m_pImportStubs = new ADDRESS[n];
@@ -849,7 +849,7 @@ ElfBinaryFile::getImportStubs(int &numImports)
 	while ((aa != m_SymTab.end()) && (a < m_uPltMax)) {
 		m_pImportStubs[i++] = a;
 		a = aa->first;
-		aa++;
+		++aa;
 	}
 	if (delDummy)
 		m_SymTab.erase(ff);  // Delete dummy entry
@@ -886,7 +886,7 @@ ElfBinaryFile::getDynamicGlobalMap()
 		return ret;
 	}
 
-	for (int i = 0; i < numEnt; i++) {
+	for (int i = 0; i < numEnt; ++i) {
 		// The ugly p[1] below is because it p might point to an Elf32_Rela struct, or an Elf32_Rel struct
 		int sym = ELF32_R_SYM(((const int *)p)[1]);
 		const char *s = getStrPtr(idxStr, pSym[sym].st_name);
@@ -1218,7 +1218,7 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative)
 					for (unsigned u = 0; u < size; u += 2 * sizeof (unsigned)) {
 						unsigned r_offset = elfRead4(pReloc++);
 						//unsigned info = elfRead4(pReloc);
-						pReloc++;
+						++pReloc;
 						//unsigned char relType = (unsigned char)info;
 						//unsigned symTabIndex = info >> 8;
 						ADDRESS pRelWord;  // Pointer to the word to be relocated
@@ -1274,7 +1274,7 @@ ElfBinaryFile::getFilenameSymbolFor(const char *sym)
 	const char *filename = nullptr;
 
 	// Index 0 is a dummy entry
-	for (int i = 1; i < nSyms; i++) {
+	for (int i = 1; i < nSyms; ++i) {
 		//ADDRESS val = (ADDRESS)elfRead4((const int *)&m_pSym[i].st_value);
 		const char *name = getStrPtr(strIdx, elfRead4(&m_pSym[i].st_name));
 		if (!name || name[0] == '\0') continue;  // Silly symbols with no names

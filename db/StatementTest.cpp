@@ -1252,7 +1252,7 @@ StatementTest::testBypass()
 	proc->getStatements(stmts);
 	auto it = stmts.begin();
 	while (!(*it)->isCall())
-		it++;
+		++it;
 	CallStatement *call = (CallStatement *)*it; // Statement 18, a call to printf
 	call->setDestProc(proc);                    // A recursive call
 	// std::cerr << "Call is "; call->dump();

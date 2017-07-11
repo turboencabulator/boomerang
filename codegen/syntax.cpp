@@ -73,7 +73,7 @@ BlockSyntaxNode::BlockSyntaxNode()
 
 BlockSyntaxNode::~BlockSyntaxNode()
 {
-	for (unsigned i = 0; i < statements.size(); i++)
+	for (unsigned i = 0; i < statements.size(); ++i)
 		delete statements[i];
 }
 
@@ -103,7 +103,7 @@ BlockSyntaxNode::findNodeFor(BasicBlock *bb)
 	if (pbb == bb)
 		return this;
 	SyntaxNode *n = nullptr;
-	for (unsigned i = 0; i < statements.size(); i++) {
+	for (unsigned i = 0; i < statements.size(); ++i) {
 		n = statements[i]->findNodeFor(bb);
 		if (n)
 			break;
@@ -137,7 +137,7 @@ BlockSyntaxNode::printAST(SyntaxNode *root, std::ostream &os)
 		os << "block";
 	os << "\"];" << std::endl;
 	if (pbb) {
-		for (int i = 0; i < pbb->getNumOutEdges(); i++) {
+		for (int i = 0; i < pbb->getNumOutEdges(); ++i) {
 			BasicBlock *out = pbb->getOutEdge(i);
 			os << std::setw(4) << std::dec << nodenum << " ";
 			SyntaxNode *to = root->findNodeFor(out);
@@ -148,9 +148,9 @@ BlockSyntaxNode::printAST(SyntaxNode *root, std::ostream &os)
 			os << "];" << std::endl;
 		}
 	} else {
-		for (unsigned i = 0; i < statements.size(); i++)
+		for (unsigned i = 0; i < statements.size(); ++i)
 			statements[i]->printAST(root, os);
-		for (unsigned i = 0; i < statements.size(); i++) {
+		for (unsigned i = 0; i < statements.size(); ++i) {
 			os << std::setw(4) << std::dec << nodenum << " ";
 			os << " -> " << statements[i]->getNumber()
 			   << " [label=\"" << i << "\"];" << std::endl;
@@ -184,7 +184,7 @@ BlockSyntaxNode::evaluate(SyntaxNode *root)
 			n += 30;
 		}
 	}
-	for (unsigned i = 0; i < statements.size(); i++) {
+	for (unsigned i = 0; i < statements.size(); ++i) {
 		n += statements[i]->evaluate(root);
 		if (statements[i]->isGoto()) {
 			if (i != statements.size() - 1) {
@@ -242,7 +242,7 @@ BlockSyntaxNode::evaluate(SyntaxNode *root)
 void
 BlockSyntaxNode::addSuccessors(SyntaxNode *root, std::vector<SyntaxNode *> &successors)
 {
-	for (unsigned i = 0; i < statements.size(); i++) {
+	for (unsigned i = 0; i < statements.size(); ++i) {
 		if (statements[i]->isBlock()) {
 			//BlockSyntaxNode *b = (BlockSyntaxNode*)statements[i];
 			// can move previous statements into this block
@@ -396,7 +396,7 @@ BlockSyntaxNode::clone()
 	if (pbb)
 		b->pbb = pbb;
 	else
-		for (unsigned i = 0; i < statements.size(); i++)
+		for (unsigned i = 0; i < statements.size(); ++i)
 			b->addStatement(statements[i]->clone());
 	return b;
 }
@@ -409,7 +409,7 @@ BlockSyntaxNode::replace(SyntaxNode *from, SyntaxNode *to)
 
 	if (!pbb) {
 		std::vector<SyntaxNode *> news;
-		for (unsigned i = 0; i < statements.size(); i++) {
+		for (unsigned i = 0; i < statements.size(); ++i) {
 			SyntaxNode *n = statements[i];
 			if (statements[i]->getCorrespond() == from)
 				n = to;
@@ -419,7 +419,7 @@ BlockSyntaxNode::replace(SyntaxNode *from, SyntaxNode *to)
 				news.push_back(n);
 		}
 		statements.resize(news.size());
-		for (unsigned i = 0; i < news.size(); i++)
+		for (unsigned i = 0; i < news.size(); ++i)
 			statements[i] = news[i];
 	}
 	return this;

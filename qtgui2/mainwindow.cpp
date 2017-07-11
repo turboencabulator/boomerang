@@ -79,7 +79,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	loadingSettings = true;
 	QSettings settings("Boomerang", "Boomerang");
 	QStringList inputfiles = settings.value("inputfiles").toStringList();
-	for (int n = 0; n < inputfiles.count(); n++) {
+	for (int n = 0; n < inputfiles.count(); ++n) {
 		if (ui.inputFileComboBox->findText(inputfiles.at(n)) == -1)
 			ui.inputFileComboBox->addItem(inputfiles.at(n));
 	}
@@ -88,7 +88,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	if (i != -1)
 		ui.inputFileComboBox->setCurrentIndex(i);
 	QStringList outputpaths = settings.value("outputpaths").toStringList();
-	for (int n = 0; n < outputpaths.count(); n++) {
+	for (int n = 0; n < outputpaths.count(); ++n) {
 		if (ui.outputPathComboBox->findText(outputpaths.at(n)) == -1)
 			ui.outputPathComboBox->addItem(outputpaths.at(n));
 	}
@@ -108,13 +108,13 @@ MainWindow::saveSettings()
 		return;
 	QSettings settings("Boomerang", "Boomerang");
 	QStringList inputfiles;
-	for (int n = 0; n < ui.inputFileComboBox->count(); n++) {
+	for (int n = 0; n < ui.inputFileComboBox->count(); ++n) {
 		inputfiles.append(ui.inputFileComboBox->itemText(n));
 	}
 	settings.setValue("inputfiles", inputfiles);
 	settings.setValue("inputfile", ui.inputFileComboBox->itemText(ui.inputFileComboBox->currentIndex()));
 	QStringList outputPaths;
-	for (int n = 0; n < ui.outputPathComboBox->count(); n++) {
+	for (int n = 0; n < ui.outputPathComboBox->count(); ++n) {
 		outputPaths.append(ui.outputPathComboBox->itemText(n));
 	}
 	settings.setValue("outputpaths", outputPaths);
@@ -453,7 +453,7 @@ MainWindow::showDecompilingProc(const QString &name)
 	if (!foundit.isEmpty()) {
 		ui.decompileProcsTreeWidget->setCurrentItem(foundit.first(), 0);
 		foundit.first()->setTextColor(0, QColor("blue"));
-		decompiledCount++;
+		++decompiledCount;
 	}
 	ui.progressDecompile->setRange(0, ui.userProcs->rowCount());
 	ui.progressDecompile->setValue(decompiledCount);
@@ -464,10 +464,10 @@ MainWindow::showNewUserProc(const QString &name, unsigned int addr)
 {
 	QString s = tr("%1").arg(addr, 8, 16, QChar('0'));
 	int nrows = ui.userProcs->rowCount();
-	for (int i = 0; i < nrows; i++)
+	for (int i = 0; i < nrows; ++i)
 		if (ui.userProcs->item(i, 1)->text() == name)
 			return;
-	for (int i = 0; i < nrows; i++)
+	for (int i = 0; i < nrows; ++i)
 		if (ui.userProcs->item(i, 0)->text() == s)
 			return;
 	ui.userProcs->setRowCount(nrows + 1);
@@ -487,7 +487,7 @@ void
 MainWindow::showNewLibProc(const QString &name, const QString &params)
 {
 	int nrows = ui.libProcs->rowCount();
-	for (int i = 0; i < nrows; i++)
+	for (int i = 0; i < nrows; ++i)
 		if (ui.libProcs->item(i, 0)->text() == name) {
 			ui.libProcs->item(i, 1)->setText(params);
 			return;
@@ -504,7 +504,7 @@ MainWindow::showRemoveUserProc(const QString &name, unsigned int addr)
 {
 	QString s = tr("%1").arg(addr, 8, 16, QChar('0'));
 	int nrows = ui.userProcs->rowCount();
-	for (int i = 0; i < nrows; i++)
+	for (int i = 0; i < nrows; ++i)
 		if (ui.userProcs->item(i, 0)->text() == s) {
 			ui.userProcs->removeRow(i);
 			break;
@@ -517,7 +517,7 @@ void
 MainWindow::showRemoveLibProc(const QString &name)
 {
 	int nrows = ui.libProcs->rowCount();
-	for (int i = 0; i < nrows; i++)
+	for (int i = 0; i < nrows; ++i)
 		if (ui.libProcs->item(i, 0)->text() == name) {
 			ui.libProcs->removeRow(i);
 			break;
@@ -560,7 +560,7 @@ MainWindow::showNewProcInCluster(const QString &name, const QString &cluster)
 		ui.clusters->scrollToItem(n);
 		ui.clusters->setCurrentItem(n, 0);
 		ui.clusters->expandItem(found.first());
-		codeGenCount++;
+		++codeGenCount;
 	}
 	ui.progressGenerateCode->setRange(0, ui.userProcs->rowCount());
 	ui.progressGenerateCode->setValue(codeGenCount);
@@ -576,7 +576,7 @@ MainWindow::showDebuggingPoint(const QString &name, const QString &description)
 	statusBar()->showMessage(msg);
 	ui.actionStep->setEnabled(true);
 
-	for (int i = 0; i < ui.userProcs->rowCount(); i++)
+	for (int i = 0; i < ui.userProcs->rowCount(); ++i)
 		if (ui.userProcs->item(i, 1)->text() == name && ui.userProcs->item(i, 2)->checkState() != Qt::Checked) {
 			on_actionStep_activated();
 			return;
@@ -589,7 +589,7 @@ void
 MainWindow::showRTLEditor(const QString &name)
 {
 	RTLEditor *n = nullptr;
-	for (int i = 0; i < ui.tabWidget->count(); i++)
+	for (int i = 0; i < ui.tabWidget->count(); ++i)
 		if (ui.tabWidget->tabText(i) == name) {
 			n = dynamic_cast<RTLEditor *>(ui.tabWidget->widget(i));
 			break;
@@ -628,7 +628,7 @@ MainWindow::on_clusters_itemDoubleClicked(QTreeWidgetItem *item, int column)
 	while (top->parent())
 		top = top->parent();
 	QTextEdit *n = nullptr;
-	for (int i = 0; i < ui.tabWidget->count(); i++)
+	for (int i = 0; i < ui.tabWidget->count(); ++i)
 		if (ui.tabWidget->tabText(i) == top->text(0)) {
 			n = dynamic_cast<QTextEdit *>(ui.tabWidget->widget(i));
 			break;
@@ -690,7 +690,7 @@ void
 MainWindow::on_userProcs_horizontalHeader_sectionClicked(int logicalIndex)
 {
 	if (logicalIndex == 2) {
-		for (int i = 0; i < ui.userProcs->rowCount(); i++) {
+		for (int i = 0; i < ui.userProcs->rowCount(); ++i) {
 			if (!ui.userProcs->item(i, 2)) {
 				ui.userProcs->setItem(i, 2, new QTableWidgetItem(""));
 			}
@@ -710,7 +710,7 @@ MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 	if (params == "<unknown>") {
 		existing = false;
 		// uhh, time to guess?
-		for (int i = row; i >= 0; i--) {
+		for (int i = row; i >= 0; --i) {
 			params = ui.libProcs->item(i, 1)->text();
 			if (params != "<unknown>") {
 				name = ui.libProcs->item(i, 0)->text();
@@ -732,7 +732,7 @@ MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 	sigFileStar.append("*");
 
 	QTextEdit *n = nullptr;
-	for (int i = 0; i < ui.tabWidget->count(); i++)
+	for (int i = 0; i < ui.tabWidget->count(); ++i)
 		if (ui.tabWidget->tabText(i) == sigFile || ui.tabWidget->tabText(i) == sigFileStar) {
 			n = dynamic_cast<QTextEdit *>(ui.tabWidget->widget(i));
 			break;
@@ -858,7 +858,7 @@ MainWindow::on_actionGenerate_Code_activated()
 void
 MainWindow::on_actionStructs_activated()
 {
-	for (int i = 0; i < ui.tabWidget->count(); i++)
+	for (int i = 0; i < ui.tabWidget->count(); ++i)
 		if (ui.tabWidget->widget(i) == structs)
 			return;
 	ui.tabWidget->addTab(structs, "Structs");

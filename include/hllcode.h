@@ -191,7 +191,7 @@ public:
 	void prependStatement(SyntaxNode *n) {
 		assert(!pbb);
 		statements.resize(statements.size() + 1);
-		for (int i = statements.size() - 1; i > 0; i--)
+		for (int i = statements.size() - 1; i > 0; --i)
 			statements[i] = statements[i - 1];
 		statements[0] = n;
 	}
@@ -218,7 +218,7 @@ public:
 	}
 	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
-		for (unsigned i = 0; i < statements.size(); i++) {
+		for (unsigned i = 0; i < statements.size(); ++i) {
 			SyntaxNode *n = statements[i]->getEnclosingLoop(pFor, cur);
 			if (n) return n;
 		}

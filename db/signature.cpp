@@ -261,7 +261,7 @@ cloneVec(std::vector<Parameter *> &from, std::vector<Parameter *> &to)
 {
 	unsigned n = from.size();
 	to.resize(n);
-	for (unsigned i = 0; i < n; i++)
+	for (unsigned i = 0; i < n; ++i)
 		to[i] = from[i]->clone();
 }
 
@@ -270,7 +270,7 @@ cloneVec(Returns &from, Returns &to)
 {
 	unsigned n = from.size();
 	to.resize(n);
-	for (unsigned i = 0; i < n; i++)
+	for (unsigned i = 0; i < n; ++i)
 		to[i] = from[i]->clone();
 }
 
@@ -385,7 +385,7 @@ CallingConvention::Win32Signature::getArgumentExp(int n)
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
 	if (!params.empty() && *params[0]->getExp() == *esp)
-		n--;
+		--n;
 	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 	return e;
 }
@@ -397,7 +397,7 @@ CallingConvention::Win32TcSignature::getArgumentExp(int n)
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
 	if (!params.empty() && *params[0]->getExp() == *esp)
-		n--;
+		--n;
 	if (n == 0)
 		// It's the first parameter, register ecx
 		return Location::regOf(25);
@@ -426,7 +426,7 @@ CallingConvention::Win32Signature::getProven(Exp *left)
 {
 	int nparams = params.size();
 	if (nparams > 0 && *params[0]->getExp() == *Location::regOf(28)) {
-		nparams--;
+		--nparams;
 	}
 	if (left->isRegOfK()) {
 		switch (((Const *)left->getSubExp1())->getInt()) {
@@ -500,7 +500,7 @@ CallingConvention::Win32TcSignature::getProven(Exp *left)
 		if (((Const *)left->getSubExp1())->getInt() == 28) {
 			int nparams = params.size();
 			if (nparams > 0 && *params[0]->getExp() == *Location::regOf(28)) {
-				nparams--;
+				--nparams;
 			}
 			// r28 += 4 + nparams*4 - 4     (-4 because ecx is register param)
 			return new Binary(opPlus, Location::regOf(28), new Const(4 + nparams * 4 - 4));
@@ -624,7 +624,7 @@ CallingConvention::StdC::PentiumSignature::getArgumentExp(int n)
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
 	if (!params.empty() && *params[0]->getExp() == *esp)
-		n--;
+		--n;
 	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 	return e;
 }
@@ -852,7 +852,7 @@ CallingConvention::StdC::ST20Signature::getArgumentExp(int n)
 	// m[%sp+4], etc.
 	Exp *sp = Location::regOf(3);
 	if (!params.empty() && *params[0]->getExp() == *sp)
-		n--;
+		--n;
 	Exp *e = Location::memOf(new Binary(opPlus, sp, new Const((n + 1) * 4)));
 	return e;
 }
@@ -1224,7 +1224,7 @@ Signature::operator ==(Signature &other)
 	//if (name != other.name) return false;  // MVE: should the name be significant? I'm thinking no
 	if (params.size() != other.params.size()) return false;
 	// Only care about the first return location (at present)
-	for (auto it1 = params.begin(), it2 = other.params.begin(); it1 != params.end(); it1++, it2++)
+	for (auto it1 = params.begin(), it2 = other.params.begin(); it1 != params.end(); ++it1, ++it2)
 		if (!(**it1 == **it2)) return false;
 	if (returns.size() != other.returns.size()) return false;
 	for (auto rr1 = returns.begin(), rr2 = other.returns.begin(); rr1 != returns.end(); ++rr1, ++rr2)
@@ -1282,10 +1282,10 @@ Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nu
 			os << "param" << n << std::ends;
 			s = os.str();
 			ok = true;
-			for (unsigned i = 0; i < params.size(); i++)
+			for (unsigned i = 0; i < params.size(); ++i)
 				if (!strcmp(s.c_str(), params[i]->getName()))
 					ok = false;
-			n++;
+			++n;
 		}
 		nam = s.c_str();
 	}
@@ -1321,7 +1321,7 @@ Signature::removeParameter(Exp *e)
 void
 Signature::removeParameter(int i)
 {
-	for (unsigned j = i + 1; j < params.size(); j++)
+	for (unsigned j = i + 1; j < params.size(); ++j)
 		params[j - 1] = params[j];
 	params.resize(params.size() - 1);
 }
@@ -1333,7 +1333,7 @@ Signature::setNumParams(int n)
 		// truncate
 		params.erase(params.begin() + n, params.end());
 	} else {
-		for (int i = params.size(); i < n; i++)
+		for (int i = params.size(); i < n; ++i)
 			addParameter();
 	}
 }
@@ -1415,7 +1415,7 @@ Signature::setParamExp(int n, Exp *e)
 int
 Signature::findParam(Exp *e)
 {
-	for (unsigned i = 0; i < getNumParams(); i++)
+	for (unsigned i = 0; i < getNumParams(); ++i)
 		if (*getParamExp(i) == *e)
 			return i;
 	return -1;
@@ -1424,7 +1424,7 @@ Signature::findParam(Exp *e)
 void
 Signature::renameParam(const char *oldName, const char *newName)
 {
-	for (unsigned i = 0; i < getNumParams(); i++)
+	for (unsigned i = 0; i < getNumParams(); ++i)
 		if (!strcmp(params[i]->getName(), oldName)) {
 			params[i]->setName(newName);
 			break;
@@ -1434,7 +1434,7 @@ Signature::renameParam(const char *oldName, const char *newName)
 int
 Signature::findParam(const char *nam)
 {
-	for (unsigned i = 0; i < getNumParams(); i++)
+	for (unsigned i = 0; i < getNumParams(); ++i)
 		if (!strcmp(getParamName(i), nam))
 			return i;
 	return -1;
@@ -1443,7 +1443,7 @@ Signature::findParam(const char *nam)
 int
 Signature::findReturn(Exp *e)
 {
-	for (unsigned i = 0; i < getNumReturns(); i++)
+	for (unsigned i = 0; i < getNumReturns(); ++i)
 		if (*returns[i]->exp == *e)
 			return (int)i;
 	return -1;
@@ -1469,7 +1469,7 @@ Signature::removeReturn(Exp *e)
 {
 	int i = findReturn(e);
 	if (i != -1) {
-		for (unsigned j = i + 1; j < returns.size(); j++)
+		for (unsigned j = i + 1; j < returns.size(); ++j)
 			returns[j - 1] = returns[j];
 		returns.resize(returns.size() - 1);
 	}
@@ -1565,7 +1565,7 @@ Signature::print(std::ostream &out, bool html)
 	if (!returns.empty()) {
 		out << "{ ";
 		unsigned n = 0;
-		for (auto rr = returns.begin(); rr != returns.end(); rr++, n++) {
+		for (auto rr = returns.begin(); rr != returns.end(); ++rr, ++n) {
 			out << (*rr)->type->getCtype() << " " << (*rr)->exp;
 			if (n != returns.size() - 1)
 				out << ", ";
@@ -1577,7 +1577,7 @@ Signature::print(std::ostream &out, bool html)
 		out << "void ";
 	out << name << "(";
 	unsigned int i;
-	for (i = 0; i < params.size(); i++) {
+	for (i = 0; i < params.size(); ++i) {
 		out << params[i]->getType()->getCtype() << " " << params[i]->getName() << " " << params[i]->getExp();
 		if (i != params.size() - 1) out << ", ";
 	}
@@ -1613,12 +1613,12 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 	}
 	StatementSet reachin;
 	//stmt->getReachIn(reachin, 2);
-	for (int i = getNumParams(); i < 10; i++)
+	for (int i = getNumParams(); i < 10; ++i)
 		if (stmt->usesExp(getParamExp(i))) {
 			bool ok = true;
 			if (checkreach) {
 				bool hasDef = false;
-				for (auto it1 = reachin.begin(); it1 != reachin.end(); it1++) {
+				for (auto it1 = reachin.begin(); it1 != reachin.end(); ++it1) {
 					Assignment *as = (Assignment *)*it1;
 					if (as->isAssignment() && *as->getLeft() == *getParamExp(i)) {
 						hasDef = true;
@@ -1929,13 +1929,13 @@ Signature::makeMemo(int mId)
 	m->preferedName = preferedName;
 	m->preferedParams = preferedParams;
 
-	for (auto it = params.begin(); it != params.end(); it++)
+	for (auto it = params.begin(); it != params.end(); ++it)
 		(*it)->takeMemo(mId);
 #if 0
-	for (auto it = implicitParams.begin(); it != implicitParams.end(); it++)
+	for (auto it = implicitParams.begin(); it != implicitParams.end(); ++it)
 		(*it)->takeMemo(mId);
 #endif
-	for (auto it = returns.begin(); it != returns.end(); it++)
+	for (auto it = returns.begin(); it != returns.end(); ++it)
 		(*it)->takeMemo(mId);
 	if (rettype)
 		rettype->takeMemo(mId);
@@ -1959,13 +1959,13 @@ Signature::readMemo(Memo *mm, bool dec)
 	preferedName = m->preferedName;
 	preferedParams = m->preferedParams;
 
-	for (auto it = params.begin(); it != params.end(); it++)
+	for (auto it = params.begin(); it != params.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 #if 0
-	for (auto it = implicitParams.begin(); it != implicitParams.end(); it++)
+	for (auto it = implicitParams.begin(); it != implicitParams.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 #endif
-	for (auto it = returns.begin(); it != returns.end(); it++)
+	for (auto it = returns.begin(); it != returns.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 	if (rettype)
 		rettype->restoreMemo(m->mId, dec);

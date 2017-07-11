@@ -133,7 +133,7 @@ MachOBinaryFile::MachOBinaryFile()
 
 MachOBinaryFile::~MachOBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; i++)
+	for (int i = 0; i < m_iNumSections; ++i)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] base;
@@ -196,7 +196,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
 
-	for (unsigned i = 0; i < header.ncmds; i++) {
+	for (unsigned i = 0; i < header.ncmds; ++i) {
 		std::streamsize pos = ifs.tellg();
 
 		struct load_command cmd;
@@ -225,7 +225,7 @@ MachOBinaryFile::load(std::istream &ifs)
 #ifdef DEBUG_MACHO_LOADER
 				fprintf(stdout, "seg addr %x size %i fileoff %x filesize %i flags %x\n", seg.vmaddr, seg.vmsize, seg.fileoff, seg.filesize, seg.flags);
 #endif
-				for (unsigned n = 0; n < seg.nsects; n++) {
+				for (unsigned n = 0; n < seg.nsects; ++n) {
 					struct section sect;
 					ifs.read((char *)&sect, sizeof sect);
 					sect.addr      = BMMH(sect.addr);
@@ -284,7 +284,7 @@ MachOBinaryFile::load(std::istream &ifs)
 				ifs.read(strtbl, syms.strsize);
 
 				ifs.seekg(syms.symoff);
-				for (unsigned n = 0; n < syms.nsyms; n++) {
+				for (unsigned n = 0; n < syms.nsyms; ++n) {
 					struct nlist sym;
 					ifs.read((char *)&sym, sizeof sym);
 					sym.n_un.n_strx = BMMH(sym.n_un.n_strx);
@@ -339,11 +339,11 @@ MachOBinaryFile::load(std::istream &ifs)
 				ifs.seekg(syms.indirectsymoff);
 				indirectsymtbl = new unsigned[syms.nindirectsyms];
 				ifs.read((char *)indirectsymtbl, sizeof *indirectsymtbl * syms.nindirectsyms);
-				for (unsigned j = 0; j < syms.nindirectsyms; j++) {
+				for (unsigned j = 0; j < syms.nindirectsyms; ++j) {
 					indirectsymtbl[j] = BMMH(indirectsymtbl[j]);
 				}
 #ifdef DEBUG_MACHO_LOADER
-				for (unsigned j = 0; j < syms.nindirectsyms; j++) {
+				for (unsigned j = 0; j < syms.nindirectsyms; ++j) {
 					fprintf(stdout, "%i ", indirectsymtbl[j]);
 				}
 				fprintf(stdout, "\n");
@@ -363,7 +363,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	}
 
 	struct segment_command *lowest = &segments[0], *highest = &segments[0];
-	for (unsigned i = 1; i < segments.size(); i++) {
+	for (unsigned i = 1; i < segments.size(); ++i) {
 		if (segments[i].vmaddr < lowest->vmaddr)
 			lowest = &segments[i];
 		if (segments[i].vmaddr > highest->vmaddr)
@@ -378,7 +378,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	m_iNumSections = segments.size();
 	m_pSections = new SectionInfo[m_iNumSections];
 
-	for (unsigned i = 0; i < segments.size(); i++) {
+	for (unsigned i = 0; i < segments.size(); ++i) {
 		ifs.seekg(segments[i].fileoff);
 		ADDRESS a = segments[i].vmaddr;
 		unsigned sz = segments[i].vmsize;
@@ -405,9 +405,9 @@ MachOBinaryFile::load(std::istream &ifs)
 	}
 
 	// process stubs_sects
-	for (unsigned j = 0; j < stubs_sects.size(); j++) {
+	for (unsigned j = 0; j < stubs_sects.size(); ++j) {
 		unsigned startidx = stubs_sects[j].reserved1;
-		for (unsigned i = 0; i < stubs_sects[j].size / stubs_sects[j].reserved2; i++) {
+		for (unsigned i = 0; i < stubs_sects[j].size / stubs_sects[j].reserved2; ++i) {
 			unsigned symbol = indirectsymtbl[startidx + i];
 			ADDRESS addr = stubs_sects[j].addr + i * stubs_sects[j].reserved2;
 			const char *name = strtbl + symbols[symbol].n_un.n_strx;
@@ -415,14 +415,14 @@ MachOBinaryFile::load(std::istream &ifs)
 			fprintf(stdout, "stub for %s at %x\n", name, addr);
 #endif
 			if (*name == '_')  // we want printf not _printf
-				name++;
+				++name;
 			m_SymA[addr] = name;
 			dlprocs[addr] = name;
 		}
 	}
 
 	// process the remaining symbols
-	for (unsigned i = 0; i < symbols.size(); i++) {
+	for (unsigned i = 0; i < symbols.size(); ++i) {
 		const char *name = strtbl + symbols[i].n_un.n_strx;
 		if (symbols[i].n_un.n_strx != 0 && symbols[i].n_value != 0 && *name != 0) {
 
@@ -432,7 +432,7 @@ MachOBinaryFile::load(std::istream &ifs)
 			        symbols[i].n_type & N_TYPE);
 #endif
 			if (*name == '_')  // we want main not _main
-				name++;
+				++name;
 			m_SymA[symbols[i].n_value] = name;
 		}
 	}
@@ -451,7 +451,7 @@ MachOBinaryFile::load(std::istream &ifs)
 #endif
 			ObjcModule *m = &modules[name];
 			m->name = name;
-			for (unsigned j = 0; j < BMMHW(symtab->cls_def_cnt); j++) {
+			for (unsigned j = 0; j < BMMHW(symtab->cls_def_cnt); ++j) {
 				struct objc_class *def = (struct objc_class *)&base[BMMH(symtab->defs[j]) - loaded_addr];
 				const char *name = (const char *)&base[BMMH(def->name) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
@@ -460,7 +460,7 @@ MachOBinaryFile::load(std::istream &ifs)
 				ObjcClass *cl = &m->classes[name];
 				cl->name = name;
 				struct objc_ivar_list *ivars = (struct objc_ivar_list *)&base[BMMH(def->ivars) - loaded_addr];
-				for (unsigned k = 0; k < BMMH(ivars->ivar_count); k++) {
+				for (unsigned k = 0; k < BMMH(ivars->ivar_count); ++k) {
 					struct objc_ivar *ivar = &ivars->ivar_list[k];
 					const char *name = (const char *)&base[BMMH(ivar->ivar_name) - loaded_addr];
 					const char *types = (const char *)&base[BMMH(ivar->ivar_type) - loaded_addr];
@@ -474,7 +474,7 @@ MachOBinaryFile::load(std::istream &ifs)
 				}
 				// this is weird, why is it defined as a ** in the struct but used as a * in otool?
 				struct objc_method_list *methods = (struct objc_method_list *)&base[BMMH(def->methodLists) - loaded_addr];
-				for (unsigned k = 0; k < BMMH(methods->method_count); k++) {
+				for (unsigned k = 0; k < BMMH(methods->method_count); ++k) {
 					struct objc_method *method = &methods->method_list[k];
 					const char *name = (const char *)&base[BMMH(method->method_name) - loaded_addr];
 					const char *types = (const char *)&base[BMMH(method->method_types) - loaded_addr];
@@ -526,7 +526,7 @@ MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false *
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)
 			return it->first;
-		it++;
+		++it;
 	}
 	return NO_ADDRESS;
 }

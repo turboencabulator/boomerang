@@ -200,7 +200,7 @@ FrontEnd::close(FrontEnd *fe)
 const char *
 FrontEnd::getRegName(int idx)
 {
-	for (auto it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); it++)
+	for (auto it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); ++it)
 		if (it->second == idx)
 			return it->first.c_str();
 	return nullptr;
@@ -300,9 +300,9 @@ FrontEnd::getEntryPoints()
 		if (!strcmp(fname + strlen(fname) - 6, "_drv.o")) {
 			const char *p = fname + strlen(fname) - 6;
 			while (*p != '/' && *p != '\\' && p != fname)
-				p--;
+				--p;
 			if (p != fname) {
-				p++;
+				++p;
 				char *name = (char *)malloc(strlen(p) + 30);
 				strcpy(name, p);
 				name[strlen(name) - 6] = 0;
@@ -376,7 +376,7 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 		LOG << "start: " << a << " gotmain: " << (gotMain ? "true" : "false") << "\n";
 	if (a == NO_ADDRESS) {
 		std::vector<ADDRESS> entrypoints = getEntryPoints();
-		for (auto it = entrypoints.begin(); it != entrypoints.end(); it++)
+		for (auto it = entrypoints.begin(); it != entrypoints.end(); ++it)
 			decode(prog, *it);
 		return;
 	}
@@ -389,7 +389,7 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 		const char *name = pBF->getSymbolByAddress(a);
 		if (!name)
 			name = mainName[0];
-		for (size_t i = 0; i < sizeof mainName / sizeof *mainName; i++) {
+		for (size_t i = 0; i < sizeof mainName / sizeof *mainName; ++i) {
 			if (!strcmp(name, mainName[i])) {
 				Proc *proc = prog->findProc(a);
 				if (!proc) {
@@ -530,7 +530,7 @@ FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
 	p.yyparse(plat, cc);
 	ifs.close();
 
-	for (auto it = p.signatures.begin(); it != p.signatures.end(); it++) {
+	for (auto it = p.signatures.begin(); it != p.signatures.end(); ++it) {
 #if 0
 		std::cerr << "readLibrarySignatures from " << sPath << ": " << (*it)->getName() << "\n";
 #endif
@@ -662,7 +662,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 				if (VERBOSE) {
 					LOG << "Warning: invalid instruction at " << uAddr << ": ";
 					// Emit the next 4 bytes for debugging
-					for (int ii = 0; ii < 4; ii++)
+					for (int ii = 0; ii < 4; ++ii)
 						LOG << (unsigned)(pBF->readNative1(uAddr + ii) & 0xFF) << " ";
 					LOG << "\n";
 				}
@@ -712,12 +712,12 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 			// FIXME: However, this workaround breaks logic below where a GOTO is changed to a CALL followed by a return
 			// if it points to the start of a known procedure
 #if 1
-			for (auto ss = sl.begin(); ss != sl.end(); ss++) { // }
+			for (auto ss = sl.begin(); ss != sl.end(); ++ss) { // }
 #else
 			// The counter is introduced because ss != sl.end() does not work as it should
 			// FIXME: why? Does this really fix the problem?
 			int counter = sl.size();
-			for (auto ss = sl.begin(); counter > 0; ss++, counter--) {
+			for (auto ss = sl.begin(); counter > 0; ++ss, --counter) {
 #endif
 				Statement *s = *ss;
 				s->setProc(pProc);  // let's do this really early!
@@ -751,7 +751,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 							call->setReturnAfterCall(true);
 							// also need to change it in the actual RTL
 							auto ss1 = ss;
-							ss1++;
+							++ss1;
 							assert(ss1 == sl.end());
 							pRtl->replaceLastStmt(s);
 							*ss = s;
@@ -837,7 +837,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 								Boomerang::get()->alert_update_signature(pProc);
 							}
 							callList.push_back(call);
-							ss = sl.end(); ss--;  // get out of the loop
+							ss = sl.end(); --ss;  // get out of the loop
 							break;
 						}
 						BB_rtls->push_back(pRtl);
@@ -852,7 +852,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 								// assume subExp2 is a jump table
 								ADDRESS jmptbl = ((Const *)pDest->getSubExp1()->getSubExp2())->getInt();
 								unsigned int i;
-								for (i = 0; ; i++) {
+								for (i = 0; ; ++i) {
 									ADDRESS uDest = pBF->readNative4(jmptbl + i * 4);
 									if (pBF->getLimitTextLow() <= uDest && uDest < pBF->getLimitTextHigh()) {
 										LOG << "  guessed uDest " << uDest << "\n";
@@ -1130,7 +1130,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 #endif
 
 	// Add the callees to the set of CallStatements, and also to the Prog object
-	for (auto it = callList.begin(); it != callList.end(); it++) {
+	for (auto it = callList.begin(); it != callList.end(); ++it) {
 		ADDRESS dest = (*it)->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically
 		// linked ones (in the .plt)

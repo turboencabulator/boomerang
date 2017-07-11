@@ -99,7 +99,7 @@ Win32BinaryFile::Win32BinaryFile()
 
 Win32BinaryFile::~Win32BinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; i++)
+	for (int i = 0; i < m_iNumSections; ++i)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] base;
@@ -159,7 +159,7 @@ Win32BinaryFile::getMainEntryPoint()
 				lastOrdCall = p;
 				gap = 0;
 				if (borlandState == 1)
-					borlandState++;
+					++borlandState;
 				else
 					borlandState = 0;
 			}
@@ -187,7 +187,7 @@ Win32BinaryFile::getMainEntryPoint()
 				break;  // Yes, just ignore it
 			// Otherwise, actually follow the branch. May have to modify this some time...
 			p += op2 + 2;  // +2 for the instruction itself, and op2 for the displacement
-			gap++;
+			++gap;
 			continue;
 		case 0x6A:
 			if (op2 == 0) {  // Push 00
@@ -212,7 +212,7 @@ Win32BinaryFile::getMainEntryPoint()
 			break;
 		case 0x68:  // Push 4 byte immediate
 			if (borlandState == 3)
-				borlandState++;
+				++borlandState;
 			else
 				borlandState = 0;
 			break;
@@ -226,7 +226,7 @@ Win32BinaryFile::getMainEntryPoint()
 			size = 1;
 		}
 		p += size;
-		gap++;
+		++gap;
 	}
 
 	// VS.NET release console mode pattern
@@ -255,7 +255,7 @@ Win32BinaryFile::getMainEntryPoint()
 	int pushes = 0;
 	p = LMMH(m_pPEHeader->EntrypointRVA);
 	while (count > 0) {
-		count--;
+		--count;
 		unsigned char op1 = *(p + base);
 		if (op1 == 0xE8) {  // CALL opcode
 			if (pushes == 3) {
@@ -273,12 +273,12 @@ Win32BinaryFile::getMainEntryPoint()
 			} else
 				pushes = 0;  // Assume pushes don't accumulate over calls
 		} else if (op1 >= 0x50 && op1 <= 0x57) {  // PUSH opcode
-			pushes++;
+			++pushes;
 		} else if (op1 == 0xFF) {
 			// FF 35 is push m[K]
 			unsigned char op2 = *(p + 1 + base);
 			if (op2 == 0x35)
-				pushes++;
+				++pushes;
 		} else if (op1 == 0xE9) {
 			// Follow the jump
 			int off = LMMH(*(p + base + 1));
@@ -406,7 +406,7 @@ Win32BinaryFile::load(std::istream &ifs)
 	m_iNumSections = LH(&m_pPEHeader->numObjects);
 	m_pSections = new PESectionInfo[m_iNumSections];
 	//SectionInfo *reloc = nullptr;
-	for (int i = 0; i < m_iNumSections; i++, o++) {
+	for (int i = 0; i < m_iNumSections; ++i, ++o) {
 		SectionInfo &sect = m_pSections[i];
 		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", (char*)o->ObjectName, LMMH(o->RVA), LMMH(o->PhysicalOffset), LMMH(o->VirtualSize));
 		char *name = new char[9];
@@ -462,11 +462,11 @@ Win32BinaryFile::load(std::istream &ifs)
 						//printf("Also added %s value %x\n", name.c_str(), LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base));
 					}
 				}
-				iat++;
+				++iat;
 				iatEntry = LMMH(*iat);
 				paddr += 4;
 			}
-			id++;
+			++id;
 		}
 	}
 
@@ -574,7 +574,7 @@ Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false *
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)
 			return it->first;
-		it++;
+		++it;
 	}
 	return NO_ADDRESS;
 }

@@ -105,7 +105,7 @@ Decompiler::addEntryPoint(ADDRESS a, const char *nam)
 void
 Decompiler::removeEntryPoint(ADDRESS a)
 {
-	for (auto it = user_entrypoints.begin(); it != user_entrypoints.end(); it++)
+	for (auto it = user_entrypoints.begin(); it != user_entrypoints.end(); ++it)
 		if (*it == a) {
 			user_entrypoints.erase(it);
 			break;
@@ -163,12 +163,12 @@ Decompiler::load()
 
 	QStringList entrypointStrings;
 	std::vector<ADDRESS> entrypoints = fe->getEntryPoints();
-	for (unsigned int i = 0; i < entrypoints.size(); i++) {
+	for (unsigned int i = 0; i < entrypoints.size(); ++i) {
 		user_entrypoints.push_back(entrypoints[i]);
 		emit newEntrypoint(entrypoints[i], fe->getBinaryFile()->getSymbolByAddress(entrypoints[i]));
 	}
 
-	for (int i = 1; i < fe->getBinaryFile()->getNumSections(); i++) {
+	for (int i = 1; i < fe->getBinaryFile()->getNumSections(); ++i) {
 		const SectionInfo *section = fe->getBinaryFile()->getSectionInfo(i);
 		emit newSection(section->pSectionName, section->uNativeAddr, section->uNativeAddr + section->uSectionSize);
 	}
@@ -183,13 +183,13 @@ Decompiler::decode()
 
 	bool gotMain;
 	ADDRESS a = fe->getMainEntryPoint(gotMain);
-	for (unsigned int i = 0; i < user_entrypoints.size(); i++)
+	for (unsigned int i = 0; i < user_entrypoints.size(); ++i)
 		if (user_entrypoints[i] == a) {
 			fe->decode(prog, true, nullptr);
 			break;
 		}
 
-	for (unsigned int i = 0; i < user_entrypoints.size(); i++) {
+	for (unsigned int i = 0; i < user_entrypoints.size(); ++i) {
 		prog->decodeEntryPoint(user_entrypoints[i]);
 	}
 
@@ -217,7 +217,7 @@ void
 Decompiler::emitClusterAndChildren(Cluster *root)
 {
 	emit newCluster(QString(root->getName()));
-	for (unsigned int i = 0; i < root->getNumChildren(); i++)
+	for (unsigned int i = 0; i < root->getNumChildren(); ++i)
 		emitClusterAndChildren(root->getChild(i));
 }
 
@@ -285,7 +285,7 @@ Decompiler::alert_new(Proc *p)
 		if (!p->getSignature() || p->getSignature()->isUnknown())
 			params = "<unknown>";
 		else {
-			for (unsigned int i = 0; i < p->getSignature()->getNumParams(); i++) {
+			for (unsigned int i = 0; i < p->getSignature()->getNumParams(); ++i) {
 				Type *ty = p->getSignature()->getParamType(i);
 				params.append(ty->getCtype());
 				params.append(" ");
@@ -388,7 +388,7 @@ Decompiler::getCompoundMembers(const QString &name, QTableWidget *tbl)
 	if (!ty || !ty->resolvesToCompound())
 		return;
 	CompoundType *c = ty->asCompound();
-	for (unsigned int i = 0; i < c->getNumTypes(); i++) {
+	for (unsigned int i = 0; i < c->getNumTypes(); ++i) {
 		tbl->setRowCount(tbl->rowCount() + 1);
 		tbl->setItem(tbl->rowCount() - 1, 0, new QTableWidgetItem(tr("%1").arg(c->getOffsetTo(i))));
 		tbl->setItem(tbl->rowCount() - 1, 1, new QTableWidgetItem(tr("%1").arg(c->getOffsetTo(i) / 8)));

@@ -85,7 +85,7 @@ bool
 InsNameElem::increment()
 {
 	if (!nextelem || nextelem->increment())
-		value++;
+		++value;
 	if (value >= ntokens()) {
 		value = 0;
 		return true;

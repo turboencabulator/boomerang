@@ -59,7 +59,7 @@ void
 CHLLCode::indent(std::ostringstream &str, int indLevel)
 {
 	// Can probably do more efficiently
-	for (int i = 0; i < indLevel; i++)
+	for (int i = 0; i < indLevel; ++i)
 		str << "\t";
 }
 
@@ -1188,7 +1188,7 @@ CHLLCode::RemoveUnusedLabels(int maxOrd)
 				continue;
 			}
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -1227,7 +1227,7 @@ CHLLCode::RemoveLabel(int ord)
 {
 	std::ostringstream s;
 	s << "L" << std::dec << ord << ":";
-	for (auto it = lines.begin(); it != lines.end(); it++) {
+	for (auto it = lines.begin(); it != lines.end(); ++it) {
 		if (!strcmp(*it, s.str().c_str())) {
 			lines.erase(it);
 			break;
@@ -1704,7 +1704,7 @@ CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 void
 CHLLCode::print(std::ostream &os)
 {
-	for (auto it = lines.begin(); it != lines.end(); it++)
+	for (auto it = lines.begin(); it != lines.end(); ++it)
 		os << *it << std::endl;
 	if (!m_proc)
 		os << std::endl;

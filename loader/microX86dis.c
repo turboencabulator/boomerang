@@ -181,12 +181,12 @@ microX86Dis(const unsigned char *pCode)
 		size += opmap[op];
 	if (size & MODRM) {
 		size &= ~MODRM;     /* Remove flag from size */
-		size++;             /* Count the mod/rm itself */
+		++size;             /* Count the mod/rm itself */
 		modrm = *pCode++;
 		mod = modrm >> 6;
 		if ((mod != 3) && ((modrm & 0x7) == 4)) {
 			/* SIB also present */
-			size++;     /* Count the SIB itself */
+			++size;     /* Count the SIB itself */
 			sib = *pCode++;
 			if ((mod == 0) && ((sib & 0x7) == 0x5)) {
 				/* ds:d32 with scale */
@@ -194,7 +194,7 @@ microX86Dis(const unsigned char *pCode)
 			}
 		}
 		/* Regardless of whether a SIB is present or not... */
-		if (mod == 1) size++;           /* d8 */
+		if (mod == 1) ++size;           /* d8 */
 		else if (mod == 2) size += 4;   /* d32 */
 		/* ds:d32 is a special case */
 		if ((mod == 0) && ((modrm & 0x7) == 5))
@@ -210,7 +210,7 @@ microX86Dis(const unsigned char *pCode)
 		/* Group 3, byte */
 		if (((modrm & 0x38) >> 3) == 0) {
 			/* There is an immediate byte as well */
-			size++;
+			++size;
 		}
 	}
 	if (op == 0xF7) {

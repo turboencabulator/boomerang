@@ -46,7 +46,7 @@ Statement::setProc(UserProc *p)
 	LocationSet defs;
 	getDefinitions(defs);
 	exps.makeUnion(defs);
-	for (auto ll = exps.begin(); ll != exps.end(); ll++) {
+	for (auto ll = exps.begin(); ll != exps.end(); ++ll) {
 		Location *l = dynamic_cast<Location *>(*ll);
 		if (l) {
 			l->setProc(p);
@@ -417,7 +417,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	RangeMap input;
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 		LOG << "unioning {\n";
-	for (int i = 0; i < pbb->getNumInEdges(); i++) {
+	for (int i = 0; i < pbb->getNumInEdges(); ++i) {
 		Statement *last = pbb->getInEdges()[i]->getLastStmt();
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 			LOG << "  in BB: " << pbb->getInEdges()[i]->getLowAddr() << " " << last << "\n";
@@ -482,7 +482,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				Signature *sig = procDest->getSignature();
 				pDest = d;
 				arguments.clear();
-				for (unsigned i = 0; i < sig->getNumParams(); i++) {
+				for (unsigned i = 0; i < sig->getNumParams(); ++i) {
 					Exp *a = sig->getParamExp(i);
 					Assign *as = new Assign(new VoidType(), a->clone(), a->clone());
 					as->setProc(proc);
@@ -550,7 +550,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				}
 				if (!last) {
 					// call followed by a ret, sigh
-					for (int i = 0; i < retbb->getNumInEdges(); i++) {
+					for (int i = 0; i < retbb->getNumInEdges(); ++i) {
 						last = retbb->getInEdges()[i]->getLastStmt();
 						if (last->isCall())
 							break;
@@ -588,7 +588,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 bool
 JunctionStatement::isLoopJunction()
 {
-	for (int i = 0; i < pbb->getNumInEdges(); i++)
+	for (int i = 0; i < pbb->getNumInEdges(); ++i)
 		if (pbb->isBackEdge(i))
 			return true;
 	return false;
@@ -628,9 +628,9 @@ Statement::getPreviousStatementInBB()
 	std::list<RTL *> *rtls = pbb->getRTLs();
 	assert(rtls);
 	Statement *previous = nullptr;
-	for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
+	for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
 		RTL *rtl = *rit;
-		for (auto it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
+		for (auto it = rtl->getList().begin(); it != rtl->getList().end(); ++it) {
 			if (*it == this)
 				return previous;
 			previous = *it;
@@ -646,9 +646,9 @@ Statement::getNextStatementInBB()
 	std::list<RTL *> *rtls = pbb->getRTLs();
 	assert(rtls);
 	bool wantNext = false;
-	for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
+	for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
 		RTL *rtl = *rit;
-		for (auto it = rtl->getList().begin(); it != rtl->getList().end(); it++) {
+		for (auto it = rtl->getList().begin(); it != rtl->getList().end(); ++it) {
 			if (wantNext)
 				return *it;
 			if (*it == this)
@@ -790,7 +790,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 		change = false;           // True if changed this iteration of the do/while loop
 		// Example: m[r24{10}] := r25{20} + m[r26{30}]
 		// exps has r24{10}, r25{30}, m[r26{30}], r26{30}
-		for (auto ll = exps.begin(); ll != exps.end(); ll++) {
+		for (auto ll = exps.begin(); ll != exps.end(); ++ll) {
 			Exp *e = *ll;
 			if (!canPropagateToExp(e))
 				continue;
@@ -896,7 +896,7 @@ Statement::propagateFlagsTo()
 	do {
 		LocationSet exps;
 		addUsedLocs(exps, true);
-		for (auto ll = exps.begin(); ll != exps.end(); ll++) {
+		for (auto ll = exps.begin(); ll != exps.end(); ++ll) {
 			Exp *e = *ll;
 			if (!e->isSubscript()) continue;  // e.g. %pc
 			Assign *def = (Assign *)((RefExp *)e)->getDef();
@@ -922,7 +922,7 @@ Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 	// Respect the -p N switch
 	if (Boomerang::get()->numToPropagate >= 0) {
 		if (Boomerang::get()->numToPropagate == 0) return false;
-		Boomerang::get()->numToPropagate--;
+		--Boomerang::get()->numToPropagate;
 	}
 
 	if (VERBOSE)
@@ -2159,7 +2159,7 @@ CallStatement::setSigArguments()
 	int n = signature->getNumParams();
 	int i;
 	arguments.clear();
-	for (i = 0; i < n; i++) {
+	for (i = 0; i < n; ++i) {
 		Exp *e = signature->getArgumentExp(i);
 		assert(e);
 		Location *l = dynamic_cast<Location *>(e);
@@ -2420,7 +2420,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 		// some hacks
 		if (std::string(p->getName()) == "printf"
 		 || std::string(p->getName()) == "scanf") {
-			for (int i = 1; i < 3; i++) {
+			for (int i = 1; i < 3; ++i) {
 				Exp *e = signature->getArgumentExp(i);
 				assert(e);
 				Location *l = dynamic_cast<Location *>(e);
@@ -2557,7 +2557,7 @@ CallStatement::convertToDirect()
 	// 3
 	// 3a Do the same with the regular arguments
 	arguments.clear();
-	for (unsigned i = 0; i < sig->getNumParams(); i++) {
+	for (unsigned i = 0; i < sig->getNumParams(); ++i) {
 		Exp *a = sig->getParamExp(i);
 		Assign *as = new Assign(new VoidType(), a->clone(), a->clone());
 		as->setProc(proc);
@@ -2625,7 +2625,7 @@ CallStatement::setNumArguments(int n)
 		arguments.erase(aa, arguments.end());
 	}
 	// MVE: check if these need extra propagation
-	for (int i = oldSize; i < n; i++) {
+	for (int i = oldSize; i < n; ++i) {
 		Exp *a = procDest->getSignature()->getArgumentExp(i);
 		Type *ty = procDest->getSignature()->getParamType(i);
 		if (!ty && oldSize)
@@ -2807,7 +2807,7 @@ CallStatement::ellipsisProcessing(Prog *prog)
 			// More likely. Example: switch_gcc. Only need ONE candidate format string
 			PhiAssign *pa = (PhiAssign *)def;
 			int n = pa->getNumDefs();
-			for (int i = 0; i < n; i++) {
+			for (int i = 0; i < n; ++i) {
 				def = pa->getStmtAt(i);
 				if (!def) continue;
 				if (!def->isAssign()) continue;
@@ -2829,14 +2829,14 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	bool isScanf = name == "scanf" || name.substr(1, 5) == "scanf";
 	const char *p = formatStr;
 	while ((p = strchr(p, '%'))) {
-		p++;  // Point past the %
+		++p;  // Point past the %
 		bool veryLong = false;  // %lld or %L
 		do {
 			ch = *p++;  // Skip size and precisionA
 			switch (ch) {
 			case '*':
 				// Example: printf("Val: %*.*f\n", width, precision, val);
-				n++;  // There is an extra parameter for the width or precision
+				++n;  // There is an extra parameter for the width or precision
 				// This extra parameter is of type integer, never int* (so pass false as last argument)
 				addSigParam(new IntegerType(), false);
 				continue;
@@ -2857,13 +2857,13 @@ CallStatement::ellipsisProcessing(Prog *prog)
 				// TODO: at least h has implications for scanf
 				if (*p == 'l') {
 					// %llx
-					p++;  // Skip second l
+					++p;  // Skip second l
 					veryLong = true;
 				}
 				continue;
 			case 'L':
 				// long. TODO: handle L for long doubles.
-				// n++;  // At least chew up one more parameter so later types are correct
+				// ++n;  // At least chew up one more parameter so later types are correct
 				veryLong = true;
 				continue;
 			default:
@@ -2873,7 +2873,7 @@ CallStatement::ellipsisProcessing(Prog *prog)
 			break;
 		} while (1);
 		if (ch != '%')  // Don't count %%
-			n++;
+			++n;
 		switch (ch) {
 		case 'd':
 		case 'i':
@@ -3010,9 +3010,9 @@ ReturnStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 void
 ReturnStatement::simplify()
 {
-	for (auto it = modifieds.begin(); it != modifieds.end(); it++)
+	for (auto it = modifieds.begin(); it != modifieds.end(); ++it)
 		(*it)->simplify();
-	for (auto it = returns.begin(); it != returns.end(); it++)
+	for (auto it = returns.begin(); it != returns.end(); ++it)
 		(*it)->simplify();
 }
 
@@ -3409,7 +3409,7 @@ Statement *
 PhiAssign::clone()
 {
 	PhiAssign *pa = new PhiAssign(type, lhs);
-	for (auto dd = defVec.begin(); dd != defVec.end(); dd++) {
+	for (auto dd = defVec.begin(); dd != defVec.end(); ++dd) {
 		PhiInfo pi;
 		pi.def = dd->def;       // Don't clone the Statement pointer (never moves)
 		pi.e = dd->e->clone();  // Do clone the expression pointer
@@ -3476,7 +3476,7 @@ Assign::simplify()
 		PhiAssign *phi = nullptr;
 		if (phist /* && phist->getRight() */)  // ?
 			phi = dynamic_cast<PhiAssign *>(phist);
-		for (int i = 0; phi && i < phi->getNumDefs(); i++) {
+		for (int i = 0; phi && i < phi->getNumDefs(); ++i) {
 			if (phi->getStmtAt(i)) {
 				Assign *def = dynamic_cast<Assign *>(phi->getStmtAt(i));
 				// Look for rX{-} - K or K
@@ -3579,7 +3579,7 @@ PhiAssign::printCompact(std::ostream &os, bool html)
 	bool simple = true;
 	int i, n = defVec.size();
 	if (n != 0) {
-		for (i = 0; i < n; i++) {
+		for (i = 0; i < n; ++i) {
 			// If e is nullptr assume it is meant to match lhs
 			if (!defVec[i].e) continue;
 			if (!(*defVec[i].e == *lhs)) {
@@ -3681,7 +3681,7 @@ Assign::searchAll(Exp *search, std::list<Exp *> &result)
 	res = lhs->searchAll(search, leftResult);
 	// Ugh: searchAll clears the list!
 	res |= rhs->searchAll(search, result);
-	for (auto it = leftResult.begin(); it != leftResult.end(); it++)
+	for (auto it = leftResult.begin(); it != leftResult.end(); ++it)
 		result.push_back(*it);
 	return res;
 }
@@ -3712,7 +3712,7 @@ PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change;
 	lhs = lhs->searchReplaceAll(search, replace, change);
-	for (auto it = defVec.begin(); it != defVec.end(); it++) {
+	for (auto it = defVec.begin(); it != defVec.end(); ++it) {
 		if (!it->e) continue;
 		bool ch;
 		// Assume that the definitions will also be replaced
@@ -3768,13 +3768,13 @@ Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	char *left = strdup(pattern);
 	char *right = strstr(left, ":=");
 	*right++ = 0;
-	right++;
+	++right;
 	while (*right == ' ')
-		right++;
+		++right;
 	char *endleft = left + strlen(left) - 1;
 	while (*endleft == ' ') {
 		*endleft = 0;
-		endleft--;
+		--endleft;
 	}
 
 	return lhs->match(left, bindings) && rhs->match(right, bindings);
@@ -3801,7 +3801,7 @@ void
 addPhiReferences(StatementSet &stmts, Statement *def)
 {
 	PhiAssign *p = (PhiAssign *)def;
-	for (auto it = p->begin(); it != p->end(); it++) {
+	for (auto it = p->begin(); it != p->end(); ++it) {
 		if (it->def->isPhi() && !stmts.exists(it->def)) {
 			stmts.insert(it->def);
 			addPhiReferences(stmts, it->def);
@@ -3840,7 +3840,7 @@ PhiAssign::genConstraints(LocationSet &cons)
 	// Generate a constraints st that all the phi's have to be the same type as
 	// result
 	Exp *result = new Unary(opTypeOf, new RefExp(lhs, this));
-	for (auto uu = defVec.begin(); uu != defVec.end(); uu++) {
+	for (auto uu = defVec.begin(); uu != defVec.end(); ++uu) {
 		Exp *conjunct = new Binary(opEquals,
 		                           result,
 		                           new Unary(opTypeOf, new RefExp(uu->e, uu->def)));
@@ -3887,7 +3887,7 @@ CallStatement::genConstraints(LocationSet &cons)
 			int n = 1;  // Number of %s plus 1 = number of args
 			const char *p = str;
 			while ((p = strchr(p, '%'))) {
-				p++;
+				++p;
 				Type *t = nullptr;
 				int longness = 0;
 				bool sign = true;
@@ -3919,7 +3919,7 @@ CallStatement::genConstraints(LocationSet &cons)
 						t = new PointerType(new CharType());
 						break;
 					case 'l':
-						longness++;
+						++longness;
 						cont = true;
 						break;
 					case '.':
@@ -3932,7 +3932,7 @@ CallStatement::genConstraints(LocationSet &cons)
 							cont = true;
 						break;
 					}
-					p++;
+					++p;
 				} while (cont);
 				if (t) {
 					// scanf takes addresses of these
@@ -3946,7 +3946,7 @@ CallStatement::genConstraints(LocationSet &cons)
 					Exp *con = argn->genConstraints(tv);
 					cons.insert(con);
 				}
-				n++;
+				++n;
 			}
 		}
 	}
@@ -4120,11 +4120,11 @@ CallStatement::accept(StmtExpVisitor *v)
 	if (override) return ret;
 	if (ret && pDest)
 		ret = pDest->accept(v->ev);
-	for (auto it = arguments.begin(); ret && it != arguments.end(); it++)
+	for (auto it = arguments.begin(); ret && it != arguments.end(); ++it)
 		ret = (*it)->accept(v);
 	// FIXME: why aren't defines counted?
 #if 0  // Do we want to accept visits to the defines? Not sure now...
-	for (auto rr = defines.begin(); ret && rr != defines.end(); rr++)
+	for (auto rr = defines.begin(); ret && rr != defines.end(); ++rr)
 		if (rr->e)  // Can be nullptr now to line up with other returns
 			ret = rr->e->accept(v->ev);
 #endif
@@ -4258,7 +4258,7 @@ CallStatement::accept(StmtModifier *v)
 	if (!recur) return true;
 	if (pDest)
 		pDest = pDest->accept(v->mod);
-	for (auto it = arguments.begin(); recur && it != arguments.end(); it++)
+	for (auto it = arguments.begin(); recur && it != arguments.end(); ++it)
 		(*it)->accept(v);
 	// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
 	// adjusted
@@ -4266,7 +4266,7 @@ CallStatement::accept(StmtModifier *v)
 	// collectors as the rename logic set it
 	// Well, sort it out with ignoreCollector()
 	if (!v->ignoreCollector()) {
-		for (auto cc = defCol.begin(); cc != defCol.end(); cc++)
+		for (auto cc = defCol.begin(); cc != defCol.end(); ++cc)
 			(*cc)->accept(v);
 	}
 	for (auto dd = defines.begin(); recur && dd != defines.end(); ++dd)
@@ -4379,20 +4379,20 @@ CallStatement::accept(StmtPartModifier *v)
 	v->visit(this, recur);
 	if (pDest && recur)
 		pDest = pDest->accept(v->mod);
-	for (auto it = arguments.begin(); recur && it != arguments.end(); it++)
+	for (auto it = arguments.begin(); recur && it != arguments.end(); ++it)
 		(*it)->accept(v);
 	// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
 	// adjusted
 	// But now I'm thinking no, the bypass and propagate while possible logic should take care of it.
 	// Then again, what about the use collectors in calls? Best to do it.
 	if (!v->ignoreCollector()) {
-		for (auto dd = defCol.begin(); dd != defCol.end(); dd++)
+		for (auto dd = defCol.begin(); dd != defCol.end(); ++dd)
 			(*dd)->accept(v);
 		for (auto uu = useCol.begin(); uu != useCol.end(); ++uu)
 			// I believe that these should never change at the top level, e.g. m[esp{30} + 4] -> m[esp{-} - 20]
 			(*uu)->accept(v->mod);
 	}
-	for (auto dd = defines.begin(); recur && dd != defines.end(); dd++)
+	for (auto dd = defines.begin(); recur && dd != defines.end(); ++dd)
 		(*dd)->accept(v);
 	return true;
 }
@@ -4509,7 +4509,7 @@ PhiAssign::simplify()
 		bool allSame = true;
 		auto uu = defVec.begin();
 		Statement *first;
-		for (first = (uu++)->def; uu != defVec.end(); uu++) {
+		for (first = (uu++)->def; uu != defVec.end(); ++uu) {
 			if (uu->def != first) {
 				allSame = false;
 				break;
@@ -4525,7 +4525,7 @@ PhiAssign::simplify()
 
 		bool onlyOneNotThis = true;
 		Statement *notthis = (Statement *)-1;
-		for (uu = defVec.begin(); uu != defVec.end(); uu++) {
+		for (uu = defVec.begin(); uu != defVec.end(); ++uu) {
 			if (!uu->def || uu->def->isImplicit() || !uu->def->isPhi() || uu->def != this) {
 				if (notthis != (Statement *)-1) {
 					onlyOneNotThis = false;
@@ -4586,7 +4586,7 @@ CallStatement::definesLoc(Exp *loc)
 bool
 ReturnStatement::definesLoc(Exp *loc)
 {
-	for (auto it = modifieds.begin(); it != modifieds.end(); it++) {
+	for (auto it = modifieds.begin(); it != modifieds.end(); ++it) {
 		if ((*it)->definesLoc(loc))
 			return true;
 	}
@@ -4604,7 +4604,7 @@ ReturnStatement::getDefinitions(LocationSet &ls)
 Type *
 ReturnStatement::getTypeFor(Exp *e)
 {
-	for (auto rr = modifieds.begin(); rr != modifieds.end(); rr++) {
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *e)
 			return ((Assignment *)*rr)->getType();
 	}
@@ -4614,13 +4614,13 @@ ReturnStatement::getTypeFor(Exp *e)
 void
 ReturnStatement::setTypeFor(Exp *e, Type *ty)
 {
-	for (auto rr = modifieds.begin(); rr != modifieds.end(); rr++) {
+	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *e) {
 			((Assignment *)*rr)->setType(ty);
 			break;
 		}
 	}
-	for (auto rr = returns.begin(); rr != returns.end(); rr++) {
+	for (auto rr = returns.begin(); rr != returns.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *e) {
 			((Assignment *)*rr)->setType(ty);
 			return;
@@ -4738,7 +4738,7 @@ ReturnStatement::updateModifieds()
 		Exp *colLhs = as->getLeft();
 		if (proc->filterReturns(colLhs))
 			continue;  // Filtered out
-		for (auto it = oldMods.begin(); it != oldMods.end(); it++) {
+		for (auto it = oldMods.begin(); it != oldMods.end(); ++it) {
 			Exp *lhs = ((Assign *)*it)->getLeft();
 			if (*lhs == *colLhs) {
 				found = true;
@@ -4799,7 +4799,7 @@ ReturnStatement::updateReturns()
 		// Special case for the stack pointer: it has to be a modified (otherwise, the changes will bypass the calls),
 		// but it is not wanted as a return
 		if (loc->isRegN(sp)) continue;
-		for (auto it = oldRets.begin(); it != oldRets.end(); it++) {
+		for (auto it = oldRets.begin(); it != oldRets.end(); ++it) {
 			Exp *lhs = ((Assign *)*it)->getLeft();
 			if (*lhs == *loc) {
 				found = true;
@@ -5026,7 +5026,7 @@ ArgSourceProvider::curType(Exp *e)
 	case SRC_CALLEE:
 		{
 			Type *ty = ((Assignment *)*--pp)->getType();
-			pp++;
+			++pp;
 			return ty;
 		}
 	case SRC_COL:
@@ -5049,7 +5049,7 @@ ArgSourceProvider::exists(Exp *e)
 		if (callSig->hasEllipsis())
 			// FIXME: for now, just don't check
 			return true;
-		for (i = 0; i < n; i++) {
+		for (i = 0; i < n; ++i) {
 			Exp *sigParam = callSig->getParamExp(i)->clone();
 			sigParam->removeSubscripts(allZero);
 			call->localiseComp(sigParam);
@@ -5170,7 +5170,7 @@ CallStatement::calcResults()
 		Signature *sig = procDest->getSignature();
 		if (procDest && procDest->isLib()) {
 			int n = sig->getNumReturns();
-			for (int i = 1; i < n; i++) {  // Ignore first (stack pointer) return
+			for (int i = 1; i < n; ++i) {  // Ignore first (stack pointer) return
 				Exp *sigReturn = sig->getReturnExp(i);
 #if SYMS_IN_BACK_END
 				// But we have translated out of SSA form, so some registers have had to have been replaced with locals
@@ -5475,7 +5475,7 @@ JunctionStatement::print(std::ostream &os, bool html)
 		os << "<a name=\"stmt" << std::dec << number << "\">";
 	}
 	os << "JUNCTION ";
-	for (int i = 0; i < pbb->getNumInEdges(); i++) {
+	for (int i = 0; i < pbb->getNumInEdges(); ++i) {
 		os << std::hex << pbb->getInEdges()[i]->getHiAddr() << std::dec;
 		if (pbb->isBackEdge(i))
 			os << "*";

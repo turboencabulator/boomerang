@@ -78,7 +78,7 @@ Prog::~Prog()
 {
 	if (pFE) FrontEnd::close(pFE);
 	if (pBF) BinaryFile::close(pBF);
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		delete *it;
 	}
 	m_procs.clear();
@@ -97,7 +97,7 @@ Prog::wellForm()
 {
 	bool wellformed = true;
 
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		if (!(*it)->isLib()) {
 			UserProc *u = (UserProc *)*it;
 			wellformed &= u->getCFG()->wellFormCfg();
@@ -110,7 +110,7 @@ Prog::wellForm()
 void
 Prog::finishDecode()
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 
 		if (pProc->isLib()) continue;
@@ -127,7 +127,7 @@ Prog::generateDot(std::ostream &os)
 {
 	os << "digraph Cfg {\n";
 
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
@@ -158,7 +158,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 			bool global = false;
 			if (Boomerang::get()->noDecompile) {
 				const char *sections[] = { "rodata", "data", "data1", 0 };
-				for (int j = 0; sections[j]; j++) {
+				for (int j = 0; sections[j]; ++j) {
 					std::string str = ".";
 					str += sections[j];
 					const SectionInfo *info = pBF->getSectionInfoByName(str.c_str());
@@ -169,7 +169,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 					str += "_size";
 					code->AddGlobal(str.c_str(), new IntegerType(32, -1), new Const(info ? info->uSectionSize : (unsigned int)-1));
 					Exp *l = new Terminal(opNil);
-					for (unsigned int i = 0; info && i < info->uSectionSize; i++) {
+					for (unsigned int i = 0; info && i < info->uSectionSize; ++i) {
 						int n = pBF->readNative1(info->uNativeAddr + info->uSectionSize - 1 - i);
 						if (n < 0)
 							n = 256 + n;
@@ -181,7 +181,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 				os << "#include \"boomerang.h\"\n\n";
 				global = true;
 			}
-			for (auto it1 = globals.begin(); it1 != globals.end(); it1++) {
+			for (auto it1 = globals.begin(); it1 != globals.end(); ++it1) {
 				// Check for an initial value
 				Exp *e = nullptr;
 				e = (*it1)->getInitialValue(this);
@@ -196,7 +196,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 
 	// First declare prototypes for all but the first proc
 	bool first = true, proto = false;
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if ((*it)->isLib()) continue;
 		if (first) {
 			first = false;
@@ -212,7 +212,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 	if ((proto && !cluster) || cluster == m_rootCluster)
 		os << "\n";  // Separate prototype(s) from first proc
 
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 		if (pProc->isLib()) continue;
 		UserProc *up = (UserProc *)pProc;
@@ -239,7 +239,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 void
 Prog::generateRTL(Cluster *cluster, UserProc *proc)
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
@@ -258,7 +258,7 @@ Prog::generateRTL(Cluster *cluster, UserProc *proc)
 Statement *
 Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end)
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
@@ -294,7 +294,7 @@ void
 Cluster::removeChild(Cluster *n)
 {
 	auto it = children.begin();
-	for (; it != children.end(); it++)
+	for (; it != children.end(); ++it)
 		if (*it == n)
 			break;
 	assert(it != children.end());
@@ -315,7 +315,7 @@ Cluster::find(const char *nam)
 {
 	if (name == nam)
 		return this;
-	for (unsigned i = 0; i < children.size(); i++) {
+	for (unsigned i = 0; i < children.size(); ++i) {
 		Cluster *c = children[i]->find(nam);
 		if (c)
 			return c;
@@ -349,7 +349,7 @@ void
 Cluster::openStreams(const char *ext)
 {
 	openStream(ext);
-	for (unsigned i = 0; i < children.size(); i++)
+	for (unsigned i = 0; i < children.size(); ++i)
 		children[i]->openStreams(ext);
 }
 
@@ -359,14 +359,14 @@ Cluster::closeStreams()
 	if (out.is_open()) {
 		out.close();
 	}
-	for (unsigned i = 0; i < children.size(); i++)
+	for (unsigned i = 0; i < children.size(); ++i)
 		children[i]->closeStreams();
 }
 
 bool
 Prog::clusterUsed(Cluster *c)
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		if ((*it)->getCluster() == c)
 			return true;
 	return false;
@@ -396,7 +396,7 @@ void
 Prog::generateCode(std::ostream &os)
 {
 	HLLCode *code = Boomerang::get()->getHLLCode();
-	for (auto it1 = globals.begin(); it1 != globals.end(); it1++) {
+	for (auto it1 = globals.begin(); it1 != globals.end(); ++it1) {
 		// Check for an initial value
 		Exp *e = nullptr;
 		e = (*it1)->getInitialValue(this);
@@ -405,7 +405,7 @@ Prog::generateCode(std::ostream &os)
 	}
 	code->print(os);
 	delete code;
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
@@ -422,7 +422,7 @@ Prog::generateCode(std::ostream &os)
 void
 Prog::print(std::ostream &out)
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
 		if (pProc->isLib()) continue;
 		UserProc *p = (UserProc *)pProc;
@@ -514,7 +514,7 @@ Prog::remProc(UserProc *uProc)
 	// Replace the entry in the procedure map with -1 as a warning not to decode that address ever again
 	m_procLabels[uProc->getNativeAddress()] = (Proc *)-1;
 
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if (*it == uProc) {
 			m_procs.erase(it);
 			break;
@@ -528,7 +528,7 @@ Prog::remProc(UserProc *uProc)
 void
 Prog::removeProc(const char *name)
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		if (std::string(name) == (*it)->getName()) {
 			Boomerang::get()->alert_remove(*it);
 			m_procs.erase(it);
@@ -551,9 +551,9 @@ int
 Prog::getNumUserProcs()
 {
 	int n = 0;
-	for (auto it = m_procs.cbegin(); it != m_procs.cend(); it++)
+	for (auto it = m_procs.cbegin(); it != m_procs.cend(); ++it)
 		if (!(*it)->isLib())
-			n++;
+			++n;
 	return n;
 }
 
@@ -570,8 +570,8 @@ Prog::getProc(int idx) const
 	// If index is invalid, result will be nullptr
 	if ((idx < 0) || (idx >= (int)m_procs.size())) return nullptr;
 	auto it = m_procs.cbegin();
-	for (int i = 0; i < idx; i++)
-		it++;
+	for (int i = 0; i < idx; ++i)
+		++it;
 	return (*it);
 }
 
@@ -595,7 +595,7 @@ Prog::findProc(ADDRESS uAddr) const
 Proc *
 Prog::findProc(const char *name) const
 {
-	for (auto it = m_procs.cbegin(); it != m_procs.cend(); it++)
+	for (auto it = m_procs.cbegin(); it != m_procs.cend(); ++it)
 		if (!strcmp((*it)->getName(), name))
 			return *it;
 	return nullptr;
@@ -621,11 +621,11 @@ void
 Prog::rereadLibSignatures()
 {
 	pFE->readLibraryCatalog();
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if ((*it)->isLib()) {
 			(*it)->setSignature(getLibSignature((*it)->getName()));
 			std::set<CallStatement *> &callers = (*it)->getCallers();
-			for (auto it1 = callers.begin(); it1 != callers.end(); it1++)
+			for (auto it1 = callers.begin(); it1 != callers.end(); ++it1)
 				(*it1)->setSigArguments();
 			Boomerang::get()->alert_update_signature(*it);
 		}
@@ -666,7 +666,7 @@ const char *
 Prog::getGlobalName(ADDRESS uaddr)
 {
 	// FIXME: inefficient
-	for (auto it = globals.begin(); it != globals.end(); it++) {
+	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if ((*it)->getAddress() == uaddr)
 			return (*it)->getName();
 		else if ((*it)->getAddress() < uaddr
@@ -681,7 +681,7 @@ Prog::getGlobalName(ADDRESS uaddr)
 void
 Prog::dumpGlobals()
 {
-	for (auto it = globals.begin(); it != globals.end(); it++) {
+	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		(*it)->print(std::cerr, this);
 		std::cerr << "\n";
 	}
@@ -690,7 +690,7 @@ Prog::dumpGlobals()
 ADDRESS
 Prog::getGlobalAddr(const char *nam)
 {
-	for (auto it = globals.begin(); it != globals.end(); it++) {
+	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if (!strcmp((*it)->getName(), nam))
 			return (*it)->getAddress();
 	}
@@ -700,7 +700,7 @@ Prog::getGlobalAddr(const char *nam)
 Global *
 Prog::getGlobal(const char *nam)
 {
-	for (auto it = globals.begin(); it != globals.end(); it++) {
+	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if (!strcmp((*it)->getName(), nam))
 			return *it;
 	}
@@ -712,7 +712,7 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 {
 	Global *global;
 
-	for (auto it = globals.begin(); it != globals.end(); it++) {
+	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if ((*it)->getAddress() == uaddr) {
 			if (knownType) (*it)->meetType(knownType);
 			return true;
@@ -814,7 +814,7 @@ Prog::newGlobalName(ADDRESS uaddr)
 Type *
 Prog::getGlobalType(const char *nam)
 {
-	for (auto it = globals.begin(); it != globals.end(); it++)
+	for (auto it = globals.begin(); it != globals.end(); ++it)
 		if (!strcmp((*it)->getName(), nam))
 			return (*it)->getType();
 	return nullptr;
@@ -824,7 +824,7 @@ void
 Prog::setGlobalType(const char *nam, Type *ty)
 {
 	// FIXME: inefficient
-	for (auto it = globals.begin(); it != globals.end(); it++) {
+	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if (!strcmp((*it)->getName(), nam)) {
 			(*it)->setType(ty);
 			return;
@@ -849,10 +849,10 @@ Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */)
 			return p;
 		int printable = 0;
 		char last = 0;
-		for (int i = 0; i < 6; i++) {
+		for (int i = 0; i < 6; ++i) {
 			char c = p[i];
 			if (c == 0) break;
-			if (c >= ' ' && c < '\x7F') printable++;
+			if (c >= ' ' && c < '\x7F') ++printable;
 			last = c;
 		}
 		if (printable >= 4)
@@ -891,7 +891,7 @@ Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits)
 Proc *
 Prog::findContainingProc(ADDRESS uAddr) const
 {
-	for (auto it = m_procs.cbegin(); it != m_procs.cend(); it++) {
+	for (auto it = m_procs.cbegin(); it != m_procs.cend(); ++it) {
 		Proc *p = (*it);
 		if (p->getNativeAddress() == uAddr)
 			return p;
@@ -954,7 +954,7 @@ Prog::getFirstProc(PROGMAP::const_iterator &it)
 {
 	it = m_procLabels.begin();
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
-		it++;
+		++it;
 	if (it == m_procLabels.end())
 		return nullptr;
 	return it->second;
@@ -970,9 +970,9 @@ Prog::getFirstProc(PROGMAP::const_iterator &it)
 Proc *
 Prog::getNextProc(PROGMAP::const_iterator &it)
 {
-	it++;
+	++it;
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
-		it++;
+		++it;
 	if (it == m_procLabels.end())
 		return nullptr;
 	return it->second;
@@ -990,7 +990,7 @@ Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 {
 	it = m_procs.begin();
 	while (it != m_procs.end() && (*it)->isLib())
-		it++;
+		++it;
 	if (it == m_procs.end())
 		return nullptr;
 	return (UserProc *)*it;
@@ -1007,9 +1007,9 @@ Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 UserProc *
 Prog::getNextUserProc(std::list<Proc *>::iterator &it)
 {
-	it++;
+	++it;
 	while (it != m_procs.end() && (*it)->isLib())
-		it++;
+		++it;
 	if (it == m_procs.end())
 		return nullptr;
 	return (UserProc *)*it;
@@ -1032,7 +1032,7 @@ Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta)
 	last = nullptr;
 	int n = pBF->getNumSections();
 	// Search all code and read-only sections
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		const SectionInfo *pSect = pBF->getSectionInfo(i);
 		if ((!pSect->bCode) && (!pSect->bReadOnly))
 			continue;
@@ -1077,7 +1077,7 @@ Prog::setEntryPoint(ADDRESS a)
 void
 Prog::decodeEverythingUndecoded()
 {
-	for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+	for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 		UserProc *up = (UserProc *)*pp;
 		if (!up) continue;  // Probably not needed
 		if (up->isLib()) continue;
@@ -1109,7 +1109,7 @@ Prog::decompile()
 		bool foundone = true;
 		while (foundone) {
 			foundone = false;
-			for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+			for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 				UserProc *proc = (UserProc *)(*pp);
 				if (proc->isLib()) continue;
 				if (proc->isDecompiled()) continue;
@@ -1138,7 +1138,7 @@ Prog::decompile()
 		}
 
 		// print XML after removing returns
-		for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+		for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 			UserProc *proc = (UserProc *)(*pp);
 			if (proc->isLib()) continue;
 			proc->printXML();
@@ -1164,7 +1164,7 @@ Prog::removeUnusedGlobals()
 
 	// seach for used globals
 	std::list<Exp *> usedGlobals;
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if ((*it)->isLib()) continue;
 		UserProc *u = (UserProc *)(*it);
 		Exp *search = new Location(opGlobal, new Terminal(opWild), u);
@@ -1183,7 +1183,7 @@ Prog::removeUnusedGlobals()
 
 	// make a map to find a global by its name (could be a global var too)
 	std::map<std::string, Global *> namedGlobals;
-	for (auto it = globals.begin(); it != globals.end(); it++)
+	for (auto it = globals.begin(); it != globals.end(); ++it)
 		namedGlobals[(*it)->getName()] = (*it);
 
 	// rebuild the globals vector
@@ -1191,7 +1191,7 @@ Prog::removeUnusedGlobals()
 	Global *usedGlobal;
 
 	globals.clear();
-	for (auto it = usedGlobals.begin(); it != usedGlobals.end(); it++) {
+	for (auto it = usedGlobals.begin(); it != usedGlobals.end(); ++it) {
 		if (DEBUG_UNUSED)
 			LOG << " " << *it << " is used\n";
 		name = ((Const *)(*it)->getSubExp1())->getStr();
@@ -1245,7 +1245,7 @@ Prog::removeUnusedReturns()
 void
 Prog::fromSSAform()
 {
-	for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+	for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 		UserProc *proc = (UserProc *)(*pp);
 		if (proc->isLib()) continue;
 		if (VERBOSE) {
@@ -1271,7 +1271,7 @@ Prog::conTypeAnalysis()
 		LOG << "=== start constraint-based type analysis ===\n";
 	// FIXME: This needs to be done bottom of the call-tree first, with repeat until no change for cycles
 	// in the call graph
-	for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+	for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 		UserProc *proc = (UserProc *)(*pp);
 		if (proc->isLib()) continue;
 		if (!proc->isDecoded()) continue;
@@ -1286,7 +1286,7 @@ Prog::globalTypeAnalysis()
 {
 	if (VERBOSE || DEBUG_TA)
 		LOG << "### start global data-flow-based type analysis ###\n";
-	for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+	for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 		UserProc *proc = (UserProc *)(*pp);
 		if (proc->isLib()) continue;
 		if (!proc->isDecoded()) continue;
@@ -1302,7 +1302,7 @@ Prog::globalTypeAnalysis()
 void
 Prog::rangeAnalysis()
 {
-	for (auto pp = m_procs.begin(); pp != m_procs.end(); pp++) {
+	for (auto pp = m_procs.begin(); pp != m_procs.end(); ++pp) {
 		UserProc *proc = (UserProc *)(*pp);
 		if (proc->isLib()) continue;
 		if (!proc->isDecoded()) continue;
@@ -1336,17 +1336,17 @@ Prog::printCallGraph()
 		if (seen.find(p) == seen.end()) {
 			seen.insert(p);
 			int n = spaces[p];
-			for (int i = 0; i < n; i++)
+			for (int i = 0; i < n; ++i)
 				f1 << "\t ";
 			f1 << p->getName() << " @ " << std::hex << p->getNativeAddress();
 			if (parent.find(p) != parent.end())
 				f1 << " [parent=" << parent[p]->getName() << "]";
 			f1 << std::endl;
 			if (!p->isLib()) {
-				n++;
+				++n;
 				UserProc *u = (UserProc *)p;
 				std::list<Proc *> &calleeList = u->getCallees();
-				for (auto it1 = calleeList.rbegin(); it1 != calleeList.rend(); it1++) {
+				for (auto it1 = calleeList.rbegin(); it1 != calleeList.rend(); ++it1) {
 					procList.push_front(*it1);
 					spaces[*it1] = n;
 					parent[*it1] = p;
@@ -1370,7 +1370,7 @@ printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &
 		seen.insert(proc);
 		fisttime = true;
 	}
-	for (int i = 0; i < indent; i++)
+	for (int i = 0; i < indent; ++i)
 		f << "\t ";
 
 	if (!proc->isLib() && fisttime) { // seen lib proc
@@ -1379,10 +1379,10 @@ printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &
 
 		UserProc *u = (UserProc *)proc;
 		std::list<Proc *> &calleeList = u->getCallees();
-		for (auto it1 = calleeList.begin(); it1 != calleeList.end(); it1++) {
+		for (auto it1 = calleeList.begin(); it1 != calleeList.end(); ++it1) {
 			printProcsRecursive(*it1, indent + 1, f, seen);
 		}
-		for (int i = 0; i < indent; i++)
+		for (int i = 0; i < indent; ++i)
 			f << "\t ";
 		f << "// End of " << proc->getName() << "\n";
 	} else {
@@ -1405,7 +1405,7 @@ Prog::printSymbolsToFile()
 		printProcsRecursive(*pp, 0, f, seen);
 
 	f << "/* Leftovers: */\n"; // don't forget the rest
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		if (!(*it)->isLib() && seen.find(*it) == seen.end()) {
 			printProcsRecursive(*it, 0, f, seen);
 		}
@@ -1420,7 +1420,7 @@ Prog::printCallGraphXML()
 {
 	if (!DUMP_XML)
 		return;
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		(*it)->clearVisited();
 	std::string fname = Boomerang::get()->getOutputPath() + "callgraph.xml";
 	int fd = lockFileWrite(fname.c_str());
@@ -1429,7 +1429,7 @@ Prog::printCallGraphXML()
 	f << "\t<callgraph>\n";
 	for (auto pp = entryProcs.begin(); pp != entryProcs.end(); ++pp)
 		(*pp)->printCallGraphXML(f, 2);
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++) {
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if (!(*it)->isVisited() && !(*it)->isLib()) {
 			(*it)->printCallGraphXML(f, 2);
 		}
@@ -1456,7 +1456,7 @@ Prog::readSymbolFile(const char *fname)
 	par.yyparse(plat, cc);
 	ifs.close();
 
-	for (auto it = par.symbols.begin(); it != par.symbols.end(); it++) {
+	for (auto it = par.symbols.begin(); it != par.symbols.end(); ++it) {
 		if ((*it)->sig) {
 			Proc *p = newProc((*it)->sig->getName(), (*it)->addr,
 			                  pBF->isDynamicLinkedProcPointer((*it)->addr)
@@ -1480,7 +1480,7 @@ Prog::readSymbolFile(const char *fname)
 		}
 	}
 
-	for (auto it2 = par.refs.begin(); it2 != par.refs.end(); it2++) {
+	for (auto it2 = par.refs.begin(); it2 != par.refs.end(); ++it2) {
 		pFE->addRefHint((*it2)->addr, (*it2)->nam.c_str());
 	}
 }
@@ -1536,7 +1536,7 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type)
 	if (type->resolvesToCompound()) {
 		CompoundType *c = type->asCompound();
 		Exp *n = e = new Terminal(opNil);
-		for (unsigned int i = 0; i < c->getNumTypes(); i++) {
+		for (unsigned int i = 0; i < c->getNumTypes(); ++i) {
 			ADDRESS addr = uaddr + c->getOffsetTo(i) / 8;
 			Type *t = c->getType(i);
 			Exp *v = readNativeAs(addr, t);
@@ -1569,7 +1569,7 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type)
 		if (nam)
 			nelems = pBF->getSizeByName(nam) / base_sz;
 		Exp *n = e = new Terminal(opNil);
-		for (int i = 0; nelems == -1 || i < nelems; i++) {
+		for (int i = 0; nelems == -1 || i < nelems; ++i) {
 			Exp *v = readNativeAs(uaddr + i * base_sz, type->asArray()->getBaseType());
 			if (!v)
 				break;
@@ -1664,7 +1664,7 @@ Cluster::readMemo(Memo *mm, bool dec)
 	children = m->children;
 	parent = m->parent;
 
-	for (auto it = children.begin(); it != children.end(); it++)
+	for (auto it = children.begin(); it != children.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 }
 
@@ -1727,10 +1727,10 @@ Prog::makeMemo(int mId)
 	m->m_iNumberedProc = m_iNumberedProc;
 	m->m_rootCluster = m_rootCluster;
 
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		(*it)->takeMemo(m->mId);
 	m_rootCluster->takeMemo(m->mId);
-	for (auto it = globals.begin(); it != globals.end(); it++)
+	for (auto it = globals.begin(); it != globals.end(); ++it)
 		(*it)->takeMemo(m->mId);
 
 	return m;
@@ -1749,10 +1749,10 @@ Prog::readMemo(Memo *mm, bool dec)
 	m_iNumberedProc = m->m_iNumberedProc;
 	m_rootCluster = m->m_rootCluster;
 
-	for (auto it = m_procs.begin(); it != m_procs.end(); it++)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 	m_rootCluster->restoreMemo(m->mId, dec);
-	for (auto it = globals.begin(); it != globals.end(); it++)
+	for (auto it = globals.begin(); it != globals.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 }
 
@@ -1813,11 +1813,11 @@ Memoisable::restoreMemo(int mId, bool dec)
 	if (dec) {
 		if (cur_memo == memos.begin())
 			return;
-		cur_memo--;
+		--cur_memo;
 	} else {
-		cur_memo++;
+		++cur_memo;
 		if (cur_memo == memos.end()) {
-			cur_memo--;
+			--cur_memo;
 			return;
 		}
 	}
@@ -1839,12 +1839,12 @@ Memoisable::canRestore(bool dec)
 		if (cur_memo == memos.begin())
 			return false;
 	} else {
-		cur_memo++;
+		++cur_memo;
 		if (cur_memo == memos.end()) {
-			cur_memo--;
+			--cur_memo;
 			return false;
 		}
-		cur_memo--;
+		--cur_memo;
 	}
 	return true;
 }
@@ -1901,7 +1901,7 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 				e = new Const(str);
 			else {
 				// check for accesses into the middle of symbols
-				for (auto it = symbols.begin(); it != symbols.end(); it++) {
+				for (auto it = symbols.begin(); it != symbols.end(); ++it) {
 					if (it->first < (ADDRESS)c->getInt()
 					 && it->first + pBF->getSizeByName(it->second.c_str()) > (ADDRESS)c->getInt()) {
 						int off = c->getInt() - it->first;

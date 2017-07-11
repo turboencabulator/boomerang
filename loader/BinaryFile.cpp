@@ -64,7 +64,7 @@ BinaryFile::getNumSections() const
 int
 BinaryFile::getSectionIndexByName(const char *sName) const
 {
-	for (int i = 0; i < m_iNumSections; i++) {
+	for (int i = 0; i < m_iNumSections; ++i) {
 		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
 			return i;
 		}
@@ -90,7 +90,7 @@ BinaryFile::getSectionInfo(int idx) const
 const SectionInfo *
 BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
-	for (int i = 0; i < m_iNumSections; i++) {
+	for (int i = 0; i < m_iNumSections; ++i) {
 		const SectionInfo *pSect = &m_pSections[i];
 		if ((uEntry >= pSect->uNativeAddr)
 		 && (uEntry <  pSect->uNativeAddr + pSect->uSectionSize)) {
@@ -106,7 +106,7 @@ BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 const SectionInfo *
 BinaryFile::getSectionInfoByName(const char *sName) const
 {
-	for (int i = 0; i < m_iNumSections; i++) {
+	for (int i = 0; i < m_iNumSections; ++i) {
 		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
 			return &m_pSections[i];
 		}
@@ -322,7 +322,7 @@ BinaryFile::getTextLimits()
 	limitTextLow = 0xFFFFFFFF;
 	limitTextHigh = 0;
 	textDelta = 0;
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		const SectionInfo *pSect = getSectionInfo(i);
 		if (pSect->bCode) {
 			// The .plt section is an anomaly. It's code, but we never want to

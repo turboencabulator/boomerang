@@ -1319,7 +1319,7 @@ FlagDef::appendDot(std::ostream &os)
 	// Display the RTL as "RTL <r0> <r1>..." vertically (curly brackets)
 	   << " | { RTL ";
 	int n = rtl->getNumStmt();
-	for (int i = 0; i < n; i++)
+	for (int i = 0; i < n; ++i)
 		os << "| <r" << std::dec << i << "> ";
 	os << "} | <p1> }\"];\n";
 
@@ -1511,10 +1511,10 @@ tlstrchr(const char *str, char ch)
 			if (*str == '(')
 				close = ')';
 			while (*str && *str != close)
-				str++;
+				++str;
 		}
 		if (*str)
-			str++;
+			++str;
 	}
 	return nullptr;
 }
@@ -1596,7 +1596,7 @@ Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 		char *sub2 = (char *)tlstrchr(sub1, '+');
 		*sub2++ = 0;
 		while (*sub2 == ' ')
-			sub2++;
+			++sub2;
 		while (sub1[strlen(sub1) - 1] == ' ')
 			sub1[strlen(sub1) - 1] = 0;
 		if (subExp1->match(sub1, bindings) && subExp2->match(sub2, bindings))
@@ -1607,7 +1607,7 @@ Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 		char *sub2 = (char *)tlstrchr(sub1, '-');
 		*sub2++ = 0;
 		while (*sub2 == ' ')
-			sub2++;
+			++sub2;
 		while (sub1[strlen(sub1) - 1] == ' ')
 			sub1[strlen(sub1) - 1] = 0;
 		if (subExp1->match(sub1, bindings) && subExp2->match(sub2, bindings))
@@ -1635,7 +1635,7 @@ RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 #endif
 	const char *end = pattern + strlen(pattern) - 1;
 	if (end > pattern && *end == '}') {
-		end--;
+		--end;
 		if (*end == '-' && !def) {
 			char *sub = strdup(pattern);
 			*(sub + (end - 1 - pattern)) = 0;
@@ -1795,7 +1795,7 @@ Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = fa
 	std::list<Exp **> li;
 	Exp *top = this;  // top may change; that's why we have to return it
 	doSearch(search, top, li, false);
-	for (auto it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); ++it) {
 		Exp **pp = *it;
 		;//delete *pp;  // Delete any existing
 		*pp = replace->clone();  // Do the replacement
@@ -1851,7 +1851,7 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *pSrc = this;
 	doSearch(search, pSrc, li, false);
-	for (auto it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); ++it) {
 		// li is list of Exp**; result is list of Exp*
 		result.push_back(**it);
 	}
@@ -1975,10 +1975,10 @@ Binary::simplifyArith()
 				inc = false;  // Don't increment pp now
 				break;
 			}
-			nn++;
+			++nn;
 		}
 		if (pp == positives.end()) break;
-		if (inc) pp++;
+		if (inc) ++pp;
 	}
 
 	// Summarise the set of integers to a single number.
@@ -3348,7 +3348,7 @@ Exp::killFill()
 	std::list<Exp **> result;
 	doSearch(&srch1, res, result, false);
 	doSearch(&srch2, res, result, false);
-	for (auto it = result.begin(); it != result.end(); it++) {
+	for (auto it = result.begin(); it != result.end(); ++it) {
 		// Kill the sign extend bits
 		**it = ((Ternary *)(**it))->getSubExp3();
 	}
@@ -3373,7 +3373,7 @@ Exp::removeSubscripts(bool &allZero)
 	LocationSet locs;
 	e->addUsedLocs(locs);
 	allZero = true;
-	for (auto xx = locs.begin(); xx != locs.end(); xx++) {
+	for (auto xx = locs.begin(); xx != locs.end(); ++xx) {
 		if ((*xx)->getOper() == opSubscript) {
 			RefExp *r1 = (RefExp *)*xx;
 			Statement *def = r1->getDef();

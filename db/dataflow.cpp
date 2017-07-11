@@ -40,11 +40,11 @@ DataFlow::DFS(int p, int n)
 {
 	if (dfnum[n] == 0) {
 		dfnum[n] = N; vertex[N] = n; parent[n] = p;
-		N++;
+		++N;
 		// For each successor w of n
 		BasicBlock *bb = BBs[n];
 		std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-		for (auto oo = outEdges.begin(); oo != outEdges.end(); oo++) {
+		for (auto oo = outEdges.begin(); oo != outEdges.end(); ++oo) {
 			DFS(n, indices[*oo]);
 		}
 	}
@@ -74,7 +74,7 @@ DataFlow::dominators(Cfg *cfg)
 	// Set up the BBs and indices vectors. Do this here because sometimes a BB can be unreachable (so relying on
 	// in-edges doesn't work)
 	int idx = 1;
-	for (auto ii = cfg->begin(); ii != cfg->end(); ii++) {
+	for (auto ii = cfg->begin(); ii != cfg->end(); ++ii) {
 		BasicBlock *bb = *ii;
 		if (bb != r) {  // Entry BB r already done
 			indices[bb] = idx;
@@ -83,13 +83,13 @@ DataFlow::dominators(Cfg *cfg)
 	}
 	DFS(-1, 0);
 	int i;
-	for (i = N - 1; i >= 1; i--) {
+	for (i = N - 1; i >= 1; --i) {
 		int n = vertex[i]; int p = parent[n]; int s = p;
 		/* These lines calculate the semi-dominator of n, based on the Semidominator Theorem */
 		// for each predecessor v of n
 		BasicBlock *bb = BBs[n];
 		std::vector<BasicBlock *> &inEdges = bb->getInEdges();
-		for (auto it = inEdges.begin(); it != inEdges.end(); it++) {
+		for (auto it = inEdges.begin(); it != inEdges.end(); ++it) {
 			if (indices.find(*it) == indices.end()) {
 				std::cerr << "BB not in indices: "; (*it)->print(std::cerr);
 				assert(false);
@@ -107,7 +107,7 @@ DataFlow::dominators(Cfg *cfg)
 		bucket[s].insert(n);
 		Link(p, n);
 		// for each v in bucket[p]
-		for (auto jj = bucket[p].begin(); jj != bucket[p].end(); jj++) {
+		for (auto jj = bucket[p].begin(); jj != bucket[p].end(); ++jj) {
 			int v = *jj;
 			/* Now that the path from p to v has been linked into the spanning forest, these lines calculate the
 				dominator of v, based on the first clause of the Dominator Theorem, or else defer the calculation until
@@ -119,7 +119,7 @@ DataFlow::dominators(Cfg *cfg)
 		}
 		bucket[p].clear();
 	}
-	for (i = 1; i < N - 1; i++) {
+	for (i = 1; i < N - 1; ++i) {
 		/* Now all the deferred dominator calculations, based on the second clause of the Dominator Theorem, are
 			performed. */
 		int n = vertex[i];
@@ -171,7 +171,7 @@ DataFlow::computeDF(int n)
 	// for each node y in succ(n)
 	BasicBlock *bb = BBs[n];
 	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-	for (auto it = outEdges.begin(); it != outEdges.end(); it++) {
+	for (auto it = outEdges.begin(); it != outEdges.end(); ++it) {
 		int y = indices[*it];
 		if (idom[y] != n)
 			S.insert(y);
@@ -185,7 +185,7 @@ DataFlow::computeDF(int n)
 		/* This loop computes DF_up[c] */
 		// for each element w of DF[c]
 		std::set<int> &s = DF[c];
-		for (auto ww = s.begin(); ww != s.end(); ww++) {
+		for (auto ww = s.begin(); ww != s.end(); ++ww) {
 			int w = *ww;
 			// if n does not dominate w, or if n = w
 			if (n == w || !doesDominate(n, w)) {
@@ -263,7 +263,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 	// We need to create A_orig[n] for all n, the array of sets of locations defined at BB n
 	// Recreate each call because propagation and other changes make old data invalid
 	unsigned n;
-	for (n = 0; n < numBB; n++) {
+	for (n = 0; n < numBB; ++n) {
 		BasicBlock::rtlit rit;
 		StatementList::iterator sit;
 		BasicBlock *bb = BBs[n];
@@ -272,7 +272,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 			s->getDefinitions(ls);
 			if (s->isCall() && ((CallStatement *)s)->isChildless())  // If this is a childless call
 				defallsites.insert(n);  // then this block defines every variable
-			for (auto it = ls.begin(); it != ls.end(); it++) {
+			for (auto it = ls.begin(); it != ls.end(); ++it) {
 				if (canRename(*it, proc)) {
 					A_orig[n].insert((*it)->clone());
 					defStmts[*it] = s;
@@ -282,17 +282,17 @@ DataFlow::placePhiFunctions(UserProc *proc)
 	}
 
 	// For each node n
-	for (n = 0; n < numBB; n++) {
+	for (n = 0; n < numBB; ++n) {
 		// For each variable a in A_orig[n]
 		std::set<Exp *, lessExpStar> &s = A_orig[n];
-		for (auto aa = s.begin(); aa != s.end(); aa++) {
+		for (auto aa = s.begin(); aa != s.end(); ++aa) {
 			Exp *a = *aa;
 			defsites[a].insert(n);
 		}
 	}
 
 	// For each variable a (in defsites, i.e. defined anywhere)
-	for (auto mm = defsites.begin(); mm != defsites.end(); mm++) {
+	for (auto mm = defsites.begin(); mm != defsites.end(); ++mm) {
 		Exp *a = mm->first;  // *mm is pair<Exp *, set<int>>
 
 		// Special processing for define-alls
@@ -309,7 +309,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 			W.erase(W.begin());  // Remove first element
 			// for each y in DF[n]
 			std::set<int> &DFn = DF[n];
-			for (auto yy = DFn.begin(); yy != DFn.end(); yy++) {
+			for (auto yy = DFn.begin(); yy != DFn.end(); ++yy) {
 				int y = *yy;
 				// if y not element of A_phi[a]
 				std::set<int> &s = A_phi[a];
@@ -386,7 +386,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 			} else {  // Not a phi assignment
 				S->addUsedLocs(locs);
 			}
-			for (auto xx = locs.begin(); xx != locs.end(); xx++) {
+			for (auto xx = locs.begin(); xx != locs.end(); ++xx) {
 				Exp *x = *xx;
 				// Don't rename memOfs that are not renamable according to the current policy
 				if (!canRename(x, proc)) continue;
@@ -449,7 +449,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// For each definition of some variable a in S
 		LocationSet defs;
 		S->getDefinitions(defs);
-		for (auto dd = defs.begin(); dd != defs.end(); dd++) {
+		for (auto dd = defs.begin(); dd != defs.end(); ++dd) {
 			Exp *a = *dd;
 			// Don't consider a if it cannot be renamed
 			bool suitable = canRename(a, proc);
@@ -487,7 +487,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 	// For each successor Y of block n
 	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
 	unsigned numSucc = outEdges.size();
-	for (unsigned succ = 0; succ < numSucc; succ++) {
+	for (unsigned succ = 0; succ < numSucc; ++succ) {
 		BasicBlock *Ybb = outEdges[succ];
 		// Suppose n is the jth predecessor of Y
 		int j = Ybb->whichPred(bb);
@@ -517,7 +517,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 	// For each child X of n
 	// Note: linear search!
 	unsigned numBB = proc->getCFG()->getNumBBs();
-	for (unsigned X = 0; X < numBB; X++) {
+	for (unsigned X = 0; X < numBB; ++X) {
 		if (idom[X] == n)
 			renameBlockVars(proc, X);
 	}
@@ -532,7 +532,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// For each definition of some variable a in S
 		LocationSet defs;
 		S->getDefinitions(defs);
-		for (auto dd = defs.begin(); dd != defs.end(); dd++) {
+		for (auto dd = defs.begin(); dd != defs.end(); ++dd) {
 			if (canRename(*dd, proc)) {
 				// if ((*dd)->getMemDepth() == memDepth)
 				auto ss = Stacks.find(*dd);
@@ -559,7 +559,7 @@ void
 DataFlow::dumpStacks()
 {
 	std::cerr << "Stacks: " << Stacks.size() << " entries\n";
-	for (auto zz = Stacks.begin(); zz != Stacks.end(); zz++) {
+	for (auto zz = Stacks.begin(); zz != Stacks.end(); ++zz) {
 		std::cerr << "Var " << zz->first << " [ ";
 		std::stack<Statement *>tt = zz->second;               // Copy the stack!
 		while (!tt.empty()) {
@@ -597,7 +597,7 @@ DataFlow::dumpA_orig()
 void
 DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc)
 {
-	for (auto it = Stacks.begin(); it != Stacks.end(); it++) {
+	for (auto it = Stacks.begin(); it != Stacks.end(); ++it) {
 		if (it->second.empty())
 			continue;  // This variable's definition doesn't reach here
 		// Create an assignment of the form loc := loc{def}

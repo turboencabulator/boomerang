@@ -59,7 +59,7 @@ operator <<(std::ostream &os, LocationSet *ls)
 void
 StatementSet::makeUnion(StatementSet &other)
 {
-	for (auto it = other.sset.begin(); it != other.sset.end(); it++) {
+	for (auto it = other.sset.begin(); it != other.sset.end(); ++it) {
 		sset.insert(*it);
 	}
 }
@@ -68,7 +68,7 @@ StatementSet::makeUnion(StatementSet &other)
 void
 StatementSet::makeDiff(StatementSet &other)
 {
-	for (auto it = other.sset.begin(); it != other.sset.end(); it++) {
+	for (auto it = other.sset.begin(); it != other.sset.end(); ++it) {
 		sset.erase(*it);
 	}
 }
@@ -77,7 +77,7 @@ StatementSet::makeDiff(StatementSet &other)
 void
 StatementSet::makeIsect(StatementSet &other)
 {
-	for (auto it = sset.begin(); it != sset.end(); it++) {
+	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		auto ff = other.sset.find(*it);
 		if (ff == other.sset.end())
 			// Not in both sets
@@ -90,7 +90,7 @@ StatementSet::makeIsect(StatementSet &other)
 bool
 StatementSet::isSubSetOf(StatementSet &other)
 {
-	for (auto it = sset.begin(); it != sset.end(); it++) {
+	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		auto ff = other.sset.find(*it);
 		if (ff == other.sset.end())
 			return false;
@@ -121,7 +121,7 @@ StatementSet::exists(Statement *s)
 bool
 StatementSet::definesLoc(Exp *loc)
 {
-	for (auto it = sset.begin(); it != sset.end(); it++) {
+	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		if ((*it)->definesLoc(loc))
 			return true;
 	}
@@ -133,7 +133,7 @@ char *
 StatementSet::prints()
 {
 	std::ostringstream ost;
-	for (auto it = sset.begin(); it != sset.end(); it++) {
+	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		if (it != sset.begin()) ost << ",\t";
 		ost << *it;
 	}
@@ -152,7 +152,7 @@ StatementSet::dump()
 void
 StatementSet::print(std::ostream &os)
 {
-	for (auto it = sset.begin(); it != sset.end(); it++) {
+	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		if (it != sset.begin()) os << ",\t";
 		os << *it;
 	}
@@ -179,7 +179,7 @@ StatementSet::operator <(const StatementSet &o) const
 {
 	if (sset.size() < o.sset.size()) return true;
 	if (sset.size() > o.sset.size()) return false;
-	for (auto it1 = sset.cbegin(), it2 = o.sset.cbegin(); it1 != sset.cend(); it1++, it2++) {
+	for (auto it1 = sset.cbegin(), it2 = o.sset.cbegin(); it1 != sset.cend(); ++it1, ++it2) {
 		if (*it1 < *it2) return true;
 		if (*it1 > *it2) return false;
 	}
@@ -194,7 +194,7 @@ StatementSet::operator <(const StatementSet &o) const
 void
 AssignSet::makeUnion(AssignSet &other)
 {
-	for (auto it = other.aset.begin(); it != other.aset.end(); it++) {
+	for (auto it = other.aset.begin(); it != other.aset.end(); ++it) {
 		aset.insert(*it);
 	}
 }
@@ -203,7 +203,7 @@ AssignSet::makeUnion(AssignSet &other)
 void
 AssignSet::makeDiff(AssignSet &other)
 {
-	for (auto it = other.aset.begin(); it != other.aset.end(); it++) {
+	for (auto it = other.aset.begin(); it != other.aset.end(); ++it) {
 		aset.erase(*it);
 	}
 }
@@ -212,7 +212,7 @@ AssignSet::makeDiff(AssignSet &other)
 void
 AssignSet::makeIsect(AssignSet &other)
 {
-	for (auto it = aset.begin(); it != aset.end(); it++) {
+	for (auto it = aset.begin(); it != aset.end(); ++it) {
 		auto ff = other.aset.find(*it);
 		if (ff == other.aset.end())
 			// Not in both sets
@@ -225,7 +225,7 @@ AssignSet::makeIsect(AssignSet &other)
 bool
 AssignSet::isSubSetOf(AssignSet &other)
 {
-	for (auto it = aset.begin(); it != aset.end(); it++) {
+	for (auto it = aset.begin(); it != aset.end(); ++it) {
 		auto ff = other.aset.find(*it);
 		if (ff == other.aset.end())
 			return false;
@@ -276,7 +276,7 @@ char *
 AssignSet::prints()
 {
 	std::ostringstream ost;
-	for (auto it = aset.begin(); it != aset.end(); it++) {
+	for (auto it = aset.begin(); it != aset.end(); ++it) {
 		if (it != aset.begin()) ost << ",\t";
 		ost << *it;
 	}
@@ -295,7 +295,7 @@ AssignSet::dump()
 void
 AssignSet::print(std::ostream &os)
 {
-	for (auto it = aset.begin(); it != aset.end(); it++) {
+	for (auto it = aset.begin(); it != aset.end(); ++it) {
 		if (it != aset.begin()) os << ",\t";
 		os << *it;
 	}
@@ -322,7 +322,7 @@ AssignSet::operator <(const AssignSet &o) const
 {
 	if (aset.size() < o.aset.size()) return true;
 	if (aset.size() > o.aset.size()) return false;
-	for (auto it1 = aset.cbegin(), it2 = o.aset.cbegin(); it1 != aset.cend(); it1++, it2++) {
+	for (auto it1 = aset.cbegin(), it2 = o.aset.cbegin(); it1 != aset.cend(); ++it1, ++it2) {
 		if (*it1 < *it2) return true;
 		if (*it1 > *it2) return false;
 	}
@@ -338,7 +338,7 @@ LocationSet &
 LocationSet::operator =(const LocationSet &o)
 {
 	lset.clear();
-	for (auto it = o.lset.cbegin(); it != o.lset.cend(); it++) {
+	for (auto it = o.lset.cbegin(); it != o.lset.cend(); ++it) {
 		lset.insert((*it)->clone());
 	}
 	return *this;
@@ -347,7 +347,7 @@ LocationSet::operator =(const LocationSet &o)
 // Copy constructor
 LocationSet::LocationSet(const LocationSet &o)
 {
-	for (auto it = o.lset.cbegin(); it != o.lset.cend(); it++)
+	for (auto it = o.lset.cbegin(); it != o.lset.cend(); ++it)
 		lset.insert((*it)->clone());
 }
 
@@ -355,7 +355,7 @@ char *
 LocationSet::prints()
 {
 	std::ostringstream ost;
-	for (auto it = lset.begin(); it != lset.end(); it++) {
+	for (auto it = lset.begin(); it != lset.end(); ++it) {
 		if (it != lset.begin()) ost << ",\t";
 		ost << *it;
 	}
@@ -373,7 +373,7 @@ LocationSet::dump()
 void
 LocationSet::print(std::ostream &os)
 {
-	for (auto it = lset.begin(); it != lset.end(); it++) {
+	for (auto it = lset.begin(); it != lset.end(); ++it) {
 		if (it != lset.begin()) os << ",\t";
 		os << *it;
 	}
@@ -411,7 +411,7 @@ LocationSet::removeIfDefines(StatementSet &given)
 void
 LocationSet::makeUnion(LocationSet &other)
 {
-	for (auto it = other.lset.begin(); it != other.lset.end(); it++) {
+	for (auto it = other.lset.begin(); it != other.lset.end(); ++it) {
 		lset.insert(*it);
 	}
 }
@@ -420,7 +420,7 @@ LocationSet::makeUnion(LocationSet &other)
 void
 LocationSet::makeDiff(LocationSet &other)
 {
-	for (auto it = other.lset.begin(); it != other.lset.end(); it++) {
+	for (auto it = other.lset.begin(); it != other.lset.end(); ++it) {
 		lset.erase(*it);
 	}
 }
@@ -430,7 +430,7 @@ LocationSet::operator ==(const LocationSet &o) const
 {
 	// We want to compare the locations, not the pointers
 	if (size() != o.size()) return false;
-	for (auto it1 = lset.cbegin(), it2 = o.lset.cbegin(); it1 != lset.cend(); it1++, it2++) {
+	for (auto it1 = lset.cbegin(), it2 = o.lset.cbegin(); it1 != lset.cend(); ++it1, ++it2) {
 		if (!(**it1 == **it2)) return false;
 	}
 	return true;
@@ -506,7 +506,7 @@ void
 LocationSet::addSubscript(Statement *d /* , Cfg *cfg */)
 {
 	std::set<Exp *, lessExpStar> newSet;
-	for (auto it = lset.begin(); it != lset.end(); it++)
+	for (auto it = lset.begin(); it != lset.end(); ++it)
 		newSet.insert((*it)->expSubscriptVar(*it, d /* , cfg */));
 	lset = newSet;  // Replace the old set!
 	// Note: don't delete the old exps; they are copied in the new set
@@ -527,7 +527,7 @@ LocationSet::substitute(Assign &a)
 	LocationSet removeAndDelete;  // These will be removed then deleted
 	LocationSet insertSet;        // These will be inserted after the loop
 	bool change;
-	for (auto it = lset.begin(); it != lset.end(); it++) {
+	for (auto it = lset.begin(); it != lset.end(); ++it) {
 		Exp *loc = *it;
 		Exp *replace;
 		if (loc->search(lhs, replace)) {
@@ -563,7 +563,7 @@ LocationSet::substitute(Assign &a)
 	makeDiff(removeAndDelete);  // These are to be removed as well
 	makeUnion(insertSet);       // Insert the items to be added
 	// Now delete the expressions that are no longer needed
-	for (auto dd = removeAndDelete.lset.begin(); dd != removeAndDelete.lset.end(); dd++)
+	for (auto dd = removeAndDelete.lset.begin(); dd != removeAndDelete.lset.end(); ++dd)
 		delete *dd;  // Plug that memory leak
 }
 
@@ -574,7 +574,7 @@ LocationSet::substitute(Assign &a)
 bool
 StatementList::remove(Statement *s)
 {
-	for (auto it = slist.begin(); it != slist.end(); it++) {
+	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		if (*it == s) {
 			slist.erase(it);
 			return true;
@@ -586,7 +586,7 @@ StatementList::remove(Statement *s)
 void
 StatementList::append(StatementList &sl)
 {
-	for (auto it = sl.slist.begin(); it != sl.slist.end(); it++) {
+	for (auto it = sl.slist.begin(); it != sl.slist.end(); ++it) {
 		slist.push_back(*it);
 	}
 }
@@ -594,7 +594,7 @@ StatementList::append(StatementList &sl)
 void
 StatementList::append(StatementSet &ss)
 {
-	for (auto it = ss.begin(); it != ss.end(); it++) {
+	for (auto it = ss.begin(); it != ss.end(); ++it) {
 		slist.push_back(*it);
 	}
 }
@@ -603,7 +603,7 @@ char *
 StatementList::prints()
 {
 	std::ostringstream ost;
-	for (auto it = slist.begin(); it != slist.end(); it++) {
+	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		ost << *it << ",\t";
 	}
 	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
@@ -629,7 +629,7 @@ StatementVec::remove(iterator it)
 #if 0
 	auto oldoldit = it;
 	auto oldit = it;
-	for (it++; it != svec.end(); it++, oldit++)
+	for (++it; it != svec.end(); ++it, ++oldit)
 		*oldit = *it;
 	svec.resize(svec.size() - 1);
 	return oldoldit;
@@ -641,7 +641,7 @@ char *
 StatementVec::prints()
 {
 	std::ostringstream ost;
-	for (auto it = svec.begin(); it != svec.end(); it++) {
+	for (auto it = svec.begin(); it != svec.end(); ++it) {
 		ost << *it << ",\t";
 	}
 	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
@@ -681,7 +681,7 @@ void
 StatementList::makeCloneOf(StatementList &o)
 {
 	slist.clear();
-	for (auto it = o.slist.begin(); it != o.slist.end(); it++)
+	for (auto it = o.slist.begin(); it != o.slist.end(); ++it)
 		slist.push_back((*it)->clone());
 }
 
@@ -690,7 +690,7 @@ StatementList::makeCloneOf(StatementList &o)
 bool
 StatementList::existsOnLeft(Exp *loc)
 {
-	for (auto it = slist.begin(); it != slist.end(); it++) {
+	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		if (*((Assignment *)*it)->getLeft() == *loc)
 			return true;
 	}
@@ -702,7 +702,7 @@ StatementList::existsOnLeft(Exp *loc)
 void
 StatementList::removeDefOf(Exp *loc)
 {
-	for (auto it = slist.begin(); it != slist.end(); it++) {
+	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		if (*((Assignment *)*it)->getLeft() == *loc) {
 			erase(it);
 			return;
@@ -716,7 +716,7 @@ StatementList::findOnLeft(Exp *loc)
 {
 	if (slist.empty())
 		return nullptr;
-	for (auto it = slist.begin(); it != slist.end(); it++) {
+	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		Exp *left = ((Assignment *)*it)->getLeft();
 		if (*left == *loc)
 			return (Assignment *)*it;
@@ -735,7 +735,7 @@ void
 LocationSet::diff(LocationSet *o)
 {
 	bool printed2not1 = false;
-	for (auto it = o->lset.begin(); it != o->lset.end(); it++) {
+	for (auto it = o->lset.begin(); it != o->lset.end(); ++it) {
 		Exp *oe = *it;
 		if (lset.find(oe) == lset.end()) {
 			if (!printed2not1) {
@@ -748,7 +748,7 @@ LocationSet::diff(LocationSet *o)
 	if (printed2not1)
 		std::cerr << "\n";
 	bool printed1not2 = false;
-	for (auto it = lset.begin(); it != lset.end(); it++) {
+	for (auto it = lset.begin(); it != lset.end(); ++it) {
 		Exp *e = *it;
 		if (o->lset.find(e) == o->lset.end()) {
 			if (!printed1not2) {
@@ -916,7 +916,7 @@ RangeMap::getRange(Exp *loc)
 void
 RangeMap::unionwith(RangeMap &other)
 {
-	for (auto it = other.ranges.begin(); it != other.ranges.end(); it++) {
+	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
 		if (ranges.find(it->first) == ranges.end()) {
 			ranges[it->first] = it->second;
 		} else {
@@ -928,7 +928,7 @@ RangeMap::unionwith(RangeMap &other)
 void
 RangeMap::widenwith(RangeMap &other)
 {
-	for (auto it = other.ranges.begin(); it != other.ranges.end(); it++) {
+	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
 		if (ranges.find(it->first) == ranges.end()) {
 			ranges[it->first] = it->second;
 		} else {
@@ -940,7 +940,7 @@ RangeMap::widenwith(RangeMap &other)
 void
 RangeMap::print(std::ostream &os)
 {
-	for (auto it = ranges.begin(); it != ranges.end(); it++) {
+	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
 		if (it != ranges.begin())
 			os << ", ";
 		it->first->print(os);
@@ -956,7 +956,7 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 	int count = 0;
 	do {
 		changes = false;
-		for (auto it = ranges.begin(); it != ranges.end(); it++) {
+		for (auto it = ranges.begin(); it != ranges.end(); ++it) {
 			if (only && only->find(it->first) == only->end())
 				continue;
 			bool change = false;
@@ -971,7 +971,7 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 				changes = true;
 			}
 		}
-		count++;
+		++count;
 		assert(count < 5);
 	} while (changes);
 	return e;
@@ -980,7 +980,7 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 void
 RangeMap::killAllMemOfs()
 {
-	for (auto it = ranges.begin(); it != ranges.end(); it++) {
+	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
 		if (it->first->isMemOf()) {
 			Range empty;
 			it->second.unionWith(empty);
@@ -1001,7 +1001,7 @@ Range::operator ==(Range &other)
 bool
 RangeMap::isSubset(RangeMap &other)
 {
-	for (auto it = ranges.begin(); it != ranges.end(); it++) {
+	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
 		if (other.ranges.find(it->first) == other.ranges.end()) {
 			if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 				LOG << "did not find " << it->first << " in other, not a subset\n";

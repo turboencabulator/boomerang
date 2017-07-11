@@ -35,8 +35,8 @@ print_section(const SectionInfo *pSect)
 		printf("%04x:", a);
 		for (int j = 0; (j < 16) && (off < pSect->uSectionSize); ++j) {
 			printf(" %02x", *p++);
-			a++;
-			off++;
+			++a;
+			++off;
 		}
 		printf("\n");
 	}

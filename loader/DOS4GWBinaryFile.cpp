@@ -31,7 +31,7 @@ DOS4GWBinaryFile::DOS4GWBinaryFile()
 
 DOS4GWBinaryFile::~DOS4GWBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; i++)
+	for (int i = 0; i < m_iNumSections; ++i)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete    m_pLXHeader;
@@ -177,7 +177,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	m_pLXObjects = new LXObject[m_pLXHeader->numobjsinmodule];
 	ifs.seekg(lxoff + m_pLXHeader->objtbloffset);
 	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * m_pLXHeader->numobjsinmodule);
-	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++) {
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
 		m_pLXObjects[n].VirtualSize       = LMMH(m_pLXObjects[n].VirtualSize);
 		m_pLXObjects[n].RelocBaseAddr     = LMMH(m_pLXObjects[n].RelocBaseAddr);
 		m_pLXObjects[n].ObjectFlags       = LMMH(m_pLXObjects[n].ObjectFlags);
@@ -191,7 +191,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 #if 0
 	unsigned npagetblentries = 0;
 	m_cbImage = 0;
-	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++) {
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
 		if (npagetblentries < m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1)
 			npagetblentries = m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1;
 		if (m_pLXObjects[n].ObjectFlags & 0x40)
@@ -207,7 +207,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	unsigned npages = 0;
 	m_cbImage = 0;
-	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++)
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n)
 		if (m_pLXObjects[n].ObjectFlags & 0x40) {
 			if (npages < m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1)
 				npages = m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1;
@@ -220,7 +220,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	m_iNumSections = m_pLXHeader->numobjsinmodule;
 	m_pSections = new SectionInfo[m_iNumSections];
-	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; n++)
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n)
 		if (m_pLXObjects[n].ObjectFlags & 0x40) {
 			printf("vsize %x reloc %x flags %x page %i npage %i\n",
 			       m_pLXObjects[n].VirtualSize,
@@ -341,12 +341,12 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	unsigned int *fixuppagetbl = new unsigned int[npages + 1];
 	ifs.seekg(m_pLXHeader->fixuppagetbloffset + lxoff);
 	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
-	for (unsigned n = 0; n < npages + 1; n++) {
+	for (unsigned n = 0; n < npages + 1; ++n) {
 		fixuppagetbl[n] = LMMH(fixuppagetbl[n]);
 	}
 
 #if 0
-	for (unsigned n = 0; n < npages; n++)
+	for (unsigned n = 0; n < npages; ++n)
 		printf("offset for page %i: %x\n", n + 1, fixuppagetbl[n]);
 	printf("offset to end of fixup rec: %x\n", fixuppagetbl[npages]);
 #endif
@@ -379,7 +379,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 		*(unsigned int *)(base + src) = target;
 
 		while ((std::streamsize)ifs.tellg() - (m_pLXHeader->fixuprecordtbloffset + lxoff) >= fixuppagetbl[srcpage + 1])
-			srcpage++;
+			++srcpage;
 	} while (srcpage < npages);
 
 	return true;
@@ -420,7 +420,7 @@ DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false 
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)
 			return it->first;
-		it++;
+		++it;
 	}
 	return NO_ADDRESS;
 }

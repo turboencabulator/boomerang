@@ -174,7 +174,7 @@ UserProc::setParamType(int idx, Type *ty)
 {
 	int n = 0;
 	auto it = parameters.begin();
-	for (; n != idx && it != parameters.end(); it++, n++)
+	for (; n != idx && it != parameters.end(); ++it, ++n)
 		;
 	if (it != parameters.end()) {
 		Assign *a = (Assign *)*it;
@@ -209,7 +209,7 @@ Proc::printCallGraphXML(std::ostream &os, int depth, bool recurse)
 	if (!DUMP_XML)
 		return;
 	visited = true;
-	for (int i = 0; i < depth; i++) os << "\t";
+	for (int i = 0; i < depth; ++i) os << "\t";
 	os << "<proc name=\"" << getName() << "\"/>\n";
 }
 
@@ -221,13 +221,13 @@ UserProc::printCallGraphXML(std::ostream &os, int depth, bool recurse)
 	bool wasVisited = visited;
 	visited = true;
 	int i;
-	for (i = 0; i < depth; i++) os << "\t";
+	for (i = 0; i < depth; ++i) os << "\t";
 	os << "<proc name=\"" << getName() << "\">\n";
 	if (recurse) {
-		for (auto it = calleeList.begin(); it != calleeList.end(); it++)
+		for (auto it = calleeList.begin(); it != calleeList.end(); ++it)
 			(*it)->printCallGraphXML(os, depth + 1, !wasVisited && !(*it)->isVisited());
 	}
-	for (i = 0; i < depth; i++) os << "\t";
+	for (i = 0; i < depth; ++i) os << "\t";
 	os << "</proc>\n";
 }
 
@@ -239,11 +239,11 @@ Proc::printDetailsXML()
 	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-details.xml").c_str());
 	out << "<proc name=\"" << getName() << "\">\n";
 	unsigned i;
-	for (i = 0; i < signature->getNumParams(); i++)
+	for (i = 0; i < signature->getNumParams(); ++i)
 		out << "\t<param name=\"" << signature->getParamName(i)
 		    << "\" exp=\"" << signature->getParamExp(i)
 		    << "\" type=\"" << signature->getParamType(i)->getCtype() << "\"/>\n";
-	for (i = 0; i < signature->getNumReturns(); i++)
+	for (i = 0; i < signature->getNumReturns(); ++i)
 		out << "\t<return exp=\"" << signature->getReturnExp(i)
 		    << "\" type=\"" << signature->getReturnType(i)->getCtype() << "\"/>\n";
 	out << "</proc>\n";
@@ -322,13 +322,13 @@ UserProc::printUseGraph()
 	out << "digraph " << getName() << " {\n";
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->isPhi())
 			out << s->getNumber() << " [shape=diamond];\n";
 		LocationSet refs;
 		s->addUsedLocs(refs);
-		for (auto rr = refs.begin(); rr != refs.end(); rr++) {
+		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
 			if (((Exp *)*rr)->isSubscript()) {
 				RefExp *r = (RefExp *)*rr;
 				if (r->getDef())
@@ -466,7 +466,7 @@ UserProc::getAST()
 		BlockSyntaxNode *b = new BlockSyntaxNode();
 		b->setBB(bb);
 		init->addStatement(b);
-		numBBs++;
+		++numBBs;
 	}
 
 	// perform a best first search for the nicest AST
@@ -495,14 +495,14 @@ UserProc::getAST()
 			best_score = score;
 		}
 
-		count++;
+		++count;
 		if (count > 100)
 			break;
 
 		// add successors
 		std::vector<SyntaxNode *> successors;
 		top->addSuccessors(top, successors);
-		for (unsigned i = 0; i < successors.size(); i++) {
+		for (unsigned i = 0; i < successors.size(); ++i) {
 			//successors[i]->addToScore(top->getScore());  // uncomment for A*
 			successors[i]->addToScore(successors[i]->getDepth()); // or this
 			ASTs.push(successors[i]);
@@ -598,7 +598,7 @@ void
 UserProc::addCallee(Proc *callee)
 {
 	// is it already in? (this is much slower than using a set)
-	for (auto cc = calleeList.begin(); cc != calleeList.end(); cc++)
+	for (auto cc = calleeList.begin(); cc != calleeList.end(); ++cc)
 		if (*cc == callee)
 			return; // it's already in
 
@@ -624,8 +624,8 @@ UserProc::generateCode(HLLCode *hll)
 
 	// Local variables; print everything in the locals map
 	auto last = locals.end();
-	if (!locals.empty()) last--;
-	for (auto it = locals.begin(); it != locals.end(); it++) {
+	if (!locals.empty()) --last;
+	for (auto it = locals.begin(); it != locals.end(); ++it) {
 		Type *locType = it->second;
 		if (!locType || locType->isVoid())
 			locType = new IntegerType();
@@ -737,14 +737,14 @@ UserProc::printDFG()
 {
 	char fname[1024];
 	sprintf(fname, "%s%s-%i-dfg.dot", Boomerang::get()->getOutputPath().c_str(), getName(), DFGcount);
-	DFGcount++;
+	++DFGcount;
 	if (VERBOSE)
 		LOG << "outputing DFG to " << fname << "\n";
 	std::ofstream out(fname);
 	out << "digraph " << getName() << " {\n";
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->isPhi())
 			out << "\t" << s->getNumber() << " [shape=triangle];\n";
@@ -754,7 +754,7 @@ UserProc::printDFG()
 			out << "\t" << s->getNumber() << " [shape=diamond];\n";
 		LocationSet refs;
 		s->addUsedLocs(refs);
-		for (auto rr = refs.begin(); rr != refs.end(); rr++) {
+		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
 			RefExp *r = dynamic_cast<RefExp *>(*rr);
 			if (r) {
 				out << "\t";
@@ -826,7 +826,7 @@ UserProc::getStatements(StatementList &stmts)
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
 		bb->getStatements(stmts);
 
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if (!(*it)->getProc())
 			(*it)->setProc(this);
 }
@@ -842,7 +842,7 @@ UserProc::removeStatement(Statement *stmt)
 		it->second->addUsedLocs(refs);
 		it->first->addUsedLocs(refs);  // Could be say m[esp{99} - 4] on LHS and we are deleting stmt 99
 		bool usesIt = false;
-		for (auto rr = refs.begin(); rr != refs.end(); rr++) {
+		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
 			Exp *r = *rr;
 			if (r->isSubscript() && ((RefExp *)r)->getDef() == stmt) {
 				usesIt = true;
@@ -863,9 +863,9 @@ UserProc::removeStatement(Statement *stmt)
 	// remove from BB/RTL
 	BasicBlock *bb = stmt->getBB();  // Get our enclosing BB
 	std::list<RTL *> *rtls = bb->getRTLs();
-	for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
+	for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
 		std::list<Statement *> &stmts = (*rit)->getList();
-		for (auto it = stmts.begin(); it != stmts.end(); it++) {
+		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 			if (*it == stmt) {
 				stmts.erase(it);
 				return;
@@ -905,15 +905,15 @@ UserProc::insertAssignAfter(Statement *s, Exp *left, Exp *right)
 void
 UserProc::insertStatementAfter(Statement *s, Statement *a)
 {
-	for (auto bb = cfg->begin(); bb != cfg->end(); bb++) {
+	for (auto bb = cfg->begin(); bb != cfg->end(); ++bb) {
 		std::list<RTL *> *rtls = (*bb)->getRTLs();
 		if (!rtls)
 			continue;  // e.g. *bb is (as yet) invalid
-		for (auto rr = rtls->begin(); rr != rtls->end(); rr++) {
+		for (auto rr = rtls->begin(); rr != rtls->end(); ++rr) {
 			std::list<Statement *> &stmts = (*rr)->getList();
-			for (auto ss = stmts.begin(); ss != stmts.end(); ss++) {
+			for (auto ss = stmts.begin(); ss != stmts.end(); ++ss) {
 				if (*ss == s) {
-					ss++;  // This is the point to insert before
+					++ss;  // This is the point to insert before
 					stmts.insert(ss, a);
 					return;
 				}
@@ -1332,7 +1332,7 @@ UserProc::middleDecompile(ProcList *path, int indent)
 #if 1  // FIXME: Check if this is needed any more. At least fib seems to need it at present.
 		if (!Boomerang::get()->noChangeSignatures) {
 			// addNewReturns(depth);
-			for (int i = 0; i < 3; i++) {  // FIXME: should be iterate until no change
+			for (int i = 0; i < 3; ++i) {  // FIXME: should be iterate until no change
 				if (VERBOSE)
 					LOG << "### update returns loop iteration " << i << " ###\n";
 				if (status != PROC_INCYCLE)
@@ -1634,7 +1634,7 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 			Statement *s = *ll;
 			if (!s->isAssignment()) {
 				// Never delete a statement other than an assignment (e.g. nothing "uses" a Jcond)
-				ll++;
+				++ll;
 				continue;
 			}
 			Assignment *as = (Assignment *)s;
@@ -1642,24 +1642,24 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 			// If depth < 0, consider all depths
 #if 0
 			if (asLeft && depth >= 0 && asLeft->getMemDepth() > depth) {
-				ll++;
+				++ll;
 				continue;
 			}
 #endif
 			if (asLeft && asLeft->getOper() == opGlobal) {
 				// assignments to globals must always be kept
-				ll++;
+				++ll;
 				continue;
 			}
 			// If it's a memof and renameable it can still be deleted
 			if (asLeft->getOper() == opMemOf && !canRename(asLeft)) {
 				// Assignments to memof-anything-but-local must always be kept.
-				ll++;
+				++ll;
 				continue;
 			}
 			if (asLeft->getOper() == opMemberAccess || asLeft->getOper() == opArrayIndex) {
 				// can't say with these; conservatively never remove them
-				ll++;
+				++ll;
 				continue;
 			}
 			if (refCounts.find(s) == refCounts.end() || refCounts[s] == 0) {  // Care not to insert unnecessarily
@@ -1669,17 +1669,17 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 				StatementSet stmtsRefdByUnused;
 				LocationSet components;
 				s->addUsedLocs(components, false);  // Second parameter false to ignore uses in collectors
-				for (auto cc = components.begin(); cc != components.end(); cc++) {
+				for (auto cc = components.begin(); cc != components.end(); ++cc) {
 					if ((*cc)->isSubscript()) {
 						stmtsRefdByUnused.insert(((RefExp *)*cc)->getDef());
 					}
 				}
-				for (auto dd = stmtsRefdByUnused.begin(); dd != stmtsRefdByUnused.end(); dd++) {
+				for (auto dd = stmtsRefdByUnused.begin(); dd != stmtsRefdByUnused.end(); ++dd) {
 					if (!*dd) continue;
 					if (DEBUG_UNUSED)
 						LOG << "decrementing ref count of " << (*dd)->getNumber()
 						    << " because " << s->getNumber() << " is unused\n";
-					refCounts[*dd]--;
+					--refCounts[*dd];
 				}
 				if (DEBUG_UNUSED)
 					LOG << "removing unused statement " << s->getNumber() << " " << s << "\n";
@@ -1688,7 +1688,7 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 				change = true;
 				continue;  // Don't call getNext this time
 			}
-			ll++;
+			++ll;
 		}
 	} while (change);
 	// Recaluclate at least the livenesses. Example: first call to printf in test/pentium/fromssa2, eax used only in a
@@ -1741,7 +1741,7 @@ UserProc::recursionGroupAnalysis(ProcList *path, int indent)
 
 	// FIXME: why exactly do we do this?
 	// Mark all the relevant calls as non childless (will harmlessly get done again later)
-	for (auto it = cycleGrp->begin(); it != cycleGrp->end(); it++)
+	for (auto it = cycleGrp->begin(); it != cycleGrp->end(); ++it)
 		(*it)->markAsNonChildless(cycleGrp);
 
 	// Need to propagate into the initial arguments, since arguments are uses, and we are about to remove unused
@@ -1755,7 +1755,7 @@ UserProc::recursionGroupAnalysis(ProcList *path, int indent)
 	}
 
 	// while no change
-	for (int i = 0; i < 2; i++) {
+	for (int i = 0; i < 2; ++i) {
 		for (auto p = cycleGrp->begin(); p != cycleGrp->end(); ++p) {
 			(*p)->remUnusedStmtEtc();  // Also does final parameters and arguments at present
 		}
@@ -1786,7 +1786,7 @@ UserProc::branchAnalysis()
 
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *stmt = *it;
 		if (stmt->isBranch()) {
 			BranchStatement *branch = (BranchStatement *)stmt;
@@ -1853,7 +1853,7 @@ UserProc::fixUglyBranches()
 
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *stmt = *it;
 		if (stmt->isBranch()) {
 			Exp *hl = ((BranchStatement *)stmt)->getCondExpr();
@@ -1868,7 +1868,7 @@ UserProc::fixUglyBranches()
 				Statement *n = ((RefExp *)hl->getSubExp1()->getSubExp1())->getDef();
 				if (n && n->isPhi()) {
 					PhiAssign *p = (PhiAssign *)n;
-					for (int i = 0; i < p->getNumDefs(); i++)
+					for (int i = 0; i < p->getNumDefs(); ++i)
 						if (p->getStmtAt(i)->isAssign()) {
 							Assign *a = (Assign *)p->getStmtAt(i);
 							if (*a->getRight() == *hl->getSubExp1()) {
@@ -1909,12 +1909,12 @@ UserProc::findSpPreservation()
 	// Note: need this non-virtual version most of the time, since nothing proved yet
 	int sp = signature->getStackRegister(prog);
 
-	for (int n = 0; n < 2; n++) {
+	for (int n = 0; n < 2; ++n) {
 		// may need to do multiple times due to dependencies FIXME: efficiency! Needed any more?
 
 		// Special case for 32-bit stack-based machines (e.g. Pentium).
 		// RISC machines generally preserve the stack pointer (so no special case required)
-		for (int p = 0; !stdsp && p < 8; p++) {
+		for (int p = 0; !stdsp && p < 8; ++p) {
 			if (DEBUG_PROOF)
 				LOG << "attempting to prove sp = sp + " << p * 4 << " for " << getName() << "\n";
 			stdsp = prove(new Binary(opEquals,
@@ -1927,7 +1927,7 @@ UserProc::findSpPreservation()
 
 	if (DEBUG_PROOF) {
 		LOG << "proven for " << getName() << ":\n";
-		for (auto it = provenTrue.begin(); it != provenTrue.end(); it++)
+		for (auto it = provenTrue.begin(); it != provenTrue.end(); ++it)
 			LOG << it->first << " = " << it->second << "\n";
 	}
 }
@@ -1963,12 +1963,12 @@ UserProc::findPreserveds()
 
 	if (DEBUG_PROOF) {
 		LOG << "### proven true for procedure " << getName() << ":\n";
-		for (auto it = provenTrue.begin(); it != provenTrue.end(); it++)
+		for (auto it = provenTrue.begin(); it != provenTrue.end(); ++it)
 			LOG << it->first << " = " << it->second << "\n";
 		LOG << "### end proven true for procedure " << getName() << "\n\n";
 #if PROVEN_FALSE
 		LOG << "### proven false for procedure " << getName() << ":\n";
-		for (auto it = provenFalse.begin(); it != provenFalse.end(); it++)
+		for (auto it = provenFalse.begin(); it != provenFalse.end(); ++it)
 			LOG << it->first << " != " << it->second << "\n";
 		LOG << "### end proven false for procedure " << getName() << "\n\n";
 #endif
@@ -1998,13 +1998,13 @@ UserProc::removeSpAssignsIfPossible()
 
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *stmt = *it;
 		if (stmt->isAssign() && *((Assign *)stmt)->getLeft() == *sp)
 			foundone = true;
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
-		for (auto rr = refs.begin(); rr != refs.end(); rr++)
+		for (auto rr = refs.begin(); rr != refs.end(); ++rr)
 			if ((*rr)->isSubscript() && *(*rr)->getSubExp1() == *sp) {
 				Statement *def = ((RefExp *)(*rr))->getDef();
 				if (def && def->getProc() == this)
@@ -2017,7 +2017,7 @@ UserProc::removeSpAssignsIfPossible()
 
 	Boomerang::get()->alert_decompile_debug_point(this, "before removing stack pointer assigns.");
 
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if ((*it)->isAssign()) {
 			Assign *a = (Assign *)*it;
 			if (*a->getLeft() == *sp) {
@@ -2039,7 +2039,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *stmt = *it;
 		if (stmt->isAssign() && *((Assign *)stmt)->getLeft() == *e)
 			foundone = true;
@@ -2050,7 +2050,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 		}
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
-		for (auto rr = refs.begin(); rr != refs.end(); rr++)
+		for (auto rr = refs.begin(); rr != refs.end(); ++rr)
 			if ((*rr)->isSubscript() && *(*rr)->getSubExp1() == *e) {
 				Statement *def = ((RefExp *)(*rr))->getDef();
 				if (def && def->getProc() == this)
@@ -2067,7 +2067,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 	if (VERBOSE)
 		LOG << str.str().c_str() << "\n";
 
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if ((*it)->isAssign()) {
 			Assign *a = (Assign *)*it;
 			if (*a->getLeft() == *e)
@@ -2100,7 +2100,7 @@ UserProc::assignProcsToCalls()
 			pBB = cfg->getNextBB(it);
 			continue;
 		}
-		for (auto it2 = rtls->begin(); it2 != rtls->end(); it2++) {
+		for (auto it2 = rtls->begin(); it2 != rtls->end(); ++it2) {
 			if (!(*it2)->isCall()) continue;
 			CallStatement *call = (CallStatement *)(*it2)->getList().back();
 			if (!call->getDestProc() && !call->isComputed()) {
@@ -2134,8 +2134,8 @@ UserProc::finalSimplify()
 			pBB = cfg->getNextBB(it);
 			continue;
 		}
-		for (auto rit = pRtls->begin(); rit != pRtls->end(); rit++) {
-			for (int i = 0; i < (*rit)->getNumStmt(); i++) {
+		for (auto rit = pRtls->begin(); rit != pRtls->end(); ++rit) {
+			for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
 				Statement *rt = (*rit)->elementAt(i);
 				rt->simplifyAddr();
 				// Also simplify everything; in particular, stack offsets are
@@ -2295,7 +2295,7 @@ void UserProc::trimParameters(int depth)
 	bool referenced[64];
 	assert(totparams <= (int)(sizeof referenced / sizeof *referenced));
 	int i;
-	for (i = 0; i < nparams; i++) {
+	for (i = 0; i < nparams; ++i) {
 		referenced[i] = false;
 		// Push parameters implicitly defined e.g. m[r28{0}+8]{0}, (these are the parameters for the current proc)
 		params.push_back(signature->getParamExp(i)->clone()->expSubscriptAllNull());
@@ -2303,10 +2303,10 @@ void UserProc::trimParameters(int depth)
 
 	std::set<Statement *> excluded;
 
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (!s->isCall() || ((CallStatement *)s)->getDestProc() != this) {
-			for (int i = 0; i < totparams; i++) {
+			for (int i = 0; i < totparams; ++i) {
 				Exp *p, *pe;
 #if 0
 				if (i < nparams) {
@@ -2336,7 +2336,7 @@ void UserProc::trimParameters(int depth)
 					if (DEBUG_UNUSED)
 						LOG << "searching " << s << " for uses of " << params[i] << "\n";
 					PhiAssign *pa = (PhiAssign *)s;
-					for (auto it1 = pa->begin(); it1 != pa->end(); it1++)
+					for (auto it1 = pa->begin(); it1 != pa->end(); ++it1)
 						if (!it1->def) {
 							referenced[i] = true;
 							if (DEBUG_UNUSED)
@@ -2349,7 +2349,7 @@ void UserProc::trimParameters(int depth)
 		}
 	}
 
-	for (i = 0; i < totparams; i++) {
+	for (i = 0; i < totparams; ++i) {
 		if (!referenced[i] && (depth == -1 || params[i]->getMemDepth() == depth)) {
 			bool allZero;
 			Exp *e = params[i]->removeSubscripts(allZero);
@@ -2374,7 +2374,7 @@ Proc::removeParameter(Exp *e)
 	int n = signature->findParam(e);
 	if (n != -1) {
 		signature->removeParameter(n);
-		for (auto it = callerSet.begin(); it != callerSet.end(); it++) {
+		for (auto it = callerSet.begin(); it != callerSet.end(); ++it) {
 			if (DEBUG_UNUSED)
 				LOG << "removing argument " << e << " in pos " << n << " from " << *it << "\n";
 			(*it)->removeArgument(n);
@@ -2409,12 +2409,12 @@ UserProc::processFloatConstants()
 	                         new Terminal(opWild),
 	                         Location::memOf(new Terminal(opWild)));
 
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 
 		std::list<Exp *> results;
 		s->searchAll(match, results);
-		for (auto it1 = results.begin(); it1 != results.end(); it1++) {
+		for (auto it1 = results.begin(); it1 != results.end(); ++it1) {
 			Ternary *fsize = (Ternary *)*it1;
 			if (fsize->getSubExp3()->getOper() == opMemOf
 			 && fsize->getSubExp3()->getSubExp1()->getOper() == opIntConst) {
@@ -2458,7 +2458,7 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 	 && le->getSubExp1()->getSubExp1()->isSubscript()
 	 && le->getSubExp1()->getSubExp1()->getSubExp1()->isRegN(signature->getStackRegister())
 	 && le->getSubExp1()->getSubExp2()->isIntConst()) {
-		for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+		for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 			if (it->second->isLocal()) {
 				const char *nam = ((Const *)it->second->getSubExp1())->getStr();
 				if (locals.find(nam) != locals.end()) {
@@ -2560,10 +2560,10 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 	}
 
 	// start with calls because that's where we have the most types
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		if ((*it)->isCall()) {
 			CallStatement *call = (CallStatement *)*it;
-			for (int i = 0; i < call->getNumArguments(); i++) {
+			for (int i = 0; i < call->getNumArguments(); ++i) {
 				Type *ty = call->getArgumentType(i);
 				Exp *e = call->getArgumentExp(i);
 				// If a pointer type and e is of the form m[sp{0} - K]:
@@ -2603,11 +2603,11 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 
 	// normalise sp usage (turn WILD + sp{0} into sp{0} + WILD)
 	Exp *nn = new Binary(opPlus, new Terminal(opWild), new RefExp(Location::regOf(sp), nullptr));
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		std::list<Exp *> results;
 		s->searchAll(nn, results);
-		for (auto it1 = results.begin(); it1 != results.end(); it1++) {
+		for (auto it1 = results.begin(); it1 != results.end(); ++it1) {
 			Exp *wild = (*it1)->getSubExp1();
 			(*it1)->setSubExp1((*it1)->getSubExp2());
 			(*it1)->setSubExp2(wild);
@@ -2622,11 +2622,11 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 	                                               new RefExp(Location::regOf(sp), nullptr),
 	                                               new Terminal(opWild)),
 	                                    new Terminal(opWildIntConst)));
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		std::list<Exp *> results;
 		s->searchAll(l, results);
-		for (auto it1 = results.begin(); it1 != results.end(); it1++) {
+		for (auto it1 = results.begin(); it1 != results.end(); ++it1) {
 			Exp *result = *it1;
 			// arr = m[sp{0} - K2]
 			Location *arr = Location::memOf(new Binary(opMinus,
@@ -2679,11 +2679,11 @@ UserProc::searchRegularLocals(OPER minusOrPlus, bool lastPass, int sp, Statement
 		l = Location::memOf(new Binary(minusOrPlus,
 		                               new RefExp(Location::regOf(sp), nullptr),
 		                               new Terminal(opWildIntConst)));
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		std::list<Exp *> results;
 		s->searchAll(l, results);
-		for (auto it1 = results.begin(); it1 != results.end(); it1++) {
+		for (auto it1 = results.begin(); it1 != results.end(); ++it1) {
 			Exp *result = *it1;
 			Type *ty = s->getTypeFor(result);
 			Exp *e = getSymbolExp(result, ty, lastPass);
@@ -2705,7 +2705,7 @@ UserProc::removeNullStatements()
 	StatementList stmts;
 	getStatements(stmts);
 	// remove null code
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->isNullStatement()) {
 			// A statement of the form x := x
@@ -2735,7 +2735,7 @@ UserProc::propagateStatements(bool &convert, int pass)
 	// Next pass: count the number of times each assignment LHS would be propagated somewhere
 	std::map<Exp *, int, lessExpStar> destCounts;
 	// Also maintain a set of locations which are used by phi statements
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		ExpDestCounter edc(destCounts);
 		StmtDestCounter sdc(&edc);
@@ -2747,14 +2747,14 @@ UserProc::propagateStatements(bool &convert, int pass)
 #endif
 	// A fourth pass to propagate only the flags (these must be propagated even if it results in extra locals)
 	bool change = false;
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->isPhi()) continue;
 		change |= s->propagateFlagsTo();
 	}
 	// Finally the actual propagation
 	convert = false;
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->isPhi()) continue;
 		change |= s->propagateTo(convert, &destCounts, &usedByDomPhi);
@@ -2774,7 +2774,7 @@ UserProc::getStmtAtLex(unsigned int begin, unsigned int end)
 
 	unsigned int lowest = begin;
 	Statement *loweststmt = nullptr;
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if (begin >= (*it)->getLexBegin()
 		 && begin <= lowest
 		 && begin <= (*it)->getLexEnd()
@@ -2857,7 +2857,7 @@ UserProc::setLocalType(const char *nam, Type *ty)
 Type *
 UserProc::getParamType(const char *nam)
 {
-	for (unsigned int i = 0; i < signature->getNumParams(); i++)
+	for (unsigned int i = 0; i < signature->getNumParams(); ++i)
 		if (std::string(nam) == signature->getParamName(i))
 			return signature->getParamType(i);
 	return nullptr;
@@ -2919,7 +2919,7 @@ UserProc::removeSymbolMapping(Exp *from, Exp *to)
 			symbolMap.erase(it);
 			return;
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -2929,7 +2929,7 @@ UserProc::removeSymbolMapping(Exp *from, Exp *to)
 Exp *
 UserProc::expFromSymbol(const char *nam)
 {
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		Exp *e = it->second;
 		if (e->isLocal() && !strcmp(((Const *)((Location *)e)->getSubExp1())->getStr(), nam))
 			return it->first;
@@ -2941,7 +2941,7 @@ const char *
 UserProc::getLocalName(int n)
 {
 	int i = 0;
-	for (auto it = locals.begin(); it != locals.end(); it++, i++)
+	for (auto it = locals.begin(); it != locals.end(); ++it, ++i)
 		if (i == n)
 			return it->first.c_str();
 	return nullptr;
@@ -2964,7 +2964,7 @@ UserProc::countRefs(RefCounter &refCounts)
 {
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		// Don't count uses in implicit statements. There is no RHS of course, but you can still have x from m[x] on the
 		// LHS and so on, and these are not real uses
@@ -2973,14 +2973,14 @@ UserProc::countRefs(RefCounter &refCounts)
 			LOG << "counting references in " << s << "\n";
 		LocationSet refs;
 		s->addUsedLocs(refs, false);  // Ignore uses in collectors
-		for (auto rr = refs.begin(); rr != refs.end(); rr++) {
+		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
 			if (((Exp *)*rr)->isSubscript()) {
 				Statement *def = ((RefExp *)*rr)->getDef();
 				// Used to not count implicit refs here (def->getNumber() == 0), meaning that implicit definitions get
 				// removed as dead code! But these are the ideal place to read off final parameters, and it is
 				// guaranteed now that implicit statements are sorted out for us by now (for dfa type analysis)
 				if (def /* && def->getNumber() */) {
-					refCounts[def]++;
+					++refCounts[def];
 					if (DEBUG_UNUSED)
 						LOG << "counted ref to " << *rr << "\n";
 				}
@@ -3009,11 +3009,11 @@ UserProc::removeUnusedLocals()
 	getStatements(stmts);
 	// First count any uses of the locals
 	bool all = false;
-	for (auto ss = stmts.begin(); ss != stmts.end(); ss++) {
+	for (auto ss = stmts.begin(); ss != stmts.end(); ++ss) {
 		Statement *s = *ss;
 		LocationSet locs;
 		all |= s->addUsedLocals(locs);
-		for (auto uu = locs.begin(); uu != locs.end(); uu++) {
+		for (auto uu = locs.begin(); uu != locs.end(); ++uu) {
 			Exp *u = *uu;
 			// Must be a real symbol, and not defined in this statement, unless it is a return statement (in which case
 			// it is used outside this procedure), or a call statement. Consider local7 = local7+1 and
@@ -3039,7 +3039,7 @@ UserProc::removeUnusedLocals()
 	}
 	// Now record the unused ones in set removes
 	std::set<std::string> removes;
-	for (auto it = locals.begin(); it != locals.end(); it++) {
+	for (auto it = locals.begin(); it != locals.end(); ++it) {
 		std::string &name = const_cast<std::string &>(it->first);
 		// LOG << "Considering local " << name << "\n";
 		if (VERBOSE && all && !removes.empty())
@@ -3113,7 +3113,7 @@ UserProc::fromSSAform()
 	StatementList stmts;
 	getStatements(stmts);
 
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		// Map registers to initial local variables
 		(*it)->mapRegistersToLocals();
 		// Insert casts where needed, as types are about to become inaccessible
@@ -3133,7 +3133,7 @@ UserProc::fromSSAform()
 	// a different type (e.g. envp used as int in test/sparc/fibo-O4)
 	int n = signature->getNumParams();
 
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < n; ++i) {
 		Exp *paramExp = signature->getParamExp(i);
 		FirstTypeEnt fte;
 		fte.first = signature->getParamType(i);
@@ -3142,7 +3142,7 @@ UserProc::fromSSAform()
 	}
 #endif
 	int progress = 0;
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		if (++progress > 2000) {
 			std::cout << "." << std::flush;
 			progress = 0;
@@ -3150,7 +3150,7 @@ UserProc::fromSSAform()
 		Statement *s = *it;
 		LocationSet defs;
 		s->getDefinitions(defs);
-		for (auto dd = defs.begin(); dd != defs.end(); dd++) {
+		for (auto dd = defs.begin(); dd != defs.end(); ++dd) {
 			Exp *base = *dd;
 			Type *ty = s->getTypeFor(base);
 			if (VERBOSE)
@@ -3185,10 +3185,10 @@ UserProc::fromSSAform()
 
 	if (DEBUG_LIVENESS) {
 		LOG << "## ig interference graph:\n";
-		for (auto ii = ig.begin(); ii != ig.end(); ii++)
+		for (auto ii = ig.begin(); ii != ig.end(); ++ii)
 			LOG << "   ig " << ii->first << " -> " << ii->second << "\n";
 		LOG << "## pu phi unites graph:\n";
-		for (auto ii = pu.begin(); ii != pu.end(); ii++)
+		for (auto ii = pu.begin(); ii != pu.end(); ++ii)
 			LOG << "   pu " << ii->first << " -> " << ii->second << "\n";
 		LOG << "  ---\n";
 	}
@@ -3296,13 +3296,13 @@ UserProc::fromSSAform()
 	mapParameters();
 	removeSubscriptsFromSymbols();
 	removeSubscriptsFromParameters();
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		s->replaceSubscriptsWithLocals();
 	}
 
 	// Now remove the phis
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (!s->isPhi()) continue;
 		// Check if the base variables are all the same
@@ -3319,7 +3319,7 @@ UserProc::fromSSAform()
 		bool phiParamsSame = true;
 		Exp *first = nullptr;
 		if (pa->getNumDefs() > 1) {
-			for (auto uu = pa->begin(); uu != pa->end(); uu++) {
+			for (auto uu = pa->begin(); uu != pa->end(); ++uu) {
 				if (!uu->e) continue;
 				if (!first) { first = uu->e; continue; }
 				if (!(*uu->e == *first)) {
@@ -3350,7 +3350,7 @@ UserProc::fromSSAform()
 			Exp *lhs = pa->getLeft();
 			RefExp *wrappedLeft = new RefExp(lhs, pa)
 			const char *lhsName = lookupSymForRef(wrappedLeft);
-			for (auto rr = pa->begin(); rr != pa->end(); rr++) {
+			for (auto rr = pa->begin(); rr != pa->end(); ++rr) {
 				RefExp *operand = new RefExp(rr->e, rr->def);
 				const char *operName = lookupSymFromRef(operand);
 				if (strcmp(operName, lhsName) == 0)
@@ -3367,7 +3367,7 @@ UserProc::fromSSAform()
 			if (DEBUG_LIVENESS)
 				LOG << "phi statement " << s << " requires local, using " << tempLoc << "\n";
 			// For each definition ref'd in the phi
-			for (auto rr = pa->begin(); rr != pa->end(); rr++) {
+			for (auto rr = pa->begin(); rr != pa->end(); ++rr) {
 				if (!rr->e) continue;
 				insertAssignAfter(rr->def, tempLoc, rr->e);
 			}
@@ -3467,7 +3467,7 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 	// subscript locs on the right with {-} (NULL reference)
 	LocationSet locs;
 	query->getSubExp2()->addUsedLocs(locs);
-	for (auto xx = locs.begin(); xx != locs.end(); xx++) {
+	for (auto xx = locs.begin(); xx != locs.end(); ++xx) {
 		query->setSubExp2(query->getSubExp2()->expSubscriptValNull(*xx));
 	}
 
@@ -3667,7 +3667,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 					} else {
 						if (DEBUG_PROOF)
 							LOG << "found " << s << " prove for each\n";
-						for (auto it = pa->begin(); it != pa->end(); it++) {
+						for (auto it = pa->begin(); it != pa->end(); ++it) {
 							Exp *e = query->clone();
 							RefExp *r1 = (RefExp *)e->getSubExp1();
 							r1->setDef(it->def);
@@ -3733,7 +3733,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 			if (!change && query->getSubExp1()->getOper() == opMemOf) {
 				StatementList stmts;
 				getStatements(stmts);
-				for (auto it = stmts.begin(); it != stmts.end(); it++) {
+				for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 					Assign *s = (Assign *)*it;
 					if (s->isAssign()
 					 && *s->getRight() == *query->getSubExp2()
@@ -3777,7 +3777,7 @@ void
 UserProc::getDefinitions(LocationSet &ls)
 {
 	int n = signature->getNumReturns();
-	for (int j = 0; j < n; j++) {
+	for (int j = 0; j < n; ++j) {
 		ls.insert(signature->getReturnExp(j));
 	}
 }
@@ -3785,7 +3785,7 @@ UserProc::getDefinitions(LocationSet &ls)
 void
 Proc::addCallers(std::set<UserProc *> &callers)
 {
-	for (auto it = callerSet.begin(); it != callerSet.end(); it++) {
+	for (auto it = callerSet.begin(); it != callerSet.end(); ++it) {
 		UserProc *callerProc = (*it)->getProc();
 		callers.insert(callerProc);
 	}
@@ -3796,7 +3796,7 @@ UserProc::addCallees(std::list<UserProc *> &callees)
 {
 	// SLOW SLOW SLOW
 	// this function is evil now... REALLY evil... hope it doesn't get called too often
-	for (auto it = calleeList.begin(); it != calleeList.end(); it++) {
+	for (auto it = calleeList.begin(); it != calleeList.end(); ++it) {
 		UserProc *callee = (UserProc *)(*it);
 		if (callee->isLib()) continue;
 		addCallee(callee);
@@ -3814,7 +3814,7 @@ UserProc::conTypeAnalysis()
 	getStatements(stmts);
 	// For each statement this proc
 	int conscript = 0;
-	for (auto ss = stmts.begin(); ss != stmts.end(); ss++) {
+	for (auto ss = stmts.begin(); ss != stmts.end(); ++ss) {
 		cons.clear();
 		// So we can co-erce constants:
 		conscript = (*ss)->setConscripts(conscript);
@@ -3839,10 +3839,10 @@ UserProc::conTypeAnalysis()
 
 	int solnNum = 0;
 	if (DEBUG_TA) {
-		for (auto it = solns.begin(); it != solns.end(); it++) {
+		for (auto it = solns.begin(); it != solns.end(); ++it) {
 			LOG << "solution " << ++solnNum << " for proc " << getName() << "\n";
 			ConstraintMap &cm = *it;
-			for (auto cc = cm.begin(); cc != cm.end(); cc++)
+			for (auto cc = cm.begin(); cc != cm.end(); ++cc)
 				LOG << cc->first << " = " << cc->second << "\n";
 			LOG << "\n";
 		}
@@ -3852,7 +3852,7 @@ UserProc::conTypeAnalysis()
 	Prog *prog = getProg();
 	if (!solns.empty()) {
 		ConstraintMap &cm = *solns.begin();
-		for (auto cc = cm.begin(); cc != cm.end(); cc++) {
+		for (auto cc = cm.begin(); cc != cm.end(); ++cc) {
 			// Ick. A workaround for now (see test/pentium/sumarray-O4)
 			//assert(cc->first->isTypeOf());
 			if (!cc->first->isTypeOf()) continue;
@@ -3895,7 +3895,7 @@ UserProc::conTypeAnalysis()
 
 	// Clear the conscripts. These confuse the fromSSA logic, causing infinite
 	// loops
-	for (auto ss = stmts.begin(); ss != stmts.end(); ss++) {
+	for (auto ss = stmts.begin(); ss != stmts.end(); ++ss) {
 		(*ss)->clearConscripts();
 	}
 }
@@ -3906,7 +3906,7 @@ UserProc::searchAndReplace(Exp *search, Exp *replace)
 	bool ch = false;
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		ch |= s->searchAndReplace(search, replace);
 	}
@@ -3946,7 +3946,7 @@ UserProc::castConst(int num, Type *ty)
 {
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		if ((*it)->castConst(num, ty))
 			break;
 	}
@@ -3985,7 +3985,7 @@ UserProc::addImplicitAssigns()
 	getStatements(stmts);
 	ImplicitConverter ic(cfg);
 	StmtImplicitConverter sm(&ic, cfg);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		(*it)->accept(&sm);
 	}
 	cfg->setImplicitsDone();
@@ -4064,7 +4064,7 @@ UserProc::printSymbolMap(std::ostream &out, bool html)
 	if (html)
 		out << "<br>";
 	out << "symbols:\n";
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		Type *ty = getTypeForLocation(it->second);
 		out << "  " << it->first << " maps to " << it->second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
 		if (html)
@@ -4081,7 +4081,7 @@ UserProc::dumpLocals(std::ostream &os, bool html)
 	if (html)
 		os << "<br>";
 	os << "locals:\n";
-	for (auto it = locals.begin(); it != locals.end(); it++) {
+	for (auto it = locals.begin(); it != locals.end(); ++it) {
 		os << it->second->getCtype() << " " << it->first.c_str() << " ";
 		Exp *e = expFromSymbol(it->first.c_str());
 		// Beware: for some locals, expFromSymbol() returns nullptr (? No longer?)
@@ -4098,7 +4098,7 @@ UserProc::dumpLocals(std::ostream &os, bool html)
 void
 UserProc::dumpSymbolMap()
 {
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		Type *ty = getTypeForLocation(it->second);
 		std::cerr << "  " << it->first << " maps to " << it->second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
 	}
@@ -4107,7 +4107,7 @@ UserProc::dumpSymbolMap()
 void
 UserProc::dumpSymbolMapx()
 {
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		Type *ty = getTypeForLocation(it->second);
 		std::cerr << "  " << it->first << " maps to " << it->second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
 		it->first->printx(2);
@@ -4176,7 +4176,7 @@ UserProc::updateCallDefines()
 		LOG << "### update call defines for " << getName() << " ###\n";
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		CallStatement *call = dynamic_cast<CallStatement *>(*it);
 		if (!call) continue;
 		call->updateDefines();
@@ -4190,7 +4190,7 @@ UserProc::reverseStrengthReduction()
 
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if ((*it)->isAssign()) {
 			Assign *as = (Assign *)*it;
 			// of the form x = x{p} + c
@@ -4220,7 +4220,7 @@ UserProc::reverseStrengthReduction()
 							// replace with x{p} * c
 							StatementList stmts2;
 							getStatements(stmts2);
-							for (auto it2 = stmts2.begin(); it2 != stmts2.end(); it2++)
+							for (auto it2 = stmts2.begin(); it2 != stmts2.end(); ++it2)
 								if (*it2 != as)
 									(*it2)->searchAndReplace(r, new Binary(opMult, r->clone(), new Const(c)));
 							// that done we can replace c with 1 in as
@@ -4418,10 +4418,10 @@ UserProc::fixCallAndPhiRefs()
 
 	// a[m[]] hack, aint nothing better.
 	bool found = true;
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if ((*it)->isCall()) {
 			CallStatement *call = (CallStatement *)*it;
-			for (auto it1 = call->getArguments().begin(); it1 != call->getArguments().end(); it1++) {
+			for (auto it1 = call->getArguments().begin(); it1 != call->getArguments().end(); ++it1) {
 				Assign *a = (Assign *)*it1;
 				if (a->getType()->resolvesToPointer()) {
 					Exp *e = a->getRight();
@@ -4445,7 +4445,7 @@ UserProc::fixCallAndPhiRefs()
 	// ...
 	// 26 r28 := r28{56}
 	// So we can remove the second parameter, then reduce the phi to an assignment, then propagate it
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		s = *it;
 		if (s->isPhi()) {
 			PhiAssign *ps = (PhiAssign *)s;
@@ -4478,7 +4478,7 @@ UserProc::fixCallAndPhiRefs()
 	}
 
 	// Second pass
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		s = *it;
 		if (s->isPhi()) {
 			PhiAssign *ps = (PhiAssign *)s;
@@ -4594,7 +4594,7 @@ UserProc::propagateToCollector()
 		Exp *addr = ((Location *)*it)->getSubExp1();
 		LocationSet used;
 		addr->addUsedLocs(used);
-		for (auto uu = used.begin(); uu != used.end(); uu++) {
+		for (auto uu = used.begin(); uu != used.end(); ++uu) {
 			RefExp *r = (RefExp *)*uu;
 			if (!r->isSubscript()) continue;
 			Assign *as = (Assign *)r->getDef();
@@ -4745,7 +4745,7 @@ UserProc::isRetNonFakeUsed(CallStatement *c, Exp *retLoc, UserProc *p, ProcSet *
 	// are not arguments of calls to p. If we had def-use information, it would be much more efficient
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		LocationSet ls;
 		s->addUsedLocs(ls);
@@ -4797,7 +4797,7 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 	visited.insert(this);  // Prevent infinite recursion
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		// Special checking for recursive calls
 		if (s->isCall()) {
@@ -4943,13 +4943,13 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 			Exp *lhs = a->getLeft();
 			// For each location in the returns, check if in the signature
 			bool found = false;
-			for (unsigned int i = 0; i < signature->getNumReturns(); i++)
+			for (unsigned int i = 0; i < signature->getNumReturns(); ++i)
 				if (*signature->getReturnExp(i) == *lhs) {
 					found = true;
 					break;
 				}
 			if (found)
-				rr++;  // Yes, in signature; OK
+				++rr;  // Yes, in signature; OK
 			else {
 				// This return is not in the signature. Remove it
 				rr = theReturnStatement->erase(rr);
@@ -4992,7 +4992,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 			rr = theReturnStatement->erase(rr);
 			removedRets = true;
 		} else
-			rr++;
+			++rr;
 	}
 
 	if (DEBUG_UNUSED) {
@@ -5009,7 +5009,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 
 	if (removedParams || removedRets) {
 		// Update the statements that call us
-		for (auto it = callerSet.begin(); it != callerSet.end() ; it++) {
+		for (auto it = callerSet.begin(); it != callerSet.end() ; ++it) {
 			(*it)->updateArguments();               // Update caller's arguments
 			updateSet.insert((*it)->getProc());     // Make sure we redo the dataflow
 			removeRetSet.insert((*it)->getProc());  // Also schedule caller proc for more analysis
@@ -5164,7 +5164,7 @@ UserProc::clearRanges()
 {
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		(*it)->clearRanges();
 }
 
@@ -5218,7 +5218,7 @@ UserProc::rangeAnalysis()
 			junction->rangeAnalysis(execution_paths);
 		}
 
-		watchdog++;
+		++watchdog;
 		if (watchdog > 10) {
 			LOG << "  watchdog " << watchdog << "\n";
 			if (watchdog > 45) {
@@ -5246,7 +5246,7 @@ UserProc::logSuspectMemoryDefs()
 {
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++)
+	for (auto it = stmts.begin(); it != stmts.end(); ++it)
 		if ((*it)->isAssign()) {
 			Assign *a = (Assign *)*it;
 			if (a->getLeft()->isMemOf()) {
@@ -5299,10 +5299,10 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 {
 	BasicBlock *bb = s->getBB();  // Get s' enclosing BB
 	std::list<RTL *> *rtls = bb->getRTLs();
-	for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
+	for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
 		std::list<Statement *> &stmts = (*rit)->getList();
 		RTL *rtlForS;
-		for (auto it = stmts.begin(); it != stmts.end(); it++) {
+		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 			if (*it == s
 			    // Not the searched for statement. But if it is a call or return statement, it will be the last, and
 			    // s must be a substatement (e.g. argument, return, define, etc).
@@ -5395,7 +5395,7 @@ UserProc::mapTempsToLocals()
 	getStatements(stmts);
 	TempToLocalMapper ttlm(this);
 	StmtExpVisitor sv(&ttlm);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		s->accept(&sv);
 	}
@@ -5435,7 +5435,7 @@ UserProc::mapLocalsAndParams()
 		LOG << " ### mapping expressions to local variables for " << getName() << " ###\n";
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		s->dfaMapLocals();
 	}
@@ -5500,7 +5500,7 @@ UserProc::findPhiUnites(ConnectionGraph &pu)
 {
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		PhiAssign *pa = (PhiAssign *)*it;
 		if (!pa->isPhi()) continue;
 		Exp *lhs = pa->getLeft();
@@ -5519,7 +5519,7 @@ UserProc::getRegName(Exp *r)
 	assert(r->isRegOf());
 	int regNum = ((Const *)((Location *)r)->getSubExp1())->getInt();
 	const char *regName = prog->getRegName(regNum);
-	if (regName[0] == '%') regName++;  // Skip % if %eax
+	if (regName[0] == '%') ++regName;  // Skip % if %eax
 	return regName;
 }
 
@@ -5546,7 +5546,7 @@ UserProc::nameParameterPhis()
 {
 	StatementList stmts;
 	getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		PhiAssign *pi = (PhiAssign *)*it;
 		if (!pi->isPhi()) continue;  // Might be able to optimise this a bit
 		// See if the destination has a symbol already
@@ -5640,7 +5640,7 @@ LibProc::makeMemo(int mId)
 
 #if 0
 	signature->takeMemo(mId);
-	for (auto it = provenTrue.begin(); it != provenTrue.end(); it++)
+	for (auto it = provenTrue.begin(); it != provenTrue.end(); ++it)
 		(*it)->takeMemo(mId);
 #endif
 
@@ -5663,7 +5663,7 @@ LibProc::readMemo(Memo *mm, bool dec)
 
 #if 0
 	signature->restoreMemo(m->mId, dec);
-	for (auto it = provenTrue.begin(); it != provenTrue.end(); it++)
+	for (auto it = provenTrue.begin(); it != provenTrue.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 #endif
 }
@@ -5710,13 +5710,13 @@ UserProc::makeMemo(int mId)
 	m->calleeList = calleeList;
 
 	signature->takeMemo(mId);
-	for (auto it = provenTrue.begin(); it != provenTrue.end(); it++)
+	for (auto it = provenTrue.begin(); it != provenTrue.end(); ++it)
 		(*it)->takeMemo(mId);
 
-	for (auto it = locals.begin(); it != locals.end(); it++)
+	for (auto it = locals.begin(); it != locals.end(); ++it)
 		it->second->takeMemo(mId);
 
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		it->first->takeMemo(mId);
 		it->second->takeMemo(mId);
 	}
@@ -5745,13 +5745,13 @@ UserProc::readMemo(Memo *mm, bool dec)
 	calleeList = m->calleeList;
 
 	signature->restoreMemo(m->mId, dec);
-	for (auto it = provenTrue.begin(); it != provenTrue.end(); it++)
+	for (auto it = provenTrue.begin(); it != provenTrue.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 
-	for (auto it = locals.begin(); it != locals.end(); it++)
+	for (auto it = locals.begin(); it != locals.end(); ++it)
 		it->second->restoreMemo(m->mId, dec);
 
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); it++) {
+	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		it->first->restoreMemo(m->mId, dec);
 		it->second->restoreMemo(m->mId, dec);
 	}

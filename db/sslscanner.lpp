@@ -199,7 +199,7 @@ _?[A-Za-z][A-Za-z0-9_]*    { yylval.str = strdup(yytext); return SSLParser::NAME
 	}
 	// saves the next line
 	strcpy(lineBuf, yytext + 1);
-	theLine++;
+	++theLine;
 	// reparse from char 1
 	// give back all but the \n to rescan
 	yyless(1);

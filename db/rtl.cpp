@@ -61,7 +61,7 @@ RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= nullptr*/)
 RTL::RTL(const RTL &other) :
 	nativeAddr(other.nativeAddr)
 {
-	for (auto it = other.stmtList.cbegin(); it != other.stmtList.cend(); it++) {
+	for (auto it = other.stmtList.cbegin(); it != other.stmtList.cend(); ++it) {
 		stmtList.push_back((*it)->clone());
 	}
 }
@@ -82,7 +82,7 @@ RTL::operator =(RTL &other)
 {
 	if (this != &other) {
 		// Do a deep copy always
-		for (auto it = other.stmtList.begin(); it != other.stmtList.end(); it++)
+		for (auto it = other.stmtList.begin(); it != other.stmtList.end(); ++it)
 			stmtList.push_back((*it)->clone());
 
 		nativeAddr = other.nativeAddr;
@@ -102,7 +102,7 @@ RTL::clone()
 {
 	std::list<Statement *> le;
 
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		le.push_back((*it)->clone());
 	}
 
@@ -120,7 +120,7 @@ RTL::accept(StmtVisitor *visitor)
 {
 	// Might want to do something at the RTL level:
 	if (!visitor->visit(this)) return false;
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		if (!(*it)->accept(visitor)) return false;
 	}
 	return true;
@@ -136,7 +136,7 @@ RTL::accept(StmtVisitor *visitor)
 void
 RTL::deepCopyList(std::list<Statement *> &dest)
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		dest.push_back((*it)->clone());
 	}
 }
@@ -193,7 +193,7 @@ RTL::prependStmt(Statement *s)
 void
 RTL::appendListStmt(std::list<Statement *> &le)
 {
-	for (auto it = le.begin(); it != le.end(); it++) {
+	for (auto it = le.begin(); it != le.end(); ++it) {
 		stmtList.insert(stmtList.end(), (*it)->clone());
 	}
 }
@@ -231,7 +231,7 @@ RTL::insertStmt(Statement *s, unsigned i)
 
 	// Find the position
 	auto pp = stmtList.begin();
-	for (; i > 0; i--, pp++);
+	for (; i > 0; --i, ++pp);
 
 	// Do the insertion
 	stmtList.insert(pp, s);
@@ -262,7 +262,7 @@ RTL::updateStmt(Statement *s, unsigned i)
 
 	// Find the position
 	auto pp = stmtList.begin();
-	for (; i > 0; i--, pp++);
+	for (; i > 0; --i, ++pp);
 
 	// Note that sometimes we might update even when we don't know if it's
 	// needed, e.g. after a searchReplace.
@@ -286,7 +286,7 @@ RTL::deleteStmt(unsigned i)
 
 	// find the position
 	auto pp = stmtList.begin();
-	for (; i > 0; i--, pp++);
+	for (; i > 0; --i, ++pp);
 
 	// do the delete
 	stmtList.erase(pp);
@@ -341,7 +341,7 @@ Statement *
 RTL::elementAt(unsigned i)
 {
 	auto it = stmtList.begin();
-	for (; i > 0 && it != stmtList.end(); i--, it++);
+	for (; i > 0 && it != stmtList.end(); --i, ++it);
 	if (it == stmtList.end()) {
 		return nullptr;
 	}
@@ -369,7 +369,7 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
 	// Print the statements
 	// First line has 8 extra chars as above
 	bool bFirst = true;
-	for (auto ss = stmtList.begin(); ss != stmtList.end(); ss++) {
+	for (auto ss = stmtList.begin(); ss != stmtList.end(); ++ss) {
 		Statement *stmt = *ss;
 		if (html) {
 			if (!bFirst) os << "<tr><td></td>";
@@ -454,7 +454,7 @@ bool
 RTL::searchAndReplace(Exp *search, Exp *replace)
 {
 	bool ch = false;
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++)
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it)
 		ch |= (*it)->searchAndReplace(search, replace);
 	return ch;
 }
@@ -474,7 +474,7 @@ bool
 RTL::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		Statement *e = *it;
 		Exp *res;
 		if (e->search(search, res)) {
@@ -549,7 +549,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 {
 	// First skip all assignments with temps on LHS
 	auto it = stmtList.begin();
-	for (; it != stmtList.end(); it++) {
+	for (; it != stmtList.end(); ++it) {
 		Statement *s = *it;
 		if (!s->isAssign())
 			break;
@@ -563,7 +563,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 		// There isn't an assignment following. Use the previous Exp to insert
 		// before
 		if (it != stmtList.begin())
-			it--;
+			--it;
 	}
 
 	if (!type)
@@ -589,7 +589,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 Type *
 RTL::getType()
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		Statement *e = *it;
 		if (e->isAssign())
 			return ((Assign *)e)->getType();
@@ -614,7 +614,7 @@ RTL::areFlagsAffected()
 	auto it = stmtList.end();
 	if (it == stmtList.begin())
 		return false;  // Not expressions at all
-	it--;  // Will now point to the end of the list
+	--it;  // Will now point to the end of the list
 	Statement *e = *it;
 	// If it is a flag call, then the CCs are affected
 	return e->isFlagAssgn();
@@ -626,7 +626,7 @@ RTL::areFlagsAffected()
 void
 RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); it++) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		(*it)->generateCode(hll, pbb, indLevel);
 	}
 }
@@ -637,7 +637,7 @@ RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 void
 RTL::simplify()
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); /*it++*/) {
+	for (auto it = stmtList.begin(); it != stmtList.end(); /*++it*/) {
 		Statement *s = *it;
 		s->simplify();
 		if (s->isBranch()) {
@@ -664,7 +664,7 @@ RTL::simplify()
 				continue;
 			}
 		}
-		it++;
+		++it;
 	}
 }
 
@@ -702,7 +702,7 @@ RTL::isCompare(int &iReg, Exp *&expOperand)
 		cur = elementAt(i);
 		if (cur->getKind() != STMT_ASSIGN) return false;
 		rhs = ((Assign *)cur)->getRight();
-		i++;
+		++i;
 	} while (rhs->getOper() != opMinus && i < getNumStmt());
 	if (rhs->getOper() != opMinus) return false;
 	// We have a subtract assigning to a register.
@@ -760,7 +760,7 @@ RTL::isCall()
 Statement *
 RTL::getHlStmt()
 {
-	for (auto rit = stmtList.rbegin(); rit != stmtList.rend(); rit++) {
+	for (auto rit = stmtList.rbegin(); rit != stmtList.rend(); ++rit) {
 		if ((*rit)->getKind() != STMT_ASSIGN)
 			return *rit;
 	}

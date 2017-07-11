@@ -483,7 +483,7 @@ protected:
 
 	// establish if this bb has any back edges leading FROM it
 	        bool        hasBackEdge() {
-		                    for (unsigned int i = 0; i < m_OutEdges.size(); i++)
+		                    for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
 			                    if (hasBackEdgeTo(m_OutEdges[i]))
 				                    return true;
 		                    return false;
@@ -499,7 +499,7 @@ protected:
 	        bool        inLoop(BasicBlock *header, BasicBlock *latch);
 
 	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) {
-		                    for (auto it = set.begin(); it != set.end(); it++)
+		                    for (auto it = set.begin(); it != set.end(); ++it)
 			                    if (*it == bb) return true;
 		                    return false;
 	                    }

@@ -152,7 +152,7 @@ PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 	// Use doSearch, which is normally an internal method of Exp, to avoid problems of replacing the wrong
 	// subexpression (in some odd cases)
 	Exp::doSearch(Location::regOf(new Terminal(opWild)), exp, li, false);
-	for (auto it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); ++it) {
 		int reg = ((Const *)((Unary *)**it)->getSubExp1())->getInt();
 		if ((min <= reg) && (reg <= max)) {
 			// Replace the K in r[ K] with a new K
@@ -254,7 +254,7 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 		}
 		auto rit = BB_rtls->begin();
 		while (rit != BB_rtls->end()) {
-			for (int i = 0; i < (*rit)->getNumStmt(); i++) {
+			for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
 				// Get the current Exp
 				st = (*rit)->elementAt(i);
 				if (st->isFpush()) {
@@ -287,7 +287,7 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 					                              Location::tempOf(new Const("tmpD9"))), i++);
 					// Remove the FPUSH
 					(*rit)->deleteStmt(i);
-					i--;
+					--i;
 					continue;
 				}
 				else if (st->isFpop()) {
@@ -320,11 +320,11 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 					                              Location::tempOf(new Const("tmpD9"))), i++);
 					// Remove the FPOP
 					(*rit)->deleteStmt(i);
-					i--;
+					--i;
 					continue;
 				}
 			}
-			rit++;
+			++rit;
 		}
 	}
 }
@@ -363,7 +363,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 			// returning floats, the value will appear to be returned in registers r[32], then r[33], etc.
 			tos = 0;
 		}
-		if ((*rit)->getNumStmt() == 0) { rit++; continue; }
+		if ((*rit)->getNumStmt() == 0) { ++rit; continue; }
 #if PROCESS_FNSTSW
 		// Check for f(n)stsw
 		if (isStoreFsw((*rit)->elementAt(0))) {
@@ -383,7 +383,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 			continue;
 		}
 #endif
-		for (int i = 0; i < (*rit)->getNumStmt(); i++) {
+		for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
 			// Get the current Exp
 			st = (*rit)->elementAt(i);
 			if (!st->isFlagAssgn()) {
@@ -393,13 +393,13 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 					tos = (tos - 1) & 7;
 					// Remove the FPUSH
 					(*rit)->deleteStmt(i);
-					i--;  // Adjust the index
+					--i;  // Adjust the index
 					continue;
 				} else if (st->isFpop()) {
 					tos = (tos + 1) & 7;
 					// Remove the FPOP
 					(*rit)->deleteStmt(i);
-					i--;  // Adjust the index
+					--i;  // Adjust the index
 					continue;
 				} else if (st->isAssign()) {
 					Assign *asgn = (Assign *)st;
@@ -433,7 +433,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 				}
 			}
 		}
-		rit++;
+		++rit;
 	}
 	pBB->setTraversed(true);
 
@@ -442,7 +442,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 	unsigned n;
 	do {
 		n = outs.size();
-		for (unsigned o = 0; o < n; o++) {
+		for (unsigned o = 0; o < n; ++o) {
 			BasicBlock *anOut = outs[o];
 			if (!anOut->isTraversed()) {
 				processFloatCode(anOut, tos, pCfg);
@@ -689,7 +689,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 		ADDRESS prev, addr = 0;
 		bool lastRtl = true;
 		// For each RTL this BB
-		for (auto rit = rtls->begin(); rit != rtls->end(); rit++) {
+		for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
 			RTL *rtl = *rit;
 			prev = addr;
 			addr = rtl->getAddress();
@@ -713,7 +713,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 			}
 			lastRtl = false;
 		}
-		if (!noinc) it++;
+		if (!noinc) ++it;
 	}
 }
 
@@ -727,11 +727,11 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 	std::set<int> usedRegs;
 	StatementList stmts;
 	proc->getStatements(stmts);
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		LocationSet locs;
 		s->addUsedLocs(locs);
-		for (auto li = locs.begin(); li != locs.end(); li++) {
+		for (auto li = locs.begin(); li != locs.end(); ++li) {
 			Exp *l = *li;
 			if (!l->isRegOfK())
 				continue;
@@ -756,7 +756,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 	// ebp (29)  bp (5)
 	// esi (30)  si (6)
 	// edi (31)  di (7)
-	for (auto it = stmts.begin(); it != stmts.end(); it++) {
+	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->getBB()->overlappedRegProcessingDone)   // never redo processing
 			continue;
@@ -960,7 +960,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 	}
 
 	// set a flag for every BB we've processed so we don't do them again
-	for (auto bit = bbs.begin(); bit != bbs.end(); bit++)
+	for (auto bit = bbs.begin(); bit != bbs.end(); ++bit)
 		(*bit)->overlappedRegProcessingDone = true;
 }
 
@@ -1013,7 +1013,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 
 		// looking for function pointers
 		Signature *calledSig = call->getDestProc()->getSignature();
-		for (unsigned int i = 0; i < calledSig->getNumParams(); i++) {
+		for (unsigned int i = 0; i < calledSig->getNumParams(); ++i) {
 			// check param type
 			Type *paramType = calledSig->getParamType(i);
 			Type *points_to;
@@ -1025,7 +1025,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 					paramIsFuncPointer = true;
 				else if (points_to->resolvesToCompound()) {
 					compound = points_to->asCompound();
-					for (unsigned int n = 0; n < compound->getNumTypes(); n++) {
+					for (unsigned int n = 0; n < compound->getNumTypes(); ++n) {
 						if (compound->getType(n)->resolvesToPointer()
 						 && compound->getType(n)->asPointer()->getPointsTo()->resolvesToFunc())
 							paramIsCompoundWithFuncPointers = true;
@@ -1038,14 +1038,14 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 			// count pushes backwards to find arg
 			Exp *found = nullptr;
 			unsigned int pushcount = 0;
-			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
+			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; ++itr) {
 				RTL *rtl = *itr;
-				for (int n = rtl->getNumStmt() - 1; n >= 0; n--) {
+				for (int n = rtl->getNumStmt() - 1; n >= 0; --n) {
 					Statement *stmt = rtl->elementAt(n);
 					if (stmt->isAssign()) {
 						Assign *asgn = (Assign *)stmt;
 						if (asgn->getLeft()->isRegN(28) && asgn->getRight()->getOper() == opMinus)
-							pushcount++;
+							++pushcount;
 						else if (pushcount == i + 2
 						      && asgn->getLeft()->isMemOf()
 						      && asgn->getLeft()->getSubExp1()->getOper() == opMinus
@@ -1091,7 +1091,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				continue;
 #endif
 
-			for (unsigned int n = 0; n < compound->getNumTypes(); n++) {
+			for (unsigned int n = 0; n < compound->getNumTypes(); ++n) {
 				if (compound->getType(n)->resolvesToPointer()
 				 && compound->getType(n)->asPointer()->getPointsTo()->resolvesToFunc()) {
 					ADDRESS d = pBF->readNative4(a);
@@ -1113,14 +1113,14 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 			// count pushes backwards to find a push of 0
 			bool found = false;
 			int pushcount = 0;
-			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; itr++) {
+			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; ++itr) {
 				RTL *rtl = *itr;
-				for (int n = rtl->getNumStmt() - 1; n >= 0; n--) {
+				for (int n = rtl->getNumStmt() - 1; n >= 0; --n) {
 					Statement *stmt = rtl->elementAt(n);
 					if (stmt->isAssign()) {
 						Assign *asgn = (Assign *)stmt;
 						if (asgn->getLeft()->isRegN(28) && asgn->getRight()->getOper() == opMinus)
-							pushcount++;
+							++pushcount;
 						else if (asgn->getLeft()->isMemOf()
 						      && asgn->getLeft()->getSubExp1()->getOper() == opMinus
 						      && asgn->getLeft()->getSubExp1()->getSubExp1()->isRegN(28)

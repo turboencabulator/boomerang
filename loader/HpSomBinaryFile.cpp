@@ -292,7 +292,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	// The DLT entries always come first in the import table
 	unsigned u = (unsigned)numDLT, v = 0;
 	plt_record *PLTs = (plt_record *)(pltStart + deltaData);
-	for (; u < numImports; u++, v++) {
+	for (; u < numImports; ++u, ++v) {
 		//cout << "Importing " << (pDlStrings+import_list[u].name) << endl;
 		symbols.Add(PLTs[v].value, pDlStrings + UINT4(&import_list[u].name));
 		// Add it to the set of imports; needed by isDynamicLinkedProc()
@@ -301,7 +301,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	}
 	// Work through the exports, and find main. This isn't main itself,
 	// but in fact a call to main.
-	for (u = 0; u < numExports; u++) {
+	for (u = 0; u < numExports; ++u) {
 		//cout << "Exporting " << (pDlStrings+UINT4(&export_list[u].name)) << " value " << hex << UINT4(&export_list[u].value) << endl;
 		if (strncmp(pDlStrings + UINT4(&export_list[u].name), "main", 4) == 0) {
 			// Enter the symbol "_callmain" for this address
@@ -336,7 +336,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 #define SYMBOLAUX(idx) (UINT4(symPtr + idx*SYMSIZE + 8))
 #define SYMBOLVAL(idx) (UINT4(symPtr + idx*SYMSIZE + 16))
 #define SYMBOLTY(idx)  ((UINT4(symPtr + idx*SYMSIZE) >> 24) & 0x3f)
-		for (u = 0; u < numSym; u++) {
+		for (u = 0; u < numSym; ++u) {
 			// cout << "Symbol " << pNames+SYMBOLNM(u) << ", type " << SYMBOLTY(u) << ", value " << hex << SYMBOLVAL(u) << ", aux " << SYMBOLAUX(u) << endl;
 			unsigned symbol_type = SYMBOLTY(u);
 			// Only interested in type 3 (code), 8 (stub), and 12 (millicode)
@@ -461,7 +461,7 @@ HpSomBinaryFile::getSubspaceInfo(const char *ssname)
 	struct subspace_dictionary_record *subSpaces = (struct subspace_dictionary_record *)(m_pImage + UINT4(m_pImage + 0x34));
 	unsigned numSubSpaces = UINT4(m_pImage + 0x38);
 	const char *spaceStrings = (const char *)(m_pImage + UINT4(m_pImage + 0x44));
-	for (unsigned u = 0; u < numSubSpaces; u++) {
+	for (unsigned u = 0; u < numSubSpaces; ++u) {
 		const char *thisName = spaceStrings + UINT4(&subSpaces[u].name);
 		unsigned thisNameSize = UINT4(spaceStrings + UINT4(&subSpaces[u].name) - 4);
 		//cout << "Subspace " << thisName << " starts " << hex << subSpaces[u].subspace_start << " length " << subSpaces[u].subspace_length << endl;
@@ -521,7 +521,7 @@ HpSomBinaryFile::getDynamicGlobalMap()
 	const char *pDlStrings = DLTable + UINT4(DLTable + 0x28);
 
 	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
-	for (unsigned u = 0; u < numDLT; u++) {
+	for (unsigned u = 0; u < numDLT; ++u) {
 		// ? Sometimes the names are just -1
 		if (import_list[u].name == -1)
 			continue;

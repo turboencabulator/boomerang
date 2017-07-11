@@ -51,7 +51,7 @@ TableEntry::TableEntry()
 TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
 	rtl(r)
 {
-	for (auto it = p.begin(); it != p.end(); it++)
+	for (auto it = p.begin(); it != p.end(); ++it)
 		params.push_back(*it);
 }
 
@@ -85,7 +85,7 @@ TableEntry::setRTL(RTL &r)
 const TableEntry &
 TableEntry::operator =(const TableEntry &other)
 {
-	for (auto it = other.params.cbegin(); it != other.params.cend(); it++)
+	for (auto it = other.params.cbegin(); it != other.params.cend(); ++it)
 		params.push_back(*it);
 	rtl = *(new RTL(other.rtl));
 	return *this;
@@ -103,7 +103,7 @@ int
 TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
 {
 	bool match = (p.size() == params.size());
-	for (auto a = params.begin(), b = p.begin(); match && (a != params.end()) && (b != p.end()); match = (*a == *b), a++, b++);
+	for (auto a = params.begin(), b = p.begin(); match && (a != params.end()) && (b != p.end()); match = (*a == *b), ++a, ++b);
 	if (match) {
 		rtl.appendRTL(r);
 		return 0;
@@ -230,14 +230,14 @@ RTLInstDict::addRegister(const char *name, int id, int size, bool flt)
 void
 RTLInstDict::print(std::ostream &os /*= std::cout*/)
 {
-	for (auto p = idict.begin(); p != idict.end(); p++) {
+	for (auto p = idict.begin(); p != idict.end(); ++p) {
 		// print the instruction name
 		os << p->first << "  ";
 
 		// print the parameters
 		std::list<std::string> &params = p->second.params;
 		int i = params.size();
-		for (auto s = params.begin(); s != params.end(); s++, i--)
+		for (auto s = params.begin(); s != params.end(); ++s, --i)
 			os << *s << (i != 1 ? "," : "");
 		os << "\n";
 
@@ -250,7 +250,7 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/)
 #if 0
 	// Detailed register map
 	os << "\nDetailed register map\n";
-	for (auto rr = DetRegMap.begin(); rr != DetRegMap.end(); rr++) {
+	for (auto rr = DetRegMap.begin(); rr != DetRegMap.end(); ++rr) {
 		int n = rr->first;
 		Register *pr = &rr->second;
 		os << "number " << n
@@ -275,10 +275,10 @@ void
 RTLInstDict::fixupParams()
 {
 	int mark = 1;
-	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); param++) {
+	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); ++param) {
 		param->second.mark = 0;
 	}
-	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); param++) {
+	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); ++param) {
 		std::list<std::string> funcParams;
 		bool haveCount = false;
 		if (param->second.kind == PARAM_VARIANT) {
@@ -301,7 +301,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 
 	param.mark = mark;
 
-	for (auto it = param.params.begin(); it != param.params.end(); it++) {
+	for (auto it = param.params.begin(); it != param.params.end(); ++it) {
 		ParamEntry &sub = DetParamMap[*it];
 		if (sub.kind == PARAM_VARIANT) {
 			fixupParamsSub(*it, funcParams, haveCount, mark);
@@ -311,7 +311,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 		} else if (!haveCount) {
 			haveCount = true;
 			char buf[10];
-			for (unsigned i = 1; i <= sub.funcParams.size(); i++) {
+			for (unsigned i = 1; i <= sub.funcParams.size(); ++i) {
 				sprintf(buf, "__lp%d", i);
 				funcParams.push_back(buf);
 			}
@@ -324,7 +324,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 			          << " has " << sub.funcParams.size() << ".\n";
 		} else if (funcParams != sub.funcParams && sub.asgn) {
 			/* Rename so all the parameter names match */
-			for (auto i = funcParams.begin(), j = sub.funcParams.begin(); i != funcParams.end(); i++, j++) {
+			for (auto i = funcParams.begin(), j = sub.funcParams.begin(); i != funcParams.end(); ++i, ++j) {
 				Exp *match = Location::param(j->c_str());
 				Exp *replace = Location::param(i->c_str());
 				sub.asgn->searchAndReplace(match, replace);
@@ -454,11 +454,11 @@ RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &par
 	rtl.deepCopyList(*newList);
 
 	// Iterate through each Statement of the new list of stmts
-	for (auto ss = newList->begin(); ss != newList->end(); ss++) {
+	for (auto ss = newList->begin(); ss != newList->end(); ++ss) {
 		// Search for the formals and replace them with the actuals
 		auto param = params.begin();
 		auto actual = actuals.cbegin();
-		for (; param != params.end(); param++, actual++) {
+		for (; param != params.end(); ++param, ++actual) {
 			/* Simple parameter - just construct the formal to search for */
 			Exp *formal = Location::param(param->c_str());
 			(*ss)->searchAndReplace(formal, *actual);
@@ -472,7 +472,7 @@ RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &par
 	transformPostVars(newList, true);
 
 	// Perform simplifications, e.g. *1 in Pentium addressing modes
-	for (auto ss = newList->begin(); ss != newList->end(); ss++) {
+	for (auto ss = newList->begin(); ss != newList->end(); ++ss) {
 		(*ss)->simplify();
 	}
 
@@ -520,7 +520,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "Transforming from:\n";
-	for (Exp_CIT p = rts->begin(); p != rts->end(); p++) {
+	for (Exp_CIT p = rts->begin(); p != rts->end(); ++p) {
 		std::cout << setw(8) << " ";
 		(*p)->print(std::cout);
 		std::cout << "\n";
@@ -528,7 +528,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 #endif
 
 	// First pass: Scan for post-variables and usages of their referents
-	for (auto rt = rts->begin(); rt != rts->end(); rt++) {
+	for (auto rt = rts->begin(); rt != rts->end(); ++rt) {
 		// ss appears to be a list of expressions to be searched
 		// It is either the LHS and RHS of an assignment, or it's the parameters of a flag call
 		Binary *ss;
@@ -584,7 +584,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 		 * Can't really use this with Exps, so we search twice; once for the base, and once for the post, and if we
 		 * get more with the former, then we have a use of the base (consider r[0] + r[0]')
 		 */
-		for (auto sr = vars.begin(); sr != vars.end(); sr++) {
+		for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
 			if (sr->second.isNew) {
 				// Make sure we don't match a var in its defining statement
 				sr->second.isNew = false;
@@ -612,8 +612,8 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	}
 
 	// Second pass: Replace post-variables with temporaries where needed
-	for (auto rt = rts->begin(); rt != rts->end(); rt++) {
-		for (auto sr = vars.begin(); sr != vars.end(); sr++) {
+	for (auto rt = rts->begin(); rt != rts->end(); ++rt) {
+		for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
 			if (sr->second.used) {
 				(*rt)->searchAndReplace(sr->first, sr->second.tmp);
 			} else {
@@ -625,7 +625,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	// Finally: Append assignments where needed from temps to base vars
 	// Example: esp' = esp-4; m[esp'] = modrm; FLAG(esp)
 	// all the esp' are replaced with say tmp1, you need a "esp = tmp1" at the end to actually make the change
-	for (auto sr = vars.begin(); sr != vars.end(); sr++) {
+	for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
 		if (sr->second.used) {
 			Assign *te = new Assign(sr->second.type,
 			                        sr->second.base->clone(),
@@ -639,7 +639,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "\nTo =>\n";
-	for (auto p = rts->begin(); p != rts->end(); p++) {
+	for (auto p = rts->begin(); p != rts->end(); ++p) {
 		std::cout << setw(8) << " ";
 		(*p)->print(std::cout);
 		std::cout << "\n";

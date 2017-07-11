@@ -216,7 +216,7 @@ Type *
 CompoundType::clone() const
 {
 	CompoundType *t = new CompoundType();
-	for (unsigned i = 0; i < types.size(); i++)
+	for (unsigned i = 0; i < types.size(); ++i)
 		t->addType(types[i]->clone(), names[i].c_str());
 	return t;
 }
@@ -225,7 +225,7 @@ Type *
 UnionType::clone() const
 {
 	UnionType *u = new UnionType();
-	for (auto it = li.cbegin(); it != li.cend(); it++)
+	for (auto it = li.cbegin(); it != li.cend(); ++it)
 		u->addType(it->type, it->name.c_str());
 	return u;
 }
@@ -312,7 +312,7 @@ unsigned
 CompoundType::getSize() const
 {
 	int n = 0;
-	for (unsigned i = 0; i < types.size(); i++)
+	for (unsigned i = 0; i < types.size(); ++i)
 		// NOTE: this assumes no padding... perhaps explicit padding will be needed
 		n += types[i]->getSize();
 	return n;
@@ -321,7 +321,7 @@ unsigned
 UnionType::getSize() const
 {
 	int max = 0;
-	for (auto it = li.cbegin(); it != li.cend(); it++) {
+	for (auto it = li.cbegin(); it != li.cend(); ++it) {
 		int sz = it->type->getSize();
 		if (sz > max) max = sz;
 	}
@@ -338,7 +338,7 @@ SizeType::getSize() const
 Type *
 CompoundType::getType(const char *nam)
 {
-	for (unsigned i = 0; i < types.size(); i++)
+	for (unsigned i = 0; i < types.size(); ++i)
 		if (names[i] == nam)
 			return types[i];
 	return nullptr;
@@ -349,7 +349,7 @@ Type *
 CompoundType::getTypeAtOffset(unsigned n)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		if (offset <= n && n < offset + types[i]->getSize())
 			return types[i];
 		offset += types[i]->getSize();
@@ -362,14 +362,14 @@ void
 CompoundType::setTypeAtOffset(unsigned n, Type *ty)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		if (offset <= n && n < offset + types[i]->getSize()) {
 			unsigned oldsz = types[i]->getSize();
 			types[i] = ty;
 			if (ty->getSize() < oldsz) {
 				types.push_back(types[types.size() - 1]);
 				names.push_back(names[names.size() - 1]);
-				for (unsigned n = types.size() - 1; n > i; n--) {
+				for (unsigned n = types.size() - 1; n > i; --n) {
 					types[n] = types[n - 1];
 					names[n] = names[n - 1];
 				}
@@ -386,7 +386,7 @@ void
 CompoundType::setNameAtOffset(unsigned n, const char *nam)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		if (offset <= n && n < offset + types[i]->getSize()) {
 			names[i] = nam;
 			return;
@@ -400,7 +400,7 @@ const char *
 CompoundType::getNameAtOffset(unsigned n)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		//if (offset >= n && n < offset + types[i]->getSize())
 		if (offset <= n && n < offset + types[i]->getSize())
 			//return getName(offset == n ? i : i - 1);
@@ -414,7 +414,7 @@ unsigned
 CompoundType::getOffsetTo(unsigned n)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < n; i++) {
+	for (unsigned i = 0; i < n; ++i) {
 		offset += types[i]->getSize();
 	}
 	return offset;
@@ -424,7 +424,7 @@ unsigned
 CompoundType::getOffsetTo(const char *member)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		if (names[i] == member)
 			return offset;
 		offset += types[i]->getSize();
@@ -437,7 +437,7 @@ CompoundType::getOffsetRemainder(unsigned n)
 {
 	unsigned r = n;
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		offset += types[i]->getSize();
 		if (offset > n)
 			break;
@@ -523,7 +523,7 @@ PointerType::operator ==(const Type &other) const
 		return true;
 	}
 	bool ret = (*points_to == *((PointerType &)other).points_to);
-	pointerCompareNest--;
+	--pointerCompareNest;
 	return ret;
 }
 
@@ -546,7 +546,7 @@ CompoundType::operator ==(const Type &other) const
 {
 	const CompoundType &cother = (CompoundType &)other;
 	if (other.isCompound() && cother.types.size() == types.size()) {
-		for (unsigned i = 0; i < types.size(); i++)
+		for (unsigned i = 0; i < types.size(); ++i)
 			if (!(*types[i] == *cother.types[i]))
 				return false;
 		return true;
@@ -559,7 +559,7 @@ UnionType::operator ==(const Type &other) const
 {
 	const UnionType &uother = (UnionType &)other;
 	if (other.isUnion() && uother.li.size() == li.size()) {
-		for (auto it1 = li.cbegin(), it2 = uother.li.cbegin(); it1 != li.cend(); it1++, it2++)
+		for (auto it1 = li.cbegin(), it2 = uother.li.cbegin(); it1 != li.cend(); ++it1, ++it2)
 			if (!(*it1->type == *it2->type))
 				return false;
 		return true;
@@ -860,7 +860,7 @@ FuncType::getCtype(bool final) const
 	else
 		s += signature->getReturnType(0)->getCtype(final);
 	s += " (";
-	for (unsigned i = 0; i < signature->getNumParams(); i++) {
+	for (unsigned i = 0; i < signature->getNumParams(); ++i) {
 		if (i != 0) s += ", ";
 		s += signature->getParamType(i)->getCtype(final);
 	}
@@ -883,7 +883,7 @@ FuncType::getReturnAndParam(const char *&ret, const char *&param)
 		ret = signature->getReturnType(0)->getCtype();
 	std::string s;
 	s += " (";
-	for (unsigned i = 0; i < signature->getNumParams(); i++) {
+	for (unsigned i = 0; i < signature->getNumParams(); ++i) {
 		if (i != 0) s += ", ";
 		s += signature->getParamType(i)->getCtype();
 	}
@@ -979,7 +979,7 @@ const char *
 CompoundType::getCtype(bool final) const
 {
 	std::string &tmp = *(new std::string("struct { "));
-	for (unsigned i = 0; i < types.size(); i++) {
+	for (unsigned i = 0; i < types.size(); ++i) {
 		tmp += types[i]->getCtype(final);
 		if (names[i] != "") {
 			tmp += " ";
@@ -995,7 +995,7 @@ const char *
 UnionType::getCtype(bool final) const
 {
 	std::string &tmp = *(new std::string("union { "));
-	for (auto it = li.cbegin(); it != li.cend(); it++) {
+	for (auto it = li.cbegin(); it != li.cend(); ++it) {
 		tmp += it->type->getCtype(final);
 		if (it->name != "") {
 			tmp += " ";
@@ -1186,7 +1186,7 @@ PointerType::pointerDepth()
 	Type *pt = points_to;
 	while (pt->isPointer()) {
 		pt = pt->asPointer()->getPointsTo();
-		d++;
+		++d;
 	}
 	return d;
 }
@@ -1371,7 +1371,7 @@ CompoundType::isSuperStructOf(Type *other)
 	CompoundType *otherCmp = other->asCompound();
 	unsigned n = otherCmp->types.size();
 	if (n > types.size()) return false;
-	for (unsigned i = 0; i < n; i++)
+	for (unsigned i = 0; i < n; ++i)
 		if (otherCmp->types[i] != types[i]) return false;
 	return true;
 }
@@ -1384,7 +1384,7 @@ CompoundType::isSubStructOf(Type *other)
 	CompoundType *otherCmp = other->asCompound();
 	unsigned n = types.size();
 	if (n > otherCmp->types.size()) return false;
-	for (unsigned i = 0; i < n; i++)
+	for (unsigned i = 0; i < n; ++i)
 		if (otherCmp->types[i] != types[i]) return false;
 	return true;
 }
@@ -1393,7 +1393,7 @@ CompoundType::isSubStructOf(Type *other)
 bool
 UnionType::findType(Type *ty)
 {
-	for (auto it = li.begin(); it != li.end(); it++) {
+	for (auto it = li.begin(); it != li.end(); ++it) {
 		if (*it->type == *ty)
 			return true;
 	}
@@ -1432,7 +1432,7 @@ DataIntervalMap::find_it(ADDRESS addr)
 	auto it = dimap.upper_bound(addr);  // Find the first item strictly greater than addr
 	if (it == dimap.begin())
 		return dimap.end();  // None <= this address, so no overlap possible
-	it--;  // If any item overlaps, it is this one
+	--it;  // If any item overlaps, it is this one
 	if (it->first <= addr && it->first + it->second.size > addr)
 		// This is the one that overlaps with addr
 		return it;
@@ -1454,7 +1454,7 @@ DataIntervalMap::isClear(ADDRESS addr, unsigned size)
 	auto it = dimap.upper_bound(addr + size - 1); // Find the first item strictly greater than address of last byte
 	if (it == dimap.begin())
 		return true;  // None <= this address, so no overlap possible
-	it--;  // If any item overlaps, it is this one
+	--it;  // If any item overlaps, it is this one
 	// Make sure the previous item ends before this one will start
 	ADDRESS end;
 	if (it->first + it->second.size < it->first)
@@ -1918,7 +1918,7 @@ CompoundType::makeMemo(int mId)
 	m->types = types;
 	m->names = names;
 
-	for (auto it = types.begin(); it != types.end(); it++)
+	for (auto it = types.begin(); it != types.end(); ++it)
 		(*it)->takeMemo(mId);
 	return m;
 }
@@ -1930,7 +1930,7 @@ CompoundType::readMemo(Memo *mm, bool dec)
 	types = m->types;
 	names = m->names;
 
-	for (auto it = types.begin(); it != types.end(); it++)
+	for (auto it = types.begin(); it != types.end(); ++it)
 		(*it)->restoreMemo(m->mId, dec);
 }
 
@@ -1946,7 +1946,7 @@ UnionType::makeMemo(int mId)
 	UnionTypeMemo *m = new UnionTypeMemo(mId);
 	m->li = li;
 
-	for (auto it = li.begin(); it != li.end(); it++)
+	for (auto it = li.begin(); it != li.end(); ++it)
 		it->type->takeMemo(mId);  // Is this right? What about the names? MVE
 	return m;
 }
@@ -1957,7 +1957,7 @@ UnionType::readMemo(Memo *mm, bool dec)
 	UnionTypeMemo *m = dynamic_cast<UnionTypeMemo *>(mm);
 	li = m->li;
 
-	for (auto it = li.begin(); it != li.end(); it++)
+	for (auto it = li.begin(); it != li.end(); ++it)
 		it->type->restoreMemo(m->mId, dec);
 }
 

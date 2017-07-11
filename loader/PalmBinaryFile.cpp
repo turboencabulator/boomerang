@@ -36,7 +36,7 @@ PalmBinaryFile::PalmBinaryFile()
 
 PalmBinaryFile::~PalmBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; i++)
+	for (int i = 0; i < m_iNumSections; ++i)
 		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] m_pImage;
@@ -78,7 +78,7 @@ PalmBinaryFile::load(std::istream &ifs)
 	// Iterate through the resource headers (generating section info structs)
 	unsigned char *p = m_pImage + 0x4E;          // First resource header
 	unsigned off = 0;
-	for (int i = 0; i < m_iNumSections; i++) {
+	for (int i = 0; i < m_iNumSections; ++i) {
 		// First get the name (4 alpha)
 		char *name = new char[10];
 		strncpy(name, (char *)p, 4);
@@ -165,7 +165,7 @@ PalmBinaryFile::load(std::istream &ifs)
 		unsigned out = sizeData - start;
 
 		while (in) {
-			unsigned char rle = *p++; in--;
+			unsigned char rle = *p++; --in;
 			if (rle >= 0x80) {
 				// (0x80 + n) b_0 b_1 ... b_n
 				// => n+1 bytes of literal data (n <= 127)
@@ -465,7 +465,7 @@ PalmBinaryFile::getMainEntryPoint()
 void
 PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
-	for (int i = 0; i < m_iNumSections; i++) {
+	for (int i = 0; i < m_iNumSections; ++i) {
 		SectionInfo *pSect = m_pSections + i;
 		if (strncmp(pSect->pSectionName, "code", 4) != 0
 		 && strncmp(pSect->pSectionName, "data", 4) != 0) {
