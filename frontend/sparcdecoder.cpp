@@ -904,10 +904,10 @@ DecodeResult &SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                 
                 break;
               case 52: 
-                if ((80 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
-                  (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ < 196) || 
-                  (212 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
-                  (MATCH_w_32_0 >> 5 & 0x1ff)) /* opf at 0 */ < 512) 
+                if (80 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
+                  (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ < 196 || 
+                  212 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
+                  (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ < 512) 
                   goto MATCH_label_d3;  /*opt-block+*/
                 else 
                   switch((MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */) {
@@ -1341,10 +1341,10 @@ DecodeResult &SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                   } /* (MATCH_w_32_0 >> 5 & 0x1ff) -- opf at 0 --*/ 
                 break;
               case 53: 
-                if ((0 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
-                  (MATCH_w_32_0 >> 5 & 0x1ff)) /* opf at 0 */ < 81 || 
-                  (88 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
-                  (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ < 512)) 
+                if (0 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
+                  (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ < 81 || 
+                  88 <= (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ && 
+                  (MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */ < 512) 
                   goto MATCH_label_d3;  /*opt-block+*/
                 else 
                   switch((MATCH_w_32_0 >> 5 & 0x1ff) /* opf at 0 */) {
@@ -2918,6 +2918,21 @@ Exp* SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
  *============================================================================*/
 bool SparcDecoder::isFuncPrologue(ADDRESS hostPC)
 {
+#if 0		// Can't do this without patterns. It was a bit of a hack anyway
+	int hiVal, loVal, reg, locals;
+	if ((InstructionPatterns::new_reg_win(prog.csrSrc,hostPC, locals)) != NULL)
+			return true;
+	if ((InstructionPatterns::new_reg_win_large(prog.csrSrc, hostPC,
+		hiVal, loVal, reg)) != NULL)
+			return true;
+	if ((InstructionPatterns::same_reg_win(prog.csrSrc, hostPC, locals))
+		!= NULL)
+			return true;
+	if ((InstructionPatterns::same_reg_win_large(prog.csrSrc, hostPC,
+		hiVal, loVal, reg)) != NULL)
+			return true;
+#endif
+
 	return false;
 }
 

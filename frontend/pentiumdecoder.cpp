@@ -61813,7 +61813,7 @@ Exp* PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
     pc
     ;
   unsigned /* [0..255] */ MATCH_w_8_0;
-//  unsigned /* [0..255] */ MATCH_w_8_8;
+  unsigned /* [0..255] */ MATCH_w_8_8;
   { 
     MATCH_w_8_0 = getByte(MATCH_p); 
     if ((MATCH_w_8_0 >> 6 & 0x3) /* mod at 0 */ == 3) { 
