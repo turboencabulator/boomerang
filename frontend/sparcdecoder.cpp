@@ -267,7 +267,7 @@ DecodeResult &SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
     (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
     (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
     (const char *)0, (const char *)0, (const char *)0, "FADDs", "FADDd", "FADDq", (const char *)0, 
-    "FSUBs", "FSUBd", "FSUBq", (char *)0, "FMULs", "FMULd", "FMULq", 
+    "FSUBs", "FSUBd", "FSUBq", (const char *)0, "FMULs", "FMULd", "FMULq", 
     (const char *)0, "FDIVs", "FDIVd", "FDIVq", (const char *)0, "FCMPs", "FCMPd", 
     "FCMPq", (const char *)0, "FCMPEs", "FCMPEd", "FCMPEq", (const char *)0, (const char *)0, 
     (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 

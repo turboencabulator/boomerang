@@ -65,8 +65,8 @@ DecodeResult &ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
     ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
-    (const char *)0, "ldlp", (char *)0, "ldnl", "ldc", "ldnlp", (char *)0, "ldl", 
-    "adc", (const char *)0, (char *)0, "ajw", "eqc", "stl", "stnl", 
+    (const char *)0, "ldlp", (const char *)0, "ldnl", "ldc", "ldnlp", (const char *)0, "ldl", 
+    "adc", (const char *)0, (const char *)0, "ajw", "eqc", "stl", "stnl", 
   };
   unsigned /* [0..255] */ MATCH_w_8_0;
   { 
