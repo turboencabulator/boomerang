@@ -96,9 +96,6 @@ PKG_CHECK_MODULES([CPPUNIT],[cppunit],
 # Checks for header files.
 #AC_HEADER_STDC
 #AC_CHECK_HEADERS(fcntl.h malloc.h sys/time.h unistd.h byteswap.h)
-#AC_CHECK_HEADERS(libelf.h libelf/libelf.h, break)
-#AC_CHECK_HEADERS(link.h sys/link.h, break)
-#AC_CHECK_HEADERS(elf.h sys/elf_SPARC.h sys/auxv.h)
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_C_BIGENDIAN

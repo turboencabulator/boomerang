@@ -118,8 +118,7 @@ testLoader_CPPFLAGS = \
 
 
 noinst_HEADERS = \
-	palmsystraps.h \
-	syself.h
+	palmsystraps.h
 
 EXTRA_DIST = \
 	ArchiveFile.cpp \
