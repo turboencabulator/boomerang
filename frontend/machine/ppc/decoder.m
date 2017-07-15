@@ -81,7 +81,7 @@ PPCDecoder::unused(int x)
 }
 
 void
-unused(char *x)
+unused(const char *x)
 {
 }
 
@@ -110,7 +110,7 @@ PPCDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
  * \param delta  The difference between the above address and the host address
  *               of the pc (i.e. the address that the pc is at in the loaded
  *               object file).
- * \param proc   The enclosing procedure.  This can be NULL for those of us
+ * \param proc   The enclosing procedure.  This can be nullptr for those of us
  *               who are using this method in an interpreter.
  *
  * \returns  A DecodeResult structure containing all the information gathered
@@ -126,7 +126,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	result.reset();
 
 	// The actual list of instantiated statements
-	std::list<Statement *> *stmts = NULL;
+	std::list<Statement *> *stmts = nullptr;
 
 	ADDRESS nextPC = NO_ADDRESS;
 
@@ -214,7 +214,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
 		Proc *destProc = prog->setNewProc(reladdr - delta);
-		if (destProc == (Proc *)-1) destProc = NULL;
+		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
 
 	| b(reladdr) =>
@@ -363,13 +363,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
 	else
-		stmts = NULL;
+		stmts = nullptr;
 		result.valid = false;
 		result.numBytes = 4;
 	endmatch
 
 	result.numBytes = nextPC - hostPC;
-	if (result.valid && result.rtl == 0)  // Don't override higher level res
+	if (result.valid && !result.rtl)  // Don't override higher level res
 		result.rtl = new RTL(pc, stmts);
 
 	return result;

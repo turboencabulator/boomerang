@@ -79,7 +79,7 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
  * \param stmts  Ptr to list of Statement pointers.
  * \param name   Instruction name (e.g. "BNE,a", or "BPNE").
  *
- * \returns  Pointer to newly created RTL, or NULL if invalid.
+ * \returns  Pointer to newly created RTL, or nullptr if invalid.
  */
 RTL *
 SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name)
@@ -119,7 +119,7 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
 		default:
 			std::cerr << "unknown float branch " << name << std::endl;
 			delete res;
-			res = NULL;
+			res = nullptr;
 		}
 		return res;
 	}
@@ -203,7 +203,7 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
  * \param delta  The difference between the above address and the host address
  *               of the pc (i.e. the address that the pc is at in the loaded
  *               object file).
- * \param proc   The enclosing procedure.  This can be NULL for those of us
+ * \param proc   The enclosing procedure.  This can be nullptr for those of us
  *               who are using this method in an interpreter.
  *
  * \returns  A DecodeResult structure containing all the information gathered
@@ -219,7 +219,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	result.reset();
 
 	// The actual list of instantiated statements
-	std::list<Statement *> *stmts = NULL;
+	std::list<Statement *> *stmts = nullptr;
 
 	ADDRESS nextPC = NO_ADDRESS;
 
@@ -269,53 +269,53 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
     "CB013,a", "CB012,a", 
   };
   static const char *MATCH_name_op3_46[] = {
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, "RDPSR", "RDWIM", 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, "RDPSR", "RDWIM", 
     "RDTBR", 
   };
   static const char *MATCH_name_opf_51[] = {
-    (const char *)0, "FMOVs", (const char *)0, (const char *)0, (const char *)0, "FNEGs", (const char *)0, 
-    (const char *)0, (const char *)0, "FABSs", (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, "FSQRTs", "FSQRTd", "FSQRTq", 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, "FADDs", "FADDd", "FADDq", (const char *)0, 
-    "FSUBs", "FSUBd", "FSUBq", (const char *)0, "FMULs", "FMULd", "FMULq", 
-    (const char *)0, "FDIVs", "FDIVd", "FDIVq", (const char *)0, "FCMPs", "FCMPd", 
-    "FCMPq", (const char *)0, "FCMPEs", "FCMPEd", "FCMPEq", (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, (const char *)0, 
-    (const char *)0, (const char *)0, (const char *)0, (const char *)0, "FiTOs", (const char *)0, "FdTOs", 
-    "FqTOs", "FiTOd", "FsTOd", (const char *)0, "FqTOd", "FiTOq", "FsTOq", "FdTOq", 
-    (const char *)0, (const char *)0, "FsTOi", "FdTOi", "FqTOi", 
+    nullptr, "FMOVs", nullptr, nullptr, nullptr, "FNEGs", nullptr, 
+    nullptr, nullptr, "FABSs", nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, "FSQRTs", "FSQRTd", "FSQRTq", 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, "FADDs", "FADDd", "FADDq", nullptr, 
+    "FSUBs", "FSUBd", "FSUBq", nullptr, "FMULs", "FMULd", "FMULq", 
+    nullptr, "FDIVs", "FDIVd", "FDIVq", nullptr, "FCMPs", "FCMPd", 
+    "FCMPq", nullptr, "FCMPEs", "FCMPEd", "FCMPEq", nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, "FiTOs", nullptr, "FdTOs", 
+    "FqTOs", "FiTOd", "FsTOd", nullptr, "FqTOd", "FiTOq", "FsTOq", "FdTOq", 
+    nullptr, nullptr, "FsTOi", "FdTOi", "FqTOi", 
   };
   static const char *MATCH_name_cond_53[] = {
-    "TN", "TE", "TLE", "TL", "TLEU", "TCS", "TNEG", "TVS", (const char *)0, "TNE", 
+    "TN", "TE", "TLE", "TL", "TLEU", "TCS", "TNEG", "TVS", nullptr, "TNE", 
     "TG", "TGE", "TGU", "TCC", "TPOS", "TVC", 
   };
   static const char *MATCH_name_i_66[] = {"LDA", "LDF", };
@@ -346,7 +346,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                   		unused(n);
 
-                  		stmts = NULL;
+                  		stmts = nullptr;
 
                   		result.valid = false;
 
@@ -437,9 +437,9 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                       		}
 
-                      		GotoStatement *jump = 0;
+                      		GotoStatement *jump = nullptr;
 
-                      		RTL *rtl = NULL;
+                      		RTL *rtl = nullptr;
 
                       		if (strcmp(name, "BPN") == 0) {
 
@@ -648,7 +648,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
             		Proc *destProc = prog->setNewProc(nativeDest);
 
-            		if (destProc == (Proc *)-1) destProc = NULL;
+            		if (destProc == (Proc *)-1) destProc = nullptr;
 
             		newCall->setDestProc(destProc);
 
@@ -1990,9 +1990,9 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		}
 
-      		GotoStatement *jump = 0;
+      		GotoStatement *jump = nullptr;
 
-      		RTL *rtl = NULL;  // Init to NULL to suppress a warning
+      		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
 
       		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
 
@@ -2091,9 +2091,9 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		// NOTE: NJMC toolkit cannot handle embedded plain else statements! (But OK with curly bracket before the else)
 
-      		GotoStatement *jump = 0;
+      		GotoStatement *jump = nullptr;
 
-      		RTL *rtl = NULL;
+      		RTL *rtl = nullptr;
 
       		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
 
@@ -2192,9 +2192,9 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		// NOTE: NJMC toolkit cannot handle embedded else statements!
 
-      		GotoStatement *jump = 0;
+      		GotoStatement *jump = nullptr;
 
-      		RTL *rtl = NULL;  // Init to NULL to suppress a warning
+      		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
 
       		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
 
@@ -2270,7 +2270,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		result.valid = false;
 
-      		stmts = NULL;
+      		stmts = nullptr;
 
       
 
@@ -2735,7 +2735,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 #line 653 "machine/sparc/decoder.m"
 
 	result.numBytes = nextPC - hostPC;
-	if (result.valid && result.rtl == 0)  // Don't override higher level res
+	if (result.valid && !result.rtl)  // Don't override higher level res
 		result.rtl = new RTL(pc, stmts);
 
 	return result;
@@ -2946,13 +2946,13 @@ SparcDecoder::isFuncPrologue(ADDRESS hostPC)
 {
 #if 0  // Can't do this without patterns. It was a bit of a hack anyway
 	int hiVal, loVal, reg, locals;
-	if ((InstructionPatterns::new_reg_win(prog.csrSrc, hostPC, locals)) != NULL)
+	if (InstructionPatterns::new_reg_win(prog.csrSrc, hostPC, locals))
 		return true;
-	if ((InstructionPatterns::new_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg)) != NULL)
+	if (InstructionPatterns::new_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg))
 		return true;
-	if ((InstructionPatterns::same_reg_win(prog.csrSrc, hostPC, locals)) != NULL)
+	if (InstructionPatterns::same_reg_win(prog.csrSrc, hostPC, locals))
 		return true;
-	if ((InstructionPatterns::same_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg)) != NULL)
+	if (InstructionPatterns::same_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg))
 		return true;
 #endif
 	return false;

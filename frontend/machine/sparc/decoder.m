@@ -75,7 +75,7 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
  * \param stmts  Ptr to list of Statement pointers.
  * \param name   Instruction name (e.g. "BNE,a", or "BPNE").
  *
- * \returns  Pointer to newly created RTL, or NULL if invalid.
+ * \returns  Pointer to newly created RTL, or nullptr if invalid.
  */
 RTL *
 SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name)
@@ -115,7 +115,7 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
 		default:
 			std::cerr << "unknown float branch " << name << std::endl;
 			delete res;
-			res = NULL;
+			res = nullptr;
 		}
 		return res;
 	}
@@ -199,7 +199,7 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
  * \param delta  The difference between the above address and the host address
  *               of the pc (i.e. the address that the pc is at in the loaded
  *               object file).
- * \param proc   The enclosing procedure.  This can be NULL for those of us
+ * \param proc   The enclosing procedure.  This can be nullptr for those of us
  *               who are using this method in an interpreter.
  *
  * \returns  A DecodeResult structure containing all the information gathered
@@ -215,7 +215,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	result.reset();
 
 	// The actual list of instantiated statements
-	std::list<Statement *> *stmts = NULL;
+	std::list<Statement *> *stmts = nullptr;
 
 	ADDRESS nextPC = NO_ADDRESS;
 
@@ -231,7 +231,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		ADDRESS nativeDest = addr - delta;
 		newCall->setDest(nativeDest);
 		Proc *destProc = prog->setNewProc(nativeDest);
-		if (destProc == (Proc *)-1) destProc = NULL;
+		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
@@ -292,8 +292,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
 		// NOTE: NJMC toolkit cannot handle embedded else statements!
-		GotoStatement *jump = 0;
-		RTL *rtl = NULL;  // Init to NULL to suppress a warning
+		GotoStatement *jump = nullptr;
+		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
 			jump = new GotoStatement;
 			rtl = new RTL(pc, stmts);
@@ -334,8 +334,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			result.numBytes = 4;
 			return result;
 		}
-		GotoStatement *jump = 0;
-		RTL *rtl = NULL;  // Init to NULL to suppress a warning
+		GotoStatement *jump = nullptr;
+		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
 		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
 			jump = new GotoStatement;
 			rtl = new RTL(pc, stmts);
@@ -377,8 +377,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
 		// NOTE: NJMC toolkit cannot handle embedded plain else statements! (But OK with curly bracket before the else)
-		GotoStatement *jump = 0;
-		RTL *rtl = NULL;
+		GotoStatement *jump = nullptr;
+		RTL *rtl = nullptr;
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
 			jump = new GotoStatement;
 			rtl = new RTL(pc, stmts);
@@ -423,8 +423,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			result.numBytes = 4;
 			return result;
 		}
-		GotoStatement *jump = 0;
-		RTL *rtl = NULL;
+		GotoStatement *jump = nullptr;
+		RTL *rtl = nullptr;
 		if (strcmp(name, "BPN") == 0) {
 			jump = new GotoStatement;
 			rtl = new RTL(pc, stmts);
@@ -636,23 +636,23 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	| UNIMP(n) =>
 		unused(n);
-		stmts = NULL;
+		stmts = nullptr;
 		result.valid = false;
 
 	| inst = n =>
 		// What does this mean?
 		unused(n);
 		result.valid = false;
-		stmts = NULL;
+		stmts = nullptr;
 
 	else
-		stmts = NULL;
+		stmts = nullptr;
 		result.valid = false;
 		result.numBytes = 4;
 	endmatch
 
 	result.numBytes = nextPC - hostPC;
-	if (result.valid && result.rtl == 0)  // Don't override higher level res
+	if (result.valid && !result.rtl)  // Don't override higher level res
 		result.rtl = new RTL(pc, stmts);
 
 	return result;
@@ -755,13 +755,13 @@ SparcDecoder::isFuncPrologue(ADDRESS hostPC)
 {
 #if 0  // Can't do this without patterns. It was a bit of a hack anyway
 	int hiVal, loVal, reg, locals;
-	if ((InstructionPatterns::new_reg_win(prog.csrSrc, hostPC, locals)) != NULL)
+	if (InstructionPatterns::new_reg_win(prog.csrSrc, hostPC, locals))
 		return true;
-	if ((InstructionPatterns::new_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg)) != NULL)
+	if (InstructionPatterns::new_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg))
 		return true;
-	if ((InstructionPatterns::same_reg_win(prog.csrSrc, hostPC, locals)) != NULL)
+	if (InstructionPatterns::same_reg_win(prog.csrSrc, hostPC, locals))
 		return true;
-	if ((InstructionPatterns::same_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg)) != NULL)
+	if (InstructionPatterns::same_reg_win_large(prog.csrSrc, hostPC, hiVal, loVal, reg))
 		return true;
 #endif
 	return false;

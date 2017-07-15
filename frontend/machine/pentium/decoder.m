@@ -115,7 +115,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	result.reset();
 
 	// The actual list of instantiated Statements
-	std::list<Statement *> *stmts = NULL;
+	std::list<Statement *> *stmts = nullptr;
 
 
 	ADDRESS nextPC = NO_ADDRESS;
@@ -1311,7 +1311,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			call->setDest(nativeDest);
 			stmts->push_back(call);
 			Proc *destProc = prog->setNewProc(nativeDest);
-			if (destProc == (Proc *)-1) destProc = NULL;  // In case a deleted Proc
+			if (destProc == (Proc *)-1) destProc = nullptr;  // In case a deleted Proc
 			call->setDestProc(destProc);
 		}
 		result.rtl = new RTL(pc, stmts);
@@ -2127,12 +2127,12 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	else
 		result.valid = false;  // Invalid instruction
-		result.rtl = NULL;
+		result.rtl = nullptr;
 		result.numBytes = 0;
 		return result;
 	endmatch
 
-	if (result.rtl == 0)
+	if (!result.rtl)
 		result.rtl = new RTL(pc, stmts);
 	result.numBytes = nextPC - hostPC;
 	return result;
@@ -2155,7 +2155,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 Exp *
 PentiumDecoder::dis_Mem(ADDRESS pc)
 {
-	Exp *expr = NULL;
+	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
 
 	match pc to
@@ -2268,11 +2268,11 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 {
 #if 0
 	int locals, regs;
-	if ((InstructionPatterns::frameless_pro(prog.csrSrc, hostPC, locals, regs)) != NULL)
+	if (InstructionPatterns::frameless_pro(prog.csrSrc, hostPC, locals, regs))
 		return true;
-	if ((InstructionPatterns::struct_ptr(prog.csrSrc, hostPC, locals, regs)) != NULL)
+	if (InstructionPatterns::struct_ptr(prog.csrSrc, hostPC, locals, regs))
 		return true;
-	if ((InstructionPatterns::std_entry(prog.csrSrc, hostPC, locals, regs)) != NULL)
+	if (InstructionPatterns::std_entry(prog.csrSrc, hostPC, locals, regs))
 		return true;
 #endif
 	return false;

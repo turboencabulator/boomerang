@@ -119,7 +119,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	result.reset();
 
 	// The actual list of instantiated Statements
-	std::list<Statement *> *stmts = NULL;
+	std::list<Statement *> *stmts = nullptr;
 
 
 	ADDRESS nextPC = NO_ADDRESS;
@@ -145,7 +145,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
   static const char *MATCH_name_page_9[] = {"REP.CMPSB", "REPNE.SCASvod", };
   static const char *MATCH_name_page_10[] = {"REP.CMPSvow", "REP.STOSvow", };
   static const char *MATCH_name_page_13[] = {"REP.CMPSvod", "REP.STOSB", };
-  static const char *MATCH_name_col_59[] = {(const char *)0, "JMP.Jvod", (const char *)0, "JMP.Jb", };
+  static const char *MATCH_name_col_59[] = {nullptr, "JMP.Jvod", nullptr, "JMP.Jb", };
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
   unsigned /* [0..65535] */ MATCH_w_16_8;
@@ -14493,7 +14493,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                     			Proc *destProc = prog->setNewProc(nativeDest);
 
-                    			if (destProc == (Proc *)-1) destProc = NULL;  // In case a deleted Proc
+                    			if (destProc == (Proc *)-1) destProc = nullptr;  // In case a deleted Proc
 
                     			call->setDestProc(destProc);
 
@@ -37469,7 +37469,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       
       		result.valid = false;  // Invalid instruction
 
-      		result.rtl = NULL;
+      		result.rtl = nullptr;
 
       		result.numBytes = 0;
 
@@ -61450,7 +61450,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 #line 2134 "machine/pentium/decoder.m"
 
-	if (result.rtl == 0)
+	if (!result.rtl)
 		result.rtl = new RTL(pc, stmts);
 	result.numBytes = nextPC - hostPC;
 	return result;
@@ -61473,7 +61473,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 Exp *
 PentiumDecoder::dis_Mem(ADDRESS pc)
 {
-	Exp *expr = NULL;
+	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
 
 
@@ -61908,11 +61908,11 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 {
 #if 0
 	int locals, regs;
-	if ((InstructionPatterns::frameless_pro(prog.csrSrc, hostPC, locals, regs)) != NULL)
+	if (InstructionPatterns::frameless_pro(prog.csrSrc, hostPC, locals, regs))
 		return true;
-	if ((InstructionPatterns::struct_ptr(prog.csrSrc, hostPC, locals, regs)) != NULL)
+	if (InstructionPatterns::struct_ptr(prog.csrSrc, hostPC, locals, regs))
 		return true;
-	if ((InstructionPatterns::std_entry(prog.csrSrc, hostPC, locals, regs)) != NULL)
+	if (InstructionPatterns::std_entry(prog.csrSrc, hostPC, locals, regs))
 		return true;
 #endif
 	return false;

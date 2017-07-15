@@ -76,7 +76,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
 	ADDRESS hostPC = pc + delta;
-	std::list<Statement *> *stmts = NULL;  // The actual list of instantiated Statements
+	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
 	unsigned total = 0;  // Total value from all prefixes
 
 	while (1) {
@@ -91,8 +91,8 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
     ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
-    (const char *)0, "ldlp", (const char *)0, "ldnl", "ldc", "ldnlp", (const char *)0, "ldl", 
-    "adc", (const char *)0, (const char *)0, "ajw", "eqc", "stl", "stnl", 
+    nullptr, "ldlp", nullptr, "ldnl", "ldc", "ldnlp", nullptr, "ldl", 
+    "adc", nullptr, nullptr, "ajw", "eqc", "stl", "stnl", 
   };
   unsigned /* [0..255] */ MATCH_w_8_0;
   { 
@@ -242,7 +242,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
             			total |= oper;
 
-            			const char *name = NULL;
+            			const char *name = nullptr;
 
             			bool isRet = false;
 
@@ -600,7 +600,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
             				result.valid = false;  // Invalid instruction
 
-            				result.rtl = NULL;
+            				result.rtl = nullptr;
 
             				result.numBytes = 0;
 
@@ -629,7 +629,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		break;
 	}
 
-	if (result.rtl == 0)
+	if (!result.rtl)
 		result.rtl = new RTL(pc, stmts);
 	return result;
 }
