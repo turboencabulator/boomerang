@@ -89,7 +89,15 @@ EOF
 mv ${MATCHER}.d ${MATCHER_CC}
 ${UNGENERATE} ${MATCHER_CC}
 cat ${MATCHER_CC} | awk '
-	/#line.*decoder\.m"/ { line = $2; print $1 " " (line-1) " " $3; next; }
-	{ print; }
-' > ${SCRATCH}
+	/#line.*decoder\.m"/ {
+		line = $2;
+		print $1 " " (line-1) " " $3;
+		next;
+	}
+	{
+		gsub(/\(char \*\)0/, "nullptr");
+		sub(/char \*MATCH_name/, "const &");
+		sub(/char \*name = MATCH_name;/, "const &");
+		print;
+	}' > ${SCRATCH}
 mv ${SCRATCH} ${MATCHER_CC}
