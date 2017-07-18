@@ -1033,8 +1033,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
               { 
                 const char *name = MATCH_name;
                 unsigned reladdr = 
-                  4 * sign_extend((MATCH_w_32_0 >> 2 & 0xffffff) 
-                                    /* LI at 0 */, 24) + addressToPC(MATCH_p);
+                  4 * sign_extend(
+                              (MATCH_w_32_0 >> 2 & 0xffffff) /* LI at 0 */, 
+                              24) + addressToPC(MATCH_p);
                 nextPC = 4 + MATCH_p; 
                 
 #line 206 "machine/ppc/decoder.m"

@@ -377,9 +377,9 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                     unsigned cc01 = 
                       (MATCH_w_32_0 >> 20 & 0x3) /* cc01 at 0 */;
                     unsigned tgt = 
-                      4 * sign_extend((MATCH_w_32_0 & 0x7ffff) 
-                                        /* disp19 at 0 */, 19) + 
-                      addressToPC(MATCH_p);
+                      4 * sign_extend(
+                                  (MATCH_w_32_0 & 0x7ffff) /* disp19 at 0 */, 
+                                  19) + addressToPC(MATCH_p);
                     nextPC = 4 + MATCH_p; 
                     
 #line 408 "machine/sparc/decoder.m"
@@ -417,7 +417,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                       unsigned cc01 = 
                         (MATCH_w_32_0 >> 20 & 0x3) /* cc01 at 0 */;
                       unsigned tgt = 
-                        4 * sign_extend((MATCH_w_32_0 & 0x7ffff) 
+                        4 * sign_extend(
+                                    (MATCH_w_32_0 & 0x7ffff) 
                                           /* disp19 at 0 */, 19) + 
                         addressToPC(MATCH_p);
                       nextPC = 4 + MATCH_p; 
