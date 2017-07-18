@@ -30,9 +30,8 @@ if [ $# -lt 4 ]; then
 	usage;
 fi
 
-# These 3 tools are configured (see configure.in)
+# These 2 tools are configured (see configure.ac)
 TKML=@TKML@
-HEAP=@HEAP@
 UNGENERATE=@UNGENERATE@
 
 
@@ -82,7 +81,7 @@ shift
 CMD="${CMD} d \"${MATCHER}\";"
 
 # Run the toolkit
-eval "${TKML} ${HEAP}" <<EOF
+eval "${TKML}" <<EOF
 	${CMD}
 EOF
 

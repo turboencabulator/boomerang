@@ -64,17 +64,10 @@ AS_IF([test "x$enable_gui" = "xyes"], [
 	AC_SUBST([RCC])
 ])
 
-# Three paths for frontend/mltk.sh. No longer give a "value-if-not-found", so can avoid errors when not installed
-AC_PATH_PROG([TKML],[.run-sml],,
+# Two paths for frontend/mltk.sh. No longer give a "value-if-not-found", so can avoid errors when not installed
+AC_PATH_PROG([TKML],[sml-toolkit],,
 	[$PATH /usr/share/sml-nj/bin $HOME/install/smlnj/bin])
 AC_SUBST([TKML])
-
-# many more processors and platforms needed in this list
-AC_PATH_PROGS([HEAPPATH],
-	[sml-toolkit.x86-linux sml-toolkit.sparc-solaris],,
-	[$HOME/install $PATH $HOME/install/mltk])
-HEAP=\"@SMLload=$HEAPPATH\"
-AC_SUBST([HEAP])
 
 AC_PATH_PROG([UNGENERATE],[ungenerate],,
 	[$PATH:$HOME/install:$HOME/bin:/home/02/binary/u0.luna.tools/NJ/base])
