@@ -64,13 +64,13 @@ AS_IF([test "x$enable_gui" = "xyes"], [
 	AC_SUBST([RCC])
 ])
 
-# Two paths for frontend/mltk.sh. No longer give a "value-if-not-found", so can avoid errors when not installed
+# Two paths for frontend/mltk.sh.
 AC_PATH_PROG([TKML],[sml-toolkit],,
-	[$PATH /usr/share/sml-nj/bin $HOME/install/smlnj/bin])
+	[$PATH:$HOME/sml-nj/bin])
 AC_SUBST([TKML])
 
 AC_PATH_PROG([UNGENERATE],[ungenerate],,
-	[$PATH:$HOME/install:$HOME/bin:/home/02/binary/u0.luna.tools/NJ/base])
+	[$PATH:$HOME/sml-nj/install])
 
 # Checks for libraries.
 AS_IF([test "x$with_expat" = "xyes"], [

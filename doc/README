@@ -4,10 +4,265 @@ For build instructions please see
 
 Note that on a debian system you can usually get away with:
 
-  sudo apt-get install libgc-dev
-  sudo apt-get install libexpat-dev
-  ./configure
-  make remote
-  make
+	sudo apt-get install libgc-dev
+	sudo apt-get install libexpat-dev
+	./configure
+	make
 
-Thanks.
+
+Boomerang uses several obscure tools to generate some of its source files.
+These tools were last updated before Boomerang development stalled around
+2006, so it can be a pain to make them work on a modern system.  Here are
+step-by-step instructions.
+
+
+bison++/flex++
+==============
+
+These are used to generate a few lexers/parsers:
+
+	c/ansi-c-{scanner,parser}.*
+	db/ssl{scanner,parser}.*
+	transform/transformation-{scanner,parser}.*
+
+Grab the sources from here:
+
+	https://github.com/turboencabulator/bisonpp
+	https://github.com/turboencabulator/flexpp
+
+Both should install cleanly with:
+
+	./bootstrap
+	./configure
+	make
+	make install
+
+
+njmc-toolkit
+============
+
+This is used to generate the frontend/*decoder.cpp files, and has been used to
+generate some of the existing files in the frontend/machine directory.
+
+The toolkit comes in two flavors, a version written in Icon, and another in ML
+that's intended to work with SML/NJ's Compilation Manager (CM).  We use the ML
+version.
+
+We may also need a program called "ungenerate" that's distributed with the
+Icon version.  Its purpose is to rewrite #line directives in the generated
+output to something more correct.  I'm not entirely sure that it's needed
+anymore, and if so, it could probably be replaced with an awk script.  We are
+already tweaking some of the #line directives in an awk script.
+
+
+1.  Pre-compiled binary
+
+Before starting, it may be worth a try to download the pre-compiled version
+available from the SourceForge page.  It contains Icon 9.4.2, SML/NJ 110.8, an
+unknown version of ungenerate, and an unknown version of the ML flavor of the
+toolkit.
+
+	wget https://sourceforge.net/projects/boomerang/files/njmc-toolkit/linux%20binaries/sml-nj-with-toolkit-x86-linux.tar.gz
+	tar xvf sml-nj-with-toolkit-x86-linux.tar.gz
+	cd sml-nj/bin
+	mv ../install/sml-toolkit.x86-linux .heap/
+	ln -s .run-sml sml-toolkit
+	sed -i "s|BIN_DIR=.*|BIN_DIR=$(pwd)|" .run-sml
+
+./configure should find sml-nj/bin/sml-toolkit and sml-nj/install/ungenerate
+if you do the above in your $HOME directory.  Otherwise adjust configure.ac.
+Or just substitute in the executable locations in the frontend/mltk.sh script.
+
+However I have not been able to get this to work on a modern system.  It
+segfaults before producing an output file:
+
+	$ cd frontend
+	$ ./mltk.sh -o pentiumdecoder.cpp machine/pentium/{core.spec,synth.spec,dis.spec,decoder.m}
+	val it = true : bool
+	- lex+source.nw:54.43-54.147 Warning: type vars not generalized because of
+	   value restriction are instantiated to dummy types (X1,X2,...)
+	mv: cannot stat 'machine/pentium/decoder.m.d': No such file or directory
+
+strace shows this:
+
+	--- SIGSEGV {si_signo=SIGSEGV, si_code=SEGV_MAPERR, si_addr=0x6520656c} ---
+
+(It also gives the same address when trying the steps below to build the ML
+version of the toolkit.  The error is likely in SML/NJ.)  But if I do the
+above in a VM using an OS from the same era (circa 2006, Slackware 11.0 seems
+OK) then it runs fine.  So using an older OS in a VM is an alternative, but
+not convenient since it probably won't have a C++11 compiler.
+
+
+2.  Prerequisites
+
+The other alternative is to build the toolkit.  First we need its
+dependencies:  Icon, noweb, and SML/NJ.
+
+
+2.1  Icon
+
+Icon is needed to build a few tools during the install process.  It's also
+needed for the Icon version of the toolkit (of course).  Get it from your
+distribution's package manager.
+
+	https://repology.org/metapackage/icon
+
+
+2.2  noweb
+
+The toolkit sources are written in a literate programming style that requires
+the noweb tool to separate the code from the documentation.  Get it from your
+distribution's package manager.
+
+	https://repology.org/metapackage/noweb
+
+
+2.3  SML/NJ
+
+SML/NJ is the environment under which the toolkit will run.  We need an
+ancient version because the source is no longer compatible with the current
+version (due to changes to libraries or modules since the toolkit was
+originally written).  I've found 110.0.7 here, which is sufficiently old:
+
+	http://smlnj.sourceforge.net/
+	https://sourceforge.net/projects/smlnj/files/smlnj-release/110.0.7/
+
+To build SML/NJ, download all of the tarballs to one directory, untar
+config.tar.Z, make any necessary tweaks, then run `config/install.sh`.  This
+will untar the others as needed to build it.  I was not successful.  First
+there were several compiler errors to work through.  After that, it appears to
+extract and load the contents of bin.x86-unix.tar.Z, then gets stuck near
+int-inf.sml.bin, which I am not able to debug.
+
+So instead of building SML/NJ from source, download the RPM that lives
+alongside those sources and install that instead.  Convert the RPM to your
+native package format if necessary.  This RPM seems to work OK for now, but
+who knows how long before it begins to suffer from bit rot...
+
+
+3.  ML version
+
+Grab the sources from here:
+
+	https://github.com/turboencabulator/njmc-toolkit
+
+Browse the various branches and history of this repo because you will need the
+1st August 2000 version, as documented here (the first link is dead; the
+Wayback Machine has a copy along with the 1st August source tarball):
+
+	http://www.itee.uq.edu.au/%7Eemmerik/toolkitml.html#explosion
+	https://web.archive.org/web/20080920121100/http://www.itee.uq.edu.au:80/~emmerik/toolkitml.html
+
+Note that there is an install script, but it's more informative to install the
+parts by hand.
+
+
+3.1  Icon tools
+
+The programs ebnf, dt-order, and tygen are used below.  All are built from the
+Makefile.  They need to be in your $PATH, so add the tools directory to your
+$PATH or install them somewhere like /usr/local/bin.  I don't believe these
+three are needed after sml-toolkit is installed.
+
+	cd tools
+	make
+	mv ebnf dt-order tygen /usr/local/bin/
+
+
+3.2  ml-lex+
+
+This appears to be a modified version of the `ml-lex` that's provided along
+with SML/NJ.  I don't know what those modifications are.
+
+	cd tools
+	sml < lexbundle.sml
+	mv ml-lex+.x86-linux /usr/share/smlnj/bin/.heap/
+	cd /usr/share/smlnj/bin
+	ln -s .run-sml ml-lex+
+
+The first command creates a heap (what I understand to be a snapshot of the
+environment that can be restored), named "ml-lex+.$ARCH-$OPSYS".  Installation
+of the heap involves copying it to the SML/NJ heap directory and adding a
+symlink to .run-sml with the same basename as the heap.  Here we're assuming
+$ARCH-$OPSYS is "x86-linux", and the heap directory is
+"/usr/share/smlnj/bin/.heap/".  Make sure that /usr/share/smlnj/bin (or your
+equivalent location) is in your $PATH, or create a symlink
+(e.g. /usr/local/bin/ml-lex+ -> /usr/share/smlnj/bin/ml-lex+).
+
+
+3.3  sml-nw
+
+I believe this extends the `sml` environment to be able to run the noweb,
+ebnf, dt-order, tygen, and ml-lex+ tools.
+
+	cd tools
+	sml < export.sml
+	mv sml-nw.x86-linux /usr/share/smlnj/bin/.heap/
+	cd /usr/share/smlnj/bin
+	ln -s .run-sml sml-nw
+
+The first command again creates a heap.  Install it in the usual manner, and
+make sure sml-nw is in your $PATH.
+
+Note that if the first command complains, you may need to comment out some
+lines, depending on the exact version of SML/NJ that you're installing this
+on:
+
+Line 3:
+	val _ = Compiler.Control.MC.bindContainsVar := false;
+
+Possibly one of the bracketed expressions on lines 263-265:
+	( { mkCommand = fn () => command, tool = "ML-Lex+" }  (* new style *)
+	; { command = command, tool = "ML-Lex+" }  (* old style *)
+	)
+
+
+3.4  sml-toolkit
+
+cd to the src directory and run `sml-nw`.  At the prompt, type these two
+lines:
+
+	CM.make();
+	SMLofNJ.exportML "sml-toolkit";
+
+Ctrl+D to exit.  Ignore the "[Checking ... not usable]" messages from the
+first command, as long as it ends with something like this:
+
+	[introducing new bindings into toplevel environment...]
+	val it = () : unit
+	-
+
+The second command creates a heap named "sml-toolkit".  Install it as usual:
+
+	mv sml-toolkit.x86-linux /usr/share/smlnj/bin/.heap/
+	cd /usr/share/smlnj/bin
+	ln -s .run-sml sml-toolkit
+
+Then finally make sure sml-toolkit is in your $PATH.
+
+
+4.  Icon version
+
+The sources are available from the same repo, different branch:
+
+	https://github.com/turboencabulator/njmc-toolkit
+
+The files in the base directory have already been run through noweb and are
+ready to compile:
+
+	cd base
+	icont tools
+	icont ungenerate
+	gcc -c mclib.c
+	ar rv libmc.a mclib.o
+	ranlib libmc.a
+
+Now install them to somewhere like /usr/local:
+
+	mv tools ungenerate /usr/local/bin/
+	mv libmc.a /usr/local/lib/
+	mv mclib.h /usr/local/include/
+
+The mclib library and header are for use when compiling code that has been
+generated by the Icon version of the toolkit.
