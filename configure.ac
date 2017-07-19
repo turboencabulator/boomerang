@@ -49,26 +49,18 @@ AX_CXX_COMPILE_STDCXX([11])
 AC_PROG_CC_C99
 
 AC_PATH_PROG([BISONPP],[bison++])
-AC_SUBST([BISONPP])
 AC_PATH_PROG([FLEXPP],[flex++])
-AC_SUBST([FLEXPP])
 AC_PATH_PROG([M4],[m4])
-AC_SUBST([M4])
 
 AS_IF([test "x$enable_gui" = "xyes"], [
 	AC_PATH_PROG([MOC],[moc])
-	AC_SUBST([MOC])
 	AC_PATH_PROG([UIC],[uic])
-	AC_SUBST([UIC])
 	AC_PATH_PROG([RCC],[rcc])
-	AC_SUBST([RCC])
 ])
 
 # Two paths for frontend/mltk.sh.
 AC_PATH_PROG([TKML],[sml-toolkit],,
 	[$PATH:$HOME/sml-nj/bin])
-AC_SUBST([TKML])
-
 AC_PATH_PROG([UNGENERATE],[ungenerate],,
 	[$PATH:$HOME/sml-nj/install])
 
