@@ -77,11 +77,12 @@ However I have not been able to get this to work on a modern system.  It
 segfaults before producing an output file:
 
 	$ cd frontend
-	$ ./mltk.sh -o pentiumdecoder.cpp machine/pentium/{core.spec,synth.spec,dis.spec,decoder.m}
+	$ ./mltk.sh machine/pentium/decoder.m -o pentiumdecoder.cpp machine/pentium/{core,synth,dis}.spec
 	val it = true : bool
-	- lex+source.nw:54.43-54.147 Warning: type vars not generalized because of
+	- lex+source.nw:55.2-55.107 Warning: type vars not generalized because of
 	   value restriction are instantiated to dummy types (X1,X2,...)
-	mv: cannot stat 'machine/pentium/decoder.m.d': No such file or directory
+	$ echo $?
+	1
 
 strace shows this:
 
