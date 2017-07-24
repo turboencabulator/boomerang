@@ -53,8 +53,8 @@ class Proc;
  *
  * \param x  Integer variable to be "used".
  */
-void
-SparcDecoder::unused(int x)
+static void
+unused(int x)
 {
 }
 

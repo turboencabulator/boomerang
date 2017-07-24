@@ -75,12 +75,11 @@ crBit(int bitNum);  // Get an expression for a CR bit access
  *
  * \param x  Integer variable to be "used".
  */
-void
-PPCDecoder::unused(int x)
+static void
+unused(int x)
 {
 }
-
-void
+static void
 unused(const char *x)
 {
 }
@@ -194,7 +193,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		default:
 			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
 		}
-		::unused(name);
+		unused(name);
 
 	| Xd_(rd) [name] =>
 		stmts = instantiate(pc, name, DIS_RD);

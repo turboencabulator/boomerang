@@ -35,7 +35,6 @@ private:
 	Exp *dis_Mem(ADDRESS ps);
 	Exp *addReloc(Exp *e);
 
-	void unused(int x);
 	bool isFuncPrologue(ADDRESS hostPC);
 
 	Byte getByte(unsigned lc);

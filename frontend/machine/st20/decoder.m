@@ -23,16 +23,6 @@
 #include "statement.h"
 
 /**
- * A dummy function to suppress "unused local variable" messages.
- *
- * \param x  Integer variable to be "used".
- */
-void
-ST20Decoder::unused(int x)
-{
-}
-
-/**
  * Constructor.  The code won't work without this (not sure why the default
  * constructor won't do...)
  */

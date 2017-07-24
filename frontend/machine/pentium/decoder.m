@@ -62,8 +62,12 @@ genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int n
  *
  * \param x  Integer variable to be "used".
  */
-void
-PentiumDecoder::unused(int x)
+static void
+unused(int x)
+{
+}
+static void
+unused(const char *x)
 {
 }
 
@@ -155,13 +159,13 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	 * Unconditional branches
 	 */
 	| JMP.Jvod(relocd) [name] =>
-		unused((int)name);
+		unused(name);
 		unconditionalJump(name, 5, relocd, delta, pc, stmts, result);
 	| JMP.Jvow(relocd) [name] =>
-		unused((int)name);
+		unused(name);
 		unconditionalJump(name, 3, relocd, delta, pc, stmts, result);
 	| JMP.Jb(relocd) [name] =>
-		unused((int)name);
+		unused(name);
 		unconditionalJump(name, 2, relocd, delta, pc, stmts, result);
 
 	/*

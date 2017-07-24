@@ -21,16 +21,6 @@
 
 class Statement;
 
-/**
- * A dummy function to suppress "unused local variable" messages.
- *
- * \param x  Integer variable to be "used".
- */
-void
-MIPSDecoder::unused(int x)
-{
-}
-
 MIPSDecoder::MIPSDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {

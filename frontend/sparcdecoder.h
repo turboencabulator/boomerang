@@ -43,7 +43,6 @@ private:
 	Exp *dis_RegLhs(unsigned r);
 	Exp *dis_RegRhs(unsigned r);
 
-	void unused(int x);
 	RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
 	bool isFuncPrologue(ADDRESS hostPC);
 	DWord getDword(ADDRESS lc);

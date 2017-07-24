@@ -27,16 +27,6 @@
 #include "statement.h"
 
 /**
- * A dummy function to suppress "unused local variable" messages.
- *
- * \param x  Integer variable to be "used".
- */
-void
-ST20Decoder::unused(int x)
-{
-}
-
-/**
  * Constructor.  The code won't work without this (not sure why the default
  * constructor won't do...)
  */
@@ -82,11 +72,11 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	while (1) {
 
 
-#line 78 "machine/st20/decoder.m"
+#line 68 "machine/st20/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 78 "machine/st20/decoder.m"
+#line 68 "machine/st20/decoder.m"
     hostPC + result.numBytes++
     ;
   const char *MATCH_name;
@@ -103,7 +93,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 92 "machine/st20/decoder.m"
+#line 82 "machine/st20/decoder.m"
             
 
             			unconditionalJump("j", result.numBytes, hostPC + result.numBytes + total + oper, delta, pc, stmts, result);
@@ -124,7 +114,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 89 "machine/st20/decoder.m"
+#line 79 "machine/st20/decoder.m"
             
 
             			stmts = instantiate(pc, name, new Const(total + oper));
@@ -141,7 +131,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 81 "machine/st20/decoder.m"
+#line 71 "machine/st20/decoder.m"
             
 
             			total = (total + oper) << 4;
@@ -160,7 +150,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 85 "machine/st20/decoder.m"
+#line 75 "machine/st20/decoder.m"
             
 
             			total = (total + ~oper) << 4;
@@ -179,7 +169,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 95 "machine/st20/decoder.m"
+#line 85 "machine/st20/decoder.m"
             
 
             			total += oper;
@@ -208,7 +198,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 104 "machine/st20/decoder.m"
+#line 94 "machine/st20/decoder.m"
             
 
             			BranchStatement *br = new BranchStatement();
@@ -237,7 +227,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 113 "machine/st20/decoder.m"
+#line 103 "machine/st20/decoder.m"
             
 
             			total |= oper;
@@ -625,7 +615,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
   
 }
 
-#line 300 "machine/st20/decoder.m"
+#line 290 "machine/st20/decoder.m"
 		break;
 	}
 
