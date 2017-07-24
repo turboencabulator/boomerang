@@ -89,6 +89,18 @@ libfrontend_la_SOURCES += \
 endif
 
 
+# Decoders are built from matcher (.m) files...
+%decoder.cpp: machine/%/decoder.m
+	./mltk.sh $< -o $@ $(filter-out $<,$^)
+
+# ...and SLED (.spec) files.
+mipsdecoder.cpp: machine/mips/core.spec machine/mips/synth.spec machine/mips/dis.spec
+pentiumdecoder.cpp: machine/pentium/core.spec machine/pentium/synth.spec machine/pentium/dis.spec
+ppcdecoder.cpp: machine/ppc/core.spec machine/ppc/synth.spec machine/ppc/dis.spec
+sparcdecoder.cpp: machine/sparc/core.spec machine/sparc/synth.spec machine/sparc/dis.spec
+st20decoder.cpp: machine/st20/core.spec machine/st20/synth.spec machine/st20/dis.spec
+
+
 check_LTLIBRARIES = \
 	libFrontPentTest.la \
 	libFrontSparcTest.la

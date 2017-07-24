@@ -1,0 +1,8 @@
+#!/bin/sh
+
+autoreconf -vif
+touch frontend/mipsdecoder.cpp
+touch frontend/pentiumdecoder.cpp
+touch frontend/ppcdecoder.cpp
+touch frontend/sparcdecoder.cpp
+touch frontend/st20decoder.cpp
