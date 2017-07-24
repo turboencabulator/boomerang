@@ -91,7 +91,7 @@ endif
 
 # Decoders are built from matcher (.m) files...
 %decoder.cpp: machine/%/decoder.m
-	./mltk.sh $< -o $@ $(filter-out $<,$^)
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
 
 # ...and SLED (.spec) files.
 mipsdecoder.cpp: machine/mips/core.spec machine/mips/synth.spec
