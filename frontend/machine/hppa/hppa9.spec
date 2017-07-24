@@ -28,7 +28,7 @@ fields of instruction (32)
 # arithmetic immediate instructions
 #   r_06 06:10   c3_16 16:18    f_19 19:19
     t_11 11:15  ext_20 20:20 im10_21 21:30
- 
+
 # long displacement load/store instructions (load_dw/store_dw/load_w/store_w)
 #   t_11 11:15   s2_16 16:17
  im10_18 18:27 im13_18 18:30 im11_18 18:28
@@ -41,7 +41,7 @@ fields of instruction (32)
    cr_06 06:10   ct_06 27:31 im13_06 06:18
  im10_06 06:15 ext5_11 11:15   s3_16 16:18
     s_18 18:18 ext8_19 19:26  ext_17 17:17
- 
+
 # branch on bit instructions
     p_06 06:10    c_16 16:16     e_17 17:17    d_18 18:18
 
@@ -147,20 +147,20 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   | HADD | HADD.s | HADD.u | HSUB | HSUB.s | HSUB.u
   | HAVG
   | HSHL1ADD | HSHL2ADD | HSHL3ADD | HSHR1ADD | HSHR2ADD | HSHR3ADD
-  
+
   [ ADDI    ADDI.v   ]  is addi & ext_20 = { 0 to 1 }
   [ ADDI.t  ADDI.t.v ] is addi.t & ext_20 = { 0 to 1 }
   [ SUBI    SUBI.v   ]  is subi & ext_20 = { 0 to 1 }
 
   arith_imm is ADDI | ADDI.v | ADDI.t | ADDI.t.v | SUBI | SUBI.v
-  
+
   [ arith_w arith_dw ] is arith & d_26 = {0 to 1}
 
   ins_arith_w    is arith_w | arith_imm
   ins_arith_dw   is arith_dw
   ins_arith_none is ADDIL
-  
-  
+
+
 # Coprocessor (including floating point) Loads and Stores (Table C-14)
 
   cldw           is uid_23 > 1 & Copr_w  & addr_22 = 0
@@ -203,17 +203,17 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   sdisp_load is load & addr_19 = 1
   sdisp_loadabs is loadabs & addr_19 = 1
   sdisp_loads is sdisp_load | sdisp_loadabs
-  
+
   store is STB | STH | STW | STD
   storeabs is STW.a | STD.a
   storebytes is STBY | STDBY
 
   stores is store | storeabs | storebytes
-    
+
   sdisp_store is store & addr_19 = 1
   sdisp_storeabs is storeabs & addr_19 = 1
   sdisp_storebytes is storebytes & addr_19 = 1
-  
+
   sdisp_storeless is sdisp_store | sdisp_storeabs
   sdisp_storenabs is sdisp_store | sdisp_storebytes
   sdisp_stores    is sdisp_storeless | sdisp_storebytes
@@ -222,9 +222,9 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   indicesabs is index_loadabs
 
   sdisps is sdisp_store | sdisp_load
-  sdispsabs is sdisp_storeabs | sdisp_loadabs    
+  sdispsabs is sdisp_storeabs | sdisp_loadabs
   sdispsbytes is sdisp_storebytes
-  
+
   LDDl is Load_dw & ext_30 = 0
   STDl is Store_dw & ext_30 = 0
   opdl is LDDl | STDl
@@ -243,13 +243,13 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   ld_bhw_l is LDBl | LDHl | LDWl
   ld_l     is ld_bhw_l | LDWlm2i | LDWlm | LDO
   loads_l  is ld_l | LDDl
- 
+
 # We don't want STWlm to be part of st_bhw_l because it then gets the wrong
 # addressing mode
   st_bhw_l is STBl | STHl | STWl
   st_l     is st_bhw_l | STWlm2i | STWlm
   stores_l is st_l | STDl
-  
+
   ldisp_12  is LDDl | STDl
   ldisp_16  is ld_bhw_l | st_bhw_l
   ldisp_16ma is LDWlma | STWlma
@@ -260,7 +260,7 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
     is index_loads & u_18 = {0 to 1} & m_26 = {0 to 1}
 
   all_ldst  is loads | stores
-  
+
   ins_c_il  is ins_m | ins_s | ins_sm
   ins_c_ils is ins_def_il | ins_c_il
 
@@ -289,7 +289,7 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   ins_c_disps is ins_def_d | ins_c_d | ins_c_by
   ins_c_copr  is Copr_w | Copr_dw
 
-  ins_c_addrs is ins_c_disps | ins_c_ils 
+  ins_c_addrs is ins_c_disps | ins_c_ils
 
 
 ### UncondBr ######## (Table C-13)
@@ -303,7 +303,7 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   BVE.l    is UncondBr & ext3_16 = 7 & ve_19 = 1
 
   ubranch is B.l | B.g | B.p
-  
+
 ### SystemOp ######## (Table C-2)
 [
   BREAK     sync      RFI       RFI.r
@@ -334,24 +334,24 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   cmpb_all is cmpb_w | cmpb_dw
   cmpib_w is CMPIBt | CMPIBf
   cmpib_all is cmpib_w | CMPIBdw
-    
+
   cmp_w is cmpb_w | cmpib_w
   cmp_dw is cmpb_dw | CMPIBdw
-  
+
   bve is BVE | BVE.l
-  
+
   bb_all is BB | BBsar
   be_all is BE | BE.l
   bea_17 is be_all
-  
+
   ins_bb_w is BB & d_18 = 0
   ins_bb_dw is BB & d_18 = 1
 
   ins_bbs_w  is bb_all & d_18 = 0
   ins_bbs_dw is bb_all & d_18 = 1
-  
+
   nullifiable_br is UncondBr | cmpb_all | cmpib_all | bb_all | be_all
-  
+
   ins_br_nnull   is nullifiable_br & n_30 = 0
   ins_br_null    is nullifiable_br & n_30 = 1
 
@@ -374,10 +374,10 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   flt_c2_0e      is fcmp & FPOP0E
 
   [ fadd fsub fmpy fdiv ] is fp0c0e & class_21 = 3 & sub_16 = { 0 to 3}
-  
+
 
 constructors
- 
+
 # heh .. instruction completers constructed to specific completers
 
 
@@ -391,7 +391,7 @@ constructors
 # Class 0, opcode 0E
   flt_c0 ,f r,t            { op = 0x0E,
                              r@[0:4] = r_06, r@[5] = r1_24, r@[6:31] = 0,
-                             t@[0:4] = t_27, t@[5] = t_25,  t@[6:31] = 0 } 
+                             t@[0:4] = t_27, t@[5] = t_25,  t@[6:31] = 0 }
                            is flt_c0 & f_20 = f & r_06 & r1_24 & t_27 & t_25
 
 # Class 1 (fcnv), opcode 0C
@@ -423,6 +423,3 @@ constructors
                                t@[0:4] = t_27,  t@[5] = t_25,   t@[6:31] = 0 }
                            is FPOP0E & class_21 = 3 & f_20 = fmt
                              & r_06 & r1_24 & r_11 & f_19 & t_27 & t_25
-
-
-

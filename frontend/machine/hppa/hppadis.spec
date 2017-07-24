@@ -9,7 +9,7 @@
 # File: hppadis.spec
 # Desc: toolkit details for a PA-RISC disassembler (copied from Sparc spec)
 
-# interface to NJ 
+# interface to NJ
 address type is "DWord"
 address to integer using "%a"
 #address to integer using "%a - instr + pc"

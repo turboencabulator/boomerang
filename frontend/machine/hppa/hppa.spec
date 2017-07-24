@@ -49,7 +49,7 @@ fields of instruction (32)
 # arithmetic immediate instructions
 #   r_06 06:10   c3_16 16:18    f_19 19:19
     t_11 11:15  ext_20 20:20 im10_21 21:30
- 
+
 # long displacement load/store instructions (load_dw/store_dw/load_w/store_w)
 #   t_11 11:15   s2_16 16:17
  im10_18 18:27 im13_18 18:30 im11_18 18:28
@@ -62,7 +62,7 @@ fields of instruction (32)
    cr_06 06:10               im13_06 06:18
  im10_06 06:15 ext5_11 11:15   s3_16 16:18
     s_18 18:18 ext8_19 19:26  ext_17 17:17
- 
+
 # branch on bit instructions
     p_06 06:10    c_16 16:16     e_17 17:17    d_18 18:18
 
@@ -78,7 +78,7 @@ fields of instruction (32)
   im5_27 27:31
 
 # Shift, Extract, Deposit instructions
-   cl_19 19:19    p_20 20:20    se_21 21:21   cl_23 23:23 pos5_22 22:26 
+   cl_19 19:19    p_20 20:20    se_21 21:21   cl_23 23:23 pos5_22 22:26
 clen5_27 27:31   c1_16 16:16    c2_17 17:18
 
 fieldinfo
@@ -176,19 +176,19 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   | HADD | HADD.s | HADD.u | HSUB | HSUB.s | HSUB.u
   | HAVG
   | HSHL1ADD | HSHL2ADD | HSHL3ADD | HSHR1ADD | HSHR2ADD | HSHR3ADD
-  
+
   [ ADDI    ADDI.v   ]  is addi & ext_20 = { 0 to 1 }
   [ ADDI.t  ADDI.t.v ]  is addi.t & ext_20 = { 0 to 1 }
   [ SUBI    SUBI.v   ]  is subi & ext_20 = { 0 to 1 }
 
   arith_imm is ADDI | ADDI.v | ADDI.t | ADDI.t.v | SUBI | SUBI.v | CMPICLR
- 
+
   [ arith_w arith_dw ] is arith & d_26 = {0 to 1}
 
   NOP            is OR & r_06 = 0 & r_11 = 0 & t_27 = 0
   COPY           is OR & r_06 = 0 & r_11 != 0
-  
-  
+
+
 
 #   #   #   #   #   #   #   #   #   #   #   #   #   #   #
 #                                                       #
@@ -239,10 +239,10 @@ fstores_s is any of [ FSTWS FSTDS ],
 
 # here are some patterns for the address typed constructors that follow
 # ADDRESS KIND PATTERNS for loads/stores
-# 
+#
 
   # first take care of the integer loads/stores
-  
+
   index_iloads is iloads_x | iloadclears_x
 # index_istores is .. no indexed stores -_- stupid pa-risc
   sdisp_iloads is iloads_s | iloadclears_s
@@ -263,7 +263,7 @@ fstores_s is any of [ FSTWS FSTDS ],
 
   index_loads is index_iloads | index_floads
   index_stores is index_fstores # no indexed integer stores -> see index_istores above
-  
+
 index_addrs is index_loads | index_stores
 
   sdisp_loads is sdisp_iloads | sdisp_floads
@@ -276,7 +276,7 @@ sdisp_addrs_r_im is sdisp_istores
 
   ldisp_loads is ldisp_iloads
   ldisp_stores is ldisp_istores
-  
+
   ldisp_addr_16_old is ldisp_iloads | ldisp_istores # | ldisp_floads | ldisp_fstores
 ldisp_addrs_16_old is ldisp_addr_16_old & op >= 0x00
 
@@ -344,13 +344,13 @@ pc_y_addr_none  is sdisp_addrs_bytes & m_26 = 0 & a_18 = 0
 
 pc_x_addr_m is index_addrs & m_26 = 1
 pc_x_addr_notm is index_addrs & m_26 = 0
-  
+
   index_align_byte is LDBX
   index_align_hwrd is LDHX
   index_align_word is LDWX | LDWAX | FLDWX | FSTWX
   index_align_dwrd is LDDX | LDDAX | FLDDX | FSTDX | LDCWX | LDCDX
 
-  index_addr_shift is index_addrs & u_18 = 1 
+  index_addr_shift is index_addrs & u_18 = 1
   index_addr_notshift is index_addrs & u_18 = 0
 
 pc_x_addr_s_byte is index_addr_shift & index_align_byte # shifts 0 bits
@@ -391,7 +391,7 @@ sep_all is VSHD | SHD | ext_var | dep_var | ext_fix | dep_fix | dep_ivar | dep_i
   BVE.l    is UncondBr & ext3_16 = 7 & ve_19 = 1
 
   ubranch is BL | GATE | BL.PUSH
-  
+
 ### SystemOp ######## (Table C-2)
 [
   BREAK     sync      RFI       RFI.r
@@ -424,37 +424,37 @@ sep_all is VSHD | SHD | ext_var | dep_var | ext_fix | dep_fix | dep_ivar | dep_i
   cmpb_w is CMPBT | CMPBF
   cmpb_dw is CMPBdwt | CMPBdwf
   cmpb_all is cmpb_w | cmpb_dw
-  
+
   cmpib_w is CMPIBT | CMPIBF
   cmpib_dw is CMPIBdw
   cmpib_all is cmpib_w | cmpib_dw
-  
+
   cmp_w is cmpb_w | cmpib_w
   cmp_dw is cmpb_dw
   cmpi_dw is CMPIBdw
-  
+
   bve is BVE | BVE.l
-  
+
   bb_all is BB | BVB
   be_all is BE | BLE
   #bea_17 is be_all # *was* for ldisp17's, but don't need to declare at this time
-  
+
   ins_bb_w is BB & d_18 = 0
   ins_bb_dw is BB & d_18 = 1
 
   ins_bbs_w  is bb_all & d_18 = 0
   ins_bbs_dw is bb_all & d_18 = 1
-  
+
   ins_arith_w    is arith_w | arith_imm | addbr_all
   ins_arith_dw   is arith_dw
   ins_arith_none is ADDIL
 
   # must add ADDB/ADDIB/MOVB/MOVIB groups to here when they're implemented
   nullifiable_br is UncondBr    | cmpb_all | cmpib_all
-                                | bb_all | be_all 
+                                | bb_all | be_all
                                 | addb_all | addib_all
                                 | MOVB | MOVIB
-  
+
   ins_br_nnull   is nullifiable_br & n_30 = 0
   ins_br_null    is nullifiable_br & n_30 = 1
 
@@ -475,8 +475,8 @@ sep_all is VSHD | SHD | ext_var | dep_var | ext_fix | dep_fix | dep_ivar | dep_i
                  | MOVIB & c1_16 = 1
                  | cmpi_dw & c3_16 = 1
                  | sep_all & c3_16 = 1
-                 
-  
+
+
 # Floating point operations (Table 6-9)
 
   fp0c0e         is FPOP0C | FPOP0E
@@ -564,7 +564,7 @@ ins_c_od    is ins_c7 & ins_br_nonneg
 ins_c_ev    is ins_c7 & ins_br_neg
 
 constructors
- 
+
                 #   #   #   #   #   #   #   #   #   #
                 #                                   #
                 #  A d d r e s s i n g   m o d e s  #
@@ -608,17 +608,17 @@ constructors
   c_s_addr_mb         : c_addr           is pc_s_addr_mb
   c_s_addr_ma         : c_addr           is pc_s_addr_ma
   c_s_addr_notm       : c_addr           is pc_s_addr_none
-  
+
   c_x_addr_m          : c_addr           is pc_x_addr_m
   c_x_addr_notm       : c_addr           is pc_x_addr_notm
-  
+
   c_y_addr_e          : c_addr           is pc_y_addr_e
   c_y_addr_m          : c_addr           is pc_y_addr_m
   c_y_addr_me         : c_addr           is pc_y_addr_me
   c_y_addr_none       : c_addr           is pc_y_addr_none
 
   c_l_addr_none       : c_addr           is pc_l_addr_none
-  
+
 
   x_addr_nots   x  : c_xd    is pc_x_addr_nots & x_11 = x
   x_addr_s_byte x  : c_xd    is pc_x_addr_s_byte & x_11 = x
@@ -648,7 +648,7 @@ constructors
   l_addr_16_old ldisp!      : c_xd { ldisp@[13:31] = i_31!,
                                          ldisp@[0:12] = im13_18 }
                                 is ldisp_addrs_16_old & im13_18 & i_31
- 
+
   l_addr_17_old ldisp!      : c_xd { ldisp@[16:31] = w_31!,
                                          ldisp@[0:9] = w10_19,
                                          ldisp@[10:10] = w_29,
@@ -690,10 +690,10 @@ constructors
 
   iloads    c_addr c_xd(s2_16, b_06),t_27
   istores   c_addr r_11, c_xd(s2_16, b_06)
-  
+
   fdloads    c_addr c_xd(s2_16, b_06),t_27
   fdstores   c_addr r_27,c_xd(s2_16, b_06)
-  
+
   fwloads    c_addr c_xd(s, b),treg {
                    treg@[0:4] = t_27, treg@[5:5] = t_25,
                    treg@[6:31] = 0
@@ -702,10 +702,10 @@ constructors
                     rreg@[0:4] = r_27, rreg@[5:5] = r_25,
                     rreg@[6:31] = 0
                 } is fwstores & c_addr & c_xd & s2_16 = s & b_06 = b & r_27 & r_25
-  
+
   iloads_ldisp c_addr c_xd(s2_16, b_06),t_11
   istores_ldisp c_addr r_11,c_xd(s2_16, b_06)
-  
+
   LDO ldisp!(b),t      { ldisp@[13:31] = i_31!, ldisp@[0:12] = im13_18 } is LDO &
                             b_06 = b & t_11 = t & im13_18 & i_31
 
@@ -718,7 +718,7 @@ constructors
                        imm21@[00:10] =       0
                 } is LDIL & t_06 & i_31 & im11_20 & im2_16 & im5_11 & im2_18
 
-  VSHD        r1, r2, t, c_c      is VSHD 
+  VSHD        r1, r2, t, c_c      is VSHD
                     & r_11 = r1 & r_06 = r2 & t_27 = t & c_c
   SHD         r1, r2, p, t, c_c   {
                                     p@[0:31] = 31 - pos5_22
@@ -756,7 +756,7 @@ constructors
                     & im4_11 & im1_15 & pos5_22 & clen5_27 & t_06 = t & c_c
 
   ubranch c_null ubr_target!,t_06 {
-  		 ubr_target = offset + 8,
+                 ubr_target = offset + 8,
                  offset@[18:31] = w_31!,
                  offset@[13:17] = w5_11,
                  offset@[12] = w_29,
@@ -816,7 +816,7 @@ constructors
                             im5@[4:31]!     = im1_15!
                          } is addib_all & c_c & c_null & im4_11
                             & im1_15 & r_06 & w_31 & w_29 & w10_19
-  
+
   MOVB c_c, c_null r_11, r_06, target {
                             target@[13:31]! = w_31!,
                             target@[12]     = w_29,
@@ -824,7 +824,7 @@ constructors
                             target@[0:1]    = 0
                          } is MOVB & c_c & c_null & r_11 & r_06
                                             & w_31 & w_29 & w10_19
-  
+
   MOVIB c_c, c_null im5, r_06, target {
                             target@[13:31]! = w_31!,
                             target@[12]     = w_29,
@@ -834,7 +834,7 @@ constructors
                             im5@[4:31]!     = im1_15!
                          } is MOVIB & c_c & c_null & im4_11
                             & im1_15 & r_06 & w_31 & w_29 & w10_19
-  
+
   cmpb_all c_c, c_null  r_11, r_06, target {
                             target@[13:31]! = w_31!,
                             target@[12]     = w_29,
@@ -842,7 +842,7 @@ constructors
                             target@[0:1]    = 0
                          } is cmpb_all & c_c & c_null & r_11 & r_06
                                              & w_31 & w_29 & w10_19
-  
+
   cmpib_all c_c, c_null  im5!, r_06, target {
                             target@[13:31]! = w_31!,
                             target@[12]     = w_29,
@@ -852,8 +852,8 @@ constructors
                             im5@[4:31]!     = im1_15!
                          } is cmpib_all & c_c & c_null & im4_11 & im1_15 & r_06
                                              & w_31 & w_29 & w10_19
-  
-  
+
+
   bb_all c_c, c_null   r_11,c_bit,target {
                             target@[13:31]! = w_31!,
                             target@[12] = w_29,
@@ -870,7 +870,7 @@ constructors
 # Class 0, opcode 0E
   flt_c0.E ,f r,t          { op = 0x0E,
                              r@[0:4] = r_06, r@[5] = r1_24, r@[6:31] = 0,
-                             t@[0:4] = t_27, t@[5] = t_25,  t@[6:31] = 0 } 
+                             t@[0:4] = t_27, t@[5] = t_25,  t@[6:31] = 0 }
                            is flt_c0 & f_20 = f & r_06 & r1_24 & t_27 & t_25
 
 # Class 1 (fcnvxx), opcode 0C
@@ -910,4 +910,3 @@ constructors
                              r2@[0:4] = r_11, r2@[5] = f_19,  r2@[6:31] = 0,
                               t@[0:4] = t_27,  t@[5] = t_25,   t@[6:31] = 0 }
                             is XMPYU & r_06 & r1_24 & r_11 & f_19 & t_27 & t_25
-

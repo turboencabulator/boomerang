@@ -43,7 +43,7 @@ fields of instruction (32)
 # arithmetic immediate instructions
 #   r_06 06:10   c3_16 16:18    f_19 19:19
     t_11 11:15  ext_20 20:20 im10_21 21:30
- 
+
 # long displacement load/store instructions (load_dw/store_dw/load_w/store_w)
 #   t_11 11:15   s2_16 16:17
  im10_18 18:27 im13_18 18:30 im11_18 18:28
@@ -56,7 +56,7 @@ fields of instruction (32)
    cr_06 06:10   ct_06 27:31 im13_06 06:18
  im10_06 06:15 ext5_11 11:15   s3_16 16:18
     s_18 18:18 ext8_19 19:26  ext_17 17:17
- 
+
 # branch on bit instructions
     p_06 06:10    c_16 16:16     e_17 17:17    d_18 18:18
 
@@ -162,13 +162,13 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   | HADD | HADD.s | HADD.u | HSUB | HSUB.s | HSUB.u
   | HAVG
   | HSHL1ADD | HSHL2ADD | HSHL3ADD | HSHR1ADD | HSHR2ADD | HSHR3ADD
-  
+
   [ ADDI    ADDI.v   ]  is addi & ext_20 = { 0 to 1 }
   [ ADDI.t  ADDI.t.v ] is addi.t & ext_20 = { 0 to 1 }
   [ SUBI    SUBI.v   ]  is subi & ext_20 = { 0 to 1 }
 
   arith_imm is ADDI | ADDI.v | ADDI.t | ADDI.t.v | SUBI | SUBI.v
-  
+
   [ arith_w arith_dw ] is arith & d_26 = {0 to 1}
 
   ins_arith_w    is arith_w | arith_imm
@@ -177,8 +177,8 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
 
   NOP            is OR & r_06 = 0 & r_11 = 0 & t_27 = 0
   COPY           is OR & r_06 = 0 & r_11 != 0
-  
-  
+
+
 # Indexed & Short Displacement Loads/Stores (Table C-6)
 [
   LDB     LDH      LDW      LDD
@@ -199,17 +199,17 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   sdisp_load is load & addr_19 = 1
   sdisp_loadabs is loadabs & addr_19 = 1
   sdisp_loads is sdisp_load | sdisp_loadabs
-  
+
   store is STB | STH | STW | STD
   storeabs is STW.a | STD.a
   storebytes is STBY | STDBY
 
   stores is store | storeabs | storebytes
-    
+
   sdisp_store is store & addr_19 = 1
   sdisp_storeabs is storeabs & addr_19 = 1
   sdisp_storebytes is storebytes & addr_19 = 1
-  
+
   sdisp_storeless is sdisp_store | sdisp_storeabs
   sdisp_storenabs is sdisp_store | sdisp_storebytes
   sdisp_stores    is sdisp_storeless | sdisp_storebytes
@@ -218,9 +218,9 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   indicesabs is index_loadabs
 
   sdisps is sdisp_store | sdisp_load
-  sdispsabs is sdisp_storeabs | sdisp_loadabs    
+  sdispsabs is sdisp_storeabs | sdisp_loadabs
   sdispsbytes is sdisp_storebytes
-  
+
   LDDl is Load_dw & ext_30 = 0
   STDl is Store_dw & ext_30 = 0
   opdl is LDDl | STDl
@@ -239,13 +239,13 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   ld_bhw_l is LDBl | LDHl | LDWl
   ld_l     is ld_bhw_l | LDWlm2i | LDWlm | LDO
   loads_l  is ld_l | LDDl
- 
+
 # We don't want STWlm to be part of st_bhw_l because it then gets the wrong
 # addressing mode
   st_bhw_l is STBl | STHl | STWl
   st_l     is st_bhw_l | STWlm2i | STWlm
   stores_l is st_l | STDl
-  
+
   ldisp_12  is LDDl | STDl
   ldisp_16  is ld_bhw_l | st_bhw_l
   ldisp_16ma is LDWlma | STWlma
@@ -256,7 +256,7 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
     is index_loads & u_18 = {0 to 1} & m_26 = {0 to 1}
 
   all_ldst  is loads | stores
-  
+
   ins_c_il  is ins_m | ins_s | ins_sm
   ins_c_ils is ins_def_il | ins_c_il
 
@@ -284,7 +284,7 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   ins_c_by    is ins_bm | ins_e | ins_em | ins_b
   ins_c_disps is ins_def_d | ins_c_d | ins_c_by
 
-  ins_c_addrs is ins_c_disps | ins_c_ils 
+  ins_c_addrs is ins_c_disps | ins_c_ils
 
 
 ### UncondBr ######## (Table D-9 of 1.1 manual)
@@ -298,7 +298,7 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   BVE.l    is UncondBr & ext3_16 = 7 & ve_19 = 1
 
   ubranch is BL | GATE | BL.PUSH
-  
+
 ### SystemOp ######## (Table C-2)
 [
   BREAK     sync      RFI       RFI.r
@@ -329,24 +329,24 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
   cmpb_all is cmpb_w | cmpb_dw
   cmpib_w is COMIBT | COMIBF
   cmpib_all is cmpib_w | CMPIBdw
-    
+
   cmp_w is cmpb_w | cmpib_w
   cmp_dw is cmpb_dw | CMPIBdw
-  
+
   bve is BVE | BVE.l
-  
+
   bb_all is BB | BVB
   be_all is BE | BLE
   bea_17 is be_all
-  
+
   ins_bb_w is BB & d_18 = 0
   ins_bb_dw is BB & d_18 = 1
 
   ins_bbs_w  is bb_all & d_18 = 0
   ins_bbs_dw is bb_all & d_18 = 1
-  
+
   nullifiable_br is UncondBr | cmpb_all | cmpib_all | bb_all | be_all
-  
+
   ins_br_nnull   is nullifiable_br & n_30 = 0
   ins_br_null    is nullifiable_br & n_30 = 1
 
@@ -409,12 +409,12 @@ arith is ADD | ADD.v | ADD.c | ADD.c.v | SHL1ADD
 
 
 constructors
- 
+
 # Instruction completers constructed to specific completers
 
   c_cmpb_w  c3_16 : c_c is cmp_w & c3_16
   c_cmpb_dw c3_16 : c_c is cmp_dw & c3_16
-  
+
   c_bbs_w     c_16 : c_c is ins_bbs_w & c_16
   c_bbs_dw    c_16 : c_c is ins_bbs_dw & c_16
 
@@ -423,7 +423,7 @@ constructors
   c_arith_none     : c_c is ins_arith_none
 
   c_addrs : c_addr is ins_c_addrs
-  
+
   c_br_nnull : c_null is ins_br_nnull
   c_br_null  : c_null is ins_br_null
 
@@ -438,7 +438,7 @@ constructors
                                                           & b_06 = b & c_addr
   indexabs_addr  x(b)[c_addr]    : addr is index_loadabs & x_11 = x & b_06 = b
                                                                      & c_addr
-  
+
   sdispl_addr    im5!(ss,b)[c_addr]    : addr is sdisp_load & im5_11 = im5
                                              & s2_16 = ss & b_06 = b & c_addr
   sdisplabs_addr im5!(b)[c_addr]       : addr is sdisp_loadabs & im5_11 = im5
@@ -448,18 +448,18 @@ constructors
                                               & s2_16 = ss & b_06 = b& c_addr
   sdispsabs_addr im5!(b)[c_addr]       : addr is sdisp_storeabs & im5_27 = im5
                                                           & b_06 = b & c_addr
-  
+
   ldispa12_addr  ldisp!(ss,b)[c_addr]  : addr {
                            ldisp@[12:31] = i_31!,
                            ldisp@[2:11] = im10_18,
                            ldisp@[0:1] = 0
                 } is ldisp_12 & s2_16 = ss & b_06 = b & c_addr & im10_18 & i_31
-  
+
   ldispa16_addr  ldisp!(ss,b)[c_addr]  : addr {
                            ldisp@[13:31] = i_31!,
                            ldisp@[0:12] = im13_18
                 } is ldisp_16 & s2_16 = ss & b_06 = b & im13_18 & i_31 & c_addr
-  
+
   # ldispa16m[ab]_addr are the same as the above. We need the different
   # constructor name so that different semantics can be attached to the
   # addressing mode (modify before and modify after)
@@ -467,12 +467,12 @@ constructors
                            ldisp@[13:31] = i_31!,
                            ldisp@[0:12] = im13_18
                } is ldisp_16ma & s2_16 = ss & b_06 = b & im13_18 & i_31 & c_addr
-  
+
   ldispa16mb_addr  ldisp!(ss,b)[c_addr]  : addr {
                            ldisp@[13:31] = i_31!,
                            ldisp@[0:12] = im13_18
                } is ldisp_16mb & s2_16 = ss & b_06 = b & im13_18 & i_31 & c_addr
-  
+
   ldispa16abs_addr ldisp!(b)[c_addr]  : addr {
                            ldisp@[13:31] = i_31!,
                            ldisp@[0:12] = im13_18
@@ -483,7 +483,7 @@ constructors
                            ldisp@[2:12] = im11_18,
                            ldisp@[0:1] = 0
                 } is ldisp_16a & s2_16 = ss & b_06 = b & i_31 & im11_18 & c_addr
-  
+
   bea17_addr offset!(ss,b)  : addr {
                            offset@[18:31] = w_31!,
                            offset@[13:17] = w5_11,
@@ -515,7 +515,7 @@ constructors
 
   loads     cc_20, addr,t_27
   stores    cc_20, r_11,addr
-  
+
   loads_l   addr,t_11
   stores_l  r_11,addr
 
@@ -529,7 +529,7 @@ constructors
                 } is LDIL & t_06 & i_31 & im11_20 & im2_16 & im5_11 & im2_18
 
   ubranch c_null ubr_target!,t_06 {
-  		 ubr_target = offset + 8,
+                 ubr_target = offset + 8,
                  offset@[18:31] = w_31!,
                  offset@[13:17] = w5_11,
                  offset@[12] = w_29,
@@ -571,14 +571,14 @@ constructors
                            target@[0:1] = 0
                          } is cmpb_all & c_c & c_null & r_11 & r_06
                                              & w_31 & w_29 & w10_19
-  
+
   cmpib_all c_c, c_null  im5_11, r_06, target { target@[13:31]! = w_31!,
                            target@[12] = w_29, target@[2:11] = w10_19,
                            target@[0:1] = 0
                          } is cmpib_all & c_c & c_null & im5_11 & r_06
                                              & w_31 & w_29 & w10_19
-  
-  
+
+
   bb_all c_c, c_null   r_11,c_bit,target { target@[13:31]! = w_31!,
                            target@[12] = w_29, target@[2:11] = w10_19,
                            target@[0:1] = 0
@@ -593,7 +593,7 @@ constructors
 # Class 0, opcode 0E
   flt_c0.E ,f r,t          { op = 0x0E,
                              r@[0:4] = r_06, r@[5] = r1_24, r@[6:31] = 0,
-                             t@[0:4] = t_27, t@[5] = t_25,  t@[6:31] = 0 } 
+                             t@[0:4] = t_27, t@[5] = t_25,  t@[6:31] = 0 }
                            is flt_c0 & f_20 = f & r_06 & r1_24 & t_27 & t_25
 
 # Class 1 (fcnvxx), opcode 0C
@@ -656,5 +656,3 @@ constructors
 
   floads  ,c_faddr faddr, t_27
   fstores ,c_faddr r, faddr            is fstores & c_faddr & t_27 = r & faddr
-
-

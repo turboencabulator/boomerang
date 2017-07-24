@@ -103,7 +103,7 @@ patterns
 
   [ btst bchg bclr bset ]
     is sz = { 0 to 3 } & BitsImmMovep & sb = 1
-    
+
   [ movepmrw movepmrl moveprmw moveprml ]
     is sz = { 0 to 3 } & BitsImmMovep & sb = 1 & adrm = 1
     movepmr is  BitsImmMovep & sb = 1 & sz < 2 & adrm = 1
@@ -200,13 +200,13 @@ patterns
     is sz = { 0 to 3 } & Sub & sb = 1 & adrm = 1
     subxm   is  Sub & sb = 1 & LegalSz & adrm = 1
 
-    subaw   is  Sub & sb = 0 & sz = 3 
-    subal   is  Sub & sb = 1 & sz = 3 
-    suba    is  Sub & sz = 3 
+    subaw   is  Sub & sb = 0 & sz = 3
+    subal   is  Sub & sb = 1 & sz = 3
+    suba    is  Sub & sz = 3
 
   [ subrb subrw subrl _ ]
-    is sz = { 0 to 3 } & Sub & sb = 0 
-    subr    is  Sub & sb = 0 & LegalSz 
+    is sz = { 0 to 3 } & Sub & sb = 0
+    subr    is  Sub & sb = 0 & LegalSz
 
   [ submb submw subml _ ]
     is sz = { 0 to 3 } & Sub & sb = 1
@@ -217,12 +217,12 @@ patterns
     cmpm    is  CmpEor & sb = 1 & LegalSz & adrm = 1
 
   [ cmpb cmpw cmpl _ ]
-    is sz = { 0 to 3 } & CmpEor & sb = 0 
-    cmp     is  CmpEor & sb = 0 & LegalSz 
+    is sz = { 0 to 3 } & CmpEor & sb = 0
+    cmp     is  CmpEor & sb = 0 & LegalSz
 
-    cmpaw   is  CmpEor & sb = 0 & sz = 3 
-    cmpal   is  CmpEor & sb = 1 & sz = 3 
-    cmpa    is  CmpEor & sz = 3 
+    cmpaw   is  CmpEor & sb = 0 & sz = 3
+    cmpal   is  CmpEor & sb = 1 & sz = 3
+    cmpa    is  CmpEor & sz = 3
 
   [ eorb eorw eorl _ ]
     is sz = { 0 to 3 } & CmpEor & sb = 1
@@ -240,7 +240,7 @@ patterns
 
   [ andrb andrw andrl _ ]
     is sz = { 0 to 3 } & AndMulAbcdExg & sb = 0
-    andr    is  AndMulAbcdExg & sb = 0 & LegalSz 
+    andr    is  AndMulAbcdExg & sb = 0 & LegalSz
 
   [ andmb andmw andml _ ]
     is sz = { 0 to 3 } & AndMulAbcdExg & sb = 1
@@ -254,12 +254,12 @@ patterns
     is sz = { 0 to 3 } & Add & sb = 1 & adrm = 1
     addxm   is  Add & sb = 1 & LegalSz & adrm = 1
 
-    addaw   is  Add & sb = 0 & sz = 3 
-    addal   is  Add & sb = 1 & sz = 3 
-    adda    is  Add & sz = 3 
+    addaw   is  Add & sb = 0 & sz = 3
+    addal   is  Add & sb = 1 & sz = 3
+    adda    is  Add & sz = 3
 
   [ addrb addrw addrl _ ]
-    is sz = { 0 to 3 } & Add & sb = 0 
+    is sz = { 0 to 3 } & Add & sb = 0
     addr    is  Add & sb = 0 & LegalSz
 
   [ addmb addmw addml _ ]
@@ -301,7 +301,7 @@ patterns
 #  doing "computation" and partially because Cinderella doesn't expect
 #  to encounter an instruction of AsmInstr::UnknownType; thus I am making
 #  this a "catchall".
-#  
+#
 
 patterns
 
@@ -326,7 +326,7 @@ patterns
 #
 #  The MemSrcAn pattern matches any instruction which loads from
 #  a memory location, where the location is specified by an address
-#  register. 
+#  register.
 #
 #  Note. Patterns are represented internally in the toolkit in
 #  normal form, as follows:
@@ -348,54 +348,54 @@ patterns
 patterns
 
    memSrcAn is  abcdm |
-        addxm | 
-        cmpm | 
-        sbcdm | 
+        addxm |
+        cmpm |
+        sbcdm |
         subxm
 
-   memSrcEA is  addr & amAddr | 
-        addm & maAddr | 
+   memSrcEA is  addr & amAddr |
+        addm & maAddr |
         adda & amAddr |
-        andr & dAddr | 
+        andr & dAddr |
         andm & maAddr |
-        aslm & maAddr | 
+        aslm & maAddr |
         asrm & maAddr |
-        bchg & daAddr | 
-        bclr & daAddr | 
-        bset & daAddr | 
+        bchg & daAddr |
+        bclr & daAddr |
+        bset & daAddr |
         btst & dAddr |
         chk & dAddr |
         cmp & amAddr |
-        divs & dAddr | 
+        divs & dAddr |
         divu & dAddr |
-        eor & daAddr | 
+        eor & daAddr |
         eori & daAddr |
-        lslm & maAddr | 
+        lslm & maAddr |
         lsrm & maAddr |
-        moveb & amAddr | 
-        movel & amAddr | 
-        movew & amAddr | 
-        moveToCCR & dAddr | 
+        moveb & amAddr |
+        movel & amAddr |
+        movew & amAddr |
+        moveToCCR & dAddr |
         moveToSR & dAddr |
-        movemr & mrAddr | 
-        moverm & rmAddr | 
-        movepmr | 
-        muls & dAddr | 
+        movemr & mrAddr |
+        moverm & rmAddr |
+        movepmr |
+        muls & dAddr |
         mulu & dAddr |
-        nbcd & daAddr | 
-        neg & daAddr | 
-        negx & daAddr | 
+        nbcd & daAddr |
+        neg & daAddr |
+        negx & daAddr |
         not & daAddr |
-        orr & dAddr | 
+        orr & dAddr |
         orm & maAddr |
-        rolm & maAddr | 
+        rolm & maAddr |
         rorm & maAddr |
-        roxlm & maAddr | 
+        roxlm & maAddr |
         roxrm & maAddr |
-        subr & amAddr | 
-        subm & maAddr | 
+        subr & amAddr |
+        subm & maAddr |
         suba & amAddr |
-        tas & daAddr | 
+        tas & daAddr |
         tst & daAddr
 
 #
@@ -403,45 +403,45 @@ patterns
 #  except that they pertain to stores to a memory location.
 #
 
-   memDstAn is  abcdm | 
-        addxm | 
-        sbcdm | 
+   memDstAn is  abcdm |
+        addxm |
+        sbcdm |
         subxm
 
-   memDstEA is  addm & maAddr | 
-        addi & daAddr | 
+   memDstEA is  addm & maAddr |
+        addi & daAddr |
         addq & alAddr |
-        andm & maAddr | 
+        andm & maAddr |
         andi & daAddr |
-        aslm & maAddr | 
+        aslm & maAddr |
         asrm & maAddr |
-        bchg & daAddr | 
-        bclr & daAddr | 
-        bset & daAddr | 
+        bchg & daAddr |
+        bclr & daAddr |
+        bset & daAddr |
         clr & daAddr |
-        eor & daAddr | 
+        eor & daAddr |
         eori & daAddr |
-        lslm & maAddr | 
+        lslm & maAddr |
         lsrm & maAddr |
-        move & mdAddr | 
+        move & mdAddr |
         moveFromSR & daAddr |
         moveFromCCR & daAddr |
-        moverm & rmAddr | 
+        moverm & rmAddr |
         moveprm |
-        nbcd & daAddr| 
-        neg & daAddr | 
-        negx & daAddr | 
+        nbcd & daAddr|
+        neg & daAddr |
+        negx & daAddr |
         not & daAddr |
-        orm & maAddr | 
+        orm & maAddr |
         ori & daAddr |
-        rolm & maAddr | 
+        rolm & maAddr |
         rorm & maAddr |
-        roxlm & maAddr | 
+        roxlm & maAddr |
         roxrm & maAddr |
-        Scc & daAddr | 
-        subm & maAddr | 
-        subi & daAddr | 
-        subq & alAddr | 
+        Scc & daAddr |
+        subm & maAddr |
+        subi & daAddr |
+        subq & alAddr |
         tas & daAddr
 
 #
@@ -838,7 +838,7 @@ patterns
   _oneEAc   is  jsr | jmp | pea
 
 #### is extb missing?
-  _reg2only is  extw | extl | swap 
+  _reg2only is  extw | extl | swap
 
   _noArg    is  illegal | reset | nop | rte | rts | trapv | rtr
 
@@ -1031,7 +1031,7 @@ constructors
 
   moveFromUSP   "USP", reg2     is  moveFromUSP & reg2
   moveToUSP     reg2, "USP"     is  moveToUSP & reg2
-    
+
   stop          d16             is  stop; d16
 
   movermw       d16, rmEA       is  movermw & rmEA; d16
@@ -1049,7 +1049,7 @@ constructors
   exgaa         reg1, reg2
   exgda         reg1, reg2
 
-  unlk          reg2    
+  unlk          reg2
 
 
 #
@@ -1077,7 +1077,7 @@ constructors
 
 #
 # Constructors that are part of the MC68328 instruction set
-# 
+#
 
 keep
 
@@ -1089,7 +1089,7 @@ keep
     _twoRegMW
     _twoRegML
 
-# ADD, AND, CHK, CMP, CMPA, DIVS, DIVU, MULS, MULU, OR, SUB, SUBA  
+# ADD, AND, CHK, CMP, CMPA, DIVS, DIVU, MULS, MULU, OR, SUB, SUBA
     _alurB
     _alurB^".ex"
     _alurW
@@ -1133,13 +1133,13 @@ keep
     _immEAl
     _immEAl^".ex"
 
-# ANDI to CCR, EORI to CCR, ORI to CCR  
+# ANDI to CCR, EORI to CCR, ORI to CCR
     _toCCR
 
 # ANDI to SR, EORI to SR, ORI to SR
     _toSR
 
-# ASL, ASR, LSL, LSR, ROL, ROR, ROXL, ROXR 
+# ASL, ASR, LSL, LSR, ROL, ROR, ROXL, ROXR
     _shiftMR
     _shiftMR^".ex"
     _shiftML
@@ -1157,7 +1157,7 @@ keep
     _shiftRLW
     _shiftRLL
 
-# Bcc  
+# Bcc
     _br
 
 # BRA, BSR
@@ -1166,10 +1166,10 @@ keep
 # BCHG, BCLR, BSET
     _bits
     _bits^".ex"
-    _bitsi  
-    _bitsi^".ex"    
+    _bitsi
+    _bitsi^".ex"
 
-# BTST 
+# BTST
     btst
     btst^".ex"
     btsti
@@ -1207,13 +1207,13 @@ keep
 
 # JMP, JSR, PEA
     _oneEAc
-    _oneEAc^".ex"   
+    _oneEAc^".ex"
 
 # LEA
     lea
     lea^".ex"
 
-# LINK 
+# LINK
     link
 
 # MOVE
@@ -1225,7 +1225,7 @@ keep
     _move^".emxl"
 
 # MOVEA
-### which ones are these? 
+### which ones are these?
 
 # MOVEM
     movermw
@@ -1244,7 +1244,7 @@ keep
 # MOVEQ
     moveq
 
-# MOVE from SR, MOVE to SR, MOVE to CCR, MOVE from CCR 
+# MOVE from SR, MOVE to SR, MOVE to CCR, MOVE from CCR
     moveFromSR
     moveFromSR^".ex"
     moveToSR
@@ -1254,7 +1254,7 @@ keep
     moveFromCCR
     moveFromCCR^".ex"
 
-# MOVE USP 
+# MOVE USP
     moveFromUSP
     moveToUSP
 
@@ -1265,7 +1265,7 @@ keep
 # STOP
     stop
 
-# TRAP 
+# TRAP
     trap
 
 # UNLK

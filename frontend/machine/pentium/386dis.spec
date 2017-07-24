@@ -4,4 +4,3 @@ fetch 32 using "get4Bytes(%a)"
 address type is "unsigned"
 address add using "(unsigned)%a + %o"
 address to integer using "%a"
-

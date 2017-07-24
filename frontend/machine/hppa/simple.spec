@@ -100,4 +100,3 @@ constructors
 
 constructors
   flt_c3 t_flt_c3           is t_flt_c3 & ins_flt_c3
-
