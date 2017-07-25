@@ -101,6 +101,10 @@ sparcdecoder.cpp: machine/sparc/core.spec machine/sparc/synth.spec machine/sparc
 st20decoder.cpp: machine/st20/core.spec
 
 
+machine/st20/st20.ssl: machine/st20/st20.ssl.m4
+	$(AM_V_GEN)$(M4) $< > $@
+
+
 check_LTLIBRARIES = \
 	libFrontPentTest.la \
 	libFrontSparcTest.la

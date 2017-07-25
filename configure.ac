@@ -50,6 +50,7 @@ AC_PROG_CC_C99
 
 AC_PATH_PROG([BISONPP],[bison++])
 AC_PATH_PROG([FLEXPP],[flex++])
+AC_PATH_PROG([M4],[m4])
 
 AS_IF([test "x$enable_gui" = "xyes"], [
 	AC_PATH_PROG([MOC],[moc])
