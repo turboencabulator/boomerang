@@ -100,6 +100,30 @@ ppcdecoder.cpp: machine/ppc/core.spec machine/ppc/synth.spec
 sparcdecoder.cpp: machine/sparc/core.spec machine/sparc/synth.spec machine/sparc/dis.spec
 st20decoder.cpp: machine/st20/core.spec
 
+# Other matchers (not currently used)
+machine/hppa/decoder.cpp: machine/hppa/decoder.m machine/hppa/hppa.spec machine/hppa/hppadis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/hppa/decoder_low.cpp: machine/hppa/decoder_low.m machine/hppa/hppa.spec machine/hppa/hppadis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/hppa/disassembler.cpp: machine/hppa/disassembler.m machine/hppa/hppa.spec machine/hppa/hppadis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/hppa/hppa.pat.cpp: machine/hppa/hppa.pat.m machine/hppa/hppa.spec machine/hppa/hppadis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/hppa/simple.cpp: machine/hppa/simple.m machine/hppa/simple.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/mc68k/decoder.cpp: machine/mc68k/decoder.m machine/mc68k/mc68000.spec machine/mc68k/mc68000dis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/mc68k/decoder_low.cpp: machine/mc68k/decoder_low.m machine/mc68k/mc68000.spec machine/mc68k/mc68000dis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/mc68k/mc68k.pat.cpp: machine/mc68k/mc68k.pat.m machine/mc68k/mc68000.spec machine/mc68k/mc68000dis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/pentium/disassembler.cpp: machine/pentium/disassembler.m machine/pentium/core.spec machine/pentium/dis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/sparc/sparc.pat.cpp: machine/sparc/sparc.pat.m machine/sparc/core.spec machine/sparc/synth.spec machine/sparc/dis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+machine/sparc/disassembler.cpp: machine/sparc/disassembler.m machine/sparc/core.spec machine/sparc/synth.spec machine/sparc/dis.spec
+	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
+
 
 machine/st20/st20.ssl: machine/st20/st20.ssl.m4
 	$(AM_V_GEN)$(M4) $< > $@
