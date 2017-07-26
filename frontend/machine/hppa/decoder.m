@@ -1,23 +1,15 @@
-/*
- * Copyright (C) 2001, The University of Queensland
- *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
- */
-
 /*==============================================================================
  * FILE:       decoder.m
  * OVERVIEW:   Implementation of the HP pa-risc specific parts of the
  *             NJMCDecoder class.
+ *
+ * (C) 1996-2001 The University of Queensland, BT Group
  *============================================================================*/
 
 #include "global.h"
 #include "proc.h"
 #include "prog.h"
 #include "decoder.h"
-#include "hppadecoder.h"
 #include "ss.h"
 #include "rtl.h"
 #include "csr.h"

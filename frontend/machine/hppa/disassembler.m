@@ -1,15 +1,8 @@
-/*
- * Copyright (C) 2000-2001, The University of Queensland
- *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
- */
-
 /*==============================================================================
  * FILE:     disassembler.m
  * OVERVIEW: Matcher file for a stand alone disassembler tool
+ *
+ (C) 2000-2001 The University of Queensland, BT group
  *============================================================================*/
 
 #include "global.h"

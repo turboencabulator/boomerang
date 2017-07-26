@@ -1,16 +1,9 @@
-/*
- * Copyright (C) 2000-2001, The University of Queensland
- *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
- */
-
 /*==============================================================================
  * FILE:        decoder_low.m
  * OVERVIEW:    Low level New Jersey Machine Code Toolkit match file for the
  *              HP Pa/risc architecture (basically PA/RISC version 1.1)
+ *
+ * (C) 2000-01 The University of Queensland, BT group
  *============================================================================*/
 
 #include "global.h"

@@ -1,6 +1,8 @@
 /*==============================================
  * FILE:      hppa.pat.m
  * OVERVIEW:  Generated file; do not edit
+ *
+ * (C) 1998-2000 The University of Queensland, BT group
  *==============================================*/
 
 #include "global.h"
