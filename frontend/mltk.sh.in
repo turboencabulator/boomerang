@@ -38,6 +38,14 @@ else
 	OUTPUT="$(dirname "${MATCHER}")/$(basename "${MATCHER}" .m).cpp"
 fi
 
+# Remove old output files, in case generating a new one fails.
+if [ -f "${MATCHER}.d" ]; then
+	rm "${MATCHER}.d"
+fi
+if [ -f "${OUTPUT}" ]; then
+	rm "${OUTPUT}"
+fi
+
 # Build the list of spec files.
 SPECS=
 if [ $# -gt 0 ]; then
