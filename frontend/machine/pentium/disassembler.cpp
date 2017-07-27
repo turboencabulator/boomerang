@@ -24959,14 +24959,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1448 "machine/pentium/disassembler.m"
+                                      #line 1445 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIADD.I16", DIS_MEM16);
+                                              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
                                       
 
@@ -25001,13 +25001,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1448 "machine/pentium/disassembler.m"
+                                #line 1445 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIADD.I16", DIS_MEM16);
+                                        sprintf (str,  "FIADD.I32", DIS_MEM32);
 
                                 
 
@@ -25045,14 +25045,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1642 "machine/pentium/disassembler.m"
+                                      #line 1639 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+                                              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
                                       
 
@@ -25087,13 +25087,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1642 "machine/pentium/disassembler.m"
+                                #line 1639 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIMUL.I16", DIS_MEM16);
+                                        sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
                                 
 
@@ -25131,14 +25131,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1472 "machine/pentium/disassembler.m"
+                                      #line 1469 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOM.I16", DIS_MEM16);
+                                              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
                                       
 
@@ -25173,13 +25173,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1472 "machine/pentium/disassembler.m"
+                                #line 1469 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOM.I16", DIS_MEM16);
+                                        sprintf (str,  "FICOM.I32", DIS_MEM32);
 
                                 
 
@@ -25217,14 +25217,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1490 "machine/pentium/disassembler.m"
+                                      #line 1487 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+                                              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
                                       
 
@@ -25259,13 +25259,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1490 "machine/pentium/disassembler.m"
+                                #line 1487 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOMP.I16", DIS_MEM16);
+                                        sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
                                 
 
@@ -25303,14 +25303,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1729 "machine/pentium/disassembler.m"
+                                      #line 1726 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUB.I16", DIS_MEM16);
+                                              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
                                       
 
@@ -25345,13 +25345,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1729 "machine/pentium/disassembler.m"
+                                #line 1726 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUB.I16", DIS_MEM16);
+                                        sprintf (str,  "FISUB.I32", DIS_MEM32);
 
                                 
 
@@ -25389,14 +25389,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1750 "machine/pentium/disassembler.m"
+                                      #line 1747 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+                                              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
                                       
 
@@ -25431,13 +25431,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1750 "machine/pentium/disassembler.m"
+                                #line 1747 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUBR.I16", DIS_MEM16);
+                                        sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
                                 
 
@@ -25492,14 +25492,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1526 "machine/pentium/disassembler.m"
+                                      #line 1523 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+                                              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
                                       
 
@@ -25534,13 +25534,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1526 "machine/pentium/disassembler.m"
+                                #line 1523 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIV.I16", DIS_MEM16);
+                                        sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
                                 
 
@@ -25578,14 +25578,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1544 "machine/pentium/disassembler.m"
+                                      #line 1541 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+                                              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
                                       
 
@@ -25620,13 +25620,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1544 "machine/pentium/disassembler.m"
+                                #line 1541 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+                                        sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
                                 
 
@@ -27634,14 +27634,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1445 "machine/pentium/disassembler.m"
+                                      #line 1448 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIADD.I32", DIS_MEM32);
+                                              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
                                       
 
@@ -27676,13 +27676,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1445 "machine/pentium/disassembler.m"
+                                #line 1448 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIADD.I32", DIS_MEM32);
+                                        sprintf (str,  "FIADD.I16", DIS_MEM16);
 
                                 
 
@@ -27737,14 +27737,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1639 "machine/pentium/disassembler.m"
+                                      #line 1642 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+                                              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
                                       
 
@@ -27779,13 +27779,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1639 "machine/pentium/disassembler.m"
+                                #line 1642 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIMUL.I32", DIS_MEM32);
+                                        sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
                                 
 
@@ -27840,14 +27840,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1469 "machine/pentium/disassembler.m"
+                                      #line 1472 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOM.I32", DIS_MEM32);
+                                              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
                                       
 
@@ -27882,13 +27882,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1469 "machine/pentium/disassembler.m"
+                                #line 1472 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOM.I32", DIS_MEM32);
+                                        sprintf (str,  "FICOM.I16", DIS_MEM16);
 
                                 
 
@@ -27926,14 +27926,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1487 "machine/pentium/disassembler.m"
+                                      #line 1490 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+                                              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
                                       
 
@@ -27968,13 +27968,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1487 "machine/pentium/disassembler.m"
+                                #line 1490 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOMP.I32", DIS_MEM32);
+                                        sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
                                 
 
@@ -28029,14 +28029,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1726 "machine/pentium/disassembler.m"
+                                      #line 1729 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUB.I32", DIS_MEM32);
+                                              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
                                       
 
@@ -28071,13 +28071,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1726 "machine/pentium/disassembler.m"
+                                #line 1729 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUB.I32", DIS_MEM32);
+                                        sprintf (str,  "FISUB.I16", DIS_MEM16);
 
                                 
 
@@ -28132,14 +28132,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1747 "machine/pentium/disassembler.m"
+                                      #line 1750 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+                                              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
                                       
 
@@ -28174,13 +28174,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1747 "machine/pentium/disassembler.m"
+                                #line 1750 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUBR.I32", DIS_MEM32);
+                                        sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
                                 
 
@@ -28235,14 +28235,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1523 "machine/pentium/disassembler.m"
+                                      #line 1526 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+                                              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
                                       
 
@@ -28277,13 +28277,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1523 "machine/pentium/disassembler.m"
+                                #line 1526 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIV.I32", DIS_MEM32);
+                                        sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
                                 
 
@@ -28338,14 +28338,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1541 "machine/pentium/disassembler.m"
+                                      #line 1544 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+                                              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
                                       
 
@@ -28380,13 +28380,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1541 "machine/pentium/disassembler.m"
+                                #line 1544 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+                                        sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
                                 
 
@@ -53320,13 +53320,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1014: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1448 "machine/pentium/disassembler.m"
+      #line 1445 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I16", DIS_MEM16);
+              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
       
 
@@ -53338,13 +53338,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1015: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1448 "machine/pentium/disassembler.m"
+      #line 1445 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I16", DIS_MEM16);
+              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
       
 
@@ -53356,13 +53356,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1016: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1448 "machine/pentium/disassembler.m"
+      #line 1445 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I16", DIS_MEM16);
+              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
       
 
@@ -53374,13 +53374,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1017: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1642 "machine/pentium/disassembler.m"
+      #line 1639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
       
 
@@ -53392,13 +53392,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1018: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1642 "machine/pentium/disassembler.m"
+      #line 1639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
       
 
@@ -53410,13 +53410,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1019: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1642 "machine/pentium/disassembler.m"
+      #line 1639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
       
 
@@ -53428,13 +53428,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1020: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1472 "machine/pentium/disassembler.m"
+      #line 1469 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I16", DIS_MEM16);
+              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
       
 
@@ -53446,13 +53446,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1021: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1472 "machine/pentium/disassembler.m"
+      #line 1469 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I16", DIS_MEM16);
+              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
       
 
@@ -53464,13 +53464,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1022: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1472 "machine/pentium/disassembler.m"
+      #line 1469 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I16", DIS_MEM16);
+              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
       
 
@@ -53482,13 +53482,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1023: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1490 "machine/pentium/disassembler.m"
+      #line 1487 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
       
 
@@ -53500,13 +53500,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1024: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1490 "machine/pentium/disassembler.m"
+      #line 1487 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
       
 
@@ -53518,13 +53518,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1025: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1490 "machine/pentium/disassembler.m"
+      #line 1487 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
       
 
@@ -53536,13 +53536,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1026: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1729 "machine/pentium/disassembler.m"
+      #line 1726 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I16", DIS_MEM16);
+              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
       
 
@@ -53554,13 +53554,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1027: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1729 "machine/pentium/disassembler.m"
+      #line 1726 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I16", DIS_MEM16);
+              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
       
 
@@ -53572,13 +53572,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1028: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1729 "machine/pentium/disassembler.m"
+      #line 1726 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I16", DIS_MEM16);
+              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
       
 
@@ -53590,13 +53590,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1029: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1750 "machine/pentium/disassembler.m"
+      #line 1747 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
       
 
@@ -53608,13 +53608,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1030: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1750 "machine/pentium/disassembler.m"
+      #line 1747 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
       
 
@@ -53626,13 +53626,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1031: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1750 "machine/pentium/disassembler.m"
+      #line 1747 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
       
 
@@ -53644,13 +53644,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1032: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1526 "machine/pentium/disassembler.m"
+      #line 1523 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
       
 
@@ -53662,13 +53662,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1033: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1526 "machine/pentium/disassembler.m"
+      #line 1523 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
       
 
@@ -53680,13 +53680,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1034: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1526 "machine/pentium/disassembler.m"
+      #line 1523 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
       
 
@@ -53698,13 +53698,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1035: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1544 "machine/pentium/disassembler.m"
+      #line 1541 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
       
 
@@ -53716,13 +53716,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1036: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1544 "machine/pentium/disassembler.m"
+      #line 1541 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
       
 
@@ -53734,13 +53734,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1037: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1544 "machine/pentium/disassembler.m"
+      #line 1541 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
       
 
@@ -54808,13 +54808,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1095: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1445 "machine/pentium/disassembler.m"
+      #line 1448 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I32", DIS_MEM32);
+              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
       
 
@@ -54826,13 +54826,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1096: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1445 "machine/pentium/disassembler.m"
+      #line 1448 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I32", DIS_MEM32);
+              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
       
 
@@ -54844,13 +54844,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1097: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1445 "machine/pentium/disassembler.m"
+      #line 1448 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I32", DIS_MEM32);
+              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
       
 
@@ -54862,13 +54862,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1098: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1639 "machine/pentium/disassembler.m"
+      #line 1642 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
       
 
@@ -54880,13 +54880,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1099: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1639 "machine/pentium/disassembler.m"
+      #line 1642 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
       
 
@@ -54898,13 +54898,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1100: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1639 "machine/pentium/disassembler.m"
+      #line 1642 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
       
 
@@ -54916,13 +54916,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1101: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1469 "machine/pentium/disassembler.m"
+      #line 1472 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I32", DIS_MEM32);
+              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
       
 
@@ -54934,13 +54934,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1102: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1469 "machine/pentium/disassembler.m"
+      #line 1472 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I32", DIS_MEM32);
+              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
       
 
@@ -54952,13 +54952,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1103: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1469 "machine/pentium/disassembler.m"
+      #line 1472 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I32", DIS_MEM32);
+              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
       
 
@@ -54970,13 +54970,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1104: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1487 "machine/pentium/disassembler.m"
+      #line 1490 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
       
 
@@ -54988,13 +54988,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1105: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1487 "machine/pentium/disassembler.m"
+      #line 1490 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
       
 
@@ -55006,13 +55006,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1106: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1487 "machine/pentium/disassembler.m"
+      #line 1490 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
       
 
@@ -55024,13 +55024,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1107: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1726 "machine/pentium/disassembler.m"
+      #line 1729 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I32", DIS_MEM32);
+              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
       
 
@@ -55042,13 +55042,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1108: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1726 "machine/pentium/disassembler.m"
+      #line 1729 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I32", DIS_MEM32);
+              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
       
 
@@ -55060,13 +55060,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1109: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1726 "machine/pentium/disassembler.m"
+      #line 1729 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I32", DIS_MEM32);
+              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
       
 
@@ -55078,13 +55078,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1110: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1747 "machine/pentium/disassembler.m"
+      #line 1750 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
       
 
@@ -55096,13 +55096,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1111: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1747 "machine/pentium/disassembler.m"
+      #line 1750 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
       
 
@@ -55114,13 +55114,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1112: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1747 "machine/pentium/disassembler.m"
+      #line 1750 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
       
 
@@ -55132,13 +55132,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1113: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1523 "machine/pentium/disassembler.m"
+      #line 1526 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
       
 
@@ -55150,13 +55150,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1114: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1523 "machine/pentium/disassembler.m"
+      #line 1526 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
       
 
@@ -55168,13 +55168,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1115: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1523 "machine/pentium/disassembler.m"
+      #line 1526 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
       
 
@@ -55186,13 +55186,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1116: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-      #line 1541 "machine/pentium/disassembler.m"
+      #line 1544 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
       
 
@@ -55204,13 +55204,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1117: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-      #line 1541 "machine/pentium/disassembler.m"
+      #line 1544 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
       
 
@@ -55222,13 +55222,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1118: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-      #line 1541 "machine/pentium/disassembler.m"
+      #line 1544 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
       
 
