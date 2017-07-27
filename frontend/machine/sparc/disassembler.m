@@ -266,8 +266,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 	| JMPL (addr, rd) [name] => 
 		sprintf (str, "%s %s,%s", name, DIS_ADDR, DIS_RD);
 
-	| RETT (addr) [name] => 
-		sprintf (str, "%s", name);
+	| RETURN (addr) [name] => 
+		sprintf (str, "%s %s", name, DIS_ADDR);
 
 	| trap (addr) [name] => 
 		sprintf (str, "%s %s", name, DIS_ADDR);

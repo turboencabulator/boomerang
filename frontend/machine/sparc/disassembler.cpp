@@ -2,6 +2,16 @@
 #include <assert.h>
 
 #line 2 "machine/sparc/disassembler.m"
+/*
+ * Copyright (C) 2001, Sun Microsystems, Inc
+ * Copyright (C) 2001, The University of Queensland
+ *
+ * See the file "LICENSE.TERMS" for information on usage and
+ * redistribution of this file, and for a DISCLAIMER OF ALL
+ * WARRANTIES.
+ *
+ */
+
 /*==============================================================================
  * FILE:       disassembler.m
  * OVERVIEW:   Skeleton file for a disassembler of SPARC instructions. 
@@ -286,14 +296,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     "FiTOq", "FsTOq", "FdTOq", (char *)0, (char *)0, "FsTOi", "FdTOi", 
     "FqTOi", 
   };
-  static char *MATCH_name_i_50[] = {"JMPL", "RETT", };
+  static char *MATCH_name_i_50[] = {"JMPL", "RETURN", };
   static char *MATCH_name_rs1_51[] = {
     "JMPL", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", 
     "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", 
     "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", 
     "SAVE", "SAVE", "SAVE", "SAVE", "SAVE", 
   };
-  static char *MATCH_name_i_54[] = {"RETT", "SAVE", };
+  static char *MATCH_name_i_54[] = {"RETURN", "SAVE", };
   static char *MATCH_name_cond_55[] = {
     "TN", "TE", "TLE", "TL", "TLEU", "TCS", "TNEG", "TVS", "TA", "TNE", "TG", 
     "TGE", "TGU", "TCC", "TPOS", "TVC", 
@@ -2038,7 +2048,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 270 "machine/sparc/disassembler.m"
        
 
-      		sprintf (str, "%s", name);
+      		sprintf (str, "%s %s", name, DIS_ADDR);
 
       
 
