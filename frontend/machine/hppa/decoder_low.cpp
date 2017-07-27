@@ -44,11 +44,11 @@ bool c_c_n(ADDRESS hostpc)
     bool result = true;
 
 
-#line 60 "machine/hppa/decoder_low.m"
+#line 41 "machine/hppa/decoder_low.m"
 { 
   dword MATCH_p = 
     
-    #line 60 "machine/hppa/decoder_low.m"
+    #line 41 "machine/hppa/decoder_low.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -163,7 +163,7 @@ bool c_c_n(ADDRESS hostpc)
     
   MATCH_label_e1: (void)0; /*placeholder for label*/ 
     
-    #line 61 "machine/hppa/decoder_low.m"
+    #line 42 "machine/hppa/decoder_low.m"
      { result = true; }
 
     
@@ -172,7 +172,7 @@ bool c_c_n(ADDRESS hostpc)
     
   MATCH_label_e2: (void)0; /*placeholder for label*/ 
     
-    #line 62 "machine/hppa/decoder_low.m"
+    #line 43 "machine/hppa/decoder_low.m"
         { result = false; }
 
     
@@ -183,7 +183,7 @@ bool c_c_n(ADDRESS hostpc)
   
 }
 
-#line 65 "machine/hppa/decoder_low.m"
+#line 46 "machine/hppa/decoder_low.m"
     return result;
 }
 
@@ -198,11 +198,11 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
   static const int sep_codes[] = { 0, 1, 2, 7, 8, 9, 10, 15 };
 
 
-#line 76 "machine/hppa/decoder_low.m"
+#line 57 "machine/hppa/decoder_low.m"
 { 
   dword MATCH_p = 
     
-    #line 76 "machine/hppa/decoder_low.m"
+    #line 57 "machine/hppa/decoder_low.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -233,7 +233,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
                   unsigned c3 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
                   unsigned cmplt = addressToPC(MATCH_p);
                   
-                  #line 81 "machine/hppa/decoder_low.m"
+                  #line 62 "machine/hppa/decoder_low.m"
                    {
 
                               cond = c3 + (c_c_n(cmplt)?0:8); 
@@ -257,7 +257,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
           break;
         case 10: 
           
-          #line 84 "machine/hppa/decoder_low.m"
+          #line 65 "machine/hppa/decoder_low.m"
            {
 
                       cond = 0;
@@ -273,7 +273,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
             unsigned c3 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
             unsigned cmplt = addressToPC(MATCH_p);
             
-            #line 90 "machine/hppa/decoder_low.m"
+            #line 71 "machine/hppa/decoder_low.m"
              {
 
                         cond = c3 + (c_c_n(cmplt)?0:8); 
@@ -295,7 +295,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
             unsigned c3 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
             unsigned cmplt = addressToPC(MATCH_p);
             
-            #line 93 "machine/hppa/decoder_low.m"
+            #line 74 "machine/hppa/decoder_low.m"
              {
 
                         cond = c3 + (c_c_n(cmplt)?0:8); 
@@ -314,7 +314,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
           if ((MATCH_w_32_0 >> 13 & 0x1) /* d_18 at 0 */ == 1) { 
             unsigned c = (MATCH_w_32_0 >> 15 & 0x1) /* c_16 at 0 */;
             
-            #line 102 "machine/hppa/decoder_low.m"
+            #line 83 "machine/hppa/decoder_low.m"
              {
 
                         cond = 1 + (c?0:8); 
@@ -328,7 +328,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
           else { 
             unsigned c = (MATCH_w_32_0 >> 15 & 0x1) /* c_16 at 0 */;
             
-            #line 99 "machine/hppa/decoder_low.m"
+            #line 80 "machine/hppa/decoder_low.m"
              {
 
                         cond = 1 + (c?0:8); 
@@ -359,7 +359,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
               ((MATCH_w_32_0 >> 15 & 0x1) /* c1_16 at 0 */ << 2) + 
               (MATCH_w_32_0 >> 13 & 0x3) /* c2_17 at 0 */;
             
-            #line 96 "machine/hppa/decoder_low.m"
+            #line 77 "machine/hppa/decoder_low.m"
              {
 
                         cond = cmpib_codes[c3];
@@ -379,7 +379,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
   
   MATCH_label_d0: (void)0; /*placeholder for label*/ 
     
-    #line 105 "machine/hppa/decoder_low.m"
+    #line 86 "machine/hppa/decoder_low.m"
     {
 
                 cond = 0;
@@ -395,7 +395,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
       unsigned c3 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
       unsigned cmplt = addressToPC(MATCH_p);
       
-      #line 78 "machine/hppa/decoder_low.m"
+      #line 59 "machine/hppa/decoder_low.m"
        {
 
                   cond = c3 + (c_c_n(cmplt)?0:8); 
@@ -414,7 +414,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
         ((MATCH_w_32_0 >> 15 & 0x1) /* c1_16 at 0 */ << 2) + 
         (MATCH_w_32_0 >> 13 & 0x3) /* c2_17 at 0 */;
       
-      #line 87 "machine/hppa/decoder_low.m"
+      #line 68 "machine/hppa/decoder_low.m"
        {
 
                   cond = sep_codes[c3_16];
@@ -431,7 +431,7 @@ SemStr* NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
   
 }
 
-#line 109 "machine/hppa/decoder_low.m"
+#line 90 "machine/hppa/decoder_low.m"
   return instantiateNamedParam(c_c_names[cond]);
 }
 
@@ -441,11 +441,11 @@ unsigned long c_wcr(ADDRESS hostpc, char **garble)
   unsigned long regl;
 
 
-#line 115 "machine/hppa/decoder_low.m"
+#line 96 "machine/hppa/decoder_low.m"
 { 
   dword MATCH_p = 
     
-    #line 115 "machine/hppa/decoder_low.m"
+    #line 96 "machine/hppa/decoder_low.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -455,7 +455,7 @@ unsigned long c_wcr(ADDRESS hostpc, char **garble)
       if ((MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */ == 0) 
         if ((MATCH_w_32_0 >> 14 & 0x1) /* ext_17 at 0 */ == 1) 
           
-          #line 120 "machine/hppa/decoder_low.m"
+          #line 101 "machine/hppa/decoder_low.m"
            {
 
                   *garble += sprintf(*garble,".w");
@@ -469,7 +469,7 @@ unsigned long c_wcr(ADDRESS hostpc, char **garble)
         else { 
           unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
           
-          #line 117 "machine/hppa/decoder_low.m"
+          #line 98 "machine/hppa/decoder_low.m"
            {
 
                   regl = r_06;
@@ -489,7 +489,7 @@ unsigned long c_wcr(ADDRESS hostpc, char **garble)
   
   MATCH_label_c0: (void)0; /*placeholder for label*/ 
     
-    #line 124 "machine/hppa/decoder_low.m"
+    #line 105 "machine/hppa/decoder_low.m"
     {
 
             regl = 0;
@@ -506,7 +506,7 @@ unsigned long c_wcr(ADDRESS hostpc, char **garble)
   
 }
 
-#line 129 "machine/hppa/decoder_low.m"
+#line 110 "machine/hppa/decoder_low.m"
   return regl;
 #else
     return 0;
@@ -518,11 +518,11 @@ void c_null(ADDRESS hostpc, char **garble)
 #if 0
 
 
-#line 137 "machine/hppa/decoder_low.m"
+#line 118 "machine/hppa/decoder_low.m"
 { 
   dword MATCH_p = 
     
-    #line 137 "machine/hppa/decoder_low.m"
+    #line 118 "machine/hppa/decoder_low.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -538,7 +538,7 @@ void c_null(ADDRESS hostpc, char **garble)
         case 46: case 52: case 53: case 54: case 55: case 60: case 61: 
         case 62: case 63: 
           
-          #line 144 "machine/hppa/decoder_low.m"
+          #line 125 "machine/hppa/decoder_low.m"
           {
 
                   //printf("#c_NULL%08X#", getDword(hostpc));
@@ -554,7 +554,7 @@ void c_null(ADDRESS hostpc, char **garble)
         case 56: case 57: case 58: case 59: 
           if ((MATCH_w_32_0 >> 1 & 0x1) /* n_30 at 0 */ == 1) 
             
-            #line 141 "machine/hppa/decoder_low.m"
+            #line 122 "machine/hppa/decoder_low.m"
              {
 
                     *garble += sprintf(*garble, ".n");
@@ -565,7 +565,7 @@ void c_null(ADDRESS hostpc, char **garble)
              /*opt-block+*/
           else 
             
-            #line 138 "machine/hppa/decoder_low.m"
+            #line 119 "machine/hppa/decoder_low.m"
              {
 
                 }
@@ -583,7 +583,7 @@ void c_null(ADDRESS hostpc, char **garble)
   
 }
 
-#line 148 "machine/hppa/decoder_low.m"
+#line 129 "machine/hppa/decoder_low.m"
 #endif
 }
 
@@ -609,11 +609,11 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     int condvalue;
 
 
-#line 170 "machine/hppa/decoder_low.m"
+#line 151 "machine/hppa/decoder_low.m"
 { 
   dword MATCH_p = 
     
-    #line 170 "machine/hppa/decoder_low.m"
+    #line 151 "machine/hppa/decoder_low.m"
     hostPC
     ;
   char *MATCH_name;
@@ -710,7 +710,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned im5_27 = (MATCH_w_32_0 & 0x1f) /* im5_27 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 281 "machine/hppa/decoder_low.m"
+                  #line 262 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Num(im5_27), dis_Num(im13_06));
@@ -762,7 +762,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 293 "machine/hppa/decoder_low.m"
+                  #line 274 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_c_wcr(cmplt), dis_Reg(t_27));
@@ -791,7 +791,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 284 "machine/hppa/decoder_low.m"
+                  #line 265 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Num(im10_06), dis_Reg(t_27));
@@ -812,7 +812,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 299 "machine/hppa/decoder_low.m"
+                  #line 280 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Reg(t_27));
@@ -839,7 +839,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 296 "machine/hppa/decoder_low.m"
+                  #line 277 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Reg(r_11), dis_ct(ct_06));
@@ -860,7 +860,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 290 "machine/hppa/decoder_low.m"
+                  #line 271 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Reg(r_11));
@@ -1062,7 +1062,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             unsigned t_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
             nextPC = 4 + MATCH_p; 
             
-            #line 185 "machine/hppa/decoder_low.m"
+            #line 166 "machine/hppa/decoder_low.m"
              {
 
                         RTs = instantiate(pc, name, dis_Num(imm21), dis_Reg(t_06));
@@ -1126,7 +1126,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
             nextPC = 4 + MATCH_p; 
             
-            #line 182 "machine/hppa/decoder_low.m"
+            #line 163 "machine/hppa/decoder_low.m"
              {
 
                         RTs = instantiate(pc, name, dis_Num(imm21), dis_Reg(r_06));
@@ -1194,7 +1194,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                     unsigned tf = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-                    #line 304 "machine/hppa/decoder_low.m"
+                    #line 285 "machine/hppa/decoder_low.m"
                      {
 
                                 RTs = instantiate(pc, name, dis_Num(fmt), dis_Freg(rf, fmt),
@@ -1225,7 +1225,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                     unsigned tf = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-                    #line 308 "machine/hppa/decoder_low.m"
+                    #line 289 "machine/hppa/decoder_low.m"
                      {
 
                                 RTs = instantiate(pc, name, dis_Num(sf), dis_Num(df),
@@ -1303,7 +1303,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             unsigned t = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
             nextPC = 4 + MATCH_p; 
             
-            #line 221 "machine/hppa/decoder_low.m"
+            #line 202 "machine/hppa/decoder_low.m"
              {
 
                         RTs = instantiate(pc, name, dis_Num(ldisp), dis_Reg(b), dis_Reg(t));
@@ -1339,7 +1339,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                       (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-                    #line 308 "machine/hppa/decoder_low.m"
+                    #line 289 "machine/hppa/decoder_low.m"
                      {
 
                                 RTs = instantiate(pc, name, dis_Num(sf), dis_Num(df),
@@ -1411,7 +1411,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                           (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-                        #line 320 "machine/hppa/decoder_low.m"
+                        #line 301 "machine/hppa/decoder_low.m"
                          {
 
                                     // This instruction has fixed register sizes
@@ -1475,7 +1475,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             unsigned xd = addressToPC(MATCH_p);
             nextPC = 4 + MATCH_p; 
             
-            #line 213 "machine/hppa/decoder_low.m"
+            #line 194 "machine/hppa/decoder_low.m"
              {
 
                         RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd),
@@ -1502,7 +1502,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             unsigned xd = addressToPC(MATCH_p);
             nextPC = 4 + MATCH_p; 
             
-            #line 217 "machine/hppa/decoder_low.m"
+            #line 198 "machine/hppa/decoder_low.m"
              {
 
                         RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Reg(r_11),
@@ -1568,7 +1568,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 unsigned t = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
                 nextPC = 4 + MATCH_p; 
                 
-                #line 236 "machine/hppa/decoder_low.m"
+                #line 217 "machine/hppa/decoder_low.m"
                  {
 
                             RTs = instantiate(pc, name, dis_Reg(r), dis_Num(p), dis_Num(len),
@@ -1594,7 +1594,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 unsigned t = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
                 nextPC = 4 + MATCH_p; 
                 
-                #line 232 "machine/hppa/decoder_low.m"
+                #line 213 "machine/hppa/decoder_low.m"
                  {
 
                             RTs = instantiate(pc, name, dis_Reg(r), dis_Num(len), dis_Reg(t),
@@ -1626,7 +1626,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 228 "machine/hppa/decoder_low.m"
+                  #line 209 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2), dis_Num(p),
@@ -1652,7 +1652,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                   unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 224 "machine/hppa/decoder_low.m"
+                  #line 205 "machine/hppa/decoder_low.m"
                    {
 
                               RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2), dis_Reg(t),
@@ -1688,7 +1688,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 nextPC = 4 + MATCH_p; 
                 
-                #line 252 "machine/hppa/decoder_low.m"
+                #line 233 "machine/hppa/decoder_low.m"
                  {
 
                             RTs = instantiate(pc, name, dis_Num(i), dis_Num(p), dis_Num(len),
@@ -1717,7 +1717,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 nextPC = 4 + MATCH_p; 
                 
-                #line 248 "machine/hppa/decoder_low.m"
+                #line 229 "machine/hppa/decoder_low.m"
                  {
 
                             RTs = instantiate(pc, name, dis_Num(i), dis_Num(len), dis_Reg(t),
@@ -1748,7 +1748,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 nextPC = 4 + MATCH_p; 
                 
-                #line 244 "machine/hppa/decoder_low.m"
+                #line 225 "machine/hppa/decoder_low.m"
                  {
 
                             RTs = instantiate(pc, name, dis_Reg(r), dis_Num(p), dis_Num(len),
@@ -1774,7 +1774,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 nextPC = 4 + MATCH_p; 
                 
-                #line 240 "machine/hppa/decoder_low.m"
+                #line 221 "machine/hppa/decoder_low.m"
                  {
 
                             RTs = instantiate(pc, name, dis_Reg(r), dis_Num(len), dis_Reg(t),
@@ -1811,7 +1811,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                       (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-                    #line 266 "machine/hppa/decoder_low.m"
+                    #line 247 "machine/hppa/decoder_low.m"
                      {
 
                                 /* BLR,n x,t */
@@ -1849,7 +1849,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                                 1) << 23);
                   nextPC = 4 + MATCH_p; 
                   
-                  #line 261 "machine/hppa/decoder_low.m"
+                  #line 242 "machine/hppa/decoder_low.m"
                    {
 
                               /* BL.LONG cmplt,n  target,2) */
@@ -1885,7 +1885,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                       (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-                    #line 271 "machine/hppa/decoder_low.m"
+                    #line 252 "machine/hppa/decoder_low.m"
                      {
 
                                 /* BV,n x_11(b_06) */
@@ -1926,7 +1926,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     { 
       nextPC = MATCH_p; 
       
-      #line 331 "machine/hppa/decoder_low.m"
+      #line 312 "machine/hppa/decoder_low.m"
       {
 
       		    //RTs = NULL;
@@ -1948,7 +1948,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       char *name = MATCH_name;
       nextPC = 4 + MATCH_p; 
       
-      #line 287 "machine/hppa/decoder_low.m"
+      #line 268 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name);
@@ -1970,7 +1970,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 172 "machine/hppa/decoder_low.m"
+      #line 153 "machine/hppa/decoder_low.m"
        {
 
                   /*  Arith,cc_16   r_11, r_06, t_27 */
@@ -1997,7 +1997,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned xd = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-      #line 188 "machine/hppa/decoder_low.m"
+      #line 169 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_c_addr(c_addr),
@@ -2024,7 +2024,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned xd = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-      #line 193 "machine/hppa/decoder_low.m"
+      #line 174 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Reg(r_11),
@@ -2051,7 +2051,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned xd = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-      #line 197 "machine/hppa/decoder_low.m"
+      #line 178 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd),
@@ -2078,7 +2078,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned xd = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-      #line 201 "machine/hppa/decoder_low.m"
+      #line 182 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Freg(r_27, 0),
@@ -2103,7 +2103,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned xd = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-      #line 205 "machine/hppa/decoder_low.m"
+      #line 186 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd),
@@ -2128,7 +2128,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned xd = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-      #line 209 "machine/hppa/decoder_low.m"
+      #line 190 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Freg(r_27, 1),
@@ -2152,7 +2152,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned tf = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 312 "machine/hppa/decoder_low.m"
+      #line 293 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_Num(sf), dis_Num(df),
@@ -2176,7 +2176,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned frt = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 316 "machine/hppa/decoder_low.m"
+      #line 297 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_Num(fmt), dis_Freg(fr1, fmt),
@@ -2204,7 +2204,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
         (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 312 "machine/hppa/decoder_low.m"
+      #line 293 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_Num(sf), dis_Num(df),
@@ -2234,7 +2234,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
         (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 316 "machine/hppa/decoder_low.m"
+      #line 297 "machine/hppa/decoder_low.m"
        {
 
                   RTs = instantiate(pc, name, dis_Num(fmt), dis_Freg(fr1, fmt),
@@ -2260,7 +2260,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned t_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 177 "machine/hppa/decoder_low.m"
+      #line 158 "machine/hppa/decoder_low.m"
        {
 
                   /* arith_imm,cc_16 imm11!,r_06,t_11 */
@@ -2289,7 +2289,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
         (sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 1) << 18);
       nextPC = 4 + MATCH_p; 
       
-      #line 256 "machine/hppa/decoder_low.m"
+      #line 237 "machine/hppa/decoder_low.m"
        {
 
                   /* ubranch,cmplt,n  target,t_06) */
@@ -2314,7 +2314,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned p_31 = (MATCH_w_32_0 & 0x1) /* p_31 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-      #line 276 "machine/hppa/decoder_low.m"
+      #line 257 "machine/hppa/decoder_low.m"
        {
 
                   /* BVE.l BVE.lp BVE.p BVE  */
@@ -2335,7 +2335,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
   
 }
 
-#line 337 "machine/hppa/decoder_low.m"
+#line 318 "machine/hppa/decoder_low.m"
 
     result.numBytes = (nextPC - hostPC);
     return RTs;

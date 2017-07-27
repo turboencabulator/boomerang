@@ -21,11 +21,11 @@ bool InstructionPatterns::Aline(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 20 "machine/mc68k/mc68k.pat.m"
+#line 18 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 20 "machine/mc68k/mc68k.pat.m"
+    #line 18 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -35,7 +35,7 @@ bool InstructionPatterns::Aline(ADDRESS& lc, int& a, bool a_isVAR) {
       unsigned _a = (MATCH_w_16_0 & 0xfff) /* bot12 at 0 */;
       nextPC = 2 + MATCH_p; 
       
-      #line 22 "machine/mc68k/mc68k.pat.m"
+      #line 20 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -51,7 +51,7 @@ bool InstructionPatterns::Aline(ADDRESS& lc, int& a, bool a_isVAR) {
     else { 
       nextPC = MATCH_p; 
       
-      #line 25 "machine/mc68k/mc68k.pat.m"
+      #line 23 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -66,17 +66,17 @@ bool InstructionPatterns::Aline(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 29 "machine/mc68k/mc68k.pat.m"
+#line 27 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::addaw_d16(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 31 "machine/mc68k/mc68k.pat.m"
+#line 29 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 31 "machine/mc68k/mc68k.pat.m"
+    #line 29 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -119,7 +119,7 @@ bool InstructionPatterns::addaw_d16(ADDRESS& lc, int& a, bool a_isVAR) {
           sign_extend((MATCH_w_16_16 & 0xffff) /* d16 at 16 */, 16);
         nextPC = 4 + MATCH_p; 
         
-        #line 33 "machine/mc68k/mc68k.pat.m"
+        #line 31 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -141,7 +141,7 @@ bool InstructionPatterns::addaw_d16(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 36 "machine/mc68k/mc68k.pat.m"
+      #line 34 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -155,17 +155,17 @@ bool InstructionPatterns::addaw_d16(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 40 "machine/mc68k/mc68k.pat.m"
+#line 38 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::addil$daIndirect(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 42 "machine/mc68k/mc68k.pat.m"
+#line 40 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 42 "machine/mc68k/mc68k.pat.m"
+    #line 40 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -211,7 +211,7 @@ bool InstructionPatterns::addil$daIndirect(ADDRESS& lc, int& a, bool a_isVAR, in
         unsigned _b = addressToPC(MATCH_p);
         nextPC = 6 + MATCH_p; 
         
-        #line 44 "machine/mc68k/mc68k.pat.m"
+        #line 42 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -235,7 +235,7 @@ bool InstructionPatterns::addil$daIndirect(ADDRESS& lc, int& a, bool a_isVAR, in
     { 
       nextPC = MATCH_p; 
       
-      #line 48 "machine/mc68k/mc68k.pat.m"
+      #line 46 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -249,17 +249,17 @@ bool InstructionPatterns::addil$daIndirect(ADDRESS& lc, int& a, bool a_isVAR, in
   
 }
 
-#line 52 "machine/mc68k/mc68k.pat.m"
+#line 50 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::bsr(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 54 "machine/mc68k/mc68k.pat.m"
+#line 52 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 54 "machine/mc68k/mc68k.pat.m"
+    #line 52 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -270,7 +270,7 @@ bool InstructionPatterns::bsr(ADDRESS& lc, int& a, bool a_isVAR) {
       unsigned _a = addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-      #line 56 "machine/mc68k/mc68k.pat.m"
+      #line 54 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -292,7 +292,7 @@ bool InstructionPatterns::bsr(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 59 "machine/mc68k/mc68k.pat.m"
+      #line 57 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -306,17 +306,17 @@ bool InstructionPatterns::bsr(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 63 "machine/mc68k/mc68k.pat.m"
+#line 61 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::call_(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 65 "machine/mc68k/mc68k.pat.m"
+#line 63 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 65 "machine/mc68k/mc68k.pat.m"
+    #line 63 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -361,7 +361,7 @@ bool InstructionPatterns::call_(ADDRESS& lc, int& a, bool a_isVAR) {
           addressToPC(MATCH_p);
         nextPC = 4 + MATCH_p; 
         
-        #line 67 "machine/mc68k/mc68k.pat.m"
+        #line 65 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -383,7 +383,7 @@ bool InstructionPatterns::call_(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 70 "machine/mc68k/mc68k.pat.m"
+      #line 68 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -397,16 +397,16 @@ bool InstructionPatterns::call_(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 73 "machine/mc68k/mc68k.pat.m"
+#line 71 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::daIndirect(ADDRESS& lc, int& a, bool a_isVAR) {
 
 
-#line 75 "machine/mc68k/mc68k.pat.m"
+#line 73 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 75 "machine/mc68k/mc68k.pat.m"
+    #line 73 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -415,7 +415,7 @@ bool InstructionPatterns::daIndirect(ADDRESS& lc, int& a, bool a_isVAR) {
     if ((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */ == 2) { 
       unsigned _a = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 77 "machine/mc68k/mc68k.pat.m"
+      #line 75 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -428,7 +428,7 @@ bool InstructionPatterns::daIndirect(ADDRESS& lc, int& a, bool a_isVAR) {
     } /*opt-block*//*opt-block+*/
     else 
       
-      #line 79 "machine/mc68k/mc68k.pat.m"
+      #line 77 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -441,16 +441,16 @@ bool InstructionPatterns::daIndirect(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 82 "machine/mc68k/mc68k.pat.m"
+#line 80 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::daPostInc(ADDRESS& lc, int& a, bool a_isVAR) {
 
 
-#line 84 "machine/mc68k/mc68k.pat.m"
+#line 82 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 84 "machine/mc68k/mc68k.pat.m"
+    #line 82 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -459,7 +459,7 @@ bool InstructionPatterns::daPostInc(ADDRESS& lc, int& a, bool a_isVAR) {
     if ((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */ == 3) { 
       unsigned _a = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 86 "machine/mc68k/mc68k.pat.m"
+      #line 84 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -472,7 +472,7 @@ bool InstructionPatterns::daPostInc(ADDRESS& lc, int& a, bool a_isVAR) {
     } /*opt-block*//*opt-block+*/
     else 
       
-      #line 88 "machine/mc68k/mc68k.pat.m"
+      #line 86 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -485,16 +485,16 @@ bool InstructionPatterns::daPostInc(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 91 "machine/mc68k/mc68k.pat.m"
+#line 89 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::daPreDec(ADDRESS& lc, int& a, bool a_isVAR) {
 
 
-#line 93 "machine/mc68k/mc68k.pat.m"
+#line 91 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 93 "machine/mc68k/mc68k.pat.m"
+    #line 91 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -503,7 +503,7 @@ bool InstructionPatterns::daPreDec(ADDRESS& lc, int& a, bool a_isVAR) {
     if ((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */ == 4) { 
       unsigned _a = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 95 "machine/mc68k/mc68k.pat.m"
+      #line 93 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -516,7 +516,7 @@ bool InstructionPatterns::daPreDec(ADDRESS& lc, int& a, bool a_isVAR) {
     } /*opt-block*//*opt-block+*/
     else 
       
-      #line 97 "machine/mc68k/mc68k.pat.m"
+      #line 95 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -529,17 +529,17 @@ bool InstructionPatterns::daPreDec(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 101 "machine/mc68k/mc68k.pat.m"
+#line 99 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::leaSpSp(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 103 "machine/mc68k/mc68k.pat.m"
+#line 101 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 103 "machine/mc68k/mc68k.pat.m"
+    #line 101 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -583,7 +583,7 @@ bool InstructionPatterns::leaSpSp(ADDRESS& lc, int& a, bool a_isVAR) {
           sign_extend((MATCH_w_16_16 & 0xffff) /* d16 at 16 */, 16);
         nextPC = 4 + MATCH_p; 
         
-        #line 105 "machine/mc68k/mc68k.pat.m"
+        #line 103 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -605,7 +605,7 @@ bool InstructionPatterns::leaSpSp(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 108 "machine/mc68k/mc68k.pat.m"
+      #line 106 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -619,17 +619,17 @@ bool InstructionPatterns::leaSpSp(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 112 "machine/mc68k/mc68k.pat.m"
+#line 110 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::link(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 114 "machine/mc68k/mc68k.pat.m"
+#line 112 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 114 "machine/mc68k/mc68k.pat.m"
+    #line 112 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -669,7 +669,7 @@ bool InstructionPatterns::link(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b
           sign_extend((MATCH_w_16_16 & 0xffff) /* d16 at 16 */, 16);
         nextPC = 4 + MATCH_p; 
         
-        #line 116 "machine/mc68k/mc68k.pat.m"
+        #line 114 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -693,7 +693,7 @@ bool InstructionPatterns::link(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b
     { 
       nextPC = MATCH_p; 
       
-      #line 120 "machine/mc68k/mc68k.pat.m"
+      #line 118 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -707,17 +707,17 @@ bool InstructionPatterns::link(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b
   
 }
 
-#line 124 "machine/mc68k/mc68k.pat.m"
+#line 122 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::movemrl$daPostInc(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 126 "machine/mc68k/mc68k.pat.m"
+#line 124 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 126 "machine/mc68k/mc68k.pat.m"
+    #line 124 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -758,7 +758,7 @@ bool InstructionPatterns::movemrl$daPostInc(ADDRESS& lc, int& a, bool a_isVAR, i
         unsigned _b = (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
         nextPC = 4 + MATCH_p; 
         
-        #line 128 "machine/mc68k/mc68k.pat.m"
+        #line 126 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!daPostInc(_a, a, a_isVAR)) return false;
@@ -782,7 +782,7 @@ bool InstructionPatterns::movemrl$daPostInc(ADDRESS& lc, int& a, bool a_isVAR, i
     { 
       nextPC = MATCH_p; 
       
-      #line 132 "machine/mc68k/mc68k.pat.m"
+      #line 130 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -796,17 +796,17 @@ bool InstructionPatterns::movemrl$daPostInc(ADDRESS& lc, int& a, bool a_isVAR, i
   
 }
 
-#line 136 "machine/mc68k/mc68k.pat.m"
+#line 134 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::moverml$daPreDec(ADDRESS& lc, int& a, bool a_isVAR, int& b, bool b_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 138 "machine/mc68k/mc68k.pat.m"
+#line 136 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 138 "machine/mc68k/mc68k.pat.m"
+    #line 136 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -825,7 +825,7 @@ bool InstructionPatterns::moverml$daPreDec(ADDRESS& lc, int& a, bool a_isVAR, in
         unsigned _b = addressToPC(MATCH_p);
         nextPC = 4 + MATCH_p; 
         
-        #line 140 "machine/mc68k/mc68k.pat.m"
+        #line 138 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -851,7 +851,7 @@ bool InstructionPatterns::moverml$daPreDec(ADDRESS& lc, int& a, bool a_isVAR, in
     { 
       nextPC = MATCH_p; 
       
-      #line 144 "machine/mc68k/mc68k.pat.m"
+      #line 142 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -865,17 +865,17 @@ bool InstructionPatterns::moverml$daPreDec(ADDRESS& lc, int& a, bool a_isVAR, in
   
 }
 
-#line 148 "machine/mc68k/mc68k.pat.m"
+#line 146 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::peaPcDisp(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 150 "machine/mc68k/mc68k.pat.m"
+#line 148 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 150 "machine/mc68k/mc68k.pat.m"
+    #line 148 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -921,7 +921,7 @@ bool InstructionPatterns::peaPcDisp(ADDRESS& lc, int& a, bool a_isVAR) {
           sign_extend((MATCH_w_16_16 & 0xffff) /* d16 at 16 */, 16);
         nextPC = 4 + MATCH_p; 
         
-        #line 152 "machine/mc68k/mc68k.pat.m"
+        #line 150 "machine/mc68k/mc68k.pat.m"
         
 
         		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -943,7 +943,7 @@ bool InstructionPatterns::peaPcDisp(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 155 "machine/mc68k/mc68k.pat.m"
+      #line 153 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -957,17 +957,17 @@ bool InstructionPatterns::peaPcDisp(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 159 "machine/mc68k/mc68k.pat.m"
+#line 157 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::popreg(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 161 "machine/mc68k/mc68k.pat.m"
+#line 159 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 161 "machine/mc68k/mc68k.pat.m"
+    #line 159 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -980,7 +980,7 @@ bool InstructionPatterns::popreg(ADDRESS& lc, int& a, bool a_isVAR) {
       unsigned _a = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       nextPC = 2 + MATCH_p; 
       
-      #line 163 "machine/mc68k/mc68k.pat.m"
+      #line 161 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -1002,7 +1002,7 @@ bool InstructionPatterns::popreg(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 166 "machine/mc68k/mc68k.pat.m"
+      #line 164 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -1016,17 +1016,17 @@ bool InstructionPatterns::popreg(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 170 "machine/mc68k/mc68k.pat.m"
+#line 168 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::pushreg(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 172 "machine/mc68k/mc68k.pat.m"
+#line 170 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 172 "machine/mc68k/mc68k.pat.m"
+    #line 170 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1039,7 +1039,7 @@ bool InstructionPatterns::pushreg(ADDRESS& lc, int& a, bool a_isVAR) {
       unsigned _a = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       nextPC = 2 + MATCH_p; 
       
-      #line 174 "machine/mc68k/mc68k.pat.m"
+      #line 172 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -1061,7 +1061,7 @@ bool InstructionPatterns::pushreg(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 177 "machine/mc68k/mc68k.pat.m"
+      #line 175 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -1075,17 +1075,17 @@ bool InstructionPatterns::pushreg(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 181 "machine/mc68k/mc68k.pat.m"
+#line 179 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::rts(ADDRESS& lc) {
 	ADDRESS nextPC;
 
 
-#line 183 "machine/mc68k/mc68k.pat.m"
+#line 181 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 183 "machine/mc68k/mc68k.pat.m"
+    #line 181 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1125,7 +1125,7 @@ bool InstructionPatterns::rts(ADDRESS& lc) {
     else { 
       nextPC = 2 + MATCH_p; 
       
-      #line 185 "machine/mc68k/mc68k.pat.m"
+      #line 183 "machine/mc68k/mc68k.pat.m"
       
 
       		lc = nextPC;
@@ -1143,7 +1143,7 @@ bool InstructionPatterns::rts(ADDRESS& lc) {
     { 
       nextPC = MATCH_p; 
       
-      #line 187 "machine/mc68k/mc68k.pat.m"
+      #line 185 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -1157,17 +1157,17 @@ bool InstructionPatterns::rts(ADDRESS& lc) {
   
 }
 
-#line 191 "machine/mc68k/mc68k.pat.m"
+#line 189 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::trap(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 193 "machine/mc68k/mc68k.pat.m"
+#line 191 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 193 "machine/mc68k/mc68k.pat.m"
+    #line 191 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1200,7 +1200,7 @@ bool InstructionPatterns::trap(ADDRESS& lc, int& a, bool a_isVAR) {
       unsigned _a = (MATCH_w_16_0 & 0xf) /* vect at 0 */;
       nextPC = 2 + MATCH_p; 
       
-      #line 195 "machine/mc68k/mc68k.pat.m"
+      #line 193 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -1220,7 +1220,7 @@ bool InstructionPatterns::trap(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 198 "machine/mc68k/mc68k.pat.m"
+      #line 196 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -1234,17 +1234,17 @@ bool InstructionPatterns::trap(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 202 "machine/mc68k/mc68k.pat.m"
+#line 200 "machine/mc68k/mc68k.pat.m"
 }
 bool InstructionPatterns::unlk(ADDRESS& lc, int& a, bool a_isVAR) {
 	ADDRESS nextPC;
 
 
-#line 204 "machine/mc68k/mc68k.pat.m"
+#line 202 "machine/mc68k/mc68k.pat.m"
 { 
   dword MATCH_p = 
     
-    #line 204 "machine/mc68k/mc68k.pat.m"
+    #line 202 "machine/mc68k/mc68k.pat.m"
     lc
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1279,7 +1279,7 @@ bool InstructionPatterns::unlk(ADDRESS& lc, int& a, bool a_isVAR) {
       unsigned _a = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       nextPC = 2 + MATCH_p; 
       
-      #line 206 "machine/mc68k/mc68k.pat.m"
+      #line 204 "machine/mc68k/mc68k.pat.m"
       
 
       		if (!a_isVAR && (int)_a != a) return false; else a = _a;
@@ -1299,7 +1299,7 @@ bool InstructionPatterns::unlk(ADDRESS& lc, int& a, bool a_isVAR) {
     { 
       nextPC = MATCH_p; 
       
-      #line 209 "machine/mc68k/mc68k.pat.m"
+      #line 207 "machine/mc68k/mc68k.pat.m"
       
       		return false;
 
@@ -1313,7 +1313,7 @@ bool InstructionPatterns::unlk(ADDRESS& lc, int& a, bool a_isVAR) {
   
 }
 
-#line 213 "machine/mc68k/mc68k.pat.m"
+#line 211 "machine/mc68k/mc68k.pat.m"
 }
 Logue* InstructionPatterns::std_call(CSR& csr, ADDRESS& lc, int& addr)
 {

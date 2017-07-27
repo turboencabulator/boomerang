@@ -85,11 +85,11 @@ int dis_c_c_n(ADDRESS hostpc)
     int result = 0;
 
 
-#line 105 "machine/hppa/disassembler.m"
+#line 82 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 105 "machine/hppa/disassembler.m"
+    #line 82 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -204,7 +204,7 @@ int dis_c_c_n(ADDRESS hostpc)
     
   MATCH_label_h1: (void)0; /*placeholder for label*/ 
     
-    #line 106 "machine/hppa/disassembler.m"
+    #line 83 "machine/hppa/disassembler.m"
      { result = 0; }
 
     
@@ -213,7 +213,7 @@ int dis_c_c_n(ADDRESS hostpc)
     
   MATCH_label_h2: (void)0; /*placeholder for label*/ 
     
-    #line 107 "machine/hppa/disassembler.m"
+    #line 84 "machine/hppa/disassembler.m"
         { result = 8; }
 
     
@@ -224,7 +224,7 @@ int dis_c_c_n(ADDRESS hostpc)
   
 }
 
-#line 110 "machine/hppa/disassembler.m"
+#line 87 "machine/hppa/disassembler.m"
     return result;
 }
 
@@ -247,11 +247,11 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
   
 
 
-#line 129 "machine/hppa/disassembler.m"
+#line 106 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 129 "machine/hppa/disassembler.m"
+    #line 106 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -283,7 +283,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
                     (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
                   unsigned neg = addressToPC(MATCH_p);
                   
-                  #line 135 "machine/hppa/disassembler.m"
+                  #line 112 "machine/hppa/disassembler.m"
                    {
 
                               apre += sprintf(apre, "%s", cmpsubdw[c3_16 + dis_c_c_n(neg)]);
@@ -309,7 +309,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
           break;
         case 10: 
           
-          #line 158 "machine/hppa/disassembler.m"
+          #line 135 "machine/hppa/disassembler.m"
            {
 
                   }
@@ -323,7 +323,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
             unsigned c3_16 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
             unsigned neg = addressToPC(MATCH_p);
             
-            #line 139 "machine/hppa/disassembler.m"
+            #line 116 "machine/hppa/disassembler.m"
              {
 
                         apre += sprintf(apre, "%s", cmpsubw[c3_16 + dis_c_c_n(neg)]);
@@ -347,7 +347,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
             unsigned c3_16 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
             unsigned neg = addressToPC(MATCH_p);
             
-            #line 143 "machine/hppa/disassembler.m"
+            #line 120 "machine/hppa/disassembler.m"
              {
 
                         apre += sprintf(apre, "%s", cmpsubdw[c3_16 + dis_c_c_n(neg)]);
@@ -368,7 +368,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
           if ((MATCH_w_32_0 >> 13 & 0x1) /* d_18 at 0 */ == 1) { 
             unsigned c_16 = (MATCH_w_32_0 >> 15 & 0x1) /* c_16 at 0 */;
             
-            #line 155 "machine/hppa/disassembler.m"
+            #line 132 "machine/hppa/disassembler.m"
              {
 
                         apre += sprintf(apre, "[%d]",1-c_16);
@@ -384,7 +384,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
           else { 
             unsigned c_16 = (MATCH_w_32_0 >> 15 & 0x1) /* c_16 at 0 */;
             
-            #line 151 "machine/hppa/disassembler.m"
+            #line 128 "machine/hppa/disassembler.m"
              {
 
                         apre += sprintf(apre, "[%d]",1-c_16);
@@ -418,7 +418,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
   
   MATCH_label_g0: (void)0; /*placeholder for label*/ 
     
-    #line 161 "machine/hppa/disassembler.m"
+    #line 138 "machine/hppa/disassembler.m"
     {
 
                 astr += sprintf(astr, "#c_C%08X", getDword(hostpc));
@@ -434,7 +434,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
       unsigned c3_16 = (MATCH_w_32_0 >> 13 & 0x7) /* c3_16 at 0 */;
       unsigned neg = addressToPC(MATCH_p);
       
-      #line 131 "machine/hppa/disassembler.m"
+      #line 108 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", cmpsubw[c3_16 + dis_c_c_n(neg)]);
@@ -455,7 +455,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
         ((MATCH_w_32_0 >> 15 & 0x1) /* c1_16 at 0 */ << 2) + 
         (MATCH_w_32_0 >> 13 & 0x3) /* c2_17 at 0 */;
       
-      #line 147 "machine/hppa/disassembler.m"
+      #line 124 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", logw[c3_16]);
@@ -474,7 +474,7 @@ void NJMCDecoder::dis_c_c(ADDRESS hostpc)
   
 }
 
-#line 165 "machine/hppa/disassembler.m"
+#line 142 "machine/hppa/disassembler.m"
 }
 
 void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
@@ -482,11 +482,11 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
 
 
 
-#line 169 "machine/hppa/disassembler.m"
+#line 146 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 169 "machine/hppa/disassembler.m"
+    #line 146 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -511,7 +511,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
                 (sign_extend((MATCH_w_32_0 & 0x1) /* i_31 at 0 */, 1) << 4) + 
                 (MATCH_w_32_0 >> 1 & 0xf) /* im4_27 at 0 */;
               
-              #line 199 "machine/hppa/disassembler.m"
+              #line 176 "machine/hppa/disassembler.m"
                {
 
                           astr += sprintf(astr, "%d", i);
@@ -533,7 +533,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
                   if ((MATCH_w_32_0 >> 13 & 0x1) /* u_18 at 0 */ == 1) { 
                     unsigned x = (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
                     
-                    #line 175 "machine/hppa/disassembler.m"
+                    #line 152 "machine/hppa/disassembler.m"
                      {
 
                                 apre += sprintf(apre, "%s", ",s");
@@ -556,7 +556,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
                   if ((MATCH_w_32_0 >> 13 & 0x1) /* u_18 at 0 */ == 1) { 
                     unsigned x = (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
                     
-                    #line 180 "machine/hppa/disassembler.m"
+                    #line 157 "machine/hppa/disassembler.m"
                      {
 
                                 apre += sprintf(apre, "%s", ",s");
@@ -630,7 +630,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
               (sign_extend((MATCH_w_32_0 & 0x1) /* i_31 at 0 */, 1) << 13) + 
               (MATCH_w_32_0 >> 1 & 0x1fff) /* im13_18 at 0 */;
             
-            #line 203 "machine/hppa/disassembler.m"
+            #line 180 "machine/hppa/disassembler.m"
              {
 
                         astr += sprintf(astr, "%d", i);
@@ -653,7 +653,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
               (sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 1) << 16) + 
               (MATCH_w_32_0 >> 3 & 0x3ff) /* w10_19 at 0 */;
             
-            #line 207 "machine/hppa/disassembler.m"
+            #line 184 "machine/hppa/disassembler.m"
              {
 
                         astr += sprintf(astr, "%d", i);
@@ -675,7 +675,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
   
   MATCH_label_f0: (void)0; /*placeholder for label*/ 
     
-    #line 211 "machine/hppa/disassembler.m"
+    #line 188 "machine/hppa/disassembler.m"
     {
 
                 apre += sprintf(apre, "#c_X_ADDR_SHIFT%08X", getDword(hostpc));
@@ -692,7 +692,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
     { 
       unsigned x = (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
       
-      #line 171 "machine/hppa/disassembler.m"
+      #line 148 "machine/hppa/disassembler.m"
          {
 
                   astr += sprintf(astr, "%s", x_11_names[x]);
@@ -711,7 +711,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
     { 
       unsigned x = (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
       
-      #line 185 "machine/hppa/disassembler.m"
+      #line 162 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", ",s");
@@ -732,7 +732,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
     { 
       unsigned x = (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
       
-      #line 190 "machine/hppa/disassembler.m"
+      #line 167 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", ",s");
@@ -755,7 +755,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
         (sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 1) << 4) + 
         (MATCH_w_32_0 >> 17 & 0xf) /* im4_11 at 0 */;
       
-      #line 195 "machine/hppa/disassembler.m"
+      #line 172 "machine/hppa/disassembler.m"
        {
 
                   astr += sprintf(astr, "%d", i);
@@ -774,7 +774,7 @@ void NJMCDecoder::dis_c_xd(ADDRESS hostpc)
   
 }
 
-#line 216 "machine/hppa/disassembler.m"
+#line 193 "machine/hppa/disassembler.m"
 }
 
 void NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
@@ -782,11 +782,11 @@ void NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
     unsigned long regl;
 
 
-#line 220 "machine/hppa/disassembler.m"
+#line 197 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 220 "machine/hppa/disassembler.m"
+    #line 197 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -796,7 +796,7 @@ void NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
       if ((MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */ == 0) 
         if ((MATCH_w_32_0 >> 14 & 0x1) /* ext_17 at 0 */ == 1) 
           
-          #line 226 "machine/hppa/disassembler.m"
+          #line 203 "machine/hppa/disassembler.m"
            {
 
                   regl = 11;
@@ -812,7 +812,7 @@ void NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
         else { 
           unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
           
-          #line 222 "machine/hppa/disassembler.m"
+          #line 199 "machine/hppa/disassembler.m"
            {
 
                   regl = r_06;
@@ -834,7 +834,7 @@ void NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
   
   MATCH_label_e0: (void)0; /*placeholder for label*/ 
     
-    #line 231 "machine/hppa/disassembler.m"
+    #line 208 "machine/hppa/disassembler.m"
     {
 
             regl = 0;
@@ -851,7 +851,7 @@ void NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
   
 }
 
-#line 236 "machine/hppa/disassembler.m"
+#line 213 "machine/hppa/disassembler.m"
   astr += sprintf(astr, "%s", cr_06_names[regl]);
 }
 
@@ -859,11 +859,11 @@ void NJMCDecoder::dis_c_null(ADDRESS hostpc)
 {
 
 
-#line 240 "machine/hppa/disassembler.m"
+#line 217 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 240 "machine/hppa/disassembler.m"
+    #line 217 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -879,7 +879,7 @@ void NJMCDecoder::dis_c_null(ADDRESS hostpc)
         case 46: case 52: case 53: case 54: case 55: case 60: case 61: 
         case 62: case 63: 
           
-          #line 248 "machine/hppa/disassembler.m"
+          #line 225 "machine/hppa/disassembler.m"
           
                       apre += sprintf(apre, "#c_NULL%08X#", getDword(hostpc));
 
@@ -892,7 +892,7 @@ void NJMCDecoder::dis_c_null(ADDRESS hostpc)
         case 56: case 57: case 58: case 59: 
           if ((MATCH_w_32_0 >> 1 & 0x1) /* n_30 at 0 */ == 1) 
             
-            #line 245 "machine/hppa/disassembler.m"
+            #line 222 "machine/hppa/disassembler.m"
              {
 
                         apre += sprintf(apre, ",n");
@@ -905,7 +905,7 @@ void NJMCDecoder::dis_c_null(ADDRESS hostpc)
              /*opt-block+*/
           else 
             
-            #line 242 "machine/hppa/disassembler.m"
+            #line 219 "machine/hppa/disassembler.m"
              {
 
                         CONS("c_br_nnull ")
@@ -925,18 +925,18 @@ void NJMCDecoder::dis_c_null(ADDRESS hostpc)
   
 }
 
-#line 252 "machine/hppa/disassembler.m"
+#line 229 "machine/hppa/disassembler.m"
 }
 
 void NJMCDecoder::dis_c_bit(ADDRESS hostpc)
 {
 
 
-#line 255 "machine/hppa/disassembler.m"
+#line 232 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 255 "machine/hppa/disassembler.m"
+    #line 232 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -952,7 +952,7 @@ void NJMCDecoder::dis_c_bit(ADDRESS hostpc)
           goto MATCH_label_c0; break;
         case 48: 
           
-          #line 261 "machine/hppa/disassembler.m"
+          #line 238 "machine/hppa/disassembler.m"
            {
 
                       astr += sprintf(astr, "%s", "%cr11");
@@ -969,7 +969,7 @@ void NJMCDecoder::dis_c_bit(ADDRESS hostpc)
           if ((MATCH_w_32_0 >> 13 & 0x1) /* d_18 at 0 */ == 0) { 
             unsigned p_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* p_06 at 0 */;
             
-            #line 257 "machine/hppa/disassembler.m"
+            #line 234 "machine/hppa/disassembler.m"
              {
 
                         astr += sprintf(astr, "@%d",p_06);
@@ -993,7 +993,7 @@ void NJMCDecoder::dis_c_bit(ADDRESS hostpc)
   
   MATCH_label_c0: (void)0; /*placeholder for label*/ 
     
-    #line 264 "machine/hppa/disassembler.m"
+    #line 241 "machine/hppa/disassembler.m"
     
                 astr += sprintf(astr, "#c_BIT%08X#", getDword(hostpc));
 
@@ -1005,18 +1005,18 @@ void NJMCDecoder::dis_c_bit(ADDRESS hostpc)
   
 }
 
-#line 268 "machine/hppa/disassembler.m"
+#line 245 "machine/hppa/disassembler.m"
 }
 
 void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
 {
 
 
-#line 271 "machine/hppa/disassembler.m"
+#line 248 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 271 "machine/hppa/disassembler.m"
+    #line 248 "machine/hppa/disassembler.m"
     hostpc
     ;
   unsigned MATCH_w_32_0;
@@ -1038,7 +1038,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
                 if (12 <= (MATCH_w_32_0 >> 6 & 0xf) /* ext4_22 at 0 */ && 
                   (MATCH_w_32_0 >> 6 & 0xf) /* ext4_22 at 0 */ < 14) 
                   
-                  #line 295 "machine/hppa/disassembler.m"
+                  #line 272 "machine/hppa/disassembler.m"
                    {
 
                               apre += sprintf(apre, ",me");
@@ -1055,7 +1055,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
                 if (12 <= (MATCH_w_32_0 >> 6 & 0xf) /* ext4_22 at 0 */ && 
                   (MATCH_w_32_0 >> 6 & 0xf) /* ext4_22 at 0 */ < 14) 
                   
-                  #line 299 "machine/hppa/disassembler.m"
+                  #line 276 "machine/hppa/disassembler.m"
                    {
 
                               apre += sprintf(apre, ",m");
@@ -1073,7 +1073,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
                 (MATCH_w_32_0 >> 6 & 0xf) /* ext4_22 at 0 */ < 14) 
                 if ((MATCH_w_32_0 >> 13 & 0x1) /* a_18 at 0 */ == 1) 
                   
-                  #line 291 "machine/hppa/disassembler.m"
+                  #line 268 "machine/hppa/disassembler.m"
                    {
 
                               apre += sprintf(apre, ",e");
@@ -1086,7 +1086,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
                    /*opt-block+*/
                 else 
                   
-                  #line 303 "machine/hppa/disassembler.m"
+                  #line 280 "machine/hppa/disassembler.m"
                    {
 
                               CONS("c_y_addr_none ")
@@ -1132,7 +1132,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
         case 16: case 17: case 18: case 19: case 24: case 25: case 26: 
         case 27: 
           
-          #line 306 "machine/hppa/disassembler.m"
+          #line 283 "machine/hppa/disassembler.m"
            {
 
                       CONS("c_l_addr_none ");
@@ -1178,7 +1178,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
   
   MATCH_label_b0: (void)0; /*placeholder for label*/ 
     
-    #line 323 "machine/hppa/disassembler.m"
+    #line 300 "machine/hppa/disassembler.m"
     
                 // Do nothing; no completer
 
@@ -1190,7 +1190,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
     
   MATCH_label_b1: (void)0; /*placeholder for label*/ 
     
-    #line 288 "machine/hppa/disassembler.m"
+    #line 265 "machine/hppa/disassembler.m"
      {
 
                 CONS("c_x_addr_notm ")
@@ -1203,7 +1203,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
     
   MATCH_label_b2: (void)0; /*placeholder for label*/ 
     
-    #line 284 "machine/hppa/disassembler.m"
+    #line 261 "machine/hppa/disassembler.m"
      {
 
                 apre += sprintf(apre, ",x");
@@ -1218,7 +1218,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
     
   MATCH_label_b3: (void)0; /*placeholder for label*/ 
     
-    #line 281 "machine/hppa/disassembler.m"
+    #line 258 "machine/hppa/disassembler.m"
      {
 
                 CONS("c_s_addr_notm ")
@@ -1231,7 +1231,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
     
   MATCH_label_b4: (void)0; /*placeholder for label*/ 
     
-    #line 277 "machine/hppa/disassembler.m"
+    #line 254 "machine/hppa/disassembler.m"
      {
 
                 apre += sprintf(apre, ",ma");
@@ -1246,7 +1246,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
     
   MATCH_label_b5: (void)0; /*placeholder for label*/ 
     
-    #line 273 "machine/hppa/disassembler.m"
+    #line 250 "machine/hppa/disassembler.m"
      {
 
                 apre += sprintf(apre, ",mb");
@@ -1263,7 +1263,7 @@ void NJMCDecoder::dis_c_addr(ADDRESS hostpc)
   
 }
 
-#line 327 "machine/hppa/disassembler.m"
+#line 304 "machine/hppa/disassembler.m"
 }
 
 void NJMCDecoder::dis_flt_fmt(int fmt)
@@ -1312,11 +1312,11 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 
 
 
-#line 372 "machine/hppa/disassembler.m"
+#line 349 "machine/hppa/disassembler.m"
 { 
   dword MATCH_p = 
     
-    #line 372 "machine/hppa/disassembler.m"
+    #line 349 "machine/hppa/disassembler.m"
     hostPC
     ;
   char *MATCH_name;
@@ -1408,7 +1408,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     (MATCH_w_32_0 >> 13 & 0x1fff) /* im13_06 at 0 */;
                   unsigned im5_27 = (MATCH_w_32_0 & 0x1f) /* im5_27 at 0 */;
                   
-                  #line 544 "machine/hppa/disassembler.m"
+                  #line 521 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1478,7 +1478,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 591 "machine/hppa/disassembler.m"
+                  #line 568 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1505,7 +1505,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   unsigned cmplt = addressToPC(MATCH_p);
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 563 "machine/hppa/disassembler.m"
+                  #line 540 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1539,7 +1539,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     (MATCH_w_32_0 >> 16 & 0x3ff) /* im10_06 at 0 */;
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 549 "machine/hppa/disassembler.m"
+                  #line 526 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1566,7 +1566,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 579 "machine/hppa/disassembler.m"
+                  #line 556 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1592,7 +1592,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   char *name = MATCH_name;
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 574 "machine/hppa/disassembler.m"
+                  #line 551 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1619,7 +1619,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     ((MATCH_w_32_0 >> 13 & 0x1) /* s_18 at 0 */ << 2) + 
                     (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
                   
-                  #line 585 "machine/hppa/disassembler.m"
+                  #line 562 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1647,7 +1647,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     (MATCH_w_32_0 >> 21 & 0x1f) /* cr_06 at 0 */;
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   
-                  #line 569 "machine/hppa/disassembler.m"
+                  #line 546 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1671,7 +1671,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   char *name = MATCH_name;
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   
-                  #line 558 "machine/hppa/disassembler.m"
+                  #line 535 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -1718,7 +1718,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   if ((MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */ == 0) 
                     if ((MATCH_w_32_0 & 0x1f) /* t_27 at 0 */ == 0) 
                       
-                      #line 374 "machine/hppa/disassembler.m"
+                      #line 351 "machine/hppa/disassembler.m"
                        {
 
                                   apre += sprintf(apre, "%s", "NOP");
@@ -1738,7 +1738,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     unsigned r = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                     unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     
-                    #line 378 "machine/hppa/disassembler.m"
+                    #line 355 "machine/hppa/disassembler.m"
                      {
 
                                 apre += sprintf(apre, "%s", "COPY");
@@ -1914,7 +1914,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               (((MATCH_w_32_0 & 0x1) /* i_31 at 0 */ & 0x1) << 31);
             unsigned t_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
             
-            #line 400 "machine/hppa/disassembler.m"
+            #line 377 "machine/hppa/disassembler.m"
              {
 
                         ANAME
@@ -1981,7 +1981,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               (((MATCH_w_32_0 & 0x1) /* i_31 at 0 */ & 0x1) << 31);
             unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
             
-            #line 395 "machine/hppa/disassembler.m"
+            #line 372 "machine/hppa/disassembler.m"
              {
 
                         ANAME
@@ -2052,7 +2052,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     unsigned r = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
                     unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     
-                    #line 638 "machine/hppa/disassembler.m"
+                    #line 615 "machine/hppa/disassembler.m"
                      {
 
                                 apre += sprintf(apre, "%s", killDot(name));
@@ -2088,7 +2088,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     unsigned sf = (MATCH_w_32_0 >> 11 & 0x3) /* sf_19 at 0 */;
                     unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     
-                    #line 645 "machine/hppa/disassembler.m"
+                    #line 622 "machine/hppa/disassembler.m"
                      {
 
                                 apre += sprintf(apre, "%s", killDot(name));
@@ -2173,7 +2173,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               (MATCH_w_32_0 >> 1 & 0x1fff) /* im13_18 at 0 */;
             unsigned t = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
             
-            #line 440 "machine/hppa/disassembler.m"
+            #line 417 "machine/hppa/disassembler.m"
              {
 
                         ANAME
@@ -2212,7 +2212,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                       ((MATCH_w_32_0 >> 6 & 0x1) /* t_25 at 0 */ << 5) + 
                       (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                     
-                    #line 645 "machine/hppa/disassembler.m"
+                    #line 622 "machine/hppa/disassembler.m"
                      {
 
                                 apre += sprintf(apre, "%s", killDot(name));
@@ -2291,7 +2291,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           ((MATCH_w_32_0 >> 6 & 0x1) /* t_25 at 0 */ << 5) + 
                           (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                         
-                        #line 671 "machine/hppa/disassembler.m"
+                        #line 648 "machine/hppa/disassembler.m"
                          {
 
                                     apre += sprintf(apre, "XMPYU");
@@ -2350,7 +2350,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
             unsigned t_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
             unsigned xd = addressToPC(MATCH_p);
             
-            #line 422 "machine/hppa/disassembler.m"
+            #line 399 "machine/hppa/disassembler.m"
              {
 
                         ANAME
@@ -2386,7 +2386,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
             unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
             unsigned xd = addressToPC(MATCH_p);
             
-            #line 431 "machine/hppa/disassembler.m"
+            #line 408 "machine/hppa/disassembler.m"
              {
 
                         ANAME
@@ -2490,7 +2490,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 unsigned r = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
                 unsigned t = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
                 
-                #line 466 "machine/hppa/disassembler.m"
+                #line 443 "machine/hppa/disassembler.m"
                  {
 
                             ANAME
@@ -2521,7 +2521,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 unsigned r = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
                 unsigned t = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
                 
-                #line 459 "machine/hppa/disassembler.m"
+                #line 436 "machine/hppa/disassembler.m"
                  {
 
                             ANAME
@@ -2558,7 +2558,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   unsigned r2 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
                   unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 452 "machine/hppa/disassembler.m"
+                  #line 429 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -2589,7 +2589,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   unsigned r2 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
                   unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
-                  #line 445 "machine/hppa/disassembler.m"
+                  #line 422 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -2630,7 +2630,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   31 - (MATCH_w_32_0 >> 5 & 0x1f) /* pos5_22 at 0 */;
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 
-                #line 494 "machine/hppa/disassembler.m"
+                #line 471 "machine/hppa/disassembler.m"
                  {
 
                             ANAME
@@ -2664,7 +2664,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 unsigned len = 32 - (MATCH_w_32_0 & 0x1f) /* clen5_27 at 0 */;
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 
-                #line 487 "machine/hppa/disassembler.m"
+                #line 464 "machine/hppa/disassembler.m"
                  {
 
                             ANAME
@@ -2700,7 +2700,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 unsigned r = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 
-                #line 480 "machine/hppa/disassembler.m"
+                #line 457 "machine/hppa/disassembler.m"
                  {
 
                             ANAME
@@ -2731,7 +2731,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 unsigned r = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                 unsigned t = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
                 
-                #line 473 "machine/hppa/disassembler.m"
+                #line 450 "machine/hppa/disassembler.m"
                  {
 
                             ANAME
@@ -2773,7 +2773,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     unsigned x_11 = 
                       (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
                     
-                    #line 518 "machine/hppa/disassembler.m"
+                    #line 495 "machine/hppa/disassembler.m"
                      {
 
                                 ANAME
@@ -2812,7 +2812,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     (sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 
                                 1) << 23);
                   
-                  #line 512 "machine/hppa/disassembler.m"
+                  #line 489 "machine/hppa/disassembler.m"
                    {
 
                               ANAME
@@ -2849,7 +2849,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     unsigned x_11 = 
                       (MATCH_w_32_0 >> 16 & 0x1f) /* x_11 at 0 */;
                     
-                    #line 524 "machine/hppa/disassembler.m"
+                    #line 501 "machine/hppa/disassembler.m"
                      {
 
                                 ANAME
@@ -2892,7 +2892,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   
   MATCH_label_a0: (void)0; /*placeholder for label*/ 
     
-    #line 721 "machine/hppa/disassembler.m"
+    #line 698 "machine/hppa/disassembler.m"
     
                 apre += sprintf(apre, "unrecog. %02X %08X",
 
@@ -2906,7 +2906,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       char *name = MATCH_name;
       
-      #line 554 "machine/hppa/disassembler.m"
+      #line 531 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -2929,7 +2929,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
       unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       
-      #line 383 "machine/hppa/disassembler.m"
+      #line 360 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -2957,7 +2957,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       unsigned xd = addressToPC(MATCH_p);
       
-      #line 405 "machine/hppa/disassembler.m"
+      #line 382 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -2991,7 +2991,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
       unsigned xd = addressToPC(MATCH_p);
       
-      #line 414 "machine/hppa/disassembler.m"
+      #line 391 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3025,7 +3025,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       unsigned xd = addressToPC(MATCH_p);
       
-      #line 680 "machine/hppa/disassembler.m"
+      #line 657 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s",killDot(name));
@@ -3063,7 +3063,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
       unsigned xd = addressToPC(MATCH_p);
       
-      #line 690 "machine/hppa/disassembler.m"
+      #line 667 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s",killDot(name));
@@ -3099,7 +3099,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       unsigned xd = addressToPC(MATCH_p);
       
-      #line 700 "machine/hppa/disassembler.m"
+      #line 677 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s",killDot(name));
@@ -3135,7 +3135,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
       unsigned xd = addressToPC(MATCH_p);
       
-      #line 710 "machine/hppa/disassembler.m"
+      #line 687 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", killDot(name));
@@ -3172,7 +3172,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned r1 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
       unsigned r2 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
       
-      #line 653 "machine/hppa/disassembler.m"
+      #line 630 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", killDot(name));
@@ -3207,7 +3207,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned r2 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
       unsigned t = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       
-      #line 663 "machine/hppa/disassembler.m"
+      #line 640 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", killDot(name));
@@ -3242,7 +3242,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((MATCH_w_32_0 >> 12 & 0x1) /* f_19 at 0 */ << 5) + 
         (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
       
-      #line 653 "machine/hppa/disassembler.m"
+      #line 630 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", killDot(name));
@@ -3283,7 +3283,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((MATCH_w_32_0 >> 6 & 0x1) /* t_25 at 0 */ << 5) + 
         (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       
-      #line 663 "machine/hppa/disassembler.m"
+      #line 640 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", killDot(name));
@@ -3319,7 +3319,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 
                     1) & 0x7ffff) << 13);
       
-      #line 613 "machine/hppa/disassembler.m"
+      #line 590 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3358,7 +3358,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 
                     1) & 0x7ffff) << 13);
       
-      #line 621 "machine/hppa/disassembler.m"
+      #line 598 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3391,7 +3391,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
       unsigned t_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* t_11 at 0 */;
       
-      #line 389 "machine/hppa/disassembler.m"
+      #line 366 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3423,7 +3423,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 
                     1) & 0x7ffff) << 13);
       
-      #line 597 "machine/hppa/disassembler.m"
+      #line 574 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3462,7 +3462,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 
                     1) & 0x7ffff) << 13);
       
-      #line 605 "machine/hppa/disassembler.m"
+      #line 582 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3497,7 +3497,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 
                     1) & 0x7ffff) << 13);
       
-      #line 629 "machine/hppa/disassembler.m"
+      #line 606 "machine/hppa/disassembler.m"
        {
 
                   apre += sprintf(apre, "%s", "BB");
@@ -3533,7 +3533,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
         ((MATCH_w_32_0 >> 16 & 0x1f) /* w5_11 at 0 */ << 13) + 
         (sign_extend((MATCH_w_32_0 & 0x1) /* w_31 at 0 */, 1) << 18);
       
-      #line 501 "machine/hppa/disassembler.m"
+      #line 478 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3569,7 +3569,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       unsigned nulli = addressToPC(MATCH_p);
       unsigned p_31 = (MATCH_w_32_0 & 0x1) /* p_31 at 0 */;
       
-      #line 530 "machine/hppa/disassembler.m"
+      #line 507 "machine/hppa/disassembler.m"
        {
 
                   ANAME
@@ -3608,7 +3608,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   
 }
 
-#line 725 "machine/hppa/disassembler.m"
+#line 702 "machine/hppa/disassembler.m"
     // Output the two pieces, and make an attempt to have the second column
     // line up (but not have too big a gap between them). 28 seems OK
     sprintf(_assembly, "%s%*s%s", aprefix, 28-strlen(aprefix), " ", adata);
