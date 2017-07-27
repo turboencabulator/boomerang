@@ -15258,7 +15258,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             #line 688 "machine/pentium/disassembler.m"
                                             
 
-                                                    sprintf (str,  "MOV.Eb.Ivow", DIS_EADDR16, DIS_I16);
+                                                    sprintf (str,  "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
                                             
 
@@ -23068,7 +23068,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               #line 685 "machine/pentium/disassembler.m"
                               
 
-                                      sprintf (str,  "MOV.Eb.Ivod", DIS_EADDR32, DIS_I32);
+                                      sprintf (str,  "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
                               
 
@@ -44690,7 +44690,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 688 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivow", DIS_EADDR16, DIS_I16);
+              sprintf (str,  "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
       
 
@@ -44710,7 +44710,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 688 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivow", DIS_EADDR16, DIS_I16);
+              sprintf (str,  "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
       
 
@@ -44730,7 +44730,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 688 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivow", DIS_EADDR16, DIS_I16);
+              sprintf (str,  "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
       
 
@@ -44750,7 +44750,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 688 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivow", DIS_EADDR16, DIS_I16);
+              sprintf (str,  "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
       
 
@@ -50422,7 +50422,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 685 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivod", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
       
 
@@ -50441,7 +50441,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 685 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivod", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
       
 
@@ -50460,7 +50460,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 685 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivod", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
       
 
@@ -50479,7 +50479,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
       #line 685 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOV.Eb.Ivod", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
       
 

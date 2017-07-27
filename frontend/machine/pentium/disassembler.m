@@ -681,11 +681,11 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 //        unused(reg); unused(cr);
 //        sprintf (str,  "UNIMP");
 
-    | MOV.Eb.Ivod(Eaddr, i32) =>
-        sprintf (str,  "MOV.Eb.Ivod", DIS_EADDR32, DIS_I32);
+    | MOV.Ed.Ivod(Eaddr, i32) =>
+        sprintf (str,  "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
-    | MOV.Eb.Ivow(Eaddr, i16) =>
-        sprintf (str,  "MOV.Eb.Ivow", DIS_EADDR16, DIS_I16);
+    | MOV.Ew.Ivow(Eaddr, i16) =>
+        sprintf (str,  "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
     | MOV.Eb.Ib(Eaddr, i8) =>
         sprintf (str,  "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
