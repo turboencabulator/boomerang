@@ -339,10 +339,10 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 siz = 32;
                 t2->getType().setSize(32);
                 sslName[4] = 'l';       // So the second assignment will be long
-            }
-            if (!sgnex)     // else
+            } else {
                 // Just assign the source to temp1
                 rt = assignTemp(t1, siz, t3); 
+            }
             // We instantiate RTs2 to be dest = temp1
             list<RT*>* RTs2 = (instantiate (pc, sslName, t3, t2));
             // RTs has 0-2 bumps (in the correct order). We must insert
@@ -629,9 +629,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 strcpy(sslName, name);
                 sslName[3] = '\0';
                 strcat(sslName, "qa");     // addqw -> addqa
-            }
-            //if (!b)                       // Can't use else
-            } else {                        // Can use else if not at start
+            } else {
                 chop2ndLast(name);          // addqw -> addw
             }
             RTs = instantiate (pc, sslName, DIS_I8, dst); 
@@ -659,8 +657,6 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                 strcpy(sslName, name);
                 sslName[3] = '\0';
                 strcat(sslName, "qa");      // subl -> subqa
-            }
-            //if (!b)                         // Can't use else
             } else {
                 chop2ndLast(name);          // addqw -> addw
             }

@@ -5064,7 +5064,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
               char *name = MATCH_name;
               unsigned a = addressToPC(MATCH_p);
               
-              #line 706 "machine/mc68k/decoder_low.m"
+              #line 702 "machine/mc68k/decoder_low.m"
                { 
 
                       // Bcc
@@ -5088,7 +5088,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
               char *name = MATCH_name;
               unsigned a = addressToPC(MATCH_p);
               
-              #line 698 "machine/mc68k/decoder_low.m"
+              #line 694 "machine/mc68k/decoder_low.m"
                { 
 
                       // _uBranch is  bra | bsr
@@ -5118,7 +5118,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             unsigned i8 = (MATCH_w_16_0 & 0xff) /* data8 at 0 */;
             unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-            #line 711 "machine/mc68k/decoder_low.m"
+            #line 707 "machine/mc68k/decoder_low.m"
              { 
 
                     // moveq (semantics of move immediate long)
@@ -6673,7 +6673,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                             (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
                           unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
                           
-                          #line 947 "machine/mc68k/decoder_low.m"
+                          #line 943 "machine/mc68k/decoder_low.m"
                            {
 
                                       RTs = instantiate (pc, name, DIS_DN(32), DIS_DN2(32));
@@ -6698,7 +6698,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                             (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
                           unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
                           
-                          #line 951 "machine/mc68k/decoder_low.m"
+                          #line 947 "machine/mc68k/decoder_low.m"
                            {
 
                                       RTs = instantiate (pc, name, DIS_AN, DIS_AN2);
@@ -6770,7 +6770,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                             (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
                           unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
                           
-                          #line 955 "machine/mc68k/decoder_low.m"
+                          #line 951 "machine/mc68k/decoder_low.m"
                            {
 
                                       RTs = instantiate (pc, name, DIS_DN(32), DIS_AN2);
@@ -8407,7 +8407,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a1: (void)0; /*placeholder for label*/ 
     
-    #line 1100 "machine/mc68k/decoder_low.m"
+    #line 1096 "machine/mc68k/decoder_low.m"
        {   // the toolkit reserves "else" as a keyword, hence this code
 
                     if (!prevIsTrap) {
@@ -8851,13 +8851,13 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
 
                       sslName[4] = 'l';       // So the second assignment will be long
 
-                  }
-
-                  if (!sgnex)     // else
+                  } else {
 
                       // Just assign the source to temp1
 
                       rt = assignTemp(t1, siz, t3); 
+
+                  }
 
                   // We instantiate RTs2 to be dest = temp1
 
@@ -9637,7 +9637,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 814 "machine/mc68k/decoder_low.m"
+      #line 810 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -9667,7 +9667,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 822 "machine/mc68k/decoder_low.m"
+      #line 818 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -9805,11 +9805,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
 
                       strcat(sslName, "qa");     // addqw -> addqa
 
-                  }
-
-                  //if (!b)                       // Can't use else
-
-                  } else {                        // Can use else if not at start
+                  } else {
 
                       chop2ndLast(name);          // addqw -> addw
 
@@ -9836,7 +9832,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 642 "machine/mc68k/decoder_low.m"
+      #line 640 "machine/mc68k/decoder_low.m"
        { 
 
                   chopBoth(name);             // addqb.ex -> addb
@@ -9863,7 +9859,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 649 "machine/mc68k/decoder_low.m"
+      #line 647 "machine/mc68k/decoder_low.m"
        { 
 
                   int bump = 0, bumpr;
@@ -9892,10 +9888,6 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
 
                       strcat(sslName, "qa");      // subl -> subqa
 
-                  }
-
-                  //if (!b)                         // Can't use else
-
                   } else {
 
                       chop2ndLast(name);          // addqw -> addw
@@ -9923,7 +9915,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 672 "machine/mc68k/decoder_low.m"
+      #line 668 "machine/mc68k/decoder_low.m"
        { 
 
                   chopBoth(name);             // addql.ex -> addl
@@ -9947,7 +9939,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
-      #line 684 "machine/mc68k/decoder_low.m"
+      #line 680 "machine/mc68k/decoder_low.m"
        { 
 
               // Scc
@@ -9978,7 +9970,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i16 = (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 678 "machine/mc68k/decoder_low.m"
+      #line 674 "machine/mc68k/decoder_low.m"
        { 
 
               // DBcc     
@@ -10003,7 +9995,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 693 "machine/mc68k/decoder_low.m"
+      #line 689 "machine/mc68k/decoder_low.m"
        { 
 
                   RTs = instantiate (pc, name, daEAX (eax, x, result, pc, 8));
@@ -10026,7 +10018,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 800 "machine/mc68k/decoder_low.m"
+      #line 796 "machine/mc68k/decoder_low.m"
        {
 
               // _alurdB  is  andrb | orrb
@@ -10055,7 +10047,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 828 "machine/mc68k/decoder_low.m"
+      #line 824 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10082,7 +10074,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 716 "machine/mc68k/decoder_low.m"
+      #line 712 "machine/mc68k/decoder_low.m"
        { 
 
               // _alurdw is divs | divu | muls | mulu
@@ -10114,7 +10106,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 808 "machine/mc68k/decoder_low.m"
+      #line 804 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10140,7 +10132,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 835 "machine/mc68k/decoder_low.m"
+      #line 831 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10168,7 +10160,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 725 "machine/mc68k/decoder_low.m"
+      #line 721 "machine/mc68k/decoder_low.m"
        { 
 
                   RTs = instantiate (pc, name,
@@ -10191,7 +10183,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 730 "machine/mc68k/decoder_low.m"
+      #line 726 "machine/mc68k/decoder_low.m"
        {
 
               // _twoReg** (addx | subx | abcd | sbcd | cmp) 
@@ -10222,7 +10214,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 739 "machine/mc68k/decoder_low.m"
+      #line 735 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10265,7 +10257,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 842 "machine/mc68k/decoder_low.m"
+      #line 838 "machine/mc68k/decoder_low.m"
        {
 
               // _alumB   is  addmb | andmb | ormb  | submb
@@ -10295,7 +10287,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 850 "machine/mc68k/decoder_low.m"
+      #line 846 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10320,7 +10312,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 856 "machine/mc68k/decoder_low.m"
+      #line 852 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10350,7 +10342,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 864 "machine/mc68k/decoder_low.m"
+      #line 860 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10375,7 +10367,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 870 "machine/mc68k/decoder_low.m"
+      #line 866 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10405,7 +10397,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 878 "machine/mc68k/decoder_low.m"
+      #line 874 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10434,7 +10426,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 960 "machine/mc68k/decoder_low.m"
+      #line 956 "machine/mc68k/decoder_low.m"
        {
 
               // ADD, AND, CHK, CMP, CMPA, DIVS, DIVU, MULS, MULU, OR, SUB, SUBA
@@ -10464,7 +10456,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 968 "machine/mc68k/decoder_low.m"
+      #line 964 "machine/mc68k/decoder_low.m"
        {
 
                   chopDotex(name);           // Fix the name
@@ -10489,7 +10481,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 974 "machine/mc68k/decoder_low.m"
+      #line 970 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10519,7 +10511,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 982 "machine/mc68k/decoder_low.m"
+      #line 978 "machine/mc68k/decoder_low.m"
        {
 
                   chopDotex(name);           // Fix the name
@@ -10544,7 +10536,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 988 "machine/mc68k/decoder_low.m"
+      #line 984 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10574,7 +10566,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 996 "machine/mc68k/decoder_low.m"
+      #line 992 "machine/mc68k/decoder_low.m"
        {
 
                   chopDotex(name);           // Fix the name
@@ -10601,7 +10593,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 886 "machine/mc68k/decoder_low.m"
+      #line 882 "machine/mc68k/decoder_low.m"
        {
 
               // _aluaW   is  addaw | cmpaw | subaw 
@@ -10631,7 +10623,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 894 "machine/mc68k/decoder_low.m"
+      #line 890 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10656,7 +10648,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 754 "machine/mc68k/decoder_low.m"
+      #line 750 "machine/mc68k/decoder_low.m"
        {
 
                   strcpy(sslName, name);
@@ -10685,7 +10677,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 762 "machine/mc68k/decoder_low.m"
+      #line 758 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10728,7 +10720,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 777 "machine/mc68k/decoder_low.m"
+      #line 773 "machine/mc68k/decoder_low.m"
        {
 
                   strcpy(sslName, name);
@@ -10757,7 +10749,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 785 "machine/mc68k/decoder_low.m"
+      #line 781 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10800,7 +10792,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 900 "machine/mc68k/decoder_low.m"
+      #line 896 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10828,7 +10820,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 907 "machine/mc68k/decoder_low.m"
+      #line 903 "machine/mc68k/decoder_low.m"
        {
 
                   chopBoth(name);
@@ -10853,7 +10845,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 913 "machine/mc68k/decoder_low.m"
+      #line 909 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10879,7 +10871,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 919 "machine/mc68k/decoder_low.m"
+      #line 915 "machine/mc68k/decoder_low.m"
        {
 
                   RTs = instantiate (pc, name, DIS_DN(8),
@@ -10902,7 +10894,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 924 "machine/mc68k/decoder_low.m"
+      #line 920 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10928,7 +10920,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 930 "machine/mc68k/decoder_low.m"
+      #line 926 "machine/mc68k/decoder_low.m"
        {
 
                   RTs = instantiate (pc, name, DIS_DN(16),
@@ -10951,7 +10943,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
-      #line 935 "machine/mc68k/decoder_low.m"
+      #line 931 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -10977,7 +10969,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 941 "machine/mc68k/decoder_low.m"
+      #line 937 "machine/mc68k/decoder_low.m"
        {
 
                   RTs = instantiate (pc, name, DIS_DN(32),
@@ -11002,7 +10994,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1037 "machine/mc68k/decoder_low.m"
+      #line 1033 "machine/mc68k/decoder_low.m"
        {
 
               // _shiftIRB    is  asrib | lsrib | rorib | roxrib
@@ -11027,7 +11019,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1069 "machine/mc68k/decoder_low.m"
+      #line 1065 "machine/mc68k/decoder_low.m"
        {
 
               // _shiftRRB    is  asrrb | lsrrb | rorrb | roxrrb
@@ -11052,7 +11044,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1048 "machine/mc68k/decoder_low.m"
+      #line 1044 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11075,7 +11067,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1080 "machine/mc68k/decoder_low.m"
+      #line 1076 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11098,7 +11090,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1058 "machine/mc68k/decoder_low.m"
+      #line 1054 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11121,7 +11113,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1090 "machine/mc68k/decoder_low.m"
+      #line 1086 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11143,7 +11135,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
-      #line 1003 "machine/mc68k/decoder_low.m"
+      #line 999 "machine/mc68k/decoder_low.m"
        {
 
               // ASL, ASR, LSL, LSR, ROL, ROR, ROXL, ROXR
@@ -11180,7 +11172,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 1015 "machine/mc68k/decoder_low.m"
+      #line 1011 "machine/mc68k/decoder_low.m"
        {
 
                   chopDotex(name);           // Fix the name
@@ -11203,7 +11195,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1043 "machine/mc68k/decoder_low.m"
+      #line 1039 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11226,7 +11218,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1075 "machine/mc68k/decoder_low.m"
+      #line 1071 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11249,7 +11241,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1053 "machine/mc68k/decoder_low.m"
+      #line 1049 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11272,7 +11264,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1085 "machine/mc68k/decoder_low.m"
+      #line 1081 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11295,7 +11287,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1063 "machine/mc68k/decoder_low.m"
+      #line 1059 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11320,7 +11312,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-      #line 1095 "machine/mc68k/decoder_low.m"
+      #line 1091 "machine/mc68k/decoder_low.m"
        {
 
                   chop2ndLast(name);
@@ -11342,7 +11334,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
-      #line 1020 "machine/mc68k/decoder_low.m"
+      #line 1016 "machine/mc68k/decoder_low.m"
        {
 
                   int bump = 0, bumpr;
@@ -11377,7 +11369,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
-      #line 1031 "machine/mc68k/decoder_low.m"
+      #line 1027 "machine/mc68k/decoder_low.m"
        {
 
                   chopDotex(name);           // Fix the name
@@ -11400,7 +11392,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
   
 }
 
-#line 1112 "machine/mc68k/decoder_low.m"
+#line 1108 "machine/mc68k/decoder_low.m"
 
     result.numBytes += 2;           // Count the main opcode
     return RTs;
