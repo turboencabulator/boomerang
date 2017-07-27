@@ -1,6 +1,11 @@
+#define sign_extend(N,SIZE) (((int)((N) << (sizeof(unsigned)*8-(SIZE)))) >> (sizeof(unsigned)*8-(SIZE)))
+#include <assert.h>
+
+#line 1 "machine/mc68k/decoder.m"
 /*
- * Copyright (C) 2000-2001, The University of Queensland
- * Copyright (C) 2000, Sun Microsystems, Inc
+ * Copyright (C) 1996, Princeton University or Owen Braun ?????
+ * Copyright (C) 2000, The University of Queensland
+ * Copyright (C) 2000-2001, Sun Microsystems, Inc
  *
  * See the file "LICENSE.TERMS" for information on usage and
  * redistribution of this file, and for a DISCLAIMER OF ALL
@@ -8,14 +13,12 @@
  *
  */
 
-#define sign_extend(N,SIZE) (((int)((N) << (sizeof(unsigned)*8-(SIZE)))) >> (sizeof(unsigned)*8-(SIZE)))
-#include <assert.h>
-
-
 /*==============================================================================
  * FILE:       decoder.m
  * OVERVIEW:   Implementation of the higher level mc68000 specific parts of the
  *             NJMCDecoder class.
+ *
+ * (C) 2000 The University of Queensland, BT Group & Sun Microsystems, Inc.
  *============================================================================*/
 
 #include "global.h"
@@ -64,7 +67,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 	list<RT*>* RTs = NULL;
 
 	// Try matching a logue first
-	int addr, regs, locals, stackSize, d16, d32, reg;
+	int addr, locals, stackSize, d16, d32, reg;
 	ADDRESS saveHostPC = hostPC;
 	Logue* logue;
 	if ((logue = InstructionPatterns::std_call(csr, hostPC, addr)) != NULL) {
@@ -177,7 +180,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 			assert(logue->getType() == Logue::CALLEE_PROLOGUE);
 			proc->setPrologue((CalleePrologue*)logue);
 		}
-		result.rtl = new RTlist(pc, RTs);
+		result.rtl = new RTL(pc, RTs);
 		result.numBytes = hostPC - saveHostPC;
 		SHOW_ASM("link_save " << locals)
 	}
@@ -194,7 +197,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 			assert(logue->getType() == Logue::CALLEE_PROLOGUE);
 			proc->setPrologue((CalleePrologue*)logue);
 		}
-		result.rtl = new RTlist(pc, RTs);
+		result.rtl = new RTL(pc, RTs);
 		result.numBytes = hostPC - saveHostPC;
 		SHOW_ASM("link_save1 " << locals)
 	}
@@ -213,7 +216,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 			assert(logue->getType() == Logue::CALLEE_PROLOGUE);
 			proc->setPrologue((CalleePrologue*)logue);
 		}
-		result.rtl = new RTlist(pc, RTs);
+		result.rtl = new RTL(pc, RTs);
 		result.numBytes = hostPC - saveHostPC;
 		SHOW_ASM("push_lea " << locals)
 	}
@@ -230,7 +233,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 			assert(logue->getType() == Logue::CALLEE_PROLOGUE);
 			proc->setPrologue((CalleePrologue*)logue);
 		}
-		result.rtl = new RTlist(pc, RTs);
+		result.rtl = new RTL(pc, RTs);
 		result.numBytes = hostPC - saveHostPC;
 		SHOW_ASM("std_link "<< locals)
 	}
@@ -328,7 +331,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
          */
         RTs = instantiate(pc, "clear_stack", dis_Num(stackSize));
 
-        result.rtl = new RTlist(pc, RTs);
+        result.rtl = new RTL(pc, RTs);
         result.numBytes = hostPC - saveHostPC;
     }
 
@@ -340,11 +343,11 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 
 
 
-
+#line 339 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 339 "machine/mc68k/decoder.m"
     hostPC
     ;
   char *MATCH_name;
@@ -375,7 +378,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                         unsigned ea = addressToPC(MATCH_p);
                         nextPC = 2 + MATCH_p; 
                         
-
+#line 342 "machine/mc68k/decoder.m"
                         
 
                         			/*
@@ -415,7 +418,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                         unsigned ea = addressToPC(MATCH_p);
                         nextPC = 2 + MATCH_p; 
                         
-
+#line 356 "machine/mc68k/decoder.m"
                         
 
                         			/*
@@ -477,7 +480,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 427 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -507,7 +510,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 431 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -537,7 +540,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 435 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -567,7 +570,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 439 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -597,7 +600,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 443 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -627,7 +630,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 447 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -673,7 +676,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 459 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -703,7 +706,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 463 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -733,7 +736,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 467 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -763,7 +766,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 471 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -793,7 +796,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 475 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -823,7 +826,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-
+#line 479 "machine/mc68k/decoder.m"
                     
 
                                 ss = daEA(ea, pc, bump, bumpr, 1);
@@ -860,7 +863,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 372 "machine/mc68k/decoder.m"
                   
 
                   			ss = BTA(d, result, pc);
@@ -891,7 +894,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 397 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -912,7 +915,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 400 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -933,7 +936,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 409 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -954,7 +957,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 412 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -975,7 +978,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 403 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -996,7 +999,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 406 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1017,7 +1020,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 415 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1038,7 +1041,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 418 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1071,7 +1074,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 391 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1092,7 +1095,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 394 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1113,7 +1116,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 385 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1134,7 +1137,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 388 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1155,7 +1158,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 379 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1176,7 +1179,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
-
+#line 382 "machine/mc68k/decoder.m"
                   
 
                               ss = BTA(d, result, pc);
@@ -1201,9 +1204,9 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
     { 
       nextPC = MATCH_p; 
       
-
+#line 485 "machine/mc68k/decoder.m"
       
-      			result.rtl = new RTlist(pc,
+      			result.rtl = new RTL(pc,
 
       				decodeLowLevelInstruction(hostPC, pc, result));
 
@@ -1217,7 +1220,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
   
 }
 
-
+#line 489 "machine/mc68k/decoder.m"
 	}
 	return result;
 }
@@ -1236,11 +1239,11 @@ SemStr* NJMCDecoder::BTA(ADDRESS d, DecodeResult& result, ADDRESS pc)
 
 
 
-
+#line 504 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 504 "machine/mc68k/decoder.m"
     d
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1253,7 +1256,7 @@ SemStr* NJMCDecoder::BTA(ADDRESS d, DecodeResult& result, ADDRESS pc)
         int /* [~32768..32767] */ dsp16 = 
           sign_extend((MATCH_w_16_16 & 0xffff) /* d16 at 16 */, 16);
         
-
+#line 507 "machine/mc68k/decoder.m"
          {
 
                         ret->push(pc+2 + dsp16);
@@ -1273,7 +1276,7 @@ SemStr* NJMCDecoder::BTA(ADDRESS d, DecodeResult& result, ADDRESS pc)
     else { 
       unsigned dsp8 = (MATCH_w_16_0 & 0xff) /* data8 at 0 */;
       
-
+#line 512 "machine/mc68k/decoder.m"
         {
 
                       // Casts needed to work around MLTK bug
@@ -1293,7 +1296,7 @@ SemStr* NJMCDecoder::BTA(ADDRESS d, DecodeResult& result, ADDRESS pc)
   
 }
 
-
+#line 517 "machine/mc68k/decoder.m"
     
   return ret;
 }
@@ -1373,11 +1376,11 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 593 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 593 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1389,7 +1392,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 594 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -1402,7 +1405,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 595 "machine/mc68k/decoder.m"
              ret = pADirect(reg2, size);
 
             
@@ -1415,7 +1418,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 596 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -1428,7 +1431,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 597 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -1441,7 +1444,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 598 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -1452,7 +1455,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 5: case 6: case 7: 
           
-
+#line 599 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -1468,7 +1471,7 @@ SemStr* NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 602 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -1478,11 +1481,11 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 608 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 608 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1494,7 +1497,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 609 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -1507,7 +1510,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 610 "machine/mc68k/decoder.m"
              ret = pADirect(reg2, size);
 
             
@@ -1520,7 +1523,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 611 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -1533,7 +1536,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 612 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -1546,7 +1549,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 613 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -1557,7 +1560,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 5: case 6: case 7: 
           
-
+#line 614 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -1573,7 +1576,7 @@ SemStr* NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 617 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -1583,11 +1586,11 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 623 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 623 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1599,7 +1602,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 624 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -1612,7 +1615,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 625 "machine/mc68k/decoder.m"
              ret = pADirect(reg2, size);
 
             
@@ -1625,7 +1628,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 626 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -1638,7 +1641,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 627 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -1651,7 +1654,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 628 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -1662,7 +1665,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 5: case 6: case 7: 
           
-
+#line 629 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -1678,7 +1681,7 @@ SemStr* NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 632 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -1687,11 +1690,11 @@ SemStr* NJMCDecoder::cEA(ADDRESS ea, ADDRESS pc, int size)
   SemStr* ret = new SemStr(size);
 
 
-
+#line 637 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 637 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1700,7 +1703,7 @@ SemStr* NJMCDecoder::cEA(ADDRESS ea, ADDRESS pc, int size)
     if ((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */ == 2) { 
       unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
-
+#line 638 "machine/mc68k/decoder.m"
        ret = pIndirect(reg2, size);
 
       
@@ -1709,7 +1712,7 @@ SemStr* NJMCDecoder::cEA(ADDRESS ea, ADDRESS pc, int size)
     } /*opt-block*//*opt-block+*/
     else 
       
-
+#line 639 "machine/mc68k/decoder.m"
       pIllegalMode(pc);
 
       
@@ -1721,7 +1724,7 @@ SemStr* NJMCDecoder::cEA(ADDRESS ea, ADDRESS pc, int size)
   
 }
 
-
+#line 642 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -1731,11 +1734,11 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 648 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 648 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1747,7 +1750,7 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 649 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -1758,7 +1761,7 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 1: case 5: case 6: case 7: 
           
-
+#line 653 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -1769,7 +1772,7 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 650 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -1782,7 +1785,7 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 651 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -1795,7 +1798,7 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 652 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -1813,7 +1816,7 @@ SemStr* NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 656 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -1823,11 +1826,11 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 662 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 662 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1839,7 +1842,7 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 663 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -1850,7 +1853,7 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 1: case 5: case 6: case 7: 
           
-
+#line 667 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -1861,7 +1864,7 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 664 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -1874,7 +1877,7 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 665 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -1887,7 +1890,7 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 666 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -1905,7 +1908,7 @@ SemStr* NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 670 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -1915,11 +1918,11 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 676 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 676 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -1931,7 +1934,7 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 677 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -1942,7 +1945,7 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 1: case 5: case 6: case 7: 
           
-
+#line 681 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -1953,7 +1956,7 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 678 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -1966,7 +1969,7 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 679 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -1979,7 +1982,7 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 680 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -1997,7 +2000,7 @@ SemStr* NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 684 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2007,11 +2010,11 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 690 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 690 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2023,7 +2026,7 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 691 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -2034,7 +2037,7 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 1: case 5: case 6: case 7: 
           
-
+#line 695 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -2045,7 +2048,7 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 692 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -2058,7 +2061,7 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 693 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -2071,7 +2074,7 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 694 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -2089,7 +2092,7 @@ SemStr* NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 698 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2099,11 +2102,11 @@ SemStr* NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 704 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 704 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2113,7 +2116,7 @@ SemStr* NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
       switch((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */) {
         case 0: case 1: case 5: case 6: case 7: 
           
-
+#line 708 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -2124,7 +2127,7 @@ SemStr* NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 705 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -2137,7 +2140,7 @@ SemStr* NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 706 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -2150,7 +2153,7 @@ SemStr* NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 707 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -2168,7 +2171,7 @@ SemStr* NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 711 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2178,11 +2181,11 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 717 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 717 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2194,7 +2197,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 718 "machine/mc68k/decoder.m"
              ret = pDDirect(reg2, size);
 
             
@@ -2207,7 +2210,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 719 "machine/mc68k/decoder.m"
              ret = pADirect(reg2, size);
 
             
@@ -2220,7 +2223,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 720 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -2233,7 +2236,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 721 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -2246,7 +2249,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 722 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -2257,7 +2260,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 5: case 6: case 7: 
           
-
+#line 723 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -2273,7 +2276,7 @@ SemStr* NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 726 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2283,11 +2286,11 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 732 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 732 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2299,7 +2302,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 733 "machine/mc68k/decoder.m"
              ret = pDDirect(reg1, size);
 
             
@@ -2312,7 +2315,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 734 "machine/mc68k/decoder.m"
              ret = pADirect(reg1, size);
 
             
@@ -2325,7 +2328,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 735 "machine/mc68k/decoder.m"
              ret = pIndirect(reg1, size);
 
             
@@ -2338,7 +2341,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 736 "machine/mc68k/decoder.m"
              ret = pPostInc(reg1, bump, bumpr, size);
 
             
@@ -2351,7 +2354,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 737 "machine/mc68k/decoder.m"
              ret = pPreDec(reg1, bump, bumpr, size);
 
             
@@ -2362,7 +2365,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           break;
         case 5: case 6: case 7: 
           
-
+#line 738 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -2378,7 +2381,7 @@ SemStr* NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 741 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2388,11 +2391,11 @@ SemStr* NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 747 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 747 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2402,7 +2405,7 @@ SemStr* NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
       switch((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */) {
         case 0: case 1: case 4: case 5: case 6: case 7: 
           
-
+#line 750 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -2413,7 +2416,7 @@ SemStr* NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 748 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -2426,7 +2429,7 @@ SemStr* NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 749 "machine/mc68k/decoder.m"
              ret = pPostInc(reg2, bump, bumpr, size);
 
             
@@ -2444,7 +2447,7 @@ SemStr* NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 753 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2454,11 +2457,11 @@ SemStr* NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   SemStr* ret = new SemStr(size);
 
 
-
+#line 759 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 759 "machine/mc68k/decoder.m"
     ea
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2468,7 +2471,7 @@ SemStr* NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
       switch((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */) {
         case 0: case 1: case 3: case 5: case 6: case 7: 
           
-
+#line 762 "machine/mc68k/decoder.m"
           pIllegalMode(pc);
 
           
@@ -2479,7 +2482,7 @@ SemStr* NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 760 "machine/mc68k/decoder.m"
              ret = pIndirect(reg2, size);
 
             
@@ -2492,7 +2495,7 @@ SemStr* NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
           { 
             unsigned reg2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 761 "machine/mc68k/decoder.m"
              ret = pPreDec(reg2, bump, bumpr, size);
 
             
@@ -2510,7 +2513,7 @@ SemStr* NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int& bump, int& bumpr,
   
 }
 
-
+#line 765 "machine/mc68k/decoder.m"
   return ret;
 }
 
@@ -2626,11 +2629,11 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 877 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 877 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2644,7 +2647,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 878 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -2657,7 +2660,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 879 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -2671,7 +2674,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 880 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -2680,7 +2683,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 881 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -2699,7 +2702,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_od0: (void)0; /*placeholder for label*/ 
     
-
+#line 882 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -2710,17 +2713,17 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 885 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 887 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 887 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2730,7 +2733,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 888 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -2744,17 +2747,17 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 891 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 893 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 893 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2767,7 +2770,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 894 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -2781,17 +2784,17 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 897 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 899 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 899 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2801,7 +2804,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 900 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -2815,17 +2818,17 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 903 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 905 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 905 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2838,7 +2841,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 906 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -2852,7 +2855,7 @@ SemStr* NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 909 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -2869,11 +2872,11 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 922 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 922 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -2887,7 +2890,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 923 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -2900,7 +2903,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 924 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -2914,7 +2917,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 927 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -2923,7 +2926,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 928 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -2932,7 +2935,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 925 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -2941,7 +2944,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 926 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -2953,7 +2956,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                   switch((MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */) {
                     case 0: 
                       
-
+#line 929 "machine/mc68k/decoder.m"
                        { mode = 6; result.numBytes += 2;}
 
                       
@@ -2962,7 +2965,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                       break;
                     case 1: 
                       
-
+#line 930 "machine/mc68k/decoder.m"
                        { mode = 7; result.numBytes += 2;}
 
                       
@@ -2971,7 +2974,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                       break;
                     case 2: 
                       
-
+#line 931 "machine/mc68k/decoder.m"
                        { mode = 8; result.numBytes += 4;}
 
                       
@@ -2995,7 +2998,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_jd0: (void)0; /*placeholder for label*/ 
     
-
+#line 932 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -3006,17 +3009,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 935 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 937 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 937 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3026,7 +3029,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 938 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -3040,17 +3043,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 941 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 943 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 943 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3063,7 +3066,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 944 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -3077,17 +3080,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 947 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 949 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 949 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3098,7 +3101,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 950 "machine/mc68k/decoder.m"
        ret = pPcDisp(d16, delta, size);
 
       
@@ -3112,17 +3115,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 953 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 955 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 955 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3135,7 +3138,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 956 "machine/mc68k/decoder.m"
       
 
               ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
@@ -3151,17 +3154,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 960 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 962 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 962 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3171,7 +3174,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 963 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -3185,17 +3188,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 966 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 968 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 968 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3208,7 +3211,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 969 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -3222,17 +3225,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 972 "machine/mc68k/decoder.m"
       break;
     }
     case 6 : {
 
 
-
+#line 974 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 974 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3254,7 +3257,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     else { 
       unsigned d8 = (MATCH_w_16_0 & 0xff) /* disp8 at 0 */;
       
-
+#line 975 "machine/mc68k/decoder.m"
        ret = pImmB(d8);
 
       
@@ -3266,7 +3269,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_cd0: (void)0; /*placeholder for label*/ 
     
-
+#line 976 "machine/mc68k/decoder.m"
     pNonzeroByte(pc);
 
     
@@ -3277,17 +3280,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 979 "machine/mc68k/decoder.m"
       break;
     }
     case 7 : {
 
 
-
+#line 981 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 981 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3296,7 +3299,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     { 
       unsigned d16 = (MATCH_w_16_0 & 0xffff) /* d16 at 0 */;
       
-
+#line 982 "machine/mc68k/decoder.m"
        ret = pImmW(d16);
 
       
@@ -3310,17 +3313,17 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 985 "machine/mc68k/decoder.m"
       break;
     }
     case 8 : {
 
 
-
+#line 987 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 987 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3333,7 +3336,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 988 "machine/mc68k/decoder.m"
        ret = pImmL(d32);
 
       
@@ -3347,7 +3350,7 @@ SemStr* NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 991 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -3364,11 +3367,11 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1004 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1004 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3382,7 +3385,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1005 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -3395,7 +3398,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1006 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -3409,7 +3412,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1009 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -3418,7 +3421,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1010 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -3427,7 +3430,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 1007 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -3436,7 +3439,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1008 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -3446,14 +3449,14 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
               case 4: 
                 if ((MATCH_w_16_0 >> 8 & 0x1) /* sb at 0 */ == 1) 
                   
-
+#line 1012 "machine/mc68k/decoder.m"
                    { mode = 8; result.numBytes += 4;}
 
                   
                    /*opt-block+*/
                 else 
                   
-
+#line 1011 "machine/mc68k/decoder.m"
                    { mode = 7; result.numBytes += 2;}
 
                   
@@ -3472,7 +3475,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_zc0: (void)0; /*placeholder for label*/ 
     
-
+#line 1013 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -3483,17 +3486,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1016 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1018 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1018 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3503,7 +3506,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1019 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -3517,17 +3520,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1022 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1024 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1024 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3540,7 +3543,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1025 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -3554,17 +3557,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1028 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1030 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1030 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3575,7 +3578,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1031 "machine/mc68k/decoder.m"
        ret = pPcDisp(d16, delta, size);
 
       
@@ -3589,17 +3592,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1034 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1036 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1036 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3612,7 +3615,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1037 "machine/mc68k/decoder.m"
       
 
               ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
@@ -3628,17 +3631,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1041 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1043 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1043 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3648,7 +3651,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1044 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -3662,17 +3665,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1047 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1049 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1049 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3685,7 +3688,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1050 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -3699,17 +3702,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1053 "machine/mc68k/decoder.m"
       break;
     }
     case 7 : {
 
 
-
+#line 1055 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1055 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3718,7 +3721,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     { 
       unsigned d16 = (MATCH_w_16_0 & 0xffff) /* d16 at 0 */;
       
-
+#line 1056 "machine/mc68k/decoder.m"
        ret = pImmW(d16);
 
       
@@ -3732,17 +3735,17 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1059 "machine/mc68k/decoder.m"
       break;
     }
     case 8 : {
 
 
-
+#line 1061 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1061 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3755,7 +3758,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1062 "machine/mc68k/decoder.m"
        ret = pImmL(d32);
 
       
@@ -3769,7 +3772,7 @@ SemStr* NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1065 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -3786,11 +3789,11 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1078 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1078 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3804,7 +3807,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1079 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -3817,7 +3820,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1080 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -3831,7 +3834,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1083 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -3840,7 +3843,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1084 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -3849,7 +3852,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 1081 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -3858,7 +3861,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1082 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -3877,7 +3880,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_qc0: (void)0; /*placeholder for label*/ 
     
-
+#line 1085 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -3888,17 +3891,17 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1088 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1090 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1090 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3908,7 +3911,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1091 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -3922,17 +3925,17 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1094 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1096 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1096 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3945,7 +3948,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1097 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -3959,17 +3962,17 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1100 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1102 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1102 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -3980,7 +3983,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1103 "machine/mc68k/decoder.m"
        ret = pPcDisp(label, delta, size);
 
       
@@ -3994,17 +3997,17 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1106 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1108 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1108 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4017,7 +4020,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1109 "machine/mc68k/decoder.m"
        ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
 
       
@@ -4031,17 +4034,17 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1112 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1114 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1114 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4051,7 +4054,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1115 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -4065,17 +4068,17 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1118 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1120 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1120 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4088,7 +4091,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1121 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -4102,7 +4105,7 @@ SemStr* NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1124 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -4119,11 +4122,11 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1137 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1137 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4137,7 +4140,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1138 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -4150,7 +4153,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1139 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -4164,7 +4167,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1142 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -4173,7 +4176,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1143 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -4182,7 +4185,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 1140 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -4191,7 +4194,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1141 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -4203,7 +4206,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                   switch((MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */) {
                     case 0: 
                       
-
+#line 1144 "machine/mc68k/decoder.m"
                        { mode = 6; result.numBytes += 2;}
 
                       
@@ -4212,7 +4215,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                       break;
                     case 1: 
                       
-
+#line 1145 "machine/mc68k/decoder.m"
                        { mode = 7; result.numBytes += 2;}
 
                       
@@ -4221,7 +4224,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                       break;
                     case 2: 
                       
-
+#line 1146 "machine/mc68k/decoder.m"
                        { mode = 8; result.numBytes += 4;}
 
                       
@@ -4245,7 +4248,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_jc0: (void)0; /*placeholder for label*/ 
     
-
+#line 1147 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -4256,17 +4259,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1150 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1152 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1152 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4276,7 +4279,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1153 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -4290,17 +4293,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1156 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1158 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1158 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4313,7 +4316,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1159 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -4327,17 +4330,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1162 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1164 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1164 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4348,7 +4351,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1165 "machine/mc68k/decoder.m"
        ret = pPcDisp(label, delta, size);
 
       
@@ -4362,17 +4365,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1168 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1170 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1170 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4385,7 +4388,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1171 "machine/mc68k/decoder.m"
        ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
 
       
@@ -4399,17 +4402,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1174 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1176 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1176 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4419,7 +4422,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1177 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -4433,17 +4436,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1180 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1182 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1182 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4456,7 +4459,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1183 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -4470,17 +4473,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1186 "machine/mc68k/decoder.m"
       break;
     }
     case 6 : {
 
 
-
+#line 1188 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1188 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4502,7 +4505,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     else { 
       unsigned d8 = (MATCH_w_16_0 & 0xff) /* disp8 at 0 */;
       
-
+#line 1189 "machine/mc68k/decoder.m"
        ret = pImmB(d8);
 
       
@@ -4514,7 +4517,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_cc0: (void)0; /*placeholder for label*/ 
     
-
+#line 1190 "machine/mc68k/decoder.m"
     pNonzeroByte(pc);
 
     
@@ -4525,17 +4528,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1193 "machine/mc68k/decoder.m"
       break;
     }
     case 7 : {
 
 
-
+#line 1195 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1195 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4544,7 +4547,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     { 
       unsigned d16 = (MATCH_w_16_0 & 0xffff) /* d16 at 0 */;
       
-
+#line 1196 "machine/mc68k/decoder.m"
        ret = pImmW(d16);
 
       
@@ -4558,17 +4561,17 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1199 "machine/mc68k/decoder.m"
       break;
     }
     case 8 : {
 
 
-
+#line 1201 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1201 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4581,7 +4584,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1202 "machine/mc68k/decoder.m"
        ret = pImmL(d32);
 
       
@@ -4595,7 +4598,7 @@ SemStr* NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1205 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -4612,11 +4615,11 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1218 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1218 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4630,7 +4633,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1219 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -4643,7 +4646,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1220 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -4657,7 +4660,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1221 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -4666,7 +4669,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1222 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -4685,7 +4688,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_zb0: (void)0; /*placeholder for label*/ 
     
-
+#line 1223 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -4696,17 +4699,17 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1226 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1228 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1228 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4716,7 +4719,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1229 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -4730,17 +4733,17 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1232 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1234 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1234 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4753,7 +4756,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1235 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -4767,17 +4770,17 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1238 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1240 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1240 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4787,7 +4790,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1241 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -4801,17 +4804,17 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1244 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1246 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1246 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4824,7 +4827,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1247 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -4838,7 +4841,7 @@ SemStr* NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1250 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -4855,11 +4858,11 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1263 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1263 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4873,7 +4876,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1264 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -4886,7 +4889,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1265 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -4900,7 +4903,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1268 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -4909,7 +4912,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1269 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -4918,7 +4921,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 1266 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -4927,7 +4930,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1267 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -4936,7 +4939,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 4: 
                 
-
+#line 1270 "machine/mc68k/decoder.m"
                  { mode = 6; result.numBytes += 2;}
 
                 
@@ -4955,7 +4958,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_ub0: (void)0; /*placeholder for label*/ 
     
-
+#line 1271 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -4966,17 +4969,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1274 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1276 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1276 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -4986,7 +4989,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1277 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -5000,17 +5003,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1280 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1282 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1282 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5023,7 +5026,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1283 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -5037,17 +5040,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1286 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1288 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1288 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5058,7 +5061,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1289 "machine/mc68k/decoder.m"
        ret = pPcDisp(label, delta, size);
 
       
@@ -5072,17 +5075,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1292 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1294 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1294 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5095,7 +5098,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1295 "machine/mc68k/decoder.m"
       
 
               ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
@@ -5111,17 +5114,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1299 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1301 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1301 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5131,7 +5134,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1302 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -5145,17 +5148,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1305 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1307 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1307 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5168,7 +5171,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1308 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -5182,17 +5185,17 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1311 "machine/mc68k/decoder.m"
       break;
     }
     case 6 : {
 
 
-
+#line 1313 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1313 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5214,7 +5217,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     else { 
       unsigned d8 = (MATCH_w_16_0 & 0xff) /* disp8 at 0 */;
       
-
+#line 1314 "machine/mc68k/decoder.m"
        ret = pImmB(d8);
 
       
@@ -5226,7 +5229,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_nb0: (void)0; /*placeholder for label*/ 
     
-
+#line 1315 "machine/mc68k/decoder.m"
     pNonzeroByte(pc);
 
     
@@ -5237,7 +5240,7 @@ SemStr* NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1318 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -5254,11 +5257,11 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1331 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1331 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5272,7 +5275,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1332 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -5285,7 +5288,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1333 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -5299,7 +5302,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1336 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -5308,7 +5311,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1337 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -5317,7 +5320,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 1334 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -5326,7 +5329,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1335 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -5335,7 +5338,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 4: 
                 
-
+#line 1338 "machine/mc68k/decoder.m"
                  { mode = 7; result.numBytes += 2;}
 
                 
@@ -5354,7 +5357,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_mb0: (void)0; /*placeholder for label*/ 
     
-
+#line 1339 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -5365,17 +5368,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1342 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1344 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1344 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5385,7 +5388,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1345 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -5399,17 +5402,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1348 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1350 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1350 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5422,7 +5425,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1351 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -5436,17 +5439,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1354 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1356 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1356 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5457,7 +5460,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1357 "machine/mc68k/decoder.m"
        ret = pPcDisp(label, delta, size);
 
       
@@ -5471,17 +5474,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1360 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1362 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1362 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5494,7 +5497,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1363 "machine/mc68k/decoder.m"
       
 
               ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
@@ -5510,17 +5513,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1367 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1369 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1369 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5530,7 +5533,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1370 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -5544,17 +5547,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1373 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1375 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1375 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5567,7 +5570,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1376 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -5581,17 +5584,17 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1379 "machine/mc68k/decoder.m"
       break;
     }
     case 7 : {
 
 
-
+#line 1381 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1381 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5600,7 +5603,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     { 
       unsigned d16 = (MATCH_w_16_0 & 0xffff) /* d16 at 0 */;
       
-
+#line 1382 "machine/mc68k/decoder.m"
        ret = pImmW(d16);
 
       
@@ -5614,7 +5617,7 @@ SemStr* NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1385 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -5631,11 +5634,11 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1398 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1398 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5649,7 +5652,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1399 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -5662,7 +5665,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1400 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -5676,7 +5679,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1401 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -5685,7 +5688,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1402 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -5704,7 +5707,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_eb0: (void)0; /*placeholder for label*/ 
     
-
+#line 1403 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -5715,17 +5718,17 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1406 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1408 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1408 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5735,7 +5738,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1409 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -5749,17 +5752,17 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1412 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1414 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1414 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5772,7 +5775,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1415 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -5786,17 +5789,17 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1418 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1420 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1420 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5806,7 +5809,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1421 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -5820,17 +5823,17 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1424 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1426 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1426 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5843,7 +5846,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1427 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -5857,7 +5860,7 @@ SemStr* NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1430 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -5874,11 +5877,11 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1443 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1443 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -5892,7 +5895,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1444 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -5905,7 +5908,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1445 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -5919,7 +5922,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1448 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -5930,7 +5933,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 goto MATCH_label_z0; break;
               case 2: 
                 
-
+#line 1446 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -5939,7 +5942,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1447 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -5955,7 +5958,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                       goto MATCH_label_z0; break;
                     case 1: 
                       
-
+#line 1449 "machine/mc68k/decoder.m"
                        { mode = 6; result.numBytes += 2;}
 
                       
@@ -5964,7 +5967,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                       break;
                     case 3: 
                       
-
+#line 1450 "machine/mc68k/decoder.m"
                        { mode = 7; result.numBytes += 2;}
 
                       
@@ -5984,7 +5987,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_z0: (void)0; /*placeholder for label*/ 
     
-
+#line 1451 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -5995,17 +5998,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1454 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1456 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1456 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6015,7 +6018,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1457 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -6029,17 +6032,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1460 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1462 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1462 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6052,7 +6055,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1463 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -6066,17 +6069,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1466 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1468 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1468 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6087,7 +6090,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1469 "machine/mc68k/decoder.m"
        ret = pPcDisp(label, delta, size);
 
       
@@ -6101,17 +6104,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1472 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1474 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1474 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6124,7 +6127,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1475 "machine/mc68k/decoder.m"
       
 
               ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
@@ -6140,17 +6143,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1479 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1481 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1481 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6160,7 +6163,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1482 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -6174,17 +6177,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1485 "machine/mc68k/decoder.m"
       break;
     }
     case 6 : {
 
 
-
+#line 1487 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1487 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6206,7 +6209,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     else { 
       unsigned d8 = (MATCH_w_16_0 & 0xff) /* disp8 at 0 */;
       
-
+#line 1488 "machine/mc68k/decoder.m"
        ret = pImmB(d8);
 
       
@@ -6218,7 +6221,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_t0: (void)0; /*placeholder for label*/ 
     
-
+#line 1489 "machine/mc68k/decoder.m"
     pNonzeroByte(pc);
 
     
@@ -6229,17 +6232,17 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1492 "machine/mc68k/decoder.m"
       break;
     }
     case 7 : {
 
 
-
+#line 1494 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1494 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6248,7 +6251,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     { 
       unsigned d16 = (MATCH_w_16_0 & 0xffff) /* d16 at 0 */;
       
-
+#line 1495 "machine/mc68k/decoder.m"
        ret = pImmW(d16);
 
       
@@ -6262,7 +6265,7 @@ SemStr* NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1498 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -6279,11 +6282,11 @@ SemStr* NJMCDecoder::msEAXL(ADDRESS eaxl, int d32, DecodeResult& result,
 
 
 
-
+#line 1511 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1511 "machine/mc68k/decoder.m"
     eaxl
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6296,7 +6299,7 @@ SemStr* NJMCDecoder::msEAXL(ADDRESS eaxl, int d32, DecodeResult& result,
         case 1: 
           if ((MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */ == 7) 
             
-
+#line 1512 "machine/mc68k/decoder.m"
              { mode = 5; result.numBytes += 4;}
 
             
@@ -6309,7 +6312,7 @@ SemStr* NJMCDecoder::msEAXL(ADDRESS eaxl, int d32, DecodeResult& result,
           if ((MATCH_w_16_0 >> 12 & 0xf) /* op at 0 */ == 2 && 
             (MATCH_w_16_0 >> 3 & 0x7) /* adrm at 0 */ == 7) 
             
-
+#line 1513 "machine/mc68k/decoder.m"
              { mode = 8; result.numBytes += 4;}
 
             
@@ -6325,7 +6328,7 @@ SemStr* NJMCDecoder::msEAXL(ADDRESS eaxl, int d32, DecodeResult& result,
   
   MATCH_label_r0: (void)0; /*placeholder for label*/ 
     
-
+#line 1514 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -6336,7 +6339,7 @@ SemStr* NJMCDecoder::msEAXL(ADDRESS eaxl, int d32, DecodeResult& result,
   
 }
 
-
+#line 1517 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 5 : {
@@ -6361,11 +6364,11 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1538 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1538 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6380,7 +6383,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 switch((MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */) {
                   case 0: 
                     
-
+#line 1541 "machine/mc68k/decoder.m"
                      { mode = 4; result.numBytes += 2;}
 
                     
@@ -6389,7 +6392,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                     break;
                   case 1: 
                     
-
+#line 1542 "machine/mc68k/decoder.m"
                      { mode = 5; result.numBytes += 4;}
 
                     
@@ -6409,7 +6412,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 1539 "machine/mc68k/decoder.m"
              { mode = 0; reg1 = r1; result.numBytes += 2;}
 
             
@@ -6422,7 +6425,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r1 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
             
-
+#line 1540 "machine/mc68k/decoder.m"
              { mode = 1; reg1 = r1; result.numBytes += 2;}
 
             
@@ -6438,7 +6441,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_q0: (void)0; /*placeholder for label*/ 
     
-
+#line 1543 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -6449,17 +6452,17 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1546 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1548 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1548 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6469,7 +6472,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1549 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg1, size);
 
       
@@ -6483,17 +6486,17 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1552 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1554 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1554 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6506,7 +6509,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1555 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg1, iT, iR, iS, size);
 
       
@@ -6520,17 +6523,17 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1558 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1560 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1560 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6539,7 +6542,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
     { 
       unsigned d16 = (MATCH_w_16_0 & 0xffff) /* d16 at 0 */;
       
-
+#line 1561 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -6553,17 +6556,17 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1564 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1566 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1566 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6576,7 +6579,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1567 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -6590,7 +6593,7 @@ SemStr* NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1570 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -6607,11 +6610,11 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1583 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1583 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6625,7 +6628,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1584 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -6638,7 +6641,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1585 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -6652,7 +6655,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1588 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -6661,7 +6664,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1589 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -6670,7 +6673,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 2: 
                 
-
+#line 1586 "machine/mc68k/decoder.m"
                  { mode = 2; result.numBytes += 2;}
 
                 
@@ -6679,7 +6682,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 3: 
                 
-
+#line 1587 "machine/mc68k/decoder.m"
                  { mode = 3; result.numBytes += 2;}
 
                 
@@ -6698,7 +6701,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_l0: (void)0; /*placeholder for label*/ 
     
-
+#line 1590 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -6709,17 +6712,17 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1593 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1595 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1595 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6729,7 +6732,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1596 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -6743,17 +6746,17 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1599 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1601 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1601 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6766,7 +6769,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1602 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -6780,17 +6783,17 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1605 "machine/mc68k/decoder.m"
       break;
     }
     case 2 : {
 
 
-
+#line 1607 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1607 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6801,7 +6804,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16) + 
         addressToPC(MATCH_p);
       
-
+#line 1608 "machine/mc68k/decoder.m"
        ret = pPcDisp(label, delta, size);
 
       
@@ -6815,17 +6818,17 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1611 "machine/mc68k/decoder.m"
       break;
     }
     case 3 : {
 
 
-
+#line 1613 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1613 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6838,7 +6841,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1614 "machine/mc68k/decoder.m"
       
 
               ret = pPcIndex(d8, iT, iR, iS, pc+2, size);
@@ -6854,17 +6857,17 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1618 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1620 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1620 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6874,7 +6877,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1621 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -6888,17 +6891,17 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1624 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1626 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1626 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6911,7 +6914,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1627 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -6925,7 +6928,7 @@ SemStr* NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1630 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
@@ -6942,11 +6945,11 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
 
 
 
-
+#line 1643 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1643 "machine/mc68k/decoder.m"
     eax
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -6960,7 +6963,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1644 "machine/mc68k/decoder.m"
              { mode = 0; reg2 = r2; result.numBytes += 2;}
 
             
@@ -6973,7 +6976,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
           { 
             unsigned r2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
             
-
+#line 1645 "machine/mc68k/decoder.m"
              { mode = 1; reg2 = r2; result.numBytes += 2;}
 
             
@@ -6987,7 +6990,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
             switch((MATCH_w_16_0 & 0x7) /* reg2 at 0 */) {
               case 0: 
                 
-
+#line 1646 "machine/mc68k/decoder.m"
                  { mode = 4; result.numBytes += 2;}
 
                 
@@ -6996,7 +6999,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
                 break;
               case 1: 
                 
-
+#line 1647 "machine/mc68k/decoder.m"
                  { mode = 5; result.numBytes += 4;}
 
                 
@@ -7015,7 +7018,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
   MATCH_label_e0: (void)0; /*placeholder for label*/ 
     
-
+#line 1648 "machine/mc68k/decoder.m"
     pIllegalMode(pc);
 
     
@@ -7026,17 +7029,17 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1651 "machine/mc68k/decoder.m"
 
   switch (mode) {
     case 0 : {
 
 
-
+#line 1653 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1653 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -7046,7 +7049,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1654 "machine/mc68k/decoder.m"
        ret = pADisp(d16, reg2, size);
 
       
@@ -7060,17 +7063,17 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1657 "machine/mc68k/decoder.m"
       break;
     }
     case 1 : {
 
 
-
+#line 1659 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1659 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -7083,7 +7086,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       unsigned iS = (MATCH_w_16_0 >> 11 & 0x1) /* iSize at 0 */;
       unsigned iT = (MATCH_w_16_0 >> 15 & 0x1) /* iType at 0 */;
       
-
+#line 1660 "machine/mc68k/decoder.m"
        ret = pAIndex(d8, reg2, iT, iR, iS, size);
 
       
@@ -7097,17 +7100,17 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1663 "machine/mc68k/decoder.m"
       break;
     }
     case 4 : {
 
 
-
+#line 1665 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1665 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -7117,7 +7120,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
       int /* [~32768..32767] */ d16 = 
         sign_extend((MATCH_w_16_0 & 0xffff) /* d16 at 0 */, 16);
       
-
+#line 1666 "machine/mc68k/decoder.m"
        ret = pAbsW(d16, size);
 
       
@@ -7131,17 +7134,17 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1669 "machine/mc68k/decoder.m"
       break;
     }
     case 5 : {
 
 
-
+#line 1671 "machine/mc68k/decoder.m"
 { 
   dword MATCH_p = 
     
-
+#line 1671 "machine/mc68k/decoder.m"
     x
     ;
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -7154,7 +7157,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
         ((MATCH_w_16_0 & 0xffff) /* d16 at 0 */ << 16) + 
         (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
-
+#line 1672 "machine/mc68k/decoder.m"
        ret = pAbsL(d32, size);
 
       
@@ -7168,7 +7171,7 @@ SemStr* NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult& result,
   
 }
 
-
+#line 1675 "machine/mc68k/decoder.m"
       break;
     }
     default : pIllegalMode(pc); break;
