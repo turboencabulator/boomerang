@@ -578,11 +578,11 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     | POPow(r32) =>
         sprintf (str,  "POPow", DIS_R32);   // Check!
 
-    | POP.Evod(Mem) =>
-        sprintf (str,  "POP.Evod", DIS_MEM);
+    | POP.Evod(Eaddr) =>
+        sprintf (str,  "POP.Evod", DIS_EADDR32);
 
-    | POP.Evow(Mem) =>
-        sprintf (str,  "POP.Evow", DIS_MEM);
+    | POP.Evow(Eaddr) =>
+        sprintf (str,  "POP.Evow", DIS_EADDR16);
 
 //    | OUTSvod() =>
 //        sprintf (str,  "OUTSvod");

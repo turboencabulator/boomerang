@@ -1481,10 +1481,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- col at 8 --*/ 
                         break;
-                      case 1: case 2: case 3: case 5: case 6: case 7: case 8: 
+                      case 1: case 2: case 4: case 5: case 6: case 7: case 8: 
                       case 9: case 13: case 14: case 15: 
                         goto MATCH_label_a39; break;
-                      case 4: 
+                      case 3: 
                         
                           switch((MATCH_w_8_8 & 0x7) /* col at 8 */) {
                             case 0: 
@@ -13737,78 +13737,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              { 
-                                                unsigned Mem = 
-                                                  2 + addressToPC(MATCH_p);
-                                                nextPC = 3 + MATCH_p; 
-                                                
-                                                #line 585 "machine/pentium/disassembler.m"
-                                                
-
-                                                        sprintf (str,  "POP.Evow", DIS_MEM);
-
-                                                
-
-                                                //    | OUTSvod() =>
-
-                                                //        sprintf (str,  "OUTSvod");
-
-                                                
-
-                                                //    | OUTSvow() =>
-
-                                                //        sprintf (str,  "OUTSvow");
-
-                                                
-
-                                                //    | OUTSB() =>
-
-                                                //        sprintf (str,  "OUTSB");
-
-                                                
-
-                                                //    | OUT.DX.eAXod() =>
-
-                                                //        sprintf (str,  "OUT.DX.eAXod");
-
-                                                
-
-                                                //    | OUT.DX.eAXow() =>
-
-                                                //        sprintf (str,  "OUT.DX.eAXow");
-
-                                                
-
-                                                //    | OUT.DX.AL() =>
-
-                                                //        sprintf (str,  "OUT.DX.AL");
-
-                                                
-
-                                                //    | OUT.Ib.eAXod(i8) =>
-
-                                                //        sprintf (str,  "OUT.Ib.eAXod", DIS_I8);
-
-                                                
-
-                                                //    | OUT.Ib.eAXow(i8) =>
-
-                                                //        sprintf (str,  "OUT.Ib.eAXow", DIS_I8);
-
-                                                
-
-                                                //    | OUT.Ib.AL(i8) =>
-
-                                                //        sprintf (str,  "OUT.Ib.AL", DIS_I8);
-
-                                                
-
-                                                
-                                                
-                                                
-                                              }
-                                              
-                                              break;
+                                              goto MATCH_label_a520; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -13818,13 +13747,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a521;  /*opt-block+*/
+                                                goto MATCH_label_a522;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a520;  /*opt-block+*/
+                                                goto MATCH_label_a521;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a522; break;
+                                              goto MATCH_label_a523; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -13837,14 +13766,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) { 
-                                          unsigned Mem = 
+                                          unsigned Eaddr = 
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
                                           #line 585 "machine/pentium/disassembler.m"
                                           
 
-                                                  sprintf (str,  "POP.Evow", DIS_MEM);
+                                                  sprintf (str,  "POP.Evow", DIS_EADDR16);
 
                                           
 
@@ -13907,7 +13836,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a520;  /*opt-block+*/
+                                          goto MATCH_label_a521;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -13918,13 +13847,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a521;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a522;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a523;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a39; break;
+                                        goto MATCH_label_a520; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/  
@@ -14338,7 +14267,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a523; 
+                                                  goto MATCH_label_a524; 
                                                   
                                                   break;
                                                 case 4: 
@@ -14352,13 +14281,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a525; 
+                                                    goto MATCH_label_a526; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a524; 
+                                                    goto MATCH_label_a525; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -14366,7 +14295,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a526; 
+                                                  goto MATCH_label_a527; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -14410,7 +14339,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a524; 
+                                              goto MATCH_label_a525; 
                                               
                                             } /*opt-block*/
                                             
@@ -14426,13 +14355,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a525; 
+                                              goto MATCH_label_a526; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a526; 
+                                              goto MATCH_label_a527; 
                                               
                                             } /*opt-block*/
                                             
@@ -14440,7 +14369,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a523; 
+                                            goto MATCH_label_a524; 
                                             
                                             break;
                                           default: assert(0);
@@ -14459,7 +14388,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a527; 
+                                                  goto MATCH_label_a528; 
                                                   
                                                   break;
                                                 case 4: 
@@ -14473,13 +14402,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a529; 
+                                                    goto MATCH_label_a530; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a528; 
+                                                    goto MATCH_label_a529; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -14487,7 +14416,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a530; 
+                                                  goto MATCH_label_a531; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -14531,7 +14460,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a528; 
+                                              goto MATCH_label_a529; 
                                               
                                             } /*opt-block*/
                                             
@@ -14547,13 +14476,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a529; 
+                                              goto MATCH_label_a530; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a530; 
+                                              goto MATCH_label_a531; 
                                               
                                             } /*opt-block*/
                                             
@@ -14561,7 +14490,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a527; 
+                                            goto MATCH_label_a528; 
                                             
                                             break;
                                           default: assert(0);
@@ -14580,7 +14509,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a531; 
+                                                  goto MATCH_label_a532; 
                                                   
                                                   break;
                                                 case 4: 
@@ -14594,13 +14523,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a533; 
+                                                    goto MATCH_label_a534; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a532; 
+                                                    goto MATCH_label_a533; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -14608,7 +14537,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a534; 
+                                                  goto MATCH_label_a535; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -14652,7 +14581,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a532; 
+                                              goto MATCH_label_a533; 
                                               
                                             } /*opt-block*/
                                             
@@ -14668,13 +14597,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a533; 
+                                              goto MATCH_label_a534; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a534; 
+                                              goto MATCH_label_a535; 
                                               
                                             } /*opt-block*/
                                             
@@ -14682,7 +14611,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a531; 
+                                            goto MATCH_label_a532; 
                                             
                                             break;
                                           default: assert(0);
@@ -14701,7 +14630,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a535; 
+                                                  goto MATCH_label_a536; 
                                                   
                                                   break;
                                                 case 4: 
@@ -14715,13 +14644,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a537; 
+                                                    goto MATCH_label_a538; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a536; 
+                                                    goto MATCH_label_a537; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -14729,7 +14658,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a538; 
+                                                  goto MATCH_label_a539; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -14773,7 +14702,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a536; 
+                                              goto MATCH_label_a537; 
                                               
                                             } /*opt-block*/
                                             
@@ -14789,13 +14718,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a537; 
+                                              goto MATCH_label_a538; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a538; 
+                                              goto MATCH_label_a539; 
                                               
                                             } /*opt-block*/
                                             
@@ -14803,7 +14732,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a535; 
+                                            goto MATCH_label_a536; 
                                             
                                             break;
                                           default: assert(0);
@@ -14822,7 +14751,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a539; 
+                                                  goto MATCH_label_a540; 
                                                   
                                                   break;
                                                 case 4: 
@@ -14836,13 +14765,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a541; 
+                                                    goto MATCH_label_a542; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a540; 
+                                                    goto MATCH_label_a541; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -14850,7 +14779,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a542; 
+                                                  goto MATCH_label_a543; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -14894,7 +14823,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a540; 
+                                              goto MATCH_label_a541; 
                                               
                                             } /*opt-block*/
                                             
@@ -14910,13 +14839,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a541; 
+                                              goto MATCH_label_a542; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a542; 
+                                              goto MATCH_label_a543; 
                                               
                                             } /*opt-block*/
                                             
@@ -14924,7 +14853,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a539; 
+                                            goto MATCH_label_a540; 
                                             
                                             break;
                                           default: assert(0);
@@ -14943,7 +14872,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a543; 
+                                                  goto MATCH_label_a544; 
                                                   
                                                   break;
                                                 case 4: 
@@ -14957,13 +14886,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a545; 
+                                                    goto MATCH_label_a546; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a544; 
+                                                    goto MATCH_label_a545; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -14971,7 +14900,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a546; 
+                                                  goto MATCH_label_a547; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15015,7 +14944,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a544; 
+                                              goto MATCH_label_a545; 
                                               
                                             } /*opt-block*/
                                             
@@ -15031,13 +14960,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a545; 
+                                              goto MATCH_label_a546; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a546; 
+                                              goto MATCH_label_a547; 
                                               
                                             } /*opt-block*/
                                             
@@ -15045,7 +14974,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a543; 
+                                            goto MATCH_label_a544; 
                                             
                                             break;
                                           default: assert(0);
@@ -15066,7 +14995,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 3: case 6: case 7: 
                                                   MATCH_w_8_24 = 
                                                     getByte(3 + MATCH_p); 
-                                                  goto MATCH_label_a547; 
+                                                  goto MATCH_label_a548; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15080,13 +15009,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ < 8)) { 
                                                     MATCH_w_8_64 = 
                                                       getByte(8 + MATCH_p); 
-                                                    goto MATCH_label_a549; 
+                                                    goto MATCH_label_a550; 
                                                     
                                                   } /*opt-block*/
                                                   else { 
                                                     MATCH_w_8_32 = 
                                                       getByte(4 + MATCH_p); 
-                                                    goto MATCH_label_a548; 
+                                                    goto MATCH_label_a549; 
                                                     
                                                   } /*opt-block*/
                                                   
@@ -15094,7 +15023,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 case 5: 
                                                   MATCH_w_8_56 = 
                                                     getByte(7 + MATCH_p); 
-                                                  goto MATCH_label_a550; 
+                                                  goto MATCH_label_a551; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15138,7 +15067,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             else { 
                                               MATCH_w_8_32 = 
                                                 getByte(4 + MATCH_p); 
-                                              goto MATCH_label_a548; 
+                                              goto MATCH_label_a549; 
                                               
                                             } /*opt-block*/
                                             
@@ -15154,13 +15083,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ < 8)) { 
                                               MATCH_w_8_64 = 
                                                 getByte(8 + MATCH_p); 
-                                              goto MATCH_label_a549; 
+                                              goto MATCH_label_a550; 
                                               
                                             } /*opt-block*/
                                             else { 
                                               MATCH_w_8_56 = 
                                                 getByte(7 + MATCH_p); 
-                                              goto MATCH_label_a550; 
+                                              goto MATCH_label_a551; 
                                               
                                             } /*opt-block*/
                                             
@@ -15168,7 +15097,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           case 3: 
                                             MATCH_w_8_24 = 
                                               getByte(3 + MATCH_p); 
-                                            goto MATCH_label_a547; 
+                                            goto MATCH_label_a548; 
                                             
                                             break;
                                           default: assert(0);
@@ -15200,7 +15129,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             case 6: case 7: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
-                                              goto MATCH_label_a551; 
+                                              goto MATCH_label_a552; 
                                               
                                               break;
                                             case 4: 
@@ -15214,13 +15143,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ < 8)) { 
                                                 MATCH_w_16_64 = 
                                                   getWord(8 + MATCH_p); 
-                                                goto MATCH_label_a553; 
+                                                goto MATCH_label_a554; 
                                                 
                                               } /*opt-block*/
                                               else { 
                                                 MATCH_w_16_32 = 
                                                   getWord(4 + MATCH_p); 
-                                                goto MATCH_label_a552; 
+                                                goto MATCH_label_a553; 
                                                 
                                               } /*opt-block*/
                                               
@@ -15228,7 +15157,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             case 5: 
                                               MATCH_w_16_56 = 
                                                 getWord(7 + MATCH_p); 
-                                              goto MATCH_label_a554; 
+                                              goto MATCH_label_a555; 
                                               
                                               break;
                                             default: assert(0);
@@ -15271,7 +15200,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         else { 
                                           MATCH_w_16_32 = 
                                             getWord(4 + MATCH_p); 
-                                          goto MATCH_label_a552; 
+                                          goto MATCH_label_a553; 
                                           
                                         } /*opt-block*/
                                         
@@ -15286,20 +15215,20 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ < 8)) { 
                                           MATCH_w_16_64 = 
                                             getWord(8 + MATCH_p); 
-                                          goto MATCH_label_a553; 
+                                          goto MATCH_label_a554; 
                                           
                                         } /*opt-block*/
                                         else { 
                                           MATCH_w_16_56 = 
                                             getWord(7 + MATCH_p); 
-                                          goto MATCH_label_a554; 
+                                          goto MATCH_label_a555; 
                                           
                                         } /*opt-block*/
                                         
                                         break;
                                       case 3: 
                                         MATCH_w_16_24 = getWord(3 + MATCH_p); 
-                                        goto MATCH_label_a551; 
+                                        goto MATCH_label_a552; 
                                         
                                         break;
                                       default: assert(0);
@@ -15337,7 +15266,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a555; 
+                                                  goto MATCH_label_a556; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15349,13 +15278,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a557;  /*opt-block+*/
+                                                    goto MATCH_label_a558;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a556;  /*opt-block+*/
+                                                    goto MATCH_label_a557;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a558; 
+                                                  goto MATCH_label_a559; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15387,7 +15316,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a556;  /*opt-block+*/
+                                              goto MATCH_label_a557;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15399,13 +15328,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a557;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a558;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a559;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a555; break;
+                                            goto MATCH_label_a556; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15420,7 +15349,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a559; 
+                                                  goto MATCH_label_a560; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15432,13 +15361,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a561;  /*opt-block+*/
+                                                    goto MATCH_label_a562;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a560;  /*opt-block+*/
+                                                    goto MATCH_label_a561;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a562; 
+                                                  goto MATCH_label_a563; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15470,7 +15399,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a560;  /*opt-block+*/
+                                              goto MATCH_label_a561;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15482,13 +15411,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a561;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a562;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a563;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a559; break;
+                                            goto MATCH_label_a560; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15503,7 +15432,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a563; 
+                                                  goto MATCH_label_a564; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15515,13 +15444,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a565;  /*opt-block+*/
+                                                    goto MATCH_label_a566;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a564;  /*opt-block+*/
+                                                    goto MATCH_label_a565;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a566; 
+                                                  goto MATCH_label_a567; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15553,7 +15482,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a564;  /*opt-block+*/
+                                              goto MATCH_label_a565;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15565,13 +15494,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a565;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a566;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a567;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a563; break;
+                                            goto MATCH_label_a564; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15586,7 +15515,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a567; 
+                                                  goto MATCH_label_a568; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15598,13 +15527,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a569;  /*opt-block+*/
+                                                    goto MATCH_label_a570;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a568;  /*opt-block+*/
+                                                    goto MATCH_label_a569;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a570; 
+                                                  goto MATCH_label_a571; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15636,7 +15565,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a568;  /*opt-block+*/
+                                              goto MATCH_label_a569;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15648,13 +15577,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a569;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a570;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a571;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a567; break;
+                                            goto MATCH_label_a568; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15669,7 +15598,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a571; 
+                                                  goto MATCH_label_a572; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15681,13 +15610,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a573;  /*opt-block+*/
+                                                    goto MATCH_label_a574;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a572;  /*opt-block+*/
+                                                    goto MATCH_label_a573;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a574; 
+                                                  goto MATCH_label_a575; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15719,7 +15648,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a572;  /*opt-block+*/
+                                              goto MATCH_label_a573;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15731,13 +15660,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a573;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a574;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a575;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a571; break;
+                                            goto MATCH_label_a572; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15752,7 +15681,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a575; 
+                                                  goto MATCH_label_a576; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15764,13 +15693,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a577;  /*opt-block+*/
+                                                    goto MATCH_label_a578;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a576;  /*opt-block+*/
+                                                    goto MATCH_label_a577;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a578; 
+                                                  goto MATCH_label_a579; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15802,7 +15731,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a576;  /*opt-block+*/
+                                              goto MATCH_label_a577;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15814,13 +15743,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a577;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a578;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a579;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a575; break;
+                                            goto MATCH_label_a576; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15837,7 +15766,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a579; 
+                                                  goto MATCH_label_a580; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15849,13 +15778,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a581;  /*opt-block+*/
+                                                    goto MATCH_label_a582;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a580;  /*opt-block+*/
+                                                    goto MATCH_label_a581;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a582; 
+                                                  goto MATCH_label_a583; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15887,7 +15816,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a580;  /*opt-block+*/
+                                              goto MATCH_label_a581;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15899,13 +15828,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a581;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a582;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a583;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a579; break;
+                                            goto MATCH_label_a580; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -15935,7 +15864,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a583; 
+                                                  goto MATCH_label_a584; 
                                                   
                                                   break;
                                                 case 4: 
@@ -15947,13 +15876,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a585;  /*opt-block+*/
+                                                    goto MATCH_label_a586;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a584;  /*opt-block+*/
+                                                    goto MATCH_label_a585;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a586; 
+                                                  goto MATCH_label_a587; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -15985,7 +15914,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a584;  /*opt-block+*/
+                                              goto MATCH_label_a585;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -15997,13 +15926,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a585;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a586;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a587;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a583; break;
+                                            goto MATCH_label_a584; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16018,7 +15947,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a587; 
+                                                  goto MATCH_label_a588; 
                                                   
                                                   break;
                                                 case 4: 
@@ -16030,13 +15959,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a589;  /*opt-block+*/
+                                                    goto MATCH_label_a590;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a588;  /*opt-block+*/
+                                                    goto MATCH_label_a589;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a590; 
+                                                  goto MATCH_label_a591; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -16068,7 +15997,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a588;  /*opt-block+*/
+                                              goto MATCH_label_a589;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -16080,13 +16009,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a589;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a590;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a591;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a587; break;
+                                            goto MATCH_label_a588; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16101,7 +16030,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a591; 
+                                                  goto MATCH_label_a592; 
                                                   
                                                   break;
                                                 case 4: 
@@ -16113,13 +16042,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a593;  /*opt-block+*/
+                                                    goto MATCH_label_a594;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a592;  /*opt-block+*/
+                                                    goto MATCH_label_a593;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a594; 
+                                                  goto MATCH_label_a595; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -16151,7 +16080,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a592;  /*opt-block+*/
+                                              goto MATCH_label_a593;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -16163,13 +16092,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a593;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a594;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a595;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a591; break;
+                                            goto MATCH_label_a592; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16184,7 +16113,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a595; 
+                                                  goto MATCH_label_a596; 
                                                   
                                                   break;
                                                 case 4: 
@@ -16196,13 +16125,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a597;  /*opt-block+*/
+                                                    goto MATCH_label_a598;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a596;  /*opt-block+*/
+                                                    goto MATCH_label_a597;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a598; 
+                                                  goto MATCH_label_a599; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -16234,7 +16163,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a596;  /*opt-block+*/
+                                              goto MATCH_label_a597;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -16246,13 +16175,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a597;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a598;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a599;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a595; break;
+                                            goto MATCH_label_a596; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16267,7 +16196,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a599; 
+                                                  goto MATCH_label_a600; 
                                                   
                                                   break;
                                                 case 4: 
@@ -16279,13 +16208,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a601;  /*opt-block+*/
+                                                    goto MATCH_label_a602;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a600;  /*opt-block+*/
+                                                    goto MATCH_label_a601;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a602; 
+                                                  goto MATCH_label_a603; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -16317,7 +16246,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a600;  /*opt-block+*/
+                                              goto MATCH_label_a601;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -16329,13 +16258,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a601;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a602;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a603;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a599; break;
+                                            goto MATCH_label_a600; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16350,7 +16279,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a603; 
+                                                  goto MATCH_label_a604; 
                                                   
                                                   break;
                                                 case 4: 
@@ -16362,13 +16291,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a605;  /*opt-block+*/
+                                                    goto MATCH_label_a606;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a604;  /*opt-block+*/
+                                                    goto MATCH_label_a605;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a606; 
+                                                  goto MATCH_label_a607; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -16400,7 +16329,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a604;  /*opt-block+*/
+                                              goto MATCH_label_a605;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -16412,13 +16341,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a605;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a606;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a607;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a603; break;
+                                            goto MATCH_label_a604; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16435,7 +16364,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* r_m at 16 */) {
                                                 case 0: case 1: case 2: 
                                                 case 3: case 6: case 7: 
-                                                  goto MATCH_label_a607; 
+                                                  goto MATCH_label_a608; 
                                                   
                                                   break;
                                                 case 4: 
@@ -16447,13 +16376,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                           /* index at 24 */ && 
                                                     (MATCH_w_8_24 >> 3 & 0x7) 
                                                           /* index at 24 */ < 8)) 
-                                                    goto MATCH_label_a609;  /*opt-block+*/
+                                                    goto MATCH_label_a610;  /*opt-block+*/
                                                   else 
-                                                    goto MATCH_label_a608;  /*opt-block+*/
+                                                    goto MATCH_label_a609;  /*opt-block+*/
                                                   
                                                   break;
                                                 case 5: 
-                                                  goto MATCH_label_a610; 
+                                                  goto MATCH_label_a611; 
                                                   
                                                   break;
                                                 default: assert(0);
@@ -16485,7 +16414,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                               
                                             } /*opt-block*//*opt-block+*/
                                             else 
-                                              goto MATCH_label_a608;  /*opt-block+*/
+                                              goto MATCH_label_a609;  /*opt-block+*/
                                             
                                             break;
                                           case 2: 
@@ -16497,13 +16426,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                     /* index at 24 */ && 
                                               (MATCH_w_8_24 >> 3 & 0x7) 
                                                     /* index at 24 */ < 8)) 
-                                              goto MATCH_label_a609;  /*opt-block+*/
-                                            else 
                                               goto MATCH_label_a610;  /*opt-block+*/
+                                            else 
+                                              goto MATCH_label_a611;  /*opt-block+*/
                                             
                                             break;
                                           case 3: 
-                                            goto MATCH_label_a607; break;
+                                            goto MATCH_label_a608; break;
                                           default: assert(0);
                                         } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                               -- mod at 16 --*/ 
@@ -16535,7 +16464,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a639; break;
+                                              goto MATCH_label_a640; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -16545,13 +16474,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a641;  /*opt-block+*/
+                                                goto MATCH_label_a642;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a640;  /*opt-block+*/
+                                                goto MATCH_label_a641;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a642; break;
+                                              goto MATCH_label_a643; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -16580,7 +16509,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a640;  /*opt-block+*/
+                                          goto MATCH_label_a641;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -16591,13 +16520,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a641;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a642;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a643;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a639; break;
+                                        goto MATCH_label_a640; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -16612,7 +16541,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a643; break;
+                                              goto MATCH_label_a644; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -16622,13 +16551,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a645;  /*opt-block+*/
+                                                goto MATCH_label_a646;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a644;  /*opt-block+*/
+                                                goto MATCH_label_a645;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a646; break;
+                                              goto MATCH_label_a647; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -16657,7 +16586,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a644;  /*opt-block+*/
+                                          goto MATCH_label_a645;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -16668,13 +16597,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a645;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a646;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a647;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a643; break;
+                                        goto MATCH_label_a644; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -16691,7 +16620,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a647; break;
+                                              goto MATCH_label_a648; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -16701,13 +16630,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a649;  /*opt-block+*/
+                                                goto MATCH_label_a650;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a648;  /*opt-block+*/
+                                                goto MATCH_label_a649;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a650; break;
+                                              goto MATCH_label_a651; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -16736,7 +16665,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a648;  /*opt-block+*/
+                                          goto MATCH_label_a649;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -16747,13 +16676,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a649;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a650;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a651;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a647; break;
+                                        goto MATCH_label_a648; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -16780,7 +16709,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             case 6: case 7: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
-                                              goto MATCH_label_a611; 
+                                              goto MATCH_label_a612; 
                                               
                                               break;
                                             case 4: 
@@ -16794,13 +16723,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ < 8)) { 
                                                 MATCH_w_16_64 = 
                                                   getWord(8 + MATCH_p); 
-                                                goto MATCH_label_a613; 
+                                                goto MATCH_label_a614; 
                                                 
                                               } /*opt-block*/
                                               else { 
                                                 MATCH_w_16_32 = 
                                                   getWord(4 + MATCH_p); 
-                                                goto MATCH_label_a612; 
+                                                goto MATCH_label_a613; 
                                                 
                                               } /*opt-block*/
                                               
@@ -16808,7 +16737,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             case 5: 
                                               MATCH_w_16_56 = 
                                                 getWord(7 + MATCH_p); 
-                                              goto MATCH_label_a614; 
+                                              goto MATCH_label_a615; 
                                               
                                               break;
                                             default: assert(0);
@@ -16849,7 +16778,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         else { 
                                           MATCH_w_16_32 = 
                                             getWord(4 + MATCH_p); 
-                                          goto MATCH_label_a612; 
+                                          goto MATCH_label_a613; 
                                           
                                         } /*opt-block*/
                                         
@@ -16864,20 +16793,20 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ < 8)) { 
                                           MATCH_w_16_64 = 
                                             getWord(8 + MATCH_p); 
-                                          goto MATCH_label_a613; 
+                                          goto MATCH_label_a614; 
                                           
                                         } /*opt-block*/
                                         else { 
                                           MATCH_w_16_56 = 
                                             getWord(7 + MATCH_p); 
-                                          goto MATCH_label_a614; 
+                                          goto MATCH_label_a615; 
                                           
                                         } /*opt-block*/
                                         
                                         break;
                                       case 3: 
                                         MATCH_w_16_24 = getWord(3 + MATCH_p); 
-                                        goto MATCH_label_a611; 
+                                        goto MATCH_label_a612; 
                                         
                                         break;
                                       default: assert(0);
@@ -16896,7 +16825,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a615; break;
+                                              goto MATCH_label_a616; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -16906,13 +16835,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a617;  /*opt-block+*/
+                                                goto MATCH_label_a618;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a616;  /*opt-block+*/
+                                                goto MATCH_label_a617;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a618; break;
+                                              goto MATCH_label_a619; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -16941,7 +16870,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a616;  /*opt-block+*/
+                                          goto MATCH_label_a617;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -16952,13 +16881,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a617;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a618;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a619;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a615; break;
+                                        goto MATCH_label_a616; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -16973,7 +16902,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a619; break;
+                                              goto MATCH_label_a620; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -16983,13 +16912,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a621;  /*opt-block+*/
+                                                goto MATCH_label_a622;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a620;  /*opt-block+*/
+                                                goto MATCH_label_a621;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a622; break;
+                                              goto MATCH_label_a623; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -17018,7 +16947,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a620;  /*opt-block+*/
+                                          goto MATCH_label_a621;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -17029,13 +16958,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a621;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a622;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a623;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a619; break;
+                                        goto MATCH_label_a620; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -17050,7 +16979,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a623; break;
+                                              goto MATCH_label_a624; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -17060,13 +16989,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a625;  /*opt-block+*/
+                                                goto MATCH_label_a626;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a624;  /*opt-block+*/
+                                                goto MATCH_label_a625;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a626; break;
+                                              goto MATCH_label_a627; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -17095,7 +17024,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a624;  /*opt-block+*/
+                                          goto MATCH_label_a625;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -17106,13 +17035,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a625;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a626;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a627;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a623; break;
+                                        goto MATCH_label_a624; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -17127,7 +17056,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a627; break;
+                                              goto MATCH_label_a628; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -17137,13 +17066,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a629;  /*opt-block+*/
+                                                goto MATCH_label_a630;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a628;  /*opt-block+*/
+                                                goto MATCH_label_a629;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a630; break;
+                                              goto MATCH_label_a631; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -17172,7 +17101,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a628;  /*opt-block+*/
+                                          goto MATCH_label_a629;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -17183,13 +17112,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a629;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a630;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a631;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a627; break;
+                                        goto MATCH_label_a628; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -17204,7 +17133,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a631; break;
+                                              goto MATCH_label_a632; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -17214,13 +17143,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a633;  /*opt-block+*/
+                                                goto MATCH_label_a634;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a632;  /*opt-block+*/
+                                                goto MATCH_label_a633;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a634; break;
+                                              goto MATCH_label_a635; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -17249,7 +17178,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a632;  /*opt-block+*/
+                                          goto MATCH_label_a633;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -17260,13 +17189,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a633;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a634;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a635;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a631; break;
+                                        goto MATCH_label_a632; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -17281,7 +17210,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* r_m at 16 */) {
                                             case 0: case 1: case 2: case 3: 
                                             case 6: case 7: 
-                                              goto MATCH_label_a635; break;
+                                              goto MATCH_label_a636; break;
                                             case 4: 
                                               MATCH_w_8_24 = 
                                                 getByte(3 + MATCH_p); 
@@ -17291,13 +17220,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                       /* index at 24 */ && 
                                                 (MATCH_w_8_24 >> 3 & 0x7) 
                                                       /* index at 24 */ < 8)) 
-                                                goto MATCH_label_a637;  /*opt-block+*/
+                                                goto MATCH_label_a638;  /*opt-block+*/
                                               else 
-                                                goto MATCH_label_a636;  /*opt-block+*/
+                                                goto MATCH_label_a637;  /*opt-block+*/
                                               
                                               break;
                                             case 5: 
-                                              goto MATCH_label_a638; break;
+                                              goto MATCH_label_a639; break;
                                             default: assert(0);
                                           } /* (MATCH_w_8_16 & 0x7) 
                                                 -- r_m at 16 --*/ 
@@ -17326,7 +17255,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                           
                                         } /*opt-block*//*opt-block+*/
                                         else 
-                                          goto MATCH_label_a636;  /*opt-block+*/
+                                          goto MATCH_label_a637;  /*opt-block+*/
                                         
                                         break;
                                       case 2: 
@@ -17337,13 +17266,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                                 /* index at 24 */ && 
                                           (MATCH_w_8_24 >> 3 & 0x7) 
                                                 /* index at 24 */ < 8)) 
-                                          goto MATCH_label_a637;  /*opt-block+*/
-                                        else 
                                           goto MATCH_label_a638;  /*opt-block+*/
+                                        else 
+                                          goto MATCH_label_a639;  /*opt-block+*/
                                         
                                         break;
                                       case 3: 
-                                        goto MATCH_label_a635; break;
+                                        goto MATCH_label_a636; break;
                                       default: assert(0);
                                     } /* (MATCH_w_8_16 >> 6 & 0x3) 
                                           -- mod at 16 --*/ 
@@ -17380,7 +17309,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a763; break;
+                              goto MATCH_label_a764; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -17389,13 +17318,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a765;  /*opt-block+*/
+                                goto MATCH_label_a766;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a764;  /*opt-block+*/
+                                goto MATCH_label_a765;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a766; break;
+                              goto MATCH_label_a767; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -17422,7 +17351,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a764;  /*opt-block+*/
+                          goto MATCH_label_a765;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -17431,13 +17360,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a765;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a766;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a767;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a763; break;
+                        goto MATCH_label_a764; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -17450,7 +17379,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a767; break;
+                              goto MATCH_label_a768; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -17459,13 +17388,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a769;  /*opt-block+*/
+                                goto MATCH_label_a770;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a768;  /*opt-block+*/
+                                goto MATCH_label_a769;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a770; break;
+                              goto MATCH_label_a771; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -17492,7 +17421,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a768;  /*opt-block+*/
+                          goto MATCH_label_a769;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -17501,13 +17430,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a769;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a770;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a771;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a767; break;
+                        goto MATCH_label_a768; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -17520,7 +17449,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a771; break;
+                              goto MATCH_label_a772; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -17529,13 +17458,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a773;  /*opt-block+*/
+                                goto MATCH_label_a774;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a772;  /*opt-block+*/
+                                goto MATCH_label_a773;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a774; break;
+                              goto MATCH_label_a775; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -17562,7 +17491,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a772;  /*opt-block+*/
+                          goto MATCH_label_a773;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -17571,13 +17500,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a773;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a774;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a775;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a771; break;
+                        goto MATCH_label_a772; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -17590,7 +17519,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a775; break;
+                              goto MATCH_label_a776; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -17599,13 +17528,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a777;  /*opt-block+*/
+                                goto MATCH_label_a778;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a776;  /*opt-block+*/
+                                goto MATCH_label_a777;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a778; break;
+                              goto MATCH_label_a779; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -17632,7 +17561,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a776;  /*opt-block+*/
+                          goto MATCH_label_a777;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -17641,13 +17570,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a777;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a778;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a779;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a775; break;
+                        goto MATCH_label_a776; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -17690,13 +17619,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a780;  /*opt-block+*/
+                                goto MATCH_label_a781;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a779;  /*opt-block+*/
+                                goto MATCH_label_a780;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a781; break;
+                              goto MATCH_label_a782; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -17723,7 +17652,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a779;  /*opt-block+*/
+                          goto MATCH_label_a780;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -17732,9 +17661,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a780;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a781;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a782;  /*opt-block+*/
                         
                         break;
                       case 3: 
@@ -17752,23 +17681,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                             switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                               case 0: case 1: case 2: case 3: case 6: case 7: 
-                                { 
-                                  unsigned Mem = 1 + addressToPC(MATCH_p);
-                                  nextPC = 2 + MATCH_p; 
-                                  
-                                  #line 582 "machine/pentium/disassembler.m"
-                                  
-
-                                          sprintf (str,  "POP.Evod", DIS_MEM);
-
-                                  
-
-                                  
-                                  
-                                  
-                                }
-                                
-                                break;
+                                goto MATCH_label_a783; break;
                               case 4: 
                                 MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                 if ((MATCH_w_8_16 & 0x7) 
@@ -17777,13 +17690,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         /* index at 16 */ && 
                                   (MATCH_w_8_16 >> 3 & 0x7) 
                                         /* index at 16 */ < 8)) 
-                                  goto MATCH_label_a783;  /*opt-block+*/
+                                  goto MATCH_label_a785;  /*opt-block+*/
                                 else 
-                                  goto MATCH_label_a782;  /*opt-block+*/
+                                  goto MATCH_label_a784;  /*opt-block+*/
                                 
                                 break;
                               case 5: 
-                                goto MATCH_label_a784; break;
+                                goto MATCH_label_a786; break;
                               default: assert(0);
                             } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                           break;
@@ -17794,13 +17707,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   /* index at 16 */ && 
                             (MATCH_w_8_16 >> 3 & 0x7) 
                                   /* index at 16 */ < 8)) { 
-                            unsigned Mem = 1 + addressToPC(MATCH_p);
+                            unsigned Eaddr = 1 + addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
                             #line 582 "machine/pentium/disassembler.m"
                             
 
-                                    sprintf (str,  "POP.Evod", DIS_MEM);
+                                    sprintf (str,  "POP.Evod", DIS_EADDR32);
 
                             
 
@@ -17809,7 +17722,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             
                           } /*opt-block*//*opt-block+*/
                           else 
-                            goto MATCH_label_a782;  /*opt-block+*/
+                            goto MATCH_label_a784;  /*opt-block+*/
                           
                           break;
                         case 2: 
@@ -17818,13 +17731,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                   /* index at 16 */ && 
                             (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                            goto MATCH_label_a783;  /*opt-block+*/
+                            goto MATCH_label_a785;  /*opt-block+*/
                           else 
-                            goto MATCH_label_a784;  /*opt-block+*/
+                            goto MATCH_label_a786;  /*opt-block+*/
                           
                           break;
                         case 3: 
-                          goto MATCH_label_a39; break;
+                          goto MATCH_label_a783; break;
                         default: assert(0);
                       } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/  
                   else 
@@ -17849,7 +17762,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a651; 
+                                    goto MATCH_label_a652; 
                                     
                                     break;
                                   case 4: 
@@ -17861,19 +17774,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a653; 
+                                      goto MATCH_label_a654; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a652; 
+                                      goto MATCH_label_a653; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a654; 
+                                    goto MATCH_label_a655; 
                                     
                                     break;
                                   default: assert(0);
@@ -17910,7 +17823,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a652; 
+                                goto MATCH_label_a653; 
                                 
                               } /*opt-block*/
                               
@@ -17923,19 +17836,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a653; 
+                                goto MATCH_label_a654; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a654; 
+                                goto MATCH_label_a655; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a651; 
+                              goto MATCH_label_a652; 
                               
                               break;
                             default: assert(0);
@@ -17950,7 +17863,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a655; 
+                                    goto MATCH_label_a656; 
                                     
                                     break;
                                   case 4: 
@@ -17962,19 +17875,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a657; 
+                                      goto MATCH_label_a658; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a656; 
+                                      goto MATCH_label_a657; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a658; 
+                                    goto MATCH_label_a659; 
                                     
                                     break;
                                   default: assert(0);
@@ -18011,7 +17924,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a656; 
+                                goto MATCH_label_a657; 
                                 
                               } /*opt-block*/
                               
@@ -18024,19 +17937,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a657; 
+                                goto MATCH_label_a658; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a658; 
+                                goto MATCH_label_a659; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a655; 
+                              goto MATCH_label_a656; 
                               
                               break;
                             default: assert(0);
@@ -18051,7 +17964,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a659; 
+                                    goto MATCH_label_a660; 
                                     
                                     break;
                                   case 4: 
@@ -18063,19 +17976,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a661; 
+                                      goto MATCH_label_a662; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a660; 
+                                      goto MATCH_label_a661; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a662; 
+                                    goto MATCH_label_a663; 
                                     
                                     break;
                                   default: assert(0);
@@ -18112,7 +18025,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a660; 
+                                goto MATCH_label_a661; 
                                 
                               } /*opt-block*/
                               
@@ -18125,19 +18038,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a661; 
+                                goto MATCH_label_a662; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a662; 
+                                goto MATCH_label_a663; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a659; 
+                              goto MATCH_label_a660; 
                               
                               break;
                             default: assert(0);
@@ -18152,7 +18065,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a663; 
+                                    goto MATCH_label_a664; 
                                     
                                     break;
                                   case 4: 
@@ -18164,19 +18077,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a665; 
+                                      goto MATCH_label_a666; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a664; 
+                                      goto MATCH_label_a665; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a666; 
+                                    goto MATCH_label_a667; 
                                     
                                     break;
                                   default: assert(0);
@@ -18213,7 +18126,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a664; 
+                                goto MATCH_label_a665; 
                                 
                               } /*opt-block*/
                               
@@ -18226,19 +18139,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a665; 
+                                goto MATCH_label_a666; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a666; 
+                                goto MATCH_label_a667; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a663; 
+                              goto MATCH_label_a664; 
                               
                               break;
                             default: assert(0);
@@ -18253,7 +18166,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a667; 
+                                    goto MATCH_label_a668; 
                                     
                                     break;
                                   case 4: 
@@ -18265,19 +18178,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a669; 
+                                      goto MATCH_label_a670; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a668; 
+                                      goto MATCH_label_a669; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a670; 
+                                    goto MATCH_label_a671; 
                                     
                                     break;
                                   default: assert(0);
@@ -18314,7 +18227,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a668; 
+                                goto MATCH_label_a669; 
                                 
                               } /*opt-block*/
                               
@@ -18327,19 +18240,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a669; 
+                                goto MATCH_label_a670; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a670; 
+                                goto MATCH_label_a671; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a667; 
+                              goto MATCH_label_a668; 
                               
                               break;
                             default: assert(0);
@@ -18354,7 +18267,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a671; 
+                                    goto MATCH_label_a672; 
                                     
                                     break;
                                   case 4: 
@@ -18366,19 +18279,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a673; 
+                                      goto MATCH_label_a674; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a672; 
+                                      goto MATCH_label_a673; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a674; 
+                                    goto MATCH_label_a675; 
                                     
                                     break;
                                   default: assert(0);
@@ -18415,7 +18328,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a672; 
+                                goto MATCH_label_a673; 
                                 
                               } /*opt-block*/
                               
@@ -18428,19 +18341,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a673; 
+                                goto MATCH_label_a674; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a674; 
+                                goto MATCH_label_a675; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a671; 
+                              goto MATCH_label_a672; 
                               
                               break;
                             default: assert(0);
@@ -18455,7 +18368,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a675; 
+                                    goto MATCH_label_a676; 
                                     
                                     break;
                                   case 4: 
@@ -18467,19 +18380,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a677; 
+                                      goto MATCH_label_a678; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a676; 
+                                      goto MATCH_label_a677; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a678; 
+                                    goto MATCH_label_a679; 
                                     
                                     break;
                                   default: assert(0);
@@ -18516,7 +18429,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a676; 
+                                goto MATCH_label_a677; 
                                 
                               } /*opt-block*/
                               
@@ -18529,19 +18442,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a677; 
+                                goto MATCH_label_a678; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a678; 
+                                goto MATCH_label_a679; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a675; 
+                              goto MATCH_label_a676; 
                               
                               break;
                             default: assert(0);
@@ -18556,7 +18469,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a679; 
+                                    goto MATCH_label_a680; 
                                     
                                     break;
                                   case 4: 
@@ -18568,19 +18481,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a681; 
+                                      goto MATCH_label_a682; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a680; 
+                                      goto MATCH_label_a681; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a682; 
+                                    goto MATCH_label_a683; 
                                     
                                     break;
                                   default: assert(0);
@@ -18617,7 +18530,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a680; 
+                                goto MATCH_label_a681; 
                                 
                               } /*opt-block*/
                               
@@ -18630,19 +18543,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a681; 
+                                goto MATCH_label_a682; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a682; 
+                                goto MATCH_label_a683; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a679; 
+                              goto MATCH_label_a680; 
                               
                               break;
                             default: assert(0);
@@ -18665,7 +18578,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a683; 
+                                    goto MATCH_label_a684; 
                                     
                                     break;
                                   case 4: 
@@ -18677,19 +18590,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a685; 
+                                      goto MATCH_label_a686; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a684; 
+                                      goto MATCH_label_a685; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a686; 
+                                    goto MATCH_label_a687; 
                                     
                                     break;
                                   default: assert(0);
@@ -18724,7 +18637,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a684; 
+                                goto MATCH_label_a685; 
                                 
                               } /*opt-block*/
                               
@@ -18737,19 +18650,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a685; 
+                                goto MATCH_label_a686; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a686; 
+                                goto MATCH_label_a687; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a683; 
+                              goto MATCH_label_a684; 
                               
                               break;
                             default: assert(0);
@@ -18764,7 +18677,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a687; 
+                                    goto MATCH_label_a688; 
                                     
                                     break;
                                   case 4: 
@@ -18776,19 +18689,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a689; 
+                                      goto MATCH_label_a690; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a688; 
+                                      goto MATCH_label_a689; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a690; 
+                                    goto MATCH_label_a691; 
                                     
                                     break;
                                   default: assert(0);
@@ -18823,7 +18736,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a688; 
+                                goto MATCH_label_a689; 
                                 
                               } /*opt-block*/
                               
@@ -18836,19 +18749,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a689; 
+                                goto MATCH_label_a690; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a690; 
+                                goto MATCH_label_a691; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a687; 
+                              goto MATCH_label_a688; 
                               
                               break;
                             default: assert(0);
@@ -18863,7 +18776,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a691; 
+                                    goto MATCH_label_a692; 
                                     
                                     break;
                                   case 4: 
@@ -18875,19 +18788,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a693; 
+                                      goto MATCH_label_a694; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a692; 
+                                      goto MATCH_label_a693; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a694; 
+                                    goto MATCH_label_a695; 
                                     
                                     break;
                                   default: assert(0);
@@ -18922,7 +18835,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a692; 
+                                goto MATCH_label_a693; 
                                 
                               } /*opt-block*/
                               
@@ -18935,19 +18848,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a693; 
+                                goto MATCH_label_a694; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a694; 
+                                goto MATCH_label_a695; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a691; 
+                              goto MATCH_label_a692; 
                               
                               break;
                             default: assert(0);
@@ -18962,7 +18875,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a695; 
+                                    goto MATCH_label_a696; 
                                     
                                     break;
                                   case 4: 
@@ -18974,19 +18887,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a697; 
+                                      goto MATCH_label_a698; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a696; 
+                                      goto MATCH_label_a697; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a698; 
+                                    goto MATCH_label_a699; 
                                     
                                     break;
                                   default: assert(0);
@@ -19021,7 +18934,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a696; 
+                                goto MATCH_label_a697; 
                                 
                               } /*opt-block*/
                               
@@ -19034,19 +18947,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a697; 
+                                goto MATCH_label_a698; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a698; 
+                                goto MATCH_label_a699; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a695; 
+                              goto MATCH_label_a696; 
                               
                               break;
                             default: assert(0);
@@ -19061,7 +18974,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a699; 
+                                    goto MATCH_label_a700; 
                                     
                                     break;
                                   case 4: 
@@ -19073,19 +18986,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a701; 
+                                      goto MATCH_label_a702; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a700; 
+                                      goto MATCH_label_a701; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a702; 
+                                    goto MATCH_label_a703; 
                                     
                                     break;
                                   default: assert(0);
@@ -19120,7 +19033,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a700; 
+                                goto MATCH_label_a701; 
                                 
                               } /*opt-block*/
                               
@@ -19133,19 +19046,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a701; 
+                                goto MATCH_label_a702; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a702; 
+                                goto MATCH_label_a703; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a699; 
+                              goto MATCH_label_a700; 
                               
                               break;
                             default: assert(0);
@@ -19160,7 +19073,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a703; 
+                                    goto MATCH_label_a704; 
                                     
                                     break;
                                   case 4: 
@@ -19172,19 +19085,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a705; 
+                                      goto MATCH_label_a706; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a704; 
+                                      goto MATCH_label_a705; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a706; 
+                                    goto MATCH_label_a707; 
                                     
                                     break;
                                   default: assert(0);
@@ -19219,7 +19132,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a704; 
+                                goto MATCH_label_a705; 
                                 
                               } /*opt-block*/
                               
@@ -19232,19 +19145,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a705; 
+                                goto MATCH_label_a706; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a706; 
+                                goto MATCH_label_a707; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a703; 
+                              goto MATCH_label_a704; 
                               
                               break;
                             default: assert(0);
@@ -19259,7 +19172,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a707; 
+                                    goto MATCH_label_a708; 
                                     
                                     break;
                                   case 4: 
@@ -19271,19 +19184,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a709; 
+                                      goto MATCH_label_a710; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a708; 
+                                      goto MATCH_label_a709; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a710; 
+                                    goto MATCH_label_a711; 
                                     
                                     break;
                                   default: assert(0);
@@ -19318,7 +19231,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a708; 
+                                goto MATCH_label_a709; 
                                 
                               } /*opt-block*/
                               
@@ -19331,19 +19244,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a709; 
+                                goto MATCH_label_a710; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a710; 
+                                goto MATCH_label_a711; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a707; 
+                              goto MATCH_label_a708; 
                               
                               break;
                             default: assert(0);
@@ -19358,7 +19271,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a711; 
+                                    goto MATCH_label_a712; 
                                     
                                     break;
                                   case 4: 
@@ -19370,19 +19283,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a713; 
+                                      goto MATCH_label_a714; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a712; 
+                                      goto MATCH_label_a713; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a714; 
+                                    goto MATCH_label_a715; 
                                     
                                     break;
                                   default: assert(0);
@@ -19417,7 +19330,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a712; 
+                                goto MATCH_label_a713; 
                                 
                               } /*opt-block*/
                               
@@ -19430,19 +19343,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a713; 
+                                goto MATCH_label_a714; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a714; 
+                                goto MATCH_label_a715; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a711; 
+                              goto MATCH_label_a712; 
                               
                               break;
                             default: assert(0);
@@ -19467,7 +19380,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a715; 
+                                    goto MATCH_label_a716; 
                                     
                                     break;
                                   case 4: 
@@ -19479,19 +19392,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a717; 
+                                      goto MATCH_label_a718; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a716; 
+                                      goto MATCH_label_a717; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a718; 
+                                    goto MATCH_label_a719; 
                                     
                                     break;
                                   default: assert(0);
@@ -19528,7 +19441,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a716; 
+                                goto MATCH_label_a717; 
                                 
                               } /*opt-block*/
                               
@@ -19541,19 +19454,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a717; 
+                                goto MATCH_label_a718; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a718; 
+                                goto MATCH_label_a719; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a715; 
+                              goto MATCH_label_a716; 
                               
                               break;
                             default: assert(0);
@@ -19568,7 +19481,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a719; 
+                                    goto MATCH_label_a720; 
                                     
                                     break;
                                   case 4: 
@@ -19580,19 +19493,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a721; 
+                                      goto MATCH_label_a722; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a720; 
+                                      goto MATCH_label_a721; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a722; 
+                                    goto MATCH_label_a723; 
                                     
                                     break;
                                   default: assert(0);
@@ -19629,7 +19542,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a720; 
+                                goto MATCH_label_a721; 
                                 
                               } /*opt-block*/
                               
@@ -19642,19 +19555,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a721; 
+                                goto MATCH_label_a722; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a722; 
+                                goto MATCH_label_a723; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a719; 
+                              goto MATCH_label_a720; 
                               
                               break;
                             default: assert(0);
@@ -19669,7 +19582,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a723; 
+                                    goto MATCH_label_a724; 
                                     
                                     break;
                                   case 4: 
@@ -19681,19 +19594,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a725; 
+                                      goto MATCH_label_a726; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a724; 
+                                      goto MATCH_label_a725; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a726; 
+                                    goto MATCH_label_a727; 
                                     
                                     break;
                                   default: assert(0);
@@ -19730,7 +19643,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a724; 
+                                goto MATCH_label_a725; 
                                 
                               } /*opt-block*/
                               
@@ -19743,19 +19656,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a725; 
+                                goto MATCH_label_a726; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a726; 
+                                goto MATCH_label_a727; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a723; 
+                              goto MATCH_label_a724; 
                               
                               break;
                             default: assert(0);
@@ -19770,7 +19683,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a727; 
+                                    goto MATCH_label_a728; 
                                     
                                     break;
                                   case 4: 
@@ -19782,19 +19695,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a729; 
+                                      goto MATCH_label_a730; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a728; 
+                                      goto MATCH_label_a729; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a730; 
+                                    goto MATCH_label_a731; 
                                     
                                     break;
                                   default: assert(0);
@@ -19831,7 +19744,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a728; 
+                                goto MATCH_label_a729; 
                                 
                               } /*opt-block*/
                               
@@ -19844,19 +19757,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a729; 
+                                goto MATCH_label_a730; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a730; 
+                                goto MATCH_label_a731; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a727; 
+                              goto MATCH_label_a728; 
                               
                               break;
                             default: assert(0);
@@ -19871,7 +19784,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a731; 
+                                    goto MATCH_label_a732; 
                                     
                                     break;
                                   case 4: 
@@ -19883,19 +19796,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a733; 
+                                      goto MATCH_label_a734; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a732; 
+                                      goto MATCH_label_a733; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a734; 
+                                    goto MATCH_label_a735; 
                                     
                                     break;
                                   default: assert(0);
@@ -19932,7 +19845,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a732; 
+                                goto MATCH_label_a733; 
                                 
                               } /*opt-block*/
                               
@@ -19945,19 +19858,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a733; 
+                                goto MATCH_label_a734; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a734; 
+                                goto MATCH_label_a735; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a731; 
+                              goto MATCH_label_a732; 
                               
                               break;
                             default: assert(0);
@@ -19972,7 +19885,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a735; 
+                                    goto MATCH_label_a736; 
                                     
                                     break;
                                   case 4: 
@@ -19984,19 +19897,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a737; 
+                                      goto MATCH_label_a738; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a736; 
+                                      goto MATCH_label_a737; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a738; 
+                                    goto MATCH_label_a739; 
                                     
                                     break;
                                   default: assert(0);
@@ -20033,7 +19946,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a736; 
+                                goto MATCH_label_a737; 
                                 
                               } /*opt-block*/
                               
@@ -20046,19 +19959,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a737; 
+                                goto MATCH_label_a738; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a738; 
+                                goto MATCH_label_a739; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a735; 
+                              goto MATCH_label_a736; 
                               
                               break;
                             default: assert(0);
@@ -20073,7 +19986,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a739; 
+                                    goto MATCH_label_a740; 
                                     
                                     break;
                                   case 4: 
@@ -20085,19 +19998,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a741; 
+                                      goto MATCH_label_a742; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a740; 
+                                      goto MATCH_label_a741; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a742; 
+                                    goto MATCH_label_a743; 
                                     
                                     break;
                                   default: assert(0);
@@ -20134,7 +20047,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a740; 
+                                goto MATCH_label_a741; 
                                 
                               } /*opt-block*/
                               
@@ -20147,19 +20060,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a741; 
+                                goto MATCH_label_a742; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a742; 
+                                goto MATCH_label_a743; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a739; 
+                              goto MATCH_label_a740; 
                               
                               break;
                             default: assert(0);
@@ -20174,7 +20087,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a743; 
+                                    goto MATCH_label_a744; 
                                     
                                     break;
                                   case 4: 
@@ -20186,19 +20099,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a745; 
+                                      goto MATCH_label_a746; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a744; 
+                                      goto MATCH_label_a745; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a746; 
+                                    goto MATCH_label_a747; 
                                     
                                     break;
                                   default: assert(0);
@@ -20235,7 +20148,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a744; 
+                                goto MATCH_label_a745; 
                                 
                               } /*opt-block*/
                               
@@ -20248,19 +20161,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a745; 
+                                goto MATCH_label_a746; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a746; 
+                                goto MATCH_label_a747; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a743; 
+                              goto MATCH_label_a744; 
                               
                               break;
                             default: assert(0);
@@ -20278,7 +20191,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a747; break;
+                              goto MATCH_label_a748; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -20287,13 +20200,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a749;  /*opt-block+*/
+                                goto MATCH_label_a750;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a748;  /*opt-block+*/
+                                goto MATCH_label_a749;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a750; break;
+                              goto MATCH_label_a751; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -20320,7 +20233,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a748;  /*opt-block+*/
+                          goto MATCH_label_a749;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -20329,13 +20242,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a749;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a750;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a751;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a747; break;
+                        goto MATCH_label_a748; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -20348,7 +20261,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a751; break;
+                              goto MATCH_label_a752; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -20357,13 +20270,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a753;  /*opt-block+*/
+                                goto MATCH_label_a754;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a752;  /*opt-block+*/
+                                goto MATCH_label_a753;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a754; break;
+                              goto MATCH_label_a755; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -20390,7 +20303,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a752;  /*opt-block+*/
+                          goto MATCH_label_a753;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -20399,13 +20312,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a753;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a754;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a755;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a751; break;
+                        goto MATCH_label_a752; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -20418,7 +20331,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a755; break;
+                              goto MATCH_label_a756; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -20427,13 +20340,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a757;  /*opt-block+*/
+                                goto MATCH_label_a758;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a756;  /*opt-block+*/
+                                goto MATCH_label_a757;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a758; break;
+                              goto MATCH_label_a759; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -20460,7 +20373,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a756;  /*opt-block+*/
+                          goto MATCH_label_a757;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -20469,13 +20382,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a757;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a758;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a759;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a755; break;
+                        goto MATCH_label_a756; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -20488,7 +20401,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         
                           switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                             case 0: case 1: case 2: case 3: case 6: case 7: 
-                              goto MATCH_label_a759; break;
+                              goto MATCH_label_a760; break;
                             case 4: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_16 & 0x7) 
@@ -20497,13 +20410,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a761;  /*opt-block+*/
+                                goto MATCH_label_a762;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a760;  /*opt-block+*/
+                                goto MATCH_label_a761;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a762; break;
+                              goto MATCH_label_a763; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -20530,7 +20443,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a760;  /*opt-block+*/
+                          goto MATCH_label_a761;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -20539,13 +20452,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a761;  /*opt-block+*/
-                        else 
                           goto MATCH_label_a762;  /*opt-block+*/
+                        else 
+                          goto MATCH_label_a763;  /*opt-block+*/
                         
                         break;
                       case 3: 
-                        goto MATCH_label_a759; break;
+                        goto MATCH_label_a760; break;
                       default: assert(0);
                     } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                   
@@ -21262,7 +21175,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a785; 
+                                    goto MATCH_label_a787; 
                                     
                                     break;
                                   case 4: 
@@ -21274,19 +21187,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a787; 
+                                      goto MATCH_label_a789; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a786; 
+                                      goto MATCH_label_a788; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a788; 
+                                    goto MATCH_label_a790; 
                                     
                                     break;
                                   default: assert(0);
@@ -21323,7 +21236,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a786; 
+                                goto MATCH_label_a788; 
                                 
                               } /*opt-block*/
                               
@@ -21336,19 +21249,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a787; 
+                                goto MATCH_label_a789; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a788; 
+                                goto MATCH_label_a790; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a785; 
+                              goto MATCH_label_a787; 
                               
                               break;
                             default: assert(0);
@@ -21363,7 +21276,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a789; 
+                                    goto MATCH_label_a791; 
                                     
                                     break;
                                   case 4: 
@@ -21375,19 +21288,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a791; 
+                                      goto MATCH_label_a793; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a790; 
+                                      goto MATCH_label_a792; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a792; 
+                                    goto MATCH_label_a794; 
                                     
                                     break;
                                   default: assert(0);
@@ -21424,7 +21337,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a790; 
+                                goto MATCH_label_a792; 
                                 
                               } /*opt-block*/
                               
@@ -21437,19 +21350,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a791; 
+                                goto MATCH_label_a793; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a792; 
+                                goto MATCH_label_a794; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a789; 
+                              goto MATCH_label_a791; 
                               
                               break;
                             default: assert(0);
@@ -21464,7 +21377,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a793; 
+                                    goto MATCH_label_a795; 
                                     
                                     break;
                                   case 4: 
@@ -21476,19 +21389,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a795; 
+                                      goto MATCH_label_a797; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a794; 
+                                      goto MATCH_label_a796; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a796; 
+                                    goto MATCH_label_a798; 
                                     
                                     break;
                                   default: assert(0);
@@ -21525,7 +21438,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a794; 
+                                goto MATCH_label_a796; 
                                 
                               } /*opt-block*/
                               
@@ -21538,19 +21451,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a795; 
+                                goto MATCH_label_a797; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a796; 
+                                goto MATCH_label_a798; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a793; 
+                              goto MATCH_label_a795; 
                               
                               break;
                             default: assert(0);
@@ -21565,7 +21478,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a797; 
+                                    goto MATCH_label_a799; 
                                     
                                     break;
                                   case 4: 
@@ -21577,19 +21490,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a799; 
+                                      goto MATCH_label_a801; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a798; 
+                                      goto MATCH_label_a800; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a800; 
+                                    goto MATCH_label_a802; 
                                     
                                     break;
                                   default: assert(0);
@@ -21626,7 +21539,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a798; 
+                                goto MATCH_label_a800; 
                                 
                               } /*opt-block*/
                               
@@ -21639,19 +21552,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a799; 
+                                goto MATCH_label_a801; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a800; 
+                                goto MATCH_label_a802; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a797; 
+                              goto MATCH_label_a799; 
                               
                               break;
                             default: assert(0);
@@ -21666,7 +21579,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a801; 
+                                    goto MATCH_label_a803; 
                                     
                                     break;
                                   case 4: 
@@ -21678,19 +21591,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a803; 
+                                      goto MATCH_label_a805; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a802; 
+                                      goto MATCH_label_a804; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a804; 
+                                    goto MATCH_label_a806; 
                                     
                                     break;
                                   default: assert(0);
@@ -21727,7 +21640,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a802; 
+                                goto MATCH_label_a804; 
                                 
                               } /*opt-block*/
                               
@@ -21740,19 +21653,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a803; 
+                                goto MATCH_label_a805; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a804; 
+                                goto MATCH_label_a806; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a801; 
+                              goto MATCH_label_a803; 
                               
                               break;
                             default: assert(0);
@@ -21767,7 +21680,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a805; 
+                                    goto MATCH_label_a807; 
                                     
                                     break;
                                   case 4: 
@@ -21779,19 +21692,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a807; 
+                                      goto MATCH_label_a809; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a806; 
+                                      goto MATCH_label_a808; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a808; 
+                                    goto MATCH_label_a810; 
                                     
                                     break;
                                   default: assert(0);
@@ -21828,7 +21741,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a806; 
+                                goto MATCH_label_a808; 
                                 
                               } /*opt-block*/
                               
@@ -21841,19 +21754,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a807; 
+                                goto MATCH_label_a809; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a808; 
+                                goto MATCH_label_a810; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a805; 
+                              goto MATCH_label_a807; 
                               
                               break;
                             default: assert(0);
@@ -21870,7 +21783,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a809; 
+                                    goto MATCH_label_a811; 
                                     
                                     break;
                                   case 4: 
@@ -21882,19 +21795,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a811; 
+                                      goto MATCH_label_a813; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a810; 
+                                      goto MATCH_label_a812; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a812; 
+                                    goto MATCH_label_a814; 
                                     
                                     break;
                                   default: assert(0);
@@ -21931,7 +21844,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a810; 
+                                goto MATCH_label_a812; 
                                 
                               } /*opt-block*/
                               
@@ -21944,19 +21857,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a811; 
+                                goto MATCH_label_a813; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a812; 
+                                goto MATCH_label_a814; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a809; 
+                              goto MATCH_label_a811; 
                               
                               break;
                             default: assert(0);
@@ -21979,7 +21892,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a813; 
+                                    goto MATCH_label_a815; 
                                     
                                     break;
                                   case 4: 
@@ -21991,19 +21904,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a815; 
+                                      goto MATCH_label_a817; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a814; 
+                                      goto MATCH_label_a816; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a816; 
+                                    goto MATCH_label_a818; 
                                     
                                     break;
                                   default: assert(0);
@@ -22040,7 +21953,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a814; 
+                                goto MATCH_label_a816; 
                                 
                               } /*opt-block*/
                               
@@ -22053,19 +21966,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a815; 
+                                goto MATCH_label_a817; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a816; 
+                                goto MATCH_label_a818; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a813; 
+                              goto MATCH_label_a815; 
                               
                               break;
                             default: assert(0);
@@ -22080,7 +21993,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a817; 
+                                    goto MATCH_label_a819; 
                                     
                                     break;
                                   case 4: 
@@ -22092,19 +22005,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a819; 
+                                      goto MATCH_label_a821; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a818; 
+                                      goto MATCH_label_a820; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a820; 
+                                    goto MATCH_label_a822; 
                                     
                                     break;
                                   default: assert(0);
@@ -22141,7 +22054,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a818; 
+                                goto MATCH_label_a820; 
                                 
                               } /*opt-block*/
                               
@@ -22154,19 +22067,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a819; 
+                                goto MATCH_label_a821; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a820; 
+                                goto MATCH_label_a822; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a817; 
+                              goto MATCH_label_a819; 
                               
                               break;
                             default: assert(0);
@@ -22181,7 +22094,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a821; 
+                                    goto MATCH_label_a823; 
                                     
                                     break;
                                   case 4: 
@@ -22193,19 +22106,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a823; 
+                                      goto MATCH_label_a825; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a822; 
+                                      goto MATCH_label_a824; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a824; 
+                                    goto MATCH_label_a826; 
                                     
                                     break;
                                   default: assert(0);
@@ -22242,7 +22155,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a822; 
+                                goto MATCH_label_a824; 
                                 
                               } /*opt-block*/
                               
@@ -22255,19 +22168,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a823; 
+                                goto MATCH_label_a825; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a824; 
+                                goto MATCH_label_a826; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a821; 
+                              goto MATCH_label_a823; 
                               
                               break;
                             default: assert(0);
@@ -22282,7 +22195,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a825; 
+                                    goto MATCH_label_a827; 
                                     
                                     break;
                                   case 4: 
@@ -22294,19 +22207,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a827; 
+                                      goto MATCH_label_a829; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a826; 
+                                      goto MATCH_label_a828; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a828; 
+                                    goto MATCH_label_a830; 
                                     
                                     break;
                                   default: assert(0);
@@ -22343,7 +22256,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a826; 
+                                goto MATCH_label_a828; 
                                 
                               } /*opt-block*/
                               
@@ -22356,19 +22269,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a827; 
+                                goto MATCH_label_a829; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a828; 
+                                goto MATCH_label_a830; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a825; 
+                              goto MATCH_label_a827; 
                               
                               break;
                             default: assert(0);
@@ -22383,7 +22296,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a829; 
+                                    goto MATCH_label_a831; 
                                     
                                     break;
                                   case 4: 
@@ -22395,19 +22308,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a831; 
+                                      goto MATCH_label_a833; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a830; 
+                                      goto MATCH_label_a832; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a832; 
+                                    goto MATCH_label_a834; 
                                     
                                     break;
                                   default: assert(0);
@@ -22444,7 +22357,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a830; 
+                                goto MATCH_label_a832; 
                                 
                               } /*opt-block*/
                               
@@ -22457,19 +22370,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a831; 
+                                goto MATCH_label_a833; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a832; 
+                                goto MATCH_label_a834; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a829; 
+                              goto MATCH_label_a831; 
                               
                               break;
                             default: assert(0);
@@ -22484,7 +22397,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a833; 
+                                    goto MATCH_label_a835; 
                                     
                                     break;
                                   case 4: 
@@ -22496,19 +22409,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a835; 
+                                      goto MATCH_label_a837; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a834; 
+                                      goto MATCH_label_a836; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a836; 
+                                    goto MATCH_label_a838; 
                                     
                                     break;
                                   default: assert(0);
@@ -22545,7 +22458,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a834; 
+                                goto MATCH_label_a836; 
                                 
                               } /*opt-block*/
                               
@@ -22558,19 +22471,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a835; 
+                                goto MATCH_label_a837; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a836; 
+                                goto MATCH_label_a838; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a833; 
+                              goto MATCH_label_a835; 
                               
                               break;
                             default: assert(0);
@@ -22587,7 +22500,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a837; 
+                                    goto MATCH_label_a839; 
                                     
                                     break;
                                   case 4: 
@@ -22599,19 +22512,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a839; 
+                                      goto MATCH_label_a841; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a838; 
+                                      goto MATCH_label_a840; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a840; 
+                                    goto MATCH_label_a842; 
                                     
                                     break;
                                   default: assert(0);
@@ -22648,7 +22561,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a838; 
+                                goto MATCH_label_a840; 
                                 
                               } /*opt-block*/
                               
@@ -22661,19 +22574,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a839; 
+                                goto MATCH_label_a841; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a840; 
+                                goto MATCH_label_a842; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a837; 
+                              goto MATCH_label_a839; 
                               
                               break;
                             default: assert(0);
@@ -22765,13 +22678,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a842;  /*opt-block+*/
+                                goto MATCH_label_a844;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a841;  /*opt-block+*/
+                                goto MATCH_label_a843;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a843; break;
+                              goto MATCH_label_a845; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -22798,7 +22711,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a841;  /*opt-block+*/
+                          goto MATCH_label_a843;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -22807,9 +22720,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a842;  /*opt-block+*/
+                          goto MATCH_label_a844;  /*opt-block+*/
                         else 
-                          goto MATCH_label_a843;  /*opt-block+*/
+                          goto MATCH_label_a845;  /*opt-block+*/
                         
                         break;
                       case 3: 
@@ -22854,13 +22767,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a845;  /*opt-block+*/
+                                goto MATCH_label_a847;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a844;  /*opt-block+*/
+                                goto MATCH_label_a846;  /*opt-block+*/
                               
                               break;
                             case 5: 
-                              goto MATCH_label_a846; break;
+                              goto MATCH_label_a848; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                         break;
@@ -22887,7 +22800,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           
                         } /*opt-block*//*opt-block+*/
                         else 
-                          goto MATCH_label_a844;  /*opt-block+*/
+                          goto MATCH_label_a846;  /*opt-block+*/
                         
                         break;
                       case 2: 
@@ -22896,9 +22809,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
                                 /* index at 16 */ && 
                           (MATCH_w_8_16 >> 3 & 0x7) /* index at 16 */ < 8)) 
-                          goto MATCH_label_a845;  /*opt-block+*/
+                          goto MATCH_label_a847;  /*opt-block+*/
                         else 
-                          goto MATCH_label_a846;  /*opt-block+*/
+                          goto MATCH_label_a848;  /*opt-block+*/
                         
                         break;
                       case 3: 
@@ -22917,7 +22830,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                               case 0: case 1: case 2: case 3: case 6: case 7: 
                                 MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                goto MATCH_label_a847; 
+                                goto MATCH_label_a849; 
                                 
                                 break;
                               case 4: 
@@ -22929,19 +22842,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_16 >> 3 & 0x7) 
                                         /* index at 16 */ < 8)) { 
                                   MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                  goto MATCH_label_a849; 
+                                  goto MATCH_label_a851; 
                                   
                                 } /*opt-block*/
                                 else { 
                                   MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                  goto MATCH_label_a848; 
+                                  goto MATCH_label_a850; 
                                   
                                 } /*opt-block*/
                                 
                                 break;
                               case 5: 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a850; 
+                                goto MATCH_label_a852; 
                                 
                                 break;
                               default: assert(0);
@@ -22978,7 +22891,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           } /*opt-block*/
                           else { 
                             MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                            goto MATCH_label_a848; 
+                            goto MATCH_label_a850; 
                             
                           } /*opt-block*/
                           
@@ -22991,19 +22904,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             (MATCH_w_8_16 >> 3 & 0x7) 
                                   /* index at 16 */ < 8)) { 
                             MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                            goto MATCH_label_a849; 
+                            goto MATCH_label_a851; 
                             
                           } /*opt-block*/
                           else { 
                             MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                            goto MATCH_label_a850; 
+                            goto MATCH_label_a852; 
                             
                           } /*opt-block*/
                           
                           break;
                         case 3: 
                           MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                          goto MATCH_label_a847; 
+                          goto MATCH_label_a849; 
                           
                           break;
                         default: assert(0);
@@ -23022,7 +22935,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                               case 0: case 1: case 2: case 3: case 6: case 7: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                goto MATCH_label_a851; 
+                                goto MATCH_label_a853; 
                                 
                                 break;
                               case 4: 
@@ -23034,19 +22947,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_16 >> 3 & 0x7) 
                                         /* index at 16 */ < 8)) { 
                                   MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                  goto MATCH_label_a853; 
+                                  goto MATCH_label_a855; 
                                   
                                 } /*opt-block*/
                                 else { 
                                   MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                  goto MATCH_label_a852; 
+                                  goto MATCH_label_a854; 
                                   
                                 } /*opt-block*/
                                 
                                 break;
                               case 5: 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a854; 
+                                goto MATCH_label_a856; 
                                 
                                 break;
                               default: assert(0);
@@ -23080,7 +22993,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                           } /*opt-block*/
                           else { 
                             MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                            goto MATCH_label_a852; 
+                            goto MATCH_label_a854; 
                             
                           } /*opt-block*/
                           
@@ -23093,19 +23006,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             (MATCH_w_8_16 >> 3 & 0x7) 
                                   /* index at 16 */ < 8)) { 
                             MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                            goto MATCH_label_a853; 
+                            goto MATCH_label_a855; 
                             
                           } /*opt-block*/
                           else { 
                             MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                            goto MATCH_label_a854; 
+                            goto MATCH_label_a856; 
                             
                           } /*opt-block*/
                           
                           break;
                         case 3: 
                           MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                          goto MATCH_label_a851; 
+                          goto MATCH_label_a853; 
                           
                           break;
                         default: assert(0);
@@ -23159,13 +23072,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a968;  /*opt-block+*/
+                                      goto MATCH_label_a970;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a967;  /*opt-block+*/
+                                      goto MATCH_label_a969;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a969; break;
+                                    goto MATCH_label_a971; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23191,7 +23104,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a967;  /*opt-block+*/
+                                goto MATCH_label_a969;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23201,9 +23114,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a968;  /*opt-block+*/
+                                goto MATCH_label_a970;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a969;  /*opt-block+*/
+                                goto MATCH_label_a971;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23262,13 +23175,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a971;  /*opt-block+*/
+                                      goto MATCH_label_a973;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a970;  /*opt-block+*/
+                                      goto MATCH_label_a972;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a972; break;
+                                    goto MATCH_label_a974; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23294,7 +23207,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a970;  /*opt-block+*/
+                                goto MATCH_label_a972;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23304,9 +23217,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a971;  /*opt-block+*/
+                                goto MATCH_label_a973;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a972;  /*opt-block+*/
+                                goto MATCH_label_a974;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23365,13 +23278,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a974;  /*opt-block+*/
+                                      goto MATCH_label_a976;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a973;  /*opt-block+*/
+                                      goto MATCH_label_a975;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a975; break;
+                                    goto MATCH_label_a977; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23397,7 +23310,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a973;  /*opt-block+*/
+                                goto MATCH_label_a975;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23407,9 +23320,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a974;  /*opt-block+*/
+                                goto MATCH_label_a976;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a975;  /*opt-block+*/
+                                goto MATCH_label_a977;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23468,13 +23381,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a977;  /*opt-block+*/
+                                      goto MATCH_label_a979;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a976;  /*opt-block+*/
+                                      goto MATCH_label_a978;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a978; break;
+                                    goto MATCH_label_a980; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23500,7 +23413,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a976;  /*opt-block+*/
+                                goto MATCH_label_a978;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23510,9 +23423,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a977;  /*opt-block+*/
+                                goto MATCH_label_a979;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a978;  /*opt-block+*/
+                                goto MATCH_label_a980;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23571,13 +23484,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a980;  /*opt-block+*/
+                                      goto MATCH_label_a982;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a979;  /*opt-block+*/
+                                      goto MATCH_label_a981;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a981; break;
+                                    goto MATCH_label_a983; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23603,7 +23516,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a979;  /*opt-block+*/
+                                goto MATCH_label_a981;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23613,9 +23526,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a980;  /*opt-block+*/
+                                goto MATCH_label_a982;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a981;  /*opt-block+*/
+                                goto MATCH_label_a983;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23674,13 +23587,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a983;  /*opt-block+*/
+                                      goto MATCH_label_a985;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a982;  /*opt-block+*/
+                                      goto MATCH_label_a984;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a984; break;
+                                    goto MATCH_label_a986; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23706,7 +23619,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a982;  /*opt-block+*/
+                                goto MATCH_label_a984;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23716,9 +23629,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a983;  /*opt-block+*/
+                                goto MATCH_label_a985;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a984;  /*opt-block+*/
+                                goto MATCH_label_a986;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23777,13 +23690,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a986;  /*opt-block+*/
+                                      goto MATCH_label_a988;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a985;  /*opt-block+*/
+                                      goto MATCH_label_a987;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a987; break;
+                                    goto MATCH_label_a989; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23809,7 +23722,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a985;  /*opt-block+*/
+                                goto MATCH_label_a987;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23819,9 +23732,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a986;  /*opt-block+*/
+                                goto MATCH_label_a988;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a987;  /*opt-block+*/
+                                goto MATCH_label_a989;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23880,13 +23793,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a989;  /*opt-block+*/
+                                      goto MATCH_label_a991;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a988;  /*opt-block+*/
+                                      goto MATCH_label_a990;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a990; break;
+                                    goto MATCH_label_a992; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -23912,7 +23825,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a988;  /*opt-block+*/
+                                goto MATCH_label_a990;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -23922,9 +23835,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a989;  /*opt-block+*/
+                                goto MATCH_label_a991;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a990;  /*opt-block+*/
+                                goto MATCH_label_a992;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -23991,13 +23904,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a992;  /*opt-block+*/
+                                      goto MATCH_label_a994;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a991;  /*opt-block+*/
+                                      goto MATCH_label_a993;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a993; break;
+                                    goto MATCH_label_a995; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24023,7 +23936,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a991;  /*opt-block+*/
+                                goto MATCH_label_a993;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24033,9 +23946,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a992;  /*opt-block+*/
+                                goto MATCH_label_a994;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a993;  /*opt-block+*/
+                                goto MATCH_label_a995;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -24114,13 +24027,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a995;  /*opt-block+*/
+                                      goto MATCH_label_a997;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a994;  /*opt-block+*/
+                                      goto MATCH_label_a996;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a996; break;
+                                    goto MATCH_label_a998; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24146,7 +24059,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a994;  /*opt-block+*/
+                                goto MATCH_label_a996;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24156,9 +24069,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a995;  /*opt-block+*/
+                                goto MATCH_label_a997;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a996;  /*opt-block+*/
+                                goto MATCH_label_a998;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -24217,13 +24130,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a998;  /*opt-block+*/
+                                      goto MATCH_label_a1000;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a997;  /*opt-block+*/
+                                      goto MATCH_label_a999;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a999; break;
+                                    goto MATCH_label_a1001; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24249,7 +24162,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a997;  /*opt-block+*/
+                                goto MATCH_label_a999;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24259,9 +24172,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a998;  /*opt-block+*/
+                                goto MATCH_label_a1000;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a999;  /*opt-block+*/
+                                goto MATCH_label_a1001;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -24302,13 +24215,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1001;  /*opt-block+*/
+                                      goto MATCH_label_a1003;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1000;  /*opt-block+*/
+                                      goto MATCH_label_a1002;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1002; break;
+                                    goto MATCH_label_a1004; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24334,7 +24247,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1000;  /*opt-block+*/
+                                goto MATCH_label_a1002;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24344,9 +24257,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1001;  /*opt-block+*/
+                                goto MATCH_label_a1003;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1002;  /*opt-block+*/
+                                goto MATCH_label_a1004;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -24454,13 +24367,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1004;  /*opt-block+*/
+                                      goto MATCH_label_a1006;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1003;  /*opt-block+*/
+                                      goto MATCH_label_a1005;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1005; break;
+                                    goto MATCH_label_a1007; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24486,7 +24399,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1003;  /*opt-block+*/
+                                goto MATCH_label_a1005;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24496,9 +24409,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1004;  /*opt-block+*/
+                                goto MATCH_label_a1006;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1005;  /*opt-block+*/
+                                goto MATCH_label_a1007;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -24650,13 +24563,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1007;  /*opt-block+*/
+                                      goto MATCH_label_a1009;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1006;  /*opt-block+*/
+                                      goto MATCH_label_a1008;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1008; break;
+                                    goto MATCH_label_a1010; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24682,7 +24595,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1006;  /*opt-block+*/
+                                goto MATCH_label_a1008;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24692,9 +24605,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1007;  /*opt-block+*/
+                                goto MATCH_label_a1009;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1008;  /*opt-block+*/
+                                goto MATCH_label_a1010;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -24847,13 +24760,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1010;  /*opt-block+*/
+                                      goto MATCH_label_a1012;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1009;  /*opt-block+*/
+                                      goto MATCH_label_a1011;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1011; break;
+                                    goto MATCH_label_a1013; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -24879,7 +24792,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1009;  /*opt-block+*/
+                                goto MATCH_label_a1011;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -24889,9 +24802,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1010;  /*opt-block+*/
+                                goto MATCH_label_a1012;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1011;  /*opt-block+*/
+                                goto MATCH_label_a1013;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25046,14 +24959,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1445 "machine/pentium/disassembler.m"
+                                      #line 1448 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIADD.I32", DIS_MEM32);
+                                              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
                                       
 
@@ -25071,13 +24984,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1013;  /*opt-block+*/
+                                      goto MATCH_label_a1015;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1012;  /*opt-block+*/
+                                      goto MATCH_label_a1014;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1014; break;
+                                    goto MATCH_label_a1016; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25088,13 +25001,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1445 "machine/pentium/disassembler.m"
+                                #line 1448 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIADD.I32", DIS_MEM32);
+                                        sprintf (str,  "FIADD.I16", DIS_MEM16);
 
                                 
 
@@ -25103,7 +25016,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1012;  /*opt-block+*/
+                                goto MATCH_label_a1014;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25113,9 +25026,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1013;  /*opt-block+*/
+                                goto MATCH_label_a1015;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1014;  /*opt-block+*/
+                                goto MATCH_label_a1016;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25132,14 +25045,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1639 "machine/pentium/disassembler.m"
+                                      #line 1642 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+                                              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
                                       
 
@@ -25157,13 +25070,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1016;  /*opt-block+*/
+                                      goto MATCH_label_a1018;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1015;  /*opt-block+*/
+                                      goto MATCH_label_a1017;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1017; break;
+                                    goto MATCH_label_a1019; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25174,13 +25087,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1639 "machine/pentium/disassembler.m"
+                                #line 1642 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIMUL.I32", DIS_MEM32);
+                                        sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
                                 
 
@@ -25189,7 +25102,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1015;  /*opt-block+*/
+                                goto MATCH_label_a1017;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25199,9 +25112,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1016;  /*opt-block+*/
+                                goto MATCH_label_a1018;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1017;  /*opt-block+*/
+                                goto MATCH_label_a1019;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25218,14 +25131,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1469 "machine/pentium/disassembler.m"
+                                      #line 1472 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOM.I32", DIS_MEM32);
+                                              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
                                       
 
@@ -25243,13 +25156,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1019;  /*opt-block+*/
+                                      goto MATCH_label_a1021;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1018;  /*opt-block+*/
+                                      goto MATCH_label_a1020;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1020; break;
+                                    goto MATCH_label_a1022; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25260,13 +25173,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1469 "machine/pentium/disassembler.m"
+                                #line 1472 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOM.I32", DIS_MEM32);
+                                        sprintf (str,  "FICOM.I16", DIS_MEM16);
 
                                 
 
@@ -25275,7 +25188,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1018;  /*opt-block+*/
+                                goto MATCH_label_a1020;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25285,9 +25198,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1019;  /*opt-block+*/
+                                goto MATCH_label_a1021;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1020;  /*opt-block+*/
+                                goto MATCH_label_a1022;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25304,14 +25217,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1487 "machine/pentium/disassembler.m"
+                                      #line 1490 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+                                              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
                                       
 
@@ -25329,13 +25242,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1022;  /*opt-block+*/
+                                      goto MATCH_label_a1024;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1021;  /*opt-block+*/
+                                      goto MATCH_label_a1023;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1023; break;
+                                    goto MATCH_label_a1025; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25346,13 +25259,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1487 "machine/pentium/disassembler.m"
+                                #line 1490 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOMP.I32", DIS_MEM32);
+                                        sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
                                 
 
@@ -25361,7 +25274,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1021;  /*opt-block+*/
+                                goto MATCH_label_a1023;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25371,9 +25284,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1022;  /*opt-block+*/
+                                goto MATCH_label_a1024;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1023;  /*opt-block+*/
+                                goto MATCH_label_a1025;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25390,14 +25303,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1726 "machine/pentium/disassembler.m"
+                                      #line 1729 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUB.I32", DIS_MEM32);
+                                              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
                                       
 
@@ -25415,13 +25328,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1025;  /*opt-block+*/
+                                      goto MATCH_label_a1027;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1024;  /*opt-block+*/
+                                      goto MATCH_label_a1026;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1026; break;
+                                    goto MATCH_label_a1028; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25432,13 +25345,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1726 "machine/pentium/disassembler.m"
+                                #line 1729 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUB.I32", DIS_MEM32);
+                                        sprintf (str,  "FISUB.I16", DIS_MEM16);
 
                                 
 
@@ -25447,7 +25360,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1024;  /*opt-block+*/
+                                goto MATCH_label_a1026;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25457,9 +25370,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1025;  /*opt-block+*/
+                                goto MATCH_label_a1027;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1026;  /*opt-block+*/
+                                goto MATCH_label_a1028;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25476,14 +25389,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1747 "machine/pentium/disassembler.m"
+                                      #line 1750 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+                                              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
                                       
 
@@ -25501,13 +25414,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1028;  /*opt-block+*/
+                                      goto MATCH_label_a1030;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1027;  /*opt-block+*/
+                                      goto MATCH_label_a1029;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1029; break;
+                                    goto MATCH_label_a1031; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25518,13 +25431,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1747 "machine/pentium/disassembler.m"
+                                #line 1750 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUBR.I32", DIS_MEM32);
+                                        sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
                                 
 
@@ -25533,7 +25446,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1027;  /*opt-block+*/
+                                goto MATCH_label_a1029;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25543,9 +25456,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1028;  /*opt-block+*/
+                                goto MATCH_label_a1030;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1029;  /*opt-block+*/
+                                goto MATCH_label_a1031;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25579,14 +25492,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1523 "machine/pentium/disassembler.m"
+                                      #line 1526 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+                                              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
                                       
 
@@ -25604,13 +25517,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1031;  /*opt-block+*/
+                                      goto MATCH_label_a1033;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1030;  /*opt-block+*/
+                                      goto MATCH_label_a1032;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1032; break;
+                                    goto MATCH_label_a1034; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25621,13 +25534,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1523 "machine/pentium/disassembler.m"
+                                #line 1526 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIV.I32", DIS_MEM32);
+                                        sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
                                 
 
@@ -25636,7 +25549,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1030;  /*opt-block+*/
+                                goto MATCH_label_a1032;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25646,9 +25559,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1031;  /*opt-block+*/
+                                goto MATCH_label_a1033;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1032;  /*opt-block+*/
+                                goto MATCH_label_a1034;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25665,14 +25578,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem32 = 
+                                      unsigned Mem16 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1541 "machine/pentium/disassembler.m"
+                                      #line 1544 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+                                              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
                                       
 
@@ -25690,13 +25603,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1034;  /*opt-block+*/
+                                      goto MATCH_label_a1036;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1033;  /*opt-block+*/
+                                      goto MATCH_label_a1035;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1035; break;
+                                    goto MATCH_label_a1037; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25707,13 +25620,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1541 "machine/pentium/disassembler.m"
+                                #line 1544 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+                                        sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
                                 
 
@@ -25722,7 +25635,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1033;  /*opt-block+*/
+                                goto MATCH_label_a1035;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25732,9 +25645,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1034;  /*opt-block+*/
+                                goto MATCH_label_a1036;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1035;  /*opt-block+*/
+                                goto MATCH_label_a1037;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25784,13 +25697,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1037;  /*opt-block+*/
+                                      goto MATCH_label_a1039;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1036;  /*opt-block+*/
+                                      goto MATCH_label_a1038;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1038; break;
+                                    goto MATCH_label_a1040; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25816,7 +25729,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1036;  /*opt-block+*/
+                                goto MATCH_label_a1038;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25826,9 +25739,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1037;  /*opt-block+*/
+                                goto MATCH_label_a1039;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1038;  /*opt-block+*/
+                                goto MATCH_label_a1040;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25872,13 +25785,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1040;  /*opt-block+*/
+                                      goto MATCH_label_a1042;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1039;  /*opt-block+*/
+                                      goto MATCH_label_a1041;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1041; break;
+                                    goto MATCH_label_a1043; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25904,7 +25817,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1039;  /*opt-block+*/
+                                goto MATCH_label_a1041;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -25914,9 +25827,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1040;  /*opt-block+*/
+                                goto MATCH_label_a1042;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1041;  /*opt-block+*/
+                                goto MATCH_label_a1043;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -25958,13 +25871,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1043;  /*opt-block+*/
+                                      goto MATCH_label_a1045;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1042;  /*opt-block+*/
+                                      goto MATCH_label_a1044;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1044; break;
+                                    goto MATCH_label_a1046; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -25990,7 +25903,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1042;  /*opt-block+*/
+                                goto MATCH_label_a1044;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26000,9 +25913,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1043;  /*opt-block+*/
+                                goto MATCH_label_a1045;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1044;  /*opt-block+*/
+                                goto MATCH_label_a1046;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26102,13 +26015,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1046;  /*opt-block+*/
+                                      goto MATCH_label_a1048;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1045;  /*opt-block+*/
+                                      goto MATCH_label_a1047;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1047; break;
+                                    goto MATCH_label_a1049; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26144,7 +26057,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1045;  /*opt-block+*/
+                                goto MATCH_label_a1047;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26154,9 +26067,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1046;  /*opt-block+*/
+                                goto MATCH_label_a1048;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1047;  /*opt-block+*/
+                                goto MATCH_label_a1049;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26242,13 +26155,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1049;  /*opt-block+*/
+                                      goto MATCH_label_a1051;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1048;  /*opt-block+*/
+                                      goto MATCH_label_a1050;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1050; break;
+                                    goto MATCH_label_a1052; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26274,7 +26187,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1048;  /*opt-block+*/
+                                goto MATCH_label_a1050;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26284,9 +26197,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1049;  /*opt-block+*/
+                                goto MATCH_label_a1051;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1050;  /*opt-block+*/
+                                goto MATCH_label_a1052;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26336,13 +26249,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1052;  /*opt-block+*/
+                                      goto MATCH_label_a1054;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1051;  /*opt-block+*/
+                                      goto MATCH_label_a1053;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1053; break;
+                                    goto MATCH_label_a1055; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26368,7 +26281,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1051;  /*opt-block+*/
+                                goto MATCH_label_a1053;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26378,9 +26291,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1052;  /*opt-block+*/
+                                goto MATCH_label_a1054;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1053;  /*opt-block+*/
+                                goto MATCH_label_a1055;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26439,13 +26352,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1055;  /*opt-block+*/
+                                      goto MATCH_label_a1057;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1054;  /*opt-block+*/
+                                      goto MATCH_label_a1056;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1056; break;
+                                    goto MATCH_label_a1058; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26471,7 +26384,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1054;  /*opt-block+*/
+                                goto MATCH_label_a1056;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26481,9 +26394,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1055;  /*opt-block+*/
+                                goto MATCH_label_a1057;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1056;  /*opt-block+*/
+                                goto MATCH_label_a1058;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26542,13 +26455,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1058;  /*opt-block+*/
+                                      goto MATCH_label_a1060;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1057;  /*opt-block+*/
+                                      goto MATCH_label_a1059;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1059; break;
+                                    goto MATCH_label_a1061; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26574,7 +26487,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1057;  /*opt-block+*/
+                                goto MATCH_label_a1059;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26584,9 +26497,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1058;  /*opt-block+*/
+                                goto MATCH_label_a1060;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1059;  /*opt-block+*/
+                                goto MATCH_label_a1061;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26628,13 +26541,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1061;  /*opt-block+*/
+                                      goto MATCH_label_a1063;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1060;  /*opt-block+*/
+                                      goto MATCH_label_a1062;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1062; break;
+                                    goto MATCH_label_a1064; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26660,7 +26573,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1060;  /*opt-block+*/
+                                goto MATCH_label_a1062;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26670,9 +26583,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1061;  /*opt-block+*/
+                                goto MATCH_label_a1063;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1062;  /*opt-block+*/
+                                goto MATCH_label_a1064;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26714,13 +26627,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1064;  /*opt-block+*/
+                                      goto MATCH_label_a1066;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1063;  /*opt-block+*/
+                                      goto MATCH_label_a1065;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1065; break;
+                                    goto MATCH_label_a1067; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26746,7 +26659,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1063;  /*opt-block+*/
+                                goto MATCH_label_a1065;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26756,9 +26669,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1064;  /*opt-block+*/
+                                goto MATCH_label_a1066;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1065;  /*opt-block+*/
+                                goto MATCH_label_a1067;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26767,10 +26680,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-                                #line 1723 "machine/pentium/disassembler.m"
+                                #line 1744 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FSUB.STi.ST", DIS_IDX);
+                                        sprintf (str,  "FSUBR.STi.ST", DIS_IDX);
 
                                 
 
@@ -26817,13 +26730,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1067;  /*opt-block+*/
+                                      goto MATCH_label_a1069;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1066;  /*opt-block+*/
+                                      goto MATCH_label_a1068;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1068; break;
+                                    goto MATCH_label_a1070; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26849,7 +26762,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1066;  /*opt-block+*/
+                                goto MATCH_label_a1068;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26859,9 +26772,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1067;  /*opt-block+*/
+                                goto MATCH_label_a1069;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1068;  /*opt-block+*/
+                                goto MATCH_label_a1070;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26870,10 +26783,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-                                #line 1744 "machine/pentium/disassembler.m"
+                                #line 1723 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FSUBR.STi.ST", DIS_IDX);
+                                        sprintf (str,  "FSUB.STi.ST", DIS_IDX);
 
                                 
 
@@ -26920,13 +26833,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1070;  /*opt-block+*/
+                                      goto MATCH_label_a1072;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1069;  /*opt-block+*/
+                                      goto MATCH_label_a1071;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1071; break;
+                                    goto MATCH_label_a1073; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -26952,7 +26865,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1069;  /*opt-block+*/
+                                goto MATCH_label_a1071;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -26962,9 +26875,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1070;  /*opt-block+*/
+                                goto MATCH_label_a1072;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1071;  /*opt-block+*/
+                                goto MATCH_label_a1073;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -26973,10 +26886,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-                                #line 1517 "machine/pentium/disassembler.m"
+                                #line 1538 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FDIV.STi.ST", DIS_IDX);
+                                        sprintf (str,  "FDIVR.STi.ST", DIS_IDX);
 
                                 
 
@@ -27023,13 +26936,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1073;  /*opt-block+*/
+                                      goto MATCH_label_a1075;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1072;  /*opt-block+*/
+                                      goto MATCH_label_a1074;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1074; break;
+                                    goto MATCH_label_a1076; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27055,7 +26968,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1072;  /*opt-block+*/
+                                goto MATCH_label_a1074;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27065,9 +26978,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1073;  /*opt-block+*/
+                                goto MATCH_label_a1075;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1074;  /*opt-block+*/
+                                goto MATCH_label_a1076;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27076,10 +26989,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-                                #line 1538 "machine/pentium/disassembler.m"
+                                #line 1517 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FDIVR.STi.ST", DIS_IDX);
+                                        sprintf (str,  "FDIV.STi.ST", DIS_IDX);
 
                                 
 
@@ -27134,13 +27047,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1076;  /*opt-block+*/
+                                      goto MATCH_label_a1078;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1075;  /*opt-block+*/
+                                      goto MATCH_label_a1077;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1077; break;
+                                    goto MATCH_label_a1079; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27166,7 +27079,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1075;  /*opt-block+*/
+                                goto MATCH_label_a1077;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27176,9 +27089,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1076;  /*opt-block+*/
+                                goto MATCH_label_a1078;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1077;  /*opt-block+*/
+                                goto MATCH_label_a1079;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27239,13 +27152,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1079;  /*opt-block+*/
+                                      goto MATCH_label_a1081;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1078;  /*opt-block+*/
+                                      goto MATCH_label_a1080;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1080; break;
+                                    goto MATCH_label_a1082; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27271,7 +27184,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1078;  /*opt-block+*/
+                                goto MATCH_label_a1080;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27281,9 +27194,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1079;  /*opt-block+*/
+                                goto MATCH_label_a1081;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1080;  /*opt-block+*/
+                                goto MATCH_label_a1082;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27342,13 +27255,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1082;  /*opt-block+*/
+                                      goto MATCH_label_a1084;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1081;  /*opt-block+*/
+                                      goto MATCH_label_a1083;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1083; break;
+                                    goto MATCH_label_a1085; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27374,7 +27287,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1081;  /*opt-block+*/
+                                goto MATCH_label_a1083;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27384,9 +27297,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1082;  /*opt-block+*/
+                                goto MATCH_label_a1084;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1083;  /*opt-block+*/
+                                goto MATCH_label_a1085;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27444,13 +27357,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1085;  /*opt-block+*/
+                                      goto MATCH_label_a1087;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1084;  /*opt-block+*/
+                                      goto MATCH_label_a1086;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1086; break;
+                                    goto MATCH_label_a1088; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27476,7 +27389,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1084;  /*opt-block+*/
+                                goto MATCH_label_a1086;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27486,9 +27399,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1085;  /*opt-block+*/
+                                goto MATCH_label_a1087;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1086;  /*opt-block+*/
+                                goto MATCH_label_a1088;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27566,13 +27479,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1088;  /*opt-block+*/
+                                      goto MATCH_label_a1090;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1087;  /*opt-block+*/
+                                      goto MATCH_label_a1089;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1089; break;
+                                    goto MATCH_label_a1091; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27598,7 +27511,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1087;  /*opt-block+*/
+                                goto MATCH_label_a1089;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27608,9 +27521,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1088;  /*opt-block+*/
+                                goto MATCH_label_a1090;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1089;  /*opt-block+*/
+                                goto MATCH_label_a1091;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27652,13 +27565,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1091;  /*opt-block+*/
+                                      goto MATCH_label_a1093;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1090;  /*opt-block+*/
+                                      goto MATCH_label_a1092;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1092; break;
+                                    goto MATCH_label_a1094; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27684,7 +27597,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1090;  /*opt-block+*/
+                                goto MATCH_label_a1092;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27694,9 +27607,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1091;  /*opt-block+*/
+                                goto MATCH_label_a1093;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1092;  /*opt-block+*/
+                                goto MATCH_label_a1094;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27721,14 +27634,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1448 "machine/pentium/disassembler.m"
+                                      #line 1445 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIADD.I16", DIS_MEM16);
+                                              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
                                       
 
@@ -27746,13 +27659,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1094;  /*opt-block+*/
+                                      goto MATCH_label_a1096;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1093;  /*opt-block+*/
+                                      goto MATCH_label_a1095;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1095; break;
+                                    goto MATCH_label_a1097; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27763,13 +27676,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1448 "machine/pentium/disassembler.m"
+                                #line 1445 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIADD.I16", DIS_MEM16);
+                                        sprintf (str,  "FIADD.I32", DIS_MEM32);
 
                                 
 
@@ -27778,7 +27691,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1093;  /*opt-block+*/
+                                goto MATCH_label_a1095;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27788,9 +27701,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1094;  /*opt-block+*/
+                                goto MATCH_label_a1096;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1095;  /*opt-block+*/
+                                goto MATCH_label_a1097;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27824,14 +27737,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1642 "machine/pentium/disassembler.m"
+                                      #line 1639 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+                                              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
                                       
 
@@ -27849,13 +27762,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1097;  /*opt-block+*/
+                                      goto MATCH_label_a1099;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1096;  /*opt-block+*/
+                                      goto MATCH_label_a1098;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1098; break;
+                                    goto MATCH_label_a1100; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27866,13 +27779,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1642 "machine/pentium/disassembler.m"
+                                #line 1639 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIMUL.I16", DIS_MEM16);
+                                        sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
                                 
 
@@ -27881,7 +27794,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1096;  /*opt-block+*/
+                                goto MATCH_label_a1098;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27891,9 +27804,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1097;  /*opt-block+*/
+                                goto MATCH_label_a1099;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1098;  /*opt-block+*/
+                                goto MATCH_label_a1100;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -27927,14 +27840,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1472 "machine/pentium/disassembler.m"
+                                      #line 1469 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOM.I16", DIS_MEM16);
+                                              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
                                       
 
@@ -27952,13 +27865,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1100;  /*opt-block+*/
+                                      goto MATCH_label_a1102;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1099;  /*opt-block+*/
+                                      goto MATCH_label_a1101;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1101; break;
+                                    goto MATCH_label_a1103; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -27969,13 +27882,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1472 "machine/pentium/disassembler.m"
+                                #line 1469 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOM.I16", DIS_MEM16);
+                                        sprintf (str,  "FICOM.I32", DIS_MEM32);
 
                                 
 
@@ -27984,7 +27897,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1099;  /*opt-block+*/
+                                goto MATCH_label_a1101;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -27994,9 +27907,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1100;  /*opt-block+*/
+                                goto MATCH_label_a1102;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1101;  /*opt-block+*/
+                                goto MATCH_label_a1103;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28013,14 +27926,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1490 "machine/pentium/disassembler.m"
+                                      #line 1487 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+                                              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
                                       
 
@@ -28038,13 +27951,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1103;  /*opt-block+*/
+                                      goto MATCH_label_a1105;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1102;  /*opt-block+*/
+                                      goto MATCH_label_a1104;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1104; break;
+                                    goto MATCH_label_a1106; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28055,13 +27968,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1490 "machine/pentium/disassembler.m"
+                                #line 1487 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FICOMP.I16", DIS_MEM16);
+                                        sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
                                 
 
@@ -28070,7 +27983,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1102;  /*opt-block+*/
+                                goto MATCH_label_a1104;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28080,9 +27993,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1103;  /*opt-block+*/
+                                goto MATCH_label_a1105;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1104;  /*opt-block+*/
+                                goto MATCH_label_a1106;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28116,14 +28029,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1729 "machine/pentium/disassembler.m"
+                                      #line 1726 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FISUB.I16", DIS_MEM16);
+                                              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
                                       
 
@@ -28141,13 +28054,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1106;  /*opt-block+*/
+                                      goto MATCH_label_a1108;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1105;  /*opt-block+*/
+                                      goto MATCH_label_a1107;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1107; break;
+                                    goto MATCH_label_a1109; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28158,13 +28071,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1729 "machine/pentium/disassembler.m"
+                                #line 1726 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FISUB.I16", DIS_MEM16);
+                                        sprintf (str,  "FISUB.I32", DIS_MEM32);
 
                                 
 
@@ -28172,113 +28085,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                                 
                               } /*opt-block*//*opt-block+*/
-                              else 
-                                goto MATCH_label_a1105;  /*opt-block+*/
-                              
-                              break;
-                            case 2: 
-                              MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 4 && 
-                                (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
-                                      /* index at 16 */ && 
-                                (MATCH_w_8_16 >> 3 & 0x7) 
-                                      /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1106;  /*opt-block+*/
                               else 
                                 goto MATCH_label_a1107;  /*opt-block+*/
                               
                               break;
-                            case 3: 
-                              { 
-                                unsigned idx = 
-                                  (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
-                                nextPC = 2 + MATCH_p; 
-                                
-                                #line 1732 "machine/pentium/disassembler.m"
-                                
-
-                                        sprintf (str,  "FSUBP.STi.ST", DIS_IDX);
-
-                                
-
-                                
-                                
-                                
-                              }
-                              
-                              break;
-                            default: assert(0);
-                          } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
-                        break;
-                      case 5: 
-                        
-                          switch((MATCH_w_8_8 >> 6 & 0x3) /* mod at 8 */) {
-                            case 0: 
-                              
-                                switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
-                                  case 0: case 1: case 2: case 3: case 6: 
-                                  case 7: 
-                                    { 
-                                      unsigned Mem16 = 
-                                        1 + addressToPC(MATCH_p);
-                                      nextPC = 2 + MATCH_p; 
-                                      
-                                      #line 1750 "machine/pentium/disassembler.m"
-                                      
-
-                                              sprintf (str,  "FISUBR.I16", DIS_MEM16);
-
-                                      
-
-                                      
-                                      
-                                      
-                                    }
-                                    
-                                    break;
-                                  case 4: 
-                                    MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    if ((MATCH_w_8_16 & 0x7) 
-                                            /* base at 16 */ == 5 && 
-                                      (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
-                                            /* index at 16 */ && 
-                                      (MATCH_w_8_16 >> 3 & 0x7) 
-                                            /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1109;  /*opt-block+*/
-                                    else 
-                                      goto MATCH_label_a1108;  /*opt-block+*/
-                                    
-                                    break;
-                                  case 5: 
-                                    goto MATCH_label_a1110; break;
-                                  default: assert(0);
-                                } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
-                              break;
-                            case 1: 
-                              MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 4 && 
-                                (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
-                                      /* index at 16 */ && 
-                                (MATCH_w_8_16 >> 3 & 0x7) 
-                                      /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
-                                nextPC = 4 + MATCH_p; 
-                                
-                                #line 1750 "machine/pentium/disassembler.m"
-                                
-
-                                        sprintf (str,  "FISUBR.I16", DIS_MEM16);
-
-                                
-
-                                
-                                
-                                
-                              } /*opt-block*//*opt-block+*/
-                              else 
-                                goto MATCH_label_a1108;  /*opt-block+*/
-                              
-                              break;
                             case 2: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
                               if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 4 && 
@@ -28286,9 +28096,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1109;  /*opt-block+*/
+                                goto MATCH_label_a1108;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1110;  /*opt-block+*/
+                                goto MATCH_label_a1109;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28313,7 +28123,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
-                      case 6: 
+                      case 5: 
                         
                           switch((MATCH_w_8_8 >> 6 & 0x3) /* mod at 8 */) {
                             case 0: 
@@ -28322,14 +28132,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1526 "machine/pentium/disassembler.m"
+                                      #line 1747 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+                                              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
                                       
 
@@ -28347,13 +28157,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1112;  /*opt-block+*/
-                                    else 
                                       goto MATCH_label_a1111;  /*opt-block+*/
+                                    else 
+                                      goto MATCH_label_a1110;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1113; break;
+                                    goto MATCH_label_a1112; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28364,13 +28174,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1526 "machine/pentium/disassembler.m"
+                                #line 1747 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIV.I16", DIS_MEM16);
+                                        sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
                                 
 
@@ -28379,7 +28189,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1111;  /*opt-block+*/
+                                goto MATCH_label_a1110;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28389,9 +28199,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1112;  /*opt-block+*/
+                                goto MATCH_label_a1111;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1113;  /*opt-block+*/
+                                goto MATCH_label_a1112;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28400,10 +28210,113 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-                                #line 1520 "machine/pentium/disassembler.m"
+                                #line 1732 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FDIVP.STi.ST", DIS_IDX);
+                                        sprintf (str,  "FSUBP.STi.ST", DIS_IDX);
+
+                                
+
+                                
+                                
+                                
+                              }
+                              
+                              break;
+                            default: assert(0);
+                          } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
+                        break;
+                      case 6: 
+                        
+                          switch((MATCH_w_8_8 >> 6 & 0x3) /* mod at 8 */) {
+                            case 0: 
+                              
+                                switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
+                                  case 0: case 1: case 2: case 3: case 6: 
+                                  case 7: 
+                                    { 
+                                      unsigned Mem32 = 
+                                        1 + addressToPC(MATCH_p);
+                                      nextPC = 2 + MATCH_p; 
+                                      
+                                      #line 1523 "machine/pentium/disassembler.m"
+                                      
+
+                                              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+
+                                      
+
+                                      
+                                      
+                                      
+                                    }
+                                    
+                                    break;
+                                  case 4: 
+                                    MATCH_w_8_16 = getByte(2 + MATCH_p); 
+                                    if ((MATCH_w_8_16 & 0x7) 
+                                            /* base at 16 */ == 5 && 
+                                      (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
+                                            /* index at 16 */ && 
+                                      (MATCH_w_8_16 >> 3 & 0x7) 
+                                            /* index at 16 */ < 8)) 
+                                      goto MATCH_label_a1114;  /*opt-block+*/
+                                    else 
+                                      goto MATCH_label_a1113;  /*opt-block+*/
+                                    
+                                    break;
+                                  case 5: 
+                                    goto MATCH_label_a1115; break;
+                                  default: assert(0);
+                                } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
+                              break;
+                            case 1: 
+                              MATCH_w_8_16 = getByte(2 + MATCH_p); 
+                              if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 4 && 
+                                (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
+                                      /* index at 16 */ && 
+                                (MATCH_w_8_16 >> 3 & 0x7) 
+                                      /* index at 16 */ < 8)) { 
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
+                                nextPC = 4 + MATCH_p; 
+                                
+                                #line 1523 "machine/pentium/disassembler.m"
+                                
+
+                                        sprintf (str,  "FIDIV.I32", DIS_MEM32);
+
+                                
+
+                                
+                                
+                                
+                              } /*opt-block*//*opt-block+*/
+                              else 
+                                goto MATCH_label_a1113;  /*opt-block+*/
+                              
+                              break;
+                            case 2: 
+                              MATCH_w_8_16 = getByte(2 + MATCH_p); 
+                              if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 4 && 
+                                (0 <= (MATCH_w_8_16 >> 3 & 0x7) 
+                                      /* index at 16 */ && 
+                                (MATCH_w_8_16 >> 3 & 0x7) 
+                                      /* index at 16 */ < 8)) 
+                                goto MATCH_label_a1114;  /*opt-block+*/
+                              else 
+                                goto MATCH_label_a1115;  /*opt-block+*/
+                              
+                              break;
+                            case 3: 
+                              { 
+                                unsigned idx = 
+                                  (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
+                                nextPC = 2 + MATCH_p; 
+                                
+                                #line 1547 "machine/pentium/disassembler.m"
+                                
+
+                                        sprintf (str,  "FDIVRP.STi.ST", DIS_IDX);
 
                                 
 
@@ -28425,14 +28338,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     { 
-                                      unsigned Mem16 = 
+                                      unsigned Mem32 = 
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-                                      #line 1544 "machine/pentium/disassembler.m"
+                                      #line 1541 "machine/pentium/disassembler.m"
                                       
 
-                                              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+                                              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
                                       
 
@@ -28450,13 +28363,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1115;  /*opt-block+*/
+                                      goto MATCH_label_a1117;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1114;  /*opt-block+*/
+                                      goto MATCH_label_a1116;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1116; break;
+                                    goto MATCH_label_a1118; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28467,13 +28380,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
-                                unsigned Mem16 = 1 + addressToPC(MATCH_p);
+                                unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-                                #line 1544 "machine/pentium/disassembler.m"
+                                #line 1541 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+                                        sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
                                 
 
@@ -28482,7 +28395,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1114;  /*opt-block+*/
+                                goto MATCH_label_a1116;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28492,9 +28405,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1115;  /*opt-block+*/
+                                goto MATCH_label_a1117;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1116;  /*opt-block+*/
+                                goto MATCH_label_a1118;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28503,10 +28416,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-                                #line 1547 "machine/pentium/disassembler.m"
+                                #line 1520 "machine/pentium/disassembler.m"
                                 
 
-                                        sprintf (str,  "FDIVRP.STi.ST", DIS_IDX);
+                                        sprintf (str,  "FDIVP.STi.ST", DIS_IDX);
 
                                 
 
@@ -28561,13 +28474,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1118;  /*opt-block+*/
+                                      goto MATCH_label_a1120;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1117;  /*opt-block+*/
+                                      goto MATCH_label_a1119;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1119; break;
+                                    goto MATCH_label_a1121; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28593,7 +28506,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1117;  /*opt-block+*/
+                                goto MATCH_label_a1119;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28603,9 +28516,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1118;  /*opt-block+*/
+                                goto MATCH_label_a1120;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1119;  /*opt-block+*/
+                                goto MATCH_label_a1121;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28649,13 +28562,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1121;  /*opt-block+*/
+                                      goto MATCH_label_a1123;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1120;  /*opt-block+*/
+                                      goto MATCH_label_a1122;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1122; break;
+                                    goto MATCH_label_a1124; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28681,7 +28594,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1120;  /*opt-block+*/
+                                goto MATCH_label_a1122;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28691,9 +28604,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1121;  /*opt-block+*/
+                                goto MATCH_label_a1123;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1122;  /*opt-block+*/
+                                goto MATCH_label_a1124;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28735,13 +28648,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1124;  /*opt-block+*/
+                                      goto MATCH_label_a1126;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1123;  /*opt-block+*/
+                                      goto MATCH_label_a1125;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1125; break;
+                                    goto MATCH_label_a1127; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28767,7 +28680,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1123;  /*opt-block+*/
+                                goto MATCH_label_a1125;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28777,9 +28690,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1124;  /*opt-block+*/
+                                goto MATCH_label_a1126;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1125;  /*opt-block+*/
+                                goto MATCH_label_a1127;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28821,13 +28734,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1127;  /*opt-block+*/
+                                      goto MATCH_label_a1129;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1126;  /*opt-block+*/
+                                      goto MATCH_label_a1128;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1128; break;
+                                    goto MATCH_label_a1130; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28853,7 +28766,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1126;  /*opt-block+*/
+                                goto MATCH_label_a1128;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28863,9 +28776,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1127;  /*opt-block+*/
+                                goto MATCH_label_a1129;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1128;  /*opt-block+*/
+                                goto MATCH_label_a1130;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -28924,13 +28837,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1130;  /*opt-block+*/
+                                      goto MATCH_label_a1132;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1129;  /*opt-block+*/
+                                      goto MATCH_label_a1131;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1131; break;
+                                    goto MATCH_label_a1133; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -28956,7 +28869,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1129;  /*opt-block+*/
+                                goto MATCH_label_a1131;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -28966,9 +28879,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1130;  /*opt-block+*/
+                                goto MATCH_label_a1132;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1131;  /*opt-block+*/
+                                goto MATCH_label_a1133;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -29029,13 +28942,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1133;  /*opt-block+*/
+                                      goto MATCH_label_a1135;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1132;  /*opt-block+*/
+                                      goto MATCH_label_a1134;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1134; break;
+                                    goto MATCH_label_a1136; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29061,7 +28974,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1132;  /*opt-block+*/
+                                goto MATCH_label_a1134;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29071,9 +28984,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1133;  /*opt-block+*/
+                                goto MATCH_label_a1135;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1134;  /*opt-block+*/
+                                goto MATCH_label_a1136;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -29134,13 +29047,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1136;  /*opt-block+*/
+                                      goto MATCH_label_a1138;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1135;  /*opt-block+*/
+                                      goto MATCH_label_a1137;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1137; break;
+                                    goto MATCH_label_a1139; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29166,7 +29079,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1135;  /*opt-block+*/
+                                goto MATCH_label_a1137;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29176,9 +29089,9 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1136;  /*opt-block+*/
+                                goto MATCH_label_a1138;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1137;  /*opt-block+*/
+                                goto MATCH_label_a1139;  /*opt-block+*/
                               
                               break;
                             case 3: 
@@ -29207,7 +29120,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a855; break;
+                                    goto MATCH_label_a857; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29216,13 +29129,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a857;  /*opt-block+*/
+                                      goto MATCH_label_a859;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a856;  /*opt-block+*/
+                                      goto MATCH_label_a858;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a858; break;
+                                    goto MATCH_label_a860; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29248,7 +29161,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a856;  /*opt-block+*/
+                                goto MATCH_label_a858;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29258,13 +29171,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a857;  /*opt-block+*/
+                                goto MATCH_label_a859;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a858;  /*opt-block+*/
+                                goto MATCH_label_a860;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a855; break;
+                              goto MATCH_label_a857; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29276,7 +29189,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a859; break;
+                                    goto MATCH_label_a861; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29285,13 +29198,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a861;  /*opt-block+*/
+                                      goto MATCH_label_a863;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a860;  /*opt-block+*/
+                                      goto MATCH_label_a862;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a862; break;
+                                    goto MATCH_label_a864; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29317,7 +29230,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a860;  /*opt-block+*/
+                                goto MATCH_label_a862;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29327,13 +29240,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a861;  /*opt-block+*/
+                                goto MATCH_label_a863;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a862;  /*opt-block+*/
+                                goto MATCH_label_a864;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a859; break;
+                              goto MATCH_label_a861; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29345,7 +29258,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a863; break;
+                                    goto MATCH_label_a865; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29354,13 +29267,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a865;  /*opt-block+*/
+                                      goto MATCH_label_a867;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a864;  /*opt-block+*/
+                                      goto MATCH_label_a866;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a866; break;
+                                    goto MATCH_label_a868; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29386,7 +29299,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a864;  /*opt-block+*/
+                                goto MATCH_label_a866;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29396,13 +29309,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a865;  /*opt-block+*/
+                                goto MATCH_label_a867;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a866;  /*opt-block+*/
+                                goto MATCH_label_a868;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a863; break;
+                              goto MATCH_label_a865; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29414,7 +29327,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a867; break;
+                                    goto MATCH_label_a869; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29423,13 +29336,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a869;  /*opt-block+*/
+                                      goto MATCH_label_a871;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a868;  /*opt-block+*/
+                                      goto MATCH_label_a870;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a870; break;
+                                    goto MATCH_label_a872; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29455,7 +29368,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a868;  /*opt-block+*/
+                                goto MATCH_label_a870;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29465,13 +29378,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a869;  /*opt-block+*/
+                                goto MATCH_label_a871;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a870;  /*opt-block+*/
+                                goto MATCH_label_a872;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a867; break;
+                              goto MATCH_label_a869; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29483,7 +29396,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a871; break;
+                                    goto MATCH_label_a873; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29492,13 +29405,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a873;  /*opt-block+*/
+                                      goto MATCH_label_a875;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a872;  /*opt-block+*/
+                                      goto MATCH_label_a874;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a874; break;
+                                    goto MATCH_label_a876; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29524,7 +29437,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a872;  /*opt-block+*/
+                                goto MATCH_label_a874;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29534,13 +29447,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a873;  /*opt-block+*/
+                                goto MATCH_label_a875;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a874;  /*opt-block+*/
+                                goto MATCH_label_a876;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a871; break;
+                              goto MATCH_label_a873; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29552,7 +29465,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a875; break;
+                                    goto MATCH_label_a877; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29561,13 +29474,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a877;  /*opt-block+*/
+                                      goto MATCH_label_a879;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a876;  /*opt-block+*/
+                                      goto MATCH_label_a878;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a878; break;
+                                    goto MATCH_label_a880; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29593,7 +29506,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a876;  /*opt-block+*/
+                                goto MATCH_label_a878;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29603,13 +29516,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a877;  /*opt-block+*/
+                                goto MATCH_label_a879;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a878;  /*opt-block+*/
+                                goto MATCH_label_a880;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a875; break;
+                              goto MATCH_label_a877; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29623,7 +29536,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a879; break;
+                                    goto MATCH_label_a881; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29632,13 +29545,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a881;  /*opt-block+*/
+                                      goto MATCH_label_a883;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a880;  /*opt-block+*/
+                                      goto MATCH_label_a882;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a882; break;
+                                    goto MATCH_label_a884; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29664,7 +29577,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a880;  /*opt-block+*/
+                                goto MATCH_label_a882;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29674,13 +29587,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a881;  /*opt-block+*/
+                                goto MATCH_label_a883;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a882;  /*opt-block+*/
+                                goto MATCH_label_a884;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a879; break;
+                              goto MATCH_label_a881; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29700,7 +29613,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a883; break;
+                                    goto MATCH_label_a885; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29709,13 +29622,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a885;  /*opt-block+*/
+                                      goto MATCH_label_a887;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a884;  /*opt-block+*/
+                                      goto MATCH_label_a886;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a886; break;
+                                    goto MATCH_label_a888; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29741,7 +29654,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a884;  /*opt-block+*/
+                                goto MATCH_label_a886;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29751,13 +29664,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a885;  /*opt-block+*/
+                                goto MATCH_label_a887;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a886;  /*opt-block+*/
+                                goto MATCH_label_a888;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a883; break;
+                              goto MATCH_label_a885; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29769,7 +29682,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a887; break;
+                                    goto MATCH_label_a889; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29778,13 +29691,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a889;  /*opt-block+*/
+                                      goto MATCH_label_a891;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a888;  /*opt-block+*/
+                                      goto MATCH_label_a890;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a890; break;
+                                    goto MATCH_label_a892; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29810,7 +29723,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a888;  /*opt-block+*/
+                                goto MATCH_label_a890;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29820,13 +29733,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a889;  /*opt-block+*/
+                                goto MATCH_label_a891;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a890;  /*opt-block+*/
+                                goto MATCH_label_a892;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a887; break;
+                              goto MATCH_label_a889; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29838,7 +29751,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a891; break;
+                                    goto MATCH_label_a893; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29847,13 +29760,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a893;  /*opt-block+*/
+                                      goto MATCH_label_a895;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a892;  /*opt-block+*/
+                                      goto MATCH_label_a894;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a894; break;
+                                    goto MATCH_label_a896; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29879,7 +29792,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a892;  /*opt-block+*/
+                                goto MATCH_label_a894;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29889,13 +29802,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a893;  /*opt-block+*/
+                                goto MATCH_label_a895;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a894;  /*opt-block+*/
+                                goto MATCH_label_a896;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a891; break;
+                              goto MATCH_label_a893; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29907,7 +29820,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a895; break;
+                                    goto MATCH_label_a897; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29916,13 +29829,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a897;  /*opt-block+*/
+                                      goto MATCH_label_a899;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a896;  /*opt-block+*/
+                                      goto MATCH_label_a898;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a898; break;
+                                    goto MATCH_label_a900; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -29948,7 +29861,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a896;  /*opt-block+*/
+                                goto MATCH_label_a898;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -29958,13 +29871,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a897;  /*opt-block+*/
+                                goto MATCH_label_a899;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a898;  /*opt-block+*/
+                                goto MATCH_label_a900;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a895; break;
+                              goto MATCH_label_a897; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -29976,7 +29889,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a899; break;
+                                    goto MATCH_label_a901; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -29985,13 +29898,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a901;  /*opt-block+*/
+                                      goto MATCH_label_a903;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a900;  /*opt-block+*/
+                                      goto MATCH_label_a902;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a902; break;
+                                    goto MATCH_label_a904; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30017,7 +29930,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a900;  /*opt-block+*/
+                                goto MATCH_label_a902;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30027,13 +29940,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a901;  /*opt-block+*/
+                                goto MATCH_label_a903;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a902;  /*opt-block+*/
+                                goto MATCH_label_a904;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a899; break;
+                              goto MATCH_label_a901; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30045,7 +29958,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a903; break;
+                                    goto MATCH_label_a905; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30054,13 +29967,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a905;  /*opt-block+*/
+                                      goto MATCH_label_a907;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a904;  /*opt-block+*/
+                                      goto MATCH_label_a906;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a906; break;
+                                    goto MATCH_label_a908; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30086,7 +29999,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a904;  /*opt-block+*/
+                                goto MATCH_label_a906;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30096,13 +30009,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a905;  /*opt-block+*/
+                                goto MATCH_label_a907;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a906;  /*opt-block+*/
+                                goto MATCH_label_a908;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a903; break;
+                              goto MATCH_label_a905; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30116,7 +30029,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a907; break;
+                                    goto MATCH_label_a909; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30125,13 +30038,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a909;  /*opt-block+*/
+                                      goto MATCH_label_a911;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a908;  /*opt-block+*/
+                                      goto MATCH_label_a910;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a910; break;
+                                    goto MATCH_label_a912; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30157,7 +30070,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a908;  /*opt-block+*/
+                                goto MATCH_label_a910;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30167,13 +30080,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a909;  /*opt-block+*/
+                                goto MATCH_label_a911;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a910;  /*opt-block+*/
+                                goto MATCH_label_a912;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a907; break;
+                              goto MATCH_label_a909; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30193,7 +30106,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a911; break;
+                                    goto MATCH_label_a913; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30202,13 +30115,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a913;  /*opt-block+*/
+                                      goto MATCH_label_a915;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a912;  /*opt-block+*/
+                                      goto MATCH_label_a914;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a914; break;
+                                    goto MATCH_label_a916; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30234,7 +30147,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a912;  /*opt-block+*/
+                                goto MATCH_label_a914;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30244,13 +30157,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a913;  /*opt-block+*/
+                                goto MATCH_label_a915;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a914;  /*opt-block+*/
+                                goto MATCH_label_a916;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a911; break;
+                              goto MATCH_label_a913; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30262,7 +30175,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a915; break;
+                                    goto MATCH_label_a917; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30271,13 +30184,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a917;  /*opt-block+*/
+                                      goto MATCH_label_a919;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a916;  /*opt-block+*/
+                                      goto MATCH_label_a918;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a918; break;
+                                    goto MATCH_label_a920; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30303,7 +30216,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a916;  /*opt-block+*/
+                                goto MATCH_label_a918;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30313,13 +30226,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a917;  /*opt-block+*/
+                                goto MATCH_label_a919;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a918;  /*opt-block+*/
+                                goto MATCH_label_a920;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a915; break;
+                              goto MATCH_label_a917; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30331,7 +30244,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a919; break;
+                                    goto MATCH_label_a921; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30340,13 +30253,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a921;  /*opt-block+*/
+                                      goto MATCH_label_a923;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a920;  /*opt-block+*/
+                                      goto MATCH_label_a922;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a922; break;
+                                    goto MATCH_label_a924; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30372,7 +30285,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a920;  /*opt-block+*/
+                                goto MATCH_label_a922;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30382,13 +30295,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a921;  /*opt-block+*/
+                                goto MATCH_label_a923;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a922;  /*opt-block+*/
+                                goto MATCH_label_a924;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a919; break;
+                              goto MATCH_label_a921; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30400,7 +30313,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a923; break;
+                                    goto MATCH_label_a925; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30409,13 +30322,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a925;  /*opt-block+*/
+                                      goto MATCH_label_a927;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a924;  /*opt-block+*/
+                                      goto MATCH_label_a926;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a926; break;
+                                    goto MATCH_label_a928; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30441,7 +30354,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a924;  /*opt-block+*/
+                                goto MATCH_label_a926;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30451,13 +30364,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a925;  /*opt-block+*/
+                                goto MATCH_label_a927;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a926;  /*opt-block+*/
+                                goto MATCH_label_a928;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a923; break;
+                              goto MATCH_label_a925; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30469,7 +30382,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a927; break;
+                                    goto MATCH_label_a929; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30478,13 +30391,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a929;  /*opt-block+*/
+                                      goto MATCH_label_a931;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a928;  /*opt-block+*/
+                                      goto MATCH_label_a930;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a930; break;
+                                    goto MATCH_label_a932; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30510,7 +30423,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a928;  /*opt-block+*/
+                                goto MATCH_label_a930;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30520,13 +30433,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a929;  /*opt-block+*/
+                                goto MATCH_label_a931;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a930;  /*opt-block+*/
+                                goto MATCH_label_a932;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a927; break;
+                              goto MATCH_label_a929; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30538,7 +30451,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a931; break;
+                                    goto MATCH_label_a933; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30547,13 +30460,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a933;  /*opt-block+*/
+                                      goto MATCH_label_a935;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a932;  /*opt-block+*/
+                                      goto MATCH_label_a934;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a934; break;
+                                    goto MATCH_label_a936; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30579,7 +30492,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a932;  /*opt-block+*/
+                                goto MATCH_label_a934;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30589,13 +30502,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a933;  /*opt-block+*/
+                                goto MATCH_label_a935;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a934;  /*opt-block+*/
+                                goto MATCH_label_a936;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a931; break;
+                              goto MATCH_label_a933; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30609,7 +30522,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a935; break;
+                                    goto MATCH_label_a937; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30618,13 +30531,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a937;  /*opt-block+*/
+                                      goto MATCH_label_a939;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a936;  /*opt-block+*/
+                                      goto MATCH_label_a938;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a938; break;
+                                    goto MATCH_label_a940; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30650,7 +30563,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a936;  /*opt-block+*/
+                                goto MATCH_label_a938;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30660,13 +30573,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a937;  /*opt-block+*/
+                                goto MATCH_label_a939;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a938;  /*opt-block+*/
+                                goto MATCH_label_a940;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a935; break;
+                              goto MATCH_label_a937; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30686,7 +30599,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a939; break;
+                                    goto MATCH_label_a941; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30695,13 +30608,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a941;  /*opt-block+*/
+                                      goto MATCH_label_a943;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a940;  /*opt-block+*/
+                                      goto MATCH_label_a942;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a942; break;
+                                    goto MATCH_label_a944; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30727,7 +30640,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a940;  /*opt-block+*/
+                                goto MATCH_label_a942;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30737,13 +30650,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a941;  /*opt-block+*/
+                                goto MATCH_label_a943;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a942;  /*opt-block+*/
+                                goto MATCH_label_a944;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a939; break;
+                              goto MATCH_label_a941; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30755,7 +30668,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a943; break;
+                                    goto MATCH_label_a945; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30764,13 +30677,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a945;  /*opt-block+*/
+                                      goto MATCH_label_a947;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a944;  /*opt-block+*/
+                                      goto MATCH_label_a946;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a946; break;
+                                    goto MATCH_label_a948; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30796,7 +30709,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a944;  /*opt-block+*/
+                                goto MATCH_label_a946;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30806,13 +30719,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a945;  /*opt-block+*/
+                                goto MATCH_label_a947;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a946;  /*opt-block+*/
+                                goto MATCH_label_a948;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a943; break;
+                              goto MATCH_label_a945; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30824,7 +30737,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a947; break;
+                                    goto MATCH_label_a949; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30833,13 +30746,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a949;  /*opt-block+*/
+                                      goto MATCH_label_a951;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a948;  /*opt-block+*/
+                                      goto MATCH_label_a950;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a950; break;
+                                    goto MATCH_label_a952; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30865,7 +30778,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a948;  /*opt-block+*/
+                                goto MATCH_label_a950;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30875,13 +30788,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a949;  /*opt-block+*/
+                                goto MATCH_label_a951;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a950;  /*opt-block+*/
+                                goto MATCH_label_a952;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a947; break;
+                              goto MATCH_label_a949; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30893,7 +30806,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a951; break;
+                                    goto MATCH_label_a953; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30902,13 +30815,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a953;  /*opt-block+*/
+                                      goto MATCH_label_a955;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a952;  /*opt-block+*/
+                                      goto MATCH_label_a954;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a954; break;
+                                    goto MATCH_label_a956; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -30934,7 +30847,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a952;  /*opt-block+*/
+                                goto MATCH_label_a954;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -30944,13 +30857,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a953;  /*opt-block+*/
+                                goto MATCH_label_a955;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a954;  /*opt-block+*/
+                                goto MATCH_label_a956;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a951; break;
+                              goto MATCH_label_a953; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -30962,7 +30875,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a955; break;
+                                    goto MATCH_label_a957; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -30971,13 +30884,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a957;  /*opt-block+*/
+                                      goto MATCH_label_a959;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a956;  /*opt-block+*/
+                                      goto MATCH_label_a958;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a958; break;
+                                    goto MATCH_label_a960; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31003,7 +30916,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a956;  /*opt-block+*/
+                                goto MATCH_label_a958;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31013,13 +30926,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a957;  /*opt-block+*/
+                                goto MATCH_label_a959;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a958;  /*opt-block+*/
+                                goto MATCH_label_a960;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a955; break;
+                              goto MATCH_label_a957; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31031,7 +30944,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a959; break;
+                                    goto MATCH_label_a961; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31040,13 +30953,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a961;  /*opt-block+*/
+                                      goto MATCH_label_a963;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a960;  /*opt-block+*/
+                                      goto MATCH_label_a962;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a962; break;
+                                    goto MATCH_label_a964; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31072,7 +30985,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a960;  /*opt-block+*/
+                                goto MATCH_label_a962;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31082,13 +30995,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a961;  /*opt-block+*/
+                                goto MATCH_label_a963;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a962;  /*opt-block+*/
+                                goto MATCH_label_a964;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a959; break;
+                              goto MATCH_label_a961; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31102,7 +31015,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a963; break;
+                                    goto MATCH_label_a965; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31111,13 +31024,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a965;  /*opt-block+*/
+                                      goto MATCH_label_a967;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a964;  /*opt-block+*/
+                                      goto MATCH_label_a966;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a966; break;
+                                    goto MATCH_label_a968; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31143,7 +31056,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a964;  /*opt-block+*/
+                                goto MATCH_label_a966;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31153,13 +31066,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a965;  /*opt-block+*/
+                                goto MATCH_label_a967;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a966;  /*opt-block+*/
+                                goto MATCH_label_a968;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a963; break;
+                              goto MATCH_label_a965; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31400,7 +31313,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1194; break;
+                                    goto MATCH_label_a1196; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31409,13 +31322,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1196;  /*opt-block+*/
+                                      goto MATCH_label_a1198;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1195;  /*opt-block+*/
+                                      goto MATCH_label_a1197;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1197; break;
+                                    goto MATCH_label_a1199; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31477,7 +31390,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1195;  /*opt-block+*/
+                                goto MATCH_label_a1197;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31487,13 +31400,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1196;  /*opt-block+*/
+                                goto MATCH_label_a1198;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1197;  /*opt-block+*/
+                                goto MATCH_label_a1199;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1194; break;
+                              goto MATCH_label_a1196; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31505,7 +31418,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1198; break;
+                                    goto MATCH_label_a1200; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31514,13 +31427,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1200;  /*opt-block+*/
+                                      goto MATCH_label_a1202;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1199;  /*opt-block+*/
+                                      goto MATCH_label_a1201;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1201; break;
+                                    goto MATCH_label_a1203; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31546,7 +31459,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1199;  /*opt-block+*/
+                                goto MATCH_label_a1201;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31556,13 +31469,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1200;  /*opt-block+*/
+                                goto MATCH_label_a1202;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1201;  /*opt-block+*/
+                                goto MATCH_label_a1203;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1198; break;
+                              goto MATCH_label_a1200; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31584,7 +31497,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1202; break;
+                                    goto MATCH_label_a1204; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31593,13 +31506,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1204;  /*opt-block+*/
+                                      goto MATCH_label_a1206;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1203;  /*opt-block+*/
+                                      goto MATCH_label_a1205;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1205; break;
+                                    goto MATCH_label_a1207; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31625,7 +31538,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1203;  /*opt-block+*/
+                                goto MATCH_label_a1205;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31635,13 +31548,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1204;  /*opt-block+*/
+                                goto MATCH_label_a1206;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1205;  /*opt-block+*/
+                                goto MATCH_label_a1207;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1202; break;
+                              goto MATCH_label_a1204; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31653,7 +31566,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1206; break;
+                                    goto MATCH_label_a1208; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31662,13 +31575,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1208;  /*opt-block+*/
+                                      goto MATCH_label_a1210;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1207;  /*opt-block+*/
+                                      goto MATCH_label_a1209;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1209; break;
+                                    goto MATCH_label_a1211; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31694,7 +31607,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1207;  /*opt-block+*/
+                                goto MATCH_label_a1209;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31704,13 +31617,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1208;  /*opt-block+*/
+                                goto MATCH_label_a1210;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1209;  /*opt-block+*/
+                                goto MATCH_label_a1211;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1206; break;
+                              goto MATCH_label_a1208; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31722,7 +31635,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1210; break;
+                                    goto MATCH_label_a1212; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31731,13 +31644,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1212;  /*opt-block+*/
+                                      goto MATCH_label_a1214;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1211;  /*opt-block+*/
+                                      goto MATCH_label_a1213;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1213; break;
+                                    goto MATCH_label_a1215; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31763,7 +31676,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1211;  /*opt-block+*/
+                                goto MATCH_label_a1213;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31773,13 +31686,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1212;  /*opt-block+*/
+                                goto MATCH_label_a1214;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1213;  /*opt-block+*/
+                                goto MATCH_label_a1215;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1210; break;
+                              goto MATCH_label_a1212; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -31793,7 +31706,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1214; break;
+                                    goto MATCH_label_a1216; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -31802,13 +31715,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1216;  /*opt-block+*/
+                                      goto MATCH_label_a1218;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1215;  /*opt-block+*/
+                                      goto MATCH_label_a1217;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1217; break;
+                                    goto MATCH_label_a1219; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -31834,7 +31747,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1215;  /*opt-block+*/
+                                goto MATCH_label_a1217;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -31844,13 +31757,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1216;  /*opt-block+*/
+                                goto MATCH_label_a1218;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1217;  /*opt-block+*/
+                                goto MATCH_label_a1219;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1214; break;
+                              goto MATCH_label_a1216; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -32685,7 +32598,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                                    goto MATCH_label_a1138; 
+                                    goto MATCH_label_a1140; 
                                     
                                     break;
                                   case 4: 
@@ -32697,19 +32610,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                      goto MATCH_label_a1140; 
+                                      goto MATCH_label_a1142; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                      goto MATCH_label_a1139; 
+                                      goto MATCH_label_a1141; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                    goto MATCH_label_a1141; 
+                                    goto MATCH_label_a1143; 
                                     
                                     break;
                                   default: assert(0);
@@ -32744,7 +32657,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_24 = getByte(3 + MATCH_p); 
-                                goto MATCH_label_a1139; 
+                                goto MATCH_label_a1141; 
                                 
                               } /*opt-block*/
                               
@@ -32757,19 +32670,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_8_56 = getByte(7 + MATCH_p); 
-                                goto MATCH_label_a1140; 
+                                goto MATCH_label_a1142; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_8_48 = getByte(6 + MATCH_p); 
-                                goto MATCH_label_a1141; 
+                                goto MATCH_label_a1143; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_8_16 = getByte(2 + MATCH_p); 
-                              goto MATCH_label_a1138; 
+                              goto MATCH_label_a1140; 
                               
                               break;
                             default: assert(0);
@@ -32785,7 +32698,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1142; break;
+                                    goto MATCH_label_a1144; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -32794,13 +32707,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1144;  /*opt-block+*/
+                                      goto MATCH_label_a1146;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1143;  /*opt-block+*/
+                                      goto MATCH_label_a1145;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1145; break;
+                                    goto MATCH_label_a1147; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -32826,7 +32739,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1143;  /*opt-block+*/
+                                goto MATCH_label_a1145;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -32836,13 +32749,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1144;  /*opt-block+*/
+                                goto MATCH_label_a1146;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1145;  /*opt-block+*/
+                                goto MATCH_label_a1147;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1142; break;
+                              goto MATCH_label_a1144; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -32854,7 +32767,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1146; break;
+                                    goto MATCH_label_a1148; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -32863,13 +32776,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1148;  /*opt-block+*/
+                                      goto MATCH_label_a1150;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1147;  /*opt-block+*/
+                                      goto MATCH_label_a1149;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1149; break;
+                                    goto MATCH_label_a1151; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -32895,7 +32808,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1147;  /*opt-block+*/
+                                goto MATCH_label_a1149;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -32905,13 +32818,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1148;  /*opt-block+*/
+                                goto MATCH_label_a1150;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1149;  /*opt-block+*/
+                                goto MATCH_label_a1151;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1146; break;
+                              goto MATCH_label_a1148; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -32923,7 +32836,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1150; break;
+                                    goto MATCH_label_a1152; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -32932,13 +32845,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1152;  /*opt-block+*/
+                                      goto MATCH_label_a1154;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1151;  /*opt-block+*/
+                                      goto MATCH_label_a1153;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1153; break;
+                                    goto MATCH_label_a1155; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -32964,7 +32877,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1151;  /*opt-block+*/
+                                goto MATCH_label_a1153;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -32974,13 +32887,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1152;  /*opt-block+*/
+                                goto MATCH_label_a1154;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1153;  /*opt-block+*/
+                                goto MATCH_label_a1155;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1150; break;
+                              goto MATCH_label_a1152; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -32992,7 +32905,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1154; break;
+                                    goto MATCH_label_a1156; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33001,13 +32914,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1156;  /*opt-block+*/
+                                      goto MATCH_label_a1158;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1155;  /*opt-block+*/
+                                      goto MATCH_label_a1157;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1157; break;
+                                    goto MATCH_label_a1159; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33033,7 +32946,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1155;  /*opt-block+*/
+                                goto MATCH_label_a1157;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33043,13 +32956,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1156;  /*opt-block+*/
+                                goto MATCH_label_a1158;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1157;  /*opt-block+*/
+                                goto MATCH_label_a1159;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1154; break;
+                              goto MATCH_label_a1156; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33061,7 +32974,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1158; break;
+                                    goto MATCH_label_a1160; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33070,13 +32983,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1160;  /*opt-block+*/
+                                      goto MATCH_label_a1162;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1159;  /*opt-block+*/
+                                      goto MATCH_label_a1161;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1161; break;
+                                    goto MATCH_label_a1163; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33102,7 +33015,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1159;  /*opt-block+*/
+                                goto MATCH_label_a1161;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33112,13 +33025,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1160;  /*opt-block+*/
+                                goto MATCH_label_a1162;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1161;  /*opt-block+*/
+                                goto MATCH_label_a1163;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1158; break;
+                              goto MATCH_label_a1160; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33130,7 +33043,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1162; break;
+                                    goto MATCH_label_a1164; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33139,13 +33052,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1164;  /*opt-block+*/
+                                      goto MATCH_label_a1166;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1163;  /*opt-block+*/
+                                      goto MATCH_label_a1165;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1165; break;
+                                    goto MATCH_label_a1167; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33177,7 +33090,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1163;  /*opt-block+*/
+                                goto MATCH_label_a1165;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33187,13 +33100,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1164;  /*opt-block+*/
+                                goto MATCH_label_a1166;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1165;  /*opt-block+*/
+                                goto MATCH_label_a1167;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1162; break;
+                              goto MATCH_label_a1164; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33214,7 +33127,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
                                     MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                                    goto MATCH_label_a1166; 
+                                    goto MATCH_label_a1168; 
                                     
                                     break;
                                   case 4: 
@@ -33226,19 +33139,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) { 
                                       MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                      goto MATCH_label_a1168; 
+                                      goto MATCH_label_a1170; 
                                       
                                     } /*opt-block*/
                                     else { 
                                       MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                      goto MATCH_label_a1167; 
+                                      goto MATCH_label_a1169; 
                                       
                                     } /*opt-block*/
                                     
                                     break;
                                   case 5: 
                                     MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                    goto MATCH_label_a1169; 
+                                    goto MATCH_label_a1171; 
                                     
                                     break;
                                   default: assert(0);
@@ -33273,7 +33186,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_24 = getDword(3 + MATCH_p); 
-                                goto MATCH_label_a1167; 
+                                goto MATCH_label_a1169; 
                                 
                               } /*opt-block*/
                               
@@ -33286,19 +33199,19 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) { 
                                 MATCH_w_32_56 = getDword(7 + MATCH_p); 
-                                goto MATCH_label_a1168; 
+                                goto MATCH_label_a1170; 
                                 
                               } /*opt-block*/
                               else { 
                                 MATCH_w_32_48 = getDword(6 + MATCH_p); 
-                                goto MATCH_label_a1169; 
+                                goto MATCH_label_a1171; 
                                 
                               } /*opt-block*/
                               
                               break;
                             case 3: 
                               MATCH_w_32_16 = getDword(2 + MATCH_p); 
-                              goto MATCH_label_a1166; 
+                              goto MATCH_label_a1168; 
                               
                               break;
                             default: assert(0);
@@ -33314,7 +33227,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1170; break;
+                                    goto MATCH_label_a1172; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33323,13 +33236,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1172;  /*opt-block+*/
+                                      goto MATCH_label_a1174;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1171;  /*opt-block+*/
+                                      goto MATCH_label_a1173;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1173; break;
+                                    goto MATCH_label_a1175; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33355,7 +33268,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1171;  /*opt-block+*/
+                                goto MATCH_label_a1173;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33365,13 +33278,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1172;  /*opt-block+*/
+                                goto MATCH_label_a1174;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1173;  /*opt-block+*/
+                                goto MATCH_label_a1175;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1170; break;
+                              goto MATCH_label_a1172; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33383,7 +33296,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1174; break;
+                                    goto MATCH_label_a1176; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33392,13 +33305,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1176;  /*opt-block+*/
+                                      goto MATCH_label_a1178;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1175;  /*opt-block+*/
+                                      goto MATCH_label_a1177;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1177; break;
+                                    goto MATCH_label_a1179; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33424,7 +33337,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1175;  /*opt-block+*/
+                                goto MATCH_label_a1177;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33434,13 +33347,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1176;  /*opt-block+*/
+                                goto MATCH_label_a1178;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1177;  /*opt-block+*/
+                                goto MATCH_label_a1179;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1174; break;
+                              goto MATCH_label_a1176; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33452,7 +33365,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1178; break;
+                                    goto MATCH_label_a1180; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33461,13 +33374,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1180;  /*opt-block+*/
+                                      goto MATCH_label_a1182;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1179;  /*opt-block+*/
+                                      goto MATCH_label_a1181;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1181; break;
+                                    goto MATCH_label_a1183; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33493,7 +33406,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1179;  /*opt-block+*/
+                                goto MATCH_label_a1181;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33503,13 +33416,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1180;  /*opt-block+*/
+                                goto MATCH_label_a1182;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1181;  /*opt-block+*/
+                                goto MATCH_label_a1183;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1178; break;
+                              goto MATCH_label_a1180; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33521,7 +33434,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1182; break;
+                                    goto MATCH_label_a1184; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33530,13 +33443,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1184;  /*opt-block+*/
+                                      goto MATCH_label_a1186;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1183;  /*opt-block+*/
+                                      goto MATCH_label_a1185;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1185; break;
+                                    goto MATCH_label_a1187; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33562,7 +33475,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1183;  /*opt-block+*/
+                                goto MATCH_label_a1185;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33572,13 +33485,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1184;  /*opt-block+*/
+                                goto MATCH_label_a1186;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1185;  /*opt-block+*/
+                                goto MATCH_label_a1187;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1182; break;
+                              goto MATCH_label_a1184; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33590,7 +33503,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1186; break;
+                                    goto MATCH_label_a1188; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33599,13 +33512,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1188;  /*opt-block+*/
+                                      goto MATCH_label_a1190;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1187;  /*opt-block+*/
+                                      goto MATCH_label_a1189;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1189; break;
+                                    goto MATCH_label_a1191; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33631,7 +33544,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1187;  /*opt-block+*/
+                                goto MATCH_label_a1189;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33641,13 +33554,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1188;  /*opt-block+*/
+                                goto MATCH_label_a1190;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1189;  /*opt-block+*/
+                                goto MATCH_label_a1191;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1186; break;
+                              goto MATCH_label_a1188; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -33659,7 +33572,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 switch((MATCH_w_8_8 & 0x7) /* r_m at 8 */) {
                                   case 0: case 1: case 2: case 3: case 6: 
                                   case 7: 
-                                    goto MATCH_label_a1190; break;
+                                    goto MATCH_label_a1192; break;
                                   case 4: 
                                     MATCH_w_8_16 = getByte(2 + MATCH_p); 
                                     if ((MATCH_w_8_16 & 0x7) 
@@ -33668,13 +33581,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* index at 16 */ && 
                                       (MATCH_w_8_16 >> 3 & 0x7) 
                                             /* index at 16 */ < 8)) 
-                                      goto MATCH_label_a1192;  /*opt-block+*/
+                                      goto MATCH_label_a1194;  /*opt-block+*/
                                     else 
-                                      goto MATCH_label_a1191;  /*opt-block+*/
+                                      goto MATCH_label_a1193;  /*opt-block+*/
                                     
                                     break;
                                   case 5: 
-                                    goto MATCH_label_a1193; break;
+                                    goto MATCH_label_a1195; break;
                                   default: assert(0);
                                 } /* (MATCH_w_8_8 & 0x7) -- r_m at 8 --*/ 
                               break;
@@ -33700,7 +33613,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                 
                               } /*opt-block*//*opt-block+*/
                               else 
-                                goto MATCH_label_a1191;  /*opt-block+*/
+                                goto MATCH_label_a1193;  /*opt-block+*/
                               
                               break;
                             case 2: 
@@ -33710,13 +33623,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* index at 16 */ && 
                                 (MATCH_w_8_16 >> 3 & 0x7) 
                                       /* index at 16 */ < 8)) 
-                                goto MATCH_label_a1192;  /*opt-block+*/
+                                goto MATCH_label_a1194;  /*opt-block+*/
                               else 
-                                goto MATCH_label_a1193;  /*opt-block+*/
+                                goto MATCH_label_a1195;  /*opt-block+*/
                               
                               break;
                             case 3: 
-                              goto MATCH_label_a1190; break;
+                              goto MATCH_label_a1192; break;
                             default: assert(0);
                           } /* (MATCH_w_8_8 >> 6 & 0x3) -- mod at 8 --*/ 
                         break;
@@ -43906,13 +43819,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a520: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      unsigned Eaddr = 2 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
       #line 585 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "POP.Evow", DIS_MEM);
+              sprintf (str,  "POP.Evow", DIS_EADDR16);
 
       
 
@@ -43978,13 +43891,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a521: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      unsigned Eaddr = 2 + addressToPC(MATCH_p);
+      nextPC = 4 + MATCH_p; 
       
       #line 585 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "POP.Evow", DIS_MEM);
+              sprintf (str,  "POP.Evow", DIS_EADDR16);
 
       
 
@@ -44050,13 +43963,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a522: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Eaddr = 2 + addressToPC(MATCH_p);
+      nextPC = 8 + MATCH_p; 
       
       #line 585 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "POP.Evow", DIS_MEM);
+              sprintf (str,  "POP.Evow", DIS_EADDR16);
 
       
 
@@ -44123,14 +44036,66 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a523: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 345 "machine/pentium/disassembler.m"
+      #line 585 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+              sprintf (str,  "POP.Evow", DIS_EADDR16);
+
+      
+
+      //    | OUTSvod() =>
+
+      //        sprintf (str,  "OUTSvod");
+
+      
+
+      //    | OUTSvow() =>
+
+      //        sprintf (str,  "OUTSvow");
+
+      
+
+      //    | OUTSB() =>
+
+      //        sprintf (str,  "OUTSB");
+
+      
+
+      //    | OUT.DX.eAXod() =>
+
+      //        sprintf (str,  "OUT.DX.eAXod");
+
+      
+
+      //    | OUT.DX.eAXow() =>
+
+      //        sprintf (str,  "OUT.DX.eAXow");
+
+      
+
+      //    | OUT.DX.AL() =>
+
+      //        sprintf (str,  "OUT.DX.AL");
+
+      
+
+      //    | OUT.Ib.eAXod(i8) =>
+
+      //        sprintf (str,  "OUT.Ib.eAXod", DIS_I8);
+
+      
+
+      //    | OUT.Ib.eAXow(i8) =>
+
+      //        sprintf (str,  "OUT.Ib.eAXow", DIS_I8);
+
+      
+
+      //    | OUT.Ib.AL(i8) =>
+
+      //        sprintf (str,  "OUT.Ib.AL", DIS_I8);
 
       
 
@@ -44144,8 +44109,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
-      nextPC = 5 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 345 "machine/pentium/disassembler.m"
       
@@ -44164,8 +44129,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
-      nextPC = 9 + MATCH_p; 
+        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
+      nextPC = 5 + MATCH_p; 
       
       #line 345 "machine/pentium/disassembler.m"
       
@@ -44184,8 +44149,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
+      nextPC = 9 + MATCH_p; 
       
       #line 345 "machine/pentium/disassembler.m"
       
@@ -44204,13 +44169,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 339 "machine/pentium/disassembler.m"
+      #line 345 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+              sprintf (str,  "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
       
 
@@ -44224,8 +44189,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
-      nextPC = 5 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 339 "machine/pentium/disassembler.m"
       
@@ -44244,8 +44209,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
-      nextPC = 9 + MATCH_p; 
+        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
+      nextPC = 5 + MATCH_p; 
       
       #line 339 "machine/pentium/disassembler.m"
       
@@ -44264,8 +44229,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
+      nextPC = 9 + MATCH_p; 
       
       #line 339 "machine/pentium/disassembler.m"
       
@@ -44284,13 +44249,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 333 "machine/pentium/disassembler.m"
+      #line 339 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+              sprintf (str,  "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
       
 
@@ -44304,8 +44269,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
-      nextPC = 5 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 333 "machine/pentium/disassembler.m"
       
@@ -44324,8 +44289,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
-      nextPC = 9 + MATCH_p; 
+        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
+      nextPC = 5 + MATCH_p; 
       
       #line 333 "machine/pentium/disassembler.m"
       
@@ -44344,8 +44309,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
+      nextPC = 9 + MATCH_p; 
       
       #line 333 "machine/pentium/disassembler.m"
       
@@ -44364,13 +44329,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 327 "machine/pentium/disassembler.m"
+      #line 333 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+              sprintf (str,  "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
       
 
@@ -44384,8 +44349,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
-      nextPC = 5 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 327 "machine/pentium/disassembler.m"
       
@@ -44404,8 +44369,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
-      nextPC = 9 + MATCH_p; 
+        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
+      nextPC = 5 + MATCH_p; 
       
       #line 327 "machine/pentium/disassembler.m"
       
@@ -44424,8 +44389,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
+      nextPC = 9 + MATCH_p; 
       
       #line 327 "machine/pentium/disassembler.m"
       
@@ -44444,13 +44409,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 321 "machine/pentium/disassembler.m"
+      #line 327 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+              sprintf (str,  "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
       
 
@@ -44464,8 +44429,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
-      nextPC = 5 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 321 "machine/pentium/disassembler.m"
       
@@ -44484,8 +44449,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
-      nextPC = 9 + MATCH_p; 
+        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
+      nextPC = 5 + MATCH_p; 
       
       #line 321 "machine/pentium/disassembler.m"
       
@@ -44504,8 +44469,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
+      nextPC = 9 + MATCH_p; 
       
       #line 321 "machine/pentium/disassembler.m"
       
@@ -44524,13 +44489,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 315 "machine/pentium/disassembler.m"
+      #line 321 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+              sprintf (str,  "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
       
 
@@ -44544,8 +44509,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
-      nextPC = 5 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 315 "machine/pentium/disassembler.m"
       
@@ -44564,6 +44529,26 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
+        sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
+      nextPC = 5 + MATCH_p; 
+      
+      #line 315 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a546: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 2 + addressToPC(MATCH_p);
+      int /* [~128..127] */ i8 = 
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
@@ -44580,7 +44565,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a546: (void)0; /*placeholder for label*/ 
+  MATCH_label_a547: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -44600,7 +44585,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a547: (void)0; /*placeholder for label*/ 
+  MATCH_label_a548: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -44620,7 +44605,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a548: (void)0; /*placeholder for label*/ 
+  MATCH_label_a549: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -44640,7 +44625,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a549: (void)0; /*placeholder for label*/ 
+  MATCH_label_a550: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -44660,7 +44645,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a550: (void)0; /*placeholder for label*/ 
+  MATCH_label_a551: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -44680,7 +44665,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a551: (void)0; /*placeholder for label*/ 
+  MATCH_label_a552: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~32768..32767] */ i16 = 
@@ -44700,7 +44685,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a552: (void)0; /*placeholder for label*/ 
+  MATCH_label_a553: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~32768..32767] */ i16 = 
@@ -44720,7 +44705,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a553: (void)0; /*placeholder for label*/ 
+  MATCH_label_a554: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~32768..32767] */ i16 = 
@@ -44740,7 +44725,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a554: (void)0; /*placeholder for label*/ 
+  MATCH_label_a555: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       int /* [~32768..32767] */ i16 = 
@@ -44760,28 +44745,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a555: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
-      
-      #line 450 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "ROLB.Ev.1ow", DIS_EADDR16);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
   MATCH_label_a556: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 450 "machine/pentium/disassembler.m"
       
@@ -44799,7 +44766,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a557: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 450 "machine/pentium/disassembler.m"
       
@@ -44817,7 +44784,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a558: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 450 "machine/pentium/disassembler.m"
       
@@ -44835,12 +44802,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a559: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 438 "machine/pentium/disassembler.m"
+      #line 450 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ORB.Ev.1owR", DIS_EADDR16);
+              sprintf (str,  "ROLB.Ev.1ow", DIS_EADDR16);
 
       
 
@@ -44853,7 +44820,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a560: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 438 "machine/pentium/disassembler.m"
       
@@ -44871,7 +44838,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a561: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 438 "machine/pentium/disassembler.m"
       
@@ -44889,7 +44856,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a562: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 438 "machine/pentium/disassembler.m"
       
@@ -44907,12 +44874,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a563: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 426 "machine/pentium/disassembler.m"
+      #line 438 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.1ow", DIS_EADDR16);
+              sprintf (str,  "ORB.Ev.1owR", DIS_EADDR16);
 
       
 
@@ -44925,7 +44892,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a564: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 426 "machine/pentium/disassembler.m"
       
@@ -44943,7 +44910,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a565: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 426 "machine/pentium/disassembler.m"
       
@@ -44961,7 +44928,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a566: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 426 "machine/pentium/disassembler.m"
       
@@ -44979,12 +44946,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a567: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 414 "machine/pentium/disassembler.m"
+      #line 426 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.1ow", DIS_EADDR16);
+              sprintf (str,  "RCLB.Ev.1ow", DIS_EADDR16);
 
       
 
@@ -44997,7 +44964,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a568: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 414 "machine/pentium/disassembler.m"
       
@@ -45015,7 +44982,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a569: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 414 "machine/pentium/disassembler.m"
       
@@ -45033,7 +45000,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a570: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 414 "machine/pentium/disassembler.m"
       
@@ -45051,12 +45018,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a571: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 402 "machine/pentium/disassembler.m"
+      #line 414 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.1ow", DIS_EADDR16);
+              sprintf (str,  "RCRB.Ev.1ow", DIS_EADDR16);
 
       
 
@@ -45069,7 +45036,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a572: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 402 "machine/pentium/disassembler.m"
       
@@ -45087,7 +45054,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a573: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 402 "machine/pentium/disassembler.m"
       
@@ -45105,7 +45072,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a574: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 402 "machine/pentium/disassembler.m"
       
@@ -45123,12 +45090,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a575: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 390 "machine/pentium/disassembler.m"
+      #line 402 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.1ow", DIS_EADDR16);
+              sprintf (str,  "SHLSALB.Ev.1ow", DIS_EADDR16);
 
       
 
@@ -45141,7 +45108,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a576: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 390 "machine/pentium/disassembler.m"
       
@@ -45159,7 +45126,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a577: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 390 "machine/pentium/disassembler.m"
       
@@ -45177,7 +45144,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a578: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 390 "machine/pentium/disassembler.m"
       
@@ -45195,12 +45162,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a579: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 378 "machine/pentium/disassembler.m"
+      #line 390 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.1ow", DIS_EADDR16);
+              sprintf (str,  "SHRB.Ev.1ow", DIS_EADDR16);
 
       
 
@@ -45213,7 +45180,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a580: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 378 "machine/pentium/disassembler.m"
       
@@ -45231,7 +45198,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a581: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 378 "machine/pentium/disassembler.m"
       
@@ -45249,7 +45216,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a582: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 378 "machine/pentium/disassembler.m"
       
@@ -45267,12 +45234,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a583: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 444 "machine/pentium/disassembler.m"
+      #line 378 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "SARB.Ev.1ow", DIS_EADDR16);
 
       
 
@@ -45285,7 +45252,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a584: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 444 "machine/pentium/disassembler.m"
       
@@ -45303,7 +45270,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a585: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 444 "machine/pentium/disassembler.m"
       
@@ -45321,7 +45288,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a586: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 444 "machine/pentium/disassembler.m"
       
@@ -45339,12 +45306,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a587: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 432 "machine/pentium/disassembler.m"
+      #line 444 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "ROLB.Ev.CLow", DIS_EADDR16);
 
       
 
@@ -45357,7 +45324,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a588: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 432 "machine/pentium/disassembler.m"
       
@@ -45375,7 +45342,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a589: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 432 "machine/pentium/disassembler.m"
       
@@ -45393,7 +45360,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a590: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 432 "machine/pentium/disassembler.m"
       
@@ -45411,12 +45378,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a591: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 420 "machine/pentium/disassembler.m"
+      #line 432 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "RORB.Ev.CLow", DIS_EADDR16);
 
       
 
@@ -45429,7 +45396,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a592: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 420 "machine/pentium/disassembler.m"
       
@@ -45447,7 +45414,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a593: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 420 "machine/pentium/disassembler.m"
       
@@ -45465,7 +45432,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a594: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 420 "machine/pentium/disassembler.m"
       
@@ -45483,12 +45450,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a595: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 408 "machine/pentium/disassembler.m"
+      #line 420 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "RCLB.Ev.CLow", DIS_EADDR16);
 
       
 
@@ -45501,7 +45468,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a596: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 408 "machine/pentium/disassembler.m"
       
@@ -45519,7 +45486,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a597: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 408 "machine/pentium/disassembler.m"
       
@@ -45537,7 +45504,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a598: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 408 "machine/pentium/disassembler.m"
       
@@ -45555,12 +45522,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a599: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 396 "machine/pentium/disassembler.m"
+      #line 408 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "RCRB.Ev.CLow", DIS_EADDR16);
 
       
 
@@ -45573,7 +45540,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a600: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 396 "machine/pentium/disassembler.m"
       
@@ -45591,7 +45558,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a601: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 396 "machine/pentium/disassembler.m"
       
@@ -45609,7 +45576,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a602: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 396 "machine/pentium/disassembler.m"
       
@@ -45627,12 +45594,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a603: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 384 "machine/pentium/disassembler.m"
+      #line 396 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "SHLSALB.Ev.CLow", DIS_EADDR16);
 
       
 
@@ -45645,7 +45612,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a604: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 384 "machine/pentium/disassembler.m"
       
@@ -45663,7 +45630,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a605: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 384 "machine/pentium/disassembler.m"
       
@@ -45681,7 +45648,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a606: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 384 "machine/pentium/disassembler.m"
       
@@ -45699,12 +45666,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a607: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 372 "machine/pentium/disassembler.m"
+      #line 384 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.CLow", DIS_EADDR16);
+              sprintf (str,  "SHRB.Ev.CLow", DIS_EADDR16);
 
       
 
@@ -45717,7 +45684,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a608: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 372 "machine/pentium/disassembler.m"
       
@@ -45735,7 +45702,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a609: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 372 "machine/pentium/disassembler.m"
       
@@ -45753,7 +45720,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a610: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 372 "machine/pentium/disassembler.m"
       
@@ -45769,6 +45736,24 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     goto MATCH_finished_a; 
     
   MATCH_label_a611: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 2 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
+      
+      #line 372 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "SARB.Ev.CLow", DIS_EADDR16);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a612: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       unsigned i16 = (MATCH_w_16_24 & 0xffff) /* i16 at 24 */;
@@ -45787,7 +45772,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a612: (void)0; /*placeholder for label*/ 
+  MATCH_label_a613: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       unsigned i16 = (MATCH_w_16_32 & 0xffff) /* i16 at 32 */;
@@ -45806,7 +45791,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a613: (void)0; /*placeholder for label*/ 
+  MATCH_label_a614: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       unsigned i16 = (MATCH_w_16_64 & 0xffff) /* i16 at 64 */;
@@ -45825,7 +45810,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a614: (void)0; /*placeholder for label*/ 
+  MATCH_label_a615: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       unsigned i16 = (MATCH_w_16_56 & 0xffff) /* i16 at 56 */;
@@ -45844,28 +45829,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a615: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
-      
-      #line 618 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "NOTow", DIS_EADDR16);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
   MATCH_label_a616: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 618 "machine/pentium/disassembler.m"
       
@@ -45883,7 +45850,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a617: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 618 "machine/pentium/disassembler.m"
       
@@ -45901,7 +45868,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a618: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 618 "machine/pentium/disassembler.m"
       
@@ -45919,12 +45886,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a619: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 627 "machine/pentium/disassembler.m"
+      #line 618 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "NEGow", DIS_EADDR16);
+              sprintf (str,  "NOTow", DIS_EADDR16);
 
       
 
@@ -45937,7 +45904,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a620: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 627 "machine/pentium/disassembler.m"
       
@@ -45955,7 +45922,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a621: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 627 "machine/pentium/disassembler.m"
       
@@ -45973,7 +45940,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a622: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 627 "machine/pentium/disassembler.m"
       
@@ -45991,12 +45958,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a623: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 636 "machine/pentium/disassembler.m"
+      #line 627 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MUL.AXow", DIS_EADDR16);
+              sprintf (str,  "NEGow", DIS_EADDR16);
 
       
 
@@ -46009,7 +45976,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a624: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 636 "machine/pentium/disassembler.m"
       
@@ -46027,7 +45994,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a625: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 636 "machine/pentium/disassembler.m"
       
@@ -46045,7 +46012,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a626: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 636 "machine/pentium/disassembler.m"
       
@@ -46063,12 +46030,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a627: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 878 "machine/pentium/disassembler.m"
+      #line 636 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IMULow", DIS_EADDR16);
+              sprintf (str,  "MUL.AXow", DIS_EADDR16);
 
       
 
@@ -46081,7 +46048,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a628: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 878 "machine/pentium/disassembler.m"
       
@@ -46099,7 +46066,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a629: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 878 "machine/pentium/disassembler.m"
       
@@ -46117,7 +46084,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a630: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 878 "machine/pentium/disassembler.m"
       
@@ -46135,12 +46102,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a631: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 902 "machine/pentium/disassembler.m"
+      #line 878 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DIVAX", DIS_EADDR16);
+              sprintf (str,  "IMULow", DIS_EADDR16);
 
       
 
@@ -46153,7 +46120,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a632: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 902 "machine/pentium/disassembler.m"
       
@@ -46171,7 +46138,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a633: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 902 "machine/pentium/disassembler.m"
       
@@ -46189,7 +46156,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a634: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 902 "machine/pentium/disassembler.m"
       
@@ -46207,12 +46174,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a635: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 887 "machine/pentium/disassembler.m"
+      #line 902 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IDIVAX", DIS_EADDR16);
+              sprintf (str,  "DIVAX", DIS_EADDR16);
 
       
 
@@ -46225,7 +46192,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a636: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 887 "machine/pentium/disassembler.m"
       
@@ -46243,7 +46210,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a637: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 887 "machine/pentium/disassembler.m"
       
@@ -46261,7 +46228,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a638: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 887 "machine/pentium/disassembler.m"
       
@@ -46279,12 +46246,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a639: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 833 "machine/pentium/disassembler.m"
+      #line 887 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "INC.Evow", DIS_EADDR16);
+              sprintf (str,  "IDIVAX", DIS_EADDR16);
 
       
 
@@ -46297,7 +46264,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a640: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 833 "machine/pentium/disassembler.m"
       
@@ -46315,7 +46282,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a641: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 833 "machine/pentium/disassembler.m"
       
@@ -46333,7 +46300,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a642: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 833 "machine/pentium/disassembler.m"
       
@@ -46351,12 +46318,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a643: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 917 "machine/pentium/disassembler.m"
+      #line 833 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DEC.Evow", DIS_EADDR16);
+              sprintf (str,  "INC.Evow", DIS_EADDR16);
 
       
 
@@ -46369,7 +46336,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a644: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 917 "machine/pentium/disassembler.m"
       
@@ -46387,7 +46354,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a645: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 917 "machine/pentium/disassembler.m"
       
@@ -46405,7 +46372,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a646: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 917 "machine/pentium/disassembler.m"
       
@@ -46423,12 +46390,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a647: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 546 "machine/pentium/disassembler.m"
+      #line 917 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "PUSH.Evow", DIS_EADDR16);
+              sprintf (str,  "DEC.Evow", DIS_EADDR16);
 
       
 
@@ -46441,7 +46408,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a648: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 546 "machine/pentium/disassembler.m"
       
@@ -46459,7 +46426,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a649: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 8 + MATCH_p; 
+      nextPC = 4 + MATCH_p; 
       
       #line 546 "machine/pentium/disassembler.m"
       
@@ -46477,7 +46444,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a650: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 8 + MATCH_p; 
       
       #line 546 "machine/pentium/disassembler.m"
       
@@ -46494,15 +46461,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a651: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+      unsigned Eaddr = 2 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1339 "machine/pentium/disassembler.m"
+      #line 546 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ADDib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "PUSH.Evow", DIS_EADDR16);
 
       
 
@@ -46516,8 +46481,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1339 "machine/pentium/disassembler.m"
       
@@ -46536,8 +46501,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1339 "machine/pentium/disassembler.m"
       
@@ -46556,8 +46521,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1339 "machine/pentium/disassembler.m"
       
@@ -46576,13 +46541,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1336 "machine/pentium/disassembler.m"
+      #line 1339 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ORib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ADDib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -46596,8 +46561,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1336 "machine/pentium/disassembler.m"
       
@@ -46616,8 +46581,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1336 "machine/pentium/disassembler.m"
       
@@ -46636,8 +46601,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1336 "machine/pentium/disassembler.m"
       
@@ -46656,13 +46621,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1333 "machine/pentium/disassembler.m"
+      #line 1336 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ADCib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ORib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -46676,8 +46641,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1333 "machine/pentium/disassembler.m"
       
@@ -46696,8 +46661,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1333 "machine/pentium/disassembler.m"
       
@@ -46716,8 +46681,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1333 "machine/pentium/disassembler.m"
       
@@ -46736,13 +46701,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1330 "machine/pentium/disassembler.m"
+      #line 1333 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SBBib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ADCib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -46756,8 +46721,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1330 "machine/pentium/disassembler.m"
       
@@ -46776,8 +46741,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1330 "machine/pentium/disassembler.m"
       
@@ -46796,8 +46761,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1330 "machine/pentium/disassembler.m"
       
@@ -46816,13 +46781,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1327 "machine/pentium/disassembler.m"
+      #line 1330 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ANDib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SBBib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -46836,8 +46801,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1327 "machine/pentium/disassembler.m"
       
@@ -46856,8 +46821,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1327 "machine/pentium/disassembler.m"
       
@@ -46876,8 +46841,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1327 "machine/pentium/disassembler.m"
       
@@ -46896,13 +46861,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1324 "machine/pentium/disassembler.m"
+      #line 1327 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SUBib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ANDib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -46916,8 +46881,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1324 "machine/pentium/disassembler.m"
       
@@ -46936,8 +46901,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1324 "machine/pentium/disassembler.m"
       
@@ -46956,8 +46921,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1324 "machine/pentium/disassembler.m"
       
@@ -46976,13 +46941,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1321 "machine/pentium/disassembler.m"
+      #line 1324 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "XORib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SUBib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -46996,8 +46961,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1321 "machine/pentium/disassembler.m"
       
@@ -47016,8 +46981,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1321 "machine/pentium/disassembler.m"
       
@@ -47036,8 +47001,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1321 "machine/pentium/disassembler.m"
       
@@ -47056,13 +47021,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1318 "machine/pentium/disassembler.m"
+      #line 1321 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "CMPib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "XORib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -47076,8 +47041,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1318 "machine/pentium/disassembler.m"
       
@@ -47096,8 +47061,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1318 "machine/pentium/disassembler.m"
       
@@ -47116,8 +47081,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1318 "machine/pentium/disassembler.m"
       
@@ -47135,13 +47100,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a683: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      int /* [~128..127] */ i8 = 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1291 "machine/pentium/disassembler.m"
+      #line 1318 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ADDid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "CMPib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -47154,8 +47120,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a684: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1291 "machine/pentium/disassembler.m"
       
@@ -47173,8 +47139,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a685: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
-      nextPC = 11 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
       
       #line 1291 "machine/pentium/disassembler.m"
       
@@ -47192,8 +47158,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a686: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
-      nextPC = 10 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
+      nextPC = 11 + MATCH_p; 
       
       #line 1291 "machine/pentium/disassembler.m"
       
@@ -47211,13 +47177,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a687: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
+      nextPC = 10 + MATCH_p; 
       
-      #line 1288 "machine/pentium/disassembler.m"
+      #line 1291 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ORid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "ADDid", DIS_EADDR32, DIS_I32);
 
       
 
@@ -47230,8 +47196,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a688: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1288 "machine/pentium/disassembler.m"
       
@@ -47249,8 +47215,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a689: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
-      nextPC = 11 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
       
       #line 1288 "machine/pentium/disassembler.m"
       
@@ -47268,8 +47234,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a690: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
-      nextPC = 10 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
+      nextPC = 11 + MATCH_p; 
       
       #line 1288 "machine/pentium/disassembler.m"
       
@@ -47287,13 +47253,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a691: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
+      nextPC = 10 + MATCH_p; 
       
-      #line 1285 "machine/pentium/disassembler.m"
+      #line 1288 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ADCid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "ORid", DIS_EADDR32, DIS_I32);
 
       
 
@@ -47306,8 +47272,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a692: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1285 "machine/pentium/disassembler.m"
       
@@ -47325,8 +47291,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a693: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
-      nextPC = 11 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
       
       #line 1285 "machine/pentium/disassembler.m"
       
@@ -47344,8 +47310,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a694: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
-      nextPC = 10 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
+      nextPC = 11 + MATCH_p; 
       
       #line 1285 "machine/pentium/disassembler.m"
       
@@ -47363,13 +47329,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a695: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
+      nextPC = 10 + MATCH_p; 
       
-      #line 1282 "machine/pentium/disassembler.m"
+      #line 1285 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SBBid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "ADCid", DIS_EADDR32, DIS_I32);
 
       
 
@@ -47382,8 +47348,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a696: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1282 "machine/pentium/disassembler.m"
       
@@ -47401,8 +47367,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a697: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
-      nextPC = 11 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
       
       #line 1282 "machine/pentium/disassembler.m"
       
@@ -47420,8 +47386,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a698: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
-      nextPC = 10 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
+      nextPC = 11 + MATCH_p; 
       
       #line 1282 "machine/pentium/disassembler.m"
       
@@ -47439,13 +47405,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a699: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
+      nextPC = 10 + MATCH_p; 
       
-      #line 1279 "machine/pentium/disassembler.m"
+      #line 1282 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ANDid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "SBBid", DIS_EADDR32, DIS_I32);
 
       
 
@@ -47458,8 +47424,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a700: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1279 "machine/pentium/disassembler.m"
       
@@ -47477,8 +47443,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a701: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
-      nextPC = 11 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
       
       #line 1279 "machine/pentium/disassembler.m"
       
@@ -47496,8 +47462,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a702: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
-      nextPC = 10 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
+      nextPC = 11 + MATCH_p; 
       
       #line 1279 "machine/pentium/disassembler.m"
       
@@ -47515,13 +47481,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a703: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
+      nextPC = 10 + MATCH_p; 
       
-      #line 1276 "machine/pentium/disassembler.m"
+      #line 1279 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SUBid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "ANDid", DIS_EADDR32, DIS_I32);
 
       
 
@@ -47534,8 +47500,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a704: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1276 "machine/pentium/disassembler.m"
       
@@ -47553,8 +47519,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a705: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
-      nextPC = 11 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
       
       #line 1276 "machine/pentium/disassembler.m"
       
@@ -47572,8 +47538,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a706: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
-      nextPC = 10 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
+      nextPC = 11 + MATCH_p; 
       
       #line 1276 "machine/pentium/disassembler.m"
       
@@ -47591,13 +47557,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a707: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
-      nextPC = 6 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
+      nextPC = 10 + MATCH_p; 
       
-      #line 1273 "machine/pentium/disassembler.m"
+      #line 1276 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "XORid", DIS_EADDR32, DIS_I32);
+              sprintf (str,  "SUBid", DIS_EADDR32, DIS_I32);
 
       
 
@@ -47610,8 +47576,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a708: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
-      nextPC = 7 + MATCH_p; 
+      unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
+      nextPC = 6 + MATCH_p; 
       
       #line 1273 "machine/pentium/disassembler.m"
       
@@ -47629,6 +47595,25 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a709: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
+      nextPC = 7 + MATCH_p; 
+      
+      #line 1273 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "XORid", DIS_EADDR32, DIS_I32);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a710: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
@@ -47645,7 +47630,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a710: (void)0; /*placeholder for label*/ 
+  MATCH_label_a711: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
@@ -47664,7 +47649,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a711: (void)0; /*placeholder for label*/ 
+  MATCH_label_a712: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
@@ -47683,7 +47668,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a712: (void)0; /*placeholder for label*/ 
+  MATCH_label_a713: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
@@ -47702,7 +47687,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a713: (void)0; /*placeholder for label*/ 
+  MATCH_label_a714: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
@@ -47721,7 +47706,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a714: (void)0; /*placeholder for label*/ 
+  MATCH_label_a715: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
@@ -47740,32 +47725,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a715: (void)0; /*placeholder for label*/ 
+  MATCH_label_a716: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
-      
-      #line 1264 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "ADDiodb", DIS_EADDR32, DIS_I8);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
-  MATCH_label_a716: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
       
       #line 1264 "machine/pentium/disassembler.m"
       
@@ -47784,8 +47749,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1264 "machine/pentium/disassembler.m"
       
@@ -47804,8 +47769,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1264 "machine/pentium/disassembler.m"
       
@@ -47824,13 +47789,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1258 "machine/pentium/disassembler.m"
+      #line 1264 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ORiodb", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ADDiodb", DIS_EADDR32, DIS_I8);
 
       
 
@@ -47844,8 +47809,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1258 "machine/pentium/disassembler.m"
       
@@ -47864,8 +47829,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1258 "machine/pentium/disassembler.m"
       
@@ -47884,8 +47849,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1258 "machine/pentium/disassembler.m"
       
@@ -47904,13 +47869,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1252 "machine/pentium/disassembler.m"
+      #line 1258 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ADCiodb", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ORiodb", DIS_EADDR8, DIS_I8);
 
       
 
@@ -47924,8 +47889,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1252 "machine/pentium/disassembler.m"
       
@@ -47944,8 +47909,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1252 "machine/pentium/disassembler.m"
       
@@ -47964,8 +47929,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1252 "machine/pentium/disassembler.m"
       
@@ -47984,13 +47949,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1246 "machine/pentium/disassembler.m"
+      #line 1252 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SBBiodb", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "ADCiodb", DIS_EADDR8, DIS_I8);
 
       
 
@@ -48004,8 +47969,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1246 "machine/pentium/disassembler.m"
       
@@ -48024,8 +47989,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1246 "machine/pentium/disassembler.m"
       
@@ -48044,8 +48009,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1246 "machine/pentium/disassembler.m"
       
@@ -48064,13 +48029,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1240 "machine/pentium/disassembler.m"
+      #line 1246 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ANDiodb", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SBBiodb", DIS_EADDR32, DIS_I8);
 
       
 
@@ -48084,8 +48049,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1240 "machine/pentium/disassembler.m"
       
@@ -48104,8 +48069,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1240 "machine/pentium/disassembler.m"
       
@@ -48124,8 +48089,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1240 "machine/pentium/disassembler.m"
       
@@ -48144,13 +48109,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1234 "machine/pentium/disassembler.m"
+      #line 1240 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SUBiodb", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "ANDiodb", DIS_EADDR8, DIS_I8);
 
       
 
@@ -48164,8 +48129,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1234 "machine/pentium/disassembler.m"
       
@@ -48184,8 +48149,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1234 "machine/pentium/disassembler.m"
       
@@ -48204,8 +48169,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1234 "machine/pentium/disassembler.m"
       
@@ -48224,13 +48189,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1228 "machine/pentium/disassembler.m"
+      #line 1234 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "XORiodb", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SUBiodb", DIS_EADDR32, DIS_I8);
 
       
 
@@ -48244,8 +48209,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1228 "machine/pentium/disassembler.m"
       
@@ -48264,8 +48229,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1228 "machine/pentium/disassembler.m"
       
@@ -48284,8 +48249,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1228 "machine/pentium/disassembler.m"
       
@@ -48304,13 +48269,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1222 "machine/pentium/disassembler.m"
+      #line 1228 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "CMPiodb", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "XORiodb", DIS_EADDR8, DIS_I8);
 
       
 
@@ -48324,8 +48289,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 1222 "machine/pentium/disassembler.m"
       
@@ -48344,8 +48309,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 1222 "machine/pentium/disassembler.m"
       
@@ -48364,8 +48329,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
       #line 1222 "machine/pentium/disassembler.m"
       
@@ -48383,13 +48348,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a747: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      int /* [~128..127] */ i8 = 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 101 "machine/pentium/disassembler.m"
+      #line 1222 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
+              sprintf (str,  "CMPiodb", DIS_EADDR32, DIS_I8);
 
       
 
@@ -48403,7 +48369,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 101 "machine/pentium/disassembler.m"
       
@@ -48422,7 +48388,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 101 "machine/pentium/disassembler.m"
       
@@ -48441,7 +48407,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 101 "machine/pentium/disassembler.m"
       
@@ -48460,12 +48426,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 95 "machine/pentium/disassembler.m"
+      #line 101 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
+              sprintf (str,  "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
       
 
@@ -48479,7 +48445,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 95 "machine/pentium/disassembler.m"
       
@@ -48498,7 +48464,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 95 "machine/pentium/disassembler.m"
       
@@ -48517,7 +48483,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 95 "machine/pentium/disassembler.m"
       
@@ -48536,12 +48502,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 53 "machine/pentium/disassembler.m"
+      #line 95 "machine/pentium/disassembler.m"
       
 
-              sprintf (str, "%s %s,%s", "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
+              sprintf (str,  "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
       
 
@@ -48555,7 +48521,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 53 "machine/pentium/disassembler.m"
       
@@ -48574,7 +48540,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 53 "machine/pentium/disassembler.m"
       
@@ -48593,7 +48559,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 53 "machine/pentium/disassembler.m"
       
@@ -48612,12 +48578,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 47 "machine/pentium/disassembler.m"
+      #line 53 "machine/pentium/disassembler.m"
       
 
-              sprintf (str, "%s %s,%s", "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
+              sprintf (str, "%s %s,%s", "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
       
 
@@ -48631,7 +48597,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 47 "machine/pentium/disassembler.m"
       
@@ -48650,7 +48616,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 47 "machine/pentium/disassembler.m"
       
@@ -48669,7 +48635,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 47 "machine/pentium/disassembler.m"
       
@@ -48688,12 +48654,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 742 "machine/pentium/disassembler.m"
+      #line 47 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOVmrb", DIS_EADDR8, DIS_REG8);
+              sprintf (str, "%s %s,%s", "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
       
 
@@ -48707,7 +48673,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 742 "machine/pentium/disassembler.m"
       
@@ -48726,7 +48692,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 742 "machine/pentium/disassembler.m"
       
@@ -48745,7 +48711,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 742 "machine/pentium/disassembler.m"
       
@@ -48764,12 +48730,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 736 "machine/pentium/disassembler.m"
+      #line 742 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOVmrod", DIS_EADDR32, DIS_REG32);
+              sprintf (str,  "MOVmrb", DIS_EADDR8, DIS_REG8);
 
       
 
@@ -48783,7 +48749,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 736 "machine/pentium/disassembler.m"
       
@@ -48802,7 +48768,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 736 "machine/pentium/disassembler.m"
       
@@ -48821,7 +48787,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 736 "machine/pentium/disassembler.m"
       
@@ -48840,12 +48806,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 733 "machine/pentium/disassembler.m"
+      #line 736 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOVrmb", DIS_REG8, DIS_EADDR8);
+              sprintf (str,  "MOVmrod", DIS_EADDR32, DIS_REG32);
 
       
 
@@ -48859,7 +48825,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 733 "machine/pentium/disassembler.m"
       
@@ -48878,7 +48844,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 733 "machine/pentium/disassembler.m"
       
@@ -48897,7 +48863,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 733 "machine/pentium/disassembler.m"
       
@@ -48916,12 +48882,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 2 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 727 "machine/pentium/disassembler.m"
+      #line 733 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MOVrmod", DIS_REG32, DIS_EADDR32);
+              sprintf (str,  "MOVrmb", DIS_REG8, DIS_EADDR8);
 
       
 
@@ -48935,7 +48901,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 727 "machine/pentium/disassembler.m"
       
@@ -48954,7 +48920,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 727 "machine/pentium/disassembler.m"
       
@@ -48973,7 +48939,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 727 "machine/pentium/disassembler.m"
       
@@ -48990,14 +48956,14 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a779: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 778 "machine/pentium/disassembler.m"
+      #line 727 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "LEA.od", DIS_REG32, DIS_MEM);
+              sprintf (str,  "MOVrmod", DIS_REG32, DIS_EADDR32);
 
       
 
@@ -49011,7 +48977,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 7 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 778 "machine/pentium/disassembler.m"
       
@@ -49030,7 +48996,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
       #line 778 "machine/pentium/disassembler.m"
       
@@ -49048,12 +49014,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a782: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
+      nextPC = 6 + MATCH_p; 
       
-      #line 582 "machine/pentium/disassembler.m"
+      #line 778 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "POP.Evod", DIS_MEM);
+              sprintf (str,  "LEA.od", DIS_REG32, DIS_MEM);
 
       
 
@@ -49065,13 +49032,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a783: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 2 + MATCH_p; 
       
       #line 582 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "POP.Evod", DIS_MEM);
+              sprintf (str,  "POP.Evod", DIS_EADDR32);
 
       
 
@@ -49083,13 +49050,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a784: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
       #line 582 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "POP.Evod", DIS_MEM);
+              sprintf (str,  "POP.Evod", DIS_EADDR32);
 
       
 
@@ -49102,14 +49069,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a785: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 366 "machine/pentium/disassembler.m"
+      #line 582 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "POP.Evod", DIS_EADDR32);
 
       
 
@@ -49122,14 +49087,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a786: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 366 "machine/pentium/disassembler.m"
+      #line 582 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "POP.Evod", DIS_EADDR32);
 
       
 
@@ -49143,8 +49106,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 366 "machine/pentium/disassembler.m"
       
@@ -49163,8 +49126,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 366 "machine/pentium/disassembler.m"
       
@@ -49183,13 +49146,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 363 "machine/pentium/disassembler.m"
+      #line 366 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49203,13 +49166,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 363 "machine/pentium/disassembler.m"
+      #line 366 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49223,8 +49186,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 363 "machine/pentium/disassembler.m"
       
@@ -49243,8 +49206,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 363 "machine/pentium/disassembler.m"
       
@@ -49263,13 +49226,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 360 "machine/pentium/disassembler.m"
+      #line 363 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49283,13 +49246,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 360 "machine/pentium/disassembler.m"
+      #line 363 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49303,8 +49266,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 360 "machine/pentium/disassembler.m"
       
@@ -49323,8 +49286,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 360 "machine/pentium/disassembler.m"
       
@@ -49343,13 +49306,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 357 "machine/pentium/disassembler.m"
+      #line 360 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49363,13 +49326,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 357 "machine/pentium/disassembler.m"
+      #line 360 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49383,8 +49346,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 357 "machine/pentium/disassembler.m"
       
@@ -49403,8 +49366,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 357 "machine/pentium/disassembler.m"
       
@@ -49423,13 +49386,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 354 "machine/pentium/disassembler.m"
+      #line 357 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49443,13 +49406,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 354 "machine/pentium/disassembler.m"
+      #line 357 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49463,8 +49426,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 354 "machine/pentium/disassembler.m"
       
@@ -49483,8 +49446,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 354 "machine/pentium/disassembler.m"
       
@@ -49503,13 +49466,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 351 "machine/pentium/disassembler.m"
+      #line 354 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49523,13 +49486,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 351 "machine/pentium/disassembler.m"
+      #line 354 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49543,8 +49506,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 351 "machine/pentium/disassembler.m"
       
@@ -49563,8 +49526,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 351 "machine/pentium/disassembler.m"
       
@@ -49583,13 +49546,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 348 "machine/pentium/disassembler.m"
+      #line 351 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49603,13 +49566,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 348 "machine/pentium/disassembler.m"
+      #line 351 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
+              sprintf (str,  "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49623,8 +49586,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 348 "machine/pentium/disassembler.m"
       
@@ -49643,8 +49606,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 348 "machine/pentium/disassembler.m"
       
@@ -49663,13 +49626,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 342 "machine/pentium/disassembler.m"
+      #line 348 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49683,13 +49646,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 342 "machine/pentium/disassembler.m"
+      #line 348 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
       
 
@@ -49703,8 +49666,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 342 "machine/pentium/disassembler.m"
       
@@ -49723,8 +49686,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 342 "machine/pentium/disassembler.m"
       
@@ -49743,13 +49706,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 336 "machine/pentium/disassembler.m"
+      #line 342 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -49763,13 +49726,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 336 "machine/pentium/disassembler.m"
+      #line 342 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -49783,8 +49746,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 336 "machine/pentium/disassembler.m"
       
@@ -49803,8 +49766,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 336 "machine/pentium/disassembler.m"
       
@@ -49823,13 +49786,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 330 "machine/pentium/disassembler.m"
+      #line 336 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -49843,13 +49806,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 330 "machine/pentium/disassembler.m"
+      #line 336 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -49863,8 +49826,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 330 "machine/pentium/disassembler.m"
       
@@ -49883,8 +49846,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 330 "machine/pentium/disassembler.m"
       
@@ -49903,13 +49866,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 324 "machine/pentium/disassembler.m"
+      #line 330 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -49923,13 +49886,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 324 "machine/pentium/disassembler.m"
+      #line 330 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -49943,8 +49906,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 324 "machine/pentium/disassembler.m"
       
@@ -49963,8 +49926,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 324 "machine/pentium/disassembler.m"
       
@@ -49983,13 +49946,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 318 "machine/pentium/disassembler.m"
+      #line 324 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50003,13 +49966,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 318 "machine/pentium/disassembler.m"
+      #line 324 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50023,8 +49986,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 318 "machine/pentium/disassembler.m"
       
@@ -50043,8 +50006,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 318 "machine/pentium/disassembler.m"
       
@@ -50063,13 +50026,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 312 "machine/pentium/disassembler.m"
+      #line 318 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50083,13 +50046,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 312 "machine/pentium/disassembler.m"
+      #line 318 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50103,8 +50066,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 312 "machine/pentium/disassembler.m"
       
@@ -50123,8 +50086,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 312 "machine/pentium/disassembler.m"
       
@@ -50143,13 +50106,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
-      nextPC = 3 + MATCH_p; 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 306 "machine/pentium/disassembler.m"
+      #line 312 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50163,13 +50126,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
-      nextPC = 4 + MATCH_p; 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
+      nextPC = 7 + MATCH_p; 
       
-      #line 306 "machine/pentium/disassembler.m"
+      #line 312 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+              sprintf (str,  "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50183,8 +50146,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
-      nextPC = 8 + MATCH_p; 
+        sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
+      nextPC = 3 + MATCH_p; 
       
       #line 306 "machine/pentium/disassembler.m"
       
@@ -50203,8 +50166,8 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
-        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
-      nextPC = 7 + MATCH_p; 
+        sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
+      nextPC = 4 + MATCH_p; 
       
       #line 306 "machine/pentium/disassembler.m"
       
@@ -50221,14 +50184,15 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a841: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 3 + MATCH_p; 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      int /* [~128..127] */ i8 = 
+        sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
+      nextPC = 8 + MATCH_p; 
       
-      #line 772 "machine/pentium/disassembler.m"
+      #line 306 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "LES", DIS_REG32, DIS_MEM);
+              sprintf (str,  "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50240,14 +50204,15 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a842: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      int /* [~128..127] */ i8 = 
+        sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-      #line 772 "machine/pentium/disassembler.m"
+      #line 306 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "LES", DIS_REG32, DIS_MEM);
+              sprintf (str,  "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
       
 
@@ -50261,7 +50226,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 772 "machine/pentium/disassembler.m"
       
@@ -50280,6 +50245,44 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
+      nextPC = 7 + MATCH_p; 
+      
+      #line 772 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "LES", DIS_REG32, DIS_MEM);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a845: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
+      nextPC = 6 + MATCH_p; 
+      
+      #line 772 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "LES", DIS_REG32, DIS_MEM);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a846: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
       #line 784 "machine/pentium/disassembler.m"
@@ -50295,7 +50298,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a845: (void)0; /*placeholder for label*/ 
+  MATCH_label_a847: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
@@ -50314,7 +50317,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a846: (void)0; /*placeholder for label*/ 
+  MATCH_label_a848: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
@@ -50333,7 +50336,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a847: (void)0; /*placeholder for label*/ 
+  MATCH_label_a849: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -50353,7 +50356,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a848: (void)0; /*placeholder for label*/ 
+  MATCH_label_a850: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -50373,7 +50376,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a849: (void)0; /*placeholder for label*/ 
+  MATCH_label_a851: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -50393,7 +50396,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a850: (void)0; /*placeholder for label*/ 
+  MATCH_label_a852: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       int /* [~128..127] */ i8 = 
@@ -50413,7 +50416,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a851: (void)0; /*placeholder for label*/ 
+  MATCH_label_a853: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
@@ -50432,7 +50435,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a852: (void)0; /*placeholder for label*/ 
+  MATCH_label_a854: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
@@ -50451,7 +50454,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a853: (void)0; /*placeholder for label*/ 
+  MATCH_label_a855: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
@@ -50470,7 +50473,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a854: (void)0; /*placeholder for label*/ 
+  MATCH_label_a856: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
@@ -50489,46 +50492,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a855: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
-      
-      #line 492 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "ROLB.Eb.1", DIS_EADDR8);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
-  MATCH_label_a856: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
-      
-      #line 492 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "ROLB.Eb.1", DIS_EADDR8);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
   MATCH_label_a857: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 492 "machine/pentium/disassembler.m"
       
@@ -50546,7 +50513,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a858: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 492 "machine/pentium/disassembler.m"
       
@@ -50564,12 +50531,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a859: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 486 "machine/pentium/disassembler.m"
+      #line 492 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "ROLB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50582,12 +50549,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a860: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 486 "machine/pentium/disassembler.m"
+      #line 492 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "ROLB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50600,7 +50567,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a861: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 486 "machine/pentium/disassembler.m"
       
@@ -50618,7 +50585,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a862: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 486 "machine/pentium/disassembler.m"
       
@@ -50636,12 +50603,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a863: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 480 "machine/pentium/disassembler.m"
+      #line 486 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "RORB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50654,12 +50621,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a864: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 480 "machine/pentium/disassembler.m"
+      #line 486 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "RORB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50672,7 +50639,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a865: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 480 "machine/pentium/disassembler.m"
       
@@ -50690,7 +50657,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a866: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 480 "machine/pentium/disassembler.m"
       
@@ -50708,12 +50675,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a867: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 474 "machine/pentium/disassembler.m"
+      #line 480 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "RCLB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50726,12 +50693,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a868: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 474 "machine/pentium/disassembler.m"
+      #line 480 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "RCLB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50744,7 +50711,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a869: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 474 "machine/pentium/disassembler.m"
       
@@ -50762,7 +50729,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a870: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 474 "machine/pentium/disassembler.m"
       
@@ -50780,12 +50747,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a871: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 468 "machine/pentium/disassembler.m"
+      #line 474 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "RCRB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50798,12 +50765,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a872: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 468 "machine/pentium/disassembler.m"
+      #line 474 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "RCRB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50816,7 +50783,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a873: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 468 "machine/pentium/disassembler.m"
       
@@ -50834,7 +50801,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a874: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 468 "machine/pentium/disassembler.m"
       
@@ -50852,12 +50819,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a875: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 462 "machine/pentium/disassembler.m"
+      #line 468 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "SHLSALB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50870,12 +50837,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a876: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 462 "machine/pentium/disassembler.m"
+      #line 468 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Eb.1", DIS_EADDR8);
+              sprintf (str,  "SHLSALB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50888,7 +50855,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a877: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 462 "machine/pentium/disassembler.m"
       
@@ -50906,7 +50873,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a878: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 462 "machine/pentium/disassembler.m"
       
@@ -50924,12 +50891,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a879: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 456 "machine/pentium/disassembler.m"
+      #line 462 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Eb.1", DIS_EADDR16);
+              sprintf (str,  "SHRB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50942,12 +50909,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a880: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 456 "machine/pentium/disassembler.m"
+      #line 462 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Eb.1", DIS_EADDR16);
+              sprintf (str,  "SHRB.Eb.1", DIS_EADDR8);
 
       
 
@@ -50960,7 +50927,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a881: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 456 "machine/pentium/disassembler.m"
       
@@ -50978,7 +50945,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a882: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 456 "machine/pentium/disassembler.m"
       
@@ -50996,12 +50963,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a883: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 447 "machine/pentium/disassembler.m"
+      #line 456 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "SARB.Eb.1", DIS_EADDR16);
 
       
 
@@ -51014,12 +50981,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a884: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 447 "machine/pentium/disassembler.m"
+      #line 456 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "SARB.Eb.1", DIS_EADDR16);
 
       
 
@@ -51032,7 +50999,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a885: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 447 "machine/pentium/disassembler.m"
       
@@ -51050,7 +51017,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a886: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 447 "machine/pentium/disassembler.m"
       
@@ -51068,12 +51035,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a887: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 435 "machine/pentium/disassembler.m"
+      #line 447 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "ROLB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51086,12 +51053,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a888: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 435 "machine/pentium/disassembler.m"
+      #line 447 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "ROLB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51104,7 +51071,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a889: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 435 "machine/pentium/disassembler.m"
       
@@ -51122,7 +51089,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a890: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 435 "machine/pentium/disassembler.m"
       
@@ -51140,12 +51107,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a891: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 423 "machine/pentium/disassembler.m"
+      #line 435 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "RORB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51158,12 +51125,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a892: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 423 "machine/pentium/disassembler.m"
+      #line 435 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "RORB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51176,7 +51143,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a893: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 423 "machine/pentium/disassembler.m"
       
@@ -51194,7 +51161,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a894: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 423 "machine/pentium/disassembler.m"
       
@@ -51212,12 +51179,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a895: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 411 "machine/pentium/disassembler.m"
+      #line 423 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "RCLB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51230,12 +51197,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a896: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 411 "machine/pentium/disassembler.m"
+      #line 423 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "RCLB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51248,7 +51215,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a897: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 411 "machine/pentium/disassembler.m"
       
@@ -51266,7 +51233,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a898: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 411 "machine/pentium/disassembler.m"
       
@@ -51284,12 +51251,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a899: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 399 "machine/pentium/disassembler.m"
+      #line 411 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "RCRB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51302,12 +51269,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a900: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 399 "machine/pentium/disassembler.m"
+      #line 411 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "RCRB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51320,7 +51287,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a901: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 399 "machine/pentium/disassembler.m"
       
@@ -51338,7 +51305,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a902: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 399 "machine/pentium/disassembler.m"
       
@@ -51356,12 +51323,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a903: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 387 "machine/pentium/disassembler.m"
+      #line 399 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "SHLSALB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51374,12 +51341,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a904: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 387 "machine/pentium/disassembler.m"
+      #line 399 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "SHLSALB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51392,7 +51359,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a905: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 387 "machine/pentium/disassembler.m"
       
@@ -51410,7 +51377,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a906: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 387 "machine/pentium/disassembler.m"
       
@@ -51428,12 +51395,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a907: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 375 "machine/pentium/disassembler.m"
+      #line 387 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "SHRB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51446,12 +51413,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a908: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 375 "machine/pentium/disassembler.m"
+      #line 387 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.1od", DIS_EADDR32);
+              sprintf (str,  "SHRB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51464,7 +51431,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a909: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 375 "machine/pentium/disassembler.m"
       
@@ -51482,7 +51449,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a910: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 375 "machine/pentium/disassembler.m"
       
@@ -51500,12 +51467,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a911: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 489 "machine/pentium/disassembler.m"
+      #line 375 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "SARB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51518,12 +51485,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a912: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 489 "machine/pentium/disassembler.m"
+      #line 375 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "SARB.Ev.1od", DIS_EADDR32);
 
       
 
@@ -51536,7 +51503,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a913: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 489 "machine/pentium/disassembler.m"
       
@@ -51554,7 +51521,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a914: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 489 "machine/pentium/disassembler.m"
       
@@ -51572,12 +51539,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a915: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 483 "machine/pentium/disassembler.m"
+      #line 489 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "ROLB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51590,12 +51557,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a916: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 483 "machine/pentium/disassembler.m"
+      #line 489 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "ROLB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51608,7 +51575,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a917: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 483 "machine/pentium/disassembler.m"
       
@@ -51626,7 +51593,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a918: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 483 "machine/pentium/disassembler.m"
       
@@ -51644,12 +51611,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a919: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 477 "machine/pentium/disassembler.m"
+      #line 483 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "RORB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51662,12 +51629,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a920: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 477 "machine/pentium/disassembler.m"
+      #line 483 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "RORB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51680,7 +51647,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a921: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 477 "machine/pentium/disassembler.m"
       
@@ -51698,7 +51665,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a922: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 477 "machine/pentium/disassembler.m"
       
@@ -51716,12 +51683,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a923: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 471 "machine/pentium/disassembler.m"
+      #line 477 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "RCLB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51734,12 +51701,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a924: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 471 "machine/pentium/disassembler.m"
+      #line 477 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "RCLB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51752,7 +51719,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a925: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 471 "machine/pentium/disassembler.m"
       
@@ -51770,7 +51737,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a926: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 471 "machine/pentium/disassembler.m"
       
@@ -51788,12 +51755,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a927: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 465 "machine/pentium/disassembler.m"
+      #line 471 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "RCRB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51806,12 +51773,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a928: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 465 "machine/pentium/disassembler.m"
+      #line 471 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "RCRB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51824,7 +51791,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a929: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 465 "machine/pentium/disassembler.m"
       
@@ -51842,7 +51809,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a930: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 465 "machine/pentium/disassembler.m"
       
@@ -51860,12 +51827,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a931: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 459 "machine/pentium/disassembler.m"
+      #line 465 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "SHLSALB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51878,12 +51845,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a932: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 459 "machine/pentium/disassembler.m"
+      #line 465 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Eb.CL", DIS_EADDR8);
+              sprintf (str,  "SHLSALB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51896,7 +51863,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a933: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 459 "machine/pentium/disassembler.m"
       
@@ -51914,7 +51881,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a934: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 459 "machine/pentium/disassembler.m"
       
@@ -51932,12 +51899,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a935: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 453 "machine/pentium/disassembler.m"
+      #line 459 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Eb.CL", DIS_EADDR32);
+              sprintf (str,  "SHRB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51950,12 +51917,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a936: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 453 "machine/pentium/disassembler.m"
+      #line 459 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Eb.CL", DIS_EADDR32);
+              sprintf (str,  "SHRB.Eb.CL", DIS_EADDR8);
 
       
 
@@ -51968,7 +51935,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a937: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 453 "machine/pentium/disassembler.m"
       
@@ -51986,7 +51953,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a938: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 453 "machine/pentium/disassembler.m"
       
@@ -52004,12 +51971,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a939: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 441 "machine/pentium/disassembler.m"
+      #line 453 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "SARB.Eb.CL", DIS_EADDR32);
 
       
 
@@ -52022,12 +51989,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a940: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 441 "machine/pentium/disassembler.m"
+      #line 453 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "ROLB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "SARB.Eb.CL", DIS_EADDR32);
 
       
 
@@ -52040,7 +52007,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a941: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 441 "machine/pentium/disassembler.m"
       
@@ -52058,7 +52025,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a942: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 441 "machine/pentium/disassembler.m"
       
@@ -52076,12 +52043,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a943: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 429 "machine/pentium/disassembler.m"
+      #line 441 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "ROLB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52094,12 +52061,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a944: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 429 "machine/pentium/disassembler.m"
+      #line 441 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RORB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "ROLB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52112,7 +52079,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a945: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 429 "machine/pentium/disassembler.m"
       
@@ -52130,7 +52097,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a946: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 429 "machine/pentium/disassembler.m"
       
@@ -52148,12 +52115,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a947: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 417 "machine/pentium/disassembler.m"
+      #line 429 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "RORB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52166,12 +52133,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a948: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 417 "machine/pentium/disassembler.m"
+      #line 429 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCLB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "RORB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52184,7 +52151,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a949: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 417 "machine/pentium/disassembler.m"
       
@@ -52202,7 +52169,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a950: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 417 "machine/pentium/disassembler.m"
       
@@ -52220,12 +52187,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a951: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 405 "machine/pentium/disassembler.m"
+      #line 417 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "RCLB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52238,12 +52205,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a952: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 405 "machine/pentium/disassembler.m"
+      #line 417 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "RCRB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "RCLB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52256,7 +52223,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a953: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 405 "machine/pentium/disassembler.m"
       
@@ -52274,7 +52241,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a954: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 405 "machine/pentium/disassembler.m"
       
@@ -52292,12 +52259,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a955: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 393 "machine/pentium/disassembler.m"
+      #line 405 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "RCRB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52310,12 +52277,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a956: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 393 "machine/pentium/disassembler.m"
+      #line 405 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHLSALB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "RCRB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52328,7 +52295,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a957: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 393 "machine/pentium/disassembler.m"
       
@@ -52346,7 +52313,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a958: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 393 "machine/pentium/disassembler.m"
       
@@ -52364,12 +52331,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a959: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 381 "machine/pentium/disassembler.m"
+      #line 393 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "SHLSALB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52382,12 +52349,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a960: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 381 "machine/pentium/disassembler.m"
+      #line 393 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SHRB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "SHLSALB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52400,7 +52367,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a961: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 381 "machine/pentium/disassembler.m"
       
@@ -52418,7 +52385,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a962: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 381 "machine/pentium/disassembler.m"
       
@@ -52436,12 +52403,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a963: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 369 "machine/pentium/disassembler.m"
+      #line 381 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "SHRB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52454,12 +52421,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a964: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 369 "machine/pentium/disassembler.m"
+      #line 381 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "SARB.Ev.CLod", DIS_EADDR32);
+              sprintf (str,  "SHRB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52472,7 +52439,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a965: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 369 "machine/pentium/disassembler.m"
       
@@ -52490,7 +52457,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a966: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 369 "machine/pentium/disassembler.m"
       
@@ -52507,13 +52474,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a967: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1430 "machine/pentium/disassembler.m"
+      #line 369 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FADD.R32", DIS_MEM32);
+              sprintf (str,  "SARB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52525,13 +52492,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a968: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1430 "machine/pentium/disassembler.m"
+      #line 369 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FADD.R32", DIS_MEM32);
+              sprintf (str,  "SARB.Ev.CLod", DIS_EADDR32);
 
       
 
@@ -52544,7 +52511,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a969: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1430 "machine/pentium/disassembler.m"
       
@@ -52562,12 +52529,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a970: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1624 "machine/pentium/disassembler.m"
+      #line 1430 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FMUL.R32", DIS_MEM32);
+              sprintf (str,  "FADD.R32", DIS_MEM32);
 
       
 
@@ -52580,12 +52547,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a971: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1624 "machine/pentium/disassembler.m"
+      #line 1430 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FMUL.R32", DIS_MEM32);
+              sprintf (str,  "FADD.R32", DIS_MEM32);
 
       
 
@@ -52598,7 +52565,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a972: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1624 "machine/pentium/disassembler.m"
       
@@ -52616,12 +52583,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a973: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1463 "machine/pentium/disassembler.m"
+      #line 1624 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOM.R32", DIS_MEM32);
+              sprintf (str,  "FMUL.R32", DIS_MEM32);
 
       
 
@@ -52634,12 +52601,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a974: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1463 "machine/pentium/disassembler.m"
+      #line 1624 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOM.R32", DIS_MEM32);
+              sprintf (str,  "FMUL.R32", DIS_MEM32);
 
       
 
@@ -52652,7 +52619,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a975: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1463 "machine/pentium/disassembler.m"
       
@@ -52670,12 +52637,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a976: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1475 "machine/pentium/disassembler.m"
+      #line 1463 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOMP.R32", DIS_MEM32);
+              sprintf (str,  "FCOM.R32", DIS_MEM32);
 
       
 
@@ -52688,12 +52655,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a977: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1475 "machine/pentium/disassembler.m"
+      #line 1463 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOMP.R32", DIS_MEM32);
+              sprintf (str,  "FCOM.R32", DIS_MEM32);
 
       
 
@@ -52706,7 +52673,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a978: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1475 "machine/pentium/disassembler.m"
       
@@ -52724,12 +52691,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a979: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1714 "machine/pentium/disassembler.m"
+      #line 1475 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUB.R32", DIS_MEM32);
+              sprintf (str,  "FCOMP.R32", DIS_MEM32);
 
       
 
@@ -52742,12 +52709,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a980: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1714 "machine/pentium/disassembler.m"
+      #line 1475 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUB.R32", DIS_MEM32);
+              sprintf (str,  "FCOMP.R32", DIS_MEM32);
 
       
 
@@ -52760,7 +52727,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a981: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1714 "machine/pentium/disassembler.m"
       
@@ -52778,12 +52745,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a982: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1735 "machine/pentium/disassembler.m"
+      #line 1714 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUBR.R32", DIS_MEM32);
+              sprintf (str,  "FSUB.R32", DIS_MEM32);
 
       
 
@@ -52796,12 +52763,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a983: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1735 "machine/pentium/disassembler.m"
+      #line 1714 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUBR.R32", DIS_MEM32);
+              sprintf (str,  "FSUB.R32", DIS_MEM32);
 
       
 
@@ -52814,7 +52781,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a984: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1735 "machine/pentium/disassembler.m"
       
@@ -52832,12 +52799,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a985: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1508 "machine/pentium/disassembler.m"
+      #line 1735 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIV.R32", DIS_MEM32);
+              sprintf (str,  "FSUBR.R32", DIS_MEM32);
 
       
 
@@ -52850,12 +52817,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a986: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1508 "machine/pentium/disassembler.m"
+      #line 1735 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIV.R32", DIS_MEM32);
+              sprintf (str,  "FSUBR.R32", DIS_MEM32);
 
       
 
@@ -52868,7 +52835,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a987: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1508 "machine/pentium/disassembler.m"
       
@@ -52886,12 +52853,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a988: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1529 "machine/pentium/disassembler.m"
+      #line 1508 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIVR.R32", DIS_MEM32);
+              sprintf (str,  "FDIV.R32", DIS_MEM32);
 
       
 
@@ -52904,12 +52871,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a989: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1529 "machine/pentium/disassembler.m"
+      #line 1508 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIVR.R32", DIS_MEM32);
+              sprintf (str,  "FDIV.R32", DIS_MEM32);
 
       
 
@@ -52922,7 +52889,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a990: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1529 "machine/pentium/disassembler.m"
       
@@ -52940,12 +52907,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a991: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1580 "machine/pentium/disassembler.m"
+      #line 1529 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLD.lsR32", DIS_MEM32);
+              sprintf (str,  "FDIVR.R32", DIS_MEM32);
 
       
 
@@ -52958,12 +52925,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a992: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1580 "machine/pentium/disassembler.m"
+      #line 1529 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLD.lsR32", DIS_MEM32);
+              sprintf (str,  "FDIVR.R32", DIS_MEM32);
 
       
 
@@ -52976,7 +52943,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a993: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1580 "machine/pentium/disassembler.m"
       
@@ -52994,12 +52961,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a994: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1681 "machine/pentium/disassembler.m"
+      #line 1580 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FST.lsR32", DIS_MEM32);
+              sprintf (str,  "FLD.lsR32", DIS_MEM32);
 
       
 
@@ -53012,12 +52979,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a995: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1681 "machine/pentium/disassembler.m"
+      #line 1580 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FST.lsR32", DIS_MEM32);
+              sprintf (str,  "FLD.lsR32", DIS_MEM32);
 
       
 
@@ -53030,7 +52997,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a996: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1681 "machine/pentium/disassembler.m"
       
@@ -53048,12 +53015,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a997: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1687 "machine/pentium/disassembler.m"
+      #line 1681 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTP.lsR32", DIS_MEM32);
+              sprintf (str,  "FST.lsR32", DIS_MEM32);
 
       
 
@@ -53066,12 +53033,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a998: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1687 "machine/pentium/disassembler.m"
+      #line 1681 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTP.lsR32", DIS_MEM32);
+              sprintf (str,  "FST.lsR32", DIS_MEM32);
 
       
 
@@ -53084,7 +53051,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a999: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1687 "machine/pentium/disassembler.m"
       
@@ -53101,13 +53068,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1000: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1621 "machine/pentium/disassembler.m"
+      #line 1687 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLDENV", DIS_MEM);
+              sprintf (str,  "FSTP.lsR32", DIS_MEM32);
 
       
 
@@ -53119,13 +53086,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1001: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1621 "machine/pentium/disassembler.m"
+      #line 1687 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLDENV", DIS_MEM);
+              sprintf (str,  "FSTP.lsR32", DIS_MEM32);
 
       
 
@@ -53138,7 +53105,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1002: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1621 "machine/pentium/disassembler.m"
       
@@ -53155,13 +53122,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1003: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1618 "machine/pentium/disassembler.m"
+      #line 1621 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLDCW", DIS_MEM16);
+              sprintf (str,  "FLDENV", DIS_MEM);
 
       
 
@@ -53173,13 +53140,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1004: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1618 "machine/pentium/disassembler.m"
+      #line 1621 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLDCW", DIS_MEM16);
+              sprintf (str,  "FLDENV", DIS_MEM);
 
       
 
@@ -53192,7 +53159,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1005: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1618 "machine/pentium/disassembler.m"
       
@@ -53209,13 +53176,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1006: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1705 "machine/pentium/disassembler.m"
+      #line 1618 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTENV", DIS_MEM);
+              sprintf (str,  "FLDCW", DIS_MEM16);
 
       
 
@@ -53227,13 +53194,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1007: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1705 "machine/pentium/disassembler.m"
+      #line 1618 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTENV", DIS_MEM);
+              sprintf (str,  "FLDCW", DIS_MEM16);
 
       
 
@@ -53246,7 +53213,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1008: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1705 "machine/pentium/disassembler.m"
       
@@ -53263,13 +53230,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1009: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1702 "machine/pentium/disassembler.m"
+      #line 1705 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTCW", DIS_MEM16);
+              sprintf (str,  "FSTENV", DIS_MEM);
 
       
 
@@ -53281,13 +53248,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1010: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1702 "machine/pentium/disassembler.m"
+      #line 1705 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTCW", DIS_MEM16);
+              sprintf (str,  "FSTENV", DIS_MEM);
 
       
 
@@ -53300,7 +53267,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1011: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1702 "machine/pentium/disassembler.m"
       
@@ -53317,13 +53284,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1012: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1445 "machine/pentium/disassembler.m"
+      #line 1702 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I32", DIS_MEM32);
+              sprintf (str,  "FSTCW", DIS_MEM16);
 
       
 
@@ -53335,13 +53302,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1013: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1445 "machine/pentium/disassembler.m"
+      #line 1702 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I32", DIS_MEM32);
+              sprintf (str,  "FSTCW", DIS_MEM16);
 
       
 
@@ -53353,13 +53320,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1014: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1445 "machine/pentium/disassembler.m"
+      #line 1448 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I32", DIS_MEM32);
+              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
       
 
@@ -53371,13 +53338,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1015: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1639 "machine/pentium/disassembler.m"
+      #line 1448 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
       
 
@@ -53389,13 +53356,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1016: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1639 "machine/pentium/disassembler.m"
+      #line 1448 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+              sprintf (str,  "FIADD.I16", DIS_MEM16);
 
       
 
@@ -53407,13 +53374,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1017: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1639 "machine/pentium/disassembler.m"
+      #line 1642 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I32", DIS_MEM32);
+              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
       
 
@@ -53425,13 +53392,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1018: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1469 "machine/pentium/disassembler.m"
+      #line 1642 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I32", DIS_MEM32);
+              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
       
 
@@ -53443,13 +53410,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1019: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1469 "machine/pentium/disassembler.m"
+      #line 1642 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I32", DIS_MEM32);
+              sprintf (str,  "FIMUL.I16", DIS_MEM16);
 
       
 
@@ -53461,13 +53428,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1020: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1469 "machine/pentium/disassembler.m"
+      #line 1472 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I32", DIS_MEM32);
+              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
       
 
@@ -53479,13 +53446,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1021: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1487 "machine/pentium/disassembler.m"
+      #line 1472 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
       
 
@@ -53497,13 +53464,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1022: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1487 "machine/pentium/disassembler.m"
+      #line 1472 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+              sprintf (str,  "FICOM.I16", DIS_MEM16);
 
       
 
@@ -53515,13 +53482,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1023: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1487 "machine/pentium/disassembler.m"
+      #line 1490 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I32", DIS_MEM32);
+              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
       
 
@@ -53533,13 +53500,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1024: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1726 "machine/pentium/disassembler.m"
+      #line 1490 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I32", DIS_MEM32);
+              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
       
 
@@ -53551,13 +53518,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1025: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1726 "machine/pentium/disassembler.m"
+      #line 1490 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I32", DIS_MEM32);
+              sprintf (str,  "FICOMP.I16", DIS_MEM16);
 
       
 
@@ -53569,13 +53536,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1026: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1726 "machine/pentium/disassembler.m"
+      #line 1729 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I32", DIS_MEM32);
+              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
       
 
@@ -53587,13 +53554,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1027: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1747 "machine/pentium/disassembler.m"
+      #line 1729 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
       
 
@@ -53605,13 +53572,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1028: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1747 "machine/pentium/disassembler.m"
+      #line 1729 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+              sprintf (str,  "FISUB.I16", DIS_MEM16);
 
       
 
@@ -53623,13 +53590,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1029: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1747 "machine/pentium/disassembler.m"
+      #line 1750 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I32", DIS_MEM32);
+              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
       
 
@@ -53641,13 +53608,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1030: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1523 "machine/pentium/disassembler.m"
+      #line 1750 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
       
 
@@ -53659,13 +53626,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1031: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1523 "machine/pentium/disassembler.m"
+      #line 1750 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+              sprintf (str,  "FISUBR.I16", DIS_MEM16);
 
       
 
@@ -53677,13 +53644,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1032: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1523 "machine/pentium/disassembler.m"
+      #line 1526 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I32", DIS_MEM32);
+              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
       
 
@@ -53695,13 +53662,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1033: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1541 "machine/pentium/disassembler.m"
+      #line 1526 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
       
 
@@ -53713,13 +53680,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1034: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1541 "machine/pentium/disassembler.m"
+      #line 1526 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+              sprintf (str,  "FIDIV.I16", DIS_MEM16);
 
       
 
@@ -53731,13 +53698,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1035: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1541 "machine/pentium/disassembler.m"
+      #line 1544 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
+              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
       
 
@@ -53749,13 +53716,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1036: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1556 "machine/pentium/disassembler.m"
+      #line 1544 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FILD.lsI32", DIS_MEM32);
+              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
       
 
@@ -53767,13 +53734,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1037: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1556 "machine/pentium/disassembler.m"
+      #line 1544 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FILD.lsI32", DIS_MEM32);
+              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
 
       
 
@@ -53786,7 +53753,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1038: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1556 "machine/pentium/disassembler.m"
       
@@ -53804,12 +53771,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1039: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1568 "machine/pentium/disassembler.m"
+      #line 1556 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIST.lsI32", DIS_MEM32);
+              sprintf (str,  "FILD.lsI32", DIS_MEM32);
 
       
 
@@ -53822,12 +53789,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1040: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1568 "machine/pentium/disassembler.m"
+      #line 1556 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIST.lsI32", DIS_MEM32);
+              sprintf (str,  "FILD.lsI32", DIS_MEM32);
 
       
 
@@ -53840,7 +53807,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1041: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1568 "machine/pentium/disassembler.m"
       
@@ -53858,12 +53825,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1042: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1574 "machine/pentium/disassembler.m"
+      #line 1568 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISTP.lsI32", DIS_MEM32);
+              sprintf (str,  "FIST.lsI32", DIS_MEM32);
 
       
 
@@ -53876,12 +53843,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1043: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1574 "machine/pentium/disassembler.m"
+      #line 1568 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISTP.lsI32", DIS_MEM32);
+              sprintf (str,  "FIST.lsI32", DIS_MEM32);
 
       
 
@@ -53894,7 +53861,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1044: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1574 "machine/pentium/disassembler.m"
       
@@ -53911,25 +53878,15 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1045: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1586 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "FLD80", DIS_MEM80);
-
+      #line 1574 "machine/pentium/disassembler.m"
       
 
-      /* This is a bit tricky. The FPUSH logically comes between the read of STi and
+              sprintf (str,  "FISTP.lsI32", DIS_MEM32);
 
-      # the write to ST0. In particular, FLD ST0 is supposed to duplicate the TOS.
-
-      # This problem only happens with this load instruction, so there is a work
-
-      # around here that gives us the SSL a value of i that is one more than in
-
-      # the instruction */
+      
 
       
       
@@ -53939,25 +53896,15 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1046: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1586 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "FLD80", DIS_MEM80);
-
+      #line 1574 "machine/pentium/disassembler.m"
       
 
-      /* This is a bit tricky. The FPUSH logically comes between the read of STi and
+              sprintf (str,  "FISTP.lsI32", DIS_MEM32);
 
-      # the write to ST0. In particular, FLD ST0 is supposed to duplicate the TOS.
-
-      # This problem only happens with this load instruction, so there is a work
-
-      # around here that gives us the SSL a value of i that is one more than in
-
-      # the instruction */
+      
 
       
       
@@ -53968,7 +53915,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1047: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1586 "machine/pentium/disassembler.m"
       
@@ -53996,14 +53943,24 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1048: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1693 "machine/pentium/disassembler.m"
+      #line 1586 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTP80", DIS_MEM80);
+              sprintf (str,  "FLD80", DIS_MEM80);
 
       
+
+      /* This is a bit tricky. The FPUSH logically comes between the read of STi and
+
+      # the write to ST0. In particular, FLD ST0 is supposed to duplicate the TOS.
+
+      # This problem only happens with this load instruction, so there is a work
+
+      # around here that gives us the SSL a value of i that is one more than in
+
+      # the instruction */
 
       
       
@@ -54014,14 +53971,24 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1049: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1693 "machine/pentium/disassembler.m"
+      #line 1586 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTP80", DIS_MEM80);
+              sprintf (str,  "FLD80", DIS_MEM80);
 
       
+
+      /* This is a bit tricky. The FPUSH logically comes between the read of STi and
+
+      # the write to ST0. In particular, FLD ST0 is supposed to duplicate the TOS.
+
+      # This problem only happens with this load instruction, so there is a work
+
+      # around here that gives us the SSL a value of i that is one more than in
+
+      # the instruction */
 
       
       
@@ -54032,7 +53999,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1050: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1693 "machine/pentium/disassembler.m"
       
@@ -54049,13 +54016,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1051: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem80 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1433 "machine/pentium/disassembler.m"
+      #line 1693 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FADD.R64", DIS_MEM64);
+              sprintf (str,  "FSTP80", DIS_MEM80);
 
       
 
@@ -54067,13 +54034,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1052: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem80 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1433 "machine/pentium/disassembler.m"
+      #line 1693 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FADD.R64", DIS_MEM64);
+              sprintf (str,  "FSTP80", DIS_MEM80);
 
       
 
@@ -54086,7 +54053,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1053: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1433 "machine/pentium/disassembler.m"
       
@@ -54104,12 +54071,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1054: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1627 "machine/pentium/disassembler.m"
+      #line 1433 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FMUL.R64", DIS_MEM64);
+              sprintf (str,  "FADD.R64", DIS_MEM64);
 
       
 
@@ -54122,12 +54089,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1055: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1627 "machine/pentium/disassembler.m"
+      #line 1433 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FMUL.R64", DIS_MEM64);
+              sprintf (str,  "FADD.R64", DIS_MEM64);
 
       
 
@@ -54140,7 +54107,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1056: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1627 "machine/pentium/disassembler.m"
       
@@ -54158,12 +54125,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1057: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1466 "machine/pentium/disassembler.m"
+      #line 1627 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOM.R64", DIS_MEM64);
+              sprintf (str,  "FMUL.R64", DIS_MEM64);
 
       
 
@@ -54176,12 +54143,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1058: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1466 "machine/pentium/disassembler.m"
+      #line 1627 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOM.R64", DIS_MEM64);
+              sprintf (str,  "FMUL.R64", DIS_MEM64);
 
       
 
@@ -54194,7 +54161,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1059: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1466 "machine/pentium/disassembler.m"
       
@@ -54212,12 +54179,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1060: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1478 "machine/pentium/disassembler.m"
+      #line 1466 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOMP.R64", DIS_MEM64);
+              sprintf (str,  "FCOM.R64", DIS_MEM64);
 
       
 
@@ -54230,12 +54197,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1061: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1478 "machine/pentium/disassembler.m"
+      #line 1466 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FCOMP.R64", DIS_MEM64);
+              sprintf (str,  "FCOM.R64", DIS_MEM64);
 
       
 
@@ -54248,7 +54215,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1062: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1478 "machine/pentium/disassembler.m"
       
@@ -54266,12 +54233,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1063: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1717 "machine/pentium/disassembler.m"
+      #line 1478 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUB.R64", DIS_MEM64);
+              sprintf (str,  "FCOMP.R64", DIS_MEM64);
 
       
 
@@ -54284,12 +54251,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1064: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1717 "machine/pentium/disassembler.m"
+      #line 1478 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUB.R64", DIS_MEM64);
+              sprintf (str,  "FCOMP.R64", DIS_MEM64);
 
       
 
@@ -54302,7 +54269,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1065: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1717 "machine/pentium/disassembler.m"
       
@@ -54320,12 +54287,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1066: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1738 "machine/pentium/disassembler.m"
+      #line 1717 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUBR.R64", DIS_MEM64);
+              sprintf (str,  "FSUB.R64", DIS_MEM64);
 
       
 
@@ -54338,12 +54305,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1067: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1738 "machine/pentium/disassembler.m"
+      #line 1717 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSUBR.R64", DIS_MEM64);
+              sprintf (str,  "FSUB.R64", DIS_MEM64);
 
       
 
@@ -54356,7 +54323,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1068: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1738 "machine/pentium/disassembler.m"
       
@@ -54374,12 +54341,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1069: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1511 "machine/pentium/disassembler.m"
+      #line 1738 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIV.R64", DIS_MEM64);
+              sprintf (str,  "FSUBR.R64", DIS_MEM64);
 
       
 
@@ -54392,12 +54359,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1070: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1511 "machine/pentium/disassembler.m"
+      #line 1738 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIV.R64", DIS_MEM64);
+              sprintf (str,  "FSUBR.R64", DIS_MEM64);
 
       
 
@@ -54410,7 +54377,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1071: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1511 "machine/pentium/disassembler.m"
       
@@ -54428,12 +54395,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1072: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1532 "machine/pentium/disassembler.m"
+      #line 1511 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIVR.R64", DIS_MEM64);
+              sprintf (str,  "FDIV.R64", DIS_MEM64);
 
       
 
@@ -54446,12 +54413,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1073: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1532 "machine/pentium/disassembler.m"
+      #line 1511 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FDIVR.R64", DIS_MEM64);
+              sprintf (str,  "FDIV.R64", DIS_MEM64);
 
       
 
@@ -54464,7 +54431,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1074: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1532 "machine/pentium/disassembler.m"
       
@@ -54482,12 +54449,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1075: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1583 "machine/pentium/disassembler.m"
+      #line 1532 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLD.lsR64", DIS_MEM64);
+              sprintf (str,  "FDIVR.R64", DIS_MEM64);
 
       
 
@@ -54500,12 +54467,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1076: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1583 "machine/pentium/disassembler.m"
+      #line 1532 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FLD.lsR64", DIS_MEM64);
+              sprintf (str,  "FDIVR.R64", DIS_MEM64);
 
       
 
@@ -54518,7 +54485,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1077: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1583 "machine/pentium/disassembler.m"
       
@@ -54536,12 +54503,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1078: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1684 "machine/pentium/disassembler.m"
+      #line 1583 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FST.lsR64", DIS_MEM64);
+              sprintf (str,  "FLD.lsR64", DIS_MEM64);
 
       
 
@@ -54554,12 +54521,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1079: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1684 "machine/pentium/disassembler.m"
+      #line 1583 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FST.lsR64", DIS_MEM64);
+              sprintf (str,  "FLD.lsR64", DIS_MEM64);
 
       
 
@@ -54572,7 +54539,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1080: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1684 "machine/pentium/disassembler.m"
       
@@ -54590,12 +54557,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1081: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1690 "machine/pentium/disassembler.m"
+      #line 1684 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTP.lsR64", DIS_MEM64);
+              sprintf (str,  "FST.lsR64", DIS_MEM64);
 
       
 
@@ -54608,12 +54575,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1082: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1690 "machine/pentium/disassembler.m"
+      #line 1684 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTP.lsR64", DIS_MEM64);
+              sprintf (str,  "FST.lsR64", DIS_MEM64);
 
       
 
@@ -54626,7 +54593,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1083: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1690 "machine/pentium/disassembler.m"
       
@@ -54643,13 +54610,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1084: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem64 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1663 "machine/pentium/disassembler.m"
+      #line 1690 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FRSTOR", DIS_MEM);
+              sprintf (str,  "FSTP.lsR64", DIS_MEM64);
 
       
 
@@ -54661,13 +54628,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1085: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem64 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1663 "machine/pentium/disassembler.m"
+      #line 1690 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FRSTOR", DIS_MEM);
+              sprintf (str,  "FSTP.lsR64", DIS_MEM64);
 
       
 
@@ -54680,7 +54647,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1086: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1663 "machine/pentium/disassembler.m"
       
@@ -54698,12 +54665,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1087: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1666 "machine/pentium/disassembler.m"
+      #line 1663 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FNSAVE", DIS_MEM);
+              sprintf (str,  "FRSTOR", DIS_MEM);
 
       
 
@@ -54716,12 +54683,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1088: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1666 "machine/pentium/disassembler.m"
+      #line 1663 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FNSAVE", DIS_MEM);
+              sprintf (str,  "FRSTOR", DIS_MEM);
 
       
 
@@ -54734,7 +54701,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1089: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1666 "machine/pentium/disassembler.m"
       
@@ -54751,13 +54718,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1090: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1708 "machine/pentium/disassembler.m"
+      #line 1666 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTSW", DIS_MEM16);
+              sprintf (str,  "FNSAVE", DIS_MEM);
 
       
 
@@ -54769,13 +54736,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1091: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1708 "machine/pentium/disassembler.m"
+      #line 1666 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FSTSW", DIS_MEM16);
+              sprintf (str,  "FNSAVE", DIS_MEM);
 
       
 
@@ -54788,7 +54755,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1092: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1708 "machine/pentium/disassembler.m"
       
@@ -54806,12 +54773,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1093: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1448 "machine/pentium/disassembler.m"
+      #line 1708 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I16", DIS_MEM16);
+              sprintf (str,  "FSTSW", DIS_MEM16);
 
       
 
@@ -54824,12 +54791,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1094: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1448 "machine/pentium/disassembler.m"
+      #line 1708 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I16", DIS_MEM16);
+              sprintf (str,  "FSTSW", DIS_MEM16);
 
       
 
@@ -54841,13 +54808,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1095: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1448 "machine/pentium/disassembler.m"
+      #line 1445 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIADD.I16", DIS_MEM16);
+              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
       
 
@@ -54859,13 +54826,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1096: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1642 "machine/pentium/disassembler.m"
+      #line 1445 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
       
 
@@ -54877,13 +54844,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1097: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1642 "machine/pentium/disassembler.m"
+      #line 1445 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+              sprintf (str,  "FIADD.I32", DIS_MEM32);
 
       
 
@@ -54895,13 +54862,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1098: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1642 "machine/pentium/disassembler.m"
+      #line 1639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIMUL.I16", DIS_MEM16);
+              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
       
 
@@ -54913,13 +54880,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1099: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1472 "machine/pentium/disassembler.m"
+      #line 1639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I16", DIS_MEM16);
+              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
       
 
@@ -54931,13 +54898,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1100: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1472 "machine/pentium/disassembler.m"
+      #line 1639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I16", DIS_MEM16);
+              sprintf (str,  "FIMUL.I32", DIS_MEM32);
 
       
 
@@ -54949,13 +54916,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1101: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1472 "machine/pentium/disassembler.m"
+      #line 1469 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOM.I16", DIS_MEM16);
+              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
       
 
@@ -54967,13 +54934,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1102: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1490 "machine/pentium/disassembler.m"
+      #line 1469 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
       
 
@@ -54985,13 +54952,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1103: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1490 "machine/pentium/disassembler.m"
+      #line 1469 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+              sprintf (str,  "FICOM.I32", DIS_MEM32);
 
       
 
@@ -55003,13 +54970,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1104: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1490 "machine/pentium/disassembler.m"
+      #line 1487 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FICOMP.I16", DIS_MEM16);
+              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
       
 
@@ -55021,13 +54988,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1105: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1729 "machine/pentium/disassembler.m"
+      #line 1487 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I16", DIS_MEM16);
+              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
       
 
@@ -55039,13 +55006,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1106: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1729 "machine/pentium/disassembler.m"
+      #line 1487 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I16", DIS_MEM16);
+              sprintf (str,  "FICOMP.I32", DIS_MEM32);
 
       
 
@@ -55057,13 +55024,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1107: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1729 "machine/pentium/disassembler.m"
+      #line 1726 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUB.I16", DIS_MEM16);
+              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
       
 
@@ -55075,13 +55042,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1108: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1750 "machine/pentium/disassembler.m"
+      #line 1726 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
       
 
@@ -55093,13 +55060,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1109: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1750 "machine/pentium/disassembler.m"
+      #line 1726 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+              sprintf (str,  "FISUB.I32", DIS_MEM32);
 
       
 
@@ -55111,13 +55078,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1110: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1750 "machine/pentium/disassembler.m"
+      #line 1747 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISUBR.I16", DIS_MEM16);
+              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
       
 
@@ -55129,13 +55096,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1111: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1526 "machine/pentium/disassembler.m"
+      #line 1747 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
       
 
@@ -55147,13 +55114,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1112: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1526 "machine/pentium/disassembler.m"
+      #line 1747 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+              sprintf (str,  "FISUBR.I32", DIS_MEM32);
 
       
 
@@ -55165,13 +55132,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1113: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1526 "machine/pentium/disassembler.m"
+      #line 1523 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIV.I16", DIS_MEM16);
+              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
       
 
@@ -55183,13 +55150,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1114: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1544 "machine/pentium/disassembler.m"
+      #line 1523 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
       
 
@@ -55201,13 +55168,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1115: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1544 "machine/pentium/disassembler.m"
+      #line 1523 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+              sprintf (str,  "FIDIV.I32", DIS_MEM32);
 
       
 
@@ -55219,13 +55186,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1116: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 3 + MATCH_p; 
       
-      #line 1544 "machine/pentium/disassembler.m"
+      #line 1541 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIDIVR.I16", DIS_MEM16);
+              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
       
 
@@ -55237,13 +55204,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1117: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1553 "machine/pentium/disassembler.m"
+      #line 1541 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FILD.lsI16", DIS_MEM16);
+              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
       
 
@@ -55255,13 +55222,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1118: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem32 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1553 "machine/pentium/disassembler.m"
+      #line 1541 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FILD.lsI16", DIS_MEM16);
+              sprintf (str,  "FIDIVR.I32", DIS_MEM32);
 
       
 
@@ -55274,7 +55241,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1119: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1553 "machine/pentium/disassembler.m"
       
@@ -55292,12 +55259,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1120: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1565 "machine/pentium/disassembler.m"
+      #line 1553 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIST.lsI16", DIS_MEM16);
+              sprintf (str,  "FILD.lsI16", DIS_MEM16);
 
       
 
@@ -55310,12 +55277,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1121: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1565 "machine/pentium/disassembler.m"
+      #line 1553 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FIST.lsI16", DIS_MEM16);
+              sprintf (str,  "FILD.lsI16", DIS_MEM16);
 
       
 
@@ -55328,7 +55295,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1122: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1565 "machine/pentium/disassembler.m"
       
@@ -55346,12 +55313,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1123: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 1571 "machine/pentium/disassembler.m"
+      #line 1565 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISTP.lsI16", DIS_MEM16);
+              sprintf (str,  "FIST.lsI16", DIS_MEM16);
 
       
 
@@ -55364,12 +55331,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1124: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 1571 "machine/pentium/disassembler.m"
+      #line 1565 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FISTP.lsI16", DIS_MEM16);
+              sprintf (str,  "FIST.lsI16", DIS_MEM16);
 
       
 
@@ -55382,7 +55349,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1125: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1571 "machine/pentium/disassembler.m"
       
@@ -55399,13 +55366,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1126: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1451 "machine/pentium/disassembler.m"
+      #line 1571 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FBLD", DIS_MEM80);
+              sprintf (str,  "FISTP.lsI16", DIS_MEM16);
 
       
 
@@ -55417,13 +55384,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1127: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem16 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1451 "machine/pentium/disassembler.m"
+      #line 1571 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FBLD", DIS_MEM80);
+              sprintf (str,  "FISTP.lsI16", DIS_MEM16);
 
       
 
@@ -55436,7 +55403,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1128: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1451 "machine/pentium/disassembler.m"
       
@@ -55453,13 +55420,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1129: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem80 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1559 "machine/pentium/disassembler.m"
+      #line 1451 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FILD64", DIS_MEM64);
+              sprintf (str,  "FBLD", DIS_MEM80);
 
       
 
@@ -55471,13 +55438,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1130: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem80 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1559 "machine/pentium/disassembler.m"
+      #line 1451 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FILD64", DIS_MEM64);
+              sprintf (str,  "FBLD", DIS_MEM80);
 
       
 
@@ -55490,7 +55457,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1131: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1559 "machine/pentium/disassembler.m"
       
@@ -55507,13 +55474,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1132: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      unsigned Mem64 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
       
-      #line 1454 "machine/pentium/disassembler.m"
+      #line 1559 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FBSTP", DIS_MEM80);
+              sprintf (str,  "FILD64", DIS_MEM64);
 
       
 
@@ -55525,13 +55492,13 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1133: (void)0; /*placeholder for label*/ 
     { 
-      unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      unsigned Mem64 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
       
-      #line 1454 "machine/pentium/disassembler.m"
+      #line 1559 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "FBSTP", DIS_MEM80);
+              sprintf (str,  "FILD64", DIS_MEM64);
 
       
 
@@ -55544,7 +55511,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1134: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 1454 "machine/pentium/disassembler.m"
       
@@ -55561,6 +55528,42 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1135: (void)0; /*placeholder for label*/ 
     { 
+      unsigned Mem80 = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
+      
+      #line 1454 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "FBSTP", DIS_MEM80);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a1136: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Mem80 = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
+      
+      #line 1454 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "FBSTP", DIS_MEM80);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a1137: (void)0; /*placeholder for label*/ 
+    { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
@@ -55577,7 +55580,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1136: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1138: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
@@ -55595,7 +55598,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1137: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1139: (void)0; /*placeholder for label*/ 
     { 
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
@@ -55613,7 +55616,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1138: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1140: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_8_16 & 0xff) /* i8 at 16 */;
@@ -55632,7 +55635,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1139: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1141: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_8_24 & 0xff) /* i8 at 24 */;
@@ -55651,7 +55654,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1140: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1142: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_8_56 & 0xff) /* i8 at 56 */;
@@ -55670,7 +55673,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1141: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1143: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_8_48 & 0xff) /* i8 at 48 */;
@@ -55689,46 +55692,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1142: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
-      
-      #line 621 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "NOTb", DIS_EADDR8);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
-  MATCH_label_a1143: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
-      
-      #line 621 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "NOTb", DIS_EADDR8);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
   MATCH_label_a1144: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 621 "machine/pentium/disassembler.m"
       
@@ -55746,7 +55713,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1145: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 621 "machine/pentium/disassembler.m"
       
@@ -55764,12 +55731,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1146: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 630 "machine/pentium/disassembler.m"
+      #line 621 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "NEGb", DIS_EADDR8);
+              sprintf (str,  "NOTb", DIS_EADDR8);
 
       
 
@@ -55782,12 +55749,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1147: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 630 "machine/pentium/disassembler.m"
+      #line 621 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "NEGb", DIS_EADDR8);
+              sprintf (str,  "NOTb", DIS_EADDR8);
 
       
 
@@ -55800,7 +55767,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1148: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 630 "machine/pentium/disassembler.m"
       
@@ -55818,7 +55785,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1149: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 630 "machine/pentium/disassembler.m"
       
@@ -55836,12 +55803,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1150: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 639 "machine/pentium/disassembler.m"
+      #line 630 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MUL.AL", DIS_EADDR8);
+              sprintf (str,  "NEGb", DIS_EADDR8);
 
       
 
@@ -55854,12 +55821,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1151: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 639 "machine/pentium/disassembler.m"
+      #line 630 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MUL.AL", DIS_EADDR8);
+              sprintf (str,  "NEGb", DIS_EADDR8);
 
       
 
@@ -55872,7 +55839,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1152: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 639 "machine/pentium/disassembler.m"
       
@@ -55890,7 +55857,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1153: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 639 "machine/pentium/disassembler.m"
       
@@ -55908,12 +55875,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1154: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 881 "machine/pentium/disassembler.m"
+      #line 639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IMULb", DIS_EADDR8);
+              sprintf (str,  "MUL.AL", DIS_EADDR8);
 
       
 
@@ -55926,12 +55893,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1155: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 881 "machine/pentium/disassembler.m"
+      #line 639 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IMULb", DIS_EADDR8);
+              sprintf (str,  "MUL.AL", DIS_EADDR8);
 
       
 
@@ -55944,7 +55911,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1156: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 881 "machine/pentium/disassembler.m"
       
@@ -55962,7 +55929,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1157: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 881 "machine/pentium/disassembler.m"
       
@@ -55980,12 +55947,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1158: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 905 "machine/pentium/disassembler.m"
+      #line 881 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DIVAL", DIS_EADDR8);
+              sprintf (str,  "IMULb", DIS_EADDR8);
 
       
 
@@ -55998,12 +55965,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1159: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 905 "machine/pentium/disassembler.m"
+      #line 881 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DIVAL", DIS_EADDR8);
+              sprintf (str,  "IMULb", DIS_EADDR8);
 
       
 
@@ -56016,7 +55983,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1160: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 905 "machine/pentium/disassembler.m"
       
@@ -56034,7 +56001,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1161: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 905 "machine/pentium/disassembler.m"
       
@@ -56052,18 +56019,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1162: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 890 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "IDIV", DIS_EADDR8); /* ?? */
-
+      #line 905 "machine/pentium/disassembler.m"
       
 
-      //  | HLT() =>
-
-      //      sprintf (str,  "HLT");
+              sprintf (str,  "DIVAL", DIS_EADDR8);
 
       
 
@@ -56076,18 +56037,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1163: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 890 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "IDIV", DIS_EADDR8); /* ?? */
-
+      #line 905 "machine/pentium/disassembler.m"
       
 
-      //  | HLT() =>
-
-      //      sprintf (str,  "HLT");
+              sprintf (str,  "DIVAL", DIS_EADDR8);
 
       
 
@@ -56100,7 +56055,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1164: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 890 "machine/pentium/disassembler.m"
       
@@ -56124,7 +56079,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1165: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 890 "machine/pentium/disassembler.m"
       
@@ -56148,6 +56103,54 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1166: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
+      
+      #line 890 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "IDIV", DIS_EADDR8); /* ?? */
+
+      
+
+      //  | HLT() =>
+
+      //      sprintf (str,  "HLT");
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a1167: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
+      
+      #line 890 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "IDIV", DIS_EADDR8); /* ?? */
+
+      
+
+      //  | HLT() =>
+
+      //      sprintf (str,  "HLT");
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a1168: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
@@ -56164,7 +56167,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1167: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1169: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
@@ -56183,7 +56186,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1168: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1170: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
@@ -56202,7 +56205,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1169: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1171: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
@@ -56221,46 +56224,10 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1170: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
-      
-      #line 615 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "NOTod", DIS_EADDR32);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
-  MATCH_label_a1171: (void)0; /*placeholder for label*/ 
-    { 
-      unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
-      
-      #line 615 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "NOTod", DIS_EADDR32);
-
-      
-
-      
-      
-      
-    } 
-    goto MATCH_finished_a; 
-    
   MATCH_label_a1172: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 615 "machine/pentium/disassembler.m"
       
@@ -56278,7 +56245,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1173: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 615 "machine/pentium/disassembler.m"
       
@@ -56296,12 +56263,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1174: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 624 "machine/pentium/disassembler.m"
+      #line 615 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "NEGod", DIS_EADDR32);
+              sprintf (str,  "NOTod", DIS_EADDR32);
 
       
 
@@ -56314,12 +56281,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1175: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 624 "machine/pentium/disassembler.m"
+      #line 615 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "NEGod", DIS_EADDR32);
+              sprintf (str,  "NOTod", DIS_EADDR32);
 
       
 
@@ -56332,7 +56299,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1176: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 624 "machine/pentium/disassembler.m"
       
@@ -56350,7 +56317,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1177: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 624 "machine/pentium/disassembler.m"
       
@@ -56368,12 +56335,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1178: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 633 "machine/pentium/disassembler.m"
+      #line 624 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MUL.AXod", DIS_EADDR32);
+              sprintf (str,  "NEGod", DIS_EADDR32);
 
       
 
@@ -56386,12 +56353,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1179: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 633 "machine/pentium/disassembler.m"
+      #line 624 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "MUL.AXod", DIS_EADDR32);
+              sprintf (str,  "NEGod", DIS_EADDR32);
 
       
 
@@ -56404,7 +56371,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1180: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 633 "machine/pentium/disassembler.m"
       
@@ -56422,7 +56389,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1181: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 633 "machine/pentium/disassembler.m"
       
@@ -56440,12 +56407,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1182: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 875 "machine/pentium/disassembler.m"
+      #line 633 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IMULod", DIS_EADDR32);
+              sprintf (str,  "MUL.AXod", DIS_EADDR32);
 
       
 
@@ -56458,12 +56425,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1183: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 875 "machine/pentium/disassembler.m"
+      #line 633 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IMULod", DIS_EADDR32);
+              sprintf (str,  "MUL.AXod", DIS_EADDR32);
 
       
 
@@ -56476,7 +56443,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1184: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 875 "machine/pentium/disassembler.m"
       
@@ -56494,7 +56461,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1185: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 875 "machine/pentium/disassembler.m"
       
@@ -56512,12 +56479,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1186: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 899 "machine/pentium/disassembler.m"
+      #line 875 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DIVeAX", DIS_EADDR32);
+              sprintf (str,  "IMULod", DIS_EADDR32);
 
       
 
@@ -56530,12 +56497,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1187: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 899 "machine/pentium/disassembler.m"
+      #line 875 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DIVeAX", DIS_EADDR32);
+              sprintf (str,  "IMULod", DIS_EADDR32);
 
       
 
@@ -56548,7 +56515,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1188: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 899 "machine/pentium/disassembler.m"
       
@@ -56566,7 +56533,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1189: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 899 "machine/pentium/disassembler.m"
       
@@ -56584,12 +56551,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1190: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 884 "machine/pentium/disassembler.m"
+      #line 899 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IDIVeAX", DIS_EADDR32);
+              sprintf (str,  "DIVeAX", DIS_EADDR32);
 
       
 
@@ -56602,12 +56569,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1191: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 884 "machine/pentium/disassembler.m"
+      #line 899 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "IDIVeAX", DIS_EADDR32);
+              sprintf (str,  "DIVeAX", DIS_EADDR32);
 
       
 
@@ -56620,7 +56587,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1192: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 884 "machine/pentium/disassembler.m"
       
@@ -56638,7 +56605,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1193: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 884 "machine/pentium/disassembler.m"
       
@@ -56656,48 +56623,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1194: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 836 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "INC.Eb", DIS_EADDR8);
-
+      #line 884 "machine/pentium/disassembler.m"
       
 
-      //    | IN.eAX.DXod() =>
-
-      //        sprintf (str,  "IN.eAX.DXod");
-
-      
-
-      //    | IN.eAX.DXow() =>
-
-      //        sprintf (str,  "IN.eAX.DXow");
-
-      
-
-      //    | IN.AL.DX() =>
-
-      //        sprintf (str,  "IN.AL.DX");
-
-      
-
-      //    | IN.eAX.Ibod(i8) =>
-
-      //        sprintf (str,  "IN.eAX.Ibod", DIS_I8);
-
-      
-
-      //    | IN.eAX.Ibow(i8) =>
-
-      //        sprintf (str,  "IN.eAX.Ibow", DIS_I8);
-
-      
-
-      //    | IN.AL.Ib(i8) =>
-
-      //        sprintf (str,  "IN.AL.Ib", DIS_I8);
+              sprintf (str,  "IDIVeAX", DIS_EADDR32);
 
       
 
@@ -56710,48 +56641,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1195: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 836 "machine/pentium/disassembler.m"
-      
-
-              sprintf (str,  "INC.Eb", DIS_EADDR8);
-
+      #line 884 "machine/pentium/disassembler.m"
       
 
-      //    | IN.eAX.DXod() =>
-
-      //        sprintf (str,  "IN.eAX.DXod");
-
-      
-
-      //    | IN.eAX.DXow() =>
-
-      //        sprintf (str,  "IN.eAX.DXow");
-
-      
-
-      //    | IN.AL.DX() =>
-
-      //        sprintf (str,  "IN.AL.DX");
-
-      
-
-      //    | IN.eAX.Ibod(i8) =>
-
-      //        sprintf (str,  "IN.eAX.Ibod", DIS_I8);
-
-      
-
-      //    | IN.eAX.Ibow(i8) =>
-
-      //        sprintf (str,  "IN.eAX.Ibow", DIS_I8);
-
-      
-
-      //    | IN.AL.Ib(i8) =>
-
-      //        sprintf (str,  "IN.AL.Ib", DIS_I8);
+              sprintf (str,  "IDIVeAX", DIS_EADDR32);
 
       
 
@@ -56764,7 +56659,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1196: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 836 "machine/pentium/disassembler.m"
       
@@ -56818,7 +56713,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1197: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 836 "machine/pentium/disassembler.m"
       
@@ -56872,12 +56767,48 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1198: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 920 "machine/pentium/disassembler.m"
+      #line 836 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DEC.Eb", DIS_EADDR8);
+              sprintf (str,  "INC.Eb", DIS_EADDR8);
+
+      
+
+      //    | IN.eAX.DXod() =>
+
+      //        sprintf (str,  "IN.eAX.DXod");
+
+      
+
+      //    | IN.eAX.DXow() =>
+
+      //        sprintf (str,  "IN.eAX.DXow");
+
+      
+
+      //    | IN.AL.DX() =>
+
+      //        sprintf (str,  "IN.AL.DX");
+
+      
+
+      //    | IN.eAX.Ibod(i8) =>
+
+      //        sprintf (str,  "IN.eAX.Ibod", DIS_I8);
+
+      
+
+      //    | IN.eAX.Ibow(i8) =>
+
+      //        sprintf (str,  "IN.eAX.Ibow", DIS_I8);
+
+      
+
+      //    | IN.AL.Ib(i8) =>
+
+      //        sprintf (str,  "IN.AL.Ib", DIS_I8);
 
       
 
@@ -56890,12 +56821,48 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1199: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 920 "machine/pentium/disassembler.m"
+      #line 836 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DEC.Eb", DIS_EADDR8);
+              sprintf (str,  "INC.Eb", DIS_EADDR8);
+
+      
+
+      //    | IN.eAX.DXod() =>
+
+      //        sprintf (str,  "IN.eAX.DXod");
+
+      
+
+      //    | IN.eAX.DXow() =>
+
+      //        sprintf (str,  "IN.eAX.DXow");
+
+      
+
+      //    | IN.AL.DX() =>
+
+      //        sprintf (str,  "IN.AL.DX");
+
+      
+
+      //    | IN.eAX.Ibod(i8) =>
+
+      //        sprintf (str,  "IN.eAX.Ibod", DIS_I8);
+
+      
+
+      //    | IN.eAX.Ibow(i8) =>
+
+      //        sprintf (str,  "IN.eAX.Ibow", DIS_I8);
+
+      
+
+      //    | IN.AL.Ib(i8) =>
+
+      //        sprintf (str,  "IN.AL.Ib", DIS_I8);
 
       
 
@@ -56908,7 +56875,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1200: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 920 "machine/pentium/disassembler.m"
       
@@ -56926,7 +56893,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1201: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 920 "machine/pentium/disassembler.m"
       
@@ -56944,12 +56911,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1202: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 830 "machine/pentium/disassembler.m"
+      #line 920 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "INC.Evod", DIS_EADDR32);
+              sprintf (str,  "DEC.Eb", DIS_EADDR8);
 
       
 
@@ -56962,12 +56929,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1203: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 830 "machine/pentium/disassembler.m"
+      #line 920 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "INC.Evod", DIS_EADDR32);
+              sprintf (str,  "DEC.Eb", DIS_EADDR8);
 
       
 
@@ -56980,7 +56947,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1204: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 830 "machine/pentium/disassembler.m"
       
@@ -56998,7 +56965,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1205: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 830 "machine/pentium/disassembler.m"
       
@@ -57016,12 +56983,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1206: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 914 "machine/pentium/disassembler.m"
+      #line 830 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DEC.Evod", DIS_EADDR32);
+              sprintf (str,  "INC.Evod", DIS_EADDR32);
 
       
 
@@ -57034,12 +57001,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1207: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 914 "machine/pentium/disassembler.m"
+      #line 830 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "DEC.Evod", DIS_EADDR32);
+              sprintf (str,  "INC.Evod", DIS_EADDR32);
 
       
 
@@ -57052,7 +57019,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1208: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 914 "machine/pentium/disassembler.m"
       
@@ -57070,7 +57037,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1209: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 914 "machine/pentium/disassembler.m"
       
@@ -57088,12 +57055,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1210: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 2 + MATCH_p; 
+      nextPC = 7 + MATCH_p; 
       
-      #line 989 "machine/pentium/disassembler.m"
+      #line 914 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "CALL.Evod", DIS_EADDR32);
+              sprintf (str,  "DEC.Evod", DIS_EADDR32);
 
       
 
@@ -57106,12 +57073,12 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1211: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 3 + MATCH_p; 
+      nextPC = 6 + MATCH_p; 
       
-      #line 989 "machine/pentium/disassembler.m"
+      #line 914 "machine/pentium/disassembler.m"
       
 
-              sprintf (str,  "CALL.Evod", DIS_EADDR32);
+              sprintf (str,  "DEC.Evod", DIS_EADDR32);
 
       
 
@@ -57124,7 +57091,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1212: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 7 + MATCH_p; 
+      nextPC = 2 + MATCH_p; 
       
       #line 989 "machine/pentium/disassembler.m"
       
@@ -57142,7 +57109,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1213: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
-      nextPC = 6 + MATCH_p; 
+      nextPC = 3 + MATCH_p; 
       
       #line 989 "machine/pentium/disassembler.m"
       
@@ -57160,6 +57127,42 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   MATCH_label_a1214: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 7 + MATCH_p; 
+      
+      #line 989 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "CALL.Evod", DIS_EADDR32);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a1215: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
+      nextPC = 6 + MATCH_p; 
+      
+      #line 989 "machine/pentium/disassembler.m"
+      
+
+              sprintf (str,  "CALL.Evod", DIS_EADDR32);
+
+      
+
+      
+      
+      
+    } 
+    goto MATCH_finished_a; 
+    
+  MATCH_label_a1216: (void)0; /*placeholder for label*/ 
+    { 
+      unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
       #line 543 "machine/pentium/disassembler.m"
@@ -57175,7 +57178,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1215: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1217: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
@@ -57193,7 +57196,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1216: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1218: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
@@ -57211,7 +57214,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     } 
     goto MATCH_finished_a; 
     
-  MATCH_label_a1217: (void)0; /*placeholder for label*/ 
+  MATCH_label_a1219: (void)0; /*placeholder for label*/ 
     { 
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
