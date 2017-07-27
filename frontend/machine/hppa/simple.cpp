@@ -223,7 +223,7 @@ void dis_flt_c3(int& d_fmt, int& d_r1, int& d_r2, int& d_t, ADDRESS con)
     #line 79 "machine/hppa/simple.m"
     con
     ;
-  char *MATCH_name;
+  const char *MATCH_name;
   unsigned MATCH_w_32_0;
   { 
     MATCH_w_32_0 = getDword(MATCH_p); 
@@ -242,7 +242,7 @@ void dis_flt_c3(int& d_fmt, int& d_r1, int& d_r2, int& d_t, ADDRESS con)
     else { 
       MATCH_name = "flt_c3.C"; 
       { 
-        char *name = MATCH_name;
+        const char *name = MATCH_name;
         unsigned fmt = (MATCH_w_32_0 >> 11 & 0x3) /* fmt_19 at 0 */;
         unsigned r1 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
         unsigned r2 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -301,7 +301,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     #line 101 "machine/hppa/simple.m"
     hostPC
     ;
-  char *MATCH_name;
+  const char *MATCH_name;
   unsigned MATCH_w_32_0;
   { 
     MATCH_w_32_0 = getDword(MATCH_p); 
@@ -399,7 +399,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
           else { 
             MATCH_name = "flt_c3"; 
             { 
-              char *name = MATCH_name;
+              const char *name = MATCH_name;
               unsigned con = addressToPC(MATCH_p);
               
               #line 119 "machine/hppa/simple.m"
@@ -448,7 +448,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_faddr = addressToPC(MATCH_p);
       unsigned faddr = addressToPC(MATCH_p);
       unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
@@ -478,7 +478,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a2: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_faddr = addressToPC(MATCH_p);
       unsigned faddr = addressToPC(MATCH_p);
       unsigned r = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;

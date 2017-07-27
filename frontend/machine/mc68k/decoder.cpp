@@ -350,9 +350,9 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 #line 339 "machine/mc68k/decoder.m"
     hostPC
     ;
-  char *MATCH_name;
-  static char *MATCH_name_cond_12[] = {
-    "bra", (char *)0, "bhi", "bls", "bcc", "bcs", "bne", "beq", "bvc", "bvs", 
+  const char *MATCH_name;
+  static const char *MATCH_name_cond_12[] = {
+    "bra", nullptr, "bhi", "bls", "bcc", "bcs", "bne", "beq", "bvc", "bvs", 
     "bpl", "bmi", "bge", "blt", "bgt", "ble", 
   };
   unsigned /* [0..65535] */ MATCH_w_16_0;
@@ -476,7 +476,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "shi"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -506,7 +506,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "sls"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -536,7 +536,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "scc"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -566,7 +566,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "scs"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -596,7 +596,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "sne"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -626,7 +626,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "seq"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -672,7 +672,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "spl"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -702,7 +702,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "smi"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -732,7 +732,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "sge"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -762,7 +762,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "slt"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -792,7 +792,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "sgt"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -822,7 +822,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                   (MATCH_w_16_0 >> 6 & 0x3) /* sz at 0 */ == 3) { 
                   MATCH_name = "sle"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned ea = addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
@@ -859,7 +859,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -890,7 +890,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -911,7 +911,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -932,7 +932,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -953,7 +953,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -974,7 +974,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -995,7 +995,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1016,7 +1016,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1037,7 +1037,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1070,7 +1070,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1091,7 +1091,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1112,7 +1112,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1133,7 +1133,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1154,7 +1154,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   
@@ -1175,7 +1175,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
                 MATCH_name = MATCH_name_cond_12[(MATCH_w_16_0 >> 8 & 0xf) 
                       /* cond at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned d = addressToPC(MATCH_p);
                   nextPC = 2 + MATCH_p; 
                   

@@ -51,20 +51,20 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     #line 41 "machine/pentium/disassembler.m"
     hostPC
     ;
-  char *MATCH_name;
-  static char *MATCH_name_page_0[] = {"SEG.FS", "CALL.Jvod", };
-  static char *MATCH_name_page_6[] = {"REPNE.MOVSvow", "REPNE.STOSvow", };
-  static char *MATCH_name_page_7[] = {"REPNE.CMPSvow", "REPNE.LODSvow", };
-  static char *MATCH_name_page_8[] = {"REP.MOVSvow", "REPNE.SCASvow", };
-  static char *MATCH_name_page_9[] = {"REPNE.MOVSB", "REPNE.STOSB", };
-  static char *MATCH_name_page_10[] = {"REPNE.MOVSvod", "REPNE.STOSvod", };
-  static char *MATCH_name_page_11[] = {"REPNE.CMPSB", "REPNE.LODSB", };
-  static char *MATCH_name_page_12[] = {"REPNE.CMPSvod", "REPNE.LODSvod", };
-  static char *MATCH_name_page_13[] = {"REP.MOVSB", "REPNE.SCASB", };
-  static char *MATCH_name_page_14[] = {"REP.MOVSvod", "REPNE.SCASvod", };
-  static char *MATCH_name_page_15[] = {"REP.CMPSvow", "REP.STOSvow", };
-  static char *MATCH_name_page_18[] = {"REP.CMPSB", "REP.STOSB", };
-  static char *MATCH_name_page_19[] = {"REP.CMPSvod", "REP.STOSvod", };
+  const char *MATCH_name;
+  static const char *MATCH_name_page_0[] = {"SEG.FS", "CALL.Jvod", };
+  static const char *MATCH_name_page_6[] = {"REPNE.MOVSvow", "REPNE.STOSvow", };
+  static const char *MATCH_name_page_7[] = {"REPNE.CMPSvow", "REPNE.LODSvow", };
+  static const char *MATCH_name_page_8[] = {"REP.MOVSvow", "REPNE.SCASvow", };
+  static const char *MATCH_name_page_9[] = {"REPNE.MOVSB", "REPNE.STOSB", };
+  static const char *MATCH_name_page_10[] = {"REPNE.MOVSvod", "REPNE.STOSvod", };
+  static const char *MATCH_name_page_11[] = {"REPNE.CMPSB", "REPNE.LODSB", };
+  static const char *MATCH_name_page_12[] = {"REPNE.CMPSvod", "REPNE.LODSvod", };
+  static const char *MATCH_name_page_13[] = {"REP.MOVSB", "REPNE.SCASB", };
+  static const char *MATCH_name_page_14[] = {"REP.MOVSvod", "REPNE.SCASvod", };
+  static const char *MATCH_name_page_15[] = {"REP.CMPSvow", "REP.STOSvow", };
+  static const char *MATCH_name_page_18[] = {"REP.CMPSB", "REP.STOSB", };
+  static const char *MATCH_name_page_19[] = {"REP.CMPSvod", "REP.STOSvod", };
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
   unsigned /* [0..65535] */ MATCH_w_16_8;
@@ -6972,7 +6972,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   MATCH_name = MATCH_name_page_0[(MATCH_w_8_0 >> 3 & 0x1) 
                         /* page at 0 */]; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     nextPC = 1 + MATCH_p; 
                     
                     #line 59 "machine/pentium/disassembler.m"
@@ -6996,7 +6996,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 if ((MATCH_w_8_0 >> 3 & 0x1) /* page at 0 */ == 0) { 
                   MATCH_name = "SEG.GS"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     nextPC = 1 + MATCH_p; 
                     
                     #line 62 "machine/pentium/disassembler.m"
@@ -26075,7 +26075,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             case 3: 
                               MATCH_name = "FUCOMI.ST.STi"; 
                               { 
-                                char *name = MATCH_name;
+                                const char *name = MATCH_name;
                                 unsigned idx = 
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
@@ -26100,7 +26100,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                         if ((MATCH_w_8_8 >> 6 & 0x3) /* mod at 8 */ == 3) { 
                           MATCH_name = "FCOMI.ST.STi"; 
                           { 
-                            char *name = MATCH_name;
+                            const char *name = MATCH_name;
                             unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                             nextPC = 2 + MATCH_p; 
                             
@@ -28887,7 +28887,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             case 3: 
                               MATCH_name = "FUCOMIP.ST.STi"; 
                               { 
-                                char *name = MATCH_name;
+                                const char *name = MATCH_name;
                                 unsigned idx = 
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
@@ -28992,7 +28992,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             case 3: 
                               MATCH_name = "FCOMIP.ST.STi"; 
                               { 
-                                char *name = MATCH_name;
+                                const char *name = MATCH_name;
                                 unsigned idx = 
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
@@ -31109,7 +31109,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                   MATCH_name = MATCH_name_page_0[(MATCH_w_8_0 >> 3 & 0x1) 
                         /* page at 0 */]; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       5 + MATCH_w_32_8 /* i32 at 8 */ + addressToPC(MATCH_p);
                     nextPC = 5 + MATCH_p; 
@@ -31805,7 +31805,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       MATCH_name_page_6[(MATCH_w_8_16 >> 3 & 0x1) 
                                           /* page at 16 */]; 
                                     { 
-                                      char *name = MATCH_name;
+                                      const char *name = MATCH_name;
                                       nextPC = 3 + MATCH_p; 
                                       
                                       #line 297 "machine/pentium/disassembler.m"
@@ -31834,7 +31834,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         MATCH_name_page_7[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 270 "machine/pentium/disassembler.m"
@@ -31855,7 +31855,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         MATCH_name_page_6[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 279 "machine/pentium/disassembler.m"
@@ -31883,7 +31883,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         MATCH_name_page_8[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 288 "machine/pentium/disassembler.m"
@@ -31904,7 +31904,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         MATCH_name_page_7[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 261 "machine/pentium/disassembler.m"
@@ -31942,7 +31942,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_9[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 294 "machine/pentium/disassembler.m"
@@ -31969,7 +31969,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_10[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 300 "machine/pentium/disassembler.m"
@@ -31996,7 +31996,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_11[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 267 "machine/pentium/disassembler.m"
@@ -32017,7 +32017,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_9[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 276 "machine/pentium/disassembler.m"
@@ -32042,7 +32042,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_12[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 273 "machine/pentium/disassembler.m"
@@ -32063,7 +32063,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_10[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 282 "machine/pentium/disassembler.m"
@@ -32088,7 +32088,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_13[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 285 "machine/pentium/disassembler.m"
@@ -32109,7 +32109,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_11[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 258 "machine/pentium/disassembler.m"
@@ -32134,7 +32134,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_14[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 291 "machine/pentium/disassembler.m"
@@ -32155,7 +32155,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_12[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 264 "machine/pentium/disassembler.m"
@@ -32207,7 +32207,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       MATCH_name_page_15[(MATCH_w_8_16 >> 3 & 0x1) 
                                           /* page at 16 */]; 
                                     { 
-                                      char *name = MATCH_name;
+                                      const char *name = MATCH_name;
                                       nextPC = 3 + MATCH_p; 
                                       
                                       #line 252 "machine/pentium/disassembler.m"
@@ -32234,7 +32234,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* page at 16 */ == 1) { 
                                       MATCH_name = "REP.LODSvow"; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 225 "machine/pentium/disassembler.m"
@@ -32255,7 +32255,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         MATCH_name_page_8[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 234 "machine/pentium/disassembler.m"
@@ -32281,7 +32281,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                             /* page at 16 */ == 1) { 
                                       MATCH_name = "REP.SCASvow"; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 243 "machine/pentium/disassembler.m"
@@ -32302,7 +32302,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         MATCH_name_page_15[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
-                                        char *name = MATCH_name;
+                                        const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
                                         #line 216 "machine/pentium/disassembler.m"
@@ -32340,7 +32340,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_18[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 249 "machine/pentium/disassembler.m"
@@ -32367,7 +32367,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_19[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 255 "machine/pentium/disassembler.m"
@@ -32392,7 +32392,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = "REP.LODSB"; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 222 "machine/pentium/disassembler.m"
@@ -32413,7 +32413,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_13[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 231 "machine/pentium/disassembler.m"
@@ -32436,7 +32436,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = "REP.LODSvod"; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 228 "machine/pentium/disassembler.m"
@@ -32457,7 +32457,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_14[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 237 "machine/pentium/disassembler.m"
@@ -32480,7 +32480,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = "REP.SCASB"; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 240 "machine/pentium/disassembler.m"
@@ -32501,7 +32501,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_18[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 213 "machine/pentium/disassembler.m"
@@ -32524,7 +32524,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = "REP.SCASvod"; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 246 "machine/pentium/disassembler.m"
@@ -32545,7 +32545,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   MATCH_name_page_19[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
                                   #line 219 "machine/pentium/disassembler.m"

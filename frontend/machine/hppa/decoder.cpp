@@ -350,7 +350,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
 #line 288 "machine/hppa/decoder.m"
     hostPC
     ;
-  char *MATCH_name;
+  const char *MATCH_name;
   unsigned MATCH_w_32_0;
   { 
     MATCH_w_32_0 = getDword(MATCH_p); 
@@ -568,7 +568,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
         case 50: 
           MATCH_name = "MOVB"; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned c_cmplt = addressToPC(MATCH_p);
             unsigned null_cmplt = addressToPC(MATCH_p);
             unsigned r1 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -628,7 +628,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
         case 51: 
           MATCH_name = "MOVIB"; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned c_cmplt = addressToPC(MATCH_p);
             unsigned i = 
               ((sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 
@@ -808,7 +808,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
     
   MATCH_label_d2: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_cmplt = addressToPC(MATCH_p);
       unsigned null_cmplt = addressToPC(MATCH_p);
       unsigned r1 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -875,7 +875,7 @@ DecodeResult& NJMCDecoder::decodeInstruction (ADDRESS pc, int delta,
     
   MATCH_label_d3: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_cmplt = addressToPC(MATCH_p);
       unsigned im5_11 = 
         ((sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 

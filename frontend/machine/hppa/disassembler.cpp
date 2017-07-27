@@ -1319,75 +1319,75 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     #line 349 "machine/hppa/disassembler.m"
     hostPC
     ;
-  char *MATCH_name;
-  static char *MATCH_name_ext8_19_0[] = {
-    "BREAK", (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, "MFSP", (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, "RFI", (char *)0, 
-    (char *)0, (char *)0, (char *)0, "RFI.r", (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, "SSM", (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, "RSM", (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, "LDSID", (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, "MFIA", (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, "MTSP", "MTCTL", "MTSM", (char *)0, (char *)0, 
+  const char *MATCH_name;
+  static const char *MATCH_name_ext8_19_0[] = {
+    "BREAK", nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, "MFSP", nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, "RFI", nullptr, 
+    nullptr, nullptr, nullptr, "RFI.r", nullptr, nullptr, 
+    nullptr, nullptr, nullptr, "SSM", nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, "RSM", nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, "LDSID", nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, "MFIA", nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, "MTSP", "MTCTL", "MTSM", nullptr, nullptr, 
     "MTSARCM", 
   };
-  static char *MATCH_name_ext5_11_1[] = {
-    "SYNC", (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, (char *)0, "SYNCDMA", 
+  static const char *MATCH_name_ext5_11_1[] = {
+    "SYNC", nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, nullptr, "SYNCDMA", 
   };
-  static char *MATCH_name_ext_17_2[] = {"MFCTL", "MFCTL.w", };
-  static char *MATCH_name_ext4_22_55[] = {
+  static const char *MATCH_name_ext_17_2[] = {"MFCTL", "MFCTL.w", };
+  static const char *MATCH_name_ext4_22_55[] = {
     "LDBS", "LDHS", "LDWS", "LDDS", "LDDAS", "LDCDS", "LDWAS", "LDCWS", 
     "STBS", "STHS", "STWS", "STDS", "STBYS", "STDBYS", "STWAS", "STWDS", 
   };
-  static char *MATCH_name_op_58[] = {
-    (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, (char *)0, 
-    (char *)0, (char *)0, "LDIL", (char *)0, "ADDIL", (char *)0, (char *)0, 
-    "LDO", (char *)0, (char *)0, "LDB", "LDH", "LDW", "LDWM", (char *)0, 
-    (char *)0, (char *)0, (char *)0, "STB", "STH", "STW", "STWM", 
+  static const char *MATCH_name_op_58[] = {
+    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
+    nullptr, nullptr, "LDIL", nullptr, "ADDIL", nullptr, nullptr, 
+    "LDO", nullptr, nullptr, "LDB", "LDH", "LDW", "LDWM", nullptr, 
+    nullptr, nullptr, nullptr, "STB", "STH", "STW", "STWM", 
   };
-  static char *MATCH_name_sub_16_71[] = {
+  static const char *MATCH_name_sub_16_71[] = {
     "FID", "FTEST", "FCPY", "FABS", "FSQRT", "FRND", "FNEG", "FNEGABS", 
   };
-  static char *MATCH_name_sub_14_72[] = {
+  static const char *MATCH_name_sub_14_72[] = {
     "FCNVFF", "FCNVXF", "FCNVFX", "FCNVFXT", 
   };
-  static char *MATCH_name_sub_16_73[] = {"FCMP", "FSUB", "FMPY", "FDIV", };
-  static char *MATCH_name_sub_16_74[] = {"FADD", "FTEST.E", };
-  static char *MATCH_name_sub_14_75[] = {
+  static const char *MATCH_name_sub_16_73[] = {"FCMP", "FSUB", "FMPY", "FDIV", };
+  static const char *MATCH_name_sub_16_74[] = {"FADD", "FTEST.E", };
+  static const char *MATCH_name_sub_14_75[] = {
     "FCNVFF.E", "FCNVXF.E", "FCNVFX.E", "FCNVFXT.E", 
   };
-  static char *MATCH_name_p_20_98[] = {"VSHD", "SHD", };
-  static char *MATCH_name_se_21_99[] = {"VEXTRU", "VEXTRS", };
-  static char *MATCH_name_se_21_100[] = {"EXTRU", "EXTRS", };
-  static char *MATCH_name_se_21_101[] = {"ZVDEP", "VDEP", };
-  static char *MATCH_name_se_21_102[] = {"ZDEP", "DEP", };
-  static char *MATCH_name_se_21_103[] = {"ZVDEPI", "VDEPI", };
-  static char *MATCH_name_se_21_104[] = {"ZDEPI", "DEPI", };
+  static const char *MATCH_name_p_20_98[] = {"VSHD", "SHD", };
+  static const char *MATCH_name_se_21_99[] = {"VEXTRU", "VEXTRS", };
+  static const char *MATCH_name_se_21_100[] = {"EXTRU", "EXTRS", };
+  static const char *MATCH_name_se_21_101[] = {"ZVDEP", "VDEP", };
+  static const char *MATCH_name_se_21_102[] = {"ZDEP", "DEP", };
+  static const char *MATCH_name_se_21_103[] = {"ZVDEPI", "VDEPI", };
+  static const char *MATCH_name_se_21_104[] = {"ZDEPI", "DEPI", };
   unsigned MATCH_w_32_0;
   { 
     MATCH_w_32_0 = getDword(MATCH_p); 
@@ -1403,7 +1403,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned im13_06 = 
                     (MATCH_w_32_0 >> 13 & 0x1fff) /* im13_06 at 0 */;
                   unsigned im5_27 = (MATCH_w_32_0 & 0x1f) /* im5_27 at 0 */;
@@ -1472,7 +1472,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned sr = 
                     ((MATCH_w_32_0 >> 13 & 0x1) /* s_18 at 0 */ << 2) + 
                     (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
@@ -1501,7 +1501,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext_17_2[(MATCH_w_32_0 >> 14 & 0x1) 
                       /* ext_17 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned cmplt = addressToPC(MATCH_p);
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
@@ -1534,7 +1534,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned im10_06 = 
                     (MATCH_w_32_0 >> 16 & 0x3ff) /* im10_06 at 0 */;
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
@@ -1560,7 +1560,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned b_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
                   unsigned s2_16 = 
                     (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
@@ -1589,7 +1589,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned t_27 = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
                   
                   #line 551 "machine/hppa/disassembler.m"
@@ -1613,7 +1613,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   unsigned sr = 
                     ((MATCH_w_32_0 >> 13 & 0x1) /* s_18 at 0 */ << 2) + 
@@ -1642,7 +1642,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned cr_06 = 
                     (MATCH_w_32_0 >> 21 & 0x1f) /* cr_06 at 0 */;
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -1668,7 +1668,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_ext8_19_0[(MATCH_w_32_0 >> 5 & 0xff) 
                       /* ext8_19 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   
                   #line 535 "machine/hppa/disassembler.m"
@@ -1905,7 +1905,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
           MATCH_name = 
             MATCH_name_op_58[(MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */]; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned imm21 = 
               ((MATCH_w_32_0 >> 12 & 0x3) /* im2_18 at 0 */ << 11) + 
               ((MATCH_w_32_0 >> 16 & 0x1f) /* im5_11 at 0 */ << 13) + 
@@ -1972,7 +1972,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
           MATCH_name = 
             MATCH_name_op_58[(MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */]; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned imm21 = 
               ((MATCH_w_32_0 >> 12 & 0x3) /* im2_18 at 0 */ << 11) + 
               ((MATCH_w_32_0 >> 16 & 0x1f) /* im5_11 at 0 */ << 13) + 
@@ -2046,7 +2046,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     MATCH_name_sub_16_71[(MATCH_w_32_0 >> 13 & 0x7) 
                         /* sub_16 at 0 */]; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned fmt = 
                       (MATCH_w_32_0 >> 11 & 0x3) /* fmt_19 at 0 */;
                     unsigned r = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
@@ -2082,7 +2082,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     MATCH_name_sub_14_72[(MATCH_w_32_0 >> 15 & 0x7) 
                         /* sub_14 at 0 */]; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned df = (MATCH_w_32_0 >> 13 & 0x3) /* df_17 at 0 */;
                     unsigned r = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
                     unsigned sf = (MATCH_w_32_0 >> 11 & 0x3) /* sf_19 at 0 */;
@@ -2166,7 +2166,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
           MATCH_name = 
             MATCH_name_op_58[(MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */]; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
             unsigned ldisp = 
               (sign_extend((MATCH_w_32_0 & 0x1) /* i_31 at 0 */, 1) << 13) + 
@@ -2202,7 +2202,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     MATCH_name_sub_14_75[(MATCH_w_32_0 >> 15 & 0x7) 
                         /* sub_14 at 0 */]; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned df = (MATCH_w_32_0 >> 13 & 0x3) /* df_17 at 0 */;
                     unsigned r = 
                       ((MATCH_w_32_0 >> 7 & 0x1) /* r1_24 at 0 */ << 5) + 
@@ -2343,7 +2343,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
           MATCH_name = 
             MATCH_name_op_58[(MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */]; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
             unsigned c_addr = addressToPC(MATCH_p);
             unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
@@ -2379,7 +2379,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
           MATCH_name = 
             MATCH_name_op_58[(MATCH_w_32_0 >> 26 & 0x3f) /* op at 0 */]; 
           { 
-            char *name = MATCH_name;
+            const char *name = MATCH_name;
             unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
             unsigned c_addr = addressToPC(MATCH_p);
             unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -2483,7 +2483,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               MATCH_name = MATCH_name_se_21_100[(MATCH_w_32_0 >> 10 & 0x1) 
                     /* se_21 at 0 */]; 
               { 
-                char *name = MATCH_name;
+                const char *name = MATCH_name;
                 unsigned c = addressToPC(MATCH_p);
                 unsigned len = 32 - (MATCH_w_32_0 & 0x1f) /* clen5_27 at 0 */;
                 unsigned p = (MATCH_w_32_0 >> 5 & 0x1f) /* pos5_22 at 0 */;
@@ -2515,7 +2515,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               MATCH_name = MATCH_name_se_21_99[(MATCH_w_32_0 >> 10 & 0x1) 
                     /* se_21 at 0 */]; 
               { 
-                char *name = MATCH_name;
+                const char *name = MATCH_name;
                 unsigned c = addressToPC(MATCH_p);
                 unsigned len = 32 - (MATCH_w_32_0 & 0x1f) /* clen5_27 at 0 */;
                 unsigned r = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
@@ -2550,7 +2550,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_p_20_98[(MATCH_w_32_0 >> 11 & 0x1) 
                       /* p_20 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned c = addressToPC(MATCH_p);
                   unsigned p = 
                     31 - (MATCH_w_32_0 >> 5 & 0x1f) /* pos5_22 at 0 */;
@@ -2583,7 +2583,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 MATCH_name = MATCH_name_p_20_98[(MATCH_w_32_0 >> 11 & 0x1) 
                       /* p_20 at 0 */]; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned c = addressToPC(MATCH_p);
                   unsigned r1 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
                   unsigned r2 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
@@ -2619,7 +2619,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               MATCH_name = MATCH_name_se_21_104[(MATCH_w_32_0 >> 10 & 0x1) 
                     /* se_21 at 0 */]; 
               { 
-                char *name = MATCH_name;
+                const char *name = MATCH_name;
                 unsigned c = addressToPC(MATCH_p);
                 unsigned i = 
                   ((sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 
@@ -2655,7 +2655,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               MATCH_name = MATCH_name_se_21_103[(MATCH_w_32_0 >> 10 & 0x1) 
                     /* se_21 at 0 */]; 
               { 
-                char *name = MATCH_name;
+                const char *name = MATCH_name;
                 unsigned c = addressToPC(MATCH_p);
                 unsigned i = 
                   ((sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 
@@ -2692,7 +2692,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               MATCH_name = MATCH_name_se_21_102[(MATCH_w_32_0 >> 10 & 0x1) 
                     /* se_21 at 0 */]; 
               { 
-                char *name = MATCH_name;
+                const char *name = MATCH_name;
                 unsigned c = addressToPC(MATCH_p);
                 unsigned len = 32 - (MATCH_w_32_0 & 0x1f) /* clen5_27 at 0 */;
                 unsigned p = 
@@ -2725,7 +2725,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               MATCH_name = MATCH_name_se_21_101[(MATCH_w_32_0 >> 10 & 0x1) 
                     /* se_21 at 0 */]; 
               { 
-                char *name = MATCH_name;
+                const char *name = MATCH_name;
                 unsigned c = addressToPC(MATCH_p);
                 unsigned len = 32 - (MATCH_w_32_0 & 0x1f) /* clen5_27 at 0 */;
                 unsigned r = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -2766,7 +2766,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 else { 
                   MATCH_name = "BLR"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned nulli = addressToPC(MATCH_p);
                     unsigned t_06 = 
                       (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
@@ -2801,7 +2801,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
               case 5: 
                 MATCH_name = "BL.LONG"; 
                 { 
-                  char *name = MATCH_name;
+                  const char *name = MATCH_name;
                   unsigned nulli = addressToPC(MATCH_p);
                   unsigned ubr_target = 
                     8 + 
@@ -2842,7 +2842,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                 else { 
                   MATCH_name = "BV"; 
                   { 
-                    char *name = MATCH_name;
+                    const char *name = MATCH_name;
                     unsigned b_06 = 
                       (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
                     unsigned nulli = addressToPC(MATCH_p);
@@ -2904,7 +2904,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a1: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       
       #line 531 "machine/hppa/disassembler.m"
        {
@@ -2923,7 +2923,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a2: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned cmplt = addressToPC(MATCH_p);
       unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
       unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -2950,7 +2950,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a3: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned c_addr = addressToPC(MATCH_p);
       unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
@@ -2984,7 +2984,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a4: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned c_addr = addressToPC(MATCH_p);
       unsigned r_11 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -3016,7 +3016,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a5: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned c_addr = addressToPC(MATCH_p);
       unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
@@ -3054,7 +3054,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a6: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned c_addr = addressToPC(MATCH_p);
       unsigned r = 
@@ -3092,7 +3092,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a7: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned c_addr = addressToPC(MATCH_p);
       unsigned s = (MATCH_w_32_0 >> 14 & 0x3) /* s2_16 at 0 */;
@@ -3128,7 +3128,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a8: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned c_addr = addressToPC(MATCH_p);
       unsigned r = (MATCH_w_32_0 & 0x1f) /* r_27 at 0 */;
@@ -3166,7 +3166,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a9: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       unsigned fmt = (MATCH_w_32_0 >> 11 & 0x3) /* fmt_19 at 0 */;
       unsigned r1 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
@@ -3201,7 +3201,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a10: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned fmt = (MATCH_w_32_0 >> 11 & 0x3) /* fmt_19 at 0 */;
       unsigned r1 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
       unsigned r2 = (MATCH_w_32_0 >> 16 & 0x1f) /* r_11 at 0 */;
@@ -3232,7 +3232,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a11: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c = (MATCH_w_32_0 & 0x1f) /* t_27 at 0 */;
       unsigned fmt = (MATCH_w_32_0 >> 11 & 0x1) /* f_20 at 0 */;
       unsigned r1 = 
@@ -3271,7 +3271,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a12: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned fmt = (MATCH_w_32_0 >> 11 & 0x1) /* f_20 at 0 */;
       unsigned r1 = 
         ((MATCH_w_32_0 >> 7 & 0x1) /* r1_24 at 0 */ << 5) + 
@@ -3308,7 +3308,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a13: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_cmplt = addressToPC(MATCH_p);
       unsigned null_cmplt = addressToPC(MATCH_p);
       unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
@@ -3344,7 +3344,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a14: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_cmplt = addressToPC(MATCH_p);
       unsigned im5_11 = 
         ((sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 
@@ -3383,7 +3383,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a15: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned cmplt = addressToPC(MATCH_p);
       unsigned im11_21 = 
         (sign_extend((MATCH_w_32_0 & 0x1) /* i_31 at 0 */, 1) << 10) + 
@@ -3412,7 +3412,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a16: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_cmplt = addressToPC(MATCH_p);
       unsigned null_cmplt = addressToPC(MATCH_p);
       unsigned r_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* r_06 at 0 */;
@@ -3448,7 +3448,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a17: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned c_cmplt = addressToPC(MATCH_p);
       unsigned im5 = 
         ((sign_extend((MATCH_w_32_0 >> 16 & 0x1) /* im1_15 at 0 */, 
@@ -3524,7 +3524,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a19: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned nulli = addressToPC(MATCH_p);
       unsigned t_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* t_06 at 0 */;
       unsigned ubr_target = 
@@ -3564,7 +3564,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
     
   MATCH_label_a20: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned b_06 = (MATCH_w_32_0 >> 21 & 0x1f) /* b_06 at 0 */;
       unsigned nulli = addressToPC(MATCH_p);
       unsigned p_31 = (MATCH_w_32_0 & 0x1) /* p_31 at 0 */;

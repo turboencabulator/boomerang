@@ -200,394 +200,394 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     #line 190 "machine/mc68k/decoder_low.m"
     hostPC
     ;
-  char *MATCH_name;
-  static char *MATCH_name_sz_1[] = {"orrb", "oriw", "oril", "bset", };
-  static char *MATCH_name_sz_3[] = {"orrb.ex", "andiw", "andil", "bset.ex", };
-  static char *MATCH_name_sz_5[] = {"andrb", "subiw", "subil", "divu", };
-  static char *MATCH_name_sz_7[] = {
+  const char *MATCH_name;
+  static const char *MATCH_name_sz_1[] = {"orrb", "oriw", "oril", "bset", };
+  static const char *MATCH_name_sz_3[] = {"orrb.ex", "andiw", "andil", "bset.ex", };
+  static const char *MATCH_name_sz_5[] = {"andrb", "subiw", "subil", "divu", };
+  static const char *MATCH_name_sz_7[] = {
     "andrb.ex", "addiw", "addil", "divu.ex", 
   };
-  static char *MATCH_name_sz_12[] = {(char *)0, "eoriw", "eoril", "mulu", };
-  static char *MATCH_name_sz_14[] = {
-    (char *)0, "cmpiw", "cmpil", "mulu.ex", 
+  static const char *MATCH_name_sz_12[] = {nullptr, "eoriw", "eoril", "mulu", };
+  static const char *MATCH_name_sz_14[] = {
+    nullptr, "cmpiw", "cmpil", "mulu.ex", 
   };
-  static char *MATCH_name_sz_15[] = {(char *)0, "bchg", "bclr", };
-  static char *MATCH_name_sz_17[] = {(char *)0, "oriw.ex", "oril.ex", };
-  static char *MATCH_name_sz_19[] = {(char *)0, "andiw.ex", "andil.ex", };
-  static char *MATCH_name_sz_21[] = {(char *)0, "subiw.ex", "subil.ex", };
-  static char *MATCH_name_sz_23[] = {(char *)0, "addiw.ex", "addil.ex", };
-  static char *MATCH_name_sz_28[] = {(char *)0, "eoriw.ex", "eoril.ex", };
-  static char *MATCH_name_sz_30[] = {(char *)0, "cmpiw.ex", "cmpil.ex", };
-  static char *MATCH_name_sz_31[] = {(char *)0, "bchg.ex", "bclr.ex", };
-  static char *MATCH_name_adrm_35[] = {
+  static const char *MATCH_name_sz_15[] = {nullptr, "bchg", "bclr", };
+  static const char *MATCH_name_sz_17[] = {nullptr, "oriw.ex", "oril.ex", };
+  static const char *MATCH_name_sz_19[] = {nullptr, "andiw.ex", "andil.ex", };
+  static const char *MATCH_name_sz_21[] = {nullptr, "subiw.ex", "subil.ex", };
+  static const char *MATCH_name_sz_23[] = {nullptr, "addiw.ex", "addil.ex", };
+  static const char *MATCH_name_sz_28[] = {nullptr, "eoriw.ex", "eoril.ex", };
+  static const char *MATCH_name_sz_30[] = {nullptr, "cmpiw.ex", "cmpil.ex", };
+  static const char *MATCH_name_sz_31[] = {nullptr, "bchg.ex", "bclr.ex", };
+  static const char *MATCH_name_adrm_35[] = {
     "moveb", "moveb", "moveb", "moveb", "moveb", "moveb.ex", "moveb.ex", 
     "rorrb", 
   };
-  static char *MATCH_name_reg2_36[] = {
+  static const char *MATCH_name_reg2_36[] = {
     "moveb.ex", "moveb.exl", "moveb.ex", "moveb.ex", "moveb.ex", "rts", 
     "trapv", "rtr", 
   };
-  static char *MATCH_name_adrm_37[] = {
+  static const char *MATCH_name_adrm_37[] = {
     "moveb.mx", "moveb.mx", "moveb.mx", "moveb.mx", "moveb.mx", "moveb.emx", 
     "moveb.emx", "rorrw", 
   };
-  static char *MATCH_name_reg2_38[] = {
+  static const char *MATCH_name_reg2_38[] = {
     "moveb.emx", "moveb.emxl", "moveb.emx", "moveb.emx", "moveb.emx", 
   };
-  static char *MATCH_name_MDadrm_39[] = {
+  static const char *MATCH_name_MDadrm_39[] = {
     "moveb", "moveb", "moveb", "moveb", "moveb", "moveb.mx", "moveb.mx", 
     "moveb.mx", 
   };
-  static char *MATCH_name_MDadrm_40[] = {
+  static const char *MATCH_name_MDadrm_40[] = {
     "moveb.ex", "moveb.ex", "moveb.ex", "moveb.ex", "moveb.ex", "moveb.emx", 
     "moveb.emx", "moveb.emx", 
   };
-  static char *MATCH_name_MDadrm_41[] = {
+  static const char *MATCH_name_MDadrm_41[] = {
     "moveb.exl", "moveb.exl", "moveb.exl", "moveb.exl", "moveb.exl", 
     "moveb.emxl", "moveb.emxl", "moveb.emxl", 
   };
-  static char *MATCH_name_adrm_42[] = {
+  static const char *MATCH_name_adrm_42[] = {
     "movel", "movel", "movel", "movel", "movel", "movel.ex", "movel.ex", 
     "rorrl", 
   };
-  static char *MATCH_name_reg2_43[] = {
+  static const char *MATCH_name_reg2_43[] = {
     "movel.ex", "movel.exl", "movel.ex", "movel.ex", "movel.exl", 
   };
-  static char *MATCH_name_adrm_44[] = {
+  static const char *MATCH_name_adrm_44[] = {
     "movel.mx", "movel.mx", "movel.mx", "movel.mx", "movel.mx", "movel.emx", 
     "movel.emx", "rolrb", 
   };
-  static char *MATCH_name_reg2_45[] = {
+  static const char *MATCH_name_reg2_45[] = {
     "movel.emx", "movel.emxl", "movel.emx", "movel.emx", "movel.emxl", 
   };
-  static char *MATCH_name_MDadrm_46[] = {
+  static const char *MATCH_name_MDadrm_46[] = {
     "movel", "movel", "movel", "movel", "movel", "movel.mx", "movel.mx", 
     "movel.mx", 
   };
-  static char *MATCH_name_MDadrm_47[] = {
+  static const char *MATCH_name_MDadrm_47[] = {
     "movel.ex", "movel.ex", "movel.ex", "movel.ex", "movel.ex", "movel.emx", 
     "movel.emx", "movel.emx", 
   };
-  static char *MATCH_name_MDadrm_48[] = {
+  static const char *MATCH_name_MDadrm_48[] = {
     "movel.exl", "movel.exl", "movel.exl", "movel.exl", "movel.exl", 
     "movel.emxl", "movel.emxl", "movel.emxl", 
   };
-  static char *MATCH_name_adrm_49[] = {
+  static const char *MATCH_name_adrm_49[] = {
     "movew", "movew", "movew", "movew", "movew", "movew.ex", "movew.ex", 
     "rolrw", 
   };
-  static char *MATCH_name_reg2_50[] = {
+  static const char *MATCH_name_reg2_50[] = {
     "movew.ex", "movew.exl", "movew.ex", "movew.ex", "movew.ex", 
   };
-  static char *MATCH_name_adrm_51[] = {
+  static const char *MATCH_name_adrm_51[] = {
     "movew.mx", "movew.mx", "movew.mx", "movew.mx", "movew.mx", "movew.emx", 
     "movew.emx", "rolrl", 
   };
-  static char *MATCH_name_reg2_52[] = {
+  static const char *MATCH_name_reg2_52[] = {
     "movew.emx", "movew.emxl", "movew.emx", "movew.emx", "movew.emx", 
   };
-  static char *MATCH_name_MDadrm_53[] = {
+  static const char *MATCH_name_MDadrm_53[] = {
     "movew", "movew", "movew", "movew", "movew", "movew.mx", "movew.mx", 
     "movew.mx", 
   };
-  static char *MATCH_name_MDadrm_54[] = {
+  static const char *MATCH_name_MDadrm_54[] = {
     "movew.ex", "movew.ex", "movew.ex", "movew.ex", "movew.ex", "movew.emx", 
     "movew.emx", "movew.emx", 
   };
-  static char *MATCH_name_MDadrm_55[] = {
+  static const char *MATCH_name_MDadrm_55[] = {
     "movew.exl", "movew.exl", "movew.exl", "movew.exl", "movew.exl", 
     "movew.emxl", "movew.emxl", "movew.emxl", 
   };
-  static char *MATCH_name_reg1_56[] = {
-    "negxb", "clrb", "negb", "notb", "nbcd", "tstb", (char *)0, "jsr", 
+  static const char *MATCH_name_reg1_56[] = {
+    "negxb", "clrb", "negb", "notb", "nbcd", "tstb", nullptr, "jsr", 
   };
-  static char *MATCH_name_reg1_57[] = {
+  static const char *MATCH_name_reg1_57[] = {
     "negxb.ex", "clrb.ex", "negb.ex", "notb.ex", "nbcd.ex", "tstb.ex", 
-    (char *)0, "jsr.ex", 
+    nullptr, "jsr.ex", 
   };
-  static char *MATCH_name_adrm_58[] = {
+  static const char *MATCH_name_adrm_58[] = {
     "negxw", "addqb", "negxw", "negxw", "negxw", "negxw.ex", "negxw.ex", 
   };
-  static char *MATCH_name_reg2_59[] = {
+  static const char *MATCH_name_reg2_59[] = {
     "negxw.ex", "negxw.ex", "pea.ex", "pea.ex", "moveToCCR.ex", 
   };
-  static char *MATCH_name_adrm_60[] = {
+  static const char *MATCH_name_adrm_60[] = {
     "clrw", "subqb", "clrw", "clrw", "clrw", "clrw.ex", "clrw.ex", 
   };
-  static char *MATCH_name_reg2_61[] = {
+  static const char *MATCH_name_reg2_61[] = {
     "clrw.ex", "clrw.ex", "moveToCCR.ex", "rte", "illegal", 
   };
-  static char *MATCH_name_adrm_62[] = {
+  static const char *MATCH_name_adrm_62[] = {
     "negw", "addqw", "negw", "negw", "negw", "negw.ex", "negw.ex", 
   };
-  static char *MATCH_name_reg2_63[] = {
+  static const char *MATCH_name_reg2_63[] = {
     "negw.ex", "negw.ex", "jmp.ex", "moveToCCR.ex", "chk.ex", 
   };
-  static char *MATCH_name_adrm_64[] = {
+  static const char *MATCH_name_adrm_64[] = {
     "notw", "subqw", "notw", "notw", "notw", "notw.ex", "notw.ex", 
   };
-  static char *MATCH_name_reg2_65[] = {
+  static const char *MATCH_name_reg2_65[] = {
     "notw.ex", "notw.ex", "chk.ex", "jmp.ex", "divs.ex", 
   };
-  static char *MATCH_name_adrm_66[] = {
+  static const char *MATCH_name_adrm_66[] = {
     "swap", "addql", "pea", "tstw", "tstw", "pea.ex", "pea.ex", 
   };
-  static char *MATCH_name_reg2_67[] = {
+  static const char *MATCH_name_reg2_67[] = {
     "pea.ex", "pea.ex", "divs.ex", "chk.ex", "subrb.ex", 
   };
-  static char *MATCH_name_adrm_68[] = {
+  static const char *MATCH_name_adrm_68[] = {
     "tstw", "subql", "tstw", "unlk", "moveFromCCR", "tstw.ex", "tstw.ex", 
   };
-  static char *MATCH_name_reg2_69[] = {
+  static const char *MATCH_name_reg2_69[] = {
     "tstw.ex", "tstw.ex", "subrb.ex", "divs.ex", "subrw.ex", 
   };
-  static char *MATCH_name_reg2_71[] = {
+  static const char *MATCH_name_reg2_71[] = {
     "reset", "nop", "subrw.ex", "subrb.ex", "subrl.ex", 
   };
-  static char *MATCH_name_reg1_72[] = {
+  static const char *MATCH_name_reg1_72[] = {
     "negxl", "clrl", "negl", "notl", "extw", "tstl", 
   };
-  static char *MATCH_name_reg1_73[] = {
-    "negxl.ex", "clrl.ex", "negl.ex", "notl.ex", (char *)0, "tstl.ex", 
+  static const char *MATCH_name_reg1_73[] = {
+    "negxl.ex", "clrl.ex", "negl.ex", "notl.ex", nullptr, "tstl.ex", 
   };
-  static char *MATCH_name_adrm_74[] = {
+  static const char *MATCH_name_adrm_74[] = {
     "moveFromCCR", "sbcdm", "moveFromCCR", "moveFromCCR", "moveToCCR", 
     "moveFromCCR.ex", "moveFromCCR.ex", 
   };
-  static char *MATCH_name_reg2_75[] = {
+  static const char *MATCH_name_reg2_75[] = {
     "moveFromCCR.ex", "moveFromCCR.ex", "subrl.ex", "subrw.ex", "subaw.ex", 
   };
-  static char *MATCH_name_adrm_76[] = {
+  static const char *MATCH_name_adrm_76[] = {
     "moveToCCR", "subrb", "moveToCCR", "moveToCCR", "tas", "moveToCCR.ex", 
     "moveToCCR.ex", 
   };
-  static char *MATCH_name_reg2_77[] = {
+  static const char *MATCH_name_reg2_77[] = {
     "moveToCCR.ex", "moveToCCR.ex", "subaw.ex", "subrl.ex", "subal.ex", 
   };
-  static char *MATCH_name_adrm_78[] = {
+  static const char *MATCH_name_adrm_78[] = {
     "extl", "subrw", "tas", "tas", "chk", "tas.ex", "tas.ex", 
   };
-  static char *MATCH_name_adrm_79[] = {
+  static const char *MATCH_name_adrm_79[] = {
     "tas", "subrl", "jmp", "chk", "addqb", "jmp.ex", "jmp.ex", 
   };
-  static char *MATCH_name_reg2_80[] = {
+  static const char *MATCH_name_reg2_80[] = {
     "tas.ex", "tas.ex", "subal.ex", "subaw.ex", "cmpb.ex", 
   };
-  static char *MATCH_name_reg2_81[] = {
+  static const char *MATCH_name_reg2_81[] = {
     "jmp.ex", "jmp.ex", "cmpb.ex", "subal.ex", "cmpw.ex", 
   };
-  static char *MATCH_name_adrm_82[] = {
+  static const char *MATCH_name_adrm_82[] = {
     "chk", "subaw", "chk", "addqb", "subqb", "chk.ex", "chk.ex", 
   };
-  static char *MATCH_name_reg2_83[] = {
+  static const char *MATCH_name_reg2_83[] = {
     "chk.ex", "chk.ex", "cmpw.ex", "cmpb.ex", "cmpl.ex", 
   };
-  static char *MATCH_name_adrm_84[] = {
+  static const char *MATCH_name_adrm_84[] = {
     "addqb", "subxmb", "addqb", "subqb", "addqw", "addqb.ex", "addqb.ex", 
   };
-  static char *MATCH_name_reg2_85[] = {
+  static const char *MATCH_name_reg2_85[] = {
     "addqb.ex", "addqb.ex", "cmpl.ex", "cmpw.ex", "cmpaw.ex", 
   };
-  static char *MATCH_name_adrm_86[] = {
+  static const char *MATCH_name_adrm_86[] = {
     "subqb", "subxmw", "subqb", "addqw", "subqw", "subqb.ex", "subqb.ex", 
   };
-  static char *MATCH_name_reg2_87[] = {
+  static const char *MATCH_name_reg2_87[] = {
     "subqb.ex", "subqb.ex", "cmpaw.ex", "cmpl.ex", "cmpal.ex", 
   };
-  static char *MATCH_name_adrm_88[] = {
+  static const char *MATCH_name_adrm_88[] = {
     "addqw", "subxml", "addqw", "subqw", "addql", "addqw.ex", "addqw.ex", 
   };
-  static char *MATCH_name_reg2_89[] = {
+  static const char *MATCH_name_reg2_89[] = {
     "addqw.ex", "addqw.ex", "cmpal.ex", "cmpaw.ex", "muls.ex", 
   };
-  static char *MATCH_name_adrm_90[] = {
+  static const char *MATCH_name_adrm_90[] = {
     "subqw", "subal", "subqw", "addql", "subql", "subqw.ex", "subqw.ex", 
   };
-  static char *MATCH_name_reg2_91[] = {
+  static const char *MATCH_name_reg2_91[] = {
     "subqw.ex", "subqw.ex", "muls.ex", "cmpal.ex", "addrb.ex", 
   };
-  static char *MATCH_name_adrm_92[] = {
+  static const char *MATCH_name_adrm_92[] = {
     "addql", "cmpb", "addql", "subql", "ormb", "addql.ex", "addql.ex", 
   };
-  static char *MATCH_name_reg2_93[] = {
+  static const char *MATCH_name_reg2_93[] = {
     "addql.ex", "addql.ex", "addrb.ex", "muls.ex", "addrw.ex", 
   };
-  static char *MATCH_name_adrm_94[] = {
+  static const char *MATCH_name_adrm_94[] = {
     "subql", "cmpw", "subql", "ormb", "ormw", "subql.ex", "subql.ex", 
   };
-  static char *MATCH_name_reg2_95[] = {
+  static const char *MATCH_name_reg2_95[] = {
     "subql.ex", "subql.ex", "addrw.ex", "addrb.ex", "addrl.ex", 
   };
-  static char *MATCH_name_cond_96[] = {
+  static const char *MATCH_name_cond_96[] = {
     "st", "sf", "shi", "sls", "scc", "scs", "sne", "seq", "svc", "svs", 
     "spl", "smi", "sge", "slt", "sgt", "sle", 
   };
-  static char *MATCH_name_cond_97[] = {
+  static const char *MATCH_name_cond_97[] = {
     "dbt", "dbf", "dbhi", "dbls", "dbcc", "dbcs", "dbne", "dbeq", "dbvc", 
     "dbvs", "dbpl", "dbmi", "dbge", "dblt", "dbgt", "dble", 
   };
-  static char *MATCH_name_cond_98[] = {
+  static const char *MATCH_name_cond_98[] = {
     "st.ex", "sf.ex", "shi.ex", "sls.ex", "scc.ex", "scs.ex", "sne.ex", 
     "seq.ex", "svc.ex", "svs.ex", "spl.ex", "smi.ex", "sge.ex", "slt.ex", 
     "sgt.ex", "sle.ex", 
   };
-  static char *MATCH_name_cond_99[] = {
+  static const char *MATCH_name_cond_99[] = {
     "bra", "bsr", "bhi", "bls", "bcc", "bcs", "bne", "beq", "bvc", "bvs", 
     "bpl", "bmi", "bge", "blt", "bgt", "ble", 
   };
-  static char *MATCH_name_sz_100[] = {(char *)0, "orrw", "orrl", };
-  static char *MATCH_name_sz_101[] = {(char *)0, "orrw.ex", "orrl.ex", };
-  static char *MATCH_name_adrm_102[] = {
+  static const char *MATCH_name_sz_100[] = {nullptr, "orrw", "orrl", };
+  static const char *MATCH_name_sz_101[] = {nullptr, "orrw.ex", "orrl.ex", };
+  static const char *MATCH_name_adrm_102[] = {
     "sbcdr", "cmpl", "ormb", "ormw", "orml", "ormb.ex", "ormb.ex", 
   };
-  static char *MATCH_name_reg2_103[] = {
+  static const char *MATCH_name_reg2_103[] = {
     "ormb.ex", "ormb.ex", "addrl.ex", "addrw.ex", "addaw.ex", 
   };
-  static char *MATCH_name_adrm_104[] = {
+  static const char *MATCH_name_adrm_104[] = {
     "divs", "cmpaw", "ormw", "orml", "divs", "ormw.ex", "ormw.ex", 
   };
-  static char *MATCH_name_reg2_105[] = {
+  static const char *MATCH_name_reg2_105[] = {
     "ormw.ex", "ormw.ex", "addaw.ex", "addrl.ex", "addal.ex", 
   };
-  static char *MATCH_name_adrm_106[] = {
+  static const char *MATCH_name_adrm_106[] = {
     "subrb", "cmpmb", "orml", "divs", "subrb", "orml.ex", "orml.ex", 
   };
-  static char *MATCH_name_reg2_107[] = {
+  static const char *MATCH_name_reg2_107[] = {
     "orml.ex", "orml.ex", "addal.ex", "addaw.ex", 
   };
-  static char *MATCH_name_adrm_108[] = {
+  static const char *MATCH_name_adrm_108[] = {
     "subrw", "cmpmw", "divs", "subrb", "subrw", "divs.ex", "divs.ex", 
   };
-  static char *MATCH_name_reg2_109[] = {
-    "divs.ex", "divs.ex", (char *)0, "addal.ex", 
+  static const char *MATCH_name_reg2_109[] = {
+    "divs.ex", "divs.ex", nullptr, "addal.ex", 
   };
-  static char *MATCH_name_adrm_110[] = {
+  static const char *MATCH_name_adrm_110[] = {
     "subrl", "cmpml", "subrb", "subrw", "subrl", "subrb.ex", "subrb.ex", 
   };
-  static char *MATCH_name_adrm_112[] = {
+  static const char *MATCH_name_adrm_112[] = {
     "subaw", "cmpal", "subrw", "subrl", "subaw", "subrw.ex", "subrw.ex", 
   };
-  static char *MATCH_name_adrm_114[] = {
+  static const char *MATCH_name_adrm_114[] = {
     "subxrb", "abcdm", "subrl", "subaw", "submb", "subrl.ex", "subrl.ex", 
   };
-  static char *MATCH_name_adrm_116[] = {
+  static const char *MATCH_name_adrm_116[] = {
     "subxrw", "exgaa", "subaw", "submb", "submw", "subaw.ex", "subaw.ex", 
   };
-  static char *MATCH_name_adrm_118[] = {
+  static const char *MATCH_name_adrm_118[] = {
     "subxrl", "exgda", "submb", "submw", "subml", "submb.ex", "submb.ex", 
   };
-  static char *MATCH_name_adrm_120[] = {
+  static const char *MATCH_name_adrm_120[] = {
     "subal", "addrb", "submw", "subml", "subal", "submw.ex", "submw.ex", 
   };
-  static char *MATCH_name_adrm_122[] = {
+  static const char *MATCH_name_adrm_122[] = {
     "cmpb", "addrw", "subml", "subal", "cmpb", "subml.ex", "subml.ex", 
   };
-  static char *MATCH_name_adrm_124[] = {
+  static const char *MATCH_name_adrm_124[] = {
     "cmpw", "addrl", "subal", "cmpb", "cmpw", "subal.ex", "subal.ex", 
   };
-  static char *MATCH_name_adrm_126[] = {
+  static const char *MATCH_name_adrm_126[] = {
     "cmpl", "addaw", "cmpb", "cmpw", "cmpl", "cmpb.ex", "cmpb.ex", 
   };
-  static char *MATCH_name_adrm_128[] = {
+  static const char *MATCH_name_adrm_128[] = {
     "cmpaw", "addxmb", "cmpw", "cmpl", "cmpaw", "cmpw.ex", "cmpw.ex", 
   };
-  static char *MATCH_name_adrm_130[] = {
+  static const char *MATCH_name_adrm_130[] = {
     "eorb", "addxmw", "cmpl", "cmpaw", "eorb", "cmpl.ex", "cmpl.ex", 
   };
-  static char *MATCH_name_adrm_132[] = {
+  static const char *MATCH_name_adrm_132[] = {
     "eorw", "addxml", "cmpaw", "eorb", "eorw", "cmpaw.ex", "cmpaw.ex", 
   };
-  static char *MATCH_name_adrm_134[] = {
+  static const char *MATCH_name_adrm_134[] = {
     "eorl", "addal", "eorb", "eorw", "eorl", "eorb.ex", "eorb.ex", 
   };
-  static char *MATCH_name_adrm_136[] = {
+  static const char *MATCH_name_adrm_136[] = {
     "cmpal", "lsrib", "eorw", "eorl", "cmpal", "eorw.ex", "eorw.ex", 
   };
-  static char *MATCH_name_adrm_138[] = {
+  static const char *MATCH_name_adrm_138[] = {
     "abcdr", "lsriw", "eorl", "cmpal", "andmb", "eorl.ex", "eorl.ex", 
   };
-  static char *MATCH_name_adrm_140[] = {
+  static const char *MATCH_name_adrm_140[] = {
     "exgdd", "lsril", "cmpal", "andmb", "andmw", "cmpal.ex", "cmpal.ex", 
   };
-  static char *MATCH_name_sz_142[] = {(char *)0, "andrw", "andrl", };
-  static char *MATCH_name_sz_143[] = {(char *)0, "andrw.ex", "andrl.ex", };
-  static char *MATCH_name_adrm_144[] = {
+  static const char *MATCH_name_sz_142[] = {nullptr, "andrw", "andrl", };
+  static const char *MATCH_name_sz_143[] = {nullptr, "andrw.ex", "andrl.ex", };
+  static const char *MATCH_name_adrm_144[] = {
     "muls", "lslib", "andmb", "andmw", "andml", "andmb.ex", "andmb.ex", 
   };
-  static char *MATCH_name_adrm_146[] = {
+  static const char *MATCH_name_adrm_146[] = {
     "addrb", "lsliw", "andmw", "andml", "muls", "andmw.ex", "andmw.ex", 
   };
-  static char *MATCH_name_adrm_148[] = {
+  static const char *MATCH_name_adrm_148[] = {
     "addrw", "lslil", "andml", "muls", "addrb", "andml.ex", "andml.ex", 
   };
-  static char *MATCH_name_adrm_150[] = {
-    "addrl", (char *)0, "muls", "addrb", "addrw", "muls.ex", "muls.ex", 
+  static const char *MATCH_name_adrm_150[] = {
+    "addrl", nullptr, "muls", "addrb", "addrw", "muls.ex", "muls.ex", 
   };
-  static char *MATCH_name_adrm_152[] = {
-    "addaw", (char *)0, "addrb", "addrw", "addrl", "addrb.ex", "addrb.ex", 
+  static const char *MATCH_name_adrm_152[] = {
+    "addaw", nullptr, "addrb", "addrw", "addrl", "addrb.ex", "addrb.ex", 
   };
-  static char *MATCH_name_adrm_154[] = {
-    "addxrb", (char *)0, "addrw", "addrl", "addaw", "addrw.ex", "addrw.ex", 
+  static const char *MATCH_name_adrm_154[] = {
+    "addxrb", nullptr, "addrw", "addrl", "addaw", "addrw.ex", "addrw.ex", 
   };
-  static char *MATCH_name_adrm_156[] = {
-    "addxrw", (char *)0, "addrl", "addaw", "addmb", "addrl.ex", "addrl.ex", 
+  static const char *MATCH_name_adrm_156[] = {
+    "addxrw", nullptr, "addrl", "addaw", "addmb", "addrl.ex", "addrl.ex", 
   };
-  static char *MATCH_name_adrm_158[] = {
-    "addxrl", (char *)0, "addaw", "addmb", "addmw", "addaw.ex", "addaw.ex", 
+  static const char *MATCH_name_adrm_158[] = {
+    "addxrl", nullptr, "addaw", "addmb", "addmw", "addaw.ex", "addaw.ex", 
   };
-  static char *MATCH_name_adrm_160[] = {
-    "addal", (char *)0, "addmb", "addmw", "addml", "addmb.ex", "addmb.ex", 
+  static const char *MATCH_name_adrm_160[] = {
+    "addal", nullptr, "addmb", "addmw", "addml", "addmb.ex", "addmb.ex", 
   };
-  static char *MATCH_name_adrm_162[] = {
-    "asrib", (char *)0, "addmw", "addml", "addal", "addmw.ex", "addmw.ex", 
+  static const char *MATCH_name_adrm_162[] = {
+    "asrib", nullptr, "addmw", "addml", "addal", "addmw.ex", "addmw.ex", 
   };
-  static char *MATCH_name_adrm_164[] = {
-    "asriw", (char *)0, "addml", "addal", "asrrb", "addml.ex", "addml.ex", 
+  static const char *MATCH_name_adrm_164[] = {
+    "asriw", nullptr, "addml", "addal", "asrrb", "addml.ex", "addml.ex", 
   };
-  static char *MATCH_name_adrm_166[] = {
-    "asril", (char *)0, "addal", "rorib", "asrrw", "addal.ex", "addal.ex", 
+  static const char *MATCH_name_adrm_166[] = {
+    "asril", nullptr, "addal", "rorib", "asrrw", "addal.ex", "addal.ex", 
   };
-  static char *MATCH_name_adrm_168[] = {
-    "aslib", (char *)0, "roxrib", "roriw", "asrrl", "lsrrb", "roxrrb", 
+  static const char *MATCH_name_adrm_168[] = {
+    "aslib", nullptr, "roxrib", "roriw", "asrrl", "lsrrb", "roxrrb", 
   };
-  static char *MATCH_name_adrm_169[] = {
-    "asliw", (char *)0, "roxriw", "roril", "asrm", "lsrrw", "roxrrw", 
+  static const char *MATCH_name_adrm_169[] = {
+    "asliw", nullptr, "roxriw", "roril", "asrm", "lsrrw", "roxrrw", 
   };
-  static char *MATCH_name_adrm_170[] = {
-    "aslil", (char *)0, "roxril", "asrm", "lsrm", "lsrrl", "roxrrl", 
+  static const char *MATCH_name_adrm_170[] = {
+    "aslil", nullptr, "roxril", "asrm", "lsrm", "lsrrl", "roxrrl", 
   };
-  static char *MATCH_name_adrm_171[] = {
-    (char *)0, (char *)0, "asrm", "lsrm", "roxrm", "asrm.ex", "asrm.ex", 
+  static const char *MATCH_name_adrm_171[] = {
+    nullptr, nullptr, "asrm", "lsrm", "roxrm", "asrm.ex", "asrm.ex", 
   };
-  static char *MATCH_name_adrm_173[] = {
-    (char *)0, (char *)0, "lsrm", "roxrm", "rorm", "lsrm.ex", "lsrm.ex", 
+  static const char *MATCH_name_adrm_173[] = {
+    nullptr, nullptr, "lsrm", "roxrm", "rorm", "lsrm.ex", "lsrm.ex", 
   };
-  static char *MATCH_name_adrm_175[] = {
-    (char *)0, (char *)0, "roxrm", "rorm", "aslrb", "roxrm.ex", "roxrm.ex", 
+  static const char *MATCH_name_adrm_175[] = {
+    nullptr, nullptr, "roxrm", "rorm", "aslrb", "roxrm.ex", "roxrm.ex", 
   };
-  static char *MATCH_name_adrm_177[] = {
-    (char *)0, (char *)0, "rorm", "rolib", "aslrw", "rorm.ex", "rorm.ex", 
+  static const char *MATCH_name_adrm_177[] = {
+    nullptr, nullptr, "rorm", "rolib", "aslrw", "rorm.ex", "rorm.ex", 
   };
-  static char *MATCH_name_adrm_179[] = {
-    (char *)0, (char *)0, "roxlib", "roliw", "aslrl", "lslrb", "roxlrb", 
+  static const char *MATCH_name_adrm_179[] = {
+    nullptr, nullptr, "roxlib", "roliw", "aslrl", "lslrb", "roxlrb", 
   };
-  static char *MATCH_name_adrm_180[] = {
-    (char *)0, (char *)0, "roxliw", "rolil", "aslm", "lslrw", "roxlrw", 
+  static const char *MATCH_name_adrm_180[] = {
+    nullptr, nullptr, "roxliw", "rolil", "aslm", "lslrw", "roxlrw", 
   };
-  static char *MATCH_name_adrm_181[] = {
-    (char *)0, (char *)0, "roxlil", "aslm", "lslm", "lslrl", "roxlrl", 
+  static const char *MATCH_name_adrm_181[] = {
+    nullptr, nullptr, "roxlil", "aslm", "lslm", "lslrl", "roxlrl", 
   };
-  static char *MATCH_name_adrm_182[] = {
-    (char *)0, (char *)0, "aslm", "lslm", "roxlm", "aslm.ex", "aslm.ex", 
+  static const char *MATCH_name_adrm_182[] = {
+    nullptr, nullptr, "aslm", "lslm", "roxlm", "aslm.ex", "aslm.ex", 
   };
-  static char *MATCH_name_adrm_184[] = {
-    (char *)0, (char *)0, "lslm", "roxlm", "rolm", "lslm.ex", "lslm.ex", 
+  static const char *MATCH_name_adrm_184[] = {
+    nullptr, nullptr, "lslm", "roxlm", "rolm", "lslm.ex", "lslm.ex", 
   };
-  static char *MATCH_name_adrm_186[] = {
-    (char *)0, (char *)0, "roxlm", "rolm", (char *)0, "roxlm.ex", "roxlm.ex", 
+  static const char *MATCH_name_adrm_186[] = {
+    nullptr, nullptr, "roxlm", "rolm", nullptr, "roxlm.ex", "roxlm.ex", 
   };
-  static char *MATCH_name_adrm_188[] = {
-    (char *)0, (char *)0, "rolm", (char *)0, (char *)0, "rolm.ex", "rolm.ex", 
+  static const char *MATCH_name_adrm_188[] = {
+    nullptr, nullptr, "rolm", nullptr, nullptr, "rolm.ex", "rolm.ex", 
   };
   unsigned /* [0..65535] */ MATCH_w_16_0;
   unsigned /* [0..65535] */ MATCH_w_16_16;
@@ -4026,7 +4026,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                                 MATCH_w_16_16 = getWord(2 + MATCH_p); 
                                 MATCH_name = "link"; 
                                 { 
-                                  char *name = MATCH_name;
+                                  const char *name = MATCH_name;
                                   int /* [~32768..32767] */ i16 = 
                                     sign_extend(
                                                 (MATCH_w_16_16 & 0xffff) 
@@ -4062,7 +4062,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                                 MATCH_name_adrm_68[(MATCH_w_16_0 >> 3 & 0x7) 
                                     /* adrm at 0 */]; 
                               { 
-                                char *name = MATCH_name;
+                                const char *name = MATCH_name;
                                 unsigned n = 
                                   (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
                                 
@@ -5061,7 +5061,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             MATCH_name = 
               MATCH_name_cond_99[(MATCH_w_16_0 >> 8 & 0xf) /* cond at 0 */]; 
             { 
-              char *name = MATCH_name;
+              const char *name = MATCH_name;
               unsigned a = addressToPC(MATCH_p);
               
               #line 702 "machine/mc68k/decoder_low.m"
@@ -5085,7 +5085,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
             MATCH_name = 
               MATCH_name_cond_99[(MATCH_w_16_0 >> 8 & 0xf) /* cond at 0 */]; 
             { 
-              char *name = MATCH_name;
+              const char *name = MATCH_name;
               unsigned a = addressToPC(MATCH_p);
               
               #line 694 "machine/mc68k/decoder_low.m"
@@ -6668,7 +6668,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                           MATCH_name_adrm_140[(MATCH_w_16_0 >> 3 & 0x7) 
                               /* adrm at 0 */]; 
                         { 
-                          char *name = MATCH_name;
+                          const char *name = MATCH_name;
                           unsigned n = 
                             (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
                           unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
@@ -6693,7 +6693,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                           MATCH_name_adrm_116[(MATCH_w_16_0 >> 3 & 0x7) 
                               /* adrm at 0 */]; 
                         { 
-                          char *name = MATCH_name;
+                          const char *name = MATCH_name;
                           unsigned n = 
                             (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
                           unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
@@ -6765,7 +6765,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
                           MATCH_name_adrm_118[(MATCH_w_16_0 >> 3 & 0x7) 
                               /* adrm at 0 */]; 
                         { 
-                          char *name = MATCH_name;
+                          const char *name = MATCH_name;
                           unsigned n = 
                             (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
                           unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
@@ -8370,7 +8370,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
   
   MATCH_label_a0: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_16 & 0xff) /* disp8 at 16 */;
       
@@ -8436,7 +8436,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a2: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i16 = (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       
@@ -8469,7 +8469,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a3: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i32 = 
         ((MATCH_w_16_16 & 0xffff) /* d16 at 16 */ << 16) + 
@@ -8502,7 +8502,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a4: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_16 & 0xff) /* disp8 at 16 */;
       
@@ -8535,7 +8535,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a5: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -8570,7 +8570,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a6: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_16 & 0xff) /* disp8 at 16 */;
       unsigned x = 4 + addressToPC(MATCH_p);
@@ -8598,7 +8598,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a7: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i16 = (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       unsigned x = 4 + addressToPC(MATCH_p);
@@ -8626,7 +8626,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a8: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i32 = 
         ((MATCH_w_16_16 & 0xffff) /* d16 at 16 */ << 16) + 
@@ -8685,7 +8685,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a10: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_16 & 0xff) /* disp8 at 16 */;
       unsigned x = 4 + addressToPC(MATCH_p);
@@ -8738,7 +8738,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a12: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -8764,7 +8764,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a13: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_16 & 0xff) /* disp8 at 16 */;
       
       #line 193 "machine/mc68k/decoder_low.m"
@@ -8790,7 +8790,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a14: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned ea2 = addressToPC(MATCH_p);
       
@@ -8885,7 +8885,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a15: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea2 = addressToPC(MATCH_p);
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -8923,7 +8923,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a16: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned d32 = 
         ((MATCH_w_16_16 & 0xffff) /* d16 at 16 */ << 16) + 
         (MATCH_w_16_32 & 0xffff) /* d16 at 32 */;
@@ -8965,7 +8965,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a17: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned eax2 = addressToPC(MATCH_p);
       unsigned x2 = 2 + addressToPC(MATCH_p);
@@ -9005,7 +9005,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a18: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned eax2 = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -9042,7 +9042,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a19: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned d32 = 
         ((MATCH_w_16_16 & 0xffff) /* d16 at 16 */ << 16) + 
         (MATCH_w_16_32 & 0xffff) /* d16 at 32 */;
@@ -9083,7 +9083,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a20: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 417 "machine/mc68k/decoder_low.m"
@@ -9117,7 +9117,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a21: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -9140,7 +9140,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a22: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 433 "machine/mc68k/decoder_low.m"
@@ -9166,7 +9166,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a23: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -9189,7 +9189,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a24: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
       #line 477 "machine/mc68k/decoder_low.m"
@@ -9219,7 +9219,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a25: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 458 "machine/mc68k/decoder_low.m"
@@ -9245,7 +9245,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a26: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -9299,7 +9299,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a28: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       
       #line 486 "machine/mc68k/decoder_low.m"
        { 
@@ -9322,7 +9322,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a29: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 445 "machine/mc68k/decoder_low.m"
@@ -9414,7 +9414,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a32: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -9489,7 +9489,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a35: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 504 "machine/mc68k/decoder_low.m"
@@ -9513,7 +9513,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a36: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -9534,7 +9534,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a37: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 492 "machine/mc68k/decoder_low.m"
@@ -9560,7 +9560,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a38: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -9633,7 +9633,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a41: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -9662,7 +9662,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a42: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -9711,7 +9711,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a44: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -9744,7 +9744,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a45: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -9772,7 +9772,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a46: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -9827,7 +9827,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a47: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -9855,7 +9855,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a48: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -9910,7 +9910,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a49: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -9936,7 +9936,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a50: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 680 "machine/mc68k/decoder_low.m"
@@ -9966,7 +9966,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a51: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i16 = (MATCH_w_16_16 & 0xffff) /* d16 at 16 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -9991,7 +9991,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a52: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -10014,7 +10014,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a53: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10043,7 +10043,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a54: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10070,7 +10070,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a55: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10101,7 +10101,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a56: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10127,7 +10127,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a57: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10155,7 +10155,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a58: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10179,7 +10179,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a59: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10210,7 +10210,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a60: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10253,7 +10253,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a61: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10282,7 +10282,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a62: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10308,7 +10308,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a63: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10337,7 +10337,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a64: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10363,7 +10363,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a65: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10392,7 +10392,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a66: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10422,7 +10422,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a67: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10451,7 +10451,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a68: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10477,7 +10477,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a69: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10506,7 +10506,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a70: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10532,7 +10532,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a71: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10561,7 +10561,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a72: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10589,7 +10589,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a73: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10618,7 +10618,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a74: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10644,7 +10644,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a75: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10673,7 +10673,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a76: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10716,7 +10716,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a77: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10745,7 +10745,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a78: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       unsigned n2 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10788,7 +10788,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a79: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10815,7 +10815,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a80: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10841,7 +10841,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a81: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10866,7 +10866,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a82: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10890,7 +10890,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a83: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10915,7 +10915,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a84: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10939,7 +10939,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a85: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       
@@ -10964,7 +10964,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a86: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned x = 2 + addressToPC(MATCH_p);
@@ -10990,7 +10990,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a87: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11015,7 +11015,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a88: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11040,7 +11040,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a89: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11063,7 +11063,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a90: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11086,7 +11086,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a91: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11109,7 +11109,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a92: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11132,7 +11132,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a93: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 999 "machine/mc68k/decoder_low.m"
@@ -11168,7 +11168,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a94: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
@@ -11191,7 +11191,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a95: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11214,7 +11214,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a96: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11237,7 +11237,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a97: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11260,7 +11260,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a98: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11283,7 +11283,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a99: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned i8 = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11308,7 +11308,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a100: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned n = (MATCH_w_16_0 >> 9 & 0x7) /* reg1 at 0 */;
       unsigned n2 = (MATCH_w_16_0 & 0x7) /* reg2 at 0 */;
       
@@ -11331,7 +11331,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a101: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned ea = addressToPC(MATCH_p);
       
       #line 1016 "machine/mc68k/decoder_low.m"
@@ -11365,7 +11365,7 @@ list<RT*>* NJMCDecoder::decodeLowLevelInstruction (ADDRESS hostPC, ADDRESS pc,
     
   MATCH_label_a102: (void)0; /*placeholder for label*/ 
     { 
-      char *name = MATCH_name;
+      const char *name = MATCH_name;
       unsigned eax = addressToPC(MATCH_p);
       unsigned x = 2 + addressToPC(MATCH_p);
       
