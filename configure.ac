@@ -58,9 +58,12 @@ AS_IF([test "x$enable_gui" = "xyes"], [
 	AC_PATH_PROG([RCC],[rcc])
 ])
 
-# Two paths for frontend/mltk.sh.
+# ML version of the toolkit
 AC_PATH_PROG([SML_TOOLKIT],[sml-toolkit],,
 	[$PATH:$HOME/sml-nj/bin])
+# Icon version of the toolkit
+AC_PATH_PROG([TOOLS],[tools],,
+	[$PATH])
 AC_PATH_PROG([UNGENERATE],[ungenerate],,
 	[$PATH:$HOME/sml-nj/install])
 

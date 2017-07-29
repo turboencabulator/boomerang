@@ -125,6 +125,15 @@ machine/sparc/disassembler.cpp: machine/sparc/disassembler.m machine/sparc/core.
 	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
 
 
+%-names.c %-names.h:
+	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -fieldnames $(notdir $*)-names $(notdir $^)
+%-names.cpp: %-names.c
+	$(AM_V_GEN)cp $< $@
+
+machine/sparc/sparc-names.c machine/sparc/sparc-names.h: machine/sparc/core.spec machine/sparc/synth.spec machine/sparc/dis.spec
+machine/hppa/hppa-names.c machine/hppa/hppa-names.h: machine/hppa/hppa.spec machine/hppa/hppadis.spec
+
+
 machine/st20/st20.ssl: machine/st20/st20.ssl.m4
 	$(AM_V_GEN)$(M4) $< > $@
 
