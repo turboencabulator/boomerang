@@ -15,7 +15,6 @@
  *             NJMCDecoder class.
  *============================================================================*/
 
-#include <assert.h>
 #include <stdio.h>
 #include "global.h"
 #include "decoder.h"
@@ -495,12 +494,12 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 		RTs = instantiate(pc, name, daEAX(eax, x, result, pc, 16));
 	}
 
-	| trap(d4) => {
+	| trap(_) => {
+	//| trap(d4) => {
 		// Trap: as far as Palm Pilots are concerned, these are NOPs, except
 		// that an A-line instruction can then legally follow
 		RTs = instantiate(pc, "NOP");
 		IsTrap = true;
-		assert(d4 == d4);       // Suppress unused var warning
 	}
 
 	| link(n, i16) [name] => {

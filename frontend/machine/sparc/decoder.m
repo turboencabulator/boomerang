@@ -44,16 +44,6 @@ class Proc;
 #define DIS_FS1Q    (dis_RegRhs((fs1q >> 2) + 80))
 #define DIS_FS2Q    (dis_RegRhs((fs2q >> 2) + 80))
 
-/**
- * A dummy function to suppress "unused local variable" messages.
- *
- * \param x  Integer variable to be "used".
- */
-static void
-unused(int x)
-{
-}
-
 SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
@@ -405,8 +395,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		SHOW_ASM(name << " " << std::hex << tgt - delta)
 		DEBUG_STMTS
 
-	| BPA(cc01, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
-		unused(cc01);  // Does not matter because is unconditional
+	| BPA(_, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
+	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
 		GotoStatement *jump = new GotoStatement;
 
 		result.type = SD;
@@ -453,7 +443,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		SHOW_ASM(name << " " << std::hex << tgt - delta)
 		DEBUG_STMTS
 
-	| JMPL(addr, rd) =>
+	| JMPL(addr, _) =>
+	//| JMPL(addr, rd) =>
 		/*
 		 * JMPL, with rd != %o7, i.e. register jump
 		 * Note: if rd==%o7, then would be handled with the call_ arm
@@ -465,7 +456,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		result.rtl->appendStmt(jump);
 		result.type = DD;
 		jump->setDest(dis_Eaddr(addr));
-		unused(rd);
 		SHOW_ASM("JMPL ")
 		DEBUG_STMTS
 
@@ -502,8 +492,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| LDDF(addr, fdd) [name] =>
 		stmts = instantiate(pc, name, DIS_ADDR, DIS_FDD);
 
-	| load_asi(addr, asi, rd) [name] =>
-		unused(asi);  // Note: this could be serious!
+	| load_asi(addr, _, rd) [name] =>
+	//| load_asi(addr, asi, rd) [name] => // Note: this could be serious!
 		stmts = instantiate(pc, name, DIS_RD, DIS_ADDR);
 
 	| sto_greg(rd, addr) [name] =>
@@ -516,8 +506,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| STDF(fdd, addr) [name] =>
 		stmts = instantiate(pc, name, DIS_FDD, DIS_ADDR);
 
-	| sto_asi(rd, addr, asi) [name] =>
-		unused(asi);  // Note: this could be serious!
+	| sto_asi(rd, addr, _) [name] =>
+	//| sto_asi(rd, addr, asi) [name] => // Note: this could be serious!
 		stmts = instantiate(pc, name, DIS_RDR, DIS_ADDR);
 
 	| LDFSR(addr) [name] =>
@@ -634,14 +624,14 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| trap(addr) [name] =>
 		stmts = instantiate(pc, name, DIS_ADDR);
 
-	| UNIMP(n) =>
-		unused(n);
+	| UNIMP(_) =>
+	//| UNIMP(n) =>
 		stmts = nullptr;
 		result.valid = false;
 
-	| inst = n =>
+	| inst = _ =>
+	//| inst = n =>
 		// What does this mean?
-		unused(n);
 		result.valid = false;
 		stmts = nullptr;
 
@@ -778,10 +768,8 @@ bool
 SparcDecoder::isRestore(ADDRESS hostPC)
 {
 	match hostPC to
-	| RESTORE(a, b, c) =>
-		unused(a);  // Suppress warning messages
-		unused(b);
-		unused(c);
+	| RESTORE(_, _, _) =>
+	//| RESTORE(a, b, c) =>
 		return true;
 	else
 		return false;

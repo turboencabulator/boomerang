@@ -513,9 +513,9 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		astr += sprintf(astr, "  %s,%s", cr_06_names[r1], t_27_names[t_27]);
 		strcat(constrName, "sysop_cr_t ");
 	}
-	| MTCTL(r_11, ct_06) [name] => {
+	| MTCTL(_, ct_06) [name] => {
+	//| MTCTL(r_11, ct_06) [name] => {
 		astr += sprintf(astr, "%s  %s", name, ct_06_names[ct_06]);
-		// Note: r_11 not used!
 		strcat(constrName, "MTCTL ");
 	}
 	| MFIA(t_27) [name] => {

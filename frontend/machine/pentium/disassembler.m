@@ -660,20 +660,20 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 	| MOVSB() =>
 		sprintf(str, "MOVSB");
 
-//	| MOV.Rd.Dd(reg, dr) =>
-//		unused(reg); unused(dr);
+//	| MOV.Rd.Dd(_, _) =>
+//	//| MOV.Rd.Dd(reg, dr) =>
 //		sprintf(str, "UNIMP");
 
-//	| MOV.Dd.Rd(dr, reg) =>
-//		unused(reg); unused(dr);
+//	| MOV.Dd.Rd(_, _) =>
+//	//| MOV.Dd.Rd(dr, reg) =>
 //		sprintf(str, "UNIMP");
 
-//	| MOV.Rd.Cd(reg, cr) =>
-//		unused(reg); unused(cr);
+//	| MOV.Rd.Cd(_, _) =>
+//	//| MOV.Rd.Cd(reg, cr) =>
 //		sprintf(str, "UNIMP");
 
-//	| MOV.Cd.Rd(cr, reg) =>
-//		unused(reg); unused(cr);
+//	| MOV.Cd.Rd(_, _) =>
+//	//| MOV.Cd.Rd(cr, reg) =>
 //		sprintf(str, "UNIMP");
 
 	| MOV.Ed.Ivod(Eaddr, i32) =>
@@ -973,8 +973,8 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 
 	/* Decode the following as a NOP. We see these in startup code, and anywhere
 	    that calls the OS (as lcall 7, 0) */
-	| CALL.aPod(seg, off) =>
-		unused(seg); unused(off);
+	| CALL.aPod(_, _) =>
+	//| CALL.aPod(seg, off) =>
 		sprintf(str, "NOP");
 
 	| CALL.Jvod(relocd) [name] =>
@@ -1053,8 +1053,8 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 //	| BOUNDow(reg, Mem) =>
 //		sprintf(str, "BOUNDow", DIS_REG16, DIS_MEM);
 
-//	| ARPL(Eaddr, reg) =>
-//		unused(Eaddr); unused(reg);
+//	| ARPL(_, _) =>
+//	//| ARPL(Eaddr, reg) =>
 //		sprintf(str, "UNIMP");
 
 //	| AAS() =>

@@ -427,7 +427,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		}
 		// The following two groups of instructions may or may not be anulling
 		// (NCTA). If not, let the low level decoder take care of it.
-		| arith(cmplt, r_11, r_06, t_27) => {
+		| arith(cmplt, _, _, _) => {
+		//| arith(cmplt, r_11, r_06, t_27) => {
 			// Decode the instruction
 			low_level(RTs, hostPC, pc, result, nextPC);
 			int condvalue;
@@ -438,9 +439,9 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 				// We can't do this here, so we just make result.type equal to
 				// NCTA, and the front end will do this for us
 				result.type = NCTA;
-			not_used(r_11); not_used(r_06); not_used(t_27);
 		}
-		| arith_imm(cmplt, imm11, r_06, t_11) => {
+		| arith_imm(cmplt, _, _, _) => {
+		//| arith_imm(cmplt, imm11, r_06, t_11) => {
 			// Decode the instruction
 			low_level(RTs, hostPC, pc, result, nextPC);
 			int condvalue;
@@ -449,7 +450,6 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 				// Anulled. Need to decode the next instruction, and make each
 				// RTAssgn in it conditional on !r[tmpNul]
 				result.type = NCTA;
-			not_used(imm11); not_used(r_06); not_used(t_11);
 		}
 		else {
 			// Low level instruction

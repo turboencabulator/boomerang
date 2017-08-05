@@ -70,20 +70,6 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 	jump->setCondType(cond); \
 	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd - delta)
 
-/**
- * A dummy function to suppress "unused local variable" messages.
- *
- * \param x  Integer variable to be "used".
- */
-static void
-unused(int x)
-{
-}
-static void
-unused(const char *x)
-{
-}
-
 PPCDecoder::PPCDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
@@ -167,22 +153,21 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_RD_NUM);
 		} else
 			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_NZRA);
-//	| XLb_(b0, b1) [name] =>
+//	| XLb_(_, _) [name] =>
+//	//| XLb_(b0, b1) [name] =>
 #if BCCTR_LONG  // Prefer to see bltctr instead of bcctr 12,0
                 // But also affects return instructions (bclr)
 		/* FIXME: since this is used for returns, do a jump to LR instead (ie ignoring control registers) */
 		stmts = instantiate(pc, name);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(new ReturnStatement);
-		unused(b0);
-		unused(b1);
 #endif
 	| XLc_(crbD, crbA, crbB) [name] =>
 		stmts = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
 
 	| mfspr(rd, uimm) [name] =>
 		stmts = instantiate(pc, name, DIS_RD, DIS_UIMM);
-	| mtspr(uimm, rs) [name] =>
+	| mtspr(uimm, rs) =>
 		switch (uimm) {
 		case 1:
 			stmts = instantiate(pc, "MTXER", DIS_RS); break;
@@ -193,7 +178,6 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		default:
 			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
 		}
-		unused(name);
 
 	| Xd_(rd) [name] =>
 		stmts = instantiate(pc, name, DIS_RD);
@@ -239,17 +223,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			result.rtl = new RTL(pc, stmts);
 			result.rtl->appendStmt(newCall);
 		}
-		unused(BIcr);
 
-	| Xcmp_(crfd, l, ra, rb) [name] =>
+	| Xcmp_(crfd, _, ra, rb) [name] =>
+	//| Xcmp_(crfd, l, ra, rb) [name] =>
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
-		unused(l);
-	| cmpi(crfd, l, ra, simm) [name] =>
+	| cmpi(crfd, _, ra, simm) [name] =>
+	//| cmpi(crfd, l, ra, simm) [name] =>
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_SIMM);
-		unused(l);
-	| cmpli(crfd, l, ra, uimm) [name] =>
+	| cmpli(crfd, _, ra, uimm) [name] =>
+	//| cmpli(crfd, l, ra, uimm) [name] =>
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
-		unused(l);
 
 	| Ddaf_(fd, d, ra) [name] =>   // Floating point loads (non indexed)
 		stmts = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
@@ -303,17 +286,17 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 //	| bnu(BIcr, reladdr) [name] =>
 //		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
 
-	| balctr(BIcr) [name] =>
+	| balctr(_) [name] =>
+	//| balctr(BIcr) [name] =>
 		computedJump(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
-		unused(BIcr);
 
-	| balctrl(BIcr) [name] =>
+	| balctrl(_) [name] =>
+	//| balctrl(BIcr) [name] =>
 		computedCall(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
-		unused(BIcr);
 
-	| bal(BIcr, reladdr) =>
+	| bal(_, reladdr) =>
+	//| bal(BIcr, reladdr) =>
 		unconditionalJump("bal", 4, reladdr, delta, pc, stmts, result);
-		unused(BIcr);
 
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.
@@ -349,11 +332,11 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
-	| ballr(BIcr) [name] =>
+	| ballr(_) [name] =>
+	//| ballr(BIcr) [name] =>
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(new ReturnStatement);
 		SHOW_ASM(name << "\n");
-		unused(BIcr);
 
 	// Shift right arithmetic
 	| srawi(ra, rs, uimm) [name] =>

@@ -31,14 +31,6 @@ const char *GetReloc(unsigned pc);
 //#define AARGf(f, x) astr += sprintf(astr, " ## f ## ", x);
 //#define Acom        astr += sprintf(astr, ",");
 #define CONS(x)     strcat(constrName, x);
-#define IGNORE(x)   not_used(*(int *)&x);
-
-// The below is used to quelch annoying "variable not used" warnings
-void
-not_used(int unwanted)
-{
-	unwanted = 0;
-}
 
 /* get4Bytes - returns next 4-Byte from image pointed to by lc.
    Fetch in a big-endian manner  */
@@ -414,17 +406,17 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		astr += sprintf(astr, "(%s,%s)", s2_16_names[s], b_06_names[b]);
 		CONS("istores ")
 	}
-	| iloads_ldisp(c_addr, xd, s, b, t_11) [name] => {
+	| iloads_ldisp(_, xd, s, b, t_11) [name] => {
+	//| iloads_ldisp(c_addr, xd, s, b, t_11) [name] => {
 		ANAME
-		IGNORE(c_addr)
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s),%s", s2_16_names[s], b_06_names[b], t_11_names[t_11]);
 		CONS("iloads_ldisp ")
 	}
-	| istores_ldisp(c_addr, r_11, xd, s, b) [name] => {
+	| istores_ldisp(_, r_11, xd, s, b) [name] => {
+	//| istores_ldisp(c_addr, r_11, xd, s, b) [name] => {
 		ANAME
 		astr += sprintf(astr, "%s,", r_11_names[r_11]);
-		IGNORE(c_addr)
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s)", s2_16_names[s], b_06_names[b]);
 		CONS("istores_ldisp ")
@@ -511,10 +503,9 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		astr += sprintf(astr, "%s(%s)", x_11_names[x_11], b_06_names[b_06]);
 		CONS("BV ")
 	}
-	| bve(p_31, nulli, b_06) [name] => {
+	| bve(_, _, b_06) [name] => {
+	//| bve(p_31, nulli, b_06) [name] => {
 		ANAME
-		not_used(p_31);
-		IGNORE(nulli)
 		astr += sprintf(astr, " (%s)", b_06_names[b_06]);
 		CONS("bve ")
 	}
@@ -627,14 +618,14 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		astr += sprintf(astr, "%s",   dis_freg(t));
 		CONS("flt_c1_all ")
 	}
-	| flt_c2_all(fmt, c, r1, r2) [name] => {
+	| flt_c2_all(fmt, _, r1, r2) [name] => {
+	//| flt_c2_all(fmt, c, r1, r2) [name] => {
 		apre += sprintf(apre, "%s", killDot(name));
 		dis_flt_fmt(fmt);
 		astr += sprintf(astr, "%s, ", dis_freg(r1));
 		astr += sprintf(astr, "%s",   dis_freg(r2));
 		// HACK: Needs completer c decoded
 		astr += sprintf(astr, "\t/* Completer c needs decoding */");
-		IGNORE(c)
 		CONS("flt_c2_all ")
 	}
 	| flt_c3_all(fmt, r1, r2, t) [name] => {

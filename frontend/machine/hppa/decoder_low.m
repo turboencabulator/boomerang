@@ -16,13 +16,6 @@ unsigned long c_wcr(ADDRESS hostpc, char **garble);
 bool c_c_n(ADDRESS hostpc);
 void addr(ADDRESS hostpc);
 
-// The below is used to quelch annoying "variable not used" warnings
-void
-not_used(int unwanted)
-{
-	unwanted = 0;
-}
-
 /* get4Bytes - returns next 4-Byte from image pointed to by lc.
    Fetch in a big-endian manner  */
 DWord
@@ -217,30 +210,30 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 	| dep_ifix(i, p, len, t, c) [name] => {
 		RTs = instantiate(pc, name, dis_Num(i), dis_Num(p), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
 	}
-	| ubranch(nulli, ubr_target, t_06) [name] => {
+	| ubranch(_, ubr_target, t_06) [name] => {
+	//| ubranch(nulli, ubr_target, t_06) [name] => {
 		/* ubranch,cmplt,n  target,t_06) */
 		RTs = instantiate(pc, name, dis_Num(ubr_target), dis_Reg(t_06));
-		not_used(nulli);
 	}
-	| BL.LONG(nulli, ubr_target) [name] => {
+	| BL.LONG(_, ubr_target) [name] => {
+	//| BL.LONG(nulli, ubr_target) [name] => {
 		/* BL.LONG cmplt,n  target,2) */
 		RTs = instantiate(pc, name, dis_Num(ubr_target));
-		not_used(nulli);
 	}
-	| BLR(nulli, x_11, t_06) [name] => {
+	| BLR(_, x_11, t_06) [name] => {
+	//| BLR(nulli, x_11, t_06) [name] => {
 		/* BLR,n x,t */
 		RTs = instantiate(pc, name, dis_Reg(x_11), dis_Reg(t_06));
-		not_used(nulli);
 	}
-	| BV(nulli, x_11, b_06) [name] => {
+	| BV(_, x_11, b_06) [name] => {
+	//| BV(nulli, x_11, b_06) [name] => {
 		/* BV,n x_11(b_06) */
 		RTs = instantiate(pc, name, dis_Reg(x_11), dis_Reg(b_06));
-		not_used(nulli);
 	}
-	| bve(p_31, nulli, b_06) [name] => {
+	| bve(p_31, _, b_06) [name] => {
+	//| bve(p_31, nulli, b_06) [name] => {
 		/* BVE.l BVE.lp BVE.p BVE  */
 		RTs = instantiate(pc, name, p_31, dis_Reg(b_06));
-		not_used(nulli);
 	}
 	| BREAK(im5_27, im13_06) [name] => {
 		RTs = instantiate(pc, name, dis_Num(im5_27), dis_Num(im13_06));

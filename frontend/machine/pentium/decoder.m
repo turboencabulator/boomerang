@@ -58,20 +58,6 @@ void
 genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
 
 /**
- * A dummy function to suppress "unused local variable" messages.
- *
- * \param x  Integer variable to be "used".
- */
-static void
-unused(int x)
-{
-}
-static void
-unused(const char *x)
-{
-}
-
-/**
  * Constructor.  The code won't work without this (not sure why the default
  * constructor won't do...)
  */
@@ -159,13 +145,10 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	 * Unconditional branches
 	 */
 	| JMP.Jvod(relocd) [name] =>
-		unused(name);
 		unconditionalJump(name, 5, relocd, delta, pc, stmts, result);
 	| JMP.Jvow(relocd) [name] =>
-		unused(name);
 		unconditionalJump(name, 3, relocd, delta, pc, stmts, result);
 	| JMP.Jb(relocd) [name] =>
-		unused(name);
 		unconditionalJump(name, 2, relocd, delta, pc, stmts, result);
 
 	/*
@@ -974,20 +957,20 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| MOVSB() =>
 		stmts = instantiate(pc, "MOVSB");
 
-//	| MOV.Rd.Dd(reg, dr) =>
-//		unused(reg); unused(dr);
+//	| MOV.Rd.Dd(_, _) =>
+//	//| MOV.Rd.Dd(reg, dr) =>
 //		stmts = instantiate(pc, "UNIMP");
 
-//	| MOV.Dd.Rd(dr, reg) =>
-//		unused(reg); unused(dr);
+//	| MOV.Dd.Rd(_, _) =>
+//	//| MOV.Dd.Rd(dr, reg) =>
 //		stmts = instantiate(pc, "UNIMP");
 
-//	| MOV.Rd.Cd(reg, cr) =>
-//		unused(reg); unused(cr);
+//	| MOV.Rd.Cd(_, _) =>
+//	//| MOV.Rd.Cd(reg, cr) =>
 //		stmts = instantiate(pc, "UNIMP");
 
-//	| MOV.Cd.Rd(cr, reg) =>
-//		unused(reg); unused(cr);
+//	| MOV.Cd.Rd(_, _) =>
+//	//| MOV.Cd.Rd(cr, reg) =>
 //		stmts = instantiate(pc, "UNIMP");
 
 	| MOV.Ed.Ivod(Eaddr, i32) =>
@@ -1289,8 +1272,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	/* Decode the following as a NOP. We see these in startup code, and anywhere
 	 * that calls the OS (as lcall 7, 0) */
-	| CALL.aPod(seg, off) =>
-		unused(seg); unused(off);
+	| CALL.aPod(_, _) =>
+	//| CALL.aPod(seg, off) =>
 		stmts = instantiate(pc, "NOP");
 
 	| CALL.Jvod(relocd) =>
@@ -1399,8 +1382,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 //	| BOUNDow(reg, Mem) =>
 //		stmts = instantiate(pc, "BOUNDow", DIS_REG16, DIS_MEM);
 
-//	| ARPL(Eaddr, reg) =>
-//		unused(Eaddr); unused(reg);
+//	| ARPL(_, _) =>
+//	//| ARPL(Eaddr, reg) =>
 //		stmts = instantiate(pc, "UNIMP");
 
 //	| AAS() =>
