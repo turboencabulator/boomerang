@@ -3,13 +3,7 @@
 #include <assert.h>
 #define sign_extend(N,SIZE) (((int)((N) << (sizeof(unsigned)*8-(SIZE)))) >> (sizeof(unsigned)*8-(SIZE)))
 
-#line 1 "disassembler.2.m"
-/*==============================================================================
- * FILE:     disassembler.m
- * OVERVIEW: Matcher file for a stand alone disassembler tool
- *
- (C) 2000-2001 The University of Queensland, BT group
- *============================================================================*/
+#line 1 "disassembler9.m"
 
 /*
   void NJMCDecoder :: Cmplt_1(ADDRESS hostpc1)
@@ -55,36 +49,314 @@ DWord getDword (unsigned lc)
       ) + *(Byte *)(lc+3));
 }
 
-static char killBuffer[32];
 
-// Find and kill any dots in the opcode name (and all chars thereafter)
-char* killDot(char* str)
+void NJMCDecoder::dis_flt_fmt(int fmt)
 {
-    strcpy(killBuffer, str);
-    char* p = strchr(killBuffer, '.');
-    if (p) *p = '\0';
-    return killBuffer;
+    // Completer for floating point operand size
+    switch(fmt) {
+        case 0: astr += sprintf(astr, ",sgl"); break;
+        case 1: astr += sprintf(astr, ",dbl"); break;
+        case 3: astr += sprintf(astr, ",quad"); break;
+        default:astr += sprintf(astr, ",?"); break;
+    }
 }
 
-
-void NJMCDecoder::dis_c_c(ADDRESS hostpc)
+int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 {
-  static char *logw[] =  {"",",=",",<",",OD"
-                            ,",TR",",!=",",>=",",EV"};
-  static char *logdw[] =  {"",",*=",",*<] ",",*OD"
-                            ,",*TR",",*!=",",*>=",",*EV"};
-  static char *cmpsubw[] = {"",",=",",<",",<=",",<<",",<<=",
-                               ",SV",",OD",
-                               ",TR",",<>",",>=",",>",",>>=",
-                               ",>>",",NSV",",EV"};
-  static char *cmpsubdw[] = {"",",*=",",*<",",*<=",",*<<",",*<<=",
-                                ",*SV",",*OD",
-                                ",*TR",",*<>",",*>=",",*>",",*>>=",
-                                ",*>>",",*NSV",",*EV"};
-/*  static char *bitw[]  = {",<", ",>="};*/
-/*  static char *bitdw[] = {",*<", ",*>="};*/
-  
+    char sCmplt[32];
+    unsigned long r1,r2;
+    sCmplt[0]='\0';
+    ADDRESS hostPC = pc + delta;
+
+    astr = _assembly + sprintf(_assembly, "%x: %08x  ", pc, *(unsigned*)hostPC);
+
 
 
 #line 101 "generated-code"
+
+{ 
+  DWord MATCH_p = hostPC;
+  static char *MATCH_name_class_21_1[] = { 0, 0, "flt_c2_0e", "flt_c3_0e", };
+  static char *MATCH_name_sub_14_2[] = { "fcnvff", "fcnvxf", 0, "fcnvfxt", };
+  static char *MATCH_name_sub_16_3[] = { 
+    "fid", 
+    0, 
+    "fcpy", 
+    "fabs", 
+    "fsqrt", 
+    "frnd", 
+    "fneg", 
+    "fnegabs", 
+  };
+  static char *MATCH_name_class_21_4[] = { 0, 0, "flt_c2_0c", "flt_c3_0c", };
+  
+  #line 201 "generated-code"
+  { 
+    unsigned MATCH_w_32_0 = (getDword((MATCH_p+0)));
+    if (15 <= (MATCH_w_32_0 & 0x3f) /* op at 0 */ && (MATCH_w_32_0 & 0x3f) /* op at 0 */ < 64) { 
+      { 
+        
+        #line 111 "disassembler9.m"
+                    astr += sprintf(astr, "unrecog. %02X %08X",
+                      (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
+        
+        
+        #line 301 "generated-code" 
+      } 
+    } 
+    else 
+      switch (MATCH_w_32_0 & 0x3f /* op at 0 */) { 
+        case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: 
+        case 9: case 10: case 11: case 13: 
+          { 
+            { 
+              
+              #line 111 "disassembler9.m"
+                          astr += sprintf(astr, "unrecog. %02X %08X",
+                            (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
+              
+              
+              #line 401 "generated-code" 
+            } 
+          }
+          break;
+        case 12: 
+          { 
+            switch (MATCH_w_32_0 >> 21 & 0x3 /* class_21 at 0 */) { 
+              case 0: 
+                { 
+                  if ((MATCH_w_32_0 >> 16 & 0x7) /* sub_16 at 0 */ == 1) { 
+                    { 
+                      
+                      #line 111 "disassembler9.m"
+                                  astr += sprintf(astr, "unrecog. %02X %08X",
+                                    (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
+                      
+                      
+                      #line 501 "generated-code" 
+                    } 
+                  } 
+                  else { 
+                    { 
+                      unsigned t = MATCH_w_32_0 >> 27 & 0x1f /* t_27 at 0 */;
+                      unsigned fmt = MATCH_w_32_0 >> 19 & 0x3 /* fmt_19 at 0 */;
+                      unsigned r = MATCH_w_32_0 >> 6 & 0x1f /* r_06 at 0 */;
+                      char *name = 
+                        MATCH_name_sub_16_3[MATCH_w_32_0 >> 16 & 0x7 /* sub_16 at 0 */];
+                      
+                      #line 68 "disassembler9.m"
+                       {
+                                  astr += sprintf(astr, "%s", name);
+                                  dis_flt_fmt(fmt);
+                                  astr += sprintf(astr, "  fr%d, fr%d", r, t);
+                                  strcat(constrName, "flt_c0 ");
+                              }
+                      
+                      
+                      #line 601 "generated-code" 
+                    } 
+                  }  
+                }
+                break;
+              case 1: 
+                { 
+                  switch (MATCH_w_32_0 >> 14 & 0x7 /* sub_14 at 0 */) { 
+                    case 0: case 1: case 3: 
+                      { 
+                        { 
+                          unsigned df = 
+                            MATCH_w_32_0 >> 17 & 0x3 /* df_17 at 0 */;
+                          unsigned t = 
+                            MATCH_w_32_0 >> 27 & 0x1f /* t_27 at 0 */;
+                          unsigned r = MATCH_w_32_0 >> 6 & 0x1f /* r_06 at 0 */;
+                          unsigned sf = 
+                            MATCH_w_32_0 >> 19 & 0x3 /* sf_19 at 0 */;
+                          char *name = 
+                            MATCH_name_sub_14_2[MATCH_w_32_0 >> 14 & 0x7 /* sub_14 at 0 */];
+                          
+                          #line 74 "disassembler9.m"
+                           {
+                                      astr += sprintf(astr, "%s", name);
+                                      dis_flt_fmt(sf);
+                                      dis_flt_fmt(df);
+                                      astr += sprintf(astr, "  fr%d, fr%d", r, t);
+                                      strcat(constrName, "flt_c1 ");
+                                  }
+                          
+                          
+                          #line 701 "generated-code" 
+                        } 
+                      }
+                      break;
+                    case 2: case 4: case 5: case 6: case 7: 
+                      { 
+                        { 
+                          
+                          #line 111 "disassembler9.m"
+                                      astr += sprintf(astr, "unrecog. %02X %08X",
+                                        (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
+                          
+                          
+                          #line 801 "generated-code" 
+                        } 
+                      }
+                      break;
+                    default: assert(0);
+                  } /* MATCH_w_32_0 >> 14 & 0x7 -- sub_14 at 0 -- */ 
+                }
+                break;
+              case 2: 
+                { 
+                  { 
+                    unsigned c = MATCH_w_32_0 >> 6 & 0x1f /* r_06 at 0 */;
+                    unsigned r1 = MATCH_w_32_0 >> 19 & 0x3 /* fmt_19 at 0 */;
+                    unsigned fmt = MATCH_w_32_0 >> 11 & 0x1f /* r_11 at 0 */;
+                    unsigned r2 = MATCH_w_32_0 >> 27 & 0x1f /* t_27 at 0 */;
+                    char *name = 
+                      MATCH_name_class_21_4[MATCH_w_32_0 >> 21 & 0x3 /* class_21 at 0 */];
+                    
+                    #line 81 "disassembler9.m"
+                     {
+                                astr += sprintf(astr, "%s", name);
+                                dis_flt_fmt(fmt);
+                                astr += sprintf(astr, "  %fr%d, fr%d", r1, r2);
+                    // HACK: Needs completer c decoded
+                    astr += sprintf(astr, "\t\t/* Completer c needs decoding */");
+                                strcat(constrName, "flt_c2_0c ");
+                            }
+                    
+                    
+                    #line 901 "generated-code" 
+                  } 
+                }
+                break;
+              case 3: 
+                { 
+                  { 
+                    unsigned t = MATCH_w_32_0 >> 11 & 0x1f /* r_11 at 0 */;
+                    unsigned r1 = MATCH_w_32_0 >> 19 & 0x3 /* fmt_19 at 0 */;
+                    unsigned fmt = MATCH_w_32_0 >> 27 & 0x1f /* t_27 at 0 */;
+                    unsigned r2 = MATCH_w_32_0 >> 6 & 0x1f /* r_06 at 0 */;
+                    char *name = 
+                      MATCH_name_class_21_4[MATCH_w_32_0 >> 21 & 0x3 /* class_21 at 0 */];
+                    
+                    #line 97 "disassembler9.m"
+                     {
+                                astr += sprintf(astr, "%s", name);
+                                dis_flt_fmt(fmt);
+                                astr += sprintf(astr, "  fr%d, fr%d, fr%d", r1, r2, t);
+                                strcat(constrName, "flt_c3_0c ");
+                            }
+                    
+                    
+                    #line 1001 "generated-code" 
+                  } 
+                }
+                break;
+              default: assert(0);
+            } /* MATCH_w_32_0 >> 21 & 0x3 -- class_21 at 0 -- */ 
+          }
+          break;
+        case 14: 
+          { 
+            switch (MATCH_w_32_0 >> 21 & 0x3 /* class_21 at 0 */) { 
+              case 0: case 1: 
+                { 
+                  { 
+                    
+                    #line 111 "disassembler9.m"
+                                astr += sprintf(astr, "unrecog. %02X %08X",
+                                  (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
+                    
+                    
+                    #line 1101 "generated-code" 
+                  } 
+                }
+                break;
+              case 2: 
+                { 
+                  { 
+                    unsigned c = 
+                      (MATCH_w_32_0 >> 6 & 0x1f) /* r_06 at 0 */ + (0 << 6) + 
+                        ((MATCH_w_32_0 >> 24 & 0x1) /* r1_24 at 0 */ << 5);
+                    unsigned r1 = MATCH_w_32_0 >> 20 & 0x1 /* f_20 at 0 */;
+                    unsigned fmt = 
+                      (MATCH_w_32_0 >> 11 & 0x1f) /* r_11 at 0 */ + (0 << 6) + 
+                        ((MATCH_w_32_0 >> 19 & 0x1) /* f_19 at 0 */ << 5);
+                    unsigned r2 = MATCH_w_32_0 >> 27 & 0x1f /* t_27 at 0 */;
+                    char *name = 
+                      MATCH_name_class_21_1[MATCH_w_32_0 >> 21 & 0x3 /* class_21 at 0 */];
+                    
+                    #line 89 "disassembler9.m"
+                     {
+                                astr += sprintf(astr, "%s", name);
+                                dis_flt_fmt(fmt);
+                                astr += sprintf(astr, "  fr%d, fr%d", r1, r2);
+                    // HACK: Needs completer c decoded
+                    astr += sprintf(astr, "\t\t/* Completer c needs decoding */");
+                                strcat(constrName, "flt_c2_0e ");
+                            }
+                    
+                    
+                    #line 1201 "generated-code" 
+                  } 
+                }
+                break;
+              case 3: 
+                { 
+                  { 
+                    unsigned t = 
+                      (MATCH_w_32_0 >> 11 & 0x1f) /* r_11 at 0 */ + (0 << 6) + 
+                        ((MATCH_w_32_0 >> 19 & 0x1) /* f_19 at 0 */ << 5);
+                    unsigned r1 = MATCH_w_32_0 >> 20 & 0x1 /* f_20 at 0 */;
+                    unsigned fmt = 
+                      (MATCH_w_32_0 >> 27 & 0x1f) /* t_27 at 0 */ + 
+                        ((MATCH_w_32_0 >> 25 & 0x1) /* t_25 at 0 */ << 5) + 
+                        (0 << 6);
+                    unsigned r2 = 
+                      (MATCH_w_32_0 >> 6 & 0x1f) /* r_06 at 0 */ + (0 << 6) + 
+                        ((MATCH_w_32_0 >> 24 & 0x1) /* r1_24 at 0 */ << 5);
+                    char *name = 
+                      MATCH_name_class_21_1[MATCH_w_32_0 >> 21 & 0x3 /* class_21 at 0 */];
+                    
+                    #line 103 "disassembler9.m"
+                     {
+                                astr += sprintf(astr, "%s", name);
+                                dis_flt_fmt(fmt);
+                                astr += sprintf(astr, "  fr%d, fr%d, fr%d", r1, r2, t);
+                                strcat(constrName, "flt_c3_0e ");
+                            }
+                    
+                    
+                    
+                    #line 1301 "generated-code" 
+                  } 
+                }
+                break;
+              default: assert(0);
+            } /* MATCH_w_32_0 >> 21 & 0x3 -- class_21 at 0 -- */ 
+          }
+          break;
+        default: assert(0);
+      } /* MATCH_w_32_0 & 0x3f -- op at 0 -- */  
+  } 
+}
+
+#line 114 "disassembler9.m"
+
+    return 4;               // Always advance 4 bytes, even for unrecog etc
+
+}
+
+/*
+                }
+                | LDWl(cmplt, ldisp, s2_16, b_06, t_11)[name] => {
+                        astr += sprintf(astr, "%s", name);
+                        c_disps(cmplt);
+                        astr += sprintf(astr, "  %d(%s,%s),%s", ldisp, s2_16_names[s2_16], b_06_names[b_06], t_11_names[t_11]);
+                
+*/
+
+
+#line 1401 "generated-code"
 

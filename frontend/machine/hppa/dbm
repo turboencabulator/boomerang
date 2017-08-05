@@ -1,1010 +1,563 @@
-crhs for c_arith_w is (arith_w) op ==  2 & ext6_20 == 24 & d_26 ==  0 & 
-c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 56 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 28 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 60 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 25 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 57 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 26 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 58 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 27 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 59 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 16 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 48 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 19 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 51 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 20 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 52 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 17 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  0 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  8 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  9 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 10 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 14 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 34 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 38 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 39 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 40 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 41 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 42 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 43 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 46 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 47 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 15 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 13 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 12 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  7 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  5 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  4 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 11 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 29 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 30 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 31 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 21 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 22 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 23 & d_26 ==  0 & c3_16 = c3_16 
-| (ADDI) op == 45 & ext_20 ==  0 & c3_16 = c3_16 
-| (ADDI.v) op == 45 & ext_20 ==  1 & c3_16 = c3_16 
-| (ADDI.t) op == 44 & ext_20 ==  0 & c3_16 = c3_16 
-| (ADDI.t.v) op == 44 & ext_20 ==  1 & c3_16 = c3_16 
-| (SUBI) op == 37 & ext_20 ==  0 & c3_16 = c3_16 
-| (SUBI.v) op == 37 & ext_20 ==  1 & c3_16 = c3_16
-applied c_arith_w to get (arith_w) op ==  2 & ext6_20 == 24 & d_26 ==  0 & 
-c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 56 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 28 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 60 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 25 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 57 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 26 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 58 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 27 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 59 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 16 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 48 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 19 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 51 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 20 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 52 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 17 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  0 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  8 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  9 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 10 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 14 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 34 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 38 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 39 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 40 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 41 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 42 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 43 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 46 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 47 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 15 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 13 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 12 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  7 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  5 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 ==  4 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 11 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 29 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 30 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 31 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 21 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 22 & d_26 ==  0 & c3_16 = c3_16 
-| (arith_w) op ==  2 & ext6_20 == 23 & d_26 ==  0 & c3_16 = c3_16 
-| (ADDI) op == 45 & ext_20 ==  0 & c3_16 = c3_16 
-| (ADDI.v) op == 45 & ext_20 ==  1 & c3_16 = c3_16 
-| (ADDI.t) op == 44 & ext_20 ==  0 & c3_16 = c3_16 
-| (ADDI.t.v) op == 44 & ext_20 ==  1 & c3_16 = c3_16 
-| (SUBI) op == 37 & ext_20 ==  0 & c3_16 = c3_16 
-| (SUBI.v) op == 37 & ext_20 ==  1 & c3_16 = c3_16
-after pnf we have case arm (arith_w) op ==  2 & ext6_20 == 24 & d_26 ==  0 & 
-  c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 56 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 28 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 60 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 25 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 57 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 26 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 58 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 27 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 59 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 16 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 48 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 19 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 51 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 20 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 52 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 17 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  0 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  8 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  9 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 10 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 14 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 34 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 38 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 39 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 40 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 41 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 42 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 43 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 46 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 47 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 15 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 13 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 12 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  7 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  5 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  4 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 11 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 29 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 30 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 31 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 21 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 22 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 23 & d_26 ==  0 & c3_16 = c3_16 
-  | (ADDI) op == 45 & ext_20 ==  0 & c3_16 = c3_16 
-  | (ADDI.v) op == 45 & ext_20 ==  1 & c3_16 = c3_16 
-  | (ADDI.t) op == 44 & ext_20 ==  0 & c3_16 = c3_16 
-  | (ADDI.t.v) op == 44 & ext_20 ==  1 & c3_16 = c3_16 
-  | (SUBI) op == 37 & ext_20 ==  0 & c3_16 = c3_16 
-  | (SUBI.v) op == 37 & ext_20 ==  1 & c3_16 = c3_16
-after binding patlabel names we have case arm (arith_w) op ==  2 & 
-  ext6_20 == 24 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 56 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 28 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 60 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 25 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 57 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 26 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 58 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 27 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 59 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 16 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 48 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 19 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 51 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 20 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 52 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 17 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  0 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  8 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  9 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 10 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 14 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 34 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 38 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 39 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 40 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 41 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 42 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 43 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 46 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 47 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 15 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 13 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 12 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  7 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  5 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  4 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 11 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 29 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 30 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 31 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 21 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 22 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 23 & d_26 ==  0 & c3_16 = c3_16 
-  | (ADDI) op == 45 & ext_20 ==  0 & c3_16 = c3_16 
-  | (ADDI.v) op == 45 & ext_20 ==  1 & c3_16 = c3_16 
-  | (ADDI.t) op == 44 & ext_20 ==  0 & c3_16 = c3_16 
-  | (ADDI.t.v) op == 44 & ext_20 ==  1 & c3_16 = c3_16 
-  | (SUBI) op == 37 & ext_20 ==  0 & c3_16 = c3_16 
-  | (SUBI.v) op == 37 & ext_20 ==  1 & c3_16 = c3_16
-after setting offsets we have case arm (arith_w) op ==  2 & ext6_20 == 24 & 
-  d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 56 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 28 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 60 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 25 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 57 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 26 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 58 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 27 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 59 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 16 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 48 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 19 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 51 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 20 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 52 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 17 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  0 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  8 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  9 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 10 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 14 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 34 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 38 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 39 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 40 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 41 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 42 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 43 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 46 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 47 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 15 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 13 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 12 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  7 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  5 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 ==  4 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 11 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 29 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 30 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 31 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 21 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 22 & d_26 ==  0 & c3_16 = c3_16 
-  | (arith_w) op ==  2 & ext6_20 == 23 & d_26 ==  0 & c3_16 = c3_16 
-  | (ADDI) op == 45 & ext_20 ==  0 & c3_16 = c3_16 
-  | (ADDI.v) op == 45 & ext_20 ==  1 & c3_16 = c3_16 
-  | (ADDI.t) op == 44 & ext_20 ==  0 & c3_16 = c3_16 
-  | (ADDI.t.v) op == 44 & ext_20 ==  1 & c3_16 = c3_16 
-  | (SUBI) op == 37 & ext_20 ==  0 & c3_16 = c3_16 
-  | (SUBI.v) op == 37 & ext_20 ==  1 & c3_16 = c3_16
-after anf+subst we have case arm (arith_w) LENGTH = 32, {op at 0} ==  2 & 
-  {ext6_20 at 0} == 24 & {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 56 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 28 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 60 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 25 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 57 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 26 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 58 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 27 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 59 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 16 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 48 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 19 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 51 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 20 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 52 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 17 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  0 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  8 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  9 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 10 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 14 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 34 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 38 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 39 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 40 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 41 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 42 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 43 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 46 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 47 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 15 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 13 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 12 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  7 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  5 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  4 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 11 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 29 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 30 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 31 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 21 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 22 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 23 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (ADDI) LENGTH = 32, {op at 0} == 45 & {ext_20 at 0} ==  0 & 
-  {c3_16 at 0} = c3_16 
-  | (ADDI.v) LENGTH = 32, {op at 0} == 45 & {ext_20 at 0} ==  1 & 
-  {c3_16 at 0} = c3_16 
-  | (ADDI.t) LENGTH = 32, {op at 0} == 44 & {ext_20 at 0} ==  0 & 
-  {c3_16 at 0} = c3_16 
-  | (ADDI.t.v) LENGTH = 32, {op at 0} == 44 & {ext_20 at 0} ==  1 & 
-  {c3_16 at 0} = c3_16 
-  | (SUBI) LENGTH = 32, {op at 0} == 37 & {ext_20 at 0} ==  0 & 
-  {c3_16 at 0} = c3_16 
-  | (SUBI.v) LENGTH = 32, {op at 0} == 37 & {ext_20 at 0} ==  1 & 
-  {c3_16 at 0} = c3_16
+crhs for fid is (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fid is (fid) op == 14 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fcpy is (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fcpy is (fcpy) op == 14 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fabs is (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fabs is (fabs) op == 14 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fsqrt is (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fsqrt is (fsqrt) op == 14 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for frnd is (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for frnd is (frnd) op == 14 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fneg is (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fneg is (fneg) op == 14 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+crhs for fnegabs is (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+crhs for fnegabs is (fnegabs) op == 14 & class_21 ==  0 & sub_16 ==  7 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+crhs for fid is (fid) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  0 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fid is (fid) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  0 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fcpy is (fcpy) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  2 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fcpy is (fcpy) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  2 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fabs is (fabs) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  3 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fabs is (fabs) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  3 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fsqrt is (fsqrt) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  4 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fsqrt is (fsqrt) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  4 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for frnd is (frnd) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  5 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for frnd is (frnd) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  5 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fneg is (fneg) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  6 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fneg is (fneg) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  6 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fnegabs is (fnegabs) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  0 & sub_16 ==  7 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fnegabs is (fnegabs) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  0 & sub_16 ==  7 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & f_20 = f
+crhs for fcnvff is (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvff is (fcnvff) op == 14 & class_21 ==  1 & sub_14 ==  0 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) op == 14 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) op == 14 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvfxt is (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvfxt is (fcnvfxt) op == 14 & class_21 ==  1 & sub_14 ==  3 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+crhs for fcnvff is (fcnvff) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  1 & sub_14 ==  0 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvff is (fcnvff) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  1 & sub_14 ==  0 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  1 & sub_14 ==  1 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  1 & sub_14 ==  1 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  1 & sub_14 ==  1 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvxf is (fcnvxf) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  1 & sub_14 ==  1 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvfxt is (fcnvfxt) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 12 & class_21 ==  1 & sub_14 ==  3 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for fcnvfxt is (fcnvfxt) {r[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  1 & sub_14 ==  3 & t_27 = t[0:4] & t_25 = t[5:5] & 
+  r_06 = r[0:4] & r1_24 = r[5:5] & df_17 = df & sf_19 = sf
+crhs for flt_c2_0c is (?noname?) op == 12 & class_21 ==  2 & r_06 = r1 & 
+r_11 = r2 & t_27 = c & fmt_19 = fmt
+crhs for flt_c2_0e is (?noname?) {r1[6:31] = 0, r2[6:31] = 0} => 
+  op == 14 & class_21 ==  2 & f_19 = r2[5:5] & r_06 = r1[0:4] & 
+  r_11 = r2[0:4] & r1_24 = r1[5:5] & f_20 = f_20 & t_27 = c
+crhs for flt_c3_0c is (?noname?) op == 12 & class_21 ==  3 & r_06 = r1 & 
+r_11 = r2 & t_27 = t & fmt_19 = fmt
+crhs for flt_c3_0e is (?noname?) {r1[6:31] = 0, r2[6:31] = 0, t[6:31] = 0} => 
+  op == 14 & class_21 ==  3 & t_27 = t[0:4] & f_19 = r2[5:5] & t_25 = t[5:5] & 
+  r_06 = r1[0:4] & r_11 = r2[0:4] & r1_24 = r1[5:5] & f_20 = fmt
+applied fid to get (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+applied fid to get (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & 
+t_27 = t & fmt_19 = fmt
+applied fcpy to get (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fcpy to get (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fabs to get (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fabs to get (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fsqrt to get (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fsqrt to get (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied frnd to get (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied frnd to get (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fneg to get (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fneg to get (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fnegabs to get (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+applied fnegabs to get (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & 
+r_06 = r & t_27 = t & fmt_19 = fmt
+after pnf we have case arm (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & 
+  r_06 = r & t_27 = t & fmt_19 = fmt 
+  | (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt
+after binding patlabel names we have case arm (fid) op == 12 & class_21 ==  0 & 
+  sub_16 ==  0 & r_06 = r & t_27 = t & fmt_19 = fmt 
+  | (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt
+after setting offsets we have case arm (fid) op == 12 & class_21 ==  0 & 
+  sub_16 ==  0 & r_06 = r & t_27 = t & fmt_19 = fmt 
+  | (fid) op == 12 & class_21 ==  0 & sub_16 ==  0 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fcpy) op == 12 & class_21 ==  0 & sub_16 ==  2 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fabs) op == 12 & class_21 ==  0 & sub_16 ==  3 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fsqrt) op == 12 & class_21 ==  0 & sub_16 ==  4 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (frnd) op == 12 & class_21 ==  0 & sub_16 ==  5 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fneg) op == 12 & class_21 ==  0 & sub_16 ==  6 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt 
+  | (fnegabs) op == 12 & class_21 ==  0 & sub_16 ==  7 & r_06 = r & t_27 = t & 
+  fmt_19 = fmt
+after anf+subst we have case arm (fid) LENGTH = 32, {op at 0} == 12 & 
+  {class_21 at 0} ==  0 & {sub_16 at 0} ==  0 & {r_06 at 0} = r & 
+  {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fid) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  0 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fcpy) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  2 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fcpy) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  2 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fsqrt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  4 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fsqrt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  4 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (frnd) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  5 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (frnd) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  5 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fneg) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  6 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fneg) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  6 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fnegabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  7 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fnegabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  7 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt
 caught free variables:
-  freevars[c3_16] = c3_16 : integer
+  freevars[fmt] = fmt : integer
+  freevars[r] = r : integer
+  freevars[t] = t : integer
 Before simplification, case arm is 
-  (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 24 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 56 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 28 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 60 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 25 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 57 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 26 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 58 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 27 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 59 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 16 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 48 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 19 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 51 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 20 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 52 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 17 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  0 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  8 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  9 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 10 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 14 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 34 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 38 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 39 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 40 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 41 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 42 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 43 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 46 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 47 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 15 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 13 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 12 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  7 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  5 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  4 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 11 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 29 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 30 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 31 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 21 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 22 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (arith_w) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 23 & 
-  {d_26 at 0} ==  0 & {c3_16 at 0} = c3_16 
-  | (ADDI) LENGTH = 32, {op at 0} == 45 & {ext_20 at 0} ==  0 & 
-  {c3_16 at 0} = c3_16 
-  | (ADDI.v) LENGTH = 32, {op at 0} == 45 & {ext_20 at 0} ==  1 & 
-  {c3_16 at 0} = c3_16 
-  | (ADDI.t) LENGTH = 32, {op at 0} == 44 & {ext_20 at 0} ==  0 & 
-  {c3_16 at 0} = c3_16 
-  | (ADDI.t.v) LENGTH = 32, {op at 0} == 44 & {ext_20 at 0} ==  1 & 
-  {c3_16 at 0} = c3_16 
-  | (SUBI) LENGTH = 32, {op at 0} == 37 & {ext_20 at 0} ==  0 & 
-  {c3_16 at 0} = c3_16 
-  | (SUBI.v) LENGTH = 32, {op at 0} == 37 & {ext_20 at 0} ==  1 & 
-  {c3_16 at 0} = c3_16
+  (fid) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  0 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fid) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  0 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fcpy) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  2 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fcpy) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  2 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fsqrt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  4 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fsqrt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  4 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (frnd) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  5 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (frnd) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  5 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fneg) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  6 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fneg) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  6 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fnegabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  7 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt 
+  | (fnegabs) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  0 & 
+  {sub_16 at 0} ==  7 & {r_06 at 0} = r & {t_27 at 0} = t & {fmt_19 at 0} = fmt
 Case arm doesn't simplify
-Saw binding instances of c3_16
-Answers and conditions (record arm_101(10)) at length  (record solution_72(4)):
-  answers[c3_16] = {c3_16 at 0}
+Saw binding instances of fmt, r, and t
+Answers and conditions (record arm_10(10)) at length  (record solution_10(4)):
+  answers[fmt] = {fmt_19 at 0}
+  answers[r] = {r_06 at 0}
+  answers[t] = {t_27 at 0}
 (constraints:  )
-crhs for c_arith_dw is (arith_dw) op ==  2 & ext6_20 == 24 & d_26 ==  1 & 
-c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 56 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 28 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 60 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 25 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 57 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 26 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 58 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 27 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 59 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 16 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 48 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 19 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 51 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 20 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 52 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 17 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  0 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  8 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  9 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 10 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 14 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 34 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 38 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 39 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 40 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 41 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 42 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 43 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 46 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 47 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 15 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 13 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 12 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  7 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  5 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  4 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 11 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 29 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 30 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 31 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 21 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 22 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 23 & d_26 ==  1 & c3_16 = c3_16
-applied c_arith_dw to get (arith_dw) op ==  2 & ext6_20 == 24 & d_26 ==  1 & 
-c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 56 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 28 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 60 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 25 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 57 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 26 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 58 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 27 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 59 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 16 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 48 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 19 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 51 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 20 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 52 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 17 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  0 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  8 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  9 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 10 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 14 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 34 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 38 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 39 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 40 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 41 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 42 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 43 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 46 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 47 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 15 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 13 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 12 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  7 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  5 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 ==  4 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 11 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 29 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 30 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 31 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 21 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 22 & d_26 ==  1 & c3_16 = c3_16 
-| (arith_dw) op ==  2 & ext6_20 == 23 & d_26 ==  1 & c3_16 = c3_16
-after pnf we have case arm (arith_dw) op ==  2 & ext6_20 == 24 & d_26 ==  1 & 
-  c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 56 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 28 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 60 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 25 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 57 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 26 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 58 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 27 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 59 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 16 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 48 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 19 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 51 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 20 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 52 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 17 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  0 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  8 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  9 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 10 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 14 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 34 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 38 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 39 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 40 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 41 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 42 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 43 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 46 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 47 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 15 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 13 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 12 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  7 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  5 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  4 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 11 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 29 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 30 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 31 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 21 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 22 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 23 & d_26 ==  1 & c3_16 = c3_16
-after binding patlabel names we have case arm (arith_dw) op ==  2 & 
-  ext6_20 == 24 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 56 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 28 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 60 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 25 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 57 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 26 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 58 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 27 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 59 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 16 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 48 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 19 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 51 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 20 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 52 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 17 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  0 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  8 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  9 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 10 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 14 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 34 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 38 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 39 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 40 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 41 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 42 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 43 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 46 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 47 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 15 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 13 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 12 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  7 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  5 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  4 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 11 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 29 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 30 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 31 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 21 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 22 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 23 & d_26 ==  1 & c3_16 = c3_16
-after setting offsets we have case arm (arith_dw) op ==  2 & ext6_20 == 24 & 
-  d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 56 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 28 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 60 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 25 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 57 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 26 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 58 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 27 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 59 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 16 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 48 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 19 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 51 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 20 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 52 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 17 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  0 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  8 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  9 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 10 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 14 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 34 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 38 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 39 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 40 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 41 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 42 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 43 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 46 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 47 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 15 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 13 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 12 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  7 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  5 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 ==  4 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 11 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 29 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 30 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 31 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 21 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 22 & d_26 ==  1 & c3_16 = c3_16 
-  | (arith_dw) op ==  2 & ext6_20 == 23 & d_26 ==  1 & c3_16 = c3_16
-after anf+subst we have case arm (arith_dw) LENGTH = 32, {op at 0} ==  2 & 
-  {ext6_20 at 0} == 24 & {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 56 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 28 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 60 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 25 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 57 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 26 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 58 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 27 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 59 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 16 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 48 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 19 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 51 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 20 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 52 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 17 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  0 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  8 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  9 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 10 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 14 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 34 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 38 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 39 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 40 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 41 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 42 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 43 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 46 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 47 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 15 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 13 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 12 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  7 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  5 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  4 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 11 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 29 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 30 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 31 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 21 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 22 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 23 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16
+applied fcnvff to get (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvff to get (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvxf to get (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvxf to get (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvxf to get (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvxf to get (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvfxt to get (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+applied fcnvfxt to get (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & 
+r_06 = r & t_27 = t & df_17 = df & sf_19 = sf
+after pnf we have case arm (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & 
+  r_06 = r & t_27 = t & df_17 = df & sf_19 = sf 
+  | (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf
+after binding patlabel names we have case arm (fcnvff) op == 12 & 
+  class_21 ==  1 & sub_14 ==  0 & r_06 = r & t_27 = t & df_17 = df & sf_19 = sf 
+  | (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf
+after setting offsets we have case arm (fcnvff) op == 12 & class_21 ==  1 & 
+  sub_14 ==  0 & r_06 = r & t_27 = t & df_17 = df & sf_19 = sf 
+  | (fcnvff) op == 12 & class_21 ==  1 & sub_14 ==  0 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvxf) op == 12 & class_21 ==  1 & sub_14 ==  1 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf 
+  | (fcnvfxt) op == 12 & class_21 ==  1 & sub_14 ==  3 & r_06 = r & t_27 = t & 
+  df_17 = df & sf_19 = sf
+after anf+subst we have case arm (fcnvff) LENGTH = 32, {op at 0} == 12 & 
+  {class_21 at 0} ==  1 & {sub_14 at 0} ==  0 & {r_06 at 0} = r & 
+  {t_27 at 0} = t & {df_17 at 0} = df & {sf_19 at 0} = sf 
+  | (fcnvff) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  0 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvfxt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvfxt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf
 caught free variables:
-  freevars[c3_16] = c3_16 : integer
+  freevars[df] = df : integer
+  freevars[r] = r : integer
+  freevars[sf] = sf : integer
+  freevars[t] = t : integer
 Before simplification, case arm is 
-  (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 24 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 56 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 28 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 60 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 25 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 57 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 26 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 58 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 27 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 59 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 16 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 48 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 19 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 51 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 20 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 52 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 17 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  0 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  8 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  9 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 10 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 14 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 34 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 38 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 39 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 40 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 41 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 42 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 43 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 46 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 47 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 15 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 13 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 12 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  7 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  5 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} ==  4 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 11 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 29 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 30 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 31 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 21 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 22 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16 
-  | (arith_dw) LENGTH = 32, {op at 0} ==  2 & {ext6_20 at 0} == 23 & 
-  {d_26 at 0} ==  1 & {c3_16 at 0} = c3_16
+  (fcnvff) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  0 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvff) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  0 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvxf) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  1 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvfxt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf 
+  | (fcnvfxt) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  1 & 
+  {sub_14 at 0} ==  3 & {r_06 at 0} = r & {t_27 at 0} = t & {df_17 at 0} = df & 
+  {sf_19 at 0} = sf
 Case arm doesn't simplify
-Saw binding instances of c3_16
-Answers and conditions (record arm_102(10)) at length  (record solution_72(4)):
-  answers[c3_16] = {c3_16 at 0}
+Saw binding instances of df, r, sf, and t
+Answers and conditions (record arm_11(10)) at length  (record solution_38(4)):
+  answers[df] = {df_17 at 0}
+  answers[r] = {r_06 at 0}
+  answers[sf] = {sf_19 at 0}
+  answers[t] = {t_27 at 0}
 (constraints:  )
-crhs for c_cmpb_w is (COMBT) op == 32 & c3_16 = c3_16 
-| (COMBF) op == 34 & c3_16 = c3_16 
-| (COMIBT) op == 33 & c3_16 = c3_16 
-| (COMIBF) op == 35 & c3_16 = c3_16
-applied c_cmpb_w to get (COMBT) op == 32 & c3_16 = c3_16 
-| (COMBF) op == 34 & c3_16 = c3_16 
-| (COMIBT) op == 33 & c3_16 = c3_16 
-| (COMIBF) op == 35 & c3_16 = c3_16
-after pnf we have case arm (COMBT) op == 32 & c3_16 = c3_16 
-  | (COMBF) op == 34 & c3_16 = c3_16 
-  | (COMIBT) op == 33 & c3_16 = c3_16 
-  | (COMIBF) op == 35 & c3_16 = c3_16
-after binding patlabel names we have case arm (COMBT) op == 32 & c3_16 = c3_16 
-  | (COMBF) op == 34 & c3_16 = c3_16 
-  | (COMIBT) op == 33 & c3_16 = c3_16 
-  | (COMIBF) op == 35 & c3_16 = c3_16
-after setting offsets we have case arm (COMBT) op == 32 & c3_16 = c3_16 
-  | (COMBF) op == 34 & c3_16 = c3_16 
-  | (COMIBT) op == 33 & c3_16 = c3_16 
-  | (COMIBF) op == 35 & c3_16 = c3_16
-after anf+subst we have case arm (COMBT) LENGTH = 32, {op at 0} == 32 & 
-  {c3_16 at 0} = c3_16 
-  | (COMBF) LENGTH = 32, {op at 0} == 34 & {c3_16 at 0} = c3_16 
-  | (COMIBT) LENGTH = 32, {op at 0} == 33 & {c3_16 at 0} = c3_16 
-  | (COMIBF) LENGTH = 32, {op at 0} == 35 & {c3_16 at 0} = c3_16
+applied flt_c2_0c to get (flt_c2_0c) op == 12 & class_21 ==  2 & r_06 = c & 
+r_11 = fmt & t_27 = r2 & fmt_19 = r1
+after pnf we have case arm (flt_c2_0c) op == 12 & class_21 ==  2 & r_06 = c & 
+  r_11 = fmt & t_27 = r2 & fmt_19 = r1
+after binding patlabel names we have case arm (flt_c2_0c) op == 12 & 
+  class_21 ==  2 & r_06 = c & r_11 = fmt & t_27 = r2 & fmt_19 = r1
+after setting offsets we have case arm (flt_c2_0c) op == 12 & class_21 ==  2 & 
+  r_06 = c & r_11 = fmt & t_27 = r2 & fmt_19 = r1
+after anf+subst we have case arm (flt_c2_0c) LENGTH = 32, {op at 0} == 12 & 
+  {class_21 at 0} ==  2 & {r_06 at 0} = c & {r_11 at 0} = fmt & 
+  {t_27 at 0} = r2 & {fmt_19 at 0} = r1
 caught free variables:
-  freevars[c3_16] = c3_16 : integer
+  freevars[c] = c : integer
+  freevars[fmt] = fmt : integer
+  freevars[r1] = r1 : integer
+  freevars[r2] = r2 : integer
 Before simplification, case arm is 
-  (COMBT) LENGTH = 32, {op at 0} == 32 & {c3_16 at 0} = c3_16 
-  | (COMBF) LENGTH = 32, {op at 0} == 34 & {c3_16 at 0} = c3_16 
-  | (COMIBT) LENGTH = 32, {op at 0} == 33 & {c3_16 at 0} = c3_16 
-  | (COMIBF) LENGTH = 32, {op at 0} == 35 & {c3_16 at 0} = c3_16
+  (flt_c2_0c) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  2 & 
+  {r_06 at 0} = c & {r_11 at 0} = fmt & {t_27 at 0} = r2 & {fmt_19 at 0} = r1
 Case arm doesn't simplify
-Saw binding instances of c3_16
-Answers and conditions (record arm_103(10)) at length  (record solution_72(4)):
-  answers[c3_16] = {c3_16 at 0}
+Saw binding instances of c, fmt, r1, and r2
+Answers and conditions (record arm_12(10)) at length  (record solution_54(4)):
+  answers[c] = {r_06 at 0}
+  answers[fmt] = {r_11 at 0}
+  answers[r1] = {fmt_19 at 0}
+  answers[r2] = {t_27 at 0}
 (constraints:  )
-crhs for c_cmpb_dw is (CMPBdwt) op == 39 & c3_16 = c3_16 
-| (CMPBdwf) op == 47 & c3_16 = c3_16 
-| (CMPIBdw) op == 59 & c3_16 = c3_16
-applied c_cmpb_dw to get (CMPBdwt) op == 39 & c3_16 = c3_16 
-| (CMPBdwf) op == 47 & c3_16 = c3_16 
-| (CMPIBdw) op == 59 & c3_16 = c3_16
-after pnf we have case arm (CMPBdwt) op == 39 & c3_16 = c3_16 
-  | (CMPBdwf) op == 47 & c3_16 = c3_16 
-  | (CMPIBdw) op == 59 & c3_16 = c3_16
-after binding patlabel names we have case arm (CMPBdwt) op == 39 & 
-  c3_16 = c3_16 
-  | (CMPBdwf) op == 47 & c3_16 = c3_16 
-  | (CMPIBdw) op == 59 & c3_16 = c3_16
-after setting offsets we have case arm (CMPBdwt) op == 39 & c3_16 = c3_16 
-  | (CMPBdwf) op == 47 & c3_16 = c3_16 
-  | (CMPIBdw) op == 59 & c3_16 = c3_16
-after anf+subst we have case arm (CMPBdwt) LENGTH = 32, {op at 0} == 39 & 
-  {c3_16 at 0} = c3_16 
-  | (CMPBdwf) LENGTH = 32, {op at 0} == 47 & {c3_16 at 0} = c3_16 
-  | (CMPIBdw) LENGTH = 32, {op at 0} == 59 & {c3_16 at 0} = c3_16
+applied flt_c2_0e to get (flt_c2_0e) {fmt[6:31] = 0, c[6:31] = 0} => 
+  op == 14 & class_21 ==  2 & f_19 = fmt[5:5] & r_06 = c[0:4] & 
+  r_11 = fmt[0:4] & r1_24 = c[5:5] & f_20 = r1 & t_27 = r2
+after pnf we have case arm (flt_c2_0e) {fmt[6:31] = 0, c[6:31] = 0} => 
+    op == 14 & class_21 ==  2 & f_19 = fmt[5:5] & r_06 = c[0:4] & 
+    r_11 = fmt[0:4] & r1_24 = c[5:5] & f_20 = r1 & t_27 = r2
+after binding patlabel names we have case arm (flt_c2_0e) {fmt[6:31] = 0, 
+  c[6:31] = 0} => 
+    op == 14 & class_21 ==  2 & f_19 = fmt[5:5] & r_06 = c[0:4] & 
+    r_11 = fmt[0:4] & r1_24 = c[5:5] & f_20 = r1 & t_27 = r2
+after setting offsets we have case arm (flt_c2_0e) {fmt[6:31] = 0, c[6:31] = 
+  0} => 
+    op == 14 & class_21 ==  2 & f_19 = fmt[5:5] & r_06 = c[0:4] & 
+    r_11 = fmt[0:4] & r1_24 = c[5:5] & f_20 = r1 & t_27 = r2
+after anf+subst we have case arm (flt_c2_0e) {fmt[6:31] = 0, c[6:31] = 0} => 
+    LENGTH = 32, {op at 0} == 14 & {class_21 at 0} ==  2 & 
+    {f_19 at 0} = fmt[5:5] & {r_06 at 0} = c[0:4] & {r_11 at 0} = fmt[0:4] & 
+    {r1_24 at 0} = c[5:5] & {f_20 at 0} = r1 & {t_27 at 0} = r2
 caught free variables:
-  freevars[c3_16] = c3_16 : integer
+  freevars[c] = c : integer
+  freevars[fmt] = fmt : integer
+  freevars[r1] = r1 : integer
+  freevars[r2] = r2 : integer
 Before simplification, case arm is 
-  (CMPBdwt) LENGTH = 32, {op at 0} == 39 & {c3_16 at 0} = c3_16 
-  | (CMPBdwf) LENGTH = 32, {op at 0} == 47 & {c3_16 at 0} = c3_16 
-  | (CMPIBdw) LENGTH = 32, {op at 0} == 59 & {c3_16 at 0} = c3_16
+  (flt_c2_0e) {fmt[6:31] = 0, c[6:31] = 0} => 
+    LENGTH = 32, {op at 0} == 14 & {class_21 at 0} ==  2 & 
+    {f_19 at 0} = fmt[5:5] & {r_06 at 0} = c[0:4] & {r_11 at 0} = fmt[0:4] & 
+    {r1_24 at 0} = c[5:5] & {f_20 at 0} = r1 & {t_27 at 0} = r2
 Case arm doesn't simplify
-Saw binding instances of c3_16
-Answers and conditions (record arm_104(10)) at length  (record solution_72(4)):
-  answers[c3_16] = {c3_16 at 0}
+Saw binding instances of c, fmt, r1, and r2
+Answers and conditions (record arm_13(10)) at length  (record solution_56(4)):
+  answers[c] = {r_06 at 0} + 0 << 6 + {r1_24 at 0} << 5
+  answers[fmt] = {r_11 at 0} + 0 << 6 + {f_19 at 0} << 5
+  answers[r1] = {f_20 at 0}
+  answers[r2] = {t_27 at 0}
 (constraints:  )
-crhs for c_bbs_w is (ins_bbs_w) op == 49 & d_18 ==  0 & c_16 = c_16 
-| (ins_bbs_w) op == 48 & d_18 ==  0 & c_16 = c_16
-applied c_bbs_w to get (ins_bbs_w) op == 49 & d_18 ==  0 & c_16 = c_16 
-| (ins_bbs_w) op == 48 & d_18 ==  0 & c_16 = c_16
-after pnf we have case arm (ins_bbs_w) op == 49 & d_18 ==  0 & c_16 = c_16 
-  | (ins_bbs_w) op == 48 & d_18 ==  0 & c_16 = c_16
-after binding patlabel names we have case arm (ins_bbs_w) op == 49 & 
-  d_18 ==  0 & c_16 = c_16 
-  | (ins_bbs_w) op == 48 & d_18 ==  0 & c_16 = c_16
-after setting offsets we have case arm (ins_bbs_w) op == 49 & d_18 ==  0 & 
-  c_16 = c_16 
-  | (ins_bbs_w) op == 48 & d_18 ==  0 & c_16 = c_16
-after anf+subst we have case arm (ins_bbs_w) LENGTH = 32, {op at 0} == 49 & 
-  {d_18 at 0} ==  0 & {c_16 at 0} = c_16 
-  | (ins_bbs_w) LENGTH = 32, {op at 0} == 48 & {d_18 at 0} ==  0 & 
-  {c_16 at 0} = c_16
+applied flt_c3_0c to get (flt_c3_0c) op == 12 & class_21 ==  3 & r_06 = r2 & 
+r_11 = t & t_27 = fmt & fmt_19 = r1
+after pnf we have case arm (flt_c3_0c) op == 12 & class_21 ==  3 & r_06 = r2 & 
+  r_11 = t & t_27 = fmt & fmt_19 = r1
+after binding patlabel names we have case arm (flt_c3_0c) op == 12 & 
+  class_21 ==  3 & r_06 = r2 & r_11 = t & t_27 = fmt & fmt_19 = r1
+after setting offsets we have case arm (flt_c3_0c) op == 12 & class_21 ==  3 & 
+  r_06 = r2 & r_11 = t & t_27 = fmt & fmt_19 = r1
+after anf+subst we have case arm (flt_c3_0c) LENGTH = 32, {op at 0} == 12 & 
+  {class_21 at 0} ==  3 & {r_06 at 0} = r2 & {r_11 at 0} = t & 
+  {t_27 at 0} = fmt & {fmt_19 at 0} = r1
 caught free variables:
-  freevars[c_16] = c_16 : integer
+  freevars[fmt] = fmt : integer
+  freevars[r1] = r1 : integer
+  freevars[r2] = r2 : integer
+  freevars[t] = t : integer
 Before simplification, case arm is 
-  (ins_bbs_w) LENGTH = 32, {op at 0} == 49 & {d_18 at 0} ==  0 & 
-  {c_16 at 0} = c_16 
-  | (ins_bbs_w) LENGTH = 32, {op at 0} == 48 & {d_18 at 0} ==  0 & 
-  {c_16 at 0} = c_16
+  (flt_c3_0c) LENGTH = 32, {op at 0} == 12 & {class_21 at 0} ==  3 & 
+  {r_06 at 0} = r2 & {r_11 at 0} = t & {t_27 at 0} = fmt & {fmt_19 at 0} = r1
 Case arm doesn't simplify
-Saw binding instances of c_16
-Answers and conditions (record arm_105(10)) at length  (record solution_274(4)):
-  answers[c_16] = {c_16 at 0}
+Saw binding instances of fmt, r1, r2, and t
+Answers and conditions (record arm_14(10)) at length  (record solution_58(4)):
+  answers[fmt] = {t_27 at 0}
+  answers[r1] = {fmt_19 at 0}
+  answers[r2] = {r_06 at 0}
+  answers[t] = {r_11 at 0}
 (constraints:  )
-crhs for c_bbs_dw is (ins_bbs_dw) op == 49 & d_18 ==  1 & c_16 = c_16 
-| (ins_bbs_dw) op == 48 & d_18 ==  1 & c_16 = c_16
-applied c_bbs_dw to get (ins_bbs_dw) op == 49 & d_18 ==  1 & c_16 = c_16 
-| (ins_bbs_dw) op == 48 & d_18 ==  1 & c_16 = c_16
-after pnf we have case arm (ins_bbs_dw) op == 49 & d_18 ==  1 & c_16 = c_16 
-  | (ins_bbs_dw) op == 48 & d_18 ==  1 & c_16 = c_16
-after binding patlabel names we have case arm (ins_bbs_dw) op == 49 & 
-  d_18 ==  1 & c_16 = c_16 
-  | (ins_bbs_dw) op == 48 & d_18 ==  1 & c_16 = c_16
-after setting offsets we have case arm (ins_bbs_dw) op == 49 & d_18 ==  1 & 
-  c_16 = c_16 
-  | (ins_bbs_dw) op == 48 & d_18 ==  1 & c_16 = c_16
-after anf+subst we have case arm (ins_bbs_dw) LENGTH = 32, {op at 0} == 49 & 
-  {d_18 at 0} ==  1 & {c_16 at 0} = c_16 
-  | (ins_bbs_dw) LENGTH = 32, {op at 0} == 48 & {d_18 at 0} ==  1 & 
-  {c_16 at 0} = c_16
+applied flt_c3_0e to get (flt_c3_0e) {fmt[6:31] = 0, t[6:31] = 0, r2[6:31] = 
+0} => 
+  op == 14 & class_21 ==  3 & t_27 = fmt[0:4] & f_19 = t[5:5] & 
+  t_25 = fmt[5:5] & r_06 = r2[0:4] & r_11 = t[0:4] & r1_24 = r2[5:5] & f_20 = r1
+after pnf we have case arm (flt_c3_0e) {fmt[6:31] = 0, t[6:31] = 0, r2[6:31] = 
+  0} => 
+    op == 14 & class_21 ==  3 & t_27 = fmt[0:4] & f_19 = t[5:5] & 
+    t_25 = fmt[5:5] & r_06 = r2[0:4] & r_11 = t[0:4] & r1_24 = r2[5:5] & 
+    f_20 = r1
+after binding patlabel names we have case arm (flt_c3_0e) {fmt[6:31] = 0, 
+  t[6:31] = 0, r2[6:31] = 0} => 
+    op == 14 & class_21 ==  3 & t_27 = fmt[0:4] & f_19 = t[5:5] & 
+    t_25 = fmt[5:5] & r_06 = r2[0:4] & r_11 = t[0:4] & r1_24 = r2[5:5] & 
+    f_20 = r1
+after setting offsets we have case arm (flt_c3_0e) {fmt[6:31] = 0, t[6:31] = 0, 
+  r2[6:31] = 0} => 
+    op == 14 & class_21 ==  3 & t_27 = fmt[0:4] & f_19 = t[5:5] & 
+    t_25 = fmt[5:5] & r_06 = r2[0:4] & r_11 = t[0:4] & r1_24 = r2[5:5] & 
+    f_20 = r1
+after anf+subst we have case arm (flt_c3_0e) {fmt[6:31] = 0, t[6:31] = 0, 
+  r2[6:31] = 0} => 
+    LENGTH = 32, {op at 0} == 14 & {class_21 at 0} ==  3 & 
+    {t_27 at 0} = fmt[0:4] & {f_19 at 0} = t[5:5] & {t_25 at 0} = fmt[5:5] & 
+    {r_06 at 0} = r2[0:4] & {r_11 at 0} = t[0:4] & {r1_24 at 0} = r2[5:5] & 
+    {f_20 at 0} = r1
 caught free variables:
-  freevars[c_16] = c_16 : integer
+  freevars[fmt] = fmt : integer
+  freevars[r1] = r1 : integer
+  freevars[r2] = r2 : integer
+  freevars[t] = t : integer
 Before simplification, case arm is 
-  (ins_bbs_dw) LENGTH = 32, {op at 0} == 49 & {d_18 at 0} ==  1 & 
-  {c_16 at 0} = c_16 
-  | (ins_bbs_dw) LENGTH = 32, {op at 0} == 48 & {d_18 at 0} ==  1 & 
-  {c_16 at 0} = c_16
+  (flt_c3_0e) {fmt[6:31] = 0, t[6:31] = 0, r2[6:31] = 0} => 
+    LENGTH = 32, {op at 0} == 14 & {class_21 at 0} ==  3 & 
+    {t_27 at 0} = fmt[0:4] & {f_19 at 0} = t[5:5] & {t_25 at 0} = fmt[5:5] & 
+    {r_06 at 0} = r2[0:4] & {r_11 at 0} = t[0:4] & {r1_24 at 0} = r2[5:5] & 
+    {f_20 at 0} = r1
 Case arm doesn't simplify
-Saw binding instances of c_16
-Answers and conditions (record arm_106(10)) at length  (record solution_274(4)):
-  answers[c_16] = {c_16 at 0}
-(constraints:  )
-crhs for c_arith_none is (ins_arith_none) op == 10
-applied c_arith_none to get (ins_arith_none) op == 10
-after pnf we have case arm (ins_arith_none) op == 10
-after binding patlabel names we have case arm (ins_arith_none) op == 10
-after setting offsets we have case arm (ins_arith_none) op == 10
-after anf+subst we have case arm (ins_arith_none) LENGTH = 32, {op at 0} == 10
-Before simplification, case arm is (ins_arith_none) LENGTH = 32, {op at 0} == 10
-Case arm doesn't simplify
-No binding instances
-Answers and conditions (record arm_107(10)) at length  (record solution_282(4)):
-Environment answers is empty
+Saw binding instances of fmt, r1, r2, and t
+Answers and conditions (record arm_15(10)) at length  (record solution_60(4)):
+  answers[fmt] = {t_27 at 0} + 0 << 6 + {t_25 at 0} << 5
+  answers[r1] = {f_20 at 0}
+  answers[r2] = {r_06 at 0} + 0 << 6 + {r1_24 at 0} << 5
+  answers[t] = {r_11 at 0} + 0 << 6 + {f_19 at 0} << 5
 (constraints:  )
 after pnf we have case arm (epsilon) epsilon
 after binding patlabel names we have case arm (epsilon) epsilon
@@ -1013,822 +566,6 @@ after anf+subst we have case arm (epsilon) LENGTH = 0, <MATCH>
 Before simplification, case arm is (epsilon) LENGTH = 0, <MATCH>
 Case arm doesn't simplify
 No binding instances
-Answers and conditions (record arm_108(10)) at length  (record solution_282(4)):
+Answers and conditions (record arm_16(10)) at length  (record solution_62(4)):
 Environment answers is empty
-(constraints:  )
-crhs for c_addrs is (ins_def_d) op ==  3 & ext4_22 ==  0 & addr_19 ==  1 & 
-m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  1 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  2 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  3 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  5 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  7 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  4 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  6 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  8 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 ==  9 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 == 10 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 == 11 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 == 14 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op ==  3 & ext4_22 == 15 & addr_19 ==  1 & m_26 ==  0 
-| (ins_def_d) op == 20 & ext_30 ==  0 & m_28 ==  0 
-| (ins_def_d) op == 28 & ext_30 ==  0 & m_28 ==  0 
-| (LDBl) op == 16 
-| (LDHl) op == 17 
-| (LDWl) op == 18 
-| (LDWlm2i) op == 23 & ext_29 ==  1 
-| (LDWlm) op == 19 
-| (LDO) op == 13 
-| (STBl) op == 24 
-| (STHl) op == 25 
-| (STWl) op == 26 
-| (STWlm2i) op == 31 & ext_29 ==  1 
-| (STWlm) op == 27 
-| (ins_ma) op ==  3 & ext4_22 ==  0 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  1 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  2 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  3 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  5 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  7 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  4 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  6 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_11  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  8 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_27  < 32 
-| (ins_ma) op ==  3 & ext4_22 ==  9 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_27  < 32 
-| (ins_ma) op ==  3 & ext4_22 == 10 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_27  < 32 
-| (ins_ma) op ==  3 & ext4_22 == 11 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_27  < 32 
-| (ins_ma) op ==  3 & ext4_22 == 14 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_27  < 32 
-| (ins_ma) op ==  3 & ext4_22 == 15 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
- 1 <= im5_27  < 32 
-| (ins_ma) op == 20 & ext_30 ==  0 & m_28 ==  1 & a_29 ==  0 
-| (ins_mb) op ==  3 & ext4_22 ==  0 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  1 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  2 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  3 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  5 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  7 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  4 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  6 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  8 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 ==  9 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 == 10 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 == 11 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 == 14 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op ==  3 & ext4_22 == 15 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  1 
-| (ins_mb) op == 20 & ext_30 ==  0 & m_28 ==  1 & a_29 ==  1 
-| (ins_o) op ==  3 & ext4_22 ==  0 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  1 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  2 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  3 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  5 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  7 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  4 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  6 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_11 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  8 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_27 ==  0 
-| (ins_o) op ==  3 & ext4_22 ==  9 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_27 ==  0 
-| (ins_o) op ==  3 & ext4_22 == 10 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_27 ==  0 
-| (ins_o) op ==  3 & ext4_22 == 11 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_27 ==  0 
-| (ins_o) op ==  3 & ext4_22 == 14 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_27 ==  0 
-| (ins_o) op ==  3 & ext4_22 == 15 & addr_19 ==  1 & m_26 ==  1 & a_18 ==  0 & 
-im5_27 ==  0 
-| (ins_o) op == 20 & ext_30 ==  0 & m_28 ==  1 & a_29 ==  0 & im10_18 ==  0 
-| (ins_bm) op ==  3 & ext4_22 == 12 & addr_19 ==  1 & a_18 ==  0 & m_26 ==  1 
-| (ins_bm) op ==  3 & ext4_22 == 13 & addr_19 ==  1 & a_18 ==  0 & m_26 ==  1 
-| (ins_e) op ==  3 & ext4_22 == 12 & addr_19 ==  1 & a_18 ==  1 & m_26 ==  0 
-| (ins_e) op ==  3 & ext4_22 == 13 & addr_19 ==  1 & a_18 ==  1 & m_26 ==  0 
-| (ins_em) op ==  3 & ext4_22 == 12 & addr_19 ==  1 & a_18 ==  1 & m_26 ==  1 
-| (ins_em) op ==  3 & ext4_22 == 13 & addr_19 ==  1 & a_18 ==  1 & m_26 ==  1 
-| (ins_b) op ==  3 & ext4_22 == 12 & addr_19 ==  1 & a_18 ==  0 & m_26 ==  0 
-| (ins_b) op ==  3 & ext4_22 == 13 & addr_19 ==  1 & a_18 ==  0 & m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  1 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  2 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  3 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  5 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  7 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_def_il) op ==  3 & ext4_22 ==  6 & addr_19 ==  0 & u_18 ==  0 & 
-m_26 ==  0 
-| (ins_m) op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  1 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  2 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  3 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  5 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  7 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_m) op ==  3 & ext4_22 ==  6 & addr_19 ==  0 & u_18 ==  0 & m_26 ==  1 
-| (ins_s) op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  1 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  2 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  3 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  5 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  7 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_s) op ==  3 & ext4_22 ==  6 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  0 
-| (ins_sm) op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  1 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  2 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  3 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  5 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  7 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1 
-| (ins_sm) op ==  3 & ext4_22 ==  6 & addr_19 ==  0 & u_18 ==  1 & m_26 ==  1
-crhs for index_addr is (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b
-applied index_addr to get (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-| (index_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b
-after pnf we have case arm (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & 
-  op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b
-after binding patlabel names we have case arm (index_addr) cmplt: u_18 ==  0 & 
-  m_26 ==  0 & op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & x_11 = x & 
-  s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b
-after setting offsets we have case arm (index_addr) cmplt: u_18 ==  0 & 
-  m_26 ==  0 & op ==  3 & ext4_22 ==  0 & addr_19 ==  0 & x_11 = x & 
-  s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  0 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  1 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  2 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  3 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  5 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b 
-  | (index_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  7 & 
-  addr_19 ==  0 & x_11 = x & s2_16 = ss & b_06 = b
-after anf+subst we have case arm (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b
-caught free variables:
-  freevars[b] = b : integer
-  freevars[ss] = ss : integer
-  freevars[x] = x : integer
-Before simplification, case arm is 
-  (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  0 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  1 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  2 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  3 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  5 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b 
-  | (index_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  7 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {s2_16 at 0} = ss & {b_06 at 0} = b
-Case arm doesn't simplify
-Saw binding instances of b, cmplt, ss, and x
-Answers and conditions (record arm_109(10)) at length  (record solution_286(4)):
-  answers[b] = {b_06 at 0}
-  answers[cmplt] = FORCE(<program counter>)
-  answers[ss] = {s2_16 at 0}
-  answers[x] = {x_11 at 0}
-(constraints:  )
-crhs for indexabs_addr is (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (?noname?) {c_addr IS c_addrs} => 
-  (?c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b
-applied indexabs_addr to get (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-| (indexabs_addr) {cmplt : c_addr IS c_addrs} => 
-  (?cmplt : c_addr:): u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b
-after pnf we have case arm (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  0 & 
-  op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b
-after binding patlabel names we have case arm (indexabs_addr) cmplt: 
-  u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & 
-  x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b
-after setting offsets we have case arm (indexabs_addr) cmplt: u_18 ==  0 & 
-  m_26 ==  0 & op ==  3 & ext4_22 ==  4 & addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  4 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  0 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  0 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b 
-  | (indexabs_addr) cmplt: u_18 ==  1 & m_26 ==  1 & op ==  3 & ext4_22 ==  6 & 
-  addr_19 ==  0 & x_11 = x & b_06 = b
-after anf+subst we have case arm (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b
-caught free variables:
-  freevars[b] = b : integer
-  freevars[x] = x : integer
-Before simplification, case arm is 
-  (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  4 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  0 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  0 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b 
-  | (indexabs_addr) [cmplt -> 0] 
-  LENGTH = 32, {u_18 at 0} ==  1 & {m_26 at 0} ==  1 & {op at 0} ==  3 & 
-  {ext4_22 at 0} ==  6 & {addr_19 at 0} ==  0 & {x_11 at 0} = x & 
-  {b_06 at 0} = b
-Case arm doesn't simplify
-Saw binding instances of b, cmplt, and x
-Answers and conditions (record arm_110(10)) at length  (record solution_334(4)):
-  answers[b] = {b_06 at 0}
-  answers[cmplt] = FORCE(<program counter>)
-  answers[x] = {x_11 at 0}
 (constraints:  )

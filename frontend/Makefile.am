@@ -130,7 +130,7 @@ machine/sparc/disassembler.cpp: machine/sparc/disassembler.m machine/sparc/core.
 %enc.c %enc.h:
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -debug-match dbm -matcher $(notdir $<) -decoder dec -encoder enc -verbose $(notdir $(filter-out $<,$^))
 
-machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/disassembler.2.m machine/hppa/hppa.2.spec machine/hppa/hppadis.spec
+machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
 
 
 # Apparently the toolkit tries to build the encoder first with the above command,
@@ -141,7 +141,7 @@ machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/disassembler.2.m machine/hpp
 %dec %dbm:
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -debug-match dbm -matcher $(notdir $<) -decoder dec -verbose $(notdir $(filter-out $<,$^))
 
-machine/hppa/dec machine/hppa/dbm: machine/hppa/disassembler.2.m machine/hppa/hppa.2.spec machine/hppa/hppadis.spec
+machine/hppa/dec machine/hppa/dbm: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
 
 
 %-names.c %-names.h:
