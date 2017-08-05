@@ -129,17 +129,18 @@ machine/sparc/disassembler.cpp: machine/sparc/disassembler.m machine/sparc/core.
 # Options -debug-match, -matcher, and -decoder are for the decoder, not the encoder.
 %enc.c %enc.h:
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -debug-match dbm -matcher $(notdir $<) -decoder dec -encoder enc -verbose $(notdir $(filter-out $<,$^))
+	cd $(dir $*) && $(UNGENERATE) dec
 
 machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
 
 
 # Apparently the toolkit tries to build the encoder first with the above command,
 # and it may not actually produce a decoder if generating the encoder fails.
-# Or maybe it doesn't produce both an encoder and decoder in the same run?
 # Try again, this time only try to build the decoder (and some debugging output).
 # Also note:  Argument to the -decoder option really should have a .c suffix.
 %dec %dbm:
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -debug-match dbm -matcher $(notdir $<) -decoder dec -verbose $(notdir $(filter-out $<,$^))
+	cd $(dir $*) && $(UNGENERATE) dec
 
 machine/hppa/dec machine/hppa/dbm: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
 

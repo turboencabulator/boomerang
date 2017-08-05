@@ -1,5 +1,5 @@
 
-#line 1 "generated-code"
+#line 3 "dec"
 #include <assert.h>
 #define sign_extend(N,SIZE) (((int)((N) << (sizeof(unsigned)*8-(SIZE)))) >> (sizeof(unsigned)*8-(SIZE)))
 
@@ -72,7 +72,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 
 
 
-#line 101 "generated-code"
+#line 76 "dec"
 
 { 
   DWord MATCH_p = hostPC;
@@ -90,7 +90,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
   };
   static char *MATCH_name_class_21_4[] = { 0, 0, "flt_c2_0c", "flt_c3_0c", };
   
-  #line 201 "generated-code"
+#line 94 "dec"
   { 
     unsigned MATCH_w_32_0 = (getDword((MATCH_p+0)));
     if (15 <= (MATCH_w_32_0 & 0x3f) /* op at 0 */ && (MATCH_w_32_0 & 0x3f) /* op at 0 */ < 64) { 
@@ -101,7 +101,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                       (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
         
         
-        #line 301 "generated-code" 
+#line 105 "dec"
       } 
     } 
     else 
@@ -116,7 +116,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
               
               
-              #line 401 "generated-code" 
+#line 120 "dec"
             } 
           }
           break;
@@ -133,7 +133,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                     (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
                       
                       
-                      #line 501 "generated-code" 
+#line 137 "dec"
                     } 
                   } 
                   else { 
@@ -153,7 +153,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                               }
                       
                       
-                      #line 601 "generated-code" 
+#line 157 "dec"
                     } 
                   }  
                 }
@@ -184,7 +184,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   }
                           
                           
-                          #line 701 "generated-code" 
+#line 188 "dec"
                         } 
                       }
                       break;
@@ -197,7 +197,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                         (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
                           
                           
-                          #line 801 "generated-code" 
+#line 201 "dec"
                         } 
                       }
                       break;
@@ -226,7 +226,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             }
                     
                     
-                    #line 901 "generated-code" 
+#line 230 "dec"
                   } 
                 }
                 break;
@@ -249,7 +249,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             }
                     
                     
-                    #line 1001 "generated-code" 
+#line 253 "dec"
                   } 
                 }
                 break;
@@ -269,7 +269,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                                   (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
                     
                     
-                    #line 1101 "generated-code" 
+#line 273 "dec"
                   } 
                 }
                 break;
@@ -298,7 +298,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                             }
                     
                     
-                    #line 1201 "generated-code" 
+#line 302 "dec"
                   } 
                 }
                 break;
@@ -329,7 +329,7 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
                     
                     
                     
-                    #line 1301 "generated-code" 
+#line 333 "dec"
                   } 
                 }
                 break;
@@ -358,5 +358,5 @@ int NJMCDecoder::decodeAssemblyInstruction (ADDRESS pc, int delta)
 */
 
 
-#line 1401 "generated-code"
+#line 362 "dec"
 
