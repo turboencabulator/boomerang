@@ -11,21 +11,6 @@
  (C) 2000-2001 The University of Queensland, BT group
  *============================================================================*/
 
-/*
-  void NJMCDecoder :: Cmplt_1(ADDRESS hostpc1)
-  {
-  }
-
-  void NJMCDecoder :: Cmplt_2(ADDRESS hostpc2)
-  {
-  }
-
-  void NJMCDecoder :: Cmplt_3(ADDRESS hostpc3)
-  {
-  }
- */
-
-
 #include "global.h"
 #include "decoder.h"
 #include "BinaryFile.h"
@@ -34,6 +19,9 @@
 
 // globals
 extern char _assembly[];
+char aprefix[256];
+char adata[256];
+char* apre;
 char* astr;
 char *cmpltsep = ".";       // ??
 
@@ -41,6 +29,21 @@ char *cmpltsep = ".";       // ??
 const char* GetSym(unsigned pc);
 const char* GetReloc(unsigned pc);
 
+
+#define ANAME       apre += sprintf( apre, "%s", name );
+//#define APREF(x)    apre += sprintf( apre, "%s", x );
+//#define AARGs(x)    astr += sprintf( astr, "%s", x );
+//#define AARGd(x)    astr += sprintf( astr, "%d", x );
+//#define AARGf(f, x) astr += sprintf( astr, " ## f ## ", x );
+//#define Acom        astr += sprintf( astr, "," );
+#define CONS(x)     strcat(constrName, x);
+#define IGNORE(x)   not_used(*(int*)&x);
+
+// The below is used to quelch annoying "variable not used" warnings
+void not_used(int unwanted)
+{
+    unwanted = 0;
+}
 
 DWord getDword (unsigned lc)
 /* get4Bytes - returns next 4-Byte from image pointed to by lc.
@@ -77,23 +80,11 @@ char* signedHex(int disp)
     return shexBuffer;
 }
 
-void NJMCDecoder::dis_c_c(ADDRESS hostpc)
+// This function returns 0 or 8; the 8 is to access the last half of arrays
+// of conditions (e.g. CMPIBF, or the "f" bit of ariths)
+int dis_c_c_n(ADDRESS hostpc)
 {
-  static char *logw[] =  {"",",=",",<",",OD"
-                            ,",TR",",!=",",>=",",EV"};
-  static char *logdw[] =  {"",",*=",",*<] ",",*OD"
-                            ,",*TR",",*!=",",*>=",",*EV"};
-  static char *cmpsubw[] = {"",",=",",<",",<=",",<<",",<<=",
-                               ",SV",",OD",
-                               ",TR",",<>",",>=",",>",",>>=",
-                               ",>>",",NSV",",EV"};
-  static char *cmpsubdw[] = {"",",*=",",*<",",*<=",",*<<",",*<<=",
-                                ",*SV",",*OD",
-                                ",*TR",",*<>",",*>=",",*>",",*>>=",
-                                ",*>>",",*NSV",",*EV"};
-/*  static char *bitw[]  = {",<", ",>="};*/
-/*  static char *bitdw[] = {",*<", ",*>="};*/
-  
+    int result = 0;
 
 
 #line 101 "generated-code"
