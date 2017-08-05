@@ -1,4 +1,4 @@
-#line 690 "../specs/mips.nw"
+#line 690 "mips.nw"
 assembly opcode
   jr                is j
   jalr              is jal

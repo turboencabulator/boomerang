@@ -154,6 +154,27 @@ machine/sparc/sparc-names.c machine/sparc/sparc-names.h: machine/sparc/core.spec
 machine/hppa/hppa-names.c machine/hppa/hppa-names.h: machine/hppa/hppa.spec machine/hppa/hppadis.spec
 
 
+# SLED files are originally from the toolkit sources, generated using noweb.
+# Files that have since been modified have their rules commented out.
+machine/mips/core.spec machine/mips/synth.spec machine/mips/regs.spec machine/mips/trunc.spec machine/mips/names.spec machine/mips/check.spec: machine/mips/mips.nw
+	$(AM_V_GEN)cd $(dir $@) && $(NOTANGLE) -L -Rmips-$(notdir $@) $(notdir $<) > $(notdir $@)
+#machine/pentium/core.spec machine/pentium/synth.spec: machine/pentium/pentium.nw
+#	$(AM_V_GEN)cd $(dir $@) && $(NOTANGLE) -L -Rpentium-$(notdir $@) $(notdir $<) > $(notdir $@)
+#machine/ppc/core.spec machine/ppc/synth.spec: machine/ppc/ppc.nw
+#	$(AM_V_GEN)cd $(dir $@) && $(NOTANGLE) -L -Rppc-$(notdir $@) $(notdir $<) > $(notdir $@)
+#machine/sparc/core.spec machine/sparc/synth.spec machine/sparc/regs.spec: machine/sparc/sparc.nw
+#	$(AM_V_GEN)cd $(dir $@) && $(NOTANGLE) -L -Rsparc-$(notdir $@) $(notdir $<) > $(notdir $@)
+
+# Several SLED files squashed into one:
+# (but it has been modified since, so comment this rule out for now)
+#machine/mips/mips.spec: machine/mips/core.spec machine/mips/synth.spec machine/mips/regs.spec machine/mips/trunc.spec
+#	$(AM_V_GEN)cat $^ > $@
+
+# One more file generated from the noweb sources...
+machine/mips/mips-checker.s: machine/mips/mips.nw
+	$(AM_V_GEN)cd $(dir $@) && $(NOTANGLE) -R$(notdir $@) $(notdir $<) > $(notdir $@)
+
+
 # These files are generated.
 # Does anyone know what program was used to generate them?
 #machine/hppa/hppa.pat.m machine/hppa/hppa.pat.h: machine/hppa/hppa.pat

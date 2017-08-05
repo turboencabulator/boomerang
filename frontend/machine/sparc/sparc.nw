@@ -1,0 +1,788 @@
+\section{SPARC instruction-set specification}
+This section specifies the SPARC instruction set.
+It uses two specification techniques not needed in the
+simpler MIPS specification.
+Operands of some SPARC instructions contain more than one field; we
+use {\em typed constructors} to specify them.
+We also use the extended pattern declaration
+\begin{quote}
+{\em p} [[is any of []]  $p_0$ $p_1$ $\ldots$ $p_n$ [[], which is]] {\em generating expression},
+\end{quote}
+which not only defines patterns $p_0$ through $p_n$, but also defines
+$p$ to be their disjunction.
+
+We can factor 
+the SPARC instruction in much the same
+way as we did the MIPS;
+instructions with identical assembly syntax are grouped using
+disjunction and defined in one constructor declaration.
+
+The SPARC assembly language contains overloaded instructions, the
+encodings of which depend on the number and types of the operands.
+Overloading is easy to handle in a textual assembler because
+a parser can use information about operands to resolve overloaded names.
+The toolkit, however, generates encoding procedures written in~C,
+which does not permit users to overload procedures.
+For that reason, the toolkit does not permit overloading of
+constructor names; the specification writer must choose a distinct name
+for each variant of an overloaded instruction.
+It's also possible to use constructor types to play games with
+overloaded instructions; we show an example in
+Section~\ref{overloading-trick}. 
+
+\subsection{Fields}
+The SPARC is a RISC architecture and thus uses
+a single token class for all of its fields.
+<<sparc-core.spec>>=
+fields of instruction (32) <<field specifications>>
+<<[[fieldinfo]] specifications>>
+<<pattern and constructor specifications>>
+@
+Information about instruction formats and fields is taken from
+Chapter~5 of the SPARC architecture manual.
+<<field specifications>>=
+inst 0:31 op 30:31 disp30 0:29 rd 25:29 op2 22:24 imm22 0:21 a 29:29 cond 25:28
+disp22 0:21 op3 19:24 rs1 14:18 i 13:13 asi 5:12 rs2 0:4 simm13 0:12 opf 5:13
+@
+\subsection{Opcodes}
+The following opcode tables are derived from the tables in Appendix~F
+of the SPARC manual~\cite{sparc:architecture}.
+
+Where an entry in a table refers to another table, we define a pattern
+with the name of that table (e.g., [[TABLE_F2]]).
+That pattern is not useful by itself, but is used to define more
+opcodes in a pattern-binding statement that resembles the eponymous
+table.
+These strange ``opcodes'' actually play the same role as the
+``[[special]]'' and ``[[bcond]]'' opcodes on the MIPS architecture,
+but the SPARC people have a different way of naming such things.
+
+The SPARC opcode tables are organized hierarchically; the first table
+in Appendix~F is at the top of the hierarchy, and it has four entries
+corresponding to the four possible values of the (two-bit) [[op]]
+field.
+Only one of these entries ([[CALL]]) is an opcode; the others refer
+the reader to subsequent tables.
+<<pattern and constructor specifications>>=
+patterns
+ [ TABLE_F2 CALL TABLE_F3 TABLE_F4 ] is op  = {0 to 3}
+@
+Table F-2 is short, but it presents an oddity: an opcode with two names.
+[[SETHI]] means [[NOP]] when [[rd]] and [[imm22]] are zero.
+On the MIPS, no-ops were treated as synthetic instructions, but here
+we define  [[NOP]] as a separate opcode, reflecting
+the presentation in the manual.
+<<pattern and constructor specifications>>=
+patterns
+ [ UNIMP Bicc SETHI FBfcc CBccc ] is TABLE_F2 & op2 = [0 2 4 6 7]
+ NOP                              is SETHI & rd = 0 & imm22 = 0
+@
+Table~F-3 includes most of the arithmetic and logical opcodes.
+It must be specified slightly differently from the MIPS tables because
+the values of the [[op3]] field are
+``counted down'' instead of ``counted across.''
+That is, the codes corresponding to \hbox{[[op = 0, 1, 2, ...]]}
+are [[ADD, AND, OR, ...]], not [[ADD, ADDcc, TADDcc, ...]].
+To get the proper numbering, we use the generating expression
+\hbox{[[{0 to 63 columns 4}]]}, which generates the integers from
+0~to~63 in the order $(0, 16, 32, 48, 1, \ldots, 63)$.
+<<pattern and constructor specifications>>=
+patterns
+ [ ADD  ADDcc  TADDcc   WRxxx
+   AND  ANDcc  TSUBcc   WRPSR
+   OR   ORcc   TADDccTV WRWIM
+   XOR  XORcc  TSUBccTV WRTBR
+   SUB  SUBcc  MULScc   FPop1
+   ANDN ANDNcc SLL      FPop2
+   ORN  ORNcc  SRL      CPop1
+   XNOR XNORcc SRA      CPop2
+   ADDX ADDXcc RDxxx    JMPL
+   _    _      RDPSR    RETT
+   UMUL UMULcc RDWIM    Ticc
+   SMUL SMULcc RDTBR    FLUSH
+   SUBX SUBXcc _        SAVE
+   _    _      _        RESTORE
+   UDIV UDIVcc _        _
+   SDIV SDIVcc _        _       ] is TABLE_F3 & op3 = {0 to 63 columns 4}
+@ We have used [[WRxxx]] and [[RDxxx]] to stand for the groups of
+opcodes that appear in the corresponding positions in Table~F-3.
+These opcodes define variants of  the
+[[wr]] and [[rd]] instructions, which are overloaded.
+The overloading is resolved by looking at the values of operands, as
+shown by the footnotes to Table~F-3.
+It probably would have been simpler to specify these purely as
+synthetic instructions, but we've chosen to be slaves to the SPARC
+manual. 
+<<pattern and constructor specifications>>=
+patterns
+  WRASR          is WRxxx & rd != 0   # should be rdi != 0
+  WRY            is WRxxx & rd = 0
+  RDASR          is RDxxx & rs1 != 0  # should be rs1i != 0
+  RDY            is RDxxx & rs1 = 0
+  STBAR          is RDxxx & rs1 = 15 & rd = 0
+@ These patterns show a use of the inequality operator to specify 
+constraints on a field value.
+The inequality constraint is a crock that just happens to work in
+these examples.
+The toolkit can't represent an inequality constraint directly, so
+[[f != n]] is syntactic sugar for:
+\begin{quote}
+$\mathtt 0 \le f < n$ [[|]] ${\mathtt n < f} \le {\mathtt f}_{max}$,
+\end{quote}
+where ${\mathtt f}_{max}$ is the largest value the field can hold.
+Since a disjunction almost never makes sense as an opcode, this is
+asking for trouble.  Luckily, in these cases [[n]] is either 0 or
+${\mathtt f}_{max}$, so at most one of the disjuncts ever matches
+anything, and what is left is equivalent to a real inequality
+constraint.
+We hope one day to remove this ugly wart from the toolkit.
+@
+Table F-4 includes the load and store opcodes.
+<<pattern and constructor specifications>>=
+patterns
+ [ LD     LDA     LDF   LDC
+   LDUB   LDUBA   LDFSR LDCSR
+   LDUH   LDUHA   _ _
+   LDD    LDDA    LDDF  LDDC
+   ST     STA     STF   STC
+   STB    STBA    STFSR STCSR
+   STH    STHA    STDFQ STDCQ
+   STD    STDA    STDF  STDC
+   _      _       _     _
+   LDSB   LDSBA   _     _
+   LDSH   LDSHA   _     _
+   _      _       _     _
+   _      _       _     _
+   LDSTUB LDSTUBA _     _
+   _      _       _     _
+   SWAP.  SWAPA   _     _  ]  is TABLE_F4 & op3 = {0 to 63 columns 4}
+@
+Table~F-5 includes the floating-point arithmetic and conversion opcodes.
+Following Table~F-5, we list all the opcodes with their corresponding
+names, instead of using a complete table.
+We've also chosen to divide the opcodes into two groups:
+two-operand and three-operand instructions.
+
+We further divide the opcodes based on their operand types.
+This division makes it easy to use the names [[float2]], [[float3s]], etc.
+to refer to the groups, without having to re-enumerate the members of
+each group; these names are used later in the specification to specify
+complete instructions. 
+<<pattern and constructor specifications>>=
+patterns
+  float2 is any of [ FMOVs FNEGs FABSs FSQRTs FSQRTd FSQRTq
+                     FiTOs FdTOs FqTOs FiTOd  FsTOd  FqTOd
+                     FiTOq FsTOq FdTOq FsTOi  FdTOi  FqTOi ],
+  which is FPop1 & opf =  
+                   [ 0x1   0x5   0x9   0x29   0x2a   0x2b
+                     0xc4  0xc6  0xc7  0xc8   0xc9   0xcb
+                     0xcc  0xcd  0xce  0xd1   0xd2   0xd3 ]
+  float2s is FMOVs | FNEGs | FABSs | FSQRTs
+  FTOs    is FiTOs | FsTOi
+  FTOd    is FiTOd | FsTOd 
+  FTOq    is FiTOq | FsTOq 
+  FdTO    is FdTOi | FdTOs 
+  FqTO    is FqTOs | FqTOi
+
+  float3 is any of [ FADDs FADDd FADDq FSUBs FSUBd FSUBq  FMULs
+                     FMULd FMULq FDIVs FDIVd FDIVq FsMULd FdMULq ],
+    which is FPop1 & opf =
+                   [ 0x41  0x42  0x43  0x45  0x46  0x47   0x49
+                     0x4a  0x4b  0x4d  0x4e  0x4f  0x69   0x6e ]
+  float3s is  FADDs | FSUBs | FMULs | FDIVs
+  float3d is  FADDd | FSUBd | FMULd | FDIVd
+  float3q is  FADDq | FSUBq | FMULq | FDIVq
+@ 
+\iffalse
+These declarations illustrate the use of a
+syntactic short hand for specifying groups of related opcodes.
+\begin{quote}
+{\em p} [[is any of []] {\em p0 p1 ... pn} [[], which is]] {\em generating expression}
+\end{quote}
+is a short hand for the declarations
+\begin{quote}
+[[[]]{\em p0 p1 ... pn} [[]]] is {\em generating expression}\\
+{\em p} [[is]] {\em p0 $|$ p1 $|$ ... pn}
+\end{quote}
+We provide this syntactic shorthand because it eliminates
+duplication of patterns that are both defined 
+and used in a single grouping.
+\fi
+This syntactic shorthand, which defines patterns and disjoins them at
+one blow, reduces the possibility
+of errors due to miscopying.
+We didn't need this idiom to describe the MIPS because it uses just a
+few tables, and the grouping of MIPS instructions doesn't correspond
+to the organization of the tables.
+We'll see it again, however, in specifying the rest of the SPARC, and
+also on the Pentium and the Alpha.
+@
+Table F-6 includes the floating-point comparison opcodes.
+Again, we write down the codes rather than use a table.
+<<pattern and constructor specifications>>=
+patterns
+ fcompares is any of      [ FCMPs FCMPEs ],
+   which is FPop2 & opf = [ 0x51  0x55 ]
+ fcompared is any of      [ FCMPd FCMPEd ],
+   which is FPop2 & opf = [ 0x52  0x56 ]
+ fcompareq is any of      [ FCMPq FCMPEq ],
+   which is FPop2 & opf = [ 0x53  0x57 ]
+@
+Table~F-7 includes the branch and trap opcodes.
+It is strange for a different reason; it is actually four tables in
+one.
+The rows of each table vary with the values of the [[cond]] field, but
+the columns are described by four different patterns.
+We can't create such a single table with the toolkit, nor would we
+want to---we just split it into the four underlying tables, which
+correspond to three kinds of conditional branches and one of
+conditional traps.
+<<pattern and constructor specifications>>=
+patterns
+  ibranch is any of [ BN BE  BLE BL  BLEU BCS BNEG BVS
+                      BA BNE BG  BGE BGU  BCC BPOS BVC ],
+    which is Bicc & cond = {0 to 15}
+
+  fbranch is any of [ FBN FBNE FBLG FBUL FBL   FBUG FBG   FBU
+                      FBA FBE  FBUE FBGE FBUGE FBLE FBULE FBO ],
+    which is FBfcc & cond = {0 to 15}
+
+  cbranch is any of [ CBN CB123 CB12 CB13 CB1   CB23 CB2   CB3
+                      CBA CB0   CB03 CB02 CB023 CB01 CB013 CB012 ],
+    which is CBccc & cond = {0 to 15}
+
+  trap is any of    [ TN TE  TLE TL  TLEU TCS TNEG TVS
+                      TA TNE TG  TGE TGU  TCC TPOS TVC ],
+    which is Ticc & cond = {0 to 15}
+
+  branch is ibranch | fbranch | cbranch
+@ We group the three kinds of branches into the pattern [[branch]].
+
+People can never agree on the names of conditional branch
+instructions.
+We include a few of the most common synonyms, which are used in the
+definition of
+synthetic instructions.
+<<sparc-synth.spec>>=
+patterns
+  B    is BA
+  BGEU is BCC
+  BLU  is BCS
+  BNZ  is BNE
+  branch.synonyms is B | BGEU | BLU | BNZ
+@
+
+\subsection{Structured operands and typed constructors}
+Unlike the MIPS, the SPARC has instructions whose
+operands are not simple integers or fields.
+For example, 
+the integer-arithmetic instructions take an operand that may be a register 
+or an immediate value, 
+and
+the load and store instructions take an operand that computes an address.
+The formats for these operands appear on page~84 in Appendix A
+of the SPARC manual.
+
+We specify such operands by creating a constructor type for them, giving
+a constructor for each format.
+We use the ``operand syntax'' name in the SPARC manual as the name of
+the type; for example, 
+the constructors for a ``register or immediate'' operand are:
+<<pattern and constructor specifications>>=
+constructors
+  imode simm13! : reg_or_imm  is  i = 1 & simm13
+  rmode rs2     : reg_or_imm  is  i = 0 & rs2
+@ The type [[reg_or_imm]] is {\em defined} by these declarations.
+Used elsewhere, an operand of type [[reg_or_imm]] always denotes a
+pattern created by the application of one of these two constructors.
+Unlike the encoding procedures for ordinary untyped constructors,
+the encoding procedures generated for these typed constructors
+have no side effects;
+they simply return values that can be passed to other constructors
+requiring an operand of type [[reg_or_imm]].
+Such constructors, notably the arithmetic constructors, appear
+below.
+@
+Specifying addresses is a bit problematic because it's not clear what
+convention to follow.
+The underlying general mechanism is that a register is added to a
+value of type [[reg_or_imm]], but there are many useful
+abbreviations:%
+\footnote{As far as {\tt lcc} goes, we could revert to the original mechanism}
+<<pattern and constructor specifications>>=
+constructors
+  generalA  rs1 + reg_or_imm : address_
+  dispA     rs1 + simm13!    : address_  is  generalA(rs1, imode(simm13!))
+  absoluteA simm13!          : address_  is  generalA(0,   imode(simm13!))
+  indexA    rs1 + rs2        : address_  is  generalA(rs1, rmode(rs2))
+  indirectA rs1              : address_  is  generalA(rs1, rmode(0))
+@ Unfortunately We can't call the type [[address]] 
+because [[address]] is reserved for the toolkit 
+to describe the treatment of addresses in decoding specifications.
+Another ugly wart.
+@
+\subsection{Load and store, read and write}
+
+We group the load and store opcodes by their assembly syntax.
+These groupings reflect the information provided on pages~90 and 92
+for the load instructions and pages~95 and 97 for the stores.
+Each group uses a different set of names for their register operands.
+Those names are defined below.
+<<pattern and constructor specifications>>=
+patterns 
+  loadg  is LDSB  | LDSH  | LDUB  | LDUH  | LD  | LDSTUB  | SWAP.
+  loada  is LDSBA | LDSHA | LDUBA | LDUHA | LDA | LDSTUBA | SWAPA
+  storeg is STB   | STH  | ST 
+  storea is STBA  | STHA | STA
+@
+The constructors for the load and store instructions illustrate
+the use of the typed constructor [[address_]] as an operand.
+Addresses are bracketed, as in SPARC assembly language.
+Because the constructors' output patterns are the
+conjunctions of the opcodes and operands, they can be omitted.
+
+Loads and stores of double words require even-odd register
+pairs for the destination and source registers; their equations
+specify that constraint. 
+For performance reasons, these equations don't appear in an ordinary
+spec, but we want them when we validate the spec, so I have arranged
+for the command \mbox{[[sed 's/# {/{/']]} to uncomment them
+<<pattern and constructor specifications>>=
+constructors
+  loadg  [address_], rd
+  LDD    [address_], rd    # { rd = 2 * _ }
+  LDF    [address_], fd
+  LDDF   [address_], fd    # { fd = 2 * _ }
+  LDC    [address_], cd
+  LDDC   [address_], cd    # { cd = 2 * _ }
+
+  storeg rd, [address_]
+  STD    rd, [address_]    # { rd = 2 * _ }
+  STF    fd, [address_]
+  STDF   fd, [address_]    # { fd = 2 * _ }
+  STC    cd, [address_]
+  STDC   cd, [address_]    # { cd = 2 * _ }
+@ We use the synonyms [[fd]] and [[cd]] for the destination register
+[[rd]] when the affected register is a floating-point or 
+coprocessor register; same trick applies to [[fs1]] and [[fs2]].
+This trick enables us to use different names for different registers,
+which is helpful in generating a disassembler from these specifications.
+<<field specifications>>=
+fd 25:29 cd 25:29 fs1 14:18 fs2 0:4
+@ 
+The [[loada]] and [[storea]] only accept address operands constructed
+from registers.  
+As in the SPARC manual, we introduce the constructor type [[regaddr]]
+to describe this
+operand.\footnote{In fact, [[address_]] is a subtype of [[regaddr]].
+The constructors [[indexA]] and [[indirectA]] are equivalent to
+[[indexR]] and [[indirectR]]. We could specify these addresses by
+adding a constructor to create an [[address_]] from a [[regaddr]],
+but that pollutes the name space. 
+It would be better to have subtypes.}
+<<pattern and constructor specifications>>=
+constructors
+  indexR    rs1 + rs2     : regaddr  is  i = 0 & rs1 & rs2
+  indirectR rs1           : regaddr  is  i = 0 & rs2 = 0 & rs1
+
+  loada  [regaddr]asi, rd
+  LDDA   [regaddr]asi, rd # { rd = 2 * _ }
+  storea rd, [regaddr]asi
+  STDA   rd, [regaddr]asi # { rd = 2 * _ }
+@
+Here are the names associated with the different registers.
+They have to be quoted because the toolkit doesn't think the [[%]] character 
+can be part of an identifier.
+<<properties of integer-register fields>>=
+names [ "%g0"  "%g1"  "%g2"  "%g3"  "%g4"  "%g5"  "%g6"  "%g7"
+        "%o0"  "%o1"  "%o2"  "%o3"  "%o4"  "%o5"  "%sp"  "%o7"
+        "%l0"  "%l1"  "%l2"  "%l3"  "%l4"  "%l5"  "%l6"  "%l7"
+        "%i0"  "%i1"  "%i2"  "%i3"  "%i4"  "%i5"  "%fp"  "%i7" ]
+<<properties of floating-point registers>>=
+names [ "%f0"  "%f1"  "%f2"  "%f3"  "%f4"  "%f5"  "%f6"  "%f7"
+        "%f8"  "%f9"  "%f10" "%f11" "%f12" "%f13" "%f14" "%f15"
+        "%f16" "%f17" "%f18" "%f19" "%f20" "%f21" "%f22" "%f23"
+        "%f24" "%f25" "%f26" "%f27" "%f28" "%f29" "%f30" "%f31" ]
+<<properties of coprocessor destination register>>=
+names [ "%c0"  "%c1"  "%c2"  "%c3"  "%c4"  "%c5"  "%c6"  "%c7"
+        "%c8"  "%c9"  "%c10" "%c11" "%c12" "%c13" "%c14" "%c15"
+        "%c16" "%c17" "%c18" "%c19" "%c20" "%c21" "%c22" "%c23"
+        "%c24" "%c25" "%c26" "%c27" "%c28" "%c29" "%c30" "%c31" ]
+<<[[fieldinfo]] specifications>>=
+fieldinfo
+[ rd rs1 rs2 ] is [ <<properties of integer-register fields>> ]
+[ fd fs1 fs2 ] is [ <<properties of floating-point registers>> ]
+            cd is [ <<properties of coprocessor destination register>> ]
+@
+The SPARC also has several specialized load and store instructions.
+The registers loaded and stored are implicit in the opcodes,
+but we put them into the specifications as ``assembly-language
+syntax.''
+This technique helps us generate a disassembler, but more
+importantly, it makes the specification easier to read and understand.
+<<pattern and constructor specifications>>=
+constructors
+  LDFSR  [address_], "%fsr"
+  LDCSR  [address_], "%csr"
+  STFSR  "%fsr", [address_]
+  STCSR  "%csr", [address_]
+  STDFQ  "%fq",  [address_]
+  STDCQ  "%cq",  [address_]
+@
+A similar group of instructions modify a different set of registers.
+Perhaps because they move information between special-purpose
+registers and general-purpose registers, instead of special-purpose
+registers and memory, they are called ``read'' and ``write''
+instructions instead of ``load'' and ``store'' instructions.
+<<pattern and constructor specifications>>=
+constructors
+  RDY    "%y",   rd
+  RDPSR  "%psr", rd
+  RDWIM  "%wim", rd
+  RDTBR  "%tbr", rd
+  WRY    rs1, reg_or_imm, "%y"
+  WRPSR  rs1, reg_or_imm, "%psr"
+  WRWIM  rs1, reg_or_imm, "%wim"
+  WRTBR  rs1, reg_or_imm, "%tbr"
+@
+Finally, the instructions that read and write the ancillary state
+register ([[asr]]) have their own special syntax.
+<<pattern and constructor specifications>>=
+constructors
+  RDASR   "%asr"rs1i, rd
+  WRASR   rs1, reg_or_imm, "%asr"rdi
+  STBAR
+@ The registers [[rs1i]] and [[rdi]] are versions of [[rs1]] and [[rd]] that print
+as integers.
+<<field specifications>>=
+rs1i 14:18 rdi 25:29
+@
+\subsection{Shift, logic, and arithmetic}
+
+The logical, shift, and arithmetic
+instructions share identical assembly language syntax,
+so we can get away with  only a single constructor declaration.
+Including the shift instructions with the logical and arithmetic
+instructions is a cheat,
+but it's a cheat that works because the immediate field, if used, must be zero
+in the high-order 8 bits.
+<<pattern and constructor specifications>>=
+patterns 
+  logical is AND | ANDcc | ANDN | ANDNcc | OR | ORcc | ORN | ORNcc |
+             XOR | XORcc | XNOR | XNORcc
+  shift   is SLL | SRL   | SRA
+  arith   is ADD | ADDcc | ADDX | ADDXcc | TADDcc | TADDccTV |
+             SUB | SUBcc | SUBX | SUBXcc | TSUBcc | TSUBccTV |
+             MULScc | UMUL | SMUL | UMULcc | SMULcc |
+             UDIV | SDIV | UDIVcc | SDIVcc |
+             SAVE | RESTORE
+  alu     is logical | shift | arith
+
+constructors
+  alu rs1, reg_or_imm, rd
+@
+\subsection{Branches and call}
+
+As on the MIPS, a placeholder pattern must be specified before
+the declaration of any constructor that refers to relocatable
+addresses;
+such a constructor may emit a placeholder in lieu of the relocated instruction.
+We choose the [[UNIMP]] instruction because it causes an
+illegal-instruction trap if executed. 
+<<pattern and constructor specifications>>=
+placeholder for instruction is UNIMP & imm22 = 0xbad
+@
+Branch instructions come in two variants depending on the setting of the
+annul ([[a]]) bit.
+In the assembly language, the [[a]]~bit is notated with the suffix
+[[,a]] when set, and with no suffix when clear.
+We can work this notation into the toolkit specification by making
+these suffixes the names of the values of the [[a]] bit:
+<<[[fieldinfo]] specifications>>=
+fieldinfo a is [ names [ "" ",a" ] ]
+@ We then use [[a]] as a suffix to the branch instruction:
+<<pattern and constructor specifications>>=
+relocatable reloc
+constructors
+  branch^a reloc  { reloc = L + 4 * disp22! } is L: branch & a & disp22
+@ This declaration creates 96~constructors, two for each disjunct of
+the [[branch]] pattern.
+@
+As on the MIPS, all of the branch instructions take a relocatable
+address and emit a PC-relative displacement 
+in the output pattern.
+To relate them,
+we have simply used the equation that appears
+on page~120 of the SPARC manual.
+@
+
+The [[call]] instruction is like the branches, except it uses a
+ 30-bit displacement, and there is no annul bit.
+<<pattern and constructor specifications>>=
+constructors
+  call  reloc   { reloc = L + 4 * disp30! } is L: CALL & disp30
+@ We write the constructor name with two trailing underscores because
+we play overloading games below.
+@
+
+\subsection{Floating point}
+Floating-point arithmetic instructions include two-operand
+and three-operand variants.
+Their output patterns are the implicit conjunctions of their opcodes
+and operands so the output pattern is omitted.
+Equations enforce that the register specified for a 
+double-word operand is even-numbered (i.e., specifies the first
+member of an even-odd pair) and that the register for a quad-word operand
+is a multiple of four (i.e., specifies the first in a four-register set).
+As usual, those equations are commented out for speed.
+<<pattern and constructor specifications>>=
+constructors
+  float2s fs2, fd 
+  FSQRTd  fs2, fd # { fs2 = 2 * _, fd = 2 * _ }
+  FSQRTq  fs2, fd # { fs2 = 4 * _, fd = 4 * _ }
+
+  FTOs fs2, fd
+  FTOd fs2, fd  # { fd = 2 * _ }
+  FTOq fs2, fd  # { fd = 4 * _ }
+  FdTO fs2, fd  # { fs2 = 2 * _ }
+  FqTO fs2, fd  # { fs2 = 4 * _ }
+  FqTOd fs2, fd  # { fs2 = 4 * _, fd = 2 * _ }
+  FdTOq fs2, fd  # { fs2 = 2 * _, fd = 4 * _ }
+
+  float3s  fs1, fs2, fd
+  float3d  fs1, fs2, fd # { fs1 = 2 * _, fs2 = 2 * _, fd = 2 * _ }
+  float3q  fs1, fs2, fd # { fs1 = 4 * _, fs2 = 4 * _, fd = 4 * _ }
+  FsMULd   fs1, fs2, fd # { fd = 4 * _ }
+  FdMULq   fs1, fs2, fd # { fs1 = 2 * _, fs2 = 2 * _, fd = 4 * _ }
+
+  fcompares fs1, fs2
+  fcompared fs1, fs2 # { fs1 = 2 * _, fs2 = 2 * _ }
+  fcompareq fs1, fs2 # { fs1 = 4 * _, fs2 = 4 * _ }
+@
+\subsection{Miscellany}
+The remaining instructions don't belong to any particular grouping.
+<<pattern and constructor specifications>>=
+constructors
+  NOP
+  FLUSH address_
+  JMPL  address_, rd
+  RETT  address_
+  trap  address_
+  UNIMP imm22
+@
+The SPARC architecture manual defines [[sethi]] such that 
+it destroys the least significant ten bits on encoding.
+Therefore, no single bi-directional defintion of [[sethi]]
+can be written without loss of information.
+Our solution is to provide two constructors:
+[[sethi]] and [[decode_sethi]].
+[[sethi]] encodes a [[SETHI]] instruction by ignoring the
+10 low-order bits of [[val]]; [[sethi]] should be used for encoding.
+The toolkit requires that all bits in a pattern be
+constrained; [[decode_sethi]] constrains the 10 low-order
+bits of [[val]] and should be used for decoding. 
+<<pattern and constructor specifications>>=
+constructors
+  sethi        "%hi("val")", rd                   is  SETHI & rd & imm22 = val@[10:31]
+  decode_sethi "%hi("val")", rd { val@[0:9] = 0 } is  SETHI & rd & imm22 = val@[10:31]
+@
+\subsection{Synthetic instructions}
+\label{sec:sparc-synth}
+The synthetic instructions are defined on pages~84--85 in the SPARC
+manual; their definitions appear below.
+When dealing with  overloaded
+instructions like [[call]], [[mov]], and [[clr]], we've reserved  the
+standard name (e.g., [[call]]) for the most common variant, using
+either semi-mnemonic names (e.g., [[movr]] fopr move-register or
+[[clrw]] for clear-word, [[calla]] for call-address) or names with trailing underscores (e.g.,
+[[???_]]) for other variants. 
+<<sparc-synth.spec>>=
+constructors
+  cmp rs1, reg_or_imm   is SUBcc(rs1, reg_or_imm, "%g0")
+  jmp address_          is JMPL (address_, "%g0")
+  calla address_        is JMPL (address_, "%o7")
+  tst  rs2              is ORcc ("%g0", rmode(rs2), "%g0")
+  ret                   is JMPL (dispA("%i7",8), "%g0")
+  retl                  is JMPL (dispA("%o7",8), "%g0")
+  restore_              is RESTORE ("%g0", rmode("%g0"), "%g0")
+  save_                 is SAVE("%g0", rmode("%g0"), "%g0")
+  not   rd              is XNOR(rd,    rmode("%g0"), rd)
+  not2  rs1, rd         is XNOR(rs1,   rmode("%g0"), rd)
+  neg   rd              is SUB ("%g0", rmode(rd),    rd)
+  neg2  rs2, rd         is SUB ("%g0", rmode(rs2),   rd)
+  inc   val, rd         is ADD (rd, imode(val), rd)
+  inccc val, rd         is ADDcc (rd, imode(val), rd)
+  dec   val, rd         is SUB (rd, imode(val), rd)
+  deccc val, rd       	is SUBcc (rd, imode(val), rd)
+  btst reg_or_imm, rs1  is ANDcc(rs1, reg_or_imm, "%g0")
+  bset reg_or_imm, rd   is OR  (rd, reg_or_imm, rd)
+  bclr reg_or_imm, rd   is ANDN(rd, reg_or_imm, rd)
+  btog reg_or_imm, rd   is XOR (rd, reg_or_imm, rd)
+  clr  rd               is OR  ("%g0", rmode("%g0"), rd)
+  clrw [address_]       is ST  ("%g0", address_)
+  clrb [address_]       is STB ("%g0", address_)
+  clrh [address_]      	is STH ("%g0", address_)
+  mov  reg_or_imm, rd   is OR  ("%g0", reg_or_imm, rd)
+  movr rs2, rd          is OR  ("%g0", rmode(rs2),   rd)
+@ Some of the constructors applied in
+the output patterns use [[reg_or_imm]] or [[address_]] 
+operands.  
+When such a value is a literal constant (e.g., register~[[%g0]]), we
+apply either the [[imode]] or [[rmode]] constructor to it to get a
+value of type [[reg_or_imm]] (e.g., [[rmode("%g0")]]).
+@
+The SPARC has only one conditionally assembled instruction.
+The [[set]]  instruction has three ways to load
+an  immediate value [[val]] into the register [[rd]].
+If the low-order 10 bits of [[val]] are zero,
+use [[sethi]] to load the high-order 20 bits.
+If [[val]] fits in 13 signed bits,
+ [[OR]] it with register [[%g0]], which 
+is always zero.
+In the general case, use [[sethi]] to load the high-order bits
+into [[rd]] and [[OR]] to or in the low-order bits.
+<<sparc-synth.spec>>=
+constructors
+  set val, rd  
+    when { val@[0:9] = 0 }  is  sethi(val, rd)
+    otherwise               is  OR("%g0", imode(val), rd)
+    otherwise               is  sethi(val, rd); OR(rd, imode(val@[0:9]), rd)
+@ 
+Again, because [[set]] loses information, we must specify
+[[decode_set]] for use in matching statements. 
+This is really gross.  Can anything be done?
+Having tried to use it in a SPARC disassembler, NR is now convinced
+that this constructor is always useless, and he has deleted it from
+the spec.
+<<useless junk>>=
+constructors
+  decode_set val, rd  
+    when { val@[0:9] = 0 }     is  decode_sethi(val, rd)
+    when { val = val@[0:12]! } is  OR("%g0", imode(val), rd)
+    otherwise                  is  decode_sethi(val, rd); OR(rd, imode(val@[0:9]), rd)
+@
+\subsection{Application-specific specifications for the {\tt lcc} compiler}
+@
+[[lcc]] uses set, load, and store constructors that operate on
+relocatable addresses instead of SPARC operands of type [[address_]].
+<<lcc-sparc.spec>>=
+constructors
+  setr reloc, rd  is  set(reloc, rd)
+#  ldr  reloc, rd  is  sethi(reloc, "%g1"); ld(dispA("%g1", reloc@[0:9]), rd)
+#  str  rd, reloc  is  sethi(reloc, "%g1"); st(rd, dispA("%g1", reloc@[0:9]))
+@ 
+{\tt lcc} also supports a synthetic doubleword load and store
+operating on base-displacement addresses only.
+<<lcc-sparc.spec>>=
+constructors
+  ld2f [rs1+disp!], fd  is  ldf(dispA(rs1, disp), fd); ldf(dispA(rs1, disp+4), fd+1)
+  st2f fd, [rs1+disp!]  is  stf(fd, dispA(rs1, disp)); stf(fd+1, dispA(rs1, disp+4))
+@
+The following constructor is used to emit relocatable addresses.
+It is the same as that defined for the MIPS.
+<<lcc-sparc.spec>>=
+fields of addrtoken (32) addr32 0:31
+placeholder for addrtoken is addr32 = 7
+constructors
+  emit_raddr reloc is addr32 = reloc
+@
+As on the MIPS, {\tt mld} doesn't want to pay the overhead of checking
+register numbers:
+<<sparc-regs.spec>>=
+fieldinfo [ rs1 rs2 rd fd fs1 fs2 cd ] is [ guaranteed ]
+@ 
+\subsection{Application-specific specifications for the {\tt mld} linker}
+@
+[[mld]], defines set, load, and store constructors that operate on
+relocatable addresses instead of SPARC operands of type [[address_]].
+<<mld-sparc.spec>>=
+constructors
+  setr reloc, rd  is  set(reloc, rd)
+  ldr  reloc, rd  is  sethi(reloc, "%o2"); ld(dispA("%o2", reloc@[0:9]), rd)
+  str  rd, reloc  is  sethi(reloc, "%o2"); st(rd, dispA("%o2", reloc@[0:9]))
+@
+{\tt mld} uses the synonyms we've defined for the branch instructions.
+<<mld-sparc.spec>>=
+constructors
+  branch.synonyms^a reloc  { reloc = L + 4 * disp22! }  is
+        L: branch.synonyms & a & disp22
+@
+\label{overloading-trick}
+
+Like the load and store instructions,
+the SPARC call instruction is overloaded;
+it accepts either a relocatable address or an SPARC-style [[address_]].
+The first style, which we've named [[call]], uses the real [[CALL]]
+instruction, the second, which we've named [[calla]], uses [[JMPL]].
+Because {\tt mld} generates code using a bottom-up tree walk,
+it decides which kind of call instruction it
+wants before it's actually ready to emit the call.
+{\tt mld} wants to make up a cookie identifying the call, but doesn't
+emit the call until the cookie is eaten.
+The toolkit supports this trick using typed constructors; the cookie
+is a value of type [[Function]].
+<<mld-sparc.spec>>=
+constructors
+  relocfun reloc    : Function  is  call(reloc)
+  addrfun  address_ : Function  is  calla(address_)
+@ [[relocfun]] and [[addrfun]] create the cookies.
+It looks like these constructors emit the calls, but actually they
+don't have any side effects; the just return patterns representing the
+instructions to be emitted.  
+Actually emitting such an instruction is the job of the [[_call]]
+constructor:
+<<mld-sparc.spec>>=
+constructors
+  _call Function is Function
+@
+The following constructor is used to emit relocatable addresses.
+It is the same as that defined for the MIPS.
+<<mld-sparc.spec>>=
+fields of addrtoken (32) addr32 0:31
+placeholder for addrtoken is addr32 = 7
+constructors
+  emit_raddr reloc is addr32 = reloc
+@
+As on the MIPS, {\tt mld} doesn't want to pay the overhead of checking
+register numbers:
+<<sparc-regs.spec>>=
+fieldinfo [ rs1 rs2 rd fd fs1 fs2 cd ] is [ guaranteed ]
+@ 
+\subsection{Validating against the SPARC assembler}
+As on the MIPS, the same assembly name is used for integer and floating-point
+variants of an instruction.  The assembler uses the operand names
+to disambiguate.
+<<sparc-names.spec>>=
+assembly component
+  decode_{*}             is $1
+  {LDF,LDFSR,LDC,LDCSR}  is LD
+  {LDDF,LDDC}            is LDD
+  {STF,STFSR,STC,STCSR}  is ST
+  {STDF,STDFQ,STDC,STDCQ} is STD
+  {RDY,RDASR,RDPSR,RDWIM,RDTBR} is RD
+  {WRY,WRASR,WRPSR,WRWIM,WRTBR} is WR
+  {not,neg}2             is $1
+  {set,ld,st,mov}r       is $1
+  {ld2,st2}f             is $1	
+  {call}a                is $1
+  SWAP.                  is SWAP
+  {*}{_,__}              is $1
+  _{*}                   is $1
+@ We need the extra syntax so that unbracketed [[address]] operands 
+are accepted by the assembler.
+<<sparc-names.spec>>=
+assembly syntax
+  absoluteA "%g0 + " simm13!
+@
+The suggested assembly syntax for 
+several SPARC instructions is not recognized by the 
+SunOS assembler, so those instructions are discarded.
+[[emit_raddr]], [[ldr]], and [[str]] are application-specific
+and are not in the SPARC assembly language.
+<<sparc-check.spec>>=
+discard FLUSH RDASR WRASR STBAR RETT emit_raddr ldr str decode_sethi 
+@ 
+We don't have to put any special headers in assembly source used by
+the checker.
+<<sparc-checker.s>>=
+@ 
