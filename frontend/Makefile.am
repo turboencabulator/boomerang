@@ -125,26 +125,26 @@ machine/sparc/disassembler.cpp: machine/sparc/disassembler.m machine/sparc/core.
 	$(AM_V_GEN)./mltk.sh $< -o $@ $(filter-out $<,$^)
 
 
-# Was used at some point to generate machine/hppa/enc.[ch].
-# Options -debug-match, -matcher, and -decoder are for the decoder, not the encoder.
+# Generates an encoder from SLED files.
+# Uses the Icon version of the toolkit.
 %enc.c %enc.h:
-	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -debug-match dbm -matcher $(notdir $<) -decoder dec -encoder enc -verbose $(notdir $(filter-out $<,$^))
-	cd $(dir $*) && $(UNGENERATE) dec
+	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -verbose -encoder enc $(notdir $^)
 
-machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
+machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/hppa9.spec machine/hppa/hppadis.spec
 
 
-# Apparently the toolkit tries to build the encoder first with the above command,
-# and it may not actually produce a decoder if generating the encoder fails.
-# Try again, this time only try to build the decoder (and some debugging output).
-# Also note:  Argument to the -decoder option really should have a .c suffix.
+# Generates a decoder/disassembler from a matcher and SLED files.
+# Same as above, but uses the Icon version of the toolkit.
+# Results will be somewhat different from the ML version of the toolkit.
+# XXX:  Output filename should be something like $<.cpp instead of 'dec'.
 %dec %dbm:
-	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -debug-match dbm -matcher $(notdir $<) -decoder dec -verbose $(notdir $(filter-out $<,$^))
+	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -verbose -debug-match dbm -matcher $(notdir $<) -decoder dec $(notdir $(filter-out $<,$^))
 	cd $(dir $*) && $(UNGENERATE) dec
 
 machine/hppa/dec machine/hppa/dbm: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
 
 
+# Some decoders/disassemblers need fieldname strings.
 %-names.c %-names.h:
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -fieldnames $(notdir $*)-names $(notdir $^)
 %-names.cpp: %-names.c
