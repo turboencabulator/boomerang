@@ -14,8 +14,4 @@ touch frontend/st20decoder.cpp
 # These need notangle, from noweb.
 touch frontend/machine/mips/core.spec
 touch frontend/machine/mips/synth.spec
-touch frontend/machine/mips/regs.spec
-touch frontend/machine/mips/names.spec
-touch frontend/machine/mips/check.spec
 touch frontend/machine/mips/mips.spec
-touch frontend/machine/mips/mips-checker.s
