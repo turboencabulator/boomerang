@@ -130,7 +130,7 @@ machine/sparc/disassembler.cpp: machine/sparc/disassembler.m machine/sparc/core.
 %enc.c %enc.h:
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -verbose -encoder enc $(notdir $^)
 
-machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/hppa9.spec machine/hppa/hppadis.spec
+machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/hppa.spec machine/hppa/hppadis.spec
 
 
 # Generates a decoder/disassembler from a matcher and SLED files.
@@ -141,7 +141,7 @@ machine/hppa/enc.c machine/hppa/enc.h: machine/hppa/hppa9.spec machine/hppa/hppa
 	$(AM_V_GEN)cd $(dir $*) && $(TOOLS) -verbose -debug-match dbm -matcher $(notdir $<) -decoder dec $(notdir $(filter-out $<,$^))
 	cd $(dir $*) && $(UNGENERATE) dec
 
-machine/hppa/dec machine/hppa/dbm: machine/hppa/disassembler9.m machine/hppa/hppa9.spec machine/hppa/hppadis.spec
+machine/hppa/dec machine/hppa/dbm: machine/hppa/disassembler.m machine/hppa/hppa.spec machine/hppa/hppadis.spec
 
 
 # Some decoders/disassemblers need fieldname strings.
