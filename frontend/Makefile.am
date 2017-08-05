@@ -154,6 +154,18 @@ machine/sparc/sparc-names.c machine/sparc/sparc-names.h: machine/sparc/core.spec
 machine/hppa/hppa-names.c machine/hppa/hppa-names.h: machine/hppa/hppa.spec machine/hppa/hppadis.spec
 
 
+# These files are generated.
+# Does anyone know what program was used to generate them?
+#machine/hppa/hppa.pat.m machine/hppa/hppa.pat.h: machine/hppa/hppa.pat
+#machine/mc68k/mc68k.pat.m machine/mc68k/mc68k.pat.h: machine/mc68k/mc68k.pat
+#machine/sparc/sparc.pat.m machine/sparc/sparc.pat.h: machine/sparc/sparc.pat
+
+
+# Also generated, using genemu 0.61 according to comments.
+# Does anyone know where to find this program?
+#machine/sparc/sparc.c machine/sparc/sparc.h: machine/sparc/sparc-core.spec machine/sparc/sparc.ssl
+
+
 machine/st20/st20.ssl: machine/st20/st20.ssl.m4
 	$(AM_V_GEN)$(M4) $< > $@
 
