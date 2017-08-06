@@ -312,10 +312,9 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 		ADDBUMP;                // Dest may cause a bump as well
 		// Check for An as a dest, and not 32 bits size
 		RT *rt;
-		bool sgnex = ((siz != 32)
-		           && (t2->getFirstIdx() == idRegOf)
-		           && (t2->getThirdIdx() >= 8));
-		if (sgnex) {
+		if ((siz != 32)
+		 && (t2->getFirstIdx() == idRegOf)
+		 && (t2->getThirdIdx() >= 8)) {
 			// Yes, therefore this is a sign extent to 32 bits
 			rt = sgnExTemp(t1, siz, 32, t3);
 			siz = 32;
@@ -544,10 +543,9 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 		int bump = 0, bumpr;
 		if (i8 == 0) i8 = 8;        // Quirk of the addq/subq instr
 		SemStr *dst = alEA(ea, pc, bump, bumpr, 16);
-		bool b = (dst->getFirstIdx() == idRegOf)
-		      && (dst->getSecondIdx() == idIntConst)
-		      && (dst->getThirdIdx() >= 8);
-		if (b) {
+		if ((dst->getFirstIdx()  == idRegOf)
+		 && (dst->getSecondIdx() == idIntConst)
+		 && (dst->getThirdIdx()  >= 8)) {
 			// We have addq/subq to an address register. These do not
 			// affect the flags (all others do). Also, the instruction
 			// is always 32 bits. So we give it a different SSL name
@@ -569,10 +567,9 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 		int bump = 0, bumpr;
 		if (i8 == 0) i8 = 8;        // Quirk of the addq/subq instr
 		SemStr *dst = alEA(ea, pc, bump, bumpr, 32);
-		bool b = (dst->getFirstIdx() == idRegOf)
-		      && (dst->getSecondIdx() == idIntConst)
-		      && (dst->getThirdIdx() >= 8);
-		if (b) {
+		if ((dst->getFirstIdx()  == idRegOf)
+		 && (dst->getSecondIdx() == idIntConst)
+		 && (dst->getThirdIdx()  >= 8)) {
 			// We have addq/subq to an address register. These do not
 			// affect the flags (all others do). So we give it a different
 			// SSL name
