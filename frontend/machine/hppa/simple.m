@@ -20,14 +20,12 @@ void
 NJMCDecoder::dis_faddr(ADDRESS faddr)
 {
 	match faddr to
-	| index_faddr(x, s, b) => {
+	| index_faddr(x, s, b) =>
 		astr += sprintf(astr, " r%d(sr%d,r%d)", x, s, b);
 		strcat(constrName, "index_faddr ");
-	}
-	| sdisps_faddr(d, s, b) => {
+	| sdisps_faddr(d, s, b) =>
 		astr += sprintf(astr, " %d(sr%d,r%d)", d, s, b);
 		strcat(constrName, "sdisps_faddr ");
-	}
 	endmatch
 }
 
@@ -35,31 +33,25 @@ void
 NJMCDecoder::dis_c_faddr(ADDRESS c_faddr)
 {
 	match c_faddr to
-	| ins_faddr_s => {
+	| ins_faddr_s =>
 		astr += sprintf(astr, ",s");
 		strcat(constrName, "ins_faddr_s ");
-	}
-	| ins_faddr_m => {
+	| ins_faddr_m =>
 		astr += sprintf(astr, ",m");
 		strcat(constrName, "ins_faddr_m ");
-	}
-	| ins_faddr_sm => {
+	| ins_faddr_sm =>
 		astr += sprintf(astr, ",sm");
 		strcat(constrName, "ins_faddr_sm ");
-	}
 	| ins_faddr_x =>
 		strcat(constrName, "ins_faddr_x ");
-	| ins_faddr_mb => {
+	| ins_faddr_mb =>
 		astr += sprintf(astr, ",mb");
 		strcat(constrName, "ins_faddr_mb ");
-	}
-	| ins_faddr_ma => {
+	| ins_faddr_ma =>
 		astr += sprintf(astr, ",ma");
 		strcat(constrName, "ins_faddr_ma ");
-	}
-	| ins_faddr_si => {
+	| ins_faddr_si =>
 		strcat(constrName, "ins_faddr_si ");
-	}
 	endmatch
 }
 
@@ -102,30 +94,29 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 	astr = _assembly + sprintf(_assembly, "%x: %08x  ", pc, *(unsigned *)hostPC);
 
 	match hostPC to
-	| floads(c_faddr, faddr, t_27) [name] => {
+	| floads(c_faddr, faddr, t_27) [name] =>
 		// Floating point loads and stores
 		astr += sprintf(astr, "%s  ", name);
 		dis_c_faddr(c_faddr);
 		dis_faddr(faddr);
 		astr += sprintf(astr, ",fr%d", t_27);
 		strcat(constrName, "floads ");
-	}
-	| fstores(c_faddr, r, faddr) [name] => {
+
+	| fstores(c_faddr, r, faddr) [name] =>
 		astr += sprintf(astr, "%s", name);
 		dis_c_faddr(c_faddr);
 		astr += sprintf(astr, "  fr%d,", r);
 		dis_faddr(faddr);
 		strcat(constrName, "fstores ");
-	}
 
-	| flt_c3(con) [name] => {
+	| flt_c3(con) [name] =>
 		int fmt, r1, r2, t;
 		dis_flt_c3(fmt, r1, r2, t, con);
 		astr += sprintf(astr, "%s", name);
 		dis_flt_fmt(fmt);
 		astr += sprintf(astr, "  fr%d, fr%d, fr%d", r1, r2, t);
 		strcat(constrName, "flt_c3 ");
-	}
+
 	else
 		// Do nothing
 		sprintf(astr, ".");

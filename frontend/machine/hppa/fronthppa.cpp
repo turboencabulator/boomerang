@@ -420,9 +420,9 @@ case_SD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 	// Try the "delay instruction has been copied" optimisation, emitting the
 	// delay instruction now if the optimisation won't apply
 	if (delay_inst.type != NOP) {
-		if (optimise_DelayCopy(address, SD_rtl->getFixedDest(), delta, hiAddress))
+		if (optimise_DelayCopy(address, SD_rtl->getFixedDest(), delta, hiAddress)) {
 			SD_rtl->adjustFixedDest(-4);
-		else {
+		} else {
 			// Move the delay instruction before the SD. Must update the address
 			// in case there is a branch to the SD
 			delay_rtl->updateAddress(address);
@@ -566,9 +566,9 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 		// NOTE: the isSwitch and processSwitch methods should
 		// really be merged into one
 		HLNwayJump *rtl_jump = static_cast<HLNwayJump *>(inst.rtl);
-		if (isSwitch(newBB, rtl_jump->getDest(), proc, pBF))
+		if (isSwitch(newBB, rtl_jump->getDest(), proc, pBF)) {
 			processSwitch(newBB, delta, cfg, targets, pBF);
-		else {
+		} else {
 			ostrstream os;
 			os << "COMPUTED JUMP at " << hex << address - 8;
 			warning(str(os));

@@ -275,9 +275,9 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 					// Stop decoding sequentially if the basic block already existed
 					// otherwise complete the basic block
-					if (pBB == 0)
+					if (pBB == 0) {
 						sequentialDecode = false;
-					else {
+					} else {
 
 						// Add the out edge if it is to a destination within the
 						// procedure

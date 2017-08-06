@@ -205,7 +205,7 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 	| branch(tgt) [name] =>
 		sprintf(str, "%s %X", name, tgt - delta);
 
-	| call__(tgt) => {
+	| call__(tgt) =>
 		// Get the actual destination
 		ADDRESS dest = tgt - delta;
 		// Get a symbol for it, if possible
@@ -214,7 +214,6 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		if (dsym == 0)
 			sprintf(hexsym, "0x%x", dest);
 		sprintf(str, "%s %s", "call", (dsym ? dsym : hexsym));
-	}
 
 	| float2s(fs2s, fds) [name] =>
 		sprintf(str, "%s %s,%s", name, DIS_FS2S, DIS_FDS);

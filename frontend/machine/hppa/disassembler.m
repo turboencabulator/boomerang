@@ -74,8 +74,8 @@ dis_c_c_n(ADDRESS hostpc)
 {
 	int result = 0;
 	match hostpc to
-	| c_c_nonneg() => { result = 0; }
-	| c_c_neg() =>    { result = 8; }
+	| c_c_nonneg() => result = 0;
+	| c_c_neg()    => result = 8;
 	endmatch
 	return result;
 }
@@ -111,39 +111,30 @@ NJMCDecoder::dis_c_c(ADDRESS hostpc)
 #endif
 
 	match hostpc to
-	| c_arith_w(c3_16, neg) => {
+	| c_arith_w(c3_16, neg) =>
 		apre += sprintf(apre, "%s", cmpsubw[c3_16 + dis_c_c_n(neg)]);
 		CONS("c_arith_w ")
-	}
-	| c_arith_dw(c3_16, neg) => {
+	| c_arith_dw(c3_16, neg) =>
 		apre += sprintf(apre, "%s", cmpsubdw[c3_16 + dis_c_c_n(neg)]);
 		CONS("c_arith_dw ")
-	}
-	| c_cmpb_w(c3_16, neg) => {
+	| c_cmpb_w(c3_16, neg) =>
 		apre += sprintf(apre, "%s", cmpsubw[c3_16 + dis_c_c_n(neg)]);
 		CONS("c_cmpb_w ")
-	}
-	| c_cmpb_dw(c3_16, neg) => {
+	| c_cmpb_dw(c3_16, neg) =>
 		apre += sprintf(apre, "%s", cmpsubdw[c3_16 + dis_c_c_n(neg)]);
 		CONS("c_cmpb_dw ")
-	}
-	| c_sep(c3_16) => {
+	| c_sep(c3_16) =>
 		apre += sprintf(apre, "%s", logw[c3_16]);
 		CONS("c_sep ")
-	}
-	| c_bbs_w(c_16) => {
+	| c_bbs_w(c_16) =>
 		apre += sprintf(apre, "[%d]", 1 - c_16);
 		CONS("c_bbs_w ")
-	}
-	| c_bbs_dw(c_16) => {
+	| c_bbs_dw(c_16) =>
 		apre += sprintf(apre, "[%d]", 1 - c_16);
 		CONS("c_bbs_dw ")
-	}
-	| c_arith_none() => {
-	}
-	else {
+	| c_arith_none() =>
+	else
 		astr += sprintf(astr, "#c_C%08X", getDword(hostpc));
-	}
 	endmatch
 }
 
@@ -151,50 +142,40 @@ void
 NJMCDecoder::dis_c_xd(ADDRESS hostpc)
 {
 	match hostpc to
-	| x_addr_nots(x) => {
+	| x_addr_nots(x) =>
 		astr += sprintf(astr, "%s", x_11_names[x]);
 		CONS("x_addr_nots ")
-	}
-	| x_addr_s_byte(x) => {
+	| x_addr_s_byte(x) =>
 		apre += sprintf(apre, "%s", ",s");
 		astr += sprintf(astr, "%s", x_11_names[x]);
 		CONS("x_addr_s_byte ")
-	}
-	| x_addr_s_hwrd(x) => {
+	| x_addr_s_hwrd(x) =>
 		apre += sprintf(apre, "%s", ",s");
 		astr += sprintf(astr, "%s", x_11_names[x]);
 		CONS("x_addr_s_hwrd ")
-	}
-	| x_addr_s_word(x) => {
+	| x_addr_s_word(x) =>
 		apre += sprintf(apre, "%s", ",s");
 		astr += sprintf(astr, "%s", x_11_names[x]);
 		CONS("x_addr_s_word ")
-	}
-	| x_addr_s_dwrd(x) => {
+	| x_addr_s_dwrd(x) =>
 		apre += sprintf(apre, "%s", ",s");
 		astr += sprintf(astr, "%s", x_11_names[x]);
 		CONS("x_addr_s_dwrd ")
-	}
-	| s_addr_im_r(i) => {
+	| s_addr_im_r(i) =>
 		astr += sprintf(astr, "%d", i);
 		CONS("s_addr_im_r ")
-	}
-	| s_addr_r_im(i) => {
+	| s_addr_r_im(i) =>
 		astr += sprintf(astr, "%d", i);
 		CONS("s_addr_r_im ")
-	}
-	| l_addr_16_old(i) => {
+	| l_addr_16_old(i) =>
 		astr += sprintf(astr, "%d", i);
 		CONS("l_addr_16_old ")
-	}
-	| l_addr_17_old(i) => {
+	| l_addr_17_old(i) =>
 		astr += sprintf(astr, "%d", i);
 		CONS("l_addr_17_old ")
-	}
-	else {
+	else
 		apre += sprintf(apre, "#c_X_ADDR_SHIFT%08X", getDword(hostpc));
 		astr += sprintf(astr, "#c_X_ADDR_SHIFT%08X", getDword(hostpc));
-	}
 	endmatch
 }
 
@@ -203,19 +184,16 @@ NJMCDecoder::dis_c_wcr(ADDRESS hostpc)
 {
 	unsigned long regl;
 	match hostpc to
-	| c_mfctl(r_06) => {
+	| c_mfctl(r_06) =>
 		regl = r_06;
 		CONS("c_mfctl ")
-	}
-	| c_mfctl_w() => {
+	| c_mfctl_w() =>
 		regl = 11;
 		apre += sprintf(apre, ",w");
 		CONS("c_mfctl_w ")
-	}
-	else {
+	else
 		regl = 0;
 		apre += sprintf(apre, "#c_WCR%08X#", getDword(hostpc));
-	}
 	endmatch
 	astr += sprintf(astr, "%s", cr_06_names[regl]);
 }
@@ -224,13 +202,11 @@ void
 NJMCDecoder::dis_c_null(ADDRESS hostpc)
 {
 	match hostpc to
-	| c_br_nnull() => {
+	| c_br_nnull() =>
 		CONS("c_br_nnull ")
-	}
-	| c_br_null() => {
+	| c_br_null() =>
 		apre += sprintf(apre, ",n");
 		CONS("c_br_null ")
-	}
 	else
 		apre += sprintf(apre, "#c_NULL%08X#", getDword(hostpc));
 	endmatch
@@ -240,14 +216,12 @@ void
 NJMCDecoder::dis_c_bit(ADDRESS hostpc)
 {
 	match hostpc to
-	| c_bitpos_w(p_06) => {
+	| c_bitpos_w(p_06) =>
 		astr += sprintf(astr, "@%d", p_06);
 		CONS("c_bitpos_w ")
-	}
-	| c_bitsar() => {
+	| c_bitsar() =>
 		astr += sprintf(astr, "%s", "%cr11");
 		CONS("c_bitsar ")
-	}
 	else
 		astr += sprintf(astr, "#c_BIT%08X#", getDword(hostpc));
 	endmatch
@@ -257,55 +231,42 @@ void
 NJMCDecoder::dis_c_addr(ADDRESS hostpc)
 {
 	match hostpc to
-	| c_s_addr_mb() => {
+	| c_s_addr_mb() =>
 		apre += sprintf(apre, ",mb");
 		CONS("c_s_addr_mb ")
-	}
-	| c_s_addr_ma() => {
+	| c_s_addr_ma() =>
 		apre += sprintf(apre, ",ma");
 		CONS("c_s_addr_ma ")
-	}
-	| c_s_addr_notm() => {
+	| c_s_addr_notm() =>
 		CONS("c_s_addr_notm ")
-	}
-	| c_x_addr_m() => {
+	| c_x_addr_m() =>
 		apre += sprintf(apre, ",x");
 		CONS("c_x_addr_m ")
-	}
-	| c_x_addr_notm() => {
+	| c_x_addr_notm() =>
 		CONS("c_x_addr_notm ")
-	}
-	| c_y_addr_e() => {
+	| c_y_addr_e() =>
 		apre += sprintf(apre, ",e");
 		CONS("c_y_addr_e ")
-	}
-	| c_y_addr_me() => {
+	| c_y_addr_me() =>
 		apre += sprintf(apre, ",me");
 		CONS("c_y_addr_me ")
-	}
-	| c_y_addr_m() => {
+	| c_y_addr_m() =>
 		apre += sprintf(apre, ",m");
 		CONS("c_y_addr_m ")
-	}
-	| c_y_addr_none() => {
+	| c_y_addr_none() =>
 		CONS("c_y_addr_none ")
-	}
-	| c_l_addr_none() => {
+	| c_l_addr_none() =>
 		CONS("c_l_addr_none ");
-	}
 
-//	| c_addr_s() => {
+//	| c_addr_s() =>
 //		apre += sprintf(apre, ",s");
 //		strcat(constrName, "c_addr_s ");
-//	}
-//	| c_addr_m() => {
+//	| c_addr_m() =>
 //		apre += sprintf(apre, ",m");
 //		strcat(constrName, "c_addr_m ");
-//	}
-//	| c_addr_sm() => {
+//	| c_addr_sm() =>
 //		apre += sprintf(apre, ",sm");
 //		strcat(constrName, "c_addr_sm ");
-//	}
 
 	else
 		// Do nothing; no completer
@@ -340,14 +301,12 @@ NJMCDecoder::dis_freg(int regNum)
 //NJMCDecoder::dis_faddr(ADDRESS faddr)
 //{
 //	match faddr to
-//	| index_faddr(x, s, b) => {
+//	| index_faddr(x, s, b) =>
 //		astr += sprintf(astr, " %s(%s,%s)", b_06_names[x], s2_16_names[s], b_06_names[b]);
 //		strcat(constrName, "index_faddr ");
-//	}
-//	| sdisps_faddr(d, s, b) => {
+//	| sdisps_faddr(d, s, b) =>
 //		astr += sprintf(astr, " %d(%s,%s)", d, s2_16_names[s], b_06_names[b]);
 //		strcat(constrName, "sdisps_faddr ");
-//	}
 //	endmatch
 //}
 
@@ -360,121 +319,121 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 	apre += sprintf(apre, "%x: %08x  ", pc, *(unsigned *)hostPC);
 
 	match hostPC to
-	| NOP => {
+	| NOP =>
 		apre += sprintf(apre, "%s", "NOP");
 		CONS("NOP ")
-	}
-	| COPY(r, t) => {
+
+	| COPY(r, t) =>
 		apre += sprintf(apre, "%s", "COPY");
 		astr += sprintf(astr, "%s,%s", r_06_names[r], t_27_names[t]);
 		CONS("COPY ")
-	}
-	| arith(cmplt, r_11, r_06, t_27) [name] => {
+
+	| arith(cmplt, r_11, r_06, t_27) [name] =>
 		ANAME
 		dis_c_c(cmplt);
 		astr += sprintf(astr, "%s,%s,%s", r_11_names[r_11], r_06_names[r_06], t_27_names[t_27]);
 		CONS("arith ")
-	}
-	| arith_imm(cmplt, im11_21, r_06, t_11) [name] => {
+
+	| arith_imm(cmplt, im11_21, r_06, t_11) [name] =>
 		ANAME
 		dis_c_c(cmplt);
 		astr += sprintf(astr, "%d,%s,%s", im11_21, r_06_names[r_06], t_11_names[t_11]);
 		CONS("arith_imm ")
-	}
-	| ADDIL(imm21, r_06) [name] => {
+
+	| ADDIL(imm21, r_06) [name] =>
 		ANAME
 		astr += sprintf(astr, "%d,%s,%s", imm21, r_06_names[r_06], t_11_names[1]);
 		CONS("ADDIL ")
-	}
-	| LDIL(imm21, t_06) [name] => {
+
+	| LDIL(imm21, t_06) [name] =>
 		ANAME
 		astr += sprintf(astr, "0x%x,%s", imm21, t_06_names[t_06]);
 		CONS("LDIL ")
-	}
-	| iloads(c_addr, xd, s, b, t_27) [name] => {
+
+	| iloads(c_addr, xd, s, b, t_27) [name] =>
 		ANAME
 		dis_c_addr(c_addr);         // Can have ,ma/,mb
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s),%s", s2_16_names[s], b_06_names[b], t_27_names[t_27]);
 		CONS("iloads ")
-	}
-	| istores(c_addr, r_11, xd, s, b) [name] => {
+
+	| istores(c_addr, r_11, xd, s, b) [name] =>
 		ANAME
 		dis_c_addr(c_addr);         // Can have ,ma/,mb
 		astr += sprintf(astr, "%s,", r_11_names[r_11]);
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s)", s2_16_names[s], b_06_names[b]);
 		CONS("istores ")
-	}
-	| iloads_ldisp(_, xd, s, b, t_11) [name] => {
-	//| iloads_ldisp(c_addr, xd, s, b, t_11) [name] => {
+
+	| iloads_ldisp(_, xd, s, b, t_11) [name] =>
+	//| iloads_ldisp(c_addr, xd, s, b, t_11) [name] =>
 		ANAME
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s),%s", s2_16_names[s], b_06_names[b], t_11_names[t_11]);
 		CONS("iloads_ldisp ")
-	}
-	| istores_ldisp(_, r_11, xd, s, b) [name] => {
-	//| istores_ldisp(c_addr, r_11, xd, s, b) [name] => {
+
+	| istores_ldisp(_, r_11, xd, s, b) [name] =>
+	//| istores_ldisp(c_addr, r_11, xd, s, b) [name] =>
 		ANAME
 		astr += sprintf(astr, "%s,", r_11_names[r_11]);
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s)", s2_16_names[s], b_06_names[b]);
 		CONS("istores_ldisp ")
-	}
-	| LDO(ldisp, b, t) [name] => {
+
+	| LDO(ldisp, b, t) [name] =>
 		ANAME
 		astr += sprintf(astr, "%d(%s),%s", ldisp, b_06_names[b], t_06_names[t]);
 		CONS("LDO ")
-	}
-	| VSHD(r1, r2, t, c) [name] => {
+
+	| VSHD(r1, r2, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%s,%s,%s", r_11_names[r1], r_06_names[r2], t_27_names[t]);
 		CONS("VSHD ")
-	}
-	| SHD(r1, r2, p, t, c) [name] => {
+
+	| SHD(r1, r2, p, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%s,%s,%d,%s", r_11_names[r1], r_06_names[r2], p, t_27_names[t]);
 		CONS("SHD ")
-	}
-	| ext_var(r, len, t, c) [name] => {
+
+	| ext_var(r, len, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%s,%d,%s", r_11_names[r], len, t_27_names[t]);
 		CONS("ext_var ")
-	}
-	| ext_fix(r, p, len, t, c) [name] => {
+
+	| ext_fix(r, p, len, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%s,%d,%d,%s", r_11_names[r], p, len, t_27_names[t]);
 		CONS("ext_fix ")
-	}
-	| dep_var(r, len, t, c) [name] => {
+
+	| dep_var(r, len, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%s,%d,%s", r_11_names[r], len, t_27_names[t]);
 		CONS("dep_var ")
-	}
-	| dep_fix(r, p, len, t, c) [name] => {
+
+	| dep_fix(r, p, len, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%s,%d,%d,%s", r_11_names[r], p, len, t_27_names[t]);
 		CONS("dep_fix ")
-	}
-	| dep_ivar(i, len, t, c) [name] => {
+
+	| dep_ivar(i, len, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%d,%d,%s", i, len, t_27_names[t]);
 		CONS("dep_ivar ")
-	}
-	| dep_ifix(i, p, len, t, c) [name] => {
+
+	| dep_ifix(i, p, len, t, c) [name] =>
 		ANAME
 		dis_c_c(c);
 		astr += sprintf(astr, "%d,%d,%d,%s", i, p, len, t_27_names[t]);
 		CONS("dep_ifix ")
-	}
-	| ubranch(nulli, ubr_target, t_06) [name] => {
+
+	| ubranch(nulli, ubr_target, t_06) [name] =>
 		ANAME
 		dis_c_null(nulli);
 		// Get the actual destination and its symbol (if possible)
@@ -484,117 +443,117 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		if (dsym == 0) sprintf(hexsym, "0x%x", dest);
 		astr += sprintf(astr, "%s, %s", (dsym ? dsym : hexsym), t_06_names[t_06]);
 		CONS("ubranch ")
-	}
-	| BL.LONG(nulli, ubr_target) [name] => {
+
+	| BL.LONG(nulli, ubr_target) [name] =>
 		ANAME
 		dis_c_null(nulli);
 		astr += sprintf(astr, "%d %s", ubr_target, t_06_names[2]);
 		CONS("BL.LONG ")
-	}
-	| BLR(nulli, x_11, t_06) [name] => {
+
+	| BLR(nulli, x_11, t_06) [name] =>
 		ANAME
 		dis_c_null(nulli);
 		astr += sprintf(astr, "%s,%s", x_11_names[x_11], t_06_names[t_06]);
 		CONS("BLR ")
-	}
-	| BV(nulli, x_11, b_06) [name] => {
+
+	| BV(nulli, x_11, b_06) [name] =>
 		ANAME
 		dis_c_null(nulli);
 		astr += sprintf(astr, "%s(%s)", x_11_names[x_11], b_06_names[b_06]);
 		CONS("BV ")
-	}
-	| bve(_, _, b_06) [name] => {
-	//| bve(p_31, nulli, b_06) [name] => {
+
+	| bve(_, _, b_06) [name] =>
+	//| bve(p_31, nulli, b_06) [name] =>
 		ANAME
 		astr += sprintf(astr, " (%s)", b_06_names[b_06]);
 		CONS("bve ")
-	}
+
 	/* PA-RISC 2.0 */
-//	| be_all(nulli, cmplt) [name] => {
+//	| be_all(nulli, cmplt) [name] =>
 //		ANAME
 //		dis_c_null(nulli);
 //		dis_addr(cmplt);
 //		CONS("be_all ")
-//	}
-	| BREAK(im5_27, im13_06) [name] => {
+
+	| BREAK(im5_27, im13_06) [name] =>
 		ANAME
 		astr += sprintf(astr, "%d,%d", im5_27, im13_06);
 		CONS("BREAK ")
-	}
-	| sysop_i_t(im10_06, t_27) [name] => {
+
+	| sysop_i_t(im10_06, t_27) [name] =>
 		ANAME
 		astr += sprintf(astr, "%d,%s", im10_06, t_27_names[t_27]);
 		CONS("sysop_i_t ");
-	}
-	| sysop_simple [name] => {
+
+	| sysop_simple [name] =>
 		ANAME
 		CONS("sysop_simple ");
-	}
-	| sysop_r(r_11) [name] => {
+
+	| sysop_r(r_11) [name] =>
 		ANAME
 		astr += sprintf(astr, "%s", r_11_names[r_11]);
 		CONS("sysop_r ")
-	}
-	| sysop_cr_t(cmplt, t_27) [name] => {
+
+	| sysop_cr_t(cmplt, t_27) [name] =>
 		ANAME
 		dis_c_wcr(cmplt);
 		astr += sprintf(astr, ",%s", t_27_names[t_27]);
 		CONS("sysop_cr_t ")
-	}
-	| MTCTL(r_11, cr_06) [name] => {
+
+	| MTCTL(r_11, cr_06) [name] =>
 		ANAME
 		astr += sprintf(astr, "%s,%s", r_11_names[r_11], cr_06_names[cr_06]);
 		CONS("MTCTL ")
-	}
-	| MFIA(t_27) [name] => {
+
+	| MFIA(t_27) [name] =>
 		ANAME
 		astr += sprintf(astr, "%s", t_27_names[t_27]);
 		CONS("MFIA ")
-	}
-	| LDSID(s2_16, b_06, t_27) [name] => {
+
+	| LDSID(s2_16, b_06, t_27) [name] =>
 		ANAME
 		astr += sprintf(astr, "(%s,%s),%s", s2_16_names[s2_16], b_06_names[b_06], t_27_names[t_27]);
 		CONS("LDSID ")
-	}
-	| MTSP(r_11, sr) [name] => {
+
+	| MTSP(r_11, sr) [name] =>
 		ANAME
 		astr += sprintf(astr, "%s,%s", r_11_names[r_11], s3_16_names[sr]);
 		CONS("MTSP ")
-	}
-	| MFSP(sr, t_27) [name] => {
+
+	| MFSP(sr, t_27) [name] =>
 		ANAME
 		astr += sprintf(astr, "%s,%s", s3_16_names[sr], t_27_names[t_27]);
 		CONS("MFSP ")
-	}
-	| addb_all(c_cmplt, null_cmplt, r_11, r_06, target) [name] => {
+
+	| addb_all(c_cmplt, null_cmplt, r_11, r_06, target) [name] =>
 		ANAME
 		dis_c_c(c_cmplt);
 		dis_c_null(null_cmplt);
 		astr += sprintf(astr, "%s,%s,0x%x", r_11_names[r_11], r_06_names[r_06], target + pc + 8);
 		CONS("addb_all ")
-	}
-	| addib_all(c_cmplt, null_cmplt, im5, r_06, target) [name] => {
+
+	| addib_all(c_cmplt, null_cmplt, im5, r_06, target) [name] =>
 		ANAME
 		dis_c_c(c_cmplt);
 		dis_c_null(null_cmplt);
 		astr += sprintf(astr, "%d,%s,0x%x", im5, r_06_names[r_06], target + pc + 8);
 		CONS("addb_all ")
-	}
-	| cmpb_all(c_cmplt, null_cmplt, r_11, r_06, target) [name] => {
+
+	| cmpb_all(c_cmplt, null_cmplt, r_11, r_06, target) [name] =>
 		ANAME
 		dis_c_c(c_cmplt);
 		dis_c_null(null_cmplt);
 		astr += sprintf(astr, "%s,%s,0x%x", r_11_names[r_11], r_06_names[r_06], target + pc + 8);
 		CONS("cmpb_all ")
-	}
-	| cmpib_all(c_cmplt, null_cmplt, im5_11, r_06, target) [name] => {
+
+	| cmpib_all(c_cmplt, null_cmplt, im5_11, r_06, target) [name] =>
 		ANAME
 		dis_c_c(c_cmplt);
 		dis_c_null(null_cmplt);
 		astr += sprintf(astr, "%d,%s,0x%x", im5_11, r_06_names[r_06], target + pc + 8);
 		CONS("cmpib_all ")
-	}
-	| bb_all(c_cmplt, null_cmplt, r_11, bit_cmplt, target) => {
+
+	| bb_all(c_cmplt, null_cmplt, r_11, bit_cmplt, target) =>
 		apre += sprintf(apre, "%s", "BB");
 		dis_c_c(c_cmplt);
 		dis_c_null(null_cmplt);
@@ -602,24 +561,24 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		dis_c_bit(bit_cmplt);
 		sprintf(astr, ",%x", target + pc + 8);
 		CONS("bb_all ")
-	}
-	| flt_c0_all(fmt, r, t) [name] => {
+
+	| flt_c0_all(fmt, r, t) [name] =>
 		apre += sprintf(apre, "%s", killDot(name));
 		dis_flt_fmt(fmt);
 		astr += sprintf(astr, "%s, ", dis_freg(r));
 		astr += sprintf(astr, "%s",   dis_freg(t));
 		CONS("flt_c0_all ")
-	}
-	| flt_c1_all(sf, df, r, t) [name] => {
+
+	| flt_c1_all(sf, df, r, t) [name] =>
 		apre += sprintf(apre, "%s", killDot(name));
 		dis_flt_fmt(sf);
 		dis_flt_fmt(df);
 		astr += sprintf(astr, "%s, ", dis_freg(r));
 		astr += sprintf(astr, "%s",   dis_freg(t));
 		CONS("flt_c1_all ")
-	}
-	| flt_c2_all(fmt, _, r1, r2) [name] => {
-	//| flt_c2_all(fmt, c, r1, r2) [name] => {
+
+	| flt_c2_all(fmt, _, r1, r2) [name] =>
+	//| flt_c2_all(fmt, c, r1, r2) [name] =>
 		apre += sprintf(apre, "%s", killDot(name));
 		dis_flt_fmt(fmt);
 		astr += sprintf(astr, "%s, ", dis_freg(r1));
@@ -627,33 +586,33 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		// HACK: Needs completer c decoded
 		astr += sprintf(astr, "\t/* Completer c needs decoding */");
 		CONS("flt_c2_all ")
-	}
-	| flt_c3_all(fmt, r1, r2, t) [name] => {
+
+	| flt_c3_all(fmt, r1, r2, t) [name] =>
 		apre += sprintf(apre, "%s", killDot(name));
 		dis_flt_fmt(fmt);
 		astr += sprintf(astr, "%s, ", dis_freg(r1));
 		astr += sprintf(astr, "%s, ", dis_freg(r2));
 		astr += sprintf(astr, "%s",   dis_freg(t));
 		CONS("flt_c3_all ")
-	}
-	| XMPYU(r1, r2, t) => {
+
+	| XMPYU(r1, r2, t) =>
 		apre += sprintf(apre, "XMPYU");
 		astr += sprintf(astr, "%s, ", dis_freg(r1));
 		astr += sprintf(astr, "%s, ", dis_freg(r2));
 		astr += sprintf(astr, "%s",   dis_freg(t));
 		CONS("FMPYU ");
-	}
+
 
 	// Floating point loads and stores
-	| fwloads(c_addr, xd, s, b, t_27) [name] => {
+	| fwloads(c_addr, xd, s, b, t_27) [name] =>
 		apre += sprintf(apre, "%s",killDot(name));
 		//dis_c_addr(c_faddr);
 		dis_c_addr(c_addr);
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s),%s", s2_16_names[s], b_06_names[b], dis_freg(t_27));
 		CONS("fwloads ")
-	}
-	| fwstores(c_addr, r, xd, s, b) [name] => {
+
+	| fwstores(c_addr, r, xd, s, b) [name] =>
 		apre += sprintf(apre, "%s",killDot(name));
 		//dis_c_addr(c_faddr);
 		dis_c_addr(c_addr);
@@ -661,16 +620,16 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s)", s2_16_names[s], b_06_names[b]);
 		CONS("fwstores ")
-	}
-	| fdloads(c_addr, xd, s, b, t_27) [name] => {
+
+	| fdloads(c_addr, xd, s, b, t_27) [name] =>
 		apre += sprintf(apre, "%s",killDot(name));
 		//dis_c_addr(c_faddr);
 		dis_c_addr(c_addr);
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s),%s", s2_16_names[s], b_06_names[b], dis_freg(t_27));
 		CONS("fdloads ")
-	}
-	| fdstores(c_addr, r, xd, s, b) [name] => {
+
+	| fdstores(c_addr, r, xd, s, b) [name] =>
 		apre += sprintf(apre, "%s", killDot(name));
 		//dis_c_addr(c_faddr);
 		dis_c_addr(c_addr);
@@ -678,7 +637,6 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 		dis_c_xd(xd);
 		astr += sprintf(astr, "(%s,%s)", s2_16_names[s], b_06_names[b]);
 		CONS("fdstores ")
-	}
 
 	else
 		apre += sprintf(apre, "unrecog. %02X %08X", (getDword(hostPC) >> 26) & 0x3F, getDword(hostPC) & 0x03FFFFFF);
@@ -690,9 +648,8 @@ NJMCDecoder::decodeAssemblyInstruction(ADDRESS pc, int delta)
 }
 
 /*
-	| LDWl(cmplt, ldisp, s2_16, b_06, t_11) [name] => {
+	| LDWl(cmplt, ldisp, s2_16, b_06, t_11) [name] =>
 		astr += sprintf(astr, "%s", name);
 		c_disps(cmplt);
 		astr += sprintf(astr, "  %d(%s,%s),%s", ldisp, s2_16_names[s2_16], b_06_names[b_06], t_11_names[t_11]);
-	}
 */

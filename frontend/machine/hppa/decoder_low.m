@@ -32,8 +32,8 @@ c_c_n(ADDRESS hostpc)
 {
 	bool result = true;
 	match hostpc to
-	| c_c_nonneg() => { result = true; }
-	| c_c_neg() =>    { result = false; }
+	| c_c_nonneg() => result = true;
+	| c_c_neg()    => result = false;
 	endmatch
 	return result;
 }
@@ -49,36 +49,26 @@ NJMCDecoder::c_c(ADDRESS hostpc, int &cond)
 	static const int cmpib_codes[] = { 4, 1, 2, 3, 12, 9, 10, 11 };
 	static const int sep_codes[] = { 0, 1, 2, 7, 8, 9, 10, 15 };
 	match hostpc to
-	| c_arith_w(c3, cmplt) => {
+	| c_arith_w(c3, cmplt) =>
 		cond = c3 + (c_c_n(cmplt) ? 0 : 8);
-	}
-	| c_arith_dw(c3, cmplt) => {
+	| c_arith_dw(c3, cmplt) =>
 		cond = c3 + (c_c_n(cmplt) ? 0 : 8);
-	}
-	| c_arith_none() => {
+	| c_arith_none() =>
 		cond = 0;
-	}
-	| c_sep(c3_16) => {
+	| c_sep(c3_16) =>
 		cond = sep_codes[c3_16];
-	}
-	| c_cmpb_w(c3, cmplt) => {
+	| c_cmpb_w(c3, cmplt) =>
 		cond = c3 + (c_c_n(cmplt) ? 0 : 8);
-	}
-	| c_cmpb_dw(c3, cmplt) => {
+	| c_cmpb_dw(c3, cmplt) =>
 		cond = c3 + (c_c_n(cmplt) ? 0 : 8);
-	}
-	| c_cmpib_dw(c3) => {
+	| c_cmpib_dw(c3) =>
 		cond = cmpib_codes[c3];
-	}
-	| c_bbs_w(c) => {
+	| c_bbs_w(c) =>
 		cond = 1 + (c ? 0 : 8);
-	}
-	| c_bbs_dw(c) => {
+	| c_bbs_dw(c) =>
 		cond = 1 + (c ? 0 : 8);
-	}
-	else {
+	else
 		cond = 0;
-	}
 	endmatch
 	return instantiateNamedParam(c_c_names[cond]);
 }
@@ -89,17 +79,14 @@ c_wcr(ADDRESS hostpc, char **garble)
 #if 0
 	unsigned long regl;
 	match hostpc to
-	| c_mfctl(r_06) => {
+	| c_mfctl(r_06) =>
 		regl = r_06;
-	}
-	| c_mfctl_w() => {
+	| c_mfctl_w() =>
 		*garble += sprintf(*garble, ".w");
 		regl = 11;
-	}
-	else {
+	else
 		regl = 0;
 		//sprintf("#c_WCR%08X#", getDword(hostpc));
-	}
 	endmatch
 	return regl;
 #else
@@ -112,14 +99,11 @@ c_null(ADDRESS hostpc, char **garble)
 {
 #if 0
 	match hostpc to
-	| c_br_nnull() => {
-	}
-	| c_br_null() => {
+	| c_br_nnull() =>
+	| c_br_null() =>
 		*garble += sprintf(*garble, ".n");
-	}
-	else {
+	else
 		//printf("#c_NULL%08X#", getDword(hostpc));
-	}
 	endmatch
 #endif
 }
@@ -145,146 +129,104 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 	list<RT *> *RTs = NULL;
 	int condvalue;
 	match [nextPC] hostPC to
-	| arith(cmplt, r_11, r_06, t_27) [name] => {
+	| arith(cmplt, r_11, r_06, t_27) [name] =>
 		/*  Arith,cc_16   r_11, r_06, t_27 */
 		RTs = instantiate(pc, name, dis_Reg(r_11), dis_Reg(r_06), dis_Reg(t_27), c_c(cmplt, condvalue));
-	}
-	| arith_imm(cmplt, imm11, r_06, t_11) [name] => {
+	| arith_imm(cmplt, imm11, r_06, t_11) [name] =>
 		/* arith_imm,cc_16 imm11!,r_06,t_11 */
 		RTs = instantiate(pc, name, dis_Num(imm11), dis_Reg(r_06), dis_Reg(t_11), c_c(cmplt, condvalue));
-	}
-	| ADDIL(imm21, r_06) [name] => {
+	| ADDIL(imm21, r_06) [name] =>
 		RTs = instantiate(pc, name, dis_Num(imm21), dis_Reg(r_06));
-	}
-	| LDIL(imm21, t_06) [name] => {
+	| LDIL(imm21, t_06) [name] =>
 		RTs = instantiate(pc, name, dis_Num(imm21), dis_Reg(t_06));
-	}
-	| iloads(c_addr, xd, s, b, t_27) [name] => {
+	| iloads(c_addr, xd, s, b, t_27) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd), dis_Sreg(s), dis_Reg(b), dis_Reg(t_27));
-	}
-	| istores(c_addr, r_11, xd, s, b) [name] => {
+	| istores(c_addr, r_11, xd, s, b) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Reg(r_11), dis_xd(xd), dis_Sreg(s), dis_Reg(b));
-	}
-	| fwloads(c_addr, xd, s, b, t_27) [name] => {
+	| fwloads(c_addr, xd, s, b, t_27) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd), dis_Sreg(s), dis_Reg(b), dis_Freg(t_27, 0));
-	}
-	| fwstores(c_addr, r_27, xd, s, b) [name] => {
+	| fwstores(c_addr, r_27, xd, s, b) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Freg(r_27, 0), dis_xd(xd), dis_Sreg(s), dis_Reg(b));
-	}
-	| fdloads(c_addr, xd, s, b, t_27) [name] => {
+	| fdloads(c_addr, xd, s, b, t_27) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd), dis_Sreg(s), dis_Reg(b), dis_Freg(t_27, 1));
-	}
-	| fdstores(c_addr, r_27, xd, s, b) [name] => {
+	| fdstores(c_addr, r_27, xd, s, b) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Freg(r_27, 1), dis_xd(xd), dis_Sreg(s), dis_Reg(b));
-	}
-	| iloads_ldisp(c_addr, xd, s, b, r_11) [name] => {
+	| iloads_ldisp(c_addr, xd, s, b, r_11) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_xd(xd), dis_Sreg(s), dis_Reg(b), dis_Reg(r_11));
-	}
-	| istores_ldisp(c_addr, r_11, xd, s, b) [name] => {
+	| istores_ldisp(c_addr, r_11, xd, s, b) [name] =>
 		RTs = instantiate(pc, name, dis_c_addr(c_addr), dis_Reg(r_11), dis_xd(xd), dis_Sreg(s), dis_Reg(b));
-	}
-	| LDO(ldisp, b, t) [name] => {
+	| LDO(ldisp, b, t) [name] =>
 		RTs = instantiate(pc, name, dis_Num(ldisp), dis_Reg(b), dis_Reg(t));
-	}
-	| VSHD(r1, r2, t, c) [name] => {
+	| VSHD(r1, r2, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2), dis_Reg(t), c_c(c, condvalue));
-	}
-	| SHD(r1, r2, p, t, c) [name] => {
+	| SHD(r1, r2, p, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2), dis_Num(p), dis_Reg(t), c_c(c, condvalue));
-	}
-	| ext_var(r, len, t, c) [name] => {
+	| ext_var(r, len, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
-	}
-	| ext_fix(r, p, len, t, c) [name] => {
+	| ext_fix(r, p, len, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r), dis_Num(p), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
-	}
-	| dep_var(r, len, t, c) [name] => {
+	| dep_var(r, len, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
-	}
-	| dep_fix(r, p, len, t, c) [name] => {
+	| dep_fix(r, p, len, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r), dis_Num(p), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
-	}
-	| dep_ivar(i, len, t, c) [name] => {
+	| dep_ivar(i, len, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Num(i), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
-	}
-	| dep_ifix(i, p, len, t, c) [name] => {
+	| dep_ifix(i, p, len, t, c) [name] =>
 		RTs = instantiate(pc, name, dis_Num(i), dis_Num(p), dis_Num(len), dis_Reg(t), c_c(c, condvalue));
-	}
-	| ubranch(_, ubr_target, t_06) [name] => {
-	//| ubranch(nulli, ubr_target, t_06) [name] => {
+	| ubranch(_, ubr_target, t_06) [name] =>
+	//| ubranch(nulli, ubr_target, t_06) [name] =>
 		/* ubranch,cmplt,n  target,t_06) */
 		RTs = instantiate(pc, name, dis_Num(ubr_target), dis_Reg(t_06));
-	}
-	| BL.LONG(_, ubr_target) [name] => {
-	//| BL.LONG(nulli, ubr_target) [name] => {
+	| BL.LONG(_, ubr_target) [name] =>
+	//| BL.LONG(nulli, ubr_target) [name] =>
 		/* BL.LONG cmplt,n  target,2) */
 		RTs = instantiate(pc, name, dis_Num(ubr_target));
-	}
-	| BLR(_, x_11, t_06) [name] => {
-	//| BLR(nulli, x_11, t_06) [name] => {
+	| BLR(_, x_11, t_06) [name] =>
+	//| BLR(nulli, x_11, t_06) [name] =>
 		/* BLR,n x,t */
 		RTs = instantiate(pc, name, dis_Reg(x_11), dis_Reg(t_06));
-	}
-	| BV(_, x_11, b_06) [name] => {
-	//| BV(nulli, x_11, b_06) [name] => {
+	| BV(_, x_11, b_06) [name] =>
+	//| BV(nulli, x_11, b_06) [name] =>
 		/* BV,n x_11(b_06) */
 		RTs = instantiate(pc, name, dis_Reg(x_11), dis_Reg(b_06));
-	}
-	| bve(p_31, _, b_06) [name] => {
-	//| bve(p_31, nulli, b_06) [name] => {
+	| bve(p_31, _, b_06) [name] =>
+	//| bve(p_31, nulli, b_06) [name] =>
 		/* BVE.l BVE.lp BVE.p BVE  */
 		RTs = instantiate(pc, name, p_31, dis_Reg(b_06));
-	}
-	| BREAK(im5_27, im13_06) [name] => {
+	| BREAK(im5_27, im13_06) [name] =>
 		RTs = instantiate(pc, name, dis_Num(im5_27), dis_Num(im13_06));
-	}
-	| sysop_i_t(im10_06, t_27) [name] => {
+	| sysop_i_t(im10_06, t_27) [name] =>
 		RTs = instantiate(pc, name, dis_Num(im10_06), dis_Reg(t_27));
-	}
-	| sysop_simple [name] => {
+	| sysop_simple [name] =>
 		RTs = instantiate(pc, name);
-	}
-	| sysop_r(r_11) [name] => {
+	| sysop_r(r_11) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r_11));
-	}
-	| sysop_cr_t(cmplt, t_27) [name] => {
+	| sysop_cr_t(cmplt, t_27) [name] =>
 		RTs = instantiate(pc, name, dis_c_wcr(cmplt), dis_Reg(t_27));
-	}
-	| MTCTL(r_11, ct_06) [name] => {
+	| MTCTL(r_11, ct_06) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(r_11), dis_ct(ct_06));
-	}
-	| MFIA(t_27) [name] => {
+	| MFIA(t_27) [name] =>
 		RTs = instantiate(pc, name, dis_Reg(t_27));
-	}
 	// Floating point instructions. Note that the floating point format is being
 	// passed as an ss inf the form of an integer constant (using dis_Num())
-	| flt_c0_all(fmt, rf, tf) [name] => {
+	| flt_c0_all(fmt, rf, tf) [name] =>
 		RTs = instantiate(pc, name, dis_Num(fmt), dis_Freg(rf, fmt), dis_Freg(tf, fmt));
-	}
-	| flt_c1_all(sf, df, rf, tf) [name] => {
+	| flt_c1_all(sf, df, rf, tf) [name] =>
 		RTs = instantiate(pc, name, dis_Num(sf), dis_Num(df), dis_Freg(rf, sf), dis_Freg(tf, df));
-	}
-	| flt_c2_all(sf, df, rf, tf) [name] => {
+	| flt_c2_all(sf, df, rf, tf) [name] =>
 		RTs = instantiate(pc, name, dis_Num(sf), dis_Num(df), dis_Freg(rf, sf), dis_Freg(tf, df));
-	}
-	| flt_c3_all(fmt, fr1, fr2, frt) [name] => {
+	| flt_c3_all(fmt, fr1, fr2, frt) [name] =>
 		RTs = instantiate(pc, name, dis_Num(fmt), dis_Freg(fr1, fmt), dis_Freg(fr2, fmt), dis_Freg(frt, fmt));
-	}
-	| XMPYU(fr1, fr2, frt) => {
+	| XMPYU(fr1, fr2, frt) =>
 		// This instruction has fixed register sizes
 		RTs = instantiate(pc, "XMPYU", dis_Freg(fr1, 0), dis_Freg(fr2, 0), dis_Freg(frt, 1));
-	}
-//	| LDSID(s2_16, b_06, t_27) [name] => {
-//	}
-//	| MTSP(r_11, sr) [name] => {
-//	}
-//	| MFSP(sr, t_27) [name] => {
-//	}
-	else {
+//	| LDSID(s2_16, b_06, t_27) [name] =>
+//	| MTSP(r_11, sr) [name] =>
+//	| MFSP(sr, t_27) [name] =>
+	else
 		//RTs = NULL;
 		result.valid = false;
 		cout << "Undecoded instruction " << hex << *(int *)hostPC << " at " << pc << " (opcode " << ((*(unsigned *)hostPC) >> 26) << ")\n";
-	}
 	endmatch
 
 	result.numBytes = (nextPC - hostPC);
@@ -292,9 +234,8 @@ NJMCDecoder::decodeLowLevelInstruction(ADDRESS hostPC, ADDRESS pc, DecodeResult 
 }
 
 /*
-	| LDWl(cmplt, ldisp, s2_16, b_06, t_11) [name] => {
+	| LDWl(cmplt, ldisp, s2_16, b_06, t_11) [name] =>
 		*garble += sprintf(*garble, "%s", name);
 		c_disps(cmplt);
 		*garble += sprintf(*garble, "  %d(%s,%s),%s", ldisp, s2_16_names[s2_16], b_06_names[b_06], t_11_names[t_11]);
-	}
 */

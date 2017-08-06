@@ -129,8 +129,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (strcmp(name, "stmw") == 0) {
 			// Needs the last param s, which is the register number from rs
 			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_RS_NUM);
-		} else
+		} else {
 			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_NZRA);
+		}
 
 	| Dsaui_(rd, ra, uimm) [name] =>
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
@@ -138,8 +139,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (strcmp(name, "addi") == 0 || strcmp(name, "addis") == 0) {
 			// Note the DIS_RAZ, since rA could be constant zero
 			stmts = instantiate(pc, name, DIS_RD, DIS_RAZ, DIS_SIMM);
-		} else
+		} else {
 			stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_SIMM);
+		}
 	| Xsabx_^Rc(rd, ra, rb) [name] =>
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 	| Xdab_(rd, ra, rb) [name] =>
@@ -151,8 +153,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (strcmp(name, "lmw") == 0) {
 			// Needs the third param d, which is the register number from rd
 			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_RD_NUM);
-		} else
+		} else {
 			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_NZRA);
+		}
 //	| XLb_(_, _) [name] =>
 //	//| XLb_(b0, b1) [name] =>
 #if BCCTR_LONG  // Prefer to see bltctr instead of bcctr 12,0

@@ -277,7 +277,6 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 		SemStr *ss;
 
 		match [nextPC] hostPC to
-
 		| regCall(ea) =>
 			/*
 			 * Register call
@@ -441,16 +440,12 @@ NJMCDecoder::BTA(ADDRESS d, DecodeResult &result, ADDRESS pc)
 	ret->push(idIntConst);
 
 	match d to
-
-	| wordOffset(dsp16) => {
+	| wordOffset(dsp16) =>
 		ret->push(pc + 2 + dsp16);
 		result.numBytes += 2;
-	}
-
-	| byteOffset(dsp8) => {
+	| byteOffset(dsp8) =>
 		// Casts needed to work around MLTK bug
 		ret->push(pc + 2 + (int)(char)dsp8);
-	}
 	endmatch
 
 	return ret;
@@ -831,41 +826,37 @@ NJMCDecoder::alEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| alADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| alAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| alAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| alAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| alADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| alAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| alAbs.w()    => mode = 4; result.numBytes += 2;
+	| alAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| alADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| alADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| alAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| alAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| alAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| alAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| alAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| alAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -882,82 +873,74 @@ NJMCDecoder::amEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| amADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| amAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| amPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| amPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| amAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| amAbs.l()    => { mode = 5; result.numBytes += 4; }
-	| amImm.b()    => { mode = 6; result.numBytes += 2; }
-	| amImm.w()    => { mode = 7; result.numBytes += 2; }
-	| amImm.l()    => { mode = 8; result.numBytes += 4; }
+	| amADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| amAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| amPcDisp()   => mode = 2; result.numBytes += 2;
+	| amPcIndex()  => mode = 3; result.numBytes += 2;
+	| amAbs.w()    => mode = 4; result.numBytes += 2;
+	| amAbs.l()    => mode = 5; result.numBytes += 4;
+	| amImm.b()    => mode = 6; result.numBytes += 2;
+	| amImm.w()    => mode = 7; result.numBytes += 2;
+	| amImm.l()    => mode = 8; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| amADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| amADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| amAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| amAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| amPcDisp.x(d16) => ret = pPcDisp(d16, delta, size);
-			endmatch
-		}
+		match x to
+		| amPcDisp.x(d16) =>
+			ret = pPcDisp(d16, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| amPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| amPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| amAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| amAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| amAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| amAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	case 6:
-		{
-			match x to
-			| amImm.b.x(d8) => ret = pImmB(d8);
-			else pNonzeroByte(pc);
-			endmatch
-		}
+		match x to
+		| amImm.b.x(d8) =>
+			ret = pImmB(d8);
+		else
+			pNonzeroByte(pc);
+		endmatch
 		break;
 	case 7:
-		{
-			match x to
-			| amImm.w.x(d16) => ret = pImmW(d16);
-			endmatch
-		}
+		match x to
+		| amImm.w.x(d16) =>
+			ret = pImmW(d16);
+		endmatch
 		break;
 	case 8:
-		{
-			match x to
-			| amImm.l.x(d32) => ret = pImmL(d32);
-			endmatch
-		}
+		match x to
+		| amImm.l.x(d32) =>
+			ret = pImmL(d32);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -974,73 +957,65 @@ NJMCDecoder::awlEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, in
 	int reg2, mode;
 
 	match eax to
-	| awlADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| awlAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| awlPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| awlPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| awlAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| awlAbs.l()    => { mode = 5; result.numBytes += 4; }
-	| awlImm.w()    => { mode = 7; result.numBytes += 2; }
-	| awlImm.l()    => { mode = 8; result.numBytes += 4; }
+	| awlADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| awlAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| awlPcDisp()   => mode = 2; result.numBytes += 2;
+	| awlPcIndex()  => mode = 3; result.numBytes += 2;
+	| awlAbs.w()    => mode = 4; result.numBytes += 2;
+	| awlAbs.l()    => mode = 5; result.numBytes += 4;
+	| awlImm.w()    => mode = 7; result.numBytes += 2;
+	| awlImm.l()    => mode = 8; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| awlADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| awlADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| awlAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| awlAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| awlPcDisp.x(d16) => ret = pPcDisp(d16, delta, size);
-			endmatch
-		}
+		match x to
+		| awlPcDisp.x(d16) =>
+			ret = pPcDisp(d16, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| awlPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| awlPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| awlAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| awlAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| awlAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| awlAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	case 7:
-		{
-			match x to
-			| awlImm.w.x(d16) => ret = pImmW(d16);
-			endmatch
-		}
+		match x to
+		| awlImm.w.x(d16) =>
+			ret = pImmW(d16);
+		endmatch
 		break;
 	case 8:
-		{
-			match x to
-			| awlImm.l.x(d32) => ret = pImmL(d32);
-			endmatch
-		}
+		match x to
+		| awlImm.l.x(d32) =>
+			ret = pImmL(d32);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1057,57 +1032,51 @@ NJMCDecoder::cEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int 
 	int reg2, mode;
 
 	match eax to
-	| cADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| cAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| cPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| cPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| cAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| cAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| cADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| cAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| cPcDisp()   => mode = 2; result.numBytes += 2;
+	| cPcIndex()  => mode = 3; result.numBytes += 2;
+	| cAbs.w()    => mode = 4; result.numBytes += 2;
+	| cAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| cADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| cADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| cAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| cAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| cPcDisp.x(label) => ret = pPcDisp(label, delta, size);
-			endmatch
-		}
+		match x to
+		| cPcDisp.x(label) =>
+			ret = pPcDisp(label, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| cPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| cPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| cAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| cAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| cAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| cAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1124,82 +1093,74 @@ NJMCDecoder::dEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int 
 	int reg2, mode;
 
 	match eax to
-	| dADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| dAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| dPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| dPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| dAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| dAbs.l()    => { mode = 5; result.numBytes += 4; }
-	| dImm.b()    => { mode = 6; result.numBytes += 2; }
-	| dImm.w()    => { mode = 7; result.numBytes += 2; }
-	| dImm.l()    => { mode = 8; result.numBytes += 4; }
+	| dADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| dAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| dPcDisp()   => mode = 2; result.numBytes += 2;
+	| dPcIndex()  => mode = 3; result.numBytes += 2;
+	| dAbs.w()    => mode = 4; result.numBytes += 2;
+	| dAbs.l()    => mode = 5; result.numBytes += 4;
+	| dImm.b()    => mode = 6; result.numBytes += 2;
+	| dImm.w()    => mode = 7; result.numBytes += 2;
+	| dImm.l()    => mode = 8; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| dADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| dADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| dAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| dAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| dPcDisp.x(label) => ret = pPcDisp(label, delta, size);
-			endmatch
-		}
+		match x to
+		| dPcDisp.x(label) =>
+			ret = pPcDisp(label, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| dPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| dPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| dAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| dAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| dAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| dAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	case 6:
-		{
-			match x to
-			| dImm.b.x(d8) => ret = pImmB(d8);
-			else pNonzeroByte(pc);
-			endmatch
-		}
+		match x to
+		| dImm.b.x(d8) =>
+			ret = pImmB(d8);
+		else
+			pNonzeroByte(pc);
+		endmatch
 		break;
 	case 7:
-		{
-			match x to
-			| dImm.w.x(d16) => ret = pImmW(d16);
-			endmatch
-		}
+		match x to
+		| dImm.w.x(d16) =>
+			ret = pImmW(d16);
+		endmatch
 		break;
 	case 8:
-		{
-			match x to
-			| dImm.l.x(d32) => ret = pImmL(d32);
-			endmatch
-		}
+		match x to
+		| dImm.l.x(d32) =>
+			ret = pImmL(d32);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1216,41 +1177,37 @@ NJMCDecoder::daEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| daADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| daAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| daAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| daAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| daADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| daAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| daAbs.w()    => mode = 4; result.numBytes += 2;
+	| daAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| daADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| daADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| daAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| daAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| daAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| daAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| daAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| daAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1267,66 +1224,60 @@ NJMCDecoder::dBEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| dBADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| dBAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| dBPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| dBPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| dBAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| dBAbs.l()    => { mode = 5; result.numBytes += 4; }
-	| dBImm.b()    => { mode = 6; result.numBytes += 2; }
+	| dBADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| dBAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| dBPcDisp()   => mode = 2; result.numBytes += 2;
+	| dBPcIndex()  => mode = 3; result.numBytes += 2;
+	| dBAbs.w()    => mode = 4; result.numBytes += 2;
+	| dBAbs.l()    => mode = 5; result.numBytes += 4;
+	| dBImm.b()    => mode = 6; result.numBytes += 2;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| dBADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| dBADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| dBAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| dBAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| dBPcDisp.x(label) => ret = pPcDisp(label, delta, size);
-			endmatch
-		}
+		match x to
+		| dBPcDisp.x(label) =>
+			ret = pPcDisp(label, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| dBPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| dBPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| dBAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| dBAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| dBAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| dBAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	case 6:
-		{
-			match x to
-			| dImm.b.x(d8) => ret = pImmB(d8);
-			else pNonzeroByte(pc);
-			endmatch
-		}
+		match x to
+		| dImm.b.x(d8) =>
+			ret = pImmB(d8);
+		else
+			pNonzeroByte(pc);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1343,65 +1294,58 @@ NJMCDecoder::dWEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| dWADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| dWAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| dWPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| dWPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| dWAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| dWAbs.l()    => { mode = 5; result.numBytes += 4; }
-	| dWImm.w()    => { mode = 7; result.numBytes += 2; }
+	| dWADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| dWAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| dWPcDisp()   => mode = 2; result.numBytes += 2;
+	| dWPcIndex()  => mode = 3; result.numBytes += 2;
+	| dWAbs.w()    => mode = 4; result.numBytes += 2;
+	| dWAbs.l()    => mode = 5; result.numBytes += 4;
+	| dWImm.w()    => mode = 7; result.numBytes += 2;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| dWADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| dWADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| dWAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| dWAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| dWPcDisp.x(label) => ret = pPcDisp(label, delta, size);
-			endmatch
-		}
+		match x to
+		| dWPcDisp.x(label) =>
+			ret = pPcDisp(label, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| dWPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| dWPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| dWAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| dWAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| dWAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| dWAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	case 7:
-		{
-			match x to
-			| dWImm.w.x(d16) => ret = pImmW(d16);
-			endmatch
-		}
+		match x to
+		| dWImm.w.x(d16) =>
+			ret = pImmW(d16);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1418,41 +1362,37 @@ NJMCDecoder::maEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| maADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| maAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| maAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| maAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| maADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| maAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| maAbs.w()    => mode = 4; result.numBytes += 2;
+	| maAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| maADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| maADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| maAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| maAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| maAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| maAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| maAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| maAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1469,66 +1409,60 @@ NJMCDecoder::msEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| msADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| msAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| msPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| msPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| msAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| msImm.b()    => { mode = 6; result.numBytes += 2; }
-	| msImm.w()    => { mode = 7; result.numBytes += 2; }
+	| msADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| msAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| msPcDisp()   => mode = 2; result.numBytes += 2;
+	| msPcIndex()  => mode = 3; result.numBytes += 2;
+	| msAbs.w()    => mode = 4; result.numBytes += 2;
+	| msImm.b()    => mode = 6; result.numBytes += 2;
+	| msImm.w()    => mode = 7; result.numBytes += 2;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| msADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| msADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| msAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| msAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| msPcDisp.x(label) => ret = pPcDisp(label, delta, size);
-			endmatch
-		}
+		match x to
+		| msPcDisp.x(label) =>
+			ret = pPcDisp(label, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| msPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| msPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| msAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| msAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 6:
-		{
-			match x to
-			| msImm.b.x(d8) => ret = pImmB(d8);
-			else pNonzeroByte(pc);
-			endmatch
-		}
+		match x to
+		| msImm.b.x(d8) =>
+			ret = pImmB(d8);
+		else
+			pNonzeroByte(pc);
+		endmatch
 		break;
 	case 7:
-		{
-			match x to
-			| msImm.w.x(d16) => ret = pImmW(d16);
-			endmatch
-		}
+		match x to
+		| msImm.w.x(d16) =>
+			ret = pImmW(d16);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1545,8 +1479,8 @@ NJMCDecoder::msEAXL(ADDRESS eaxl, int d32, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eaxl to
-		| msAbs.l() => { mode = 5; result.numBytes += 4; }
-		| msImm.l() => { mode = 8; result.numBytes += 4; }
+		| msAbs.l() => mode = 5; result.numBytes += 4;
+		| msImm.l() => mode = 8; result.numBytes += 4;
 		else pIllegalMode(pc);
 	endmatch
 
@@ -1572,41 +1506,37 @@ NJMCDecoder::mdEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg1, mode;
 
 	match eax to
-	| mdADisp(r1)  => { mode = 0; reg1 = r1; result.numBytes += 2; }
-	| mdAIndex(r1) => { mode = 1; reg1 = r1; result.numBytes += 2; }
-	| mdAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| mdAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| mdADisp(r1)  => mode = 0; reg1 = r1; result.numBytes += 2;
+	| mdAIndex(r1) => mode = 1; reg1 = r1; result.numBytes += 2;
+	| mdAbs.w()    => mode = 4; result.numBytes += 2;
+	| mdAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| mdADisp.x(d16) => ret = pADisp(d16, reg1, size);
-			endmatch
-		}
+		match x to
+		| mdADisp.x(d16) =>
+			ret = pADisp(d16, reg1, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| mdAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg1, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| mdAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg1, iT, iR, iS, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| mdAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| mdAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| mdAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| mdAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1623,57 +1553,51 @@ NJMCDecoder::mrEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| mrADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| mrAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| mrPcDisp()   => { mode = 2; result.numBytes += 2; }
-	| mrPcIndex()  => { mode = 3; result.numBytes += 2; }
-	| mrAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| mrAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| mrADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| mrAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| mrPcDisp()   => mode = 2; result.numBytes += 2;
+	| mrPcIndex()  => mode = 3; result.numBytes += 2;
+	| mrAbs.w()    => mode = 4; result.numBytes += 2;
+	| mrAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| mrADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| mrADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| mrAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| mrAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 2:
-		{
-			match x to
-			| mrPcDisp.x(label) => ret = pPcDisp(label, delta, size);
-			endmatch
-		}
+		match x to
+		| mrPcDisp.x(label) =>
+			ret = pPcDisp(label, delta, size);
+		endmatch
 		break;
 	case 3:
-		{
-			match x to
-			| mrPcIndex.x(iT, iR, iS, d8) => ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
-			endmatch
-		}
+		match x to
+		| mrPcIndex.x(iT, iR, iS, d8) =>
+			ret = pPcIndex(d8, iT, iR, iS, pc + 2, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| mrAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| mrAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| mrAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| mrAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);
@@ -1690,41 +1614,37 @@ NJMCDecoder::rmEAX(ADDRESS eax, ADDRESS x, DecodeResult &result, ADDRESS pc, int
 	int reg2, mode;
 
 	match eax to
-	| rmADisp(r2)  => { mode = 0; reg2 = r2; result.numBytes += 2; }
-	| rmAIndex(r2) => { mode = 1; reg2 = r2; result.numBytes += 2; }
-	| rmAbs.w()    => { mode = 4; result.numBytes += 2; }
-	| rmAbs.l()    => { mode = 5; result.numBytes += 4; }
+	| rmADisp(r2)  => mode = 0; reg2 = r2; result.numBytes += 2;
+	| rmAIndex(r2) => mode = 1; reg2 = r2; result.numBytes += 2;
+	| rmAbs.w()    => mode = 4; result.numBytes += 2;
+	| rmAbs.l()    => mode = 5; result.numBytes += 4;
 	else pIllegalMode(pc);
 	endmatch
 
 	switch (mode) {
 	case 0:
-		{
-			match x to
-			| rmADisp.x(d16) => ret = pADisp(d16, reg2, size);
-			endmatch
-		}
+		match x to
+		| rmADisp.x(d16) =>
+			ret = pADisp(d16, reg2, size);
+		endmatch
 		break;
 	case 1:
-		{
-			match x to
-			| rmAIndex.x(iT, iR, iS, d8) => ret = pAIndex(d8, reg2, iT, iR, iS, size);
-			endmatch
-		}
+		match x to
+		| rmAIndex.x(iT, iR, iS, d8) =>
+			ret = pAIndex(d8, reg2, iT, iR, iS, size);
+		endmatch
 		break;
 	case 4:
-		{
-			match x to
-			| rmAbs.w.x(d16) => ret = pAbsW(d16, size);
-			endmatch
-		}
+		match x to
+		| rmAbs.w.x(d16) =>
+			ret = pAbsW(d16, size);
+		endmatch
 		break;
 	case 5:
-		{
-			match x to
-			| rmAbs.l.x(d32) => ret = pAbsL(d32, size);
-			endmatch
-		}
+		match x to
+		| rmAbs.l.x(d32) =>
+			ret = pAbsL(d32, size);
+		endmatch
 		break;
 	default:
 		pIllegalMode(pc);

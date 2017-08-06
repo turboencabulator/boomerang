@@ -46,12 +46,8 @@ is_null(ADDRESS hostPC)
 {
 	bool res;
 	match hostPC to
-	| c_br_nnull() => {
-		res = false;
-	}
-	| c_br_null() => {
-		res = true;
-	}
+	| c_br_nnull() => res = false;
+	| c_br_null()  => res = true;
 	endmatch
 
 	return res;
@@ -275,23 +271,25 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 	} else {
 		// Branches and other high level instructions
 		match [nextPC] hostPC to
-		| BL(nulli, ubr_target, t_06) => {
+		| BL(nulli, ubr_target, t_06) =>
 			HLJump *jump;
 			// The return registers are 2 (standard) or 31 (millicode)
-			if ((t_06 == 2) || (t_06 == 31))
+			if ((t_06 == 2) || (t_06 == 31)) {
 				jump = new HLCall(pc, 0, RTs);
-			if ((t_06 != 2) && (t_06 != 31))    // Can't use "else"
+			} else {
 				jump = new HLJump(pc, RTs);
+			}
 			result.rtl = jump;
 			bool isNull = is_null(nulli);
-			if (isNull)
+			if (isNull) {
 				result.type = SU;
-			if (!isNull)                        // Can't use "else"
+			} else {
 				result.type = SD;
+			}
 			jump->setDest(ubr_target + pc);     // This may change
 			result.numBytes = 4;
-		}
-		| bb_all(c_cmplt, null_cmplt, r, bit_cmplt, target) => {
+
+		| bb_all(c_cmplt, null_cmplt, r, bit_cmplt, target) =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			HLJcond *jump = new HLJcond(pc, RTs);
@@ -306,8 +304,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
-		| cmpib_all(c_cmplt, null_cmplt, im5_11, r_06, target) => {
+
+		| cmpib_all(c_cmplt, null_cmplt, im5_11, r_06, target) =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			HLJcond *jump = new HLJcond(pc, RTs);
@@ -325,8 +323,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
-		| cmpb_all(c_cmplt, null_cmplt, r1, r2, target) => {
+
+		| cmpb_all(c_cmplt, null_cmplt, r1, r2, target) =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			HLJcond *jump = new HLJcond(pc, RTs);
@@ -345,8 +343,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
-		| addib_all(c_cmplt, null_cmplt, im5_11, r_06, target) [name] => {
+
+		| addib_all(c_cmplt, null_cmplt, im5_11, r_06, target) [name] =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			// Get semantics for the add part (only)
@@ -365,8 +363,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
-		| MOVB(c_cmplt, null_cmplt, r1, r2, target) [name] => {
+
+		| MOVB(c_cmplt, null_cmplt, r1, r2, target) [name] =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2));
@@ -384,8 +382,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
-		| MOVIB(c_cmplt, null_cmplt, i, r, target) [name] => {
+
+		| MOVIB(c_cmplt, null_cmplt, i, r, target) [name] =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			RTs = instantiate(pc, name, dis_Num(i), dis_Reg(r));
@@ -403,8 +401,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
-		| addb_all(c_cmplt, null_cmplt, r1, r2, target) [name] => {
+
+		| addb_all(c_cmplt, null_cmplt, r1, r2, target) [name] =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			// Get semantics for the add part (only)
@@ -424,10 +422,10 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			result.type = isNull ? (((int)target >= 0) ? SCDAT : SCDAN) : SCD;
 			result.rtl = jump;
 			result.numBytes = 4;
-		}
+
 		// The following two groups of instructions may or may not be anulling
 		// (NCTA). If not, let the low level decoder take care of it.
-		| arith(cmplt, _, _, _) => {
+		| arith(cmplt, _, _, _) =>
 		//| arith(cmplt, r_11, r_06, t_27) => {
 			// Decode the instruction
 			low_level(RTs, hostPC, pc, result, nextPC);
@@ -439,8 +437,8 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 				// We can't do this here, so we just make result.type equal to
 				// NCTA, and the front end will do this for us
 				result.type = NCTA;
-		}
-		| arith_imm(cmplt, _, _, _) => {
+
+		| arith_imm(cmplt, _, _, _) =>
 		//| arith_imm(cmplt, imm11, r_06, t_11) => {
 			// Decode the instruction
 			low_level(RTs, hostPC, pc, result, nextPC);
@@ -450,11 +448,10 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 				// Anulled. Need to decode the next instruction, and make each
 				// RTAssgn in it conditional on !r[tmpNul]
 				result.type = NCTA;
-		}
-		else {
+
+		else
 			// Low level instruction
 			low_level(RTs, hostPC, pc, result, nextPC);
-		}
 		endmatch
 	}
 	return result;
@@ -479,12 +476,10 @@ NJMCDecoder::dis_c_bit(ADDRESS hostpc)
 {
 	SemStr *result;
 	match hostpc to
-	| c_bitpos_w(p) => {
+	| c_bitpos_w(p) =>
 		result = instantiateNamedParam("bitpos_fix", dis_Num(p));
-	}
-	| c_bitsar() => {
+	| c_bitsar() =>
 		result = instantiateNamedParam("bitpos_sar", dis_Num(0));
-	}
 	endmatch
 	return result;
 }
@@ -494,33 +489,24 @@ NJMCDecoder::dis_xd(ADDRESS hostpc)
 {
 	SemStr *result;
 	match hostpc to
-	| x_addr_nots(x) => {
+	| x_addr_nots(x) =>
 		result = instantiateNamedParam("x_addr_nots", dis_Reg(x));
-	}
-	| x_addr_s_byte(x) => {
+	| x_addr_s_byte(x) =>
 		result = instantiateNamedParam("x_addr_s_byte", dis_Reg(x));
-	}
-	| x_addr_s_hwrd(x) => {
+	| x_addr_s_hwrd(x) =>
 		result = instantiateNamedParam("x_addr_s_hwrd", dis_Reg(x));
-	}
-	| x_addr_s_word(x) => {
+	| x_addr_s_word(x) =>
 		result = instantiateNamedParam("x_addr_s_word", dis_Reg(x));
-	}
-	| x_addr_s_dwrd(x) => {
+	| x_addr_s_dwrd(x) =>
 		result = instantiateNamedParam("x_addr_s_dwrd", dis_Reg(x));
-	}
-	| s_addr_im_r(i) => {
+	| s_addr_im_r(i) =>
 		result = instantiateNamedParam("s_addr_im_r", dis_Num(i));
-	}
-	| s_addr_r_im(i) => {
+	| s_addr_r_im(i) =>
 		result = instantiateNamedParam("s_addr_r_im", dis_Num(i));
-	}
-	| l_addr_16_old(i) => {
+	| l_addr_16_old(i) =>
 		result = instantiateNamedParam("l_addr_16_old", dis_Num(i));
-	}
-	| l_addr_17_old(i) => {
+	| l_addr_17_old(i) =>
 		result = instantiateNamedParam("l_addr_17_old", dis_Num(i));
-	}
 	endmatch
 	return result;
 }
@@ -541,25 +527,25 @@ NJMCDecoder::dis_c_addr(ADDRESS hostPC)
 	SemStr *result = NULL;
 	match hostPC to
 	| c_s_addr_mb() =>
-		{ result = instantiateNamedParam("c_s_addr_mb"); }
+		result = instantiateNamedParam("c_s_addr_mb");
 	| c_s_addr_ma() =>
-		{ result = instantiateNamedParam("c_s_addr_ma"); }
+		result = instantiateNamedParam("c_s_addr_ma");
 	| c_s_addr_notm() =>
-		{ result = instantiateNamedParam("c_s_addr_notm"); }
+		result = instantiateNamedParam("c_s_addr_notm");
 	| c_x_addr_m() =>
-		{ result = instantiateNamedParam("c_x_addr_m"); }
+		result = instantiateNamedParam("c_x_addr_m");
 	| c_x_addr_notm() =>
-		{ result = instantiateNamedParam("c_x_addr_notm"); }
+		result = instantiateNamedParam("c_x_addr_notm");
 	| c_y_addr_e() =>
-		{ result = instantiateNamedParam("c_y_addr_e"); }
+		result = instantiateNamedParam("c_y_addr_e");
 	| c_y_addr_m() =>
-		{ result = instantiateNamedParam("c_y_addr_m"); }
+		result = instantiateNamedParam("c_y_addr_m");
 	| c_y_addr_me() =>
-		{ result = instantiateNamedParam("c_y_addr_me"); }
+		result = instantiateNamedParam("c_y_addr_me");
 	| c_y_addr_none() =>
-		{ result = instantiateNamedParam("c_y_addr_none"); }
+		result = instantiateNamedParam("c_y_addr_none");
 	| c_l_addr_none() =>
-		{ result = instantiateNamedParam("c_l_addr_none"); }
+		result = instantiateNamedParam("c_l_addr_none");
 	endmatch
 	return result;
 }

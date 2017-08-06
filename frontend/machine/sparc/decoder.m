@@ -123,9 +123,9 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
 				br->setCondType(BRANCH_JULE);  // BLEU
 			else
 				br->setCondType(BRANCH_JSLE);  // BLE
-		}
-		else
+		} else {
 			br->setCondType(BRANCH_JSL);  // BL
+		}
 		break;
 	case 'N':
 		// BNE, BNEG (won't see BN)
@@ -281,7 +281,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		// NOTE: NJMC toolkit cannot handle embedded else statements!
 		GotoStatement *jump = nullptr;
 		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
@@ -317,7 +316,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		 */
 
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		// NOTE: NJMC toolkit cannot handle embedded else statements!
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
@@ -366,7 +364,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
-		// NOTE: NJMC toolkit cannot handle embedded plain else statements! (But OK with curly bracket before the else)
 		GotoStatement *jump = nullptr;
 		RTL *rtl = nullptr;
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
