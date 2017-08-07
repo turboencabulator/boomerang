@@ -40,8 +40,8 @@ public:
 	           ~SymTab();
 
 	void        Add(ADDRESS a, const char *s);
-	const char *find(ADDRESS a);
-	ADDRESS     find(const char *s);
+	const char *find(ADDRESS a) const;
+	ADDRESS     find(const char *s) const;
 #if 0
 	char       *FindAfter(ADDRESS &dwAddr);     // Find entry with >= given value
 	char       *FindNext(ADDRESS &dwAddr);      // Find next entry (after a Find())

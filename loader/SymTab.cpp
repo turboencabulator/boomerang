@@ -38,7 +38,7 @@ SymTab::Add(ADDRESS a, const char *s)
  * \brief Find an entry by address; nullptr if none.
  */
 const char *
-SymTab::find(ADDRESS a)
+SymTab::find(ADDRESS a) const
 {
 	auto ff = amap.find(a);
 	if (ff == amap.end())
@@ -50,7 +50,7 @@ SymTab::find(ADDRESS a)
  * \brief Find an entry by name; NO_ADDRESS if none.
  */
 ADDRESS
-SymTab::find(const char *s)
+SymTab::find(const char *s) const
 {
 	auto ff = smap.find(s);
 	if (ff == smap.end())
