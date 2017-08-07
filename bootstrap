@@ -4,14 +4,14 @@ autoreconf -vif
 
 # Touch some files to avoid regenerating them:
 
+# These need notangle, from noweb.
+touch frontend/machine/mips/core.spec
+touch frontend/machine/mips/synth.spec
+touch frontend/machine/mips/mips.spec
+
 # These need the ML version of the toolkit.
 touch frontend/mipsdecoder.cpp
 touch frontend/pentiumdecoder.cpp
 touch frontend/ppcdecoder.cpp
 touch frontend/sparcdecoder.cpp
 touch frontend/st20decoder.cpp
-
-# These need notangle, from noweb.
-touch frontend/machine/mips/core.spec
-touch frontend/machine/mips/synth.spec
-touch frontend/machine/mips/mips.spec
