@@ -267,7 +267,7 @@ private:
 #endif
 	void        AddSyms(int secIndex);
 	void        applyRelocations();
-	bool        ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK = false);
+	bool        ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK = false) const;
 	bool        SearchValueByName(const char *pName, SymValue *pVal) const;
 	bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName) const;
 	ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);

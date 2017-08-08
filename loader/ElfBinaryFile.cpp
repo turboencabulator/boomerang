@@ -485,7 +485,7 @@ ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
 }
 
 bool
-ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* = false */)
+ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* = false */) const
 {
 	int hash, numBucket, numChain, y;
 	const int *pBuckets, *pChains;  // For symbol table work
