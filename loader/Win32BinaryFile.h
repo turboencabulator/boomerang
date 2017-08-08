@@ -175,7 +175,7 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	ADDRESS     isJumpToAnotherAddr(ADDRESS uNative) override;
+	ADDRESS     isJumpToAnotherAddr(ADDRESS uNative) const override;
 	bool        isStaticLinkedLibProc(ADDRESS uNative) override;
 	bool        isDynamicLinkedProcPointer(ADDRESS uNative) override;
 	const char *getDynamicProcName(ADDRESS uNative) override;

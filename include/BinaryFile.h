@@ -271,7 +271,7 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	virtual ADDRESS     isJumpToAnotherAddr(ADDRESS uNative);
+	virtual ADDRESS     isJumpToAnotherAddr(ADDRESS uNative) const;
 	virtual bool        isStaticLinkedLibProc(ADDRESS uNative);
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
 	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);

@@ -243,7 +243,7 @@ BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 }
 
 ADDRESS
-BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
+BinaryFile::isJumpToAnotherAddr(ADDRESS uNative) const
 {
 	return NO_ADDRESS;
 }

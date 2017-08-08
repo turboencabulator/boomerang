@@ -822,7 +822,7 @@ Win32BinaryFile::isMinGWsMalloc(ADDRESS uNative) const
 }
 
 ADDRESS
-Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative)
+Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative) const
 {
 	if ((readNative1(uNative) & 0xff) != 0xe9)
 		return NO_ADDRESS;
