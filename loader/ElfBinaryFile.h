@@ -189,7 +189,7 @@ private:
 	int         elfRead2(const short *ps) const;
 	int         elfRead4(const int *pi) const;
 	void        elfWrite4(int *pi, int val);
-	const char *NativeToHostAddress(ADDRESS uNative);
+	const char *NativeToHostAddress(ADDRESS uNative) const;
 public:
 	int         readNative1(ADDRESS a) const override;
 	int         readNative2(ADDRESS a) const override;

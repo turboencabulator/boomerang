@@ -710,7 +710,7 @@ ElfBinaryFile::getEntryPoint() const
  * FIXME:  The below assumes a fixed delta.
  */
 const char *
-ElfBinaryFile::NativeToHostAddress(ADDRESS uNative)
+ElfBinaryFile::NativeToHostAddress(ADDRESS uNative) const
 {
 	if (m_iNumSections == 0) return nullptr;
 	return &m_pSections[1].uHostAddr[uNative - m_pSections[1].uNativeAddr];
