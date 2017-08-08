@@ -244,7 +244,7 @@ ElfBinaryFile::load(std::istream &ifs)
  * \returns Pointer into the string table, or nullptr on error.
  */
 const char *
-ElfBinaryFile::getStrPtr(int idx, int offset)
+ElfBinaryFile::getStrPtr(int idx, int offset) const
 {
 	if (idx < 0) {
 		// Most commonly, this will be an index of -1, because a call to getSectionIndexByName() failed

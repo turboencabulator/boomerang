@@ -243,7 +243,7 @@ protected:
 
 private:
 	// Not meant to be used externally, but sometimes you just have to have it.
-	const char *getStrPtr(int idx, int offset);
+	const char *getStrPtr(int idx, int offset) const;
 
 #if 0 // Cruft?
 	// Similarly here; sometimes you just need to change a section's link
