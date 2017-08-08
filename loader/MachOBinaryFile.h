@@ -57,7 +57,7 @@ public:
 	void        addSymbol(ADDRESS uNative, const char *pName) override;
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
 	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
-	std::map<ADDRESS, std::string> &getSymbols() override { return m_SymA; }
+	const std::map<ADDRESS, std::string> &getSymbols() const override { return m_SymA; }
 	std::map<std::string, ObjcModule> &getObjcModules() override { return modules; }
 	/** \} */
 

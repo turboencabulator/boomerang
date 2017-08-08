@@ -168,7 +168,7 @@ public:
 	void        dumpSymbols();
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
 	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
-	std::map<ADDRESS, std::string> &getSymbols() override { return dlprocptrs; }
+	const std::map<ADDRESS, std::string> &getSymbols() const override { return dlprocptrs; }
 	/** \} */
 
 	/**

@@ -55,7 +55,7 @@ public:
 	 * \{
 	 */
 	const char *getSymbolByAddress(ADDRESS uNative) override;
-	std::map<ADDRESS, std::string> &getSymbols() override;
+	const std::map<ADDRESS, std::string> &getSymbols() const override;
 	/** \} */
 
 	/**

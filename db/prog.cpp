@@ -757,8 +757,8 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 	return true;
 }
 
-std::map<ADDRESS, std::string> &
-Prog::getSymbols()
+const std::map<ADDRESS, std::string> &
+Prog::getSymbols() const
 {
 	return pBF->getSymbols();
 }
@@ -1885,10 +1885,11 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 	// with a symbol.
 
 	if (pBF->isRelocationAt(lc)) {
-		std::map<ADDRESS, std::string> &symbols = pBF->getSymbols();
-		if (symbols.find(c->getInt()) != symbols.end()) {
-			const char *n = symbols[c->getInt()].c_str();
-			ADDRESS a = c->getInt();
+		ADDRESS a = c->getInt();  // FIXME: Why not c->getAddr()?
+		const std::map<ADDRESS, std::string> &symbols = pBF->getSymbols();
+		auto sym = symbols.find(a);
+		if (sym != symbols.end()) {
+			const char *n = sym->second.c_str();
 			unsigned int sz = pBF->getSizeByName(n);
 			if (!getGlobal(n)) {
 				Global *global = new Global(new SizeType(sz * 8), a, n);
@@ -1896,15 +1897,15 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 			}
 			e = new Unary(opAddrOf, Location::global(n, nullptr));
 		} else {
-			const char *str = getStringConstant(c->getInt());
+			const char *str = getStringConstant(a);
 			if (str)
 				e = new Const(str);
 			else {
 				// check for accesses into the middle of symbols
 				for (auto it = symbols.begin(); it != symbols.end(); ++it) {
-					if (it->first < (ADDRESS)c->getInt()
-					 && it->first + pBF->getSizeByName(it->second.c_str()) > (ADDRESS)c->getInt()) {
-						int off = c->getInt() - it->first;
+					if (a > it->first
+					 && a < it->first + pBF->getSizeByName(it->second.c_str())) {
+						int off = a - it->first;
 						e = new Binary(opPlus,
 						               new Unary(opAddrOf, Location::global(it->second.c_str(), nullptr)),
 						               new Const(off));

@@ -366,8 +366,8 @@ IntelCoffFile::isRelocationAt(ADDRESS uNative)
 	return false;
 }
 
-std::map<ADDRESS, std::string> &
-IntelCoffFile::getSymbols()
+const std::map<ADDRESS, std::string> &
+IntelCoffFile::getSymbols() const
 {
 	return m_Symbols.getAll();
 }

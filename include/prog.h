@@ -190,7 +190,7 @@ public:
 	// Get the front end id used to make this prog
 	        platform    getFrontEndId();
 
-	        std::map<ADDRESS, std::string> &getSymbols();
+	        const std::map<ADDRESS, std::string> &getSymbols() const;
 
 	        Signature  *getDefaultSignature(const char *name);
 
