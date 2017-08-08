@@ -563,21 +563,21 @@ MachOBinaryFile::machORead4(const int *pi) const
 }
 
 unsigned int
-MachOBinaryFile::BMMH(const void *x)
+MachOBinaryFile::BMMH(const void *x) const
 {
 	if (swap_bytes) return (unsigned int)_BMMH(x);
 	else return (unsigned int)x;
 }
 
 uint32_t
-MachOBinaryFile::BMMH(uint32_t x)
+MachOBinaryFile::BMMH(uint32_t x) const
 {
 	if (swap_bytes) return _BMMH(x);
 	else return x;
 }
 
 unsigned short
-MachOBinaryFile::BMMHW(unsigned short x)
+MachOBinaryFile::BMMHW(unsigned short x) const
 {
 	if (swap_bytes) return _BMMHW(x);
 	else return x;

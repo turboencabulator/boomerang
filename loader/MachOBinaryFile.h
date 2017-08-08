@@ -39,9 +39,9 @@ public:
 private:
 	int         machORead2(const short *ps) const;
 	int         machORead4(const int *pi) const;
-	unsigned int   BMMH(const void *x);
-	uint32_t       BMMH(uint32_t x);
-	unsigned short BMMHW(unsigned short x);
+	unsigned int   BMMH(const void *x) const;
+	uint32_t       BMMH(uint32_t x) const;
+	unsigned short BMMHW(unsigned short x) const;
 public:
 	int         readNative1(ADDRESS a) const override;
 	int         readNative2(ADDRESS a) const override;
