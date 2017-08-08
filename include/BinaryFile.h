@@ -262,7 +262,7 @@ public:
 	//virtual ADDRESS     applyRelocation(ADDRESS uNative, ADDRESS uWord);
 	// Get symbol associated with relocation at address, if any
 	//virtual const char *getRelocSym(ADDRESS uNative, ADDRESS *a = nullptr, unsigned int *sz = nullptr) { return nullptr; }
-	virtual bool        isRelocationAt(ADDRESS uNative) { return false; }
+	virtual bool        isRelocationAt(ADDRESS uNative) const { return false; }
 	/** \} */
 
 	//virtual std::pair<unsigned, unsigned> getGlobalPointerInfo();

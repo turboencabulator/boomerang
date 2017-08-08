@@ -1180,7 +1180,7 @@ ElfBinaryFile::applyRelocations()
 }
 
 bool
-ElfBinaryFile::isRelocationAt(ADDRESS uNative)
+ElfBinaryFile::isRelocationAt(ADDRESS uNative) const
 {
 	//int nextFakeLibAddr = -2;  // See R_386_PC32 below; -1 sometimes used for main
 	if (!m_pImage) return false;  // No file loaded

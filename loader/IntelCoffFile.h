@@ -62,7 +62,7 @@ public:
 	 * \name Relocation table functions
 	 * \{
 	 */
-	bool        isRelocationAt(ADDRESS uNative) override;
+	bool        isRelocationAt(ADDRESS uNative) const override;
 	/** \} */
 
 	/**

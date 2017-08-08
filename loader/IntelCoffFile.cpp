@@ -358,7 +358,7 @@ IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative)
 }
 
 bool
-IntelCoffFile::isRelocationAt(ADDRESS uNative)
+IntelCoffFile::isRelocationAt(ADDRESS uNative) const
 {
 	for (auto it = m_Relocations.begin(); it != m_Relocations.end(); ++it) {
 		if (*it == uNative) return true;

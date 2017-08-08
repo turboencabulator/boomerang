@@ -225,7 +225,7 @@ public:
 	//ADDRESS     applyRelocation(ADDRESS uNative, ADDRESS uWord) override;
 	// Get symbol associated with relocation at address, if any
 	//const char *getRelocSym(ADDRESS uNative, ADDRESS *a = nullptr, unsigned int *sz = nullptr) override;
-	bool        isRelocationAt(ADDRESS uNative) override;
+	bool        isRelocationAt(ADDRESS uNative) const override;
 	/** \} */
 
 	/**
