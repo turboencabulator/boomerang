@@ -176,7 +176,7 @@ public:
 	 * \{
 	 */
 	ADDRESS     isJumpToAnotherAddr(ADDRESS uNative) const override;
-	bool        isStaticLinkedLibProc(ADDRESS uNative) override;
+	bool        isStaticLinkedLibProc(ADDRESS uNative) const override;
 	bool        isDynamicLinkedProcPointer(ADDRESS uNative) override;
 	const char *getDynamicProcName(ADDRESS uNative) override;
 	ADDRESS     getMainEntryPoint() override;

@@ -683,7 +683,7 @@ Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
 }
 
 bool
-Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative)
+Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative) const
 {
 	return isMinGWsAllocStack(uNative)
 	    || isMinGWsFrameInit(uNative)
