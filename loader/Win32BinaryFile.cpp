@@ -874,7 +874,7 @@ Win32BinaryFile::getDelta()
  * \brief For debugging.
  */
 void
-Win32BinaryFile::dumpSymbols()
+Win32BinaryFile::dumpSymbols() const
 {
 	std::cerr << std::hex;
 	for (auto it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it)
