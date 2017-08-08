@@ -41,7 +41,7 @@ DOS4GWBinaryFile::~DOS4GWBinaryFile()
 }
 
 ADDRESS
-DOS4GWBinaryFile::getEntryPoint()
+DOS4GWBinaryFile::getEntryPoint() const
 {
 	return (ADDRESS)(m_pLXObjects[m_pLXHeader->eipobjectnum].RelocBaseAddr + m_pLXHeader->eip);
 }

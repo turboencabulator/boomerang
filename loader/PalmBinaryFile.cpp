@@ -254,7 +254,7 @@ PalmBinaryFile::load(std::istream &ifs)
 }
 
 ADDRESS
-PalmBinaryFile::getEntryPoint()
+PalmBinaryFile::getEntryPoint() const
 {
 	assert(0); /* FIXME: Need to be implemented */
 	return 0;

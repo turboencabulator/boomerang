@@ -325,7 +325,7 @@ IntelCoffFile::getMainEntryPoint()
 }
 
 ADDRESS
-IntelCoffFile::getEntryPoint()
+IntelCoffFile::getEntryPoint() const
 {
 	printf("IntelCoffFile::getEntryPoint called\n");
 	// There is no such thing, but we have to deliver one

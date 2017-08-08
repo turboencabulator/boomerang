@@ -275,7 +275,7 @@ BinaryFileStub::getMainEntryPoint()
 }
 
 ADDRESS
-BinaryFileStub::getEntryPoint()
+BinaryFileStub::getEntryPoint() const
 {
 	return 0;
 }

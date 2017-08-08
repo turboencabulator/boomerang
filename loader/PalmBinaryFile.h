@@ -48,7 +48,7 @@ public:
 	 */
 	bool        isDynamicLinkedProc(ADDRESS uNative) override;
 	ADDRESS     getMainEntryPoint() override;
-	ADDRESS     getEntryPoint() override;
+	ADDRESS     getEntryPoint() const override;
 	/** \} */
 
 protected:

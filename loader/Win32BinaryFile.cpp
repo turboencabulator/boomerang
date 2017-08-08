@@ -106,7 +106,7 @@ Win32BinaryFile::~Win32BinaryFile()
 }
 
 ADDRESS
-Win32BinaryFile::getEntryPoint()
+Win32BinaryFile::getEntryPoint() const
 {
 	return (ADDRESS)(LMMH(m_pPEHeader->EntrypointRVA)
 	               + LMMH(m_pPEHeader->Imagebase));

@@ -378,7 +378,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 }
 
 ADDRESS
-HpSomBinaryFile::getEntryPoint()
+HpSomBinaryFile::getEntryPoint() const
 {
 	assert(0); /* FIXME: Someone who understands this file please implement */
 	return 0;

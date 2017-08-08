@@ -68,7 +68,7 @@ public:
 	bool        isDynamicLinkedProc(ADDRESS uNative) override { return dlprocs.find(uNative) != dlprocs.end(); }
 	const char *getDynamicProcName(ADDRESS uNative) override;
 	ADDRESS     getMainEntryPoint() override;
-	ADDRESS     getEntryPoint() override;
+	ADDRESS     getEntryPoint() const override;
 	//DWord       getDelta();
 	/** \} */
 

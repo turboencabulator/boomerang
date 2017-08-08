@@ -232,7 +232,7 @@ ExeBinaryFile::getMainEntryPoint()
 }
 
 ADDRESS
-ExeBinaryFile::getEntryPoint()
+ExeBinaryFile::getEntryPoint() const
 {
 	// Check this...
 	return (ADDRESS)((m_pHeader->initCS << 4) + m_pHeader->initIP);

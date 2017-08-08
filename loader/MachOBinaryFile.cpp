@@ -140,7 +140,7 @@ MachOBinaryFile::~MachOBinaryFile()
 }
 
 ADDRESS
-MachOBinaryFile::getEntryPoint()
+MachOBinaryFile::getEntryPoint() const
 {
 	return entrypoint;
 }

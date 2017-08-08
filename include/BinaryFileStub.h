@@ -27,7 +27,7 @@ public:
 	 * \{
 	 */
 	ADDRESS     getMainEntryPoint() override;
-	ADDRESS     getEntryPoint() override;
+	ADDRESS     getEntryPoint() const override;
 	/** \} */
 
 protected:

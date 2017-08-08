@@ -285,7 +285,7 @@ public:
 	 * Return the "real" entry point, i.e. where execution of the program
 	 * begins.
 	 */
-	virtual ADDRESS     getEntryPoint() = 0;
+	virtual ADDRESS     getEntryPoint() const = 0;
 	/** \} */
 
 protected:

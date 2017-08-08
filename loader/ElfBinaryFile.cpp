@@ -701,7 +701,7 @@ ElfBinaryFile::getMainEntryPoint()
 }
 
 ADDRESS
-ElfBinaryFile::getEntryPoint()
+ElfBinaryFile::getEntryPoint() const
 {
 	return (ADDRESS)elfRead4(&((Elf32_Ehdr *)m_pImage)->e_entry);
 }
