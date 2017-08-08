@@ -268,8 +268,8 @@ private:
 	void        AddSyms(int secIndex);
 	void        applyRelocations();
 	bool        ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK = false);
-	bool        SearchValueByName(const char *pName, SymValue *pVal);
-	bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName);
+	bool        SearchValueByName(const char *pName, SymValue *pVal) const;
+	bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName) const;
 	ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
 
 	char       *m_pImage = nullptr;         ///< Pointer to the loaded image.

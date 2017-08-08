@@ -552,7 +552,7 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
  * See comments above for why this appears to be needed.
  */
 bool
-ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName)
+ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName) const
 {
 	// Note: this assumes .symtab. Many files don't have this section!!!
 
@@ -588,7 +588,7 @@ ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *
  * found or the table has been stripped, search .dynstr.
  */
 bool
-ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal)
+ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal) const
 {
 	if (SearchValueByName(pName, pVal, ".symtab", ".strtab"))
 		return true;
