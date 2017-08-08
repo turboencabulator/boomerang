@@ -677,7 +677,7 @@ Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
 }
 
 bool
-Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
+Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 {
 	return dlprocptrs.find(uNative) != dlprocptrs.end();
 }

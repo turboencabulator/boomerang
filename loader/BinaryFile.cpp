@@ -237,7 +237,7 @@ BinaryFile::isStaticLinkedLibProc(ADDRESS uNative) const
 }
 
 bool
-BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
+BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 {
 	return false;
 }

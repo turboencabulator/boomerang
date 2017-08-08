@@ -524,7 +524,7 @@ DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
 }
 
 bool
-DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative)
+DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 {
 	return dlprocptrs.find(uNative) != dlprocptrs.end();
 }
