@@ -1309,7 +1309,7 @@ ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
  * \brief For debugging.
  */
 void
-ElfBinaryFile::dumpSymbols()
+ElfBinaryFile::dumpSymbols() const
 {
 	std::cerr << std::hex;
 	for (auto it = m_SymTab.begin(); it != m_SymTab.end(); ++it)
