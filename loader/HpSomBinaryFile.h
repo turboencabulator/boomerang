@@ -112,7 +112,7 @@ protected:
 	//bool        PostLoad(void *handle) override;
 
 private:
-	std::pair<ADDRESS, int> getSubspaceInfo(const char *ssname);
+	std::pair<ADDRESS, int> getSubspaceInfo(const char *ssname) const;
 
 	unsigned char *m_pImage = nullptr;  ///< Points to loaded image.
 	SymTab      symbols;                ///< Symbol table object.

@@ -454,7 +454,7 @@ HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
  * Get the start and length of a given subspace.
  */
 std::pair<ADDRESS, int>
-HpSomBinaryFile::getSubspaceInfo(const char *ssname)
+HpSomBinaryFile::getSubspaceInfo(const char *ssname) const
 {
 	std::pair<ADDRESS, int> ret(0, 0);
 	// Get the start and length of the subspace with the given name
