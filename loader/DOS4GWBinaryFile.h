@@ -151,7 +151,7 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	bool        isDynamicLinkedProc(ADDRESS uNative) override;
+	bool        isDynamicLinkedProc(ADDRESS uNative) const override;
 	bool        isDynamicLinkedProcPointer(ADDRESS uNative) override;
 	const char *getDynamicProcName(ADDRESS uNative) override;
 	ADDRESS     getMainEntryPoint() override;

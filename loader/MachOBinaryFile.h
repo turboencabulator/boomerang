@@ -65,7 +65,7 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	bool        isDynamicLinkedProc(ADDRESS uNative) override { return dlprocs.find(uNative) != dlprocs.end(); }
+	bool        isDynamicLinkedProc(ADDRESS uNative) const override { return dlprocs.find(uNative) != dlprocs.end(); }
 	const char *getDynamicProcName(ADDRESS uNative) override;
 	ADDRESS     getMainEntryPoint() override;
 	ADDRESS     getEntryPoint() const override;

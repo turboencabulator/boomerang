@@ -232,7 +232,7 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	bool        isDynamicLinkedProc(ADDRESS wNative) override;
+	bool        isDynamicLinkedProc(ADDRESS wNative) const override;
 	ADDRESS     getMainEntryPoint() override;
 	ADDRESS     getEntryPoint() const override;
 	/** \} */

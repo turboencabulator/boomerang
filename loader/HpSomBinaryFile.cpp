@@ -444,7 +444,7 @@ HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false *
  * calls.
  */
 bool
-HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
 	// Look up the address in the set of imports
 	return imports.find(uNative) != imports.end();

@@ -225,7 +225,7 @@ BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK)
 }
 
 bool
-BinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+BinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
 	return false;
 }

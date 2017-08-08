@@ -680,7 +680,7 @@ ElfBinaryFile::getDistanceByName(const char *sName)
 }
 
 bool
-ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
 	if (uNative > (unsigned)-1024 && uNative != (unsigned)-1)
 		return true;  // Say yes for fake library functions

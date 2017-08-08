@@ -273,7 +273,7 @@ public:
 	 */
 	virtual ADDRESS     isJumpToAnotherAddr(ADDRESS uNative) const;
 	virtual bool        isStaticLinkedLibProc(ADDRESS uNative) const;
-	virtual bool        isDynamicLinkedProc(ADDRESS uNative);
+	virtual bool        isDynamicLinkedProc(ADDRESS uNative) const;
 	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative);
 	virtual const char *getDynamicProcName(ADDRESS uNative);
 

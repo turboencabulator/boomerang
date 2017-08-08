@@ -46,7 +46,7 @@ public:
 	 * \name Analysis functions
 	 * \{
 	 */
-	bool        isDynamicLinkedProc(ADDRESS uNative) override;
+	bool        isDynamicLinkedProc(ADDRESS uNative) const override;
 	ADDRESS     getMainEntryPoint() override;
 	ADDRESS     getEntryPoint() const override;
 	/** \} */

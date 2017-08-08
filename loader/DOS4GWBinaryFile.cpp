@@ -386,11 +386,12 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 }
 
 bool
-DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative)
+DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
-	return dlprocptrs.find(uNative) != dlprocptrs.end()
-	    && dlprocptrs[uNative] != "main"
-	    && dlprocptrs[uNative] != "_start";
+	auto it = dlprocptrs.find(uNative);
+	return it != dlprocptrs.end()
+	    && it->second != "main"
+	    && it->second != "_start";
 }
 
 #if 0 // Cruft?
