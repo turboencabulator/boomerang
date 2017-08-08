@@ -266,7 +266,7 @@ ElfBinaryFile::getStrPtr(int idx, int offset) const
  * entries to search.
  */
 ADDRESS
-ElfBinaryFile::findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt)
+ElfBinaryFile::findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt) const
 {
 	int first = i;
 	if (first >= numRelPlt)

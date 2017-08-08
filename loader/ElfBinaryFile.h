@@ -270,7 +270,7 @@ private:
 	bool        ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK = false) const;
 	bool        SearchValueByName(const char *pName, SymValue *pVal) const;
 	bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName) const;
-	ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt);
+	ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt) const;
 
 	char       *m_pImage = nullptr;         ///< Pointer to the loaded image.
 	const Elf32_Phdr *m_pPhdrs = nullptr;   ///< Pointer to program headers.
