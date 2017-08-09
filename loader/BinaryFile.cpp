@@ -219,7 +219,7 @@ BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK)
  * \brief Get the size associated with the symbol.
  */
 int
-BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK)
+BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK) const
 {
 	return 0;
 }

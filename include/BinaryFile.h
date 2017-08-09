@@ -243,7 +243,7 @@ public:
 	virtual void        addSymbol(ADDRESS uNative, const char *pName);
 	virtual const char *getSymbolByAddress(ADDRESS uNative);
 	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false);
-	virtual int         getSizeByName(const char *pName, bool bTypeOK = false);
+	virtual int         getSizeByName(const char *pName, bool bTypeOK = false) const;
 	virtual const char *getFilenameSymbolFor(const char *sym) { return nullptr; }
 	virtual ADDRESS    *getImportStubs(int &numImports);
 	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }

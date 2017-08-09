@@ -606,7 +606,7 @@ ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 }
 
 int
-ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */)
+ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	SymValue Val;
 	if (ValueByName(pName, &Val, bNoTypeOK))
