@@ -203,7 +203,7 @@ public:
 	 * \{
 	 */
 	void        addSymbol(ADDRESS uNative, const char *pName) override;
-	void        dumpSymbols() const;
+	//void        dumpSymbols() const;
 	const char *getSymbolByAddress(ADDRESS uAddr) override;
 	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) override;
 	int         getSizeByName(const char *pName, bool bNoTypeOK = false) override;

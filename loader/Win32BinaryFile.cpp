@@ -870,6 +870,7 @@ Win32BinaryFile::getDelta()
 }
 #endif
 
+#if 0 // Cruft?
 /**
  * \brief For debugging.
  */
@@ -881,6 +882,7 @@ Win32BinaryFile::dumpSymbols() const
 		std::cerr << "0x" << it->first << " " << it->second << "        ";
 	std::cerr << std::dec << "\n";
 }
+#endif
 
 #ifdef DYNAMIC
 /**

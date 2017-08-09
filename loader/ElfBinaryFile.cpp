@@ -1305,6 +1305,7 @@ ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 	m_SymTab[uNative] = pName;
 }
 
+#if 0 // Cruft?
 /**
  * \brief For debugging.
  */
@@ -1316,6 +1317,7 @@ ElfBinaryFile::dumpSymbols() const
 		std::cerr << "0x" << it->first << " " << it->second << "        ";
 	std::cerr << std::dec << "\n";
 }
+#endif
 
 #ifdef DYNAMIC
 /**
