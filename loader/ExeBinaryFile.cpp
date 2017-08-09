@@ -205,7 +205,7 @@ ExeBinaryFile::isLibrary() const
 }
 
 std::list<const char *>
-ExeBinaryFile::getDependencyList()
+ExeBinaryFile::getDependencyList() const
 {
 	return std::list<const char *>(); /* for now */
 }

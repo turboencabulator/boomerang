@@ -244,7 +244,7 @@ BinaryFileStub::getMachine() const
 }
 
 std::list<const char *>
-BinaryFileStub::getDependencyList()
+BinaryFileStub::getDependencyList() const
 {
 	assert(false);
 	return std::list<const char *>();

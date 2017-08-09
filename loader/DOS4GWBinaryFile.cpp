@@ -554,7 +554,7 @@ DOS4GWBinaryFile::getImageSize() const
 }
 
 std::list<const char *>
-DOS4GWBinaryFile::getDependencyList()
+DOS4GWBinaryFile::getDependencyList() const
 {
 	return std::list<const char *>(); /* FIXME */
 }

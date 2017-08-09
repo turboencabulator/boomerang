@@ -27,7 +27,7 @@ public:
 
 	LOADFMT     getFormat() const override { return LOADFMT_PALM; }
 	MACHINE     getMachine() const override { return MACHINE_PALM; }
-	std::list<const char *> getDependencyList() override;
+	std::list<const char *> getDependencyList() const override;
 
 	bool        isLibrary() const override;
 	ADDRESS     getImageBase() const override;

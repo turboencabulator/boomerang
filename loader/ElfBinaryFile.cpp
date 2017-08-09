@@ -769,7 +769,7 @@ ElfBinaryFile::isLibrary() const
 }
 
 std::list<const char *>
-ElfBinaryFile::getDependencyList()
+ElfBinaryFile::getDependencyList() const
 {
 	std::list<const char *> result;
 	const SectionInfo *dynsect = getSectionInfoByName(".dynamic");

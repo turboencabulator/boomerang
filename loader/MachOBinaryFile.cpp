@@ -674,7 +674,7 @@ MachOBinaryFile::getImageSize() const
 }
 
 std::list<const char *>
-MachOBinaryFile::getDependencyList()
+MachOBinaryFile::getDependencyList() const
 {
 	return std::list<const char *>(); /* FIXME */
 }

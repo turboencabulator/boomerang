@@ -338,7 +338,7 @@ IntelCoffFile::getEntryPoint() const
 }
 
 std::list<const char *>
-IntelCoffFile::getDependencyList()
+IntelCoffFile::getDependencyList() const
 {
 	std::list<const char *> dummy;
 	return dummy;  // TODO: How ever return this is ought to work out

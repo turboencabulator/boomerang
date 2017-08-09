@@ -190,7 +190,7 @@ public:
 	virtual MACHINE     getMachine() const = 0;
 	        const char *getFilename() const { return m_pFilename; }
 	/// Return a list of library names which the binary file depends on.
-	virtual std::list<const char *> getDependencyList() = 0;
+	virtual std::list<const char *> getDependencyList() const = 0;
 
 	/**
 	 * Return whether or not the object is a library file.

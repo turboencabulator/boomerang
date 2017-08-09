@@ -854,7 +854,7 @@ Win32BinaryFile::getImageSize() const
 }
 
 std::list<const char *>
-Win32BinaryFile::getDependencyList()
+Win32BinaryFile::getDependencyList() const
 {
 	return std::list<const char *>(); /* FIXME */
 }

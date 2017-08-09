@@ -276,7 +276,7 @@ PalmBinaryFile::isLibrary() const
 }
 
 std::list<const char *>
-PalmBinaryFile::getDependencyList()
+PalmBinaryFile::getDependencyList() const
 {
 	return std::list<const char *>(); /* doesn't really exist on palm */
 }

@@ -402,7 +402,7 @@ HpSomBinaryFile::isLibrary() const
 }
 
 std::list<const char *>
-HpSomBinaryFile::getDependencyList()
+HpSomBinaryFile::getDependencyList() const
 {
 	return std::list<const char *>(); /* FIXME */
 }
