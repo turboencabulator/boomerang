@@ -476,7 +476,7 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
  * base class (i.e. BinaryFile::getSymbolByAddress())
  */
 const char *
-ElfBinaryFile::getSymbolByAddress(const ADDRESS dwAddr)
+ElfBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	auto aa = m_SymTab.find(dwAddr);
 	if (aa == m_SymTab.end())

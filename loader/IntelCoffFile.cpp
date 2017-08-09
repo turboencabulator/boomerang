@@ -338,7 +338,7 @@ IntelCoffFile::getEntryPoint() const
 }
 
 const char *
-IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
+IntelCoffFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	return m_Symbols.find(dwAddr);
 }
