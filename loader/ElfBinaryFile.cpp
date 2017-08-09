@@ -597,7 +597,7 @@ ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal) const
 
 
 ADDRESS
-ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	SymValue Val;
 	if (ValueByName(pName, &Val, bNoTypeOK))

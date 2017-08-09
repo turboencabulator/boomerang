@@ -205,7 +205,7 @@ public:
 	void        addSymbol(ADDRESS uNative, const char *pName) override;
 	//void        dumpSymbols() const;
 	const char *getSymbolByAddress(ADDRESS uAddr) override;
-	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) override;
+	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const override;
 	int         getSizeByName(const char *pName, bool bNoTypeOK = false) const override;
 	const char *getFilenameSymbolFor(const char *sym) override;
 	int         getDistanceByName(const char *pName, const char *pSectName);

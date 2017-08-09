@@ -166,7 +166,7 @@ public:
 	void        addSymbol(ADDRESS uNative, const char *pName) override;
 	//void        dumpSymbols() const;
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
-	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
+	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) const override;
 	const std::map<ADDRESS, std::string> &getSymbols() const override { return dlprocptrs; }
 	/** \} */
 

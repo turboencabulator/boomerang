@@ -412,7 +412,7 @@ DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 ADDRESS
-DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search

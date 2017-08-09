@@ -517,7 +517,7 @@ MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 ADDRESS
-MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon
 	// Use linear search

@@ -210,7 +210,7 @@ BinaryFile::getSymbolByAddress(ADDRESS uNative)
  * \returns NO_ADDRESS if not found.
  */
 ADDRESS
-BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK)
+BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK) const
 {
 	return 0;
 }

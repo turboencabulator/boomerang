@@ -566,7 +566,7 @@ Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 ADDRESS
-Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
+Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	auto it = dlprocptrs.begin();

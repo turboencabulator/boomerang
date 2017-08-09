@@ -91,7 +91,7 @@ public:
 	 * \{
 	 */
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
-	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) override;
+	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const override;
 	//std::map<ADDRESS, const char *> *getDynamicGlobalMap() override;
 	/** \} */
 
