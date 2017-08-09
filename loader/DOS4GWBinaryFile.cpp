@@ -553,12 +553,6 @@ DOS4GWBinaryFile::getImageSize() const
 	return 0; // TODO
 }
 
-std::list<const char *>
-DOS4GWBinaryFile::getDependencyList() const
-{
-	return std::list<const char *>(); /* FIXME */
-}
-
 #if 0 // Cruft?
 DWord
 DOS4GWBinaryFile::getDelta()

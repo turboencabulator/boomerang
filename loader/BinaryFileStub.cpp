@@ -243,13 +243,6 @@ BinaryFileStub::getMachine() const
 	return MACHINE_PENTIUM;
 }
 
-std::list<const char *>
-BinaryFileStub::getDependencyList() const
-{
-	assert(false);
-	return std::list<const char *>();
-}
-
 bool
 BinaryFileStub::isLibrary() const
 {

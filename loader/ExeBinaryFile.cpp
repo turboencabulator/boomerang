@@ -204,12 +204,6 @@ ExeBinaryFile::isLibrary() const
 	return false;
 }
 
-std::list<const char *>
-ExeBinaryFile::getDependencyList() const
-{
-	return std::list<const char *>(); /* for now */
-}
-
 ADDRESS
 ExeBinaryFile::getImageBase() const
 {

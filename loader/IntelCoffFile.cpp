@@ -337,13 +337,6 @@ IntelCoffFile::getEntryPoint() const
 	return m_EntryPoints.front();
 }
 
-std::list<const char *>
-IntelCoffFile::getDependencyList() const
-{
-	std::list<const char *> dummy;
-	return dummy;  // TODO: How ever return this is ought to work out
-}
-
 const char *
 IntelCoffFile::getSymbolByAddress(const ADDRESS dwAddr)
 {

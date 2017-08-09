@@ -401,12 +401,6 @@ HpSomBinaryFile::isLibrary() const
 	    || type == 0x010E || type == 0x0619;
 }
 
-std::list<const char *>
-HpSomBinaryFile::getDependencyList() const
-{
-	return std::list<const char *>(); /* FIXME */
-}
-
 ADDRESS
 HpSomBinaryFile::getImageBase() const
 {

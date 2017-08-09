@@ -673,12 +673,6 @@ MachOBinaryFile::getImageSize() const
 	return loaded_size;
 }
 
-std::list<const char *>
-MachOBinaryFile::getDependencyList() const
-{
-	return std::list<const char *>(); /* FIXME */
-}
-
 #if 0 // Cruft?
 DWord
 MachOBinaryFile::getDelta()

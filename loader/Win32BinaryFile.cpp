@@ -853,12 +853,6 @@ Win32BinaryFile::getImageSize() const
 	return m_pPEHeader->ImageSize;
 }
 
-std::list<const char *>
-Win32BinaryFile::getDependencyList() const
-{
-	return std::list<const char *>(); /* FIXME */
-}
-
 #if 0 // Cruft?
 DWord
 Win32BinaryFile::getDelta()
