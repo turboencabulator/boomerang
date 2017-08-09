@@ -600,26 +600,18 @@ ADDRESS
 ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	SymValue Val;
-	bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
-	if (bSuccess) {
-		m_iLastSize = Val.iSymSize;
-		m_uLastAddr = Val.uSymAddr;
+	if (ValueByName(pName, &Val, bNoTypeOK))
 		return Val.uSymAddr;
-	}
-	else return NO_ADDRESS;
+	return NO_ADDRESS;
 }
 
 int
 ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */)
 {
 	SymValue Val;
-	bool bSuccess = ValueByName(pName, &Val, bNoTypeOK);
-	if (bSuccess) {
-		m_iLastSize = Val.iSymSize;
-		m_uLastAddr = Val.uSymAddr;
+	if (ValueByName(pName, &Val, bNoTypeOK))
 		return Val.iSymSize;
-	} else
-		return 0;
+	return 0;
 }
 
 /**

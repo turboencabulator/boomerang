@@ -290,8 +290,6 @@ private:
 	const Elf32_Rel *m_pReloc = nullptr;    ///< Pointer to the relocation section.
 	const Elf32_Sym *m_pSym = nullptr;      ///< Pointer to loaded symbol section.
 	bool        m_bAddend;                  ///< true if reloc table has addend.
-	ADDRESS     m_uLastAddr;                ///< Save last address looked up.
-	int         m_iLastSize = 0;            ///< Size associated with that name.
 	ADDRESS     m_uPltMin = 0;              ///< Min address of PLT table.
 	ADDRESS     m_uPltMax = 0;              ///< Max address (1 past last) of PLT.
 	ADDRESS    *m_pImportStubs = nullptr;   ///< An array of import stubs.
