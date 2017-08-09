@@ -768,6 +768,7 @@ ElfBinaryFile::isLibrary() const
 	return (type == ET_DYN);
 }
 
+#if 0 // Cruft?
 std::list<const char *>
 ElfBinaryFile::getDependencyList() const
 {
@@ -796,6 +797,7 @@ ElfBinaryFile::getDependencyList() const
 	}
 	return result;
 }
+#endif
 
 ADDRESS
 ElfBinaryFile::getImageBase() const
