@@ -973,25 +973,25 @@ Boomerang::setOutputDirectory(const char *path)
  * \param prog The Prog object to add the information to.
  */
 void
-Boomerang::objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog)
+Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *prog)
 {
 	if (VERBOSE)
 		LOG << "Adding Objective-C information to Prog.\n";
 	Cluster *root = prog->getRootCluster();
 	for (auto it = modules.begin(); it != modules.end(); ++it) {
-		ObjcModule &mod = it->second;
+		const ObjcModule &mod = it->second;
 		Module *module = new Module(mod.name.c_str());
 		root->addChild(module);
 		if (VERBOSE)
 			LOG << "\tModule: " << mod.name.c_str() << "\n";
 		for (auto it1 = mod.classes.begin(); it1 != mod.classes.end(); ++it1) {
-			ObjcClass &c = it1->second;
+			const ObjcClass &c = it1->second;
 			Class *cl = new Class(c.name.c_str());
 			root->addChild(cl);
 			if (VERBOSE)
 				LOG << "\t\tClass: " << c.name.c_str() << "\n";
 			for (auto it2 = c.methods.begin(); it2 != c.methods.end(); ++it2) {
-				ObjcMethod &m = it2->second;
+				const ObjcMethod &m = it2->second;
 				// TODO: parse :'s in names
 				Proc *p = prog->newProc(m.name.c_str(), m.addr);
 				p->setCluster(cl);
@@ -1035,7 +1035,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 		prog->readSymbolFile(symbolFiles[i].c_str());
 	}
 
-	std::map<std::string, ObjcModule> &objcmodules = fe->getBinaryFile()->getObjcModules();
+	const std::map<std::string, ObjcModule> &objcmodules = fe->getBinaryFile()->getObjcModules();
 	if (!objcmodules.empty())
 		objcDecode(objcmodules, prog);
 

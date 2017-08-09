@@ -142,7 +142,7 @@ public:
 	static  Prog       *loadFromXML(const char *fname);
 #endif
 
-	static  void        objcDecode(std::map<std::string, ObjcModule> &modules, Prog *prog);
+	static  void        objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *prog);
 
 	        /// Alert the watchers that decompilation has completed.
 	        void        alert_complete() {

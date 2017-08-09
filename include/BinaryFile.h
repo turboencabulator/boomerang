@@ -250,7 +250,7 @@ public:
 	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 	virtual const std::map<ADDRESS, std::string> &getFuncSymbols() const { return *new std::map<ADDRESS, std::string>(); }
 	virtual const std::map<ADDRESS, std::string> &getSymbols() const { return *new std::map<ADDRESS, std::string>(); }
-	virtual std::map<std::string, ObjcModule> &getObjcModules() { return *new std::map<std::string, ObjcModule>(); }
+	virtual const std::map<std::string, ObjcModule> &getObjcModules() const { return *new std::map<std::string, ObjcModule>(); }
 	/** \} */
 
 	/**

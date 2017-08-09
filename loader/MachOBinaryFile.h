@@ -58,7 +58,7 @@ public:
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
 	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) override;
 	const std::map<ADDRESS, std::string> &getSymbols() const override { return m_SymA; }
-	std::map<std::string, ObjcModule> &getObjcModules() override { return modules; }
+	const std::map<std::string, ObjcModule> &getObjcModules() const override { return modules; }
 	/** \} */
 
 	/**
