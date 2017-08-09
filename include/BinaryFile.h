@@ -248,7 +248,7 @@ public:
 	virtual ADDRESS    *getImportStubs(int &numImports);
 	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
 	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
-	virtual std::map<ADDRESS, std::string> &getFuncSymbols() { return *new std::map<ADDRESS, std::string>(); }
+	virtual const std::map<ADDRESS, std::string> &getFuncSymbols() const { return *new std::map<ADDRESS, std::string>(); }
 	virtual const std::map<ADDRESS, std::string> &getSymbols() const { return *new std::map<ADDRESS, std::string>(); }
 	virtual std::map<std::string, ObjcModule> &getObjcModules() { return *new std::map<std::string, ObjcModule>(); }
 	/** \} */
