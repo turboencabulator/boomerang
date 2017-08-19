@@ -385,15 +385,6 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	return true;
 }
 
-bool
-DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
-{
-	auto it = dlprocptrs.find(uNative);
-	return it != dlprocptrs.end()
-	    && it->second != "main"
-	    && it->second != "_start";
-}
-
 #if 0 // Cruft?
 bool
 DOS4GWBinaryFile::PostLoad(void *handle)
@@ -521,6 +512,15 @@ DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
 #endif
 	//return reinterpret_cast<double>(*raw);  // Note: cast, not convert!!
 	return *(double *)raw;
+}
+
+bool
+DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
+{
+	auto it = dlprocptrs.find(uNative);
+	return it != dlprocptrs.end()
+	    && it->second != "main"
+	    && it->second != "_start";
 }
 
 bool

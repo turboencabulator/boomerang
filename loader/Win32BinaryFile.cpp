@@ -677,22 +677,6 @@ Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
 }
 
 bool
-Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
-{
-	return dlprocptrs.find(uNative) != dlprocptrs.end();
-}
-
-bool
-Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative) const
-{
-	return isMinGWsAllocStack(uNative)
-	    || isMinGWsFrameInit(uNative)
-	    || isMinGWsFrameEnd(uNative)
-	    || isMinGWsCleanupSetup(uNative)
-	    || isMinGWsMalloc(uNative);
-}
-
-bool
 Win32BinaryFile::isMinGWsAllocStack(ADDRESS uNative) const
 {
 	if (!mingw_main) return false;
@@ -827,6 +811,22 @@ Win32BinaryFile::isJumpToAnotherAddr(ADDRESS uNative) const
 	if ((readNative1(uNative) & 0xff) != 0xe9)
 		return NO_ADDRESS;
 	return readNative4(uNative + 1) + uNative + 5;
+}
+
+bool
+Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative) const
+{
+	return isMinGWsAllocStack(uNative)
+	    || isMinGWsFrameInit(uNative)
+	    || isMinGWsFrameEnd(uNative)
+	    || isMinGWsCleanupSetup(uNative)
+	    || isMinGWsMalloc(uNative);
+}
+
+bool
+Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
+{
+	return dlprocptrs.find(uNative) != dlprocptrs.end();
 }
 
 const char *
