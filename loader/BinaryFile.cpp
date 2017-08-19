@@ -249,9 +249,9 @@ BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 }
 
 const char *
-BinaryFile::getDynamicProcName(ADDRESS uNative)
+BinaryFile::getDynamicProcName(ADDRESS uNative) const
 {
-	return "dynamic";
+	return nullptr;
 }
 
 #if 0 // Cruft?

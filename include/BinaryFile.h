@@ -275,7 +275,7 @@ public:
 	virtual bool        isStaticLinkedLibProc(ADDRESS uNative) const;
 	virtual bool        isDynamicLinkedProc(ADDRESS uNative) const;
 	virtual bool        isDynamicLinkedProcPointer(ADDRESS uNative) const;
-	virtual const char *getDynamicProcName(ADDRESS uNative);
+	virtual const char *getDynamicProcName(ADDRESS uNative) const;
 
 	/**
 	 * Returns the entry point to main.

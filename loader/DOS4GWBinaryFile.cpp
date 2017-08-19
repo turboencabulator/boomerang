@@ -530,9 +530,12 @@ DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 }
 
 const char *
-DOS4GWBinaryFile::getDynamicProcName(ADDRESS uNative)
+DOS4GWBinaryFile::getDynamicProcName(ADDRESS uNative) const
 {
-	return dlprocptrs[uNative].c_str();
+	auto it = dlprocptrs.find(uNative);
+	if (it != dlprocptrs.end())
+		return it->second.c_str();
+	return nullptr;
 }
 
 bool

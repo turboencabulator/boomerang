@@ -830,9 +830,12 @@ Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 }
 
 const char *
-Win32BinaryFile::getDynamicProcName(ADDRESS uNative)
+Win32BinaryFile::getDynamicProcName(ADDRESS uNative) const
 {
-	return dlprocptrs[uNative].c_str();
+	auto it = dlprocptrs.find(uNative);
+	if (it != dlprocptrs.end())
+		return it->second.c_str();
+	return nullptr;
 }
 
 bool

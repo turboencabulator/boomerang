@@ -649,10 +649,21 @@ MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
 	return *(double *)raw;
 }
 
-const char *
-MachOBinaryFile::getDynamicProcName(ADDRESS uNative)
+// FIXME:  Should this be isDynamicLinkedProcPointer() instead?
+//         getDynamicProcName() is always used with isDynamicLinkedProcPointer().
+bool
+MachOBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
-	return dlprocs[uNative].c_str();
+	return dlprocs.find(uNative) != dlprocs.end();
+}
+
+const char *
+MachOBinaryFile::getDynamicProcName(ADDRESS uNative) const
+{
+	auto it = dlprocs.find(uNative);
+	if (it != dlprocs.end())
+		return it->second.c_str();
+	return nullptr;
 }
 
 bool

@@ -152,7 +152,7 @@ public:
 	 */
 	bool        isDynamicLinkedProc(ADDRESS uNative) const override;
 	bool        isDynamicLinkedProcPointer(ADDRESS uNative) const override;
-	const char *getDynamicProcName(ADDRESS uNative) override;
+	const char *getDynamicProcName(ADDRESS uNative) const override;
 	ADDRESS     getMainEntryPoint() override;
 	ADDRESS     getEntryPoint() const override;
 	//DWord       getDelta();
