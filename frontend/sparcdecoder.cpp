@@ -2717,12 +2717,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	return result;
 }
 
-
-/*
- * These are functions used to decode instruction operands into expressions
- * (Exp*s).
- */
-
 /**
  * Decode the register on the LHS.
  *
@@ -2763,11 +2757,11 @@ SparcDecoder::dis_RegImm(unsigned pc)
 {
 
 
-#line 691 "machine/sparc/decoder.m"
+#line 685 "machine/sparc/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 691 "machine/sparc/decoder.m"
+#line 685 "machine/sparc/decoder.m"
     pc
     ;
   unsigned MATCH_w_32_0;
@@ -2777,7 +2771,7 @@ SparcDecoder::dis_RegImm(unsigned pc)
       int /* [~4096..4095] */ i = 
         sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
       
-#line 693 "machine/sparc/decoder.m"
+#line 687 "machine/sparc/decoder.m"
       
 
       		Exp *expr = new Const(i);
@@ -2791,7 +2785,7 @@ SparcDecoder::dis_RegImm(unsigned pc)
     else { 
       unsigned rs2 = (MATCH_w_32_0 & 0x1f) /* rs2 at 0 */;
       
-#line 695 "machine/sparc/decoder.m"
+#line 689 "machine/sparc/decoder.m"
       
 
       		return dis_RegRhs(rs2);
@@ -2807,7 +2801,7 @@ SparcDecoder::dis_RegImm(unsigned pc)
   
 }
 
-#line 699 "machine/sparc/decoder.m"
+#line 693 "machine/sparc/decoder.m"
 }
 
 /**
@@ -2826,11 +2820,11 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
 
 
 
-#line 714 "machine/sparc/decoder.m"
+#line 708 "machine/sparc/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 714 "machine/sparc/decoder.m"
+#line 708 "machine/sparc/decoder.m"
     pc
     ;
   unsigned MATCH_w_32_0;
@@ -2841,7 +2835,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
         int /* [~4096..4095] */ i = 
           sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
         
-#line 721 "machine/sparc/decoder.m"
+#line 715 "machine/sparc/decoder.m"
         
 
         		expr = new Const((int)i);
@@ -2855,7 +2849,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
           sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         
-#line 724 "machine/sparc/decoder.m"
+#line 718 "machine/sparc/decoder.m"
         
 
         		expr = new Binary(opPlus,
@@ -2872,7 +2866,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
       if ((MATCH_w_32_0 & 0x1f) /* rs2 at 0 */ == 0) { 
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         
-#line 715 "machine/sparc/decoder.m"
+#line 709 "machine/sparc/decoder.m"
         
 
         		expr = Location::regOf(rs1);
@@ -2885,7 +2879,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         unsigned rs2 = (MATCH_w_32_0 & 0x1f) /* rs2 at 0 */;
         
-#line 718 "machine/sparc/decoder.m"
+#line 712 "machine/sparc/decoder.m"
         
 
         		expr = new Binary(opPlus,
@@ -2905,7 +2899,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
   
 }
 
-#line 729 "machine/sparc/decoder.m"
+#line 723 "machine/sparc/decoder.m"
 
 	return expr;
 }
@@ -2946,11 +2940,11 @@ SparcDecoder::isRestore(ADDRESS hostPC)
 {
 
 
-#line 766 "machine/sparc/decoder.m"
+#line 760 "machine/sparc/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 766 "machine/sparc/decoder.m"
+#line 760 "machine/sparc/decoder.m"
     hostPC
     ;
   unsigned MATCH_w_32_0;
@@ -2961,7 +2955,7 @@ SparcDecoder::isRestore(ADDRESS hostPC)
       (0 <= (MATCH_w_32_0 >> 13 & 0x1) /* i at 0 */ && 
       (MATCH_w_32_0 >> 13 & 0x1) /* i at 0 */ < 2)) 
       
-#line 768 "machine/sparc/decoder.m"
+#line 762 "machine/sparc/decoder.m"
       
 
       	//| RESTORE(a, b, c) =>
@@ -2977,7 +2971,7 @@ SparcDecoder::isRestore(ADDRESS hostPC)
   
   MATCH_label_a0: (void)0; /*placeholder for label*/ 
     
-#line 770 "machine/sparc/decoder.m"
+#line 764 "machine/sparc/decoder.m"
     
     		return false;
 
@@ -2989,7 +2983,7 @@ SparcDecoder::isRestore(ADDRESS hostPC)
   
 }
 
-#line 774 "machine/sparc/decoder.m"
+#line 768 "machine/sparc/decoder.m"
 }
 
 /*

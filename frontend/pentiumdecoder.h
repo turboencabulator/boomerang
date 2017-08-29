@@ -27,13 +27,14 @@ public:
 	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
-	/*
-	 * Various functions to decode the operands of an instruction into
-	 * a SemStr representation.
+	/**
+	 * \name Functions to decode instruction operands into Exp*s
+	 * \{
 	 */
 	Exp *dis_Eaddr(ADDRESS pc, int size = 0);
 	Exp *dis_Mem(ADDRESS ps);
 	Exp *addReloc(Exp *e);
+	/** \} */
 
 	bool isFuncPrologue(ADDRESS hostPC);
 

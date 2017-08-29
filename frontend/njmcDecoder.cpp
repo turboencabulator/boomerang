@@ -191,8 +191,7 @@ DecodeResult::reset()
 Exp *
 NJMCDecoder::dis_Reg(int regNum)
 {
-	Exp *expr = Location::regOf(regNum);
-	return expr;
+	return Location::regOf(regNum);
 }
 
 /**
@@ -206,8 +205,7 @@ NJMCDecoder::dis_Reg(int regNum)
 Exp *
 NJMCDecoder::dis_Num(unsigned num)
 {
-	Exp *expr = new Const((int)num);
-	return expr;
+	return new Const((int)num);
 }
 
 /**

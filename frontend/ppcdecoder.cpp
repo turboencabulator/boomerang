@@ -4516,12 +4516,6 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	return result;
 }
 
-
-/*
- * These are functions used to decode instruction operands into expressions
- * (Exp*s).
- */
-
 /**
  * Decode the register.
  *

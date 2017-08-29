@@ -61590,11 +61590,6 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	return result;
 }
 
-/*
- * These are machine specific functions used to decode instruction operands
- * into Exp*s.
- */
-
 /**
  * Converts a dynamic address to a Exp* expression.
  * E.g. [1000] --> m[, 1000
@@ -61612,11 +61607,11 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
 
 
 
-#line 2147 "machine/pentium/decoder.m"
+#line 2142 "machine/pentium/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 2147 "machine/pentium/decoder.m"
+#line 2142 "machine/pentium/decoder.m"
     pc
     ;
   unsigned /* [0..255] */ MATCH_w_8_0;
@@ -61635,7 +61630,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 { 
                   unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
                   
-#line 2202 "machine/pentium/decoder.m"
+#line 2197 "machine/pentium/decoder.m"
                   
 
                   		// m[ r[base] ]
@@ -61656,7 +61651,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                     { 
                       unsigned d = MATCH_w_32_16 /* i32 at 16 */;
                       
-#line 2212 "machine/pentium/decoder.m"
+#line 2207 "machine/pentium/decoder.m"
                       
 
                       		// [d] (Same as Abs32 using SIB)
@@ -61677,7 +61672,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                         (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                       unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                       
-#line 2205 "machine/pentium/decoder.m"
+#line 2200 "machine/pentium/decoder.m"
                       
 
                       		// m[ r[index] * ss + d ]
@@ -61702,7 +61697,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                   if ((MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */ == 4) { 
                     unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                     
-#line 2169 "machine/pentium/decoder.m"
+#line 2164 "machine/pentium/decoder.m"
                     
 
                     		// m[ r[base] ]
@@ -61719,7 +61714,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                       (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                     unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                     
-#line 2162 "machine/pentium/decoder.m"
+#line 2157 "machine/pentium/decoder.m"
                     
 
                     		// m[ r[base] + r[index] * ss]
@@ -61745,7 +61740,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 { 
                   unsigned a = MATCH_w_32_8 /* i32 at 8 */;
                   
-#line 2149 "machine/pentium/decoder.m"
+#line 2144 "machine/pentium/decoder.m"
                   
 
                   		// [a]
@@ -61770,7 +61765,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                 unsigned d = (MATCH_w_8_16 & 0xff) /* i8 at 16 */;
                 
-#line 2195 "machine/pentium/decoder.m"
+#line 2190 "machine/pentium/decoder.m"
                 
 
                 		// m[ r[ base] + d ]
@@ -61800,7 +61795,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2186 "machine/pentium/decoder.m"
+#line 2181 "machine/pentium/decoder.m"
                 
 
                 		// m[ r[ base ] + r[ index ] * ss + d ]
@@ -61834,7 +61829,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               
-#line 2157 "machine/pentium/decoder.m"
+#line 2152 "machine/pentium/decoder.m"
               
 
               		// m[ r[ r32] + d]
@@ -61861,7 +61856,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                 unsigned d = MATCH_w_32_16 /* i32 at 16 */;
                 
-#line 2181 "machine/pentium/decoder.m"
+#line 2176 "machine/pentium/decoder.m"
                 
 
                 		// m[ r[ base] + d ]
@@ -61886,7 +61881,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2172 "machine/pentium/decoder.m"
+#line 2167 "machine/pentium/decoder.m"
                 
 
                 		// m[ r[ base ] + r[ index ] * ss + d ]
@@ -61919,7 +61914,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
               unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               unsigned d = MATCH_w_32_8 /* i32 at 8 */;
               
-#line 2152 "machine/pentium/decoder.m"
+#line 2147 "machine/pentium/decoder.m"
               
 
               		// m[ r[ base] + d]
@@ -61948,7 +61943,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
   
 }
 
-#line 2216 "machine/pentium/decoder.m"
+#line 2211 "machine/pentium/decoder.m"
 	return expr;
 }
 
@@ -61966,11 +61961,11 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
 {
 
 
-#line 2230 "machine/pentium/decoder.m"
+#line 2225 "machine/pentium/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 2230 "machine/pentium/decoder.m"
+#line 2225 "machine/pentium/decoder.m"
     pc
     ;
   unsigned /* [0..255] */ MATCH_w_8_0;
@@ -61980,7 +61975,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
     if ((MATCH_w_8_0 >> 6 & 0x3) /* mod at 0 */ == 3) { 
       unsigned reg = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
       
-#line 2234 "machine/pentium/decoder.m"
+#line 2229 "machine/pentium/decoder.m"
       
 
       		Exp *e;
@@ -62012,7 +62007,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
     { 
       unsigned mem = addressToPC(MATCH_p);
       
-#line 2231 "machine/pentium/decoder.m"
+#line 2226 "machine/pentium/decoder.m"
       
 
       		return dis_Mem(mem);
@@ -62027,7 +62022,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
   
 }
 
-#line 2244 "machine/pentium/decoder.m"
+#line 2239 "machine/pentium/decoder.m"
 }
 
 /**

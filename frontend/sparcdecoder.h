@@ -34,14 +34,15 @@ public:
 	bool isRestore(ADDRESS hostPC);
 
 private:
-	/*
-	 * Various functions to decode the operands of an instruction into
-	 * a SemStr representation.
+	/**
+	 * \name Functions to decode instruction operands into Exp*s
+	 * \{
 	 */
 	Exp *dis_Eaddr(ADDRESS pc, int size = 0);
 	Exp *dis_RegImm(ADDRESS pc);
 	Exp *dis_RegLhs(unsigned r);
 	Exp *dis_RegRhs(unsigned r);
+	/** \} */
 
 	RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
 	bool isFuncPrologue(ADDRESS hostPC);

@@ -139,7 +139,7 @@ protected:
 	char constrName[84];
 
 	/**
-	 * \name Functions used to decode instruction operands into Exp*s
+	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
 	Exp *dis_Num(unsigned num);

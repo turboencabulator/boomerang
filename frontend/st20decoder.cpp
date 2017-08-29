@@ -625,11 +625,6 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 }
 
 /*
- * These are machine specific functions used to decode instruction operands
- * into Exp*s.
- */
-
-/*
  * These are the fetch routines.
  */
 

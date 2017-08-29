@@ -2125,11 +2125,6 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	return result;
 }
 
-/*
- * These are machine specific functions used to decode instruction operands
- * into Exp*s.
- */
-
 /**
  * Converts a dynamic address to a Exp* expression.
  * E.g. [1000] --> m[, 1000
