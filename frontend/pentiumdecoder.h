@@ -24,7 +24,7 @@ public:
 	PentiumDecoder(Prog *prog);
 
 	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
-	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
 	/**
@@ -36,7 +36,7 @@ private:
 	Exp *addReloc(Exp *e);
 	/** \} */
 
-	bool isFuncPrologue(ADDRESS hostPC);
+	//bool isFuncPrologue(ADDRESS hostPC);
 
 	Byte getByte(unsigned lc);
 	SWord getWord(unsigned lc);

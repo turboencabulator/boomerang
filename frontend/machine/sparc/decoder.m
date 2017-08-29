@@ -51,12 +51,14 @@ SparcDecoder::SparcDecoder(Prog *prog) :
 	RTLDict.readSSLFile(file.c_str());
 }
 
+#if 0 // Cruft?
 // For now...
 int
 SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 {
 	return 0;
 }
+#endif
 
 /**
  * Create an RTL for a Bx instruction.
@@ -724,6 +726,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
 	return expr;
 }
 
+#if 0 // Cruft?
 /**
  * Check to see if the instructions at the given offset match any callee
  * prologue, i.e. does it look like this offset is a pointer to a function?
@@ -747,6 +750,7 @@ SparcDecoder::isFuncPrologue(ADDRESS hostPC)
 #endif
 	return false;
 }
+#endif
 
 /**
  * Check to see if the instruction at the given offset is a restore

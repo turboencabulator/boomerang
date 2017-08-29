@@ -24,14 +24,12 @@ public:
 	ST20Decoder(Prog *prog);
 
 	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
-	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
-	RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
-	bool isFuncPrologue(ADDRESS hostPC);
-	DWord getDword(ADDRESS lc);
-	SWord getWord(ADDRESS lc);
 	Byte getByte(ADDRESS lc);
+	//SWord getWord(ADDRESS lc);
+	//DWord getDword(ADDRESS lc);
 };
 
 #endif

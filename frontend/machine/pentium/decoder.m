@@ -68,12 +68,14 @@ PentiumDecoder::PentiumDecoder(Prog *prog) :
 	RTLDict.readSSLFile(file.c_str());
 }
 
+#if 0 // Cruft?
 // For now...
 int
 PentiumDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 {
 	return 0;
 }
+#endif
 
 static DecodeResult result;
 
@@ -2238,6 +2240,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
 	endmatch
 }
 
+#if 0 // Cruft?
 /**
  * Check to see if the instructions at the given offset match any callee
  * prologue, i.e. does it look like this offset is a pointer to a function?
@@ -2259,6 +2262,7 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 #endif
 	return false;
 }
+#endif
 
 
 /*

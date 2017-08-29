@@ -37,12 +37,14 @@ ST20Decoder::ST20Decoder(Prog *prog) :
 	RTLDict.readSSLFile(file.c_str());
 }
 
+#if 0 // Cruft?
 // For now...
 int
 ST20Decoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 {
 	return 0;
 }
+#endif
 
 static DecodeResult result;
 
@@ -72,11 +74,11 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	while (1) {
 
 
-#line 68 "machine/st20/decoder.m"
+#line 70 "machine/st20/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 68 "machine/st20/decoder.m"
+#line 70 "machine/st20/decoder.m"
     hostPC + result.numBytes++
     ;
   const char *MATCH_name;
@@ -93,7 +95,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 82 "machine/st20/decoder.m"
+#line 84 "machine/st20/decoder.m"
             
 
             			unconditionalJump("j", result.numBytes, hostPC + result.numBytes + total + oper, delta, pc, stmts, result);
@@ -114,7 +116,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 79 "machine/st20/decoder.m"
+#line 81 "machine/st20/decoder.m"
             
 
             			stmts = instantiate(pc, name, new Const(total + oper));
@@ -131,7 +133,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 71 "machine/st20/decoder.m"
+#line 73 "machine/st20/decoder.m"
             
 
             			total = (total + oper) << 4;
@@ -150,7 +152,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 75 "machine/st20/decoder.m"
+#line 77 "machine/st20/decoder.m"
             
 
             			total = (total + ~oper) << 4;
@@ -169,7 +171,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 85 "machine/st20/decoder.m"
+#line 87 "machine/st20/decoder.m"
             
 
             			total += oper;
@@ -198,7 +200,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 94 "machine/st20/decoder.m"
+#line 96 "machine/st20/decoder.m"
             
 
             			BranchStatement *br = new BranchStatement();
@@ -227,7 +229,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 103 "machine/st20/decoder.m"
+#line 105 "machine/st20/decoder.m"
             
 
             			total |= oper;
@@ -615,7 +617,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
   
 }
 
-#line 290 "machine/st20/decoder.m"
+#line 292 "machine/st20/decoder.m"
 		break;
 	}
 
@@ -637,6 +639,7 @@ ST20Decoder::getByte(unsigned lc)
 	return *(Byte *)lc;
 }
 
+#if 0 // Cruft?
 /**
  * \returns The next 2-byte word from image pointed to by lc.
  */
@@ -658,5 +661,6 @@ ST20Decoder::getDword(unsigned lc)
 	            + (*(Byte *)(lc + 2) << 16)
 	            + (*(Byte *)(lc + 3) << 24));
 }
+#endif
 
 

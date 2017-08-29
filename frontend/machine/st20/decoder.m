@@ -33,12 +33,14 @@ ST20Decoder::ST20Decoder(Prog *prog) :
 	RTLDict.readSSLFile(file.c_str());
 }
 
+#if 0 // Cruft?
 // For now...
 int
 ST20Decoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 {
 	return 0;
 }
+#endif
 
 static DecodeResult result;
 
@@ -308,6 +310,7 @@ ST20Decoder::getByte(unsigned lc)
 	return *(Byte *)lc;
 }
 
+#if 0 // Cruft?
 /**
  * \returns The next 2-byte word from image pointed to by lc.
  */
@@ -329,3 +332,4 @@ ST20Decoder::getDword(unsigned lc)
 	            + (*(Byte *)(lc + 2) << 16)
 	            + (*(Byte *)(lc + 3) << 24));
 }
+#endif

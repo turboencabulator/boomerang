@@ -115,14 +115,18 @@ public:
 	 */
 	virtual DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) = 0;
 
+#if 0 // Cruft?
 	/**
 	 * Disassembles the machine instruction at pc and returns the number
 	 * of bytes disassembled.  Assembler output goes to global _assembly.
 	 */
 	virtual int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) = 0;
+#endif
 
 	RTLInstDict &getRTLDict() { return RTLDict; }
+#if 0 // Cruft?
 	Prog *getProg() { return prog; }
+#endif
 
 protected:
 	std::list<Statement *> *instantiate(ADDRESS pc, const char *name, ...);
@@ -133,10 +137,12 @@ protected:
 	static void computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 	static void computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 
+#if 0 // Cruft?
 	/**
 	 * String for the constructor names (displayed with use "-c").
 	 */
 	char constrName[84];
+#endif
 
 	/**
 	 * \name Functions to decode instruction operands into Exp*s
@@ -153,12 +159,14 @@ protected:
 	RTLInstDict RTLDict;
 };
 
+#if 0 // Cruft?
 /**
  * Does the instruction at the given offset correspond to a caller prologue?
  *
  * \note Implemented in the decoder.m files.
  */
 bool isFuncPrologue(ADDRESS hostPC);
+#endif
 
 
 /**
@@ -210,6 +218,7 @@ bool isFuncPrologue(ADDRESS hostPC);
 /** \} */
 
 
+#if 0 // Cruft?
 /**
  * \name Arrays used to map register numbers to their names
  * \{
@@ -247,5 +256,6 @@ SWord getWord(ADDRESS lc);
  */
 DWord getDword(ADDRESS lc);
 /** \} */
+#endif
 
 #endif

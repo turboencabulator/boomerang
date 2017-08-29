@@ -26,7 +26,7 @@ public:
 	PPCDecoder(Prog *prog);
 
 	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
-	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
 	/**
@@ -37,8 +37,7 @@ private:
 	Exp *dis_RAmbz(unsigned r);  // Special for rA of certain instructions
 	/** \} */
 
-	RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
-	bool isFuncPrologue(ADDRESS hostPC);
+	//bool isFuncPrologue(ADDRESS hostPC);
 	DWord getDword(ADDRESS lc);
 };
 

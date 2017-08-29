@@ -77,12 +77,14 @@ PPCDecoder::PPCDecoder(Prog *prog) :
 	RTLDict.readSSLFile(file.c_str());
 }
 
+#if 0 // Cruft?
 // For now...
 int
 PPCDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 {
 	return 0;
 }
+#endif
 
 /**
  * Attempt to decode the high level instruction at a given address and return
@@ -386,6 +388,7 @@ PPCDecoder::dis_RAmbz(unsigned r)
 	return Location::regOf(r);
 }
 
+#if 0 // Cruft?
 /**
  * Check to see if the instructions at the given offset match any callee
  * prologue, i.e. does it look like this offset is a pointer to a function?
@@ -398,6 +401,7 @@ PPCDecoder::isFuncPrologue(ADDRESS hostPC)
 {
 	return false;
 }
+#endif
 
 
 /*

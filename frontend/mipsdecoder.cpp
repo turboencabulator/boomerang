@@ -32,12 +32,14 @@ MIPSDecoder::MIPSDecoder(Prog *prog) :
 	RTLDict.readSSLFile(file.c_str());
 }
 
+#if 0 // Cruft?
 // For now...
 int
 MIPSDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 {
 	return 0;
 }
+#endif
 
 /**
  * Attempt to decode the high level instruction at a given address and return

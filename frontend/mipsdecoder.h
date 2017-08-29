@@ -22,14 +22,7 @@ public:
 	MIPSDecoder(Prog *prog);
 
 	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
-	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
-
-private:
-#if 0
-	RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
-	bool isFuncPrologue(ADDRESS hostPC);
-	DWord getDword(ADDRESS lc);
-#endif
+	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 };
 
 #endif

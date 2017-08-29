@@ -26,7 +26,7 @@ public:
 	SparcDecoder(Prog *prog);
 
 	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
-	int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 	/*
 	 * Indicates whether the instruction at the given address is a restore instruction.
@@ -45,7 +45,7 @@ private:
 	/** \} */
 
 	RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
-	bool isFuncPrologue(ADDRESS hostPC);
+	//bool isFuncPrologue(ADDRESS hostPC);
 	DWord getDword(ADDRESS lc);
 };
 
