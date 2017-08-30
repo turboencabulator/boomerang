@@ -2273,7 +2273,7 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
  * \returns The next byte from image pointed to by lc.
  */
 Byte
-PentiumDecoder::getByte(unsigned lc)
+PentiumDecoder::getByte(ADDRESS lc)
 {
 	return *(Byte *)lc;
 }
@@ -2282,7 +2282,7 @@ PentiumDecoder::getByte(unsigned lc)
  * \returns The next 2-byte word from image pointed to by lc.
  */
 SWord
-PentiumDecoder::getWord(unsigned lc)
+PentiumDecoder::getWord(ADDRESS lc)
 {
 	return (SWord)(*(Byte *)lc
 	            + (*(Byte *)(lc + 1) << 8));
@@ -2292,7 +2292,7 @@ PentiumDecoder::getWord(unsigned lc)
  * \returns The next 4-byte word from image pointed to by lc.
  */
 DWord
-PentiumDecoder::getDword(unsigned lc)
+PentiumDecoder::getDword(ADDRESS lc)
 {
 	lastDwordLc = lc - prog->getTextDelta();
 	return (DWord)(*(Byte *)lc

@@ -305,7 +305,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
  * \returns The next byte from image pointed to by lc.
  */
 Byte
-ST20Decoder::getByte(unsigned lc)
+ST20Decoder::getByte(ADDRESS lc)
 {
 	return *(Byte *)lc;
 }
@@ -315,7 +315,7 @@ ST20Decoder::getByte(unsigned lc)
  * \returns The next 2-byte word from image pointed to by lc.
  */
 SWord
-ST20Decoder::getWord(unsigned lc)
+ST20Decoder::getWord(ADDRESS lc)
 {
 	return (SWord)(*(Byte *)lc
 	            + (*(Byte *)(lc + 1) << 8));
@@ -325,7 +325,7 @@ ST20Decoder::getWord(unsigned lc)
  * \returns The next 4-byte word from image pointed to by lc.
  */
 DWord
-ST20Decoder::getDword(unsigned lc)
+ST20Decoder::getDword(ADDRESS lc)
 {
 	return (DWord)(*(Byte *)lc
 	            + (*(Byte *)(lc + 1) <<  8)
