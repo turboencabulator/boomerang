@@ -101,7 +101,7 @@ ExeBinaryFile::load(std::istream &ifs)
 
 		/* Allocate the relocation table */
 		if (m_cReloc) {
-			m_pRelocTable = new dword[m_cReloc];
+			m_pRelocTable = new DWord[m_cReloc];
 			ifs.seekg(m_pHeader->relocTabOffset);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
