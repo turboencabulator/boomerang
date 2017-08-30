@@ -553,9 +553,11 @@ PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 ADDRESS
 PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 {
-	gotMain = true;
 	ADDRESS start = pBF->getMainEntryPoint();
-	if (start != NO_ADDRESS) return start;
+	if (start != NO_ADDRESS) {
+		gotMain = true;
+		return start;
+	}
 
 	gotMain = false;
 	start = pBF->getEntryPoint();

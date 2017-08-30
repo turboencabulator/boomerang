@@ -1535,15 +1535,14 @@ SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl
 ADDRESS
 SparcFrontEnd::getMainEntryPoint(bool &gotMain)
 {
-	gotMain = true;
 	ADDRESS start = pBF->getMainEntryPoint();
-	if (start != NO_ADDRESS) return start;
+	if (start != NO_ADDRESS) {
+		gotMain = true;
+		return start;
+	}
 
 	start = pBF->getEntryPoint();
-	gotMain = false;
-	if (start == NO_ADDRESS) return NO_ADDRESS;
-
-	gotMain = true;
+	gotMain = start != NO_ADDRESS;
 	return start;
 }
 
