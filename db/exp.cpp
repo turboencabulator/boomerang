@@ -1186,7 +1186,7 @@ Exp::dump()
  * PARAMETERS:      The stream to write
  *============================================================================*/
 void
-Exp::createDot(std::ostream &os)
+Exp::createDot(std::ostream &os) const
 {
 	os << "digraph Exp {\n";
 	appendDot(os);
@@ -1197,7 +1197,7 @@ Exp::createDot(std::ostream &os)
 //  Const   //
 //  //  //  //
 void
-Const::appendDot(std::ostream &os)
+Const::appendDot(std::ostream &os) const
 {
 	// We define a unique name for each node as "e123456" if the address of "this" == 0x123456
 	os << "\te" << std::hex << (int)this
@@ -1220,7 +1220,7 @@ Const::appendDot(std::ostream &os)
 // Terminal //
 //  //  //  //
 void
-Terminal::appendDot(std::ostream &os)
+Terminal::appendDot(std::ostream &os) const
 {
 	os << "\te" << std::hex << (int)this
 	// Note: opWild value is -1, so can't index array
@@ -1233,7 +1233,7 @@ Terminal::appendDot(std::ostream &os)
 //  Unary   //
 //  //  //  //
 void
-Unary::appendDot(std::ostream &os)
+Unary::appendDot(std::ostream &os) const
 {
 	// First a node for this Unary object
 	os << "\te" << std::hex << (int)this
@@ -1252,7 +1252,7 @@ Unary::appendDot(std::ostream &os)
 //  Binary  //
 //  //  //  //
 void
-Binary::appendDot(std::ostream &os)
+Binary::appendDot(std::ostream &os) const
 {
 	// First a node for this Binary object
 	os << "\te" << std::hex << (int)this
@@ -1272,7 +1272,7 @@ Binary::appendDot(std::ostream &os)
 //  Ternary //
 //  //  //  //
 void
-Ternary::appendDot(std::ostream &os)
+Ternary::appendDot(std::ostream &os) const
 {
 	// First a node for this Ternary object
 	os << "\te" << std::hex << (int)this
@@ -1294,7 +1294,7 @@ Ternary::appendDot(std::ostream &os)
 // TypedExp //
 //  //  //  //
 void
-TypedExp::appendDot(std::ostream &os)
+TypedExp::appendDot(std::ostream &os) const
 {
 	os << "\te" << std::hex << (int)this
 	   << " [shape=record,label=\"{ " << "opTypedExp"
@@ -1311,7 +1311,7 @@ TypedExp::appendDot(std::ostream &os)
 //  FlagDef //
 //  //  //  //
 void
-FlagDef::appendDot(std::ostream &os)
+FlagDef::appendDot(std::ostream &os) const
 {
 	os << "\te" << std::hex << (int)this
 	   << " [shape=record,label=\"{ " << "opFlagDef"

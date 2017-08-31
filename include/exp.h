@@ -93,8 +93,8 @@ public:
 	virtual void        printx(int ind) = 0;
 
 	// Display as a dotty graph
-	        void        createDot(std::ostream &os);
-	virtual void        appendDot(std::ostream &os) = 0;
+	        void        createDot(std::ostream &os) const;
+	virtual void        appendDot(std::ostream &os) const = 0;
 
 	// Clone (make copy of self that can be deleted without affecting self)
 	virtual Exp        *clone() = 0;
@@ -412,7 +412,7 @@ public:
 	void        printNoQuotes(std::ostream &os);
 	void        printx(int ind) override;
 
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
@@ -449,7 +449,7 @@ public:
 	bool        operator *=(Exp &o) override;
 
 	void        print(std::ostream &os, bool html = false) override;
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	void        printx(int ind) override;
 
 	bool        isTerminal() const override { return true; }
@@ -498,7 +498,7 @@ public:
 
 	// Print
 	void        print(std::ostream &os, bool html = false) override;
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	void        printx(int ind) override;
 
 	// Set first subexpression
@@ -568,7 +568,7 @@ public:
 	// Print
 	void        print(std::ostream &os, bool html = false) override;
 	void        printr(std::ostream &os, bool html = false) override;
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	void        printx(int ind) override;
 
 	// Set second subexpression
@@ -641,7 +641,7 @@ public:
 	// Print
 	void        print(std::ostream &os, bool html = false) override;
 	void        printr(std::ostream &os, bool html = false) override;
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	void        printx(int ind) override;
 
 	// Set third subexpression
@@ -702,7 +702,7 @@ public:
 
 
 	void        print(std::ostream &os, bool html = false) override;
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	void        printx(int ind) override;
 
 	// Get and set the type
@@ -731,7 +731,7 @@ class FlagDef : public Unary {
 public:
 	            FlagDef(Exp *params, RTL *rtl);  // Constructor
 	virtual    ~FlagDef();                       // Destructor
-	void        appendDot(std::ostream &os) override;
+	void        appendDot(std::ostream &os) const override;
 	RTL        *getRtl() const { return rtl; }
 	void        setRtl(RTL *r) { rtl = r; }
 
