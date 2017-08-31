@@ -786,15 +786,12 @@ Prog::guessGlobalType(const char *nam, ADDRESS u)
 			// return char* and hope it is dealt with properly
 			return new PointerType(new CharType());
 	}
-	Type *ty;
 	switch (sz) {
 	case 1: case 2: case 4: case 8:
-		ty = new IntegerType(sz * 8);
-		break;
+		return new IntegerType(sz * 8);
 	default:
-		ty = new ArrayType(new CharType(), sz);
+		return new ArrayType(new CharType(), sz);
 	}
-	return ty;
 }
 
 const char *

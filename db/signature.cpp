@@ -386,8 +386,7 @@ CallingConvention::Win32Signature::getArgumentExp(int n)
 	Exp *esp = Location::regOf(28);
 	if (!params.empty() && *params[0]->getExp() == *esp)
 		--n;
-	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
-	return e;
+	return Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 }
 
 Exp *
@@ -402,8 +401,7 @@ CallingConvention::Win32TcSignature::getArgumentExp(int n)
 		// It's the first parameter, register ecx
 		return Location::regOf(25);
 	// Else, it is m[esp+4n)]
-	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const(n * 4)));
-	return e;
+	return Location::memOf(new Binary(opPlus, esp, new Const(n * 4)));
 }
 
 Signature *
@@ -625,8 +623,7 @@ CallingConvention::StdC::PentiumSignature::getArgumentExp(int n)
 	Exp *esp = Location::regOf(28);
 	if (!params.empty() && *params[0]->getExp() == *esp)
 		--n;
-	Exp *e = Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
-	return e;
+	return Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 }
 
 Signature *
@@ -739,14 +736,11 @@ CallingConvention::StdC::PPCSignature::getArgumentExp(int n)
 {
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
-	Exp *e;
-	if (n >= 8) {
+	if (n >= 8)
 		// PPCs pass the ninth and subsequent parameters at m[%r1+8],
 		// m[%r1+12], etc.
-		e = Location::memOf(new Binary(opPlus, Location::regOf(1), new Const(8 + (n - 8) * 4)));
-	} else
-		e = Location::regOf((int)(3 + n));
-	return e;
+		return Location::memOf(new Binary(opPlus, Location::regOf(1), new Const(8 + (n - 8) * 4)));
+	return Location::regOf((int)(3 + n));
 }
 
 void
@@ -853,8 +847,7 @@ CallingConvention::StdC::ST20Signature::getArgumentExp(int n)
 	Exp *sp = Location::regOf(3);
 	if (!params.empty() && *params[0]->getExp() == *sp)
 		--n;
-	Exp *e = Location::memOf(new Binary(opPlus, sp, new Const((n + 1) * 4)));
-	return e;
+	return Location::memOf(new Binary(opPlus, sp, new Const((n + 1) * 4)));
 }
 
 void
@@ -1067,16 +1060,13 @@ CallingConvention::StdC::SparcSignature::getArgumentExp(int n)
 {
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
-	Exp *e;
-	if (n >= 6) {
+	if (n >= 6)
 		// SPARCs pass the seventh and subsequent parameters at m[%sp+92],
 		// m[%esp+96], etc.
-		e = Location::memOf(new Binary(opPlus,
-		                               Location::regOf(14), // %o6 == %sp
-		                               new Const(92 + (n - 6) * 4)));
-	} else
-		e = Location::regOf((int)(8 + n));
-	return e;
+		return Location::memOf(new Binary(opPlus,
+		                                  Location::regOf(14), // %o6 == %sp
+		                                  new Const(92 + (n - 6) * 4)));
+	return Location::regOf((int)(8 + n));
 }
 
 Signature *
@@ -1648,10 +1638,9 @@ Signature::getFirstArgLoc(Prog *prog)
 	case MACHINE_PENTIUM:
 		{
 			//CallingConvention::StdC::PentiumSignature sig("");
-			//Exp *e = sig.getArgumentExp(0);
+			//return sig.getArgumentExp(0);
 			// For now, need to work around how the above appears to be the wrong thing!
-			Exp *e = Location::memOf(Location::regOf(28));
-			return e;
+			return Location::memOf(Location::regOf(28));
 		}
 	case MACHINE_ST20:
 		{

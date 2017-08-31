@@ -3420,8 +3420,7 @@ PhiAssign::clone()
 Statement *
 ImplicitAssign::clone()
 {
-	ImplicitAssign *ia = new ImplicitAssign(type, lhs);
-	return ia;
+	return new ImplicitAssign(type, lhs);
 }
 
 // visit this Statement

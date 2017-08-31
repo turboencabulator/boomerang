@@ -3515,9 +3515,9 @@ Const::genConstraints(Exp *result)
 	default:
 		return nullptr;
 	}
-	TypeVal *tv = new TypeVal(t);
-	Exp *e = new Binary(opEquals, result->clone(), tv);
-	return e;
+	return new Binary(opEquals,
+	                  result->clone(),
+	                  new TypeVal(t));
 }
 
 Exp *
@@ -4363,8 +4363,7 @@ public:
 Memo *
 Terminal::makeMemo(int mId)
 {
-	TerminalMemo *m = new TerminalMemo(mId);
-	return m;
+	return new TerminalMemo(mId);
 }
 
 void
@@ -4382,8 +4381,7 @@ public:
 Memo *
 Unary::makeMemo(int mId)
 {
-	UnaryMemo *m = new UnaryMemo(mId);
-	return m;
+	return new UnaryMemo(mId);
 }
 
 void
@@ -4401,8 +4399,7 @@ public:
 Memo *
 Binary::makeMemo(int mId)
 {
-	BinaryMemo *m = new BinaryMemo(mId);
-	return m;
+	return new BinaryMemo(mId);
 }
 
 void
@@ -4420,8 +4417,7 @@ public:
 Memo *
 Ternary::makeMemo(int mId)
 {
-	TernaryMemo *m = new TernaryMemo(mId);
-	return m;
+	return new TernaryMemo(mId);
 }
 
 void
@@ -4439,8 +4435,7 @@ public:
 Memo *
 TypedExp::makeMemo(int mId)
 {
-	TypedExpMemo *m = new TypedExpMemo(mId);
-	return m;
+	return new TypedExpMemo(mId);
 }
 
 void
@@ -4458,8 +4453,7 @@ public:
 Memo *
 FlagDef::makeMemo(int mId)
 {
-	FlagDefMemo *m = new FlagDefMemo(mId);
-	return m;
+	return new FlagDefMemo(mId);
 }
 
 void
@@ -4477,8 +4471,7 @@ public:
 Memo *
 RefExp::makeMemo(int mId)
 {
-	RefExpMemo *m = new RefExpMemo(mId);
-	return m;
+	return new RefExpMemo(mId);
 }
 
 void
@@ -4496,8 +4489,7 @@ public:
 Memo *
 TypeVal::makeMemo(int mId)
 {
-	TypeValMemo *m = new TypeValMemo(mId);
-	return m;
+	return new TypeValMemo(mId);
 }
 
 void
@@ -4515,8 +4507,7 @@ public:
 Memo *
 Location::makeMemo(int mId)
 {
-	LocationMemo *m = new LocationMemo(mId);
-	return m;
+	return new LocationMemo(mId);
 }
 
 void

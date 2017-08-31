@@ -79,9 +79,7 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 		std::cout << std::endl;
 	}
 
-	std::list<Statement *> *instance = RTLDict.instantiateRTL(opcode, pc, actuals);
-
-	return instance;
+	return RTLDict.instantiateRTL(opcode, pc, actuals);
 }
 
 /**

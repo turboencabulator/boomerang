@@ -106,8 +106,7 @@ RTL::clone()
 		le.push_back((*it)->clone());
 	}
 
-	RTL *ret = new RTL(nativeAddr, &le);
-	return ret;
+	return new RTL(nativeAddr, &le);
 }
 
 /**

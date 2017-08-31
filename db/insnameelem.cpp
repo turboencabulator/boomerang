@@ -120,14 +120,13 @@ InsOptionElem::ntokens()
 std::string
 InsOptionElem::getinstruction()
 {
-	std::string s = nextelem
-	              ? ((getvalue() == 0)
-	               ? (elemname + nextelem->getinstruction())
-	               : nextelem->getinstruction())
-	              : ((getvalue() == 0)
-	               ? elemname
-	               : "");
-	return s;
+	return nextelem
+	     ? ((getvalue() == 0)
+	      ? (elemname + nextelem->getinstruction())
+	      : nextelem->getinstruction())
+	     : ((getvalue() == 0)
+	      ? elemname
+	      : "");
 }
 
 std::string

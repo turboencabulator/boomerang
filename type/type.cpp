@@ -152,64 +152,55 @@ UnionType::~UnionType() { }
 Type *
 IntegerType::clone() const
 {
-	IntegerType *t = new IntegerType(size, signedness);
-	return t;
+	return new IntegerType(size, signedness);
 }
 
 Type *
 FloatType::clone() const
 {
-	FloatType *t = new FloatType(size);
-	return t;
+	return new FloatType(size);
 }
 
 Type *
 BooleanType::clone() const
 {
-	BooleanType *t = new BooleanType();
-	return t;
+	return new BooleanType();
 }
 
 Type *
 CharType::clone() const
 {
-	CharType *t = new CharType();
-	return t;
+	return new CharType();
 }
 
 Type *
 VoidType::clone() const
 {
-	VoidType *t = new VoidType();
-	return t;
+	return new VoidType();
 }
 
 Type *
 FuncType::clone() const
 {
-	FuncType *t = new FuncType(signature);
-	return t;
+	return new FuncType(signature);
 }
 
 Type *
 PointerType::clone() const
 {
-	PointerType *t = new PointerType(points_to->clone());
-	return t;
+	return new PointerType(points_to->clone());
 }
 
 Type *
 ArrayType::clone() const
 {
-	ArrayType *t = new ArrayType(base_type->clone(), length);
-	return t;
+	return new ArrayType(base_type->clone(), length);
 }
 
 Type *
 NamedType::clone() const
 {
-	NamedType *t = new NamedType(name.c_str());
-	return t;
+	return new NamedType(name.c_str());
 }
 
 Type *
@@ -233,22 +224,19 @@ UnionType::clone() const
 Type *
 SizeType::clone() const
 {
-	SizeType *t = new SizeType(size);
-	return t;
+	return new SizeType(size);
 }
 
 Type *
 UpperType::clone() const
 {
-	UpperType *t = new UpperType(base_type->clone());
-	return t;
+	return new UpperType(base_type->clone());
 }
 
 Type *
 LowerType::clone() const
 {
-	LowerType *t = new LowerType(base_type->clone());
-	return t;
+	return new LowerType(base_type->clone());
 }
 
 
