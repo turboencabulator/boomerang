@@ -35,6 +35,7 @@
 #include <string>
 
 #include <cassert>
+#include <cstdint>
 #include <cstdlib>
 #include <cstring>
 
@@ -1213,9 +1214,9 @@ void
 Const::appendDot(std::ostream &os) const
 {
 	// We define a unique name for each node as "e123456" if the address of "this" == 0x123456
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	   << " [shape=record,label=\"{ " << operStrings[op]
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	   << " | ";
 	switch (op) {
 	case opIntConst:  os << std::dec << u.i; break;
@@ -1235,10 +1236,10 @@ Const::appendDot(std::ostream &os) const
 void
 Terminal::appendDot(std::ostream &os) const
 {
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	// Note: opWild value is -1, so can't index array
 	   << " [shape=parallelogram,label=\"" << (op == opWild ? "WILD" : operStrings[op])
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	   << "\"];\n";
 }
 
@@ -1249,16 +1250,16 @@ void
 Unary::appendDot(std::ostream &os) const
 {
 	// First a node for this Unary object
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	   << " [shape=record,label=\"{ " << operStrings[op]
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	   << " | <p1> }\"];\n";
 
 	// Now recurse to the subexpression.
 	subExp1->appendDot(os);
 
 	// Finally an edge for the subexpression
-	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p1 -> e" << (uintptr_t)subExp1 << ";\n";
 }
 
 //  //  //  //
@@ -1268,17 +1269,17 @@ void
 Binary::appendDot(std::ostream &os) const
 {
 	// First a node for this Binary object
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	   << " [shape=record,label=\"{ " << operStrings[op]
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	   << " | {<p1> | <p2>} }\"];\n";
 
 	subExp1->appendDot(os);
 	subExp2->appendDot(os);
 
 	// Now an edge for each subexpression
-	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
-	os << "\te" << std::hex << (int)this << ":p2 -> e" << (int)subExp2 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p1 -> e" << (uintptr_t)subExp1 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p2 -> e" << (uintptr_t)subExp2 << ";\n";
 }
 
 //  //  //  //
@@ -1288,9 +1289,9 @@ void
 Ternary::appendDot(std::ostream &os) const
 {
 	// First a node for this Ternary object
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	   << " [shape=record,label=\"{ " << operStrings[op]
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	   << " | {<p1> | <p2> | <p3>} }\"];\n";
 
 	subExp1->appendDot(os);
@@ -1298,9 +1299,9 @@ Ternary::appendDot(std::ostream &os) const
 	subExp3->appendDot(os);
 
 	// Now an edge for each subexpression
-	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
-	os << "\te" << std::hex << (int)this << ":p2 -> e" << (int)subExp2 << ";\n";
-	os << "\te" << std::hex << (int)this << ":p3 -> e" << (int)subExp3 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p1 -> e" << (uintptr_t)subExp1 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p2 -> e" << (uintptr_t)subExp2 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p3 -> e" << (uintptr_t)subExp3 << ";\n";
 }
 
 //  //  //  //
@@ -1309,15 +1310,15 @@ Ternary::appendDot(std::ostream &os) const
 void
 TypedExp::appendDot(std::ostream &os) const
 {
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	   << " [shape=record,label=\"{ " << "opTypedExp"
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	// Just display the C type for now
 	   << " | " << type->getCtype() << " | <p1> }\"];\n";
 
 	subExp1->appendDot(os);
 
-	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p1 -> e" << (uintptr_t)subExp1 << ";\n";
 }
 
 //  //  //  //
@@ -1326,9 +1327,9 @@ TypedExp::appendDot(std::ostream &os) const
 void
 FlagDef::appendDot(std::ostream &os) const
 {
-	os << "\te" << std::hex << (int)this
+	os << "\te" << std::hex << (uintptr_t)this
 	   << " [shape=record,label=\"{ " << "opFlagDef"
-	   << "\\n0x" << std::hex << (int)this
+	   << "\\n0x" << std::hex << (uintptr_t)this
 	// Display the RTL as "RTL <r0> <r1>..." vertically (curly brackets)
 	   << " | { RTL ";
 	int n = rtl->getNumStmt();
@@ -1338,7 +1339,7 @@ FlagDef::appendDot(std::ostream &os) const
 
 	subExp1->appendDot(os);
 
-	os << "\te" << std::hex << (int)this << ":p1 -> e" << (int)subExp1 << ";\n";
+	os << "\te" << std::hex << (uintptr_t)this << ":p1 -> e" << (uintptr_t)subExp1 << ";\n";
 }
 
 /*==============================================================================
