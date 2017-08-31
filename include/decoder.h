@@ -174,11 +174,12 @@ bool isFuncPrologue(ADDRESS hostPC);
  * \{
  */
 #define DEBUG_DECODER (Boomerang::get()->debugDecoder)
-#define SHOW_ASM(output) if (DEBUG_DECODER) \
-	std::cout << std::hex << pc << std::dec << ": " << output << std::endl;
+#define SHOW_ASM(output) \
+	if (DEBUG_DECODER) \
+		std::cout << std::hex << pc << std::dec << ": " << output << std::endl;
 #define DEBUG_STMTS \
-	std::list<Statement *> &lst = result.rtl->getList(); \
 	if (DEBUG_DECODER) { \
+		std::list<Statement *> &lst = result.rtl->getList(); \
 		for (auto ii = lst.begin(); ii != lst.end(); ++ii) \
 			std::cout << "\t\t\t" << *ii << "\n"; \
 	}
