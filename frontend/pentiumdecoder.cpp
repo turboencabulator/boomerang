@@ -69,7 +69,7 @@ PentiumDecoder::PentiumDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
 	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/pentium/pentium.ssl";
-	RTLDict.readSSLFile(file.c_str());
+	RTLDict.readSSLFile(file);
 }
 
 #if 0 // Cruft?

@@ -52,7 +52,7 @@ SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
 	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/sparc/sparc.ssl";
-	RTLDict.readSSLFile(file.c_str());
+	RTLDict.readSSLFile(file);
 }
 
 #if 0 // Cruft?
