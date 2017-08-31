@@ -101,13 +101,13 @@ public:
 
 	// Comparison
 	// Type sensitive equality
-	virtual bool        operator ==(const Exp &o) const = 0;
+	virtual bool        operator ==(const Exp &) const = 0;
 	// Type sensitive less than
-	virtual bool        operator < (const Exp &o) const = 0;
+	virtual bool        operator < (const Exp &) const = 0;
 	// Type insensitive less than. Class TypedExp overrides
-	virtual bool        operator <<(const Exp &o) const { return (*this < o); }
+	virtual bool        operator <<(const Exp &e) const { return (*this < e); }
 	// Comparison ignoring subscripts
-	virtual bool        operator *=(Exp &o) = 0;
+	virtual bool        operator *=(const Exp &) const = 0;
 
 	// Return the number of subexpressions. This is only needed in rare cases.
 	// Could use polymorphism for all those cases, but this is easier
@@ -384,9 +384,9 @@ public:
 	Exp        *clone() const override;
 
 	// Compare
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 	// Get the constant
 	int         getInt()  const { return u.i;  }
@@ -444,9 +444,9 @@ public:
 	Exp        *clone() const override;
 
 	// Compare
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 	void        print(std::ostream &os, bool html = false) override;
 	void        appendDot(std::ostream &os) const override;
@@ -489,9 +489,9 @@ public:
 	Exp        *clone() const override;
 
 	// Compare
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 	// Arity
 	int         getArity() const override { return 1; }
@@ -558,9 +558,9 @@ public:
 	Exp        *clone() const override;
 
 	// Compare
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 	// Arity
 	int         getArity() const override { return 2; }
@@ -631,9 +631,9 @@ public:
 	Exp        *clone() const override;
 
 	// Compare
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 	// Arity
 	int         getArity() const override { return 3; }
@@ -695,10 +695,10 @@ public:
 	Exp        *clone() const override;
 
 	// Compare
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator <<(const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator <<(const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 
 	void        print(std::ostream &os, bool html = false) override;
@@ -758,9 +758,9 @@ public:
 	            //RefExp(Exp *e);
 	            //RefExp(RefExp &o);
 	Exp        *clone() const override;
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 
 	void        print(std::ostream &os, bool html = false) override;
 	void        printx(int ind) override;
@@ -803,9 +803,9 @@ public:
 	virtual Type *getType() const { return val; }
 	virtual void setType(Type *t) { val = t; }
 	Exp        *clone() const override;
-	bool        operator ==(const Exp &o) const override;
-	bool        operator < (const Exp &o) const override;
-	bool        operator *=(Exp &o) override;
+	bool        operator ==(const Exp &) const override;
+	bool        operator < (const Exp &) const override;
+	bool        operator *=(const Exp &) const override;
 	void        print(std::ostream &os, bool html = false) override;
 	void        printx(int ind) override;
 	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return nullptr; }  // Should not be constraining constraints

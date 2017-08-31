@@ -361,193 +361,214 @@ Location::clone() const
  * RETURNS:         True if equal
  *============================================================================*/
 bool
-Const::operator ==(const Exp &o) const
+Const::operator ==(const Exp &e) const
 {
-	// Note: the casts of o to Const& are needed, else op is protected! Duh.
-	if (((Const &)o).op == opWild) return true;
-	if (((Const &)o).op == opWildIntConst && op == opIntConst) return true;
-	if (((Const &)o).op == opWildStrConst && op == opStrConst) return true;
-	if (op != ((Const &)o).op) return false;
-	if ((conscript && conscript != ((Const &)o).conscript) || ((Const &)o).conscript)
+	const Const &o = (const Const &)e;
+	if ((o.op == opWild)
+	 || (o.op == opWildIntConst && op == opIntConst)
+	 || (o.op == opWildStrConst && op == opStrConst))
+		return true;
+	if (op != o.op)
+		return false;
+	if ((conscript && conscript != o.conscript) || o.conscript)
 		return false;
 	switch (op) {
-	case opIntConst: return u.i == ((Const &)o).u.i;
-	case opFltConst: return u.d == ((Const &)o).u.d;
-	case opStrConst: return (strcmp(u.p, ((Const &)o).u.p) == 0);
+	case opIntConst: return u.i == o.u.i;
+	case opFltConst: return u.d == o.u.d;
+	case opStrConst: return strcmp(u.p, o.u.p) == 0;
 	default:
 		LOG << "operator == invalid operator " << operStrings[op] << "\n";
 		assert(0);
+		return false;
 	}
-	return false;
 }
 bool
-Unary::operator ==(const Exp &o) const
+Unary::operator ==(const Exp &e) const
 {
-	if (((Unary &)o).op == opWild) return true;
-	if (((Unary &)o).op == opWildRegOf && op == opRegOf) return true;
-	if (((Unary &)o).op == opWildMemOf && op == opMemOf) return true;
-	if (((Unary &)o).op == opWildAddrOf && op == opAddrOf) return true;
-	if (op != ((Unary &)o).op) return false;
-	return *subExp1 == *((Unary &)o).getSubExp1();
+	const Unary &o = (const Unary &)e;
+	if ((o.op == opWild)
+	 || (o.op == opWildRegOf  && op == opRegOf)
+	 || (o.op == opWildMemOf  && op == opMemOf)
+	 || (o.op == opWildAddrOf && op == opAddrOf))
+		return true;
+	return op == o.op
+	    && *subExp1 == *o.getSubExp1();
 }
 bool
-Binary::operator ==(const Exp &o) const
+Binary::operator ==(const Exp &e) const
 {
 	assert(subExp1 && subExp2);
-	if (((Binary &)o).op == opWild) return true;
-	if (op != ((Binary &)o).op) return false;
-	if (!( *subExp1 == *((Binary &)o).getSubExp1())) return false;
-	return *subExp2 == *((Binary &)o).getSubExp2();
+	const Binary &o = (const Binary &)e;
+	if (o.op == opWild)
+		return true;
+	return op == o.op
+	    && *subExp1 == *o.getSubExp1()
+	    && *subExp2 == *o.getSubExp2();
 }
 bool
-Ternary::operator ==(const Exp &o) const
+Ternary::operator ==(const Exp &e) const
 {
-	if (((Ternary &)o).op == opWild) return true;
-	if (op != ((Ternary &)o).op) return false;
-	if (!( *subExp1 == *((Ternary &)o).getSubExp1())) return false;
-	if (!( *subExp2 == *((Ternary &)o).getSubExp2())) return false;
-	return *subExp3 == *((Ternary &)o).getSubExp3();
+	const Ternary &o = (const Ternary &)e;
+	if (o.op == opWild)
+		return true;
+	return op == o.op
+	    && *subExp1 == *o.getSubExp1()
+	    && *subExp2 == *o.getSubExp2()
+	    && *subExp3 == *o.getSubExp3();
 }
 bool
-Terminal::operator ==(const Exp &o) const
+Terminal::operator ==(const Exp &e) const
 {
-	if (op == opWildIntConst) return ((Terminal &)o).op == opIntConst;
-	if (op == opWildStrConst) return ((Terminal &)o).op == opStrConst;
-	if (op == opWildMemOf)    return ((Terminal &)o).op == opMemOf;
-	if (op == opWildRegOf)    return ((Terminal &)o).op == opRegOf;
-	if (op == opWildAddrOf)   return ((Terminal &)o).op == opAddrOf;
-	return ((op == opWild)  // Wild matches anything
-	     || (((Terminal &)o).op == opWild)
-	     || (op == ((Terminal &)o).op));
+	const Terminal &o = (const Terminal &)e;
+	if (op == opWildIntConst) return o.op == opIntConst;
+	if (op == opWildStrConst) return o.op == opStrConst;
+	if (op == opWildMemOf)    return o.op == opMemOf;
+	if (op == opWildRegOf)    return o.op == opRegOf;
+	if (op == opWildAddrOf)   return o.op == opAddrOf;
+	return op == opWild  // Wild matches anything
+	    || o.op == opWild
+	    || op == o.op;
 }
 bool
-TypedExp::operator ==(const Exp &o) const
+TypedExp::operator ==(const Exp &e) const
 {
-	if (((TypedExp &)o).op == opWild) return true;
-	if (((TypedExp &)o).op != opTypedExp) return false;
-	// This is the strict type version
-	if (*type != *((TypedExp &)o).type) return false;
-	return *((Unary *)this)->getSubExp1() == *((Unary &)o).getSubExp1();
+	const TypedExp &o = (const TypedExp &)e;
+	if (o.op == opWild)
+		return true;
+	if (o.op != opTypedExp
+	 || *type != *o.type)  // This is the strict type version
+		return false;
+	return *getSubExp1() == *o.getSubExp1();
 }
 bool
-RefExp::operator ==(const Exp &o) const
+RefExp::operator ==(const Exp &e) const
 {
-	if (((RefExp &)o).op == opWild) return true;
-	if (((RefExp &)o).op != opSubscript) return false;
-	if (!(*subExp1 == *((RefExp &)o).subExp1)) return false;
-	// Allow a def of (Statement *)-1 as a wild card
-	if ((int)def == -1) return true;
-	// Allow a def of nullptr to match a def of an implicit assignment
-	if ((int)((RefExp &)o).def == -1) return true;
-	if (!def && ((RefExp &)o).isImplicitDef()) return true;
-	if (!((RefExp &)o).def && def && def->isImplicit()) return true;
-	return def == ((RefExp &)o).def;
+	const RefExp &o = (const RefExp &)e;
+	if (o.op == opWild)
+		return true;
+	if (o.op != opSubscript
+	 || !(*subExp1 == *o.subExp1))
+		return false;
+	return (int)def == -1  // Allow a def of (Statement *)-1 as a wild card
+	    || (int)o.def == -1
+	    || (!def && o.isImplicitDef())  // Allow a def of nullptr to match a def of an implicit assignment
+	    || (!o.def && def && def->isImplicit())
+	    || def == o.def;
 }
 bool
-TypeVal::operator ==(const Exp &o) const
+TypeVal::operator ==(const Exp &e) const
 {
-	if (((TypeVal &)o).op == opWild) return true;
-	if (((TypeVal &)o).op != opTypeVal) return false;
-	return *val == *((TypeVal &)o).val;
+	const TypeVal &o = (const TypeVal &)e;
+	if (o.op == opWild)
+		return true;
+	return o.op == opTypeVal
+	    && *val == *o.val;
 }
 
 /*==============================================================================
  * FUNCTION:        Const::operator <() etc
  * OVERVIEW:        Virtual function to compare myself with another Exp
- * NOTE:            The test for a wildcard is only with this object, not the other object (o).
+ * NOTE:            The test for a wildcard is only with this object, not the other object (e).
  *                  So when searching and there could be wildcards, use search == *this not *this == search
  * PARAMETERS:      Ref to other Exp
  * RETURNS:         True if equal
  *============================================================================*/
 bool
-Const::operator <(const Exp &o) const
+Const::operator <(const Exp &e) const
 {
-	if (op < o.getOper()) return true;
-	if (op > o.getOper()) return false;
+	const Const &o = (const Const &)e;
+	if (op < o.op) return true;
+	if (op > o.op) return false;
 	if (conscript) {
-		if (conscript < ((Const &)o).conscript) return true;
-		if (conscript > ((Const &)o).conscript) return false;
-	} else if (((Const &)o).conscript) return true;
+		if (conscript < o.conscript) return true;
+		if (conscript > o.conscript) return false;
+	} else if (o.conscript) return true;
 	switch (op) {
-	case opIntConst:
-		return u.i < ((Const &)o).u.i;
-	case opFltConst:
-		return u.d < ((Const &)o).u.d;
-	case opStrConst:
-		return strcmp(u.p, ((Const &)o).u.p) < 0;
+	case opIntConst: return u.i < o.u.i;
+	case opFltConst: return u.d < o.u.d;
+	case opStrConst: return strcmp(u.p, o.u.p) < 0;
 	default:
 		LOG << "operator < invalid operator " << operStrings[op] << "\n";
 		assert(0);
+		return false;
 	}
-	return false;
 }
 bool
-Terminal::operator <(const Exp &o) const
+Terminal::operator <(const Exp &e) const
 {
-	return (op < o.getOper());
+	const Terminal &o = (const Terminal &)e;
+	return (op < o.op);
 }
 bool
-Unary::operator <(const Exp &o) const
+Unary::operator <(const Exp &e) const
 {
-	if (op < o.getOper()) return true;
-	if (op > o.getOper()) return false;
-	return *subExp1 < *((Unary &)o).getSubExp1();
+	const Unary &o = (const Unary &)e;
+	if (op < o.op) return true;
+	if (op > o.op) return false;
+	return *subExp1 < *o.getSubExp1();
 }
 bool
-Binary::operator <(const Exp &o) const
+Binary::operator <(const Exp &e) const
 {
 	assert(subExp1 && subExp2);
-	if (op < o.getOper()) return true;
-	if (op > o.getOper()) return false;
-	if (*subExp1 < *((Binary &)o).getSubExp1()) return true;
-	if (*((Binary &)o).getSubExp1() < *subExp1) return false;
-	return *subExp2 < *((Binary &)o).getSubExp2();
+	const Binary &o = (const Binary &)e;
+	if (op < o.op) return true;
+	if (op > o.op) return false;
+	if (*subExp1 < *o.getSubExp1()) return true;
+	if (*o.getSubExp1() < *subExp1) return false;
+	return *subExp2 < *o.getSubExp2();
 }
 bool
-Ternary::operator <(const Exp &o) const
+Ternary::operator <(const Exp &e) const
 {
-	if (op < o.getOper()) return true;
-	if (op > o.getOper()) return false;
-	if (*subExp1 < *((Ternary &)o).getSubExp1()) return true;
-	if (*((Ternary &)o).getSubExp1() < *subExp1) return false;
-	if (*subExp2 < *((Ternary &)o).getSubExp2()) return true;
-	if (*((Ternary &)o).getSubExp2() < *subExp2) return false;
-	return *subExp3 < *((Ternary &)o).getSubExp3();
+	const Ternary &o = (const Ternary &)e;
+	if (op < o.op) return true;
+	if (op > o.op) return false;
+	if (*subExp1 < *o.getSubExp1()) return true;
+	if (*o.getSubExp1() < *subExp1) return false;
+	if (*subExp2 < *o.getSubExp2()) return true;
+	if (*o.getSubExp2() < *subExp2) return false;
+	return *subExp3 < *o.getSubExp3();
 }
 bool
-TypedExp::operator <<(const Exp &o) const  // Type insensitive
+TypedExp::operator <<(const Exp &e) const  // Type insensitive
 {
-	if (op < o.getOper()) return true;
-	if (op > o.getOper()) return false;
-	return *subExp1 << *((Unary &)o).getSubExp1();
+	const TypedExp &o = (const TypedExp &)e;
+	if (op < o.op) return true;
+	if (op > o.op) return false;
+	return *subExp1 << *o.getSubExp1();
 }
 bool
-TypedExp::operator <(const Exp &o) const  // Type sensitive
+TypedExp::operator <(const Exp &e) const  // Type sensitive
 {
-	if (op < o.getOper()) return true;
-	if (op > o.getOper()) return false;
-	if (*type < *((TypedExp &)o).type) return true;
-	if (*((TypedExp &)o).type < *type) return false;
-	return *subExp1 < *((Unary &)o).getSubExp1();
+	const TypedExp &o = (const TypedExp &)e;
+	if (op < o.op) return true;
+	if (op > o.op) return false;
+	if (*type < *o.type) return true;
+	if (*o.type < *type) return false;
+	return *subExp1 < *o.getSubExp1();
 }
 bool
-RefExp::operator <(const Exp &o) const
+RefExp::operator <(const Exp &e) const
 {
-	if (opSubscript < o.getOper()) return true;
-	if (opSubscript > o.getOper()) return false;
-	if (*subExp1 < *((Unary &)o).getSubExp1()) return true;
-	if (*((Unary &)o).getSubExp1() < *subExp1) return false;
+	const RefExp &o = (const RefExp &)e;
+	if (opSubscript < o.op) return true;
+	if (opSubscript > o.op) return false;
+	if (*subExp1 < *o.getSubExp1()) return true;
+	if (*o.getSubExp1() < *subExp1) return false;
 	// Allow a wildcard def to match any
-	if (def == (Statement *)-1) return false;  // Not less (equal)
-	if (((RefExp &)o).def == (Statement *)-1) return false;
-	return def < ((RefExp &)o).def;
+	if (def == (Statement *)-1
+	 || o.def == (Statement *)-1)
+		return false;
+	return def < o.def;
 }
 bool
-TypeVal::operator <(const Exp &o) const
+TypeVal::operator <(const Exp &e) const
 {
-	if (opTypeVal < o.getOper()) return true;
-	if (opTypeVal > o.getOper()) return false;
-	return *val < *((TypeVal &)o).val;
+	const TypeVal &o = (const TypeVal &)e;
+	if (opTypeVal < o.op) return true;
+	if (opTypeVal > o.op) return false;
+	return *val < *o.val;
 }
 
 /*==============================================================================
@@ -557,76 +578,84 @@ TypeVal::operator <(const Exp &o) const
  * RETURNS:         True if equal
  *============================================================================*/
 bool
-Const::operator *=(Exp &o)
+Const::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
 	return *this == *other;
 }
 bool
-Unary::operator *=(Exp &o)
+Unary::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
-	if (((Unary *)other)->op == opWild) return true;
-	if (((Unary *)other)->op == opWildRegOf && op == opRegOf) return true;
-	if (((Unary *)other)->op == opWildMemOf && op == opMemOf) return true;
-	if (((Unary *)other)->op == opWildAddrOf && op == opAddrOf) return true;
-	if (op != ((Unary *)other)->op) return false;
-	return *subExp1 *= *((Unary *)other)->getSubExp1();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
+	const Unary *o = (const Unary *)other;
+	if ((o->op == opWild)
+	 || (o->op == opWildRegOf  && op == opRegOf)
+	 || (o->op == opWildMemOf  && op == opMemOf)
+	 || (o->op == opWildAddrOf && op == opAddrOf))
+		return true;
+	return op == o->op
+	    && (*subExp1 *= *o->getSubExp1());
 }
 bool
-Binary::operator *=(Exp &o)
+Binary::operator *=(const Exp &e) const
 {
 	assert(subExp1 && subExp2);
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
-	if (((Binary *)other)->op == opWild) return true;
-	if (op != ((Binary *)other)->op) return false;
-	if (!( *subExp1 *= *((Binary *)other)->getSubExp1())) return false;
-	return *subExp2 *= *((Binary *)other)->getSubExp2();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
+	const Binary *o = (const Binary *)other;
+	if (o->op == opWild)
+		return true;
+	return op == o->op
+	    && (*subExp1 *= *o->getSubExp1())
+	    && (*subExp2 *= *o->getSubExp2());
 }
 bool
-Ternary::operator *=(Exp &o)
+Ternary::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
-	if (((Ternary *)other)->op == opWild) return true;
-	if (op != ((Ternary *)other)->op) return false;
-	if (!( *subExp1 *= *((Ternary *)other)->getSubExp1())) return false;
-	if (!( *subExp2 *= *((Ternary *)other)->getSubExp2())) return false;
-	return *subExp3 *= *((Ternary *)other)->getSubExp3();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
+	const Ternary *o = (const Ternary *)other;
+	if (o->op == opWild)
+		return true;
+	return op == o->op
+	    && (*subExp1 *= *o->getSubExp1())
+	    && (*subExp2 *= *o->getSubExp2())
+	    && (*subExp3 *= *o->getSubExp3());
 }
 bool
-Terminal::operator *=(Exp &o)
+Terminal::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
 	return *this == *other;
 }
 bool
-TypedExp::operator *=(Exp &o)
+TypedExp::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
-	if (((TypedExp *)other)->op == opWild) return true;
-	if (((TypedExp *)other)->op != opTypedExp) return false;
-	// This is the strict type version
-	if (*type != *((TypedExp *)other)->type) return false;
-	return *((Unary *)this)->getSubExp1() *= *((Unary *)other)->getSubExp1();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
+	const TypedExp *o = (const TypedExp *)other;
+	if (o->op == opWild)
+		return true;
+	if (o->op != opTypedExp
+	 || *type != *o->type)  // This is the strict type version
+		return false;
+	return (*getSubExp1() *= *o->getSubExp1());
 }
 bool
-RefExp::operator *=(Exp &o)
+RefExp::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
-	return *subExp1 *= *other;
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
+	return (*subExp1 *= *other);
 }
 bool
-TypeVal::operator *=(Exp &o)
+TypeVal::operator *=(const Exp &e) const
 {
-	Exp *other = &o;
-	if (o.getOper() == opSubscript) other = o.getSubExp1();
+	const Exp *other = &e;
+	if (e.getOper() == opSubscript) other = e.getSubExp1();
 	return *this == *other;
 }
 
