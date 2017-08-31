@@ -148,8 +148,8 @@ protected:
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	Exp *dis_Num(unsigned num);
-	Exp *dis_Reg(int regNum);
+	static Exp *dis_Num(unsigned num);
+	static Exp *dis_Reg(int regNum);
 	/** \} */
 
 	/**

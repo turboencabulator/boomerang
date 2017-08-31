@@ -33,12 +33,12 @@ private:
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	Exp *dis_Reg(unsigned r);  // XXX: Signedness difference with base class ???
-	Exp *dis_RAmbz(unsigned r);  // Special for rA of certain instructions
+	static Exp *dis_Reg(unsigned r);  // XXX: Signedness difference with base class ???
+	static Exp *dis_RAmbz(unsigned r);  // Special for rA of certain instructions
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
-	DWord getDword(ADDRESS lc);
+	static DWord getDword(ADDRESS lc);
 };
 
 #endif

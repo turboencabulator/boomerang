@@ -27,9 +27,9 @@ public:
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
-	Byte getByte(ADDRESS lc);
-	//SWord getWord(ADDRESS lc);
-	//DWord getDword(ADDRESS lc);
+	static Byte getByte(ADDRESS lc);
+	//static SWord getWord(ADDRESS lc);
+	//static DWord getDword(ADDRESS lc);
 };
 
 #endif

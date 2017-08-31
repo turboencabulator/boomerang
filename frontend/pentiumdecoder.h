@@ -38,8 +38,8 @@ private:
 
 	//bool isFuncPrologue(ADDRESS hostPC);
 
-	Byte getByte(ADDRESS lc);
-	SWord getWord(ADDRESS lc);
+	static Byte getByte(ADDRESS lc);
+	static SWord getWord(ADDRESS lc);
 	DWord getDword(ADDRESS lc);
 
 	unsigned lastDwordLc;
