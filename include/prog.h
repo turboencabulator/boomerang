@@ -198,7 +198,7 @@ public:
 	        std::vector<Exp *> &getDefaultReturns();
 
 	// Returns true if this is a win32 program
-	        bool        isWin32();
+	        bool        isWin32() const;
 
 	// Get a global variable if possible, looking up the loader's symbol table if necessary
 	        const char *getGlobalName(ADDRESS uaddr);

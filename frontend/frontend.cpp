@@ -218,7 +218,7 @@ FrontEnd::getRegSize(int idx)
  * \brief Is this a win32 frontend?
  */
 bool
-FrontEnd::isWin32()
+FrontEnd::isWin32() const
 {
 	return pBF->getFormat() == LOADFMT_PE;
 }

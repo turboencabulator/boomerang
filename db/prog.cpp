@@ -657,7 +657,7 @@ Prog::getDefaultReturns()
 }
 
 bool
-Prog::isWin32()
+Prog::isWin32() const
 {
 	return pFE->isWin32();
 }

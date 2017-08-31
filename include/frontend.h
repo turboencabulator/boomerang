@@ -124,7 +124,7 @@ public:
 	/// Accessor function to get the decoder.
 	virtual NJMCDecoder &getDecoder() = 0;
 
-	bool isWin32();
+	bool isWin32() const;
 
 	static bool noReturnCallDest(const char *name);
 
