@@ -77,8 +77,8 @@ public:
 
 	        void        setLexBegin(unsigned int n) { lexBegin = n; }
 	        void        setLexEnd(unsigned int n) { lexEnd = n; }
-	        unsigned    getLexBegin() { return lexBegin; }
-	        unsigned    getLexEnd() { return lexEnd; }
+	        unsigned    getLexBegin() const { return lexBegin; }
+	        unsigned    getLexEnd() const { return lexEnd; }
 
 	// Print the expression to the given stream
 	virtual void        print(std::ostream &os, bool html = false) = 0;
@@ -111,102 +111,102 @@ public:
 
 	// Return the number of subexpressions. This is only needed in rare cases.
 	// Could use polymorphism for all those cases, but this is easier
-	virtual int         getArity() { return 0; }  // Overridden for Unary, Binary, etc
+	virtual int         getArity() const { return 0; }  // Overridden for Unary, Binary, etc
 
 	//  //  //  //  //  //  //
 	//   Enquiry functions  //
 	//  //  //  //  //  //  //
 
 	// True if this is a call to a flag function
-	        bool        isFlagCall() { return op == opFlagCall; }
+	        bool        isFlagCall() const { return op == opFlagCall; }
 	// True if this represents one of the abstract flags locations, int or float
-	        bool        isFlags() { return op == opFlags || op == opFflags; }
+	        bool        isFlags() const { return op == opFlags || op == opFflags; }
 	// True if is one of the main 4 flags
-	        bool        isMainFlag() { return op >= opZF && op <= opOF; }
+	        bool        isMainFlag() const { return op >= opZF && op <= opOF; }
 	// True if this is a register location
-	        bool        isRegOf() { return op == opRegOf; }
+	        bool        isRegOf() const { return op == opRegOf; }
 	// True if this is a register location with a constant index
-	        bool        isRegOfK();
+	        bool        isRegOfK() const;
 	// True if this is a specific numeric register
-	        bool        isRegN(int n);
+	        bool        isRegN(int n) const;
 	// True if this is a memory location (any memory nesting depth)
-	        bool        isMemOf() { return op == opMemOf; }
+	        bool        isMemOf() const { return op == opMemOf; }
 	// True if this is an address of
-	        bool        isAddrOf() { return op == opAddrOf; }
+	        bool        isAddrOf() const { return op == opAddrOf; }
 	// True if this is an array expression
-	        bool        isArrayIndex() { return op == opArrayIndex; }
+	        bool        isArrayIndex() const { return op == opArrayIndex; }
 	// True if this is a struct member access
-	        bool        isMemberOf() { return op == opMemberAccess; }
+	        bool        isMemberOf() const { return op == opMemberAccess; }
 	// True if this is a temporary. Note some old code still has r[tmp]
-	        bool        isTemp();
+	        bool        isTemp() const;
 	// True if this is the anull Terminal (anulls next instruction)
-	        bool        isAnull() { return op == opAnull; }
+	        bool        isAnull() const { return op == opAnull; }
 	// True if this is the Nil Terminal (terminates lists; "NOP" expression)
-	        bool        isNil() { return op == opNil; }
+	        bool        isNil() const { return op == opNil; }
 	// True if this is %pc
-	        bool        isPC() { return op == opPC; }
+	        bool        isPC() const { return op == opPC; }
 	// True if is %afp, %afp+k, %afp-k, or a[m[<any of these]]
-	        bool        isAfpTerm();
+	        bool        isAfpTerm() const;
 	// True if is int const
-	        bool        isIntConst() { return op == opIntConst; }
+	        bool        isIntConst() const { return op == opIntConst; }
 	// True if is string const
-	        bool        isStrConst() { return op == opStrConst; }
+	        bool        isStrConst() const { return op == opStrConst; }
 	// Get string constant even if mangled
-	        const char *getAnyStrConst();
+	        const char *getAnyStrConst() const;
 	// True if is flt point const
-	        bool        isFltConst() { return op == opFltConst; }
+	        bool        isFltConst() const { return op == opFltConst; }
 	// True if inteter or string constant
-	        bool        isConst() { return op == opIntConst || op == opStrConst; }
+	        bool        isConst() const { return op == opIntConst || op == opStrConst; }
 	// True if is a post-var expression (var_op' in SSL file)
-	        bool        isPostVar() { return op == opPostVar; }
+	        bool        isPostVar() const { return op == opPostVar; }
 	// True if this is an opSize (size case; deprecated)
-	        bool        isSizeCast() { return op == opSize; }
+	        bool        isSizeCast() const { return op == opSize; }
 	// True if this is a subscripted expression (SSA)
-	        bool        isSubscript() { return op == opSubscript; }
+	        bool        isSubscript() const { return op == opSubscript; }
 	// True if this is a phi assignmnet (SSA)
-	//        bool        isPhi() { return op == opPhi; }
+	//        bool        isPhi() const { return op == opPhi; }
 	// True if this is a local variable
-	        bool        isLocal() { return op == opLocal; }
+	        bool        isLocal() const { return op == opLocal; }
 	// True if this is a global variable
-	        bool        isGlobal() { return op == opGlobal; }
+	        bool        isGlobal() const { return op == opGlobal; }
 	// True if this is a typeof
-	        bool        isTypeOf() { return op == opTypeOf; }
+	        bool        isTypeOf() const { return op == opTypeOf; }
 	// Get the index for this var
-	        int         getVarIndex();
+	        int         getVarIndex() const;
 	// True if this is a terminal
-	virtual bool        isTerminal() { return false; }
+	virtual bool        isTerminal() const { return false; }
 	// True if this is the constant "true"
-	        bool        isTrue() { return op == opTrue; }
+	        bool        isTrue() const { return op == opTrue; }
 	// True if this is the constant "false"
-	        bool        isFalse() { return op == opFalse; }
+	        bool        isFalse() const { return op == opFalse; }
 	// True if this is a disjunction, i.e. x or y
-	        bool        isDisjunction() { return op == opOr; }
+	        bool        isDisjunction() const { return op == opOr; }
 	// True if this is a conjunction, i.e. x and y
-	        bool        isConjunction() { return op == opAnd; }
+	        bool        isConjunction() const { return op == opAnd; }
 	// True if this is a boolean constant
-	        bool        isBoolConst() { return op == opTrue || op == opFalse; }
+	        bool        isBoolConst() const { return op == opTrue || op == opFalse; }
 	// True if this is an equality (== or !=)
-	        bool        isEquality() { return op == opEquals /*|| op == opNotEqual*/; }
+	        bool        isEquality() const { return op == opEquals /*|| op == opNotEqual*/; }
 	// True if this is a comparison
-	        bool        isComparison() { return op == opEquals   || op == opNotEqual
-	                                         || op == opGtr      || op == opLess
-	                                         || op == opGtrUns   || op == opLessUns
-	                                         || op == opGtrEq    || op == opLessEq
-	                                         || op == opGtrEqUns || op == opLessEqUns; }
+	        bool        isComparison() const { return op == opEquals   || op == opNotEqual
+	                                               || op == opGtr      || op == opLess
+	                                               || op == opGtrUns   || op == opLessUns
+	                                               || op == opGtrEq    || op == opLessEq
+	                                               || op == opGtrEqUns || op == opLessEqUns; }
 	// True if this is a TypeVal
-	        bool        isTypeVal() { return op == opTypeVal; }
+	        bool        isTypeVal() const { return op == opTypeVal; }
 	// True if this is a machine feature
-	        bool        isMachFtr() { return op == opMachFtr; }
+	        bool        isMachFtr() const { return op == opMachFtr; }
 	// True if this is a parameter. Note: opParam has two meanings: a SSL parameter, or a function parameter
-	        bool        isParam() { return op == opParam; }
+	        bool        isParam() const { return op == opParam; }
 
 	// True if this is a location
-	        bool        isLocation() { return op == opMemOf  || op == opRegOf
-	                                       || op == opGlobal || op == opLocal
-	                                       || op == opParam; }
+	        bool        isLocation() const { return op == opMemOf  || op == opRegOf
+	                                             || op == opGlobal || op == opLocal
+	                                             || op == opParam; }
 
 	// True if this is a typed expression
-	        bool        isTypedExp() { return op == opTypedExp; }
+	        bool        isTypedExp() const { return op == opTypedExp; }
 
 
 	// FIXME: are these used?
@@ -252,9 +252,9 @@ public:
 	// These are here so we can (optionally) prevent code clutter.
 	// Using a *Exp (that is known to be a Binary* say), you can just directly call getSubExp2.
 	// However, you can still choose to cast from Exp* to Binary* etc. and avoid the virtual call
-	virtual Exp        *getSubExp1() { return nullptr; }
-	virtual Exp        *getSubExp2() { return nullptr; }
-	virtual Exp        *getSubExp3() { return nullptr; }
+	virtual Exp        *getSubExp1() const { return nullptr; }
+	virtual Exp        *getSubExp2() const { return nullptr; }
+	virtual Exp        *getSubExp3() const { return nullptr; }
 	virtual Exp       *&refSubExp1();
 	virtual Exp       *&refSubExp2();
 	virtual Exp       *&refSubExp3();
@@ -270,7 +270,7 @@ public:
 	//  //  //  //  //  //  //
 	//  Guarded assignment  //
 	//  //  //  //  //  //  //
-	        Exp        *getGuard();  // Get the guard expression, or 0 if not
+	        Exp        *getGuard() const;  // Get the guard expression, or 0 if not
 
 	//  //  //  //  //  //  //  //  //
 	//  Expression Simplification   //
@@ -295,7 +295,7 @@ public:
 	        Exp        *removeSubscripts(bool &allZero);
 
 	// Get number of definitions (statements this expression depends on)
-	virtual int         getNumRefs() { return 0; }
+	virtual int         getNumRefs() const { return 0; }
 
 	// Convert from SSA form, where this is not subscripted (but defined at statement d)
 	// Needs the UserProc for the symbol map
@@ -389,12 +389,12 @@ public:
 	bool        operator *=(Exp &o) override;
 
 	// Get the constant
-	int         getInt()  { return u.i;  }
-	QWord       getLong() { return u.ll; }
-	double      getFlt()  { return u.d;  }
-	const char *getStr()  { return u.p;  }
-	ADDRESS     getAddr() { return u.a;  }
-	const char *getFuncName();
+	int         getInt()  const { return u.i;  }
+	QWord       getLong() const { return u.ll; }
+	double      getFlt()  const { return u.d;  }
+	const char *getStr()  const { return u.p;  }
+	ADDRESS     getAddr() const { return u.a;  }
+	const char *getFuncName() const;
 
 	// Set the constant
 	void        setInt(int i)         { u.i  = i;  }
@@ -404,7 +404,7 @@ public:
 	void        setAddr(ADDRESS a)    { u.a  = a;  }
 
 	// Get and set the type
-	Type       *getType() { return type; }
+	Type       *getType() const { return type; }
 	void        setType(Type *ty) { type = ty; }
 
 	void        print(std::ostream &os, bool html = false) override;
@@ -421,7 +421,7 @@ public:
 
 	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
 
-	int         getConscript() { return conscript; }
+	int         getConscript() const { return conscript; }
 	void        setConscript(int cs) { conscript = cs; }
 
 	Type       *ascendType() override;
@@ -452,7 +452,7 @@ public:
 	void        appendDot(std::ostream &os) override;
 	void        printx(int ind) override;
 
-	bool        isTerminal() override { return true; }
+	bool        isTerminal() const override { return true; }
 
 	// Visitation
 	bool        accept(ExpVisitor *v) override;
@@ -494,7 +494,7 @@ public:
 	bool        operator *=(Exp &o) override;
 
 	// Arity
-	int         getArity() override { return 1; }
+	int         getArity() const override { return 1; }
 
 	// Print
 	void        print(std::ostream &os, bool html = false) override;
@@ -505,7 +505,7 @@ public:
 	void        setSubExp1(Exp *e) override;
 	void        setSubExp1ND(Exp *e) { subExp1 = e; }
 	// Get first subexpression
-	Exp        *getSubExp1() override;
+	Exp        *getSubExp1() const override;
 	// Get a reference to subexpression 1
 	Exp       *&refSubExp1() override;
 
@@ -563,7 +563,7 @@ public:
 	bool        operator *=(Exp &o) override;
 
 	// Arity
-	int         getArity() override { return 2; }
+	int         getArity() const override { return 2; }
 
 	// Print
 	void        print(std::ostream &os, bool html = false) override;
@@ -574,7 +574,7 @@ public:
 	// Set second subexpression
 	void        setSubExp2(Exp *e) override;
 	// Get second subexpression
-	Exp        *getSubExp2() override;
+	Exp        *getSubExp2() const override;
 	// Commute the two operands
 	void        commute();
 	// Get a reference to subexpression 2
@@ -636,7 +636,7 @@ public:
 	bool        operator *=(Exp &o) override;
 
 	// Arity
-	int         getArity() override { return 3; }
+	int         getArity() const override { return 3; }
 
 	// Print
 	void        print(std::ostream &os, bool html = false) override;
@@ -647,7 +647,7 @@ public:
 	// Set third subexpression
 	void        setSubExp3(Exp *e) override;
 	// Get third subexpression
-	Exp        *getSubExp3() override;
+	Exp        *getSubExp3() const override;
 	// Get a reference to subexpression 3
 	Exp       *&refSubExp3() override;
 
@@ -706,7 +706,7 @@ public:
 	void        printx(int ind) override;
 
 	// Get and set the type
-	virtual Type *getType() { return type; }
+	virtual Type *getType() const { return type; }
 	virtual void setType(Type *ty) { type = ty; }
 
 	// polySimplify
@@ -732,7 +732,7 @@ public:
 	            FlagDef(Exp *params, RTL *rtl);  // Constructor
 	virtual    ~FlagDef();                       // Destructor
 	void        appendDot(std::ostream &os) override;
-	RTL        *getRtl() { return rtl; }
+	RTL        *getRtl() const { return rtl; }
 	void        setRtl(RTL *r) { rtl = r; }
 
 	// Visitation
@@ -764,8 +764,8 @@ public:
 
 	void        print(std::ostream &os, bool html = false) override;
 	void        printx(int ind) override;
-	//int         getNumRefs() override { return 1; }
-	Statement  *getDef() { return def; }  // Ugh was called getRef()
+	//int         getNumRefs() const override { return 1; }
+	Statement  *getDef() const { return def; }  // Ugh was called getRef()
 	Exp        *addSubscript(Statement *def) { this->def = def; return this; }
 	void        setDef(Statement *def) { this->def = def; }
 	Exp        *genConstraints(Exp *restrictTo) override;
@@ -776,7 +776,7 @@ public:
 
 	// Before type analysis, implicit definitions are nullptr.  During and after TA, they point to an implicit
 	// assignment statement.  Don't implement here, since it would require #including of statement.h
-	bool        isImplicitDef();
+	bool        isImplicitDef() const;
 
 	// Visitation
 	bool        accept(ExpVisitor *v) override;
@@ -800,7 +800,7 @@ public:
 	            TypeVal(Type *ty);
 	           ~TypeVal();
 
-	virtual Type *getType() { return val; }
+	virtual Type *getType() const { return val; }
 	virtual void setType(Type *t) { val = t; }
 	Exp        *clone() override;
 	bool        operator ==(const Exp &o) const override;
@@ -840,10 +840,10 @@ public:
 	Exp        *clone() override;
 
 	void        setProc(UserProc *p) { proc = p; }
-	UserProc   *getProc() { return proc; }
+	UserProc   *getProc() const { return proc; }
 
 	Exp        *polySimplify(bool &bMod) override;
-	virtual void getDefinitions(LocationSet &defs);
+	virtual void getDefinitions(LocationSet &defs) const;
 
 	// Visitation
 	bool        accept(ExpVisitor *v) override;

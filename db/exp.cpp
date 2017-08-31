@@ -241,7 +241,7 @@ Ternary::setSubExp3(Exp *e)
  * RETURNS:         Pointer to the requested subexpression
  *============================================================================*/
 Exp *
-Unary::getSubExp1()
+Unary::getSubExp1() const
 {
 	assert(subExp1);
 	return subExp1;
@@ -253,7 +253,7 @@ Unary::refSubExp1()
 	return subExp1;
 }
 Exp *
-Binary::getSubExp2()
+Binary::getSubExp2() const
 {
 	assert(subExp1 && subExp2);
 	return subExp2;
@@ -265,7 +265,7 @@ Binary::refSubExp2()
 	return subExp2;
 }
 Exp *
-Ternary::getSubExp3()
+Ternary::getSubExp3() const
 {
 	assert(subExp1 && subExp2 && subExp3);
 	return subExp3;
@@ -1334,10 +1334,10 @@ FlagDef::appendDot(std::ostream &os)
  * RETURNS:         True if matches
  *============================================================================*/
 bool
-Exp::isRegOfK()
+Exp::isRegOfK() const
 {
 	if (op != opRegOf) return false;
-	return ((Unary *)this)->getSubExp1()->getOper() == opIntConst;
+	return ((const Unary *)this)->getSubExp1()->getOper() == opIntConst;
 }
 
 /*==============================================================================
@@ -1347,11 +1347,11 @@ Exp::isRegOfK()
  * RETURNS:         True if matches
  *============================================================================*/
 bool
-Exp::isRegN(int N)
+Exp::isRegN(int N) const
 {
 	if (op != opRegOf) return false;
-	Exp *sub = ((Unary *)this)->getSubExp1();
-	return (sub->getOper() == opIntConst && ((Const *)sub)->getInt() == N);
+	const Exp *sub = ((const Unary *)this)->getSubExp1();
+	return (sub->getOper() == opIntConst && ((const Const *)sub)->getInt() == N);
 }
 
 /*==============================================================================
@@ -1360,21 +1360,21 @@ Exp::isRegN(int N)
  * RETURNS:         True if found
  *============================================================================*/
 bool
-Exp::isAfpTerm()
+Exp::isAfpTerm() const
 {
-	Exp *cur = this;
+	const Exp *cur = this;
 	if (op == opTypedExp)
-		cur = ((Unary *)this)->getSubExp1();
-	Exp *p;
-	if ((cur->getOper() == opAddrOf) && ((p = ((Unary *)cur)->getSubExp1()), p->getOper() == opMemOf))
-		cur = ((Unary *)p)->getSubExp1();
+		cur = ((const Unary *)this)->getSubExp1();
+	const Exp *p;
+	if ((cur->getOper() == opAddrOf) && ((p = ((const Unary *)cur)->getSubExp1()), p->getOper() == opMemOf))
+		cur = ((const Unary *)p)->getSubExp1();
 
 	OPER curOp = cur->getOper();
 	if (curOp == opAFP) return true;
 	if ((curOp != opPlus) && (curOp != opMinus)) return false;
 	// cur must be a Binary* now
-	OPER subOp1 = ((Binary *)cur)->getSubExp1()->getOper();
-	OPER subOp2 = ((Binary *)cur)->getSubExp2()->getOper();
+	OPER subOp1 = ((const Binary *)cur)->getSubExp1()->getOper();
+	OPER subOp2 = ((const Binary *)cur)->getSubExp2()->getOper();
 	return ((subOp1 == opAFP) && (subOp2 == opIntConst));
 }
 
@@ -1384,11 +1384,11 @@ Exp::isAfpTerm()
  * RETURNS:         The index
  *============================================================================*/
 int
-Exp::getVarIndex()
+Exp::getVarIndex() const
 {
 	assert(op == opVar);
-	Exp *sub = ((Unary *)this)->getSubExp1();
-	return ((Const *)sub)->getInt();
+	const Exp *sub = ((const Unary *)this)->getSubExp1();
+	return ((const Const *)sub)->getInt();
 }
 
 /*==============================================================================
@@ -1397,9 +1397,9 @@ Exp::getVarIndex()
  * RETURNS:         Ptr to the guard, or 0
  *============================================================================*/
 Exp *
-Exp::getGuard()
+Exp::getGuard() const
 {
-	if (op == opGuard) return ((Unary *)this)->getSubExp1();
+	if (op == opGuard) return ((const Unary *)this)->getSubExp1();
 	return nullptr;
 }
 
@@ -3356,12 +3356,12 @@ Exp::killFill()
 }
 
 bool
-Exp::isTemp()
+Exp::isTemp() const
 {
 	if (op == opTemp) return true;
 	if (op != opRegOf) return false;
 	// Some old code has r[tmpb] instead of just tmpb
-	Exp *sub = ((Unary *)this)->getSubExp1();
+	const Exp *sub = ((const Unary *)this)->getSubExp1();
 	return sub->op == opTemp;
 }
 
@@ -3823,17 +3823,17 @@ Location::polySimplify(bool &bMod)
 }
 
 void
-Location::getDefinitions(LocationSet &defs)
+Location::getDefinitions(LocationSet &defs) const
 {
 	// This is a hack to fix aliasing (replace with something general)
 	// FIXME! This is x86 specific too. Use -O for overlapped registers!
-	if (op == opRegOf && ((Const *)subExp1)->getInt() == 24) {
+	if (op == opRegOf && ((const Const *)subExp1)->getInt() == 24) {
 		defs.insert(Location::regOf(0));
 	}
 }
 
 const char *
-Const::getFuncName()
+Const::getFuncName() const
 {
 	return u.pp->getName();
 }
@@ -4167,18 +4167,18 @@ RefExp::printx(int ind)
 }
 
 const char *
-Exp::getAnyStrConst()
+Exp::getAnyStrConst() const
 {
-	Exp *e = this;
+	const Exp *e = this;
 	if (op == opAddrOf) {
-		e = ((Location *)this)->getSubExp1();
+		e = ((const Location *)this)->getSubExp1();
 		if (e->op == opSubscript)
-			e = ((Unary *)e)->getSubExp1();
+			e = ((const Unary *)e)->getSubExp1();
 		if (e->op == opMemOf)
-			e = ((Location *)e)->getSubExp1();
+			e = ((const Location *)e)->getSubExp1();
 	}
 	if (e->op != opStrConst) return nullptr;
-	return ((Const *)e)->getStr();
+	return ((const Const *)e)->getStr();
 }
 
 // Find the locations used by this expression. Use the UsedLocsFinder visitor class
@@ -4221,7 +4221,7 @@ Location::local(const char *nam, UserProc *p)
 
 // Don't put in exp.h, as this would require statement.h including before exp.h
 bool
-RefExp::isImplicitDef()
+RefExp::isImplicitDef() const
 {
 	return !def || def->getKind() == STMT_IMPASSIGN;
 }
