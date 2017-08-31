@@ -70,14 +70,14 @@ Unary::Unary(OPER op) :
 Unary::Unary(OPER op, Exp *e) :
 	Exp(op)
 {
-	subExp1 = e;  // Initialise the pointer
-	assert(subExp1);
+	assert(e);
+	subExp1 = e;
 }
 Unary::Unary(const Unary &o) :
 	Exp(o.op)
 {
+	assert(o.subExp1);
 	subExp1 = o.subExp1->clone();
-	assert(subExp1);
 }
 
 Binary::Binary(OPER op) :
@@ -87,15 +87,15 @@ Binary::Binary(OPER op) :
 Binary::Binary(OPER op, Exp *e1, Exp *e2) :
 	Unary(op, e1)
 {
-	subExp2 = e2;  // Initialise the 2nd pointer
-	assert(subExp1 && subExp2);
+	assert(e2);
+	subExp2 = e2;
 }
 Binary::Binary(const Binary &o) :
-	Unary(op)  // FIXME:  should be o.op?
+	Unary(o.op)
 {
-	setSubExp1(subExp1->clone());
+	assert(o.subExp1 && o.subExp2);
+	subExp1 = o.subExp1->clone();
 	subExp2 = o.subExp2->clone();
-	assert(subExp1 && subExp2);
 }
 
 Ternary::Ternary(OPER op) :
@@ -105,16 +105,16 @@ Ternary::Ternary(OPER op) :
 Ternary::Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3) :
 	Binary(op, e1, e2)
 {
+	assert(e3);
 	subExp3 = e3;
-	assert(subExp1 && subExp2 && subExp3);
 }
 Ternary::Ternary(const Ternary &o) :
 	Binary(o.op)
 {
+	assert(o.subExp1 && o.subExp2 && o.subExp3);
 	subExp1 = o.subExp1->clone();
 	subExp2 = o.subExp2->clone();
 	subExp3 = o.subExp3->clone();
-	assert(subExp1 && subExp2 && subExp3);
 }
 
 TypedExp::TypedExp() : Unary(opTypedExp) { }
@@ -320,29 +320,17 @@ Terminal::clone() const
 Exp *
 Unary::clone() const
 {
-	assert(subExp1);
-	Unary *c = new Unary(op);
-	c->subExp1 = subExp1->clone();
-	return c;
+	return new Unary(*this);
 }
 Exp *
 Binary::clone() const
 {
-	assert(subExp1 && subExp2);
-	Binary *c = new Binary(op);
-	c->subExp1 = subExp1->clone();
-	c->subExp2 = subExp2->clone();
-	return c;
+	return new Binary(*this);
 }
 Exp *
 Ternary::clone() const
 {
-	assert(subExp1 && subExp2 && subExp3);
-	Ternary *c = new Ternary(op);
-	c->subExp1 = subExp1->clone();
-	c->subExp2 = subExp2->clone();
-	c->subExp3 = subExp3->clone();
-	return c;
+	return new Ternary(*this);
 }
 Exp *
 TypedExp::clone() const
