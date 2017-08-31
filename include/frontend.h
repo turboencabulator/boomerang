@@ -119,7 +119,7 @@ public:
 	int         getRegSize(int idx);
 
 	/// Returns an enum identifer for this frontend's platform.
-	virtual platform getFrontEndId() = 0;
+	virtual platform getFrontEndId() const = 0;
 
 	/// Accessor function to get the decoder.
 	virtual NJMCDecoder &getDecoder() = 0;

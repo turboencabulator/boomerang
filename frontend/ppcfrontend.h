@@ -23,7 +23,7 @@ public:
 	PPCFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~PPCFrontEnd();
 
-	platform getFrontEndId() override { return PLAT_PPC; }
+	platform getFrontEndId() const override { return PLAT_PPC; }
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	std::vector<Exp *> &getDefaultParams() override;

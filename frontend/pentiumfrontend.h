@@ -27,7 +27,7 @@ public:
 	PentiumFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~PentiumFrontEnd();
 
-	platform getFrontEndId() override { return PLAT_PENTIUM; }
+	platform getFrontEndId() const override { return PLAT_PENTIUM; }
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	std::vector<Exp *> &getDefaultParams() override;

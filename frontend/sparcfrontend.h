@@ -32,7 +32,7 @@ public:
 	SparcFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~SparcFrontEnd();
 
-	platform getFrontEndId() override { return PLAT_SPARC; }
+	platform getFrontEndId() const override { return PLAT_SPARC; }
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	std::vector<Exp *> &getDefaultParams() override;

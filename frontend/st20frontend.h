@@ -23,7 +23,7 @@ public:
 	ST20FrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~ST20FrontEnd();
 
-	platform getFrontEndId() override { return PLAT_ST20; }
+	platform getFrontEndId() const override { return PLAT_ST20; }
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	std::vector<Exp *> &getDefaultParams() override;

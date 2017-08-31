@@ -27,7 +27,7 @@ public:
 	MIPSFrontEnd(BinaryFile *pBF, Prog *prog);
 	virtual ~MIPSFrontEnd();
 
-	platform getFrontEndId() override { return PLAT_MIPS; }
+	platform getFrontEndId() const override { return PLAT_MIPS; }
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	std::vector<Exp *> &getDefaultParams() override;
