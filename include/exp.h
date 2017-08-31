@@ -97,7 +97,7 @@ public:
 	virtual void        appendDot(std::ostream &os) const = 0;
 
 	// Clone (make copy of self that can be deleted without affecting self)
-	virtual Exp        *clone() = 0;
+	virtual Exp        *clone() const = 0;
 
 	// Comparison
 	// Type sensitive equality
@@ -376,12 +376,12 @@ public:
 	            Const(const char *p);
 	            Const(Proc *pp);
 	// Copy constructor
-	            Const(Const &o);
+	            Const(const Const &o);
 
 	// Nothing to destruct: Don't deallocate the string passed to constructor
 
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	// Compare
 	bool        operator ==(const Exp &o) const override;
@@ -438,10 +438,10 @@ class Terminal : public Exp {
 public:
 	// Constructors
 	            Terminal(OPER op);
-	            Terminal(Terminal &o);  // Copy constructor
+	            Terminal(const Terminal &o);  // Copy constructor
 
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	// Compare
 	bool        operator ==(const Exp &o) const override;
@@ -480,13 +480,13 @@ public:
 	// Constructor, with ID and subexpression
 	            Unary(OPER op, Exp *e);
 	// Copy constructor
-	            Unary(Unary &o);
+	            Unary(const Unary &o);
 
 	// Destructor
 	virtual    ~Unary();
 
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	// Compare
 	bool        operator ==(const Exp &o) const override;
@@ -549,13 +549,13 @@ public:
 	// Constructor, with ID and subexpressions
 	            Binary(OPER op, Exp *e1, Exp *e2);
 	// Copy constructor
-	            Binary(Binary &o);
+	            Binary(const Binary &o);
 
 	// Destructor
 	virtual    ~Binary();
 
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	// Compare
 	bool        operator ==(const Exp &o) const override;
@@ -622,13 +622,13 @@ public:
 	// Constructor, with operator and subexpressions
 	            Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3);
 	// Copy constructor
-	            Ternary(Ternary &o);
+	            Ternary(const Ternary &o);
 
 	// Destructor
 	virtual    ~Ternary();
 
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	// Compare
 	bool        operator ==(const Exp &o) const override;
@@ -689,10 +689,10 @@ public:
 	// e.g. foo = new TypedExp(Type(INTEGER), ...);
 	            TypedExp(Type *ty, Exp *e1);
 	// Copy constructor
-	            TypedExp(TypedExp &o);
+	            TypedExp(const TypedExp &o);
 
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	// Compare
 	bool        operator ==(const Exp &o) const override;
@@ -757,7 +757,7 @@ public:
 	            RefExp(Exp *e, Statement *def);
 	            //RefExp(Exp *e);
 	            //RefExp(RefExp &o);
-	Exp        *clone() override;
+	Exp        *clone() const override;
 	bool        operator ==(const Exp &o) const override;
 	bool        operator < (const Exp &o) const override;
 	bool        operator *=(Exp &o) override;
@@ -802,7 +802,7 @@ public:
 
 	virtual Type *getType() const { return val; }
 	virtual void setType(Type *t) { val = t; }
-	Exp        *clone() override;
+	Exp        *clone() const override;
 	bool        operator ==(const Exp &o) const override;
 	bool        operator < (const Exp &o) const override;
 	bool        operator *=(Exp &o) override;
@@ -827,7 +827,7 @@ public:
 	// Constructor with ID, subexpression, and UserProc*
 	            Location(OPER op, Exp *e, UserProc *proc);
 	// Copy constructor
-	            Location(Location &o);
+	            Location(const Location &o);
 	// Custom constructor
 	static  Location *regOf(int r) { return new Location(opRegOf, new Const(r), nullptr); }
 	static  Location *regOf(Exp *e) { return new Location(opRegOf, e, nullptr); }
@@ -837,7 +837,7 @@ public:
 	static  Location *local(const char *nam, UserProc *p);
 	static  Location *param(const char *nam, UserProc *p = nullptr) { return new Location(opParam, new Const(nam), p); }
 	// Clone
-	Exp        *clone() override;
+	Exp        *clone() const override;
 
 	void        setProc(UserProc *p) { proc = p; }
 	UserProc   *getProc() const { return proc; }

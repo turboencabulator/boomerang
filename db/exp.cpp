@@ -57,10 +57,10 @@ Const::Const(Proc *pp)      : Exp(opFuncConst), type(new VoidType) { u.pp = pp; 
 Const::Const(ADDRESS a)     : Exp(opIntConst),  type(new VoidType) { u.a  = a;  }
 
 // Copy constructor
-Const::Const(Const &o) : Exp(o.op) { u = o.u; conscript = o.conscript; type = o.type; }
+Const::Const(const Const &o) : Exp(o.op) { u = o.u; conscript = o.conscript; type = o.type; }
 
 Terminal::Terminal(OPER op) : Exp(op) { }
-Terminal::Terminal(Terminal &o) : Exp(o.op) { }  // Copy constructor
+Terminal::Terminal(const Terminal &o) : Exp(o.op) { }  // Copy constructor
 
 Unary::Unary(OPER op) :
 	Exp(op)
@@ -73,7 +73,7 @@ Unary::Unary(OPER op, Exp *e) :
 	subExp1 = e;  // Initialise the pointer
 	assert(subExp1);
 }
-Unary::Unary(Unary &o) :
+Unary::Unary(const Unary &o) :
 	Exp(o.op)
 {
 	subExp1 = o.subExp1->clone();
@@ -90,7 +90,7 @@ Binary::Binary(OPER op, Exp *e1, Exp *e2) :
 	subExp2 = e2;  // Initialise the 2nd pointer
 	assert(subExp1 && subExp2);
 }
-Binary::Binary(Binary &o) :
+Binary::Binary(const Binary &o) :
 	Unary(op)  // FIXME:  should be o.op?
 {
 	setSubExp1(subExp1->clone());
@@ -108,7 +108,7 @@ Ternary::Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3) :
 	subExp3 = e3;
 	assert(subExp1 && subExp2 && subExp3);
 }
-Ternary::Ternary(Ternary &o) :
+Ternary::Ternary(const Ternary &o) :
 	Binary(o.op)
 {
 	subExp1 = o.subExp1->clone();
@@ -120,7 +120,7 @@ Ternary::Ternary(Ternary &o) :
 TypedExp::TypedExp() : Unary(opTypedExp) { }
 TypedExp::TypedExp(Exp *e1) : Unary(opTypedExp, e1) { }
 TypedExp::TypedExp(Type *ty, Exp *e1) : Unary(opTypedExp, e1), type(ty) { }
-TypedExp::TypedExp(TypedExp &o) :
+TypedExp::TypedExp(const TypedExp &o) :
 	Unary(opTypedExp)
 {
 	subExp1 = o.subExp1->clone();
@@ -175,7 +175,7 @@ Location::Location(OPER op, Exp *exp, UserProc *proc) :
 	}
 }
 
-Location::Location(Location &o) :
+Location::Location(const Location &o) :
 	Unary(o.op, o.subExp1->clone()),
 	proc(o.proc)
 {
@@ -307,18 +307,18 @@ Binary::commute()
  * RETURNS:         Pointer to cloned object
  *============================================================================*/
 Exp *
-Const::clone()
+Const::clone() const
 {
 	// Note: not actually cloning the Type* type pointer. Probably doesn't matter with GC
 	return new Const(*this);
 }
 Exp *
-Terminal::clone()
+Terminal::clone() const
 {
 	return new Terminal(*this);
 }
 Exp *
-Unary::clone()
+Unary::clone() const
 {
 	assert(subExp1);
 	Unary *c = new Unary(op);
@@ -326,7 +326,7 @@ Unary::clone()
 	return c;
 }
 Exp *
-Binary::clone()
+Binary::clone() const
 {
 	assert(subExp1 && subExp2);
 	Binary *c = new Binary(op);
@@ -335,7 +335,7 @@ Binary::clone()
 	return c;
 }
 Exp *
-Ternary::clone()
+Ternary::clone() const
 {
 	assert(subExp1 && subExp2 && subExp3);
 	Ternary *c = new Ternary(op);
@@ -345,28 +345,24 @@ Ternary::clone()
 	return c;
 }
 Exp *
-TypedExp::clone()
+TypedExp::clone() const
 {
-	TypedExp *c = new TypedExp(type, subExp1->clone());
-	return c;
+	return new TypedExp(type, subExp1->clone());
 }
 Exp *
-RefExp::clone()
+RefExp::clone() const
 {
-	RefExp *c = new RefExp(subExp1->clone(), def);
-	return c;
+	return new RefExp(subExp1->clone(), def);
 }
 Exp *
-TypeVal::clone()
+TypeVal::clone() const
 {
-	TypeVal *c = new TypeVal(val->clone());
-	return c;
+	return new TypeVal(val->clone());
 }
 Exp *
-Location::clone()
+Location::clone() const
 {
-	Location *c = new Location(op, subExp1->clone(), proc);
-	return c;
+	return new Location(op, subExp1->clone(), proc);
 }
 
 /*==============================================================================
