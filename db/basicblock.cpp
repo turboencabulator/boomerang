@@ -636,23 +636,23 @@ BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
 /*==============================================================================
  * FUNCTION:        BasicBlock::getCallDest
  * OVERVIEW:        Get the destination of the call, if this is a CALL BB with
- *                      a fixed dest. Otherwise, return -1
- * RETURNS:         Native destination of the call, or -1
+ *                      a fixed dest. Otherwise, return NO_ADDRESS
+ * RETURNS:         Native destination of the call, or NO_ADDRESS
  *============================================================================*/
 ADDRESS
 BasicBlock::getCallDest()
 {
 	if (m_nodeType != CALL)
-		return (ADDRESS)-1;
+		return NO_ADDRESS;
 	if (m_pRtls->empty())
-		return (ADDRESS)-1;
+		return NO_ADDRESS;
 	RTL *lastRtl = m_pRtls->back();
 	std::list<Statement *> &sl = lastRtl->getList();
 	for (auto rit = sl.rbegin(); rit != sl.rend(); ++rit) {
 		if ((*rit)->getKind() == STMT_CALL)
 			return ((CallStatement *)(*rit))->getFixedDest();
 	}
-	return (ADDRESS)-1;
+	return NO_ADDRESS;
 }
 
 Proc *
