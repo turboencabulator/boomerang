@@ -1511,7 +1511,7 @@ TypeVal::match(Exp *pattern)
 #define ISVARIABLE(x) (strspn((x), "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789") == strlen((x)))
 //#define DEBUG_MATCH
 
-const char *
+static const char *
 tlstrchr(const char *str, char ch)
 {
 	while (str && *str) {
@@ -4088,7 +4088,7 @@ TypeVal::accept(ExpModifier *v)
 	return v->postVisit((TypeVal *)v->preVisit(this));
 }
 
-void
+static void
 child(Exp *e, int ind)
 {
 	if (!e) {
