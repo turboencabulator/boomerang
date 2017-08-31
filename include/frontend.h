@@ -130,8 +130,6 @@ public:
 
 	BinaryFile *getBinaryFile() { return pBF; }
 
-	virtual int getInst(int addr);
-
 	virtual DecodeResult &decodeInstruction(ADDRESS pc);
 	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
 

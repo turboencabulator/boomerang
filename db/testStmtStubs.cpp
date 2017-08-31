@@ -54,7 +54,6 @@ FrontEnd::FrontEnd(BinaryFile *pBF) { }
 PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF) : FrontEnd(pBF) { }
 PentiumFrontEnd::~PentiumFrontEnd() { }
 FrontEnd::~FrontEnd() { }
-int FrontEnd::getInst(int addr) { return 0; }
 bool PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool spec /* = false */, PHELPER helperFunc /* = nullptr */) { return false; }
 ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain) { return 0; }
 Prog *FrontEnd::decode() { return nullptr; }

@@ -1158,22 +1158,6 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 }
 
 /**
- * \brief Function to fetch the smallest machine instruction.
- *
- * Fetch the smallest (nop-sized) instruction, in an endianness independent manner.
- *
- * \note Frequently overridden.
- *
- * \param addr  Host address to fetch from.
- * \returns     An integer with the instruction in it.
- */
-int
-FrontEnd::getInst(int addr)
-{
-	return (int)(*(unsigned char *)addr);
-}
-
-/**
  * \brief Visit a destination as a label, i.e. check whether we need to queue
  * it as a new BB to create later.
  *
