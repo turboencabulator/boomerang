@@ -676,17 +676,13 @@ DefCollector::prints()
 void
 UseCollector::dump()
 {
-	std::ostringstream ost;
-	print(ost);
-	std::cerr << ost.str();
+	print(std::cerr);
 }
 
 void
 DefCollector::dump()
 {
-	std::ostringstream ost;
-	print(ost);
-	std::cerr << ost.str();
+	print(std::cerr);
 }
 
 void

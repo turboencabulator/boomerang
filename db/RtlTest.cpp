@@ -40,11 +40,8 @@ RtlTest::testAppend()
 	                       new Binary(opPlus, Location::regOf(9), new Const(99)));
 	RTL r;
 	r.appendStmt(a);
-	std::ostringstream ost;
-	r.print(ost);
-	std::string actual(ost.str());
 	std::string expected("00000000    0 *v* r8 := r9 + 99\n");
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, r.prints());
 	// No! appendExp does not copy the expression, so deleting the RTL will
 	// delete the expression(s) in it.
 	// Not sure if that's what we want...
@@ -67,16 +64,13 @@ RtlTest::testClone()
 	ls.push_back(a2);
 	RTL *r = new RTL(0x1234, &ls);
 	RTL *r2 = r->clone();
-	std::ostringstream o1, o2;
-	r->print(o1);
+	std::string act1(r->prints());
 	delete r;  // And r2 should still stand!
-	r2->print(o2);
+	std::string act2(r2->prints());
 	delete r2;
 	std::string expected("00001234    0 *v* r8 := r9 + 99\n"
 	                     "            0 *j16* x := y\n");
 
-	std::string act1(o1.str());
-	std::string act2(o2.str());
 	CPPUNIT_ASSERT_EQUAL(expected, act1);
 	CPPUNIT_ASSERT_EQUAL(expected, act2);
 }
@@ -199,10 +193,7 @@ RtlTest::testIsCompare()
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(9, iReg);
 	std::string expected("5");
-	std::ostringstream ost1;
-	eOperand->print(ost1);
-	std::string actual(ost1.str());
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, eOperand->prints());
 	delete prog;
 
 	prog = new Prog;
@@ -215,10 +206,7 @@ RtlTest::testIsCompare()
 	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(24, iReg);
-	std::ostringstream ost2;
-	eOperand->print(ost2);
-	actual = ost2.str();
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, eOperand->prints());
 
 	// Decode instruction: "add     $0x4,%esp"
 	inst = pFE->decodeInstruction(0x804890c);
@@ -267,8 +255,5 @@ RtlTest::testSetConscripts()
 	                     "              Reaching definitions: \n"
 	                     "              Live variables: \n");
 
-	std::ostringstream ost;
-	rtl->print(ost);
-	std::string actual = ost.str();
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, rtl->prints());
 }

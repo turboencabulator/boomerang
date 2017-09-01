@@ -256,9 +256,7 @@ UserProc::printDecodedXML()
 	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-decoded.xml").c_str());
 	out << "<proc name=\"" << getName() << "\">\n";
 	out << "\t<decoded>\n";
-	std::ostringstream os;
-	print(os);
-	std::string s = os.str();
+	std::string s = prints();
 	escapeXMLChars(s);
 	out << s;
 	out << "\t</decoded>\n";
@@ -274,9 +272,7 @@ UserProc::printAnalysedXML()
 	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-analysed.xml").c_str());
 	out << "<proc name=\"" << getName() << "\">\n";
 	out << "\t<analysed>\n";
-	std::ostringstream os;
-	print(os);
-	std::string s = os.str();
+	std::string s = prints();
 	escapeXMLChars(s);
 	out << s;
 	out << "\t</analysed>\n";
@@ -292,9 +288,7 @@ UserProc::printSSAXML()
 	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-ssa.xml").c_str());
 	out << "<proc name=\"" << getName() << "\">\n";
 	out << "\t<ssa>\n";
-	std::ostringstream os;
-	print(os);
-	std::string s = os.str();
+	std::string s = prints();
 	escapeXMLChars(s);
 	out << s;
 	out << "\t</ssa>\n";
@@ -659,23 +653,18 @@ UserProc::print(std::ostream &out, bool html)
 	out << "in cluster " << cluster->getName() << "\n";
 	if (html)
 		out << "<br>";
-	std::ostringstream ost;
-	printParams(ost, html);
-	dumpLocals(ost, html);
-	out << ost.str().c_str();
+	printParams(out, html);
+	dumpLocals(out, html);
 	printSymbolMap(out, html);
 	if (html)
 		out << "<br>";
 	out << "live variables: ";
-	std::ostringstream ost2;
-	col.print(ost2);
-	out << ost2.str().c_str() << "\n";
+	col.print(out);
+	out << "\n";
 	if (html)
 		out << "<br>";
 	out << "end live variables\n";
-	std::ostringstream ost3;
-	cfg->print(ost3, html);
-	out << ost3.str().c_str();
+	cfg->print(out, html);
 	out << "\n";
 }
 
@@ -723,9 +712,7 @@ UserProc::dump()
 void
 UserProc::printToLog()
 {
-	std::ostringstream ost;
-	print(ost);
-	LOG << ost.str().c_str();
+	LOG << prints();
 }
 
 void
@@ -4155,9 +4142,7 @@ UserProc::updateArguments()
 		c->updateArguments();
 		//c->bypass();
 		if (VERBOSE) {
-			std::ostringstream ost;
-			c->print(ost);
-			LOG << ost.str().c_str() << "\n";
+			LOG << c->prints() << "\n";
 		}
 	}
 	if (VERBOSE)

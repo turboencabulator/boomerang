@@ -35,8 +35,6 @@
 void
 FrontSparcTest::test1()
 {
-	std::ostringstream ost;
-
 	Prog *prog = new Prog;
 	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF);
@@ -50,7 +48,6 @@ FrontSparcTest::test1()
 	// Decode first instruction
 	DecodeResult inst = pFE->decodeInstruction(addr);
 	CPPUNIT_ASSERT(inst.rtl);
-	inst.rtl->print(ost);
 
 	std::string expected("00010684    0 *32* tmp := r14 - 112\n"
 	                     "            0 *32* m[r14] := r16\n"
@@ -78,21 +75,17 @@ FrontSparcTest::test1()
 	                     "            0 *32* r30 := r14\n"
 	                     "            0 *32* r31 := r15\n"
 	                     "            0 *32* r14 := tmp\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(ost.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o2;
 	addr += inst.numBytes;
 	inst = pFE->decodeInstruction(addr);
-	inst.rtl->print(o2);
 	expected = std::string("00010688    0 *32* r8 := 0x10400\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o2.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o3;
 	addr += inst.numBytes;
 	inst = pFE->decodeInstruction(addr);
-	inst.rtl->print(o3);
 	expected = std::string("0001068c    0 *32* r8 := r8 | 848\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	delete prog;
 }
@@ -109,34 +102,26 @@ FrontSparcTest::test2()
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
-	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x10690);
-	inst.rtl->print(o1);
 	// This call is to out of range of the program's text limits (to the Program Linkage Table (PLT), calling printf)
 	// This is quite normal.
 	expected = std::string("00010690    0 CALL printf(\n"
 	                       "              )\n"
 	                       "              Reaching definitions: \n"
 	                       "              Live variables: \n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o1.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o2;
 	inst = pFE->decodeInstruction(0x10694);
-	inst.rtl->print(o2);
 	expected = std::string("00010694\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o2.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o3;
 	inst = pFE->decodeInstruction(0x10698);
-	inst.rtl->print(o3);
 	expected = std::string("00010698    0 *32* r8 := 0\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o4;
 	inst = pFE->decodeInstruction(0x1069c);
-	inst.rtl->print(o4);
 	expected = std::string("0001069c    0 *32* r24 := r8\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o4.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	delete prog;
 }
@@ -153,23 +138,17 @@ FrontSparcTest::test3()
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
-	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x106a0);
-	inst.rtl->print(o1);
 	expected = std::string("000106a0\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o1.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o2;
 	inst = pFE->decodeInstruction(0x106a4);
-	inst.rtl->print(o2);
 	expected = std::string("000106a4    0 RET\n"
 	                       "              Modifieds: \n"
 	                       "              Reaching definitions: \n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o2.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	std::ostringstream o3;
 	inst = pFE->decodeInstruction(0x106a8);
-	inst.rtl->print(o3);
 	expected = std::string("000106a8    0 *32* tmp := 0\n"
 	                       "            0 *32* r8 := r24\n"
 	                       "            0 *32* r9 := r25\n"
@@ -197,7 +176,7 @@ FrontSparcTest::test3()
 	                       "            0 *32* r30 := m[r14 + 56]\n"
 	                       "            0 *32* r31 := m[r14 + 60]\n"
 	                       "            0 *32* r0 := tmp\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	delete prog;
 }
@@ -216,29 +195,23 @@ FrontSparcTest::testBranch()
 	FrontEnd *pFE = FrontEnd::open(pBF, prog);
 
 	// bne
-	std::ostringstream o1;
 	inst = pFE->decodeInstruction(0x10ab0);
-	inst.rtl->print(o1);
 	expected = std::string("00010ab0    0 BRANCH 0x10ac8, condition not equals\n"
 	                       "High level: %flags\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o1.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bg
-	std::ostringstream o2;
 	inst = pFE->decodeInstruction(0x10af8);
-	inst.rtl->print(o2);
 	expected = std::string("00010af8    0 BRANCH 0x10b10, condition "
 	                       "signed greater\n"
 	                       "High level: %flags\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o2.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bleu
-	std::ostringstream o3;
 	inst = pFE->decodeInstruction(0x10b44);
-	inst.rtl->print(o3);
 	expected = std::string("00010b44    0 BRANCH 0x10b54, condition unsigned less or equals\n"
 	                       "High level: %flags\n");
-	CPPUNIT_ASSERT_EQUAL(expected, std::string(o3.str()));
+	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	delete prog;
 }
@@ -268,8 +241,6 @@ FrontSparcTest::testDelaySlot()
 	Cfg *cfg = pProc->getCFG();
 	BB_IT it;
 	BasicBlock *bb = cfg->getFirstBB(it);
-	std::ostringstream o1;
-	bb->print(o1);
 	std::string expected("Call BB:\n"
 	                     "in edges: \n"
 	                     "out edges: 10a98 \n"
@@ -308,13 +279,10 @@ FrontSparcTest::testDelaySlot()
 	                     "              )\n"
 	                     "              Reaching definitions: \n"
 	                     "              Live variables: \n");
-	std::string actual(o1.str());
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
 	bb = cfg->getNextBB(it);
 	CPPUNIT_ASSERT(bb);
-	std::ostringstream o2;
-	bb->print(o2);
 	expected = std::string("Call BB:\n"
 	                       "in edges: 10a90 \n"
 	                       "out edges: 10aa4 \n"
@@ -325,13 +293,10 @@ FrontSparcTest::testDelaySlot()
 	                       "              )\n"
 	                       "              Reaching definitions: \n"
 	                       "              Live variables: \n");
-	actual = std::string(o2.str());
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
 	bb = cfg->getNextBB(it);
 	CPPUNIT_ASSERT(bb);
-	std::ostringstream o3;
-	bb->print(o3);
 	expected = std::string("Twoway BB:\n"
 	                       "in edges: 10a9c \n"
 	                       "out edges: 10ac8 10ab8 \n"
@@ -343,26 +308,20 @@ FrontSparcTest::testDelaySlot()
 	                       "00010ab0    0 *32* r8 := 0x11400\n"
 	                       "00010ab0    0 BRANCH 0x10ac8, condition not equals\n"
 	                       "High level: %flags\n");
-	actual = std::string(o3.str());
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
 	bb = cfg->getNextBB(it);
 	CPPUNIT_ASSERT(bb);
-	std::ostringstream o4;
-	bb->print(o4);
 	expected = std::string("L1: Twoway BB:\n"
 	                       "in edges: 10ab0 10ac4 \n"
 	                       "out edges: 10ad8 10ad0 \n"
 	                       "00010ac8    0 *32* r8 := 0x11400\n"
 	                       "00010ac8    0 BRANCH 0x10ad8, condition equals\n"
 	                       "High level: %flags\n");
-	actual = std::string(o4.str());
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
 	bb = cfg->getNextBB(it);
 	CPPUNIT_ASSERT(bb);
-	std::ostringstream o5;
-	bb->print(o5);
 	expected = std::string("Call BB:\n"
 	                       "in edges: 10ab0 \n"
 	                       "out edges: 10ac0 \n"
@@ -371,8 +330,7 @@ FrontSparcTest::testDelaySlot()
 	                       "              )\n"
 	                       "              Reaching definitions: \n"
 	                       "              Live variables: \n");
-	actual = std::string(o5.str());
-	CPPUNIT_ASSERT_EQUAL(expected, actual);
+	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
 	delete prog;
 }

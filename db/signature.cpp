@@ -1583,9 +1583,7 @@ Signature::prints()
 void
 Signature::printToLog()
 {
-	std::ostringstream os;
-	print(os);
-	LOG << os.str().c_str();
+	LOG << prints();
 }
 
 bool

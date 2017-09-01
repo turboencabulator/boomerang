@@ -308,9 +308,7 @@ BasicBlock::print(std::ostream &os, bool html)
 void
 BasicBlock::printToLog()
 {
-	std::ostringstream ost;
-	print(ost);
-	LOG << ost.str().c_str();
+	LOG << prints();
 }
 
 bool

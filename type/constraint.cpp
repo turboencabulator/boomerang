@@ -278,9 +278,7 @@ bool
 Constraints::solve(std::list<ConstraintMap> &solns)
 {
 	LOG << conSet.size() << " constraints:";
-	std::ostringstream os;
-	conSet.print(os);
-	LOG << os.str().c_str();
+	LOG << conSet.prints();
 	// Replace Ta[loc] = ptr(alpha) with
 	//         Tloc = alpha
 	for (auto cc = conSet.begin(); cc != conSet.end(); ++cc) {

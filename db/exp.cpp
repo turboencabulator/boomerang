@@ -1539,9 +1539,7 @@ bool
 Exp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 {
 	// most obvious
-	std::ostringstream ostr;
-	this->print(ostr);
-	if (ostr.str() == pattern)
+	if (prints() == pattern)
 		return true;
 
 	// alright, is pattern an acceptable variable?
