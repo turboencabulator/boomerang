@@ -20,6 +20,7 @@
 #include <ostream>
 #include <list>
 #include <map>
+#include <string>
 
 // This class represents fixed constraints (e.g. Ta = <int>, Tb = <alpha2*>),
 // but also "tentative" constraints resulting from disjunctions of constraints
@@ -81,8 +82,8 @@ public:
 	void makeUnion(ConstraintMap &o);
 	// Print to the given stream
 	void print(std::ostream &os);
-	// Print to the debug buffer, and return that buffer
-	char *prints();
+	// Print to a string
+	std::string prints();
 	// Substitute the given constraints into this map
 	void substitute(ConstraintMap &other);
 	// For this solution, we need to find disjunctions of the form
@@ -121,7 +122,7 @@ public:
 		return emap.find(e);
 	}
 	void print(std::ostream &os);
-	char *prints();
+	std::string prints();
 };
 
 class Constraints {
@@ -138,7 +139,7 @@ public:
 	~Constraints();
 
 	void print(std::ostream &os);
-	char *prints();
+	std::string prints();
 
 	LocationSet &getConstraints() {
 		return conSet;

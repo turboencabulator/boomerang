@@ -143,7 +143,7 @@ public:
 
 	        Statement  *getHlStmt();
 
-	        char       *prints();
+	        std::string prints();
 
 	        int         setConscripts(int n, bool bClear);
 protected:

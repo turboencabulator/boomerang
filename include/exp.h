@@ -45,9 +45,6 @@ class Type;
 class TypeVal;
 class UserProc;
 
-#define DEBUG_BUFSIZE 5000  // Size of the debug print buffer
-
-
 /*==============================================================================
  * Exp is an expression class, though it will probably be used to hold many other things (e.g. perhaps transformations).
  * It is a standard tree representation. Exp itself is abstract. A special class Const is used for constants. Unary,
@@ -85,7 +82,7 @@ public:
 	// Print with <type>
 	        void        printt(std::ostream &os = std::cout);
 	        void        printAsHL(std::ostream &os = std::cout); // Print with v[5] as v5
-	        char       *prints();  // Print to string (for debugging and logging)
+	        std::string prints();  // Print to string (for debugging and logging)
 	        void        dump();    // Print to standard error (for debugging)
 	// Recursive print: don't want parens at the top level
 	virtual void        printr(std::ostream &os, bool html = false) { print(os, html); }  // But most classes want standard

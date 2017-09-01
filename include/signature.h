@@ -180,7 +180,7 @@ public:
 	// any signature can be promoted to a higher level signature, if available
 	virtual Signature  *promote(UserProc *p);
 	        void        print(std::ostream &out, bool html = false);
-	        char       *prints();  // For debugging
+	        std::string prints();  // For debugging
 	        void        printToLog();
 
 	// Special for Mike: find the location that conventionally holds the first outgoing (actual) parameter

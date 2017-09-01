@@ -29,6 +29,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <string>
 #include <vector>
 
 class Assign;
@@ -69,7 +70,7 @@ public:
 	bool        operator <(const StatementSet &o) const;  // Compare if less
 	void        print(std::ostream &os);                  // Print to os
 	void        printNums(std::ostream &os);              // Print statements as numbers
-	char       *prints();                                 // Print to string (for debug)
+	std::string prints();                                 // Print to string (for debug)
 	void        dump();                                   // Print to standard error for debugging
 };
 
@@ -106,7 +107,7 @@ public:
 	bool        operator <(const AssignSet &o) const;  // Compare if less
 	void        print(std::ostream &os);               // Print to os
 	void        printNums(std::ostream &os);           // Print statements as numbers
-	char       *prints();                              // Print to string (for debug)
+	std::string prints();                              // Print to string (for debug)
 	void        dump();                                // Print to standard error for debugging
 	//bool        isLast(StmtSetIter &it);               // returns true if it is at end
 };
@@ -141,7 +142,7 @@ public:
 	iterator    erase(iterator first, iterator last) { return slist.erase(first, last); }
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
 	bool        exists(Statement *s);               // Search; returns false if not found
-	char       *prints();                           // Print to string (for debugging)
+	std::string prints();                           // Print to string (for debugging)
 	void        dump();                             // Print to standard error for debugging
 	void        clear() { slist.clear(); }
 	void        makeCloneOf(StatementList &o);      // Make this a clone of o
@@ -164,7 +165,7 @@ public:
 	Statement  *operator [](int idx) { return svec[idx]; }
 	void        putAt(int idx, Statement *s);
 	iterator    remove(iterator it);
-	char       *prints();                           // Print to string (for debugging)
+	std::string prints();                           // Print to string (for debugging)
 	void        dump();                             // Print to standard error for debugging
 	void        printNums(std::ostream &os);
 	void        clear() { svec.clear(); }
@@ -201,7 +202,7 @@ public:
 	bool        operator ==(const LocationSet &o) const;// Compare
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
 	void        print(std::ostream &os);                // Print to os
-	char       *prints();                               // Print to string for debugging
+	std::string prints();                               // Print to string for debugging
 	void        dump();
 	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
 	bool        exists(Exp *e);                         // Return true if the location exists in the set

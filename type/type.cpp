@@ -33,8 +33,6 @@
 #include <cstring>
 #include <cassert>
 
-extern char debug_buffer[];  // For prints functions
-
 bool
 Type::isCString()
 {
@@ -1658,15 +1656,13 @@ DataIntervalMap::dump()
 	std::cerr << prints();
 }
 
-char *
+std::string
 DataIntervalMap::prints()
 {
 	std::ostringstream ost;
 	for (auto it = dimap.begin(); it != dimap.end(); ++it)
 		ost << std::hex << "0x" << it->first << std::dec << " " << it->second.name << " " << it->second.type->getCtype() << "\n";
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 ComplexTypeCompList &

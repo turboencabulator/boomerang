@@ -688,7 +688,7 @@ public:
 	void        addItem(ADDRESS addr, const char *name, Type *ty, bool forced = false);
 	void        deleteItem(ADDRESS addr);       // Mainly for testing?
 	void        expandItem(ADDRESS addr, unsigned size);
-	char       *prints();                       // For test and debug
+	std::string prints();                       // For test and debug
 	void        dump();                         // For debug
 
 private:

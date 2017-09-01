@@ -26,11 +26,6 @@
 #include <algorithm>    // For std::min(), std::max()
 #include <sstream>
 
-#include <cstring>
-
-extern char debug_buffer[];  // For prints functions
-
-
 std::ostream &
 operator <<(std::ostream &os, StatementSet *ss)
 {
@@ -129,7 +124,7 @@ StatementSet::definesLoc(Exp *loc)
 }
 
 // Print to a string, for debugging
-char *
+std::string
 StatementSet::prints()
 {
 	std::ostringstream ost;
@@ -138,9 +133,7 @@ StatementSet::prints()
 		ost << *it;
 	}
 	ost << "\n";
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void
@@ -272,7 +265,7 @@ AssignSet::lookupLoc(Exp *loc)
 }
 
 // Print to a string, for debugging
-char *
+std::string
 AssignSet::prints()
 {
 	std::ostringstream ost;
@@ -281,9 +274,7 @@ AssignSet::prints()
 		ost << *it;
 	}
 	ost << "\n";
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void
@@ -351,7 +342,7 @@ LocationSet::LocationSet(const LocationSet &o)
 		lset.insert((*it)->clone());
 }
 
-char *
+std::string
 LocationSet::prints()
 {
 	std::ostringstream ost;
@@ -359,9 +350,7 @@ LocationSet::prints()
 		if (it != lset.begin()) ost << ",\t";
 		ost << *it;
 	}
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void
@@ -599,16 +588,14 @@ StatementList::append(StatementSet &ss)
 	}
 }
 
-char *
+std::string
 StatementList::prints()
 {
 	std::ostringstream ost;
 	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		ost << *it << ",\t";
 	}
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 //
@@ -637,16 +624,14 @@ StatementVec::remove(iterator it)
 	return svec.erase(it);
 }
 
-char *
+std::string
 StatementVec::prints()
 {
 	std::ostringstream ost;
 	for (auto it = svec.begin(); it != svec.end(); ++it) {
 		ost << *it << ",\t";
 	}
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 // Print just the numbers to stream os

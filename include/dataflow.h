@@ -21,6 +21,7 @@
 #include <map>
 #include <set>
 #include <stack>
+#include <string>
 #include <vector>
 
 class BasicBlock;
@@ -172,7 +173,7 @@ public:
 	/*
 	 * Print to string or stdout (for debugging)
 	 */
-	char       *prints();
+	std::string prints();
 	void        dump();
 	Assign     *dumpAddrOfFourth();
 
@@ -249,7 +250,7 @@ public:
 	/*
 	 * Print to string or stderr (for debugging)
 	 */
-	char       *prints();
+	std::string prints();
 	void        dump();
 
 	/*

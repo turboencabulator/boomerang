@@ -30,8 +30,6 @@
 #include <cassert>
 #include <cstring>
 
-extern char debug_buffer[];  // For prints()
-
 const char *
 Signature::platformName(platform plat)
 {
@@ -1574,14 +1572,12 @@ Signature::print(std::ostream &out, bool html)
 	out << ")\n";
 }
 
-char *
+std::string
 Signature::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void

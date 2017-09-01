@@ -39,8 +39,6 @@
 #include <cstdlib>
 #include <cstring>
 
-extern char debug_buffer[];      ///< For prints functions
-
 /*==============================================================================
  * FUNCTION:        Const::Const etc
  * OVERVIEW:        Constructors
@@ -1174,17 +1172,15 @@ TypeVal::print(std::ostream &os, bool html)
 
 /*==============================================================================
  * FUNCTION:        Exp::prints
- * OVERVIEW:        Print to a static string (for debugging)
- * RETURNS:         Address of the static buffer
+ * OVERVIEW:        Print to a string (for debugging)
+ * RETURNS:         The string
  *============================================================================*/
-char *
+std::string
 Exp::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void

@@ -456,7 +456,7 @@ public:
 	/// print this proc, mainly for debugging
 	void        print(std::ostream &out, bool html = false);
 	void        printParams(std::ostream &out, bool html = false);
-	char       *prints();
+	std::string prints();
 	void        dump();
 	void        printToLog();
 	void        printDFG();

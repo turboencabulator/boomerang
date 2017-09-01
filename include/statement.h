@@ -231,7 +231,7 @@ public:
 	        void        printAsUse(std::ostream &os)   { os << std::dec << number; }
 	        void        printAsUseBy(std::ostream &os) { os << std::dec << number; }
 	        void        printNum(std::ostream &os)     { os << std::dec << number; }
-	        char       *prints();  // For logging, was also for debugging
+	        std::string prints();  // For logging, was also for debugging
 	        void        dump();    // For debugging
 
 	// general search

@@ -177,7 +177,7 @@ public:
 	 */
 	        void        print(std::ostream &os, bool html = false);
 	        void        printToLog();
-	        char       *prints();  // For debugging
+	        std::string prints();  // For debugging
 	        void        dump();
 
 	/*

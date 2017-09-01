@@ -45,8 +45,6 @@
 
 typedef std::map<Statement *, int> RefCounter;
 
-extern char debug_buffer[];  // Defined in basicblock.cpp, size DEBUG_BUFSIZE
-
 Proc::~Proc()
 {
 }
@@ -708,14 +706,12 @@ UserProc::printParams(std::ostream &out, bool html)
 	out << "end parameters\n";
 }
 
-char *
+std::string
 UserProc::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void

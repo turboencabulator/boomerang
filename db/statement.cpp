@@ -35,8 +35,6 @@
 #include <cassert>
 #include <cstring>
 
-extern char debug_buffer[];  // For prints functions
-
 void
 Statement::setProc(UserProc *p)
 {
@@ -686,14 +684,12 @@ Statement::isFlagAssgn()
 	return (op == opFlagCall);
 }
 
-char *
+std::string
 Statement::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 // This version prints much better in gdb

@@ -24,8 +24,6 @@
 
 #include <sstream>
 
-#include <cstring>
-
 void
 ConstraintMap::print(std::ostream &os)
 {
@@ -38,15 +36,12 @@ ConstraintMap::print(std::ostream &os)
 	os << "\n";
 }
 
-extern char debug_buffer[];
-char *
+std::string
 ConstraintMap::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void
@@ -92,14 +87,12 @@ EquateMap::print(std::ostream &os)
 	os << "\n";
 }
 
-char *
+std::string
 EquateMap::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 // Substitute the given constraints into this map
@@ -598,12 +591,10 @@ Constraints::print(std::ostream &os)
 	equates.print(os);
 }
 
-char *
+std::string
 Constraints::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }

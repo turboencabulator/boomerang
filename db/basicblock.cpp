@@ -40,7 +40,6 @@
 #include <sstream>
 
 #include <cassert>
-#include <cstring>
 
 /*==============================================================================
  * FUNCTION:        BasicBlock::BasicBlock
@@ -235,21 +234,15 @@ BasicBlock::isJumpReqd()
 
 /*==============================================================================
  * FUNCTION:        BasicBlock::prints
- * OVERVIEW:        Print to a static string (for debugging)
- * RETURNS:         Address of the static buffer
+ * OVERVIEW:        Print to a string (for debugging)
+ * RETURNS:         The string
  *============================================================================*/
-char debug_buffer[DEBUG_BUFSIZE];
-
-char *
+std::string
 BasicBlock::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	// Static buffer might have overflowed if we used it directly, hence we just copy and print the first
-	// DEBUG_BUFSIZE-1 bytes
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void

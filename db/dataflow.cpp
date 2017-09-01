@@ -26,10 +26,6 @@
 #include <sstream>
 
 #include <cassert>
-#include <cstring>
-
-extern char debug_buffer[];  // For prints functions
-
 
 /*
  * Dominator frontier code largely as per Appel 2002 ("Modern Compiler Implementation in Java")
@@ -661,24 +657,20 @@ DefCollector::print(std::ostream &os, bool html)
 	}
 }
 
-char *
+std::string
 UseCollector::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
-char *
+std::string
 DefCollector::prints()
 {
 	std::ostringstream ost;
 	print(ost);
-	strncpy(debug_buffer, ost.str().c_str(), DEBUG_BUFSIZE - 1);
-	debug_buffer[DEBUG_BUFSIZE - 1] = '\0';
-	return debug_buffer;
+	return ost.str();
 }
 
 void
