@@ -71,16 +71,16 @@ public:
 	        void        setOper(OPER x) { op = x; }  // A few simplifications use this
 
 	// Print the expression to the given stream
-	virtual void        print(std::ostream &os, bool html = false) = 0;
+	virtual void        print(std::ostream &os, bool html = false) const = 0;
 	// Print with <type>
-	        void        printt(std::ostream &os = std::cout);
-	        void        printAsHL(std::ostream &os = std::cout); // Print with v[5] as v5
-	        std::string prints();  // Print to string (for debugging and logging)
-	        void        dump();    // Print to standard error (for debugging)
+	        void        printt(std::ostream &os = std::cout) const;
+	        void        printAsHL(std::ostream &os = std::cout) const; // Print with v[5] as v5
+	        std::string prints() const;  // Print to string (for debugging and logging)
+	        void        dump() const;    // Print to standard error (for debugging)
 	// Recursive print: don't want parens at the top level
-	virtual void        printr(std::ostream &os, bool html = false) { print(os, html); }  // But most classes want standard
+	virtual void        printr(std::ostream &os, bool html = false) const { print(os, html); }  // But most classes want standard
 	// For debugging: print in indented hex. In gdb: "p x->printx(0)"
-	virtual void        printx(int ind) = 0;
+	virtual void        printx(int ind) const = 0;
 
 	// Display as a dotty graph
 	        void        createDot(std::ostream &os) const;
@@ -338,7 +338,7 @@ protected:
 };
 
 // Not part of the Exp class, but logically belongs with it:
-std::ostream &operator <<(std::ostream &os, Exp *p);  // Print the Exp poited to by p
+std::ostream &operator <<(std::ostream &os, const Exp *p);  // Print the Exp poited to by p
 
 /*==============================================================================
  * Const is a subclass of Exp, and holds either an integer, floating point, string, or address constant
@@ -397,10 +397,10 @@ public:
 	Type       *getType() const { return type; }
 	void        setType(Type *ty) { type = ty; }
 
-	void        print(std::ostream &os, bool html = false) override;
+	void        print(std::ostream &os, bool html = false) const override;
 	// Print "recursive" (extra parens not wanted at outer levels)
-	void        printNoQuotes(std::ostream &os);
-	void        printx(int ind) override;
+	void        printNoQuotes(std::ostream &os) const;
+	void        printx(int ind) const override;
 
 	void        appendDot(std::ostream &os) const override;
 	Exp        *genConstraints(Exp *restrictTo) override;
@@ -438,9 +438,9 @@ public:
 	bool        operator < (const Exp &) const override;
 	bool        operator *=(const Exp &) const override;
 
-	void        print(std::ostream &os, bool html = false) override;
+	void        print(std::ostream &os, bool html = false) const override;
 	void        appendDot(std::ostream &os) const override;
-	void        printx(int ind) override;
+	void        printx(int ind) const override;
 
 	bool        isTerminal() const override { return true; }
 
@@ -487,9 +487,9 @@ public:
 	int         getArity() const override { return 1; }
 
 	// Print
-	void        print(std::ostream &os, bool html = false) override;
+	void        print(std::ostream &os, bool html = false) const override;
 	void        appendDot(std::ostream &os) const override;
-	void        printx(int ind) override;
+	void        printx(int ind) const override;
 
 	// Set first subexpression
 	void        setSubExp1(Exp *e) override;
@@ -556,10 +556,10 @@ public:
 	int         getArity() const override { return 2; }
 
 	// Print
-	void        print(std::ostream &os, bool html = false) override;
-	void        printr(std::ostream &os, bool html = false) override;
+	void        print(std::ostream &os, bool html = false) const override;
+	void        printr(std::ostream &os, bool html = false) const override;
 	void        appendDot(std::ostream &os) const override;
-	void        printx(int ind) override;
+	void        printx(int ind) const override;
 
 	// Set second subexpression
 	void        setSubExp2(Exp *e) override;
@@ -629,10 +629,10 @@ public:
 	int         getArity() const override { return 3; }
 
 	// Print
-	void        print(std::ostream &os, bool html = false) override;
-	void        printr(std::ostream &os, bool html = false) override;
+	void        print(std::ostream &os, bool html = false) const override;
+	void        printr(std::ostream &os, bool html = false) const override;
 	void        appendDot(std::ostream &os) const override;
-	void        printx(int ind) override;
+	void        printx(int ind) const override;
 
 	// Set third subexpression
 	void        setSubExp3(Exp *e) override;
@@ -691,9 +691,9 @@ public:
 	bool        operator *=(const Exp &) const override;
 
 
-	void        print(std::ostream &os, bool html = false) override;
+	void        print(std::ostream &os, bool html = false) const override;
 	void        appendDot(std::ostream &os) const override;
-	void        printx(int ind) override;
+	void        printx(int ind) const override;
 
 	// Get and set the type
 	virtual Type *getType() const { return type; }
@@ -752,8 +752,8 @@ public:
 	bool        operator < (const Exp &) const override;
 	bool        operator *=(const Exp &) const override;
 
-	void        print(std::ostream &os, bool html = false) override;
-	void        printx(int ind) override;
+	void        print(std::ostream &os, bool html = false) const override;
+	void        printx(int ind) const override;
 	//int         getNumRefs() const override { return 1; }
 	Statement  *getDef() const { return def; }  // Ugh was called getRef()
 	Exp        *addSubscript(Statement *def) { this->def = def; return this; }
@@ -796,8 +796,8 @@ public:
 	bool        operator ==(const Exp &) const override;
 	bool        operator < (const Exp &) const override;
 	bool        operator *=(const Exp &) const override;
-	void        print(std::ostream &os, bool html = false) override;
-	void        printx(int ind) override;
+	void        print(std::ostream &os, bool html = false) const override;
+	void        printx(int ind) const override;
 	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return nullptr; }  // Should not be constraining constraints
 	//Exp        *match(Exp *pattern) override;
 

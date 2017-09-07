@@ -669,7 +669,7 @@ TypeVal::operator *=(const Exp &e) const
 //  Const   //
 //  //  //  //
 void
-Const::print(std::ostream &os, bool html)
+Const::print(std::ostream &os, bool html) const
 {
 	switch (op) {
 	case opIntConst:
@@ -701,7 +701,7 @@ Const::print(std::ostream &os, bool html)
 }
 
 void
-Const::printNoQuotes(std::ostream &os)
+Const::printNoQuotes(std::ostream &os) const
 {
 	if (op == opStrConst)
 		os << u.p;
@@ -713,7 +713,7 @@ Const::printNoQuotes(std::ostream &os)
 //  Binary  //
 //  //  //  //
 void
-Binary::printr(std::ostream &os, bool html)
+Binary::printr(std::ostream &os, bool html) const
 {
 	assert(subExp1 && subExp2);
 	// The "r" is for recursive: the idea is that we don't want parentheses at the outer level, but a subexpression
@@ -736,7 +736,7 @@ Binary::printr(std::ostream &os, bool html)
 }
 
 void
-Binary::print(std::ostream &os, bool html)
+Binary::print(std::ostream &os, bool html) const
 {
 	assert(subExp1 && subExp2);
 	Exp *p1 = ((Binary *)this)->getSubExp1();
@@ -853,7 +853,7 @@ Binary::print(std::ostream &os, bool html)
 //   Terminal   //
 //  //  //  //  //
 void
-Terminal::print(std::ostream &os, bool html)
+Terminal::print(std::ostream &os, bool html) const
 {
 	switch (op) {
 	case opPC:           os << "%pc";     break;
@@ -889,7 +889,7 @@ Terminal::print(std::ostream &os, bool html)
 //   Unary  //
 //  //  //  //
 void
-Unary::print(std::ostream &os, bool html)
+Unary::print(std::ostream &os, bool html) const
 {
 	Exp *p1 = ((Unary *)this)->getSubExp1();
 	switch (op) {
@@ -1034,7 +1034,7 @@ Unary::print(std::ostream &os, bool html)
 //  Ternary //
 //  //  //  //
 void
-Ternary::printr(std::ostream &os, bool html)
+Ternary::printr(std::ostream &os, bool html) const
 {
 	// The function-like operators don't need parentheses
 	switch (op) {
@@ -1060,7 +1060,7 @@ Ternary::printr(std::ostream &os, bool html)
 }
 
 void
-Ternary::print(std::ostream &os, bool html)
+Ternary::print(std::ostream &os, bool html) const
 {
 	Exp *p1 = ((Ternary *)this)->getSubExp1();
 	Exp *p2 = ((Ternary *)this)->getSubExp2();
@@ -1121,7 +1121,7 @@ Ternary::print(std::ostream &os, bool html)
 // TypedExp //
 //  //  //  //
 void
-TypedExp::print(std::ostream &os, bool html)
+TypedExp::print(std::ostream &os, bool html) const
 {
 	os << " ";
 	type->starPrint(os);
@@ -1133,7 +1133,7 @@ TypedExp::print(std::ostream &os, bool html)
 //  RefExp  //
 //  //  //  //
 void
-RefExp::print(std::ostream &os, bool html)
+RefExp::print(std::ostream &os, bool html) const
 {
 	if (subExp1) subExp1->print(os, html);
 	else os << "<NULL>";
@@ -1160,7 +1160,7 @@ RefExp::print(std::ostream &os, bool html)
 // TypeVal  //
 //  //  //  //
 void
-TypeVal::print(std::ostream &os, bool html)
+TypeVal::print(std::ostream &os, bool html) const
 {
 	if (val)
 		os << "<" << val->getCtype() << ">";
@@ -1174,7 +1174,7 @@ TypeVal::print(std::ostream &os, bool html)
  * RETURNS:         The string
  *============================================================================*/
 std::string
-Exp::prints()
+Exp::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -1182,7 +1182,7 @@ Exp::prints()
 }
 
 void
-Exp::dump()
+Exp::dump() const
 {
 	print(std::cerr);
 }
@@ -3240,7 +3240,7 @@ Ternary::simplifyAddr()
  * PARAMETERS:      Output stream to send the output to
  *============================================================================*/
 void
-Exp::printt(std::ostream &os /*= cout*/)
+Exp::printt(std::ostream &os /*= cout*/) const
 {
 	print(os);
 	if (op != opTypedExp) return;
@@ -3274,7 +3274,7 @@ Exp::printt(std::ostream &os /*= cout*/)
  * PARAMETERS:      Output stream to send the output to
  *============================================================================*/
 void
-Exp::printAsHL(std::ostream &os /*= cout*/)
+Exp::printAsHL(std::ostream &os /*= cout*/) const
 {
 	std::ostringstream ost;
 	ost << this;  // Print to the string stream
@@ -3295,7 +3295,7 @@ Exp::printAsHL(std::ostream &os /*= cout*/)
  * RETURNS:         copy of os (for concatenation)
  *============================================================================*/
 std::ostream &
-operator <<(std::ostream &os, Exp *p)
+operator <<(std::ostream &os, const Exp *p)
 {
 #if 1
 	// Useful for debugging, but can clutter the output
@@ -4082,7 +4082,7 @@ TypeVal::accept(ExpModifier *v)
 }
 
 static void
-child(Exp *e, int ind)
+child(const Exp *e, int ind)
 {
 	if (!e) {
 		std::cerr << std::setw(ind + 4) << " " << "<NULL>\n" << std::flush;
@@ -4097,13 +4097,13 @@ child(Exp *e, int ind)
 }
 
 void
-Unary::printx(int ind)
+Unary::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
 	child(subExp1, ind);
 }
 void
-Binary::printx(int ind)
+Binary::printx(int ind) const
 {
 	assert(subExp1 && subExp2);
 
@@ -4112,7 +4112,7 @@ Binary::printx(int ind)
 	child(subExp2, ind);
 }
 void
-Ternary::printx(int ind)
+Ternary::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
 	child(subExp1, ind);
@@ -4120,7 +4120,7 @@ Ternary::printx(int ind)
 	child(subExp3, ind);
 }
 void
-Const::printx(int ind)
+Const::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	switch (op) {
@@ -4144,25 +4144,25 @@ Const::printx(int ind)
 	std::cerr << std::flush << "\n";
 }
 void
-TypeVal::printx(int ind)
+TypeVal::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << val->getCtype() << std::flush << "\n";
 }
 void
-TypedExp::printx(int ind)
+TypedExp::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << type->getCtype() << std::flush << "\n";
 	child(subExp1, ind);
 }
 void
-Terminal::printx(int ind)
+Terminal::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
 }
 void
-RefExp::printx(int ind)
+RefExp::printx(int ind) const
 {
 	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
 	std::cerr << "{";
