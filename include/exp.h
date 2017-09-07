@@ -58,8 +58,6 @@ class Exp {
 protected:
 	        OPER        op;  // The operator (e.g. opPlus)
 
-	        unsigned    lexBegin, lexEnd;
-
 	// Constructor, with ID
 	                    Exp(OPER op) : op(op) { }
 
@@ -71,11 +69,6 @@ public:
 	        // it (at least, for subexpressions)
 	        OPER        getOper() const { return op; }
 	        void        setOper(OPER x) { op = x; }  // A few simplifications use this
-
-	        void        setLexBegin(unsigned int n) { lexBegin = n; }
-	        void        setLexEnd(unsigned int n) { lexEnd = n; }
-	        unsigned    getLexBegin() const { return lexBegin; }
-	        unsigned    getLexEnd() const { return lexEnd; }
 
 	// Print the expression to the given stream
 	virtual void        print(std::ostream &os, bool html = false) = 0;

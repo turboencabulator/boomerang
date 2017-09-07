@@ -671,7 +671,6 @@ TypeVal::operator *=(const Exp &e) const
 void
 Const::print(std::ostream &os, bool html)
 {
-	setLexBegin(os.tellp());
 	switch (op) {
 	case opIntConst:
 		if (u.i < -1000 || u.i > 1000)
@@ -699,7 +698,6 @@ Const::print(std::ostream &os, bool html)
 	}
 	if (conscript)
 		os << "\\" << std::dec << conscript << "\\";
-	setLexEnd(os.tellp());
 }
 
 void
