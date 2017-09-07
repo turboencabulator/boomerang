@@ -202,10 +202,10 @@ public:
 	// FIXME: are these used?
 	// Matches this expression to the pattern, if successful returns a list of variable bindings, otherwise returns
 	// nullptr
-	virtual Exp        *match(Exp *pattern);
+	virtual Exp        *match(const Exp *pattern) const;
 
 	// match a string pattern
-	virtual bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	virtual bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const;
 
 	//  //  //  //  //  //  //
 	//  Search and Replace  //
@@ -409,7 +409,7 @@ public:
 	bool        accept(ExpVisitor *v) override;
 	Exp        *accept(ExpModifier *v) override;
 
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 	int         getConscript() const { return conscript; }
 	void        setConscript(int cs) { conscript = cs; }
@@ -451,7 +451,7 @@ public:
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 protected:
 	friend class XMLProgParser;
@@ -499,8 +499,8 @@ public:
 	// Get a reference to subexpression 1
 	Exp       *&refSubExp1() override;
 
-	Exp        *match(Exp *pattern) override;
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	Exp        *match(const Exp *pattern) const override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
@@ -570,8 +570,8 @@ public:
 	// Get a reference to subexpression 2
 	Exp       *&refSubExp2() override;
 
-	Exp        *match(Exp *pattern) override;
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	Exp        *match(const Exp *pattern) const override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;
@@ -655,7 +655,7 @@ public:
 	bool        accept(ExpVisitor *v) override;
 	Exp        *accept(ExpModifier *v) override;
 
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -761,8 +761,8 @@ public:
 	Exp        *genConstraints(Exp *restrictTo) override;
 	bool        references(Statement *s) { return def == s; }
 	Exp        *polySimplify(bool &bMod) override;
-	Exp        *match(Exp *pattern) override;
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	Exp        *match(const Exp *pattern) const override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 	// Before type analysis, implicit definitions are nullptr.  During and after TA, they point to an implicit
 	// assignment statement.  Don't implement here, since it would require #including of statement.h
@@ -799,7 +799,7 @@ public:
 	void        print(std::ostream &os, bool html = false) const override;
 	void        printx(int ind) const override;
 	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return nullptr; }  // Should not be constraining constraints
-	//Exp        *match(Exp *pattern) override;
+	//Exp        *match(const Exp *pattern) const override;
 
 	// Visitation
 	bool        accept(ExpVisitor *v) override;
@@ -838,7 +838,7 @@ public:
 	// Visitation
 	bool        accept(ExpVisitor *v) override;
 	Exp        *accept(ExpModifier *v) override;
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings) override;
+	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 protected:
 	friend class XMLProgParser;

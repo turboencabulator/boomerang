@@ -1418,7 +1418,7 @@ Exp::getGuard() const
  * RETURNS:         list of variable bindings, or nullptr if matching fails
  *============================================================================*/
 Exp *
-Exp::match(Exp *pattern)
+Exp::match(const Exp *pattern) const
 {
 	if (*this == *pattern)
 		return new Terminal(opNil);
@@ -1430,7 +1430,7 @@ Exp::match(Exp *pattern)
 	return nullptr;
 }
 Exp *
-Unary::match(Exp *pattern)
+Unary::match(const Exp *pattern) const
 {
 	assert(subExp1);
 	if (op == pattern->getOper()) {
@@ -1439,7 +1439,7 @@ Unary::match(Exp *pattern)
 	return Exp::match(pattern);
 }
 Exp *
-Binary::match(Exp *pattern)
+Binary::match(const Exp *pattern) const
 {
 	assert(subExp1 && subExp2);
 	if (op == pattern->getOper()) {
@@ -1475,7 +1475,7 @@ Binary::match(Exp *pattern)
 	return Exp::match(pattern);
 }
 Exp *
-RefExp::match(Exp *pattern)
+RefExp::match(const Exp *pattern) const
 {
 	Exp *r = Unary::match(pattern);
 #if 0
@@ -1494,7 +1494,7 @@ RefExp::match(Exp *pattern)
 }
 #if 0  // Suspect ADHOC TA only
 Exp *
-TypeVal::match(Exp *pattern)
+TypeVal::match(const Exp *pattern) const
 {
 	if (op == pattern->getOper()) {
 		return val->match(pattern->getType());
@@ -1534,7 +1534,7 @@ tlstrchr(const char *str, char ch)
  * RETURNS:         true if match, false otherwise
  *============================================================================*/
 bool
-Exp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Exp::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	// most obvious
 	if (prints() == pattern)
@@ -1550,7 +1550,7 @@ Exp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-Unary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Unary::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1566,7 +1566,7 @@ Unary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Binary::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1622,7 +1622,7 @@ Binary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-Ternary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Ternary::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1632,7 +1632,7 @@ Ternary::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+RefExp::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1659,7 +1659,7 @@ RefExp::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-Const::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Const::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1669,7 +1669,7 @@ Const::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-Terminal::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Terminal::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
@@ -1679,7 +1679,7 @@ Terminal::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return false;
 }
 bool
-Location::match(const char *pattern, std::map<std::string, Exp *> &bindings)
+Location::match(const char *pattern, std::map<std::string, const Exp *> &bindings) const
 {
 	if (Exp::match(pattern, bindings))
 		return true;
