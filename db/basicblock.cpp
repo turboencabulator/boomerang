@@ -245,12 +245,6 @@ BasicBlock::prints()
 	return ost.str();
 }
 
-void
-BasicBlock::dump()
-{
-	print(std::cerr);
-}
-
 /*==============================================================================
  * FUNCTION:        BasicBlock::print()
  * OVERVIEW:        Display the whole BB to the given stream

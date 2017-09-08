@@ -64,7 +64,6 @@ public:
 	void visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB);
 	void initial(ADDRESS uAddr);
 	ADDRESS nextAddress(Cfg *cfg);
-	void dump();
 };
 
 

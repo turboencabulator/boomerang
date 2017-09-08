@@ -232,7 +232,6 @@ public:
 	        void        printAsUseBy(std::ostream &os) { os << std::dec << number; }
 	        void        printNum(std::ostream &os)     { os << std::dec << number; }
 	        std::string prints();  // For logging, was also for debugging
-	        void        dump();    // For debugging
 
 	// general search
 	virtual bool        search(Exp *search, Exp *&result) = 0;

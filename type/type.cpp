@@ -1023,12 +1023,6 @@ Type::prints()
 	return getCtype(false);  // For debugging
 }
 
-void
-Type::dump()
-{
-	std::cerr << getCtype(false);  // For debugging
-}
-
 std::map<std::string, Type *> Type::namedTypes;
 
 // named type accessors
@@ -1064,13 +1058,6 @@ Type::getNamedType(const char *name)
 	if (namedTypes.find(name) != namedTypes.end())
 		return namedTypes[name];
 	return nullptr;
-}
-
-void
-Type::dumpNames()
-{
-	for (auto it = namedTypes.begin(); it != namedTypes.end(); ++it)
-		std::cerr << it->first << " -> " << it->second->getCtype() << "\n";
 }
 
 /*==============================================================================
@@ -1648,12 +1635,6 @@ DataIntervalMap::deleteItem(ADDRESS addr)
 	if (it == dimap.end())
 		return;
 	dimap.erase(it);
-}
-
-void
-DataIntervalMap::dump()
-{
-	std::cerr << prints();
 }
 
 std::string

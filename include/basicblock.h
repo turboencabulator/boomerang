@@ -178,7 +178,6 @@ public:
 	        void        print(std::ostream &os, bool html = false);
 	        void        printToLog();
 	        std::string prints();  // For debugging
-	        void        dump();
 
 	/*
 	 * Set the type of the basic block.

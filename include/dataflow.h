@@ -113,12 +113,6 @@ public:
 	int         getIdom(int node) { return idom[node]; }
 	int         getSemi(int node) { return semi[node]; }
 	std::set<int> &getA_phi(Exp *e) { return A_phi[e]; }
-
-	// For debugging:
-	void        dumpStacks();
-	void        dumpDefsites();
-	void        dumpA_orig();
-	void        dumpA_phi();
 };
 
 /*  *   *   *   *   *   *\
@@ -171,11 +165,9 @@ public:
 	void        print(std::ostream &os, bool html = false);
 
 	/*
-	 * Print to string or stdout (for debugging)
+	 * Print to string (for debugging)
 	 */
 	std::string prints();
-	void        dump();
-	Assign     *dumpAddrOfFourth();
 
 	/*
 	 * begin() and end() so we can iterate through the locations
@@ -248,10 +240,9 @@ public:
 	void        print(std::ostream &os, bool html = false);
 
 	/*
-	 * Print to string or stderr (for debugging)
+	 * Print to string (for debugging)
 	 */
 	std::string prints();
-	void        dump();
 
 	/*
 	 * begin() and end() so we can iterate through the locations

@@ -97,11 +97,6 @@ public:
 
 	virtual void        renameParam(const char *oldName, const char *newName);
 
-	/*
-	 * Prints this procedure to an output stream.
-	 */
-	//virtual std::ostream &put(std::ostream &os) = 0;
-
 	/**
 	 * Modify actuals so that it is now the list of locations that must
 	 * be passed to this procedure. The modification will be to either add
@@ -165,11 +160,6 @@ public:
 	 * Return true if this procedure doesn't return
 	 */
 	virtual bool        isNoReturn() = 0;
-
-	/**
-	 * OutPut operator for a Proc object.
-	 */
-	friend  std::ostream &operator <<(std::ostream &os, Proc &proc);
 
 	virtual Exp        *getProven(Exp *left) = 0;    // Get the RHS, if any, that is proven for left
 	virtual Exp        *getPremised(Exp *left) = 0;  // Get the RHS, if any, that is premised for left
@@ -263,11 +253,6 @@ public:
 	Exp        *getProven(Exp *left) override;                       // Get the RHS that is proven for left
 	Exp        *getPremised(Exp *left) override { return nullptr; }  // Get the RHS that is premised for left
 	bool        isPreserved(Exp *e) override;                        ///< Return whether e is preserved by this proc
-
-	/*
-	 * Prints this procedure to an output stream.
-	 */
-	//std::ostream &put(std::ostream &os) override;
 
 	void        getInternalStatements(StatementList &internal);
 protected:
@@ -457,15 +442,11 @@ public:
 	void        print(std::ostream &out, bool html = false);
 	void        printParams(std::ostream &out, bool html = false);
 	std::string prints();
-	void        dump();
 	void        printToLog();
 	void        printDFG();
 	void        printSymbolMap(std::ostream &out, bool html = false);  ///< Print just the symbol map
-	void        dumpSymbolMap();   ///< For debugging
-	void        dumpSymbolMapx();  ///< For debugging
 	void        testSymbolMap();   ///< For debugging
 	void        dumpLocals(std::ostream &os, bool html = false);
-	void        dumpLocals();
 
 	/// simplify the statements in this proc
 	void        simplify() { cfg->simplify(); }
@@ -760,11 +741,6 @@ public:
 	 * Get the BB that is the entry point (not always the first BB)
 	 */
 	BasicBlock *getEntryBB();
-
-	/*
-	 * Prints this procedure to an output stream.
-	 */
-	//std::ostream &put(std::ostream &os) override;
 
 	/**
 	 * Set the entry BB for this procedure (constructor has the entry address)

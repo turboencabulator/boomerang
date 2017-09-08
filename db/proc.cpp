@@ -332,21 +332,6 @@ UserProc::printUseGraph()
 	out.close();
 }
 
-#if 0
-/*==============================================================================
- * FUNCTION:        operator <<
- * OVERVIEW:        Output operator for a Proc object.
- * PARAMETERS:      os - output stream
- *                  proc -
- * RETURNS:         os
- *============================================================================*/
-std::ostream &
-operator <<(std::ostream &os, Proc &proc)
-{
-	return proc.put(os);
-}
-#endif
-
 Proc *
 Proc::getFirstCaller()
 {
@@ -374,21 +359,6 @@ LibProc::LibProc(Prog *prog, std::string &name, ADDRESS uNative) :
 LibProc::~LibProc()
 {
 }
-
-#if 0
-/*==============================================================================
- * FUNCTION:        LibProc::put
- * OVERVIEW:        Display on os.
- * PARAMETERS:      os -
- * RETURNS:         os
- *============================================================================*/
-std::ostream &
-LibProc::put(std::ostream &os)
-{
-	os << "library procedure `" << signature->getName() << "' resides at 0x";
-	return os << std::hex << address << std::endl;
-}
-#endif
 
 Exp *
 LibProc::getProven(Exp *left)
@@ -700,12 +670,6 @@ UserProc::prints()
 	std::ostringstream ost;
 	print(ost);
 	return ost.str();
-}
-
-void
-UserProc::dump()
-{
-	print(std::cerr);
 }
 
 void
@@ -4078,25 +4042,6 @@ UserProc::dumpLocals(std::ostream &os, bool html)
 }
 
 void
-UserProc::dumpSymbolMap()
-{
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
-		Type *ty = getTypeForLocation(it->second);
-		std::cerr << "  " << it->first << " maps to " << it->second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
-	}
-}
-
-void
-UserProc::dumpSymbolMapx()
-{
-	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
-		Type *ty = getTypeForLocation(it->second);
-		std::cerr << "  " << it->first << " maps to " << it->second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
-		it->first->printx(2);
-	}
-}
-
-void
 UserProc::testSymbolMap()
 {
 	bool OK = true;
@@ -4115,14 +4060,6 @@ UserProc::testSymbolMap()
 		}
 	}
 	std::cerr << "Symbolmap is " << (OK ? "OK" : "NOT OK!!!!!") << "\n";
-}
-
-void
-UserProc::dumpLocals()
-{
-	std::stringstream ost;
-	dumpLocals(ost);
-	std::cerr << ost.str();
 }
 
 void
@@ -5379,23 +5316,6 @@ UserProc::mapTempsToLocals()
 		Statement *s = *it;
 		s->accept(&sv);
 	}
-}
-
-// For debugging:
-void
-dumpProcList(ProcList *pc)
-{
-	for (auto pi = pc->begin(); pi != pc->end(); ++pi)
-		std::cerr << (*pi)->getName() << ", ";
-	std::cerr << "\n";
-}
-
-void
-dumpProcSet(ProcSet *pc)
-{
-	for (auto pi = pc->begin(); pi != pc->end(); ++pi)
-		std::cerr << (*pi)->getName() << ", ";
-	std::cerr << "\n";
 }
 
 void

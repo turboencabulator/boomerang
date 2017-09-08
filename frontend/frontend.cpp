@@ -1228,21 +1228,6 @@ TargetQueue::nextAddress(Cfg *cfg)
 }
 
 /**
- * \brief Print (for debugging)
- */
-void
-TargetQueue::dump()
-{
-	std::queue<ADDRESS> copy(targets);
-	while (!copy.empty()) {
-		ADDRESS a = copy.front();
-		copy.pop();
-		std::cerr << std::hex << a << ", ";
-	}
-	std::cerr << std::dec << "\n";
-}
-
-/**
  * \brief Get a Prog object (mainly for testing and not decoding).
  *
  * \returns Pointer to a Prog object (with pFE and pBF filled in).

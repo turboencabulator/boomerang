@@ -678,15 +678,6 @@ Prog::getGlobalName(ADDRESS uaddr)
 	return nullptr;
 }
 
-void
-Prog::dumpGlobals()
-{
-	for (auto it = globals.begin(); it != globals.end(); ++it) {
-		(*it)->print(std::cerr, this);
-		std::cerr << "\n";
-	}
-}
-
 ADDRESS
 Prog::getGlobalAddr(const char *nam)
 {

@@ -387,12 +387,6 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
 	if (stmtList.empty()) os << std::endl;  // New line for NOP
 }
 
-void
-RTL::dump()
-{
-	print(std::cerr);
-}
-
 /**
  * \brief Print to a string (mainly for debugging).
  */

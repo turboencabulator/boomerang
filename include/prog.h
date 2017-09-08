@@ -223,9 +223,6 @@ public:
 	// Set the type of a global variable
 	        void        setGlobalType(const char *name, Type *ty);
 
-	// Dump the globals to stderr for debugging
-	        void        dumpGlobals();
-
 	// get a string constant at a give address if appropriate
 	        const char *getStringConstant(ADDRESS uaddr, bool knownString = false);
 	        double      getFloatConstant(ADDRESS uaddr, bool &ok, int bits = 64);

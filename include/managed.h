@@ -71,7 +71,6 @@ public:
 	void        print(std::ostream &os);                  // Print to os
 	void        printNums(std::ostream &os);              // Print statements as numbers
 	std::string prints();                                 // Print to string (for debug)
-	void        dump();                                   // Print to standard error for debugging
 };
 
 // As above, but the Statements are known to be Assigns, and are sorted sensibly
@@ -108,7 +107,6 @@ public:
 	void        print(std::ostream &os);               // Print to os
 	void        printNums(std::ostream &os);           // Print statements as numbers
 	std::string prints();                              // Print to string (for debug)
-	void        dump();                                // Print to standard error for debugging
 	//bool        isLast(StmtSetIter &it);               // returns true if it is at end
 };
 
@@ -201,7 +199,6 @@ public:
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
 	void        print(std::ostream &os);                // Print to os
 	std::string prints();                               // Print to string for debugging
-	void        dump();
 	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
 	bool        exists(Exp *e);                         // Return true if the location exists in the set
 	Exp        *findNS(Exp *e);                         // Find location e (no subscripts); nullptr if not found
@@ -279,7 +276,6 @@ public:
 	// Update the map that used to be a <-> b, now it is a <-> c
 	void        update(Exp *a, Exp *b, Exp *c);
 	iterator    remove(iterator aa);            // Remove the mapping at *aa
-	void        dump();                         // Dump for debugging
 };
 
 #endif

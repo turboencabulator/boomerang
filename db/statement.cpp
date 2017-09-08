@@ -692,14 +692,6 @@ Statement::prints()
 	return ost.str();
 }
 
-// This version prints much better in gdb
-void
-Statement::dump()
-{
-	print(std::cerr);
-	std::cerr << "\n";
-}
-
 
 /* This function is designed to find basic flag calls, plus in addition two variations seen with Pentium FP code.
    These variations involve ANDing and/or XORing with constants. So it should return true for these values of e:
@@ -5425,15 +5417,6 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 		if (!it->e) continue;
 		RefExp *r = new RefExp(it->e, it->def);
 		le.push_back(r);
-	}
-}
-
-// For debugging
-void
-dumpDestCounts(std::map<Exp *, int, lessExpStar> *destCounts)
-{
-	for (auto it = destCounts->begin(); it != destCounts->end(); ++it) {
-		std::cerr << std::setw(4) << std::dec << it->second << " " << it->first << "\n";
 	}
 }
 

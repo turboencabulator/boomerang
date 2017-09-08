@@ -105,7 +105,6 @@ public:
 	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
 
 	        void        print(std::ostream &os = std::cout, bool html = false);
-	        void        dump();
 
 	        void        updateAddress(ADDRESS addr);
 

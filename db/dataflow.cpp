@@ -215,22 +215,6 @@ DataFlow::canRename(Exp *e, UserProc *proc)
 	return renameLocalsAndParams && !proc->isAddressEscapedVar(e);  // escaped
 }
 
-// For debugging
-void
-DataFlow::dumpA_phi()
-{
-	std::cerr << "A_phi:\n";
-	for (auto zz = A_phi.begin(); zz != A_phi.end(); ++zz) {
-		std::cerr << zz->first << " -> ";
-		std::set<int> &si = zz->second;
-		for (auto qq = si.begin(); qq != si.end(); ++qq)
-			std::cerr << *qq << ", ";
-		std::cerr << "\n";
-	}
-	std::cerr << "end A_phi\n";
-}
-
-
 bool
 DataFlow::placePhiFunctions(UserProc *proc)
 {
@@ -552,45 +536,6 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 }
 
 void
-DataFlow::dumpStacks()
-{
-	std::cerr << "Stacks: " << Stacks.size() << " entries\n";
-	for (auto zz = Stacks.begin(); zz != Stacks.end(); ++zz) {
-		std::cerr << "Var " << zz->first << " [ ";
-		std::stack<Statement *>tt = zz->second;               // Copy the stack!
-		while (!tt.empty()) {
-			std::cerr << tt.top()->getNumber() << " "; tt.pop();
-		}
-		std::cerr << "]\n";
-	}
-}
-
-void
-DataFlow::dumpDefsites()
-{
-	for (auto dd = defsites.begin(); dd != defsites.end(); ++dd) {
-		std::cerr << dd->first;
-		std::set<int> &si = dd->second;
-		for (auto ii = si.begin(); ii != si.end(); ++ii)
-			std::cerr << " " << *ii;
-		std::cerr << "\n";
-	}
-}
-
-void
-DataFlow::dumpA_orig()
-{
-	int n = A_orig.size();
-	for (int i = 0; i < n; ++i) {
-		std::cerr << i;
-		std::set<Exp *, lessExpStar> &se = A_orig[i];
-		for (auto ee = se.begin(); ee != se.end(); ++ee)
-			std::cerr << " " << *ee;
-		std::cerr << "\n";
-	}
-}
-
-void
 DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc)
 {
 	for (auto it = Stacks.begin(); it != Stacks.end(); ++it) {
@@ -671,18 +616,6 @@ DefCollector::prints()
 	std::ostringstream ost;
 	print(ost);
 	return ost.str();
-}
-
-void
-UseCollector::dump()
-{
-	print(std::cerr);
-}
-
-void
-DefCollector::dump()
-{
-	print(std::cerr);
 }
 
 void

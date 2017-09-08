@@ -1181,12 +1181,6 @@ Exp::prints() const
 	return ost.str();
 }
 
-void
-Exp::dump() const
-{
-	print(std::cerr);
-}
-
 /*==============================================================================
  * FUNCTION:        Exp::createDot etc
  * OVERVIEW:        Create a dotty file (use dotty to display the file; search the web for "graphviz").

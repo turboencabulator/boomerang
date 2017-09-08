@@ -76,7 +76,6 @@ public:
 	        void        printt(std::ostream &os = std::cout) const;
 	        void        printAsHL(std::ostream &os = std::cout) const; // Print with v[5] as v5
 	        std::string prints() const;  // Print to string (for debugging and logging)
-	        void        dump() const;    // Print to standard error (for debugging)
 	// Recursive print: don't want parens at the top level
 	virtual void        printr(std::ostream &os, bool html = false) const { print(os, html); }  // But most classes want standard
 	// For debugging: print in indented hex. In gdb: "p x->printx(0)"

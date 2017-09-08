@@ -1113,20 +1113,6 @@ Cfg::print(std::ostream &out, bool html)
 }
 
 void
-Cfg::dump()
-{
-	print(std::cerr);
-}
-
-void
-Cfg::dumpImplicitMap()
-{
-	for (auto it = implicitMap.begin(); it != implicitMap.end(); ++it) {
-		std::cerr << it->first << " -> " << it->second << "\n";
-	}
-}
-
-void
 Cfg::printToLog()
 {
 	std::ostringstream ost;

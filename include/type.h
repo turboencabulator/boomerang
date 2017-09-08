@@ -162,8 +162,6 @@ public:
 	// Print in *i32* format
 	        void        starPrint(std::ostream &os);
 	        const char *prints();           // For debugging
-	        void        dump();             // For debugging
-	static  void        dumpNames();        // For debugging
 
 	virtual std::string getTempName() const; // Get a temporary name for the type
 
@@ -689,7 +687,6 @@ public:
 	void        deleteItem(ADDRESS addr);       // Mainly for testing?
 	void        expandItem(ADDRESS addr, unsigned size);
 	std::string prints();                       // For test and debug
-	void        dump();                         // For debug
 
 private:
 	void        enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
