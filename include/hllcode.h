@@ -52,7 +52,7 @@ public:
 	virtual void    reset() { }
 
 	// access to proc
-	        UserProc *getProc() { return m_proc; }
+	        UserProc *getProc() const { return m_proc; }
 	        void    setProc(UserProc *p) { m_proc = p; }
 
 	/*
@@ -116,7 +116,7 @@ public:
 	/*
 	 * output functions, pure virtual.
 	 */
-	virtual void    print(std::ostream &os) = 0;
+	virtual void    print(std::ostream &os) const = 0;
 };
 
 class SyntaxNode {

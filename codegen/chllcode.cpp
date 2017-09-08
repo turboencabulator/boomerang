@@ -75,7 +75,7 @@ CHLLCode::indent(std::ostringstream &str, int indLevel)
  */
 static int progress = 0;
 void
-CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /* = false */)
+CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /* = false */) const
 {
 	if (!exp) return;  // ?
 
@@ -1702,7 +1702,7 @@ CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 
 /// Dump all generated code to \a os.
 void
-CHLLCode::print(std::ostream &os)
+CHLLCode::print(std::ostream &os) const
 {
 	for (auto it = lines.begin(); it != lines.end(); ++it)
 		os << *it << std::endl;

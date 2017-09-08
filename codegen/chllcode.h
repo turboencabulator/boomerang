@@ -81,16 +81,16 @@ private:
 	/// The generated code.
 	std::list<char *> lines;
 
-	void indent(std::ostringstream &str, int indLevel);
-	void appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns = false);
-	void appendType(std::ostringstream &str, Type *typ);
-	void appendTypeIdent(std::ostringstream &str, Type *typ, const char *ident);
+	static void indent(std::ostringstream &str, int indLevel);
+	void appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns = false) const;
+	static void appendType(std::ostringstream &str, Type *typ);
+	static void appendTypeIdent(std::ostringstream &str, Type *typ, const char *ident);
 	/// Adds: (
-	void openParen(std::ostringstream &str, PREC outer, PREC inner) {
+	static void openParen(std::ostringstream &str, PREC outer, PREC inner) {
 		if (inner < outer) str << "(";
 	}
 	/// Adds: )
-	void closeParen(std::ostringstream &str, PREC outer, PREC inner) {
+	static void closeParen(std::ostringstream &str, PREC outer, PREC inner) {
 		if (inner < outer) str << ")";
 	}
 
@@ -178,7 +178,7 @@ public:
 	/*
 	 * output functions
 	 */
-	void print(std::ostream &os) override;
+	void print(std::ostream &os) const override;
 };
 
 #endif
