@@ -606,7 +606,7 @@ public:
 	PhiInfo    &getAt(int idx) { return defVec[idx]; }
 	void        putAt(int idx, Statement *d, Exp *e);
 	void        simplifyRefs();
-	virtual int getNumDefs() { return defVec.size(); }
+	virtual int getNumDefs() const { return defVec.size(); }
 	Definitions &getDefs() { return defVec; }
 	// A hack. Check MVE
 	bool        hasGlobalFuncParam();
@@ -700,7 +700,7 @@ public:
 	// As above, no delete (for subscripting)
 	void        setCondExprND(Exp *e) { pCond = e; }
 
-	int         getSize() { return size; }  // Return the size of the assignment
+	int         getSize() const { return size; }  // Return the size of the assignment
 	void        makeSigned();
 
 	void        printCompact(std::ostream &os = std::cout, bool html = false) override;
@@ -1227,7 +1227,7 @@ public:
 	iterator    erase(iterator it)  { return returns.erase(it); }
 	StatementList &getModifieds()   { return modifieds; }
 	StatementList &getReturns()     { return returns; }
-	unsigned    getNumReturns()     { return returns.size(); }
+	unsigned    getNumReturns() const { return returns.size(); }
 	void        updateModifieds();  // Update modifieds from the collector
 	void        updateReturns();    // Update returns from the modifieds
 

@@ -500,7 +500,7 @@ public:
 		            types.push_back(n);
 		            names.push_back(str);
 	            }
-	unsigned    getNumTypes() { return types.size(); }
+	unsigned    getNumTypes() const { return types.size(); }
 	Type       *getType(unsigned n) { assert(n < getNumTypes()); return types[n]; }
 	Type       *getType(const char *nam);
 	const char *getName(unsigned n) { assert(n < getNumTypes()); return names[n].c_str(); }

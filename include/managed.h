@@ -53,7 +53,7 @@ public:
 	void        makeIsect(StatementSet &other);   // Set intersection
 	bool        isSubSetOf(StatementSet &other);  // Subset relation
 
-	unsigned    size()        { return sset.size(); }   // Number of elements
+	unsigned    size() const  { return sset.size(); }   // Number of elements
 	bool        empty() const { return sset.empty(); }
 	iterator    begin()       { return sset.begin(); }
 	iterator    end()         { return sset.end(); }
@@ -88,7 +88,7 @@ public:
 	void        makeIsect(AssignSet &other);   // Set intersection
 	bool        isSubSetOf(AssignSet &other);  // Subset relation
 
-	unsigned    size()  { return aset.size(); }   // Number of elements
+	unsigned    size() const { return aset.size(); }   // Number of elements
 	//Statement  *getFirst(StmtSetIter &it);        // Get the first Statement
 	//Statement  *getNext(StmtSetIter &it);         // Get next
 	iterator    begin() { return aset.begin(); }
@@ -119,7 +119,7 @@ public:
 	typedef std::list<Statement *>::iterator iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 	           ~StatementList() { }
-	unsigned    size()        { return slist.size(); }   // Number of elements
+	unsigned    size() const  { return slist.size(); }   // Number of elements
 	bool        empty() const { return slist.empty(); }
 	iterator    begin()       { return slist.begin(); }
 	iterator    end()         { return slist.end(); }
@@ -156,7 +156,7 @@ class StatementVec {
 public:
 	typedef std::vector<Statement *>::iterator iterator;
 	typedef std::vector<Statement *>::reverse_iterator reverse_iterator;
-	unsigned    size()  { return svec.size(); }   // Number of elements
+	unsigned    size() const { return svec.size(); }   // Number of elements
 	iterator    begin() { return svec.begin(); }
 	iterator    end()   { return svec.end(); }
 	reverse_iterator rbegin() { return svec.rbegin(); }
@@ -257,7 +257,7 @@ public:
 	void        killAllMemOfs();
 	void        clear() { ranges.clear(); }
 	bool        isSubset(RangeMap &other);
-	bool        empty() { return ranges.empty(); }
+	bool        empty() const { return ranges.empty(); }
 };
 
 /// A class to store connections in a graph, e.g. for interferences of types or live ranges, or the phi_unite relation

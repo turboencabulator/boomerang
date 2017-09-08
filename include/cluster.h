@@ -38,12 +38,12 @@ public:
 	virtual            ~Cluster() { }
 	        const char *getName() { return name.c_str(); }
 	        void        setName(const char *nam) { name = nam; }
-	        unsigned int getNumChildren() { return children.size(); }
+	        unsigned int getNumChildren() const { return children.size(); }
 	        Cluster    *getChild(int n) { return children[n]; }
 	        void        addChild(Cluster *n);
 	        void        removeChild(Cluster *n);
 	        Cluster    *getParent() { return parent; }
-	        bool        hasChildren() { return !children.empty(); }
+	        bool        hasChildren() const { return !children.empty(); }
 	        void        openStream(const char *ext);
 	        void        openStreams(const char *ext);
 	        void        closeStreams();

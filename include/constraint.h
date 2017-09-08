@@ -42,7 +42,7 @@ public:
 		return cmap[e];
 	}
 	// Return the number of constraints in the map
-	int size() {
+	int size() const {
 		return cmap.size();
 	}
 	bool empty() const {
@@ -110,7 +110,7 @@ public:
 	void erase(iterator it) {
 		emap.erase(it);
 	}
-	int size() {
+	int size() const {
 		return emap.size();
 	}
 	// Add an equate (both ways)

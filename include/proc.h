@@ -741,7 +741,7 @@ public:
 	const char *findLocal(Exp *e, Type *ty);
 	const char *findLocalFromRef(RefExp *r);
 	const char *findFirstSymbol(Exp *e);
-	int         getNumLocals() { return (int)locals.size(); }
+	int         getNumLocals() const { return (int)locals.size(); }
 	const char *getLocalName(int n);
 	const char *getSymbolName(Exp *e);  ///< As getLocalName, but look for expression e
 	void        renameLocal(const char *oldName, const char *newName);

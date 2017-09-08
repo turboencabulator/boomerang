@@ -130,7 +130,7 @@ public:
 	/*
 	 * Get the number of BBs
 	 */
-	unsigned    getNumBBs() { return m_listBB.size(); }
+	unsigned    getNumBBs() const { return m_listBB.size(); }
 
 	/*
 	 * Equality operator.

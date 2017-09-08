@@ -122,7 +122,7 @@ public:
 	virtual void        addReturn(Exp *e);
 	virtual void        addReturn(Return *ret) { returns.push_back(ret); }
 	virtual void        removeReturn(Exp *e);
-	virtual unsigned    getNumReturns() { return returns.size(); }
+	virtual unsigned    getNumReturns() const { return returns.size(); }
 	virtual Exp        *getReturnExp(int n) { return returns[n]->exp; }
 	        void        setReturnExp(int n, Exp *e) { returns[n]->exp = e; }
 	virtual Type       *getReturnType(int n) { return returns[n]->type; }
@@ -153,7 +153,7 @@ public:
 	virtual void        setNumParams(int n);
 
 	// accessors for parameters
-	virtual unsigned    getNumParams() { return params.size(); }
+	virtual unsigned    getNumParams() const { return params.size(); }
 	virtual const char *getParamName(int n);
 	virtual Exp        *getParamExp(int n);
 	virtual Type       *getParamType(int n);
@@ -241,7 +241,7 @@ public:
 	        void        addPreferedParameter(int n) { preferedParams.push_back(n); }
 	        Type       *getPreferedReturn() { return preferedReturn; }
 	        const char *getPreferedName() { return preferedName.c_str(); }
-	        unsigned int getNumPreferedParams() { return preferedParams.size(); }
+	        unsigned int getNumPreferedParams() const { return preferedParams.size(); }
 	        int         getPreferedParam(int n) { return preferedParams[n]; }
 
 	// A compare function for arguments and returns. Used for sorting returns in calcReturn() etc
