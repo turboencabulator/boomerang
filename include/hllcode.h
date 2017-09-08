@@ -176,9 +176,10 @@ public:
 	bool isBlock() override { return !pbb; }
 
 	void ignoreGoto() override {
-		if (pbb) notGoto = true;
+		if (pbb)
+			notGoto = true;
 		else if (!statements.empty())
-			statements[statements.size() - 1]->ignoreGoto();
+			statements.back()->ignoreGoto();
 	}
 
 	int getNumStatements() {
@@ -190,10 +191,7 @@ public:
 	}
 	void prependStatement(SyntaxNode *n) {
 		assert(!pbb);
-		statements.resize(statements.size() + 1);
-		for (int i = statements.size() - 1; i > 0; --i)
-			statements[i] = statements[i - 1];
-		statements[0] = n;
+		statements.insert(statements.begin(), n);
 	}
 	void addStatement(SyntaxNode *n) {
 		assert(!pbb);
@@ -208,18 +206,17 @@ public:
 	SyntaxNode *getOutEdge(SyntaxNode *root, int n) override;
 	bool endsWithGoto() override {
 		if (pbb) return isGoto();
-		bool last = false;
 		if (!statements.empty())
-			last = statements[statements.size() - 1]->endsWithGoto();
-		return last;
+			return statements.back()->endsWithGoto();
+		return false;
 	}
 	bool startsWith(SyntaxNode *node) override {
-		return this == node || (!statements.empty() && statements[0]->startsWith(node));
+		return this == node || (!statements.empty() && statements.front()->startsWith(node));
 	}
 	SyntaxNode *getEnclosingLoop(SyntaxNode *pFor, SyntaxNode *cur = nullptr) override {
 		if (this == pFor) return cur;
-		for (unsigned i = 0; i < statements.size(); ++i) {
-			SyntaxNode *n = statements[i]->getEnclosingLoop(pFor, cur);
+		for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
+			SyntaxNode *n = (*it)->getEnclosingLoop(pFor, cur);
 			if (n) return n;
 		}
 		return nullptr;

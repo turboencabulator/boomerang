@@ -73,8 +73,8 @@ BlockSyntaxNode::BlockSyntaxNode()
 
 BlockSyntaxNode::~BlockSyntaxNode()
 {
-	for (unsigned i = 0; i < statements.size(); ++i)
-		delete statements[i];
+	for (auto it = statements.cbegin(); it != statements.cend(); ++it)
+		delete *it;
 }
 
 int
@@ -82,9 +82,9 @@ BlockSyntaxNode::getNumOutEdges()
 {
 	if (pbb)
 		return pbb->getNumOutEdges();
-	if (statements.empty())
-		return 0;
-	return statements[statements.size() - 1]->getNumOutEdges();
+	if (!statements.empty())
+		return statements.back()->getNumOutEdges();
+	return 0;
 }
 
 SyntaxNode *
@@ -92,9 +92,9 @@ BlockSyntaxNode::getOutEdge(SyntaxNode *root, int n)
 {
 	if (pbb)
 		return root->findNodeFor(pbb->getOutEdge(n));
-	if (statements.empty())
-		return nullptr;
-	return statements[statements.size() - 1]->getOutEdge(root, n);
+	if (!statements.empty())
+		return statements.back()->getOutEdge(root, n);
+	return nullptr;
 }
 
 SyntaxNode *
@@ -103,12 +103,12 @@ BlockSyntaxNode::findNodeFor(BasicBlock *bb)
 	if (pbb == bb)
 		return this;
 	SyntaxNode *n = nullptr;
-	for (unsigned i = 0; i < statements.size(); ++i) {
-		n = statements[i]->findNodeFor(bb);
+	for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
+		n = (*it)->findNodeFor(bb);
 		if (n)
 			break;
 	}
-	if (n && n == statements[0])
+	if (n && n == statements.front())
 		return this;
 	return n;
 }
@@ -396,8 +396,8 @@ BlockSyntaxNode::clone()
 	if (pbb)
 		b->pbb = pbb;
 	else
-		for (unsigned i = 0; i < statements.size(); ++i)
-			b->addStatement(statements[i]->clone());
+		for (auto it = statements.cbegin(); it != statements.cend(); ++it)
+			b->addStatement((*it)->clone());
 	return b;
 }
 
@@ -409,18 +409,16 @@ BlockSyntaxNode::replace(SyntaxNode *from, SyntaxNode *to)
 
 	if (!pbb) {
 		std::vector<SyntaxNode *> news;
-		for (unsigned i = 0; i < statements.size(); ++i) {
-			SyntaxNode *n = statements[i];
-			if (statements[i]->getCorrespond() == from)
+		for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
+			SyntaxNode *n = *it;
+			if ((*it)->getCorrespond() == from)
 				n = to;
 			else
-				n = statements[i]->replace(from, to);
+				n = (*it)->replace(from, to);
 			if (n)
 				news.push_back(n);
 		}
-		statements.resize(news.size());
-		for (unsigned i = 0; i < news.size(); ++i)
-			statements[i] = news[i];
+		statements.swap(news);
 	}
 	return this;
 }
