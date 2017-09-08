@@ -317,14 +317,14 @@ UserProc::printUseGraph()
 	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 		Statement *s = *it;
 		if (s->isPhi())
-			out << s->getNumber() << " [shape=diamond];\n";
+			out << "\t" << s->getNumber() << " [shape=diamond];\n";
 		LocationSet refs;
 		s->addUsedLocs(refs);
 		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
 			if (((Exp *)*rr)->isSubscript()) {
 				RefExp *r = (RefExp *)*rr;
 				if (r->getDef())
-					out << r->getDef()->getNumber() << " -> " << s->getNumber() << ";\n";
+					out << "\t" << r->getDef()->getNumber() << " -> " << s->getNumber() << ";\n";
 			}
 		}
 	}
@@ -515,20 +515,19 @@ UserProc::getAST()
 	return best;
 }
 
-int count = 1;
-
 void
 UserProc::printAST(SyntaxNode *a)
 {
+	static int count = 1;
 	char s[1024];
 	if (!a)
 		a = getAST();
 	sprintf(s, "ast%i-%s.dot", count++, getName());
 	std::ofstream of(s);
-	of << "digraph " << getName() << " {" << std::endl;
-	of << "\t label=\"score: " << a->evaluate(a) << "\";" << std::endl;
+	of << "digraph " << getName() << " {\n";
+	of << "\tlabel=\"score: " << a->evaluate(a) << "\";\n";
 	a->printAST(a, of);
-	of << "}" << std::endl;
+	of << "}\n";
 	of.close();
 }
 
@@ -722,7 +721,7 @@ UserProc::printDFG()
 	sprintf(fname, "%s%s-%i-dfg.dot", Boomerang::get()->getOutputPath().c_str(), getName(), DFGcount);
 	++DFGcount;
 	if (VERBOSE)
-		LOG << "outputing DFG to " << fname << "\n";
+		LOG << "outputting DFG to " << fname << "\n";
 	std::ofstream out(fname);
 	out << "digraph " << getName() << " {\n";
 	StatementList stmts;

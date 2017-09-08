@@ -18,7 +18,6 @@
 
 #include <iostream>
 #include <fstream>
-#include <iomanip>      // For std::setw
 
 #include <cstdlib>
 
@@ -27,14 +26,14 @@ static int nodecount = 1000;
 
 #define PRINT_BEFORE_AFTER \
 	std::ofstream of("before.dot"); \
-	of << "digraph before {" << std::endl; \
+	of << "digraph before {\n"; \
 	root->printAST(root, of); \
-	of << "}" << std::endl; \
+	of << "}\n"; \
 	of.close(); \
 	std::ofstream of1("after.dot"); \
-	of1 << "digraph after {" << std::endl; \
+	of1 << "digraph after {\n"; \
 	n->printAST(n, of1); \
-	of1 << "}" << std::endl; \
+	of1 << "}\n"; \
 	of1.close(); \
 	exit(0);
 
@@ -116,8 +115,8 @@ BlockSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << "[label=\"";
+	os << "\t" << std::dec << nodenum
+	   << " [label=\"";
 	if (pbb) {
 		switch (pbb->getType()) {
 		case ONEWAY:   os << "Oneway";
@@ -135,25 +134,26 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 		os << " " << std::hex << pbb->getLowAddr();
 	} else
 		os << "block";
-	os << "\"];" << std::endl;
+	os << "\"];\n";
 	if (pbb) {
 		for (int i = 0; i < pbb->getNumOutEdges(); ++i) {
 			BasicBlock *out = pbb->getOutEdge(i);
-			os << std::setw(4) << std::dec << nodenum << " ";
 			const SyntaxNode *to = root->findNodeFor(out);
 			assert(to);
-			os << " -> " << to->getNumber() << " [style=dotted";
+			os << "\t" << std::dec << nodenum
+			   << " -> " << to->getNumber()
+			   << " [style=dotted";
 			if (pbb->getNumOutEdges() > 1)
-				os << ",label=" << i;
-			os << "];" << std::endl;
+				os << ",label=\"" << i << "\"";
+			os << "];\n";
 		}
 	} else {
 		for (unsigned i = 0; i < statements.size(); ++i)
 			statements[i]->printAST(root, os);
 		for (unsigned i = 0; i < statements.size(); ++i) {
-			os << std::setw(4) << std::dec << nodenum << " ";
-			os << " -> " << statements[i]->getNumber()
-			   << " [label=\"" << i << "\"];" << std::endl;
+			os << "\t" << std::dec << nodenum
+			   << " -> " << statements[i]->getNumber()
+			   << " [label=\"" << i << "\"];\n";
 		}
 	}
 }
@@ -489,14 +489,16 @@ IfThenSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 IfThenSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << "[label=\"if " << cond << " \"];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " [label=\"if " << cond << "\"];\n";
 	pThen->printAST(root, os);
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << pThen->getNumber() << " [label=then];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " -> " << pThen->getNumber()
+	   << " [label=\"then\"];\n";
 	const SyntaxNode *follows = root->findNodeFor(pbb->getOutEdge(0));
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << follows->getNumber() << " [style=dotted];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " -> " << follows->getNumber()
+	   << " [style=dotted];\n";
 }
 
 IfThenElseSyntaxNode::IfThenElseSyntaxNode()
@@ -591,14 +593,16 @@ IfThenElseSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 IfThenElseSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << "[label=\"if " << cond << " \"];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " [label=\"if " << cond << "\"];\n";
 	pThen->printAST(root, os);
 	pElse->printAST(root, os);
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << pThen->getNumber() << " [label=then];" << std::endl;
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << pElse->getNumber() << " [label=else];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " -> " << pThen->getNumber()
+	   << " [label=\"then\"];\n";
+	os << "\t" << std::dec << nodenum
+	   << " -> " << pElse->getNumber()
+	   << " [label=\"else\"];\n";
 }
 
 
@@ -679,15 +683,15 @@ PretestedLoopSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 PretestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << "[label=\"loop pretested ";
-	os << cond << " \"];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " [label=\"loop pretested " << cond << "\"];\n";
 	pBody->printAST(root, os);
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << pBody->getNumber() << ";" << std::endl;
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << getOutEdge(root, 0)->getNumber()
-	   << " [style=dotted];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " -> " << pBody->getNumber()
+	   << ";\n";
+	os << "\t" << std::dec << nodenum
+	   << " -> " << getOutEdge(root, 0)->getNumber()
+	   << " [style=dotted];\n";
 }
 
 PostTestedLoopSyntaxNode::PostTestedLoopSyntaxNode()
@@ -769,15 +773,15 @@ PostTestedLoopSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 PostTestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << "[label=\"loop posttested ";
-	os << cond << " \"];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " [label=\"loop posttested " << cond << "\"];\n";
 	pBody->printAST(root, os);
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << pBody->getNumber() << ";" << std::endl;
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << " -> " << getOutEdge(root, 0)->getNumber()
-	   << " [style=dotted];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " -> " << pBody->getNumber()
+	   << ";\n";
+	os << "\t" << std::dec << nodenum
+	   << " -> " << getOutEdge(root, 0)->getNumber()
+	   << " [style=dotted];\n";
 }
 
 InfiniteLoopSyntaxNode::InfiniteLoopSyntaxNode()
@@ -851,12 +855,13 @@ InfiniteLoopSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 InfiniteLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << std::setw(4) << std::dec << nodenum << " ";
-	os << "[label=\"loop infinite\"];" << std::endl;
+	os << "\t" << std::dec << nodenum
+	   << " [label=\"loop infinite\"];\n";
 	if (pBody)
 		pBody->printAST(root, os);
 	if (pBody) {
-		os << std::setw(4) << std::dec << nodenum << " ";
-		os << " -> " << pBody->getNumber() << ";" << std::endl;
+		os << "\t" << std::dec << nodenum
+		   << " -> " << pBody->getNumber()
+		   << ";\n";
 	}
 }
