@@ -106,10 +106,9 @@ StatementSet::remove(Statement *s)
 
 // Search for s in this Statement set. Return true if found
 bool
-StatementSet::exists(Statement *s)
+StatementSet::exists(Statement *s) const
 {
-	auto it = sset.find(s);
-	return (it != sset.end());
+	return sset.find(s) != sset.end();
 }
 
 // Find a definition for loc in this Statement set. Return true if found
@@ -229,10 +228,9 @@ AssignSet::remove(Assign *a)
 
 // Search for a in this Assign set. Return true if found
 bool
-AssignSet::exists(Assign *a)
+AssignSet::exists(Assign *a) const
 {
-	auto it = aset.find(a);
-	return (it != aset.end());
+	return aset.find(a) != aset.end();
 }
 
 // Find a definition for loc in this Assign set. Return true if found
@@ -397,7 +395,7 @@ LocationSet::operator ==(const LocationSet &o) const
 }
 
 bool
-LocationSet::exists(Exp *e)
+LocationSet::exists(Exp *e) const
 {
 	return lset.find(e) != lset.end();
 }

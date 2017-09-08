@@ -62,7 +62,7 @@ public:
 	bool        remove(Statement *s);                     // Removal; rets false if not found
 	bool        removeIfDefines(Exp *given);              // Remove if given exp is defined
 	bool        removeIfDefines(StatementSet &given);     // Remove if any given is def'd
-	bool        exists(Statement *s);                     // Search; returns false if !found
+	bool        exists(Statement *s) const;               // Search; returns false if !found
 	bool        definesLoc(Exp *loc);                     // Search; returns true if any
 	                                                      // statement defines loc
 	void        clear() { sset.clear(); }                 // Clear the set
@@ -97,7 +97,7 @@ public:
 	bool        remove(Assign *a);                     // Removal; rets false if not found
 	bool        removeIfDefines(Exp *given);           // Remove if given exp is defined
 	bool        removeIfDefines(AssignSet &given);     // Remove if any given is def'd
-	bool        exists(Assign *s);                     // Search; returns false if !found
+	bool        exists(Assign *s) const;               // Search; returns false if !found
 	bool        definesLoc(Exp *loc);                  // Search; returns true if any assignment defines loc
 	Assign     *lookupLoc(Exp *loc);                   // Search for loc on LHS, return ptr to Assign if found
 
@@ -139,7 +139,6 @@ public:
 	iterator    erase(iterator it) { return slist.erase(it); }
 	iterator    erase(iterator first, iterator last) { return slist.erase(first, last); }
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
-	bool        exists(Statement *s);               // Search; returns false if not found
 	std::string prints();                           // Print to string (for debugging)
 	void        clear() { slist.clear(); }
 	void        makeCloneOf(StatementList &o);      // Make this a clone of o
@@ -200,7 +199,7 @@ public:
 	void        print(std::ostream &os);                // Print to os
 	std::string prints();                               // Print to string for debugging
 	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
-	bool        exists(Exp *e);                         // Return true if the location exists in the set
+	bool        exists(Exp *e) const;                   // Return true if the location exists in the set
 	Exp        *findNS(Exp *e);                         // Find location e (no subscripts); nullptr if not found
 	bool        existsImplicit(Exp *e);                 // Search for location e{-} or e{0} (e has no subscripts)
 	// Return an iterator to the found item (or end() if not). Only really makes sense if e has a wildcard
