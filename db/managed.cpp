@@ -128,11 +128,7 @@ std::string
 StatementSet::prints()
 {
 	std::ostringstream ost;
-	for (auto it = sset.begin(); it != sset.end(); ++it) {
-		if (it != sset.begin()) ost << ",\t";
-		ost << *it;
-	}
-	ost << "\n";
+	print(ost);
 	return ost.str();
 }
 
@@ -269,11 +265,7 @@ std::string
 AssignSet::prints()
 {
 	std::ostringstream ost;
-	for (auto it = aset.begin(); it != aset.end(); ++it) {
-		if (it != aset.begin()) ost << ",\t";
-		ost << *it;
-	}
-	ost << "\n";
+	print(ost);
 	return ost.str();
 }
 
@@ -346,10 +338,7 @@ std::string
 LocationSet::prints()
 {
 	std::ostringstream ost;
-	for (auto it = lset.begin(); it != lset.end(); ++it) {
-		if (it != lset.begin()) ost << ",\t";
-		ost << *it;
-	}
+	print(ost);
 	return ost.str();
 }
 
@@ -1088,14 +1077,6 @@ ConnectionGraph::remove(iterator aa)
 		++aa;
 	emap.erase(bb);
 	return aa;
-}
-
-// For debugging
-void
-dumpConnectionGraph(ConnectionGraph *cg)
-{
-	for (auto cc = cg->begin(); cc != cg->end(); ++cc)
-		std::cerr << cc->first << " <-> " << cc->second << "\n";
 }
 
 void

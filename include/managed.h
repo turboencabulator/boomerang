@@ -143,7 +143,6 @@ public:
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
 	bool        exists(Statement *s);               // Search; returns false if not found
 	std::string prints();                           // Print to string (for debugging)
-	void        dump();                             // Print to standard error for debugging
 	void        clear() { slist.clear(); }
 	void        makeCloneOf(StatementList &o);      // Make this a clone of o
 	bool        existsOnLeft(Exp *loc);             // True if loc exists on the LHS of any Assignment in this list
@@ -166,7 +165,6 @@ public:
 	void        putAt(int idx, Statement *s);
 	iterator    remove(iterator it);
 	std::string prints();                           // Print to string (for debugging)
-	void        dump();                             // Print to standard error for debugging
 	void        printNums(std::ostream &os);
 	void        clear() { svec.clear(); }
 	bool        operator ==(const StatementVec &o) const { return svec == o.svec; }  // Compare if equal
