@@ -60,8 +60,6 @@ public:
 
 	void        insert(Statement *s) { sset.insert(s); }  // Insertion
 	bool        remove(Statement *s);                     // Removal; rets false if not found
-	bool        removeIfDefines(Exp *given);              // Remove if given exp is defined
-	bool        removeIfDefines(StatementSet &given);     // Remove if any given is def'd
 	bool        exists(Statement *s) const;               // Search; returns false if !found
 	bool        definesLoc(Exp *loc);                     // Search; returns true if any
 	                                                      // statement defines loc
@@ -89,15 +87,11 @@ public:
 	bool        isSubSetOf(AssignSet &other);  // Subset relation
 
 	unsigned    size() const { return aset.size(); }   // Number of elements
-	//Statement  *getFirst(StmtSetIter &it);        // Get the first Statement
-	//Statement  *getNext(StmtSetIter &it);         // Get next
 	iterator    begin() { return aset.begin(); }
 	iterator    end()   { return aset.end(); }
 
 	void        insert(Assign *a) { aset.insert(a); }  // Insertion
 	bool        remove(Assign *a);                     // Removal; rets false if not found
-	bool        removeIfDefines(Exp *given);           // Remove if given exp is defined
-	bool        removeIfDefines(AssignSet &given);     // Remove if any given is def'd
 	bool        exists(Assign *s) const;               // Search; returns false if !found
 	bool        definesLoc(Exp *loc);                  // Search; returns true if any assignment defines loc
 	Assign     *lookupLoc(Exp *loc);                   // Search for loc on LHS, return ptr to Assign if found
@@ -109,7 +103,6 @@ public:
 	friend std::ostream &operator <<(std::ostream &, const AssignSet &);
 	void        printNums(std::ostream &os);           // Print statements as numbers
 	std::string prints();                              // Print to string (for debug)
-	//bool        isLast(StmtSetIter &it);               // returns true if it is at end
 };
 
 class StatementList {
@@ -123,8 +116,6 @@ public:
 	bool        empty() const { return slist.empty(); }
 	iterator    begin()       { return slist.begin(); }
 	iterator    end()         { return slist.end(); }
-	reverse_iterator rbegin() { return slist.rbegin(); }
-	reverse_iterator rend()   { return slist.rend(); }
 
 	// A special intersection operator; this becomes the intersection of StatementList a (assumed to be a list of
 	// Assignment*s) with the LocationSet b.
@@ -153,12 +144,7 @@ class StatementVec {
 
 public:
 	typedef std::vector<Statement *>::iterator iterator;
-	typedef std::vector<Statement *>::reverse_iterator reverse_iterator;
 	unsigned    size() const { return svec.size(); }   // Number of elements
-	iterator    begin() { return svec.begin(); }
-	iterator    end()   { return svec.end(); }
-	reverse_iterator rbegin() { return svec.rbegin(); }
-	reverse_iterator rend()   { return svec.rend(); }
 	// Get/put at position idx (0 based)
 	Statement  *operator [](int idx) { return svec[idx]; }
 	void        putAt(int idx, Statement *s);
