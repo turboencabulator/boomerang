@@ -726,56 +726,56 @@ Range::Range(int stride, int lowerBound, int upperBound, Exp *base) :
 	}
 }
 
-void
-Range::print(std::ostream &os)
+std::ostream &
+operator <<(std::ostream &os, const Range &r)
 {
-	assert(lowerBound <= upperBound);
-	if (base->isIntConst()
-	 && ((Const *)base)->getInt() == 0
-	 && lowerBound == MIN
-	 && upperBound == MAX) {
-		os << "T";
-		return;
+	assert(r.lowerBound <= r.upperBound);
+	if (r.base->isIntConst()
+	 && ((Const *)r.base)->getInt() == 0
+	 && r.lowerBound == r.MIN
+	 && r.upperBound == r.MAX) {
+		return os << "T";
 	}
 	bool needPlus = false;
-	if (lowerBound == upperBound) {
-		if (!base->isIntConst() || ((Const *)base)->getInt() != 0) {
-			if (lowerBound != 0) {
-				os << lowerBound;
+	if (r.lowerBound == r.upperBound) {
+		if (!r.base->isIntConst() || ((Const *)r.base)->getInt() != 0) {
+			if (r.lowerBound != 0) {
+				os << r.lowerBound;
 				needPlus = true;
 			}
 		} else {
 			needPlus = true;
-			os << lowerBound;
+			os << r.lowerBound;
 		}
 	} else {
-		if (stride != 1)
-			os << stride;
+		if (r.stride != 1)
+			os << r.stride;
 		os << "[";
-		if (lowerBound == MIN)
+		if (r.lowerBound == r.MIN)
 			os << "-inf";
 		else
-			os << lowerBound;
+			os << r.lowerBound;
 		os << ", ";
-		if (upperBound == MAX)
+		if (r.upperBound == r.MAX)
 			os << "inf";
 		else
-			os << upperBound;
+			os << r.upperBound;
 		os << "]";
 		needPlus = true;
 	}
-	if (!base->isIntConst() || ((Const *)base)->getInt() != 0) {
+	if (!r.base->isIntConst() || ((Const *)r.base)->getInt() != 0) {
 		if (needPlus)
 			os << " + ";
-		base->print(os);
+		r.base->print(os);
 	}
+	return os;
 }
 
 void
 Range::unionWith(Range &r)
 {
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << "unioning " << this << " with " << r << " got ";
+		LOG << "unioning " << *this << " with " << r << " got ";
 	if (base->getOper() == opMinus
 	 && r.base->getOper() == opMinus
 	 && *base->getSubExp1() == *r.base->getSubExp1()
@@ -791,7 +791,7 @@ Range::unionWith(Range &r)
 				upperBound = std::max(-c1, -c2);
 				base = base->getSubExp1();
 				if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-					LOG << this << "\n";
+					LOG << *this << "\n";
 				return;
 			}
 		}
@@ -802,7 +802,7 @@ Range::unionWith(Range &r)
 		upperBound = MAX;
 		base = new Const(0);
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-			LOG << this << "\n";
+			LOG << *this << "\n";
 		return;
 	}
 	if (stride != r.stride)
@@ -812,21 +812,21 @@ Range::unionWith(Range &r)
 	if (upperBound != r.upperBound)
 		upperBound = std::max(upperBound, r.upperBound);
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << this << "\n";
+		LOG << *this << "\n";
 }
 
 void
 Range::widenWith(Range &r)
 {
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << "widening " << this << " with " << r << " got ";
+		LOG << "widening " << *this << " with " << r << " got ";
 	if (!(*base == *r.base)) {
 		stride = 1;
 		lowerBound = MIN;
 		upperBound = MAX;
 		base = new Const(0);
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-			LOG << this << "\n";
+			LOG << *this << "\n";
 		return;
 	}
 	// ignore stride for now
@@ -835,7 +835,7 @@ Range::widenWith(Range &r)
 	if (r.getUpperBound() > upperBound)
 		upperBound = MAX;
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << this << "\n";
+		LOG << *this << "\n";
 }
 
 Range &
@@ -871,16 +871,16 @@ RangeMap::widenwith(RangeMap &other)
 	}
 }
 
-void
-RangeMap::print(std::ostream &os)
+std::ostream &
+operator <<(std::ostream &os, const RangeMap &rm)
 {
-	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
-		if (it != ranges.begin())
+	for (auto it = rm.ranges.begin(); it != rm.ranges.end(); ++it) {
+		if (it != rm.ranges.begin())
 			os << ", ";
 		it->first->print(os);
-		os << " -> ";
-		it->second.print(os);
+		os << " -> " << it->second;
 	}
+	return os;
 }
 
 Exp *

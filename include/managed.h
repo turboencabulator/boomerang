@@ -220,7 +220,7 @@ public:
 	int         getUpperBound() { return upperBound; }
 	void        unionWith(Range &r);
 	void        widenWith(Range &r);
-	void        print(std::ostream &os);
+	friend std::ostream &operator <<(std::ostream &, const Range &);
 	bool        operator ==(Range &other);
 };
 
@@ -235,7 +235,7 @@ public:
 	Range      &getRange(Exp *loc);
 	void        unionwith(RangeMap &other);
 	void        widenwith(RangeMap &other);
-	void        print(std::ostream &os);
+	friend std::ostream &operator <<(std::ostream &, const RangeMap &);
 	Exp        *substInto(Exp *e, std::set<Exp *, lessExpStar> *only = nullptr);
 	void        killAllMemOfs();
 	void        clear() { ranges.clear(); }

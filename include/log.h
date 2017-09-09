@@ -32,9 +32,8 @@ public:
 	virtual Log &operator <<(Exp *e);
 	virtual Log &operator <<(Type *ty);
 	virtual Log &operator <<(RTL *r);
-	virtual Log &operator <<(Range *r);
-	virtual Log &operator <<(Range &r);
-	virtual Log &operator <<(RangeMap &r);
+	virtual Log &operator <<(const Range &r);
+	virtual Log &operator <<(const RangeMap &r);
 	virtual Log &operator <<(int i);
 	virtual Log &operator <<(char c);
 	virtual Log &operator <<(double d);

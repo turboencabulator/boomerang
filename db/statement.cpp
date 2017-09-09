@@ -3539,8 +3539,7 @@ Assignment::print(std::ostream &os, bool html)
 	if (html)
 		os << "</a>";
 	if (!ranges.empty()) {
-		os << "\n\t\t\tranges: ";
-		ranges.print(os);
+		os << "\n\t\t\tranges: " << ranges;
 	}
 }
 
@@ -5461,8 +5460,7 @@ JunctionStatement::print(std::ostream &os, bool html)
 	}
 	if (isLoopJunction())
 		os << "LOOP";
-	os << "\n\t\t\tranges: ";
-	ranges.print(os);
+	os << "\n\t\t\tranges: " << ranges;
 	if (html)
 		os << "</a></td>";
 }

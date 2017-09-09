@@ -44,26 +44,18 @@ Log::operator <<(Type *ty)
 }
 
 Log &
-Log::operator <<(Range *r)
+Log::operator <<(const Range &r)
 {
 	std::ostringstream st;
-	r->print(st);
+	st << r;
 	return *this << st.str().c_str();
 }
 
 Log &
-Log::operator <<(Range &r)
+Log::operator <<(const RangeMap &r)
 {
 	std::ostringstream st;
-	r.print(st);
-	return *this << st.str().c_str();
-}
-
-Log &
-Log::operator <<(RangeMap &r)
-{
-	std::ostringstream st;
-	r.print(st);
+	st << r;
 	return *this << st.str().c_str();
 }
 
