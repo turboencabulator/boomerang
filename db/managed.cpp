@@ -27,21 +27,30 @@
 #include <sstream>
 
 std::ostream &
-operator <<(std::ostream &os, StatementSet *ss)
+operator <<(std::ostream &os, const StatementSet &ss)
 {
-	ss->print(os);
-	return os;
+	for (auto it = ss.sset.cbegin(); it != ss.sset.cend(); ++it) {
+		if (it != ss.sset.cbegin()) os << ",\t";
+		os << *it;
+	}
+	return os << "\n";
 }
 std::ostream &
-operator <<(std::ostream &os, AssignSet *as)
+operator <<(std::ostream &os, const AssignSet &as)
 {
-	as->print(os);
-	return os;
+	for (auto it = as.aset.cbegin(); it != as.aset.cend(); ++it) {
+		if (it != as.aset.cbegin()) os << ",\t";
+		os << *it;
+	}
+	return os << "\n";
 }
 std::ostream &
-operator <<(std::ostream &os, LocationSet *ls)
+operator <<(std::ostream &os, const LocationSet &ls)
 {
-	ls->print(os);
+	for (auto it = ls.lset.cbegin(); it != ls.lset.cend(); ++it) {
+		if (it != ls.lset.cbegin()) os << ",\t";
+		os << *it;
+	}
 	return os;
 }
 
@@ -127,18 +136,8 @@ std::string
 StatementSet::prints()
 {
 	std::ostringstream ost;
-	print(ost);
+	ost << *this;
 	return ost.str();
-}
-
-void
-StatementSet::print(std::ostream &os)
-{
-	for (auto it = sset.begin(); it != sset.end(); ++it) {
-		if (it != sset.begin()) os << ",\t";
-		os << *it;
-	}
-	os << "\n";
 }
 
 // Print just the numbers to stream os
@@ -257,18 +256,8 @@ std::string
 AssignSet::prints()
 {
 	std::ostringstream ost;
-	print(ost);
+	ost << *this;
 	return ost.str();
-}
-
-void
-AssignSet::print(std::ostream &os)
-{
-	for (auto it = aset.begin(); it != aset.end(); ++it) {
-		if (it != aset.begin()) os << ",\t";
-		os << *it;
-	}
-	os << "\n";
 }
 
 // Print just the numbers to stream os
@@ -324,17 +313,8 @@ std::string
 LocationSet::prints()
 {
 	std::ostringstream ost;
-	print(ost);
+	ost << *this;
 	return ost.str();
-}
-
-void
-LocationSet::print(std::ostream &os)
-{
-	for (auto it = lset.begin(); it != lset.end(); ++it) {
-		if (it != lset.begin()) os << ",\t";
-		os << *it;
-	}
 }
 
 void

@@ -621,7 +621,7 @@ StatementTest::testLocationSet()
 
 	RefExp r3(Location::regOf(8), nullptr);
 	ls.insert(&r3);
-	std::cerr << ls.prints() << "\n";
+	std::cerr << ls << "\n";
 	CPPUNIT_ASSERT(ls.existsImplicit(r8));
 
 	ls.remove(&r3);
@@ -629,7 +629,7 @@ StatementTest::testLocationSet()
 	ImplicitAssign zero(r8);
 	RefExp r4(Location::regOf(8), &zero);
 	ls.insert(&r4);
-	std::cerr << ls.prints() << "\n";
+	std::cerr << ls << "\n";
 	CPPUNIT_ASSERT(ls.existsImplicit(r8));
 }
 
@@ -904,10 +904,8 @@ StatementTest::testAddUsedLocsAssign()
 	a->setNumber(1);
 	LocationSet l;
 	a->addUsedLocs(l);
-	std::ostringstream ost1;
-	l.print(ost1);
 	std::string expected = "r26,\tr28,\tm[r28 - 8]";
-	std::string actual = ost1.str();
+	std::string actual = l.prints();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	l.clear();
@@ -915,10 +913,8 @@ StatementTest::testAddUsedLocsAssign()
 	g->setNumber(55);
 	g->setDest(Location::memOf(Location::regOf(26)));
 	g->addUsedLocs(l);
-	std::ostringstream ost2;
-	l.print(ost2);
 	expected = "r26,\tm[r26]";
-	actual = ost2.str();
+	actual = l.prints();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
@@ -934,10 +930,8 @@ StatementTest::testAddUsedLocsBranch()
 	b->setDest(new RefExp(Location::memOf(new RefExp(Location::regOf(26), b)), g));
 	b->setCondExpr(new Terminal(opFlags));
 	b->addUsedLocs(l);
-	std::ostringstream ost3;
-	l.print(ost3);
 	std::string expected("r26{99},\tm[r26{99}]{55},\t%flags");
-	std::string actual(ost3.str());
+	std::string actual(l.prints());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
@@ -952,10 +946,8 @@ StatementTest::testAddUsedLocsCase()
 	si.pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
 	c->setSwitchInfo(&si);
 	c->addUsedLocs(l);
-	std::ostringstream ost4;
-	l.print(ost4);
 	std::string expected("r26,\tr28,\tm[r28 - 12],\tm[r26]");
-	std::string actual(ost4.str());
+	std::string actual(l.prints());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
@@ -975,20 +967,16 @@ StatementTest::testAddUsedLocsCall()
 	ca->addDefine(new ImplicitAssign(Location::regOf(31)));
 	ca->addDefine(new ImplicitAssign(Location::regOf(24)));
 	ca->addUsedLocs(l);
-	std::ostringstream ost5;
-	l.print(ost5);
 	std::string expected("r26,\tr27,\tm[r26],\tm[r27],\tr28{55}");
-	std::string actual(ost5.str());
+	std::string actual(l.prints());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Now with uses in collector
 #if 0  // FIXME: to be completed
 	l.clear();
 	ca->addUsedLocs(l, true);
-	std::ostringstream ost5f;
-	l.print(ost5f);
 	expected = "m[r26],\tm[r27],\tr26,\tr27,\tr28{55}";
-	actual = ost5f.str();
+	actual = l.prints();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 #endif
 }
@@ -1010,10 +998,8 @@ StatementTest::testAddUsedLocsReturn()
 	                                                   new RefExp(Location::regOf(26), b))),
 	                        new Const(5)));
 	r->addUsedLocs(l);
-	std::ostringstream ost6;
-	l.print(ost6);
 	std::string expected("r24,\tr25{55},\tr26{99}");
-	std::string actual(ost6.str());
+	std::string actual(l.prints());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
 
@@ -1029,10 +1015,8 @@ StatementTest::testAddUsedLocsBool()
 	stmts.push_back(a);
 	bs->setLeftFromList(&stmts);
 	bs->addUsedLocs(l);
-	std::ostringstream ost7;
-	l.print(ost7);
 	std::string expected("r24,\tr25,\tr26,\tm[r24]");
-	std::string actual(ost7.str());
+	std::string actual(l.prints());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// m[local21 + 16] := phi{0, 372}
@@ -1046,18 +1030,14 @@ StatementTest::testAddUsedLocsBool()
 	pa->addUsedLocs(l);
 	// Note: phis were not considered to use blah if they ref m[blah], so local21 was not considered used
 	expected = "m[local21 + 16]{-},\tm[local21 + 16]{372},\tlocal21";
-	std::ostringstream ost8;
-	l.print(ost8);
-	actual = ost8.str();
+	actual = l.prints();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// m[r28{-} - 4] := -
 	l.clear();
 	ImplicitAssign *ia = new ImplicitAssign(Location::memOf(new Binary(opMinus, new RefExp(Location::regOf(28), nullptr), new Const(4))));
-	std::ostringstream ost9;
 	ia->addUsedLocs(l);
-	l.print(ost9);
-	actual = ost9.str();
+	actual = l.prints();
 	expected = "r28{-}";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }

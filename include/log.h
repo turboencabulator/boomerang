@@ -39,9 +39,9 @@ public:
 	virtual Log &operator <<(char c);
 	virtual Log &operator <<(double d);
 	virtual Log &operator <<(ADDRESS a);
-	virtual Log &operator <<(LocationSet *l);
+	virtual Log &operator <<(const LocationSet &l);
 	Log &operator <<(const std::string &s) {
-		return operator <<(s.c_str());
+		return *this << s.c_str();
 	}
 };
 

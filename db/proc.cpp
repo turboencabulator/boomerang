@@ -3767,7 +3767,7 @@ UserProc::conTypeAnalysis()
 		(*ss)->genConstraints(cons);
 		consObj.addConstraints(cons);
 		if (DEBUG_TA)
-			LOG << (*ss) << "\n" << &cons << "\n";
+			LOG << (*ss) << "\n" << cons << "\n";
 		// Remove the sizes immediately the constraints are generated.
 		// Otherwise, x and x*8* look like different expressions
 		(*ss)->stripSizes();
@@ -4913,9 +4913,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 	}
 
 	if (DEBUG_UNUSED) {
-		std::ostringstream ost;
-		unionOfCallerLiveLocs.print(ost);
-		LOG << "%%%  union of caller live locations for " << getName() << ": " << ost.str().c_str() << "\n";
+		LOG << "%%%  union of caller live locations for " << getName() << ": " << unionOfCallerLiveLocs << "\n";
 		LOG << "%%%  final returns for " << getName() << ": " << theReturnStatement->getReturns().prints() << "\n";
 	}
 

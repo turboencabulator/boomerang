@@ -352,10 +352,8 @@ public:
 	friend class XMLProgParser;
 };
 
-// Print the Statement (etc) poited to by p
+// Print the Statement pointed to by p
 std::ostream &operator <<(std::ostream &os, Statement *p);
-std::ostream &operator <<(std::ostream &os, StatementSet *p);
-std::ostream &operator <<(std::ostream &os, LocationSet *p);
 
 /*==============================================================================
  * TypingStatement is an abstract subclass of Statement. It has a type, representing the type of a reference or an

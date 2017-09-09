@@ -68,7 +68,8 @@ public:
 	void        clear() { sset.clear(); }                 // Clear the set
 	bool        operator ==(const StatementSet &o) const { return sset == o.sset; }  // Compare if equal
 	bool        operator <(const StatementSet &o) const;  // Compare if less
-	void        print(std::ostream &os);                  // Print to os
+
+	friend std::ostream &operator <<(std::ostream &, const StatementSet &);
 	void        printNums(std::ostream &os);              // Print statements as numbers
 	std::string prints();                                 // Print to string (for debug)
 };
@@ -104,7 +105,8 @@ public:
 	void        clear() { aset.clear(); }              // Clear the set
 	bool        operator ==(const AssignSet &o) const { return aset == o.aset; }  // Compare if equal
 	bool        operator <(const AssignSet &o) const;  // Compare if less
-	void        print(std::ostream &os);               // Print to os
+
+	friend std::ostream &operator <<(std::ostream &, const AssignSet &);
 	void        printNums(std::ostream &os);           // Print statements as numbers
 	std::string prints();                              // Print to string (for debug)
 	//bool        isLast(StmtSetIter &it);               // returns true if it is at end
@@ -196,7 +198,8 @@ public:
 	bool        empty() const { return lset.empty(); }
 	bool        operator ==(const LocationSet &o) const;// Compare
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
-	void        print(std::ostream &os);                // Print to os
+
+	friend std::ostream &operator <<(std::ostream &, const LocationSet &);
 	std::string prints();                               // Print to string for debugging
 	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
 	bool        exists(Exp *e) const;                   // Return true if the location exists in the set
