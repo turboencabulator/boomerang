@@ -4079,12 +4079,12 @@ static void
 child(const Exp *e, int ind)
 {
 	if (!e) {
-		std::cerr << std::setw(ind + 4) << " " << "<NULL>\n" << std::flush;
+		std::cerr << std::setw(ind + 4) << " " << "<NULL>\n";
 		return;
 	}
 	void *vt = *(void **)e;
 	if (!vt) {
-		std::cerr << std::setw(ind + 4) << " " << "<NULL VT>\n" << std::flush;
+		std::cerr << std::setw(ind + 4) << " " << "<NULL VT>\n";
 		return;
 	}
 	e->printx(ind + 4);
@@ -4093,7 +4093,7 @@ child(const Exp *e, int ind)
 void
 Unary::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
+	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
 	child(subExp1, ind);
 }
 void
@@ -4101,14 +4101,14 @@ Binary::printx(int ind) const
 {
 	assert(subExp1 && subExp2);
 
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
+	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
 	child(subExp1, ind);
 	child(subExp2, ind);
 }
 void
 Ternary::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
+	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
 	child(subExp1, ind);
 	child(subExp2, ind);
 	child(subExp3, ind);
@@ -4135,34 +4135,33 @@ Const::printx(int ind) const
 	}
 	if (conscript)
 		std::cerr << " \\" << std::dec << conscript << "\\";
-	std::cerr << std::flush << "\n";
+	std::cerr << "\n";
 }
 void
 TypeVal::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
-	std::cerr << val->getCtype() << std::flush << "\n";
+	std::cerr << std::setw(ind) << " " << operStrings[op] << " " << val->getCtype() << "\n";
 }
 void
 TypedExp::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
-	std::cerr << type->getCtype() << std::flush << "\n";
+	std::cerr << std::setw(ind) << " " << operStrings[op] << " " << type->getCtype() << "\n";
 	child(subExp1, ind);
 }
 void
 Terminal::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n" << std::flush;
+	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
 }
 void
 RefExp::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
-	std::cerr << "{";
-	if (!def) std::cerr << "NULL";
-	else std::cerr << std::hex << (unsigned)def << "=" << std::dec << def->getNumber();
-	std::cerr << "}\n" << std::flush;
+	std::cerr << std::setw(ind) << " " << operStrings[op] << " {";
+	if (!def)
+		std::cerr << "NULL";
+	else
+		std::cerr << std::hex << (unsigned)def << "=" << std::dec << def->getNumber();
+	std::cerr << "}\n";
 	child(subExp1, ind);
 }
 
