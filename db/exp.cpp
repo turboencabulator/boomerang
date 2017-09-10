@@ -739,8 +739,8 @@ void
 Binary::print(std::ostream &os, bool html) const
 {
 	assert(subExp1 && subExp2);
-	Exp *p1 = ((Binary *)this)->getSubExp1();
-	Exp *p2 = ((Binary *)this)->getSubExp2();
+	Exp *p1 = getSubExp1();
+	Exp *p2 = getSubExp2();
 	// Special cases
 	switch (op) {
 	case opSize:
@@ -891,7 +891,7 @@ Terminal::print(std::ostream &os, bool html) const
 void
 Unary::print(std::ostream &os, bool html) const
 {
-	Exp *p1 = ((Unary *)this)->getSubExp1();
+	Exp *p1 = getSubExp1();
 	switch (op) {
 	//  //  //  //  //  //  //
 	//  x[ subexpression ]  //
@@ -1062,9 +1062,9 @@ Ternary::printr(std::ostream &os, bool html) const
 void
 Ternary::print(std::ostream &os, bool html) const
 {
-	Exp *p1 = ((Ternary *)this)->getSubExp1();
-	Exp *p2 = ((Ternary *)this)->getSubExp2();
-	Exp *p3 = ((Ternary *)this)->getSubExp3();
+	Exp *p1 = getSubExp1();
+	Exp *p2 = getSubExp2();
+	Exp *p3 = getSubExp3();
 	switch (op) {
 	// The "function-like" ternaries
 	case opTruncu:
@@ -1125,7 +1125,7 @@ TypedExp::print(std::ostream &os, bool html) const
 {
 	os << " ";
 	type->starPrint(os);
-	Exp *p1 = ((Ternary *)this)->getSubExp1();
+	Exp *p1 = getSubExp1();
 	p1->print(os, html);
 }
 
