@@ -1029,34 +1029,34 @@ std::map<std::string, Type *> Type::namedTypes;
 void
 Type::addNamedType(const char *name, Type *type)
 {
-	if (namedTypes.find(name) != namedTypes.end()) {
-		if (!(*type == *namedTypes[name])) {
-			//LOG << "addNamedType: name " << name << " type " << type->getCtype() << " != "
-			//    << namedTypes[name]->getCtype() << "\n";// << std::flush;
-			std::cerr << "Warning: Type::addNamedType: Redefinition of type " << name << "\n";
-			std::cerr << " type     = " << type->prints() << "\n";
-			std::cerr << " previous = " << namedTypes[name]->prints() << "\n";
-			*type == *namedTypes[name];
-		}
-	} else {
+	auto prev = getNamedType(name);
+	if (!prev) {
 		// check if it is:
 		// typedef int a;
 		// typedef a b;
 		// we then need to define b as int
 		// we create clones to keep the GC happy
-		if (namedTypes.find(type->getCtype()) != namedTypes.end()) {
-			namedTypes[name] = namedTypes[type->getCtype()]->clone();
-		} else {
-			namedTypes[name] = type->clone();
-		}
+		auto it = namedTypes.find(type->getCtype());
+		if (it != namedTypes.end())
+			type = it->second;
+		namedTypes[name] = type->clone();
+	} else if (*type != *prev) {
+		//LOG << "addNamedType: name " << name
+		//    << " type " << type->getCtype()
+		//    << " != " << prev->getCtype() << "\n";
+		std::cerr << "Warning: Type::addNamedType: Redefinition of type " << name << "\n"
+		          << " type     = " << type->prints() << "\n"
+		          << " previous = " << prev->prints() << "\n";
+		*type == *prev;
 	}
 }
 
 Type *
 Type::getNamedType(const char *name)
 {
-	if (namedTypes.find(name) != namedTypes.end())
-		return namedTypes[name];
+	auto it = namedTypes.find(name);
+	if (it != namedTypes.end())
+		return it->second;
 	return nullptr;
 }
 
@@ -1070,21 +1070,19 @@ Type::getNamedType(const char *name)
 Type *
 Type::getTempType(const std::string &name)
 {
-	Type *ty;
 	char ctype = ' ';
 	if (name.size() > 3) ctype = name[3];
 	switch (ctype) {
 	// They are all int32, except for a few specials
-	case 'f': ty = new FloatType(32);   break;
-	case 'd': ty = new FloatType(64);   break;
-	case 'F': ty = new FloatType(80);   break;
-	case 'D': ty = new FloatType(128);  break;
-	case 'l': ty = new IntegerType(64); break;
-	case 'h': ty = new IntegerType(16); break;
-	case 'b': ty = new IntegerType(8);  break;
-	default:  ty = new IntegerType(32); break;
+	case 'f': return new FloatType(32);
+	case 'd': return new FloatType(64);
+	case 'F': return new FloatType(80);
+	case 'D': return new FloatType(128);
+	case 'l': return new IntegerType(64);
+	case 'h': return new IntegerType(16);
+	case 'b': return new IntegerType(8);
+	default:  return new IntegerType(32);
 	}
-	return ty;
 }
 
 
@@ -1105,8 +1103,8 @@ IntegerType::getTempName() const
 	case 16: return std::string("tmph");
 	case 32: return std::string("tmpi");
 	case 64: return std::string("tmpl");
+	default: return std::string("tmp");
 	}
-	return std::string("tmp");
 }
 
 std::string
@@ -1117,8 +1115,8 @@ FloatType::getTempName() const
 	case 64:  return std::string("tmpd");
 	case 80:  return std::string("tmpF");
 	case 128: return std::string("tmpD");
+	default:  return std::string("tmp");
 	}
-	return std::string("tmp");
 }
 
 std::string
