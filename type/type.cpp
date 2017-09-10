@@ -1047,7 +1047,7 @@ Type::addNamedType(const char *name, Type *type)
 		std::cerr << "Warning: Type::addNamedType: Redefinition of type " << name << "\n"
 		          << " type     = " << type->prints() << "\n"
 		          << " previous = " << prev->prints() << "\n";
-		*type == *prev;
+		*type = *prev;
 	}
 }
 
