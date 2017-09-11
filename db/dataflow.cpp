@@ -442,7 +442,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 				// Replace definition of a with definition of a_i in S (we don't do this)
 			}
 			// FIXME: MVE: do we need this awful hack?
-			if (a->getOper() == opLocal) {
+			if (a->isLocal()) {
 				Exp *a1 = S->getProc()->expFromSymbol(((Const *)a->getSubExp1())->getStr());
 				assert(a1);
 				a = a1;

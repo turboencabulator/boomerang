@@ -975,7 +975,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 								Exp *rhs = ((Assign *)a)->getRight();
 								Location *o7 = Location::regOf(15);
 								if (rhs->getOper() == opPlus
-								 && (((Binary *)rhs)->getSubExp2()->getOper() == opIntConst)
+								 && (((Binary *)rhs)->getSubExp2()->isIntConst())
 								 && (*((Binary *)rhs)->getSubExp1() == *o7)) {
 									// Get the constant
 									int K = ((Const *)((Binary *)rhs)->getSubExp2())->getInt();

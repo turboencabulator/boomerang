@@ -582,8 +582,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 			cs = (CallStatement *)(inst.rtl->getList().back());
 		if (cs
 		 && cs->getKind() == STMT_CALL
-		 && cs->getDest()->getOper() == opMemOf
-		 && cs->getDest()->getSubExp1()->getOper() == opIntConst
+		 && cs->getDest()->isMemOf()
+		 && cs->getDest()->getSubExp1()->isIntConst()
 		 && pBF->isDynamicLinkedProcPointer(((Const *)cs->getDest()->getSubExp1())->getAddr())
 		 && !strcmp(pBF->getDynamicProcName(((Const *)cs->getDest()->getSubExp1())->getAddr()), "GetModuleHandleA")) {
 #if 0

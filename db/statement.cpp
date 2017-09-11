@@ -375,16 +375,7 @@ BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	Exp *e = nullptr;
 	// try to hack up a useful expression for this branch
 	OPER op = pCond->getOper();
-	if (op == opLess
-	 || op == opLessEq
-	 || op == opGtr
-	 || op == opGtrEq
-	 || op == opLessUns
-	 || op == opLessEqUns
-	 || op == opGtrUns
-	 || op == opGtrEqUns
-	 || op == opEquals
-	 || op == opNotEqual) {
+	if (pCond->isComparison()) {
 		if (pCond->getSubExp1()->isFlags() && output.hasRange(pCond->getSubExp1())) {
 			Range &r = output.getRange(pCond->getSubExp1());
 			if (r.getBase()->isFlagCall()
@@ -507,7 +498,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				 && ((Assign *)prev)->getLeft()->isMemOf()
 				 && ((Assign *)prev)->getLeft()->getSubExp1()->isRegOfK()
 				 && ((Const *)((Assign *)prev)->getLeft()->getSubExp1()->getSubExp1())->getInt() == 28
-				 && ((Assign *)prev)->getRight()->getOper() != opPC) {
+				 && !((Assign *)prev)->getRight()->isPC()) {
 					c += 4;
 				}
 				prev = prev->getPreviousStatementInBB();
@@ -680,8 +671,7 @@ Statement::isFlagAssgn()
 {
 	if (kind != STMT_ASSIGN)
 		return false;
-	OPER op = ((Assign *)this)->getRight()->getOper();
-	return (op == opFlagCall);
+	return (((Assign *)this)->getRight()->isFlagCall());
 }
 
 std::string
@@ -1066,7 +1056,7 @@ GotoStatement::~GotoStatement()
 ADDRESS
 GotoStatement::getFixedDest()
 {
-	if (pDest->getOper() != opIntConst) return NO_ADDRESS;
+	if (!pDest->isIntConst()) return NO_ADDRESS;
 	return ((Const *)pDest)->getAddr();
 }
 
@@ -1120,7 +1110,7 @@ void
 GotoStatement::adjustFixedDest(int delta)
 {
 	// Ensure that the destination is fixed.
-	if (!pDest || pDest->getOper() != opIntConst)
+	if (!pDest || !pDest->isIntConst())
 		LOG << "Can't adjust destination of non-static CTI\n";
 
 	ADDRESS dest = ((Const *)pDest)->getAddr();
@@ -1187,7 +1177,7 @@ GotoStatement::print(std::ostream &os, bool html)
 	os << "GOTO ";
 	if (!pDest)
 		os << "*no dest*";
-	else if (pDest->getOper() != opIntConst)
+	else if (!pDest->isIntConst())
 		pDest->print(os);
 	else
 		os << "0x" << std::hex << getFixedDest();
@@ -1804,7 +1794,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 			int k = ((Const *)right)->getInt();
 			// Only interested in 40, 1
 			k &= 0x41;
-			if (left1->getOper() == opFlagCall && left2->isIntConst()) {
+			if (left1->isFlagCall() && left2->isIntConst()) {
 				int mask = ((Const *)left2)->getInt();
 				// Only interested in 1, 40
 				mask &= 0x41;
@@ -2484,7 +2474,7 @@ CallStatement::convertToDirect()
 			return false;  // If an already defined global, don't convert
 		e = ((RefExp *)e)->getSubExp1();
 	}
-	if (e->getOper() == opArrayIndex
+	if (e->isArrayIndex()
 	 && ((Binary *)e)->getSubExp2()->isIntConst()
 	 && ((Const *)(((Binary *)e)->getSubExp2()))->getInt() == 0)
 		e = ((Binary *)e)->getSubExp1();
@@ -3432,8 +3422,8 @@ void
 Assign::simplify()
 {
 	// simplify arithmetic of assignment
-	OPER leftop = lhs->getOper();
 	if (Boomerang::get()->noBranchSimplify) {
+		OPER leftop = lhs->getOper();
 		if (leftop == opZF || leftop == opCF || leftop == opOF || leftop == opNF)
 			return;
 	}
@@ -3450,14 +3440,14 @@ Assign::simplify()
 	if (guard && (guard->isTrue() || (guard->isIntConst() && ((Const *)guard)->getInt() == 1)))
 		guard = nullptr;  // No longer a guarded assignment
 
-	if (lhs->getOper() == opMemOf) {
+	if (lhs->isMemOf()) {
 		lhs->setSubExp1(lhs->getSubExp1()->simplifyArith());
 	}
 
 	// this hack finds address constants.. it should go away when Mike writes some decent type analysis.
 #if 0
 	if (DFA_TYPE_ANALYSIS) return;
-	if (lhs->getOper() == opMemOf && lhs->getSubExp1()->getOper() == opSubscript) {
+	if (lhs->isMemOf() && lhs->getSubExp1()->isSubscript()) {
 		RefExp *ref = (RefExp *)lhs->getSubExp1();
 		Statement *phist = ref->getDef();
 		PhiAssign *phi = nullptr;
@@ -3480,9 +3470,9 @@ Assign::simplify()
 					def->rhs = ne;
 				}
 				if (def
-				 && def->rhs->getOper() == opAddrOf
-				 && def->rhs->getSubExp1()->getOper() == opSubscript
-				 && def->rhs->getSubExp1()->getSubExp1()->getOper() == opGlobal
+				 && def->rhs->isAddrOf()
+				 && def->rhs->getSubExp1()->isSubscript()
+				 && def->rhs->getSubExp1()->getSubExp1()->isGlobal()
 				 && rhs->getOper() != opPhi  // MVE: opPhi!!
 				 && rhs->getOper() != opItof
 				 && rhs->getOper() != opFltConst) {

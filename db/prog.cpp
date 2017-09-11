@@ -1536,7 +1536,7 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type)
 				n = new Binary(opList, v, n);
 				e = n;
 			} else {
-				assert(n->getSubExp2()->getOper() == opNil);
+				assert(n->getSubExp2()->isNil());
 				n->setSubExp2(new Binary(opList, v, n->getSubExp2()));
 				n = n->getSubExp2();
 			}
@@ -1565,7 +1565,7 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type)
 				n = new Binary(opList, v, n);
 				e = n;
 			} else {
-				assert(n->getSubExp2()->getOper() == opNil);
+				assert(n->getSubExp2()->isNil());
 				n->setSubExp2(new Binary(opList, v, n->getSubExp2()));
 				n = n->getSubExp2();
 			}

@@ -219,7 +219,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 	case opGlobal:
 	case opLocal:
 		c = dynamic_cast<Const *>(u->getSubExp1());
-		assert(c && c->getOper() == opStrConst);
+		assert(c && c->isStrConst());
 		str << c->getStr();
 		break;
 	case opEquals:
@@ -302,7 +302,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		openParen(str, curPrec, PREC_BIT_AND);
 		appendExp(str, b->getSubExp1(), PREC_BIT_AND);
 		str << " & ";
-		if (b->getSubExp2()->getOper() == opIntConst) {
+		if (b->getSubExp2()->isIntConst()) {
 			// print it 0x2000 style
 			str << "0x" << std::hex << ((Const *)b->getSubExp2())->getInt();
 		} else {
@@ -400,7 +400,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				str << "tmp";
 				break;
 			}
-			assert(u->getSubExp1()->getOper() == opIntConst);
+			assert(u->getSubExp1()->isIntConst());
 			const char *n = m_proc->getProg()->getRegName(
 			                    ((Const *)u->getSubExp1())->getInt());
 			if (n) {
@@ -608,7 +608,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		break;
 	case opFlagCall:
 		{
-			assert(b->getSubExp1()->getOper() == opStrConst);
+			assert(b->getSubExp1()->isStrConst());
 			str << ((Const *)b->getSubExp1())->getStr();
 			str << "(";
 			Binary *l = (Binary *)b->getSubExp2();
@@ -708,11 +708,11 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				break;
 			}
 #endif
-			if (u->getSubExp1()->getOper() == opTypedExp
+			if (u->getSubExp1()->isTypedExp()
 			 && *((TypedExp *)u)->getType() == *((TypedExp *)u->getSubExp1())->getType()) {
 				// We have (type)(type)x: recurse with type(x)
 				appendExp(str, u->getSubExp1(), curPrec);
-			} else if (u->getSubExp1()->getOper() == opMemOf) {
+			} else if (u->getSubExp1()->isMemOf()) {
 				// We have (tt)m[x]
 #if 0  // ADHOC TA
 				PointerType *pty = dynamic_cast<PointerType *>(u->getSubExp1()->getSubExp1()->getType());
@@ -872,7 +872,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 			// local11.lhHeight (where local11 is a register)
 			// Mike: it shouldn't!  local11 should have a compound type
 			//assert(ty->resolvesToCompound());
-			if (b->getSubExp1()->getOper() == opMemOf) {
+			if (b->getSubExp1()->isMemOf()) {
 				appendExp(str, b->getSubExp1()->getSubExp1(), PREC_PRIM);
 				str << "->";
 			} else {
@@ -1256,7 +1256,7 @@ void
 CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 {
 	// Gerard: shouldn't these  3 types of statements be removed earlier?
-	if (asgn->getLeft()->getOper() == opPC)
+	if (asgn->getLeft()->isPC())
 		return;  // Never want to see assignments to %PC
 	Exp *result;
 	if (asgn->getRight()->search(new Terminal(opPC), result)) // Gerard: what's this?
@@ -1277,7 +1277,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 
 	if (Boomerang::get()->noDecompile
 	 && isBareMemof(rhs, proc)
-	 && lhs->getOper() == opRegOf
+	 && lhs->isRegOf()
 	 && m_proc->getProg()->getFrontEndId() == PLAT_SPARC) {
 		// add some fsize hints to rhs
 		if (((Const *)lhs->getSubExp1())->getInt() >= 32
@@ -1299,7 +1299,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 				s << "FLOAT_";
 			else
 				s << "DOUBLE_";
-		} else if (rhs->getOper() == opRegOf && m_proc->getProg()->getFrontEndId() == PLAT_SPARC) {
+		} else if (rhs->isRegOf() && m_proc->getProg()->getFrontEndId() == PLAT_SPARC) {
 			// yes, this is a hack
 			if (((Const *)rhs->getSubExp1())->getInt() >= 32
 			 && ((Const *)rhs->getSubExp1())->getInt() <= 63)
@@ -1323,7 +1323,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 		          new TypedExp(
 		              asgnType,
 		              lhs), PREC_ASSIGN);
-	else if (lhs->getOper() == opGlobal && asgn->getType()->isArray())
+	else if (lhs->isGlobal() && asgn->getType()->isArray())
 		appendExp(s, new Binary(opArrayIndex,
 		                        lhs,
 		                        new Const(0)), PREC_ASSIGN);
@@ -1640,10 +1640,10 @@ CHLLCode::AddLocal(const char *name, Type *type, bool last)
 	Exp *e = m_proc->expFromSymbol(name);
 	if (e) {
 		// ? Should never see subscripts in the back end!
-		if (e->getOper() == opSubscript
+		if (e->isSubscript()
 		 && ((RefExp *)e)->isImplicitDef()
-		 && (e->getSubExp1()->getOper() == opParam
-		  || e->getSubExp1()->getOper() == opGlobal)) {
+		 && (e->getSubExp1()->isParam()
+		  || e->getSubExp1()->isGlobal())) {
 			s << " = ";
 			appendExp(s, e->getSubExp1(), PREC_NONE);
 			s << ";";

@@ -806,8 +806,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 						}
 						// Check for indirect calls to library functions, especially in Win32 programs
 						if (pDest
-						 && pDest->getOper() == opMemOf
-						 && pDest->getSubExp1()->getOper() == opIntConst
+						 && pDest->isMemOf()
+						 && pDest->getSubExp1()->isIntConst()
 						 && pBF->isDynamicLinkedProcPointer(((Const *)pDest->getSubExp1())->getAddr())) {
 							if (VERBOSE)
 								LOG << "jump to a library function: " << stmt_jump << ", replacing with a call/ret.\n";
@@ -903,8 +903,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 						CallStatement *call = static_cast<CallStatement *>(s);
 
 						// Check for a dynamic linked library function
-						if (call->getDest()->getOper() == opMemOf
-						 && call->getDest()->getSubExp1()->getOper() == opIntConst
+						if (call->getDest()->isMemOf()
+						 && call->getDest()->getSubExp1()->isIntConst()
 						 && pBF->isDynamicLinkedProcPointer(((Const *)call->getDest()->getSubExp1())->getAddr())) {
 							// Dynamic linked proc pointers are treated as static.
 							const char *nam = pBF->getDynamicProcName(((Const *)call->getDest()->getSubExp1())->getAddr());
@@ -933,8 +933,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 										// In fact it's a computed (looked up) jump, so the jump seems to be a case
 										// statement.
 										if (first_statement->getKind() == STMT_CASE
-										 && stmt_jump->getDest()->getOper() == opMemOf
-										 && stmt_jump->getDest()->getSubExp1()->getOper() == opIntConst
+										 && stmt_jump->getDest()->isMemOf()
+										 && stmt_jump->getDest()->getSubExp1()->isIntConst()
 										 && pBF->isDynamicLinkedProcPointer(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr())) {  // Is it an "DynamicLinkedProcPointer"?
 											// Yes, it's a library function. Look up it's name.
 											ADDRESS a = ((Const *)stmt_jump->getDest()->getSubExp1())->getAddr();

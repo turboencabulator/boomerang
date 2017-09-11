@@ -424,7 +424,7 @@ UsedLocsVisitor::visit(Assign *s, bool &override)
 			child->accept(ev);
 			ulf->setMemOnly(wasMemOnly);
 		}
-	} else if (lhs->getOper() == opArrayIndex || lhs->getOper() == opMemberAccess) {
+	} else if (lhs->isArrayIndex() || lhs->isMemberOf()) {
 		Exp *subExp1 = ((Binary *)lhs)->getSubExp1();  // array(base, index) and member(base, offset)?? use base and index
 		subExp1->accept(ev);
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
@@ -454,7 +454,7 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 			child->accept(ev);
 			ulf->setMemOnly(wasMemOnly);
 		}
-	} else if (lhs->getOper() == opArrayIndex || lhs->getOper() == opMemberAccess) {
+	} else if (lhs->isArrayIndex() || lhs->isMemberOf()) {
 		Exp *subExp1 = ((Binary *)lhs)->getSubExp1();
 		subExp1->accept(ev);
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
@@ -488,7 +488,7 @@ UsedLocsVisitor::visit(ImplicitAssign *s, bool &override)
 			child->accept(ev);
 			ulf->setMemOnly(wasMemOnly);
 		}
-	} else if (lhs->getOper() == opArrayIndex || lhs->getOper() == opMemberAccess) {
+	} else if (lhs->isArrayIndex() || lhs->isMemberOf()) {
 		Exp *subExp1 = ((Binary *)lhs)->getSubExp1();
 		subExp1->accept(ev);
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
@@ -557,7 +557,7 @@ UsedLocsVisitor::visit(BoolAssign *s, bool &override)
 			x->accept(ev);
 			ulf->setMemOnly(wasMemOnly);
 		}
-	} else if (lhs->getOper() == opArrayIndex || lhs->getOper() == opMemberAccess) {
+	} else if (lhs->isArrayIndex() || lhs->isMemberOf()) {
 		Exp *subExp1 = ((Binary *)lhs)->getSubExp1();
 		subExp1->accept(ev);
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();

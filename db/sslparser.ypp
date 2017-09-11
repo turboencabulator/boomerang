@@ -1115,7 +1115,7 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 			Exp *res;
 			while (s->search(srchOp, res)) {
 				Ternary *t;
-				if (res->getOper() == opTypedExp)
+				if (res->isTypedExp())
 					t = (Ternary *)res->getSubExp1();
 				else
 					t = (Ternary *)res;

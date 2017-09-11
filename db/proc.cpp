@@ -1592,18 +1592,18 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 				continue;
 			}
 #endif
-			if (asLeft && asLeft->getOper() == opGlobal) {
+			if (asLeft && asLeft->isGlobal()) {
 				// assignments to globals must always be kept
 				++ll;
 				continue;
 			}
 			// If it's a memof and renameable it can still be deleted
-			if (asLeft->getOper() == opMemOf && !canRename(asLeft)) {
+			if (asLeft->isMemOf() && !canRename(asLeft)) {
 				// Assignments to memof-anything-but-local must always be kept.
 				++ll;
 				continue;
 			}
-			if (asLeft->getOper() == opMemberAccess || asLeft->getOper() == opArrayIndex) {
+			if (asLeft->isMemberOf() || asLeft->isArrayIndex()) {
 				// can't say with these; conservatively never remove them
 				++ll;
 				continue;
@@ -2157,7 +2157,7 @@ UserProc::findFinalParameters()
 			if (!(e->isRegOf() || isLocalOrParamPattern(e)))
 				continue;
 #else
-			if (signature->isStackLocal(prog, e) || e->getOper() == opLocal) {
+			if (signature->isStackLocal(prog, e) || e->isLocal()) {
 				if (VERBOSE || DEBUG_PARAMS)
 					LOG << "ignoring local " << e << "\n";
 				continue;
@@ -2177,7 +2177,7 @@ UserProc::findFinalParameters()
 					LOG << "ignoring m[global] " << e << "\n";
 				continue;
 			}
-			if (e->isMemOf() && e->getSubExp1()->getOper() == opParam) {
+			if (e->isMemOf() && e->getSubExp1()->isParam()) {
 				if (VERBOSE || DEBUG_PARAMS)
 					LOG << "ignoring m[param] " << e << "\n";
 				continue;
@@ -2362,8 +2362,8 @@ UserProc::processFloatConstants()
 		s->searchAll(match, results);
 		for (auto it1 = results.begin(); it1 != results.end(); ++it1) {
 			Ternary *fsize = (Ternary *)*it1;
-			if (fsize->getSubExp3()->getOper() == opMemOf
-			 && fsize->getSubExp3()->getSubExp1()->getOper() == opIntConst) {
+			if (fsize->getSubExp3()->isMemOf()
+			 && fsize->getSubExp3()->getSubExp1()->isIntConst()) {
 				Exp *memof = fsize->getSubExp3();
 				ADDRESS u = ((Const *)memof->getSubExp1())->getInt();
 				bool ok;
@@ -2454,7 +2454,7 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 		// compilers and machine language programmers sometimes re-use the same locations with different types.
 		// Let type analysis sort out which live ranges have which type
 		e = symbolMap[le]->clone();
-		if (e->getOper() == opLocal && e->getSubExp1()->getOper() == opStrConst) {
+		if (e->isLocal() && e->getSubExp1()->isStrConst()) {
 			std::string name = ((Const *)e->getSubExp1())->getStr();
 			Type *nty = ty;
 			Type *ty = locals[name];
@@ -3417,7 +3417,7 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 		query->setSubExp2(query->getSubExp2()->expSubscriptValNull(*xx));
 	}
 
-	if (query->getSubExp1()->getOper() != opSubscript) {
+	if (!query->getSubExp1()->isSubscript()) {
 		bool gotDef = false;
 		// replace expression from return set with expression in the collector of the return
 		if (theReturnStatement) {
@@ -3654,8 +3654,8 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 
 			// remove memofs from both sides if possible
 			if (!change
-			 && query->getSubExp1()->getOper() == opMemOf
-			 && query->getSubExp2()->getOper() == opMemOf) {
+			 && query->getSubExp1()->isMemOf()
+			 && query->getSubExp2()->isMemOf()) {
 				query->setSubExp1(((Unary *)query->getSubExp1())->getSubExp1());
 				query->setSubExp2(((Unary *)query->getSubExp2())->getSubExp1());
 				change = true;
@@ -3663,11 +3663,11 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 
 			// is ok if both of the memofs are subscripted with nullptr
 			if (!change
-			 && query->getSubExp1()->getOper() == opSubscript
-			 && query->getSubExp1()->getSubExp1()->getOper() == opMemOf
+			 && query->getSubExp1()->isSubscript()
+			 && query->getSubExp1()->getSubExp1()->isMemOf()
 			 && !((RefExp *)query->getSubExp1())->getDef()
-			 && query->getSubExp2()->getOper() == opSubscript
-			 && query->getSubExp2()->getSubExp1()->getOper() == opMemOf
+			 && query->getSubExp2()->isSubscript()
+			 && query->getSubExp2()->getSubExp1()->isMemOf()
 			 && !((RefExp *)query->getSubExp2())->getDef()) {
 				query->setSubExp1(((Unary *)query->getSubExp1()->getSubExp1())->getSubExp1());
 				query->setSubExp2(((Unary *)query->getSubExp2()->getSubExp1())->getSubExp1());
@@ -3676,14 +3676,14 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 
 			// find a memory def for the right if there is a memof on the left
 			// FIXME: this seems pretty much like a bad hack!
-			if (!change && query->getSubExp1()->getOper() == opMemOf) {
+			if (!change && query->getSubExp1()->isMemOf()) {
 				StatementList stmts;
 				getStatements(stmts);
 				for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 					Assign *s = (Assign *)*it;
 					if (s->isAssign()
 					 && *s->getRight() == *query->getSubExp2()
-					 && s->getLeft()->getOper() == opMemOf) {
+					 && s->getLeft()->isMemOf()) {
 						query->setSubExp2(s->getLeft()->clone());
 						change = true;
 						break;
@@ -3715,7 +3715,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 		//delete old;
 	}
 
-	return query->getOper() == opTrue;
+	return query->isTrue();
 }
 
 // Get the set of locations defined by this proc. In other words, the define set, currently called returns
