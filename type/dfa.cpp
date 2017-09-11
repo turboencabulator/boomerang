@@ -260,7 +260,7 @@ UserProc::dfaTypeAnalysis()
 			//Type* ty = s->getTypeFor(*rr);
 			// FIXME: should check that we use with array type...
 			// Find idx and K2
-			Exp *t = ((Unary *)(*rr)->getSubExp1());    // idx*K1 + K2
+			Exp *t = ((Unary *)(*rr))->getSubExp1();    // idx*K1 + K2
 			Exp *l = ((Binary *)t)->getSubExp1();       // idx*K1
 			Exp *r = ((Binary *)t)->getSubExp2();       // K2
 			ADDRESS K2 = (ADDRESS)((Const *)r)->getInt();
@@ -1339,7 +1339,7 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 		      && ((RefExp *)((Binary *)subExp1)->getSubExp1())->isLocation()
 		      && ((Binary *)subExp1)->getSubExp2()->isIntConst()) {
 			// m[l1 + K]
-			Location *l1 = (Location *)((RefExp *)((Binary *)subExp1)->getSubExp1());
+			Location *l1 = (Location *)((RefExp *)((Binary *)subExp1)->getSubExp1());  // FIXME: This casting looks suspicious
 			Type *l1Type = l1->ascendType();
 			int K = ((Const *)((Binary *)subExp1)->getSubExp2())->getInt();
 			if (l1Type->resolvesToPointer()) {

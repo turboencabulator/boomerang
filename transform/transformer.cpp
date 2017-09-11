@@ -34,7 +34,7 @@ ExpTransformer::ExpTransformer()
 	transformers.push_back(this);
 }
 
-std::list<Exp *> cache;
+std::list<Binary *> cache;
 
 Exp *
 ExpTransformer::applyAllTo(Exp *p, bool &bMod)

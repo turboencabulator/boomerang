@@ -532,13 +532,13 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 	case opFround:
 		// Note: we need roundf or roundl depending on size of operands
 		str << "round(";  // Note: math.h required
-		appendExp(str, u->getSubExp1(), PREC_NONE);
+		appendExp(str, t->getSubExp1(), PREC_NONE);
 		str << ")";
 		break;
 	case opFtrunc:
 		// Note: we need truncf or truncl depending on size of operands
 		str << "trunc(";  // Note: math.h required
-		appendExp(str, u->getSubExp1(), PREC_NONE);
+		appendExp(str, t->getSubExp1(), PREC_NONE);
 		str << ")";
 		break;
 	case opFabs:
@@ -549,7 +549,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 	case opFtoi:
 		// Should check size!
 		str << "(int)";
-		appendExp(str, u->getSubExp3(), PREC_UNARY);
+		appendExp(str, t->getSubExp3(), PREC_UNARY);
 		break;
 	case opRotateL:
 		str << "ROTL(";
