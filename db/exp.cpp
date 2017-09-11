@@ -234,6 +234,7 @@ Ternary::setSubExp3(Exp *e)
 	subExp3 = e;
 	assert(subExp1 && subExp2 && subExp3);
 }
+
 /*==============================================================================
  * FUNCTION:        Unary::getSubExp1 etc
  * OVERVIEW:        Get subexpression
@@ -245,20 +246,8 @@ Unary::getSubExp1() const
 	assert(subExp1);
 	return subExp1;
 }
-Exp *&
-Unary::refSubExp1()
-{
-	assert(subExp1);
-	return subExp1;
-}
 Exp *
 Binary::getSubExp2() const
-{
-	assert(subExp1 && subExp2);
-	return subExp2;
-}
-Exp *&
-Binary::refSubExp2()
 {
 	assert(subExp1 && subExp2);
 	return subExp2;
@@ -269,19 +258,6 @@ Ternary::getSubExp3() const
 	assert(subExp1 && subExp2 && subExp3);
 	return subExp3;
 }
-Exp *&
-Ternary::refSubExp3()
-{
-	assert(subExp1 && subExp2 && subExp3);
-	return subExp3;
-}
-
-// This to satisfy the compiler (never gets called!)
-Exp *dummy;
-Exp *&Exp::refSubExp1() { return dummy; }
-Exp *&Exp::refSubExp2() { return dummy; }
-Exp *&Exp::refSubExp3() { return dummy; }
-
 
 /*==============================================================================
  * FUNCTION:        Binary::commute

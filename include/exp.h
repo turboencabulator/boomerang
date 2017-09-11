@@ -244,9 +244,6 @@ public:
 	virtual Exp        *getSubExp1() const { return nullptr; }
 	virtual Exp        *getSubExp2() const { return nullptr; }
 	virtual Exp        *getSubExp3() const { return nullptr; }
-	virtual Exp       *&refSubExp1();
-	virtual Exp       *&refSubExp2();
-	virtual Exp       *&refSubExp3();
 	virtual void        setSubExp1(Exp *e) { }
 	virtual void        setSubExp2(Exp *e) { }
 	virtual void        setSubExp3(Exp *e) { }
@@ -495,8 +492,6 @@ public:
 	void        setSubExp1ND(Exp *e) { subExp1 = e; }
 	// Get first subexpression
 	Exp        *getSubExp1() const override;
-	// Get a reference to subexpression 1
-	Exp       *&refSubExp1() override;
 
 	Exp        *match(const Exp *pattern) const override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
@@ -566,8 +561,6 @@ public:
 	Exp        *getSubExp2() const override;
 	// Commute the two operands
 	void        commute();
-	// Get a reference to subexpression 2
-	Exp       *&refSubExp2() override;
 
 	Exp        *match(const Exp *pattern) const override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
@@ -637,8 +630,6 @@ public:
 	void        setSubExp3(Exp *e) override;
 	// Get third subexpression
 	Exp        *getSubExp3() const override;
-	// Get a reference to subexpression 3
-	Exp       *&refSubExp3() override;
 
 	// Search children
 	void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once) override;

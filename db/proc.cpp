@@ -3363,10 +3363,10 @@ UserProc::removeSubscriptsFromSymbols()
 		Exp *from = it->first;
 		if (from->isSubscript()) {
 			// As noted above, don't touch the outer level of subscripts
-			Exp *&sub = ((RefExp *)from)->refSubExp1();
-			sub = sub->accept(&esx);
+			RefExp *sub = static_cast<RefExp *>(from);
+			sub->setSubExp1(sub->getSubExp1()->accept(&esx));
 		} else
-			from = it->first->accept(&esx);
+			from = from->accept(&esx);
 		mapSymbolTo(from, it->second);
 	}
 }
