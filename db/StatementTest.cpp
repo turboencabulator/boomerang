@@ -92,8 +92,8 @@ StatementTest::testEmpty()
 	// compare it to expected
 	std::string expected =
 	    "Ret BB:\n"
-	    "in edges: \n"
-	    "out edges: \n"
+	    "in edges:\n"
+	    "out edges:\n"
 	    "00000123\n\n";
 	CPPUNIT_ASSERT_EQUAL(expected, s);
 	// clean up
@@ -149,12 +149,12 @@ StatementTest::testFlow()
 	// to r24 is removed
 	expected =
 	    "Fall BB:\n"
-	    "in edges: \n"
-	    "out edges: 123 \n"
+	    "in edges:\n"
+	    "out edges: 123\n"
 	    "00000000\n"
 	    "Ret BB:\n"
-	    "in edges: 0 \n"
-	    "out edges: \n"
+	    "in edges: 0\n"
+	    "out edges:\n"
 	    "00000123    2 RET *v* r24 := 5\n"
 	    "              Modifieds: \n"
 	    "              Reaching definitions: r24=5\n\n";
@@ -215,12 +215,12 @@ StatementTest::testKill()
 	std::string expected;
 	expected =
 	    "Fall BB:\n"
-	    "in edges: \n"
-	    "out edges: 123 \n"
+	    "in edges:\n"
+	    "out edges: 123\n"
 	    "00000000\n"
 	    "Ret BB:\n"
-	    "in edges: 0 \n"
-	    "out edges: \n"
+	    "in edges: 0\n"
+	    "out edges:\n"
 	    "00000123    3 RET *v* r24 := 0\n"
 	    "              Modifieds: \n"
 	    "              Reaching definitions: r24=6\n\n";
@@ -281,12 +281,12 @@ StatementTest::testUse()
 	std::string expected;
 	expected =
 	    "Fall BB:\n"
-	    "in edges: \n"
-	    "out edges: 123 \n"
+	    "in edges:\n"
+	    "out edges: 123\n"
 	    "00000000\n"
 	    "Ret BB:\n"
-	    "in edges: 0 \n"
-	    "out edges: \n"
+	    "in edges: 0\n"
+	    "out edges:\n"
 	    "00000123    3 RET *v* r28 := 1000\n"
 	    "              Modifieds: \n"
 	    "              Reaching definitions: r24=5,   r28=5\n\n";
@@ -351,12 +351,12 @@ StatementTest::testUseOverKill()
 	std::string expected;
 	expected =
 	    "Fall BB:\n"
-	    "in edges: \n"
-	    "out edges: 123 \n"
+	    "in edges:\n"
+	    "out edges: 123\n"
 	    "00000000\n"
 	    "Ret BB:\n"
-	    "in edges: 0 \n"
-	    "out edges: \n"
+	    "in edges: 0\n"
+	    "out edges:\n"
 	    "00000123    4 RET *v* r24 := 0\n"
 	    "              Modifieds: \n"
 	    "              Reaching definitions: r24=6,   r28=6\n\n";
@@ -422,12 +422,12 @@ StatementTest::testUseOverBB()
 	std::string expected;
 	expected =
 	    "Fall BB:\n"
-	    "in edges: \n"
-	    "out edges: 123 \n"
+	    "in edges:\n"
+	    "out edges: 123\n"
 	    "00000000\n"
 	    "Ret BB:\n"
-	    "in edges: 0 \n"
-	    "out edges: \n"
+	    "in edges: 0\n"
+	    "out edges:\n"
 	    "00000000\n"
 	    "00000123    4 RET *v* r24 := 0\n"
 	    "              Modifieds: \n"
@@ -488,12 +488,12 @@ StatementTest::testUseKill()
 	std::string expected;
 	expected =
 	    "Fall BB:\n"
-	    "in edges: \n"
-	    "out edges: 123 \n"
+	    "in edges:\n"
+	    "out edges: 123\n"
 	    "00000000\n"
 	    "Ret BB:\n"
-	    "in edges: 0 \n"
-	    "out edges: \n"
+	    "in edges: 0\n"
+	    "out edges:\n"
 	    "00000123    3 RET *v* r24 := 0\n"
 	    "              Modifieds: \n"
 	    "              Reaching definitions: r24=6\n\n";

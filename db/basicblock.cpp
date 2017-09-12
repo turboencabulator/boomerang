@@ -256,7 +256,7 @@ BasicBlock::print(std::ostream &os, bool html)
 {
 	if (html)
 		os << "<br>";
-	if (m_iLabelNum) os << "L" << std::dec << m_iLabelNum << ": ";
+	if (m_iLabelNum) os << std::dec << "L" << m_iLabelNum << ": ";
 	switch (m_nodeType) {
 	case ONEWAY:    os << "Oneway BB";        break;
 	case TWOWAY:    os << "Twoway BB";        break;
@@ -269,13 +269,13 @@ BasicBlock::print(std::ostream &os, bool html)
 	case INVALID:   os << "Invalid BB";       break;
 	}
 	os << ":\n";
-	os << "in edges: ";
+	os << "in edges:" << std::hex;
 	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
-		os << std::hex << m_InEdges[i]->getHiAddr() << " ";
+		os << " " << m_InEdges[i]->getHiAddr();
 	os << std::dec << "\n";
-	os << "out edges: ";
+	os << "out edges:" << std::hex;
 	for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
-		os << std::hex << m_OutEdges[i]->getLowAddr() << " ";
+		os << " " << m_OutEdges[i]->getLowAddr();
 	os << std::dec << "\n";
 	if (m_pRtls) {  // Can be zero if e.g. INVALID
 		if (html)
@@ -289,13 +289,13 @@ BasicBlock::print(std::ostream &os, bool html)
 	if (m_bJumpReqd) {
 		if (html)
 			os << "<br>";
-		os << "Synthetic out edge(s) to ";
+		os << "Synthetic out edge(s) to" << std::dec;
 		for (int i = 0; i < m_iNumOutEdges; ++i) {
 			BasicBlock *outEdge = m_OutEdges[i];
 			if (outEdge && outEdge->m_iLabelNum)
-				os << "L" << std::dec << outEdge->m_iLabelNum << " ";
+				os << " L" << outEdge->m_iLabelNum;
 		}
-		os << std::endl;
+		os << "\n";
 	}
 }
 
@@ -1355,7 +1355,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		if (m_OutEdges.empty()) {
 			std::cerr << "WARNING: no out edge for this BB in " << proc->getName() << ":\n";
 			this->print(std::cerr);
-			std::cerr << std::endl;
+			std::cerr << "\n";
 			if (m_nodeType == COMPJUMP) {
 				std::ostringstream ost;
 				assert(!m_pRtls->empty());

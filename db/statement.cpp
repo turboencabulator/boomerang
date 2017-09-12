@@ -1169,10 +1169,10 @@ GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 GotoStatement::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 	os << "GOTO ";
 	if (!pDest)
@@ -1513,10 +1513,10 @@ BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 BranchStatement::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 	os << "BRANCH ";
 	if (!pDest)
@@ -1546,7 +1546,7 @@ BranchStatement::print(std::ostream &os, bool html)
 	case BRANCH_JPAR: os << "parity"; break;
 	}
 	if (bFloat) os << " float";
-	os << std::endl;
+	os << "\n";
 	if (pCond) {
 		if (html)
 			os << "<br>";
@@ -1947,10 +1947,10 @@ CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 CaseStatement::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 	if (!pSwitchInfo) {
 		os << "CASE [";
@@ -2226,10 +2226,10 @@ CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 CallStatement::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 
 	// Define(s), if any
@@ -3188,7 +3188,7 @@ BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html)
 	if (bFloat) os << ", float";
 	if (html)
 		os << "<br>";
-	os << std::endl;
+	os << "\n";
 	if (pCond) {
 		os << "High level: ";
 		pCond->print(os, html);
@@ -3520,10 +3520,10 @@ Assign::fixSuccessor()
 void
 Assignment::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 	printCompact(os, html);
 	if (html)
@@ -4608,10 +4608,10 @@ ReturnStatement::setTypeFor(Exp *e, Type *ty)
 void
 ReturnStatement::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 	os << "RET";
 	bool first = true;
@@ -5293,10 +5293,10 @@ TypingStatement::TypingStatement(Type *ty) :
 void
 ImpRefStatement::print(std::ostream &os, bool html)
 {
-	os << "     *";  // No statement number
+	os << std::dec << "     *";  // No statement number
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
 	os << type << "* IMP REF " << addressExp;
 	if (html)
@@ -5436,20 +5436,20 @@ JunctionStatement::accept(StmtPartModifier *visitor)
 void
 JunctionStatement::print(std::ostream &os, bool html)
 {
-	os << std::setw(4) << std::dec << number << " ";
+	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>";
-		os << "<a name=\"stmt" << std::dec << number << "\">";
+		os << "</td><td>"
+		   << "<a name=\"stmt" << number << "\">";
 	}
-	os << "JUNCTION ";
+	os << "JUNCTION" << std::hex;
 	for (int i = 0; i < pbb->getNumInEdges(); ++i) {
-		os << std::hex << pbb->getInEdges()[i]->getHiAddr() << std::dec;
+		os << " " << pbb->getInEdges()[i]->getHiAddr();
 		if (pbb->isBackEdge(i))
 			os << "*";
-		os << " ";
 	}
 	if (isLoopJunction())
-		os << "LOOP";
+		os << " LOOP";
+	os << std::dec;
 	os << "\n\t\t\tranges: " << ranges;
 	if (html)
 		os << "</a></td>";
