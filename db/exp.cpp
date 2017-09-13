@@ -1342,7 +1342,7 @@ Exp::isAfpTerm() const
 {
 	const Exp *cur = this;
 	if (isTypedExp())
-		cur = ((const Unary *)this)->getSubExp1();
+		cur = ((const TypedExp *)this)->getSubExp1();
 	const Exp *p;
 	if ((cur->isAddrOf()) && ((p = ((const Unary *)cur)->getSubExp1()), p->isMemOf()))
 		cur = ((const Unary *)p)->getSubExp1();
@@ -3214,7 +3214,7 @@ Exp::printt(std::ostream &os /*= cout*/) const
 {
 	print(os);
 	if (!isTypedExp()) return;
-	Type *t = ((TypedExp *)this)->getType();
+	Type *t = ((const TypedExp *)this)->getType();
 	os << "<" << std::dec << t->getSize();
 #if 0
 	switch (t->getType()) {
@@ -4148,7 +4148,7 @@ Exp::getAnyStrConst() const
 	if (isAddrOf()) {
 		e = ((const Location *)this)->getSubExp1();
 		if (e->isSubscript())
-			e = ((const Unary *)e)->getSubExp1();
+			e = ((const RefExp *)e)->getSubExp1();
 		if (e->isMemOf())
 			e = ((const Location *)e)->getSubExp1();
 	}

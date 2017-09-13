@@ -2468,7 +2468,7 @@ CallStatement::convertToDirect()
 		return false;
 	bool convertIndirect = false;
 	Exp *e = pDest;
-	if (pDest->isSubscript()) {
+	if (e->isSubscript()) {
 		Statement *def = ((RefExp *)e)->getDef();
 		if (def && !def->isImplicit())
 			return false;  // If an already defined global, don't convert
@@ -2999,7 +2999,7 @@ void
 ReturnStatement::removeReturn(Exp *loc)
 {
 	if (loc->isSubscript())
-		loc = ((Location *)loc)->getSubExp1();
+		loc = ((RefExp *)loc)->getSubExp1();
 	for (auto rr = returns.begin(); rr != returns.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *loc) {
 			returns.erase(rr);
