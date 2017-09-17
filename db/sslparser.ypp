@@ -43,7 +43,7 @@
 %union {
 	Exp            *exp;
 	OPER            op;
-	const char     *str;
+	std::string    *str;
 	int             num;
 	double          dbl;
 	Statement      *regtransfer;
@@ -236,8 +236,9 @@ operand
 	 * Example: reg_or_imm := { imode, rmode }; */
 	: param EQUATE '{' list_parameter '}' {
 		// Note: the below copies the list of strings!
-		Dict.DetParamMap[$1].params = *$4;
-		Dict.DetParamMap[$1].kind = PARAM_VARIANT;
+		Dict.DetParamMap[*$1].params = *$4;
+		Dict.DetParamMap[*$1].kind = PARAM_VARIANT;
+		delete $1;
 		//delete $4;
 	  }
 
@@ -248,7 +249,7 @@ operand
 	 * PARAM_LAMBDA
 	 * Example: indexA  rs1, rs2 *i32* r[rs1] + r[rs2] */
 	| param list_parameter func_parameter assigntype exp {
-		ParamEntry &param = Dict.DetParamMap[$1];
+		ParamEntry &param = Dict.DetParamMap[*$1];
 		Statement *asgn = new Assign($4, new Terminal(opNil), $5);
 		// Note: The below 2 copy lists of strings (to be deleted below!)
 		param.params = *$2;
@@ -258,6 +259,7 @@ operand
 
 		if (!param.funcParams.empty())
 			param.kind = PARAM_LAMBDA;
+		delete $1;
 		//delete $2;
 		//delete $3;
 	  }
@@ -280,34 +282,36 @@ a_reglists
 
 a_reglist
 	: REG_ID INDEX NUM {
-		if (Dict.RegMap.find($1) != Dict.RegMap.end())
+		if (Dict.RegMap.find(*$1) != Dict.RegMap.end())
 			yyerror("Name reglist decared twice");
-		Dict.RegMap[$1] = $3;
+		Dict.RegMap[*$1] = $3;
+		delete $1;
 	  }
 
 	| REG_ID '[' NUM ']' INDEX NUM {
-		if (Dict.RegMap.find($1) != Dict.RegMap.end())
+		if (Dict.RegMap.find(*$1) != Dict.RegMap.end())
 			yyerror("Name reglist declared twice");
-		Dict.addRegister($1, $6, $3, bFloat);
+		Dict.addRegister($1->c_str(), $6, $3, bFloat);
+		//delete $1;
 	  }
 
 	| REG_ID '[' NUM ']' INDEX NUM COVERS REG_ID TO REG_ID {
-		if (Dict.RegMap.find($1) != Dict.RegMap.end())
+		if (Dict.RegMap.find(*$1) != Dict.RegMap.end())
 			yyerror("Name reglist declared twice");
-		Dict.RegMap[$1] = $6;
+		Dict.RegMap[*$1] = $6;
 		// Now for detailed Reg information
 		if (Dict.DetRegMap.find($6) != Dict.DetRegMap.end())
 			yyerror("Index used for more than one register");
-		Dict.DetRegMap[$6].s_name($1);
+		Dict.DetRegMap[$6].s_name($1->c_str());
 		Dict.DetRegMap[$6].s_size($3);
 		Dict.DetRegMap[$6].s_address(nullptr);
 		// check range is legitimate for size. 8,10
-		if ((Dict.RegMap.find($8)  == Dict.RegMap.end())
-		 || (Dict.RegMap.find($10) == Dict.RegMap.end()))
+		if ((Dict.RegMap.find(*$8)  == Dict.RegMap.end())
+		 || (Dict.RegMap.find(*$10) == Dict.RegMap.end()))
 			yyerror("Undefined range");
 		else {
-			int bitsize = Dict.DetRegMap[Dict.RegMap[$10]].g_size();
-			for (int i = Dict.RegMap[$8]; i != Dict.RegMap[$10]; ++i) {
+			int bitsize = Dict.DetRegMap[Dict.RegMap[*$10]].g_size();
+			for (int i = Dict.RegMap[*$8]; i != Dict.RegMap[*$10]; ++i) {
 				if (Dict.DetRegMap.find(i) == Dict.DetRegMap.end()) {
 					yyerror("Not all registers in range defined");
 					break;
@@ -322,32 +326,37 @@ a_reglist
 			yyerror("Register size is exceeds registers in range");
 			// copy information
 		}
-		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[$8]);
+		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[*$8]);
 		Dict.DetRegMap[$6].s_mappedOffset(0);
 		Dict.DetRegMap[$6].s_float(bFloat);
+		//delete $1;
+		delete $8;
+		delete $10;
 	  }
 
 	| REG_ID '[' NUM ']' INDEX NUM SHARES REG_ID AT '[' NUM TO NUM ']' {
-		if (Dict.RegMap.find($1) != Dict.RegMap.end())
+		if (Dict.RegMap.find(*$1) != Dict.RegMap.end())
 			yyerror("Name reglist declared twice");
-		Dict.RegMap[$1] = $6;
+		Dict.RegMap[*$1] = $6;
 		// Now for detailed Reg information
 		if (Dict.DetRegMap.find($6) != Dict.DetRegMap.end())
 			yyerror("Index used for more than one register");
-		Dict.DetRegMap[$6].s_name($1);
+		Dict.DetRegMap[$6].s_name($1->c_str());
 		Dict.DetRegMap[$6].s_size($3);
 		Dict.DetRegMap[$6].s_address(nullptr);
 		// Do checks
 		if ($3 != ($13 - $11) + 1)
 			yyerror("Size does not equal range");
-			if (Dict.RegMap.find($8) != Dict.RegMap.end()) {
-				if ($13 >= Dict.DetRegMap[Dict.RegMap[$8]].g_size())
+			if (Dict.RegMap.find(*$8) != Dict.RegMap.end()) {
+				if ($13 >= Dict.DetRegMap[Dict.RegMap[*$8]].g_size())
 					yyerror("Range extends over target register");
 			} else
 				yyerror("Shared index not yet defined");
-		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[$8]);
+		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[*$8]);
 		Dict.DetRegMap[$6].s_mappedOffset($11);
 		Dict.DetRegMap[$6].s_float(bFloat);
+		//delete $1;
+		delete $8;
 	  }
 
 	| '[' reg_table ']' '[' NUM ']' INDEX NUM TO NUM {
@@ -377,40 +386,43 @@ a_reglist
 	;
 
 reg_table
-	: reg_table ',' REG_ID                    { $1->push_back($3); }
-	| REG_ID { $$ = new std::list<std::string>; $$->push_back($1); }
+	: reg_table ',' REG_ID        { $1->push_back(*$3); delete $3; }
+	| REG_ID { $$ = new std::list<std::string>(1, *$1); delete $1; }
 	;
 
 /* Flag definitions */
 flag_fnc
 	: NAME_CALL list_parameter ')' '{' rt_list '}' {
 		// Note: $2 is a list of strings
-		Dict.FlagFuncs[$1] = new FlagDef(listStrToExp($2), $5);
+		Dict.FlagFuncs[*$1] = new FlagDef(listStrToExp($2), $5);
+		delete $1;
 	  }
 	;
 
 constants
 	: NAME EQUATE NUM {
-		if (ConstTable.find($1) != ConstTable.end())
+		if (ConstTable.find(*$1) != ConstTable.end())
 			yyerror("Constant declared twice");
-		ConstTable[std::string($1)] = $3;
+		ConstTable[*$1] = $3;
+		delete $1;
 	  }
 
 	| NAME EQUATE NUM ARITH_OP NUM {
-		if (ConstTable.find($1) != ConstTable.end())
+		if (ConstTable.find(*$1) != ConstTable.end())
 			yyerror("Constant declared twice");
 		else if ($4 == opMinus)
-			ConstTable[std::string($1)] = $3 - $5;
+			ConstTable[*$1] = $3 - $5;
 		else if ($4 == opPlus)
-			ConstTable[std::string($1)] = $3 + $5;
+			ConstTable[*$1] = $3 + $5;
 		else
 			yyerror("Constant expression must be NUM + NUM or NUM - NUM");
+		delete $1;
 	  }
 	;
 
 
 table_assign
-	: NAME EQUATE table_expr { TableDict[$1] = $3; }
+	: NAME EQUATE table_expr { TableDict[*$1] = $3; delete $1; }
 	;
 
 table_expr
@@ -453,43 +465,48 @@ name_expand
 	: '\'' NAME '\'' {
 		$$ = new std::deque<std::string>;
 		$$->push_back("");
-		$$->push_back($2);
+		$$->push_back(*$2);
+		delete $2;
 	  }
 
 	| '"' NAME '"' {
-		$$ = new std::deque<std::string>(1, $2);
+		$$ = new std::deque<std::string>(1, *$2);
+		delete $2;
 	  }
 
 	| '$' NAME {
 		std::ostringstream o;
 		// expand $2 from table of names
-		if (TableDict.find($2) != TableDict.end())
-			if (TableDict[$2]->getType() == NAMETABLE)
-				$$ = new std::deque<std::string>(TableDict[$2]->records);
+		auto it = TableDict.find(*$2);
+		if (it != TableDict.end())
+			if (it->second->getType() == NAMETABLE)
+				$$ = new std::deque<std::string>(it->second->records);
 			else {
-				o << "Name " << $2 << " is not a NAMETABLE";
+				o << "Name " << *$2 << " is not a NAMETABLE";
 				yyerror(o.str().c_str());
 			}
 		else {
-			o << "Could not dereference name " << $2;
+			o << "Could not dereference name " << *$2;
 			yyerror(o.str().c_str());
 		}
+		delete $2;
 	  }
 
 	| NAME {
 		// try and expand $1 from table of names. if fail, expand using '"' NAME '"' rule
-		if (TableDict.find($1) != TableDict.end())
-			if (TableDict[$1]->getType() == NAMETABLE)
-				$$ = new std::deque<std::string>(TableDict[$1]->records);
+		auto it = TableDict.find(*$1);
+		if (it != TableDict.end())
+			if (it->second->getType() == NAMETABLE)
+				$$ = new std::deque<std::string>(it->second->records);
 			else {
 				std::ostringstream o;
-				o << "Name " << $1 << " is not a NAMETABLE";
+				o << "Name " << *$1 << " is not a NAMETABLE";
 				yyerror(o.str().c_str());
 			}
 		else {
-			$$ = new std::deque<std::string>;
-			$$->push_back($1);
+			$$ = new std::deque<std::string>(1, *$1);
 		}
+		delete $1;
 	  }
 	;
 
@@ -529,80 +546,89 @@ instr
 instr_name
 	: instr_elem { $$ = $1; }
 	| instr_name DECOR {
-		std::string nm = $2;
 		std::string::size_type i;
 
-		if (nm[0] == '^')
-			nm.erase(0, 1);
+		if ((*$2)[0] == '^')
+			$2->erase(0, 1);
 
 		// remove all " and _, from the decoration
-		while ((i = nm.find('"')) != nm.npos)
-			nm.erase(i, 1);
+		while ((i = $2->find('"')) != $2->npos)
+			$2->erase(i, 1);
 		// replace all '.' with '_'s from the decoration
-		while ((i = nm.find('.')) != nm.npos)
-			nm[i] = '_';
-		while ((i = nm.find('_')) != nm.npos)
-			nm.erase(i, 1);
+		while ((i = $2->find('.')) != $2->npos)
+			(*$2)[i] = '_';
+		while ((i = $2->find('_')) != $2->npos)
+			$2->erase(i, 1);
 
-		InsNameElem *temp = new InsNameElem(nm);
 		$$ = $1;
-		$$->append(temp);
+		$$->append(new InsNameElem(*$2));
+		delete $2;
 	  }
 	;
 
 instr_elem
-	: NAME                     { $$ = new InsNameElem($1); }
+	: NAME                     { $$ = new InsNameElem(*$1); delete $1; }
 	| name_contract            { $$ = $1; }
 	| instr_elem name_contract { $$ = $1; $$->append($2); }
 	;
 
 name_contract
-	: '\'' NAME '\'' { $$ = new InsOptionElem($2); }
+	: '\'' NAME '\'' { $$ = new InsOptionElem(*$2); delete $2; }
 
 	| NAME_LOOKUP NUM ']' {
 		std::ostringstream o;
-		if (TableDict.find($1) == TableDict.end()) {
-			o << "Table " << $1 << " has not been declared";
+		auto it = TableDict.find(*$1);
+		if (it == TableDict.end()) {
+			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (($2 < 0) || ($2 >= (int)TableDict[$1]->records.size())) {
-			o << "Can't get element " << $2 << " of table " << $1;
+		} else if (($2 < 0) || ($2 >= (int)it->second->records.size())) {
+			o << "Can't get element " << $2 << " of table " << *$1;
 			yyerror(o.str().c_str());
 		} else
-			$$ = new InsNameElem(TableDict[$1]->records[$2]);
+			$$ = new InsNameElem(it->second->records[$2]);
+		delete $1;
 	  }
 
 	/* Example: ARITH[IDX]  where ARITH := { "ADD", "SUB", ... }; */
 	| NAME_LOOKUP NAME ']' {
 		std::ostringstream o;
-		if (TableDict.find($1) == TableDict.end()) {
-			o << "Table " << $1 << " has not been declared";
+		auto it = TableDict.find(*$1);
+		if (it == TableDict.end()) {
+			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
 		} else
-			$$ = new InsListElem($1, TableDict[$1], $2);
+			$$ = new InsListElem(*$1, it->second, *$2);
+		delete $1;
+		delete $2;
 	  }
 
 	| '$' NAME_LOOKUP NUM ']' {
 		std::ostringstream o;
-		if (TableDict.find($2) == TableDict.end()) {
-			o << "Table " << $2 << " has not been declared";
+		auto it = TableDict.find(*$2);
+		if (it == TableDict.end()) {
+			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (($3 < 0) || ($3 >= (int)TableDict[$2]->records.size())) {
-			o << "Can't get element " << $3 << " of table " << $2;
+		} else if (($3 < 0) || ($3 >= (int)it->second->records.size())) {
+			o << "Can't get element " << $3 << " of table " << *$2;
 			yyerror(o.str().c_str());
 		} else
-			$$ = new InsNameElem(TableDict[$2]->records[$3]);
+			$$ = new InsNameElem(it->second->records[$3]);
+		delete $2;
 	  }
 
 	| '$' NAME_LOOKUP NAME ']' {
 		std::ostringstream o;
-		if (TableDict.find($2) == TableDict.end()) {
-			o << "Table " << $2 << " has not been declared";
+		auto it = TableDict.find(*$2);
+		if (it == TableDict.end()) {
+			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
 		} else
-			$$ = new InsListElem($2, TableDict[$2], $3);
+			$$ = new InsListElem(*$2, it->second, *$3);
+		delete $2;
+		delete $3;
 	  }
 
-	| '"' NAME '"' { $$ = new InsNameElem($2); }
+	| '"' NAME '"' { $$ = new InsNameElem(*$2); delete $2; }
 	;
 
 rt_list
@@ -627,16 +653,18 @@ rt
 	/* Example: ADDFLAGS(r[tmp], reg_or_imm, r[rd]) */
 	| NAME_CALL list_actualparameter ')' {
 		std::ostringstream o;
-		if (Dict.FlagFuncs.find($1) != Dict.FlagFuncs.end()) {
+		if (Dict.FlagFuncs.find(*$1) != Dict.FlagFuncs.end()) {
 			// Note: SETFFLAGS assigns to the floating point flags. All others to the integer flags
-			bool bFloat = strcmp($1, "SETFFLAGS") == 0;
+			bool bFloat = $1->compare("SETFFLAGS") == 0;
 			OPER op = bFloat ? opFflags : opFlags;
 			$$ = new Assign(new Terminal(op), new Binary(opFlagCall,
-			                                             new Const($1),
+			                                             new Const($1->c_str()),
 			                                             listExpToExp($2)));
+			//delete $1;
 		} else {
-			o << $1 << " is not declared as a flag function";
+			o << *$1 << " is not declared as a flag function";
 			yyerror(o.str().c_str());
+			delete $1;
 		}
 	  }
 
@@ -650,30 +678,32 @@ rt
 flag_list
 	: flag_list ',' REG_ID {
 		// Not sure why the below is commented out (MVE)
-		/*Location *pFlag = Location::regOf(Dict.RegMap[$3]);
+		/*Location *pFlag = Location::regOf(Dict.RegMap[*$3]);
 		$1->push_back(pFlag);
 		$$ = $1;*/
 		$$ = nullptr;
+		delete $3;
 	  }
 	| REG_ID {
 		/*std::list<Exp *> *tmp = new std::list<Exp *>;
-		Unary *pFlag = new Unary(opIdRegOf, Dict.RegMap[$1]);
+		Unary *pFlag = new Unary(opIdRegOf, Dict.RegMap[*$1]);
 		tmp->push_back(pFlag);
 		$$ = tmp;*/
 		$$ = nullptr;
+		delete $1;
 	  }
 	;
 
 /* Note: this list is a list of strings (other code needs this) */
 list_parameter
-	: list_parameter ',' param    { assert($3); $1->push_back($3); $$ = $1; }
-	| param       { $$ = new std::list<std::string>; $$->push_back($1); }
-	| /* empty */ { $$ = new std::list<std::string>; }
+	: list_parameter ',' param { $$ = $1; $$->push_back(*$3); delete $3; }
+	| param        { $$ = new std::list<std::string>(1, *$1); delete $1; }
+	| /* empty */  { $$ = new std::list<std::string>; }
 	;
 
 param
 	: NAME {
-		Dict.ParamSet.insert($1);  // MVE: Likely wrong. Likely supposed to be OPERAND params only
+		Dict.ParamSet.insert(*$1);  // MVE: Likely wrong. Likely supposed to be OPERAND params only
 		$$ = $1;
 	  }
 	;
@@ -734,22 +764,26 @@ exp_term
 	/* Example: *Use* of COND[idx] */
 	| NAME_LOOKUP NAME ']' {
 		std::ostringstream o;
-		if (indexrefmap.find($2) == indexrefmap.end()) {
-			o << "Index " << $2 << " not declared for use";
+		auto ir = indexrefmap.find(*$2);
+		auto it = TableDict.find(*$1);
+		if (ir == indexrefmap.end()) {
+			o << "Index " << *$2 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (TableDict.find($1) == TableDict.end()) {
-			o << "Table " << $1 << " not declared for use";
+		} else if (it == TableDict.end()) {
+			o << "Table " << *$1 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (TableDict[$1]->getType() != EXPRTABLE) {
-			o << "Table " << $1 << " is not an expression table but appears to be used as one";
+		} else if (it->second->getType() != EXPRTABLE) {
+			o << "Table " << *$1 << " is not an expression table but appears to be used as one";
 			yyerror(o.str().c_str());
-		} else if ((int)((ExprTable *)TableDict[$1])->expressions.size() < indexrefmap[$2]->ntokens()) {
-			o << "Table " << $1 << " (" << ((ExprTable *)TableDict[$1])->expressions.size()
-			  << ") is too small to use " << $2 << " (" << indexrefmap[$2]->ntokens() << ") as an index";
+		} else if ((int)((ExprTable *)it->second)->expressions.size() < ir->second->ntokens()) {
+			o << "Table " << *$1 << " (" << ((ExprTable *)it->second)->expressions.size()
+			  << ") is too small to use " << *$2 << " (" << ir->second->ntokens() << ") as an index";
 			yyerror(o.str().c_str());
 		}
 		// $1 is a map from string to Table*; $2 is a map from string to InsNameElem*
-		$$ = new Binary(opExpTable, new Const($1), new Const($2));
+		$$ = new Binary(opExpTable, new Const($1->c_str()), new Const($2->c_str()));
+		//delete $1;
+		//delete $2;
 	  }
 
 	/* This is a "lambda" function-like parameter
@@ -757,25 +791,30 @@ exp_term
 	 * I believe only PA/RISC uses these so far. */
 	| NAME_CALL list_actualparameter ')' {
 		std::ostringstream o;
-		if (Dict.ParamSet.find($1) != Dict.ParamSet.end()) {
-			if (Dict.DetParamMap.find($1) != Dict.DetParamMap.end()) {
-				ParamEntry &param = Dict.DetParamMap[$1];
+		if (Dict.ParamSet.find(*$1) != Dict.ParamSet.end()) {
+			auto it = Dict.DetParamMap.find(*$1);
+			if (it != Dict.DetParamMap.end()) {
+				ParamEntry &param = it->second;
 				if ($2->size() != param.funcParams.size()) {
-					o << $1 << " requires " << param.funcParams.size() << " parameters, but received " << $2->size();
+					o << *$1 << " requires " << param.funcParams.size() << " parameters, but received " << $2->size();
 					yyerror(o.str().c_str());
+					delete $1;
 				} else {
 					// Everything checks out. *phew*
 					// Note: the below may not be right! (MVE)
-					$$ = new Binary(opFlagDef, new Const($1), listExpToExp($2));
+					$$ = new Binary(opFlagDef, new Const($1->c_str()), listExpToExp($2));
+					//delete $1;
 					//delete $2;  // Delete the list of char*s
 				}
 			} else {
-				o << $1 << " is not defined as a OPERAND function";
+				o << *$1 << " is not defined as a OPERAND function";
 				yyerror(o.str().c_str());
+				delete $1;
 			}
 		} else {
-			o << "Unrecognized name " << $1 << " in lambda call";
+			o << "Unrecognized name " << *$1 << " in lambda call";
 			yyerror(o.str().c_str());
+			delete $1;
 		}
 	  }
 
@@ -810,27 +849,31 @@ exp
 	 * Example: OP1[IDX] where OP1 := {  "&",  "|", "^", ... }; */
 	| exp NAME_LOOKUP NAME ']' exp_term %prec LOOKUP_RDC {
 		std::ostringstream o;
-		if (indexrefmap.find($3) == indexrefmap.end()) {
-			o << "Index " << $3 << " not declared for use";
+		auto ir = indexrefmap.find(*$3);
+		auto it = TableDict.find(*$2);
+		if (ir == indexrefmap.end()) {
+			o << "Index " << *$3 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (TableDict.find($2) == TableDict.end()) {
-			o << "Table " << $2 << " not declared for use";
+		} else if (it == TableDict.end()) {
+			o << "Table " << *$2 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (TableDict[$2]->getType() != OPTABLE) {
-			o << "Table " << $2 << " is not an operator table but appears to be used as one";
+		} else if (it->second->getType() != OPTABLE) {
+			o << "Table " << *$2 << " is not an operator table but appears to be used as one";
 			yyerror(o.str().c_str());
-		} else if ((int)((OpTable *)TableDict[$2])->operators.size() < indexrefmap[$3]->ntokens()) {
-			o << "Table " << $2 << " is too small to use with " << $3 << " as an index";
+		} else if ((int)((OpTable *)it->second)->operators.size() < ir->second->ntokens()) {
+			o << "Table " << *$2 << " is too small to use with " << *$3 << " as an index";
 			yyerror(o.str().c_str());
 		}
 		$$ = new Ternary(opOpTable,
-		                 new Const($2),
-		                 new Const($3),
+		                 new Const($2->c_str()),
+		                 new Const($3->c_str()),
 		                 new Binary(opList,
 		                            $1,
 		                            new Binary(opList,
 		                                       $5,
 		                                       new Terminal(opNil))));
+		//delete $2;
+		//delete $3;
 	  }
 
 	| exp_term { $$ = $1; }
@@ -841,25 +884,29 @@ location
 	 * is -1. If so, the equivalent of a special register is generated, i.e. a Terminal or opMachFtr
 	 * (machine specific feature) representing that register. */
 	: REG_ID {
-		bool isFlag = !!strstr($1, "flags");
-		auto it = Dict.RegMap.find($1);
+		bool isFlag = $1->find("flags") != $1->npos;
+		auto it = Dict.RegMap.find(*$1);
 		if (it == Dict.RegMap.cend() && !isFlag) {
 			std::ostringstream o;
-			o << "Register `" << $1 << "' is undefined";
+			o << "Register `" << *$1 << "' is undefined";
 			yyerror(o.str().c_str());
+			delete $1;
 		} else if (isFlag || it->second == -1) {
 			// A special register, e.g. %npc or %CF. Return a Terminal for it
-			OPER op = strToTerm($1);
+			OPER op = strToTerm($1->c_str());
 			if (op) {
 				$$ = new Terminal(op);
+				delete $1;
 			} else {
 				$$ = new Unary(opMachFtr,  // Machine specific feature
-				               new Const($1));
+				               new Const($1->c_str()));
+				//delete $1;
 			}
 		}
 		else {
 			// A register with a constant reg nmber, e.g. %g2.  In this case, we want to return r[const 2]
 			$$ = Location::regOf(it->second);
+			delete $1;
 		}
 	  }
 
@@ -869,24 +916,25 @@ location
 
 	| NAME {
 		// This is a mixture of the param: PARM {} match and the value_op: NAME {} match
-		Exp *s;
-		auto it = Dict.ParamSet.find($1);
+		auto it = Dict.ParamSet.find(*$1);
 		if (it != Dict.ParamSet.end()) {
-			s = new Location(opParam, new Const($1), nullptr);
-		} else if (ConstTable.find($1) != ConstTable.end()) {
-			s = new Const(ConstTable[$1]);
+			$$ = new Location(opParam, new Const($1->c_str()), nullptr);
+			//delete $1;
+		} else if (ConstTable.find(*$1) != ConstTable.end()) {
+			$$ = new Const(ConstTable[*$1]);
+			delete $1;
 		} else {
 			std::ostringstream o;
-			o << "`" << $1 << "' is not a constant, definition or a parameter of this instruction";
+			o << "`" << *$1 << "' is not a constant, definition or a parameter of this instruction";
 			yyerror(o.str().c_str());
-			s = new Const(0);
+			$$ = new Const(0);
+			delete $1;
 		}
-		$$ = s;
 	  }
 
 	| exp AT '[' exp ':' exp ']' { $$ = new Ternary(opAt, $1, $4, $6); }
 
-	| TEMP { $$ = Location::tempOf(new Const($1)); }
+	| TEMP { $$ = Location::tempOf(new Const($1->c_str())); /*delete $1;*/ }
 
 	/* This indicates a post-instruction marker (var tick) */
 	| location '\'' { $$ = new Unary(opPostVar, $1); }
@@ -908,17 +956,18 @@ esize
 
 assigntype
 	: ASSIGNTYPE {
-		char c = $1[1];
+		const char *s = $1->c_str();
+		char c = s[1];
 		if (c == '*') $$ = new SizeType(0); // MVE: should remove these
 		else if (isdigit(c)) {
 			int size;
 			// Skip star (hence +1)
-			sscanf($1 + 1, "%d", &size);
+			sscanf(s + 1, "%d", &size);
 			$$ = new SizeType(size);
 		} else {
 			int size;
 			// Skip star and letter
-			sscanf($1 + 2, "%d", &size);
+			sscanf(s + 2, "%d", &size);
 			if (size == 0) size = STD_SIZE;
 			switch (c) {
 			case 'i': $$ = new IntegerType(size, 1); break;
@@ -931,6 +980,7 @@ assigntype
 				$$ = new IntegerType;
 			}
 		}
+		delete $1;
 	  }
 	;
 
@@ -945,7 +995,7 @@ fastentries
 	;
 
 fastentry
-	: NAME INDEX NAME { Dict.fastMap[std::string($1)] = std::string($3); }
+	: NAME INDEX NAME { Dict.fastMap[*$1] = *$3; delete $1; delete $3; }
 	;
 
 %%

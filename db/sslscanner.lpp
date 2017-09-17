@@ -65,7 +65,7 @@
 "FAST"       { return SSLParser::FAST; }
 "FETCHEXEC"  { return SSLParser::FETCHEXEC; }
 
-"*"[a-z]?[0-9]*"*" { yylval.str = strdup(yytext); return SSLParser::ASSIGNTYPE; }
+"*"[a-z]?[0-9]*"*" { yylval.str = new std::string(yytext, yyleng); return SSLParser::ASSIGNTYPE; }
 
 "or"    { yylval.op = opOr;        return SSLParser::LOG_OP; }
 "and"   { yylval.op = opAnd;       return SSLParser::LOG_OP; }
@@ -154,19 +154,19 @@
 "sqrt("          { yylval.op = opSqrt;    return SSLParser::TRANSCEND; }
 "succ("          { return SSLParser::SUCCESSOR; }
 
-"tmp"[a-zA-Z0-9_]* { yylval.str = strdup(yytext); return SSLParser::TEMP; }
+"tmp"[a-zA-Z0-9_]* { yylval.str = new std::string(yytext, yyleng); return SSLParser::TEMP; }
 
 "r["        { return SSLParser::REG_IDX; }
 "r"[0-9]*   { yylval.num = strtol(&yytext[1], nullptr, 10); return SSLParser::REG_NUM; }
 "m["        { return SSLParser::MEM_IDX; }
 "_"         { return yytext[0]; }
 
-"%"[A-Za-z][A-Za-z0-9]*    { yylval.str = strdup(yytext); return SSLParser::REG_ID; }
-_?[A-Za-z][A-Za-z0-9_]*"(" { yytext[--yyleng] = '\0'; yylval.str = strdup(yytext); return SSLParser::NAME_CALL; }
-_?[A-Za-z][A-Za-z0-9_]*"[" { yytext[--yyleng] = '\0'; yylval.str = strdup(yytext); return SSLParser::NAME_LOOKUP; }
-_?[A-Za-z][A-Za-z0-9_]*    { yylval.str = strdup(yytext); return SSLParser::NAME; }
+"%"[A-Za-z][A-Za-z0-9]*    { yylval.str = new std::string(yytext, yyleng); return SSLParser::REG_ID; }
+_?[A-Za-z][A-Za-z0-9_]*"(" { yylval.str = new std::string(yytext, yyleng - 1); return SSLParser::NAME_CALL; }
+_?[A-Za-z][A-Za-z0-9_]*"[" { yylval.str = new std::string(yytext, yyleng - 1); return SSLParser::NAME_LOOKUP; }
+_?[A-Za-z][A-Za-z0-9_]*    { yylval.str = new std::string(yytext, yyleng); return SSLParser::NAME; }
 "."[A-Za-z][A-Za-z.0-9]*   |
-"^"\"[A-Za-z][A-Za-z]*\"   { yylval.str = strdup(yytext); return SSLParser::DECOR; }
+"^"\"[A-Za-z][A-Za-z]*\"   { yylval.str = new std::string(yytext, yyleng); return SSLParser::DECOR; }
 
 [?:,{}()'"] |
 "]"         |

@@ -21,7 +21,6 @@
 %}
 
 %{
-	#include <string.h>
 	#define YY_USER_ACTION \
 		count();
 %}
@@ -75,9 +74,9 @@ IS                      (u|U|l|L)*
 "a["                    { return TransformationParser::ADDROF; }
 "true"                  { return TransformationParser::BOOL_TRUE; }
 "false"                 { return TransformationParser::BOOL_FALSE; }
-{L}({L}|{D})*\(         { yytext[--yyleng] = '\0'; yylval.str = strdup(yytext); return TransformationParser::FUNC; }
+{L}({L}|{D})*\(         { yylval.str = new std::string(yytext, yyleng - 1); return TransformationParser::FUNC; }
 
-{L}({L}|{D})*           { yylval.str = strdup(yytext); return TransformationParser::IDENTIFIER; }
+{L}({L}|{D})*           { yylval.str = new std::string(yytext, yyleng); return TransformationParser::IDENTIFIER; }
 
 0[xX]{H}+{IS}?          |
 0{D}+{IS}?              |
@@ -88,7 +87,7 @@ L?'(\\.|[^\\'])+'       { return TransformationParser::CONSTANT; }
 {D}*"."{D}+({E})?{FS}?  |
 {D}+"."{D}*({E})?{FS}?  { return TransformationParser::CONSTANT; }
 
-L?\"(\\.|[^\\"])*\"     { yylval.str = strdup(yytext); return TransformationParser::STRING_LITERAL; }
+L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return TransformationParser::STRING_LITERAL; }
 
 "..."                   { return TransformationParser::ELLIPSIS; }
 ">>="                   { return TransformationParser::RIGHT_ASSIGN; }

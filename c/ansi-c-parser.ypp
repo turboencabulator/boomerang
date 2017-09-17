@@ -29,6 +29,8 @@
 	public:
 		Type *ty;
 		std::string nam;
+
+		TypeIdent(Type *ty, const std::string &nam) : ty(ty), nam(nam) { }
 	};
 
 	class SymbolMods {
@@ -42,7 +44,7 @@
 	class Symbol {
 	public:
 		ADDRESS addr;
-		std::string nam = "";
+		std::string nam;
 		Type *ty = nullptr;
 		Signature *sig = nullptr;
 		SymbolMods *mods = nullptr;
@@ -63,7 +65,7 @@
 		ADDRESS addr;
 		std::string nam;
 
-		SymbolRef(ADDRESS a, const char *nam) : addr(a), nam(nam) { }
+		SymbolRef(ADDRESS a, const std::string &nam) : addr(a), nam(nam) { }
 	};
 
 	class Bound {
@@ -71,13 +73,13 @@
 		int kind;
 		std::string nam;
 
-		Bound(int kind, const char *nam) : kind(kind), nam(nam) { }
+		Bound(int kind, const std::string &nam) : kind(kind), nam(nam) { }
 	};
 %}
 
 %union {
 	int ival;
-	const char *str;
+	std::string *str;
 	Type *type;
 	std::list<Parameter *> *param_list;
 	std::list<int> *num_list;
@@ -208,7 +210,7 @@ exp
 	;
 
 optional_bound
-	: MAXBOUND IDENTIFIER ')' { $$ = new Bound(0, $2); }
+	: MAXBOUND IDENTIFIER ')' { $$ = new Bound(0, *$2); delete $2; }
 	| /* empty */
 	;
 
@@ -246,7 +248,8 @@ param
 				delete *it;
 			}
 		delete $7;
-		$$ = new Parameter(new PointerType(new FuncType(sig)), $4);
+		$$ = new Parameter(new PointerType(new FuncType(sig)), $4->c_str());
+		delete $4;
 	  }
 	| ELLIPSIS {
 		$$ = new Parameter(new VoidType, "...");
@@ -268,7 +271,8 @@ type_decl
 				delete *it;
 			}
 		delete $8;
-		Type::addNamedType($5, new PointerType(new FuncType(sig)));
+		Type::addNamedType(*$5, new PointerType(new FuncType(sig)));
+		delete $5;
 	  }
 	| TYPEDEF type_ident '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, $2->nam.c_str());
@@ -288,9 +292,9 @@ type_decl
 		for (auto it = $4->begin(); it != $4->end(); ++it) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
-		std::string tmp = "struct ";
-		tmp += $2;
-		Type::addNamedType(tmp, t);
+		$2->insert(0, "struct ");
+		Type::addNamedType(*$2, t);
+		delete $2;
 	  }
 	;
 
@@ -356,7 +360,8 @@ signature
 
 symbol_ref_decl
 	: SYMBOLREF CONSTANT IDENTIFIER ';' {
-		SymbolRef *ref = new SymbolRef($2, $3);
+		SymbolRef *ref = new SymbolRef($2, *$3);
+		delete $3;
 		refs.push_back(ref);
 	  }
 	;
@@ -404,15 +409,13 @@ array_modifier
 
 type_ident
 	: type IDENTIFIER {
-		$$ = new TypeIdent();
-		$$->ty = $1;
-		$$->nam = $2;
+		$$ = new TypeIdent($1, *$2);
+		delete $2;
 	  }
 	| type IDENTIFIER array_modifier {
-		$$ = new TypeIdent();
 		((ArrayType *)$3)->fixBaseType($1);
-		$$->ty = $3;
-		$$->nam = $2;
+		$$ = new TypeIdent($3, *$2);
+		delete $2;
 	  }
 	;
 
@@ -447,12 +450,13 @@ type
 	| IDENTIFIER {
 		//$$ = Type::getNamedType($1);
 		//if (!$$)
-		$$ = new NamedType($1);
+		$$ = new NamedType(*$1);
+		delete $1;
 	  }
 	| STRUCT IDENTIFIER {
-		std::string tmp = "struct ";
-		tmp += $2;
-		$$ = new NamedType(tmp);
+		$2->insert(0, "struct ");
+		$$ = new NamedType(*$2);
+		delete $2;
 	  }
 	| STRUCT '{' type_ident_list '}' {
 		CompoundType *t = new CompoundType();

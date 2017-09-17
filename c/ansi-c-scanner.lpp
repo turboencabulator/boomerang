@@ -21,7 +21,6 @@
 %}
 
 %{
-	#include <string.h>
 	#define YY_USER_ACTION \
 		count();
 %}
@@ -116,7 +115,7 @@ IS                      (u|U|l|L)*
 "m["                    { return AnsiCParser::MEMOF; }
 "@max("                 { return AnsiCParser::MAXBOUND; }
 
-{L}({L}|{D})*           { yylval.str = strdup(yytext); return check_type(); }
+{L}({L}|{D})*           { yylval.str = new std::string(yytext, yyleng); return check_type(); }
 
 0[xX]{H}+{IS}?          |
 0{D}+{IS}?              |
@@ -127,7 +126,7 @@ L?'(\\.|[^\\'])+'       { return AnsiCParser::CONSTANT; }
 {D}*"."{D}+({E})?{FS}?  |
 {D}+"."{D}*({E})?{FS}?  { return AnsiCParser::CONSTANT; }
 
-L?\"(\\.|[^\\"])*\"     { yylval.str = strdup(yytext); return AnsiCParser::STRING_LITERAL; }
+L?\"(\\.|[^\\"])*\"     { yylval.str = new std::string(yytext, yyleng); return AnsiCParser::STRING_LITERAL; }
 
 "..."                   { return AnsiCParser::ELLIPSIS; }
 ">>="                   { return AnsiCParser::RIGHT_ASSIGN; }
