@@ -319,7 +319,7 @@ RTL::replaceLastStmt(Statement *repl)
  * \returns Integer number of Statements.
  */
 int
-RTL::getNumStmt()
+RTL::getNumStmt() const
 {
 	return stmtList.size();
 }

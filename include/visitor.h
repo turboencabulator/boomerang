@@ -99,7 +99,7 @@ class GetProcVisitor : public ExpVisitor {
 
 public:
 	            GetProcVisitor() { }  // Constructor
-	UserProc   *getProc() { return proc; }
+	UserProc   *getProc() const { return proc; }
 	bool        visit(Location *e, bool &override) override;
 	// All others inherit and visit their children
 };
@@ -111,7 +111,7 @@ class SetConscripts : public ExpVisitor {
 	bool        bClear;                  // True when clearing, not setting
 public:
 	            SetConscripts(int n, bool bClear) : curConscript(n), bClear(bClear) { }
-	int         getLast() { return curConscript; }
+	int         getLast() const { return curConscript; }
 	bool        visit(Const    *e) override;
 	bool        visit(Location *e, bool &override) override;
 	bool        visit(Binary   *b, bool &override) override;
@@ -129,7 +129,7 @@ protected:
 public:
 	                    ExpModifier() { }
 	virtual            ~ExpModifier() { }
-	        bool        isMod() { return mod; }
+	        bool        isMod() const { return mod; }
 	        void        clearMod() { mod = false; }
 
 	// visitor functions
@@ -189,7 +189,7 @@ class StmtConscriptSetter : public StmtVisitor {
 	bool        bClear;
 public:
 	            StmtConscriptSetter(int n, bool bClear) : curConscript(n), bClear(bClear) { }
-	int         getLast() { return curConscript; }
+	int         getLast() const { return curConscript; }
 
 	bool        visit(         Assign *stmt) override;
 	bool        visit(      PhiAssign *stmt) override;
@@ -221,7 +221,7 @@ public:
 	virtual bool        visit(ReturnStatement *stmt, bool &override) { override = false; return true; }
 	virtual bool        visit(ImpRefStatement *stmt, bool &override) { override = false; return true; }
 
-	        bool        isIgnoreCol() { return ignoreCol; }
+	        bool        isIgnoreCol() const { return ignoreCol; }
 };
 
 // StmtModifier is a class that for all expressions in this statement, makes a modification.
@@ -238,7 +238,7 @@ public:
 	        ExpModifier *mod;  // The expression modifier object
 	                    StmtModifier(ExpModifier *em, bool ic = false) : ignoreCol(ic), mod(em) { }// Constructor
 	virtual            ~StmtModifier() { }
-	        bool        ignoreCollector() { return ignoreCol; }
+	        bool        ignoreCollector() const { return ignoreCol; }
 	// This class' visitor functions don't return anything. Maybe we'll need return values at a later stage.
 	virtual void        visit(         Assign *s, bool &recur) { recur = true; }
 	virtual void        visit(      PhiAssign *s, bool &recur) { recur = true; }
@@ -261,7 +261,7 @@ public:
 	        ExpModifier *mod;  // The expression modifier object
 	                    StmtPartModifier(ExpModifier *em, bool ic = false) : ignoreCol(ic), mod(em) { }  // Constructor
 	virtual            ~StmtPartModifier() { }
-	        bool        ignoreCollector() { return ignoreCol; }
+	        bool        ignoreCollector() const { return ignoreCol; }
 	// This class' visitor functions don't return anything. Maybe we'll need return values at a later stage.
 	virtual void        visit(         Assign *s, bool &recur) { recur = true; }
 	virtual void        visit(      PhiAssign *s, bool &recur) { recur = true; }
@@ -280,7 +280,7 @@ class PhiStripper : public StmtModifier {
 public:
 	            PhiStripper(ExpModifier *em) : StmtModifier(em) { }
 	void        visit(PhiAssign *stmt, bool &recur) override;
-	bool        getDelete() { return del; }
+	bool        getDelete() const { return del; }
 };
 
 // A simplifying expression modifier. It does a simplification on the parent after a child has been modified
@@ -294,8 +294,8 @@ protected:
 	unsigned    unchanged = (unsigned)-1;
 public:
 	            SimpExpModifier() { }
-	unsigned    getUnchanged() { return unchanged; }
-	bool        isTopChanged() { return !(unchanged & mask); }
+	unsigned    getUnchanged() const { return unchanged; }
+	bool        isTopChanged() const { return !(unchanged & mask); }
 	Exp        *preVisit(Unary     *e, bool &recur) override { recur = true; mask <<= 1; return e; }
 	Exp        *preVisit(Binary    *e, bool &recur) override { recur = true; mask <<= 1; return e; }
 	Exp        *preVisit(Ternary   *e, bool &recur) override { recur = true; mask <<= 1; return e; }
@@ -339,9 +339,9 @@ public:
 	            UsedLocsFinder(LocationSet &used, bool memOnly) : used(&used), memOnly(memOnly) { }
 	           ~UsedLocsFinder() { }
 
-	LocationSet *getLocSet() { return used; }
+	LocationSet *getLocSet() const { return used; }
 	void        setMemOnly(bool b) { memOnly = b; }
-	bool        isMemOnly() { return memOnly; }
+	bool        isMemOnly() const { return memOnly; }
 
 	bool        visit(RefExp   *e, bool &override) override;
 	bool        visit(Location *e, bool &override) override;
@@ -360,8 +360,8 @@ public:
 	            UsedLocalFinder(LocationSet &used, UserProc *proc) : used(&used), proc(proc) { }
 	           ~UsedLocalFinder() { }
 
-	LocationSet *getLocSet() { return used; }
-	bool        wasAllFound() { return all; }
+	LocationSet *getLocSet() const { return used; }
+	bool        wasAllFound() const { return all; }
 
 	bool        visit(TypedExp *e, bool &override) override;
 	bool        visit(Location *e, bool &override) override;
@@ -426,7 +426,7 @@ class ExpConstCaster: public ExpModifier {
 public:
 	            ExpConstCaster(int num, Type *ty) : num(num), ty(ty) { }
 	virtual    ~ExpConstCaster() { }
-	bool        isChanged() { return changed; }
+	bool        isChanged() const { return changed; }
 
 	Exp        *preVisit(Const *c) override;
 };
@@ -516,7 +516,7 @@ class ComplexityFinder : public ExpVisitor {
 	UserProc   *proc;
 public:
 	            ComplexityFinder(UserProc *p) : proc(p) { }
-	int         getDepth() { return count; }
+	int         getDepth() const { return count; }
 
 	bool        visit(Unary    *e, bool &override) override;
 	bool        visit(Binary   *e, bool &override) override;
@@ -530,7 +530,7 @@ class MemDepthFinder : public ExpVisitor {
 public:
 	            MemDepthFinder() { }
 	bool        visit(Location *e, bool &override) override;
-	int         getDepth() { return depth; }
+	int         getDepth() const { return depth; }
 };
 
 
@@ -540,7 +540,7 @@ class ExpPropagator : public SimpExpModifier {
 	bool        change = false;
 public:
 	            ExpPropagator() { }
-	bool        isChanged() { return change; }
+	bool        isChanged() const { return change; }
 	void        clearChanged() { change = false; }
 	Exp        *postVisit(RefExp *e) override;
 };
@@ -551,7 +551,7 @@ class PrimitiveTester : public ExpVisitor {
 	bool        result = true;
 public:
 	            PrimitiveTester() { }  // Initialise result true: need AND of all components
-	bool        getResult() { return result; }
+	bool        getResult() const { return result; }
 	bool        visit(RefExp   *e, bool &override) override;
 	bool        visit(Location *e, bool &override) override;
 };
@@ -563,7 +563,7 @@ class ExpHasMemofTester : public ExpVisitor {
 	UserProc   *proc;
 public:
 	            ExpHasMemofTester(UserProc *proc) : proc(proc) { }
-	bool        getResult() { return result; }
+	bool        getResult() const { return result; }
 	bool        visit(Location *e, bool &override) override;
 };
 
@@ -622,7 +622,7 @@ class FlagsFinder : public ExpVisitor {
 	bool        found = false;
 public:
 	            FlagsFinder() { }
-	bool        isFound() { return found; }
+	bool        isFound() const { return found; }
 private:
 	bool        visit(Binary *e, bool &override) override;
 };
@@ -633,7 +633,7 @@ class BadMemofFinder : public ExpVisitor {
 	UserProc   *proc;
 public:
 	            BadMemofFinder(UserProc *proc) : proc(proc) { }
-	bool        isFound() { return found; }
+	bool        isFound() const { return found; }
 private:
 	bool        visit(RefExp   *e, bool &override) override;
 	bool        visit(Location *e, bool &override) override;
@@ -668,7 +668,7 @@ class ExpSsaXformer : public ExpModifier {
 	UserProc   *proc;
 public:
 	            ExpSsaXformer(UserProc *proc) : proc(proc) { }
-	UserProc   *getProc() { return proc; }
+	UserProc   *getProc() const { return proc; }
 
 	Exp        *postVisit(RefExp *e) override;
 };

@@ -149,7 +149,7 @@ DataFlow::Link(int p, int n)
 
 // Return true if n dominates w
 bool
-DataFlow::doesDominate(int n, int w)
+DataFlow::doesDominate(int n, int w) const
 {
 	while (idom[w] != -1) {
 		if (idom[w] == n)
@@ -194,7 +194,7 @@ DataFlow::computeDF(int n)
 
 
 bool
-DataFlow::canRename(Exp *e, UserProc *proc)
+DataFlow::canRename(Exp *e, UserProc *proc) const
 {
 	if (e->isSubscript()) e = ((RefExp *)e)->getSubExp1();  // Look inside refs
 	if (e->isRegOf())    return true;   // Always rename registers

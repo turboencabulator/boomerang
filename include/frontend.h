@@ -127,7 +127,7 @@ public:
 
 	static bool noReturnCallDest(const char *name);
 
-	BinaryFile *getBinaryFile() { return pBF; }
+	BinaryFile *getBinaryFile() const { return pBF; }
 
 	virtual DecodeResult &decodeInstruction(ADDRESS pc);
 	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
@@ -166,7 +166,7 @@ public:
 
 	std::vector<ADDRESS> getEntryPoints();
 
-	Prog *getProg();
+	Prog *getProg() const;
 
 	BasicBlock *createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl);
 

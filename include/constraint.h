@@ -30,7 +30,7 @@ public:
 	typedef std::map<Exp *, Exp *, lessExpStar>::iterator iterator;
 
 	// Return true if the given expression is in the map
-	bool isFound(Exp *e) {
+	bool isFound(Exp *e) const {
 		return cmap.find(e) != cmap.end();
 	}
 	// Return an iterator to the given left hand side Exp
@@ -81,9 +81,9 @@ public:
 	// Union with another constraint map
 	void makeUnion(ConstraintMap &o);
 	// Print to the given stream
-	void print(std::ostream &os);
+	void print(std::ostream &os) const;
 	// Print to a string
-	std::string prints();
+	std::string prints() const;
 	// Substitute the given constraints into this map
 	void substitute(ConstraintMap &other);
 	// For this solution, we need to find disjunctions of the form
@@ -121,8 +121,8 @@ public:
 	iterator find(Exp *e) {
 		return emap.find(e);
 	}
-	void print(std::ostream &os);
-	std::string prints();
+	void print(std::ostream &os) const;
+	std::string prints() const;
 };
 
 class Constraints {
@@ -138,8 +138,8 @@ public:
 	Constraints() { }
 	~Constraints();
 
-	void print(std::ostream &os);
-	std::string prints();
+	void print(std::ostream &os) const;
+	std::string prints() const;
 
 	LocationSet &getConstraints() {
 		return conSet;

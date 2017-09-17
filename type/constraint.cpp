@@ -25,7 +25,7 @@
 #include <sstream>
 
 void
-ConstraintMap::print(std::ostream &os)
+ConstraintMap::print(std::ostream &os) const
 {
 	bool first = true;
 	for (auto kk = cmap.begin(); kk != cmap.end(); ++kk) {
@@ -37,7 +37,7 @@ ConstraintMap::print(std::ostream &os)
 }
 
 std::string
-ConstraintMap::prints()
+ConstraintMap::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -79,7 +79,7 @@ ConstraintMap::insert(Exp *term)
 
 
 void
-EquateMap::print(std::ostream &os)
+EquateMap::print(std::ostream &os) const
 {
 	for (auto ee = emap.begin(); ee != emap.end(); ++ee) {
 		os << "\t " << ee->first << " = " << ee->second.prints();
@@ -88,7 +88,7 @@ EquateMap::print(std::ostream &os)
 }
 
 std::string
-EquateMap::prints()
+EquateMap::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -234,7 +234,7 @@ Constraints::substIntoEquates(ConstraintMap &in)
 // But NOT (a or b) or (c or d)
 // Could also be just a (a conjunction, or a single constraint)
 // Note: remainder is changed by this function
-Exp *
+static Exp *
 nextDisjunct(Exp *&remainder)
 {
 	if (!remainder) return nullptr;
@@ -254,7 +254,7 @@ nextDisjunct(Exp *&remainder)
 	return ret;
 }
 
-Exp *
+static Exp *
 nextConjunct(Exp *&remainder)
 {
 	if (!remainder) return nullptr;
@@ -577,7 +577,7 @@ Constraints::alphaSubst()
 }
 
 void
-Constraints::print(std::ostream &os)
+Constraints::print(std::ostream &os) const
 {
 	os << "\n" << std::dec << (int)disjunctions.size() << " disjunctions: ";
 	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
@@ -590,7 +590,7 @@ Constraints::print(std::ostream &os)
 }
 
 std::string
-Constraints::prints()
+Constraints::prints() const
 {
 	std::ostringstream ost;
 	print(ost);

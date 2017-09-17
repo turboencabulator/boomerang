@@ -209,9 +209,10 @@ FrontEnd::getRegName(int idx)
 int
 FrontEnd::getRegSize(int idx)
 {
-	if (getDecoder().getRTLDict().DetRegMap.find(idx) == getDecoder().getRTLDict().DetRegMap.end())
-		return 32;
-	return getDecoder().getRTLDict().DetRegMap[idx].g_size();
+	auto it = getDecoder().getRTLDict().DetRegMap.find(idx);
+	if (it != getDecoder().getRTLDict().DetRegMap.end())
+		return it->second.g_size();
+	return 32;
 }
 
 /**
@@ -1233,7 +1234,7 @@ TargetQueue::nextAddress(Cfg *cfg)
  * \returns Pointer to a Prog object (with pFE and pBF filled in).
  */
 Prog *
-FrontEnd::getProg()
+FrontEnd::getProg() const
 {
 	return prog;
 }

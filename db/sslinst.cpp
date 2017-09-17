@@ -132,7 +132,7 @@ RTLInstDict::~RTLInstDict()
  * \returns 0 for success, non-zero for failure.
  */
 int
-RTLInstDict::appendToDict(std::string &n, std::list<std::string> &p, RTL &r)
+RTLInstDict::appendToDict(const std::string &n, std::list<std::string> &p, RTL &r)
 {
 	char *opcode = new char[n.size() + 1];
 	strcpy(opcode, n.c_str());

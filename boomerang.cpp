@@ -261,7 +261,7 @@ createDirectory(std::string dir)
  * Prints a tree graph.
  */
 void
-Cluster::printTree(std::ostream &out)
+Cluster::printTree(std::ostream &out) const
 {
 	out << "\t\t" << name << "\n";
 	for (unsigned i = 0; i < children.size(); ++i)

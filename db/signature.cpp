@@ -65,7 +65,7 @@ namespace CallingConvention {
 		            Win32Signature(Signature &old);
 		virtual    ~Win32Signature() { }
 		Signature  *clone() override;
-		bool        operator ==(Signature &other) override;
+		bool        operator ==(const Signature &other) const override;
 		static bool qualified(UserProc *p, Signature &candidate);
 
 		void        addReturn(Type *type, Exp *e = nullptr) override;
@@ -105,7 +105,7 @@ namespace CallingConvention {
 			            PentiumSignature(Signature &old);
 			virtual    ~PentiumSignature() { }
 			Signature  *clone() override;
-			bool        operator ==(Signature &other) override;
+			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 
 			void        addReturn(Type *type, Exp *e = nullptr) override;
@@ -131,7 +131,7 @@ namespace CallingConvention {
 			            SparcSignature(Signature &old);
 			virtual    ~SparcSignature() { }
 			Signature  *clone() override;
-			bool        operator ==(Signature &other) override;
+			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 
 			void        addReturn(Type *type, Exp *e = nullptr) override;
@@ -211,7 +211,7 @@ namespace CallingConvention {
 			            ST20Signature(Signature &old);
 			virtual    ~ST20Signature() { }
 			Signature  *clone() override;
-			bool        operator ==(Signature &other) override;
+			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 
 			void        addReturn(Type *type, Exp *e = nullptr) override;
@@ -320,7 +320,7 @@ CallingConvention::Win32TcSignature::clone()
 }
 
 bool
-CallingConvention::Win32Signature::operator ==(Signature &other)
+CallingConvention::Win32Signature::operator ==(const Signature &other) const
 {
 	return Signature::operator ==(other);
 }
@@ -536,7 +536,7 @@ CallingConvention::StdC::PentiumSignature::clone()
 }
 
 bool
-CallingConvention::StdC::PentiumSignature::operator ==(Signature &other)
+CallingConvention::StdC::PentiumSignature::operator ==(const Signature &other) const
 {
 	return Signature::operator ==(other);
 }
@@ -831,7 +831,7 @@ CallingConvention::StdC::ST20Signature::clone()
 }
 
 bool
-CallingConvention::StdC::ST20Signature::operator ==(Signature &other)
+CallingConvention::StdC::ST20Signature::operator ==(const Signature &other) const
 {
 	return Signature::operator ==(other);
 }
@@ -983,7 +983,7 @@ CallingConvention::StdC::SparcLibSignature::clone()
 }
 
 bool
-CallingConvention::StdC::SparcSignature::operator ==(Signature &other)
+CallingConvention::StdC::SparcSignature::operator ==(const Signature &other) const
 {
 	return Signature::operator ==(other);
 }
@@ -1207,7 +1207,7 @@ CustomSignature::clone()
 }
 
 bool
-Signature::operator ==(Signature &other)
+Signature::operator ==(const Signature &other) const
 {
 	//if (name != other.name) return false;  // MVE: should the name be significant? I'm thinking no
 	if (params.size() != other.params.size()) return false;
@@ -1546,7 +1546,7 @@ Signature::instantiate(platform plat, callconv cc, const char *nam)
 }
 
 void
-Signature::print(std::ostream &out, bool html)
+Signature::print(std::ostream &out, bool html) const
 {
 	if (isForced())
 		out << "*forced* ";
@@ -1573,7 +1573,7 @@ Signature::print(std::ostream &out, bool html)
 }
 
 std::string
-Signature::prints()
+Signature::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -1581,7 +1581,7 @@ Signature::prints()
 }
 
 void
-Signature::printToLog()
+Signature::printToLog() const
 {
 	LOG << prints();
 }
@@ -1865,7 +1865,7 @@ CallingConvention::StdC::SparcSignature::isAddrOfStackLocal(Prog *prog, Exp *e)
 }
 
 bool
-Parameter::operator ==(Parameter &other)
+Parameter::operator ==(const Parameter &other) const
 {
 	if (!(*type == *other.type)) return false;
 	// Do we really care about a parameter's name?
@@ -2181,7 +2181,7 @@ Return::clone()
 }
 
 bool
-Return::operator ==(Return &other)
+Return::operator ==(const Return &other) const
 {
 	if (!(*type == *other.type)) return false;
 	if (!(*exp == *other.exp)) return false;

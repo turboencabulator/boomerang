@@ -102,7 +102,7 @@ public:
 	virtual bool        isLower()       const { return false; }
 
 	// Return false if some info is missing, e.g. unknown sign, size or basic type
-	virtual bool        isComplete() { return true; }
+	virtual bool        isComplete() const { return true; }
 
 	// These replace type casts
 	        VoidType     *asVoid();
@@ -121,19 +121,19 @@ public:
 	        LowerType    *asLower();
 
 	// These replace calls to isNamed() and resolvesTo()
-	        bool        resolvesToVoid();
-	        bool        resolvesToFunc();
-	        bool        resolvesToBoolean();
-	        bool        resolvesToChar();
-	        bool        resolvesToInteger();
-	        bool        resolvesToFloat();
-	        bool        resolvesToPointer();
-	        bool        resolvesToArray();
-	        bool        resolvesToCompound();
-	        bool        resolvesToUnion();
-	        bool        resolvesToSize();
-	        bool        resolvesToUpper();
-	        bool        resolvesToLower();
+	        bool        resolvesToVoid() const;
+	        bool        resolvesToFunc() const;
+	        bool        resolvesToBoolean() const;
+	        bool        resolvesToChar() const;
+	        bool        resolvesToInteger() const;
+	        bool        resolvesToFloat() const;
+	        bool        resolvesToPointer() const;
+	        bool        resolvesToArray() const;
+	        bool        resolvesToCompound() const;
+	        bool        resolvesToUnion() const;
+	        bool        resolvesToSize() const;
+	        bool        resolvesToUpper() const;
+	        bool        resolvesToLower() const;
 
 	// cloning
 	virtual Type       *clone() const = 0;
@@ -160,8 +160,8 @@ public:
 	// When final, choose a signedness etc
 	virtual const char *getCtype(bool final = false) const = 0;
 	// Print in *i32* format
-	        void        starPrint(std::ostream &os);
-	        const char *prints();           // For debugging
+	        void        starPrint(std::ostream &os) const;
+	        const char *prints() const;     // For debugging
 
 	virtual std::string getTempName() const; // Get a temporary name for the type
 
@@ -233,7 +233,7 @@ public:
 
 	Type       *clone() const override;
 
-	Signature  *getSignature() { return signature; }
+	Signature  *getSignature() const { return signature; }
 	void        setSignature(Signature *sig) { signature = sig; }
 
 	bool        operator ==(const Type &other) const override;
@@ -246,7 +246,7 @@ public:
 	const char *getCtype(bool final = false) const override;
 
 	// Split the C type into return and parameter parts
-	void        getReturnAndParam(const char *&ret, const char *&param);
+	void        getReturnAndParam(const char *&ret, const char *&param) const;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -264,7 +264,7 @@ public:
 	            IntegerType(int sz = STD_SIZE, int sign = 0);
 	virtual    ~IntegerType();
 	bool        isInteger() const override { return true; }
-	bool        isComplete() override { return signedness != 0 && size != 0; }
+	bool        isComplete() const override { return signedness != 0 && size != 0; }
 
 	Type       *clone() const override;
 
@@ -277,14 +277,14 @@ public:
 	unsigned    getSize() const override;            // Get size in bits
 	void        setSize(int sz) override { size = sz; }
 	// Is it signed? 0=unknown, pos=yes, neg = no
-	bool        isSigned()   { return signedness >= 0; }    // True if not unsigned
-	bool        isUnsigned() { return signedness <= 0; }    // True if not definately signed
+	bool        isSigned() const   { return signedness >= 0; }  // True if not unsigned
+	bool        isUnsigned() const { return signedness <= 0; }  // True if not definitely signed
 	// A hint for signedness
 	void        bumpSigned(int sg) { signedness += sg; }
 	// Set absolute signedness
 	void        setSigned(int sg)  { signedness = sg; }
 	// Get the signedness
-	int         getSignedness()    { return signedness; }
+	int         getSignedness() const { return signedness; }
 
 	// Get the C type as a string. If full, output comments re the lack of sign information (in IntegerTypes).
 	const char *getCtype(bool final = false) const override;
@@ -385,7 +385,7 @@ public:
 	virtual    ~PointerType();
 	bool        isPointer() const override { return true; }
 	void        setPointsTo(Type *p);
-	Type       *getPointsTo() { return points_to; }
+	Type       *getPointsTo() const { return points_to; }
 	static PointerType *newPtrAlpha();
 	bool        pointsToAlpha();
 	int         pointerDepth();     // Return 2 for **x
@@ -420,10 +420,10 @@ public:
 	            ArrayType(Type *p);
 	virtual    ~ArrayType();
 	bool        isArray() const override { return true; }
-	Type       *getBaseType() { return base_type; }
+	Type       *getBaseType() const { return base_type; }
 	void        setBaseType(Type *b);
 	void        fixBaseType(Type *b);
-	unsigned    getLength() { return length; }
+	unsigned    getLength() const { return length; }
 	void        setLength(unsigned n) { length = n; }
 	bool        isUnbounded() const;
 
@@ -456,7 +456,7 @@ public:
 	            NamedType(const char *name);
 	virtual    ~NamedType();
 	bool        isNamed() const override { return true; }
-	const char *getName() { return name.c_str(); }
+	const char *getName() const { return name.c_str(); }
 	Type       *resolvesTo() const;
 	// Get a new type variable, e.g. alpha0, alpha55
 	static NamedType *getAlpha();
@@ -499,18 +499,18 @@ public:
 		            names.push_back(str);
 	            }
 	unsigned    getNumTypes() const { return types.size(); }
-	Type       *getType(unsigned n) { assert(n < getNumTypes()); return types[n]; }
-	Type       *getType(const char *nam);
-	const char *getName(unsigned n) { assert(n < getNumTypes()); return names[n].c_str(); }
+	Type       *getType(unsigned n) const { assert(n < getNumTypes()); return types[n]; }
+	Type       *getType(const char *nam) const;
+	const char *getName(unsigned n) const { assert(n < getNumTypes()); return names[n].c_str(); }
 	void        setTypeAtOffset(unsigned n, Type *ty);
-	Type       *getTypeAtOffset(unsigned n);
+	Type       *getTypeAtOffset(unsigned n) const;
 	void        setNameAtOffset(unsigned n, const char *nam);
-	const char *getNameAtOffset(unsigned n);
-	bool        isGeneric() { return generic; }
+	const char *getNameAtOffset(unsigned n) const;
+	bool        isGeneric() const { return generic; }
 	void        updateGenericMember(int off, Type *ty, bool &ch);   // Add a new generic member if necessary
-	unsigned    getOffsetTo(unsigned n);
-	unsigned    getOffsetTo(const char *member);
-	unsigned    getOffsetRemainder(unsigned n);
+	unsigned    getOffsetTo(unsigned n) const;
+	unsigned    getOffsetTo(const char *member) const;
+	unsigned    getOffsetRemainder(unsigned n) const;
 
 	Type       *clone() const override;
 
@@ -523,8 +523,8 @@ public:
 
 	const char *getCtype(bool final = false) const override;
 
-	bool        isSuperStructOf(Type *other);       // True if this is is a superstructure of other
-	bool        isSubStructOf(Type *other);         // True if this is is a substructure of other
+	bool        isSuperStructOf(Type *other);       // True if this is a superstructure of other
+	bool        isSubStructOf(Type *other);         // True if this is a substructure of other
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
@@ -596,7 +596,7 @@ public:
 	unsigned    getSize() const override;
 	void        setSize(unsigned sz) /* override */ { size = sz; }  // FIXME: different parameter type
 	bool        isSize() const override { return true; }
-	bool        isComplete() override { return false; }    // Basic type is unknown
+	bool        isComplete() const override { return false; }    // Basic type is unknown
 	const char *getCtype(bool final = false) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -617,13 +617,13 @@ public:
 	bool        operator < (const Type &other) const override;
 	//Exp        *match(Type *pattern) override;
 	Type       *mergeWith(Type *other) override;
-	Type       *getBaseType() { return base_type; }
+	Type       *getBaseType() const { return base_type; }
 	void        setBaseType(Type *b) { base_type = b; }
 
 	unsigned    getSize() const override { return base_type->getSize() / 2; }
 	void        setSize(int sz) override;        // Does this make sense?
 	bool        isUpper() const override { return true; }
-	bool        isComplete() override { return base_type->isComplete(); }
+	bool        isComplete() const override { return base_type->isComplete(); }
 	const char *getCtype(bool final = false) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -641,13 +641,13 @@ public:
 	bool        operator < (const Type &other) const override;
 	//Exp        *match(Type *pattern) override;
 	Type       *mergeWith(Type *other) override;
-	Type       *getBaseType() { return base_type; }
+	Type       *getBaseType() const { return base_type; }
 	void        setBaseType(Type *b) { base_type = b; }
 
 	unsigned    getSize() const override { return base_type->getSize() / 2; }
 	void        setSize(int sz) override;        // Does this make sense?
 	bool        isLower() const override { return true; }
-	bool        isComplete() override { return base_type->isComplete(); }
+	bool        isComplete() const override { return base_type->isComplete(); }
 	const char *getCtype(bool final = false) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -686,7 +686,7 @@ public:
 	void        addItem(ADDRESS addr, const char *name, Type *ty, bool forced = false);
 	void        deleteItem(ADDRESS addr);       // Mainly for testing?
 	void        expandItem(ADDRESS addr, unsigned size);
-	std::string prints();                       // For test and debug
+	std::string prints() const;                 // For test and debug
 
 private:
 	void        enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);

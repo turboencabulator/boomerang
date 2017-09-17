@@ -70,7 +70,7 @@ public:
 	 * \name Common enquiry methods
 	 * \{
 	 */
-	        ADDRESS     getAddress() { return nativeAddr; }        ///< Return RTL's native address.
+	        ADDRESS     getAddress() const { return nativeAddr; }  ///< Return RTL's native address.
 	        void        setAddress(ADDRESS a) { nativeAddr = a; }  ///< Set the address.
 	        Type       *getType();
 	        bool        areFlagsAffected();
@@ -80,7 +80,7 @@ public:
 	 * \name Statement list enquiry methods
 	 * \{
 	 */
-	        int         getNumStmt();
+	        int         getNumStmt() const;
 	        Statement  *elementAt(unsigned i);
 	/** \} */
 
@@ -221,7 +221,7 @@ public:
 
 	std::pair<std::string, unsigned> getSignature(const char *name);
 
-	int appendToDict(std::string &n, std::list<std::string> &p, RTL &rtl);
+	int appendToDict(const std::string &n, std::list<std::string> &p, RTL &rtl);
 
 	std::list<Statement *> *instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *> &actuals);
 	std::list<Statement *> *instantiateRTL(RTL &rtls, ADDRESS natPC, std::list<std::string> &params, std::vector<Exp *> &actuals);

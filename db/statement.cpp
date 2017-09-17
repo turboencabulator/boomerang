@@ -53,7 +53,7 @@ Statement::setProc(UserProc *p)
 }
 
 Exp *
-Statement::getExpAtLex(unsigned int begin, unsigned int end)
+Statement::getExpAtLex(unsigned int begin, unsigned int end) const
 {
 	return nullptr;
 }
@@ -575,7 +575,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 }
 
 bool
-JunctionStatement::isLoopJunction()
+JunctionStatement::isLoopJunction() const
 {
 	for (int i = 0; i < pbb->getNumInEdges(); ++i)
 		if (pbb->isBackEdge(i))
@@ -667,7 +667,7 @@ operator <<(std::ostream &os, Statement *s)
 }
 
 bool
-Statement::isFlagAssgn()
+Statement::isFlagAssgn() const
 {
 	if (kind != STMT_ASSIGN)
 		return false;
@@ -978,7 +978,7 @@ Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 }
 
 bool
-Statement::isNullStatement()
+Statement::isNullStatement() const
 {
 	if (kind != STMT_ASSIGN) return false;
 	Exp *right = ((Assign *)this)->getRight();
@@ -991,13 +991,13 @@ Statement::isNullStatement()
 }
 
 bool
-Statement::isFpush()
+Statement::isFpush() const
 {
 	if (kind != STMT_ASSIGN) return false;
 	return ((Assign *)this)->getRight()->getOper() == opFpush;
 }
 bool
-Statement::isFpop()
+Statement::isFpop() const
 {
 	if (kind != STMT_ASSIGN) return false;
 	return ((Assign *)this)->getRight()->getOper() == opFpop;
@@ -1054,7 +1054,7 @@ GotoStatement::~GotoStatement()
  * RETURNS:         Fixed dest or NO_ADDRESS if there isn't one
  *============================================================================*/
 ADDRESS
-GotoStatement::getFixedDest()
+GotoStatement::getFixedDest() const
 {
 	if (!pDest->isIntConst()) return NO_ADDRESS;
 	return ((Const *)pDest)->getAddr();
@@ -1205,7 +1205,7 @@ GotoStatement::setIsComputed(bool b)
  * RETURNS:       this call is computed
  *============================================================================*/
 bool
-GotoStatement::isComputed()
+GotoStatement::isComputed() const
 {
 	return m_isComputed;
 }
@@ -2323,7 +2323,7 @@ CallStatement::setReturnAfterCall(bool b)
  * RETURNS:          True if this call is effectively followed by a return
  *============================================================================*/
 bool
-CallStatement::isReturnAfterCall()
+CallStatement::isReturnAfterCall() const
 {
 	return returnAfterCall;
 }
@@ -3162,7 +3162,7 @@ BoolAssign::setCondExpr(Exp *pss)
  * PARAMETERS:      os: stream
  *============================================================================*/
 void
-BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html)
+BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html) const
 {
 	os << "BOOL ";
 	lhs->print(os);
@@ -3534,7 +3534,7 @@ Assignment::print(std::ostream &os, bool html)
 }
 
 void
-Assign::printCompact(std::ostream &os, bool html)
+Assign::printCompact(std::ostream &os, bool html) const
 {
 	os << "*" << type << "* ";
 	if (guard)
@@ -3545,7 +3545,7 @@ Assign::printCompact(std::ostream &os, bool html)
 }
 
 void
-PhiAssign::printCompact(std::ostream &os, bool html)
+PhiAssign::printCompact(std::ostream &os, bool html) const
 {
 	os << "*" << type << "* ";
 	if (lhs) lhs->print(os, html);
@@ -3601,7 +3601,7 @@ PhiAssign::printCompact(std::ostream &os, bool html)
 }
 
 void
-ImplicitAssign::printCompact(std::ostream &os, bool html)
+ImplicitAssign::printCompact(std::ostream &os, bool html) const
 {
 	os << "*" << type << "* ";
 	if (lhs) lhs->print(os, html);
@@ -5219,7 +5219,7 @@ CallStatement::removeDefine(Exp *e)
 }
 
 bool
-CallStatement::isChildless()
+CallStatement::isChildless() const
 {
 	if (!procDest) return true;
 	if (procDest->isLib()) return false;

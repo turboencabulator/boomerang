@@ -48,10 +48,10 @@ public:
 	typedef std::set<Statement *>::iterator iterator;
 
 	           ~StatementSet() { }
-	void        makeUnion(StatementSet &other);   // Set union
-	void        makeDiff(StatementSet &other);    // Set difference
-	void        makeIsect(StatementSet &other);   // Set intersection
-	bool        isSubSetOf(StatementSet &other);  // Subset relation
+	void        makeUnion(const StatementSet &other);   // Set union
+	void        makeDiff(const StatementSet &other);    // Set difference
+	void        makeIsect(const StatementSet &other);   // Set intersection
+	bool        isSubSetOf(const StatementSet &other);  // Subset relation
 
 	unsigned    size() const  { return sset.size(); }   // Number of elements
 	bool        empty() const { return sset.empty(); }
@@ -61,15 +61,15 @@ public:
 	void        insert(Statement *s) { sset.insert(s); }  // Insertion
 	bool        remove(Statement *s);                     // Removal; rets false if not found
 	bool        exists(Statement *s) const;               // Search; returns false if !found
-	bool        definesLoc(Exp *loc);                     // Search; returns true if any
+	bool        definesLoc(Exp *loc) const;               // Search; returns true if any
 	                                                      // statement defines loc
 	void        clear() { sset.clear(); }                 // Clear the set
 	bool        operator ==(const StatementSet &o) const { return sset == o.sset; }  // Compare if equal
 	bool        operator <(const StatementSet &o) const;  // Compare if less
 
 	friend std::ostream &operator <<(std::ostream &, const StatementSet &);
-	void        printNums(std::ostream &os);              // Print statements as numbers
-	std::string prints();                                 // Print to string (for debug)
+	void        printNums(std::ostream &os) const;        // Print statements as numbers
+	std::string prints() const;                           // Print to string (for debug)
 };
 
 // As above, but the Statements are known to be Assigns, and are sorted sensibly
@@ -81,10 +81,10 @@ public:
 	typedef std::set<Assign *, lessAssign>::const_iterator const_iterator;
 
 	           ~AssignSet() { }
-	void        makeUnion(AssignSet &other);   // Set union
-	void        makeDiff(AssignSet &other);    // Set difference
-	void        makeIsect(AssignSet &other);   // Set intersection
-	bool        isSubSetOf(AssignSet &other);  // Subset relation
+	void        makeUnion(const AssignSet &other);     // Set union
+	void        makeDiff(const AssignSet &other);      // Set difference
+	void        makeIsect(const AssignSet &other);     // Set intersection
+	bool        isSubSetOf(const AssignSet &other) const;  // Subset relation
 
 	unsigned    size() const { return aset.size(); }   // Number of elements
 	iterator    begin() { return aset.begin(); }
@@ -93,16 +93,16 @@ public:
 	void        insert(Assign *a) { aset.insert(a); }  // Insertion
 	bool        remove(Assign *a);                     // Removal; rets false if not found
 	bool        exists(Assign *s) const;               // Search; returns false if !found
-	bool        definesLoc(Exp *loc);                  // Search; returns true if any assignment defines loc
-	Assign     *lookupLoc(Exp *loc);                   // Search for loc on LHS, return ptr to Assign if found
+	bool        definesLoc(Exp *loc) const;            // Search; returns true if any assignment defines loc
+	Assign     *lookupLoc(Exp *loc) const;             // Search for loc on LHS, return ptr to Assign if found
 
 	void        clear() { aset.clear(); }              // Clear the set
 	bool        operator ==(const AssignSet &o) const { return aset == o.aset; }  // Compare if equal
 	bool        operator <(const AssignSet &o) const;  // Compare if less
 
 	friend std::ostream &operator <<(std::ostream &, const AssignSet &);
-	void        printNums(std::ostream &os);           // Print statements as numbers
-	std::string prints();                              // Print to string (for debug)
+	void        printNums(std::ostream &os) const;     // Print statements as numbers
+	std::string prints() const;                        // Print to string (for debug)
 };
 
 class StatementList {
@@ -120,10 +120,10 @@ public:
 	// A special intersection operator; this becomes the intersection of StatementList a (assumed to be a list of
 	// Assignment*s) with the LocationSet b.
 	// Used for calculating returns for a CallStatement
-	void        makeIsect(StatementList &a, LocationSet &b);
+	void        makeIsect(const StatementList &a, const LocationSet &b);
 
 	void        append(Statement *s) { slist.push_back(s); } // Insert at end
-	void        append(StatementList &sl);          // Append whole StatementList
+	void        append(const StatementList &sl);    // Append whole StatementList
 	void        append(StatementSet &sl);           // Append whole StatementSet
 	bool        remove(Statement *s);               // Removal; rets false if not found
 	void        removeDefOf(Exp *loc);              // Remove definitions of loc
@@ -132,11 +132,11 @@ public:
 	iterator    erase(iterator it) { return slist.erase(it); }
 	iterator    erase(iterator first, iterator last) { return slist.erase(first, last); }
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
-	std::string prints();                           // Print to string (for debugging)
+	std::string prints() const;                     // Print to string (for debugging)
 	void        clear() { slist.clear(); }
-	void        makeCloneOf(StatementList &o);      // Make this a clone of o
-	bool        existsOnLeft(Exp *loc);             // True if loc exists on the LHS of any Assignment in this list
-	Assignment *findOnLeft(Exp *loc);               // Return the first stmt with loc on the LHS
+	void        makeCloneOf(const StatementList &o);// Make this a clone of o
+	bool        existsOnLeft(Exp *loc) const;       // True if loc exists on the LHS of any Assignment in this list
+	Assignment *findOnLeft(Exp *loc) const;         // Return the first stmt with loc on the LHS
 };
 
 class StatementVec {
@@ -149,8 +149,8 @@ public:
 	Statement  *operator [](int idx) { return svec[idx]; }
 	void        putAt(int idx, Statement *s);
 	iterator    remove(iterator it);
-	std::string prints();                           // Print to string (for debugging)
-	void        printNums(std::ostream &os);
+	std::string prints() const;                     // Print to string (for debugging)
+	void        printNums(std::ostream &os) const;
 	void        clear() { svec.clear(); }
 	bool        operator ==(const StatementVec &o) const { return svec == o.svec; }  // Compare if equal
 	bool        operator <(const StatementVec &o) const { return svec < o.svec; }    // Compare if less
@@ -171,8 +171,8 @@ public:
 	           ~LocationSet() { }                       // virtual destructor kills warning
 	            LocationSet(const LocationSet &o);      // Copy constructor
 	LocationSet &operator =(const LocationSet &o);      // Assignment
-	void        makeUnion(LocationSet &other);          // Set union
-	void        makeDiff (LocationSet &other);          // Set difference
+	void        makeUnion(const LocationSet &other);    // Set union
+	void        makeDiff (const LocationSet &other);    // Set difference
 	void        clear() { lset.clear(); }               // Clear the set
 	iterator    begin() { return lset.begin(); }
 	iterator    end()   { return lset.end(); }
@@ -186,16 +186,16 @@ public:
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
 
 	friend std::ostream &operator <<(std::ostream &, const LocationSet &);
-	std::string prints();                               // Print to string for debugging
+	std::string prints() const;                         // Print to string for debugging
 	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
 	bool        exists(Exp *e) const;                   // Return true if the location exists in the set
-	Exp        *findNS(Exp *e);                         // Find location e (no subscripts); nullptr if not found
-	bool        existsImplicit(Exp *e);                 // Search for location e{-} or e{0} (e has no subscripts)
+	Exp        *findNS(Exp *e) const;                   // Find location e (no subscripts); nullptr if not found
+	bool        existsImplicit(Exp *e) const;           // Search for location e{-} or e{0} (e has no subscripts)
 	// Return an iterator to the found item (or end() if not). Only really makes sense if e has a wildcard
 	iterator    find(Exp *e) { return lset.find(e); }
 	// Find a location with a different def, but same expression. For example, pass r28{10},
 	// return true if r28{20} in the set. If return true, dr points to the first different ref
-	bool        findDifferentRef(RefExp *e, Exp *&dr);
+	bool        findDifferentRef(RefExp *e, Exp *&dr) const;
 	void        addSubscript(Statement *def /* , Cfg *cfg */);  // Add a subscript to all elements
 };
 
@@ -214,14 +214,14 @@ public:
 	Range();
 	Range(int stride, int lowerBound, int upperBound, Exp *base);
 
-	Exp        *getBase() { return base; }
-	int         getStride() { return stride; }
-	int         getLowerBound() { return lowerBound; }
-	int         getUpperBound() { return upperBound; }
-	void        unionWith(Range &r);
-	void        widenWith(Range &r);
+	Exp        *getBase() const { return base; }
+	int         getStride() const { return stride; }
+	int         getLowerBound() const { return lowerBound; }
+	int         getUpperBound() const { return upperBound; }
+	void        unionWith(const Range &r);
+	void        widenWith(const Range &r);
 	friend std::ostream &operator <<(std::ostream &, const Range &);
-	bool        operator ==(Range &other);
+	bool        operator ==(const Range &) const;
 };
 
 class RangeMap {
@@ -231,15 +231,15 @@ protected:
 public:
 	            RangeMap() { }
 	void        addRange(Exp *loc, Range &r) { ranges[loc] = r; }
-	bool        hasRange(Exp *loc) { return ranges.find(loc) != ranges.end(); }
+	bool        hasRange(Exp *loc) const { return ranges.find(loc) != ranges.end(); }
 	Range      &getRange(Exp *loc);
-	void        unionwith(RangeMap &other);
-	void        widenwith(RangeMap &other);
+	void        unionwith(const RangeMap &other);
+	void        widenwith(const RangeMap &other);
 	friend std::ostream &operator <<(std::ostream &, const RangeMap &);
 	Exp        *substInto(Exp *e, std::set<Exp *, lessExpStar> *only = nullptr);
 	void        killAllMemOfs();
 	void        clear() { ranges.clear(); }
-	bool        isSubset(RangeMap &other);
+	bool        isSubset(RangeMap &other) const;
 	bool        empty() const { return ranges.empty(); }
 };
 
@@ -259,8 +259,8 @@ public:
 	void        connect(Exp *a, Exp *b);
 	iterator    begin() { return emap.begin(); }
 	iterator    end()   { return emap.end(); }
-	int         count(Exp *a);                  // Return a count of locations connected to a
-	bool        isConnected(Exp *a, Exp *b);    // Return true if a is connected to b
+	int         count(Exp *a) const;            // Return a count of locations connected to a
+	bool        isConnected(Exp *a, Exp *b) const;  // Return true if a is connected to b
 	// Update the map that used to be a <-> b, now it is a <-> c
 	void        update(Exp *a, Exp *b, Exp *c);
 	iterator    remove(iterator aa);            // Remove the mapping at *aa

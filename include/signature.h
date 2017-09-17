@@ -40,18 +40,18 @@ private:
 public:
 	                    Parameter(Type *type, const char *name, Exp *exp = nullptr, const char *boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
-	        bool        operator ==(Parameter &other);
+	        bool        operator ==(const Parameter &other) const;
 	        Parameter  *clone();
 
-	        Type       *getType() { return type; }
+	        Type       *getType() const { return type; }
 	        void        setType(Type *ty) { type = ty; }
-	        const char *getName() { return name.c_str(); }
+	        const char *getName() const { return name.c_str(); }
 	        void        setName(const char *nam) { name = nam; }
-	        Exp        *getExp() { return exp; }
+	        Exp        *getExp() const { return exp; }
 	        void        setExp(Exp *e) { exp = e; }
 
 	// this parameter is the bound of another parameter with name nam
-	        const char  *getBoundMax() { return boundMax.c_str(); }
+	        const char  *getBoundMax() const { return boundMax.c_str(); }
 	        void        setBoundMax(const char *nam);
 
 protected:
@@ -66,7 +66,7 @@ public:
 
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
 	virtual            ~Return() { }
-	        bool        operator ==(Return &other);
+	        bool        operator ==(const Return &other) const;
 	        Return     *clone();
 
 	                    Return() { }
@@ -106,15 +106,15 @@ public:
 	static  Signature  *instantiate(platform plat, callconv cc, const char *nam);
 	virtual            ~Signature() { }
 
-	virtual bool        operator ==(Signature &other);
+	virtual bool        operator ==(const Signature &other) const;
 
 	// clone this signature
 	virtual Signature  *clone();
 
-	        bool        isUnknown() { return unknown; }
+	        bool        isUnknown() const { return unknown; }
 	        void        setUnknown(bool b) { unknown = b; }
 	        //void        setFullSig(bool full) { bFullSig = full; }
-	        bool        isForced() { return forced; }
+	        bool        isForced() const { return forced; }
 	        void        setForced(bool f) { forced = f; }
 
 	// get the return location
@@ -167,7 +167,7 @@ public:
 	virtual int         findParam(const char *nam);
 	// accessor for argument expressions
 	virtual Exp        *getArgumentExp(int n);
-	virtual bool        hasEllipsis() { return ellipsis; }
+	virtual bool        hasEllipsis() const { return ellipsis; }
 
 	        void        renameParam(const char *oldName, const char *newName);
 
@@ -179,9 +179,9 @@ public:
 
 	// any signature can be promoted to a higher level signature, if available
 	virtual Signature  *promote(UserProc *p);
-	        void        print(std::ostream &out, bool html = false);
-	        std::string prints();  // For debugging
-	        void        printToLog();
+	        void        print(std::ostream &out, bool html = false) const;
+	        std::string prints() const;  // For debugging
+	        void        printToLog() const;
 
 	// Special for Mike: find the location that conventionally holds the first outgoing (actual) parameter
 	// MVE: Use the below now

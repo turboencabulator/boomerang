@@ -118,7 +118,7 @@ protected:
 #if USE_DOMINANCE_NUMS
 	        int         dominanceNum;      // Like a statement number, but has dominance properties
 public:
-	        int         getDomNumber() { return dominanceNum; }
+	        int         getDomNumber() const { return dominanceNum; }
 	        void        setDomNumber(int dn) { dominanceNum = dn; }
 protected:
 #endif
@@ -135,22 +135,22 @@ public:
 	virtual            ~Statement() { }
 
 	// get/set the enclosing BB, etc
-	        BasicBlock *getBB() { return pbb; }
+	        BasicBlock *getBB() const { return pbb; }
 	        void        setBB(BasicBlock *bb) { pbb = bb; }
 
 	        //bool        operator ==(Statement &o);
 	// Get and set *enclosing* proc (not destination proc)
 	        void        setProc(UserProc *p);
-	        UserProc   *getProc() { return proc; }
+	        UserProc   *getProc() const { return proc; }
 
-	        int         getNumber() { return number; }
+	        int         getNumber() const { return number; }
 	virtual void        setNumber(int num) { number = num; }  // Overridden for calls (and maybe later returns)
 
-	        STMT_KIND   getKind() { return kind; }
+	        STMT_KIND   getKind() const { return kind; }
 	        void        setKind(STMT_KIND k) { kind = k; }
 
 	        void        setParent(Statement *par) { parent = par; }
-	        Statement  *getParent() { return parent; }
+	        Statement  *getParent() const { return parent; }
 
 	        RangeMap   &getRanges() { return ranges; }
 	        void        clearRanges() { ranges.clear(); }
@@ -165,55 +165,55 @@ public:
 
 	        void        setLexBegin(unsigned int n) { lexBegin = n; }
 	        void        setLexEnd(unsigned int n) { lexEnd = n; }
-	        unsigned    int getLexBegin() { return lexBegin; }
-	        unsigned    int getLexEnd() { return lexEnd; }
-	        Exp        *getExpAtLex(unsigned int begin, unsigned int end);
+	        unsigned    int getLexBegin() const { return lexBegin; }
+	        unsigned    int getLexEnd() const { return lexEnd; }
+	        Exp        *getExpAtLex(unsigned int begin, unsigned int end) const;
 
 
 	// returns true if this statement defines anything
 	virtual bool        isDefinition() = 0;
 
 	// true if is a null statement
-	        bool        isNullStatement();
+	        bool        isNullStatement() const;
 
-	virtual bool        isTyping() { return false; }  // Return true if a TypingStatement
+	virtual bool        isTyping() const { return false; }  // Return true if a TypingStatement
 	// true if this statement is a standard assign
-	        bool        isAssign() { return kind == STMT_ASSIGN; }
+	        bool        isAssign() const { return kind == STMT_ASSIGN; }
 	// true if this statement is a any kind of assignment
-	        bool        isAssignment() { return kind == STMT_ASSIGN || kind == STMT_PHIASSIGN || kind == STMT_IMPASSIGN || kind == STMT_BOOLASSIGN; }
+	        bool        isAssignment() const { return kind == STMT_ASSIGN || kind == STMT_PHIASSIGN || kind == STMT_IMPASSIGN || kind == STMT_BOOLASSIGN; }
 	// true if this statement is a phi assignment
-	        bool        isPhi() { return kind == STMT_PHIASSIGN; }
+	        bool        isPhi() const { return kind == STMT_PHIASSIGN; }
 	// true if this statement is an implicit assignment
-	        bool        isImplicit() { return kind == STMT_IMPASSIGN; }
+	        bool        isImplicit() const { return kind == STMT_IMPASSIGN; }
 	// true if this statment is a flags assignment
-	        bool        isFlagAssgn();
+	        bool        isFlagAssgn() const;
 	// true of this statement is an implicit reference
-	        bool        isImpRef() { return kind == STMT_IMPREF; }
+	        bool        isImpRef() const { return kind == STMT_IMPREF; }
 
-	virtual bool        isGoto() { return kind == STMT_GOTO; }
-	virtual bool        isBranch() { return kind == STMT_BRANCH; }
+	virtual bool        isGoto() const { return kind == STMT_GOTO; }
+	virtual bool        isBranch() const { return kind == STMT_BRANCH; }
 
 	// true if this statement is a junction
-	        bool        isJunction() { return kind == STMT_JUNCTION; }
+	        bool        isJunction() const { return kind == STMT_JUNCTION; }
 
 	// true if this statement is a call
-	        bool        isCall() { return kind == STMT_CALL; }
+	        bool        isCall() const { return kind == STMT_CALL; }
 
 	// true if this statement is a BoolAssign
-	        bool        isBool() { return kind == STMT_BOOLASSIGN; }
+	        bool        isBool() const { return kind == STMT_BOOLASSIGN; }
 
 	// true if this statement is a ReturnStatement
-	        bool        isReturn() { return kind == STMT_RET; }
+	        bool        isReturn() const { return kind == STMT_RET; }
 
 	// true if this statement is a decoded ICT.
 	// NOTE: for now, it only represents decoded indirect jump instructions
-	        bool        isHL_ICT() { return kind == STMT_CASE; }
+	        bool        isHL_ICT() const { return kind == STMT_CASE; }
 
-	        bool        isCase() { return kind == STMT_CASE; }
+	        bool        isCase() const { return kind == STMT_CASE; }
 
 	// true if this is a fpush/fpop
-	        bool        isFpush();
-	        bool        isFpop();
+	        bool        isFpush() const;
+	        bool        isFpop() const;
 
 	// returns a set of locations defined by this statement
 	// Classes with no definitions (e.g. GotoStatement and children) don't override this
@@ -228,9 +228,9 @@ public:
 
 	// statements should be printable (for debugging)
 	virtual void        print(std::ostream &os, bool html = false) = 0;
-	        void        printAsUse(std::ostream &os)   { os << std::dec << number; }
-	        void        printAsUseBy(std::ostream &os) { os << std::dec << number; }
-	        void        printNum(std::ostream &os)     { os << std::dec << number; }
+	        void        printAsUse(std::ostream &os) const   { os << std::dec << number; }
+	        void        printAsUseBy(std::ostream &os) const { os << std::dec << number; }
+	        void        printNum(std::ostream &os) const     { os << std::dec << number; }
 	        std::string prints();  // For logging, was also for debugging
 
 	// general search
@@ -342,9 +342,6 @@ public:
 	// Set the type for the definition of e in this Statement
 	virtual void        setTypeFor(Exp *e, Type *ty) { assert(0); }
 
-	//virtual Type       *getType() { return nullptr; }    // Assignment, ReturnStatement and
-	//virtual void        setType(Type *t) { assert(0); }  // CallStatement override
-
 	        bool        doPropagateTo(Exp *e, Assign *def, bool &convert);
 	        bool        calcMayAlias(Exp *e1, Exp *e2, int size);
 	        bool        mayAlias(Exp *e1, Exp *e2, int size);
@@ -366,10 +363,10 @@ public:
 	            TypingStatement(Type *ty);  // Constructor
 
 	// Get and set the type.
-	Type       *getType() /* override */ { return type; }
-	void        setType(Type *ty) /* override */ { type = ty; }
+	Type       *getType() const { return type; }
+	void        setType(Type *ty) { type = ty; }
 
-	bool        isTyping() override { return true; }
+	bool        isTyping() const override { return true; }
 };
 
 /*==========================================================================
@@ -401,7 +398,7 @@ public:
 	bool        accept(StmtPartModifier *visitor) override = 0;
 
 	void        print(std::ostream &os, bool html = false) override;
-	virtual void printCompact(std::ostream &os, bool html = false) = 0;  // Without statement number
+	virtual void printCompact(std::ostream &os, bool html = false) const = 0;  // Without statement number
 
 	Type       *getTypeFor(Exp *e) override;            // Get the type for this assignment. It should define e
 	void        setTypeFor(Exp *e, Type *ty) override;  // Set the type for this assignment. It should define e
@@ -482,12 +479,12 @@ public:
 	bool        accept(StmtModifier *visitor) override;
 	bool        accept(StmtPartModifier *visitor) override;
 
-	void        printCompact(std::ostream &os, bool html = false) override;  // Without statement number
+	void        printCompact(std::ostream &os, bool html = false) const override;  // Without statement number
 
 	// Guard
 	void        setGuard(Exp *g) { guard = g; }
-	Exp        *getGuard() { return guard; }
-	bool        isGuarded() { return !!guard; }
+	Exp        *getGuard() const { return guard; }
+	bool        isGuarded() const { return !!guard; }
 
 	bool        usesExp(Exp *e) override;
 	bool        isDefinition() override { return true; }
@@ -576,7 +573,7 @@ public:
 	bool        accept(StmtModifier *visitor) override;
 	bool        accept(StmtPartModifier *visitor) override;
 
-	void        printCompact(std::ostream &os, bool html = false) override;
+	void        printCompact(std::ostream &os, bool html = false) const override;
 
 	// general search
 	bool        search(Exp *search, Exp *&result) override;
@@ -648,7 +645,7 @@ public:
 	// general search and replace
 	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
 
-	void        printCompact(std::ostream &os, bool html = false) override;
+	void        printCompact(std::ostream &os, bool html = false) const override;
 
 	// Statement and Assignment functions
 	virtual Exp *getRight() { return nullptr; }
@@ -687,8 +684,8 @@ public:
 	// Set and return the BRANCH_TYPE of this scond as well as whether the
 	// floating point condition codes are used.
 	void        setCondType(BRANCH_TYPE cond, bool usesFloat = false);
-	BRANCH_TYPE getCond() { return jtCond; }
-	bool        isFloat() { return bFloat; }
+	BRANCH_TYPE getCond() const { return jtCond; }
+	bool        isFloat() const { return bFloat; }
 	void        setFloat(bool b) { bFloat = b; }
 
 	// Set and return the Exp representing the HL condition
@@ -700,7 +697,7 @@ public:
 	int         getSize() const { return size; }  // Return the size of the assignment
 	void        makeSigned();
 
-	void        printCompact(std::ostream &os = std::cout, bool html = false) override;
+	void        printCompact(std::ostream &os = std::cout, bool html = false) const override;
 
 	// code generation
 	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
@@ -732,8 +729,7 @@ class ImpRefStatement : public TypingStatement {
 public:
 	// Constructor, subexpression
 	            ImpRefStatement(Type *ty, Exp *a) : TypingStatement(ty), addressExp(a) { kind = STMT_IMPREF; }
-	Exp        *getAddressExp() { return addressExp; }
-	Type       *getType() /* override */ { return type; }
+	Exp        *getAddressExp() const { return addressExp; }
 	void        meetWith(Type *ty, bool &ch);  // Meet the internal type with ty. Set ch if a change
 
 	// Virtuals
@@ -790,7 +786,7 @@ public:
 	virtual Exp *getDest();
 
 	// Return the fixed destination of this CTI. For dynamic CTIs, returns -1.
-	ADDRESS     getFixedDest();
+	ADDRESS     getFixedDest() const;
 
 	// Adjust the fixed destination by a given amount. Invalid for dynamic CTIs.
 	void        adjustFixedDest(int delta);
@@ -798,7 +794,7 @@ public:
 	// Set and return whether the destination of this CTI is computed.
 	// NOTE: These should really be removed, once CaseStatement and HLNwayCall are implemented properly.
 	void        setIsComputed(bool b = true);
-	bool        isComputed();
+	bool        isComputed() const;
 
 	void        print(std::ostream &os = std::cout, bool html = false) override;
 
@@ -858,7 +854,7 @@ public:
 	void        simplify() override { }
 
 	void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
-	bool        isLoopJunction();
+	bool        isLoopJunction() const;
 };
 
 /*================================================================================
@@ -889,8 +885,8 @@ public:
 	// Set and return the BRANCH_TYPE of this jcond as well as whether the
 	// floating point condition codes are used.
 	void        setCondType(BRANCH_TYPE cond, bool usesFloat = false);
-	BRANCH_TYPE getCond() { return jtCond; }
-	bool        isFloat() { return bFloat; }
+	BRANCH_TYPE getCond() const { return jtCond; }
+	bool        isFloat() const { return bFloat; }
 	void        setFloat(bool b) { bFloat = b; }
 
 	// Set and return the Exp representing the HL condition
@@ -1067,11 +1063,11 @@ public:
 	//void        addReturn(Exp *e, Type *ty = nullptr);
 	void        updateDefines();  // Update the defines based on a callee change
 	StatementList *calcResults();  // Calculate defines(this) isect live(this)
-	ReturnStatement *getCalleeReturn() { return calleeReturn; }
+	ReturnStatement *getCalleeReturn() const { return calleeReturn; }
 	void        setCalleeReturn(ReturnStatement *ret) { calleeReturn = ret; }
-	bool        isChildless();
+	bool        isChildless() const;
 	Exp        *getProven(Exp *e);
-	Signature  *getSignature() { return signature; }
+	Signature  *getSignature() const { return signature; }
 	// Localise the various components of expression e with reaching definitions to this call
 	// Note: can change e so usually need to clone the argument
 	// Was called substituteParams
@@ -1111,7 +1107,7 @@ public:
 	// Set and return whether the call is effectively followed by a return.
 	// E.g. on Sparc, whether there is a restore in the delay slot.
 	void        setReturnAfterCall(bool b);
-	bool        isReturnAfterCall();
+	bool        isReturnAfterCall() const;
 
 	// Set and return the list of Exps that occur *after* the call (the
 	// list of exps in the RTL occur before the call). Useful for odd patterns.
@@ -1279,7 +1275,7 @@ public:
 	DefCollector *getCollector() { return &col; }  // Return pointer to the collector object
 
 	// Get and set the native address for the first and only return statement
-	ADDRESS     getRetAddr() { return retAddr; }
+	ADDRESS     getRetAddr() const { return retAddr; }
 	void        setRetAddr(ADDRESS r) { retAddr = r; }
 
 	// Find definition for e (in the collector)

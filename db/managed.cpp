@@ -61,7 +61,7 @@ operator <<(std::ostream &os, const LocationSet &ls)
 
 // Make this set the union of itself and other
 void
-StatementSet::makeUnion(StatementSet &other)
+StatementSet::makeUnion(const StatementSet &other)
 {
 	for (auto it = other.sset.begin(); it != other.sset.end(); ++it) {
 		sset.insert(*it);
@@ -70,7 +70,7 @@ StatementSet::makeUnion(StatementSet &other)
 
 // Make this set the difference of itself and other
 void
-StatementSet::makeDiff(StatementSet &other)
+StatementSet::makeDiff(const StatementSet &other)
 {
 	for (auto it = other.sset.begin(); it != other.sset.end(); ++it) {
 		sset.erase(*it);
@@ -79,7 +79,7 @@ StatementSet::makeDiff(StatementSet &other)
 
 // Make this set the intersection of itself and other
 void
-StatementSet::makeIsect(StatementSet &other)
+StatementSet::makeIsect(const StatementSet &other)
 {
 	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		auto ff = other.sset.find(*it);
@@ -92,7 +92,7 @@ StatementSet::makeIsect(StatementSet &other)
 // Check for the subset relation, i.e. are all my elements also in the set
 // other. Effectively (this intersect other) == this
 bool
-StatementSet::isSubSetOf(StatementSet &other)
+StatementSet::isSubSetOf(const StatementSet &other)
 {
 	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		auto ff = other.sset.find(*it);
@@ -122,7 +122,7 @@ StatementSet::exists(Statement *s) const
 
 // Find a definition for loc in this Statement set. Return true if found
 bool
-StatementSet::definesLoc(Exp *loc)
+StatementSet::definesLoc(Exp *loc) const
 {
 	for (auto it = sset.begin(); it != sset.end(); ++it) {
 		if ((*it)->definesLoc(loc))
@@ -133,7 +133,7 @@ StatementSet::definesLoc(Exp *loc)
 
 // Print to a string, for debugging
 std::string
-StatementSet::prints()
+StatementSet::prints() const
 {
 	std::ostringstream ost;
 	ost << *this;
@@ -142,7 +142,7 @@ StatementSet::prints()
 
 // Print just the numbers to stream os
 void
-StatementSet::printNums(std::ostream &os)
+StatementSet::printNums(std::ostream &os) const
 {
 	os << std::dec;
 	for (auto it = sset.begin(); it != sset.end(); ) {
@@ -173,7 +173,7 @@ StatementSet::operator <(const StatementSet &o) const
 
 // Make this set the union of itself and other
 void
-AssignSet::makeUnion(AssignSet &other)
+AssignSet::makeUnion(const AssignSet &other)
 {
 	for (auto it = other.aset.begin(); it != other.aset.end(); ++it) {
 		aset.insert(*it);
@@ -182,7 +182,7 @@ AssignSet::makeUnion(AssignSet &other)
 
 // Make this set the difference of itself and other
 void
-AssignSet::makeDiff(AssignSet &other)
+AssignSet::makeDiff(const AssignSet &other)
 {
 	for (auto it = other.aset.begin(); it != other.aset.end(); ++it) {
 		aset.erase(*it);
@@ -191,7 +191,7 @@ AssignSet::makeDiff(AssignSet &other)
 
 // Make this set the intersection of itself and other
 void
-AssignSet::makeIsect(AssignSet &other)
+AssignSet::makeIsect(const AssignSet &other)
 {
 	for (auto it = aset.begin(); it != aset.end(); ++it) {
 		auto ff = other.aset.find(*it);
@@ -204,7 +204,7 @@ AssignSet::makeIsect(AssignSet &other)
 // Check for the subset relation, i.e. are all my elements also in the set
 // other. Effectively (this intersect other) == this
 bool
-AssignSet::isSubSetOf(AssignSet &other)
+AssignSet::isSubSetOf(const AssignSet &other) const
 {
 	for (auto it = aset.begin(); it != aset.end(); ++it) {
 		auto ff = other.aset.find(*it);
@@ -234,7 +234,7 @@ AssignSet::exists(Assign *a) const
 
 // Find a definition for loc in this Assign set. Return true if found
 bool
-AssignSet::definesLoc(Exp *loc)
+AssignSet::definesLoc(Exp *loc) const
 {
 	Assign *as = new Assign(loc, new Terminal(opWild));
 	auto ff = aset.find(as);
@@ -243,7 +243,7 @@ AssignSet::definesLoc(Exp *loc)
 
 // Find a definition for loc on the LHS in this Assign set. If found, return pointer to the Assign with that LHS
 Assign *
-AssignSet::lookupLoc(Exp *loc)
+AssignSet::lookupLoc(Exp *loc) const
 {
 	Assign *as = new Assign(loc, new Terminal(opWild));
 	auto ff = aset.find(as);
@@ -253,7 +253,7 @@ AssignSet::lookupLoc(Exp *loc)
 
 // Print to a string, for debugging
 std::string
-AssignSet::prints()
+AssignSet::prints() const
 {
 	std::ostringstream ost;
 	ost << *this;
@@ -262,7 +262,7 @@ AssignSet::prints()
 
 // Print just the numbers to stream os
 void
-AssignSet::printNums(std::ostream &os)
+AssignSet::printNums(std::ostream &os) const
 {
 	os << std::dec;
 	for (auto it = aset.begin(); it != aset.end(); ) {
@@ -310,7 +310,7 @@ LocationSet::LocationSet(const LocationSet &o)
 }
 
 std::string
-LocationSet::prints()
+LocationSet::prints() const
 {
 	std::ostringstream ost;
 	ost << *this;
@@ -347,7 +347,7 @@ LocationSet::removeIfDefines(StatementSet &given)
 
 // Make this set the union of itself and other
 void
-LocationSet::makeUnion(LocationSet &other)
+LocationSet::makeUnion(const LocationSet &other)
 {
 	for (auto it = other.lset.begin(); it != other.lset.end(); ++it) {
 		lset.insert(*it);
@@ -356,7 +356,7 @@ LocationSet::makeUnion(LocationSet &other)
 
 // Make this set the set difference of itself and other
 void
-LocationSet::makeDiff(LocationSet &other)
+LocationSet::makeDiff(const LocationSet &other)
 {
 	for (auto it = other.lset.begin(); it != other.lset.end(); ++it) {
 		lset.erase(*it);
@@ -383,7 +383,7 @@ LocationSet::exists(Exp *e) const
 // This set is assumed to be of subscripted locations (e.g. a Collector), and we want to find the unsubscripted
 // location e in the set
 Exp *
-LocationSet::findNS(Exp *e)
+LocationSet::findNS(Exp *e) const
 {
 	// Note: can't search with a wildcard, since it doesn't have the weak ordering required (I think)
 	RefExp r(e, nullptr);
@@ -399,7 +399,7 @@ LocationSet::findNS(Exp *e)
 
 // Given an unsubscripted location e, return true if e{-} or e{0} exists in the set
 bool
-LocationSet::existsImplicit(Exp *e)
+LocationSet::existsImplicit(Exp *e) const
 {
 	RefExp r(e, nullptr);
 	auto it = lset.lower_bound(&r);  // First element >= r
@@ -418,7 +418,7 @@ LocationSet::existsImplicit(Exp *e)
 // Find a location with a different def, but same expression. For example, pass r28{10},
 // return true if r28{20} in the set. If return true, dr points to the first different ref
 bool
-LocationSet::findDifferentRef(RefExp *e, Exp *&dr)
+LocationSet::findDifferentRef(RefExp *e, Exp *&dr) const
 {
 	RefExp search(e->getSubExp1()->clone(), (Statement *)-1);
 	auto pos = lset.find(&search);
@@ -522,7 +522,7 @@ StatementList::remove(Statement *s)
 }
 
 void
-StatementList::append(StatementList &sl)
+StatementList::append(const StatementList &sl)
 {
 	for (auto it = sl.slist.begin(); it != sl.slist.end(); ++it) {
 		slist.push_back(*it);
@@ -538,7 +538,7 @@ StatementList::append(StatementSet &ss)
 }
 
 std::string
-StatementList::prints()
+StatementList::prints() const
 {
 	std::ostringstream ost;
 	for (auto it = slist.begin(); it != slist.end(); ++it) {
@@ -574,7 +574,7 @@ StatementVec::remove(iterator it)
 }
 
 std::string
-StatementVec::prints()
+StatementVec::prints() const
 {
 	std::ostringstream ost;
 	for (auto it = svec.begin(); it != svec.end(); ++it) {
@@ -585,7 +585,7 @@ StatementVec::prints()
 
 // Print just the numbers to stream os
 void
-StatementVec::printNums(std::ostream &os)
+StatementVec::printNums(std::ostream &os) const
 {
 	os << std::dec;
 	for (auto it = svec.begin(); it != svec.end(); ) {
@@ -601,7 +601,7 @@ StatementVec::printNums(std::ostream &os)
 
 // Special intersection method: this := a intersect b
 void
-StatementList::makeIsect(StatementList &a, LocationSet &b)
+StatementList::makeIsect(const StatementList &a, const LocationSet &b)
 {
 	slist.clear();
 	for (auto it = a.slist.begin(); it != a.slist.end(); ++it) {
@@ -612,7 +612,7 @@ StatementList::makeIsect(StatementList &a, LocationSet &b)
 }
 
 void
-StatementList::makeCloneOf(StatementList &o)
+StatementList::makeCloneOf(const StatementList &o)
 {
 	slist.clear();
 	for (auto it = o.slist.begin(); it != o.slist.end(); ++it)
@@ -622,7 +622,7 @@ StatementList::makeCloneOf(StatementList &o)
 // Return true if loc appears on the left of any statements in this list
 // Note: statements in this list are assumed to be assignments
 bool
-StatementList::existsOnLeft(Exp *loc)
+StatementList::existsOnLeft(Exp *loc) const
 {
 	for (auto it = slist.begin(); it != slist.end(); ++it) {
 		if (*((Assignment *)*it)->getLeft() == *loc)
@@ -646,7 +646,7 @@ StatementList::removeDefOf(Exp *loc)
 
 // Find the first Assignment with loc on the LHS
 Assignment *
-StatementList::findOnLeft(Exp *loc)
+StatementList::findOnLeft(Exp *loc) const
 {
 	if (slist.empty())
 		return nullptr;
@@ -772,7 +772,7 @@ operator <<(std::ostream &os, const Range &r)
 }
 
 void
-Range::unionWith(Range &r)
+Range::unionWith(const Range &r)
 {
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 		LOG << "unioning " << *this << " with " << r << " got ";
@@ -816,7 +816,7 @@ Range::unionWith(Range &r)
 }
 
 void
-Range::widenWith(Range &r)
+Range::widenWith(const Range &r)
 {
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 		LOG << "widening " << *this << " with " << r << " got ";
@@ -848,7 +848,7 @@ RangeMap::getRange(Exp *loc)
 }
 
 void
-RangeMap::unionwith(RangeMap &other)
+RangeMap::unionwith(const RangeMap &other)
 {
 	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
 		if (ranges.find(it->first) == ranges.end()) {
@@ -860,7 +860,7 @@ RangeMap::unionwith(RangeMap &other)
 }
 
 void
-RangeMap::widenwith(RangeMap &other)
+RangeMap::widenwith(const RangeMap &other)
 {
 	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
 		if (ranges.find(it->first) == ranges.end()) {
@@ -923,7 +923,7 @@ RangeMap::killAllMemOfs()
 }
 
 bool
-Range::operator ==(Range &other)
+Range::operator ==(const Range &other) const
 {
 	return stride == other.stride
 	    && lowerBound == other.lowerBound
@@ -933,7 +933,7 @@ Range::operator ==(Range &other)
 
 // return true if this range map is a subset of the other range map
 bool
-RangeMap::isSubset(RangeMap &other)
+RangeMap::isSubset(RangeMap &other) const
 {
 	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
 		if (other.ranges.find(it->first) == other.ranges.end()) {
@@ -976,7 +976,7 @@ ConnectionGraph::connect(Exp *a, Exp *b)
 }
 
 int
-ConnectionGraph::count(Exp *e)
+ConnectionGraph::count(Exp *e) const
 {
 	auto ff = emap.find(e);
 	int n = 0;
@@ -988,7 +988,7 @@ ConnectionGraph::count(Exp *e)
 }
 
 bool
-ConnectionGraph::isConnected(Exp *a, Exp *b)
+ConnectionGraph::isConnected(Exp *a, Exp *b) const
 {
 	auto ff = emap.find(a);
 	while (ff != emap.end() && *ff->first == *a) {

@@ -322,7 +322,7 @@ SizeType::getSize() const
 
 
 Type *
-CompoundType::getType(const char *nam)
+CompoundType::getType(const char *nam) const
 {
 	for (unsigned i = 0; i < types.size(); ++i)
 		if (names[i] == nam)
@@ -332,7 +332,7 @@ CompoundType::getType(const char *nam)
 
 // Note: n is a BIT offset
 Type *
-CompoundType::getTypeAtOffset(unsigned n)
+CompoundType::getTypeAtOffset(unsigned n) const
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < types.size(); ++i) {
@@ -383,7 +383,7 @@ CompoundType::setNameAtOffset(unsigned n, const char *nam)
 
 
 const char *
-CompoundType::getNameAtOffset(unsigned n)
+CompoundType::getNameAtOffset(unsigned n) const
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < types.size(); ++i) {
@@ -397,7 +397,7 @@ CompoundType::getNameAtOffset(unsigned n)
 }
 
 unsigned
-CompoundType::getOffsetTo(unsigned n)
+CompoundType::getOffsetTo(unsigned n) const
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < n; ++i) {
@@ -407,7 +407,7 @@ CompoundType::getOffsetTo(unsigned n)
 }
 
 unsigned
-CompoundType::getOffsetTo(const char *member)
+CompoundType::getOffsetTo(const char *member) const
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < types.size(); ++i) {
@@ -419,7 +419,7 @@ CompoundType::getOffsetTo(const char *member)
 }
 
 unsigned
-CompoundType::getOffsetRemainder(unsigned n)
+CompoundType::getOffsetRemainder(unsigned n) const
 {
 	unsigned r = n;
 	unsigned offset = 0;
@@ -856,7 +856,7 @@ FuncType::getCtype(bool final) const
 
 // As above, but split into the return and parameter parts
 void
-FuncType::getReturnAndParam(const char *&ret, const char *&param)
+FuncType::getReturnAndParam(const char *&ret, const char *&param) const
 {
 	if (!signature) {
 		ret = "void";
@@ -1018,7 +1018,7 @@ LowerType::getCtype(bool final) const
 }
 
 const char *
-Type::prints()
+Type::prints() const
 {
 	return getCtype(false);  // For debugging
 }
@@ -1221,8 +1221,7 @@ AS_TYPE(Lower)
 NamedType *
 Type::asNamed()
 {
-	Type *ty = this;
-	NamedType *res = dynamic_cast<NamedType *>(ty);
+	NamedType *res = dynamic_cast<NamedType *>(this);
 	assert(res);
 	return res;
 }
@@ -1231,11 +1230,11 @@ Type::asNamed()
 
 #define RESOLVES_TO_TYPE(x) \
 bool \
-Type::resolvesTo##x() \
+Type::resolvesTo##x() const \
 { \
-	Type *ty = this; \
+	const Type *ty = this; \
 	if (ty->isNamed()) \
-		ty = ((NamedType*)ty)->resolvesTo(); \
+		ty = ((const NamedType *)ty)->resolvesTo(); \
 	return ty && ty->is##x(); \
 }
 
@@ -1260,7 +1259,7 @@ Type::isPointerToAlpha()
 }
 
 void
-Type::starPrint(std::ostream &os)
+Type::starPrint(std::ostream &os) const
 {
 	os << "*" << this << "*";
 }
@@ -1636,7 +1635,7 @@ DataIntervalMap::deleteItem(ADDRESS addr)
 }
 
 std::string
-DataIntervalMap::prints()
+DataIntervalMap::prints() const
 {
 	std::ostringstream ost;
 	for (auto it = dimap.begin(); it != dimap.end(); ++it)

@@ -94,10 +94,10 @@ public:
 	bool        placePhiFunctions(UserProc *proc);
 	// Rename variables in basicblock n. Return true if any change made
 	bool        renameBlockVars(UserProc *proc, int n, bool clearStacks = false);
-	bool        doesDominate(int n, int w);
+	bool        doesDominate(int n, int w) const;
 	void        setRenameLocalsParams(bool b) { renameLocalsAndParams = b; }
-	bool        canRenameLocalsParams() { return renameLocalsAndParams; }
-	bool        canRename(Exp *e, UserProc *proc);
+	bool        canRenameLocalsParams() const { return renameLocalsAndParams; }
+	bool        canRename(Exp *e, UserProc *proc) const;
 	void        convertImplicits(Cfg *cfg);
 	// Find the locations used by a live, dominating phi-function. Also removes dead phi-funcions
 	void        findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedByDomPhi0, std::map<Exp *, PhiAssign *, lessExpStar> &defdByPhi);
@@ -148,7 +148,7 @@ public:
 	/*
 	 * Return true if initialised
 	 */
-	bool        isInitialised() { return initialised; }
+	bool        isInitialised() const { return initialised; }
 
 	/*
 	 * Clear the location set
@@ -175,7 +175,7 @@ public:
 	typedef AssignSet::iterator iterator;
 	iterator    begin() { return defs.begin(); }
 	iterator    end()   { return defs.end(); }
-	bool        existsOnLeft(Exp *e) { return defs.definesLoc(e); }
+	bool        existsOnLeft(Exp *e) const { return defs.definesLoc(e); }
 
 	/*
 	 * Update the definitions with the current set of reaching definitions
@@ -223,7 +223,7 @@ public:
 	/*
 	 * Return true if initialised
 	 */
-	bool        isInitialised() { return initialised; }
+	bool        isInitialised() const { return initialised; }
 
 	/*
 	 * Clear the location set
@@ -250,7 +250,7 @@ public:
 	typedef LocationSet::iterator iterator;
 	iterator    begin() { return locs.begin(); }
 	iterator    end()   { return locs.end(); }
-	bool        exists(Exp *e) { return locs.exists(e); }  // True if e is in the collection
+	bool        exists(Exp *e) const { return locs.exists(e); }  // True if e is in the collection
 	LocationSet &getLocSet() { return locs; }
 public:
 	/*

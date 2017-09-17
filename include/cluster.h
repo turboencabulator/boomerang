@@ -36,13 +36,13 @@ public:
 	                    Cluster() { }
 	                    Cluster(const char *name) : name(name) { }
 	virtual            ~Cluster() { }
-	        const char *getName() { return name.c_str(); }
+	        const char *getName() const { return name.c_str(); }
 	        void        setName(const char *nam) { name = nam; }
 	        unsigned int getNumChildren() const { return children.size(); }
-	        Cluster    *getChild(int n) { return children[n]; }
+	        Cluster    *getChild(int n) const { return children[n]; }
 	        void        addChild(Cluster *n);
 	        void        removeChild(Cluster *n);
-	        Cluster    *getParent() { return parent; }
+	        Cluster    *getParent() const { return parent; }
 	        bool        hasChildren() const { return !children.empty(); }
 	        void        openStream(const char *ext);
 	        void        openStreams(const char *ext);
@@ -51,9 +51,9 @@ public:
 	        const char *makeDirs();
 	        const char *getOutPath(const char *ext);
 	        Cluster    *find(const char *nam);
-	virtual bool        isAggregate() { return false; }
+	virtual bool        isAggregate() const { return false; }
 
-	        void        printTree(std::ostream &out);
+	        void        printTree(std::ostream &out) const;
 
 protected:
 	friend class XMLProgParser;
@@ -73,7 +73,7 @@ public:
 
 	// A Class tends to be aggregated into the parent Module,
 	// this isn't the case with Java, but hey, we're not doing that yet.
-	bool isAggregate() override { return true; }
+	bool isAggregate() const override { return true; }
 };
 
 #endif
