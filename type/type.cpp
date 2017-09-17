@@ -945,14 +945,12 @@ PointerType::getCtype(bool final) const
 const char *
 ArrayType::getCtype(bool final) const
 {
-	std::string s = base_type->getCtype(final);
 	std::ostringstream ost;
-	if (isUnbounded())
-		ost << "[]";
-	else
-		ost << "[" << length << "]";
-	s += ost.str().c_str();
-	return strdup(s.c_str()); // memory..
+	ost << base_type->getCtype(final) << "[";
+	if (!isUnbounded())
+		ost << length;
+	ost << "]";
+	return strdup(ost.str().c_str()); // memory..
 }
 
 const char *
@@ -964,7 +962,7 @@ NamedType::getCtype(bool final) const
 const char *
 CompoundType::getCtype(bool final) const
 {
-	std::string &tmp = *(new std::string("struct { "));
+	std::string tmp = "struct { ";
 	for (unsigned i = 0; i < types.size(); ++i) {
 		tmp += types[i]->getCtype(final);
 		if (names[i] != "") {
@@ -980,7 +978,7 @@ CompoundType::getCtype(bool final) const
 const char *
 UnionType::getCtype(bool final) const
 {
-	std::string &tmp = *(new std::string("union { "));
+	std::string tmp = "union { ";
 	for (auto it = li.cbegin(); it != li.cend(); ++it) {
 		tmp += it->type->getCtype(final);
 		if (it->name != "") {
@@ -1017,7 +1015,7 @@ LowerType::getCtype(bool final) const
 	return strdup(ost.str().c_str());
 }
 
-const char *
+std::string
 Type::prints() const
 {
 	return getCtype(false);  // For debugging

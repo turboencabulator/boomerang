@@ -161,7 +161,7 @@ public:
 	virtual const char *getCtype(bool final = false) const = 0;
 	// Print in *i32* format
 	        void        starPrint(std::ostream &os) const;
-	        const char *prints() const;     // For debugging
+	        std::string prints() const;     // For debugging
 
 	virtual std::string getTempName() const; // Get a temporary name for the type
 

@@ -62,51 +62,43 @@ TypeTest::testCompound()
 	Signature *paintSig = pFE->getLibSignature("BeginPaint");
 	// Second argument should be an LPPAINTSTRUCT
 	Type *ty = paintSig->getParamType(1);
-	const char *p = ty->getCtype();
 	std::string expected("LPPAINTSTRUCT");
-	std::string actual(p);
+	std::string actual(ty->getCtype());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Get the type pointed to
 	ty = ty->asPointer()->getPointsTo();
-	p = ty->getCtype();
 	expected = "PAINTSTRUCT";
-	actual = p;
+	actual = ty->getCtype();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 
 	// Offset 8 should have a RECT
 	Type *subTy = ty->asCompound()->getTypeAtOffset(8 * 8);
-	p = subTy->getCtype();
 	expected = "RECT";
-	actual = p;
+	actual = subTy->getCtype();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Name at offset C should be bottom
-	p = subTy->asCompound()->getNameAtOffset(0x0C * 8);
 	expected = "bottom";
-	actual = p;
+	actual = subTy->asCompound()->getNameAtOffset(0x0C * 8);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Now figure out the name at offset 8+C
-	p = ty->asCompound()->getNameAtOffset((8 + 0x0C) * 8);
 	expected = "rcPaint";
-	actual = p;
+	actual = ty->asCompound()->getNameAtOffset((8 + 0x0C) * 8);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Also at offset 8
-	p = ty->asCompound()->getNameAtOffset((8 + 0) * 8);
-	actual = p;
+	actual = ty->asCompound()->getNameAtOffset((8 + 0) * 8);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Also at offset 8+4
-	p = ty->asCompound()->getNameAtOffset((8 + 4) * 8);
-	actual = p;
+	actual = ty->asCompound()->getNameAtOffset((8 + 4) * 8);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// And at offset 8+8
-	p = ty->asCompound()->getNameAtOffset((8 + 8) * 8);
-	actual = p;
+	actual = ty->asCompound()->getNameAtOffset((8 + 8) * 8);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	delete prog;
