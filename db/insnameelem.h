@@ -22,7 +22,7 @@ class Table;
 
 class InsNameElem {
 public:
-	InsNameElem(const char *name);
+	InsNameElem(const std::string &name);
 	virtual ~InsNameElem();
 	virtual int ntokens();
 	virtual std::string getinstruction();
@@ -43,7 +43,7 @@ protected:
 
 class InsOptionElem : public InsNameElem {
 public:
-	InsOptionElem(const char *name);
+	InsOptionElem(const std::string &name);
 	int ntokens() override;
 	std::string getinstruction() override;
 	std::string getinspattern() override;
@@ -51,7 +51,7 @@ public:
 
 class InsListElem : public InsNameElem {
 public:
-	InsListElem(const char *name, Table *t, const char *idx);
+	InsListElem(const std::string &name, Table *t, const std::string &idx);
 	int ntokens() override;
 	std::string getinstruction() override;
 	std::string getinspattern() override;

@@ -23,7 +23,7 @@
 
 #include "table.h"
 
-InsNameElem::InsNameElem(const char *name) :
+InsNameElem::InsNameElem(const std::string &name) :
 	elemname(name)
 {
 }
@@ -106,7 +106,7 @@ InsNameElem::getvalue()
 	return value;
 }
 
-InsOptionElem::InsOptionElem(const char *name) :
+InsOptionElem::InsOptionElem(const std::string &name) :
 	InsNameElem(name)
 {
 }
@@ -137,7 +137,7 @@ InsOptionElem::getinspattern()
 	     : ('\'' + elemname + '\'');
 }
 
-InsListElem::InsListElem(const char *name, Table *t, const char *idx) :
+InsListElem::InsListElem(const std::string &name, Table *t, const std::string &idx) :
 	InsNameElem(name),
 	indexname(idx),
 	thetable(t)

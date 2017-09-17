@@ -544,7 +544,7 @@ instr_name
 		while ((i = nm.find('_')) != nm.npos)
 			nm.erase(i, 1);
 
-		InsNameElem *temp = new InsNameElem(nm.c_str());
+		InsNameElem *temp = new InsNameElem(nm);
 		$$ = $1;
 		$$->append(temp);
 	  }
@@ -568,7 +568,7 @@ name_contract
 			o << "Can't get element " << $2 << " of table " << $1;
 			yyerror(o.str().c_str());
 		} else
-			$$ = new InsNameElem(TableDict[$1]->records[$2].c_str());
+			$$ = new InsNameElem(TableDict[$1]->records[$2]);
 	  }
 
 	/* Example: ARITH[IDX]  where ARITH := { "ADD", "SUB", ... }; */
@@ -590,7 +590,7 @@ name_contract
 			o << "Can't get element " << $3 << " of table " << $2;
 			yyerror(o.str().c_str());
 		} else
-			$$ = new InsNameElem(TableDict[$2]->records[$3].c_str());
+			$$ = new InsNameElem(TableDict[$2]->records[$3]);
 	  }
 
 	| '$' NAME_LOOKUP NAME ']' {
