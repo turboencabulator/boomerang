@@ -383,7 +383,7 @@ Decompiler::renameProc(const QString &oldName, const QString &newName)
 void
 Decompiler::getCompoundMembers(const QString &name, QTableWidget *tbl)
 {
-	Type *ty = NamedType::getNamedType((const char *)name.toAscii());
+	Type *ty = Type::getNamedType(name.toStdString());
 	tbl->setRowCount(0);
 	if (!ty || !ty->resolvesToCompound())
 		return;

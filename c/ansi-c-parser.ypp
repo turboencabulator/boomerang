@@ -255,7 +255,7 @@ param
 
 type_decl
 	: TYPEDEF type_ident ';' {
-		Type::addNamedType($2->nam.c_str(), $2->ty);
+		Type::addNamedType($2->nam, $2->ty);
 	  }
 	| TYPEDEF type '(' '*' IDENTIFIER ')' '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
@@ -281,15 +281,15 @@ type_decl
 				delete *it;
 			}
 		delete $4;
-		Type::addNamedType($2->nam.c_str(), new FuncType(sig));
+		Type::addNamedType($2->nam, new FuncType(sig));
 	  }
 	| STRUCT IDENTIFIER '{' type_ident_list '}' ';' {
 		CompoundType *t = new CompoundType();
 		for (auto it = $4->begin(); it != $4->end(); ++it) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
-		char tmp[1024];
-		sprintf(tmp, "struct %s", $2);
+		std::string tmp = "struct ";
+		tmp += $2;
 		Type::addNamedType(tmp, t);
 	  }
 	;
@@ -450,8 +450,8 @@ type
 		$$ = new NamedType($1);
 	  }
 	| STRUCT IDENTIFIER {
-		char tmp[1024];
-		sprintf(tmp, "struct %s", $2);
+		std::string tmp = "struct ";
+		tmp += $2;
 		$$ = new NamedType(tmp);
 	  }
 	| STRUCT '{' type_ident_list '}' {

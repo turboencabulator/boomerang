@@ -76,8 +76,8 @@ public:
 	virtual            ~Type();
 	        eType       getId() const { return id; }
 
-	static void         addNamedType(const char *name, Type *type);
-	static Type        *getNamedType(const char *name);
+	static void         addNamedType(const std::string &name, Type *type);
+	static Type        *getNamedType(const std::string &name);
 
 	// Return type for given temporary variable name
 	static Type        *getTempType(const std::string &name);
@@ -454,7 +454,7 @@ private:
 	static int  nextAlpha;
 
 public:
-	            NamedType(const char *name);
+	            NamedType(const std::string &name);
 	virtual    ~NamedType();
 	bool        isNamed() const override { return true; }
 	const char *getName() const { return name.c_str(); }
@@ -494,7 +494,7 @@ public:
 
 	void        addType(Type *n, const char *str) {
 		            // check if it is a user defined type (typedef)
-		            Type *t = getNamedType(n->getCtype().c_str());
+		            Type *t = getNamedType(n->getCtype());
 		            if (t) n = t;
 		            types.push_back(n);
 		            names.push_back(str);

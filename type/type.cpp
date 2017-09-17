@@ -113,7 +113,7 @@ ArrayType::setBaseType(Type *b)
 }
 
 
-NamedType::NamedType(const char *name) : Type(eNamed), name(name) { }
+NamedType::NamedType(const std::string &name) : Type(eNamed), name(name) { }
 
 CompoundType::CompoundType(bool generic /* = false */) : Type(eCompound), generic(generic) { }
 
@@ -198,7 +198,7 @@ ArrayType::clone() const
 Type *
 NamedType::clone() const
 {
-	return new NamedType(name.c_str());
+	return new NamedType(name);
 }
 
 Type *
@@ -291,7 +291,7 @@ NamedType::getSize() const
 	if (ty)
 		return ty->getSize();
 	if (VERBOSE)
-		LOG << "WARNING: Unknown size for named type " << name.c_str() << "\n";
+		LOG << "WARNING: Unknown size for named type " << name << "\n";
 	return 0; // don't know
 }
 unsigned
@@ -1013,7 +1013,7 @@ std::map<std::string, Type *> Type::namedTypes;
 
 // named type accessors
 void
-Type::addNamedType(const char *name, Type *type)
+Type::addNamedType(const std::string &name, Type *type)
 {
 	auto prev = getNamedType(name);
 	if (!prev) {
@@ -1038,7 +1038,7 @@ Type::addNamedType(const char *name, Type *type)
 }
 
 Type *
-Type::getNamedType(const char *name)
+Type::getNamedType(const std::string &name)
 {
 	auto it = namedTypes.find(name);
 	if (it != namedTypes.end())
@@ -1117,7 +1117,7 @@ NamedType::getAlpha()
 {
 	std::ostringstream ost;
 	ost << "alpha" << nextAlpha++;
-	return new NamedType(strdup(ost.str().c_str()));
+	return new NamedType(ost.str());
 }
 
 PointerType *
@@ -1160,7 +1160,7 @@ PointerType::getFinalPointsTo()
 
 Type *NamedType::resolvesTo() const
 {
-	Type *ty = getNamedType(name.c_str());
+	Type *ty = getNamedType(name);
 	if (ty && ty->isNamed())
 		return ((NamedType *)ty)->resolvesTo();
 	return ty;

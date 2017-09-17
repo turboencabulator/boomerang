@@ -315,7 +315,7 @@ FrontEnd::getEntryPoints()
 					setup = pBF->readNative4(a + 4);
 					teardown = pBF->readNative4(a + 8);
 					if (setup) {
-						Type *ty = NamedType::getNamedType("ModuleSetupProc");
+						Type *ty = Type::getNamedType("ModuleSetupProc");
 						assert(ty->isFunc());
 						UserProc *proc = (UserProc *)prog->setNewProc(setup);
 						assert(proc);
@@ -328,7 +328,7 @@ FrontEnd::getEntryPoints()
 						entrypoints.push_back(setup);
 					}
 					if (teardown) {
-						Type *ty = NamedType::getNamedType("ModuleTearDownProc");
+						Type *ty = Type::getNamedType("ModuleTearDownProc");
 						assert(ty->isFunc());
 						UserProc *proc = (UserProc *)prog->setNewProc(teardown);
 						assert(proc);

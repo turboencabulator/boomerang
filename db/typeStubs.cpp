@@ -15,10 +15,10 @@
 
 Type::Type() { }
 Type::~Type() { }
-Type *Type::getNamedType(const char *name) { return nullptr; }
+Type *Type::getNamedType(const std::string &name) { return nullptr; }
 bool Type::operator !=(const Type &other) const { return false; }
 std::string Type::getTempName() const { return ""; }
-void Type::addNamedType(const char *name, Type *type) { }
+void Type::addNamedType(const std::string &name, Type *type) { }
 
 BooleanType::BooleanType() { }
 BooleanType::~BooleanType() { }
@@ -78,7 +78,7 @@ bool FuncType::operator < (const Type &other) const { return false; }
 int FuncType::getSize() const { return 0; }
 std::string FuncType::getCtype() const { return ""; }
 
-NamedType::NamedType(const char *name) { }
+NamedType::NamedType(const std::string &name) { }
 NamedType::~NamedType() { }
 Type *NamedType::clone() const { return nullptr; }
 bool NamedType::operator ==(const Type &other) const { return false; }
