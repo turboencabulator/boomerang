@@ -158,7 +158,7 @@ public:
 	// Print and format functions
 	// Get the C type, e.g. "unsigned int". If not final, include comment for lack of sign information.
 	// When final, choose a signedness etc
-	virtual const char *getCtype(bool final = false) const = 0;
+	virtual std::string getCtype(bool final = false) const = 0;
 	// Print in *i32* format
 	        void        starPrint(std::ostream &os) const;
 	        std::string prints() const;     // For debugging
@@ -214,7 +214,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -243,10 +243,11 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	// Split the C type into return and parameter parts
-	void        getReturnAndParam(const char *&ret, const char *&param) const;
+	std::string getReturn(bool final = false) const;
+	std::string getParam(bool final = false) const;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -287,7 +288,7 @@ public:
 	int         getSignedness() const { return signedness; }
 
 	// Get the C type as a string. If full, output comments re the lack of sign information (in IntegerTypes).
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	std::string getTempName() const override;
 
@@ -317,7 +318,7 @@ public:
 	unsigned    getSize() const override;
 	void        setSize(int sz) override { size = sz; }
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	std::string getTempName() const override;
 
@@ -343,7 +344,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -367,7 +368,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -401,7 +402,7 @@ public:
 	unsigned    getSize() const override;
 	void        setSize(int sz) override { assert(sz == STD_SIZE); }
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -436,7 +437,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
@@ -470,7 +471,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -493,7 +494,7 @@ public:
 
 	void        addType(Type *n, const char *str) {
 		            // check if it is a user defined type (typedef)
-		            Type *t = getNamedType(n->getCtype());
+		            Type *t = getNamedType(n->getCtype().c_str());
 		            if (t) n = t;
 		            types.push_back(n);
 		            names.push_back(str);
@@ -521,7 +522,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	bool        isSuperStructOf(Type *other);       // True if this is a superstructure of other
 	bool        isSubStructOf(Type *other);         // True if this is a substructure of other
@@ -566,7 +567,7 @@ public:
 
 	unsigned    getSize() const override;
 
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all) override { return isCompatible(other, all); }
@@ -597,7 +598,7 @@ public:
 	void        setSize(unsigned sz) /* override */ { size = sz; }  // FIXME: different parameter type
 	bool        isSize() const override { return true; }
 	bool        isComplete() const override { return false; }    // Basic type is unknown
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 
@@ -624,7 +625,7 @@ public:
 	void        setSize(int sz) override;        // Does this make sense?
 	bool        isUpper() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 };
@@ -648,7 +649,7 @@ public:
 	void        setSize(int sz) override;        // Does this make sense?
 	bool        isLower() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
-	const char *getCtype(bool final = false) const override;
+	std::string getCtype(bool final = false) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 };

@@ -829,55 +829,43 @@ UnionType::match(Type *pattern)
  * PARAMETERS:      final: if true, this is final output
  * RETURNS:         Pointer to a constant string of char
  *============================================================================*/
-const char *
+std::string
 VoidType::getCtype(bool final) const
 {
 	return "void";
 }
 
-const char *
+std::string
 FuncType::getCtype(bool final) const
 {
-	if (!signature)
-		return "void (void)";
-	std::string s;
-	if (signature->getNumReturns() == 0)
-		s += "void";
-	else
-		s += signature->getReturnType(0)->getCtype(final);
-	s += " (";
+	return getReturn(final) + " " + getParam(final);
+}
+
+std::string
+FuncType::getReturn(bool final) const
+{
+	if (!signature
+	 || signature->getNumReturns() == 0)
+		return "void";
+	return signature->getReturnType(0)->getCtype(final);
+}
+
+std::string
+FuncType::getParam(bool final) const
+{
+	if (!signature) {
+		return "(void)";
+	}
+	std::string s = "(";
 	for (unsigned i = 0; i < signature->getNumParams(); ++i) {
 		if (i != 0) s += ", ";
 		s += signature->getParamType(i)->getCtype(final);
 	}
 	s += ")";
-	return strdup(s.c_str());
+	return s;
 }
 
-// As above, but split into the return and parameter parts
-void
-FuncType::getReturnAndParam(const char *&ret, const char *&param) const
-{
-	if (!signature) {
-		ret = "void";
-		param = "(void)";
-		return;
-	}
-	if (signature->getNumReturns() == 0)
-		ret = "void";
-	else
-		ret = signature->getReturnType(0)->getCtype();
-	std::string s;
-	s += " (";
-	for (unsigned i = 0; i < signature->getNumParams(); ++i) {
-		if (i != 0) s += ", ";
-		s += signature->getParamType(i)->getCtype();
-	}
-	s += ")";
-	param = strdup(s.c_str());
-}
-
-const char *
+std::string
 IntegerType::getCtype(bool final) const
 {
 	if (signedness >= 0) {
@@ -894,7 +882,7 @@ IntegerType::getCtype(bool final) const
 			if (!final) s += "?";  // To indicate invalid/unknown size
 			s += "int";
 		}
-		return strdup(s.c_str());
+		return s;
 	} else {
 		switch (size) {
 		case 32: return "unsigned int";
@@ -909,7 +897,7 @@ IntegerType::getCtype(bool final) const
 	}
 }
 
-const char *
+std::string
 FloatType::getCtype(bool final) const
 {
 	switch (size) {
@@ -919,19 +907,19 @@ FloatType::getCtype(bool final) const
 	}
 }
 
-const char *
+std::string
 BooleanType::getCtype(bool final) const
 {
 	return "bool";
 }
 
-const char *
+std::string
 CharType::getCtype(bool final) const
 {
 	return "char";
 }
 
-const char *
+std::string
 PointerType::getCtype(bool final) const
 {
 	std::string s = points_to->getCtype(final);
@@ -939,10 +927,10 @@ PointerType::getCtype(bool final) const
 		s += "*";
 	else
 		s += " *";
-	return strdup(s.c_str()); // memory..
+	return s;
 }
 
-const char *
+std::string
 ArrayType::getCtype(bool final) const
 {
 	std::ostringstream ost;
@@ -950,16 +938,16 @@ ArrayType::getCtype(bool final) const
 	if (!isUnbounded())
 		ost << length;
 	ost << "]";
-	return strdup(ost.str().c_str()); // memory..
+	return ost.str();
 }
 
-const char *
+std::string
 NamedType::getCtype(bool final) const
 {
-	return name.c_str();
+	return name;
 }
 
-const char *
+std::string
 CompoundType::getCtype(bool final) const
 {
 	std::string tmp = "struct { ";
@@ -972,10 +960,10 @@ CompoundType::getCtype(bool final) const
 		tmp += "; ";
 	}
 	tmp += "}";
-	return strdup(tmp.c_str());
+	return tmp;
 }
 
-const char *
+std::string
 UnionType::getCtype(bool final) const
 {
 	std::string tmp = "union { ";
@@ -988,31 +976,31 @@ UnionType::getCtype(bool final) const
 		tmp += "; ";
 	}
 	tmp += "}";
-	return strdup(tmp.c_str());
+	return tmp;
 }
 
-const char *
+std::string
 SizeType::getCtype(bool final) const
 {
 	// Emit a comment and the size
 	std::ostringstream ost;
 	ost << "__size" << std::dec << size;
-	return strdup(ost.str().c_str());
+	return ost.str();
 }
 
-const char *
+std::string
 UpperType::getCtype(bool final) const
 {
 	std::ostringstream ost;
 	ost << "/*upper*/(" << base_type << ")";
-	return strdup(ost.str().c_str());
+	return ost.str();
 }
-const char *
+std::string
 LowerType::getCtype(bool final) const
 {
 	std::ostringstream ost;
 	ost << "/*lower*/(" << base_type << ")";
-	return strdup(ost.str().c_str());
+	return ost.str();
 }
 
 std::string

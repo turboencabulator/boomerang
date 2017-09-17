@@ -1682,9 +1682,7 @@ CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 		// void (*global0)(void) = foo__1B;
 		PointerType *pt = (PointerType *)type;
 		FuncType *ft = (FuncType *)pt->getPointsTo();
-		const char *ret, *param;
-		ft->getReturnAndParam(ret, param);
-		s << ret << "(*" << name << ")" << param;
+		s << ft->getReturn() << " (*" << name << ")" << ft->getParam();
 	} else {
 		appendType(s, type);
 		s << " " << name;

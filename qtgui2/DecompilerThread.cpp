@@ -287,7 +287,7 @@ Decompiler::alert_new(Proc *p)
 		else {
 			for (unsigned int i = 0; i < p->getSignature()->getNumParams(); ++i) {
 				Type *ty = p->getSignature()->getParamType(i);
-				params.append(ty->getCtype());
+				params.append(ty->getCtype().c_str());
 				params.append(" ");
 				params.append(p->getSignature()->getParamName(i));
 				if (i != p->getSignature()->getNumParams() - 1)
