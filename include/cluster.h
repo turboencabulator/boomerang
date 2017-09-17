@@ -26,11 +26,10 @@
 
 class Cluster {
 protected:
-	        std::string name = "";
+	        std::string name;
 	        std::vector<Cluster *> children;
 	        Cluster    *parent = nullptr;
 	        std::ofstream out;
-	        std::string stream_ext;
 
 public:
 	                    Cluster() { }
@@ -48,8 +47,8 @@ public:
 	        void        openStreams(const char *ext);
 	        void        closeStreams();
 	        std::ofstream &getStream() { return out; }
-	        const char *makeDirs();
-	        const char *getOutPath(const char *ext);
+	        std::string makeDirs();
+	        std::string getOutPath(const char *ext);
 	        Cluster    *find(const char *nam);
 	virtual bool        isAggregate() const { return false; }
 

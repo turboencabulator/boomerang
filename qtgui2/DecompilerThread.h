@@ -40,8 +40,8 @@ public:
 	void alert_update_signature(Proc *p) override;
 
 	bool getRtlForProc(const QString &name, QString &rtl);
-	const char *getSigFile(const QString &name);
-	const char *getClusterFile(const QString &name);
+	QString getSigFile(const QString &name);
+	QString getClusterFile(const QString &name);
 	void renameProc(const QString &oldName, const QString &newName);
 	void rereadLibSignatures();
 	void getCompoundMembers(const QString &name, QTableWidget *tbl);

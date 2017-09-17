@@ -348,22 +348,22 @@ Decompiler::stopWaiting()
 	waiting = false;
 }
 
-const char *
+QString
 Decompiler::getSigFile(const QString &name)
 {
 	Proc *p = prog->findProc((const char *)name.toAscii());
-	if (!p || !p->isLib() || !p->getSignature())
-		return nullptr;
-	return p->getSignature()->getSigFile();
+	if (p && p->isLib() && p->getSignature())
+		return QString(p->getSignature()->getSigFile());
+	return QString();
 }
 
-const char *
+QString
 Decompiler::getClusterFile(const QString &name)
 {
 	Cluster *c = prog->findCluster((const char *)name.toAscii());
-	if (!c)
-		return nullptr;
-	return c->getOutPath("c");
+	if (c)
+		return QString::fromStdString(c->getOutPath("c"));
+	return QString();
 }
 
 void

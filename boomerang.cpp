@@ -471,8 +471,8 @@ Boomerang::parseCmd(int argc, const char *argv[])
 				return 1;
 			}
 
-			unlink(cluster->getOutPath("xml"));
-			unlink(cluster->getOutPath("c"));
+			unlink(cluster->getOutPath("xml").c_str());
+			unlink(cluster->getOutPath("c").c_str());
 			assert(cluster->getParent());
 			cluster->getParent()->removeChild(cluster);
 		} else {

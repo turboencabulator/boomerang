@@ -275,7 +275,7 @@ Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end)
 	return nullptr;
 }
 
-const char *
+std::string
 Cluster::makeDirs()
 {
 	std::string path;
@@ -287,7 +287,7 @@ Cluster::makeDirs()
 		path = path + "/" + name;
 		mkdir(path.c_str(), 0777);
 	}
-	return strdup(path.c_str());
+	return path;
 }
 
 void
@@ -323,12 +323,10 @@ Cluster::find(const char *nam)
 	return nullptr;
 }
 
-const char *
+std::string
 Cluster::getOutPath(const char *ext)
 {
-	std::string basedir = makeDirs();
-	// Ugh - should probably return a whole std::string
-	return strdup((basedir + "/" + name + "." + ext).c_str());
+	return makeDirs() + "/" + name + "." + ext;
 }
 
 void
@@ -337,7 +335,6 @@ Cluster::openStream(const char *ext)
 	if (out.is_open())
 		return;
 	out.open(getOutPath(ext));
-	stream_ext = ext;
 	if (!strcmp(ext, "xml")) {
 		out << "<?xml version=\"1.0\"?>\n";
 		if (parent)
