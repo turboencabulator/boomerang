@@ -28,7 +28,7 @@ enum TABLE_TYPE {
 
 class Table {
 public:
-	Table(std::deque<std::string> &recs, TABLE_TYPE t = NAMETABLE);
+	Table(const std::deque<std::string> &recs, TABLE_TYPE t = NAMETABLE);
 	Table(TABLE_TYPE t);
 	TABLE_TYPE getType() const;
 	std::deque<std::string> records;
@@ -39,7 +39,7 @@ private:
 
 class OpTable : public Table {
 public:
-	OpTable(std::deque<OPER> &ops);
+	OpTable(const std::deque<OPER> &ops);
 	std::deque<OPER> operators;
 };
 
@@ -47,7 +47,7 @@ class Exp;
 
 class ExprTable : public Table {
 public:
-	ExprTable(std::deque<Exp *> &exprs);
+	ExprTable(const std::deque<Exp *> &exprs);
 	~ExprTable();
 	std::deque<Exp *> expressions;
 };

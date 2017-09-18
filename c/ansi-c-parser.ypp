@@ -184,16 +184,16 @@ convention
 	;
 
 num_list
-	: CONSTANT ',' num_list { $$ = $3; $$->push_front($1); }
-	| CONSTANT    { $$ = new std::list<int>(); $$->push_back($1); }
-	| /* empty */ { $$ = new std::list<int>(); }
+	: num_list ',' CONSTANT { $$ = $1; $$->push_back($3); }
+	| CONSTANT          { $$ = new std::list<int>(1, $1); }
+	| /* empty */       { $$ = new std::list<int>; }
 	;
 
 param_list
-	: param_exp ',' param_list { $$ = $3; $$->push_front($1); }
-	| param_exp   { $$ = new std::list<Parameter *>(); $$->push_back($1); }
-	| VOID        { $$ = new std::list<Parameter *>() }
-	| /* empty */ { $$ = new std::list<Parameter *>() }
+	: param_list ',' param_exp { $$ = $1; $$->push_back($3); }
+	| param_exp    { $$ = new std::list<Parameter *>(1, $1); }
+	| VOID         { $$ = new std::list<Parameter *> }
+	| /* empty */  { $$ = new std::list<Parameter *> }
 	;
 
 param_exp
@@ -211,7 +211,7 @@ exp
 
 optional_bound
 	: MAXBOUND IDENTIFIER ')' { $$ = new Bound(0, *$2); delete $2; }
-	| /* empty */
+	| /* empty */             { $$ = nullptr; }
 	;
 
 param
@@ -231,11 +231,13 @@ param
 			$1->ty = new PointerType($1->ty);
 		}
 		$$ = new Parameter($1->ty, $1->nam.c_str());
+		delete $1;
 		if ($2) {
 			switch ($2->kind) {
 			case 0: $$->setBoundMax($2->nam.c_str());
 			}
 		}
+		delete $2;
 	  }
 	| type '(' '*' IDENTIFIER ')' '(' param_list ')' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
@@ -259,6 +261,7 @@ param
 type_decl
 	: TYPEDEF type_ident ';' {
 		Type::addNamedType($2->nam, $2->ty);
+		delete $2;
 	  }
 	| TYPEDEF type '(' '*' IDENTIFIER ')' '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
@@ -286,12 +289,14 @@ type_decl
 			}
 		delete $4;
 		Type::addNamedType($2->nam, new FuncType(sig));
+		delete $2;
 	  }
 	| STRUCT IDENTIFIER '{' type_ident_list '}' ';' {
 		CompoundType *t = new CompoundType();
 		for (auto it = $4->begin(); it != $4->end(); ++it) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
+		delete $4;
 		$2->insert(0, "struct ");
 		Type::addNamedType(*$2, t);
 		delete $2;
@@ -305,6 +310,7 @@ func_decl
 	| signature PREFER type_ident '(' num_list ')' ';' {
 		$1->setPreferedReturn($3->ty);
 		$1->setPreferedName($3->nam.c_str());
+		delete $3;
 		for (auto it = $5->begin(); it != $5->end(); ++it)
 			$1->addPreferedParameter(*it - 1);
 		delete $5;
@@ -317,6 +323,7 @@ signature
 		/* Use the passed calling convention (cc) */
 		Signature *sig = Signature::instantiate(plat, cc, $1->nam.c_str());
 		sig->addReturn($1->ty);
+		delete $1;
 		for (auto it = $3->begin(); it != $3->end(); ++it)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
@@ -330,6 +337,7 @@ signature
 	| convention type_ident '(' param_list ')' {
 		Signature *sig = Signature::instantiate(plat, $1, $2->nam.c_str());
 		sig->addReturn($2->ty);
+		delete $2;
 		for (auto it = $4->begin(); it != $4->end(); ++it)
 			if (std::string((*it)->getName()) != "...")
 				sig->addParameter(*it);
@@ -346,6 +354,8 @@ signature
 			sig->addReturn($3->ty, $2->exp);
 		if ($2->sp)
 			sig->setSP($2->sp);
+		delete $2;
+		delete $3;
 		for (auto it = $5->begin(); it != $5->end(); ++it)
 			if (std::string((*it)->getName()) != "...") {
 				sig->addParameter(*it);
@@ -372,6 +382,7 @@ symbol_decl
 		sym->nam = $2->nam;
 		sym->ty = $2->ty;
 		symbols.push_back(sym);
+		delete $2;
 	  }
 	/*
 	 * Note: in practice, a function signature needs either a
@@ -420,8 +431,8 @@ type_ident
 	;
 
 type_ident_list
-	: type_ident ';' type_ident_list { $$ = $3; $$->push_front($1); }
-	| type_ident ';' { $$ = new std::list<TypeIdent *>(); $$->push_back($1); }
+	: type_ident_list type_ident ';' { $$ = $1; $$->push_back($2); }
+	| type_ident ';'     { $$ = new std::list<TypeIdent *>(1, $1); }
 	;
 
 type
@@ -463,6 +474,7 @@ type
 		for (auto it = $3->begin(); it != $3->end(); ++it) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
+		delete $3;
 		$$ = t;
 	  }
 	;

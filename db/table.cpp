@@ -26,7 +26,7 @@ Table::Table(TABLE_TYPE t) :
 {
 }
 
-Table::Table(std::deque<std::string> &recs, TABLE_TYPE t /* = NAMETABLE */) :
+Table::Table(const std::deque<std::string> &recs, TABLE_TYPE t /* = NAMETABLE */) :
 	records(recs),
 	type(t)
 {
@@ -38,13 +38,13 @@ Table::getType() const
 	return type;
 }
 
-OpTable::OpTable(std::deque<OPER> &ops) :
+OpTable::OpTable(const std::deque<OPER> &ops) :
 	Table(OPTABLE),
 	operators(ops)
 {
 }
 
-ExprTable::ExprTable(std::deque<Exp *> &exprs) :
+ExprTable::ExprTable(const std::deque<Exp *> &exprs) :
 	Table(EXPRTABLE),
 	expressions(exprs)
 {
