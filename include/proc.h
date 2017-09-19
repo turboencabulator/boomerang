@@ -95,7 +95,7 @@ public:
 	        Signature  *getSignature() { return signature; }
 	        void        setSignature(Signature *sig) { signature = sig; }
 
-	virtual void        renameParam(const char *oldName, const char *newName);
+	virtual void        renameParam(const std::string &oldName, const std::string &newName);
 
 	/**
 	 * Modify actuals so that it is now the list of locations that must
@@ -726,10 +726,10 @@ public:
 	const char *getLocalName(int n);
 	const char *getSymbolName(Exp *e);  ///< As getLocalName, but look for expression e
 	void        renameLocal(const char *oldName, const char *newName);
-	void        renameParam(const char *oldName, const char *newName) override;
+	void        renameParam(const std::string &oldName, const std::string &newName) override;
 
 	const char *getRegName(Exp *r);  /// Get a name like eax or o2 from r24 or r8
-	void        setParamType(const char *nam, Type *ty);
+	void        setParamType(const std::string &nam, Type *ty);
 	void        setParamType(int idx, Type *ty);
 
 	/**

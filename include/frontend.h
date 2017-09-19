@@ -132,8 +132,8 @@ public:
 	virtual DecodeResult &decodeInstruction(ADDRESS pc);
 	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
 
-	void readLibrarySignatures(const char *sPath, callconv cc);
-	void readLibraryCatalog(const char *sPath);
+	void readLibrarySignatures(const std::string &sPath, callconv cc);
+	void readLibraryCatalog(const std::string &sPath);
 	void readLibraryCatalog();
 
 	Signature *getLibSignature(const char *name);

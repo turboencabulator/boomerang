@@ -277,11 +277,11 @@ Parameter *hack;
 Parameter *
 Parameter::clone()
 {
-	return new Parameter(type->clone(), name.c_str(), exp->clone(), boundMax.c_str());
+	return new Parameter(type->clone(), name, exp->clone(), boundMax);
 }
 
 void
-Parameter::setBoundMax(const char *nam)
+Parameter::setBoundMax(const std::string &nam)
 {
 	hack = this;
 	boundMax = nam;
@@ -1250,9 +1250,10 @@ Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nu
 	if (!e) {
 		std::cerr << "No expression for parameter ";
 		if (!type)
-			std::cerr << "<notype> ";
+			std::cerr << "<notype>";
 		else
-			std::cerr << type->getCtype() << " ";
+			std::cerr << type->getCtype();
+		std::cerr << " ";
 		if (!nam)
 			std::cerr << "<noname>";
 		else
@@ -1263,18 +1264,12 @@ Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nu
 
 	std::string s;
 	if (!nam) {
-		int n = params.size() + 1;
-		bool ok = false;
-		while (!ok) {
+		int n = params.size();
+		do {
 			std::stringstream os;
-			os << "param" << n << std::ends;
+			os << "param" << ++n;
 			s = os.str();
-			ok = true;
-			for (unsigned i = 0; i < params.size(); ++i)
-				if (!strcmp(s.c_str(), params[i]->getName()))
-					ok = false;
-			++n;
-		}
+		} while (findParam(s) != -1);
 		nam = s.c_str();
 	}
 	Parameter *p = new Parameter(type, nam, e, boundMax);
@@ -1366,7 +1361,7 @@ Signature::setParamType(int n, Type *ty)
 }
 
 void
-Signature::setParamType(const char *nam, Type *ty)
+Signature::setParamType(const std::string &nam, Type *ty)
 {
 	int idx = findParam(nam);
 	if (idx == -1) {
@@ -1388,7 +1383,7 @@ Signature::setParamType(Exp *e, Type *ty)
 }
 
 void
-Signature::setParamName(int n, const char *name)
+Signature::setParamName(int n, const std::string &name)
 {
 	params[n]->setName(name);
 }
@@ -1403,27 +1398,27 @@ Signature::setParamExp(int n, Exp *e)
 int
 Signature::findParam(Exp *e)
 {
-	for (unsigned i = 0; i < getNumParams(); ++i)
-		if (*getParamExp(i) == *e)
+	for (unsigned i = 0; i < params.size(); ++i)
+		if (*params[i]->getExp() == *e)
 			return i;
 	return -1;
 }
 
 void
-Signature::renameParam(const char *oldName, const char *newName)
+Signature::renameParam(const std::string &oldName, const std::string &newName)
 {
-	for (unsigned i = 0; i < getNumParams(); ++i)
-		if (!strcmp(params[i]->getName(), oldName)) {
+	for (unsigned i = 0; i < params.size(); ++i)
+		if (params[i]->getName() == oldName) {
 			params[i]->setName(newName);
 			break;
 		}
 }
 
 int
-Signature::findParam(const char *nam)
+Signature::findParam(const std::string &nam)
 {
-	for (unsigned i = 0; i < getNumParams(); ++i)
-		if (!strcmp(getParamName(i), nam))
+	for (unsigned i = 0; i < params.size(); ++i)
+		if (params[i]->getName() == nam)
 			return i;
 	return -1;
 }
@@ -2020,7 +2015,7 @@ ImplicitParameter::readMemo(Memo *mm, bool dec)
 {
 	ImplicitParameterMemo *m = dynamic_cast<ImplicitParameterMemo *>(mm);
 	setType(m->type);
-	setName(m->name.c_str());
+	setName(m->name);
 	setExp(m->exp);
 	parent = m->parent;
 

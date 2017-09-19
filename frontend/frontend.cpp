@@ -238,7 +238,7 @@ FrontEnd::noReturnCallDest(const char *name)
  * \brief Read library signatures from a catalog.
  */
 void
-FrontEnd::readLibraryCatalog(const char *sPath)
+FrontEnd::readLibraryCatalog(const std::string &sPath)
 {
 	std::ifstream inf(sPath);
 	if (!inf.good()) {
@@ -261,7 +261,7 @@ FrontEnd::readLibraryCatalog(const char *sPath)
 		callconv cc = CONV_C;  // Most APIs are C calling convention
 		if (sFile == "windows.h") cc = CONV_PASCAL;    // One exception
 		if (sFile == "mfc.h")     cc = CONV_THISCALL;  // Another exception
-		readLibrarySignatures(sPath.c_str(), cc);
+		readLibrarySignatures(sPath, cc);
 	}
 	inf.close();
 }
@@ -274,13 +274,14 @@ FrontEnd::readLibraryCatalog()
 {
 	librarySignatures.clear();
 	std::string sList = Boomerang::get()->getProgPath() + "signatures/common.hs";
+	readLibraryCatalog(sList);
 
-	readLibraryCatalog(sList.c_str());
 	sList = Boomerang::get()->getProgPath() + "signatures/" + Signature::platformName(getFrontEndId()) + ".hs";
-	readLibraryCatalog(sList.c_str());
+	readLibraryCatalog(sList);
+
 	if (isWin32()) {
 		sList = Boomerang::get()->getProgPath() + "signatures/win32.hs";
-		readLibraryCatalog(sList.c_str());
+		readLibraryCatalog(sList);
 	}
 }
 
@@ -518,7 +519,7 @@ FrontEnd::decodeInstruction(ADDRESS pc)
  * \param cc     The calling convention assumed.
  */
 void
-FrontEnd::readLibrarySignatures(const char *sPath, callconv cc)
+FrontEnd::readLibrarySignatures(const std::string &sPath, callconv cc)
 {
 	std::ifstream ifs(sPath);
 	if (!ifs.good()) {

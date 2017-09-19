@@ -33,12 +33,12 @@ class UserProc;
 class Parameter {
 private:
 	        Type       *type = nullptr;
-	        std::string name = "";
+	        std::string name;
 	        Exp        *exp = nullptr;
 	        std::string boundMax;
 
 public:
-	                    Parameter(Type *type, const char *name, Exp *exp = nullptr, const char *boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
+	                    Parameter(Type *type, const std::string &name, Exp *exp = nullptr, const std::string &boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
 	        bool        operator ==(const Parameter &other) const;
 	        Parameter  *clone();
@@ -46,13 +46,13 @@ public:
 	        Type       *getType() const { return type; }
 	        void        setType(Type *ty) { type = ty; }
 	        const char *getName() const { return name.c_str(); }
-	        void        setName(const char *nam) { name = nam; }
+	        void        setName(const std::string &nam) { name = nam; }
 	        Exp        *getExp() const { return exp; }
 	        void        setExp(Exp *e) { exp = e; }
 
 	// this parameter is the bound of another parameter with name nam
 	        const char  *getBoundMax() const { return boundMax.c_str(); }
-	        void        setBoundMax(const char *nam);
+	        void        setBoundMax(const std::string &nam);
 
 protected:
 	friend class XMLProgParser;
@@ -78,7 +78,7 @@ typedef std::vector<Return *> Returns;
 
 class Signature {
 protected:
-	        std::string name = "";  // name of procedure
+	        std::string name;  // name of procedure
 	        std::string sigFile;  // signature file this signature was read from (for libprocs)
 	        std::vector<Parameter *> params;
 	        //std::vector<ImplicitParameter *> implicitParams;
@@ -90,7 +90,7 @@ protected:
 	        // True if the signature is forced with a -sf entry, or is otherwise known, e.g. WinMain
 	        bool        forced = false;
 	        Type       *preferedReturn = nullptr;
-	        std::string preferedName = "";
+	        std::string preferedName;
 	        std::vector<int> preferedParams;
 
 	        //void        updateParams(UserProc *p, Statement *stmt, bool checkreach = true);
@@ -138,7 +138,7 @@ public:
 	virtual void        setName(const char *nam);
 	// get/set the signature file
 	        const char *getSigFile() { return sigFile.c_str(); }
-	        void        setSigFile(const char *nam) { sigFile = nam; }
+	        void        setSigFile(const std::string &nam) { sigFile = nam; }
 
 	// add a new parameter to this signature
 	virtual void        addParameter(const char *nam = nullptr);
@@ -159,17 +159,17 @@ public:
 	virtual Type       *getParamType(int n);
 	virtual const char *getParamBoundMax(int n);
 	virtual void        setParamType(int n, Type *ty);
-	virtual void        setParamType(const char *nam, Type *ty);
+	virtual void        setParamType(const std::string &nam, Type *ty);
 	virtual void        setParamType(Exp *e, Type *ty);
-	virtual void        setParamName(int n, const char *nam);
+	virtual void        setParamName(int n, const std::string &nam);
 	virtual void        setParamExp(int n, Exp *e);
 	virtual int         findParam(Exp *e);
-	virtual int         findParam(const char *nam);
+	virtual int         findParam(const std::string &nam);
 	// accessor for argument expressions
 	virtual Exp        *getArgumentExp(int n);
 	virtual bool        hasEllipsis() const { return ellipsis; }
 
-	        void        renameParam(const char *oldName, const char *newName);
+	        void        renameParam(const std::string &oldName, const std::string &newName);
 
 	// analysis determines parameters / return type
 	//virtual void        analyse(UserProc *p);
@@ -237,7 +237,7 @@ public:
 
 	// prefered format
 	        void        setPreferedReturn(Type *ty) { preferedReturn = ty; }
-	        void        setPreferedName(const char *nam) { preferedName = nam; }
+	        void        setPreferedName(const std::string &nam) { preferedName = nam; }
 	        void        addPreferedParameter(int n) { preferedParams.push_back(n); }
 	        Type       *getPreferedReturn() { return preferedReturn; }
 	        const char *getPreferedName() { return preferedName.c_str(); }

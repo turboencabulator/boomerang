@@ -148,21 +148,20 @@ UserProc::containsAddr(ADDRESS uAddr)
 }
 
 void
-Proc::renameParam(const char *oldName, const char *newName)
+Proc::renameParam(const std::string &oldName, const std::string &newName)
 {
 	signature->renameParam(oldName, newName);
 }
 
 void
-UserProc::renameParam(const char *oldName, const char *newName)
+UserProc::renameParam(const std::string &oldName, const std::string &newName)
 {
-	oldName = strdup(oldName);
 	Proc::renameParam(oldName, newName);
 	//cfg->searchAndReplace(Location::param(strdup(oldName), this), Location::param(strdup(newName), this));
 }
 
 void
-UserProc::setParamType(const char *nam, Type *ty)
+UserProc::setParamType(const std::string &nam, Type *ty)
 {
 	signature->setParamType(nam, ty);
 }

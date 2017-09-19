@@ -230,11 +230,11 @@ param
 			 */
 			$1->ty = new PointerType($1->ty);
 		}
-		$$ = new Parameter($1->ty, $1->nam.c_str());
+		$$ = new Parameter($1->ty, $1->nam);
 		delete $1;
 		if ($2) {
 			switch ($2->kind) {
-			case 0: $$->setBoundMax($2->nam.c_str());
+			case 0: $$->setBoundMax($2->nam);
 			}
 		}
 		delete $2;
@@ -250,7 +250,7 @@ param
 				delete *it;
 			}
 		delete $7;
-		$$ = new Parameter(new PointerType(new FuncType(sig)), $4->c_str());
+		$$ = new Parameter(new PointerType(new FuncType(sig)), *$4);
 		delete $4;
 	  }
 	| ELLIPSIS {
@@ -309,7 +309,7 @@ func_decl
 	  }
 	| signature PREFER type_ident '(' num_list ')' ';' {
 		$1->setPreferedReturn($3->ty);
-		$1->setPreferedName($3->nam.c_str());
+		$1->setPreferedName($3->nam);
 		delete $3;
 		for (auto it = $5->begin(); it != $5->end(); ++it)
 			$1->addPreferedParameter(*it - 1);
