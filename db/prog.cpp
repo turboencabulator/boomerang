@@ -62,13 +62,13 @@ Prog::setFrontEnd(FrontEnd *pFE)
 	this->pFE = pFE;
 	if (pBF && pBF->getFilename()) {
 		m_name = pBF->getFilename();
-		m_rootCluster = new Cluster(getNameNoPathNoExt().c_str());
+		m_rootCluster = new Cluster(getNameNoPathNoExt());
 	}
 }
 
 Prog::Prog(const char *name) :
 	m_name(name),
-	m_rootCluster(new Cluster(getNameNoPathNoExt().c_str()))
+	m_rootCluster(new Cluster(getNameNoPathNoExt()))
 {
 	// Constructor taking a name. Technically, the allocation of the space for the name could fail, but this is unlikely
 	m_path = m_name;
@@ -85,7 +85,7 @@ Prog::~Prog()
 }
 
 void
-Prog::setName(const char *name)  // Assign a name to this program
+Prog::setName(const std::string &name)  // Assign a name to this program
 {
 	m_name = name;
 	m_rootCluster->setName(name);
@@ -311,7 +311,7 @@ Cluster::addChild(Cluster *n)
 }
 
 Cluster *
-Cluster::find(const char *nam)
+Cluster::find(const std::string &nam)
 {
 	if (name == nam)
 		return this;
@@ -324,18 +324,18 @@ Cluster::find(const char *nam)
 }
 
 std::string
-Cluster::getOutPath(const char *ext)
+Cluster::getOutPath(const std::string &ext)
 {
 	return makeDirs() + "/" + name + "." + ext;
 }
 
 void
-Cluster::openStream(const char *ext)
+Cluster::openStream(const std::string &ext)
 {
 	if (out.is_open())
 		return;
 	out.open(getOutPath(ext));
-	if (!strcmp(ext, "xml")) {
+	if (ext == "xml") {
 		out << "<?xml version=\"1.0\"?>\n";
 		if (parent)
 			out << "<procs>\n";
@@ -343,7 +343,7 @@ Cluster::openStream(const char *ext)
 }
 
 void
-Cluster::openStreams(const char *ext)
+Cluster::openStreams(const std::string &ext)
 {
 	openStream(ext);
 	for (unsigned i = 0; i < children.size(); ++i)
@@ -370,23 +370,25 @@ Prog::clusterUsed(Cluster *c)
 }
 
 Cluster *
-Prog::getDefaultCluster(const char *name)
+Prog::getDefaultCluster(const std::string &name)
 {
 	const char *cfname = nullptr;
 	if (pBF) cfname = pBF->getFilenameSymbolFor(name);
-	if (!cfname)
-		return m_rootCluster;
-	if (strcmp(cfname + strlen(cfname) - 2, ".c"))
-		return m_rootCluster;
-	LOG << "got filename " << cfname << " for " << name << "\n";
-	char *fname = strdup(cfname);
-	fname[strlen(fname) - 2] = 0;
-	Cluster *c = findCluster(fname);
-	if (!c) {
-		c = new Cluster(fname);
-		m_rootCluster->addChild(c);
+	if (cfname) {
+		std::string fname = cfname;
+		auto len = fname.length();
+		if (len >= 2 && fname.compare(len - 2, fname.npos, ".c") == 0) {
+			LOG << "got filename " << fname << " for " << name << "\n";
+			fname.erase(len - 2);
+			Cluster *c = findCluster(fname);
+			if (!c) {
+				c = new Cluster(fname);
+				m_rootCluster->addChild(c);
+			}
+			return c;
+		}
 	}
-	return c;
+	return m_rootCluster;
 }
 
 void
@@ -910,7 +912,7 @@ Prog::isProcLabel(ADDRESS addr)
 std::string
 Prog::getNameNoPath() const
 {
-	std::string::size_type n = m_name.rfind('/');
+	auto n = m_name.rfind('/');
 	if (n == m_name.npos) n = m_name.rfind('\\');
 	if (n == m_name.npos)
 		return m_name;
@@ -920,8 +922,8 @@ Prog::getNameNoPath() const
 std::string
 Prog::getNameNoPathNoExt() const
 {
-	std::string nopath = getNameNoPath();
-	std::string::size_type n = nopath.rfind('.');
+	auto nopath = getNameNoPath();
+	auto n = nopath.rfind('.');
 	if (n == nopath.npos)
 		return nopath;
 	return nopath.substr(0, n);

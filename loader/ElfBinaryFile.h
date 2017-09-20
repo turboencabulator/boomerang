@@ -207,7 +207,7 @@ public:
 	const char *getSymbolByAddress(ADDRESS uAddr) override;
 	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const override;
 	int         getSizeByName(const char *pName, bool bNoTypeOK = false) const override;
-	const char *getFilenameSymbolFor(const char *sym) override;
+	const char *getFilenameSymbolFor(const std::string &sym) override;
 	int         getDistanceByName(const char *pName, const char *pSectName);
 	int         getDistanceByName(const char *pName);
 	ADDRESS    *getImportStubs(int &numImports) override;

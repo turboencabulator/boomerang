@@ -1245,7 +1245,7 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative) const
  * not found or if it is a zero-length string.
  */
 const char *
-ElfBinaryFile::getFilenameSymbolFor(const char *sym)
+ElfBinaryFile::getFilenameSymbolFor(const std::string &sym)
 {
 	int secIndex = 0;
 	for (int i = 1; i < m_iNumSections; ++i) {

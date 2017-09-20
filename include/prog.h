@@ -69,7 +69,7 @@ public:
 	virtual            ~Prog();
 	                    Prog(const char *name);         // Constructor with name
 	        void        setFrontEnd(FrontEnd *fe);
-	        void        setName(const char *name);      // Set the name of this program
+	        void        setName(const std::string &name);  // Set the name of this program
 	        Proc       *setNewProc(ADDRESS uNative);    // Set up new proc
 	// Return a pointer to a new proc
 	        Proc       *newProc(const char *name, ADDRESS uNative, bool bLib = false);
@@ -257,8 +257,8 @@ public:
 	        void        printCallGraphXML();
 
 	        Cluster    *getRootCluster() { return m_rootCluster; }
-	        Cluster    *findCluster(const char *name) { return m_rootCluster->find(name); }
-	        Cluster    *getDefaultCluster(const char *name);
+	        Cluster    *findCluster(const std::string &name) { return m_rootCluster->find(name); }
+	        Cluster    *getDefaultCluster(const std::string &name);
 	        bool        clusterUsed(Cluster *c);
 
 	// Add the given RTL to the front end's map from address to aldready-decoded-RTL

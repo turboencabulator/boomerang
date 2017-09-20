@@ -980,13 +980,13 @@ Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *pr
 	Cluster *root = prog->getRootCluster();
 	for (auto it = modules.begin(); it != modules.end(); ++it) {
 		const ObjcModule &mod = it->second;
-		Module *module = new Module(mod.name.c_str());
+		Module *module = new Module(mod.name);
 		root->addChild(module);
 		if (VERBOSE)
 			LOG << "\tModule: " << mod.name.c_str() << "\n";
 		for (auto it1 = mod.classes.begin(); it1 != mod.classes.end(); ++it1) {
 			const ObjcClass &c = it1->second;
-			Class *cl = new Class(c.name.c_str());
+			Class *cl = new Class(c.name);
 			root->addChild(cl);
 			if (VERBOSE)
 				LOG << "\t\tClass: " << c.name.c_str() << "\n";

@@ -216,7 +216,7 @@ Decompiler::decompile()
 void
 Decompiler::emitClusterAndChildren(Cluster *root)
 {
-	emit newCluster(QString(root->getName()));
+	emit newCluster(QString::fromStdString(root->getName()));
 	for (unsigned int i = 0; i < root->getNumChildren(); ++i)
 		emitClusterAndChildren(root->getChild(i));
 }
@@ -233,7 +233,7 @@ Decompiler::generateCode()
 		emitClusterAndChildren(root);
 	std::list<Proc *>::iterator it;
 	for (UserProc *p = prog->getFirstUserProc(it); p; p = prog->getNextUserProc(it)) {
-		emit newProcInCluster(QString(p->getName()), QString(p->getCluster()->getName()));
+		emit newProcInCluster(QString(p->getName()), QString::fromStdString(p->getCluster()->getName()));
 	}
 
 	emit generateCodeCompleted();
@@ -360,7 +360,7 @@ Decompiler::getSigFile(const QString &name)
 QString
 Decompiler::getClusterFile(const QString &name)
 {
-	Cluster *c = prog->findCluster((const char *)name.toAscii());
+	Cluster *c = prog->findCluster(name.toStdString());
 	if (c)
 		return QString::fromStdString(c->getOutPath("c"));
 	return QString();

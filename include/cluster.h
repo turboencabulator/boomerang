@@ -33,23 +33,23 @@ protected:
 
 public:
 	                    Cluster() { }
-	                    Cluster(const char *name) : name(name) { }
+	                    Cluster(const std::string &name) : name(name) { }
 	virtual            ~Cluster() { }
-	        const char *getName() const { return name.c_str(); }
-	        void        setName(const char *nam) { name = nam; }
+	        const std::string &getName() const { return name; }
+	        void        setName(const std::string &nam) { name = nam; }
 	        unsigned int getNumChildren() const { return children.size(); }
 	        Cluster    *getChild(int n) const { return children[n]; }
 	        void        addChild(Cluster *n);
 	        void        removeChild(Cluster *n);
 	        Cluster    *getParent() const { return parent; }
 	        bool        hasChildren() const { return !children.empty(); }
-	        void        openStream(const char *ext);
-	        void        openStreams(const char *ext);
+	        void        openStream(const std::string &ext);
+	        void        openStreams(const std::string &ext);
 	        void        closeStreams();
 	        std::ofstream &getStream() { return out; }
 	        std::string makeDirs();
-	        std::string getOutPath(const char *ext);
-	        Cluster    *find(const char *nam);
+	        std::string getOutPath(const std::string &ext);
+	        Cluster    *find(const std::string &nam);
 	virtual bool        isAggregate() const { return false; }
 
 	        void        printTree(std::ostream &out) const;
@@ -60,7 +60,7 @@ protected:
 
 class Module : public Cluster {
 public:
-	Module(const char *name) : Cluster(name) { }
+	Module(const std::string &name) : Cluster(name) { }
 };
 
 class Class : public Cluster {
@@ -68,7 +68,7 @@ protected:
 	CompoundType *type;
 
 public:
-	Class(const char *name) : Cluster(name) { type = new CompoundType(); }
+	Class(const std::string &name) : Cluster(name) { type = new CompoundType(); }
 
 	// A Class tends to be aggregated into the parent Module,
 	// this isn't the case with Java, but hey, we're not doing that yet.

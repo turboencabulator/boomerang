@@ -34,7 +34,7 @@ ProgTest::testName()
 	std::string expected(HELLO_PENTIUM);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 	std::string name("Happy prog");
-	prog->setName(name.c_str());
+	prog->setName(name);
 	actual = prog->getName();
 	CPPUNIT_ASSERT_EQUAL(name, actual);
 	delete prog;
