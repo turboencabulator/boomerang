@@ -47,8 +47,8 @@ public:
 	        void        openStreams(const std::string &ext);
 	        void        closeStreams();
 	        std::ofstream &getStream() { return out; }
-	        std::string makeDirs();
-	        std::string getOutPath(const std::string &ext);
+	        std::string makeDirs() const;
+	        std::string getOutPath(const std::string &ext) const;
 	        Cluster    *find(const std::string &nam);
 	virtual bool        isAggregate() const { return false; }
 

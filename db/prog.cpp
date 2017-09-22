@@ -123,7 +123,7 @@ Prog::finishDecode()
 }
 
 void
-Prog::generateDot(std::ostream &os)
+Prog::generateDot(std::ostream &os) const
 {
 	os << "digraph Cfg {\n";
 
@@ -237,7 +237,7 @@ Prog::generateCode(Cluster *cluster, UserProc *proc, bool intermixRTL)
 }
 
 void
-Prog::generateRTL(Cluster *cluster, UserProc *proc)
+Prog::generateRTL(Cluster *cluster, UserProc *proc) const
 {
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
@@ -256,7 +256,7 @@ Prog::generateRTL(Cluster *cluster, UserProc *proc)
 }
 
 Statement *
-Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end)
+Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const
 {
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
@@ -276,7 +276,7 @@ Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end)
 }
 
 std::string
-Cluster::makeDirs()
+Cluster::makeDirs() const
 {
 	std::string path;
 	if (parent)
@@ -324,7 +324,7 @@ Cluster::find(const std::string &nam)
 }
 
 std::string
-Cluster::getOutPath(const std::string &ext)
+Cluster::getOutPath(const std::string &ext) const
 {
 	return makeDirs() + "/" + name + "." + ext;
 }
@@ -361,7 +361,7 @@ Cluster::closeStreams()
 }
 
 bool
-Prog::clusterUsed(Cluster *c)
+Prog::clusterUsed(Cluster *c) const
 {
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
 		if ((*it)->getCluster() == c)
@@ -370,7 +370,7 @@ Prog::clusterUsed(Cluster *c)
 }
 
 Cluster *
-Prog::getDefaultCluster(const std::string &name)
+Prog::getDefaultCluster(const std::string &name) const
 {
 	const char *cfname = nullptr;
 	if (pBF) cfname = pBF->getFilenameSymbolFor(name);
@@ -419,7 +419,7 @@ Prog::generateCode(std::ostream &os)
 
 // Print this program, mainly for debugging
 void
-Prog::print(std::ostream &out)
+Prog::print(std::ostream &out) const
 {
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		Proc *pProc = *it;
@@ -541,13 +541,13 @@ Prog::removeProc(const char *name)
  * RETURNS:     The number of procedures
  *============================================================================*/
 int
-Prog::getNumProcs()
+Prog::getNumProcs() const
 {
 	return m_procs.size();
 }
 
 int
-Prog::getNumUserProcs()
+Prog::getNumUserProcs() const
 {
 	int n = 0;
 	for (auto it = m_procs.cbegin(); it != m_procs.cend(); ++it)
@@ -611,7 +611,7 @@ Prog::getLibraryProc(const char *nam)
 }
 
 Signature *
-Prog::getLibSignature(const char *nam)
+Prog::getLibSignature(const char *nam) const
 {
 	return pFE->getLibSignature(nam);
 }
@@ -632,25 +632,25 @@ Prog::rereadLibSignatures()
 }
 
 platform
-Prog::getFrontEndId()
+Prog::getFrontEndId() const
 {
 	return pFE->getFrontEndId();
 }
 
 Signature *
-Prog::getDefaultSignature(const char *name)
+Prog::getDefaultSignature(const char *name) const
 {
 	return pFE->getDefaultSignature(name);
 }
 
 std::vector<Exp *> &
-Prog::getDefaultParams()
+Prog::getDefaultParams() const
 {
 	return pFE->getDefaultParams();
 }
 
 std::vector<Exp *> &
-Prog::getDefaultReturns()
+Prog::getDefaultReturns() const
 {
 	return pFE->getDefaultReturns();
 }
@@ -662,7 +662,7 @@ Prog::isWin32() const
 }
 
 const char *
-Prog::getGlobalName(ADDRESS uaddr)
+Prog::getGlobalName(ADDRESS uaddr) const
 {
 	// FIXME: inefficient
 	for (auto it = globals.begin(); it != globals.end(); ++it) {
@@ -678,7 +678,7 @@ Prog::getGlobalName(ADDRESS uaddr)
 }
 
 ADDRESS
-Prog::getGlobalAddr(const char *nam)
+Prog::getGlobalAddr(const char *nam) const
 {
 	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if (!strcmp((*it)->getName(), nam))
@@ -688,7 +688,7 @@ Prog::getGlobalAddr(const char *nam)
 }
 
 Global *
-Prog::getGlobal(const char *nam)
+Prog::getGlobal(const char *nam) const
 {
 	for (auto it = globals.begin(); it != globals.end(); ++it) {
 		if (!strcmp((*it)->getName(), nam))
@@ -766,7 +766,7 @@ Prog::makeArrayType(ADDRESS u, Type *t)
 }
 
 Type *
-Prog::guessGlobalType(const char *nam, ADDRESS u)
+Prog::guessGlobalType(const char *nam, ADDRESS u) const
 {
 	int sz = pBF->getSizeByName(nam);
 	if (sz == 0) {
@@ -799,7 +799,7 @@ Prog::newGlobalName(ADDRESS uaddr)
 }
 
 Type *
-Prog::getGlobalType(const char *nam)
+Prog::getGlobalType(const char *nam) const
 {
 	for (auto it = globals.begin(); it != globals.end(); ++it)
 		if (!strcmp((*it)->getName(), nam))
@@ -822,7 +822,7 @@ Prog::setGlobalType(const char *nam, Type *ty)
 // get a string constant at a given address if appropriate
 // if knownString, it is already known to be a char*
 const char *
-Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */)
+Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */) const
 {
 	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
 	// Too many compilers put constants, including string constants, into read/write sections
@@ -852,7 +852,7 @@ Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */)
 }
 
 double
-Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits)
+Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits) const
 {
 	ok = true;
 	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
@@ -1013,7 +1013,7 @@ Prog::getNextUserProc(std::list<Proc *>::iterator &it)
  *              Also sets 2 reference parameters (see above)
  *============================================================================*/
 const void *
-Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta)
+Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta) const
 {
 	delta = 0;
 	last = nullptr;
@@ -1299,7 +1299,7 @@ Prog::rangeAnalysis()
 }
 
 void
-Prog::printCallGraph()
+Prog::printCallGraph() const
 {
 	std::string fname1 = Boomerang::get()->getOutputPath() + "callgraph.out";
 	std::string fname2 = Boomerang::get()->getOutputPath() + "callgraph.dot";
@@ -1349,7 +1349,7 @@ Prog::printCallGraph()
 	unlockFile(fd2);
 }
 
-void
+static void
 printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &seen)
 {
 	bool fisttime = false;
@@ -1378,7 +1378,7 @@ printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &
 }
 
 void
-Prog::printSymbolsToFile()
+Prog::printSymbolsToFile() const
 {
 	std::cerr << "entering Prog::printSymbolsToFile\n";
 	std::string fname = Boomerang::get()->getOutputPath() + "symbols.h";
@@ -1403,7 +1403,7 @@ Prog::printSymbolsToFile()
 }
 
 void
-Prog::printCallGraphXML()
+Prog::printCallGraphXML() const
 {
 	if (!DUMP_XML)
 		return;
@@ -1478,7 +1478,7 @@ Global::~Global()
 }
 
 Exp *
-Global::getInitialValue(Prog *prog)
+Global::getInitialValue(Prog *prog) const
 {
 	Exp *e = nullptr;
 	const SectionInfo *si = prog->getSectionInfoByAddr(uaddr);
@@ -1492,7 +1492,7 @@ Global::getInitialValue(Prog *prog)
 }
 
 void
-Global::print(std::ostream &os, Prog *prog)
+Global::print(std::ostream &os, Prog *prog) const
 {
 	Exp *init = getInitialValue(prog);
 	os << type << " " << nam << " at " << std::hex << uaddr << std::dec
@@ -1500,7 +1500,7 @@ Global::print(std::ostream &os, Prog *prog)
 }
 
 Exp *
-Prog::readNativeAs(ADDRESS uaddr, Type *type)
+Prog::readNativeAs(ADDRESS uaddr, Type *type) const
 {
 	Exp *e = nullptr;
 	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
