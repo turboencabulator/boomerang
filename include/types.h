@@ -10,7 +10,7 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <stdint.h>
+#include <cstdint>
 
 // Machine types
 typedef uint8_t  Byte;

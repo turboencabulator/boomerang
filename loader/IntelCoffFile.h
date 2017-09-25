@@ -13,7 +13,7 @@
 #include "BinaryFile.h"
 #include "SymTab.h"
 
-#include <stdint.h>
+#include <cstdint>
 
 struct __attribute__((packed)) coff_header {
 	uint16_t coff_magic;

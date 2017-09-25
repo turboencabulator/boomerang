@@ -424,8 +424,8 @@ RefExp::operator ==(const Exp &e) const
 	if (!o.isSubscript()
 	 || !(*subExp1 == *o.subExp1))
 		return false;
-	return (int)def == -1  // Allow a def of (Statement *)-1 as a wild card
-	    || (int)o.def == -1
+	return def == (Statement *)-1  // Allow a def of (Statement *)-1 as a wild card
+	    || o.def == (Statement *)-1
 	    || (!def && o.isImplicitDef())  // Allow a def of nullptr to match a def of an implicit assignment
 	    || (!o.def && def && def->isImplicit())
 	    || def == o.def;
@@ -4136,7 +4136,7 @@ RefExp::printx(int ind) const
 	if (!def)
 		std::cerr << "NULL";
 	else
-		std::cerr << std::hex << (unsigned)def << "=" << std::dec << def->getNumber();
+		std::cerr << std::hex << (uintptr_t)def << "=" << std::dec << def->getNumber();
 	std::cerr << "}\n";
 	child(subExp1, ind);
 }

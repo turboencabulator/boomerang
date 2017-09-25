@@ -40,6 +40,7 @@
 #include <sstream>
 
 #include <cassert>
+#include <cstdint>
 
 /*==============================================================================
  * FUNCTION:        BasicBlock::BasicBlock
@@ -1613,7 +1614,7 @@ BasicBlock::getStmtNumber()
 	if (first)
 		sprintf(ret, "%d", first->getNumber());
 	else
-		sprintf(ret, "bb%x", (unsigned)this);
+		sprintf(ret, "bb%x", (uintptr_t)this);
 	return ret;
 }
 
