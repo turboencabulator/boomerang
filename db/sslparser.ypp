@@ -546,7 +546,7 @@ instr_name
 	| instr_name DECOR {
 		std::string::size_type i;
 
-		if ((*$2)[0] == '^')
+		if ($2->front() == '^')
 			$2->erase(0, 1);
 
 		// remove all " and _, from the decoration
@@ -1190,7 +1190,7 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 			yyerror(o.str().c_str());
 		}
 	}
-	indexrefmap.erase(indexrefmap.begin(), indexrefmap.end());
+	indexrefmap.clear();
 }
 
 /*==============================================================================

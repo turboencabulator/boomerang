@@ -95,8 +95,8 @@ ExpTransformer::loadAll()
 		std::string::size_type j = sFile.find('#');
 		if (j != sFile.npos)
 			sFile.erase(j);
-		if (!sFile.empty() && sFile[sFile.size() - 1] == '\n')
-			sFile.erase(sFile.size() - 1);
+		if (!sFile.empty() && sFile.back() == '\n')
+			sFile.pop_back();
 		if (sFile.empty()) continue;
 
 		std::string sPath1 = Boomerang::get()->getProgPath() + "transformations/" + sFile;

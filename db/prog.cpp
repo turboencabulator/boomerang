@@ -1317,7 +1317,7 @@ Prog::printCallGraph() const
 	spaces[procList.front()] = 0;
 	while (!procList.empty()) {
 		Proc *p = procList.front();
-		procList.erase(procList.begin());
+		procList.pop_front();
 		if ((unsigned)p == NO_ADDRESS)
 			continue;
 		if (seen.find(p) == seen.end()) {

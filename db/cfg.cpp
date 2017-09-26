@@ -36,8 +36,8 @@
 #include <cassert>
 #include <cstring>
 
-void delete_lrtls(std::list<RTL *> *pLrtl);
-void erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end);
+static void delete_lrtls(std::list<RTL *> *pLrtl);
+static void erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end);
 
 /*==============================================================================
  * FUNCTION:        Cfg::Cfg
@@ -378,7 +378,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		pNewBB = new BasicBlock(*pBB);
 		// But we don't want the top BB's in edges; our only in-edge should be the out edge from the top BB
 		pNewBB->m_iNumInEdges = 0;
-		pNewBB->m_InEdges.erase(pNewBB->m_InEdges.begin(), pNewBB->m_InEdges.end());
+		pNewBB->m_InEdges.clear();
 		// The "bottom" BB now starts at the implicit label, so we create a new list that starts at ri. We need a new
 		// list, since it is different from the original BB's list. We don't have to "deep copy" the RTLs themselves,
 		// since they will never overlap
@@ -435,7 +435,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		pBB->m_pRtls->erase(ri, pBB->m_pRtls->end());
 	}
 	// Erase any existing out edges
-	pBB->m_OutEdges.erase(pBB->m_OutEdges.begin(), pBB->m_OutEdges.end());
+	pBB->m_OutEdges.clear();
 	pBB->m_iNumOutEdges = 1;
 	addOutEdge(pBB, uNativeAddr);
 	return pNewBB;
@@ -1036,7 +1036,7 @@ Cfg::searchAll(Exp *search, std::list<Exp *> &result)
  * OVERVIEW:    "deep" delete for a list of pointers to RTLs
  * PARAMETERS:  pLrtl - the list
  *============================================================================*/
-void
+static void
 delete_lrtls(std::list<RTL *> *pLrtl)
 {
 	for (auto it = pLrtl->begin(); it != pLrtl->end(); ++it) {
@@ -1051,7 +1051,7 @@ delete_lrtls(std::list<RTL *> *pLrtl)
  *              begin - iterator to first (inclusive) item to delete
  *              end - iterator to last (exclusive) item to delete
  *============================================================================*/
-void
+static void
 erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end)
 {
 	for (auto it = begin; it != end; ++it) {
@@ -1724,7 +1724,7 @@ Cfg::findInterferences(ConnectionGraph &cg)
 			progress = 0;
 		}
 		BasicBlock *currBB = workList.back();
-		workList.erase(--workList.end());
+		workList.pop_back();
 		workSet.erase(currBB);
 		// Calculate live locations and interferences
 		change = currBB->calcLiveness(cg, myProc);
@@ -1851,10 +1851,9 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	// Remove the SKIP from the start of the string instruction RTL
 	std::list<Statement *> &li = rtl->getList();
 	assert(li.size() >= 4);
-	li.erase(li.begin());
+	li.pop_front();
 	// Replace the last statement with br2
-	auto ll = --li.end();
-	li.erase(ll);
+	li.pop_back();
 	li.push_back(br2);
 
 	// Move the remainder of the string RTL into a new BB
@@ -1890,7 +1889,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	// Change pBB to a FALL bb
 	pBB->updateType(FALL, 1);
 	// Set the first out-edge to be skipBB
-	pBB->m_OutEdges.erase(pBB->m_OutEdges.begin(), pBB->m_OutEdges.end());
+	pBB->m_OutEdges.clear();
 	addOutEdge(pBB, skipBB);
 	// Set the out edges for skipBB. First is the taken (true) leg.
 	addOutEdge(skipBB, newBb);

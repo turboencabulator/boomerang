@@ -297,7 +297,7 @@ void
 RTL::deleteLastStmt()
 {
 	assert(!stmtList.empty());
-	stmtList.erase(--stmtList.end());
+	stmtList.pop_back();
 }
 
 /**

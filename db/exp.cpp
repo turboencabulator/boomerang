@@ -3251,8 +3251,8 @@ Exp::printAsHL(std::ostream &os /*= cout*/) const
 	std::string s(ost.str());
 	if ((s.length() >= 4) && (s[1] == '[')) {
 		// r[nn]; change to rnn
-		s.erase(1, 1);            // '['
-		s.erase(s.length() - 1);  // ']'
+		s.erase(1, 1);  // '['
+		s.pop_back();   // ']'
 	}
 	os << s;  // Print to the output stream
 }
