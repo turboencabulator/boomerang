@@ -2096,7 +2096,7 @@ CallStatement::getArgumentType(int i)
 {
 	assert(i < (int)arguments.size());
 	auto aa = arguments.begin();
-	advance(aa, i);
+	std::advance(aa, i);
 	return ((Assign *)(*aa))->getType();
 }
 
@@ -2573,7 +2573,7 @@ CallStatement::getArgumentExp(int i)
 {
 	assert(i < (int)arguments.size());
 	auto aa = arguments.begin();
-	advance(aa, i);
+	std::advance(aa, i);
 	return ((Assign *)*aa)->getRight();
 }
 
@@ -2582,7 +2582,7 @@ CallStatement::setArgumentExp(int i, Exp *e)
 {
 	assert(i < (int)arguments.size());
 	auto aa = arguments.begin();
-	advance(aa, i);
+	std::advance(aa, i);
 	Exp *&a = ((Assign *)*aa)->getRightRef();
 	a = e->clone();
 }
@@ -2599,7 +2599,7 @@ CallStatement::setNumArguments(int n)
 	int oldSize = arguments.size();
 	if (oldSize > n) {
 		auto aa = arguments.begin();
-		advance(aa, n);
+		std::advance(aa, n);
 		arguments.erase(aa, arguments.end());
 	}
 	// MVE: check if these need extra propagation
@@ -2621,7 +2621,7 @@ void
 CallStatement::removeArgument(int i)
 {
 	auto aa = arguments.begin();
-	advance(aa, i);
+	std::advance(aa, i);
 	arguments.erase(aa);
 }
 
@@ -3917,7 +3917,7 @@ CallStatement::genConstraints(LocationSet &cons)
 					// Generate a constraint for the parameter
 					TypeVal *tv = new TypeVal(t);
 					auto aa = arguments.begin();
-					advance(aa, n);
+					std::advance(aa, n);
 					Exp *argn = ((Assign *)*aa)->getRight();
 					Exp *con = argn->genConstraints(tv);
 					cons.insert(con);

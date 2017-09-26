@@ -1235,7 +1235,7 @@ StatementTest::testBypass()
 		++it;
 	CallStatement *call = (CallStatement *)*it; // Statement 18, a call to printf
 	call->setDestProc(proc);                    // A recursive call
-	advance(it, 2);
+	std::advance(it, 2);
 	Statement *s20 = *it;                       // Statement 20
 	// FIXME: Ugh. Somehow, statement 20 has already bypassed the call, and incorrectly from what I can see - MVE
 	s20->bypass();                              // r28 should bypass the call
