@@ -110,6 +110,7 @@ class StatementList {
 
 public:
 	typedef std::list<Statement *>::iterator iterator;
+	typedef std::list<Statement *>::const_iterator const_iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 	           ~StatementList() { }
 	unsigned    size() const  { return slist.size(); }   // Number of elements
@@ -129,8 +130,8 @@ public:
 	void        removeDefOf(Exp *loc);              // Remove definitions of loc
 	// This one is needed where you remove in the middle of a loop
 	// Use like this: it = mystatementlist.erase(it);
-	iterator    erase(iterator it) { return slist.erase(it); }
-	iterator    erase(iterator first, iterator last) { return slist.erase(first, last); }
+	iterator    erase(const_iterator it) { return slist.erase(it); }
+	iterator    erase(const_iterator first, const_iterator last) { return slist.erase(first, last); }
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
 	std::string prints() const;                     // Print to string (for debugging)
 	void        clear() { slist.clear(); }
@@ -144,18 +145,19 @@ class StatementVec {
 
 public:
 	typedef std::vector<Statement *>::iterator iterator;
+	typedef std::vector<Statement *>::const_iterator const_iterator;
 	unsigned    size() const { return svec.size(); }   // Number of elements
 	// Get/put at position idx (0 based)
 	Statement  *operator [](int idx) { return svec[idx]; }
 	void        putAt(int idx, Statement *s);
-	iterator    remove(iterator it);
+	iterator    remove(const_iterator it) { return svec.erase(it); }
 	std::string prints() const;                     // Print to string (for debugging)
 	void        printNums(std::ostream &os) const;
 	void        clear() { svec.clear(); }
 	bool        operator ==(const StatementVec &o) const { return svec == o.svec; }  // Compare if equal
 	bool        operator <(const StatementVec &o) const { return svec < o.svec; }    // Compare if less
 	void        append(Statement *s) { svec.push_back(s); }
-	void        erase(iterator it) { svec.erase(it); }
+	iterator    erase(const_iterator it) { return svec.erase(it); }
 };
 
 // For various purposes, we need sets of locations (registers or memory)
@@ -167,6 +169,7 @@ class LocationSet {
 	std::set<Exp *, lessExpStar> lset;
 public:
 	typedef std::set<Exp *, lessExpStar>::iterator iterator;
+	typedef std::set<Exp *, lessExpStar>::const_iterator const_iterator;
 	            LocationSet() { }                       // Default constructor
 	           ~LocationSet() { }                       // virtual destructor kills warning
 	            LocationSet(const LocationSet &o);      // Copy constructor
@@ -178,7 +181,7 @@ public:
 	iterator    end()   { return lset.end(); }
 	void        insert(Exp *loc) { lset.insert(loc); }  // Insert the given location
 	void        remove(Exp *loc);                       // Remove the given location
-	void        remove(iterator ll) { lset.erase(ll); } // Remove location, given iterator
+	iterator    remove(const_iterator ll) { return lset.erase(ll); } // Remove location, given iterator
 	void        removeIfDefines(StatementSet &given);   // Remove locs defined in given
 	unsigned    size() const  { return lset.size(); }   // Number of elements
 	bool        empty() const { return lset.empty(); }

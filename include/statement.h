@@ -549,6 +549,7 @@ class PhiAssign : public Assignment {
 public:
 	typedef std::vector<PhiInfo> Definitions;
 	typedef Definitions::iterator iterator;
+	typedef Definitions::const_iterator const_iterator;
 private:
 	Definitions defVec;  // A vector of information about definitions
 public:
@@ -607,7 +608,7 @@ public:
 
 	iterator    begin() { return defVec.begin(); }
 	iterator    end()   { return defVec.end(); }
-	iterator    erase(iterator it) { return defVec.erase(it); }
+	iterator    erase(const_iterator it) { return defVec.erase(it); }
 
 	// Convert this phi assignment to an ordinary assignment
 	void        convertToAssign(Exp *rhs);
@@ -1215,9 +1216,10 @@ public:
 	virtual    ~ReturnStatement();
 
 	typedef StatementList::iterator iterator;
+	typedef StatementList::const_iterator const_iterator;
 	iterator    begin()             { return returns.begin(); }
 	iterator    end()               { return returns.end(); }
-	iterator    erase(iterator it)  { return returns.erase(it); }
+	iterator    erase(const_iterator it) { return returns.erase(it); }
 	StatementList &getModifieds()   { return modifieds; }
 	StatementList &getReturns()     { return returns; }
 	unsigned    getNumReturns() const { return returns.size(); }

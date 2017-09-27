@@ -248,6 +248,7 @@ public:
 	 * begin() and end() so we can iterate through the locations
 	 */
 	typedef LocationSet::iterator iterator;
+	typedef LocationSet::const_iterator const_iterator;
 	iterator    begin() { return locs.begin(); }
 	iterator    end()   { return locs.end(); }
 	bool        exists(Exp *e) const { return locs.exists(e); }  // True if e is in the collection
@@ -258,7 +259,7 @@ public:
 	 */
 	void        updateLocs(Statement *u);
 	void        remove(Exp *loc) { locs.remove(loc); }        // Remove the given location
-	void        remove(iterator it) { locs.remove(it); }      // Remove the current location
+	iterator    remove(const_iterator it) { return locs.remove(it); }  // Remove the current location
 	void        fromSSAform(UserProc *proc, Statement *def);  // Translate out of SSA form
 	bool        operator ==(UseCollector &other);
 };

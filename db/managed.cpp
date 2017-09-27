@@ -559,20 +559,6 @@ StatementVec::putAt(int idx, Statement *s)
 	svec[idx] = s;
 }
 
-StatementVec::iterator
-StatementVec::remove(iterator it)
-{
-#if 0
-	auto oldoldit = it;
-	auto oldit = it;
-	for (++it; it != svec.end(); ++it, ++oldit)
-		*oldit = *it;
-	svec.resize(svec.size() - 1);
-	return oldoldit;
-#endif
-	return svec.erase(it);
-}
-
 std::string
 StatementVec::prints() const
 {

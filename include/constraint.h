@@ -101,14 +101,15 @@ class EquateMap {
 	std::map<Exp *, LocationSet, lessExpStar> emap;
 public:
 	typedef std::map<Exp *, LocationSet, lessExpStar>::iterator iterator;
+	typedef std::map<Exp *, LocationSet, lessExpStar>::const_iterator const_iterator;
 	iterator begin() {
 		return emap.begin();
 	}
 	iterator end() {
 		return emap.end();
 	}
-	void erase(iterator it) {
-		emap.erase(it);
+	iterator erase(const_iterator it) {
+		return emap.erase(it);
 	}
 	int size() const {
 		return emap.size();
