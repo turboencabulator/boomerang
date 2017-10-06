@@ -1064,7 +1064,7 @@ UserProc::decompile(ProcList *path, int &indent)
 	// Remove last element (= this) from path
 	// The if should not be neccesary, but nestedswitch needs it
 	if (!path->empty())
-		path->erase(--path->end());
+		path->pop_back();
 	else
 		LOG << "WARNING: UserProc::decompile: empty path when trying to remove last proc\n";
 
@@ -1417,7 +1417,7 @@ UserProc::middleDecompile(ProcList *path, int indent)
 		prog->reDecode(this);
 		df.setRenameLocalsParams(false);        // Start again with memofs
 		setStatus(PROC_VISITED);                // Back to only visited progress
-		path->erase(--path->end());             // Remove self from path
+		path->pop_back();                       // Remove self from path
 		--indent;                               // Because this is not recursion
 		ProcSet *ret = decompile(path, indent); // Restart decompiling this proc
 		++indent;                               // Restore indent

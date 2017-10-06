@@ -112,6 +112,7 @@ public:
 	typedef std::list<Statement *>::iterator iterator;
 	typedef std::list<Statement *>::const_iterator const_iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
+	typedef std::list<Statement *>::size_type size_type;
 	           ~StatementList() { }
 	unsigned    size() const  { return slist.size(); }   // Number of elements
 	bool        empty() const { return slist.empty(); }
@@ -131,7 +132,7 @@ public:
 	// This one is needed where you remove in the middle of a loop
 	// Use like this: it = mystatementlist.erase(it);
 	iterator    erase(const_iterator it) { return slist.erase(it); }
-	iterator    erase(const_iterator first, const_iterator last) { return slist.erase(first, last); }
+	void        resize(size_type n) { slist.resize(n); }
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
 	std::string prints() const;                     // Print to string (for debugging)
 	void        clear() { slist.clear(); }

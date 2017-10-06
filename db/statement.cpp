@@ -2598,9 +2598,7 @@ CallStatement::setNumArguments(int n)
 {
 	int oldSize = arguments.size();
 	if (oldSize > n) {
-		auto aa = arguments.begin();
-		std::advance(aa, n);
-		arguments.erase(aa, arguments.end());
+		arguments.resize(n);
 	}
 	// MVE: check if these need extra propagation
 	for (int i = oldSize; i < n; ++i) {

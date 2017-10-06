@@ -1313,8 +1313,7 @@ void
 Signature::setNumParams(int n)
 {
 	if (n < (int)params.size()) {
-		// truncate
-		params.erase(params.begin() + n, params.end());
+		params.resize(n);
 	} else {
 		for (int i = params.size(); i < n; ++i)
 			addParameter();

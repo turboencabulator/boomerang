@@ -109,11 +109,7 @@ StatementSet::isSubSetOf(const StatementSet &other)
 bool
 StatementSet::remove(Statement *s)
 {
-	if (sset.find(s) != sset.end()) {
-		sset.erase(s);
-		return true;
-	}
-	return false;
+	return !!sset.erase(s);
 }
 
 // Search for s in this Statement set. Return true if found
@@ -224,11 +220,7 @@ AssignSet::isSubSetOf(const AssignSet &other) const
 bool
 AssignSet::remove(Assign *a)
 {
-	if (aset.find(a) != aset.end()) {
-		aset.erase(a);
-		return true;
-	}
-	return false;
+	return !!aset.erase(a);
 }
 
 // Search for a in this Assign set. Return true if found
