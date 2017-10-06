@@ -97,12 +97,7 @@ StatementSet::makeIsect(const StatementSet &other)
 bool
 StatementSet::isSubSetOf(const StatementSet &other)
 {
-	for (auto it = sset.begin(); it != sset.end(); ++it) {
-		auto ff = other.sset.find(*it);
-		if (ff == other.sset.end())
-			return false;
-	}
-	return true;
+	return std::includes(other.sset.begin(), other.sset.end(), sset.begin(), sset.end());
 }
 
 // Remove this Statement. Return false if it was not found
@@ -208,12 +203,7 @@ AssignSet::makeIsect(const AssignSet &other)
 bool
 AssignSet::isSubSetOf(const AssignSet &other) const
 {
-	for (auto it = aset.begin(); it != aset.end(); ++it) {
-		auto ff = other.aset.find(*it);
-		if (ff == other.aset.end())
-			return false;
-	}
-	return true;
+	return std::includes(other.aset.begin(), other.aset.end(), aset.begin(), aset.end());
 }
 
 // Remove this Assign. Return false if it was not found
