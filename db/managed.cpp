@@ -81,11 +81,14 @@ StatementSet::makeDiff(const StatementSet &other)
 void
 StatementSet::makeIsect(const StatementSet &other)
 {
-	for (auto it = sset.begin(); it != sset.end(); ++it) {
+	for (auto it = sset.begin(); it != sset.end(); ) {
 		auto ff = other.sset.find(*it);
-		if (ff == other.sset.end())
+		if (ff == other.sset.end()) {
 			// Not in both sets
-			sset.erase(it);
+			it = sset.erase(it);
+			continue;
+		}
+		++it;
 	}
 }
 
@@ -193,11 +196,14 @@ AssignSet::makeDiff(const AssignSet &other)
 void
 AssignSet::makeIsect(const AssignSet &other)
 {
-	for (auto it = aset.begin(); it != aset.end(); ++it) {
+	for (auto it = aset.begin(); it != aset.end(); ) {
 		auto ff = other.aset.find(*it);
-		if (ff == other.aset.end())
+		if (ff == other.aset.end()) {
 			// Not in both sets
-			aset.erase(it);
+			it = aset.erase(it);
+			continue;
+		}
+		++it;
 	}
 }
 
@@ -1016,7 +1022,7 @@ ConnectionGraph::remove(iterator aa)
 {
 	assert(aa != emap.end());
 	Exp *b = aa->second;
-	emap.erase(aa++);
+	aa = emap.erase(aa);
 	auto bb = emap.find(b);
 	assert(bb != emap.end());
 	if (bb == aa)

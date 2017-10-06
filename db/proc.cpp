@@ -798,7 +798,7 @@ UserProc::removeStatement(Statement *stmt)
 			if (VERBOSE)
 				LOG << "removing proven true exp " << it->first << " = " << it->second
 				    << " that uses statement being removed.\n";
-			provenTrue.erase(it++);
+			it = provenTrue.erase(it);
 			// it = provenTrue.begin();
 			continue;
 		}
@@ -3019,15 +3019,15 @@ UserProc::removeUnusedLocals()
 		}
 	}
 	// Finally, remove them from locals, so they don't get declared
-	for (auto it1 = removes.begin(); it1 != removes.end(); )
-		locals.erase(*it1++);
+	for (auto it1 = removes.begin(); it1 != removes.end(); ++it1)
+		locals.erase(*it1);
 	// Also remove them from the symbols, since symbols are a superset of locals at present
 	for (auto sm = symbolMap.begin(); sm != symbolMap.end(); ) {
 		Exp *mapsTo = sm->second;
 		if (mapsTo->isLocal()) {
 			const char *tmpName = ((Const *)((Location *)mapsTo)->getSubExp1())->getStr();
 			if (removes.find(tmpName) != removes.end()) {
-				symbolMap.erase(sm++);
+				sm = symbolMap.erase(sm);
 				continue;
 			}
 		}
@@ -4521,8 +4521,7 @@ UserProc::propagateToCollector()
 			Exp *memOfRes = Location::memOf(res)->simplify();
 			// First check to see if memOfRes is already in the set
 			if (col.exists(memOfRes)) {
-				// Take care not to use an iterator to the newly erased element.
-				/* it = */ col.remove(it++);  // Already exists; just remove the old one
+				it = col.remove(it);  // Already exists; just remove the old one
 				continue;
 			} else {
 				if (VERBOSE)

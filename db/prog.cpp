@@ -293,12 +293,13 @@ Cluster::makeDirs() const
 void
 Cluster::removeChild(Cluster *n)
 {
-	auto it = children.begin();
-	for (; it != children.end(); ++it)
-		if (*it == n)
-			break;
-	assert(it != children.end());
-	children.erase(it);
+	for (auto it = children.begin(); it != children.end(); ++it) {
+		if (*it == n) {
+			children.erase(it);
+			return;
+		}
+	}
+	assert(0);
 }
 
 void

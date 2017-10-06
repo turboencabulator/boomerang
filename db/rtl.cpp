@@ -282,11 +282,8 @@ RTL::deleteStmt(unsigned i)
 	// check that position i is not out of bounds
 	assert(i < stmtList.size());
 
-	// find the position
 	auto pp = stmtList.begin();
-	for (; i > 0; --i, ++pp);
-
-	// do the delete
+	std::advance(pp, i);
 	stmtList.erase(pp);
 }
 
