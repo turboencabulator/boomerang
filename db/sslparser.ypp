@@ -291,7 +291,7 @@ a_reglist
 	| REG_ID '[' NUM ']' INDEX NUM {
 		if (Dict.RegMap.find(*$1) != Dict.RegMap.end())
 			yyerror("Name reglist declared twice");
-		Dict.addRegister($1->c_str(), $6, $3, bFloat);
+		Dict.addRegister(*$1, $6, $3, bFloat);
 		//delete $1;
 	  }
 
@@ -368,7 +368,7 @@ a_reglist
 			for (int x = $8; x <= $10; ++x, ++loc) {
 				if (Dict.RegMap.find(*loc) != Dict.RegMap.end())
 					yyerror("Name reglist declared twice");
-				Dict.addRegister(loc->c_str(), x, $5, bFloat);
+				Dict.addRegister(*loc, x, $5, bFloat);
 			}
 			//delete $2;
 		}
@@ -379,7 +379,7 @@ a_reglist
 		for (; loc != $2->end(); ++loc) {
 			if (Dict.RegMap.find(*loc) != Dict.RegMap.end())
 				yyerror("Name reglist declared twice");
-			Dict.addRegister(loc->c_str(), $8, $5, bFloat);
+			Dict.addRegister(*loc, $8, $5, bFloat);
 		}
 		//delete $2;
 	  }

@@ -230,7 +230,7 @@ public:
 
 	void print(std::ostream &os = std::cout);
 
-	void addRegister(const char *name, int id, int size, bool flt);
+	void addRegister(const std::string &name, int id, int size, bool flt);
 
 	bool partialType(Exp *exp, Type &ty);
 
