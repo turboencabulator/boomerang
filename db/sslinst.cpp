@@ -206,14 +206,14 @@ RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt)
 {
 	RegMap[name] = id;
 	if (id == -1) {
-		SpecialRegMap[name].s_name(name.c_str());
+		SpecialRegMap[name].s_name(name);
 		SpecialRegMap[name].s_size(size);
 		SpecialRegMap[name].s_float(flt);
 		SpecialRegMap[name].s_address(nullptr);
 		SpecialRegMap[name].s_mappedIndex(-1);
 		SpecialRegMap[name].s_mappedOffset(-1);
 	} else {
-		DetRegMap[id].s_name(name.c_str());
+		DetRegMap[id].s_name(name);
 		DetRegMap[id].s_size(size);
 		DetRegMap[id].s_float(flt);
 		DetRegMap[id].s_address(nullptr);

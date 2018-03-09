@@ -23,9 +23,6 @@
 
 #include "type.h"
 
-#include <cassert>
-#include <cstring>
-
 /*==============================================================================
  * FUNCTION:      Register::Register
  * OVERVIEW:      Constructor.
@@ -40,14 +37,13 @@ Register::Register()
  * PARAMETERS:    Reference to another Register object to construct from
  *============================================================================*/
 Register::Register(const Register &r) :
+	name(r.name),
 	size(r.size),
 	address(r.address),
 	mappedIndex(r.mappedIndex),
 	mappedOffset(r.mappedOffset),
 	flt(r.flt)
 {
-	if (r.name)
-		name = strdup(r.name);
 }
 
 /*==============================================================================
@@ -59,17 +55,12 @@ Register::Register(const Register &r) :
 Register
 Register::operator =(const Register &r2)
 {
-	// copy operator
-
-	//if (name)
-		//free(name);
-	name = r2.name;
-	size = r2.size;
-	flt  = r2.flt;
-	address = r2.address;
-
-	mappedIndex = r2.mappedIndex;
+	name         = r2.name;
+	size         = r2.size;
+	address      = r2.address;
+	mappedIndex  = r2.mappedIndex;
 	mappedOffset = r2.mappedOffset;
+	flt          = r2.flt;
 
 	return (*this);
 }
@@ -84,8 +75,7 @@ bool
 Register::operator ==(const Register &r2) const
 {
 	// compare on name
-	assert(name && r2.name);
-	return strcmp(name, r2.name) == 0;
+	return name == r2.name;
 }
 
 /*==============================================================================
@@ -98,38 +88,7 @@ bool
 Register::operator <(const Register &r2) const
 {
 	// compare on name
-	assert(name && r2.name);
-	return strcmp(name, r2.name) < 0;
-}
-
-/*==============================================================================
- * FUNCTION:      Register::s_name
- * OVERVIEW:      Set the name for this register
- * PARAMETERS:    s: name to set it to
- *============================================================================*/
-void
-Register::s_name(const char *s)
-{
-	assert(s);
-
-	//if (name)
-		//free(name);
-	name = strdup(s);
-}
-
-/*==============================================================================
- * FUNCTION:      Register::g_name
- * OVERVIEW:      Get the name for this register
- * RETURNS:       The name as a character string
- *============================================================================*/
-char *
-Register::g_name() const
-{
-	static char outname[100];
-
-	strncpy(outname, name, 100);
-	outname[99] = '\0';
-	return (outname);
+	return name < r2.name;
 }
 
 /*==============================================================================

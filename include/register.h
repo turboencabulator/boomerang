@@ -13,6 +13,8 @@
 #ifndef REGISTER_H
 #define REGISTER_H
 
+#include <string>
+
 class Type;
 
 /*==============================================================================
@@ -35,13 +37,13 @@ public:
 	bool operator <(const Register &r2) const;
 
 	// access and set functins
-	void s_name(const char *);
+	void s_name(const std::string &s) { name = s; }
 	void s_size(int s) { size = s; }
 	void s_float(bool f) { flt = f; }
 	void s_address(void *p) { address = p; }
 
 	/* These are only used in the interpreter */
-	char *g_name() const;
+	const std::string &g_name() const { return name; }
 	void *g_address() const { return address; }
 
 	int g_size() const { return size; }
@@ -65,7 +67,7 @@ public:
 	bool isFloat() const { return flt; }
 
 private:
-	char *name = nullptr;
+	std::string name;
 	short size;
 	void *address = nullptr;
 	int mappedIndex = -1;

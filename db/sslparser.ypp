@@ -302,7 +302,7 @@ a_reglist
 		// Now for detailed Reg information
 		if (Dict.DetRegMap.find($6) != Dict.DetRegMap.end())
 			yyerror("Index used for more than one register");
-		Dict.DetRegMap[$6].s_name($1->c_str());
+		Dict.DetRegMap[$6].s_name(*$1);
 		Dict.DetRegMap[$6].s_size($3);
 		Dict.DetRegMap[$6].s_address(nullptr);
 		// check range is legitimate for size. 8,10
@@ -341,7 +341,7 @@ a_reglist
 		// Now for detailed Reg information
 		if (Dict.DetRegMap.find($6) != Dict.DetRegMap.end())
 			yyerror("Index used for more than one register");
-		Dict.DetRegMap[$6].s_name($1->c_str());
+		Dict.DetRegMap[$6].s_name(*$1);
 		Dict.DetRegMap[$6].s_size($3);
 		Dict.DetRegMap[$6].s_address(nullptr);
 		// Do checks
