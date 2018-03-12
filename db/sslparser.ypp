@@ -283,7 +283,7 @@ a_reglists
 a_reglist
 	: REG_ID INDEX NUM {
 		if (Dict.RegMap.find(*$1) != Dict.RegMap.end())
-			yyerror("Name reglist decared twice");
+			yyerror("Name reglist declared twice");
 		Dict.RegMap[*$1] = $3;
 		delete $1;
 	  }
@@ -307,9 +307,9 @@ a_reglist
 		Dict.DetRegMap[$6].s_address(nullptr);
 		// check range is legitimate for size. 8,10
 		if ((Dict.RegMap.find(*$8)  == Dict.RegMap.end())
-		 || (Dict.RegMap.find(*$10) == Dict.RegMap.end()))
+		 || (Dict.RegMap.find(*$10) == Dict.RegMap.end())) {
 			yyerror("Undefined range");
-		else {
+		} else {
 			int bitsize = Dict.DetRegMap[Dict.RegMap[*$10]].g_size();
 			for (int i = Dict.RegMap[*$8]; i != Dict.RegMap[*$10]; ++i) {
 				if (Dict.DetRegMap.find(i) == Dict.DetRegMap.end()) {
@@ -322,9 +322,10 @@ a_reglist
 					break;
 				}
 			}
-		if (bitsize < $3)
-			yyerror("Register size is exceeds registers in range");
-			// copy information
+			if (bitsize < $3) {
+				yyerror("Register size is exceeds registers in range");
+				// copy information
+			}
 		}
 		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[*$8]);
 		Dict.DetRegMap[$6].s_mappedOffset(0);
@@ -347,11 +348,12 @@ a_reglist
 		// Do checks
 		if ($3 != ($13 - $11) + 1)
 			yyerror("Size does not equal range");
-			if (Dict.RegMap.find(*$8) != Dict.RegMap.end()) {
-				if ($13 >= Dict.DetRegMap[Dict.RegMap[*$8]].g_size())
-					yyerror("Range extends over target register");
-			} else
-				yyerror("Shared index not yet defined");
+		if (Dict.RegMap.find(*$8) != Dict.RegMap.end()) {
+			if ($13 >= Dict.DetRegMap[Dict.RegMap[*$8]].g_size())
+				yyerror("Range extends over target register");
+		} else {
+			yyerror("Shared index not yet defined");
+		}
 		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[*$8]);
 		Dict.DetRegMap[$6].s_mappedOffset($11);
 		Dict.DetRegMap[$6].s_float(bFloat);
@@ -476,14 +478,14 @@ name_expand
 		std::ostringstream o;
 		// expand $2 from table of names
 		auto it = TableDict.find(*$2);
-		if (it != TableDict.end())
-			if (it->second->getType() == NAMETABLE)
+		if (it != TableDict.end()) {
+			if (it->second->getType() == NAMETABLE) {
 				$$ = new std::deque<std::string>(it->second->records);
-			else {
+			} else {
 				o << "Name " << *$2 << " is not a NAMETABLE";
 				yyerror(o.str().c_str());
 			}
-		else {
+		} else {
 			o << "Could not dereference name " << *$2;
 			yyerror(o.str().c_str());
 		}
@@ -493,15 +495,15 @@ name_expand
 	| NAME {
 		// try and expand $1 from table of names. if fail, expand using '"' NAME '"' rule
 		auto it = TableDict.find(*$1);
-		if (it != TableDict.end())
-			if (it->second->getType() == NAMETABLE)
+		if (it != TableDict.end()) {
+			if (it->second->getType() == NAMETABLE) {
 				$$ = new std::deque<std::string>(it->second->records);
-			else {
+			} else {
 				std::ostringstream o;
 				o << "Name " << *$1 << " is not a NAMETABLE";
 				yyerror(o.str().c_str());
 			}
-		else {
+		} else {
 			$$ = new std::deque<std::string>(1, *$1);
 		}
 		delete $1;
@@ -582,8 +584,9 @@ name_contract
 		} else if (($2 < 0) || ($2 >= (int)it->second->records.size())) {
 			o << "Can't get element " << $2 << " of table " << *$1;
 			yyerror(o.str().c_str());
-		} else
+		} else {
 			$$ = new InsNameElem(it->second->records[$2]);
+		}
 		delete $1;
 	  }
 
@@ -594,8 +597,9 @@ name_contract
 		if (it == TableDict.end()) {
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else
+		} else {
 			$$ = new InsListElem(*$1, it->second, *$2);
+		}
 		delete $1;
 		delete $2;
 	  }
@@ -609,8 +613,9 @@ name_contract
 		} else if (($3 < 0) || ($3 >= (int)it->second->records.size())) {
 			o << "Can't get element " << $3 << " of table " << *$2;
 			yyerror(o.str().c_str());
-		} else
+		} else {
 			$$ = new InsNameElem(it->second->records[$3]);
+		}
 		delete $2;
 	  }
 
@@ -620,8 +625,9 @@ name_contract
 		if (it == TableDict.end()) {
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else
+		} else {
 			$$ = new InsListElem(*$2, it->second, *$3);
+		}
 		delete $2;
 		delete $3;
 	  }
@@ -652,7 +658,7 @@ rt
 		std::ostringstream o;
 		if (Dict.FlagFuncs.find(*$1) != Dict.FlagFuncs.end()) {
 			// Note: SETFFLAGS assigns to the floating point flags. All others to the integer flags
-			bool bFloat = $1->compare("SETFFLAGS") == 0;
+			bool bFloat = *$1 == "SETFFLAGS";
 			OPER op = bFloat ? opFflags : opFlags;
 			$$ = new Assign(new Terminal(op), new Binary(opFlagCall,
 			                                             new Const($1->c_str()),
@@ -900,8 +906,7 @@ location
 				               new Const($1->c_str()));
 				//delete $1;
 			}
-		}
-		else {
+		} else {
 			// A register with a constant reg nmber, e.g. %g2.  In this case, we want to return r[const 2]
 			$$ = Location::regOf(it->second);
 			delete $1;
@@ -956,8 +961,9 @@ assigntype
 	: ASSIGNTYPE {
 		const char *s = $1->c_str();
 		char c = s[1];
-		if (c == '*') $$ = new SizeType(0); // MVE: should remove these
-		else if (isdigit(c)) {
+		if (c == '*') {
+			$$ = new SizeType(0); // MVE: should remove these
+		} else if (isdigit(c)) {
 			int size;
 			// Skip star (hence +1)
 			sscanf(s + 1, "%d", &size);
