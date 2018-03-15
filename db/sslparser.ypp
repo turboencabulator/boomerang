@@ -960,22 +960,20 @@ esize
 assigntype
 	: ASSIGNTYPE {
 		const char *s = $1->c_str();
-		char c = s[1];
-		if (c == '*') {
-			$$ = new SizeType(0); // MVE: should remove these
+		char c = s[0];
+		int size = 0;
+		if (!c) {
+			$$ = new SizeType(size); // MVE: should remove these
 		} else if (isdigit(c)) {
-			int size;
-			// Skip star (hence +1)
-			sscanf(s + 1, "%d", &size);
+			sscanf(s, "%d", &size);
 			$$ = new SizeType(size);
 		} else {
-			int size;
-			// Skip star and letter
-			sscanf(s + 2, "%d", &size);
+			// Skip letter
+			sscanf(s + 1, "%d", &size);
 			if (size == 0) size = STD_SIZE;
 			switch (c) {
-			case 'i': $$ = new IntegerType(size, 1); break;
-			case 'j': $$ = new IntegerType(size, 0); break;
+			case 'i': $$ = new IntegerType(size,  1); break;
+			case 'j': $$ = new IntegerType(size,  0); break;
 			case 'u': $$ = new IntegerType(size, -1); break;
 			case 'f': $$ = new FloatType(size); break;
 			case 'c': $$ = new CharType; break;

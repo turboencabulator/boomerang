@@ -65,7 +65,7 @@
 "FAST"       { return SSLParser::FAST; }
 "FETCHEXEC"  { return SSLParser::FETCHEXEC; }
 
-"*"[a-z]?[0-9]*"*" { yylval.str = new std::string(yytext, yyleng); return SSLParser::ASSIGNTYPE; }
+"*"[a-z]?[0-9]*"*" { yylval.str = new std::string(yytext + 1, yyleng - 2); return SSLParser::ASSIGNTYPE; }
 
 "or"    { yylval.op = opOr;        return SSLParser::LOG_OP; }
 "and"   { yylval.op = opAnd;       return SSLParser::LOG_OP; }
