@@ -42,17 +42,19 @@ InsNameElem::ntokens()
 std::string
 InsNameElem::getinstruction()
 {
-	return nextelem
-	     ? (elemname + nextelem->getinstruction())
-	     : elemname;
+	std::string s = elemname;
+	if (nextelem)
+		s += nextelem->getinstruction();
+	return s;
 }
 
 std::string
 InsNameElem::getinspattern()
 {
-	return nextelem
-	     ? (elemname + nextelem->getinspattern())
-	     : elemname;
+	std::string s = elemname;
+	if (nextelem)
+		s += nextelem->getinspattern();
+	return s;
 }
 
 void
@@ -67,18 +69,19 @@ InsNameElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 int
 InsNameElem::ninstructions()
 {
-	return nextelem
-	     ? (nextelem->ninstructions() * ntokens())
-	     : ntokens();
+	int n = ntokens();
+	if (nextelem)
+		n *= nextelem->ninstructions();
+	return n;
 }
 
 void
 InsNameElem::append(InsNameElem *next)
 {
-	if (!nextelem)
-		nextelem = next;
-	else
+	if (nextelem)
 		nextelem->append(next);
+	else
+		nextelem = next;
 }
 
 bool
@@ -97,7 +100,8 @@ void
 InsNameElem::reset()
 {
 	value = 0;
-	if (nextelem) nextelem->reset();
+	if (nextelem)
+		nextelem->reset();
 }
 
 int
@@ -120,21 +124,21 @@ InsOptionElem::ntokens()
 std::string
 InsOptionElem::getinstruction()
 {
-	return nextelem
-	     ? ((getvalue() == 0)
-	      ? (elemname + nextelem->getinstruction())
-	      : nextelem->getinstruction())
-	     : ((getvalue() == 0)
-	      ? elemname
-	      : "");
+	std::string s;
+	if (getvalue() == 0)
+		s = elemname;
+	if (nextelem)
+		s += nextelem->getinstruction();
+	return s;
 }
 
 std::string
 InsOptionElem::getinspattern()
 {
-	return nextelem
-	     ? ('\'' + elemname + '\'' + nextelem->getinspattern())
-	     : ('\'' + elemname + '\'');
+	std::string s = '\'' + elemname + '\'';
+	if (nextelem)
+		s += nextelem->getinspattern();
+	return s;
 }
 
 InsListElem::InsListElem(const std::string &name, Table *t, const std::string &idx) :
@@ -153,17 +157,19 @@ InsListElem::ntokens()
 std::string
 InsListElem::getinstruction()
 {
-	return nextelem
-	     ? (thetable->records[getvalue()] + nextelem->getinstruction())
-	     : thetable->records[getvalue()];
+	std::string s = thetable->records[getvalue()];
+	if (nextelem)
+		s += nextelem->getinstruction();
+	return s;
 }
 
 std::string
 InsListElem::getinspattern()
 {
-	return nextelem
-	     ? (elemname + '[' + indexname + ']' + nextelem->getinspattern())
-	     : (elemname + '[' + indexname + ']');
+	std::string s = elemname + '[' + indexname + ']';
+	if (nextelem)
+		s += nextelem->getinspattern();
+	return s;
 }
 
 void
