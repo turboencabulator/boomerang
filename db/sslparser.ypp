@@ -475,17 +475,18 @@ name_expand
 	  }
 
 	| '$' NAME {
-		std::ostringstream o;
 		// expand $2 from table of names
 		auto it = TableDict.find(*$2);
 		if (it != TableDict.end()) {
 			if (it->second->getType() == NAMETABLE) {
 				$$ = new std::deque<std::string>(it->second->records);
 			} else {
+				std::ostringstream o;
 				o << "Name " << *$2 << " is not a NAMETABLE";
 				yyerror(o.str().c_str());
 			}
 		} else {
+			std::ostringstream o;
 			o << "Could not dereference name " << *$2;
 			yyerror(o.str().c_str());
 		}
@@ -576,12 +577,13 @@ name_contract
 	: '\'' NAME '\'' { $$ = new InsOptionElem(*$2); delete $2; }
 
 	| NAME_LOOKUP NUM ']' {
-		std::ostringstream o;
 		auto it = TableDict.find(*$1);
 		if (it == TableDict.end()) {
+			std::ostringstream o;
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
 		} else if (($2 < 0) || ($2 >= (int)it->second->records.size())) {
+			std::ostringstream o;
 			o << "Can't get element " << $2 << " of table " << *$1;
 			yyerror(o.str().c_str());
 		} else {
@@ -592,9 +594,9 @@ name_contract
 
 	/* Example: ARITH[IDX]  where ARITH := { "ADD", "SUB", ... }; */
 	| NAME_LOOKUP NAME ']' {
-		std::ostringstream o;
 		auto it = TableDict.find(*$1);
 		if (it == TableDict.end()) {
+			std::ostringstream o;
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
 		} else {
@@ -605,12 +607,13 @@ name_contract
 	  }
 
 	| '$' NAME_LOOKUP NUM ']' {
-		std::ostringstream o;
 		auto it = TableDict.find(*$2);
 		if (it == TableDict.end()) {
+			std::ostringstream o;
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
 		} else if (($3 < 0) || ($3 >= (int)it->second->records.size())) {
+			std::ostringstream o;
 			o << "Can't get element " << $3 << " of table " << *$2;
 			yyerror(o.str().c_str());
 		} else {
@@ -620,9 +623,9 @@ name_contract
 	  }
 
 	| '$' NAME_LOOKUP NAME ']' {
-		std::ostringstream o;
 		auto it = TableDict.find(*$2);
 		if (it == TableDict.end()) {
+			std::ostringstream o;
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
 		} else {
@@ -655,7 +658,6 @@ rt
 
 	/* Example: ADDFLAGS(r[tmp], reg_or_imm, r[rd]) */
 	| NAME_CALL list_actualparameter ')' {
-		std::ostringstream o;
 		if (Dict.FlagFuncs.find(*$1) != Dict.FlagFuncs.end()) {
 			// Note: SETFFLAGS assigns to the floating point flags. All others to the integer flags
 			bool bFloat = *$1 == "SETFFLAGS";
@@ -665,6 +667,7 @@ rt
 			                                             listExpToExp($2)));
 			//delete $1;
 		} else {
+			std::ostringstream o;
 			o << *$1 << " is not declared as a flag function";
 			yyerror(o.str().c_str());
 			delete $1;
@@ -767,19 +770,22 @@ exp_term
 
 	/* Example: *Use* of COND[idx] */
 	| NAME_LOOKUP NAME ']' {
-		std::ostringstream o;
 		auto ir = indexrefmap.find(*$2);
 		auto it = TableDict.find(*$1);
 		if (ir == indexrefmap.end()) {
+			std::ostringstream o;
 			o << "Index " << *$2 << " not declared for use";
 			yyerror(o.str().c_str());
 		} else if (it == TableDict.end()) {
+			std::ostringstream o;
 			o << "Table " << *$1 << " not declared for use";
 			yyerror(o.str().c_str());
 		} else if (it->second->getType() != EXPRTABLE) {
+			std::ostringstream o;
 			o << "Table " << *$1 << " is not an expression table but appears to be used as one";
 			yyerror(o.str().c_str());
 		} else if ((int)((ExprTable *)it->second)->expressions.size() < ir->second->ntokens()) {
+			std::ostringstream o;
 			o << "Table " << *$1 << " (" << ((ExprTable *)it->second)->expressions.size()
 			  << ") is too small to use " << *$2 << " (" << ir->second->ntokens() << ") as an index";
 			yyerror(o.str().c_str());
@@ -794,12 +800,12 @@ exp_term
 	 * $1 is the "function" name, and $2 is a list of Exp* for the actual params.
 	 * I believe only PA/RISC uses these so far. */
 	| NAME_CALL list_actualparameter ')' {
-		std::ostringstream o;
 		if (Dict.ParamSet.find(*$1) != Dict.ParamSet.end()) {
 			auto it = Dict.DetParamMap.find(*$1);
 			if (it != Dict.DetParamMap.end()) {
 				ParamEntry &param = it->second;
 				if ($2->size() != param.funcParams.size()) {
+					std::ostringstream o;
 					o << *$1 << " requires " << param.funcParams.size() << " parameters, but received " << $2->size();
 					yyerror(o.str().c_str());
 					delete $1;
@@ -810,11 +816,13 @@ exp_term
 					//delete $1;
 				}
 			} else {
+				std::ostringstream o;
 				o << *$1 << " is not defined as a OPERAND function";
 				yyerror(o.str().c_str());
 				delete $1;
 			}
 		} else {
+			std::ostringstream o;
 			o << "Unrecognized name " << *$1 << " in lambda call";
 			yyerror(o.str().c_str());
 			delete $1;
@@ -852,19 +860,22 @@ exp
 	/* See comment above re "%prec LOOKUP_RDC"
 	 * Example: OP1[IDX] where OP1 := {  "&",  "|", "^", ... }; */
 	| exp NAME_LOOKUP NAME ']' exp_term %prec LOOKUP_RDC {
-		std::ostringstream o;
 		auto ir = indexrefmap.find(*$3);
 		auto it = TableDict.find(*$2);
 		if (ir == indexrefmap.end()) {
+			std::ostringstream o;
 			o << "Index " << *$3 << " not declared for use";
 			yyerror(o.str().c_str());
 		} else if (it == TableDict.end()) {
+			std::ostringstream o;
 			o << "Table " << *$2 << " not declared for use";
 			yyerror(o.str().c_str());
 		} else if (it->second->getType() != OPTABLE) {
+			std::ostringstream o;
 			o << "Table " << *$2 << " is not an operator table but appears to be used as one";
 			yyerror(o.str().c_str());
 		} else if ((int)((OpTable *)it->second)->operators.size() < ir->second->ntokens()) {
+			std::ostringstream o;
 			o << "Table " << *$2 << " is too small to use with " << *$3 << " as an index";
 			yyerror(o.str().c_str());
 		}
@@ -1141,12 +1152,10 @@ void
 SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL *o_rtlist, RTLInstDict &Dict)
 {
 	int i, m;
-	std::string nam;
-	std::ostringstream o;
 	m = iname->ninstructions();
 	// Expand the tables (if any) in this instruction
 	for (i = 0, iname->reset(); i < m; ++i, iname->increment()) {
-		nam = iname->getinstruction();
+		std::string nam = iname->getinstruction();
 		// Need to make substitutions to a copy of the RTL
 		RTL *rtl = o_rtlist->clone();
 		int n = rtl->getNumStmt();
@@ -1190,6 +1199,7 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 		}
 
 		if (Dict.appendToDict(nam, *params, *rtl) != 0) {
+			std::ostringstream o;
 			o << "Pattern " << iname->getinspattern() << " conflicts with an earlier declaration of " << nam;
 			yyerror(o.str().c_str());
 		}
