@@ -28,13 +28,18 @@ enum TABLE_TYPE {
 
 class Table {
 public:
-	Table(const std::deque<std::string> &recs, TABLE_TYPE t = NAMETABLE);
 	Table(TABLE_TYPE t);
+	virtual ~Table() = 0;
 	TABLE_TYPE getType() const;
-	std::deque<std::string> records;
 
 private:
 	TABLE_TYPE type;
+};
+
+class NameTable : public Table {
+public:
+	NameTable(const std::deque<std::string> &recs);
+	std::deque<std::string> records;
 };
 
 class OpTable : public Table {

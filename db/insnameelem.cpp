@@ -141,7 +141,7 @@ InsOptionElem::getinspattern()
 	return s;
 }
 
-InsListElem::InsListElem(const std::string &name, Table *t, const std::string &idx) :
+InsListElem::InsListElem(const std::string &name, NameTable *t, const std::string &idx) :
 	InsNameElem(name),
 	indexname(idx),
 	thetable(t)

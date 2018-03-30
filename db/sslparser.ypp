@@ -427,7 +427,7 @@ table_assign
 	;
 
 table_expr
-	: str_expr     { $$ = new Table(*$1);     delete $1; }
+	: str_expr     { $$ = new NameTable(*$1); delete $1; }
 	| opstr_expr   { $$ = new OpTable(*$1);   delete $1; }
 	| exprstr_expr { $$ = new ExprTable(*$1); delete $1; }
 	;
@@ -485,7 +485,7 @@ name_expand
 			o << "Name " << *$2 << " is not a NAMETABLE";
 			yyerror(o.str().c_str());
 		} else {
-			$$ = new std::deque<std::string>(it->second->records);
+			$$ = new std::deque<std::string>(((NameTable *)it->second)->records);
 		}
 		delete $2;
 	  }
@@ -500,7 +500,7 @@ name_expand
 			o << "Name " << *$1 << " is not a NAMETABLE";
 			yyerror(o.str().c_str());
 		} else {
-			$$ = new std::deque<std::string>(it->second->records);
+			$$ = new std::deque<std::string>(((NameTable *)it->second)->records);
 		}
 		delete $1;
 	  }
@@ -579,12 +579,16 @@ name_contract
 			std::ostringstream o;
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (($2 < 0) || ($2 >= (int)it->second->records.size())) {
+		} else if (it->second->getType() != NAMETABLE) {
+			std::ostringstream o;
+			o << "Name " << *$1 << " is not a NAMETABLE";
+			yyerror(o.str().c_str());
+		} else if (($2 < 0) || ($2 >= (int)((NameTable *)it->second)->records.size())) {
 			std::ostringstream o;
 			o << "Can't get element " << $2 << " of table " << *$1;
 			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsNameElem(it->second->records[$2]);
+			$$ = new InsNameElem(((NameTable *)it->second)->records[$2]);
 		}
 		delete $1;
 	  }
@@ -595,12 +599,16 @@ name_contract
 			std::ostringstream o;
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (($3 < 0) || ($3 >= (int)it->second->records.size())) {
+		} else if (it->second->getType() != NAMETABLE) {
+			std::ostringstream o;
+			o << "Name " << *$2 << " is not a NAMETABLE";
+			yyerror(o.str().c_str());
+		} else if (($3 < 0) || ($3 >= (int)((NameTable *)it->second)->records.size())) {
 			std::ostringstream o;
 			o << "Can't get element " << $3 << " of table " << *$2;
 			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsNameElem(it->second->records[$3]);
+			$$ = new InsNameElem(((NameTable *)it->second)->records[$3]);
 		}
 		delete $2;
 	  }
@@ -612,8 +620,12 @@ name_contract
 			std::ostringstream o;
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
+		} else if (it->second->getType() != NAMETABLE) {
+			std::ostringstream o;
+			o << "Name " << *$1 << " is not a NAMETABLE";
+			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsListElem(*$1, it->second, *$2);
+			$$ = new InsListElem(*$1, (NameTable *)it->second, *$2);
 		}
 		delete $1;
 		delete $2;
@@ -625,8 +637,12 @@ name_contract
 			std::ostringstream o;
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
+		} else if (it->second->getType() != NAMETABLE) {
+			std::ostringstream o;
+			o << "Name " << *$2 << " is not a NAMETABLE";
+			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsListElem(*$2, it->second, *$3);
+			$$ = new InsListElem(*$2, (NameTable *)it->second, *$3);
 		}
 		delete $2;
 		delete $3;

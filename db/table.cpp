@@ -1,7 +1,7 @@
 /**
  * \file
- * \brief Provides the implementation of classes Table, OpTable, and
- *        ExprTable.
+ * \brief Provides the implementation of classes Table, NameTable, OpTable,
+ *        and ExprTable.
  *
  * \authors
  * Copyright (C) 2001, The University of Queensland
@@ -26,9 +26,7 @@ Table::Table(TABLE_TYPE t) :
 {
 }
 
-Table::Table(const std::deque<std::string> &recs, TABLE_TYPE t /* = NAMETABLE */) :
-	records(recs),
-	type(t)
+Table::~Table()
 {
 }
 
@@ -36,6 +34,12 @@ TABLE_TYPE
 Table::getType() const
 {
 	return type;
+}
+
+NameTable::NameTable(const std::deque<std::string> &recs) :
+	Table(NAMETABLE),
+	records(recs)
+{
 }
 
 OpTable::OpTable(const std::deque<OPER> &ops) :

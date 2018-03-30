@@ -18,7 +18,7 @@
 #include <map>
 #include <string>
 
-class Table;
+class NameTable;
 
 class InsNameElem {
 public:
@@ -51,7 +51,7 @@ public:
 
 class InsListElem : public InsNameElem {
 public:
-	InsListElem(const std::string &name, Table *t, const std::string &idx);
+	InsListElem(const std::string &name, NameTable *t, const std::string &idx);
 	int ntokens() override;
 	std::string getinstruction() override;
 	std::string getinspattern() override;
@@ -61,7 +61,7 @@ public:
 
 protected:
 	std::string indexname;
-	Table *thetable;
+	NameTable *thetable;
 };
 
 #endif
