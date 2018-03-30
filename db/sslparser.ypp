@@ -206,7 +206,6 @@ parts
 
 	/* Name := value */
 	| constants
-
 	| table_assign
 
 	/* Optional one-line section declaring endianness */
@@ -446,6 +445,11 @@ str_expr
 	| str_term { $$ = $1; }
 	;
 
+str_term
+	: '{' str_array '}' { $$ = $2; }
+	| name_expand       { $$ = $1; }
+	;
+
 str_array
 	: str_array ',' str_expr {
 		$$ = $1;
@@ -454,11 +458,6 @@ str_array
 	  }
 	| str_array ',' '"' '"' { $1->push_back(""); }
 	| str_expr              { $$ = $1; }
-	;
-
-str_term
-	: '{' str_array '}' { $$ = $2; }
-	| name_expand       { $$ = $1; }
 	;
 
 name_expand
@@ -477,18 +476,16 @@ name_expand
 	| '$' NAME {
 		// expand $2 from table of names
 		auto it = TableDict.find(*$2);
-		if (it != TableDict.end()) {
-			if (it->second->getType() == NAMETABLE) {
-				$$ = new std::deque<std::string>(it->second->records);
-			} else {
-				std::ostringstream o;
-				o << "Name " << *$2 << " is not a NAMETABLE";
-				yyerror(o.str().c_str());
-			}
-		} else {
+		if (it == TableDict.end()) {
 			std::ostringstream o;
 			o << "Could not dereference name " << *$2;
 			yyerror(o.str().c_str());
+		} else if (it->second->getType() != NAMETABLE) {
+			std::ostringstream o;
+			o << "Name " << *$2 << " is not a NAMETABLE";
+			yyerror(o.str().c_str());
+		} else {
+			$$ = new std::deque<std::string>(it->second->records);
 		}
 		delete $2;
 	  }
@@ -496,25 +493,17 @@ name_expand
 	| NAME {
 		// try and expand $1 from table of names. if fail, expand using '"' NAME '"' rule
 		auto it = TableDict.find(*$1);
-		if (it != TableDict.end()) {
-			if (it->second->getType() == NAMETABLE) {
-				$$ = new std::deque<std::string>(it->second->records);
-			} else {
-				std::ostringstream o;
-				o << "Name " << *$1 << " is not a NAMETABLE";
-				yyerror(o.str().c_str());
-			}
-		} else {
+		if (it == TableDict.end()) {
 			$$ = new std::deque<std::string>(1, *$1);
+		} else if (it->second->getType() != NAMETABLE) {
+			std::ostringstream o;
+			o << "Name " << *$1 << " is not a NAMETABLE";
+			yyerror(o.str().c_str());
+		} else {
+			$$ = new std::deque<std::string>(it->second->records);
 		}
 		delete $1;
 	  }
-	;
-
-bin_oper
-	: BIT_OP    { $$ = $1; }
-	| ARITH_OP  { $$ = $1; }
-	| FARITH_OP { $$ = $1; }
 	;
 
 /* Example: OP2 := { "<<",  ">>",  ">>A" }; */
@@ -525,6 +514,12 @@ opstr_expr
 opstr_array
 	: opstr_array ',' '"' bin_oper '"' { $$ = $1; $$->push_back($4); }
 	| '"' bin_oper '"'           { $$ = new std::deque<OPER>(1, $2); }
+	;
+
+bin_oper
+	: BIT_OP    { $$ = $1; }
+	| ARITH_OP  { $$ = $1; }
+	| FARITH_OP { $$ = $1; }
 	;
 
 /* Example: COND1_C := { "~%ZF", "%ZF", "~(%ZF | (%NF ^ %OF))", ... }; */
@@ -576,6 +571,8 @@ instr_elem
 name_contract
 	: '\'' NAME '\'' { $$ = new InsOptionElem(*$2); delete $2; }
 
+	| '"' NAME '"' { $$ = new InsNameElem(*$2); delete $2; }
+
 	| NAME_LOOKUP NUM ']' {
 		auto it = TableDict.find(*$1);
 		if (it == TableDict.end()) {
@@ -590,20 +587,6 @@ name_contract
 			$$ = new InsNameElem(it->second->records[$2]);
 		}
 		delete $1;
-	  }
-
-	/* Example: ARITH[IDX]  where ARITH := { "ADD", "SUB", ... }; */
-	| NAME_LOOKUP NAME ']' {
-		auto it = TableDict.find(*$1);
-		if (it == TableDict.end()) {
-			std::ostringstream o;
-			o << "Table " << *$1 << " has not been declared";
-			yyerror(o.str().c_str());
-		} else {
-			$$ = new InsListElem(*$1, it->second, *$2);
-		}
-		delete $1;
-		delete $2;
 	  }
 
 	| '$' NAME_LOOKUP NUM ']' {
@@ -622,6 +605,20 @@ name_contract
 		delete $2;
 	  }
 
+	/* Example: ARITH[IDX]  where ARITH := { "ADD", "SUB", ... }; */
+	| NAME_LOOKUP NAME ']' {
+		auto it = TableDict.find(*$1);
+		if (it == TableDict.end()) {
+			std::ostringstream o;
+			o << "Table " << *$1 << " has not been declared";
+			yyerror(o.str().c_str());
+		} else {
+			$$ = new InsListElem(*$1, it->second, *$2);
+		}
+		delete $1;
+		delete $2;
+	  }
+
 	| '$' NAME_LOOKUP NAME ']' {
 		auto it = TableDict.find(*$2);
 		if (it == TableDict.end()) {
@@ -634,8 +631,6 @@ name_contract
 		delete $2;
 		delete $3;
 	  }
-
-	| '"' NAME '"' { $$ = new InsNameElem(*$2); delete $2; }
 	;
 
 rt_list
