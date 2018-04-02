@@ -97,12 +97,13 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 Exp *
 NJMCDecoder::instantiateNamedParam(const char *name, ...)
 {
-	if (RTLDict.ParamSet.find(name) == RTLDict.ParamSet.end()) {
+	if (!RTLDict.ParamSet.count(name)) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
 		return nullptr;
 	}
-	assert(RTLDict.DetParamMap.find(name) != RTLDict.DetParamMap.end());
-	ParamEntry &ent = RTLDict.DetParamMap[name];
+	auto it = RTLDict.DetParamMap.find(name);
+	assert(it != RTLDict.DetParamMap.end());
+	ParamEntry &ent = it->second;
 	if (ent.kind != PARAM_ASGN && ent.kind != PARAM_LAMBDA) {
 		std::cerr << "Attempt to instantiate expressionless parameter '" << name << "'\n";
 		return nullptr;
@@ -141,7 +142,7 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
 void
 NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 {
-	if (RTLDict.ParamSet.find(name) == RTLDict.ParamSet.end()) {
+	if (!RTLDict.ParamSet.count(name)) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
 		return;
 	}

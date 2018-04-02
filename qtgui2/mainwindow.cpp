@@ -185,7 +185,7 @@ MainWindow::on_outputPathComboBox_editTextChanged(QString &text)
 void
 MainWindow::closeCurrentTab()
 {
-	if (openFiles.find(ui.tabWidget->currentWidget()) != openFiles.end())
+	if (openFiles.count(ui.tabWidget->currentWidget()))
 		on_actionClose_activated();
 	else if (ui.tabWidget->currentIndex() != 0)
 		ui.tabWidget->removeTab(ui.tabWidget->currentIndex());
@@ -226,8 +226,9 @@ MainWindow::on_actionOpen_activated()
 void
 MainWindow::on_actionSave_activated()
 {
-	if (openFiles.find(ui.tabWidget->currentWidget()) != openFiles.end()) {
-		QString filename = openFiles[ui.tabWidget->currentWidget()];
+	auto it = openFiles.find(ui.tabWidget->currentWidget());
+	if (it != openFiles.end()) {
+		QString filename = it->second;
 		QFile file(filename);
 		if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate))
 			return;
@@ -237,7 +238,7 @@ MainWindow::on_actionSave_activated()
 		QString text = ui.tabWidget->tabText(ui.tabWidget->currentIndex());
 		if (text.right(1) == "*")
 			ui.tabWidget->setTabText(ui.tabWidget->currentIndex(), text.left(text.length() - 1));
-		if (signatureFiles.find(ui.tabWidget->currentWidget()) != signatureFiles.end()) {
+		if (signatureFiles.count(ui.tabWidget->currentWidget())) {
 			decompilerThread->getDecompiler()->rereadLibSignatures();
 		}
 	}
@@ -246,9 +247,10 @@ MainWindow::on_actionSave_activated()
 void
 MainWindow::on_actionClose_activated()
 {
-	if (openFiles.find(ui.tabWidget->currentWidget()) != openFiles.end()) {
+	auto it = openFiles.find(ui.tabWidget->currentWidget());
+	if (it != openFiles.end()) {
 		on_actionSave_activated();
-		openFiles.erase(ui.tabWidget->currentWidget());
+		openFiles.erase(it);
 		signatureFiles.erase(ui.tabWidget->currentWidget());
 		ui.tabWidget->removeTab(ui.tabWidget->currentIndex());
 	}
@@ -257,8 +259,8 @@ MainWindow::on_actionClose_activated()
 void
 MainWindow::on_tabWidget_currentChanged(int index)
 {
-	ui.actionSave->setEnabled(openFiles.find(ui.tabWidget->widget(index)) != openFiles.end());
-	ui.actionClose->setEnabled(openFiles.find(ui.tabWidget->widget(index)) != openFiles.end());
+	ui.actionSave->setEnabled(!!openFiles.count(ui.tabWidget->widget(index)));
+	ui.actionClose->setEnabled(!!openFiles.count(ui.tabWidget->widget(index)));
 }
 
 void

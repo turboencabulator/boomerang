@@ -586,10 +586,9 @@ Proc *
 Prog::findProc(ADDRESS uAddr) const
 {
 	auto it = m_procLabels.find(uAddr);
-	if (it == m_procLabels.cend())
-		return nullptr;
-	else
+	if (it != m_procLabels.cend())
 		return it->second;
+	return nullptr;
 }
 
 Proc *
@@ -1321,14 +1320,15 @@ Prog::printCallGraph() const
 		procList.pop_front();
 		if ((unsigned)p == NO_ADDRESS)
 			continue;
-		if (seen.find(p) == seen.end()) {
+		if (!seen.count(p)) {
 			seen.insert(p);
 			int n = spaces[p];
 			for (int i = 0; i < n; ++i)
 				f1 << "\t ";
 			f1 << p->getName() << " @ " << std::hex << p->getNativeAddress();
-			if (parent.find(p) != parent.end())
-				f1 << " [parent=" << parent[p]->getName() << "]";
+			auto it = parent.find(p);
+			if (it != parent.end())
+				f1 << " [parent=" << it->second->getName() << "]";
 			f1 << std::endl;
 			if (!p->isLib()) {
 				++n;
@@ -1354,7 +1354,7 @@ static void
 printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &seen)
 {
 	bool fisttime = false;
-	if (seen.find(proc) == seen.end()) {
+	if (!seen.count(proc)) {
 		seen.insert(proc);
 		fisttime = true;
 	}
@@ -1394,7 +1394,7 @@ Prog::printSymbolsToFile() const
 
 	f << "/* Leftovers: */\n"; // don't forget the rest
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
-		if (!(*it)->isLib() && seen.find(*it) == seen.end()) {
+		if (!(*it)->isLib() && !seen.count(*it)) {
 			printProcsRecursive(*it, 0, f, seen);
 		}
 

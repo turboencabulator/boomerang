@@ -86,7 +86,7 @@ DataFlow::dominators(Cfg *cfg)
 		BasicBlock *bb = BBs[n];
 		std::vector<BasicBlock *> &inEdges = bb->getInEdges();
 		for (auto it = inEdges.begin(); it != inEdges.end(); ++it) {
-			if (indices.find(*it) == indices.end()) {
+			if (!indices.count(*it)) {
 				std::cerr << "BB not in indices: "; (*it)->print(std::cerr);
 				assert(false);
 			}
@@ -293,7 +293,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 				int y = *yy;
 				// if y not element of A_phi[a]
 				std::set<int> &s = A_phi[a];
-				if (s.find(y) == s.end()) {
+				if (!s.count(y)) {
 					// Insert trivial phi function for a at top of block y: a := phi()
 					change = true;
 					Statement *as = new PhiAssign(a->clone());
@@ -302,7 +302,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 					// A_phi[a] <- A_phi[a] U {y}
 					s.insert(y);
 					// if a !elementof A_orig[y]
-					if (A_orig[y].find(a) == A_orig[y].end()) {
+					if (!A_orig[y].count(a)) {
 						// W <- W U {y}
 						W.insert(y);
 					}
@@ -324,7 +324,7 @@ static Exp *defineAll = new Terminal(opDefineAll);  // An expression representin
 
 // Care with the Stacks object (a map from expression to stack); using Stacks[q].empty() can needlessly insert an empty
 // stack
-#define STACKS_EMPTY(q) (Stacks.find(q) == Stacks.end() || Stacks[q].empty())
+#define STACKS_EMPTY(q) (!Stacks.count(q) || Stacks[q].empty())
 
 // Subscript dataflow variables
 static int progress = 0;
@@ -769,7 +769,7 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 			RefExp *wrappedDef = new RefExp(*it, S);
 			// If this definition is in the usedByDomPhi0 set, then it is in fact dominated by a phi use, so move it to
 			// the final usedByDomPhi set
-			if (usedByDomPhi0.find(wrappedDef) != usedByDomPhi0.end()) {
+			if (usedByDomPhi0.exists(wrappedDef)) {
 				usedByDomPhi0.remove(wrappedDef);
 				usedByDomPhi.insert(wrappedDef);
 			}

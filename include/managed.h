@@ -235,7 +235,7 @@ protected:
 public:
 	            RangeMap() { }
 	void        addRange(Exp *loc, Range &r) { ranges[loc] = r; }
-	bool        hasRange(Exp *loc) const { return ranges.find(loc) != ranges.end(); }
+	bool        hasRange(Exp *loc) const { return !!ranges.count(loc); }
 	Range      &getRange(Exp *loc);
 	void        unionwith(const RangeMap &other);
 	void        widenwith(const RangeMap &other);

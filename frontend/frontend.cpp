@@ -723,8 +723,9 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 #endif
 				Statement *s = *ss;
 				s->setProc(pProc);  // let's do this really early!
-				if (refHints.find(pRtl->getAddress()) != refHints.end()) {
-					const char *nam = refHints[pRtl->getAddress()].c_str();
+				auto it = refHints.find(pRtl->getAddress());
+				if (it != refHints.end()) {
+					const char *nam = it->second.c_str();
 					ADDRESS gu = prog->getGlobalAddr(nam);
 					if (gu != NO_ADDRESS) {
 						s->searchAndReplace(new Const((int)gu), new Unary(opAddrOf, Location::global(nam, pProc)));

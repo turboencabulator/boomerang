@@ -234,13 +234,15 @@ Win32BinaryFile::getMainEntryPoint()
 	if (*(p + base + 0x20) == 0xff
 	 && *(p + base + 0x21) == 0x15) {
 		unsigned int desti = LMMH(*(p + base + 0x22));
-		if (dlprocptrs.find(desti) != dlprocptrs.end()
-		 && dlprocptrs[desti] == "GetVersionExA") {
+		auto it = dlprocptrs.find(desti);
+		if (it != dlprocptrs.end()
+		 && it->second == "GetVersionExA") {
 			if (*(p + base + 0x6d) == 0xff
 			 && *(p + base + 0x6e) == 0x15) {
 				desti = LMMH(*(p + base + 0x6f));
-				if (dlprocptrs.find(desti) != dlprocptrs.end()
-				 && dlprocptrs[desti] == "GetModuleHandleA") {
+				it = dlprocptrs.find(desti);
+				if (it != dlprocptrs.end()
+				 && it->second == "GetModuleHandleA") {
 					if (*(p + base + 0x16e) == 0xe8) {
 						unsigned int dest = p + 0x16e + 5 + LMMH(*(p + base + 0x16f));
 						return dest + LMMH(m_pPEHeader->Imagebase);
@@ -309,11 +311,12 @@ Win32BinaryFile::getMainEntryPoint()
 				unsigned char op2 = *(dest + base);
 				unsigned char op2a = *(dest + base + 1);
 				unsigned int desti = LMMH(*(dest + base + 2));
+				auto it = dlprocptrs.find(desti);
 				// skip all the call statements until we hit a call to an indirect call to ExitProcess
 				// main is the 2nd call before this one
 				if (op2 == 0xff && op2a == 0x25
-				 && dlprocptrs.find(desti) != dlprocptrs.end()
-				 && dlprocptrs[desti] == "ExitProcess") {
+				 && it != dlprocptrs.end()
+				 && it->second == "ExitProcess") {
 					mingw_main = true;
 					return lastlastcall + 5 + LMMH(*(lastlastcall + base + 1)) + LMMH(m_pPEHeader->Imagebase);
 				}
@@ -344,8 +347,9 @@ Win32BinaryFile::getMainEntryPoint()
 		unsigned char op2 = *(p + base + 1);
 		if (op1 == 0xFF && op2 == 0x15) { // indirect CALL opcode
 			unsigned int desti = LMMH(*(p + base + 2));
-			if (dlprocptrs.find(desti) != dlprocptrs.end()
-			 && dlprocptrs[desti] == "GetModuleHandleA") {
+			auto it = dlprocptrs.find(desti);
+			if (it != dlprocptrs.end()
+			 && it->second == "GetModuleHandleA") {
 				gotGMHA = true;
 			}
 		}
@@ -478,8 +482,7 @@ Win32BinaryFile::load(std::istream &ifs)
 	// Give the entry point a symbol
 	ADDRESS entry = getMainEntryPoint();
 	if (entry != NO_ADDRESS) {
-		auto it = dlprocptrs.find(entry);
-		if (it == dlprocptrs.end())
+		if (!dlprocptrs.count(entry))
 			dlprocptrs[entry] = "main";
 	}
 
@@ -560,21 +563,19 @@ Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 		return "malloc";
 
 	auto it = dlprocptrs.find(dwAddr);
-	if (it == dlprocptrs.end())
-		return nullptr;
-	return it->second.c_str();
+	if (it != dlprocptrs.end())
+		return it->second.c_str();
+	return nullptr;
 }
 
 ADDRESS
 Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
-	auto it = dlprocptrs.begin();
-	while (it != dlprocptrs.end()) {
+	for (auto it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it) {
 		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
 		if (it->second == pName)
 			return it->first;
-		++it;
 	}
 	return NO_ADDRESS;
 }
@@ -826,7 +827,7 @@ Win32BinaryFile::isStaticLinkedLibProc(ADDRESS uNative) const
 bool
 Win32BinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 {
-	return dlprocptrs.find(uNative) != dlprocptrs.end();
+	return !!dlprocptrs.count(uNative);
 }
 
 const char *

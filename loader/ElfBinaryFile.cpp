@@ -332,9 +332,8 @@ ElfBinaryFile::AddSyms(int secIndex)
 		if (pos != str.npos)
 			str.erase(pos);
 
-		auto aa = m_SymTab.find(val);
 		// Ensure no overwriting (except functions)
-		if (aa == m_SymTab.end() || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
+		if (!m_SymTab.count(val) || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
 			if (val == 0 && siPlt) { //&& i < max_i_for_hack) {
 				// Special hack for gcc circa 3.3.3: (e.g. test/pentium/settest).  The value in the dynamic symbol table
 				// is zero!  I was assuming that index i in the dynamic symbol table would always correspond to index i
@@ -355,10 +354,9 @@ ElfBinaryFile::AddSyms(int secIndex)
 		}
 	}
 	ADDRESS uMain = getMainEntryPoint();
-	if (uMain != NO_ADDRESS && m_SymTab.find(uMain) == m_SymTab.end()) {
+	if (uMain != NO_ADDRESS && !m_SymTab.count(uMain)) {
 		// Ugh - main mustn't have the STT_FUNC attribute. Add it
-		std::string sMain("main");
-		m_SymTab[uMain] = sMain;
+		m_SymTab[uMain] = "main";
 	}
 	return;
 }
@@ -479,9 +477,9 @@ const char *
 ElfBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	auto aa = m_SymTab.find(dwAddr);
-	if (aa == m_SymTab.end())
-		return nullptr;
-	return aa->second.c_str();
+	if (aa != m_SymTab.end())
+		return aa->second.c_str();
+	return nullptr;
 }
 
 bool

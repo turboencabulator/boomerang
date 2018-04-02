@@ -397,9 +397,9 @@ const char *
 DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	auto it = dlprocptrs.find(dwAddr);
-	if (it == dlprocptrs.end())
-		return nullptr;
-	return it->second.c_str();
+	if (it != dlprocptrs.end())
+		return it->second.c_str();
+	return nullptr;
 }
 
 ADDRESS
@@ -526,7 +526,7 @@ DOS4GWBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 bool
 DOS4GWBinaryFile::isDynamicLinkedProcPointer(ADDRESS uNative) const
 {
-	return dlprocptrs.find(uNative) != dlprocptrs.end();
+	return !!dlprocptrs.count(uNative);
 }
 
 const char *

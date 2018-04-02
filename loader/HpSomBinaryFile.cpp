@@ -428,9 +428,9 @@ HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false *
 	// For now, we ignore the symbol table and do a linear search of our
 	// SymTab table
 	ADDRESS res = symbols.find(pName);
-	if (res == NO_ADDRESS)
-		return 0;  // Till the failure return value is fixed
-	return res;
+	if (res != NO_ADDRESS)
+		return res;
+	return 0;  // Till the failure return value is fixed
 }
 
 /**
@@ -441,7 +441,7 @@ bool
 HpSomBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
 	// Look up the address in the set of imports
-	return imports.find(uNative) != imports.end();
+	return !!imports.count(uNative);
 }
 
 /**

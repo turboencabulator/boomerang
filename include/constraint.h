@@ -31,7 +31,7 @@ public:
 
 	// Return true if the given expression is in the map
 	bool isFound(Exp *e) const {
-		return cmap.find(e) != cmap.end();
+		return !!cmap.count(e);
 	}
 	// Return an iterator to the given left hand side Exp
 	iterator find(Exp *e) {

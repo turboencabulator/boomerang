@@ -82,8 +82,7 @@ void
 StatementSet::makeIsect(const StatementSet &other)
 {
 	for (auto it = sset.begin(); it != sset.end(); ) {
-		auto ff = other.sset.find(*it);
-		if (ff == other.sset.end()) {
+		if (!other.sset.count(*it)) {
 			// Not in both sets
 			it = sset.erase(it);
 			continue;
@@ -111,7 +110,7 @@ StatementSet::remove(Statement *s)
 bool
 StatementSet::exists(Statement *s) const
 {
-	return sset.find(s) != sset.end();
+	return !!sset.count(s);
 }
 
 // Find a definition for loc in this Statement set. Return true if found
@@ -188,8 +187,7 @@ void
 AssignSet::makeIsect(const AssignSet &other)
 {
 	for (auto it = aset.begin(); it != aset.end(); ) {
-		auto ff = other.aset.find(*it);
-		if (ff == other.aset.end()) {
+		if (!other.aset.count(*it)) {
 			// Not in both sets
 			it = aset.erase(it);
 			continue;
@@ -217,7 +215,7 @@ AssignSet::remove(Assign *a)
 bool
 AssignSet::exists(Assign *a) const
 {
-	return aset.find(a) != aset.end();
+	return !!aset.count(a);
 }
 
 // Find a definition for loc in this Assign set. Return true if found
@@ -225,8 +223,7 @@ bool
 AssignSet::definesLoc(Exp *loc) const
 {
 	Assign *as = new Assign(loc, new Terminal(opWild));
-	auto ff = aset.find(as);
-	return ff != aset.end();
+	return !!aset.count(as);
 }
 
 // Find a definition for loc on the LHS in this Assign set. If found, return pointer to the Assign with that LHS
@@ -235,8 +232,9 @@ AssignSet::lookupLoc(Exp *loc) const
 {
 	Assign *as = new Assign(loc, new Terminal(opWild));
 	auto ff = aset.find(as);
-	if (ff == aset.end()) return nullptr;
-	return *ff;
+	if (ff != aset.end())
+		return *ff;
+	return nullptr;
 }
 
 // Print to a string, for debugging
@@ -365,7 +363,7 @@ LocationSet::operator ==(const LocationSet &o) const
 bool
 LocationSet::exists(Exp *e) const
 {
-	return lset.find(e) != lset.end();
+	return !!lset.count(e);
 }
 
 // This set is assumed to be of subscripted locations (e.g. a Collector), and we want to find the unsubscripted
@@ -409,9 +407,7 @@ bool
 LocationSet::findDifferentRef(RefExp *e, Exp *&dr) const
 {
 	RefExp search(e->getSubExp1()->clone(), (Statement *)-1);
-	auto pos = lset.find(&search);
-	if (pos == lset.end()) return false;
-	while (pos != lset.end()) {
+	for (auto pos = lset.find(&search); pos != lset.end(); ++pos) {
 		// Exit if we've gone to a new base expression
 		// E.g. searching for r13{10} and **pos is r14{0}
 		// Note: we want a ref-sensitive compare, but with the outer refs stripped off
@@ -422,7 +418,6 @@ LocationSet::findDifferentRef(RefExp *e, Exp *&dr) const
 			dr = *pos;
 			return true;
 		}
-		++pos;
 	}
 	return false;
 }
@@ -645,7 +640,7 @@ LocationSet::diff(LocationSet *o)
 	bool printed2not1 = false;
 	for (auto it = o->lset.begin(); it != o->lset.end(); ++it) {
 		Exp *oe = *it;
-		if (lset.find(oe) == lset.end()) {
+		if (!lset.count(oe)) {
 			if (!printed2not1) {
 				printed2not1 = true;
 				std::cerr << "In set 2 but not set 1:\n";
@@ -658,7 +653,7 @@ LocationSet::diff(LocationSet *o)
 	bool printed1not2 = false;
 	for (auto it = lset.begin(); it != lset.end(); ++it) {
 		Exp *e = *it;
-		if (o->lset.find(e) == o->lset.end()) {
+		if (!o->lset.count(e)) {
 			if (!printed1not2) {
 				printed1not2 = true;
 				std::cerr << "In set 1 but not set 2:\n";
@@ -815,7 +810,7 @@ Range::widenWith(const Range &r)
 Range &
 RangeMap::getRange(Exp *loc)
 {
-	if (ranges.find(loc) == ranges.end()) {
+	if (!ranges.count(loc)) {
 		return *(new Range(1, Range::MIN, Range::MAX, new Const(0)));
 	}
 	return ranges[loc];
@@ -825,7 +820,7 @@ void
 RangeMap::unionwith(const RangeMap &other)
 {
 	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
-		if (ranges.find(it->first) == ranges.end()) {
+		if (!ranges.count(it->first)) {
 			ranges[it->first] = it->second;
 		} else {
 			ranges[it->first].unionWith(it->second);
@@ -837,7 +832,7 @@ void
 RangeMap::widenwith(const RangeMap &other)
 {
 	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
-		if (ranges.find(it->first) == ranges.end()) {
+		if (!ranges.count(it->first)) {
 			ranges[it->first] = it->second;
 		} else {
 			ranges[it->first].widenWith(it->second);
@@ -865,7 +860,7 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 	do {
 		changes = false;
 		for (auto it = ranges.begin(); it != ranges.end(); ++it) {
-			if (only && only->find(it->first) == only->end())
+			if (only && !only->count(it->first))
 				continue;
 			bool change = false;
 			Exp *eold = e->clone();
@@ -910,7 +905,7 @@ bool
 RangeMap::isSubset(RangeMap &other) const
 {
 	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
-		if (other.ranges.find(it->first) == other.ranges.end()) {
+		if (!other.ranges.count(it->first)) {
 			if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 				LOG << "did not find " << it->first << " in other, not a subset\n";
 			return false;
@@ -931,10 +926,8 @@ RangeMap::isSubset(RangeMap &other) const
 void
 ConnectionGraph::add(Exp *a, Exp *b)
 {
-	auto ff = emap.find(a);
-	while (ff != emap.end() && *ff->first == *a) {
+	for (auto ff = emap.find(a); ff != emap.end() && *ff->first == *a; ++ff) {
 		if (*ff->second == *b) return;  // Don't add a second entry
-		++ff;
 	}
 	std::pair<Exp *, Exp *> pr;
 	pr.first = a;
@@ -952,11 +945,9 @@ ConnectionGraph::connect(Exp *a, Exp *b)
 int
 ConnectionGraph::count(Exp *e) const
 {
-	auto ff = emap.find(e);
 	int n = 0;
-	while (ff != emap.end() && *ff->first == *e) {
+	for (auto ff = emap.find(e); ff != emap.end() && *ff->first == *e; ++ff) {
 		++n;
-		++ff;
 	}
 	return n;
 }
@@ -964,11 +955,9 @@ ConnectionGraph::count(Exp *e) const
 bool
 ConnectionGraph::isConnected(Exp *a, Exp *b) const
 {
-	auto ff = emap.find(a);
-	while (ff != emap.end() && *ff->first == *a) {
+	for (auto ff = emap.find(a); ff != emap.end() && *ff->first == *a; ++ff) {
 		if (*ff->second == *b)
 			return true;  // Found the connection
-		++ff;
 	}
 	return false;
 }
@@ -978,23 +967,19 @@ void
 ConnectionGraph::update(Exp *a, Exp *b, Exp *c)
 {
 	// find a->b
-	auto ff = emap.find(a);
-	while (ff != emap.end() && *ff->first == *a) {
+	for (auto ff = emap.find(a); ff != emap.end() && *ff->first == *a; ++ff) {
 		if (*ff->second == *b) {
 			ff->second = c;  // Now a->c
 			break;
 		}
-		++ff;
 	}
-	// find b -> a
-	ff = emap.find(b);
-	while (ff != emap.end() && *ff->first == *b) {
+	// find b->a
+	for (auto ff = emap.find(b); ff != emap.end() && *ff->first == *b; ++ff) {
 		if (*ff->second == *a) {
 			emap.erase(ff);
 			add(c, a);  // Now c->a
 			break;
 		}
-		++ff;
 	}
 }
 

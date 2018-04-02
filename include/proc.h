@@ -427,7 +427,7 @@ public:
 	bool        isDecoded() { return status >= PROC_DECODED; }
 	bool        isDecompiled() { return status >= PROC_FINAL; }
 	bool        isEarlyRecursive() { return cycleGrp && status <= PROC_INCYCLE; }
-	bool        doesRecurseTo(UserProc *p) { return cycleGrp && cycleGrp->find(p) != cycleGrp->end(); }
+	bool        doesRecurseTo(UserProc *p) { return cycleGrp && cycleGrp->count(p); }
 
 	bool        isSorted() { return status >= PROC_SORTED; }
 	void        setSorted() { setStatus(PROC_SORTED); }

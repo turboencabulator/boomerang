@@ -141,7 +141,7 @@ RTLInstDict::appendToDict(const std::string &n, std::list<std::string> &p, RTL &
 	std::string s(opcode);
 	//delete [] opcode;
 
-	if (idict.find(s) == idict.end()) {
+	if (!idict.count(s)) {
 		idict[s] = TableEntry(p, r);
 	} else {
 		return idict[s].appendRTL(p, r);
@@ -421,11 +421,12 @@ RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *>
 			lname = &itf->second;
 	}
 	// Retrieve the dictionary entry for the named instruction
-	if (idict.find(*lname) == idict.end()) { /* lname is not in dictionary */
+	auto it = idict.find(*lname);
+	if (it == idict.end()) { /* lname is not in dictionary */
 		std::cerr << "ERROR: unknown instruction " << *lname << " at 0x" << std::hex << natPC << ", ignoring.\n";
 		return nullptr;
 	}
-	TableEntry &entry = idict[*lname];
+	TableEntry &entry = it->second;
 
 	return instantiateRTL(entry.rtl, natPC, entry.params, actuals);
 }
@@ -538,7 +539,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 			// Look for assignments to post-variables
 			if (lhs && lhs->isPostVar()) {
-				if (vars.find(lhs) == vars.end()) {
+				if (!vars.count(lhs)) {
 					// Add a record in the map for this postvar
 					transPost &el = vars[lhs];
 					el.used = false;

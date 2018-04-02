@@ -776,7 +776,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		case 24: case 25: case 26: case 27:
 		//  eax      ecx      edx      ebx
 			// Emit *16* r<off> := trunc(32, 16, r<24+off>)
-			if (usedRegs.find(off) != usedRegs.end()) {
+			if (usedRegs.count(off)) {
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off),
 				               new Ternary(opTruncu,
@@ -787,7 +787,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			}
 
 			// Emit *8* r<8+off> := trunc(32, 8, r<24+off>)
-			if (usedRegs.find(8 + off) != usedRegs.end()) {
+			if (usedRegs.count(8 + off)) {
 				a = new Assign(new IntegerType(8),
 				               Location::regOf(8 + off),
 				               new Ternary(opTruncu,
@@ -798,7 +798,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			}
 
 			// Emit *8* r<12+off> := r<24+off>@[15:8]
-			if (usedRegs.find(12 + off) != usedRegs.end()) {
+			if (usedRegs.count(12 + off)) {
 				a = new Assign(new IntegerType(8),
 				               Location::regOf(12 + off),
 				               new Ternary(opAt,
@@ -812,7 +812,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		case 0: case 1: case 2: case 3:
 		//  ax      cx      dx      bx
 			// Emit *32* r<24+off> := r<24+off>@[31:16] | zfill(16, 32, r<off>)
-			if (usedRegs.find(24 + off) != usedRegs.end()) {
+			if (usedRegs.count(24 + off)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
 				               new Binary(opBitOr,
@@ -828,7 +828,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			}
 
 			// Emit *8* r<8+off> := trunc(16, 8, r<off>)
-			if (usedRegs.find(8 + off) != usedRegs.end()) {
+			if (usedRegs.count(8 + off)) {
 				a = new Assign(new IntegerType(8),
 				               Location::regOf(8 + off),
 				               new Ternary(opTruncu,
@@ -839,7 +839,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			}
 
 			// Emit *8* r<12+off> := r<off>@[15:8]
-			if (usedRegs.find(12 + off) != usedRegs.end()) {
+			if (usedRegs.count(12 + off)) {
 				a = new Assign(new IntegerType(8),
 				               Location::regOf(12 + off),
 				               new Ternary(opAt,
@@ -853,7 +853,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		case 8: case 9: case 10: case 11:
 		//  al      cl       dl       bl
 			// Emit *32* r<24+off> := r<24+off>@[31:8] | zfill(8, 32, r<8+off>)
-			if (usedRegs.find(24 + off) != usedRegs.end()) {
+			if (usedRegs.count(24 + off)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
 				               new Binary(opBitOr,
@@ -869,7 +869,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			}
 
 			// Emit *16* r<off> := r<off>@[15:8] | zfill(8, 16, r<8+off>)
-			if (usedRegs.find(off) != usedRegs.end()) {
+			if (usedRegs.count(off)) {
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off),
 				               new Binary(opBitOr,
@@ -889,7 +889,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		//   ah       ch       dh       bh
 			// Emit *32* r<24+off> := r<24+off> & 0xFFFF00FF
 			//      *32* r<24+off> := r<24+off> | r<12+off> << 8
-			if (usedRegs.find(24 + off) != usedRegs.end()) {
+			if (usedRegs.count(24 + off)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
 				               new Binary(opBitOr,
@@ -908,7 +908,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 
 			// Emit *16* r<off> := r<off> & 0x00FF
 			//      *16* r<off> := r<off> | r<12+off> << 8
-			if (usedRegs.find(off) != usedRegs.end()) {
+			if (usedRegs.count(off)) {
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off),
 				               new Binary(opBitOr,
@@ -929,7 +929,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		case 5: case 6: case 7:
 		//  bp      si      di
 			// Emit *32* r<24+off_mod8> := r<24+off_mod8>@[31:16] | zfill(16, 32, r<off_mod8>)
-			if (usedRegs.find(24 + off_mod8) != usedRegs.end()) {
+			if (usedRegs.count(24 + off_mod8)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off_mod8),
 				               new Binary(opBitOr,
@@ -948,7 +948,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		case 29: case 30: case 31:
 		//  ebp      esi      edi
 			// Emit *16* r<off_mod8> := trunc(32, 16, r<24+off_mod8>)
-			if (usedRegs.find(off_mod8) != usedRegs.end()) {
+			if (usedRegs.count(off_mod8)) {
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off_mod8),
 				               new Ternary(opTruncu,

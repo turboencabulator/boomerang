@@ -990,7 +990,7 @@ UserProc::decompile(ProcList *path, int &indent)
 						Proc *f = nullptr;
 						auto pi = path->begin();
 						for (; pi != path->end(); ++pi) {
-							if (c->cycleGrp->find(*pi) != c->cycleGrp->end()) {
+							if (c->cycleGrp->count(*pi)) {
 								f = *pi;
 								break;
 							}
@@ -1049,7 +1049,7 @@ UserProc::decompile(ProcList *path, int &indent)
 		// find first element f in path that is also in cycleGrp
 		auto f = path->begin();
 		for (; f != path->end(); ++f)
-			if (cycleGrp->find(*f) != cycleGrp->end())
+			if (cycleGrp->count(*f))
 				break;
 		// The big test: have we found all the strongly connected components (in the call graph)?
 		if (*f == this) {
@@ -1607,7 +1607,7 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 				++ll;
 				continue;
 			}
-			if (refCounts.find(s) == refCounts.end() || refCounts[s] == 0) {  // Care not to insert unnecessarily
+			if (!refCounts.count(s) || refCounts[s] == 0) {  // Care not to insert unnecessarily
 				// First adjust the counts, due to statements only referenced by statements that are themselves unused.
 				// Need to be careful not to count two refs to the same def as two; refCounts is a count of the number
 				// of statements that use a definition, not the total number of refs
@@ -2265,7 +2265,7 @@ void UserProc::trimParameters(int depth)
 				}
 #endif
 				if (!referenced[i]
-				 && excluded.find(s) == excluded.end()
+				 && !excluded.count(s)
 				    // Search for the named parameter (e.g. param1), and just in case, also for the expression
 				    // (e.g. r8{0})
 				 && (s->usesExp(p) || s->usesExp(params[i]))) {
@@ -2275,7 +2275,7 @@ void UserProc::trimParameters(int depth)
 					}
 				}
 				if (!referenced[i]
-				 && excluded.find(s) == excluded.end()
+				 && !excluded.count(s)
 				 && s->isPhi()
 				 && *((PhiAssign *)s)->getLeft() == *pe) {
 					if (DEBUG_UNUSED)
@@ -2406,8 +2406,9 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 		for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 			if (it->second->isLocal()) {
 				const char *nam = ((Const *)it->second->getSubExp1())->getStr();
-				if (locals.find(nam) != locals.end()) {
-					Type *lty = locals[nam];
+				auto it1 = locals.find(nam);
+				if (it1 != locals.end()) {
+					Type *lty = it1->second;
 					Exp *loc = it->first;
 					if (loc->isMemOf()
 					 && loc->getSubExp1()->getOper() == opMinus
@@ -2430,7 +2431,8 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 		}
 	}
 
-	if (symbolMap.find(le) == symbolMap.end()) {
+	auto it = symbolMap.find(le);
+	if (it == symbolMap.end()) {
 		if (!ty) {
 			if (lastPass)
 				ty = new IntegerType();
@@ -2452,7 +2454,7 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 		// This code was assuming that locations only every have one type associated with them. The reality is that
 		// compilers and machine language programmers sometimes re-use the same locations with different types.
 		// Let type analysis sort out which live ranges have which type
-		e = symbolMap[le]->clone();
+		e = it->second->clone();
 		if (e->isLocal() && e->getSubExp1()->isStrConst()) {
 			std::string name = ((Const *)e->getSubExp1())->getStr();
 			Type *nty = ty;
@@ -2747,7 +2749,7 @@ UserProc::newLocalName(Exp *e)
 		do {
 			ost.str("");
 			ost << regName << "_" << ++tag;
-		} while (locals.find(ost.str()) != locals.end());
+		} while (locals.count(ost.str()));
 		return strdup(ost.str().c_str());
 	}
 	ost << "local" << nextLocal++;
@@ -2785,10 +2787,10 @@ UserProc::addLocal(Type *ty, const char *nam, Exp *e)
 Type *
 UserProc::getLocalType(const char *nam)
 {
-	if (locals.find(nam) == locals.end())
-		return nullptr;
-	Type *ty = locals[nam];
-	return ty;
+	auto it = locals.find(nam);
+	if (it != locals.end())
+		return it->second;
+	return nullptr;
 }
 
 void
@@ -2825,11 +2827,9 @@ UserProc::mapSymbolToRepl(Exp *from, Exp *oldTo, Exp *newTo)
 void
 UserProc::mapSymbolTo(Exp *from, Exp *to)
 {
-	auto it = symbolMap.find(from);
-	while (it != symbolMap.end() && *it->first == *from) {
+	for (auto it = symbolMap.find(from); it != symbolMap.end() && *it->first == *from; ++it) {
 		if (*it->second == *to)
 			return;  // Already in the multimap
-		++it;
 	}
 	std::pair<Exp *, Exp *> pr;
 	pr.first = from;
@@ -2841,8 +2841,7 @@ UserProc::mapSymbolTo(Exp *from, Exp *to)
 Exp *
 UserProc::getSymbolFor(Exp *from, Type *ty)
 {
-	auto ff = symbolMap.find(from);
-	while (ff != symbolMap.end() && *ff->first == *from) {
+	for (auto ff = symbolMap.find(from); ff != symbolMap.end() && *ff->first == *from; ++ff) {
 		Exp *currTo = ff->second;
 		assert(currTo->isLocal() || currTo->isParam());
 		const char *name = ((Const *)((Location *)currTo)->getSubExp1())->getStr();
@@ -2850,7 +2849,6 @@ UserProc::getSymbolFor(Exp *from, Type *ty)
 		if (!currTy) currTy = getParamType(name);
 		if (currTy && currTy->isCompatibleWith(ty))
 			return currTo;
-		++ff;
 	}
 	return nullptr;
 }
@@ -2858,13 +2856,11 @@ UserProc::getSymbolFor(Exp *from, Type *ty)
 void
 UserProc::removeSymbolMapping(Exp *from, Exp *to)
 {
-	auto it = symbolMap.find(from);
-	while (it != symbolMap.end() && *it->first == *from) {
+	for (auto it = symbolMap.find(from); it != symbolMap.end() && *it->first == *from; ++it) {
 		if (*it->second == *to) {
 			symbolMap.erase(it);
 			return;
 		}
-		++it;
 	}
 }
 
@@ -2990,7 +2986,7 @@ UserProc::removeUnusedLocals()
 		if (VERBOSE && all && !removes.empty())
 			LOG << "WARNING: defineall seen in procedure " << name.c_str()
 			    << " so not removing " << (int)removes.size() << " locals\n";
-		if (usedLocals.find(name) == usedLocals.end() && !all) {
+		if (!usedLocals.count(name) && !all) {
 			if (VERBOSE)
 				LOG << "removed unused local " << name.c_str() << "\n";
 			removes.insert(name);
@@ -3006,7 +3002,7 @@ UserProc::removeUnusedLocals()
 			const char *name = findLocal(*ll, ty);
 			if (!name) continue;
 			std::string str(name);
-			if (removes.find(str) != removes.end()) {
+			if (removes.count(str)) {
 				// Remove it. If an assign, delete it; otherwise (call), remove the define
 				if (s->isAssignment()) {
 					removeStatement(s);
@@ -3026,7 +3022,7 @@ UserProc::removeUnusedLocals()
 		Exp *mapsTo = sm->second;
 		if (mapsTo->isLocal()) {
 			const char *tmpName = ((Const *)((Location *)mapsTo)->getSubExp1())->getStr();
-			if (removes.find(tmpName) != removes.end()) {
+			if (removes.count(tmpName)) {
 				sm = symbolMap.erase(sm);
 				continue;
 			}
@@ -3390,12 +3386,14 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 	assert(query->isEquality());
 	Exp *queryLeft  = ((Binary *)query)->getSubExp1();
 	Exp *queryRight = ((Binary *)query)->getSubExp2();
-	if (provenTrue.find(queryLeft) != provenTrue.end() && *provenTrue[queryLeft] == *queryRight) {
+	auto it1 = provenTrue.find(queryLeft);
+	if (it1 != provenTrue.end() && *it1->second == *queryRight) {
 		if (DEBUG_PROOF) LOG << "found true in provenTrue cache " << query << " in " << getName() << "\n";
 		return true;
 	}
 #if PROVEN_FALSE  // Maybe not so smart... may prove true after some iterations
-	if (provenFalse.find(queryLeft) != provenFalse.end() && *provenFalse[queryLeft] == *queryRight) {
+	auto it2 = provenFalse.find(queryLeft);
+	if (it2 != provenFalse.end() && *it2->second == *queryRight) {
 		if (DEBUG_PROOF) LOG << "found false in provenFalse cache " << query << " in " << getName() << "\n";
 		return false;
 	}
@@ -3473,7 +3471,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 	std::map<CallStatement *, Exp *> called;
 	Exp *phiInd = query->getSubExp2()->clone();
 
-	if (lastPhi && cache.find(lastPhi) != cache.end() && *cache[lastPhi] == *phiInd) {
+	if (lastPhi && cache.count(lastPhi) && *cache[lastPhi] == *phiInd) {
 		if (DEBUG_PROOF)
 			LOG << "true - in the phi cache\n";
 		return true;
@@ -3526,7 +3524,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 					if (destProc
 					 && !destProc->isLib()
 					 && ((UserProc *)destProc)->cycleGrp
-					 && ((UserProc *)destProc)->cycleGrp->find(this) != ((UserProc *)destProc)->cycleGrp->end()) {
+					 && ((UserProc *)destProc)->cycleGrp->count(this)) {
 						// The destination procedure may not have preservation proved as yet, because it is involved
 						// in our recursion group. Use the conditional preservation logic to determine whether query is
 						// true for this procedure
@@ -3581,7 +3579,8 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 					Exp *right = call->getProven(r->getSubExp1());  // getProven returns the right side of what is
 					if (right) {                                    //  proven about r (the LHS of query)
 						right = right->clone();
-						if (called.find(call) != called.end() && *called[call] == *query) {
+						auto it = called.find(call);
+						if (it != called.end() && *it->second == *query) {
 							LOG << "found call loop to " << call->getDestProc()->getName() << " " << query << "\n";
 							query = new Terminal(opFalse);
 							change = true;
@@ -3601,7 +3600,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 					// for a phi, we have to prove the query for every statement
 					PhiAssign *pa = (PhiAssign *)s;
 					bool ok = true;
-					if (lastPhis.find(pa) != lastPhis.end() || pa == lastPhi) {
+					if (lastPhis.count(pa) || pa == lastPhi) {
 						if (DEBUG_PROOF)
 							LOG << "phi loop detected ";
 						ok = (*query->getSubExp2() == *phiInd);
@@ -3636,7 +3635,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 						query = new Terminal(opFalse);
 					change = true;
 				} else if (s && s->isAssign()) {
-					if (s && refsTo.find(s) != refsTo.end()) {
+					if (s && refsTo.count(s)) {
 						LOG << "detected ref loop " << s << "\n";
 						LOG << "refsTo: ";
 						for (auto ll = refsTo.begin(); ll != refsTo.end(); ++ll)
@@ -3883,7 +3882,8 @@ UserProc::getPremised(Exp *left)
 bool
 UserProc::isPreserved(Exp *e)
 {
-	return provenTrue.find(e) != provenTrue.end() && *provenTrue[e] == *e;
+	auto it = provenTrue.find(e);
+	return it != provenTrue.end() && *it->second == *e;
 }
 
 void
@@ -4262,7 +4262,7 @@ UserProc::findLocal(Exp *e, Type *ty)
 		return nullptr;
 	// Now make sure it is a local; some symbols (e.g. parameters) are in the symbol map but not locals
 	std::string str(name);
-	if (locals.find(str) != locals.end())
+	if (locals.count(str))
 		return name;
 	return nullptr;
 }
@@ -4278,7 +4278,7 @@ UserProc::findLocalFromRef(RefExp *r)
 		return nullptr;
 	// Now make sure it is a local; some symbols (e.g. parameters) are in the symbol map but not locals
 	std::string str(name);
-	if (locals.find(str) != locals.end())
+	if (locals.count(str))
 		return name;
 	return nullptr;
 }
@@ -4491,7 +4491,7 @@ UserProc::markAsNonChildless(ProcSet *cs)
 		CallStatement *c = (CallStatement *)bb->getLastStmt(rrit, srit);
 		if (c && c->isCall() && c->isChildless()) {
 			UserProc *dest = (UserProc *)c->getDestProc();
-			if (cs->find(dest) != cs->end())  // Part of the cycle?
+			if (cs->count(dest))  // Part of the cycle?
 				// Yes, set the callee return statement (making it non childless)
 				c->setCalleeReturn(dest->getTheReturnStatement());
 		}
@@ -4640,7 +4640,7 @@ UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 			if (dest->doesRecurseTo(p)) {
 				// We have come to a call that is not to p, but is in the same recursion group as p and this proc.
 				visited->insert(this);
-				if (visited->find(dest) != visited->end()) {
+				if (visited->count(dest)) {
 					// Recurse to the next proc
 					bool res = dest->doesParamChainToCall(param, p, visited);
 					if (res)
@@ -4693,7 +4693,7 @@ UserProc::isRetNonFakeUsed(CallStatement *c, Exp *retLoc, UserProc *p, ProcSet *
 			return true;
 		// We have a call that uses the return, but it may well recurse to p
 		visited->insert(this);
-		if (visited->find(dest) != visited->end())
+		if (visited->count(dest))
 			// We've not found any way for loc to be fake-used. Count it as non-fake
 			return true;
 		if (!doesParamChainToCall(retLoc, p, visited))
@@ -4732,7 +4732,7 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 					rhs->addUsedLocs(argUses);
 					if (argUses.existsImplicit(bparam)) {
 						Exp *lloc = ((Assign *)*aa)->getLeft();
-						if (visited.find(dest) == visited.end() && dest->checkForGainfulUse(lloc, visited))
+						if (!visited.count(dest) && dest->checkForGainfulUse(lloc, visited))
 							return true;
 					}
 				}
@@ -5425,8 +5425,9 @@ UserProc::getTypeForLocation(Exp *e)
 	const char *name;
 	if (e->isLocal()) {
 		name = ((Const *)((Unary *)e)->getSubExp1())->getStr();
-		if (locals.find(name) != locals.end())
-			return locals[name];
+		auto it = locals.find(name);
+		if (it != locals.end())
+			return it->second;
 	}
 	// Sometimes parameters use opLocal, so fall through
 	name = ((Const *)((Unary *)e)->getSubExp1())->getStr();
@@ -5475,7 +5476,7 @@ bool
 UserProc::existsLocal(const char *name)
 {
 	std::string s(name);
-	return locals.find(s) != locals.end();
+	return !!locals.count(s);
 }
 
 void

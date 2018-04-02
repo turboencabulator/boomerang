@@ -1697,7 +1697,7 @@ updateWorkListRev(BasicBlock *currBB, std::list<BasicBlock *> &workList, std::se
 	int n = ins.size();
 	for (int i = 0; i < n; ++i) {
 		BasicBlock *currIn = ins[i];
-		if (workSet.find(currIn) == workSet.end()) {
+		if (!workSet.count(currIn)) {
 			workList.push_front(currIn);
 			workSet.insert(currIn);
 		}

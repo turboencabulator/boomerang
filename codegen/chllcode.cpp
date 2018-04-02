@@ -1183,7 +1183,7 @@ CHLLCode::RemoveUnusedLabels(int maxOrd)
 			char *s = strdup(*it);
 			*strchr(s, ':') = 0;
 			int n = atoi(s + 1);
-			if (usedLabels.find(n) == usedLabels.end()) {
+			if (!usedLabels.count(n)) {
 				it = lines.erase(it);
 				continue;
 			}

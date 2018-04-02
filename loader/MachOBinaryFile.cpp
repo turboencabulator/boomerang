@@ -654,7 +654,7 @@ MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
 bool
 MachOBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
 {
-	return dlprocs.find(uNative) != dlprocs.end();
+	return !!dlprocs.count(uNative);
 }
 
 const char *
