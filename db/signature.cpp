@@ -1304,9 +1304,7 @@ Signature::removeParameter(Exp *e)
 void
 Signature::removeParameter(int i)
 {
-	for (unsigned j = i + 1; j < params.size(); ++j)
-		params[j - 1] = params[j];
-	params.resize(params.size() - 1);
+	params.erase(params.begin() + i);
 }
 
 void
@@ -1451,9 +1449,7 @@ Signature::removeReturn(Exp *e)
 {
 	int i = findReturn(e);
 	if (i != -1) {
-		for (unsigned j = i + 1; j < returns.size(); ++j)
-			returns[j - 1] = returns[j];
-		returns.resize(returns.size() - 1);
+		returns.erase(returns.begin() + i);
 	}
 }
 

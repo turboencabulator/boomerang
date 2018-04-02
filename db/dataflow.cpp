@@ -219,14 +219,14 @@ bool
 DataFlow::placePhiFunctions(UserProc *proc)
 {
 	// First free some memory no longer needed
-	dfnum.resize(0);
-	semi.resize(0);
-	ancestor.resize(0);
-	samedom.resize(0);
-	vertex.resize(0);
-	parent.resize(0);
-	best.resize(0);
-	bucket.resize(0);
+	dfnum.clear();
+	semi.clear();
+	ancestor.clear();
+	samedom.clear();
+	vertex.clear();
+	parent.clear();
+	best.clear();
+	bucket.clear();
 	defsites.clear();   // Clear defsites map,
 	defallsites.clear();
 	A_orig.clear();     // and A_orig,

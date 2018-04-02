@@ -1165,7 +1165,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		// write the code for the follow of the loop (if it exists)
 		if (loopFollow) {
 			// remove the follow from the follow set
-			followSet.resize(followSet.size() - 1);
+			followSet.pop_back();
 
 			if (loopFollow->traversed != DFS_CODEGEN)
 				loopFollow->generateCode(hll, indLevel, latch, followSet, gotoSet, proc);
@@ -1324,10 +1324,10 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 				// added by this header
 				if (usType == Structured || usType == JumpIntoCase) {
 					assert(gotoTotal == 0);
-					followSet.resize(followSet.size() - 1);
+					followSet.pop_back();
 				} else // remove all the nodes added to the goto set
 					for (int i = 0; i < gotoTotal; ++i)
-						gotoSet.resize(gotoSet.size() - 1);
+						gotoSet.pop_back();
 
 				// do the code generation (or goto emitting) for the new conditional follow if it exists, otherwise do
 				// it for the original follow
