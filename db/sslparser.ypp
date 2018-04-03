@@ -291,7 +291,7 @@ a_reglist
 		if (Dict.RegMap.count(*$1))
 			yyerror("Name reglist declared twice");
 		Dict.addRegister(*$1, $6, $3, bFloat);
-		//delete $1;
+		delete $1;
 	  }
 
 	| REG_ID '[' NUM ']' INDEX NUM COVERS REG_ID TO REG_ID {
@@ -329,7 +329,7 @@ a_reglist
 		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[*$8]);
 		Dict.DetRegMap[$6].s_mappedOffset(0);
 		Dict.DetRegMap[$6].s_float(bFloat);
-		//delete $1;
+		delete $1;
 		delete $8;
 		delete $10;
 	  }
@@ -356,7 +356,7 @@ a_reglist
 		Dict.DetRegMap[$6].s_mappedIndex(Dict.RegMap[*$8]);
 		Dict.DetRegMap[$6].s_mappedOffset($11);
 		Dict.DetRegMap[$6].s_float(bFloat);
-		//delete $1;
+		delete $1;
 		delete $8;
 	  }
 
@@ -371,18 +371,17 @@ a_reglist
 					yyerror("Name reglist declared twice");
 				Dict.addRegister(*loc, x, $5, bFloat);
 			}
-			//delete $2;
+			delete $2;
 		}
 	  }
 
 	| '[' reg_table ']' '[' NUM ']' INDEX NUM {
-		auto loc = $2->begin();
-		for (; loc != $2->end(); ++loc) {
+		for (auto loc = $2->begin(); loc != $2->end(); ++loc) {
 			if (Dict.RegMap.count(*loc))
 				yyerror("Name reglist declared twice");
 			Dict.addRegister(*loc, $8, $5, bFloat);
 		}
-		//delete $2;
+		delete $2;
 	  }
 	;
 
