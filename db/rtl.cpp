@@ -333,7 +333,7 @@ RTL::getNumStmt() const
  *          or nullptr if the index is out of bounds.
  */
 Statement *
-RTL::elementAt(unsigned i)
+RTL::elementAt(unsigned i) const
 {
 	auto it = stmtList.begin();
 	for (; i > 0 && it != stmtList.end(); --i, ++it);
@@ -351,7 +351,7 @@ RTL::elementAt(unsigned i)
  * \param os  Stream to output to (often cout or cerr).
  */
 void
-RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
+RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/) const
 {
 	if (html)
 		os << "<tr><td>";
@@ -388,7 +388,7 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/)
  * \brief Print to a string (mainly for debugging).
  */
 std::string
-RTL::prints()
+RTL::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -572,7 +572,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
  * \returns A pointer to the type.
  */
 Type *
-RTL::getType()
+RTL::getType() const
 {
 	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		Statement *e = *it;
@@ -592,7 +592,7 @@ RTL::getType()
  * \returns Boolean as above.
  */
 bool
-RTL::areFlagsAffected()
+RTL::areFlagsAffected() const
 {
 	if (stmtList.empty()) return false;
 	// Get an iterator to the last RT
@@ -609,7 +609,7 @@ RTL::areFlagsAffected()
  * \brief Code generation.
  */
 void
-RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
+RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) const
 {
 	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		(*it)->generateCode(hll, pbb, indLevel);
@@ -671,7 +671,7 @@ RTL::simplify()
  * \returns true if found.
  */
 bool
-RTL::isCompare(int &iReg, Exp *&expOperand)
+RTL::isCompare(int &iReg, Exp *&expOperand) const
 {
 	// Expect to see a subtract, then a setting of the flags
 	// Dest of subtract should be a register (could be the always zero register)
@@ -707,7 +707,7 @@ RTL::isCompare(int &iReg, Exp *&expOperand)
  * \brief True if this RTL ends in a GotoStatement.
  */
 bool
-RTL::isGoto()
+RTL::isGoto() const
 {
 	if (stmtList.empty()) return false;
 	Statement *last = stmtList.back();
@@ -718,7 +718,7 @@ RTL::isGoto()
  * \brief Is this RTL a branch instruction?
  */
 bool
-RTL::isBranch()
+RTL::isBranch() const
 {
 	if (stmtList.empty()) return false;
 	Statement *last = stmtList.back();
@@ -729,7 +729,7 @@ RTL::isBranch()
  * \brief Is this RTL a call instruction?
  */
 bool
-RTL::isCall()
+RTL::isCall() const
 {
 	if (stmtList.empty()) return false;
 	Statement *last = stmtList.back();
@@ -743,7 +743,7 @@ RTL::isCall()
  * last.
  */
 Statement *
-RTL::getHlStmt()
+RTL::getHlStmt() const
 {
 	for (auto rit = stmtList.rbegin(); rit != stmtList.rend(); ++rit) {
 		if ((*rit)->getKind() != STMT_ASSIGN)

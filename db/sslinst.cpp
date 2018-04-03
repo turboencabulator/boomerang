@@ -225,21 +225,21 @@ RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt)
  * \param os  Stream used for printing.
  */
 void
-RTLInstDict::print(std::ostream &os /*= std::cout*/)
+RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 {
 	for (auto p = idict.begin(); p != idict.end(); ++p) {
 		// print the instruction name
 		os << p->first;
 
 		// print the parameters
-		std::list<std::string> &params = p->second.params;
+		const std::list<std::string> &params = p->second.params;
 		int i = 0;
 		for (auto s = params.begin(); s != params.end(); ++s, ++i)
 			os << (i ? "," : "  ") << *s;
 		os << "\n";
 
 		// print the RTL
-		RTL &rtlist = p->second.rtl;
+		const RTL &rtlist = p->second.rtl;
 		rtlist.print(os);
 		os << "\n";
 	}
@@ -343,7 +343,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
  * \returns The signature (name + number of operands).
  */
 std::pair<std::string, unsigned>
-RTLInstDict::getSignature(const std::string &name)
+RTLInstDict::getSignature(const std::string &name) const
 {
 	// Take the argument, convert it to upper case and remove any .'s
 	std::string opcode(name);

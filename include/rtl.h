@@ -71,8 +71,8 @@ public:
 	 */
 	        ADDRESS     getAddress() const { return nativeAddr; }  ///< Return RTL's native address.
 	        void        setAddress(ADDRESS a) { nativeAddr = a; }  ///< Set the address.
-	        Type       *getType();
-	        bool        areFlagsAffected();
+	        Type       *getType() const;
+	        bool        areFlagsAffected() const;
 	/** \} */
 
 	/**
@@ -80,7 +80,7 @@ public:
 	 * \{
 	 */
 	        int         getNumStmt() const;
-	        Statement  *elementAt(unsigned i);
+	        Statement  *elementAt(unsigned i) const;
 	/** \} */
 
 	/**
@@ -103,11 +103,9 @@ public:
 
 	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
 
-	        void        print(std::ostream &os = std::cout, bool html = false);
+	        void        print(std::ostream &os = std::cout, bool html = false) const;
 
 	        void        updateAddress(ADDRESS addr);
-
-	        bool        isCompare(int &iReg, Exp *&pTerm);
 
 #if 0 // Cruft?
 	// Return true if RTL loads the high half of an immediate constant into anything. If so, loads the already
@@ -131,17 +129,18 @@ public:
 	        bool        searchAndReplace(Exp *search, Exp *replace);
 	        bool        searchAll(Exp *search, std::list<Exp *> &result);
 
-	        void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel);
+	        void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) const;
 
 	        void        simplify();
 
-	        bool        isGoto();
-	        bool        isCall();
-	        bool        isBranch();
+	        bool        isCompare(int &iReg, Exp *&pTerm) const;
+	        bool        isGoto() const;
+	        bool        isCall() const;
+	        bool        isBranch() const;
 
-	        Statement  *getHlStmt();
+	        Statement  *getHlStmt() const;
 
-	        std::string prints();
+	        std::string prints() const;
 
 	        int         setConscripts(int n, bool bClear);
 protected:
@@ -218,7 +217,7 @@ public:
 
 	void reset();
 
-	std::pair<std::string, unsigned> getSignature(const std::string &name);
+	std::pair<std::string, unsigned> getSignature(const std::string &name) const;
 
 	int appendToDict(const std::string &n, std::list<std::string> &p, RTL &rtl);
 
@@ -227,7 +226,7 @@ public:
 
 	std::list<Statement *> *transformPostVars(std::list<Statement *> *rts, bool optimise);
 
-	void print(std::ostream &os = std::cout);
+	void print(std::ostream &os = std::cout) const;
 
 	void addRegister(const std::string &name, int id, int size, bool flt);
 
