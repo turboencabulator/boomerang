@@ -47,22 +47,22 @@ ConstraintMap::prints() const
 void
 ConstraintMap::makeUnion(ConstraintMap &o)
 {
-	std::pair<std::map<Exp *, Exp *, lessExpStar>::iterator, bool> ret;
 	for (auto it = o.cmap.begin(); it != o.cmap.end(); ++it) {
 		// Note: *it is a std::pair<Exp*, Exp*>
-		ret = cmap.insert(*it);
+		auto ret = cmap.insert(*it);
 		// If an insertion occured, ret will be std::pair<where, true>
 		// If no insertion occured, ret will be std::pair<where, false>
 		if (!ret.second) {
-//std::cerr << "ConstraintMap::makeUnion: want to overwrite " << ret.first->first
-// << " -> " << ret.first->second << " with " << it->first << " -> " << it->second << "\n";
+			//std::cerr << "ConstraintMap::makeUnion: want to overwrite "
+			//          << ret.first->first << " -> " << ret.first->second
+			//          << " with " << it->first << " -> " << it->second << "\n";
 			TypeVal *Tret = (TypeVal *)ret.first->second;
 			Type *ty1 = Tret->getType();
 			TypeVal *Toth = (TypeVal *)it->second;
 			Type *ty2 = Toth->getType();
 			if (ty1 && ty2 && *ty1 != *ty2) {
 				Tret->setType(ty1->mergeWith(ty2));
-//std::cerr << "Now " << ret.first->first << " -> " << ret.first->second << "\n";
+				//std::cerr << "Now " << ret.first->first << " -> " << ret.first->second << "\n";
 			}
 		}
 	}
@@ -347,12 +347,10 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 		}
 	}
 
-	{
-		LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
-		for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-			LOG << *dd << ",\n";
-		LOG << "\n";
-	}
+	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
+	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
+		LOG << *dd << ",\n";
+	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
 
@@ -364,25 +362,22 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	substIntoEquates(fixed);
 
 	LOG << "\nAfter substitute fixed into equates:\n";
-	{
-		LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
-		for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-			LOG << *dd << ",\n";
-		LOG << "\n";
-	}
+	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
+	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
+		LOG << *dd << ",\n";
+	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
+
 	// Substitute again the fixed types into the disjunctions
 	// (since there may be more fixed types from the above)
 	substIntoDisjuncts(fixed);
 
 	LOG << "\nAfter second substitute fixed into disjunctions:\n";
-	{
-		LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
-		for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-			LOG << *dd << ",\n";
-		LOG << "\n";
-	}
+	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
+	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
+		LOG << *dd << ",\n";
+	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
 
