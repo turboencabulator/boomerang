@@ -595,14 +595,9 @@ bool
 RTL::areFlagsAffected() const
 {
 	if (stmtList.empty()) return false;
-	// Get an iterator to the last RT
-	auto it = stmtList.end();
-	if (it == stmtList.begin())
-		return false;  // Not expressions at all
-	--it;  // Will now point to the end of the list
-	Statement *e = *it;
+	Statement *last = stmtList.back();
 	// If it is a flag call, then the CCs are affected
-	return e->isFlagAssgn();
+	return last->isFlagAssgn();
 }
 
 /**
