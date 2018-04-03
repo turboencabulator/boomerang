@@ -219,7 +219,7 @@ public:
 
 	void reset();
 
-	std::pair<std::string, unsigned> getSignature(const char *name);
+	std::pair<std::string, unsigned> getSignature(const std::string &name);
 
 	int appendToDict(const std::string &n, std::list<std::string> &p, RTL &rtl);
 

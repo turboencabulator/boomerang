@@ -68,6 +68,7 @@
 	#include <gc/gc.h>
 	#endif
 
+	#include <algorithm>
 	#include <sstream>
 	#include <string>
 
@@ -541,19 +542,8 @@ instr
 instr_name
 	: instr_elem { $$ = $1; }
 	| instr_name DECOR {
-		std::string::size_type i;
-
-		if ($2->front() == '^')
-			$2->erase(0, 1);
-
-		// remove all " and _, from the decoration
-		while ((i = $2->find('"')) != $2->npos)
-			$2->erase(i, 1);
-		// replace all '.' with '_'s from the decoration
-		while ((i = $2->find('.')) != $2->npos)
-			(*$2)[i] = '_';
-		while ((i = $2->find('_')) != $2->npos)
-			$2->erase(i, 1);
+		// remove all . from the decoration
+		$2->erase(std::remove($2->begin(), $2->end(), '.'), $2->end());
 
 		$$ = $1;
 		$$->append(new InsNameElem(*$2));

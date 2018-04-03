@@ -48,19 +48,6 @@ operator +(const std::string &s, int i)
 	return ret.append(buf);
 }
 
-/**
- * \brief           Uppercase a C string.
- * \param[in] s     The string to start with.
- * \param[out] d    The string to write to (can be the same string).
- */
-void
-upperStr(const char *s, char *d)
-{
-	while (*s)
-		*d++ = toupper(*s++);
-	*d = '\0';
-}
-
 int
 lockFileRead(const char *fname)
 {

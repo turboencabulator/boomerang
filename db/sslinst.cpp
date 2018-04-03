@@ -36,11 +36,11 @@
 #include "types.h"
 #include "util.h"
 
-#include <algorithm>    // For std::remove()
+#include <algorithm>    // For std::remove(), std::transform()
 #include <fstream>
 
 #include <cassert>
-#include <cstring>
+#include <cctype>
 
 //#define DEBUG_SSLPARSER 1
 
@@ -134,17 +134,14 @@ RTLInstDict::~RTLInstDict()
 int
 RTLInstDict::appendToDict(const std::string &n, std::list<std::string> &p, RTL &r)
 {
-	char *opcode = new char[n.size() + 1];
-	strcpy(opcode, n.c_str());
-	upperStr(opcode, opcode);
-	std::remove(opcode, opcode + strlen(opcode) + 1, '.');
-	std::string s(opcode);
-	//delete [] opcode;
+	std::string opcode(n);
+	std::transform(n.begin(), n.end(), opcode.begin(), toupper);
+	opcode.erase(std::remove(opcode.begin(), opcode.end(), '.'), opcode.end());
 
-	if (!idict.count(s)) {
-		idict[s] = TableEntry(p, r);
+	if (!idict.count(opcode)) {
+		idict[opcode] = TableEntry(p, r);
 	} else {
-		return idict[s].appendRTL(p, r);
+		return idict[opcode].appendRTL(p, r);
 	}
 	return 0;
 }
@@ -232,13 +229,13 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/)
 {
 	for (auto p = idict.begin(); p != idict.end(); ++p) {
 		// print the instruction name
-		os << p->first << "  ";
+		os << p->first;
 
 		// print the parameters
 		std::list<std::string> &params = p->second.params;
-		int i = params.size();
-		for (auto s = params.begin(); s != params.end(); ++s, --i)
-			os << *s << (i != 1 ? "," : "");
+		int i = 0;
+		for (auto s = params.begin(); s != params.end(); ++s, ++i)
+			os << (i ? "," : "  ") << *s;
 		os << "\n";
 
 		// print the RTL
@@ -346,13 +343,12 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
  * \returns The signature (name + number of operands).
  */
 std::pair<std::string, unsigned>
-RTLInstDict::getSignature(const char *name)
+RTLInstDict::getSignature(const std::string &name)
 {
-	// Take the argument, convert it to upper case and remove any _'s and .'s
-	char *opcode = new char[strlen(name) + 1];
-	upperStr(name, opcode);
-	//std::remove(opcode, opcode + strlen(opcode) + 1, '_');
-	std::remove(opcode, opcode + strlen(opcode) + 1, '.');
+	// Take the argument, convert it to upper case and remove any .'s
+	std::string opcode(name);
+	std::transform(name.begin(), name.end(), opcode.begin(), toupper);
+	opcode.erase(std::remove(opcode.begin(), opcode.end(), '.'), opcode.end());
 
 	// Look up the dictionary
 	auto it = idict.find(opcode);
@@ -363,7 +359,6 @@ RTLInstDict::getSignature(const char *name)
 
 	std::pair<std::string, unsigned> ret;
 	ret = std::pair<std::string, unsigned>(opcode, (it->second).params.size());
-	//delete [] opcode;
 	return ret;
 }
 
