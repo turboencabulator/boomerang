@@ -544,9 +544,9 @@ ARITH_C[IDX]^"IAL" i8
 ARITH_C[IDX]^"IAX" i16
 	*16* tmp1 := %ax
 	*16* %ax := %ax OP2[IDX] i16 OP2[IDX] %CF;
-ADCIAX i16
+ADC.IAX i16
 	ADDFLAGS16(tmp1, i16, %ax);
-SBBIAX i16
+SBB.IAX i16
 	SUBFLAGS16(tmp1, i16, %ax);
 
 ARITH_C[IDX]^"IEAX" i32
