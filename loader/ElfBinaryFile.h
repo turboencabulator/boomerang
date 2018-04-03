@@ -16,11 +16,8 @@
 #include "BinaryFile.h"
 #include "SymTab.h"  // For SymTab (probably unused)
 
-#include <functional>
 #include <map>
 #include <string>
-
-typedef std::map<ADDRESS, std::string, std::less<ADDRESS> > RelocMap;
 
 typedef struct {
 	ADDRESS uSymAddr;  // Symbol native address
@@ -257,7 +254,7 @@ private:
 	ADDRESS     getNextHeaderAddress();   // Get any other headers
 
 	// Write an ELF object file for a given procedure
-	void        writeObjectFile(std::string &path, const char *name, void *ptxt, int txtsz, RelocMap &reloc);
+	void        writeObjectFile(std::string &path, const char *name, void *ptxt, int txtsz, std::map<ADDRESS, std::string> &reloc);
 	void        writeNative4(ADDRESS nat, unsigned int n);
 
 	int         ProcessElfFile();         // Does most of the work

@@ -21,8 +21,6 @@
 #include <cstdio>
 #include <cstring>
 
-typedef std::map<std::string, int, std::less<std::string> > StrIntMap;
-
 ElfBinaryFile::ElfBinaryFile(bool bArchive /* = false */) :
 	BinaryFile(bArchive)
 {

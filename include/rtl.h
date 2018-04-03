@@ -29,7 +29,6 @@
 
 #include <iostream>
 #include <ostream>
-#include <functional>
 #include <list>
 #include <map>
 #include <set>
@@ -241,19 +240,19 @@ public:
 	 * A map from the symbolic representation of a register (e.g. "%g0")
 	 * to its index within an array of registers.
 	 */
-	std::map<std::string, int, std::less<std::string> > RegMap;
+	std::map<std::string, int> RegMap;
 
 	/**
 	 * Similar to r_map but stores more info about a register such as its
 	 * size, its addresss, etc. (see register.h).
 	 */
-	std::map<int, Register, std::less<int> > DetRegMap;
+	std::map<int, Register> DetRegMap;
 
 	/**
 	 * A map from symbolic representation of a special (non-addressable)
 	 * register to a Register object.
 	 */
-	std::map<std::string, Register, std::less<std::string> > SpecialRegMap;
+	std::map<std::string, Register> SpecialRegMap;
 
 	/**
 	 * A set of parameter names, to make sure they are declared (?).
@@ -288,7 +287,7 @@ public:
 	/**
 	 * The actual dictionary.
 	 */
-	std::map<std::string, TableEntry, std::less<std::string> > idict;
+	std::map<std::string, TableEntry> idict;
 
 	/**
 	 * An RTL describing the machine's basic fetch-execute cycle.

@@ -24,7 +24,6 @@
 
 #include <fstream>
 #include <ostream>
-#include <functional>
 #include <list>
 #include <map>
 #include <set>
@@ -38,7 +37,7 @@ class Statement;
 class StatementSet;
 class UserProc;
 
-typedef std::map<ADDRESS, Proc *, std::less<ADDRESS> > PROGMAP;
+typedef std::map<ADDRESS, Proc *> PROGMAP;
 
 class Global {
 private:

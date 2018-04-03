@@ -24,7 +24,6 @@
 
 #include <ostream>
 #include <exception>
-#include <functional>
 #include <list>
 #include <map>
 #include <set>
@@ -48,7 +47,7 @@ class UserProc;
 
 
 // A type for the ADDRESS to BB map
-typedef std::map<ADDRESS, BasicBlock *, std::less<ADDRESS> > MAPBB;
+typedef std::map<ADDRESS, BasicBlock *> MAPBB;
 
 /*==============================================================================
  * Control Flow Graph class. Contains all the BasicBlock objects for a procedure.  These BBs contain all the RTLs for
