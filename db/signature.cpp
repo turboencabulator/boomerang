@@ -257,19 +257,19 @@ CallingConvention::Win32TcSignature::Win32TcSignature(Signature &old) :
 static void
 cloneVec(const std::vector<Parameter *> &from, std::vector<Parameter *> &to)
 {
-	unsigned n = from.size();
-	to.resize(n);
-	for (unsigned i = 0; i < n; ++i)
-		to[i] = from[i]->clone();
+	to.clear();
+	to.reserve(from.size());
+	for (auto it = from.begin(); it != from.end(); ++it)
+		to.push_back((*it)->clone());
 }
 
 static void
-cloneVec(const Returns &from, Returns &to)
+cloneVec(const std::vector<Return *> &from, std::vector<Return *> &to)
 {
-	unsigned n = from.size();
-	to.resize(n);
-	for (unsigned i = 0; i < n; ++i)
-		to[i] = from[i]->clone();
+	to.clear();
+	to.reserve(from.size());
+	for (auto it = from.begin(); it != from.end(); ++it)
+		to.push_back((*it)->clone());
 }
 
 Parameter *hack;
@@ -1880,7 +1880,7 @@ public:
 	std::string name;  // name of procedure
 	std::vector<Parameter *> params;
 	// std::vector<ImplicitParameter *> implicitParams;
-	Returns returns;
+	std::vector<Return *> returns;
 	Type *rettype;
 	bool ellipsis;
 	Type *preferedReturn;

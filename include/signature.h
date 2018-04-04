@@ -73,16 +73,13 @@ public:
 	friend class XMLProgParser;
 };
 
-typedef std::vector<Return *> Returns;
-
-
 class Signature {
 protected:
 	        std::string name;  // name of procedure
 	        std::string sigFile;  // signature file this signature was read from (for libprocs)
 	        std::vector<Parameter *> params;
 	        //std::vector<ImplicitParameter *> implicitParams;
-	        Returns     returns;
+	        std::vector<Return *> returns;
 	        Type       *rettype = nullptr;
 	        bool        ellipsis = false;
 	        bool        unknown = true;
@@ -130,7 +127,7 @@ public:
 	        int         findReturn(Exp *e);
 	        //void        fixReturnsWithParameters();  // Needs description
 	        void        setRetType(Type *t) { rettype = t; }
-	        Returns    &getReturns() { return returns; }
+	        std::vector<Return *> &getReturns() { return returns; }
 	        Type       *getTypeFor(Exp *e);
 
 	// get/set the name
