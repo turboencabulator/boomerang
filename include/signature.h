@@ -41,7 +41,7 @@ public:
 	                    Parameter(Type *type, const std::string &name, Exp *exp = nullptr, const std::string &boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
 	        bool        operator ==(const Parameter &other) const;
-	        Parameter  *clone();
+	        Parameter  *clone() const;
 
 	        Type       *getType() const { return type; }
 	        void        setType(Type *ty) { type = ty; }
@@ -67,7 +67,7 @@ public:
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
 	virtual            ~Return() { }
 	        bool        operator ==(const Return &other) const;
-	        Return     *clone();
+	        Return     *clone() const;
 
 	                    Return() { }
 	friend class XMLProgParser;
@@ -109,7 +109,7 @@ public:
 	virtual bool        operator ==(const Signature &other) const;
 
 	// clone this signature
-	virtual Signature  *clone();
+	virtual Signature  *clone() const;
 
 	        bool        isUnknown() const { return unknown; }
 	        void        setUnknown(bool b) { unknown = b; }
@@ -264,7 +264,7 @@ public:
 	            CustomSignature(const char *nam);
 	virtual    ~CustomSignature() { }
 	bool        isPromoted() override { return true; }
-	Signature  *clone() override;
+	Signature  *clone() const override;
 	void        setSP(int nsp);
 	int         getStackRegister() throw (StackRegisterNotDefinedException) override { return sp; };
 };

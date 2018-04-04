@@ -97,14 +97,10 @@ RTL::operator =(RTL &other)
  * \returns Pointer to a new RTL that is a clone of this one.
  */
 RTL *
-RTL::clone()
+RTL::clone() const
 {
 	std::list<Statement *> le;
-
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
-		le.push_back((*it)->clone());
-	}
-
+	deepCopyList(le);
 	return new RTL(nativeAddr, &le);
 }
 
@@ -132,7 +128,7 @@ RTL::accept(StmtVisitor *visitor)
  * \param dest  Ref to empty list to copy to.
  */
 void
-RTL::deepCopyList(std::list<Statement *> &dest)
+RTL::deepCopyList(std::list<Statement *> &dest) const
 {
 	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
 		dest.push_back((*it)->clone());

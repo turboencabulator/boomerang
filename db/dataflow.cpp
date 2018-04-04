@@ -619,7 +619,7 @@ DefCollector::prints()
 }
 
 void
-UseCollector::makeCloneOf(UseCollector &other)
+UseCollector::makeCloneOf(const UseCollector &other)
 {
 	initialised = other.initialised;
 	locs.clear();
@@ -628,7 +628,7 @@ UseCollector::makeCloneOf(UseCollector &other)
 }
 
 void
-DefCollector::makeCloneOf(DefCollector &other)
+DefCollector::makeCloneOf(const DefCollector &other)
 {
 	initialised = other.initialised;
 	defs.clear();

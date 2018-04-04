@@ -86,9 +86,11 @@ public:
 	void        makeIsect(const AssignSet &other);     // Set intersection
 	bool        isSubSetOf(const AssignSet &other) const;  // Subset relation
 
-	unsigned    size() const { return aset.size(); }   // Number of elements
-	iterator    begin() { return aset.begin(); }
-	iterator    end()   { return aset.end(); }
+	unsigned    size() const     { return aset.size(); }   // Number of elements
+	const_iterator begin() const { return aset.begin(); }
+	const_iterator end() const   { return aset.end(); }
+	iterator    begin()          { return aset.begin(); }
+	iterator    end()            { return aset.end(); }
 
 	void        insert(Assign *a) { aset.insert(a); }  // Insertion
 	bool        remove(Assign *a);                     // Removal; rets false if not found
@@ -114,10 +116,12 @@ public:
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 	typedef std::list<Statement *>::size_type size_type;
 	           ~StatementList() { }
-	unsigned    size() const  { return slist.size(); }   // Number of elements
-	bool        empty() const { return slist.empty(); }
-	iterator    begin()       { return slist.begin(); }
-	iterator    end()         { return slist.end(); }
+	unsigned    size() const     { return slist.size(); }   // Number of elements
+	bool        empty() const    { return slist.empty(); }
+	const_iterator begin() const { return slist.begin(); }
+	const_iterator end() const   { return slist.end(); }
+	iterator    begin()          { return slist.begin(); }
+	iterator    end()            { return slist.end(); }
 
 	// A special intersection operator; this becomes the intersection of StatementList a (assumed to be a list of
 	// Assignment*s) with the LocationSet b.
@@ -178,8 +182,10 @@ public:
 	void        makeUnion(const LocationSet &other);    // Set union
 	void        makeDiff (const LocationSet &other);    // Set difference
 	void        clear() { lset.clear(); }               // Clear the set
-	iterator    begin() { return lset.begin(); }
-	iterator    end()   { return lset.end(); }
+	const_iterator begin() const { return lset.begin(); }
+	const_iterator end() const   { return lset.end(); }
+	iterator    begin()          { return lset.begin(); }
+	iterator    end()            { return lset.end(); }
 	void        insert(Exp *loc) { lset.insert(loc); }  // Insert the given location
 	void        remove(Exp *loc);                       // Remove the given location
 	iterator    remove(const_iterator ll) { return lset.erase(ll); } // Remove location, given iterator

@@ -155,7 +155,7 @@ public:
 	        RangeMap   &getRanges() { return ranges; }
 	        void        clearRanges() { ranges.clear(); }
 
-	virtual Statement  *clone() = 0;  // Make copy of self
+	virtual Statement  *clone() const = 0;  // Make copy of self
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	virtual bool        accept(StmtVisitor *visitor) = 0;
@@ -384,7 +384,7 @@ public:
 	virtual    ~Assignment();
 
 	// Clone
-	Statement  *clone() override = 0;
+	Statement  *clone() const override = 0;
 
 	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated
@@ -462,7 +462,7 @@ public:
 	           ~Assign() { }
 
 	// Clone
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() { return rhs; }
@@ -563,7 +563,7 @@ public:
 	virtual    ~PhiAssign() { }
 
 	// Clone
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() { return nullptr; }
@@ -634,7 +634,7 @@ public:
 	virtual    ~ImplicitAssign();
 
 	// Clone
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &ch) override;
@@ -674,7 +674,7 @@ public:
 	virtual    ~BoolAssign();
 
 	// Make a deep copy, and make the copy a derived object if needed.
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor *visitor) override;
@@ -734,7 +734,7 @@ public:
 	void        meetWith(Type *ty, bool &ch);  // Meet the internal type with ty. Set ch if a change
 
 	// Virtuals
-	Statement  *clone() override;
+	Statement  *clone() const override;
 	bool        accept(StmtVisitor *) override;
 	bool        accept(StmtExpVisitor *) override;
 	bool        accept(StmtModifier *) override;
@@ -772,7 +772,7 @@ public:
 	virtual    ~GotoStatement();
 
 	// Make a deep copy, and make the copy a derived object if needed.
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor *visitor) override;
@@ -826,7 +826,7 @@ class JunctionStatement: public Statement {
 public:
 	            JunctionStatement() { kind = STMT_JUNCTION; }
 
-	Statement  *clone() override { return new JunctionStatement(); }
+	Statement  *clone() const override { return new JunctionStatement(); }
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	bool        accept(StmtVisitor *visitor) override;
@@ -875,7 +875,7 @@ public:
 	virtual    ~BranchStatement();
 
 	// Make a deep copy, and make the copy a derived object if needed.
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor *visitor) override;
@@ -964,7 +964,7 @@ public:
 	virtual    ~CaseStatement();
 
 	// Make a deep copy, and make the copy a derived object if needed.
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Accept a visitor to this Statememt
 	bool        accept(StmtVisitor *visitor) override;
@@ -1040,7 +1040,7 @@ public:
 
 	void        setNumber(int num) override;
 	// Make a deep copy, and make the copy a derived object if needed.
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Accept a visitor to this stmt
 	bool        accept(StmtVisitor *visitor) override;
@@ -1258,7 +1258,7 @@ public:
 	Exp        *subscriptWithDef(Exp *e);
 
 	// Make a deep copy, and make the copy a derived object if needed.
-	Statement  *clone() override;
+	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor *visitor) override;

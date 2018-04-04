@@ -143,7 +143,7 @@ public:
 	/**
 	 * makeCloneOf(): clone the given Collector into this one
 	 */
-	void        makeCloneOf(DefCollector &other);
+	void        makeCloneOf(const DefCollector &other);
 
 	/*
 	 * Return true if initialised
@@ -173,8 +173,11 @@ public:
 	 * begin() and end() so we can iterate through the locations
 	 */
 	typedef AssignSet::iterator iterator;
-	iterator    begin() { return defs.begin(); }
-	iterator    end()   { return defs.end(); }
+	typedef AssignSet::const_iterator const_iterator;
+	const_iterator begin() const { return defs.begin(); }
+	const_iterator end() const   { return defs.end(); }
+	iterator    begin()          { return defs.begin(); }
+	iterator    end()            { return defs.end(); }
 	bool        existsOnLeft(Exp *e) const { return defs.definesLoc(e); }
 
 	/*
@@ -218,7 +221,7 @@ public:
 	/**
 	 * makeCloneOf(): clone the given Collector into this one
 	 */
-	void        makeCloneOf(UseCollector &other);
+	void        makeCloneOf(const UseCollector &other);
 
 	/*
 	 * Return true if initialised
@@ -249,8 +252,10 @@ public:
 	 */
 	typedef LocationSet::iterator iterator;
 	typedef LocationSet::const_iterator const_iterator;
-	iterator    begin() { return locs.begin(); }
-	iterator    end()   { return locs.end(); }
+	const_iterator begin() const { return locs.begin(); }
+	const_iterator end() const   { return locs.end(); }
+	iterator    begin()          { return locs.begin(); }
+	iterator    end()            { return locs.end(); }
 	bool        exists(Exp *e) const { return locs.exists(e); }  // True if e is in the collection
 	LocationSet &getLocSet() { return locs; }
 public:

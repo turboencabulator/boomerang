@@ -64,7 +64,7 @@ namespace CallingConvention {
 		            Win32Signature(const char *nam);
 		            Win32Signature(Signature &old);
 		virtual    ~Win32Signature() { }
-		Signature  *clone() override;
+		Signature  *clone() const override;
 		bool        operator ==(const Signature &other) const override;
 		static bool qualified(UserProc *p, Signature &candidate);
 
@@ -92,7 +92,7 @@ namespace CallingConvention {
 		            Win32TcSignature(Signature &old);
 		Exp        *getArgumentExp(int n) override;
 		Exp        *getProven(Exp *left) override;
-		Signature  *clone() override;
+		Signature  *clone() const override;
 		platform    getPlatform() override { return PLAT_PENTIUM; }
 		callconv    getConvention() override { return CONV_THISCALL; }
 	};
@@ -104,7 +104,7 @@ namespace CallingConvention {
 			            PentiumSignature(const char *nam);
 			            PentiumSignature(Signature &old);
 			virtual    ~PentiumSignature() { }
-			Signature  *clone() override;
+			Signature  *clone() const override;
 			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 
@@ -130,7 +130,7 @@ namespace CallingConvention {
 			            SparcSignature(const char *nam);
 			            SparcSignature(Signature &old);
 			virtual    ~SparcSignature() { }
-			Signature  *clone() override;
+			Signature  *clone() const override;
 			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 
@@ -159,7 +159,7 @@ namespace CallingConvention {
 		public:
 			            SparcLibSignature(const char *nam) : SparcSignature(nam) { }
 			            SparcLibSignature(Signature &old);
-			Signature  *clone() override;
+			Signature  *clone() const override;
 			Exp        *getProven(Exp *left) override;
 		};
 
@@ -168,7 +168,7 @@ namespace CallingConvention {
 			            PPCSignature(const char *name);
 			            PPCSignature(Signature &old);
 			virtual    ~PPCSignature() { }
-			Signature  *clone() override;
+			Signature  *clone() const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 			void        addReturn(Type *type, Exp *e = nullptr) override;
 			Exp        *getArgumentExp(int n) override;
@@ -189,7 +189,7 @@ namespace CallingConvention {
 			            MIPSSignature(const char *name);
 			            MIPSSignature(Signature &old);
 			virtual    ~MIPSSignature() { }
-			Signature  *clone() override;
+			Signature  *clone() const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 			void        addReturn(Type *type, Exp *e = nullptr) override;
 			Exp        *getArgumentExp(int n) override;
@@ -210,7 +210,7 @@ namespace CallingConvention {
 			            ST20Signature(const char *name);
 			            ST20Signature(Signature &old);
 			virtual    ~ST20Signature() { }
-			Signature  *clone() override;
+			Signature  *clone() const override;
 			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 
@@ -255,7 +255,7 @@ CallingConvention::Win32TcSignature::Win32TcSignature(Signature &old) :
 }
 
 static void
-cloneVec(std::vector<Parameter *> &from, std::vector<Parameter *> &to)
+cloneVec(const std::vector<Parameter *> &from, std::vector<Parameter *> &to)
 {
 	unsigned n = from.size();
 	to.resize(n);
@@ -264,7 +264,7 @@ cloneVec(std::vector<Parameter *> &from, std::vector<Parameter *> &to)
 }
 
 static void
-cloneVec(Returns &from, Returns &to)
+cloneVec(const Returns &from, Returns &to)
 {
 	unsigned n = from.size();
 	to.resize(n);
@@ -275,7 +275,7 @@ cloneVec(Returns &from, Returns &to)
 Parameter *hack;
 
 Parameter *
-Parameter::clone()
+Parameter::clone() const
 {
 	return new Parameter(type->clone(), name, exp->clone(), boundMax);
 }
@@ -288,9 +288,9 @@ Parameter::setBoundMax(const std::string &nam)
 }
 
 Signature *
-CallingConvention::Win32Signature::clone()
+CallingConvention::Win32Signature::clone() const
 {
-	Win32Signature *n = new Win32Signature(name.c_str());
+	auto n = new Win32Signature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -304,9 +304,9 @@ CallingConvention::Win32Signature::clone()
 }
 
 Signature *
-CallingConvention::Win32TcSignature::clone()
+CallingConvention::Win32TcSignature::clone() const
 {
-	Win32TcSignature *n = new Win32TcSignature(name.c_str());
+	auto n = new Win32TcSignature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -519,9 +519,9 @@ CallingConvention::StdC::PentiumSignature::PentiumSignature(Signature &old) :
 }
 
 Signature *
-CallingConvention::StdC::PentiumSignature::clone()
+CallingConvention::StdC::PentiumSignature::clone() const
 {
-	PentiumSignature *n = new PentiumSignature(name.c_str());
+	auto n = new PentiumSignature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -713,9 +713,9 @@ CallingConvention::StdC::PPCSignature::PPCSignature(Signature &old) :
 }
 
 Signature *
-CallingConvention::StdC::PPCSignature::clone()
+CallingConvention::StdC::PPCSignature::clone() const
 {
-	PPCSignature *n = new PPCSignature(name.c_str());
+	auto n = new PPCSignature(name.c_str());
 	cloneVec(params, n->params);
 	// n->implicitParams = implicitParams;
 	cloneVec(returns, n->returns);
@@ -816,9 +816,9 @@ CallingConvention::StdC::ST20Signature::ST20Signature(Signature &old) :
 }
 
 Signature *
-CallingConvention::StdC::ST20Signature::clone()
+CallingConvention::StdC::ST20Signature::clone() const
 {
-	ST20Signature *n = new ST20Signature(name.c_str());
+	auto n = new ST20Signature(name.c_str());
 	n->params = params;
 	n->returns = returns;
 	n->ellipsis = ellipsis;
@@ -950,9 +950,9 @@ CallingConvention::StdC::SparcSignature::SparcSignature(Signature &old) :
 }
 
 Signature *
-CallingConvention::StdC::SparcSignature::clone()
+CallingConvention::StdC::SparcSignature::clone() const
 {
-	SparcSignature *n = new SparcSignature(name.c_str());
+	auto n = new SparcSignature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -967,9 +967,9 @@ CallingConvention::StdC::SparcSignature::clone()
 }
 
 Signature *
-CallingConvention::StdC::SparcLibSignature::clone()
+CallingConvention::StdC::SparcLibSignature::clone() const
 {
-	SparcLibSignature *n = new SparcLibSignature(name.c_str());
+	auto n = new SparcLibSignature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -1172,9 +1172,9 @@ CustomSignature::setSP(int nsp)
 }
 
 Signature *
-Signature::clone()
+Signature::clone() const
 {
-	Signature *n = new Signature(name.c_str());
+	auto n = new Signature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -1190,9 +1190,9 @@ Signature::clone()
 }
 
 Signature *
-CustomSignature::clone()
+CustomSignature::clone() const
 {
-	CustomSignature *n = new CustomSignature(name.c_str());
+	auto n = new CustomSignature(name.c_str());
 	cloneVec(params, n->params);
 	// cloneVec(implicitParams, n->implicitParams);
 	cloneVec(returns, n->returns);
@@ -2165,7 +2165,7 @@ CallingConvention::StdC::SparcSignature::argumentCompare(Assignment &a, Assignme
 
 // Class Return methods
 Return *
-Return::clone()
+Return::clone() const
 {
 	return new Return(type->clone(), exp->clone());
 }

@@ -1216,9 +1216,9 @@ GotoStatement::isComputed() const
  * RETURNS:         Pointer to a new Statement, a clone of this GotoStatement
  *============================================================================*/
 Statement *
-GotoStatement::clone()
+GotoStatement::clone() const
 {
-	GotoStatement *ret = new GotoStatement();
+	auto ret = new GotoStatement();
 	ret->pDest = pDest->clone();
 	ret->m_isComputed = m_isComputed;
 	// Statement members
@@ -1563,9 +1563,9 @@ BranchStatement::print(std::ostream &os, bool html)
  * RETURNS:         Pointer to a new Statement, a clone of this BranchStatement
  *============================================================================*/
 Statement *
-BranchStatement::clone()
+BranchStatement::clone() const
 {
-	BranchStatement *ret = new BranchStatement();
+	auto ret = new BranchStatement();
 	ret->pDest = pDest->clone();
 	ret->m_isComputed = m_isComputed;
 	ret->jtCond = jtCond;
@@ -1970,9 +1970,9 @@ CaseStatement::print(std::ostream &os, bool html)
  * RETURNS:         Pointer to a new Statement that is a clone of this one
  *============================================================================*/
 Statement *
-CaseStatement::clone()
+CaseStatement::clone() const
 {
-	CaseStatement *ret = new CaseStatement();
+	auto ret = new CaseStatement();
 	ret->pDest = pDest->clone();
 	ret->m_isComputed = m_isComputed;
 	ret->pSwitchInfo = new SWITCH_INFO;
@@ -2334,9 +2334,9 @@ CallStatement::isReturnAfterCall() const
  * RETURNS:         Pointer to a new Statement, a clone of this CallStatement
  *============================================================================*/
 Statement *
-CallStatement::clone()
+CallStatement::clone() const
 {
-	CallStatement *ret = new CallStatement();
+	auto ret = new CallStatement();
 	ret->pDest = pDest->clone();
 	ret->m_isComputed = m_isComputed;
 	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
@@ -2954,9 +2954,9 @@ ReturnStatement::~ReturnStatement()
  * RETURNS:         Pointer to a new Statement, a clone of this ReturnStatement
  *============================================================================*/
 Statement *
-ReturnStatement::clone()
+ReturnStatement::clone() const
 {
-	ReturnStatement *ret = new ReturnStatement();
+	auto ret = new ReturnStatement();
 	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		ret->modifieds.append((ImplicitAssign *)(*rr)->clone());
 	for (auto rr = returns.begin(); rr != returns.end(); ++rr)
@@ -3202,9 +3202,9 @@ BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html) const
  * RETURNS:         Pointer to a new Statement, a clone of this BoolAssign
  *============================================================================*/
 Statement *
-BoolAssign::clone()
+BoolAssign::clone() const
 {
-	BoolAssign *ret = new BoolAssign(size);
+	auto ret = new BoolAssign(size);
 	ret->jtCond = jtCond;
 	if (pCond) ret->pCond = pCond->clone();
 	else ret->pCond = nullptr;
@@ -3372,9 +3372,9 @@ ImplicitAssign::~ImplicitAssign()
 }
 
 Statement *
-Assign::clone()
+Assign::clone() const
 {
-	Assign *a = new Assign(!type ? nullptr : type->clone(), lhs->clone(), rhs->clone(), !guard ? nullptr : guard->clone());
+	auto a = new Assign(!type ? nullptr : type->clone(), lhs->clone(), rhs->clone(), !guard ? nullptr : guard->clone());
 	// Statement members
 	a->pbb = pbb;
 	a->proc = proc;
@@ -3382,9 +3382,9 @@ Assign::clone()
 	return a;
 }
 Statement *
-PhiAssign::clone()
+PhiAssign::clone() const
 {
-	PhiAssign *pa = new PhiAssign(type, lhs);
+	auto pa = new PhiAssign(type, lhs);
 	for (auto dd = defVec.begin(); dd != defVec.end(); ++dd) {
 		PhiInfo pi;
 		pi.def = dd->def;       // Don't clone the Statement pointer (never moves)
@@ -3394,7 +3394,7 @@ PhiAssign::clone()
 	return pa;
 }
 Statement *
-ImplicitAssign::clone()
+ImplicitAssign::clone() const
 {
 	return new ImplicitAssign(type, lhs);
 }
@@ -5308,7 +5308,7 @@ ImpRefStatement::meetWith(Type *ty, bool &ch)
 }
 
 Statement *
-ImpRefStatement::clone()
+ImpRefStatement::clone() const
 {
 	return new ImpRefStatement(type->clone(), addressExp->clone());
 }

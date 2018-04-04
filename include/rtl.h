@@ -60,7 +60,7 @@ public:
 	typedef std::list<Statement *>::iterator iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 
-	        RTL        *clone();
+	        RTL        *clone() const;
 	        RTL        &operator =(RTL &other);
 
 	        bool        accept(StmtVisitor *visitor);
@@ -98,7 +98,7 @@ public:
 	        void        clear();
 	        void        appendListStmt(std::list<Statement *> &le);
 	        void        appendRTL(RTL &rtl);
-	        void        deepCopyList(std::list<Statement *> &dest);
+	        void        deepCopyList(std::list<Statement *> &dest) const;
 	/** \} */
 
 	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
