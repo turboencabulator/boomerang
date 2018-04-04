@@ -593,7 +593,7 @@ BranchStatement::getRangesForOutEdgeTo(BasicBlock *out)
 }
 
 bool
-Statement::isFirstStatementInBB()
+Statement::isFirstStatementInBB() const
 {
 	assert(pbb);
 	assert(pbb->getRTLs());
@@ -604,14 +604,14 @@ Statement::isFirstStatementInBB()
 }
 
 bool
-Statement::isLastStatementInBB()
+Statement::isLastStatementInBB() const
 {
 	assert(pbb);
 	return this == pbb->getLastStmt();
 }
 
 Statement *
-Statement::getPreviousStatementInBB()
+Statement::getPreviousStatementInBB() const
 {
 	assert(pbb);
 	std::list<RTL *> *rtls = pbb->getRTLs();
@@ -629,7 +629,7 @@ Statement::getPreviousStatementInBB()
 }
 
 Statement *
-Statement::getNextStatementInBB()
+Statement::getNextStatementInBB() const
 {
 	assert(pbb);
 	std::list<RTL *> *rtls = pbb->getRTLs();
@@ -652,11 +652,11 @@ Statement::getNextStatementInBB()
  * OVERVIEW:        Output operator for Statement*
  *                  Just makes it easier to use e.g. std::cerr << myStmtStar
  * PARAMETERS:      os: output stream to send to
- *                  p: ptr to Statement to print to the stream
+ *                  s: ptr to Statement to print to the stream
  * RETURNS:         copy of os (for concatenation)
  *============================================================================*/
 std::ostream &
-operator <<(std::ostream &os, Statement *s)
+operator <<(std::ostream &os, const Statement *s)
 {
 	if (!s) {
 		os << "NULL ";
@@ -675,7 +675,7 @@ Statement::isFlagAssgn() const
 }
 
 std::string
-Statement::prints()
+Statement::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -1093,7 +1093,7 @@ GotoStatement::setDest(ADDRESS addr)
  * RETURNS:         Pointer to the SS representing the dest of this jump
  *============================================================================*/
 Exp *
-GotoStatement::getDest()
+GotoStatement::getDest() const
 {
 	return pDest;
 }
@@ -1167,7 +1167,7 @@ GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * PARAMETERS:      os: stream to write to
  *============================================================================*/
 void
-GotoStatement::print(std::ostream &os, bool html)
+GotoStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
@@ -1373,7 +1373,7 @@ BranchStatement::makeSigned()
  * RETURNS:         ptr to an expression
  *============================================================================*/
 Exp *
-BranchStatement::getCondExpr()
+BranchStatement::getCondExpr() const
 {
 	return pCond;
 }
@@ -1391,7 +1391,7 @@ BranchStatement::setCondExpr(Exp *e)
 }
 
 BasicBlock *
-BranchStatement::getFallBB()
+BranchStatement::getFallBB() const
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1428,7 +1428,7 @@ BranchStatement::setFallBB(BasicBlock *bb)
 }
 
 BasicBlock *
-BranchStatement::getTakenBB()
+BranchStatement::getTakenBB() const
 {
 	ADDRESS a = getFixedDest();
 	if (a == NO_ADDRESS)
@@ -1511,7 +1511,7 @@ BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * PARAMETERS:      os: stream
  *============================================================================*/
 void
-BranchStatement::print(std::ostream &os, bool html)
+BranchStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
@@ -1593,7 +1593,7 @@ BranchStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 }
 
 bool
-BranchStatement::usesExp(Exp *e)
+BranchStatement::usesExp(Exp *e) const
 {
 	Exp *tmp;
 	return pCond && pCond->search(e, tmp);
@@ -1889,7 +1889,7 @@ CaseStatement::~CaseStatement()
  * RETURNS:         a semantic string
  *============================================================================*/
 SWITCH_INFO *
-CaseStatement::getSwitchInfo()
+CaseStatement::getSwitchInfo() const
 {
 	return pSwitchInfo;
 }
@@ -1945,7 +1945,7 @@ CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
  *                  indent: number of columns to skip
  *============================================================================*/
 void
-CaseStatement::print(std::ostream &os, bool html)
+CaseStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
@@ -1999,7 +1999,7 @@ CaseStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 }
 
 bool
-CaseStatement::usesExp(Exp *e)
+CaseStatement::usesExp(Exp *e) const
 {
 	// Before a switch statement is recognised, pDest is non null
 	if (pDest)
@@ -2054,7 +2054,7 @@ CallStatement::findDefine(Exp *e)
 }
 
 Exp *
-CallStatement::getProven(Exp *e)
+CallStatement::getProven(Exp *e) const
 {
 	if (procDest)
 		return procDest->getProven(e);
@@ -2086,13 +2086,13 @@ CallStatement::localiseExp(Exp *e)
 // Was called findArgument(), and used implicit arguments and signature parameters
 // Note: must only operator on unsubscripted locations, otherwise it is invalid
 Exp *
-CallStatement::findDefFor(Exp *e)
+CallStatement::findDefFor(Exp *e) const
 {
 	return defCol.findDefFor(e);
 }
 
 Type *
-CallStatement::getArgumentType(int i)
+CallStatement::getArgumentType(int i) const
 {
 	assert(i < (int)arguments.size());
 	auto aa = arguments.begin();
@@ -2224,7 +2224,7 @@ CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
  * PARAMETERS:      os: stream to write to
  *============================================================================*/
 void
-CallStatement::print(std::ostream &os, bool html)
+CallStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
@@ -2358,7 +2358,7 @@ CallStatement::accept(StmtVisitor *visitor)
 }
 
 Proc *
-CallStatement::getDestProc()
+CallStatement::getDestProc() const
 {
 	return procDest;
 }
@@ -2430,14 +2430,14 @@ CallStatement::simplify()
 }
 
 bool
-GotoStatement::usesExp(Exp *e)
+GotoStatement::usesExp(Exp *e) const
 {
 	Exp *where;
 	return (pDest->search(e, where));
 }
 
 bool
-CallStatement::usesExp(Exp *e)
+CallStatement::usesExp(Exp *e) const
 {
 	if (GotoStatement::usesExp(e)) return true;
 	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
@@ -2448,7 +2448,7 @@ CallStatement::usesExp(Exp *e)
 }
 
 void
-CallStatement::getDefinitions(LocationSet &defs)
+CallStatement::getDefinitions(LocationSet &defs) const
 {
 	for (auto dd = defines.begin(); dd != defines.end(); ++dd)
 		defs.insert(((Assignment *)*dd)->getLeft());
@@ -2569,7 +2569,7 @@ CallStatement::convertToDirect()
 }
 
 Exp *
-CallStatement::getArgumentExp(int i)
+CallStatement::getArgumentExp(int i) const
 {
 	assert(i < (int)arguments.size());
 	auto aa = arguments.begin();
@@ -2588,7 +2588,7 @@ CallStatement::setArgumentExp(int i, Exp *e)
 }
 
 int
-CallStatement::getNumArguments()
+CallStatement::getNumArguments() const
 {
 	return arguments.size();
 }
@@ -2695,7 +2695,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 }
 
 Type *
-Assignment::getTypeFor(Exp *e)
+Assignment::getTypeFor(Exp *e) const
 {
 	// assert(*lhs == *e);  // No: local vs base expression
 	return type;
@@ -2713,7 +2713,7 @@ Assignment::setTypeFor(Exp *e, Type *ty)
 
 // Scan the returns for e. If found, return the type associated with that return
 Type *
-CallStatement::getTypeFor(Exp *e)
+CallStatement::getTypeFor(Exp *e) const
 {
 	// The defines "cache" what the destination proc is defining
 	Assignment *as = defines.findOnLeft(e);
@@ -3048,7 +3048,7 @@ ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
 }
 
 bool
-CallStatement::isDefinition()
+CallStatement::isDefinition() const
 {
 	LocationSet defs;
 	getDefinitions(defs);
@@ -3056,7 +3056,7 @@ CallStatement::isDefinition()
 }
 
 bool
-ReturnStatement::usesExp(Exp *e)
+ReturnStatement::usesExp(Exp *e) const
 {
 	Exp *where;
 	for (auto rr = begin(); rr != end(); ++rr) {
@@ -3137,7 +3137,7 @@ BoolAssign::makeSigned()
  * RETURNS:         a semantic string
  *============================================================================*/
 Exp *
-BoolAssign::getCondExpr()
+BoolAssign::getCondExpr() const
 {
 	return pCond;
 }
@@ -3242,13 +3242,13 @@ BoolAssign::simplify()
 }
 
 void
-BoolAssign::getDefinitions(LocationSet &defs)
+BoolAssign::getDefinitions(LocationSet &defs) const
 {
 	defs.insert(getLeft());
 }
 
 bool
-BoolAssign::usesExp(Exp *e)
+BoolAssign::usesExp(Exp *e) const
 {
 	assert(lhs && pCond);
 	Exp *where = nullptr;
@@ -3516,7 +3516,7 @@ Assign::fixSuccessor()
 }
 
 void
-Assignment::print(std::ostream &os, bool html)
+Assignment::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
@@ -3608,7 +3608,7 @@ ImplicitAssign::printCompact(std::ostream &os, bool html) const
 
 // All the Assignment-derived classes have the same definitions: the lhs
 void
-Assignment::getDefinitions(LocationSet &defs)
+Assignment::getDefinitions(LocationSet &defs) const
 {
 	if (lhs->getOper() == opAt)  // foo@[m:n] really only defines foo
 		defs.insert(((Ternary *)lhs)->getSubExp1());
@@ -3710,7 +3710,7 @@ Assign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 }
 
 int
-Assign::getMemDepth()
+Assign::getMemDepth() const
 {
 	int d1 = lhs->getMemDepth();
 	int d2 = rhs->getMemDepth();
@@ -3720,14 +3720,14 @@ Assign::getMemDepth()
 
 // PhiExp and ImplicitExp:
 bool
-Assignment::usesExp(Exp *e)
+Assignment::usesExp(Exp *e) const
 {
 	Exp *where = nullptr;
 	return (lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where);
 }
 
 bool
-Assign::usesExp(Exp *e)
+Assign::usesExp(Exp *e) const
 {
 	Exp *where = nullptr;
 	return (rhs->search(e, where) || ((lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where)));
@@ -4535,7 +4535,7 @@ CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
 }
 
 bool
-Assignment::definesLoc(Exp *loc)
+Assignment::definesLoc(Exp *loc) const
 {
 	if (lhs->getOper() == opAt)  // For foo@[x:y], match of foo==loc OR whole thing == loc
 		if (*((Ternary *)lhs)->getSubExp1() == *loc) return true;
@@ -4543,7 +4543,7 @@ Assignment::definesLoc(Exp *loc)
 }
 
 bool
-CallStatement::definesLoc(Exp *loc)
+CallStatement::definesLoc(Exp *loc) const
 {
 	for (auto dd = defines.begin(); dd != defines.end(); ++dd) {
 		Exp *lhs = ((Assign *)*dd)->getLeft();
@@ -4558,7 +4558,7 @@ CallStatement::definesLoc(Exp *loc)
 // store the return type(s) for example.
 // FIXME: seems it would be cleaner to say that Return Statements don't define anything.
 bool
-ReturnStatement::definesLoc(Exp *loc)
+ReturnStatement::definesLoc(Exp *loc) const
 {
 	for (auto it = modifieds.begin(); it != modifieds.end(); ++it) {
 		if ((*it)->definesLoc(loc))
@@ -4569,14 +4569,14 @@ ReturnStatement::definesLoc(Exp *loc)
 
 // FIXME: see above
 void
-ReturnStatement::getDefinitions(LocationSet &ls)
+ReturnStatement::getDefinitions(LocationSet &ls) const
 {
 	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr)
 		(*rr)->getDefinitions(ls);
 }
 
 Type *
-ReturnStatement::getTypeFor(Exp *e)
+ReturnStatement::getTypeFor(Exp *e) const
 {
 	for (auto rr = modifieds.begin(); rr != modifieds.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *e)
@@ -4604,7 +4604,7 @@ ReturnStatement::setTypeFor(Exp *e, Type *ty)
 
 #define RETSTMT_COLS 120
 void
-ReturnStatement::print(std::ostream &os, bool html)
+ReturnStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
@@ -5289,7 +5289,7 @@ TypingStatement::TypingStatement(Type *ty) :
 
 // NOTE: ImpRefStatement not yet used
 void
-ImpRefStatement::print(std::ostream &os, bool html)
+ImpRefStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << "     *";  // No statement number
 	if (html) {
@@ -5432,7 +5432,7 @@ JunctionStatement::accept(StmtPartModifier *visitor)
 }
 
 void
-JunctionStatement::print(std::ostream &os, bool html)
+JunctionStatement::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
 	if (html) {
