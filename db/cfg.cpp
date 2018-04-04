@@ -337,7 +337,7 @@ Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel /* = false */)
 // Note: must ignore entries with a null pBB, since these are caused by
 // calls to Label that failed, i.e. the instruction is not decoded yet.
 bool
-Cfg::existsBB(ADDRESS uNativeAddr)
+Cfg::existsBB(ADDRESS uNativeAddr) const
 {
 	auto mi = m_mapBB.find(uNativeAddr);
 	return (mi != m_mapBB.end() && mi->second);
@@ -562,7 +562,7 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
  * RETURNS:         True if uAddr starts an incomplete BB
  *============================================================================*/
 bool
-Cfg::isIncomplete(ADDRESS uAddr)
+Cfg::isIncomplete(ADDRESS uAddr) const
 {
 	auto mi = m_mapBB.find(uAddr);
 	if (mi == m_mapBB.end())
@@ -882,7 +882,7 @@ Cfg::establishDFTOrder()
 }
 
 BasicBlock *
-Cfg::findRetNode()
+Cfg::findRetNode() const
 {
 	BasicBlock *retNode = nullptr;
 	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
@@ -936,7 +936,7 @@ Cfg::establishRevDFTOrder()
  * OVERVIEW:
  *============================================================================*/
 bool
-Cfg::isWellFormed()
+Cfg::isWellFormed() const
 {
 	return m_bWellFormed;
 }
@@ -946,7 +946,7 @@ Cfg::isWellFormed()
  * OVERVIEW:
  *============================================================================*/
 bool
-Cfg::isOrphan(ADDRESS uAddr)
+Cfg::isOrphan(ADDRESS uAddr) const
 {
 	auto mi = m_mapBB.find(uAddr);
 	if (mi == m_mapBB.end())
@@ -966,7 +966,7 @@ Cfg::isOrphan(ADDRESS uAddr)
  * RETURNS:         Index, or -1 for unknown BasicBlock*
  *============================================================================*/
 int
-Cfg::pbbToIndex(BasicBlock *pBB)
+Cfg::pbbToIndex(BasicBlock *pBB) const
 {
 	int i = 0;
 	auto it = m_listBB.begin();
@@ -1105,7 +1105,7 @@ Cfg::simplify()
 
 // print this cfg, mainly for debugging
 void
-Cfg::print(std::ostream &out, bool html)
+Cfg::print(std::ostream &out, bool html) const
 {
 	for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it)
 		(*it)->print(out, html);
@@ -1113,7 +1113,7 @@ Cfg::print(std::ostream &out, bool html)
 }
 
 void
-Cfg::printToLog()
+Cfg::printToLog() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -1592,7 +1592,7 @@ Cfg::removeUnneededLabels(HLLCode *hll)
 #define BBINDEX 0     // Non zero to print <index>: before <statement number>
 #define BACK_EDGES 0  // Non zero to generate green back edges
 void
-Cfg::generateDot(std::ostream &os)
+Cfg::generateDot(std::ostream &os) const
 {
 	ADDRESS aret = NO_ADDRESS;
 

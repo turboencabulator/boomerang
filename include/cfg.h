@@ -220,13 +220,13 @@ public:
 	 * Checks whether the given native address is in the map. If not, returns false. If so, returns true if it is
 	 * incomplete.  Otherwise, returns false.
 	 */
-	bool        isIncomplete(ADDRESS uNativeAddr);
+	bool        isIncomplete(ADDRESS uNativeAddr) const;
 
 	/*
 	 * Just checks to see if there exists a BB starting with this native address. If not, the address is NOT added
 	 * to the map of labels to BBs.
 	 */
-	bool        existsBB(ADDRESS uNativeAddr);
+	bool        existsBB(ADDRESS uNativeAddr) const;
 
 	/*
 	 * Sorts the BBs in the CFG according to the low address of each BB.  Useful because it makes printouts easier,
@@ -289,7 +289,7 @@ public:
 	 * Given a pointer to a basic block, return an index (e.g. 0 for the first basic block, 1 for the next, ... n-1
 	 * for the last BB.
 	 */
-	int         pbbToIndex(BasicBlock *pBB);
+	int         pbbToIndex(BasicBlock *pBB) const;
 
 	/*
 	 * Reset all the traversed flags.
@@ -300,12 +300,12 @@ public:
 	/*
 	 * Return true if the CFG is well formed.
 	 */
-	bool        isWellFormed();
+	bool        isWellFormed() const;
 
 	/*
 	 * Return true if there is a BB at the address given whose first RTL is an orphan, i.e. GetAddress() returns 0.
 	 */
-	bool        isOrphan(ADDRESS uAddr);
+	bool        isOrphan(ADDRESS uAddr) const;
 
 	/*
 	 * This is called where a two-way branch is deleted, thereby joining a two-way BB with it's successor.
@@ -426,14 +426,14 @@ public:
 	void        tagNodesInLoop(BasicBlock *header, bool *&loopNodes);
 
 	void        removeUnneededLabels(HLLCode *hll);
-	void        generateDot(std::ostream &os);
+	void        generateDot(std::ostream &os) const;
 
 
 	/*
 	 * Get the entry-point or exit BB
 	 */
-	BasicBlock *getEntryBB() { return entryBB; }
-	BasicBlock *getExitBB()  { return exitBB; }
+	BasicBlock *getEntryBB() const { return entryBB; }
+	BasicBlock *getExitBB() const  { return exitBB; }
 
 	/*
 	 * Set the entry-point BB (and exit BB as well)
@@ -441,7 +441,7 @@ public:
 	void        setEntryBB(BasicBlock *bb);
 	void        setExitBB(BasicBlock *bb);
 
-	BasicBlock *findRetNode();
+	BasicBlock *findRetNode() const;
 
 	/*
 	 * Set an additional new out edge to a given value
@@ -451,8 +451,8 @@ public:
 	/*
 	 * print this cfg, mainly for debugging
 	 */
-	void        print(std::ostream &out, bool html = false);
-	void        printToLog();
+	void        print(std::ostream &out, bool html = false) const;
+	void        printToLog() const;
 
 	/*
 	 * Check for indirect jumps and calls. If any found, decode the extra code and return true
@@ -462,12 +462,12 @@ public:
 	/*
 	 * Implicit assignments
 	 */
-	Statement  *findImplicitAssign(Exp *x);                    // Find or create an implicit assign for x
-	Statement  *findTheImplicitAssign(Exp *x);                 // Find the existing implicit assign for x (if any)
-	Statement  *findImplicitParamAssign(Parameter *p);         // Find exiting implicit assign for parameter p
-	void        removeImplicitAssign(Exp *x);                  // Remove an existing implicit assignment for x
-	bool        implicitsDone() { return bImplicitsDone; }     // True if implicits have been created
-	void        setImplicitsDone() { bImplicitsDone = true; }  // Call when implicits have been created
+	Statement  *findImplicitAssign(Exp *x);                      // Find or create an implicit assign for x
+	Statement  *findTheImplicitAssign(Exp *x);                   // Find the existing implicit assign for x (if any)
+	Statement  *findImplicitParamAssign(Parameter *p);           // Find exiting implicit assign for parameter p
+	void        removeImplicitAssign(Exp *x);                    // Remove an existing implicit assignment for x
+	bool        implicitsDone() const { return bImplicitsDone; } // True if implicits have been created
+	void        setImplicitsDone() { bImplicitsDone = true; }    // Call when implicits have been created
 
 	void        findInterferences(ConnectionGraph &ig);
 	void        appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workset);
