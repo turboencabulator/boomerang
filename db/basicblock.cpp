@@ -133,13 +133,13 @@ BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges)
  * RETURNS:         An integer unique to this BB, or zero
  *============================================================================*/
 int
-BasicBlock::getLabel()
+BasicBlock::getLabel() const
 {
 	return m_iLabelNum;
 }
 
 bool
-BasicBlock::isCaseOption()
+BasicBlock::isCaseOption() const
 {
 	if (caseHead)
 		for (unsigned int i = 0; i < caseHead->getOutEdges().size() - 1; ++i)
@@ -154,7 +154,7 @@ BasicBlock::isCaseOption()
  * RETURNS:         True if traversed
  *============================================================================*/
 bool
-BasicBlock::isTraversed()
+BasicBlock::isTraversed() const
 {
 	return m_iTraversed;
 }
@@ -191,7 +191,7 @@ BasicBlock::setRTLs(std::list<RTL *> *rtls)
  * RETURNS:         the type of the basic block
  *============================================================================*/
 BBTYPE
-BasicBlock::getType()
+BasicBlock::getType() const
 {
 	return m_nodeType;
 }
@@ -228,7 +228,7 @@ BasicBlock::setJumpReqd()
  * RETURNS:         True if a jump is required
  *============================================================================*/
 bool
-BasicBlock::isJumpReqd()
+BasicBlock::isJumpReqd() const
 {
 	return m_bJumpReqd;
 }
@@ -239,7 +239,7 @@ BasicBlock::isJumpReqd()
  * RETURNS:         The string
  *============================================================================*/
 std::string
-BasicBlock::prints()
+BasicBlock::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -253,7 +253,7 @@ BasicBlock::prints()
  * PARAMETERS:      os - stream to output to
  *============================================================================*/
 void
-BasicBlock::print(std::ostream &os, bool html)
+BasicBlock::print(std::ostream &os, bool html) const
 {
 	if (html)
 		os << "<br>";
@@ -301,13 +301,13 @@ BasicBlock::print(std::ostream &os, bool html)
 }
 
 void
-BasicBlock::printToLog()
+BasicBlock::printToLog() const
 {
 	LOG << prints();
 }
 
 bool
-BasicBlock::isBackEdge(int inEdge)
+BasicBlock::isBackEdge(int inEdge) const
 {
 	BasicBlock *in = m_InEdges[inEdge];
 	return this == in || (m_DFTfirst < in->m_DFTfirst && m_DFTlast > in->m_DFTlast);
@@ -330,7 +330,7 @@ printBB(BasicBlock *bb)
  * RETURNS:         the lowest real address associated with this BB
  *============================================================================*/
 ADDRESS
-BasicBlock::getLowAddr()
+BasicBlock::getLowAddr() const
 {
 	if (!m_pRtls || m_pRtls->empty()) return 0;
 	ADDRESS a = m_pRtls->front()->getAddress();
@@ -353,7 +353,7 @@ BasicBlock::getLowAddr()
  *                  always the address associated with the last RTL.
  *============================================================================*/
 ADDRESS
-BasicBlock::getHiAddr()
+BasicBlock::getHiAddr() const
 {
 	assert(m_pRtls);
 	return m_pRtls->back()->getAddress();
@@ -364,13 +364,13 @@ BasicBlock::getHiAddr()
  * OVERVIEW:        Get pointer to the list of RTL*.
  *============================================================================*/
 std::list<RTL *> *
-BasicBlock::getRTLs()
+BasicBlock::getRTLs() const
 {
 	return m_pRtls;
 }
 
 RTL *
-BasicBlock::getRTLWithStatement(Statement *stmt)
+BasicBlock::getRTLWithStatement(Statement *stmt) const
 {
 	if (!m_pRtls)
 		return nullptr;
@@ -458,7 +458,7 @@ BasicBlock::getOutEdge(unsigned int i)
  * PARAMETERS:      a: the address
  *============================================================================*/
 BasicBlock *
-BasicBlock::getCorrectOutEdge(ADDRESS a)
+BasicBlock::getCorrectOutEdge(ADDRESS a) const
 {
 	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
 		if ((*it)->getLowAddr() == a) return *it;
@@ -626,7 +626,7 @@ BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
  * RETURNS:         Native destination of the call, or NO_ADDRESS
  *============================================================================*/
 ADDRESS
-BasicBlock::getCallDest()
+BasicBlock::getCallDest() const
 {
 	if (m_nodeType != CALL)
 		return NO_ADDRESS;
@@ -642,7 +642,7 @@ BasicBlock::getCallDest()
 }
 
 Proc *
-BasicBlock::getCallDestProc()
+BasicBlock::getCallDestProc() const
 {
 	if (m_nodeType != CALL)
 		return nullptr;
@@ -776,7 +776,7 @@ BasicBlock::getStatements(StatementList &stmts)
 
 /* Get the condition */
 Exp *
-BasicBlock::getCond() throw (LastStatementNotABranchError)
+BasicBlock::getCond() const throw (LastStatementNotABranchError)
 {
 	// the condition will be in the last rtl
 	assert(m_pRtls);
@@ -792,7 +792,7 @@ BasicBlock::getCond() throw (LastStatementNotABranchError)
 
 /* Get the destiantion, if any */
 Exp *
-BasicBlock::getDest() throw (LastStatementNotAGotoError)
+BasicBlock::getDest() const throw (LastStatementNotAGotoError)
 {
 	// The destianation will be in the last rtl
 	assert(m_pRtls);
@@ -835,7 +835,7 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 
 /* Check for branch if equal relation */
 bool
-BasicBlock::isJmpZ(BasicBlock *dest)
+BasicBlock::isJmpZ(BasicBlock *dest) const
 {
 	// The condition will be in the last rtl
 	assert(m_pRtls);
@@ -862,7 +862,7 @@ BasicBlock::isJmpZ(BasicBlock *dest)
 
 /* Get the loop body */
 BasicBlock *
-BasicBlock::getLoopBody()
+BasicBlock::getLoopBody() const
 {
 	assert(m_structType == PRETESTLOOP || m_structType == POSTTESTLOOP || m_structType == ENDLESSLOOP);
 	assert(m_iNumOutEdges == 2);
@@ -872,7 +872,7 @@ BasicBlock::getLoopBody()
 }
 
 bool
-BasicBlock::isAncestorOf(BasicBlock *other)
+BasicBlock::isAncestorOf(const BasicBlock *other) const
 {
 	return ((loopStamps[0] < other->loopStamps[0]
 	      && loopStamps[1] > other->loopStamps[1])
@@ -970,7 +970,7 @@ BasicBlock::simplify()
 }
 
 bool
-BasicBlock::hasBackEdgeTo(BasicBlock *dest)
+BasicBlock::hasBackEdgeTo(const BasicBlock *dest) const
 {
 	//assert(HasEdgeTo(dest) || dest == this);
 	return dest == this || dest->isAncestorOf(this);
@@ -979,7 +979,7 @@ BasicBlock::hasBackEdgeTo(BasicBlock *dest)
 // Return true if every parent (i.e. forward in edge source) of this node has
 // had its code generated
 bool
-BasicBlock::allParentsGenerated()
+BasicBlock::allParentsGenerated() const
 {
 	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
 		if (!m_InEdges[i]->hasBackEdgeTo(this)
@@ -1416,7 +1416,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 // Get the destination proc
 // Note: this must be a call BB!
 Proc *
-BasicBlock::getDestProc()
+BasicBlock::getDestProc() const
 {
 	// The last Statement of the last RTL should be a CallStatement
 	CallStatement *call = (CallStatement *)(m_pRtls->back()->getHlStmt());
@@ -1546,7 +1546,7 @@ BasicBlock::setUnstructType(unstructType us)
 }
 
 unstructType
-BasicBlock::getUnstructType()
+BasicBlock::getUnstructType() const
 {
 	assert((sType == Cond || sType == LoopCond) && cType != Case);
 	return usType;
@@ -1565,7 +1565,7 @@ BasicBlock::setLoopType(loopType l)
 }
 
 loopType
-BasicBlock::getLoopType()
+BasicBlock::getLoopType() const
 {
 	assert(sType == Loop || sType == LoopCond);
 	return lType;
@@ -1579,14 +1579,14 @@ BasicBlock::setCondType(condType c)
 }
 
 condType
-BasicBlock::getCondType()
+BasicBlock::getCondType() const
 {
 	assert(sType == Cond || sType == LoopCond);
 	return cType;
 }
 
 bool
-BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch)
+BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch) const
 {
 	assert(header->latchNode == latch);
 	assert(header == latch
@@ -1764,7 +1764,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 // Basically the "whichPred" function as per Briggs, Cooper, et al (and presumably "Cryton, Ferante, Rosen, Wegman, and
 // Zadek").  Return -1 if not found
 int
-BasicBlock::whichPred(BasicBlock *pred)
+BasicBlock::whichPred(BasicBlock *pred) const
 {
 	int n = m_InEdges.size();
 	for (int i = 0; i < n; ++i) {

@@ -147,24 +147,24 @@ public:
 	/*
 	 * Return the type of the basic block.
 	 */
-	        BBTYPE      getType();
+	        BBTYPE      getType() const;
 
 	/*
 	 * Check if this BB has a label. If so, return the numeric value of the label (nonzero integer). If not, returns
 	 * zero.  See also Cfg::setLabel()
 	 */
-	        int         getLabel();
+	        int         getLabel() const;
 
-	        std::string &getLabelStr() { return m_labelStr; }
+	        const std::string &getLabelStr() const { return m_labelStr; }
 	        void        setLabelStr(std::string &s) { m_labelStr = s; }
-	        bool        isLabelNeeded() { return m_labelneeded; }
+	        bool        isLabelNeeded() const { return m_labelneeded; }
 	        void        setLabelNeeded(bool b) { m_labelneeded = b; }
-	        bool        isCaseOption();
+	        bool        isCaseOption() const;
 
 	/*
 	 * Return whether this BB has been traversed or not
 	 */
-	        bool        isTraversed();
+	        bool        isTraversed() const;
 
 	/*
 	 * Set the traversed flag
@@ -175,9 +175,9 @@ public:
 	 * Print the BB. For -R and for debugging
 	 * Don't use = std::cout, because gdb doesn't know about std::
 	 */
-	        void        print(std::ostream &os, bool html = false);
-	        void        printToLog();
-	        std::string prints();  // For debugging
+	        void        print(std::ostream &os, bool html = false) const;
+	        void        printToLog() const;
+	        std::string prints() const;  // For debugging
 
 	/*
 	 * Set the type of the basic block.
@@ -194,29 +194,29 @@ public:
 	/*
 	 * Check if jump is required (see above).
 	 */
-	        bool        isJumpReqd();
+	        bool        isJumpReqd() const;
 
 	/*
 	 * Get the address associated with the BB
 	 * Note that this is not always the same as getting the address of the first RTL (e.g. if the first RTL is a
 	 * delay instruction of a DCTI instruction; then the address of this RTL will be 0)
 	 */
-	        ADDRESS     getLowAddr();
-	        ADDRESS     getHiAddr();
+	        ADDRESS     getLowAddr() const;
+	        ADDRESS     getHiAddr() const;
 
 	/*
 	 * Get ptr to the list of RTLs.
 	 */
-	        std::list<RTL *> *getRTLs();
+	        std::list<RTL *> *getRTLs() const;
 
-	        RTL        *getRTLWithStatement(Statement *stmt);
+	        RTL        *getRTLWithStatement(Statement *stmt) const;
 
 	/*
 	 * Get the set of in edges.
 	 */
 	        std::vector<BasicBlock *> &getInEdges();
 
-	        int         getNumInEdges() { return m_iNumInEdges; }
+	        int         getNumInEdges() const { return m_iNumInEdges; }
 
 	/*
 	 * Get the set of out edges.
@@ -238,12 +238,12 @@ public:
 	 */
 	        BasicBlock *getOutEdge(unsigned int i);
 
-	        int         getNumOutEdges() { return m_iNumOutEdges; }
+	        int         getNumOutEdges() const { return m_iNumOutEdges; }
 
 	/*
 	 * Get the index of my in-edges is BB pred
 	 */
-	        int         whichPred(BasicBlock *pred);
+	        int         whichPred(BasicBlock *pred) const;
 
 	/*
 	 * Add an in-edge
@@ -260,8 +260,8 @@ public:
 	/*
 	 * If this is a call BB, find the fixed destination (if any).  Returns -1 otherwise
 	 */
-	        ADDRESS     getCallDest();
-	        Proc       *getCallDestProc();
+	        ADDRESS     getCallDest() const;
+	        Proc       *getCallDestProc() const;
 
 	/*
 	 * Traverse this node and recurse on its children in a depth first manner.
@@ -303,7 +303,7 @@ public:
 		LastStatementNotABranchError(Statement *stmt) : stmt(stmt) { }
 	};
 	/* get the condition */
-	        Exp        *getCond() throw (LastStatementNotABranchError);
+	        Exp        *getCond() const throw (LastStatementNotABranchError);
 
 	/* set the condition */
 	        void        setCond(Exp *e) throw (LastStatementNotABranchError);
@@ -314,13 +314,13 @@ public:
 		LastStatementNotAGotoError(Statement *stmt) : stmt(stmt) { }
 	};
 	/* Get the destination expression, if any */
-	        Exp        *getDest() throw (LastStatementNotAGotoError);
+	        Exp        *getDest() const throw (LastStatementNotAGotoError);
 
 	/* Check if there is a jump if equals relation */
-	        bool        isJmpZ(BasicBlock *dest);
+	        bool        isJmpZ(BasicBlock *dest) const;
 
 	/* get the loop body */
-	        BasicBlock *getLoopBody();
+	        BasicBlock *getLoopBody() const;
 
 	/* Simplify all the expressions in this BB
 	 */
@@ -330,7 +330,7 @@ public:
 	/*
 	 * given an address, returns the outedge which corresponds to that address or 0 if there was no such outedge
 	 */
-	        BasicBlock *getCorrectOutEdge(ADDRESS a);
+	        BasicBlock *getCorrectOutEdge(ADDRESS a) const;
 
 	/*
 	 * Depth first traversal of all bbs, numbering as we go and as we come back, forward and reverse passes.
@@ -394,7 +394,7 @@ public:
 
 	        bool        isPostCall();
 	static  void        doAvail(StatementSet &s, BasicBlock *inEdge);
-	        Proc       *getDestProc();
+	        Proc       *getDestProc() const;
 
 	/**
 	 * Get first/next statement this BB
@@ -452,36 +452,36 @@ protected:
 	        void        setRevOrder(std::vector<BasicBlock *> &order);
 
 	        void        setLoopHead(BasicBlock *head) { loopHead = head; }
-	        BasicBlock *getLoopHead() { return loopHead; }
+	        BasicBlock *getLoopHead() const { return loopHead; }
 	        void        setLatchNode(BasicBlock *latch) { latchNode = latch; }
-	        bool        isLatchNode() { return loopHead && loopHead->latchNode == this; }
-	        BasicBlock *getLatchNode() { return latchNode; }
-	        BasicBlock *getCaseHead() { return caseHead; }
+	        bool        isLatchNode() const { return loopHead && loopHead->latchNode == this; }
+	        BasicBlock *getLatchNode() const { return latchNode; }
+	        BasicBlock *getCaseHead() const { return caseHead; }
 	        void        setCaseHead(BasicBlock *head, BasicBlock *follow);
 
-	        structType  getStructType() { return sType; }
+	        structType  getStructType() const { return sType; }
 	        void        setStructType(structType s);
 
-	        unstructType getUnstructType();
+	        unstructType getUnstructType() const;
 	        void        setUnstructType(unstructType us);
 
-	        loopType    getLoopType();
+	        loopType    getLoopType() const;
 	        void        setLoopType(loopType l);
 
-	        condType    getCondType();
+	        condType    getCondType() const;
 	        void        setCondType(condType l);
 
 	        void        setLoopFollow(BasicBlock *other) { loopFollow = other; }
-	        BasicBlock *getLoopFollow() { return loopFollow; }
+	        BasicBlock *getLoopFollow() const { return loopFollow; }
 
 	        void        setCondFollow(BasicBlock *other) { condFollow = other; }
-	        BasicBlock *getCondFollow() { return condFollow; }
+	        BasicBlock *getCondFollow() const { return condFollow; }
 
 	// establish if this bb has a back edge to the given destination
-	        bool        hasBackEdgeTo(BasicBlock *dest);
+	        bool        hasBackEdgeTo(const BasicBlock *dest) const;
 
 	// establish if this bb has any back edges leading FROM it
-	        bool        hasBackEdge() {
+	        bool        hasBackEdge() const {
 		                    for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
 			                    if (hasBackEdgeTo(m_OutEdges[i]))
 				                    return true;
@@ -489,22 +489,22 @@ protected:
 	                    }
 
 public:
-	        bool        isBackEdge(int inEdge);
+	        bool        isBackEdge(int inEdge) const;
 
 protected:
 	// establish if this bb is an ancestor of another BB
-	        bool        isAncestorOf(BasicBlock *other);
+	        bool        isAncestorOf(const BasicBlock *other) const;
 
-	        bool        inLoop(BasicBlock *header, BasicBlock *latch);
+	        bool        inLoop(BasicBlock *header, BasicBlock *latch) const;
 
-	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) {
+	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) const {
 		                    for (auto it = set.begin(); it != set.end(); ++it)
 			                    if (*it == bb) return true;
 		                    return false;
 	                    }
 
 	        char       *indent(int indLevel, int extra = 0);
-	        bool        allParentsGenerated();
+	        bool        allParentsGenerated() const;
 	        void        emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest);
 	        void        WriteBB(HLLCode *hll, int indLevel);
 
