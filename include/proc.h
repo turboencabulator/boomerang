@@ -60,7 +60,7 @@ public:
 	/**
 	 * Gets name of this procedure.
 	 */
-	        const char *getName();
+	        const char *getName() const;
 
 	/**
 	 * Gets sets the name of this procedure.
@@ -70,7 +70,7 @@ public:
 	/**
 	 * Get the native address.
 	 */
-	        ADDRESS     getNativeAddress();
+	        ADDRESS     getNativeAddress() const;
 
 	/**
 	 * Set the native address
@@ -80,7 +80,7 @@ public:
 	/**
 	 * Get the program this procedure belongs to.
 	 */
-	        Prog       *getProg() { return prog; }
+	        Prog       *getProg() const { return prog; }
 	        void        setProg(Prog *p) { prog = p; }
 
 	/**
@@ -92,7 +92,7 @@ public:
 	/**
 	 * Returns a pointer to the Signature
 	 */
-	        Signature  *getSignature() { return signature; }
+	        Signature  *getSignature() const { return signature; }
 	        void        setSignature(Signature *sig) { signature = sig; }
 
 	virtual void        renameParam(const std::string &oldName, const std::string &newName);
@@ -154,16 +154,16 @@ public:
 	/**
 	 * Return true if this is a library proc
 	 */
-	virtual bool        isLib() { return false; }
+	virtual bool        isLib() const { return false; }
 
 	/**
 	 * Return true if this procedure doesn't return
 	 */
-	virtual bool        isNoReturn() = 0;
+	virtual bool        isNoReturn() const = 0;
 
-	virtual Exp        *getProven(Exp *left) = 0;    // Get the RHS, if any, that is proven for left
-	virtual Exp        *getPremised(Exp *left) = 0;  // Get the RHS, if any, that is premised for left
-	virtual bool        isPreserved(Exp *e) = 0;     ///< Return whether e is preserved by this proc
+	virtual Exp        *getProven(Exp *left) const = 0;    // Get the RHS, if any, that is proven for left
+	virtual Exp        *getPremised(Exp *left) const = 0;  // Get the RHS, if any, that is premised for left
+	virtual bool        isPreserved(Exp *e) const = 0;     ///< Return whether e is preserved by this proc
 
 	/// Set an equation as proven. Useful for some sorts of testing
 	        void        setProvenTrue(Exp *fact);
@@ -190,11 +190,11 @@ public:
 	//        void        sortParameters();
 
 	virtual void        printCallGraphXML(std::ostream &os, int depth, bool recurse = true);
-	        void        printDetailsXML();
+	        void        printDetailsXML() const;
 	        void        clearVisited() { visited = false; }
-	        bool        isVisited() { return visited; }
+	        bool        isVisited() const { return visited; }
 
-	        Cluster    *getCluster() { return cluster; }
+	        Cluster    *getCluster() const { return cluster; }
 	        void        setCluster(Cluster *c) { cluster = c; }
 
 protected:
@@ -246,13 +246,13 @@ public:
 	/**
 	 * Return true, since is a library proc
 	 */
-	bool        isLib() override { return true; }
+	bool        isLib() const override { return true; }
 
-	bool        isNoReturn() override;
+	bool        isNoReturn() const override;
 
-	Exp        *getProven(Exp *left) override;                       // Get the RHS that is proven for left
-	Exp        *getPremised(Exp *left) override { return nullptr; }  // Get the RHS that is premised for left
-	bool        isPreserved(Exp *e) override;                        ///< Return whether e is preserved by this proc
+	Exp        *getProven(Exp *left) const override;                       // Get the RHS that is proven for left
+	Exp        *getPremised(Exp *left) const override { return nullptr; }  // Get the RHS that is premised for left
+	bool        isPreserved(Exp *e) const override;                        ///< Return whether e is preserved by this proc
 
 	void        getInternalStatements(StatementList &internal);
 protected:
@@ -398,7 +398,7 @@ public:
 	/**
 	 * Returns a pointer to the CFG object.
 	 */
-	Cfg        *getCFG() { return cfg; }
+	Cfg        *getCFG() const { return cfg; }
 
 	/**
 	 * Returns a pointer to the DataFlow object.
@@ -411,42 +411,42 @@ public:
 	 */
 	void        deleteCFG();
 
-	bool        isNoReturn() override;
+	bool        isNoReturn() const override;
 
 	/**
 	 * Returns an abstract syntax tree for the procedure in the internal representation. This function actually
 	 * _calculates_ * this value and is expected to do so expensively.
 	 */
-	SyntaxNode *getAST();
+	SyntaxNode *getAST() const;
 	// print it to a file
-	void        printAST(SyntaxNode *a = nullptr);
+	void        printAST(SyntaxNode *a = nullptr) const;
 
 	/**
 	 * Returns whether or not this procedure can be decoded (i.e. has it already been decoded).
 	 */
-	bool        isDecoded() { return status >= PROC_DECODED; }
-	bool        isDecompiled() { return status >= PROC_FINAL; }
-	bool        isEarlyRecursive() { return cycleGrp && status <= PROC_INCYCLE; }
-	bool        doesRecurseTo(UserProc *p) { return cycleGrp && cycleGrp->count(p); }
+	bool        isDecoded() const { return status >= PROC_DECODED; }
+	bool        isDecompiled() const { return status >= PROC_FINAL; }
+	bool        isEarlyRecursive() const { return cycleGrp && status <= PROC_INCYCLE; }
+	bool        doesRecurseTo(UserProc *p) const { return cycleGrp && cycleGrp->count(p); }
 
-	bool        isSorted() { return status >= PROC_SORTED; }
+	bool        isSorted() const { return status >= PROC_SORTED; }
 	void        setSorted() { setStatus(PROC_SORTED); }
 
-	ProcStatus  getStatus() { return status; }
+	ProcStatus  getStatus() const { return status; }
 	void        setStatus(ProcStatus s);
 
 	/// code generation
 	void        generateCode(HLLCode *hll);
 
 	/// print this proc, mainly for debugging
-	void        print(std::ostream &out, bool html = false);
-	void        printParams(std::ostream &out, bool html = false);
-	std::string prints();
-	void        printToLog();
+	void        print(std::ostream &out, bool html = false) const;
+	void        printParams(std::ostream &out, bool html = false) const;
+	std::string prints() const;
+	void        printToLog() const;
 	void        printDFG();
-	void        printSymbolMap(std::ostream &out, bool html = false);  ///< Print just the symbol map
+	void        printSymbolMap(std::ostream &out, bool html = false) const;  ///< Print just the symbol map
 	void        testSymbolMap();   ///< For debugging
-	void        dumpLocals(std::ostream &os, bool html = false);
+	void        dumpLocals(std::ostream &os, bool html = false) const;
 
 	/// simplify the statements in this proc
 	void        simplify() { cfg->simplify(); }
@@ -538,12 +538,12 @@ public:
 	//void        mapExpressionsToParameters();       ///< must be in SSA form
 	void        mapExpressionsToLocals(bool lastPass = false);
 	void        addParameterSymbols();
-	bool        isLocal(Exp *e);                    ///< True if e represents a stack local variable
-	bool        isLocalOrParam(Exp *e);             ///< True if e represents a stack local or stack param
-	bool        isLocalOrParamPattern(Exp *e);      ///< True if e could represent a stack local or stack param
-	bool        existsLocal(const char *name);      ///< True if a local exists with name \a name
-	bool        isAddressEscapedVar(Exp *e) { return addressEscapedVars.exists(e); }
-	bool        isPropagatable(Exp *e);             ///< True if e can be propagated
+	bool        isLocal(Exp *e) const;              ///< True if e represents a stack local variable
+	bool        isLocalOrParam(Exp *e) const;       ///< True if e represents a stack local or stack param
+	bool        isLocalOrParamPattern(Exp *e) const;///< True if e could represent a stack local or stack param
+	bool        existsLocal(const char *name) const;///< True if a local exists with name \a name
+	bool        isAddressEscapedVar(Exp *e) const { return addressEscapedVars.exists(e); }
+	bool        isPropagatable(Exp *e) const;       ///< True if e can be propagated
 
 	/// find the procs the calls point to
 	void        assignProcsToCalls();
@@ -642,7 +642,7 @@ public:
 
 	bool        searchAll(Exp *search, std::list<Exp *> &result);
 
-	void        getDefinitions(LocationSet &defs);
+	void        getDefinitions(LocationSet &defs) const;
 	void        addImplicitAssigns();
 	void        makeSymbolsImplicit();
 	void        makeParamsImplicit();
@@ -696,13 +696,13 @@ public:
 	void        addLocal(Type *ty, const char *nam, Exp *e);
 
 	/// return a local's type
-	Type       *getLocalType(const char *nam);
+	Type       *getLocalType(const char *nam) const;
 	void        setLocalType(const char *nam, Type *ty);
 
-	Type       *getParamType(const char *nam);
+	Type       *getParamType(const char *nam) const;
 
 	/// return a symbol's exp (note: the original exp, like r24, not local1)
-	Exp        *expFromSymbol(const char *nam);
+	Exp        *expFromSymbol(const char *nam) const;
 	void        setExpSymbol(const char *nam, Exp *e, Type *ty);
 	void        mapSymbolTo(Exp *from, Exp *to);
 	/// As above but with replacement
@@ -710,25 +710,25 @@ public:
 	void        removeSymbolMapping(Exp *from, Exp *to);  /// Remove this mapping
 	/// Lookup the expression in the symbol map. Return nullptr or a C string with the symbol. Use the Type* ty to
 	/// select from several names in the multimap; the name corresponding to the first compatible type is returned
-	Exp        *getSymbolFor(Exp *e, Type *ty);  /// Lookup the symbol map considering type
-	const char *lookupSym(Exp *e, Type *ty);
-	const char *lookupSymFromRef(RefExp *r);     // Lookup a specific symbol for the given ref
-	const char *lookupSymFromRefAny(RefExp *r);  // Lookup a specific symbol if any, else the general one if any
-	const char *lookupParam(Exp *e);             // Find the implicit definition for e and lookup a symbol
-	void        checkLocalFor(RefExp *r);        // Check if r is already mapped to a local, else add one
-	Type       *getTypeForLocation(Exp *e);      // Find the type of the local or parameter e
+	Exp        *getSymbolFor(Exp *e, Type *ty) const;  /// Lookup the symbol map considering type
+	const char *lookupSym(Exp *e, Type *ty) const;
+	const char *lookupSymFromRef(RefExp *r) const;     // Lookup a specific symbol for the given ref
+	const char *lookupSymFromRefAny(RefExp *r) const;  // Lookup a specific symbol if any, else the general one if any
+	const char *lookupParam(Exp *e) const;             // Find the implicit definition for e and lookup a symbol
+	void        checkLocalFor(RefExp *r);              // Check if r is already mapped to a local, else add one
+	Type       *getTypeForLocation(Exp *e) const;      // Find the type of the local or parameter e
 	/// Determine whether e is a local, either as a true opLocal (e.g. generated by fromSSA), or if it is in the
 	/// symbol map and the name is in the locals map. If it is a local, return its name, else nullptr
-	const char *findLocal(Exp *e, Type *ty);
-	const char *findLocalFromRef(RefExp *r);
-	const char *findFirstSymbol(Exp *e);
+	const char *findLocal(Exp *e, Type *ty) const;
+	const char *findLocalFromRef(RefExp *r) const;
+	const char *findFirstSymbol(Exp *e) const;
 	int         getNumLocals() const { return (int)locals.size(); }
-	const char *getLocalName(int n);
-	const char *getSymbolName(Exp *e);  ///< As getLocalName, but look for expression e
+	const char *getLocalName(int n) const;
+	const char *getSymbolName(Exp *e) const;  ///< As getLocalName, but look for expression e
 	void        renameLocal(const char *oldName, const char *newName);
 	void        renameParam(const std::string &oldName, const std::string &newName) override;
 
-	const char *getRegName(Exp *r);  /// Get a name like eax or o2 from r24 or r8
+	const char *getRegName(Exp *r) const;  /// Get a name like eax or o2 from r24 or r8
 	void        setParamType(const std::string &nam, Type *ty);
 	void        setParamType(int idx, Type *ty);
 
@@ -740,7 +740,7 @@ public:
 	/**
 	 * Get the BB that is the entry point (not always the first BB)
 	 */
-	BasicBlock *getEntryBB();
+	BasicBlock *getEntryBB() const;
 
 	/**
 	 * Set the entry BB for this procedure (constructor has the entry address)
@@ -765,7 +765,7 @@ public:
 	/**
 	 * return true if this procedure contains the given address.
 	 */
-	bool        containsAddr(ADDRESS uAddr);
+	bool        containsAddr(ADDRESS uAddr) const;
 
 	/**
 	 * Change BB containing this statement from a COMPCALL to a CALL.
@@ -778,17 +778,17 @@ public:
 	 */
 	//virtual bool isAggregateUsed() { return aggregateUsed; }
 
-	Exp        *getProven(Exp *left) override;
-	Exp        *getPremised(Exp *left) override;
+	Exp        *getProven(Exp *left) const override;
+	Exp        *getPremised(Exp *left) const override;
 	// Set a location as a new premise, i.e. assume e=e
 	void        setPremise(Exp *e) { e = e->clone(); recurPremises[e] = e; }
 	void        killPremise(Exp *e) { recurPremises.erase(e); }
-	bool        isPreserved(Exp *e) override;  ///< Return whether e is preserved by this proc
+	bool        isPreserved(Exp *e) const override;  ///< Return whether e is preserved by this proc
 
 	void        printCallGraphXML(std::ostream &os, int depth, bool recurse = true) override;
-	void        printDecodedXML();
-	void        printAnalysedXML();
-	void        printSSAXML();
+	void        printDecodedXML() const;
+	void        printAnalysedXML() const;
+	void        printSSAXML() const;
 	void        printXML();
 	void        printUseGraph();
 
@@ -812,13 +812,13 @@ private:
 	ReturnStatement *theReturnStatement = nullptr;
 	int         DFGcount = 0;
 public:
-	ADDRESS     getTheReturnAddr() { return !theReturnStatement ? NO_ADDRESS : theReturnStatement->getRetAddr(); }
+	ADDRESS     getTheReturnAddr() const { return !theReturnStatement ? NO_ADDRESS : theReturnStatement->getRetAddr(); }
 	void        setTheReturnAddr(ReturnStatement *s, ADDRESS r) {
 		            assert(!theReturnStatement);
 		            theReturnStatement = s;
 		            theReturnStatement->setRetAddr(r);
 	}
-	ReturnStatement *getTheReturnStatement() { return theReturnStatement; }
+	ReturnStatement *getTheReturnStatement() const { return theReturnStatement; }
 	bool        filterReturns(Exp *e);  ///< Decide whether to filter out e (return true) or keep it
 	bool        filterParams(Exp *e);   ///< As above but for parameters and arguments
 

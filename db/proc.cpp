@@ -71,7 +71,7 @@ Proc::Proc(Prog *prog, ADDRESS uNative, Signature *sig) :
  * RETURNS:         the name of this procedure
  *============================================================================*/
 const char *
-Proc::getName()
+Proc::getName() const
 {
 	assert(signature);
 	return signature->getName();
@@ -95,7 +95,7 @@ Proc::setName(const char *nam)
  * RETURNS:         the native address of this procedure (entry point)
  *============================================================================*/
 ADDRESS
-Proc::getNativeAddress()
+Proc::getNativeAddress() const
 {
 	return address;
 }
@@ -107,13 +107,13 @@ Proc::setNativeAddress(ADDRESS a)
 }
 
 bool
-LibProc::isNoReturn()
+LibProc::isNoReturn() const
 {
 	return FrontEnd::noReturnCallDest(getName());
 }
 
 bool
-UserProc::isNoReturn()
+UserProc::isNoReturn() const
 {
 	// undecoded procs are assumed to always return (and define everything)
 	if (!this->isDecoded())
@@ -138,7 +138,7 @@ UserProc::isNoReturn()
  * RETURNS:       true if it does
  *============================================================================*/
 bool
-UserProc::containsAddr(ADDRESS uAddr)
+UserProc::containsAddr(ADDRESS uAddr) const
 {
 	BB_IT it;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
@@ -229,7 +229,7 @@ UserProc::printCallGraphXML(std::ostream &os, int depth, bool recurse)
 }
 
 void
-Proc::printDetailsXML()
+Proc::printDetailsXML() const
 {
 	if (!DUMP_XML)
 		return;
@@ -248,7 +248,7 @@ Proc::printDetailsXML()
 }
 
 void
-UserProc::printDecodedXML()
+UserProc::printDecodedXML() const
 {
 	if (!DUMP_XML)
 		return;
@@ -264,7 +264,7 @@ UserProc::printDecodedXML()
 }
 
 void
-UserProc::printAnalysedXML()
+UserProc::printAnalysedXML() const
 {
 	if (!DUMP_XML)
 		return;
@@ -280,7 +280,7 @@ UserProc::printAnalysedXML()
 }
 
 void
-UserProc::printSSAXML()
+UserProc::printSSAXML() const
 {
 	if (!DUMP_XML)
 		return;
@@ -360,14 +360,14 @@ LibProc::~LibProc()
 }
 
 Exp *
-LibProc::getProven(Exp *left)
+LibProc::getProven(Exp *left) const
 {
 	// Just use the signature information (all we have, after all)
 	return signature->getProven(left);
 }
 
 bool
-LibProc::isPreserved(Exp *e)
+LibProc::isPreserved(Exp *e) const
 {
 	return signature->isPreserved(e);
 }
@@ -418,7 +418,7 @@ public:
 };
 
 SyntaxNode *
-UserProc::getAST()
+UserProc::getAST() const
 {
 	int numBBs = 0;
 	BlockSyntaxNode *init = new BlockSyntaxNode();
@@ -485,7 +485,7 @@ UserProc::getAST()
 }
 
 void
-UserProc::printAST(SyntaxNode *a)
+UserProc::printAST(SyntaxNode *a) const
 {
 	static int count = 1;
 	char s[1024];
@@ -528,7 +528,7 @@ UserProc::unDecode()
  * RETURNS:     Pointer to the entry point BB, or nullptr if not found
  *============================================================================*/
 BasicBlock *
-UserProc::getEntryBB()
+UserProc::getEntryBB() const
 {
 	return cfg->getEntryBB();
 }
@@ -613,7 +613,7 @@ UserProc::generateCode(HLLCode *hll)
 
 // print this userproc, maining for debugging
 void
-UserProc::print(std::ostream &out, bool html)
+UserProc::print(std::ostream &out, bool html) const
 {
 	signature->print(out, html);
 	if (html)
@@ -644,7 +644,7 @@ UserProc::setStatus(ProcStatus s)
 }
 
 void
-UserProc::printParams(std::ostream &out, bool html)
+UserProc::printParams(std::ostream &out, bool html) const
 {
 	if (html)
 		out << "<br>";
@@ -664,7 +664,7 @@ UserProc::printParams(std::ostream &out, bool html)
 }
 
 std::string
-UserProc::prints()
+UserProc::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -672,7 +672,7 @@ UserProc::prints()
 }
 
 void
-UserProc::printToLog()
+UserProc::printToLog() const
 {
 	LOG << prints();
 }
@@ -2785,7 +2785,7 @@ UserProc::addLocal(Type *ty, const char *nam, Exp *e)
 }
 
 Type *
-UserProc::getLocalType(const char *nam)
+UserProc::getLocalType(const char *nam) const
 {
 	auto it = locals.find(nam);
 	if (it != locals.end())
@@ -2802,7 +2802,7 @@ UserProc::setLocalType(const char *nam, Type *ty)
 }
 
 Type *
-UserProc::getParamType(const char *nam)
+UserProc::getParamType(const char *nam) const
 {
 	for (unsigned int i = 0; i < signature->getNumParams(); ++i)
 		if (std::string(nam) == signature->getParamName(i))
@@ -2839,7 +2839,7 @@ UserProc::mapSymbolTo(Exp *from, Exp *to)
 
 // FIXME: is this the same as lookupSym() now?
 Exp *
-UserProc::getSymbolFor(Exp *from, Type *ty)
+UserProc::getSymbolFor(Exp *from, Type *ty) const
 {
 	for (auto ff = symbolMap.find(from); ff != symbolMap.end() && *ff->first == *from; ++ff) {
 		Exp *currTo = ff->second;
@@ -2868,7 +2868,7 @@ UserProc::removeSymbolMapping(Exp *from, Exp *to)
 
 // NOTE: linear search!!
 Exp *
-UserProc::expFromSymbol(const char *nam)
+UserProc::expFromSymbol(const char *nam) const
 {
 	for (auto it = symbolMap.begin(); it != symbolMap.end(); ++it) {
 		Exp *e = it->second;
@@ -2879,7 +2879,7 @@ UserProc::expFromSymbol(const char *nam)
 }
 
 const char *
-UserProc::getLocalName(int n)
+UserProc::getLocalName(int n) const
 {
 	int i = 0;
 	for (auto it = locals.begin(); it != locals.end(); ++it, ++i)
@@ -2889,7 +2889,7 @@ UserProc::getLocalName(int n)
 }
 
 const char *
-UserProc::getSymbolName(Exp *e)
+UserProc::getSymbolName(Exp *e) const
 {
 	auto it = symbolMap.find(e);
 	if (it == symbolMap.end()) return nullptr;
@@ -3718,7 +3718,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 
 // Get the set of locations defined by this proc. In other words, the define set, currently called returns
 void
-UserProc::getDefinitions(LocationSet &ls)
+UserProc::getDefinitions(LocationSet &ls) const
 {
 	int n = signature->getNumReturns();
 	for (int j = 0; j < n; ++j) {
@@ -3858,7 +3858,7 @@ UserProc::searchAndReplace(Exp *search, Exp *replace)
 }
 
 Exp *
-UserProc::getProven(Exp *left)
+UserProc::getProven(Exp *left) const
 {
 	// Note: proven information is in the form r28 mapsto (r28 + 4)
 	auto it = provenTrue.find(left);
@@ -3871,7 +3871,7 @@ UserProc::getProven(Exp *left)
 }
 
 Exp *
-UserProc::getPremised(Exp *left)
+UserProc::getPremised(Exp *left) const
 {
 	auto it = recurPremises.find(left);
 	if (it != recurPremises.end())
@@ -3880,7 +3880,7 @@ UserProc::getPremised(Exp *left)
 }
 
 bool
-UserProc::isPreserved(Exp *e)
+UserProc::isPreserved(Exp *e) const
 {
 	auto it = provenTrue.find(e);
 	return it != provenTrue.end() && *it->second == *e;
@@ -3943,7 +3943,7 @@ UserProc::addImplicitAssigns()
 
 // e is a parameter location, e.g. r8 or m[r28{0}+8]. Lookup a symbol for it
 const char *
-UserProc::lookupParam(Exp *e)
+UserProc::lookupParam(Exp *e) const
 {
 	// Originally e.g. m[esp+K]
 	Statement *def = cfg->findTheImplicitAssign(e);
@@ -3957,7 +3957,7 @@ UserProc::lookupParam(Exp *e)
 }
 
 const char *
-UserProc::lookupSymFromRef(RefExp *r)
+UserProc::lookupSymFromRef(RefExp *r) const
 {
 	Statement *def = r->getDef();
 	Exp *base = r->getSubExp1();
@@ -3966,7 +3966,7 @@ UserProc::lookupSymFromRef(RefExp *r)
 }
 
 const char *
-UserProc::lookupSymFromRefAny(RefExp *r)
+UserProc::lookupSymFromRefAny(RefExp *r) const
 {
 	Statement *def = r->getDef();
 	Exp *base = r->getSubExp1();
@@ -3978,7 +3978,7 @@ UserProc::lookupSymFromRefAny(RefExp *r)
 }
 
 const char *
-UserProc::lookupSym(Exp *e, Type *ty)
+UserProc::lookupSym(Exp *e, Type *ty) const
 {
 	if (e->isTypedExp())
 		e = ((TypedExp *)e)->getSubExp1();
@@ -4004,7 +4004,7 @@ UserProc::lookupSym(Exp *e, Type *ty)
 }
 
 void
-UserProc::printSymbolMap(std::ostream &out, bool html)
+UserProc::printSymbolMap(std::ostream &out, bool html) const
 {
 	if (html)
 		out << "<br>";
@@ -4021,7 +4021,7 @@ UserProc::printSymbolMap(std::ostream &out, bool html)
 }
 
 void
-UserProc::dumpLocals(std::ostream &os, bool html)
+UserProc::dumpLocals(std::ostream &os, bool html) const
 {
 	if (html)
 		os << "<br>";
@@ -4252,7 +4252,7 @@ UserProc::filterParams(Exp *e)
 }
 
 const char *
-UserProc::findLocal(Exp *e, Type *ty)
+UserProc::findLocal(Exp *e, Type *ty) const
 {
 	if (e->isLocal())
 		return ((Const *)((Unary *)e)->getSubExp1())->getStr();
@@ -4268,7 +4268,7 @@ UserProc::findLocal(Exp *e, Type *ty)
 }
 
 const char *
-UserProc::findLocalFromRef(RefExp *r)
+UserProc::findLocalFromRef(RefExp *r) const
 {
 	Statement *def = r->getDef();
 	Exp *base = r->getSubExp1();
@@ -4284,7 +4284,7 @@ UserProc::findLocalFromRef(RefExp *r)
 }
 
 const char *
-UserProc::findFirstSymbol(Exp *e)
+UserProc::findFirstSymbol(Exp *e) const
 {
 	auto ff = symbolMap.find(e);
 	if (ff == symbolMap.end()) return nullptr;
@@ -4559,7 +4559,7 @@ UserProc::inductivePreservation(UserProc *topOfCycle)
 }
 
 bool
-UserProc::isLocal(Exp *e)
+UserProc::isLocal(Exp *e) const
 {
 	if (!e->isMemOf()) return false;  // Don't want say a register
 	auto ff = symbolMap.find(e);
@@ -4569,14 +4569,14 @@ UserProc::isLocal(Exp *e)
 }
 
 bool
-UserProc::isPropagatable(Exp *e)
+UserProc::isPropagatable(Exp *e) const
 {
 	if (addressEscapedVars.exists(e)) return false;
 	return isLocalOrParam(e);
 }
 
 bool
-UserProc::isLocalOrParam(Exp *e)
+UserProc::isLocalOrParam(Exp *e) const
 {
 	if (isLocal(e)) return true;
 	return parameters.existsOnLeft(e);
@@ -4584,7 +4584,7 @@ UserProc::isLocalOrParam(Exp *e)
 
 // Is this m[sp{-} +/- K]?
 bool
-UserProc::isLocalOrParamPattern(Exp *e)
+UserProc::isLocalOrParamPattern(Exp *e) const
 {
 	if (!e->isMemOf()) return false;  // Don't want say a register
 	Exp *addr = ((Location *)e)->getSubExp1();
@@ -5410,7 +5410,7 @@ UserProc::findPhiUnites(ConnectionGraph &pu)
 }
 
 const char *
-UserProc::getRegName(Exp *r)
+UserProc::getRegName(Exp *r) const
 {
 	assert(r->isRegOf());
 	int regNum = ((Const *)((Location *)r)->getSubExp1())->getInt();
@@ -5420,7 +5420,7 @@ UserProc::getRegName(Exp *r)
 }
 
 Type *
-UserProc::getTypeForLocation(Exp *e)
+UserProc::getTypeForLocation(Exp *e) const
 {
 	const char *name;
 	if (e->isLocal()) {
@@ -5473,7 +5473,7 @@ UserProc::nameParameterPhis()
 }
 
 bool
-UserProc::existsLocal(const char *name)
+UserProc::existsLocal(const char *name) const
 {
 	std::string s(name);
 	return !!locals.count(s);
