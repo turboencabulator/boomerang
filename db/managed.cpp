@@ -535,9 +535,9 @@ StatementList::prints() const
 //
 
 void
-StatementVec::putAt(int idx, Statement *s)
+StatementVec::putAt(size_type idx, Statement *s)
 {
-	if (idx >= (int)svec.size())
+	if (idx >= svec.size())
 		svec.resize(idx + 1, nullptr);
 	svec[idx] = s;
 }

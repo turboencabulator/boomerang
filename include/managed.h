@@ -46,6 +46,7 @@ class StatementSet {
 
 public:
 	typedef std::set<Statement *>::iterator iterator;
+	typedef std::set<Statement *>::size_type size_type;
 
 	           ~StatementSet() { }
 	void        makeUnion(const StatementSet &other);   // Set union
@@ -53,7 +54,7 @@ public:
 	void        makeIsect(const StatementSet &other);   // Set intersection
 	bool        isSubSetOf(const StatementSet &other);  // Subset relation
 
-	unsigned    size() const  { return sset.size(); }   // Number of elements
+	size_type   size() const  { return sset.size(); }   // Number of elements
 	bool        empty() const { return sset.empty(); }
 	iterator    begin()       { return sset.begin(); }
 	iterator    end()         { return sset.end(); }
@@ -79,6 +80,7 @@ class AssignSet {
 public:
 	typedef std::set<Assign *, lessAssign>::iterator iterator;
 	typedef std::set<Assign *, lessAssign>::const_iterator const_iterator;
+	typedef std::set<Assign *, lessAssign>::size_type size_type;
 
 	           ~AssignSet() { }
 	void        makeUnion(const AssignSet &other);     // Set union
@@ -86,7 +88,7 @@ public:
 	void        makeIsect(const AssignSet &other);     // Set intersection
 	bool        isSubSetOf(const AssignSet &other) const;  // Subset relation
 
-	unsigned    size() const     { return aset.size(); }   // Number of elements
+	size_type   size() const     { return aset.size(); }   // Number of elements
 	const_iterator begin() const { return aset.begin(); }
 	const_iterator end() const   { return aset.end(); }
 	iterator    begin()          { return aset.begin(); }
@@ -115,8 +117,9 @@ public:
 	typedef std::list<Statement *>::const_iterator const_iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 	typedef std::list<Statement *>::size_type size_type;
+
 	           ~StatementList() { }
-	unsigned    size() const     { return slist.size(); }   // Number of elements
+	size_type   size() const     { return slist.size(); }   // Number of elements
 	bool        empty() const    { return slist.empty(); }
 	const_iterator begin() const { return slist.begin(); }
 	const_iterator end() const   { return slist.end(); }
@@ -151,10 +154,12 @@ class StatementVec {
 public:
 	typedef std::vector<Statement *>::iterator iterator;
 	typedef std::vector<Statement *>::const_iterator const_iterator;
-	unsigned    size() const { return svec.size(); }   // Number of elements
+	typedef std::vector<Statement *>::size_type size_type;
+
+	size_type   size() const { return svec.size(); }   // Number of elements
 	// Get/put at position idx (0 based)
-	Statement  *operator [](int idx) { return svec[idx]; }
-	void        putAt(int idx, Statement *s);
+	Statement  *operator [](size_type idx) { return svec[idx]; }
+	void        putAt(size_type idx, Statement *s);
 	iterator    remove(const_iterator it) { return svec.erase(it); }
 	std::string prints() const;                     // Print to string (for debugging)
 	void        printNums(std::ostream &os) const;
@@ -175,6 +180,8 @@ class LocationSet {
 public:
 	typedef std::set<Exp *, lessExpStar>::iterator iterator;
 	typedef std::set<Exp *, lessExpStar>::const_iterator const_iterator;
+	typedef std::set<Exp *, lessExpStar>::size_type size_type;
+
 	            LocationSet() { }                       // Default constructor
 	           ~LocationSet() { }                       // virtual destructor kills warning
 	            LocationSet(const LocationSet &o);      // Copy constructor
@@ -190,7 +197,7 @@ public:
 	void        remove(Exp *loc);                       // Remove the given location
 	iterator    remove(const_iterator ll) { return lset.erase(ll); } // Remove location, given iterator
 	void        removeIfDefines(StatementSet &given);   // Remove locs defined in given
-	unsigned    size() const  { return lset.size(); }   // Number of elements
+	size_type   size() const  { return lset.size(); }   // Number of elements
 	bool        empty() const { return lset.empty(); }
 	bool        operator ==(const LocationSet &o) const;// Compare
 	void        substitute(Assign &a);                  // Substitute the given assignment to all
