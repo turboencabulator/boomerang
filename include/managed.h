@@ -194,7 +194,7 @@ public:
 	iterator    begin()          { return lset.begin(); }
 	iterator    end()            { return lset.end(); }
 	void        insert(Exp *loc) { lset.insert(loc); }  // Insert the given location
-	void        remove(Exp *loc);                       // Remove the given location
+	void        remove(Exp *loc) { lset.erase(loc); }   // Remove the given location
 	iterator    remove(const_iterator ll) { return lset.erase(ll); } // Remove location, given iterator
 	void        removeIfDefines(StatementSet &given);   // Remove locs defined in given
 	size_type   size() const  { return lset.size(); }   // Number of elements

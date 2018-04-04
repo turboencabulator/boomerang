@@ -303,20 +303,6 @@ LocationSet::prints() const
 	return ost.str();
 }
 
-void
-LocationSet::remove(Exp *given)
-{
-	auto it = lset.find(given);
-	if (it == lset.end()) return;
-	//std::cerr << "LocationSet::remove at " << std::hex << (unsigned)this << " of " << *it << "\n";
-	//std::cerr << "before: "; print();
-	// NOTE: if the below uncommented, things go crazy. Valgrind says that
-	// the deleted value gets used next in LocationSet::operator == ?!
-	//delete *it;  // These expressions were cloned when created
-	lset.erase(it);
-	//std::cerr << "after : "; print();
-}
-
 // Remove locations defined by any of the given set of statements
 // Used for killing in liveness sets
 void
