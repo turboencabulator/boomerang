@@ -552,7 +552,7 @@ DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &
 
 // Find the definition for e that reaches this Collector. If none reaches here, return nullptr
 Exp *
-DefCollector::findDefFor(Exp *e)
+DefCollector::findDefFor(Exp *e) const
 {
 	for (auto it = defs.begin(); it != defs.end(); ++it) {
 		Exp *lhs = (*it)->getLeft();
@@ -563,7 +563,7 @@ DefCollector::findDefFor(Exp *e)
 }
 
 void
-UseCollector::print(std::ostream &os, bool html)
+UseCollector::print(std::ostream &os, bool html) const
 {
 	bool first = true;
 	for (auto it = locs.begin(); it != locs.end(); ++it) {
@@ -577,7 +577,7 @@ UseCollector::print(std::ostream &os, bool html)
 
 #define DEFCOL_COLS 120
 void
-DefCollector::print(std::ostream &os, bool html)
+DefCollector::print(std::ostream &os, bool html) const
 {
 	unsigned col = 36;
 	bool first = true;
@@ -603,7 +603,7 @@ DefCollector::print(std::ostream &os, bool html)
 }
 
 std::string
-UseCollector::prints()
+UseCollector::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -611,7 +611,7 @@ UseCollector::prints()
 }
 
 std::string
-DefCollector::prints()
+DefCollector::prints() const
 {
 	std::ostringstream ost;
 	print(ost);
@@ -666,7 +666,7 @@ UseCollector::fromSSAform(UserProc *proc, Statement *def)
 }
 
 bool
-UseCollector::operator ==(UseCollector &other)
+UseCollector::operator ==(const UseCollector &other) const
 {
 	if (other.initialised != initialised) return false;
 	if (other.locs.size() != locs.size()) return false;

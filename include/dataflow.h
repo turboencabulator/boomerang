@@ -109,9 +109,9 @@ public:
 	// For testing:
 	int         pbbToNode(BasicBlock *bb) { return indices[bb]; }
 	std::set<int> &getDF(int node) { return DF[node]; }
-	BasicBlock *nodeToBB(int node) { return BBs[node]; }
-	int         getIdom(int node) { return idom[node]; }
-	int         getSemi(int node) { return semi[node]; }
+	BasicBlock *nodeToBB(int node) const { return BBs[node]; }
+	int         getIdom(int node) const { return idom[node]; }
+	int         getSemi(int node) const { return semi[node]; }
 	std::set<int> &getA_phi(Exp *e) { return A_phi[e]; }
 };
 
@@ -162,12 +162,12 @@ public:
 	/*
 	 * Print the collected locations to stream os
 	 */
-	void        print(std::ostream &os, bool html = false);
+	void        print(std::ostream &os, bool html = false) const;
 
 	/*
 	 * Print to string (for debugging)
 	 */
-	std::string prints();
+	std::string prints() const;
 
 	/*
 	 * begin() and end() so we can iterate through the locations
@@ -189,7 +189,7 @@ public:
 	/**
 	 * Find the definition for a location.  If not found, return nullptr.
 	 */
-	Exp        *findDefFor(Exp *e);
+	Exp        *findDefFor(Exp *e) const;
 
 	/**
 	 * Search and replace all occurrences
@@ -240,12 +240,12 @@ public:
 	/*
 	 * Print the collected locations to stream os
 	 */
-	void        print(std::ostream &os, bool html = false);
+	void        print(std::ostream &os, bool html = false) const;
 
 	/*
 	 * Print to string (for debugging)
 	 */
-	std::string prints();
+	std::string prints() const;
 
 	/*
 	 * begin() and end() so we can iterate through the locations
@@ -266,7 +266,7 @@ public:
 	void        remove(Exp *loc) { locs.remove(loc); }        // Remove the given location
 	iterator    remove(const_iterator it) { return locs.remove(it); }  // Remove the current location
 	void        fromSSAform(UserProc *proc, Statement *def);  // Translate out of SSA form
-	bool        operator ==(UseCollector &other);
+	bool        operator ==(const UseCollector &other) const;
 };
 
 #endif
