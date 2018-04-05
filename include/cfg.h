@@ -163,11 +163,6 @@ public:
 	BasicBlock *newIncompleteBB(ADDRESS addr);
 
 	/*
-	 * Remove the incomplete BB at uAddr, if any. Was used when dealing with the SKIP instruction, but no longer.
-	 */
-	void        removeIncBB(ADDRESS uAddr);
-
-	/*
 	 * Adds an out-edge to the basic block pBB by filling in the first slot that is empty.  Note: an address is
 	 * given here; the out edge will be filled in as a pointer to a BB. An incomplete BB will be created if
 	 * required. If bSetLabel is true, the destination BB will have its "label required" bit set.
@@ -321,11 +316,6 @@ public:
 	void        removeBB(BasicBlock *bb);
 
 	/*
-	 * Resets the DFA sets of all the BBs.
-	 */
-	void        resetDFASets();
-
-	/*
 	 * Add a call to the set of calls within this procedure.
 	 */
 	void        addCall(CallStatement *call);
@@ -342,12 +332,6 @@ public:
 	bool        searchAll(Exp *search, std::list<Exp *> &result);
 
 	/*
-	 * Set the return value for this CFG (assumes there is only one exit bb)
-	 */
-	void        setReturnVal(Exp *e);
-	Exp        *getReturnVal();
-
-	/*
 	 * Structures the control flow graph
 	 */
 	void        structure();
@@ -357,20 +341,6 @@ public:
 	 */
 	void        addJunctionStatements();
 	void        removeJunctionStatements();
-
-	/*
-	 * Resolves goto/branch destinations to statements
-	 * Good to do this late, as removing statements doesn't update this information.
-	 */
-	void        resolveGotos();
-
-	/*
-	 * Virtual Function Call analysis
-	 */
-	void        virtualFunctionCalls(Prog *prog);
-
-	/* return a bb given an address */
-	BasicBlock *bbForAddr(ADDRESS addr) { return m_mapBB[addr]; }
 
 	/* Simplify all the expressions in the CFG
 	 */
@@ -471,8 +441,6 @@ public:
 
 	void        findInterferences(ConnectionGraph &ig);
 	void        appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workset);
-
-	void        removeUsedGlobals(std::set<Global *> &unusedGlobals);
 
 protected:
 	void        addBB(BasicBlock *bb) { m_listBB.push_back(bb); }

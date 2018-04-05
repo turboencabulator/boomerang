@@ -87,8 +87,6 @@ public:
 	// Find the Proc that contains the given address
 	        Proc       *findContainingProc(ADDRESS uAddr) const;
 	        bool        isProcLabel(ADDRESS addr);      // Checks if addr is a label or not
-	// Create a dot file for all CFGs
-	        bool        createDotFile(const char *, bool bMainOnly = false) const;
 	// get the filename of this program
 	        std::string getNameNoPath() const;
 	        std::string getNameNoPathNoExt() const;
@@ -126,28 +124,11 @@ public:
 	// last fixes after decoding everything
 	        void        finishDecode();
 
-	// Recover return locations
-	        void        recoverReturnLocs();
-
-	// Remove interprocedural edges
-	        void        removeInterprocEdges();
-
 	// Do the main non-global decompilation steps
 	        void        decompile();
 
-	// All that used to be done in UserProc::decompile, but now done globally: propagation, recalc DFA, remove null
-	// and unused statements, compressCfg, process constants, promote signature, simplify a[m[]].
-	        void        decompileProcs();
-
-	// Remove null, unused, and restored statements
-	        void        removeNullStmts();
-	        void        removeUnusedStmts();
 	        void        removeUnusedGlobals();
 	        void        removeUnusedLocals();
-	        void        removeRestoreStmts(StatementSet &rs);
-
-	// Process constants
-	        void        processConstants();
 
 	// Type analysis
 	        void        globalTypeAnalysis();
@@ -161,7 +142,6 @@ public:
 
 	// Type analysis
 	        void        conTypeAnalysis();
-	        void        dfaTypeAnalysis();
 
 	// Range analysis
 	        void        rangeAnalysis();

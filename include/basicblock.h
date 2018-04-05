@@ -292,11 +292,6 @@ public:
 	 */
 	static  bool        lessLastDFT(BasicBlock *bb1, BasicBlock *bb2);
 
-	/*
-	 * Resets the DFA sets of this BB.
-	 */
-	        void        resetDFASets();
-
 	class LastStatementNotABranchError : public std::exception {
 	public:
 		Statement *stmt;
@@ -356,9 +351,6 @@ private:
 
 public:
 
-	// code generation
-	        void        generateBodyCode(HLLCode &hll, bool dup = false);
-
 	/* high level structuring */
 	        SBBTYPE     m_structType = NONE;    // structured type of this node
 	        SBBTYPE     m_loopCondType = NONE;  // type of conditional to treat this loop header as (if any)
@@ -391,9 +383,6 @@ protected:
 	        LocationSet liveIn;         // Set of locations live at BB start
 
 public:
-
-	        bool        isPostCall();
-	static  void        doAvail(StatementSet &s, BasicBlock *inEdge);
 	        Proc       *getDestProc() const;
 
 	/**
@@ -503,7 +492,6 @@ protected:
 		                    return false;
 	                    }
 
-	        char       *indent(int indLevel, int extra = 0);
 	        bool        allParentsGenerated() const;
 	        void        emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest);
 	        void        WriteBB(HLLCode *hll, int indLevel);

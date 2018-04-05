@@ -107,22 +107,6 @@ public:
 
 	        void        updateAddress(ADDRESS addr);
 
-#if 0 // Cruft?
-	// Return true if RTL loads the high half of an immediate constant into anything. If so, loads the already
-	// shifted high value into the parameter.
-	        bool        isHiImmedLoad(ADDRESS &uHiHalf);
-
-	// As above for low half. Extra parameters are required for SPARC, where bits are potentially transferred from
-	// one register to another.
-	        bool        isLoImmedLoad(ADDRESS &uLoHalf, bool &bTrans, int &iSrc);
-
-	// Do a machine dependent, and a standard simplification of the RTL.
-	        void        allSimplify();
-
-	// Perform forward substitutions of temps, if possible. Called from the above
-	        void        forwardSubs();
-#endif
-
 	        void        insertAssign(Exp *ssLhs, Exp *ssRhs, bool prep, Type *type = nullptr);
 	        void        insertAfterTemps(Exp *ssLhs, Exp *ssRhs, Type *type = nullptr);
 
