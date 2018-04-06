@@ -1190,7 +1190,7 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 				assert(b->getOper() == opList);
 				Exp *e1 = b->getSubExp1();
 				Exp *e2 = b->getSubExp2();  // This should be an opList too
-				assert(b->getOper() == opList);
+				assert(e2->getOper() == opList);
 				e2 = ((Binary *)e2)->getSubExp1();
 				OPER ops = ((OpTable *)(TableDict[tbl]))->operators[indexrefmap[idx]->getvalue()];
 				Exp *repl = new Binary(ops, e1->clone(), e2->clone());  // FIXME!
