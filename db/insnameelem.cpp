@@ -87,13 +87,13 @@ InsNameElem::append(InsNameElem *next)
 bool
 InsNameElem::increment()
 {
-	if (!nextelem || nextelem->increment())
+	if (!nextelem || !nextelem->increment())
 		++value;
 	if (value >= ntokens()) {
 		value = 0;
-		return true;
+		return false;
 	}
-	return false;
+	return true;
 }
 
 void
