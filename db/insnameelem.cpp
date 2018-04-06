@@ -34,13 +34,13 @@ InsNameElem::~InsNameElem()
 }
 
 int
-InsNameElem::ntokens()
+InsNameElem::ntokens() const
 {
 	return 1;
 }
 
 std::string
-InsNameElem::getinstruction()
+InsNameElem::getinstruction() const
 {
 	std::string s = elemname;
 	if (nextelem)
@@ -49,7 +49,7 @@ InsNameElem::getinstruction()
 }
 
 std::string
-InsNameElem::getinspattern()
+InsNameElem::getinspattern() const
 {
 	std::string s = elemname;
 	if (nextelem)
@@ -58,7 +58,7 @@ InsNameElem::getinspattern()
 }
 
 void
-InsNameElem::getrefmap(std::map<std::string, InsNameElem *> &m)
+InsNameElem::getrefmap(std::map<std::string, const InsNameElem *> &m) const
 {
 	if (nextelem)
 		nextelem->getrefmap(m);
@@ -67,7 +67,7 @@ InsNameElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 }
 
 int
-InsNameElem::ninstructions()
+InsNameElem::ninstructions() const
 {
 	int n = ntokens();
 	if (nextelem)
@@ -105,7 +105,7 @@ InsNameElem::reset()
 }
 
 int
-InsNameElem::getvalue()
+InsNameElem::getvalue() const
 {
 	return value;
 }
@@ -116,13 +116,13 @@ InsOptionElem::InsOptionElem(const std::string &name) :
 }
 
 int
-InsOptionElem::ntokens()
+InsOptionElem::ntokens() const
 {
 	return 2;
 }
 
 std::string
-InsOptionElem::getinstruction()
+InsOptionElem::getinstruction() const
 {
 	std::string s;
 	if (getvalue() == 0)
@@ -133,7 +133,7 @@ InsOptionElem::getinstruction()
 }
 
 std::string
-InsOptionElem::getinspattern()
+InsOptionElem::getinspattern() const
 {
 	std::string s = '\'' + elemname + '\'';
 	if (nextelem)
@@ -149,13 +149,13 @@ InsListElem::InsListElem(const std::string &name, NameTable *t, const std::strin
 }
 
 int
-InsListElem::ntokens()
+InsListElem::ntokens() const
 {
 	return thetable->records.size();
 }
 
 std::string
-InsListElem::getinstruction()
+InsListElem::getinstruction() const
 {
 	std::string s = thetable->records[getvalue()];
 	if (nextelem)
@@ -164,7 +164,7 @@ InsListElem::getinstruction()
 }
 
 std::string
-InsListElem::getinspattern()
+InsListElem::getinspattern() const
 {
 	std::string s = elemname + '[' + indexname + ']';
 	if (nextelem)
@@ -173,7 +173,7 @@ InsListElem::getinspattern()
 }
 
 void
-InsListElem::getrefmap(std::map<std::string, InsNameElem *> &m)
+InsListElem::getrefmap(std::map<std::string, const InsNameElem *> &m) const
 {
 	if (nextelem)
 		nextelem->getrefmap(m);
@@ -185,7 +185,7 @@ InsListElem::getrefmap(std::map<std::string, InsNameElem *> &m)
 }
 
 std::string
-InsListElem::getindex()
+InsListElem::getindex() const
 {
 	return indexname;
 }

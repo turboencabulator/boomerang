@@ -111,7 +111,7 @@
 		/* \
 		 * maps index names to instruction name-elements \
 		 */ \
-		std::map<std::string, InsNameElem *> indexrefmap; \
+		std::map<std::string, const InsNameElem *> indexrefmap; \
 	\
 		/* \
 		 * Maps table names to Table's.\

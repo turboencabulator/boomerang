@@ -24,16 +24,16 @@ class InsNameElem {
 public:
 	InsNameElem(const std::string &name);
 	virtual ~InsNameElem();
-	virtual int ntokens();
-	virtual std::string getinstruction();
-	virtual std::string getinspattern();
-	virtual void getrefmap(std::map<std::string, InsNameElem *> &m);
+	virtual int ntokens() const;
+	virtual std::string getinstruction() const;
+	virtual std::string getinspattern() const;
+	virtual void getrefmap(std::map<std::string, const InsNameElem *> &m) const;
 
-	int ninstructions();
+	int ninstructions() const;
 	void append(InsNameElem *next);
 	bool increment();
 	void reset();
-	int getvalue();
+	int getvalue() const;
 
 protected:
 	InsNameElem *nextelem = nullptr;
@@ -44,20 +44,20 @@ protected:
 class InsOptionElem : public InsNameElem {
 public:
 	InsOptionElem(const std::string &name);
-	int ntokens() override;
-	std::string getinstruction() override;
-	std::string getinspattern() override;
+	int ntokens() const override;
+	std::string getinstruction() const override;
+	std::string getinspattern() const override;
 };
 
 class InsListElem : public InsNameElem {
 public:
 	InsListElem(const std::string &name, NameTable *t, const std::string &idx);
-	int ntokens() override;
-	std::string getinstruction() override;
-	std::string getinspattern() override;
-	void getrefmap(std::map<std::string, InsNameElem *> &m) override;
+	int ntokens() const override;
+	std::string getinstruction() const override;
+	std::string getinspattern() const override;
+	void getrefmap(std::map<std::string, const InsNameElem *> &m) const override;
 
-	std::string getindex();
+	std::string getindex() const;
 
 protected:
 	std::string indexname;
