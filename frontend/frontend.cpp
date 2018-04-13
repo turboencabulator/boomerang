@@ -273,15 +273,11 @@ void
 FrontEnd::readLibraryCatalog()
 {
 	librarySignatures.clear();
-	std::string sList = Boomerang::get()->getProgPath() + "signatures/common.hs";
-	readLibraryCatalog(sList);
-
-	sList = Boomerang::get()->getProgPath() + "signatures/" + Signature::platformName(getFrontEndId()) + ".hs";
-	readLibraryCatalog(sList);
-
+	std::string path = Boomerang::get()->getProgPath() + "signatures/";
+	readLibraryCatalog(path + "common.hs");
+	readLibraryCatalog(path + Signature::platformName(getFrontEndId()) + ".hs");
 	if (isWin32()) {
-		sList = Boomerang::get()->getProgPath() + "signatures/win32.hs";
-		readLibraryCatalog(sList);
+		readLibraryCatalog(path + "win32.hs");
 	}
 }
 
