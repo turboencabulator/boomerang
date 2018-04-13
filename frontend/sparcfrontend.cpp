@@ -1532,20 +1532,6 @@ SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl
 	return true;
 }
 
-ADDRESS
-SparcFrontEnd::getMainEntryPoint(bool &gotMain)
-{
-	ADDRESS start = pBF->getMainEntryPoint();
-	if (start != NO_ADDRESS) {
-		gotMain = true;
-		return start;
-	}
-
-	start = pBF->getEntryPoint();
-	gotMain = start != NO_ADDRESS;
-	return start;
-}
-
 #ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new FrontEnd

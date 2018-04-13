@@ -281,6 +281,20 @@ FrontEnd::readLibraryCatalog()
 	}
 }
 
+ADDRESS
+FrontEnd::getMainEntryPoint(bool &gotMain)
+{
+	ADDRESS start = pBF->getMainEntryPoint();
+	if (start != NO_ADDRESS) {
+		gotMain = true;
+		return start;
+	}
+
+	start = pBF->getEntryPoint();
+	gotMain = start != NO_ADDRESS;
+	return start;
+}
+
 /**
  * \brief Returns a list of all available entrypoints.
  */

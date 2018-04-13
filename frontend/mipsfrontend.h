@@ -34,8 +34,6 @@ public:
 	std::vector<Exp *> &getDefaultReturns() override;
 
 	bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false) override;
-
-	ADDRESS getMainEntryPoint(bool &gotMain) override;
 };
 
 #endif

@@ -162,7 +162,7 @@ public:
 	 *
 	 * \returns Native pointer if found; NO_ADDRESS if not.
 	 */
-	virtual ADDRESS getMainEntryPoint(bool &gotMain) = 0;
+	virtual ADDRESS getMainEntryPoint(bool &gotMain);
 
 	std::vector<ADDRESS> getEntryPoints();
 

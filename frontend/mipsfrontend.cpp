@@ -53,20 +53,6 @@ MIPSFrontEnd::getDefaultReturns()
 	return returns;
 }
 
-ADDRESS
-MIPSFrontEnd::getMainEntryPoint(bool &gotMain)
-{
-	ADDRESS start = pBF->getMainEntryPoint();
-	if (start != NO_ADDRESS) {
-		gotMain = true;
-		return start;
-	}
-
-	start = pBF->getEntryPoint();
-	gotMain = start != NO_ADDRESS;
-	return start;
-}
-
 bool
 MIPSFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
 {
