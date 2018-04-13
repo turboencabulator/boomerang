@@ -16,7 +16,6 @@
 
 #include "signature.h"
 
-#include "BinaryFile.h"
 #include "boomerang.h"
 #include "exp.h"
 #include "log.h"
@@ -1635,26 +1634,6 @@ Signature::getFirstArgLoc(Prog *prog)
 	default:
 		std::cerr << "Signature::getFirstArgLoc: machine not handled\n";
 		assert(0);
-	}
-	return nullptr;
-}
-
-// A bit of a cludge. Problem is that we can't call the polymorphic getReturnExp() until signature promotion has
-// happened. For the switch logic, that happens way too late. So for now, we have this cludge.
-// This is very very hacky! (trent)
-/*static*/ Exp *
-Signature::getReturnExp2(BinaryFile *pBF)
-{
-	switch (pBF->getMachine()) {
-	case MACHINE_SPARC:
-		return Location::regOf(8);
-	case MACHINE_PENTIUM:
-		return Location::regOf(24);
-	case MACHINE_ST20:
-		return Location::regOf(0);
-	default:
-		std::cerr << "getReturnExp2: machine not handled\n";
-		return nullptr;
 	}
 	return nullptr;
 }

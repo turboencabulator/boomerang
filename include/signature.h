@@ -23,7 +23,6 @@
 #include <vector>
 
 class Assignment;
-class BinaryFile;
 class Cfg;
 class Prog;
 class Statement;
@@ -211,7 +210,6 @@ public:
 	        bool        isOpCompatStackLocal(OPER op);
 
 	// Quick and dirty hack
-	static  Exp        *getReturnExp2(BinaryFile *pBF);
 	static  StatementList &getStdRetStmt(Prog *prog);
 
 	// get anything that can be proven as a result of the signature

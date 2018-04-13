@@ -18,7 +18,6 @@ Signature::Signature(const char *nam) { }
 bool Signature::operator ==(const Signature &other) const { return false; }
 Signature *Signature::clone() { return nullptr; }
 Exp *Signature::getReturnExp() { return nullptr; }
-Exp *Signature::getReturnExp2(BinaryFile *pBF) { return nullptr; }
 Type *Signature::getReturnType() { return nullptr; }
 void Signature::setReturnType(Type *t) { }
 const char *Signature::getName() { return nullptr; }
