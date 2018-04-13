@@ -1704,43 +1704,6 @@ Signature::getEarlyParamExp(int n, Prog *prog)
 	return nullptr;
 }
 
-StatementList &
-Signature::getStdRetStmt(Prog *prog)
-{
-	// pc := m[r[28]]
-	static Assign pent1ret(new Terminal(opPC),
-	                       Location::memOf(Location::regOf(28)));
-	// r[28] := r[28] + 4
-	static Assign pent2ret(Location::regOf(28),
-	                       new Binary(opPlus, Location::regOf(28), new Const(4)));
-	static Assign st20_1ret(new Terminal(opPC),
-	                        Location::memOf(Location::regOf(3)));
-	static Assign st20_2ret(Location::regOf(3),
-	                        new Binary(opPlus, Location::regOf(3), new Const(16)));
-	MACHINE mach = prog->getMachine();
-	switch (mach) {
-	case MACHINE_SPARC:
-		break;  // No adjustment to stack pointer required
-	case MACHINE_PENTIUM:
-		{
-			StatementList *sl = new StatementList;
-			sl->append((Statement *)&pent1ret);
-			sl->append((Statement *)&pent2ret);
-			return *sl;
-		}
-	case MACHINE_ST20:
-		{
-			StatementList *sl = new StatementList;
-			sl->append((Statement *)&st20_1ret);
-			sl->append((Statement *)&st20_2ret);
-			return *sl;
-		}
-	default:
-		break;
-	}
-	return *new StatementList;
-}
-
 int
 Signature::getStackRegister() throw (StackRegisterNotDefinedException)
 {

@@ -209,9 +209,6 @@ public:
 	// Is this operator (between the stack pointer and a constant) compatible with a stack local pattern?
 	        bool        isOpCompatStackLocal(OPER op);
 
-	// Quick and dirty hack
-	static  StatementList &getStdRetStmt(Prog *prog);
-
 	// get anything that can be proven as a result of the signature
 	virtual Exp        *getProven(Exp *left) { return nullptr; }
 	virtual bool        isPreserved(Exp *e) { return false; }  // Return whether e is preserved by this proc
