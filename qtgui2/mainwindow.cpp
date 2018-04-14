@@ -772,8 +772,7 @@ void
 MainWindow::on_actionCut_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
-		if (n)
+		if (auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget()))
 			n->cut();
 	}
 }
@@ -782,8 +781,7 @@ void
 MainWindow::on_actionCopy_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
-		if (n)
+		if (auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget()))
 			n->copy();
 	}
 }
@@ -792,8 +790,7 @@ void
 MainWindow::on_actionPaste_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
-		if (n)
+		if (auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget()))
 			n->paste();
 	}
 }
@@ -802,8 +799,7 @@ void
 MainWindow::on_actionDelete_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
-		if (n)
+		if (auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget()))
 			n->textCursor().removeSelectedText();
 	}
 }
@@ -827,8 +823,7 @@ void
 MainWindow::on_actionSelect_All_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
-		if (n)
+		if (auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget()))
 			n->selectAll();
 	}
 }

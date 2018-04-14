@@ -560,23 +560,23 @@ CallingConvention::StdC::PentiumSignature::qualified(UserProc *p, Signature &can
 	internal.append(*p->getCFG()->getReachExit());
 	StmtListIter it;
 	for (Statement *s = internal.getFirst(it); s; s = internal.getNext(it)) {
-		auto e = dynamic_cast<Assign *>(s);
-		if (!e) continue;
-		if (e->getLeft()->isPC()) {
-			if (e->getRight()->isMemOf() && e->getRight()->getSubExp1()->isRegOfN(28)) {
-				if (VERBOSE)
-					std::cerr << "got pc = m[r[28]]" << std::endl;
-				gotcorrectret1 = true;
-			}
-		} else if (e->getLeft()->isRegOfK()
-		        && ((Const *)e->getLeft()->getSubExp1())->getInt() == 28) {
-			if (e->getRight()->getOper() == opPlus
-			 && e->getRight()->getSubExp1()->isRegOfN(28)
-			 && e->getRight()->getSubExp2()->isIntConst()
-			 && ((Const *)e->getRight()->getSubExp2())->getInt() == 4) {
-				if (VERBOSE)
-					std::cerr << "got r[28] = r[28] + 4" << std::endl;
-				gotcorrectret2 = true;
+		if (auto e = dynamic_cast<Assign *>(s)) {
+			if (e->getLeft()->isPC()) {
+				if (e->getRight()->isMemOf() && e->getRight()->getSubExp1()->isRegOfN(28)) {
+					if (VERBOSE)
+						std::cerr << "got pc = m[r[28]]" << std::endl;
+					gotcorrectret1 = true;
+				}
+			} else if (e->getLeft()->isRegOfK()
+			        && ((Const *)e->getLeft()->getSubExp1())->getInt() == 28) {
+				if (e->getRight()->getOper() == opPlus
+				 && e->getRight()->getSubExp1()->isRegOfN(28)
+				 && e->getRight()->getSubExp2()->isIntConst()
+				 && ((Const *)e->getRight()->getSubExp2())->getInt() == 4) {
+					if (VERBOSE)
+						std::cerr << "got r[28] = r[28] + 4" << std::endl;
+					gotcorrectret2 = true;
+				}
 			}
 		}
 	}

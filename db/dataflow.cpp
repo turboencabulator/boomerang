@@ -472,25 +472,21 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// Suppose n is the jth predecessor of Y
 		int j = Ybb->whichPred(bb);
 		// For each phi-function in Y
-		Statement *S;
-		for (S = Ybb->getFirstStmt(rit, sit); S; S = Ybb->getNextStmt(rit, sit)) {
-			auto pa = dynamic_cast<PhiAssign *>(S);
-			// if S is not a phi function, then quit the loop (no more phi's)
-			// Wrong: do not quit the loop: there's an optimisation that turns a PhiAssign into an ordinary Assign.
-			// So continue, not break.
-			if (!pa) continue;
-			// Suppose the jth operand of the phi is a
-			// For now, just get the LHS
-			Exp *a = pa->getLeft();
-			// Only consider variables that can be renamed
-			if (!canRename(a, proc)) continue;
-			Statement *def;
-			if (STACKS_EMPTY(a))
-				def = nullptr;  // No reaching definition
-			else
-				def = Stacks[a].top();
-			// "Replace jth operand with a_i"
-			pa->putAt(j, def, a);
+		for (Statement *S = Ybb->getFirstStmt(rit, sit); S; S = Ybb->getNextStmt(rit, sit)) {
+			if (auto pa = dynamic_cast<PhiAssign *>(S)) {
+				// Suppose the jth operand of the phi is a
+				// For now, just get the LHS
+				Exp *a = pa->getLeft();
+				// Only consider variables that can be renamed
+				if (!canRename(a, proc)) continue;
+				Statement *def;
+				if (STACKS_EMPTY(a))
+					def = nullptr;  // No reaching definition
+				else
+					def = Stacks[a].top();
+				// "Replace jth operand with a_i"
+				pa->putAt(j, def, a);
+			}
 		}
 	}
 

@@ -409,14 +409,13 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 						LOG << "no proc found for address " << a << "\n";
 					return;
 				}
-				auto fty = dynamic_cast<FuncType *>(Type::getNamedType(name));
-				if (!fty)
-					LOG << "unable to find signature for known entrypoint " << name << "\n";
-				else {
+				if (auto fty = dynamic_cast<FuncType *>(Type::getNamedType(name))) {
 					proc->setSignature(fty->getSignature()->clone());
 					proc->getSignature()->setName(name);
 					//proc->getSignature()->setFullSig(true);  // Don't add or remove parameters
 					proc->getSignature()->setForced(true);   // Don't add or remove parameters
+				} else {
+					LOG << "unable to find signature for known entrypoint " << name << "\n";
 				}
 				break;
 			}

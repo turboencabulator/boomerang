@@ -799,16 +799,13 @@ BasicBlock::getDest() const throw (LastStatementNotAGotoError)
 	RTL *lastRtl = m_pRtls->back();
 	// It should contain a GotoStatement or derived class
 	Statement *lastStmt = lastRtl->getHlStmt();
-	auto cs = dynamic_cast<CaseStatement *>(lastStmt);
-	if (cs) {
+	if (auto cs = dynamic_cast<CaseStatement *>(lastStmt)) {
 		// Get the expression from the switch info
 		SWITCH_INFO *si = cs->getSwitchInfo();
 		if (si)
 			return si->pSwitchVar;
-	} else {
-		auto gs = dynamic_cast<GotoStatement *>(lastStmt);
-		if (gs)
-			return gs->getDest();
+	} else if (auto gs = dynamic_cast<GotoStatement *>(lastStmt)) {
+		return gs->getDest();
 	}
 	if (VERBOSE)
 		LOG << "throwing LastStatementNotAGotoError\n";

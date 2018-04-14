@@ -45,8 +45,7 @@ Statement::setProc(UserProc *p)
 	getDefinitions(defs);
 	exps.makeUnion(defs);
 	for (auto ll = exps.begin(); ll != exps.end(); ++ll) {
-		auto l = dynamic_cast<Location *>(*ll);
-		if (l) {
+		if (auto l = dynamic_cast<Location *>(*ll)) {
 			l->setProc(p);
 		}
 	}
@@ -2121,8 +2120,7 @@ CallStatement::setSigArguments()
 	for (i = 0; i < n; ++i) {
 		Exp *e = signature->getArgumentExp(i);
 		assert(e);
-		auto l = dynamic_cast<Location *>(e);
-		if (l) {
+		if (auto l = dynamic_cast<Location *>(e)) {
 			l->setProc(proc);  // Needed?
 		}
 		auto as = new Assign(signature->getParamType(i)->clone(), e->clone(), e->clone());
@@ -2382,8 +2380,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 			for (int i = 1; i < 3; ++i) {
 				Exp *e = signature->getArgumentExp(i);
 				assert(e);
-				auto l = dynamic_cast<Location *>(e);
-				if (l) {
+				if (auto l = dynamic_cast<Location *>(e)) {
 					l->setProc(proc);  // Needed?
 				}
 				auto as = new Assign(signature->getParamType(i), e->clone(), e->clone());

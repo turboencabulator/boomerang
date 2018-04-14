@@ -417,8 +417,7 @@ UsedLocsVisitor::visit(Assign *s, bool &override)
 		Exp *child = ((Location *)lhs)->getSubExp1();  // m[xxx] uses xxx
 		// Care! Don't want the memOnly flag when inside a m[...]. Otherwise, nothing will be found
 		// Also beware that ev may be a UsedLocalFinder now
-		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
-		if (ulf) {
+		if (auto ulf = dynamic_cast<UsedLocsFinder *>(ev)) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
 			child->accept(ev);
@@ -447,8 +446,7 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 	// Special logic for the LHS
 	if (lhs->isMemOf()) {
 		Exp *child = ((Location *)lhs)->getSubExp1();
-		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
-		if (ulf) {
+		if (auto ulf = dynamic_cast<UsedLocsFinder *>(ev)) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
 			child->accept(ev);
@@ -481,8 +479,7 @@ UsedLocsVisitor::visit(ImplicitAssign *s, bool &override)
 	// Special logic for the LHS
 	if (lhs->isMemOf()) {
 		Exp *child = ((Location *)lhs)->getSubExp1();
-		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
-		if (ulf) {
+		if (auto ulf = dynamic_cast<UsedLocsFinder *>(ev)) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
 			child->accept(ev);
@@ -550,8 +547,7 @@ UsedLocsVisitor::visit(BoolAssign *s, bool &override)
 	Exp *lhs = s->getLeft();
 	if (lhs && lhs->isMemOf()) {  // If dest is of form m[x]...
 		Exp *x = ((Location *)lhs)->getSubExp1();
-		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
-		if (ulf) {
+		if (auto ulf = dynamic_cast<UsedLocsFinder *>(ev)) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
 			x->accept(ev);

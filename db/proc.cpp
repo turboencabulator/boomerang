@@ -700,8 +700,7 @@ UserProc::printDFG()
 		LocationSet refs;
 		s->addUsedLocs(refs);
 		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
-			auto r = dynamic_cast<RefExp *>(*rr);
-			if (r) {
+			if (auto r = dynamic_cast<RefExp *>(*rr)) {
 				out << "\t";
 				if (r->getDef())
 					out << r->getDef()->getNumber();
@@ -731,8 +730,7 @@ UserProc::initStatements()
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			s->setProc(this);
 			s->setBB(bb);
-			auto call = dynamic_cast<CallStatement *>(s);
-			if (call) {
+			if (auto call = dynamic_cast<CallStatement *>(s)) {
 				call->setSigArguments();
 				if (call->getDestProc()
 				 && call->getDestProc()->isNoReturn()
@@ -3516,8 +3514,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 			if (!change && query->getSubExp1()->getOper() == opSubscript) {
 				RefExp *r = (RefExp *)query->getSubExp1();
 				Statement *s = r->getDef();
-				auto call = dynamic_cast<CallStatement *>(s);
-				if (call) {
+				if (auto call = dynamic_cast<CallStatement *>(s)) {
 					// See if we can prove something about this register.
 					UserProc *destProc = (UserProc *)call->getDestProc();
 					Exp *base = r->getSubExp1();
@@ -4093,9 +4090,9 @@ UserProc::updateCallDefines()
 	StatementList stmts;
 	getStatements(stmts);
 	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
-		auto call = dynamic_cast<CallStatement *>(*it);
-		if (!call) continue;
-		call->updateDefines();
+		if (auto call = dynamic_cast<CallStatement *>(*it)) {
+			call->updateDefines();
+		}
 	}
 }
 
