@@ -271,8 +271,6 @@ cloneVec(const std::vector<Return *> &from, std::vector<Return *> &to)
 		to.push_back((*it)->clone());
 }
 
-Parameter *hack;
-
 Parameter *
 Parameter::clone() const
 {
@@ -282,7 +280,6 @@ Parameter::clone() const
 void
 Parameter::setBoundMax(const std::string &nam)
 {
-	hack = this;
 	boundMax = nam;
 }
 
