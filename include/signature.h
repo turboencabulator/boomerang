@@ -179,10 +179,6 @@ public:
 	        std::string prints() const;  // For debugging
 	        void        printToLog() const;
 
-	// Special for Mike: find the location that conventionally holds the first outgoing (actual) parameter
-	// MVE: Use the below now
-	        Exp        *getFirstArgLoc(Prog *prog);
-
 	// Get a wildcard to find stack locations
 	virtual Exp        *getStackWildcard() { return nullptr; }
 	class StackRegisterNotDefinedException : public std::exception {

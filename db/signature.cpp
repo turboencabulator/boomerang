@@ -1607,37 +1607,6 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 	return n > ((int)getNumParams() - 1);
 }
 
-// Special for Mike: find the location where the first outgoing (actual) parameter is conventionally held
-Exp *
-Signature::getFirstArgLoc(Prog *prog)
-{
-	MACHINE mach = prog->getMachine();
-	switch (mach) {
-	case MACHINE_SPARC:
-		{
-			CallingConvention::StdC::SparcSignature sig("");
-			return sig.getArgumentExp(0);
-		}
-	case MACHINE_PENTIUM:
-		{
-			//CallingConvention::StdC::PentiumSignature sig("");
-			//return sig.getArgumentExp(0);
-			// For now, need to work around how the above appears to be the wrong thing!
-			return Location::memOf(Location::regOf(28));
-		}
-	case MACHINE_ST20:
-		{
-			CallingConvention::StdC::ST20Signature sig("");
-			return sig.getArgumentExp(0);
-			//return Location::regOf(0);
-		}
-	default:
-		std::cerr << "Signature::getFirstArgLoc: machine not handled\n";
-		assert(0);
-	}
-	return nullptr;
-}
-
 // Not very satisfying to do things this way. Problem is that the polymorphic CallingConvention objects are set up
 // very late in the decompilation. Get the set of registers that are not saved in library functions (or any
 // procedures that follow the calling convention)
