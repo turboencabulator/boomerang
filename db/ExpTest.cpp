@@ -65,7 +65,7 @@ ExpTest::test99()
 void
 ExpTest::testFlt()
 {
-	Const *c = new Const(3.14);
+	auto c = new Const(3.14);
 	CPPUNIT_ASSERT_EQUAL(std::string("3.1400"), c->prints());
 	delete c;
 }
@@ -90,7 +90,7 @@ ExpTest::testRegOf2()
 void
 ExpTest::testBinaries()
 {
-	Binary *b = new Binary(opPlus, m_99->clone(), m_rof2->clone());
+	auto b = new Binary(opPlus, m_99->clone(), m_rof2->clone());
 	CPPUNIT_ASSERT_EQUAL(std::string("99 + r2"), b->prints());
 	delete b;
 
@@ -129,7 +129,7 @@ ExpTest::testBinaries()
 void
 ExpTest::testUnaries()
 {
-	Unary *u = new Unary(opNot, new Terminal(opZF));
+	auto u = new Unary(opNot, new Terminal(opZF));
 	CPPUNIT_ASSERT_EQUAL(std::string("~%ZF"), u->prints());
 	delete u;
 
@@ -648,10 +648,10 @@ ExpTest::testSimplifyBinary()
 	delete e;
 
 	// r27 := m[r29 + -4]
-	Assign *as = new Assign(Location::regOf(27),
-	                        Location::memOf(new Binary(opPlus,
-	                                                   Location::regOf(29),
-	                                                   new Const(-4))));
+	auto as = new Assign(Location::regOf(27),
+	                     Location::memOf(new Binary(opPlus,
+	                                                Location::regOf(29),
+	                                                new Const(-4))));
 	as->simplify();
 	expected = "   0 *v* r27 := m[r29 - 4]";
 	CPPUNIT_ASSERT_EQUAL(expected, as->prints());
@@ -899,13 +899,13 @@ void
 ExpTest::testFixSuccessor()
 {
 	// Trivial test (should not affect)
-	Binary *b = new Binary(opMinus, m_99->clone(), m_rof2->clone());
+	auto b = new Binary(opMinus, m_99->clone(), m_rof2->clone());
 	Exp *e = b->fixSuccessor();
 	std::string expected("99 - r2");
 	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
 	delete e;
 
-	Unary *u = new Unary(opSuccessor, Location::regOf(2));
+	auto u = new Unary(opSuccessor, Location::regOf(2));
 	e = u->fixSuccessor();
 	expected = "r3";
 	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
@@ -933,12 +933,12 @@ ExpTest::testKillFill()
 
 	// Note: e2 has to be a pointer, not a local Ternary, because it
 	// gets changed at the top level (and so would die in its destructor)
-	Ternary *e2 = new Ternary(opZfill,
-	                          new Const(16),
-	                          new Const(32),
-	                          Location::memOf(new Binary(opPlus,
-	                                                     Location::regOf(16),
-	                                                     new Const(16))));
+	auto e2 = new Ternary(opZfill,
+	                      new Const(16),
+	                      new Const(32),
+	                      Location::memOf(new Binary(opPlus,
+	                                                 Location::regOf(16),
+	                                                 new Const(16))));
 	// Try again but at top level
 	res = e2->killFill();
 	expected = "m[r16 + 16]";
@@ -989,15 +989,15 @@ ExpTest::testSubscriptVar()
 	Exp *left = Location::memOf(new Binary(opMinus,
 	                                       Location::regOf(28),
 	                                       new Const(4)));
-	Assign *ae = new Assign(left->clone(),
-	                        new Binary(opPlus,
-	                                   Location::regOf(28),
-	                                   Location::regOf(29)));
+	auto ae = new Assign(left->clone(),
+	                     new Binary(opPlus,
+	                                Location::regOf(28),
+	                                Location::regOf(29)));
 
-	Statement *s = dynamic_cast<Statement *>(ae);
+	auto s = dynamic_cast<Statement *>(ae);
 	// Subtest 1: should do nothing
 	Exp *r28 = Location::regOf(28);
-	Statement *def1 = dynamic_cast<Statement *>(new Assign(r28->clone(), r28->clone()));
+	auto def1 = dynamic_cast<Statement *>(new Assign(r28->clone(), r28->clone()));
 	def1->setNumber(12);
 	def1->subscriptVar(left, def1);  // Should do nothing
 	std::string expected1;

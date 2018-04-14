@@ -229,7 +229,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			       m_pLXObjects[n].PageTblIdx,
 			       m_pLXObjects[n].NumPageTblEntries);
 
-			char *name = new char[9];
+			auto name = new char[9];
 			snprintf(name, sizeof (char[9]), "seg%i", n);  // no section names in LX
 			m_pSections[n].pSectionName = name;
 			m_pSections[n].uNativeAddr = (ADDRESS)m_pLXObjects[n].RelocBaseAddr;
@@ -338,7 +338,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 #endif
 
 	// fixups
-	unsigned int *fixuppagetbl = new unsigned int[npages + 1];
+	auto fixuppagetbl = new unsigned int[npages + 1];
 	ifs.seekg(m_pLXHeader->fixuppagetbloffset + lxoff);
 	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
 	for (unsigned n = 0; n < npages + 1; ++n) {

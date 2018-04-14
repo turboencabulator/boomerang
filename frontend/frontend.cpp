@@ -89,9 +89,9 @@ FrontEnd::~FrontEnd()
 FrontEnd *
 FrontEnd::open(const char *name, Prog *prog)
 {
-	BinaryFile *bf = BinaryFile::open(name);
+	auto bf = BinaryFile::open(name);
 	if (!bf) return nullptr;
-	FrontEnd *fe = FrontEnd::open(bf, prog);
+	auto fe = FrontEnd::open(bf, prog);
 	if (!fe) BinaryFile::close(bf);
 	return fe;
 }
@@ -409,7 +409,7 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 						LOG << "no proc found for address " << a << "\n";
 					return;
 				}
-				FuncType *fty = dynamic_cast<FuncType *>(Type::getNamedType(name));
+				auto fty = dynamic_cast<FuncType *>(Type::getNamedType(name));
 				if (!fty)
 					LOG << "unable to find signature for known entrypoint " << name << "\n";
 				else {
@@ -641,7 +641,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 
 	while ((uAddr = targetQueue.nextAddress(pCfg)) != NO_ADDRESS) {
 		// The list of RTLs for the current basic block
-		std::list<RTL *> *BB_rtls = new std::list<RTL *>();
+		auto BB_rtls = new std::list<RTL *>();
 
 		// Keep decoding sequentially until a CTI without a fall through branch is decoded
 		//ADDRESS start = uAddr;
@@ -742,7 +742,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 					}
 				}
 				s->simplify();
-				GotoStatement *stmt_jump = static_cast<GotoStatement *>(s);
+				auto stmt_jump = static_cast<GotoStatement *>(s);
 
 				// Check for a call to an already existing procedure (including self recursive jumps), or to the PLT
 				// (note that a LibProc entry for the PLT function may not yet exist)
@@ -758,7 +758,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 						}
 						if (proc && proc != (Proc *)-1) {
 							s = new CallStatement();
-							CallStatement *call = static_cast<CallStatement *>(s);
+							auto call = static_cast<CallStatement *>(s);
 							call->setDest(dest);
 							call->setDestProc(proc);
 							call->setReturnAfterCall(true);
@@ -827,14 +827,14 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 							// jump to a library function
 							// replace with a call ret
 							std::string func = pBF->getDynamicProcName(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr());
-							CallStatement *call = new CallStatement;
+							auto call = new CallStatement;
 							call->setDest(stmt_jump->getDest()->clone());
 							LibProc *lp = pProc->getProg()->getLibraryProc(func.c_str());
 							if (!lp)
 								LOG << "getLibraryProc returned nullptr, aborting\n";
 							assert(lp);
 							call->setDestProc(lp);
-							std::list<Statement *> *stmt_list = new std::list<Statement *>;
+							auto stmt_list = new std::list<Statement *>;
 							stmt_list->push_back(call);
 							BB_rtls->push_back(new RTL(pRtl->getAddress(), stmt_list));
 							pBB = pCfg->newBB(BB_rtls, CALL, 1);
@@ -913,7 +913,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 
 				case STMT_CALL:
 					{
-						CallStatement *call = static_cast<CallStatement *>(s);
+						auto call = static_cast<CallStatement *>(s);
 
 						// Check for a dynamic linked library function
 						if (call->getDest()->isMemOf()
@@ -942,7 +942,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 									if (first_statement) {
 										first_statement->setProc(pProc);
 										first_statement->simplify();
-										GotoStatement *stmt_jump = static_cast<GotoStatement *>(first_statement);
+										auto stmt_jump = static_cast<GotoStatement *>(first_statement);
 										// In fact it's a computed (looked up) jump, so the jump seems to be a case
 										// statement.
 										if (first_statement->getKind() == STMT_CASE
@@ -1037,13 +1037,13 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 
 								if (call->isReturnAfterCall()) {
 									// Constuct the RTLs for the new basic block
-									std::list<RTL *> *rtls = new std::list<RTL *>();
+									auto rtls = new std::list<RTL *>();
 									// The only RTL in the basic block is one with a ReturnStatement
-									std::list<Statement *> *sl = new std::list<Statement *>;
+									auto sl = new std::list<Statement *>;
 									sl->push_back(new ReturnStatement());
 									rtls->push_back(new RTL(pRtl->getAddress() + 1, sl));
 
-									BasicBlock *returnBB = pCfg->newBB(rtls, RET, 0);
+									auto returnBB = pCfg->newBB(rtls, RET, 0);
 									// Add out edge from call to return
 									pCfg->addOutEdge(pBB, returnBB);
 									// Put a label on the return BB (since it's an orphan); a jump will be reqd
@@ -1115,7 +1115,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 			if (sequentialDecode && pCfg->existsBB(uAddr)) {
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
-					BasicBlock *pBB = pCfg->newBB(BB_rtls, FALL, 1);
+					auto pBB = pCfg->newBB(BB_rtls, FALL, 1);
 					// Add an out edge to this address
 					if (pBB) {
 						pCfg->addOutEdge(pBB, uAddr);
@@ -1322,9 +1322,9 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 void
 FrontEnd::appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl)
 {
-	ReturnStatement *ret = new ReturnStatement();
-	std::list<RTL *> *ret_rtls = new std::list<RTL *>();
-	std::list<Statement *> *stmt_list = new std::list<Statement *>;
+	auto ret = new ReturnStatement();
+	auto ret_rtls = new std::list<RTL *>();
+	auto stmt_list = new std::list<Statement *>;
 	stmt_list->push_back(ret);
 	BasicBlock *pret = createReturnBlock(pProc, ret_rtls, new RTL(pRtl->getAddress() + 1, stmt_list));
 	pret->addInEdge(pCallBB);

@@ -715,7 +715,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 			} else if (u->getSubExp1()->isMemOf()) {
 				// We have (tt)m[x]
 #if 0  // ADHOC TA
-				PointerType *pty = dynamic_cast<PointerType *>(u->getSubExp1()->getSubExp1()->getType());
+				auto pty = dynamic_cast<PointerType *>(u->getSubExp1()->getSubExp1()->getType());
 #else
 				PointerType *pty = nullptr;
 #endif

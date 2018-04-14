@@ -469,7 +469,7 @@ PentiumFrontEnd::emitSet(std::list<RTL *> *BB_rtls, std::list<RTL *>::iterator &
 	                                         cond,
 	                                         new Const(1),
 	                                         new Const(0)));
-	RTL *pRtl = new RTL(uAddr);
+	auto pRtl = new RTL(uAddr);
 	pRtl->appendStmt(asgn);
 	//std::cout << "Emit "; pRtl->print(); std::cout << std::endl;
 	// Insert the new RTL before rit
@@ -512,7 +512,7 @@ PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 		                                      new Const(64),
 		                                      new Const(32),
 		                                      Location::regOf(32)));
-		RTL *pRtl = new RTL(addr);
+		auto pRtl = new RTL(addr);
 		pRtl->appendStmt(a);
 		a = new Assign(Location::regOf(24),
 		               new Ternary(opTruncs,
@@ -531,7 +531,7 @@ PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 		return true;
 
 	} else if (name == "__mingw_allocstack") {
-		RTL *pRtl = new RTL(addr);
+		auto pRtl = new RTL(addr);
 		Statement *a = new Assign(Location::regOf(28),
 		                          new Binary(opMinus,
 		                                     Location::regOf(28),
@@ -593,14 +593,14 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 			int oNumBytes = inst.numBytes;
 			inst = decodeInstruction(addr + oNumBytes);
 			if (inst.valid && inst.rtl->getNumStmt() == 2) {
-				Assign *a = dynamic_cast<Assign *>(inst.rtl->elementAt(1));
+				auto a = dynamic_cast<Assign *>(inst.rtl->elementAt(1));
 				if (a && *a->getRight() == *Location::regOf(24)) {
 #if 0
 					std::cerr << "is followed by push eax.. " << "good" << std::endl;
 #endif
 					inst = decodeInstruction(addr + oNumBytes + inst.numBytes);
 					if (!inst.rtl->getList().empty()) {
-						CallStatement *toMain = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
+						auto toMain = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
 						if (toMain && toMain->getFixedDest() != NO_ADDRESS) {
 							pBF->addSymbol(toMain->getFixedDest(), "WinMain");
 							gotMain = true;
@@ -656,7 +656,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 static void
 toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &it)
 {
-	BranchStatement *br1 = new BranchStatement;
+	auto br1 = new BranchStatement;
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
 	Statement *s1 = *rtl->getList().begin();
 	Statement *s6 = *(--rtl->getList().end());
@@ -665,7 +665,7 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &i
 	else
 		br1->setCondExpr(nullptr);
 	br1->setDest(a + 2);
-	BranchStatement *br2 = new BranchStatement;
+	auto br2 = new BranchStatement;
 	if (s6->isAssign())
 		br2->setCondExpr(((Assign *)s6)->getRight());
 	else
@@ -981,7 +981,7 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 		r.rtl = new RTL(pc);
 		Exp *dx = Location::regOf(decoder.getRTLDict().RegMap["%dx"]);
 		Exp *al = Location::regOf(decoder.getRTLDict().RegMap["%al"]);
-		CallStatement *call = new CallStatement();
+		auto call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("outp"));
 		call->setArgumentExp(0, dx);
 		call->setArgumentExp(1, al);
@@ -996,7 +996,7 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 		r.type = NCT;
 		r.reDecode = false;
 		r.rtl = new RTL(pc);
-		CallStatement *call = new CallStatement();
+		auto call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("invalid_opcode"));
 		r.rtl->appendStmt(call);
 		return r;

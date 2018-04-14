@@ -799,14 +799,14 @@ BasicBlock::getDest() const throw (LastStatementNotAGotoError)
 	RTL *lastRtl = m_pRtls->back();
 	// It should contain a GotoStatement or derived class
 	Statement *lastStmt = lastRtl->getHlStmt();
-	CaseStatement *cs = dynamic_cast<CaseStatement *>(lastStmt);
+	auto cs = dynamic_cast<CaseStatement *>(lastStmt);
 	if (cs) {
 		// Get the expression from the switch info
 		SWITCH_INFO *si = cs->getSwitchInfo();
 		if (si)
 			return si->pSwitchVar;
 	} else {
-		GotoStatement *gs = dynamic_cast<GotoStatement *>(lastStmt);
+		auto gs = dynamic_cast<GotoStatement *>(lastStmt);
 		if (gs)
 			return gs->getDest();
 	}
@@ -1637,7 +1637,7 @@ BasicBlock::prependStmt(Statement *s, UserProc *proc)
 	// Otherwise, prepend a new RTL
 	std::list<Statement *> listStmt;
 	listStmt.push_back(s);
-	RTL *rtl = new RTL(0, &listStmt);
+	auto rtl = new RTL(0, &listStmt);
 	m_pRtls->push_front(rtl);
 }
 
@@ -1752,7 +1752,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 			PhiAssign *pa = (PhiAssign *)*it;
 			// Get the jth operand to the phi function; it has a use from BB *this
 			Statement *def = pa->getStmtAt(j);
-			RefExp *r = new RefExp(pa->getLeft()->clone(), def);
+			auto r = new RefExp(pa->getLeft()->clone(), def);
 			liveout.insert(r);
 			phiLocs.insert(r);
 			if (DEBUG_LIVENESS)
@@ -2100,7 +2100,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			}
 		}
 		if (form) {
-			SWITCH_INFO *swi = new SWITCH_INFO;
+			auto swi = new SWITCH_INFO;
 			swi->chForm = form;
 			ADDRESS T;
 			Exp *expr;
@@ -2153,11 +2153,11 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 					// The switch info wants an array of native addresses
 					int n = dests.size();
 					if (n) {
-						int *destArray = new int[n];
+						auto destArray = new int[n];
 						auto ii = dests.begin();
 						for (int i = 0; i < n; ++i)
 							destArray[i] = *ii++;
-						SWITCH_INFO *swi = new SWITCH_INFO;
+						auto swi = new SWITCH_INFO;
 						swi->chForm = 'F';  // The "Fortran" form
 						swi->pSwitchVar = e;
 						swi->uTable = (ADDRESS)destArray;  // Abuse the uTable member as a pointer

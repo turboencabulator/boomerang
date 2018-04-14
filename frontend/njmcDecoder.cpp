@@ -219,7 +219,7 @@ NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdi
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;
-	GotoStatement *jump = new GotoStatement();
+	auto jump = new GotoStatement();
 	jump->setDest(relocd - delta);
 	result.rtl->appendStmt(jump);
 	SHOW_ASM(name << " 0x" << std::hex << relocd - delta)
@@ -240,7 +240,7 @@ NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;
-	GotoStatement *jump = new GotoStatement();
+	auto jump = new GotoStatement();
 	jump->setDest(dest);
 	jump->setIsComputed(true);
 	result.rtl->appendStmt(jump);
@@ -262,7 +262,7 @@ NJMCDecoder::computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std
 {
 	result.rtl = new RTL(pc, stmts);
 	result.numBytes = size;
-	CallStatement *call = new CallStatement();
+	auto call = new CallStatement();
 	call->setDest(dest);
 	call->setIsComputed(true);
 	result.rtl->appendStmt(call);

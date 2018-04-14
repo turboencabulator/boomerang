@@ -292,7 +292,7 @@ type_decl
 		delete $2;
 	  }
 	| STRUCT IDENTIFIER '{' type_ident_list '}' ';' {
-		CompoundType *t = new CompoundType();
+		auto t = new CompoundType();
 		for (auto it = $4->begin(); it != $4->end(); ++it) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}
@@ -349,7 +349,7 @@ signature
 		$$ = sig;
 	  }
 	| CUSTOM custom_options type_ident '(' param_list ')' {
-		CustomSignature *sig = new CustomSignature($3->nam.c_str());
+		auto sig = new CustomSignature($3->nam.c_str());
 		if ($2->exp)
 			sig->addReturn($3->ty, $2->exp);
 		if ($2->sp)
@@ -370,7 +370,7 @@ signature
 
 symbol_ref_decl
 	: SYMBOLREF CONSTANT IDENTIFIER ';' {
-		SymbolRef *ref = new SymbolRef($2, *$3);
+		auto ref = new SymbolRef($2, *$3);
 		delete $3;
 		refs.push_back(ref);
 	  }
@@ -378,7 +378,7 @@ symbol_ref_decl
 
 symbol_decl
 	: CONSTANT type_ident ';' {
-		Symbol *sym = new Symbol($1);
+		auto sym = new Symbol($1);
 		sym->nam = $2->nam;
 		sym->ty = $2->ty;
 		symbols.push_back(sym);
@@ -392,7 +392,7 @@ symbol_decl
 	 * the parser can't distinguish 123 int foo from 123 int foo()
 	 */
 	| CONSTANT symbol_mods signature ';' {
-		Symbol *sym = new Symbol($1);
+		auto sym = new Symbol($1);
 		sym->sig = $3;
 		sym->mods = $2;
 		symbols.push_back(sym);
@@ -470,7 +470,7 @@ type
 		delete $2;
 	  }
 	| STRUCT '{' type_ident_list '}' {
-		CompoundType *t = new CompoundType();
+		auto t = new CompoundType();
 		for (auto it = $3->begin(); it != $3->end(); ++it) {
 			t->addType((*it)->ty, (*it)->nam.c_str());
 		}

@@ -851,7 +851,7 @@ ElfBinaryFile::getImportStubs(int &numImports)
 std::map<ADDRESS, const char *> *
 ElfBinaryFile::getDynamicGlobalMap()
 {
-	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
+	auto ret = new std::map<ADDRESS, const char *>;
 
 	const SectionInfo *pSect = getSectionInfoByName(".rel.bss");
 	if (!pSect) pSect = getSectionInfoByName(".rela.bss");

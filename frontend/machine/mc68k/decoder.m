@@ -70,7 +70,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 		/*
 		 * Direct call
 		 */
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		result.rtl = newCall;
 		result.numBytes = hostPC - saveHostPC;
 
@@ -85,7 +85,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 		/*
 		 * Call with short displacement (16 bit instruction)
 		 */
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		result.rtl = newCall;
 		result.numBytes = hostPC - saveHostPC;
 
@@ -101,7 +101,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 		 * pea E(pc) pea 4(pc) / addil #d32, (a7) / rts
 		 * Handle as a call
 		 */
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		result.rtl = newCall;
 		result.numBytes = hostPC - saveHostPC;
 
@@ -118,7 +118,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 		 * pea 4(pc) / addil #d32, (a7) / rts
 		 * Handle as a call followed by a return
 		 */
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		result.rtl = newCall;
 		result.numBytes = hostPC - saveHostPC;
 
@@ -138,7 +138,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 		 * trap / AXXX  (d16 set to the XXX)
 		 * Handle as a library call
 		 */
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		result.rtl = newCall;
 		result.numBytes = hostPC - saveHostPC;
 
@@ -282,7 +282,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 			 * Register call
 			 */
 			// Mike: there should probably be a HLNwayCall class for this!
-			HLCall *newCall = new HLCall(pc, 0, RTs);
+			auto newCall = new HLCall(pc, 0, RTs);
 			// Record the fact that this is a computed call
 			newCall->setIsComputed();
 			// Set the destination expression
@@ -295,7 +295,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 			/*
 			 * Register jump
 			 */
-			HLNwayJump *newJump = new HLNwayJump(pc, RTs);
+			auto newJump = new HLNwayJump(pc, RTs);
 			// Record the fact that this is a computed call
 			newJump->setIsComputed();
 			// Set the destination expression
@@ -436,7 +436,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 SemStr *
 NJMCDecoder::BTA(ADDRESS d, DecodeResult &result, ADDRESS pc)
 {
-	SemStr *ret = new SemStr(32);
+	auto ret = new SemStr(32);
 	ret->push(idIntConst);
 
 	match d to
@@ -463,7 +463,7 @@ NJMCDecoder::pIllegalMode(ADDRESS pc)
 SemStr *
 NJMCDecoder::pDDirect(int r2, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	ret->push(idRegOf);
 	ret->push(idIntConst);
 	ret->push(r2);
@@ -473,7 +473,7 @@ NJMCDecoder::pDDirect(int r2, int size)
 SemStr *
 NJMCDecoder::pADirect(int r2, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	ret->push(idRegOf);
 	ret->push(idIntConst);
 	ret->push(r2 + 8);          // First A register is r[8]
@@ -483,7 +483,7 @@ NJMCDecoder::pADirect(int r2, int size)
 SemStr *
 NJMCDecoder::pIndirect(int r2, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	ret->push(idMemOf);
 	ret->push(idRegOf);
 	ret->push(idIntConst);
@@ -498,7 +498,7 @@ NJMCDecoder::pPostInc(int r2, int &bump, int &bumpr, int size)
 	// Note special semantics when r2 == 7 (stack pointer): if size == 1, then
 	// the system will change it to 2 to keep the stack word aligned
 	if ((r2 == 7) && (size == 8)) size = 16;
-	SemStr *ret = new SemStr(size / 8);
+	auto ret = new SemStr(size / 8);
 	ret->push(idMemOf);
 	ret->push(idRegOf);
 	ret->push(idIntConst);
@@ -515,7 +515,7 @@ NJMCDecoder::pPreDec(int r2, int &bump, int &bumpr, int size)
 	// Note special semantics when r2 == 7 (stack pointer): if size == 1, then
 	// the system will change it to 2 to keep the stack word aligned
 	if ((r2 == 7) && (size == 8)) size = 16;
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	ret->push(idMemOf); ret->push(idPlus);
 	ret->push(idRegOf);
 	ret->push(idIntConst);
@@ -529,7 +529,7 @@ NJMCDecoder::pPreDec(int r2, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| alDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| alADirect(reg2)  => ret = pADirect(reg2, size);
@@ -544,7 +544,7 @@ NJMCDecoder::alEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| amDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| amADirect(reg2)  => ret = pADirect(reg2, size);
@@ -559,7 +559,7 @@ NJMCDecoder::amEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| awlDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| awlADirect(reg2)  => ret = pADirect(reg2, size);
@@ -574,7 +574,7 @@ NJMCDecoder::awlEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::cEA(ADDRESS ea, ADDRESS pc, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| cIndirect(reg2) => ret = pIndirect(reg2, size);
 	else pIllegalMode(pc);
@@ -585,7 +585,7 @@ NJMCDecoder::cEA(ADDRESS ea, ADDRESS pc, int size)
 SemStr *
 NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| dDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| dIndirect(reg2) => ret = pIndirect(reg2, size);
@@ -599,7 +599,7 @@ NJMCDecoder::dEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| daDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| daIndirect(reg2) => ret = pIndirect(reg2, size);
@@ -613,7 +613,7 @@ NJMCDecoder::daEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| dBDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| dBIndirect(reg2) => ret = pIndirect(reg2, size);
@@ -627,7 +627,7 @@ NJMCDecoder::dBEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| dWDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| dWIndirect(reg2) => ret = pIndirect(reg2, size);
@@ -641,7 +641,7 @@ NJMCDecoder::dWEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| maIndirect(reg2) => ret = pIndirect(reg2, size);
 	| maPostInc(reg2)  => ret = pPostInc(reg2, bump, bumpr, size);
@@ -654,7 +654,7 @@ NJMCDecoder::maEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| msDDirect(reg2)  => ret = pDDirect(reg2, size);
 	| msADirect(reg2)  => ret = pADirect(reg2, size);
@@ -669,7 +669,7 @@ NJMCDecoder::msEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| mdDDirect(reg1)  => ret = pDDirect(reg1, size);
 	| mdADirect(reg1)  => ret = pADirect(reg1, size);
@@ -684,7 +684,7 @@ NJMCDecoder::mdEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| mrIndirect(reg2) => ret = pIndirect(reg2, size);
 	| mrPostInc(reg2)  => ret = pPostInc(reg2, bump, bumpr, size);
@@ -696,7 +696,7 @@ NJMCDecoder::mrEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	match ea to
 	| rmIndirect(reg2) => ret = pIndirect(reg2, size);
 	| rmPreDec(reg2)   => ret = pPreDec(reg2, bump, bumpr, size);
@@ -709,7 +709,7 @@ NJMCDecoder::rmEA(ADDRESS ea, ADDRESS pc, int &bump, int &bumpr, int size)
 SemStr *
 NJMCDecoder::pADisp(int d16, int r, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	// d16(Ar) -> m[ + r[ int r+8 ] int d16]
 	ret->push(idMemOf); ret->push(idPlus); ret->push(idRegOf);
 	ret->push(idIntConst); ret->push(r + 8);
@@ -720,7 +720,7 @@ NJMCDecoder::pADisp(int d16, int r, int size)
 SemStr *
 NJMCDecoder::pAIndex(int d8, int r, int iT, int iR, int iS, int size)
 {
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	// d8(Ar, A/Di.[wl] ->
 	//   m[ + + r[ int r+8 ] ! size[ 16/32 r[ int iT<<3+iR ]] int i8 ]
 	ret->push(idMemOf); ret->push(idPlus); ret->push(idPlus);
@@ -736,7 +736,7 @@ SemStr *
 NJMCDecoder::pPcDisp(ADDRESS label, int delta, int size)
 {
 	// Note: label is in the host address space, so need to subtract delta
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	// d16(pc) -> m[ code pc+d16 ]
 	// Note: we use "code" instead of "int" to flag the fact that this address
 	// is relative to the pc, and hence needs translation before use in the
@@ -750,7 +750,7 @@ SemStr *
 NJMCDecoder::pPcIndex(int d8, int iT, int iR, int iS, ADDRESS nextPc, int size)
 {
 	// Note: nextPc is expected to have +2 or +4 etc already added to it!
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	// d8(pc, A/Di.[wl] ->
 	//   m[ + pc+i8 ! size[ 16/32 r[ int iT<<3+iR ]]]
 	ret->push(idMemOf); ret->push(idPlus);
@@ -766,7 +766,7 @@ NJMCDecoder::pAbsW(int d16, int size)
 {
 	// (d16).w  ->  size[ ss m[ int d16 ]]
 	// Note: d16 should already have been sign extended to 32 bits
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	ret->push(idSize); ret->push(size);
 	ret->push(idMemOf); ret->push(idIntConst); ret->push(d16);
 	return ret;
@@ -776,7 +776,7 @@ SemStr *
 NJMCDecoder::pAbsL(int d32, int size)
 {
 	// (d32).w  ->  size[ ss m[ int d32 ]]
-	SemStr *ret = new SemStr(size);
+	auto ret = new SemStr(size);
 	ret->push(idSize); ret->push(size);
 	ret->push(idMemOf); ret->push(idIntConst); ret->push(d32);
 	return ret;
@@ -787,7 +787,7 @@ NJMCDecoder::pImmB(int d8)
 {
 	// #d8 -> int d8
 	// Should already be sign extended to 32 bits
-	SemStr *ret = new SemStr(8);
+	auto ret = new SemStr(8);
 	ret->push(idIntConst); ret->push(d8);
 	return ret;
 }
@@ -797,7 +797,7 @@ NJMCDecoder::pImmW(int d16)
 {
 	// #d16 -> int d16
 	// Should already be sign extended to 32 bits
-	SemStr *ret = new SemStr(16);
+	auto ret = new SemStr(16);
 	ret->push(idIntConst); ret->push(d16);
 	return ret;
 }
@@ -805,7 +805,7 @@ NJMCDecoder::pImmW(int d16)
 SemStr *
 NJMCDecoder::pImmL(int d32)
 {
-	SemStr *ret = new SemStr(32);
+	auto ret = new SemStr(32);
 	ret->push(idIntConst); ret->push(d32);
 	return ret;
 }

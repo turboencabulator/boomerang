@@ -273,7 +273,7 @@ BasicBlock *
 Cfg::newIncompleteBB(ADDRESS addr)
 {
 	// Create a new (basically empty) BB
-	BasicBlock *pBB = new BasicBlock();
+	auto pBB = new BasicBlock();
 	// Add it to the list
 	m_listBB.push_back(pBB);
 	m_mapBB[addr] = pBB;  // Insert the mapping
@@ -1414,7 +1414,7 @@ Cfg::structLoops()
 		// if a latching node was found for the current node then it is a loop header.
 		if (latch) {
 			// define the map that maps each node to whether or not it is within the current loop
-			bool *loopNodes = new bool[Ordering.size()];
+			auto loopNodes = new bool[Ordering.size()];
 			for (unsigned int j = 0; j < Ordering.size(); ++j)
 				loopNodes[j] = false;
 
@@ -1564,7 +1564,7 @@ Cfg::addJunctionStatements()
 		BasicBlock *pbb = *it;
 		if (pbb->getNumInEdges() > 1 && (!pbb->getFirstStmt() || !pbb->getFirstStmt()->isJunction())) {
 			assert(pbb->getRTLs());
-			JunctionStatement *j = new JunctionStatement();
+			auto j = new JunctionStatement();
 			j->setBB(pbb);
 			pbb->getRTLs()->front()->prependStmt(j);
 		}
@@ -1820,15 +1820,15 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	ADDRESS addr = rtl->getAddress();
 
 	// Make a BB for the br1 instruction
-	std::list<RTL *> *pRtls = new std::list<RTL *>;
-	std::list<Statement *> *ls = new std::list<Statement *>;
+	auto pRtls = new std::list<RTL *>;
+	auto ls = new std::list<Statement *>;
 	ls->push_back(br1);
 	// Don't give this "instruction" the same address as the rest of the string instruction (causes problems when
 	// creating the rptBB). Or if there is no A, temporarily use 0
 	ADDRESS a = (haveA) ? addr : 0;
-	RTL *skipRtl = new RTL(a, ls);
+	auto skipRtl = new RTL(a, ls);
 	pRtls->push_back(skipRtl);
-	BasicBlock *skipBB = newBB(pRtls, TWOWAY, 2);
+	auto skipBB = newBB(pRtls, TWOWAY, 2);
 	rtl->updateAddress(addr + 1);
 	if (!haveA) {
 		skipRtl->updateAddress(addr);
@@ -1859,7 +1859,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	// Move the remainder of the string RTL into a new BB
 	pRtls = new std::list<RTL *>;
 	pRtls->push_back(*ri);
-	BasicBlock *rptBB = newBB(pRtls, TWOWAY, 2);
+	auto rptBB = newBB(pRtls, TWOWAY, 2);
 	ri = pBB->m_pRtls->erase(ri);
 
 	// Move the remaining RTLs (if any) to a new list of RTLs

@@ -45,7 +45,7 @@ Statement::setProc(UserProc *p)
 	getDefinitions(defs);
 	exps.makeUnion(defs);
 	for (auto ll = exps.begin(); ll != exps.end(); ++ll) {
-		Location *l = dynamic_cast<Location *>(*ll);
+		auto l = dynamic_cast<Location *>(*ll);
 		if (l) {
 			l->setProc(p);
 		}
@@ -473,7 +473,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				arguments.clear();
 				for (unsigned i = 0; i < sig->getNumParams(); ++i) {
 					Exp *a = sig->getParamExp(i);
-					Assign *as = new Assign(new VoidType(), a->clone(), a->clone());
+					auto as = new Assign(new VoidType(), a->clone(), a->clone());
 					as->setProc(proc);
 					as->setBB(pbb);
 					arguments.append(as);
@@ -789,7 +789,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 				LocationSet used;
 				def->addUsedLocs(used);
 				RefExp left(def->getLeft(), (Statement *)-1);
-				RefExp *right = dynamic_cast<RefExp *>(def->getRight());
+				auto right = dynamic_cast<RefExp *>(def->getRight());
 				// Beware of x := x{something else} (because we do want to do copy propagation)
 				if (used.exists(&left) && !(right && *right->getSubExp1() == *left.getSubExp1()))
 					// We have something like eax = eax + 1
@@ -2121,11 +2121,11 @@ CallStatement::setSigArguments()
 	for (i = 0; i < n; ++i) {
 		Exp *e = signature->getArgumentExp(i);
 		assert(e);
-		Location *l = dynamic_cast<Location *>(e);
+		auto l = dynamic_cast<Location *>(e);
 		if (l) {
 			l->setProc(proc);  // Needed?
 		}
-		Assign *as = new Assign(signature->getParamType(i)->clone(), e->clone(), e->clone());
+		auto as = new Assign(signature->getParamType(i)->clone(), e->clone(), e->clone());
 		as->setProc(proc);
 		as->setBB(pbb);
 		as->setNumber(number);  // So fromSSAform will work later. But note: this call is probably not numbered yet!
@@ -2370,7 +2370,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	assert(p);
 	if (Boomerang::get()->noDecompile) {
 		if (procDest->getSignature()->getNumReturns() > 0) {
-			Assign *as = new Assign(new IntegerType(), new Unary(opRegOf, new Const(24)), new Unary(opRegOf, new Const(24)));
+			auto as = new Assign(new IntegerType(), new Unary(opRegOf, new Const(24)), new Unary(opRegOf, new Const(24)));
 			as->setProc(proc);
 			as->setBB(pbb);
 			results->append(as);
@@ -2382,11 +2382,11 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 			for (int i = 1; i < 3; ++i) {
 				Exp *e = signature->getArgumentExp(i);
 				assert(e);
-				Location *l = dynamic_cast<Location *>(e);
+				auto l = dynamic_cast<Location *>(e);
 				if (l) {
 					l->setProc(proc);  // Needed?
 				}
-				Assign *as = new Assign(signature->getParamType(i), e->clone(), e->clone());
+				auto as = new Assign(signature->getParamType(i), e->clone(), e->clone());
 				as->setProc(proc);
 				as->setBB(pbb);
 				as->setNumber(number);  // So fromSSAform will work later
@@ -2518,7 +2518,7 @@ CallStatement::convertToDirect()
 	arguments.clear();
 	for (unsigned i = 0; i < sig->getNumParams(); ++i) {
 		Exp *a = sig->getParamExp(i);
-		Assign *as = new Assign(new VoidType(), a->clone(), a->clone());
+		auto as = new Assign(new VoidType(), a->clone(), a->clone());
 		as->setProc(proc);
 		as->setBB(pbb);
 		arguments.append(as);
@@ -2589,7 +2589,7 @@ CallStatement::setNumArguments(int n)
 			ty = procDest->getSignature()->getParamType(oldSize - 1);
 		if (!ty)
 			ty = new VoidType();
-		Assign *as = new Assign(ty, a->clone(), a->clone());
+		auto as = new Assign(ty, a->clone(), a->clone());
 		as->setProc(proc);
 		as->setBB(pbb);
 		arguments.append(as);
@@ -2880,7 +2880,7 @@ CallStatement::makeArgAssign(Type *ty, Exp *e)
 	Exp *lhs = e->clone();
 	localiseComp(lhs);  // Localise the components of lhs (if needed)
 	Exp *rhs = localiseExp(e->clone());
-	Assign *as = new Assign(ty, lhs, rhs);
+	auto as = new Assign(ty, lhs, rhs);
 	as->setProc(proc);
 	as->setBB(pbb);
 	// It may need implicit converting (e.g. sp{-} -> sp{0})
@@ -3414,7 +3414,7 @@ Assign::simplify()
 			phi = dynamic_cast<PhiAssign *>(phist);
 		for (int i = 0; phi && i < phi->getNumDefs(); ++i) {
 			if (phi->getStmtAt(i)) {
-				Assign *def = dynamic_cast<Assign *>(phi->getStmtAt(i));
+				auto def = dynamic_cast<Assign *>(phi->getStmtAt(i));
 				// Look for rX{-} - K or K
 				if (def
 				 && (def->rhs->isIntConst()
@@ -3596,7 +3596,7 @@ PhiAssign::search(Exp *search, Exp *&result)
 		return true;
 	for (auto it = defVec.begin(); it != defVec.end(); ++it) {
 		if (!it->e) continue;  // Note: can't match foo{-} because of this
-		RefExp *re = new RefExp(it->e, it->def);
+		auto re = new RefExp(it->e, it->def);
 		if (re->search(search, result))
 			return true;
 	}
@@ -3874,7 +3874,7 @@ CallStatement::genConstraints(LocationSet &cons)
 					if (name == "scanf")
 						t = new PointerType(t);
 					// Generate a constraint for the parameter
-					TypeVal *tv = new TypeVal(t);
+					auto tv = new TypeVal(t);
 					auto aa = arguments.begin();
 					std::advance(aa, n);
 					Exp *argn = ((Assign *)*aa)->getRight();
@@ -3992,7 +3992,7 @@ PhiAssign::accept(StmtExpVisitor *v)
 	if (ret && lhs) ret = lhs->accept(v->ev);
 	for (auto it = defVec.begin(); it != defVec.end(); ++it) {
 		if (!it->e) continue;
-		RefExp *re = new RefExp(it->e, it->def);
+		auto re = new RefExp(it->e, it->def);
 		ret = re->accept(v->ev);
 		if (!ret) return false;
 	}
@@ -4636,8 +4636,8 @@ ReturnStatement::print(std::ostream &os, bool html) const
 bool
 lessAssignment::operator ()(const Assignment *x, const Assignment *y) const
 {
-	Assignment *xx = const_cast<Assignment *>(x);
-	Assignment *yy = const_cast<Assignment *>(y);
+	auto xx = const_cast<Assignment *>(x);
+	auto yy = const_cast<Assignment *>(y);
 	return (*xx->getLeft() < *yy->getLeft());  // Compare the LHS expressions
 }
 
@@ -4645,8 +4645,8 @@ lessAssignment::operator ()(const Assignment *x, const Assignment *y) const
 bool
 lessAssign::operator ()(const Assign *x, const Assign *y) const
 {
-	Assign *xx = const_cast<Assign *>(x);
-	Assign *yy = const_cast<Assign *>(y);
+	auto xx = const_cast<Assign *>(x);
+	auto yy = const_cast<Assign *>(y);
 	return (*xx->getLeft() < *yy->getLeft());  // Compare the LHS expressions
 }
 
@@ -4681,7 +4681,7 @@ ReturnStatement::updateModifieds()
 			}
 		}
 		if (!found) {
-			ImplicitAssign *ias = new ImplicitAssign(as->getType()->clone(), as->getLeft()->clone());
+			auto ias = new ImplicitAssign(as->getType()->clone(), as->getLeft()->clone());
 			ias->setProc(proc);  // Comes from the Collector
 			ias->setBB(pbb);
 			oldMods.append(ias);
@@ -4743,7 +4743,7 @@ ReturnStatement::updateReturns()
 		}
 		if (!found) {
 			Exp *rhs = col.findDefFor(loc);  // Find the definition that reaches the return statement's collector
-			Assign *as = new Assign(loc->clone(), rhs->clone());
+			auto as = new Assign(loc->clone(), rhs->clone());
 			as->setProc(proc);
 			as->setBB(pbb);
 			oldRets.append(as);
@@ -4826,7 +4826,7 @@ CallStatement::updateDefines()
 			if (proc->filterReturns(loc))
 				continue;  // Filtered out
 			if (!oldDefines.existsOnLeft(loc)) {
-				ImplicitAssign *as = new ImplicitAssign(loc->clone());
+				auto as = new ImplicitAssign(loc->clone());
 				as->setProc(proc);
 				as->setBB(pbb);
 				oldDefines.append(as);
@@ -5062,7 +5062,7 @@ CallStatement::updateArguments()
 			else
 				rhs = loc->clone();
 			Type *ty = asp.curType(loc);
-			Assign *as = new Assign(ty, loc->clone(), rhs);
+			auto as = new Assign(ty, loc->clone(), rhs);
 			as->setNumber(number);  // Give the assign the same statement number as the call (for now)
 			as->setParent(this);
 			as->setProc(proc);
@@ -5100,7 +5100,7 @@ CallStatement::updateArguments()
 StatementList *
 CallStatement::calcResults()
 {
-	StatementList *ret = new StatementList;
+	auto ret = new StatementList;
 	if (procDest) {
 		Signature *sig = procDest->getSignature();
 		if (procDest && procDest->isLib()) {
@@ -5110,13 +5110,13 @@ CallStatement::calcResults()
 #if SYMS_IN_BACK_END
 				// But we have translated out of SSA form, so some registers have had to have been replaced with locals
 				// So wrap the return register in a ref to this and check the locals
-				RefExp *wrappedRet = new RefExp(sigReturn, this);
+				auto wrappedRet = new RefExp(sigReturn, this);
 				const char *locName = proc->findLocal(wrappedRet);  // E.g. r24{16}
 				if (locName)
 					sigReturn = Location::local(locName, proc);  // Replace e.g. r24 with local19
 #endif
 				if (useCol.exists(sigReturn)) {
-					ImplicitAssign *as = new ImplicitAssign(getTypeFor(sigReturn), sigReturn);
+					auto as = new ImplicitAssign(getTypeFor(sigReturn), sigReturn);
 					ret->append(as);
 				}
 			}
@@ -5139,10 +5139,9 @@ CallStatement::calcResults()
 			Exp *loc = *rr;
 			if (proc->filterReturns(loc)) continue;        // Ignore filtered locations
 			if (loc->isRegN(sp)) continue;                 // Ignore the stack pointer
-			ImplicitAssign *as = new ImplicitAssign(loc);  // Create an implicit assignment
+			auto as = new ImplicitAssign(loc);  // Create an implicit assignment
 			bool inserted = false;
-			for (auto nn = ret->begin(); nn != ret->end(); ++nn) {  // Iterates through new results
-				// If the new assignment is less than the current one,
+			for (auto nn = ret->begin(); nn != ret->end(); ++nn) {  // Iterates through new results // If the new assignment is less than the current one,
 				if (sig->returnCompare(*as, *(Assignment *)*nn)) {
 					nn = ret->insert(nn, as);  // then insert before this position
 					inserted = true;
@@ -5363,7 +5362,7 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 {
 	for (auto it = begin(); it != end(); ++it) {
 		if (!it->e) continue;
-		RefExp *r = new RefExp(it->e, it->def);
+		auto r = new RefExp(it->e, it->def);
 		le.push_back(r);
 	}
 }

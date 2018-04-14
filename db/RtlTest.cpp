@@ -36,8 +36,8 @@
 void
 RtlTest::testAppend()
 {
-	Assign *a = new Assign(Location::regOf(8),
-	                       new Binary(opPlus, Location::regOf(9), new Const(99)));
+	auto a = new Assign(Location::regOf(8),
+	                    new Binary(opPlus, Location::regOf(9), new Const(99)));
 	RTL r;
 	r.appendStmt(a);
 	std::string expected("00000000    0 *v* r8 := r9 + 99\n");
@@ -54,15 +54,15 @@ RtlTest::testAppend()
 void
 RtlTest::testClone()
 {
-	Assign *a1 = new Assign(Location::regOf(8),
-	                        new Binary(opPlus, Location::regOf(9), new Const(99)));
-	Assign *a2 = new Assign(new IntegerType(16),
-	                        new Location(opParam, new Const("x"), nullptr),
-	                        new Location(opParam, new Const("y"), nullptr));
+	auto a1 = new Assign(Location::regOf(8),
+	                     new Binary(opPlus, Location::regOf(9), new Const(99)));
+	auto a2 = new Assign(new IntegerType(16),
+	                     new Location(opParam, new Const("x"), nullptr),
+	                     new Location(opParam, new Const("y"), nullptr));
 	std::list<Statement *> ls;
 	ls.push_back(a1);
 	ls.push_back(a2);
-	RTL *r = new RTL(0x1234, &ls);
+	auto r = new RTL(0x1234, &ls);
 	RTL *r2 = r->clone();
 	std::string act1(r->prints());
 	delete r;  // And r2 should still stand!
@@ -109,52 +109,52 @@ public:
 void
 RtlTest::testVisitor()
 {
-	StmtVisitorStub *visitor = new StmtVisitorStub();
+	auto visitor = new StmtVisitorStub();
 
 	/* rtl */
-	RTL *rtl = new RTL();
+	auto rtl = new RTL();
 	rtl->accept(visitor);
 	CPPUNIT_ASSERT(visitor->a);
 	delete rtl;
 
 	/* jump stmt */
-	GotoStatement *jump = new GotoStatement;
+	auto jump = new GotoStatement;
 	jump->accept(visitor);
 	CPPUNIT_ASSERT(visitor->b);
 	delete jump;
 
 	/* branch stmt */
-	BranchStatement *jcond = new BranchStatement;
+	auto jcond = new BranchStatement;
 	jcond->accept(visitor);
 	CPPUNIT_ASSERT(visitor->c);
 	delete jcond;
 
 	/* nway jump stmt */
-	CaseStatement *nwayjump = new CaseStatement;
+	auto nwayjump = new CaseStatement;
 	nwayjump->accept(visitor);
 	CPPUNIT_ASSERT(visitor->d);
 	delete nwayjump;
 
 	/* call stmt */
-	CallStatement *call = new CallStatement;
+	auto call = new CallStatement;
 	call->accept(visitor);
 	CPPUNIT_ASSERT(visitor->e);
 	delete call;
 
 	/* return stmt */
-	ReturnStatement *ret = new ReturnStatement;
+	auto ret = new ReturnStatement;
 	ret->accept(visitor);
 	CPPUNIT_ASSERT(visitor->f);
 	delete ret;
 
 	/* "bool" assgn */
-	BoolAssign *scond = new BoolAssign(0);
+	auto scond = new BoolAssign(0);
 	scond->accept(visitor);
 	CPPUNIT_ASSERT(visitor->g);
 	delete scond;
 
 	/* assignment stmt */
-	Assign *as = new Assign;
+	auto as = new Assign;
 	as->accept(visitor);
 	CPPUNIT_ASSERT(visitor->h);
 	delete as;
@@ -175,8 +175,8 @@ RtlTest::testVisitor()
 void
 RtlTest::testIsCompare()
 {
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(SWITCH_SPARC, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(SWITCH_SPARC, prog);
 	CPPUNIT_ASSERT(pFE);
 	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_SPARC);
 
@@ -225,7 +225,7 @@ RtlTest::testSetConscripts()
 	                                      new Const(1000)));
 
 	// "printf("max is %d", (local0 > 0) ? local0 : global1)
-	CallStatement *s2 = new CallStatement();
+	auto s2 = new CallStatement();
 	std::string name("printf");
 	Proc *proc = new UserProc(new Prog(), name, 0x2000);  // Making a true LibProc is problematic
 	s2->setDestProc(proc);
@@ -245,7 +245,7 @@ RtlTest::testSetConscripts()
 	std::list<Statement *> list;
 	list.push_back(s1);
 	list.push_back(s2);
-	RTL *rtl = new RTL(0x1000, &list);
+	auto rtl = new RTL(0x1000, &list);
 	rtl->setConscripts(0, false);
 	std::string expected("00001000    0 *v* m[1000\\1\\] := m[1000\\2\\] + 1000\\3\\\n"
 	                     "            0 CALL printf(\n"

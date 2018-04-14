@@ -268,7 +268,7 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
               UserProc *proc, std::list<CallStatement *> &callList, ofstream &os, bool isPattern = false)
 {
 	// Aliases for the call and delay RTLs
-	HLCall *call_rtl = static_cast<HLCall *>(inst.rtl);
+	auto call_rtl = static_cast<HLCall *>(inst.rtl);
 	HRTL *delay_rtl = delay_inst.rtl;
 
 	Cfg *cfg = proc->getCFG();
@@ -300,7 +300,7 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 		BB_rtls->push_back(call_rtl);
 
 		// End the current basic block
-		BasicBlock *callBB = cfg->newBB(BB_rtls, CALL, 1);
+		auto callBB = cfg->newBB(BB_rtls, CALL, 1);
 		if (callBB == NULL)
 			return false;
 
@@ -315,12 +315,12 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 			handleCall(call_rtl->getFixedDest(), callBB, cfg, address);
 
 			// Constuct the RTLs for the new basic block
-			list<HRTL *> *rtls = new list<HRTL *>();
+			auto rtls = new list<HRTL *>();
 
 			// The only RTL in the basic block is a high level return that
 			// doesn't have any RTs.
 			rtls->push_back(new HLReturn(0, NULL));
-			BasicBlock *returnBB = cfg->newBB(rtls, RET, 0);
+			auto returnBB = cfg->newBB(rtls, RET, 0);
 
 			// Now add the out edge
 			cfg->addOutEdge(callBB, returnBB);
@@ -414,7 +414,7 @@ case_SD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
             Cfg *cfg, TARGETS &targets, ofstream &os)
 {
 	// Aliases for the SD and delay RTLs
-	HLJump *SD_rtl = static_cast<HLJump *>(inst.rtl);
+	auto SD_rtl = static_cast<HLJump *>(inst.rtl);
 	HRTL *delay_rtl = delay_inst.rtl;
 
 	// Try the "delay instruction has been copied" optimisation, emitting the
@@ -440,7 +440,7 @@ case_SD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 	BB_rtls->push_back(SD_rtl);
 
 	// Add the one-way branch BB
-	BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+	auto pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
 	if (pBB == 0) {
 		BB_rtls = NULL;
 		return;
@@ -525,7 +525,7 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 
 		// Attempt to add a return BB if the delay
 		// instruction is a RESTORE
-		HLCall *rtl_call = static_cast<HLCall *>(inst.rtl);
+		auto rtl_call = static_cast<HLCall *>(inst.rtl);
 #if 0  // Sparc specific code, but we may need something similar
 		BasicBlock *returnBB = optimise_CallReturn(rtl_call, delay_inst.rtl, cfg);
 		if (returnBB != NULL) {
@@ -565,7 +565,7 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 		// Attempt to process this jmpl as a switch statement.
 		// NOTE: the isSwitch and processSwitch methods should
 		// really be merged into one
-		HLNwayJump *rtl_jump = static_cast<HLNwayJump *>(inst.rtl);
+		auto rtl_jump = static_cast<HLNwayJump *>(inst.rtl);
 		if (isSwitch(newBB, rtl_jump->getDest(), proc, pBF)) {
 			processSwitch(newBB, delta, cfg, targets, pBF);
 		} else {
@@ -611,7 +611,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
              DecodeResult &inst, DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
              Cfg *cfg, TARGETS &targets)
 {
-	HLJump *rtl_jump = static_cast<HLJump *>(inst.rtl);
+	auto rtl_jump = static_cast<HLJump *>(inst.rtl);
 	ADDRESS uDest = rtl_jump->getFixedDest();
 
 #if 0
@@ -624,7 +624,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		// following next. Assumes the first instruction of the pattern is
 		// not used in the true leg
 		BB_rtls->push_back(inst.rtl);
-		BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
 		if (pBB == 0)  return false;
 		handleBranch(uDest, hiAddress, pBB, cfg, targets);
 		// Add the "false" leg
@@ -652,7 +652,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		}
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
-		BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
 		if (pBB == 0)  return false;
 		handleBranch(uDest, hiAddress, pBB, cfg, targets);
 		// Add the "false" leg; skips the NCT
@@ -665,7 +665,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		rtl_jump->adjustFixedDest(-4);
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
-		BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
 		if (pBB == 0) return false;
 		handleBranch(uDest - 4, hiAddress, pBB, cfg, targets);
 		// Add the "false" leg: point to the delay inst
@@ -678,11 +678,11 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs
 		// We want to do this first, else ordering can go silly
-		BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
 		if (pBB == 0) return false;
 		// Visit the target of the branch
 		visit(cfg, uDest, targets, pBB);
-		HRTLList *pOrphan = new HRTLList;
+		auto pOrphan = new HRTLList;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address
 		// (else we may branch to here when we want to branch to the real
@@ -698,7 +698,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		// Again, we can't even give the jumps a special address like 1, since
 		// then the BB would have this getLowAddr.
 		pOrphan->push_back(new HLJump(0, uDest));
-		BasicBlock *pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
+		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well
 		cfg->addOutEdge(pOrBB, uDest, true);
 		// Add an out edge from the current RTL to
@@ -750,7 +750,7 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 	// need the orphan. We do just a binary comparison; that
 	// may fail to make this optimisation if the instr has
 	// relative fields.
-	HLJump *rtl_jump = static_cast<HLJump *>(inst.rtl);
+	auto rtl_jump = static_cast<HLJump *>(inst.rtl);
 	ADDRESS uDest = rtl_jump->getFixedDest();
 	BasicBlock *pBB;
 	if (optimise_DelayCopy(address, uDest, delta, hiAddress)) {
@@ -771,7 +771,7 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		if (pBB == 0) return false;
 		// Visit the target of the branch
 		visit(cfg, uDest, targets, pBB);
-		HRTLList *pOrphan = new HRTLList;
+		auto pOrphan = new HRTLList;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address
 		// (else we may branch to here when we want to branch to the real
@@ -779,7 +779,7 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		delay_inst.rtl->updateAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
 		pOrphan->push_back(new HLJump(0, uDest));
-		BasicBlock *pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
+		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well. Set a label there.
 		cfg->addOutEdge(pOrBB, uDest, true);
 		// Add an out edge from the current RTL to
@@ -849,7 +849,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 	while ((address = nextAddress(targets, cfg)) != NO_ADDRESS) {
 
 		// The list of RTLs for the current basic block
-		list<HRTL *> *BB_rtls = new list<HRTL *>();
+		auto BB_rtls = new list<HRTL *>();
 
 		// Keep decoding sequentially until a CTI without a fall through branch
 		// is decoded
@@ -884,7 +884,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 			// Define aliases to the RTLs so that they can be treated as a high
 			// level types where appropriate.
 			HRTL *rtl = inst.rtl;
-			HLJump *rtl_jump = static_cast<HLJump *>(rtl);
+			auto rtl_jump = static_cast<HLJump *>(rtl);
 
 			// Update the number of bytes (for coverage)
 			rtl->updateNumBytes(inst.numBytes);
@@ -948,7 +948,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 
 					// Construct the new basic block and save its destination
 					// address if it hasn't been visited already
-					BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+					auto pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
 					handleBranch(address + 8, uUpper, pBB, cfg, targets);
 
 					// There is no fall through branch.
@@ -964,7 +964,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 					case_CALL_NCT(address, inst, nop_inst, BB_rtls, proc, callList, os);
 				} else {
 					BB_rtls->push_back(rtl_jump);
-					BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+					auto pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
 					handleBranch(rtl_jump->getFixedDest(), uUpper, pBB, cfg, targets);
 					address += inst.numBytes;    // Update address for coverage
 				}
@@ -1019,7 +1019,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 							case_unhandled_stub(address);
 
 							// Adjust the destination of the SD and emit it.
-							HLJump *delay_jump = static_cast<HLJump *>(delay_rtl);
+							auto delay_jump = static_cast<HLJump *>(delay_rtl);
 							int dest = delay_jump->getFixedDest();
 							rtl_jump->setDest(dest);
 							BB_rtls->push_back(rtl_jump);
@@ -1039,7 +1039,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 								// need to be analysed later.
 								callList.push_back((HLCall *)inst.rtl);
 							} else {
-								BasicBlock *pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
+								auto pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
 								handleBranch(dest, uUpper, pBB, cfg, targets);
 
 								// There is no fall through branch.
@@ -1150,7 +1150,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 							// Add the branch to the list of RTLs for this BB
 							BB_rtls->push_back(rtl);
 							// Create the BB and add it to the CFG
-							BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+							auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
 							if (pBB == 0) {
 								sequentialDecode = false;
 								break;
@@ -1184,7 +1184,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 					// out-edges
 					BB_rtls->push_back(rtl);        // Add the jump
 					ADDRESS uDest = ((HLJump *)rtl)->getFixedDest();
-					BasicBlock *pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
+					auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
 					if (pBB == 0) {
 						BB_rtls = NULL;
 						continue;
@@ -1209,7 +1209,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 					for (int i = 0; i < n; i++) {
 						RTAssgn *rt = (RTAssgn *)follow_rtl->elementAt(i);
 						if (rt->getKind() == RTASSGN) {
-							SemStr *notNull = new SemStr;
+							auto notNull = new SemStr;
 							// We want L! r[ tpmNul ]
 							*notNull << idLNot << idRegOf << idTemp << idTmpNul;
 							rt->addGuard(notNull);
@@ -1242,7 +1242,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 			if (sequentialDecode && cfg->existsBB(address)) {
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
-					BasicBlock *pBB = cfg->newBB(BB_rtls, FALL, 1);
+					auto pBB = cfg->newBB(BB_rtls, FALL, 1);
 					// Add an out edge to this address
 					if (pBB) {
 						cfg->addOutEdge(pBB, address);
@@ -1344,14 +1344,14 @@ void
 emitCopyPC(HRTLList *pRtls, ADDRESS uAddr)
 {
 	// Emit %o7 = %pc
-	SemStr *pssSrc = new SemStr;
+	auto pssSrc = new SemStr;
 	pssSrc->push(idPC);
-	SemStr *pssDest = new SemStr;
+	auto pssDest = new SemStr;
 	pssDest->push(idRegOf);
 	pssDest->push(idIntConst);
 	pssDest->push(15);      // %o7
 	// Make an assignment RT
-	RTAssgn *pRt = new RTAssgn(pssDest, pssSrc, 32);
+	auto pRt = new RTAssgn(pssDest, pssSrc, 32);
 	// Add the RT to an RTL
 	HRTL *pRtl = new RTL(uAddr);
 	pRtl->appendRT(pRt);
@@ -1374,9 +1374,9 @@ emitCopyPC(HRTLList *pRtls, ADDRESS uAddr)
 void
 appendAssignment(SemStr *lhs, SemStr *rhs, int size, ADDRESS addr, HRTLList *lrtl)
 {
-	RTAssgn *rta = new RTAssgn(lhs, rhs, size);
+	auto rta = new RTAssgn(lhs, rhs, size);
 	// Create an RTL with this one RT
-	list<RT *> *lrt = new list<RT *>;
+	auto lrt = new list<RT *>;
 	lrt->push_back(rta);
 	HRTL *rtl = new RTL(addr, lrt);
 	// Append this RTL to the list of RTLs for this BB
@@ -1397,7 +1397,7 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 	string name(pName);
 //	if (progOptions.fastInstr == false)
 //		return helperFuncLong(dest, addr, lrtl, name);
-	SemStr *rhs = new SemStr;
+	auto rhs = new SemStr;
 	if (name == "$$remU") {
 		// %r26 % %r25
 		*rhs << idMod
@@ -1421,8 +1421,8 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 	} else if (name == "$$dyncall") {
 		// *(r22)()
 		list<RT *> ll;
-		HLCall *call = new HLCall(addr);
-		SemStr *dest = new SemStr;
+		auto call = new HLCall(addr);
+		auto dest = new SemStr;
 		*dest << idMemOf << idRegOf << idIntConst << 22;
 		call->setDest(dest);
 		// Append this RTL to the list of RTLs for this BB
@@ -1436,11 +1436,11 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 	// Need to make an RTAssgn with %r29 = rhs
 	// Note: r29 is the millicode return value register. This code assumes that
 	// all helper functions are millicode functions!
-	SemStr *lhs = new SemStr;
+	auto lhs = new SemStr;
 	*lhs << idRegOf << idIntConst << 29;
-	RTAssgn *rta = new RTAssgn(lhs, rhs, 32);
+	auto rta = new RTAssgn(lhs, rhs, 32);
 	// Create an RTL with this one RT
-	list<RT *> *lrt = new list<RT *>;
+	auto lrt = new list<RT *>;
 	lrt->push_back(rta);
 	HRTL *rtl = new RTL(addr, lrt);
 	// Append this RTL to the list of RTLs for this BB
@@ -1454,8 +1454,8 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 void
 quadOperation(ADDRESS addr, HRTLList *lrtl, int op)
 {
-	SemStr *lhs = new SemStr(Type(FLOATP, 128, true));
-	SemStr *rhs = new SemStr(Type(FLOATP, 128, true));
+	auto lhs = new SemStr(Type(FLOATP, 128, true));
+	auto rhs = new SemStr(Type(FLOATP, 128, true));
 	lhs->push(idMemOf);
 	lhs->push(idMemOf);
 	lhs->push(idPlus);
@@ -1480,9 +1480,9 @@ quadOperation(ADDRESS addr, HRTLList *lrtl, int op)
 bool
 helperFuncLong(ADDRESS dest, ADDRESS addr, HRTLList *lrtl, string &name)
 {
-	SemStr *rhs = new SemStr;
-	SemStr *lhs = new SemStr;
-	list<RT *> *lrt = new list<RT *>;
+	auto rhs = new SemStr;
+	auto lhs = new SemStr;
+	auto lrt = new list<RT *>;
 	int tmpl = theSemTable.findItem("tmpl");
 	if (name == ".umul") {
 		// r[tmpl] = sgnex(32, 64, r8) * sgnex(32, 64, r9)

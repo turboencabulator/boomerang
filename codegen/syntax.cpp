@@ -262,7 +262,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 			if (statements.size() != 1) {
 				// can replace statement with a block containing that statement
 				std::cerr << "successor: replace statement with a block containing the statement" << std::endl;
-				BlockSyntaxNode *b = new BlockSyntaxNode();
+				auto b = new BlockSyntaxNode();
 				b->addStatement(statements[i]->clone());
 				SyntaxNode *n = root->clone();
 				n->setDepth(root->getDepth() + 1);
@@ -280,7 +280,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 				std::cerr << "successor: jump over style if then" << std::endl;
 				BlockSyntaxNode *b1 = (BlockSyntaxNode *)this->clone();
 				b1 = (BlockSyntaxNode *)b1->replace(statements[i + 1], nullptr);
-				IfThenSyntaxNode *nif = new IfThenSyntaxNode();
+				auto nif = new IfThenSyntaxNode();
 				Exp *cond = b->getBB()->getCond();
 				cond = new Unary(opLNot, cond->clone());
 				cond = cond->simplify();
@@ -313,7 +313,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 					n->setDepth(root->getDepth() + 1);
 					n = n->replace(tThen, nullptr);
 					n = n->replace(tElse, nullptr);
-					IfThenElseSyntaxNode *nif = new IfThenElseSyntaxNode();
+					auto nif = new IfThenElseSyntaxNode();
 					nif->setCond(statements[i]->getBB()->getCond()->clone());
 					nif->setBB(statements[i]->getBB());
 					nif->setThen(tThen->clone());
@@ -338,7 +338,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 				SyntaxNode *n = root->clone();
 				n->setDepth(root->getDepth() + 1);
 				n = n->replace(tBody, nullptr);
-				PretestedLoopSyntaxNode *nloop = new PretestedLoopSyntaxNode();
+				auto nloop = new PretestedLoopSyntaxNode();
 				nloop->setCond(statements[i]->getBB()->getCond()->clone());
 				nloop->setBB(statements[i]->getBB());
 				nloop->setBody(tBody->clone());
@@ -361,7 +361,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 				SyntaxNode *n = root->clone();
 				n->setDepth(root->getDepth() + 1);
 				n = n->replace(tBody, nullptr);
-				PostTestedLoopSyntaxNode *nloop = new PostTestedLoopSyntaxNode();
+				auto nloop = new PostTestedLoopSyntaxNode();
 				nloop->setCond(statements[i]->getBB()->getCond()->clone());
 				nloop->setBB(statements[i]->getBB());
 				nloop->setBody(tBody->clone());
@@ -377,7 +377,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 			std::cerr << "successor: infinite loop" << std::endl;
 			SyntaxNode *n = root->clone();
 			n->setDepth(root->getDepth() + 1);
-			InfiniteLoopSyntaxNode *nloop = new InfiniteLoopSyntaxNode();
+			auto nloop = new InfiniteLoopSyntaxNode();
 			nloop->setBody(statements[i]->clone());
 			n = n->replace(statements[i], nloop);
 			successors.push_back(n);
@@ -391,7 +391,7 @@ BlockSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *>
 SyntaxNode *
 BlockSyntaxNode::clone() const
 {
-	BlockSyntaxNode *b = new BlockSyntaxNode();
+	auto b = new BlockSyntaxNode();
 	b->correspond = this;
 	if (pbb)
 		b->pbb = pbb;
@@ -458,7 +458,7 @@ IfThenSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNode *
 SyntaxNode *
 IfThenSyntaxNode::clone() const
 {
-	IfThenSyntaxNode *b = new IfThenSyntaxNode();
+	auto b = new IfThenSyntaxNode();
 	b->correspond = this;
 	b->pbb = pbb;
 	b->cond = cond->clone();
@@ -553,7 +553,7 @@ IfThenElseSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<SyntaxNo
 SyntaxNode *
 IfThenElseSyntaxNode::clone() const
 {
-	IfThenElseSyntaxNode *b = new IfThenElseSyntaxNode();
+	auto b = new IfThenElseSyntaxNode();
 	b->correspond = this;
 	b->pbb = pbb;
 	b->cond = cond->clone();
@@ -652,7 +652,7 @@ PretestedLoopSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<Synta
 SyntaxNode *
 PretestedLoopSyntaxNode::clone() const
 {
-	PretestedLoopSyntaxNode *b = new PretestedLoopSyntaxNode();
+	auto b = new PretestedLoopSyntaxNode();
 	b->correspond = this;
 	b->pbb = pbb;
 	b->cond = cond->clone();
@@ -739,7 +739,7 @@ PostTestedLoopSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<Synt
 SyntaxNode *
 PostTestedLoopSyntaxNode::clone() const
 {
-	PostTestedLoopSyntaxNode *b = new PostTestedLoopSyntaxNode();
+	auto b = new PostTestedLoopSyntaxNode();
 	b->correspond = this;
 	b->pbb = pbb;
 	b->cond = cond->clone();
@@ -822,7 +822,7 @@ InfiniteLoopSyntaxNode::addSuccessors(const SyntaxNode *root, std::vector<Syntax
 SyntaxNode *
 InfiniteLoopSyntaxNode::clone() const
 {
-	InfiniteLoopSyntaxNode *b = new InfiniteLoopSyntaxNode();
+	auto b = new InfiniteLoopSyntaxNode();
 	b->correspond = this;
 	b->pbb = pbb;
 	b->pBody = pBody->clone();

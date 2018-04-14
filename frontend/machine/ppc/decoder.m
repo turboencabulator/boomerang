@@ -63,7 +63,7 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 
 #define PPC_COND_JUMP(name, size, relocd, cond, BIcr) \
 	result.rtl = new RTL(pc, stmts); \
-	BranchStatement *jump = new BranchStatement; \
+	auto jump = new BranchStatement; \
 	result.rtl->appendStmt(jump); \
 	result.numBytes = size; \
 	jump->setDest(relocd - delta); \
@@ -194,7 +194,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| bl(reladdr) [name] =>
 		Exp *dest = DIS_RELADDR;
 		stmts = instantiate(pc, name, dest);
-		CallStatement *newCall = new CallStatement;
+		auto newCall = new CallStatement;
 		// Record the fact that this is not a computed call
 		newCall->setIsComputed(false);
 		// Set the destination expression
@@ -211,16 +211,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| ball(BIcr, reladdr) [name] =>  // Always "conditional" branch with link, test/OSX/hello has this
 		if (reladdr - delta - pc == 4) {  // Branch to next instr?
 			// Effectively %LR = %pc+4, but give the actual value for %pc
-			Assign *as = new Assign(new IntegerType,
-			                        new Unary(opMachFtr, new Const("%LR")),
-			                        new Const(pc + 4));
+			auto as = new Assign(new IntegerType,
+			                     new Unary(opMachFtr, new Const("%LR")),
+			                     new Const(pc + 4));
 			stmts = new std::list<Statement *>;
 			stmts->push_back(as);
 			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4")
 		} else {
 			Exp *dest = DIS_RELADDR;
 			stmts = instantiate(pc, name, dest);
-			CallStatement *newCall = new CallStatement;
+			auto newCall = new CallStatement;
 			// Record the fact that this is not a computed call
 			newCall->setIsComputed(false);
 			// Set the destination expression

@@ -79,7 +79,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		/*
 		 * Ordinary call to fixed dest
 		 */
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		// Set the fixed destination. Note that addr is (at present!!) just
 		// the offset in the instruction, so we have to add native pc
 		newCall->setDest(addr + pc);
@@ -146,12 +146,12 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		// However, they boil down to these three, and the parameter analysis
 		// should be able to use these:
 		// *64* m[%afp + 0] = r[39];
-		SemStr *ssSrc = new SemStr;
-		SemStr *ssDst = new SemStr;
+		auto ssSrc = new SemStr;
+		auto ssDst = new SemStr;
 		*ssSrc << idRegOf << idIntConst << 39;
 		*ssDst << idMemOf << idAFP;
 		RTs = new list<RT *>;
-		RTAssgn *pRt = new RTAssgn(ssDst, ssSrc, 64);
+		auto pRt = new RTAssgn(ssDst, ssSrc, 64);
 		RTs->push_back(pRt);
 		// *32* r[23] := m[%afp    ];
 		ssSrc = new SemStr;
@@ -172,7 +172,7 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		// the pc of the whole pattern
 		ADDRESS dest = pc + 12 + libstub;
 		// Treat it like a call, followed by a return
-		HLCall *newCall = new HLCall(pc, 0, RTs);
+		auto newCall = new HLCall(pc, 0, RTs);
 		// Set the fixed destination.
 		newCall->setDest(dest);
 		newCall->setReturnAfterCall(true);
@@ -292,11 +292,11 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		| bb_all(c_cmplt, null_cmplt, r, bit_cmplt, target) =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *reg = dis_Reg(r);
 			SemStr *mask = dis_c_bit(bit_cmplt);
-			SemStr *exp = new SemStr;
+			auto exp = new SemStr;
 			*exp << idBitAnd << *mask << *reg;
 			substituteCallArgs("c_c", cond_ss, mask, reg, exp);
 			jump->setCondExpr(cond_ss);
@@ -308,13 +308,13 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		| cmpib_all(c_cmplt, null_cmplt, im5_11, r_06, target) =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setCondType(hl_jcond_type[condvalue]);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *imm = dis_Num(im5_11);
 			SemStr *reg = dis_Reg(r_06);
 			reg->prep(idRegOf);
-			SemStr *exp = new SemStr;
+			auto exp = new SemStr;
 			*exp << idMinus << *imm << *reg;
 			substituteCallArgs("c_c", cond_ss, imm, reg, exp);
 			jump->setCondExpr(cond_ss);
@@ -327,14 +327,14 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 		| cmpb_all(c_cmplt, null_cmplt, r1, r2, target) =>
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setCondType(hl_jcond_type[condvalue]);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *reg1 = dis_Reg(r1);
 			SemStr *reg2 = dis_Reg(r2);
 			reg1->prep(idRegOf);
 			reg2->prep(idRegOf);
-			SemStr *exp = new SemStr;
+			auto exp = new SemStr;
 			*exp << idMinus << *reg1 << *reg2;
 			substituteCallArgs("c_c", cond_ss, reg1, reg2, exp);
 			jump->setCondExpr(cond_ss);
@@ -349,13 +349,13 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			// Get semantics for the add part (only)
 			RTs = instantiate(pc, name, dis_Num(im5_11), dis_Reg(r_06));
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setCondType(hl_jcond_type[condvalue]);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *imm = dis_Num(im5_11);
 			SemStr *reg = dis_Reg(r_06);
 			reg->prep(idRegOf);
-			SemStr *tgt = new SemStr(*reg);      // Each actual is deleted
+			auto tgt = new SemStr(*reg);      // Each actual is deleted
 			substituteCallArgs("c_c", cond_ss, imm, reg, tgt);
 			jump->setCondExpr(cond_ss);
 			bool isNull = is_null(null_cmplt);
@@ -368,14 +368,14 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2));
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setCondType(hl_jcond_type[condvalue]);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *reg1 = dis_Reg(r1);
 			SemStr *reg2 = dis_Reg(r2);
 			reg1->prep(idRegOf);
 			reg2->prep(idRegOf);
-			SemStr *tgt = new SemStr(*reg2);
+			auto tgt = new SemStr(*reg2);
 			substituteCallArgs("c_c", cond_ss, reg1, reg2, tgt);
 			jump->setCondExpr(cond_ss);
 			bool isNull = is_null(null_cmplt);
@@ -387,14 +387,14 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			int condvalue;
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			RTs = instantiate(pc, name, dis_Num(i), dis_Reg(r));
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setCondType(hl_jcond_type[condvalue]);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *imm = dis_Reg(i);
 			SemStr *reg = dis_Reg(r);
 			imm->prep(idIntConst);
 			reg->prep(idRegOf);
-			SemStr *tgt = new SemStr(*reg);
+			auto tgt = new SemStr(*reg);
 			substituteCallArgs("c_c", cond_ss, imm, reg, tgt);
 			jump->setCondExpr(cond_ss);
 			bool isNull = is_null(null_cmplt);
@@ -407,14 +407,14 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc /* = NULL *
 			SemStr *cond_ss = c_c(c_cmplt, condvalue);
 			// Get semantics for the add part (only)
 			RTs = instantiate(pc, name, dis_Reg(r1), dis_Reg(r2));
-			HLJcond *jump = new HLJcond(pc, RTs);
+			auto jump = new HLJcond(pc, RTs);
 			jump->setCondType(hl_jcond_type[condvalue]);
 			jump->setDest(dis_Num(target + pc + 8));
 			SemStr *reg1 = dis_Reg(r1);
 			SemStr *reg2 = dis_Reg(r2);
 			reg1->prep(idRegOf);
 			reg2->prep(idRegOf);
-			SemStr *tgt = new SemStr(*reg2);      // Each actual is deleted
+			auto tgt = new SemStr(*reg2);      // Each actual is deleted
 			substituteCallArgs("c_c", cond_ss, reg1, reg2, tgt);
 			jump->setCondExpr(cond_ss);
 			bool isNull = is_null(null_cmplt);
@@ -580,7 +580,7 @@ NJMCDecoder::dis_Freg(int regNum, int fmt)
 		printf("Error decoding floating point register %d with format %d\n", regNum, fmt);
 		r = 0;
 	}
-	SemStr *ss = new SemStr;
+	auto ss = new SemStr;
 	*ss << idIntConst << r;
 	return ss;
 }
@@ -588,7 +588,7 @@ NJMCDecoder::dis_Freg(int regNum, int fmt)
 SemStr *
 NJMCDecoder::dis_Creg(int regNum)
 {
-	SemStr *ss = new SemStr;
+	auto ss = new SemStr;
 	*ss << idIntConst << (regNum + 256);
 	return ss;
 }
@@ -596,7 +596,7 @@ NJMCDecoder::dis_Creg(int regNum)
 SemStr *
 NJMCDecoder::dis_Sreg(int regNum)
 {
-	SemStr *ss = new SemStr;
+	auto ss = new SemStr;
 	*ss << idIntConst << regNum;
 	return ss;
 }

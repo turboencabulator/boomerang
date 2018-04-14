@@ -87,14 +87,14 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		| call(oper) =>
 			total += oper;
 			stmts = instantiate(pc, "call", new Const(total));
-			CallStatement *newCall = new CallStatement;
+			auto newCall = new CallStatement;
 			newCall->setIsComputed(false);
 			newCall->setDest(pc + result.numBytes + total);
 			result.rtl = new RTL(pc, stmts);
 			result.rtl->appendStmt(newCall);
 
 		| cj(oper) =>
-			BranchStatement *br = new BranchStatement();
+			auto br = new BranchStatement();
 			//br->setCondType(BRANCH_JE);
 			br->setDest(pc + result.numBytes + total + oper);
 			//br->setCondExpr(dis_Reg(0));

@@ -2026,7 +2026,7 @@ Exp::Accumulate(std::list<Exp *> exprs)
 
 	Exp *first = exprs.front()->clone();
 	exprs.pop_front();
-	Binary *res = new Binary(opPlus, first, Accumulate(exprs));
+	auto res = new Binary(opPlus, first, Accumulate(exprs));
 	exprs.push_front(first);
 	return res;
 }
@@ -3034,7 +3034,7 @@ Ternary::polySimplify(bool &bMod)
 	 && subExp3->isMemOf()
 	 && subExp3->getSubExp1()->isIntConst()) {
 		unsigned u = ((Const *)subExp3->getSubExp1())->getInt();
-		Location *l = dynamic_cast<Location *>(subExp3);
+		auto l = dynamic_cast<Location *>(subExp3);
 		UserProc *p = l->getProc();
 		if (p) {
 			Prog *prog = p->getProg();
@@ -3368,7 +3368,7 @@ Exp::removeSubscripts(bool &allZero)
 Exp *
 Exp::fromSSAleft(UserProc *proc, Statement *d)
 {
-	RefExp *r = new RefExp(this, d);  // "Wrap" in a ref
+	auto r = new RefExp(this, d);  // "Wrap" in a ref
 	return r->accept(new ExpSsaXformer(proc));
 }
 
@@ -3611,7 +3611,7 @@ Binary::genConstraints(Exp *result)
 	if (result->isTypeVal())
 		restrictTo = ((TypeVal *)result)->getType();
 	Exp *res = nullptr;
-	IntegerType *intType = new IntegerType(0);  // Wild size (=0)
+	auto intType = new IntegerType(0);  // Wild size (=0)
 	TypeVal intVal(intType);
 	switch (op) {
 	case opFPlus:
@@ -3624,8 +3624,8 @@ Binary::genConstraints(Exp *result)
 				return new Terminal(opFalse);
 
 			// MVE: what about sizes?
-			FloatType *ft = new FloatType();
-			TypeVal *ftv = new TypeVal(ft);
+			auto ft = new FloatType();
+			auto ftv = new TypeVal(ft);
 			res = constrainSub(ftv, ftv);
 			if (!restrictTo)
 				// Also constrain the result
@@ -3645,8 +3645,8 @@ Binary::genConstraints(Exp *result)
 				return new Terminal(opFalse);
 
 			// MVE: What about sizes?
-			IntegerType *it = new IntegerType();
-			TypeVal *itv = new TypeVal(it);
+			auto it = new IntegerType();
+			auto itv = new TypeVal(it);
 			res = constrainSub(itv, itv);
 			if (!restrictTo)
 				// Also constrain the result
@@ -4303,7 +4303,7 @@ public:
 Memo *
 Const::makeMemo(int mId)
 {
-	ConstMemo *m = new ConstMemo(mId);
+	auto m = new ConstMemo(mId);
 	memcpy(&m->u, &u, sizeof u);
 	m->conscript = conscript;
 	return m;
@@ -4312,7 +4312,7 @@ Const::makeMemo(int mId)
 void
 Const::readMemo(Memo *mm, bool dec)
 {
-	ConstMemo *m = dynamic_cast<ConstMemo *>(mm);
+	auto m = dynamic_cast<ConstMemo *>(mm);
 	memcpy(&u, &m->u, sizeof u);
 	conscript = m->conscript;
 }
@@ -4332,7 +4332,7 @@ void
 Terminal::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// TerminalMemo *m = dynamic_cast<TerminalMemo *>(mm);
+	// auto m = dynamic_cast<TerminalMemo *>(mm);
 }
 
 class UnaryMemo : public Memo {
@@ -4350,7 +4350,7 @@ void
 Unary::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// UnaryMemo *m = dynamic_cast<UnaryMemo *>(mm);
+	// auto m = dynamic_cast<UnaryMemo *>(mm);
 }
 
 class BinaryMemo : public Memo {
@@ -4368,7 +4368,7 @@ void
 Binary::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// BinaryMemo *m = dynamic_cast<BinaryMemo *>(mm);
+	// auto m = dynamic_cast<BinaryMemo *>(mm);
 }
 
 class TernaryMemo : public Memo {
@@ -4386,7 +4386,7 @@ void
 Ternary::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// TernaryMemo *m = dynamic_cast<TernaryMemo *>(mm);
+	// auto m = dynamic_cast<TernaryMemo *>(mm);
 }
 
 class TypedExpMemo : public Memo {
@@ -4404,7 +4404,7 @@ void
 TypedExp::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// TypedExpMemo *m = dynamic_cast<TypedExpMemo *>(mm);
+	// auto m = dynamic_cast<TypedExpMemo *>(mm);
 }
 
 class FlagDefMemo : public Memo {
@@ -4422,7 +4422,7 @@ void
 FlagDef::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// FlagDefMemo *m = dynamic_cast<FlagDefMemo *>(mm);
+	// auto m = dynamic_cast<FlagDefMemo *>(mm);
 }
 
 class RefExpMemo : public Memo {
@@ -4440,7 +4440,7 @@ void
 RefExp::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// RefExpMemo *m = dynamic_cast<RefExpMemo *>(mm);
+	// auto m = dynamic_cast<RefExpMemo *>(mm);
 }
 
 class TypeValMemo : public Memo {
@@ -4458,7 +4458,7 @@ void
 TypeVal::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// TypeValMemo *m = dynamic_cast<TypeValMemo *>(mm);
+	// auto m = dynamic_cast<TypeValMemo *>(mm);
 }
 
 class LocationMemo : public Memo {
@@ -4476,6 +4476,6 @@ void
 Location::readMemo(Memo *mm, bool dec)
 {
 	// FIXME: not completed
-	// LocationMemo *m = dynamic_cast<LocationMemo *>(mm);
+	// auto m = dynamic_cast<LocationMemo *>(mm);
 }
 #endif

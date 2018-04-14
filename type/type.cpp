@@ -204,7 +204,7 @@ NamedType::clone() const
 Type *
 CompoundType::clone() const
 {
-	CompoundType *t = new CompoundType();
+	auto t = new CompoundType();
 	for (unsigned i = 0; i < types.size(); ++i)
 		t->addType(types[i]->clone(), names[i].c_str());
 	return t;
@@ -213,7 +213,7 @@ CompoundType::clone() const
 Type *
 UnionType::clone() const
 {
-	UnionType *u = new UnionType();
+	auto u = new UnionType();
 	for (auto it = li.cbegin(); it != li.cend(); ++it)
 		u->addType(it->type, it->name.c_str());
 	return u;
@@ -1184,7 +1184,7 @@ Type::as##x() \
 	Type *ty = this; \
 	if (isNamed()) \
 		ty = ((NamedType *)ty)->resolvesTo(); \
-	x##Type *res = dynamic_cast<x##Type *>(ty); \
+	auto res = dynamic_cast<x##Type *>(ty); \
 	assert(res); \
 	return res; \
 }
@@ -1207,7 +1207,7 @@ AS_TYPE(Lower)
 NamedType *
 Type::asNamed()
 {
-	NamedType *res = dynamic_cast<NamedType *>(this);
+	auto res = dynamic_cast<NamedType *>(this);
 	assert(res);
 	return res;
 }
@@ -1553,7 +1553,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 	// Check for existing locals that need to be updated
 	if (ty->resolvesToCompound() || ty->resolvesToArray()) {
 		Exp *rsp = Location::regOf(proc->getSignature()->getStackRegister());
-		RefExp *rsp0 = new RefExp(rsp, proc->getCFG()->findTheImplicitAssign(rsp));  // sp{0}
+		auto rsp0 = new RefExp(rsp, proc->getCFG()->findTheImplicitAssign(rsp));  // sp{0}
 		for (auto it = it1; it != it2; ++it) {
 			// Check if there is an existing local here
 			Exp *locl = Location::memOf(new Binary(opPlus,
@@ -1629,7 +1629,7 @@ ComplexTypeCompList &
 Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 {
 	DataIntervalEntry *pdie = dim.find(addr);
-	ComplexTypeCompList *res = new ComplexTypeCompList;
+	auto res = new ComplexTypeCompList;
 	if (!pdie) return *res;
 	ADDRESS startCurrent = pdie->first;
 	Type *curType = pdie->second.type;
@@ -1708,7 +1708,7 @@ public:
 Memo *
 FuncType::makeMemo(int mId)
 {
-	FuncTypeMemo *m = new FuncTypeMemo(mId);
+	auto m = new FuncTypeMemo(mId);
 	m->signature = signature;
 
 	signature->takeMemo(mId);
@@ -1718,7 +1718,7 @@ FuncType::makeMemo(int mId)
 void
 FuncType::readMemo(Memo *mm, bool dec)
 {
-	FuncTypeMemo *m = dynamic_cast<FuncTypeMemo *>(mm);
+	auto m = dynamic_cast<FuncTypeMemo *>(mm);
 	signature = m->signature;
 
 	//signature->restoreMemo(m->mId, dec);
@@ -1734,7 +1734,7 @@ public:
 Memo *
 IntegerType::makeMemo(int mId)
 {
-	IntegerTypeMemo *m = new IntegerTypeMemo(mId);
+	auto m = new IntegerTypeMemo(mId);
 	m->size = size;
 	m->signedness = signedness;
 	return m;
@@ -1743,7 +1743,7 @@ IntegerType::makeMemo(int mId)
 void
 IntegerType::readMemo(Memo *mm, bool dec)
 {
-	IntegerTypeMemo *m = dynamic_cast<IntegerTypeMemo *>(mm);
+	auto m = dynamic_cast<IntegerTypeMemo *>(mm);
 	size = m->size;
 	signedness = m->signedness;
 }
@@ -1757,7 +1757,7 @@ public:
 Memo *
 FloatType::makeMemo(int mId)
 {
-	FloatTypeMemo *m = new FloatTypeMemo(mId);
+	auto m = new FloatTypeMemo(mId);
 	m->size = size;
 	return m;
 }
@@ -1765,7 +1765,7 @@ FloatType::makeMemo(int mId)
 void
 FloatType::readMemo(Memo *mm, bool dec)
 {
-	FloatTypeMemo *m = dynamic_cast<FloatTypeMemo *>(mm);
+	auto m = dynamic_cast<FloatTypeMemo *>(mm);
 	size = m->size;
 }
 
@@ -1778,7 +1778,7 @@ public:
 Memo *
 PointerType::makeMemo(int mId)
 {
-	PointerTypeMemo *m = new PointerTypeMemo(mId);
+	auto m = new PointerTypeMemo(mId);
 	m->points_to = points_to;
 
 	points_to->takeMemo(mId);
@@ -1789,7 +1789,7 @@ PointerType::makeMemo(int mId)
 void
 PointerType::readMemo(Memo *mm, bool dec)
 {
-	PointerTypeMemo *m = dynamic_cast<PointerTypeMemo *>(mm);
+	auto m = dynamic_cast<PointerTypeMemo *>(mm);
 	points_to = m->points_to;
 
 	points_to->restoreMemo(m->mId, dec);
@@ -1805,7 +1805,7 @@ public:
 Memo *
 ArrayType::makeMemo(int mId)
 {
-	ArrayTypeMemo *m = new ArrayTypeMemo(mId);
+	auto m = new ArrayTypeMemo(mId);
 	m->base_type = base_type;
 	m->length = length;
 
@@ -1817,7 +1817,7 @@ ArrayType::makeMemo(int mId)
 void
 ArrayType::readMemo(Memo *mm, bool dec)
 {
-	ArrayTypeMemo *m = dynamic_cast<ArrayTypeMemo *>(mm);
+	auto m = dynamic_cast<ArrayTypeMemo *>(mm);
 	length = m->length;
 	base_type = m->base_type;
 
@@ -1834,7 +1834,7 @@ public:
 Memo *
 NamedType::makeMemo(int mId)
 {
-	NamedTypeMemo *m = new NamedTypeMemo(mId);
+	auto m = new NamedTypeMemo(mId);
 	m->name = name;
 	m->nextAlpha = nextAlpha;
 	return m;
@@ -1843,7 +1843,7 @@ NamedType::makeMemo(int mId)
 void
 NamedType::readMemo(Memo *mm, bool dec)
 {
-	NamedTypeMemo *m = dynamic_cast<NamedTypeMemo *>(mm);
+	auto m = dynamic_cast<NamedTypeMemo *>(mm);
 	name = m->name;
 	nextAlpha = m->nextAlpha;
 }
@@ -1858,7 +1858,7 @@ public:
 Memo *
 CompoundType::makeMemo(int mId)
 {
-	CompoundTypeMemo *m = new CompoundTypeMemo(mId);
+	auto m = new CompoundTypeMemo(mId);
 	m->types = types;
 	m->names = names;
 
@@ -1870,7 +1870,7 @@ CompoundType::makeMemo(int mId)
 void
 CompoundType::readMemo(Memo *mm, bool dec)
 {
-	CompoundTypeMemo *m = dynamic_cast<CompoundTypeMemo *>(mm);
+	auto m = dynamic_cast<CompoundTypeMemo *>(mm);
 	types = m->types;
 	names = m->names;
 
@@ -1887,7 +1887,7 @@ public:
 Memo *
 UnionType::makeMemo(int mId)
 {
-	UnionTypeMemo *m = new UnionTypeMemo(mId);
+	auto m = new UnionTypeMemo(mId);
 	m->li = li;
 
 	for (auto it = li.begin(); it != li.end(); ++it)
@@ -1898,7 +1898,7 @@ UnionType::makeMemo(int mId)
 void
 UnionType::readMemo(Memo *mm, bool dec)
 {
-	UnionTypeMemo *m = dynamic_cast<UnionTypeMemo *>(mm);
+	auto m = dynamic_cast<UnionTypeMemo *>(mm);
 	li = m->li;
 
 	for (auto it = li.begin(); it != li.end(); ++it)

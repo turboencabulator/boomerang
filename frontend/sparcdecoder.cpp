@@ -76,8 +76,8 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 RTL *
 SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name)
 {
-	RTL *res = new RTL(pc, stmts);
-	BranchStatement *br = new BranchStatement();
+	auto res = new RTL(pc, stmts);
+	auto br = new BranchStatement();
 	res->appendStmt(br);
 	if (name[0] == 'F') {
 		// fbranch is any of [ FBN FBNE FBLG FBUL FBL   FBUG FBG   FBU
@@ -374,7 +374,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                     	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
 
-                    		GotoStatement *jump = new GotoStatement;
+                    		auto jump = new GotoStatement;
 
                     
 
@@ -624,7 +624,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
             		 */
 
-            		CallStatement *newCall = new CallStatement;
+            		auto newCall = new CallStatement;
 
             
 
@@ -2319,7 +2319,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		 */
 
-      		CaseStatement *jump = new CaseStatement;
+      		auto jump = new CaseStatement;
 
       		// Record the fact that it is a computed jump
 
@@ -2373,7 +2373,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		 */
 
-      		CallStatement *newCall = new CallStatement;
+      		auto newCall = new CallStatement;
 
       
 

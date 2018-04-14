@@ -54,8 +54,8 @@ TypeTest::testNotEqual()
 void
 TypeTest::testCompound()
 {
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_WINDOWS, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_WINDOWS, prog);
 	Boomerang::get()->setLogger(new FileLogger());  // May try to output some messages to LOG
 	pFE->readLibraryCatalog();  // Read definitions
 
@@ -112,7 +112,7 @@ TypeTest::testDataInterval()
 {
 	DataIntervalMap dim;
 
-	Prog *prog = new Prog;
+	auto prog = new Prog;
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	std::string name("test");
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
@@ -199,7 +199,7 @@ TypeTest::testDataIntervalOverlaps()
 {
 	DataIntervalMap dim;
 
-	Prog *prog = new Prog;
+	auto prog = new Prog;
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	std::string name("test");
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));

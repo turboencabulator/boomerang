@@ -8246,7 +8246,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                     		stmts = instantiate(pc, "RET.far.Iw", DIS_I16);
 
-                    		ReturnStatement *ret = new ReturnStatement;
+                    		auto ret = new ReturnStatement;
 
                     		result.rtl = new RTL(pc, stmts);
 
@@ -14462,7 +14462,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                     		} else {
 
-                    			CallStatement *call = new CallStatement;
+                    			auto call = new CallStatement;
 
                     			// Set the destination
 
@@ -15013,7 +15013,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                                 		stmts = instantiate(pc, "CALL.Evod", DIS_EADDR32);
 
-                                		CallStatement *newCall = new CallStatement;
+                                		auto newCall = new CallStatement;
 
                                 		// Record the fact that this is a computed call
 
@@ -15106,7 +15106,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                                 		 */
 
-                                		CaseStatement *newJump = new CaseStatement;
+                                		auto newJump = new CaseStatement;
 
                                 		// Record the fact that this is a computed call
 
@@ -31970,7 +31970,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
                     		stmts = instantiate(pc, "RET.Iw", DIS_I16);
 
-                    		ReturnStatement *ret = new ReturnStatement;
+                    		auto ret = new ReturnStatement;
 
                     		result.rtl = new RTL(pc, stmts);
 
@@ -61152,7 +61152,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		stmts = instantiate(pc, "CALL.Evod", DIS_EADDR32);
 
-      		CallStatement *newCall = new CallStatement;
+      		auto newCall = new CallStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61196,7 +61196,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		stmts = instantiate(pc, "CALL.Evod", DIS_EADDR32);
 
-      		CallStatement *newCall = new CallStatement;
+      		auto newCall = new CallStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61240,7 +61240,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		stmts = instantiate(pc, "CALL.Evod", DIS_EADDR32);
 
-      		CallStatement *newCall = new CallStatement;
+      		auto newCall = new CallStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61284,7 +61284,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		stmts = instantiate(pc, "CALL.Evod", DIS_EADDR32);
 
-      		CallStatement *newCall = new CallStatement;
+      		auto newCall = new CallStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61324,7 +61324,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		 */
 
-      		CaseStatement *newJump = new CaseStatement;
+      		auto newJump = new CaseStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61370,7 +61370,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		 */
 
-      		CaseStatement *newJump = new CaseStatement;
+      		auto newJump = new CaseStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61416,7 +61416,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		 */
 
-      		CaseStatement *newJump = new CaseStatement;
+      		auto newJump = new CaseStatement;
 
       		// Record the fact that this is a computed call
 
@@ -61462,7 +61462,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       		 */
 
-      		CaseStatement *newJump = new CaseStatement;
+      		auto newJump = new CaseStatement;
 
       		// Record the fact that this is a computed call
 
@@ -62110,7 +62110,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 	//  pc+2: branch pc+2 condition modrm@[dest:dest]=0
 	// exit:
 
-	std::list<Statement *> *stmts = new std::list<Statement *>;
+	auto stmts = new std::list<Statement *>;
 	Statement *s;
 	BranchStatement *b;
 	switch (BSFRstate) {

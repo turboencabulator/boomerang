@@ -244,8 +244,8 @@ XMLProgParser::parse(const char *filename)
 	}
 	if (!prog)
 		return nullptr;
-	//FrontEnd *pFE = FrontEnd::open(prog->getPath(), prog);  // Path is usually empty!?
-	FrontEnd *pFE = FrontEnd::open(prog->getPathAndName(), prog);
+	//auto pFE = FrontEnd::open(prog->getPath(), prog);  // Path is usually empty!?
+	auto pFE = FrontEnd::open(prog->getPathAndName(), prog);
 	return prog;
 }
 
@@ -521,7 +521,7 @@ XMLProgParser::addChildTo_libproc(Context *node, const Context *child) const
 	if (phase == 1) {
 		switch (child->tag) {
 		case e_caller:
-			CallStatement *call = dynamic_cast<CallStatement *>(child->stmt);
+			auto call = dynamic_cast<CallStatement *>(child->stmt);
 			assert(call);
 			node->proc->addCaller(call);
 			break;
@@ -548,7 +548,7 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->proc = (Proc *)findId(getAttr(attr, "id"));
-		UserProc *u = dynamic_cast<UserProc *>(node->proc);
+		auto u = dynamic_cast<UserProc *>(node->proc);
 		assert(u);
 		Proc *p = (Proc *)findId(getAttr(attr, "firstCaller"));
 		if (p)
@@ -561,7 +561,7 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 			u->theReturnStatement = r;
 		return;
 	}
-	UserProc *proc = new UserProc();
+	auto proc = new UserProc();
 	node->proc = proc;
 	addId(attr, proc);
 
@@ -579,13 +579,13 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_userproc(Context *node, const Context *child) const
 {
-	UserProc *userproc = dynamic_cast<UserProc *>(node->proc);
+	auto userproc = dynamic_cast<UserProc *>(node->proc);
 	assert(userproc);
 	if (phase == 1) {
 		switch (child->tag) {
 		case e_caller:
 			{
-				CallStatement *call = dynamic_cast<CallStatement *>(child->stmt);
+				auto call = dynamic_cast<CallStatement *>(child->stmt);
 				assert(call);
 				node->proc->addCaller(call);
 			}
@@ -944,7 +944,7 @@ XMLProgParser::start_cfg(Context *node, const char **attr)
 			node->cfg->setExitBB(exitBB);
 		return;
 	}
-	Cfg *cfg = new Cfg();
+	auto cfg = new Cfg();
 	node->cfg = cfg;
 	addId(attr, cfg);
 
@@ -1304,7 +1304,7 @@ XMLProgParser::addChildTo_assign(Context *node, const Context *child) const
 	if (phase == 1) {
 		return;
 	}
-	Assign *assign = dynamic_cast<Assign *>(node->stmt);
+	auto assign = dynamic_cast<Assign *>(node->stmt);
 	assert(assign);
 	switch (child->tag) {
 	case e_lhs:
@@ -1346,7 +1346,7 @@ XMLProgParser::addChildTo_phiassign(Context *node, const Context *child) const
 	if (phase == 1) {
 		return;
 	}
-	PhiAssign *pa = dynamic_cast<PhiAssign *>(node->stmt);
+	auto pa = dynamic_cast<PhiAssign *>(node->stmt);
 	assert(pa);
 	switch (child->tag) {
 	case e_lhs:
@@ -1394,7 +1394,7 @@ XMLProgParser::start_callstmt(Context *node, const char **attr)
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	CallStatement *call = new CallStatement();
+	auto call = new CallStatement();
 	node->stmt = call;
 	addId(attr, call);
 	const char *n = getAttr(attr, "number");
@@ -1411,7 +1411,7 @@ XMLProgParser::start_callstmt(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_callstmt(Context *node, const Context *child) const
 {
-	CallStatement *call = dynamic_cast<CallStatement *>(node->stmt);
+	auto call = dynamic_cast<CallStatement *>(node->stmt);
 	assert(call);
 	if (phase == 1) {
 		switch (child->tag) {
@@ -1503,7 +1503,7 @@ XMLProgParser::start_returnstmt(Context *node, const char **attr)
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	ReturnStatement *ret = new ReturnStatement();
+	auto ret = new ReturnStatement();
 	node->stmt = ret;
 	addId(attr, ret);
 	const char *n = getAttr(attr, "number");
@@ -1517,7 +1517,7 @@ XMLProgParser::start_returnstmt(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_returnstmt(Context *node, const Context *child) const
 {
-	ReturnStatement *ret = dynamic_cast<ReturnStatement *>(node->stmt);
+	auto ret = dynamic_cast<ReturnStatement *>(node->stmt);
 	assert(ret);
 	if (phase == 1) {
 		return;
@@ -1568,7 +1568,7 @@ XMLProgParser::start_gotostmt(Context *node, const char **attr)
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	GotoStatement *branch = new GotoStatement();
+	auto branch = new GotoStatement();
 	node->stmt = branch;
 	addId(attr, branch);
 	const char *n = getAttr(attr, "number");
@@ -1582,7 +1582,7 @@ XMLProgParser::start_gotostmt(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_gotostmt(Context *node, const Context *child) const
 {
-	GotoStatement *branch = dynamic_cast<GotoStatement *>(node->stmt);
+	auto branch = dynamic_cast<GotoStatement *>(node->stmt);
 	assert(branch);
 	if (phase == 1) {
 		return;
@@ -1610,7 +1610,7 @@ XMLProgParser::start_branchstmt(Context *node, const char **attr)
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	BranchStatement *branch = new BranchStatement();
+	auto branch = new BranchStatement();
 	node->stmt = branch;
 	addId(attr, branch);
 	const char *n = getAttr(attr, "number");
@@ -1630,7 +1630,7 @@ XMLProgParser::start_branchstmt(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_branchstmt(Context *node, const Context *child) const
 {
-	BranchStatement *branch = dynamic_cast<BranchStatement *>(node->stmt);
+	auto branch = dynamic_cast<BranchStatement *>(node->stmt);
 	assert(branch);
 	if (phase == 1) {
 		return;
@@ -1672,7 +1672,7 @@ XMLProgParser::start_casestmt(Context *node, const char **attr)
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	CaseStatement *cas = new CaseStatement();
+	auto cas = new CaseStatement();
 	node->stmt = cas;
 	addId(attr, cas);
 	const char *n = getAttr(attr, "number");
@@ -1686,7 +1686,7 @@ XMLProgParser::start_casestmt(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_casestmt(Context *node, const Context *child) const
 {
-	CaseStatement *cas = dynamic_cast<CaseStatement *>(node->stmt);
+	auto cas = dynamic_cast<CaseStatement *>(node->stmt);
 	assert(cas);
 	if (phase == 1) {
 		return;
@@ -1716,7 +1716,7 @@ XMLProgParser::start_boolasgn(Context *node, const char **attr)
 	}
 	const char *n = getAttr(attr, "size");
 	assert(n);
-	BoolAssign *boo = new BoolAssign(atoi(n));
+	auto boo = new BoolAssign(atoi(n));
 	node->stmt = boo;
 	addId(attr, boo);
 	n = getAttr(attr, "number");
@@ -1733,7 +1733,7 @@ XMLProgParser::start_boolasgn(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_boolasgn(Context *node, const Context *child) const
 {
-	BoolAssign *boo = dynamic_cast<BoolAssign *>(node->stmt);
+	auto boo = dynamic_cast<BoolAssign *>(node->stmt);
 	assert(boo);
 	if (phase == 1) {
 		return;
@@ -1801,7 +1801,7 @@ XMLProgParser::start_integertype(Context *node, const char **attr)
 		node->type = (Type *)findId(getAttr(attr, "id"));
 		return;
 	}
-	IntegerType *ty = new IntegerType();
+	auto ty = new IntegerType();
 	node->type = ty;
 	addId(attr, ty);
 	const char *n = getAttr(attr, "size");
@@ -1836,7 +1836,7 @@ XMLProgParser::start_pointertype(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_pointertype(Context *node, const Context *child) const
 {
-	PointerType *p = dynamic_cast<PointerType *>(node->type);
+	auto p = dynamic_cast<PointerType *>(node->type);
 	assert(p);
 	if (phase == 1) {
 		return;
@@ -1893,7 +1893,7 @@ XMLProgParser::start_arraytype(Context *node, const char **attr)
 		node->type = (Type *)findId(getAttr(attr, "id"));
 		return;
 	}
-	ArrayType *a = new ArrayType();
+	auto a = new ArrayType();
 	node->type = a;
 	addId(attr, a);
 	const char *len = getAttr(attr, "length");
@@ -1904,7 +1904,7 @@ XMLProgParser::start_arraytype(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_arraytype(Context *node, const Context *child) const
 {
-	ArrayType *a = dynamic_cast<ArrayType *>(node->type);
+	auto a = dynamic_cast<ArrayType *>(node->type);
 	assert(a);
 	switch (child->tag) {
 	case e_basetype:
@@ -1934,7 +1934,7 @@ XMLProgParser::start_sizetype(Context *node, const char **attr)
 		node->type = (Type *)findId(getAttr(attr, "id"));
 		return;
 	}
-	SizeType *ty = new SizeType();
+	auto ty = new SizeType();
 	node->type = ty;
 	addId(attr, ty);
 	const char *n = getAttr(attr, "size");
@@ -1974,7 +1974,7 @@ XMLProgParser::addChildTo_location(Context *node, const Context *child) const
 	if (phase == 1) {
 		return;
 	}
-	Location *l = dynamic_cast<Location *>(node->exp);
+	auto l = dynamic_cast<Location *>(node->exp);
 	assert(l);
 	switch (child->tag) {
 	case e_subexp1:
@@ -2165,7 +2165,7 @@ XMLProgParser::start_typedexp(Context *node, const char **attr)
 void
 XMLProgParser::addChildTo_typedexp(Context *node, const Context *child) const
 {
-	TypedExp *t = dynamic_cast<TypedExp *>(node->exp);
+	auto t = dynamic_cast<TypedExp *>(node->exp);
 	assert(t);
 	switch (child->tag) {
 	case e_type:
@@ -2185,7 +2185,7 @@ XMLProgParser::start_refexp(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->exp = (Exp *)findId(getAttr(attr, "id"));
-		RefExp *r = dynamic_cast<RefExp *>(node->exp);
+		auto r = dynamic_cast<RefExp *>(node->exp);
 		assert(r);
 		r->def = (Statement *)findId(getAttr(attr, "def"));
 		return;
@@ -2444,19 +2444,19 @@ XMLProgParser::persistToXML(std::ostream &out, Signature *sig)
 void
 XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 {
-	VoidType *v = dynamic_cast<VoidType *>(ty);
+	auto v = dynamic_cast<VoidType *>(ty);
 	if (v) {
 		out << "<voidtype id=\"" << (int)ty << "\"/>\n";
 		return;
 	}
-	FuncType *f = dynamic_cast<FuncType *>(ty);
+	auto f = dynamic_cast<FuncType *>(ty);
 	if (f) {
 		out << "<functype id=\"" << (int)ty << "\">\n";
 		persistToXML(out, f->signature);
 		out << "</functype>\n";
 		return;
 	}
-	IntegerType *i = dynamic_cast<IntegerType *>(ty);
+	auto i = dynamic_cast<IntegerType *>(ty);
 	if (i) {
 		out << "<integertype id=\"" << (int)ty
 		    << "\" size=\"" << i->size
@@ -2464,30 +2464,30 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 		    << "\"/>\n";
 		return;
 	}
-	FloatType *fl = dynamic_cast<FloatType *>(ty);
+	auto fl = dynamic_cast<FloatType *>(ty);
 	if (fl) {
 		out << "<floattype id=\"" << (int)ty
 		    << "\" size=\"" << fl->size << "\"/>\n";
 		return;
 	}
-	BooleanType *b = dynamic_cast<BooleanType *>(ty);
+	auto b = dynamic_cast<BooleanType *>(ty);
 	if (b) {
 		out << "<booleantype id=\"" << (int)ty << "\"/>\n";
 		return;
 	}
-	CharType *c = dynamic_cast<CharType *>(ty);
+	auto c = dynamic_cast<CharType *>(ty);
 	if (c) {
 		out << "<chartype id=\"" << (int)ty << "\"/>\n";
 		return;
 	}
-	PointerType *p = dynamic_cast<PointerType *>(ty);
+	auto p = dynamic_cast<PointerType *>(ty);
 	if (p) {
 		out << "<pointertype id=\"" << (int)ty << "\">\n";
 		persistToXML(out, p->points_to);
 		out << "</pointertype>\n";
 		return;
 	}
-	ArrayType *a = dynamic_cast<ArrayType *>(ty);
+	auto a = dynamic_cast<ArrayType *>(ty);
 	if (a) {
 		out << "<arraytype id=\"" << (int)ty
 		    << "\" length=\"" << (int)a->length
@@ -2498,14 +2498,14 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 		out << "</arraytype>\n";
 		return;
 	}
-	NamedType *n = dynamic_cast<NamedType *>(ty);
+	auto n = dynamic_cast<NamedType *>(ty);
 	if (n) {
 		out << "<namedtype id=\"" << (int)ty
 		    << "\" name=\"" << n->name
 		    << "\"/>\n";
 		return;
 	}
-	CompoundType *co = dynamic_cast<CompoundType *>(ty);
+	auto co = dynamic_cast<CompoundType *>(ty);
 	if (co) {
 		out << "<compoundtype id=\"" << (int)ty << "\">\n";
 		for (unsigned i = 0; i < co->names.size(); ++i) {
@@ -2516,7 +2516,7 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 		out << "</compoundtype>\n";
 		return;
 	}
-	SizeType *sz = dynamic_cast<SizeType *>(ty);
+	auto sz = dynamic_cast<SizeType *>(ty);
 	if (sz) {
 		out << "<sizetype id=\"" << (int)ty
 		    << "\" size=\"" << sz->getSize()
@@ -2530,7 +2530,7 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 void
 XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 {
-	TypeVal *t = dynamic_cast<TypeVal *>(e);
+	auto t = dynamic_cast<TypeVal *>(e);
 	if (t) {
 		out << "<typeval id=\"" << (int)e
 		    << "\" op=\"" << operStrings[t->op]
@@ -2541,14 +2541,14 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</typeval>\n";
 		return;
 	}
-	Terminal *te = dynamic_cast<Terminal *>(e);
+	auto te = dynamic_cast<Terminal *>(e);
 	if (te) {
 		out << "<terminal id=\"" << (int)e
 		    << "\" op=\"" << operStrings[te->op]
 		    << "\"/>\n";
 		return;
 	}
-	Const *c = dynamic_cast<Const *>(e);
+	auto c = dynamic_cast<Const *>(e);
 	if (c) {
 		out << "<const id=\"" << (int)e
 		    << "\" op=\"" << operStrings[c->op]
@@ -2570,7 +2570,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "\"/>\n";
 		return;
 	}
-	Location *l = dynamic_cast<Location *>(e);
+	auto l = dynamic_cast<Location *>(e);
 	if (l) {
 		out << "<location id=\"" << (int)e;
 		if (l->proc)
@@ -2583,7 +2583,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</location>\n";
 		return;
 	}
-	RefExp *r = dynamic_cast<RefExp *>(e);
+	auto r = dynamic_cast<RefExp *>(e);
 	if (r) {
 		out << "<refexp id=\"" << (int)e;
 		if (r->def)
@@ -2596,7 +2596,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</refexp>\n";
 		return;
 	}
-	FlagDef *f = dynamic_cast<FlagDef *>(e);
+	auto f = dynamic_cast<FlagDef *>(e);
 	if (f) {
 		out << "<flagdef id=\"" << (int)e;
 		if (f->rtl)
@@ -2609,7 +2609,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</flagdef>\n";
 		return;
 	}
-	TypedExp *ty = dynamic_cast<TypedExp *>(e);
+	auto ty = dynamic_cast<TypedExp *>(e);
 	if (ty) {
 		out << "<typedexp id=\"" << (int)e
 		    << "\" op=\"" << operStrings[ty->op]
@@ -2623,7 +2623,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</typedexp>\n";
 		return;
 	}
-	Ternary *tn = dynamic_cast<Ternary *>(e);
+	auto tn = dynamic_cast<Ternary *>(e);
 	if (tn) {
 		out << "<ternary id=\"" << (int)e
 		    << "\" op=\"" << operStrings[tn->op]
@@ -2640,7 +2640,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</ternary>\n";
 		return;
 	}
-	Binary *b = dynamic_cast<Binary *>(e);
+	auto b = dynamic_cast<Binary *>(e);
 	if (b) {
 		out << "<binary id=\"" << (int)e
 		    << "\" op=\"" << operStrings[b->op]
@@ -2654,7 +2654,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		out << "</binary>\n";
 		return;
 	}
-	Unary *u = dynamic_cast<Unary *>(e);
+	auto u = dynamic_cast<Unary *>(e);
 	if (u) {
 		out << "<unary id=\"" << (int)e
 		    << "\" op=\"" << operStrings[u->op]
@@ -2791,7 +2791,7 @@ XMLProgParser::persistToXML(std::ostream &out, RTL *rtl)
 void
 XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 {
-	BoolAssign *b = dynamic_cast<BoolAssign *>(stmt);
+	auto b = dynamic_cast<BoolAssign *>(stmt);
 	if (b) {
 		out << "<boolasgn id=\"" << (int)stmt
 		    << "\" number=\"" << b->number;
@@ -2811,7 +2811,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</boolasgn>\n";
 		return;
 	}
-	ReturnStatement *r = dynamic_cast<ReturnStatement *>(stmt);
+	auto r = dynamic_cast<ReturnStatement *>(stmt);
 	if (r) {
 		out << "<returnstmt id=\"" << (int)stmt
 		    << "\" number=\"" << r->number;
@@ -2836,7 +2836,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</returnstmt>\n";
 		return;
 	}
-	CallStatement *c = dynamic_cast<CallStatement *>(stmt);
+	auto c = dynamic_cast<CallStatement *>(stmt);
 	if (c) {
 		out << "<callstmt id=\"" << (int)stmt
 		    << "\" number=\"" << c->number
@@ -2872,7 +2872,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</callstmt>\n";
 		return;
 	}
-	CaseStatement *ca = dynamic_cast<CaseStatement *>(stmt);
+	auto ca = dynamic_cast<CaseStatement *>(stmt);
 	if (ca) {
 		out << "<casestmt id=\"" << (int)stmt
 		    << "\" number=\"" << ca->number
@@ -2892,7 +2892,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</casestmt>\n";
 		return;
 	}
-	BranchStatement *br = dynamic_cast<BranchStatement *>(stmt);
+	auto br = dynamic_cast<BranchStatement *>(stmt);
 	if (br) {
 		out << "<branchstmt id=\"" << (int)stmt
 		    << "\" number=\"" << br->number
@@ -2917,7 +2917,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</branchstmt>\n";
 		return;
 	}
-	GotoStatement *g = dynamic_cast<GotoStatement *>(stmt);
+	auto g = dynamic_cast<GotoStatement *>(stmt);
 	if (g) {
 		out << "<gotostmt id=\"" << (int)stmt
 		    << "\" number=\"" << g->number
@@ -2935,7 +2935,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</gotostmt>\n";
 		return;
 	}
-	PhiAssign *p = dynamic_cast<PhiAssign *>(stmt);
+	auto p = dynamic_cast<PhiAssign *>(stmt);
 	if (p) {
 		out << "<phiassign id=\"" << (int)stmt
 		    << "\" number=\"" << p->number;
@@ -2954,7 +2954,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "</phiassign>\n";
 		return;
 	}
-	Assign *a = dynamic_cast<Assign *>(stmt);
+	auto a = dynamic_cast<Assign *>(stmt);
 	if (a) {
 		out << "<assign id=\"" << (int)stmt
 		    << "\" number=\"" << a->number;

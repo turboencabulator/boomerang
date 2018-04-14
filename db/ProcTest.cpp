@@ -39,9 +39,9 @@ ProcTest::tearDown()
 void
 ProcTest::testName()
 {
-	Prog *prog = new Prog;
+	auto prog = new Prog;
 	std::string nm("default name");
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	pFE->readLibraryCatalog();              // Since we are not decoding
 	m_proc = new UserProc(prog, nm, 20000); // Will print in decimal if error

@@ -35,11 +35,11 @@
 void
 FrontSparcTest::test1()
 {
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -96,11 +96,11 @@ FrontSparcTest::test2()
 	DecodeResult inst;
 	std::string expected;
 
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	inst = pFE->decodeInstruction(0x10690);
 	// This call is to out of range of the program's text limits (to the Program Linkage Table (PLT), calling printf)
@@ -132,11 +132,11 @@ FrontSparcTest::test3()
 	DecodeResult inst;
 	std::string expected;
 
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_SPARC);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	inst = pFE->decodeInstruction(0x106a0);
 	expected = std::string("000106a0\n");
@@ -188,11 +188,11 @@ FrontSparcTest::testBranch()
 	DecodeResult inst;
 	std::string expected;
 
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(BRANCH_SPARC);
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	// bne
 	inst = pFE->decodeInstruction(0x10ab0);
@@ -219,11 +219,11 @@ FrontSparcTest::testBranch()
 void
 FrontSparcTest::testDelaySlot()
 {
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(BRANCH_SPARC);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(BRANCH_SPARC);
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared
 	Type::clearNamedTypes();
 	pFE->decode(prog);
@@ -233,7 +233,7 @@ FrontSparcTest::testDelaySlot()
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	std::string name("testDelaySlot");
-	UserProc *pProc = new UserProc(prog, name, addr);
+	auto pProc = new UserProc(prog, name, addr);
 	std::ofstream dummy;
 	bool res = pFE->processProc(addr, pProc, dummy, false);
 

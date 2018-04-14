@@ -164,7 +164,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 	while ((uAddr = nextAddress(targets, pCfg)) != 0) {
 
 		// The list of RTLs for the current basic block
-		list<HRTL *> *BB_rtls = new list<HRTL *>();
+		auto BB_rtls = new list<HRTL *>();
 
 		// Keep decoding sequentially until a CTI without a fall through branch
 		// is decoded
@@ -202,7 +202,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 				continue;
 			}
 
-			HLJump *rtl_jump = static_cast<HLJump *>(pRtl);
+			auto rtl_jump = static_cast<HLJump *>(pRtl);
 
 			// Display RTL representation if asked
 			if (progOptions.rtl) pRtl->print();
@@ -304,7 +304,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 			case CALL_HRTL:
 				{
-					HLCall *call = static_cast<HLCall *>(pRtl);
+					auto call = static_cast<HLCall *>(pRtl);
 
 					// Treat computed and static calls seperately
 					if (call->isComputed()) {
@@ -353,12 +353,12 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 							if (call->isReturnAfterCall()) {
 								// Constuct the RTLs for the new basic block
-								list<HRTL *> *rtls = new list<HRTL *>();
+								auto rtls = new list<HRTL *>();
 								// The only RTL in the basic block is a high level
 								// return that doesn't have any RTs.
 								rtls->push_back(new HLReturn(0, NULL));
 
-								BasicBlock *returnBB = pCfg->newBB(rtls, RET, 0);
+								auto returnBB = pCfg->newBB(rtls, RET, 0);
 								// Add out edge from call to return
 								pCfg->addOutEdge(pBB, returnBB);
 								// Put a label on the return BB (since it's an
@@ -426,7 +426,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 			if (sequentialDecode && pCfg->existsBB(uAddr)) {
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
-					BasicBlock *pBB = pCfg->newBB(BB_rtls, FALL, 1);
+					auto pBB = pCfg->newBB(BB_rtls, FALL, 1);
 					// Add an out edge to this address
 					if (pBB) {
 						pCfg->addOutEdge(pBB, uAddr);

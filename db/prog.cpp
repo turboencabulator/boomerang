@@ -1636,7 +1636,7 @@ public:
 Memo *
 Cluster::makeMemo(int mId)
 {
-	ClusterMemo *m = new ClusterMemo(mId);
+	auto m = new ClusterMemo(mId);
 	m->name = name;
 	m->children = children;
 	m->parent = parent;
@@ -1646,7 +1646,7 @@ Cluster::makeMemo(int mId)
 void
 Cluster::readMemo(Memo *mm, bool dec)
 {
-	ClusterMemo *m = dynamic_cast<ClusterMemo *>(mm);
+	auto m = dynamic_cast<ClusterMemo *>(mm);
 
 	name = m->name;
 	children = m->children;
@@ -1668,7 +1668,7 @@ public:
 Memo *
 Global::makeMemo(int mId)
 {
-	GlobalMemo *m = new GlobalMemo(mId);
+	auto m = new GlobalMemo(mId);
 	m->type = type;
 	m->uaddr = uaddr;
 	m->nam = nam;
@@ -1680,7 +1680,7 @@ Global::makeMemo(int mId)
 void
 Global::readMemo(Memo *mm, bool dec)
 {
-	GlobalMemo *m = dynamic_cast<GlobalMemo *>(mm);
+	auto m = dynamic_cast<GlobalMemo *>(mm);
 
 	type = m->type;
 	uaddr = m->uaddr;
@@ -1705,7 +1705,7 @@ public:
 Memo *
 Prog::makeMemo(int mId)
 {
-	ProgMemo *m = new ProgMemo(mId);
+	auto m = new ProgMemo(mId);
 	m->m_name = m_name;
 	m->m_path = m_path;
 	m->m_procs = m_procs;
@@ -1727,7 +1727,7 @@ Prog::makeMemo(int mId)
 void
 Prog::readMemo(Memo *mm, bool dec)
 {
-	ProgMemo *m = dynamic_cast<ProgMemo *>(mm);
+	auto m = dynamic_cast<ProgMemo *>(mm);
 	m_name = m->m_name;
 	m_path = m->m_path;
 	m_procs = m->m_procs;
@@ -1880,7 +1880,7 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 			const char *n = sym->second.c_str();
 			unsigned int sz = pBF->getSizeByName(n);
 			if (!getGlobal(n)) {
-				Global *global = new Global(new SizeType(sz * 8), a, n);
+				auto global = new Global(new SizeType(sz * 8), a, n);
 				globals.insert(global);
 			}
 			e = new Unary(opAddrOf, Location::global(n, nullptr));

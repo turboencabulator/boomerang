@@ -64,7 +64,7 @@ MainWindow::MainWindow(QWidget *parent) :
 	ui.entrypoints->verticalHeader()->hide();
 	ui.structMembers->verticalHeader()->hide();
 
-	QPushButton *closeButton = new QPushButton(QIcon(":/images/closetab.png"), "", ui.tabWidget);
+	auto closeButton = new QPushButton(QIcon(":/images/closetab.png"), "", ui.tabWidget);
 	closeButton->setFixedSize(closeButton->iconSize());
 	ui.tabWidget->setCornerWidget(closeButton);
 	ui.tabWidget->cornerWidget()->show();
@@ -204,7 +204,7 @@ MainWindow::on_actionOpen_activated()
 {
 	QString filename = QFileDialog::getOpenFileName(this, tr("Select a file to open..."));
 	if (!filename.isEmpty()) {
-		QTextEdit *n = new QTextEdit();
+		auto n = new QTextEdit();
 		QFile file(filename);
 		if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
 			return;
@@ -438,7 +438,7 @@ MainWindow::showConsideringProc(const QString &parent, const QString &name)
 		} else {
 			QList<QTreeWidgetItem *> found = ui.decompileProcsTreeWidget->findItems(parent, Qt::MatchExactly | Qt::MatchRecursive);
 			if (!found.isEmpty()) {
-				QTreeWidgetItem *n = new QTreeWidgetItem(found.first(), texts);
+				auto n = new QTreeWidgetItem(found.first(), texts);
 				n->setData(0, 1, name);
 				ui.decompileProcsTreeWidget->expandItem(found.first());
 				ui.decompileProcsTreeWidget->scrollToItem(n);
@@ -477,7 +477,7 @@ MainWindow::showNewUserProc(const QString &name, unsigned int addr)
 	ui.userProcs->setItem(nrows, 1, new QTableWidgetItem(name));
 	ui.userProcs->item(nrows, 1)->setData(1, name);
 	if (ui.actionEnable->isChecked()) {
-		QTableWidgetItem *d = new QTableWidgetItem("");
+		auto d = new QTableWidgetItem("");
 		d->setCheckState(Qt::Checked);
 		ui.userProcs->setItem(nrows, 2, d);
 	}
@@ -546,7 +546,7 @@ MainWindow::showNewCluster(const QString &name)
 {
 	QString cname = name;
 	cname = cname.append(".c");
-	QTreeWidgetItem *n = new QTreeWidgetItem(QStringList(cname));
+	auto n = new QTreeWidgetItem(QStringList(cname));
 	ui.clusters->addTopLevelItem(n);
 	ui.clusters->expandItem(n);
 }
@@ -558,7 +558,7 @@ MainWindow::showNewProcInCluster(const QString &name, const QString &cluster)
 	cname = cname.append(".c");
 	QList<QTreeWidgetItem *> found = ui.clusters->findItems(cname, Qt::MatchExactly);
 	if (!found.isEmpty()) {
-		QTreeWidgetItem *n = new QTreeWidgetItem(found.first(), QStringList(name));
+		auto n = new QTreeWidgetItem(found.first(), QStringList(name));
 		ui.clusters->scrollToItem(n);
 		ui.clusters->setCurrentItem(n, 0);
 		ui.clusters->expandItem(found.first());
@@ -772,7 +772,7 @@ void
 MainWindow::on_actionCut_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
+		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
 		if (n)
 			n->cut();
 	}
@@ -782,7 +782,7 @@ void
 MainWindow::on_actionCopy_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
+		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
 		if (n)
 			n->copy();
 	}
@@ -792,7 +792,7 @@ void
 MainWindow::on_actionPaste_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
+		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
 		if (n)
 			n->paste();
 	}
@@ -802,7 +802,7 @@ void
 MainWindow::on_actionDelete_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
+		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
 		if (n)
 			n->textCursor().removeSelectedText();
 	}
@@ -827,7 +827,7 @@ void
 MainWindow::on_actionSelect_All_activated()
 {
 	if (ui.tabWidget->currentIndex() != 0) {
-		QTextEdit *n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
+		auto n = dynamic_cast<QTextEdit *>(ui.tabWidget->currentWidget());
 		if (n)
 			n->selectAll();
 	}
@@ -876,7 +876,7 @@ MainWindow::on_structName_returnPressed()
 void
 MainWindow::on_actionAbout_activated()
 {
-	QDialog *dlg = new QDialog;
+	auto dlg = new QDialog;
 	Ui::AboutDialog ui;
 	ui.setupUi(dlg);
 	ui.VersionLabel->setText(QString("<h3>").append(Boomerang::getVersionStr()).append("</h3>"));

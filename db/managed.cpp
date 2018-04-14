@@ -222,7 +222,7 @@ AssignSet::exists(Assign *a) const
 bool
 AssignSet::definesLoc(Exp *loc) const
 {
-	Assign *as = new Assign(loc, new Terminal(opWild));
+	auto as = new Assign(loc, new Terminal(opWild));
 	return !!aset.count(as);
 }
 
@@ -230,7 +230,7 @@ AssignSet::definesLoc(Exp *loc) const
 Assign *
 AssignSet::lookupLoc(Exp *loc) const
 {
-	Assign *as = new Assign(loc, new Terminal(opWild));
+	auto as = new Assign(loc, new Terminal(opWild));
 	auto ff = aset.find(as);
 	if (ff != aset.end())
 		return *ff;

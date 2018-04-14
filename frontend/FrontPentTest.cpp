@@ -38,13 +38,13 @@
 void
 FrontPentTest::test1()
 {
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_PENT);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(HELLO_PENT);
 	if (!pBF)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -77,13 +77,13 @@ FrontPentTest::test2()
 	DecodeResult inst;
 	std::string expected;
 
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_PENT);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(HELLO_PENT);
 	if (!pBF)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	inst = pFE->decodeInstruction(0x8048345);
 	expected = std::string("08048345    0 *32* tmp1 := r28\n"
@@ -108,13 +108,13 @@ FrontPentTest::test3()
 	DecodeResult inst;
 	std::string expected;
 
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(HELLO_PENT);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(HELLO_PENT);
 	if (!pBF)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	inst = pFE->decodeInstruction(0x804834d);
 	expected = std::string("0804834d    0 *32* r28 := r29\n"
@@ -140,13 +140,13 @@ FrontPentTest::testBranch()
 	DecodeResult inst;
 	std::string expected;
 
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(BRANCH_PENT);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(BRANCH_PENT);
 	if (!pBF)
 		pBF = new BinaryFileStub();
 	CPPUNIT_ASSERT(pBF);
 	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_PENTIUM);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 
 	// jne
 	inst = pFE->decodeInstruction(0x8048979);
@@ -176,10 +176,10 @@ FrontPentTest::testBranch()
 void
 FrontPentTest::testFindMain()
 {
-	Prog *prog = new Prog;
-	BinaryFile *pBF = BinaryFile::open(FEDORA2_TRUE);
+	auto prog = new Prog;
+	auto pBF = BinaryFile::open(FEDORA2_TRUE);
 	CPPUNIT_ASSERT(pBF);
-	FrontEnd *pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(pBF, prog);
 	CPPUNIT_ASSERT(pFE);
 	bool found;
 	ADDRESS addr = pFE->getMainEntryPoint(found);

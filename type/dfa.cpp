@@ -756,7 +756,7 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 		std::cerr << "createUnion breakpoint\n";  // Note: you need two breakpoints (also in UnionType::meetWith)
 #endif
 	sprintf(name, "x%d", ++nextUnionNumber);
-	UnionType *u = new UnionType;
+	auto u = new UnionType;
 	u->addType(this->clone(), name);
 	sprintf(name, "x%d", ++nextUnionNumber);
 	u->addType(other->clone(), name);
@@ -1372,7 +1372,7 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 						;
 				} else {
 					// Need to create a generic stuct with a least one member at offset K
-					CompoundType *ct = new CompoundType(true);
+					auto ct = new CompoundType(true);
 					ct->updateGenericMember(K, parentType, ch);
 				}
 			}
@@ -1659,7 +1659,7 @@ Type::dereference()
 Type *
 UnionType::dereferenceUnion()
 {
-	UnionType *ret = new UnionType;
+	auto ret = new UnionType;
 	char name[20];
 	for (auto it = li.begin(); it != li.end(); ++it) {
 		Type *elem = it->type->dereference();

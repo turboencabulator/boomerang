@@ -49,7 +49,7 @@ void
 LoaderTest::testSparcLoad()
 {
 	// Load SPARC hello world
-	BinaryFile *bf = BinaryFile::open(HELLO_SPARC);
+	auto bf = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(bf);
 
 	int n = bf->getNumSections();
@@ -75,7 +75,7 @@ void
 LoaderTest::testPentiumLoad()
 {
 	// Load Pentium hello world
-	BinaryFile *bf = BinaryFile::open(HELLO_PENTIUM);
+	auto bf = BinaryFile::open(HELLO_PENTIUM);
 	CPPUNIT_ASSERT(bf);
 
 	int n = bf->getNumSections();
@@ -101,7 +101,7 @@ void
 LoaderTest::testHppaLoad()
 {
 	// Load HPPA hello world
-	BinaryFile *bf = BinaryFile::open(HELLO_HPPA);
+	auto bf = BinaryFile::open(HELLO_HPPA);
 	CPPUNIT_ASSERT(bf);
 
 	int n = bf->getNumSections();
@@ -126,7 +126,7 @@ void
 LoaderTest::testPalmLoad()
 {
 	// Load Palm Starter.prc
-	BinaryFile *bf = BinaryFile::open(STARTER_PALM);
+	auto bf = BinaryFile::open(STARTER_PALM);
 	CPPUNIT_ASSERT(bf);
 
 	int n = bf->getNumSections();
@@ -154,7 +154,7 @@ LoaderTest::testWinLoad()
 #if 0 /* FIXME: these tests should use non-proprietary programs */
 	{
 		// Load Windows program calc.exe
-		BinaryFile *bf = BinaryFile::open(CALC_WINDOWS);
+		auto bf = BinaryFile::open(CALC_WINDOWS);
 		CPPUNIT_ASSERT(bf);
 
 		int n = bf->getNumSections();
@@ -199,7 +199,7 @@ LoaderTest::testWinLoad()
 
 	{
 		// Test loading the "new style" exes, as found in winXP etc
-		BinaryFile *bf = BinaryFile::open(CALC_WINXP);
+		auto bf = BinaryFile::open(CALC_WINXP);
 		CPPUNIT_ASSERT(bf);
 
 		ADDRESS addr = bf->getMainEntryPoint();
@@ -213,7 +213,7 @@ LoaderTest::testWinLoad()
 
 	{
 		// Test loading the calc.exe found in Windows 2000 (more NT based)
-		BinaryFile *bf = BinaryFile::open(CALC_WIN2000);
+		auto bf = BinaryFile::open(CALC_WIN2000);
 		CPPUNIT_ASSERT(bf);
 
 		ADDRESS addr = bf->getMainEntryPoint();
@@ -227,7 +227,7 @@ LoaderTest::testWinLoad()
 
 	{
 		// Test loading the lpq.exe program - console mode PE file
-		BinaryFile *bf = BinaryFile::open(LPQ_WINDOWS);
+		auto bf = BinaryFile::open(LPQ_WINDOWS);
 		CPPUNIT_ASSERT(bf);
 
 		ADDRESS addr = bf->getMainEntryPoint();
@@ -242,7 +242,7 @@ LoaderTest::testWinLoad()
 
 	{
 		// Borland
-		BinaryFile *bf = BinaryFile::open(SWITCH_BORLAND);
+		auto bf = BinaryFile::open(SWITCH_BORLAND);
 		CPPUNIT_ASSERT(bf);
 
 		ADDRESS addr = bf->getMainEntryPoint();

@@ -132,7 +132,7 @@ escapeStr(const char *str)
 		}
 	}
 
-	char *ret = new char[out.str().size() + 1];
+	auto ret = new char[out.str().size() + 1];
 	strcpy(ret, out.str().c_str());
 	return ret;
 }

@@ -72,8 +72,8 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 RTL *
 SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name)
 {
-	RTL *res = new RTL(pc, stmts);
-	BranchStatement *br = new BranchStatement();
+	auto res = new RTL(pc, stmts);
+	auto br = new BranchStatement();
 	res->appendStmt(br);
 	if (name[0] == 'F') {
 		// fbranch is any of [ FBN FBNE FBLG FBUL FBL   FBUG FBG   FBU
@@ -217,7 +217,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		/*
 		 * A standard call
 		 */
-		CallStatement *newCall = new CallStatement;
+		auto newCall = new CallStatement;
 
 		// Set the destination
 		ADDRESS nativeDest = addr - delta;
@@ -235,7 +235,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		/*
 		 * A JMPL with rd == %o7, i.e. a register call
 		 */
-		CallStatement *newCall = new CallStatement;
+		auto newCall = new CallStatement;
 
 		// Record the fact that this is a computed call
 		newCall->setIsComputed();
@@ -396,7 +396,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	| BPA(_, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
 	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
-		GotoStatement *jump = new GotoStatement;
+		auto jump = new GotoStatement;
 
 		result.type = SD;
 		result.rtl = new RTL(pc, stmts);
@@ -448,7 +448,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		 * JMPL, with rd != %o7, i.e. register jump
 		 * Note: if rd==%o7, then would be handled with the call_ arm
 		 */
-		CaseStatement *jump = new CaseStatement;
+		auto jump = new CaseStatement;
 		// Record the fact that it is a computed jump
 		jump->setIsComputed();
 		result.rtl = new RTL(pc, stmts);

@@ -80,7 +80,7 @@ SectionInfo *
 IntelCoffFile::AddSection(SectionInfo *psi)
 {
 	int idxSect = m_iNumSections++;
-	SectionInfo *ps = new SectionInfo[m_iNumSections];
+	auto ps = new SectionInfo[m_iNumSections];
 	for (int i = 0; i < idxSect; ++i)
 		ps[i] = m_pSections[i];
 	ps[idxSect] = *psi;
@@ -103,7 +103,7 @@ IntelCoffFile::load(std::istream &ifs)
 	// Skip the optional header, if present
 	ifs.seekg(m_Header.coff_opthead_size, ifs.cur);
 
-	struct struc_coff_sect *psh = new struct struc_coff_sect[m_Header.coff_sections];
+	auto psh = new struct struc_coff_sect[m_Header.coff_sections];
 	ifs.read((char *)psh, sizeof *psh * m_Header.coff_sections);
 	if (!ifs.good()) {
 		delete [] psh;
@@ -113,7 +113,7 @@ IntelCoffFile::load(std::istream &ifs)
 		//assert(0 == psh[iSection].sch_virtaddr);
 		//assert(0 == psh[iSection].sch_physaddr);
 
-		char *sectname = new char[sizeof psh->sch_sectname + 1];
+		auto sectname = new char[sizeof psh->sch_sectname + 1];
 		strncpy(sectname, psh[iSection].sch_sectname, sizeof psh->sch_sectname);
 		sectname[sizeof psh->sch_sectname] = '\0';
 
@@ -145,7 +145,7 @@ IntelCoffFile::load(std::istream &ifs)
 	for (int sidx = 0; sidx < m_iNumSections; ++sidx) {
 		SectionInfo *psi = &m_pSections[sidx];
 		if (psi->uSectionSize > 0) {
-			char *pData = new char[psi->uSectionSize];
+			auto pData = new char[psi->uSectionSize];
 			psi->uHostAddr = pData;
 			psi->uNativeAddr = a;
 			a += psi->uSectionSize;
@@ -169,14 +169,14 @@ IntelCoffFile::load(std::istream &ifs)
 
 	// Load the symbol table
 	printf("Load symbol table\n");
-	struct coff_symbol *pSymbols = new struct coff_symbol[m_Header.coff_num_syment];
+	auto pSymbols = new struct coff_symbol[m_Header.coff_num_syment];
 	ifs.seekg(m_Header.coff_symtab_ofs);
 	ifs.read((char *)pSymbols, sizeof *pSymbols * m_Header.coff_num_syment);
 	if (!ifs.good())
 		return false;
 
 	// TODO: Groesse des Abschnittes vorher bestimmen
-	char *pStrings = new char[0x8000];
+	auto pStrings = new char[0x8000];
 	ifs.read(pStrings, 0x8000);
 
 
@@ -230,7 +230,7 @@ IntelCoffFile::load(std::istream &ifs)
 		if (!psh[iSection].sch_nreloc) continue;
 
 		//printf("Relocation table at %08lx\n", psh[iSection].sch_relptr);
-		struct struct_coff_rel *pRel = new struct struct_coff_rel[psh[iSection].sch_nreloc];
+		auto pRel = new struct struct_coff_rel[psh[iSection].sch_nreloc];
 		ifs.seekg(psh[iSection].sch_relptr);
 		ifs.read((char *)pRel, sizeof *pRel * psh[iSection].sch_nreloc);
 		if (!ifs.good())

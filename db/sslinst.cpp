@@ -446,7 +446,7 @@ RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &par
 	assert(params.size() == actuals.size());
 
 	// Get a deep copy of the template RTL
-	std::list<Statement *> *newList = new std::list<Statement *>();
+	auto newList = new std::list<Statement *>();
 	rtl.deepCopyList(*newList);
 
 	// Iterate through each Statement of the new list of stmts
@@ -623,9 +623,9 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	// all the esp' are replaced with say tmp1, you need a "esp = tmp1" at the end to actually make the change
 	for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
 		if (sr->second.used) {
-			Assign *te = new Assign(sr->second.type,
-			                        sr->second.base->clone(),
-			                        sr->second.tmp);
+			auto te = new Assign(sr->second.type,
+			                     sr->second.base->clone(),
+			                     sr->second.tmp);
 			rts->push_back(te);
 		} else {
 			// The temp is either used (uncloned) in the assignment, or is deleted here

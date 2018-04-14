@@ -38,8 +38,8 @@ CfgTest::testDominators()
 #define FRONTIER_TWELVE   0x080483b2
 #define FRONTIER_THIRTEEN 0x080483b9
 
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
@@ -94,8 +94,8 @@ CfgTest::testSemiDominators()
 #define SEMI_D  0x8048354
 #define SEMI_M  0x80483e2
 
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(SEMI_PENTIUM, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(SEMI_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
@@ -144,8 +144,8 @@ CfgTest::testSemiDominators()
 void
 CfgTest::testPlacePhi()
 {
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
@@ -182,8 +182,8 @@ CfgTest::testPlacePhi()
 void
 CfgTest::testPlacePhi2()
 {
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);
@@ -239,8 +239,8 @@ CfgTest::testPlacePhi2()
 void
 CfgTest::testRenameVars()
 {
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
 	pFE->decode(prog);

@@ -417,7 +417,7 @@ UsedLocsVisitor::visit(Assign *s, bool &override)
 		Exp *child = ((Location *)lhs)->getSubExp1();  // m[xxx] uses xxx
 		// Care! Don't want the memOnly flag when inside a m[...]. Otherwise, nothing will be found
 		// Also beware that ev may be a UsedLocalFinder now
-		UsedLocsFinder *ulf = dynamic_cast<UsedLocsFinder *>(ev);
+		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
 		if (ulf) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
@@ -447,7 +447,7 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 	// Special logic for the LHS
 	if (lhs->isMemOf()) {
 		Exp *child = ((Location *)lhs)->getSubExp1();
-		UsedLocsFinder *ulf = dynamic_cast<UsedLocsFinder *>(ev);
+		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
 		if (ulf) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
@@ -466,7 +466,7 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 		// Also note that it's possible for uu->e to be nullptr. Suppose variable a can be assigned to along in-edges
 		// 0, 1, and 3; inserting the phi parameter at index 3 will cause a null entry at 2
 		if (uu->e) {
-			RefExp *temp = new RefExp(uu->e, uu->def);
+			auto temp = new RefExp(uu->e, uu->def);
 			temp->accept(ev);
 		}
 	}
@@ -481,7 +481,7 @@ UsedLocsVisitor::visit(ImplicitAssign *s, bool &override)
 	// Special logic for the LHS
 	if (lhs->isMemOf()) {
 		Exp *child = ((Location *)lhs)->getSubExp1();
-		UsedLocsFinder *ulf = dynamic_cast<UsedLocsFinder *>(ev);
+		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
 		if (ulf) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
@@ -550,7 +550,7 @@ UsedLocsVisitor::visit(BoolAssign *s, bool &override)
 	Exp *lhs = s->getLeft();
 	if (lhs && lhs->isMemOf()) {  // If dest is of form m[x]...
 		Exp *x = ((Location *)lhs)->getSubExp1();
-		UsedLocsFinder *ulf = dynamic_cast<UsedLocsFinder *>(ev);
+		auto ulf = dynamic_cast<UsedLocsFinder *>(ev);
 		if (ulf) {
 			bool wasMemOnly = ulf->isMemOnly();
 			ulf->setMemOnly(false);
@@ -921,7 +921,7 @@ StmtRegMapper::common(Assignment *stmt, bool &override)
 {
 	// In case lhs is a reg or m[reg] such that reg is otherwise unused
 	Exp *lhs = stmt->getLeft();
-	RefExp *re = new RefExp(lhs, stmt);
+	auto re = new RefExp(lhs, stmt);
 	re->accept((ExpRegMapper *)ev);
 	override = false;
 	return true;
@@ -1166,7 +1166,7 @@ StmtSsaXformer::commonLhs(Assignment *as)
 {
 	Exp *lhs = as->getLeft();
 	lhs = lhs->accept((ExpSsaXformer *)mod);  // In case the LHS has say m[r28{0}+8] -> m[esp+8]
-	RefExp *re = new RefExp(lhs, as);
+	auto re = new RefExp(lhs, as);
 	const char *sym = proc->lookupSymFromRefAny(re);
 	if (sym)
 		as->setLeft(Location::local(sym, proc));
@@ -1203,7 +1203,7 @@ StmtSsaXformer::visit(PhiAssign *s, bool &recur)
 	UserProc *proc = ((ExpSsaXformer *)mod)->getProc();
 	for (auto it = s->begin(); it != s->end(); ++it) {
 		if (!it->e) continue;
-		RefExp *r = new RefExp(it->e, it->def);
+		auto r = new RefExp(it->e, it->def);
 		const char *sym = proc->lookupSymFromRefAny(r);
 		if (sym)
 			it->e = Location::local(sym, proc);  // Some may be parameters, but hopefully it won't matter

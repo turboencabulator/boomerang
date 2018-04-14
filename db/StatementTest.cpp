@@ -67,19 +67,19 @@ StatementTest::testEmpty()
 	boo->setLogger(new FileLogger());
 
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	std::list<Statement *> *ls = new std::list<Statement *>;
+	auto pRtls = new std::list<RTL *>();
+	auto ls = new std::list<Statement *>;
 	ls->push_back(new ReturnStatement);
 	pRtls->push_back(new RTL(0x123));
-	BasicBlock *bb = cfg->newBB(pRtls, RET, 0);
+	auto bb = cfg->newBB(pRtls, RET, 0);
 	cfg->setEntryBB(bb);
 	proc->setDecoded();  // We manually "decoded"
 	// compute dataflow
@@ -104,8 +104,8 @@ void
 StatementTest::testFlow()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
@@ -113,24 +113,24 @@ StatementTest::testFlow()
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
-	Assign *a = new Assign(Location::regOf(24), new Const(5));
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
+	auto a = new Assign(Location::regOf(24), new Const(5));
 	a->setProc(proc);
 	a->setNumber(1);
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
-	ReturnStatement *rs = new ReturnStatement;
+	auto rs = new ReturnStatement;
 	rs->setNumber(2);
 	a = new Assign(Location::regOf(24), new Const(5));
 	a->setProc(proc);
 	rs->addReturn(a);
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
 	ret->addInEdge(first);
 	cfg->setEntryBB(first);  // Also sets exitBB; important!
@@ -167,8 +167,8 @@ void
 StatementTest::testKill()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
@@ -176,9 +176,9 @@ StatementTest::testKill()
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
-	Assign *e = new Assign(Location::regOf(24), new Const(5));
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
+	auto e = new Assign(Location::regOf(24), new Const(5));
 	e->setNumber(1);
 	e->setProc(proc);
 	rtl->appendStmt(e);
@@ -187,17 +187,17 @@ StatementTest::testKill()
 	e->setProc(proc);
 	rtl->appendStmt(e);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
-	ReturnStatement *rs = new ReturnStatement;
+	auto rs = new ReturnStatement;
 	rs->setNumber(3);
 	e = new Assign(Location::regOf(24), new Const(0));
 	e->setProc(proc);
 	rs->addReturn(e);
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
 	ret->addInEdge(first);
 	cfg->setEntryBB(first);
@@ -232,8 +232,8 @@ void
 StatementTest::testUse()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
@@ -241,9 +241,9 @@ StatementTest::testUse()
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
-	Assign *a = new Assign(Location::regOf(24), new Const(5));
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
+	auto a = new Assign(Location::regOf(24), new Const(5));
 	a->setNumber(1);
 	a->setProc(proc);
 	rtl->appendStmt(a);
@@ -252,17 +252,17 @@ StatementTest::testUse()
 	a->setProc(proc);
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
-	ReturnStatement *rs = new ReturnStatement;
+	auto rs = new ReturnStatement;
 	rs->setNumber(3);
 	a = new Assign(Location::regOf(28), new Const(1000));
 	a->setProc(proc);
 	rs->addReturn(a);
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
 	ret->addInEdge(first);
 	cfg->setEntryBB(first);
@@ -297,8 +297,8 @@ void
 StatementTest::testUseOverKill()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
@@ -306,9 +306,9 @@ StatementTest::testUseOverKill()
 	proc->setSignature(Signature::instantiate(PLAT_PENTIUM, CONV_C, name.c_str()));
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
-	Assign *e = new Assign(Location::regOf(24), new Const(5));
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
+	auto e = new Assign(Location::regOf(24), new Const(5));
 	e->setNumber(1);
 	e->setProc(proc);
 	rtl->appendStmt(e);
@@ -321,17 +321,17 @@ StatementTest::testUseOverKill()
 	e->setProc(proc);
 	rtl->appendStmt(e);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
-	ReturnStatement *rs = new ReturnStatement;
+	auto rs = new ReturnStatement;
 	rs->setNumber(4);
 	e = new Assign(Location::regOf(24), new Const(0));
 	e->setProc(proc);
 	rs->addReturn(e);
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
 	ret->addInEdge(first);
 	cfg->setEntryBB(first);
@@ -366,17 +366,17 @@ void
 StatementTest::testUseOverBB()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
-	Assign *a = new Assign(Location::regOf(24), new Const(5));
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
+	auto a = new Assign(Location::regOf(24), new Const(5));
 	a->setNumber(1);
 	a->setProc(proc);
 	rtl->appendStmt(a);
@@ -385,7 +385,7 @@ StatementTest::testUseOverBB()
 	a->setProc(proc);
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL();
 	a = new Assign(Location::regOf(28), Location::regOf(24));
@@ -394,14 +394,14 @@ StatementTest::testUseOverBB()
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
 	rtl = new RTL(0x123);
-	ReturnStatement *rs = new ReturnStatement;
+	auto rs = new ReturnStatement;
 	rs->setNumber(4);
 	a = new Assign(Location::regOf(24), new Const(0));
 	a->setProc(proc);
 	rs->addReturn(a);
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
 	ret->addInEdge(first);
 	cfg->setEntryBB(first);
@@ -437,17 +437,17 @@ void
 StatementTest::testUseKill()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
-	Assign *a = new Assign(Location::regOf(24), new Const(5));
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
+	auto a = new Assign(Location::regOf(24), new Const(5));
 	a->setNumber(1);
 	a->setProc(proc);
 	rtl->appendStmt(a);
@@ -456,17 +456,17 @@ StatementTest::testUseKill()
 	a->setProc(proc);
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
-	ReturnStatement *rs = new ReturnStatement;
+	auto rs = new ReturnStatement;
 	rs->setNumber(3);
 	a = new Assign(Location::regOf(24), new Const(0));
 	a->setProc(proc);
 	rs->addReturn(a);
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
 	ret->addInEdge(first);
 	cfg->setEntryBB(first);
@@ -501,22 +501,22 @@ void
 StatementTest::testEndlessLoop()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
 	// r[24] := 5
-	Assign *e = new Assign(Location::regOf(24), new Const(5));
+	auto e = new Assign(Location::regOf(24), new Const(5));
 	e->setProc(proc);
 	rtl->appendStmt(e);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL();
 	// r[24] := r[24] + 1
@@ -524,7 +524,7 @@ StatementTest::testEndlessLoop()
 	e->setProc(proc);
 	rtl->appendStmt(e);
 	pRtls->push_back(rtl);
-	BasicBlock *body = cfg->newBB(pRtls, ONEWAY, 1);
+	auto body = cfg->newBB(pRtls, ONEWAY, 1);
 	first->setOutEdge(0, body);
 	body->addInEdge(first);
 	body->setOutEdge(0, body);
@@ -597,8 +597,8 @@ StatementTest::testLocationSet()
 	Assign s10(new Const(0), new Const(0)), s20(new Const(0), new Const(0));
 	s10.setNumber(10);
 	s20.setNumber(20);
-	RefExp *r1 = new RefExp(Location::regOf(8), &s10);
-	RefExp *r2 = new RefExp(Location::regOf(8), &s20);
+	auto r1 = new RefExp(Location::regOf(8), &s10);
+	auto r2 = new RefExp(Location::regOf(8), &s20);
 	ls.insert(r1);  // ls now m[r14 + 4] r8 r12 r24 r31 r8{10} (not sure where r8{10} appears)
 	CPPUNIT_ASSERT_EQUAL(6u, ls.size());
 	Exp *dummy;
@@ -675,19 +675,19 @@ void
 StatementTest::testRecursion()
 {
 	// create Prog
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
 	std::string name = "test";
-	UserProc *proc = new UserProc(prog, name, 0);
+	auto proc = new UserProc(prog, name, 0);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
-	std::list<RTL *> *pRtls = new std::list<RTL *>();
-	RTL *rtl = new RTL();
+	auto pRtls = new std::list<RTL *>();
+	auto rtl = new RTL();
 	// push bp
 	// r28 := r28 + -4
-	Assign *a = new Assign(Location::regOf(28), new Binary(opPlus, Location::regOf(28), new Const(-4)));
+	auto a = new Assign(Location::regOf(28), new Binary(opPlus, Location::regOf(28), new Const(-4)));
 	rtl->appendStmt(a);
 	// m[r28] := r29
 	a = new Assign(Location::memOf(Location::regOf(28)), Location::regOf(29));
@@ -710,7 +710,7 @@ StatementTest::testRecursion()
 	a->setProc(proc);
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	BasicBlock *first = cfg->newBB(pRtls, FALL, 1);
+	auto first = cfg->newBB(pRtls, FALL, 1);
 
 	// The call BB
 	pRtls = new std::list<RTL *>();
@@ -731,7 +731,7 @@ StatementTest::testRecursion()
 	a->setProc(proc);
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	CallStatement *c = new CallStatement;
+	auto c = new CallStatement;
 	rtl->appendStmt(c);
 #if 0
 	// Vector of 1 arg
@@ -742,7 +742,7 @@ StatementTest::testRecursion()
 	crtl->setArguments(args);
 #endif
 	c->setDestProc(proc);  // Just call self
-	BasicBlock *callbb = cfg->newBB(pRtls, CALL, 1);
+	auto callbb = cfg->newBB(pRtls, CALL, 1);
 	first->setOutEdge(0, callbb);
 	callbb->addInEdge(first);
 	callbb->setOutEdge(0, callbb);
@@ -760,7 +760,7 @@ StatementTest::testRecursion()
 	a = new Assign(Location::regOf(28), new Binary(opPlus, Location::regOf(28), new Const(4)));
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
-	BasicBlock *ret = cfg->newBB(pRtls, RET, 0);
+	auto ret = cfg->newBB(pRtls, RET, 0);
 	callbb->setOutEdge(0, ret);
 	ret->addInEdge(callbb);
 	cfg->setEntryBB(first);
@@ -793,16 +793,16 @@ StatementTest::testRecursion()
 void
 StatementTest::testClone()
 {
-	Assign *a1 = new Assign(Location::regOf(8),
-	                        new Binary(opPlus,
-	                                   Location::regOf(9),
-	                                   new Const(99)));
-	Assign *a2 = new Assign(new IntegerType(16, 1),
-	                        new Location(opParam, new Const("x"), nullptr),
-	                        new Location(opParam, new Const("y"), nullptr));
-	Assign *a3 = new Assign(new IntegerType(16, -1),
-	                        new Location(opParam, new Const("z"), nullptr),
-	                        new Location(opParam, new Const("q"), nullptr));
+	auto a1 = new Assign(Location::regOf(8),
+	                     new Binary(opPlus,
+	                                Location::regOf(9),
+	                                new Const(99)));
+	auto a2 = new Assign(new IntegerType(16, 1),
+	                     new Location(opParam, new Const("x"), nullptr),
+	                     new Location(opParam, new Const("y"), nullptr));
+	auto a3 = new Assign(new IntegerType(16, -1),
+	                     new Location(opParam, new Const("z"), nullptr),
+	                     new Location(opParam, new Const("q"), nullptr));
 	Statement *c1 = a1->clone();
 	Statement *c2 = a2->clone();
 	Statement *c3 = a3->clone();
@@ -838,7 +838,7 @@ StatementTest::testIsAssign()
 	//CPPUNIT_ASSERT_EQUAL(std::string("*v* r2 := 99"), std::string(ost.str()));
 	CPPUNIT_ASSERT(a.isAssign());
 
-	CallStatement *c = new CallStatement;
+	auto c = new CallStatement;
 	CPPUNIT_ASSERT(!c->isAssign());
 }
 
@@ -856,12 +856,12 @@ StatementTest::testIsFlagAssgn()
 	                     new Binary(opList,
 	                                Location::regOf(2),
 	                                new Const(99))));
-	CallStatement *call = new CallStatement;
-	BranchStatement *br = new BranchStatement;
-	Assign *as = new Assign(Location::regOf(9),
-	                        new Binary(opPlus,
-	                                   Location::regOf(10),
-	                                   new Const(4)));
+	auto call = new CallStatement;
+	auto br = new BranchStatement;
+	auto as = new Assign(Location::regOf(9),
+	                     new Binary(opPlus,
+	                                Location::regOf(10),
+	                                new Const(4)));
 	fc.print(ost);
 	std::string expected("   0 *v* %flags := addFlags( r2, 99 )");
 	std::string actual(ost.str());
@@ -881,14 +881,14 @@ void
 StatementTest::testAddUsedLocsAssign()
 {
 	// m[r28-4] := m[r28-8] * r26
-	Assign *a = new Assign(Location::memOf(new Binary(opMinus,
-	                                                  Location::regOf(28),
-	                                                  new Const(4))),
-	                       new Binary(opMult,
-	                                  Location::memOf(new Binary(opMinus,
-	                                                             Location::regOf(28),
-	                                                             new Const(8))),
-	                                  Location::regOf(26)));
+	auto a = new Assign(Location::memOf(new Binary(opMinus,
+	                                               Location::regOf(28),
+	                                               new Const(4))),
+	                    new Binary(opMult,
+	                               Location::memOf(new Binary(opMinus,
+	                                                          Location::regOf(28),
+	                                                          new Const(8))),
+	                               Location::regOf(26)));
 	a->setNumber(1);
 	LocationSet l;
 	a->addUsedLocs(l);
@@ -897,7 +897,7 @@ StatementTest::testAddUsedLocsAssign()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	l.clear();
-	GotoStatement *g = new GotoStatement();
+	auto g = new GotoStatement();
 	g->setNumber(55);
 	g->setDest(Location::memOf(Location::regOf(26)));
 	g->addUsedLocs(l);
@@ -910,10 +910,10 @@ void
 StatementTest::testAddUsedLocsBranch()
 {
 	// BranchStatement with dest m[r26{99}]{55}, condition %flags
-	GotoStatement *g = new GotoStatement();
+	auto g = new GotoStatement();
 	g->setNumber(55);
 	LocationSet l;
-	BranchStatement *b = new BranchStatement;
+	auto b = new BranchStatement;
 	b->setNumber(99);
 	b->setDest(new RefExp(Location::memOf(new RefExp(Location::regOf(26), b)), g));
 	b->setCondExpr(new Terminal(opFlags));
@@ -928,7 +928,7 @@ StatementTest::testAddUsedLocsCase()
 {
 	// CaseStatement with pDest = m[r26], switchVar = m[r28 - 12]
 	LocationSet l;
-	CaseStatement *c = new CaseStatement;
+	auto c = new CaseStatement;
 	c->setDest(Location::memOf(Location::regOf(26)));
 	SWITCH_INFO si;
 	si.pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
@@ -944,9 +944,9 @@ StatementTest::testAddUsedLocsCall()
 {
 	// CallStatement with pDest = m[r26], params = m[r27], r28{55}, defines r31, m[r24]
 	LocationSet l;
-	GotoStatement *g = new GotoStatement();
+	auto g = new GotoStatement();
 	g->setNumber(55);
-	CallStatement *ca = new CallStatement;
+	auto ca = new CallStatement;
 	ca->setDest(Location::memOf(Location::regOf(26)));
 	StatementList argl;
 	argl.append(new Assign(Location::regOf(8), Location::memOf(Location::regOf(27))));
@@ -974,11 +974,11 @@ StatementTest::testAddUsedLocsReturn()
 {
 	// ReturnStatement with returns r31, m[r24], m[r25]{55} + r[26]{99}]
 	LocationSet l;
-	GotoStatement *g = new GotoStatement();
+	auto g = new GotoStatement();
 	g->setNumber(55);
-	BranchStatement *b = new BranchStatement;
+	auto b = new BranchStatement;
 	b->setNumber(99);
-	ReturnStatement *r = new ReturnStatement;
+	auto r = new ReturnStatement;
 	r->addReturn(new Assign(Location::regOf(31), new Const(100)));
 	r->addReturn(new Assign(Location::memOf(Location::regOf(24)), new Const(0)));
 	r->addReturn(new Assign(Location::memOf(new Binary(opPlus,
@@ -996,10 +996,10 @@ StatementTest::testAddUsedLocsBool()
 {
 	// Boolstatement with condition m[r24] = r25, dest m[r26]
 	LocationSet l;
-	BoolAssign *bs = new BoolAssign(8);
+	auto bs = new BoolAssign(8);
 	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(24)), Location::regOf(25)));
 	std::list<Statement *> stmts;
-	Assign *a = new Assign(Location::memOf(Location::regOf(26)), new Terminal(opNil));
+	auto a = new Assign(Location::memOf(Location::regOf(26)), new Terminal(opNil));
 	stmts.push_back(a);
 	bs->setLeftFromList(&stmts);
 	bs->addUsedLocs(l);
@@ -1012,7 +1012,7 @@ StatementTest::testAddUsedLocsBool()
 	Exp *base = Location::memOf(new Binary(opPlus, Location::local("local21", nullptr), new Const(16)));
 	Assign s372(base, new Const(0));
 	s372.setNumber(372);
-	PhiAssign *pa = new PhiAssign(base);
+	auto pa = new PhiAssign(base);
 	pa->putAt(0, nullptr, base);
 	pa->putAt(1, &s372, base);
 	pa->addUsedLocs(l);
@@ -1023,7 +1023,7 @@ StatementTest::testAddUsedLocsBool()
 
 	// m[r28{-} - 4] := -
 	l.clear();
-	ImplicitAssign *ia = new ImplicitAssign(Location::memOf(new Binary(opMinus, new RefExp(Location::regOf(28), nullptr), new Const(4))));
+	auto ia = new ImplicitAssign(Location::memOf(new Binary(opMinus, new RefExp(Location::regOf(28), nullptr), new Const(4))));
 	ia->addUsedLocs(l);
 	actual = l.prints();
 	expected = "r28{-}";
@@ -1042,10 +1042,10 @@ StatementTest::testSubscriptVars()
 	s9.setNumber(9);
 
 	// m[r28-4] := m[r28-8] * r26
-	Assign *a = new Assign(Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(4))),
-	                       new Binary(opMult,
-	                                  Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(8))),
-	                                  Location::regOf(26)));
+	auto a = new Assign(Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(4))),
+	                    new Binary(opMult,
+	                               Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(8))),
+	                               Location::regOf(26)));
 	a->setNumber(1);
 	std::ostringstream ost1;
 	a->subscriptVar(srch, &s9);
@@ -1055,7 +1055,7 @@ StatementTest::testSubscriptVars()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// GotoStatement
-	GotoStatement *g = new GotoStatement();
+	auto g = new GotoStatement();
 	g->setNumber(55);
 	g->setDest(Location::regOf(28));
 	std::ostringstream ost2;
@@ -1066,7 +1066,7 @@ StatementTest::testSubscriptVars()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// BranchStatement with dest m[r26{99}]{55}, condition %flags
-	BranchStatement *b = new BranchStatement;
+	auto b = new BranchStatement;
 	b->setNumber(99);
 	Exp *srchb = Location::memOf(new RefExp(Location::regOf(26), b));
 	b->setDest(new RefExp(srchb, g));
@@ -1081,7 +1081,7 @@ StatementTest::testSubscriptVars()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// CaseStatement with pDest = m[r26], switchVar = m[r28 - 12]
-	CaseStatement *c = new CaseStatement;
+	auto c = new CaseStatement;
 	c->setDest(Location::memOf(Location::regOf(26)));
 	SWITCH_INFO si;
 	si.pSwitchVar = Location::memOf(new Binary(opMinus, Location::regOf(28), new Const(12)));
@@ -1104,7 +1104,7 @@ StatementTest::testSubscriptVars()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// CallStatement with pDest = m[r26], params = m[r27], r28, defines r28, m[r28]
-	CallStatement *ca = new CallStatement;
+	auto ca = new CallStatement;
 	ca->setDest(Location::memOf(Location::regOf(26)));
 	StatementList argl;
 	argl.append(new Assign(Location::memOf(Location::regOf(27)), new Const(1)));
@@ -1155,7 +1155,7 @@ StatementTest::testSubscriptVars()
 
 	// ReturnStatement with returns r28, m[r28], m[r28]{55} + r[26]{99}]
 	// FIXME: shouldn't this test have some propagation? Now, it seems it's just testing the print code!
-	ReturnStatement *r = new ReturnStatement;
+	auto r = new ReturnStatement;
 	r->addReturn(new Assign(Location::regOf(28), new Const(1000)));
 	r->addReturn(new Assign(Location::memOf(Location::regOf(28)), new Const(2000)));
 	r->addReturn(new Assign(Location::memOf(new Binary(opPlus,
@@ -1173,7 +1173,7 @@ StatementTest::testSubscriptVars()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Boolstatement with condition m[r28] = r28, dest m[r28]
-	BoolAssign *bs = new BoolAssign(8);
+	auto bs = new BoolAssign(8);
 	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(28)), Location::regOf(28)));
 	bs->setLeft(Location::memOf(Location::regOf(28)));
 	std::ostringstream ost7;
@@ -1192,8 +1192,8 @@ StatementTest::testSubscriptVars()
 void
 StatementTest::testBypass()
 {
-	Prog *prog = new Prog;
-	FrontEnd *pFE = FrontEnd::open(GLOBAL1_PENTIUM, prog);
+	auto prog = new Prog;
+	auto pFE = FrontEnd::open(GLOBAL1_PENTIUM, prog);
 	Type::clearNamedTypes();
 	pFE->decode(prog, true);        // Decode main
 	pFE->decode(prog, NO_ADDRESS);  // Decode anything undecoded

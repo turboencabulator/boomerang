@@ -421,10 +421,10 @@ SyntaxNode *
 UserProc::getAST() const
 {
 	int numBBs = 0;
-	BlockSyntaxNode *init = new BlockSyntaxNode();
+	auto init = new BlockSyntaxNode();
 	BB_IT it;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
-		BlockSyntaxNode *b = new BlockSyntaxNode();
+		auto b = new BlockSyntaxNode();
 		b->setBB(bb);
 		init->addStatement(b);
 		++numBBs;
@@ -700,7 +700,7 @@ UserProc::printDFG()
 		LocationSet refs;
 		s->addUsedLocs(refs);
 		for (auto rr = refs.begin(); rr != refs.end(); ++rr) {
-			RefExp *r = dynamic_cast<RefExp *>(*rr);
+			auto r = dynamic_cast<RefExp *>(*rr);
 			if (r) {
 				out << "\t";
 				if (r->getDef())
@@ -731,7 +731,7 @@ UserProc::initStatements()
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			s->setProc(this);
 			s->setBB(bb);
-			CallStatement *call = dynamic_cast<CallStatement *>(s);
+			auto call = dynamic_cast<CallStatement *>(s);
 			if (call) {
 				call->setSigArguments();
 				if (call->getDestProc()
@@ -839,7 +839,7 @@ UserProc::insertAssignAfter(Statement *s, Exp *left, Exp *right)
 		stmts = &rtls->back()->getList();
 		it = stmts->end();  // Insert before the end
 	}
-	Assign *as = new Assign(left, right);
+	auto as = new Assign(left, right);
 	as->setProc(this);
 	stmts->insert(it, as);
 	return;
@@ -937,7 +937,7 @@ UserProc::decompile(ProcList *path, int &indent)
 
 	if (status < PROC_VISITED)
 		setStatus(PROC_VISITED);  // We have at least visited this proc "on the way down"
-	ProcSet *child = new ProcSet;
+	auto child = new ProcSet;
 	path->push_back(this);  // Append this proc to path
 
 	/*  *   *   *   *   *   *   *   *   *   *   *
@@ -2124,11 +2124,11 @@ UserProc::findFinalParameters()
 					paramLoc->accept(&ic);                    // E.g. r28{-} -> r28{0}
 				}
 			}
-			ImplicitAssign *ia = new ImplicitAssign(signature->getParamType(i), paramLoc);
+			auto ia = new ImplicitAssign(signature->getParamType(i), paramLoc);
 			parameters.append(ia);
 			const char *name = signature->getParamName(i);
 			Exp *param = Location::param(name, this);
-			RefExp *reParamLoc = new RefExp(paramLoc, cfg->findImplicitAssign(paramLoc));
+			auto reParamLoc = new RefExp(paramLoc, cfg->findImplicitAssign(paramLoc));
 			mapSymbolTo(reParamLoc, param);  // Update name map
 		}
 		return;
@@ -2813,7 +2813,7 @@ UserProc::getParamType(const char *nam) const
 void
 UserProc::setExpSymbol(const char *nam, Exp *e, Type *ty)
 {
-	TypedExp *te = new TypedExp(ty, Location::local(strdup(nam), this));
+	auto te = new TypedExp(ty, Location::local(strdup(nam), this));
 	mapSymbolTo(e, te);
 }
 
@@ -2981,7 +2981,7 @@ UserProc::removeUnusedLocals()
 	// Now record the unused ones in set removes
 	std::set<std::string> removes;
 	for (auto it = locals.begin(); it != locals.end(); ++it) {
-		std::string &name = const_cast<std::string &>(it->first);
+		auto &name = const_cast<std::string &>(it->first);
 		// LOG << "Considering local " << name << "\n";
 		if (VERBOSE && all && !removes.empty())
 			LOG << "WARNING: defineall seen in procedure " << name.c_str()
@@ -3099,7 +3099,7 @@ UserProc::fromSSAform()
 			if (!ty)  // Can happen e.g. when getting the type for %flags
 				ty = new VoidType();
 			auto ff = firstTypes.find(base);
-			RefExp *ref = new RefExp(base, s);
+			auto ref = new RefExp(base, s);
 			if (ff == firstTypes.end()) {
 				// There is no first type yet. Record it.
 				FirstTypeEnt fte;
@@ -3201,7 +3201,7 @@ UserProc::fromSSAform()
 				const char *firstName = nullptr;
 				PhiAssign *pi = (PhiAssign *)def1;
 				for (auto rr = pi->begin(); rr != pi->end(); ++rr) {
-					RefExp *re = new RefExp(rr->e, rr->def);
+					auto re = new RefExp(rr->e, rr->def);
 					if (*re == *r2)
 						r2IsOperand = true;
 					if (!firstName)
@@ -3289,10 +3289,10 @@ UserProc::fromSSAform()
 			// definitions and uses of that variable. It could be that the dominance numbers could solve this, but it
 			// seems unlikely
 			Exp *lhs = pa->getLeft();
-			RefExp *wrappedLeft = new RefExp(lhs, pa)
+			auto wrappedLeft = new RefExp(lhs, pa)
 			const char *lhsName = lookupSymForRef(wrappedLeft);
 			for (auto rr = pa->begin(); rr != pa->end(); ++rr) {
-				RefExp *operand = new RefExp(rr->e, rr->def);
+				auto operand = new RefExp(rr->e, rr->def);
 				const char *operName = lookupSymFromRef(operand);
 				if (strcmp(operName, lhsName) == 0)
 					continue;  // No need for copies for this operand
@@ -3358,7 +3358,7 @@ UserProc::removeSubscriptsFromSymbols()
 		Exp *from = it->first;
 		if (from->isSubscript()) {
 			// As noted above, don't touch the outer level of subscripts
-			RefExp *sub = static_cast<RefExp *>(from);
+			auto sub = static_cast<RefExp *>(from);
 			sub->setSubExp1(sub->getSubExp1()->accept(&esx));
 		} else
 			from = from->accept(&esx);
@@ -3516,7 +3516,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 			if (!change && query->getSubExp1()->getOper() == opSubscript) {
 				RefExp *r = (RefExp *)query->getSubExp1();
 				Statement *s = r->getDef();
-				CallStatement *call = dynamic_cast<CallStatement *>(s);
+				auto call = dynamic_cast<CallStatement *>(s);
 				if (call) {
 					// See if we can prove something about this register.
 					UserProc *destProc = (UserProc *)call->getDestProc();
@@ -3951,7 +3951,7 @@ UserProc::lookupParam(Exp *e) const
 		LOG << "ERROR: no implicit definition for parameter " << e << " !\n";
 		return nullptr;
 	}
-	RefExp *re = new RefExp(e, def);
+	auto re = new RefExp(e, def);
 	Type *ty = def->getTypeFor(e);
 	return lookupSym(re, ty);
 }
@@ -4093,7 +4093,7 @@ UserProc::updateCallDefines()
 	StatementList stmts;
 	getStatements(stmts);
 	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
-		CallStatement *call = dynamic_cast<CallStatement *>(*it);
+		auto call = dynamic_cast<CallStatement *>(*it);
 		if (!call) continue;
 		call->updateDefines();
 	}
@@ -4160,7 +4160,7 @@ UserProc::insertParameter(Exp *e, Type *ty)
 	// See test/pentium/restoredparam for an example where you must not remove restored locations
 
 	// Wrap it in an implicit assignment; DFA based TA should update the type later
-	ImplicitAssign *as = new ImplicitAssign(ty->clone(), e->clone());
+	auto as = new ImplicitAssign(ty->clone(), e->clone());
 	// Insert as, in order, into the existing set of parameters
 	bool inserted = false;
 	for (auto nn = parameters.begin(); nn != parameters.end(); ++nn) {
@@ -4365,7 +4365,7 @@ UserProc::fixCallAndPhiRefs()
 		s = *it;
 		if (s->isPhi()) {
 			PhiAssign *ps = (PhiAssign *)s;
-			RefExp *r = new RefExp(ps->getLeft(), ps);
+			auto r = new RefExp(ps->getLeft(), ps);
 			for (auto p = ps->begin(); p != ps->end(); ) {
 				if (!p->e) {  // Can happen due to PhiAssign::setAt
 					++p;
@@ -4443,10 +4443,10 @@ UserProc::fixCallAndPhiRefs()
 				while (!p->e && p != ps->end())
 					++p;  // Skip any null parameters
 				assert(p != ps->end());  // Should have been deleted
-				RefExp *best = new RefExp(p->e, p->def);
+				auto best = new RefExp(p->e, p->def);
 				for (++p; p != ps->end(); ++p) {
 					if (!p->e) continue;
-					RefExp *current = new RefExp(p->e, p->def);
+					auto current = new RefExp(p->e, p->def);
 					if (current->isImplicitDef()) {
 						best = current;
 						break;
@@ -4745,7 +4745,7 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 				continue;  //  then ignore this return statement
 		} else if (s->isPhi() && theReturnStatement && cycleGrp && !cycleGrp->empty()) {
 			Exp *phiLeft = ((PhiAssign *)s)->getLeft();
-			RefExp *refPhi = new RefExp(phiLeft, s);
+			auto refPhi = new RefExp(phiLeft, s);
 			bool foundPhi = false;
 			for (auto rr = theReturnStatement->begin(); rr != theReturnStatement->end(); ++rr) {
 				Exp *rhs = ((Assign *)*rr)->getRight();
@@ -5261,7 +5261,7 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 					bool ch;
 					irs->meetWith(ty, ch);
 				} else {
-					ImpRefStatement *irs = new ImpRefStatement(ty, a);
+					auto irs = new ImpRefStatement(ty, a);
 					rtlForS->insertStmt(irs, itForS);
 				}
 				return;
@@ -5373,7 +5373,7 @@ UserProc::findLiveAtDomPhi(LocationSet &usedByDomPhi)
 		// For each phi parameter, remove from the final usedByDomPhi set
 		for (auto pp = it->second->begin(); pp != it->second->end(); ++pp) {
 			if (!pp->e) continue;
-			RefExp *wrappedParam = new RefExp(pp->e, pp->def);
+			auto wrappedParam = new RefExp(pp->e, pp->def);
 			usedByDomPhi.remove(wrappedParam);
 		}
 		// Now remove the actual phi-function (a PhiAssign Statement)
@@ -5400,10 +5400,10 @@ UserProc::findPhiUnites(ConnectionGraph &pu)
 		PhiAssign *pa = (PhiAssign *)*it;
 		if (!pa->isPhi()) continue;
 		Exp *lhs = pa->getLeft();
-		RefExp *reLhs = new RefExp(lhs, pa);
+		auto reLhs = new RefExp(lhs, pa);
 		for (auto pp = pa->begin(); pp != pa->end(); ++pp) {
 			if (!pp->e) continue;
-			RefExp *re = new RefExp(pp->e, pp->def);
+			auto re = new RefExp(pp->e, pp->def);
 			pu.connect(reLhs, re);
 		}
 	}
@@ -5448,7 +5448,7 @@ UserProc::nameParameterPhis()
 		if (!pi->isPhi()) continue;  // Might be able to optimise this a bit
 		// See if the destination has a symbol already
 		Exp *lhs = pi->getLeft();
-		RefExp *lhsRef = new RefExp(lhs, pi);
+		auto lhsRef = new RefExp(lhs, pi);
 		if (findFirstSymbol(lhsRef))
 			continue;  // Already mapped to something
 		bool multiple = false;   // True if find more than one unique parameter
@@ -5456,7 +5456,7 @@ UserProc::nameParameterPhis()
 		Type *ty = pi->getType();
 		for (auto pp = pi->begin(); pp != pi->end(); ++pp) {
 			if (pp->def->isImplicit()) {
-				RefExp *phiArg = new RefExp(pp->e, pp->def);
+				auto phiArg = new RefExp(pp->e, pp->def);
 				const char *name = lookupSym(phiArg, ty);
 				if (name) {
 					if (firstName && strcmp(firstName, name) != 0) {
@@ -5524,7 +5524,7 @@ public:
 Memo *
 LibProc::makeMemo(int mId)
 {
-	LibProcMemo *m = new LibProcMemo(mId);
+	auto m = new LibProcMemo(mId);
 	m->visited = visited;
 	m->prog = prog;
 	m->signature = signature;
@@ -5547,7 +5547,7 @@ LibProc::makeMemo(int mId)
 void
 LibProc::readMemo(Memo *mm, bool dec)
 {
-	LibProcMemo *m = dynamic_cast<LibProcMemo *>(mm);
+	auto m = dynamic_cast<LibProcMemo *>(mm);
 	visited = m->visited;
 	prog = m->prog;
 	signature = m->signature;
@@ -5589,7 +5589,7 @@ public:
 Memo *
 UserProc::makeMemo(int mId)
 {
-	UserProcMemo *m = new UserProcMemo(mId);
+	auto m = new UserProcMemo(mId);
 	m->visited = visited;
 	m->prog = prog;
 	m->signature = signature;
@@ -5624,7 +5624,7 @@ UserProc::makeMemo(int mId)
 void
 UserProc::readMemo(Memo *mm, bool dec)
 {
-	UserProcMemo *m = dynamic_cast<UserProcMemo *>(mm);
+	auto m = dynamic_cast<UserProcMemo *>(mm);
 	visited = m->visited;
 	prog = m->prog;
 	signature = m->signature;

@@ -178,7 +178,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
             			stmts = instantiate(pc, "call", new Const(total));
 
-            			CallStatement *newCall = new CallStatement;
+            			auto newCall = new CallStatement;
 
             			newCall->setIsComputed(false);
 
@@ -203,7 +203,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 #line 96 "machine/st20/decoder.m"
             
 
-            			BranchStatement *br = new BranchStatement();
+            			auto br = new BranchStatement();
 
             			//br->setCondType(BRANCH_JE);
 

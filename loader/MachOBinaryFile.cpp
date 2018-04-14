@@ -389,7 +389,7 @@ MachOBinaryFile::load(std::istream &ifs)
 		fprintf(stderr, "loaded segment %x %i in mem %i in file\n", a, sz, fsz);
 #endif
 
-		char *name = new char[17];
+		auto name = new char[17];
 		strncpy(name, segments[i].segname, 16);
 		name[16] = '\0';
 		m_pSections[i].pSectionName = name;

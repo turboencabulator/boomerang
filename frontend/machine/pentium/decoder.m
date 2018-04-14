@@ -119,7 +119,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		 */
 		// Mike: there should probably be a HLNwayCall class for this!
 		stmts = instantiate(pc, "CALL.Evod", DIS_EADDR32);
-		CallStatement *newCall = new CallStatement;
+		auto newCall = new CallStatement;
 		// Record the fact that this is a computed call
 		newCall->setIsComputed();
 		// Set the destination expression
@@ -133,7 +133,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		/*
 		 * Register jump
 		 */
-		CaseStatement *newJump = new CaseStatement;
+		auto newJump = new CaseStatement;
 		// Record the fact that this is a computed call
 		newJump->setIsComputed();
 		// Set the destination expression
@@ -475,13 +475,13 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	| RET.far.Iw(i16) =>
 		stmts = instantiate(pc, "RET.far.Iw", DIS_I16);
-		ReturnStatement *ret = new ReturnStatement;
+		auto ret = new ReturnStatement;
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(ret);
 
 	| RET.Iw(i16) =>
 		stmts = instantiate(pc, "RET.Iw", DIS_I16);
-		ReturnStatement *ret = new ReturnStatement;
+		auto ret = new ReturnStatement;
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(ret);
 
@@ -1288,7 +1288,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			stmts->pop_back();
 			// And don't make it a call statement
 		} else {
-			CallStatement *call = new CallStatement;
+			auto call = new CallStatement;
 			// Set the destination
 			call->setDest(nativeDest);
 			stmts->push_back(call);
@@ -2330,7 +2330,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 	//  pc+2: branch pc+2 condition modrm@[dest:dest]=0
 	// exit:
 
-	std::list<Statement *> *stmts = new std::list<Statement *>;
+	auto stmts = new std::list<Statement *>;
 	Statement *s;
 	BranchStatement *b;
 	switch (BSFRstate) {

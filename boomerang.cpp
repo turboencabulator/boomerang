@@ -424,7 +424,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 				return 1;
 			}
 
-			Cluster *cluster = new Cluster(argv[2]);
+			auto cluster = new Cluster(argv[2]);
 			if (!cluster) {
 				std::cerr << "cannot create cluster " << argv[2] << "\n";
 				return 1;
@@ -980,13 +980,13 @@ Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *pr
 	Cluster *root = prog->getRootCluster();
 	for (auto it = modules.begin(); it != modules.end(); ++it) {
 		const ObjcModule &mod = it->second;
-		Module *module = new Module(mod.name);
+		auto module = new Module(mod.name);
 		root->addChild(module);
 		if (VERBOSE)
 			LOG << "\tModule: " << mod.name.c_str() << "\n";
 		for (auto it1 = mod.classes.begin(); it1 != mod.classes.end(); ++it1) {
 			const ObjcClass &c = it1->second;
-			Class *cl = new Class(c.name);
+			auto cl = new Class(c.name);
 			root->addChild(cl);
 			if (VERBOSE)
 				LOG << "\t\tClass: " << c.name.c_str() << "\n";
@@ -1017,8 +1017,8 @@ Prog *
 Boomerang::loadAndDecode(const char *fname, const char *pname)
 {
 	std::cout << "loading...\n";
-	Prog *prog = new Prog();
-	FrontEnd *fe = FrontEnd::open(fname, prog);
+	auto prog = new Prog();
+	auto fe = FrontEnd::open(fname, prog);
 	if (!fe) {
 		std::cerr << "failed.\n";
 		return nullptr;

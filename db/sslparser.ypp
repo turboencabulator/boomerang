@@ -693,8 +693,8 @@ flag_list
 		delete $3;
 	  }
 	| REG_ID {
-		/*std::list<Exp *> *tmp = new std::list<Exp *>;
-		Unary *pFlag = new Unary(opIdRegOf, Dict.RegMap[*$1]);
+		/*auto tmp = new std::list<Exp *>;
+		auto pFlag = new Unary(opIdRegOf, Dict.RegMap[*$1]);
 		tmp->push_back(pFlag);
 		$$ = tmp;*/
 		$$ = nullptr;
@@ -725,7 +725,7 @@ list_actualparameter
 assign_rt
 	/*   Size   guard =>    lhs      :=   rhs */
 	: assigntype exp THEN location EQUATE exp {
-		Assign *a = new Assign($1, $4, $6);
+		auto a = new Assign($1, $4, $6);
 		a->setGuard($2);
 		$$ = a;
 	  }

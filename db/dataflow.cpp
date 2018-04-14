@@ -474,7 +474,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// For each phi-function in Y
 		Statement *S;
 		for (S = Ybb->getFirstStmt(rit, sit); S; S = Ybb->getNextStmt(rit, sit)) {
-			PhiAssign *pa = dynamic_cast<PhiAssign *>(S);
+			auto pa = dynamic_cast<PhiAssign *>(S);
 			// if S is not a phi function, then quit the loop (no more phi's)
 			// Wrong: do not quit the loop: there's an optimisation that turns a PhiAssign into an ordinary Assign.
 			// So continue, not break.
@@ -542,8 +542,8 @@ DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &
 		if (it->second.empty())
 			continue;  // This variable's definition doesn't reach here
 		// Create an assignment of the form loc := loc{def}
-		RefExp *re = new RefExp(it->first->clone(), it->second.top());
-		Assign *as = new Assign(it->first->clone(), re);
+		auto re = new RefExp(it->first->clone(), it->second.top());
+		auto as = new Assign(it->first->clone(), re);
 		as->setProc(proc);  // Simplify sometimes needs this
 		insert(as);
 	}
@@ -650,7 +650,7 @@ UseCollector::fromSSAform(UserProc *proc, Statement *def)
 	LocationSet removes, inserts;
 	ExpSsaXformer esx(proc);
 	for (auto it = locs.begin(); it != locs.end(); ++it) {
-		RefExp *ref = new RefExp(*it, def);  // Wrap it in a def
+		auto ref = new RefExp(*it, def);  // Wrap it in a def
 		Exp *ret = ref->accept(&esx);
 		// If there is no change, ret will equal *it again (i.e. fromSSAform just removed the subscript)
 		if (ret != *it) {  // Pointer comparison
@@ -746,12 +746,12 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 			PhiAssign *pa = (PhiAssign *)S;
 			for (auto it = pa->begin(); it != pa->end(); ++it) {
 				if (it->e) {
-					RefExp *re = new RefExp(it->e, it->def);
+					auto re = new RefExp(it->e, it->def);
 					usedByDomPhi0.insert(re);
 				}
 			}
 			// Insert an entry into the defdByPhi map
-			RefExp *wrappedLhs = new RefExp(pa->getLeft(), pa);
+			auto wrappedLhs = new RefExp(pa->getLeft(), pa);
 			defdByPhi[wrappedLhs] = pa;
 			// Fall through to the below, because phi uses are also legitimate uses
 		}
@@ -766,7 +766,7 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 		ls.clear();
 		S->getDefinitions(ls);
 		for (auto it = ls.begin(); it != ls.end(); ++it) {
-			RefExp *wrappedDef = new RefExp(*it, S);
+			auto wrappedDef = new RefExp(*it, S);
 			// If this definition is in the usedByDomPhi0 set, then it is in fact dominated by a phi use, so move it to
 			// the final usedByDomPhi set
 			if (usedByDomPhi0.exists(wrappedDef)) {

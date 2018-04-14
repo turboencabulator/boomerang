@@ -499,7 +499,7 @@ void
 RTL::insertAssign(Exp *pLhs, Exp *pRhs, bool prep, Type *type /*= nullptr */)
 {
 	// Generate the assignment expression
-	Assign *asgn = new Assign(type, pLhs, pRhs);
+	auto asgn = new Assign(type, pLhs, pRhs);
 	if (prep)
 		prependStmt(asgn);
 	else
@@ -551,7 +551,7 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 		type = getType();
 
 	// Generate the assignment expression
-	Assign *asgn = new Assign(type, pLhs, pRhs);
+	auto asgn = new Assign(type, pLhs, pRhs);
 
 	// Insert before "it"
 	stmtList.insert(it, asgn);

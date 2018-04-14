@@ -560,7 +560,7 @@ CallingConvention::StdC::PentiumSignature::qualified(UserProc *p, Signature &can
 	internal.append(*p->getCFG()->getReachExit());
 	StmtListIter it;
 	for (Statement *s = internal.getFirst(it); s; s = internal.getNext(it)) {
-		Assign *e = dynamic_cast<Assign *>(s);
+		auto e = dynamic_cast<Assign *>(s);
 		if (!e) continue;
 		if (e->getLeft()->isPC()) {
 			if (e->getRight()->isMemOf() && e->getRight()->getSubExp1()->isRegOfN(28)) {
@@ -1268,7 +1268,7 @@ Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nu
 		} while (findParam(s) != -1);
 		nam = s.c_str();
 	}
-	Parameter *p = new Parameter(type, nam, e, boundMax);
+	auto p = new Parameter(type, nam, e, boundMax);
 	addParameter(p);
 	// addImplicitParametersFor(p);
 }
@@ -1766,7 +1766,7 @@ public:
 Memo *
 Signature::makeMemo(int mId)
 {
-	SignatureMemo *m = new SignatureMemo(mId);
+	auto m = new SignatureMemo(mId);
 	m->name = name;
 	m->params = params;
 	// m->implicitParams = implicitParams;
@@ -1795,7 +1795,7 @@ Signature::makeMemo(int mId)
 void
 Signature::readMemo(Memo *mm, bool dec)
 {
-	SignatureMemo *m = dynamic_cast<SignatureMemo *>(mm);
+	auto m = dynamic_cast<SignatureMemo *>(mm);
 
 	name = m->name;
 	params = m->params;
@@ -1833,7 +1833,7 @@ public:
 Memo *
 Parameter::makeMemo(int mId)
 {
-	ParameterMemo *m = new ParameterMemo(mId);
+	auto m = new ParameterMemo(mId);
 
 	m->type = type;
 	m->name = name;
@@ -1848,7 +1848,7 @@ Parameter::makeMemo(int mId)
 void
 Parameter::readMemo(Memo *mm, bool dec)
 {
-	ParameterMemo *m = dynamic_cast<ParameterMemo *>(mm);
+	auto m = dynamic_cast<ParameterMemo *>(mm);
 	type = m->type;
 	name = m->name;
 	exp = m->exp;
@@ -1867,7 +1867,7 @@ public:
 Memo *
 ImplicitParameter::makeMemo(int mId)
 {
-	ImplicitParameterMemo *m = new ImplicitParameterMemo(mId);
+	auto m = new ImplicitParameterMemo(mId);
 
 	m->type = getType();
 	m->name = getName();
@@ -1883,7 +1883,7 @@ ImplicitParameter::makeMemo(int mId)
 void
 ImplicitParameter::readMemo(Memo *mm, bool dec)
 {
-	ImplicitParameterMemo *m = dynamic_cast<ImplicitParameterMemo *>(mm);
+	auto m = dynamic_cast<ImplicitParameterMemo *>(mm);
 	setType(m->type);
 	setName(m->name);
 	setExp(m->exp);
@@ -2065,7 +2065,7 @@ public:
 Memo *
 Return::makeMemo(int mId)
 {
-	ReturnMemo *m = new ReturnMemo(mId);
+	auto m = new ReturnMemo(mId);
 
 	m->type = type;
 	m->exp = exp;
@@ -2079,7 +2079,7 @@ Return::makeMemo(int mId)
 void
 Return::readMemo(Memo *mm, bool dec)
 {
-	ReturnMemo *m = dynamic_cast<ReturnMemo *>(mm);
+	auto m = dynamic_cast<ReturnMemo *>(mm);
 	type = m->type;
 	exp = m->exp;
 

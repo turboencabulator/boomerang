@@ -199,7 +199,7 @@ bool isFuncPrologue(ADDRESS hostPC);
  */
 #define COND_JUMP(name, size, relocd, cond) \
 	result.rtl = new RTL(pc, stmts); \
-	BranchStatement *jump = new BranchStatement; \
+	auto jump = new BranchStatement; \
 	result.rtl->appendStmt(jump); \
 	result.numBytes = size; \
 	jump->setDest(relocd-delta); \
@@ -208,7 +208,7 @@ bool isFuncPrologue(ADDRESS hostPC);
 
 /// This one is X86 specific.
 #define SETS(name, dest, cond) \
-	BoolAssign *bs = new BoolAssign(8); \
+	auto bs = new BoolAssign(8); \
 	bs->setLeftFromList(stmts); \
 	stmts->clear(); \
 	result.rtl = new RTL(pc, stmts); \

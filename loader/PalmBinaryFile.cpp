@@ -80,7 +80,7 @@ PalmBinaryFile::load(std::istream &ifs)
 	unsigned off = 0;
 	for (int i = 0; i < m_iNumSections; ++i) {
 		// First get the name (4 alpha)
-		char *name = new char[10];
+		auto name = new char[10];
 		strncpy(name, (char *)p, 4);
 		name[4] = '\0';
 		p += 4;

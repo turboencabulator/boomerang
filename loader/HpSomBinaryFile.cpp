@@ -514,7 +514,7 @@ HpSomBinaryFile::getDynamicGlobalMap()
 	// Those names are in the DLT string table
 	const char *pDlStrings = DLTable + UINT4(DLTable + 0x28);
 
-	std::map<ADDRESS, const char *> *ret = new std::map<ADDRESS, const char *>;
+	auto ret = new std::map<ADDRESS, const char *>;
 	for (unsigned u = 0; u < numDLT; ++u) {
 		// ? Sometimes the names are just -1
 		if (import_list[u].name == -1)

@@ -106,14 +106,14 @@ void
 bumpRegister(list<RT *> *RTs, int bump, int bumpr)
 {
 	// Lhs: r[bumpr]
-	SemStr *lhs = new SemStr(32);
+	auto lhs = new SemStr(32);
 	lhs->push(idRegOf); lhs->push(idIntConst); lhs->push(bumpr);
 	// Rhs: r[bumpr] + bump
-	SemStr *rhs = new SemStr(32);
+	auto rhs = new SemStr(32);
 	rhs->push(idPlus);
 	rhs->push(idRegOf); rhs->push(idIntConst); rhs->push(bumpr);
 	rhs->push(idIntConst); rhs->push(bump);
-	RTAssgn *pRT = new RTAssgn(lhs, rhs, 32);
+	auto pRT = new RTAssgn(lhs, rhs, 32);
 	RTs->push_back(pRT);
 }
 
@@ -131,10 +131,10 @@ assignTemp(SemStr *src, int size, SemStr *&temp)
 {
 	if (temp1 == 0) temp1 = theSemTable.addItem("temp1");
 	// Lhs: r[temp1]
-	SemStr *lhs = new SemStr(size);
+	auto lhs = new SemStr(size);
 	lhs->push(idRegOf); lhs->push(idTemp); lhs->push(temp1);
 	// Rhs is just src
-	RTAssgn *pRT = new RTAssgn(lhs, src, size);
+	auto pRT = new RTAssgn(lhs, src, size);
 	temp = new SemStr(*lhs);
 	return pRT;
 }
@@ -154,13 +154,13 @@ sgnExTemp(SemStr *src, int size, int size2, SemStr *&temp)
 {
 	if (temp1 == 0) temp1 = theSemTable.addItem("temp1");
 	// Lhs: r[temp1]
-	SemStr *lhs = new SemStr(size2);
+	auto lhs = new SemStr(size2);
 	lhs->push(idRegOf); lhs->push(idTemp); lhs->push(temp1);
 	// Rhs is just sgnex(size, size2, src)
 	src->prep(size2);
 	src->prep(size);
 	src->prep(idSgnEx);
-	RTAssgn *pRT = new RTAssgn(lhs, src, size2);
+	auto pRT = new RTAssgn(lhs, src, size2);
 	temp = new SemStr(*lhs);
 	return pRT;
 }
