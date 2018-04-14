@@ -1675,35 +1675,6 @@ Signature::setABIdefines(Prog *prog, StatementList *defs)
 	}
 }
 
-// Get the expected argument location, based solely on the machine of the input program
-Exp *
-Signature::getEarlyParamExp(int n, Prog *prog)
-{
-	MACHINE mach = prog->getMachine();
-	switch (mach) {
-	case MACHINE_SPARC:
-		{
-			CallingConvention::StdC::SparcSignature temp("");
-			return temp.getParamExp(n);
-		}
-	case MACHINE_PENTIUM:
-		{
-			// Would we ever need Win32?
-			CallingConvention::StdC::PentiumSignature temp("");
-			return temp.getParamExp(n);
-		}
-	case MACHINE_ST20:
-		{
-			CallingConvention::StdC::ST20Signature temp("");
-			return temp.getParamExp(n);
-		}
-	default:
-		break;
-	}
-	assert(0);  // Machine not handled
-	return nullptr;
-}
-
 int
 Signature::getStackRegister() throw (StackRegisterNotDefinedException)
 {

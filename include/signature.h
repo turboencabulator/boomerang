@@ -183,10 +183,6 @@ public:
 	// MVE: Use the below now
 	        Exp        *getFirstArgLoc(Prog *prog);
 
-	// This is like getParamLoc, except that it works before Signature::analyse is called.  It is used only to order
-	// parameters correctly, for the common case where the proc will end up using a standard calling convention
-	        Exp        *getEarlyParamExp(int n, Prog *prog);
-
 	// Get a wildcard to find stack locations
 	virtual Exp        *getStackWildcard() { return nullptr; }
 	class StackRegisterNotDefinedException : public std::exception {

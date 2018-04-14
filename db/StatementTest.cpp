@@ -106,7 +106,6 @@ StatementTest::testFlow()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -170,7 +169,6 @@ StatementTest::testKill()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -236,7 +234,6 @@ StatementTest::testUse()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -302,7 +299,6 @@ StatementTest::testUseOverKill()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -372,7 +368,6 @@ StatementTest::testUseOverBB()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -444,7 +439,6 @@ StatementTest::testUseKill()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -509,7 +503,6 @@ StatementTest::testEndlessLoop()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
@@ -684,7 +677,6 @@ StatementTest::testRecursion()
 	// create Prog
 	Prog *prog = new Prog;
 	FrontEnd *pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
-	// We need a Prog object with a pBF (for getEarlyParamExp())
 
 	// create UserProc
 	std::string name = "test";
