@@ -1614,28 +1614,24 @@ Signature::setABIdefines(Prog *prog, StatementList *defs)
 	MACHINE mach = prog->getMachine();
 	switch (mach) {
 	case MACHINE_PENTIUM:
-		{
-			defs->append(new ImplicitAssign(Location::regOf(24)));  // eax
-			defs->append(new ImplicitAssign(Location::regOf(25)));  // ecx
-			defs->append(new ImplicitAssign(Location::regOf(26)));  // edx
-		}
+		defs->append(new ImplicitAssign(Location::regOf(24)));  // eax
+		defs->append(new ImplicitAssign(Location::regOf(25)));  // ecx
+		defs->append(new ImplicitAssign(Location::regOf(26)));  // edx
+		break;
 	case MACHINE_SPARC:
-		{
-			for (int r = 8; r <= 13; ++r)
-				defs->append(new ImplicitAssign(Location::regOf(r)));  // %o0-o5
-			defs->append(new ImplicitAssign(Location::regOf(1)));  // %g1
-		}
+		for (int r = 8; r <= 13; ++r)
+			defs->append(new ImplicitAssign(Location::regOf(r)));  // %o0-o5
+		defs->append(new ImplicitAssign(Location::regOf(1)));  // %g1
+		break;
 	case MACHINE_PPC:
-		{
-			for (int r = 3; r <= 12; ++r)
-				defs->append(new ImplicitAssign(Location::regOf(r)));  // r3-r12
-		}
+		for (int r = 3; r <= 12; ++r)
+			defs->append(new ImplicitAssign(Location::regOf(r)));  // r3-r12
+		break;
 	case MACHINE_ST20:
-		{
-			defs->append(new ImplicitAssign(Location::regOf(0)));  // A
-			defs->append(new ImplicitAssign(Location::regOf(1)));  // B
-			defs->append(new ImplicitAssign(Location::regOf(2)));  // C
-		}
+		defs->append(new ImplicitAssign(Location::regOf(0)));  // A
+		defs->append(new ImplicitAssign(Location::regOf(1)));  // B
+		defs->append(new ImplicitAssign(Location::regOf(2)));  // C
+		break;
 	default:
 		break;
 	}
