@@ -693,7 +693,6 @@ public:
 	void        setCondExprND(Exp *e) { pCond = e; }
 
 	int         getSize() const { return size; }  // Return the size of the assignment
-	void        makeSigned();
 
 	void        printCompact(std::ostream &os = std::cout, bool html = false) const override;
 
@@ -897,10 +896,6 @@ public:
 	BasicBlock *getTakenBB() const;
 	void        setFallBB(BasicBlock *bb);
 	void        setTakenBB(BasicBlock *bb);
-
-	// Probably only used in front386.cc: convert this from an unsigned to a
-	// signed conditional branch
-	void        makeSigned();
 
 	void        print(std::ostream &os = std::cout, bool html = false) const override;
 

@@ -1349,25 +1349,6 @@ BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 }
 
 /*==============================================================================
- * FUNCTION:        BranchStatement::makeSigned
- * OVERVIEW:        Change this from an unsigned to a signed branch
- *============================================================================*/
-void
-BranchStatement::makeSigned()
-{
-	// Make this into a signed branch
-	switch (jtCond) {
-	case BRANCH_JUL:  jtCond = BRANCH_JSL;  break;
-	case BRANCH_JULE: jtCond = BRANCH_JSLE; break;
-	case BRANCH_JUGE: jtCond = BRANCH_JSGE; break;
-	case BRANCH_JUG:  jtCond = BRANCH_JSG;  break;
-	default:
-		// Do nothing for other cases
-		break;
-	}
-}
-
-/*==============================================================================
  * FUNCTION:        BranchStatement::getCondExpr
  * OVERVIEW:        Return the SemStr expression containing the HL condition.
  * RETURNS:         ptr to an expression
@@ -3109,26 +3090,6 @@ BoolAssign::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 	jtCond = cond;
 	bFloat = usesFloat;
 	setCondExpr(new Terminal(opFlags));
-}
-
-/*==============================================================================
- * FUNCTION:        BoolAssign::makeSigned
- * OVERVIEW:        Change this from an unsigned to a signed branch
- * NOTE:            Not sure if this is ever going to be used
- *============================================================================*/
-void
-BoolAssign::makeSigned()
-{
-	// Make this into a signed branch
-	switch (jtCond) {
-	case BRANCH_JUL:  jtCond = BRANCH_JSL;  break;
-	case BRANCH_JULE: jtCond = BRANCH_JSLE; break;
-	case BRANCH_JUGE: jtCond = BRANCH_JSGE; break;
-	case BRANCH_JUG:  jtCond = BRANCH_JSG;  break;
-	default:
-		// Do nothing for other cases
-		break;
-	}
 }
 
 /*==============================================================================
