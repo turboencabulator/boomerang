@@ -602,8 +602,6 @@ public:
 	void        simplifyRefs();
 	virtual int getNumDefs() const { return defVec.size(); }
 	Definitions &getDefs() { return defVec; }
-	// A hack. Check MVE
-	bool        hasGlobalFuncParam();
 
 	iterator    begin() { return defVec.begin(); }
 	iterator    end()   { return defVec.end(); }
@@ -1054,12 +1052,9 @@ public:
 	void        setSigArguments();  // Set arguments based on signature
 	StatementList &getArguments() { return arguments; }  // Return call's arguments
 	void        updateArguments();  // Update the arguments based on a callee change
-	//Exp        *getDefineExp(int i);
 	int         findDefine(Exp *e);  // Still needed temporarily for ad hoc type analysis
 	void        removeDefine(Exp *e);
 	void        addDefine(ImplicitAssign *as);  // For testing
-	//void        ignoreReturn(Exp *e);
-	//void        ignoreReturn(int n);
 	//void        addReturn(Exp *e, Type *ty = nullptr);
 	void        updateDefines();  // Update the defines based on a callee change
 	StatementList *calcResults();  // Calculate defines(this) isect live(this)
@@ -1077,7 +1072,6 @@ public:
 	// Set ch if changed (bypassed)
 	Exp        *bypassRef(RefExp *r, bool &ch);
 	void        clearUseCollector() { useCol.clear(); }
-	void        addArgument(Exp *e, UserProc *proc);
 	Exp        *findDefFor(Exp *e) const;  // Find the reaching definition for expression e
 	Exp        *getArgumentExp(int i) const;
 	void        setArgumentExp(int i, Exp *e);
@@ -1085,8 +1079,6 @@ public:
 	int         getNumArguments() const;
 	void        removeArgument(int i);
 	Type       *getArgumentType(int i) const;
-	void        truncateArguments();
-	void        clearLiveEntry();
 	void        eliminateDuplicateArgs();
 
 	// Range analysis
@@ -1170,7 +1162,6 @@ private:
 
 protected:
 
-	void        updateDefineWithType(int n);
 	void        appendArgument(Assignment *as) { arguments.append(as); }
 	friend class XMLProgParser;
 };
@@ -1255,9 +1246,6 @@ public:
 
 	bool        isDefinition() const override { return true; }
 
-	// Get a subscripted version of e from the collector
-	Exp        *subscriptWithDef(Exp *e);
-
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
@@ -1285,9 +1273,6 @@ public:
 	Exp        *findDefFor(Exp *e) const { return col.findDefFor(e); }
 
 	void        dfaTypeAnalysis(bool &ch) override;
-
-	// Remove the stack pointer and return a statement list
-	StatementList *getCleanReturns();
 
 	// Temporary hack (not neccesary anymore)
 	//void        specialProcessing();
