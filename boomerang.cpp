@@ -23,9 +23,7 @@
 #include "proc.h"
 #include "prog.h"
 //#include "transformer.h"
-#ifdef USE_XML
 #include "xmlprogparser.h"
-#endif
 
 // For the -nG switch to disable the garbage collector
 #ifdef GARBAGE_COLLECTOR
@@ -164,10 +162,10 @@ Boomerang::help()
 		"  -t               : Trace (print address of) every instruction decoded\n"
 		"  -Tc              : Use old constraint-based type analysis\n"
 		"  -Td              : Use data-flow-based type analysis\n"
-#ifdef USE_XML
+#ifdef ENABLE_XML_LOAD
 		"  -LD              : Load before decompile (<program> becomes xml input file)\n"
-		"  -SD              : Save before decompile\n"
 #endif
+		"  -SD              : Save before decompile\n"
 		"  -a               : Assume ABI compliance\n"
 		//"  -pa              : only propagate if can propagate to all\n"
 		"\n"
@@ -318,7 +316,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		}
 		delete prog;
 		prog = p;
-#ifdef USE_XML
+#ifdef ENABLE_XML_LOAD
 	} else if (!strcmp(argv[0], "load")) {
 		if (argc <= 1) {
 			std::cerr << "not enough arguments for cmd\n";
@@ -333,13 +331,13 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		}
 		delete prog;
 		prog = p;
+#endif
 	} else if (!strcmp(argv[0], "save")) {
 		if (!prog) {
 			std::cerr << "need to load or decode before save!\n";
 			return 1;
 		}
 		persistToXML(prog);
-#endif
 	} else if (!strcmp(argv[0], "decompile")) {
 		if (argc > 1) {
 			Proc *proc = prog->findProc(argv[1]);
@@ -895,21 +893,18 @@ Boomerang::commandLine(int argc, const char *argv[])
 				}
 			break;
 		case 'L':
-			if (argv[i][2] == 'D')
-#ifdef USE_XML
+			if (argv[i][2] == 'D') {
+#ifdef ENABLE_XML_LOAD
 				loadBeforeDecompile = true;
 #else
 				std::cerr << "LD command not enabled\n";
 #endif
+			}
 			break;
 		case 'S':
-			if (argv[i][2] == 'D')
-#ifdef USE_XML
+			if (argv[i][2] == 'D') {
 				saveBeforeDecompile = true;
-#else
-				std::cerr << "SD command not enabled\n";
-#endif
-			else {
+			} else {
 				sscanf(argv[++i], "%i", &minsToStopAfter);
 			}
 			break;
@@ -1111,7 +1106,7 @@ Boomerang::decompile(const char *fname, const char *pname)
 	//std::cout << "setting up transformers...\n";
 	//ExpTransformer::loadAll();
 
-#ifdef USE_XML
+#ifdef ENABLE_XML_LOAD
 	if (loadBeforeDecompile) {
 		std::cout << "loading persisted state...\n";
 		prog = loadFromXML(fname);
@@ -1123,12 +1118,10 @@ Boomerang::decompile(const char *fname, const char *pname)
 			return 1;
 	}
 
-#ifdef USE_XML
 	if (saveBeforeDecompile) {
 		std::cout << "saving persistable state...\n";
 		persistToXML(prog);
 	}
-#endif
 
 	if (stopBeforeDecompile)
 		return 0;
@@ -1177,7 +1170,6 @@ Boomerang::decompile(const char *fname, const char *pname)
 	return 0;
 }
 
-#ifdef USE_XML
 /**
  * Saves the state of the Prog object to a XML file.
  * \param prog The Prog object to save.
@@ -1188,6 +1180,8 @@ Boomerang::persistToXML(Prog *prog)
 	LOG << "saving persistable state...\n";
 	XMLProgParser::persistToXML(prog);
 }
+
+#ifdef ENABLE_XML_LOAD
 /**
  * Loads the state of a Prog object from a XML file.
  * \param fname The name of the XML file.

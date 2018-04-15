@@ -28,7 +28,7 @@ AC_ARG_ENABLE([gui],
 AC_ARG_WITH([expat],
 	[AS_HELP_STRING(
 		[--with-expat],
-		[enable XML loading and saving])],
+		[enable XML loading])],
 	[],
 	[AS_VAR_SET([with_expat], [no])])
 
@@ -94,7 +94,6 @@ AC_C_BIGENDIAN
 
 AM_CONDITIONAL([DYNAMIC], [test "x$enable_modules" = "xyes"])
 AM_CONDITIONAL([GUI], [test "x$enable_gui" = "xyes"])
-AM_CONDITIONAL([XML], [test "x$with_expat" = "xyes"])
 AM_CONDITIONAL([GC], [test "x$with_gc" = "xyes"])
 
 AS_IF([test "x$enable_modules" = "xyes"], [
@@ -103,7 +102,7 @@ AS_IF([test "x$enable_modules" = "xyes"], [
 	AC_DEFINE([MODSUFFIX], [".so"], [Define to the module name suffix])
 ])
 AS_IF([test "x$with_expat" = "xyes"], [
-	AC_DEFINE([USE_XML], [1], [Define to 1 to enable XML loading and saving (requires expat)])
+	AC_DEFINE([ENABLE_XML_LOAD], [1], [Define to 1 to enable XML loading (requires expat)])
 ])
 AS_IF([test "x$with_gc" = "xyes"], [
 	AC_DEFINE([GARBAGE_COLLECTOR], [1], [Define to 1 to enable garbage collection (requires gc)])

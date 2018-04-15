@@ -34,10 +34,6 @@ libboomerang_la_LIBADD = \
 	$(top_builddir)/loader/libloader.la \
 	$(top_builddir)/transform/libtransform.la \
 	$(GC_LIBS)
-if XML
-libboomerang_la_LIBADD += \
-	$(top_builddir)/db/libxmlprogparser.la
-endif
 libboomerang_la_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-DDATADIR=\"$(pkgdatadir)\" \

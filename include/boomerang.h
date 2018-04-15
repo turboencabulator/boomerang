@@ -137,8 +137,8 @@ public:
 	        /// Add a Watcher to the set of Watchers for this Boomerang object.
 	        void        addWatcher(Watcher *watcher) { watchers.insert(watcher); }
 
-#ifdef USE_XML
 	static  void        persistToXML(Prog *prog);
+#ifdef ENABLE_XML_LOAD
 	static  Prog       *loadFromXML(const char *fname);
 #endif
 
@@ -273,10 +273,10 @@ public:
 	        bool        noDecodeChildren = false;
 	        bool        debugProof = false;
 	        bool        debugUnused = false;
-#ifdef USE_XML
+#ifdef ENABLE_XML_LOAD
 	        bool        loadBeforeDecompile = false;
-	        bool        saveBeforeDecompile = false;
 #endif
+	        bool        saveBeforeDecompile = false;
 	        bool        noProve = false;
 	        bool        noChangeSignatures = false;
 	        bool        conTypeAnalysis = false;

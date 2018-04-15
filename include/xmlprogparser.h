@@ -16,8 +16,10 @@
 #define XMLPROGPARSER_H
 
 #include <ostream>
+#ifdef ENABLE_XML_LOAD
 #include <map>
 #include <stack>
+#endif
 
 class BasicBlock;
 class Cfg;
@@ -34,16 +36,21 @@ class Statement;
 class Type;
 class UserProc;
 
+#ifdef ENABLE_XML_LOAD
 class XMLProgParser;
 typedef struct {
 	const char *tag;
 	void (XMLProgParser::*start)(Context *node, const char **attr);
 	void (XMLProgParser::*addChildTo)(Context *node, const Context *child) const;
 } _tag;
+#endif
 
 class XMLProgParser {
 public:
 	XMLProgParser() { }
+
+#ifdef ENABLE_XML_LOAD
+public:
 	Prog *parse(const char *filename);
 protected:
 	void parseFile(const char *filename);
@@ -138,6 +145,7 @@ protected:
 	TAGD(subexp1)
 	TAGD(subexp2)
 	TAGD(subexp3)
+#endif
 
 public:
 	static void persistToXML(Prog *prog);

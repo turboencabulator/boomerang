@@ -1,6 +1,7 @@
 AM_CPPFLAGS = \
 	-I$(top_srcdir)/include \
 	-I$(top_srcdir)/c \
+	$(EXPAT_CFLAGS) \
 	$(GC_CFLAGS)
 
 
@@ -40,7 +41,9 @@ libdb_la_SOURCES = \
 	table.cpp \
 	table.h \
 	visitor.cpp \
-	$(top_srcdir)/include/visitor.h
+	$(top_srcdir)/include/visitor.h \
+	xmlprogparser.cpp \
+	$(top_srcdir)/include/xmlprogparser.h
 noinst_HEADERS = \
 	$(top_srcdir)/include/cluster.h \
 	$(top_srcdir)/include/exphelp.h \
@@ -50,22 +53,8 @@ noinst_HEADERS = \
 	$(top_srcdir)/include/sigenum.h \
 	$(top_srcdir)/include/types.h
 libdb_la_LIBADD = \
+	$(EXPAT_LIBS) \
 	$(GC_LIBS)
-
-
-if XML
-noinst_LTLIBRARIES += \
-	libxmlprogparser.la
-
-libxmlprogparser_la_SOURCES = \
-	xmlprogparser.cpp \
-	$(top_srcdir)/include/xmlprogparser.h
-libxmlprogparser_la_LIBADD = \
-	$(EXPAT_LIBS)
-libxmlprogparser_la_CPPFLAGS = \
-	$(AM_CPPFLAGS) \
-	$(EXPAT_CFLAGS)
-endif
 
 
 check_LTLIBRARIES = \

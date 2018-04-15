@@ -30,12 +30,17 @@
 #include "statement.h"
 #include "type.h"
 
+#ifdef ENABLE_XML_LOAD
 #include <expat.h>
+#endif
 
 #include <cctype>
 #include <cstdio>
 #include <cstring>
 
+extern const char *operStrings[];
+
+#ifdef ENABLE_XML_LOAD
 typedef enum {
 	e_prog, e_procs, e_global, e_cluster, e_libproc, e_userproc, e_local, e_symbol, e_secondexp,
 	e_proven_true, e_callee, e_caller, e_defines,
@@ -302,8 +307,6 @@ XMLProgParser::parseChildren(Cluster *c)
 		parseChildren(c->children[i]);
 	}
 }
-
-extern const char *operStrings[];
 
 int
 XMLProgParser::operFromString(const char *s)
@@ -2258,6 +2261,7 @@ XMLProgParser::addChildTo_subexp3(Context *node, const Context *child) const
 {
 	node->exp = child->exp;
 }
+#endif
 
 
 void
