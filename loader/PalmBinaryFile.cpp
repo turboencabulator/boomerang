@@ -426,29 +426,26 @@ PalmBinaryFile::getMainEntryPoint()
 	const SWord *startCode = (const SWord *)pSect->uHostAddr;
 
 	// First try the CW first jump pattern
-	const SWord *res = findPattern(startCode, CWFirstJump, sizeof CWFirstJump / sizeof *CWFirstJump, 1);
-	if (res) {
+	if (auto jump = findPattern(startCode, CWFirstJump, sizeof CWFirstJump / sizeof *CWFirstJump, 1)) {
 		// We have the code warrior first jump. Get the addil operand
-		int addilOp = (res[5] << 16) + res[6];
-		startCode = (const SWord *)((const char *)res + 10 + addilOp);
+		int addilOp = (jump[5] << 16) + jump[6];
+		startCode = (const SWord *)((const char *)jump + 10 + addilOp);
 		// Now check the next 60 SWords for the call to PilotMain
-		res = findPattern(startCode, CWCallMain, sizeof CWCallMain / sizeof *CWCallMain, 60);
-		if (res) {
+		if (auto call = findPattern(startCode, CWCallMain, sizeof CWCallMain / sizeof *CWCallMain, 60)) {
 			// Get the addil operand
-			addilOp = (res[5] << 16) + res[6];
+			addilOp = (call[5] << 16) + call[6];
 			// That operand plus the address of that operand is PilotMain
-			return pSect->uNativeAddr + (((const char *)res + 10 + addilOp) - pSect->uHostAddr);
+			return pSect->uNativeAddr + (((const char *)call + 10 + addilOp) - pSect->uHostAddr);
 		} else {
 			fprintf(stderr, "Could not find call to PilotMain in CW app\n");
 			return NO_ADDRESS;
 		}
 	}
 	// Check for gcc call to main
-	res = findPattern(startCode, GccCallMain, sizeof GccCallMain / sizeof *GccCallMain, 75);
-	if (res) {
+	if (auto call = findPattern(startCode, GccCallMain, sizeof GccCallMain / sizeof *GccCallMain, 75)) {
 		// Get the operand to the bsr
-		SWord bsrOp = res[7];
-		return pSect->uNativeAddr + (((const char *)res + 14 + bsrOp) - pSect->uHostAddr);
+		SWord bsrOp = call[7];
+		return pSect->uNativeAddr + (((const char *)call + 14 + bsrOp) - pSect->uHostAddr);
 	}
 
 	fprintf(stderr, "Cannot find call to PilotMain\n");

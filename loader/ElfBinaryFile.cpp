@@ -102,20 +102,18 @@ ElfBinaryFile::load(std::istream &ifs)
 	m_elfEndianness = pHeader->endianness - 1;
 
 	// Set up program header pointer (in case needed)
-	int i = elfRead4(&pHeader->e_phoff);
-	if (i) m_pPhdrs = (const Elf32_Phdr *)(m_pImage + i);
+	if (int i = elfRead4(&pHeader->e_phoff))
+		m_pPhdrs = (const Elf32_Phdr *)(m_pImage + i);
 
 	// Set up section header pointer
-	i = elfRead4(&pHeader->e_shoff);
-	if (i) m_pShdrs = (const Elf32_Shdr *)(m_pImage + i);
+	if (int i = elfRead4(&pHeader->e_shoff))
+		m_pShdrs = (const Elf32_Shdr *)(m_pImage + i);
 
 	// Set up section header string table pointer
 	// NOTE: it does not appear that endianness affects shorts.. they are always in little endian format
 	// Gerard: I disagree. I need the elfRead on linux/i386
-	i = elfRead2(&pHeader->e_shstrndx); // pHeader->e_shstrndx;
-	if (i) m_pStrings = m_pImage + elfRead4(&m_pShdrs[i].sh_offset);
-
-	i = 1;              // counter - # sects. Start @ 1, total m_iNumSections
+	if (int i = elfRead2(&pHeader->e_shstrndx)) // pHeader->e_shstrndx;
+		m_pStrings = m_pImage + elfRead4(&m_pShdrs[i].sh_offset);
 
 	// Number of sections
 	m_iNumSections = elfRead2(&pHeader->e_shnum);
@@ -130,7 +128,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	// Number of elf sections
 	bool bGotCode = false;                  // True when have seen a code sect
 	ADDRESS arbitaryLoadAddr = 0x08000000;
-	for (i = 0; i < m_iNumSections; ++i) {
+	for (int i = 0; i < m_iNumSections; ++i) {
 		// Get section information.
 		const Elf32_Shdr *pShdr = m_pShdrs + i;
 		if ((const char *)pShdr > m_pImage + size) {
@@ -143,8 +141,8 @@ ElfBinaryFile::load(std::istream &ifs)
 			return false;
 		}
 		m_pSections[i].pSectionName = pName;
-		int off = elfRead4(&pShdr->sh_offset);
-		if (off) m_pSections[i].uHostAddr = m_pImage + off;
+		if (int off = elfRead4(&pShdr->sh_offset))
+			m_pSections[i].uHostAddr = m_pImage + off;
 		m_pSections[i].uNativeAddr = elfRead4(&pShdr->sh_addr);
 		m_pSections[i].uSectionSize = elfRead4(&pShdr->sh_size);
 		if (m_pSections[i].uNativeAddr == 0 && strncmp(pName, ".rel", 4)) {
@@ -188,7 +186,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	}  // for each section
 
 	// assign arbitary addresses to .rel.* sections too
-	for (i = 0; i < m_iNumSections; ++i)
+	for (int i = 0; i < m_iNumSections; ++i)
 		if (m_pSections[i].uNativeAddr == 0 && !strncmp(m_pSections[i].pSectionName, ".rel", 4)) {
 			m_pSections[i].uNativeAddr = arbitaryLoadAddr;
 			arbitaryLoadAddr += m_pSections[i].uSectionSize;
@@ -196,7 +194,7 @@ ElfBinaryFile::load(std::istream &ifs)
 
 	// Add symbol info. Note that some symbols will be in the main table only, and others in the dynamic table only.
 	// So the best idea is to add symbols for all sections of the appropriate type
-	for (i = 1; i < m_iNumSections; ++i) {
+	for (int i = 1; i < m_iNumSections; ++i) {
 		unsigned uType = m_pSections[i].uType;
 		if (uType == SHT_SYMTAB || uType == SHT_DYNSYM)
 			AddSyms(i);
@@ -207,23 +205,20 @@ ElfBinaryFile::load(std::istream &ifs)
 	}
 
 	// Save the relocation to symbol table info
-	const SectionInfo *pRel = getSectionInfoByName(".rela.text");
-	if (pRel) {
+	if (auto pRelA = getSectionInfoByName(".rela.text")) {
 		m_bAddend = true;               // Remember its a relA table
-		m_pReloc = (const Elf32_Rel *)pRel->uHostAddr;  // Save pointer to reloc table
-		//SetRelocInfo(pRel);
+		m_pReloc = (const Elf32_Rel *)pRelA->uHostAddr;  // Save pointer to reloc table
+		//SetRelocInfo(pRelA);
 	} else {
 		m_bAddend = false;
-		pRel = getSectionInfoByName(".rel.text");
-		if (pRel) {
+		if (auto pRel = getSectionInfoByName(".rel.text")) {
 			//SetRelocInfo(pRel);
 			m_pReloc = (const Elf32_Rel *)pRel->uHostAddr;  // Save pointer to reloc table
 		}
 	}
 
 	// Find the PLT limits. Required for isDynamicLinkedProc(), e.g.
-	const SectionInfo *pPlt = getSectionInfoByName(".plt");
-	if (pPlt) {
+	if (auto pPlt = getSectionInfoByName(".plt")) {
 		m_uPltMin = pPlt->uNativeAddr;
 		m_uPltMax = pPlt->uNativeAddr + pPlt->uSectionSize;
 	}
@@ -483,12 +478,6 @@ ElfBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 bool
 ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* = false */) const
 {
-	int hash, numBucket, numChain, y;
-	const int *pBuckets, *pChains;  // For symbol table work
-	const int *pHash;               // Pointer to hash table
-	const Elf32_Sym *pSym;          // Pointer to the symbol table
-	int iStr;                       // Section index of the string table
-
 	const SectionInfo *pSect = getSectionInfoByName(".dynsym");
 	if (!pSect) {
 		// We have a file with no .dynsym section, and hence no .hash section (from my understanding - MVE).
@@ -497,22 +486,24 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
 		// Note MVE: We can't use m_SymTab because we may need the size
 		return SearchValueByName(pName, pVal);
 	}
-	pSym = (const Elf32_Sym *)pSect->uHostAddr;
+	auto pSym = (const Elf32_Sym *)pSect->uHostAddr;
 	if (!pSym) return false;
+
 	pSect = getSectionInfoByName(".hash");
 	if (!pSect) return false;
-	pHash = (const int *)pSect->uHostAddr;
-	iStr = getSectionIndexByName(".dynstr");
+	auto pHash = (const int *)pSect->uHostAddr;
+
+	int iStr = getSectionIndexByName(".dynstr");
 
 	// First organise the hash table
-	numBucket = elfRead4(&pHash[0]);
-	numChain  = elfRead4(&pHash[1]);
-	pBuckets = &pHash[2];
-	pChains  = &pBuckets[numBucket];
+	int numBucket = elfRead4(&pHash[0]);
+	int numChain  = elfRead4(&pHash[1]);
+	const int *pBuckets = &pHash[2];
+	const int *pChains  = &pBuckets[numBucket];
 
 	// Hash the symbol
-	hash = elf_hash(pName) % numBucket;
-	y = elfRead4(&pBuckets[hash]);  // Look it up in the bucket list
+	int hash = elf_hash(pName) % numBucket;
+	int y = elfRead4(&pBuckets[hash]);  // Look it up in the bucket list
 	// Beware of symbol tables with 0 in the buckets, e.g. libstdc++.
 	// In that case, set found to false.
 	bool found = false;
@@ -622,8 +613,8 @@ ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */) co
 int
 ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 {
-	int size = getSizeByName(sName);
-	if (size) return size;  // No need to guess!
+	if (int size = getSizeByName(sName))
+		return size;  // No need to guess!
 	// No need to guess, but if there are fillers, then subtracting labels will give a better answer for coverage
 	// purposes. For example, switch_cc. But some programs (e.g. switch_ps) have the switch tables between the
 	// end of _start and main! So we are better off overall not trying to guess the size of _start
@@ -662,8 +653,8 @@ ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
 int
 ElfBinaryFile::getDistanceByName(const char *sName)
 {
-	int val = getDistanceByName(sName, ".symtab");
-	if (val) return val;
+	if (int val = getDistanceByName(sName, ".symtab"))
+		return val;
 	return getDistanceByName(sName, ".dynsym");
 }
 
@@ -780,8 +771,7 @@ ElfBinaryFile::getDependencyList() const
 	const char *stringtab = NativeToHostAddress(strtab);
 	for (const Elf32_Dyn *dyn = (const Elf32_Dyn *)dynsect->uHostAddr; dyn->d_tag != DT_NULL; ++dyn) {
 		if (dyn->d_tag == DT_NEEDED) {
-			const char *need = stringtab + dyn->d_un.d_val;
-			if (need)
+			if (const char *need = stringtab + dyn->d_un.d_val)
 				result.push_back(need);
 		}
 	}
