@@ -33,7 +33,6 @@
 #include <sstream>
 
 #include <cstdlib>
-#include <cstring>
 #include <cassert>
 
 extern const char *operStrings[];
@@ -787,7 +786,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 			Exp *s = t->getSubExp3();
 			int toSize = ((Const *)t->getSubExp2())->getInt();
 			switch (toSize) {
-			case 8: str << "(unsigned char) ";       break;
+			case 8:  str << "(unsigned char) ";      break;
 			case 16: str << "(unsigned short) ";     break;
 			case 64: str << "(unsigned long long) "; break;
 			default: str << "(unsigned int) ";       break;
@@ -994,9 +993,6 @@ CHLLCode::AddPretestedLoopHeader(int indLevel, Exp *cond)
 	s << "while (";
 	appendExp(s, cond, PREC_NONE);
 	s << ") {";
-	// Note: removing the strdup() causes weird problems.
-	// Looks to me that it should work (with no real operator delete(),
-	// and garbage collecting...
 	appendLine(s);
 }
 
@@ -1179,10 +1175,10 @@ void
 CHLLCode::RemoveUnusedLabels(int maxOrd)
 {
 	for (auto it = lines.begin(); it != lines.end(); ) {
-		if ((*it)[0] == 'L' && strchr(*it, ':')) {
-			char *s = strdup(*it);
-			*strchr(s, ':') = 0;
-			int n = atoi(s + 1);
+		if (it->length() >  2
+		 && it->front()  == 'L'
+		 && it->back()   == ':') {
+			int n = atoi(it->c_str() + 1);
 			if (!usedLabels.count(n)) {
 				it = lines.erase(it);
 				continue;
@@ -1228,7 +1224,7 @@ CHLLCode::RemoveLabel(int ord)
 	std::ostringstream s;
 	s << "L" << std::dec << ord << ":";
 	for (auto it = lines.begin(); it != lines.end(); ++it) {
-		if (!strcmp(*it, s.str().c_str())) {
+		if (*it == s.str()) {
 			lines.erase(it);
 			break;
 		}
@@ -1728,5 +1724,5 @@ CHLLCode::appendLine(const std::ostringstream &ostr)
 void
 CHLLCode::appendLine(const std::string &s)
 {
-	lines.push_back(strdup(s.c_str()));
+	lines.push_back(s);
 }

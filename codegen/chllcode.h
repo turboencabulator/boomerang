@@ -79,7 +79,7 @@ enum PREC {
 class CHLLCode : public HLLCode {
 private:
 	/// The generated code.
-	std::list<char *> lines;
+	std::list<std::string> lines;
 
 	static void indent(std::ostringstream &str, int indLevel);
 	void appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns = false) const;
