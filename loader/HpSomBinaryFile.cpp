@@ -393,6 +393,7 @@ HpSomBinaryFile::PostLoad(void *handle)
 }
 #endif
 
+#if 0 // Cruft?
 bool
 HpSomBinaryFile::isLibrary() const
 {
@@ -400,6 +401,7 @@ HpSomBinaryFile::isLibrary() const
 	return type == 0x0104 || type == 0x010D
 	    || type == 0x010E || type == 0x0619;
 }
+#endif
 
 ADDRESS
 HpSomBinaryFile::getImageBase() const

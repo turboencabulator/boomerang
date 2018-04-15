@@ -198,11 +198,13 @@ ExeBinaryFile::PostLoad(void *handle)
 }
 #endif
 
+#if 0 // Cruft?
 bool
 ExeBinaryFile::isLibrary() const
 {
 	return false;
 }
+#endif
 
 ADDRESS
 ExeBinaryFile::getImageBase() const

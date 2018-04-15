@@ -269,11 +269,13 @@ PalmBinaryFile::PostLoad(void *handle)
 }
 #endif
 
+#if 0 // Cruft?
 bool
 PalmBinaryFile::isLibrary() const
 {
 	return strncmp((char *)(m_pImage + 0x3C), "libr", 4) == 0;
 }
+#endif
 
 ADDRESS
 PalmBinaryFile::getImageBase() const

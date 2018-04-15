@@ -243,11 +243,13 @@ BinaryFileStub::getMachine() const
 	return MACHINE_PENTIUM;
 }
 
+#if 0 // Cruft?
 bool
 BinaryFileStub::isLibrary() const
 {
 	return false;
 }
+#endif
 
 ADDRESS
 BinaryFileStub::getImageBase() const

@@ -78,7 +78,7 @@ public:
 	LOADFMT     getFormat() const override { return LOADFMT_EXE; }
 	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }
 
-	bool        isLibrary() const override;
+	//bool        isLibrary() const override;
 	ADDRESS     getImageBase() const override;
 	size_t      getImageSize() const override;
 

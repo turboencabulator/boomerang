@@ -666,11 +666,13 @@ MachOBinaryFile::getDynamicProcName(ADDRESS uNative) const
 	return nullptr;
 }
 
+#if 0 // Cruft?
 bool
 MachOBinaryFile::isLibrary() const
 {
 	return false;
 }
+#endif
 
 ADDRESS
 MachOBinaryFile::getImageBase() const

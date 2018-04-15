@@ -192,6 +192,7 @@ public:
 	/// Return a list of library names which the binary file depends on.
 	//virtual std::list<const char *> getDependencyList() const { return std::list<const char *>(); }
 
+#if 0 // Cruft?
 	/**
 	 * Return whether or not the object is a library file.
 	 */
@@ -202,6 +203,7 @@ public:
 	 * be loaded at the address given by getImageBase().
 	 */
 	virtual bool        isRelocatable() const { return isLibrary(); }
+#endif
 	/**
 	 * Return the virtual address at which the binary expects to be
 	 * loaded.  For position independent / relocatable code this should be

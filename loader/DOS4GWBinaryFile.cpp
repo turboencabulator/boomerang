@@ -538,11 +538,13 @@ DOS4GWBinaryFile::getDynamicProcName(ADDRESS uNative) const
 	return nullptr;
 }
 
+#if 0 // Cruft?
 bool
 DOS4GWBinaryFile::isLibrary() const
 {
 	return false; // TODO
 }
+#endif
 
 ADDRESS
 DOS4GWBinaryFile::getImageBase() const

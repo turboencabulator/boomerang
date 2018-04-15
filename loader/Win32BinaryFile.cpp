@@ -839,11 +839,13 @@ Win32BinaryFile::getDynamicProcName(ADDRESS uNative) const
 	return nullptr;
 }
 
+#if 0 // Cruft?
 bool
 Win32BinaryFile::isLibrary() const
 {
 	return (m_pPEHeader->Flags & 0x2000) != 0;
 }
+#endif
 
 ADDRESS
 Win32BinaryFile::getImageBase() const

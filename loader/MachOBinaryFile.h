@@ -31,7 +31,7 @@ public:
 	LOADFMT     getFormat() const override { return LOADFMT_MACHO; }
 	MACHINE     getMachine() const override { return machine; }
 
-	bool        isLibrary() const override;
+	//bool        isLibrary() const override;
 	ADDRESS     getImageBase() const override;
 	size_t      getImageSize() const override;
 

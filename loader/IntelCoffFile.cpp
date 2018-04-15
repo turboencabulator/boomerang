@@ -292,12 +292,14 @@ IntelCoffFile::PostLoad(void *)
 }
 #endif
 
+#if 0 // Cruft?
 bool
 IntelCoffFile::isLibrary() const
 {
 	printf("IntelCoffFile::isLibrary called\n");
 	return false;
 }
+#endif
 
 ADDRESS
 IntelCoffFile::getImageBase() const

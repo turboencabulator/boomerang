@@ -749,12 +749,14 @@ ElfBinaryFile::getMachine() const
 	return (MACHINE)-1;
 }
 
+#if 0 // Cruft?
 bool
 ElfBinaryFile::isLibrary() const
 {
 	int type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	return (type == ET_DYN);
 }
+#endif
 
 #if 0 // Cruft?
 std::list<const char *>
