@@ -411,7 +411,7 @@ Win32BinaryFile::load(std::istream &ifs)
 	m_pSections = new PESectionInfo[m_iNumSections];
 	//SectionInfo *reloc = nullptr;
 	for (int i = 0; i < m_iNumSections; ++i, ++o) {
-		SectionInfo &sect = m_pSections[i];
+		auto &sect = m_pSections[i];
 		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", (char*)o->ObjectName, LMMH(o->RVA), LMMH(o->PhysicalOffset), LMMH(o->VirtualSize));
 		auto name = new char[9];
 		strncpy(name, o->ObjectName, 8);

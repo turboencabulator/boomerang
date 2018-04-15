@@ -178,12 +178,13 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	ifs.seekg(lxoff + m_pLXHeader->objtbloffset);
 	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * m_pLXHeader->numobjsinmodule);
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
-		m_pLXObjects[n].VirtualSize       = LMMH(m_pLXObjects[n].VirtualSize);
-		m_pLXObjects[n].RelocBaseAddr     = LMMH(m_pLXObjects[n].RelocBaseAddr);
-		m_pLXObjects[n].ObjectFlags       = LMMH(m_pLXObjects[n].ObjectFlags);
-		m_pLXObjects[n].PageTblIdx        = LMMH(m_pLXObjects[n].PageTblIdx);
-		m_pLXObjects[n].NumPageTblEntries = LMMH(m_pLXObjects[n].NumPageTblEntries);
-		m_pLXObjects[n].Reserved1         = LMMH(m_pLXObjects[n].Reserved1);
+		auto &obj = m_pLXObjects[n];
+		obj.VirtualSize       = LMMH(obj.VirtualSize);
+		obj.RelocBaseAddr     = LMMH(obj.RelocBaseAddr);
+		obj.ObjectFlags       = LMMH(obj.ObjectFlags);
+		obj.PageTblIdx        = LMMH(obj.PageTblIdx);
+		obj.NumPageTblEntries = LMMH(obj.NumPageTblEntries);
+		obj.Reserved1         = LMMH(obj.Reserved1);
 	}
 
 	// at this point we're supposed to read in the page table and fuss around with it
@@ -192,11 +193,12 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	unsigned npagetblentries = 0;
 	m_cbImage = 0;
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
-		if (npagetblentries < m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1)
-			npagetblentries = m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1;
-		if (m_pLXObjects[n].ObjectFlags & 0x40)
-			if (m_cbImage < m_pLXObjects[n].RelocBaseAddr + m_pLXObjects[n].VirtualSize)
-				m_cbImage = m_pLXObjects[n].RelocBaseAddr + m_pLXObjects[n].VirtualSize;
+		auto &obj = m_pLXObjects[n];
+		if (npagetblentries < obj.PageTblIdx + obj.NumPageTblEntries - 1)
+			npagetblentries = obj.PageTblIdx + obj.NumPageTblEntries - 1;
+		if (obj.ObjectFlags & 0x40)
+			if (m_cbImage < obj.RelocBaseAddr + obj.VirtualSize)
+				m_cbImage = obj.RelocBaseAddr + obj.VirtualSize;
 	}
 	m_cbImage -= m_pLXObjects[0].RelocBaseAddr;
 
@@ -207,12 +209,14 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	unsigned npages = 0;
 	m_cbImage = 0;
-	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n)
-		if (m_pLXObjects[n].ObjectFlags & 0x40) {
-			if (npages < m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1)
-				npages = m_pLXObjects[n].PageTblIdx + m_pLXObjects[n].NumPageTblEntries - 1;
-			m_cbImage = m_pLXObjects[n].RelocBaseAddr + m_pLXObjects[n].VirtualSize;
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
+		auto &obj = m_pLXObjects[n];
+		if (obj.ObjectFlags & 0x40) {
+			if (npages < obj.PageTblIdx + obj.NumPageTblEntries - 1)
+				npages = obj.PageTblIdx + obj.NumPageTblEntries - 1;
+			m_cbImage = obj.RelocBaseAddr + obj.VirtualSize;
 		}
+	}
 
 	m_cbImage -= m_pLXObjects[0].RelocBaseAddr;
 
@@ -220,30 +224,33 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	m_iNumSections = m_pLXHeader->numobjsinmodule;
 	m_pSections = new SectionInfo[m_iNumSections];
-	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n)
-		if (m_pLXObjects[n].ObjectFlags & 0x40) {
+	for (unsigned n = 0; n < m_iNumSections; ++n) {
+		auto &obj = m_pLXObjects[n];
+		auto &sect = m_pSections[n];
+		if (obj.ObjectFlags & 0x40) {
 			printf("vsize %x reloc %x flags %x page %i npage %i\n",
-			       m_pLXObjects[n].VirtualSize,
-			       m_pLXObjects[n].RelocBaseAddr,
-			       m_pLXObjects[n].ObjectFlags,
-			       m_pLXObjects[n].PageTblIdx,
-			       m_pLXObjects[n].NumPageTblEntries);
+			       obj.VirtualSize,
+			       obj.RelocBaseAddr,
+			       obj.ObjectFlags,
+			       obj.PageTblIdx,
+			       obj.NumPageTblEntries);
 
 			auto name = new char[9];
 			snprintf(name, sizeof (char[9]), "seg%i", n);  // no section names in LX
-			m_pSections[n].pSectionName = name;
-			m_pSections[n].uNativeAddr = (ADDRESS)m_pLXObjects[n].RelocBaseAddr;
-			m_pSections[n].uHostAddr = (char *)(m_pLXObjects[n].RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr + base);
-			m_pSections[n].uSectionSize = m_pLXObjects[n].VirtualSize;
-			DWord Flags = m_pLXObjects[n].ObjectFlags;
-			m_pSections[n].bBss      = false; // TODO
-			m_pSections[n].bCode     = (Flags & 0x4) != 0;
-			m_pSections[n].bData     = (Flags & 0x4) == 0;
-			m_pSections[n].bReadOnly = (Flags & 0x1) == 0;
+			sect.pSectionName = name;
+			sect.uNativeAddr = (ADDRESS)obj.RelocBaseAddr;
+			sect.uHostAddr = (char *)(obj.RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr + base);
+			sect.uSectionSize = obj.VirtualSize;
+			DWord Flags = obj.ObjectFlags;
+			sect.bBss      = false; // TODO
+			sect.bCode     = (Flags & 0x4) != 0;
+			sect.bData     = (Flags & 0x4) == 0;
+			sect.bReadOnly = (Flags & 0x1) == 0;
 
-			ifs.seekg(m_pLXHeader->datapagesoffset + (m_pLXObjects[n].PageTblIdx - 1) * m_pLXHeader->pagesize);
-			ifs.read(m_pSections[n].uHostAddr, m_pLXHeader->pagesize * m_pLXObjects[n].NumPageTblEntries);
+			ifs.seekg(m_pLXHeader->datapagesoffset + (obj.PageTblIdx - 1) * m_pLXHeader->pagesize);
+			ifs.read(sect.uHostAddr, m_pLXHeader->pagesize * obj.NumPageTblEntries);
 		}
+	}
 
 	// TODO: decode entry tables
 

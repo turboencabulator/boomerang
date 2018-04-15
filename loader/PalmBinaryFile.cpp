@@ -79,6 +79,8 @@ PalmBinaryFile::load(std::istream &ifs)
 	unsigned char *p = m_pImage + 0x4E;          // First resource header
 	unsigned off = 0;
 	for (int i = 0; i < m_iNumSections; ++i) {
+		auto &sect = m_pSections[i];
+
 		// First get the name (4 alpha)
 		auto name = new char[10];
 		strncpy(name, (char *)p, 4);
@@ -90,31 +92,31 @@ PalmBinaryFile::load(std::istream &ifs)
 		p += 2;
 
 		// Decide if code or data
-		m_pSections[i].bCode = strcmp(name, "code") == 0;
-		m_pSections[i].bData = strcmp(name, "data") == 0;
+		sect.bCode = strcmp(name, "code") == 0;
+		sect.bData = strcmp(name, "data") == 0;
 
-		if (m_pSections[i].bCode && id == 0) {
+		if (sect.bCode && id == 0) {
 			// Note that code0 is a special case (not code)
-			m_pSections[i].bCode = false;
-			pCode0 = &m_pSections[i];
+			sect.bCode = false;
+			pCode0 = &sect;
 		}
-		if (m_pSections[i].bData && id == 0) {
-			pData = &m_pSections[i];
+		if (sect.bData && id == 0) {
+			pData = &sect;
 		}
 
 		// Join the id to the name, e.g. code0, data12
 		snprintf(name + 4, 6, "%u", id);
-		m_pSections[i].pSectionName = name;
+		sect.pSectionName = name;
 
 		off = UINT4(p);
 		p += 4;
-		m_pSections[i].uNativeAddr = off;
-		m_pSections[i].uHostAddr = (char *)m_pImage + off;
+		sect.uNativeAddr = off;
+		sect.uHostAddr = (char *)m_pImage + off;
 
 		// Guess the length
 		if (i > 0) {
 			m_pSections[i - 1].uSectionSize = off - m_pSections[i - 1].uNativeAddr;
-			m_pSections[i].uSectionEntrySize = 1;        // No info available
+			sect.uSectionEntrySize = 1;        // No info available
 		}
 	}
 

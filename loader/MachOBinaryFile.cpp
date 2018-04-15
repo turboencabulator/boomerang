@@ -378,7 +378,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	m_iNumSections = segments.size();
 	m_pSections = new SectionInfo[m_iNumSections];
 
-	for (unsigned i = 0; i < segments.size(); ++i) {
+	for (unsigned i = 0; i < m_iNumSections; ++i) {
 		ifs.seekg(segments[i].fileoff);
 		ADDRESS a = segments[i].vmaddr;
 		unsigned sz = segments[i].vmsize;
@@ -392,16 +392,17 @@ MachOBinaryFile::load(std::istream &ifs)
 		auto name = new char[17];
 		strncpy(name, segments[i].segname, 16);
 		name[16] = '\0';
-		m_pSections[i].pSectionName = name;
-		m_pSections[i].uNativeAddr = a;
-		m_pSections[i].uHostAddr = &base[a - loaded_addr];
-		m_pSections[i].uSectionSize = sz;
+		auto &sect = m_pSections[i];
+		sect.pSectionName = name;
+		sect.uNativeAddr = a;
+		sect.uHostAddr = &base[a - loaded_addr];
+		sect.uSectionSize = sz;
 
 		unsigned long l = segments[i].initprot;
-		m_pSections[i].bBss      = false; // TODO
-		m_pSections[i].bCode     =  (l & VM_PROT_EXECUTE) != 0;
-		m_pSections[i].bData     =  (l & VM_PROT_READ)    != 0;
-		m_pSections[i].bReadOnly = ~(l & VM_PROT_WRITE)   == 0;  // FIXME: This is always false.
+		sect.bBss      = false; // TODO
+		sect.bCode     =  (l & VM_PROT_EXECUTE) != 0;
+		sect.bData     =  (l & VM_PROT_READ)    != 0;
+		sect.bReadOnly = ~(l & VM_PROT_WRITE)   == 0;  // FIXME: This is always false.
 	}
 
 	// process stubs_sects

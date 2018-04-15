@@ -140,35 +140,36 @@ ElfBinaryFile::load(std::istream &ifs)
 			std::cerr << "name for section " << i << " is outside the image size\n";
 			return false;
 		}
-		m_pSections[i].pSectionName = pName;
+		auto &sect = m_pSections[i];
+		sect.pSectionName = pName;
 		if (int off = elfRead4(&pShdr->sh_offset))
-			m_pSections[i].uHostAddr = m_pImage + off;
-		m_pSections[i].uNativeAddr = elfRead4(&pShdr->sh_addr);
-		m_pSections[i].uSectionSize = elfRead4(&pShdr->sh_size);
-		if (m_pSections[i].uNativeAddr == 0 && strncmp(pName, ".rel", 4)) {
+			sect.uHostAddr = m_pImage + off;
+		sect.uNativeAddr = elfRead4(&pShdr->sh_addr);
+		sect.uSectionSize = elfRead4(&pShdr->sh_size);
+		if (sect.uNativeAddr == 0 && strncmp(pName, ".rel", 4)) {
 			int align = elfRead4(&pShdr->sh_addralign);
 			if (align > 1) {
 				if (arbitaryLoadAddr % align)
 					arbitaryLoadAddr += align - (arbitaryLoadAddr % align);
 			}
-			m_pSections[i].uNativeAddr = arbitaryLoadAddr;
-			arbitaryLoadAddr += m_pSections[i].uSectionSize;
+			sect.uNativeAddr = arbitaryLoadAddr;
+			arbitaryLoadAddr += sect.uSectionSize;
 		}
-		m_pSections[i].uType = elfRead4(&pShdr->sh_type);
+		sect.uType = elfRead4(&pShdr->sh_type);
 		m_sh_link[i] = elfRead4(&pShdr->sh_link);
 		m_sh_info[i] = elfRead4(&pShdr->sh_info);
-		m_pSections[i].uSectionEntrySize = elfRead4(&pShdr->sh_entsize);
-		if (m_pSections[i].uNativeAddr + m_pSections[i].uSectionSize > next_extern)
-			first_extern = next_extern = m_pSections[i].uNativeAddr + m_pSections[i].uSectionSize;
+		sect.uSectionEntrySize = elfRead4(&pShdr->sh_entsize);
+		if (sect.uNativeAddr + sect.uSectionSize > next_extern)
+			first_extern = next_extern = sect.uNativeAddr + sect.uSectionSize;
 		if ((elfRead4(&pShdr->sh_flags) & SHF_WRITE) == 0)
-			m_pSections[i].bReadOnly = true;
+			sect.bReadOnly = true;
 		// Can't use the SHF_ALLOC bit to determine bss section; the bss section has SHF_ALLOC but also SHT_NOBITS.
 		// (But many other sections, such as .comment, also have SHT_NOBITS). So for now, just use the name
 		//if ((elfRead4(&pShdr->sh_flags) & SHF_ALLOC) == 0)
 		if (strcmp(pName, ".bss") == 0)
-			m_pSections[i].bBss = true;
+			sect.bBss = true;
 		if (elfRead4(&pShdr->sh_flags) & SHF_EXECINSTR) {
-			m_pSections[i].bCode = true;
+			sect.bCode = true;
 			bGotCode = true;            // We've got to a code section
 		}
 		// Deciding what is data and what is not is actually quite tricky but important.
@@ -182,15 +183,17 @@ ElfBinaryFile::load(std::istream &ifs)
 		if (bGotCode
 		 && ((elfRead4(&pShdr->sh_flags) & (SHF_EXECINSTR | SHF_ALLOC)) == SHF_ALLOC)
 		 && (elfRead4(&pShdr->sh_type) != SHT_NOBITS))
-			m_pSections[i].bData = true;
+			sect.bData = true;
 	}  // for each section
 
 	// assign arbitary addresses to .rel.* sections too
-	for (int i = 0; i < m_iNumSections; ++i)
-		if (m_pSections[i].uNativeAddr == 0 && !strncmp(m_pSections[i].pSectionName, ".rel", 4)) {
-			m_pSections[i].uNativeAddr = arbitaryLoadAddr;
-			arbitaryLoadAddr += m_pSections[i].uSectionSize;
+	for (int i = 0; i < m_iNumSections; ++i) {
+		auto &sect = m_pSections[i];
+		if (sect.uNativeAddr == 0 && !strncmp(sect.pSectionName, ".rel", 4)) {
+			sect.uNativeAddr = arbitaryLoadAddr;
+			arbitaryLoadAddr += sect.uSectionSize;
 		}
+	}
 
 	// Add symbol info. Note that some symbols will be in the main table only, and others in the dynamic table only.
 	// So the best idea is to add symbols for all sections of the appropriate type
@@ -1099,14 +1102,13 @@ ElfBinaryFile::applyRelocations()
 							destNatOrigin = 0;
 						}
 						ADDRESS A, S = 0, P;
-						int nsec;
 						switch (relType) {
 						case 0:  // R_386_NONE: just ignore (common)
 							break;
 						case 1:  // R_386_32: S + A
 							S = elfRead4((const int *)&symOrigin[symTabIndex].st_value);
 							if (e_type == E_REL) {
-								nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
+								int nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
 								if (nsec >= 0 && nsec < m_iNumSections)
 									S += getSectionInfo(nsec)->uNativeAddr;
 							}
@@ -1115,7 +1117,7 @@ ElfBinaryFile::applyRelocations()
 							break;
 						case 2:  // R_386_PC32: S + A - P
 							if (ELF32_ST_TYPE(symOrigin[symTabIndex].st_info) == STT_SECTION) {
-								nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
+								int nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
 								if (nsec >= 0 && nsec < m_iNumSections)
 									S = getSectionInfo(nsec)->uNativeAddr;
 							} else {
@@ -1136,7 +1138,7 @@ ElfBinaryFile::applyRelocations()
 										addSymbol(S, pName);
 									//}
 								} else if (e_type == E_REL) {
-									nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
+									int nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
 									if (nsec >= 0 && nsec < m_iNumSections)
 										S += getSectionInfo(nsec)->uNativeAddr;
 								}

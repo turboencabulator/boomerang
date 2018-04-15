@@ -171,11 +171,6 @@ HpSomBinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
-	// Allocate the section information. There will be just four entries:
-	// one for the header, one for text, one for initialised data, one for BSS
-	m_iNumSections = 4;
-	m_pSections = new SectionInfo[m_iNumSections];
-
 	// Find the main symbol table, if it exists
 	const char *symPtr = (const char *)m_pImage + UINT4(m_pImage + 0x5C);
 	unsigned numSym = UINT4(m_pImage + 0x60);
@@ -196,6 +191,11 @@ HpSomBinaryFile::load(std::istream &ifs)
 // A convenient macro for accessing the fields (0-11) of the auxiliary header
 // Fields 0, 1 are the header (flags, aux header type, and size)
 #define AUXHDR(idx) (UINT4(m_pImage + auxHeaders + 4*idx))
+
+	// Allocate the section information. There will be just four entries:
+	// one for the header, one for text, one for initialised data, one for BSS
+	m_iNumSections = 4;
+	m_pSections = new SectionInfo[m_iNumSections];
 
 	// Section 0: header
 	m_pSections[0].pSectionName = "$HEADER$";

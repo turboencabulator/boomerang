@@ -76,17 +76,16 @@ IntelCoffFile::~IntelCoffFile()
 {
 }
 
-SectionInfo *
-IntelCoffFile::AddSection(SectionInfo *psi)
+SectionInfo &
+IntelCoffFile::addSection()
 {
 	int idxSect = m_iNumSections++;
 	auto ps = new SectionInfo[m_iNumSections];
 	for (int i = 0; i < idxSect; ++i)
 		ps[i] = m_pSections[i];
-	ps[idxSect] = *psi;
 	delete[] m_pSections;
 	m_pSections = ps;
-	return ps + idxSect;
+	return ps[idxSect];
 }
 
 bool
@@ -117,38 +116,35 @@ IntelCoffFile::load(std::istream &ifs)
 		strncpy(sectname, psh[iSection].sch_sectname, sizeof psh->sch_sectname);
 		sectname[sizeof psh->sch_sectname] = '\0';
 
-		SectionInfo *psi = nullptr;
 		int sidx = getSectionIndexByName(sectname);
 		if (-1 == sidx) {
-			SectionInfo si;
-			si.bCode = 0 != (psh[iSection].sch_flags & 0x20);
-			si.bData = 0 != (psh[iSection].sch_flags & 0x40);
-			si.bBss = 0 != (psh[iSection].sch_flags & 0x80);
-			si.bReadOnly = 0 != (psh[iSection].sch_flags & 0x1000);
-			si.pSectionName = sectname;
-
 			sidx = m_iNumSections;
-			psi = AddSection(&si);
+			auto &sect = addSection();
+
+			sect.bCode     = 0 != (psh[iSection].sch_flags &   0x20);
+			sect.bData     = 0 != (psh[iSection].sch_flags &   0x40);
+			sect.bBss      = 0 != (psh[iSection].sch_flags &   0x80);
+			sect.bReadOnly = 0 != (psh[iSection].sch_flags & 0x1000);
+			sect.pSectionName = sectname;
 		} else {
 			delete [] sectname;
-			psi = &m_pSections[sidx];
 		}
 
-		psh[iSection].sch_virtaddr = psi->uSectionSize;
+		auto &sect = m_pSections[sidx];
+		psh[iSection].sch_virtaddr = sect.uSectionSize;
 		psh[iSection].sch_physaddr = sidx;
-
-		psi->uSectionSize += psh[iSection].sch_sectsize;
+		sect.uSectionSize += psh[iSection].sch_sectsize;
 	}
 	printf("Loaded %d section headers\n", (int)m_Header.coff_sections);
 
 	ADDRESS a = 0x40000000;
 	for (int sidx = 0; sidx < m_iNumSections; ++sidx) {
-		SectionInfo *psi = &m_pSections[sidx];
-		if (psi->uSectionSize > 0) {
-			auto pData = new char[psi->uSectionSize];
-			psi->uHostAddr = pData;
-			psi->uNativeAddr = a;
-			a += psi->uSectionSize;
+		auto &sect = m_pSections[sidx];
+		if (sect.uSectionSize > 0) {
+			auto pData = new char[sect.uSectionSize];
+			sect.uHostAddr = pData;
+			sect.uNativeAddr = a;
+			a += sect.uSectionSize;
 		}
 	}
 	printf("Allocated %d segments. a=%08x", m_iNumSections, a);
@@ -370,7 +366,7 @@ IntelCoffFile::getSymbols() const
 unsigned char *
 IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 {
-	for (int iSection = 0; iSection < m_iNumSections; ++iSection) {
+	for (int iSection = 0; iSection < getNumSections(); ++iSection) {
 		const SectionInfo *psi = getSectionInfo(iSection);
 		if (a >= psi->uNativeAddr && (a + range) < (psi->uNativeAddr + psi->uSectionSize)) {
 			return (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));
@@ -399,7 +395,7 @@ IntelCoffFile::readNative4(ADDRESS a) const
 {
 	return readNative(a, 4);
 #if 0
-	for (int iSection = 0; iSection < m_iNumSections; ++iSection) {
+	for (int iSection = 0; iSection < getNumSections(); ++iSection) {
 		const SectionInfo *psi = getSectionInfo(iSection);
 		if (a >= psi->uNativeAddr && (a + 3) < (psi->uNativeAddr + psi->uSectionSize)) {
 			unsigned long tmp;

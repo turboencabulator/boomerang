@@ -34,12 +34,6 @@ bool
 ExeBinaryFile::load(std::istream &ifs)
 {
 	std::streamsize cb;
-
-	// Always just 3 sections
-	// FIXME:  Should $HEADER and $RELOC be sections?
-	//         We've converted them to host endianness.
-	m_iNumSections = 3;
-	m_pSections = new SectionInfo[m_iNumSections];
 	m_pHeader = new exeHeader;
 
 	/* Read in first 2 bytes to check EXE signature */
@@ -153,6 +147,12 @@ ExeBinaryFile::load(std::istream &ifs)
 		*p++    = (Byte)(w & 0x00FF);
 		*p      = (Byte)((w & 0xFF00) >> 8);
 	}
+
+	// Always just 3 sections
+	// FIXME:  Should $HEADER and $RELOC be sections?
+	//         We've converted them to host endianness.
+	m_iNumSections = 3;
+	m_pSections = new SectionInfo[m_iNumSections];
 
 	m_pSections[0].pSectionName = "$HEADER";  // Special header section
 	//m_pSections[0].fSectionFlags = ST_HEADER;
