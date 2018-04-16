@@ -82,8 +82,6 @@ private:
 	std::list<ADDRESS> m_Relocations;
 	struct coff_header m_Header;
 
-	SectionInfo &addSection();
-
 	SymTab m_Symbols;
 };
 

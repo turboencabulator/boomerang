@@ -76,18 +76,6 @@ IntelCoffFile::~IntelCoffFile()
 {
 }
 
-SectionInfo &
-IntelCoffFile::addSection()
-{
-	int idxSect = m_iNumSections++;
-	auto ps = new SectionInfo[m_iNumSections];
-	for (int i = 0; i < idxSect; ++i)
-		ps[i] = m_pSections[i];
-	delete[] m_pSections;
-	m_pSections = ps;
-	return ps[idxSect];
-}
-
 bool
 IntelCoffFile::load(std::istream &ifs)
 {
@@ -119,17 +107,17 @@ IntelCoffFile::load(std::istream &ifs)
 
 		int sidx = getSectionIndexByName(sectname.c_str());
 		if (sidx == -1) {
-			sidx = m_iNumSections;
-			auto &sect = addSection();
-
+			sidx = sections.size();
+			auto sect = SectionInfo();
 			sect.name      = sectname;
 			sect.bCode     = 0 != (psh[iSection].sch_flags &   0x20);
 			sect.bData     = 0 != (psh[iSection].sch_flags &   0x40);
 			sect.bBss      = 0 != (psh[iSection].sch_flags &   0x80);
 			sect.bReadOnly = 0 != (psh[iSection].sch_flags & 0x1000);
+			sections.push_back(sect);
 		}
 
-		auto &sect = m_pSections[sidx];
+		auto &sect = sections[sidx];
 		psh[iSection].sch_virtaddr = sect.uSectionSize;
 		psh[iSection].sch_physaddr = sidx;
 		sect.uSectionSize += psh[iSection].sch_sectsize;
@@ -137,8 +125,8 @@ IntelCoffFile::load(std::istream &ifs)
 	printf("Loaded %d section headers\n", (int)m_Header.coff_sections);
 
 	ADDRESS a = 0x40000000;
-	for (int sidx = 0; sidx < m_iNumSections; ++sidx) {
-		auto &sect = m_pSections[sidx];
+	for (int sidx = 0; sidx < sections.size(); ++sidx) {
+		auto &sect = sections[sidx];
 		if (sect.uSectionSize > 0) {
 			auto pData = new char[sect.uSectionSize];
 			sect.uHostAddr = pData;
@@ -146,7 +134,7 @@ IntelCoffFile::load(std::istream &ifs)
 			a += sect.uSectionSize;
 		}
 	}
-	printf("Allocated %d segments. a=%08x", m_iNumSections, a);
+	printf("Allocated %d segments. a=%08x", sections.size(), a);
 
 	for (int iSection = 0; iSection < m_Header.coff_sections; ++iSection) {
 		printf("Loading section %d of %hd\n", iSection + 1, m_Header.coff_sections);

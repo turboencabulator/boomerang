@@ -34,7 +34,6 @@ HpSomBinaryFile::HpSomBinaryFile()
 
 HpSomBinaryFile::~HpSomBinaryFile()
 {
-	delete [] m_pSections;
 	delete [] m_pImage;
 }
 
@@ -194,62 +193,69 @@ HpSomBinaryFile::load(std::istream &ifs)
 
 	// Allocate the section information. There will be just four entries:
 	// one for the header, one for text, one for initialised data, one for BSS
-	m_iNumSections = 4;
-	m_pSections = new SectionInfo[m_iNumSections];
+	sections.reserve(4);
 
 	// Section 0: header
-	m_pSections[0].name = "$HEADER$";
-	m_pSections[0].uNativeAddr = 0;         // Not applicable
-	m_pSections[0].uHostAddr = (char *)m_pImage;
-	//m_pSections[0].uSectionSize = AUXHDR(4);
+	auto sect0 = SectionInfo();
+	sect0.name = "$HEADER$";
+	sect0.uNativeAddr = 0;         // Not applicable
+	sect0.uHostAddr = (char *)m_pImage;
+	//sect0.uSectionSize = AUXHDR(4);
 	// There is nothing that appears in memory space here; to give this a size
 	// is to invite getSectionInfoByAddr to return this section!
-	m_pSections[0].uSectionSize = 0;
+	sect0.uSectionSize = 0;
 
-	m_pSections[0].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[0].bCode = false;
-	m_pSections[0].bData = false;
-	m_pSections[0].bBss = false;
-	m_pSections[0].bReadOnly = false;
+	sect0.uSectionEntrySize = 1;   // Not applicable
+	sect0.bCode = false;
+	sect0.bData = false;
+	sect0.bBss = false;
+	sect0.bReadOnly = false;
+	sections.push_back(sect0);
 
 	// Section 1: text (code)
-	m_pSections[1].name = "$TEXT$";
-	m_pSections[1].uNativeAddr = AUXHDR(3);
-	m_pSections[1].uHostAddr = (char *)m_pImage + AUXHDR(4);
-	m_pSections[1].uSectionSize = AUXHDR(2);
-	m_pSections[1].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[1].bCode = true;
-	m_pSections[1].bData = false;
-	m_pSections[1].bBss = false;
-	m_pSections[1].bReadOnly = true;
+	auto sect1 = SectionInfo();
+	sect1.name = "$TEXT$";
+	sect1.uNativeAddr = AUXHDR(3);
+	sect1.uHostAddr = (char *)m_pImage + AUXHDR(4);
+	sect1.uSectionSize = AUXHDR(2);
+	sect1.uSectionEntrySize = 1;   // Not applicable
+	sect1.bCode = true;
+	sect1.bData = false;
+	sect1.bBss = false;
+	sect1.bReadOnly = true;
+	sections.push_back(sect1);
 
 	// Section 2: initialised data
-	m_pSections[2].name = "$DATA$";
-	m_pSections[2].uNativeAddr = AUXHDR(6);
-	m_pSections[2].uHostAddr = (char *)m_pImage + AUXHDR(7);
-	m_pSections[2].uSectionSize = AUXHDR(5);
-	m_pSections[2].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[2].bCode = false;
-	m_pSections[2].bData = true;
-	m_pSections[2].bBss = false;
-	m_pSections[2].bReadOnly = false;
+	auto sect2 = SectionInfo();
+	sect2.name = "$DATA$";
+	sect2.uNativeAddr = AUXHDR(6);
+	sect2.uHostAddr = (char *)m_pImage + AUXHDR(7);
+	sect2.uSectionSize = AUXHDR(5);
+	sect2.uSectionEntrySize = 1;   // Not applicable
+	sect2.bCode = false;
+	sect2.bData = true;
+	sect2.bBss = false;
+	sect2.bReadOnly = false;
+	sections.push_back(sect2);
 
 	// Section 3: BSS
-	m_pSections[3].name = "$BSS$";
+	auto sect3 = SectionInfo();
+	sect3.name = "$BSS$";
 	// For now, assume that BSS starts at the end of the initialised data
-	m_pSections[3].uNativeAddr = AUXHDR(6) + AUXHDR(5);
-	m_pSections[3].uHostAddr = nullptr;     // Not applicable
-	m_pSections[3].uSectionSize = AUXHDR(8);
-	m_pSections[3].uSectionEntrySize = 1;   // Not applicable
-	m_pSections[3].bCode = false;
-	m_pSections[3].bData = false;
-	m_pSections[3].bBss = true;
-	m_pSections[3].bReadOnly = false;
+	sect3.uNativeAddr = AUXHDR(6) + AUXHDR(5);
+	sect3.uHostAddr = nullptr;     // Not applicable
+	sect3.uSectionSize = AUXHDR(8);
+	sect3.uSectionEntrySize = 1;   // Not applicable
+	sect3.bCode = false;
+	sect3.bData = false;
+	sect3.bBss = true;
+	sect3.bReadOnly = false;
+	sections.push_back(sect3);
 
 	// Work through the imports, and find those for which there are stubs using that import entry.
 	// Add the addresses of any such stubs.
-	ptrdiff_t deltaText = m_pSections[1].uHostAddr - (char *)m_pSections[1].uNativeAddr;
-	ptrdiff_t deltaData = m_pSections[2].uHostAddr - (char *)m_pSections[2].uNativeAddr;
+	ptrdiff_t deltaText = sections[1].uHostAddr - (char *)sections[1].uNativeAddr;
+	ptrdiff_t deltaData = sections[2].uHostAddr - (char *)sections[2].uNativeAddr;
 	// The "end of data" where r27 points is not necessarily the same as
 	// the end of the $DATA$ space. So we have to call getSubSpaceInfo
 	std::pair<unsigned, int> pr = getSubspaceInfo("$GLOBAL$");
@@ -267,8 +273,8 @@ HpSomBinaryFile::load(std::istream &ifs)
 	// This code was for pattern patching the BOR (Bind On Reference, or library call stub) routines. It appears to be
 	// unnecessary, since as they appear in the file, the PLT entries point to the BORs
 #if 0
-	const char *startText = m_pSections[1].uHostAddr;
-	const char *endText = startText + m_pSections[1].uSectionSize - 0x10;
+	const char *startText = sections[1].uHostAddr;
+	const char *endText = startText + sections[1].uSectionSize - 0x10;
 	for (const char *host = startText; host != endText; host += 4) {
 		// Test this location for a BOR (library stub)
 		int offset;
@@ -508,7 +514,7 @@ HpSomBinaryFile::getDynamicGlobalMap()
 
 	unsigned numDLT = UINT4(DLTable + 0x40);
 	// Offset 0x38 in the DL table has the offset relative to $DATA$ (section 2)
-	unsigned *p = (unsigned *)(UINT4(DLTable + 0x38) + m_pSections[2].uHostAddr);
+	unsigned *p = (unsigned *)(UINT4(DLTable + 0x38) + sections[2].uHostAddr);
 
 	// The DLT is paralelled by the first <numDLT> entries in the import table;
 	// the import table has the symbolic names
@@ -540,7 +546,7 @@ HpSomBinaryFile::getMainEntryPoint()
 		return 0;
 	}
 	// Expect a bl <main>, rp instruction
-	unsigned instr = UINT4(m_pSections[1].uHostAddr + mainExport - m_pSections[1].uNativeAddr);
+	unsigned instr = UINT4(sections[1].uHostAddr + mainExport - sections[1].uNativeAddr);
 	int disp;
 	// Standard form: sub-opcode 0, target register = 2
 	if (instr >> 26 == 0x3A

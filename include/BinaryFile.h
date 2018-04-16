@@ -311,8 +311,7 @@ protected:
 
 	        const char *m_pFilename = nullptr;   ///< Input file name.
 	        bool        m_bArchive;              ///< True if archive member.
-	        int         m_iNumSections = 0;      ///< Number of sections.
-	        SectionInfo *m_pSections = nullptr;  ///< The section info.
+	        std::vector<SectionInfo> sections;   ///< The section info.
 	        ADDRESS     m_uInitPC;               ///< Initial program counter.
 	        ADDRESS     m_uInitSP;               ///< Initial stack pointer.
 

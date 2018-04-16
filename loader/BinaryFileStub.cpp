@@ -209,26 +209,24 @@ static const unsigned char pent_hello_text[] = {
 
 BinaryFileStub::BinaryFileStub()
 {
-	m_iNumSections = 1;
-	m_pSections = new SectionInfo[m_iNumSections];
-
-	m_pSections[0].name = ".text";
-	m_pSections[0].uNativeAddr = 0x8048810;
-	m_pSections[0].uHostAddr = (char *)pent_hello_text;
-	m_pSections[0].uSectionSize = sizeof pent_hello_text;
-	m_pSections[0].uSectionEntrySize = 0;
-	m_pSections[0].uType = 0;
-	m_pSections[0].bCode = true;
-	m_pSections[0].bData = false;
-	m_pSections[0].bBss = false;
-	m_pSections[0].bReadOnly = true;
+	auto sect = SectionInfo();
+	sect.name = ".text";
+	sect.uNativeAddr = 0x8048810;
+	sect.uHostAddr = (char *)pent_hello_text;
+	sect.uSectionSize = sizeof pent_hello_text;
+	sect.uSectionEntrySize = 0;
+	sect.uType = 0;
+	sect.bCode = true;
+	sect.bData = false;
+	sect.bBss = false;
+	sect.bReadOnly = true;
+	sections.push_back(sect);
 
 	getTextLimits();
 }
 
 BinaryFileStub::~BinaryFileStub()
 {
-	delete [] m_pSections;
 }
 
 LOADFMT

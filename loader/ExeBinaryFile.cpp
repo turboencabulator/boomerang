@@ -24,7 +24,6 @@ ExeBinaryFile::ExeBinaryFile()
 
 ExeBinaryFile::~ExeBinaryFile()
 {
-	delete [] m_pSections;
 	delete    m_pHeader;
 	delete [] m_pImage;
 	delete [] m_pRelocTable;
@@ -151,30 +150,35 @@ ExeBinaryFile::load(std::istream &ifs)
 	// Always just 3 sections
 	// FIXME:  Should $HEADER and $RELOC be sections?
 	//         We've converted them to host endianness.
-	m_iNumSections = 3;
-	m_pSections = new SectionInfo[m_iNumSections];
+	sections.reserve(3);
 
-	m_pSections[0].name = "$HEADER";  // Special header section
-	//m_pSections[0].fSectionFlags = ST_HEADER;
-	m_pSections[0].uNativeAddr = 0;  // Not applicable
-	m_pSections[0].uHostAddr = (char *)m_pHeader;
-	m_pSections[0].uSectionSize = sizeof *m_pHeader;
-	m_pSections[0].uSectionEntrySize = 1;  // Not applicable
+	auto sect0 = SectionInfo();
+	sect0.name = "$HEADER";  // Special header section
+	//sect0.fSectionFlags = ST_HEADER;
+	sect0.uNativeAddr = 0;  // Not applicable
+	sect0.uHostAddr = (char *)m_pHeader;
+	sect0.uSectionSize = sizeof *m_pHeader;
+	sect0.uSectionEntrySize = 1;  // Not applicable
+	sections.push_back(sect0);
 
-	m_pSections[1].name = ".text";  // The text and data section
-	m_pSections[1].bCode = true;
-	m_pSections[1].bData = true;
-	m_pSections[1].uNativeAddr = 0;
-	m_pSections[1].uHostAddr = (char *)m_pImage;
-	m_pSections[1].uSectionSize = cb;
-	m_pSections[1].uSectionEntrySize = 1;  // Not applicable
+	auto sect1 = SectionInfo();
+	sect1.name = ".text";  // The text and data section
+	sect1.bCode = true;
+	sect1.bData = true;
+	sect1.uNativeAddr = 0;
+	sect1.uHostAddr = (char *)m_pImage;
+	sect1.uSectionSize = cb;
+	sect1.uSectionEntrySize = 1;  // Not applicable
+	sections.push_back(sect1);
 
-	m_pSections[2].name = "$RELOC";  // Special relocation section
-	//m_pSections[2].fSectionFlags = ST_RELOC;  // Give it a special flag
-	m_pSections[2].uNativeAddr = 0;  // Not applicable
-	m_pSections[2].uHostAddr = (char *)m_pRelocTable;
-	m_pSections[2].uSectionSize =  m_cReloc * sizeof *m_pRelocTable;
-	m_pSections[2].uSectionEntrySize = sizeof *m_pRelocTable;
+	auto sect2 = SectionInfo();
+	sect2.name = "$RELOC";  // Special relocation section
+	//sect2.fSectionFlags = ST_RELOC;  // Give it a special flag
+	sect2.uNativeAddr = 0;  // Not applicable
+	sect2.uHostAddr = (char *)m_pRelocTable;
+	sect2.uSectionSize =  m_cReloc * sizeof *m_pRelocTable;
+	sect2.uSectionEntrySize = sizeof *m_pRelocTable;
+	sections.push_back(sect2);
 
 	return true;
 }

@@ -99,7 +99,6 @@ Win32BinaryFile::Win32BinaryFile()
 
 Win32BinaryFile::~Win32BinaryFile()
 {
-	delete [] m_pSections;
 	delete [] base;
 }
 
@@ -405,10 +404,9 @@ Win32BinaryFile::load(std::istream &ifs)
 //printf("Image Base %08X, real base %p\n", LMMH(m_pPEHeader->Imagebase), base);
 
 	const PEObject *o = (PEObject *)(((char *)m_pPEHeader) + LH(&m_pPEHeader->NtHdrSize) + 24);
-	m_iNumSections = LH(&m_pPEHeader->numObjects);
-	m_pSections = new PESectionInfo[m_iNumSections];
-	for (int i = 0; i < m_iNumSections; ++i, ++o) {
-		auto &sect = m_pSections[i];
+	int numSections = LH(&m_pPEHeader->numObjects);
+	sections.reserve(numSections);
+	for (int i = 0; i < numSections; ++i, ++o) {
 		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", (char*)o->ObjectName, LMMH(o->RVA), LMMH(o->PhysicalOffset), LMMH(o->VirtualSize));
 
 		auto name = std::string(o->ObjectName, sizeof o->ObjectName);
@@ -416,6 +414,7 @@ Win32BinaryFile::load(std::istream &ifs)
 		if (len != name.npos)
 			name.erase(len);
 
+		auto sect = PESectionInfo();
 		sect.name = name;
 		sect.uNativeAddr = (ADDRESS)(LMMH(o->RVA) + LMMH(m_pPEHeader->Imagebase));
 		sect.uHostAddr = (char *)base + LMMH(o->RVA);
@@ -426,10 +425,12 @@ Win32BinaryFile::load(std::istream &ifs)
 		sect.bData     = (Flags & IMAGE_SCN_CNT_INITIALIZED_DATA)   != 0;
 		sect.bReadOnly = (Flags & IMAGE_SCN_MEM_WRITE)              == 0;
 		// TODO: Check for unreadable sections (!IMAGE_SCN_MEM_READ)?
+		sections.push_back(sect);
+
 		ifs.seekg(LMMH(o->PhysicalOffset));
 		memset(base + LMMH(o->RVA), 0, LMMH(o->VirtualSize));
 		ifs.read((char *)(base + LMMH(o->RVA)), LMMH(o->PhysicalSize));
-		s_sectionObjects[static_cast<const PESectionInfo *>(&sect)] = o;
+		s_sectionObjects[static_cast<const PESectionInfo *>(&sections.back())] = o;
 	}
 
 	// Add the Import Address Table entries to the symbol table

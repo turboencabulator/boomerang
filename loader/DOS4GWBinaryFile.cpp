@@ -31,7 +31,6 @@ DOS4GWBinaryFile::DOS4GWBinaryFile()
 
 DOS4GWBinaryFile::~DOS4GWBinaryFile()
 {
-	delete [] m_pSections;
 	delete    m_pLXHeader;
 	delete [] m_pLXObjects;
 	delete [] m_pLXPages;
@@ -220,11 +219,9 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	base = new unsigned char[m_cbImage];
 
-	m_iNumSections = m_pLXHeader->numobjsinmodule;
-	m_pSections = new SectionInfo[m_iNumSections];
-	for (unsigned n = 0; n < m_iNumSections; ++n) {
+	sections.reserve(m_pLXHeader->numobjsinmodule);
+	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
 		auto &obj = m_pLXObjects[n];
-		auto &sect = m_pSections[n];
 		if (obj.ObjectFlags & 0x40) {
 			printf("vsize %x reloc %x flags %x page %i npage %i\n",
 			       obj.VirtualSize,
@@ -233,15 +230,17 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			       obj.PageTblIdx,
 			       obj.NumPageTblEntries);
 
+			auto sect = SectionInfo();
 			sect.name = "seg" + std::to_string(n);  // no section names in LX
 			sect.uNativeAddr = (ADDRESS)obj.RelocBaseAddr;
 			sect.uHostAddr = (char *)(obj.RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr + base);
 			sect.uSectionSize = obj.VirtualSize;
-			DWord Flags = obj.ObjectFlags;
+			auto Flags = obj.ObjectFlags;
 			sect.bBss      = false; // TODO
 			sect.bCode     = (Flags & 0x4) != 0;
 			sect.bData     = (Flags & 0x4) == 0;
 			sect.bReadOnly = (Flags & 0x1) == 0;
+			sections.push_back(sect);
 
 			ifs.seekg(m_pLXHeader->datapagesoffset + (obj.PageTblIdx - 1) * m_pLXHeader->pagesize);
 			ifs.read(sect.uHostAddr, m_pLXHeader->pagesize * obj.NumPageTblEntries);

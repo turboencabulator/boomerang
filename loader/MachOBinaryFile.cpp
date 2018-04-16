@@ -133,7 +133,6 @@ MachOBinaryFile::MachOBinaryFile()
 
 MachOBinaryFile::~MachOBinaryFile()
 {
-	delete [] m_pSections;
 	delete [] base;
 }
 
@@ -373,36 +372,37 @@ MachOBinaryFile::load(std::istream &ifs)
 
 	base = new char[loaded_size];
 
-	m_iNumSections = segments.size();
-	m_pSections = new SectionInfo[m_iNumSections];
-
-	for (unsigned i = 0; i < m_iNumSections; ++i) {
-		ifs.seekg(segments[i].fileoff);
-		ADDRESS a = segments[i].vmaddr;
-		unsigned sz = segments[i].vmsize;
-		unsigned fsz = segments[i].filesize;
+	auto numSections = segments.size();
+	sections.reserve(numSections);
+	for (unsigned i = 0; i < numSections; ++i) {
+		auto &seg = segments[i];
+		ifs.seekg(seg.fileoff);
+		ADDRESS a = seg.vmaddr;
+		unsigned sz = seg.vmsize;
+		unsigned fsz = seg.filesize;
 		memset(&base[a - loaded_addr], 0, sz);
 		ifs.read(&base[a - loaded_addr], fsz);
 #ifdef DEBUG_MACHO_LOADER
 		fprintf(stderr, "loaded segment %x %i in mem %i in file\n", a, sz, fsz);
 #endif
 
-		auto name = std::string(segments[i].segname, sizeof segments[i].segname);
+		auto name = std::string(seg.segname, sizeof seg.segname);
 		auto len = name.find('\0');
 		if (len != name.npos)
 			name.erase(len);
 
-		auto &sect = m_pSections[i];
+		auto sect = SectionInfo();
 		sect.name = name;
 		sect.uNativeAddr = a;
 		sect.uHostAddr = &base[a - loaded_addr];
 		sect.uSectionSize = sz;
 
-		unsigned long l = segments[i].initprot;
+		auto l = seg.initprot;
 		sect.bBss      = false; // TODO
 		sect.bCode     =  (l & VM_PROT_EXECUTE) != 0;
 		sect.bData     =  (l & VM_PROT_READ)    != 0;
 		sect.bReadOnly = ~(l & VM_PROT_WRITE)   == 0;  // FIXME: This is always false.
+		sections.push_back(sect);
 	}
 
 	// process stubs_sects

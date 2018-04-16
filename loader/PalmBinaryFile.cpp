@@ -35,7 +35,6 @@ PalmBinaryFile::PalmBinaryFile()
 
 PalmBinaryFile::~PalmBinaryFile()
 {
-	delete [] m_pSections;
 	delete [] m_pImage;
 	delete [] m_pData;
 }
@@ -65,18 +64,18 @@ PalmBinaryFile::load(std::istream &ifs)
 	}
 
 	// Get the number of resource headers (one section per resource)
-	m_iNumSections = (m_pImage[0x4C] << 8) + m_pImage[0x4D];
+	int numSections = (m_pImage[0x4C] << 8) + m_pImage[0x4D];
 
 	// Allocate the section information
-	m_pSections = new SectionInfo[m_iNumSections];
+	sections.reserve(numSections);
 	SectionInfo *pData = nullptr;
 	const SectionInfo *pCode0 = nullptr;
 
 	// Iterate through the resource headers (generating section info structs)
 	unsigned char *p = m_pImage + 0x4E;          // First resource header
 	unsigned off = 0;
-	for (int i = 0; i < m_iNumSections; ++i) {
-		auto &sect = m_pSections[i];
+	for (int i = 0; i < numSections; ++i) {
+		auto sect = SectionInfo();
 
 		// First get the name (4 alpha)
 		// XXX:  Assumes no embedded NULs
@@ -88,17 +87,9 @@ PalmBinaryFile::load(std::istream &ifs)
 		p += 2;
 
 		// Decide if code or data
-		sect.bCode = name == "code";
+		// Note that code0 is a special case (not code)
+		sect.bCode = name == "code" && id != 0;
 		sect.bData = name == "data";
-
-		if (sect.bCode && id == 0) {
-			// Note that code0 is a special case (not code)
-			sect.bCode = false;
-			pCode0 = &sect;
-		}
-		if (sect.bData && id == 0) {
-			pData = &sect;
-		}
 
 		// Join the id to the name, e.g. code0, data12
 		sect.name = name + std::to_string(id);
@@ -110,13 +101,21 @@ PalmBinaryFile::load(std::istream &ifs)
 
 		// Guess the length
 		if (i > 0) {
-			m_pSections[i - 1].uSectionSize = off - m_pSections[i - 1].uNativeAddr;
+			sections.back().uSectionSize = off - sections.back().uNativeAddr;
 			sect.uSectionEntrySize = 1;        // No info available
+		}
+
+		sections.push_back(sect);
+		if (id == 0) {
+			if (name == "code")
+				pCode0 = &sections.back();
+			else if (name == "data")
+				pData = &sections.back();
 		}
 	}
 
 	// Set the length for the last section
-	m_pSections[m_iNumSections - 1].uSectionSize = size - off;
+	sections.back().uSectionSize = size - off;
 
 	// Create a separate, uncompressed, initialised data section
 	if (!pData) {
@@ -455,8 +454,8 @@ PalmBinaryFile::getMainEntryPoint()
 void
 PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
-	for (int i = 0; i < m_iNumSections; ++i) {
-		auto &sect = m_pSections[i];
+	for (int i = 0; i < sections.size(); ++i) {
+		auto &sect = sections[i];
 		if (sect.name.compare(0, 4, "code") != 0
 		 && sect.name.compare(0, 4, "data") != 0) {
 			// Save this section in a file
