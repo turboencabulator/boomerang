@@ -31,8 +31,6 @@ DOS4GWBinaryFile::DOS4GWBinaryFile()
 
 DOS4GWBinaryFile::~DOS4GWBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; ++i)
-		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete    m_pLXHeader;
 	delete [] m_pLXObjects;
@@ -235,9 +233,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			       obj.PageTblIdx,
 			       obj.NumPageTblEntries);
 
-			auto name = new char[9];
-			snprintf(name, sizeof (char[9]), "seg%i", n);  // no section names in LX
-			sect.pSectionName = name;
+			sect.name = "seg" + std::to_string(n);  // no section names in LX
 			sect.uNativeAddr = (ADDRESS)obj.RelocBaseAddr;
 			sect.uHostAddr = (char *)(obj.RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr + base);
 			sect.uSectionSize = obj.VirtualSize;

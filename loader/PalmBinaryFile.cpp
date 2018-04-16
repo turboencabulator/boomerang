@@ -22,7 +22,6 @@
 
 #include <cassert>
 #include <cstdio>
-#include <cstdlib>
 #include <cstring>
 
 // Macro to convert a pointer to a Big Endian integer into a host integer
@@ -36,8 +35,6 @@ PalmBinaryFile::PalmBinaryFile()
 
 PalmBinaryFile::~PalmBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; ++i)
-		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] m_pImage;
 	delete [] m_pData;
@@ -82,9 +79,8 @@ PalmBinaryFile::load(std::istream &ifs)
 		auto &sect = m_pSections[i];
 
 		// First get the name (4 alpha)
-		auto name = new char[10];
-		strncpy(name, (char *)p, 4);
-		name[4] = '\0';
+		// XXX:  Assumes no embedded NULs
+		auto name = std::string((char *)p, 4);
 		p += 4;
 
 		// Now get the identifier (2 byte binary)
@@ -92,8 +88,8 @@ PalmBinaryFile::load(std::istream &ifs)
 		p += 2;
 
 		// Decide if code or data
-		sect.bCode = strcmp(name, "code") == 0;
-		sect.bData = strcmp(name, "data") == 0;
+		sect.bCode = name == "code";
+		sect.bData = name == "data";
 
 		if (sect.bCode && id == 0) {
 			// Note that code0 is a special case (not code)
@@ -105,8 +101,7 @@ PalmBinaryFile::load(std::istream &ifs)
 		}
 
 		// Join the id to the name, e.g. code0, data12
-		snprintf(name + 4, 6, "%u", id);
-		sect.pSectionName = name;
+		sect.name = name + std::to_string(id);
 
 		off = UINT4(p);
 		p += 4;
@@ -461,23 +456,17 @@ void
 PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
 	for (int i = 0; i < m_iNumSections; ++i) {
-		SectionInfo *pSect = m_pSections + i;
-		if (strncmp(pSect->pSectionName, "code", 4) != 0
-		 && strncmp(pSect->pSectionName, "data", 4) != 0) {
+		auto &sect = m_pSections[i];
+		if (sect.name.compare(0, 4, "code") != 0
+		 && sect.name.compare(0, 4, "data") != 0) {
 			// Save this section in a file
-			// First construct the file name
-			char name[20];
-			strncpy(name, pSect->pSectionName, 4);
-			sprintf(name + 4, "%04x.bin", atoi(pSect->pSectionName + 4));
-			std::string fullName(path);
-			fullName += name;
-			// Create the file
-			FILE *f = fopen(fullName.c_str(), "w");
+			auto name = std::string(path + sect.name + ".bin");
+			FILE *f = fopen(name.c_str(), "w");
 			if (!f) {
-				fprintf(stderr, "Could not open %s for writing binary file\n", fullName.c_str());
+				fprintf(stderr, "Could not open %s for writing binary file\n", name.c_str());
 				return;
 			}
-			fwrite(pSect->uHostAddr, pSect->uSectionSize, 1, f);
+			fwrite(sect.uHostAddr, sect.uSectionSize, 1, f);
 			fclose(f);
 		}
 	}

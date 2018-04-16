@@ -22,12 +22,6 @@
 
 #include <iostream>
 
-#include <cstring>
-
-/**
- * This struct used to be initialised with a memset, but now that overwrites
- * the virtual table (if compiled under gcc and possibly others).
- */
 SectionInfo::SectionInfo() :
 	bCode(false),
 	bData(false),
@@ -65,7 +59,7 @@ int
 BinaryFile::getSectionIndexByName(const char *sName) const
 {
 	for (int i = 0; i < m_iNumSections; ++i) {
-		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
+		if (m_pSections[i].name == sName) {
 			return i;
 		}
 	}
@@ -107,7 +101,7 @@ const SectionInfo *
 BinaryFile::getSectionInfoByName(const char *sName) const
 {
 	for (int i = 0; i < m_iNumSections; ++i) {
-		if (strcmp(m_pSections[i].pSectionName, sName) == 0) {
+		if (m_pSections[i].name == sName) {
 			return &m_pSections[i];
 		}
 	}
@@ -329,7 +323,7 @@ BinaryFile::getTextLimits()
 			// decode it, and in Sparc ELF files, it's actually in the data
 			// segment (so it can be modified). For now, we make this ugly
 			// exception
-			if (strcmp(".plt", pSect->pSectionName) == 0)
+			if (pSect->name == ".plt")
 				continue;
 			if (pSect->uNativeAddr < limitTextLow)
 				limitTextLow = pSect->uNativeAddr;
@@ -341,7 +335,7 @@ BinaryFile::getTextLimits()
 			else {
 				if (textDelta != pSect->uHostAddr - (char *)pSect->uNativeAddr)
 					std::cerr << "warning: textDelta different for section "
-					          << pSect->pSectionName
+					          << pSect->name
 					          << " (ignoring).\n";
 			}
 		}

@@ -91,7 +91,7 @@ struct SectionInfo {
 	 */
 	virtual bool isAddressBss(ADDRESS a) const { return bBss != 0; }
 
-	const char *pSectionName = nullptr; ///< Name of section.
+	std::string name;                   ///< Name of section.
 	char       *uHostAddr = nullptr;    ///< Host or actual address of data.
 	ADDRESS     uNativeAddr = 0;        ///< Logical or native load address.
 	ADDRESS     uSectionSize = 0;       ///< Size of section in bytes.

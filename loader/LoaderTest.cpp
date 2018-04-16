@@ -56,12 +56,9 @@ LoaderTest::testSparcLoad()
 	CPPUNIT_ASSERT_EQUAL(29, n);
 
 	// Just use the first (real one) and last sections
-	const SectionInfo *si;
 	std::ostringstream actual;
-	si = bf->getSectionInfo(1);
-	actual << si->pSectionName << "\n";
-	si = bf->getSectionInfo(n - 1);
-	actual << si->pSectionName << "\n";
+	actual << bf->getSectionInfo(1)->name << "\n";
+	actual << bf->getSectionInfo(n - 1)->name << "\n";
 	std::string expected(".interp\n.stab.indexstr\n");
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 
@@ -81,12 +78,9 @@ LoaderTest::testPentiumLoad()
 	int n = bf->getNumSections();
 	CPPUNIT_ASSERT_EQUAL(34, n);
 
-	const SectionInfo *si;
 	std::ostringstream actual;
-	si = bf->getSectionInfo(1);
-	actual << si->pSectionName << "\n";
-	si = bf->getSectionInfo(n - 1);
-	actual << si->pSectionName << "\n";
+	actual << bf->getSectionInfo(1)->name << "\n";
+	actual << bf->getSectionInfo(n - 1)->name << "\n";
 	// (slightly different string to the sparc test, e.g. rel vs rela)
 	std::string expected(".interp\n.strtab\n");
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
@@ -107,11 +101,9 @@ LoaderTest::testHppaLoad()
 	int n = bf->getNumSections();
 	CPPUNIT_ASSERT_EQUAL(4, n);
 
-	const SectionInfo *si;
 	std::ostringstream actual;
 	for (int i = 0; i < n; ++i) {
-		si = bf->getSectionInfo(i);
-		actual << si->pSectionName << "\n";
+		actual << bf->getSectionInfo(i)->name << "\n";
 	}
 	std::string expected("$HEADER$\n$TEXT$\n$DATA$\n$BSS$\n");
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
@@ -132,11 +124,9 @@ LoaderTest::testPalmLoad()
 	int n = bf->getNumSections();
 	CPPUNIT_ASSERT_EQUAL(8, n);
 
-	const SectionInfo *si;
 	std::ostringstream actual;
 	for (int i = 0; i < n; ++i) {
-		si = bf->getSectionInfo(i);
-		actual << si->pSectionName << "\n";
+		actual << bf->getSectionInfo(i)->name << "\n";
 	}
 	std::string expected("code1\nMBAR1000\ntFRM1000\nTalt1001\n"
 	                     "data0\ncode0\ntAIN1000\ntver1000\n");
@@ -161,11 +151,9 @@ LoaderTest::testWinLoad()
 		CPPUNIT_ASSERT_EQUAL(5, n);
 
 		{
-			const SectionInfo *si;
 			std::ostringstream actual;
 			for (int i = 0; i < n; ++i) {
-				si = bf->getSectionInfo(i);
-				actual << si->pSectionName << "\n";
+				actual << bf->getSectionInfo(i)->name << "\n";
 			}
 			std::string expected(".text\n.rdata\n.data\n.rsrc\n.reloc\n");
 			CPPUNIT_ASSERT_EQUAL(expected, actual.str());

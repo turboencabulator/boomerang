@@ -198,7 +198,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	m_pSections = new SectionInfo[m_iNumSections];
 
 	// Section 0: header
-	m_pSections[0].pSectionName = "$HEADER$";
+	m_pSections[0].name = "$HEADER$";
 	m_pSections[0].uNativeAddr = 0;         // Not applicable
 	m_pSections[0].uHostAddr = (char *)m_pImage;
 	//m_pSections[0].uSectionSize = AUXHDR(4);
@@ -213,7 +213,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	m_pSections[0].bReadOnly = false;
 
 	// Section 1: text (code)
-	m_pSections[1].pSectionName = "$TEXT$";
+	m_pSections[1].name = "$TEXT$";
 	m_pSections[1].uNativeAddr = AUXHDR(3);
 	m_pSections[1].uHostAddr = (char *)m_pImage + AUXHDR(4);
 	m_pSections[1].uSectionSize = AUXHDR(2);
@@ -224,7 +224,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	m_pSections[1].bReadOnly = true;
 
 	// Section 2: initialised data
-	m_pSections[2].pSectionName = "$DATA$";
+	m_pSections[2].name = "$DATA$";
 	m_pSections[2].uNativeAddr = AUXHDR(6);
 	m_pSections[2].uHostAddr = (char *)m_pImage + AUXHDR(7);
 	m_pSections[2].uSectionSize = AUXHDR(5);
@@ -235,7 +235,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	m_pSections[2].bReadOnly = false;
 
 	// Section 3: BSS
-	m_pSections[3].pSectionName = "$BSS$";
+	m_pSections[3].name = "$BSS$";
 	// For now, assume that BSS starts at the end of the initialised data
 	m_pSections[3].uNativeAddr = AUXHDR(6) + AUXHDR(5);
 	m_pSections[3].uHostAddr = nullptr;     // Not applicable

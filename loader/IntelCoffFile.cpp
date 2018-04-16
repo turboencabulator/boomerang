@@ -112,22 +112,21 @@ IntelCoffFile::load(std::istream &ifs)
 		//assert(0 == psh[iSection].sch_virtaddr);
 		//assert(0 == psh[iSection].sch_physaddr);
 
-		auto sectname = new char[sizeof psh->sch_sectname + 1];
-		strncpy(sectname, psh[iSection].sch_sectname, sizeof psh->sch_sectname);
-		sectname[sizeof psh->sch_sectname] = '\0';
+		auto sectname = std::string(psh[iSection].sch_sectname, sizeof psh[iSection].sch_sectname);
+		auto len = sectname.find('\0');
+		if (len != sectname.npos)
+			sectname.erase(len);
 
-		int sidx = getSectionIndexByName(sectname);
-		if (-1 == sidx) {
+		int sidx = getSectionIndexByName(sectname.c_str());
+		if (sidx == -1) {
 			sidx = m_iNumSections;
 			auto &sect = addSection();
 
+			sect.name      = sectname;
 			sect.bCode     = 0 != (psh[iSection].sch_flags &   0x20);
 			sect.bData     = 0 != (psh[iSection].sch_flags &   0x40);
 			sect.bBss      = 0 != (psh[iSection].sch_flags &   0x80);
 			sect.bReadOnly = 0 != (psh[iSection].sch_flags & 0x1000);
-			sect.pSectionName = sectname;
-		} else {
-			delete [] sectname;
 		}
 
 		auto &sect = m_pSections[sidx];

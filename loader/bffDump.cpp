@@ -64,7 +64,7 @@ main(int argc, char *argv[])
 	for (int i = 0; i < bf->getNumSections(); ++i) {
 		const SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bCode) {
-			printf("  Code section: %s\n", pSect->pSectionName);
+			printf("  Code section: %s\n", pSect->name.c_str());
 			print_section(pSect);
 			printf("\n");
 		}
@@ -74,7 +74,7 @@ main(int argc, char *argv[])
 	for (int i = 0; i < bf->getNumSections(); ++i) {
 		const SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bData) {
-			printf("  Data section: %s\n", pSect->pSectionName);
+			printf("  Data section: %s\n", pSect->name.c_str());
 			print_section(pSect);
 			printf("\n");
 		}

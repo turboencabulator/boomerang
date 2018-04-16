@@ -133,8 +133,6 @@ MachOBinaryFile::MachOBinaryFile()
 
 MachOBinaryFile::~MachOBinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; ++i)
-		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] base;
 }
@@ -389,11 +387,13 @@ MachOBinaryFile::load(std::istream &ifs)
 		fprintf(stderr, "loaded segment %x %i in mem %i in file\n", a, sz, fsz);
 #endif
 
-		auto name = new char[17];
-		strncpy(name, segments[i].segname, 16);
-		name[16] = '\0';
+		auto name = std::string(segments[i].segname, sizeof segments[i].segname);
+		auto len = name.find('\0');
+		if (len != name.npos)
+			name.erase(len);
+
 		auto &sect = m_pSections[i];
-		sect.pSectionName = name;
+		sect.name = name;
 		sect.uNativeAddr = a;
 		sect.uHostAddr = &base[a - loaded_addr];
 		sect.uSectionSize = sz;

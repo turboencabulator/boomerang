@@ -154,14 +154,14 @@ ExeBinaryFile::load(std::istream &ifs)
 	m_iNumSections = 3;
 	m_pSections = new SectionInfo[m_iNumSections];
 
-	m_pSections[0].pSectionName = "$HEADER";  // Special header section
+	m_pSections[0].name = "$HEADER";  // Special header section
 	//m_pSections[0].fSectionFlags = ST_HEADER;
 	m_pSections[0].uNativeAddr = 0;  // Not applicable
 	m_pSections[0].uHostAddr = (char *)m_pHeader;
 	m_pSections[0].uSectionSize = sizeof *m_pHeader;
 	m_pSections[0].uSectionEntrySize = 1;  // Not applicable
 
-	m_pSections[1].pSectionName = ".text";  // The text and data section
+	m_pSections[1].name = ".text";  // The text and data section
 	m_pSections[1].bCode = true;
 	m_pSections[1].bData = true;
 	m_pSections[1].uNativeAddr = 0;
@@ -169,7 +169,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	m_pSections[1].uSectionSize = cb;
 	m_pSections[1].uSectionEntrySize = 1;  // Not applicable
 
-	m_pSections[2].pSectionName = "$RELOC";  // Special relocation section
+	m_pSections[2].name = "$RELOC";  // Special relocation section
 	//m_pSections[2].fSectionFlags = ST_RELOC;  // Give it a special flag
 	m_pSections[2].uNativeAddr = 0;  // Not applicable
 	m_pSections[2].uHostAddr = (char *)m_pRelocTable;

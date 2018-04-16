@@ -141,12 +141,12 @@ ElfBinaryFile::load(std::istream &ifs)
 			return false;
 		}
 		auto &sect = m_pSections[i];
-		sect.pSectionName = pName;
+		sect.name = pName;
 		if (int off = elfRead4(&pShdr->sh_offset))
 			sect.uHostAddr = m_pImage + off;
 		sect.uNativeAddr = elfRead4(&pShdr->sh_addr);
 		sect.uSectionSize = elfRead4(&pShdr->sh_size);
-		if (sect.uNativeAddr == 0 && strncmp(pName, ".rel", 4)) {
+		if (sect.uNativeAddr == 0 && sect.name.compare(0, 4, ".rel") != 0) {
 			int align = elfRead4(&pShdr->sh_addralign);
 			if (align > 1) {
 				if (arbitaryLoadAddr % align)
@@ -166,7 +166,7 @@ ElfBinaryFile::load(std::istream &ifs)
 		// Can't use the SHF_ALLOC bit to determine bss section; the bss section has SHF_ALLOC but also SHT_NOBITS.
 		// (But many other sections, such as .comment, also have SHT_NOBITS). So for now, just use the name
 		//if ((elfRead4(&pShdr->sh_flags) & SHF_ALLOC) == 0)
-		if (strcmp(pName, ".bss") == 0)
+		if (sect.name == ".bss")
 			sect.bBss = true;
 		if (elfRead4(&pShdr->sh_flags) & SHF_EXECINSTR) {
 			sect.bCode = true;
@@ -189,7 +189,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	// assign arbitary addresses to .rel.* sections too
 	for (int i = 0; i < m_iNumSections; ++i) {
 		auto &sect = m_pSections[i];
-		if (sect.uNativeAddr == 0 && !strncmp(sect.pSectionName, ".rel", 4)) {
+		if (sect.uNativeAddr == 0 && sect.name.compare(0, 4, ".rel") == 0) {
 			sect.uNativeAddr = arbitaryLoadAddr;
 			arbitaryLoadAddr += sect.uSectionSize;
 		}

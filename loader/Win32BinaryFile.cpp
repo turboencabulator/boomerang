@@ -99,8 +99,6 @@ Win32BinaryFile::Win32BinaryFile()
 
 Win32BinaryFile::~Win32BinaryFile()
 {
-	for (int i = 0; i < m_iNumSections; ++i)
-		delete [] m_pSections[i].pSectionName;
 	delete [] m_pSections;
 	delete [] base;
 }
@@ -409,18 +407,16 @@ Win32BinaryFile::load(std::istream &ifs)
 	const PEObject *o = (PEObject *)(((char *)m_pPEHeader) + LH(&m_pPEHeader->NtHdrSize) + 24);
 	m_iNumSections = LH(&m_pPEHeader->numObjects);
 	m_pSections = new PESectionInfo[m_iNumSections];
-	//SectionInfo *reloc = nullptr;
 	for (int i = 0; i < m_iNumSections; ++i, ++o) {
 		auto &sect = m_pSections[i];
 		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", (char*)o->ObjectName, LMMH(o->RVA), LMMH(o->PhysicalOffset), LMMH(o->VirtualSize));
-		auto name = new char[9];
-		strncpy(name, o->ObjectName, 8);
-		name[8] = '\0';
-		sect.pSectionName = name;
-#if 0
-		if (!strcmp(sect.pSectionName, ".reloc"))
-			reloc = &sect;
-#endif
+
+		auto name = std::string(o->ObjectName, sizeof o->ObjectName);
+		auto len = name.find('\0');
+		if (len != name.npos)
+			name.erase(len);
+
+		sect.name = name;
 		sect.uNativeAddr = (ADDRESS)(LMMH(o->RVA) + LMMH(m_pPEHeader->Imagebase));
 		sect.uHostAddr = (char *)base + LMMH(o->RVA);
 		sect.uSectionSize = LMMH(o->VirtualSize);
