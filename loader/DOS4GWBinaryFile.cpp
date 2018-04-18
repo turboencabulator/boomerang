@@ -407,14 +407,11 @@ DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 ADDRESS
 DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
-	// This is "looking up the wrong way" and hopefully is uncommon
-	// Use linear search
-	auto it = dlprocptrs.begin();
-	while (it != dlprocptrs.end()) {
-		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
-		if (it->second == pName)
-			return it->first;
-		++it;
+	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
+	for (auto &sym : dlprocptrs) {
+		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
+		if (sym.second == pName)
+			return sym.first;
 	}
 	return NO_ADDRESS;
 }

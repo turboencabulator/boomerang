@@ -520,14 +520,11 @@ MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 ADDRESS
 MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
-	// This is "looking up the wrong way" and hopefully is uncommon
-	// Use linear search
-	auto it = m_SymA.begin();
-	while (it != m_SymA.end()) {
-		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
-		if (it->second == pName)
-			return it->first;
-		++it;
+	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
+	for (auto &sym : m_SymA) {
+		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
+		if (sym.second == pName)
+			return sym.first;
 	}
 	return NO_ADDRESS;
 }

@@ -125,8 +125,7 @@ IntelCoffFile::load(std::istream &ifs)
 	printf("Loaded %d section headers\n", (int)m_Header.coff_sections);
 
 	ADDRESS a = 0x40000000;
-	for (int sidx = 0; sidx < sections.size(); ++sidx) {
-		auto &sect = sections[sidx];
+	for (auto &sect : sections) {
 		if (sect.uSectionSize > 0) {
 			auto pData = new char[sect.uSectionSize];
 			sect.uHostAddr = pData;
@@ -338,8 +337,10 @@ IntelCoffFile::isDynamicLinkedProc(ADDRESS uNative) const
 bool
 IntelCoffFile::isRelocationAt(ADDRESS uNative) const
 {
-	for (auto it = m_Relocations.begin(); it != m_Relocations.end(); ++it) {
-		if (*it == uNative) return true;
+	for (auto &reloc : m_Relocations) {
+		if (reloc == uNative) {
+			return true;
+		}
 	}
 	return false;
 }
@@ -353,10 +354,9 @@ IntelCoffFile::getSymbols() const
 unsigned char *
 IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
 {
-	for (int iSection = 0; iSection < getNumSections(); ++iSection) {
-		const SectionInfo *psi = getSectionInfo(iSection);
-		if (a >= psi->uNativeAddr && (a + range) < (psi->uNativeAddr + psi->uSectionSize)) {
-			return (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));
+	for (auto &sect : sections) {
+		if (a >= sect.uNativeAddr && (a + range) < (sect.uNativeAddr + sect.uSectionSize)) {
+			return (unsigned char *)(sect.uHostAddr + (a - sect.uNativeAddr));
 		}
 	}
 	return nullptr;
@@ -382,11 +382,10 @@ IntelCoffFile::readNative4(ADDRESS a) const
 {
 	return readNative(a, 4);
 #if 0
-	for (int iSection = 0; iSection < getNumSections(); ++iSection) {
-		const SectionInfo *psi = getSectionInfo(iSection);
-		if (a >= psi->uNativeAddr && (a + 3) < (psi->uNativeAddr + psi->uSectionSize)) {
+	for (auto &sect : sections) {
+		if (a >= sect.uNativeAddr && (a + 3) < (sect.uNativeAddr + sect.uSectionSize)) {
 			unsigned long tmp;
-			unsigned char *buf = (unsigned char *)(psi->uHostAddr + (a - psi->uNativeAddr));
+			unsigned char *buf = (unsigned char *)(sect.uHostAddr + (a - sect.uNativeAddr));
 			tmp = *buf++;
 			tmp += (unsigned long)*buf++ * 256;
 			tmp += (unsigned long)*buf++ * 256 * 256;

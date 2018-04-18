@@ -20,6 +20,7 @@
 
 #include "Win32BinaryFile.h"
 
+#include <algorithm>
 #include <iostream>
 #include <sstream>
 
@@ -446,9 +447,7 @@ Win32BinaryFile::load(std::istream &ifs)
 				if (iatEntry >> 31) {
 					// This is an ordinal number (stupid idea)
 					std::string nodots(dllName);
-					for (auto it = nodots.begin(); it != nodots.end(); ++it)
-						if (*it == '.')
-							*it = '_';  // Dots can't be in identifiers
+					std::replace(nodots.begin(), nodots.end(), '.', '_');  // Dots can't be in identifiers
 					std::ostringstream ost;
 					ost << nodots << "_" << (iatEntry & 0x7FFFFFFF);
 					dlprocptrs[paddr] = ost.str();
@@ -569,10 +568,10 @@ ADDRESS
 Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
-	for (auto it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it) {
-		// std::cerr << "Symbol: " << it->second.c_str() << " at 0x" << std::hex << it->first << "\n";
-		if (it->second == pName)
-			return it->first;
+	for (auto &sym : dlprocptrs) {
+		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
+		if (sym.second == pName)
+			return sym.first;
 	}
 	return NO_ADDRESS;
 }
@@ -875,8 +874,8 @@ void
 Win32BinaryFile::dumpSymbols() const
 {
 	std::cerr << std::hex;
-	for (auto it = dlprocptrs.begin(); it != dlprocptrs.end(); ++it)
-		std::cerr << "0x" << it->first << " " << it->second << "        ";
+	for (auto &sym : dlprocptrs)
+		std::cerr << "0x" << sym.first << " " << sym.second << "        ";
 	std::cerr << std::dec << "\n";
 }
 #endif

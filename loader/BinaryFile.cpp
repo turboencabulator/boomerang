@@ -84,8 +84,7 @@ BinaryFile::getSectionInfo(int idx) const
 const SectionInfo *
 BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
-	for (int i = 0; i < sections.size(); ++i) {
-		auto &sect = sections[i];
+	for (auto &sect : sections) {
 		if ((uEntry >= sect.uNativeAddr)
 		 && (uEntry <  sect.uNativeAddr + sect.uSectionSize)) {
 			return &sect;
@@ -100,8 +99,7 @@ BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 const SectionInfo *
 BinaryFile::getSectionInfoByName(const char *sName) const
 {
-	for (int i = 0; i < sections.size(); ++i) {
-		auto &sect = sections[i];
+	for (auto &sect : sections) {
 		if (sect.name == sName) {
 			return &sect;
 		}
@@ -313,32 +311,28 @@ BinaryFile::getImportStubs(int &numImports)
 void
 BinaryFile::getTextLimits()
 {
-	int n = getNumSections();
 	limitTextLow = 0xFFFFFFFF;
 	limitTextHigh = 0;
 	textDelta = 0;
-	for (int i = 0; i < n; ++i) {
-		const SectionInfo *pSect = getSectionInfo(i);
-		if (pSect->bCode) {
+	for (auto &sect : sections) {
+		if (sect.bCode) {
 			// The .plt section is an anomaly. It's code, but we never want to
 			// decode it, and in Sparc ELF files, it's actually in the data
 			// segment (so it can be modified). For now, we make this ugly
 			// exception
-			if (pSect->name == ".plt")
+			if (sect.name == ".plt")
 				continue;
-			if (pSect->uNativeAddr < limitTextLow)
-				limitTextLow = pSect->uNativeAddr;
-			ADDRESS hiAddress = pSect->uNativeAddr + pSect->uSectionSize;
-			if (hiAddress > limitTextHigh)
+			if (limitTextLow > sect.uNativeAddr)
+				limitTextLow = sect.uNativeAddr;
+			ADDRESS hiAddress = sect.uNativeAddr + sect.uSectionSize;
+			if (limitTextHigh < hiAddress)
 				limitTextHigh = hiAddress;
 			if (textDelta == 0)
-				textDelta = pSect->uHostAddr - (char *)pSect->uNativeAddr;
-			else {
-				if (textDelta != pSect->uHostAddr - (char *)pSect->uNativeAddr)
-					std::cerr << "warning: textDelta different for section "
-					          << pSect->name
-					          << " (ignoring).\n";
-			}
+				textDelta = sect.uHostAddr - (char *)sect.uNativeAddr;
+			else if (textDelta != sect.uHostAddr - (char *)sect.uNativeAddr)
+				std::cerr << "warning: textDelta different for section "
+				          << sect.name
+				          << " (ignoring).\n";
 		}
 	}
 }

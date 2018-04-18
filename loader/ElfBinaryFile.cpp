@@ -187,8 +187,7 @@ ElfBinaryFile::load(std::istream &ifs)
 	}  // for each section
 
 	// assign arbitary addresses to .rel.* sections too
-	for (int i = 0; i < sections.size(); ++i) {
-		auto &sect = sections[i];
+	for (auto &sect : sections) {
 		if (sect.uNativeAddr == 0 && sect.name.compare(0, 4, ".rel") == 0) {
 			sect.uNativeAddr = arbitaryLoadAddr;
 			arbitaryLoadAddr += sect.uSectionSize;
@@ -1297,8 +1296,8 @@ void
 ElfBinaryFile::dumpSymbols() const
 {
 	std::cerr << std::hex;
-	for (auto it = m_SymTab.begin(); it != m_SymTab.end(); ++it)
-		std::cerr << "0x" << it->first << " " << it->second << "        ";
+	for (auto &sym : m_SymTab)
+		std::cerr << "0x" << sym.first << " " << sym.second << "        ";
 	std::cerr << std::dec << "\n";
 }
 #endif
