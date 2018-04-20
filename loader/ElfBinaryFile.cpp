@@ -955,7 +955,7 @@ int
 ElfBinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) si = getSectionInfo(0);
+	if (!si) return 0;
 	return si->uHostAddr[nat - si->uNativeAddr];
 }
 

@@ -611,7 +611,7 @@ int
 Win32BinaryFile::readNative1(ADDRESS nat) const
 {
 	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return -1;
+	if (!si) return 0;
 	return si->uHostAddr[nat - si->uNativeAddr];
 }
 
