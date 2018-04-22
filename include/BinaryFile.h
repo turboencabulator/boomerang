@@ -219,17 +219,20 @@ public:
 	        ptrdiff_t   getTextDelta() const { return textDelta; }
 
 
-	virtual int         readNative1(ADDRESS a) const;
-	virtual int         readNative2(ADDRESS a) const;
-	virtual int         readNative4(ADDRESS a) const;
-	virtual QWord       readNative8(ADDRESS a) const;
-	virtual float       readNativeFloat4(ADDRESS a) const;
-	virtual double      readNativeFloat8(ADDRESS a) const;
+	        int         readNative1(ADDRESS a) const;
+	        int         readNative2(ADDRESS a) const;
+	        int         readNative4(ADDRESS a) const;
+	        QWord       readNative8(ADDRESS a) const;
+	        float       readNativeFloat4(ADDRESS a) const;
+	        double      readNativeFloat8(ADDRESS a) const;
 
 	/**
 	 * \name Section functions
 	 * \{
 	 */
+protected:
+	        char       *getSectionData(ADDRESS a, ADDRESS range) const;
+public:
 	        int         getNumSections() const;
 	        int         getSectionIndexByName(const char *sName) const;
 	        const SectionInfo *getSectionInfo(int idx) const;
@@ -311,6 +314,7 @@ protected:
 
 	        const char *m_pFilename = nullptr;   ///< Input file name.
 	        bool        m_bArchive;              ///< True if archive member.
+	        bool        bigendian = false;       ///< Section data in big-endian byte order?
 	        std::vector<SectionInfo> sections;   ///< The section info.
 	        ADDRESS     m_uInitPC;               ///< Initial program counter.
 	        ADDRESS     m_uInitSP;               ///< Initial stack pointer.

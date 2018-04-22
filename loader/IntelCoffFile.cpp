@@ -70,6 +70,7 @@ struct __attribute__((packed)) struct_coff_rel {
 
 IntelCoffFile::IntelCoffFile()
 {
+	bigendian = false;
 }
 
 IntelCoffFile::~IntelCoffFile()
@@ -349,64 +350,6 @@ const std::map<ADDRESS, std::string> &
 IntelCoffFile::getSymbols() const
 {
 	return m_Symbols.getAll();
-}
-
-unsigned char *
-IntelCoffFile::getAddrPtr(ADDRESS a, ADDRESS range) const
-{
-	for (auto &sect : sections) {
-		if (a >= sect.uNativeAddr && (a + range) < (sect.uNativeAddr + sect.uSectionSize)) {
-			return (unsigned char *)(sect.uHostAddr + (a - sect.uNativeAddr));
-		}
-	}
-	return nullptr;
-}
-
-int
-IntelCoffFile::readNative(ADDRESS a, unsigned short n) const
-{
-	unsigned char *buf = getAddrPtr(a, (ADDRESS)n);
-	if (!a) return 0;
-
-	unsigned long tmp = 0;
-	unsigned long mult = 1;
-	for (unsigned short o = 0; o < n; ++o) {
-		tmp += (unsigned long)(*buf++) * mult;
-		mult *= 256;
-	}
-	return tmp;
-}
-
-int
-IntelCoffFile::readNative4(ADDRESS a) const
-{
-	return readNative(a, 4);
-#if 0
-	for (auto &sect : sections) {
-		if (a >= sect.uNativeAddr && (a + 3) < (sect.uNativeAddr + sect.uSectionSize)) {
-			unsigned long tmp;
-			unsigned char *buf = (unsigned char *)(sect.uHostAddr + (a - sect.uNativeAddr));
-			tmp = *buf++;
-			tmp += (unsigned long)*buf++ * 256;
-			tmp += (unsigned long)*buf++ * 256 * 256;
-			tmp += (unsigned long)*buf++ * 256 * 256 * 256;
-			return (int)tmp;
-		}
-	}
-	return 0;
-#endif
-}
-
-int
-IntelCoffFile::readNative2(ADDRESS a) const
-{
-	return readNative(a, 2);
-}
-
-int
-IntelCoffFile::readNative1(ADDRESS a) const
-{
-	return readNative(a, 1);
 }
 
 #ifdef DYNAMIC

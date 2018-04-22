@@ -125,17 +125,6 @@ public:
 	ADDRESS     getImageBase() const override;
 	size_t      getImageSize() const override;
 
-private:
-	int         dos4gwRead2(const short *ps) const;
-	int         dos4gwRead4(const int *pi) const;
-public:
-	int         readNative1(ADDRESS a) const override;
-	int         readNative2(ADDRESS a) const override;
-	int         readNative4(ADDRESS a) const override;
-	QWord       readNative8(ADDRESS a) const override;
-	float       readNativeFloat4(ADDRESS a) const override;
-	double      readNativeFloat8(ADDRESS a) const override;
-
 	/**
 	 * \name Symbol table functions
 	 * \{

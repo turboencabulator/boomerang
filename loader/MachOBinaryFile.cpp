@@ -129,6 +129,7 @@ struct objc_module {
 
 MachOBinaryFile::MachOBinaryFile()
 {
+	bigendian = true;
 }
 
 MachOBinaryFile::~MachOBinaryFile()
@@ -535,31 +536,6 @@ MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 	m_SymA[uNative] = pName;
 }
 
-/**
- * \brief Read 2 bytes from native addr.
- */
-int
-MachOBinaryFile::machORead2(const short *ps) const
-{
-	const unsigned char *p = (const unsigned char *)ps;
-	// Big endian
-	int n = (int)(p[1] + (p[0] << 8));
-	return n;
-}
-
-/**
- * \brief Read 4 bytes from native addr.
- */
-int
-MachOBinaryFile::machORead4(const int *pi) const
-{
-	const short *p = (const short *)pi;
-	int n1 = machORead2(p);
-	int n2 = machORead2(p + 1);
-	int n = (int)(n2 | (n1 << 16));
-	return n;
-}
-
 unsigned int
 MachOBinaryFile::BMMH(const void *x) const
 {
@@ -579,72 +555,6 @@ MachOBinaryFile::BMMHW(unsigned short x) const
 {
 	if (swap_bytes) return _BMMHW(x);
 	else return x;
-}
-
-int
-MachOBinaryFile::readNative1(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return si->uHostAddr[nat - si->uNativeAddr];
-}
-
-int
-MachOBinaryFile::readNative2(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return machORead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-int
-MachOBinaryFile::readNative4(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return machORead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-QWord
-MachOBinaryFile::readNative8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	// Source and host are different endianness
-	raw[1] = readNative4(nat);
-	raw[0] = readNative4(nat + 4);
-#else
-	// Source and host are same endianness
-	raw[0] = readNative4(nat);
-	raw[1] = readNative4(nat + 4);
-#endif
-	return *(QWord *)raw;
-}
-
-float
-MachOBinaryFile::readNativeFloat4(ADDRESS nat) const
-{
-	int raw = readNative4(nat);
-	// Ugh! gcc says that reinterpreting from int to float is invalid!!
-	//return reinterpret_cast<float>(raw);  // Note: cast, not convert!!
-	return *(float *)&raw;  // Note: cast, not convert
-}
-
-double
-MachOBinaryFile::readNativeFloat8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	// Source and host are different endianness
-	raw[1] = readNative4(nat);
-	raw[0] = readNative4(nat + 4);
-#else
-	// Source and host are same endianness
-	raw[0] = readNative4(nat);
-	raw[1] = readNative4(nat + 4);
-#endif
-	//return reinterpret_cast<double>(*raw);  // Note: cast, not convert!!
-	return *(double *)raw;
 }
 
 // FIXME:  Should this be isDynamicLinkedProcPointer() instead?

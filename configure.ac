@@ -87,7 +87,7 @@ PKG_CHECK_MODULES([CPPUNIT],[cppunit],
 #AC_CHECK_HEADERS(fcntl.h malloc.h sys/time.h unistd.h byteswap.h)
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_C_BIGENDIAN
+#AC_C_BIGENDIAN
 
 # Checks for library functions.
 #AC_CHECK_FUNCS(mkdir rmdir)

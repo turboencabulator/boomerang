@@ -188,12 +188,6 @@ private:
 	void        elfWrite4(int *pi, int val);
 	const char *NativeToHostAddress(ADDRESS uNative) const;
 public:
-	int         readNative1(ADDRESS a) const override;
-	int         readNative2(ADDRESS a) const override;
-	int         readNative4(ADDRESS a) const override;
-	QWord       readNative8(ADDRESS a) const override;
-	float       readNativeFloat4(ADDRESS a) const override;
-	double      readNativeFloat8(ADDRESS a) const override;
 
 	/**
 	 * \name Symbol table functions
@@ -273,7 +267,6 @@ private:
 	const Elf32_Phdr *m_pPhdrs = nullptr;   ///< Pointer to program headers.
 	const Elf32_Shdr *m_pShdrs = nullptr;   ///< Array of section header structs.
 	const char *m_pStrings = nullptr;       ///< Pointer to the string section.
-	char        m_elfEndianness;            ///< 1 = Big Endian.
 
 	/**
 	 * \brief Map from address to symbol name.

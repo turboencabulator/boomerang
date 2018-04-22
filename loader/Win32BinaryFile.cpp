@@ -96,6 +96,7 @@ static_assert(sizeof (SectionInfo) == sizeof (PESectionInfo), "PESectionInfo siz
 
 Win32BinaryFile::Win32BinaryFile()
 {
+	bigendian = false;
 }
 
 Win32BinaryFile::~Win32BinaryFile()
@@ -580,97 +581,6 @@ void
 Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	dlprocptrs[uNative] = pName;
-}
-
-/**
- * \brief Read 2 bytes from native addr.
- */
-int
-Win32BinaryFile::win32Read2(const short *ps) const
-{
-	const unsigned char *p = (const unsigned char *)ps;
-	// Little endian
-	int n = (int)(p[0] + (p[1] << 8));
-	return n;
-}
-
-/**
- * \brief Read 4 bytes from native addr.
- */
-int
-Win32BinaryFile::win32Read4(const int *pi) const
-{
-	const short *p = (const short *)pi;
-	int n1 = win32Read2(p);
-	int n2 = win32Read2(p + 1);
-	int n = (int)(n1 | (n2 << 16));
-	return n;
-}
-
-int
-Win32BinaryFile::readNative1(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return si->uHostAddr[nat - si->uNativeAddr];
-}
-
-int
-Win32BinaryFile::readNative2(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return win32Read2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-int
-Win32BinaryFile::readNative4(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return win32Read4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-QWord
-Win32BinaryFile::readNative8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	// Source and host are different endianness
-	raw[1] = readNative4(nat);
-	raw[0] = readNative4(nat + 4);
-#else
-	// Source and host are same endianness
-	raw[0] = readNative4(nat);
-	raw[1] = readNative4(nat + 4);
-#endif
-	return *(QWord *)raw;
-}
-
-float
-Win32BinaryFile::readNativeFloat4(ADDRESS nat) const
-{
-	int raw = readNative4(nat);
-	// Ugh! gcc says that reinterpreting from int to float is invalid!!
-	//return reinterpret_cast<float>(raw);  // Note: cast, not convert!!
-	return *(float *)&raw;  // Note: cast, not convert
-}
-
-double
-Win32BinaryFile::readNativeFloat8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	// Source and host are different endianness
-	raw[1] = readNative4(nat);
-	raw[0] = readNative4(nat + 4);
-#else
-	// Source and host are same endianness
-	raw[0] = readNative4(nat);
-	raw[1] = readNative4(nat + 4);
-#endif
-	//return reinterpret_cast<double>(*raw);  // Note: cast, not convert!!
-	return *(double *)raw;
 }
 
 bool

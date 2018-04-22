@@ -36,18 +36,10 @@ public:
 	size_t      getImageSize() const override;
 
 private:
-	int         machORead2(const short *ps) const;
-	int         machORead4(const int *pi) const;
 	unsigned int   BMMH(const void *x) const;
 	uint32_t       BMMH(uint32_t x) const;
 	unsigned short BMMHW(unsigned short x) const;
 public:
-	int         readNative1(ADDRESS a) const override;
-	int         readNative2(ADDRESS a) const override;
-	int         readNative4(ADDRESS a) const override;
-	QWord       readNative8(ADDRESS a) const override;
-	float       readNativeFloat4(ADDRESS a) const override;
-	double      readNativeFloat8(ADDRESS a) const override;
 
 	/**
 	 * \name Symbol table functions

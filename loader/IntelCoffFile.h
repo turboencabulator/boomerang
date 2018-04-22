@@ -41,14 +41,6 @@ public:
 	ADDRESS     getImageBase() const override;
 	size_t      getImageSize() const override;
 
-private:
-	unsigned char *getAddrPtr(ADDRESS a, ADDRESS range) const;
-	int         readNative(ADDRESS a, unsigned short n) const;
-public:
-	int         readNative1(ADDRESS a) const override;
-	int         readNative2(ADDRESS a) const override;
-	int         readNative4(ADDRESS a) const override;
-
 	/**
 	 * \name Symbol table functions
 	 * \{

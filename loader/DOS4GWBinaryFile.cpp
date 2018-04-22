@@ -27,6 +27,7 @@ extern "C" size_t microX86Dis(const unsigned char *p);  // From microX86dis.c
 
 DOS4GWBinaryFile::DOS4GWBinaryFile()
 {
+	bigendian = false;
 }
 
 DOS4GWBinaryFile::~DOS4GWBinaryFile()
@@ -330,97 +331,6 @@ void
 DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 {
 	dlprocptrs[uNative] = pName;
-}
-
-/**
- * \brief Read 2 bytes from native addr.
- */
-int
-DOS4GWBinaryFile::dos4gwRead2(const short *ps) const
-{
-	const unsigned char *p = (const unsigned char *)ps;
-	// Little endian
-	int n = (int)(p[0] + (p[1] << 8));
-	return n;
-}
-
-/**
- * \brief Read 4 bytes from native addr.
- */
-int
-DOS4GWBinaryFile::dos4gwRead4(const int *pi) const
-{
-	const short *p = (const short *)pi;
-	int n1 = dos4gwRead2(p);
-	int n2 = dos4gwRead2(p + 1);
-	int n = (int)(n1 | (n2 << 16));
-	return n;
-}
-
-int
-DOS4GWBinaryFile::readNative1(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return si->uHostAddr[nat - si->uNativeAddr];
-}
-
-int
-DOS4GWBinaryFile::readNative2(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return dos4gwRead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-int
-DOS4GWBinaryFile::readNative4(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return dos4gwRead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-QWord
-DOS4GWBinaryFile::readNative8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	// Source and host are different endianness
-	raw[1] = readNative4(nat);
-	raw[0] = readNative4(nat + 4);
-#else
-	// Source and host are same endianness
-	raw[0] = readNative4(nat);
-	raw[1] = readNative4(nat + 4);
-#endif
-	return *(QWord *)raw;
-}
-
-float
-DOS4GWBinaryFile::readNativeFloat4(ADDRESS nat) const
-{
-	int raw = readNative4(nat);
-	// Ugh! gcc says that reinterpreting from int to float is invalid!!
-	//return reinterpret_cast<float>(raw);  // Note: cast, not convert!!
-	return *(float *)&raw;  // Note: cast, not convert
-}
-
-double
-DOS4GWBinaryFile::readNativeFloat8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	// Source and host are different endianness
-	raw[1] = readNative4(nat);
-	raw[0] = readNative4(nat + 4);
-#else
-	// Source and host are same endianness
-	raw[0] = readNative4(nat);
-	raw[1] = readNative4(nat + 4);
-#endif
-	//return reinterpret_cast<double>(*raw);  // Note: cast, not convert!!
-	return *(double *)raw;
 }
 
 bool

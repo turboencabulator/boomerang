@@ -22,6 +22,8 @@
 
 #include <iostream>
 
+#include <cstdint>
+
 SectionInfo::SectionInfo() :
 	bCode(false),
 	bData(false),
@@ -85,8 +87,8 @@ const SectionInfo *
 BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
 	for (auto &sect : sections) {
-		if ((uEntry >= sect.uNativeAddr)
-		 && (uEntry <  sect.uNativeAddr + sect.uSectionSize)) {
+		if (uEntry >= sect.uNativeAddr
+		 && (uEntry - sect.uNativeAddr) < sect.uSectionSize) {
 			return &sect;
 		}
 	}
@@ -117,10 +119,18 @@ BinaryFile::isReadOnly(ADDRESS uEntry) const
 	return p && p->bReadOnly;
 }
 
-///////////////////////
-// Trivial functions //
-// Overridden if reqd//
-///////////////////////
+char *
+BinaryFile::getSectionData(ADDRESS a, ADDRESS range) const
+{
+	for (auto &sect : sections) {
+		if (a >= sect.uNativeAddr
+		 && (a - sect.uNativeAddr) < sect.uSectionSize
+		 && range <= sect.uSectionSize - (a - sect.uNativeAddr)) {
+			return sect.uHostAddr + (a - sect.uNativeAddr);
+		}
+	}
+	return nullptr;
+}
 
 /**
  * \brief Read 1 byte from given native address a; considers endianness.
@@ -128,7 +138,9 @@ BinaryFile::isReadOnly(ADDRESS uEntry) const
 int
 BinaryFile::readNative1(ADDRESS a) const
 {
-	return 0;
+	auto data = (unsigned char *)getSectionData(a, 1);
+	if (!data) return 0;
+	return *data;
 }
 
 /**
@@ -137,7 +149,17 @@ BinaryFile::readNative1(ADDRESS a) const
 int
 BinaryFile::readNative2(ADDRESS a) const
 {
-	return 0;
+	auto data = (unsigned char *)getSectionData(a, 2);
+	if (!data) return 0;
+
+	uint16_t raw = 0;
+	if (bigendian)
+		for (int i = 0; i < 2; ++i)
+			raw = (raw << 8) | data[i];
+	else
+		for (int i = 1; i >= 0; --i)
+			raw = (raw << 8) | data[i];
+	return raw;
 }
 
 /**
@@ -146,7 +168,17 @@ BinaryFile::readNative2(ADDRESS a) const
 int
 BinaryFile::readNative4(ADDRESS a) const
 {
-	return 0;
+	auto data = (unsigned char *)getSectionData(a, 4);
+	if (!data) return 0;
+
+	uint32_t raw = 0;
+	if (bigendian)
+		for (int i = 0; i < 4; ++i)
+			raw = (raw << 8) | data[i];
+	else
+		for (int i = 3; i >= 0; --i)
+			raw = (raw << 8) | data[i];
+	return raw;
 }
 
 /**
@@ -155,7 +187,17 @@ BinaryFile::readNative4(ADDRESS a) const
 QWord
 BinaryFile::readNative8(ADDRESS a) const
 {
-	return 0;
+	auto data = (unsigned char *)getSectionData(a, 8);
+	if (!data) return 0;
+
+	uint64_t raw = 0;
+	if (bigendian)
+		for (int i = 0; i < 8; ++i)
+			raw = (raw << 8) | data[i];
+	else
+		for (int i = 7; i >= 0; --i)
+			raw = (raw << 8) | data[i];
+	return raw;
 }
 
 /**
@@ -164,7 +206,20 @@ BinaryFile::readNative8(ADDRESS a) const
 float
 BinaryFile::readNativeFloat4(ADDRESS a) const
 {
-	return 0.;
+	auto data = (unsigned char *)getSectionData(a, 4);
+	if (!data) return 0.0f;
+
+	uint32_t raw = 0;
+	if (bigendian)
+		for (int i = 0; i < 4; ++i)
+			raw = (raw << 8) | data[i];
+	else
+		for (int i = 3; i >= 0; --i)
+			raw = (raw << 8) | data[i];
+
+	union { uint32_t i; float f; } u;
+	u.i = raw;
+	return u.f;
 }
 
 /**
@@ -173,7 +228,20 @@ BinaryFile::readNativeFloat4(ADDRESS a) const
 double
 BinaryFile::readNativeFloat8(ADDRESS a) const
 {
-	return 0.;
+	auto data = (unsigned char *)getSectionData(a, 8);
+	if (!data) return 0.0;
+
+	uint64_t raw = 0;
+	if (bigendian)
+		for (int i = 0; i < 8; ++i)
+			raw = (raw << 8) | data[i];
+	else
+		for (int i = 7; i >= 0; --i)
+			raw = (raw << 8) | data[i];
+
+	union { uint64_t i; double f; } u;
+	u.i = raw;
+	return u.f;
 }
 
 /**

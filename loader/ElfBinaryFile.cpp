@@ -98,7 +98,7 @@ ElfBinaryFile::load(std::istream &ifs)
 		return false;
 	}
 	// Needed for elfRead4 to work:
-	m_elfEndianness = pHeader->endianness - 1;
+	bigendian = pHeader->endianness - 1;
 
 	// Set up program header pointer (in case needed)
 	if (int i = elfRead4(&pHeader->e_phoff))
@@ -888,8 +888,7 @@ ElfBinaryFile::getDynamicGlobalMap()
  *
  * Read a 2 byte quantity from host address (C pointer) p.
  *
- * \note Takes care of reading the correct endianness, set early on into
- * m_elfEndianness.
+ * \note Takes care of reading the correct endianness.
  *
  * \param ps  Host pointer to the data.
  *
@@ -899,11 +898,9 @@ int
 ElfBinaryFile::elfRead2(const short *ps) const
 {
 	const unsigned char *p = (const unsigned char *)ps;
-	if (m_elfEndianness) {
-		// Big endian
+	if (bigendian) {
 		return (int)((p[0] << 8) + p[1]);
 	} else {
-		// Little endian
 		return (int)(p[0] + (p[1] << 8));
 	}
 }
@@ -913,8 +910,7 @@ ElfBinaryFile::elfRead2(const short *ps) const
  *
  * Read a 4 byte quantity from host address (C pointer) p
  *
- * \note Takes care of reading the correct endianness, set early on into
- * m_elfEndianness.
+ * \note Takes care of reading the correct endianness.
  *
  * \param pi  Host pointer to the data.
  *
@@ -924,7 +920,7 @@ int
 ElfBinaryFile::elfRead4(const int *pi) const
 {
 	const short *p = (const short *)pi;
-	if (m_elfEndianness) {
+	if (bigendian) {
 		return (int)((elfRead2(p) << 16) + elfRead2(p + 1));
 	} else
 		return (int)(elfRead2(p) + (elfRead2(p + 1) << 16));
@@ -937,8 +933,7 @@ void
 ElfBinaryFile::elfWrite4(int *pi, int val)
 {
 	char *p = (char *)pi;
-	if (m_elfEndianness) {
-		// Big endian
+	if (bigendian) {
 		*p++ = (char)(val >> 24);
 		*p++ = (char)(val >> 16);
 		*p++ = (char)(val >>  8);
@@ -951,30 +946,6 @@ ElfBinaryFile::elfWrite4(int *pi, int val)
 	}
 }
 
-int
-ElfBinaryFile::readNative1(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return si->uHostAddr[nat - si->uNativeAddr];
-}
-
-int
-ElfBinaryFile::readNative2(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return elfRead2((const short *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
-int
-ElfBinaryFile::readNative4(ADDRESS nat) const
-{
-	const SectionInfo *si = getSectionInfoByAddr(nat);
-	if (!si) return 0;
-	return elfRead4((const int *)&si->uHostAddr[nat - si->uNativeAddr]);
-}
-
 #if 0 // Cruft?
 void
 ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
@@ -982,7 +953,7 @@ ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 	const SectionInfo *si = getSectionInfoByAddr(nat);
 	if (!si) return;
 	char *host = &si->uHostAddr[nat - si->uNativeAddr];
-	if (m_elfEndianness) {
+	if (bigendian) {
 		*(unsigned char *)host       = (n >> 24) & 0xff;
 		*(unsigned char *)(host + 1) = (n >> 16) & 0xff;
 		*(unsigned char *)(host + 2) = (n >>  8) & 0xff;
@@ -995,57 +966,6 @@ ElfBinaryFile::writeNative4(ADDRESS nat, unsigned int n)
 	}
 }
 #endif
-
-QWord
-ElfBinaryFile::readNative8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	if (m_elfEndianness) {  // This tests the source machine
-#else
-	if (!m_elfEndianness) {
-#endif  // Balance }
-		// Source and host are same endianness
-		raw[0] = readNative4(nat);
-		raw[1] = readNative4(nat + 4);
-	} else {
-		// Source and host are different endianness
-		raw[1] = readNative4(nat);
-		raw[0] = readNative4(nat + 4);
-	}
-	//return reinterpret_cast<long long>(*raw);  // Note: cast, not convert!!
-	return *(QWord *)raw;
-}
-
-float
-ElfBinaryFile::readNativeFloat4(ADDRESS nat) const
-{
-	int raw = readNative4(nat);
-	// Ugh! gcc says that reinterpreting from int to float is invalid!!
-	//return reinterpret_cast<float>(raw);  // Note: cast, not convert!!
-	return *(float *)&raw;  // Note: cast, not convert
-}
-
-double
-ElfBinaryFile::readNativeFloat8(ADDRESS nat) const
-{
-	int raw[2];
-#ifdef WORDS_BIGENDIAN  // This tests the host machine
-	if (m_elfEndianness) {  // This tests the source machine
-#else
-	if (!m_elfEndianness) {
-#endif  // Balance }
-		// Source and host are same endianness
-		raw[0] = readNative4(nat);
-		raw[1] = readNative4(nat + 4);
-	} else {
-		// Source and host are different endianness
-		raw[1] = readNative4(nat);
-		raw[0] = readNative4(nat + 4);
-	}
-	//return reinterpret_cast<double>(*raw);  // Note: cast, not convert!!
-	return *(double *)raw;
-}
 
 /**
  * Apply relocations; important when the input program
