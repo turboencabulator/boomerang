@@ -52,7 +52,6 @@
 #include <queue>
 #include <sstream>
 
-#include <cstdlib>
 #include <cstring>
 #include <cassert>
 
@@ -315,11 +314,10 @@ FrontEnd::getEntryPoints()
 				--p;
 			if (p != fname) {
 				++p;
-				char *name = (char *)malloc(strlen(p) + 30);
-				strcpy(name, p);
-				name[strlen(name) - 6] = 0;
-				strcat(name, "ModuleData");
-				ADDRESS a = pBF->getAddressByName(name, true);
+				auto name = std::string(p);
+				name.erase(name.length() - 6);
+				name += "ModuleData";
+				ADDRESS a = pBF->getAddressByName(name.c_str(), true);
 				if (a != NO_ADDRESS) {
 					ADDRESS vers, setup, teardown;
 					vers = pBF->readNative4(a);
