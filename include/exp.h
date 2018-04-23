@@ -33,6 +33,7 @@
 #include <vector>
 
 #include <cassert>
+#include <cstdint>
 
 class BasicBlock;
 class ExpModifier;
@@ -345,7 +346,7 @@ class Const : public Exp {
 		// Note: although we have i and a as unions, both often use the same operator (opIntConst).
 		// There is no opCodeAddr any more.
 		ADDRESS     a;      // void* conflated with unsigned int: needs fixing
-		QWord       ll;     // 64 bit integer
+		uint64_t    ll;     // 64 bit integer
 		double      d;      // Double precision float
 		const char *p;      // Pointer to string
 		                    // Don't store string: function could be renamed
@@ -356,7 +357,7 @@ class Const : public Exp {
 public:
 	// Special constructors overloaded for the various constants
 	            Const(int i);
-	            Const(QWord ll);
+	            Const(uint64_t ll);
 	            Const(ADDRESS a);
 	            Const(double d);
 	            Const(const char *p);
@@ -376,7 +377,7 @@ public:
 
 	// Get the constant
 	int         getInt()  const { return u.i;  }
-	QWord       getLong() const { return u.ll; }
+	uint64_t    getLong() const { return u.ll; }
 	double      getFlt()  const { return u.d;  }
 	const char *getStr()  const { return u.p;  }
 	ADDRESS     getAddr() const { return u.a;  }
@@ -384,7 +385,7 @@ public:
 
 	// Set the constant
 	void        setInt(int i)         { u.i  = i;  }
-	void        setLong(QWord ll)     { u.ll = ll; }
+	void        setLong(uint64_t ll)  { u.ll = ll; }
 	void        setFlt(double d)      { u.d  = d;  }
 	void        setStr(const char *p) { u.p  = p;  }
 	void        setAddr(ADDRESS a)    { u.a  = a;  }

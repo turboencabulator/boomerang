@@ -2553,7 +2553,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 			out << "\" value=\"" << c->u.p;
 		else {
 			// TODO
-			// QWord ll;
+			// uint64_t ll;
 			// Proc *pp;
 			assert(false);
 		}

@@ -2265,33 +2265,33 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 /**
  * \returns The next byte from image pointed to by lc.
  */
-Byte
+uint8_t
 PentiumDecoder::getByte(ADDRESS lc)
 {
-	return *(Byte *)lc;
+	return *(uint8_t *)lc;
 }
 
 /**
  * \returns The next 2-byte word from image pointed to by lc.
  */
-SWord
+uint16_t
 PentiumDecoder::getWord(ADDRESS lc)
 {
-	return (SWord)(*(Byte *)lc
-	            + (*(Byte *)(lc + 1) << 8));
+	return (uint16_t)(*(uint8_t *)lc
+	               + (*(uint8_t *)(lc + 1) << 8));
 }
 
 /**
  * \returns The next 4-byte word from image pointed to by lc.
  */
-DWord
+uint32_t
 PentiumDecoder::getDword(ADDRESS lc)
 {
 	lastDwordLc = lc - prog->getTextDelta();
-	return (DWord)(*(Byte *)lc
-	            + (*(Byte *)(lc + 1) <<  8)
-	            + (*(Byte *)(lc + 2) << 16)
-	            + (*(Byte *)(lc + 3) << 24));
+	return (uint32_t)(*(uint8_t *)lc
+	               + (*(uint8_t *)(lc + 1) <<  8)
+	               + (*(uint8_t *)(lc + 2) << 16)
+	               + (*(uint8_t *)(lc + 3) << 24));
 }
 
 

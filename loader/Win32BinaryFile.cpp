@@ -376,7 +376,7 @@ Win32BinaryFile::getMainEntryPoint()
 bool
 Win32BinaryFile::load(std::istream &ifs)
 {
-	DWord peoffLE, peoff;
+	uint32_t peoffLE, peoff;
 	ifs.seekg(0x3c);
 	ifs.read((char *)&peoffLE, sizeof peoffLE);  // Note: peoffLE will be in Little Endian
 	peoff = LMMH(peoffLE);
@@ -421,7 +421,7 @@ Win32BinaryFile::load(std::istream &ifs)
 		sect.uNativeAddr = (ADDRESS)(LMMH(o->RVA) + LMMH(m_pPEHeader->Imagebase));
 		sect.uHostAddr = (char *)base + LMMH(o->RVA);
 		sect.uSectionSize = LMMH(o->VirtualSize);
-		DWord Flags = LMMH(o->Flags);
+		uint32_t Flags = LMMH(o->Flags);
 		sect.bBss      = (Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA) != 0;
 		sect.bCode     = (Flags & IMAGE_SCN_CNT_CODE)               != 0;
 		sect.bData     = (Flags & IMAGE_SCN_CNT_INITIALIZED_DATA)   != 0;
@@ -766,13 +766,13 @@ Win32BinaryFile::getImageSize() const
 }
 
 #if 0 // Cruft?
-DWord
+uint32_t
 Win32BinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
 	// This should work for the header only
-	//return (DWord)base - LMMH(m_pPEHeader->Imagebase);
-	return (DWord)base - (DWord)m_pPEHeader->Imagebase;
+	//return (uint32_t)base - LMMH(m_pPEHeader->Imagebase);
+	return (uint32_t)base - (uint32_t)m_pPEHeader->Imagebase;
 }
 #endif
 

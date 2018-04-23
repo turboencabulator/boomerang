@@ -22,8 +22,6 @@
 
 #include <iostream>
 
-#include <cstdint>
-
 SectionInfo::SectionInfo() :
 	bCode(false),
 	bData(false),
@@ -184,7 +182,7 @@ BinaryFile::readNative4(ADDRESS a) const
 /**
  * \brief Read 8 bytes from given native address a; considers endianness.
  */
-QWord
+uint64_t
 BinaryFile::readNative8(ADDRESS a) const
 {
 	auto data = (unsigned char *)getSectionData(a, 8);

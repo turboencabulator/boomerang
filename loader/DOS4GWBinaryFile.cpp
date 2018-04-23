@@ -115,7 +115,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 bool
 DOS4GWBinaryFile::load(std::istream &ifs)
 {
-	DWord lxoff;
+	uint32_t lxoff;
 	ifs.seekg(0x3c);
 	ifs.read((char *)&lxoff, sizeof lxoff);
 	lxoff = LMMH(lxoff);
@@ -378,13 +378,13 @@ DOS4GWBinaryFile::getImageSize() const
 }
 
 #if 0 // Cruft?
-DWord
+uint32_t
 DOS4GWBinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
 	// This should work for the header only
-	//return (DWord)base - LMMH(m_pPEHeader->Imagebase);
-	return (DWord)base - (DWord)m_pLXObjects[0].RelocBaseAddr;
+	//return (uint32_t)base - LMMH(m_pPEHeader->Imagebase);
+	return (uint32_t)base - (uint32_t)m_pLXObjects[0].RelocBaseAddr;
 }
 #endif
 

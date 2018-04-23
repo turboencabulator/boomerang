@@ -48,7 +48,7 @@
 // Derived class constructors
 
 Const::Const(int i)         : Exp(opIntConst),  type(new VoidType) { u.i  = i;  }
-Const::Const(QWord ll)      : Exp(opLongConst), type(new VoidType) { u.ll = ll; }
+Const::Const(uint64_t ll)   : Exp(opLongConst), type(new VoidType) { u.ll = ll; }
 Const::Const(double d)      : Exp(opFltConst),  type(new VoidType) { u.d  = d;  }
 Const::Const(const char *p) : Exp(opStrConst),  type(new VoidType) { u.p  = p;  }
 Const::Const(Proc *pp)      : Exp(opFuncConst), type(new VoidType) { u.pp = pp; }
@@ -4292,7 +4292,7 @@ public:
 	union {
 		int i;
 		ADDRESS a;
-		QWord ll;
+		uint64_t ll;
 		double d;
 		char *p;
 		Proc *pp;

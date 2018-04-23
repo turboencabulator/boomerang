@@ -10,7 +10,7 @@
 # Desc: toolkit details for a PA-RISC disassembler (copied from Sparc spec)
 
 # interface to NJ
-address type is "DWord"
+address type is "uint32_t"
 address to integer using "%a"
 #address to integer using "%a - instr + pc"
 address add using "%a+%o"

@@ -24,6 +24,7 @@
 #include <list>
 
 #include <cstddef>
+#include <cstdint>
 
 class Exp;
 class Prog;
@@ -245,17 +246,17 @@ extern int scale[];
 /**
  * \returns The byte (8 bits) starting at the given address.
  */
-Byte getByte(ADDRESS lc);
+uint8_t getByte(ADDRESS lc);
 
 /**
  * \returns The word (16 bits) starting at the given address.
  */
-SWord getWord(ADDRESS lc);
+uint16_t getWord(ADDRESS lc);
 
 /**
  * \returns The double (32 bits) starting at the given address.
  */
-DWord getDword(ADDRESS lc);
+uint32_t getDword(ADDRESS lc);
 /** \} */
 #endif
 

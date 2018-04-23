@@ -24,7 +24,7 @@ patterns
 float_cmp  is fcompares | fcompared | fcompareq 
 
 # interface to NJ 
-address type is "DWord"
+address type is "uint32_t"
 address to integer using "%a"
 #address to integer using "%a - instr + pc"
 address add using "%a+%o"

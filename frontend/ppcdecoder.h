@@ -38,7 +38,7 @@ private:
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
-	static DWord getDword(ADDRESS lc);
+	static uint32_t getDword(ADDRESS lc);
 };
 
 #endif

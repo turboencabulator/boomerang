@@ -595,13 +595,13 @@ MachOBinaryFile::getImageSize() const
 }
 
 #if 0 // Cruft?
-DWord
+uint32_t
 MachOBinaryFile::getDelta()
 {
 	// Stupid function anyway: delta depends on section
 	// This should work for the header only
-	//return (DWord)base - LMMH(m_pPEHeader->Imagebase);
-	return (DWord)base - (DWord)loaded_addr;
+	//return (uint32_t)base - LMMH(m_pPEHeader->Imagebase);
+	return (uint32_t)base - (uint32_t)loaded_addr;
 }
 #endif
 

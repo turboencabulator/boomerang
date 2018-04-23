@@ -34,13 +34,13 @@ const char *GetReloc(unsigned pc);
 
 /* get4Bytes - returns next 4-Byte from image pointed to by lc.
    Fetch in a big-endian manner  */
-DWord
+uint32_t
 getDword(unsigned lc)
 {
-	return (DWord)((((((*(Byte *) lc       << 8)
-	                  + *(Byte *)(lc + 1)) << 8)
-	                  + *(Byte *)(lc + 2)) << 8)
-	                  + *(Byte *)(lc + 3));
+	return (uint32_t)((((((*(uint8_t *) lc       << 8)
+	                     + *(uint8_t *)(lc + 1)) << 8)
+	                     + *(uint8_t *)(lc + 2)) << 8)
+	                     + *(uint8_t *)(lc + 3));
 }
 
 static char killBuffer[32];

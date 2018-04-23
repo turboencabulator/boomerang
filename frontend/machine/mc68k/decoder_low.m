@@ -36,11 +36,11 @@ static int temp1 = 0;               // id of a temp; initialised on first use
  *============================================================================*/
 /* get2Bytes - returns next 2-Byte from image pointed to by lc.
    Fetch in a big-endian manner  */
-SWord
+uint16_t
 getWord(unsigned lc)
 {
-	return (SWord)((*(Byte *)lc << 8)
-	              + *(Byte *)(lc + 1));
+	return (uint16_t)((*(uint8_t *)lc << 8)
+	                 + *(uint8_t *)(lc + 1));
 }
 
 
@@ -54,8 +54,8 @@ void
 decodeTrapName(ADDRESS pc)
 {
 	// Need to think about what to do here
-	//fprintf(stderr, "dc.w #%d\t// ", (SWord)(*(SWord *)pc));
-	//fprintf(stderr, "%s", trapNames[*(SWord *)pc - sysTrapBase]);
+	//fprintf(stderr, "dc.w #%d\t// ", (uint16_t)(*(uint16_t *)pc));
+	//fprintf(stderr, "%s", trapNames[*(uint16_t *)pc - sysTrapBase]);
 }
 
 // Convert names like addb.ex, orl, mulu to appropriate SSL form

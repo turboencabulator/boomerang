@@ -22,43 +22,43 @@
  * \brief PSP structure
  */
 typedef struct {
-	SWord int20h;           ///< Interrupt 20h
-	SWord eof;              ///< Segment, end of allocation block
-	Byte  res1;             ///< Reserved
-	Byte  dosDisp[5];       ///< Far call to DOS function dispatcher
-	Byte  int22h[4];        ///< Vector for terminate routine
-	Byte  int23h[4];        ///< Vector for ctrl+break routine
-	Byte  int24h[4];        ///< Vector for error routine
-	Byte  res2[22];         ///< Reserved
-	SWord segEnv;           ///< Segment address of environment block
-	Byte  res3[34];         ///< Reserved
-	Byte  int21h[6];        ///< Opcode for int21h and far return
-	Byte  res4[6];          ///< Reserved
-	Byte  fcb1[16];         ///< Default file control block 1
-	Byte  fcb2[16];         ///< Default file control block 2
-	Byte  res5[4];          ///< Reserved
-	Byte  cmdTail[0x80];    ///< Command tail and disk transfer area
+	uint16_t int20h;           ///< Interrupt 20h
+	uint16_t eof;              ///< Segment, end of allocation block
+	uint8_t  res1;             ///< Reserved
+	uint8_t  dosDisp[5];       ///< Far call to DOS function dispatcher
+	uint8_t  int22h[4];        ///< Vector for terminate routine
+	uint8_t  int23h[4];        ///< Vector for ctrl+break routine
+	uint8_t  int24h[4];        ///< Vector for error routine
+	uint8_t  res2[22];         ///< Reserved
+	uint16_t segEnv;           ///< Segment address of environment block
+	uint8_t  res3[34];         ///< Reserved
+	uint8_t  int21h[6];        ///< Opcode for int21h and far return
+	uint8_t  res4[6];          ///< Reserved
+	uint8_t  fcb1[16];         ///< Default file control block 1
+	uint8_t  fcb2[16];         ///< Default file control block 2
+	uint8_t  res5[4];          ///< Reserved
+	uint8_t  cmdTail[0x80];    ///< Command tail and disk transfer area
 } PSP;
 
 /**
  * \brief EXE file header
  */
 typedef struct {
-	Byte  sigLo;            ///< .EXE signature: 0x4D 0x5A
-	Byte  sigHi;
-	SWord lastPageSize;     ///< Size of the last page
-	SWord numPages;         ///< Number of pages in the file
-	SWord numReloc;         ///< Number of relocation items
-	SWord numParaHeader;    ///< Number of paragraphs in the header
-	SWord minAlloc;         ///< Minimum number of paragraphs
-	SWord maxAlloc;         ///< Maximum number of paragraphs
-	SWord initSS;           ///< Segment displacement of stack
-	SWord initSP;           ///< Contents of SP at entry
-	SWord checkSum;         ///< Complemented checksum
-	SWord initIP;           ///< Contents of IP at entry
-	SWord initCS;           ///< Segment displacement of code
-	SWord relocTabOffset;   ///< Relocation table offset
-	SWord overlayNum;       ///< Overlay number
+	uint8_t  sigLo;            ///< .EXE signature: 0x4D 0x5A
+	uint8_t  sigHi;
+	uint16_t lastPageSize;     ///< Size of the last page
+	uint16_t numPages;         ///< Number of pages in the file
+	uint16_t numReloc;         ///< Number of relocation items
+	uint16_t numParaHeader;    ///< Number of paragraphs in the header
+	uint16_t minAlloc;         ///< Minimum number of paragraphs
+	uint16_t maxAlloc;         ///< Maximum number of paragraphs
+	uint16_t initSS;           ///< Segment displacement of stack
+	uint16_t initSP;           ///< Contents of SP at entry
+	uint16_t checkSum;         ///< Complemented checksum
+	uint16_t initIP;           ///< Contents of IP at entry
+	uint16_t initCS;           ///< Segment displacement of code
+	uint16_t relocTabOffset;   ///< Relocation table offset
+	uint16_t overlayNum;       ///< Overlay number
 } exeHeader;
 
 
@@ -103,9 +103,9 @@ protected:
 
 private:
 	exeHeader  *m_pHeader = nullptr;      ///< Pointer to header.
-	Byte       *m_pImage = nullptr;       ///< Pointer to image.
+	uint8_t    *m_pImage = nullptr;       ///< Pointer to image.
 	int         m_cReloc;                 ///< Number of relocation entries.
-	DWord      *m_pRelocTable = nullptr;  ///< The relocation table.
+	uint32_t   *m_pRelocTable = nullptr;  ///< The relocation table.
 };
 
 #endif

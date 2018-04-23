@@ -94,12 +94,12 @@ ExeBinaryFile::load(std::istream &ifs)
 
 		/* Allocate the relocation table */
 		if (m_cReloc) {
-			m_pRelocTable = new DWord[m_cReloc];
+			m_pRelocTable = new uint32_t[m_cReloc];
 			ifs.seekg(m_pHeader->relocTabOffset);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
 			for (int i = 0; i < m_cReloc; ++i) {
-				Byte buf[4];
+				uint8_t buf[4];
 				ifs.read((char *)buf, 4);
 				m_pRelocTable[i] = LH(buf) + ((int)LH(buf + 2) << 4);
 			}
@@ -131,7 +131,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	}
 
 	/* Allocate a block of memory for the image. */
-	m_pImage  = new Byte[cb];
+	m_pImage  = new uint8_t[cb];
 
 	ifs.read((char *)m_pImage, cb);
 	if (!ifs.good()) {
@@ -141,10 +141,10 @@ ExeBinaryFile::load(std::istream &ifs)
 
 	/* Relocate segment constants */
 	for (int i = 0; i < m_cReloc; ++i) {
-		Byte *p = &m_pImage[m_pRelocTable[i]];
-		SWord w = (SWord)LH(p);
-		*p++    = (Byte)(w & 0x00FF);
-		*p      = (Byte)((w & 0xFF00) >> 8);
+		uint8_t *p = &m_pImage[m_pRelocTable[i]];
+		uint16_t w = (uint16_t)LH(p);
+		*p++       = (uint8_t)(w & 0x00FF);
+		*p         = (uint8_t)((w & 0xFF00) >> 8);
 	}
 
 	// Always just 3 sections

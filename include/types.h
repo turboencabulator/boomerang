@@ -10,14 +10,6 @@
 #ifndef TYPES_H
 #define TYPES_H
 
-#include <cstdint>
-
-// Machine types
-typedef uint8_t  Byte;
-typedef uint16_t SWord;
-typedef uint32_t DWord;
-typedef uint64_t QWord;
-
 typedef unsigned int ADDRESS;       /* 32-bit unsigned */
 typedef ADDRESS dword;              /* for use in decoders */
 
