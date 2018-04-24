@@ -144,7 +144,6 @@ public:
 	const char *getDynamicProcName(ADDRESS uNative) const override;
 	ADDRESS     getMainEntryPoint() override;
 	ADDRESS     getEntryPoint() const override;
-	//uint32_t    getDelta();
 	/** \} */
 
 protected:

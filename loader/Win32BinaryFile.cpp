@@ -766,17 +766,6 @@ Win32BinaryFile::getImageSize() const
 }
 
 #if 0 // Cruft?
-uint32_t
-Win32BinaryFile::getDelta()
-{
-	// Stupid function anyway: delta depends on section
-	// This should work for the header only
-	//return (uint32_t)base - LMMH(m_pPEHeader->Imagebase);
-	return (uint32_t)base - (uint32_t)m_pPEHeader->Imagebase;
-}
-#endif
-
-#if 0 // Cruft?
 /**
  * \brief For debugging.
  */

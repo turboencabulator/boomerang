@@ -377,17 +377,6 @@ DOS4GWBinaryFile::getImageSize() const
 	return 0; // TODO
 }
 
-#if 0 // Cruft?
-uint32_t
-DOS4GWBinaryFile::getDelta()
-{
-	// Stupid function anyway: delta depends on section
-	// This should work for the header only
-	//return (uint32_t)base - LMMH(m_pPEHeader->Imagebase);
-	return (uint32_t)base - (uint32_t)m_pLXObjects[0].RelocBaseAddr;
-}
-#endif
-
 #ifdef DYNAMIC
 /**
  * This function is called via dlopen/dlsym; it returns a new BinaryFile
