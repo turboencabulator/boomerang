@@ -78,11 +78,11 @@ class PESectionInfo : public SectionInfo {
 		assert(it->second);
 		assert(this == it->first);
 		const PEObject *sectionHeader = it->second;
-		const bool has_slack = LMMH(sectionHeader->VirtualSize) > LMMH(sectionHeader->PhysicalSize);
+		bool has_slack = sectionHeader->VirtualSize > sectionHeader->PhysicalSize;
 		if (!has_slack) {
 			return false; // BSS not possible.
 		}
-		if (a >= uNativeAddr + LMMH(sectionHeader->PhysicalSize)) {
+		if (a >= uNativeAddr + sectionHeader->PhysicalSize) {
 			return true;
 		}
 		return false;
@@ -107,8 +107,8 @@ Win32BinaryFile::~Win32BinaryFile()
 ADDRESS
 Win32BinaryFile::getEntryPoint() const
 {
-	return (ADDRESS)(LMMH(m_pPEHeader->EntrypointRVA)
-	               + LMMH(m_pPEHeader->Imagebase));
+	return (ADDRESS)(m_pPEHeader->EntrypointRVA
+	               + m_pPEHeader->Imagebase);
 }
 
 /**
@@ -130,7 +130,7 @@ Win32BinaryFile::getMainEntryPoint()
 		return aMain;
 
 	// Start at program entry point
-	unsigned p = LMMH(m_pPEHeader->EntrypointRVA);
+	unsigned p = m_pPEHeader->EntrypointRVA;
 	unsigned lim = p + 0x200;
 	unsigned lastOrdCall = 0;
 	int gap;               // Number of instructions from the last ordinary call
@@ -144,7 +144,7 @@ Win32BinaryFile::getMainEntryPoint()
 		lim = p + textSize;
 
 	if (m_pPEHeader->Subsystem == 1)  // native
-		return LMMH(m_pPEHeader->EntrypointRVA) + LMMH(m_pPEHeader->Imagebase);
+		return m_pPEHeader->EntrypointRVA + m_pPEHeader->Imagebase;
 
 	gap = 0xF0000000;  // Large positive number (in case no ordinary calls)
 	while (p < lim) {
@@ -175,7 +175,7 @@ Win32BinaryFile::getMainEntryPoint()
 						addr = LMMH(*(lastOrdCall + base + 1));
 						addr += lastOrdCall + 5;  // Addr is dest of call
 						//printf("*** MAIN AT 0x%x ***\n", addr);
-						return addr + LMMH(m_pPEHeader->Imagebase);
+						return addr + m_pPEHeader->Imagebase;
 					}
 				}
 			} else
@@ -229,7 +229,7 @@ Win32BinaryFile::getMainEntryPoint()
 	}
 
 	// VS.NET release console mode pattern
-	p = LMMH(m_pPEHeader->EntrypointRVA);
+	p = m_pPEHeader->EntrypointRVA;
 	if (*(p + base + 0x20) == 0xff
 	 && *(p + base + 0x21) == 0x15) {
 		unsigned int desti = LMMH(*(p + base + 0x22));
@@ -244,7 +244,7 @@ Win32BinaryFile::getMainEntryPoint()
 				 && it->second == "GetModuleHandleA") {
 					if (*(p + base + 0x16e) == 0xe8) {
 						unsigned int dest = p + 0x16e + 5 + LMMH(*(p + base + 0x16f));
-						return dest + LMMH(m_pPEHeader->Imagebase);
+						return dest + m_pPEHeader->Imagebase;
 					}
 				}
 			}
@@ -254,7 +254,7 @@ Win32BinaryFile::getMainEntryPoint()
 	// For VS.NET, need an old favourite: find a call with three pushes in the first 100 instructions
 	int count = 100;
 	int pushes = 0;
-	p = LMMH(m_pPEHeader->EntrypointRVA);
+	p = m_pPEHeader->EntrypointRVA;
 	while (count > 0) {
 		--count;
 		unsigned char op1 = *(p + base);
@@ -270,7 +270,7 @@ Win32BinaryFile::getMainEntryPoint()
 					off = LMMH(*(dest + base + 1));
 					dest = dest + 5 + off;
 				}
-				return dest + LMMH(m_pPEHeader->Imagebase);
+				return dest + m_pPEHeader->Imagebase;
 			} else
 				pushes = 0;  // Assume pushes don't accumulate over calls
 		} else if (op1 >= 0x50 && op1 <= 0x57) {  // PUSH opcode
@@ -299,7 +299,7 @@ Win32BinaryFile::getMainEntryPoint()
 	}
 
 	// mingw pattern
-	p = LMMH(m_pPEHeader->EntrypointRVA);
+	p = m_pPEHeader->EntrypointRVA;
 	bool in_mingw_CRTStartup = false;
 	unsigned int lastcall = 0, lastlastcall = 0;
 	while (1) {
@@ -317,7 +317,7 @@ Win32BinaryFile::getMainEntryPoint()
 				 && it != dlprocptrs.end()
 				 && it->second == "ExitProcess") {
 					mingw_main = true;
-					return lastlastcall + 5 + LMMH(*(lastlastcall + base + 1)) + LMMH(m_pPEHeader->Imagebase);
+					return lastlastcall + 5 + LMMH(*(lastlastcall + base + 1)) + m_pPEHeader->Imagebase;
 				}
 				lastlastcall = lastcall;
 				lastcall = p;
@@ -339,7 +339,7 @@ Win32BinaryFile::getMainEntryPoint()
 	}
 
 	// Microsoft VisualC 2-6/net runtime
-	p = LMMH(m_pPEHeader->EntrypointRVA);
+	p = m_pPEHeader->EntrypointRVA;
 	bool gotGMHA = false;
 	while (1) {
 		unsigned char op1 = *(p + base);
@@ -354,8 +354,8 @@ Win32BinaryFile::getMainEntryPoint()
 		}
 		if (op1 == 0xE8 && gotGMHA) {  // CALL opcode
 			unsigned int dest = p + 5 + LMMH(*(p + base + 1));
-			addSymbol(dest + LMMH(m_pPEHeader->Imagebase), "WinMain");
-			return dest + LMMH(m_pPEHeader->Imagebase);
+			addSymbol(dest + m_pPEHeader->Imagebase, "WinMain");
+			return dest + m_pPEHeader->Imagebase;
 		}
 		if (op1 == 0xc3)   // ret ends search
 			break;
@@ -376,20 +376,21 @@ Win32BinaryFile::getMainEntryPoint()
 bool
 Win32BinaryFile::load(std::istream &ifs)
 {
-	uint32_t peoffLE, peoff;
+	uint32_t peoff;
 	ifs.seekg(0x3c);
-	ifs.read((char *)&peoffLE, sizeof peoffLE);  // Note: peoffLE will be in Little Endian
-	peoff = LMMH(peoffLE);
+	ifs.read((char *)&peoff, sizeof peoff);
+	peoff = LMMH(peoff);
 
 	PEHeader tmphdr;
-
 	ifs.seekg(peoff);
 	ifs.read((char *)&tmphdr, sizeof tmphdr);
 	// Note: all tmphdr fields will be little endian
+	tmphdr.ImageSize  = LMMH(tmphdr.ImageSize);
+	tmphdr.HeaderSize = LMMH(tmphdr.HeaderSize);
 
-	base = new unsigned char[LMMH(tmphdr.ImageSize)];
+	base = new unsigned char[tmphdr.ImageSize];
 	ifs.seekg(0);
-	ifs.read((char *)base, LMMH(tmphdr.HeaderSize));
+	ifs.read((char *)base, tmphdr.HeaderSize);
 
 	m_pHeader = (Header *)base;
 	if (m_pHeader->sigLo != 'M' || m_pHeader->sigHi != 'Z') {
@@ -403,13 +404,78 @@ Win32BinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
-//printf("Image Base %08X, real base %p\n", LMMH(m_pPEHeader->Imagebase), base);
+	m_pPEHeader->sigver                 = LH(&m_pPEHeader->sigver);
+	m_pPEHeader->cputype                = LH(&m_pPEHeader->cputype);
+	m_pPEHeader->numObjects             = LH(&m_pPEHeader->numObjects);
+	m_pPEHeader->TimeDate               = LMMH(m_pPEHeader->TimeDate);
+	m_pPEHeader->Reserved1              = LMMH(m_pPEHeader->Reserved1);
+	m_pPEHeader->Reserved2              = LMMH(m_pPEHeader->Reserved2);
+	m_pPEHeader->NtHdrSize              = LH(&m_pPEHeader->NtHdrSize);
+	m_pPEHeader->Flags                  = LH(&m_pPEHeader->Flags);
+	m_pPEHeader->Reserved3              = LH(&m_pPEHeader->Reserved3);
+	m_pPEHeader->Reserved4              = LMMH(m_pPEHeader->Reserved4);
+	m_pPEHeader->Reserved5              = LMMH(m_pPEHeader->Reserved5);
+	m_pPEHeader->Reserved6              = LMMH(m_pPEHeader->Reserved6);
+	m_pPEHeader->EntrypointRVA          = LMMH(m_pPEHeader->EntrypointRVA);
+	m_pPEHeader->Reserved7              = LMMH(m_pPEHeader->Reserved7);
+	m_pPEHeader->Reserved8              = LMMH(m_pPEHeader->Reserved8);
+	m_pPEHeader->Imagebase              = LMMH(m_pPEHeader->Imagebase);
+	m_pPEHeader->ObjectAlign            = LMMH(m_pPEHeader->ObjectAlign);
+	m_pPEHeader->FileAlign              = LMMH(m_pPEHeader->FileAlign);
+	m_pPEHeader->OSMajor                = LH(&m_pPEHeader->OSMajor);
+	m_pPEHeader->OSMinor                = LH(&m_pPEHeader->OSMinor);
+	m_pPEHeader->UserMajor              = LH(&m_pPEHeader->UserMajor);
+	m_pPEHeader->UserMinor              = LH(&m_pPEHeader->UserMinor);
+	m_pPEHeader->SubsysMajor            = LH(&m_pPEHeader->SubsysMajor);
+	m_pPEHeader->SubsysMinor            = LH(&m_pPEHeader->SubsysMinor);
+	m_pPEHeader->Reserved9              = LMMH(m_pPEHeader->Reserved9);
+	m_pPEHeader->ImageSize              = LMMH(m_pPEHeader->ImageSize);
+	m_pPEHeader->HeaderSize             = LMMH(m_pPEHeader->HeaderSize);
+	m_pPEHeader->FileChecksum           = LMMH(m_pPEHeader->FileChecksum);
+	m_pPEHeader->Subsystem              = LH(&m_pPEHeader->Subsystem);
+	m_pPEHeader->DLLFlags               = LH(&m_pPEHeader->DLLFlags);
+	m_pPEHeader->StackReserveSize       = LMMH(m_pPEHeader->StackReserveSize);
+	m_pPEHeader->StackCommitSize        = LMMH(m_pPEHeader->StackCommitSize);
+	m_pPEHeader->HeapReserveSize        = LMMH(m_pPEHeader->HeapReserveSize);
+	m_pPEHeader->HeapCommitSize         = LMMH(m_pPEHeader->HeapCommitSize);
+	m_pPEHeader->Reserved10             = LMMH(m_pPEHeader->Reserved10);
+	m_pPEHeader->nInterestingRVASizes   = LMMH(m_pPEHeader->nInterestingRVASizes);
+	m_pPEHeader->ExportTableRVA         = LMMH(m_pPEHeader->ExportTableRVA);
+	m_pPEHeader->TotalExportDataSize    = LMMH(m_pPEHeader->TotalExportDataSize);
+	m_pPEHeader->ImportTableRVA         = LMMH(m_pPEHeader->ImportTableRVA);
+	m_pPEHeader->TotalImportDataSize    = LMMH(m_pPEHeader->TotalImportDataSize);
+	m_pPEHeader->ResourceTableRVA       = LMMH(m_pPEHeader->ResourceTableRVA);
+	m_pPEHeader->TotalResourceDataSize  = LMMH(m_pPEHeader->TotalResourceDataSize);
+	m_pPEHeader->ExceptionTableRVA      = LMMH(m_pPEHeader->ExceptionTableRVA);
+	m_pPEHeader->TotalExceptionDataSize = LMMH(m_pPEHeader->TotalExceptionDataSize);
+	m_pPEHeader->SecurityTableRVA       = LMMH(m_pPEHeader->SecurityTableRVA);
+	m_pPEHeader->TotalSecurityDataSize  = LMMH(m_pPEHeader->TotalSecurityDataSize);
+	m_pPEHeader->FixupTableRVA          = LMMH(m_pPEHeader->FixupTableRVA);
+	m_pPEHeader->TotalFixupDataSize     = LMMH(m_pPEHeader->TotalFixupDataSize);
+	m_pPEHeader->DebugTableRVA          = LMMH(m_pPEHeader->DebugTableRVA);
+	m_pPEHeader->TotalDebugDirectories  = LMMH(m_pPEHeader->TotalDebugDirectories);
+	m_pPEHeader->ImageDescriptionRVA    = LMMH(m_pPEHeader->ImageDescriptionRVA);
+	m_pPEHeader->TotalDescriptionSize   = LMMH(m_pPEHeader->TotalDescriptionSize);
+	m_pPEHeader->MachineSpecificRVA     = LMMH(m_pPEHeader->MachineSpecificRVA);
+	m_pPEHeader->MachineSpecificSize    = LMMH(m_pPEHeader->MachineSpecificSize);
+	m_pPEHeader->ThreadLocalStorageRVA  = LMMH(m_pPEHeader->ThreadLocalStorageRVA);
+	m_pPEHeader->TotalTLSSize           = LMMH(m_pPEHeader->TotalTLSSize);
 
-	const PEObject *o = (PEObject *)(((char *)m_pPEHeader) + LH(&m_pPEHeader->NtHdrSize) + 24);
-	int numSections = LH(&m_pPEHeader->numObjects);
-	sections.reserve(numSections);
-	for (int i = 0; i < numSections; ++i, ++o) {
-		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", (char*)o->ObjectName, LMMH(o->RVA), LMMH(o->PhysicalOffset), LMMH(o->VirtualSize));
+	//printf("Image Base %08X, real base %p\n", m_pPEHeader->Imagebase, base);
+
+	auto o = (PEObject *)(((char *)m_pPEHeader) + m_pPEHeader->NtHdrSize + 24);
+	sections.reserve(m_pPEHeader->numObjects);
+	for (int i = 0; i < m_pPEHeader->numObjects; ++i, ++o) {
+		o->VirtualSize    = LMMH(o->VirtualSize);
+		o->RVA            = LMMH(o->RVA);
+		o->PhysicalSize   = LMMH(o->PhysicalSize);
+		o->PhysicalOffset = LMMH(o->PhysicalOffset);
+		o->Reserved1      = LMMH(o->Reserved1);
+		o->Reserved2      = LMMH(o->Reserved2);
+		o->Reserved3      = LMMH(o->Reserved3);
+		o->Flags          = LMMH(o->Flags);
+
+		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", o->ObjectName, o->RVA, o->PhysicalOffset, o->VirtualSize);
 
 		auto name = std::string(o->ObjectName, sizeof o->ObjectName);
 		auto len = name.find('\0');
@@ -418,10 +484,10 @@ Win32BinaryFile::load(std::istream &ifs)
 
 		auto sect = PESectionInfo();
 		sect.name = name;
-		sect.uNativeAddr = (ADDRESS)(LMMH(o->RVA) + LMMH(m_pPEHeader->Imagebase));
-		sect.uHostAddr = (char *)base + LMMH(o->RVA);
-		sect.uSectionSize = LMMH(o->VirtualSize);
-		uint32_t Flags = LMMH(o->Flags);
+		sect.uNativeAddr = (ADDRESS)(o->RVA + m_pPEHeader->Imagebase);
+		sect.uHostAddr = (char *)base + o->RVA;
+		sect.uSectionSize = o->VirtualSize;
+		uint32_t Flags = o->Flags;
 		sect.bBss      = (Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA) != 0;
 		sect.bCode     = (Flags & IMAGE_SCN_CNT_CODE)               != 0;
 		sect.bData     = (Flags & IMAGE_SCN_CNT_INITIALIZED_DATA)   != 0;
@@ -429,21 +495,29 @@ Win32BinaryFile::load(std::istream &ifs)
 		// TODO: Check for unreadable sections (!IMAGE_SCN_MEM_READ)?
 		sections.push_back(sect);
 
-		ifs.seekg(LMMH(o->PhysicalOffset));
-		memset(base + LMMH(o->RVA), 0, LMMH(o->VirtualSize));
-		ifs.read((char *)(base + LMMH(o->RVA)), LMMH(o->PhysicalSize));
+		ifs.seekg(o->PhysicalOffset);
+		memset(base + o->RVA, 0, o->VirtualSize);
+		ifs.read((char *)(base + o->RVA), o->PhysicalSize);
 		s_sectionObjects[static_cast<const PESectionInfo *>(&sections.back())] = o;
 	}
 
 	// Add the Import Address Table entries to the symbol table
 	if (m_pPEHeader->ImportTableRVA) {  // If any import table entry exists
-		const PEImportDtor *id = (const PEImportDtor *)(base + LMMH(m_pPEHeader->ImportTableRVA));
+		auto id = (PEImportDtor *)(base + m_pPEHeader->ImportTableRVA);
+
+		id->originalFirstThunk = LMMH(id->originalFirstThunk);
+		id->preSnapDate        = LMMH(id->preSnapDate);
+		id->verMajor           = LH(&id->verMajor);
+		id->verMinor           = LH(&id->verMinor);
+		id->name               = LMMH(id->name);
+		id->firstThunk         = LMMH(id->firstThunk);
+
 		while (id->name != 0) {
-			const char *dllName = (const char *)(base + LMMH(id->name));
+			auto dllName = (const char *)(base + id->name);
 			unsigned thunk = id->originalFirstThunk ? id->originalFirstThunk : id->firstThunk;
-			const unsigned *iat = (const unsigned *)(base + LMMH(thunk));
+			auto iat = (const unsigned *)(base + thunk);
 			unsigned iatEntry = LMMH(*iat);
-			ADDRESS paddr = LMMH(m_pPEHeader->Imagebase) + LMMH(id->firstThunk);
+			ADDRESS paddr = m_pPEHeader->Imagebase + id->firstThunk;
 			while (iatEntry) {
 				if (iatEntry >> 31) {
 					// This is an ordinal number (stupid idea)
@@ -458,9 +532,9 @@ Win32BinaryFile::load(std::istream &ifs)
 					std::string name((const char *)(base + iatEntry + 2));
 					dlprocptrs[paddr] = name;
 					//printf("Added symbol %s value %x\n", name.c_str(), paddr);
-					if (paddr != LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base)) {
-						dlprocptrs[LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base)] = name.insert(0, "old_"); // add both possibilities
-						//printf("Also added %s value %x\n", name.c_str(), LMMH(m_pPEHeader->Imagebase) + ((const char *)iat - (const char *)base));
+					if (paddr != m_pPEHeader->Imagebase + ((const char *)iat - (const char *)base)) {
+						dlprocptrs[m_pPEHeader->Imagebase + ((const char *)iat - (const char *)base)] = name.insert(0, "old_"); // add both possibilities
+						//printf("Also added %s value %x\n", name.c_str(), m_pPEHeader->Imagebase + ((const char *)iat - (const char *)base));
 					}
 				}
 				++iat;
@@ -473,7 +547,7 @@ Win32BinaryFile::load(std::istream &ifs)
 
 	// Was hoping that _main or main would turn up here for Borland console mode programs. No such luck.
 	// I think IDA Pro must find it by a combination of FLIRT and some pattern matching
-	//PEExportDtor *eid = (PEExportDtor *)(LMMH(m_pPEHeader->ExportTableRVA) + base);
+	//auto eid = (PEExportDtor *)(m_pPEHeader->ExportTableRVA + base);
 
 
 	// Give the entry point a symbol
@@ -545,7 +619,7 @@ const char *
 Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 {
 	if (m_pPEHeader->Subsystem == 1  // native
-	 && LMMH(m_pPEHeader->EntrypointRVA) + LMMH(m_pPEHeader->Imagebase) == dwAddr)
+	 && m_pPEHeader->EntrypointRVA + m_pPEHeader->Imagebase == dwAddr)
 		return "DriverEntry";
 
 	if (isMinGWsAllocStack(dwAddr))
