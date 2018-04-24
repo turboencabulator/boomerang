@@ -18,8 +18,8 @@ public:
 	MACHINE     getMachine() const override;
 
 	//bool        isLibrary() const override;
-	ADDRESS     getImageBase() const override;
-	size_t      getImageSize() const override;
+	//ADDRESS     getImageBase() const override;
+	//size_t      getImageSize() const override;
 
 	/**
 	 * \name Analysis functions

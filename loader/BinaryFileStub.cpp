@@ -247,7 +247,6 @@ BinaryFileStub::isLibrary() const
 {
 	return false;
 }
-#endif
 
 ADDRESS
 BinaryFileStub::getImageBase() const
@@ -260,6 +259,7 @@ BinaryFileStub::getImageSize() const
 {
 	return 0;
 }
+#endif
 
 ADDRESS
 BinaryFileStub::getMainEntryPoint()

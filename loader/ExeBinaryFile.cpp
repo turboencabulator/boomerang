@@ -208,7 +208,6 @@ ExeBinaryFile::isLibrary() const
 {
 	return false;
 }
-#endif
 
 ADDRESS
 ExeBinaryFile::getImageBase() const
@@ -221,6 +220,7 @@ ExeBinaryFile::getImageSize() const
 {
 	return 0; /* FIXME */
 }
+#endif
 
 /**
  * Should be doing a search for this.

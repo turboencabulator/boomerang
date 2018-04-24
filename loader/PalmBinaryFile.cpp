@@ -271,7 +271,6 @@ PalmBinaryFile::isLibrary() const
 {
 	return strncmp((char *)(m_pImage + 0x3C), "libr", 4) == 0;
 }
-#endif
 
 ADDRESS
 PalmBinaryFile::getImageBase() const
@@ -284,6 +283,7 @@ PalmBinaryFile::getImageSize() const
 {
 	return 0; /* FIXME */
 }
+#endif
 
 /**
  * We at least need to be able to name the main function and system calls.

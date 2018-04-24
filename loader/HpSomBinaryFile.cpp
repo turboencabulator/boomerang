@@ -407,7 +407,6 @@ HpSomBinaryFile::isLibrary() const
 	return type == 0x0104 || type == 0x010D
 	    || type == 0x010E || type == 0x0619;
 }
-#endif
 
 ADDRESS
 HpSomBinaryFile::getImageBase() const
@@ -420,6 +419,7 @@ HpSomBinaryFile::getImageSize() const
 {
 	return UINT4(m_pImage + 0x24);
 }
+#endif
 
 /**
  * We at least need to be able to name the main function and system calls.

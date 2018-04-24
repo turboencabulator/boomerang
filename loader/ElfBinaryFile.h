@@ -179,8 +179,8 @@ public:
 	//std::list<const char *> getDependencyList() const override;
 
 	//bool        isLibrary() const override;
-	ADDRESS     getImageBase() const override;
-	size_t      getImageSize() const override;
+	//ADDRESS     getImageBase() const override;
+	//size_t      getImageSize() const override;
 
 private:
 	int         elfRead2(const short *ps) const;
@@ -283,8 +283,8 @@ private:
 	ADDRESS     m_uPltMin = 0;              ///< Min address of PLT table.
 	ADDRESS     m_uPltMax = 0;              ///< Max address (1 past last) of PLT.
 	ADDRESS    *m_pImportStubs = nullptr;   ///< An array of import stubs.
-	ADDRESS     m_uBaseAddr;                ///< Base image virtual address.
-	size_t      m_uImageSize;               ///< Total image size (bytes).
+	//ADDRESS     m_uBaseAddr;                ///< Base image virtual address.
+	//size_t      m_uImageSize;               ///< Total image size (bytes).
 	ADDRESS     first_extern;               ///< Where the first extern will be placed.
 	ADDRESS     next_extern = 0;            ///< Where the next extern will be placed.
 	int        *m_sh_link = nullptr;        ///< Pointer to array of sh_link values.

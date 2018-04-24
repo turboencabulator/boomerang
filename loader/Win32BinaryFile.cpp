@@ -751,7 +751,6 @@ Win32BinaryFile::isLibrary() const
 {
 	return (m_pPEHeader->Flags & 0x2000) != 0;
 }
-#endif
 
 ADDRESS
 Win32BinaryFile::getImageBase() const
@@ -764,6 +763,7 @@ Win32BinaryFile::getImageSize() const
 {
 	return m_pPEHeader->ImageSize;
 }
+#endif
 
 #if 0 // Cruft?
 /**

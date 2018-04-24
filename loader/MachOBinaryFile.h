@@ -32,8 +32,8 @@ public:
 	MACHINE     getMachine() const override { return machine; }
 
 	//bool        isLibrary() const override;
-	ADDRESS     getImageBase() const override;
-	size_t      getImageSize() const override;
+	//ADDRESS     getImageBase() const override;
+	//size_t      getImageSize() const override;
 
 private:
 	unsigned int   BMMH(const void *x) const;

@@ -580,7 +580,6 @@ MachOBinaryFile::isLibrary() const
 {
 	return false;
 }
-#endif
 
 ADDRESS
 MachOBinaryFile::getImageBase() const
@@ -593,6 +592,7 @@ MachOBinaryFile::getImageSize() const
 {
 	return loaded_size;
 }
+#endif
 
 #ifdef DYNAMIC
 /**

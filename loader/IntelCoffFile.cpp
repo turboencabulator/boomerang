@@ -282,7 +282,6 @@ IntelCoffFile::isLibrary() const
 	printf("IntelCoffFile::isLibrary called\n");
 	return false;
 }
-#endif
 
 ADDRESS
 IntelCoffFile::getImageBase() const
@@ -298,6 +297,7 @@ IntelCoffFile::getImageSize() const
 	// TODO: Implement it. We will have to load complete before knowing the size
 	return 0;
 }
+#endif
 
 ADDRESS
 IntelCoffFile::getMainEntryPoint()

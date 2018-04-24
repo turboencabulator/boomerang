@@ -743,15 +743,6 @@ ElfBinaryFile::getMachine() const
 }
 
 #if 0 // Cruft?
-bool
-ElfBinaryFile::isLibrary() const
-{
-	int type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
-	return (type == ET_DYN);
-}
-#endif
-
-#if 0 // Cruft?
 std::list<const char *>
 ElfBinaryFile::getDependencyList() const
 {
@@ -781,6 +772,14 @@ ElfBinaryFile::getDependencyList() const
 }
 #endif
 
+#if 0 // Cruft?
+bool
+ElfBinaryFile::isLibrary() const
+{
+	int type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
+	return (type == ET_DYN);
+}
+
 ADDRESS
 ElfBinaryFile::getImageBase() const
 {
@@ -792,6 +791,7 @@ ElfBinaryFile::getImageSize() const
 {
 	return m_uImageSize;
 }
+#endif
 
 /**
  * \brief Get an array of addresses of imported function stubs.

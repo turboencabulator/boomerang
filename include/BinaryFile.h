@@ -204,7 +204,6 @@ public:
 	 * be loaded at the address given by getImageBase().
 	 */
 	virtual bool        isRelocatable() const { return isLibrary(); }
-#endif
 	/**
 	 * Return the virtual address at which the binary expects to be
 	 * loaded.  For position independent / relocatable code this should be
@@ -215,10 +214,11 @@ public:
 	 * Return the total size of the loaded image.
 	 */
 	virtual size_t      getImageSize() const = 0;
+#endif
+
 	        ADDRESS     getLimitTextLow() const { return limitTextLow; }
 	        ADDRESS     getLimitTextHigh() const { return limitTextHigh; }
 	        ptrdiff_t   getTextDelta() const { return textDelta; }
-
 
 	        int         readNative1(ADDRESS a) const;
 	        int         readNative2(ADDRESS a) const;

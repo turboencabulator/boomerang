@@ -363,7 +363,6 @@ DOS4GWBinaryFile::isLibrary() const
 {
 	return false; // TODO
 }
-#endif
 
 ADDRESS
 DOS4GWBinaryFile::getImageBase() const
@@ -376,6 +375,7 @@ DOS4GWBinaryFile::getImageSize() const
 {
 	return 0; // TODO
 }
+#endif
 
 #ifdef DYNAMIC
 /**
