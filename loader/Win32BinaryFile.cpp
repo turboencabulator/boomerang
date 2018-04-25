@@ -166,13 +166,13 @@ Win32BinaryFile::getMainEntryPoint()
 		case 0xFF:
 			if (op2 == 0x15) {  // Opcode FF 15 is indirect call
 				// Get the 4 byte address from the instruction
-				unsigned addr = LMMH(*(p + base + 2));
+				unsigned addr = LH32(p + base + 2);
 				//const char *c = dlprocptrs[addr].c_str();
 				//printf("Checking %x finding %s\n", addr, c);
 				if (dlprocptrs[addr] == "exit") {
 					if (gap <= 10) {
 						// This is it. The instruction at lastOrdCall is (win)main
-						addr = LMMH(*(lastOrdCall + base + 1));
+						addr = LH32(lastOrdCall + base + 1);
 						addr += lastOrdCall + 5;  // Addr is dest of call
 						//printf("*** MAIN AT 0x%x ***\n", addr);
 						return addr + m_pPEHeader->Imagebase;
@@ -196,7 +196,7 @@ Win32BinaryFile::getMainEntryPoint()
 					borlandState = 1;
 				else if (borlandState == 4) {
 					// Borland pattern succeeds. p-4 has the offset of mainInfo
-					ADDRESS mainInfo = LMMH(*(base + p - 4));
+					ADDRESS mainInfo = LH32(base + p - 4);
 					ADDRESS main = readNative4(mainInfo + 0x18);  // Address of main is at mainInfo+18
 					return main;
 				}
@@ -232,18 +232,18 @@ Win32BinaryFile::getMainEntryPoint()
 	p = m_pPEHeader->EntrypointRVA;
 	if (*(p + base + 0x20) == 0xff
 	 && *(p + base + 0x21) == 0x15) {
-		unsigned int desti = LMMH(*(p + base + 0x22));
+		unsigned int desti = LH32(p + base + 0x22);
 		auto it = dlprocptrs.find(desti);
 		if (it != dlprocptrs.end()
 		 && it->second == "GetVersionExA") {
 			if (*(p + base + 0x6d) == 0xff
 			 && *(p + base + 0x6e) == 0x15) {
-				desti = LMMH(*(p + base + 0x6f));
+				desti = LH32(p + base + 0x6f);
 				it = dlprocptrs.find(desti);
 				if (it != dlprocptrs.end()
 				 && it->second == "GetModuleHandleA") {
 					if (*(p + base + 0x16e) == 0xe8) {
-						unsigned int dest = p + 0x16e + 5 + LMMH(*(p + base + 0x16f));
+						unsigned int dest = p + 0x16e + 5 + LH32(p + base + 0x16f);
 						return dest + m_pPEHeader->Imagebase;
 					}
 				}
@@ -261,13 +261,13 @@ Win32BinaryFile::getMainEntryPoint()
 		if (op1 == 0xE8) {  // CALL opcode
 			if (pushes == 3) {
 				// Get the offset
-				int off = LMMH(*(p + base + 1));
+				int off = LH32(p + base + 1);
 				unsigned dest = (unsigned)p + 5 + off;
 				// Check for a jump there
 				op1 = *(dest + base);
 				if (op1 == 0xE9) {
 					// Follow that jump
-					off = LMMH(*(dest + base + 1));
+					off = LH32(dest + base + 1);
 					dest = dest + 5 + off;
 				}
 				return dest + m_pPEHeader->Imagebase;
@@ -282,7 +282,7 @@ Win32BinaryFile::getMainEntryPoint()
 				++pushes;
 		} else if (op1 == 0xE9) {
 			// Follow the jump
-			int off = LMMH(*(p + base + 1));
+			int off = LH32(p + base + 1);
 			p += off + 5;
 			continue;
 		}
@@ -305,11 +305,11 @@ Win32BinaryFile::getMainEntryPoint()
 	while (1) {
 		unsigned char op1 = *(p + base);
 		if (op1 == 0xE8) {  // CALL opcode
-			unsigned int dest = p + 5 + LMMH(*(p + base + 1));
+			unsigned int dest = p + 5 + LH32(p + base + 1);
 			if (in_mingw_CRTStartup) {
 				unsigned char op2 = *(dest + base);
 				unsigned char op2a = *(dest + base + 1);
-				unsigned int desti = LMMH(*(dest + base + 2));
+				unsigned int desti = LH32(dest + base + 2);
 				auto it = dlprocptrs.find(desti);
 				// skip all the call statements until we hit a call to an indirect call to ExitProcess
 				// main is the 2nd call before this one
@@ -317,7 +317,7 @@ Win32BinaryFile::getMainEntryPoint()
 				 && it != dlprocptrs.end()
 				 && it->second == "ExitProcess") {
 					mingw_main = true;
-					return lastlastcall + 5 + LMMH(*(lastlastcall + base + 1)) + m_pPEHeader->Imagebase;
+					return lastlastcall + 5 + LH32(lastlastcall + base + 1) + m_pPEHeader->Imagebase;
 				}
 				lastlastcall = lastcall;
 				lastcall = p;
@@ -345,7 +345,7 @@ Win32BinaryFile::getMainEntryPoint()
 		unsigned char op1 = *(p + base);
 		unsigned char op2 = *(p + base + 1);
 		if (op1 == 0xFF && op2 == 0x15) { // indirect CALL opcode
-			unsigned int desti = LMMH(*(p + base + 2));
+			unsigned int desti = LH32(p + base + 2);
 			auto it = dlprocptrs.find(desti);
 			if (it != dlprocptrs.end()
 			 && it->second == "GetModuleHandleA") {
@@ -353,7 +353,7 @@ Win32BinaryFile::getMainEntryPoint()
 			}
 		}
 		if (op1 == 0xE8 && gotGMHA) {  // CALL opcode
-			unsigned int dest = p + 5 + LMMH(*(p + base + 1));
+			unsigned int dest = p + 5 + LH32(p + base + 1);
 			addSymbol(dest + m_pPEHeader->Imagebase, "WinMain");
 			return dest + m_pPEHeader->Imagebase;
 		}
@@ -379,14 +379,14 @@ Win32BinaryFile::load(std::istream &ifs)
 	uint32_t peoff;
 	ifs.seekg(0x3c);
 	ifs.read((char *)&peoff, sizeof peoff);
-	peoff = LMMH(peoff);
+	peoff = LH32(&peoff);
 
 	PEHeader tmphdr;
 	ifs.seekg(peoff);
 	ifs.read((char *)&tmphdr, sizeof tmphdr);
 	// Note: all tmphdr fields will be little endian
-	tmphdr.ImageSize  = LMMH(tmphdr.ImageSize);
-	tmphdr.HeaderSize = LMMH(tmphdr.HeaderSize);
+	tmphdr.ImageSize  = LH32(&tmphdr.ImageSize);
+	tmphdr.HeaderSize = LH32(&tmphdr.HeaderSize);
 
 	base = new unsigned char[tmphdr.ImageSize];
 	ifs.seekg(0);
@@ -404,76 +404,76 @@ Win32BinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
-	m_pPEHeader->sigver                 = LH(&m_pPEHeader->sigver);
-	m_pPEHeader->cputype                = LH(&m_pPEHeader->cputype);
-	m_pPEHeader->numObjects             = LH(&m_pPEHeader->numObjects);
-	m_pPEHeader->TimeDate               = LMMH(m_pPEHeader->TimeDate);
-	m_pPEHeader->Reserved1              = LMMH(m_pPEHeader->Reserved1);
-	m_pPEHeader->Reserved2              = LMMH(m_pPEHeader->Reserved2);
-	m_pPEHeader->NtHdrSize              = LH(&m_pPEHeader->NtHdrSize);
-	m_pPEHeader->Flags                  = LH(&m_pPEHeader->Flags);
-	m_pPEHeader->Reserved3              = LH(&m_pPEHeader->Reserved3);
-	m_pPEHeader->Reserved4              = LMMH(m_pPEHeader->Reserved4);
-	m_pPEHeader->Reserved5              = LMMH(m_pPEHeader->Reserved5);
-	m_pPEHeader->Reserved6              = LMMH(m_pPEHeader->Reserved6);
-	m_pPEHeader->EntrypointRVA          = LMMH(m_pPEHeader->EntrypointRVA);
-	m_pPEHeader->Reserved7              = LMMH(m_pPEHeader->Reserved7);
-	m_pPEHeader->Reserved8              = LMMH(m_pPEHeader->Reserved8);
-	m_pPEHeader->Imagebase              = LMMH(m_pPEHeader->Imagebase);
-	m_pPEHeader->ObjectAlign            = LMMH(m_pPEHeader->ObjectAlign);
-	m_pPEHeader->FileAlign              = LMMH(m_pPEHeader->FileAlign);
-	m_pPEHeader->OSMajor                = LH(&m_pPEHeader->OSMajor);
-	m_pPEHeader->OSMinor                = LH(&m_pPEHeader->OSMinor);
-	m_pPEHeader->UserMajor              = LH(&m_pPEHeader->UserMajor);
-	m_pPEHeader->UserMinor              = LH(&m_pPEHeader->UserMinor);
-	m_pPEHeader->SubsysMajor            = LH(&m_pPEHeader->SubsysMajor);
-	m_pPEHeader->SubsysMinor            = LH(&m_pPEHeader->SubsysMinor);
-	m_pPEHeader->Reserved9              = LMMH(m_pPEHeader->Reserved9);
-	m_pPEHeader->ImageSize              = LMMH(m_pPEHeader->ImageSize);
-	m_pPEHeader->HeaderSize             = LMMH(m_pPEHeader->HeaderSize);
-	m_pPEHeader->FileChecksum           = LMMH(m_pPEHeader->FileChecksum);
-	m_pPEHeader->Subsystem              = LH(&m_pPEHeader->Subsystem);
-	m_pPEHeader->DLLFlags               = LH(&m_pPEHeader->DLLFlags);
-	m_pPEHeader->StackReserveSize       = LMMH(m_pPEHeader->StackReserveSize);
-	m_pPEHeader->StackCommitSize        = LMMH(m_pPEHeader->StackCommitSize);
-	m_pPEHeader->HeapReserveSize        = LMMH(m_pPEHeader->HeapReserveSize);
-	m_pPEHeader->HeapCommitSize         = LMMH(m_pPEHeader->HeapCommitSize);
-	m_pPEHeader->Reserved10             = LMMH(m_pPEHeader->Reserved10);
-	m_pPEHeader->nInterestingRVASizes   = LMMH(m_pPEHeader->nInterestingRVASizes);
-	m_pPEHeader->ExportTableRVA         = LMMH(m_pPEHeader->ExportTableRVA);
-	m_pPEHeader->TotalExportDataSize    = LMMH(m_pPEHeader->TotalExportDataSize);
-	m_pPEHeader->ImportTableRVA         = LMMH(m_pPEHeader->ImportTableRVA);
-	m_pPEHeader->TotalImportDataSize    = LMMH(m_pPEHeader->TotalImportDataSize);
-	m_pPEHeader->ResourceTableRVA       = LMMH(m_pPEHeader->ResourceTableRVA);
-	m_pPEHeader->TotalResourceDataSize  = LMMH(m_pPEHeader->TotalResourceDataSize);
-	m_pPEHeader->ExceptionTableRVA      = LMMH(m_pPEHeader->ExceptionTableRVA);
-	m_pPEHeader->TotalExceptionDataSize = LMMH(m_pPEHeader->TotalExceptionDataSize);
-	m_pPEHeader->SecurityTableRVA       = LMMH(m_pPEHeader->SecurityTableRVA);
-	m_pPEHeader->TotalSecurityDataSize  = LMMH(m_pPEHeader->TotalSecurityDataSize);
-	m_pPEHeader->FixupTableRVA          = LMMH(m_pPEHeader->FixupTableRVA);
-	m_pPEHeader->TotalFixupDataSize     = LMMH(m_pPEHeader->TotalFixupDataSize);
-	m_pPEHeader->DebugTableRVA          = LMMH(m_pPEHeader->DebugTableRVA);
-	m_pPEHeader->TotalDebugDirectories  = LMMH(m_pPEHeader->TotalDebugDirectories);
-	m_pPEHeader->ImageDescriptionRVA    = LMMH(m_pPEHeader->ImageDescriptionRVA);
-	m_pPEHeader->TotalDescriptionSize   = LMMH(m_pPEHeader->TotalDescriptionSize);
-	m_pPEHeader->MachineSpecificRVA     = LMMH(m_pPEHeader->MachineSpecificRVA);
-	m_pPEHeader->MachineSpecificSize    = LMMH(m_pPEHeader->MachineSpecificSize);
-	m_pPEHeader->ThreadLocalStorageRVA  = LMMH(m_pPEHeader->ThreadLocalStorageRVA);
-	m_pPEHeader->TotalTLSSize           = LMMH(m_pPEHeader->TotalTLSSize);
+	m_pPEHeader->sigver                 = LH16(&m_pPEHeader->sigver);
+	m_pPEHeader->cputype                = LH16(&m_pPEHeader->cputype);
+	m_pPEHeader->numObjects             = LH16(&m_pPEHeader->numObjects);
+	m_pPEHeader->TimeDate               = LH32(&m_pPEHeader->TimeDate);
+	m_pPEHeader->Reserved1              = LH32(&m_pPEHeader->Reserved1);
+	m_pPEHeader->Reserved2              = LH32(&m_pPEHeader->Reserved2);
+	m_pPEHeader->NtHdrSize              = LH16(&m_pPEHeader->NtHdrSize);
+	m_pPEHeader->Flags                  = LH16(&m_pPEHeader->Flags);
+	m_pPEHeader->Reserved3              = LH16(&m_pPEHeader->Reserved3);
+	m_pPEHeader->Reserved4              = LH32(&m_pPEHeader->Reserved4);
+	m_pPEHeader->Reserved5              = LH32(&m_pPEHeader->Reserved5);
+	m_pPEHeader->Reserved6              = LH32(&m_pPEHeader->Reserved6);
+	m_pPEHeader->EntrypointRVA          = LH32(&m_pPEHeader->EntrypointRVA);
+	m_pPEHeader->Reserved7              = LH32(&m_pPEHeader->Reserved7);
+	m_pPEHeader->Reserved8              = LH32(&m_pPEHeader->Reserved8);
+	m_pPEHeader->Imagebase              = LH32(&m_pPEHeader->Imagebase);
+	m_pPEHeader->ObjectAlign            = LH32(&m_pPEHeader->ObjectAlign);
+	m_pPEHeader->FileAlign              = LH32(&m_pPEHeader->FileAlign);
+	m_pPEHeader->OSMajor                = LH16(&m_pPEHeader->OSMajor);
+	m_pPEHeader->OSMinor                = LH16(&m_pPEHeader->OSMinor);
+	m_pPEHeader->UserMajor              = LH16(&m_pPEHeader->UserMajor);
+	m_pPEHeader->UserMinor              = LH16(&m_pPEHeader->UserMinor);
+	m_pPEHeader->SubsysMajor            = LH16(&m_pPEHeader->SubsysMajor);
+	m_pPEHeader->SubsysMinor            = LH16(&m_pPEHeader->SubsysMinor);
+	m_pPEHeader->Reserved9              = LH32(&m_pPEHeader->Reserved9);
+	m_pPEHeader->ImageSize              = LH32(&m_pPEHeader->ImageSize);
+	m_pPEHeader->HeaderSize             = LH32(&m_pPEHeader->HeaderSize);
+	m_pPEHeader->FileChecksum           = LH32(&m_pPEHeader->FileChecksum);
+	m_pPEHeader->Subsystem              = LH16(&m_pPEHeader->Subsystem);
+	m_pPEHeader->DLLFlags               = LH16(&m_pPEHeader->DLLFlags);
+	m_pPEHeader->StackReserveSize       = LH32(&m_pPEHeader->StackReserveSize);
+	m_pPEHeader->StackCommitSize        = LH32(&m_pPEHeader->StackCommitSize);
+	m_pPEHeader->HeapReserveSize        = LH32(&m_pPEHeader->HeapReserveSize);
+	m_pPEHeader->HeapCommitSize         = LH32(&m_pPEHeader->HeapCommitSize);
+	m_pPEHeader->Reserved10             = LH32(&m_pPEHeader->Reserved10);
+	m_pPEHeader->nInterestingRVASizes   = LH32(&m_pPEHeader->nInterestingRVASizes);
+	m_pPEHeader->ExportTableRVA         = LH32(&m_pPEHeader->ExportTableRVA);
+	m_pPEHeader->TotalExportDataSize    = LH32(&m_pPEHeader->TotalExportDataSize);
+	m_pPEHeader->ImportTableRVA         = LH32(&m_pPEHeader->ImportTableRVA);
+	m_pPEHeader->TotalImportDataSize    = LH32(&m_pPEHeader->TotalImportDataSize);
+	m_pPEHeader->ResourceTableRVA       = LH32(&m_pPEHeader->ResourceTableRVA);
+	m_pPEHeader->TotalResourceDataSize  = LH32(&m_pPEHeader->TotalResourceDataSize);
+	m_pPEHeader->ExceptionTableRVA      = LH32(&m_pPEHeader->ExceptionTableRVA);
+	m_pPEHeader->TotalExceptionDataSize = LH32(&m_pPEHeader->TotalExceptionDataSize);
+	m_pPEHeader->SecurityTableRVA       = LH32(&m_pPEHeader->SecurityTableRVA);
+	m_pPEHeader->TotalSecurityDataSize  = LH32(&m_pPEHeader->TotalSecurityDataSize);
+	m_pPEHeader->FixupTableRVA          = LH32(&m_pPEHeader->FixupTableRVA);
+	m_pPEHeader->TotalFixupDataSize     = LH32(&m_pPEHeader->TotalFixupDataSize);
+	m_pPEHeader->DebugTableRVA          = LH32(&m_pPEHeader->DebugTableRVA);
+	m_pPEHeader->TotalDebugDirectories  = LH32(&m_pPEHeader->TotalDebugDirectories);
+	m_pPEHeader->ImageDescriptionRVA    = LH32(&m_pPEHeader->ImageDescriptionRVA);
+	m_pPEHeader->TotalDescriptionSize   = LH32(&m_pPEHeader->TotalDescriptionSize);
+	m_pPEHeader->MachineSpecificRVA     = LH32(&m_pPEHeader->MachineSpecificRVA);
+	m_pPEHeader->MachineSpecificSize    = LH32(&m_pPEHeader->MachineSpecificSize);
+	m_pPEHeader->ThreadLocalStorageRVA  = LH32(&m_pPEHeader->ThreadLocalStorageRVA);
+	m_pPEHeader->TotalTLSSize           = LH32(&m_pPEHeader->TotalTLSSize);
 
 	//printf("Image Base %08X, real base %p\n", m_pPEHeader->Imagebase, base);
 
 	auto o = (PEObject *)(((char *)m_pPEHeader) + m_pPEHeader->NtHdrSize + 24);
 	sections.reserve(m_pPEHeader->numObjects);
 	for (int i = 0; i < m_pPEHeader->numObjects; ++i, ++o) {
-		o->VirtualSize    = LMMH(o->VirtualSize);
-		o->RVA            = LMMH(o->RVA);
-		o->PhysicalSize   = LMMH(o->PhysicalSize);
-		o->PhysicalOffset = LMMH(o->PhysicalOffset);
-		o->Reserved1      = LMMH(o->Reserved1);
-		o->Reserved2      = LMMH(o->Reserved2);
-		o->Reserved3      = LMMH(o->Reserved3);
-		o->Flags          = LMMH(o->Flags);
+		o->VirtualSize    = LH32(&o->VirtualSize);
+		o->RVA            = LH32(&o->RVA);
+		o->PhysicalSize   = LH32(&o->PhysicalSize);
+		o->PhysicalOffset = LH32(&o->PhysicalOffset);
+		o->Reserved1      = LH32(&o->Reserved1);
+		o->Reserved2      = LH32(&o->Reserved2);
+		o->Reserved3      = LH32(&o->Reserved3);
+		o->Flags          = LH32(&o->Flags);
 
 		//printf("%.8s RVA=%08X Offset=%08X size=%08X\n", o->ObjectName, o->RVA, o->PhysicalOffset, o->VirtualSize);
 
@@ -505,18 +505,18 @@ Win32BinaryFile::load(std::istream &ifs)
 	if (m_pPEHeader->ImportTableRVA) {  // If any import table entry exists
 		auto id = (PEImportDtor *)(base + m_pPEHeader->ImportTableRVA);
 
-		id->originalFirstThunk = LMMH(id->originalFirstThunk);
-		id->preSnapDate        = LMMH(id->preSnapDate);
-		id->verMajor           = LH(&id->verMajor);
-		id->verMinor           = LH(&id->verMinor);
-		id->name               = LMMH(id->name);
-		id->firstThunk         = LMMH(id->firstThunk);
+		id->originalFirstThunk = LH32(&id->originalFirstThunk);
+		id->preSnapDate        = LH32(&id->preSnapDate);
+		id->verMajor           = LH16(&id->verMajor);
+		id->verMinor           = LH16(&id->verMinor);
+		id->name               = LH32(&id->name);
+		id->firstThunk         = LH32(&id->firstThunk);
 
 		while (id->name != 0) {
 			auto dllName = (const char *)(base + id->name);
 			unsigned thunk = id->originalFirstThunk ? id->originalFirstThunk : id->firstThunk;
 			auto iat = (const unsigned *)(base + thunk);
-			unsigned iatEntry = LMMH(*iat);
+			unsigned iatEntry = LH32(iat);
 			ADDRESS paddr = m_pPEHeader->Imagebase + id->firstThunk;
 			while (iatEntry) {
 				if (iatEntry >> 31) {
@@ -538,7 +538,7 @@ Win32BinaryFile::load(std::istream &ifs)
 					}
 				}
 				++iat;
-				iatEntry = LMMH(*iat);
+				iatEntry = LH32(iat);
 				paddr += 4;
 			}
 			++id;
@@ -594,8 +594,8 @@ Win32BinaryFile::findJumps(ADDRESS curr)
 	while (cnt < 0x60) {  // Max of 0x60 bytes without a match
 		curr -= 2;  // Has to be on 2-byte boundary
 		cnt += 2;
-		if (LH(delta + curr) != 0xFF + (0x25 << 8)) continue;
-		ADDRESS operand = LMMH2(delta + curr + 2);
+		if (LH16(delta + curr) != 0xFF + (0x25 << 8)) continue;
+		ADDRESS operand = LH32(delta + curr + 2);
 		auto it = dlprocptrs.find(operand);
 		if (it == dlprocptrs.end()) continue;
 		std::string sym = it->second;

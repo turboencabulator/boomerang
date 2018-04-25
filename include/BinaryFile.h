@@ -28,51 +28,27 @@
 #include <cstddef>
 #include <cstdint>
 
-// Given a pointer p, returns the 16 bits (halfword) in the two bytes
-// starting at p.
-#define LH(p) \
-  ( ((int)((uint8_t *)(p))[0]     ) \
-  + ((int)((uint8_t *)(p))[1] << 8) )
+// Little-endian to host-endian conversions
+#define LH16(p) \
+  ( ((unsigned)((uint8_t *)(p))[0]     ) \
+  + ((unsigned)((uint8_t *)(p))[1] << 8) )
 
-// Given a little endian value x, load its value assuming little endian order
-// Note: must be able to take address of x
-// Note: Unlike the LH macro, the parameter is not a pointer
-#define LMMH(x) \
-  ( ((unsigned)((uint8_t *)(&x))[0]      ) \
-  + ((unsigned)((uint8_t *)(&x))[1] <<  8) \
-  + ((unsigned)((uint8_t *)(&x))[2] << 16) \
-  + ((unsigned)((uint8_t *)(&x))[3] << 24) )
+#define LH32(p) \
+  ( ((unsigned)((uint8_t *)(p))[0]      ) \
+  + ((unsigned)((uint8_t *)(p))[1] <<  8) \
+  + ((unsigned)((uint8_t *)(p))[2] << 16) \
+  + ((unsigned)((uint8_t *)(p))[3] << 24) )
 
-// With this one, x is a pointer to unsigned
-#define LMMH2(x) \
-  ( ((unsigned)((uint8_t *)(x))[0]      ) \
-  + ((unsigned)((uint8_t *)(x))[1] <<  8) \
-  + ((unsigned)((uint8_t *)(x))[2] << 16) \
-  + ((unsigned)((uint8_t *)(x))[3] << 24) )
+// Big-endian to host-endian conversions
+#define BH16(p) \
+  ( ((unsigned)((uint8_t *)(p))[1]     ) \
+  + ((unsigned)((uint8_t *)(p))[0] << 8) )
 
-#define LMMHw(x) \
-  ( ((unsigned)((uint8_t *)(&x))[0]     ) \
-  + ((unsigned)((uint8_t *)(&x))[1] << 8) )
-
-// Given a little endian value x, load its value assuming big endian order
-// Note: must be able to take address of x
-// Note: Unlike the LH macro, the parameter is not a pointer
-#define _BMMH(x) \
-  ( ((unsigned)((uint8_t *)(&x))[3]      ) \
-  + ((unsigned)((uint8_t *)(&x))[2] <<  8) \
-  + ((unsigned)((uint8_t *)(&x))[1] << 16) \
-  + ((unsigned)((uint8_t *)(&x))[0] << 24) )
-
-// With this one, x is a pointer to unsigned
-#define _BMMH2(x) \
-  ( ((unsigned)((uint8_t *)(x))[3]      ) \
-  + ((unsigned)((uint8_t *)(x))[2] <<  8) \
-  + ((unsigned)((uint8_t *)(x))[1] << 16) \
-  + ((unsigned)((uint8_t *)(x))[0] << 24) )
-
-#define _BMMHW(x) \
-  ( ((unsigned)((uint8_t *)(&x))[1]     ) \
-  + ((unsigned)((uint8_t *)(&x))[0] << 8) )
+#define BH32(p) \
+  ( ((unsigned)((uint8_t *)(p))[3]      ) \
+  + ((unsigned)((uint8_t *)(p))[2] <<  8) \
+  + ((unsigned)((uint8_t *)(p))[1] << 16) \
+  + ((unsigned)((uint8_t *)(p))[0] << 24) )
 
 
 /**

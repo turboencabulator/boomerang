@@ -20,14 +20,6 @@
 #include <cstdio>
 #include <cstring>
 
-// Macro to convert a pointer to a Big Endian integer into a host integer
-#define UC(p) ((unsigned char *)p)
-#define UINT4(p) \
-	( (UC(p)[0] << 24) \
-	+ (UC(p)[1] << 16) \
-	+ (UC(p)[2] <<  8) \
-	+  UC(p)[3])
-
 HpSomBinaryFile::HpSomBinaryFile()
 {
 }
@@ -134,7 +126,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 
 	// Check type at offset 0x0; should be 0x0210 or 0x20B then
 	// 0107, 0108, or 010B
-	unsigned magic = UINT4(m_pImage);
+	unsigned magic = BH32(m_pImage);
 	unsigned system_id = magic >> 16;
 	unsigned a_magic = magic & 0xFFFF;
 	if (((system_id != 0x210) && (system_id != 0x20B))
@@ -145,9 +137,9 @@ HpSomBinaryFile::load(std::istream &ifs)
 	}
 
 	// Find the array of aux headers
-	unsigned auxHeaders = UINT4(m_pImage + 0x1c);
+	unsigned auxHeaders = BH32(m_pImage + 0x1c);
 	// Get the size of the aux headers
-	unsigned sizeAux = UINT4(m_pImage + 0x20);
+	unsigned sizeAux = BH32(m_pImage + 0x20);
 	if (!auxHeaders || !sizeAux) {
 		fprintf(stderr, "Error: auxiliary header array is not present\n");
 		return false;
@@ -157,13 +149,13 @@ HpSomBinaryFile::load(std::istream &ifs)
 	bool found = false;
 	unsigned maxAux = auxHeaders + sizeAux;
 	while (auxHeaders < maxAux) {
-		if ((UINT4(m_pImage + auxHeaders) & 0xFFFF) == 0x0004) {
+		if ((BH32(m_pImage + auxHeaders) & 0xFFFF) == 0x0004) {
 			found = true;
 			break;
 		}
 		// Skip this one; length is at the second word and does NOT include
 		// the 2-word header.  Round the length up to the next word boundary.
-		auxHeaders += (UINT4(m_pImage + auxHeaders + 4) + 11) & ~3;
+		auxHeaders += (BH32(m_pImage + auxHeaders + 4) + 11) & ~3;
 	}
 	if (!found) {
 		fprintf(stderr, "Error: Exec auxiliary header not found\n");
@@ -171,25 +163,25 @@ HpSomBinaryFile::load(std::istream &ifs)
 	}
 
 	// Find the main symbol table, if it exists
-	const char *symPtr = (const char *)m_pImage + UINT4(m_pImage + 0x5C);
-	unsigned numSym = UINT4(m_pImage + 0x60);
+	const char *symPtr = (const char *)m_pImage + BH32(m_pImage + 0x5C);
+	unsigned numSym = BH32(m_pImage + 0x60);
 
 	// Find the DL Table, if it exists
 	// The DL table (Dynamic Link info?) is supposed to be at the start of
 	// the $TEXT$ space, but the only way I can presently find that is to
 	// assume that the first subspace entry points to it
-	char *subspace_location = (char *)m_pImage + UINT4(m_pImage + 0x34);
-	ADDRESS first_subspace_fileloc = UINT4(subspace_location + 8);
+	char *subspace_location = (char *)m_pImage + BH32(m_pImage + 0x34);
+	ADDRESS first_subspace_fileloc = BH32(subspace_location + 8);
 	char *DLTable = (char *)m_pImage + first_subspace_fileloc;
-	const char *pDlStrings = DLTable + UINT4(DLTable + 0x28);
-	unsigned numImports = UINT4(DLTable + 0x14);    // Number of import strings
-	import_entry *import_list = (import_entry *)(DLTable + UINT4(DLTable + 0x10));
-	unsigned numExports = UINT4(DLTable + 0x24);    // Number of export strings
-	export_entry *export_list = (export_entry *)(DLTable + UINT4(DLTable + 0x20));
+	const char *pDlStrings = DLTable + BH32(DLTable + 0x28);
+	unsigned numImports = BH32(DLTable + 0x14);    // Number of import strings
+	import_entry *import_list = (import_entry *)(DLTable + BH32(DLTable + 0x10));
+	unsigned numExports = BH32(DLTable + 0x24);    // Number of export strings
+	export_entry *export_list = (export_entry *)(DLTable + BH32(DLTable + 0x20));
 
 // A convenient macro for accessing the fields (0-11) of the auxiliary header
 // Fields 0, 1 are the header (flags, aux header type, and size)
-#define AUXHDR(idx) (UINT4(m_pImage + auxHeaders + 4*idx))
+#define AUXHDR(idx) (BH32(m_pImage + auxHeaders + 4*idx))
 
 	// Allocate the section information. There will be just four entries:
 	// one for the header, one for text, one for initialised data, one for BSS
@@ -268,7 +260,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	// Note: DLT entries come before PLT entries in the import array, but
 	// the $DLT$ subsection is not necessarily just before the $PLT$
 	// subsection in memory.
-	int numDLT = UINT4(DLTable + 0x40);
+	int numDLT = BH32(DLTable + 0x40);
 
 	// This code was for pattern patching the BOR (Bind On Reference, or library call stub) routines. It appears to be
 	// unnecessary, since as they appear in the file, the PLT entries point to the BORs
@@ -300,7 +292,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	plt_record *PLTs = (plt_record *)(pltStart + deltaData);
 	for (; u < numImports; ++u, ++v) {
 		//cout << "Importing " << (pDlStrings+import_list[u].name) << endl;
-		symbols.Add(PLTs[v].value, pDlStrings + UINT4(&import_list[u].name));
+		symbols.Add(PLTs[v].value, pDlStrings + BH32(&import_list[u].name));
 		// Add it to the set of imports; needed by isDynamicLinkedProc()
 		imports.insert(PLTs[v].value);
 		//cout << "Added import sym " << (import_list[u].name + pDlStrings) << ", value " << hex << PLTs[v].value << endl;
@@ -308,10 +300,10 @@ HpSomBinaryFile::load(std::istream &ifs)
 	// Work through the exports, and find main. This isn't main itself,
 	// but in fact a call to main.
 	for (u = 0; u < numExports; ++u) {
-		//cout << "Exporting " << (pDlStrings+UINT4(&export_list[u].name)) << " value " << hex << UINT4(&export_list[u].value) << endl;
-		if (strncmp(pDlStrings + UINT4(&export_list[u].name), "main", 4) == 0) {
+		//cout << "Exporting " << (pDlStrings+BH32(&export_list[u].name)) << " value " << hex << BH32(&export_list[u].value) << endl;
+		if (strncmp(pDlStrings + BH32(&export_list[u].name), "main", 4) == 0) {
 			// Enter the symbol "_callmain" for this address
-			symbols.Add(UINT4(&export_list[u].value), "_callmain");
+			symbols.Add(BH32(&export_list[u].value), "_callmain");
 			// Found call to main. Extract the offset. See assemble_17
 			// in pa-risc 1.1 manual page 5-9
 			// +--------+--------+--------+----+------------+-+-+
@@ -323,25 +315,25 @@ HpSomBinaryFile::load(std::istream &ifs)
 			// +----------------------+--------+-----+----------+
 			//  31                  16|15    11| 10  |9        0
 
-			unsigned bincall = *(unsigned *)(UINT4(&export_list[u].value) + deltaText);
+			unsigned bincall = *(unsigned *)(BH32(&export_list[u].value) + deltaText);
 			int offset = (((bincall & 1) << 31) >> 15)     // w
 			           | ((bincall & 0x1f0000) >> 5)       // w1
 			           | ((bincall &        4) << 8)       // w2@10
 			           | ((bincall &   0x1ff8) >> 3);      // w2@0..9
 			// Address of main is st + 8 + offset << 2
-			symbols.Add(UINT4(&export_list[u].value) + 8 + (offset << 2), "main");
+			symbols.Add(BH32(&export_list[u].value) + 8 + (offset << 2), "main");
 			break;
 		}
 	}
 
 	// Read the main symbol table, if any
 	if (numSym) {
-		const char *pNames = (const char *)(m_pImage + (int)UINT4(m_pImage + 0x6C));
+		const char *pNames = (const char *)(m_pImage + (int)BH32(m_pImage + 0x6C));
 #define SYMSIZE 20              // 5 4-byte words per symbol entry
-#define SYMBOLNM(idx)  (UINT4(symPtr + idx*SYMSIZE + 4))
-#define SYMBOLAUX(idx) (UINT4(symPtr + idx*SYMSIZE + 8))
-#define SYMBOLVAL(idx) (UINT4(symPtr + idx*SYMSIZE + 16))
-#define SYMBOLTY(idx)  ((UINT4(symPtr + idx*SYMSIZE) >> 24) & 0x3f)
+#define SYMBOLNM(idx)  (BH32(symPtr + idx*SYMSIZE + 4))
+#define SYMBOLAUX(idx) (BH32(symPtr + idx*SYMSIZE + 8))
+#define SYMBOLVAL(idx) (BH32(symPtr + idx*SYMSIZE + 16))
+#define SYMBOLTY(idx)  ((BH32(symPtr + idx*SYMSIZE) >> 24) & 0x3f)
 		for (u = 0; u < numSym; ++u) {
 			// cout << "Symbol " << pNames+SYMBOLNM(u) << ", type " << SYMBOLTY(u) << ", value " << hex << SYMBOLVAL(u) << ", aux " << SYMBOLAUX(u) << endl;
 			unsigned symbol_type = SYMBOLTY(u);
@@ -403,7 +395,7 @@ HpSomBinaryFile::PostLoad(void *handle)
 bool
 HpSomBinaryFile::isLibrary() const
 {
-	int type =  UINT4(m_pImage) & 0xFFFF;
+	int type =  BH32(m_pImage) & 0xFFFF;
 	return type == 0x0104 || type == 0x010D
 	    || type == 0x010E || type == 0x0619;
 }
@@ -417,7 +409,7 @@ HpSomBinaryFile::getImageBase() const
 size_t
 HpSomBinaryFile::getImageSize() const
 {
-	return UINT4(m_pImage + 0x24);
+	return BH32(m_pImage + 0x24);
 }
 #endif
 
@@ -460,17 +452,17 @@ HpSomBinaryFile::getSubspaceInfo(const char *ssname) const
 {
 	std::pair<ADDRESS, int> ret(0, 0);
 	// Get the start and length of the subspace with the given name
-	struct subspace_dictionary_record *subSpaces = (struct subspace_dictionary_record *)(m_pImage + UINT4(m_pImage + 0x34));
-	unsigned numSubSpaces = UINT4(m_pImage + 0x38);
-	const char *spaceStrings = (const char *)(m_pImage + UINT4(m_pImage + 0x44));
+	struct subspace_dictionary_record *subSpaces = (struct subspace_dictionary_record *)(m_pImage + BH32(m_pImage + 0x34));
+	unsigned numSubSpaces = BH32(m_pImage + 0x38);
+	const char *spaceStrings = (const char *)(m_pImage + BH32(m_pImage + 0x44));
 	for (unsigned u = 0; u < numSubSpaces; ++u) {
-		const char *thisName = spaceStrings + UINT4(&subSpaces[u].name);
-		unsigned thisNameSize = UINT4(spaceStrings + UINT4(&subSpaces[u].name) - 4);
+		const char *thisName = spaceStrings + BH32(&subSpaces[u].name);
+		unsigned thisNameSize = BH32(spaceStrings + BH32(&subSpaces[u].name) - 4);
 		//cout << "Subspace " << thisName << " starts " << hex << subSpaces[u].subspace_start << " length " << subSpaces[u].subspace_length << endl;
 		if (thisNameSize == strlen(ssname)
 		 && strcmp(thisName, ssname) == 0) {
-			ret.first = UINT4(&subSpaces[u].subspace_start);
-			ret.second = UINT4(&subSpaces[u].subspace_length);
+			ret.first = BH32(&subSpaces[u].subspace_start);
+			ret.second = BH32(&subSpaces[u].subspace_length);
 			return ret;
 		}
 	}
@@ -508,19 +500,19 @@ HpSomBinaryFile::getDynamicGlobalMap()
 	// The DL table (Dynamic Link info) is supposed to be at the start of
 	// the $TEXT$ space, but the only way I can presently find that is to
 	// assume that the first subspace entry points to it
-	const char *subspace_location = (const char *)m_pImage + UINT4(m_pImage + 0x34);
-	ADDRESS first_subspace_fileloc = UINT4(subspace_location + 8);
+	const char *subspace_location = (const char *)m_pImage + BH32(m_pImage + 0x34);
+	ADDRESS first_subspace_fileloc = BH32(subspace_location + 8);
 	const char *DLTable = (const char *)m_pImage + first_subspace_fileloc;
 
-	unsigned numDLT = UINT4(DLTable + 0x40);
+	unsigned numDLT = BH32(DLTable + 0x40);
 	// Offset 0x38 in the DL table has the offset relative to $DATA$ (section 2)
-	unsigned *p = (unsigned *)(UINT4(DLTable + 0x38) + sections[2].uHostAddr);
+	unsigned *p = (unsigned *)(BH32(DLTable + 0x38) + sections[2].uHostAddr);
 
 	// The DLT is paralelled by the first <numDLT> entries in the import table;
 	// the import table has the symbolic names
-	const import_entry *import_list = (import_entry *)(DLTable + UINT4(DLTable + 0x10));
+	const import_entry *import_list = (import_entry *)(DLTable + BH32(DLTable + 0x10));
 	// Those names are in the DLT string table
-	const char *pDlStrings = DLTable + UINT4(DLTable + 0x28);
+	const char *pDlStrings = DLTable + BH32(DLTable + 0x28);
 
 	auto ret = new std::map<ADDRESS, const char *>;
 	for (unsigned u = 0; u < numDLT; ++u) {
@@ -546,7 +538,7 @@ HpSomBinaryFile::getMainEntryPoint()
 		return 0;
 	}
 	// Expect a bl <main>, rp instruction
-	unsigned instr = UINT4(sections[1].uHostAddr + mainExport - sections[1].uNativeAddr);
+	unsigned instr = BH32(sections[1].uHostAddr + mainExport - sections[1].uNativeAddr);
 	int disp;
 	// Standard form: sub-opcode 0, target register = 2
 	if (instr >> 26 == 0x3A

@@ -539,21 +539,21 @@ MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
 unsigned int
 MachOBinaryFile::BMMH(const void *x) const
 {
-	if (swap_bytes) return (unsigned int)_BMMH(x);
+	if (swap_bytes) return (unsigned int)BH32(&x);
 	else return (unsigned int)x;
 }
 
 uint32_t
 MachOBinaryFile::BMMH(uint32_t x) const
 {
-	if (swap_bytes) return _BMMH(x);
+	if (swap_bytes) return BH32(&x);
 	else return x;
 }
 
 unsigned short
 MachOBinaryFile::BMMHW(unsigned short x) const
 {
-	if (swap_bytes) return _BMMHW(x);
+	if (swap_bytes) return BH16(&x);
 	else return x;
 }
 

@@ -68,7 +68,7 @@ magic(std::istream &ifs)
 		return LOADFMT_COFF;
 	} else if (TESTMAGIC2(buf, 0, 'M', 'Z')) {
 		/* DOS-based file */
-		int peoff = LMMH(buf[0x3c]);
+		int peoff = LH32(&buf[0x3c]);
 		if (peoff != 0
 		 && ifs.seekg(peoff).read(buf, 4).good()) {
 			if (TESTMAGIC4(buf, 0, 'P', 'E', '\0', '\0')) {

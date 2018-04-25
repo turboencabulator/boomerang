@@ -24,11 +24,6 @@
 #include <cstdio>
 #include <cstring>
 
-// Macro to convert a pointer to a Big Endian integer into a host integer
-#define UC(p) ((unsigned char*)p)
-#define UINT4(p) ((UC(p)[0] << 24) + (UC(p)[1] << 16) + (UC(p)[2] << 8) + \
-    UC(p)[3])
-
 PalmBinaryFile::PalmBinaryFile()
 {
 }
@@ -94,7 +89,7 @@ PalmBinaryFile::load(std::istream &ifs)
 		// Join the id to the name, e.g. code0, data12
 		sect.name = name + std::to_string(id);
 
-		off = UINT4(p);
+		off = BH32(p);
 		p += 4;
 		sect.uNativeAddr = off;
 		sect.uHostAddr = (char *)m_pImage + off;
@@ -130,9 +125,9 @@ PalmBinaryFile::load(std::istream &ifs)
 	// When the info is all boiled down, the two things we need from the
 	// code 0 section are at offset 0, the size of data above a5, and at
 	// offset 4, the size below. Save the size below as a member variable
-	m_SizeBelowA5 = UINT4(pCode0->uHostAddr + 4);
+	m_SizeBelowA5 = BH32(pCode0->uHostAddr + 4);
 	// Total size is this plus the amount above (>=) a5
-	unsigned sizeData = m_SizeBelowA5 + UINT4(pCode0->uHostAddr);
+	unsigned sizeData = m_SizeBelowA5 + BH32(pCode0->uHostAddr);
 
 	// Allocate a new data section
 	m_pData = new unsigned char[sizeData];
@@ -153,7 +148,7 @@ PalmBinaryFile::load(std::istream &ifs)
 	for (int i = 0; i < 3; ++i) {
 		done = false;
 		if (in < 4) break;
-		int start = (int)UINT4(p);
+		int start = (int)BH32(p);
 		p += 4; in -= 4;
 		start += m_SizeBelowA5;
 		if (start < 0 || start >= sizeData) break;

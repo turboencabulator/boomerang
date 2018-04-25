@@ -79,7 +79,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 		case 0xE8:  // An ordinary call
 			if (gotSubEbp) {
 				// This is the call we want. Get the offset from the call instruction
-				unsigned addr = nativeOrigin + p + 5 + LMMH(*(p + base + 1));
+				unsigned addr = nativeOrigin + p + 5 + LH32(p + base + 1);
 				// std::cerr << "__CMain at " << std::hex << addr << "\n";
 				return addr;
 			}
@@ -118,54 +118,54 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	uint32_t lxoff;
 	ifs.seekg(0x3c);
 	ifs.read((char *)&lxoff, sizeof lxoff);
-	lxoff = LMMH(lxoff);
+	lxoff = LH32(&lxoff);
 
 	m_pLXHeader = new LXHeader;
 	ifs.seekg(lxoff);
 	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
-	m_pLXHeader->formatlvl               = LMMH(m_pLXHeader->formatlvl);
-	m_pLXHeader->cputype                 = LMMH(m_pLXHeader->cputype);
-	m_pLXHeader->ostype                  = LMMH(m_pLXHeader->ostype);
-	m_pLXHeader->modulever               = LMMH(m_pLXHeader->modulever);
-	m_pLXHeader->moduleflags             = LMMH(m_pLXHeader->moduleflags);
-	m_pLXHeader->modulenumpages          = LMMH(m_pLXHeader->modulenumpages);
-	m_pLXHeader->eipobjectnum            = LMMH(m_pLXHeader->eipobjectnum);
-	m_pLXHeader->eip                     = LMMH(m_pLXHeader->eip);
-	m_pLXHeader->espobjectnum            = LMMH(m_pLXHeader->espobjectnum);
-	m_pLXHeader->esp                     = LMMH(m_pLXHeader->esp);
-	m_pLXHeader->pagesize                = LMMH(m_pLXHeader->pagesize);
-	m_pLXHeader->pageoffsetshift         = LMMH(m_pLXHeader->pageoffsetshift);
-	m_pLXHeader->fixupsectionsize        = LMMH(m_pLXHeader->fixupsectionsize);
-	m_pLXHeader->fixupsectionchksum      = LMMH(m_pLXHeader->fixupsectionchksum);
-	m_pLXHeader->loadersectionsize       = LMMH(m_pLXHeader->loadersectionsize);
-	m_pLXHeader->loadersectionchksum     = LMMH(m_pLXHeader->loadersectionchksum);
-	m_pLXHeader->objtbloffset            = LMMH(m_pLXHeader->objtbloffset);
-	m_pLXHeader->numobjsinmodule         = LMMH(m_pLXHeader->numobjsinmodule);
-	m_pLXHeader->objpagetbloffset        = LMMH(m_pLXHeader->objpagetbloffset);
-	m_pLXHeader->objiterpagesoffset      = LMMH(m_pLXHeader->objiterpagesoffset);
-	m_pLXHeader->resourcetbloffset       = LMMH(m_pLXHeader->resourcetbloffset);
-	m_pLXHeader->numresourcetblentries   = LMMH(m_pLXHeader->numresourcetblentries);
-	m_pLXHeader->residentnametbloffset   = LMMH(m_pLXHeader->residentnametbloffset);
-	m_pLXHeader->entrytbloffset          = LMMH(m_pLXHeader->entrytbloffset);
-	m_pLXHeader->moduledirectivesoffset  = LMMH(m_pLXHeader->moduledirectivesoffset);
-	m_pLXHeader->nummoduledirectives     = LMMH(m_pLXHeader->nummoduledirectives);
-	m_pLXHeader->fixuppagetbloffset      = LMMH(m_pLXHeader->fixuppagetbloffset);
-	m_pLXHeader->fixuprecordtbloffset    = LMMH(m_pLXHeader->fixuprecordtbloffset);
-	m_pLXHeader->importtbloffset         = LMMH(m_pLXHeader->importtbloffset);
-	m_pLXHeader->numimportmoduleentries  = LMMH(m_pLXHeader->numimportmoduleentries);
-	m_pLXHeader->importproctbloffset     = LMMH(m_pLXHeader->importproctbloffset);
-	m_pLXHeader->perpagechksumoffset     = LMMH(m_pLXHeader->perpagechksumoffset);
-	m_pLXHeader->datapagesoffset         = LMMH(m_pLXHeader->datapagesoffset);
-	m_pLXHeader->numpreloadpages         = LMMH(m_pLXHeader->numpreloadpages);
-	m_pLXHeader->nonresnametbloffset     = LMMH(m_pLXHeader->nonresnametbloffset);
-	m_pLXHeader->nonresnametbllen        = LMMH(m_pLXHeader->nonresnametbllen);
-	m_pLXHeader->nonresnametblchksum     = LMMH(m_pLXHeader->nonresnametblchksum);
-	m_pLXHeader->autodsobjectnum         = LMMH(m_pLXHeader->autodsobjectnum);
-	m_pLXHeader->debuginfooffset         = LMMH(m_pLXHeader->debuginfooffset);
-	m_pLXHeader->debuginfolen            = LMMH(m_pLXHeader->debuginfolen);
-	m_pLXHeader->numinstancepreload      = LMMH(m_pLXHeader->numinstancepreload);
-	m_pLXHeader->numinstancedemand       = LMMH(m_pLXHeader->numinstancedemand);
-	m_pLXHeader->heapsize                = LMMH(m_pLXHeader->heapsize);
+	m_pLXHeader->formatlvl               = LH32(&m_pLXHeader->formatlvl);
+	m_pLXHeader->cputype                 = LH32(&m_pLXHeader->cputype);
+	m_pLXHeader->ostype                  = LH32(&m_pLXHeader->ostype);
+	m_pLXHeader->modulever               = LH32(&m_pLXHeader->modulever);
+	m_pLXHeader->moduleflags             = LH32(&m_pLXHeader->moduleflags);
+	m_pLXHeader->modulenumpages          = LH32(&m_pLXHeader->modulenumpages);
+	m_pLXHeader->eipobjectnum            = LH32(&m_pLXHeader->eipobjectnum);
+	m_pLXHeader->eip                     = LH32(&m_pLXHeader->eip);
+	m_pLXHeader->espobjectnum            = LH32(&m_pLXHeader->espobjectnum);
+	m_pLXHeader->esp                     = LH32(&m_pLXHeader->esp);
+	m_pLXHeader->pagesize                = LH32(&m_pLXHeader->pagesize);
+	m_pLXHeader->pageoffsetshift         = LH32(&m_pLXHeader->pageoffsetshift);
+	m_pLXHeader->fixupsectionsize        = LH32(&m_pLXHeader->fixupsectionsize);
+	m_pLXHeader->fixupsectionchksum      = LH32(&m_pLXHeader->fixupsectionchksum);
+	m_pLXHeader->loadersectionsize       = LH32(&m_pLXHeader->loadersectionsize);
+	m_pLXHeader->loadersectionchksum     = LH32(&m_pLXHeader->loadersectionchksum);
+	m_pLXHeader->objtbloffset            = LH32(&m_pLXHeader->objtbloffset);
+	m_pLXHeader->numobjsinmodule         = LH32(&m_pLXHeader->numobjsinmodule);
+	m_pLXHeader->objpagetbloffset        = LH32(&m_pLXHeader->objpagetbloffset);
+	m_pLXHeader->objiterpagesoffset      = LH32(&m_pLXHeader->objiterpagesoffset);
+	m_pLXHeader->resourcetbloffset       = LH32(&m_pLXHeader->resourcetbloffset);
+	m_pLXHeader->numresourcetblentries   = LH32(&m_pLXHeader->numresourcetblentries);
+	m_pLXHeader->residentnametbloffset   = LH32(&m_pLXHeader->residentnametbloffset);
+	m_pLXHeader->entrytbloffset          = LH32(&m_pLXHeader->entrytbloffset);
+	m_pLXHeader->moduledirectivesoffset  = LH32(&m_pLXHeader->moduledirectivesoffset);
+	m_pLXHeader->nummoduledirectives     = LH32(&m_pLXHeader->nummoduledirectives);
+	m_pLXHeader->fixuppagetbloffset      = LH32(&m_pLXHeader->fixuppagetbloffset);
+	m_pLXHeader->fixuprecordtbloffset    = LH32(&m_pLXHeader->fixuprecordtbloffset);
+	m_pLXHeader->importtbloffset         = LH32(&m_pLXHeader->importtbloffset);
+	m_pLXHeader->numimportmoduleentries  = LH32(&m_pLXHeader->numimportmoduleentries);
+	m_pLXHeader->importproctbloffset     = LH32(&m_pLXHeader->importproctbloffset);
+	m_pLXHeader->perpagechksumoffset     = LH32(&m_pLXHeader->perpagechksumoffset);
+	m_pLXHeader->datapagesoffset         = LH32(&m_pLXHeader->datapagesoffset);
+	m_pLXHeader->numpreloadpages         = LH32(&m_pLXHeader->numpreloadpages);
+	m_pLXHeader->nonresnametbloffset     = LH32(&m_pLXHeader->nonresnametbloffset);
+	m_pLXHeader->nonresnametbllen        = LH32(&m_pLXHeader->nonresnametbllen);
+	m_pLXHeader->nonresnametblchksum     = LH32(&m_pLXHeader->nonresnametblchksum);
+	m_pLXHeader->autodsobjectnum         = LH32(&m_pLXHeader->autodsobjectnum);
+	m_pLXHeader->debuginfooffset         = LH32(&m_pLXHeader->debuginfooffset);
+	m_pLXHeader->debuginfolen            = LH32(&m_pLXHeader->debuginfolen);
+	m_pLXHeader->numinstancepreload      = LH32(&m_pLXHeader->numinstancepreload);
+	m_pLXHeader->numinstancedemand       = LH32(&m_pLXHeader->numinstancedemand);
+	m_pLXHeader->heapsize                = LH32(&m_pLXHeader->heapsize);
 
 	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {
 		fprintf(stderr, "error loading file %s, bad LE/LX magic\n", getFilename());
@@ -177,12 +177,12 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	ifs.read((char *)m_pLXObjects, sizeof *m_pLXObjects * m_pLXHeader->numobjsinmodule);
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
 		auto &obj = m_pLXObjects[n];
-		obj.VirtualSize       = LMMH(obj.VirtualSize);
-		obj.RelocBaseAddr     = LMMH(obj.RelocBaseAddr);
-		obj.ObjectFlags       = LMMH(obj.ObjectFlags);
-		obj.PageTblIdx        = LMMH(obj.PageTblIdx);
-		obj.NumPageTblEntries = LMMH(obj.NumPageTblEntries);
-		obj.Reserved1         = LMMH(obj.Reserved1);
+		obj.VirtualSize       = LH32(&obj.VirtualSize);
+		obj.RelocBaseAddr     = LH32(&obj.RelocBaseAddr);
+		obj.ObjectFlags       = LH32(&obj.ObjectFlags);
+		obj.PageTblIdx        = LH32(&obj.PageTblIdx);
+		obj.NumPageTblEntries = LH32(&obj.NumPageTblEntries);
+		obj.Reserved1         = LH32(&obj.Reserved1);
 	}
 
 	// at this point we're supposed to read in the page table and fuss around with it
@@ -255,7 +255,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	ifs.seekg(m_pLXHeader->fixuppagetbloffset + lxoff);
 	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
 	for (unsigned n = 0; n < npages + 1; ++n) {
-		fixuppagetbl[n] = LMMH(fixuppagetbl[n]);
+		fixuppagetbl[n] = LH32(&fixuppagetbl[n]);
 	}
 
 #if 0
@@ -269,7 +269,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	do {
 		LXFixup fixup;
 		ifs.read((char *)&fixup, sizeof fixup);
-		fixup.srcoff = LMMHw(fixup.srcoff);
+		fixup.srcoff = LH16(&fixup.srcoff);
 
 		if (fixup.src != 7 || (fixup.flags & ~0x50)) {
 			fprintf(stderr, "unknown fixup type %02x %02x\n", fixup.src, fixup.flags);
@@ -287,7 +287,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			ifs.read((char *)&trgoff, 4);
 		else
 			ifs.read((char *)&trgoff, 2);
-		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + LMMHw(trgoff);
+		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + LH16(&trgoff);
 		//printf("relocate dword at %x to point to %x\n", src, target);
 		*(unsigned int *)(base + src) = target;
 

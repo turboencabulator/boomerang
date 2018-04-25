@@ -51,19 +51,19 @@ ExeBinaryFile::load(std::istream &ifs)
 			fprintf(stderr, "Cannot read file %s\n", getFilename());
 			return false;
 		}
-		m_pHeader->lastPageSize   = LH(&m_pHeader->lastPageSize);
-		m_pHeader->numPages       = LH(&m_pHeader->numPages);
-		m_pHeader->numReloc       = LH(&m_pHeader->numReloc);
-		m_pHeader->numParaHeader  = LH(&m_pHeader->numParaHeader);
-		m_pHeader->minAlloc       = LH(&m_pHeader->minAlloc);
-		m_pHeader->maxAlloc       = LH(&m_pHeader->maxAlloc);
-		m_pHeader->initSS         = LH(&m_pHeader->initSS);
-		m_pHeader->initSP         = LH(&m_pHeader->initSP);
-		m_pHeader->checkSum       = LH(&m_pHeader->checkSum);
-		m_pHeader->initIP         = LH(&m_pHeader->initIP);
-		m_pHeader->initCS         = LH(&m_pHeader->initCS);
-		m_pHeader->relocTabOffset = LH(&m_pHeader->relocTabOffset);
-		m_pHeader->overlayNum     = LH(&m_pHeader->overlayNum);
+		m_pHeader->lastPageSize   = LH16(&m_pHeader->lastPageSize);
+		m_pHeader->numPages       = LH16(&m_pHeader->numPages);
+		m_pHeader->numReloc       = LH16(&m_pHeader->numReloc);
+		m_pHeader->numParaHeader  = LH16(&m_pHeader->numParaHeader);
+		m_pHeader->minAlloc       = LH16(&m_pHeader->minAlloc);
+		m_pHeader->maxAlloc       = LH16(&m_pHeader->maxAlloc);
+		m_pHeader->initSS         = LH16(&m_pHeader->initSS);
+		m_pHeader->initSP         = LH16(&m_pHeader->initSP);
+		m_pHeader->checkSum       = LH16(&m_pHeader->checkSum);
+		m_pHeader->initIP         = LH16(&m_pHeader->initIP);
+		m_pHeader->initCS         = LH16(&m_pHeader->initCS);
+		m_pHeader->relocTabOffset = LH16(&m_pHeader->relocTabOffset);
+		m_pHeader->overlayNum     = LH16(&m_pHeader->overlayNum);
 
 		/* This is a typical DOS kludge! */
 		if (m_pHeader->relocTabOffset == 0x40) {
@@ -101,7 +101,7 @@ ExeBinaryFile::load(std::istream &ifs)
 			for (int i = 0; i < m_cReloc; ++i) {
 				uint8_t buf[4];
 				ifs.read((char *)buf, 4);
-				m_pRelocTable[i] = LH(buf) + ((int)LH(buf + 2) << 4);
+				m_pRelocTable[i] = LH16(buf) + ((int)LH16(buf + 2) << 4);
 			}
 		}
 
@@ -142,7 +142,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	/* Relocate segment constants */
 	for (int i = 0; i < m_cReloc; ++i) {
 		uint8_t *p = &m_pImage[m_pRelocTable[i]];
-		uint16_t w = (uint16_t)LH(p);
+		uint16_t w = (uint16_t)LH16(p);
 		*p++       = (uint8_t)(w & 0x00FF);
 		*p         = (uint8_t)((w & 0xFF00) >> 8);
 	}
