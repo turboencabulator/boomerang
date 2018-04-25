@@ -227,8 +227,8 @@ public:
 	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const;
 	virtual int         getSizeByName(const char *pName, bool bTypeOK = false) const;
 	virtual const char *getFilenameSymbolFor(const std::string &sym) { return nullptr; }
-	virtual ADDRESS    *getImportStubs(int &numImports);
-	virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
+	//virtual ADDRESS    *getImportStubs(int &numImports);
+	//virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
 	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
 	//virtual const std::map<ADDRESS, std::string> &getFuncSymbols() const { return *new std::map<ADDRESS, std::string>(); }
 	virtual const std::map<ADDRESS, std::string> &getSymbols() const { return *new std::map<ADDRESS, std::string>(); }

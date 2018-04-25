@@ -201,8 +201,8 @@ public:
 	const char *getFilenameSymbolFor(const std::string &sym) override;
 	int         getDistanceByName(const char *pName, const char *pSectName);
 	int         getDistanceByName(const char *pName);
-	ADDRESS    *getImportStubs(int &numImports) override;
-	std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) override;
+	//ADDRESS    *getImportStubs(int &numImports) override;
+	//std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) override;
 	//std::map<ADDRESS, const char *> *getDynamicGlobalMap() override;
 	const std::map<ADDRESS, std::string> &getSymbols() const override { return m_SymTab; }
 	/** \} */

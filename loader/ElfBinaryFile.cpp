@@ -356,6 +356,7 @@ ElfBinaryFile::AddSyms(int secIndex)
 	return;
 }
 
+#if 0 // Cruft?
 std::vector<ADDRESS>
 ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 {
@@ -404,6 +405,7 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 	}
 	return exported;
 }
+#endif
 
 #if 0 // Cruft?
 /**
@@ -793,6 +795,7 @@ ElfBinaryFile::getImageSize() const
 }
 #endif
 
+#if 0 // Cruft?
 /**
  * \brief Get an array of addresses of imported function stubs.
  *
@@ -840,6 +843,7 @@ ElfBinaryFile::getImportStubs(int &numImports)
 	numImports = n;
 	return m_pImportStubs;
 }
+#endif
 
 #if 0 // Cruft?
 std::map<ADDRESS, const char *> *

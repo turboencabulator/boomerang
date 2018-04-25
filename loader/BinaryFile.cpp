@@ -357,6 +357,7 @@ BinaryFile::getDynamicGlobalMap()
 }
 #endif
 
+#if 0 // Cruft?
 /**
  * \brief Get an array of exported function stub addresses.
  * Normally overridden.
@@ -370,6 +371,7 @@ BinaryFile::getImportStubs(int &numImports)
 	numImports = 0;
 	return nullptr;
 }
+#endif
 
 /**
  * \brief Get the lower and upper limits of the text segment.
