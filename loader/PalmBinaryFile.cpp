@@ -59,7 +59,7 @@ PalmBinaryFile::load(std::istream &ifs)
 	}
 
 	// Get the number of resource headers (one section per resource)
-	int numSections = (m_pImage[0x4C] << 8) + m_pImage[0x4D];
+	int numSections = BH16(m_pImage + 0x4C);
 
 	// Allocate the section information
 	sections.reserve(numSections);
@@ -78,7 +78,7 @@ PalmBinaryFile::load(std::istream &ifs)
 		p += 4;
 
 		// Now get the identifier (2 byte binary)
-		unsigned id = (p[0] << 8) + p[1];
+		unsigned id = BH16(p);
 		p += 2;
 
 		// Decide if code or data
@@ -345,10 +345,7 @@ PalmBinaryFile::getAppID() const
 		return 0;
 	// Beware the endianness (large)
 #define OFFSET_ID 0x40
-	return (m_pImage[OFFSET_ID]     << 24)
-	     + (m_pImage[OFFSET_ID + 1] << 16)
-	     + (m_pImage[OFFSET_ID + 2] <<  8)
-	     + (m_pImage[OFFSET_ID + 3]);
+	return BH32(m_pImage + OFFSET_ID);
 }
 
 // Patterns for Code Warrior

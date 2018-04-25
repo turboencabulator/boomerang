@@ -901,11 +901,10 @@ ElfBinaryFile::getDynamicGlobalMap()
 int
 ElfBinaryFile::elfRead2(const short *ps) const
 {
-	const unsigned char *p = (const unsigned char *)ps;
 	if (bigendian) {
-		return (int)((p[0] << 8) + p[1]);
+		return (int)BH16(ps);
 	} else {
-		return (int)(p[0] + (p[1] << 8));
+		return (int)LH16(ps);
 	}
 }
 
@@ -923,11 +922,11 @@ ElfBinaryFile::elfRead2(const short *ps) const
 int
 ElfBinaryFile::elfRead4(const int *pi) const
 {
-	const short *p = (const short *)pi;
 	if (bigendian) {
-		return (int)((elfRead2(p) << 16) + elfRead2(p + 1));
-	} else
-		return (int)(elfRead2(p) + (elfRead2(p + 1) << 16));
+		return (int)BH32(pi);
+	} else {
+		return (int)LH32(pi);
+	}
 }
 
 /**
