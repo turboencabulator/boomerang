@@ -293,8 +293,6 @@ protected:
 	        bool        m_bArchive;              ///< True if archive member.
 	        bool        bigendian = false;       ///< Section data in big-endian byte order?
 	        std::vector<SectionInfo> sections;   ///< The section info.
-	        ADDRESS     m_uInitPC;               ///< Initial program counter.
-	        ADDRESS     m_uInitSP;               ///< Initial stack pointer.
 
 	        ADDRESS     limitTextLow;            ///< Lowest used native address (inclusive) in the text segment.
 	        ADDRESS     limitTextHigh;           ///< Highest used native address (not inclusive) in the text segment.

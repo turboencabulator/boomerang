@@ -110,8 +110,8 @@ ExeBinaryFile::load(std::istream &ifs)
 
 		// Initial PC and SP. Note that we fake the seg:offset by putting
 		// the segment in the top half, and offset in the bottom
-		m_uInitPC = (m_pHeader->initCS << 16) + m_pHeader->initIP;
-		m_uInitSP = (m_pHeader->initSS << 16) + m_pHeader->initSP;
+		//m_uInitPC = (m_pHeader->initCS << 16) + m_pHeader->initIP;
+		//m_uInitSP = (m_pHeader->initSS << 16) + m_pHeader->initSP;
 	} else {
 		/* COM file
 		 * In this case the load module size is just the file length
@@ -123,8 +123,8 @@ ExeBinaryFile::load(std::istream &ifs)
 		 * This is also the implied start address so if we load the image
 		 * at offset 100H addresses should all line up properly again.
 		 */
-		m_uInitPC = 0x100;
-		m_uInitSP = 0xFFFE;
+		//m_uInitPC = 0x100;
+		//m_uInitSP = 0xFFFE;
 		m_cReloc = 0;
 
 		ifs.seekg(0, ifs.beg);
