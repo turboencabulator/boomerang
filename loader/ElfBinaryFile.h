@@ -186,7 +186,7 @@ private:
 	int         elfRead2(const short *ps) const;
 	int         elfRead4(const int *pi) const;
 	void        elfWrite4(int *pi, int val);
-	const char *NativeToHostAddress(ADDRESS uNative) const;
+	//const char *NativeToHostAddress(ADDRESS uNative) const;
 public:
 
 	/**
@@ -199,8 +199,8 @@ public:
 	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const override;
 	int         getSizeByName(const char *pName, bool bNoTypeOK = false) const override;
 	const char *getFilenameSymbolFor(const std::string &sym) override;
-	int         getDistanceByName(const char *pName, const char *pSectName);
-	int         getDistanceByName(const char *pName);
+	//int         getDistanceByName(const char *pName, const char *pSectName);
+	//int         getDistanceByName(const char *pName);
 	//ADDRESS    *getImportStubs(int &numImports) override;
 	//std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) override;
 	//std::map<ADDRESS, const char *> *getDynamicGlobalMap() override;

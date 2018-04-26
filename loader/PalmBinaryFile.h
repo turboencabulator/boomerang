@@ -55,8 +55,8 @@ protected:
 	//bool        PostLoad(void *handle) override;
 
 private:
-	int         getAppID() const;
-	void        generateBinFiles(const std::string &path) const;
+	//int         getAppID() const;
+	//void        generateBinFiles(const std::string &path) const;
 
 	unsigned char *m_pImage = nullptr;  ///< Points to loaded image.
 	unsigned char *m_pData = nullptr;   ///< Points to data.

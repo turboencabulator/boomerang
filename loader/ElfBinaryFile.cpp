@@ -605,6 +605,7 @@ ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */) co
 	return 0;
 }
 
+#if 0 // Cruft?
 /**
  * \brief Get the size associated with the symbol; guess if necessary.
  *
@@ -661,6 +662,7 @@ ElfBinaryFile::getDistanceByName(const char *sName)
 		return val;
 	return getDistanceByName(sName, ".dynsym");
 }
+#endif
 
 bool
 ElfBinaryFile::isDynamicLinkedProc(ADDRESS uNative) const
@@ -689,6 +691,7 @@ ElfBinaryFile::getEntryPoint() const
 	return (ADDRESS)elfRead4(&((Elf32_Ehdr *)m_pImage)->e_entry);
 }
 
+#if 0 // Cruft?
 /**
  * FIXME:  The below assumes a fixed delta.
  */
@@ -698,6 +701,7 @@ ElfBinaryFile::NativeToHostAddress(ADDRESS uNative) const
 	if (sections.size() == 0) return nullptr;
 	return &sections[1].uHostAddr[uNative - sections[1].uNativeAddr];
 }
+#endif
 
 #if 0 // Cruft?
 ADDRESS

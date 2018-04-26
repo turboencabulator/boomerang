@@ -333,6 +333,7 @@ PalmBinaryFile::getGlobalPointerInfo()
 }
 #endif
 
+#if 0 // Cruft?
 /**
  * Get the ID number for this application.  It's possible that the app uses
  * this number internally, so this needs to be used in the final make.
@@ -347,6 +348,7 @@ PalmBinaryFile::getAppID() const
 #define OFFSET_ID 0x40
 	return BH32(m_pImage + OFFSET_ID);
 }
+#endif
 
 // Patterns for Code Warrior
 #define WILD 0x4afc
@@ -440,6 +442,7 @@ PalmBinaryFile::getMainEntryPoint()
 	return NO_ADDRESS;
 }
 
+#if 0 // Cruft?
 /**
  * Generate binary files for non code and data sections.
  */
@@ -461,6 +464,7 @@ PalmBinaryFile::generateBinFiles(const std::string &path) const
 		}
 	}
 }
+#endif
 
 #ifdef DYNAMIC
 /**
