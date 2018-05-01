@@ -86,7 +86,6 @@ BasicBlock::BasicBlock(const BasicBlock &bb) :
 	m_bJumpReqd(bb.m_bJumpReqd),
 	m_InEdges(bb.m_InEdges),
 	m_OutEdges(bb.m_OutEdges),
-	m_iNumInEdges(bb.m_iNumInEdges),
 	m_iNumOutEdges(bb.m_iNumOutEdges),
 // From Doug's code
 	ord(bb.ord),
@@ -476,7 +475,6 @@ void
 BasicBlock::addInEdge(BasicBlock *pNewInEdge)
 {
 	m_InEdges.push_back(pNewInEdge);
-	++m_iNumInEdges;
 }
 
 /*==============================================================================
@@ -492,7 +490,6 @@ void
 BasicBlock::deleteInEdge(std::vector<BasicBlock *>::iterator &it)
 {
 	it = m_InEdges.erase(it);
-	--m_iNumInEdges;
 }
 
 void
@@ -928,10 +925,7 @@ BasicBlock::simplify()
 				}
 			}
 			if (VERBOSE)
-				LOG << "\n";
-			redundant->m_iNumInEdges = redundant->m_InEdges.size();
-			if (VERBOSE)
-				LOG << "   after: " << m_OutEdges[0]->getLowAddr() << "\n";
+				LOG << "\n   after: " << m_OutEdges[0]->getLowAddr() << "\n";
 		}
 		if (m_nodeType == ONEWAY) {
 			// set out edges to be the first one
@@ -958,10 +952,7 @@ BasicBlock::simplify()
 				}
 			}
 			if (VERBOSE)
-				LOG << "\n";
-			redundant->m_iNumInEdges = redundant->m_InEdges.size();
-			if (VERBOSE)
-				LOG << "   after: " << m_OutEdges[0]->getLowAddr() << "\n";
+				LOG << "\n   after: " << m_OutEdges[0]->getLowAddr() << "\n";
 		}
 	}
 }

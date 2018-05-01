@@ -298,7 +298,6 @@ Cfg::addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel /* = false 
 	// Note that the number of out edges is set at constructor time, not incremented here.
 	// Add the in edge to the destination BB
 	pDestBB->m_InEdges.push_back(pBB);
-	++pDestBB->m_iNumInEdges;           // Inc the count
 	if (bSetLabel) setLabel(pDestBB);   // Indicate "label required"
 }
 
@@ -377,7 +376,6 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 	if (!pNewBB) {
 		pNewBB = new BasicBlock(*pBB);
 		// But we don't want the top BB's in edges; our only in-edge should be the out edge from the top BB
-		pNewBB->m_iNumInEdges = 0;
 		pNewBB->m_InEdges.clear();
 		// The "bottom" BB now starts at the implicit label, so we create a new list that starts at ri. We need a new
 		// list, since it is different from the original BB's list. We don't have to "deep copy" the RTLs themselves,
@@ -398,7 +396,6 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		*pNewBB = *pBB;  // Assign the BB, copying fields. This will set m_bIncomplete false
 		// Replace the in edges (likely only one)
 		pNewBB->m_InEdges = ins;
-		pNewBB->m_iNumInEdges = ins.size();
 		// Replace the label (must be one, since we are splitting this BB!)
 		pNewBB->m_iLabelNum = label;
 		// The "bottom" BB now starts at the implicit label
@@ -660,7 +657,6 @@ Cfg::wellFormCfg()
 			}
 			// Also check that each in edge has a corresponding out edge to here (could have an extra in-edge, for
 			// example)
-			assert((int)(*it)->m_InEdges.size() == (*it)->m_iNumInEdges);
 			for (auto ii = (*it)->m_InEdges.begin(); ii != (*it)->m_InEdges.end(); ++ii) {
 				auto oo = (*ii)->m_OutEdges.begin();
 				for (; oo != (*ii)->m_OutEdges.end(); ++oo)
@@ -687,7 +683,7 @@ Cfg::mergeBBs(BasicBlock *pb1, BasicBlock *pb2)
 	// after the in-edges are done, which can only be done on a well formed CFG.
 	if (!m_bWellFormed) return false;
 	if (pb1->m_iNumOutEdges != 1) return false;
-	if (pb2->m_iNumInEdges != 1) return false;
+	if (pb2->m_InEdges.size() != 1) return false;
 	if (pb1->m_OutEdges[0] != pb2) return false;
 	if (pb2->m_InEdges[0] != pb1) return false;
 
@@ -708,7 +704,7 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 {
 	// First we replace all of pb1's predecessors' out edges that used to point to pb1 (usually only one of these) with
 	// pb2
-	for (int i = 0; i < pb1->m_iNumInEdges; ++i) {
+	for (int i = 0; i < pb1->m_InEdges.size(); ++i) {
 		BasicBlock *pPred = pb1->m_InEdges[i];
 		for (int j = 0; j < pPred->m_iNumOutEdges; ++j) {
 			if (pPred->m_OutEdges[j] == pb1)
@@ -718,7 +714,6 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 
 	// Now we replace pb2's in edges by pb1's inedges
 	pb2->m_InEdges = pb1->m_InEdges;
-	pb2->m_iNumInEdges = pb1->m_iNumInEdges;
 
 	if (bDelete) {
 		// Finally, we delete pb1 from the BB list. Note: remove(pb1) should also work, but it would involve member
@@ -822,7 +817,7 @@ Cfg::compressCfg()
 				assert(it2 != pSucc->m_InEdges.end());
 				pSucc->deleteInEdge(it2);
 				// If nothing else uses this BB (J), remove it from the CFG
-				if (pSucc->m_iNumInEdges == 0) {
+				if (pSucc->m_InEdges.size() == 0) {
 					for (auto it3 = m_listBB.begin(); it3 != m_listBB.end(); ++it3) {
 						if (*it3 == pSucc) {
 							m_listBB.erase(it3);

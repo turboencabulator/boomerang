@@ -216,7 +216,7 @@ public:
 	 */
 	        std::vector<BasicBlock *> &getInEdges();
 
-	        int         getNumInEdges() const { return m_iNumInEdges; }
+	        int         getNumInEdges() const { return m_InEdges.size(); }
 
 	/*
 	 * Get the set of out edges.
@@ -373,8 +373,7 @@ protected:
 	/* in-edges and out-edges */
 	        std::vector<BasicBlock *> m_InEdges; // Vector of in-edges
 	        std::vector<BasicBlock *> m_OutEdges;// Vector of out-edges
-	        int         m_iNumInEdges = 0;  // We need these two because GCC doesn't
-	        int         m_iNumOutEdges = 0; // support resize() of vectors!
+	        int         m_iNumOutEdges = 0; // We need this because GCC doesn't support resize() of vectors!
 
 	/* for traversal */
 	        bool        m_iTraversed = false;  // traversal marker
