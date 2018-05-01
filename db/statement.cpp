@@ -4653,8 +4653,8 @@ void
 ReturnStatement::updateModifieds()
 {
 	Signature *sig = proc->getSignature();
-	StatementList oldMods(modifieds);  // Copy the old modifieds
-	modifieds.clear();
+	auto oldMods = StatementList();
+	oldMods.swap(modifieds);
 
 	if (pbb->getNumInEdges() == 1 && pbb->getInEdges()[0]->getLastStmt()->isCall()) {
 		CallStatement *call = (CallStatement *)pbb->getInEdges()[0]->getLastStmt();
@@ -4718,8 +4718,8 @@ ReturnStatement::updateReturns()
 {
 	Signature *sig = proc->getSignature();
 	int sp = sig->getStackRegister();
-	StatementList oldRets(returns);  // Copy the old returns
-	returns.clear();
+	auto oldRets = StatementList();
+	oldRets.swap(returns);
 	// For each location in the modifieds, make sure that there is an assignment in the old returns, which will
 	// be filtered and sorted to become the new returns
 	// Ick... O(N*M) (N existing returns, M modifieds locations)
@@ -4802,8 +4802,8 @@ CallStatement::updateDefines()
 	}
 
 	// Move the defines to a temporary list
-	StatementList oldDefines(defines);  // Copy the old defines
-	defines.clear();
+	auto oldDefines = StatementList();
+	oldDefines.swap(defines);
 
 	if (procDest && calleeReturn) {
 		StatementList &modifieds = ((UserProc *)procDest)->getModifieds();
@@ -5013,8 +5013,7 @@ CallStatement::updateArguments()
 		else
 			if a forced callee signature, source = signature
 			else source is def collector in this call.
-		oldArguments = arguments
-		clear arguments
+		move arguments to oldArguments
 		for each arg lhs in source
 			if exists in oldArguments, leave alone
 			else if not filtered append assignment lhs=lhs to oldarguments
@@ -5034,8 +5033,8 @@ CallStatement::updateArguments()
 		bool convert;
 		proc->propagateStatements(convert, 88);
 	}
-	StatementList oldArguments(arguments);
-	arguments.clear();
+	auto oldArguments = StatementList();
+	oldArguments.swap(arguments);
 	if (EXPERIMENTAL) {
 		// I don't really know why this is needed, but I was seeing r28 := ((((((r28{-}-4)-4)-4)-8)-4)-4)-4:
 		for (auto dd = defCol.begin(); dd != defCol.end(); ++dd)

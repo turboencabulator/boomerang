@@ -3349,8 +3349,8 @@ UserProc::removeSubscriptsFromSymbols()
 	// However, do not remove subscripts from the outer level; they are still needed for comments in the output and also
 	// for when removing subscripts from parameters (still need the {0})
 	// Since this will potentially change the ordering of entries, need to copy the map
-	SymbolMap sm2 = symbolMap;  // Object copy
-	symbolMap.clear();
+	auto sm2 = SymbolMap();
+	sm2.swap(symbolMap);
 	ExpSsaXformer esx(this);
 	for (auto it = sm2.begin(); it != sm2.end(); ++it) {
 		Exp *from = it->first;
@@ -5339,8 +5339,8 @@ UserProc::mapLocalsAndParams()
 void
 UserProc::makeSymbolsImplicit()
 {
-	SymbolMap sm2 = symbolMap;  // Copy the whole map; necessary because the keys (Exps) change
-	symbolMap.clear();
+	auto sm2 = SymbolMap();
+	sm2.swap(symbolMap);
 	ImplicitConverter ic(cfg);
 	for (auto it = sm2.begin(); it != sm2.end(); ++it) {
 		Exp *impFrom = it->first->accept(&ic);

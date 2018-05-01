@@ -912,8 +912,8 @@ BasicBlock::simplify()
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
-			std::vector<BasicBlock *> rinedges = redundant->m_InEdges;
-			redundant->m_InEdges.clear();
+			auto rinedges = std::vector<BasicBlock *>();
+			rinedges.swap(redundant->m_InEdges);
 			for (unsigned i = 0; i < rinedges.size(); ++i) {
 				if (VERBOSE)
 					LOG << rinedges[i]->getLowAddr() << " ";
@@ -939,8 +939,8 @@ BasicBlock::simplify()
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
-			std::vector<BasicBlock *> rinedges = redundant->m_InEdges;
-			redundant->m_InEdges.clear();
+			auto rinedges = std::vector<BasicBlock *>();
+			rinedges.swap(redundant->m_InEdges);
 			for (unsigned i = 0; i < rinedges.size(); ++i) {
 				if (VERBOSE)
 					LOG << rinedges[i]->getLowAddr() << " ";

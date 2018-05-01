@@ -143,6 +143,7 @@ public:
 	iterator    insert(iterator it, Statement *s) { return slist.insert(it, s); }
 	std::string prints() const;                     // Print to string (for debugging)
 	void        clear() { slist.clear(); }
+	void        swap(StatementList &o) { slist.swap(o.slist); }
 	void        makeCloneOf(const StatementList &o);// Make this a clone of o
 	bool        existsOnLeft(Exp *loc) const;       // True if loc exists on the LHS of any Assignment in this list
 	Assignment *findOnLeft(Exp *loc) const;         // Return the first stmt with loc on the LHS

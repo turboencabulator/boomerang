@@ -683,17 +683,17 @@ void
 DataFlow::convertImplicits(Cfg *cfg)
 {
 	// Convert statements in A_phi from m[...]{-} to m[...]{0}
-	std::map<Exp *, std::set<int>, lessExpStar> A_phi_copy = A_phi;  // Object copy
 	ImplicitConverter ic(cfg);
-	A_phi.clear();
+	auto A_phi_copy = std::map<Exp *, std::set<int>, lessExpStar>();
+	A_phi_copy.swap(A_phi);
 	for (auto it = A_phi_copy.begin(); it != A_phi_copy.end(); ++it) {
 		Exp *e = it->first->clone();
 		e = e->accept(&ic);
 		A_phi[e] = it->second;  // Copy the set (doesn't have to be deep)
 	}
 
-	std::map<Exp *, std::set<int>, lessExpStar> defsites_copy = defsites;  // Object copy
-	defsites.clear();
+	auto defsites_copy = std::map<Exp *, std::set<int>, lessExpStar>();
+	defsites_copy.swap(defsites);
 	for (auto dd = A_phi_copy.begin(); dd != A_phi_copy.end(); ++dd) {
 		Exp *e = dd->first->clone();
 		e = e->accept(&ic);
