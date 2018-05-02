@@ -84,7 +84,7 @@ BinaryFile::getSectionInfo(int idx) const
 const SectionInfo *
 BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 {
-	for (auto &sect : sections) {
+	for (const auto &sect : sections) {
 		if (uEntry >= sect.uNativeAddr
 		 && (uEntry - sect.uNativeAddr) < sect.uSectionSize) {
 			return &sect;
@@ -99,7 +99,7 @@ BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
 const SectionInfo *
 BinaryFile::getSectionInfoByName(const char *sName) const
 {
-	for (auto &sect : sections) {
+	for (const auto &sect : sections) {
 		if (sect.name == sName) {
 			return &sect;
 		}
@@ -120,7 +120,7 @@ BinaryFile::isReadOnly(ADDRESS uEntry) const
 char *
 BinaryFile::getSectionData(ADDRESS a, ADDRESS range) const
 {
-	for (auto &sect : sections) {
+	for (const auto &sect : sections) {
 		if (a >= sect.uNativeAddr
 		 && (a - sect.uNativeAddr) < sect.uSectionSize
 		 && range <= sect.uSectionSize - (a - sect.uNativeAddr)) {
@@ -382,7 +382,7 @@ BinaryFile::getTextLimits()
 	limitTextLow = 0xFFFFFFFF;
 	limitTextHigh = 0;
 	textDelta = 0;
-	for (auto &sect : sections) {
+	for (const auto &sect : sections) {
 		if (sect.bCode) {
 			// The .plt section is an anomaly. It's code, but we never want to
 			// decode it, and in Sparc ELF files, it's actually in the data

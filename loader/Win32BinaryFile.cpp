@@ -643,7 +643,7 @@ ADDRESS
 Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
-	for (auto &sym : dlprocptrs) {
+	for (const auto &sym : dlprocptrs) {
 		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
 		if (sym.second == pName)
 			return sym.first;
@@ -847,7 +847,7 @@ void
 Win32BinaryFile::dumpSymbols() const
 {
 	std::cerr << std::hex;
-	for (auto &sym : dlprocptrs)
+	for (const auto &sym : dlprocptrs)
 		std::cerr << "0x" << sym.first << " " << sym.second << "        ";
 	std::cerr << std::dec << "\n";
 }

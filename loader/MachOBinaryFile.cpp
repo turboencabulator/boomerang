@@ -376,7 +376,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	auto numSections = segments.size();
 	sections.reserve(numSections);
 	for (unsigned i = 0; i < numSections; ++i) {
-		auto &seg = segments[i];
+		const auto &seg = segments[i];
 		ifs.seekg(seg.fileoff);
 		ADDRESS a = seg.vmaddr;
 		unsigned sz = seg.vmsize;
@@ -522,7 +522,7 @@ ADDRESS
 MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
-	for (auto &sym : m_SymA) {
+	for (const auto &sym : m_SymA) {
 		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
 		if (sym.second == pName)
 			return sym.first;

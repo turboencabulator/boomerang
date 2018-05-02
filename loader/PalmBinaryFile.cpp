@@ -449,7 +449,7 @@ PalmBinaryFile::getMainEntryPoint()
 void
 PalmBinaryFile::generateBinFiles(const std::string &path) const
 {
-	for (auto &sect : sections) {
+	for (const auto &sect : sections) {
 		if (sect.name.compare(0, 4, "code") != 0
 		 && sect.name.compare(0, 4, "data") != 0) {
 			// Save this section in a file

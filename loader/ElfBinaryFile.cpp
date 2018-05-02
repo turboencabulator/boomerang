@@ -293,7 +293,7 @@ void
 ElfBinaryFile::AddSyms(int secIndex)
 {
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
-	auto &sect = sections[secIndex];
+	const auto &sect = sections[secIndex];
 	// Calc number of symbols
 	int nSyms = sect.uSectionSize / sect.uSectionEntrySize;
 	m_pSym = (const Elf32_Sym *)sect.uHostAddr;  // Pointer to symbols
@@ -374,7 +374,7 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 		return exported;
 
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
-	auto &sect = sections[secIndex];
+	const auto &sect = sections[secIndex];
 	// Calc number of symbols
 	int nSyms = sect.uSectionSize / sect.uSectionEntrySize;
 	m_pSym = (const Elf32_Sym *)sect.uHostAddr;  // Pointer to symbols
@@ -417,7 +417,7 @@ void
 ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 {
 	if (relSecIdx >= sections.size()) return;
-	auto &sect = sections[relSecIdx];
+	const auto &sect = sections[relSecIdx];
 	// Calc number of relocations
 	int nRelocs = sect.uSectionSize / sect.uSectionEntrySize;
 	m_pReloc = (const Elf32_Rel *)sect.uHostAddr;  // Pointer to symbols
@@ -991,7 +991,7 @@ ElfBinaryFile::applyRelocations()
 	case EM_386:
 		{
 			for (int i = 1; i < sections.size(); ++i) {
-				auto &sect = sections[i];
+				const auto &sect = sections[i];
 				if (sect.uType == SHT_REL) {
 					// A section such as .rel.dyn or .rel.plt (without an addend field).
 					// Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
@@ -1102,7 +1102,7 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative) const
 	case EM_386:
 		{
 			for (int i = 1; i < sections.size(); ++i) {
-				auto &sect = sections[i];
+				const auto &sect = sections[i];
 				if (sect.uType == SHT_REL) {
 					// A section such as .rel.dyn or .rel.plt (without an addend field).
 					// Each entry has 2 words: r_offet and r_info. The r_offset is just the offset from the beginning
@@ -1175,7 +1175,7 @@ ElfBinaryFile::getFilenameSymbolFor(const std::string &sym)
 		return nullptr;
 
 	//int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
-	auto &sect = sections[secIndex];
+	const auto &sect = sections[secIndex];
 	// Calc number of symbols
 	int nSyms = sect.uSectionSize / sect.uSectionEntrySize;
 	m_pSym = (const Elf32_Sym *)sect.uHostAddr;  // Pointer to symbols
@@ -1223,7 +1223,7 @@ void
 ElfBinaryFile::dumpSymbols() const
 {
 	std::cerr << std::hex;
-	for (auto &sym : m_SymTab)
+	for (const auto &sym : m_SymTab)
 		std::cerr << "0x" << sym.first << " " << sym.second << "        ";
 	std::cerr << std::dec << "\n";
 }

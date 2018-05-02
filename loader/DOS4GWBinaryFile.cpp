@@ -191,7 +191,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	unsigned npagetblentries = 0;
 	m_cbImage = 0;
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
-		auto &obj = m_pLXObjects[n];
+		const auto &obj = m_pLXObjects[n];
 		if (npagetblentries < obj.PageTblIdx + obj.NumPageTblEntries - 1)
 			npagetblentries = obj.PageTblIdx + obj.NumPageTblEntries - 1;
 		if (obj.ObjectFlags & 0x40)
@@ -208,7 +208,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	unsigned npages = 0;
 	m_cbImage = 0;
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
-		auto &obj = m_pLXObjects[n];
+		const auto &obj = m_pLXObjects[n];
 		if (obj.ObjectFlags & 0x40) {
 			if (npages < obj.PageTblIdx + obj.NumPageTblEntries - 1)
 				npages = obj.PageTblIdx + obj.NumPageTblEntries - 1;
@@ -222,7 +222,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 
 	sections.reserve(m_pLXHeader->numobjsinmodule);
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
-		auto &obj = m_pLXObjects[n];
+		const auto &obj = m_pLXObjects[n];
 		if (obj.ObjectFlags & 0x40) {
 			printf("vsize %x reloc %x flags %x page %i npage %i\n",
 			       obj.VirtualSize,
@@ -319,7 +319,7 @@ ADDRESS
 DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
-	for (auto &sym : dlprocptrs) {
+	for (const auto &sym : dlprocptrs) {
 		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
 		if (sym.second == pName)
 			return sym.first;
