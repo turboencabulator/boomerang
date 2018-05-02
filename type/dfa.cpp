@@ -313,8 +313,7 @@ UserProc::dfaTypeAnalysis()
 					addrExp = ((Location *)lhs)->getSubExp1();
 					typeExp = ((Assignment *)s)->getType();
 				}
-			}
-			else {
+			} else {
 				// Assume an implicit reference
 				addrExp = ((ImpRefStatement *)s)->getAddressExp();
 				if (addrExp->isTypedExp() && ((TypedExp *)addrExp)->getType()->resolvesToPointer())
@@ -1314,8 +1313,7 @@ Const::descendType(Type *parentType, bool &ch, Statement *s)
 				type = new FloatType(64);
 				float f = *(float *)&u.i;
 				u.d = (double)f;
-			}
-			else if (op == opLongConst) {
+			} else if (op == opLongConst) {
 				op = opFltConst;
 				type = new FloatType(64);
 				double d = *(double *)&u.ll;
@@ -1351,8 +1349,7 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 			ADDRESS intK2 = (ADDRESS)constK2->getInt();
 			Prog *prog = s->getProc()->getProg();
 			constK2->descendType(prog->makeArrayType(intK2, parentType), ch, s);
-		}
-		else if (subExp1->getOper() == opPlus
+		} else if (subExp1->getOper() == opPlus
 		      && ((Binary *)subExp1)->getSubExp1()->isSubscript()
 		      && ((RefExp *)((Binary *)subExp1)->getSubExp1())->isLocation()
 		      && ((Binary *)subExp1)->getSubExp2()->isIntConst()) {
@@ -1375,14 +1372,12 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 					auto ct = new CompoundType(true);
 					ct->updateGenericMember(K, parentType, ch);
 				}
-			}
-			else {
+			} else {
 				// K must be the pointer, so this is a global array
 				// FIXME: finish this case
 			}
 			// FIXME: many other cases
-		}
-		else
+		} else
 			subExp1->descendType(new PointerType(parentType), ch, s);
 		break;
 	case opAddrOf:

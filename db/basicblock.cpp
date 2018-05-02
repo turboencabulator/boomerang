@@ -2022,8 +2022,7 @@ findConstantValues(Statement *s, std::list<int> &dests)
 		// For each definition, recurse
 		for (auto it = ((PhiAssign *)s)->begin(); it != ((PhiAssign *)s)->end(); ++it)
 			findConstantValues(it->def, dests);
-	}
-	else if (s->isAssign()) {
+	} else if (s->isAssign()) {
 		Exp *rhs = ((Assign *)s)->getRight();
 		if (rhs->isIntConst())
 			dests.push_back(((Const *)rhs)->getInt());
@@ -2373,8 +2372,7 @@ BasicBlock::processSwitch(UserProc *proc)
 			int iValue = prog->readNative4(si->uTable + i*2);
 			if (iValue == -1) continue;
 			uSwitch = prog->readNative4(si->uTable + i*8 + 4);
-		}
-		else if (si->chForm == 'F')
+		} else if (si->chForm == 'F')
 			uSwitch = ((int *)si->uTable)[i];
 		else
 			uSwitch = prog->readNative4(si->uTable + i*4);

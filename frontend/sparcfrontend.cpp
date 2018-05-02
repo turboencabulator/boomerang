@@ -568,7 +568,7 @@ SparcFrontEnd::case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, De
 		// Assumes the first instruction of the pattern is not used in the true leg
 		BB_rtls->push_back(inst.rtl);
 		auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!pBB)  return false;
+		if (!pBB) return false;
 		handleBranch(uDest, hiAddress, pBB, cfg, tq);
 		// Add the "false" leg
 		cfg->addOutEdge(pBB, address + 4);
@@ -592,7 +592,7 @@ SparcFrontEnd::case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, De
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto pBB = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!pBB)  return false;
+		if (!pBB) return false;
 		handleBranch(uDest, hiAddress, pBB, cfg, tq);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(pBB, address + 8);

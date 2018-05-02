@@ -716,8 +716,7 @@ Boomerang::commandLine(int argc, const char *argv[])
 			if (argv[i][2] == 'c') {
 				conTypeAnalysis = true;  // -Tc: use old constraint-based type analysis
 				dfaTypeAnalysis = false;
-			}
-			else if (argv[i][2] == 'd')
+			} else if (argv[i][2] == 'd')
 				dfaTypeAnalysis = true;  // -Td: use data-flow-based type analysis (now default)
 			break;
 		case 'g':
@@ -740,8 +739,7 @@ Boomerang::commandLine(int argc, const char *argv[])
 			if (argv[i][2] == 'a') {
 				propOnlyToAll = true;
 				std::cerr << " * * Warning! -pa is not implemented yet!\n";
-			}
-			else {
+			} else {
 				if (++i == argc) {
 					usage();
 					return 1;

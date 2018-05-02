@@ -621,7 +621,7 @@ RTL::simplify()
 			if (cond && cond->isIntConst()) {
 				if (((Const *)cond)->getInt() == 0) {
 					if (VERBOSE)
-						LOG << "removing branch with false condition at " << getAddress()  << " " << *it << "\n";
+						LOG << "removing branch with false condition at " << getAddress() << " " << *it << "\n";
 					it = stmtList.erase(it);
 					continue;
 				} else {

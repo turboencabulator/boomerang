@@ -4616,7 +4616,7 @@ UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 	StatementList::reverse_iterator srit;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
 		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
-		if (!c || !c->isCall())  continue;  // Only interested in calls
+		if (!c || !c->isCall()) continue;  // Only interested in calls
 		UserProc *dest = (UserProc *)c->getDestProc();
 		if (!dest || dest->isLib()) continue;  // Only interested in calls to UserProcs
 		if (dest == p) {  // Pointer comparison is OK here
@@ -4736,8 +4736,7 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 				// If get to here, then none of the arguments is of this form, and we can ignore this call
 				continue;
 			}
-		}
-		else if (s->isReturn()) {
+		} else if (s->isReturn()) {
 			if (cycleGrp && !cycleGrp->empty())  // If this function is involved in recursion
 				continue;  //  then ignore this return statement
 		} else if (s->isPhi() && theReturnStatement && cycleGrp && !cycleGrp->empty()) {
@@ -5060,9 +5059,7 @@ UserProc::typeAnalysis()
 		simplify();  // In case there are new struct members
 		if (VERBOSE || DEBUG_TA)
 			LOG << "=== end type analysis for " << getName() << " ===\n";
-	}
-
-	else if (CON_TYPE_ANALYSIS) {
+	} else if (CON_TYPE_ANALYSIS) {
 		// FIXME: if we want to do comparison
 	}
 

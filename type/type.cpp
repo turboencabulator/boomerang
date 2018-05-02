@@ -1484,8 +1484,7 @@ DataIntervalMap::enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const cha
 		} else
 			LOG << "TYPE ERROR: At address " << addr << " type " << ty->getCtype()
 			    << " is not compatible with existing structure member type " << memberType->getCtype() << "\n";
-	}
-	else if (pdie->second.type->resolvesToArray()) {
+	} else if (pdie->second.type->resolvesToArray()) {
 		Type *memberType = pdie->second.type->asArray()->getBaseType();
 		if (memberType->isCompatibleWith(ty)) {
 			bool ch;

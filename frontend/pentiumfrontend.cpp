@@ -289,8 +289,7 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 					(*rit)->deleteStmt(i);
 					--i;
 					continue;
-				}
-				else if (st->isFpop()) {
+				} else if (st->isFpop()) {
 					(*rit)->insertStmt(new Assign(new FloatType(80),
 					                              Location::tempOf(new Const("tmpD9")),
 					                              Location::regOf(32)), i++);
