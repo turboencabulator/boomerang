@@ -242,13 +242,14 @@ param
 	| type '(' '*' IDENTIFIER ')' '(' param_list ')' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($1);
-		for (auto it = $7->begin(); it != $7->end(); ++it)
-			if (std::string((*it)->getName()) != "...")
-				sig->addParameter(*it);
-			else {
+		for (const auto &param : *$7) {
+			if (std::string(param->getName()) != "...") {
+				sig->addParameter(param);
+			} else {
 				sig->addEllipsis();
-				delete *it;
+				delete param;
 			}
+		}
 		delete $7;
 		$$ = new Parameter(new PointerType(new FuncType(sig)), *$4);
 		delete $4;
@@ -266,13 +267,14 @@ type_decl
 	| TYPEDEF type '(' '*' IDENTIFIER ')' '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($2);
-		for (auto it = $8->begin(); it != $8->end(); ++it)
-			if (std::string((*it)->getName()) != "...")
-				sig->addParameter(*it);
-			else {
+		for (const auto &param : *$8) {
+			if (std::string(param->getName()) != "...") {
+				sig->addParameter(param);
+			} else {
 				sig->addEllipsis();
-				delete *it;
+				delete param;
 			}
+		}
 		delete $8;
 		Type::addNamedType(*$5, new PointerType(new FuncType(sig)));
 		delete $5;
@@ -280,21 +282,22 @@ type_decl
 	| TYPEDEF type_ident '(' param_list ')' ';' {
 		Signature *sig = Signature::instantiate(plat, cc, $2->nam.c_str());
 		sig->addReturn($2->ty);
-		for (auto it = $4->begin(); it != $4->end(); ++it)
-			if (std::string((*it)->getName()) != "...")
-				sig->addParameter(*it);
-			else {
+		for (const auto &param : *$4) {
+			if (std::string(param->getName()) != "...") {
+				sig->addParameter(param);
+			} else {
 				sig->addEllipsis();
-				delete *it;
+				delete param;
 			}
+		}
 		delete $4;
 		Type::addNamedType($2->nam, new FuncType(sig));
 		delete $2;
 	  }
 	| STRUCT IDENTIFIER '{' type_ident_list '}' ';' {
 		auto t = new CompoundType();
-		for (auto it = $4->begin(); it != $4->end(); ++it) {
-			t->addType((*it)->ty, (*it)->nam.c_str());
+		for (const auto &type_ident : *$4) {
+			t->addType(type_ident->ty, type_ident->nam.c_str());
 		}
 		delete $4;
 		$2->insert(0, "struct ");
@@ -311,8 +314,9 @@ func_decl
 		$1->setPreferedReturn($3->ty);
 		$1->setPreferedName($3->nam);
 		delete $3;
-		for (auto it = $5->begin(); it != $5->end(); ++it)
-			$1->addPreferedParameter(*it - 1);
+		for (const auto &num : *$5) {
+			$1->addPreferedParameter(num - 1);
+		}
 		delete $5;
 		signatures.push_back($1);
 	  }
@@ -324,13 +328,14 @@ signature
 		Signature *sig = Signature::instantiate(plat, cc, $1->nam.c_str());
 		sig->addReturn($1->ty);
 		delete $1;
-		for (auto it = $3->begin(); it != $3->end(); ++it)
-			if (std::string((*it)->getName()) != "...")
-				sig->addParameter(*it);
-			else {
+		for (const auto &param : *$3) {
+			if (std::string(param->getName()) != "...") {
+				sig->addParameter(param);
+			} else {
 				sig->addEllipsis();
-				delete *it;
+				delete param;
 			}
+		}
 		delete $3;
 		$$ = sig;
 	  }
@@ -338,13 +343,14 @@ signature
 		Signature *sig = Signature::instantiate(plat, $1, $2->nam.c_str());
 		sig->addReturn($2->ty);
 		delete $2;
-		for (auto it = $4->begin(); it != $4->end(); ++it)
-			if (std::string((*it)->getName()) != "...")
-				sig->addParameter(*it);
-			else {
+		for (const auto &param : *$4) {
+			if (std::string(param->getName()) != "...") {
+				sig->addParameter(param);
+			} else {
 				sig->addEllipsis();
-				delete *it;
+				delete param;
 			}
+		}
 		delete $4;
 		$$ = sig;
 	  }
@@ -356,13 +362,14 @@ signature
 			sig->setSP($2->sp);
 		delete $2;
 		delete $3;
-		for (auto it = $5->begin(); it != $5->end(); ++it)
-			if (std::string((*it)->getName()) != "...") {
-				sig->addParameter(*it);
+		for (const auto &param : *$5) {
+			if (std::string(param->getName()) != "...") {
+				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
-				delete *it;
+				delete param;
 			}
+		}
 		delete $5;
 		$$ = sig;
 	  }
@@ -471,8 +478,8 @@ type
 	  }
 	| STRUCT '{' type_ident_list '}' {
 		auto t = new CompoundType();
-		for (auto it = $3->begin(); it != $3->end(); ++it) {
-			t->addType((*it)->ty, (*it)->nam.c_str());
+		for (const auto &type_ident : *$3) {
+			t->addType(type_ident->ty, type_ident->nam.c_str());
 		}
 		delete $3;
 		$$ = t;
