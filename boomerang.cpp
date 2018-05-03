@@ -262,8 +262,8 @@ void
 Cluster::printTree(std::ostream &out) const
 {
 	out << "\t\t" << name << "\n";
-	for (unsigned i = 0; i < children.size(); ++i)
-		children[i]->printTree(out);
+	for (const auto &child : children)
+		child->printTree(out);
 }
 
 /**
@@ -971,20 +971,19 @@ Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *pr
 	if (VERBOSE)
 		LOG << "Adding Objective-C information to Prog.\n";
 	Cluster *root = prog->getRootCluster();
-	for (auto it = modules.begin(); it != modules.end(); ++it) {
-		const ObjcModule &mod = it->second;
-		auto module = new Module(mod.name);
-		root->addChild(module);
+	for (const auto &module : modules) {
+		const ObjcModule &mod = module.second;
+		root->addChild(new Module(mod.name));
 		if (VERBOSE)
 			LOG << "\tModule: " << mod.name.c_str() << "\n";
-		for (auto it1 = mod.classes.begin(); it1 != mod.classes.end(); ++it1) {
-			const ObjcClass &c = it1->second;
+		for (const auto &cls : mod.classes) {
+			const ObjcClass &c = cls.second;
 			auto cl = new Class(c.name);
 			root->addChild(cl);
 			if (VERBOSE)
 				LOG << "\t\tClass: " << c.name.c_str() << "\n";
-			for (auto it2 = c.methods.begin(); it2 != c.methods.end(); ++it2) {
-				const ObjcMethod &m = it2->second;
+			for (const auto &method : c.methods) {
+				const ObjcMethod &m = method.second;
 				// TODO: parse :'s in names
 				Proc *p = prog->newProc(m.name.c_str(), m.addr);
 				p->setCluster(cl);
@@ -1018,14 +1017,14 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	}
 
 	// Add symbols from -s switch(es)
-	for (auto it = symbols.begin(); it != symbols.end(); ++it) {
-		fe->addSymbol(it->first, it->second.c_str());
+	for (const auto &symbol : symbols) {
+		fe->addSymbol(symbol.first, symbol.second.c_str());
 	}
 	fe->readLibraryCatalog();  // Needed before readSymbolFile()
 
-	for (unsigned i = 0; i < symbolFiles.size(); ++i) {
-		std::cout << "reading symbol file " << symbolFiles[i].c_str() << "\n";
-		prog->readSymbolFile(symbolFiles[i].c_str());
+	for (const auto &file : symbolFiles) {
+		std::cout << "reading symbol file " << file.c_str() << "\n";
+		prog->readSymbolFile(file.c_str());
 	}
 
 	const std::map<std::string, ObjcModule> &objcmodules = fe->getBinaryFile()->getObjcModules();
@@ -1033,9 +1032,9 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 		objcDecode(objcmodules, prog);
 
 	// Entry points from -e (and -E) switch(es)
-	for (unsigned i = 0; i < entrypoints.size(); ++i) {
-		std::cout << "decoding specified entrypoint " << std::hex << entrypoints[i] << "\n";
-		prog->decodeEntryPoint(entrypoints[i]);
+	for (const auto &entrypoint : entrypoints) {
+		std::cout << "decoding specified entrypoint " << std::hex << entrypoint << "\n";
+		prog->decodeEntryPoint(entrypoint);
 	}
 
 	if (entrypoints.empty()) {  // no -e or -E given
@@ -1203,8 +1202,8 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 		static std::set<Statement *> watches;
 		if (!stopAt || !strcmp(p->getName(), stopAt)) {
 			// This is a mini command line debugger.  Feel free to expand it.
-			for (auto it = watches.begin(); it != watches.end(); ++it) {
-				(*it)->print(std::cout);
+			for (const auto &watch : watches) {
+				watch->print(std::cout);
 				std::cout << "\n";
 			}
 			std::cout << " <press enter to continue> \n";
@@ -1229,10 +1228,10 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 					int n = atoi(line + 6);
 					StatementList stmts;
 					p->getStatements(stmts);
-					for (auto it = stmts.begin(); it != stmts.end(); ++it)
-						if ((*it)->getNumber() == n) {
-							watches.insert(*it);
-							std::cout << "watching " << *it << "\n";
+					for (const auto &stmt : stmts)
+						if (stmt->getNumber() == n) {
+							watches.insert(stmt);
+							std::cout << "watching " << stmt << "\n";
 						}
 				} else
 					break;
