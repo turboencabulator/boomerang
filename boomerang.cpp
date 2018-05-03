@@ -1239,8 +1239,8 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 			}
 		}
 	}
-	for (auto it = watchers.begin(); it != watchers.end(); ++it)
-		(*it)->alert_decompile_debug_point(p, description);
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_debug_point(p, description);
 }
 
 const char *

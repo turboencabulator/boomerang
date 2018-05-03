@@ -146,89 +146,89 @@ public:
 
 	        /// Alert the watchers that decompilation has completed.
 	        void        alert_complete() {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_complete();
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_complete();
 	                    }
 	        /// Alert the watchers we have found a new %Proc.
 	        void        alert_new(Proc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_new(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_new(p);
 	                    }
 	        /// Alert the watchers we have removed a %Proc.
 	        void        alert_remove(Proc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_remove(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_remove(p);
 	                    }
 	        /// Alert the watchers we have updated this Procs signature
 	        void        alert_update_signature(Proc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_update_signature(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_update_signature(p);
 	                    }
 	        /// Alert the watchers we are currently decoding \a nBytes bytes at address \a pc.
 	        void        alert_decode(ADDRESS pc, int nBytes) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decode(pc, nBytes);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decode(pc, nBytes);
 	                    }
 	        /// Alert the watchers of a bad decode of an instruction at \a pc.
 	        void        alert_baddecode(ADDRESS pc) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_baddecode(pc);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_baddecode(pc);
 	                    }
 	        /// Alert the watchers we have succesfully decoded this function
 	        void        alert_decode(Proc *p, ADDRESS pc, ADDRESS last, int nBytes) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decode(p, pc, last, nBytes);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decode(p, pc, last, nBytes);
 	                    }
 	        /// Alert the watchers we have loaded the Proc.
 	        void        alert_load(Proc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_load(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_load(p);
 	                    }
 	        /// Alert the watchers we are starting to decode.
 	        void        alert_start_decode(ADDRESS start, int nBytes) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_start_decode(start, nBytes);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_start_decode(start, nBytes);
 	                    }
 	        /// Alert the watchers we finished decoding.
 	        void        alert_end_decode() {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_end_decode();
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_end_decode();
 	                    }
 	virtual void        alert_start_decompile(UserProc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_start_decompile(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_start_decompile(p);
 	                    }
 	virtual void        alert_proc_status_change(UserProc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_proc_status_change(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_proc_status_change(p);
 	                    }
 	virtual void        alert_decompile_SSADepth(UserProc *p, int depth) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decompile_SSADepth(p, depth);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decompile_SSADepth(p, depth);
 	                    }
 	virtual void        alert_decompile_beforePropagate(UserProc *p, int depth) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decompile_beforePropagate(p, depth);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decompile_beforePropagate(p, depth);
 	                    }
 	virtual void        alert_decompile_afterPropagate(UserProc *p, int depth) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decompile_afterPropagate(p, depth);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decompile_afterPropagate(p, depth);
 	                    }
 	virtual void        alert_decompile_afterRemoveStmts(UserProc *p, int depth) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decompile_afterRemoveStmts(p, depth);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decompile_afterRemoveStmts(p, depth);
 	                    }
 	virtual void        alert_end_decompile(UserProc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_end_decompile(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_end_decompile(p);
 	                    }
 	virtual void        alert_considering(Proc *parent, Proc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_considering(parent, p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_considering(parent, p);
 	                    }
 	virtual void        alert_decompiling(UserProc *p) {
-		                    for (auto it = watchers.begin(); it != watchers.end(); ++it)
-			                    (*it)->alert_decompiling(p);
+		                    for (const auto &watcher : watchers)
+			                    watcher->alert_decompiling(p);
 	                    }
 	virtual void        alert_decompile_debug_point(UserProc *p, const char *description);
 
