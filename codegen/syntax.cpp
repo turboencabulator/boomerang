@@ -72,8 +72,8 @@ BlockSyntaxNode::BlockSyntaxNode()
 
 BlockSyntaxNode::~BlockSyntaxNode()
 {
-	for (auto it = statements.cbegin(); it != statements.cend(); ++it)
-		delete *it;
+	for (const auto &stmt : statements)
+		delete stmt;
 }
 
 int
@@ -102,8 +102,8 @@ BlockSyntaxNode::findNodeFor(BasicBlock *bb) const
 	if (pbb == bb)
 		return this;
 	const SyntaxNode *n = nullptr;
-	for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
-		n = (*it)->findNodeFor(bb);
+	for (const auto &stmt : statements) {
+		n = stmt->findNodeFor(bb);
 		if (n)
 			break;
 	}
@@ -396,8 +396,8 @@ BlockSyntaxNode::clone() const
 	if (pbb)
 		b->pbb = pbb;
 	else
-		for (auto it = statements.cbegin(); it != statements.cend(); ++it)
-			b->addStatement((*it)->clone());
+		for (const auto &stmt : statements)
+			b->addStatement(stmt->clone());
 	return b;
 }
 
@@ -409,12 +409,12 @@ BlockSyntaxNode::replace(const SyntaxNode *from, SyntaxNode *to)
 
 	if (!pbb) {
 		std::vector<SyntaxNode *> news;
-		for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
-			SyntaxNode *n = *it;
-			if ((*it)->getCorrespond() == from)
+		for (const auto &stmt : statements) {
+			SyntaxNode *n;
+			if (stmt->getCorrespond() == from)
 				n = to;
 			else
-				n = (*it)->replace(from, to);
+				n = stmt->replace(from, to);
 			if (n)
 				news.push_back(n);
 		}

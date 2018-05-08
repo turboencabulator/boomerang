@@ -215,8 +215,8 @@ public:
 	}
 	const SyntaxNode *getEnclosingLoop(const SyntaxNode *pFor, const SyntaxNode *cur = nullptr) const override {
 		if (this == pFor) return cur;
-		for (auto it = statements.cbegin(); it != statements.cend(); ++it) {
-			const SyntaxNode *n = (*it)->getEnclosingLoop(pFor, cur);
+		for (const auto &stmt : statements) {
+			const SyntaxNode *n = stmt->getEnclosingLoop(pFor, cur);
 			if (n) return n;
 		}
 		return nullptr;

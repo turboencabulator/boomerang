@@ -606,18 +606,14 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		//assert(false);
 		break;
 	case opFlagCall:
-		{
-			assert(b->getSubExp1()->isStrConst());
-			str << ((Const *)b->getSubExp1())->getStr();
-			str << "(";
-			Binary *l = (Binary *)b->getSubExp2();
-			for (; l && l->getOper() == opList; l = (Binary *)l->getSubExp2()) {
-				appendExp(str, l->getSubExp1(), PREC_NONE);
-				if (l->getSubExp2()->getOper() == opList)
-					str << ", ";
-			}
-			str << ")";
+		assert(b->getSubExp1()->isStrConst());
+		str << ((Const *)b->getSubExp1())->getStr() << "(";
+		for (auto l = (Binary *)b->getSubExp2(); l && l->getOper() == opList; l = (Binary *)l->getSubExp2()) {
+			appendExp(str, l->getSubExp1(), PREC_NONE);
+			if (l->getSubExp2()->getOper() == opList)
+				str << ", ";
 		}
+		str << ")";
 		break;
 	case opList:
 		{
@@ -626,12 +622,11 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 			str << "{ ";
 			if (b->getSubExp1()->getOper() == opList)
 				str << "\n ";
-			while (e2->getOper() == opList)
-			{
+			while (e2->getOper() == opList) {
 				appendExp(str, b->getSubExp1(), PREC_NONE, uns);
 				++elems_on_line;
-				if (b->getSubExp1()->getOper() == opList || elems_on_line >= 16 /* completely arbitrary, but better than nothing*/)
-				{
+				if (b->getSubExp1()->getOper() == opList
+				 || elems_on_line >= 16 /* completely arbitrary, but better than nothing */) {
 					str << ",\n ";
 					elems_on_line = 0;
 				} else {
@@ -1456,12 +1451,12 @@ CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, State
 	appendExp(s, exp, PREC_NONE);
 	s << ")(";
 	bool first = true;
-	for (auto ss = args.begin(); ss != args.end(); ++ss) {
+	for (const auto &stmt : args) {
 		if (first)
 			first = false;
 		else
 			s << ", ";
-		Exp *arg = ((Assign *)*ss)->getRight();
+		Exp *arg = ((Assign *)stmt)->getRight();
 		appendExp(s, arg, PREC_COMMA);
 	}
 	s << ");";
@@ -1576,12 +1571,12 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 	}
 
 	bool first = true;
-	for (auto pp = parameters.begin(); pp != parameters.end(); ++pp) {
+	for (const auto &param : parameters) {
 		if (first)
 			first = false;
 		else
 			s << ", ";
-		Assign *as = (Assign *)*pp;
+		auto as = (Assign *)param;
 		Exp *left = as->getLeft();
 		Type *ty = as->getType();
 		if (!ty) {
@@ -1698,8 +1693,8 @@ CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
 void
 CHLLCode::print(std::ostream &os) const
 {
-	for (auto it = lines.begin(); it != lines.end(); ++it)
-		os << *it << std::endl;
+	for (const auto &line : lines)
+		os << line << std::endl;
 	if (!m_proc)
 		os << std::endl;
 }
