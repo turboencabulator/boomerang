@@ -39,9 +39,9 @@ std::list<Binary *> cache;
 Exp *
 ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 {
-	for (auto it = cache.begin(); it != cache.end(); ++it)
-		if (*(*it)->getSubExp1() == *p)
-			return (*it)->getSubExp2()->clone();
+	for (const auto &elem : cache)
+		if (*elem->getSubExp1() == *p)
+			return elem->getSubExp2()->clone();
 
 	Exp *e = p->clone();
 	Exp *subs[3];
@@ -69,8 +69,8 @@ ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 	bool mod;
 	//do {
 		mod = false;
-		for (auto it = transformers.begin(); it != transformers.end(); ++it) {
-			e = (*it)->applyTo(e, mod);
+		for (const auto &transformer : transformers) {
+			e = transformer->applyTo(e, mod);
 			bMod |= mod;
 		}
 	//} while (mod);
