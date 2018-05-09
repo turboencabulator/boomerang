@@ -78,17 +78,17 @@ UserProc::dfaTypeAnalysis()
 	int iter;
 	for (iter = 1; iter <= DFA_ITER_LIMIT; ++iter) {
 		ch = false;
-		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
+		for (const auto &stmt : stmts) {
 			if (++progress >= 2000) {
 				progress = 0;
 				std::cerr << "t" << std::flush;
 			}
 			bool thisCh = false;
-			(*it)->dfaTypeAnalysis(thisCh);
+			stmt->dfaTypeAnalysis(thisCh);
 			if (thisCh) {
 				ch = true;
 				if (DEBUG_TA)
-					LOG << " caused change: " << *it << "\n";
+					LOG << " caused change: " << stmt << "\n";
 			}
 		}
 		if (!ch)
@@ -101,36 +101,35 @@ UserProc::dfaTypeAnalysis()
 	if (DEBUG_TA) {
 		LOG << "\n ### results for data flow based type analysis for " << getName() << " ###\n";
 		LOG << iter << " iterations\n";
-		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
-			Statement *s = *it;
-			LOG << s << "\n";  // Print the statement; has dest type
+		for (const auto &stmt : stmts) {
+			LOG << stmt << "\n";  // Print the statement; has dest type
 			// Now print type for each constant in this Statement
 			std::list<Const *> lc;
-			s->findConstants(lc);
+			stmt->findConstants(lc);
 			if (!lc.empty()) {
 				LOG << "       ";
-				for (auto cc = lc.begin(); cc != lc.end(); ++cc)
-					LOG << (*cc)->getType()->getCtype() << " " << *cc << "  ";
+				for (const auto &con : lc)
+					LOG << con->getType()->getCtype() << " " << con << "  ";
 				LOG << "\n";
 			}
-			// If s is a call, also display its return types
-			if (s->isCall()) {
-				CallStatement *call = (CallStatement *)s;
+			// If stmt is a call, also display its return types
+			if (stmt->isCall()) {
+				CallStatement *call = (CallStatement *)stmt;
 				ReturnStatement *rs = call->getCalleeReturn();
 				if (!rs) continue;
 				UseCollector *uc = call->getUseCollector();
 				bool first = true;
-				for (auto rr = rs->begin(); rr != rs->end(); ++rr) {
+				for (const auto &ret : *rs) {
 					// Intersect the callee's returns with the live locations at the call, i.e. make sure that they
 					// exist in *uc
-					Exp *lhs = ((Assignment *)*rr)->getLeft();
+					Exp *lhs = ((Assignment *)ret)->getLeft();
 					if (!uc->exists(lhs))
 						continue;  // Intersection fails
 					if (first)
 						LOG << "       returns: ";
 					else
 						LOG << ", ";
-					LOG << ((Assignment *)*rr)->getType()->getCtype() << " " << ((Assignment *)*rr)->getLeft();
+					LOG << ((Assignment *)ret)->getType()->getCtype() << " " << ((Assignment *)ret)->getLeft();
 				}
 				LOG << "\n";
 			}
@@ -143,9 +142,8 @@ UserProc::dfaTypeAnalysis()
 	Boomerang::get()->alert_decompile_debug_point(this, "before mapping locals from dfa type analysis");
 	if (DEBUG_TA)
 		LOG << " ### mapping expressions to local variables for " << getName() << " ###\n";
-	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
-		Statement *s = *it;
-		s->dfaMapLocals();
+	for (const auto &stmt : stmts) {
+		stmt->dfaMapLocals();
 	}
 	if (DEBUG_TA)
 		LOG << " ### end mapping expressions to local variables for " << getName() << " ###\n";
@@ -154,14 +152,11 @@ UserProc::dfaTypeAnalysis()
 	Boomerang::get()->alert_decompile_debug_point(this, "before other uses of dfa type analysis");
 
 	Prog *prog = getProg();
-	for (auto it = stmts.begin(); it != stmts.end(); ++it) {
-		Statement *s = *it;
-
+	for (const auto &stmt : stmts) {
 		// 1) constants
 		std::list<Const *> lc;
-		s->findConstants(lc);
-		for (auto cc = lc.begin(); cc != lc.end(); ++cc) {
-			Const *con = (Const *)*cc;
+		stmt->findConstants(lc);
+		for (const auto &con : lc) {
 			Type *t = con->getType();
 			int val = con->getInt();
 			if (t && t->resolvesToPointer()) {
@@ -192,8 +187,8 @@ UserProc::dfaTypeAnalysis()
 							                                new Const(r)), this);
 						} else {
 							Type *ty = prog->getGlobalType(gloName);
-							if (s->isAssign() && ((Assign *)s)->getType()) {
-								int bits = ((Assign *)s)->getType()->getSize();
+							if (stmt->isAssign() && ((Assign *)stmt)->getType()) {
+								int bits = ((Assign *)stmt)->getType()->getSize();
 								if (!ty || ty->getSize() == 0)
 									prog->setGlobalType(gloName, new IntegerType(bits));
 							}
@@ -204,35 +199,35 @@ UserProc::dfaTypeAnalysis()
 								ne = g;
 						}
 						Exp *memof = Location::memOf(con);
-						s->searchAndReplace(memof->clone(), ne);
+						stmt->searchAndReplace(memof->clone(), ne);
 					}
 				} else if (baseType->resolvesToArray()) {
-					// We have found a constant in s which has type pointer to array of alpha. We can't get the parent
+					// We have found a constant in stmt which has type pointer to array of alpha. We can't get the parent
 					// of con, but we can find it with the pattern unscaledArrayPat.
 					std::list<Exp *> result;
-					s->searchAll(unscaledArrayPat, result);
-					for (auto rr = result.begin(); rr != result.end(); ++rr) {
+					stmt->searchAll(unscaledArrayPat, result);
+					for (const auto &res : result) {
 						// idx + K
-						Const *constK = (Const *)((Binary *)*rr)->getSubExp2();
+						Const *constK = (Const *)((Binary *)res)->getSubExp2();
 						// Note: keep searching till we find the pattern with this constant, since other constants may
 						// not be used as pointer to array type.
 						if (constK != con) continue;
 						ADDRESS K = (ADDRESS)constK->getInt();
-						Exp *idx = ((Binary *)*rr)->getSubExp1();
+						Exp *idx = ((Binary *)res)->getSubExp1();
 						Exp *arr = new Unary(opAddrOf,
 						                     new Binary(opArrayIndex,
 						                                Location::global(prog->getGlobalName(K), this),
 						                                idx));
 						// Beware of changing expressions in implicit assignments... map can become invalid
-						bool isImplicit = s->isImplicit();
+						bool isImplicit = stmt->isImplicit();
 						if (isImplicit)
-							cfg->removeImplicitAssign(((ImplicitAssign *)s)->getLeft());
-						s->searchAndReplace(unscaledArrayPat, arr);
-						// s will likely have an m[a[array]], so simplify
-						s->simplifyAddr();
+							cfg->removeImplicitAssign(((ImplicitAssign *)stmt)->getLeft());
+						stmt->searchAndReplace(unscaledArrayPat, arr);
+						// stmt will likely have an m[a[array]], so simplify
+						stmt->simplifyAddr();
 						if (isImplicit)
-							// Replace the implicit assignment entry. Note that s' lhs has changed
-							cfg->findImplicitAssign(((ImplicitAssign *)s)->getLeft());
+							// Replace the implicit assignment entry. Note that stmt's lhs has changed
+							cfg->findImplicitAssign(((ImplicitAssign *)stmt)->getLeft());
 						// Ensure that the global is declared
 						// Ugh... I think that arrays and pointers to arrays are muddled!
 						prog->globalUsed(K, baseType);
@@ -255,12 +250,12 @@ UserProc::dfaTypeAnalysis()
 
 		// 2) Search for the scaled array pattern and replace it with an array use m[idx*K1 + K2]
 		std::list<Exp *> result;
-		s->searchAll(scaledArrayPat, result);
-		for (auto rr = result.begin(); rr != result.end(); ++rr) {
-			//Type* ty = s->getTypeFor(*rr);
+		stmt->searchAll(scaledArrayPat, result);
+		for (const auto &res : result) {
+			//Type* ty = stmt->getTypeFor(res);
 			// FIXME: should check that we use with array type...
 			// Find idx and K2
-			Exp *t = ((Unary *)(*rr))->getSubExp1();    // idx*K1 + K2
+			Exp *t = ((Unary *)res)->getSubExp1();      // idx*K1 + K2
 			Exp *l = ((Binary *)t)->getSubExp1();       // idx*K1
 			Exp *r = ((Binary *)t)->getSubExp2();       // K2
 			ADDRESS K2 = (ADDRESS)((Const *)r)->getInt();
@@ -272,17 +267,17 @@ UserProc::dfaTypeAnalysis()
 			Exp *arr = new Binary(opArrayIndex,
 			                      Location::global(nam, this),
 			                      idx);
-			if (s->searchAndReplace(scaledArrayPat, arr)) {
-				if (s->isImplicit())
+			if (stmt->searchAndReplace(scaledArrayPat, arr)) {
+				if (stmt->isImplicit())
 					// Register an array of appropriate type
-					prog->globalUsed(K2, new ArrayType(((ImplicitAssign *)s)->getType()));
+					prog->globalUsed(K2, new ArrayType(((ImplicitAssign *)stmt)->getType()));
 			}
 		}
 
 		// 3) Check implicit assigns for parameter and global types.
-		if (s->isImplicit()) {
-			Exp *lhs = ((ImplicitAssign *)s)->getLeft();
-			Type *iType = ((ImplicitAssign *)s)->getType();
+		if (stmt->isImplicit()) {
+			Exp *lhs = ((ImplicitAssign *)stmt)->getLeft();
+			Type *iType = ((ImplicitAssign *)stmt)->getType();
 			// Note: parameters are not explicit any more
 			//if (lhs->isParam()) { // }
 			bool allZero;
@@ -304,21 +299,21 @@ UserProc::dfaTypeAnalysis()
 		}
 
 		// 4) Add the locals (soon globals as well) to the localTable, to sort out the overlaps
-		if (s->isTyping()) {
+		if (stmt->isTyping()) {
 			Exp *addrExp = nullptr;
 			Type *typeExp = nullptr;
-			if (s->isAssignment()) {
-				Exp *lhs = ((Assignment *)s)->getLeft();
+			if (stmt->isAssignment()) {
+				Exp *lhs = ((Assignment *)stmt)->getLeft();
 				if (lhs->isMemOf()) {
 					addrExp = ((Location *)lhs)->getSubExp1();
-					typeExp = ((Assignment *)s)->getType();
+					typeExp = ((Assignment *)stmt)->getType();
 				}
 			} else {
 				// Assume an implicit reference
-				addrExp = ((ImpRefStatement *)s)->getAddressExp();
+				addrExp = ((ImpRefStatement *)stmt)->getAddressExp();
 				if (addrExp->isTypedExp() && ((TypedExp *)addrExp)->getType()->resolvesToPointer())
 					addrExp = ((Unary *)addrExp)->getSubExp1();
-				typeExp = ((ImpRefStatement *)s)->getType();
+				typeExp = ((ImpRefStatement *)stmt)->getType();
 				// typeExp should be a pointer expression, or a union of pointer types
 				if (typeExp->resolvesToUnion())
 					typeExp = typeExp->asUnion()->dereferenceUnion();
@@ -338,7 +333,7 @@ UserProc::dfaTypeAnalysis()
 					}
 				}
 				LOG << "in proc " << getName() << " adding addrExp " << addrExp << " to local table\n";
-				Type *ty = ((TypingStatement *)s)->getType();
+				Type *ty = ((TypingStatement *)stmt)->getType();
 				localTable.addItem(addr, lookupSym(Location::memOf(addrExp), ty), typeExp);
 			}
 		}
@@ -609,11 +604,11 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		if (this == other)  // Note: pointer comparison
 			return this;  // Avoid infinite recursion
 		ch = true;
-		UnionType *otherUnion = (UnionType *)other;
+		auto otherUnion = (UnionType *)other;
 		// Always return this, never other, (even if other is larger than this) because otherwise iterators can become
 		// invalid below
-		for (auto it = otherUnion->li.begin(); it != otherUnion->li.end(); ++it) {
-			meetWith(it->type, ch, bHighestPtr);
+		for (const auto &elem : otherUnion->li) {
+			meetWith(elem.type, ch, bHighestPtr);
 			return this;
 		}
 	}
@@ -623,10 +618,10 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		LOG << "WARNING! attempt to union " << getCtype() << " with pointer to self!\n";
 		return this;
 	}
-	for (auto it = li.begin(); it != li.end(); ++it) {
-		Type *curr = it->type->clone();
+	for (auto &elem : li) {
+		Type *curr = elem.type->clone();
 		if (curr->isCompatibleWith(other)) {
-			it->type = curr->meetWith(other, ch, bHighestPtr);
+			elem.type = curr->meetWith(other, ch, bHighestPtr);
 			return this;
 		}
 	}
@@ -807,11 +802,11 @@ CallStatement::dfaTypeAnalysis(bool &ch)
 void
 ReturnStatement::dfaTypeAnalysis(bool &ch)
 {
-	for (auto mm = modifieds.begin(); mm != modifieds.end(); ++mm) {
-		((Assign *)*mm)->dfaTypeAnalysis(ch);
+	for (const auto &mod : modifieds) {
+		((Assign *)mod)->dfaTypeAnalysis(ch);
 	}
-	for (auto rr = returns.begin(); rr != returns.end(); ++rr) {
-		((Assign *)*rr)->dfaTypeAnalysis(ch);
+	for (const auto &ret : returns) {
+		((Assign *)ret)->dfaTypeAnalysis(ch);
 	}
 }
 
@@ -835,9 +830,9 @@ PhiAssign::dfaTypeAnalysis(bool &ch)
 		meetOfArgs = meetOfArgs->meetWith(typeOfDef, ch);
 	}
 	type = type->meetWith(meetOfArgs, ch);
-	for (it = defVec.begin(); it != defVec.end(); ++it) {
-		if (!it->e) continue;
-		it->def->meetWithFor(type, it->e, ch);
+	for (const auto &def : defVec) {
+		if (!def.e) continue;
+		def.def->meetWithFor(type, def.e, ch);
 	}
 	Assignment::dfaTypeAnalysis(ch);  // Handle the LHS
 }
@@ -1429,16 +1424,16 @@ bool
 Signature::dfaTypeAnalysis(Cfg *cfg)
 {
 	bool ch = false;
-	for (auto it = params.begin(); it != params.end(); ++it) {
+	for (const auto &param : params) {
 		// Parameters should be defined in an implicit assignment
-		Statement *def = cfg->findImplicitParamAssign(*it);
+		Statement *def = cfg->findImplicitParamAssign(param);
 		if (def) {  // But sometimes they are not used, and hence have no implicit definition
 			bool thisCh = false;
-			def->meetWithFor((*it)->getType(), (*it)->getExp(), thisCh);
+			def->meetWithFor(param->getType(), param->getExp(), thisCh);
 			if (thisCh) {
 				ch = true;
 				if (DEBUG_TA)
-					LOG << "  sig caused change: " << (*it)->getType()->getCtype() << " " << (*it)->getName() << "\n";
+					LOG << "  sig caused change: " << param->getType()->getCtype() << " " << param->getName() << "\n";
 			}
 		}
 	}
@@ -1577,20 +1572,20 @@ UnionType::isCompatible(Type *other, bool all)
 	if (other->resolvesToUnion()) {
 		if (this == other)  // Note: pointer comparison
 			return true;  // Avoid infinite recursion
-		UnionType *otherUnion = (UnionType *)other;
+		auto otherUnion = (UnionType *)other;
 		// Unions are compatible if one is a subset of the other
 		if (li.size() < otherUnion->li.size()) {
-			for (auto it = li.begin(); it != li.end(); ++it)
-				if (!otherUnion->isCompatible(it->type, all)) return false;
+			for (const auto &elem : li)
+				if (!otherUnion->isCompatible(elem.type, all)) return false;
 		} else {
-			for (auto it = otherUnion->li.begin(); it != otherUnion->li.end(); ++it)
-				if (!isCompatible(it->type, all)) return false;
+			for (const auto &elem : otherUnion->li)
+				if (!isCompatible(elem.type, all)) return false;
 		}
 		return true;
 	}
 	// Other is not a UnionType
-	for (auto it = li.begin(); it != li.end(); ++it)
-		if (other->isCompatibleWith(it->type), all) return true;
+	for (const auto &elem : li)
+		if (other->isCompatibleWith(elem.type), all) return true;
 	return false;
 }
 
@@ -1656,12 +1651,12 @@ UnionType::dereferenceUnion()
 {
 	auto ret = new UnionType;
 	char name[20];
-	for (auto it = li.begin(); it != li.end(); ++it) {
-		Type *elem = it->type->dereference();
-		if (elem->resolvesToVoid())
-			return elem;  // Return void for the whole thing
+	for (const auto &elem : li) {
+		Type *ty = elem.type->dereference();
+		if (ty->resolvesToVoid())
+			return ty;  // Return void for the whole thing
 		sprintf(name, "x%d", ++nextUnionNumber);
-		ret->addType(elem->clone(), name);
+		ret->addType(ty->clone(), name);
 	}
 	return ret;
 }

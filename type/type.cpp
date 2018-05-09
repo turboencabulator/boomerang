@@ -214,8 +214,8 @@ Type *
 UnionType::clone() const
 {
 	auto u = new UnionType();
-	for (auto it = li.cbegin(); it != li.cend(); ++it)
-		u->addType(it->type, it->name.c_str());
+	for (const auto &elem : li)
+		u->addType(elem.type, elem.name.c_str());
 	return u;
 }
 
@@ -298,17 +298,17 @@ unsigned
 CompoundType::getSize() const
 {
 	int n = 0;
-	for (unsigned i = 0; i < types.size(); ++i)
+	for (const auto &type : types)
 		// NOTE: this assumes no padding... perhaps explicit padding will be needed
-		n += types[i]->getSize();
+		n += type->getSize();
 	return n;
 }
 unsigned
 UnionType::getSize() const
 {
 	int max = 0;
-	for (auto it = li.cbegin(); it != li.cend(); ++it) {
-		int sz = it->type->getSize();
+	for (const auto &elem : li) {
+		int sz = elem.type->getSize();
 		if (sz > max) max = sz;
 	}
 	return max;
@@ -335,10 +335,10 @@ Type *
 CompoundType::getTypeAtOffset(unsigned n) const
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); ++i) {
-		if (offset <= n && n < offset + types[i]->getSize())
-			return types[i];
-		offset += types[i]->getSize();
+	for (const auto &type : types) {
+		if (offset <= n && n < offset + type->getSize())
+			return type;
+		offset += type->getSize();
 	}
 	return nullptr;
 }
@@ -423,11 +423,11 @@ CompoundType::getOffsetRemainder(unsigned n) const
 {
 	unsigned r = n;
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); ++i) {
-		offset += types[i]->getSize();
+	for (const auto &type : types) {
+		offset += type->getSize();
 		if (offset > n)
 			break;
-		r -= types[i]->getSize();
+		r -= type->getSize();
 	}
 	return r;
 }
@@ -967,11 +967,11 @@ std::string
 UnionType::getCtype(bool final) const
 {
 	std::string tmp = "union { ";
-	for (auto it = li.cbegin(); it != li.cend(); ++it) {
-		tmp += it->type->getCtype(final);
-		if (it->name != "") {
+	for (const auto &elem : li) {
+		tmp += elem.type->getCtype(final);
+		if (elem.name != "") {
 			tmp += " ";
-			tmp += it->name;
+			tmp += elem.name;
 		}
 		tmp += "; ";
 	}
@@ -1349,8 +1349,8 @@ CompoundType::isSubStructOf(Type *other)
 bool
 UnionType::findType(Type *ty)
 {
-	for (auto it = li.begin(); it != li.end(); ++it) {
-		if (*it->type == *ty)
+	for (const auto &elem : li) {
+		if (*elem.type == *ty)
 			return true;
 	}
 	return false;
@@ -1619,8 +1619,8 @@ std::string
 DataIntervalMap::prints() const
 {
 	std::ostringstream ost;
-	for (auto it = dimap.begin(); it != dimap.end(); ++it)
-		ost << std::hex << "0x" << it->first << std::dec << " " << it->second.name << " " << it->second.type->getCtype() << "\n";
+	for (const auto &di : dimap)
+		ost << std::hex << "0x" << di.first << std::dec << " " << di.second.name << " " << di.second.type->getCtype() << "\n";
 	return ost.str();
 }
 
@@ -1861,8 +1861,8 @@ CompoundType::makeMemo(int mId)
 	m->types = types;
 	m->names = names;
 
-	for (auto it = types.begin(); it != types.end(); ++it)
-		(*it)->takeMemo(mId);
+	for (const auto &type : types)
+		type->takeMemo(mId);
 	return m;
 }
 
@@ -1873,8 +1873,8 @@ CompoundType::readMemo(Memo *mm, bool dec)
 	types = m->types;
 	names = m->names;
 
-	for (auto it = types.begin(); it != types.end(); ++it)
-		(*it)->restoreMemo(m->mId, dec);
+	for (const auto &type : types)
+		type->restoreMemo(m->mId, dec);
 }
 
 class UnionTypeMemo : public Memo {
@@ -1889,8 +1889,8 @@ UnionType::makeMemo(int mId)
 	auto m = new UnionTypeMemo(mId);
 	m->li = li;
 
-	for (auto it = li.begin(); it != li.end(); ++it)
-		it->type->takeMemo(mId);  // Is this right? What about the names? MVE
+	for (const auto &elem : li)
+		elem.type->takeMemo(mId);  // Is this right? What about the names? MVE
 	return m;
 }
 
@@ -1900,8 +1900,8 @@ UnionType::readMemo(Memo *mm, bool dec)
 	auto m = dynamic_cast<UnionTypeMemo *>(mm);
 	li = m->li;
 
-	for (auto it = li.begin(); it != li.end(); ++it)
-		it->type->restoreMemo(m->mId, dec);
+	for (const auto &elem : li)
+		elem.type->restoreMemo(m->mId, dec);
 }
 
 // Don't insert new functions here! (Unles memo related.) Inside #ifdef USING_MEMO!

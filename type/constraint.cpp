@@ -28,10 +28,10 @@ void
 ConstraintMap::print(std::ostream &os) const
 {
 	bool first = true;
-	for (auto kk = cmap.begin(); kk != cmap.end(); ++kk) {
+	for (const auto &con : cmap) {
 		if (first) first = false;
 		else os << ", ";
-		os << kk->first << " = " << kk->second;
+		os << con.first << " = " << con.second;
 	}
 	os << "\n";
 }
@@ -47,18 +47,17 @@ ConstraintMap::prints() const
 void
 ConstraintMap::makeUnion(ConstraintMap &o)
 {
-	for (auto it = o.cmap.begin(); it != o.cmap.end(); ++it) {
-		// Note: *it is a std::pair<Exp*, Exp*>
-		auto ret = cmap.insert(*it);
+	for (const auto &oth : o.cmap) {
+		auto ret = cmap.insert(oth);
 		// If an insertion occured, ret will be std::pair<where, true>
 		// If no insertion occured, ret will be std::pair<where, false>
 		if (!ret.second) {
 			//std::cerr << "ConstraintMap::makeUnion: want to overwrite "
 			//          << ret.first->first << " -> " << ret.first->second
-			//          << " with " << it->first << " -> " << it->second << "\n";
-			TypeVal *Tret = (TypeVal *)ret.first->second;
+			//          << " with " << oth.first << " -> " << oth.second << "\n";
+			auto Tret = (TypeVal *)ret.first->second;
 			Type *ty1 = Tret->getType();
-			TypeVal *Toth = (TypeVal *)it->second;
+			auto Toth = (TypeVal *)oth.second;
 			Type *ty2 = Toth->getType();
 			if (ty1 && ty2 && *ty1 != *ty2) {
 				Tret->setType(ty1->mergeWith(ty2));
@@ -81,8 +80,8 @@ ConstraintMap::insert(Exp *term)
 void
 EquateMap::print(std::ostream &os) const
 {
-	for (auto ee = emap.begin(); ee != emap.end(); ++ee) {
-		os << "\t " << ee->first << " = " << ee->second.prints();
+	for (const auto &eq : emap) {
+		os << "\t " << eq.first << " = " << eq.second.prints();
 	}
 	os << "\n";
 }
@@ -99,10 +98,10 @@ EquateMap::prints() const
 void
 ConstraintMap::substitute(ConstraintMap &other)
 {
-	for (auto oo = other.cmap.begin(); oo != other.cmap.end(); ++oo) {
+	for (const auto &oth : other.cmap) {
 		bool ch;
 		for (auto cc = cmap.begin(); cc != cmap.end(); ++cc) {
-			Exp *newVal = cc->second->searchReplaceAll(oo->first, oo->second, ch);
+			Exp *newVal = cc->second->searchReplaceAll(oth.first, oth.second, ch);
 			if (ch) {
 				if (*cc->first == *newVal)
 					// e.g. was <char*> = <alpha6> now <char*> = <char*>
@@ -112,7 +111,7 @@ ConstraintMap::substitute(ConstraintMap &other)
 			} else
 				// The existing value
 				newVal = cc->second;
-			Exp *newKey = cc->first->searchReplaceAll(oo->first, oo->second, ch);
+			Exp *newKey = cc->first->searchReplaceAll(oth.first, oth.second, ch);
 			if (ch) {
 				cmap.erase(cc->first);
 				// Often end up with <char*> = <char*>
@@ -127,13 +126,13 @@ void
 ConstraintMap::substAlpha()
 {
 	ConstraintMap alphaDefs;
-	for (auto cc = cmap.begin(); cc != cmap.end(); ++cc) {
+	for (const auto &con : cmap) {
 		// Looking for entries with two TypeVals, where exactly one is an alpha
-		if (!cc->first->isTypeVal() || !cc->second->isTypeVal())
+		if (!con.first->isTypeVal() || !con.second->isTypeVal())
 			continue;
 		Type *t1, *t2;
-		t1 = ((TypeVal *)cc->first)->getType();
-		t2 = ((TypeVal *)cc->second)->getType();
+		t1 = ((TypeVal *)con.first)->getType();
+		t2 = ((TypeVal *)con.second)->getType();
 		int numAlpha = 0;
 		if (t1->isPointerToAlpha()) ++numAlpha;
 		if (t2->isPointerToAlpha()) ++numAlpha;
@@ -141,14 +140,14 @@ ConstraintMap::substAlpha()
 			continue;
 		// This is such an equality. Copy it to alphaDefs
 		if (t1->isPointerToAlpha())
-			alphaDefs.cmap[cc->first] = cc->second;
+			alphaDefs.cmap[con.first] = con.second;
 		else
-			alphaDefs.cmap[cc->second] = cc->first;
+			alphaDefs.cmap[con.second] = con.first;
 	}
 
 	// Remove these from the solution
-	for (auto cc = alphaDefs.begin(); cc != alphaDefs.end(); ++cc)
-		cmap.erase(cc->first);
+	for (const auto &con : alphaDefs)
+		cmap.erase(con.first);
 
 	// Now substitute into the remainder
 	substitute(alphaDefs);
@@ -158,8 +157,8 @@ ConstraintMap::substAlpha()
 
 Constraints::~Constraints()
 {
-	for (auto cc = conSet.begin(); cc != conSet.end(); ++cc) {
-		delete *cc;
+	for (const auto &con : conSet) {
+		delete con;
 	}
 }
 
@@ -167,13 +166,13 @@ Constraints::~Constraints()
 void
 Constraints::substIntoDisjuncts(ConstraintMap &in)
 {
-	for (auto kk = in.begin(); kk != in.end(); ++kk) {
-		Exp *from = kk->first;
-		Exp *to = kk->second;
+	for (const auto &con : in) {
+		Exp *from = con.first;
+		Exp *to = con.second;
 		bool ch;
-		for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd) {
-			(*dd)->searchReplaceAll(from, to, ch);
-			*dd = (*dd)->simplifyConstraint();
+		for (auto &dis : disjunctions) {
+			dis->searchReplaceAll(from, to, ch);
+			dis = dis->simplifyConstraint();
 		}
 	}
 	// Now do alpha substitution
@@ -189,34 +188,34 @@ Constraints::substIntoEquates(ConstraintMap &in)
 	ConstraintMap cur = in;
 	while (!cur.empty()) {
 		extra.clear();
-		for (auto kk = cur.begin(); kk != cur.end(); ++kk) {
-			Exp *lhs = kk->first;
+		for (const auto &con : cur) {
+			Exp *lhs = con.first;
 			auto it = equates.find(lhs);
 			if (it != equates.end()) {
 				// Possibly new constraints that
 				// typeof(elements in it->second) == val
-				Exp *val = kk->second;
+				Exp *val = con.second;
 				LocationSet &ls = it->second;
-				for (auto ll = ls.begin(); ll != ls.end(); ++ll) {
-					auto ff = fixed.find(*ll);
+				for (const auto &loc : ls) {
+					auto ff = fixed.find(loc);
 					if (ff != fixed.end()) {
 						if (!unify(val, ff->second, extra)) {
 							if (VERBOSE || DEBUG_TA)
-								LOG << "Constraint failure: " << *ll << " constrained to be "
+								LOG << "Constraint failure: " << loc << " constrained to be "
 								    << ((TypeVal *)val)->getType()->getCtype() << " and "
 								    << ((TypeVal *)ff->second)->getType()->getCtype() << "\n";
 							return;
 						}
 					} else
-						extra[*ll] = val;  // A new constant constraint
+						extra[loc] = val;  // A new constant constraint
 				}
 				if (((TypeVal *)val)->getType()->isComplete()) {
 					// We have a complete type equal to one or more variables
 					// Remove the equate, and generate more fixed
 					// e.g. Ta = Tb,Tc and Ta = K => Tb=K, Tc=K
-					for (auto ll = ls.begin(); ll != ls.end(); ++ll) {
+					for (const auto &loc : ls) {
 						Exp *newFixed = new Binary(opEquals,
-						                           *ll,     // e.g. Tb
+						                           loc,     // e.g. Tb
 						                           val);    // e.g. K
 						extra.insert(newFixed);
 					}
@@ -281,19 +280,18 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	LOG << conSet.prints();
 	// Replace Ta[loc] = ptr(alpha) with
 	//         Tloc = alpha
-	for (auto cc = conSet.begin(); cc != conSet.end(); ++cc) {
-		Exp *c = *cc;
-		if (!c->isEquality()) continue;
-		Exp *left = ((Binary *)c)->getSubExp1();
+	for (const auto &con : conSet) {
+		if (!con->isEquality()) continue;
+		Exp *left = ((Binary *)con)->getSubExp1();
 		if (!left->isTypeOf()) continue;
 		Exp *leftSub = ((Unary *)left)->getSubExp1();
 		if (!leftSub->isAddrOf()) continue;
-		Exp *right = ((Binary *)c)->getSubExp2();
+		Exp *right = ((Binary *)con)->getSubExp2();
 		if (!right->isTypeVal()) continue;
 		Type *t = ((TypeVal *)right)->getType();
 		if (!t->isPointer()) continue;
 		// Don't modify a key in a map
-		Exp *clone = c->clone();
+		Exp *clone = con->clone();
 		// left is typeof(addressof(something)) -> typeof(something)
 		left = ((Binary *)clone)->getSubExp1();
 		leftSub = ((Unary *)left)->getSubExp1();
@@ -306,9 +304,9 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 		t = ((TypeVal *)right)->getType();
 		((TypeVal *)right)->setType(((PointerType *)t)->getPointsTo()->clone());
 		delete t;
-		conSet.remove(c);
+		conSet.remove(con);  // FIXME:  Invalidates iterators
 		conSet.insert(clone);
-		delete c;
+		delete con;
 	}
 
 	// Sort constraints into a few categories. Disjunctions go to a special
@@ -316,20 +314,19 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	// typeof(x) = y (where y is a type value) go to a map called fixed.
 	// Constraint terms of the form Tx = Ty go into a map of LocationSets
 	// called equates for fast lookup
-	for (auto cc = conSet.begin(); cc != conSet.end(); ++cc) {
-		Exp *c = *cc;
-		if (c->isTrue()) continue;
-		if (c->isFalse()) {
+	for (const auto &con : conSet) {
+		if (con->isTrue()) continue;
+		if (con->isFalse()) {
 			if (VERBOSE || DEBUG_TA)
 				LOG << "Constraint failure: always false constraint\n";
 			return false;
 		}
-		if (c->isDisjunction()) {
-			disjunctions.push_back(c);
+		if (con->isDisjunction()) {
+			disjunctions.push_back(con);
 			continue;
 		}
 		// Break up conjunctions into terms
-		Exp *rem = c, *term;
+		Exp *rem = con, *term;
 		while (!!(term = nextConjunct(rem))) {
 			assert(term->isEquality());
 			Exp *lhs = ((Binary *)term)->getSubExp1();
@@ -348,8 +345,8 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	}
 
 	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
-	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-		LOG << *dd << ",\n";
+	for (const auto &dis : disjunctions)
+		LOG << dis << ",\n";
 	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
@@ -363,8 +360,8 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 
 	LOG << "\nAfter substitute fixed into equates:\n";
 	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
-	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-		LOG << *dd << ",\n";
+	for (const auto &dis : disjunctions)
+		LOG << dis << ",\n";
 	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
@@ -375,8 +372,8 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 
 	LOG << "\nAfter second substitute fixed into disjunctions:\n";
 	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
-	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-		LOG << *dd << ",\n";
+	for (const auto &dis : disjunctions)
+		LOG << dis << ",\n";
 	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
@@ -388,8 +385,8 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 		// <alphaN> = <type>      or
 		// <type>   = <alphaN>
 		// and substitute these into each part of the solution
-		for (auto it = solns.begin(); it != solns.end(); ++it)
-			it->substAlpha();
+		for (auto &sol : solns)
+			sol.substAlpha();
 	}
 	return ret;
 }
@@ -523,13 +520,13 @@ Constraints::unify(Exp *x, Exp *y, ConstraintMap &extra)
 void
 Constraints::alphaSubst()
 {
-	for (auto it = disjunctions.begin(); it != disjunctions.end(); ++it) {
+	for (auto &dis : disjunctions) {
 		// This should be a conjuction of terms
-		if (!(*it)->isConjunction())
+		if (!dis->isConjunction())
 			// A single term will do no good...
 			continue;
 		// Look for a term like alphaX* == fixedType*
-		Exp *temp = (*it)->clone();
+		Exp *temp = dis->clone();
 		Exp *term;
 		bool found = false;
 		Exp *trm1 = nullptr;
@@ -566,8 +563,8 @@ Constraints::alphaSubst()
 		}
 		// Now substitute
 		bool change;
-		*it = (*it)->searchReplaceAll(alpha, val, change);
-		*it = (*it)->simplifyConstraint();
+		dis = dis->searchReplaceAll(alpha, val, change);
+		dis = dis->simplifyConstraint();
 	}
 }
 
@@ -575,8 +572,8 @@ void
 Constraints::print(std::ostream &os) const
 {
 	os << "\n" << std::dec << (int)disjunctions.size() << " disjunctions: ";
-	for (auto dd = disjunctions.begin(); dd != disjunctions.end(); ++dd)
-		os << *dd << ",\n";
+	for (const auto &dis : disjunctions)
+		os << dis << ",\n";
 	os << "\n";
 	os << (int)fixed.size() << " fixed: ";
 	fixed.print(os);
