@@ -51,30 +51,33 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 	// Get the signature of the instruction and extract its parts
 	std::pair<std::string, unsigned> sig = RTLDict.getSignature(name);
 	std::string opcode = sig.first;
-	unsigned numOperands = sig.second;
 
 	// Put the operands into a vector
-	std::vector<Exp *> actuals(numOperands);
+	std::vector<Exp *> actuals(sig.second);
 	va_list args;
 	va_start(args, name);
-	for (unsigned i = 0; i < numOperands; ++i)
-		actuals[i] = va_arg(args, Exp *);
+	for (auto &operand : actuals)
+		operand = va_arg(args, Exp *);
 	va_end(args);
 
 	if (DEBUG_DECODER) {
 		// Display a disassembly of this instruction if requested
 		std::cout << std::hex << pc << std::dec << ": " << name << " ";
-		for (auto itd = actuals.begin(); itd != actuals.end(); ++itd) {
-			if ((*itd)->isIntConst()) {
-				int val = ((Const *)(*itd))->getInt();
+		bool first = true;
+		for (const auto &operand : actuals) {
+			if (first)
+				first = false;
+			else
+				std::cout << ", ";
+
+			if (operand->isIntConst()) {
+				int val = ((Const *)operand)->getInt();
 				if (val > 100 || val < -100)
 					std::cout << std::hex << "0x" << val << std::dec;
 				else
 					std::cout << val;
 			} else
-				(*itd)->print(std::cout);
-			if (itd != actuals.end() - 1)
-				std::cout << ", ";
+				operand->print(std::cout);
 		}
 		std::cout << std::endl;
 	}
@@ -114,8 +117,8 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
 
 	va_list args;
 	va_start(args, name);
-	for (auto it = ent.params.begin(); it != ent.params.end(); ++it) {
-		Exp *formal = new Location(opParam, new Const(it->c_str()), nullptr);
+	for (const auto &param : ent.params) {
+		Exp *formal = new Location(opParam, new Const(param.c_str()), nullptr);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
 		result = result->searchReplaceAll(formal, actual, change);
@@ -156,8 +159,8 @@ NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 
 	va_list args;
 	va_start(args, exp);
-	for (auto it = ent.funcParams.begin(); it != ent.funcParams.end(); ++it) {
-		Exp *formal = new Location(opParam, new Const(it->c_str()), nullptr);
+	for (const auto &param : ent.funcParams) {
+		Exp *formal = new Location(opParam, new Const(param.c_str()), nullptr);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
 		exp = exp->searchReplaceAll(formal, actual, change);

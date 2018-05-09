@@ -1220,12 +1220,12 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 
 	// Add the callees to the set of CallStatements to proces for parameter recovery, and also to the Prog object
-	for (auto it = callList.begin(); it != callList.end(); ++it) {
-		ADDRESS dest = (*it)->getFixedDest();
+	for (const auto &call : callList) {
+		ADDRESS dest = call->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically linked
 		// ones (in the .plt)
 		if (pBF->isDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
-			cfg->addCall(*it);
+			cfg->addCall(call);
 			// Don't visit the destination of a register call
 			//if (dest != NO_ADDRESS) newProc(proc->getProg(), dest);
 			if (dest != NO_ADDRESS) proc->getProg()->setNewProc(dest);

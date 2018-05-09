@@ -199,17 +199,18 @@ FrontEnd::close(FrontEnd *fe)
 const char *
 FrontEnd::getRegName(int idx)
 {
-	for (auto it = getDecoder().getRTLDict().RegMap.begin(); it != getDecoder().getRTLDict().RegMap.end(); ++it)
-		if (it->second == idx)
-			return it->first.c_str();
+	for (const auto &reg : getDecoder().getRTLDict().RegMap)
+		if (reg.second == idx)
+			return reg.first.c_str();
 	return nullptr;
 }
 
 int
 FrontEnd::getRegSize(int idx)
 {
-	auto it = getDecoder().getRTLDict().DetRegMap.find(idx);
-	if (it != getDecoder().getRTLDict().DetRegMap.end())
+	const auto &map = getDecoder().getRTLDict().DetRegMap;
+	auto it = map.find(idx);
+	if (it != map.end())
 		return it->second.g_size();
 	return 32;
 }
@@ -386,8 +387,8 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 		LOG << "start: " << a << " gotmain: " << (gotMain ? "true" : "false") << "\n";
 	if (a == NO_ADDRESS) {
 		std::vector<ADDRESS> entrypoints = getEntryPoints();
-		for (auto it = entrypoints.begin(); it != entrypoints.end(); ++it)
-			decode(prog, *it);
+		for (const auto &entrypoint : entrypoints)
+			decode(prog, entrypoint);
 		return;
 	}
 
@@ -539,12 +540,12 @@ FrontEnd::readLibrarySignatures(const std::string &sPath, callconv cc)
 	p.yyparse(plat, cc);
 	ifs.close();
 
-	for (auto it = p.signatures.begin(); it != p.signatures.end(); ++it) {
+	for (const auto &sig : p.signatures) {
 #if 0
-		std::cerr << "readLibrarySignatures from " << sPath << ": " << (*it)->getName() << "\n";
+		std::cerr << "readLibrarySignatures from " << sPath << ": " << sig->getName() << "\n";
 #endif
-		librarySignatures[(*it)->getName()] = *it;
-		(*it)->setSigFile(sPath);
+		librarySignatures[sig->getName()] = sig;
+		sig->setSigFile(sPath);
 	}
 }
 
@@ -1140,14 +1141,14 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 #endif
 
 	// Add the callees to the set of CallStatements, and also to the Prog object
-	for (auto it = callList.begin(); it != callList.end(); ++it) {
-		ADDRESS dest = (*it)->getFixedDest();
+	for (const auto &call : callList) {
+		ADDRESS dest = call->getFixedDest();
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically
 		// linked ones (in the .plt)
 		if (pBF->isDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
-			pCfg->addCall(*it);
+			pCfg->addCall(call);
 			// Don't visit the destination of a register call
-			Proc *np = (*it)->getDestProc();
+			Proc *np = call->getDestProc();
 			if (!np && dest != NO_ADDRESS) {
 				//np = newProc(pProc->getProg(), dest);
 				np = pProc->getProg()->setNewProc(dest);
