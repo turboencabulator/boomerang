@@ -470,8 +470,8 @@ protected:
 
 	// establish if this bb has any back edges leading FROM it
 	        bool        hasBackEdge() const {
-		                    for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
-			                    if (hasBackEdgeTo(m_OutEdges[i]))
+		                    for (const auto &edge : m_OutEdges)
+			                    if (hasBackEdgeTo(edge))
 				                    return true;
 		                    return false;
 	                    }
@@ -486,8 +486,9 @@ protected:
 	        bool        inLoop(BasicBlock *header, BasicBlock *latch) const;
 
 	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) const {
-		                    for (auto it = set.begin(); it != set.end(); ++it)
-			                    if (*it == bb) return true;
+		                    for (const auto &elem : set)
+			                    if (elem == bb)
+				                    return true;
 		                    return false;
 	                    }
 

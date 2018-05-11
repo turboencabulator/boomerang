@@ -58,8 +58,8 @@ BasicBlock::~BasicBlock()
 {
 	// Delete the RTLs
 	if (m_pRtls) {
-		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it) {
-			delete *it;
+		for (const auto &rtl : *m_pRtls) {
+			delete rtl;
 		}
 	}
 
@@ -141,8 +141,8 @@ bool
 BasicBlock::isCaseOption() const
 {
 	if (caseHead)
-		for (unsigned int i = 0; i < caseHead->getOutEdges().size() - 1; ++i)
-			if (caseHead->getOutEdge(i) == this)
+		for (const auto &edge : caseHead->m_OutEdges)
+			if (edge == this)
 				return true;
 	return false;
 }
@@ -270,18 +270,18 @@ BasicBlock::print(std::ostream &os, bool html) const
 	}
 	os << ":\n";
 	os << "in edges:" << std::hex;
-	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
-		os << " " << m_InEdges[i]->getHiAddr();
+	for (const auto &edge : m_InEdges)
+		os << " " << edge->getHiAddr();
 	os << std::dec << "\n";
 	os << "out edges:" << std::hex;
-	for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
-		os << " " << m_OutEdges[i]->getLowAddr();
+	for (const auto &edge : m_OutEdges)
+		os << " " << edge->getLowAddr();
 	os << std::dec << "\n";
 	if (m_pRtls) {  // Can be zero if e.g. INVALID
 		if (html)
 			os << "<table>\n";
-		for (auto rit = m_pRtls->begin(); rit != m_pRtls->end(); ++rit) {
-			(*rit)->print(os, html);
+		for (const auto &rtl : *m_pRtls) {
+			rtl->print(os, html);
 		}
 		if (html)
 			os << "</table>\n";
@@ -291,7 +291,7 @@ BasicBlock::print(std::ostream &os, bool html) const
 			os << "<br>";
 		os << "Synthetic out edge(s) to" << std::dec;
 		for (int i = 0; i < m_iNumOutEdges; ++i) {
-			BasicBlock *outEdge = m_OutEdges[i];
+			const auto &outEdge = m_OutEdges[i];
 			if (outEdge && outEdge->m_iLabelNum)
 				os << " L" << outEdge->m_iLabelNum;
 		}
@@ -373,10 +373,9 @@ BasicBlock::getRTLWithStatement(Statement *stmt) const
 {
 	if (!m_pRtls)
 		return nullptr;
-	for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it) {
-		RTL *rtl = *it;
-		for (auto it1 = rtl->getList().begin(); it1 != rtl->getList().end(); ++it1)
-			if (*it1 == stmt)
+	for (const auto &rtl : *m_pRtls) {
+		for (const auto &s : rtl->getList())
+			if (s == stmt)
 				return rtl;
 	}
 	return nullptr;
@@ -459,8 +458,8 @@ BasicBlock::getOutEdge(unsigned int i)
 BasicBlock *
 BasicBlock::getCorrectOutEdge(ADDRESS a) const
 {
-	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
-		if ((*it)->getLowAddr() == a) return *it;
+	for (const auto &edge : m_OutEdges) {
+		if (edge->getLowAddr() == a) return edge;
 	}
 	return nullptr;
 }
@@ -497,7 +496,7 @@ BasicBlock::deleteInEdge(BasicBlock *edge)
 {
 	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {
 		if (*it == edge) {
-			deleteInEdge(it);
+			m_InEdges.erase(it);
 			break;
 		}
 	}
@@ -533,8 +532,7 @@ BasicBlock::DFTOrder(int &first, int &last)
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
-		BasicBlock *child = *it;
+	for (const auto &child : m_OutEdges) {
 		if (!child->m_iTraversed)
 			numTraversed = numTraversed + child->DFTOrder(first, last);
 	}
@@ -562,8 +560,7 @@ BasicBlock::RevDFTOrder(int &first, int &last)
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {
-		BasicBlock *parent = *it;
+	for (const auto &parent : m_InEdges) {
 		if (!parent->m_iTraversed)
 			numTraversed = numTraversed + parent->RevDFTOrder(first, last);
 	}
@@ -748,14 +745,12 @@ BasicBlock::getLastStmt()
 void
 BasicBlock::getStatements(StatementList &stmts)
 {
-	std::list<RTL *> *rtls = getRTLs();
-	if (rtls) {
-		for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
-			RTL *rtl = *rit;
-			for (auto it = rtl->getList().begin(); it != rtl->getList().end(); ++it) {
-				if (!(*it)->getBB())
-					(*it)->setBB(this);
-				stmts.append(*it);
+	if (m_pRtls) {
+		for (const auto &rtl : *m_pRtls) {
+			for (const auto &stmt : rtl->getList()) {
+				if (!stmt->getBB())
+					stmt->setBB(this);
+				stmts.append(stmt);
 			}
 		}
 	}
@@ -884,8 +879,8 @@ void
 BasicBlock::simplify()
 {
 	if (m_pRtls)
-		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it)
-			(*it)->simplify();
+		for (const auto &rtl : *m_pRtls)
+			rtl->simplify();
 	if (m_nodeType == TWOWAY) {
 		if (!m_pRtls || m_pRtls->empty()) {
 			m_nodeType = FALL;
@@ -914,11 +909,11 @@ BasicBlock::simplify()
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
 			rinedges.swap(redundant->m_InEdges);
-			for (unsigned i = 0; i < rinedges.size(); ++i) {
+			for (const auto &edge : rinedges) {
 				if (VERBOSE)
-					LOG << rinedges[i]->getLowAddr() << " ";
-				if (rinedges[i] != this)
-					redundant->m_InEdges.push_back(rinedges[i]);
+					LOG << edge->getLowAddr() << " ";
+				if (edge != this)
+					redundant->m_InEdges.push_back(edge);
 				else {
 					if (VERBOSE)
 						LOG << "(ignored) ";
@@ -941,11 +936,11 @@ BasicBlock::simplify()
 				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
 			rinedges.swap(redundant->m_InEdges);
-			for (unsigned i = 0; i < rinedges.size(); ++i) {
+			for (const auto &edge : rinedges) {
 				if (VERBOSE)
-					LOG << rinedges[i]->getLowAddr() << " ";
-				if (rinedges[i] != this)
-					redundant->m_InEdges.push_back(rinedges[i]);
+					LOG << edge->getLowAddr() << " ";
+				if (edge != this)
+					redundant->m_InEdges.push_back(edge);
 				else {
 					if (VERBOSE)
 						LOG << "(ignored) ";
@@ -969,9 +964,9 @@ BasicBlock::hasBackEdgeTo(const BasicBlock *dest) const
 bool
 BasicBlock::allParentsGenerated() const
 {
-	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
-		if (!m_InEdges[i]->hasBackEdgeTo(this)
-		 &&  m_InEdges[i]->traversed != DFS_CODEGEN)
+	for (const auto &edge : m_InEdges)
+		if (!edge->hasBackEdgeTo(this)
+		 &&  edge->traversed != DFS_CODEGEN)
 			return false;
 	return true;
 }
@@ -1007,10 +1002,10 @@ BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 	hll->AddLabel(indLevel, ord);
 
 	if (m_pRtls) {
-		for (auto it = m_pRtls->begin(); it != m_pRtls->end(); ++it) {
+		for (const auto &rtl : *m_pRtls) {
 			if (DEBUG_GEN)
-				LOG << (*it)->getAddress() << "\t";
-			(*it)->generateCode(hll, this, indLevel);
+				LOG << rtl->getAddress() << "\t";
+			rtl->generateCode(hll, this, indLevel);
 		}
 		if (DEBUG_GEN)
 			LOG << "\n";
@@ -1426,14 +1421,14 @@ BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 	loopStamps[0] = time;
 
 	// recurse on unvisited children and set inedges for all children
-	for (unsigned int i = 0; i < m_OutEdges.size(); ++i) {
+	for (const auto &edge : m_OutEdges) {
 		// set the in edge from this child to its parent (the current node)
 		// (not done here, might be a problem)
 		// outEdges[i]->inEdges.Add(this);
 
 		// recurse on this child if it hasn't already been visited
-		if (m_OutEdges[i]->traversed != DFS_LNUM)
-			m_OutEdges[i]->setLoopStamps(++time, order);
+		if (edge->traversed != DFS_LNUM)
+			edge->setLoopStamps(++time, order);
 	}
 
 	// set the the second loopStamp value
@@ -1452,10 +1447,11 @@ BasicBlock::setRevLoopStamps(int &time)
 	revLoopStamps[0] = time;
 
 	// recurse on the unvisited children in reverse order
-	for (int i = m_OutEdges.size() - 1; i >= 0; --i) {
+	for (auto it = m_OutEdges.rbegin(); it != m_OutEdges.rend(); ++it) {
+		const auto &edge = *it;
 		// recurse on this child if it hasn't already been visited
-		if (m_OutEdges[i]->traversed != DFS_RNUM)
-			m_OutEdges[i]->setRevLoopStamps(++time);
+		if (edge->traversed != DFS_RNUM)
+			edge->setRevLoopStamps(++time);
 	}
 
 	// set the the second loopStamp value
@@ -1469,9 +1465,9 @@ BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
 	traversed = DFS_PDOM;
 
 	// recurse on unvisited children
-	for (unsigned int i = 0; i < m_InEdges.size(); ++i)
-		if (m_InEdges[i]->traversed != DFS_PDOM)
-			m_InEdges[i]->setRevOrder(order);
+	for (const auto &edge : m_InEdges)
+		if (edge->traversed != DFS_PDOM)
+			edge->setRevOrder(order);
 
 	// add this node to the ordering structure and record the post dom. order of this node as its index within this
 	// ordering structure
@@ -1500,11 +1496,11 @@ BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 		//   i) isn't on a back-edge,
 		//  ii) hasn't already been traversed in a case tagging traversal and,
 		// iii) isn't the follow node.
-		for (unsigned int i = 0; i < m_OutEdges.size(); ++i)
-			if (!hasBackEdgeTo(m_OutEdges[i])
-			 && m_OutEdges[i]->traversed != DFS_CASE
-			 && m_OutEdges[i] != follow)
-				m_OutEdges[i]->setCaseHead(head, follow);
+		for (const auto &edge : m_OutEdges)
+			if (!hasBackEdgeTo(edge)
+			 && edge->traversed != DFS_CASE
+			 && edge != follow)
+				edge->setCaseHead(head, follow);
 }
 
 void
@@ -1638,8 +1634,7 @@ void
 checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, UserProc *proc)
 {
 	// For each location to be considered
-	for (auto uu = ls.begin(); uu != ls.end(); ++uu) {
-		Exp *u = (Exp *)*uu;
+	for (const auto &u : ls) {
 		if (!u->isSubscript()) continue;  // Only interested in subscripted vars
 		RefExp *r = (RefExp *)u;
 		// Interference if we can find a live variable which differs only in the reference
@@ -1723,8 +1718,7 @@ void
 BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 {
 	liveout.clear();
-	for (unsigned i = 0; i < m_OutEdges.size(); ++i) {
-		BasicBlock *currBB = m_OutEdges[i];
+	for (const auto &currBB : m_OutEdges) {
 		// First add the non-phi liveness
 		liveout.makeUnion(currBB->liveIn);
 		int j = currBB->whichPred(this);
@@ -1733,18 +1727,18 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 			continue;
 		RTL *phiRtl = currBB->m_pRtls->front();
 		std::list<Statement *> &stmts = phiRtl->getList();
-		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
+		for (const auto &stmt : stmts) {
 			// Only interested in phi assignments. Note that it is possible that some phi assignments have been
 			// converted to ordinary assignments. So the below is a continue, not a break.
-			if (!(*it)->isPhi()) continue;
-			PhiAssign *pa = (PhiAssign *)*it;
+			if (!stmt->isPhi()) continue;
+			PhiAssign *pa = (PhiAssign *)stmt;
 			// Get the jth operand to the phi function; it has a use from BB *this
 			Statement *def = pa->getStmtAt(j);
 			auto r = new RefExp(pa->getLeft()->clone(), def);
 			liveout.insert(r);
 			phiLocs.insert(r);
 			if (DEBUG_LIVENESS)
-				LOG << " ## Liveness: adding " << r << " due to ref to phi " << *it << " in BB at " << getLowAddr() << "\n";
+				LOG << " ## Liveness: adding " << r << " due to ref to phi " << stmt << " in BB at " << getLowAddr() << "\n";
 		}
 	}
 }
@@ -1987,11 +1981,11 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 int
 BasicBlock::findNumCases()
 {
-	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {  // For each in-edge
-		if ((*it)->m_nodeType != TWOWAY)  // look for a two-way BB
+	for (const auto &edge : m_InEdges) {
+		if (edge->m_nodeType != TWOWAY)  // look for a two-way BB
 			continue;  // Ignore all others
-		assert(!(*it)->m_pRtls->empty());
-		RTL *lastRtl = (*it)->m_pRtls->back();
+		assert(!edge->m_pRtls->empty());
+		RTL *lastRtl = edge->m_pRtls->back();
 		assert(lastRtl->getNumStmt() >= 1);
 		BranchStatement *lastStmt = (BranchStatement *)lastRtl->elementAt(lastRtl->getNumStmt() - 1);
 		Exp *pCond = lastStmt->getCondExpr();
@@ -2020,8 +2014,8 @@ findConstantValues(Statement *s, std::list<int> &dests)
 	if (!s) return;
 	if (s->isPhi()) {
 		// For each definition, recurse
-		for (auto it = ((PhiAssign *)s)->begin(); it != ((PhiAssign *)s)->end(); ++it)
-			findConstantValues(it->def, dests);
+		for (const auto &def : *(PhiAssign *)s)
+			findConstantValues(def.def, dests);
 	} else if (s->isAssign()) {
 		Exp *rhs = ((Assign *)s)->getRight();
 		if (rhs->isIntConst())
@@ -2047,15 +2041,15 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		do {
 			PhiAssign *pi = (PhiAssign *)*workSet.begin();
 			workSet.remove(pi);
-			for (auto it = pi->begin(); it != pi->end(); ++it) {
-				if (!it->def) continue;
-				if (!it->def->isPhi()) continue;
-				if (seenSet.exists(it->def)) {
+			for (const auto &def : *pi) {
+				if (!def.def) continue;
+				if (!def.def->isPhi()) continue;
+				if (seenSet.exists(def.def)) {
 					std::cerr << "Real phi loop involving statements " << originalPhi->getNumber() << " and " << pi->getNumber() << "\n";
 					break;
 				} else {
-					workSet.insert(it->def);
-					seenSet.insert(it->def);
+					workSet.insert(def.def);
+					seenSet.insert(def.def);
 				}
 			}
 		} while (!workSet.empty());
@@ -2408,12 +2402,12 @@ BasicBlock::processSwitch(UserProc *proc)
 	}
 	// Decode the newly discovered switch code arms, if any, and if not already decoded
 	int count = 0;
-	for (auto dd = dests.begin(); dd != dests.end(); ++dd) {
+	for (const auto &dest : dests) {
 		char tmp[1024];
 		++count;
-		sprintf(tmp, "before decoding fragment %i of %i (%x)", count, dests.size(), *dd);
+		sprintf(tmp, "before decoding fragment %i of %i (%x)", count, dests.size(), dest);
 		Boomerang::get()->alert_decompile_debug_point(proc, tmp);
-		prog->decodeFragment(proc, *dd);
+		prog->decodeFragment(proc, dest);
 	}
 }
 
