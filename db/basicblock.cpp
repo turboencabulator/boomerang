@@ -371,13 +371,11 @@ BasicBlock::getRTLs() const
 RTL *
 BasicBlock::getRTLWithStatement(Statement *stmt) const
 {
-	if (!m_pRtls)
-		return nullptr;
-	for (const auto &rtl : *m_pRtls) {
-		for (const auto &s : rtl->getList())
-			if (s == stmt)
-				return rtl;
-	}
+	if (m_pRtls)
+		for (const auto &rtl : *m_pRtls)
+			for (const auto &s : rtl->getList())
+				if (s == stmt)
+					return rtl;
 	return nullptr;
 }
 
@@ -445,8 +443,9 @@ BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
 BasicBlock *
 BasicBlock::getOutEdge(unsigned int i)
 {
-	if (i < m_OutEdges.size()) return m_OutEdges[i];
-	else return nullptr;
+	if (i < m_OutEdges.size())
+		return m_OutEdges[i];
+	return nullptr;
 }
 
 /*==============================================================================
@@ -458,9 +457,9 @@ BasicBlock::getOutEdge(unsigned int i)
 BasicBlock *
 BasicBlock::getCorrectOutEdge(ADDRESS a) const
 {
-	for (const auto &edge : m_OutEdges) {
-		if (edge->getLowAddr() == a) return edge;
-	}
+	for (const auto &edge : m_OutEdges)
+		if (edge->getLowAddr() == a)
+			return edge;
 	return nullptr;
 }
 
@@ -657,14 +656,13 @@ BasicBlock::getCallDestProc() const
 Statement *
 BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 {
-	if (!m_pRtls) return nullptr;
-	rit = m_pRtls->begin();
-	while (rit != m_pRtls->end()) {
-		RTL *rtl = *rit;
-		sit = rtl->getList().begin();
-		if (sit != rtl->getList().end())
-			return *sit;
-		++rit;
+	if (m_pRtls) {
+		for (rit = m_pRtls->begin(); rit != m_pRtls->end(); ++rit) {
+			RTL *rtl = *rit;
+			sit = rtl->getList().begin();
+			if (sit != rtl->getList().end())
+				return *sit;
+		}
 	}
 	return nullptr;
 }
@@ -678,7 +676,7 @@ BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
 	do {
 		if (++rit == m_pRtls->end())
 			return nullptr;  // End of all RTLs reached, return null Statement
-	} while ((*rit)->getNumStmt() == 0);  // Ignore all RTLs with no statements
+	} while ((*rit)->getList().empty());  // Ignore all RTLs with no statements
 	sit = (*rit)->getList().begin();  // Point to 1st statement at start of next RTL
 	return *sit;                      // Return first statement
 }
@@ -692,7 +690,7 @@ BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 	do {
 		if (++rit == m_pRtls->rend())
 			return nullptr;  // End of all RTLs reached, return null Statement
-	} while ((*rit)->getNumStmt() == 0);  // Ignore all RTLs with no statements
+	} while ((*rit)->getList().empty());  // Ignore all RTLs with no statements
 	sit = (*rit)->getList().rbegin();  // Point to last statement at end of prev RTL
 	return *sit;                       // Return last statement
 }
@@ -700,14 +698,13 @@ BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 Statement *
 BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 {
-	if (!m_pRtls) return nullptr;
-	rit = m_pRtls->rbegin();
-	while (rit != m_pRtls->rend()) {
-		RTL *rtl = *rit;
-		sit = rtl->getList().rbegin();
-		if (sit != rtl->getList().rend())
-			return *sit;
-		++rit;
+	if (m_pRtls) {
+		for (rit = m_pRtls->rbegin(); rit != m_pRtls->rend(); ++rit) {
+			RTL *rtl = *rit;
+			sit = rtl->getList().rbegin();
+			if (sit != rtl->getList().rend())
+				return *sit;
+		}
 	}
 	return nullptr;
 }
@@ -715,31 +712,17 @@ BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
 Statement *
 BasicBlock::getFirstStmt()
 {
-	if (!m_pRtls) return nullptr;
-	auto rit = m_pRtls->begin();
-	while (rit != m_pRtls->end()) {
-		RTL *rtl = *rit;
-		auto sit = rtl->getList().begin();
-		if (sit != rtl->getList().end())
-			return *sit;
-		++rit;
-	}
-	return nullptr;
+	rtlit rit;
+	StatementList::iterator sit;
+	return getFirstStmt(rit, sit);
 }
 
 Statement *
 BasicBlock::getLastStmt()
 {
-	if (!m_pRtls) return nullptr;
-	auto rit = m_pRtls->rbegin();
-	while (rit != m_pRtls->rend()) {
-		RTL *rtl = *rit;
-		auto sit = rtl->getList().rbegin();
-		if (sit != rtl->getList().rend())
-			return *sit;
-		++rit;
-	}
-	return nullptr;
+	rtlrit rit;
+	StatementList::reverse_iterator sit;
+	return getLastStmt(rit, sit);
 }
 
 void
@@ -835,13 +818,14 @@ BasicBlock::isJmpZ(BasicBlock *dest) const
 	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
 		if ((*it)->getKind() == STMT_BRANCH) {
 			BRANCH_TYPE jt = ((BranchStatement *)(*it))->getCond();
-			if ((jt != BRANCH_JE) && (jt != BRANCH_JNE)) return false;
-			BasicBlock *trueEdge = m_OutEdges[0];
-			if (jt == BRANCH_JE)
+			if (jt == BRANCH_JE) {
+				const auto &trueEdge = m_OutEdges[0];
 				return dest == trueEdge;
-			else {
-				BasicBlock *falseEdge = m_OutEdges[1];
+			} else if (jt == BRANCH_JNE) {
+				const auto &falseEdge = m_OutEdges[1];
 				return dest == falseEdge;
+			} else {
+				return false;
 			}
 		}
 	}
@@ -1028,10 +1012,9 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		emitGotoAndLabel(hll, indLevel, this);
 		return;
 	} else if (isIn(followSet, this)) {
-		if (this != enclFollow) {
+		if (this != enclFollow)
 			emitGotoAndLabel(hll, indLevel, this);
-			return;
-		} else return;
+		return;
 	}
 
 	// Has this node already been generated?
@@ -2152,7 +2135,6 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 				}
 			}
 		}
-		return false;
 	} else if (m_nodeType == COMPCALL) {
 		assert(!m_pRtls->empty());
 		RTL *lastRtl = m_pRtls->back();
@@ -2340,11 +2322,9 @@ BasicBlock::processSwitch(UserProc *proc)
 		LOG << "lo= " << si->iLower << ", hi= " << si->iUpper << "\n";
 	}
 	ADDRESS uSwitch;
-	int iNumOut, iNum;
-	iNumOut = si->iUpper - si->iLower + 1;
-	iNum = iNumOut;
+	int iNum = si->iUpper - si->iLower + 1;
 	// Emit an NWAY BB instead of the COMPJUMP. Also update the number of out edges.
-	updateType(NWAY, iNumOut);
+	updateType(NWAY, iNum);
 
 	Prog *prog = proc->getProg();
 	Cfg *cfg = proc->getCFG();
@@ -2388,14 +2368,11 @@ BasicBlock::processSwitch(UserProc *proc)
 			// has ended. Don't try to pull any more data from it.
 			LOG << "Assuming the end of the pointer-array has been reached at index " << i << "\n";
 			// TODO: Elevate this logic to the code calculating iNumTable, but still leave this code as a safeguard.
-			// Q: Should iNumOut and m_iNumOutEdges really be adjusted (iNum - i) ?
-			//assert(iNumOut        >= (iNum - i));
+			// Q: Should m_iNumOutEdges really be adjusted (iNum - i) ?
 			assert(m_iNumOutEdges >= (iNum - i));
-			//iNumOut        -= (iNum - i);
 			m_iNumOutEdges -= (iNum - i);
 			break;
 #else
-			--iNumOut;
 			--m_iNumOutEdges;  // FIXME: where is this set?
 #endif
 		}

@@ -952,9 +952,9 @@ int
 Cfg::pbbToIndex(BasicBlock *pBB) const
 {
 	int i = 0;
-	auto it = m_listBB.begin();
-	while (it != m_listBB.end()) {
-		if (*it++ == pBB) return i;
+	for (const auto &bb : m_listBB) {
+		if (bb == pBB)
+			return i;
 		++i;
 	}
 	return -1;
@@ -1817,13 +1817,10 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	// Move the remaining RTLs (if any) to a new list of RTLs
 	BasicBlock *newBb;
 	unsigned oldOutEdges = 0;
-	bool haveB = true;
-	if (ri != pBB->m_pRtls->end()) {
+	bool haveB = (ri != pBB->m_pRtls->end());
+	if (haveB) {
 		pRtls = new std::list<RTL *>;
-		while (ri != pBB->m_pRtls->end()) {
-			pRtls->push_back(*ri);
-			ri = pBB->m_pRtls->erase(ri);
-		}
+		pRtls->splice(pRtls->end(), *pBB->m_pRtls, ri, pBB->m_pRtls->end());
 		oldOutEdges = pBB->getNumOutEdges();
 		newBb = newBB(pRtls, pBB->getType(), oldOutEdges);
 		// Transfer the out edges from A to B (pBB to newBb)
@@ -1834,7 +1831,6 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	} else {
 		// The "B" part of the above diagram is empty.
 		// Don't create a new BB; just point newBB to the successor of pBB
-		haveB = false;
 		newBb = pBB->getOutEdge(0);
 	}
 
