@@ -48,7 +48,7 @@ TableEntry::TableEntry()
 {
 }
 
-TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
+TableEntry::TableEntry(const std::list<std::string> &p, const RTL &r) :
 	rtl(r)
 {
 	for (auto it = p.begin(); it != p.end(); ++it)
@@ -59,7 +59,7 @@ TableEntry::TableEntry(std::list<std::string> &p, RTL &r) :
  * \brief Set the parameter list.
  */
 void
-TableEntry::setParam(std::list<std::string> &p)
+TableEntry::setParam(const std::list<std::string> &p)
 {
 	params = p;
 }
@@ -68,7 +68,7 @@ TableEntry::setParam(std::list<std::string> &p)
  * \brief Set the RTL.
  */
 void
-TableEntry::setRTL(RTL &r)
+TableEntry::setRTL(const RTL &r)
 {
 	rtl = r;
 }
@@ -100,10 +100,10 @@ TableEntry::operator =(const TableEntry &other)
  * \returns 0 for success, non-zero for failure.
  */
 int
-TableEntry::appendRTL(std::list<std::string> &p, RTL &r)
+TableEntry::appendRTL(const std::list<std::string> &p, const RTL &r)
 {
 	bool match = (p.size() == params.size());
-	for (auto a = params.begin(), b = p.begin(); match && (a != params.end()) && (b != p.end()); match = (*a == *b), ++a, ++b);
+	for (auto a = params.cbegin(), b = p.cbegin(); match && (a != params.cend()) && (b != p.cend()); match = (*a == *b), ++a, ++b);
 	if (match) {
 		rtl.appendRTL(r);
 		return 0;
@@ -132,7 +132,7 @@ RTLInstDict::~RTLInstDict()
  * \returns 0 for success, non-zero for failure.
  */
 int
-RTLInstDict::appendToDict(const std::string &n, std::list<std::string> &p, RTL &r)
+RTLInstDict::appendToDict(const std::string &n, const std::list<std::string> &p, const RTL &r)
 {
 	std::string opcode(n);
 	std::transform(n.begin(), n.end(), opcode.begin(), toupper);
@@ -404,7 +404,7 @@ RTLInstDict::partialType(Exp *exp, Type &ty)
  * \returns The instantiated list of Exps.
  */
 std::list<Statement *> *
-RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *> &actuals)
+RTLInstDict::instantiateRTL(const std::string &name, ADDRESS natPC, const std::vector<Exp *> &actuals)
 {
 	// If -f is in force, use the fast (but not as precise) name instead
 	const std::string *lname = &name;
@@ -441,7 +441,7 @@ RTLInstDict::instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *>
  * \returns The instantiated list of Exps.
  */
 std::list<Statement *> *
-RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &params, std::vector<Exp *> &actuals)
+RTLInstDict::instantiateRTL(const RTL &rtl, ADDRESS natPC, const std::list<std::string> &params, const std::vector<Exp *> &actuals)
 {
 	assert(params.size() == actuals.size());
 
@@ -452,9 +452,9 @@ RTLInstDict::instantiateRTL(RTL &rtl, ADDRESS natPC, std::list<std::string> &par
 	// Iterate through each Statement of the new list of stmts
 	for (auto ss = newList->begin(); ss != newList->end(); ++ss) {
 		// Search for the formals and replace them with the actuals
-		auto param = params.begin();
+		auto param = params.cbegin();
 		auto actual = actuals.cbegin();
-		for (; param != params.end(); ++param, ++actual) {
+		for (; param != params.cend(); ++param, ++actual) {
 			/* Simple parameter - just construct the formal to search for */
 			Exp *formal = Location::param(param->c_str());
 			(*ss)->searchAndReplace(formal, *actual);

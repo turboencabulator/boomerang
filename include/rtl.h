@@ -53,7 +53,7 @@ class RTL {
 	        std::list<Statement *> stmtList;  ///< List of expressions in this RTL.
 public:
 	                    RTL();
-	                    RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt = nullptr);
+	                    RTL(ADDRESS instNativeAddr, const std::list<Statement *> *listStmt = nullptr);
 	                    RTL(const RTL &other);
 	                   ~RTL();
 
@@ -61,7 +61,7 @@ public:
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 
 	        RTL        *clone() const;
-	        RTL        &operator =(RTL &other);
+	        RTL        &operator =(const RTL &other);
 
 	        bool        accept(StmtVisitor *visitor);
 
@@ -96,8 +96,8 @@ public:
 	        void        deleteLastStmt();
 	        void        replaceLastStmt(Statement *repl);
 	        void        clear();
-	        void        appendListStmt(std::list<Statement *> &le);
-	        void        appendRTL(RTL &rtl);
+	        void        appendListStmt(const std::list<Statement *> &le);
+	        void        appendRTL(const RTL &rtl);
 	        void        deepCopyList(std::list<Statement *> &dest) const;
 	/** \} */
 
@@ -142,14 +142,14 @@ protected:
 class TableEntry {
 public:
 	TableEntry();
-	TableEntry(std::list<std::string> &p, RTL &rtl);
+	TableEntry(const std::list<std::string> &p, const RTL &rtl);
 
 	const TableEntry &operator =(const TableEntry &other);
 
-	void setParam(std::list<std::string> &p);
-	void setRTL(RTL &rtl);
+	void setParam(const std::list<std::string> &p);
+	void setRTL(const RTL &rtl);
 
-	int appendRTL(std::list<std::string> &p, RTL &rtl);
+	int appendRTL(const std::list<std::string> &p, const RTL &rtl);
 
 public:
 	std::list<std::string> params;
@@ -203,10 +203,10 @@ public:
 
 	std::pair<std::string, unsigned> getSignature(const std::string &name) const;
 
-	int appendToDict(const std::string &n, std::list<std::string> &p, RTL &rtl);
+	int appendToDict(const std::string &n, const std::list<std::string> &p, const RTL &rtl);
 
-	std::list<Statement *> *instantiateRTL(std::string &name, ADDRESS natPC, std::vector<Exp *> &actuals);
-	std::list<Statement *> *instantiateRTL(RTL &rtls, ADDRESS natPC, std::list<std::string> &params, std::vector<Exp *> &actuals);
+	std::list<Statement *> *instantiateRTL(const std::string &name, ADDRESS natPC, const std::vector<Exp *> &actuals);
+	std::list<Statement *> *instantiateRTL(const RTL &rtls, ADDRESS natPC, const std::list<std::string> &params, const std::vector<Exp *> &actuals);
 
 	std::list<Statement *> *transformPostVars(std::list<Statement *> *rts, bool optimise);
 

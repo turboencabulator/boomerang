@@ -43,7 +43,7 @@ RTL::RTL()
  * \param instNativeAddr  The native address of the instruction.
  * \param listExp         Ptr to existing list of Exps.
  */
-RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= nullptr*/) :
+RTL::RTL(ADDRESS instNativeAddr, const std::list<Statement *> *listStmt /*= nullptr*/) :
 	nativeAddr(instNativeAddr)
 {
 	if (listStmt)
@@ -78,7 +78,7 @@ RTL::~RTL()
  * \returns A reference to this object.
  */
 RTL &
-RTL::operator =(RTL &other)
+RTL::operator =(const RTL &other)
 {
 	if (this != &other) {
 		// Do a deep copy always
@@ -184,7 +184,7 @@ RTL::prependStmt(Statement *s)
  * \param le  List of Exps to insert.
  */
 void
-RTL::appendListStmt(std::list<Statement *> &le)
+RTL::appendListStmt(const std::list<Statement *> &le)
 {
 	for (const auto &stmt : le) {
 		stmtList.push_back(stmt->clone());
@@ -201,7 +201,7 @@ RTL::appendListStmt(std::list<Statement *> &le)
  * \param r  Reference to RTL whose Exps we are to insert.
  */
 void
-RTL::appendRTL(RTL &r)
+RTL::appendRTL(const RTL &r)
 {
 	appendListStmt(r.stmtList);
 }
