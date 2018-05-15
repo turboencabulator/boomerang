@@ -49,10 +49,9 @@ TableEntry::TableEntry()
 }
 
 TableEntry::TableEntry(const std::list<std::string> &p, const RTL &r) :
+	params(p),
 	rtl(r)
 {
-	for (auto it = p.begin(); it != p.end(); ++it)
-		params.push_back(*it);
 }
 
 /**
