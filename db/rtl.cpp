@@ -60,8 +60,8 @@ RTL::RTL(ADDRESS instNativeAddr, std::list<Statement *> *listStmt /*= nullptr*/)
 RTL::RTL(const RTL &other) :
 	nativeAddr(other.nativeAddr)
 {
-	for (auto it = other.stmtList.cbegin(); it != other.stmtList.cend(); ++it) {
-		stmtList.push_back((*it)->clone());
+	for (const auto &stmt : other.stmtList) {
+		stmtList.push_back(stmt->clone());
 	}
 }
 
@@ -81,8 +81,8 @@ RTL::operator =(RTL &other)
 {
 	if (this != &other) {
 		// Do a deep copy always
-		for (auto it = other.stmtList.begin(); it != other.stmtList.end(); ++it)
-			stmtList.push_back((*it)->clone());
+		for (const auto &stmt : other.stmtList)
+			stmtList.push_back(stmt->clone());
 
 		nativeAddr = other.nativeAddr;
 	}
@@ -114,8 +114,8 @@ RTL::accept(StmtVisitor *visitor)
 {
 	// Might want to do something at the RTL level:
 	if (!visitor->visit(this)) return false;
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
-		if (!(*it)->accept(visitor)) return false;
+	for (const auto &stmt : stmtList) {
+		if (!stmt->accept(visitor)) return false;
 	}
 	return true;
 }
@@ -130,8 +130,8 @@ RTL::accept(StmtVisitor *visitor)
 void
 RTL::deepCopyList(std::list<Statement *> &dest) const
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
-		dest.push_back((*it)->clone());
+	for (const auto &stmt : stmtList) {
+		dest.push_back(stmt->clone());
 	}
 }
 
@@ -187,8 +187,8 @@ RTL::prependStmt(Statement *s)
 void
 RTL::appendListStmt(std::list<Statement *> &le)
 {
-	for (auto it = le.begin(); it != le.end(); ++it) {
-		stmtList.insert(stmtList.end(), (*it)->clone());
+	for (const auto &stmt : le) {
+		stmtList.insert(stmtList.end(), stmt->clone());
 	}
 }
 
@@ -360,8 +360,7 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/) const
 	// Print the statements
 	// First line has 8 extra chars as above
 	bool bFirst = true;
-	for (auto ss = stmtList.begin(); ss != stmtList.end(); ++ss) {
-		Statement *stmt = *ss;
+	for (const auto &stmt : stmtList) {
 		if (html) {
 			if (!bFirst) os << "<tr><td></td>";
 			os << "<td width=\"50\" align=\"center\">";
@@ -435,8 +434,8 @@ bool
 RTL::searchAndReplace(Exp *search, Exp *replace)
 {
 	bool ch = false;
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it)
-		ch |= (*it)->searchAndReplace(search, replace);
+	for (const auto &stmt : stmtList)
+		ch |= stmt->searchAndReplace(search, replace);
 	return ch;
 }
 
@@ -455,10 +454,9 @@ bool
 RTL::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
-		Statement *e = *it;
+	for (const auto &stmt : stmtList) {
 		Exp *res;
-		if (e->search(search, res)) {
+		if (stmt->search(search, res)) {
 			found = true;
 			result.push_back(res);
 		}
@@ -531,10 +529,10 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 	// First skip all assignments with temps on LHS
 	auto it = stmtList.begin();
 	for (; it != stmtList.end(); ++it) {
-		Statement *s = *it;
-		if (!s->isAssign())
+		const auto &stmt = *it;
+		if (!stmt->isAssign())
 			break;
-		Exp *LHS = ((Assign *)s)->getLeft();
+		Exp *LHS = ((Assign *)stmt)->getLeft();
 		if (LHS->isTemp())
 			break;
 	}
@@ -570,10 +568,9 @@ RTL::insertAfterTemps(Exp *pLhs, Exp *pRhs, Type *type /* nullptr */)
 Type *
 RTL::getType() const
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
-		Statement *e = *it;
-		if (e->isAssign())
-			return ((Assign *)e)->getType();
+	for (const auto &stmt : stmtList) {
+		if (stmt->isAssign())
+			return ((Assign *)stmt)->getType();
 	}
 	return new IntegerType();  // Default to 32 bit integer if no assignments
 }
@@ -602,8 +599,8 @@ RTL::areFlagsAffected() const
 void
 RTL::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) const
 {
-	for (auto it = stmtList.begin(); it != stmtList.end(); ++it) {
-		(*it)->generateCode(hll, pbb, indLevel);
+	for (const auto &stmt : stmtList) {
+		stmt->generateCode(hll, pbb, indLevel);
 	}
 }
 
@@ -614,28 +611,28 @@ void
 RTL::simplify()
 {
 	for (auto it = stmtList.begin(); it != stmtList.end(); /*++it*/) {
-		Statement *s = *it;
-		s->simplify();
-		if (s->isBranch()) {
-			Exp *cond = ((BranchStatement *)s)->getCondExpr();
+		const auto &stmt = *it;
+		stmt->simplify();
+		if (stmt->isBranch()) {
+			Exp *cond = ((BranchStatement *)stmt)->getCondExpr();
 			if (cond && cond->isIntConst()) {
 				if (((Const *)cond)->getInt() == 0) {
 					if (VERBOSE)
-						LOG << "removing branch with false condition at " << getAddress() << " " << *it << "\n";
+						LOG << "removing branch with false condition at " << getAddress() << " " << stmt << "\n";
 					it = stmtList.erase(it);
 					continue;
 				} else {
 					if (VERBOSE)
-						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << *it << "\n";
-					*it = new GotoStatement(((BranchStatement *)s)->getFixedDest());
+						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << stmt << "\n";
+					*it = new GotoStatement(((BranchStatement *)stmt)->getFixedDest());
 				}
 			}
-		} else if (s->isAssign()) {
-			Exp *guard = ((Assign *)s)->getGuard();
+		} else if (stmt->isAssign()) {
+			Exp *guard = ((Assign *)stmt)->getGuard();
 			if (guard && (guard->isFalse() || (guard->isIntConst() && ((Const *)guard)->getInt() == 0))) {
 				// This assignment statement can be deleted
 				if (VERBOSE)
-					LOG << "removing assignment with false guard at " << getAddress() << " " << *it << "\n";
+					LOG << "removing assignment with false guard at " << getAddress() << " " << stmt << "\n";
 				it = stmtList.erase(it);
 				continue;
 			}
