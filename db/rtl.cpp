@@ -30,6 +30,7 @@
 #include "visitor.h"
 
 #include <iomanip>      // For std::setw, std::setfill
+#include <iterator>
 #include <sstream>
 
 #include <cassert>
@@ -99,9 +100,7 @@ RTL::operator =(RTL &other)
 RTL *
 RTL::clone() const
 {
-	std::list<Statement *> le;
-	deepCopyList(le);
-	return new RTL(nativeAddr, &le);
+	return new RTL(*this);
 }
 
 /**
@@ -188,7 +187,7 @@ void
 RTL::appendListStmt(std::list<Statement *> &le)
 {
 	for (const auto &stmt : le) {
-		stmtList.insert(stmtList.end(), stmt->clone());
+		stmtList.push_back(stmt->clone());
 	}
 }
 
@@ -224,11 +223,11 @@ RTL::insertStmt(Statement *s, unsigned i)
 	assert(i < stmtList.size() || stmtList.empty());
 
 	// Find the position
-	auto pp = stmtList.begin();
-	for (; i > 0; --i, ++pp);
+	auto it = stmtList.begin();
+	std::advance(it, i);
 
 	// Do the insertion
-	stmtList.insert(pp, s);
+	stmtList.insert(it, s);
 }
 
 /**
@@ -255,17 +254,17 @@ RTL::updateStmt(Statement *s, unsigned i)
 	assert(i < stmtList.size());
 
 	// Find the position
-	auto pp = stmtList.begin();
-	for (; i > 0; --i, ++pp);
+	auto it = stmtList.begin();
+	std::advance(it, i);
 
 	// Note that sometimes we might update even when we don't know if it's
 	// needed, e.g. after a searchReplace.
 	// In that case, don't update, and especially don't delete the existing
 	// statement (because it's also the one we are updating!)
-	if (*pp != s) {
+	if (*it != s) {
 		// Do the update
-		;//delete *pp;
-		*pp = s;
+		;//delete *it;
+		*it = s;
 	}
 }
 
@@ -278,9 +277,9 @@ RTL::deleteStmt(unsigned i)
 	// check that position i is not out of bounds
 	assert(i < stmtList.size());
 
-	auto pp = stmtList.begin();
-	std::advance(pp, i);
-	stmtList.erase(pp);
+	auto it = stmtList.begin();
+	std::advance(it, i);
+	stmtList.erase(it);
 }
 
 /**
@@ -300,8 +299,7 @@ void
 RTL::replaceLastStmt(Statement *repl)
 {
 	assert(!stmtList.empty());
-	Statement *&last = stmtList.back();
-	last = repl;
+	stmtList.back() = repl;
 }
 
 /**
@@ -331,12 +329,12 @@ RTL::getNumStmt() const
 Statement *
 RTL::elementAt(unsigned i) const
 {
-	auto it = stmtList.begin();
-	for (; i > 0 && it != stmtList.end(); --i, ++it);
-	if (it == stmtList.end()) {
-		return nullptr;
+	if (i < stmtList.size()) {
+		auto it = stmtList.begin();
+		std::advance(it, i);
+		return *it;
 	}
-	return *it;
+	return nullptr;
 }
 
 /**
@@ -588,9 +586,8 @@ bool
 RTL::areFlagsAffected() const
 {
 	if (stmtList.empty()) return false;
-	Statement *last = stmtList.back();
 	// If it is a flag call, then the CCs are affected
-	return last->isFlagAssgn();
+	return stmtList.back()->isFlagAssgn();
 }
 
 /**
@@ -698,8 +695,7 @@ bool
 RTL::isGoto() const
 {
 	if (stmtList.empty()) return false;
-	Statement *last = stmtList.back();
-	return last->getKind() == STMT_GOTO;
+	return stmtList.back()->getKind() == STMT_GOTO;
 }
 
 /**
@@ -709,8 +705,7 @@ bool
 RTL::isBranch() const
 {
 	if (stmtList.empty()) return false;
-	Statement *last = stmtList.back();
-	return last->getKind() == STMT_BRANCH;
+	return stmtList.back()->getKind() == STMT_BRANCH;
 }
 
 /**
@@ -720,8 +715,7 @@ bool
 RTL::isCall() const
 {
 	if (stmtList.empty()) return false;
-	Statement *last = stmtList.back();
-	return last->getKind() == STMT_CALL;
+	return stmtList.back()->getKind() == STMT_CALL;
 }
 
 /**
