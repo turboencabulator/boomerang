@@ -276,9 +276,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 		Exp *a = mm->first;  // *mm is pair<Exp *, set<int>>
 
 		// Special processing for define-alls
-		// for each n in defallsites
-		for (auto da = defallsites.begin(); da != defallsites.end(); ++da)
-			defsites[a].insert(*da);
+		defsites[a].insert(defallsites.begin(), defallsites.end());
 
 		// W <- defsites[a];
 		std::set<int> W = defsites[a];  // set copy
@@ -655,10 +653,8 @@ UseCollector::fromSSAform(UserProc *proc, Statement *def)
 			inserts.insert(ret);
 		}
 	}
-	for (auto it = removes.begin(); it != removes.end(); ++it)
-		locs.remove(*it);
-	for (auto it = inserts.begin(); it != inserts.end(); ++it)
-		locs.insert(*it);
+	locs.makeDiff(removes);
+	locs.makeUnion(inserts);
 }
 
 bool

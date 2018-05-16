@@ -977,10 +977,7 @@ UserProc::decompile(ProcList *path, int &indent)
 					if (inPath) {
 						// This is a completely new cycle
 						// Insert every proc from c to the end of path into child
-						do {
-							child->insert(*pi);
-							++pi;
-						} while (pi != path->end());
+						child->insert(pi, path->end());
 					} else {
 						// This is new branch of an existing cycle
 						child = c->cycleGrp;
@@ -989,16 +986,13 @@ UserProc::decompile(ProcList *path, int &indent)
 						auto pi = path->begin();
 						for (; pi != path->end(); ++pi) {
 							if (c->cycleGrp->count(*pi)) {
-								f = *pi;
+								f = *pi++;
 								break;
 							}
 						}
 						assert(f);
 						// Insert every proc after f to the end of path into child
-						// There must be at least one element in the list (this proc), so the ++pi should be safe
-						while (++pi != path->end()) {
-							child->insert(*pi);
-						}
+						child->insert(pi, path->end());
 					}
 					// point cycleGrp for each element of child to child, unioning in each element's cycleGrp
 					for (auto cc = child->begin(); cc != child->end(); ++cc) {

@@ -1312,8 +1312,7 @@ Prog::printCallGraph() const
 	std::map<Proc *, Proc *> parent;
 	std::list<Proc *> procList;
 	f2 << "digraph callgraph {\n";
-	for (auto pp = entryProcs.begin(); pp != entryProcs.end(); ++pp)
-		procList.push_back(*pp);
+	procList.insert(procList.end(), entryProcs.begin(), entryProcs.end());
 	spaces[procList.front()] = 0;
 	while (!procList.empty()) {
 		Proc *p = procList.front();

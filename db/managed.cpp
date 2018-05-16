@@ -63,9 +63,7 @@ operator <<(std::ostream &os, const LocationSet &ls)
 void
 StatementSet::makeUnion(const StatementSet &other)
 {
-	for (auto it = other.sset.begin(); it != other.sset.end(); ++it) {
-		sset.insert(*it);
-	}
+	sset.insert(other.sset.begin(), other.sset.end());
 }
 
 // Make this set the difference of itself and other
@@ -168,9 +166,7 @@ StatementSet::operator <(const StatementSet &o) const
 void
 AssignSet::makeUnion(const AssignSet &other)
 {
-	for (auto it = other.aset.begin(); it != other.aset.end(); ++it) {
-		aset.insert(*it);
-	}
+	aset.insert(other.aset.begin(), other.aset.end());
 }
 
 // Make this set the difference of itself and other
@@ -321,9 +317,7 @@ LocationSet::removeIfDefines(StatementSet &given)
 void
 LocationSet::makeUnion(const LocationSet &other)
 {
-	for (auto it = other.lset.begin(); it != other.lset.end(); ++it) {
-		lset.insert(*it);
-	}
+	lset.insert(other.lset.begin(), other.lset.end());
 }
 
 // Make this set the set difference of itself and other
@@ -493,17 +487,13 @@ StatementList::remove(Statement *s)
 void
 StatementList::append(const StatementList &sl)
 {
-	for (auto it = sl.slist.begin(); it != sl.slist.end(); ++it) {
-		slist.push_back(*it);
-	}
+	slist.insert(slist.end(), sl.slist.begin(), sl.slist.end());
 }
 
 void
 StatementList::append(StatementSet &ss)
 {
-	for (auto it = ss.begin(); it != ss.end(); ++it) {
-		slist.push_back(*it);
-	}
+	slist.insert(slist.end(), ss.begin(), ss.end());
 }
 
 std::string
