@@ -131,20 +131,20 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 		auto rtls = new std::list<RTL *>();
 
 		// The only RTL in the basic block is a ReturnStatement
-		auto ls = new std::list<Statement *>;
+		auto ls = std::list<Statement *>();
 		// If the delay slot is a single assignment to %o7, we want to see the semantics for it, so that preservation
 		// or otherwise of %o7 is correct
 		if (delay->getNumStmt() == 1
 		 && delay->elementAt(0)->isAssign()
 		 && ((Assign *)delay->elementAt(0))->getLeft()->isRegN(15))
-			ls->push_back(delay->elementAt(0));
-		ls->push_back(new ReturnStatement);
+			ls.push_back(delay->elementAt(0));
+		ls.push_back(new ReturnStatement);
 #if 0
-		rtls->push_back(new RTL(rtl->getAddress() + 1, ls));
+		rtls->push_back(new RTL(rtl->getAddress() + 1, &ls));
 		Cfg *cfg = pProc->getCFG();
 		auto returnBB = cfg->newBB(rtls, RET, 0);
 #endif
-		BasicBlock *returnBB = createReturnBlock(pProc, rtls, new RTL(rtl->getAddress() + 1, ls));
+		BasicBlock *returnBB = createReturnBlock(pProc, rtls, new RTL(rtl->getAddress() + 1, &ls));
 		return returnBB;
 	} else
 		// May want to put code here that checks whether or not the delay instruction redefines %o7
@@ -629,9 +629,9 @@ SparcFrontEnd::case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, De
 		delay_inst.rtl->updateAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch. Again, we can't even give the jumps
 		// a special address like 1, since then the BB would have this getLowAddr.
-		auto gl = new std::list<Statement *>;
-		gl->push_back(new GotoStatement(uDest));
-		pOrphan->push_back(new RTL(0, gl));
+		auto gl = std::list<Statement *>();
+		gl.push_back(new GotoStatement(uDest));
+		pOrphan->push_back(new RTL(0, &gl));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well
 		cfg->addOutEdge(pOrBB, uDest, true);
@@ -702,9 +702,9 @@ SparcFrontEnd::case_SCDAN(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, 
 		// branch to the real BB with this instruction).
 		delay_inst.rtl->updateAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
-		auto gl = new std::list<Statement *>;
-		gl->push_back(new GotoStatement(uDest));
-		pOrphan->push_back(new RTL(0, gl));
+		auto gl = std::list<Statement *>();
+		gl.push_back(new GotoStatement(uDest));
+		pOrphan->push_back(new RTL(0, &gl));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well. Set a label there.
 		cfg->addOutEdge(pOrBB, uDest, true);
@@ -1288,9 +1288,9 @@ SparcFrontEnd::appendAssignment(Exp *lhs, Exp *rhs, Type *type, ADDRESS addr, st
 {
 	auto a = new Assign(type, lhs, rhs);
 	// Create an RTL with this one Statement
-	auto lrt = new std::list<Statement *>;
-	lrt->push_back(a);
-	auto rtl = new RTL(addr, lrt);
+	auto lrt = std::list<Statement *>();
+	lrt.push_back(a);
+	auto rtl = new RTL(addr, &lrt);
 	// Append this RTL to the list of RTLs for this BB
 	lrtl->push_back(rtl);
 }
@@ -1398,9 +1398,9 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 	Exp *lhs = Location::regOf(8);
 	auto a = new Assign(lhs, rhs);
 	// Create an RTL with this one Exp
-	auto lrt = new std::list<Statement *>;
-	lrt->push_back(a);
-	auto rtl = new RTL(addr, lrt);
+	auto lrt = std::list<Statement *>();
+	lrt.push_back(a);
+	auto rtl = new RTL(addr, &lrt);
 	// Append this RTL to the list of RTLs for this BB
 	lrtl->push_back(rtl);
 	return true;
@@ -1422,7 +1422,7 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 void
 SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 {
-	auto ls = new std::list<Statement *>;
+	auto ls = std::list<Statement *>();
 #ifdef V9_ONLY
 	// tmp[tmpl] = sgnex(32, 64, r8) op sgnex(32, 64, r9)
 	Statement *a = new Assign(64,
@@ -1430,17 +1430,17 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 	                          new Binary(op,  // opMult or opMults
 	                                     new Ternary(opSgnEx, Const(32), Const(64), Location::regOf(8)),
 	                                     new Ternary(opSgnEx, Const(32), Const(64), Location::regOf(9))));
-	ls->push_back(a);
+	ls.push_back(a);
 	// r8 = truncs(64, 32, tmp[tmpl]);
 	a = new Assign(32,
 	               Location::regOf(8),
 	               new Ternary(opTruncs, new Const(64), new Const(32), Location::tempOf(new Const("tmpl"))));
-	ls->push_back(a);
+	ls.push_back(a);
 	// r9 = r[tmpl]@32:63;
 	a = new Assign(32,
 	               Location::regOf(9),
 	               new Ternary(opAt, Location::tempOf(new Const("tmpl")), new Const(32), new Const(63)));
-	ls->push_back(a);
+	ls.push_back(a);
 #else
 	// BTL: The .umul and .mul support routines are used in V7 code. We implsment these using the V8 UMUL and SMUL
 	// instructions.
@@ -1453,19 +1453,18 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 	                    new Binary(op,  // opMult or opMults
 	                               Location::regOf(8),
 	                               Location::regOf(9)));
-	ls->push_back(a);
+	ls.push_back(a);
 	// r8 = r[tmp];  /* low-order bits */
 	a = new Assign(Location::regOf(8),
 	               Location::tempOf(new Const("tmp")));
-	ls->push_back(a);
+	ls.push_back(a);
 	// r9 = %Y;      /* high-order bits */
 	a = new Assign(Location::regOf(8),
 	               new Unary(opMachFtr, new Const("%Y")));
-	ls->push_back(a);
+	ls.push_back(a);
 #endif /* V9_ONLY */
-	auto rtl = new RTL(addr, ls);
+	auto rtl = new RTL(addr, &ls);
 	lrtl->push_back(rtl);
-	delete ls;
 }
 
 /**

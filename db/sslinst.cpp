@@ -84,9 +84,9 @@ TableEntry::setRTL(const RTL &r)
 const TableEntry &
 TableEntry::operator =(const TableEntry &other)
 {
-	for (auto it = other.params.cbegin(); it != other.params.cend(); ++it)
-		params.push_back(*it);
-	rtl = *(new RTL(other.rtl));
+	// FIXME:  Should this replace the list instead of appending to it?
+	params.insert(params.end(), other.params.cbegin(), other.params.cend());
+	rtl = other.rtl;
 	return *this;
 }
 

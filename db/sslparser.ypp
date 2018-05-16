@@ -648,7 +648,7 @@ rt_list
 			$$->appendStmt($2);
 	  }
 	| rt {
-		$$ = new RTL(STMT_ASSIGN);
+		$$ = new RTL();
 		if ($1)
 			$$->appendStmt($1);
 	  }
