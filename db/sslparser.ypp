@@ -377,10 +377,10 @@ a_reglist
 	  }
 
 	| '[' reg_table ']' '[' NUM ']' INDEX NUM {
-		for (auto loc = $2->begin(); loc != $2->end(); ++loc) {
-			if (Dict.RegMap.count(*loc))
+		for (const auto &loc : *$2) {
+			if (Dict.RegMap.count(loc))
 				yyerror("Name reglist declared twice");
-			Dict.addRegister(*loc, $8, $5, bFloat);
+			Dict.addRegister(loc, $8, $5, bFloat);
 		}
 		delete $2;
 	  }
@@ -436,9 +436,9 @@ str_expr
 	: str_expr str_term {
 		// cross-product of two str_expr's
 		$$ = new std::deque<std::string>;
-		for (auto i = $1->begin(); i != $1->end(); ++i)
-			for (auto j = $2->begin(); j != $2->end(); ++j)
-				$$->push_back((*i) + (*j));
+		for (const auto &i : *$1)
+			for (const auto &j : *$2)
+				$$->push_back(i + j);
 		delete $1;
 		delete $2;
 	  }
@@ -1036,8 +1036,8 @@ SSLParser::parseExp(const char *str)
 SSLParser::~SSLParser()
 {
 	delete theScanner;
-	for (auto loc = TableDict.begin(); loc != TableDict.end(); ++loc)
-		delete loc->second;
+	for (const auto &loc : TableDict)
+		delete loc.second;
 }
 
 /*==============================================================================
@@ -1158,18 +1158,16 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 		std::string nam = iname->getinstruction();
 		// Need to make substitutions to a copy of the RTL
 		RTL *rtl = o_rtlist->clone();
-		int n = rtl->getNumStmt();
-		for (int j = 0; j < n; ++j) {
-			Statement *s = rtl->elementAt(j);
+		for (const auto &s : rtl->getList()) {
 			std::list<Exp *> le;
 			// Expression tables
 			assert(s->getKind() == STMT_ASSIGN);
 			if (((Assign *)s)->searchAll(srchExpr, le)) {
-				for (auto it = le.begin(); it != le.end(); ++it) {
-					const char *tbl = ((Const *)((Binary *)*it)->getSubExp1())->getStr();
-					const char *idx = ((Const *)((Binary *)*it)->getSubExp2())->getStr();
+				for (const auto &e : le) {
+					const char *tbl = ((Const *)((Binary *)e)->getSubExp1())->getStr();
+					const char *idx = ((Const *)((Binary *)e)->getSubExp2())->getStr();
 					Exp *repl =((ExprTable *)(TableDict[tbl]))->expressions[indexrefmap[idx]->getvalue()];
-					s->searchAndReplace(*it, repl);
+					s->searchAndReplace(e, repl);
 				}
 			}
 			// Operator tables

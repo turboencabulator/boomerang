@@ -301,10 +301,10 @@ void
 XMLProgParser::parseChildren(Cluster *c)
 {
 	std::string path = c->makeDirs();
-	for (unsigned i = 0; i < c->children.size(); ++i) {
-		std::string d = path + "/" + c->children[i]->getName() + ".xml";
+	for (const auto &child : c->children) {
+		std::string d = path + "/" + child->getName() + ".xml";
 		parseFile(d.c_str());
-		parseChildren(c->children[i]);
+		parseChildren(child);
 	}
 }
 
@@ -387,10 +387,10 @@ XMLProgParser::addChildTo_prog(Context *node, const Context *child) const
 		node->prog->m_procLabels[child->proc->getNativeAddress()] = child->proc;
 		break;
 	case e_procs:
-		for (auto it = child->procs.cbegin(); it != child->procs.cend(); ++it) {
-			node->prog->m_procs.push_back(*it);
-			node->prog->m_procLabels[(*it)->getNativeAddress()] = *it;
-			Boomerang::get()->alert_load(*it);
+		for (const auto &proc : child->procs) {
+			node->prog->m_procs.push_back(proc);
+			node->prog->m_procLabels[proc->getNativeAddress()] = proc;
+			Boomerang::get()->alert_load(proc);
 		}
 		break;
 	case e_cluster:
@@ -2273,13 +2273,11 @@ XMLProgParser::persistToXML(Prog *prog)
 	   << "\" name=\"" << prog->getName()
 	   << "\" iNumberedProc=\"" << prog->m_iNumberedProc
 	   << "\">\n";
-	for (auto it1 = prog->globals.begin(); it1 != prog->globals.end(); ++it1)
-		persistToXML(os, *it1);
+	for (const auto &global : prog->globals)
+		persistToXML(os, global);
 	persistToXML(os, prog->m_rootCluster);
-	for (auto it = prog->m_procs.begin(); it != prog->m_procs.end(); ++it) {
-		Proc *p = *it;
-		persistToXML(p->getCluster()->getStream(), p);
-	}
+	for (const auto &proc : prog->m_procs)
+		persistToXML(proc->getCluster()->getStream(), proc);
 	os << "</prog>\n";
 	os.close();
 	prog->m_rootCluster->closeStreams();
@@ -2303,8 +2301,8 @@ XMLProgParser::persistToXML(std::ostream &out, Cluster *c)
 	out << "<cluster id=\"" << (int)c
 	    << "\" name=\"" << c->name
 	    << "\">\n";
-	for (unsigned i = 0; i < c->children.size(); ++i) {
-		persistToXML(out, c->children[i]);
+	for (const auto &child : c->children) {
+		persistToXML(out, child);
 	}
 	out << "</cluster>\n";
 }
@@ -2332,12 +2330,12 @@ XMLProgParser::persistToXML(std::ostream &out, LibProc *proc)
 
 	persistToXML(out, proc->signature);
 
-	for (auto it = proc->callerSet.begin(); it != proc->callerSet.end(); ++it)
-		out << "<caller call=\"" << (int)(*it) << "\"/>\n";
-	for (auto it = proc->provenTrue.begin(); it != proc->provenTrue.end(); ++it) {
+	for (const auto &caller : proc->callerSet)
+		out << "<caller call=\"" << (int)caller << "\"/>\n";
+	for (const auto &pt : proc->provenTrue) {
 		out << "<proven_true>\n";
-		persistToXML(out, it->first);
-		persistToXML(out, it->second);
+		persistToXML(out, pt.first);
+		persistToXML(out, pt.second);
 		out << "</proven_true>\n";
 	}
 	out << "</libproc>\n";
@@ -2360,36 +2358,36 @@ XMLProgParser::persistToXML(std::ostream &out, UserProc *proc)
 
 	persistToXML(out, proc->signature);
 
-	for (auto it = proc->callerSet.begin(); it != proc->callerSet.end(); ++it)
-		out << "<caller call=\"" << (int)(*it) << "\"/>\n";
-	for (auto it = proc->provenTrue.begin(); it != proc->provenTrue.end(); ++it) {
+	for (const auto &caller : proc->callerSet)
+		out << "<caller call=\"" << (int)caller << "\"/>\n";
+	for (const auto &pt : proc->provenTrue) {
 		out << "<proven_true>\n";
-		persistToXML(out, it->first);
-		persistToXML(out, it->second);
+		persistToXML(out, pt.first);
+		persistToXML(out, pt.second);
 		out << "</proven_true>\n";
 	}
 
-	for (auto it1 = proc->locals.begin(); it1 != proc->locals.end(); ++it1) {
-		out << "<local name=\"" << it1->first << "\">\n";
+	for (const auto &local : proc->locals) {
+		out << "<local name=\"" << local.first << "\">\n";
 		out << "<type>\n";
-		persistToXML(out, it1->second);
+		persistToXML(out, local.second);
 		out << "</type>\n";
 		out << "</local>\n";
 	}
 
-	for (auto it2 = proc->symbolMap.begin(); it2 != proc->symbolMap.end(); ++it2) {
+	for (const auto &symbol : proc->symbolMap) {
 		out << "<symbol>\n";
 		out << "<exp>\n";
-		persistToXML(out, it2->first);
+		persistToXML(out, symbol.first);
 		out << "</exp>\n";
 		out << "<secondexp>\n";
-		persistToXML(out, it2->second);
+		persistToXML(out, symbol.second);
 		out << "</secondexp>\n";
 		out << "</symbol>\n";
 	}
 
-	for (auto it = proc->calleeList.begin(); it != proc->calleeList.end(); ++it)
-		out << "<callee proc=\"" << (int)(*it) << "\"/>\n";
+	for (const auto &callee : proc->calleeList)
+		out << "<callee proc=\"" << (int)callee << "\"/>\n";
 
 	persistToXML(out, proc->cfg);
 
@@ -2408,25 +2406,25 @@ XMLProgParser::persistToXML(std::ostream &out, Signature *sig)
 	if (sig->getConvention() != CONV_NONE)
 		out << "\" convention=\"" << sig->conventionName(sig->getConvention());
 	out << "\">\n";
-	for (unsigned i = 0; i < sig->params.size(); ++i) {
-		out << "<param id=\"" << (int)sig->params[i]
-		    << "\" name=\"" << sig->params[i]->getName()
+	for (const auto &param : sig->params) {
+		out << "<param id=\"" << (int)param
+		    << "\" name=\"" << param->getName()
 		    << "\">\n";
 		out << "<type>\n";
-		persistToXML(out, sig->params[i]->getType());
+		persistToXML(out, param->getType());
 		out << "</type>\n";
 		out << "<exp>\n";
-		persistToXML(out, sig->params[i]->getExp());
+		persistToXML(out, param->getExp());
 		out << "</exp>\n";
 		out << "</param>\n";
 	}
-	for (auto rr = sig->returns.begin(); rr != sig->returns.end(); ++rr) {
+	for (const auto &ret : sig->returns) {
 		out << "<return>\n";
 		out << "<type>\n";
-		persistToXML(out, (*rr)->type);
+		persistToXML(out, ret->type);
 		out << "</type>\n";
 		out << "<exp>\n";
-		persistToXML(out, (*rr)->exp);
+		persistToXML(out, ret->exp);
 		out << "</exp>\n";
 		out << "</return>\n";
 	}
@@ -2440,8 +2438,8 @@ XMLProgParser::persistToXML(std::ostream &out, Signature *sig)
 		persistToXML(out, sig->preferedReturn);
 		out << "</prefreturn>\n";
 	}
-	for (unsigned i = 0; i < sig->preferedParams.size(); ++i)
-		out << "<prefparam index=\"" << sig->preferedParams[i] << "\"/>\n";
+	for (const auto &pp : sig->preferedParams)
+		out << "<prefparam index=\"" << pp << "\"/>\n";
 	out << "</signature>\n";
 }
 
@@ -2662,14 +2660,14 @@ XMLProgParser::persistToXML(std::ostream &out, Cfg *cfg)
 	    << "\" exitBB=\"" << (int)cfg->exitBB
 	    << "\">\n";
 
-	for (auto it = cfg->m_listBB.begin(); it != cfg->m_listBB.end(); ++it)
-		persistToXML(out, *it);
+	for (const auto &bb : cfg->m_listBB)
+		persistToXML(out, bb);
 
-	for (unsigned i = 0; i < cfg->Ordering.size(); ++i)
-		out << "<order bb=\"" << (int)cfg->Ordering[i] << "\"/>\n";
+	for (const auto &bb : cfg->Ordering)
+		out << "<order bb=\"" << (int)bb << "\"/>\n";
 
-	for (unsigned i = 0; i < cfg->revOrdering.size(); ++i)
-		out << "<revorder bb=\"" << (int)cfg->revOrdering[i] << "\"/>\n";
+	for (const auto &bb : cfg->revOrdering)
+		out << "<revorder bb=\"" << (int)bb << "\"/>\n";
 
 	// TODO
 	// MAPBB m_mapBB;
@@ -2739,20 +2737,20 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 	    << "\" cType=\"" << (int)bb->cType
 	    << "\">\n";
 
-	for (unsigned i = 0; i < bb->m_InEdges.size(); ++i)
-		out << "<inedge bb=\"" << (int)bb->m_InEdges[i] << "\"/>\n";
-	for (unsigned i = 0; i < bb->m_OutEdges.size(); ++i)
-		out << "<outedge bb=\"" << (int)bb->m_OutEdges[i] << "\"/>\n";
+	for (const auto &edge : bb->m_InEdges)
+		out << "<inedge bb=\"" << (int)edge << "\"/>\n";
+	for (const auto &edge : bb->m_OutEdges)
+		out << "<outedge bb=\"" << (int)edge << "\"/>\n";
 
-	for (auto it = bb->liveIn.begin(); it != bb->liveIn.end(); ++it) {
+	for (const auto &li : bb->liveIn) {
 		out << "<livein>\n";
-		persistToXML(out, *it);
+		persistToXML(out, li);
 		out << "</livein>\n";
 	}
 
 	if (bb->m_pRtls) {
-		for (auto it = bb->m_pRtls->begin(); it != bb->m_pRtls->end(); ++it)
-			persistToXML(out, *it);
+		for (const auto &rtl : *bb->m_pRtls)
+			persistToXML(out, rtl);
 	}
 	out << "</bb>\n";
 }
@@ -2763,9 +2761,9 @@ XMLProgParser::persistToXML(std::ostream &out, RTL *rtl)
 	out << "<rtl id=\"" << (int)rtl
 	    << "\" addr=\"" << (int)rtl->nativeAddr
 	    << "\">\n";
-	for (auto it = rtl->stmtList.begin(); it != rtl->stmtList.end(); ++it) {
+	for (const auto &stmt : rtl->stmtList) {
 		out << "<stmt>\n";
-		persistToXML(out, *it);
+		persistToXML(out, stmt);
 		out << "</stmt>\n";
 	}
 	out << "</rtl>\n";
@@ -2803,14 +2801,14 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "\" retAddr=\"" << (int)r->retAddr
 		    << "\">\n";
 
-		for (auto rr = r->modifieds.begin(); rr != r->modifieds.end(); ++rr) {
+		for (const auto &mod : r->modifieds) {
 			out << "<modifieds>\n";
-			persistToXML(out, *rr);
+			persistToXML(out, mod);
 			out << "</modifieds>\n";
 		}
-		for (auto rr = r->returns.begin(); rr != r->returns.end(); ++rr) {
+		for (const auto &ret : r->returns) {
 			out << "<returns>\n";
-			persistToXML(out, *rr);
+			persistToXML(out, ret);
 			out << "</returns>\n";
 		}
 
@@ -2837,15 +2835,15 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 			out << "</dest>\n";
 		}
 
-		for (auto ss = c->arguments.begin(); ss != c->arguments.end(); ++ss) {
+		for (const auto &arg : c->arguments) {
 			out << "<argument>\n";
-			persistToXML(out, *ss);
+			persistToXML(out, arg);
 			out << "</argument>\n";
 		}
 
-		for (auto ss = c->defines.begin(); ss != c->defines.end(); ++ss) {
+		for (const auto &def : c->defines) {
 			out << "<defines>\n";
-			persistToXML(out, *ss);
+			persistToXML(out, def);
 			out << "</defines>\n";
 		}
 
@@ -2923,9 +2921,9 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		out << "<lhs>\n";
 		persistToXML(out, p->lhs);
 		out << "</lhs>\n";
-		for (auto it = p->begin(); it != p->end(); ++p)
-			out << "<def stmt=\"" << (int)it->def
-			    << "\" exp=\"" << (int)it->e
+		for (const auto &def : *p)
+			out << "<def stmt=\"" << (int)def.def
+			    << "\" exp=\"" << (int)def.e
 			    << "\"/>\n";
 		out << "</phiassign>\n";
 		return;

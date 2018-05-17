@@ -226,19 +226,21 @@ RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt)
 void
 RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 {
-	for (auto p = idict.begin(); p != idict.end(); ++p) {
+	for (const auto &p : idict) {
 		// print the instruction name
-		os << p->first;
+		os << p.first;
 
 		// print the parameters
-		const std::list<std::string> &params = p->second.params;
-		int i = 0;
-		for (auto s = params.begin(); s != params.end(); ++s, ++i)
-			os << (i ? "," : "  ") << *s;
+		const std::list<std::string> &params = p.second.params;
+		bool first = true;
+		for (const auto &s : params) {
+			os << (first ? "  " : ",") << s;
+			first = false;
+		}
 		os << "\n";
 
 		// print the RTL
-		const RTL &rtlist = p->second.rtl;
+		const RTL &rtlist = p.second.rtl;
 		rtlist.print(os);
 		os << "\n";
 	}
@@ -246,16 +248,16 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 #if 0
 	// Detailed register map
 	os << "\nDetailed register map\n";
-	for (auto rr = DetRegMap.begin(); rr != DetRegMap.end(); ++rr) {
-		int n = rr->first;
-		Register *pr = &rr->second;
+	for (const auto &rr : DetRegMap) {
+		int n = rr.first;
+		auto &pr = rr.second;
 		os << "number " << n
-		   << " name " << pr->g_name()
-		   << " size " << std::dec << pr->g_size()
-		   << " address 0x" << std::hex << (unsigned)pr->g_address()
-		   << " mappedIndex " << std::dec << pr->g_mappedIndex()
-		   << " mappedOffset " << pr->g_mappedOffset()
-		   << " flt " << pr->isFloat()
+		   << " name " << pr.g_name()
+		   << " size " << std::dec << pr.g_size()
+		   << " address 0x" << std::hex << (unsigned)pr.g_address()
+		   << " mappedIndex " << std::dec << pr.g_mappedIndex()
+		   << " mappedOffset " << pr.g_mappedOffset()
+		   << " flt " << pr.isFloat()
 		   << "\n";
 	}
 #endif
@@ -271,14 +273,14 @@ void
 RTLInstDict::fixupParams()
 {
 	int mark = 1;
-	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); ++param) {
-		param->second.mark = 0;
+	for (auto &param : DetParamMap) {
+		param.second.mark = 0;
 	}
-	for (auto param = DetParamMap.begin(); param != DetParamMap.end(); ++param) {
+	for (const auto &param : DetParamMap) {
 		std::list<std::string> funcParams;
 		bool haveCount = false;
-		if (param->second.kind == PARAM_VARIANT) {
-			fixupParamsSub(param->first, funcParams, haveCount, mark++);
+		if (param.second.kind == PARAM_VARIANT) {
+			fixupParamsSub(param.first, funcParams, haveCount, mark++);
 		}
 	}
 }
@@ -286,7 +288,7 @@ RTLInstDict::fixupParams()
 void
 RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark)
 {
-	ParamEntry &param = DetParamMap[s];
+	auto &param = DetParamMap[s];
 
 	if (param.params.empty()) {
 		std::cerr << "Error in SSL File: Variant operand " << s << " has no branches. Well that's really useful...\n";
@@ -297,10 +299,10 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 
 	param.mark = mark;
 
-	for (auto it = param.params.begin(); it != param.params.end(); ++it) {
-		ParamEntry &sub = DetParamMap[*it];
+	for (const auto &p : param.params) {
+		ParamEntry &sub = DetParamMap[p];
 		if (sub.kind == PARAM_VARIANT) {
-			fixupParamsSub(*it, funcParams, haveCount, mark);
+			fixupParamsSub(p, funcParams, haveCount, mark);
 			if (!haveCount) { /* Empty branch? */
 				continue;
 			}
@@ -316,7 +318,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 		if (funcParams.size() != sub.funcParams.size()) {
 			std::cerr << "Error in SSL File: Variant operand " << s
 			          << " does not have a fixed number of functional parameters:\n"
-			          << "Expected " << funcParams.size() << ", but branch " << *it
+			          << "Expected " << funcParams.size() << ", but branch " << p
 			          << " has " << sub.funcParams.size() << ".\n";
 		} else if (funcParams != sub.funcParams && sub.asgn) {
 			/* Rename so all the parameter names match */
@@ -449,26 +451,26 @@ RTLInstDict::instantiateRTL(const RTL &rtl, ADDRESS natPC, const std::list<std::
 	rtl.deepCopyList(*newList);
 
 	// Iterate through each Statement of the new list of stmts
-	for (auto ss = newList->begin(); ss != newList->end(); ++ss) {
+	for (const auto &ss : *newList) {
 		// Search for the formals and replace them with the actuals
 		auto param = params.cbegin();
 		auto actual = actuals.cbegin();
 		for (; param != params.cend(); ++param, ++actual) {
 			/* Simple parameter - just construct the formal to search for */
 			Exp *formal = Location::param(param->c_str());
-			(*ss)->searchAndReplace(formal, *actual);
+			ss->searchAndReplace(formal, *actual);
 			//delete formal;
 		}
-		(*ss)->fixSuccessor();
+		ss->fixSuccessor();
 		if (Boomerang::get()->debugDecoder)
-			std::cout << "\t\t\t" << *ss << "\n";
+			std::cout << "\t\t\t" << ss << "\n";
 	}
 
 	transformPostVars(newList, true);
 
 	// Perform simplifications, e.g. *1 in Pentium addressing modes
-	for (auto ss = newList->begin(); ss != newList->end(); ++ss) {
-		(*ss)->simplify();
+	for (const auto &ss : *newList) {
+		ss->simplify();
 	}
 
 	return newList;
@@ -515,21 +517,21 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "Transforming from:\n";
-	for (Exp_CIT p = rts->begin(); p != rts->end(); ++p) {
+	for (const auto &rt : *rts) {
 		std::cout << setw(8) << " ";
-		(*p)->print(std::cout);
+		rt->print(std::cout);
 		std::cout << "\n";
 	}
 #endif
 
 	// First pass: Scan for post-variables and usages of their referents
-	for (auto rt = rts->begin(); rt != rts->end(); ++rt) {
+	for (const auto &rt : *rts) {
 		// ss appears to be a list of expressions to be searched
 		// It is either the LHS and RHS of an assignment, or it's the parameters of a flag call
 		Binary *ss;
-		if ((*rt)->isAssign()) {
-			Exp *lhs = ((Assign *)*rt)->getLeft();
-			Exp *rhs = ((Assign *)*rt)->getRight();
+		if (rt->isAssign()) {
+			Exp *lhs = ((Assign *)rt)->getLeft();
+			Exp *rhs = ((Assign *)rt)->getRight();
 
 			// Look for assignments to post-variables
 			if (lhs && lhs->isPostVar()) {
@@ -537,7 +539,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 					// Add a record in the map for this postvar
 					transPost &el = vars[lhs];
 					el.used = false;
-					el.type = ((Assign *)*rt)->getType();
+					el.type = ((Assign *)rt)->getType();
 
 					// Constuct a temporary. We should probably be smarter and actually check that it's not otherwise
 					// used here.
@@ -565,9 +567,9 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 			                new Binary(opList,
 			                           rhs->clone(),
 			                           new Terminal(opNil)));
-		} else if ((*rt)->isFlagAssgn()) {
+		} else if (rt->isFlagAssgn()) {
 			// An opFlagCall is assumed to be a Binary with a string and an opList of parameters
-			ss = (Binary *)((Binary *)*rt)->getSubExp2();
+			ss = (Binary *)((Binary *)rt)->getSubExp2();
 		} else
 			ss = nullptr;
 
@@ -579,40 +581,39 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 		 * Can't really use this with Exps, so we search twice; once for the base, and once for the post, and if we
 		 * get more with the former, then we have a use of the base (consider r[0] + r[0]')
 		 */
-		for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
-			if (sr->second.isNew) {
+		for (auto &sr : vars) {
+			if (sr.second.isNew) {
 				// Make sure we don't match a var in its defining statement
-				sr->second.isNew = false;
+				sr.second.isNew = false;
 				continue;
 			}
-			Binary *cur;
-			for (cur = ss; !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
-				if (sr->second.used)
+			for (Binary *cur = ss; !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
+				if (sr.second.used)
 					break;  // Don't bother; already know it's used
 				Exp *s = cur->getSubExp1();
 				if (!s) continue;
-				if (*s == *sr->second.base) {
-					sr->second.used = true;
+				if (*s == *sr.second.base) {
+					sr.second.used = true;
 					break;
 				}
 				std::list<Exp *> res1, res2;
-				s->searchAll(sr->second.base, res1);
-				s->searchAll(sr->second.post, res2);
+				s->searchAll(sr.second.base, res1);
+				s->searchAll(sr.second.post, res2);
 				// Each match of a post will also match the base.
 				// But if there is a bare (non-post) use of the base, there will be a result in res1 that is not in res2
 				if (res1.size() > res2.size())
-					sr->second.used = true;
+					sr.second.used = true;
 			}
 		}
 	}
 
 	// Second pass: Replace post-variables with temporaries where needed
-	for (auto rt = rts->begin(); rt != rts->end(); ++rt) {
-		for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
-			if (sr->second.used) {
-				(*rt)->searchAndReplace(sr->first, sr->second.tmp);
+	for (const auto &rt : *rts) {
+		for (const auto &sr : vars) {
+			if (sr.second.used) {
+				rt->searchAndReplace(sr.first, sr.second.tmp);
 			} else {
-				(*rt)->searchAndReplace(sr->first, sr->second.base);
+				rt->searchAndReplace(sr.first, sr.second.base);
 			}
 		}
 	}
@@ -620,23 +621,23 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	// Finally: Append assignments where needed from temps to base vars
 	// Example: esp' = esp-4; m[esp'] = modrm; FLAG(esp)
 	// all the esp' are replaced with say tmp1, you need a "esp = tmp1" at the end to actually make the change
-	for (auto sr = vars.begin(); sr != vars.end(); ++sr) {
-		if (sr->second.used) {
-			auto te = new Assign(sr->second.type,
-			                     sr->second.base->clone(),
-			                     sr->second.tmp);
+	for (const auto &sr : vars) {
+		if (sr.second.used) {
+			auto te = new Assign(sr.second.type,
+			                     sr.second.base->clone(),
+			                     sr.second.tmp);
 			rts->push_back(te);
 		} else {
 			// The temp is either used (uncloned) in the assignment, or is deleted here
-			//delete sr->second.tmp;
+			//delete sr.second.tmp;
 		}
 	}
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "\nTo =>\n";
-	for (auto p = rts->begin(); p != rts->end(); ++p) {
+	for (const auto &rt : *rts) {
 		std::cout << setw(8) << " ";
-		(*p)->print(std::cout);
+		rt->print(std::cout);
 		std::cout << "\n";
 	}
 	std::cout << "\n";

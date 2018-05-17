@@ -56,6 +56,6 @@ ExprTable::ExprTable(const std::deque<Exp *> &exprs) :
 
 ExprTable::~ExprTable()
 {
-	for (auto loc = expressions.begin(); loc != expressions.end(); ++loc)
-		delete *loc;
+	for (const auto &loc : expressions)
+		delete loc;
 }
