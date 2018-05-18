@@ -46,6 +46,7 @@ class StatementSet {
 
 public:
 	typedef std::set<Statement *>::iterator iterator;
+	typedef std::set<Statement *>::const_iterator const_iterator;
 	typedef std::set<Statement *>::size_type size_type;
 
 	           ~StatementSet() { }
@@ -54,10 +55,12 @@ public:
 	void        makeIsect(const StatementSet &other);   // Set intersection
 	bool        isSubSetOf(const StatementSet &other);  // Subset relation
 
-	size_type   size() const  { return sset.size(); }   // Number of elements
-	bool        empty() const { return sset.empty(); }
-	iterator    begin()       { return sset.begin(); }
-	iterator    end()         { return sset.end(); }
+	size_type   size() const     { return sset.size(); }   // Number of elements
+	bool        empty() const    { return sset.empty(); }
+	const_iterator begin() const { return sset.begin(); }
+	const_iterator end() const   { return sset.end(); }
+	iterator    begin()          { return sset.begin(); }
+	iterator    end()            { return sset.end(); }
 
 	void        insert(Statement *s) { sset.insert(s); }  // Insertion
 	bool        remove(Statement *s);                     // Removal; rets false if not found
@@ -197,7 +200,7 @@ public:
 	void        insert(Exp *loc) { lset.insert(loc); }  // Insert the given location
 	void        remove(Exp *loc) { lset.erase(loc); }   // Remove the given location
 	iterator    remove(const_iterator ll) { return lset.erase(ll); } // Remove location, given iterator
-	void        removeIfDefines(StatementSet &given);   // Remove locs defined in given
+	void        removeIfDefines(const StatementSet &given);  // Remove locs defined in given
 	size_type   size() const  { return lset.size(); }   // Number of elements
 	bool        empty() const { return lset.empty(); }
 	bool        operator ==(const LocationSet &o) const;// Compare
@@ -277,7 +280,7 @@ public:
 	void        connect(Exp *a, Exp *b);
 	iterator    begin() { return emap.begin(); }
 	iterator    end()   { return emap.end(); }
-	int         count(Exp *a) const;            // Return a count of locations connected to a
+	int         count(Exp *a) const { return emap.count(a); }  // Return a count of locations connected to a
 	bool        isConnected(Exp *a, Exp *b) const;  // Return true if a is connected to b
 	// Update the map that used to be a <-> b, now it is a <-> c
 	void        update(Exp *a, Exp *b, Exp *c);

@@ -29,27 +29,39 @@
 std::ostream &
 operator <<(std::ostream &os, const StatementSet &ss)
 {
-	for (auto it = ss.sset.cbegin(); it != ss.sset.cend(); ++it) {
-		if (it != ss.sset.cbegin()) os << ",\t";
-		os << *it;
+	bool first = true;
+	for (const auto &s : ss.sset) {
+		if (first)
+			first = false;
+		else
+			os << ",\t";
+		os << s;
 	}
 	return os << "\n";
 }
 std::ostream &
 operator <<(std::ostream &os, const AssignSet &as)
 {
-	for (auto it = as.aset.cbegin(); it != as.aset.cend(); ++it) {
-		if (it != as.aset.cbegin()) os << ",\t";
-		os << *it;
+	bool first = true;
+	for (const auto &a : as.aset) {
+		if (first)
+			first = false;
+		else
+			os << ",\t";
+		os << a;
 	}
 	return os << "\n";
 }
 std::ostream &
 operator <<(std::ostream &os, const LocationSet &ls)
 {
-	for (auto it = ls.lset.cbegin(); it != ls.lset.cend(); ++it) {
-		if (it != ls.lset.cbegin()) os << ",\t";
-		os << *it;
+	bool first = true;
+	for (const auto &l : ls.lset) {
+		if (first)
+			first = false;
+		else
+			os << ",\t";
+		os << l;
 	}
 	return os;
 }
@@ -70,9 +82,8 @@ StatementSet::makeUnion(const StatementSet &other)
 void
 StatementSet::makeDiff(const StatementSet &other)
 {
-	for (auto it = other.sset.begin(); it != other.sset.end(); ++it) {
-		sset.erase(*it);
-	}
+	for (const auto &s : other.sset)
+		sset.erase(s);
 }
 
 // Make this set the intersection of itself and other
@@ -80,12 +91,10 @@ void
 StatementSet::makeIsect(const StatementSet &other)
 {
 	for (auto it = sset.begin(); it != sset.end(); ) {
-		if (!other.sset.count(*it)) {
-			// Not in both sets
+		if (!other.sset.count(*it))
 			it = sset.erase(it);
-			continue;
-		}
-		++it;
+		else
+			++it;
 	}
 }
 
@@ -115,8 +124,8 @@ StatementSet::exists(Statement *s) const
 bool
 StatementSet::definesLoc(Exp *loc) const
 {
-	for (auto it = sset.begin(); it != sset.end(); ++it) {
-		if ((*it)->definesLoc(loc))
+	for (const auto &s : sset) {
+		if (s->definesLoc(loc))
 			return true;
 	}
 	return false;
@@ -136,13 +145,17 @@ void
 StatementSet::printNums(std::ostream &os) const
 {
 	os << std::dec;
-	for (auto it = sset.begin(); it != sset.end(); ) {
-		if (*it)
-			(*it)->printNum(os);
+	bool first = true;
+	for (const auto &s : sset) {
+		if (first)
+			first = false;
+		else
+			os << " ";
+
+		if (s)
+			s->printNum(os);
 		else
 			os << "-";  // Special case for nullptr definition
-		if (++it != sset.end())
-			os << " ";
 	}
 }
 
@@ -173,9 +186,8 @@ AssignSet::makeUnion(const AssignSet &other)
 void
 AssignSet::makeDiff(const AssignSet &other)
 {
-	for (auto it = other.aset.begin(); it != other.aset.end(); ++it) {
-		aset.erase(*it);
-	}
+	for (const auto &a : other.aset)
+		aset.erase(a);
 }
 
 // Make this set the intersection of itself and other
@@ -183,12 +195,10 @@ void
 AssignSet::makeIsect(const AssignSet &other)
 {
 	for (auto it = aset.begin(); it != aset.end(); ) {
-		if (!other.aset.count(*it)) {
-			// Not in both sets
+		if (!other.aset.count(*it))
 			it = aset.erase(it);
-			continue;
-		}
-		++it;
+		else
+			++it;
 	}
 }
 
@@ -219,7 +229,7 @@ bool
 AssignSet::definesLoc(Exp *loc) const
 {
 	auto as = new Assign(loc, new Terminal(opWild));
-	return !!aset.count(as);
+	return exists(as);
 }
 
 // Find a definition for loc on the LHS in this Assign set. If found, return pointer to the Assign with that LHS
@@ -227,9 +237,9 @@ Assign *
 AssignSet::lookupLoc(Exp *loc) const
 {
 	auto as = new Assign(loc, new Terminal(opWild));
-	auto ff = aset.find(as);
-	if (ff != aset.end())
-		return *ff;
+	auto it = aset.find(as);
+	if (it != aset.end())
+		return *it;
 	return nullptr;
 }
 
@@ -247,13 +257,17 @@ void
 AssignSet::printNums(std::ostream &os) const
 {
 	os << std::dec;
-	for (auto it = aset.begin(); it != aset.end(); ) {
-		if (*it)
-			(*it)->printNum(os);
+	bool first = true;
+	for (const auto &a : aset) {
+		if (first)
+			first = false;
+		else
+			os << " ";
+
+		if (a)
+			a->printNum(os);
 		else
 			os << "-";  // Special case for nullptr definition
-		if (++it != aset.end())
-			os << " ";
 	}
 }
 
@@ -278,17 +292,16 @@ LocationSet &
 LocationSet::operator =(const LocationSet &o)
 {
 	lset.clear();
-	for (auto it = o.lset.cbegin(); it != o.lset.cend(); ++it) {
-		lset.insert((*it)->clone());
-	}
+	for (const auto &l : o.lset)
+		lset.insert(l->clone());
 	return *this;
 }
 
 // Copy constructor
 LocationSet::LocationSet(const LocationSet &o)
 {
-	for (auto it = o.lset.cbegin(); it != o.lset.cend(); ++it)
-		lset.insert((*it)->clone());
+	for (const auto &l : o.lset)
+		lset.insert(l->clone());
 }
 
 std::string
@@ -302,14 +315,12 @@ LocationSet::prints() const
 // Remove locations defined by any of the given set of statements
 // Used for killing in liveness sets
 void
-LocationSet::removeIfDefines(StatementSet &given)
+LocationSet::removeIfDefines(const StatementSet &given)
 {
-	for (auto it = given.begin(); it != given.end(); ++it) {
-		Statement *s = (Statement *)*it;
+	for (const auto &s : given) {
 		LocationSet defs;
 		s->getDefinitions(defs);
-		for (auto dd = defs.begin(); dd != defs.end(); ++dd)
-			lset.erase(*dd);
+		makeDiff(defs);
 	}
 }
 
@@ -324,9 +335,8 @@ LocationSet::makeUnion(const LocationSet &other)
 void
 LocationSet::makeDiff(const LocationSet &other)
 {
-	for (auto it = other.lset.begin(); it != other.lset.end(); ++it) {
-		lset.erase(*it);
-	}
+	for (const auto &l : other.lset)
+		lset.erase(l);
 }
 
 bool
@@ -368,15 +378,14 @@ bool
 LocationSet::existsImplicit(Exp *e) const
 {
 	RefExp r(e, nullptr);
-	auto it = lset.lower_bound(&r);  // First element >= r
 	// Note: the below relies on the fact that nullptr is less than any other pointer. Try later entries in the set:
-	while (it != lset.end()) {
-		if (!(*it)->isSubscript()) return false;        // Looking for e{something} (could be e.g. %pc)
+	for (auto it = lset.lower_bound(&r); it != lset.end(); ++it) {
+		if (!(*it)->isSubscript())                      // Looking for e{something} (could be e.g. %pc)
+			return false;
 		if (!(*((RefExp *)*it)->getSubExp1() == *e))    // Gone past e{anything}?
 			return false;                               // Yes, then e{-} or e{0} cannot exist
 		if (((RefExp *)*it)->isImplicitDef())           // Check for e{-} or e{0}
 			return true;                                // Found
-		++it;                                           // Else check next entry
 	}
 	return false;
 }
@@ -407,9 +416,9 @@ void
 LocationSet::addSubscript(Statement *d /* , Cfg *cfg */)
 {
 	std::set<Exp *, lessExpStar> newSet;
-	for (auto it = lset.begin(); it != lset.end(); ++it)
-		newSet.insert((*it)->expSubscriptVar(*it, d /* , cfg */));
-	lset = newSet;  // Replace the old set!
+	for (const auto &l : lset)
+		newSet.insert(l->expSubscriptVar(l, d /* , cfg */));
+	lset.swap(newSet);  // Replace the old set!
 	// Note: don't delete the old exps; they are copied in the new set
 }
 
@@ -428,16 +437,15 @@ LocationSet::substitute(Assign &a)
 	LocationSet removeAndDelete;  // These will be removed then deleted
 	LocationSet insertSet;        // These will be inserted after the loop
 	bool change;
-	for (auto it = lset.begin(); it != lset.end(); ++it) {
-		Exp *loc = *it;
+	for (const auto &l : lset) {
 		Exp *replace;
-		if (loc->search(lhs, replace)) {
+		if (l->search(lhs, replace)) {
 			if (rhs->isTerminal()) {
 				// This is no longer a location of interest (e.g. %pc)
-				removeSet.insert(loc);
+				removeSet.insert(l);
 				continue;
 			}
-			loc = loc->clone()->searchReplaceAll(lhs, rhs, change);
+			Exp *loc = l->clone()->searchReplaceAll(lhs, rhs, change);
 			if (change) {
 				loc = loc->simplifyArith();
 				loc = loc->simplify();
@@ -448,14 +456,14 @@ LocationSet::substitute(Assign &a)
 					// Note: can't delete the expression yet, because the
 					// act of insertion into the remove set requires silent
 					// calls to the compare function
-					removeAndDelete.insert(*it);
+					removeAndDelete.insert(l);
 					loc->addUsedLocs(insertSet);
 					continue;
 				}
 				// Else we just want to replace it
 				// Regardless of whether the top level expression pointer has
 				// changed, remove and insert it from the set of pointers
-				removeSet.insert(*it);  // Note: remove the unmodified ptr
+				removeSet.insert(l);  // Note: remove the unmodified ptr
 				insertSet.insert(loc);
 			}
 		}
@@ -464,8 +472,8 @@ LocationSet::substitute(Assign &a)
 	makeDiff(removeAndDelete);  // These are to be removed as well
 	makeUnion(insertSet);       // Insert the items to be added
 	// Now delete the expressions that are no longer needed
-	for (auto dd = removeAndDelete.lset.begin(); dd != removeAndDelete.lset.end(); ++dd)
-		delete *dd;  // Plug that memory leak
+	for (const auto &l : removeAndDelete.lset)
+		delete l;  // Plug that memory leak
 }
 
 //
@@ -475,11 +483,10 @@ LocationSet::substitute(Assign &a)
 bool
 StatementList::remove(Statement *s)
 {
-	for (auto it = slist.begin(); it != slist.end(); ++it) {
-		if (*it == s) {
-			slist.erase(it);
-			return true;
-		}
+	auto it = std::find(slist.begin(), slist.end(), s);
+	if (it != slist.end()) {
+		slist.erase(it);
+		return true;
 	}
 	return false;
 }
@@ -500,9 +507,8 @@ std::string
 StatementList::prints() const
 {
 	std::ostringstream ost;
-	for (auto it = slist.begin(); it != slist.end(); ++it) {
-		ost << *it << ",\t";
-	}
+	for (const auto &s : slist)
+		ost << s << ",\t";
 	return ost.str();
 }
 
@@ -522,9 +528,8 @@ std::string
 StatementVec::prints() const
 {
 	std::ostringstream ost;
-	for (auto it = svec.begin(); it != svec.end(); ++it) {
-		ost << *it << ",\t";
-	}
+	for (const auto &s : svec)
+		ost << s << ",\t";
 	return ost.str();
 }
 
@@ -533,13 +538,17 @@ void
 StatementVec::printNums(std::ostream &os) const
 {
 	os << std::dec;
-	for (auto it = svec.begin(); it != svec.end(); ) {
-		if (*it)
-			(*it)->printNum(os);
+	bool first = true;
+	for (const auto &s : svec) {
+		if (first)
+			first = false;
+		else
+			os << " ";
+
+		if (s)
+			s->printNum(os);
 		else
 			os << "-";  // Special case for no definition
-		if (++it != svec.end())
-			os << " ";
 	}
 }
 
@@ -549,8 +558,8 @@ void
 StatementList::makeIsect(const StatementList &a, const LocationSet &b)
 {
 	slist.clear();
-	for (auto it = a.slist.begin(); it != a.slist.end(); ++it) {
-		Assignment *as = (Assignment *)*it;
+	for (const auto &s : a.slist) {
+		auto as = (Assignment *)s;
 		if (b.exists(as->getLeft()))
 			slist.push_back(as);
 	}
@@ -560,8 +569,8 @@ void
 StatementList::makeCloneOf(const StatementList &o)
 {
 	slist.clear();
-	for (auto it = o.slist.begin(); it != o.slist.end(); ++it)
-		slist.push_back((*it)->clone());
+	for (const auto &s : o.slist)
+		slist.push_back(s->clone());
 }
 
 // Return true if loc appears on the left of any statements in this list
@@ -569,8 +578,9 @@ StatementList::makeCloneOf(const StatementList &o)
 bool
 StatementList::existsOnLeft(Exp *loc) const
 {
-	for (auto it = slist.begin(); it != slist.end(); ++it) {
-		if (*((Assignment *)*it)->getLeft() == *loc)
+	for (const auto &s : slist) {
+		auto as = (Assignment *)s;
+		if (*as->getLeft() == *loc)
 			return true;
 	}
 	return false;
@@ -582,7 +592,8 @@ void
 StatementList::removeDefOf(Exp *loc)
 {
 	for (auto it = slist.begin(); it != slist.end(); ++it) {
-		if (*((Assignment *)*it)->getLeft() == *loc) {
+		auto as = (Assignment *)*it;
+		if (*as->getLeft() == *loc) {
 			erase(it);
 			return;
 		}
@@ -593,17 +604,16 @@ StatementList::removeDefOf(Exp *loc)
 Assignment *
 StatementList::findOnLeft(Exp *loc) const
 {
-	if (slist.empty())
-		return nullptr;
-	for (auto it = slist.begin(); it != slist.end(); ++it) {
-		Exp *left = ((Assignment *)*it)->getLeft();
+	for (const auto &s : slist) {
+		auto as = (Assignment *)s;
+		Exp *left = as->getLeft();
 		if (*left == *loc)
-			return (Assignment *)*it;
+			return as;
 		if (left->isLocal()) {
-			Location *l = (Location *)left;
+			auto l = (Location *)left;
 			Exp *e = l->getProc()->expFromSymbol(((Const *)l->getSubExp1())->getStr());
 			if (e && ((*e == *loc) || (e->isSubscript() && *e->getSubExp1() == *loc))) {
-				return (Assignment *)*it;
+				return as;
 			}
 		}
 	}
@@ -614,8 +624,7 @@ void
 LocationSet::diff(LocationSet *o)
 {
 	bool printed2not1 = false;
-	for (auto it = o->lset.begin(); it != o->lset.end(); ++it) {
-		Exp *oe = *it;
+	for (const auto &oe : o->lset) {
 		if (!lset.count(oe)) {
 			if (!printed2not1) {
 				printed2not1 = true;
@@ -627,8 +636,7 @@ LocationSet::diff(LocationSet *o)
 	if (printed2not1)
 		std::cerr << "\n";
 	bool printed1not2 = false;
-	for (auto it = lset.begin(); it != lset.end(); ++it) {
-		Exp *e = *it;
+	for (const auto &e : lset) {
 		if (!o->lset.count(e)) {
 			if (!printed1not2) {
 				printed1not2 = true;
@@ -786,44 +794,44 @@ Range::widenWith(const Range &r)
 Range &
 RangeMap::getRange(Exp *loc)
 {
-	if (!ranges.count(loc)) {
-		return *(new Range(1, Range::MIN, Range::MAX, new Const(0)));
-	}
-	return ranges[loc];
+	auto it = ranges.find(loc);
+	if (it != ranges.end())
+		return it->second;
+	return *(new Range(1, Range::MIN, Range::MAX, new Const(0)));
 }
 
 void
 RangeMap::unionwith(const RangeMap &other)
 {
-	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
-		if (!ranges.count(it->first)) {
-			ranges[it->first] = it->second;
-		} else {
-			ranges[it->first].unionWith(it->second);
-		}
+	for (const auto &r : other.ranges) {
+		auto ret = ranges.insert(r);
+		if (!ret.second)
+			ret.first->second.unionWith(r.second);
 	}
 }
 
 void
 RangeMap::widenwith(const RangeMap &other)
 {
-	for (auto it = other.ranges.begin(); it != other.ranges.end(); ++it) {
-		if (!ranges.count(it->first)) {
-			ranges[it->first] = it->second;
-		} else {
-			ranges[it->first].widenWith(it->second);
-		}
+	for (const auto &r : other.ranges) {
+		auto ret = ranges.insert(r);
+		if (!ret.second)
+			ret.first->second.widenWith(r.second);
 	}
 }
 
 std::ostream &
 operator <<(std::ostream &os, const RangeMap &rm)
 {
-	for (auto it = rm.ranges.begin(); it != rm.ranges.end(); ++it) {
-		if (it != rm.ranges.begin())
+	bool first = true;
+	for (const auto &r : rm.ranges) {
+		if (first)
+			first = false;
+		else
 			os << ", ";
-		it->first->print(os);
-		os << " -> " << it->second;
+
+		r.first->print(os);
+		os << " -> " << r.second;
 	}
 	return os;
 }
@@ -835,18 +843,18 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 	int count = 0;
 	do {
 		changes = false;
-		for (auto it = ranges.begin(); it != ranges.end(); ++it) {
-			if (only && !only->count(it->first))
+		for (const auto &r : ranges) {
+			if (only && !only->count(r.first))
 				continue;
 			bool change = false;
 			Exp *eold = e->clone();
-			if (it->second.getLowerBound() == it->second.getUpperBound()) {
-				e = e->searchReplaceAll(it->first, (new Binary(opPlus, it->second.getBase(), new Const(it->second.getLowerBound())))->simplify(), change);
+			if (r.second.getLowerBound() == r.second.getUpperBound()) {
+				e = e->searchReplaceAll(r.first, (new Binary(opPlus, r.second.getBase(), new Const(r.second.getLowerBound())))->simplify(), change);
 			}
 			if (change) {
 				e = e->simplify()->simplifyArith();
 				if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-					LOG << "applied " << it->first << " to " << eold << " to get " << e << "\n";
+					LOG << "applied " << r.first << " to " << eold << " to get " << e << "\n";
 				changes = true;
 			}
 		}
@@ -859,10 +867,10 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 void
 RangeMap::killAllMemOfs()
 {
-	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
-		if (it->first->isMemOf()) {
+	for (auto &r : ranges) {
+		if (r.first->isMemOf()) {
 			Range empty;
-			it->second.unionWith(empty);
+			r.second.unionWith(empty);
 		}
 	}
 }
@@ -880,16 +888,16 @@ Range::operator ==(const Range &other) const
 bool
 RangeMap::isSubset(RangeMap &other) const
 {
-	for (auto it = ranges.begin(); it != ranges.end(); ++it) {
-		if (!other.ranges.count(it->first)) {
+	for (const auto &r : ranges) {
+		auto it = other.ranges.find(r.first);
+		if (it == other.ranges.end()) {
 			if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-				LOG << "did not find " << it->first << " in other, not a subset\n";
+				LOG << "did not find " << r.first << " in other, not a subset\n";
 			return false;
 		}
-		Range &r = other.ranges[it->first];
-		if (!(it->second == r)) {
+		if (!(r.second == it->second)) {
 			if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-				LOG << "range for " << it->first << " in other " << r << " is not equal to range in this " << it->second << ", not a subset\n";
+				LOG << "range for " << r.first << " in other " << it->second << " is not equal to range in this " << r.second << ", not a subset\n";
 			return false;
 		}
 	}
@@ -902,9 +910,8 @@ RangeMap::isSubset(RangeMap &other) const
 void
 ConnectionGraph::add(Exp *a, Exp *b)
 {
-	for (auto ff = emap.find(a); ff != emap.end() && *ff->first == *a; ++ff) {
-		if (*ff->second == *b) return;  // Don't add a second entry
-	}
+	if (isConnected(a, b))
+		return;  // Don't add a second entry
 	std::pair<Exp *, Exp *> pr;
 	pr.first = a;
 	pr.second = b;
@@ -918,23 +925,13 @@ ConnectionGraph::connect(Exp *a, Exp *b)
 	add(b, a);
 }
 
-int
-ConnectionGraph::count(Exp *e) const
-{
-	int n = 0;
-	for (auto ff = emap.find(e); ff != emap.end() && *ff->first == *e; ++ff) {
-		++n;
-	}
-	return n;
-}
-
 bool
 ConnectionGraph::isConnected(Exp *a, Exp *b) const
 {
-	for (auto ff = emap.find(a); ff != emap.end() && *ff->first == *a; ++ff) {
-		if (*ff->second == *b)
+	auto ra = emap.equal_range(a);
+	for (auto it = ra.first; it != ra.second; ++it)
+		if (*it->second == *b)
 			return true;  // Found the connection
-	}
 	return false;
 }
 
@@ -943,16 +940,18 @@ void
 ConnectionGraph::update(Exp *a, Exp *b, Exp *c)
 {
 	// find a->b
-	for (auto ff = emap.find(a); ff != emap.end() && *ff->first == *a; ++ff) {
-		if (*ff->second == *b) {
-			ff->second = c;  // Now a->c
+	auto ra = emap.equal_range(a);
+	for (auto it = ra.first; it != ra.second; ++it) {
+		if (*it->second == *b) {
+			it->second = c;  // Now a->c
 			break;
 		}
 	}
 	// find b->a
-	for (auto ff = emap.find(b); ff != emap.end() && *ff->first == *b; ++ff) {
-		if (*ff->second == *a) {
-			emap.erase(ff);
+	auto rb = emap.equal_range(b);
+	for (auto it = rb.first; it != rb.second; ++it) {
+		if (*it->second == *a) {
+			emap.erase(it);
 			add(c, a);  // Now c->a
 			break;
 		}
@@ -968,8 +967,7 @@ ConnectionGraph::remove(iterator aa)
 	aa = emap.erase(aa);
 	auto bb = emap.find(b);
 	assert(bb != emap.end());
-	if (bb == aa)
-		++aa;
-	emap.erase(bb);
-	return aa;
+	bool same = (bb == aa);
+	bb = emap.erase(bb);
+	return same ? bb : aa;
 }
