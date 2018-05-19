@@ -807,7 +807,7 @@ UserProc::removeStatement(Statement *stmt)
 	BasicBlock *bb = stmt->getBB();  // Get our enclosing BB
 	std::list<RTL *> *rtls = bb->getRTLs();
 	for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
-		std::list<Statement *> &stmts = (*rit)->getList();
+		auto &stmts = (*rit)->getList();
 		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 			if (*it == stmt) {
 				stmts.erase(it);
@@ -2071,9 +2071,8 @@ UserProc::finalSimplify()
 			pBB = cfg->getNextBB(it);
 			continue;
 		}
-		for (auto rit = pRtls->begin(); rit != pRtls->end(); ++rit) {
-			for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
-				Statement *rt = (*rit)->elementAt(i);
+		for (const auto &rtl : *pRtls) {
+			for (const auto &rt : rtl->getList()) {
 				rt->simplifyAddr();
 				// Also simplify everything; in particular, stack offsets are
 				// often negative, so we at least canonicalise [esp + -8] to [esp-8]

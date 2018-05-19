@@ -75,8 +75,8 @@ bool
 PentiumFrontEnd::isDecAh(RTL *r)
 {
 	// Check for decrement; RHS of middle Exp will be r[12]{8} - 1
-	if (r->getNumStmt() != 3) return false;
-	Statement *mid = r->elementAt(1);
+	if (r->getList().size() != 3) return false;
+	auto mid = *(++r->getList().begin());
 	if (!mid->isAssign()) return false;
 	Assign *asgn = (Assign *)mid;
 	Exp *rhs = asgn->getRight();
@@ -362,12 +362,12 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 			// returning floats, the value will appear to be returned in registers r[32], then r[33], etc.
 			tos = 0;
 		}
-		if ((*rit)->getNumStmt() == 0) { ++rit; continue; }
+		if ((*rit)->getList().empty()) { ++rit; continue; }
 #if PROCESS_FNSTSW
 		// Check for f(n)stsw
-		if (isStoreFsw((*rit)->elementAt(0))) {
+		if (isStoreFsw((*rit)->getList().front())) {
 			// Check the register - at present we only handle AX
-			Exp *lhs = ((Assign *)(*rit)->elementAt(0))->getLeft();
+			Exp *lhs = ((Assign *)(*rit)->getList().front())->getLeft();
 			Exp *ax = Location::regOf(0);
 			assert(*lhs == *ax);
 			delete ax;
@@ -591,8 +591,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 #endif
 			int oNumBytes = inst.numBytes;
 			inst = decodeInstruction(addr + oNumBytes);
-			if (inst.valid && inst.rtl->getNumStmt() == 2) {
-				auto a = dynamic_cast<Assign *>(inst.rtl->elementAt(1));
+			if (inst.valid && inst.rtl->getList().size() == 2) {
+				auto a = dynamic_cast<Assign *>(inst.rtl->getList().back());
 				if (a && *a->getRight() == *Location::regOf(24)) {
 #if 0
 					std::cerr << "is followed by push eax.. " << "good" << std::endl;
@@ -622,8 +622,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 				// Note: the RTL changed recently from esp = esp-4; m[esp] = K tp m[esp-4] = K; esp = esp-4
 				inst = decodeInstruction(addr - 5);
 				assert(inst.valid);
-				assert(inst.rtl->getNumStmt() == 2);
-				Assign *a = (Assign *)inst.rtl->elementAt(0);  // Get m[esp-4] = K
+				assert(inst.rtl->getList().size() == 2);
+				auto a = (Assign *)inst.rtl->getList().front();  // Get m[esp-4] = K
 				Exp *rhs = a->getRight();
 				assert(rhs->isIntConst());
 				gotMain = true;
@@ -657,8 +657,8 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &i
 {
 	auto br1 = new BranchStatement;
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
-	Statement *s1 = *rtl->getList().begin();
-	Statement *s6 = *(--rtl->getList().end());
+	auto s1 = rtl->getList().front();
+	auto s6 = rtl->getList().back();
 	if (s1->isAssign())
 		br1->setCondExpr(((Assign *)s1)->getRight());
 	else
@@ -694,7 +694,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 			prev = addr;
 			addr = rtl->getAddress();
 			if (!rtl->getList().empty()) {
-				Statement *firstStmt = *rtl->getList().begin();
+				auto firstStmt = rtl->getList().front();
 				if (firstStmt->isAssign()) {
 					Exp *lhs = ((Assign *)firstStmt)->getLeft();
 					if (lhs->isMachFtr()) {
@@ -1035,12 +1035,12 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 			// count pushes backwards to find arg
 			Exp *found = nullptr;
 			unsigned int pushcount = 0;
-			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; ++itr) {
-				RTL *rtl = *itr;
-				for (int n = rtl->getNumStmt() - 1; n >= 0; --n) {
-					Statement *stmt = rtl->elementAt(n);
+			for (auto rrit = BB_rtls->crbegin(); rrit != BB_rtls->crend() && !found; ++rrit) {
+				const auto &stmts = (*rrit)->getList();
+				for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+					auto stmt = *srit;
 					if (stmt->isAssign()) {
-						Assign *asgn = (Assign *)stmt;
+						auto asgn = (Assign *)stmt;
 						if (asgn->getLeft()->isRegN(28) && asgn->getRight()->getOper() == opMinus)
 							++pushcount;
 						else if (pushcount == i + 2
@@ -1110,12 +1110,12 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 			// count pushes backwards to find a push of 0
 			bool found = false;
 			int pushcount = 0;
-			for (auto itr = BB_rtls->rbegin(); itr != BB_rtls->rend() && !found; ++itr) {
-				RTL *rtl = *itr;
-				for (int n = rtl->getNumStmt() - 1; n >= 0; --n) {
-					Statement *stmt = rtl->elementAt(n);
+			for (auto rrit = BB_rtls->crbegin(); rrit != BB_rtls->crend() && !found; ++rrit) {
+				const auto &stmts = (*rrit)->getList();
+				for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+					auto stmt = *srit;
 					if (stmt->isAssign()) {
-						Assign *asgn = (Assign *)stmt;
+						auto asgn = (Assign *)stmt;
 						if (asgn->getLeft()->isRegN(28) && asgn->getRight()->getOper() == opMinus)
 							++pushcount;
 						else if (asgn->getLeft()->isMemOf()

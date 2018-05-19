@@ -1296,7 +1296,7 @@ FlagDef::appendDot(std::ostream &os) const
 	   << "\\n0x" << std::hex << (uintptr_t)this
 	// Display the RTL as "RTL <r0> <r1>..." vertically (curly brackets)
 	   << " | { RTL ";
-	int n = rtl->getNumStmt();
+	int n = rtl->getList().size();
 	for (int i = 0; i < n; ++i)
 		os << "| <r" << std::dec << i << "> ";
 	os << "} | <p1> }\"];\n";

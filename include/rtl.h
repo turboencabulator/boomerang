@@ -57,9 +57,6 @@ public:
 	                    RTL(const RTL &other);
 	                   ~RTL();
 
-	typedef std::list<Statement *>::iterator iterator;
-	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
-
 	        RTL        *clone() const;
 	        RTL        &operator =(const RTL &other);
 
@@ -81,6 +78,10 @@ public:
 	 */
 	        int         getNumStmt() const;
 	        Statement  *elementAt(unsigned i) const;
+	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
+	typedef std::list<Statement *>::iterator iterator;
+	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
+
 	/** \} */
 
 	/**
@@ -100,8 +101,6 @@ public:
 	        void        appendRTL(const RTL &rtl);
 	        void        deepCopyList(std::list<Statement *> &dest) const;
 	/** \} */
-
-	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
 
 	        void        print(std::ostream &os = std::cout, bool html = false) const;
 

@@ -134,10 +134,13 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 		auto ls = std::list<Statement *>();
 		// If the delay slot is a single assignment to %o7, we want to see the semantics for it, so that preservation
 		// or otherwise of %o7 is correct
-		if (delay->getNumStmt() == 1
-		 && delay->elementAt(0)->isAssign()
-		 && ((Assign *)delay->elementAt(0))->getLeft()->isRegN(15))
-			ls.push_back(delay->elementAt(0));
+		const auto &stmts = delay->getList();
+		if (stmts.size() == 1
+		 && stmts.front()->isAssign()) {
+			auto as = (Assign *)stmts.front();
+			if (as->getLeft()->isRegN(15))
+				ls.push_back(stmts.front());
+		}
 		ls.push_back(new ReturnStatement);
 #if 0
 		rtls->push_back(new RTL(rtl->getAddress() + 1, &ls));
@@ -250,7 +253,7 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &del
                          UserProc *proc, std::list<CallStatement *> &callList, std::ofstream &os, bool isPattern/* = false*/)
 {
 	// Aliases for the call and delay RTLs
-	CallStatement *call_stmt = ((CallStatement *)inst.rtl->getList().back());
+	auto call_stmt = (CallStatement *)inst.rtl->getList().back();
 	RTL *delay_rtl = delay_inst.rtl;
 
 	// Emit the delay instruction, unless the delay instruction is a nop, or we have a pattern, or are followed by a
@@ -458,7 +461,7 @@ SparcFrontEnd::case_DD(ADDRESS &address, ptrdiff_t delta, DecodeResult &inst, De
 
 	BasicBlock *newBB;
 	bool bRet = true;
-	Statement *lastStmt = inst.rtl->getList().back();
+	auto lastStmt = inst.rtl->getList().back();
 	switch (lastStmt->getKind()) {
 	case STMT_CALL:
 		// Will be a computed call
@@ -492,12 +495,12 @@ SparcFrontEnd::case_DD(ADDRESS &address, ptrdiff_t delta, DecodeResult &inst, De
 	}
 	if (!newBB) return false;
 
-	Statement *last = inst.rtl->getList().back();
+	auto last = inst.rtl->getList().back();
 	// Do extra processing for for special types of DD
 	if (last->getKind() == STMT_CALL) {
 
 		// Attempt to add a return BB if the delay instruction is a RESTORE
-		CallStatement *call_stmt = (CallStatement *)(inst.rtl->getList().back());
+		auto call_stmt = (CallStatement *)inst.rtl->getList().back();
 		BasicBlock *returnBB = optimise_CallReturn(call_stmt, inst.rtl, delay_inst.rtl, proc);
 		if (returnBB) {
 			cfg->addOutEdge(newBB, returnBB);
@@ -848,9 +851,9 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 			RTL *rtl = inst.rtl;
 			GotoStatement *stmt_jump = nullptr;
 			Statement *last = nullptr;
-			std::list<Statement *> &slist = rtl->getList();
-			if (!slist.empty()) {
-				last = slist.back();
+			const auto &stmts = rtl->getList();
+			if (!stmts.empty()) {
+				last = stmts.back();
 				stmt_jump = static_cast<GotoStatement *>(last);
 			}
 
@@ -962,17 +965,18 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 						// Note there could be an unrelated instruction between the first move and the call
 						// (move/x/call/move in UQBT terms).  In boomerang, we leave the semantics of the moves there
 						// (to be likely removed by dataflow analysis) and merely insert a return BB after the call
-						int nd = delay_inst.rtl->getNumStmt();
 						// Note that if an add, there may be an assignment to a temp register first. So look at last RT
-						Statement *a = delay_inst.rtl->elementAt(nd - 1); // Look at last
-						if (a && a->isAssign()) {
-							Exp *lhs = ((Assign *)a)->getLeft();
+						const auto &stmts = delay_inst.rtl->getList();
+						if (!stmts.empty()
+						 && stmts.back()->isAssign()) {
+							auto as = (Assign *)stmts.back();
+							Exp *lhs = as->getLeft();
 							if (lhs->isRegN(15)) {  // %o7 is r[15]
 								// If it's an add, this is special. Example:
 								//   call foo
 								//   add %o7, K, %o7
 								// is equivalent to call foo / ba .+K
-								Exp *rhs = ((Assign *)a)->getRight();
+								Exp *rhs = as->getRight();
 								Location *o7 = Location::regOf(15);
 								if (rhs->getOper() == opPlus
 								 && (((Binary *)rhs)->getSubExp2()->isIntConst())

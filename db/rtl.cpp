@@ -659,25 +659,22 @@ RTL::isCompare(int &iReg, Exp *&expOperand) const
 {
 	// Expect to see a subtract, then a setting of the flags
 	// Dest of subtract should be a register (could be the always zero register)
-	if (getNumStmt() < 2) return false;
+	if (stmtList.size() < 2) return false;
 	// Could be first some assignments to temporaries
 	// But the actual compare could also be an assignment to a temporary
 	// So we search for the first RHS with an opMinus, that has a LHS to
 	// a register (whether a temporary or a machine register)
-	int i = 0;
-	Exp *rhs;
-	Statement *cur;
-	do {
-		cur = elementAt(i);
+	Exp *rhs = nullptr;
+	for (const auto &cur : stmtList) {
 		if (cur->getKind() != STMT_ASSIGN) return false;
 		rhs = ((Assign *)cur)->getRight();
-		++i;
-	} while (rhs->getOper() != opMinus && i < getNumStmt());
+		if (rhs->getOper() == opMinus)
+			break;
+	}
 	if (rhs->getOper() != opMinus) return false;
 	// We have a subtract assigning to a register.
 	// Check if there is a subflags last
-	Statement *last = elementAt(getNumStmt() - 1);
-	if (!last->isFlagAssgn()) return false;
+	if (!stmtList.back()->isFlagAssgn()) return false;
 	Exp *sub = ((Binary *)rhs)->getSubExp1();
 	// Should be a compare of a register and something (probably a constant)
 	if (!sub->isRegOf()) return false;

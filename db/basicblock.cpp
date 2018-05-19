@@ -625,9 +625,8 @@ BasicBlock::getCallDest() const
 		return NO_ADDRESS;
 	if (m_pRtls->empty())
 		return NO_ADDRESS;
-	RTL *lastRtl = m_pRtls->back();
-	std::list<Statement *> &sl = lastRtl->getList();
-	for (auto rit = sl.rbegin(); rit != sl.rend(); ++rit) {
+	const auto &stmts = m_pRtls->back()->getList();
+	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
 		if ((*rit)->getKind() == STMT_CALL)
 			return ((CallStatement *)(*rit))->getFixedDest();
 	}
@@ -641,11 +640,10 @@ BasicBlock::getCallDestProc() const
 		return nullptr;
 	if (m_pRtls->empty())
 		return nullptr;
-	RTL *lastRtl = m_pRtls->back();
-	std::list<Statement *> &sl = lastRtl->getList();
-	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
-		if ((*it)->getKind() == STMT_CALL)
-			return ((CallStatement *)(*it))->getDestProc();
+	const auto &stmts = m_pRtls->back()->getList();
+	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
+		if ((*rit)->getKind() == STMT_CALL)
+			return ((CallStatement *)(*rit))->getDestProc();
 	}
 	return nullptr;
 }
@@ -792,13 +790,12 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 {
 	// the condition will be in the last rtl
 	assert(m_pRtls);
-	RTL *last = m_pRtls->back();
 	// it should contain a BranchStatement
-	std::list<Statement *> &sl = last->getList();
-	assert(!sl.empty());
-	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
-		if ((*it)->getKind() == STMT_BRANCH) {
-			((BranchStatement *)(*it))->setCondExpr(e);
+	const auto &stmts = m_pRtls->back()->getList();
+	assert(!stmts.empty());
+	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
+		if ((*rit)->getKind() == STMT_BRANCH) {
+			((BranchStatement *)(*rit))->setCondExpr(e);
 			return;
 		}
 	}
@@ -811,13 +808,12 @@ BasicBlock::isJmpZ(BasicBlock *dest) const
 {
 	// The condition will be in the last rtl
 	assert(m_pRtls);
-	RTL *last = m_pRtls->back();
 	// it should contain a BranchStatement
-	std::list<Statement *> &sl = last->getList();
-	assert(!sl.empty());
-	for (auto it = sl.rbegin(); it != sl.rend(); ++it) {
-		if ((*it)->getKind() == STMT_BRANCH) {
-			BRANCH_TYPE jt = ((BranchStatement *)(*it))->getCond();
+	const auto &stmts = m_pRtls->back()->getList();
+	assert(!stmts.empty());
+	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
+		if ((*rit)->getKind() == STMT_BRANCH) {
+			BRANCH_TYPE jt = ((BranchStatement *)(*rit))->getCond();
 			if (jt == BRANCH_JE) {
 				const auto &trueEdge = m_OutEdges[0];
 				return dest == trueEdge;
@@ -869,12 +865,12 @@ BasicBlock::simplify()
 		if (!m_pRtls || m_pRtls->empty()) {
 			m_nodeType = FALL;
 		} else {
-			RTL *last = m_pRtls->back();
-			if (last->getNumStmt() == 0) {
+			const auto &stmts = m_pRtls->back()->getList();
+			if (stmts.empty()) {
 				m_nodeType = FALL;
-			} else if (last->elementAt(last->getNumStmt() - 1)->isGoto()) {
+			} else if (stmts.back()->isGoto()) {
 				m_nodeType = ONEWAY;
-			} else if (!last->elementAt(last->getNumStmt() - 1)->isBranch()) {
+			} else if (!stmts.back()->isBranch()) {
 				m_nodeType = FALL;
 			}
 		}
@@ -1326,9 +1322,9 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 			if (m_nodeType == COMPJUMP) {
 				std::ostringstream ost;
 				assert(!m_pRtls->empty());
-				RTL *lastRTL = m_pRtls->back();
-				assert(lastRTL->getNumStmt());
-				GotoStatement *gs = (GotoStatement *)lastRTL->elementAt(lastRTL->getNumStmt() - 1);
+				const auto &stmts = m_pRtls->back()->getList();
+				assert(!stmts.empty());
+				auto gs = (GotoStatement *)stmts.back();
 				ost << "goto " << gs->getDest();
 				hll->AddLineComment(ost.str().c_str());
 			}
@@ -1645,10 +1641,10 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 	checkForOverlap(liveLocs, phiLocs, ig, myProc);
 	// For each RTL in this BB
 	if (m_pRtls)  // this can be nullptr
-		for (auto rit = m_pRtls->rbegin(); rit != m_pRtls->rend(); ++rit) {
-			std::list<Statement *> &stmts = (*rit)->getList();
+		for (auto rit = m_pRtls->crbegin(); rit != m_pRtls->crend(); ++rit) {
+			const auto &stmts = (*rit)->getList();
 			// For each statement this RTL
-			for (auto sit = stmts.rbegin(); sit != stmts.rend(); ++sit) {
+			for (auto sit = stmts.crbegin(); sit != stmts.crend(); ++sit) {
 				Statement *s = *sit;
 				LocationSet defs;
 				s->getDefinitions(defs);
@@ -1708,8 +1704,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 		// The first RTL will have the phi functions, if any
 		if (!currBB->m_pRtls || currBB->m_pRtls->empty())
 			continue;
-		RTL *phiRtl = currBB->m_pRtls->front();
-		std::list<Statement *> &stmts = phiRtl->getList();
+		const auto &stmts = currBB->m_pRtls->front()->getList();
 		for (const auto &stmt : stmts) {
 			// Only interested in phi assignments. Note that it is possible that some phi assignments have been
 			// converted to ordinary assignments. So the below is a continue, not a break.
@@ -1968,9 +1963,9 @@ BasicBlock::findNumCases()
 		if (edge->m_nodeType != TWOWAY)  // look for a two-way BB
 			continue;  // Ignore all others
 		assert(!edge->m_pRtls->empty());
-		RTL *lastRtl = edge->m_pRtls->back();
-		assert(lastRtl->getNumStmt() >= 1);
-		BranchStatement *lastStmt = (BranchStatement *)lastRtl->elementAt(lastRtl->getNumStmt() - 1);
+		const auto &stmts = edge->m_pRtls->back()->getList();
+		assert(!stmts.empty());
+		auto lastStmt = (BranchStatement *)stmts.back();
 		Exp *pCond = lastStmt->getCondExpr();
 		if (pCond->getArity() != 2) continue;
 		Exp *rhs = ((Binary *)pCond)->getSubExp2();
@@ -2041,11 +2036,11 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 
 	if (m_nodeType == COMPJUMP) {
 		assert(!m_pRtls->empty());
-		RTL *lastRtl = m_pRtls->back();
 		if (DEBUG_SWITCH)
-			LOG << "decodeIndirectJmp: " << lastRtl->prints();
-		assert(lastRtl->getNumStmt() >= 1);
-		CaseStatement *lastStmt = (CaseStatement *)lastRtl->elementAt(lastRtl->getNumStmt() - 1);
+			LOG << "decodeIndirectJmp: " << m_pRtls->back()->prints();
+		const auto &stmts = m_pRtls->back()->getList();
+		assert(!stmts.empty());
+		auto lastStmt = (CaseStatement *)stmts.back();
 		// Note: some programs might not have the case expression propagated to, because of the -l switch (?)
 		// We used to use ordinary propagation here to get the memory expression, but now it refuses to propagate memofs
 		// because of the alias safety issue. Eventually, we should use an alias-safe incremental propagation, but for
@@ -2137,11 +2132,11 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		}
 	} else if (m_nodeType == COMPCALL) {
 		assert(!m_pRtls->empty());
-		RTL *lastRtl = m_pRtls->back();
 		if (DEBUG_SWITCH)
-			LOG << "decodeIndirectJmp: COMPCALL:\n" << lastRtl->prints() << "\n";
-		assert(lastRtl->getNumStmt() >= 1);
-		CallStatement *lastStmt = (CallStatement *)lastRtl->elementAt(lastRtl->getNumStmt() - 1);
+			LOG << "decodeIndirectJmp: COMPCALL:\n" << m_pRtls->back()->prints() << "\n";
+		const auto &stmts = m_pRtls->back()->getList();
+		assert(!stmts.empty());
+		auto lastStmt = (CallStatement *)stmts.back();
 		Exp *e = lastStmt->getDest();
 		// Indirect calls may sometimes not be propagated to, because of limited propagation (-l switch).
 		// Propagate to e, but only keep the changes if the expression matches (don't want excessive propagation to
@@ -2392,10 +2387,9 @@ BasicBlock::processSwitch(UserProc *proc)
 bool
 BasicBlock::undoComputedBB(Statement *stmt)
 {
-	RTL *last = m_pRtls->back();
-	std::list<Statement *> &list = last->getList();
-	for (auto rr = list.rbegin(); rr != list.rend(); ++rr) {
-		if (*rr == stmt) {
+	const auto &stmts = m_pRtls->back()->getList();
+	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
+		if (*rit == stmt) {
 			m_nodeType = CALL;
 			LOG << "undoComputedBB for statement " << stmt << "\n";
 			return true;

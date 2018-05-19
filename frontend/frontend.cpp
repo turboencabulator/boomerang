@@ -935,8 +935,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 								DecodeResult decoded = decodeInstruction(callAddr);
 								if (decoded.valid) { // is the instruction decoded succesfully?
 									// Yes, it is. Create a Statement from it.
-									RTL *rtl = decoded.rtl;
-									Statement *first_statement = *rtl->getList().begin();
+									auto first_statement = decoded.rtl->getList().front();
 									if (first_statement) {
 										first_statement->setProc(pProc);
 										first_statement->simplify();
@@ -1273,7 +1272,7 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 	if (retAddr == NO_ADDRESS) {
 		// Create the basic block
 		pBB = pCfg->newBB(BB_rtls, RET, 0);
-		Statement *s = pRtl->getList().back();  // The last statement should be the ReturnStatement
+		auto s = pRtl->getList().back();  // The last statement should be the ReturnStatement
 		pProc->setTheReturnAddr((ReturnStatement *)s, pRtl->getAddress());
 	} else {
 		// We want to replace the *whole* RTL with a branch to THE first return's RTL. There can sometimes be extra

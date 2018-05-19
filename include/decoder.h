@@ -180,8 +180,8 @@ bool isFuncPrologue(ADDRESS hostPC);
 		std::cout << std::hex << pc << std::dec << ": " << output << std::endl;
 #define DEBUG_STMTS \
 	if (DEBUG_DECODER) { \
-		std::list<Statement *> &lst = result.rtl->getList(); \
-		for (const auto &stmt : lst) \
+		const auto &stmts = result.rtl->getList(); \
+		for (const auto &stmt : stmts) \
 			std::cout << "\t\t\t" << stmt << "\n"; \
 	}
 /** \} */
