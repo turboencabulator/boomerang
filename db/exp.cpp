@@ -1771,8 +1771,7 @@ Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = fa
 	std::list<Exp **> li;
 	Exp *top = this;  // top may change; that's why we have to return it
 	doSearch(search, top, li, false);
-	for (auto it = li.begin(); it != li.end(); ++it) {
-		Exp **pp = *it;
+	for (const auto &pp : li) {
 		;//delete *pp;  // Delete any existing
 		*pp = replace->clone();  // Do the replacement
 		if (once) {
@@ -1827,9 +1826,9 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *pSrc = this;
 	doSearch(search, pSrc, li, false);
-	for (auto it = li.begin(); it != li.end(); ++it) {
+	for (const auto &pp : li) {
 		// li is list of Exp**; result is list of Exp*
-		result.push_back(**it);
+		result.push_back(*pp);
 	}
 	return !li.empty();
 }
@@ -3324,9 +3323,9 @@ Exp::killFill()
 	std::list<Exp **> result;
 	doSearch(&srch1, res, result, false);
 	doSearch(&srch2, res, result, false);
-	for (auto it = result.begin(); it != result.end(); ++it) {
+	for (const auto &pp : result) {
 		// Kill the sign extend bits
-		**it = ((Ternary *)(**it))->getSubExp3();
+		*pp = ((Ternary *)(*pp))->getSubExp3();
 	}
 	return res;
 }
@@ -3349,15 +3348,15 @@ Exp::removeSubscripts(bool &allZero)
 	LocationSet locs;
 	e->addUsedLocs(locs);
 	allZero = true;
-	for (auto xx = locs.begin(); xx != locs.end(); ++xx) {
-		if ((*xx)->isSubscript()) {
-			RefExp *r1 = (RefExp *)*xx;
+	for (const auto &xx : locs) {
+		if (xx->isSubscript()) {
+			auto r1 = (RefExp *)xx;
 			Statement *def = r1->getDef();
 			if (!(!def || def->getNumber() == 0)) {
 				allZero = false;
 			}
 			bool change;
-			e = e->searchReplaceAll(*xx, r1->getSubExp1()/*->clone()*/, change);
+			e = e->searchReplaceAll(xx, r1->getSubExp1()/*->clone()*/, change);
 		}
 	}
 	return e;

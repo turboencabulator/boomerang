@@ -38,10 +38,9 @@ DataFlow::DFS(int p, int n)
 		dfnum[n] = N; vertex[N] = n; parent[n] = p;
 		++N;
 		// For each successor w of n
-		BasicBlock *bb = BBs[n];
-		std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-		for (auto oo = outEdges.begin(); oo != outEdges.end(); ++oo) {
-			DFS(n, indices[*oo]);
+		const auto &outEdges = BBs[n]->getOutEdges();
+		for (const auto &edge : outEdges) {
+			DFS(n, indices[edge]);
 		}
 	}
 }
@@ -70,8 +69,7 @@ DataFlow::dominators(Cfg *cfg)
 	// Set up the BBs and indices vectors. Do this here because sometimes a BB can be unreachable (so relying on
 	// in-edges doesn't work)
 	int idx = 1;
-	for (auto ii = cfg->begin(); ii != cfg->end(); ++ii) {
-		BasicBlock *bb = *ii;
+	for (const auto &bb : *cfg) {
 		if (bb != r) {  // Entry BB r already done
 			indices[bb] = idx;
 			BBs[idx++] = bb;
@@ -83,14 +81,13 @@ DataFlow::dominators(Cfg *cfg)
 		int n = vertex[i]; int p = parent[n]; int s = p;
 		/* These lines calculate the semi-dominator of n, based on the Semidominator Theorem */
 		// for each predecessor v of n
-		BasicBlock *bb = BBs[n];
-		std::vector<BasicBlock *> &inEdges = bb->getInEdges();
-		for (auto it = inEdges.begin(); it != inEdges.end(); ++it) {
-			if (!indices.count(*it)) {
-				std::cerr << "BB not in indices: "; (*it)->print(std::cerr);
+		const auto &inEdges = BBs[n]->getInEdges();
+		for (const auto &edge : inEdges) {
+			if (!indices.count(edge)) {
+				std::cerr << "BB not in indices: "; edge->print(std::cerr);
 				assert(false);
 			}
-			int v = indices[*it];
+			int v = indices[edge];
 			int sdash;
 			if (dfnum[v] <= dfnum[n])
 				sdash = v;
@@ -103,8 +100,7 @@ DataFlow::dominators(Cfg *cfg)
 		bucket[s].insert(n);
 		Link(p, n);
 		// for each v in bucket[p]
-		for (auto jj = bucket[p].begin(); jj != bucket[p].end(); ++jj) {
-			int v = *jj;
+		for (const auto &v : bucket[p]) {
 			/* Now that the path from p to v has been linked into the spanning forest, these lines calculate the
 				dominator of v, based on the first clause of the Dominator Theorem, or else defer the calculation until
 				y's dominator is known. */
@@ -163,12 +159,10 @@ void
 DataFlow::computeDF(int n)
 {
 	std::set<int> S;
-	/* THis loop computes DF_local[n] */
-	// for each node y in succ(n)
-	BasicBlock *bb = BBs[n];
-	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-	for (auto it = outEdges.begin(); it != outEdges.end(); ++it) {
-		int y = indices[*it];
+	/* This loop computes DF_local[n] */
+	const auto &outEdges = BBs[n]->getOutEdges();
+	for (const auto &edge : outEdges) {
+		int y = indices[edge];
 		if (idom[y] != n)
 			S.insert(y);
 	}
@@ -179,10 +173,8 @@ DataFlow::computeDF(int n)
 		if (idom[c] != n) continue;
 		computeDF(c);
 		/* This loop computes DF_up[c] */
-		// for each element w of DF[c]
-		std::set<int> &s = DF[c];
-		for (auto ww = s.begin(); ww != s.end(); ++ww) {
-			int w = *ww;
+		const auto &s = DF[c];
+		for (const auto &w : s) {
 			// if n does not dominate w, or if n = w
 			if (n == w || !doesDominate(n, w)) {
 				S.insert(w);
@@ -252,10 +244,10 @@ DataFlow::placePhiFunctions(UserProc *proc)
 			s->getDefinitions(ls);
 			if (s->isCall() && ((CallStatement *)s)->isChildless())  // If this is a childless call
 				defallsites.insert(n);  // then this block defines every variable
-			for (auto it = ls.begin(); it != ls.end(); ++it) {
-				if (canRename(*it, proc)) {
-					A_orig[n].insert((*it)->clone());
-					defStmts[*it] = s;
+			for (const auto &loc : ls) {
+				if (canRename(loc, proc)) {
+					A_orig[n].insert(loc->clone());
+					defStmts[loc] = s;
 				}
 			}
 		}
@@ -263,32 +255,28 @@ DataFlow::placePhiFunctions(UserProc *proc)
 
 	// For each node n
 	for (n = 0; n < numBB; ++n) {
-		// For each variable a in A_orig[n]
-		std::set<Exp *, lessExpStar> &s = A_orig[n];
-		for (auto aa = s.begin(); aa != s.end(); ++aa) {
-			Exp *a = *aa;
+		const auto &s = A_orig[n];
+		for (const auto &a : s) {
 			defsites[a].insert(n);
 		}
 	}
 
 	// For each variable a (in defsites, i.e. defined anywhere)
-	for (auto mm = defsites.begin(); mm != defsites.end(); ++mm) {
-		Exp *a = mm->first;  // *mm is pair<Exp *, set<int>>
+	for (auto &defsite : defsites) {
+		Exp *a = defsite.first;
 
 		// Special processing for define-alls
-		defsites[a].insert(defallsites.begin(), defallsites.end());
+		defsite.second.insert(defallsites.begin(), defallsites.end());
 
-		// W <- defsites[a];
-		std::set<int> W = defsites[a];  // set copy
+		// W <- defsite.second;
+		std::set<int> W = defsite.second;  // set copy
 		// While W not empty
 		while (!W.empty()) {
 			// Remove some node n from W
 			int n = *W.begin();  // Copy first element
 			W.erase(W.begin());  // Remove first element
-			// for each y in DF[n]
-			std::set<int> &DFn = DF[n];
-			for (auto yy = DFn.begin(); yy != DFn.end(); ++yy) {
-				int y = *yy;
+			const auto &DFn = DF[n];
+			for (const auto &y : DFn) {
 				// if y not element of A_phi[a]
 				std::set<int> &s = A_phi[a];
 				if (!s.count(y)) {
@@ -356,16 +344,14 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 					phiLeft->getSubExp1()->addUsedLocs(locs);
 				// A phi statement may use a location defined in a childless call, in which case its use collector
 				// needs updating
-				for (auto pp = pa->begin(); pp != pa->end(); ++pp) {
-					Statement *def = pp->def;
-					if (def && def->isCall())
-						((CallStatement *)def)->useBeforeDefine(phiLeft->clone());
+				for (const auto &pp : *pa) {
+					if (pp.def && pp.def->isCall())
+						((CallStatement *)pp.def)->useBeforeDefine(phiLeft->clone());
 				}
 			} else {  // Not a phi assignment
 				S->addUsedLocs(locs);
 			}
-			for (auto xx = locs.begin(); xx != locs.end(); ++xx) {
-				Exp *x = *xx;
+			for (const auto &x : locs) {
 				// Don't rename memOfs that are not renamable according to the current policy
 				if (!canRename(x, proc)) continue;
 				Statement *def = nullptr;
@@ -427,8 +413,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// For each definition of some variable a in S
 		LocationSet defs;
 		S->getDefinitions(defs);
-		for (auto dd = defs.begin(); dd != defs.end(); ++dd) {
-			Exp *a = *dd;
+		for (const auto &a : defs) {
 			// Don't consider a if it cannot be renamed
 			bool suitable = canRename(a, proc);
 			if (suitable) {
@@ -443,10 +428,9 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 			if (a->isLocal()) {
 				Exp *a1 = S->getProc()->expFromSymbol(((Const *)a->getSubExp1())->getStr());
 				assert(a1);
-				a = a1;
 				// Stacks already has a definition for a (as just the bare local)
 				if (suitable) {
-					Stacks[a->clone()].push(S);
+					Stacks[a1->clone()].push(S);
 				}
 			}
 		}
@@ -455,18 +439,16 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		if (S->isCall() && ((CallStatement *)S)->isChildless() && !Boomerang::get()->assumeABI) {
 			// S is a childless call (and we're not assuming ABI compliance)
 			Stacks[defineAll];  // Ensure that there is an entry for defineAll
-			for (auto dd = Stacks.begin(); dd != Stacks.end(); ++dd) {
-				//if (dd->first->isMemDepth(memDepth))
-					dd->second.push(S);  // Add a definition for all vars
+			for (auto &stack : Stacks) {
+				//if (dd.first->isMemDepth(memDepth))
+					stack.second.push(S);  // Add a definition for all vars
 			}
 		}
 	}
 
 	// For each successor Y of block n
-	std::vector<BasicBlock *> &outEdges = bb->getOutEdges();
-	unsigned numSucc = outEdges.size();
-	for (unsigned succ = 0; succ < numSucc; ++succ) {
-		BasicBlock *Ybb = outEdges[succ];
+	const auto &outEdges = bb->getOutEdges();
+	for (const auto &Ybb : outEdges) {
 		// Suppose n is the jth predecessor of Y
 		int j = Ybb->whichPred(bb);
 		// For each phi-function in Y
@@ -506,12 +488,12 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		// For each definition of some variable a in S
 		LocationSet defs;
 		S->getDefinitions(defs);
-		for (auto dd = defs.begin(); dd != defs.end(); ++dd) {
-			if (canRename(*dd, proc)) {
-				// if ((*dd)->getMemDepth() == memDepth)
-				auto ss = Stacks.find(*dd);
+		for (const auto &def : defs) {
+			if (canRename(def, proc)) {
+				// if (def->getMemDepth() == memDepth)
+				auto ss = Stacks.find(def);
 				if (ss == Stacks.end()) {
-					std::cerr << "Tried to pop " << *dd << " from Stacks; does not exist\n";
+					std::cerr << "Tried to pop " << def << " from Stacks; does not exist\n";
 					assert(0);
 				}
 				ss->second.pop();
@@ -519,9 +501,9 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		}
 		// Pop all defs due to childless calls
 		if (S->isCall() && ((CallStatement *)S)->isChildless()) {
-			for (auto sss = Stacks.begin(); sss != Stacks.end(); ++sss) {
-				if (!sss->second.empty() && sss->second.top() == S) {
-					sss->second.pop();
+			for (auto &stack : Stacks) {
+				if (!stack.second.empty() && stack.second.top() == S) {
+					stack.second.pop();
 				}
 			}
 		}
@@ -532,12 +514,12 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 void
 DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &Stacks, UserProc *proc)
 {
-	for (auto it = Stacks.begin(); it != Stacks.end(); ++it) {
-		if (it->second.empty())
+	for (const auto &stack : Stacks) {
+		if (stack.second.empty())
 			continue;  // This variable's definition doesn't reach here
 		// Create an assignment of the form loc := loc{def}
-		auto re = new RefExp(it->first->clone(), it->second.top());
-		auto as = new Assign(it->first->clone(), re);
+		auto re = new RefExp(stack.first->clone(), stack.second.top());
+		auto as = new Assign(stack.first->clone(), re);
 		as->setProc(proc);  // Simplify sometimes needs this
 		insert(as);
 	}
@@ -548,10 +530,10 @@ DefCollector::updateDefs(std::map<Exp *, std::stack<Statement *>, lessExpStar> &
 Exp *
 DefCollector::findDefFor(Exp *e) const
 {
-	for (auto it = defs.begin(); it != defs.end(); ++it) {
-		Exp *lhs = (*it)->getLeft();
+	for (const auto &def : defs) {
+		Exp *lhs = def->getLeft();
 		if (*lhs == *e)
-			return (*it)->getRight();
+			return def->getRight();
 	}
 	return nullptr;  // Not explicitly defined here
 }
@@ -560,12 +542,12 @@ void
 UseCollector::print(std::ostream &os, bool html) const
 {
 	bool first = true;
-	for (auto it = locs.begin(); it != locs.end(); ++it) {
+	for (const auto &loc : locs) {
 		if (first)
 			first = false;
 		else
 			os << ",  ";
-		(*it)->print(os, html);
+		loc->print(os, html);
 	}
 }
 
@@ -575,11 +557,11 @@ DefCollector::print(std::ostream &os, bool html) const
 {
 	unsigned col = 36;
 	bool first = true;
-	for (auto it = defs.begin(); it != defs.end(); ++it) {
+	for (const auto &def : defs) {
 		std::ostringstream ost;
-		(*it)->getLeft()->print(ost, html);
+		def->getLeft()->print(ost, html);
 		ost << "=";
-		(*it)->getRight()->print(ost, html);
+		def->getRight()->print(ost, html);
 		unsigned len = ost.str().length();
 		if (first)
 			first = false;
@@ -617,8 +599,8 @@ UseCollector::makeCloneOf(const UseCollector &other)
 {
 	initialised = other.initialised;
 	locs.clear();
-	for (auto it = other.begin(); it != other.end(); ++it)
-		locs.insert((*it)->clone());
+	for (const auto &o : other)
+		locs.insert(o->clone());
 }
 
 void
@@ -626,15 +608,15 @@ DefCollector::makeCloneOf(const DefCollector &other)
 {
 	initialised = other.initialised;
 	defs.clear();
-	for (auto it = other.begin(); it != other.end(); ++it)
-		defs.insert((Assign *)(*it)->clone());
+	for (const auto &o : other)
+		defs.insert((Assign *)o->clone());
 }
 
 void
 DefCollector::searchReplaceAll(Exp *from, Exp *to, bool &change)
 {
-	for (auto it = defs.begin(); it != defs.end(); ++it)
-		(*it)->searchAndReplace(from, to);
+	for (const auto &def : defs)
+		def->searchAndReplace(from, to);
 }
 
 // Called from CallStatement::fromSSAform. The UserProc is needed for the symbol map
@@ -643,13 +625,13 @@ UseCollector::fromSSAform(UserProc *proc, Statement *def)
 {
 	LocationSet removes, inserts;
 	ExpSsaXformer esx(proc);
-	for (auto it = locs.begin(); it != locs.end(); ++it) {
-		auto ref = new RefExp(*it, def);  // Wrap it in a def
+	for (const auto &loc : locs) {
+		auto ref = new RefExp(loc, def);  // Wrap it in a def
 		Exp *ret = ref->accept(&esx);
-		// If there is no change, ret will equal *it again (i.e. fromSSAform just removed the subscript)
-		if (ret != *it) {  // Pointer comparison
-			// There was a change; we want to replace *it with ret
-			removes.insert(*it);
+		// If there is no change, ret will equal loc again (i.e. fromSSAform just removed the subscript)
+		if (ret != loc) {  // Pointer comparison
+			// There was a change; we want to replace loc with ret
+			removes.insert(loc);
 			inserts.insert(ret);
 		}
 	}
@@ -682,27 +664,26 @@ DataFlow::convertImplicits(Cfg *cfg)
 	ImplicitConverter ic(cfg);
 	auto A_phi_copy = std::map<Exp *, std::set<int>, lessExpStar>();
 	A_phi_copy.swap(A_phi);
-	for (auto it = A_phi_copy.begin(); it != A_phi_copy.end(); ++it) {
-		Exp *e = it->first->clone();
+	for (const auto &dd : A_phi_copy) {
+		Exp *e = dd.first->clone();
 		e = e->accept(&ic);
-		A_phi[e] = it->second;  // Copy the set (doesn't have to be deep)
+		A_phi[e] = dd.second;  // Copy the set (doesn't have to be deep)
 	}
 
 	auto defsites_copy = std::map<Exp *, std::set<int>, lessExpStar>();
 	defsites_copy.swap(defsites);
-	for (auto dd = A_phi_copy.begin(); dd != A_phi_copy.end(); ++dd) {
-		Exp *e = dd->first->clone();
+	for (const auto &dd : A_phi_copy) {
+		Exp *e = dd.first->clone();
 		e = e->accept(&ic);
-		defsites[e] = dd->second;  // Copy the set (doesn't have to be deep)
+		defsites[e] = dd.second;  // Copy the set (doesn't have to be deep)
 	}
 
 	std::vector<std::set<Exp *, lessExpStar> > A_orig_copy;
 	A_orig.clear();
-	for (auto oo = A_orig_copy.begin(); oo != A_orig_copy.end(); ++oo) {
-		std::set<Exp *, lessExpStar> &se = *oo;
+	for (const auto &se : A_orig_copy) {
 		std::set<Exp *, lessExpStar> se_new;
-		for (auto ee = se.begin(); ee != se.end(); ++ee) {
-			Exp *e = (*ee)->clone();
+		for (const auto &ee : se) {
+			Exp *e = ee->clone();
 			e = e->accept(&ic);
 			se_new.insert(e);
 		}
@@ -736,10 +717,9 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 		if (S->isPhi()) {
 			// For each phi parameter, insert an entry into usedByDomPhi0
 			PhiAssign *pa = (PhiAssign *)S;
-			for (auto it = pa->begin(); it != pa->end(); ++it) {
-				if (it->e) {
-					auto re = new RefExp(it->e, it->def);
-					usedByDomPhi0.insert(re);
+			for (const auto &pp : *pa) {
+				if (pp.e) {
+					usedByDomPhi0.insert(new RefExp(pp.e, pp.def));
 				}
 			}
 			// Insert an entry into the defdByPhi map
@@ -750,15 +730,15 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 		LocationSet ls;
 		S->addUsedLocs(ls);
 		// Consider uses of this statement
-		for (auto it = ls.begin(); it != ls.end(); ++it) {
+		for (const auto &loc : ls) {
 			// Remove this entry from the map, since it is not unused
-			defdByPhi.erase(*it);
+			defdByPhi.erase(loc);
 		}
 		// Now process any definitions
 		ls.clear();
 		S->getDefinitions(ls);
-		for (auto it = ls.begin(); it != ls.end(); ++it) {
-			auto wrappedDef = new RefExp(*it, S);
+		for (const auto &loc : ls) {
+			auto wrappedDef = new RefExp(loc, S);
 			// If this definition is in the usedByDomPhi0 set, then it is in fact dominated by a phi use, so move it to
 			// the final usedByDomPhi set
 			if (usedByDomPhi0.exists(wrappedDef)) {

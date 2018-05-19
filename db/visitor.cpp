@@ -119,8 +119,8 @@ StmtConscriptSetter::visit(CallStatement *stmt)
 {
 	SetConscripts sc(curConscript, bClear);
 	StatementList &args = stmt->getArguments();
-	for (auto ss = args.begin(); ss != args.end(); ++ss)
-		(*ss)->accept(this);
+	for (const auto &arg : args)
+		arg->accept(this);
 	curConscript = sc.getLast();
 	return true;
 }
@@ -141,8 +141,8 @@ bool
 StmtConscriptSetter::visit(ReturnStatement *stmt)
 {
 	SetConscripts sc(curConscript, bClear);
-	for (auto rr = stmt->begin(); rr != stmt->end(); ++rr)
-		(*rr)->accept(this);
+	for (const auto &rr : *stmt)
+		rr->accept(this);
 	curConscript = sc.getLast();
 	return true;
 }
@@ -458,13 +458,13 @@ UsedLocsVisitor::visit(PhiAssign *s, bool &override)
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
 		subExp2->accept(ev);
 	}
-	for (auto uu = s->begin(); uu != s->end(); ++uu) {
+	for (const auto &uu : *s) {
 		// Note: don't make the RefExp based on lhs, since it is possible that the lhs was renamed in fromSSA()
 		// Use the actual expression in the PhiAssign
-		// Also note that it's possible for uu->e to be nullptr. Suppose variable a can be assigned to along in-edges
+		// Also note that it's possible for uu.e to be nullptr. Suppose variable a can be assigned to along in-edges
 		// 0, 1, and 3; inserting the phi parameter at index 3 will cause a null entry at 2
-		if (uu->e) {
-			auto temp = new RefExp(uu->e, uu->def);
+		if (uu.e) {
+			auto temp = new RefExp(uu.e, uu.def);
 			temp->accept(ev);
 		}
 	}
@@ -502,14 +502,14 @@ UsedLocsVisitor::visit(CallStatement *s, bool &override)
 	if (pDest)
 		pDest->accept(ev);
 	StatementList &arguments = s->getArguments();
-	for (auto it = arguments.begin(); it != arguments.end(); ++it) {
+	for (const auto &arg : arguments) {
 		// Don't want to ever collect anything from the lhs
-		((Assign *)*it)->getRight()->accept(ev);
+		((Assign *)arg)->getRight()->accept(ev);
 	}
 	if (countCol) {
 		DefCollector *col = s->getDefCollector();
-		for (auto dd = col->begin(); dd != col->end(); ++dd)
-			(*dd)->accept(this);
+		for (const auto &dd : *col)
+			dd->accept(this);
 	}
 	override = true;  // Don't do the normal accept logic
 	return true;      // Continue the recursion
@@ -519,14 +519,14 @@ bool
 UsedLocsVisitor::visit(ReturnStatement *s, bool &override)
 {
 	// For the final pass, only consider the first return
-	for (auto rr = s->begin(); rr != s->end(); ++rr)
-		(*rr)->accept(this);
+	for (const auto &rr : *s)
+		rr->accept(this);
 	// Also consider the reaching definitions to be uses, so when they are the only non-empty component of this
 	// ReturnStatement, they can get propagated to.
 	if (countCol) {  // But we need to ignore these "uses" unless propagating
 		DefCollector *col = s->getCollector();
-		for (auto dd = col->begin(); dd != col->end(); ++dd)
-			(*dd)->accept(this);
+		for (const auto &dd : *col)
+			dd->accept(this);
 	}
 
 	// Insert a phantom use of "everything" here, so that we can find out if any childless calls define something that
@@ -654,8 +654,8 @@ StmtSubscripter::visit(CallStatement *s, bool &recur)
 		s->setDest(pDest->accept(mod));
 	// Subscript the ordinary arguments
 	StatementList &arguments = s->getArguments();
-	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
-		(*ss)->accept(this);
+	for (const auto &arg : arguments)
+		arg->accept(this);
 	// Returns are like the LHS of an assignment; don't subscript them directly (only if m[x], and then only subscript
 	// the x's)
 	recur = false;  // Don't do the usual accept logic
@@ -717,10 +717,10 @@ StmtImplicitConverter::visit(PhiAssign *s, bool &recur)
 {
 	// The LHS could be a m[x] where x has a null subscript; must do first
 	s->setLeft(s->getLeft()->accept(mod));
-	for (auto uu = s->begin(); uu != s->end(); ++uu) {
-		if (!uu->e) continue;
-		if (!uu->def)
-			uu->def = cfg->findImplicitAssign(uu->e);
+	for (auto &uu : *s) {
+		if (!uu.e) continue;
+		if (!uu.def)
+			uu.def = cfg->findImplicitAssign(uu.e);
 	}
 	recur = false;  // Already done LHS
 }
@@ -1197,12 +1197,12 @@ StmtSsaXformer::visit(PhiAssign *s, bool &recur)
 {
 	commonLhs(s);
 	UserProc *proc = ((ExpSsaXformer *)mod)->getProc();
-	for (auto it = s->begin(); it != s->end(); ++it) {
-		if (!it->e) continue;
-		auto r = new RefExp(it->e, it->def);
+	for (auto &uu : *s) {
+		if (!uu.e) continue;
+		auto r = new RefExp(uu.e, uu.def);
 		const char *sym = proc->lookupSymFromRefAny(r);
 		if (sym)
-			it->e = Location::local(sym, proc);  // Some may be parameters, but hopefully it won't matter
+			uu.e = Location::local(sym, proc);  // Some may be parameters, but hopefully it won't matter
 	}
 }
 
@@ -1215,14 +1215,14 @@ StmtSsaXformer::visit(CallStatement *s, bool &recur)
 		s->setDest(pDest);
 	}
 	StatementList &arguments = s->getArguments();
-	for (auto ss = arguments.begin(); ss != arguments.end(); ++ss)
-		(*ss)->accept(this);
+	for (const auto &arg : arguments)
+		arg->accept(this);
 	// Note that defines have statements (assignments) within a statement (this call). The fromSSA logic, which needs
 	// to subscript definitions on the left with the statement pointer, won't work if we just call the assignment's
 	// fromSSA() function
 	StatementList &defines = s->getDefines();
-	for (auto ss = defines.begin(); ss != defines.end(); ++ss) {
-		Assignment *as = ((Assignment *)*ss);
+	for (const auto &def : defines) {
+		auto as = (Assignment *)def;
 		// FIXME: use of fromSSAleft is deprecated
 		Exp *e = as->getLeft()->fromSSAleft(((ExpSsaXformer *)mod)->getProc(), s);
 		// FIXME: this looks like a HACK that can go:

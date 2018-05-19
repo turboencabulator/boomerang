@@ -258,8 +258,8 @@ cloneVec(const std::vector<Parameter *> &from, std::vector<Parameter *> &to)
 {
 	to.clear();
 	to.reserve(from.size());
-	for (auto it = from.begin(); it != from.end(); ++it)
-		to.push_back((*it)->clone());
+	for (const auto &param : from)
+		to.push_back(param->clone());
 }
 
 static void
@@ -267,8 +267,8 @@ cloneVec(const std::vector<Return *> &from, std::vector<Return *> &to)
 {
 	to.clear();
 	to.reserve(from.size());
-	for (auto it = from.begin(); it != from.end(); ++it)
-		to.push_back((*it)->clone());
+	for (const auto &ret : from)
+		to.push_back(ret->clone());
 }
 
 Parameter *
@@ -1391,37 +1391,47 @@ Signature::setParamExp(int n, Exp *e)
 int
 Signature::findParam(Exp *e)
 {
-	for (unsigned i = 0; i < params.size(); ++i)
-		if (*params[i]->getExp() == *e)
-			return i;
+	unsigned i = 0;
+	for (const auto &param : params) {
+		if (*param->getExp() == *e)
+			return (int)i;
+		++i;
+	}
 	return -1;
 }
 
 void
 Signature::renameParam(const std::string &oldName, const std::string &newName)
 {
-	for (unsigned i = 0; i < params.size(); ++i)
-		if (params[i]->getName() == oldName) {
-			params[i]->setName(newName);
+	for (const auto &param : params) {
+		if (param->getName() == oldName) {
+			param->setName(newName);
 			break;
 		}
+	}
 }
 
 int
 Signature::findParam(const std::string &nam)
 {
-	for (unsigned i = 0; i < params.size(); ++i)
-		if (params[i]->getName() == nam)
-			return i;
+	unsigned i = 0;
+	for (const auto &param : params) {
+		if (param->getName() == nam)
+			return (int)i;
+		++i;
+	}
 	return -1;
 }
 
 int
 Signature::findReturn(Exp *e)
 {
-	for (unsigned i = 0; i < getNumReturns(); ++i)
-		if (*returns[i]->exp == *e)
+	unsigned i = 0;
+	for (const auto &ret : returns) {
+		if (*ret->exp == *e)
 			return (int)i;
+		++i;
+	}
 	return -1;
 }
 
@@ -1538,22 +1548,25 @@ Signature::print(std::ostream &out, bool html) const
 		out << "*forced* ";
 	if (!returns.empty()) {
 		out << "{ ";
-		unsigned n = 0;
-		for (auto rr = returns.begin(); rr != returns.end(); ++rr, ++n) {
-			out << (*rr)->type->getCtype() << " " << (*rr)->exp;
-			if (n != returns.size() - 1)
-				out << ", ";
+		bool first = true;
+		for (const auto &ret : returns) {
+			if (first)
+				first = false;
 			else
-				out << " ";
+				out << ", ";
+			out << ret->type->getCtype() << " " << ret->exp;
 		}
-		out << "} ";
+		out << " } ";
 	} else
 		out << "void ";
 	out << name << "(";
-	unsigned int i;
-	for (i = 0; i < params.size(); ++i) {
-		out << params[i]->getType()->getCtype() << " " << params[i]->getName() << " " << params[i]->getExp();
-		if (i != params.size() - 1) out << ", ";
+	bool first = true;
+	for (const auto &param : params) {
+		if (first)
+			first = false;
+		else
+			out << ", ";
+		out << param->getType()->getCtype() << " " << param->getName() << " " << param->getExp();
 	}
 	out << ")\n";
 }
@@ -1588,8 +1601,8 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 			bool ok = true;
 			if (checkreach) {
 				bool hasDef = false;
-				for (auto it1 = reachin.begin(); it1 != reachin.end(); ++it1) {
-					Assignment *as = (Assignment *)*it1;
+				for (const auto &ri : reachin) {
+					auto as = (Assignment *)ri;
 					if (as->isAssignment() && *as->getLeft() == *getParamExp(i)) {
 						hasDef = true;
 						break;
@@ -1777,14 +1790,14 @@ Signature::makeMemo(int mId)
 	m->preferedName = preferedName;
 	m->preferedParams = preferedParams;
 
-	for (auto it = params.begin(); it != params.end(); ++it)
-		(*it)->takeMemo(mId);
+	for (const auto &param : params)
+		param->takeMemo(mId);
 #if 0
-	for (auto it = implicitParams.begin(); it != implicitParams.end(); ++it)
-		(*it)->takeMemo(mId);
+	for (const auto &param : implicitParams)
+		param->takeMemo(mId);
 #endif
-	for (auto it = returns.begin(); it != returns.end(); ++it)
-		(*it)->takeMemo(mId);
+	for (const auto &ret : returns)
+		ret->takeMemo(mId);
 	if (rettype)
 		rettype->takeMemo(mId);
 	if (preferedReturn)
@@ -1807,14 +1820,14 @@ Signature::readMemo(Memo *mm, bool dec)
 	preferedName = m->preferedName;
 	preferedParams = m->preferedParams;
 
-	for (auto it = params.begin(); it != params.end(); ++it)
-		(*it)->restoreMemo(m->mId, dec);
+	for (const auto &param : params)
+		param->restoreMemo(m->mId, dec);
 #if 0
-	for (auto it = implicitParams.begin(); it != implicitParams.end(); ++it)
-		(*it)->restoreMemo(m->mId, dec);
+	for (const auto &param : implicitParams)
+		param->restoreMemo(m->mId, dec);
 #endif
-	for (auto it = returns.begin(); it != returns.end(); ++it)
-		(*it)->restoreMemo(m->mId, dec);
+	for (const auto &ret : returns)
+		ret->restoreMemo(m->mId, dec);
 	if (rettype)
 		rettype->restoreMemo(m->mId, dec);
 	if (preferedReturn)
@@ -2091,10 +2104,8 @@ Return::readMemo(Memo *mm, bool dec)
 Type *
 Signature::getTypeFor(Exp *e)
 {
-	int n = returns.size();
-	for (int i = 0; i < n; ++i) {
-		if (*returns[i]->exp == *e)
-			return returns[i]->type;
-	}
+	for (const auto &ret : returns)
+		if (*ret->exp == *e)
+			return ret->type;
 	return nullptr;
 }
