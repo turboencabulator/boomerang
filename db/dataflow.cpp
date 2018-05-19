@@ -672,14 +672,14 @@ DataFlow::convertImplicits(Cfg *cfg)
 
 	auto defsites_copy = std::map<Exp *, std::set<int>, lessExpStar>();
 	defsites_copy.swap(defsites);
-	for (const auto &dd : A_phi_copy) {
+	for (const auto &dd : defsites_copy) {
 		Exp *e = dd.first->clone();
 		e = e->accept(&ic);
 		defsites[e] = dd.second;  // Copy the set (doesn't have to be deep)
 	}
 
-	std::vector<std::set<Exp *, lessExpStar> > A_orig_copy;
-	A_orig.clear();
+	auto A_orig_copy = std::vector<std::set<Exp *, lessExpStar> >();
+	A_orig_copy.swap(A_orig);
 	for (const auto &se : A_orig_copy) {
 		std::set<Exp *, lessExpStar> se_new;
 		for (const auto &ee : se) {
@@ -687,7 +687,7 @@ DataFlow::convertImplicits(Cfg *cfg)
 			e = e->accept(&ic);
 			se_new.insert(e);
 		}
-		A_orig.insert(A_orig.end(), se_new);  // Copy the set (doesn't have to be a deep copy)
+		A_orig.push_back(se_new);  // Copy the set (doesn't have to be a deep copy)
 	}
 }
 
