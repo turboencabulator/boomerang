@@ -20,7 +20,7 @@
 #include <sstream>
 
 Log &
-Log::operator <<(Statement *s)
+Log::operator <<(const Statement *s)
 {
 	std::ostringstream st;
 	s->print(st);
@@ -28,7 +28,7 @@ Log::operator <<(Statement *s)
 }
 
 Log &
-Log::operator <<(Exp *e)
+Log::operator <<(const Exp *e)
 {
 	std::ostringstream st;
 	e->print(st);
@@ -60,7 +60,7 @@ Log::operator <<(const RangeMap &r)
 }
 
 Log &
-Log::operator <<(RTL *r)
+Log::operator <<(const RTL *r)
 {
 	std::ostringstream st;
 	r->print(st);

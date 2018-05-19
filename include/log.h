@@ -28,10 +28,10 @@ public:
 	virtual ~Log() { }
 
 	virtual Log &operator <<(const char *str) = 0;
-	virtual Log &operator <<(Statement *s);
-	virtual Log &operator <<(Exp *e);
+	virtual Log &operator <<(const Statement *s);
+	virtual Log &operator <<(const Exp *e);
 	virtual Log &operator <<(Type *ty);
-	virtual Log &operator <<(RTL *r);
+	virtual Log &operator <<(const RTL *r);
 	virtual Log &operator <<(const Range &r);
 	virtual Log &operator <<(const RangeMap &r);
 	virtual Log &operator <<(int i);

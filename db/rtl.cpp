@@ -399,13 +399,12 @@ RTL::prints() const
  * \returns Copy of os (for concatenation).
  */
 std::ostream &
-operator <<(std::ostream &os, RTL *r)
+operator <<(std::ostream &os, const RTL *r)
 {
-	if (!r) {
+	if (r)
+		r->print(os);
+	else
 		os << "NULL ";
-		return os;
-	}
-	r->print(os);
 	return os;
 }
 
