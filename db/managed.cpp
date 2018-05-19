@@ -498,7 +498,7 @@ StatementList::append(const StatementList &sl)
 }
 
 void
-StatementList::append(StatementSet &ss)
+StatementList::append(const StatementSet &ss)
 {
 	slist.insert(slist.end(), ss.begin(), ss.end());
 }
@@ -621,10 +621,10 @@ StatementList::findOnLeft(Exp *loc) const
 }
 
 void
-LocationSet::diff(LocationSet *o)
+LocationSet::diff(const LocationSet &o)
 {
 	bool printed2not1 = false;
-	for (const auto &oe : o->lset) {
+	for (const auto &oe : o.lset) {
 		if (!lset.count(oe)) {
 			if (!printed2not1) {
 				printed2not1 = true;
@@ -637,7 +637,7 @@ LocationSet::diff(LocationSet *o)
 		std::cerr << "\n";
 	bool printed1not2 = false;
 	for (const auto &e : lset) {
-		if (!o->lset.count(e)) {
+		if (!o.lset.count(e)) {
 			if (!printed1not2) {
 				printed1not2 = true;
 				std::cerr << "In set 1 but not set 2:\n";

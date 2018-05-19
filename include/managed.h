@@ -136,7 +136,7 @@ public:
 
 	void        append(Statement *s) { slist.push_back(s); } // Insert at end
 	void        append(const StatementList &sl);    // Append whole StatementList
-	void        append(StatementSet &sl);           // Append whole StatementSet
+	void        append(const StatementSet &sl);     // Append whole StatementSet
 	bool        remove(Statement *s);               // Removal; rets false if not found
 	void        removeDefOf(Exp *loc);              // Remove definitions of loc
 	// This one is needed where you remove in the middle of a loop
@@ -208,7 +208,7 @@ public:
 
 	friend std::ostream &operator <<(std::ostream &, const LocationSet &);
 	std::string prints() const;                         // Print to string for debugging
-	void        diff(LocationSet *o);                   // Diff 2 location sets to std::cerr
+	void        diff(const LocationSet &o);             // Diff 2 location sets to std::cerr
 	bool        exists(Exp *e) const;                   // Return true if the location exists in the set
 	Exp        *findNS(Exp *e) const;                   // Find location e (no subscripts); nullptr if not found
 	bool        existsImplicit(Exp *e) const;           // Search for location e{-} or e{0} (e has no subscripts)
