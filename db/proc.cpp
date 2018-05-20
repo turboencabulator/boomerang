@@ -944,8 +944,9 @@ UserProc::decompile(ProcList *path, int &indent)
 					LOG << "bb at " << bb->getLowAddr() << " is a CALL but last stmt is not a call: " << call << "\n";
 				}
 				assert(call->isCall());
-				auto c = (UserProc *)call->getDestProc();
-				if (!c || c->isLib()) continue;
+				auto proc = call->getDestProc();
+				if (!proc || proc->isLib()) continue;
+				auto c = (UserProc *)proc;
 				if (c->status == PROC_FINAL) {
 					// Already decompiled, but the return statement still needs to be set for this call
 					call->setCalleeReturn(c->getTheReturnStatement());
@@ -3460,12 +3461,13 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 				Statement *s = r->getDef();
 				if (auto call = dynamic_cast<CallStatement *>(s)) {
 					// See if we can prove something about this register.
-					auto destProc = (UserProc *)call->getDestProc();
+					auto proc = call->getDestProc();
 					Exp *base = r->getSubExp1();
-					if (destProc
-					 && !destProc->isLib()
-					 && ((UserProc *)destProc)->cycleGrp
-					 && ((UserProc *)destProc)->cycleGrp->count(this)) {
+					if (proc
+					 && !proc->isLib()
+					 && ((UserProc *)proc)->cycleGrp
+					 && ((UserProc *)proc)->cycleGrp->count(this)) {
+						auto destProc = (UserProc *)proc;
 						// The destination procedure may not have preservation proved as yet, because it is involved
 						// in our recursion group. Use the conditional preservation logic to determine whether query is
 						// true for this procedure
@@ -3681,11 +3683,9 @@ UserProc::addCallees(std::list<UserProc *> &callees)
 {
 	// SLOW SLOW SLOW
 	// this function is evil now... REALLY evil... hope it doesn't get called too often
-	for (const auto &proc : calleeList) {
-		auto callee = (UserProc *)proc;
-		if (callee->isLib()) continue;
-		addCallee(callee);
-	}
+	for (const auto &proc : calleeList)
+		if (!proc->isLib())
+			addCallee((UserProc *)proc);
 }
 
 void
@@ -4544,8 +4544,9 @@ UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 	for (const auto &bb : *cfg) {
 		auto c = (CallStatement *)bb->getLastStmt();
 		if (!c || !c->isCall()) continue;  // Only interested in calls
-		auto dest = (UserProc *)c->getDestProc();
-		if (!dest || dest->isLib()) continue;  // Only interested in calls to UserProcs
+		auto proc = c->getDestProc();
+		if (!proc || proc->isLib()) continue;  // Only interested in calls to UserProcs
+		auto dest = (UserProc *)proc;
 		if (dest == p) {  // Pointer comparison is OK here
 			// This is a recursive call to p. Check for an argument of the form param{-} FIXME: should be looking for
 			// component
@@ -4602,14 +4603,15 @@ UserProc::isRetNonFakeUsed(CallStatement *c, Exp *retLoc, UserProc *p, ProcSet *
 		if (!stmt->isCall())
 			// This non-call uses the return; return true as it is non-fake used
 			return true;
-		auto dest = (UserProc *)((CallStatement *)stmt)->getDestProc();
-		if (!dest)
+		auto proc = ((CallStatement *)stmt)->getDestProc();
+		auto dest = (UserProc *)proc;
+		if (!proc)
 			// This childless call seems to use the return. Count it as a non-fake use
 			return true;
 		if (dest == p)
 			// This procedure uses the parameter, but it's a recursive call to p, so ignore it
 			continue;
-		if (dest->isLib())
+		if (proc->isLib())
 			// Can't be a recursive call
 			return true;
 		if (!dest->doesRecurseTo(p))
@@ -4639,8 +4641,9 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 		// Special checking for recursive calls
 		if (stmt->isCall()) {
 			auto c = (CallStatement *)stmt;
-			auto dest = (UserProc *)c->getDestProc();
-			if (dest && !dest->isLib() && dest->doesRecurseTo(this)) {
+			auto proc = c->getDestProc();
+			if (proc && !proc->isLib() && ((UserProc *)proc)->doesRecurseTo(this)) {
+				auto dest = (UserProc *)proc;
 				// In the destination expression?
 				LocationSet u;
 				c->getDest()->addUsedLocs(u);
@@ -4891,7 +4894,7 @@ UserProc::updateForUseChange(std::set<UserProc *> &removeRetSet)
 		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
-		auto dest = (UserProc *)c->getDestProc();
+		auto dest = c->getDestProc();
 		// Not interested in unanalysed indirect calls (not sure) or calls to lib procs
 		if (!dest || dest->isLib()) continue;
 		callLiveness[c].makeCloneOf(*c->getUseCollector());

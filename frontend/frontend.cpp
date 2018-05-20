@@ -435,16 +435,17 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 		prog->setNewProc(a);
 		if (VERBOSE)
 			LOG << "starting decode at address " << a << "\n";
-		UserProc *p = (UserProc *)prog->findProc(a);
-		if (!p) {
+		auto proc = prog->findProc(a);
+		if (!proc) {
 			if (VERBOSE)
 				LOG << "no proc found at address " << a << "\n";
 			return;
 		}
-		if (p->isLib()) {
+		if (proc->isLib()) {
 			LOG << "NOT decoding library proc at address 0x" << a << "\n";
 			return;
 		}
+		auto p = (UserProc *)proc;
 		std::ofstream os;
 		processProc(a, p, os);
 		p->setDecoded();
@@ -456,7 +457,7 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 			PROGMAP::const_iterator it;
 			for (Proc *pProc = prog->getFirstProc(it); pProc; pProc = prog->getNextProc(it)) {
 				if (pProc->isLib()) continue;
-				UserProc *p = (UserProc *)pProc;
+				auto p = (UserProc *)pProc;
 				if (p->isDecoded()) continue;
 
 				// undecoded userproc.. decode it
@@ -486,8 +487,9 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 void
 FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
 {
-	UserProc *p = (UserProc *)prog->setNewProc(a);
-	assert(!p->isLib());
+	auto proc = prog->setNewProc(a);
+	assert(!proc->isLib());
+	auto p = (UserProc *)proc;
 	std::ofstream os;
 	if (processProc(p->getNativeAddress(), p, os))
 		p->setDecoded();
