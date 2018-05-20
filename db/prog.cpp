@@ -1013,7 +1013,7 @@ Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta) const
 void
 Prog::decodeEntryPoint(ADDRESS a)
 {
-	Proc *p = (UserProc *)findProc(a);
+	Proc *p = findProc(a);
 	if (!p || (!p->isLib() && !((UserProc *)p)->isDecoded())) {
 		if (a < pBF->getLimitTextLow() || a >= pBF->getLimitTextHigh()) {
 			std::cerr << "attempt to decode entrypoint at address outside text area, addr=" << a << "\n";
@@ -1034,7 +1034,7 @@ Prog::decodeEntryPoint(ADDRESS a)
 void
 Prog::setEntryPoint(ADDRESS a)
 {
-	Proc *p = (UserProc *)findProc(a);
+	Proc *p = findProc(a);
 	if (p && !p->isLib())
 		entryProcs.push_back((UserProc *)p);
 }
@@ -1043,9 +1043,9 @@ void
 Prog::decodeEverythingUndecoded()
 {
 	for (const auto &proc : m_procs) {
+		if (!proc) continue;  // Probably not needed
+		if (proc->isLib()) continue;
 		auto up = (UserProc *)proc;
-		if (!up) continue;  // Probably not needed
-		if (up->isLib()) continue;
 		if (up->isDecoded()) continue;
 		pFE->decode(this, up->getNativeAddress());
 	}
@@ -1075,8 +1075,8 @@ Prog::decompile()
 		while (foundone) {
 			foundone = false;
 			for (const auto &proc : m_procs) {
+				if (proc->isLib()) continue;
 				auto up = (UserProc *)proc;
-				if (up->isLib()) continue;
 				if (up->isDecompiled()) continue;
 				int indent = 0;
 				up->decompile(new ProcList, indent);
@@ -1104,8 +1104,8 @@ Prog::decompile()
 
 		// print XML after removing returns
 		for (const auto &proc : m_procs) {
+			if (proc->isLib()) continue;
 			auto up = (UserProc *)proc;
-			if (up->isLib()) continue;
 			up->printXML();
 		}
 	}
@@ -1183,8 +1183,8 @@ Prog::removeUnusedReturns()
 	// This will be all user procs, except those undecoded (-sf says just trust the given signature)
 	std::set<UserProc *> removeRetSet;
 	for (const auto &proc : m_procs) {
+		if (proc->isLib()) continue;
 		auto up = (UserProc *)proc;
-		if (up->isLib()) continue;
 		if (!up->isDecoded()) continue;  // e.g. use -sf file to just prototype the proc
 		removeRetSet.insert(up);
 	}
@@ -1207,8 +1207,8 @@ void
 Prog::fromSSAform()
 {
 	for (const auto &proc : m_procs) {
+		if (proc->isLib()) continue;
 		auto up = (UserProc *)proc;
-		if (up->isLib()) continue;
 		if (VERBOSE) {
 			LOG << "===== before transformation from SSA form for " << up->getName() << " =====\n";
 			up->printToLog();
@@ -1233,8 +1233,8 @@ Prog::conTypeAnalysis()
 	// FIXME: This needs to be done bottom of the call-tree first, with repeat until no change for cycles
 	// in the call graph
 	for (const auto &proc : m_procs) {
+		if (proc->isLib()) continue;
 		auto up = (UserProc *)proc;
-		if (up->isLib()) continue;
 		if (!up->isDecoded()) continue;
 		up->conTypeAnalysis();
 	}
@@ -1248,8 +1248,8 @@ Prog::globalTypeAnalysis()
 	if (VERBOSE || DEBUG_TA)
 		LOG << "### start global data-flow-based type analysis ###\n";
 	for (const auto &proc : m_procs) {
+		if (proc->isLib()) continue;
 		auto up = (UserProc *)proc;
-		if (up->isLib()) continue;
 		if (!up->isDecoded()) continue;
 		// FIXME: this just does local TA again. Need to meet types for all parameter/arguments, and return/results!
 		// This will require a repeat until no change loop
@@ -1264,8 +1264,8 @@ void
 Prog::rangeAnalysis()
 {
 	for (const auto &proc : m_procs) {
+		if (proc->isLib()) continue;
 		auto up = (UserProc *)proc;
-		if (up->isLib()) continue;
 		if (!up->isDecoded()) continue;
 		up->rangeAnalysis();
 		up->logSuspectMemoryDefs();
