@@ -626,9 +626,9 @@ BasicBlock::getCallDest() const
 	if (m_pRtls->empty())
 		return NO_ADDRESS;
 	const auto &stmts = m_pRtls->back()->getList();
-	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
-		if ((*rit)->getKind() == STMT_CALL)
-			return ((CallStatement *)(*rit))->getFixedDest();
+	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+		if ((*srit)->getKind() == STMT_CALL)
+			return ((CallStatement *)(*srit))->getFixedDest();
 	}
 	return NO_ADDRESS;
 }
@@ -641,9 +641,9 @@ BasicBlock::getCallDestProc() const
 	if (m_pRtls->empty())
 		return nullptr;
 	const auto &stmts = m_pRtls->back()->getList();
-	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
-		if ((*rit)->getKind() == STMT_CALL)
-			return ((CallStatement *)(*rit))->getDestProc();
+	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+		if ((*srit)->getKind() == STMT_CALL)
+			return ((CallStatement *)(*srit))->getDestProc();
 	}
 	return nullptr;
 }
@@ -652,7 +652,7 @@ BasicBlock::getCallDestProc() const
 // Get First/Next Statement in a BB
 //
 Statement *
-BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
+BasicBlock::getFirstStmt(rtlit &rit, stlit &sit)
 {
 	if (m_pRtls) {
 		for (rit = m_pRtls->begin(); rit != m_pRtls->end(); ++rit) {
@@ -666,7 +666,7 @@ BasicBlock::getFirstStmt(rtlit &rit, StatementList::iterator &sit)
 }
 
 Statement *
-BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
+BasicBlock::getNextStmt(rtlit &rit, stlit &sit)
 {
 	if (++sit != (*rit)->getList().end())
 		return *sit;  // End of current RTL not reached, so return next
@@ -680,28 +680,28 @@ BasicBlock::getNextStmt(rtlit &rit, StatementList::iterator &sit)
 }
 
 Statement *
-BasicBlock::getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
+BasicBlock::getPrevStmt(rtlrit &rrit, stlrit &srit)
 {
-	if (++sit != (*rit)->getList().rend())
-		return *sit;  // Beginning of current RTL not reached, so return next
+	if (++srit != (*rrit)->getList().rend())
+		return *srit;  // Beginning of current RTL not reached, so return next
 	// Else, find prev non-empty RTL & return its last statement
 	do {
-		if (++rit == m_pRtls->rend())
+		if (++rrit == m_pRtls->rend())
 			return nullptr;  // End of all RTLs reached, return null Statement
-	} while ((*rit)->getList().empty());  // Ignore all RTLs with no statements
-	sit = (*rit)->getList().rbegin();  // Point to last statement at end of prev RTL
-	return *sit;                       // Return last statement
+	} while ((*rrit)->getList().empty());  // Ignore all RTLs with no statements
+	srit = (*rrit)->getList().rbegin();  // Point to last statement at end of prev RTL
+	return *srit;                       // Return last statement
 }
 
 Statement *
-BasicBlock::getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit)
+BasicBlock::getLastStmt(rtlrit &rrit, stlrit &srit)
 {
 	if (m_pRtls) {
-		for (rit = m_pRtls->rbegin(); rit != m_pRtls->rend(); ++rit) {
-			RTL *rtl = *rit;
-			sit = rtl->getList().rbegin();
-			if (sit != rtl->getList().rend())
-				return *sit;
+		for (rrit = m_pRtls->rbegin(); rrit != m_pRtls->rend(); ++rrit) {
+			RTL *rtl = *rrit;
+			srit = rtl->getList().rbegin();
+			if (srit != rtl->getList().rend())
+				return *srit;
 		}
 	}
 	return nullptr;
@@ -711,16 +711,16 @@ Statement *
 BasicBlock::getFirstStmt()
 {
 	rtlit rit;
-	StatementList::iterator sit;
+	stlit sit;
 	return getFirstStmt(rit, sit);
 }
 
 Statement *
 BasicBlock::getLastStmt()
 {
-	rtlrit rit;
-	StatementList::reverse_iterator sit;
-	return getLastStmt(rit, sit);
+	rtlrit rrit;
+	stlrit srit;
+	return getLastStmt(rrit, srit);
 }
 
 void
@@ -793,9 +793,9 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 	// it should contain a BranchStatement
 	const auto &stmts = m_pRtls->back()->getList();
 	assert(!stmts.empty());
-	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
-		if ((*rit)->getKind() == STMT_BRANCH) {
-			((BranchStatement *)(*rit))->setCondExpr(e);
+	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+		if ((*srit)->getKind() == STMT_BRANCH) {
+			((BranchStatement *)(*srit))->setCondExpr(e);
 			return;
 		}
 	}
@@ -811,9 +811,9 @@ BasicBlock::isJmpZ(BasicBlock *dest) const
 	// it should contain a BranchStatement
 	const auto &stmts = m_pRtls->back()->getList();
 	assert(!stmts.empty());
-	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
-		if ((*rit)->getKind() == STMT_BRANCH) {
-			BRANCH_TYPE jt = ((BranchStatement *)(*rit))->getCond();
+	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+		if ((*srit)->getKind() == STMT_BRANCH) {
+			BRANCH_TYPE jt = ((BranchStatement *)(*srit))->getCond();
 			if (jt == BRANCH_JE) {
 				const auto &trueEdge = m_OutEdges[0];
 				return dest == trueEdge;
@@ -1426,8 +1426,8 @@ BasicBlock::setRevLoopStamps(int &time)
 	revLoopStamps[0] = time;
 
 	// recurse on the unvisited children in reverse order
-	for (auto it = m_OutEdges.rbegin(); it != m_OutEdges.rend(); ++it) {
-		const auto &edge = *it;
+	for (auto rit = m_OutEdges.rbegin(); rit != m_OutEdges.rend(); ++rit) {
+		const auto &edge = *rit;
 		// recurse on this child if it hasn't already been visited
 		if (edge->traversed != DFS_RNUM)
 			edge->setRevLoopStamps(++time);
@@ -1571,9 +1571,7 @@ char *
 BasicBlock::getStmtNumber()
 {
 	static char ret[12];
-	rtlit rit;
-	StatementList::iterator sit;
-	Statement *first = getFirstStmt(rit, sit);
+	Statement *first = getFirstStmt();
 	if (first)
 		sprintf(ret, "%d", first->getNumber());
 	else
@@ -1641,11 +1639,11 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 	checkForOverlap(liveLocs, phiLocs, ig, myProc);
 	// For each RTL in this BB
 	if (m_pRtls)  // this can be nullptr
-		for (auto rit = m_pRtls->crbegin(); rit != m_pRtls->crend(); ++rit) {
-			const auto &stmts = (*rit)->getList();
+		for (auto rrit = m_pRtls->crbegin(); rrit != m_pRtls->crend(); ++rrit) {
+			const auto &stmts = (*rrit)->getList();
 			// For each statement this RTL
-			for (auto sit = stmts.crbegin(); sit != stmts.crend(); ++sit) {
-				Statement *s = *sit;
+			for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+				Statement *s = *srit;
 				LocationSet defs;
 				s->getDefinitions(defs);
 				// The definitions don't have refs yet
@@ -2008,9 +2006,8 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 #define CHECK_REAL_PHI_LOOPS 0
 #if CHECK_REAL_PHI_LOOPS
 	rtlit rit;
-	StatementList::iterator sit;
-	Statement *s = getFirstStmt(rit, sit);
-	for (s = getFirstStmt(rit, sit); s; s = getNextStmt(rit, sit)) {
+	stlit sit;
+	for (Statement *s = getFirstStmt(rit, sit); s; s = getNextStmt(rit, sit)) {
 		if (!s->isPhi()) continue;
 		Statement *originalPhi = s;
 		StatementSet workSet, seenSet;
@@ -2388,8 +2385,8 @@ bool
 BasicBlock::undoComputedBB(Statement *stmt)
 {
 	const auto &stmts = m_pRtls->back()->getList();
-	for (auto rit = stmts.crbegin(); rit != stmts.crend(); ++rit) {
-		if (*rit == stmt) {
+	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+		if (*srit == stmt) {
 			m_nodeType = CALL;
 			LOG << "undoComputedBB for statement " << stmt << "\n";
 			return true;

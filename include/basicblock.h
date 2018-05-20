@@ -19,6 +19,7 @@
 #define BASICBLOCK_H
 
 #include "managed.h"  // For LocationSet etc
+#include "rtl.h"
 #include "types.h"
 
 #include <ostream>
@@ -31,7 +32,6 @@ class BasicBlock;
 class Exp;
 class HLLCode;
 class Proc;
-class RTL;
 class Statement;
 class UserProc;
 
@@ -391,12 +391,14 @@ public:
 	 */
 	typedef std::list<RTL *>::iterator rtlit;
 	typedef std::list<RTL *>::reverse_iterator rtlrit;
-	        Statement  *getFirstStmt(rtlit &rit, StatementList::iterator &sit);
-	        Statement  *getNextStmt(rtlit &rit, StatementList::iterator &sit);
-	        Statement  *getLastStmt(rtlrit &rit, StatementList::reverse_iterator &sit);
+	typedef RTL::iterator stlit;
+	typedef RTL::reverse_iterator stlrit;
+	        Statement  *getFirstStmt(rtlit &rit, stlit &sit);
+	        Statement  *getNextStmt(rtlit &rit, stlit &sit);
+	        Statement  *getLastStmt(rtlrit &rrit, stlrit &srit);
+	        Statement  *getPrevStmt(rtlrit &rrit, stlrit &srit);
 	        Statement  *getFirstStmt(); // for those of us that don't want the iterators
 	        Statement  *getLastStmt(); // for those of us that don't want the iterators
-	        Statement  *getPrevStmt(rtlrit &rit, StatementList::reverse_iterator &sit);
 	        RTL        *getLastRtl() { return m_pRtls->back(); }
 
 	        void        getStatements(StatementList &stmts);

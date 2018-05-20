@@ -725,7 +725,7 @@ UserProc::initStatements()
 {
 	BB_IT it;
 	BasicBlock::rtlit rit;
-	StatementList::iterator sit;
+	BasicBlock::stlit sit;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			s->setProc(this);
@@ -751,7 +751,7 @@ UserProc::numberStatements()
 {
 	BB_IT it;
 	BasicBlock::rtlit rit;
-	StatementList::iterator sit;
+	BasicBlock::stlit sit;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit))
 			if (!s->isImplicit()      // Don't renumber implicits (remain number 0)
@@ -3891,11 +3891,9 @@ UserProc::castConst(int num, Type *ty)
 bool
 UserProc::ellipsisProcessing()
 {
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	bool ch = false;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		ch |= c->ellipsisProcessing(prog);
@@ -4058,10 +4056,8 @@ UserProc::updateArguments()
 	if (VERBOSE)
 		LOG << "### update arguments for " << getName() << " ###\n";
 	Boomerang::get()->alert_decompile_debug_point(this, "before updating arguments");
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->updateArguments();
@@ -4474,11 +4470,9 @@ UserProc::fixCallAndPhiRefs()
 void
 UserProc::markAsNonChildless(ProcSet *cs)
 {
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	BB_IT it;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
-		CallStatement *c = (CallStatement *)bb->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)bb->getLastStmt();
 		if (c && c->isCall() && c->isChildless()) {
 			UserProc *dest = (UserProc *)c->getDestProc();
 			if (cs->count(dest))  // Part of the cycle?
@@ -4605,10 +4599,8 @@ UserProc::isLocalOrParamPattern(Exp *e) const
 bool
 UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 {
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
 		if (!c || !c->isCall()) continue;  // Only interested in calls
 		UserProc *dest = (UserProc *)c->getDestProc();
 		if (!dest || dest->isLib()) continue;  // Only interested in calls to UserProcs
@@ -4955,11 +4947,9 @@ UserProc::updateForUseChange(std::set<UserProc *> &removeRetSet)
 	// Save the old parameters and call liveness
 	StatementList oldParameters(parameters);
 	std::map<CallStatement *, UseCollector> callLiveness;
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	BB_IT it;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
-		CallStatement *c = (CallStatement *)bb->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		UserProc *dest = (UserProc *)c->getDestProc();
@@ -5007,10 +4997,8 @@ UserProc::clearUses()
 	if (VERBOSE)
 		LOG << "### clearing usage for " << getName() << " ###\n";
 	col.clear();
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->clearUseCollector();
@@ -5174,10 +5162,8 @@ void
 UserProc::processDecodedICTs()
 {
 	BB_IT it;
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
-		Statement *last = bb->getLastStmt(rrit, srit);
+		Statement *last = bb->getLastStmt();
 		if (!last) continue;  // e.g. a BB with just a NOP in it
 		if (!last->isHL_ICT()) continue;
 		RTL *rtl = bb->getLastRtl();
@@ -5263,10 +5249,8 @@ UserProc::eliminateDuplicateArgs()
 {
 	if (VERBOSE)
 		LOG << "### eliminate duplicate args for " << getName() << " ###\n";
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->eliminateDuplicateArgs();
@@ -5278,10 +5262,8 @@ UserProc::removeCallLiveness()
 {
 	if (VERBOSE)
 		LOG << "### removing call livenesses for " << getName() << " ###\n";
-	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
 	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt(rrit, srit);
+		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->removeAllLive();

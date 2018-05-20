@@ -237,7 +237,7 @@ DataFlow::placePhiFunctions(UserProc *proc)
 	unsigned n;
 	for (n = 0; n < numBB; ++n) {
 		BasicBlock::rtlit rit;
-		StatementList::iterator sit;
+		BasicBlock::stlit sit;
 		BasicBlock *bb = BBs[n];
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			LocationSet ls;
@@ -329,7 +329,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 
 	// For each statement S in block n
 	BasicBlock::rtlit rit;
-	StatementList::iterator sit;
+	BasicBlock::stlit sit;
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
@@ -483,7 +483,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 	// statments in the BB *backwards*. (It is not important in Appel's algorithm, since he always pushes a definition
 	// for every variable defined on the Stacks).
 	BasicBlock::rtlrit rrit;
-	StatementList::reverse_iterator srit;
+	BasicBlock::stlrit srit;
 	for (S = bb->getLastStmt(rrit, srit); S; S = bb->getPrevStmt(rrit, srit)) {
 		// For each definition of some variable a in S
 		LocationSet defs;
@@ -710,7 +710,7 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 {
 	// For each statement this BB
 	BasicBlock::rtlit rit;
-	StatementList::iterator sit;
+	BasicBlock::stlit sit;
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
@@ -765,7 +765,7 @@ void
 DataFlow::setDominanceNums(int n, int &currNum)
 {
 	BasicBlock::rtlit rit;
-	StatementList::iterator sit;
+	BasicBlock::stlit sit;
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit))
