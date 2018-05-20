@@ -439,32 +439,6 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 }
 
 /*==============================================================================
- * FUNCTION:        Cfg::getFirstBB
- * OVERVIEW:        Get the first BB of this cfg
- * PARAMETERS:      it: set to an value that must be passed to getNextBB
- * RETURNS:         Pointer to the first BB this cfg, or nullptr if none
- *============================================================================*/
-BasicBlock *
-Cfg::getFirstBB(BB_IT &it)
-{
-	if ((it = m_listBB.begin()) == m_listBB.end()) return nullptr;
-	return *it;
-}
-
-/*==============================================================================
- * FUNCTION:        Cfg::getNextBB
- * OVERVIEW:        Get the next BB this cfg. Basically increments the given iterator and returns it
- * PARAMETERS:      iterator from a call to getFirstBB or getNextBB
- * RETURNS:         pointer to the BB, or nullptr if no more
- *============================================================================*/
-BasicBlock *
-Cfg::getNextBB(BB_IT &it)
-{
-	if (++it == m_listBB.end()) return nullptr;
-	return *it;
-}
-
-/*==============================================================================
  * FUNCTION:    Cfg::label
  * OVERVIEW:    Checks whether the given native address is a label (explicit or non explicit) or not. Returns false for
  *              incomplete BBs.  So it returns true iff the address has already been decoded in some BB. If it was not
@@ -1758,7 +1732,7 @@ dumpBB(BasicBlock *bb)
  */
 
 BasicBlock *
-Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, BB_IT &it)
+Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, iterator &it)
 {
 #if 0
 	std::cerr << "splitForBranch before:\n";

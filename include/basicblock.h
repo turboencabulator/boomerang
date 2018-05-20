@@ -117,8 +117,6 @@ enum SBBTYPE {
 	CASE            // case statement (switch)
 };
 
-typedef std::list<BasicBlock *>::iterator BB_IT;
-
 /*==============================================================================
  * BasicBlock class. <more comments>
  *============================================================================*/

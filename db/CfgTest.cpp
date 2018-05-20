@@ -54,10 +54,12 @@ CfgTest::testDominators()
 	df->dominators(cfg);
 
 	// Find BB "5" (as per Appel, Figure 19.5).
-	BB_IT it;
-	BasicBlock *bb = cfg->getFirstBB(it);
-	while (bb && bb->getLowAddr() != FRONTIER_FIVE) {
-		bb = cfg->getNextBB(it);
+	BasicBlock *bb = nullptr;
+	for (const auto &b : *cfg) {
+		if (b->getLowAddr() == FRONTIER_FIVE) {
+			bb = b;
+			break;
+		}
 	}
 	CPPUNIT_ASSERT(bb);
 
@@ -111,10 +113,12 @@ CfgTest::testSemiDominators()
 	df->dominators(cfg);
 
 	// Find BB "L (6)" (as per Appel, Figure 19.8).
-	BB_IT it;
-	BasicBlock *bb = cfg->getFirstBB(it);
-	while (bb && bb->getLowAddr() != SEMI_L) {
-		bb = cfg->getNextBB(it);
+	BasicBlock *bb = nullptr;
+	for (const auto &b : *cfg) {
+		if (b->getLowAddr() == SEMI_L) {
+			bb = b;
+			break;
+		}
 	}
 	CPPUNIT_ASSERT(bb);
 	int nL = df->pbbToNode(bb);

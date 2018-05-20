@@ -238,9 +238,8 @@ FrontSparcTest::testDelaySlot()
 	bool res = pFE->processProc(addr, pProc, dummy, false);
 
 	CPPUNIT_ASSERT(res == 1);
-	Cfg *cfg = pProc->getCFG();
-	BB_IT it;
-	BasicBlock *bb = cfg->getFirstBB(it);
+	Cfg::iterator it = pProc->getCFG()->begin();
+	BasicBlock *bb = *it++;
 	std::string expected("Call BB:\n"
 	                     "in edges: \n"
 	                     "out edges: 10a98 \n"
@@ -281,7 +280,7 @@ FrontSparcTest::testDelaySlot()
 	                     "              Live variables: \n");
 	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
-	bb = cfg->getNextBB(it);
+	bb = *it++;
 	CPPUNIT_ASSERT(bb);
 	expected = std::string("Call BB:\n"
 	                       "in edges: 10a90 \n"
@@ -295,7 +294,7 @@ FrontSparcTest::testDelaySlot()
 	                       "              Live variables: \n");
 	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
-	bb = cfg->getNextBB(it);
+	bb = *it++;
 	CPPUNIT_ASSERT(bb);
 	expected = std::string("Twoway BB:\n"
 	                       "in edges: 10a9c \n"
@@ -310,7 +309,7 @@ FrontSparcTest::testDelaySlot()
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
-	bb = cfg->getNextBB(it);
+	bb = *it++;
 	CPPUNIT_ASSERT(bb);
 	expected = std::string("L1: Twoway BB:\n"
 	                       "in edges: 10ab0 10ac4 \n"
@@ -320,7 +319,7 @@ FrontSparcTest::testDelaySlot()
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
-	bb = cfg->getNextBB(it);
+	bb = *it++;
 	CPPUNIT_ASSERT(bb);
 	expected = std::string("Call BB:\n"
 	                       "in edges: 10ab0 \n"

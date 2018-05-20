@@ -181,24 +181,11 @@ public:
 	void        setLabel(BasicBlock *pBB);
 
 	/*
-	 * Gets a pointer to the first BB this cfg. Also initialises `it' so that calling GetNextBB will return the
-	 * second BB, etc.  Also, *it is the first BB.  Returns 0 if there are no BBs this CFG.
+	 * Allow iteration over the list of BBs.
 	 */
-	BasicBlock *getFirstBB(BB_IT &it);
-
-	/*
-	 * Gets a pointer to the next BB this cfg. `it' must be from a call to GetFirstBB(), or from a subsequent call
-	 * to GetNextBB().  Also, *it is the current BB.  Returns 0 if there are no more BBs this CFG.
-	 */
-	BasicBlock *getNextBB(BB_IT &it);
-
-	/*
-	 * An alternative to the above is to use begin() and end():
-	 */
-	typedef BB_IT iterator;
+	typedef std::list<BasicBlock *>::iterator iterator;
 	iterator    begin() { return m_listBB.begin(); }
 	iterator    end()   { return m_listBB.end(); }
-
 
 	/*
 	 * Checks whether the given native address is a label (explicit or non explicit) or not.  Explicit labels are
@@ -380,7 +367,7 @@ public:
 	 * Split the given BB at the RTL given, and turn it into the BranchStatement given. Sort out all the in and out
 	 * edges.
 	 */
-	BasicBlock *splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, BB_IT &it);
+	BasicBlock *splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, iterator &it);
 
 	/*
 	 * Control flow analysis stuff, lifted from Doug Simon's honours thesis.

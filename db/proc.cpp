@@ -140,8 +140,7 @@ UserProc::isNoReturn() const
 bool
 UserProc::containsAddr(ADDRESS uAddr) const
 {
-	BB_IT it;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
+	for (const auto &bb : *cfg)
 		if (bb->getRTLs() && bb->getLowAddr() <= uAddr && bb->getHiAddr() >= uAddr)
 			return true;
 	return false;
@@ -422,8 +421,7 @@ UserProc::getAST() const
 {
 	int numBBs = 0;
 	auto init = new BlockSyntaxNode();
-	BB_IT it;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (const auto &bb : *cfg) {
 		auto b = new BlockSyntaxNode();
 		b->setBB(bb);
 		init->addStatement(b);
@@ -540,11 +538,13 @@ UserProc::getEntryBB() const
 void
 UserProc::setEntryBB()
 {
-	std::list<BasicBlock *>::iterator bbit;
-	BasicBlock *pBB = cfg->getFirstBB(bbit);  // Get an iterator to the first BB
+	BasicBlock *pBB = nullptr;
 	// Usually, but not always, this will be the first BB, or at least in the first few
-	while (pBB && address != pBB->getLowAddr()) {
-		pBB = cfg->getNextBB(bbit);
+	for (const auto &bb : *cfg) {
+		if (address == bb->getLowAddr()) {
+			pBB = bb;
+			break;
+		}
 	}
 	cfg->setEntryBB(pBB);
 }
@@ -723,10 +723,9 @@ UserProc::printDFG()
 void
 UserProc::initStatements()
 {
-	BB_IT it;
-	BasicBlock::rtlit rit;
-	BasicBlock::stlit sit;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (const auto &bb : *cfg) {
+		BasicBlock::rtlit rit;
+		BasicBlock::stlit sit;
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			s->setProc(this);
 			s->setBB(bb);
@@ -749,10 +748,9 @@ UserProc::initStatements()
 void
 UserProc::numberStatements()
 {
-	BB_IT it;
-	BasicBlock::rtlit rit;
-	BasicBlock::stlit sit;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (const auto &bb : *cfg) {
+		BasicBlock::rtlit rit;
+		BasicBlock::stlit sit;
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit))
 			if (!s->isImplicit()      // Don't renumber implicits (remain number 0)
 			 && s->getNumber() == 0)  // Don't renumber existing (or waste numbers)
@@ -765,13 +763,12 @@ UserProc::numberStatements()
 void
 UserProc::getStatements(StatementList &stmts)
 {
-	BB_IT it;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it))
+	for (const auto &bb : *cfg)
 		bb->getStatements(stmts);
 
-	for (auto it = stmts.begin(); it != stmts.end(); ++it)
-		if (!(*it)->getProc())
-			(*it)->setProc(this);
+	for (const auto &stmt : stmts)
+		if (!stmt->getProc())
+			stmt->setProc(this);
 }
 
 // Remove a statement. This is somewhat inefficient - we have to search the whole BB for the statement.
@@ -848,16 +845,16 @@ UserProc::insertAssignAfter(Statement *s, Exp *left, Exp *right)
 void
 UserProc::insertStatementAfter(Statement *s, Statement *a)
 {
-	for (auto bb = cfg->begin(); bb != cfg->end(); ++bb) {
-		std::list<RTL *> *rtls = (*bb)->getRTLs();
+	for (const auto &bb : *cfg) {
+		std::list<RTL *> *rtls = bb->getRTLs();
 		if (!rtls)
-			continue;  // e.g. *bb is (as yet) invalid
-		for (auto rr = rtls->begin(); rr != rtls->end(); ++rr) {
-			std::list<Statement *> &stmts = (*rr)->getList();
-			for (auto ss = stmts.begin(); ss != stmts.end(); ++ss) {
-				if (*ss == s) {
-					++ss;  // This is the point to insert before
-					stmts.insert(ss, a);
+			continue;  // e.g. bb is (as yet) invalid
+		for (const auto &rtl : *rtls) {
+			auto &stmts = rtl->getList();
+			for (auto it = stmts.begin(); it != stmts.end(); ++it) {
+				if (*it == s) {
+					++it;  // This is the point to insert before
+					stmts.insert(it, a);
 					return;
 				}
 			}
@@ -946,17 +943,16 @@ UserProc::decompile(ProcList *path, int &indent)
 
 	if (!Boomerang::get()->noDecodeChildren) {
 		// Recurse to children first, to perform a depth first search
-		BB_IT it;
 		// Look at each call, to do the DFS
-		for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+		for (const auto &bb : *cfg) {
 			if (bb->getType() == CALL) {
 				// The call Statement will be in the last RTL in this BB
-				CallStatement *call = (CallStatement *)bb->getRTLs()->back()->getHlStmt();
+				auto call = (CallStatement *)bb->getRTLs()->back()->getHlStmt();
 				if (!call->isCall()) {
 					LOG << "bb at " << bb->getLowAddr() << " is a CALL but last stmt is not a call: " << call << "\n";
 				}
 				assert(call->isCall());
-				UserProc *c = (UserProc *)call->getDestProc();
+				auto c = (UserProc *)call->getDestProc();
 				if (!c || c->isLib()) continue;
 				if (c->status == PROC_FINAL) {
 					// Already decompiled, but the return statement still needs to be set for this call
@@ -2029,30 +2025,24 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 void
 UserProc::assignProcsToCalls()
 {
-	std::list<BasicBlock *>::iterator it;
-	BasicBlock *pBB = cfg->getFirstBB(it);
-	while (pBB) {
-		std::list<RTL *> *rtls = pBB->getRTLs();
-		if (!rtls) {
-			pBB = cfg->getNextBB(it);
+	for (const auto &bb : *cfg) {
+		std::list<RTL *> *rtls = bb->getRTLs();
+		if (!rtls)
 			continue;
-		}
-		for (auto it2 = rtls->begin(); it2 != rtls->end(); ++it2) {
-			if (!(*it2)->isCall()) continue;
-			CallStatement *call = (CallStatement *)(*it2)->getList().back();
+		for (const auto &rtl : *rtls) {
+			if (!rtl->isCall()) continue;
+			auto call = (CallStatement *)rtl->getList().back();
 			if (!call->getDestProc() && !call->isComputed()) {
 				Proc *p = prog->findProc(call->getFixedDest());
 				if (!p) {
 					std::cerr << "Cannot find proc for dest " << call->getFixedDest()
-					          << " in call at " << (*it2)->getAddress() << "\n";
+					          << " in call at " << rtl->getAddress() << "\n";
 					assert(p);
 				}
 				call->setDestProc(p);
 			}
 			// call->setSigArguments();  // But BBs not set yet; will get done in initStatements()
 		}
-
-		pBB = cfg->getNextBB(it);
 	}
 }
 
@@ -2063,23 +2053,18 @@ UserProc::assignProcsToCalls()
 void
 UserProc::finalSimplify()
 {
-	std::list<BasicBlock *>::iterator it;
-	BasicBlock *pBB = cfg->getFirstBB(it);
-	while (pBB) {
-		std::list<RTL *> *pRtls = pBB->getRTLs();
-		if (!pRtls) {
-			pBB = cfg->getNextBB(it);
+	for (const auto &bb : *cfg) {
+		std::list<RTL *> *pRtls = bb->getRTLs();
+		if (!pRtls)
 			continue;
-		}
 		for (const auto &rtl : *pRtls) {
-			for (const auto &rt : rtl->getList()) {
-				rt->simplifyAddr();
+			for (const auto &stmt : rtl->getList()) {
+				stmt->simplifyAddr();
 				// Also simplify everything; in particular, stack offsets are
 				// often negative, so we at least canonicalise [esp + -8] to [esp-8]
-				rt->simplify();
+				stmt->simplify();
 			}
 		}
-		pBB = cfg->getNextBB(it);
 	}
 }
 
@@ -3892,8 +3877,8 @@ bool
 UserProc::ellipsisProcessing()
 {
 	bool ch = false;
-	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		ch |= c->ellipsisProcessing(prog);
@@ -4056,8 +4041,8 @@ UserProc::updateArguments()
 	if (VERBOSE)
 		LOG << "### update arguments for " << getName() << " ###\n";
 	Boomerang::get()->alert_decompile_debug_point(this, "before updating arguments");
-	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->updateArguments();
@@ -4470,11 +4455,10 @@ UserProc::fixCallAndPhiRefs()
 void
 UserProc::markAsNonChildless(ProcSet *cs)
 {
-	BB_IT it;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
-		CallStatement *c = (CallStatement *)bb->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		if (c && c->isCall() && c->isChildless()) {
-			UserProc *dest = (UserProc *)c->getDestProc();
+			auto dest = (UserProc *)c->getDestProc();
 			if (cs->count(dest))  // Part of the cycle?
 				// Yes, set the callee return statement (making it non childless)
 				c->setCalleeReturn(dest->getTheReturnStatement());
@@ -4599,10 +4583,10 @@ UserProc::isLocalOrParamPattern(Exp *e) const
 bool
 UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 {
-	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		if (!c || !c->isCall()) continue;  // Only interested in calls
-		UserProc *dest = (UserProc *)c->getDestProc();
+		auto dest = (UserProc *)c->getDestProc();
 		if (!dest || dest->isLib()) continue;  // Only interested in calls to UserProcs
 		if (dest == p) {  // Pointer comparison is OK here
 			// This is a recursive call to p. Check for an argument of the form param{-} FIXME: should be looking for
@@ -4947,12 +4931,11 @@ UserProc::updateForUseChange(std::set<UserProc *> &removeRetSet)
 	// Save the old parameters and call liveness
 	StatementList oldParameters(parameters);
 	std::map<CallStatement *, UseCollector> callLiveness;
-	BB_IT it;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
-		CallStatement *c = (CallStatement *)bb->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
-		UserProc *dest = (UserProc *)c->getDestProc();
+		auto dest = (UserProc *)c->getDestProc();
 		// Not interested in unanalysed indirect calls (not sure) or calls to lib procs
 		if (!dest || dest->isLib()) continue;
 		callLiveness[c].makeCloneOf(*c->getUseCollector());
@@ -4997,8 +4980,8 @@ UserProc::clearUses()
 	if (VERBOSE)
 		LOG << "### clearing usage for " << getName() << " ###\n";
 	col.clear();
-	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->clearUseCollector();
@@ -5161,8 +5144,7 @@ RTL *globalRtl = nullptr;
 void
 UserProc::processDecodedICTs()
 {
-	BB_IT it;
-	for (BasicBlock *bb = cfg->getFirstBB(it); bb; bb = cfg->getNextBB(it)) {
+	for (const auto &bb : *cfg) {
 		Statement *last = bb->getLastStmt();
 		if (!last) continue;  // e.g. a BB with just a NOP in it
 		if (!last->isHL_ICT()) continue;
@@ -5249,8 +5231,8 @@ UserProc::eliminateDuplicateArgs()
 {
 	if (VERBOSE)
 		LOG << "### eliminate duplicate args for " << getName() << " ###\n";
-	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->eliminateDuplicateArgs();
@@ -5262,8 +5244,8 @@ UserProc::removeCallLiveness()
 {
 	if (VERBOSE)
 		LOG << "### removing call livenesses for " << getName() << " ###\n";
-	for (auto it = cfg->begin(); it != cfg->end(); ++it) {
-		CallStatement *c = (CallStatement *)(*it)->getLastStmt();
+	for (const auto &bb : *cfg) {
+		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
 		if (!c || !c->isCall()) continue;
 		c->removeAllLive();

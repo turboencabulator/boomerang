@@ -242,8 +242,7 @@ PentiumFrontEnd::getDefaultReturns()
 void
 PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 {
-	BB_IT it;
-	for (BasicBlock *pBB = pCfg->getFirstBB(it); pBB; pBB = pCfg->getNextBB(it)) {
+	for (const auto &pBB : *pCfg) {
 		Statement *st;
 
 		// Loop through each RTL this BB
@@ -653,7 +652,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 }
 
 static void
-toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, BB_IT &it)
+toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::iterator &it)
 {
 	auto br1 = new BranchStatement;
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
