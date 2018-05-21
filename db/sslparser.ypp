@@ -1161,7 +1161,7 @@ SSLParser::expandTables(InsNameElem &iname, const std::list<std::string> &params
 			}
 		}
 
-		if (Dict.appendToDict(nam, params, *rtl) != 0) {
+		if (!Dict.appendToDict(nam, params, *rtl)) {
 			std::ostringstream o;
 			o << "Pattern " << iname.getinspattern() << " conflicts with an earlier declaration of " << nam;
 			yyerror(o.str().c_str());

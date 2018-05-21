@@ -148,7 +148,7 @@ public:
 	void setParam(const std::list<std::string> &p);
 	void setRTL(const RTL &rtl);
 
-	int appendRTL(const std::list<std::string> &p, const RTL &rtl);
+	bool appendRTL(const std::list<std::string> &, const RTL &);
 
 public:
 	std::list<std::string> params;
@@ -202,7 +202,7 @@ public:
 
 	std::pair<std::string, unsigned> getSignature(const std::string &name) const;
 
-	int appendToDict(const std::string &n, const std::list<std::string> &p, const RTL &rtl);
+	bool appendToDict(const std::string &, const std::list<std::string> &, const RTL &);
 
 	std::list<Statement *> *instantiateRTL(const std::string &name, ADDRESS natPC, const std::vector<Exp *> &actuals);
 	std::list<Statement *> *instantiateRTL(const RTL &rtls, ADDRESS natPC, const std::list<std::string> &params, const std::vector<Exp *> &actuals);

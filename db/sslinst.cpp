@@ -96,18 +96,18 @@ TableEntry::operator =(const TableEntry &other)
  * \param p  Reference to list of formal parameters (as strings).
  * \param r  Reference to RTL with list of Exps to append.
  *
- * \returns 0 for success, non-zero for failure.
+ * \returns true for success, false for failure.
  */
-int
+bool
 TableEntry::appendRTL(const std::list<std::string> &p, const RTL &r)
 {
 	bool match = (p.size() == params.size());
 	for (auto a = params.cbegin(), b = p.cbegin(); match && (a != params.cend()) && (b != p.cend()); match = (*a == *b), ++a, ++b);
 	if (match) {
 		rtl.appendRTL(r);
-		return 0;
+		return true;
 	}
-	return -1;
+	return false;
 }
 
 RTLInstDict::RTLInstDict()
@@ -128,9 +128,9 @@ RTLInstDict::~RTLInstDict()
  * \param p  List of formal parameters (as strings) for the RTL to add.
  * \param r  Reference to the RTL to add.
  *
- * \returns 0 for success, non-zero for failure.
+ * \returns true for success, false for failure.
  */
-int
+bool
 RTLInstDict::appendToDict(const std::string &n, const std::list<std::string> &p, const RTL &r)
 {
 	std::string opcode(n);
@@ -139,10 +139,9 @@ RTLInstDict::appendToDict(const std::string &n, const std::list<std::string> &p,
 
 	if (!idict.count(opcode)) {
 		idict[opcode] = TableEntry(p, r);
-	} else {
-		return idict[opcode].appendRTL(p, r);
+		return true;
 	}
-	return 0;
+	return idict[opcode].appendRTL(p, r);
 }
 
 /**
