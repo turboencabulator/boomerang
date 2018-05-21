@@ -179,16 +179,14 @@ RTL::prependStmt(Statement *s)
  *
  * Append a given list of Statements to this RTL.
  *
- * \note A copy of the Statements in le are appended.
+ * \note Does not make a deep copy of the Statements.
  *
- * \param le  List of Exps to insert.
+ * \param l  List of Statements to insert.
  */
 void
-RTL::appendListStmt(const std::list<Statement *> &le)
+RTL::append(const std::list<Statement *> &l)
 {
-	for (const auto &stmt : le) {
-		stmtList.push_back(stmt->clone());
-	}
+	stmtList.insert(stmtList.end(), l.begin(), l.end());
 }
 
 /**
@@ -196,14 +194,14 @@ RTL::appendListStmt(const std::list<Statement *> &le)
  *
  * Append the Statemens of another RTL to this object.
  *
- * \note A copy of the Statements in r are appended.
+ * \note Does not make a deep copy of the Statements.
  *
- * \param r  Reference to RTL whose Exps we are to insert.
+ * \param r  Reference to RTL whose Statements we are to insert.
  */
 void
-RTL::appendRTL(const RTL &r)
+RTL::append(const RTL &r)
 {
-	appendListStmt(r.stmtList);
+	append(r.stmtList);
 }
 
 /**

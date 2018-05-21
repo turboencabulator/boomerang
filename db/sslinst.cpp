@@ -91,10 +91,10 @@ TableEntry::operator =(const TableEntry &other)
 }
 
 /**
- * \brief Appends an RTL to an exising TableEntry.
+ * \brief Appends Statements in an RTL to an existing TableEntry.
  *
  * \param p  Reference to list of formal parameters (as strings).
- * \param r  Reference to RTL with list of Exps to append.
+ * \param r  Reference to RTL with list of Statements to append.
  *
  * \returns true for success, false for failure.
  */
@@ -104,7 +104,7 @@ TableEntry::appendRTL(const std::list<std::string> &p, const RTL &r)
 	bool match = (p.size() == params.size());
 	for (auto a = params.cbegin(), b = p.cbegin(); match && (a != params.cend()) && (b != p.cend()); match = (*a == *b), ++a, ++b);
 	if (match) {
-		rtl.appendRTL(r);
+		rtl.append(r);
 		return true;
 	}
 	return false;
@@ -121,8 +121,8 @@ RTLInstDict::~RTLInstDict()
 /**
  * \brief Appends one RTL to the dictionary.
  *
- * Appends an RTL to an idict entry, or adds it to idict if an entry does not
- * already exist.
+ * Adds the RTL to idict if an entry does not already exist, otherwise
+ * appends the RTL's Statements to the existing entry.
  *
  * \param n  Name of the instruction to add to.
  * \param p  List of formal parameters (as strings) for the RTL to add.

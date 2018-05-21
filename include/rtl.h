@@ -97,8 +97,8 @@ public:
 	        void        deleteLastStmt();
 	        void        replaceLastStmt(Statement *repl);
 	        void        clear();
-	        void        appendListStmt(const std::list<Statement *> &le);
-	        void        appendRTL(const RTL &rtl);
+	        void        append(const std::list<Statement *> &);
+	        void        append(const RTL &);
 	        void        deepCopyList(std::list<Statement *> &dest) const;
 	/** \} */
 
