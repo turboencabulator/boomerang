@@ -38,8 +38,6 @@ libdb_la_SOURCES = \
 	sslscanner.h \
 	statement.cpp \
 	$(top_srcdir)/include/statement.h \
-	table.cpp \
-	table.h \
 	visitor.cpp \
 	$(top_srcdir)/include/visitor.h \
 	xmlprogparser.cpp \

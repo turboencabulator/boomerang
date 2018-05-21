@@ -15,10 +15,9 @@
 #ifndef INSNAMEELEM_H
 #define INSNAMEELEM_H
 
+#include <deque>
 #include <map>
 #include <string>
-
-class NameTable;
 
 class InsNameElem {
 public:
@@ -51,7 +50,7 @@ public:
 
 class InsListElem : public InsNameElem {
 public:
-	InsListElem(const std::string &name, NameTable *t, const std::string &idx);
+	InsListElem(const std::string &name, const std::deque<std::string> *t, const std::string &idx);
 	int ntokens() const override;
 	std::string getinstruction() const override;
 	std::string getinspattern() const override;
@@ -61,7 +60,7 @@ public:
 
 protected:
 	std::string indexname;
-	NameTable *thetable;
+	const std::deque<std::string> *thetable;
 };
 
 #endif

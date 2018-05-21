@@ -33,7 +33,6 @@
 	#include "operator.h"
 	#include "rtl.h"
 	#include "statement.h"
-	#include "table.h"
 	#include "type.h"
 	#include "types.h"
 
@@ -49,14 +48,13 @@
 	Statement      *regtransfer;
 	Type           *typ;
 
-	Table          *tab;
 	InsNameElem    *insel;
 	std::list<std::string>   *parmlist;
 	std::list<std::string>   *strlist;
-	std::deque<OPER>         *oplist;
-	std::deque<Exp *>        *exprlist;
-	std::deque<std::string>  *namelist;
 	std::list<Exp *>         *explist;
+	std::deque<OPER>         *opdeque;
+	std::deque<Exp *>        *expdeque;
+	std::deque<std::string>  *namedeque;
 	RTL            *rtlist;
 	bool            endianness;
 }
@@ -75,9 +73,9 @@
 	#include <cstdlib>
 	#include <cassert>
 
-	OPER strToTerm(const char *s);                 // Convert string to a Terminal (if possible)
-	Exp *listExpToExp(std::list<Exp *> *le);       // Convert a STL list of Exp* to opList
-	Exp *listStrToExp(std::list<std::string> *ls); // Convert a STL list of strings to opList
+	static OPER strToTerm(const char *s);                       // Convert string to a Terminal (if possible)
+	static Exp *listExpToExp(const std::list<Exp *> &le);       // Convert a STL list of Exp* to opList
+	static Exp *listStrToExp(const std::list<std::string> &ls); // Convert a STL list of strings to opList
 %}
 
 %define DEBUG 1
@@ -89,7 +87,7 @@
 		virtual ~SSLParser(); \
 		static Statement *parseExp(const char *str); /* Parse an expression or assignment from a string */ \
 		/* The code for expanding tables and saving to the dictionary */ \
-		void expandTables(InsNameElem *iname, std::list<std::string> *params, RTL *o_rtlist, RTLInstDict &Dict); \
+		void expandTables(InsNameElem &iname, const std::list<std::string> &params, const RTL &o_rtlist, RTLInstDict &Dict); \
 		Exp *makeSuccessor(Exp *e); /* Get successor (of register expression) */ \
 	\
 		/* \
@@ -106,17 +104,15 @@
 		/* \
 		 * Maps SSL constants to their values. \
 		 */ \
-		std::map<std::string, int> ConstTable; \
+		std::map<std::string, int>                       ConstTable; \
+		std::map<std::string, std::deque<std::string> *> NameTable; \
+		std::map<std::string, std::deque<OPER> *>        OpTable; \
+		std::map<std::string, std::deque<Exp *> *>       ExpTable; \
 	\
 		/* \
 		 * maps index names to instruction name-elements \
 		 */ \
 		std::map<std::string, const InsNameElem *> indexrefmap; \
-	\
-		/* \
-		 * Maps table names to Table's.\
-		 */ \
-		std::map<std::string, Table *> TableDict; \
 	\
 		/* \
 		 * True when FLOAT keyword seen; false when INTEGER keyword seen \
@@ -176,14 +172,13 @@
 %type <regtransfer> rt assign_rt
 %type <typ> assigntype
 %type <num> cast
-%type <tab> table_expr
 %type <insel> name_contract instr_elem instr_name
 %type <strlist> reg_table
 %type <parmlist> list_parameter func_parameter
-%type <namelist> name_expand str_term str_expr str_array
+%type <namedeque> name_expand str_term str_expr str_array
 %type <explist> flag_list
-%type <oplist> opstr_array opstr_expr
-%type <exprlist> exprstr_array exprstr_expr
+%type <opdeque> opstr_array opstr_expr
+%type <expdeque> expstr_array expstr_expr
 %type <explist> list_actualparameter
 %type <rtlist> rt_list
 %type <endianness> esize
@@ -207,7 +202,6 @@ parts
 
 	/* Name := value */
 	| constants
-	| table_assign
 
 	/* Optional one-line section declaring endianness */
 	| endianness
@@ -394,7 +388,7 @@ reg_table
 /* Flag definitions */
 flag_fnc
 	: NAME_CALL list_parameter ')' '{' rt_list '}' {
-		Dict.FlagFuncs[*$1] = new FlagDef(listStrToExp($2), $5);
+		Dict.FlagFuncs[*$1] = new FlagDef(listStrToExp(*$2), $5);
 		delete $1;
 		//delete $2;
 	  }
@@ -419,17 +413,10 @@ constants
 			yyerror("Constant expression must be NUM + NUM or NUM - NUM");
 		delete $1;
 	  }
-	;
 
-
-table_assign
-	: NAME EQUATE table_expr { TableDict[*$1] = $3; delete $1; }
-	;
-
-table_expr
-	: str_expr     { $$ = new NameTable(*$1); delete $1; }
-	| opstr_expr   { $$ = new OpTable(*$1);   delete $1; }
-	| exprstr_expr { $$ = new ExprTable(*$1); delete $1; }
+	| NAME EQUATE str_expr    { NameTable[*$1] = $3; }
+	| NAME EQUATE opstr_expr  { OpTable[*$1]   = $3; }
+	| NAME EQUATE expstr_expr { ExpTable[*$1]  = $3; }
 	;
 
 str_expr
@@ -475,32 +462,24 @@ name_expand
 
 	| '$' NAME {
 		// expand $2 from table of names
-		auto it = TableDict.find(*$2);
-		if (it == TableDict.end()) {
+		auto it = NameTable.find(*$2);
+		if (it == NameTable.end()) {
 			std::ostringstream o;
 			o << "Could not dereference name " << *$2;
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != NAMETABLE) {
-			std::ostringstream o;
-			o << "Name " << *$2 << " is not a NAMETABLE";
-			yyerror(o.str().c_str());
 		} else {
-			$$ = new std::deque<std::string>(((NameTable *)it->second)->records);
+			$$ = new std::deque<std::string>(*it->second);
 		}
 		delete $2;
 	  }
 
 	| NAME {
 		// try and expand $1 from table of names. if fail, expand using '"' NAME '"' rule
-		auto it = TableDict.find(*$1);
-		if (it == TableDict.end()) {
+		auto it = NameTable.find(*$1);
+		if (it == NameTable.end()) {
 			$$ = new std::deque<std::string>(1, *$1);
-		} else if (it->second->getType() != NAMETABLE) {
-			std::ostringstream o;
-			o << "Name " << *$1 << " is not a NAMETABLE";
-			yyerror(o.str().c_str());
 		} else {
-			$$ = new std::deque<std::string>(((NameTable *)it->second)->records);
+			$$ = new std::deque<std::string>(*it->second);
 		}
 		delete $1;
 	  }
@@ -523,20 +502,23 @@ bin_oper
 	;
 
 /* Example: COND1_C := { "~%ZF", "%ZF", "~(%ZF | (%NF ^ %OF))", ... }; */
-exprstr_expr
-	: '{' exprstr_array '}' { $$ = $2; }
+expstr_expr
+	: '{' expstr_array '}' { $$ = $2; }
 	;
 
-exprstr_array
-	: exprstr_array ',' '"' exp '"' { $$ = $1; $$->push_back($4); }
-	| '"' exp '"'            { $$ = new std::deque<Exp *>(1, $2); }
+expstr_array
+	: expstr_array ',' '"' exp '"' { $$ = $1; $$->push_back($4); }
+	| '"' exp '"'           { $$ = new std::deque<Exp *>(1, $2); }
 	;
 
 instr
 	: instr_name { $1->getrefmap(indexrefmap); } list_parameter rt_list {
 		// This function expands the tables and saves the expanded RTLs to the dictionary
-		expandTables($1, $3, $4, Dict);
+		expandTables(*$1, *$3, *$4, Dict);
 		indexrefmap.clear();
+		delete $1;
+		delete $3;
+		delete $4;
 	  }
 	;
 
@@ -564,75 +546,59 @@ name_contract
 	| '"' NAME '"' { $$ = new InsNameElem(*$2); delete $2; }
 
 	| NAME_LOOKUP NUM ']' {
-		auto it = TableDict.find(*$1);
-		if (it == TableDict.end()) {
+		auto it = NameTable.find(*$1);
+		if (it == NameTable.end()) {
 			std::ostringstream o;
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != NAMETABLE) {
-			std::ostringstream o;
-			o << "Name " << *$1 << " is not a NAMETABLE";
-			yyerror(o.str().c_str());
-		} else if (($2 < 0) || ($2 >= (int)((NameTable *)it->second)->records.size())) {
+		} else if (($2 < 0) || ($2 >= (int)it->second->size())) {
 			std::ostringstream o;
 			o << "Can't get element " << $2 << " of table " << *$1;
 			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsNameElem(((NameTable *)it->second)->records[$2]);
+			$$ = new InsNameElem((*it->second)[$2]);
 		}
 		delete $1;
 	  }
 
 	| '$' NAME_LOOKUP NUM ']' {
-		auto it = TableDict.find(*$2);
-		if (it == TableDict.end()) {
+		auto it = NameTable.find(*$2);
+		if (it == NameTable.end()) {
 			std::ostringstream o;
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != NAMETABLE) {
-			std::ostringstream o;
-			o << "Name " << *$2 << " is not a NAMETABLE";
-			yyerror(o.str().c_str());
-		} else if (($3 < 0) || ($3 >= (int)((NameTable *)it->second)->records.size())) {
+		} else if (($3 < 0) || ($3 >= (int)it->second->size())) {
 			std::ostringstream o;
 			o << "Can't get element " << $3 << " of table " << *$2;
 			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsNameElem(((NameTable *)it->second)->records[$3]);
+			$$ = new InsNameElem((*it->second)[$3]);
 		}
 		delete $2;
 	  }
 
 	/* Example: ARITH[IDX]  where ARITH := { "ADD", "SUB", ... }; */
 	| NAME_LOOKUP NAME ']' {
-		auto it = TableDict.find(*$1);
-		if (it == TableDict.end()) {
+		auto it = NameTable.find(*$1);
+		if (it == NameTable.end()) {
 			std::ostringstream o;
 			o << "Table " << *$1 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != NAMETABLE) {
-			std::ostringstream o;
-			o << "Name " << *$1 << " is not a NAMETABLE";
-			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsListElem(*$1, (NameTable *)it->second, *$2);
+			$$ = new InsListElem(*$1, it->second, *$2);
 		}
 		delete $1;
 		delete $2;
 	  }
 
 	| '$' NAME_LOOKUP NAME ']' {
-		auto it = TableDict.find(*$2);
-		if (it == TableDict.end()) {
+		auto it = NameTable.find(*$2);
+		if (it == NameTable.end()) {
 			std::ostringstream o;
 			o << "Table " << *$2 << " has not been declared";
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != NAMETABLE) {
-			std::ostringstream o;
-			o << "Name " << *$2 << " is not a NAMETABLE";
-			yyerror(o.str().c_str());
 		} else {
-			$$ = new InsListElem(*$2, (NameTable *)it->second, *$3);
+			$$ = new InsListElem(*$2, it->second, *$3);
 		}
 		delete $2;
 		delete $3;
@@ -665,7 +631,7 @@ rt
 			OPER op = bFloat ? opFflags : opFlags;
 			$$ = new Assign(new Terminal(op), new Binary(opFlagCall,
 			                                             new Const($1->c_str()),
-			                                             listExpToExp($2)));
+			                                             listExpToExp(*$2)));
 			//delete $1;
 		} else {
 			std::ostringstream o;
@@ -772,22 +738,18 @@ exp_term
 	/* Example: *Use* of COND[idx] */
 	| NAME_LOOKUP NAME ']' {
 		auto ir = indexrefmap.find(*$2);
-		auto it = TableDict.find(*$1);
+		auto it = ExpTable.find(*$1);
 		if (ir == indexrefmap.end()) {
 			std::ostringstream o;
 			o << "Index " << *$2 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (it == TableDict.end()) {
+		} else if (it == ExpTable.end()) {
 			std::ostringstream o;
 			o << "Table " << *$1 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != EXPRTABLE) {
+		} else if ((int)it->second->size() < ir->second->ntokens()) {
 			std::ostringstream o;
-			o << "Table " << *$1 << " is not an expression table but appears to be used as one";
-			yyerror(o.str().c_str());
-		} else if ((int)((ExprTable *)it->second)->expressions.size() < ir->second->ntokens()) {
-			std::ostringstream o;
-			o << "Table " << *$1 << " (" << ((ExprTable *)it->second)->expressions.size()
+			o << "Table " << *$1 << " (" << it->second->size()
 			  << ") is too small to use " << *$2 << " (" << ir->second->ntokens() << ") as an index";
 			yyerror(o.str().c_str());
 		}
@@ -813,7 +775,7 @@ exp_term
 				} else {
 					// Everything checks out. *phew*
 					// Note: the below may not be right! (MVE)
-					$$ = new Binary(opFlagDef, new Const($1->c_str()), listExpToExp($2));
+					$$ = new Binary(opFlagDef, new Const($1->c_str()), listExpToExp(*$2));
 					//delete $1;
 				}
 			} else {
@@ -862,20 +824,16 @@ exp
 	 * Example: OP1[IDX] where OP1 := {  "&",  "|", "^", ... }; */
 	| exp NAME_LOOKUP NAME ']' exp_term %prec LOOKUP_RDC {
 		auto ir = indexrefmap.find(*$3);
-		auto it = TableDict.find(*$2);
+		auto it = OpTable.find(*$2);
 		if (ir == indexrefmap.end()) {
 			std::ostringstream o;
 			o << "Index " << *$3 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (it == TableDict.end()) {
+		} else if (it == OpTable.end()) {
 			std::ostringstream o;
 			o << "Table " << *$2 << " not declared for use";
 			yyerror(o.str().c_str());
-		} else if (it->second->getType() != OPTABLE) {
-			std::ostringstream o;
-			o << "Table " << *$2 << " is not an operator table but appears to be used as one";
-			yyerror(o.str().c_str());
-		} else if ((int)((OpTable *)it->second)->operators.size() < ir->second->ntokens()) {
+		} else if ((int)it->second->size() < ir->second->ntokens()) {
 			std::ostringstream o;
 			o << "Table " << *$2 << " is too small to use with " << *$3 << " as an index";
 			yyerror(o.str().c_str());
@@ -1036,8 +994,15 @@ SSLParser::parseExp(const char *str)
 SSLParser::~SSLParser()
 {
 	delete theScanner;
-	for (const auto &loc : TableDict)
+	for (const auto &loc : NameTable)
 		delete loc.second;
+	for (const auto &loc : OpTable)
+		delete loc.second;
+	for (const auto &loc : ExpTable) {
+		for (const auto &e : *loc.second)
+			delete e;
+		delete loc.second;
+	}
 }
 
 /*==============================================================================
@@ -1064,7 +1029,7 @@ SSLParser::yylex()
 	return token;
 }
 
-OPER
+static OPER
 strToTerm(const char *s)
 {
 	// s could be %pc, %afp, %agp, %CF, %ZF, %OF, %NF, %DF, %flags, %fflags
@@ -1097,11 +1062,11 @@ strToTerm(const char *s)
  * PARAMETERS:      le: the list of expressions
  * RETURNS:         The opList Expression
  *============================================================================*/
-Exp *
-listExpToExp(std::list<Exp *> *le)
+static Exp *
+listExpToExp(const std::list<Exp *> &le)
 {
 	Exp *e = new Terminal(opNil);  // Terminate the chain
-	for (auto it = le->rbegin(); it != le->rend(); ++it)
+	for (auto it = le.crbegin(); it != le.crend(); ++it)
 		e = new Binary(opList, *it, e);
 	return e;
 }
@@ -1113,11 +1078,11 @@ listExpToExp(std::list<Exp *> *le)
  * PARAMETERS:      ls - the list of strings
  * RETURNS:         The opList expression
  *============================================================================*/
-Exp *
-listStrToExp(std::list<std::string> *ls)
+static Exp *
+listStrToExp(const std::list<std::string> &ls)
 {
 	Exp *e = new Terminal(opNil);  // Terminate the chain
-	for (auto it = ls->rbegin(); it != ls->rend(); ++it)
+	for (auto it = ls.crbegin(); it != ls.crend(); ++it)
 		e = new Binary(opList, new Location(opParam, new Const(it->c_str()), nullptr), e);
 	return e;
 }
@@ -1149,15 +1114,15 @@ init_sslparser()
  *                  Dict: Ref to the dictionary that will contain the results of the parse
  *============================================================================*/
 void
-SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL *o_rtlist, RTLInstDict &Dict)
+SSLParser::expandTables(InsNameElem &iname, const std::list<std::string> &params, const RTL &o_rtlist, RTLInstDict &Dict)
 {
-	assert(iname->ninstructions());
-	iname->reset();
+	assert(iname.ninstructions());
+	iname.reset();
 	// Expand the tables (if any) in this instruction
 	do {
-		std::string nam = iname->getinstruction();
+		std::string nam = iname.getinstruction();
 		// Need to make substitutions to a copy of the RTL
-		RTL *rtl = o_rtlist->clone();
+		RTL *rtl = o_rtlist.clone();
 		for (const auto &s : rtl->getList()) {
 			std::list<Exp *> le;
 			// Expression tables
@@ -1166,7 +1131,7 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 				for (const auto &e : le) {
 					const char *tbl = ((Const *)((Binary *)e)->getSubExp1())->getStr();
 					const char *idx = ((Const *)((Binary *)e)->getSubExp2())->getStr();
-					Exp *repl =((ExprTable *)(TableDict[tbl]))->expressions[indexrefmap[idx]->getvalue()];
+					Exp *repl = (*ExpTable[tbl])[indexrefmap[idx]->getvalue()];
 					s->searchAndReplace(e, repl);
 				}
 			}
@@ -1190,18 +1155,18 @@ SSLParser::expandTables(InsNameElem *iname, std::list<std::string> *params, RTL 
 				Exp *e2 = b->getSubExp2();  // This should be an opList too
 				assert(e2->getOper() == opList);
 				e2 = ((Binary *)e2)->getSubExp1();
-				OPER ops = ((OpTable *)(TableDict[tbl]))->operators[indexrefmap[idx]->getvalue()];
+				OPER ops = (*OpTable[tbl])[indexrefmap[idx]->getvalue()];
 				Exp *repl = new Binary(ops, e1->clone(), e2->clone());  // FIXME!
 				s->searchAndReplace(res, repl);
 			}
 		}
 
-		if (Dict.appendToDict(nam, *params, *rtl) != 0) {
+		if (Dict.appendToDict(nam, params, *rtl) != 0) {
 			std::ostringstream o;
-			o << "Pattern " << iname->getinspattern() << " conflicts with an earlier declaration of " << nam;
+			o << "Pattern " << iname.getinspattern() << " conflicts with an earlier declaration of " << nam;
 			yyerror(o.str().c_str());
 		}
-	} while (iname->increment());
+	} while (iname.increment());
 }
 
 /*==============================================================================

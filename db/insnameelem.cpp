@@ -21,8 +21,6 @@
 
 #include "insnameelem.h"
 
-#include "table.h"
-
 InsNameElem::InsNameElem(const std::string &name) :
 	elemname(name)
 {
@@ -30,7 +28,7 @@ InsNameElem::InsNameElem(const std::string &name) :
 
 InsNameElem::~InsNameElem()
 {
-	//delete nextelem;
+	delete nextelem;
 }
 
 int
@@ -141,7 +139,7 @@ InsOptionElem::getinspattern() const
 	return s;
 }
 
-InsListElem::InsListElem(const std::string &name, NameTable *t, const std::string &idx) :
+InsListElem::InsListElem(const std::string &name, const std::deque<std::string> *t, const std::string &idx) :
 	InsNameElem(name),
 	indexname(idx),
 	thetable(t)
@@ -151,13 +149,13 @@ InsListElem::InsListElem(const std::string &name, NameTable *t, const std::strin
 int
 InsListElem::ntokens() const
 {
-	return thetable->records.size();
+	return thetable->size();
 }
 
 std::string
 InsListElem::getinstruction() const
 {
-	std::string s = thetable->records[getvalue()];
+	std::string s = (*thetable)[getvalue()];
 	if (nextelem)
 		s += nextelem->getinstruction();
 	return s;
