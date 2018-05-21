@@ -735,12 +735,7 @@ Binary::print(std::ostream &os, bool html) const
 		os << " )";
 		return;
 	case opExpTable:
-	case opNameTable:
-		if (op == opExpTable)
-			os << "exptable(";
-		else
-			os << "nametable(";
-		os << p1 << ", " << p2 << ")";
+		os << "exptable(" << p1 << ", " << p2 << ")";
 		return;
 
 	case opList:

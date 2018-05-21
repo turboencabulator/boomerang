@@ -85,10 +85,9 @@ enum OPER {
 	opFlagDef,              // A flag function definition (class FlagDef)
 	opList,                 // A binary, with expression (1) and next element
 	                        //  in chain (2). Last element in chain is opNil
-	// Next three are for parser use only. Binary with name of table and name
+	// Next two are for parser use only. Binary with name of table and name
 	// of string as Const string subexpressions. Actual table info held in the
 	// TableDict object
-	opNameTable,            // A table of strings
 	opExpTable,             // A table of expressions
 	// Actually, opOptable needs 4 subexpressions (table, index, and two
 	// expressions to operate on), so it's actually a Ternary with table,

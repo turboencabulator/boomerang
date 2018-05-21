@@ -79,7 +79,6 @@ const char *operStrings[] = {
 	"opFlagCall",           // A flag call (Binary with string and params)
 	"opFlagDef",            // A flag function definition (class FlagDef)
 	"opList",               // A binary, with expression (1) and next element
-	"opNameTable",          // A table of strings
 	"opExpTable",           // A table of expressions
 	"opOpTable",            // A table of operators
 	"opSuccessor",          // Get the successor of this register parameter
