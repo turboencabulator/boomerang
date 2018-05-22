@@ -133,38 +133,34 @@
  * Declaration of token types, associativity and precedence
  *============================================================================*/
 
-%token <op>  LOG_OP COND_OP BIT_OP ARITH_OP FARITH_OP
-%token <op>  FPUSH FPOP NOT LNOT FNEG S_E
-%token <op>  ADDR CONV_FUNC TRUNC_FUNC FABS_FUNC TRANSCEND
-%token <str> NAME ASSIGNTYPE
-%token <str> REG_ID DECOR
-%token <str> TEMP
-%token <str> NAME_CALL NAME_LOOKUP
-
 %token       ENDIANNESS BIG LITTLE
-%token       COVERS INDEX
-%token       SHARES THEN LOOKUP_RDC
-%token       ASSIGN TO AT REG_IDX EQUATE
-%token       MEM_IDX TOK_INTEGER TOK_FLOAT FAST OPERAND
-%token       FETCHEXEC CAST_OP FLAGMACRO SUCCESSOR
+%token       TOK_INTEGER TOK_FLOAT COVERS SHARES
+%token       FETCHEXEC FAST OPERAND
+%token       THEN INDEX EQUATE ASSIGN TO
 
-%token <num> NUM REG_NUM
+%token <op>  ADDR CONV_FUNC TRUNC_FUNC FABS_FUNC TRANSCEND
+%token <op>  FPUSH FPOP
+%token       FLAGMACRO SUCCESSOR
+%token <str> ASSIGNTYPE
+%token <str> NAME_CALL NAME_LOOKUP NAME DECOR
+%token <str> REG_ID TEMP
+%token       REG_IDX MEM_IDX
+%token <num> REG_NUM
+%token <num> NUM
 %token <dbl> FLOATNUM       // I'd prefer type double here!
 
-%token
-
-%left LOG_OP
-%right COND_OP
-%left BIT_OP
-%left ARITH_OP
-%left FARITH_OP
-%right NOT LNOT FNEG
-%left CAST_OP
-%left LOOKUP_RDC
-%left S_E               // Sign extend. Note it effectively has low precedence, because being a post operator,
+%left  <op>  LOG_OP
+%right <op>  COND_OP
+%left  <op>  BIT_OP
+%left  <op>  ARITH_OP
+%left  <op>  FARITH_OP
+%right <op>  NOT LNOT FNEG
+%left        CAST_OP
+%left        LOOKUP_RDC
+%left  <op>  S_E        // Sign extend. Note it effectively has low precedence, because being a post operator,
                         // the whole expression is already parsed, and hence is sign extended.
                         // Another reason why ! is deprecated!
-%nonassoc AT
+%nonassoc    AT
 
 %type <exp> exp location exp_term
 %type <op> bin_oper
