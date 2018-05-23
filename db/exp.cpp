@@ -730,9 +730,9 @@ Binary::print(std::ostream &os, bool html) const
 	case opFlagCall:
 		// The name of the flag function (e.g. ADDFLAGS) should be enough
 		((Const *)p1)->printNoQuotes(os);
-		os << "( ";
-		p2->printr(os, html);
-		os << " )";
+		os << "(";
+		p2->print(os, html);
+		os << ")";
 		return;
 	case opExpTable:
 		os << "exptable(" << p1 << ", " << p2 << ")";
@@ -957,7 +957,7 @@ Unary::print(std::ostream &os, bool html) const
 		case opSuccessor: os << "succ(";    break;
 		default:                            break;  // For warning
 		}
-		p1->printr(os, html);
+		p1->print(os, html);
 		os << ")";
 		return;
 
@@ -1063,8 +1063,8 @@ Ternary::print(std::ostream &os, bool html) const
 		}
 		// Use print not printr here, since , has the lowest precendence of all.
 		// Also it makes it the same as UQBT, so it's easier to test
-		if (p1) p1->print(os, html); else os << "<NULL>"; os << ",";
-		if (p2) p2->print(os, html); else os << "<NULL>"; os << ",";
+		if (p1) p1->print(os, html); else os << "<NULL>"; os << ", ";
+		if (p2) p2->print(os, html); else os << "<NULL>"; os << ", ";
 		if (p3) p3->print(os, html); else os << "<NULL>"; os << ")";
 		return;
 	default:
@@ -1079,9 +1079,9 @@ Ternary::print(std::ostream &os, bool html) const
 		if (p3) p3->print(os, html); else os << "<NULL>";
 	} else if (op == opAt) {
 		os << "@";
-		if (p2) p2->printr(os, html); else os << "NULL>";
+		if (p2) p2->printr(os, html); else os << "<NULL>";
 		os << ":";
-		if (p3) p3->printr(os, html); else os << "NULL>";
+		if (p3) p3->printr(os, html); else os << "<NULL>";
 	} else {
 		LOG << "Ternary::print invalid operator " << operStrings[op] << "\n";
 		assert(0);

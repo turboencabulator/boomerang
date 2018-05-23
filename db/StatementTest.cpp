@@ -863,7 +863,7 @@ StatementTest::testIsFlagAssgn()
 	                                Location::regOf(10),
 	                                new Const(4)));
 	fc.print(ost);
-	std::string expected("   0 *v* %flags := addFlags( r2, 99 )");
+	std::string expected("   0 *v* %flags := addFlags(r2, 99)");
 	std::string actual(ost.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 	CPPUNIT_ASSERT (    fc.isFlagAssgn());
@@ -1272,7 +1272,7 @@ StatementTest::testStripSizes()
 	                      new Const(16));
 	Statement *s = new Assign(lhs, rhs);
 	s->stripSizes();
-	std::string expected("   0 *v* r24 := m[zfill(8,32,local5) + param6] / 16");
+	std::string expected("   0 *v* r24 := m[zfill(8, 32, local5) + param6] / 16");
 	std::string actual;
 	std::ostringstream ost;
 	ost << s;

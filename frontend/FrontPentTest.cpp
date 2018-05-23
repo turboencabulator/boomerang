@@ -88,7 +88,7 @@ FrontPentTest::test2()
 	inst = pFE->decodeInstruction(0x8048345);
 	expected = std::string("08048345    0 *32* tmp1 := r28\n"
 	                       "            0 *32* r28 := r28 + 16\n"
-	                       "            0 *v* %flags := ADDFLAGS32( tmp1, 16, r28 )\n");
+	                       "            0 *v* %flags := ADDFLAGS32(tmp1, 16, r28)\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	inst = pFE->decodeInstruction(0x8048348);
