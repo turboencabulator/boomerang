@@ -760,8 +760,6 @@ exp_term
 		}
 		delete $2;
 	  }
-
-	| SUCCESSOR exp ')' { $$ = makeSuccessor($2); }
 	;
 
 exp
