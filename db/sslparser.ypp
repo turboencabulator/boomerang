@@ -83,7 +83,6 @@
 %define MEMBERS \
 	public: \
 		virtual ~SSLParser(); \
-		static Statement *parseExp(const char *str); /* Parse an expression or assignment from a string */ \
 		/* The code for expanding tables and saving to the dictionary */ \
 		void expandTables(InsNameElem &iname, const std::list<std::string> &params, const RTL &o_rtlist, RTLInstDict &Dict); \
 		Exp *makeSuccessor(Exp *e); /* Get successor (of register expression) */ \
@@ -92,13 +91,8 @@
 		 * The scanner. \
 		 */ \
 		SSLScanner *theScanner; \
+	\
 	protected: \
-	\
-		/* \
-		 * Result for parsing an assignment. \
-		 */ \
-		Statement *the_asgn; \
-	\
 		/* \
 		 * Maps SSL constants to their values. \
 		 */ \
@@ -177,12 +171,6 @@
 %type <rtlist> rt_list
 
 %%
-
-specorasgn
-	: assign_rt { the_asgn = $1; }
-	| exp       { the_asgn = new Assign(new Terminal(opNil), $1); }
-	| specification
-	;
 
 specification
 	: specification parts ';'
@@ -935,22 +923,6 @@ fastentry
 	;
 
 %%
-
-/*==============================================================================
- * FUNCTION:        SSLParser::parseExp
- * OVERVIEW:        Parses an assignment from a string.
- * PARAMETERS:      the string
- * RETURNS:         an Assignment or nullptr.
- *============================================================================*/
-Statement *
-SSLParser::parseExp(const char *str)
-{
-	std::istringstream ss(str);
-	SSLParser p(ss, false);  // Second arg true for debugging
-	RTLInstDict d;
-	p.yyparse(d);
-	return p.the_asgn;
-}
 
 /*==============================================================================
  * FUNCTION:        SSLParser::~SSLParser

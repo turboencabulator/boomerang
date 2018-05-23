@@ -32,17 +32,34 @@ ParserTest::testRead()
 }
 
 /**
+ * Parse an assignment from a string.
+ */
+static Statement *
+parseStmt(const std::string &str)
+{
+	std::string s("OPCODE " + str);
+	std::istringstream ss(s);
+	SSLParser p(ss, false);  // Second arg true for debugging
+	RTLInstDict d;
+	p.yyparse(d);
+	CPPUNIT_ASSERT(d.idict.count("OPCODE"));
+	TableEntry &t = d.idict["OPCODE"];
+	CPPUNIT_ASSERT(!t.rtl.getList().empty());
+	return t.rtl.getList().front();
+}
+
+/**
  * Test parsing an expression.
  */
 void
 ParserTest::testExp()
 {
 	std::string s("*i32* r0 := 5 + 6");
-	Statement *a = SSLParser::parseExp(s.c_str());
+	Statement *a = parseStmt(s);
 	CPPUNIT_ASSERT(a);
 	CPPUNIT_ASSERT_EQUAL("   0 " + s, a->prints());
 	std::string s2 = "*i32* r[0] := 5 + 6";
-	a = SSLParser::parseExp(s2.c_str());
+	a = parseStmt(s2);
 	CPPUNIT_ASSERT(a);
 	// Still should print to string s, not s2
 	CPPUNIT_ASSERT_EQUAL("   0 " + s, a->prints());
