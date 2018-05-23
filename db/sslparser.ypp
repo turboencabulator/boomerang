@@ -136,7 +136,7 @@
 %token       FETCHEXEC FAST OPERAND
 %token       THEN INDEX EQUATE ASSIGN TO
 
-%token <op>  ADDR CONV_FUNC TRUNC_FUNC FABS_FUNC TRANSCEND
+%token <op>  UNARY_FUNC CONV_FUNC
 %token <op>  FPUSH FPOP
 %token       FLAGMACRO SUCCESSOR
 %token <str> ASSIGNTYPE
@@ -152,7 +152,7 @@
 %left  <op>  BIT_OP
 %left  <op>  ARITH_OP
 %left  <op>  FARITH_OP
-%right <op>  NOT LNOT FNEG
+%right <op>  NEG_OP
 %left        CAST_OP
 %left        LOOKUP_RDC
 %left  <op>  S_E        // Sign extend. Note it effectively has low precedence, because being a post operator,
@@ -706,24 +706,14 @@ exp_term
 	| location                    { $$ = $1; }
 	| '[' exp '?' exp ':' exp ']' { $$ = new Ternary(opTern, $2, $4, $6); }
 
-	/* Address-of, for LEA type instructions */
-	| ADDR exp ')' { $$ = new Unary($1, $2); }
+	| UNARY_FUNC exp ')' { $$ = new Unary($1, $2); }
 
 	/* Conversion functions, e.g. fsize(32, 80, modrm). Args are FROMsize, TOsize, EXPression */
 	| CONV_FUNC NUM ',' NUM ',' exp ')' { $$ = new Ternary($1, new Const($2), new Const($4), $6); }
 
-	/* Truncation function: ftrunc(3.01) == 3.00 */
-	| TRUNC_FUNC exp ')' { $$ = new Unary($1, $2); }
-
-	/* fabs function: fabs(-3.01) == 3.01 */
-	| FABS_FUNC exp ')' { $$ = new Unary($1, $2); }
-
 	/* FPUSH and FPOP */
 	| FPUSH { $$ = new Terminal($1); }
 	| FPOP  { $$ = new Terminal($1); }
-
-	/* Transcendental functions */
-	| TRANSCEND exp ')' { $$ = new Unary($1, $2); }
 
 	/* Example: *Use* of COND[idx] */
 	| NAME_LOOKUP NAME ']' {
@@ -800,9 +790,7 @@ exp
 			$$ = new Binary(opSize, new Const($2), $1);
 	  }
 
-	| NOT  exp { $$ = new Unary($1, $2); }
-	| LNOT exp { $$ = new Unary($1, $2); }
-	| FNEG exp { $$ = new Unary($1, $2); }
+	| NEG_OP exp { $$ = new Unary($1, $2); }
 
 	| exp FARITH_OP exp { $$ = new Binary($2, $1, $3); }
 	| exp ARITH_OP  exp { $$ = new Binary($2, $1, $3); }
