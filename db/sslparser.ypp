@@ -49,14 +49,12 @@
 	Type           *typ;
 
 	InsNameElem    *insel;
-	std::list<std::string>   *parmlist;
 	std::list<std::string>   *strlist;
 	std::list<Exp *>         *explist;
 	std::deque<OPER>         *opdeque;
 	std::deque<Exp *>        *expdeque;
 	std::deque<std::string>  *namedeque;
 	RTL            *rtlist;
-	bool            endianness;
 }
 
 %{
@@ -170,14 +168,13 @@
 %type <num> cast
 %type <insel> name_contract instr_elem instr_name
 %type <strlist> reg_table
-%type <parmlist> list_parameter func_parameter
+%type <strlist> list_parameter func_parameter
 %type <namedeque> name_expand str_term str_expr str_array
 %type <explist> flag_list
 %type <opdeque> opstr_array opstr_expr
 %type <expdeque> expstr_array expstr_expr
 %type <explist> list_actualparameter
 %type <rtlist> rt_list
-%type <endianness> esize
 
 %%
 
@@ -200,16 +197,18 @@ parts
 	| constants
 
 	/* Optional one-line section declaring endianness */
-	| endianness
+	| ENDIANNESS BIG    { Dict.bigEndian = true;  }
+	| ENDIANNESS LITTLE { Dict.bigEndian = false; }
 
-	/* Optional section describing faster versions of instructions (e.g. that don't inplement the full
+	/* Optional section describing faster versions of instructions (e.g. that don't implement the full
 	 * specifications, but if they work, will be much faster) */
-	| fastlist
+	| FAST fastentries
 
 	/* Definitions of registers (with overlaps, etc) */
-	| reglist
+	| TOK_INTEGER { bFloat = false; } reglists
+	| TOK_FLOAT   { bFloat = true;  } reglists
 
-	/* Declaration of "flag functions". These describe the detailed flag setting semantics for insructions */
+	/* Declaration of "flag functions". These describe the detailed flag setting semantics for instructions */
 	| flag_fnc
 
 	/* Addressing modes (or instruction operands) (optional) */
@@ -260,17 +259,12 @@ func_parameter
 	| /* empty */            { $$ = new std::list<std::string>; }
 	;
 
+reglists
+	: reglists ',' reglist
+	| reglist
+	;
+
 reglist
-	: TOK_INTEGER { bFloat = false; } a_reglists
-	| TOK_FLOAT   { bFloat = true; }  a_reglists
-	;
-
-a_reglists
-	: a_reglists ',' a_reglist
-	| a_reglist
-	;
-
-a_reglist
 	: REG_ID INDEX NUM {
 		if (Dict.RegMap.count(*$1))
 			yyerror("Name reglist declared twice");
@@ -913,15 +907,6 @@ cast
 	: '{' NUM '}' { $$ = $2; }
 	;
 
-endianness
-	: ENDIANNESS esize { Dict.bigEndian = $2; }
-	;
-
-esize
-	: BIG    { $$ = true; }
-	| LITTLE { $$ = false; }
-	;
-
 assigntype
 	: ASSIGNTYPE {
 		const char *s = $1->c_str();
@@ -952,10 +937,6 @@ assigntype
 	;
 
 /* Section for indicating which instructions to substitute when using -f (fast but not quite as exact instruction mapping) */
-fastlist
-	: FAST fastentries
-	;
-
 fastentries
 	: fastentries ',' fastentry
 	| fastentry
