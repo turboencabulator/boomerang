@@ -158,7 +158,7 @@
 %left BIT_OP
 %left ARITH_OP
 %left FARITH_OP
-%right NOT LNOT FCHS
+%right NOT LNOT FNEG
 %left CAST_OP
 %left LOOKUP_RDC
 %left S_E               // Sign extend. Note it effectively has low precedence, because being a post operator,
