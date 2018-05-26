@@ -146,9 +146,9 @@
 %left  <op>  BIT_OP
 %left  <op>  ARITH_OP
 %left  <op>  FARITH_OP
+%left        TABLE_OP NAME_LOOKUP
 %right <op>  NEG_OP
 %left        CAST_OP '{'
-%left        TABLE_OP NAME_LOOKUP
 %left  <op>  S_E        // Sign extend. Note it effectively has low precedence, because being a post operator,
                         // the whole expression is already parsed, and hence is sign extended.
                         // Another reason why ! is deprecated!
