@@ -142,6 +142,11 @@
 
 %token CASE DEFAULT IF ELSE SWITCH WHILE DO FOR GOTO CONTINUE BREAK RETURN
 
+%left '+' '-'
+
+%left '*' '['
+%nonassoc CONST
+
 %type<type> type
 %type<param> param
 %type<param> param_exp
