@@ -50,49 +50,49 @@ SETXER(value) {
 };
 
 ADDFLAGSX(result, op1, op2) {
-	*1*  %XERCA :=                      ((op1@[31:31]) & (op2@[31:31]))
-	             | (~(result@[31:31]) & ((op1@[31:31]) | (op2@[31:31])))
+	*1*  %XERCA :=                    (op1@[31:31] & op2@[31:31])
+	             | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
 	*1*  %XER@[29:29] := %XERCA
 };
 
 ADDFLAGSX0(result, op1, op2) {
-	*1*  %XERCA :=                      ((op1@[31:31]) & (op2@[31:31]))
-	             | (~(result@[31:31]) & ((op1@[31:31]) | (op2@[31:31])))
+	*1*  %XERCA :=                    (op1@[31:31] & op2@[31:31])
+	             | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
 	*1*  %XER@[29:29] := %XERCA
 	*1*  %CR0@[0:0] := %XERSO
-	*1*  %CR0@[1:1] := [result = 0?1:0]
-	*1*  %CR0@[2:2] := [result > 0?1:0]
-	*1*  %CR0@[3:3] := [result < 0?1:0]
+	*1*  %CR0@[1:1] := [result = 0 ? 1 : 0]
+	*1*  %CR0@[2:2] := [result > 0 ? 1 : 0]
+	*1*  %CR0@[3:3] := [result < 0 ? 1 : 0]
 };
 
 SUBFLAGSX(result, op1, op2) {
-	*1*  %XERCA :=                     (~(op1@[31:31]) & (op2@[31:31]))
-	             | ((result@[31:31]) & (~(op1@[31:31]) | (op2@[31:31])))
+	*1*  %XERCA :=                   (~op1@[31:31] & op2@[31:31])
+	             | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
 	*1*  %XER@[29:29] := %XERCA
 };
 
 SUBFLAGS0(result) {
 	*1*  %CR0@[0:0] := %XERSO
-	*1*  %CR0@[1:1] := [result = 0?1:0]
-	*1*  %CR0@[2:2] := [result > 0?1:0]
-	*1*  %CR0@[3:3] := [result < 0?1:0]
+	*1*  %CR0@[1:1] := [result = 0 ? 1 : 0]
+	*1*  %CR0@[2:2] := [result > 0 ? 1 : 0]
+	*1*  %CR0@[3:3] := [result < 0 ? 1 : 0]
 };
 
 SUBFLAGSX0(result, op1, op2) {
-	*1*  %XERCA :=                     (~(op1@[31:31]) & (op2@[31:31]))
-	             | ((result@[31:31]) & (~(op1@[31:31]) | (op2@[31:31])))
+	*1*  %XERCA :=                   (~op1@[31:31] & op2@[31:31])
+	             | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
 	*1*  %XER@[29:29] := %XERCA
 	*1*  %CR0@[0:0] := %XERSO
-	*1*  %CR0@[1:1] := [result = 0?1:0]
-	*1*  %CR0@[2:2] := [result > 0?1:0]
-	*1*  %CR0@[3:3] := [result < 0?1:0]
+	*1*  %CR0@[1:1] := [result = 0 ? 1 : 0]
+	*1*  %CR0@[2:2] := [result > 0 ? 1 : 0]
+	*1*  %CR0@[3:3] := [result < 0 ? 1 : 0]
 };
 
 SETFLAGS0(rd) {
 	*1*  %CR0@[0:0] := %XERSO  # Note: these are non IBM bit numbers; LT is most significant bit (PPC bit 0)
-	*1*  %CR0@[1:1] := [rd = 0?1:0]
-	*1*  %CR0@[2:2] := [rd > 0?1:0]
-	*1*  %CR0@[3:3] := [rd < 0?1:0]
+	*1*  %CR0@[1:1] := [rd = 0 ? 1 : 0]
+	*1*  %CR0@[2:2] := [rd > 0 ? 1 : 0]
+	*1*  %CR0@[3:3] := [rd < 0 ? 1 : 0]
 };
 
 
@@ -220,10 +220,10 @@ ADDMEq  rd, ra
 	SETFLAGS0(rd);
 
 ADDZE   rd, ra
-	*32* rd:= ra + %XERCA;
+	*32* rd := ra + %XERCA;
 
 ADDZEq  rd, ra
-	*32* rd:= ra + %XERCA
+	*32* rd := ra + %XERCA
 	SETFLAGS0(rd);
 
 DIVW    rd, ra, rb
@@ -335,7 +335,7 @@ NLOGDOT[IDX] rd, ra, rb
 	SETFLAGS0(rd);
 
 LOGC[IDX]    rd, ra, rb
-	*32* rd := ra LOGCOP[IDX] (~rb);
+	*32* rd := ra LOGCOP[IDX] ~rb;
 LOGCDOT[IDX] rd, ra, rb
 	SETFLAGS0(rd);
 
@@ -657,7 +657,7 @@ CRLOG[IDX]  d, a, b
 CRNLOG[IDX] d, a, b
 	*1* d := ~(a CR_OP[IDX]  b);
 CRLOGC[IDX] d, a, b
-	*1* d :=   a CR_OP[IDX] (~b);
+	*1* d :=   a CR_OP[IDX] ~b;
 
 # Floating point operations
 
@@ -731,10 +731,10 @@ BRCONDSLR  := { "bltlr",  "blelr",  "beqlr",  "bgelr",  "bgtlr",  "bnllr",
                 "bnelr",  "bnglr",  "bsolr",  "bnslr",  "bunlr",  "bnulr"  };
 
 BRCONDS[IDX] BIcr, reloc
-	*32* %pc := [(CONDBR[IDX] = 1) ? %pc+reloc : %pc];
+	*32* %pc := [CONDBR[IDX] = 1 ? %pc+reloc : %pc];
 
 BRCONDSCTR[IDX] BIcr
-	*32* %pc := [(CONDBR[IDX] = 1) ? %CTR : %pc];
+	*32* %pc := [CONDBR[IDX] = 1 ? %CTR : %pc];
 
 BRCONDSLR[IDX] BIcr
-	*32* %pc := [(CONDBR[IDX] = 1) ? %LR : %pc];
+	*32* %pc := [CONDBR[IDX] = 1 ? %LR : %pc];

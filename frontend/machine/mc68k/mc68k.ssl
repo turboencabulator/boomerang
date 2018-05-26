@@ -34,122 +34,122 @@ INTEGER
 	%OF [1] -> -1;
 
 ADDFLAGS8(op1, op2, result) {
-	*1* %CF := ((op1@[7:7]) and (op2@[7:7])) or (~(result@[7:7]) and ((op1@[7:7]) or (op2@[7:7])))
-	*1* %OF := ((op1@[7:7]) and (op2@[7:7]) and ~(result@[7:7])) or (~(op1@[7:7]) and ~(op2@[7:7]) and (result@[7:7]))
+	*1* %CF := (op1@[7:7] and op2@[7:7]) or (~result@[7:7] and (op1@[7:7] or op2@[7:7]))
+	*1* %OF := (op1@[7:7] and op2@[7:7] and ~result@[7:7]) or (~op1@[7:7] and ~op2@[7:7] and result@[7:7])
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 };
 
 SUBFLAGS8(op1, op2, result) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op1@[7:7]) and ~(op2@[7:7]) and ~(result@[7:7])) or (~(op1@[7:7]) and (op2@[7:7]) and (result@[7:7]))
-	*1* %CF := (~(op1@[7:7]) and (op2@[7:7])) or ((result@[7:7]) and (~(op1@[7:7]) or (op2@[7:7])))
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := (op1@[7:7] and ~op2@[7:7] and ~result@[7:7]) or (~op1@[7:7] and op2@[7:7] and result@[7:7])
+	*1* %CF := (~op1@[7:7] and op2@[7:7]) or (result@[7:7] and (~op1@[7:7] or op2@[7:7]))
 };
 
 ADDFLAGS16(op1, op2, result) {
-	*1* %CF := ((op1@[15:15]) and (op2@[15:15])) or (~(result@[15:15]) and ((op1@[15:15]) or (op2@[15:15])))
-	*1* %OF := ((op1@[15:15]) and (op2@[15:15]) and ~(result@[15:15])) or (~(op1@[15:15]) and ~(op2@[15:15]) and (result@[15:15]))
+	*1* %CF := (op1@[15:15] and op2@[15:15]) or (~result@[15:15] and (op1@[15:15] or op2@[15:15]))
+	*1* %OF := (op1@[15:15] and op2@[15:15] and ~result@[15:15]) or (~op1@[15:15] and ~op2@[15:15] and result@[15:15])
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 };
 
 SUBFLAGS16(op1, op2, result) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op1@[15:15]) and ~(op2@[15:15]) and ~(result@[15:15])) or (~(op1@[15:15]) and (op2@[15:15]) and (result@[15:15]))
-	*1* %CF := (~(op1@[15:15]) and (op2@[15:15])) or ((result@[15:15]) and (~(op1@[15:15]) or (op2@[15:15])))
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := (op1@[15:15] and ~op2@[15:15] and ~result@[15:15]) or (~op1@[15:15] and op2@[15:15] and result@[15:15])
+	*1* %CF := (~op1@[15:15] and op2@[15:15]) or (result@[15:15] and (~op1@[15:15] or op2@[15:15]))
 };
 
 ADDFLAGS32(op1, op2, result) {
-	*1* %CF := ((op1@[31:31]) and (op2@[31:31])) or (~(result@[31:31]) and ((op1@[31:31]) or (op2@[31:31])))
-	*1* %OF := ((op1@[31:31]) and (op2@[31:31]) and ~(result@[31:31])) or (~(op1@[31:31]) and ~(op2@[31:31]) and (result@[31:31]))
+	*1* %CF := (op1@[31:31] and op2@[31:31]) or (~result@[31:31] and (op1@[31:31] or op2@[31:31]))
+	*1* %OF := (op1@[31:31] and op2@[31:31] and ~result@[31:31]) or (~op1@[31:31] and ~op2@[31:31] and result@[31:31])
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 };
 
 SUBFLAGS32(op1, op2, result) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op1@[31:31]) and ~(op2@[31:31]) and ~(result@[31:31])) or (~(op1@[31:31]) and (op2@[31:31]) and (result@[31:31]))
-	*1* %CF := (~(op1@[31:31]) and (op2@[31:31])) or ((result@[31:31]) and (~(op1@[31:31]) or (op2@[31:31])))
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := (op1@[31:31] and ~op2@[31:31] and ~result@[31:31]) or (~op1@[31:31] and op2@[31:31] and result@[31:31])
+	*1* %CF := (~op1@[31:31] and op2@[31:31]) or (result@[31:31] and (~op1@[31:31] or op2@[31:31]))
 };
 
 SUBXFLAGS32(result, op1, op2) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result! = 0?0:%ZF]
-	*1* %OF := ((op1@[31:31]) and ~(op2@[31:31]) and ~(result@[31:31])) or (~(op1@[31:31]) and (op2@[31:31]) and (result@[31:31]))
-	*1* %CF := (~(op1@[31:31]) and (op2@[31:31])) or ((result@[31:31]) and (~(op1@[31:31]) or (op2@[31:31])))
+	*1* %ZF := [result! = 0 ? 0 : %ZF]
+	*1* %OF := (op1@[31:31] and ~op2@[31:31] and ~result@[31:31]) or (~op1@[31:31] and op2@[31:31] and result@[31:31])
+	*1* %CF := (~op1@[31:31] and op2@[31:31]) or (result@[31:31] and (~op1@[31:31] or op2@[31:31]))
 };
 
 COMPLEXARITHFLAGS32(op1, op2, result) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op1@[31:31]) and ~(op2@[31:31]) and ~(result@[31:31])) or (~(op1@[31:31]) and (op2@[31:31]) and (result@[31:31]))
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := (op1@[31:31] and ~op2@[31:31] and ~result@[31:31]) or (~op1@[31:31] and op2@[31:31] and result@[31:31])
 	*1* %CF := 0
 };
 
 LOGICALFLAGS8(result) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
 	*1* %CF := 0
 };
 
 LOGICALFLAGS16(result) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
 	*1* %CF := 0
 };
 
 LOGICALFLAGS32(result) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
 	*1* %CF := 0
 };
 
 ARITHSHIFTFLAGS8(result, src, count) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
-	*1* %CF := [count = 0?0:src@[(7 - count):(7 - count)]]
+	*1* %CF := [count = 0 ? 0 : src@[(7 - count):(7 - count)]]
 };
 
 ARITHSHIFTFLAGS16(result, src, count) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
-	*1* %CF := [count = 0?0:src@[(15 - count):(15 - count)]]
+	*1* %CF := [count = 0 ? 0 : src@[(15 - count):(15 - count)]]
 };
 
 ARITHSHIFTFLAGS32(result, src, count) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
-	*1* %CF := [count = 0?0:src@[(31 - count):(31 - count)]]
+	*1* %CF := [count = 0 ? 0 : src@[(31 - count):(31 - count)]]
 };
 
 LOGSHIFTFLAGS8(result, src, count) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
-	*1* %CF := [count = 0?0:src@[(7 - count):(7 - count)]]
+	*1* %CF := [count = 0 ? 0 : src@[(7 - count):(7 - count)]]
 };
 
 LOGSHIFTFLAGS16(result, src, count) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
-	*1* %CF := [count = 0?0:src@[(15 - count):(15 - count)]]
+	*1* %CF := [count = 0 ? 0 : src@[(15 - count):(15 - count)]]
 };
 
 LOGSHIFTFLAGS32(result, src, count) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
-	*1* %CF := [count = 0?0:src@[(31 - count):(31 - count)]]
+	*1* %CF := [count = 0 ? 0 : src@[(31 - count):(31 - count)]]
 };
 
 CLEARFLAGS() {
@@ -161,63 +161,63 @@ CLEARFLAGS() {
 
 NEGFLAGS8(result, op2) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op2@[7:7]) and (result@[7:7]))
-	*1* %CF := [result = 0?0:1]
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := op2@[7:7] and result@[7:7]
+	*1* %CF := [result = 0 ? 0 : 1]
 };
 
 NEGFLAGS16(result, op2) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op2@[15:15]) and (result@[15:15]))
-	*1* %CF := [result = 0?0:1]
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := op2@[15:15] and result@[15:15]
+	*1* %CF := [result = 0 ? 0 : 1]
 };
 
 NEGFLAGS32(result, op2) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
-	*1* %OF := ((op2@[31:31]) and (result@[31:31]))
-	*1* %CF := [result = 0?0:1]
+	*1* %ZF := [result = 0 ? 1 : 0]
+	*1* %OF := op2@[31:31] and result@[31:31]
+	*1* %CF := [result = 0 ? 0 : 1]
 };
 
 NEGXFLAGS8(result, op2) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result! = 0?0:%ZF]
-	*1* %OF := ((op2@[7:7]) and (result@[7:7]))
-	*1* %CF := (op2@[7:7]) or ((result@[7:7]) and (op2@[7:7]))
+	*1* %ZF := [result! = 0 ? 0 : %ZF]
+	*1* %OF := op2@[7:7] and result@[7:7]
+	*1* %CF := op2@[7:7] or (result@[7:7] and op2@[7:7])
 };
 
 NEGXFLAGS16(result, op2) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result! = 0?0:%ZF]
-	*1* %OF := ((op2@[15:15]) and (result@[15:15]))
-	*1* %CF := (op2@[15:15]) or ((result@[15:15]) and (op2@[15:15]))
+	*1* %ZF := [result! = 0 ? 0 : %ZF]
+	*1* %OF := op2@[15:15] and result@[15:15]
+	*1* %CF := op2@[15:15] or (result@[15:15] and op2@[15:15])
 };
 
 NEGXFLAGS32(result, op2) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result! = 0?0:%ZF]
-	*1* %OF := ((op2@[31:31]) and (result@[31:31]))
-	*1* %CF := (op2@[31:31]) or ((result@[31:31]) and (op2@[31:31]))
+	*1* %ZF := [result! = 0 ? 0 : %ZF]
+	*1* %OF := op2@[31:31] and result@[31:31]
+	*1* %CF := op2@[31:31] or (result@[31:31] and op2@[31:31])
 };
 
 COMMONFLAGS8(result) {
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
 	*1* %CF := 0
 };
 
 COMMONFLAGS16(result) {
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
 	*1* %CF := 0
 };
 
 COMMONFLAGS32(result) {
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %OF := 0
 	*1* %CF := 0
 };
@@ -416,7 +416,7 @@ COND1    := { "1",   "~%CF & ~%ZF", "%CF | %ZF", "~%CF", "%CF", "~%ZF", "%ZF", "
 BRANCHES := { "BRA", "BHI",         "BLS",       "BCC",  "BCS", "BNE",  "BEQ", "BVC",  "BVS", "BPL",  "BMI",  "BGE",          "BLT",       "BGT",                  "BLE"               };
 
 BRANCHES[IDX] dst
-	*32* %pc := [(COND1[IDX] = 1)?dst:%pc];
+	*32* %pc := [COND1[IDX] = 1 ? dst : %pc];
 
 JSR size, dst
 	*32* r[SP] := r[SP] - 4
@@ -424,31 +424,31 @@ JSR size, dst
 	*32* %pc := dst;
 
 BCHGb bit, dst
-	*1* %ZF := ~(dst@[bit:bit])
+	*1* %ZF := ~dst@[bit:bit]
 	*1* dst@[bit:bit] := ~dst@[bit:bit];
 
 BCHGl bit, dst
-	*1* %ZF := ~(dst@[bit:bit])
+	*1* %ZF := ~dst@[bit:bit]
 	*1* dst@[bit:bit] := ~dst@[bit:bit];
 
 BCLRb bit, dst
-	*1* %ZF := ~(dst@[bit:bit])
+	*1* %ZF := ~dst@[bit:bit]
 	*1* dst@[bit:bit] := 0;
 
 BCLRl bit, dst
-	*1* %ZF := ~(dst@[bit:bit])
+	*1* %ZF := ~dst@[bit:bit]
 	*1* dst@[bit:bit] := 0;
 
 BSETb bit, dst
-	*1* %ZF := ~(dst@[bit:bit])
+	*1* %ZF := ~dst@[bit:bit]
 	*1* dst@[bit:bit] := 1;
 
 BSETl bit, dst
-	*1* %ZF := ~(dst@[bit:bit])
+	*1* %ZF := ~dst@[bit:bit]
 	*1* dst@[bit:bit] := 1;
 
 BTST bit, dst
-	*1* %ZF := ~(dst@[bit:bit]);
+	*1* %ZF := ~dst@[bit:bit];
 
 CLRb dst
 	*8* dst := 0
@@ -525,8 +525,8 @@ COND2 := { "1",   "~%CF & ~%ZF", "%CF | %ZF", "~%CF", "%CF",  "~%ZF", "%ZF",  "~
 DBCCS := { "DBT", "DBHI",        "DBLS",      "DBCC", "DBCS", "DBNE", "DBEQ", "DBVC", "DBVS", "DBPL", "DBMI", "DBGE",         "DBLT",      "DBGT",                 "DBLE",              "DBF" };
 
 DBCCS[IDX]   dn, dst
-	*32* dn := [COND2[IDX]?dn:dn - 1]
-	*32* %pc := [(COND2[IDX] = 1)?%pc:[(dn = -1)?%pc:dst]];
+	*32* dn := [COND2[IDX] ? dn : dn - 1]
+	*32* %pc := [COND2[IDX] = 1 ? %pc : [dn = -1 ? %pc : dst]];
 
 EXG rx, ry
 	*32* r[tmp1] := rx
@@ -616,146 +616,146 @@ MOVEAl src, dst
 	*32* dst := src;
 
 LOADMw mask, an
-	*16* r[0] := [mask@[0:0]?m[an]{16}:r[0]]
-	*32* an := [mask@[0:0]?an + 2:an]
-	*16* r[1] := [mask@[1:1]?m[an]{16}:r[1]]
-	*32* an := [mask@[1:1]?an + 2:an]
-	*16* r[2] := [mask@[2:2]?m[an]{16}:r[2]]
-	*32* an := [mask@[2:2]?an + 2:an]
-	*16* r[3] := [mask@[3:3]?m[an]{16}:r[3]]
-	*32* an := [mask@[3:3]?an + 2:an]
-	*16* r[4] := [mask@[4:4]?m[an]{16}:r[4]]
-	*32* an := [mask@[4:4]?an + 2:an]
-	*16* r[5] := [mask@[5:5]?m[an]{16}:r[5]]
-	*32* an := [mask@[5:5]?an + 2:an]
-	*16* r[6] := [mask@[6:6]?m[an]{16}:r[6]]
-	*32* an := [mask@[6:6]?an + 2:an]
-	*16* r[7] := [mask@[7:7]?m[an]{16}:r[7]]
-	*32* an := [mask@[7:7]?an + 2:an]
-	*16* r[8] := [mask@[8:8]?m[an]{16}:r[8]]
-	*32* an := [mask@[8:8]?an + 2:an]
-	*16* r[9] := [mask@[9:9]?m[an]{16}:r[9]]
-	*32* an := [mask@[9:9]?an + 2:an]
-	*16* r[10] := [mask@[10:10]?m[an]{16}:r[10]]
-	*32* an := [mask@[10:10]?an + 2:an]
-	*16* r[11] := [mask@[11:11]?m[an]{16}:r[11]]
-	*32* an := [mask@[11:11]?an + 2:an]
-	*16* r[12] := [mask@[12:12]?m[an]{16}:r[12]]
-	*32* an := [mask@[12:12]?an + 2:an]
-	*16* r[13] := [mask@[13:13]?m[an]{16}:r[13]]
-	*32* an := [mask@[13:13]?an + 2:an]
-	*16* r[14] := [mask@[14:14]?m[an]{16}:r[14]]
-	*32* an := [mask@[14:14]?an + 2:an]
-	*16* r[15] := [mask@[15:15]?m[an]{16}:r[15]]
-	*32* an := [mask@[15:15]?an + 2:an];
+	*16* r[0]  := [mask@[0:0]   ? m[an]{16} : r[0]]
+	*32* an    := [mask@[0:0]   ? an + 2 : an]
+	*16* r[1]  := [mask@[1:1]   ? m[an]{16} : r[1]]
+	*32* an    := [mask@[1:1]   ? an + 2 : an]
+	*16* r[2]  := [mask@[2:2]   ? m[an]{16} : r[2]]
+	*32* an    := [mask@[2:2]   ? an + 2 : an]
+	*16* r[3]  := [mask@[3:3]   ? m[an]{16} : r[3]]
+	*32* an    := [mask@[3:3]   ? an + 2 : an]
+	*16* r[4]  := [mask@[4:4]   ? m[an]{16} : r[4]]
+	*32* an    := [mask@[4:4]   ? an + 2 : an]
+	*16* r[5]  := [mask@[5:5]   ? m[an]{16} : r[5]]
+	*32* an    := [mask@[5:5]   ? an + 2 : an]
+	*16* r[6]  := [mask@[6:6]   ? m[an]{16} : r[6]]
+	*32* an    := [mask@[6:6]   ? an + 2 : an]
+	*16* r[7]  := [mask@[7:7]   ? m[an]{16} : r[7]]
+	*32* an    := [mask@[7:7]   ? an + 2 : an]
+	*16* r[8]  := [mask@[8:8]   ? m[an]{16} : r[8]]
+	*32* an    := [mask@[8:8]   ? an + 2 : an]
+	*16* r[9]  := [mask@[9:9]   ? m[an]{16} : r[9]]
+	*32* an    := [mask@[9:9]   ? an + 2 : an]
+	*16* r[10] := [mask@[10:10] ? m[an]{16} : r[10]]
+	*32* an    := [mask@[10:10] ? an + 2 : an]
+	*16* r[11] := [mask@[11:11] ? m[an]{16} : r[11]]
+	*32* an    := [mask@[11:11] ? an + 2 : an]
+	*16* r[12] := [mask@[12:12] ? m[an]{16} : r[12]]
+	*32* an    := [mask@[12:12] ? an + 2 : an]
+	*16* r[13] := [mask@[13:13] ? m[an]{16} : r[13]]
+	*32* an    := [mask@[13:13] ? an + 2 : an]
+	*16* r[14] := [mask@[14:14] ? m[an]{16} : r[14]]
+	*32* an    := [mask@[14:14] ? an + 2 : an]
+	*16* r[15] := [mask@[15:15] ? m[an]{16} : r[15]]
+	*32* an    := [mask@[15:15] ? an + 2 : an];
 
 STOREMw an, mask
-	*32* an := [mask@[15:15]?an - 2:an]
-	*16* r[0] := [mask@[15:15]?m[an]{16}:r[0]]
-	*32* an := [mask@[14:14]?an - 2:an]
-	*16* r[0] := [mask@[14:14]?m[an]{16}:r[1]]
-	*32* an := [mask@[13:13]?an - 2:an]
-	*16* r[0] := [mask@[13:13]?m[an]{16}:r[2]]
-	*32* an := [mask@[12:12]?an - 2:an]
-	*16* r[0] := [mask@[12:12]?m[an]{16}:r[3]]
-	*32* an := [mask@[11:11]?an - 2:an]
-	*16* r[0] := [mask@[11:11]?m[an]{16}:r[4]]
-	*32* an := [mask@[10:10]?an - 2:an]
-	*16* r[0] := [mask@[10:10]?m[an]{16}:r[5]]
-	*32* an := [mask@[9:9]?an - 2:an]
-	*16* r[0] := [mask@[9:9]?m[an]{16}:r[6]]
-	*32* an := [mask@[8:8]?an - 2:an]
-	*16* r[0] := [mask@[8:8]?m[an]{16}:r[7]]
-	*32* an := [mask@[7:7]?an - 2:an]
-	*16* r[0] := [mask@[7:7]?m[an]{16}:r[8]]
-	*32* an := [mask@[6:6]?an - 2:an]
-	*16* r[0] := [mask@[6:6]?m[an]{16}:r[9]]
-	*32* an := [mask@[5:5]?an - 2:an]
-	*16* r[0] := [mask@[5:5]?m[an]{16}:r[10]]
-	*32* an := [mask@[4:4]?an - 2:an]
-	*16* r[0] := [mask@[4:4]?m[an]{16}:r[11]]
-	*32* an := [mask@[3:3]?an - 2:an]
-	*16* r[0] := [mask@[3:3]?m[an]{16}:r[12]]
-	*32* an := [mask@[2:2]?an - 2:an]
-	*16* r[0] := [mask@[2:2]?m[an]{16}:r[13]]
-	*32* an := [mask@[1:1]?an - 2:an]
-	*16* r[0] := [mask@[1:1]?m[an]{16}:r[14]]
-	*32* an := [mask@[0:0]?an - 2:an]
-	*16* r[0] := [mask@[0:0]?m[an]{16}:r[15]];
+	*32* an   := [mask@[15:15] ? an - 2 : an]
+	*16* r[0] := [mask@[15:15] ? m[an]{16} : r[0]]
+	*32* an   := [mask@[14:14] ? an - 2 : an]
+	*16* r[0] := [mask@[14:14] ? m[an]{16} : r[1]]
+	*32* an   := [mask@[13:13] ? an - 2 : an]
+	*16* r[0] := [mask@[13:13] ? m[an]{16} : r[2]]
+	*32* an   := [mask@[12:12] ? an - 2 : an]
+	*16* r[0] := [mask@[12:12] ? m[an]{16} : r[3]]
+	*32* an   := [mask@[11:11] ? an - 2 : an]
+	*16* r[0] := [mask@[11:11] ? m[an]{16} : r[4]]
+	*32* an   := [mask@[10:10] ? an - 2 : an]
+	*16* r[0] := [mask@[10:10] ? m[an]{16} : r[5]]
+	*32* an   := [mask@[9:9]   ? an - 2 : an]
+	*16* r[0] := [mask@[9:9]   ? m[an]{16} : r[6]]
+	*32* an   := [mask@[8:8]   ? an - 2 : an]
+	*16* r[0] := [mask@[8:8]   ? m[an]{16} : r[7]]
+	*32* an   := [mask@[7:7]   ? an - 2 : an]
+	*16* r[0] := [mask@[7:7]   ? m[an]{16} : r[8]]
+	*32* an   := [mask@[6:6]   ? an - 2 : an]
+	*16* r[0] := [mask@[6:6]   ? m[an]{16} : r[9]]
+	*32* an   := [mask@[5:5]   ? an - 2 : an]
+	*16* r[0] := [mask@[5:5]   ? m[an]{16} : r[10]]
+	*32* an   := [mask@[4:4]   ? an - 2 : an]
+	*16* r[0] := [mask@[4:4]   ? m[an]{16} : r[11]]
+	*32* an   := [mask@[3:3]   ? an - 2 : an]
+	*16* r[0] := [mask@[3:3]   ? m[an]{16} : r[12]]
+	*32* an   := [mask@[2:2]   ? an - 2 : an]
+	*16* r[0] := [mask@[2:2]   ? m[an]{16} : r[13]]
+	*32* an   := [mask@[1:1]   ? an - 2 : an]
+	*16* r[0] := [mask@[1:1]   ? m[an]{16} : r[14]]
+	*32* an   := [mask@[0:0]   ? an - 2 : an]
+	*16* r[0] := [mask@[0:0]   ? m[an]{16} : r[15]];
 
 LOADMl mask, an
-	*32* r[0] := [mask@[0:0]?m[an]{32}:r[0]]
-	*32* an := [mask@[0:0]?an + 4:an]
-	*32* r[1] := [mask@[1:1]?m[an]{32}:r[1]]
-	*32* an := [mask@[1:1]?an + 4:an]
-	*32* r[2] := [mask@[2:2]?m[an]{32}:r[2]]
-	*32* an := [mask@[2:2]?an + 4:an]
-	*32* r[3] := [mask@[3:3]?m[an]{32}:r[3]]
-	*32* an := [mask@[3:3]?an + 4:an]
-	*32* r[4] := [mask@[4:4]?m[an]{32}:r[4]]
-	*32* an := [mask@[4:4]?an + 4:an]
-	*32* r[5] := [mask@[5:5]?m[an]{32}:r[5]]
-	*32* an := [mask@[5:5]?an + 4:an]
-	*32* r[6] := [mask@[6:6]?m[an]{32}:r[6]]
-	*32* an := [mask@[6:6]?an + 4:an]
-	*32* r[7] := [mask@[7:7]?m[an]{32}:r[7]]
-	*32* an := [mask@[7:7]?an + 4:an]
-	*32* r[8] := [mask@[8:8]?m[an]{32}:r[8]]
-	*32* an := [mask@[8:8]?an + 4:an]
-	*32* r[9] := [mask@[9:9]?m[an]{32}:r[9]]
-	*32* an := [mask@[9:9]?an + 4:an]
-	*32* r[10] := [mask@[10:10]?m[an]{32}:r[10]]
-	*32* an := [mask@[10:10]?an + 4:an]
-	*32* r[11] := [mask@[11:11]?m[an]{32}:r[11]]
-	*32* an := [mask@[11:11]?an + 4:an]
-	*32* r[12] := [mask@[12:12]?m[an]{32}:r[12]]
-	*32* an := [mask@[12:12]?an + 4:an]
-	*32* r[13] := [mask@[13:13]?m[an]{32}:r[13]]
-	*32* an := [mask@[13:13]?an + 4:an]
-	*32* r[14] := [mask@[14:14]?m[an]{32}:r[14]]
-	*32* an := [mask@[14:14]?an + 4:an]
-	*32* r[15] := [mask@[15:15]?m[an]{32}:r[15]]
-	*32* an := [mask@[15:15]?an + 4:an];
+	*32* r[0]  := [mask@[0:0]   ? m[an]{32} : r[0]]
+	*32* an    := [mask@[0:0]   ? an + 4 : an]
+	*32* r[1]  := [mask@[1:1]   ? m[an]{32} : r[1]]
+	*32* an    := [mask@[1:1]   ? an + 4 : an]
+	*32* r[2]  := [mask@[2:2]   ? m[an]{32} : r[2]]
+	*32* an    := [mask@[2:2]   ? an + 4 : an]
+	*32* r[3]  := [mask@[3:3]   ? m[an]{32} : r[3]]
+	*32* an    := [mask@[3:3]   ? an + 4 : an]
+	*32* r[4]  := [mask@[4:4]   ? m[an]{32} : r[4]]
+	*32* an    := [mask@[4:4]   ? an + 4 : an]
+	*32* r[5]  := [mask@[5:5]   ? m[an]{32} : r[5]]
+	*32* an    := [mask@[5:5]   ? an + 4 : an]
+	*32* r[6]  := [mask@[6:6]   ? m[an]{32} : r[6]]
+	*32* an    := [mask@[6:6]   ? an + 4 : an]
+	*32* r[7]  := [mask@[7:7]   ? m[an]{32} : r[7]]
+	*32* an    := [mask@[7:7]   ? an + 4 : an]
+	*32* r[8]  := [mask@[8:8]   ? m[an]{32} : r[8]]
+	*32* an    := [mask@[8:8]   ? an + 4 : an]
+	*32* r[9]  := [mask@[9:9]   ? m[an]{32} : r[9]]
+	*32* an    := [mask@[9:9]   ? an + 4 : an]
+	*32* r[10] := [mask@[10:10] ? m[an]{32} : r[10]]
+	*32* an    := [mask@[10:10] ? an + 4 : an]
+	*32* r[11] := [mask@[11:11] ? m[an]{32} : r[11]]
+	*32* an    := [mask@[11:11] ? an + 4 : an]
+	*32* r[12] := [mask@[12:12] ? m[an]{32} : r[12]]
+	*32* an    := [mask@[12:12] ? an + 4 : an]
+	*32* r[13] := [mask@[13:13] ? m[an]{32} : r[13]]
+	*32* an    := [mask@[13:13] ? an + 4 : an]
+	*32* r[14] := [mask@[14:14] ? m[an]{32} : r[14]]
+	*32* an    := [mask@[14:14] ? an + 4 : an]
+	*32* r[15] := [mask@[15:15] ? m[an]{32} : r[15]]
+	*32* an    := [mask@[15:15] ? an + 4 : an];
 
 STOREMl an, mask
-	*32* an := [mask@[15:15]?an - 4:an]
-	*32* r[0] := [mask@[15:15]?m[an]{32}:r[0]]
-	*32* an := [mask@[14:14]?an - 4:an]
-	*32* r[0] := [mask@[14:14]?m[an]{32}:r[1]]
-	*32* an := [mask@[13:13]?an - 4:an]
-	*32* r[0] := [mask@[13:13]?m[an]{32}:r[2]]
-	*32* an := [mask@[12:12]?an - 4:an]
-	*32* r[0] := [mask@[12:12]?m[an]{32}:r[3]]
-	*32* an := [mask@[11:11]?an - 4:an]
-	*32* r[0] := [mask@[11:11]?m[an]{32}:r[4]]
-	*32* an := [mask@[10:10]?an - 4:an]
-	*32* r[0] := [mask@[10:10]?m[an]{32}:r[5]]
-	*32* an := [mask@[9:9]?an - 4:an]
-	*32* r[0] := [mask@[9:9]?m[an]{32}:r[6]]
-	*32* an := [mask@[8:8]?an - 4:an]
-	*32* r[0] := [mask@[8:8]?m[an]{32}:r[7]]
-	*32* an := [mask@[7:7]?an - 4:an]
-	*32* r[0] := [mask@[7:7]?m[an]{32}:r[8]]
-	*32* an := [mask@[6:6]?an - 4:an]
-	*32* r[0] := [mask@[6:6]?m[an]{32}:r[9]]
-	*32* an := [mask@[5:5]?an - 4:an]
-	*32* r[0] := [mask@[5:5]?m[an]{32}:r[10]]
-	*32* an := [mask@[4:4]?an - 4:an]
-	*32* r[0] := [mask@[4:4]?m[an]{32}:r[11]]
-	*32* an := [mask@[3:3]?an - 4:an]
-	*32* r[0] := [mask@[3:3]?m[an]{32}:r[12]]
-	*32* an := [mask@[2:2]?an - 4:an]
-	*32* r[0] := [mask@[2:2]?m[an]{32}:r[13]]
-	*32* an := [mask@[1:1]?an - 4:an]
-	*32* r[0] := [mask@[1:1]?m[an]{32}:r[14]]
-	*32* an := [mask@[0:0]?an - 4:an]
-	*32* r[0] := [mask@[0:0]?m[an]{32}:r[15]];
+	*32* an   := [mask@[15:15] ? an - 4 : an]
+	*32* r[0] := [mask@[15:15] ? m[an]{32} : r[0]]
+	*32* an   := [mask@[14:14] ? an - 4 : an]
+	*32* r[0] := [mask@[14:14] ? m[an]{32} : r[1]]
+	*32* an   := [mask@[13:13] ? an - 4 : an]
+	*32* r[0] := [mask@[13:13] ? m[an]{32} : r[2]]
+	*32* an   := [mask@[12:12] ? an - 4 : an]
+	*32* r[0] := [mask@[12:12] ? m[an]{32} : r[3]]
+	*32* an   := [mask@[11:11] ? an - 4 : an]
+	*32* r[0] := [mask@[11:11] ? m[an]{32} : r[4]]
+	*32* an   := [mask@[10:10] ? an - 4 : an]
+	*32* r[0] := [mask@[10:10] ? m[an]{32} : r[5]]
+	*32* an   := [mask@[9:9]   ? an - 4 : an]
+	*32* r[0] := [mask@[9:9]   ? m[an]{32} : r[6]]
+	*32* an   := [mask@[8:8]   ? an - 4 : an]
+	*32* r[0] := [mask@[8:8]   ? m[an]{32} : r[7]]
+	*32* an   := [mask@[7:7]   ? an - 4 : an]
+	*32* r[0] := [mask@[7:7]   ? m[an]{32} : r[8]]
+	*32* an   := [mask@[6:6]   ? an - 4 : an]
+	*32* r[0] := [mask@[6:6]   ? m[an]{32} : r[9]]
+	*32* an   := [mask@[5:5]   ? an - 4 : an]
+	*32* r[0] := [mask@[5:5]   ? m[an]{32} : r[10]]
+	*32* an   := [mask@[4:4]   ? an - 4 : an]
+	*32* r[0] := [mask@[4:4]   ? m[an]{32} : r[11]]
+	*32* an   := [mask@[3:3]   ? an - 4 : an]
+	*32* r[0] := [mask@[3:3]   ? m[an]{32} : r[12]]
+	*32* an   := [mask@[2:2]   ? an - 4 : an]
+	*32* r[0] := [mask@[2:2]   ? m[an]{32} : r[13]]
+	*32* an   := [mask@[1:1]   ? an - 4 : an]
+	*32* r[0] := [mask@[1:1]   ? m[an]{32} : r[14]]
+	*32* an   := [mask@[0:0]   ? an - 4 : an]
+	*32* r[0] := [mask@[0:0]   ? m[an]{32} : r[15]];
 
 COND3 := { "1",  "0",  "~%CF ^ ~%ZF", "%CF | %ZF", "~%CF", "%CF", "~%ZF", "%ZF", "~%OF", "%OF", "~%NF", "%NF", "%NF ^ %OF | ~%NF ^ ~%OF", "%NF ^ ~%OF | ~%NF ^ %OF", "%NF ^ %OF ^ ~%ZF | ~%NF ^ ~%OF ^ ~%ZF", "%ZF | %NF ^ ~%OF | ~%NF ^ %OF" };
 SCCS  := { "ST", "SF", "SHI",         "SLS",       "SCC",  "SCS", "SNE",  "SEQ", "SVC",  "SVS", "SPL",  "SMI", "SGE",                     "SLT",                     "SGT",                                   "SLE"                           };
 
 SCCS[IDX] dst
-	*8* dst := [(COND3[IDX] = 1)?1:0];
+	*8* dst := [COND3[IDX] = 1 ? 1 : 0];
 
 SUBX src, dst
 	*32* r[tmp1] := dst

@@ -38,7 +38,7 @@ define([[POP2]], [[]])
 #};
 
 #OP2C(op) {
-#	*32* %Areg := [%Breg op %Areg?1:0];
+#	*32* %Areg := [%Breg op %Areg ? 1 : 0];
 #	POP1()
 #};
 
@@ -72,15 +72,15 @@ breakpoint       # breakpoint
 	_;
 cj         val   # conditional jump
 	*32* tmp := %Areg
-	*32* %ZF := [tmp = 0?1:0]
-	*32* %Areg := [tmp = 0?%Areg:%Breg]
-	*32* %Breg := [tmp = 0?%Breg:%Creg]
-	*32* %pc := [tmp = 0?%pc+val:%pc];
+	*32* %ZF := [tmp = 0 ? 1 : 0]
+	*32* %Areg := [tmp = 0 ? %Areg : %Breg]
+	*32* %Breg := [tmp = 0 ? %Breg : %Creg]
+	*32* %pc := [tmp = 0 ? %pc+val : %pc];
 cj1        val   # conditional jump
 	*32* tmp := %Areg
-	*32* %ZF := [tmp = 0?1:0]
-	*32* %Areg := [tmp = 0?%Areg:%Breg]
-	*32* %Breg := [tmp = 0?%Breg:%Creg];
+	*32* %ZF := [tmp = 0 ? 1 : 0]
+	*32* %Areg := [tmp = 0 ? %Areg : %Breg]
+	*32* %Breg := [tmp = 0 ? %Breg : %Creg];
 dequeue          # dequeue a process
 	_;
 divstep          # divide step
@@ -92,7 +92,7 @@ ecall            # exception call
 enqueue          # enqueue a process
 	_;
 eqc        val   # equals constant
-	*32* %Areg := [%Areg = val?1:0];
+	*32* %Areg := [%Areg = val ? 1 : 0];
 eret             # exception return
 	_;
 fcall      val   # function call
@@ -103,11 +103,11 @@ gajw             # general adjust workspace
 	*32* %Areg := tmp;
 gt               # greater than
 	#OP2C(">");
-	*32* %Areg := [%Breg > %Areg?1:0]
+	*32* %Areg := [%Breg > %Areg ? 1 : 0]
 	POP1();
 gtu              # greater than unsigned
 	#OP2C(">");
-	*32* %Areg := [%Breg >u %Areg?1:0]
+	*32* %Areg := [%Breg >u %Areg ? 1 : 0]
 	POP1();
 io               # input/output
 	_;
@@ -206,7 +206,7 @@ stl        val   # store local
 	*32* m[%sp + (val * 4)] := %Areg
 	POPALL();
 stnl       val   # store non-local
-	*32* m[%Areg + (val * 4) ] := %Breg
+	*32* m[%Areg + (val * 4)] := %Breg
 	POPALL()
 	POPALL();
 stop             # stop process
@@ -592,6 +592,6 @@ wsubdb           # form double word subscript
 	POP1();
 xdble            # extend to double
 	*32* %Creg := %Breg
-	*32* %Breg := [%Areg@[31:31] = 0?0:-1];
+	*32* %Breg := [%Areg@[31:31] = 0 ? 0 : -1];
 xword            # extend word
 	_;

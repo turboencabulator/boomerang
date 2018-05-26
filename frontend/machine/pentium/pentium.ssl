@@ -73,67 +73,67 @@ INTEGER
 
 
 ADDFLAGS8(op1, op2, result) {
-	*1* %CF :=                    ((op1@[7:7]) & (op2@[7:7]))
-	         | (~(result@[7:7]) & ((op1@[7:7]) | (op2@[7:7])))
-	*1* %OF := ( (op1@[7:7]) &  (op2@[7:7]) & ~(result@[7:7]))
-	         | (~(op1@[7:7]) & ~(op2@[7:7]) &  (result@[7:7]))
+	*1* %CF :=                  (op1@[7:7] & op2@[7:7])
+	         | (~result@[7:7] & (op1@[7:7] | op2@[7:7]))
+	*1* %OF := ( op1@[7:7] &  op2@[7:7] & ~result@[7:7])
+	         | (~op1@[7:7] & ~op2@[7:7] &  result@[7:7])
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 ADDFLAGS16(op1, op2, result) {
-	*1* %CF :=                      ((op1@[15:15]) & (op2@[15:15]))
-	         | (~(result@[15:15]) & ((op1@[15:15]) | (op2@[15:15])))
-	*1* %OF := ( (op1@[15:15]) &  (op2@[15:15]) & ~(result@[15:15]))
-	         | (~(op1@[15:15]) & ~(op2@[15:15]) &  (result@[15:15]))
+	*1* %CF :=                    (op1@[15:15] & op2@[15:15])
+	         | (~result@[15:15] & (op1@[15:15] | op2@[15:15]))
+	*1* %OF := ( op1@[15:15] &  op2@[15:15] & ~result@[15:15])
+	         | (~op1@[15:15] & ~op2@[15:15] &  result@[15:15])
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 ADDFLAGS32(op1, op2, result) {
-	*1* %CF :=                      ((op1@[31:31]) & (op2@[31:31]))
-	         | (~(result@[31:31]) & ((op1@[31:31]) | (op2@[31:31])))
-	*1* %OF := ( (op1@[31:31]) &  (op2@[31:31]) & ~(result@[31:31]))
-	         | (~(op1@[31:31]) & ~(op2@[31:31]) &  (result@[31:31]))
+	*1* %CF :=                    (op1@[31:31] & op2@[31:31])
+	         | (~result@[31:31] & (op1@[31:31] | op2@[31:31]))
+	*1* %OF := ( op1@[31:31] &  op2@[31:31] & ~result@[31:31])
+	         | (~op1@[31:31] & ~op2@[31:31] &  result@[31:31])
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 SUBFLAGS8(op1, op2, result) {
-	*1* %CF :=                   (~(op1@[7:7]) & (op2@[7:7]))
-	         | ((result@[7:7]) & (~(op1@[7:7]) | (op2@[7:7])))
-	*1* %OF := ( (op1@[7:7]) & ~(op2@[7:7]) & ~(result@[7:7]))
-	         | (~(op1@[7:7]) &  (op2@[7:7]) &  (result@[7:7]))
+	*1* %CF :=                 (~op1@[7:7] & op2@[7:7])
+	         | (result@[7:7] & (~op1@[7:7] | op2@[7:7]))
+	*1* %OF := ( op1@[7:7] & ~op2@[7:7] & ~result@[7:7])
+	         | (~op1@[7:7] &  op2@[7:7] &  result@[7:7])
 	*1* %NF := result@[7:7]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 SUBFLAGS16(op1, op2, result) {
-	*1* %CF :=                     (~(op1@[15:15]) & (op2@[15:15]))
-	         | ((result@[15:15]) & (~(op1@[15:15]) | (op2@[15:15])))
-	*1* %OF := ( (op1@[15:15]) & ~(op2@[15:15]) & ~(result@[15:15]))
-	         | (~(op1@[15:15]) &  (op2@[15:15]) &  (result@[15:15]))
+	*1* %CF :=                   (~op1@[15:15] & op2@[15:15])
+	         | (result@[15:15] & (~op1@[15:15] | op2@[15:15]))
+	*1* %OF := ( op1@[15:15] & ~op2@[15:15] & ~result@[15:15])
+	         | (~op1@[15:15] &  op2@[15:15] &  result@[15:15])
 	*1* %NF := result@[15:15]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
 
 SUBFLAGS32(op1, op2, result) {
-	*1* %CF :=                     (~(op1@[31:31]) & (op2@[31:31]))
-	         | ((result@[31:31]) & (~(op1@[31:31]) | (op2@[31:31])))
-	*1* %OF := ( (op1@[31:31]) & ~(op2@[31:31]) & ~(result@[31:31]))
-	         | (~(op1@[31:31]) &  (op2@[31:31]) &  (result@[31:31]))
+	*1* %CF :=                   (~op1@[31:31] & op2@[31:31])
+	         | (result@[31:31] & (~op1@[31:31] | op2@[31:31]))
+	*1* %OF := ( op1@[31:31] & ~op2@[31:31] & ~result@[31:31])
+	         | (~op1@[31:31] &  op2@[31:31] &  result@[31:31])
 	*1* %NF := result@[31:31]
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 #	*1* %PF := ??
 #	*1* %AF := ??   # unpacked BCD
 };
@@ -146,7 +146,7 @@ SUBFLAGSFL(op1, op2) {
 LOGICALFLAGS8(result) {
 	*1* %CF := 0
 	*1* %OF := 0
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %NF := result@[7:7]
 #	*1* %PF := ??
 #	*1* %AF := ??
@@ -155,7 +155,7 @@ LOGICALFLAGS8(result) {
 LOGICALFLAGS16(result) {
 	*1* %CF := 0
 	*1* %OF := 0
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %NF := result@[15:15]
 #	*1* %PF := ??
 #	*1* %AF := ??
@@ -164,131 +164,131 @@ LOGICALFLAGS16(result) {
 LOGICALFLAGS32(result) {
 	*1* %CF := 0
 	*1* %OF := 0
-	*1* %ZF := [result = 0?1:0]
+	*1* %ZF := [result = 0 ? 1 : 0]
 	*1* %NF := result@[31:31]
 #	*1* %PF := ??
 #	*1* %AF := ??
 };
 
 IMULTFLAGS8(result) {
-	*1* %CF := [(result@[7:15] = 0) or (result@[7:15] = 1)?1:0]
-	*1* %OF := [(result@[7:15] = 0) or (result@[7:15] = 1)?1:0]
+	*1* %CF := [(result@[7:15] = 0) or (result@[7:15] = 1) ? 1 : 0]
+	*1* %OF := [(result@[7:15] = 0) or (result@[7:15] = 1) ? 1 : 0]
 };
 
 IMULTFLAGS16(result) {
-	*1* %CF := [(result@[15:31] = 0) or (result@[15:31] = 1)?1:0]
-	*1* %OF := [(result@[15:31] = 0) or (result@[15:31] = 1)?1:0]
+	*1* %CF := [(result@[15:31] = 0) or (result@[15:31] = 1) ? 1 : 0]
+	*1* %OF := [(result@[15:31] = 0) or (result@[15:31] = 1) ? 1 : 0]
 };
 
 IMULTFLAGS32(result) {
-	*1* %CF := [(result@[31:63] = 0) or (result@[31:63] = 1)?1:0]
-	*1* %OF := [(result@[31:63] = 0) or (result@[31:63] = 1)?1:0]
+	*1* %CF := [(result@[31:63] = 0) or (result@[31:63] = 1) ? 1 : 0]
+	*1* %OF := [(result@[31:63] = 0) or (result@[31:63] = 1) ? 1 : 0]
 };
 
 MULTFLAGS8(result) {
-	*1* %CF := [result@[8:15]?1:0]
-	*1* %OF := [result@[8:15]?1:0]
+	*1* %CF := [result@[8:15] ? 1 : 0]
+	*1* %OF := [result@[8:15] ? 1 : 0]
 };
 
 MULTFLAGS16(result) {
-	*1* %CF := [result@[16:31]?1:0]
-	*1* %OF := [result@[16:31]?1:0]
+	*1* %CF := [result@[16:31] ? 1 : 0]
+	*1* %OF := [result@[16:31] ? 1 : 0]
 };
 
 MULTFLAGS32(result) {
-	*1* %CF := [result@[32:63]?1:0]
-	*1* %OF := [result@[32:63]?1:0]
+	*1* %CF := [result@[32:63] ? 1 : 0]
+	*1* %OF := [result@[32:63] ? 1 : 0]
 };
 
 ROLFLAGS8(result, op1, count) {
-	*1* %OF := [count = 1?(op1@[7:7])! = %CF:-1]
+	*1* %OF := [count = 1 ? op1@[7:7]! = %CF : -1]
 	*1* %CF := result@[7:7]
 };
 
 ROLFLAGS16(result, op1, count) {
-	*1* %OF := [count = 1?(op1@[15:15])! = %CF:-1]
+	*1* %OF := [count = 1 ? op1@[15:15]! = %CF : -1]
 	*1* %CF := result@[15:15]
 };
 
 ROLFLAGS32(result, op1, count) {
-	*1* %OF := [count = 1?(op1@[31:31])! = %CF:-1]
+	*1* %OF := [count = 1 ? op1@[31:31]! = %CF : -1]
 	*1* %CF := result@[31:31]
 };
 
 RORFLAGS8(result, op1, count) {
 	*1* %CF := result@[7:7]
-	*1* %OF := [count = 1?(op1@[7:7])! = (op1@[6:6]):-1]
+	*1* %OF := [count = 1 ? op1@[7:7]! = op1@[6:6] : -1]
 };
 
 RORFLAGS16(result, op1, count) {
 	*1* %CF := result@[15:15]
-	*1* %OF := [count = 1?(op1@[15:15])! = (op1@[14:14]):-1]
+	*1* %OF := [count = 1 ? op1@[15:15]! = op1@[14:14] : -1]
 };
 
 RORFLAGS32(result, op1, count) {
 	*1* %CF := result@[31:31]
-	*1* %OF := [count = 1?(op1@[31:31])! = (op1@[30:30]):-1]
+	*1* %OF := [count = 1 ? op1@[31:31]! = op1@[30:30] : -1]
 };
 
 SALFLAGS8(result, op1, count) {
 	*1* %CF := op1@[(8 - count):(9 - count)]
-	*1* %OF := [count = 1?(result@[7:7])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[7:7]! = %CF : -1]
 };
 
 SALFLAGS16(result, op1, count) {
 	*1* %CF := op1@[(16 - count):(17 - count)]
-	*1* %OF := [count = 1?(result@[15:15])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[15:15]! = %CF : -1]
 };
 
 SALFLAGS32(result, op1, count) {
 	*1* %CF := op1@[(32 - count):(33 - count)]
-	*1* %OF := [count = 1?(result@[31:31])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
 };
 
 SARFLAGS(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1?0:-1]
+	*1* %OF := [count = 1 ? 0 : -1]
 };
 
 SHRFLAGS8(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1?(result@[7:7])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[7:7]! = %CF : -1]
 };
 
 SHRFLAGS16(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1?(result@[15:15])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[15:15]! = %CF : -1]
 };
 
 SHRFLAGS32(result, op1, count) {
 	*1* %CF := op1@[(count - 1):count]
-	*1* %OF := [count = 1?(result@[31:31])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
 };
 
 SHLDFLAGS32(result, combine, count) {
 	*1* %CF := combine@[(32 - count):(33 - count)]
-	*1* %OF := [count = 1?(result@[31:31])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
 };
 
 SHLDFLAGS64(result, combine, count) {
 	*1* %CF := combine@[(64 - count):(65 - count)]
-	*1* %OF := [count = 1?(result@[63:64])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[63:64]! = %CF : -1]
 };
 
 SHRDFLAGS32(result, combine, count) {
 	*1* %CF := combine@[(count - 1):count]
-	*1* %OF := [count = 1?(result@[31:31])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[31:31]! = %CF : -1]
 };
 
 SHRDFLAGS64(result, combine, count) {
 	*1* %CF := combine@[(count - 1):count]
-	*1* %OF := [count = 1?(result@[63:64])! = %CF:-1]
+	*1* %OF := [count = 1 ? result@[63:64]! = %CF : -1]
 };
 
 SETFFLAGS(op1, op2) {
-	*1* %FZF := [(op1 = op2) ? 1 : 0]
-	*1* %FLF := [(op1 < op2) ? 1 : 0]
-	*1* %C2 := 0 # [ (op1 > op2) ? 1 : 0]
+	*1* %FZF := [op1 = op2 ? 1 : 0]
+	*1* %FLF := [op1 < op2 ? 1 : 0]
+	*1* %C2 := 0 # [op1 > op2 ? 1 : 0]
 };
 
 OP1  := { "+",   "-"   };
@@ -643,7 +643,7 @@ BT.od modrm, reg32
 BTR.od modrm, reg32
 	*32* tmp1 := 1 << reg32
 	*1* %CF := modrm@[reg32:reg32]
-	*32* modrm := modrm & ~(tmp1);
+	*32* modrm := modrm & ~tmp1;
 
 BTC.od modrm, reg32
 	*32* tmp1 := 1 << reg32
@@ -699,31 +699,31 @@ CLI
 	*1* %IF := 0;
 
 CMC
-	*1* %CF := ~(%CF);
+	*1* %CF := ~%CF;
 
 CMPXCHG.EV.GB modrm, reg8
 	*8* tmpb := modrm{8}
-	*8* modrm := [%al = tmpb?reg8:tmpb]
-	*8* %al := [%al = tmpb?%al:tmpb]
-	*1* %ZF := [%al = tmpb?1:0];
+	*8* modrm := [%al = tmpb ? reg8 : tmpb]
+	*8* %al := [%al = tmpb ? %al : tmpb]
+	*1* %ZF := [%al = tmpb ? 1 : 0];
 
 CMPXCHG.EV.GVOW modrm, reg16
 	*16* tmph := modrm{16}
-	*16* modrm := [%ax = tmph?reg16:tmph]
-	*16* %ax := [%ax = tmph?%ax:tmph]
-	*1* %ZF := [%ax = tmph?1:0];
+	*16* modrm := [%ax = tmph ? reg16 : tmph]
+	*16* %ax := [%ax = tmph ? %ax : tmph]
+	*1* %ZF := [%ax = tmph ? 1 : 0];
 
 CMPXCHG.EV.GVOD modrm, reg32
 	*32* tmp1 := modrm
-	*32* modrm := [%eax = tmp1?reg32:tmp1]
-	*32* %eax := [%eax = tmp1?%eax:tmp1]
-	*1* %ZF := [%eax = tmp1?1:0];
+	*32* modrm := [%eax = tmp1 ? reg32 : tmp1]
+	*32* %eax := [%eax = tmp1 ? %eax : tmp1]
+	*1* %ZF := [%eax = tmp1 ? 1 : 0];
 
 CWD
-	*16* %dx := [%ax < 0?-1:0];
+	*16* %dx := [%ax < 0 ? -1 : 0];
 
 CDQ
-	*32* %edx := [%eax < 0?-1:0];
+	*32* %edx := [%eax < 0 ? -1 : 0];
 
 # Note that decrement doesn't set the carry flag, so none of the carry related compares, which need SUBFLAGS, should
 # ever be needed. If the carry flag IS used, then it will depend on earlier SUBFLAGS, and Boomerang won't handle that
@@ -900,7 +900,7 @@ JMP32S := {
 };
 
 JMP32S[IDX] reloc32
-	*32* %pc := [(COND1[IDX] = 1)?%pc + 6 + reloc32:%pc];
+	*32* %pc := [COND1[IDX] = 1 ? %pc + 6 + reloc32 : %pc];
 
 COND2 := {
 	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
@@ -918,7 +918,7 @@ JMP16S := {
 };
 
 JMP16S[IDX] reloc16
-	*32* %pc := [(COND2[IDX] = 1)?%pc + 4 + reloc16:%pc];
+	*32* %pc := [COND2[IDX] = 1 ? %pc + 4 + reloc16 : %pc];
 
 COND3 := {
 	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
@@ -936,7 +936,7 @@ JMP8S := {
 };
 
 JMP8S[IDX] reloc8
-	*32* %pc := [(COND3[IDX] = 1)?%pc + 2 + reloc8:%pc];
+	*32* %pc := [COND3[IDX] = 1 ? %pc + 2 + reloc8 : %pc];
 
 JMP.JB reloc8
 	*32* %pc := %pc + 2 + reloc8;
@@ -978,7 +978,7 @@ LOOPS := { "LOOP", "LOOPE", "LOOPZ", "LOOPNE", "LOOPNZ" };
 
 LOOPS[IDX] reloc
 	*32* %ecx := %ecx - 1
-	*32* %pc := [COND4[IDX]?%pc + reloc:%pc];
+	*32* %pc := [COND4[IDX] ? %pc + reloc : %pc];
 
 MOV.EB.IB modrm, i8
 	*8* modrm := i8;
@@ -1266,52 +1266,52 @@ SEG.SS
 	_;
 
 SETB.B modrm
-	*8* modrm := [%CF?1:0];
+	*8* modrm := [%CF ? 1 : 0];
 
 SETB.NB modrm
-	*8* modrm := [~%CF?1:0];
+	*8* modrm := [~%CF ? 1 : 0];
 
 SETB.BE modrm
-	*8* modrm := [%CF | %ZF?1:0];
+	*8* modrm := [%CF | %ZF ? 1 : 0];
 
 SETB.NBE modrm
-	*8* modrm := [~%CF & ~%ZF?1:0];
+	*8* modrm := [~%CF & ~%ZF ? 1 : 0];
 
 SETB.L modrm
-	*8* modrm := [%NF! = %OF?1:0];
+	*8* modrm := [%NF! = %OF ? 1 : 0];
 
 SETB.NL modrm
-	*8* modrm := [%NF = %OF?1:0];
+	*8* modrm := [%NF = %OF ? 1 : 0];
 
 SETB.O modrm
-	*8* modrm := [%OF?1:0];
+	*8* modrm := [%OF ? 1 : 0];
 
 SETB.NO modrm
-	*8* modrm := [~%OF?1:0];
+	*8* modrm := [~%OF ? 1 : 0];
 
 SETB.P modrm
-	*8* modrm := [%PF?1:0];
+	*8* modrm := [%PF ? 1 : 0];
 
 SETB.NP modrm
-	*8* modrm := [~%PF = 0?1:0];
+	*8* modrm := [~%PF = 0 ? 1 : 0];
 
 SETB.S modrm
-	*8* modrm := [%NF?1:0];
+	*8* modrm := [%NF ? 1 : 0];
 
 SETB.NS modrm
-	*8* modrm := [~%NF?1:0];
+	*8* modrm := [~%NF ? 1 : 0];
 
 SETB.Z modrm
-	*8*  modrm := [%ZF?1:0];
+	*8*  modrm := [%ZF ? 1 : 0];
 
 SETB.NZ modrm
-	*8* modrm := [~%ZF?1:0];
+	*8* modrm := [~%ZF ? 1 : 0];
 
 SETB.LE modrm
-	*8* modrm := [%ZF | (%NF ~= %OF) ?1:0];
+	*8* modrm := [%ZF | (%NF ~= %OF) ? 1 : 0];
 
 SETB.NLE modrm
-	*8* modrm := [~%ZF & (%NF = %OF) ?1:0];
+	*8* modrm := [~%ZF & (%NF = %OF) ? 1 : 0];
 
 OP5 := { "<<",     ">>A", ">>"  };
 SHT := { "SHLSAL", "SAR", "SHR" };
@@ -1410,7 +1410,7 @@ OP6  := { "<<",   ">>"   };
 SHTD := { "SHLD", "SHRD" };
 
 SHTD[IDX].CLOW modrm, reg16
-	*32* tmp1 := [%cl > 31?%cl:31]
+	*32* tmp1 := [%cl > 31 ? %cl : 31]
 	*32* tmp2 := reg16 << 16
 	*32* tmp3 := tmp2 + modrm{16}
 	*32* tmp5 := tmp3 OP6[IDX] tmp1
@@ -1421,7 +1421,7 @@ SHRD.CLOW modrm, reg16
 	SHRDFLAGS32(tmp5, tmp3, tmp1);
 
 SHTD[IDX].CLOD modrm, reg32
-	*32* tmp1 := [%cl > 31?%cl:31]
+	*32* tmp1 := [%cl > 31 ? %cl : 31]
 	*64* tmp2 := reg32 << 32
 	*64* tmp3 := tmp2 + modrm
 	*64* tmp5 := tmp3 OP6[IDX] tmp1
@@ -1432,7 +1432,7 @@ SHRD.CLOD modrm, reg32
 	SHRDFLAGS64(tmp5, tmp3, tmp1);
 
 SHTD[IDX].IBOW modrm, reg16, cnt
-	*32* tmp1 := [cnt > 31?cnt:31]
+	*32* tmp1 := [cnt > 31 ? cnt : 31]
 	*32* tmp2 := reg16 << 16
 	*32* tmp3 := tmp2 + modrm{16}
 	*32* tmp5 := tmp3 OP6[IDX] tmp1
@@ -1443,7 +1443,7 @@ SHRD.IBOW modrm, reg16, cnt
 	SHRDFLAGS32(tmp5, tmp3, tmp1);
 
 SHTD[IDX].IBOD modrm, reg32, cnt
-	*32* tmp1 := [cnt > 31?cnt:31]
+	*32* tmp1 := [cnt > 31 ? cnt : 31]
 	*64* tmp2 := reg32 << 32
 	*64* tmp3 := tmp2 + modrm{32}
 	*64* tmp5 := tmp3 OP6[IDX] tmp1
@@ -1503,9 +1503,9 @@ STOS_OR[X].B
 STRFL_OR[X].B
 	SUBFLAGS8(m[%esi]{8}, m[%edi]{8}, tmpb);
 STRSI[IDX].B
-	*32* %esi := %esi + [%DF = 0?1:-1];
+	*32* %esi := %esi + [%DF = 0 ? 1 : -1];
 STRDI[IDX].B
-	*32* %edi := %edi + [%DF = 0?1:-1];
+	*32* %edi := %edi + [%DF = 0 ? 1 : -1];
 
 CMPS_OR[X].VOW
 	*16* tmph := m[%esi]{16} - m[%edi]{16};
@@ -1520,9 +1520,9 @@ STOS_OR[X].VOW
 STRFL_OR[X].VOW
 	SUBFLAGS16(m[%esi]{16}, m[%edi]{16}, tmph);
 STRSI[IDX].VOW
-	*16* %esi := %esi + [%DF = 0?2:-2];
+	*16* %esi := %esi + [%DF = 0 ? 2 : -2];
 STRDI[IDX].VOW
-	*16* %edi := %edi + [%DF = 0?2:-2];
+	*16* %edi := %edi + [%DF = 0 ? 2 : -2];
 
 CMPS_OR[X].VOD
 	*32* tmp1 := m[%esi]{32} - m[%edi]{32};
@@ -1537,9 +1537,9 @@ STOS_OR[X].VOD
 STRFL_OR[X].VOD
 	SUBFLAGS32(m[%esi]{32}, m[%edi]{32}, tmp1);
 STRSI[IDX].VOD
-	*32* %esi := %esi + [%DF = 0?4:-4];
+	*32* %esi := %esi + [%DF = 0 ? 4 : -4];
 STRDI[IDX].VOD
-	*32* %edi := %edi + [%DF = 0?4:-4];
+	*32* %edi := %edi + [%DF = 0 ? 4 : -4];
 
 # All repeated instructions decrement %ecx
 STRS_R[X]ALLSZ[Y]
