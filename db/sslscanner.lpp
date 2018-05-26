@@ -125,8 +125,6 @@
 ":="    { return SSLParser::EQUATE; }
 "::="   { return SSLParser::ASSIGN; }
 ".."    { return SSLParser::TO; }
-"!"     { yylval.op = opSignExt; return SSLParser::S_E; }
-"@"     { return SSLParser::AT; }
 
 "addr("          { yylval.op = opAddrOf;  return SSLParser::UNARY_FUNC; }
 "fsize("         { yylval.op = opFsize;   return SSLParser::CONV_FUNC; }
@@ -172,6 +170,8 @@ _?[A-Za-z][A-Za-z0-9_]*    { yylval.str = new std::string(yytext, yyleng); retur
 "]"         |
 "["         |
 ";"         |
+"!"         |
+"@"         |
 "$"         { return yytext[0]; }
 
 -?[0-9]+"."[0-9]+ { yylval.dbl = atof(yytext); return SSLParser::FLOATNUM; }

@@ -148,11 +148,7 @@
 %left  <op>  FARITH_OP
 %left        TABLE_OP NAME_LOOKUP
 %right <op>  NEG_OP
-%left        CAST_OP '{'
-%left  <op>  S_E        // Sign extend. Note it effectively has low precedence, because being a post operator,
-                        // the whole expression is already parsed, and hence is sign extended.
-                        // Another reason why ! is deprecated!
-%nonassoc    AT
+%left        POSTFIX_OP '!' '@' '{'
 
 %type <exp> exp location
 %type <op> bin_oper
@@ -306,7 +302,7 @@ reglist
 		delete $10;
 	  }
 
-	| REG_ID '[' NUM ']' INDEX NUM SHARES REG_ID AT '[' NUM TO NUM ']' {
+	| REG_ID '[' NUM ']' INDEX NUM SHARES REG_ID '@' '[' NUM TO NUM ']' {
 		if (Dict.RegMap.count(*$1))
 			yyerror("Name reglist declared twice");
 		Dict.RegMap[*$1] = $6;
@@ -760,11 +756,15 @@ exp
 		delete $2;
 	  }
 
-	| exp S_E { $$ = new Unary($2, $1); }
+	/* FIXME:  Does the following comment still apply?  '!' is highest precedence. */
+	/* Sign extend. Note it effectively has low precedence, because being a post operator,
+	 * the whole expression is already parsed, and hence is sign extended.
+	 * Another reason why ! is deprecated! */
+	| exp '!' { $$ = new Unary(opSignExt, $1); }
 
-	/* "%prec CAST_OP" just says that this operator has the precedence of the dummy terminal CAST_OP
+	/* "%prec POSTFIX_OP" just says that this operator has the precedence of the dummy terminal POSTFIX_OP
 	 * It's a "precedence modifier" (see "Context-Dependent Precedence" in the Bison documantation) */
-	| exp '{' NUM '}' %prec CAST_OP {
+	| exp '{' NUM '}' %prec POSTFIX_OP {
 		// size casts and the opSize operator were generally deprecated, but now opSize is used to transmit
 		// the size of operands that could be memOfs from the decoder to type analysis
 		if ($3 == STD_SIZE)
@@ -863,7 +863,7 @@ location
 		}
 	  }
 
-	| exp AT '[' exp ':' exp ']' { $$ = new Ternary(opAt, $1, $4, $6); }
+	| exp '@' '[' exp ':' exp ']' { $$ = new Ternary(opAt, $1, $4, $6); }
 
 	| TEMP { $$ = Location::tempOf(new Const($1->c_str())); /*delete $1;*/ }
 
