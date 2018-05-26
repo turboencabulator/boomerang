@@ -147,19 +147,18 @@
 %left  <op>  ARITH_OP
 %left  <op>  FARITH_OP
 %right <op>  NEG_OP
-%left        CAST_OP
-%left        LOOKUP_RDC
+%left        CAST_OP '{'
+%left        TABLE_OP NAME_LOOKUP
 %left  <op>  S_E        // Sign extend. Note it effectively has low precedence, because being a post operator,
                         // the whole expression is already parsed, and hence is sign extended.
                         // Another reason why ! is deprecated!
 %nonassoc    AT
 
-%type <exp> exp location exp_term
+%type <exp> exp location
 %type <op> bin_oper
 %type <str> param
 %type <regtransfer> rt assign_rt
 %type <typ> assigntype
-%type <num> cast
 %type <insel> name_contract instr_elem instr_name
 %type <strlist> reg_table
 %type <strlist> list_parameter func_parameter
@@ -687,7 +686,7 @@ assign_rt
 	| assigntype exp { $$ = new Assign($1, nullptr, $2); }
 	;
 
-exp_term
+exp
 	: NUM                         { $$ = new Const($1); }
 	| FLOATNUM                    { $$ = new Const($1); }
 	| '(' exp ')'                 { $$ = $2; }
@@ -760,20 +759,18 @@ exp_term
 		}
 		delete $2;
 	  }
-	;
 
-exp
-	: exp S_E { $$ = new Unary($2, $1); }
+	| exp S_E { $$ = new Unary($2, $1); }
 
 	/* "%prec CAST_OP" just says that this operator has the precedence of the dummy terminal CAST_OP
 	 * It's a "precedence modifier" (see "Context-Dependent Precedence" in the Bison documantation) */
-	| exp cast %prec CAST_OP {
+	| exp '{' NUM '}' %prec CAST_OP {
 		// size casts and the opSize operator were generally deprecated, but now opSize is used to transmit
 		// the size of operands that could be memOfs from the decoder to type analysis
-		if ($2 == STD_SIZE)
+		if ($3 == STD_SIZE)
 			$$ = $1;
 		else
-			$$ = new Binary(opSize, new Const($2), $1);
+			$$ = new Binary(opSize, new Const($3), $1);
 	  }
 
 	| NEG_OP exp { $$ = new Unary($1, $2); }
@@ -784,9 +781,9 @@ exp
 	| exp COND_OP   exp { $$ = new Binary($2, $1, $3); }
 	| exp LOG_OP    exp { $$ = new Binary($2, $1, $3); }
 
-	/* See comment above re "%prec LOOKUP_RDC"
+	/* See comment above re "%prec TABLE_OP"
 	 * Example: OP1[IDX] where OP1 := {  "&",  "|", "^", ... }; */
-	| exp NAME_LOOKUP NAME ']' exp_term %prec LOOKUP_RDC {
+	| exp NAME_LOOKUP NAME ']' exp %prec TABLE_OP {
 		auto ir = indexrefmap.find(*$3);
 		auto it = OpTable.find(*$2);
 		if (ir == indexrefmap.end()) {
@@ -813,8 +810,6 @@ exp
 		//delete $2;
 		//delete $3;
 	  }
-
-	| exp_term { $$ = $1; }
 	;
 
 location
@@ -875,10 +870,6 @@ location
 	/* This indicates a post-instruction marker (var tick) */
 	| location '\'' { $$ = new Unary(opPostVar, $1); }
 	| SUCCESSOR exp ')' { $$ = makeSuccessor($2); }
-	;
-
-cast
-	: '{' NUM '}' { $$ = $2; }
 	;
 
 assigntype
