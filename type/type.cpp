@@ -768,42 +768,6 @@ Type::match(Type *pattern)
 }
 
 Exp *
-IntegerType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-FloatType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-BooleanType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-CharType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-VoidType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-FuncType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
 PointerType::match(Type *pattern)
 {
 	if (pattern->isPointer()) {
@@ -818,24 +782,6 @@ ArrayType::match(Type *pattern)
 {
 	if (pattern->isArray())
 		return base_type->match(pattern);
-	return Type::match(pattern);
-}
-
-Exp *
-NamedType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-CompoundType::match(Type *pattern)
-{
-	return Type::match(pattern);
-}
-
-Exp *
-UnionType::match(Type *pattern)
-{
 	return Type::match(pattern);
 }
 

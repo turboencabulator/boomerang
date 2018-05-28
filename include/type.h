@@ -223,7 +223,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -253,7 +252,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -288,7 +286,6 @@ public:
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
 	Type       *mergeWith(Type *other) override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;            // Get size in bits
 	void        setSize(int sz) override { size = sz; }
@@ -329,7 +326,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 	void        setSize(int sz) override { size = sz; }
@@ -357,7 +353,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -382,7 +377,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -488,7 +482,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -540,7 +533,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -586,7 +578,6 @@ public:
 	bool        operator ==(const Type &other) const override;
 	//bool        operator -=(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
 
@@ -615,7 +606,6 @@ public:
 	Type       *clone() const override;
 	bool        operator ==(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	//Exp        *match(Type *pattern) override;
 	Type       *mergeWith(Type *other) override;
 
 	unsigned    getSize() const override;
@@ -641,7 +631,6 @@ public:
 	Type       *clone() const override;
 	bool        operator ==(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	//Exp        *match(Type *pattern) override;
 	Type       *mergeWith(Type *other) override;
 	Type       *getBaseType() const { return base_type; }
 	void        setBaseType(Type *b) { base_type = b; }
@@ -666,7 +655,6 @@ public:
 	Type       *clone() const override;
 	bool        operator ==(const Type &other) const override;
 	bool        operator < (const Type &other) const override;
-	//Exp        *match(Type *pattern) override;
 	Type       *mergeWith(Type *other) override;
 	Type       *getBaseType() const { return base_type; }
 	void        setBaseType(Type *b) { base_type = b; }
