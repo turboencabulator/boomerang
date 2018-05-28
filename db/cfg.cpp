@@ -1560,7 +1560,7 @@ Cfg::generateDot(std::ostream &os) const
 			os << "nway";
 			{
 				Exp *de = bb->getDest();
-				if (de) os << "\\n" << de;
+				if (de) os << "\\n" << *de;
 				os << "\",shape=trapezium];\n";
 			}
 			continue;

@@ -230,12 +230,12 @@ GenericExpTransformer::applyTo(Exp *e, bool &bMod)
 			return e;
 	}
 
-	LOG << "applying generic exp transformer match: " << match;
+	LOG << "applying generic exp transformer match: " << *match;
 	if (where)
-		LOG << " where: " << where;
-	LOG << " become: " << become;
-	LOG << " to: " << e;
-	LOG << " bindings: " << bindings << "\n";
+		LOG << " where: " << *where;
+	LOG << " become: " << *become;
+	LOG << " to: " << *e;
+	LOG << " bindings: " << *bindings << "\n";
 
 	e = become->clone();
 	for (Exp *l = bindings; !l->isNil(); l = l->getSubExp2())
@@ -243,12 +243,12 @@ GenericExpTransformer::applyTo(Exp *e, bool &bMod)
 		                        l->getSubExp1()->getSubExp2(),
 		                        change);
 
-	LOG << "calculated result: " << e << "\n";
+	LOG << "calculated result: " << *e << "\n";
 	bMod = true;
 
 	Exp *r;
 	if (e->search(new Unary(opVar, new Terminal(opWild)), r)) {
-		LOG << "error: variable " << r << " in result!\n";
+		LOG << "error: variable " << *r << " in result!\n";
 		assert(false);
 	}
 

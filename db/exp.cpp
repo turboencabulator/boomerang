@@ -735,7 +735,7 @@ Binary::print(std::ostream &os, bool html) const
 		os << ")";
 		return;
 	case opExpTable:
-		os << "exptable(" << p1 << ", " << p2 << ")";
+		os << "exptable(" << *p1 << ", " << *p2 << ")";
 		return;
 
 	case opList:
@@ -1027,7 +1027,7 @@ Ternary::printr(std::ostream &os, bool html) const
 		break;
 	}
 	// All other cases, we use the parens
-	os << "(" << this << ")";
+	os << "(" << *this << ")";
 }
 
 void
@@ -2769,7 +2769,7 @@ Binary::polySimplify(bool &bMod)
 				                                      new Const(strdup(nam)))),
 				                 new Const(r / 8));
 				if (VERBOSE)
-					LOG << "(trans1) replacing " << this << " with " << res << "\n";
+					LOG << "(trans1) replacing " << *this << " with " << *res << "\n";
 				bMod = true;
 				return res;
 			}
@@ -3036,7 +3036,7 @@ Ternary::polySimplify(bool &bMod)
 			double d = prog->getFloatConstant(u, ok, ((Const *)subExp1)->getInt());
 			if (ok) {
 				if (VERBOSE)
-					LOG << "replacing " << subExp3 << " with " << d << " in " << this << "\n";
+					LOG << "replacing " << *subExp3 << " with " << d << " in " << *this << "\n";
 				subExp3 = new Const(d);
 				bMod = true;
 				return res;
@@ -3241,7 +3241,7 @@ void
 Exp::printAsHL(std::ostream &os /*= cout*/) const
 {
 	std::ostringstream ost;
-	ost << this;  // Print to the string stream
+	ost << *this;  // Print to the string stream
 	std::string s(ost.str());
 	if ((s.length() >= 4) && (s[1] == '[')) {
 		// r[nn]; change to rnn
@@ -3261,11 +3261,16 @@ Exp::printAsHL(std::ostream &os /*= cout*/) const
 std::ostream &
 operator <<(std::ostream &os, const Exp *p)
 {
+	return os << *p;
+}
+std::ostream &
+operator <<(std::ostream &os, const Exp &p)
+{
 #if 1
 	// Useful for debugging, but can clutter the output
-	p->printt(os);
+	p.printt(os);
 #else
-	p->print(os);
+	p.print(os);
 #endif
 	return os;
 }
@@ -3774,7 +3779,7 @@ Location::polySimplify(bool &bMod)
 
 	if (res->isMemOf() && res->getSubExp1()->isAddrOf()) {
 		if (VERBOSE)
-			LOG << "polySimplify " << res << "\n";
+			LOG << "polySimplify " << *res << "\n";
 		res = res->getSubExp1()->getSubExp1();
 		bMod = true;
 		return res;

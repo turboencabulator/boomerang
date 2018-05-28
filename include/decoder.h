@@ -216,7 +216,7 @@ bool isFuncPrologue(ADDRESS hostPC);
 	result.rtl->appendStmt(bs); \
 	bs->setCondType(cond); \
 	result.numBytes = 3; \
-	SHOW_ASM(name << " " << dest)
+	SHOW_ASM(name << " " << *dest)
 /** \} */
 
 

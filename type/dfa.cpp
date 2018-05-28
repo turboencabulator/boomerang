@@ -88,7 +88,7 @@ UserProc::dfaTypeAnalysis()
 			if (thisCh) {
 				ch = true;
 				if (DEBUG_TA)
-					LOG << " caused change: " << stmt << "\n";
+					LOG << " caused change: " << *stmt << "\n";
 			}
 		}
 		if (!ch)
@@ -102,14 +102,14 @@ UserProc::dfaTypeAnalysis()
 		LOG << "\n ### results for data flow based type analysis for " << getName() << " ###\n";
 		LOG << iter << " iterations\n";
 		for (const auto &stmt : stmts) {
-			LOG << stmt << "\n";  // Print the statement; has dest type
+			LOG << *stmt << "\n";  // Print the statement; has dest type
 			// Now print type for each constant in this Statement
 			std::list<Const *> lc;
 			stmt->findConstants(lc);
 			if (!lc.empty()) {
 				LOG << "       ";
 				for (const auto &con : lc)
-					LOG << con->getType()->getCtype() << " " << con << "  ";
+					LOG << con->getType()->getCtype() << " " << *con << "  ";
 				LOG << "\n";
 			}
 			// If stmt is a call, also display its return types
@@ -129,7 +129,7 @@ UserProc::dfaTypeAnalysis()
 						LOG << "       returns: ";
 					else
 						LOG << ", ";
-					LOG << ((Assignment *)ret)->getType()->getCtype() << " " << ((Assignment *)ret)->getLeft();
+					LOG << ((Assignment *)ret)->getType()->getCtype() << " " << *((Assignment *)ret)->getLeft();
 				}
 				LOG << "\n";
 			}
@@ -332,7 +332,7 @@ UserProc::dfaTypeAnalysis()
 							addr = -addr;
 					}
 				}
-				LOG << "in proc " << getName() << " adding addrExp " << addrExp << " to local table\n";
+				LOG << "in proc " << getName() << " adding addrExp " << *addrExp << " to local table\n";
 				Type *ty = ((TypingStatement *)stmt)->getType();
 				localTable.addItem(addr, lookupSym(Location::memOf(addrExp), ty), typeExp);
 			}
@@ -1069,7 +1069,7 @@ Type *
 RefExp::ascendType()
 {
 	if (!def) {
-		std::cerr << "Warning! Null reference in " << this << "\n";
+		std::cerr << "Warning! Null reference in " << *this << "\n";
 		return new VoidType;
 	}
 	return def->getTypeFor(subExp1);
@@ -1124,7 +1124,7 @@ Terminal::ascendType()
 	case opFlags:
 		return new IntegerType(STD_SIZE, -1);
 	default:
-		std::cerr << "ascendType() for terminal " << this << " not implemented!\n";
+		std::cerr << "ascendType() for terminal " << *this << " not implemented!\n";
 		return new VoidType;
 	}
 }
@@ -1333,7 +1333,7 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 			// We would expect the stride to be the same size as the base type
 			unsigned stride = ((Const *)((Binary *)leftOfPlus)->getSubExp2())->getInt();
 			if (DEBUG_TA && stride * 8 != parentType->getSize())
-				LOG << "type WARNING: apparent array reference at " << this
+				LOG << "type WARNING: apparent array reference at " << *this
 				    << " has stride " << stride * 8 << " bits, but parent type " << parentType->getCtype()
 				    << " has size " << parentType->getSize() << "\n";
 			// The index is integer type

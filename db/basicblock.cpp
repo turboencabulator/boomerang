@@ -1325,7 +1325,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 				const auto &stmts = m_pRtls->back()->getList();
 				assert(!stmts.empty());
 				auto gs = (GotoStatement *)stmts.back();
-				ost << "goto " << gs->getDest();
+				ost << "goto " << *gs->getDest();
 				hll->AddLineComment(ost.str().c_str());
 			}
 			return;
@@ -1620,7 +1620,7 @@ checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, Use
 			// We have an interference between r and dr. Record it
 			ig.connect(r, dr);
 			if (VERBOSE || DEBUG_LIVENESS)
-				LOG << "interference of " << dr << " with " << r << "\n";
+				LOG << "interference of " << *dr << " with " << *r << "\n";
 		}
 		// Add the uses one at a time. Note: don't use makeUnion, because then we don't discover interferences
 		// from the same statement, e.g.  blah := r24{2} + r24{3}
@@ -1675,7 +1675,7 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 				s->addUsedLocs(uses);
 				checkForOverlap(liveLocs, uses, ig, myProc);
 				if (DEBUG_LIVENESS)
-					LOG << " ## liveness: at top of " << s << ", liveLocs is " << liveLocs.prints() << "\n";
+					LOG << " ## liveness: at top of " << *s << ", liveLocs is " << liveLocs.prints() << "\n";
 			}
 		}
 	// liveIn is what we calculated last time
@@ -1714,7 +1714,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 			liveout.insert(r);
 			phiLocs.insert(r);
 			if (DEBUG_LIVENESS)
-				LOG << " ## Liveness: adding " << r << " due to ref to phi " << stmt << " in BB at " << getLowAddr() << "\n";
+				LOG << " ## Liveness: adding " << *r << " due to ref to phi " << *stmt << " in BB at " << getLowAddr() << "\n";
 		}
 	}
 }
@@ -2148,7 +2148,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		// converter will only simplify the direct parent of the changed expression (which is r24{16} + 20).
 		e = e->simplify();
 		if (DEBUG_SWITCH)
-			LOG << "decodeIndirect: propagated and const global converted call expression is " << e << "\n";
+			LOG << "decodeIndirect: propagated and const global converted call expression is " << *e << "\n";
 
 		int n = sizeof hlVfc / sizeof *hlVfc;
 		bool recognised = false;
@@ -2263,14 +2263,14 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			vtExp = (Exp *)-1;
 		}
 		if (DEBUG_SWITCH)
-			LOG << "form " << i << ": from statement " << lastStmt->getNumber() << " get e = " << lastStmt->getDest()
-			    << ", K1 = " << K1 << ", K2 = " << K2 << ", vtExp = " << vtExp << "\n";
+			LOG << "form " << i << ": from statement " << lastStmt->getNumber() << " get e = " << *lastStmt->getDest()
+			    << ", K1 = " << K1 << ", K2 = " << K2 << ", vtExp = " << *vtExp << "\n";
 		// The vt expression might not be a constant yet, because of expressions not fully propagated, or because of
 		// m[K] in the expression (fixed with the ConstGlobalConverter).  If so, look it up in the defCollector in the
 		// call
 		vtExp = lastStmt->findDefFor(vtExp);
 		if (vtExp && DEBUG_SWITCH)
-			LOG << "VT expression boils down to this: " << vtExp << "\n";
+			LOG << "VT expression boils down to this: " << *vtExp << "\n";
 
 		// Danger. For now, only do if -ic given
 		bool decodeThru = Boomerang::get()->decodeThruIndCall;
@@ -2388,7 +2388,7 @@ BasicBlock::undoComputedBB(Statement *stmt)
 	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
 		if (*srit == stmt) {
 			m_nodeType = CALL;
-			LOG << "undoComputedBB for statement " << stmt << "\n";
+			LOG << "undoComputedBB for statement " << *stmt << "\n";
 			return true;
 		}
 	}

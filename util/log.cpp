@@ -20,18 +20,18 @@
 #include <sstream>
 
 Log &
-Log::operator <<(const Statement *s)
+Log::operator <<(const Statement &s)
 {
 	std::ostringstream st;
-	s->print(st);
+	s.print(st);
 	return *this << st.str().c_str();
 }
 
 Log &
-Log::operator <<(const Exp *e)
+Log::operator <<(const Exp &e)
 {
 	std::ostringstream st;
-	e->print(st);
+	e.print(st);
 	return *this << st.str().c_str();
 }
 
@@ -60,10 +60,10 @@ Log::operator <<(const RangeMap &r)
 }
 
 Log &
-Log::operator <<(const RTL *r)
+Log::operator <<(const RTL &r)
 {
 	std::ostringstream st;
-	r->print(st);
+	r.print(st);
 	return *this << st.str().c_str();
 }
 

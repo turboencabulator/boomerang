@@ -462,7 +462,7 @@ RTLInstDict::instantiateRTL(const RTL &rtl, ADDRESS natPC, const std::list<std::
 		}
 		ss->fixSuccessor();
 		if (Boomerang::get()->debugDecoder)
-			std::cout << "\t\t\t" << ss << "\n";
+			std::cout << "\t\t\t" << *ss << "\n";
 	}
 
 	transformPostVars(newList, true);

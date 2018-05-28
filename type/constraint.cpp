@@ -31,7 +31,7 @@ ConstraintMap::print(std::ostream &os) const
 	for (const auto &con : cmap) {
 		if (first) first = false;
 		else os << ", ";
-		os << con.first << " = " << con.second;
+		os << *con.first << " = " << *con.second;
 	}
 	os << "\n";
 }
@@ -81,7 +81,7 @@ void
 EquateMap::print(std::ostream &os) const
 {
 	for (const auto &eq : emap) {
-		os << "\t " << eq.first << " = " << eq.second.prints();
+		os << "\t " << *eq.first << " = " << eq.second.prints();
 	}
 	os << "\n";
 }
@@ -201,7 +201,7 @@ Constraints::substIntoEquates(ConstraintMap &in)
 					if (ff != fixed.end()) {
 						if (!unify(val, ff->second, extra)) {
 							if (VERBOSE || DEBUG_TA)
-								LOG << "Constraint failure: " << loc << " constrained to be "
+								LOG << "Constraint failure: " << *loc << " constrained to be "
 								    << ((TypeVal *)val)->getType()->getCtype() << " and "
 								    << ((TypeVal *)ff->second)->getType()->getCtype() << "\n";
 							return;
@@ -346,7 +346,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 
 	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
-		LOG << dis << ",\n";
+		LOG << *dis << ",\n";
 	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
@@ -361,7 +361,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	LOG << "\nAfter substitute fixed into equates:\n";
 	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
-		LOG << dis << ",\n";
+		LOG << *dis << ",\n";
 	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
@@ -373,7 +373,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	LOG << "\nAfter second substitute fixed into disjunctions:\n";
 	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
-		LOG << dis << ",\n";
+		LOG << *dis << ",\n";
 	LOG << "\n";
 	LOG << fixed.size() << " fixed: " << fixed.prints();
 	LOG << equates.size() << " equates: " << equates.prints();
@@ -420,7 +420,7 @@ Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::li
 	bool anyUnified = false;
 	Exp *d;
 	while (!!(d = nextDisjunct(rem1))) {
-		LOG << " $$ d is " << d << ", rem1 is " << (!rem1 ? "NULL" : rem1->prints()) << " $$\n";
+		LOG << " $$ d is " << *d << ", rem1 is " << (!rem1 ? "NULL" : rem1->prints()) << " $$\n";
 		// Match disjunct d against the fixed types; it could be compatible,
 		// compatible and generate an additional constraint, or be
 		// incompatible
@@ -429,7 +429,7 @@ Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::li
 		Exp *rem2 = d;
 		bool unified = true;
 		while (!!(c = nextConjunct(rem2))) {
-			LOG << "   $$ c is " << c << ", rem2 is " << (!rem2 ? "NULL" : rem2->prints()) << " $$\n";
+			LOG << "   $$ c is " << *c << ", rem2 is " << (!rem2 ? "NULL" : rem2->prints()) << " $$\n";
 			if (c->isFalse()) {
 				unified = false;
 				break;
@@ -474,7 +474,7 @@ Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::li
 bool
 Constraints::unify(Exp *x, Exp *y, ConstraintMap &extra)
 {
-	LOG << "Unifying " << x << " with " << y << " result ";
+	LOG << "Unifying " << *x << " with " << *y << " result ";
 	assert(x->isTypeVal());
 	assert(y->isTypeVal());
 	Type *xtype = ((TypeVal *)x)->getType();
@@ -573,7 +573,7 @@ Constraints::print(std::ostream &os) const
 {
 	os << "\n" << std::dec << (int)disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
-		os << dis << ",\n";
+		os << *dis << ",\n";
 	os << "\n";
 	os << (int)fixed.size() << " fixed: ";
 	fixed.print(os);

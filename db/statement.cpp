@@ -65,7 +65,7 @@ Statement::mayAlias(Exp *e1, Exp *e2, int size)
 	// (only need to check one of these cases)
 	bool b = (calcMayAlias(e1, e2, size) && calcMayAlias(e2, e1, size));
 	if (b && VERBOSE) {
-		LOG << "May alias: " << e1 << " and " << e2 << " size " << size << "\n";
+		LOG << "May alias: " << *e1 << " and " << *e2 << " size " << size << "\n";
 	}
 	return b;
 }
@@ -220,7 +220,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		 && ((Const *)a_rhs->getSubExp1()->getSubExp1()->getSubExp1())->getInt() == 28)
 			a_rhs = new Unary(opInitValueOf, new Terminal(opPC));   // nice hack
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-			LOG << "a_rhs is " << a_rhs << "\n";
+			LOG << "a_rhs is " << *a_rhs << "\n";
 		if (a_rhs->isMemOf() && a_rhs->getSubExp1()->isIntConst()) {
 			ADDRESS c = ((Const *)a_rhs->getSubExp1())->getInt();
 			if (proc->getProg()->isDynamicLinkedProcPointer(c)) {
@@ -289,10 +289,10 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		}
 	}
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << "added " << a_lhs << " -> " << output.getRange(a_lhs) << "\n";
+		LOG << "added " << *a_lhs << " -> " << output.getRange(a_lhs) << "\n";
 	updateRanges(output, execution_paths);
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << this << "\n";
+		LOG << *this << "\n";
 }
 
 void
@@ -382,7 +382,7 @@ BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			 && r.getBase()->getSubExp2()->getSubExp2()->getOper() == opList) {
 				e = new Binary(op, r.getBase()->getSubExp2()->getSubExp1()->clone(), r.getBase()->getSubExp2()->getSubExp2()->getSubExp1()->clone());
 				if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-					LOG << "calculated condition " << e << "\n";
+					LOG << "calculated condition " << *e << "\n";
 			}
 		}
 	}
@@ -396,7 +396,7 @@ BranchStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	updateRanges(output, execution_paths, true);
 
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << this << "\n";
+		LOG << *this << "\n";
 }
 
 void
@@ -408,7 +408,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	for (const auto &edge : pbb->getInEdges()) {
 		Statement *last = edge->getLastStmt();
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-			LOG << "  in BB: " << edge->getLowAddr() << " " << last << "\n";
+			LOG << "  in BB: " << edge->getLowAddr() << " " << *last << "\n";
 		if (last->isBranch()) {
 			input.unionwith(((BranchStatement *)last)->getRangesForOutEdgeTo(pbb));
 		} else {
@@ -448,7 +448,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	}
 
 	if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-		LOG << this << "\n";
+		LOG << *this << "\n";
 }
 
 void
@@ -520,7 +520,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			Exp *eq = p->getProven(Location::regOf(28));
 			if (eq) {
 				if (VERBOSE)
-					LOG << "found proven " << eq << "\n";
+					LOG << "found proven " << *eq << "\n";
 				if (eq->getOper() == opPlus
 				 && *eq->getSubExp1() == *Location::regOf(28)
 				 && eq->getSubExp2()->isIntConst()) {
@@ -655,11 +655,14 @@ Statement::getNextStatementInBB() const
 std::ostream &
 operator <<(std::ostream &os, const Statement *s)
 {
-	if (!s) {
-		os << "NULL ";
-		return os;
-	}
-	s->print(os);
+	if (!s)
+		return os << "NULL ";
+	return os << *s;
+}
+std::ostream &
+operator <<(std::ostream &os, const Statement &s)
+{
+	s.print(os);
 	return os;
 }
 
@@ -697,7 +700,7 @@ hasSetFlags(Exp *e)
 	Exp *right = ((Binary *)e)->getSubExp2();
 	if (!right->isIntConst()) return false;
 	if (left->isFlagCall()) {
-		std::cerr << "hasSetFlags returns true with " << e << "\n";
+		std::cerr << "hasSetFlags returns true with " << *e << "\n";
 		return true;
 	}
 	op = left->getOper();
@@ -707,7 +710,7 @@ hasSetFlags(Exp *e)
 	if (!right->isIntConst()) return false;
 	bool ret = left->isFlagCall();
 	if (ret)
-		std::cerr << "hasSetFlags returns true with " << e << "\n";
+		std::cerr << "hasSetFlags returns true with " << *e << "\n";
 	return ret;
 }
 
@@ -829,7 +832,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 									doNotPropagate = true;
 								break;
 							}
-							if (OW) std::cerr << "Ow is " << OW << "\n";
+							if (OW) std::cerr << "Ow is " << *OW << "\n";
 						}
 					}
 					if (doNotPropagate) {
@@ -899,13 +902,13 @@ Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 	}
 
 	if (VERBOSE)
-		LOG << "propagating " << def << "\n"
-		    << "       into " << this << "\n";
+		LOG << "propagating " << *def << "\n"
+		    << "       into " << *this << "\n";
 
 	bool change = replaceRef(e, def, convert);
 
 	if (VERBOSE) {
-		LOG << "     result " << this << "\n\n";
+		LOG << "     result " << *this << "\n\n";
 	}
 	return change;
 }
@@ -1498,7 +1501,7 @@ BranchStatement::print(std::ostream &os, bool html) const
 	if (!pDest)
 		os << "*no dest*";
 	else if (!pDest->isIntConst())
-		os << pDest;
+		os << *pDest;
 	else {
 		// Really we'd like to display the destination label here...
 		os << "0x" << std::hex << getFixedDest();
@@ -1690,7 +1693,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				OPER op;
 				switch (mask) {
 				case 0:
-					LOG << "WARNING: unhandled pentium branch if parity with pCond = " << pCond << "\n";
+					LOG << "WARNING: unhandled pentium branch if parity with pCond = " << *pCond << "\n";
 					return false;
 				case 1:
 					op = opLess;
@@ -1932,10 +1935,10 @@ CaseStatement::print(std::ostream &os, bool html) const
 		os << "CASE [";
 		if (!pDest)
 			os << "*no dest*";
-		else os << pDest;
+		else os << *pDest;
 		os << "]";
 	} else
-		os << "SWITCH(" << pSwitchInfo->pSwitchVar << ")\n";
+		os << "SWITCH(" << *pSwitchInfo->pSwitchVar << ")\n";
 	if (html)
 		os << "</a></td>";
 }
@@ -2219,9 +2222,9 @@ CallStatement::print(std::ostream &os, bool html) const
 				first = false;
 			else
 				os << ", ";
-			os << "*" << as->getType() << "* " << as->getLeft();
+			os << "*" << as->getType() << "* " << *as->getLeft();
 			if (as->isAssign())
-				os << " := " << ((Assign *)as)->getRight();
+				os << " := " << *((Assign *)as)->getRight();
 		}
 		if (defines.size() > 1) os << "}";
 		os << " := ";
@@ -2539,7 +2542,7 @@ CallStatement::convertToDirect()
 	convertIndirect = true;
 
 	if (VERBOSE)
-		LOG << "Result of convertToDirect: " << this << "\n";
+		LOG << "Result of convertToDirect: " << *this << "\n";
 	return convertIndirect;
 }
 
@@ -2683,7 +2686,7 @@ Assignment::setTypeFor(Exp *e, Type *ty)
 	Type *oldType = type;
 	type = ty;
 	if (DEBUG_TA && oldType != ty)
-		LOG << "    changed type of " << this << "  (type was " << oldType->getCtype() << ")\n";
+		LOG << "    changed type of " << *this << "  (type was " << oldType->getCtype() << ")\n";
 }
 
 // Scan the returns for e. If found, return the type associated with that return
@@ -2859,7 +2862,7 @@ CallStatement::ellipsisProcessing(Prog *prog)
 		case '%':
 			break;  // Ignore %% (emits 1 percent char)
 		default:
-			LOG << "Unhandled format character " << ch << " in format string for call " << this << "\n";
+			LOG << "Unhandled format character " << ch << " in format string for call " << *this << "\n";
 		}
 	}
 	setNumArguments(format + n);
@@ -2895,7 +2898,7 @@ CallStatement::addSigParam(Type *ty, bool isScanf)
 	signature->addParameter(ty);
 	Exp *paramExp = signature->getParamExp(signature->getNumParams() - 1);
 	if (VERBOSE)
-		LOG << "  ellipsisProcessing: adding parameter " << paramExp << " of type " << ty->getCtype() << "\n";
+		LOG << "  ellipsisProcessing: adding parameter " << *paramExp << " of type " << ty->getCtype() << "\n";
 	if (arguments.size() < (unsigned)signature->getNumParams()) {
 		Assign *as = makeArgAssign(ty, paramExp);
 		arguments.append(as);
@@ -3491,7 +3494,7 @@ Assign::printCompact(std::ostream &os, bool html) const
 {
 	os << "*" << type << "* ";
 	if (guard)
-		os << guard << " => ";
+		os << *guard << " => ";
 	if (lhs) lhs->print(os, html);
 	os << " := ";
 	if (rhs) rhs->print(os, html);
@@ -3547,7 +3550,7 @@ PhiAssign::printCompact(std::ostream &os, bool html) const
 			if (!e)
 				os << "NULL{";
 			else
-				os << e << "{";
+				os << *e << "{";
 			if (def.def)
 				os << std::dec << def.def->getNumber();
 			else
@@ -4112,7 +4115,7 @@ Assign::accept(StmtModifier *v)
 	if (recur) lhs = lhs->accept(v->mod);
 	if (recur) rhs = rhs->accept(v->mod);
 	if (VERBOSE && v->mod->isMod())
-		LOG << "Assignment changed: now " << this << "\n";
+		LOG << "Assignment changed: now " << *this << "\n";
 	return true;
 }
 bool
@@ -4123,7 +4126,7 @@ PhiAssign::accept(StmtModifier *v)
 	v->mod->clearMod();
 	if (recur) lhs = lhs->accept(v->mod);
 	if (VERBOSE && v->mod->isMod())
-		LOG << "PhiAssign changed: now " << this << "\n";
+		LOG << "PhiAssign changed: now " << *this << "\n";
 	return true;
 }
 bool
@@ -4134,7 +4137,7 @@ ImplicitAssign::accept(StmtModifier *v)
 	v->mod->clearMod();
 	if (recur) lhs = lhs->accept(v->mod);
 	if (VERBOSE && v->mod->isMod())
-		LOG << "ImplicitAssign changed: now " << this << "\n";
+		LOG << "ImplicitAssign changed: now " << *this << "\n";
 	return true;
 }
 bool
@@ -4241,7 +4244,7 @@ Assign::accept(StmtPartModifier *v)
 	}
 	if (recur) rhs = rhs->accept(v->mod);
 	if (VERBOSE && v->mod->isMod())
-		LOG << "Assignment changed: now " << this << "\n";
+		LOG << "Assignment changed: now " << *this << "\n";
 	return true;
 }
 bool
@@ -4254,7 +4257,7 @@ PhiAssign::accept(StmtPartModifier *v)
 		((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v->mod));
 	}
 	if (VERBOSE && v->mod->isMod())
-		LOG << "PhiAssign changed: now " << this << "\n";
+		LOG << "PhiAssign changed: now " << *this << "\n";
 	return true;
 }
 
@@ -4268,7 +4271,7 @@ ImplicitAssign::accept(StmtPartModifier *v)
 		((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v->mod));
 	}
 	if (VERBOSE && v->mod->isMod())
-		LOG << "ImplicitAssign changed: now " << this << "\n";
+		LOG << "ImplicitAssign changed: now " << *this << "\n";
 	return true;
 }
 
@@ -4452,7 +4455,7 @@ PhiAssign::simplify()
 
 		if (allSame) {
 			if (VERBOSE)
-				LOG << "all the same in " << this << "\n";
+				LOG << "all the same in " << *this << "\n";
 			convertToAssign(new RefExp(lhs, first));
 			return;
 		}
@@ -4470,7 +4473,7 @@ PhiAssign::simplify()
 
 		if (onlyOneNotThis && notthis != (Statement *)-1) {
 			if (VERBOSE)
-				LOG << "all but one not this in " << this << "\n";
+				LOG << "all but one not this in " << *this << "\n";
 			convertToAssign(new RefExp(lhs, notthis));
 			return;
 		}
@@ -4490,7 +4493,7 @@ PhiAssign::putAt(int i, Statement *def, Exp *e)
 void
 CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
 {
-	std::cerr << "! Attempt to setLeftFor this call statement! forExp is " << forExp << ", newExp is " << newExp << "\n";
+	std::cerr << "! Attempt to setLeftFor this call statement! forExp is " << *forExp << ", newExp is " << *newExp << "\n";
 	assert(0);
 }
 
@@ -4605,7 +4608,7 @@ ReturnStatement::print(std::ostream &os, bool html) const
 		Type *ty = as->getType();
 		if (ty)
 			ost << "*" << ty << "* ";
-		ost << as->getLeft();
+		ost << *as->getLeft();
 		unsigned len = ost.str().length();
 		if (first)
 			first = false;
@@ -5171,7 +5174,7 @@ CallStatement::removeDefine(Exp *e)
 			return;
 		}
 	}
-	LOG << "WARNING: could not remove define " << e << " from call " << this << "\n";
+	LOG << "WARNING: could not remove define " << *e << " from call " << *this << "\n";
 }
 
 bool
@@ -5210,7 +5213,7 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 			Exp *ret = localiseExp(base->clone());  // Assume that it is proved as preserved
 			ch = true;
 			if (VERBOSE)
-				LOG << base << " allowed to bypass call statement " << number << " ignoring aliasing; result " << ret << "\n";
+				LOG << *base << " allowed to bypass call statement " << number << " ignoring aliasing; result " << *ret << "\n";
 			return ret;
 		}
 
@@ -5223,7 +5226,7 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 	proven = proven->clone();  // Don't modify the expressions in destProc->proven!
 	proven = proven->searchReplaceAll(base, to, ch);  // e.g. r28{17} + 4
 	if (ch && VERBOSE)
-		LOG << "bypassRef() replacing " << r << " with " << proven << "\n";
+		LOG << "bypassRef() replacing " << *r << " with " << *proven << "\n";
 	return proven;
 }
 
@@ -5254,7 +5257,7 @@ ImpRefStatement::print(std::ostream &os, bool html) const
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
 	}
-	os << type << "* IMP REF " << addressExp;
+	os << type << "* IMP REF " << *addressExp;
 	if (html)
 		os << "</a></td>";
 }
@@ -5296,7 +5299,7 @@ ImpRefStatement::accept(StmtModifier *v)
 	v->mod->clearMod();
 	if (recur) addressExp = addressExp->accept(v->mod);
 	if (VERBOSE && v->mod->isMod())
-		LOG << "ImplicitRef changed: now " << this << "\n";
+		LOG << "ImplicitRef changed: now " << *this << "\n";
 	return true;
 }
 
@@ -5308,7 +5311,7 @@ ImpRefStatement::accept(StmtPartModifier *v)
 	v->mod->clearMod();
 	if (recur) addressExp = addressExp->accept(v->mod);
 	if (VERBOSE && v->mod->isMod())
-		LOG << "ImplicitRef changed: now " << this << "\n";
+		LOG << "ImplicitRef changed: now " << *this << "\n";
 	return true;
 }
 

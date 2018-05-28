@@ -246,7 +246,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		result.rtl->appendStmt(newCall);
 		result.type = DD;
 
-		SHOW_ASM("call_ " << dis_Eaddr(addr))
+		SHOW_ASM("call_ " << *dis_Eaddr(addr))
 		DEBUG_STMTS
 
 	| ret() =>

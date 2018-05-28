@@ -2395,7 +2395,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
       
 
-      		SHOW_ASM("call_ " << dis_Eaddr(addr))
+      		SHOW_ASM("call_ " << *dis_Eaddr(addr))
 
       		DEBUG_STMTS
 

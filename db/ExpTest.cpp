@@ -80,7 +80,7 @@ void
 ExpTest::testRegOf2()
 {
 	std::ostringstream ost;
-	ost << m_rof2;
+	ost << *m_rof2;
 	CPPUNIT_ASSERT_EQUAL(std::string("r2"), std::string(ost.str()));
 }
 
@@ -822,7 +822,7 @@ ExpTest::testList()
 	Exp *l0, *l1, *l2, *l3, *l4;
 	// Empty list
 	l0 = new Binary(opList, new Terminal(opNil), new Terminal(opNil));
-	o0 << l0;
+	o0 << *l0;
 	std::string expected0("");
 	std::string actual0(o0.str());
 	CPPUNIT_ASSERT_EQUAL(expected0, actual0);
@@ -831,7 +831,7 @@ ExpTest::testList()
 	// 1 element list
 	l1 = new Binary(opList, new Location(opParam, new Const("a"), nullptr),
 	                        new Terminal(opNil));
-	o1 << l1;
+	o1 << *l1;
 	std::string expected1("a");
 	std::string actual1(o1.str());
 	CPPUNIT_ASSERT_EQUAL(expected1, actual1);
@@ -841,7 +841,7 @@ ExpTest::testList()
 	l2 = new Binary(opList, new Location(opParam, new Const("a"), nullptr),
 	     new Binary(opList, new Location(opParam, new Const("b"), nullptr),
 	                        new Terminal(opNil)));
-	o2 << l2;
+	o2 << *l2;
 	std::string expected2("a, b");
 	std::string actual2(o2.str());
 	CPPUNIT_ASSERT_EQUAL(expected2, actual2);
@@ -852,7 +852,7 @@ ExpTest::testList()
 	     new Binary(opList, new Location(opParam, new Const("b"), nullptr),
 	     new Binary(opList, new Location(opParam, new Const("c"), nullptr),
 	                        new Terminal(opNil))));
-	o3 << l3;
+	o3 << *l3;
 	std::string expected3("a, b, c");
 	std::string actual3(o3.str());
 	CPPUNIT_ASSERT_EQUAL(expected3, actual3);
@@ -864,7 +864,7 @@ ExpTest::testList()
 	     new Binary(opList, new Location(opParam, new Const("c"), nullptr),
 	     new Binary(opList, new Location(opParam, new Const("d"), nullptr),
 	                        new Terminal(opNil)))));
-	o4 << l4;
+	o4 << *l4;
 	std::string expected4("a, b, c, d");
 	std::string actual4(o4.str());
 	CPPUNIT_ASSERT_EQUAL(expected4, actual4);
@@ -989,21 +989,20 @@ ExpTest::testSubscriptVar()
 	Exp *left = Location::memOf(new Binary(opMinus,
 	                                       Location::regOf(28),
 	                                       new Const(4)));
-	auto ae = new Assign(left->clone(),
-	                     new Binary(opPlus,
-	                                Location::regOf(28),
-	                                Location::regOf(29)));
+	Statement *s = new Assign(left->clone(),
+	                          new Binary(opPlus,
+	                                     Location::regOf(28),
+	                                     Location::regOf(29)));
 
-	auto s = dynamic_cast<Statement *>(ae);
 	// Subtest 1: should do nothing
 	Exp *r28 = Location::regOf(28);
-	auto def1 = dynamic_cast<Statement *>(new Assign(r28->clone(), r28->clone()));
+	Statement * def1 = new Assign(r28->clone(), r28->clone());
 	def1->setNumber(12);
 	def1->subscriptVar(left, def1);  // Should do nothing
 	std::string expected1;
 	expected1 = "   0 *v* m[r28 - 4] := r28 + r29";
 	std::ostringstream actual1;
-	actual1 << s;
+	actual1 << *s;
 	CPPUNIT_ASSERT_EQUAL(expected1, actual1.str());
 	// m[r28 - 4]
 
@@ -1011,7 +1010,7 @@ ExpTest::testSubscriptVar()
 	s->subscriptVar(r28, def1);
 	std::string expected2("   0 *v* m[r28{12} - 4] := r28{12} + r29");
 	std::ostringstream actual2;
-	actual2 << s;
+	actual2 << *s;
 	CPPUNIT_ASSERT_EQUAL(expected2, actual2.str());
 
 	// Subtest 3: change to a different definition
@@ -1022,10 +1021,10 @@ ExpTest::testSubscriptVar()
 	s->subscriptVar(r28, def3);
 	std::string expected3("   0 *v* m[r28{12} - 4] := r28{12} + r29");
 	std::ostringstream actual3;
-	actual3 << s;
+	actual3 << *s;
 	CPPUNIT_ASSERT_EQUAL(expected3, actual3.str());
 
-	delete ae; delete def1; delete def3; delete r28; delete left;
+	delete s; delete def1; delete def3; delete r28; delete left;
 }
 
 /**
@@ -1044,7 +1043,7 @@ ExpTest::testTypeOf()
 	                    new Unary(opTypeOf, new RefExp(Location::regOf(24), s5)),
 	                    new Unary(opTypeOf, new RefExp(Location::regOf(25), s9)));
 	std::ostringstream actual1;
-	actual1 << e;
+	actual1 << *e;
 	CPPUNIT_ASSERT_EQUAL(expected1, actual1.str());
 
 	// Tr24{5} = <float>
@@ -1055,7 +1054,7 @@ ExpTest::testTypeOf()
 	               new Unary(opTypeOf, new RefExp(Location::regOf(24), s5)),
 	               new TypeVal(t));
 	std::ostringstream actual2;
-	actual2 << e;
+	actual2 << *e;
 	CPPUNIT_ASSERT_EQUAL(expected2, actual2.str());
 }
 
@@ -1072,14 +1071,14 @@ ExpTest::testSetConscripts()
 	e->setConscripts(0, false);
 	std::string expected("m[1000\\1\\] + 1000\\2\\");
 	std::ostringstream actual;
-	actual << e;
+	actual << *e;
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 
 	// Clear them
 	e->setConscripts(0, true);
 	expected = "m[1000] + 1000";
 	std::ostringstream actual1;
-	actual1 << e;
+	actual1 << *e;
 	CPPUNIT_ASSERT_EQUAL(expected, actual1.str());
 
 	// m[r28 + 1000]
@@ -1089,14 +1088,14 @@ ExpTest::testSetConscripts()
 	e->setConscripts(0, false);
 	expected = "m[r28 + 1000\\1\\]";
 	std::ostringstream act2;
-	act2 << e;
+	act2 << *e;
 	CPPUNIT_ASSERT_EQUAL(expected, act2.str());
 
 	// Clear
 	e->setConscripts(0, true);
 	expected = "m[r28 + 1000]";
 	std::ostringstream act3;
-	act3 << e;
+	act3 << *e;
 	CPPUNIT_ASSERT_EQUAL(expected, act3.str());
 }
 
@@ -1200,7 +1199,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(search, &s9);
 	std::string expected("%pc");
 	std::ostringstream ost1;
-	ost1 << e;
+	ost1 << *e;
 	std::string actual = ost1.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
@@ -1209,7 +1208,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(search, &s9);
 	expected = "r28{9}";
 	std::ostringstream ost2;
-	ost2 << e;
+	ost2 << *e;
 	actual = ost2.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
@@ -1218,7 +1217,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(e->clone(), &s9);
 	expected = "tmp1{9}";
 	std::ostringstream ost3;
-	ost3 << e;
+	ost3 << *e;
 	actual = ost3.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
@@ -1229,7 +1228,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(search, &s9);
 	expected = "m[r28{9}] + r28{9}";
 	std::ostringstream ost4;
-	ost4 << e;
+	ost4 << *e;
 	actual = ost4.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
@@ -1241,7 +1240,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(search, &s9);
 	expected = "r28{7}";
 	std::ostringstream ost5;
-	ost5 << e;
+	ost5 << *e;
 	actual = ost5.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
@@ -1255,7 +1254,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(search, &s9);
 	expected = "m[r28{7} + 4]{8}";
 	std::ostringstream ost6;
-	ost6 << e;
+	ost6 << *e;
 	actual = ost6.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
@@ -1265,7 +1264,7 @@ ExpTest::testSubscriptVars()
 	e = e->expSubscriptVar(e->clone(), nullptr);
 	expected = "r24{7}";
 	std::ostringstream ost7;
-	ost7 << e;
+	ost7 << *e;
 	actual = ost7.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }

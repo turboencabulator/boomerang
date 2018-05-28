@@ -490,7 +490,7 @@ void
 IfThenSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
 	os << "\t" << std::dec << nodenum
-	   << " [label=\"if " << cond << "\"];\n";
+	   << " [label=\"if " << *cond << "\"];\n";
 	pThen->printAST(root, os);
 	os << "\t" << std::dec << nodenum
 	   << " -> " << pThen->getNumber()
@@ -594,7 +594,7 @@ void
 IfThenElseSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
 	os << "\t" << std::dec << nodenum
-	   << " [label=\"if " << cond << "\"];\n";
+	   << " [label=\"if " << *cond << "\"];\n";
 	pThen->printAST(root, os);
 	pElse->printAST(root, os);
 	os << "\t" << std::dec << nodenum
@@ -684,7 +684,7 @@ void
 PretestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
 	os << "\t" << std::dec << nodenum
-	   << " [label=\"loop pretested " << cond << "\"];\n";
+	   << " [label=\"loop pretested " << *cond << "\"];\n";
 	pBody->printAST(root, os);
 	os << "\t" << std::dec << nodenum
 	   << " -> " << pBody->getNumber()
@@ -774,7 +774,7 @@ void
 PostTestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
 	os << "\t" << std::dec << nodenum
-	   << " [label=\"loop posttested " << cond << "\"];\n";
+	   << " [label=\"loop posttested " << *cond << "\"];\n";
 	pBody->printAST(root, os);
 	os << "\t" << std::dec << nodenum
 	   << " -> " << pBody->getNumber()

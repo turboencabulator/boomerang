@@ -27,18 +27,18 @@ public:
 	Log() { }
 	virtual ~Log() { }
 
-	virtual Log &operator <<(const char *str) = 0;
-	virtual Log &operator <<(const Statement *s);
-	virtual Log &operator <<(const Exp *e);
-	virtual Log &operator <<(Type *ty);
-	virtual Log &operator <<(const RTL *r);
-	virtual Log &operator <<(const Range &r);
-	virtual Log &operator <<(const RangeMap &r);
-	virtual Log &operator <<(int i);
-	virtual Log &operator <<(char c);
-	virtual Log &operator <<(double d);
-	virtual Log &operator <<(ADDRESS a);
-	virtual Log &operator <<(const LocationSet &l);
+	virtual Log &operator <<(const char *) = 0;
+	virtual Log &operator <<(const Statement &);
+	virtual Log &operator <<(const Exp &);
+	virtual Log &operator <<(Type *);
+	virtual Log &operator <<(const RTL &);
+	virtual Log &operator <<(const Range &);
+	virtual Log &operator <<(const RangeMap &);
+	virtual Log &operator <<(int);
+	virtual Log &operator <<(char);
+	virtual Log &operator <<(double);
+	virtual Log &operator <<(ADDRESS);
+	virtual Log &operator <<(const LocationSet &);
 	Log &operator <<(const std::string &s) {
 		return *this << s.c_str();
 	}

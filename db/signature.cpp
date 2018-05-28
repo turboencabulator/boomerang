@@ -1369,7 +1369,7 @@ Signature::setParamType(Exp *e, Type *ty)
 {
 	int idx = findParam(e);
 	if (idx == -1) {
-		LOG << "could not set type for unknown parameter expression " << e << "\n";
+		LOG << "could not set type for unknown parameter expression " << *e << "\n";
 		return;
 	}
 	params[idx]->setType(ty);
@@ -1554,7 +1554,7 @@ Signature::print(std::ostream &out, bool html) const
 				first = false;
 			else
 				out << ", ";
-			out << ret->type->getCtype() << " " << ret->exp;
+			out << ret->type->getCtype() << " " << *ret->exp;
 		}
 		out << " } ";
 	} else
@@ -1566,7 +1566,7 @@ Signature::print(std::ostream &out, bool html) const
 			first = false;
 		else
 			out << ", ";
-		out << param->getType()->getCtype() << " " << param->getName() << " " << param->getExp();
+		out << param->getType()->getCtype() << " " << param->getName() << " " << *param->getExp();
 	}
 	out << ")\n";
 }

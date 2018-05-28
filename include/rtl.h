@@ -131,6 +131,9 @@ protected:
 	friend class XMLProgParser;
 };
 
+std::ostream & operator <<(std::ostream &, const RTL *) __attribute__((deprecated));
+std::ostream & operator <<(std::ostream &, const RTL &);
+
 
 /**
  * Represents a single instruction - a string/RTL pair.

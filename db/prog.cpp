@@ -1154,7 +1154,7 @@ Prog::removeUnusedGlobals()
 	globals.clear();
 	for (const auto &global : usedGlobals) {
 		if (DEBUG_UNUSED)
-			LOG << " " << global << " is used\n";
+			LOG << " " << *global << " is used\n";
 		const char *name = ((Const *)global->getSubExp1())->getStr();
 		Global *usedGlobal = namedGlobals[name];
 		if (usedGlobal) {

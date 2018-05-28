@@ -335,7 +335,8 @@ protected:
 };
 
 // Not part of the Exp class, but logically belongs with it:
-std::ostream &operator <<(std::ostream &os, const Exp *p);  // Print the Exp poited to by p
+std::ostream &operator <<(std::ostream &, const Exp *) __attribute__((deprecated));
+std::ostream &operator <<(std::ostream &, const Exp &);
 
 /*==============================================================================
  * Const is a subclass of Exp, and holds either an integer, floating point, string, or address constant

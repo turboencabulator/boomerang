@@ -392,17 +392,21 @@ RTL::prints() const
  * Just makes it easier to use e.g. std::cerr << myRTLptr.
  *
  * \param os  Output stream to send to.
- * \param p   Ptr to RTL to print to the stream.
+ * \param r   Ptr to RTL to print to the stream.
  *
  * \returns Copy of os (for concatenation).
  */
 std::ostream &
 operator <<(std::ostream &os, const RTL *r)
 {
-	if (r)
-		r->print(os);
-	else
-		os << "NULL ";
+	if (!r)
+		return os << "NULL ";
+	return os << *r;
+}
+std::ostream &
+operator <<(std::ostream &os, const RTL &r)
+{
+	r.print(os);
 	return os;
 }
 
@@ -612,12 +616,12 @@ RTL::simplify()
 			if (cond && cond->isIntConst()) {
 				if (((Const *)cond)->getInt() == 0) {
 					if (VERBOSE)
-						LOG << "removing branch with false condition at " << getAddress() << " " << stmt << "\n";
+						LOG << "removing branch with false condition at " << getAddress() << " " << *stmt << "\n";
 					it = stmtList.erase(it);
 					continue;
 				} else {
 					if (VERBOSE)
-						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << stmt << "\n";
+						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << *stmt << "\n";
 					*it = new GotoStatement(((BranchStatement *)stmt)->getFixedDest());
 				}
 			}
@@ -626,7 +630,7 @@ RTL::simplify()
 			if (guard && (guard->isFalse() || (guard->isIntConst() && ((Const *)guard)->getInt() == 0))) {
 				// This assignment statement can be deleted
 				if (VERBOSE)
-					LOG << "removing assignment with false guard at " << getAddress() << " " << stmt << "\n";
+					LOG << "removing assignment with false guard at " << getAddress() << " " << *stmt << "\n";
 				it = stmtList.erase(it);
 				continue;
 			}

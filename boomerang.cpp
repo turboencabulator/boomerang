@@ -1231,7 +1231,7 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 					for (const auto &stmt : stmts)
 						if (stmt->getNumber() == n) {
 							watches.insert(stmt);
-							std::cout << "watching " << stmt << "\n";
+							std::cout << "watching " << *stmt << "\n";
 						}
 				} else
 					break;

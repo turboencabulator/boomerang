@@ -493,7 +493,7 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 				// if (def->getMemDepth() == memDepth)
 				auto ss = Stacks.find(def);
 				if (ss == Stacks.end()) {
-					std::cerr << "Tried to pop " << def << " from Stacks; does not exist\n";
+					std::cerr << "Tried to pop " << *def << " from Stacks; does not exist\n";
 					assert(0);
 				}
 				ss->second.pop();

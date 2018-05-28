@@ -856,7 +856,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 			Type *ty = nullptr;
 #endif
 			if (!ty) {
-				LOG << "type failure: no type for subexp1 of " << b << "\n";
+				LOG << "type failure: no type for subexp1 of " << *b << "\n";
 				//ty = b->getSubExp1()->getType();
 				// No idea why this is hitting! - trentw
 				// str << "/* type failure */ ";
@@ -1581,14 +1581,14 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 		Type *ty = as->getType();
 		if (!ty) {
 			if (VERBOSE)
-				LOG << "ERROR in CHLLCode::AddProcDec: no type for parameter " << left << "!\n";
+				LOG << "ERROR in CHLLCode::AddProcDec: no type for parameter " << *left << "!\n";
 			ty = new IntegerType();
 		}
 		const char *name;
 		if (left->isParam())
 			name = ((Const *)((Location *)left)->getSubExp1())->getStr();
 		else {
-			LOG << "ERROR: parameter " << left << " is not opParam!\n";
+			LOG << "ERROR: parameter " << *left << " is not opParam!\n";
 			name = "??";
 		}
 		if (ty->isPointer() && ((PointerType *)ty)->getPointsTo()->isArray()) {

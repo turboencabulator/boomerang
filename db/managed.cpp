@@ -61,7 +61,7 @@ operator <<(std::ostream &os, const LocationSet &ls)
 			first = false;
 		else
 			os << ",\t";
-		os << l;
+		os << *l;
 	}
 	return os;
 }
@@ -630,7 +630,7 @@ LocationSet::diff(const LocationSet &o)
 				printed2not1 = true;
 				std::cerr << "In set 2 but not set 1:\n";
 			}
-			std::cerr << oe << "\t";
+			std::cerr << *oe << "\t";
 		}
 	}
 	if (printed2not1)
@@ -642,7 +642,7 @@ LocationSet::diff(const LocationSet &o)
 				printed1not2 = true;
 				std::cerr << "In set 1 but not set 2:\n";
 			}
-			std::cerr << e << "\t";
+			std::cerr << *e << "\t";
 		}
 	}
 	if (printed1not2)
@@ -854,7 +854,7 @@ RangeMap::substInto(Exp *e, std::set<Exp *, lessExpStar> *only)
 			if (change) {
 				e = e->simplify()->simplifyArith();
 				if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-					LOG << "applied " << r.first << " to " << eold << " to get " << e << "\n";
+					LOG << "applied " << *r.first << " to " << *eold << " to get " << *e << "\n";
 				changes = true;
 			}
 		}
@@ -892,12 +892,12 @@ RangeMap::isSubset(RangeMap &other) const
 		auto it = other.ranges.find(r.first);
 		if (it == other.ranges.end()) {
 			if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-				LOG << "did not find " << r.first << " in other, not a subset\n";
+				LOG << "did not find " << *r.first << " in other, not a subset\n";
 			return false;
 		}
 		if (!(r.second == it->second)) {
 			if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-				LOG << "range for " << r.first << " in other " << it->second << " is not equal to range in this " << r.second << ", not a subset\n";
+				LOG << "range for " << *r.first << " in other " << it->second << " is not equal to range in this " << r.second << ", not a subset\n";
 			return false;
 		}
 	}

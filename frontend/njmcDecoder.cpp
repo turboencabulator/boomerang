@@ -247,7 +247,7 @@ NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std
 	jump->setDest(dest);
 	jump->setIsComputed(true);
 	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " " << dest)
+	SHOW_ASM(name << " " << *dest)
 }
 
 /**
@@ -269,5 +269,5 @@ NJMCDecoder::computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std
 	call->setDest(dest);
 	call->setIsComputed(true);
 	result.rtl->appendStmt(call);
-	SHOW_ASM(name << " " << dest)
+	SHOW_ASM(name << " " << *dest)
 }

@@ -823,7 +823,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 						 && pDest->getSubExp1()->isIntConst()
 						 && pBF->isDynamicLinkedProcPointer(((Const *)pDest->getSubExp1())->getAddr())) {
 							if (VERBOSE)
-								LOG << "jump to a library function: " << stmt_jump << ", replacing with a call/ret.\n";
+								LOG << "jump to a library function: " << *stmt_jump << ", replacing with a call/ret.\n";
 							// jump to a library function
 							// replace with a call ret
 							std::string func = pBF->getDynamicProcName(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr());
@@ -856,7 +856,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 						BB_rtls->push_back(pRtl);
 						// We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
 						pBB = pCfg->newBB(BB_rtls, COMPJUMP, 0);
-						LOG << "COMPUTED JUMP at " << uAddr << ", pDest = " << pDest << "\n";
+						LOG << "COMPUTED JUMP at " << uAddr << ", pDest = " << *pDest << "\n";
 						if (Boomerang::get()->noDecompile) {
 							// try some hacks
 							if (pDest->isMemOf()

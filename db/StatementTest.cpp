@@ -1049,7 +1049,7 @@ StatementTest::testSubscriptVars()
 	a->setNumber(1);
 	std::ostringstream ost1;
 	a->subscriptVar(srch, &s9);
-	ost1 << a;
+	ost1 << *a;
 	std::string expected = "   1 *v* m[r28{9} - 4] := m[r28{9} - 8] * r26";
 	std::string actual(ost1.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -1060,7 +1060,7 @@ StatementTest::testSubscriptVars()
 	g->setDest(Location::regOf(28));
 	std::ostringstream ost2;
 	g->subscriptVar(srch, &s9);
-	ost2 << g;
+	ost2 << *g;
 	expected = "  55 GOTO r28{9}";
 	actual = ost2.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -1074,7 +1074,7 @@ StatementTest::testSubscriptVars()
 	std::ostringstream ost3;
 	b->subscriptVar(srchb, &s9);  // Should be ignored now: new behaviour
 	b->subscriptVar(new Terminal(opFlags), g);
-	ost3 << b;
+	ost3 << *b;
 	expected = "  99 BRANCH m[r26{99}]{55}, condition equals\n"
 	           "High level: %flags{55}";
 	actual = ost3.str();
@@ -1088,7 +1088,7 @@ StatementTest::testSubscriptVars()
 	c->setSwitchInfo(&si);
 	std::ostringstream ost4;
 	c->subscriptVar(srch, &s9);
-	ost4 << c;
+	ost4 << *c;
 	expected = "   0 SWITCH(m[r28{9} - 12])\n";
 	actual = ost4.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -1098,7 +1098,7 @@ StatementTest::testSubscriptVars()
 	c->setSwitchInfo(nullptr);
 	std::ostringstream ost4a;
 	c->subscriptVar(srch, &s9);
-	ost4a << c;
+	ost4a << *c;
 	expected = "   0 CASE [r28{9}]";
 	actual = ost4a.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -1117,7 +1117,7 @@ StatementTest::testSubscriptVars()
 	ca->setCalleeReturn(new ReturnStatement);  // So it's not a childless call, and we can see the defs and params
 	std::ostringstream ost5;
 	ca->subscriptVar(srch, &s9);
-	ost5 << ca;
+	ost5 << *ca;
 	expected =
 	    "   0 {*v* r28, *v* m[r28]} := CALL dest(\n"
 	    "                *v* m[r27] := 1\n"
@@ -1141,7 +1141,7 @@ StatementTest::testSubscriptVars()
 	ca->setCalleeReturn(new ReturnStatement);  // So it's not a childless call, and we can see the defs and params
 	std::ostringstream ost5a;
 	ca->subscriptVar(srch, &s9);
-	ost5a << ca;
+	ost5a << *ca;
 	expected =
 	    "   0 {*v* r31, *v* m[r31]} := CALL dest(\n"
 	    "                *v* m[r27] := 1\n"
@@ -1164,7 +1164,7 @@ StatementTest::testSubscriptVars()
 	                        new Const(100)));
 	std::ostringstream ost6;
 	r->subscriptVar(srch, &s9);  // New behaviour: gets ignored now
-	ost6 << r;
+	ost6 << *r;
 	expected =
 	    "   0 RET *v* r28 := 1000,   *v* m[r28{9}] := 0x7d0,   *v* m[r28{55} + r26{99}] := 100\n"
 	    "              Modifieds: \n"
@@ -1178,7 +1178,7 @@ StatementTest::testSubscriptVars()
 	bs->setLeft(Location::memOf(Location::regOf(28)));
 	std::ostringstream ost7;
 	bs->subscriptVar(srch, &s9);
-	ost7 << bs;
+	ost7 << *bs;
 	expected = "   0 BOOL m[r28{9}] := CC(equals)\n"
 	           "High level: m[r28{9}] = r28{9}\n";
 	actual = ost7.str();
@@ -1231,7 +1231,7 @@ StatementTest::testBypass()
 	std::string expected("  20 *32* r28 := r28{-} - 16");
 	std::string actual;
 	std::ostringstream ost1;
-	ost1 << s20;
+	ost1 << *s20;
 	actual = ost1.str();
 	//CPPUNIT_ASSERT_EQUAL(expected, actual);
 #if 0  // No longer needed, but could maybe expand the test one day
@@ -1275,7 +1275,7 @@ StatementTest::testStripSizes()
 	std::string expected("   0 *v* r24 := m[zfill(8, 32, local5) + param6] / 16");
 	std::string actual;
 	std::ostringstream ost;
-	ost << s;
+	ost << *s;
 	actual = ost.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 }
@@ -1291,7 +1291,7 @@ StatementTest::testFindConstants()
 	a->findConstants(lc);
 	std::ostringstream ost1;
 	for (auto it = lc.begin(); it != lc.end();) {
-		ost1 << *it;
+		ost1 << **it;
 		if (++it != lc.end())
 			ost1 << ", ";
 	}

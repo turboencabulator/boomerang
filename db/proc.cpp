@@ -237,10 +237,10 @@ Proc::printDetailsXML() const
 	unsigned i;
 	for (i = 0; i < signature->getNumParams(); ++i)
 		out << "\t<param name=\"" << signature->getParamName(i)
-		    << "\" exp=\"" << signature->getParamExp(i)
+		    << "\" exp=\"" << *signature->getParamExp(i)
 		    << "\" type=\"" << signature->getParamType(i)->getCtype() << "\"/>\n";
 	for (i = 0; i < signature->getNumReturns(); ++i)
-		out << "\t<return exp=\"" << signature->getReturnExp(i)
+		out << "\t<return exp=\"" << *signature->getReturnExp(i)
 		    << "\" type=\"" << signature->getReturnType(i)->getCtype() << "\"/>\n";
 	out << "</proc>\n";
 	out.close();
@@ -652,7 +652,7 @@ UserProc::printParams(std::ostream &out, bool html) const
 		else
 			out << ", ";
 		auto as = (Assign *)param;
-		out << as->getType() << " " << as->getLeft();
+		out << as->getType() << " " << *as->getLeft();
 	}
 	out << "\n";
 	if (html)
@@ -786,7 +786,7 @@ UserProc::removeStatement(Statement *stmt)
 		}
 		if (usesIt) {
 			if (VERBOSE)
-				LOG << "removing proven true exp " << it->first << " = " << it->second
+				LOG << "removing proven true exp " << *it->first << " = " << *it->second
 				    << " that uses statement being removed.\n";
 			it = provenTrue.erase(it);
 			// it = provenTrue.begin();
@@ -941,7 +941,7 @@ UserProc::decompile(ProcList *path, int &indent)
 				// The call Statement will be in the last RTL in this BB
 				auto call = (CallStatement *)bb->getRTLs()->back()->getHlStmt();
 				if (!call->isCall()) {
-					LOG << "bb at " << bb->getLowAddr() << " is a CALL but last stmt is not a call: " << call << "\n";
+					LOG << "bb at " << bb->getLowAddr() << " is a CALL but last stmt is not a call: " << *call << "\n";
 				}
 				assert(call->isCall());
 				auto proc = call->getDestProc();
@@ -1600,7 +1600,7 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 					--refCounts[dd];
 				}
 				if (DEBUG_UNUSED)
-					LOG << "removing unused statement " << s->getNumber() << " " << s << "\n";
+					LOG << "removing unused statement " << s->getNumber() << " " << *s << "\n";
 				removeStatement(s);
 				ll = stmts.erase(ll);  // So we don't try to re-remove it
 				change = true;
@@ -1844,7 +1844,7 @@ UserProc::findSpPreservation()
 	if (DEBUG_PROOF) {
 		LOG << "proven for " << getName() << ":\n";
 		for (const auto &pt : provenTrue)
-			LOG << pt.first << " = " << pt.second << "\n";
+			LOG << *pt.first << " = " << *pt.second << "\n";
 	}
 }
 
@@ -1871,7 +1871,7 @@ UserProc::findPreserveds()
 		Exp *lhs = ((Assignment *)mod)->getLeft();
 		Exp *equation = new Binary(opEquals, lhs, lhs);
 		if (DEBUG_PROOF)
-			LOG << "attempting to prove " << equation << " is preserved by " << getName() << "\n";
+			LOG << "attempting to prove " << *equation << " is preserved by " << getName() << "\n";
 		if (prove(equation)) {
 			removes.insert(equation);
 		}
@@ -1880,12 +1880,12 @@ UserProc::findPreserveds()
 	if (DEBUG_PROOF) {
 		LOG << "### proven true for procedure " << getName() << ":\n";
 		for (const auto &pt : provenTrue)
-			LOG << pt.first << " = " << pt.second << "\n";
+			LOG << *pt.first << " = " << *pt.second << "\n";
 		LOG << "### end proven true for procedure " << getName() << "\n\n";
 #if PROVEN_FALSE
 		LOG << "### proven false for procedure " << getName() << ":\n";
 		for (const auto &pf : provenFalse)
-			LOG << pf.first << " != " << pf.second << "\n";
+			LOG << *pf.first << " != " << *pf.second << "\n";
 		LOG << "### end proven false for procedure " << getName() << "\n\n";
 #endif
 	}
@@ -1979,7 +1979,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 		return;
 
 	std::ostringstream str;
-	str << "before removing matching assigns (" << e << ").";
+	str << "before removing matching assigns (" << *e << ").";
 	Boomerang::get()->alert_decompile_debug_point(this, str.str().c_str());
 	if (VERBOSE)
 		LOG << str.str().c_str() << "\n";
@@ -1997,7 +1997,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 	}
 
 	str.str("");
-	str << "after removing matching assigns (" << e << ").";
+	str << "after removing matching assigns (" << *e << ").";
 	Boomerang::get()->alert_decompile_debug_point(this, str.str().c_str());
 	LOG << str.str().c_str() << "\n";
 }
@@ -2111,7 +2111,7 @@ UserProc::findFinalParameters()
 		Exp *e = ((ImplicitAssign *)stmt)->getLeft();
 		if (signature->findParam(e) == -1) {
 			if (VERBOSE || DEBUG_PARAMS)
-				LOG << "potential param " << e << "\n";
+				LOG << "potential param " << *e << "\n";
 #if 1  // I believe that the only true parameters will be registers or memofs that look like locals (stack pararameters)
 			if (!(e->isRegOf() || isLocalOrParamPattern(e)))
 				continue;
@@ -2168,7 +2168,7 @@ UserProc::findFinalParameters()
 			}
 #endif
 			if (VERBOSE || DEBUG_PARAMS)
-				LOG << "found new parameter " << e << "\n";
+				LOG << "found new parameter " << *e << "\n";
 
 			Type *ty = ((ImplicitAssign *)stmt)->getType();
 			// Add this parameter to the signature (for now; creates parameter names)
@@ -2280,7 +2280,7 @@ Proc::removeParameter(Exp *e)
 		signature->removeParameter(n);
 		for (const auto &caller : callerSet) {
 			if (DEBUG_UNUSED)
-				LOG << "removing argument " << e << " in pos " << n << " from " << caller << "\n";
+				LOG << "removing argument " << *e << " in pos " << n << " from " << *caller << "\n";
 			caller->removeArgument(n);
 		}
 	}
@@ -2325,7 +2325,7 @@ UserProc::processFloatConstants()
 				bool ok;
 				double d = prog->getFloatConstant(u, ok);
 				if (ok) {
-					LOG << "replacing " << memof << " with " << d << " in " << fsize << "\n";
+					LOG << "replacing " << *memof << " with " << d << " in " << *fsize << "\n";
 					fsize->setSubExp3(new Const(d));
 				}
 			}
@@ -2380,7 +2380,7 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 							                               new Unary(opAddrOf, symbol.second->clone()),
 							                               new Const(m - n)));
 							if (VERBOSE)
-								LOG << "seems " << le << " is in the middle of " << loc << " returning " << e << "\n";
+								LOG << "seems " << *le << " is in the middle of " << *loc << " returning " << *e << "\n";
 							return e;
 						}
 					}
@@ -2473,7 +2473,7 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 				Exp *e = call->getArgumentExp(i);
 				// If a pointer type and e is of the form m[sp{0} - K]:
 				if (ty && ty->resolvesToPointer() && signature->isAddrOfStackLocal(prog, e)) {
-					LOG << "argument " << e << " is an addr of stack local and the type resolves to a pointer\n";
+					LOG << "argument " << *e << " is an addr of stack local and the type resolves to a pointer\n";
 					Exp *olde = e->clone();
 					Type *pty = ty->asPointer()->getPointsTo();
 					if (e->isAddrOf()
@@ -2496,7 +2496,7 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 					if (e) {
 						Exp *ne = new Unary(opAddrOf, e);
 						if (VERBOSE)
-							LOG << "replacing argument " << olde << " with " << ne << " in " << call << "\n";
+							LOG << "replacing argument " << *olde << " with " << *ne << " in " << *call << "\n";
 						call->setArgumentExp(i, ne);
 					}
 				}
@@ -2549,7 +2549,7 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 			                                          new Unary(opAddrOf, arr),
 			                                          res->getSubExp1()->getSubExp1()->getSubExp2()->clone()), this);
 			if (VERBOSE)
-				LOG << "replacing " << res << " with " << replace << " in " << stmt << "\n";
+				LOG << "replacing " << *res << " with " << *replace << " in " << *stmt << "\n";
 			stmt->searchAndReplace(res->clone(), replace);
 		}
 	}
@@ -2590,7 +2590,7 @@ UserProc::searchRegularLocals(OPER minusOrPlus, bool lastPass, int sp, Statement
 			if (e) {
 				Exp *search = res->clone();
 				if (VERBOSE)
-					LOG << "mapping " << search << " to " << e << " in " << stmt << "\n";
+					LOG << "mapping " << *search << " to " << *e << " in " << *stmt << "\n";
 				//stmt->searchAndReplace(search, e);
 			}
 		}
@@ -2609,7 +2609,7 @@ UserProc::removeNullStatements()
 		if (stmt->isNullStatement()) {
 			// A statement of the form x := x
 			if (VERBOSE) {
-				LOG << "removing null statement: " << stmt->getNumber() << " " << stmt << "\n";
+				LOG << "removing null statement: " << stmt->getNumber() << " " << *stmt << "\n";
 			}
 			removeStatement(stmt);
 			change = true;
@@ -2862,7 +2862,7 @@ UserProc::countRefs(RefCounter &refCounts)
 		// LHS and so on, and these are not real uses
 		if (stmt->isImplicit()) continue;
 		if (DEBUG_UNUSED)
-			LOG << "counting references in " << stmt << "\n";
+			LOG << "counting references in " << *stmt << "\n";
 		LocationSet refs;
 		stmt->addUsedLocs(refs, false);  // Ignore uses in collectors
 		for (const auto &ref : refs) {
@@ -2874,7 +2874,7 @@ UserProc::countRefs(RefCounter &refCounts)
 				if (def /* && def->getNumber() */) {
 					++refCounts[def];
 					if (DEBUG_UNUSED)
-						LOG << "counted ref to " << ref << "\n";
+						LOG << "counted ref to " << *ref << "\n";
 				}
 			}
 		}
@@ -2915,7 +2915,7 @@ UserProc::removeUnusedLocals()
 				std::string name(((Const *)((Location *)loc)->getSubExp1())->getStr());
 				usedLocals.insert(name);
 				if (DEBUG_UNUSED)
-					LOG << "counted local " << name << " in " << stmt << "\n";
+					LOG << "counted local " << name << " in " << *stmt << "\n";
 			}
 		}
 		if (stmt->isAssignment() && !stmt->isImplicit() && ((Assignment *)stmt)->getLeft()->isLocal()) {
@@ -2923,7 +2923,7 @@ UserProc::removeUnusedLocals()
 			auto c = (Const *)((Unary *)as->getLeft())->getSubExp1();
 			std::string name(c->getStr());
 			usedLocals.insert(name);
-			if (DEBUG_UNUSED) LOG << "counted local " << name.c_str() << " on left of " << stmt << "\n";
+			if (DEBUG_UNUSED) LOG << "counted local " << name.c_str() << " on left of " << *stmt << "\n";
 
 		}
 	}
@@ -3041,7 +3041,7 @@ UserProc::fromSSAform()
 		for (const auto &base : defs) {
 			Type *ty = stmt->getTypeFor(base);
 			if (VERBOSE)
-				LOG << "got type " << ty << " for " << base << " from " << stmt << "\n";
+				LOG << "got type " << ty << " for " << *base << " from " << *stmt << "\n";
 			if (!ty)  // Can happen e.g. when getting the type for %flags
 				ty = new VoidType();
 			auto ff = firstTypes.find(base);
@@ -3054,7 +3054,7 @@ UserProc::fromSSAform()
 				firstTypes[base] = fte;
 			} else if (ff->second.first && !ty->isCompatibleWith(ff->second.first)) {
 				if (DEBUG_LIVENESS)
-					LOG << "def of " << base << " at " << stmt->getNumber() << " type " << ty
+					LOG << "def of " << *base << " at " << stmt->getNumber() << " type " << ty
 					    << " is not compatible with first type " << ff->second.first << ".\n";
 				// There already is a type for base, and it is different to the type for this definition.
 				// Record an "interference" so it will get a new variable
@@ -3073,10 +3073,10 @@ UserProc::fromSSAform()
 	if (DEBUG_LIVENESS) {
 		LOG << "## ig interference graph:\n";
 		for (const auto &edge : ig)
-			LOG << "   ig " << edge.first << " -> " << edge.second << "\n";
+			LOG << "   ig " << *edge.first << " -> " << *edge.second << "\n";
 		LOG << "## pu phi unites graph:\n";
 		for (const auto &edge : pu)
-			LOG << "   pu " << edge.first << " -> " << edge.second << "\n";
+			LOG << "   pu " << *edge.first << " -> " << *edge.second << "\n";
 		LOG << "  ---\n";
 	}
 
@@ -3118,7 +3118,7 @@ UserProc::fromSSAform()
 		ty = rename->getDef()->getTypeFor(rename->getSubExp1());
 		Exp *local = newLocal(ty, rename);
 		if (DEBUG_LIVENESS)
-			LOG << "renaming " << rename << " to " << local << "\n";
+			LOG << "renaming " << *rename << " to " << *local << "\n";
 		mapSymbolTo(rename, local);
 	}
 
@@ -3194,7 +3194,7 @@ UserProc::fromSSAform()
 		if (pa->begin() == pa->end()) {
 			// no params to this phi, just remove it
 			if (VERBOSE)
-				LOG << "phi with no params, removing: " << stmt << "\n";
+				LOG << "phi with no params, removing: " << *stmt << "\n";
 			removeStatement(stmt);
 			continue;
 		}
@@ -3216,7 +3216,7 @@ UserProc::fromSSAform()
 			// Is the left of the phi assignment the same base variable as all the operands?
 			if (*pa->getLeft() == *first) {
 				if (DEBUG_LIVENESS || DEBUG_UNUSED)
-					LOG << "removing phi: left and all refs same or 0: " << stmt << "\n";
+					LOG << "removing phi: left and all refs same or 0: " << *stmt << "\n";
 				// Just removing the refs will work, or removing the whole phi
 				// NOTE: Removing the phi here may cause other statments to be not used.
 				removeStatement(stmt);
@@ -3249,7 +3249,7 @@ UserProc::fromSSAform()
 			// Exp *tempLoc = newLocal(pa->getType());
 			Exp *tempLoc = getSymbolExp(new RefExp(pa->getLeft(), pa), pa->getType());
 			if (DEBUG_LIVENESS)
-				LOG << "phi statement " << stmt << " requires local, using " << tempLoc << "\n";
+				LOG << "phi statement " << *stmt << " requires local, using " << *tempLoc << "\n";
 			// For each definition ref'd in the phi
 			for (const auto &rr : *pa) {
 				if (!rr.e) continue;
@@ -3276,7 +3276,7 @@ UserProc::mapParameters()
 		Exp *lhs = ((Assignment *)param)->getLeft();
 		const char *mappedName = lookupParam(lhs);
 		if (!mappedName) {
-			LOG << "WARNING! No symbol mapping for parameter " << lhs << "\n";
+			LOG << "WARNING! No symbol mapping for parameter " << *lhs << "\n";
 			bool allZero;
 			Exp *clean = lhs->clone()->removeSubscripts(allZero);
 			if (allZero)
@@ -3331,13 +3331,13 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 	Exp *queryRight = ((Binary *)query)->getSubExp2();
 	auto it1 = provenTrue.find(queryLeft);
 	if (it1 != provenTrue.end() && *it1->second == *queryRight) {
-		if (DEBUG_PROOF) LOG << "found true in provenTrue cache " << query << " in " << getName() << "\n";
+		if (DEBUG_PROOF) LOG << "found true in provenTrue cache " << *query << " in " << getName() << "\n";
 		return true;
 	}
 #if PROVEN_FALSE  // Maybe not so smart... may prove true after some iterations
 	auto it2 = provenFalse.find(queryLeft);
 	if (it2 != provenFalse.end() && *it2->second == *queryRight) {
-		if (DEBUG_PROOF) LOG << "found false in provenFalse cache " << query << " in " << getName() << "\n";
+		if (DEBUG_PROOF) LOG << "found false in provenFalse cache " << *query << " in " << getName() << "\n";
 		return false;
 	}
 #endif
@@ -3375,12 +3375,12 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 			 && origLeft->getOper() != opDefineAll          // Beware infinite recursion
 			 && prove(&allEqAll)) {                         // Recurse in case <all> not proven yet
 				if (DEBUG_PROOF)
-					LOG << "Using all=all for " << query->getSubExp1() << "\n" << "prove returns true\n";
+					LOG << "Using all=all for " << *query->getSubExp1() << "\n" << "prove returns true\n";
 				provenTrue[origLeft->clone()] = right;
 				return true;
 			}
 			if (DEBUG_PROOF)
-				LOG << "not in return collector: " << query->getSubExp1() << "\n" << "prove returns false\n";
+				LOG << "not in return collector: " << *query->getSubExp1() << "\n" << "prove returns false\n";
 			return false;
 		}
 	}
@@ -3394,7 +3394,7 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 	bool result = prover(query, lastPhis, cache, original);
 	if (cycleGrp)
 		recurPremises.erase(origLeft);  // Remove the premise, regardless of result
-	if (DEBUG_PROOF) LOG << "prove returns " << (result ? "true" : "false") << " for " << query << " in " << getName() << "\n";
+	if (DEBUG_PROOF) LOG << "prove returns " << (result ? "true" : "false") << " for " << *query << " in " << getName() << "\n";
 
 	if (!conditional) {
 		if (result)
@@ -3427,7 +3427,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 	bool swapped = false;
 	while (change) {
 		if (DEBUG_PROOF) {
-			LOG << query << "\n";
+			LOG << *query << "\n";
 		}
 
 		change = false;
@@ -3496,14 +3496,14 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 								Exp *newQuery = new Binary(opEquals, base->clone(), base->clone());
 								destProc->setPremise(base);
 								if (DEBUG_PROOF)
-									LOG << "new required premise " << newQuery
+									LOG << "new required premise " << *newQuery
 									    << " for " << destProc->getName() << "\n";
 								// Pass conditional as true, since even if proven, this is conditional on other things
 								bool result = destProc->prove(newQuery, true);
 								destProc->killPremise(base);
 								if (result) {
 									if (DEBUG_PROOF)
-										LOG << "conditional preservation with new premise " << newQuery
+										LOG << "conditional preservation with new premise " << *newQuery
 										    << " succeeds for " << destProc->getName() << "\n";
 									// Use the new conditionally proven result
 									Exp *queryLeft = call->localiseExp(base->clone());
@@ -3511,7 +3511,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 									return destProc->prover(query, lastPhis, cache, original, lastPhi);
 								} else {
 									if (DEBUG_PROOF)
-										LOG << "conditional preservation required premise " << newQuery << " fails!\n";
+										LOG << "conditional preservation required premise " << *newQuery << " fails!\n";
 									// Do nothing else; the outer proof will likely fail
 								}
 							}
@@ -3524,17 +3524,17 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 						right = right->clone();
 						auto it = called.find(call);
 						if (it != called.end() && *it->second == *query) {
-							LOG << "found call loop to " << call->getDestProc()->getName() << " " << query << "\n";
+							LOG << "found call loop to " << call->getDestProc()->getName() << " " << *query << "\n";
 							query = new Terminal(opFalse);
 							change = true;
 						} else {
 							called[call] = query->clone();
 							if (DEBUG_PROOF)
 								LOG << "using proven for " << call->getDestProc()->getName()
-								    << " " << r->getSubExp1() << " = " << right << "\n";
+								    << " " << *r->getSubExp1() << " = " << *right << "\n";
 							right = call->localiseExp(right);
 							if (DEBUG_PROOF)
-								LOG << "right with subs: " << right << "\n";
+								LOG << "right with subs: " << *right << "\n";
 							query->setSubExp1(right);  // Replace LHS of query with right
 							change = true;
 						}
@@ -3550,16 +3550,16 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 						if (ok && DEBUG_PROOF)
 							LOG << "(set true due to induction)\n";  // FIXME: induction??!
 						if (!ok && DEBUG_PROOF)
-							LOG << "(set false " << query->getSubExp2() << " != " << phiInd << ")\n";
+							LOG << "(set false " << *query->getSubExp2() << " != " << *phiInd << ")\n";
 					} else {
 						if (DEBUG_PROOF)
-							LOG << "found " << s << " prove for each\n";
+							LOG << "found " << *s << " prove for each\n";
 						for (const auto &def : *pa) {
 							Exp *e = query->clone();
 							RefExp *r1 = (RefExp *)e->getSubExp1();
 							r1->setDef(def.def);
 							if (DEBUG_PROOF)
-								LOG << "proving for " << e << "\n";
+								LOG << "proving for " << *e << "\n";
 							lastPhis.insert(lastPhi);
 							if (!prover(e, lastPhis, cache, original, pa)) {
 								ok = false;
@@ -3579,7 +3579,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 					change = true;
 				} else if (s && s->isAssign()) {
 					if (s && refsTo.count(s)) {
-						LOG << "detected ref loop " << s << "\n";
+						LOG << "detected ref loop " << *s << "\n";
 						LOG << "refsTo: ";
 						for (const auto &rt : refsTo)
 							LOG << rt->getNumber() << ", ";
@@ -3651,7 +3651,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 		query = query->clone()->simplify();
 
 		if (change && !(*old == *query) && DEBUG_PROOF) {
-			LOG << old << "\n";
+			LOG << *old << "\n";
 		}
 		//delete old;
 	}
@@ -3706,7 +3706,7 @@ UserProc::conTypeAnalysis()
 		stmt->genConstraints(cons);
 		consObj.addConstraints(cons);
 		if (DEBUG_TA)
-			LOG << stmt << "\n" << cons << "\n";
+			LOG << *stmt << "\n" << cons << "\n";
 		// Remove the sizes immediately the constraints are generated.
 		// Otherwise, x and x*8* look like different expressions
 		stmt->stripSizes();
@@ -3727,7 +3727,7 @@ UserProc::conTypeAnalysis()
 		for (auto &soln : solns) {
 			LOG << "solution " << ++solnNum << " for proc " << getName() << "\n";
 			for (const auto &cc : soln)
-				LOG << cc.first << " = " << cc.second << "\n";
+				LOG << *cc.first << " = " << *cc.second << "\n";
 			LOG << "\n";
 		}
 	}
@@ -3883,7 +3883,7 @@ UserProc::lookupParam(Exp *e) const
 	// Originally e.g. m[esp+K]
 	Statement *def = cfg->findTheImplicitAssign(e);
 	if (!def) {
-		LOG << "ERROR: no implicit definition for parameter " << e << " !\n";
+		LOG << "ERROR: no implicit definition for parameter " << *e << " !\n";
 		return nullptr;
 	}
 	auto re = new RefExp(e, def);
@@ -3945,7 +3945,7 @@ UserProc::printSymbolMap(std::ostream &out, bool html) const
 	out << "symbols:\n";
 	for (const auto &sym : symbolMap) {
 		Type *ty = getTypeForLocation(sym.second);
-		out << "  " << sym.first << " maps to " << sym.second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
+		out << "  " << *sym.first << " maps to " << *sym.second << " type " << (ty ? ty->getCtype() : "NULL") << "\n";
 		if (html)
 			out << "<br>";
 	}
@@ -3965,7 +3965,7 @@ UserProc::dumpLocals(std::ostream &os, bool html) const
 		Exp *e = expFromSymbol(local.first.c_str());
 		// Beware: for some locals, expFromSymbol() returns nullptr (? No longer?)
 		if (e)
-			os << e << "\n";
+			os << *e << "\n";
 		else
 			os << "-\n";
 	}
@@ -3985,7 +3985,7 @@ UserProc::testSymbolMap()
 		while (it2 != symbolMap.end()) {
 			if (*it2->first < *it1->first) {  // Compare keys
 				OK = false;
-				std::cerr << "*it2->first < *it1->first: " << it2->first << " < " << it1->first << "!\n";
+				std::cerr << "*it2->first < *it1->first: " << *it2->first << " < " << *it1->first << "!\n";
 				// it2->first->printx(0); it1->first->printx(5);
 			}
 			++it1;
@@ -4388,7 +4388,7 @@ UserProc::fixCallAndPhiRefs()
 				}
 				ps->convertToAssign(best);
 				if (VERBOSE)
-					LOG << "redundant phi replaced with copy assign; now " << ps << "\n";
+					LOG << "redundant phi replaced with copy assign; now " << *ps << "\n";
 			}
 		} else {  // Ordinary statement
 			stmt->bypass();
@@ -4450,7 +4450,7 @@ UserProc::propagateToCollector()
 					continue;
 				} else {
 					if (VERBOSE)
-						LOG << "propagating " << r << " to " << as->getRight() << " in collector; result " << memOfRes << "\n";
+						LOG << "propagating " << *r << " to " << *as->getRight() << " in collector; result " << *memOfRes << "\n";
 					((Location *)*it)->setSubExp1(res);  // Change the child of the memof
 				}
 			}
@@ -4729,7 +4729,7 @@ UserProc::removeRedundantParameters()
 			// Remove the parameter
 			ret = true;
 			if (DEBUG_UNUSED)
-				LOG << " %%% removing unused parameter " << param << " in " << getName() << "\n";
+				LOG << " %%% removing unused parameter " << *param << " in " << getName() << "\n";
 			// Check if it is in the symbol map. If so, delete it; a local will be created later
 			auto ss = symbolMap.find(param);
 			if (ss != symbolMap.end())
@@ -4794,7 +4794,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 				rr = theReturnStatement->erase(rr);
 				removedRets = true;
 				if (DEBUG_UNUSED)
-					LOG << "%%%  removing unused return " << a << " from proc " << getName() << " (forced signature)\n";
+					LOG << "%%%  removing unused return " << *a << " from proc " << getName() << " (forced signature)\n";
 			}
 		}
 		if (removedRets)
@@ -4824,7 +4824,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 		auto a = (Assign *)*rr;
 		if (!unionOfCallerLiveLocs.exists(a->getLeft())) {
 			if (DEBUG_UNUSED)
-				LOG << "%%%  removing unused return " << a << " from proc " << getName() << "\n";
+				LOG << "%%%  removing unused return " << *a << " from proc " << getName() << "\n";
 			// If a component of the RHS referenced a call statement, the liveness used to be killed here.
 			// This was wrong; you need to notice the liveness changing inside updateForUseChange() to correctly
 			// recurse to callee
@@ -5043,7 +5043,7 @@ UserProc::rangeAnalysis()
 			Statement *junction = junctions.front();
 			junctions.pop_front();
 			if (watchdog > 45)
-				LOG << "processing junction " << junction << "\n";
+				LOG << "processing junction " << *junction << "\n";
 			assert(junction->isJunction());
 			junction->rangeAnalysis(execution_paths);
 		}
@@ -5084,12 +5084,12 @@ UserProc::logSuspectMemoryDefs()
 				Exp *p = rm.substInto(a->getLeft()->getSubExp1()->clone());
 				if (rm.hasRange(p)) {
 					Range &r = rm.getRange(p);
-					LOG << "got p " << p << " with range " << r << "\n";
+					LOG << "got p " << *p << " with range " << r << "\n";
 					if (r.getBase()->getOper() == opInitValueOf
 					 && r.getBase()->getSubExp1()->isRegOfK()
 					 && ((Const *)r.getBase()->getSubExp1()->getSubExp1())->getInt() == 28) {
 						RTL *rtl = a->getBB()->getRTLWithStatement(a);
-						LOG << "interesting stack reference at " << rtl->getAddress() << " " << a << "\n";
+						LOG << "interesting stack reference at " << rtl->getAddress() << " " << *a << "\n";
 					}
 				}
 			}
@@ -5110,7 +5110,7 @@ UserProc::processDecodedICTs()
 		if (!last->isHL_ICT()) continue;
 		RTL *rtl = bb->getLastRtl();
 		if (DEBUG_SWITCH)
-			LOG << "Saving high level switch statement " << rtl << "\n";
+			LOG << "Saving high level switch statement " << *rtl << "\n";
 		prog->addDecodedRtl(bb->getHiAddr(), rtl);
 		// Now decode those new targets, adding out edges as well
 #if 0

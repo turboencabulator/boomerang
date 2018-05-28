@@ -1232,7 +1232,7 @@ StmtSsaXformer::visit(CallStatement *s, bool &recur)
 			Type *lty = proc->getLocalType(((Const *)e->getSubExp1())->getStr());
 			Type *ty = as->getType();
 			if (ty && lty && *ty != *lty) {
-				LOG << "local " << e << " has type " << lty->getCtype()
+				LOG << "local " << *e << " has type " << lty->getCtype()
 				    << " that doesn't agree with type of define " << ty->getCtype() << " of a library, why?\n";
 				proc->setLocalType(((Const *)e->getSubExp1())->getStr(), ty);
 			}
