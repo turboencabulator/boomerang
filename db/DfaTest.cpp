@@ -52,7 +52,7 @@ DfaTest::testMeetInt()
 	i32.meetWith(&i32, ch, false);
 	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost1;
-	ost1 << &i32;
+	ost1 << i32;
 	std::string actual(ost1.str());
 	std::string expected("i32");
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -62,7 +62,7 @@ DfaTest::testMeetInt()
 	j32.meetWith(&i32, ch, false);
 	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost2;
-	ost2 << &i32;
+	ost2 << i32;
 	actual = ost2.str();
 	expected = "i32";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -72,7 +72,7 @@ DfaTest::testMeetInt()
 	j32.meetWith(&v, ch, false);
 	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost2a;
-	ost2a << &j32;
+	ost2a << j32;
 	actual = ost2a.str();
 	expected = "j32";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -81,7 +81,7 @@ DfaTest::testMeetInt()
 	j32.meetWith(&u32, ch, false);
 	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost3;
-	ost3 << &j32;
+	ost3 << j32;
 	actual = ost3.str();
 	expected = "u32";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -90,7 +90,7 @@ DfaTest::testMeetInt()
 	u32.meetWith(&s32, ch, false);
 	CPPUNIT_ASSERT(!ch);
 	std::ostringstream ost4;
-	ost4 << &u32;
+	ost4 << u32;
 	actual = ost4.str();
 	expected = "u32";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -98,7 +98,7 @@ DfaTest::testMeetInt()
 	u32.meetWith(&s64, ch, false);
 	CPPUNIT_ASSERT(ch);
 	std::ostringstream ost5;
-	ost5 << &u32;
+	ost5 << u32;
 	actual = ost5.str();
 	expected = "u64";
 	CPPUNIT_ASSERT_EQUAL(expected, actual);

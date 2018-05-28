@@ -4607,7 +4607,7 @@ ReturnStatement::print(std::ostream &os, bool html) const
 		Assign *as = (Assign *)mod;
 		Type *ty = as->getType();
 		if (ty)
-			ost << "*" << ty << "* ";
+			ost << "*" << *ty << "* ";
 		ost << *as->getLeft();
 		unsigned len = ost.str().length();
 		if (first)

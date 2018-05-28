@@ -1247,38 +1247,111 @@ Type::isPointerToAlpha()
 void
 Type::starPrint(std::ostream &os) const
 {
-	os << "*" << this << "*";
+	os << "*" << *this << "*";
 }
 
 // A crude shortcut representation of a type
+void
+VoidType::print(std::ostream &os) const
+{
+	os << 'v';
+}
+
+void
+FuncType::print(std::ostream &os) const
+{
+	os << "func";
+}
+
+void
+BooleanType::print(std::ostream &os) const
+{
+	os << 'b';
+}
+
+void
+CharType::print(std::ostream &os) const
+{
+	os << 'c';
+}
+
+void
+IntegerType::print(std::ostream &os) const
+{
+	int sg = getSignedness();
+	// 'j' for either i or u, don't know which
+	os << (sg == 0 ? 'j' : sg > 0 ? 'i' : 'u');
+	os << std::dec << getSize();
+}
+
+void
+FloatType::print(std::ostream &os) const
+{
+	os << 'f'; os << std::dec << getSize();
+}
+
+void
+PointerType::print(std::ostream &os) const
+{
+	os << getPointsTo() << '*';
+}
+
+void
+ArrayType::print(std::ostream &os) const
+{
+	os << '[' << getBaseType();
+	if (!isUnbounded())
+		os << ", " << getLength();
+	os << ']';
+}
+
+void
+NamedType::print(std::ostream &os) const
+{
+	os << getName();
+}
+
+void
+CompoundType::print(std::ostream &os) const
+{
+	os << "struct";
+}
+
+void
+UnionType::print(std::ostream &os) const
+{
+	os << "union";
+	//os << getCtype();
+}
+
+void
+SizeType::print(std::ostream &os) const
+{
+	os << std::dec << getSize();
+}
+
+void
+UpperType::print(std::ostream &os) const
+{
+	os << "U(" << getBaseType() << ')';
+}
+
+void
+LowerType::print(std::ostream &os) const
+{
+	os << "L(" << getBaseType() << ')';
+}
+
 std::ostream &
-operator <<(std::ostream &os, Type *t)
+operator <<(std::ostream &os, const Type *t)
 {
 	if (!t) return os << '0';
-	switch (t->getId()) {
-	case eInteger:
-		{
-			int sg = ((IntegerType *)t)->getSignedness();
-			// 'j' for either i or u, don't know which
-			os << (sg == 0 ? 'j' : sg > 0 ? 'i' : 'u');
-			os << std::dec << t->asInteger()->getSize();
-		}
-		break;
-	case eFloat:    os << 'f'; os << std::dec << t->asFloat()->getSize(); break;
-	case ePointer:  os << t->asPointer()->getPointsTo() << '*'; break;
-	case eSize:     os << std::dec << t->getSize(); break;
-	case eChar:     os << 'c'; break;
-	case eVoid:     os << 'v'; break;
-	case eBoolean:  os << 'b'; break;
-	case eCompound: os << "struct"; break;
-	case eUnion:    os << "union"; break;
-	//case eUnion:    os << t->getCtype(); break;
-	case eFunc:     os << "func"; break;
-	case eArray:    os << '[' << t->asArray()->getBaseType(); if (!t->asArray()->isUnbounded()) os << ", " << t->asArray()->getLength(); os << ']'; break;
-	case eNamed:    os << t->asNamed()->getName(); break;
-	case eUpper:    os << "U(" << t->asUpper()->getBaseType() << ')'; break;
-	case eLower:    os << "L(" << t->asLower()->getBaseType() << ')'; break;
-	}
+	return os << *t;
+}
+std::ostream &
+operator <<(std::ostream &os, const Type &t)
+{
+	t.print(os);
 	return os;
 }
 

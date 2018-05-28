@@ -50,8 +50,20 @@ class Signature;
 class UserProc;
 
 enum eType {
-	eVoid, eFunc, eBoolean, eChar, eInteger, eFloat, ePointer, eArray, eNamed, eCompound, eUnion, eSize,
-	eUpper, eLower        // For operator < mostly
+	eVoid,
+	eFunc,
+	eBoolean,
+	eChar,
+	eInteger,
+	eFloat,
+	ePointer,
+	eArray,
+	eNamed,
+	eCompound,
+	eUnion,
+	eSize,
+	eUpper,
+	eLower
 };
 
 // The following two are for Type::compForAddress()
@@ -66,7 +78,7 @@ typedef std::list<ComplexTypeComp> ComplexTypeCompList;
 
 class Type {
 protected:
-	        eType       id;
+	        eType       id;  // For operator < mostly
 private:
 	static  std::map<std::string, Type *> namedTypes;
 
@@ -111,9 +123,9 @@ public:
 	        CharType     *asChar();
 	        IntegerType  *asInteger();
 	        FloatType    *asFloat();
-	        NamedType    *asNamed();
 	        PointerType  *asPointer();
 	        ArrayType    *asArray();
+	        NamedType    *asNamed();
 	        CompoundType *asCompound();
 	        UnionType    *asUnion();
 	        SizeType     *asSize();
@@ -161,6 +173,7 @@ public:
 	virtual std::string getCtype(bool final = false) const = 0;
 	// Print in *i32* format
 	        void        starPrint(std::ostream &os) const;
+	virtual void        print(std::ostream &) const = 0;
 	        std::string prints() const;     // For debugging
 
 	virtual std::string getTempName() const; // Get a temporary name for the type
@@ -215,6 +228,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -244,6 +258,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	// Split the C type into return and parameter parts
 	std::string getReturn(bool final = false) const;
@@ -289,6 +304,7 @@ public:
 
 	// Get the C type as a string. If full, output comments re the lack of sign information (in IntegerTypes).
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	std::string getTempName() const override;
 
@@ -319,6 +335,7 @@ public:
 	void        setSize(int sz) override { size = sz; }
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	std::string getTempName() const override;
 
@@ -345,6 +362,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -369,6 +387,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -403,6 +422,7 @@ public:
 	void        setSize(int sz) override { assert(sz == STD_SIZE); }
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -438,6 +458,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
@@ -472,6 +493,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
@@ -523,6 +545,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	bool        isSuperStructOf(Type *other);       // True if this is a superstructure of other
 	bool        isSubStructOf(Type *other);         // True if this is a substructure of other
@@ -568,6 +591,7 @@ public:
 	unsigned    getSize() const override;
 
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all) override { return isCompatible(other, all); }
@@ -599,6 +623,7 @@ public:
 	bool        isSize() const override { return true; }
 	bool        isComplete() const override { return false; }    // Basic type is unknown
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 
@@ -626,6 +651,7 @@ public:
 	bool        isUpper() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 };
@@ -650,6 +676,7 @@ public:
 	bool        isLower() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
 	std::string getCtype(bool final = false) const override;
+	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 };
@@ -696,6 +723,7 @@ private:
 };
 
 // Not part of the Type class, but logically belongs with it:
-std::ostream &operator <<(std::ostream &os, Type *t);  // Print the Type pointed to by t
+std::ostream &operator <<(std::ostream &, const Type *);
+std::ostream &operator <<(std::ostream &, const Type &);
 
 #endif

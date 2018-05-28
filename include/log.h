@@ -30,7 +30,8 @@ public:
 	virtual Log &operator <<(const char *) = 0;
 	virtual Log &operator <<(const Statement &);
 	virtual Log &operator <<(const Exp &);
-	virtual Log &operator <<(Type *);
+	virtual Log &operator <<(const Type *);
+	virtual Log &operator <<(const Type &);
 	virtual Log &operator <<(const RTL &);
 	virtual Log &operator <<(const Range &);
 	virtual Log &operator <<(const RangeMap &);

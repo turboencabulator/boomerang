@@ -36,7 +36,15 @@ Log::operator <<(const Exp &e)
 }
 
 Log &
-Log::operator <<(Type *ty)
+Log::operator <<(const Type *ty)
+{
+	std::ostringstream st;
+	st << ty;
+	return *this << st.str().c_str();
+}
+
+Log &
+Log::operator <<(const Type &ty)
 {
 	std::ostringstream st;
 	st << ty;
