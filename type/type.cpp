@@ -452,23 +452,22 @@ Type::parseType(const char *str)
 bool
 IntegerType::operator ==(const Type &other) const
 {
-	IntegerType &otherInt = (IntegerType &) other;
-	return other.isInteger()
-	       // Note: zero size matches any other size (wild, or unknown, size)
-	    && (size == 0 || otherInt.size == 0 || size == otherInt.size)
-	       // Note: actual value of signedness is disregarded, just whether less than, equal to, or greater than 0
-	    && ((signedness <  0 && otherInt.signedness <  0)
-	     || (signedness == 0 && otherInt.signedness == 0)
-	     || (signedness >  0 && otherInt.signedness >  0));
+	if (!other.isInteger()) return false;
+	const IntegerType &o = (const IntegerType &)other;
+	// Note: zero size matches any other size (wild, or unknown, size)
+	// Note: actual value of signedness is disregarded, just whether less than, equal to, or greater than 0
+	return (size == 0 || o.size == 0 || size == o.size)
+	    && ((signedness <  0 && o.signedness <  0)
+	     || (signedness == 0 && o.signedness == 0)
+	     || (signedness >  0 && o.signedness >  0));
 }
 
 bool
 FloatType::operator ==(const Type &other) const
 {
-	return other.isFloat()
-	    && (size == 0
-	     || ((FloatType &)other).size == 0
-	     || (size == ((FloatType &)other).size));
+	if (!other.isFloat()) return false;
+	const FloatType &o = (const FloatType &)other;
+	return (size == 0 || o.size == 0 || size == o.size);
 }
 
 bool
@@ -493,9 +492,10 @@ bool
 FuncType::operator ==(const Type &other) const
 {
 	if (!other.isFunc()) return false;
+	const FuncType &o = (const FuncType &)other;
 	// Note: some functions don't have a signature (e.g. indirect calls that have not yet been successfully analysed)
-	if (!signature) return !((FuncType &)other).signature;
-	return *signature == *((FuncType &)other).signature;
+	if (!signature) return !o.signature;
+	return *signature == *o.signature;
 }
 
 static int pointerCompareNest = 0;
@@ -504,11 +504,12 @@ PointerType::operator ==(const Type &other) const
 {
 	// return other.isPointer() && (*points_to == *((PointerType&)other).points_to);
 	if (!other.isPointer()) return false;
+	const PointerType &o = (const PointerType &)other;
 	if (++pointerCompareNest >= 20) {
 		std::cerr << "PointerType operator == nesting depth exceeded!\n";
 		return true;
 	}
-	bool ret = (*points_to == *((PointerType &)other).points_to);
+	bool ret = (*points_to == *o.points_to);
 	--pointerCompareNest;
 	return ret;
 }
@@ -516,59 +517,66 @@ PointerType::operator ==(const Type &other) const
 bool
 ArrayType::operator ==(const Type &other) const
 {
-	return other.isArray()
-	    && *base_type == *((ArrayType &)other).base_type
-	    && ((ArrayType &)other).length == length;
+	if (!other.isArray()) return false;
+	const ArrayType &o = (const ArrayType &)other;
+	return *base_type == *o.base_type
+	    && o.length == length;
 }
 
 bool
 NamedType::operator ==(const Type &other) const
 {
-	return other.isNamed() && (name == ((NamedType &)other).name);
+	if (!other.isNamed()) return false;
+	const NamedType &o = (const NamedType &)other;
+	return name == o.name;
 }
 
 bool
 CompoundType::operator ==(const Type &other) const
 {
-	const CompoundType &cother = (CompoundType &)other;
-	if (other.isCompound() && cother.types.size() == types.size()) {
-		for (unsigned i = 0; i < types.size(); ++i)
-			if (!(*types[i] == *cother.types[i]))
-				return false;
-		return true;
-	}
-	return false;
+	if (!other.isCompound()) return false;
+	const CompoundType &o = (const CompoundType &)other;
+	if (types.size() != o.types.size()) return false;
+	for (auto it1 = types.cbegin(), it2 = o.types.cbegin(); it1 != types.cend(); ++it1, ++it2)
+		if (**it1 != **it2)
+			return false;
+	return true;
 }
 
 bool
 UnionType::operator ==(const Type &other) const
 {
-	const UnionType &uother = (UnionType &)other;
-	if (other.isUnion() && uother.li.size() == li.size()) {
-		for (auto it1 = li.cbegin(), it2 = uother.li.cbegin(); it1 != li.cend(); ++it1, ++it2)
-			if (!(*it1->type == *it2->type))
-				return false;
-		return true;
-	}
-	return false;
+	if (!other.isUnion()) return false;
+	const UnionType &o = (const UnionType &)other;
+	if (li.size() != o.li.size()) return false;
+	for (auto it1 = li.cbegin(), it2 = o.li.cbegin(); it1 != li.cend(); ++it1, ++it2)
+		if (*it1->type != *it2->type)
+			return false;
+	return true;
 }
 
 bool
 SizeType::operator ==(const Type &other) const
 {
-	return other.isSize() && (size == ((SizeType &)other).size);
+	if (!other.isSize()) return false;
+	const SizeType &o = (const SizeType &)other;
+	return size == o.size;
 }
 
 bool
 UpperType::operator ==(const Type &other) const
 {
-	return other.isUpper() && *base_type == *((UpperType &)other).base_type;
+	if (!other.isUpper()) return false;
+	const UpperType &o = (const UpperType &)other;
+	return *base_type == *o.base_type;
 }
 
 bool
 LowerType::operator ==(const Type &other) const
 {
-	return other.isLower() && *base_type == *((LowerType &)other).base_type;
+	if (!other.isLower()) return false;
+	const LowerType &o = (const LowerType &)other;
+	return *base_type == *o.base_type;
 }
 
 
@@ -623,9 +631,10 @@ IntegerType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	if (size < ((IntegerType &)other).size) return true;
-	if (size > ((IntegerType &)other).size) return false;
-	return (signedness < ((IntegerType &)other).signedness);
+	const IntegerType &o = (const IntegerType &)other;
+	if (size < o.size) return true;
+	if (size > o.size) return false;
+	return signedness < o.signedness;
 }
 
 bool
@@ -633,7 +642,8 @@ FloatType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (size < ((FloatType &)other).size);
+	const FloatType &o = (const FloatType &)other;
+	return size < o.size;
 }
 
 bool
@@ -670,7 +680,8 @@ PointerType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (*points_to < *((PointerType &)other).points_to);
+	const PointerType &o = (const PointerType &)other;
+	return *points_to < *o.points_to;
 }
 
 bool
@@ -678,7 +689,8 @@ ArrayType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (*base_type < *((ArrayType &)other).base_type);
+	const ArrayType &o = (const ArrayType &)other;
+	return *base_type < *o.base_type;
 }
 
 bool
@@ -686,7 +698,8 @@ NamedType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (name < ((NamedType &)other).name);
+	const NamedType &o = (const NamedType &)other;
+	return name < o.name;
 }
 
 bool
@@ -702,7 +715,8 @@ UnionType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return getNumTypes() < ((const UnionType &)other).getNumTypes();
+	const UnionType &o = (const UnionType &)other;
+	return getNumTypes() < o.getNumTypes();
 }
 
 bool
@@ -710,7 +724,8 @@ SizeType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (size < ((SizeType &)other).size);
+	const SizeType &o = (const SizeType &)other;
+	return size < o.size;
 }
 
 bool
@@ -718,7 +733,8 @@ UpperType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (*base_type < *((UpperType &)other).base_type);
+	const UpperType &o = (const UpperType &)other;
+	return *base_type < *o.base_type;
 }
 
 bool
@@ -726,7 +742,8 @@ LowerType::operator <(const Type &other) const
 {
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
-	return (*base_type < *((LowerType &)other).base_type);
+	const LowerType &o = (const LowerType &)other;
+	return *base_type < *o.base_type;
 }
 
 /*==============================================================================
