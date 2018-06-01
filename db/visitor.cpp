@@ -713,13 +713,6 @@ Localiser::preVisit(RefExp *e, bool &recurse)
 }
 
 Exp *
-Localiser::preVisit(Location *e, bool &recurse)
-{
-	mask <<= 1;
-	return e;
-}
-
-Exp *
 Localiser::postVisit(Location *e)
 {
 	Exp *ret = e;
@@ -946,12 +939,6 @@ ExpDestCounter::visit(RefExp *e, bool &recurse)
 	if (Statement::canPropagateToExp(e))
 		++destCounts[e];
 	return true;       // Continue visiting the rest of Exp *e
-}
-
-bool
-StmtDestCounter::visit(PhiAssign *stmt, bool &recurse)
-{
-	return true;
 }
 
 bool

@@ -505,7 +505,6 @@ class Localiser : public SimpExpModifier {
 public:
 	            Localiser(CallStatement *call) : call(call) { }
 	Exp        *preVisit(   RefExp *, bool &) override;
-	Exp        *preVisit( Location *, bool &) override;
 	Exp        *postVisit(Location *) override;
 	Exp        *postVisit(Terminal *) override;
 };
@@ -614,7 +613,6 @@ public:
 class StmtDestCounter : public StmtExpVisitor {
 public:
 	            StmtDestCounter(ExpDestCounter &edc) : StmtExpVisitor(edc) { }
-	bool        visit(PhiAssign *, bool &) override;
 };
 
 // Search an expression for flags calls, e.g. SETFFLAGS(...) & 0x45
