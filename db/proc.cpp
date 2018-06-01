@@ -2082,7 +2082,7 @@ UserProc::findFinalParameters()
 			for (const auto &cc : components) {
 				if (cc != paramLoc) {  // Don't subscript outer level
 					paramLoc->expSubscriptVar(cc, nullptr);  // E.g. r28 -> r28{-}
-					paramLoc->accept(&ic);                   // E.g. r28{-} -> r28{0}
+					paramLoc->accept(ic);                    // E.g. r28{-} -> r28{0}
 				}
 			}
 			auto ia = new ImplicitAssign(signature->getParamType(i), paramLoc);
@@ -2342,7 +2342,7 @@ UserProc::addParameterSymbols()
 	for (const auto &param : parameters) {
 		Exp *lhs = ((Assignment *)param)->getLeft();
 		lhs = lhs->expSubscriptAllNull();
-		lhs = lhs->accept(&ic);
+		lhs = lhs->accept(ic);
 		Location *to = Location::param(strdup(signature->getParamName(i)), this);
 		mapSymbolTo(lhs, to);
 		++i;
@@ -2636,8 +2636,8 @@ UserProc::propagateStatements(bool &convert, int pass)
 	// Also maintain a set of locations which are used by phi statements
 	for (const auto &stmt : stmts) {
 		ExpDestCounter edc(destCounts);
-		StmtDestCounter sdc(&edc);
-		stmt->accept(&sdc);
+		StmtDestCounter sdc(edc);
+		stmt->accept(sdc);
 	}
 #if USE_DOMINANCE_NUMS
 	// A third pass for dominance numbers
@@ -3302,9 +3302,9 @@ UserProc::removeSubscriptsFromSymbols()
 		if (from->isSubscript()) {
 			// As noted above, don't touch the outer level of subscripts
 			auto sub = static_cast<RefExp *>(from);
-			sub->setSubExp1(sub->getSubExp1()->accept(&esx));
+			sub->setSubExp1(sub->getSubExp1()->accept(esx));
 		} else
-			from = from->accept(&esx);
+			from = from->accept(esx);
 		mapSymbolTo(from, sym.second);
 	}
 }
@@ -3315,7 +3315,7 @@ UserProc::removeSubscriptsFromParameters()
 	ExpSsaXformer esx(this);
 	for (const auto &param : parameters) {
 		Exp *left = ((Assignment *)param)->getLeft();
-		left = left->accept(&esx);
+		left = left->accept(esx);
 		((Assignment *)param)->setLeft(left);
 	}
 }
@@ -3865,9 +3865,9 @@ UserProc::addImplicitAssigns()
 	StatementList stmts;
 	getStatements(stmts);
 	ImplicitConverter ic(cfg);
-	StmtImplicitConverter sm(&ic, cfg);
+	StmtImplicitConverter sm(ic, cfg);
 	for (const auto &stmt : stmts)
-		stmt->accept(&sm);
+		stmt->accept(sm);
 	cfg->setImplicitsDone();
 	df.convertImplicits(cfg);  // Some maps have m[...]{-} need to be m[...]{0} now
 	makeSymbolsImplicit();
@@ -4340,7 +4340,7 @@ UserProc::fixCallAndPhiRefs()
 			Exp *first = new RefExp(p->e, p->def);
 			// bypass to first
 			CallBypasser cb(ps);
-			first = first->accept(&cb);
+			first = first->accept(cb);
 			if (cb.isTopChanged())
 				first = first->simplify();
 			first = first->propagateAll();  // Propagate everything repeatedly
@@ -4355,7 +4355,7 @@ UserProc::fixCallAndPhiRefs()
 				if (!p->e) continue;
 				Exp *current = new RefExp(p->e, p->def);
 				CallBypasser cb2(ps);
-				current = current->accept(&cb2);
+				current = current->accept(cb2);
 				if (cb2.isTopChanged())
 					current = current->simplify();
 				current = current->propagateAll();
@@ -4400,7 +4400,7 @@ UserProc::fixCallAndPhiRefs()
 		if (!cc->isMemOf()) continue;
 		Exp *addr = ((Location *)cc)->getSubExp1();
 		CallBypasser cb(nullptr);
-		addr = addr->accept(&cb);
+		addr = addr->accept(cb);
 		if (cb.isMod())
 			((Location *)cc)->setSubExp1(addr);
 	}
@@ -4718,7 +4718,7 @@ UserProc::removeRedundantParameters()
 		// Memory parameters will be of the form m[sp + K]; convert to m[sp{0} + K] as will be found in uses
 		bparam = bparam->expSubscriptAllNull();     // Now m[sp{-}+K]{-}
 		ImplicitConverter ic(cfg);
-		bparam = bparam->accept(&ic);               // Now m[sp{0}+K]{0}
+		bparam = bparam->accept(ic);                // Now m[sp{0}+K]{0}
 		assert(bparam->isSubscript());
 		bparam = ((RefExp *)bparam)->getSubExp1();  // now m[sp{0}+K] (bare parameter)
 
@@ -5218,9 +5218,9 @@ UserProc::mapTempsToLocals()
 	StatementList stmts;
 	getStatements(stmts);
 	TempToLocalMapper ttlm(this);
-	StmtExpVisitor sv(&ttlm);
+	StmtExpVisitor sv(ttlm);
 	for (const auto &stmt : stmts) {
-		stmt->accept(&sv);
+		stmt->accept(sv);
 	}
 }
 
@@ -5255,7 +5255,7 @@ UserProc::makeSymbolsImplicit()
 	sm2.swap(symbolMap);
 	ImplicitConverter ic(cfg);
 	for (const auto &sym : sm2) {
-		Exp *impFrom = sym.first->accept(&ic);
+		Exp *impFrom = sym.first->accept(ic);
 		mapSymbolTo(impFrom, sym.second);
 	}
 }
@@ -5266,7 +5266,7 @@ UserProc::makeParamsImplicit()
 	ImplicitConverter ic(cfg);
 	for (const auto &param : parameters) {
 		Exp *lhs = ((Assignment *)param)->getLeft();
-		lhs = lhs->accept(&ic);
+		lhs = lhs->accept(ic);
 		((Assignment *)param)->setLeft(lhs);
 	}
 }

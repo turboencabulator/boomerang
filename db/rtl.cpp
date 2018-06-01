@@ -109,13 +109,14 @@ RTL::clone() const
  * Visit this RTL, and all its Statements.
  */
 bool
-RTL::accept(StmtVisitor *visitor)
+RTL::accept(StmtVisitor &v)
 {
 	// Might want to do something at the RTL level:
-	if (!visitor->visit(this)) return false;
-	for (const auto &stmt : stmtList) {
-		if (!stmt->accept(visitor)) return false;
-	}
+	if (!v.visit(this))
+		return false;
+	for (const auto &stmt : stmtList)
+		if (!stmt->accept(v))
+			return false;
 	return true;
 }
 
@@ -739,6 +740,6 @@ int
 RTL::setConscripts(int n, bool bClear)
 {
 	StmtConscriptSetter ssc(n, bClear);
-	accept(&ssc);
+	accept(ssc);
 	return ssc.getLast();
 }

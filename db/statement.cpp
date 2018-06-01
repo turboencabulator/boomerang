@@ -1226,13 +1226,6 @@ GotoStatement::clone() const
 	return ret;
 }
 
-// visit this Statement in the RTL
-bool
-GotoStatement::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
-}
-
 void
 GotoStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
@@ -1556,13 +1549,6 @@ BranchStatement::clone() const
 	ret->proc = proc;
 	ret->number = number;
 	return ret;
-}
-
-// visit this stmt
-bool
-BranchStatement::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
 }
 
 void
@@ -1964,13 +1950,6 @@ CaseStatement::clone() const
 	return ret;
 }
 
-// visit this stmt
-bool
-CaseStatement::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
-}
-
 void
 CaseStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
@@ -2057,7 +2036,7 @@ CallStatement::localiseExp(Exp *e)
 {
 	if (!defCol.isInitialised()) return e;  // Don't attempt to subscript if the data flow not started yet
 	Localiser l(this);
-	e = e->clone()->accept(&l);
+	e = e->clone()->accept(l);
 
 	return e;
 }
@@ -2327,13 +2306,6 @@ CallStatement::clone() const
 	ret->proc = proc;
 	ret->number = number;
 	return ret;
-}
-
-// visit this stmt
-bool
-CallStatement::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
 }
 
 Proc *
@@ -2884,8 +2856,8 @@ CallStatement::makeArgAssign(Type *ty, Exp *e)
 	Cfg *cfg = proc->getCFG();
 	if (cfg->implicitsDone()) {
 		ImplicitConverter ic(cfg);
-		StmtImplicitConverter sm(&ic, cfg);
-		as->accept(&sm);
+		StmtImplicitConverter sm(ic, cfg);
+		as->accept(sm);
 	}
 	return as;
 }
@@ -2946,13 +2918,6 @@ ReturnStatement::clone() const
 	rs->proc = proc;
 	rs->number = number;
 	return rs;
-}
-
-// visit this stmt
-bool
-ReturnStatement::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
 }
 
 void
@@ -3175,13 +3140,6 @@ BoolAssign::clone() const
 	return ret;
 }
 
-// visit this Statement
-bool
-BoolAssign::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
-}
-
 void
 BoolAssign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
@@ -3355,23 +3313,6 @@ Statement *
 ImplicitAssign::clone() const
 {
 	return new ImplicitAssign(type, lhs);
-}
-
-// visit this Statement
-bool
-Assign::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
-}
-bool
-PhiAssign::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
-}
-bool
-ImplicitAssign::accept(StmtVisitor *visitor)
-{
-	return visitor->visit(this);
 }
 
 void
@@ -3940,7 +3881,7 @@ int
 Statement::setConscripts(int n)
 {
 	StmtConscriptSetter scs(n, false);
-	accept(&scs);
+	accept(scs);
 	return scs.getLast();
 }
 
@@ -3948,7 +3889,7 @@ void
 Statement::clearConscripts()
 {
 	StmtConscriptSetter scs(0, true);
-	accept(&scs);
+	accept(scs);
 }
 
 // Cast the constant num to be of type ty. Return true if a change made
@@ -3956,8 +3897,8 @@ bool
 Statement::castConst(int num, Type *ty)
 {
 	ExpConstCaster ecc(num, ty);
-	StmtModifier scc(&ecc);
-	accept(&scc);
+	StmtModifier scc(ecc);
+	accept(scc);
 	return ecc.isChanged();
 }
 
@@ -3965,118 +3906,155 @@ void
 Statement::stripSizes()
 {
 	SizeStripper ss;
-	StmtModifier sm(&ss);
-	accept(&sm);
+	StmtModifier sm(ss);
+	accept(sm);
+}
+
+// visit this Statement
+bool
+Assign::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+PhiAssign::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+ImplicitAssign::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+BoolAssign::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+GotoStatement::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+BranchStatement::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+CaseStatement::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+CallStatement::accept(StmtVisitor &v)
+{
+	return v.visit(this);
+}
+bool
+ReturnStatement::accept(StmtVisitor &v)
+{
+	return v.visit(this);
 }
 
 // Visiting from class StmtExpVisitor
 // Visit all the various expressions in a statement
 bool
-Assign::accept(StmtExpVisitor *v)
+Assign::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override)
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
 		// The visitor has overridden this functionality.  This is needed for example in UsedLocFinder, where the lhs of
 		// an assignment is not used (but if it's m[blah], then blah is used)
 		return ret;
-	if (ret && lhs) ret = lhs->accept(v->ev);
-	if (ret && rhs) ret = rhs->accept(v->ev);
-	return ret;
+	return (!lhs || lhs->accept(v.ev))
+	    && (!rhs || rhs->accept(v.ev));
 }
-
 bool
-PhiAssign::accept(StmtExpVisitor *v)
+PhiAssign::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret && lhs) ret = lhs->accept(v->ev);
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!recurse) return ret;
+	if (ret && lhs)
+		ret = lhs->accept(v.ev);
 	for (const auto &def : defVec) {
 		if (!def.e) continue;
 		auto re = new RefExp(def.e, def.def);
-		ret = re->accept(v->ev);
-		if (!ret) return false;
+		if (!re->accept(v.ev))
+			return false;
 	}
 	return true;
 }
-
 bool
-ImplicitAssign::accept(StmtExpVisitor *v)
+ImplicitAssign::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret && lhs) ret = lhs->accept(v->ev);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return (!lhs || lhs->accept(v.ev));
 }
-
 bool
-GotoStatement::accept(StmtExpVisitor *v)
+GotoStatement::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret && pDest)
-		ret = pDest->accept(v->ev);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return (!pDest || pDest->accept(v.ev));
 }
-
 bool
-BranchStatement::accept(StmtExpVisitor *v)
+BranchStatement::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
 	// Destination will always be a const for X86, so the below will never be used in practice
-	if (ret && pDest)
-		ret = pDest->accept(v->ev);
-	if (ret && pCond)
-		ret = pCond->accept(v->ev);
-	return ret;
+	return (!pDest || pDest->accept(v.ev))
+	    && (!pCond || pCond->accept(v.ev));
 }
-
 bool
-CaseStatement::accept(StmtExpVisitor *v)
+CaseStatement::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret && pDest)
-		ret = pDest->accept(v->ev);
-	if (ret && pSwitchInfo && pSwitchInfo->pSwitchVar)
-		ret = pSwitchInfo->pSwitchVar->accept(v->ev);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return (!pDest || pDest->accept(v.ev))
+	    && (!pSwitchInfo || !pSwitchInfo->pSwitchVar || pSwitchInfo->pSwitchVar->accept(v.ev));
 }
-
 bool
-CallStatement::accept(StmtExpVisitor *v)
+CallStatement::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret && pDest)
-		ret = pDest->accept(v->ev);
-	for (auto it = arguments.begin(); ret && it != arguments.end(); ++it)
-		ret = (*it)->accept(v);
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	if (pDest && !pDest->accept(v.ev))
+		return false;
+	for (const auto &arg : arguments)
+		if (!arg->accept(v))
+			return false;
 	// FIXME: why aren't defines counted?
 #if 0  // Do we want to accept visits to the defines? Not sure now...
-	for (auto rr = defines.begin(); ret && rr != defines.end(); ++rr)
-		if (rr->e)  // Can be nullptr now to line up with other returns
-			ret = rr->e->accept(v->ev);
+	for (const auto &def : defines)
+		if (def.e && !def.e->accept(v.ev))  // Can be nullptr now to line up with other returns
+			return false;
 #endif
 	// FIXME: surely collectors should be counted?
-	return ret;
+	return true;
 }
-
 bool
-ReturnStatement::accept(StmtExpVisitor *v)
+ReturnStatement::accept(StmtExpVisitor &v)
 {
-	bool override;
-	if (!v->visit(this, override))
-		return false;
-	if (override) return true;
-	if (!v->isIgnoreCol()) {
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	if (!v.isIgnoreCol()) {
 		for (const auto &def : col)
 			if (!def->accept(v))
 				return false;
@@ -4092,253 +4070,266 @@ ReturnStatement::accept(StmtExpVisitor *v)
 			return false;
 	return true;
 }
-
 bool
-BoolAssign::accept(StmtExpVisitor *v)
+BoolAssign::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret && pCond)
-		ret = pCond->accept(v->ev);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return (!pCond || pCond->accept(v.ev));
 }
 
 // Visiting from class StmtModifier
 // Modify all the various expressions in a statement
 bool
-Assign::accept(StmtModifier *v)
+Assign::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur) lhs = lhs->accept(v->mod);
-	if (recur) rhs = rhs->accept(v->mod);
-	if (VERBOSE && v->mod->isMod())
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		lhs = lhs->accept(v.mod);
+		rhs = rhs->accept(v.mod);
+	}
+	if (VERBOSE && v.mod.isMod())
 		LOG << "Assignment changed: now " << *this << "\n";
 	return true;
 }
 bool
-PhiAssign::accept(StmtModifier *v)
+PhiAssign::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur) lhs = lhs->accept(v->mod);
-	if (VERBOSE && v->mod->isMod())
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		lhs = lhs->accept(v.mod);
+	}
+	if (VERBOSE && v.mod.isMod())
 		LOG << "PhiAssign changed: now " << *this << "\n";
 	return true;
 }
 bool
-ImplicitAssign::accept(StmtModifier *v)
+ImplicitAssign::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur) lhs = lhs->accept(v->mod);
-	if (VERBOSE && v->mod->isMod())
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		lhs = lhs->accept(v.mod);
+	}
+	if (VERBOSE && v.mod.isMod())
 		LOG << "ImplicitAssign changed: now " << *this << "\n";
 	return true;
 }
 bool
-BoolAssign::accept(StmtModifier *v)
+BoolAssign::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pCond && recur)
-		pCond = pCond->accept(v->mod);
-	if (recur && lhs->isMemOf()) {
-		((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v->mod));
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pCond)
+			pCond = pCond->accept(v.mod);
+		if (lhs->isMemOf())
+			((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v.mod));
 	}
 	return true;
 }
-
 bool
-GotoStatement::accept(StmtModifier *v)
+GotoStatement::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+	}
 	return true;
 }
-
 bool
-BranchStatement::accept(StmtModifier *v)
+BranchStatement::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
-	if (pCond && recur)
-		pCond = pCond->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+		if (pCond)
+			pCond = pCond->accept(v.mod);
+	}
 	return true;
 }
-
 bool
-CaseStatement::accept(StmtModifier *v)
+CaseStatement::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
-	if (pSwitchInfo && pSwitchInfo->pSwitchVar && recur)
-		pSwitchInfo->pSwitchVar = pSwitchInfo->pSwitchVar->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+		if (pSwitchInfo && pSwitchInfo->pSwitchVar)
+			pSwitchInfo->pSwitchVar = pSwitchInfo->pSwitchVar->accept(v.mod);
+	}
 	return true;
 }
-
 bool
-CallStatement::accept(StmtModifier *v)
+CallStatement::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (!recur) return true;
-	if (pDest)
-		pDest = pDest->accept(v->mod);
-	for (auto it = arguments.begin(); recur && it != arguments.end(); ++it)
-		(*it)->accept(v);
-	// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
-	// adjusted
-	// I'm thinking no at present... let the bypass and propagate while possible logic take care of it, and leave the
-	// collectors as the rename logic set it
-	// Well, sort it out with ignoreCollector()
-	if (!v->ignoreCollector()) {
-		for (const auto &def : defCol)
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+		for (const auto &arg : arguments)
+			arg->accept(v);
+		// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
+		// adjusted
+		// I'm thinking no at present... let the bypass and propagate while possible logic take care of it, and leave the
+		// collectors as the rename logic set it
+		// Well, sort it out with ignoreCollector()
+		if (!v.ignoreCollector())
+			for (const auto &def : defCol)
+				def->accept(v);
+		for (const auto &def : defines)
 			def->accept(v);
 	}
-	for (auto dd = defines.begin(); recur && dd != defines.end(); ++dd)
-		(*dd)->accept(v);
 	return true;
 }
-
 bool
-ReturnStatement::accept(StmtModifier *v)
+ReturnStatement::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (!recur) return true;
-	if (!v->ignoreCollector()) {
-		for (const auto &def : col)
-			if (!def->accept(v))
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (!v.ignoreCollector())
+			for (const auto &def : col)
+				if (!def->accept(v))
+					return false;
+		for (const auto &mod : modifieds)
+			if (!mod->accept(v))
+				return false;
+		for (const auto &ret : returns)
+			if (!ret->accept(v))
 				return false;
 	}
-	for (const auto &mod : modifieds)
-		if (!mod->accept(v))
-			return false;
-	for (const auto &ret : returns)
-		if (!ret->accept(v))
-			return false;
 	return true;
 }
 
 // Visiting from class StmtPartModifier
 // Modify all the various expressions in a statement, except for the top level of the LHS of assignments
 bool
-Assign::accept(StmtPartModifier *v)
+Assign::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur && lhs->isMemOf()) {
-		((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v->mod));
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		if (lhs->isMemOf())
+			((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v.mod));
+		rhs = rhs->accept(v.mod);
 	}
-	if (recur) rhs = rhs->accept(v->mod);
-	if (VERBOSE && v->mod->isMod())
+	if (VERBOSE && v.mod.isMod())
 		LOG << "Assignment changed: now " << *this << "\n";
 	return true;
 }
 bool
-PhiAssign::accept(StmtPartModifier *v)
+PhiAssign::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur && lhs->isMemOf()) {
-		((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v->mod));
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		if (lhs->isMemOf())
+			((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v.mod));
 	}
-	if (VERBOSE && v->mod->isMod())
+	if (VERBOSE && v.mod.isMod())
 		LOG << "PhiAssign changed: now " << *this << "\n";
 	return true;
 }
-
 bool
-ImplicitAssign::accept(StmtPartModifier *v)
+ImplicitAssign::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur && lhs->isMemOf()) {
-		((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v->mod));
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		if (lhs->isMemOf())
+			((Location *)lhs)->setSubExp1(((Location *)lhs)->getSubExp1()->accept(v.mod));
 	}
-	if (VERBOSE && v->mod->isMod())
+	if (VERBOSE && v.mod.isMod())
 		LOG << "ImplicitAssign changed: now " << *this << "\n";
 	return true;
 }
-
 bool
-GotoStatement::accept(StmtPartModifier *v)
+GotoStatement::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+	}
 	return true;
 }
-
 bool
-BranchStatement::accept(StmtPartModifier *v)
+BranchStatement::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
-	if (pCond && recur)
-		pCond = pCond->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+		if (pCond)
+			pCond = pCond->accept(v.mod);
+	}
 	return true;
 }
-
 bool
-CaseStatement::accept(StmtPartModifier *v)
+CaseStatement::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
-	if (pSwitchInfo && pSwitchInfo->pSwitchVar && recur)
-		pSwitchInfo->pSwitchVar = pSwitchInfo->pSwitchVar->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+		if (pSwitchInfo && pSwitchInfo->pSwitchVar)
+			pSwitchInfo->pSwitchVar = pSwitchInfo->pSwitchVar->accept(v.mod);
+	}
 	return true;
 }
-
 bool
-CallStatement::accept(StmtPartModifier *v)
+CallStatement::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pDest && recur)
-		pDest = pDest->accept(v->mod);
-	for (auto it = arguments.begin(); recur && it != arguments.end(); ++it)
-		(*it)->accept(v);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pDest)
+			pDest = pDest->accept(v.mod);
+		for (const auto &arg : arguments)
+			arg->accept(v);
+	}
 	// For example: needed for CallBypasser so that a collected definition that happens to be another call gets
 	// adjusted
 	// But now I'm thinking no, the bypass and propagate while possible logic should take care of it.
 	// Then again, what about the use collectors in calls? Best to do it.
-	if (!v->ignoreCollector()) {
+	if (!v.ignoreCollector()) {
 		for (const auto &def : defCol)
 			def->accept(v);
 		for (const auto &use : useCol)
 			// I believe that these should never change at the top level, e.g. m[esp{30} + 4] -> m[esp{-} - 20]
-			use->accept(v->mod);
+			use->accept(v.mod);
 	}
-	for (auto dd = defines.begin(); recur && dd != defines.end(); ++dd)
-		(*dd)->accept(v);
+	if (recurse) {
+		for (const auto &def : defines)
+			def->accept(v);
+	}
 	return true;
 }
-
 bool
-ReturnStatement::accept(StmtPartModifier *v)
+ReturnStatement::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
+	bool recurse = true;
+	v.visit(this, recurse);
 	for (const auto &mod : modifieds)
 		if (!mod->accept(v))
 			return false;
@@ -4347,16 +4338,17 @@ ReturnStatement::accept(StmtPartModifier *v)
 			return false;
 	return true;
 }
-
 bool
-BoolAssign::accept(StmtPartModifier *v)
+BoolAssign::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	if (pCond && recur)
-		pCond = pCond->accept(v->mod);
-	if (lhs && recur)
-		lhs = lhs->accept(v->mod);
+	bool recurse = true;
+	v.visit(this, recurse);
+	if (recurse) {
+		if (pCond)
+			pCond = pCond->accept(v.mod);
+		if (lhs)
+			lhs = lhs->accept(v.mod);
+	}
 	return true;
 }
 
@@ -4365,8 +4357,8 @@ void
 Statement::bypass()
 {
 	CallBypasser cb(this);
-	StmtPartModifier sm(&cb);  // Use the Part modifier so we don't change the top level of LHS of assigns etc
-	accept(&sm);
+	StmtPartModifier sm(cb);  // Use the Part modifier so we don't change the top level of LHS of assigns etc
+	accept(sm);
 	if (cb.isTopChanged())
 		simplify();  // E.g. m[esp{20}] := blah -> m[esp{-}-20+4] := blah
 }
@@ -4378,16 +4370,16 @@ void
 Statement::addUsedLocs(LocationSet &used, bool cc /* = false */, bool memOnly /*= false */)
 {
 	UsedLocsFinder ulf(used, memOnly);
-	UsedLocsVisitor ulv(&ulf, cc);
-	accept(&ulv);
+	UsedLocsVisitor ulv(ulf, cc);
+	accept(ulv);
 }
 
 bool
 Statement::addUsedLocals(LocationSet &used)
 {
 	UsedLocalFinder ulf(used, proc);
-	UsedLocsVisitor ulv(&ulf, false);
-	accept(&ulv);
+	UsedLocsVisitor ulv(ulf, false);
+	accept(ulv);
 	return ulf.wasAllFound();
 }
 
@@ -4396,8 +4388,8 @@ void
 Statement::subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */)
 {
 	ExpSubscripter es(e, def /*, cfg*/);
-	StmtSubscripter ss(&es);
-	accept(&ss);
+	StmtSubscripter ss(es);
+	accept(ss);
 }
 
 // Find all constants in this Statement
@@ -4405,8 +4397,8 @@ void
 Statement::findConstants(std::list<Const *> &lc)
 {
 	ConstFinder cf(lc);
-	StmtConstFinder scf(&cf);
-	accept(&scf);
+	StmtConstFinder scf(cf);
+	accept(scf);
 }
 
 // Convert this PhiAssignment to an ordinary Assignment.  Hopefully, this is the only place that Statements change from
@@ -5275,42 +5267,45 @@ ImpRefStatement::clone() const
 }
 
 bool
-ImpRefStatement::accept(StmtVisitor *visitor)
+ImpRefStatement::accept(StmtVisitor &v)
 {
-	return visitor->visit(this);
+	return v.visit(this);
 }
 
 bool
-ImpRefStatement::accept(StmtExpVisitor *v)
+ImpRefStatement::accept(StmtExpVisitor &v)
 {
-	bool override;
-	bool ret = v->visit(this, override);
-	if (override)
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
 		return ret;
-	if (ret) ret = addressExp->accept(v->ev);
-	return ret;
+	return addressExp->accept(v.ev);
 }
 
 bool
-ImpRefStatement::accept(StmtModifier *v)
+ImpRefStatement::accept(StmtModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur) addressExp = addressExp->accept(v->mod);
-	if (VERBOSE && v->mod->isMod())
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		addressExp = addressExp->accept(v.mod);
+	}
+	if (VERBOSE && v.mod.isMod())
 		LOG << "ImplicitRef changed: now " << *this << "\n";
 	return true;
 }
 
 bool
-ImpRefStatement::accept(StmtPartModifier *v)
+ImpRefStatement::accept(StmtPartModifier &v)
 {
-	bool recur;
-	v->visit(this, recur);
-	v->mod->clearMod();
-	if (recur) addressExp = addressExp->accept(v->mod);
-	if (VERBOSE && v->mod->isMod())
+	bool recurse = true;
+	v.visit(this, recurse);
+	v.mod.clearMod();
+	if (recurse) {
+		addressExp = addressExp->accept(v.mod);
+	}
+	if (VERBOSE && v.mod.isMod())
 		LOG << "ImplicitRef changed: now " << *this << "\n";
 	return true;
 }
@@ -5369,25 +5364,25 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 }
 
 bool
-JunctionStatement::accept(StmtVisitor *visitor)
+JunctionStatement::accept(StmtVisitor &v)
 {
 	return true;
 }
 
 bool
-JunctionStatement::accept(StmtExpVisitor *visitor)
+JunctionStatement::accept(StmtExpVisitor &v)
 {
 	return true;
 }
 
 bool
-JunctionStatement::accept(StmtModifier *visitor)
+JunctionStatement::accept(StmtModifier &v)
 {
 	return true;
 }
 
 bool
-JunctionStatement::accept(StmtPartModifier *visitor)
+JunctionStatement::accept(StmtPartModifier &v)
 {
 	return true;
 }
@@ -5419,8 +5414,8 @@ void
 Statement::mapRegistersToLocals()
 {
 	ExpRegMapper erm(proc);
-	StmtRegMapper srm(&erm);
-	accept(&srm);
+	StmtRegMapper srm(erm);
+	accept(srm);
 }
 
 void
@@ -5428,27 +5423,27 @@ Statement::insertCasts()
 {
 	// First we postvisit expressions using a StmtModifier and an ExpCastInserter
 	ExpCastInserter eci(proc);
-	StmtModifier sm(&eci, true);  // True to ignore collectors
-	accept(&sm);
+	StmtModifier sm(eci, true);  // True to ignore collectors
+	accept(sm);
 	// Now handle the LHS of assigns that happen to be m[...], using a StmtCastInserter
 	StmtCastInserter sci;
-	accept(&sci);
+	accept(sci);
 }
 
 void
 Statement::replaceSubscriptsWithLocals()
 {
 	ExpSsaXformer esx(proc);
-	StmtSsaXformer ssx(&esx, proc);
-	accept(&ssx);
+	StmtSsaXformer ssx(esx, proc);
+	accept(ssx);
 }
 
 void
 Statement::dfaMapLocals()
 {
 	DfaLocalMapper dlm(proc);
-	StmtModifier sm(&dlm, true);  // True to ignore def collector in return statement
-	accept(&sm);
+	StmtModifier sm(dlm, true);  // True to ignore def collector in return statement
+	accept(sm);
 	if (VERBOSE && dlm.change)
 		LOG << "statement mapped with new local(s): " << number << "\n";
 }

@@ -2141,7 +2141,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		e = e->propagateAll();
 		// We also want to replace any m[K]{-} with the actual constant from the (presumably) read-only data section
 		ConstGlobalConverter cgc(proc->getProg());
-		e = e->accept(&cgc);
+		e = e->accept(cgc);
 		// Simplify the result, e.g. for m[m[(r24{16} + m[0x8048d74]{-}) + 12]{-}]{-} get
 		// m[m[(r24{16} + 20) + 12]{-}]{-}, want m[m[r24{16} + 32]{-}]{-}. Note also that making the
 		// ConstGlobalConverter a simplifying expression modifier won't work in this case, since the simplifying

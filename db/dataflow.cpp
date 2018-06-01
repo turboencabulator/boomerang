@@ -627,7 +627,7 @@ UseCollector::fromSSAform(UserProc *proc, Statement *def)
 	ExpSsaXformer esx(proc);
 	for (const auto &loc : locs) {
 		auto ref = new RefExp(loc, def);  // Wrap it in a def
-		Exp *ret = ref->accept(&esx);
+		Exp *ret = ref->accept(esx);
 		// If there is no change, ret will equal loc again (i.e. fromSSAform just removed the subscript)
 		if (ret != loc) {  // Pointer comparison
 			// There was a change; we want to replace loc with ret
@@ -666,7 +666,7 @@ DataFlow::convertImplicits(Cfg *cfg)
 	A_phi_copy.swap(A_phi);
 	for (const auto &dd : A_phi_copy) {
 		Exp *e = dd.first->clone();
-		e = e->accept(&ic);
+		e = e->accept(ic);
 		A_phi[e] = dd.second;  // Copy the set (doesn't have to be deep)
 	}
 
@@ -674,7 +674,7 @@ DataFlow::convertImplicits(Cfg *cfg)
 	defsites_copy.swap(defsites);
 	for (const auto &dd : defsites_copy) {
 		Exp *e = dd.first->clone();
-		e = e->accept(&ic);
+		e = e->accept(ic);
 		defsites[e] = dd.second;  // Copy the set (doesn't have to be deep)
 	}
 
@@ -684,7 +684,7 @@ DataFlow::convertImplicits(Cfg *cfg)
 		std::set<Exp *, lessExpStar> se_new;
 		for (const auto &ee : se) {
 			Exp *e = ee->clone();
-			e = e->accept(&ic);
+			e = e->accept(ic);
 			se_new.insert(e);
 		}
 		A_orig.push_back(se_new);  // Copy the set (doesn't have to be a deep copy)

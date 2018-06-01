@@ -109,64 +109,61 @@ public:
 void
 RtlTest::testVisitor()
 {
-	auto visitor = new StmtVisitorStub();
+	StmtVisitorStub visitor;
 
 	/* rtl */
 	auto rtl = new RTL();
 	rtl->accept(visitor);
-	CPPUNIT_ASSERT(visitor->a);
+	CPPUNIT_ASSERT(visitor.a);
 	delete rtl;
 
 	/* jump stmt */
 	auto jump = new GotoStatement;
 	jump->accept(visitor);
-	CPPUNIT_ASSERT(visitor->b);
+	CPPUNIT_ASSERT(visitor.b);
 	delete jump;
 
 	/* branch stmt */
 	auto jcond = new BranchStatement;
 	jcond->accept(visitor);
-	CPPUNIT_ASSERT(visitor->c);
+	CPPUNIT_ASSERT(visitor.c);
 	delete jcond;
 
 	/* nway jump stmt */
 	auto nwayjump = new CaseStatement;
 	nwayjump->accept(visitor);
-	CPPUNIT_ASSERT(visitor->d);
+	CPPUNIT_ASSERT(visitor.d);
 	delete nwayjump;
 
 	/* call stmt */
 	auto call = new CallStatement;
 	call->accept(visitor);
-	CPPUNIT_ASSERT(visitor->e);
+	CPPUNIT_ASSERT(visitor.e);
 	delete call;
 
 	/* return stmt */
 	auto ret = new ReturnStatement;
 	ret->accept(visitor);
-	CPPUNIT_ASSERT(visitor->f);
+	CPPUNIT_ASSERT(visitor.f);
 	delete ret;
 
 	/* "bool" assgn */
 	auto scond = new BoolAssign(0);
 	scond->accept(visitor);
-	CPPUNIT_ASSERT(visitor->g);
+	CPPUNIT_ASSERT(visitor.g);
 	delete scond;
 
 	/* assignment stmt */
 	auto as = new Assign;
 	as->accept(visitor);
-	CPPUNIT_ASSERT(visitor->h);
+	CPPUNIT_ASSERT(visitor.h);
 	delete as;
 
 	/* polymorphic */
 	Statement *s = new CallStatement;
 	s->accept(visitor);
-	CPPUNIT_ASSERT(visitor->e);
+	CPPUNIT_ASSERT(visitor.e);
 	delete s;
-
-	/* cleanup */
-	delete visitor;
 }
 
 /**

@@ -158,10 +158,10 @@ public:
 	virtual Statement  *clone() const = 0;  // Make copy of self
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
-	virtual bool        accept(StmtVisitor *visitor) = 0;
-	virtual bool        accept(StmtExpVisitor *visitor) = 0;
-	virtual bool        accept(StmtModifier *visitor) = 0;
-	virtual bool        accept(StmtPartModifier *visitor) = 0;
+	virtual bool        accept(StmtVisitor &) = 0;
+	virtual bool        accept(StmtExpVisitor &) = 0;
+	virtual bool        accept(StmtModifier &) = 0;
+	virtual bool        accept(StmtPartModifier &) = 0;
 
 	        void        setLexBegin(unsigned int n) { lexBegin = n; }
 	        void        setLexEnd(unsigned int n) { lexEnd = n; }
@@ -391,12 +391,6 @@ public:
 	// Assume that we won't want sets of assignments differing by anything other than LHSs
 	bool        operator <(const Assignment &o) const { return lhs < o.lhs; }
 
-	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override = 0;
-	bool        accept(StmtExpVisitor *visitor) override = 0;
-	bool        accept(StmtModifier *visitor) override = 0;
-	bool        accept(StmtPartModifier *visitor) override = 0;
-
 	void        print(std::ostream &os, bool html = false) const override;
 	virtual void printCompact(std::ostream &os, bool html = false) const = 0;  // Without statement number
 
@@ -471,10 +465,10 @@ public:
 
 
 	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	void        printCompact(std::ostream &os, bool html = false) const override;  // Without statement number
 
@@ -568,10 +562,10 @@ public:
 	virtual Exp *getRight() const { return nullptr; }
 
 	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	void        printCompact(std::ostream &os, bool html = false) const override;
 
@@ -650,10 +644,10 @@ public:
 	void        simplify() override { }
 
 	// Visitation
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 };
 
 /*==============================================================================
@@ -674,10 +668,10 @@ public:
 	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	// Set and return the BRANCH_TYPE of this scond as well as whether the
 	// floating point condition codes are used.
@@ -731,10 +725,10 @@ public:
 
 	// Virtuals
 	Statement  *clone() const override;
-	bool        accept(StmtVisitor *) override;
-	bool        accept(StmtExpVisitor *) override;
-	bool        accept(StmtModifier *) override;
-	bool        accept(StmtPartModifier *) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 	bool        isDefinition() const override { return false; }
 	bool        usesExp(Exp *) const override { return false; }
 	bool        search(Exp *, Exp *&) override;
@@ -771,10 +765,10 @@ public:
 	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	// Set and return the destination of the jump. The destination is either an Exp, or an ADDRESS that is
 	// converted to a Exp.
@@ -825,10 +819,10 @@ public:
 	Statement  *clone() const override { return new JunctionStatement(); }
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	// returns true if this statement defines anything
 	bool        isDefinition() const override { return false; }
@@ -874,10 +868,10 @@ public:
 	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	// Set and return the BRANCH_TYPE of this jcond as well as whether the
 	// floating point condition codes are used.
@@ -959,10 +953,10 @@ public:
 	Statement  *clone() const override;
 
 	// Accept a visitor to this Statememt
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	// Set and return the Exp representing the switch variable
 	SWITCH_INFO *getSwitchInfo() const;
@@ -1035,10 +1029,10 @@ public:
 	Statement  *clone() const override;
 
 	// Accept a visitor to this stmt
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	void        setArguments(StatementList &args);
 	// Set implicit arguments: so far, for testing only:
@@ -1245,10 +1239,10 @@ public:
 	Statement  *clone() const override;
 
 	// Accept a visitor to this Statement
-	bool        accept(StmtVisitor *visitor) override;
-	bool        accept(StmtExpVisitor *visitor) override;
-	bool        accept(StmtModifier *visitor) override;
-	bool        accept(StmtPartModifier *visitor) override;
+	bool        accept(StmtVisitor &) override;
+	bool        accept(StmtExpVisitor &) override;
+	bool        accept(StmtModifier &) override;
+	bool        accept(StmtPartModifier &) override;
 
 	bool        definesLoc(Exp *loc) const override;  // True if this Statement defines loc
 

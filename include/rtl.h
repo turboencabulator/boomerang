@@ -60,7 +60,7 @@ public:
 	        RTL        *clone() const;
 	        RTL        &operator =(const RTL &other);
 
-	        bool        accept(StmtVisitor *visitor);
+	        bool        accept(StmtVisitor &);
 
 	/**
 	 * \name Common enquiry methods

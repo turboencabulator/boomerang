@@ -303,8 +303,8 @@ public:
 
 	// Visitation
 	// Note: best to have accept() as pure virtual, so you don't forget to implement it for new subclasses of Exp
-	virtual bool        accept(ExpVisitor *v) = 0;
-	virtual Exp        *accept(ExpModifier *v) = 0;
+	virtual bool        accept(ExpVisitor &) = 0;
+	virtual Exp        *accept(ExpModifier &) = 0;
 	        void        fixLocationProc(UserProc *p);
 	        UserProc   *findProc();
 	// Set or clear the constant subscripts
@@ -404,8 +404,8 @@ public:
 	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
@@ -443,8 +443,8 @@ public:
 	bool        isTerminal() const override { return true; }
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -511,8 +511,8 @@ public:
 	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -580,8 +580,8 @@ public:
 	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -644,8 +644,8 @@ public:
 	Exp        *genConstraints(Exp *restrictTo) override;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
@@ -695,8 +695,8 @@ public:
 	Exp        *polySimplify(bool &bMod) override;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -718,8 +718,8 @@ public:
 	void        setRtl(RTL *r) { rtl = r; }
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 protected:
 	friend class XMLProgParser;
@@ -761,8 +761,8 @@ public:
 	bool        isImplicitDef() const;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
@@ -794,8 +794,8 @@ public:
 	//Exp        *match(const Exp *pattern) const override;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 
 protected:
 	friend class XMLProgParser;
@@ -828,8 +828,8 @@ public:
 	virtual void getDefinitions(LocationSet &defs) const;
 
 	// Visitation
-	bool        accept(ExpVisitor *v) override;
-	Exp        *accept(ExpModifier *v) override;
+	bool        accept(ExpVisitor &) override;
+	Exp        *accept(ExpModifier &) override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
 protected:

@@ -3368,7 +3368,8 @@ Exp *
 Exp::fromSSAleft(UserProc *proc, Statement *d)
 {
 	auto r = new RefExp(this, d);  // "Wrap" in a ref
-	return r->accept(new ExpSsaXformer(proc));
+	ExpSsaXformer esx(proc);
+	return r->accept(esx);
 }
 
 // A helper class for comparing Exp*'s sensibly
@@ -3861,74 +3862,81 @@ Binary::simplifyConstraint()
 //                          //
 //  //  //  //  //  //  //  //
 bool
-Unary::accept(ExpVisitor *v)
+Unary::accept(ExpVisitor &v)
 {
-	bool override, ret = v->visit(this, override);
-	if (override) return ret;  // Override the rest of the accept logic
-	if (ret) ret = subExp1->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v);
 }
 bool
-Binary::accept(ExpVisitor *v)
+Binary::accept(ExpVisitor &v)
 {
 	assert(subExp1 && subExp2);
 
-	bool override, ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret) ret = subExp1->accept(v);
-	if (ret) ret = subExp2->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v)
+	    && subExp2->accept(v);
 }
 bool
-Ternary::accept(ExpVisitor *v)
+Ternary::accept(ExpVisitor &v)
 {
-	bool override, ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret) ret = subExp1->accept(v);
-	if (ret) ret = subExp2->accept(v);
-	if (ret) ret = subExp3->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v)
+	    && subExp2->accept(v)
+	    && subExp3->accept(v);
 }
 
 // All the Unary derived accept functions look the same, but they have to be repeated because the particular visitor
 // function called each time is different for each class (because "this" is different each time)
 bool
-TypedExp::accept(ExpVisitor *v)
+TypedExp::accept(ExpVisitor &v)
 {
-	bool override, ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret) ret = subExp1->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v);
 }
 bool
-FlagDef::accept(ExpVisitor *v)
+FlagDef::accept(ExpVisitor &v)
 {
-	bool override, ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret) ret = subExp1->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v);
 }
 bool
-RefExp::accept(ExpVisitor *v)
+RefExp::accept(ExpVisitor &v)
 {
-	bool override, ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret) ret = subExp1->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v);
 }
 bool
-Location::accept(ExpVisitor *v)
+Location::accept(ExpVisitor &v)
 {
-	bool override = false, ret = v->visit(this, override);
-	if (override) return ret;
-	if (ret) ret &= subExp1->accept(v);
-	return ret;
+	bool recurse = true;
+	bool ret = v.visit(this, recurse);
+	if (!ret || !recurse)
+		return ret;
+	return subExp1->accept(v);
 }
 
 // The following are similar, but don't have children that have to accept visitors
-bool Terminal::accept(ExpVisitor *v) { return v->visit(this); }
-bool    Const::accept(ExpVisitor *v) { return v->visit(this); }
-bool  TypeVal::accept(ExpVisitor *v) { return v->visit(this); }
+bool Terminal::accept(ExpVisitor &v) { return v.visit(this); }
+bool    Const::accept(ExpVisitor &v) { return v.visit(this); }
+bool  TypeVal::accept(ExpVisitor &v) { return v.visit(this); }
 
 // FixProcVisitor class
 
@@ -3940,7 +3948,7 @@ Exp::fixLocationProc(UserProc *p)
 	// Location subexpresssions.
 	FixProcVisitor fpv;
 	fpv.setProc(p);
-	accept(&fpv);
+	accept(fpv);
 }
 
 // GetProcVisitor class
@@ -3949,7 +3957,7 @@ UserProc *
 Exp::findProc()
 {
 	GetProcVisitor gpv;
-	accept(&gpv);
+	accept(gpv);
 	return gpv.getProc();
 }
 
@@ -3957,7 +3965,7 @@ void
 Exp::setConscripts(int n, bool bClear)
 {
 	SetConscripts sc(n, bClear);
-	accept(&sc);
+	accept(sc);
 }
 
 // Strip size casts from an Exp
@@ -3965,89 +3973,106 @@ Exp *
 Exp::stripSizes()
 {
 	SizeStripper ss;
-	return accept(&ss);
+	return accept(ss);
 }
 
 Exp *
-Unary::accept(ExpModifier *v)
+Unary::accept(ExpModifier &v)
 {
 	// This Unary will be changed in *either* the pre or the post visit. If it's changed in the preVisit step, then
 	// postVisit doesn't care about the type of ret. So let's call it a Unary, and the type system is happy
-	bool recur;
-	Unary *ret = (Unary *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (Unary *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-Binary::accept(ExpModifier *v)
+Binary::accept(ExpModifier &v)
 {
 	assert(subExp1 && subExp2);
 
-	bool recur;
-	Binary *ret = (Binary *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	if (recur) subExp2 = subExp2->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (Binary *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+		subExp2 = subExp2->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-Ternary::accept(ExpModifier *v)
+Ternary::accept(ExpModifier &v)
 {
-	bool recur;
-	Ternary *ret = (Ternary *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	if (recur) subExp2 = subExp2->accept(v);
-	if (recur) subExp3 = subExp3->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (Ternary *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+		subExp2 = subExp2->accept(v);
+		subExp3 = subExp3->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-Location::accept(ExpModifier *v)
+Location::accept(ExpModifier &v)
 {
 	// This looks to be the same source code as Unary::accept, but the type of "this" is different, which is all
 	// important here!  (it makes a call to a different visitor member function).
-	bool recur;
-	Location *ret = (Location *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (Location *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-RefExp::accept(ExpModifier *v)
+RefExp::accept(ExpModifier &v)
 {
-	bool recur;
-	RefExp *ret = (RefExp *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (RefExp *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-FlagDef::accept(ExpModifier *v)
+FlagDef::accept(ExpModifier &v)
 {
-	bool recur;
-	FlagDef *ret = (FlagDef *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (FlagDef *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-TypedExp::accept(ExpModifier *v)
+TypedExp::accept(ExpModifier &v)
 {
-	bool recur;
-	TypedExp *ret = (TypedExp *)v->preVisit(this, recur);
-	if (recur) subExp1 = subExp1->accept(v);
-	return v->postVisit(ret);
+	bool recurse = true;
+	auto ret = (TypedExp *)v.preVisit(this, recurse);
+	if (recurse) {
+		subExp1 = subExp1->accept(v);
+	}
+	return v.postVisit(ret);
 }
 Exp *
-Terminal::accept(ExpModifier *v)
+Terminal::accept(ExpModifier &v)
 {
 	// This is important if we need to modify terminals
-	return v->postVisit((Terminal *)v->preVisit(this));
+	auto ret = (Terminal *)v.preVisit(this);
+	return v.postVisit(ret);
 }
 Exp *
-Const::accept(ExpModifier *v)
+Const::accept(ExpModifier &v)
 {
-	return v->postVisit((Const *)v->preVisit(this));
+	auto ret = (Const *)v.preVisit(this);
+	return v.postVisit(ret);
 }
 Exp *
-TypeVal::accept(ExpModifier *v)
+TypeVal::accept(ExpModifier &v)
 {
-	return v->postVisit((TypeVal *)v->preVisit(this));
+	auto ret = (TypeVal *)v.preVisit(this);
+	return v.postVisit(ret);
 }
 
 static void
@@ -4161,7 +4186,7 @@ void
 Exp::addUsedLocs(LocationSet &used, bool memOnly)
 {
 	UsedLocsFinder ulf(used, memOnly);
-	accept(&ulf);
+	accept(ulf);
 }
 
 // Subscript any occurrences of e with e{def} in this expression
@@ -4169,7 +4194,7 @@ Exp *
 Exp::expSubscriptVar(Exp *e, Statement *def)
 {
 	ExpSubscripter es(e, def);
-	return accept(&es);
+	return accept(es);
 }
 
 // Subscript any occurrences of e with e{-} in this expression Note: subscript with nullptr, not implicit assignments as
@@ -4204,7 +4229,7 @@ Exp *
 Exp::bypass()
 {
 	CallBypasser cb(nullptr);
-	return accept(&cb);
+	return accept(cb);
 }
 
 void
@@ -4218,7 +4243,7 @@ int
 Exp::getComplexityDepth(UserProc *proc)
 {
 	ComplexityFinder cf(proc);
-	accept(&cf);
+	accept(cf);
 	return cf.getDepth();
 }
 
@@ -4226,7 +4251,7 @@ int
 Exp::getMemDepth()
 {
 	MemDepthFinder mdf;
-	accept(&mdf);
+	accept(mdf);
 	return mdf.getDepth();
 }
 
@@ -4235,7 +4260,7 @@ Exp *
 Exp::propagateAll()
 {
 	ExpPropagator ep;
-	return accept(&ep);
+	return accept(ep);
 }
 
 // Propagate all possible statements to this expression, and repeat until there is no further change
@@ -4247,7 +4272,7 @@ Exp::propagateAllRpt(bool &changed)
 	Exp *ret = this;
 	while (true) {
 		ep.clearChanged();  // Want to know if changed this *last* accept()
-		ret = ret->accept(&ep);
+		ret = ret->accept(ep);
 		if (ep.isChanged())
 			changed = true;
 		else
@@ -4260,7 +4285,7 @@ bool
 Exp::containsFlags()
 {
 	FlagsFinder ff;
-	accept(&ff);
+	accept(ff);
 	return ff.isFound();
 }
 
@@ -4270,7 +4295,7 @@ bool
 Exp::containsBadMemof(UserProc *proc)
 {
 	BadMemofFinder bmf(proc);
-	accept(&bmf);
+	accept(bmf);
 	return bmf.isFound();
 }
 
@@ -4279,7 +4304,7 @@ bool
 Exp::containsMemof(UserProc *proc)
 {
 	ExpHasMemofTester ehmt(proc);
-	accept(&ehmt);
+	accept(ehmt);
 	return ehmt.getResult();
 }
 
