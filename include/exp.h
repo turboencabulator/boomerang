@@ -357,14 +357,15 @@ class Const : public Exp {
 	Type       *type;           // Constants need types during type analysis
 public:
 	// Special constructors overloaded for the various constants
-	            Const(int i);
-	            Const(uint64_t ll);
-	            Const(ADDRESS a);
-	            Const(double d);
-	            Const(const char *p);
-	            Const(Proc *pp);
+	            Const(int);
+	            Const(uint64_t);
+	            Const(ADDRESS);
+	            Const(double);
+	            Const(const char *);
+		    Const(const std::string &);
+	            Const(Proc *);
 	// Copy constructor
-	            Const(const Const &o);
+	            Const(const Const &);
 
 	// Nothing to destruct: Don't deallocate the string passed to constructor
 

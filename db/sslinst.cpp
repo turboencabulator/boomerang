@@ -543,7 +543,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 					// Constuct a temporary. We should probably be smarter and actually check that it's not otherwise
 					// used here.
 					std::string tmpname = el.type->getTempName() + (tmpcount++) + "post" ;
-					el.tmp = Location::tempOf(new Const(tmpname.c_str()));
+					el.tmp = Location::tempOf(new Const(tmpname));
 
 					// Keep a copy of the referrent. For example, if the lhs is r[0]', base is r[0]
 					el.base = lhs->getSubExp1();

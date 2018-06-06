@@ -109,14 +109,14 @@ exp
 	| exp NE_OP exp      { $$ = new Binary(opNotEqual, $1, $3); }
 	| exp '.' exp        { $$ = new Binary(opMemberAccess, $1, $3); }
 	| CONSTANT           { $$ = new Const($1); }
-	| FUNC exp ')'       { $$ = new Binary(opFlagCall, new Const($1->c_str()), $2); /*delete $1;*/  }
+	| FUNC exp ')'       { $$ = new Binary(opFlagCall, new Const(*$1), $2); delete $1; }
 	| IDENTIFIER         {
 		const char *s = $1->c_str();
 		if (s[0] == 'o' && s[1] == 'p' && s[2] != '\0')
-			$$ = new Const(s); // treat op* as a string constant
+			$$ = new Const(*$1); // treat op* as a string constant
 		else
-			$$ = new Unary(opVar, new Const(s));
-		//delete $1;
+			$$ = new Unary(opVar, new Const(*$1));
+		delete $1;
 	  }
 	| '(' exp ')'        { $$ = $2; }
 	| KIND exp ')'       { $$ = new Unary(opKindOf, $2); }

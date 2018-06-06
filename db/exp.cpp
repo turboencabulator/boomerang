@@ -47,13 +47,14 @@
 
 // Derived class constructors
 
-Const::Const(int i)         : Exp(opIntConst),  type(new VoidType) { u.i  = i;  }
-Const::Const(uint64_t ll)   : Exp(opLongConst), type(new VoidType) { u.ll = ll; }
-Const::Const(double d)      : Exp(opFltConst),  type(new VoidType) { u.d  = d;  }
-Const::Const(const char *p) : Exp(opStrConst),  type(new VoidType) { u.p  = p;  }
-Const::Const(Proc *pp)      : Exp(opFuncConst), type(new VoidType) { u.pp = pp; }
+Const::Const(int i)                : Exp(opIntConst),  type(new VoidType) { u.i  = i;  }
+Const::Const(uint64_t ll)          : Exp(opLongConst), type(new VoidType) { u.ll = ll; }
+Const::Const(double d)             : Exp(opFltConst),  type(new VoidType) { u.d  = d;  }
+Const::Const(const char *p)        : Exp(opStrConst),  type(new VoidType) { u.p  = p;  }
+Const::Const(const std::string &s) : Exp(opStrConst),  type(new VoidType) { u.p  = strdup(s.c_str()); }
+Const::Const(Proc *pp)             : Exp(opFuncConst), type(new VoidType) { u.pp = pp; }
 /// \remark This is bad. We need a way of constructing true unsigned constants
-Const::Const(ADDRESS a)     : Exp(opIntConst),  type(new VoidType) { u.a  = a;  }
+Const::Const(ADDRESS a)            : Exp(opIntConst),  type(new VoidType) { u.a  = a;  }
 
 // Copy constructor
 Const::Const(const Const &o) : Exp(o.op) { u = o.u; conscript = o.conscript; type = o.type; }
