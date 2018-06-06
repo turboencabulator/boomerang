@@ -19,8 +19,8 @@ std::string operator +(const std::string &s, int i);
 void escapeXMLChars(std::string &s);
 char *escapeStr(const char *str);
 
-int lockFileRead(const char *fname);
-int lockFileWrite(const char *fname);
+int lockFileRead(const std::string &fname);
+int lockFileWrite(const std::string &fname);
 void unlockFile(int n);
 
 #endif
