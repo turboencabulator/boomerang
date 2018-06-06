@@ -83,7 +83,7 @@ void
 ExpTransformer::loadAll()
 {
 	std::string sPath = Boomerang::get()->getProgPath() + "transformations/exp.ts";
-	std::ifstream ifs(sPath.c_str());
+	std::ifstream ifs(sPath);
 	if (!ifs.good()) {
 		std::cerr << "can't open `" << sPath.c_str() << "'\n";
 		exit(1);
@@ -100,7 +100,7 @@ ExpTransformer::loadAll()
 		if (sFile.empty()) continue;
 
 		std::string sPath1 = Boomerang::get()->getProgPath() + "transformations/" + sFile;
-		std::ifstream ifs1(sPath1.c_str());
+		std::ifstream ifs1(sPath1);
 		if (!ifs1.good()) {
 			LOG << "can't open `" << sPath1.c_str() << "'\n";
 			exit(1);

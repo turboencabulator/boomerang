@@ -166,7 +166,7 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
 	addRegister("%NEXT", -1, 32, false);
 
 	// Attempt to parse the SSL file
-	std::ifstream ssl(SSLFileName.c_str());
+	std::ifstream ssl(SSLFileName);
 	if (!ssl) {
 		std::cerr << "can't open `" << SSLFileName << "' for reading\n";
 		return false;

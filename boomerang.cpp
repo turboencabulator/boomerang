@@ -83,7 +83,7 @@ Boomerang::log()
  * Sets the outputfile to be the file "log" in the default output directory.
  */
 FileLogger::FileLogger() :
-	out((Boomerang::get()->getOutputPath() + "log").c_str())
+	out(Boomerang::get()->getOutputPath() + "log")
 {
 }
 
@@ -246,7 +246,7 @@ createDirectory(std::string dir)
 	mkdir(path.c_str(), 0777);  // Make the last dir if needed
 	path += "test.file";
 	std::ofstream test;
-	test.open(path.c_str(), std::ios::out);
+	test.open(path);
 	test << "testing\n";
 	bool pathOK = !test.bad();
 	test.close();
@@ -887,7 +887,7 @@ Boomerang::commandLine(int argc, const char *argv[])
 			if (argv[i][2] == 'w')  // -iw
 				if (ofsIndCallReport) {
 					std::string fname = getOutputPath() + "indirect.txt";
-					ofsIndCallReport = new std::ofstream(fname.c_str());
+					ofsIndCallReport = new std::ofstream(fname);
 				}
 			break;
 		case 'L':

@@ -232,7 +232,7 @@ Proc::printDetailsXML() const
 {
 	if (!DUMP_XML)
 		return;
-	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-details.xml").c_str());
+	std::ofstream out(Boomerang::get()->getOutputPath() + getName() + "-details.xml");
 	out << "<proc name=\"" << getName() << "\">\n";
 	unsigned i;
 	for (i = 0; i < signature->getNumParams(); ++i)
@@ -251,7 +251,7 @@ UserProc::printDecodedXML() const
 {
 	if (!DUMP_XML)
 		return;
-	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-decoded.xml").c_str());
+	std::ofstream out(Boomerang::get()->getOutputPath() + getName() + "-decoded.xml");
 	out << "<proc name=\"" << getName() << "\">\n";
 	out << "\t<decoded>\n";
 	std::string s = prints();
@@ -267,7 +267,7 @@ UserProc::printAnalysedXML() const
 {
 	if (!DUMP_XML)
 		return;
-	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-analysed.xml").c_str());
+	std::ofstream out(Boomerang::get()->getOutputPath() + getName() + "-analysed.xml");
 	out << "<proc name=\"" << getName() << "\">\n";
 	out << "\t<analysed>\n";
 	std::string s = prints();
@@ -283,7 +283,7 @@ UserProc::printSSAXML() const
 {
 	if (!DUMP_XML)
 		return;
-	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-ssa.xml").c_str());
+	std::ofstream out(Boomerang::get()->getOutputPath() + getName() + "-ssa.xml");
 	out << "<proc name=\"" << getName() << "\">\n";
 	out << "\t<ssa>\n";
 	std::string s = prints();
@@ -308,7 +308,7 @@ UserProc::printXML()
 void
 UserProc::printUseGraph()
 {
-	std::ofstream out((Boomerang::get()->getOutputPath() + getName() + "-usegraph.dot").c_str());
+	std::ofstream out(Boomerang::get()->getOutputPath() + getName() + "-usegraph.dot");
 	out << "digraph " << getName() << " {\n";
 	StatementList stmts;
 	getStatements(stmts);

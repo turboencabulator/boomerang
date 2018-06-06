@@ -1279,8 +1279,8 @@ Prog::printCallGraph() const
 	std::string fname2 = Boomerang::get()->getOutputPath() + "callgraph.dot";
 	int fd1 = lockFileWrite(fname1.c_str());
 	int fd2 = lockFileWrite(fname2.c_str());
-	std::ofstream f1(fname1.c_str());
-	std::ofstream f2(fname2.c_str());
+	std::ofstream f1(fname1);
+	std::ofstream f2(fname2);
 	std::set<Proc *> seen;
 	std::map<Proc *, int> spaces;
 	std::map<Proc *, Proc *> parent;
@@ -1357,7 +1357,7 @@ Prog::printSymbolsToFile() const
 	std::cerr << "entering Prog::printSymbolsToFile\n";
 	std::string fname = Boomerang::get()->getOutputPath() + "symbols.h";
 	int fd = lockFileWrite(fname.c_str());
-	std::ofstream f(fname.c_str());
+	std::ofstream f(fname);
 
 	/* Print procs */
 	f << "/* Functions: */\n";
@@ -1384,7 +1384,7 @@ Prog::printCallGraphXML() const
 		proc->clearVisited();
 	std::string fname = Boomerang::get()->getOutputPath() + "callgraph.xml";
 	int fd = lockFileWrite(fname.c_str());
-	std::ofstream f(fname.c_str());
+	std::ofstream f(fname);
 	f << "<prog name=\"" << getName() << "\">\n";
 	f << "\t<callgraph>\n";
 	for (const auto &proc : entryProcs)
