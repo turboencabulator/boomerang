@@ -4397,7 +4397,7 @@ void
 Statement::findConstants(std::list<Const *> &lc)
 {
 	ConstFinder cf(lc);
-	StmtConstFinder scf(cf);
+	StmtExpVisitor scf(cf);
 	accept(scf);
 }
 

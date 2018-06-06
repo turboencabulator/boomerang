@@ -441,11 +441,6 @@ public:
 	bool        visit(   Const *) override;
 };
 
-class StmtConstFinder : public StmtExpVisitor {
-public:
-	            StmtConstFinder(ConstFinder &v) : StmtExpVisitor(v) { }
-};
-
 // This class is an ExpModifier because although most of the time it merely maps expressions to locals, in one case,
 // where sp-K is found, we replace it with a[m[sp-K]] so the back end emits it as &localX.
 // FIXME: this is probably no longer necessary, since the back end no longer maps anything!
