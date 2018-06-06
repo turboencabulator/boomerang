@@ -57,8 +57,8 @@ RtlTest::testClone()
 	auto a1 = new Assign(Location::regOf(8),
 	                     new Binary(opPlus, Location::regOf(9), new Const(99)));
 	auto a2 = new Assign(new IntegerType(16),
-	                     new Location(opParam, new Const("x"), nullptr),
-	                     new Location(opParam, new Const("y"), nullptr));
+	                     Location::param("x"),
+	                     Location::param("y"));
 	std::list<Statement *> ls;
 	ls.push_back(a1);
 	ls.push_back(a2);

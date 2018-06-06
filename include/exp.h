@@ -812,13 +812,16 @@ public:
 	// Copy constructor
 	            Location(const Location &o);
 	// Custom constructor
-	static  Location *regOf(int r) { return new Location(opRegOf, new Const(r), nullptr); }
-	static  Location *regOf(Exp *e) { return new Location(opRegOf, e, nullptr); }
-	static  Location *memOf(Exp *e, UserProc *p = nullptr) { return new Location(opMemOf, e, p); }
-	static  Location *tempOf(Exp *e) { return new Location(opTemp, e, nullptr); }
-	static  Location *global(const char *nam, UserProc *p) { return new Location(opGlobal, new Const(nam), p); }
-	static  Location *local(const char *nam, UserProc *p);
-	static  Location *param(const char *nam, UserProc *p = nullptr) { return new Location(opParam, new Const(nam), p); }
+	static  Location *regOf(int r)                                         { return new Location(opRegOf, new Const(r), nullptr); }
+	static  Location *regOf(Exp *e)                                        { return new Location(opRegOf, e, nullptr); }
+	static  Location *memOf(Exp *e, UserProc *p = nullptr)                 { return new Location(opMemOf, e, p); }
+	static  Location *tempOf(Exp *e)                                       { return new Location(opTemp, e, nullptr); }
+	static  Location *global(const char *nam, UserProc *p)                 { return new Location(opGlobal, new Const(nam), p); }
+	static  Location *global(const std::string &nam, UserProc *p)          { return new Location(opGlobal, new Const(nam), p); }
+	static  Location *local(const char *nam, UserProc *p)                  { return new Location(opLocal, new Const(nam), p); }
+	static  Location *local(const std::string &nam, UserProc *p)           { return new Location(opLocal, new Const(nam), p); }
+	static  Location *param(const char *nam, UserProc *p = nullptr)        { return new Location(opParam, new Const(nam), p); }
+	static  Location *param(const std::string &nam, UserProc *p = nullptr) { return new Location(opParam, new Const(nam), p); }
 	// Clone
 	Exp        *clone() const override;
 

@@ -118,7 +118,7 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
 	va_list args;
 	va_start(args, name);
 	for (const auto &param : ent.params) {
-		Exp *formal = new Location(opParam, new Const(param), nullptr);
+		Exp *formal = Location::param(param);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
 		result = result->searchReplaceAll(formal, actual, change);
@@ -160,7 +160,7 @@ NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
 	va_list args;
 	va_start(args, exp);
 	for (const auto &param : ent.funcParams) {
-		Exp *formal = new Location(opParam, new Const(param), nullptr);
+		Exp *formal = Location::param(param);
 		Exp *actual = va_arg(args, Exp *);
 		bool change;
 		exp = exp->searchReplaceAll(formal, actual, change);

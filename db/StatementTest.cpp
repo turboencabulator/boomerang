@@ -798,11 +798,11 @@ StatementTest::testClone()
 	                                Location::regOf(9),
 	                                new Const(99)));
 	auto a2 = new Assign(new IntegerType(16, 1),
-	                     new Location(opParam, new Const("x"), nullptr),
-	                     new Location(opParam, new Const("y"), nullptr));
+	                     Location::param("x"),
+	                     Location::param("y"));
 	auto a3 = new Assign(new IntegerType(16, -1),
-	                     new Location(opParam, new Const("z"), nullptr),
-	                     new Location(opParam, new Const("q"), nullptr));
+	                     Location::param("z"),
+	                     Location::param("q"));
 	Statement *c1 = a1->clone();
 	Statement *c2 = a2->clone();
 	Statement *c3 = a3->clone();

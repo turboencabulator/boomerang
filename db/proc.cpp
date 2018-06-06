@@ -158,7 +158,7 @@ void
 UserProc::renameParam(const std::string &oldName, const std::string &newName)
 {
 	Proc::renameParam(oldName, newName);
-	//cfg->searchAndReplace(Location::param(strdup(oldName), this), Location::param(strdup(newName), this));
+	//cfg->searchAndReplace(Location::param(oldName, this), Location::param(newName, this));
 }
 
 void
@@ -2720,7 +2720,7 @@ UserProc::newLocal(Type *ty, Exp *e, const char *nam /* = nullptr */)
 	}
 	if (VERBOSE)
 		LOG << "assigning type " << ty->getCtype() << " to new " << name << "\n";
-	return Location::local(strdup(name.c_str()), this);
+	return Location::local(name, this);
 }
 
 void

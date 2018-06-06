@@ -4213,12 +4213,6 @@ Exp::expSubscriptAllNull(/*Cfg *cfg*/)
 	return expSubscriptVar(new Terminal(opWild), nullptr /* was nullptr, nullptr, cfg */);
 }
 
-Location *
-Location::local(const char *nam, UserProc *p)
-{
-	return new Location(opLocal, new Const(nam), p);
-}
-
 // Don't put in exp.h, as this would require statement.h including before exp.h
 bool
 RefExp::isImplicitDef() const

@@ -1230,8 +1230,7 @@ DfaLocalMapper::processExp(Exp *e)
 		} else {
 			std::ostringstream ost;
 			ost << "tparam" << proc->nextParamNum();
-			const char *name = strdup(ost.str().c_str());
-			proc->mapSymbolTo(e, Location::param(name, proc));
+			proc->mapSymbolTo(e, Location::param(ost.str(), proc));
 #endif
 		}
 		return false;  // set recurse false: Don't dig inside m[x] to make m[a[m[x]]] !

@@ -35,7 +35,7 @@ void
 ExpTest::setUp()
 {
 	m_99 = new Const(99);
-	m_rof2 = new Location(opRegOf, new Const(2), nullptr);
+	m_rof2 = Location::regOf(2);
 }
 
 /**
@@ -829,7 +829,7 @@ ExpTest::testList()
 	delete l0;
 
 	// 1 element list
-	l1 = new Binary(opList, new Location(opParam, new Const("a"), nullptr),
+	l1 = new Binary(opList, Location::param("a"),
 	                        new Terminal(opNil));
 	o1 << *l1;
 	std::string expected1("a");
@@ -838,8 +838,8 @@ ExpTest::testList()
 	delete l1;
 
 	// 2 element list
-	l2 = new Binary(opList, new Location(opParam, new Const("a"), nullptr),
-	     new Binary(opList, new Location(opParam, new Const("b"), nullptr),
+	l2 = new Binary(opList, Location::param("a"),
+	     new Binary(opList, Location::param("b"),
 	                        new Terminal(opNil)));
 	o2 << *l2;
 	std::string expected2("a, b");
@@ -848,9 +848,9 @@ ExpTest::testList()
 	delete l2;
 
 	// 3 element list
-	l3 = new Binary(opList, new Location(opParam, new Const("a"), nullptr),
-	     new Binary(opList, new Location(opParam, new Const("b"), nullptr),
-	     new Binary(opList, new Location(opParam, new Const("c"), nullptr),
+	l3 = new Binary(opList, Location::param("a"),
+	     new Binary(opList, Location::param("b"),
+	     new Binary(opList, Location::param("c"),
 	                        new Terminal(opNil))));
 	o3 << *l3;
 	std::string expected3("a, b, c");
@@ -859,10 +859,10 @@ ExpTest::testList()
 	delete l3;
 
 	// 4 element list
-	l4 = new Binary(opList, new Location(opParam, new Const("a"), nullptr),
-	     new Binary(opList, new Location(opParam, new Const("b"), nullptr),
-	     new Binary(opList, new Location(opParam, new Const("c"), nullptr),
-	     new Binary(opList, new Location(opParam, new Const("d"), nullptr),
+	l4 = new Binary(opList, Location::param("a"),
+	     new Binary(opList, Location::param("b"),
+	     new Binary(opList, Location::param("c"),
+	     new Binary(opList, Location::param("d"),
 	                        new Terminal(opNil)))));
 	o4 << *l4;
 	std::string expected4("a, b, c, d");
@@ -877,13 +877,13 @@ ExpTest::testList()
 void
 ExpTest::testParen()
 {
-	Assign a(Location::regOf(new Location(opParam, new Const("rd"), nullptr)),
+	Assign a(Location::regOf(Location::param("rd")),
 	         new Binary(opBitAnd,
-	                    Location::regOf(new Location(opParam, new Const("rs1"), nullptr)),
+	                    Location::regOf(Location::param("rs1")),
 	                    new Binary(opMinus,
 	                               new Binary(opMinus,
 	                                          new Const(0),
-	                                          new Location(opParam, new Const("reg_or_imm"), nullptr)),
+	                                          Location::param("reg_or_imm")),
 	                               new Const(1))));
 	std::string expected("   0 *v* r[rd] := r[rs1] & ((0 - reg_or_imm) - 1)");
 	//std::ofstream of("andn.dot");

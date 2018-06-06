@@ -842,7 +842,7 @@ location
 	| NAME {
 		// This is a mixture of the param: PARM {} match and the value_op: NAME {} match
 		if (Dict.ParamSet.count(*$1)) {
-			$$ = new Location(opParam, new Const(*$1), nullptr);
+			$$ = Location::param(*$1);
 		} else if (ConstTable.count(*$1)) {
 			$$ = new Const(ConstTable[*$1]);
 		} else {
@@ -1000,7 +1000,7 @@ listStrToExp(const std::list<std::string> &ls)
 {
 	Exp *e = new Terminal(opNil);  // Terminate the chain
 	for (auto it = ls.crbegin(); it != ls.crend(); ++it)
-		e = new Binary(opList, new Location(opParam, new Const(*it), nullptr), e);
+		e = new Binary(opList, Location::param(*it), e);
 	return e;
 }
 
