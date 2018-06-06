@@ -1070,7 +1070,7 @@ Cfg::printToLog() const
 {
 	std::ostringstream ost;
 	print(ost);
-	LOG << ost.str().c_str();
+	LOG << ost.str();
 }
 
 void

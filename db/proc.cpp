@@ -1982,7 +1982,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 	str << "before removing matching assigns (" << *e << ").";
 	Boomerang::get()->alert_decompile_debug_point(this, str.str().c_str());
 	if (VERBOSE)
-		LOG << str.str().c_str() << "\n";
+		LOG << str.str() << "\n";
 
 	for (const auto &stmt : stmts) {
 		if (stmt->isAssign()) {
@@ -1999,7 +1999,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 	str.str("");
 	str << "after removing matching assigns (" << *e << ").";
 	Boomerang::get()->alert_decompile_debug_point(this, str.str().c_str());
-	LOG << str.str().c_str() << "\n";
+	LOG << str.str() << "\n";
 }
 
 /*
@@ -2421,14 +2421,14 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 			if (nty && !(*ty == *nty) && nty->getSize() > ty->getSize()) {
 				// FIXME: should this be a type meeting?
 				if (DEBUG_TA)
-					LOG << "getSymbolExp: updating type of " << name.c_str() << " to " << nty->getCtype() << "\n";
+					LOG << "getSymbolExp: updating type of " << name << " to " << nty->getCtype() << "\n";
 				ty = nty;
 				locals[name] = ty;
 			}
 			if (ty->resolvesToCompound()) {
 				CompoundType *compound = ty->asCompound();
 				if (VERBOSE)
-					LOG << "found reference to first member of compound " << name.c_str() << ": " << le << "\n";
+					LOG << "found reference to first member of compound " << name << ": " << le << "\n";
 				const char *nam = compound->getName(0);
 				if (!nam) nam = "??";
 				return new TypedExp(ty, new Binary(opMemberAccess, e, new Const(nam)));
@@ -2719,7 +2719,7 @@ UserProc::newLocal(Type *ty, Exp *e, const char *nam /* = nullptr */)
 		assert(false);
 	}
 	if (VERBOSE)
-		LOG << "assigning type " << ty->getCtype() << " to new " << name.c_str() << "\n";
+		LOG << "assigning type " << ty->getCtype() << " to new " << name << "\n";
 	return Location::local(strdup(name.c_str()), this);
 }
 
@@ -2923,7 +2923,7 @@ UserProc::removeUnusedLocals()
 			auto c = (Const *)((Unary *)as->getLeft())->getSubExp1();
 			std::string name(c->getStr());
 			usedLocals.insert(name);
-			if (DEBUG_UNUSED) LOG << "counted local " << name.c_str() << " on left of " << *stmt << "\n";
+			if (DEBUG_UNUSED) LOG << "counted local " << name << " on left of " << *stmt << "\n";
 
 		}
 	}
@@ -2933,11 +2933,11 @@ UserProc::removeUnusedLocals()
 		auto &name = const_cast<std::string &>(local.first);
 		// LOG << "Considering local " << name << "\n";
 		if (VERBOSE && all && !removes.empty())
-			LOG << "WARNING: defineall seen in procedure " << name.c_str()
+			LOG << "WARNING: defineall seen in procedure " << name
 			    << " so not removing " << (int)removes.size() << " locals\n";
 		if (!usedLocals.count(name) && !all) {
 			if (VERBOSE)
-				LOG << "removed unused local " << name.c_str() << "\n";
+				LOG << "removed unused local " << name << "\n";
 			removes.insert(name);
 		}
 	}
@@ -3961,7 +3961,7 @@ UserProc::dumpLocals(std::ostream &os, bool html) const
 		os << "<br>";
 	os << "locals:\n";
 	for (const auto &local : locals) {
-		os << local.second->getCtype() << " " << local.first.c_str() << " ";
+		os << local.second->getCtype() << " " << local.first << " ";
 		Exp *e = expFromSymbol(local.first.c_str());
 		// Beware: for some locals, expFromSymbol() returns nullptr (? No longer?)
 		if (e)
@@ -4472,7 +4472,7 @@ UserProc::initialParameters()
 	if (VERBOSE) {
 		std::ostringstream ost;
 		printParams(ost);
-		LOG << ost.str().c_str();
+		LOG << ost.str();
 	}
 }
 

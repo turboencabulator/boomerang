@@ -975,13 +975,13 @@ Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *pr
 		const ObjcModule &mod = module.second;
 		root->addChild(new Module(mod.name));
 		if (VERBOSE)
-			LOG << "\tModule: " << mod.name.c_str() << "\n";
+			LOG << "\tModule: " << mod.name << "\n";
 		for (const auto &cls : mod.classes) {
 			const ObjcClass &c = cls.second;
 			auto cl = new Class(c.name);
 			root->addChild(cl);
 			if (VERBOSE)
-				LOG << "\t\tClass: " << c.name.c_str() << "\n";
+				LOG << "\t\tClass: " << c.name << "\n";
 			for (const auto &method : c.methods) {
 				const ObjcMethod &m = method.second;
 				// TODO: parse :'s in names
@@ -989,7 +989,7 @@ Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *pr
 				p->setCluster(cl);
 				// TODO: decode types in m.types
 				if (VERBOSE)
-					LOG << "\t\t\tMethod: " << m.name.c_str() << "\n";
+					LOG << "\t\t\tMethod: " << m.name << "\n";
 			}
 		}
 	}
@@ -1023,7 +1023,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	fe->readLibraryCatalog();  // Needed before readSymbolFile()
 
 	for (const auto &file : symbolFiles) {
-		std::cout << "reading symbol file " << file.c_str() << "\n";
+		std::cout << "reading symbol file " << file << "\n";
 		prog->readSymbolFile(file.c_str());
 	}
 

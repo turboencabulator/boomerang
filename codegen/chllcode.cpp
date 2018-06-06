@@ -845,7 +845,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		appendExp(str, u->getSubExp1(), curPrec);
 		if (VERBOSE)
 			LOG << "ERROR: CHLLCode::appendExp: subscript in code generation of proc "
-			    << m_proc->getName() << " exp (without subscript): " << str.str().c_str() << "\n";
+			    << m_proc->getName() << " exp (without subscript): " << str.str() << "\n";
 		//assert(false);
 		break;
 	case opMemberAccess:

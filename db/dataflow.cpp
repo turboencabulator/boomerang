@@ -573,7 +573,7 @@ DefCollector::print(std::ostream &os, bool html) const
 			os << ",   ";
 			col += 4;
 		}
-		os << ost.str().c_str();
+		os << ost.str();
 		col += len;
 	}
 }
