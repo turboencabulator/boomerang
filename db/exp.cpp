@@ -2133,7 +2133,6 @@ Unary::polySimplify(bool &bMod)
 	case opNeg:
 	case opNot:
 	case opLNot:
-	case opSize:
 		{
 			OPER subOP = subExp1->getOper();
 			if (subOP == opIntConst) {
@@ -2145,7 +2144,6 @@ Unary::polySimplify(bool &bMod)
 				case opNeg:  k = -k; break;
 				case opNot:  k = ~k; break;
 				case opLNot: k = !k; break;
-				case opSize: /* No change required */ break;
 				default: break;
 				}
 				((Const *)res)->setInt(k);
