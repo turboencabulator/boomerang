@@ -1008,7 +1008,6 @@ Ternary::printr(std::ostream &os, bool html) const
 	case opItof:
 	case opFtoi:
 	case opFround:
-	case opFtrunc:
 	case opOpTable:
 		// No paren case
 		print(os);
@@ -1036,7 +1035,6 @@ Ternary::print(std::ostream &os, bool html) const
 	case opItof:
 	case opFtoi:
 	case opFround:
-	case opFtrunc:
 	case opOpTable:
 		switch (op) {
 		case opTruncu:  os << "truncu(";  break;
@@ -1047,7 +1045,6 @@ Ternary::print(std::ostream &os, bool html) const
 		case opItof:    os << "itof(";    break;
 		case opFtoi:    os << "ftoi(";    break;
 		case opFround:  os << "fround(";  break;
-		case opFtrunc:  os << "ftrunc(";  break;
 		case opOpTable: os << "optable("; break;
 		default:                          break;  // For warning
 		}
