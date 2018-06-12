@@ -1790,7 +1790,7 @@ static Exp *formR = new Binary(opPlus,
             new Binary(opMult,
                 new Terminal(opWild),
                 new Const(4)),
-            new Const(opWildIntConst)))));
+            new Terminal(opWildIntConst)))));
 
 // Pattern: %pc + m[%pc + ((<expr> * 4) - k)] - k
 // where k is a smallish constant, e.g. 288 (/usr/bin/vi 2.6, 0c4233c).

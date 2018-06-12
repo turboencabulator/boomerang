@@ -1676,7 +1676,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				// the branch is for any one of the (one or two) bits being on. For example, if the mask is 0x41, we
 				// are branching of less (0x1) or equal (0x41).
 				mask &= 0x41;
-				OPER op;
+				OPER op = opWild;
 				switch (mask) {
 				case 0:
 					LOG << "WARNING: unhandled pentium branch if parity with pCond = " << *pCond << "\n";
@@ -1691,8 +1691,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 					op = opLessEq;
 					break;
 				default:
-					op = opWild;  // Not possible, but avoid a compiler warning
-					break;
+					break;  // Not possible, but avoid a compiler warning
 				}
 				pCond = new Binary(op,
 				                   flagsParam->getSubExp1()->getSubExp2()->getSubExp1()->clone(),

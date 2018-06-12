@@ -398,8 +398,8 @@ Terminal::operator ==(const Exp &e) const
 	const Terminal &o = (const Terminal &)e;
 	if (op == opWildIntConst) return o.op == opIntConst;
 	if (op == opWildStrConst) return o.op == opStrConst;
-	if (op == opWildMemOf)    return o.op == opMemOf;
 	if (op == opWildRegOf)    return o.op == opRegOf;
+	if (op == opWildMemOf)    return o.op == opMemOf;
 	if (op == opWildAddrOf)   return o.op == opAddrOf;
 	return op == opWild  // Wild matches anything
 	    || o.op == opWild
@@ -838,12 +838,12 @@ Terminal::print(std::ostream &os, bool html) const
 	case opDF:           os << "%DF";     break;
 	case opAFP:          os << "%afp";    break;
 	case opAGP:          os << "%agp";    break;
-	case opWild:         os << "WILD";    break;
 	case opAnull:        os << "%anul";   break;
 	case opFpush:        os << "FPUSH";   break;
 	case opFpop:         os << "FPOP";    break;
-	case opWildMemOf:    os << "m[WILD]"; break;
+	case opWild:         os << "WILD";    break;
 	case opWildRegOf:    os << "r[WILD]"; break;
+	case opWildMemOf:    os << "m[WILD]"; break;
 	case opWildAddrOf:   os << "a[WILD]"; break;
 	case opWildIntConst: os << "WILDINT"; break;
 	case opWildStrConst: os << "WILDSTR"; break;
