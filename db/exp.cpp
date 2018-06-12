@@ -903,6 +903,21 @@ Unary::print(std::ostream &os, bool html) const
 		os << "]";
 		break;
 
+	case opTemp:
+		if (p1->getOper() == opWildStrConst) {
+			os << "t[";
+			((Const *)p1)->printNoQuotes(os);
+			os << "]";
+			return;
+		}
+		// Temp: just print the string, no quotes
+	case opGlobal:
+	case opLocal:
+	case opParam:
+		// Print a more concise form than param["foo"] (just foo)
+		((Const *)p1)->printNoQuotes(os);
+		return;
+
 	//  //  //  //  //  //  //
 	//    Unary operators   //
 	//  //  //  //  //  //  //
@@ -919,14 +934,18 @@ Unary::print(std::ostream &os, bool html) const
 		return;
 
 	case opSignExt:
+	case opInitValueOf:
 		p1->printr(os, html);
-		os << "!";  // Operator after expression
+		if (op == opSignExt) os << "!";  // Operator after expression
+		else                 os << "'";
 		return;
 
 	//  //  //  //  //  //  //  //
 	//  Function-like operators //
 	//  //  //  //  //  //  //  //
 
+	case opFtrunc:
+	case opFabs:
 	case opSQRTs:
 	case opSQRTd:
 	case opSQRTq:
@@ -941,7 +960,10 @@ Unary::print(std::ostream &os, bool html) const
 	case opExecute:
 	case opMachFtr:
 	case opSuccessor:
+	case opPhi:
 		switch (op) {
+		case opFtrunc:    os << "ftrunc(";  break;
+		case opFabs:      os << "fabs(";    break;
 		case opSQRTs:     os << "SQRTs(";   break;
 		case opSQRTd:     os << "SQRTd(";   break;
 		case opSQRTq:     os << "SQRTq(";   break;
@@ -956,46 +978,13 @@ Unary::print(std::ostream &os, bool html) const
 		case opExecute:   os << "execute("; break;
 		case opMachFtr:   os << "machine("; break;
 		case opSuccessor: os << "succ(";    break;
+		case opPhi:       os << "phi(";     break;
 		default:                            break;  // For warning
 		}
 		p1->print(os, html);
 		os << ")";
 		return;
 
-	//  Misc    //
-	case opTemp:
-		if (p1->getOper() == opWildStrConst) {
-			os << "t[";
-			((Const *)p1)->printNoQuotes(os);
-			os << "]";
-			return;
-		}
-		// Temp: just print the string, no quotes
-	case opGlobal:
-	case opLocal:
-	case opParam:
-		// Print a more concise form than param["foo"] (just foo)
-		((Const *)p1)->printNoQuotes(os);
-		return;
-	case opInitValueOf:
-		p1->printr(os, html);
-		os << "'";
-		return;
-	case opPhi:
-		os << "phi(";
-		p1->print(os, html);
-		os << ")";
-		return;
-	case opFtrunc:
-		os << "ftrunc(";
-		p1->print(os, html);
-		os << ")";
-		return;
-	case opFabs:
-		os << "fabs(";
-		p1->print(os, html);
-		os << ")";
-		return;
 	default:
 		LOG << "Unary::print invalid operator " << operStrings[op] << "\n";
 		assert(0);
