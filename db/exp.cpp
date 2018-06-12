@@ -938,7 +938,7 @@ Unary::print(std::ostream &os, bool html) const
 	case opLog2:
 	case opLog10:
 	case opLoge:
-	case opPow:
+	case opExecute:
 	case opMachFtr:
 	case opSuccessor:
 		switch (op) {
