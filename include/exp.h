@@ -386,11 +386,11 @@ public:
 	const char *getFuncName() const;
 
 	// Set the constant
-	void        setInt(int i)         { u.i  = i;  }
-	void        setLong(uint64_t ll)  { u.ll = ll; }
-	void        setFlt(double d)      { u.d  = d;  }
-	void        setStr(const char *p) { u.p  = p;  }
-	void        setAddr(ADDRESS a)    { u.a  = a;  }
+	void        setInt(int i)         { u.i  = i;  op = opIntConst;  }
+	void        setLong(uint64_t ll)  { u.ll = ll; op = opLongConst; }
+	void        setFlt(double d)      { u.d  = d;  op = opFltConst;  }
+	void        setStr(const char *p) { u.p  = p;  op = opStrConst;  }
+	void        setAddr(ADDRESS a)    { u.a  = a;  op = opIntConst;  }
 
 	// Get and set the type
 	Type       *getType() const { return type; }

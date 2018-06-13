@@ -3759,14 +3759,12 @@ UserProc::conTypeAnalysis()
 					// Need heavy duty cast here
 					// MVE: check this! Especially when a double prec float
 					con->setFlt(*(float *)&val);
-					con->setOper(opFltConst);
 				} else if (ty->isCString()) {
 					// Convert to a string
 					const char *str = prog->getStringConstant(val, true);
 					if (str) {
 						// Make a string
 						con->setStr(str);
-						con->setOper(opStrConst);
 					}
 				} else {
 					if (ty->isInteger() && ty->getSize() && ty->getSize() != STD_SIZE)

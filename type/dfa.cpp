@@ -169,7 +169,6 @@ UserProc::dfaTypeAnalysis()
 					if (str) {
 						// Make a string
 						con->setStr(str);
-						con->setOper(opStrConst);
 					}
 				} else if (baseType->resolvesToInteger()
 				        || baseType->resolvesToFloat()
@@ -239,7 +238,6 @@ UserProc::dfaTypeAnalysis()
 					//con->setFlt(reinterpret_cast<float>(con->getInt()));
 					int tmp = con->getInt();
 					con->setFlt(*(float *)&tmp); // Reinterpret to float, then cast to double
-					con->setOper(opFltConst);
 					con->setType(new FloatType(64));
 				}
 				// MVE: more work if double?

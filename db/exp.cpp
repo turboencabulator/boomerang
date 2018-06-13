@@ -2137,10 +2137,9 @@ Unary::polySimplify(bool &bMod)
 			OPER subOP = subExp1->getOper();
 			if (subOP == opIntConst) {
 				// -k, ~k, or !k
-				OPER op2 = op;
 				res = ((Unary *)res)->getSubExp1();
 				int k = ((Const *)res)->getInt();
-				switch (op2) {
+				switch (op) {
 				case opNeg:  k = -k; break;
 				case opNot:  k = ~k; break;
 				case opLNot: k = !k; break;
