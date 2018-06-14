@@ -79,13 +79,13 @@ public:
 		cmap[new TypeVal(t1)] = new TypeVal(t2);
 	}
 	// Union with another constraint map
-	void makeUnion(ConstraintMap &o);
+	void makeUnion(const ConstraintMap &);
 	// Print to the given stream
 	void print(std::ostream &os) const;
 	// Print to a string
 	std::string prints() const;
 	// Substitute the given constraints into this map
-	void substitute(ConstraintMap &other);
+	void substitute(const ConstraintMap &);
 	// For this solution, we need to find disjunctions of the form
 	// <alphaN> = <type>      or
 	// <type>   = <alphaN>

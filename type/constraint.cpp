@@ -45,7 +45,7 @@ ConstraintMap::prints() const
 }
 
 void
-ConstraintMap::makeUnion(ConstraintMap &o)
+ConstraintMap::makeUnion(const ConstraintMap &o)
 {
 	for (const auto &oth : o.cmap) {
 		auto ret = cmap.insert(oth);
@@ -96,7 +96,7 @@ EquateMap::prints() const
 
 // Substitute the given constraints into this map
 void
-ConstraintMap::substitute(ConstraintMap &other)
+ConstraintMap::substitute(const ConstraintMap &other)
 {
 	for (const auto &oth : other.cmap) {
 		bool ch;
