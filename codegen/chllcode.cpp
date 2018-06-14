@@ -1376,7 +1376,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
  * \todo                Add assingment for when the function returns a struct.
  */
 void
-CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results)
+CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1389,13 +1389,13 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, Statement
 	s << name << "(";
 	bool first = true;
 	int n = 0;
-	for (auto ss = args.begin(); ss != args.end(); ++ss, ++n) {
+	for (const auto &stmt : args) {
 		if (first)
 			first = false;
 		else
 			s << ", ";
-		Type *t = ((Assign *)*ss)->getType();
-		Exp *arg = ((Assign *)*ss)->getRight();
+		Type *t = ((Assign *)stmt)->getType();
+		Exp *arg = ((Assign *)stmt)->getRight();
 		bool ok = true;
 		if (t && t->isPointer() && ((PointerType *)t)->getPointsTo()->isFunc() && arg->isIntConst()) {
 			Proc *p = proc->getProg()->findProc(((Const *)arg)->getInt());
@@ -1416,6 +1416,7 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, Statement
 			if (needclose)
 				s << ")";
 		}
+		++n;
 	}
 	s << ");";
 	if (results->size() > 1) {
@@ -1442,7 +1443,7 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, Statement
  */
 // Ugh - almost the same as the above, but it needs to take an expression, // not a Proc*
 void
-CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results)
+CHLLCode::AddIndCallStatement(int indLevel, Exp *exp, const StatementList &args, StatementList *results)
 {
 	// FIXME: Need to use 'results', since we can infer some defines...
 	std::ostringstream s;

@@ -99,8 +99,8 @@ public:
 
 	// sequential statements
 	virtual void    AddAssignmentStatement(int indLevel, Assign *s) = 0;
-	virtual void    AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results) = 0;
-	virtual void    AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results) = 0;
+	virtual void    AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results) = 0;
+	virtual void    AddIndCallStatement(int indLevel, Exp *exp, const StatementList &args, StatementList *results) = 0;
 	virtual void    AddReturnStatement(int indLevel, StatementList *rets) = 0;
 
 	// procedure related

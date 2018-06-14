@@ -158,8 +158,8 @@ public:
 
 	// sequential statements
 	void AddAssignmentStatement(int indLevel, Assign *asgn) override;
-	void AddCallStatement(int indLevel, Proc *proc, const char *name, StatementList &args, StatementList *results) override;
-	void AddIndCallStatement(int indLevel, Exp *exp, StatementList &args, StatementList *results) override;
+	void AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results) override;
+	void AddIndCallStatement(int indLevel, Exp *exp, const StatementList &args, StatementList *results) override;
 	void AddReturnStatement(int indLevel, StatementList *rets) override;
 
 	// proc related
