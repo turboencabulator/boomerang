@@ -229,8 +229,8 @@ public:
 	        int         getPreferedParam(int n) { return preferedParams[n]; }
 
 	// A compare function for arguments and returns. Used for sorting returns in calcReturn() etc
-	virtual bool        argumentCompare(Assignment &a, Assignment &b);
-	virtual bool        returnCompare(Assignment &a, Assignment &b);
+	virtual bool        argumentCompare(const Assignment &a, const Assignment &b);
+	virtual bool        returnCompare(const Assignment &a, const Assignment &b);
 
 
 protected:

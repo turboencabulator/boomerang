@@ -120,8 +120,8 @@ namespace CallingConvention {
 			bool        isPromoted() override { return true; }
 			platform    getPlatform() override { return PLAT_PENTIUM; }
 			callconv    getConvention() override { return CONV_C; }
-			bool        returnCompare(Assignment &a, Assignment &b) override;
-			bool        argumentCompare(Assignment &a, Assignment &b) override;
+			bool        returnCompare(const Assignment &a, const Assignment &b) override;
+			bool        argumentCompare(const Assignment &a, const Assignment &b) override;
 		};
 
 		class SparcSignature : public Signature {
@@ -150,8 +150,8 @@ namespace CallingConvention {
 			bool        isPromoted() override { return true; }
 			platform    getPlatform() override { return PLAT_SPARC; }
 			callconv    getConvention() override { return CONV_C; }
-			bool        returnCompare(Assignment &a, Assignment &b) override;
-			bool        argumentCompare(Assignment &a, Assignment &b) override;
+			bool        returnCompare(const Assignment &a, const Assignment &b) override;
+			bool        argumentCompare(const Assignment &a, const Assignment &b) override;
 		};
 
 		class SparcLibSignature : public SparcSignature {
@@ -1916,19 +1916,19 @@ Signature::isOpCompatStackLocal(OPER op)
 }
 
 bool
-Signature::returnCompare(Assignment &a, Assignment &b)
+Signature::returnCompare(const Assignment &a, const Assignment &b)
 {
 	return *a.getLeft() < *b.getLeft();  // Default: sort by expression only, no explicit ordering
 }
 
 bool
-Signature::argumentCompare(Assignment &a, Assignment &b)
+Signature::argumentCompare(const Assignment &a, const Assignment &b)
 {
 	return *a.getLeft() < *b.getLeft();  // Default: sort by expression only, no explicit ordering
 }
 
 bool
-CallingConvention::StdC::PentiumSignature::returnCompare(Assignment &a, Assignment &b)
+CallingConvention::StdC::PentiumSignature::returnCompare(const Assignment &a, const Assignment &b)
 {
 	Exp *la = a.getLeft();
 	Exp *lb = b.getLeft();
@@ -1946,7 +1946,7 @@ CallingConvention::StdC::PentiumSignature::returnCompare(Assignment &a, Assignme
 
 static Unary spPlus64(opMemOf, new Binary(opPlus, Location::regOf(14), new Const(64)));
 bool
-CallingConvention::StdC::SparcSignature::returnCompare(Assignment &a, Assignment &b)
+CallingConvention::StdC::SparcSignature::returnCompare(const Assignment &a, const Assignment &b)
 {
 	Exp *la = a.getLeft();
 	Exp *lb = b.getLeft();
@@ -1996,7 +1996,7 @@ stackOffset(Exp *e, int sp)
 }
 
 bool
-CallingConvention::StdC::PentiumSignature::argumentCompare(Assignment &a, Assignment &b)
+CallingConvention::StdC::PentiumSignature::argumentCompare(const Assignment &a, const Assignment &b)
 {
 	Exp *la = a.getLeft();
 	Exp *lb = b.getLeft();
@@ -2015,7 +2015,7 @@ CallingConvention::StdC::PentiumSignature::argumentCompare(Assignment &a, Assign
 }
 
 bool
-CallingConvention::StdC::SparcSignature::argumentCompare(Assignment &a, Assignment &b)
+CallingConvention::StdC::SparcSignature::argumentCompare(const Assignment &a, const Assignment &b)
 {
 	Exp *la = a.getLeft();
 	Exp *lb = b.getLeft();
