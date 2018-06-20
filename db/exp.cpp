@@ -1350,7 +1350,7 @@ Exp::getVarIndex() const
 
 /*==============================================================================
  * FUNCTION:        Exp::getGuard
- * OVERVIEW:        Returns a ptr to the guard exression, or 0 if none
+ * OVERVIEW:        Returns a ptr to the guard expression, or 0 if none
  * RETURNS:         Ptr to the guard, or 0
  *============================================================================*/
 Exp *
@@ -1362,7 +1362,7 @@ Exp::getGuard() const
 
 /*==============================================================================
  * FUNCTION:        Exp::match
- * OVERVIEW:        Matches this expression to the given patten
+ * OVERVIEW:        Matches this expression to the given pattern
  * PARAMETERS:      pattern to match
  * RETURNS:         list of variable bindings, or nullptr if matching fails
  *============================================================================*/
@@ -1478,7 +1478,7 @@ tlstrchr(const char *str, char ch)
 
 /*==============================================================================
  * FUNCTION:        Exp::match
- * OVERVIEW:        Matches this expression to the given patten
+ * OVERVIEW:        Matches this expression to the given pattern
  * PARAMETERS:      pattern to match, map of bindings
  * RETURNS:         true if match, false otherwise
  *============================================================================*/
@@ -1816,7 +1816,7 @@ Exp::searchAll(Exp *search, std::list<Exp *> &result)
 // They can't go into util.so, since then util.so and db.so would co-depend on each other for testing at least
 /*==============================================================================
  * FUNCTION:        Exp::partitionTerms
- * OVERVIEW:        Takes an expression consisting on only + and - operators and partitions its terms into positive
+ * OVERVIEW:        Takes an expression consisting of only + and - operators and partitions its terms into positive
  *                  non-integer fixed terms, negative non-integer fixed terms and integer terms. For example, given:
  *                     %sp + 108 + n - %sp - 92
  *                  the resulting partition will be:
@@ -2008,7 +2008,7 @@ Exp::Accumulate(std::list<Exp *> exprs)
 
 /*==============================================================================
  * FUNCTION:        Exp::simplify
- * OVERVIEW:        Apply various simplifications such as constant folding. Also canonicalise by putting iteger
+ * OVERVIEW:        Apply various simplifications such as constant folding. Also canonicalise by putting integer
  *                  constants on the right hand side of sums, adding of negative constants changed to subtracting
  *                  positive constants, etc.  Changes << k to a multiply
  * NOTE:            User must ;//delete result

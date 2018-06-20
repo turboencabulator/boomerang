@@ -561,7 +561,7 @@ ExpTest::testSimplifyBinary()
 	CPPUNIT_ASSERT(*b == sixteen);
 	delete b;
 
-	// Shift right arithmetic two integer contants
+	// Shift right arithmetic two integer constants
 	b = new Binary(opShiftRA, new Const(-144), new Const(3));
 	b = b->simplify();
 	Const minus18(-18);
