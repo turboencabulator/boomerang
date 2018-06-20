@@ -1541,8 +1541,7 @@ BranchStatement::clone() const
 	ret->pDest = pDest->clone();
 	ret->m_isComputed = m_isComputed;
 	ret->jtCond = jtCond;
-	if (pCond) ret->pCond = pCond->clone();
-	else ret->pCond = nullptr;
+	ret->pCond = pCond ? pCond->clone() : nullptr;
 	ret->bFloat = bFloat;
 	// Statement members
 	ret->pbb = pbb;
@@ -1582,16 +1581,16 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 		// Special for PPC unsigned compares; may be other cases in the future
 		bool makeUns = strncmp(((Const *)pCond->getSubExp1())->getStr(), "SUBFLAGSNL", 10) == 0;
 		switch (jtCond) {
-		case BRANCH_JE:   op = opEquals; break;
+		case BRANCH_JE:   op = opEquals;   break;
 		case BRANCH_JNE:  op = opNotEqual; break;
-		case BRANCH_JSL:  if (makeUns) op = opLessUns;   else op = opLess; break;
-		case BRANCH_JSLE: if (makeUns) op = opLessEqUns; else op = opLessEq; break;
-		case BRANCH_JSGE: if (makeUns) op = opGtrEqUns;  else op = opGtrEq; break;
-		case BRANCH_JSG:  if (makeUns) op = opGtrUns;    else op = opGtr; break;
-		case BRANCH_JUL:  op = opLessUns; break;
+		case BRANCH_JSL:  op = (makeUns ? opLessUns   : opLess);   break;
+		case BRANCH_JSLE: op = (makeUns ? opLessEqUns : opLessEq); break;
+		case BRANCH_JSGE: op = (makeUns ? opGtrEqUns  : opGtrEq);  break;
+		case BRANCH_JSG:  op = (makeUns ? opGtrUns    : opGtr);    break;
+		case BRANCH_JUL:  op = opLessUns;   break;
 		case BRANCH_JULE: op = opLessEqUns; break;
-		case BRANCH_JUGE: op = opGtrEqUns; break;
-		case BRANCH_JUG:  op = opGtrUns; break;
+		case BRANCH_JUGE: op = opGtrEqUns;  break;
+		case BRANCH_JUG:  op = opGtrUns;    break;
 		case BRANCH_JMI:
 			/*   pCond
 			     /    \
@@ -1769,30 +1768,21 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				} else {
 					switch (mask) {
 					case 1:
-						if ((condOp == opEquals && k == 0) || (condOp == opNotEqual && k == 1))
-							op = opGtrEq;
-						else
-							op = opLess;
+						op = ((condOp == opEquals && k == 0) || (condOp == opNotEqual && k == 1)) ? opGtrEq : opLess;
 						break;
 					case 0x40:
-						if ((condOp == opEquals && k == 0) || (condOp == opNotEqual && k == 0x40))
-							op = opNotEqual;
-						else
-							op = opEquals;
+						op = ((condOp == opEquals && k == 0) || (condOp == opNotEqual && k == 0x40)) ? opNotEqual : opEquals;
 						break;
 					case 0x41:
 						switch (k) {
 						case 0:
-							if (condOp == opEquals) op = opGtr;
-							else op = opLessEq;
+							op = (condOp == opEquals) ? opGtr : opLessEq;
 							break;
 						case 1:
-							if (condOp == opEquals) op = opLess;
-							else op = opGtrEq;
+							op = (condOp == opEquals) ? opLess : opGtrEq;
 							break;
 						case 0x40:
-							if (condOp == opEquals) op = opEquals;
-							else op = opNotEqual;
+							op = (condOp == opEquals) ? opEquals : opNotEqual;
 							break;
 						default:
 							std::cerr << "BranchStatement::simplify: k is " << std::hex << k << "\n";
@@ -2207,10 +2197,7 @@ CallStatement::print(std::ostream &os, bool html) const
 		if (defines.size() > 1) os << "}";
 		os << " := ";
 	} else if (isChildless()) {
-		if (html)
-			os << "&lt;all&gt; := ";
-		else
-			os << "<all> := ";
+		os << (html ? "&lt;all&gt; := " : "<all> := ");
 	}
 
 	os << "CALL ";
@@ -2227,10 +2214,7 @@ CallStatement::print(std::ostream &os, bool html) const
 
 	// Print the actual arguments of the call
 	if (isChildless()) {
-		if (html)
-			os << "(&lt;all&gt;)";
-		else
-			os << "(<all>)";
+		os << (html ? "(&lt;all&gt;)" : "(<all>)");
 	} else {
 		os << "(\n";
 		for (const auto &arg : arguments) {
@@ -2243,17 +2227,11 @@ CallStatement::print(std::ostream &os, bool html) const
 
 #if 1
 	// Collected reaching definitions
-	if (html)
-		os << "<br>";
-	else
-		os << "\n              ";
-	os << "Reaching definitions: ";
+	os << (html ? "<br>" : "\n              ")
+	   << "Reaching definitions: ";
 	defCol.print(os, html);
-	if (html)
-		os << "<br>";
-	else
-		os << "\n              ";
-	os << "Live variables: ";
+	os << (html ? "<br>" : "\n              ")
+	   << "Live variables: ";
 	useCol.print(os, html);
 #endif
 
@@ -3128,8 +3106,7 @@ BoolAssign::clone() const
 {
 	auto ret = new BoolAssign(size);
 	ret->jtCond = jtCond;
-	if (pCond) ret->pCond = pCond->clone();
-	else ret->pCond = nullptr;
+	ret->pCond = pCond ? pCond->clone() : nullptr;
 	ret->bFloat = bFloat;
 	ret->size = size;
 	// Statement members
@@ -3256,9 +3233,9 @@ Assign::Assign(Assign &o) :
 	Assignment(lhs->clone())
 {
 	kind = STMT_ASSIGN;
-	rhs = o.rhs->clone();
-	if (o.type)  type  = o.type->clone();  else type  = nullptr;
-	if (o.guard) guard = o.guard->clone(); else guard = nullptr;
+	rhs   = o.rhs->clone();
+	type  = o.type  ? o.type->clone()  : nullptr;
+	guard = o.guard ? o.guard->clone() : nullptr;
 }
 
 // Implicit Assignment
@@ -3289,7 +3266,7 @@ ImplicitAssign::~ImplicitAssign()
 Statement *
 Assign::clone() const
 {
-	auto a = new Assign(!type ? nullptr : type->clone(), lhs->clone(), rhs->clone(), !guard ? nullptr : guard->clone());
+	auto a = new Assign(type ? type->clone() : nullptr, lhs->clone(), rhs->clone(), guard ? guard->clone() : nullptr);
 	// Statement members
 	a->pbb = pbb;
 	a->proc = proc;
@@ -4586,11 +4563,8 @@ ReturnStatement::print(std::ostream &os, bool html) const
 		os << ost.str();
 		column += len;
 	}
-	if (html)
-		os << "</a><br>";
-	else
-		os << "\n              ";
-	os << "Modifieds: ";
+	os << (html ? "</a><br>" : "\n              ")
+	   << "Modifieds: ";
 	first = true;
 	column = 25;
 	for (const auto &mod : modifieds) {
@@ -4616,11 +4590,8 @@ ReturnStatement::print(std::ostream &os, bool html) const
 	}
 #if 1
 	// Collected reaching definitions
-	if (html)
-		os << "<br>";
-	else
-		os << "\n              ";
-	os << "Reaching definitions: ";
+	os << (html ? "<br>" : "\n              ")
+	   << "Reaching definitions: ";
 	col.print(os, html);
 #endif
 }

@@ -91,7 +91,8 @@ DataFlow::dominators(Cfg *cfg)
 			int sdash;
 			if (dfnum[v] <= dfnum[n])
 				sdash = v;
-			else sdash = semi[ancestorWithLowestSemi(v)];
+			else
+				sdash = semi[ancestorWithLowestSemi(v)];
 			if (dfnum[sdash] < dfnum[s])
 				s = sdash;
 		}
@@ -107,7 +108,8 @@ DataFlow::dominators(Cfg *cfg)
 			int y = ancestorWithLowestSemi(v);
 			if (semi[y] == semi[v])
 				idom[v] = p;  // Success!
-			else samedom[v] = y;  // Defer
+			else
+				samedom[v] = y;  // Defer
 		}
 		bucket[p].clear();
 	}

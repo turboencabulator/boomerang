@@ -3572,10 +3572,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 						if (ok)
 							cache[pa] = query->getSubExp2()->clone();
 					}
-					if (ok)
-						query = new Terminal(opTrue);
-					else
-						query = new Terminal(opFalse);
+					query = new Terminal(ok ? opTrue : opFalse);
 					change = true;
 				} else if (s && s->isAssign()) {
 					if (s && refsTo.count(s)) {

@@ -293,8 +293,7 @@ CallingConvention::Win32Signature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	return n;
 }
@@ -309,8 +308,7 @@ CallingConvention::Win32TcSignature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	return n;
 }
@@ -354,21 +352,16 @@ CallingConvention::Win32Signature::addReturn(Type *type, Exp *e)
 {
 	if (type->isVoid())
 		return;
-	if (!e) {
-		if (type->isFloat())
-			e = Location::regOf(32);
-		else
-			e = Location::regOf(24);
-	}
+	if (!e)
+		e = Location::regOf(type->isFloat() ? 32 : 24);
 	Signature::addReturn(type, e);
 }
 
 void
 CallingConvention::Win32Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nullptr*/, const char *boundMax /*= ""*/)
 {
-	if (!e) {
+	if (!e)
 		e = getArgumentExp(params.size());
-	}
 	Signature::addParameter(type, nam, e, boundMax);
 }
 
@@ -524,8 +517,7 @@ CallingConvention::StdC::PentiumSignature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	n->unknown = unknown;
 	return n;
@@ -591,21 +583,16 @@ CallingConvention::StdC::PentiumSignature::addReturn(Type *type, Exp *e)
 {
 	if (type->isVoid())
 		return;
-	if (!e) {
-		if (type->isFloat())
-			e = Location::regOf(32);
-		else
-			e = Location::regOf(24);
-	}
+	if (!e)
+		e = Location::regOf(type->isFloat() ? 32 : 24);
 	Signature::addReturn(type, e);
 }
 
 void
 CallingConvention::StdC::PentiumSignature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nullptr*/, const char *boundMax /*= ""*/)
 {
-	if (!e) {
+	if (!e)
 		e = getArgumentExp(params.size());
-	}
 	Signature::addParameter(type, nam, e, boundMax);
 }
 
@@ -718,8 +705,7 @@ CallingConvention::StdC::PPCSignature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	n->unknown = unknown;
 	return n;
@@ -742,18 +728,16 @@ CallingConvention::StdC::PPCSignature::addReturn(Type *type, Exp *e)
 {
 	if (type->isVoid())
 		return;
-	if (!e) {
+	if (!e)
 		e = Location::regOf(3);
-	}
 	Signature::addReturn(type, e);
 }
 
 void
 CallingConvention::StdC::PPCSignature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nullptr*/, const char *boundMax /*= ""*/)
 {
-	if (!e) {
+	if (!e)
 		e = getArgumentExp(params.size());
-	}
 	Signature::addParameter(type, nam, e, boundMax);
 }
 
@@ -849,9 +833,8 @@ CallingConvention::StdC::ST20Signature::addReturn(Type *type, Exp *e)
 {
 	if (type->isVoid())
 		return;
-	if (!e) {
+	if (!e)
 		e = Location::regOf(0);
-	}
 	Signature::addReturn(type, e);
 }
 
@@ -865,9 +848,8 @@ CallingConvention::StdC::ST20Signature::promote(UserProc *p)
 void
 CallingConvention::StdC::ST20Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nullptr*/, const char *boundMax /*= ""*/)
 {
-	if (!e) {
+	if (!e)
 		e = getArgumentExp(params.size());
-	}
 	Signature::addParameter(type, nam, e, boundMax);
 }
 
@@ -955,8 +937,7 @@ CallingConvention::StdC::SparcSignature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	n->unknown = unknown;
 	return n;
@@ -972,8 +953,7 @@ CallingConvention::StdC::SparcLibSignature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	return n;
 }
@@ -1034,18 +1014,16 @@ CallingConvention::StdC::SparcSignature::addReturn(Type *type, Exp *e)
 {
 	if (type->isVoid())
 		return;
-	if (!e) {
+	if (!e)
 		e = Location::regOf(8);
-	}
 	Signature::addReturn(type, e);
 }
 
 void
 CallingConvention::StdC::SparcSignature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nullptr*/, const char *boundMax /*= ""*/)
 {
-	if (!e) {
+	if (!e)
 		e = getArgumentExp(params.size());
-	}
 	Signature::addParameter(type, nam, e, boundMax);
 }
 
@@ -1146,10 +1124,7 @@ CallingConvention::StdC::SparcLibSignature::getProven(Exp *left)
 Signature::Signature(const char *nam) :
 	rettype(new VoidType())
 {
-	if (!nam)
-		name = "<ANON>";
-	else
-		name = nam;
+	name = nam ? nam : "<ANON>";
 }
 
 CustomSignature::CustomSignature(const char *nam) :
@@ -1177,8 +1152,7 @@ Signature::clone() const
 	n->ellipsis = ellipsis;
 	n->rettype = rettype->clone();
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	n->unknown = unknown;
 	n->sigFile = sigFile;
@@ -1196,8 +1170,7 @@ CustomSignature::clone() const
 	n->rettype = rettype->clone();
 	n->sp = sp;
 	n->preferedName = preferedName;
-	if (preferedReturn) n->preferedReturn = preferedReturn->clone();
-	else n->preferedReturn = nullptr;
+	n->preferedReturn = preferedReturn ? preferedReturn->clone() : nullptr;
 	n->preferedParams = preferedParams;
 	return n;
 }

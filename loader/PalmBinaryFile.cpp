@@ -291,13 +291,11 @@ PalmBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 		unsigned offset = dwAddr & 0xFFF;
 		if (offset < numTrapStrings)
 			return trapNames[offset];
-		else
-			return nullptr;
+		return nullptr;
 	}
 	if (dwAddr == getMainEntryPoint())
 		return "PilotMain";
-	else
-		return nullptr;
+	return nullptr;
 }
 
 /**

@@ -44,8 +44,8 @@ isLDW(unsigned instr, int &offset, unsigned dest)
 		offset = (((int)instr << 31) >> 18)
 		       | ((instr & 0x3ffe) >> 1);
 		return true;
-	} else
-		return false;
+	}
+	return false;
 }
 
 bool

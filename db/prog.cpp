@@ -717,11 +717,9 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 	globals.insert(new Global(ty, uaddr, nam));
 
 	if (VERBOSE) {
-		LOG << "globalUsed: name " << nam << ", address " << uaddr;
-		if (knownType)
-			LOG << ", known type " << ty->getCtype() << "\n";
-		else
-			LOG << ", guessed type " << ty->getCtype() << "\n";
+		LOG << "globalUsed: name " << nam
+		    << ", address " << uaddr
+		    << (knownType ? ", known type " : ", guessed type ") << ty->getCtype() << "\n";
 	}
 	return true;
 }

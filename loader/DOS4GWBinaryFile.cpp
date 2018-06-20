@@ -278,15 +278,9 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 		//printf("srcpage = %i srcoff = %x object = %02x trgoff = %x\n", srcpage + 1, fixup.srcoff, fixup.object, fixup.trgoff);
 		unsigned long src = srcpage * m_pLXHeader->pagesize + fixup.srcoff;
 		unsigned short object = 0;
-		if (fixup.flags & 0x40)
-			ifs.read((char *)&object, 2);
-		else
-			ifs.read((char *)&object, 1);
+		ifs.read((char *)&object, fixup.flags & 0x40 ? 2 : 1);
 		unsigned int trgoff = 0;
-		if (fixup.flags & 0x10)
-			ifs.read((char *)&trgoff, 4);
-		else
-			ifs.read((char *)&trgoff, 2);
+		ifs.read((char *)&trgoff, fixup.flags & 0x10 ? 4 : 2);
 		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + LH16(&trgoff);
 		//printf("relocate dword at %x to point to %x\n", src, target);
 		*(unsigned int *)(base + src) = target;

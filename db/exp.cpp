@@ -792,19 +792,19 @@ Binary::print(std::ostream &os, bool html) const
 	case opBitXor:    os << " ^ ";   break;
 	case opEquals:    os << " = ";   break;
 	case opNotEqual:  os << " ~= ";  break;
-	case opLess:      if (html) os << " &lt; ";   else os << " < ";   break;
-	case opGtr:       if (html) os << " &gt; ";   else os << " > ";   break;
-	case opLessEq:    if (html) os << " &lt;= ";  else os << " <= ";  break;
-	case opGtrEq:     if (html) os << " &gt;= ";  else os << " >= ";  break;
-	case opLessUns:   if (html) os << " &lt;u ";  else os << " <u ";  break;
-	case opGtrUns:    if (html) os << " &gt;u ";  else os << " >u ";  break;
-	case opLessEqUns: if (html) os << " &lt;u ";  else os << " <=u "; break;
-	case opGtrEqUns:  if (html) os << " &gt;=u "; else os << " >=u "; break;
+	case opLess:      os << (html ? " &lt; "   : " < ");   break;
+	case opGtr:       os << (html ? " &gt; "   : " > ");   break;
+	case opLessEq:    os << (html ? " &lt;= "  : " <= ");  break;
+	case opGtrEq:     os << (html ? " &gt;= "  : " >= ");  break;
+	case opLessUns:   os << (html ? " &lt;u "  : " <u ");  break;
+	case opGtrUns:    os << (html ? " &gt;u "  : " >u ");  break;
+	case opLessEqUns: os << (html ? " &lt;u "  : " <=u "); break;
+	case opGtrEqUns:  os << (html ? " &gt;=u " : " >=u "); break;
 	case opUpper:     os << " GT "; break;
 	case opLower:     os << " LT "; break;
-	case opShiftL:    if (html) os << " &lt;&lt; ";  else os << " << ";  break;
-	case opShiftR:    if (html) os << " &gt;&gt; ";  else os << " >> ";  break;
-	case opShiftRA:   if (html) os << " &gt;&gt;A "; else os << " >>A "; break;
+	case opShiftL:    os << (html ? " &lt;&lt; "  : " << ");  break;
+	case opShiftR:    os << (html ? " &gt;&gt; "  : " >> ");  break;
+	case opShiftRA:   os << (html ? " &gt;&gt;A " : " >>A "); break;
 	case opRotateL:   os << " rl ";  break;
 	case opRotateR:   os << " rr ";  break;
 	case opRotateLC:  os << " rlc "; break;
@@ -897,9 +897,8 @@ Unary::print(std::ostream &os, bool html) const
 			((Const *)p1)->printNoQuotes(os);
 		// Use print, not printr, because this is effectively the top level again (because the [] act as
 		// parentheses)
-		else {
+		else
 			p1->print(os, html);
-		}
 		os << "]";
 		break;
 
@@ -1093,25 +1092,23 @@ TypedExp::print(std::ostream &os, bool html) const
 void
 RefExp::print(std::ostream &os, bool html) const
 {
-	if (subExp1) subExp1->print(os, html);
-	else os << "<NULL>";
-	if (html)
-		os << "<sub>";
+	if (subExp1)
+		subExp1->print(os, html);
 	else
-		os << "{";
-	if (def == (Statement *)-1) os << "WILD";
-	else if (def) {
+		os << "<NULL>";
+	os << (html ? "<sub>" : "{");
+	if (def == (Statement *)-1) {
+		os << "WILD";
+	} else if (def) {
 		if (html)
 			os << "<a href=\"#stmt" << std::dec << def->getNumber() << "\">";
 		def->printNum(os);
 		if (html)
 			os << "</a>";
-	} else
+	} else {
 		os << "-";  // So you can tell the difference with {0}
-	if (html)
-		os << "</sub>";
-	else
-		os << "}";
+	}
+	os << (html ? "</sub>" : "}");
 }
 
 //  //  //  //
@@ -1858,10 +1855,7 @@ Exp::partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, st
 	case opIntConst:
 		{
 			int k = ((Const *)this)->getInt();
-			if (negate)
-				integers.push_back(-k);
-			else
-				integers.push_back(k);
+			integers.push_back(negate ? -k : k);
 		}
 		break;
 	default:
@@ -3821,10 +3815,7 @@ Binary::simplifyConstraint()
 				Type *t2 = ((TypeVal *)subExp2)->getType();
 				if (!t1->isPointerToAlpha() && !t2->isPointerToAlpha()) {
 					delete this;
-					if (*t1 == *t2)
-						return new Terminal(opTrue);
-					else
-						return new Terminal(opFalse);
+					return new Terminal(*t1 == *t2 ? opTrue : opFalse);
 				}
 			}
 		}
