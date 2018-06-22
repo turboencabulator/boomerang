@@ -52,9 +52,8 @@
 
 
 /**
- * SectionInfo structure.  BinaryFile::getSectionInfo returns a pointer to an
- * array of these structs.  All information about the sections is contained in
- * these structures.
+ * BinaryFile::getSectionInfo returns a pointer to an array of these structs.
+ * All information about the sections is contained in these structures.
  */
 struct SectionInfo {
 	            SectionInfo();
@@ -110,7 +109,7 @@ public:
 
 /**
  * This enum allows a sort of run time type identification, without using
- * compiler specific features.
+ * compiler-specific features.
  */
 enum LOADFMT {
 	LOADFMT_ELF,

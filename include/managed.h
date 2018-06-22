@@ -40,7 +40,9 @@ class LocationSet;
 class RefExp;
 class Statement;
 
-// A class to implement sets of statements
+/**
+ * \brief A class to implement sets of statements.
+ */
 class StatementSet {
 	std::set<Statement *> sset;  // For now, use use standard sets
 
@@ -76,7 +78,10 @@ public:
 	std::string prints() const;                           // Print to string (for debug)
 };
 
-// As above, but the Statements are known to be Assigns, and are sorted sensibly
+/**
+ * \brief As above, but the Statements are known to be Assigns, and are sorted
+ * sensibly.
+ */
 class AssignSet {
 	std::set<Assign *, lessAssign> aset;  // For now, use use standard sets
 
@@ -174,7 +179,9 @@ public:
 	iterator    erase(const_iterator it) { return svec.erase(it); }
 };
 
-// For various purposes, we need sets of locations (registers or memory)
+/**
+ * For various purposes, we need sets of locations (registers or memory).
+ */
 class LocationSet {
 	// We use a standard set, but with a special "less than" operator so that the sets are ordered
 	// by expression value. If this is not done, then two expressions with the same value (say r[10])
@@ -264,12 +271,17 @@ public:
 	bool        empty() const { return ranges.empty(); }
 };
 
-/// A class to store connections in a graph, e.g. for interferences of types or live ranges, or the phi_unite relation
-/// that phi statements imply
-/// If a is connected to b, then b is automatically connected to a
-// This is implemented in a std::multimap, even though Appel suggests a bitmap (e.g. std::vector<bool> does this in a
-// space efficient manner), but then you still need maps from expression to bit number. So here a standard map is used,
-// and when a -> b is inserted, b->a is redundantly inserted.
+/**
+ * A class to store connections in a graph, e.g. for interferences of types or
+ * live ranges, or the phi_unite relation that phi statements imply.
+ *
+ * If a is connected to b, then b is automatically connected to a.
+ *
+ * This is implemented in a std::multimap, even though Appel suggests a bitmap
+ * (e.g. std::vector<bool> does this in a space efficient manner), but then
+ * you still need maps from expression to bit number.  So here a standard map
+ * is used, and when a -> b is inserted, b->a is redundantly inserted.
+ */
 class ConnectionGraph {
 	std::multimap<Exp *, Exp *, lessExpStar> emap;  // The map
 public:

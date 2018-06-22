@@ -41,46 +41,55 @@ class UserProc;
 *                                                            *
 \*  *   *   *   *   *   *   *   *   *   *   *   *   *   *   */
 
-// Depth-first traversal constants.
+/**
+ * Depth-first traversal constants.
+ */
 enum travType {
-	UNTRAVERSED,  // Initial value
-	DFS_TAG,      // Remove redundant nodes pass
-	DFS_LNUM,     // DFS loop stamping pass
-	DFS_RNUM,     // DFS reverse loop stamping pass
-	DFS_CASE,     // DFS case head tagging traversal
-	DFS_PDOM,     // DFS post dominator ordering
-	DFS_CODEGEN   // Code generating pass
+	UNTRAVERSED,  ///< Initial value.
+	DFS_TAG,      ///< Remove redundant nodes pass.
+	DFS_LNUM,     ///< DFS loop stamping pass.
+	DFS_RNUM,     ///< DFS reverse loop stamping pass.
+	DFS_CASE,     ///< DFS case head tagging traversal.
+	DFS_PDOM,     ///< DFS post dominator ordering.
+	DFS_CODEGEN   ///< Code generating pass.
 };
 
-// an enumerated type for the class of stucture determined for a node
+/**
+ * An enumerated type for the class of stucture determined for a node.
+ */
 enum structType {
-	Loop,      // Header of a loop only
-	Cond,      // Header of a conditional only (if-then-else or switch)
-	LoopCond,  // Header of a loop and a conditional
-	Seq        // sequential statement (default)
+	Loop,      ///< Header of a loop only.
+	Cond,      ///< Header of a conditional only (if-then-else or switch).
+	LoopCond,  ///< Header of a loop and a conditional.
+	Seq        ///< Sequential statement (default).
 };
 
-// an type for the class of unstructured conditional jumps
+/**
+ * A type for the class of unstructured conditional jumps.
+ */
 enum unstructType {
 	Structured,
 	JumpInOutLoop,
 	JumpIntoCase
 };
 
-
-// an enumerated type for the type of conditional headers
+/**
+ * An enumerated type for the type of conditional headers.
+ */
 enum condType {
-	IfThen,      // conditional with only a then clause
-	IfThenElse,  // conditional with a then and an else clause
-	IfElse,      // conditional with only an else clause
-	Case         // nway conditional header (case statement)
+	IfThen,      ///< Conditional with only a then clause.
+	IfThenElse,  ///< Conditional with a then and an else clause.
+	IfElse,      ///< Conditional with only an else clause.
+	Case         ///< Nway conditional header (case statement).
 };
 
-// an enumerated type for the type of loop headers
+/**
+ * An enumerated type for the type of loop headers.
+ */
 enum loopType {
-	PreTested,   // Header of a while loop
-	PostTested,  // Header of a repeat loop
-	Endless      // Header of an endless loop
+	PreTested,   ///< Header of a while loop.
+	PostTested,  ///< Header of a repeat loop.
+	Endless      ///< Header of an endless loop.
 };
 
 /*  *   *   *   *   *   *   *   *   *\
@@ -89,37 +98,37 @@ enum loopType {
 *                                    *
 \*  *   *   *   *   *   *   *   *   */
 
-// Kinds of basic block nodes
-// reordering these will break the save files - trent
+/**
+ * Kinds of basic block nodes.
+ *
+ * Reordering these will break the save files - trent
+ */
 enum BBTYPE {
-	ONEWAY,         // unconditional branch
-	TWOWAY,         // conditional branch
-	NWAY,           // case branch
-	CALL,           // procedure call
-	RET,            // return
-	FALL,           // fall-through node
-	COMPJUMP,       // computed jump
-	COMPCALL,       // computed call
-	INVALID         // invalid instruction
+	ONEWAY,         ///< Unconditional branch.
+	TWOWAY,         ///< Conditional branch.
+	NWAY,           ///< Case branch.
+	CALL,           ///< Procedure call.
+	RET,            ///< Return.
+	FALL,           ///< Fall-through node.
+	COMPJUMP,       ///< Computed jump.
+	COMPCALL,       ///< Computed call.
+	INVALID         ///< Invalid instruction.
 };
 
 enum SBBTYPE {
-	NONE,           // not structured
-	PRETESTLOOP,    // header of a loop
+	NONE,           ///< Not structured.
+	PRETESTLOOP,    ///< Header of a loop.
 	POSTTESTLOOP,
 	ENDLESSLOOP,
-	JUMPINOUTLOOP,  // an unstructured jump in or out of a loop
-	JUMPINTOCASE,   // an unstructured jump into a case statement
-	IFGOTO,         // unstructured conditional
-	IFTHEN,         // conditional with then clause
-	IFTHENELSE,     // conditional with then and else clauses
-	IFELSE,         // conditional with else clause only
-	CASE            // case statement (switch)
+	JUMPINOUTLOOP,  ///< An unstructured jump in or out of a loop.
+	JUMPINTOCASE,   ///< An unstructured jump into a case statement.
+	IFGOTO,         ///< Unstructured conditional.
+	IFTHEN,         ///< Conditional with then clause.
+	IFTHENELSE,     ///< Conditional with then and else clauses.
+	IFELSE,         ///< Conditional with else clause only.
+	CASE            ///< Case statement (switch).
 };
 
-/*==============================================================================
- * BasicBlock class. <more comments>
- *============================================================================*/
 class BasicBlock {
 	/*
 	 * Objects of class Cfg can access the internals of a BasicBlock object.

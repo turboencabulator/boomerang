@@ -58,10 +58,10 @@ class Type;
 class UserProc;
 class lessExpStar;
 
-/*
- * The ExpVisitor class is used to iterate over all subexpressions in an expression.
+/**
+ * The ExpVisitor class is used to iterate over all subexpressions in an
+ * expression.
  */
-
 class ExpVisitor {
 public:
 	                    ExpVisitor() { }
@@ -82,7 +82,9 @@ public:
 	virtual bool        visit( TypeVal *)         { return true; }
 };
 
-// This class visits subexpressions, and if a location, sets the UserProc
+/**
+ * This class visits subexpressions, and if a location, sets the UserProc.
+ */
 class FixProcVisitor : public ExpVisitor {
 	// the enclosing UserProc (if a Location)
 	UserProc   *proc;
@@ -93,7 +95,10 @@ public:
 	// All other virtual functions inherit from ExpVisitor, i.e. they just visit their children recursively
 };
 
-// This class is more or less the opposite of the above. It finds a proc by visiting the whole expression if necessary
+/**
+ * This class is more or less the opposite of the above.  It finds a proc by
+ * visiting the whole expression if necessary.
+ */
 class GetProcVisitor : public ExpVisitor {
 	UserProc   *proc = nullptr;  // The result (or nullptr)
 
@@ -104,7 +109,10 @@ public:
 	// All others inherit and visit their children
 };
 
-// This class visits subexpressions, and if a Const, sets or clears a new conscript
+/**
+ * This class visits subexpressions, and if a Const, sets or clears a new
+ * conscript.
+ */
 class SetConscripts : public ExpVisitor {
 	int         curConscript;
 	bool        bInLocalGlobal = false;  // True when inside a local or global
@@ -118,10 +126,11 @@ public:
 	// All other virtual functions inherit from ExpVisitor: return true
 };
 
-/*
- * The ExpModifier class is used to iterate over all subexpressions in an expression. It contains methods for each kind
- * of subexpression found in an and can be used to eliminate switch statements.
- * It is a little more expensive to use than ExpVisitor, but can make changes to the expression
+/**
+ * The ExpModifier class is used to iterate over all subexpressions in an
+ * expression.  It contains methods for each kind of subexpression found in an
+ * and can be used to eliminate switch statements.  It is a little more
+ * expensive to use than ExpVisitor, but can make changes to the expression.
  */
 class ExpModifier {
 protected:
@@ -159,10 +168,12 @@ public:
 	virtual Exp        *postVisit( TypeVal *e)         { return e; }
 };
 
-/*
- * The StmtVisitor class is used for code that has to work with all the Statement classes. One advantage is that you
- * don't need to declare a function in every class derived from Statement: the accept methods already do that for you.
- * It does not automatically visit the expressions in the statement.
+/**
+ * The StmtVisitor class is used for code that has to work with all the
+ * Statement classes.  One advantage is that you don't need to declare a
+ * function in every class derived from Statement:  The accept methods already
+ * do that for you.  It does not automatically visit the expressions in the
+ * statement.
  */
 class StmtVisitor {
 public:
@@ -202,8 +213,11 @@ public:
 	bool        visit(ImpRefStatement *) override;
 };
 
-// StmtExpVisitor is a visitor of statements, and of expressions within those expressions. The visiting of expressions
-// (after the current node) is done by an ExpVisitor (i.e. this is a preorder traversal).
+/**
+ * StmtExpVisitor is a visitor of statements, and of expressions within those
+ * expressions.  The visiting of expressions (after the current node) is done
+ * by an ExpVisitor (i.e. this is a preorder traversal).
+ */
 class StmtExpVisitor {
 	        bool        ignoreCol;  // True if ignoring collectors
 public:
@@ -224,13 +238,21 @@ public:
 	        bool        isIgnoreCol() const { return ignoreCol; }
 };
 
-// StmtModifier is a class that for all expressions in this statement, makes a modification.
-// The modification is as a result of an ExpModifier; there is a pointer to such an ExpModifier in a StmtModifier.
-// Even the top level of the LHS of assignments are changed. This is useful e.g. when modifiying locations to locals
-// as a result of converting from SSA form, e.g. eax := ebx -> local1 := local2
-// Classes that derive from StmtModifier inherit the code (in the accept member functions) to modify all the expressions
-// in the various types of statement.
-// Because there is nothing specialised about a StmtModifier, it is not an abstract class (can be instantiated).
+/**
+ * StmtModifier is a class that for all expressions in this statement, makes a
+ * modification.  The modification is as a result of an ExpModifier; there is
+ * a pointer to such an ExpModifier in a StmtModifier.  Even the top level of
+ * the LHS of assignments are changed.  This is useful e.g. when modifiying
+ * locations to locals as a result of converting from SSA form,
+ * e.g. eax := ebx -> local1 := local2
+ *
+ * Classes that derive from StmtModifier inherit the code (in the accept
+ * member functions) to modify all the expressions in the various types of
+ * statement.
+ *
+ * Because there is nothing specialised about a StmtModifier, it is not an
+ * abstract class (can be instantiated).
+ */
 class StmtModifier {
 protected:
 	        bool        ignoreCol;
@@ -252,9 +274,12 @@ public:
 	virtual void        visit(ImpRefStatement *, bool &) { }
 };
 
-// As above, but specialised for propagating to. The top level of the lhs of assignment-like statements (including
-// arguments in calls) is not modified. So for example eax := ebx -> eax := local2, but in m[xxx] := rhs, the rhs and
-// xxx are modified, but not the m[xxx]
+/**
+ * As above, but specialised for propagating to.  The top level of the lhs of
+ * assignment-like statements (including arguments in calls) is not modified.
+ * So for example eax := ebx -> eax := local2, but in m[xxx] := rhs, the rhs
+ * and xxx are modified, but not the m[xxx].
+ */
 class StmtPartModifier {
 	        bool        ignoreCol;
 public:
@@ -283,7 +308,10 @@ public:
 	bool        getDelete() const { return del; }
 };
 
-// A simplifying expression modifier. It does a simplification on the parent after a child has been modified
+/**
+ * A simplifying expression modifier.  It does a simplification on the parent
+ * after a child has been modified.
+ */
 class SimpExpModifier : public ExpModifier {
 protected:
 	// These two provide 31 bits (or sizeof (int) - 1) of information about whether the child is unchanged.
@@ -319,11 +347,19 @@ public:
 	Exp        *postVisit( TypeVal *) override;
 };
 
-// A modifying visitor to process all references in an expression, bypassing calls (and phi statements if they have been
-// replaced by copy assignments), and performing simplification on the direct parent of the expression that is modified.
-// NOTE: this is sometimes not enough! Consider changing (r+x)+K2) where x gets changed to K1. Now you have (r+K1)+K2,
-// but simplifying only the parent doesn't simplify the K1+K2.
-// Used to also propagate, but this became unwieldy with -l propagation limiting
+/**
+ * A modifying visitor to process all references in an expression, bypassing
+ * calls (and phi statements if they have been replaced by copy assignments),
+ * and performing simplification on the direct parent of the expression that
+ * is modified.
+ *
+ * \note This is sometimes not enough!  Consider changing (r+x)+K2 where x
+ * gets changed to K1. Now you have (r+K1)+K2, but simplifying only the parent
+ * doesn't simplify the K1+K2.
+ *
+ * Used to also propagate, but this became unwieldy with -l propagation
+ * limiting.
+ */
 class CallBypasser : public SimpExpModifier {
 	Statement  *enclosingStmt;  // Statement that is being modified at present, for debugging only
 public:
@@ -348,10 +384,12 @@ public:
 	bool        visit(Terminal *) override;
 };
 
-// This class differs from the above in these ways:
-//  1) it counts locals implicitly referred to with (cast to pointer)(sp-K)
-//  2) it does not recurse inside the memof (thus finding the stack pointer as a local)
-//  3) only used after fromSSA, so no RefExps to visit
+/**
+ * This class differs from the above in these ways:
+ * 1. It counts locals implicitly referred to with (cast to pointer)(sp-K).
+ * 2. It does not recurse inside the memof (thus finding the stack pointer as a local).
+ * 3. Only used after fromSSA, so no RefExps to visit.
+ */
 class UsedLocalFinder : public ExpVisitor {
 	LocationSet *used;        // Set of used locals' names
 	UserProc   *proc;         // Enclosing proc
@@ -441,9 +479,14 @@ public:
 	bool        visit(   Const *) override;
 };
 
-// This class is an ExpModifier because although most of the time it merely maps expressions to locals, in one case,
-// where sp-K is found, we replace it with a[m[sp-K]] so the back end emits it as &localX.
-// FIXME: this is probably no longer necessary, since the back end no longer maps anything!
+/**
+ * This class is an ExpModifier because although most of the time it merely
+ * maps expressions to locals, in one case, where sp-K is found, we replace it
+ * with a[m[sp-K]] so the back end emits it as &localX.
+ *
+ * FIXME:  This is probably no longer necessary, since the back end no longer
+ * maps anything!
+ */
 class DfaLocalMapper : public ExpModifier {
 	UserProc   *proc;
 	Prog       *prog;
@@ -477,9 +520,14 @@ public:
 };
 #endif
 
-// Convert any exp{-} (with null definition) so that the definition points instead to an implicit assignment (exp{0})
-// Note it is important to process refs in a depth first manner, so that e.g. m[sp{-}-8]{-} -> m[sp{0}-8]{-} first, so
-// that there is never an implicit definition for m[sp{-}-8], only ever for m[sp{0}-8]
+/**
+ * Convert any exp{-} (with null definition) so that the definition points
+ * instead to an implicit assignment (exp{0}).
+ *
+ * \note It is important to process refs in a depth first manner, so that e.g.
+ * m[sp{-}-8]{-} -> m[sp{0}-8]{-} first, so that there is never an implicit
+ * definition for m[sp{-}-8], only ever for m[sp{0}-8].
+ */
 class ImplicitConverter : public ExpModifier {
 	Cfg        *cfg;
 public:
@@ -518,7 +566,9 @@ public:
 	bool        visit(Location *, bool &) override;
 };
 
-// Used by range analysis
+/**
+ * Used by range analysis.
+ */
 class MemDepthFinder : public ExpVisitor {
 	int         depth = 0;
 public:
@@ -527,9 +577,12 @@ public:
 	int         getDepth() const { return depth; }
 };
 
-
-// A class to propagate everything, regardless, to this expression. Does not consider memory expressions and whether
-// the address expression is primitive. Use with caution; mostly Statement::propagateTo() should be used.
+/**
+ * A class to propagate everything, regardless, to this expression.  Does not
+ * consider memory expressions and whether the address expression is
+ * primitive.  Use with caution; mostly Statement::propagateTo() should be
+ * used.
+ */
 class ExpPropagator : public SimpExpModifier {
 	bool        change = false;
 public:
@@ -539,8 +592,12 @@ public:
 	Exp        *postVisit(RefExp *) override;
 };
 
-// Test an address expression (operand of a memOf) for primitiveness (i.e. if it is possible to SSA rename the memOf
-// without problems). Note that the PrimitiveTester is not used with the memOf expression, only its address expression
+/**
+ * Test an address expression (operand of a memOf) for primitiveness (i.e. if
+ * it is possible to SSA rename the memOf without problems).  Note that the
+ * PrimitiveTester is not used with the memOf expression, only its address
+ * expression.
+ */
 class PrimitiveTester : public ExpVisitor {
 	bool        result = true;
 public:
@@ -550,8 +607,12 @@ public:
 	bool        visit(Location *, bool &) override;
 };
 
-// Test if an expression (usually the RHS on an assignment) contains memory expressions. If so, it may not be safe to
-// propagate the assignment. NO LONGER USED.
+/**
+ * Test if an expression (usually the RHS on an assignment) contains memory
+ * expressions.  If so, it may not be safe to propagate the assignment.
+ *
+ * NO LONGER USED.
+ */
 class ExpHasMemofTester : public ExpVisitor {
 	bool        result = false;
 	UserProc   *proc;
@@ -568,7 +629,9 @@ public:
 	bool        visit(Location *, bool &) override;
 };
 
-// Name registers and temporaries
+/**
+ * Name registers and temporaries.
+ */
 class ExpRegMapper : public ExpVisitor {
 	UserProc   *proc;  // Proc object for storing the symbols
 	Prog       *prog;
@@ -594,8 +657,11 @@ public:
 	Exp        *preVisit(RefExp *, bool &) override;
 };
 
-// Count the number of times a reference expression is used. Increments the count multiple times if the same reference
-// expression appears multiple times (so can't use UsedLocsFinder for this)
+/**
+ * Count the number of times a reference expression is used.  Increments the
+ * count multiple times if the same reference expression appears multiple
+ * times (so can't use UsedLocsFinder for this).
+ */
 class ExpDestCounter : public ExpVisitor {
 	std::map<Exp *, int, lessExpStar> &destCounts;
 public:
@@ -603,14 +669,18 @@ public:
 	bool        visit(RefExp *, bool &) override;
 };
 
-// FIXME: do I need to count collectors? All the visitors and modifiers should be refactored to conditionally visit
-// or modify collectors, or not
+/**
+ * FIXME:  Do I need to count collectors?  All the visitors and modifiers
+ * should be refactored to conditionally visit or modify collectors, or not.
+ */
 class StmtDestCounter : public StmtExpVisitor {
 public:
 	            StmtDestCounter(ExpDestCounter &edc) : StmtExpVisitor(edc) { }
 };
 
-// Search an expression for flags calls, e.g. SETFFLAGS(...) & 0x45
+/**
+ * Search an expression for flags calls, e.g. SETFFLAGS(...) & 0x45.
+ */
 class FlagsFinder : public ExpVisitor {
 	bool        found = false;
 public:
@@ -620,7 +690,10 @@ private:
 	bool        visit(Binary *, bool &) override;
 };
 
-// Search an expression for a bad memof (non subscripted or not linked with a symbol, i.e. local or parameter)
+/**
+ * Search an expression for a bad memof (non subscripted or not linked with a
+ * symbol, i.e. local or parameter).
+ */
 class BadMemofFinder : public ExpVisitor {
 	bool        found = false;
 	UserProc   *proc;
@@ -654,9 +727,14 @@ public:
 	bool        visit(    BoolAssign *) override;
 };
 
-// Transform an exp by applying mappings to the subscripts. This used to be done by many Exp::fromSSAform() functions.
-// Note that mappings have to be done depth first, so e.g. m[r28{0}-8]{22} -> m[esp-8]{22} first, otherwise there wil be
-// a second implicit definition for m[esp{0}-8] (original should be b[esp+8] by now)
+/**
+ * Transform an exp by applying mappings to the subscripts.  This used to be
+ * done by many Exp::fromSSAform() functions.
+ *
+ * \note Mappings have to be done depth first, so e.g. m[r28{0}-8]{22} ->
+ * m[esp-8]{22} first, otherwise there wil be a second implicit definition for
+ * m[esp{0}-8] (original should be b[esp+8] by now).
+ */
 class ExpSsaXformer : public ExpModifier {
 	UserProc   *proc;
 public:

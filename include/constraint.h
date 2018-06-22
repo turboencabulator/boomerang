@@ -22,8 +22,11 @@
 #include <map>
 #include <string>
 
-// This class represents fixed constraints (e.g. Ta = <int>, Tb = <alpha2*>),
-// but also "tentative" constraints resulting from disjunctions of constraints
+/**
+ * This class represents fixed constraints (e.g. Ta = <int>, Tb = <alpha2*>),
+ * but also "tentative" constraints resulting from disjunctions of
+ * constraints.
+ */
 class ConstraintMap {
 	std::map<Exp *, Exp *, lessExpStar> cmap;
 public:
@@ -93,10 +96,13 @@ public:
 	void substAlpha();
 };
 
-// A class used for fast location of a constraint
-// An equation like Ta = Tb is inserted into this class twice (i.e. as
-// Ta = Tb and also as Tb = Ta. So to find out if Ta is involved in an
-// equate, only have to look up Ta in the map (on the LHS, which is fast)
+/**
+ * \brief A class used for fast location of a constraint.
+ *
+ * An equation like Ta = Tb is inserted into this class twice (i.e. as Ta = Tb
+ * and also as Tb = Ta).  So to find out if Ta is involved in an equate, only
+ * have to look up Ta in the map (on the LHS, which is fast).
+ */
 class EquateMap {
 	std::map<Exp *, LocationSet, lessExpStar> emap;
 public:

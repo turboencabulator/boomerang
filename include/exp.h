@@ -46,15 +46,18 @@ class Type;
 class TypeVal;
 class UserProc;
 
-/*==============================================================================
- * Exp is an expression class, though it will probably be used to hold many other things (e.g. perhaps transformations).
- * It is a standard tree representation. Exp itself is abstract. A special class Const is used for constants. Unary,
- * Binary, and Ternary hold 1, 2, and 3 subexpressions respectively. For efficiency of representation, these have to be
- * separate classes, derived from Exp.
- *============================================================================*/
-
-// Class Exp is abstract. However, the constructor can be called from the constructors of derived classes, and virtual
-// functions not overridden by derived classes can be called
+/**
+ * Exp is an expression class, though it will probably be used to hold many
+ * other things (e.g. perhaps transformations).  It is a standard tree
+ * representation.  Exp itself is abstract.  A special class Const is used for
+ * constants.  Unary, Binary, and Ternary hold 1, 2, and 3 subexpressions
+ * respectively.  For efficiency of representation, these have to be separate
+ * classes, derived from Exp.
+ *
+ * Class Exp is abstract.  However, the constructor can be called from the
+ * constructors of derived classes, and virtual functions not overridden by
+ * derived classes can be called.
+ */
 class Exp {
 protected:
 	        OPER        op;  // The operator (e.g. opPlus)
@@ -338,9 +341,10 @@ protected:
 std::ostream &operator <<(std::ostream &, const Exp *) __attribute__((deprecated));
 std::ostream &operator <<(std::ostream &, const Exp &);
 
-/*==============================================================================
- * Const is a subclass of Exp, and holds either an integer, floating point, string, or address constant
- *============================================================================*/
+/**
+ * Const is a subclass of Exp, and holds either an integer, floating point,
+ * string, or address constant.
+ */
 class Const : public Exp {
 	union {
 		int         i;      // Integer
@@ -420,9 +424,10 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * Terminal is a subclass of Exp, and holds special zero arity items such as opFlags (abstract flags register)
- *============================================================================*/
+/**
+ * Terminal is a subclass of Exp, and holds special zero arity items such as
+ * opFlags (abstract flags register).
+ */
 class Terminal : public Exp {
 public:
 	// Constructors
@@ -456,9 +461,9 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * Unary is a subclass of Exp, holding one subexpression
- *============================================================================*/
+/**
+ * Unary is a subclass of Exp, holding one subexpression.
+ */
 class Unary : public Exp {
 protected:
 	Exp        *subExp1 = nullptr;  // One subexpression pointer
@@ -522,9 +527,9 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * Binary is a subclass of Unary, holding two subexpressions
- *============================================================================*/
+/**
+ * Binary is a subclass of Unary, holding two subexpressions.
+ */
 class Binary : public Unary {
 protected:
 	Exp        *subExp2 = nullptr;  // Second subexpression pointer
@@ -594,9 +599,9 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * Ternary is a subclass of Binary, holding three subexpressions
- *============================================================================*/
+/**
+ * Ternary is a subclass of Binary, holding three subexpressions.
+ */
 class Ternary : public Binary {
 	Exp        *subExp3 = nullptr;  // Third subexpression pointer
 
@@ -657,9 +662,9 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * TypedExp is a subclass of Unary, holding one subexpression and a Type
- *============================================================================*/
+/**
+ * TypedExp is a subclass of Unary, holding one subexpression and a Type.
+ */
 class TypedExp : public Unary {
 	Type       *type = nullptr;
 public:
@@ -706,9 +711,10 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * FlagDef is a subclass of Unary, and holds a list of parameters (in the subexpression), and a pointer to an RTL
- *============================================================================*/
+/**
+ * FlagDef is a subclass of Unary, and holds a list of parameters (in the
+ * subexpression), and a pointer to an RTL.
+ */
 class FlagDef : public Unary {
 	RTL        *rtl;
 public:
@@ -726,12 +732,17 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * RefExp is a subclass of Unary, holding an ordinary Exp pointer, and a pointer to a defining statement (could be a
- * phi assignment).  This is used for subscripting SSA variables. Example:
- *   m[1000] becomes m[1000]{3} if defined at statement 3
- * The integer is really a pointer to the definig statement, printed as the statement number for compactness.
- *============================================================================*/
+/**
+ * RefExp is a subclass of Unary, holding an ordinary Exp pointer, and a
+ * pointer to a defining statement (could be a phi assignment).  This is used
+ * for subscripting SSA variables.
+ *
+ * \par Example
+ * m[1000] becomes m[1000]{3} if defined at statement 3
+ *
+ * The integer is really a pointer to the defining statement, printed as the
+ * statement number for compactness.
+ */
 class RefExp : public Unary {
 	Statement  *def = nullptr;  // The defining statement
 
@@ -773,9 +784,9 @@ protected:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
-class TypeVal. Just a Terminal with a Type. Used for type values in constraints
-==============================================================================*/
+/**
+ * Just a Terminal with a Type.  Used for type values in constraints.
+ */
 class TypeVal : public Terminal {
 	Type       *val;
 

@@ -495,7 +495,9 @@ protected:
 	friend class XMLProgParser;
 };
 
-// The compound type represents structures, not unions
+/**
+ * The compound type represents structures, not unions.
+ */
 class CompoundType : public Type {
 private:
 	std::vector<Type *> types;
@@ -550,11 +552,14 @@ protected:
 	friend class XMLProgParser;
 };
 
-// The union type represents the union of any number of any other types
 struct UnionElement {
 	Type       *type;
 	std::string name;
 };
+
+/**
+ * The union type represents the union of any number of any other types.
+ */
 class UnionType : public Type {
 private:
 	// Note: list, not vector, as it is occasionally desirable to insert elements without affecting iterators
@@ -594,8 +599,10 @@ protected:
 	friend class XMLProgParser;
 };
 
-// This class is for before type analysis. Typically, you have no info at all, or only know the size (e.g.
-// width of a register or memory transfer)
+/**
+ * This class is for before type analysis.  Typically, you have no info at all,
+ * or only know the size (e.g. width of a register or memory transfer).
+ */
 class SizeType : public Type {
 private:
 	unsigned    size;               // Size in bits, e.g. 16
@@ -620,8 +627,10 @@ public:
 	friend class XMLProgParser;
 };
 
-// This class represents the upper half of its base type
-// Mainly needed to represent the upper and lower half for type double
+/**
+ * This class represents the upper half of its base type.
+ * Mainly needed to represent the upper and lower half for type double.
+ */
 class UpperType : public Type {
 	Type       *base_type;
 
@@ -645,7 +654,9 @@ public:
 	bool        isCompatible(Type *other, bool all) override;
 };
 
-// As above, but stores the lower half
+/**
+ * As above, but stores the lower half.
+ */
 class LowerType : public Type {
 	Type       *base_type;
 
@@ -671,15 +682,19 @@ public:
 
 
 /**
- * Class DataInterval. This class is used to represent local variables in procedures, and the global variables for
- * the program. The concept is that the data space (the current procedure's stack or the global data space) has to
- * be partitioned into separate variables of various sizes and types. If a new variable is inserted that would cause
- * an overlap, the types have to be reconciled such that they no longer conflict (generally, the smaller type becomes a
- * member of the larger type, which has to be a structure or an array).
- * Each procedure and the Prog object have a map from ADDRESS (stack offset from sp{0} for locals, or native address for
- * globals), to an object of this class. A multimap is not needed, as the type of the entry specifies the overlapping.
+ * This class is used to represent local variables in procedures, and the
+ * global variables for the program.  The concept is that the data space (the
+ * current procedure's stack or the global data space) has to be partitioned
+ * into separate variables of various sizes and types.  If a new variable is
+ * inserted that would cause an overlap, the types have to be reconciled such
+ * that they no longer conflict (generally, the smaller type becomes a member
+ * of the larger type, which has to be a structure or an array).
+ *
+ * Each procedure and the Prog object have a map from ADDRESS (stack offset
+ * from sp{0} for locals, or native address for globals), to an object of this
+ * class.  A multimap is not needed, as the type of the entry specifies the
+ * overlapping.
  */
-
 struct DataInterval {
 	unsigned    size;               // The size of this type in bytes
 	std::string name;               // The name of the variable

@@ -59,10 +59,11 @@ class lessExpStar;
 
 typedef std::set<UserProc *> CycleSet;
 
-/*==============================================================================
+/**
  * Kinds of Statements, or high-level register transfer lists.
- * changing the order of these will result in save files not working - trent
- *============================================================================*/
+ *
+ * Changing the order of these will result in save files not working - trent
+ */
 enum STMT_KIND {
 	STMT_ASSIGN = 0,
 	STMT_PHIASSIGN,
@@ -78,37 +79,33 @@ enum STMT_KIND {
 	STMT_JUNCTION
 };
 
-/*==============================================================================
- * BRANCH_TYPE: These values indicate what kind of conditional jump or
- * conditonal assign is being performed.
+/**
+ * These values indicate what kind of conditional jump or conditional assign
+ * is being performed.
+ *
  * Changing the order of these will result in save files not working - trent
- *============================================================================*/
+ */
 enum BRANCH_TYPE {
-	BRANCH_JE = 0,          // Jump if equals
-	BRANCH_JNE,             // Jump if not equals
-	BRANCH_JSL,             // Jump if signed less
-	BRANCH_JSLE,            // Jump if signed less or equal
-	BRANCH_JSGE,            // Jump if signed greater or equal
-	BRANCH_JSG,             // Jump if signed greater
-	BRANCH_JUL,             // Jump if unsigned less
-	BRANCH_JULE,            // Jump if unsigned less or equal
-	BRANCH_JUGE,            // Jump if unsigned greater or equal
-	BRANCH_JUG,             // Jump if unsigned greater
-	BRANCH_JMI,             // Jump if result is minus
-	BRANCH_JPOS,            // Jump if result is positive
-	BRANCH_JOF,             // Jump if overflow
-	BRANCH_JNOF,            // Jump if no overflow
-	BRANCH_JPAR             // Jump if parity even (Intel only)
+	BRANCH_JE = 0,          ///< Jump if equals.
+	BRANCH_JNE,             ///< Jump if not equals.
+	BRANCH_JSL,             ///< Jump if signed less.
+	BRANCH_JSLE,            ///< Jump if signed less or equal.
+	BRANCH_JSGE,            ///< Jump if signed greater or equal.
+	BRANCH_JSG,             ///< Jump if signed greater.
+	BRANCH_JUL,             ///< Jump if unsigned less.
+	BRANCH_JULE,            ///< Jump if unsigned less or equal.
+	BRANCH_JUGE,            ///< Jump if unsigned greater or equal.
+	BRANCH_JUG,             ///< Jump if unsigned greater.
+	BRANCH_JMI,             ///< Jump if result is minus.
+	BRANCH_JPOS,            ///< Jump if result is positive.
+	BRANCH_JOF,             ///< Jump if overflow.
+	BRANCH_JNOF,            ///< Jump if no overflow.
+	BRANCH_JPAR             ///< Jump if parity even (Intel only).
 };
 
-//  //  //  //  //  //  //  //  //  //  //  //  //  //
-//
-//  A b s t r a c t   C l a s s   S t a t e m e n t //
-//
-//  //  //  //  //  //  //  //  //  //  //  //  //  //
-
-/* Statements define values that are used in expressions.
- * They are akin to "definition" in the Dragon Book.
+/**
+ * Statements define values that are used in expressions.  They are akin to
+ * "definition" in the Dragon Book.
  */
 class Statement {
 protected:
@@ -352,10 +349,10 @@ public:
 std::ostream &operator <<(std::ostream &, const Statement *);
 std::ostream &operator <<(std::ostream &, const Statement &);
 
-/*==============================================================================
- * TypingStatement is an abstract subclass of Statement. It has a type, representing the type of a reference or an
- * assignment
- *============================================================================*/
+/**
+ * TypingStatement is an abstract subclass of Statement.  It has a type,
+ * representing the type of a reference or an assignment.
+ */
 class TypingStatement : public Statement {
 protected:
 	Type       *type;  // The type for this assignment or reference
@@ -369,9 +366,9 @@ public:
 	bool        isTyping() const override { return true; }
 };
 
-/*==========================================================================
- * Assignment is an abstract subclass of TypingStatement, holding a location
- *==========================================================================*/
+/**
+ * Assignment is an abstract subclass of TypingStatement, holding a location.
+ */
 class Assignment : public TypingStatement {
 protected:
 	Exp        *lhs;  // The left hand side
@@ -435,7 +432,9 @@ public:
 };
 
 
-// Assign: an ordinary assignment with left and right sides
+/**
+ * An ordinary assignment with left and right sides.
+ */
 class Assign : public Assignment {
 	Exp        *rhs = nullptr;
 	Exp        *guard = nullptr;
@@ -519,18 +518,12 @@ public:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * PhiAssign is a subclass of Assignment, having a left hand side, and a StatementVec with the references.
- * Example:
- * m[1000] := phi{3 7 10}   m[1000] is defined at statements 3, 7, and 10
- * m[r28{3}+4] := phi{2 8}  the memof is defined at 2 and 8, and
- * the r28 is defined at 3. The integers are really pointers to statements,
- * printed as the statement number for compactness
- * NOTE: Although the left hand side is nearly always redundant, it is essential in at least one circumstance: when
- * finding locations used by some statement, and the reference is to a CallStatement returning multiple locations.
- *============================================================================*/
-// The below could almost be a RefExp. But we could not at one stage #include exp.h as part of statement.h; that's since
-// changed so it is now possible, and arguably desirable.  However, it's convenient to have these members public
+/**
+ * The below could almost be a RefExp.  But we could not at one stage #include
+ * exp.h as part of statement.h; that's since changed so it is now possible,
+ * and arguably desirable.  However, it's convenient to have these members
+ * public.
+ */
 struct PhiInfo {
 	// A default constructor is required because CFG changes (?) can cause access to elements of the vector that
 	// are beyond the current end, creating gaps which have to be initialised to zeroes so that they can be skipped
@@ -538,6 +531,26 @@ struct PhiInfo {
 	Statement  *def = nullptr;  // The defining statement
 	Exp        *e = nullptr;    // The expression for the thing being defined (never subscripted)
 };
+
+/**
+ * PhiAssign is a subclass of Assignment, having a left hand side, and a
+ * StatementVec with the references.
+ *
+ * \par Example
+ * `m[1000] := phi{3 7 10}`\n
+ * m[1000] is defined at statements 3, 7, and 10
+ *
+ * \par
+ * `m[r28{3}+4] := phi{2 8}`\n
+ * The memof is defined at 2 and 8, and the r28 is defined at 3.  The integers
+ * are really pointers to statements, printed as the statement number for
+ * compactness.
+ *
+ * \note Although the left hand side is nearly always redundant, it is
+ * essential in at least one circumstance:  When finding locations used by
+ * some statement, and the reference is to a CallStatement returning multiple
+ * locations.
+ */
 class PhiAssign : public Assignment {
 public:
 	typedef std::vector<PhiInfo> Definitions;
@@ -611,8 +624,11 @@ protected:
 	friend class XMLProgParser;
 };
 
-// An implicit assignment has only a left hand side. It is a placeholder for storing the types of parameters and
-// globals.  That way, you can always find the type of a subscripted variable by looking in its defining Assignment
+/**
+ * An implicit assignment has only a left hand side.  It is a placeholder for
+ * storing the types of parameters and globals.  That way, you can always find
+ * the type of a subscripted variable by looking in its defining Assignment.
+ */
 class ImplicitAssign : public Assignment {
 public:
 	// Constructor, subexpression
@@ -650,10 +666,11 @@ public:
 	bool        accept(StmtPartModifier &) override;
 };
 
-/*==============================================================================
- * BoolAssign represents "setCC" type instructions, where some destination is set (to 1 or 0) depending on the
- * condition codes. It has a condition Exp, similar to the BranchStatement class.
- * *==========================================================================*/
+/**
+ * BoolAssign represents "setCC" type instructions, where some destination is
+ * set (to 1 or 0) depending on the condition codes.  It has a condition Exp,
+ * similar to the BranchStatement class.
+ */
 class BoolAssign: public Assignment {
 	BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // the condition for setting true
 	Exp        *pCond = nullptr; // Exp representation of the high level
@@ -712,9 +729,13 @@ public:
 	friend class XMLProgParser;
 };
 
-// An implicit reference has only an expression. It holds the type information that results from taking the address
-// of a location. Note that dataflow can't decide which local variable (in the decompiled output) is being taken,
-// if there is more than one local variable sharing the same memory address (separated then by type).
+/**
+ * An implicit reference has only an expression.  It holds the type
+ * information that results from taking the address of a location.  Note that
+ * dataflow can't decide which local variable (in the decompiled output) is
+ * being taken, if there is more than one local variable sharing the same
+ * memory address (separated then by type).
+ */
 class ImpRefStatement : public TypingStatement {
 	Exp        *addressExp;  // The expression representing the address of the location referenced
 public:
@@ -739,16 +760,15 @@ public:
 	void        print(std::ostream &os, bool html = false) const override;
 };
 
-
-/*=============================================================================
+/**
  * GotoStatement has just one member variable, an expression representing the
- * jump's destination (an integer constant for direct jumps; an expression
- * for register jumps). An instance of this class will never represent a
- * return or computed call as these are distinguised by the decoder and are
- * instantiated as CallStatements and ReturnStatements respecitvely.
- * This class also represents unconditional jumps with a fixed offset
- * (e.g BN, Ba on SPARC).
- *===========================================================================*/
+ * jump's destination (an integer constant for direct jumps; an expression for
+ * register jumps).  An instance of this class will never represent a return
+ * or computed call as these are distinguished by the decoder and are
+ * instantiated as CallStatements and ReturnStatements respectively.  This
+ * class also represents unconditional jumps with a fixed offset (e.g BN, Ba
+ * on SPARC).
+ */
 class GotoStatement: public Statement {
 protected:
 	Exp        *pDest = nullptr;       // Destination of a jump or call. This is the absolute destination for both static
@@ -848,9 +868,10 @@ public:
 	bool        isLoopJunction() const;
 };
 
-/*================================================================================
- * BranchStatement has a condition Exp in addition to the destination of the jump.
- *==============================================================================*/
+/**
+ * BranchStatement has a condition Exp in addition to the destination of the
+ * jump.
+ */
 class BranchStatement: public GotoStatement {
 	BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // The condition for jumping
 	Exp        *pCond = nullptr; // The Exp representation of the high level condition: e.g., r[8] == 5
@@ -928,10 +949,6 @@ public:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * CaseStatement is derived from GotoStatement. In addition to the destination
- * of the jump, it has a switch variable Exp.
- *============================================================================*/
 struct SWITCH_INFO {
 	Exp        *pSwitchVar;     // Ptr to Exp repres switch var, e.g. v[7]
 	char        chForm;         // Switch form: 'A', 'O', 'R', 'H', or 'F' etc
@@ -943,6 +960,10 @@ struct SWITCH_INFO {
 	//int         delta;          // Host address - Native address
 };
 
+/**
+ * CaseStatement is derived from GotoStatement.  In addition to the
+ * destination of the jump, it has a switch variable Exp.
+ */
 class CaseStatement: public GotoStatement {
 	SWITCH_INFO *pSwitchInfo = nullptr;  // Ptr to struct with info about the switch
 public:
@@ -984,9 +1005,10 @@ public:
 	friend class XMLProgParser;
 };
 
-/*==============================================================================
- * CallStatement: represents a high level call. Information about parameters and the like are stored here.
- *============================================================================*/
+/**
+ * Represents a high level call.  Information about parameters and the like
+ * are stored here.
+ */
 class CallStatement: public GotoStatement {
 	bool        returnAfterCall = false;// True if call is effectively followed by a return.
 
@@ -1155,39 +1177,54 @@ protected:
 	friend class XMLProgParser;
 };
 
-
-/*===========================================================
- * ReturnStatement: represents an ordinary high level return.
- *==========================================================*/
+/**
+ * Represents an ordinary high level return.
+ */
 class ReturnStatement : public Statement {
 protected:
 	// Native address of the (only) return instruction. Needed for branching to this only return statement
 	ADDRESS     retAddr = NO_ADDRESS;
 
 	/**
+	 * \brief A DefCollector object to collect the reaching definitions.
+	 *
 	 * The progression of return information is as follows:
-	 * First, reaching definitions are collected in the DefCollector col. These are not sorted or filtered.
-	 * Second, some of those definitions make it to the modifieds list, which is sorted and filtered. These are
-	 * the locations that are modified by the enclosing procedure. As locations are proved to be preserved (with NO
-	 * modification, not even sp = sp+4), they are removed from this list. Defines in calls to the enclosing
+	 *
+	 * First, reaching definitions are collected in the DefCollector col.
+	 * These are not sorted or filtered.
+	 *
+	 * Second, some of those definitions make it to the modifieds list,
+	 * which is sorted and filtered.  These are the locations that are
+	 * modified by the enclosing procedure.  As locations are proved to be
+	 * preserved (with NO modification, not even sp = sp+4), they are
+	 * removed from this list.  Defines in calls to the enclosing
 	 * procedure are based on this list.
-	 * Third, the modifications are initially copied to the returns list (also sorted and filtered, but the returns
-	 * have RHS where the modifieds don't). Locations not live at any caller are removed from the returns, but not
-	 * from the modifieds.
+	 *
+	 * Third, the modifications are initially copied to the returns list
+	 * (also sorted and filtered, but the returns have RHS where the
+	 * modifieds don't).  Locations not live at any caller are removed
+	 * from the returns, but not from the modifieds.
 	 */
-	/// A DefCollector object to collect the reaching definitions
 	DefCollector col;
 
-	/// A list of assignments that represents the locations modified by the enclosing procedure. These assignments
-	/// have no RHS?
-	/// These transmit type information to callers
-	/// Note that these include preserved locations early on (?)
+	/**
+	 * \brief A list of assignments that represents the locations modified
+	 * by the enclosing procedure.  These assignments have no RHS?
+	 *
+	 * These transmit type information to callers.
+	 *
+	 * Note that these include preserved locations early on (?)
+	 */
 	StatementList modifieds;
 
-	/// A list of assignments of locations to expressions.
-	/// Initially definitions reaching the exit less preserveds; later has locations unused by any callers removed.
-	/// A list is used to facilitate ordering. (A set would be ideal, but the ordering depends at runtime on the
-	/// signature)
+	/**
+	 * \brief A list of assignments of locations to expressions.
+	 *
+	 * Initially definitions reaching the exit less preserveds; later has
+	 * locations unused by any callers removed.  A list is used to
+	 * facilitate ordering.  (A set would be ideal, but the ordering
+	 * depends at runtime on the signature.)
+	 */
 	StatementList returns;
 
 public:

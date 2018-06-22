@@ -115,14 +115,9 @@ public:
 	std::set<int> &getA_phi(Exp *e) { return A_phi[e]; }
 };
 
-/*  *   *   *   *   *   *\
-*                        *
-*   C o l l e c t o r s  *
-*                        *
-\*  *   *   *   *   *   */
-
 /**
- * DefCollector class. This class collects all definitions that reach the statement that contains this collector.
+ * This class collects all definitions that reach the statement that contains
+ * this collector.
  */
 class DefCollector {
 	/*
@@ -198,9 +193,10 @@ public:
 };
 
 /**
- * UseCollector class. This class collects all uses (live variables) that will be defined by the statement that
- * contains this collector (or the UserProc that contains it).
- * Typically the entries are not subscripted, like parameters or locations on the LHS of assignments
+ * This class collects all uses (live variables) that will be defined by the
+ * statement that contains this collector (or the UserProc that contains it).
+ * Typically the entries are not subscripted, like parameters or locations on
+ * the LHS of assignments.
  */
 class UseCollector {
 	/*

@@ -43,11 +43,10 @@ class Signature;
 class SyntaxNode;
 class UserProc;
 
-/*==============================================================================
- * Procedure class.
- *============================================================================*/
-/// Interface for the procedure classes, which are used to store information about variables in the
-/// procedure such as parameters and locals.
+/**
+ * Interface for the procedure classes, which are used to store information
+ * about variables in the procedure such as parameters and locals.
+ */
 class Proc {
 public:
 	/**
@@ -180,9 +179,6 @@ protected:
 
 };
 
-/*==============================================================================
- * LibProc class.
- *============================================================================*/
 class LibProc : public Proc {
 public:
 	            LibProc(Prog *prog, std::string &name, ADDRESS address);
@@ -221,10 +217,6 @@ enum ProcStatus {
 
 typedef std::set<UserProc *> ProcSet;
 typedef std::list<UserProc *> ProcList;
-
-/*==============================================================================
- * UserProc class.
- *============================================================================*/
 
 class UserProc : public Proc {
 	/**

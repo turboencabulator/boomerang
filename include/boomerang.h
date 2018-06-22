@@ -50,7 +50,9 @@ class UserProc;
 
 #define DEBUG_RANGE_ANALYSIS 0
 
-/// Virtual class to monitor the decompilation.
+/**
+ * \brief Virtual class to monitor the decompilation.
+ */
 class Watcher {
 public:
 	        Watcher() { }
@@ -79,8 +81,8 @@ public:
 };
 
 /**
- * Controls the loading, decoding, decompilation and code generation for a program.
- * This is the main class of the decompiler.
+ * Controls the loading, decoding, decompilation and code generation for a
+ * program.  This is the main class of the decompiler.
  */
 class Boomerang {
 private:

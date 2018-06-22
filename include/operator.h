@@ -11,8 +11,10 @@
 #ifndef OPERATOR_H
 #define OPERATOR_H
 
-// The OPER (and integer representation) of expressions (they can be a fair
-// bit different from operators)
+/**
+ * The OPER (and integer representation) of expressions (they can be a fair
+ * bit different from operators).
+ */
 enum OPER {
 	// Operators
 	opWild = -1,            // Wildcard (Terminal for search Exps only)
