@@ -32,7 +32,7 @@ static const struct {
 	checkpoint(opFPlusd),
 	checkpoint(opSQRTd),
 	checkpoint(opGtrEqUns),
-	checkpoint(opTargetInst),
+	checkpoint(opRotateL),
 	checkpoint(opList),
 	checkpoint(opMachFtr),
 	checkpoint(opFpop),

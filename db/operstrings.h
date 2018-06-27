@@ -70,12 +70,10 @@ const char *operStrings[] = {
 	"opRotateR",            // Rotate right
 	"opRotateLC",           // Rotate left through carry
 	"opRotateRC",           // Rotate right through carry
-	"opTargetInst",         // Target specific instruction (Unary)
 
 	"opTypedExp",           // Typed expression
 	"opNamedExp",           // Named expression (binary, subExp1 = Const("name"), subExp2 = exp)
 	"opGuard",              // Guarded expression (should be assignment)
-	"opComma",              // Separate expressions in a list (e.g. params)
 	"opFlagCall",           // A flag call (Binary with string and params)
 	"opFlagDef",            // A flag function definition (class FlagDef)
 	"opList",               // A binary, with expression (1) and next element
@@ -97,15 +95,12 @@ const char *operStrings[] = {
 	"opPhi",                // Represents phi(a1, a2, a3) .. ie SSA form merging
 	"opSubscript",          // Represents subscript(e, n) .. ie SSA renaming
 	"opParam",              // Parameter param`'
-	"opArg",                // Used a temporary for arguments to calls
 	"opLocal",              // Represents a local, takes a string
 	"opGlobal",             // Represents a global; takes a string
-	"opExpand",             // Expandable expression
 	"opMemberAccess",       // . and -> in C
 	"opArrayIndex",         // [] in C
 	"opTemp",               // Temp register name
 	"opSize",               // Size override
-	"opCastIntStar",        // Cast to int*
 	"opPostVar",            // Post-instruction variable marker (unary with
 	"opMachFtr",            // A Unary with Const(string) representing a machine specific feature (register, instruction
 	                        // or whatever; the analysis better understand it and transform it away)
@@ -122,8 +117,6 @@ const char *operStrings[] = {
 	"opFround",             // Floating point to nearest float conversion
 	"opFtrunc",             // Floating point to next lower e.g. 3.01 -> 3.00
 	"opFabs",               // Floating point absolute function
-	"opForceInt",           // Forcibly change current type to int/flt,
-	"opForceFlt",           //  without changing any of the bits
 	"opFpush",              // Floating point stack push
 	"opFpop",               // Floating point stack pop
 
@@ -156,9 +149,6 @@ const char *operStrings[] = {
 
 	"opAnull",              // Anull "variable"
 
-
-	"opHLCTI",              // High level Control transfer instruction
-	"opDEFINE",             // Define Type of use with lexer
 
 	"opTrue",               // Logical true
 	"opFalse",              // Logical false

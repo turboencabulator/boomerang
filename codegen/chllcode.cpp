@@ -584,16 +584,10 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 	case opSQRTd:
 	case opSQRTq:
 	case opSignExt:
-	case opTargetInst:
 	case opNamedExp:
 	case opGuard:
 	case opVar:
-	case opArg:
-	case opExpand:
-	case opCastIntStar:
 	case opPostVar:
-	case opForceInt:
-	case opForceFlt:
 	case opFpush:
 	case opFpop:
 	case opLoge:

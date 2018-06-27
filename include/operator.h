@@ -75,14 +75,10 @@ enum OPER {
 	opRotateR,              // Rotate right
 	opRotateLC,             // Rotate left through carry
 	opRotateRC,             // Rotate right through carry
-	opTargetInst,           // Target specific instruction (Unary)
-	                        // See frontend.cc for details
 
 	opTypedExp,             // Typed expression
 	opNamedExp,             // Named expression (binary, subExp1 = Const("name"), subExp2 = exp)
 	opGuard,                // Guarded expression (should be assignment)
-	// The below is (and should) probably no longer used. Use opList instead
-	opComma,                // Separate expressions in a list (e.g. params)
 	opFlagCall,             // A flag call (Binary with string and params)
 	opFlagDef,              // A flag function definition (class FlagDef)
 	opList,                 // A binary, with expression (1) and next element
@@ -112,15 +108,12 @@ enum OPER {
 	opPhi,                  // Represents phi(a1, a2, a3) .. ie SSA form merging
 	opSubscript,            // Represents subscript(e, n) .. ie SSA renaming
 	opParam,                // SSL parameter param`'
-	opArg,                  // Used a temporary for arguments to calls
 	opLocal,                // used to represent a local, takes a string
 	opGlobal,               // used to represent a global, takes a string
-	opExpand,               // Expandable expression
 	opMemberAccess,         // . and -> in C
 	opArrayIndex,           // [] in C
 	opTemp,                 // Temp register name
 	opSize,                 // Size specifier
-	opCastIntStar,          // Cast to int*
 	opPostVar,              // Post-instruction variable marker (unary with any subexpression). Can arise in some SSL
 	                        // files when ticked variables are used
 	opMachFtr,              // A Unary with Const(string) representing a machine specific feature (register, instruction
@@ -137,8 +130,6 @@ enum OPER {
 	opFround,               // Floating point to nearest float conversion
 	opFtrunc,               // chop float to int, e.g. 3.99 -> 3.00
 	opFabs,                 // floating point absolute function
-	opForceInt,             // Forcibly change current type to int/flt,
-	opForceFlt,             //  without changing any of the bits
 	opFpush,                // Floating point stack push
 	opFpop,                 // Floating point stack pop
 
@@ -183,8 +174,6 @@ enum OPER {
 
 
 	// Added for type analysis
-	opHLCTI,                // High level Control transfer instruction
-	opDEFINE,               // Define Type of use with lexer
 	opTrue,
 	opFalse,
 	opTypeOf,               // Unary: takes a location, makes a type variable
