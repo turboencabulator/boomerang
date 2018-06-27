@@ -69,47 +69,62 @@ public:
 	// Virtual destructor
 	virtual            ~Exp() { }
 
-	        // Return the operator. Note: I'd like to make this protected, but then subclasses don't seem to be able to use
-	        // it (at least, for subexpressions)
+	// Clone
+	virtual Exp        *clone() const = 0;
+
+	// Return the operator. Note: I'd like to make this protected, but then subclasses don't seem to be able to use
+	// it (at least, for subexpressions)
 	        OPER        getOper() const { return op; }
 	        void        setOper(OPER x) { op = x; }  // A few simplifications use this
 
-	// Print the expression to the given stream
+	/**
+	 * \name Printing
+	 * \{
+	 */
 	virtual void        print(std::ostream &os, bool html = false) const = 0;
-	// Print with <type>
+	virtual void        printr(std::ostream &os, bool html = false) const { print(os, html); }
 	        void        printt(std::ostream &os = std::cout) const;
-	        void        printAsHL(std::ostream &os = std::cout) const; // Print with v[5] as v5
-	        std::string prints() const;  // Print to string (for debugging and logging)
-	// Recursive print: don't want parens at the top level
-	virtual void        printr(std::ostream &os, bool html = false) const { print(os, html); }  // But most classes want standard
-	// For debugging: print in indented hex. In gdb: "p x->printx(0)"
+	        void        printAsHL(std::ostream &os = std::cout) const;
+	        std::string prints() const;
 	virtual void        printx(int ind) const = 0;
 
-	// Display as a dotty graph
 	        void        createDot(std::ostream &os) const;
 	virtual void        appendDot(std::ostream &os) const = 0;
+	/** \} */
 
-	// Clone (make copy of self that can be deleted without affecting self)
-	virtual Exp        *clone() const = 0;
-
-	// Comparison
-	// Type sensitive equality
+	/**
+	 * \name Comparison
+	 * \{
+	 */
 	virtual bool        operator ==(const Exp &) const = 0;
-	// Type sensitive less than
 	virtual bool        operator < (const Exp &) const = 0;
-	// Type insensitive less than. Class TypedExp overrides
 	virtual bool        operator <<(const Exp &e) const { return (*this < e); }
-	// Comparison ignoring subscripts
 	virtual bool        operator *=(const Exp &) const = 0;
+	/** \} */
 
+	/**
+	 * \name Sub expressions
+	 * \{
+	 */
 	// Return the number of subexpressions. This is only needed in rare cases.
 	// Could use polymorphism for all those cases, but this is easier
 	virtual int         getArity() const { return 0; }  // Overridden for Unary, Binary, etc
 
-	//  //  //  //  //  //  //
-	//   Enquiry functions  //
-	//  //  //  //  //  //  //
+	// These are here so we can (optionally) prevent code clutter.
+	// Using a *Exp (that is known to be a Binary* say), you can just directly call getSubExp2.
+	// However, you can still choose to cast from Exp* to Binary* etc. and avoid the virtual call
+	virtual Exp        *getSubExp1() const { return nullptr; }
+	virtual Exp        *getSubExp2() const { return nullptr; }
+	virtual Exp        *getSubExp3() const { return nullptr; }
+	virtual void        setSubExp1(Exp *e) { }
+	virtual void        setSubExp2(Exp *e) { }
+	virtual void        setSubExp3(Exp *e) { }
+	/** \} */
 
+	/**
+	 * \name Enquiry functions
+	 * \{
+	 */
 	// True if this is a call to a flag function
 	        bool        isFlagCall() const { return op == opFlagCall; }
 	// True if this represents one of the abstract flags locations, int or float
@@ -138,7 +153,7 @@ public:
 	        bool        isNil() const { return op == opNil; }
 	// True if this is %pc
 	        bool        isPC() const { return op == opPC; }
-	// True if is %afp, %afp+k, %afp-k, or a[m[<any of these]]
+	// True if is %afp, %afp+k, %afp-k, or a[m[<any of these>]]
 	        bool        isAfpTerm() const;
 	// True if is int const
 	        bool        isIntConst() const { return op == opIntConst; }
@@ -200,86 +215,42 @@ public:
 
 	// True if this is a typed expression
 	        bool        isTypedExp() const { return op == opTypedExp; }
+	/** \} */
 
 
 	// FIXME: are these used?
-	// Matches this expression to the pattern, if successful returns a list of variable bindings, otherwise returns
-	// nullptr
 	virtual Exp        *match(const Exp *pattern) const;
-
-	// match a string pattern
 	virtual bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const;
 
-	//  //  //  //  //  //  //
-	//  Search and Replace  //
-	//  //  //  //  //  //  //
-
-	// Search for Exp *search in this Exp. If found, return true and return a ptr to the matching expression in
-	// result (useful with wildcards).
+	/**
+	 * \name Search and replace
+	 * \{
+	 */
 	virtual bool        search(Exp *search, Exp *&result);
-
-	// Search for Exp search in this Exp. For each found, add a ptr to the matching expression in result (useful
-	// with wildcards).  Does NOT clear result on entry
 	        bool        searchAll(Exp *search, std::list<Exp *> &result);
-
-	// Search this Exp for *search; if found, replace with *replace
 	        Exp        *searchReplace(Exp *search, Exp *replace, bool &change);
-
-	// Search *pSrc for *search; for all occurrences, replace with *replace
 	        Exp        *searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once = false);
-
-	// Mostly not for public use. Search for subexpression matches.
 	static  void        doSearch(Exp *search, Exp *&pSrc, std::list<Exp **> &li, bool once);
-
-	// As above.
 	virtual void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once);
+	/** \} */
 
-	/// Propagate all possible assignments to components of this expression.
-	        Exp        *propagateAll();
-	        Exp        *propagateAllRpt(bool &changed);  // As above, but keep propagating until no change
+	        Exp        *getGuard() const;
 
-	//  //  //  //  //  //  //
-	//    Sub expressions   //
-	//  //  //  //  //  //  //
-
-	// These are here so we can (optionally) prevent code clutter.
-	// Using a *Exp (that is known to be a Binary* say), you can just directly call getSubExp2.
-	// However, you can still choose to cast from Exp* to Binary* etc. and avoid the virtual call
-	virtual Exp        *getSubExp1() const { return nullptr; }
-	virtual Exp        *getSubExp2() const { return nullptr; }
-	virtual Exp        *getSubExp3() const { return nullptr; }
-	virtual void        setSubExp1(Exp *e) { }
-	virtual void        setSubExp2(Exp *e) { }
-	virtual void        setSubExp3(Exp *e) { }
-
-	// Get the complexity depth. Basically, add one for each unary, binary, or ternary
-	        int         getComplexityDepth(UserProc *proc);
-	// Get memory depth. Add one for each m[]
-	        int         getMemDepth();
-
-	//  //  //  //  //  //  //
-	//  Guarded assignment  //
-	//  //  //  //  //  //  //
-	        Exp        *getGuard() const;  // Get the guard expression, or 0 if not
-
-	//  //  //  //  //  //  //  //  //
-	//  Expression Simplification   //
-	//  //  //  //  //  //  //  //  //
-
+	/**
+	 * \name Expression simplification
+	 * \{
+	 */
 	        void        partitionTerms(std::list<Exp *> &positives, std::list<Exp *> &negatives, std::vector<int> &integers, bool negate);
 	virtual Exp        *simplifyArith() { return this; }
 	static  Exp        *Accumulate(std::list<Exp *> exprs);
-	// Simplify the expression
 	        Exp        *simplify();
 	virtual Exp        *polySimplify(bool &bMod) { bMod = false; return this; }
-	// Just the address simplification a[ m[ any ]]
 	virtual Exp        *simplifyAddr() { return this; }
 	virtual Exp        *simplifyConstraint() { return this; }
-	        Exp        *fixSuccessor();  // succ(r2) -> r3
-	// Kill any zero fill, sign extend, or truncates
+	        Exp        *fixSuccessor();
 	        Exp        *killFill();
+	/** \} */
 
-	// Do the work of finding used locations. If memOnly set, only look inside m[...]
 	        void        addUsedLocs(LocationSet &used, bool memOnly = false);
 
 	        Exp        *removeSubscripts(bool &allZero);
@@ -287,24 +258,14 @@ public:
 	// Get number of definitions (statements this expression depends on)
 	virtual int         getNumRefs() const { return 0; }
 
-	// Convert from SSA form, where this is not subscripted (but defined at statement d)
-	// Needs the UserProc for the symbol map
 	        Exp        *fromSSAleft(UserProc *proc, Statement *d);
 
-	// Generate constraints for this Exp. NOTE: The behaviour is a bit different depending on whether or not
-	// parameter result is a type constant or a type variable.
-	// If the constraint is always satisfied, return true
-	// If the constraint can never be satisfied, return false
-	// Example: this is opMinus and result is <int>, constraints are:
-	//   sub1 = <int> and sub2 = <int> or
-	//   sub1 = <ptr> and sub2 = <ptr>
-	// Example: this is opMinus and result is Tr (typeOf r), constraints are:
-	//   sub1 = <int> and sub2 = <int> and Tr = <int> or
-	//   sub1 = <ptr> and sub2 = <ptr> and Tr = <int> or
-	//   sub1 = <ptr> and sub2 = <int> and Tr = <ptr>
 	virtual Exp        *genConstraints(Exp *result);
 
-	// Visitation
+	/**
+	 * \name Visitation
+	 * \{
+	 */
 	// Note: best to have accept() as pure virtual, so you don't forget to implement it for new subclasses of Exp
 	virtual bool        accept(ExpVisitor &) = 0;
 	virtual Exp        *accept(ExpModifier &) = 0;
@@ -312,7 +273,7 @@ public:
 	        UserProc   *findProc();
 	// Set or clear the constant subscripts
 	        void        setConscripts(int n, bool bClear);
-	        Exp        *stripSizes();  // Strip all size casts
+	        Exp        *stripSizes();
 	// Subscript all e in this Exp with statement def:
 	        Exp        *expSubscriptVar(Exp *e, Statement *def /*, Cfg *cfg */);
 	// Subscript all e in this Exp with 0 (implicit assignments)
@@ -323,9 +284,14 @@ public:
 	// Note: can change this, so often need to clone before calling
 	        Exp        *bypass();
 	        void        bypassComp();                   // As above, but only the xxx of m[xxx]
+	        int         getComplexityDepth(UserProc *proc);
+	        int         getMemDepth();
+	        Exp        *propagateAll();
+	        Exp        *propagateAllRpt(bool &changed);
 	        bool        containsFlags();                // Check if this exp contains any flag calls
 	        bool        containsBadMemof(UserProc *p);  // Check if this Exp contains a bare (non subscripted) memof
 	        bool        containsMemof(UserProc *proc);  // Check of this Exp contains any memof at all. Not used.
+	/** \} */
 
 	// Data flow based type analysis (implemented in type/dfa.cpp)
 	// Pull type information up the expression tree
@@ -567,7 +533,6 @@ public:
 	void        setSubExp2(Exp *e) override;
 	// Get second subexpression
 	Exp        *getSubExp2() const override;
-	// Commute the two operands
 	void        commute();
 
 	Exp        *match(const Exp *pattern) const override;
@@ -768,8 +733,6 @@ public:
 	Exp        *match(const Exp *pattern) const override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
 
-	// Before type analysis, implicit definitions are nullptr.  During and after TA, they point to an implicit
-	// assignment statement.  Don't implement here, since it would require #including of statement.h
 	bool        isImplicitDef() const;
 
 	// Visitation
