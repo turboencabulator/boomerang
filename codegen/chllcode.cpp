@@ -66,7 +66,7 @@ CHLLCode::indent(std::ostringstream &str, int indLevel)
  * Append code for the given expression \a exp to stream \a str.
  *
  * \param str       The stream to output to.
- * \param ext       The expresson to output.
+ * \param ext       The expression to output.
  * \param curPrec   The current operator precedence. Add parens around this expression if necessary.
  * \param uns       If true, cast operands to unsigned if necessary.
  *
@@ -1373,7 +1373,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
  * \param results       The variable that will receive the return value of the function.
  *
  * \todo                Remove the \a name parameter and use Proc::getName()
- * \todo                Add assingment for when the function returns a struct.
+ * \todo                Add assignment for when the function returns a struct.
  */
 void
 CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results)
