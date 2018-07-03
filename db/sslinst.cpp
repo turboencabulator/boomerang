@@ -84,9 +84,10 @@ TableEntry::setRTL(const RTL &r)
 const TableEntry &
 TableEntry::operator =(const TableEntry &other)
 {
-	// FIXME:  Should this replace the list instead of appending to it?
-	params.insert(params.end(), other.params.cbegin(), other.params.cend());
-	rtl = other.rtl;
+	if (this != &other) {
+		params = other.params;
+		rtl = other.rtl;
+	}
 	return *this;
 }
 
@@ -101,9 +102,8 @@ TableEntry::operator =(const TableEntry &other)
 bool
 TableEntry::appendRTL(const std::list<std::string> &p, const RTL &r)
 {
-	bool match = (p.size() == params.size());
-	for (auto a = params.cbegin(), b = p.cbegin(); match && (a != params.cend()) && (b != p.cend()); match = (*a == *b), ++a, ++b);
-	if (match) {
+	if (params.size() == p.size()
+	 && std::equal(params.cbegin(), params.cend(), p.cbegin())) {
 		rtl.append(r);
 		return true;
 	}

@@ -61,9 +61,8 @@ RTL::RTL(ADDRESS instNativeAddr, const std::list<Statement *> *listStmt /*= null
 RTL::RTL(const RTL &other) :
 	nativeAddr(other.nativeAddr)
 {
-	for (const auto &stmt : other.stmtList) {
+	for (const auto &stmt : other.stmtList)
 		stmtList.push_back(stmt->clone());
-	}
 }
 
 RTL::~RTL()
@@ -81,7 +80,7 @@ RTL &
 RTL::operator =(const RTL &other)
 {
 	if (this != &other) {
-		// Do a deep copy always
+		stmtList.clear();
 		for (const auto &stmt : other.stmtList)
 			stmtList.push_back(stmt->clone());
 
@@ -130,9 +129,8 @@ RTL::accept(StmtVisitor &v)
 void
 RTL::deepCopyList(std::list<Statement *> &dest) const
 {
-	for (const auto &stmt : stmtList) {
+	for (const auto &stmt : stmtList)
 		dest.push_back(stmt->clone());
-	}
 }
 
 /**
