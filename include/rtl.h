@@ -255,8 +255,6 @@ public:
 	 * The maps which summarise the semantics (.ssl) file.
 	 */
 	std::map<std::string, Exp *> FlagFuncs;
-	std::map<std::string, std::pair<int, void *> *> DefMap;
-	std::map<int, Exp *> AliasMap;
 
 	/**
 	 * Map from ordinary instruction to fast pseudo instruction, for use

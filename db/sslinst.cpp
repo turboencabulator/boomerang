@@ -659,8 +659,6 @@ RTLInstDict::reset()
 	ParamSet.clear();
 	DetParamMap.clear();
 	FlagFuncs.clear();
-	DefMap.clear();
-	AliasMap.clear();
 	fastMap.clear();
 	idict.clear();
 	fetchExecCycle = nullptr;
