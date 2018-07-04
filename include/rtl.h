@@ -219,6 +219,7 @@ public:
 	bool partialType(Exp *exp, Type &ty);
 
 	void fixupParams();
+	void fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark);
 
 public:
 	/**
@@ -263,11 +264,6 @@ public:
 	std::map<std::string, std::string> fastMap;
 
 	/**
-	 * True if this source is big endian.
-	 */
-	bool bigEndian;
-
-	/**
 	 * The actual dictionary.
 	 */
 	std::map<std::string, TableEntry> idict;
@@ -277,7 +273,10 @@ public:
 	 */
 	RTL *fetchExecCycle;
 
-	void fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark);
+	/**
+	 * True if this source is big endian.
+	 */
+	bool bigEndian;
 };
 
 #endif

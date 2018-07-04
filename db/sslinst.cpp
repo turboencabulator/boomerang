@@ -662,4 +662,5 @@ RTLInstDict::reset()
 	fastMap.clear();
 	idict.clear();
 	fetchExecCycle = nullptr;
+	bigEndian = false;
 }
