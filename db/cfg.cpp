@@ -100,9 +100,11 @@ Cfg::clear()
 const Cfg &
 Cfg::operator =(const Cfg &other)
 {
-	m_listBB = other.m_listBB;
-	m_mapBB = other.m_mapBB;
-	m_bWellFormed = other.m_bWellFormed;
+	if (this != &other) {
+		m_listBB = other.m_listBB;
+		m_mapBB = other.m_mapBB;
+		m_bWellFormed = other.m_bWellFormed;
+	}
 	return *this;
 }
 

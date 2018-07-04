@@ -291,9 +291,11 @@ AssignSet::operator <(const AssignSet &o) const
 LocationSet &
 LocationSet::operator =(const LocationSet &o)
 {
-	lset.clear();
-	for (const auto &l : o.lset)
-		lset.insert(l->clone());
+	if (this != &o) {
+		lset.clear();
+		for (const auto &l : o.lset)
+			lset.insert(l->clone());
+	}
 	return *this;
 }
 
