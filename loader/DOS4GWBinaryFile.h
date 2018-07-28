@@ -96,11 +96,11 @@ typedef struct __attribute__((packed)) {
 
 // this is correct for internal fixups only
 typedef struct __attribute__((packed)) {
-	unsigned char src;
-	unsigned char flags;
-	short srcoff;
-	//unsigned char object;  // these are now variable length
-	//unsigned short trgoff;
+	uint8_t  src;
+	uint8_t  flags;
+	uint16_t srcoff;
+	//uint8_t  object;  // these are now variable length
+	//uint16_t trgoff;
 } LXFixup;
 
 

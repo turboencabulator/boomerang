@@ -124,8 +124,8 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	ifs.seekg(lxoff);
 	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
 	m_pLXHeader->formatlvl               = LH32(&m_pLXHeader->formatlvl);
-	m_pLXHeader->cputype                 = LH32(&m_pLXHeader->cputype);
-	m_pLXHeader->ostype                  = LH32(&m_pLXHeader->ostype);
+	m_pLXHeader->cputype                 = LH16(&m_pLXHeader->cputype);
+	m_pLXHeader->ostype                  = LH16(&m_pLXHeader->ostype);
 	m_pLXHeader->modulever               = LH32(&m_pLXHeader->modulever);
 	m_pLXHeader->moduleflags             = LH32(&m_pLXHeader->moduleflags);
 	m_pLXHeader->modulenumpages          = LH32(&m_pLXHeader->modulenumpages);
@@ -251,7 +251,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	// TODO: decode entry tables
 
 	// fixups
-	auto fixuppagetbl = new unsigned int[npages + 1];
+	auto fixuppagetbl = new uint32_t[npages + 1];
 	ifs.seekg(m_pLXHeader->fixuppagetbloffset + lxoff);
 	ifs.read((char *)fixuppagetbl, sizeof *fixuppagetbl * (npages + 1));
 	for (unsigned n = 0; n < npages + 1; ++n) {
@@ -277,11 +277,13 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 		}
 		//printf("srcpage = %i srcoff = %x object = %02x trgoff = %x\n", srcpage + 1, fixup.srcoff, fixup.object, fixup.trgoff);
 		unsigned long src = srcpage * m_pLXHeader->pagesize + fixup.srcoff;
-		unsigned short object = 0;
+		uint16_t object = 0;
 		ifs.read((char *)&object, fixup.flags & 0x40 ? 2 : 1);
-		unsigned int trgoff = 0;
+		object = LH16(&object);
+		uint32_t trgoff = 0;
 		ifs.read((char *)&trgoff, fixup.flags & 0x10 ? 4 : 2);
-		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + LH16(&trgoff);
+		trgoff = LH32(&trgoff);
+		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + trgoff;
 		//printf("relocate dword at %x to point to %x\n", src, target);
 		*(unsigned int *)(base + src) = target;
 
