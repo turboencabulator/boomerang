@@ -129,39 +129,37 @@ Win32BinaryFile::getMainEntryPoint()
 	if (aMain != NO_ADDRESS)
 		return aMain;
 
-	// Start at program entry point
-	unsigned p = m_pPEHeader->EntrypointRVA;
-	unsigned lim = p + 0x200;
-	unsigned lastOrdCall = 0;
-	int gap;               // Number of instructions from the last ordinary call
-	int borlandState = 0;  // State machine for Borland
+	if (m_pPEHeader->Subsystem == 1)  // native
+		return m_pPEHeader->EntrypointRVA + m_pPEHeader->Imagebase;
 
 	const SectionInfo *si = getSectionInfoByName(".text");
 	if (!si) si = getSectionInfoByName("CODE");
 	assert(si);
 	unsigned textSize = si->uSectionSize;
+
+	// Start at program entry point
+	unsigned p = m_pPEHeader->EntrypointRVA;
+	unsigned lim = p + 0x200;
 	if (textSize < 0x200)
 		lim = p + textSize;
 
-	if (m_pPEHeader->Subsystem == 1)  // native
-		return m_pPEHeader->EntrypointRVA + m_pPEHeader->Imagebase;
-
-	gap = 0xF0000000;  // Large positive number (in case no ordinary calls)
+	unsigned lastOrdCall = 0;
+	int gap = 0xF0000000;  // Number of instructions from the last ordinary call
+	                       // Large positive number (in case no ordinary calls)
+	int borlandState = 0;  // State machine for Borland
 	while (p < lim) {
 		unsigned char op1 = *(p + base);
 		unsigned char op2 = *(p + base + 1);
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:
-			{
-				// An ordinary call; this could be to winmain/main
-				lastOrdCall = p;
-				gap = 0;
-				if (borlandState == 1)
-					++borlandState;
-				else
-					borlandState = 0;
-			}
+			// An ordinary call; this could be to winmain/main
+			lastOrdCall = p;
+			gap = 0;
+			if (borlandState == 1)
+				++borlandState;
+			else
+				borlandState = 0;
 			break;
 		case 0xFF:
 			if (op2 == 0x15) {  // Opcode FF 15 is indirect call
@@ -286,7 +284,6 @@ Win32BinaryFile::getMainEntryPoint()
 			p += off + 5;
 			continue;
 		}
-
 
 		size_t size = microX86Dis(p + base);
 		if (size == 0x40) {

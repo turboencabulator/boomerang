@@ -56,21 +56,20 @@ DOS4GWBinaryFile::getMainEntryPoint()
 
 	// Search with this crude pattern: call, sub ebp, ebp, call __Cmain in the first 0x300 bytes
 	// Start at program entry point
-	unsigned p = m_pLXHeader->eip;
-	unsigned lim = p + 0x300;
-	unsigned lastOrdCall = 0;
-	bool gotSubEbp = false;         // True if see sub ebp, ebp
-	bool lastWasCall = false;       // True if the last instruction was a call
-
 	const SectionInfo *si = getSectionInfoByName("seg0");     // Assume the first section is text
 	if (!si) si = getSectionInfoByName(".text");
 	if (!si) si = getSectionInfoByName("CODE");
 	assert(si);
 	ADDRESS nativeOrigin = si->uNativeAddr;
 	unsigned textSize = si->uSectionSize;
+
+	unsigned p = m_pLXHeader->eip;
+	unsigned lim = p + 0x300;
 	if (textSize < 0x300)
 		lim = p + textSize;
 
+	bool gotSubEbp = false;         // True if see sub ebp, ebp
+	bool lastWasCall = false;       // True if the last instruction was a call
 	while (p < lim) {
 		unsigned char op1 = *(p + base);
 		unsigned char op2 = *(p + base + 1);
@@ -83,7 +82,6 @@ DOS4GWBinaryFile::getMainEntryPoint()
 				// std::cerr << "__CMain at " << std::hex << addr << "\n";
 				return addr;
 			}
-			lastOrdCall = p;
 			lastWasCall = true;
 			break;
 		case 0x2B:  // 0x2B 0xED is sub ebp,ebp
@@ -189,16 +187,16 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	// but I'm just going to assume the file is flat.
 #if 0
 	unsigned npagetblentries = 0;
-	m_cbImage = 0;
+	unsigned imagesize = 0;
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
 		const auto &obj = m_pLXObjects[n];
 		if (npagetblentries < obj.PageTblIdx + obj.NumPageTblEntries - 1)
 			npagetblentries = obj.PageTblIdx + obj.NumPageTblEntries - 1;
 		if (obj.ObjectFlags & 0x40)
-			if (m_cbImage < obj.RelocBaseAddr + obj.VirtualSize)
-				m_cbImage = obj.RelocBaseAddr + obj.VirtualSize;
+			if (imagesize < obj.RelocBaseAddr + obj.VirtualSize)
+				imagesize = obj.RelocBaseAddr + obj.VirtualSize;
 	}
-	m_cbImage -= m_pLXObjects[0].RelocBaseAddr;
+	imagesize -= m_pLXObjects[0].RelocBaseAddr;
 
 	m_pLXPages = new LXPage[npagetblentries];
 	ifs.seekg(lxoff + m_pLXHeader->objpagetbloffset);
@@ -206,19 +204,19 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 #endif
 
 	unsigned npages = 0;
-	m_cbImage = 0;
+	unsigned imagesize = 0;
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
 		const auto &obj = m_pLXObjects[n];
 		if (obj.ObjectFlags & 0x40) {
 			if (npages < obj.PageTblIdx + obj.NumPageTblEntries - 1)
 				npages = obj.PageTblIdx + obj.NumPageTblEntries - 1;
-			m_cbImage = obj.RelocBaseAddr + obj.VirtualSize;
+			imagesize = obj.RelocBaseAddr + obj.VirtualSize;
 		}
 	}
 
-	m_cbImage -= m_pLXObjects[0].RelocBaseAddr;
+	imagesize -= m_pLXObjects[0].RelocBaseAddr;
 
-	base = new unsigned char[m_cbImage];
+	base = new unsigned char[imagesize];
 
 	sections.reserve(m_pLXHeader->numobjsinmodule);
 	for (unsigned n = 0; n < m_pLXHeader->numobjsinmodule; ++n) {
@@ -276,13 +274,15 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			return false;
 		}
 		//printf("srcpage = %i srcoff = %x object = %02x trgoff = %x\n", srcpage + 1, fixup.srcoff, fixup.object, fixup.trgoff);
-		unsigned long src = srcpage * m_pLXHeader->pagesize + fixup.srcoff;
+
 		uint16_t object = 0;
 		ifs.read((char *)&object, fixup.flags & 0x40 ? 2 : 1);
 		object = LH16(&object);
 		uint32_t trgoff = 0;
 		ifs.read((char *)&trgoff, fixup.flags & 0x10 ? 4 : 2);
 		trgoff = LH32(&trgoff);
+
+		unsigned long src = srcpage * m_pLXHeader->pagesize + fixup.srcoff;
 		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + trgoff;
 		//printf("relocate dword at %x to point to %x\n", src, target);
 		*(unsigned int *)(base + src) = target;

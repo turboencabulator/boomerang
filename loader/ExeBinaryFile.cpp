@@ -32,7 +32,6 @@ ExeBinaryFile::~ExeBinaryFile()
 bool
 ExeBinaryFile::load(std::istream &ifs)
 {
-	std::streamsize cb;
 	m_pHeader = new exeHeader;
 
 	/* Read in first 2 bytes to check EXE signature */
@@ -41,6 +40,9 @@ ExeBinaryFile::load(std::istream &ifs)
 		fprintf(stderr, "Cannot read file %s\n", getFilename());
 		return false;
 	}
+
+	std::streamsize cb;
+	unsigned numreloc;
 
 	// Check for the "MZ" exe header
 	if (m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z') {
@@ -90,15 +92,15 @@ ExeBinaryFile::load(std::istream &ifs)
 		 * to have to load DS from a constant so it'll be pretty
 		 * obvious.
 		 */
-		m_cReloc = m_pHeader->numReloc;
+		numreloc = m_pHeader->numReloc;
 
 		/* Allocate the relocation table */
-		if (m_cReloc) {
-			m_pRelocTable = new uint32_t[m_cReloc];
+		if (numreloc) {
+			m_pRelocTable = new uint32_t[numreloc];
 			ifs.seekg(m_pHeader->relocTabOffset);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
-			for (int i = 0; i < m_cReloc; ++i) {
+			for (int i = 0; i < numreloc; ++i) {
 				uint8_t buf[4];
 				ifs.read((char *)buf, 4);
 				m_pRelocTable[i] = LH16(buf) + ((int)LH16(buf + 2) << 4);
@@ -125,13 +127,13 @@ ExeBinaryFile::load(std::istream &ifs)
 		 */
 		//m_uInitPC = 0x100;
 		//m_uInitSP = 0xFFFE;
-		m_cReloc = 0;
+		numreloc = 0;
 
 		ifs.seekg(0, ifs.beg);
 	}
 
 	/* Allocate a block of memory for the image. */
-	m_pImage  = new uint8_t[cb];
+	m_pImage = new uint8_t[cb];
 
 	ifs.read((char *)m_pImage, cb);
 	if (!ifs.good()) {
@@ -140,7 +142,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	}
 
 	/* Relocate segment constants */
-	for (int i = 0; i < m_cReloc; ++i) {
+	for (int i = 0; i < numreloc; ++i) {
 		uint8_t *p = &m_pImage[m_pRelocTable[i]];
 		uint16_t w = (uint16_t)LH16(p);
 		*p++       = (uint8_t)(w & 0x00FF);
@@ -176,7 +178,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	//sect2.fSectionFlags = ST_RELOC;  // Give it a special flag
 	sect2.uNativeAddr = 0;  // Not applicable
 	sect2.uHostAddr = (char *)m_pRelocTable;
-	sect2.uSectionSize =  m_cReloc * sizeof *m_pRelocTable;
+	sect2.uSectionSize =  numreloc * sizeof *m_pRelocTable;
 	sect2.uSectionEntrySize = sizeof *m_pRelocTable;
 	sections.push_back(sect2);
 

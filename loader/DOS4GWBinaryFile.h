@@ -155,9 +155,6 @@ private:
 	LXHeader   *m_pLXHeader = nullptr;   ///< Pointer to lx header.
 	LXObject   *m_pLXObjects = nullptr;  ///< Pointer to lx objects.
 	LXPage     *m_pLXPages = nullptr;    ///< Pointer to lx pages.
-	int         m_cbImage;               ///< Size of image.
-	//int         m_cReloc;                ///< Number of relocation entries.
-	//uint32_t   *m_pRelocTable;           ///< The relocation table.
 	unsigned char *base = nullptr;       ///< Beginning of the loaded image.
 
 	/// Map from address of dynamic pointers to library procedure names.
