@@ -148,8 +148,8 @@ Win32BinaryFile::getMainEntryPoint()
 	                       // Large positive number (in case no ordinary calls)
 	int borlandState = 0;  // State machine for Borland
 	while (p < lim) {
-		unsigned char op1 = *(p + base);
-		unsigned char op2 = *(p + base + 1);
+		unsigned char op1 = base[p];
+		unsigned char op2 = base[p + 1];
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:
@@ -164,13 +164,13 @@ Win32BinaryFile::getMainEntryPoint()
 		case 0xFF:
 			if (op2 == 0x15) {  // Opcode FF 15 is indirect call
 				// Get the 4 byte address from the instruction
-				unsigned addr = LH32(p + base + 2);
+				unsigned addr = LH32(&base[p + 2]);
 				//const char *c = dlprocptrs[addr].c_str();
 				//printf("Checking %x finding %s\n", addr, c);
 				if (dlprocptrs[addr] == "exit") {
 					if (gap <= 10) {
 						// This is it. The instruction at lastOrdCall is (win)main
-						addr = LH32(lastOrdCall + base + 1);
+						addr = LH32(&base[lastOrdCall + 1]);
 						addr += lastOrdCall + 5;  // Addr is dest of call
 						//printf("*** MAIN AT 0x%x ***\n", addr);
 						return addr + m_pPEHeader->Imagebase;
@@ -194,7 +194,7 @@ Win32BinaryFile::getMainEntryPoint()
 					borlandState = 1;
 				else if (borlandState == 4) {
 					// Borland pattern succeeds. p-4 has the offset of mainInfo
-					ADDRESS mainInfo = LH32(base + p - 4);
+					ADDRESS mainInfo = LH32(&base[p - 4]);
 					ADDRESS main = readNative4(mainInfo + 0x18);  // Address of main is at mainInfo+18
 					return main;
 				}
@@ -217,7 +217,7 @@ Win32BinaryFile::getMainEntryPoint()
 			borlandState = 0;
 			break;
 		}
-		size_t size = microX86Dis(p + base);
+		size_t size = microX86Dis(&base[p]);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -228,20 +228,20 @@ Win32BinaryFile::getMainEntryPoint()
 
 	// VS.NET release console mode pattern
 	p = m_pPEHeader->EntrypointRVA;
-	if (*(p + base + 0x20) == 0xff
-	 && *(p + base + 0x21) == 0x15) {
-		unsigned int desti = LH32(p + base + 0x22);
+	if (base[p + 0x20] == 0xff
+	 && base[p + 0x21] == 0x15) {
+		unsigned int desti = LH32(&base[p + 0x22]);
 		auto it = dlprocptrs.find(desti);
 		if (it != dlprocptrs.end()
 		 && it->second == "GetVersionExA") {
-			if (*(p + base + 0x6d) == 0xff
-			 && *(p + base + 0x6e) == 0x15) {
-				desti = LH32(p + base + 0x6f);
+			if (base[p + 0x6d] == 0xff
+			 && base[p + 0x6e] == 0x15) {
+				desti = LH32(&base[p + 0x6f]);
 				it = dlprocptrs.find(desti);
 				if (it != dlprocptrs.end()
 				 && it->second == "GetModuleHandleA") {
-					if (*(p + base + 0x16e) == 0xe8) {
-						unsigned int dest = p + 0x16e + 5 + LH32(p + base + 0x16f);
+					if (base[p + 0x16e] == 0xe8) {
+						unsigned int dest = p + 0x16e + 5 + LH32(&base[p + 0x16f]);
 						return dest + m_pPEHeader->Imagebase;
 					}
 				}
@@ -255,17 +255,17 @@ Win32BinaryFile::getMainEntryPoint()
 	p = m_pPEHeader->EntrypointRVA;
 	while (count > 0) {
 		--count;
-		unsigned char op1 = *(p + base);
+		unsigned char op1 = base[p];
 		if (op1 == 0xE8) {  // CALL opcode
 			if (pushes == 3) {
 				// Get the offset
-				int off = LH32(p + base + 1);
+				int off = LH32(&base[p + 1]);
 				unsigned dest = (unsigned)p + 5 + off;
 				// Check for a jump there
-				op1 = *(dest + base);
+				op1 = base[dest];
 				if (op1 == 0xE9) {
 					// Follow that jump
-					off = LH32(dest + base + 1);
+					off = LH32(&base[dest + 1]);
 					dest = dest + 5 + off;
 				}
 				return dest + m_pPEHeader->Imagebase;
@@ -275,17 +275,17 @@ Win32BinaryFile::getMainEntryPoint()
 			++pushes;
 		} else if (op1 == 0xFF) {
 			// FF 35 is push m[K]
-			unsigned char op2 = *(p + 1 + base);
+			unsigned char op2 = base[p + 1];
 			if (op2 == 0x35)
 				++pushes;
 		} else if (op1 == 0xE9) {
 			// Follow the jump
-			int off = LH32(p + base + 1);
+			int off = LH32(&base[p + 1]);
 			p += off + 5;
 			continue;
 		}
 
-		size_t size = microX86Dis(p + base);
+		size_t size = microX86Dis(&base[p]);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -300,13 +300,13 @@ Win32BinaryFile::getMainEntryPoint()
 	bool in_mingw_CRTStartup = false;
 	unsigned int lastcall = 0, lastlastcall = 0;
 	while (1) {
-		unsigned char op1 = *(p + base);
+		unsigned char op1 = base[p];
 		if (op1 == 0xE8) {  // CALL opcode
-			unsigned int dest = p + 5 + LH32(p + base + 1);
+			unsigned int dest = p + 5 + LH32(&base[p + 1]);
 			if (in_mingw_CRTStartup) {
-				unsigned char op2 = *(dest + base);
-				unsigned char op2a = *(dest + base + 1);
-				unsigned int desti = LH32(dest + base + 2);
+				unsigned char op2 = base[dest];
+				unsigned char op2a = base[dest + 1];
+				unsigned int desti = LH32(&base[dest + 2]);
 				auto it = dlprocptrs.find(desti);
 				// skip all the call statements until we hit a call to an indirect call to ExitProcess
 				// main is the 2nd call before this one
@@ -314,7 +314,7 @@ Win32BinaryFile::getMainEntryPoint()
 				 && it != dlprocptrs.end()
 				 && it->second == "ExitProcess") {
 					mingw_main = true;
-					return lastlastcall + 5 + LH32(lastlastcall + base + 1) + m_pPEHeader->Imagebase;
+					return lastlastcall + 5 + LH32(&base[lastlastcall + 1]) + m_pPEHeader->Imagebase;
 				}
 				lastlastcall = lastcall;
 				lastcall = p;
@@ -325,7 +325,7 @@ Win32BinaryFile::getMainEntryPoint()
 			}
 		}
 
-		size_t size = microX86Dis(p + base);
+		size_t size = microX86Dis(&base[p]);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -339,10 +339,10 @@ Win32BinaryFile::getMainEntryPoint()
 	p = m_pPEHeader->EntrypointRVA;
 	bool gotGMHA = false;
 	while (1) {
-		unsigned char op1 = *(p + base);
-		unsigned char op2 = *(p + base + 1);
+		unsigned char op1 = base[p];
+		unsigned char op2 = base[p + 1];
 		if (op1 == 0xFF && op2 == 0x15) { // indirect CALL opcode
-			unsigned int desti = LH32(p + base + 2);
+			unsigned int desti = LH32(&base[p + 2]);
 			auto it = dlprocptrs.find(desti);
 			if (it != dlprocptrs.end()
 			 && it->second == "GetModuleHandleA") {
@@ -350,14 +350,14 @@ Win32BinaryFile::getMainEntryPoint()
 			}
 		}
 		if (op1 == 0xE8 && gotGMHA) {  // CALL opcode
-			unsigned int dest = p + 5 + LH32(p + base + 1);
+			unsigned int dest = p + 5 + LH32(&base[p + 1]);
 			addSymbol(dest + m_pPEHeader->Imagebase, "WinMain");
 			return dest + m_pPEHeader->Imagebase;
 		}
 		if (op1 == 0xc3)   // ret ends search
 			break;
 
-		size_t size = microX86Dis(p + base);
+		size_t size = microX86Dis(&base[p]);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -395,7 +395,7 @@ Win32BinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
-	m_pPEHeader = (PEHeader *)(base + peoff);
+	m_pPEHeader = (PEHeader *)&base[peoff];
 	if (m_pPEHeader->sigLo != 'P' || m_pPEHeader->sigHi != 'E') {
 		fprintf(stderr, "error loading file %s, bad PE magic\n", getFilename());
 		return false;
@@ -482,7 +482,7 @@ Win32BinaryFile::load(std::istream &ifs)
 		auto sect = PESectionInfo();
 		sect.name = name;
 		sect.uNativeAddr = (ADDRESS)(o->RVA + m_pPEHeader->Imagebase);
-		sect.uHostAddr = (char *)base + o->RVA;
+		sect.uHostAddr = (char *)&base[o->RVA];
 		sect.uSectionSize = o->VirtualSize;
 		uint32_t Flags = o->Flags;
 		sect.bBss      = (Flags & IMAGE_SCN_CNT_UNINITIALIZED_DATA) != 0;
@@ -493,14 +493,14 @@ Win32BinaryFile::load(std::istream &ifs)
 		sections.push_back(sect);
 
 		ifs.seekg(o->PhysicalOffset);
-		memset(base + o->RVA, 0, o->VirtualSize);
-		ifs.read((char *)(base + o->RVA), o->PhysicalSize);
+		memset(&base[o->RVA], 0, o->VirtualSize);
+		ifs.read((char *)&base[o->RVA], o->PhysicalSize);
 		s_sectionObjects[static_cast<const PESectionInfo *>(&sections.back())] = o;
 	}
 
 	// Add the Import Address Table entries to the symbol table
 	if (m_pPEHeader->ImportTableRVA) {  // If any import table entry exists
-		auto id = (PEImportDtor *)(base + m_pPEHeader->ImportTableRVA);
+		auto id = (PEImportDtor *)&base[m_pPEHeader->ImportTableRVA];
 
 		id->originalFirstThunk = LH32(&id->originalFirstThunk);
 		id->preSnapDate        = LH32(&id->preSnapDate);
@@ -510,9 +510,9 @@ Win32BinaryFile::load(std::istream &ifs)
 		id->firstThunk         = LH32(&id->firstThunk);
 
 		while (id->name != 0) {
-			auto dllName = (const char *)(base + id->name);
+			auto dllName = (const char *)&base[id->name];
 			unsigned thunk = id->originalFirstThunk ? id->originalFirstThunk : id->firstThunk;
-			auto iat = (const unsigned *)(base + thunk);
+			auto iat = (const unsigned *)&base[thunk];
 			unsigned iatEntry = LH32(iat);
 			ADDRESS paddr = m_pPEHeader->Imagebase + id->firstThunk;
 			while (iatEntry) {
@@ -526,7 +526,7 @@ Win32BinaryFile::load(std::istream &ifs)
 					// printf("Added symbol %s value %x\n", ost.str().c_str(), paddr);
 				} else {
 					// Normal case (IMAGE_IMPORT_BY_NAME). Skip the useless hint (2 bytes)
-					std::string name((const char *)(base + iatEntry + 2));
+					std::string name((const char *)&base[iatEntry + 2]);
 					dlprocptrs[paddr] = name;
 					//printf("Added symbol %s value %x\n", name.c_str(), paddr);
 					if (paddr != m_pPEHeader->Imagebase + ((const char *)iat - (const char *)base)) {
@@ -544,7 +544,7 @@ Win32BinaryFile::load(std::istream &ifs)
 
 	// Was hoping that _main or main would turn up here for Borland console mode programs. No such luck.
 	// I think IDA Pro must find it by a combination of FLIRT and some pattern matching
-	//auto eid = (PEExportDtor *)(m_pPEHeader->ExportTableRVA + base);
+	//auto eid = (PEExportDtor *)&base[m_pPEHeader->ExportTableRVA];
 
 
 	// Give the entry point a symbol

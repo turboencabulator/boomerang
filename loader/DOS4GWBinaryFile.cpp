@@ -71,14 +71,14 @@ DOS4GWBinaryFile::getMainEntryPoint()
 	bool gotSubEbp = false;         // True if see sub ebp, ebp
 	bool lastWasCall = false;       // True if the last instruction was a call
 	while (p < lim) {
-		unsigned char op1 = *(p + base);
-		unsigned char op2 = *(p + base + 1);
+		unsigned char op1 = base[p];
+		unsigned char op2 = base[p + 1];
 		//std::cerr << std::hex << "At " << p << ", ops " << (unsigned)op1 << ", " << (unsigned)op2 << std::dec << "\n";
 		switch (op1) {
 		case 0xE8:  // An ordinary call
 			if (gotSubEbp) {
 				// This is the call we want. Get the offset from the call instruction
-				unsigned addr = nativeOrigin + p + 5 + LH32(p + base + 1);
+				unsigned addr = nativeOrigin + p + 5 + LH32(&base[p + 1]);
 				// std::cerr << "__CMain at " << std::hex << addr << "\n";
 				return addr;
 			}
@@ -100,7 +100,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 			p += op2 + 2;  // +2 for the instruction itself, and op2 for the displacement
 			continue;      // Don't break, we have the new "pc" set already
 		}
-		size_t size = microX86Dis(p + base);
+		size_t size = microX86Dis(&base[p]);
 		if (size == 0x40) {
 			fprintf(stderr, "Warning! Microdisassembler out of step at offset 0x%x\n", p);
 			size = 1;
@@ -232,7 +232,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 			auto sect = SectionInfo();
 			sect.name = "seg" + std::to_string(n);  // no section names in LX
 			sect.uNativeAddr = (ADDRESS)obj.RelocBaseAddr;
-			sect.uHostAddr = (char *)(obj.RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr + base);
+			sect.uHostAddr = (char *)&base[obj.RelocBaseAddr - m_pLXObjects[0].RelocBaseAddr];
 			sect.uSectionSize = obj.VirtualSize;
 			auto Flags = obj.ObjectFlags;
 			sect.bBss      = false; // TODO
@@ -285,7 +285,7 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 		unsigned long src = srcpage * m_pLXHeader->pagesize + fixup.srcoff;
 		unsigned long target = m_pLXObjects[object - 1].RelocBaseAddr + trgoff;
 		//printf("relocate dword at %x to point to %x\n", src, target);
-		*(unsigned int *)(base + src) = target;
+		*(unsigned int *)&base[src] = target;
 
 		while ((std::streamsize)ifs.tellg() - (m_pLXHeader->fixuprecordtbloffset + lxoff) >= fixuppagetbl[srcpage + 1])
 			++srcpage;
