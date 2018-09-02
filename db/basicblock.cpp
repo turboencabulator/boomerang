@@ -876,11 +876,10 @@ BasicBlock::simplify()
 		}
 		if (m_nodeType == FALL) {
 			// set out edges to be the second one
-			if (VERBOSE) {
+			if (VERBOSE)
 				LOG << "turning TWOWAY into FALL: "
 				    << m_OutEdges[0]->getLowAddr() << " "
 				    << m_OutEdges[1]->getLowAddr() << "\n";
-			}
 			BasicBlock *redundant = m_OutEdges[0];
 			m_OutEdges[0] = m_OutEdges[1];
 			m_OutEdges.resize(1);
@@ -904,11 +903,10 @@ BasicBlock::simplify()
 		}
 		if (m_nodeType == ONEWAY) {
 			// set out edges to be the first one
-			if (VERBOSE) {
+			if (VERBOSE)
 				LOG << "turning TWOWAY into ONEWAY: "
 				    << m_OutEdges[0]->getLowAddr() << " "
 				    << m_OutEdges[1]->getLowAddr() << "\n";
-			}
 			BasicBlock *redundant = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
@@ -1271,9 +1269,8 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 					//assert(succ->caseHead == this || succ == condFollow || HasBackEdgeTo(succ));
 					if (succ->traversed == DFS_CODEGEN)
 						emitGotoAndLabel(hll, indLevel + 1, succ);
-					else {
+					else
 						succ->generateCode(hll, indLevel + 1, latch, followSet, gotoSet, proc);
-					}
 				}
 				// generate the closing bracket
 				hll->AddCaseCondEnd(indLevel);

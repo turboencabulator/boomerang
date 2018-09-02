@@ -64,9 +64,8 @@ Statement::mayAlias(Exp *e1, Exp *e2, int size)
 	// Pass the expressions both ways. Saves checking things like m[exp] vs m[exp+K] and m[exp+K] vs m[exp] explicitly
 	// (only need to check one of these cases)
 	bool b = (calcMayAlias(e1, e2, size) && calcMayAlias(e2, e1, size));
-	if (b && VERBOSE) {
+	if (b && VERBOSE)
 		LOG << "May alias: " << *e1 << " and " << *e2 << " size " << size << "\n";
-	}
 	return b;
 }
 
@@ -502,9 +501,9 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				}
 				prev = prev->getPreviousStatementInBB();
 			}
-		} else if (procDest->getSignature()->getConvention() == CONV_PASCAL)
+		} else if (procDest->getSignature()->getConvention() == CONV_PASCAL) {
 			c += procDest->getSignature()->getNumParams() * 4;
-		else if (!strncmp(procDest->getName(), "__imp_", 6)) {
+		} else if (!strncmp(procDest->getName(), "__imp_", 6)) {
 			Statement *first = ((UserProc *)procDest)->getCFG()->getEntryBB()->getFirstStmt();
 			assert(first && first->isCall());
 			Proc *d = ((CallStatement *)first)->getDestProc();
@@ -907,9 +906,8 @@ Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 
 	bool change = replaceRef(e, def, convert);
 
-	if (VERBOSE) {
+	if (VERBOSE)
 		LOG << "     result " << *this << "\n\n";
-	}
 	return change;
 }
 
@@ -980,10 +978,10 @@ Statement::isNullStatement() const
 {
 	if (kind != STMT_ASSIGN) return false;
 	Exp *right = ((Assign *)this)->getRight();
-	if (right->isSubscript()) {
+	if (right->isSubscript())
 		// Must refer to self to be null
 		return this == ((RefExp *)right)->getDef();
-	} else
+	else
 		// Null if left == right
 		return *((Assign *)this)->getLeft() == *right;
 }
@@ -1495,10 +1493,9 @@ BranchStatement::print(std::ostream &os, bool html) const
 		os << "*no dest*";
 	else if (!pDest->isIntConst())
 		os << *pDest;
-	else {
+	else
 		// Really we'd like to display the destination label here...
 		os << "0x" << std::hex << getFixedDest();
-	}
 	os << ", condition ";
 	switch (jtCond) {
 	case BRANCH_JE:   os << "equals"; break;
@@ -2340,9 +2337,9 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 			}
 		}
 	}
-	if (p->isLib() && *p->getSignature()->getPreferedName()) {
+	if (p->isLib() && *p->getSignature()->getPreferedName())
 		hll->AddCallStatement(indLevel, p, p->getSignature()->getPreferedName(), arguments, results);
-	} else
+	else
 		hll->AddCallStatement(indLevel, p, p->getName(), arguments, results);
 }
 
@@ -3394,16 +3391,14 @@ void
 Assignment::print(std::ostream &os, bool html) const
 {
 	os << std::dec << std::setw(4) << number << " ";
-	if (html) {
+	if (html)
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
-	}
 	printCompact(os, html);
 	if (html)
 		os << "</a>";
-	if (!ranges.empty()) {
+	if (!ranges.empty())
 		os << "\n\t\t\tranges: " << ranges;
-	}
 }
 
 void

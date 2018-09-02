@@ -1753,7 +1753,6 @@ UserProc::branchAnalysis()
 						assert(fallto->getBB()->getNumOutEdges() == 0);
 						cfg->removeBB(fallto->getBB());
 					}
-
 				}
 			}
 		}
@@ -1784,7 +1783,7 @@ UserProc::fixUglyBranches()
 				Statement *n = ((RefExp *)hl->getSubExp1()->getSubExp1())->getDef();
 				if (n && n->isPhi()) {
 					auto p = (PhiAssign *)n;
-					for (int i = 0; i < p->getNumDefs(); ++i)
+					for (int i = 0; i < p->getNumDefs(); ++i) {
 						if (p->getStmtAt(i)->isAssign()) {
 							auto a = (Assign *)p->getStmtAt(i);
 							if (*a->getRight() == *hl->getSubExp1()) {
@@ -1792,6 +1791,7 @@ UserProc::fixUglyBranches()
 								break;
 							}
 						}
+					}
 				}
 			}
 		}
@@ -2240,13 +2240,14 @@ void UserProc::trimParameters(int depth)
 					if (DEBUG_UNUSED)
 						LOG << "searching " << stmt << " for uses of " << params[i] << "\n";
 					auto pa = (PhiAssign *)stmt;
-					for (const auto &def : *pa)
+					for (const auto &def : *pa) {
 						if (!def.def) {
 							referenced[i] = true;
 							if (DEBUG_UNUSED)
 								LOG << "parameter " << p << " used by phi statement " << stmt->getNumber() << "\n";
 							break;
 						}
+					}
 				}
 				// delete p;
 			}
@@ -2608,9 +2609,8 @@ UserProc::removeNullStatements()
 	for (const auto &stmt : stmts) {
 		if (stmt->isNullStatement()) {
 			// A statement of the form x := x
-			if (VERBOSE) {
+			if (VERBOSE)
 				LOG << "removing null statement: " << stmt->getNumber() << " " << *stmt << "\n";
-			}
 			removeStatement(stmt);
 			change = true;
 		}
@@ -2670,7 +2670,7 @@ UserProc::getStmtAtLex(unsigned int begin, unsigned int end)
 
 	unsigned int lowest = begin;
 	Statement *loweststmt = nullptr;
-	for (const auto &stmt : stmts)
+	for (const auto &stmt : stmts) {
 		if (begin >= stmt->getLexBegin()
 		 && begin <= lowest
 		 && begin <= stmt->getLexEnd()
@@ -2678,6 +2678,7 @@ UserProc::getStmtAtLex(unsigned int begin, unsigned int end)
 			loweststmt = stmt;
 			lowest = stmt->getLexBegin();
 		}
+	}
 	return loweststmt;
 }
 
@@ -4003,9 +4004,8 @@ UserProc::updateArguments()
 		if (!c || !c->isCall()) continue;
 		c->updateArguments();
 		//c->bypass();
-		if (VERBOSE) {
+		if (VERBOSE)
 			LOG << c->prints() << "\n";
-		}
 	}
 	if (VERBOSE)
 		LOG << "=== end update arguments for " << getName() << "\n";

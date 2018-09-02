@@ -1135,12 +1135,13 @@ Boomerang::decompile(const char *fname, const char *pname)
 	if (printAST) {
 		std::cout << "printing AST...\n";
 		PROGMAP::const_iterator it;
-		for (Proc *p = prog->getFirstProc(it); p; p = prog->getNextProc(it))
+		for (Proc *p = prog->getFirstProc(it); p; p = prog->getNextProc(it)) {
 			if (!p->isLib()) {
 				UserProc *u = (UserProc *)p;
 				u->getCFG()->compressCfg();
 				u->printAST();
 			}
+		}
 	}
 
 	std::cout << "generating code...\n";
@@ -1228,11 +1229,12 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
 					int n = atoi(line + 6);
 					StatementList stmts;
 					p->getStatements(stmts);
-					for (const auto &stmt : stmts)
+					for (const auto &stmt : stmts) {
 						if (stmt->getNumber() == n) {
 							watches.insert(stmt);
 							std::cout << "watching " << *stmt << "\n";
 						}
+					}
 				} else
 					break;
 			}

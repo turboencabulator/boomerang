@@ -49,7 +49,7 @@ ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 	subs[1] = e->getSubExp2();
 	subs[2] = e->getSubExp3();
 
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < 3; ++i) {
 		if (subs[i]) {
 			bool mod = false;
 			subs[i] = applyAllTo(subs[i], mod);
@@ -62,6 +62,7 @@ ExpTransformer::applyAllTo(Exp *p, bool &bMod)
 			bMod |= mod;
 			//if (mod) --i;
 		}
+	}
 
 #if 0
 	LOG << "applyAllTo called on " << e << "\n";

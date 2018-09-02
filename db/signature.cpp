@@ -1569,7 +1569,7 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 	}
 	StatementSet reachin;
 	//stmt->getReachIn(reachin, 2);
-	for (int i = getNumParams(); i < 10; ++i)
+	for (int i = getNumParams(); i < 10; ++i) {
 		if (stmt->usesExp(getParamExp(i))) {
 			bool ok = true;
 			if (checkreach) {
@@ -1587,6 +1587,7 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 				n = i;
 			}
 		}
+	}
 	return n > ((int)getNumParams() - 1);
 }
 

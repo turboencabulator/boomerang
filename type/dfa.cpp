@@ -774,7 +774,7 @@ CallStatement::dfaTypeAnalysis(bool &ch)
 			std::string boundmax = procDest->getSignature()->getParamBoundMax(n);
 			assert(a->getType()->resolvesToInteger());
 			int nt = 0;
-			for (auto aat = arguments.begin(); aat != arguments.end(); ++aat, ++nt)
+			for (auto aat = arguments.begin(); aat != arguments.end(); ++aat, ++nt) {
 				if (boundmax == procDest->getSignature()->getParamName(nt)) {
 					Type *tyt = ((Assign *)*aat)->getType();
 					if (tyt->resolvesToPointer()
@@ -783,6 +783,7 @@ CallStatement::dfaTypeAnalysis(bool &ch)
 						tyt->asPointer()->getPointsTo()->asArray()->setLength(((Const *)a->getRight())->getInt());
 					break;
 				}
+			}
 		}
 		// The below will ascend type, meet type with that of arg, and descend type. Note that the type of the assign
 		// will already be that of the signature, if this is a library call, from updateArguments()

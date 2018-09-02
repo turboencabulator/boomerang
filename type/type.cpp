@@ -816,9 +816,8 @@ FuncType::getReturn(bool final) const
 std::string
 FuncType::getParam(bool final) const
 {
-	if (!signature) {
+	if (!signature)
 		return "(void)";
-	}
 	std::string s = "(";
 	for (unsigned i = 0; i < signature->getNumParams(); ++i) {
 		if (i != 0) s += ", ";

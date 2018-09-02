@@ -150,11 +150,10 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 	} else {
 		for (unsigned i = 0; i < statements.size(); ++i)
 			statements[i]->printAST(root, os);
-		for (unsigned i = 0; i < statements.size(); ++i) {
+		for (unsigned i = 0; i < statements.size(); ++i)
 			os << "\t" << std::dec << nodenum
 			   << " -> " << statements[i]->getNumber()
 			   << " [label=\"" << i << "\"];\n";
-		}
 	}
 }
 
@@ -859,9 +858,8 @@ InfiniteLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 	   << " [label=\"loop infinite\"];\n";
 	if (pBody)
 		pBody->printAST(root, os);
-	if (pBody) {
+	if (pBody)
 		os << "\t" << std::dec << nodenum
 		   << " -> " << pBody->getNumber()
 		   << ";\n";
-	}
 }

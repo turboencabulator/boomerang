@@ -1285,10 +1285,10 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 		// (RTLs).
 		BasicBlock *retBB = pProc->getCFG()->findRetNode();
 		assert(retBB);
-		if (retBB->getFirstStmt()->isReturn()) {
+		if (retBB->getFirstStmt()->isReturn())
 			// ret node has no semantics, clearly we need to keep ours
 			pRtl->deleteLastStmt();
-		} else
+		else
 			pRtl->clear();
 		pRtl->appendStmt(new GotoStatement(retAddr));
 		try {

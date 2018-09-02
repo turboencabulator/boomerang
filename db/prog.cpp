@@ -511,12 +511,13 @@ Prog::remProc(UserProc *uProc)
 void
 Prog::removeProc(const char *name)
 {
-	for (auto it = m_procs.begin(); it != m_procs.end(); ++it)
+	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if (std::string(name) == (*it)->getName()) {
 			Boomerang::get()->alert_remove(*it);
 			m_procs.erase(it);
 			break;
 		}
+	}
 }
 
 /*==============================================================================
@@ -716,11 +717,10 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 
 	globals.insert(new Global(ty, uaddr, nam));
 
-	if (VERBOSE) {
+	if (VERBOSE)
 		LOG << "globalUsed: name " << nam
 		    << ", address " << uaddr
 		    << (knownType ? ", known type " : ", guessed type ") << ty->getCtype() << "\n";
-	}
 	return true;
 }
 

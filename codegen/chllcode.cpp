@@ -301,12 +301,11 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		openParen(str, curPrec, PREC_BIT_AND);
 		appendExp(str, b->getSubExp1(), PREC_BIT_AND);
 		str << " & ";
-		if (b->getSubExp2()->isIntConst()) {
+		if (b->getSubExp2()->isIntConst())
 			// print it 0x2000 style
 			str << "0x" << std::hex << ((Const *)b->getSubExp2())->getInt();
-		} else {
+		else
 			appendExp(str, b->getSubExp2(), PREC_BIT_AND);
-		}
 		closeParen(str, curPrec, PREC_BIT_AND);
 		break;
 	case opBitOr:
@@ -356,9 +355,8 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 			if (mask < 10)
 				// print 0x3 as 3
 				str << mask;
-			else {
+			else
 				str << "0x" << std::hex << mask;
-			}
 			closeParen(str, curPrec, PREC_BIT_AND);
 		}
 		break;
@@ -880,10 +878,10 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 #endif
 			if (ty
 			 && ty->resolvesToPointer()
-			 && ty->asPointer()->getPointsTo()->resolvesToArray()) {
+			 && ty->asPointer()->getPointsTo()->resolvesToArray())
 				// a pointer to an array is automatically dereferenced in C
 				appendExp(str, b->getSubExp1()->getSubExp1(), PREC_PRIM);
-			} else
+			else
 				appendExp(str, b->getSubExp1(), PREC_PRIM);
 		} else
 			appendExp(str, b->getSubExp1(), PREC_PRIM);

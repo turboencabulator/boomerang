@@ -174,8 +174,9 @@ IntelCoffFile::load(std::istream &ifs)
 			// TODO: the symbol is found in a string table behind the symbol table at offset csym_offset
 			//snprintf(tmp_name, 8, "n%07lx", pSymbols[iSym].csym_offset);
 			name = pStrings + pSymbols[iSym].csym_offset;
-		} else
+		} else {
 			memcpy(tmp_name, pSymbols[iSym].csym_name, 8);
+		}
 
 		if (!(pSymbols[iSym].csym_loadclass & 0x60) && (pSymbols[iSym].csym_sectnum <= m_Header.coff_sections)) {
 			if (pSymbols[iSym].csym_sectnum > 0) {
@@ -192,9 +193,9 @@ IntelCoffFile::load(std::istream &ifs)
 					pSymbols[iSym].csym_value = fakeForImport; // TODO: external reference
 					fakeForImport -= 0x10000;
 					m_Symbols.Add(pSymbols[iSym].csym_value, name);
-				} else if (pSymbols[iSym].csym_value != 0)
+				} else if (pSymbols[iSym].csym_value != 0) {
 					assert(false); //pSymbols[iSym].csym_value = ield_1C->SetName(var_8, 0, this, field_4[var_4].csym_value);
-				else {
+				} else {
 					pSymbols[iSym].csym_value = fakeForImport; // TODO: external reference
 					fakeForImport -= 0x10000;
 					m_Symbols.Add(pSymbols[iSym].csym_value, name);

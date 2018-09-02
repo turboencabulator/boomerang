@@ -125,9 +125,8 @@ LoaderTest::testPalmLoad()
 	CPPUNIT_ASSERT_EQUAL(8, n);
 
 	std::ostringstream actual;
-	for (int i = 0; i < n; ++i) {
+	for (int i = 0; i < n; ++i)
 		actual << bf->getSectionInfo(i)->name << "\n";
-	}
 	std::string expected("code1\nMBAR1000\ntFRM1000\nTalt1001\n"
 	                     "data0\ncode0\ntAIN1000\ntver1000\n");
 	CPPUNIT_ASSERT_EQUAL(expected, actual.str());
@@ -152,9 +151,8 @@ LoaderTest::testWinLoad()
 
 		{
 			std::ostringstream actual;
-			for (int i = 0; i < n; ++i) {
+			for (int i = 0; i < n; ++i)
 				actual << bf->getSectionInfo(i)->name << "\n";
-			}
 			std::string expected(".text\n.rdata\n.data\n.rsrc\n.reloc\n");
 			CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 		}

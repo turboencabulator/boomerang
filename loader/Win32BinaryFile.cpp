@@ -63,15 +63,12 @@ SectionObjectMap s_sectionObjects;
  */
 class PESectionInfo : public SectionInfo {
 	bool isAddressBss(ADDRESS a) const override {
-		if (a < uNativeAddr || a >= uNativeAddr + uSectionSize) {
+		if (a < uNativeAddr || a >= uNativeAddr + uSectionSize)
 			return false; // not even within this section
-		}
-		if (bBss) {
+		if (bBss)
 			return true; // obvious
-		}
-		if (bReadOnly) {
+		if (bReadOnly)
 			return false; // R/O BSS makes no sense.
-		}
 		// Don't check for bData here. So long as the section has slack at end, that space can contain BSS.
 		auto it = s_sectionObjects.find(this);
 		assert(it != s_sectionObjects.end());
@@ -79,12 +76,10 @@ class PESectionInfo : public SectionInfo {
 		assert(this == it->first);
 		const PEObject *sectionHeader = it->second;
 		bool has_slack = sectionHeader->VirtualSize > sectionHeader->PhysicalSize;
-		if (!has_slack) {
+		if (!has_slack)
 			return false; // BSS not possible.
-		}
-		if (a >= uNativeAddr + sectionHeader->PhysicalSize) {
+		if (a >= uNativeAddr + sectionHeader->PhysicalSize)
 			return true;
-		}
 		return false;
 	}
 };

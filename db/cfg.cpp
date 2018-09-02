@@ -596,10 +596,9 @@ Cfg::wellFormCfg()
 				if (itm->second == bb) break;
 			if (itm == m_mapBB.end())
 				std::cerr << "WellFormCfg: incomplete BB not even in map!\n";
-			else {
+			else
 				std::cerr << "WellFormCfg: BB with native address " << std::hex << itm->first
 				          << " is incomplete\n";
-			}
 		} else {
 			// Complete. Test the out edges
 			assert((int)bb->m_OutEdges.size() == bb->m_iNumOutEdges);
@@ -1159,7 +1158,7 @@ Cfg::findImmedPDom()
 	// one final pass to fix up nodes involved in a loop
 	for (const auto &curNode : Ordering) {
 		const auto &oEdges = curNode->getOutEdges();
-		if (oEdges.size() > 1)
+		if (oEdges.size() > 1) {
 			for (const auto &succNode : oEdges) {
 				if (curNode->hasBackEdgeTo(succNode)
 				 && curNode->getOutEdges().size() > 1
@@ -1169,6 +1168,7 @@ Cfg::findImmedPDom()
 				else
 					curNode->immPDom = commonPDom(curNode->immPDom, succNode);
 			}
+		}
 	}
 }
 
@@ -1313,13 +1313,14 @@ Cfg::tagNodesInLoop(BasicBlock *header, bool *&loopNodes)
 	//  iii) curNode is the latch node
 
 	BasicBlock *latch = header->getLatchNode();
-	for (int i = header->ord - 1; i >= latch->ord; --i)
+	for (int i = header->ord - 1; i >= latch->ord; --i) {
 		if (Ordering[i]->inLoop(header, latch)) {
 			// update the membership map to reflect that this node is within the loop
 			loopNodes[i] = true;
 
 			Ordering[i]->setLoopHead(header);
 		}
+	}
 }
 
 // Pre: The graph for curProc has been built.
