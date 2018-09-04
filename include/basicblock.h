@@ -129,6 +129,9 @@ enum SBBTYPE {
 	CASE            ///< Case statement (switch).
 };
 
+/**
+ * \brief Basic Block class
+ */
 class BasicBlock {
 	/*
 	 * Objects of class Cfg can access the internals of a BasicBlock object.
@@ -136,30 +139,13 @@ class BasicBlock {
 	friend class Cfg;
 
 public:
-	/*
-	 * Constructor.
-	 */
 	                    BasicBlock();
-
-	/*
-	 * Destructor.
-	 */
 	                   ~BasicBlock();
-
-	/*
-	 * Copy constructor.
-	 */
 	                    BasicBlock(const BasicBlock &bb);
 
-	/*
-	 * Return the type of the basic block.
-	 */
 	        BBTYPE      getType() const;
+	        void        updateType(BBTYPE bbType, int iNumOutEdges);
 
-	/*
-	 * Check if this BB has a label. If so, return the numeric value of the label (nonzero integer). If not, returns
-	 * zero.  See also Cfg::setLabel()
-	 */
 	        int         getLabel() const;
 
 	        const std::string &getLabelStr() const { return m_labelStr; }
@@ -168,135 +154,54 @@ public:
 	        void        setLabelNeeded(bool b) { m_labelneeded = b; }
 	        bool        isCaseOption() const;
 
-	/*
-	 * Return whether this BB has been traversed or not
-	 */
 	        bool        isTraversed() const;
-
-	/*
-	 * Set the traversed flag
-	 */
 	        void        setTraversed(bool bTraversed);
 
 	/*
-	 * Print the BB. For -R and for debugging
 	 * Don't use = std::cout, because gdb doesn't know about std::
 	 */
 	        void        print(std::ostream &os, bool html = false) const;
 	        void        printToLog() const;
 	        std::string prints() const;  // For debugging
 
-	/*
-	 * Set the type of the basic block.
-	 */
-	        void        updateType(BBTYPE bbType, int iNumOutEdges);
-
-	/*
-	 * Set the "jump reqd" bit. This means that this is an orphan BB (it is generated, not part of the original
-	 * program), and that the "fall through" out edge (m_OutEdges[1]) has to be implemented as a jump. The back end
-	 * needs to take heed of this bit
-	 */
 	        void        setJumpReqd();
-
-	/*
-	 * Check if jump is required (see above).
-	 */
 	        bool        isJumpReqd() const;
 
-	/*
-	 * Get the address associated with the BB
-	 * Note that this is not always the same as getting the address of the first RTL (e.g. if the first RTL is a
-	 * delay instruction of a DCTI instruction; then the address of this RTL will be 0)
-	 */
 	        ADDRESS     getLowAddr() const;
 	        ADDRESS     getHiAddr() const;
 
-	/*
-	 * Get ptr to the list of RTLs.
-	 */
 	        std::list<RTL *> *getRTLs() const;
 
 	        RTL        *getRTLWithStatement(Statement *stmt) const;
 
-	/*
-	 * Get the set of in edges.
-	 */
 	        std::vector<BasicBlock *> &getInEdges();
-
-	        int         getNumInEdges() const { return m_InEdges.size(); }
-
-	/*
-	 * Get the set of out edges.
-	 */
 	        std::vector<BasicBlock *> &getOutEdges();
 
-	/*
-	 * Set an in edge to a new value; same number of in edges as before
-	 */
-	        void        setInEdge(int i, BasicBlock *newIn);
-
-	/*
-	 * Set an out edge to a new value; same number of out edges as before
-	 */
-	        void        setOutEdge(int i, BasicBlock *newInEdge);
-
-	/*
-	 * Get the n-th out edge or 0 if it does not exist
-	 */
-	        BasicBlock *getOutEdge(unsigned int i);
-
+	        int         getNumInEdges() const { return m_InEdges.size(); }
 	        int         getNumOutEdges() const { return m_iNumOutEdges; }
 
-	/*
-	 * Get the index of my in-edges is BB pred
-	 */
+	        BasicBlock *getOutEdge(unsigned int i);
+	        BasicBlock *getCorrectOutEdge(ADDRESS a) const;
+
+	        void        setInEdge(int i, BasicBlock *newIn);
+	        void        setOutEdge(int i, BasicBlock *newInEdge);
+
 	        int         whichPred(BasicBlock *pred) const;
 
-	/*
-	 * Add an in-edge
-	 */
 	        void        addInEdge(BasicBlock *newInEdge);
-	        void        deleteEdge(BasicBlock *edge);
 
-	/*
-	 * Delete an in-edge
-	 */
 	        void        deleteInEdge(std::vector<BasicBlock *>::iterator &it);
 	        void        deleteInEdge(BasicBlock *edge);
+	        void        deleteEdge(BasicBlock *edge);
 
-	/*
-	 * If this is a call BB, find the fixed destination (if any).  Returns -1 otherwise
-	 */
 	        ADDRESS     getCallDest() const;
 	        Proc       *getCallDestProc() const;
 
-	/*
-	 * Traverse this node and recurse on its children in a depth first manner.
-	 * Records the times at which this node was first visited and last visited.
-	 * Returns the number of nodes traversed.
-	 */
 	        unsigned    DFTOrder(int &first, int &last);
-
-	/*
-	 * Traverse this node and recurse on its parents in a reverse depth first manner.
-	 * Records the times at which this node was first visited and last visited.
-	 * Returns the number of nodes traversed.
-	 */
 	        unsigned    RevDFTOrder(int &first, int &last);
 
-	/*
-	 * Static comparison function that returns true if the first BB has an address less than the second BB.
-	 */
 	static  bool        lessAddress(BasicBlock *bb1, BasicBlock *bb2);
-
-	/*
-	 * Static comparison function that returns true if the first BB has an DFT first number less than the second BB.
-	 */
 	static  bool        lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2);
-
-	/*
-	 * Static comparison function that returns true if the first BB has an DFT last less than the second BB.
-	 */
 	static  bool        lessLastDFT(BasicBlock *bb1, BasicBlock *bb2);
 
 	class LastStatementNotABranchError : public std::exception {
@@ -304,10 +209,8 @@ public:
 		Statement *stmt;
 		LastStatementNotABranchError(Statement *stmt) : stmt(stmt) { }
 	};
-	/* get the condition */
 	        Exp        *getCond() const throw (LastStatementNotABranchError);
 
-	/* set the condition */
 	        void        setCond(Exp *e) throw (LastStatementNotABranchError);
 
 	class LastStatementNotAGotoError : public std::exception {
@@ -315,24 +218,13 @@ public:
 		Statement *stmt;
 		LastStatementNotAGotoError(Statement *stmt) : stmt(stmt) { }
 	};
-	/* Get the destination expression, if any */
 	        Exp        *getDest() const throw (LastStatementNotAGotoError);
 
-	/* Check if there is a jump if equals relation */
 	        bool        isJmpZ(BasicBlock *dest) const;
 
-	/* get the loop body */
 	        BasicBlock *getLoopBody() const;
 
-	/* Simplify all the expressions in this BB
-	 */
 	        void        simplify();
-
-
-	/*
-	 * given an address, returns the outedge which corresponds to that address or 0 if there was no such outedge
-	 */
-	        BasicBlock *getCorrectOutEdge(ADDRESS a) const;
 
 	/*
 	 * Depth first traversal of all bbs, numbering as we go and as we come back, forward and reverse passes.
@@ -344,16 +236,8 @@ public:
 	        int         m_DFTrevlast;   // reverse depth-first traversal last visit
 
 private:
-	/*
-	 * Constructor. Called by Cfg::NewBB.
-	 */
 	                    BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges);
 
-	/*
-	 * Sets the RTLs for this BB. This is the only place that
-	 * the RTLs for a block must be set as we need to add the back
-	 * link for a call instruction to its enclosing BB.
-	 */
 	        void        setRTLs(std::list<RTL *> *rtls);
 
 public:
@@ -391,10 +275,10 @@ protected:
 public:
 	        Proc       *getDestProc() const;
 
-	/**
-	 * Get first/next statement this BB
-	 * Somewhat intricate because of the post call semantics; these funcs save a lot of duplicated, easily-bugged
-	 * code
+	/*
+	 * Get first/next statement this BB.
+	 * Somewhat intricate because of the post call semantics; these funcs
+	 * save a lot of duplicated, easily-bugged code.
 	 */
 	typedef std::list<RTL *>::iterator rtlit;
 	typedef std::list<RTL *>::reverse_iterator rtlrit;
@@ -404,17 +288,12 @@ public:
 	        Statement  *getNextStmt(rtlit &rit, stlit &sit);
 	        Statement  *getLastStmt(rtlrit &rrit, stlrit &srit);
 	        Statement  *getPrevStmt(rtlrit &rrit, stlrit &srit);
-	        Statement  *getFirstStmt(); // for those of us that don't want the iterators
-	        Statement  *getLastStmt(); // for those of us that don't want the iterators
+	        Statement  *getFirstStmt();
+	        Statement  *getLastStmt();
 	        RTL        *getLastRtl() { return m_pRtls->back(); }
 
 	        void        getStatements(StatementList &stmts);
 
-	/**
-	 * Get the statement number for the first BB as a character array.
-	 * If not possible (e.g. because the BB has no statements), return
-	 * a unique string (e.g. bb8048c10)
-	 */
 	        char       *getStmtNumber();
 
 protected:
@@ -474,7 +353,6 @@ protected:
 	        void        setCondFollow(BasicBlock *other) { condFollow = other; }
 	        BasicBlock *getCondFollow() const { return condFollow; }
 
-	// establish if this bb has a back edge to the given destination
 	        bool        hasBackEdgeTo(const BasicBlock *dest) const;
 
 	// establish if this bb has any back edges leading FROM it
@@ -489,7 +367,6 @@ public:
 	        bool        isBackEdge(int inEdge) const;
 
 protected:
-	// establish if this bb is an ancestor of another BB
 	        bool        isAncestorOf(const BasicBlock *other) const;
 
 	        bool        inLoop(BasicBlock *header, BasicBlock *latch) const;
@@ -507,21 +384,16 @@ protected:
 
 public:
 	        void        generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::list<BasicBlock *> &followSet, std::list<BasicBlock *> &gotoSet, UserProc *proc);
-	// For prepending phi functions
 	        void        prependStmt(Statement *s, UserProc *proc);
 
 	// Liveness
 	        bool        calcLiveness(ConnectionGraph &ig, UserProc *proc);
 	        void        getLiveOut(LocationSet &live, LocationSet &phiLocs);
 
-	// Find indirect jumps and calls
 	        bool        decodeIndirectJmp(UserProc *proc);
 	        void        processSwitch(UserProc *proc);
 	        int         findNumCases();
 
-	/*
-	 * Change the BB enclosing stmt to be CALL, not COMPCALL
-	 */
 	        bool        undoComputedBB(Statement *stmt);
 
 	// true if processing for overlapped registers on statements in this BB
