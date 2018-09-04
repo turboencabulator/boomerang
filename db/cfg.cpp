@@ -1630,7 +1630,7 @@ Cfg::generateDot(std::ostream &os) const
 //           Liveness             //
 ////////////////////////////////////
 
-void
+static void
 updateWorkListRev(BasicBlock *currBB, std::list<BasicBlock *> &workList, std::set<BasicBlock *> &workSet)
 {
 	// Insert inedges of currBB into the worklist, unless already there
@@ -1697,7 +1697,8 @@ Cfg::appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workse
 		workset.insert(bb);
 }
 
-void
+#if DEBUG_SPLIT_FOR_BRANCH
+static void
 dumpBB(BasicBlock *bb)
 {
 	std::cerr << "For BB at " << std::hex << bb << ":\nIn edges: ";
@@ -1710,6 +1711,7 @@ dumpBB(BasicBlock *bb)
 		std::cerr << edge << " ";
 	std::cerr << "\n";
 }
+#endif
 
 /*  pBB-> +----+    +----+ <-pBB
  * Change | A  | to | A  | where A and B could be empty. S is the string

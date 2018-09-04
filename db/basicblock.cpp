@@ -320,15 +320,6 @@ BasicBlock::isBackEdge(int inEdge) const
 }
 
 /**
- * Another attempt at printing BBs that gdb doesn't like to print.
- */
-void
-printBB(BasicBlock *bb)
-{
-	bb->print(std::cerr);
-}
-
-/**
  * \brief Get the address associated with the BB.  Note that this is not
  * always the same as getting the address of the first RTL (e.g. if the first
  * RTL is a delay instruction of a DCTI instruction; then the address of this
@@ -1693,7 +1684,7 @@ BasicBlock::prependStmt(Statement *s, UserProc *proc)
  * if DFA_TYPE_ANALYSIS.  This is a helper function that is not directly
  * declared in the BasicBlock class.
  */
-void
+static void
 checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, UserProc *proc)
 {
 	// For each location to be considered
@@ -1974,7 +1965,7 @@ static Location *vfc_vto = Location::memOf(
 /**
  * Pattern 3: m[ m[ \<expr\> + K1 ] ]
  */
-Location *vfc_vfo = Location::memOf(
+static Location *vfc_vfo = Location::memOf(
     Location::memOf(
         new Binary(opPlus,
             new Terminal(opWild),
@@ -1983,13 +1974,13 @@ Location *vfc_vfo = Location::memOf(
 /**
  * Pattern 4: m[ m[ \<expr\> ] ]
  */
-Location *vfc_none = Location::memOf(
+static Location *vfc_none = Location::memOf(
     Location::memOf(
         new Terminal(opWild)));
 
 static Exp *hlVfc[] = { vfc_funcptr, vfc_both, vfc_vto, vfc_vfo, vfc_none };
 
-void
+static void
 findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 {
 	switch (form) {
@@ -2122,7 +2113,7 @@ BasicBlock::findNumCases()
  * Find all the possible constant values that the location defined by s could
  * be assigned with.
  */
-void
+static void
 findConstantValues(Statement *s, std::list<int> &dests)
 {
 	if (!s) return;
