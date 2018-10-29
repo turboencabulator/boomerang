@@ -287,9 +287,8 @@ BasicBlock::print(std::ostream &os, bool html) const
 	if (m_pRtls) {  // Can be zero if e.g. INVALID
 		if (html)
 			os << "<table>\n";
-		for (const auto &rtl : *m_pRtls) {
+		for (const auto &rtl : *m_pRtls)
 			rtl->print(os, html);
-		}
 		if (html)
 			os << "</table>\n";
 	}
@@ -315,7 +314,7 @@ BasicBlock::printToLog() const
 bool
 BasicBlock::isBackEdge(int inEdge) const
 {
-	BasicBlock *in = m_InEdges[inEdge];
+	const auto &in = m_InEdges[inEdge];
 	return this == in || (m_DFTfirst < in->m_DFTfirst && m_DFTlast > in->m_DFTlast);
 }
 
@@ -559,7 +558,7 @@ BasicBlock::DFTOrder(int &first, int &last)
 
 	for (const auto &child : m_OutEdges) {
 		if (!child->m_iTraversed)
-			numTraversed = numTraversed + child->DFTOrder(first, last);
+			numTraversed += child->DFTOrder(first, last);
 	}
 
 	++last;
@@ -590,7 +589,7 @@ BasicBlock::RevDFTOrder(int &first, int &last)
 
 	for (const auto &parent : m_InEdges) {
 		if (!parent->m_iTraversed)
-			numTraversed = numTraversed + parent->RevDFTOrder(first, last);
+			numTraversed += parent->RevDFTOrder(first, last);
 	}
 
 	++last;
@@ -650,14 +649,12 @@ BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
 ADDRESS
 BasicBlock::getCallDest() const
 {
-	if (m_nodeType != CALL)
-		return NO_ADDRESS;
-	if (m_pRtls->empty())
-		return NO_ADDRESS;
-	const auto &stmts = m_pRtls->back()->getList();
-	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
-		if ((*srit)->getKind() == STMT_CALL)
-			return ((CallStatement *)(*srit))->getFixedDest();
+	if (m_nodeType == CALL && !m_pRtls->empty()) {
+		const auto &stmts = m_pRtls->back()->getList();
+		for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+			if ((*srit)->getKind() == STMT_CALL)
+				return ((CallStatement *)(*srit))->getFixedDest();
+		}
 	}
 	return NO_ADDRESS;
 }
@@ -665,14 +662,12 @@ BasicBlock::getCallDest() const
 Proc *
 BasicBlock::getCallDestProc() const
 {
-	if (m_nodeType != CALL)
-		return nullptr;
-	if (m_pRtls->empty())
-		return nullptr;
-	const auto &stmts = m_pRtls->back()->getList();
-	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
-		if ((*srit)->getKind() == STMT_CALL)
-			return ((CallStatement *)(*srit))->getDestProc();
+	if (m_nodeType == CALL && !m_pRtls->empty()) {
+		const auto &stmts = m_pRtls->back()->getList();
+		for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
+			if ((*srit)->getKind() == STMT_CALL)
+				return ((CallStatement *)(*srit))->getDestProc();
+		}
 	}
 	return nullptr;
 }
@@ -792,7 +787,7 @@ BasicBlock::getCond() const throw (LastStatementNotABranchError)
 {
 	// the condition will be in the last rtl
 	assert(m_pRtls);
-	RTL *last = m_pRtls->back();
+	const auto &last = m_pRtls->back();
 	// it should contain a BranchStatement
 	BranchStatement *bs = (BranchStatement *)last->getHlStmt();
 	if (bs && bs->getKind() == STMT_BRANCH)
@@ -810,7 +805,7 @@ BasicBlock::getDest() const throw (LastStatementNotAGotoError)
 {
 	// The destianation will be in the last rtl
 	assert(m_pRtls);
-	RTL *lastRtl = m_pRtls->back();
+	const auto &lastRtl = m_pRtls->back();
 	// It should contain a GotoStatement or derived class
 	Statement *lastStmt = lastRtl->getHlStmt();
 	if (auto cs = dynamic_cast<CaseStatement *>(lastStmt)) {
@@ -1383,11 +1378,11 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 			this->print(std::cerr);
 			std::cerr << "\n";
 			if (m_nodeType == COMPJUMP) {
-				std::ostringstream ost;
 				assert(!m_pRtls->empty());
 				const auto &stmts = m_pRtls->back()->getList();
 				assert(!stmts.empty());
 				auto gs = (GotoStatement *)stmts.back();
+				std::ostringstream ost;
 				ost << "goto " << *gs->getDest();
 				hll->AddLineComment(ost.str().c_str());
 			}
@@ -1533,9 +1528,11 @@ BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 	// if this is a nested case header, then it's member nodes will already have been tagged so skip straight to its
 	// follow
 	if (getType() == NWAY && this != head) {
-		if (condFollow && condFollow->traversed != DFS_CASE && condFollow != follow)
+		if (condFollow
+		 && condFollow->traversed != DFS_CASE
+		 && condFollow != follow)
 			condFollow->setCaseHead(head, follow);
-	} else
+	} else {
 		// traverse each child of this node that:
 		//   i) isn't on a back-edge,
 		//  ii) hasn't already been traversed in a case tagging traversal and,
@@ -1545,6 +1542,7 @@ BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 			 && edge->traversed != DFS_CASE
 			 && edge != follow)
 				edge->setCaseHead(head, follow);
+	}
 }
 
 void
@@ -2179,8 +2177,8 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		bool convert;
 		lastStmt->propagateTo(convert, nullptr, nullptr, true /* force */);
 		Exp *e = lastStmt->getDest();
-		int n = sizeof hlForms / sizeof *hlForms;
 		char form = 0;
+		int n = sizeof hlForms / sizeof *hlForms;
 		for (int i = 0; i < n; ++i) {
 			if (*e *= *hlForms[i]) {  // *= compare ignores subscripts
 				form = chForms[i];
@@ -2284,9 +2282,8 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		if (DEBUG_SWITCH)
 			LOG << "decodeIndirect: propagated and const global converted call expression is " << *e << "\n";
 
-		int n = sizeof hlVfc / sizeof *hlVfc;
 		bool recognised = false;
-		int i;
+		int i, n = sizeof hlVfc / sizeof *hlVfc;
 		for (i = 0; i < n; ++i) {
 			if (*e *= *hlVfc[i]) {  // *= compare ignores subscripts
 				recognised = true;
@@ -2440,7 +2437,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 void
 BasicBlock::processSwitch(UserProc *proc)
 {
-	RTL *last = m_pRtls->back();
+	const auto &last = m_pRtls->back();
 	CaseStatement *lastStmt = (CaseStatement *)last->getHlStmt();
 	SWITCH_INFO *si = lastStmt->getSwitchInfo();
 
@@ -2450,7 +2447,6 @@ BasicBlock::processSwitch(UserProc *proc)
 			LOG << si->iNumTable << " entries, ";
 		LOG << "lo= " << si->iLower << ", hi= " << si->iUpper << "\n";
 	}
-	ADDRESS uSwitch;
 	int iNum = si->iUpper - si->iLower + 1;
 	// Emit an NWAY BB instead of the COMPJUMP. Also update the number of out edges.
 	updateType(NWAY, iNum);
@@ -2470,15 +2466,17 @@ BasicBlock::processSwitch(UserProc *proc)
 	// but a smarter back end could group them
 	std::list<ADDRESS> dests;
 	for (int i = 0; i < iNum; ++i) {
+		ADDRESS uSwitch;
 		// Get the destination address from the switch table.
 		if (si->chForm == 'H') {
 			int iValue = prog->readNative4(si->uTable + i*2);
 			if (iValue == -1) continue;
 			uSwitch = prog->readNative4(si->uTable + i*8 + 4);
-		} else if (si->chForm == 'F')
+		} else if (si->chForm == 'F') {
 			uSwitch = ((int *)si->uTable)[i];
-		else
+		} else {
 			uSwitch = prog->readNative4(si->uTable + i*4);
+		}
 		if ((si->chForm == 'O') || (si->chForm == 'R') || (si->chForm == 'r'))
 			// Offset: add table address to make a real pointer to code.  For type R, the table is relative to the
 			// branch, so take iOffset. For others, iOffset is 0, so no harm
@@ -2510,8 +2508,7 @@ BasicBlock::processSwitch(UserProc *proc)
 	int count = 0;
 	for (const auto &dest : dests) {
 		char tmp[1024];
-		++count;
-		sprintf(tmp, "before decoding fragment %i of %i (%x)", count, dests.size(), dest);
+		sprintf(tmp, "before decoding fragment %i of %i (%x)", ++count, dests.size(), dest);
 		Boomerang::get()->alert_decompile_debug_point(proc, tmp);
 		prog->decodeFragment(proc, dest);
 	}
