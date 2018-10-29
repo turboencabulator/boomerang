@@ -781,7 +781,7 @@ bool
 Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 {
 	// Ensure that the fallthrough case for pb1 is pb2
-	std::vector<BasicBlock *> &v = pb1->getOutEdges();
+	const auto &v = pb1->getOutEdges();
 	if (v.size() != 2 || v[1] != pb2)
 		return false;
 	// Prepend the RTLs for pb1 to those of pb2. Since they will be pushed to the front of pb2, push them in reverse
@@ -1476,7 +1476,7 @@ Cfg::structLoops()
 		//  vi) has a lower ordering than all other suitable candiates
 		// If no nodes meet the above criteria, then the current node is not a loop header
 
-		std::vector<BasicBlock *> &iEdges = curNode->getInEdges();
+		const auto &iEdges = curNode->getInEdges();
 		for (const auto &pred : iEdges) {
 			if (pred->getCaseHead() == curNode->getCaseHead()  // ii)
 			 && pred->getLoopHead() == curNode->getLoopHead()  // iii)
@@ -1530,7 +1530,7 @@ void
 Cfg::checkConds()
 {
 	for (const auto &curNode : Ordering) {
-		std::vector<BasicBlock *> &oEdges = curNode->getOutEdges();
+		const auto &oEdges = curNode->getOutEdges();
 
 		// consider only conditional headers that have a follow and aren't case headers
 		if ((curNode->getStructType() == Cond || curNode->getStructType() == LoopCond)
