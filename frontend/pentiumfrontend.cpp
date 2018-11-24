@@ -686,11 +686,11 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 		std::list<RTL *> *rtls = bb->getRTLs();
 		if (!rtls)
 			break;
-		ADDRESS prev, addr = 0;
+		ADDRESS addr = 0;
 		bool lastRtl = true;
 		// For each RTL this BB
 		for (const auto &rtl : *rtls) {
-			prev = addr;
+			//ADDRESS prev = addr;
 			addr = rtl->getAddress();
 			if (!rtl->getList().empty()) {
 				auto firstStmt = rtl->getList().front();

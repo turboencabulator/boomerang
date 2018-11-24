@@ -2537,12 +2537,12 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 			                                           res->getSubExp1()->getSubExp2()->clone()));
 			int n = ((Const *)res->getSubExp1()->getSubExp2())->getInt();
 			arr->setProc(this);
-			Type *base = new IntegerType();
-			if (stmt->isAssign() && ((Assign *)stmt)->getLeft() == res) {
-				Type *at = ((Assign *)stmt)->getType();
-				if (at && at->getSize() != 0)
-					base = ((Assign *)stmt)->getType()->clone();
-			}
+			//Type *base = new IntegerType();
+			//if (stmt->isAssign() && ((Assign *)stmt)->getLeft() == res) {
+			//	Type *at = ((Assign *)stmt)->getType();
+			//	if (at && at->getSize() != 0)
+			//		base = ((Assign *)stmt)->getType()->clone();
+			//}
 			//arr->setType(new ArrayType(base, n / (base->getSize() / 8)));
 			if (VERBOSE)
 				LOG << "found a local array using " << n << " bytes\n";

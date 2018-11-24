@@ -320,10 +320,9 @@ FrontEnd::getEntryPoints()
 				name += "ModuleData";
 				ADDRESS a = pBF->getAddressByName(name.c_str(), true);
 				if (a != NO_ADDRESS) {
-					ADDRESS vers, setup, teardown;
-					vers = pBF->readNative4(a);
-					setup = pBF->readNative4(a + 4);
-					teardown = pBF->readNative4(a + 8);
+					//ADDRESS vers = pBF->readNative4(a);
+					ADDRESS setup = pBF->readNative4(a + 4);
+					ADDRESS teardown = pBF->readNative4(a + 8);
 					if (setup) {
 						Type *ty = Type::getNamedType("ModuleSetupProc");
 						assert(ty->isFunc());
