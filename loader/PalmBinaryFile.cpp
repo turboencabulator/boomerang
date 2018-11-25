@@ -452,13 +452,13 @@ PalmBinaryFile::generateBinFiles(const std::string &path) const
 		 && sect.name.compare(0, 4, "data") != 0) {
 			// Save this section in a file
 			auto name = std::string(path + sect.name + ".bin");
-			FILE *f = fopen(name.c_str(), "w");
+			auto f = std::ofstream(name);
 			if (!f) {
 				std::cerr << "Could not open " << name << " for writing binary file\n";
 				return;
 			}
-			fwrite(sect.uHostAddr, sect.uSectionSize, 1, f);
-			fclose(f);
+			f.write(sect.uHostAddr, sect.uSectionSize);
+			f.close();
 		}
 	}
 }

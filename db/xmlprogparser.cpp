@@ -34,10 +34,10 @@
 #include <expat.h>
 #endif
 
+#include <fstream>
 #include <iostream>
 
 #include <cctype>
-#include <cstdio>
 #include <cstring>
 
 extern const char *operStrings[];
@@ -234,10 +234,10 @@ XMLProgParser::addChildStub(Context *node, const Context *child) const
 Prog *
 XMLProgParser::parse(const char *filename)
 {
-	FILE *f = fopen(filename, "r");
+	auto f = std::ifstream(filename);
 	if (!f)
 		return nullptr;
-	fclose(f);
+	f.close();
 
 	while (!stack.empty())
 		stack.pop();
@@ -259,7 +259,7 @@ XMLProgParser::parse(const char *filename)
 void
 XMLProgParser::parseFile(const char *filename)
 {
-	FILE *f = fopen(filename, "r");
+	auto f = std::ifstream(filename);
 	if (!f)
 		return;
 	XML_Parser p = XML_ParserCreate(nullptr);
@@ -275,30 +275,26 @@ XMLProgParser::parseFile(const char *filename)
 	char Buff[8192];
 
 	for (;;) {
-		int done;
-		int len;
-
-		len = fread(Buff, 1, sizeof Buff, f);
-		if (ferror(f)) {
+		f.read(Buff, sizeof Buff);
+		if (f.bad()) {
 			std::cerr << "Read error\n";
-			fclose(f);
-			return;
+			break;
 		}
-		done = feof(f);
 
+		auto len = f.gcount();
+		auto done = f.eof();
 		if (XML_Parse(p, Buff, len, done) == XML_STATUS_ERROR) {
 			if (XML_GetErrorCode(p) != XML_ERROR_NO_ELEMENTS)
 				std::cerr << "Parse error at line " << XML_GetCurrentLineNumber(p)
 				          << " of file " << filename << ":\n"
 				          << XML_ErrorString(XML_GetErrorCode(p)) << "\n";
-			fclose(f);
-			return;
+			break;
 		}
 
 		if (done)
 			break;
 	}
-	fclose(f);
+	f.close();
 }
 
 void
