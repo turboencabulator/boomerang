@@ -517,7 +517,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 #ifdef DEBUG_POSTVAR
 	std::cout << "Transforming from:\n";
 	for (const auto &rt : *rts) {
-		std::cout << setw(8) << " ";
+		std::cout << "\t";
 		rt->print(std::cout);
 		std::cout << "\n";
 	}
@@ -635,7 +635,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 #ifdef DEBUG_POSTVAR
 	std::cout << "\nTo =>\n";
 	for (const auto &rt : *rts) {
-		std::cout << setw(8) << " ";
+		std::cout << "\t";
 		rt->print(std::cout);
 		std::cout << "\n";
 	}
