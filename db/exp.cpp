@@ -4101,16 +4101,17 @@ TypeVal::accept(ExpModifier &v)
 static void
 child(const Exp *e, int ind)
 {
+	ind += 4;
 	if (!e) {
-		std::cerr << std::setw(ind + 4) << " " << "<NULL>\n";
+		std::cerr << std::setw(ind) << "" << "<NULL>\n";
 		return;
 	}
 	void *vt = *(void **)e;
 	if (!vt) {
-		std::cerr << std::setw(ind + 4) << " " << "<NULL VT>\n";
+		std::cerr << std::setw(ind) << "" << "<NULL VT>\n";
 		return;
 	}
-	e->printx(ind + 4);
+	e->printx(ind);
 }
 
 /**
@@ -4122,7 +4123,7 @@ child(const Exp *e, int ind)
 void
 Unary::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << "\n";
 	child(subExp1, ind);
 }
 void
@@ -4130,14 +4131,14 @@ Binary::printx(int ind) const
 {
 	assert(subExp1 && subExp2);
 
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << "\n";
 	child(subExp1, ind);
 	child(subExp2, ind);
 }
 void
 Ternary::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << "\n";
 	child(subExp1, ind);
 	child(subExp2, ind);
 	child(subExp3, ind);
@@ -4145,7 +4146,7 @@ Ternary::printx(int ind) const
 void
 Const::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " ";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << " ";
 	switch (op) {
 	case opIntConst:
 		std::cerr << std::dec << u.i;
@@ -4169,23 +4170,23 @@ Const::printx(int ind) const
 void
 TypeVal::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " " << val->getCtype() << "\n";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << " " << val->getCtype() << "\n";
 }
 void
 TypedExp::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " " << type->getCtype() << "\n";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << " " << type->getCtype() << "\n";
 	child(subExp1, ind);
 }
 void
 Terminal::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << "\n";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << "\n";
 }
 void
 RefExp::printx(int ind) const
 {
-	std::cerr << std::setw(ind) << " " << operStrings[op] << " {";
+	std::cerr << std::setw(ind) << "" << operStrings[op] << " {";
 	if (!def)
 		std::cerr << "NULL";
 	else
