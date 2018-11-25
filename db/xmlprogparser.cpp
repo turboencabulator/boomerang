@@ -34,6 +34,8 @@
 #include <expat.h>
 #endif
 
+#include <iostream>
+
 #include <cctype>
 #include <cstdio>
 #include <cstring>
@@ -262,7 +264,7 @@ XMLProgParser::parseFile(const char *filename)
 		return;
 	XML_Parser p = XML_ParserCreate(nullptr);
 	if (!p) {
-		fprintf(stderr, "Couldn't allocate memory for parser\n");
+		std::cerr << "Couldn't allocate memory for parser\n";
 		return;
 	}
 
@@ -278,7 +280,7 @@ XMLProgParser::parseFile(const char *filename)
 
 		len = fread(Buff, 1, sizeof Buff, f);
 		if (ferror(f)) {
-			fprintf(stderr, "Read error\n");
+			std::cerr << "Read error\n";
 			fclose(f);
 			return;
 		}
@@ -286,7 +288,9 @@ XMLProgParser::parseFile(const char *filename)
 
 		if (XML_Parse(p, Buff, len, done) == XML_STATUS_ERROR) {
 			if (XML_GetErrorCode(p) != XML_ERROR_NO_ELEMENTS)
-				fprintf(stderr, "Parse error at line %d of file %s:\n%s\n", XML_GetCurrentLineNumber(p), filename, XML_ErrorString(XML_GetErrorCode(p)));
+				std::cerr << "Parse error at line " << XML_GetCurrentLineNumber(p)
+				          << " of file " << filename << ":\n"
+				          << XML_ErrorString(XML_GetErrorCode(p)) << "\n";
 			fclose(f);
 			return;
 		}

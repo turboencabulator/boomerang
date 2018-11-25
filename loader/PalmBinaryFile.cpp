@@ -20,8 +20,9 @@
 
 #include "palmsystraps.h"
 
+#include <iostream>
+
 #include <cassert>
-#include <cstdio>
 #include <cstring>
 
 PalmBinaryFile::PalmBinaryFile()
@@ -46,7 +47,7 @@ PalmBinaryFile::load(std::istream &ifs)
 	ifs.seekg(0, ifs.beg);
 	ifs.read((char *)m_pImage, size);
 	if (!ifs.good()) {
-		fprintf(stderr, "Error reading binary file %s\n", getFilename());
+		std::cerr << "Error reading binary file " << getFilename() << "\n";
 		return false;
 	}
 
@@ -54,7 +55,7 @@ PalmBinaryFile::load(std::istream &ifs)
 	if (strncmp((char *)(m_pImage + 0x3C), "appl", 4) != 0
 	 && strncmp((char *)(m_pImage + 0x3C), "panl", 4) != 0
 	 && strncmp((char *)(m_pImage + 0x3C), "libr", 4) != 0) {
-		fprintf(stderr, "%s is not a standard .prc file\n", getFilename());
+		std::cerr << getFilename() << " is not a standard .prc file\n";
 		return false;
 	}
 
@@ -114,11 +115,11 @@ PalmBinaryFile::load(std::istream &ifs)
 
 	// Create a separate, uncompressed, initialised data section
 	if (!pData) {
-		fprintf(stderr, "No data section!\n");
+		std::cerr << "No data section!\n";
 		return false;
 	}
 	if (!pCode0) {
-		fprintf(stderr, "No code 0 section!\n");
+		std::cerr << "No code 0 section!\n";
 		return false;
 	}
 
@@ -230,9 +231,8 @@ PalmBinaryFile::load(std::istream &ifs)
 	}
 
 	if (!done)
-		fprintf(stderr, "Warning! Compressed data section premature end\n");
-	//printf("Used %u bytes of %u in decompressing data section\n",
-	//       pData->uSectionSize - in, pData->uSectionSize);
+		std::cerr << "Warning! Compressed data section premature end\n";
+	//std::cout << "Used " << pData->uSectionSize - in << " bytes of " << pData->uSectionSize << " in decompressing data section\n";
 
 	// Replace the data pointer and size with the uncompressed versions
 	pData->uHostAddr = (char *)m_pData;
@@ -425,7 +425,7 @@ PalmBinaryFile::getMainEntryPoint()
 			// That operand plus the address of that operand is PilotMain
 			return pSect->uNativeAddr + (((const char *)call + 10 + addilOp) - pSect->uHostAddr);
 		} else {
-			fprintf(stderr, "Could not find call to PilotMain in CW app\n");
+			std::cerr << "Could not find call to PilotMain in CW app\n";
 			return NO_ADDRESS;
 		}
 	}
@@ -436,7 +436,7 @@ PalmBinaryFile::getMainEntryPoint()
 		return pSect->uNativeAddr + (((const char *)call + 14 + bsrOp) - pSect->uHostAddr);
 	}
 
-	fprintf(stderr, "Cannot find call to PilotMain\n");
+	std::cerr << "Cannot find call to PilotMain\n";
 	return NO_ADDRESS;
 }
 
@@ -454,7 +454,7 @@ PalmBinaryFile::generateBinFiles(const std::string &path) const
 			auto name = std::string(path + sect.name + ".bin");
 			FILE *f = fopen(name.c_str(), "w");
 			if (!f) {
-				fprintf(stderr, "Could not open %s for writing binary file\n", name.c_str());
+				std::cerr << "Could not open " << name << " for writing binary file\n";
 				return;
 			}
 			fwrite(sect.uHostAddr, sect.uSectionSize, 1, f);

@@ -33,9 +33,9 @@
 #endif
 
 #include <fstream>
+#include <iostream>
 
 #include <cassert>
-#include <cstdio>
 #include <cstring>
 #include <cerrno>
 
@@ -117,13 +117,13 @@ BinaryFile::open(const char *name)
 	std::ifstream ifs;
 	ifs.open(name, ifs.binary);
 	if (!ifs.good()) {
-		fprintf(stderr, "%s: opening failed\n", name);
+		std::cerr << name << ": opening failed\n";
 		return nullptr;
 	}
 
 	LOADFMT format = magic(ifs);
 	if (format == LOADFMT_UNKNOWN) {
-		fprintf(stderr, "%s: unrecognised binary file\n", name);
+		std::cerr << name << ": unrecognised binary file\n";
 		ifs.close();
 		return nullptr;
 	}
@@ -146,7 +146,7 @@ BinaryFile::open(const char *name)
 	// Load the specific loader library
 	void *handle = dlopen(libname, RTLD_LAZY);
 	if (!handle) {
-		fprintf(stderr, "cannot load library: %s\n", dlerror());
+		std::cerr << "cannot load library: " << dlerror() << "\n";
 		ifs.close();
 		return nullptr;
 	}
@@ -159,7 +159,7 @@ BinaryFile::open(const char *name)
 	constructFcn construct = (constructFcn)dlsym(handle, symbol);
 	error = dlerror();
 	if (error) {
-		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
+		std::cerr << "cannot load symbol '" << symbol << "': " << error << "\n";
 		dlclose(handle);
 		ifs.close();
 		return nullptr;
@@ -168,7 +168,7 @@ BinaryFile::open(const char *name)
 	destructFcn destruct = (destructFcn)dlsym(handle, symbol);
 	error = dlerror();
 	if (error) {
-		fprintf(stderr, "cannot load symbol '%s': %s\n", symbol, error);
+		std::cerr << "cannot load symbol '" << symbol << "': " << error << "\n";
 		dlclose(handle);
 		ifs.close();
 		return nullptr;
@@ -199,7 +199,7 @@ BinaryFile::open(const char *name)
 	bf->m_pFilename = name;
 
 	if (!bf->load(ifs)) {
-		fprintf(stderr, "%s: loading failed\n", name);
+		std::cerr << name << ": loading failed\n";
 		BinaryFile::close(bf); bf = nullptr;
 	}
 	ifs.close();

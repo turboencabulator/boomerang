@@ -14,6 +14,8 @@
 #include <config.h>
 #endif
 
+#include <iostream>
+
 ElfArchiveFile::ElfArchiveFile()
 {
 }
@@ -30,14 +32,14 @@ ElfArchiveFile::Load(const char *pName)
 	// Load the elf file
 	m_filedes = open(pName, O_RDONLY);
 	if (m_filedes == -1) {
-		printf("Could not open %s\n", pName);
+		std::cout << "Could not open " << pName << "\n";
 		return false;
 	}
 
 	elf_version(EV_CURRENT);
 	m_arf = elf_begin(m_filedes, ELF_C_READ, (Elf *)0);
 	if (elf_kind(m_arf) != ELF_K_AR) {
-		printf("Error - %s is not an archive (.a) file\n", pName);
+		std::cout << "Error - " << pName << " is not an archive (.a) file\n";
 		return false;
 	}
 
@@ -53,7 +55,7 @@ ElfArchiveFile::Load(const char *pName)
 	Elf_Arsym *asym = elf_getarsym(m_arf, &uNumSyms);
 	--uNumSyms;
 	if (!asym) {
-		printf("Get archive symbol table failed\n");
+		std::cout << "Get archive symbol table failed\n";
 		return false;
 	}
 
@@ -68,17 +70,17 @@ ElfArchiveFile::Load(const char *pName)
 
 			// Seek to that member
 			if (elf_rand(m_arf, iOffset) == 0) {
-				printf("Could not seek to offset %d\n", iOffset);
+				std::cout << "Could not seek to offset " << iOffset << "\n";
 				return false;
 			}
 			Elf *elf = elf_begin(m_filedes, ELF_C_READ, m_arf);
 			if (!elf) {
-				printf("Could not begin member at offset %d\n", iOffset);
+				std::cout << "Could not begin member at offset " << iOffset << "\n";
 				return false;
 			}
 			Elf_Arhdr *ahdr = elf_getarhdr(elf);
 			if (!ahdr) {
-				printf("Could not get header information for member at offset %d\n", iOffset);
+				std::cout << "Could not get header information for member at offset " << iOffset << "\n";
 				return false;
 			}
 			// Add the name to the map
