@@ -29,7 +29,7 @@
 #include "types.h"
 #include "visitor.h"
 
-#include <iomanip>      // For std::setw, std::setfill
+#include <iomanip>      // For std::setw
 #include <iterator>
 #include <sstream>
 
@@ -347,8 +347,9 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/) const
 	if (html)
 		os << "<tr><td>";
 	// print out the instruction address of this RTL
-	os << std::hex << std::setfill('0') << std::setw(8) << nativeAddr;
-	os << std::dec << std::setfill(' ');  // Ugh - why is this needed?
+	auto fill = os.fill('0');
+	os << std::hex << std::setw(8) << nativeAddr << std::dec;
+	os.fill(fill);
 	if (html)
 		os << "</td>";
 

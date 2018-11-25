@@ -32,7 +32,7 @@
 #include "prog.h"
 #include "rtl.h"
 
-#include <iomanip>      // For std::setw, std::setfill
+#include <iomanip>      // For std::setw
 #include <sstream>
 
 #include <cstring>
@@ -831,11 +831,11 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 			// Check for invalid instructions
 			if (!inst.valid) {
 				std::cerr << "Invalid instruction at " << std::hex << address << ": ";
-				std::cerr << std::setfill('0') << std::setw(2);
+				auto fill = std::cerr.fill('0');
 				ptrdiff_t delta = pBF->getTextDelta();
 				for (int j = 0; j < inst.numBytes; ++j)
-					std::cerr << std::setfill('0') << std::setw(2) << (unsigned)*(unsigned char *)(address + delta + j)
-					          << " " << std::setfill(' ') << std::setw(0) << "\n";
+					std::cerr << std::setw(2) << (unsigned)*(unsigned char *)(address + delta + j) << " \n";
+				std::cerr.fill(fill);
 				return false;
 			}
 

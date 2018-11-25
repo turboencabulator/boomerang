@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include <iomanip>      // For std::setw, std::setfill
+#include <iomanip>      // For std::setw
 #include <string>
 #include <sstream>
 
@@ -126,8 +126,9 @@ escapeStr(const char *str)
 			}
 			if (!escapedSucessfully) {
 				// it isn't so just use the \xhh escape
-				out << "\\x" << std::hex << std::setfill('0') << std::setw(2) << (int)*str;
-				out << std::setfill(' ');
+				auto fill = out.fill('0');
+				out << "\\x" << std::hex << std::setw(2) << (int)*str;
+				out.fill(fill);
 			}
 		}
 	}
