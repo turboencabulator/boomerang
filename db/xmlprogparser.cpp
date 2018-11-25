@@ -352,7 +352,6 @@ XMLProgParser::start_prog(Context *node, const char **attr)
 		return;
 	}
 	node->prog = new Prog();
-	addId(attr, node->prog);
 	const char *name = getAttr(attr, "name");
 	if (name)
 		node->prog->setName(name);
@@ -440,7 +439,6 @@ XMLProgParser::start_global(Context *node, const char **attr)
 		return;
 	}
 	node->global = new Global();
-	addId(attr, node->global);
 	const char *name = getAttr(attr, "name");
 	if (name)
 		node->global->nam = name;
@@ -1008,7 +1006,7 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 		h = (BasicBlock *)findId(getAttr(attr, "m_latchNode"));
 		if (h)
 			bb->m_latchNode = h;
-		// note the rediculous duplication here
+		// note the ridiculous duplication here
 		h = (BasicBlock *)findId(getAttr(attr, "immPDom"));
 		if (h)
 			bb->immPDom = h;
@@ -2419,7 +2417,8 @@ XMLProgParser::persistToXML(std::ostream &out, Signature *sig)
 		out << "</param>\n";
 	}
 	for (const auto &ret : sig->returns) {
-		out << "<return>\n";
+		out << "<return id=\"" << (int)ret
+		    << "\">\n";
 		out << "<type>\n";
 		persistToXML(out, ret->type);
 		out << "</type>\n";
@@ -2718,7 +2717,7 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 	if (bb->labelStr)
 		out << "\" labelStr=\"" << bb->labelStr;
 	out << "\" indentLevel=\"" << bb->indentLevel;
-	// note the rediculous duplication here
+	// note the ridiculous duplication here
 	if (bb->immPDom)
 		out << "\" immPDom=\"" << (int)bb->immPDom;
 	if (bb->loopHead)
