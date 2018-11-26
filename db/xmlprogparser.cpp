@@ -320,8 +320,7 @@ XMLProgParser::operFromString(const char *s)
 void
 XMLProgParser::addId(const char **attr, void *x)
 {
-	const char *val = getAttr(attr, "id");
-	if (val) {
+	if (auto val = getAttr(attr, "id")) {
 		//std::cerr << "map id " << val << " to " << std::hex << (int)x << std::dec << "\n";
 		idToX[atoi(val)] = x;
 	}
@@ -352,13 +351,11 @@ XMLProgParser::start_prog(Context *node, const char **attr)
 		return;
 	}
 	node->prog = new Prog();
-	const char *name = getAttr(attr, "name");
-	if (name)
+	if (auto name = getAttr(attr, "name"))
 		node->prog->setName(name);
-	name = getAttr(attr, "path");
-	if (name)
-		node->prog->m_path = name;
-	const char *iNumberedProc = getAttr(attr, "iNumberedProc");
+	if (auto path = getAttr(attr, "path"))
+		node->prog->m_path = path;
+	auto iNumberedProc = getAttr(attr, "iNumberedProc");
 	node->prog->m_iNumberedProc = atoi(iNumberedProc);
 }
 
@@ -439,11 +436,9 @@ XMLProgParser::start_global(Context *node, const char **attr)
 		return;
 	}
 	node->global = new Global();
-	const char *name = getAttr(attr, "name");
-	if (name)
+	if (auto name = getAttr(attr, "name"))
 		node->global->nam = name;
-	const char *uaddr = getAttr(attr, "uaddr");
-	if (uaddr)
+	if (auto uaddr = getAttr(attr, "uaddr"))
 		node->global->uaddr = atoi(uaddr);
 }
 
@@ -472,8 +467,7 @@ XMLProgParser::start_cluster(Context *node, const char **attr)
 	}
 	node->cluster = new Cluster();
 	addId(attr, node->cluster);
-	const char *name = getAttr(attr, "name");
-	if (name)
+	if (auto name = getAttr(attr, "name"))
 		node->cluster->setName(name);
 }
 
@@ -498,21 +492,17 @@ XMLProgParser::start_libproc(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->proc = (Proc *)findId(getAttr(attr, "id"));
-		Proc *p = (Proc *)findId(getAttr(attr, "firstCaller"));
-		if (p)
+		if (auto p = (Proc *)findId(getAttr(attr, "firstCaller")))
 			node->proc->m_firstCaller = p;
-		Cluster *c = (Cluster *)findId(getAttr(attr, "cluster"));
-		if (c)
+		if (auto c = (Cluster *)findId(getAttr(attr, "cluster")))
 			node->proc->cluster = c;
 		return;
 	}
 	node->proc = new LibProc();
 	addId(attr, node->proc);
-	const char *address = getAttr(attr, "address");
-	if (address)
+	if (auto address = getAttr(attr, "address"))
 		node->proc->address = atoi(address);
-	address = getAttr(attr, "firstCallerAddress");
-	if (address)
+	if (auto address = getAttr(attr, "firstCallerAddress"))
 		node->proc->m_firstCallerAddr = atoi(address);
 }
 
@@ -551,14 +541,11 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 		node->proc = (Proc *)findId(getAttr(attr, "id"));
 		auto u = dynamic_cast<UserProc *>(node->proc);
 		assert(u);
-		Proc *p = (Proc *)findId(getAttr(attr, "firstCaller"));
-		if (p)
+		if (auto p = (Proc *)findId(getAttr(attr, "firstCaller")))
 			u->m_firstCaller = p;
-		Cluster *c = (Cluster *)findId(getAttr(attr, "cluster"));
-		if (c)
+		if (auto c = (Cluster *)findId(getAttr(attr, "cluster")))
 			u->cluster = c;
-		ReturnStatement *r = (ReturnStatement *)findId(getAttr(attr, "retstmt"));
-		if (r)
+		if (auto r = (ReturnStatement *)findId(getAttr(attr, "retstmt")))
 			u->theReturnStatement = r;
 		return;
 	}
@@ -566,14 +553,11 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 	node->proc = proc;
 	addId(attr, proc);
 
-	const char *address = getAttr(attr, "address");
-	if (address)
+	if (auto address = getAttr(attr, "address"))
 		proc->address = atoi(address);
-	address = getAttr(attr, "status");
-	if (address)
-		proc->status = (ProcStatus)atoi(address);
-	address = getAttr(attr, "firstCallerAddress");
-	if (address)
+	if (auto status = getAttr(attr, "status"))
+		proc->status = (ProcStatus)atoi(status);
+	if (auto address = getAttr(attr, "firstCallerAddress"))
 		proc->m_firstCallerAddr = atoi(address);
 }
 
@@ -741,9 +725,9 @@ XMLProgParser::start_signature(Context *node, const char **attr)
 		node->signature = (Signature *)findId(getAttr(attr, "id"));
 		return;
 	}
-	const char *plat = getAttr(attr, "platform");
-	const char *convention = getAttr(attr, "convention");
-	const char *name = getAttr(attr, "name");
+	auto plat = getAttr(attr, "platform");
+	auto convention = getAttr(attr, "convention");
+	auto name = getAttr(attr, "name");
 
 	Signature *sig;
 	if (plat && convention) {
@@ -781,11 +765,9 @@ XMLProgParser::start_signature(Context *node, const char **attr)
 	sig->returns.clear();
 	node->signature = sig;
 	addId(attr, sig);
-	const char *n = getAttr(attr, "ellipsis");
-	if (n)
+	if (auto n = getAttr(attr, "ellipsis"))
 		sig->ellipsis = atoi(n) > 0;
-	n = getAttr(attr, "preferedName");
-	if (n)
+	if (auto n = getAttr(attr, "preferedName"))
 		sig->preferedName = n;
 }
 
@@ -826,8 +808,7 @@ XMLProgParser::start_param(Context *node, const char **attr)
 	}
 	node->param = new Parameter();
 	addId(attr, node->param);
-	const char *n = getAttr(attr, "name");
-	if (n)
+	if (auto n = getAttr(attr, "name"))
 		node->param->setName(n);
 }
 
@@ -914,7 +895,7 @@ XMLProgParser::start_prefparam(Context *node, const char **attr)
 	if (phase == 1) {
 		return;
 	}
-	const char *n = getAttr(attr, "index");
+	auto n = getAttr(attr, "index");
 	assert(n);
 	node->n = atoi(n);
 }
@@ -937,11 +918,9 @@ XMLProgParser::start_cfg(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->cfg = (Cfg *)findId(getAttr(attr, "id"));
-		BasicBlock *entryBB = (BasicBlock *)findId(getAttr(attr, "entryBB"));
-		if (entryBB)
+		if (auto entryBB = (BasicBlock *)findId(getAttr(attr, "entryBB")))
 			node->cfg->setEntryBB(entryBB);
-		BasicBlock *exitBB = (BasicBlock *)findId(getAttr(attr, "exitBB"));
-		if (exitBB)
+		if (auto exitBB = (BasicBlock *)findId(getAttr(attr, "exitBB")))
 			node->cfg->setExitBB(exitBB);
 		return;
 	}
@@ -949,11 +928,9 @@ XMLProgParser::start_cfg(Context *node, const char **attr)
 	node->cfg = cfg;
 	addId(attr, cfg);
 
-	const char *str = getAttr(attr, "wellformed");
-	if (str)
+	if (auto str = getAttr(attr, "wellformed"))
 		cfg->m_bWellFormed = atoi(str) > 0;
-	str = getAttr(attr, "lastLabel");
-	if (str)
+	if (auto str = getAttr(attr, "lastLabel"))
 		cfg->lastLabel = atoi(str);
 }
 
@@ -991,39 +968,28 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 	BasicBlock *bb;
 	if (phase == 1) {
 		bb = node->bb = (BasicBlock *)findId(getAttr(attr, "id"));
-		BasicBlock *h = (BasicBlock *)findId(getAttr(attr, "m_loopHead"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "m_loopHead")))
 			bb->m_loopHead = h;
-		h = (BasicBlock *)findId(getAttr(attr, "m_caseHead"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "m_caseHead")))
 			bb->m_caseHead = h;
-		h = (BasicBlock *)findId(getAttr(attr, "m_condFollow"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "m_condFollow")))
 			bb->m_condFollow = h;
-		h = (BasicBlock *)findId(getAttr(attr, "m_loopFollow"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "m_loopFollow")))
 			bb->m_loopFollow = h;
-		h = (BasicBlock *)findId(getAttr(attr, "m_latchNode"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "m_latchNode")))
 			bb->m_latchNode = h;
 		// note the ridiculous duplication here
-		h = (BasicBlock *)findId(getAttr(attr, "immPDom"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "immPDom")))
 			bb->immPDom = h;
-		h = (BasicBlock *)findId(getAttr(attr, "loopHead"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "loopHead")))
 			bb->loopHead = h;
-		h = (BasicBlock *)findId(getAttr(attr, "caseHead"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "caseHead")))
 			bb->caseHead = h;
-		h = (BasicBlock *)findId(getAttr(attr, "condFollow"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "condFollow")))
 			bb->condFollow = h;
-		h = (BasicBlock *)findId(getAttr(attr, "loopFollow"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "loopFollow")))
 			bb->loopFollow = h;
-		h = (BasicBlock *)findId(getAttr(attr, "latchNode"));
-		if (h)
+		if (auto h = (BasicBlock *)findId(getAttr(attr, "latchNode")))
 			bb->latchNode = h;
 		return;
 	}
@@ -1031,92 +997,63 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 	node->bb = bb;
 	addId(attr, bb);
 
-	const char *str = getAttr(attr, "nodeType");
-	if (str)
+	if (auto str = getAttr(attr, "nodeType"))
 		bb->m_nodeType = (BBTYPE)atoi(str);
-	str = getAttr(attr, "labelNum");
-	if (str)
+	if (auto str = getAttr(attr, "labelNum"))
 		bb->m_iLabelNum = atoi(str);
-	str = getAttr(attr, "label");
-	if (str)
+	if (auto str = getAttr(attr, "label"))
 		bb->m_labelStr = strdup(str);
-	str = getAttr(attr, "labelneeded");
-	if (str)
+	if (auto str = getAttr(attr, "labelneeded"))
 		bb->m_labelneeded = atoi(str) > 0;
-	str = getAttr(attr, "incomplete");
-	if (str)
+	if (auto str = getAttr(attr, "incomplete"))
 		bb->m_bIncomplete = atoi(str) > 0;
-	str = getAttr(attr, "jumpreqd");
-	if (str)
+	if (auto str = getAttr(attr, "jumpreqd"))
 		bb->m_bJumpReqd = atoi(str) > 0;
-	str = getAttr(attr, "m_traversed");
-	if (str)
+	if (auto str = getAttr(attr, "m_traversed"))
 		bb->m_iTraversed = atoi(str) > 0;
-	str = getAttr(attr, "DFTfirst");
-	if (str)
+	if (auto str = getAttr(attr, "DFTfirst"))
 		bb->m_DFTfirst = atoi(str);
-	str = getAttr(attr, "DFTlast");
-	if (str)
+	if (auto str = getAttr(attr, "DFTlast"))
 		bb->m_DFTlast = atoi(str);
-	str = getAttr(attr, "DFTrevfirst");
-	if (str)
+	if (auto str = getAttr(attr, "DFTrevfirst"))
 		bb->m_DFTrevfirst = atoi(str);
-	str = getAttr(attr, "DFTrevlast");
-	if (str)
+	if (auto str = getAttr(attr, "DFTrevlast"))
 		bb->m_DFTrevlast = atoi(str);
-	str = getAttr(attr, "structType");
-	if (str)
+	if (auto str = getAttr(attr, "structType"))
 		bb->m_structType = (SBBTYPE)atoi(str);
-	str = getAttr(attr, "loopCondType");
-	if (str)
+	if (auto str = getAttr(attr, "loopCondType"))
 		bb->m_loopCondType = (SBBTYPE)atoi(str);
-	str = getAttr(attr, "ord");
-	if (str)
+	if (auto str = getAttr(attr, "ord"))
 		bb->ord = atoi(str);
-	str = getAttr(attr, "revOrd");
-	if (str)
+	if (auto str = getAttr(attr, "revOrd"))
 		bb->revOrd = atoi(str);
-	str = getAttr(attr, "inEdgesVisited");
-	if (str)
+	if (auto str = getAttr(attr, "inEdgesVisited"))
 		bb->inEdgesVisited = atoi(str);
-	str = getAttr(attr, "numForwardInEdges");
-	if (str)
+	if (auto str = getAttr(attr, "numForwardInEdges"))
 		bb->numForwardInEdges = atoi(str);
-	str = getAttr(attr, "loopStamp1");
-	if (str)
+	if (auto str = getAttr(attr, "loopStamp1"))
 		bb->loopStamps[0] = atoi(str);
-	str = getAttr(attr, "loopStamp2");
-	if (str)
+	if (auto str = getAttr(attr, "loopStamp2"))
 		bb->loopStamps[1] = atoi(str);
-	str = getAttr(attr, "revLoopStamp1");
-	if (str)
+	if (auto str = getAttr(attr, "revLoopStamp1"))
 		bb->revLoopStamps[0] = atoi(str);
-	str = getAttr(attr, "revLoopStamp2");
-	if (str)
+	if (auto str = getAttr(attr, "revLoopStamp2"))
 		bb->revLoopStamps[1] = atoi(str);
-	str = getAttr(attr, "traversed");
-	if (str)
+	if (auto str = getAttr(attr, "traversed"))
 		bb->traversed = (travType)atoi(str);
-	str = getAttr(attr, "hllLabel");
-	if (str)
+	if (auto str = getAttr(attr, "hllLabel"))
 		bb->hllLabel = atoi(str) > 0;
-	str = getAttr(attr, "labelStr");
-	if (str)
+	if (auto str = getAttr(attr, "labelStr"))
 		bb->labelStr = strdup(str);
-	str = getAttr(attr, "indentLevel");
-	if (str)
+	if (auto str = getAttr(attr, "indentLevel"))
 		bb->indentLevel = atoi(str);
-	str = getAttr(attr, "sType");
-	if (str)
+	if (auto str = getAttr(attr, "sType"))
 		bb->sType = (structType)atoi(str);
-	str = getAttr(attr, "usType");
-	if (str)
+	if (auto str = getAttr(attr, "usType"))
 		bb->usType = (unstructType)atoi(str);
-	str = getAttr(attr, "lType");
-	if (str)
+	if (auto str = getAttr(attr, "lType"))
 		bb->lType = (loopType)atoi(str);
-	str = getAttr(attr, "cType");
-	if (str)
+	if (auto str = getAttr(attr, "cType"))
 		bb->cType = (condType)atoi(str);
 }
 
@@ -1247,8 +1184,7 @@ XMLProgParser::start_rtl(Context *node, const char **attr)
 	}
 	node->rtl = new RTL();
 	addId(attr, node->rtl);
-	const char *a = getAttr(attr, "addr");
-	if (a)
+	if (auto a = getAttr(attr, "addr"))
 		node->rtl->nativeAddr = atoi(a);
 }
 
@@ -1284,18 +1220,15 @@ XMLProgParser::start_assign(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			node->stmt->setProc(p);
-		Statement *parent = (Statement *)findId(getAttr(attr, "parent"));
-		if (parent)
+		if (auto parent = (Statement *)findId(getAttr(attr, "parent")))
 			node->stmt->parent = parent;
 		return;
 	}
 	node->stmt = new Assign();
 	addId(attr, node->stmt);
-	const char *n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		node->stmt->number = atoi(n);
 }
 
@@ -1387,25 +1320,20 @@ XMLProgParser::start_callstmt(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Statement *)node->stmt)->setProc(p);
-		Statement *s = (Statement *)findId(getAttr(attr, "parent"));
-		if (s)
+		if (auto s = (Statement *)findId(getAttr(attr, "parent")))
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
 	auto call = new CallStatement();
 	node->stmt = call;
 	addId(attr, call);
-	const char *n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		call->number = atoi(n);
-	n = getAttr(attr, "computed");
-	if (n)
+	if (auto n = getAttr(attr, "computed"))
 		call->m_isComputed = atoi(n) > 0;
-	n = getAttr(attr, "returnAftercall");
-	if (n)
+	if (auto n = getAttr(attr, "returnAftercall"))
 		call->returnAfterCall = atoi(n) > 0;
 }
 
@@ -1445,8 +1373,7 @@ void
 XMLProgParser::start_dest(Context *node, const char **attr)
 {
 	if (phase == 1) {
-		Proc *p = (Proc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (Proc *)findId(getAttr(attr, "proc")))
 			node->proc = p;
 		return;
 	}
@@ -1496,22 +1423,18 @@ XMLProgParser::start_returnstmt(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Statement *)node->stmt)->setProc(p);
-		Statement *s = (Statement *)findId(getAttr(attr, "parent"));
-		if (s)
+		if (auto s = (Statement *)findId(getAttr(attr, "parent")))
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
 	auto ret = new ReturnStatement();
 	node->stmt = ret;
 	addId(attr, ret);
-	const char *n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		ret->number = atoi(n);
-	n = getAttr(attr, "retAddr");
-	if (n)
+	if (auto n = getAttr(attr, "retAddr"))
 		ret->retAddr = atoi(n);
 }
 
@@ -1561,22 +1484,18 @@ XMLProgParser::start_gotostmt(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Statement *)node->stmt)->setProc(p);
-		Statement *s = (Statement *)findId(getAttr(attr, "parent"));
-		if (s)
+		if (auto s = (Statement *)findId(getAttr(attr, "parent")))
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
 	auto branch = new GotoStatement();
 	node->stmt = branch;
 	addId(attr, branch);
-	const char *n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		branch->number = atoi(n);
-	n = getAttr(attr, "computed");
-	if (n)
+	if (auto n = getAttr(attr, "computed"))
 		branch->m_isComputed = atoi(n) > 0;
 }
 
@@ -1603,28 +1522,22 @@ XMLProgParser::start_branchstmt(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Statement *)node->stmt)->setProc(p);
-		Statement *s = (Statement *)findId(getAttr(attr, "parent"));
-		if (s)
+		if (auto s = (Statement *)findId(getAttr(attr, "parent")))
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
 	auto branch = new BranchStatement();
 	node->stmt = branch;
 	addId(attr, branch);
-	const char *n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		branch->number = atoi(n);
-	n = getAttr(attr, "computed");
-	if (n)
+	if (auto n = getAttr(attr, "computed"))
 		branch->m_isComputed = atoi(n) > 0;
-	n = getAttr(attr, "jtcond");
-	if (n)
+	if (auto n = getAttr(attr, "jtcond"))
 		branch->jtCond = (BRANCH_TYPE)atoi(n);
-	n = getAttr(attr, "float");
-	if (n)
+	if (auto n = getAttr(attr, "float"))
 		branch->bFloat = atoi(n) > 0;
 }
 
@@ -1665,22 +1578,18 @@ XMLProgParser::start_casestmt(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Statement *)node->stmt)->setProc(p);
-		Statement *s = (Statement *)findId(getAttr(attr, "parent"));
-		if (s)
+		if (auto s = (Statement *)findId(getAttr(attr, "parent")))
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
 	auto cas = new CaseStatement();
 	node->stmt = cas;
 	addId(attr, cas);
-	const char *n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		cas->number = atoi(n);
-	n = getAttr(attr, "computed");
-	if (n)
+	if (auto n = getAttr(attr, "computed"))
 		cas->m_isComputed = atoi(n) > 0;
 }
 
@@ -1707,27 +1616,22 @@ XMLProgParser::start_boolasgn(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->stmt = (Statement *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Statement *)node->stmt)->setProc(p);
-		Statement *s = (Statement *)findId(getAttr(attr, "parent"));
-		if (s)
+		if (auto s = (Statement *)findId(getAttr(attr, "parent")))
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	const char *n = getAttr(attr, "size");
-	assert(n);
-	auto boo = new BoolAssign(atoi(n));
+	auto size = getAttr(attr, "size");
+	assert(size);
+	auto boo = new BoolAssign(atoi(size));
 	node->stmt = boo;
 	addId(attr, boo);
-	n = getAttr(attr, "number");
-	if (n)
+	if (auto n = getAttr(attr, "number"))
 		boo->number = atoi(n);
-	n = getAttr(attr, "jtcond");
-	if (n)
+	if (auto n = getAttr(attr, "jtcond"))
 		boo->jtCond = (BRANCH_TYPE)atoi(n);
-	n = getAttr(attr, "float");
-	if (n)
+	if (auto n = getAttr(attr, "float"))
 		boo->bFloat = atoi(n) > 0;
 }
 
@@ -1805,11 +1709,9 @@ XMLProgParser::start_integertype(Context *node, const char **attr)
 	auto ty = new IntegerType();
 	node->type = ty;
 	addId(attr, ty);
-	const char *n = getAttr(attr, "size");
-	if (n)
+	if (auto n = getAttr(attr, "size"))
 		ty->size = atoi(n);
-	n = getAttr(attr, "signedness");
-	if (n)
+	if (auto n = getAttr(attr, "signedness"))
 		ty->signedness = atoi(n);
 }
 
@@ -1897,8 +1799,7 @@ XMLProgParser::start_arraytype(Context *node, const char **attr)
 	auto a = new ArrayType();
 	node->type = a;
 	addId(attr, a);
-	const char *len = getAttr(attr, "length");
-	if (len)
+	if (auto len = getAttr(attr, "length"))
 		a->length = atoi(len);
 }
 
@@ -1938,8 +1839,7 @@ XMLProgParser::start_sizetype(Context *node, const char **attr)
 	auto ty = new SizeType();
 	node->type = ty;
 	addId(attr, ty);
-	const char *n = getAttr(attr, "size");
-	if (n)
+	if (auto n = getAttr(attr, "size"))
 		ty->size = atoi(n);
 }
 
@@ -1958,12 +1858,11 @@ XMLProgParser::start_location(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->exp = (Exp *)findId(getAttr(attr, "id"));
-		UserProc *p = (UserProc *)findId(getAttr(attr, "proc"));
-		if (p)
+		if (auto p = (UserProc *)findId(getAttr(attr, "proc")))
 			((Location *)node->exp)->setProc(p);
 		return;
 	}
-	OPER op = (OPER)operFromString(getAttr(attr, "op"));
+	auto op = (OPER)operFromString(getAttr(attr, "op"));
 	assert(op != -1);
 	node->exp = new Location(op);
 	addId(attr, node->exp);
@@ -1994,7 +1893,7 @@ XMLProgParser::start_unary(Context *node, const char **attr)
 		node->exp = (Exp *)findId(getAttr(attr, "id"));
 		return;
 	}
-	OPER op = (OPER)operFromString(getAttr(attr, "op"));
+	auto op = (OPER)operFromString(getAttr(attr, "op"));
 	assert(op != -1);
 	node->exp = new Unary(op);
 	addId(attr, node->exp);
@@ -2023,7 +1922,7 @@ XMLProgParser::start_binary(Context *node, const char **attr)
 		node->exp = (Exp *)findId(getAttr(attr, "id"));
 		return;
 	}
-	OPER op = (OPER)operFromString(getAttr(attr, "op"));
+	auto op = (OPER)operFromString(getAttr(attr, "op"));
 	assert(op != -1);
 	node->exp = new Binary(op);
 	addId(attr, node->exp);
@@ -2055,7 +1954,7 @@ XMLProgParser::start_ternary(Context *node, const char **attr)
 		node->exp = (Exp *)findId(getAttr(attr, "id"));
 		return;
 	}
-	OPER op = (OPER)operFromString(getAttr(attr, "op"));
+	auto op = (OPER)operFromString(getAttr(attr, "op"));
 	assert(op != -1);
 	node->exp = new Ternary(op);
 	addId(attr, node->exp);
@@ -2091,12 +1990,12 @@ XMLProgParser::start_const(Context *node, const char **attr)
 		return;
 	}
 	double d;
-	const char *value = getAttr(attr, "value");
-	const char *opstring = getAttr(attr, "op");
+	auto value = getAttr(attr, "value");
+	auto opstring = getAttr(attr, "op");
 	assert(value);
 	assert(opstring);
 	//std::cerr << "got value=" << value << " opstring=" << opstring << "\n";
-	OPER op = (OPER)operFromString(opstring);
+	auto op = (OPER)operFromString(opstring);
 	assert(op != -1);
 	switch (op) {
 	case opIntConst:
@@ -2136,7 +2035,7 @@ XMLProgParser::start_terminal(Context *node, const char **attr)
 		node->exp = (Exp *)findId(getAttr(attr, "id"));
 		return;
 	}
-	OPER op = (OPER)operFromString(getAttr(attr, "op"));
+	auto op = (OPER)operFromString(getAttr(attr, "op"));
 	assert(op != -1);
 	node->exp = new Terminal(op);
 	addId(attr, node->exp);
@@ -2446,43 +2345,43 @@ void
 XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 {
 	if (auto v = dynamic_cast<VoidType *>(ty)) {
-		out << "<voidtype id=\"" << (int)ty << "\"/>\n";
+		out << "<voidtype id=\"" << (int)v << "\"/>\n";
 		return;
 	}
 	if (auto f = dynamic_cast<FuncType *>(ty)) {
-		out << "<functype id=\"" << (int)ty << "\">\n";
+		out << "<functype id=\"" << (int)f << "\">\n";
 		persistToXML(out, f->signature);
 		out << "</functype>\n";
 		return;
 	}
 	if (auto i = dynamic_cast<IntegerType *>(ty)) {
-		out << "<integertype id=\"" << (int)ty
+		out << "<integertype id=\"" << (int)i
 		    << "\" size=\"" << i->size
 		    << "\" signedness=\"" << i->signedness
 		    << "\"/>\n";
 		return;
 	}
 	if (auto fl = dynamic_cast<FloatType *>(ty)) {
-		out << "<floattype id=\"" << (int)ty
+		out << "<floattype id=\"" << (int)fl
 		    << "\" size=\"" << fl->size << "\"/>\n";
 		return;
 	}
 	if (auto b = dynamic_cast<BooleanType *>(ty)) {
-		out << "<booleantype id=\"" << (int)ty << "\"/>\n";
+		out << "<booleantype id=\"" << (int)b << "\"/>\n";
 		return;
 	}
 	if (auto c = dynamic_cast<CharType *>(ty)) {
-		out << "<chartype id=\"" << (int)ty << "\"/>\n";
+		out << "<chartype id=\"" << (int)c << "\"/>\n";
 		return;
 	}
 	if (auto p = dynamic_cast<PointerType *>(ty)) {
-		out << "<pointertype id=\"" << (int)ty << "\">\n";
+		out << "<pointertype id=\"" << (int)p << "\">\n";
 		persistToXML(out, p->points_to);
 		out << "</pointertype>\n";
 		return;
 	}
 	if (auto a = dynamic_cast<ArrayType *>(ty)) {
-		out << "<arraytype id=\"" << (int)ty
+		out << "<arraytype id=\"" << (int)a
 		    << "\" length=\"" << (int)a->length
 		    << "\">\n";
 		out << "<basetype>\n";
@@ -2492,13 +2391,13 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 		return;
 	}
 	if (auto n = dynamic_cast<NamedType *>(ty)) {
-		out << "<namedtype id=\"" << (int)ty
+		out << "<namedtype id=\"" << (int)n
 		    << "\" name=\"" << n->name
 		    << "\"/>\n";
 		return;
 	}
 	if (auto co = dynamic_cast<CompoundType *>(ty)) {
-		out << "<compoundtype id=\"" << (int)ty << "\">\n";
+		out << "<compoundtype id=\"" << (int)co << "\">\n";
 		for (unsigned i = 0; i < co->names.size(); ++i) {
 			out << "<member name=\"" << co->names[i] << "\">\n";
 			persistToXML(out, co->types[i]);
@@ -2508,7 +2407,7 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 		return;
 	}
 	if (auto sz = dynamic_cast<SizeType *>(ty)) {
-		out << "<sizetype id=\"" << (int)ty
+		out << "<sizetype id=\"" << (int)sz
 		    << "\" size=\"" << sz->getSize()
 		    << "\"/>\n";
 		return;
@@ -2521,7 +2420,7 @@ void
 XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 {
 	if (auto t = dynamic_cast<TypeVal *>(e)) {
-		out << "<typeval id=\"" << (int)e
+		out << "<typeval id=\"" << (int)t
 		    << "\" op=\"" << operStrings[t->op]
 		    << "\">\n";
 		out << "<type>\n";
@@ -2531,13 +2430,13 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto te = dynamic_cast<Terminal *>(e)) {
-		out << "<terminal id=\"" << (int)e
+		out << "<terminal id=\"" << (int)te
 		    << "\" op=\"" << operStrings[te->op]
 		    << "\"/>\n";
 		return;
 	}
 	if (auto c = dynamic_cast<Const *>(e)) {
-		out << "<const id=\"" << (int)e
+		out << "<const id=\"" << (int)c
 		    << "\" op=\"" << operStrings[c->op]
 		    << "\" conscript=\"" << c->conscript;
 		if (c->op == opIntConst)
@@ -2558,7 +2457,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto l = dynamic_cast<Location *>(e)) {
-		out << "<location id=\"" << (int)e;
+		out << "<location id=\"" << (int)l;
 		if (l->proc)
 			out << "\" proc=\"" << (int)l->proc;
 		out << "\" op=\"" << operStrings[l->op]
@@ -2570,7 +2469,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto r = dynamic_cast<RefExp *>(e)) {
-		out << "<refexp id=\"" << (int)e;
+		out << "<refexp id=\"" << (int)r;
 		if (r->def)
 			out << "\" def=\"" << (int)r->def;
 		out << "\" op=\"" << operStrings[r->op]
@@ -2582,7 +2481,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto f = dynamic_cast<FlagDef *>(e)) {
-		out << "<flagdef id=\"" << (int)e;
+		out << "<flagdef id=\"" << (int)f;
 		if (f->rtl)
 			out << "\" rtl=\"" << (int)f->rtl;
 		out << "\" op=\"" << operStrings[f->op]
@@ -2594,7 +2493,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto ty = dynamic_cast<TypedExp *>(e)) {
-		out << "<typedexp id=\"" << (int)e
+		out << "<typedexp id=\"" << (int)ty
 		    << "\" op=\"" << operStrings[ty->op]
 		    << "\">\n";
 		out << "<subexp1>\n";
@@ -2607,7 +2506,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto tn = dynamic_cast<Ternary *>(e)) {
-		out << "<ternary id=\"" << (int)e
+		out << "<ternary id=\"" << (int)tn
 		    << "\" op=\"" << operStrings[tn->op]
 		    << "\">\n";
 		out << "<subexp1>\n";
@@ -2623,7 +2522,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto b = dynamic_cast<Binary *>(e)) {
-		out << "<binary id=\"" << (int)e
+		out << "<binary id=\"" << (int)b
 		    << "\" op=\"" << operStrings[b->op]
 		    << "\">\n";
 		out << "<subexp1>\n";
@@ -2636,7 +2535,7 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		return;
 	}
 	if (auto u = dynamic_cast<Unary *>(e)) {
-		out << "<unary id=\"" << (int)e
+		out << "<unary id=\"" << (int)u
 		    << "\" op=\"" << operStrings[u->op]
 		    << "\">\n";
 		out << "<subexp1>\n";
@@ -2772,7 +2671,7 @@ void
 XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 {
 	if (auto b = dynamic_cast<BoolAssign *>(stmt)) {
-		out << "<boolasgn id=\"" << (int)stmt
+		out << "<boolasgn id=\"" << (int)b
 		    << "\" number=\"" << b->number;
 		if (b->parent)
 			out << "\" parent=\"" << (int)b->parent;
@@ -2791,7 +2690,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto r = dynamic_cast<ReturnStatement *>(stmt)) {
-		out << "<returnstmt id=\"" << (int)stmt
+		out << "<returnstmt id=\"" << (int)r
 		    << "\" number=\"" << r->number;
 		if (r->parent)
 			out << "\" parent=\"" << (int)r->parent;
@@ -2815,7 +2714,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto c = dynamic_cast<CallStatement *>(stmt)) {
-		out << "<callstmt id=\"" << (int)stmt
+		out << "<callstmt id=\"" << (int)c
 		    << "\" number=\"" << c->number
 		    << "\" computed=\"" << (int)c->m_isComputed;
 		if (c->parent)
@@ -2850,7 +2749,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto ca = dynamic_cast<CaseStatement *>(stmt)) {
-		out << "<casestmt id=\"" << (int)stmt
+		out << "<casestmt id=\"" << (int)ca
 		    << "\" number=\"" << ca->number
 		    << "\" computed=\"" << (int)ca->m_isComputed;
 		if (ca->parent)
@@ -2869,7 +2768,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto br = dynamic_cast<BranchStatement *>(stmt)) {
-		out << "<branchstmt id=\"" << (int)stmt
+		out << "<branchstmt id=\"" << (int)br
 		    << "\" number=\"" << br->number
 		    << "\" computed=\"" << (int)br->m_isComputed
 		    << "\" jtcond=\"" << br->jtCond
@@ -2893,7 +2792,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto g = dynamic_cast<GotoStatement *>(stmt)) {
-		out << "<gotostmt id=\"" << (int)stmt
+		out << "<gotostmt id=\"" << (int)g
 		    << "\" number=\"" << g->number
 		    << "\" computed=\"" << (int) g->m_isComputed;
 		if (g->parent)
@@ -2910,7 +2809,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto p = dynamic_cast<PhiAssign *>(stmt)) {
-		out << "<phiassign id=\"" << (int)stmt
+		out << "<phiassign id=\"" << (int)p
 		    << "\" number=\"" << p->number;
 		if (p->parent)
 			out << "\" parent=\"" << (int)p->parent;
@@ -2928,7 +2827,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 		return;
 	}
 	if (auto a = dynamic_cast<Assign *>(stmt)) {
-		out << "<assign id=\"" << (int)stmt
+		out << "<assign id=\"" << (int)a
 		    << "\" number=\"" << a->number;
 		if (a->parent)
 			out << "\" parent=\"" << (int)a->parent;
