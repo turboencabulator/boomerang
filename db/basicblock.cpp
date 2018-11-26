@@ -1640,8 +1640,7 @@ char *
 BasicBlock::getStmtNumber()
 {
 	static char ret[12];
-	Statement *first = getFirstStmt();
-	if (first)
+	if (auto first = getFirstStmt())
 		sprintf(ret, "%d", first->getNumber());
 	else
 		sprintf(ret, "bb%x", (uintptr_t)this);

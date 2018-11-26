@@ -1693,24 +1693,19 @@ Cfg::generateDot(std::ostream &os) const
 			if (bb->getCond()) {
 				os << "\\n";
 				bb->getCond()->print(os);
-				os << "\",shape=diamond];\n";
-				continue;
 			}
-			break;
+			os << "\",shape=diamond];\n";
+			continue;
 		case NWAY:
 			os << "nway";
-			{
-				Exp *de = bb->getDest();
-				if (de) os << "\\n" << *de;
-				os << "\",shape=trapezium];\n";
-			}
+			if (auto dest = bb->getDest())
+				os << "\\n" << *dest;
+			os << "\",shape=trapezium];\n";
 			continue;
 		case CALL:
 			os << "call";
-			{
-				Proc *dest = bb->getDestProc();
-				if (dest) os << "\\n" << dest->getName();
-			}
+			if (auto dest = bb->getDestProc())
+				os << "\\n" << dest->getName();
 			break;
 		case RET:
 			os << "ret\",shape=triangle];\n";

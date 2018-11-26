@@ -130,7 +130,7 @@ Prog::generateDot(std::ostream &os) const
 		auto p = (UserProc *)proc;
 		if (!p->isDecoded()) continue;
 		// Subgraph for the proc name
-		os << "\n\tsubgraph cluster_" << p->getName() << " {\n"
+		os << "\tsubgraph cluster_" << p->getName() << " {\n"
 		   << "\t\tcolor=gray;\n\t\tlabel=\"" << p->getName() << "\";\n";
 		// Generate dotty CFG for this proc
 		p->getCFG()->generateDot(os);
