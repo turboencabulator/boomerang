@@ -1677,11 +1677,13 @@ Cfg::generateDot(std::ostream &os) const
 
 	// The nodes
 	for (const auto &bb : m_listBB) {
-		os << "\t\tbb" << std::hex << bb->getLowAddr()
-		   << " [label=\"";
+		os << std::hex
+		   << "\t\tbb" << bb->getLowAddr()
+		   << " [label=\""
+		   << std::dec;
 
 #if BBINDEX
-		os << std::dec << indices[bb];
+		os << indices[bb];
 #endif
 		// Print the first statement's number,
 		// or a unique string (e.g. bb0x8048c10) if no statements.
@@ -1716,7 +1718,7 @@ Cfg::generateDot(std::ostream &os) const
 			break;
 		case RET:
 			os << "ret\",shape=triangle];\n";
-			// Remember the (unbique) return BB's address
+			// Remember the (unique) return BB's address
 			aret = bb->getLowAddr();
 			continue;
 		case ONEWAY:   os << "oneway";   break;
@@ -1731,7 +1733,9 @@ Cfg::generateDot(std::ostream &os) const
 	// Force the one return node to be at the bottom (max rank).
 	// Otherwise, with all its in-edges, it will end up in the middle.
 	if (aret)
-		os << "\t\t{rank=max; bb" << std::hex << aret << "}\n";
+		os << std::hex
+		   << "\t\t{rank=max; bb" << aret << "}\n"
+		   << std::dec;
 
 	// Close the subgraph
 	os << "\t}\n";
@@ -1740,9 +1744,11 @@ Cfg::generateDot(std::ostream &os) const
 	for (const auto &bb : m_listBB) {
 		const auto &outEdges = bb->getOutEdges();
 		for (unsigned int j = 0; j < outEdges.size(); ++j) {
-			os << "\tbb" << std::hex << bb->getLowAddr()
-			   << " -> bb" << std::hex << outEdges[j]->getLowAddr()
-			   << " [color=blue";
+			os << std::hex
+			   << "\tbb" << bb->getLowAddr()
+			   << " -> bb" << outEdges[j]->getLowAddr()
+			   << " [color=blue"
+			   << std::dec;
 			if (bb->getType() == TWOWAY) {
 				if (j == 0)
 					os << ",label=\"true\"";
@@ -1756,9 +1762,11 @@ Cfg::generateDot(std::ostream &os) const
 	for (const auto &bb : m_listBB) {
 		const auto &inEdges = bb->getInEdges();
 		for (const auto &edge : inEdges) {
-			os << "\tbb" << std::hex << bb->getLowAddr()
-			   << " -> bb" << std::hex << edge->getLowAddr()
-			   << " [color=green];\n";
+			os << std::hex
+			   << "\tbb" << bb->getLowAddr()
+			   << " -> bb" << edge->getLowAddr()
+			   << " [color=green];\n"
+			   << std::dec;
 		}
 	}
 #endif
