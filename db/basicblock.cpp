@@ -40,7 +40,6 @@
 #include <sstream>
 
 #include <cassert>
-#include <cstdint>
 
 /**
  * \brief Constructor.
@@ -1626,25 +1625,6 @@ BasicBlock::inLoop(BasicBlock *header, BasicBlock *latch) const
 	     && loopStamps[0] < latch->loopStamps[0] && latch->loopStamps[1] < loopStamps[1])
 	    || (header->revLoopStamps[0] < revLoopStamps[0] && revLoopStamps[1] < header->revLoopStamps[1]
 	     && revLoopStamps[0] < latch->revLoopStamps[0] && latch->revLoopStamps[1] < revLoopStamps[1]);
-}
-
-/**
- * \brief Return the first statement number as a string.  Used in dotty file
- * generation.
- *
- * Get the statement number for the first BB as a character array.  If not
- * possible (e.g. because the BB has no statements), return a unique string
- * (e.g. bb8048c10)
- */
-char *
-BasicBlock::getStmtNumber()
-{
-	static char ret[12];
-	if (auto first = getFirstStmt())
-		sprintf(ret, "%d", first->getNumber());
-	else
-		sprintf(ret, "bb%x", (uintptr_t)this);
-	return ret;
 }
 
 /**

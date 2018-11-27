@@ -294,8 +294,6 @@ public:
 
 	        void        getStatements(StatementList &stmts);
 
-	        char       *getStmtNumber();
-
 protected:
 	/* Control flow analysis stuff, lifted from Doug Simon's honours thesis.
 	 */

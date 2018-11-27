@@ -1679,14 +1679,21 @@ Cfg::generateDot(std::ostream &os) const
 	for (const auto &bb : m_listBB) {
 		os << "\t\tbb" << std::hex << bb->getLowAddr()
 		   << " [label=\"";
-		const char *p = bb->getStmtNumber();
+
 #if BBINDEX
 		os << std::dec << indices[bb];
-		if (p[0] != 'b')
-			// If starts with 'b', no statements (something like bb8101c3c).
+#endif
+		// Print the first statement's number,
+		// or a unique string (e.g. bb0x8048c10) if no statements.
+		if (auto first = bb->getFirstStmt()) {
+#if BBINDEX
 			os << ":";
 #endif
-		os << p << " ";
+			os << first->getNumber() << " ";
+		} else {
+			os << "bb" << (void *)bb << " ";
+		}
+
 		switch (bb->getType()) {
 		case TWOWAY:
 			os << "twoway";
