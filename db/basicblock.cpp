@@ -946,7 +946,7 @@ BasicBlock::simplify()
 				LOG << "turning TWOWAY into FALL: "
 				    << m_OutEdges[0]->getLowAddr() << " "
 				    << m_OutEdges[1]->getLowAddr() << "\n";
-			BasicBlock *redundant = m_OutEdges[0];
+			auto redundant = m_OutEdges[0];
 			m_OutEdges[0] = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
@@ -959,21 +959,18 @@ BasicBlock::simplify()
 					LOG << edge->getLowAddr() << " ";
 				if (edge != this)
 					redundant->m_InEdges.push_back(edge);
-				else {
-					if (VERBOSE)
-						LOG << "(ignored) ";
-				}
+				else if (VERBOSE)
+					LOG << "(ignored) ";
 			}
 			if (VERBOSE)
 				LOG << "\n   after: " << m_OutEdges[0]->getLowAddr() << "\n";
-		}
-		if (m_nodeType == ONEWAY) {
+		} else if (m_nodeType == ONEWAY) {
 			// set out edges to be the first one
 			if (VERBOSE)
 				LOG << "turning TWOWAY into ONEWAY: "
 				    << m_OutEdges[0]->getLowAddr() << " "
 				    << m_OutEdges[1]->getLowAddr() << "\n";
-			BasicBlock *redundant = m_OutEdges[1];
+			auto redundant = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
@@ -985,10 +982,8 @@ BasicBlock::simplify()
 					LOG << edge->getLowAddr() << " ";
 				if (edge != this)
 					redundant->m_InEdges.push_back(edge);
-				else {
-					if (VERBOSE)
-						LOG << "(ignored) ";
-				}
+				else if (VERBOSE)
+					LOG << "(ignored) ";
 			}
 			if (VERBOSE)
 				LOG << "\n   after: " << m_OutEdges[0]->getLowAddr() << "\n";
