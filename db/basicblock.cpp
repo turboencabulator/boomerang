@@ -114,6 +114,15 @@ BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges)
 	m_bIncomplete(false),
 	m_iNumOutEdges(iNumOutEdges)
 {
+	assert(bbType != ONEWAY   || iNumOutEdges == 1);
+	assert(bbType != TWOWAY   || iNumOutEdges == 2);
+	assert(bbType != CALL     || iNumOutEdges <= 1);
+	assert(bbType != RET      || iNumOutEdges == 0);
+	assert(bbType != FALL     || iNumOutEdges == 1);
+	assert(bbType != COMPJUMP || iNumOutEdges == 0);
+	assert(bbType != COMPCALL || iNumOutEdges == 1);
+	assert(bbType != INVALID  || iNumOutEdges == 0);
+
 	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with AddOutEdge()
 
 	// Set the RTLs
@@ -201,11 +210,20 @@ BasicBlock::getType() const
  * type is updated to an NWAY when a switch idiom is discovered.
  *
  * \param[in] bbType        The new type.
- * \param[in] iNumOutEdges  New number of inedges.
+ * \param[in] iNumOutEdges  New number of outedges.
  */
 void
 BasicBlock::updateType(BBTYPE bbType, int iNumOutEdges)
 {
+	assert(bbType != ONEWAY   || iNumOutEdges == 1);
+	assert(bbType != TWOWAY   || iNumOutEdges == 2);
+	assert(bbType != CALL     || iNumOutEdges <= 1);
+	assert(bbType != RET      || iNumOutEdges == 0);
+	assert(bbType != FALL     || iNumOutEdges == 1);
+	assert(bbType != COMPJUMP || iNumOutEdges == 0);
+	assert(bbType != COMPCALL || iNumOutEdges == 1);
+	assert(bbType != INVALID  || iNumOutEdges == 0);
+
 	m_nodeType = bbType;
 	m_iNumOutEdges = iNumOutEdges;
 	//m_OutEdges.resize(iNumOutEdges);

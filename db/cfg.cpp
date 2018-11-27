@@ -182,6 +182,15 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 	MAPBB::iterator mi;
 	BasicBlock *pBB;
 
+	assert(bbType != ONEWAY   || iNumOutEdges == 1);
+	assert(bbType != TWOWAY   || iNumOutEdges == 2);
+	assert(bbType != CALL     || iNumOutEdges <= 1);
+	assert(bbType != RET      || iNumOutEdges == 0);
+	assert(bbType != FALL     || iNumOutEdges == 1);
+	assert(bbType != COMPJUMP || iNumOutEdges == 0);
+	assert(bbType != COMPCALL || iNumOutEdges == 1);
+	assert(bbType != INVALID  || iNumOutEdges == 0);
+
 	// First find the native address of the first RTL
 	// Can't use BasicBlock::GetLowAddr(), since we don't yet have a BB!
 	ADDRESS addr = pRtls->front()->getAddress();
