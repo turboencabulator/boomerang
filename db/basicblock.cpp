@@ -123,7 +123,7 @@ BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges)
 	assert(bbType != COMPCALL || iNumOutEdges == 1);
 	assert(bbType != INVALID  || iNumOutEdges == 0);
 
-	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with addOutEdge()
+	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with Cfg::addOutEdge()
 
 	// Set the RTLs
 	setRTLs(pRtls);

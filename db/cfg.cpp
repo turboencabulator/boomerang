@@ -1114,8 +1114,7 @@ Cfg::setLabel(BasicBlock *pBB)
 void
 Cfg::addNewOutEdge(BasicBlock *pFromBB, BasicBlock *pNewOutEdge)
 {
-	pFromBB->m_OutEdges.push_back(pNewOutEdge);
-	++pFromBB->m_iNumOutEdges;
+	pFromBB->addOutEdge(pNewOutEdge);
 	// Since this is a new out-edge, set the "jump required" flag
 	pFromBB->m_bJumpReqd = true;
 	// Make sure that there is a label there

@@ -400,7 +400,10 @@ public:
 
 protected:
 	friend class XMLProgParser;
-	        void        addOutEdge(BasicBlock *bb) { m_OutEdges.push_back(bb); }
+	        void        addOutEdge(BasicBlock *bb) {
+		                    m_OutEdges.push_back(bb);
+		                    ++m_iNumOutEdges;
+	                    }
 	        void        addRTL(RTL *rtl) {
 		                    if (!m_pRtls)
 			                    m_pRtls = new std::list<RTL *>;
