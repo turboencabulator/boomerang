@@ -37,7 +37,6 @@
 #include <cstring>
 
 static void delete_lrtls(std::list<RTL *> *pLrtl);
-static void erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end);
 
 /**
  * \brief Constructor.
@@ -430,25 +429,27 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 	// If necessary, set up a new basic block with information from the original bb
 	if (!pNewBB) {
 		pNewBB = new BasicBlock(*pBB);
-		// But we don't want the top BB's in edges; our only in-edge should be the out edge from the top BB
-		pNewBB->m_InEdges.clear();
-		// The "bottom" BB now starts at the implicit label, so we create a new list that starts at ri. We need a new
-		// list, since it is different from the original BB's list. We don't have to "deep copy" the RTLs themselves,
-		// since they will never overlap
-		pNewBB->setRTLs(new std::list<RTL *>(ri, pBB->m_pRtls->end()));
 		// Put it in the graph
 		m_listBB.push_back(pNewBB);
 		// Put the implicit label into the map. Need to do this before the addOutEdge() below
 		m_mapBB[uNativeAddr] = pNewBB;
+
+		// But we don't want the top BB's in edges; our only in-edge should be the out edge from the top BB
+		pNewBB->m_InEdges.clear();
 		// There must be a label here; else would not be splitting.  Give it a new label
 		pNewBB->m_iLabelNum = ++lastLabel;
+		// The "bottom" BB now starts at the implicit label, so we create a new list that starts at ri. We need a new
+		// list, since it is different from the original BB's list. We don't have to "deep copy" the RTLs themselves,
+		// since they will never overlap
+		pNewBB->setRTLs(new std::list<RTL *>(ri, pBB->m_pRtls->end()));
 	} else if (pNewBB->m_bIncomplete) {
 		// We have an existing BB and a map entry, but no details except for in-edges and m_bHasLabel.
 		// First save the in-edges and m_iLabelNum
-		std::vector<BasicBlock *> ins(pNewBB->m_InEdges);
-		int label = pNewBB->m_iLabelNum;
+		auto ins = pNewBB->m_InEdges;
+		auto label = pNewBB->m_iLabelNum;
 		// Copy over the details now, completing the bottom BB
 		*pNewBB = *pBB;  // Assign the BB, copying fields. This will set m_bIncomplete false
+
 		// Replace the in edges (likely only one)
 		pNewBB->m_InEdges = ins;
 		// Replace the label (must be one, since we are splitting this BB!)
@@ -460,8 +461,6 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 	// else pNewBB exists and is complete. We don't want to change the complete BB in any way, except to later add one
 	// in-edge
 
-	// Update original ("top") basic block's info and make it a fall-through
-	pBB->m_nodeType = FALL;
 	// Fix the in-edges of pBB's descendants. They are now pNewBB
 	// Note: you can't believe m_iNumOutEdges at the time that this function may get called
 	for (const auto &pDescendant : pBB->m_OutEdges) {
@@ -478,17 +477,21 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		// That pointer should have been found!
 		assert(found);
 	}
+
 	// The old BB needs to have part of its list of RTLs erased, since the instructions overlap
 	if (bDelRtls) {
-		// Delete the list of pointers, and also the RTLs they point to
-		erase_lrtls(pBB->m_pRtls, ri, pBB->m_pRtls->end());
-	} else {
-		// Delete the list of pointers, but not the RTLs they point to
-		pBB->m_pRtls->erase(ri, pBB->m_pRtls->end());
+		// Delete the RTLs they point to
+		for (auto it = ri; it != pBB->m_pRtls->end(); ++it) {
+			delete *it;
+		}
 	}
+	// Delete the list of pointers
+	pBB->m_pRtls->erase(ri, pBB->m_pRtls->end());
+
+	// Update original ("top") basic block's info and make it a fall-through
+	pBB->updateType(FALL, 1);
 	// Erase any existing out edges
 	pBB->m_OutEdges.clear();
-	pBB->m_iNumOutEdges = 1;
 	addOutEdge(pBB, uNativeAddr);
 	return pNewBB;
 }
@@ -1099,22 +1102,6 @@ delete_lrtls(std::list<RTL *> *pLrtl)
 	for (const auto &rtl : *pLrtl) {
 		delete rtl;
 	}
-}
-
-/**
- * "Deep" erase for a list of pointers to RTLs.
- *
- * \param pLrtl  The list.
- * \param begin  Iterator to first (inclusive) item to delete.
- * \param end    Iterator to last (exclusive) item to delete.
- */
-static void
-erase_lrtls(std::list<RTL *> *pLrtl, std::list<RTL *>::iterator begin, std::list<RTL *>::iterator end)
-{
-	for (auto it = begin; it != end; ++it) {
-		delete *it;
-	}
-	pLrtl->erase(begin, end);
 }
 
 /**
