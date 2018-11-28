@@ -104,7 +104,7 @@ BasicBlock::BasicBlock(const BasicBlock &bb) :
 }
 
 /**
- * \brief Private constructor.  Called by Cfg::NewBB.
+ * \brief Private constructor.  Called by Cfg::newBB.
  * \param pRtls
  * \param bbType
  * \param iNumOutEdges
@@ -123,7 +123,7 @@ BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges)
 	assert(bbType != COMPCALL || iNumOutEdges == 1);
 	assert(bbType != INVALID  || iNumOutEdges == 0);
 
-	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with AddOutEdge()
+	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with addOutEdge()
 
 	// Set the RTLs
 	setRTLs(pRtls);

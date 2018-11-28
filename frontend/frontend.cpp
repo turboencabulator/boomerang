@@ -1177,7 +1177,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
  * address into the Cfg's BB map, and it looks like the BB has already been
  * visited, and it gets overlooked. It would be better to have a scheme
  * whereby the order of calling these functions (i.e. visit() and
- * AddOutEdge()) did not matter.
+ * addOutEdge()) did not matter.
  *
  * \param pCfg      The enclosing CFG.
  * \param uNewAddr  The address to be checked.
