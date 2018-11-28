@@ -44,9 +44,6 @@ class UserProc;
 #define BTHEN 0
 #define BELSE 1
 
-// A type for the ADDRESS to BB map
-typedef std::map<ADDRESS, BasicBlock *> MAPBB;
-
 /**
  * Control Flow Graph class.  Contains all the BasicBlock objects for a
  * procedure.  These BBs contain all the RTLs for the procedure, so by
@@ -72,7 +69,7 @@ class Cfg {
 	/**
 	 * The ADDRESS to BasicBlock* map.
 	 */
-	MAPBB       m_mapBB;
+	std::map<ADDRESS, BasicBlock *> m_mapBB;
 
 	/**
 	 * The entry and exit BBs.

@@ -36,8 +36,6 @@
 #include <cassert>
 #include <cstring>
 
-static void delete_lrtls(std::list<RTL *> *pLrtl);
-
 /**
  * \brief Constructor.
  */
@@ -178,18 +176,6 @@ Cfg::checkEntryBB()
 BasicBlock *
 Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError)
 {
-	MAPBB::iterator mi;
-	BasicBlock *pBB;
-
-	assert(bbType != ONEWAY   || iNumOutEdges == 1);
-	assert(bbType != TWOWAY   || iNumOutEdges == 2);
-	assert(bbType != CALL     || iNumOutEdges <= 1);
-	assert(bbType != RET      || iNumOutEdges == 0);
-	assert(bbType != FALL     || iNumOutEdges == 1);
-	assert(bbType != COMPJUMP || iNumOutEdges == 0);
-	assert(bbType != COMPCALL || iNumOutEdges == 1);
-	assert(bbType != INVALID  || iNumOutEdges == 0);
-
 	// First find the native address of the first RTL
 	// Can't use BasicBlock::GetLowAddr(), since we don't yet have a BB!
 	ADDRESS addr = pRtls->front()->getAddress();
@@ -207,7 +193,8 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 
 	// If this addr is non zero, check the map to see if we have a (possibly incomplete) BB here already
 	// If it is zero, this is a special BB for handling delayed branches or the like
-	bool bDone = false;
+	auto mi = m_mapBB.end();
+	BasicBlock *pBB = nullptr;
 	if (addr != 0) {
 		mi = m_mapBB.find(addr);
 		if (mi != m_mapBB.end() && mi->second) {
@@ -215,23 +202,22 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 			// It should be incomplete, or the pBB there should be zero (we have called Label but not yet created the BB
 			// for it).  Else we have duplicated BBs. Note: this can happen with forward jumps into the middle of a
 			// loop, so not error
-			if (!pBB->m_bIncomplete) {
+			if (pBB->m_bIncomplete) {
+				// Fill in the details, and return it
+				pBB->setRTLs(pRtls);
+				pBB->updateType(bbType, iNumOutEdges);
+				pBB->m_bIncomplete = false;
+			} else {
 				// This list of RTLs is not needed now
-				delete_lrtls(pRtls);
+				for (const auto &rtl : *pRtls)
+					delete rtl;
 				if (VERBOSE)
 					LOG << "throwing BBAlreadyExistsError\n";
 				throw BBAlreadyExistsError(pBB);
-			} else {
-				// Fill in the details, and return it
-				pBB->setRTLs(pRtls);
-				pBB->m_nodeType = bbType;
-				pBB->m_iNumOutEdges = iNumOutEdges;
-				pBB->m_bIncomplete = false;
 			}
-			bDone = true;
 		}
 	}
-	if (!bDone) {
+	if (!pBB) {
 		// Else add a new BB to the back of the current list.
 		pBB = new BasicBlock(pRtls, bbType, iNumOutEdges);
 		m_listBB.push_back(pBB);
@@ -244,7 +230,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		}
 	}
 
-	if (addr != 0 && (mi != m_mapBB.end())) {
+	if (mi != m_mapBB.end()) {
 		// Existing New         +---+ Top of new
 		//          +---+       +---+
 		//  +---+   |   |       +---+ Fall through
@@ -1089,19 +1075,6 @@ Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 		}
 	}
 	return ch;
-}
-
-/**
- * "Deep" delete for a list of pointers to RTLs.
- *
- * \param pLrtl  The list.
- */
-static void
-delete_lrtls(std::list<RTL *> *pLrtl)
-{
-	for (const auto &rtl : *pLrtl) {
-		delete rtl;
-	}
 }
 
 /**
