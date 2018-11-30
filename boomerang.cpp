@@ -175,7 +175,7 @@ Boomerang::help()
 		"  -o <output path> : Where to generate output (defaults to ./output)\n"
 		"  -x               : Dump XML files\n"
 		"  -r               : Print RTL for each proc to log before code generation\n"
-		"  -gd <dot file>   : Generate a dotty graph of the program's CFG and DFG\n"
+		"  -gd              : Generate a dotty graph of the program's CFG and DFG\n"
 		"  -gc              : Generate a call graph (callgraph.out and callgraph.dot)\n"
 		"  -gs              : Generate a symbol file (symbols.h)\n"
 		"  -iw              : Write indirect call report to output/indirect.txt\n"
@@ -721,7 +721,7 @@ Boomerang::commandLine(int argc, const char *argv[])
 			break;
 		case 'g':
 			if (argv[i][2] == 'd')
-				dotFile = argv[++i];
+				dotFile = true;
 			else if (argv[i][2] == 'c')
 				generateCallGraph = true;
 			else if (argv[i][2] == 's') {
@@ -1127,7 +1127,7 @@ Boomerang::decompile(const char *fname, const char *pname)
 	prog->decompile();
 
 	if (dotFile) {
-		std::ofstream of(dotFile);
+		std::ofstream of(outputPath + "cfg.dot");
 		prog->generateDot(of);
 		of.close();
 	}

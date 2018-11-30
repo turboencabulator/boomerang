@@ -1241,7 +1241,7 @@ UserProc::middleDecompile(ProcList *path, int indent)
 			LOG << "=== end debug print SSA for " << getName() << " pass " << pass << " (no propagations) ===\n\n";
 		}
 
-		if (Boomerang::get()->dotFile)  // Require -gd now (though doesn't listen to file name)
+		if (Boomerang::get()->dotFile)
 			printDFG();
 		Boomerang::get()->alert_decompile_SSADepth(this, pass);  // FIXME: need depth -> pass in GUI code
 

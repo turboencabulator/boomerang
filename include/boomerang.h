@@ -245,8 +245,7 @@ public:
 	        bool        noDecompile = false;
 	        bool        stopBeforeDecompile = false;
 	        bool        traceDecoder = false;
-	        /// The file in which the dotty graph is saved
-	        const char *dotFile = nullptr;
+	        bool        dotFile = false;
 	        int         numToPropagate = -1;
 	        bool        noPromote = false;
 	        bool        propOnlyToAll = false;
