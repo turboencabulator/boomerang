@@ -1654,14 +1654,14 @@ Cfg::generateDot(std::ostream &os) const
 		os << indices[bb];
 #endif
 		// Print the first statement's number,
-		// or a unique string (e.g. bb0x8048c10) if no statements.
+		// or the BB's address if no statements.
 		if (auto first = bb->getFirstStmt()) {
 #if BBINDEX
 			os << ":";
 #endif
 			os << first->getNumber() << " ";
 		} else {
-			os << "bb" << (void *)bb << " ";
+			os << "bb" << bb->getLowAddr() << " ";
 		}
 
 		switch (bb->getType()) {
