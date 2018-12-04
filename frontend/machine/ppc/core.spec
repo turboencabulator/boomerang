@@ -423,8 +423,8 @@ constructors
 
 # very ugly code generated...
 #  b^LK^AA reloc
-#    when { AA = 0, reloc = $pc + LI * 4 } is b & LK & AA & LI
-#    when { AA = 1, reloc =       LI * 4 } is b & LK & AA & LI
+#    when { AA = 0, reloc = $pc + LI! * 4 } is b & LK & AA & LI
+#    when { AA = 1, reloc =       LI! * 4 } is b & LK & AA & LI
 
    b^LK     reloc { reloc = L + LI! * 4 } is L: b & LK & LI & AA = 0
    b^LK^"a" reloc { reloc =     LI! * 4 } is    b & LK & LI & AA = 1
@@ -433,13 +433,11 @@ constructors
 
 # very ugly code generated...
 #  bc^LK^AA reloc
-#    when { AA = 0, reloc = $pc + BD * 4 } is bc & LK & AA & BO & BI & BD
-#    when { AA = 1, reloc =       BD * 4 } is bc & LK & AA & BO & BI & BD
+#    when { AA = 0, reloc = $pc + BD! * 4 } is bc & LK & AA & BO & BI & BD
+#    when { AA = 1, reloc =       BD! * 4 } is bc & LK & AA & BO & BI & BD
 
-   bc^LK     BO,BI,reloc { reloc = L + BD * 4 }
-                         is L: bc & LK & BO & BI & BD & AA = 0
-   bc^LK^"a" BO,BI,reloc { reloc =     BD * 4 }
-                         is    bc & LK & BO & BI & BD & AA = 1
+   bc^LK     BO,BI,reloc { reloc = L + BD! * 4 } is L: bc & LK & BO & BI & BD & AA = 0
+   bc^LK^"a" BO,BI,reloc { reloc =     BD! * 4 } is    bc & LK & BO & BI & BD & AA = 1
 
 ## SC-Form
 
@@ -691,8 +689,8 @@ constructors
 # void bXX(unsigned BIcr, RAddr reloc) { bc( t/f, ( BIcr * 4 + XX ), reloc ); }
 # but it doesn't work, and this makes way too much code...
 
-bcc_^LK     BIcr, reloc { reloc = L + BD * 4 } is L: bc & LK & BIcr & bcc_ & BD & AA = 0
-bcc_^LK^"a" BIcr, reloc { reloc =     BD * 4 } is    bc & LK & BIcr & bcc_ & BD & AA = 1
+bcc_^LK     BIcr, reloc { reloc = L + BD! * 4 } is L: bc & LK & BIcr & bcc_ & BD & AA = 0
+bcc_^LK^"a" BIcr, reloc { reloc =     BD! * 4 } is    bc & LK & BIcr & bcc_ & BD & AA = 1
 
 #bcc_^"lr"^LK  BIcr     is bclr    & LK & BIcr & bcc_
 #bcc_^"ctr"^LK BIcr     is bcctr   & LK & BIcr & bcc_

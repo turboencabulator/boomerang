@@ -673,8 +673,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                   const char *name = MATCH_name;
                   unsigned BIcr = (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                   unsigned reladdr = 
-                    4 * (MATCH_w_32_0 >> 2 & 0x3fff) /* BD at 0 */ + 
-                    addressToPC(MATCH_p);
+                    4 * sign_extend(
+                                (MATCH_w_32_0 >> 2 & 0x3fff) /* BD at 0 */, 
+                                14) + addressToPC(MATCH_p);
                   nextPC = 4 + MATCH_p; 
                   
 #line 211 "machine/ppc/decoder.m"
@@ -753,8 +754,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 274 "machine/ppc/decoder.m"
@@ -777,8 +780,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 268 "machine/ppc/decoder.m"
@@ -817,8 +822,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 270 "machine/ppc/decoder.m"
@@ -841,8 +848,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 277 "machine/ppc/decoder.m"
@@ -885,8 +894,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 281 "machine/ppc/decoder.m"
@@ -913,8 +924,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 272 "machine/ppc/decoder.m"
@@ -953,8 +966,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 287 "machine/ppc/decoder.m"
@@ -987,8 +1002,10 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             unsigned BIcr = 
                               (MATCH_w_32_0 >> 18 & 0x7) /* BIcr at 0 */;
                             unsigned reladdr = 
-                              4 * (MATCH_w_32_0 >> 2 & 0x3fff) 
-                                    /* BD at 0 */ + addressToPC(MATCH_p);
+                              4 * sign_extend(
+                                          (MATCH_w_32_0 >> 2 & 0x3fff) 
+                                                /* BD at 0 */, 14) + 
+                              addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
 #line 284 "machine/ppc/decoder.m"
@@ -4075,7 +4092,8 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
   MATCH_label_a1: (void)0; /*placeholder for label*/ 
     { 
       unsigned reladdr = 
-        4 * (MATCH_w_32_0 >> 2 & 0x3fff) /* BD at 0 */ + addressToPC(MATCH_p);
+        4 * sign_extend((MATCH_w_32_0 >> 2 & 0x3fff) /* BD at 0 */, 14) + 
+        addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
 #line 302 "machine/ppc/decoder.m"
