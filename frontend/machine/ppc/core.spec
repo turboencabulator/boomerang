@@ -196,7 +196,6 @@ lswi   is ab_dx         & Rc = 0 & Xo1 = 597
 
 mfsrin is ab_dx & A = 0 & Rc = 0 & Xo1 = 659
 
-
 Xd_ is any of  [ mfcr mfmsr ],
  which is Xo1 = [ 19    83  ]
  & ab_dx
@@ -207,7 +206,8 @@ Xd_ is any of  [ mfcr mfmsr ],
 mfsr is ab_dx & B = 0 & Rc = 0 & SRz = 0 & Xo1 = 595
 
 Xsabx_ is any of [ and andc eqv nand nor  or orc sld slw srad sraw srd srw xor ],
- which is Xo1 = [   28  60  284  476 124 444 412  27  24  794  792 539 536 316 ] & ab_dx
+ which is Xo1 = [   28  60  284  476 124 444 412  27  24  794  792 539 536 316 ]
+ & ab_dx
 
 Xsab0_ is any of [ ecowx stbux stbx stdux stdx
                     sthbrx sthux sthx stswx stwbrx stwux stwx ],
@@ -332,7 +332,7 @@ sradi is  ab_dx  & Xo2 = 413 # split sh field
 ## XO-Form
 
 XO_ is any of   [ add addc adde divd divdu divw divwu mulld mullw subf subfc subfe ],
- which is Xo9 = [ 266  10   138  489  457   491  459   233   235   40    8   136  ]
+ which is Xo9 = [ 266  10   138  489  457   491  459   233   235   40    8    136  ]
  & ab_dx
 
 XOo_ is any of  [ mulhd mulhdu mulhw mulhwu ],
@@ -507,7 +507,7 @@ constructors
    mfspr  D, spr { spr@[10:31] = 0 }
                  is mfspr & D & sprH = spr@[5:9] & sprL = spr@[0:4]
    mftb   D, tbr { tbr@[10:31] = 0 }
-                 is mftb  & D & tbrL = tbr@[0:4] & tbrH = tbr@[5:9] 
+                 is mftb  & D & tbrL = tbr@[0:4] & tbrH = tbr@[5:9]
    mtcrf  CRM, S
    mtspr  spr, S { spr@[10:31] = 0 }
                  is mtspr & S & sprH = spr@[5:9] & sprL = spr@[0:4]
@@ -518,7 +518,7 @@ constructors
 
 ## XS-Form (64 bit instruction)
 
-   sradi^Rc A,S,sh 
+   sradi^Rc A,S,sh
               is sradi & Rc & A & S & SH = sh@[0:3] & AA = sh@[4]
 
 ## XO-Form
@@ -541,12 +541,12 @@ constructors
 
 ## MD-Form  (64-bit instructions)
 
-   MD_^Rc A,S,sh,m is MD_  & Rc & A & S & SH = sh@[0:3] & AA  = sh@[4] 
+   MD_^Rc A,S,sh,m is MD_  & Rc & A & S & SH = sh@[0:3] & AA  = sh@[4]
                                         & MB =  m@[0:3] & mbe =  m@[4]
 
 ## MDS-Form (64-bit instructions)
 
-   MDS_^Rc A,S,B,m is MDS_ & Rc & A & S & B 
+   MDS_^Rc A,S,B,m is MDS_ & Rc & A & S & B
                                         & MB =  m@[0:3] & mbe =  m@[4]
 
 ### discard 64 bit operations
@@ -602,15 +602,15 @@ constructors
 # Table F-5
 
    extlwi A,S,n,p    is rlwinm( A,S,p,     0,   n- 1   )
-   extrwi A,S,n,p    is rlwinm( A,S,p+n,   32-n,31    ) 
+   extrwi A,S,n,p    is rlwinm( A,S,p+n,   32-n,31    )
    inslwi A,S,n,p    is rlwimi( A,S,32-p,  p,   p+n- 1 )
    insrwi A,S,n,p    is rlwimi( A,S,32-p-n,p,   p+n- 1 )
    rotlwi A,S,n      is rlwinm( A,S,n,     0,   31    )
    rotrwi A,S,n      is rlwinm( A,S,32-n,  0,   31    )
-   rotlw  A,S,B      is rlwnm(  A,S,B,     0,   31    )  
+   rotlw  A,S,B      is rlwnm(  A,S,B,     0,   31    )
    slwi   A,S,n      is rlwinm( A,S,n,     0,   31-n  )
    srwi   A,S,n      is rlwinm( A,S,32-n,  n,   31    )
-   clrlwi A,S,n      is rlwinm( A,S,0,     n,   31    )  
+   clrlwi A,S,n      is rlwinm( A,S,0,     n,   31    )
    clrrwi A,S,n      is rlwinm( A,S,0,     0,   31-n  )
    clrlslwi A,S,p,n  is rlwinm( A,S,n,     p-n, 31-n  )
 
@@ -702,4 +702,3 @@ bcc_^"ctr"^LK BIcr     is Xo1 = 528 & cr_dx & crbB = 0   & LK & BIcr & bcc_
 #XLb_ is any of [ bcctr bclr ],
 # which is Xo1 = [ 528   16  ]
 # & cr_dx & crbB = 0
-

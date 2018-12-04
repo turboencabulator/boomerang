@@ -16,13 +16,10 @@ constructors
    mrq   A, S     is orq( A, S, S )
    not   A, S     is nor( A, S, S )
    notq  A, S     is norq( A, S, S )
-   mtcr  S        is mtcrf( 0xff, S ) 
+   mtcr  S        is mtcrf( 0xff, S )
 
 # e additions
 #
    lwi   D, x     is addis( D, 0, x@[16:31] ); ori(D, D, x@[0:15] )
 
 #### end
-
-
-
