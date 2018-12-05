@@ -627,7 +627,7 @@ RTL::simplify()
 			}
 		} else if (stmt->isAssign()) {
 			Exp *guard = ((Assign *)stmt)->getGuard();
-			if (guard && (guard->isFalse() || (guard->isIntConst() && ((Const *)guard)->getInt() == 0))) {
+			if (guard && (guard->isFalse() || (guard->isIntConst() && !((Const *)guard)->getInt()))) {
 				// This assignment statement can be deleted
 				if (VERBOSE)
 					LOG << "removing assignment with false guard at " << getAddress() << " " << *stmt << "\n";

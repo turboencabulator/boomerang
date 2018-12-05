@@ -2446,17 +2446,16 @@ Binary::polySimplify(bool &bMod)
 	}
 
 	// Check for exp AND TRUE (logical AND)
-	if ((op == opAnd)
-	    // Is the below really needed?
-	 && (((opSub2 == opIntConst && ((Const *)subExp2)->getInt() != 0)) || subExp2->isTrue())) {
+	if (op == opAnd
+	 && (subExp2->isTrue() || (opSub2 == opIntConst && !!((Const *)subExp2)->getInt()))) {
 		res = ((Unary *)res)->getSubExp1();
 		bMod = true;
 		return res;
 	}
 
 	// Check for exp OR TRUE (logical OR)
-	if ((op == opOr)
-	 && (((opSub2 == opIntConst && ((Const *)subExp2)->getInt() != 0)) || subExp2->isTrue())) {
+	if (op == opOr
+	 && (subExp2->isTrue() || (opSub2 == opIntConst && !!((Const *)subExp2)->getInt()))) {
 		//delete res;
 		res = new Terminal(opTrue);
 		bMod = true;
