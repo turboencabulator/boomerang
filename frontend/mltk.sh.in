@@ -58,6 +58,8 @@ while [ $# -gt 0 ]; do
 done
 
 # Run the toolkit.
+# See usercode.nw in the toolkit sources for more example templates.
+#
 # Norman wrote some 32 bit code for us, at great time expense to him, but
 # unfortunately, this seems to cause a memory explosion. The versions from
 # 4th Aug onwards have this problem. So for now, we use the 1st Aug version,
@@ -65,8 +67,29 @@ done
 # optimisations (so it doesn't need the 32 bit code to match single sparc
 # return instructions, for example).
 eval "${SML_TOOLKIT}" <<EOF
+	structure Frontend = struct
+		structure Exp = Main.Exp
+		structure Code = Main.Code
+		fun call(f, args) = Code.EVAL (Exp.call (Exp.var f :: args))
+		val templates =
+			{ addressAdd = fn {address, pcUnits} => Exp.add(address, Exp.const pcUnits)
+			, addressToPC = fn x => Exp.call [Exp.var "addressToPC", x]
+			, addressType = Type.VAR {interface=NONE, name="dword"}
+			, fetch = fn {address, width} =>
+				let val rtn = case width
+					of 8 => "getByte"
+					| 16 => "getWord"
+					| 32 => "getDword"
+					| _  => Impossible.impossible ("width = " ^ Int.toString width)
+				in  Exp.call [Exp.var rtn, address]
+				end
+			, noMatch = Code.COMMENTED_STMT (call ("assert", [Exp.false']), "no match")
+			}
+		fun matcher x = Main.matcher' templates true x
+	end
+
 	val _ = GlobalState.Match.fuse := false;
-	val d = CC.matcher[${SPECS}];
+	val d = Frontend.matcher[${SPECS}];
 	d "${MATCHER}";
 EOF
 if [ ! -f "${MATCHER}.d" ]; then
