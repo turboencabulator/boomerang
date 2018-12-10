@@ -220,7 +220,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 #line 214 "machine/sparc/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 214 "machine/sparc/decoder.m"
 hostPC
@@ -2387,7 +2387,7 @@ SparcDecoder::dis_RegImm(unsigned pc)
 
 #line 688 "machine/sparc/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 688 "machine/sparc/decoder.m"
 pc
@@ -2450,7 +2450,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
 
 #line 711 "machine/sparc/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 711 "machine/sparc/decoder.m"
 pc
@@ -2567,7 +2567,7 @@ SparcDecoder::isRestore(ADDRESS hostPC)
 
 #line 765 "machine/sparc/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 765 "machine/sparc/decoder.m"
 hostPC

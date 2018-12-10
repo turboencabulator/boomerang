@@ -77,7 +77,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 #line 71 "machine/st20/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 71 "machine/st20/decoder.m"
 hostPC + result.numBytes++

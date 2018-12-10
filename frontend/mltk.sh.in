@@ -74,7 +74,7 @@ eval "${SML_TOOLKIT}" <<EOF
 		val templates =
 			{ addressAdd = fn {address, pcUnits} => Exp.add(address, Exp.const pcUnits)
 			, addressToPC = fn x => Exp.call [Exp.var "addressToPC", x]
-			, addressType = Type.VAR {interface=NONE, name="dword"}
+			, addressType = Type.VAR {interface=NONE, name="ADDRESS"}
 			, fetch = fn {address, width} =>
 				let val rtn = case width
 					of 8 => "getByte"

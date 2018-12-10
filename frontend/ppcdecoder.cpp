@@ -126,7 +126,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 #line 120 "machine/ppc/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 120 "machine/ppc/decoder.m"
 hostPC

@@ -11,7 +11,6 @@
 #define TYPES_H
 
 typedef unsigned int ADDRESS;       /* 32-bit unsigned */
-typedef ADDRESS dword;              /* for use in decoders */
 
 #define STD_SIZE    32              // Standard size
 #define NO_ADDRESS ((ADDRESS)-1)    // For invalid ADDRESSes

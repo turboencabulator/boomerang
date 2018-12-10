@@ -120,7 +120,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 #line 114 "machine/pentium/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 114 "machine/pentium/decoder.m"
 hostPC
@@ -56909,7 +56909,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
 
 #line 2138 "machine/pentium/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 2138 "machine/pentium/decoder.m"
 pc
@@ -57212,7 +57212,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
 
 #line 2221 "machine/pentium/decoder.m"
 { 
-  dword MATCH_p = 
+  ADDRESS MATCH_p = 
     
 #line 2221 "machine/pentium/decoder.m"
 pc
