@@ -75,4 +75,5 @@ MIPSDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	ADDRESS nextPC = NO_ADDRESS;
 }
 
+#line 79 "mipsdecoder.cpp"
 

@@ -122,447 +122,265 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	ADDRESS nextPC = NO_ADDRESS;
 
 
+#line 126 "ppcdecoder.cpp"
 
-#line 119 "machine/ppc/decoder.m"
+#line 120 "machine/ppc/decoder.m"
 { 
   dword MATCH_p = 
     
-#line 119 "machine/ppc/decoder.m"
-    hostPC
-    ;
+#line 120 "machine/ppc/decoder.m"
+hostPC
+#line 134 "ppcdecoder.cpp"
+;
   const char *MATCH_name;
   static const char *MATCH_name_OPCD_0[] = {
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "mulli", "subfic", nullptr, nullptr, nullptr, "addic", 
-    "addicq", "addi", "addis", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "ori", "oris", "xori", 
-    "xoris", "andiq", "andisq", nullptr, nullptr, "lwz", "lwzu", "lbz", 
-    "lbzu", "stw", "stwu", "stb", "stbu", "lhz", "lhzu", "lha", "lhau", 
-    "sth", "sthu", "lmw", "stmw", "lfs", "lfsu", "lfd", "lfdu", "stfs", 
-    "stfsu", "stfd", "stfdu", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, "mulli", "subfic", NULL, NULL, 
+    NULL, "addic", "addicq", "addi", "addis", NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, "ori", "oris", "xori", "xoris", "andiq", "andisq", 
+    NULL, NULL, "lwz", "lwzu", "lbz", "lbzu", "stw", "stwu", "stb", "stbu", 
+    "lhz", "lhzu", "lha", "lhau", "sth", "sthu", "lmw", "stmw", "lfs", 
+    "lfsu", "lfd", "lfdu", "stfs", "stfsu", "stfd", "stfdu", 
   };
   static const char *MATCH_name_BO4_3[] = {
-    nullptr, nullptr, "bge", nullptr, nullptr, nullptr, "blt", 
+    NULL, NULL, "bge", NULL, NULL, NULL, "blt", 
   };
   static const char *MATCH_name_BO4_4[] = {
-    nullptr, nullptr, "ble", nullptr, nullptr, nullptr, "bgt", 
+    NULL, NULL, "ble", NULL, NULL, NULL, "bgt", 
   };
   static const char *MATCH_name_BO4_5[] = {
-    nullptr, nullptr, "bne", nullptr, nullptr, nullptr, "beq", 
+    NULL, NULL, "bne", NULL, NULL, NULL, "beq", 
   };
   static const char *MATCH_name_BO4_6[] = {
-    nullptr, nullptr, "bns", nullptr, nullptr, nullptr, "bso", 
+    NULL, NULL, "bns", NULL, NULL, NULL, "bso", 
   };
   static const char *MATCH_name_LK_8[] = {"crnor", "bl", };
   static const char *MATCH_name_BO4_10[] = {
-    nullptr, nullptr, "bgelr", nullptr, nullptr, nullptr, "bltlr", 
+    NULL, NULL, "bgelr", NULL, NULL, NULL, "bltlr", 
   };
   static const char *MATCH_name_BO4_11[] = {
-    nullptr, nullptr, "blelr", nullptr, nullptr, nullptr, "bgtlr", 
+    NULL, NULL, "blelr", NULL, NULL, NULL, "bgtlr", 
   };
   static const char *MATCH_name_BO4_12[] = {
-    nullptr, nullptr, "bnelr", nullptr, nullptr, nullptr, "beqlr", 
+    NULL, NULL, "bnelr", NULL, NULL, NULL, "beqlr", 
   };
   static const char *MATCH_name_BO4_13[] = {
-    nullptr, nullptr, "bnslr", nullptr, nullptr, nullptr, "bsolr", 
+    NULL, NULL, "bnslr", NULL, NULL, NULL, "bsolr", 
   };
   static const char *MATCH_name_LK_14[] = {"crandc", "balctrl", };
   static const char *MATCH_name_Rc_22[] = {"rlwimi", "rlwimiq", };
   static const char *MATCH_name_Rc_23[] = {"rlwinm", "rlwinmq", };
   static const char *MATCH_name_Xo1_26[] = {
-    "fcmpu", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, "frsp", 
-    nullptr, "fctiw", "fctiwz", nullptr, nullptr, nullptr, nullptr, 
-    "lwarx", "ldx", nullptr, "lwzx", "slw", nullptr, "cntlzw", "sld", 
-    "and", nullptr, nullptr, nullptr, "fcmpo", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "fneg", nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "ldux", nullptr, 
-    "lwzux", nullptr, nullptr, "cntlzd", nullptr, "andc", nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "fmr", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "ldarx", nullptr, nullptr, "lbzx", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "lbzux", nullptr, nullptr, nullptr, nullptr, "nor", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "fnabs", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, "stdx", 
-    "stwcxq", "stwx", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    "stdux", nullptr, "stwux", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "stdcxq", "stbx", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "stbux", nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "fabs", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "lhzx", nullptr, 
-    nullptr, nullptr, nullptr, "eqv", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "eciwx", "lhzux", nullptr, 
-    nullptr, nullptr, nullptr, "xor", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "mfspr", nullptr, "lwax", nullptr, "lhax", nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "lwaux", nullptr, "lhaux", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "sthx", nullptr, nullptr, nullptr, nullptr, "orc", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "ecowx", "sthux", nullptr, nullptr, nullptr, nullptr, 
-    "or", nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "nand", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "lswx", "lwbrx", "lfsx", "srw", 
-    nullptr, nullptr, "srd", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "lfsux", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "lfdx", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "lfdux", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "stswx", "stwbrx", "stfsx", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "stfsux", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "stfdx", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "stfdux", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "lhbrx", nullptr, "sraw", 
-    nullptr, "srad", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "fctid", "fctidz", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "srawi", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "fcfid", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "sthbrx", nullptr, nullptr, 
-    nullptr, "extsh", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "extsb", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "stfiwx", nullptr, nullptr, "extsw", 
+    "fcmpu", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, "frsp", NULL, "fctiw", "fctiwz", NULL, NULL, NULL, NULL, "lwarx", 
+    "ldx", NULL, "lwzx", "slw", NULL, "cntlzw", "sld", "and", NULL, NULL, 
+    NULL, "fcmpo", NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fneg", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "ldux", 
+    NULL, "lwzux", NULL, NULL, "cntlzd", NULL, "andc", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fmr", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "ldarx", NULL, NULL, 
+    "lbzx", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "lbzux", NULL, NULL, 
+    NULL, NULL, "nor", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "fnabs", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, "stdx", "stwcxq", "stwx", NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, "stdux", NULL, "stwux", NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    "stdcxq", "stbx", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "stbux", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, "fabs", NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, "lhzx", NULL, NULL, NULL, NULL, 
+    "eqv", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "eciwx", "lhzux", NULL, NULL, NULL, NULL, "xor", NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "mfspr", NULL, "lwax", 
+    NULL, "lhax", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, "lwaux", NULL, "lhaux", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, "sthx", NULL, NULL, NULL, NULL, 
+    "orc", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "ecowx", "sthux", NULL, NULL, NULL, NULL, "or", NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "nand", NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "lswx", "lwbrx", "lfsx", "srw", NULL, NULL, "srd", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "lfsux", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "lfdx", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, "lfdux", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "stswx", "stwbrx", "stfsx", NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "stfsux", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    "stfdx", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "stfdux", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "lhbrx", NULL, "sraw", NULL, "srad", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, "fctid", "fctidz", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "srawi", NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, "fcfid", NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "sthbrx", NULL, NULL, NULL, "extsh", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, "extsb", NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    "stfiwx", NULL, NULL, "extsw", 
   };
   static const char *MATCH_name_Xo9_29[] = {
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "subfc", nullptr, "addc", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "subf", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, "neg", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "subfe", nullptr, "adde", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "subfze", nullptr, "addze", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "subfme", "mulld", 
-    "addme", "mullw", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "add", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "divdu", 
-    nullptr, "divwu", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "divd", nullptr, "divw", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "subfc", NULL, "addc", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "subf", NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "neg", NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "subfe", NULL, "adde", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "subfze", 
+    NULL, "addze", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "subfme", "mulld", 
+    "addme", "mullw", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "add", NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "divdu", NULL, "divwu", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "divd", NULL, "divw", 
   };
   static const char *MATCH_name_Xo1_30[] = {
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    "frspq", nullptr, "fctiwq", "fctiwzq", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "slwq", nullptr, 
-    nullptr, "sldq", "andq", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "fnegq", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "andcq", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "fmrq", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, "norq", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "fnabsq", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "fabsq", nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "eqvq", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "xorq", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, "orcq", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "orq", nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "nandq", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, "srwq", nullptr, 
-    nullptr, "srdq", nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, "srawq", nullptr, "sradq", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, "fctidq", "fctidzq", 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, "srawiq", nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    "fcfidq", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    "frspq", NULL, "fctiwq", "fctiwzq", NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, "slwq", NULL, NULL, "sldq", "andq", NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fnegq", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, "andcq", NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, "fmrq", NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "norq", NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fnabsq", NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, "fabsq", NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, "eqvq", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "xorq", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "orcq", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, "orq", NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, "nandq", NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, "srwq", NULL, NULL, "srdq", NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "srawq", NULL, 
+    "sradq", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fctidq", 
+    "fctidzq", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "srawiq", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fcfidq", 
   };
   static const char *MATCH_name_Rc_36[] = {"fdivs", "fdivsq", };
   static const char *MATCH_name_Rc_37[] = {"fsubs", "fsubsq", };
   static const char *MATCH_name_Rc_38[] = {"fadds", "faddsq", };
   static const char *MATCH_name_Xo5_40[] = {
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, 
-    nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, "fdiv", 
-    nullptr, "fsub", "fadd", 
+    NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
+    NULL, NULL, NULL, NULL, NULL, NULL, "fdiv", NULL, "fsub", "fadd", 
   };
   unsigned MATCH_w_32_0;
   { 
@@ -585,22 +403,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             nextPC = 4 + MATCH_p; 
             
 #line 140 "machine/ppc/decoder.m"
-            
 
-            		if (strcmp(name, "addi") == 0 || strcmp(name, "addis") == 0) {
+		if (strcmp(name, "addi") == 0 || strcmp(name, "addis") == 0) {
+			// Note the DIS_RAZ, since rA could be constant zero
+			stmts = instantiate(pc, name, DIS_RD, DIS_RAZ, DIS_SIMM);
+		} else {
+			stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_SIMM);
+		}
 
-            			// Note the DIS_RAZ, since rA could be constant zero
+#line 415 "ppcdecoder.cpp"
 
-            			stmts = instantiate(pc, name, DIS_RD, DIS_RAZ, DIS_SIMM);
-
-            		} else {
-
-            			stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_SIMM);
-
-            		}
-
-            
-            
             
           }
           
@@ -616,16 +428,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
               nextPC = 4 + MATCH_p; 
               
 #line 238 "machine/ppc/decoder.m"
-              
 
-              	//| cmpli(crfd, l, ra, uimm) [name] =>
+	//| cmpli(crfd, l, ra, uimm) [name] =>
+		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
 
-              		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
 
-              
+#line 437 "ppcdecoder.cpp"
 
-              
-              
               
             }
             
@@ -646,14 +455,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
               nextPC = 4 + MATCH_p; 
               
 #line 235 "machine/ppc/decoder.m"
-              
 
-              	//| cmpi(crfd, l, ra, simm) [name] =>
+	//| cmpi(crfd, l, ra, simm) [name] =>
+		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_SIMM);
 
-              		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_SIMM);
+#line 463 "ppcdecoder.cpp"
 
-              
-              
               
             }
             
@@ -679,50 +486,30 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                   nextPC = 4 + MATCH_p; 
                   
 #line 211 "machine/ppc/decoder.m"
-                    // Always "conditional" branch with link, test/OSX/hello has this
+  // Always "conditional" branch with link, test/OSX/hello has this
+		if (reladdr - delta - pc == 4) {  // Branch to next instr?
+			// Effectively %LR = %pc+4, but give the actual value for %pc
+			auto as = new Assign(new IntegerType,
+			                     new Unary(opMachFtr, new Const("%LR")),
+			                     new Const(pc + 4));
+			stmts = new std::list<Statement *>;
+			stmts->push_back(as);
+			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4")
+		} else {
+			Exp *dest = DIS_RELADDR;
+			stmts = instantiate(pc, name, dest);
+			auto newCall = new CallStatement;
+			// Record the fact that this is not a computed call
+			newCall->setIsComputed(false);
+			// Set the destination expression
+			newCall->setDest(dest);
+			result.rtl = new RTL(pc, stmts);
+			result.rtl->appendStmt(newCall);
+		}
 
-                  		if (reladdr - delta - pc == 4) {  // Branch to next instr?
 
-                  			// Effectively %LR = %pc+4, but give the actual value for %pc
+#line 512 "ppcdecoder.cpp"
 
-                  			auto as = new Assign(new IntegerType,
-
-                  			                     new Unary(opMachFtr, new Const("%LR")),
-
-                  			                     new Const(pc + 4));
-
-                  			stmts = new std::list<Statement *>;
-
-                  			stmts->push_back(as);
-
-                  			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4")
-
-                  		} else {
-
-                  			Exp *dest = DIS_RELADDR;
-
-                  			stmts = instantiate(pc, name, dest);
-
-                  			auto newCall = new CallStatement;
-
-                  			// Record the fact that this is not a computed call
-
-                  			newCall->setIsComputed(false);
-
-                  			// Set the destination expression
-
-                  			newCall->setDest(dest);
-
-                  			result.rtl = new RTL(pc, stmts);
-
-                  			result.rtl->appendStmt(newCall);
-
-                  		}
-
-                  
-
-                  
-                  
                   
                 }
                 
@@ -760,13 +547,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 274 "machine/ppc/decoder.m"
-                            
+#line 275 "machine/ppc/decoder.m"
 
-                            		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSGE, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSGE, BIcr);
 
-                            
-                            
+#line 555 "ppcdecoder.cpp"
+
                             
                           }
                           
@@ -786,13 +572,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 268 "machine/ppc/decoder.m"
-                            
+#line 269 "machine/ppc/decoder.m"
 
-                            		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSL, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSL, BIcr);
 
-                            
-                            
+#line 580 "ppcdecoder.cpp"
+
                             
                           }
                           
@@ -828,13 +613,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 270 "machine/ppc/decoder.m"
-                            
+#line 271 "machine/ppc/decoder.m"
 
-                            		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSLE, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSLE, BIcr);
 
-                            
-                            
+#line 621 "ppcdecoder.cpp"
+
                             
                           }
                           
@@ -855,16 +639,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             nextPC = 4 + MATCH_p; 
                             
 #line 277 "machine/ppc/decoder.m"
-                            
 
-                            		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSG, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSG, BIcr);
+//	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
+//		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSGE, BIcr);
 
-                            //	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
+#line 648 "ppcdecoder.cpp"
 
-                            //		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSGE, BIcr);
-
-                            
-                            
                             
                           }
                           
@@ -901,16 +682,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             nextPC = 4 + MATCH_p; 
                             
 #line 281 "machine/ppc/decoder.m"
-                            
 
-                            		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JNE, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JNE, BIcr);
+//	| bng(BIcr, reladdr) [name] =>  // bng same as blt
+//		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSLE, BIcr);
 
-                            //	| bng(BIcr, reladdr) [name] =>  // bng same as blt
+#line 691 "ppcdecoder.cpp"
 
-                            //		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSLE, BIcr);
-
-                            
-                            
                             
                           }
                           
@@ -930,13 +708,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 272 "machine/ppc/decoder.m"
-                            
+#line 273 "machine/ppc/decoder.m"
 
-                            		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JE, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JE, BIcr);
 
-                            
-                            
+#line 716 "ppcdecoder.cpp"
+
                             
                           }
                           
@@ -973,22 +750,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                             nextPC = 4 + MATCH_p; 
                             
 #line 287 "machine/ppc/decoder.m"
-                            
 
-                            		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+//	| bun(BIcr, reladdr) [name] =>
+//		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+//	| bnu(BIcr, reladdr) [name] =>
+//		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
 
-                            //	| bun(BIcr, reladdr) [name] =>
 
-                            //		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+#line 762 "ppcdecoder.cpp"
 
-                            //	| bnu(BIcr, reladdr) [name] =>
-
-                            //		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
-
-                            
-
-                            
-                            
                             
                           }
                           
@@ -1008,13 +779,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 284 "machine/ppc/decoder.m"
-                              // Branch on summary overflow
+#line 285 "machine/ppc/decoder.m"
+  // Branch on summary overflow
+		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
 
-                            		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
+#line 787 "ppcdecoder.cpp"
 
-                            
-                            
                             
                           }
                           
@@ -1041,36 +811,23 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                 nextPC = 4 + MATCH_p; 
                 
 #line 194 "machine/ppc/decoder.m"
-                
 
-                		Exp *dest = DIS_RELADDR;
+		Exp *dest = DIS_RELADDR;
+		stmts = instantiate(pc, name, dest);
+		auto newCall = new CallStatement;
+		// Record the fact that this is not a computed call
+		newCall->setIsComputed(false);
+		// Set the destination expression
+		newCall->setDest(dest);
+		result.rtl = new RTL(pc, stmts);
+		result.rtl->appendStmt(newCall);
+		Proc *destProc = prog->setNewProc(reladdr - delta);
+		if (destProc == (Proc *)-1) destProc = nullptr;
+		newCall->setDestProc(destProc);
 
-                		stmts = instantiate(pc, name, dest);
 
-                		auto newCall = new CallStatement;
+#line 830 "ppcdecoder.cpp"
 
-                		// Record the fact that this is not a computed call
-
-                		newCall->setIsComputed(false);
-
-                		// Set the destination expression
-
-                		newCall->setDest(dest);
-
-                		result.rtl = new RTL(pc, stmts);
-
-                		result.rtl->appendStmt(newCall);
-
-                		Proc *destProc = prog->setNewProc(reladdr - delta);
-
-                		if (destProc == (Proc *)-1) destProc = nullptr;
-
-                		newCall->setDestProc(destProc);
-
-                
-
-                
-                
                 
               }
               
@@ -1082,14 +839,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
               nextPC = 4 + MATCH_p; 
               
 #line 208 "machine/ppc/decoder.m"
-              
 
-              		unconditionalJump("b", 4, reladdr, delta, pc, stmts, result);
+		unconditionalJump("b", 4, reladdr, delta, pc, stmts, result);
 
-              
 
-              
-              
+#line 847 "ppcdecoder.cpp"
+
               
             } /*opt-block*//*opt-block+*/ /*opt-block+*/
           break;
@@ -1170,16 +925,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 320 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSL, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSL, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 934 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1196,16 +948,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 308 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSGE, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSGE, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 957 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1242,16 +991,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 312 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSG, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSG, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 1000 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1268,16 +1014,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 324 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSLE, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSLE, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 1023 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1314,16 +1057,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 328 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JE, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JE, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 1066 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1340,16 +1080,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 316 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JNE, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JNE, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 1089 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1386,16 +1123,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 336 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 1132 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1412,16 +1146,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                                   nextPC = 4 + MATCH_p; 
                                   
 #line 332 "machine/ppc/decoder.m"
-                                  
 
-                                  		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		result.rtl->appendStmt(new ReturnStatement);
 
-                                  		result.rtl->appendStmt(new ReturnStatement);
 
-                                  
+#line 1155 "ppcdecoder.cpp"
 
-                                  
-                                  
                                   
                                 }
                                 
@@ -1527,16 +1258,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                         nextPC = 4 + MATCH_p; 
                         
 #line 298 "machine/ppc/decoder.m"
-                        
 
-                        	//| balctrl(BIcr) [name] =>
+	//| balctrl(BIcr) [name] =>
+		computedCall(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
 
-                        		computedCall(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
 
-                        
+#line 1267 "ppcdecoder.cpp"
 
-                        
-                        
                         
                       }
                       
@@ -1548,16 +1276,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                         nextPC = 4 + MATCH_p; 
                         
 #line 294 "machine/ppc/decoder.m"
-                        
 
-                        	//| balctr(BIcr) [name] =>
+	//| balctr(BIcr) [name] =>
+		computedJump(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
 
-                        		computedJump(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
 
-                        
+#line 1285 "ppcdecoder.cpp"
 
-                        
-                        
                         
                       }
                       
@@ -1590,13 +1315,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             unsigned uimm = (MATCH_w_32_0 & 0xffff) /* UIMM at 0 */;
             nextPC = 4 + MATCH_p; 
             
-#line 137 "machine/ppc/decoder.m"
-            
+#line 138 "machine/ppc/decoder.m"
 
-            		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
+		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
 
-            
-            
+#line 1323 "ppcdecoder.cpp"
+
             
           }
           
@@ -1713,14 +1437,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                     nextPC = 4 + MATCH_p; 
                     
 #line 349 "machine/ppc/decoder.m"
-                    
 
-                    		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
+		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
-                    
 
-                    
-                    
+#line 1445 "ppcdecoder.cpp"
+
                     
                   }
                   
@@ -2641,13 +2363,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
                           (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 122 "machine/ppc/decoder.m"
-                        
+#line 123 "machine/ppc/decoder.m"
 
-                        		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
+		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
 
-                        
-                        
+#line 2371 "ppcdecoder.cpp"
+
                         
                       }
                       
@@ -3416,40 +3137,25 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             nextPC = 4 + MATCH_p; 
             
 #line 154 "machine/ppc/decoder.m"
-            
 
-            		if (strcmp(name, "lmw") == 0) {
+		if (strcmp(name, "lmw") == 0) {
+			// Needs the third param d, which is the register number from rd
+			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_RD_NUM);
+		} else {
+			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_NZRA);
+		}
+//	| XLb_(_, _) [name] =>
+//	//| XLb_(b0, b1) [name] =>
+#if BCCTR_LONG  // Prefer to see bltctr instead of bcctr 12,0
+                // But also affects return instructions (bclr)
+		/* FIXME: since this is used for returns, do a jump to LR instead (ie ignoring control registers) */
+		stmts = instantiate(pc, name);
+		result.rtl = new RTL(pc, stmts);
+		result.rtl->appendStmt(new ReturnStatement);
+#endif
 
-            			// Needs the third param d, which is the register number from rd
+#line 3158 "ppcdecoder.cpp"
 
-            			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_RD_NUM);
-
-            		} else {
-
-            			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_NZRA);
-
-            		}
-
-            //	| XLb_(_, _) [name] =>
-
-            //	//| XLb_(b0, b1) [name] =>
-
-            #if BCCTR_LONG  // Prefer to see bltctr instead of bcctr 12,0
-
-                            // But also affects return instructions (bclr)
-
-            		/* FIXME: since this is used for returns, do a jump to LR instead (ie ignoring control registers) */
-
-            		stmts = instantiate(pc, name);
-
-            		result.rtl = new RTL(pc, stmts);
-
-            		result.rtl->appendStmt(new ReturnStatement);
-
-            #endif
-
-            
-            
             
           }
           
@@ -3466,24 +3172,17 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             nextPC = 4 + MATCH_p; 
             
 #line 130 "machine/ppc/decoder.m"
-            
 
-            		if (strcmp(name, "stmw") == 0) {
+		if (strcmp(name, "stmw") == 0) {
+			// Needs the last param s, which is the register number from rs
+			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_RS_NUM);
+		} else {
+			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_NZRA);
+		}
 
-            			// Needs the last param s, which is the register number from rs
 
-            			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_RS_NUM);
+#line 3185 "ppcdecoder.cpp"
 
-            		} else {
-
-            			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_NZRA);
-
-            		}
-
-            
-
-            
-            
             
           }
           
@@ -3500,14 +3199,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             nextPC = 4 + MATCH_p; 
             
 #line 242 "machine/ppc/decoder.m"
-               // Floating point loads (non indexed)
+   // Floating point loads (non indexed)
+		stmts = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
-            		stmts = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
-            
+#line 3207 "ppcdecoder.cpp"
 
-            
-            
             
           }
           
@@ -3524,14 +3221,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
             nextPC = 4 + MATCH_p; 
             
 #line 248 "machine/ppc/decoder.m"
-               // Floating point stores (non indexed)
+   // Floating point stores (non indexed)
+		stmts = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
-            		stmts = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
-            
+#line 3229 "ppcdecoder.cpp"
 
-            
-            
             
           }
           
@@ -4076,15 +3771,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = MATCH_p; 
       
 #line 352 "machine/ppc/decoder.m"
-      
-      		stmts = nullptr;
 
-      		result.valid = false;
+		stmts = nullptr;
+		result.valid = false;
+		result.numBytes = 4;
 
-      		result.numBytes = 4;
+#line 3780 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4097,20 +3790,15 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 302 "machine/ppc/decoder.m"
-      
 
-      	//| bal(BIcr, reladdr) =>
+	//| bal(BIcr, reladdr) =>
+		unconditionalJump("bal", 4, reladdr, delta, pc, stmts, result);
 
-      		unconditionalJump("bal", 4, reladdr, delta, pc, stmts, result);
+	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
+	// statement.
 
-      
+#line 3801 "ppcdecoder.cpp"
 
-      	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
-
-      	// statement.
-
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4121,22 +3809,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 340 "machine/ppc/decoder.m"
-      
 
-      	//| ballr(BIcr) [name] =>
+	//| ballr(BIcr) [name] =>
+		result.rtl = new RTL(pc, stmts);
+		result.rtl->appendStmt(new ReturnStatement);
+		SHOW_ASM(name << "\n");
 
-      		result.rtl = new RTL(pc, stmts);
+	// Shift right arithmetic
 
-      		result.rtl->appendStmt(new ReturnStatement);
+#line 3821 "ppcdecoder.cpp"
 
-      		SHOW_ASM(name << "\n");
-
-      
-
-      	// Shift right arithmetic
-
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4150,14 +3832,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 170 "machine/ppc/decoder.m"
-      
 
-      		stmts = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
+		stmts = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
 
-      
 
-      
-      
+#line 3840 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4173,16 +3853,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 190 "machine/ppc/decoder.m"
-      
 
-      		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM, DIS_BEG, DIS_END);
+		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM, DIS_BEG, DIS_END);
 
-      
 
-      
 
-      
-      
+#line 3862 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4196,14 +3873,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 232 "machine/ppc/decoder.m"
-      
 
-      	//| Xcmp_(crfd, l, ra, rb) [name] =>
+	//| Xcmp_(crfd, l, ra, rb) [name] =>
+		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
 
-      		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
+#line 3881 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4215,14 +3890,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 187 "machine/ppc/decoder.m"
-      
 
-      		stmts = instantiate(pc, name, DIS_RD);
+		stmts = instantiate(pc, name, DIS_RD);
 
-      
 
-      
-      
+#line 3898 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4235,13 +3908,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 148 "machine/ppc/decoder.m"
-      
+#line 149 "machine/ppc/decoder.m"
 
-      		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
 
-      
-      
+#line 3916 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4254,13 +3926,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       unsigned rd = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 146 "machine/ppc/decoder.m"
-      
+#line 147 "machine/ppc/decoder.m"
 
-      		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
+		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 
-      
-      
+#line 3934 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4273,18 +3944,14 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 125 "machine/ppc/decoder.m"
-      
 
-      		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
+		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
+	// The number of parameters in these matcher arms has to agree with the number in core.spec
+	// The number of parameters passed to instantiate() after pc and name has to agree with ppc.ssl
+	// Stores and loads pass rA to instantiate twice: as part of DIS_DISP, and separately as DIS_NZRA
 
-      	// The number of parameters in these matcher arms has to agree with the number in core.spec
+#line 3954 "ppcdecoder.cpp"
 
-      	// The number of parameters passed to instantiate() after pc and name has to agree with ppc.ssl
-
-      	// Stores and loads pass rA to instantiate twice: as part of DIS_DISP, and separately as DIS_NZRA
-
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4298,14 +3965,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 151 "machine/ppc/decoder.m"
-      
 
-      		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
+	// Load instructions
 
-      	// Load instructions
+#line 3973 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4319,13 +3984,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
         (MATCH_w_32_0 >> 16 & 0x1f) /* sprL at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 172 "machine/ppc/decoder.m"
-      
+#line 173 "machine/ppc/decoder.m"
 
-      		stmts = instantiate(pc, name, DIS_RD, DIS_UIMM);
+		stmts = instantiate(pc, name, DIS_RD, DIS_UIMM);
 
-      
-      
+#line 3992 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4339,32 +4003,21 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 175 "machine/ppc/decoder.m"
-      
 
-      		switch (uimm) {
+		switch (uimm) {
+		case 1:
+			stmts = instantiate(pc, "MTXER", DIS_RS); break;
+		case 8:
+			stmts = instantiate(pc, "MTLR", DIS_RS); break;
+		case 9:
+			stmts = instantiate(pc, "MTCTR", DIS_RS); break;
+		default:
+			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
+		}
 
-      		case 1:
 
-      			stmts = instantiate(pc, "MTXER", DIS_RS); break;
+#line 4020 "ppcdecoder.cpp"
 
-      		case 8:
-
-      			stmts = instantiate(pc, "MTLR", DIS_RS); break;
-
-      		case 9:
-
-      			stmts = instantiate(pc, "MTCTR", DIS_RS); break;
-
-      		default:
-
-      			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
-
-      		}
-
-      
-
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4378,14 +4031,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 245 "machine/ppc/decoder.m"
-        // Floating point loads (indexed)
+  // Floating point loads (indexed)
+		stmts = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
-      		stmts = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
-      
+#line 4039 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4399,16 +4050,13 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 251 "machine/ppc/decoder.m"
-        // Floating point stores (indexed)
+  // Floating point stores (indexed)
+		stmts = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
-      		stmts = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
-      
 
-      
+#line 4059 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4421,13 +4069,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       unsigned uimm = (MATCH_w_32_0 >> 11 & 0x1f) /* SH at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 346 "machine/ppc/decoder.m"
-      
+#line 347 "machine/ppc/decoder.m"
 
-      		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
+		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
-      
-      
+#line 4077 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4440,13 +4087,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 120 "machine/ppc/decoder.m"
-      
+#line 121 "machine/ppc/decoder.m"
 
-      		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
+		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 
-      
-      
+#line 4095 "ppcdecoder.cpp"
+
       
     } 
     goto MATCH_finished_a; 
@@ -4460,24 +4106,17 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 261 "machine/ppc/decoder.m"
-         // Floating point binary
+   // Floating point binary
+		stmts = instantiate(pc, name, DIS_FD, DIS_FA, DIS_FB);
 
-      		stmts = instantiate(pc, name, DIS_FD, DIS_FA, DIS_FB);
 
-      
 
-      
 
-      
+	// Conditional branches
+	// bcc_ is blt | ble | beq | bge | bgt | bnl | bne | bng | bso | bns | bun | bnu | bal (branch always)
 
-      
+#line 4119 "ppcdecoder.cpp"
 
-      	// Conditional branches
-
-      	// bcc_ is blt | ble | beq | bge | bgt | bnl | bne | bng | bso | bns | bun | bnu | bal (branch always)
-
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4491,14 +4130,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 255 "machine/ppc/decoder.m"
-        // Floating point compare
+  // Floating point compare
+		stmts = instantiate(pc, name, DIS_CRFD, DIS_FA, DIS_FB);
 
-      		stmts = instantiate(pc, name, DIS_CRFD, DIS_FA, DIS_FB);
 
-      
+#line 4138 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4511,14 +4148,12 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
       nextPC = 4 + MATCH_p; 
       
 #line 258 "machine/ppc/decoder.m"
-           // Floating point unary
+     // Floating point unary
+		stmts = instantiate(pc, name, DIS_FD, DIS_FB);
 
-      		stmts = instantiate(pc, name, DIS_FD, DIS_FB);
 
-      
+#line 4156 "ppcdecoder.cpp"
 
-      
-      
       
     } 
     goto MATCH_finished_a; 
@@ -4526,6 +4161,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
+#line 4165 "ppcdecoder.cpp"
 
 #line 357 "machine/ppc/decoder.m"
 
@@ -4611,4 +4247,5 @@ crBit(int bitNum)
 	                   new Const(bitNum));
 }
 
+#line 4251 "ppcdecoder.cpp"
 

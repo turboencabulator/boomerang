@@ -73,18 +73,5 @@ if [ ! -f "${MATCHER}.d" ]; then
 	exit 1;
 fi
 
-# Clean up the toolkit output and rename it.
-${UNGENERATE} "${MATCHER}.d"
-cat "${MATCHER}.d" | awk '
-	/#line.*decoder\.m"/ {
-		line = $2;
-		print $1 " " (line-1) " " $3;
-		next;
-	}
-	{
-		gsub(/\(char \*\)0/, "nullptr");
-		sub(/char \*MATCH_name/, "const &");
-		sub(/char \*name = MATCH_name;/, "const &");
-		print;
-	}' > "${OUTPUT}"
-rm "${MATCHER}.d"
+mv "${MATCHER}.d" "${OUTPUT}"
+${UNGENERATE} "${OUTPUT}"
