@@ -61,14 +61,6 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_FA      (dis_Reg(fa + 32))
 #define DIS_FB      (dis_Reg(fb + 32))
 
-#define PPC_COND_JUMP(name, relocd, cond, BIcr) \
-	result.rtl = new RTL(pc, stmts); \
-	auto jump = new BranchStatement; \
-	result.rtl->appendStmt(jump); \
-	jump->setDest(relocd - delta); \
-	jump->setCondType(cond); \
-	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd - delta)
-
 PPCDecoder::PPCDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
@@ -266,29 +258,29 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// Conditional branches
 	// bcc_ is blt | ble | beq | bge | bgt | bnl | bne | bng | bso | bns | bun | bnu | bal (branch always)
 	| blt(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, BRANCH_JSL, BIcr);
+		conditionalJump(name, BRANCH_JSL, BIcr, reladdr, delta, pc, stmts, result);
 	| ble(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, BRANCH_JSLE, BIcr);
+		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr, delta, pc, stmts, result);
 	| beq(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, BRANCH_JE, BIcr);
+		conditionalJump(name, BRANCH_JE, BIcr, reladdr, delta, pc, stmts, result);
 	| bge(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, BRANCH_JSGE, BIcr);
+		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr, delta, pc, stmts, result);
 	| bgt(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, BRANCH_JSG, BIcr);
+		conditionalJump(name, BRANCH_JSG, BIcr, reladdr, delta, pc, stmts, result);
 //	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
-//		PPC_COND_JUMP(name, reladdr, BRANCH_JSGE, BIcr);
+//		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr, delta, pc, stmts, result);
 	| bne(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, BRANCH_JNE, BIcr);
+		conditionalJump(name, BRANCH_JNE, BIcr, reladdr, delta, pc, stmts, result);
 //	| bng(BIcr, reladdr) [name] =>  // bng same as blt
-//		PPC_COND_JUMP(name, reladdr, BRANCH_JSLE, BIcr);
+//		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr, delta, pc, stmts, result);
 	| bso(BIcr, reladdr) [name] =>  // Branch on summary overflow
-		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, delta, pc, stmts, result);  // MVE: Don't know these last 4 yet
 	| bns(BIcr, reladdr) [name] =>
-		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, delta, pc, stmts, result);
 //	| bun(BIcr, reladdr) [name] =>
-//		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);
+//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, delta, pc, stmts, result);
 //	| bnu(BIcr, reladdr) [name] =>
-//		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);
+//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, delta, pc, stmts, result);
 
 	| balctr(_) [name] =>
 	//| balctr(BIcr) [name] =>
@@ -305,35 +297,35 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.
 	| bltlr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, BRANCH_JSGE, BIcr);
+		conditionalJump(name, BRANCH_JSGE, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| blelr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, BRANCH_JSG, BIcr);
+		conditionalJump(name, BRANCH_JSG, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| beqlr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, BRANCH_JNE, BIcr);
+		conditionalJump(name, BRANCH_JNE, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bgelr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, BRANCH_JSL, BIcr);
+		conditionalJump(name, BRANCH_JSL, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bgtlr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, BRANCH_JSLE, BIcr);
+		conditionalJump(name, BRANCH_JSLE, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bnelr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, BRANCH_JE, BIcr);
+		conditionalJump(name, BRANCH_JE, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bsolr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, (BRANCH_TYPE)0, BIcr);
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bnslr(BIcr) [name] =>
-		PPC_COND_JUMP(name, nextPC, (BRANCH_TYPE)0, BIcr);
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC, delta, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| ballr(_) [name] =>
@@ -358,6 +350,20 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		result.rtl = new RTL(pc, stmts);
 
 	return result;
+}
+
+/**
+ * Process a conditional jump instruction.
+ */
+void
+PPCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, unsigned BIcr, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+{
+	result.rtl = new RTL(pc, stmts);
+	auto jump = new BranchStatement();
+	jump->setDest(relocd - delta);
+	jump->setCondType(cond);
+	result.rtl->appendStmt(jump);
+	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd - delta)
 }
 
 /**
