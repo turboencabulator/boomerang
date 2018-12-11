@@ -29,7 +29,7 @@ public:
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 protected:
-	static void conditionalJump(const char *name, BRANCH_TYPE cond, unsigned BIcr, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void conditionalJump(const char *name, BRANCH_TYPE cond, unsigned BIcr, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 
 private:
 	/**

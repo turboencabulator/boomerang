@@ -217,13 +217,13 @@ NJMCDecoder::dis_Num(unsigned num)
  * to other procedures.
  */
 void
-NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
 	auto jump = new GotoStatement();
-	jump->setDest(relocd - delta);
+	jump->setDest(relocd);
 	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " 0x" << std::hex << relocd - delta)
+	SHOW_ASM(name << " 0x" << std::hex << relocd)
 }
 
 /**
@@ -232,14 +232,14 @@ NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ptrdiff_t delta
  * \note This used to be the COND_JUMP macro.
  */
 void
-NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
 	auto jump = new BranchStatement();
-	jump->setDest(relocd - delta);
+	jump->setDest(relocd);
 	jump->setCondType(cond);
 	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " " << relocd - delta)
+	SHOW_ASM(name << " " << relocd)
 }
 
 /**

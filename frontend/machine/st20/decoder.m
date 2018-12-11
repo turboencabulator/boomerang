@@ -82,7 +82,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			stmts = instantiate(pc, name, new Const(total + oper));
 
 		| j(oper) =>
-			unconditionalJump("j", hostPC + result.numBytes + total + oper, delta, pc, stmts, result);
+			unconditionalJump("j", hostPC + result.numBytes + total + oper - delta, pc, stmts, result);
 
 		| call(oper) =>
 			total += oper;
