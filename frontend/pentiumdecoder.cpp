@@ -127,23 +127,45 @@ hostPC
 #line 128 "pentiumdecoder.cpp"
 ;
   const char *MATCH_name;
-  static const char *MATCH_name_page_0[] = {"REPNE.MOVSB", "JMP.Jvow", };
-  static const char *MATCH_name_page_1[] = {
+  static const char *MATCH_name_col_0[] = {
+    "Jv.Oow", "Jv.NOow", "Jv.Bow", "Jv.NBow", "Jv.Zow", "Jv.NZow", "Jv.BEow", 
+    "Jv.NBEow", 
+  };
+  static const char *MATCH_name_col_1[] = {
+    "Jv.Sow", "Jv.NSow", "Jv.Pow", "Jv.NPow", "Jv.Low", "Jv.NLow", "Jv.LEow", 
+    "Jv.NLEow", 
+  };
+  static const char *MATCH_name_page_2[] = {"REPNE.MOVSB", "JMP.Jvow", };
+  static const char *MATCH_name_col_3[] = {
+    "Jb.O", "Jb.NO", "Jb.B", "Jb.NB", "Jb.Z", "Jb.NZ", "Jb.BE", "Jb.NBE", 
+  };
+  static const char *MATCH_name_page_4[] = {
     "REPNE.MOVSvow", "REPNE.STOSvow", 
   };
-  static const char *MATCH_name_page_2[] = {
+  static const char *MATCH_name_page_5[] = {
     "REPNE.CMPSvow", "REPNE.LODSvow", 
   };
-  static const char *MATCH_name_page_3[] = {"REP.MOVSvow", "REPNE.SCASvow", };
-  static const char *MATCH_name_page_4[] = {"REPNE.MOVSvod", "REPNE.STOSB", };
-  static const char *MATCH_name_page_5[] = {"REPNE.CMPSB", "REPNE.STOSvod", };
-  static const char *MATCH_name_page_6[] = {"REPNE.CMPSvod", "REPNE.LODSB", };
-  static const char *MATCH_name_page_7[] = {"REP.MOVSB", "REPNE.LODSvod", };
-  static const char *MATCH_name_page_8[] = {"REP.MOVSvod", "REPNE.SCASB", };
-  static const char *MATCH_name_page_9[] = {"REP.CMPSB", "REPNE.SCASvod", };
-  static const char *MATCH_name_page_10[] = {"REP.CMPSvow", "REP.STOSvow", };
-  static const char *MATCH_name_page_13[] = {"REP.CMPSvod", "REP.STOSB", };
-  static const char *MATCH_name_col_59[] = {
+  static const char *MATCH_name_page_6[] = {"REP.MOVSvow", "REPNE.SCASvow", };
+  static const char *MATCH_name_page_7[] = {"REPNE.MOVSvod", "REPNE.STOSB", };
+  static const char *MATCH_name_page_8[] = {"REPNE.CMPSB", "REPNE.STOSvod", };
+  static const char *MATCH_name_page_9[] = {"REPNE.CMPSvod", "REPNE.LODSB", };
+  static const char *MATCH_name_page_10[] = {"REP.MOVSB", "REPNE.LODSvod", };
+  static const char *MATCH_name_page_11[] = {"REP.MOVSvod", "REPNE.SCASB", };
+  static const char *MATCH_name_page_12[] = {"REP.CMPSB", "REPNE.SCASvod", };
+  static const char *MATCH_name_page_13[] = {"REP.CMPSvow", "REP.STOSvow", };
+  static const char *MATCH_name_page_16[] = {"REP.CMPSvod", "REP.STOSB", };
+  static const char *MATCH_name_col_22[] = {
+    "Jv.Ood", "Jv.NOod", "Jv.Bod", "Jv.NBod", "Jv.Zod", "Jv.NZod", "Jv.BEod", 
+    "Jv.NBEod", 
+  };
+  static const char *MATCH_name_col_23[] = {
+    "Jv.Sod", "Jv.NSod", "Jv.Pod", "Jv.NPod", "Jv.Lod", "Jv.NLod", "Jv.LEod", 
+    "Jv.NLEod", 
+  };
+  static const char *MATCH_name_col_60[] = {
+    "Jb.S", "Jb.NS", "Jb.P", "Jb.NP", "Jb.L", "Jb.NL", "Jb.LE", "Jb.NLE", 
+  };
+  static const char *MATCH_name_col_65[] = {
     NULL, "JMP.Jvod", NULL, "JMP.Jb", 
   };
   unsigned /* [0..255] */ MATCH_w_8_0;
@@ -220,7 +242,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 224 "pentiumdecoder.cpp"
+#line 246 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -288,7 +310,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 292 "pentiumdecoder.cpp"
+#line 314 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -356,7 +378,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 360 "pentiumdecoder.cpp"
+#line 382 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -424,7 +446,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 428 "pentiumdecoder.cpp"
+#line 450 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -461,7 +483,7 @@ hostPC
 		stmts = instantiate(pc, "ORiAL", DIS_I8);
 
 
-#line 465 "pentiumdecoder.cpp"
+#line 487 "pentiumdecoder.cpp"
 
                     
                   }
@@ -478,7 +500,7 @@ hostPC
 		stmts = instantiate(pc, "ORiEAX", DIS_I32);
 
 
-#line 482 "pentiumdecoder.cpp"
+#line 504 "pentiumdecoder.cpp"
 
                     
                   }
@@ -492,7 +514,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.CS");
 
 
-#line 496 "pentiumdecoder.cpp"
+#line 518 "pentiumdecoder.cpp"
 
                   
                   
@@ -514,7 +536,7 @@ hostPC
 		stmts = instantiate(pc, "INVD");
 
 
-#line 518 "pentiumdecoder.cpp"
+#line 540 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -576,7 +598,7 @@ hostPC
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 580 "pentiumdecoder.cpp"
+#line 602 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -625,7 +647,7 @@ hostPC
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 629 "pentiumdecoder.cpp"
+#line 651 "pentiumdecoder.cpp"
 
                                                     
                                                   }
@@ -671,7 +693,7 @@ hostPC
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 675 "pentiumdecoder.cpp"
+#line 697 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -754,7 +776,7 @@ hostPC
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 758 "pentiumdecoder.cpp"
+#line 780 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -835,7 +857,7 @@ hostPC
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 839 "pentiumdecoder.cpp"
+#line 861 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -916,7 +938,7 @@ hostPC
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 920 "pentiumdecoder.cpp"
+#line 942 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -960,7 +982,7 @@ hostPC
 		stmts = instantiate(pc, "WBINVD");
 
 
-#line 964 "pentiumdecoder.cpp"
+#line 986 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -991,7 +1013,7 @@ hostPC
 
 	// Sets are now in the high level instructions
 
-#line 995 "pentiumdecoder.cpp"
+#line 1017 "pentiumdecoder.cpp"
 
                                                     
                                                   }
@@ -1038,7 +1060,7 @@ hostPC
 
 	// Sets are now in the high level instructions
 
-#line 1042 "pentiumdecoder.cpp"
+#line 1064 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -1087,7 +1109,7 @@ hostPC
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 1091 "pentiumdecoder.cpp"
+#line 1113 "pentiumdecoder.cpp"
 
                                                     
                                                   }
@@ -1133,7 +1155,7 @@ hostPC
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 1137 "pentiumdecoder.cpp"
+#line 1159 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -1216,7 +1238,7 @@ hostPC
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 1220 "pentiumdecoder.cpp"
+#line 1242 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -1265,7 +1287,7 @@ hostPC
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 1269 "pentiumdecoder.cpp"
+#line 1291 "pentiumdecoder.cpp"
 
                                                     
                                                   }
@@ -1311,7 +1333,7 @@ hostPC
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 1315 "pentiumdecoder.cpp"
+#line 1337 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -1401,7 +1423,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 1405 "pentiumdecoder.cpp"
+#line 1427 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -1486,7 +1508,7 @@ hostPC
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 1490 "pentiumdecoder.cpp"
+#line 1512 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -1527,7 +1549,7 @@ hostPC
 		stmts = instantiate(pc, "CLTS");
 
 
-#line 1531 "pentiumdecoder.cpp"
+#line 1553 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -1554,7 +1576,7 @@ hostPC
 		stmts = instantiate(pc, "WRMSR");
 
 
-#line 1558 "pentiumdecoder.cpp"
+#line 1580 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -1574,7 +1596,7 @@ hostPC
 		stmts = instantiate(pc, "RDMSR");
 
 
-#line 1578 "pentiumdecoder.cpp"
+#line 1600 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -1591,7 +1613,11 @@ hostPC
                             switch((MATCH_w_8_8 & 0x7) /* col at 8 */) {
                               case 0: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1599,9 +1625,9 @@ hostPC
                                   
 #line 241 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Sod", BRANCH_JMI, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JMI, relocd - delta, pc, stmts, result);
 
-#line 1605 "pentiumdecoder.cpp"
+#line 1631 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1609,7 +1635,11 @@ hostPC
                                 break;
                               case 1: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1617,9 +1647,9 @@ hostPC
                                   
 #line 239 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NSod", BRANCH_JPOS, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPOS, relocd - delta, pc, stmts, result);
 
-#line 1623 "pentiumdecoder.cpp"
+#line 1653 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1627,7 +1657,11 @@ hostPC
                                 break;
                               case 2: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1635,9 +1669,9 @@ hostPC
                                   
 #line 237 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Pod", BRANCH_JPAR, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPAR, relocd - delta, pc, stmts, result);
 
-#line 1641 "pentiumdecoder.cpp"
+#line 1675 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1645,7 +1679,11 @@ hostPC
                                 break;
                               case 3: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1653,9 +1691,9 @@ hostPC
                                   
 #line 235 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NPod", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
-#line 1659 "pentiumdecoder.cpp"
+#line 1697 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1663,7 +1701,11 @@ hostPC
                                 break;
                               case 4: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1671,9 +1713,9 @@ hostPC
                                   
 #line 233 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Lod", BRANCH_JSL, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, relocd - delta, pc, stmts, result);
 
-#line 1677 "pentiumdecoder.cpp"
+#line 1719 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1681,7 +1723,11 @@ hostPC
                                 break;
                               case 5: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1689,9 +1735,9 @@ hostPC
                                   
 #line 231 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NLod", BRANCH_JSGE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, relocd - delta, pc, stmts, result);
 
-#line 1695 "pentiumdecoder.cpp"
+#line 1741 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1699,7 +1745,11 @@ hostPC
                                 break;
                               case 6: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1707,9 +1757,9 @@ hostPC
                                   
 #line 229 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.LEod", BRANCH_JSLE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, relocd - delta, pc, stmts, result);
 
-#line 1713 "pentiumdecoder.cpp"
+#line 1763 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1717,7 +1767,11 @@ hostPC
                                 break;
                               case 7: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_23[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1725,9 +1779,9 @@ hostPC
                                   
 #line 227 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NLEod", BRANCH_JSG, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, relocd - delta, pc, stmts, result);
 
-#line 1731 "pentiumdecoder.cpp"
+#line 1785 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1740,7 +1794,11 @@ hostPC
                             switch((MATCH_w_8_8 & 0x7) /* col at 8 */) {
                               case 0: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1748,10 +1806,10 @@ hostPC
                                   
 #line 257 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Ood", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
 
-#line 1755 "pentiumdecoder.cpp"
+#line 1813 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1759,7 +1817,11 @@ hostPC
                                 break;
                               case 1: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1767,9 +1829,9 @@ hostPC
                                   
 #line 255 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NOod", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
-#line 1773 "pentiumdecoder.cpp"
+#line 1835 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1777,7 +1839,11 @@ hostPC
                                 break;
                               case 2: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1785,9 +1851,9 @@ hostPC
                                   
 #line 253 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Bod", BRANCH_JUL, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUL, relocd - delta, pc, stmts, result);
 
-#line 1791 "pentiumdecoder.cpp"
+#line 1857 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1795,7 +1861,11 @@ hostPC
                                 break;
                               case 3: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1803,9 +1873,9 @@ hostPC
                                   
 #line 251 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NBod", BRANCH_JUGE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUGE, relocd - delta, pc, stmts, result);
 
-#line 1809 "pentiumdecoder.cpp"
+#line 1879 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1813,7 +1883,11 @@ hostPC
                                 break;
                               case 4: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1821,9 +1895,9 @@ hostPC
                                   
 #line 249 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Zod", BRANCH_JE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, relocd - delta, pc, stmts, result);
 
-#line 1827 "pentiumdecoder.cpp"
+#line 1901 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1831,7 +1905,11 @@ hostPC
                                 break;
                               case 5: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1839,9 +1917,9 @@ hostPC
                                   
 #line 247 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NZod", BRANCH_JNE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, relocd - delta, pc, stmts, result);
 
-#line 1845 "pentiumdecoder.cpp"
+#line 1923 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1849,7 +1927,11 @@ hostPC
                                 break;
                               case 6: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1857,9 +1939,9 @@ hostPC
                                   
 #line 245 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.BEod", BRANCH_JULE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JULE, relocd - delta, pc, stmts, result);
 
-#line 1863 "pentiumdecoder.cpp"
+#line 1945 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1867,7 +1949,11 @@ hostPC
                                 break;
                               case 7: 
                                 MATCH_w_32_16 = getDword(2 + MATCH_p); 
+                                MATCH_name = 
+                                  MATCH_name_col_22[(MATCH_w_8_8 & 0x7) 
+                                      /* col at 8 */]; 
                                 { 
+                                  const char *name = MATCH_name;
                                   unsigned relocd = 
                                     6 + MATCH_w_32_16 /* i32 at 16 */ + 
                                     addressToPC(MATCH_p);
@@ -1875,9 +1961,9 @@ hostPC
                                   
 #line 243 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NBEod", BRANCH_JUG, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUG, relocd - delta, pc, stmts, result);
 
-#line 1881 "pentiumdecoder.cpp"
+#line 1967 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -1954,7 +2040,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 1958 "pentiumdecoder.cpp"
+#line 2044 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2060,7 +2146,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 2064 "pentiumdecoder.cpp"
+#line 2150 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2174,7 +2260,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 2178 "pentiumdecoder.cpp"
+#line 2264 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2280,7 +2366,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 2284 "pentiumdecoder.cpp"
+#line 2370 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2386,7 +2472,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 2390 "pentiumdecoder.cpp"
+#line 2476 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2492,7 +2578,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 2496 "pentiumdecoder.cpp"
+#line 2582 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2612,7 +2698,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 2616 "pentiumdecoder.cpp"
+#line 2702 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2718,7 +2804,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 2722 "pentiumdecoder.cpp"
+#line 2808 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2824,7 +2910,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 2828 "pentiumdecoder.cpp"
+#line 2914 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -2930,7 +3016,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 2934 "pentiumdecoder.cpp"
+#line 3020 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -3036,7 +3122,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 3040 "pentiumdecoder.cpp"
+#line 3126 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -3142,7 +3228,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 3146 "pentiumdecoder.cpp"
+#line 3232 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -3200,7 +3286,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.GS");
 
 
-#line 3204 "pentiumdecoder.cpp"
+#line 3290 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -3212,7 +3298,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.FS");
 
 
-#line 3216 "pentiumdecoder.cpp"
+#line 3302 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -3228,7 +3314,7 @@ hostPC
 		stmts = instantiate(pc, "POP.GS");
 
 
-#line 3232 "pentiumdecoder.cpp"
+#line 3318 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -3240,7 +3326,7 @@ hostPC
 		stmts = instantiate(pc, "POP.FS");
 
 
-#line 3244 "pentiumdecoder.cpp"
+#line 3330 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -3256,7 +3342,7 @@ hostPC
 		stmts = instantiate(pc, "RSM");
 
 
-#line 3260 "pentiumdecoder.cpp"
+#line 3346 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -3268,7 +3354,7 @@ hostPC
 		stmts = instantiate(pc, "CPUID");
 
 
-#line 3272 "pentiumdecoder.cpp"
+#line 3358 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -3328,7 +3414,7 @@ hostPC
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 3332 "pentiumdecoder.cpp"
+#line 3418 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -3408,7 +3494,7 @@ hostPC
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 3412 "pentiumdecoder.cpp"
+#line 3498 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -3512,7 +3598,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 3516 "pentiumdecoder.cpp"
+#line 3602 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -3627,7 +3713,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 3631 "pentiumdecoder.cpp"
+#line 3717 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -3724,7 +3810,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 3728 "pentiumdecoder.cpp"
+#line 3814 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -3804,7 +3890,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 3808 "pentiumdecoder.cpp"
+#line 3894 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -3889,7 +3975,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 3893 "pentiumdecoder.cpp"
+#line 3979 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4009,7 +4095,7 @@ hostPC
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 4013 "pentiumdecoder.cpp"
+#line 4099 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -4128,7 +4214,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 4132 "pentiumdecoder.cpp"
+#line 4218 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -4247,7 +4333,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 4251 "pentiumdecoder.cpp"
+#line 4337 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -4366,7 +4452,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 4370 "pentiumdecoder.cpp"
+#line 4456 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -4469,7 +4555,7 @@ hostPC
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 4473 "pentiumdecoder.cpp"
+#line 4559 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4551,7 +4637,7 @@ hostPC
 		return result;
 
 
-#line 4555 "pentiumdecoder.cpp"
+#line 4641 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4634,7 +4720,7 @@ hostPC
 		return result;
 
 
-#line 4638 "pentiumdecoder.cpp"
+#line 4724 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4714,7 +4800,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 4718 "pentiumdecoder.cpp"
+#line 4804 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4794,7 +4880,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 4798 "pentiumdecoder.cpp"
+#line 4884 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4879,7 +4965,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 4883 "pentiumdecoder.cpp"
+#line 4969 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -4959,7 +5045,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 4963 "pentiumdecoder.cpp"
+#line 5049 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5011,7 +5097,7 @@ hostPC
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 5015 "pentiumdecoder.cpp"
+#line 5101 "pentiumdecoder.cpp"
 
                                               
                                             }
@@ -5057,7 +5143,7 @@ hostPC
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 5061 "pentiumdecoder.cpp"
+#line 5147 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5137,7 +5223,7 @@ hostPC
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 5141 "pentiumdecoder.cpp"
+#line 5227 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5189,7 +5275,7 @@ hostPC
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 5193 "pentiumdecoder.cpp"
+#line 5279 "pentiumdecoder.cpp"
 
                                               
                                             }
@@ -5235,7 +5321,7 @@ hostPC
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 5239 "pentiumdecoder.cpp"
+#line 5325 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5287,7 +5373,7 @@ hostPC
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 5291 "pentiumdecoder.cpp"
+#line 5377 "pentiumdecoder.cpp"
 
                                               
                                             }
@@ -5333,7 +5419,7 @@ hostPC
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 5337 "pentiumdecoder.cpp"
+#line 5423 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5413,7 +5499,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 5417 "pentiumdecoder.cpp"
+#line 5503 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5493,7 +5579,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 5497 "pentiumdecoder.cpp"
+#line 5583 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5534,7 +5620,7 @@ hostPC
 		stmts = instantiate(pc, "BSWAP", DIS_R32);
 
 
-#line 5538 "pentiumdecoder.cpp"
+#line 5624 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -5593,7 +5679,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 5597 "pentiumdecoder.cpp"
+#line 5683 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5673,7 +5759,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 5677 "pentiumdecoder.cpp"
+#line 5763 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -5726,7 +5812,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 5730 "pentiumdecoder.cpp"
+#line 5816 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -5769,7 +5855,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 5773 "pentiumdecoder.cpp"
+#line 5859 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -5855,7 +5941,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 5859 "pentiumdecoder.cpp"
+#line 5945 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -5923,7 +6009,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 5927 "pentiumdecoder.cpp"
+#line 6013 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -5991,7 +6077,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 5995 "pentiumdecoder.cpp"
+#line 6081 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6059,7 +6145,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 6063 "pentiumdecoder.cpp"
+#line 6149 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6096,7 +6182,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiAL", DIS_I8);
 
 
-#line 6100 "pentiumdecoder.cpp"
+#line 6186 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6113,7 +6199,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiEAX", DIS_I32);
 
 
-#line 6117 "pentiumdecoder.cpp"
+#line 6203 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6127,7 +6213,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.DS");
 
 
-#line 6131 "pentiumdecoder.cpp"
+#line 6217 "pentiumdecoder.cpp"
 
                   
                   
@@ -6140,7 +6226,7 @@ hostPC
 		stmts = instantiate(pc, "POP.DS");
 
 
-#line 6144 "pentiumdecoder.cpp"
+#line 6230 "pentiumdecoder.cpp"
 
                   
                   
@@ -6194,7 +6280,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 6198 "pentiumdecoder.cpp"
+#line 6284 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6262,7 +6348,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 6266 "pentiumdecoder.cpp"
+#line 6352 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6330,7 +6416,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 6334 "pentiumdecoder.cpp"
+#line 6420 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6398,7 +6484,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 6402 "pentiumdecoder.cpp"
+#line 6488 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6435,7 +6521,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiAL", DIS_I8);
 
 
-#line 6439 "pentiumdecoder.cpp"
+#line 6525 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6452,7 +6538,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiEAX", DIS_I32);
 
 
-#line 6456 "pentiumdecoder.cpp"
+#line 6542 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6466,7 +6552,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 6470 "pentiumdecoder.cpp"
+#line 6556 "pentiumdecoder.cpp"
 
                   
                   
@@ -6479,7 +6565,7 @@ hostPC
 		stmts = instantiate(pc, "DAS");
 
 
-#line 6483 "pentiumdecoder.cpp"
+#line 6569 "pentiumdecoder.cpp"
 
                   
                   
@@ -6533,7 +6619,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 6537 "pentiumdecoder.cpp"
+#line 6623 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6601,7 +6687,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 6605 "pentiumdecoder.cpp"
+#line 6691 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6669,7 +6755,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 6673 "pentiumdecoder.cpp"
+#line 6759 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6737,7 +6823,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 6741 "pentiumdecoder.cpp"
+#line 6827 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -6774,7 +6860,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiAL", DIS_I8);
 
 
-#line 6778 "pentiumdecoder.cpp"
+#line 6864 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6791,7 +6877,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiEAX", DIS_I32);
 
 
-#line 6795 "pentiumdecoder.cpp"
+#line 6881 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6805,7 +6891,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 6809 "pentiumdecoder.cpp"
+#line 6895 "pentiumdecoder.cpp"
 
                   
                   
@@ -6825,7 +6911,7 @@ hostPC
 		stmts = instantiate(pc, "DECod", DIS_R32);
 
 
-#line 6829 "pentiumdecoder.cpp"
+#line 6915 "pentiumdecoder.cpp"
 
               
             }
@@ -6841,7 +6927,7 @@ hostPC
 		stmts = instantiate(pc, "POPod", DIS_R32);
 
 
-#line 6845 "pentiumdecoder.cpp"
+#line 6931 "pentiumdecoder.cpp"
 
               
             }
@@ -6861,7 +6947,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Ivod", DIS_I32);
 
 
-#line 6865 "pentiumdecoder.cpp"
+#line 6951 "pentiumdecoder.cpp"
 
                     
                   }
@@ -6925,7 +7011,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 6929 "pentiumdecoder.cpp"
+#line 7015 "pentiumdecoder.cpp"
 
                             
                           }
@@ -6976,7 +7062,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Ixob", DIS_I8);
 
 
-#line 6980 "pentiumdecoder.cpp"
+#line 7066 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7043,7 +7129,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 7047 "pentiumdecoder.cpp"
+#line 7133 "pentiumdecoder.cpp"
 
                             
                           }
@@ -7092,7 +7178,10 @@ hostPC
               switch((MATCH_w_8_0 & 0x7) /* col at 0 */) {
                 case 0: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7100,9 +7189,9 @@ hostPC
                     
 #line 169 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.S", BRANCH_JMI, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JMI, relocd - delta, pc, stmts, result);
 
-#line 7106 "pentiumdecoder.cpp"
+#line 7195 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7110,7 +7199,10 @@ hostPC
                   break;
                 case 1: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7118,9 +7210,9 @@ hostPC
                     
 #line 167 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NS", BRANCH_JPOS, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPOS, relocd - delta, pc, stmts, result);
 
-#line 7124 "pentiumdecoder.cpp"
+#line 7216 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7128,7 +7220,10 @@ hostPC
                   break;
                 case 2: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7136,9 +7231,9 @@ hostPC
                     
 #line 165 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.P", BRANCH_JPAR, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPAR, relocd - delta, pc, stmts, result);
 
-#line 7142 "pentiumdecoder.cpp"
+#line 7237 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7146,7 +7241,10 @@ hostPC
                   break;
                 case 3: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7154,9 +7252,9 @@ hostPC
                     
 #line 163 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NP", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
-#line 7160 "pentiumdecoder.cpp"
+#line 7258 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7164,7 +7262,10 @@ hostPC
                   break;
                 case 4: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7172,9 +7273,9 @@ hostPC
                     
 #line 161 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.L", BRANCH_JSL, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, relocd - delta, pc, stmts, result);
 
-#line 7178 "pentiumdecoder.cpp"
+#line 7279 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7182,7 +7283,10 @@ hostPC
                   break;
                 case 5: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7190,9 +7294,9 @@ hostPC
                     
 #line 159 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NL", BRANCH_JSGE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, relocd - delta, pc, stmts, result);
 
-#line 7196 "pentiumdecoder.cpp"
+#line 7300 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7200,7 +7304,10 @@ hostPC
                   break;
                 case 6: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7208,9 +7315,9 @@ hostPC
                     
 #line 157 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.LE", BRANCH_JSLE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, relocd - delta, pc, stmts, result);
 
-#line 7214 "pentiumdecoder.cpp"
+#line 7321 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7218,7 +7325,10 @@ hostPC
                   break;
                 case 7: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_60[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -7226,9 +7336,9 @@ hostPC
                     
 #line 155 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NLE", BRANCH_JSG, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, relocd - delta, pc, stmts, result);
 
-#line 7232 "pentiumdecoder.cpp"
+#line 7342 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7283,7 +7393,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 7287 "pentiumdecoder.cpp"
+#line 7397 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -7351,7 +7461,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 7355 "pentiumdecoder.cpp"
+#line 7465 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -7419,7 +7529,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 7423 "pentiumdecoder.cpp"
+#line 7533 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -7487,7 +7597,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 7491 "pentiumdecoder.cpp"
+#line 7601 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -7534,7 +7644,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 7538 "pentiumdecoder.cpp"
+#line 7648 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -7574,7 +7684,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 7578 "pentiumdecoder.cpp"
+#line 7688 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -7642,7 +7752,7 @@ hostPC
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 7646 "pentiumdecoder.cpp"
+#line 7756 "pentiumdecoder.cpp"
 
                             
                           } /*opt-block*//*opt-block+*/
@@ -7683,7 +7793,7 @@ hostPC
 		stmts = instantiate(pc, "CWDE");
 
 
-#line 7687 "pentiumdecoder.cpp"
+#line 7797 "pentiumdecoder.cpp"
 
                   
                   
@@ -7696,7 +7806,7 @@ hostPC
 		stmts = instantiate(pc, "CDQ");
 
 
-#line 7700 "pentiumdecoder.cpp"
+#line 7810 "pentiumdecoder.cpp"
 
                   
                   
@@ -7710,7 +7820,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 7714 "pentiumdecoder.cpp"
+#line 7824 "pentiumdecoder.cpp"
 
                   
                   
@@ -7723,7 +7833,7 @@ hostPC
 		stmts = instantiate(pc, "WAIT");
 
 
-#line 7727 "pentiumdecoder.cpp"
+#line 7837 "pentiumdecoder.cpp"
 
                   
                   
@@ -7738,7 +7848,7 @@ hostPC
 		stmts = instantiate(pc, "SAHF");
 
 
-#line 7742 "pentiumdecoder.cpp"
+#line 7852 "pentiumdecoder.cpp"
 
                   
                   
@@ -7752,7 +7862,7 @@ hostPC
 
 	/* Branches have been handled in decodeInstruction() now */
 
-#line 7756 "pentiumdecoder.cpp"
+#line 7866 "pentiumdecoder.cpp"
 
                   
                   
@@ -7774,7 +7884,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.AL.Ib", DIS_I8);
 
 
-#line 7778 "pentiumdecoder.cpp"
+#line 7888 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7791,7 +7901,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.eAX.Ivod", DIS_I32);
 
 
-#line 7795 "pentiumdecoder.cpp"
+#line 7905 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7805,7 +7915,7 @@ hostPC
 		stmts = instantiate(pc, "STOSB");
 
 
-#line 7809 "pentiumdecoder.cpp"
+#line 7919 "pentiumdecoder.cpp"
 
                   
                   
@@ -7818,7 +7928,7 @@ hostPC
 		stmts = instantiate(pc, "STOSvod");
 
 
-#line 7822 "pentiumdecoder.cpp"
+#line 7932 "pentiumdecoder.cpp"
 
                   
                   
@@ -7832,7 +7942,7 @@ hostPC
 
 	/* Floating point instructions */
 
-#line 7836 "pentiumdecoder.cpp"
+#line 7946 "pentiumdecoder.cpp"
 
                   
                   
@@ -7845,7 +7955,7 @@ hostPC
 		stmts = instantiate(pc, "LODSvod");
 
 
-#line 7849 "pentiumdecoder.cpp"
+#line 7959 "pentiumdecoder.cpp"
 
                   
                   
@@ -7858,7 +7968,7 @@ hostPC
 		stmts = instantiate(pc, "SCASB");
 
 
-#line 7862 "pentiumdecoder.cpp"
+#line 7972 "pentiumdecoder.cpp"
 
                   
                   
@@ -7871,7 +7981,7 @@ hostPC
 		stmts = instantiate(pc, "SCASvod");
 
 
-#line 7875 "pentiumdecoder.cpp"
+#line 7985 "pentiumdecoder.cpp"
 
                   
                   
@@ -7891,7 +8001,7 @@ hostPC
 		stmts = instantiate(pc, "MOVid", DIS_R32, DIS_I32);
 
 
-#line 7895 "pentiumdecoder.cpp"
+#line 8005 "pentiumdecoder.cpp"
 
               
             }
@@ -7914,7 +8024,7 @@ hostPC
 		stmts = instantiate(pc, "ENTER", DIS_I16, DIS_I8);
 
 
-#line 7918 "pentiumdecoder.cpp"
+#line 8028 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7928,7 +8038,7 @@ hostPC
 		stmts = instantiate(pc, "LEAVE");
 
 
-#line 7932 "pentiumdecoder.cpp"
+#line 8042 "pentiumdecoder.cpp"
 
                   
                   
@@ -7947,7 +8057,7 @@ hostPC
 		result.rtl->appendStmt(ret);
 
 
-#line 7951 "pentiumdecoder.cpp"
+#line 8061 "pentiumdecoder.cpp"
 
                     
                   }
@@ -7963,7 +8073,7 @@ hostPC
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 7967 "pentiumdecoder.cpp"
+#line 8077 "pentiumdecoder.cpp"
 
                   
                   
@@ -7996,7 +8106,7 @@ hostPC
 //		stmts = instantiate(pc, "INSB");
 
 
-#line 8000 "pentiumdecoder.cpp"
+#line 8110 "pentiumdecoder.cpp"
 
                     
                   }
@@ -8010,7 +8120,7 @@ hostPC
 		stmts = instantiate(pc, "INTO");
 
 
-#line 8014 "pentiumdecoder.cpp"
+#line 8124 "pentiumdecoder.cpp"
 
                   
                   
@@ -8023,7 +8133,7 @@ hostPC
 		stmts = instantiate(pc, "IRET");
 
 
-#line 8027 "pentiumdecoder.cpp"
+#line 8137 "pentiumdecoder.cpp"
 
                   
                   
@@ -8056,7 +8166,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 8060 "pentiumdecoder.cpp"
+#line 8170 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8095,7 +8205,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 8099 "pentiumdecoder.cpp"
+#line 8209 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8126,7 +8236,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.St.STi", DIS_IDX);
 
 
-#line 8130 "pentiumdecoder.cpp"
+#line 8240 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8153,7 +8263,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 8157 "pentiumdecoder.cpp"
+#line 8267 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8192,7 +8302,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 8196 "pentiumdecoder.cpp"
+#line 8306 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8223,7 +8333,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.ST.STi", DIS_IDX);
 
 
-#line 8227 "pentiumdecoder.cpp"
+#line 8337 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8250,7 +8360,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 8254 "pentiumdecoder.cpp"
+#line 8364 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8289,7 +8399,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 8293 "pentiumdecoder.cpp"
+#line 8403 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8320,7 +8430,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.ST.STi", DIS_IDX);
 
 
-#line 8324 "pentiumdecoder.cpp"
+#line 8434 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8347,7 +8457,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 8351 "pentiumdecoder.cpp"
+#line 8461 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8386,7 +8496,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 8390 "pentiumdecoder.cpp"
+#line 8500 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8417,7 +8527,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.ST.STi", DIS_IDX);
 
 
-#line 8421 "pentiumdecoder.cpp"
+#line 8531 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8444,7 +8554,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 8448 "pentiumdecoder.cpp"
+#line 8558 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8483,7 +8593,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 8487 "pentiumdecoder.cpp"
+#line 8597 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8514,7 +8624,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.ST.STi", DIS_IDX);
 
 
-#line 8518 "pentiumdecoder.cpp"
+#line 8628 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8541,7 +8651,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 8545 "pentiumdecoder.cpp"
+#line 8655 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8580,7 +8690,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 8584 "pentiumdecoder.cpp"
+#line 8694 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8611,7 +8721,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.ST.STi", DIS_IDX);
 
 
-#line 8615 "pentiumdecoder.cpp"
+#line 8725 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8638,7 +8748,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 8642 "pentiumdecoder.cpp"
+#line 8752 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8677,7 +8787,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 8681 "pentiumdecoder.cpp"
+#line 8791 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8708,7 +8818,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.ST.STi", DIS_IDX);
 
 
-#line 8712 "pentiumdecoder.cpp"
+#line 8822 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8735,7 +8845,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 8739 "pentiumdecoder.cpp"
+#line 8849 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8774,7 +8884,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 8778 "pentiumdecoder.cpp"
+#line 8888 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8805,7 +8915,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.ST.STi", DIS_IDX);
 
 
-#line 8809 "pentiumdecoder.cpp"
+#line 8919 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8840,7 +8950,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 8844 "pentiumdecoder.cpp"
+#line 8954 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8879,7 +8989,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 8883 "pentiumdecoder.cpp"
+#line 8993 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -8910,7 +9020,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.STi", DIS_IDXP1);
 
 
-#line 8914 "pentiumdecoder.cpp"
+#line 9024 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -8929,7 +9039,7 @@ hostPC
 		stmts = instantiate(pc, "FXCH", DIS_IDX);
 
 
-#line 8933 "pentiumdecoder.cpp"
+#line 9043 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -8955,7 +9065,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 8959 "pentiumdecoder.cpp"
+#line 9069 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -8994,7 +9104,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 8998 "pentiumdecoder.cpp"
+#line 9108 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9023,7 +9133,7 @@ hostPC
 		stmts = instantiate(pc, "FNOP");
 
 
-#line 9027 "pentiumdecoder.cpp"
+#line 9137 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9052,7 +9162,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 9056 "pentiumdecoder.cpp"
+#line 9166 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9091,7 +9201,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 9095 "pentiumdecoder.cpp"
+#line 9205 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9133,7 +9243,7 @@ hostPC
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 9137 "pentiumdecoder.cpp"
+#line 9247 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9172,7 +9282,7 @@ hostPC
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 9176 "pentiumdecoder.cpp"
+#line 9286 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9203,7 +9313,7 @@ hostPC
 		stmts = instantiate(pc, "FCHS");
 
 
-#line 9207 "pentiumdecoder.cpp"
+#line 9317 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9216,7 +9326,7 @@ hostPC
 		stmts = instantiate(pc, "FABS");
 
 
-#line 9220 "pentiumdecoder.cpp"
+#line 9330 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9231,7 +9341,7 @@ hostPC
 		stmts = instantiate(pc, "FTST");
 
 
-#line 9235 "pentiumdecoder.cpp"
+#line 9345 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9244,7 +9354,7 @@ hostPC
 		stmts = instantiate(pc, "FXAM");
 
 
-#line 9248 "pentiumdecoder.cpp"
+#line 9358 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9273,7 +9383,7 @@ hostPC
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 9277 "pentiumdecoder.cpp"
+#line 9387 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9312,7 +9422,7 @@ hostPC
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 9316 "pentiumdecoder.cpp"
+#line 9426 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9343,7 +9453,7 @@ hostPC
 		stmts = instantiate(pc, "FLD1");
 
 
-#line 9347 "pentiumdecoder.cpp"
+#line 9457 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9356,7 +9466,7 @@ hostPC
 		stmts = instantiate(pc, "FLDL2T");
 
 
-#line 9360 "pentiumdecoder.cpp"
+#line 9470 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9369,7 +9479,7 @@ hostPC
 		stmts = instantiate(pc, "FLDL2E");
 
 
-#line 9373 "pentiumdecoder.cpp"
+#line 9483 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9382,7 +9492,7 @@ hostPC
 		stmts = instantiate(pc, "FLDPI");
 
 
-#line 9386 "pentiumdecoder.cpp"
+#line 9496 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9395,7 +9505,7 @@ hostPC
 		stmts = instantiate(pc, "FLDLG2");
 
 
-#line 9399 "pentiumdecoder.cpp"
+#line 9509 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9408,7 +9518,7 @@ hostPC
 		stmts = instantiate(pc, "FLDLN2");
 
 
-#line 9412 "pentiumdecoder.cpp"
+#line 9522 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9421,7 +9531,7 @@ hostPC
 		stmts = instantiate(pc, "FLDZ");
 
 
-#line 9425 "pentiumdecoder.cpp"
+#line 9535 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9451,7 +9561,7 @@ hostPC
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 9455 "pentiumdecoder.cpp"
+#line 9565 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9490,7 +9600,7 @@ hostPC
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 9494 "pentiumdecoder.cpp"
+#line 9604 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9521,7 +9631,7 @@ hostPC
 		stmts = instantiate(pc, "F2XM1");
 
 
-#line 9525 "pentiumdecoder.cpp"
+#line 9635 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9534,7 +9644,7 @@ hostPC
 		stmts = instantiate(pc, "FYL2X");
 
 
-#line 9538 "pentiumdecoder.cpp"
+#line 9648 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9547,7 +9657,7 @@ hostPC
 		stmts = instantiate(pc, "FPTAN");
 
 
-#line 9551 "pentiumdecoder.cpp"
+#line 9661 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9560,7 +9670,7 @@ hostPC
 		stmts = instantiate(pc, "FPATAN");
 
 
-#line 9564 "pentiumdecoder.cpp"
+#line 9674 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9573,7 +9683,7 @@ hostPC
 		stmts = instantiate(pc, "FXTRACT");
 
 
-#line 9577 "pentiumdecoder.cpp"
+#line 9687 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9586,7 +9696,7 @@ hostPC
 		stmts = instantiate(pc, "FPREM1");
 
 
-#line 9590 "pentiumdecoder.cpp"
+#line 9700 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9599,7 +9709,7 @@ hostPC
 		stmts = instantiate(pc, "FDECSTP");
 
 
-#line 9603 "pentiumdecoder.cpp"
+#line 9713 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9630,7 +9740,7 @@ hostPC
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 9634 "pentiumdecoder.cpp"
+#line 9744 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9669,7 +9779,7 @@ hostPC
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 9673 "pentiumdecoder.cpp"
+#line 9783 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9700,7 +9810,7 @@ hostPC
 		stmts = instantiate(pc, "FPREM");
 
 
-#line 9704 "pentiumdecoder.cpp"
+#line 9814 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9713,7 +9823,7 @@ hostPC
 		stmts = instantiate(pc, "FYL2XP1");
 
 
-#line 9717 "pentiumdecoder.cpp"
+#line 9827 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9726,7 +9836,7 @@ hostPC
 		stmts = instantiate(pc, "FSQRT");
 
 
-#line 9730 "pentiumdecoder.cpp"
+#line 9840 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9739,7 +9849,7 @@ hostPC
 		stmts = instantiate(pc, "FSINCOS");
 
 
-#line 9743 "pentiumdecoder.cpp"
+#line 9853 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9752,7 +9862,7 @@ hostPC
 		stmts = instantiate(pc, "FRNDINT");
 
 
-#line 9756 "pentiumdecoder.cpp"
+#line 9866 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9765,7 +9875,7 @@ hostPC
 		stmts = instantiate(pc, "FSCALE");
 
 
-#line 9769 "pentiumdecoder.cpp"
+#line 9879 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9778,7 +9888,7 @@ hostPC
 		stmts = instantiate(pc, "FSIN");
 
 
-#line 9782 "pentiumdecoder.cpp"
+#line 9892 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9791,7 +9901,7 @@ hostPC
 		stmts = instantiate(pc, "FCOS");
 
 
-#line 9795 "pentiumdecoder.cpp"
+#line 9905 "pentiumdecoder.cpp"
 
                                     
                                     
@@ -9828,7 +9938,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 9832 "pentiumdecoder.cpp"
+#line 9942 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9867,7 +9977,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 9871 "pentiumdecoder.cpp"
+#line 9981 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9910,7 +10020,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 9914 "pentiumdecoder.cpp"
+#line 10024 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -9949,7 +10059,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 9953 "pentiumdecoder.cpp"
+#line 10063 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -9992,7 +10102,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 9996 "pentiumdecoder.cpp"
+#line 10106 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10031,7 +10141,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 10035 "pentiumdecoder.cpp"
+#line 10145 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10074,7 +10184,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 10078 "pentiumdecoder.cpp"
+#line 10188 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10113,7 +10223,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 10117 "pentiumdecoder.cpp"
+#line 10227 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10156,7 +10266,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 10160 "pentiumdecoder.cpp"
+#line 10270 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10195,7 +10305,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 10199 "pentiumdecoder.cpp"
+#line 10309 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10238,7 +10348,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 10242 "pentiumdecoder.cpp"
+#line 10352 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10277,7 +10387,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 10281 "pentiumdecoder.cpp"
+#line 10391 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10306,7 +10416,7 @@ hostPC
 		stmts = instantiate(pc, "FUCOMPP");
 
 
-#line 10310 "pentiumdecoder.cpp"
+#line 10420 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10335,7 +10445,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 10339 "pentiumdecoder.cpp"
+#line 10449 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10374,7 +10484,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 10378 "pentiumdecoder.cpp"
+#line 10488 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10417,7 +10527,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 10421 "pentiumdecoder.cpp"
+#line 10531 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10456,7 +10566,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 10460 "pentiumdecoder.cpp"
+#line 10570 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10507,7 +10617,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 10511 "pentiumdecoder.cpp"
+#line 10621 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10546,7 +10656,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 10550 "pentiumdecoder.cpp"
+#line 10660 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10591,7 +10701,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 10595 "pentiumdecoder.cpp"
+#line 10705 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10630,7 +10740,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 10634 "pentiumdecoder.cpp"
+#line 10744 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10673,7 +10783,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 10677 "pentiumdecoder.cpp"
+#line 10787 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10712,7 +10822,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 10716 "pentiumdecoder.cpp"
+#line 10826 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10752,7 +10862,7 @@ hostPC
 		stmts = instantiate(pc, "FNCLEX");
 
 
-#line 10756 "pentiumdecoder.cpp"
+#line 10866 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10770,7 +10880,7 @@ hostPC
 		stmts = instantiate(pc, "FINIT");
 
 
-#line 10774 "pentiumdecoder.cpp"
+#line 10884 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10804,7 +10914,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 10808 "pentiumdecoder.cpp"
+#line 10918 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10848,7 +10958,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 10852 "pentiumdecoder.cpp"
+#line 10962 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -10881,7 +10991,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_IDX);
 
 
-#line 10885 "pentiumdecoder.cpp"
+#line 10995 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -10903,7 +11013,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_IDX);
 
 
-#line 10907 "pentiumdecoder.cpp"
+#line 11017 "pentiumdecoder.cpp"
 
                             
                           }
@@ -10931,7 +11041,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 10935 "pentiumdecoder.cpp"
+#line 11045 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -10970,7 +11080,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 10974 "pentiumdecoder.cpp"
+#line 11084 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11021,7 +11131,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 11025 "pentiumdecoder.cpp"
+#line 11135 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11060,7 +11170,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 11064 "pentiumdecoder.cpp"
+#line 11174 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11091,7 +11201,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.STi.ST", DIS_IDX);
 
 
-#line 11095 "pentiumdecoder.cpp"
+#line 11205 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11118,7 +11228,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 11122 "pentiumdecoder.cpp"
+#line 11232 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11157,7 +11267,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 11161 "pentiumdecoder.cpp"
+#line 11271 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11188,7 +11298,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.STi.ST", DIS_IDX);
 
 
-#line 11192 "pentiumdecoder.cpp"
+#line 11302 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11215,7 +11325,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 11219 "pentiumdecoder.cpp"
+#line 11329 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11254,7 +11364,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 11258 "pentiumdecoder.cpp"
+#line 11368 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11297,7 +11407,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 11301 "pentiumdecoder.cpp"
+#line 11411 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11336,7 +11446,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 11340 "pentiumdecoder.cpp"
+#line 11450 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11379,7 +11489,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 11383 "pentiumdecoder.cpp"
+#line 11493 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11418,7 +11528,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 11422 "pentiumdecoder.cpp"
+#line 11532 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11449,7 +11559,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.STi.ST", DIS_IDX);
 
 
-#line 11453 "pentiumdecoder.cpp"
+#line 11563 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11476,7 +11586,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 11480 "pentiumdecoder.cpp"
+#line 11590 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11515,7 +11625,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 11519 "pentiumdecoder.cpp"
+#line 11629 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11546,7 +11656,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.STi.ST", DIS_IDX);
 
 
-#line 11550 "pentiumdecoder.cpp"
+#line 11660 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11573,7 +11683,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 11577 "pentiumdecoder.cpp"
+#line 11687 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11612,7 +11722,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 11616 "pentiumdecoder.cpp"
+#line 11726 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11643,7 +11753,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.STi.ST", DIS_IDX);
 
 
-#line 11647 "pentiumdecoder.cpp"
+#line 11757 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11670,7 +11780,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 11674 "pentiumdecoder.cpp"
+#line 11784 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11709,7 +11819,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 11713 "pentiumdecoder.cpp"
+#line 11823 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11740,7 +11850,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.STi.ST", DIS_IDX);
 
 
-#line 11744 "pentiumdecoder.cpp"
+#line 11854 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11775,7 +11885,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 11779 "pentiumdecoder.cpp"
+#line 11889 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11814,7 +11924,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 11818 "pentiumdecoder.cpp"
+#line 11928 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11845,7 +11955,7 @@ hostPC
 		stmts = instantiate(pc, "FFREE", DIS_IDX);
 
 
-#line 11849 "pentiumdecoder.cpp"
+#line 11959 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11874,7 +11984,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 11878 "pentiumdecoder.cpp"
+#line 11988 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -11913,7 +12023,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 11917 "pentiumdecoder.cpp"
+#line 12027 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -11944,7 +12054,7 @@ hostPC
 		stmts = instantiate(pc, "FST.st.STi", DIS_IDX);
 
 
-#line 11948 "pentiumdecoder.cpp"
+#line 12058 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -11971,7 +12081,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 11975 "pentiumdecoder.cpp"
+#line 12085 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12010,7 +12120,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 12014 "pentiumdecoder.cpp"
+#line 12124 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12041,7 +12151,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.st.STi", DIS_IDX);
 
 
-#line 12045 "pentiumdecoder.cpp"
+#line 12155 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -12067,7 +12177,7 @@ hostPC
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 12071 "pentiumdecoder.cpp"
+#line 12181 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12106,7 +12216,7 @@ hostPC
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 12110 "pentiumdecoder.cpp"
+#line 12220 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12137,7 +12247,7 @@ hostPC
 		stmts = instantiate(pc, "FUCOM", DIS_IDX);
 
 
-#line 12141 "pentiumdecoder.cpp"
+#line 12251 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -12156,7 +12266,7 @@ hostPC
 		stmts = instantiate(pc, "FUCOMP", DIS_IDX);
 
 
-#line 12160 "pentiumdecoder.cpp"
+#line 12270 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -12181,7 +12291,7 @@ hostPC
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 12185 "pentiumdecoder.cpp"
+#line 12295 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12220,7 +12330,7 @@ hostPC
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 12224 "pentiumdecoder.cpp"
+#line 12334 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12263,7 +12373,7 @@ hostPC
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 12267 "pentiumdecoder.cpp"
+#line 12377 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12302,7 +12412,7 @@ hostPC
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 12306 "pentiumdecoder.cpp"
+#line 12416 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12353,7 +12463,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 12357 "pentiumdecoder.cpp"
+#line 12467 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12392,7 +12502,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 12396 "pentiumdecoder.cpp"
+#line 12506 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12423,7 +12533,7 @@ hostPC
 		stmts = instantiate(pc, "FADDP.STi.ST", DIS_IDX);
 
 
-#line 12427 "pentiumdecoder.cpp"
+#line 12537 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -12450,7 +12560,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 12454 "pentiumdecoder.cpp"
+#line 12564 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12489,7 +12599,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 12493 "pentiumdecoder.cpp"
+#line 12603 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12520,7 +12630,7 @@ hostPC
 		stmts = instantiate(pc, "FMULP.STi.ST", DIS_IDX);
 
 
-#line 12524 "pentiumdecoder.cpp"
+#line 12634 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -12547,7 +12657,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 12551 "pentiumdecoder.cpp"
+#line 12661 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12586,7 +12696,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 12590 "pentiumdecoder.cpp"
+#line 12700 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12629,7 +12739,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 12633 "pentiumdecoder.cpp"
+#line 12743 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12668,7 +12778,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 12672 "pentiumdecoder.cpp"
+#line 12782 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12697,7 +12807,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMPP");
 
 
-#line 12701 "pentiumdecoder.cpp"
+#line 12811 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12726,7 +12836,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 12730 "pentiumdecoder.cpp"
+#line 12840 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12765,7 +12875,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 12769 "pentiumdecoder.cpp"
+#line 12879 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12796,7 +12906,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBRP.STi.ST", DIS_IDX);
 
 
-#line 12800 "pentiumdecoder.cpp"
+#line 12910 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -12823,7 +12933,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 12827 "pentiumdecoder.cpp"
+#line 12937 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12862,7 +12972,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 12866 "pentiumdecoder.cpp"
+#line 12976 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12893,7 +13003,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBP.STi.ST", DIS_IDX);
 
 
-#line 12897 "pentiumdecoder.cpp"
+#line 13007 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -12920,7 +13030,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 12924 "pentiumdecoder.cpp"
+#line 13034 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -12959,7 +13069,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 12963 "pentiumdecoder.cpp"
+#line 13073 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -12990,7 +13100,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVRP.STi.ST", DIS_IDX);
 
 
-#line 12994 "pentiumdecoder.cpp"
+#line 13104 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -13017,7 +13127,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 13021 "pentiumdecoder.cpp"
+#line 13131 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13056,7 +13166,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 13060 "pentiumdecoder.cpp"
+#line 13170 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13087,7 +13197,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVP.STi.ST", DIS_IDX);
 
 
-#line 13091 "pentiumdecoder.cpp"
+#line 13201 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -13122,7 +13232,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 13126 "pentiumdecoder.cpp"
+#line 13236 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13161,7 +13271,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 13165 "pentiumdecoder.cpp"
+#line 13275 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13206,7 +13316,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 13210 "pentiumdecoder.cpp"
+#line 13320 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13245,7 +13355,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 13249 "pentiumdecoder.cpp"
+#line 13359 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13288,7 +13398,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 13292 "pentiumdecoder.cpp"
+#line 13402 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13327,7 +13437,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 13331 "pentiumdecoder.cpp"
+#line 13441 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13370,7 +13480,7 @@ hostPC
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 13374 "pentiumdecoder.cpp"
+#line 13484 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13409,7 +13519,7 @@ hostPC
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 13413 "pentiumdecoder.cpp"
+#line 13523 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13438,7 +13548,7 @@ hostPC
 		stmts = instantiate(pc, "FSTSW.AX");
 
 
-#line 13442 "pentiumdecoder.cpp"
+#line 13552 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13467,7 +13577,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 13471 "pentiumdecoder.cpp"
+#line 13581 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13506,7 +13616,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 13510 "pentiumdecoder.cpp"
+#line 13620 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13539,7 +13649,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_IDX);
 
 
-#line 13543 "pentiumdecoder.cpp"
+#line 13653 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -13566,7 +13676,7 @@ hostPC
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 13570 "pentiumdecoder.cpp"
+#line 13680 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13605,7 +13715,7 @@ hostPC
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 13609 "pentiumdecoder.cpp"
+#line 13719 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13638,7 +13748,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_IDX);
 
 
-#line 13642 "pentiumdecoder.cpp"
+#line 13752 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -13665,7 +13775,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 13669 "pentiumdecoder.cpp"
+#line 13779 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -13704,7 +13814,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 13708 "pentiumdecoder.cpp"
+#line 13818 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -13768,7 +13878,7 @@ hostPC
 		result.rtl = new RTL(pc, stmts);
 
 
-#line 13772 "pentiumdecoder.cpp"
+#line 13882 "pentiumdecoder.cpp"
 
                     
                   }
@@ -13777,7 +13887,7 @@ hostPC
                 case 1: 
                   MATCH_w_32_8 = getDword(1 + MATCH_p); 
                   MATCH_name = 
-                    MATCH_name_col_59[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
+                    MATCH_name_col_65[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
                     const char *name = MATCH_name;
                     unsigned relocd = 
@@ -13788,7 +13898,7 @@ hostPC
 
 		unconditionalJump(name, relocd - delta, pc, stmts, result);
 
-#line 13792 "pentiumdecoder.cpp"
+#line 13902 "pentiumdecoder.cpp"
 
                     
                   }
@@ -13799,7 +13909,7 @@ hostPC
                 case 3: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
                   MATCH_name = 
-                    MATCH_name_col_59[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
+                    MATCH_name_col_65[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
                     const char *name = MATCH_name;
                     unsigned relocd = 
@@ -13815,7 +13925,7 @@ hostPC
 	 * Conditional branches, 8 bit offset: 7X XX
 	 */
 
-#line 13819 "pentiumdecoder.cpp"
+#line 13929 "pentiumdecoder.cpp"
 
                     
                   }
@@ -13835,7 +13945,7 @@ hostPC
 		stmts = instantiate(pc, "CLC");
 
 
-#line 13839 "pentiumdecoder.cpp"
+#line 13949 "pentiumdecoder.cpp"
 
                   
                   
@@ -13848,7 +13958,7 @@ hostPC
 		stmts = instantiate(pc, "STC");
 
 
-#line 13852 "pentiumdecoder.cpp"
+#line 13962 "pentiumdecoder.cpp"
 
                   
                   
@@ -13861,7 +13971,7 @@ hostPC
 		stmts = instantiate(pc, "CLI");
 
 
-#line 13865 "pentiumdecoder.cpp"
+#line 13975 "pentiumdecoder.cpp"
 
                   
                   
@@ -13874,7 +13984,7 @@ hostPC
 		stmts = instantiate(pc, "STI");
 
 
-#line 13878 "pentiumdecoder.cpp"
+#line 13988 "pentiumdecoder.cpp"
 
                   
                   
@@ -13887,7 +13997,7 @@ hostPC
 		stmts = instantiate(pc, "CLD");
 
 
-#line 13891 "pentiumdecoder.cpp"
+#line 14001 "pentiumdecoder.cpp"
 
                   
                   
@@ -13900,7 +14010,7 @@ hostPC
 		stmts = instantiate(pc, "STD");
 
 
-#line 13904 "pentiumdecoder.cpp"
+#line 14014 "pentiumdecoder.cpp"
 
                   
                   
@@ -13969,7 +14079,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 13973 "pentiumdecoder.cpp"
+#line 14083 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14036,7 +14146,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 14040 "pentiumdecoder.cpp"
+#line 14150 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14113,7 +14223,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 14117 "pentiumdecoder.cpp"
+#line 14227 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14180,7 +14290,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 14184 "pentiumdecoder.cpp"
+#line 14294 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14258,7 +14368,7 @@ hostPC
 		result.rtl->appendStmt(newCall);
 
 
-#line 14262 "pentiumdecoder.cpp"
+#line 14372 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14339,7 +14449,7 @@ hostPC
 	 * Unconditional branches
 	 */
 
-#line 14343 "pentiumdecoder.cpp"
+#line 14453 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14406,7 +14516,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 14410 "pentiumdecoder.cpp"
+#line 14520 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14489,7 +14599,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 14493 "pentiumdecoder.cpp"
+#line 14603 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14557,7 +14667,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 14561 "pentiumdecoder.cpp"
+#line 14671 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14625,7 +14735,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 14629 "pentiumdecoder.cpp"
+#line 14739 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14693,7 +14803,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 14697 "pentiumdecoder.cpp"
+#line 14807 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14730,7 +14840,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiAL", DIS_I8);
 
 
-#line 14734 "pentiumdecoder.cpp"
+#line 14844 "pentiumdecoder.cpp"
 
                     
                   }
@@ -14747,7 +14857,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiEAX", DIS_I32);
 
 
-#line 14751 "pentiumdecoder.cpp"
+#line 14861 "pentiumdecoder.cpp"
 
                     
                   }
@@ -14761,7 +14871,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.ES");
 
 
-#line 14765 "pentiumdecoder.cpp"
+#line 14875 "pentiumdecoder.cpp"
 
                   
                   
@@ -14774,7 +14884,7 @@ hostPC
 		stmts = instantiate(pc, "POP.ES");
 
 
-#line 14778 "pentiumdecoder.cpp"
+#line 14888 "pentiumdecoder.cpp"
 
                   
                   
@@ -14828,7 +14938,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 14832 "pentiumdecoder.cpp"
+#line 14942 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14896,7 +15006,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 14900 "pentiumdecoder.cpp"
+#line 15010 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14964,7 +15074,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 14968 "pentiumdecoder.cpp"
+#line 15078 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15032,7 +15142,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 15036 "pentiumdecoder.cpp"
+#line 15146 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15069,7 +15179,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiAL", DIS_I8);
 
 
-#line 15073 "pentiumdecoder.cpp"
+#line 15183 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15086,7 +15196,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiEAX", DIS_I32);
 
 
-#line 15090 "pentiumdecoder.cpp"
+#line 15200 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15100,7 +15210,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.SS");
 
 
-#line 15104 "pentiumdecoder.cpp"
+#line 15214 "pentiumdecoder.cpp"
 
                   
                   
@@ -15113,7 +15223,7 @@ hostPC
 		stmts = instantiate(pc, "POP.SS");
 
 
-#line 15117 "pentiumdecoder.cpp"
+#line 15227 "pentiumdecoder.cpp"
 
                   
                   
@@ -15167,7 +15277,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 15171 "pentiumdecoder.cpp"
+#line 15281 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15235,7 +15345,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 15239 "pentiumdecoder.cpp"
+#line 15349 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15303,7 +15413,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 15307 "pentiumdecoder.cpp"
+#line 15417 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15371,7 +15481,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 15375 "pentiumdecoder.cpp"
+#line 15485 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15408,7 +15518,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiAL", DIS_I8);
 
 
-#line 15412 "pentiumdecoder.cpp"
+#line 15522 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15425,7 +15535,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiEAX", DIS_I32);
 
 
-#line 15429 "pentiumdecoder.cpp"
+#line 15539 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15439,7 +15549,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15443 "pentiumdecoder.cpp"
+#line 15553 "pentiumdecoder.cpp"
 
                   
                   
@@ -15452,7 +15562,7 @@ hostPC
 		stmts = instantiate(pc, "DAA");
 
 
-#line 15456 "pentiumdecoder.cpp"
+#line 15566 "pentiumdecoder.cpp"
 
                   
                   
@@ -15506,7 +15616,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 15510 "pentiumdecoder.cpp"
+#line 15620 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15574,7 +15684,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 15578 "pentiumdecoder.cpp"
+#line 15688 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15642,7 +15752,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 15646 "pentiumdecoder.cpp"
+#line 15756 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15710,7 +15820,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 15714 "pentiumdecoder.cpp"
+#line 15824 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15747,7 +15857,7 @@ hostPC
 		stmts = instantiate(pc, "XORiAL", DIS_I8);
 
 
-#line 15751 "pentiumdecoder.cpp"
+#line 15861 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15764,7 +15874,7 @@ hostPC
 		stmts = instantiate(pc, "XORiEAX", DIS_I32);
 
 
-#line 15768 "pentiumdecoder.cpp"
+#line 15878 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15778,7 +15888,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15782 "pentiumdecoder.cpp"
+#line 15892 "pentiumdecoder.cpp"
 
                   
                   
@@ -15798,7 +15908,7 @@ hostPC
 		stmts = instantiate(pc, "INCod", DIS_R32);
 
 
-#line 15802 "pentiumdecoder.cpp"
+#line 15912 "pentiumdecoder.cpp"
 
               
             }
@@ -15814,7 +15924,7 @@ hostPC
 		stmts = instantiate(pc, "PUSHod", DIS_R32);
 
 
-#line 15818 "pentiumdecoder.cpp"
+#line 15928 "pentiumdecoder.cpp"
 
               
             }
@@ -15833,7 +15943,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15837 "pentiumdecoder.cpp"
+#line 15947 "pentiumdecoder.cpp"
 
                   
                   
@@ -15846,7 +15956,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15850 "pentiumdecoder.cpp"
+#line 15960 "pentiumdecoder.cpp"
 
                   
                   
@@ -15914,7 +16024,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 15918 "pentiumdecoder.cpp"
+#line 16028 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -15994,7 +16104,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 15998 "pentiumdecoder.cpp"
+#line 16108 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -16077,7 +16187,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16081 "pentiumdecoder.cpp"
+#line 16191 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -16157,7 +16267,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16161 "pentiumdecoder.cpp"
+#line 16271 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -16202,7 +16312,7 @@ hostPC
 		stmts = instantiate(pc, "ORiAX", DIS_I16);
 
 
-#line 16206 "pentiumdecoder.cpp"
+#line 16316 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -16222,7 +16332,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiAX", DIS_I16);
 
 
-#line 16226 "pentiumdecoder.cpp"
+#line 16336 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -16310,7 +16420,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16314 "pentiumdecoder.cpp"
+#line 16424 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -16408,7 +16518,7 @@ hostPC
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16412 "pentiumdecoder.cpp"
+#line 16522 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -16457,7 +16567,11 @@ hostPC
                                             case 0: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16468,9 +16582,9 @@ hostPC
                                                 
 #line 205 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Sow", BRANCH_JMI, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JMI, relocd - delta, pc, stmts, result);
 
-#line 16474 "pentiumdecoder.cpp"
+#line 16588 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16479,7 +16593,11 @@ hostPC
                                             case 1: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16490,9 +16608,9 @@ hostPC
                                                 
 #line 203 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NSow", BRANCH_JPOS, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPOS, relocd - delta, pc, stmts, result);
 
-#line 16496 "pentiumdecoder.cpp"
+#line 16614 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16501,7 +16619,11 @@ hostPC
                                             case 2: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16512,9 +16634,9 @@ hostPC
                                                 
 #line 201 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Pow", BRANCH_JPAR, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPAR, relocd - delta, pc, stmts, result);
 
-#line 16518 "pentiumdecoder.cpp"
+#line 16640 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16523,7 +16645,11 @@ hostPC
                                             case 3: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16534,9 +16660,9 @@ hostPC
                                                 
 #line 199 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NPow", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
-#line 16540 "pentiumdecoder.cpp"
+#line 16666 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16545,7 +16671,11 @@ hostPC
                                             case 4: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16556,9 +16686,9 @@ hostPC
                                                 
 #line 197 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Low", BRANCH_JSL, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, relocd - delta, pc, stmts, result);
 
-#line 16562 "pentiumdecoder.cpp"
+#line 16692 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16567,7 +16697,11 @@ hostPC
                                             case 5: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16578,9 +16712,9 @@ hostPC
                                                 
 #line 195 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NLow", BRANCH_JSGE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, relocd - delta, pc, stmts, result);
 
-#line 16584 "pentiumdecoder.cpp"
+#line 16718 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16589,7 +16723,11 @@ hostPC
                                             case 6: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16600,9 +16738,9 @@ hostPC
                                                 
 #line 193 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.LEow", BRANCH_JSLE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, relocd - delta, pc, stmts, result);
 
-#line 16606 "pentiumdecoder.cpp"
+#line 16744 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16611,7 +16749,11 @@ hostPC
                                             case 7: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_1[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16622,9 +16764,9 @@ hostPC
                                                 
 #line 191 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NLEow", BRANCH_JSG, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, relocd - delta, pc, stmts, result);
 
-#line 16628 "pentiumdecoder.cpp"
+#line 16770 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16640,7 +16782,11 @@ hostPC
                                             case 0: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16651,13 +16797,13 @@ hostPC
                                                 
 #line 221 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Oow", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
 	/*
 	 * Conditional branches, 32 bit offset: 0F 8X XX XX XX XX
 	 */
 
-#line 16661 "pentiumdecoder.cpp"
+#line 16807 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16666,7 +16812,11 @@ hostPC
                                             case 1: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16677,9 +16827,9 @@ hostPC
                                                 
 #line 219 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NOow", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
-#line 16683 "pentiumdecoder.cpp"
+#line 16833 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16688,7 +16838,11 @@ hostPC
                                             case 2: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16699,9 +16853,9 @@ hostPC
                                                 
 #line 217 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Bow", BRANCH_JUL, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUL, relocd - delta, pc, stmts, result);
 
-#line 16705 "pentiumdecoder.cpp"
+#line 16859 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16710,7 +16864,11 @@ hostPC
                                             case 3: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16721,9 +16879,9 @@ hostPC
                                                 
 #line 215 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NBow", BRANCH_JUGE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUGE, relocd - delta, pc, stmts, result);
 
-#line 16727 "pentiumdecoder.cpp"
+#line 16885 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16732,7 +16890,11 @@ hostPC
                                             case 4: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16743,9 +16905,9 @@ hostPC
                                                 
 #line 213 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.Zow", BRANCH_JE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, relocd - delta, pc, stmts, result);
 
-#line 16749 "pentiumdecoder.cpp"
+#line 16911 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16754,7 +16916,11 @@ hostPC
                                             case 5: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16765,9 +16931,9 @@ hostPC
                                                 
 #line 211 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NZow", BRANCH_JNE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, relocd - delta, pc, stmts, result);
 
-#line 16771 "pentiumdecoder.cpp"
+#line 16937 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16776,7 +16942,11 @@ hostPC
                                             case 6: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16787,9 +16957,9 @@ hostPC
                                                 
 #line 209 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.BEow", BRANCH_JULE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JULE, relocd - delta, pc, stmts, result);
 
-#line 16793 "pentiumdecoder.cpp"
+#line 16963 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16798,7 +16968,11 @@ hostPC
                                             case 7: 
                                               MATCH_w_16_24 = 
                                                 getWord(3 + MATCH_p); 
+                                              MATCH_name = 
+                                                MATCH_name_col_0[(MATCH_w_8_16 & 0x7) 
+                                                    /* col at 16 */]; 
                                               { 
+                                                const char *name = MATCH_name;
                                                 unsigned relocd = 
                                                   5 + sign_extend(
                                                               (MATCH_w_16_24 & 0xffff) 
@@ -16809,9 +16983,9 @@ hostPC
                                                 
 #line 207 "machine/pentium/decoder.m"
 
-		conditionalJump("Jv.NBEow", BRANCH_JUG, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUG, relocd - delta, pc, stmts, result);
 
-#line 16815 "pentiumdecoder.cpp"
+#line 16989 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16891,7 +17065,7 @@ hostPC
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 16895 "pentiumdecoder.cpp"
+#line 17069 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -16984,7 +17158,7 @@ hostPC
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 16988 "pentiumdecoder.cpp"
+#line 17162 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17106,7 +17280,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 17110 "pentiumdecoder.cpp"
+#line 17284 "pentiumdecoder.cpp"
 
                                                         
                                                       }
@@ -17241,7 +17415,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 17245 "pentiumdecoder.cpp"
+#line 17419 "pentiumdecoder.cpp"
 
                                                         
                                                       }
@@ -17353,7 +17527,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 17357 "pentiumdecoder.cpp"
+#line 17531 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17446,7 +17620,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 17450 "pentiumdecoder.cpp"
+#line 17624 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17542,7 +17716,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 17546 "pentiumdecoder.cpp"
+#line 17720 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17652,7 +17826,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 17656 "pentiumdecoder.cpp"
+#line 17830 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17788,7 +17962,7 @@ hostPC
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 17792 "pentiumdecoder.cpp"
+#line 17966 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -17935,7 +18109,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 17939 "pentiumdecoder.cpp"
+#line 18113 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -18082,7 +18256,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 18086 "pentiumdecoder.cpp"
+#line 18260 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -18229,7 +18403,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 18233 "pentiumdecoder.cpp"
+#line 18407 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -18357,7 +18531,7 @@ hostPC
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 18361 "pentiumdecoder.cpp"
+#line 18535 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18450,7 +18624,7 @@ hostPC
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 18454 "pentiumdecoder.cpp"
+#line 18628 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18571,7 +18745,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 18575 "pentiumdecoder.cpp"
+#line 18749 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18671,7 +18845,7 @@ hostPC
 		return result;
 
 
-#line 18675 "pentiumdecoder.cpp"
+#line 18849 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18769,7 +18943,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 18773 "pentiumdecoder.cpp"
+#line 18947 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18862,7 +19036,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 18866 "pentiumdecoder.cpp"
+#line 19040 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18962,7 +19136,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 18966 "pentiumdecoder.cpp"
+#line 19140 "pentiumdecoder.cpp"
 
                                                   
                                                 } /*opt-block*//*opt-block+*/
@@ -19064,7 +19238,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19068 "pentiumdecoder.cpp"
+#line 19242 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19144,7 +19318,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19148 "pentiumdecoder.cpp"
+#line 19322 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19227,7 +19401,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19231 "pentiumdecoder.cpp"
+#line 19405 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19307,7 +19481,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19311 "pentiumdecoder.cpp"
+#line 19485 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19352,7 +19526,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiAX", DIS_I16);
 
 
-#line 19356 "pentiumdecoder.cpp"
+#line 19530 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19372,7 +19546,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiAX", DIS_I16);
 
 
-#line 19376 "pentiumdecoder.cpp"
+#line 19550 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19442,7 +19616,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19446 "pentiumdecoder.cpp"
+#line 19620 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19522,7 +19696,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19526 "pentiumdecoder.cpp"
+#line 19700 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19605,7 +19779,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19609 "pentiumdecoder.cpp"
+#line 19783 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19685,7 +19859,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19689 "pentiumdecoder.cpp"
+#line 19863 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19730,7 +19904,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiAX", DIS_I16);
 
 
-#line 19734 "pentiumdecoder.cpp"
+#line 19908 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19750,7 +19924,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiAX", DIS_I16);
 
 
-#line 19754 "pentiumdecoder.cpp"
+#line 19928 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19820,7 +19994,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19824 "pentiumdecoder.cpp"
+#line 19998 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19900,7 +20074,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19904 "pentiumdecoder.cpp"
+#line 20078 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19983,7 +20157,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19987 "pentiumdecoder.cpp"
+#line 20161 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -20063,7 +20237,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 20067 "pentiumdecoder.cpp"
+#line 20241 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -20108,7 +20282,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiAX", DIS_I16);
 
 
-#line 20112 "pentiumdecoder.cpp"
+#line 20286 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20128,7 +20302,7 @@ hostPC
 		stmts = instantiate(pc, "XORiAX", DIS_I16);
 
 
-#line 20132 "pentiumdecoder.cpp"
+#line 20306 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20149,7 +20323,7 @@ hostPC
 		stmts = instantiate(pc, "DECow", DIS_R32);
 
 
-#line 20153 "pentiumdecoder.cpp"
+#line 20327 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20162,7 +20336,7 @@ hostPC
 		stmts = instantiate(pc, "INCow", DIS_R32);
 
 
-#line 20166 "pentiumdecoder.cpp"
+#line 20340 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20178,7 +20352,7 @@ hostPC
 		stmts = instantiate(pc, "POPow", DIS_R32);  // Check!
 
 
-#line 20182 "pentiumdecoder.cpp"
+#line 20356 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20191,7 +20365,7 @@ hostPC
 		stmts = instantiate(pc, "PUSHow", DIS_R32);  // Check!
 
 
-#line 20195 "pentiumdecoder.cpp"
+#line 20369 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20215,7 +20389,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Ivow", DIS_I16);
 
 
-#line 20219 "pentiumdecoder.cpp"
+#line 20393 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20296,7 +20470,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 20300 "pentiumdecoder.cpp"
+#line 20474 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -20352,7 +20526,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Ixow", DIS_I8);
 
 
-#line 20356 "pentiumdecoder.cpp"
+#line 20530 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20433,7 +20607,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 20437 "pentiumdecoder.cpp"
+#line 20611 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -20543,7 +20717,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 20547 "pentiumdecoder.cpp"
+#line 20721 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -20649,7 +20823,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 20653 "pentiumdecoder.cpp"
+#line 20827 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -20768,7 +20942,7 @@ hostPC
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 20772 "pentiumdecoder.cpp"
+#line 20946 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -20887,7 +21061,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 20891 "pentiumdecoder.cpp"
+#line 21065 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21006,7 +21180,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21010 "pentiumdecoder.cpp"
+#line 21184 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21125,7 +21299,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21129 "pentiumdecoder.cpp"
+#line 21303 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21244,7 +21418,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21248 "pentiumdecoder.cpp"
+#line 21422 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21363,7 +21537,7 @@ hostPC
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21367 "pentiumdecoder.cpp"
+#line 21541 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21482,7 +21656,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21486 "pentiumdecoder.cpp"
+#line 21660 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21588,7 +21762,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 21592 "pentiumdecoder.cpp"
+#line 21766 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -21694,7 +21868,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 21698 "pentiumdecoder.cpp"
+#line 21872 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21813,7 +21987,7 @@ hostPC
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 21817 "pentiumdecoder.cpp"
+#line 21991 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21932,7 +22106,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 21936 "pentiumdecoder.cpp"
+#line 22110 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22051,7 +22225,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22055 "pentiumdecoder.cpp"
+#line 22229 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22170,7 +22344,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22174 "pentiumdecoder.cpp"
+#line 22348 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22289,7 +22463,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22293 "pentiumdecoder.cpp"
+#line 22467 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22408,7 +22582,7 @@ hostPC
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22412 "pentiumdecoder.cpp"
+#line 22586 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22527,7 +22701,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22531 "pentiumdecoder.cpp"
+#line 22705 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22605,7 +22779,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 22609 "pentiumdecoder.cpp"
+#line 22783 "pentiumdecoder.cpp"
 
                                               
                                             }
@@ -22651,7 +22825,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 22655 "pentiumdecoder.cpp"
+#line 22829 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -22731,7 +22905,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 22735 "pentiumdecoder.cpp"
+#line 22909 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -22840,7 +23014,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 22844 "pentiumdecoder.cpp"
+#line 23018 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -22922,7 +23096,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 22926 "pentiumdecoder.cpp"
+#line 23100 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -22968,7 +23142,7 @@ hostPC
 	/* Decode the following as a NOP. We see these in startup code, and anywhere
 	 * that calls the OS (as lcall 7, 0) */
 
-#line 22972 "pentiumdecoder.cpp"
+#line 23146 "pentiumdecoder.cpp"
 
                                 
                                 
@@ -22981,7 +23155,7 @@ hostPC
 		stmts = instantiate(pc, "CWD");
 
 
-#line 22985 "pentiumdecoder.cpp"
+#line 23159 "pentiumdecoder.cpp"
 
                                 
                                 
@@ -22999,7 +23173,7 @@ hostPC
 		stmts = instantiate(pc, "XCHGeAXow", DIS_R32);
 
 
-#line 23003 "pentiumdecoder.cpp"
+#line 23177 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -23023,7 +23197,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.eAX.Ivow", DIS_I16);
 
 
-#line 23027 "pentiumdecoder.cpp"
+#line 23201 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -23041,7 +23215,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.eAX.Ovow", DIS_OFF);
 
 
-#line 23045 "pentiumdecoder.cpp"
+#line 23219 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -23059,7 +23233,7 @@ hostPC
 		stmts = instantiate(pc, "STOSvow");
 
 
-#line 23063 "pentiumdecoder.cpp"
+#line 23237 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23075,7 +23249,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ov.eAXow", DIS_OFF);
 
 
-#line 23079 "pentiumdecoder.cpp"
+#line 23253 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -23093,7 +23267,7 @@ hostPC
 		stmts = instantiate(pc, "LODSvow");
 
 
-#line 23097 "pentiumdecoder.cpp"
+#line 23271 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23105,7 +23279,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSvow");
 
 
-#line 23109 "pentiumdecoder.cpp"
+#line 23283 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23121,7 +23295,7 @@ hostPC
 		stmts = instantiate(pc, "SCASvow");
 
 
-#line 23125 "pentiumdecoder.cpp"
+#line 23299 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23133,7 +23307,7 @@ hostPC
 		stmts = instantiate(pc, "CMPSvow");
 
 
-#line 23137 "pentiumdecoder.cpp"
+#line 23311 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23158,7 +23332,7 @@ hostPC
 		stmts = instantiate(pc, "MOViw", DIS_R16, DIS_I16);  // Check!
 
 
-#line 23162 "pentiumdecoder.cpp"
+#line 23336 "pentiumdecoder.cpp"
 
                             
                           }
@@ -23255,7 +23429,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23259 "pentiumdecoder.cpp"
+#line 23433 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23374,7 +23548,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23378 "pentiumdecoder.cpp"
+#line 23552 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23493,7 +23667,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23497 "pentiumdecoder.cpp"
+#line 23671 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23612,7 +23786,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23616 "pentiumdecoder.cpp"
+#line 23790 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23731,7 +23905,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23735 "pentiumdecoder.cpp"
+#line 23909 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23850,7 +24024,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23854 "pentiumdecoder.cpp"
+#line 24028 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23971,7 +24145,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23975 "pentiumdecoder.cpp"
+#line 24149 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -24102,7 +24276,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 24106 "pentiumdecoder.cpp"
+#line 24280 "pentiumdecoder.cpp"
 
                                             
                                           }
@@ -24220,7 +24394,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24224 "pentiumdecoder.cpp"
+#line 24398 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24301,7 +24475,7 @@ hostPC
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 24305 "pentiumdecoder.cpp"
+#line 24479 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24382,7 +24556,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24386 "pentiumdecoder.cpp"
+#line 24560 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24463,7 +24637,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24467 "pentiumdecoder.cpp"
+#line 24641 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24544,7 +24718,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24548 "pentiumdecoder.cpp"
+#line 24722 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24625,7 +24799,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24629 "pentiumdecoder.cpp"
+#line 24803 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24708,7 +24882,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24712 "pentiumdecoder.cpp"
+#line 24886 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24804,7 +24978,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 24808 "pentiumdecoder.cpp"
+#line 24982 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24885,7 +25059,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 24889 "pentiumdecoder.cpp"
+#line 25063 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24966,7 +25140,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 24970 "pentiumdecoder.cpp"
+#line 25144 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25047,7 +25221,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25051 "pentiumdecoder.cpp"
+#line 25225 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25128,7 +25302,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25132 "pentiumdecoder.cpp"
+#line 25306 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25209,7 +25383,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25213 "pentiumdecoder.cpp"
+#line 25387 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25292,7 +25466,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25296 "pentiumdecoder.cpp"
+#line 25470 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25334,7 +25508,7 @@ hostPC
                           (MATCH_w_8_8 >> 3 & 0x1) /* page at 8 */ == 1) { 
                           MATCH_w_16_16 = getWord(2 + MATCH_p); 
                           MATCH_name = 
-                            MATCH_name_page_0[(MATCH_w_8_8 >> 3 & 0x1) 
+                            MATCH_name_page_2[(MATCH_w_8_8 >> 3 & 0x1) 
                                 /* page at 8 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -25349,7 +25523,7 @@ hostPC
 
 		unconditionalJump(name, relocd - delta, pc, stmts, result);
 
-#line 25353 "pentiumdecoder.cpp"
+#line 25527 "pentiumdecoder.cpp"
 
                             
                           }
@@ -25415,7 +25589,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 25419 "pentiumdecoder.cpp"
+#line 25593 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25490,7 +25664,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 25494 "pentiumdecoder.cpp"
+#line 25668 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25579,7 +25753,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 25583 "pentiumdecoder.cpp"
+#line 25757 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25686,7 +25860,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 25690 "pentiumdecoder.cpp"
+#line 25864 "pentiumdecoder.cpp"
 
                                             
                                           }
@@ -25780,7 +25954,7 @@ hostPC
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 25784 "pentiumdecoder.cpp"
+#line 25958 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25855,7 +26029,7 @@ hostPC
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 25859 "pentiumdecoder.cpp"
+#line 26033 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25930,7 +26104,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 25934 "pentiumdecoder.cpp"
+#line 26108 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26005,7 +26179,7 @@ hostPC
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 26009 "pentiumdecoder.cpp"
+#line 26183 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26080,7 +26254,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 26084 "pentiumdecoder.cpp"
+#line 26258 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26155,7 +26329,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 26159 "pentiumdecoder.cpp"
+#line 26333 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26202,7 +26376,10 @@ hostPC
               switch((MATCH_w_8_0 & 0x7) /* col at 0 */) {
                 case 0: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26210,13 +26387,13 @@ hostPC
                     
 #line 185 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.O", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
 	/*
 	 * Conditional branches, 16 bit offset: 66 0F 8X XX XX
 	 */
 
-#line 26220 "pentiumdecoder.cpp"
+#line 26397 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26224,7 +26401,10 @@ hostPC
                   break;
                 case 1: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26232,9 +26412,9 @@ hostPC
                     
 #line 183 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NO", (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd - delta, pc, stmts, result);
 
-#line 26238 "pentiumdecoder.cpp"
+#line 26418 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26242,7 +26422,10 @@ hostPC
                   break;
                 case 2: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26250,9 +26433,9 @@ hostPC
                     
 #line 181 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.B", BRANCH_JUL, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUL, relocd - delta, pc, stmts, result);
 
-#line 26256 "pentiumdecoder.cpp"
+#line 26439 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26260,7 +26443,10 @@ hostPC
                   break;
                 case 3: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26268,9 +26454,9 @@ hostPC
                     
 #line 179 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NB", BRANCH_JUGE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUGE, relocd - delta, pc, stmts, result);
 
-#line 26274 "pentiumdecoder.cpp"
+#line 26460 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26278,7 +26464,10 @@ hostPC
                   break;
                 case 4: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26286,9 +26475,9 @@ hostPC
                     
 #line 177 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.Z", BRANCH_JE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, relocd - delta, pc, stmts, result);
 
-#line 26292 "pentiumdecoder.cpp"
+#line 26481 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26296,7 +26485,10 @@ hostPC
                   break;
                 case 5: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26304,9 +26496,9 @@ hostPC
                     
 #line 175 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NZ", BRANCH_JNE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, relocd - delta, pc, stmts, result);
 
-#line 26310 "pentiumdecoder.cpp"
+#line 26502 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26314,7 +26506,10 @@ hostPC
                   break;
                 case 6: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26322,9 +26517,9 @@ hostPC
                     
 #line 173 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.BE", BRANCH_JULE, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JULE, relocd - delta, pc, stmts, result);
 
-#line 26328 "pentiumdecoder.cpp"
+#line 26523 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26332,7 +26527,10 @@ hostPC
                   break;
                 case 7: 
                   MATCH_w_8_8 = getByte(1 + MATCH_p); 
+                  MATCH_name = 
+                    MATCH_name_col_3[(MATCH_w_8_0 & 0x7) /* col at 0 */]; 
                   { 
+                    const char *name = MATCH_name;
                     unsigned relocd = 
                       2 + sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 
                                   8) + addressToPC(MATCH_p);
@@ -26340,9 +26538,9 @@ hostPC
                     
 #line 171 "machine/pentium/decoder.m"
 
-		conditionalJump("Jb.NBE", BRANCH_JUG, relocd - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUG, relocd - delta, pc, stmts, result);
 
-#line 26346 "pentiumdecoder.cpp"
+#line 26544 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26418,7 +26616,7 @@ hostPC
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 26422 "pentiumdecoder.cpp"
+#line 26620 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26517,7 +26715,7 @@ hostPC
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 26521 "pentiumdecoder.cpp"
+#line 26719 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26616,7 +26814,7 @@ hostPC
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 26620 "pentiumdecoder.cpp"
+#line 26818 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26715,7 +26913,7 @@ hostPC
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 26719 "pentiumdecoder.cpp"
+#line 26917 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26814,7 +27012,7 @@ hostPC
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 26818 "pentiumdecoder.cpp"
+#line 27016 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26913,7 +27111,7 @@ hostPC
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 26917 "pentiumdecoder.cpp"
+#line 27115 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27012,7 +27210,7 @@ hostPC
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 27016 "pentiumdecoder.cpp"
+#line 27214 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27111,7 +27309,7 @@ hostPC
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 27115 "pentiumdecoder.cpp"
+#line 27313 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27216,7 +27414,7 @@ hostPC
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 27220 "pentiumdecoder.cpp"
+#line 27418 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27313,7 +27511,7 @@ hostPC
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 27317 "pentiumdecoder.cpp"
+#line 27515 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27410,7 +27608,7 @@ hostPC
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 27414 "pentiumdecoder.cpp"
+#line 27612 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27507,7 +27705,7 @@ hostPC
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 27511 "pentiumdecoder.cpp"
+#line 27709 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27604,7 +27802,7 @@ hostPC
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 27608 "pentiumdecoder.cpp"
+#line 27806 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27701,7 +27899,7 @@ hostPC
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 27705 "pentiumdecoder.cpp"
+#line 27903 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27798,7 +27996,7 @@ hostPC
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 27802 "pentiumdecoder.cpp"
+#line 28000 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27895,7 +28093,7 @@ hostPC
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 27899 "pentiumdecoder.cpp"
+#line 28097 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28004,7 +28202,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28008 "pentiumdecoder.cpp"
+#line 28206 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28103,7 +28301,7 @@ hostPC
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28107 "pentiumdecoder.cpp"
+#line 28305 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28202,7 +28400,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28206 "pentiumdecoder.cpp"
+#line 28404 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28301,7 +28499,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28305 "pentiumdecoder.cpp"
+#line 28503 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28403,7 +28601,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28407 "pentiumdecoder.cpp"
+#line 28605 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28502,7 +28700,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28506 "pentiumdecoder.cpp"
+#line 28704 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28601,7 +28799,7 @@ hostPC
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28605 "pentiumdecoder.cpp"
+#line 28803 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28700,7 +28898,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28704 "pentiumdecoder.cpp"
+#line 28902 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28786,7 +28984,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 28790 "pentiumdecoder.cpp"
+#line 28988 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -28854,7 +29052,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 28858 "pentiumdecoder.cpp"
+#line 29056 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -28922,7 +29120,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 28926 "pentiumdecoder.cpp"
+#line 29124 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -28990,7 +29188,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 28994 "pentiumdecoder.cpp"
+#line 29192 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -29027,7 +29225,7 @@ hostPC
 		stmts = instantiate(pc, "NOP");
 
 
-#line 29031 "pentiumdecoder.cpp"
+#line 29229 "pentiumdecoder.cpp"
 
               
             } /*opt-block*//*opt-block+*/
@@ -29040,7 +29238,7 @@ hostPC
 		stmts = instantiate(pc, "XCHGeAXod", DIS_R32);
 
 
-#line 29044 "pentiumdecoder.cpp"
+#line 29242 "pentiumdecoder.cpp"
 
               
             } /*opt-block*//*opt-block+*/
@@ -29066,7 +29264,7 @@ hostPC
 //		stmts = instantiate(pc, "MOV.Ew.Sw", DIS_MEM, DIS_SR16);
 
 
-#line 29070 "pentiumdecoder.cpp"
+#line 29268 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29083,7 +29281,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.eAX.Ovod", DIS_OFF);
 
 
-#line 29087 "pentiumdecoder.cpp"
+#line 29285 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29100,7 +29298,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ob.AL", DIS_OFF);
 
 
-#line 29104 "pentiumdecoder.cpp"
+#line 29302 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29117,7 +29315,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ov.eAXod", DIS_OFF);
 
 
-#line 29121 "pentiumdecoder.cpp"
+#line 29319 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29147,7 +29345,7 @@ hostPC
 //		stmts = instantiate(pc, "UNIMP");
 
 
-#line 29151 "pentiumdecoder.cpp"
+#line 29349 "pentiumdecoder.cpp"
 
                   
                   
@@ -29160,7 +29358,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSvod");
 
 
-#line 29164 "pentiumdecoder.cpp"
+#line 29362 "pentiumdecoder.cpp"
 
                   
                   
@@ -29173,7 +29371,7 @@ hostPC
 		stmts = instantiate(pc, "CMPSB");
 
 
-#line 29177 "pentiumdecoder.cpp"
+#line 29375 "pentiumdecoder.cpp"
 
                   
                   
@@ -29186,7 +29384,7 @@ hostPC
 		stmts = instantiate(pc, "CMPSvod");
 
 
-#line 29190 "pentiumdecoder.cpp"
+#line 29388 "pentiumdecoder.cpp"
 
                   
                   
@@ -29207,7 +29405,7 @@ hostPC
 		stmts = instantiate(pc, "MOVib", DIS_R8, DIS_I8);
 
 
-#line 29211 "pentiumdecoder.cpp"
+#line 29409 "pentiumdecoder.cpp"
 
               
             }
@@ -29280,7 +29478,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29284 "pentiumdecoder.cpp"
+#line 29482 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29379,7 +29577,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29383 "pentiumdecoder.cpp"
+#line 29581 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29478,7 +29676,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29482 "pentiumdecoder.cpp"
+#line 29680 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29577,7 +29775,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29581 "pentiumdecoder.cpp"
+#line 29779 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29676,7 +29874,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29680 "pentiumdecoder.cpp"
+#line 29878 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29775,7 +29973,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29779 "pentiumdecoder.cpp"
+#line 29977 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29876,7 +30074,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29880 "pentiumdecoder.cpp"
+#line 30078 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29983,7 +30181,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 29987 "pentiumdecoder.cpp"
+#line 30185 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30082,7 +30280,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30086 "pentiumdecoder.cpp"
+#line 30284 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30181,7 +30379,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30185 "pentiumdecoder.cpp"
+#line 30383 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30280,7 +30478,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30284 "pentiumdecoder.cpp"
+#line 30482 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30379,7 +30577,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30383 "pentiumdecoder.cpp"
+#line 30581 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30478,7 +30676,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30482 "pentiumdecoder.cpp"
+#line 30680 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30579,7 +30777,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30583 "pentiumdecoder.cpp"
+#line 30781 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30636,7 +30834,7 @@ hostPC
 		result.rtl->appendStmt(ret);
 
 
-#line 30640 "pentiumdecoder.cpp"
+#line 30838 "pentiumdecoder.cpp"
 
                     
                   }
@@ -30658,7 +30856,7 @@ hostPC
 //		stmts = instantiate(pc, "REP");
 
 
-#line 30662 "pentiumdecoder.cpp"
+#line 30860 "pentiumdecoder.cpp"
 
                   
                   
@@ -30683,7 +30881,7 @@ hostPC
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 30687 "pentiumdecoder.cpp"
+#line 30885 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -30723,7 +30921,7 @@ hostPC
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 30727 "pentiumdecoder.cpp"
+#line 30925 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -30768,7 +30966,7 @@ hostPC
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 30772 "pentiumdecoder.cpp"
+#line 30970 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -30808,7 +31006,7 @@ hostPC
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 30812 "pentiumdecoder.cpp"
+#line 31010 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -30894,7 +31092,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 30898 "pentiumdecoder.cpp"
+#line 31096 "pentiumdecoder.cpp"
 
                               
                             }
@@ -30994,7 +31192,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 30998 "pentiumdecoder.cpp"
+#line 31196 "pentiumdecoder.cpp"
 
                               
                             }
@@ -31102,7 +31300,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 31106 "pentiumdecoder.cpp"
+#line 31304 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31169,7 +31367,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 31173 "pentiumdecoder.cpp"
+#line 31371 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31236,7 +31434,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 31240 "pentiumdecoder.cpp"
+#line 31438 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31303,7 +31501,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 31307 "pentiumdecoder.cpp"
+#line 31505 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31370,7 +31568,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 31374 "pentiumdecoder.cpp"
+#line 31572 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31437,7 +31635,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 31441 "pentiumdecoder.cpp"
+#line 31639 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31506,7 +31704,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 31510 "pentiumdecoder.cpp"
+#line 31708 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31581,7 +31779,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 31585 "pentiumdecoder.cpp"
+#line 31783 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31648,7 +31846,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 31652 "pentiumdecoder.cpp"
+#line 31850 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31715,7 +31913,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 31719 "pentiumdecoder.cpp"
+#line 31917 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31782,7 +31980,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 31786 "pentiumdecoder.cpp"
+#line 31984 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31849,7 +32047,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 31853 "pentiumdecoder.cpp"
+#line 32051 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31916,7 +32114,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 31920 "pentiumdecoder.cpp"
+#line 32118 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31985,7 +32183,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 31989 "pentiumdecoder.cpp"
+#line 32187 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32060,7 +32258,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 32064 "pentiumdecoder.cpp"
+#line 32262 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32127,7 +32325,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 32131 "pentiumdecoder.cpp"
+#line 32329 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32194,7 +32392,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 32198 "pentiumdecoder.cpp"
+#line 32396 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32261,7 +32459,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 32265 "pentiumdecoder.cpp"
+#line 32463 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32328,7 +32526,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 32332 "pentiumdecoder.cpp"
+#line 32530 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32395,7 +32593,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 32399 "pentiumdecoder.cpp"
+#line 32597 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32464,7 +32662,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 32468 "pentiumdecoder.cpp"
+#line 32666 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32539,7 +32737,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32543 "pentiumdecoder.cpp"
+#line 32741 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32606,7 +32804,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32610 "pentiumdecoder.cpp"
+#line 32808 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32673,7 +32871,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32677 "pentiumdecoder.cpp"
+#line 32875 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32740,7 +32938,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32744 "pentiumdecoder.cpp"
+#line 32942 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32807,7 +33005,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32811 "pentiumdecoder.cpp"
+#line 33009 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32874,7 +33072,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32878 "pentiumdecoder.cpp"
+#line 33076 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32943,7 +33141,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32947 "pentiumdecoder.cpp"
+#line 33145 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32982,7 +33180,7 @@ hostPC
 		stmts = instantiate(pc, "XLATB");
 
 
-#line 32986 "pentiumdecoder.cpp"
+#line 33184 "pentiumdecoder.cpp"
 
                   
                   
@@ -33006,7 +33204,7 @@ hostPC
 		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - hostPC - 2));
 
 
-#line 33010 "pentiumdecoder.cpp"
+#line 33208 "pentiumdecoder.cpp"
 
                     
                   }
@@ -33025,7 +33223,7 @@ hostPC
 		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - hostPC - 2));
 
 
-#line 33029 "pentiumdecoder.cpp"
+#line 33227 "pentiumdecoder.cpp"
 
                     
                   }
@@ -33044,7 +33242,7 @@ hostPC
 		stmts = instantiate(pc, "LOOP", dis_Num(relocd - hostPC - 2));
 
 
-#line 33048 "pentiumdecoder.cpp"
+#line 33246 "pentiumdecoder.cpp"
 
                     
                   }
@@ -33084,7 +33282,7 @@ hostPC
                                     (MATCH_w_8_16 >> 3 & 0x1) 
                                           /* page at 16 */ == 1) { 
                                     MATCH_name = 
-                                      MATCH_name_page_1[(MATCH_w_8_16 >> 3 & 0x1) 
+                                      MATCH_name_page_4[(MATCH_w_8_16 >> 3 & 0x1) 
                                           /* page at 16 */]; 
                                     { 
                                       const char *name = MATCH_name;
@@ -33095,7 +33293,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33099 "pentiumdecoder.cpp"
+#line 33297 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -33111,7 +33309,7 @@ hostPC
                                     if ((MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */ == 1) { 
                                       MATCH_name = 
-                                        MATCH_name_page_2[(MATCH_w_8_16 >> 3 & 0x1) 
+                                        MATCH_name_page_5[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
                                         const char *name = MATCH_name;
@@ -33122,7 +33320,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33126 "pentiumdecoder.cpp"
+#line 33324 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33130,7 +33328,7 @@ hostPC
                                     } /*opt-block*/
                                     else { 
                                       MATCH_name = 
-                                        MATCH_name_page_1[(MATCH_w_8_16 >> 3 & 0x1) 
+                                        MATCH_name_page_4[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
                                         const char *name = MATCH_name;
@@ -33141,7 +33339,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33145 "pentiumdecoder.cpp"
+#line 33343 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33156,7 +33354,7 @@ hostPC
                                     if ((MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */ == 1) { 
                                       MATCH_name = 
-                                        MATCH_name_page_3[(MATCH_w_8_16 >> 3 & 0x1) 
+                                        MATCH_name_page_6[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
                                         const char *name = MATCH_name;
@@ -33167,7 +33365,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33171 "pentiumdecoder.cpp"
+#line 33369 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33175,7 +33373,7 @@ hostPC
                                     } /*opt-block*/
                                     else { 
                                       MATCH_name = 
-                                        MATCH_name_page_2[(MATCH_w_8_16 >> 3 & 0x1) 
+                                        MATCH_name_page_5[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
                                         const char *name = MATCH_name;
@@ -33186,7 +33384,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33190 "pentiumdecoder.cpp"
+#line 33388 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33211,7 +33409,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_4[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_7[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33222,7 +33420,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33226 "pentiumdecoder.cpp"
+#line 33424 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33236,7 +33434,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_5[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_8[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33247,7 +33445,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33251 "pentiumdecoder.cpp"
+#line 33449 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33261,7 +33459,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_6[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_9[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33272,7 +33470,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33276 "pentiumdecoder.cpp"
+#line 33474 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33280,7 +33478,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_0[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_2[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33291,7 +33489,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33295 "pentiumdecoder.cpp"
+#line 33493 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33303,7 +33501,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_7[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_10[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33314,7 +33512,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33318 "pentiumdecoder.cpp"
+#line 33516 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33322,7 +33520,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_4[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_7[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33333,7 +33531,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33337 "pentiumdecoder.cpp"
+#line 33535 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33345,7 +33543,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_8[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_11[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33356,7 +33554,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33360 "pentiumdecoder.cpp"
+#line 33558 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33364,7 +33562,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_5[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_8[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33375,7 +33573,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33379 "pentiumdecoder.cpp"
+#line 33577 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33387,7 +33585,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_9[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_12[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33398,7 +33596,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33402 "pentiumdecoder.cpp"
+#line 33600 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33406,7 +33604,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_6[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_9[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33417,7 +33615,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33421 "pentiumdecoder.cpp"
+#line 33619 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33456,7 +33654,7 @@ hostPC
                                     (MATCH_w_8_16 >> 3 & 0x1) 
                                           /* page at 16 */ == 1) { 
                                     MATCH_name = 
-                                      MATCH_name_page_10[(MATCH_w_8_16 >> 3 & 0x1) 
+                                      MATCH_name_page_13[(MATCH_w_8_16 >> 3 & 0x1) 
                                           /* page at 16 */]; 
                                     { 
                                       const char *name = MATCH_name;
@@ -33467,7 +33665,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33471 "pentiumdecoder.cpp"
+#line 33669 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -33492,7 +33690,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33496 "pentiumdecoder.cpp"
+#line 33694 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33500,7 +33698,7 @@ hostPC
                                     } /*opt-block*/
                                     else { 
                                       MATCH_name = 
-                                        MATCH_name_page_3[(MATCH_w_8_16 >> 3 & 0x1) 
+                                        MATCH_name_page_6[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
                                         const char *name = MATCH_name;
@@ -33511,7 +33709,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33515 "pentiumdecoder.cpp"
+#line 33713 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33535,7 +33733,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33539 "pentiumdecoder.cpp"
+#line 33737 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33543,7 +33741,7 @@ hostPC
                                     } /*opt-block*/
                                     else { 
                                       MATCH_name = 
-                                        MATCH_name_page_10[(MATCH_w_8_16 >> 3 & 0x1) 
+                                        MATCH_name_page_13[(MATCH_w_8_16 >> 3 & 0x1) 
                                             /* page at 16 */]; 
                                       { 
                                         const char *name = MATCH_name;
@@ -33554,7 +33752,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33558 "pentiumdecoder.cpp"
+#line 33756 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33579,7 +33777,7 @@ hostPC
                               if ((MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */ == 1) { 
                                 MATCH_name = 
-                                  MATCH_name_page_13[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_16[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33590,7 +33788,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33594 "pentiumdecoder.cpp"
+#line 33792 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33613,7 +33811,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33617 "pentiumdecoder.cpp"
+#line 33815 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33636,7 +33834,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33640 "pentiumdecoder.cpp"
+#line 33838 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33644,7 +33842,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_7[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_10[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33655,7 +33853,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33659 "pentiumdecoder.cpp"
+#line 33857 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33676,7 +33874,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33680 "pentiumdecoder.cpp"
+#line 33878 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33684,7 +33882,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_8[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_11[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33695,7 +33893,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33699 "pentiumdecoder.cpp"
+#line 33897 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33716,7 +33914,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33720 "pentiumdecoder.cpp"
+#line 33918 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33724,7 +33922,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_9[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_12[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33735,7 +33933,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33739 "pentiumdecoder.cpp"
+#line 33937 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33756,7 +33954,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33760 "pentiumdecoder.cpp"
+#line 33958 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33764,7 +33962,7 @@ hostPC
                               } /*opt-block*/
                               else { 
                                 MATCH_name = 
-                                  MATCH_name_page_13[(MATCH_w_8_8 >> 3 & 0x1) 
+                                  MATCH_name_page_16[(MATCH_w_8_8 >> 3 & 0x1) 
                                       /* page at 8 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -33775,7 +33973,7 @@ hostPC
 		stmts = instantiate(pc, name);
 
 
-#line 33779 "pentiumdecoder.cpp"
+#line 33977 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33798,7 +33996,7 @@ hostPC
 		stmts = instantiate(pc, "CMC");
 
 
-#line 33802 "pentiumdecoder.cpp"
+#line 34000 "pentiumdecoder.cpp"
 
                   
                   
@@ -33865,7 +34063,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 33869 "pentiumdecoder.cpp"
+#line 34067 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33948,7 +34146,7 @@ hostPC
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 33952 "pentiumdecoder.cpp"
+#line 34150 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34015,7 +34213,7 @@ hostPC
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 34019 "pentiumdecoder.cpp"
+#line 34217 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34082,7 +34280,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 34086 "pentiumdecoder.cpp"
+#line 34284 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34149,7 +34347,7 @@ hostPC
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 34153 "pentiumdecoder.cpp"
+#line 34351 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34216,7 +34414,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 34220 "pentiumdecoder.cpp"
+#line 34418 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34286,7 +34484,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 34290 "pentiumdecoder.cpp"
+#line 34488 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34377,7 +34575,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 34381 "pentiumdecoder.cpp"
+#line 34579 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -34460,7 +34658,7 @@ hostPC
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 34464 "pentiumdecoder.cpp"
+#line 34662 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34527,7 +34725,7 @@ hostPC
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 34531 "pentiumdecoder.cpp"
+#line 34729 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34594,7 +34792,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 34598 "pentiumdecoder.cpp"
+#line 34796 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34661,7 +34859,7 @@ hostPC
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 34665 "pentiumdecoder.cpp"
+#line 34863 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34728,7 +34926,7 @@ hostPC
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 34732 "pentiumdecoder.cpp"
+#line 34930 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34795,7 +34993,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 34799 "pentiumdecoder.cpp"
+#line 34997 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34843,7 +35041,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34847 "pentiumdecoder.cpp"
+#line 35045 "pentiumdecoder.cpp"
 
       
     } 
@@ -34860,7 +35058,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34864 "pentiumdecoder.cpp"
+#line 35062 "pentiumdecoder.cpp"
 
       
     } 
@@ -34877,7 +35075,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34881 "pentiumdecoder.cpp"
+#line 35079 "pentiumdecoder.cpp"
 
       
     } 
@@ -34894,7 +35092,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34898 "pentiumdecoder.cpp"
+#line 35096 "pentiumdecoder.cpp"
 
       
     } 
@@ -34911,7 +35109,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34915 "pentiumdecoder.cpp"
+#line 35113 "pentiumdecoder.cpp"
 
       
     } 
@@ -34928,7 +35126,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34932 "pentiumdecoder.cpp"
+#line 35130 "pentiumdecoder.cpp"
 
       
     } 
@@ -34945,7 +35143,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34949 "pentiumdecoder.cpp"
+#line 35147 "pentiumdecoder.cpp"
 
       
     } 
@@ -34962,7 +35160,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34966 "pentiumdecoder.cpp"
+#line 35164 "pentiumdecoder.cpp"
 
       
     } 
@@ -34979,7 +35177,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 34983 "pentiumdecoder.cpp"
+#line 35181 "pentiumdecoder.cpp"
 
       
     } 
@@ -34996,7 +35194,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35000 "pentiumdecoder.cpp"
+#line 35198 "pentiumdecoder.cpp"
 
       
     } 
@@ -35013,7 +35211,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35017 "pentiumdecoder.cpp"
+#line 35215 "pentiumdecoder.cpp"
 
       
     } 
@@ -35030,7 +35228,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35034 "pentiumdecoder.cpp"
+#line 35232 "pentiumdecoder.cpp"
 
       
     } 
@@ -35047,7 +35245,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35051 "pentiumdecoder.cpp"
+#line 35249 "pentiumdecoder.cpp"
 
       
     } 
@@ -35064,7 +35262,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35068 "pentiumdecoder.cpp"
+#line 35266 "pentiumdecoder.cpp"
 
       
     } 
@@ -35081,7 +35279,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35085 "pentiumdecoder.cpp"
+#line 35283 "pentiumdecoder.cpp"
 
       
     } 
@@ -35098,7 +35296,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35102 "pentiumdecoder.cpp"
+#line 35300 "pentiumdecoder.cpp"
 
       
     } 
@@ -35115,7 +35313,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35119 "pentiumdecoder.cpp"
+#line 35317 "pentiumdecoder.cpp"
 
       
     } 
@@ -35132,7 +35330,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35136 "pentiumdecoder.cpp"
+#line 35334 "pentiumdecoder.cpp"
 
       
     } 
@@ -35149,7 +35347,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35153 "pentiumdecoder.cpp"
+#line 35351 "pentiumdecoder.cpp"
 
       
     } 
@@ -35166,7 +35364,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35170 "pentiumdecoder.cpp"
+#line 35368 "pentiumdecoder.cpp"
 
       
     } 
@@ -35183,7 +35381,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35187 "pentiumdecoder.cpp"
+#line 35385 "pentiumdecoder.cpp"
 
       
     } 
@@ -35200,7 +35398,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35204 "pentiumdecoder.cpp"
+#line 35402 "pentiumdecoder.cpp"
 
       
     } 
@@ -35217,7 +35415,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35221 "pentiumdecoder.cpp"
+#line 35419 "pentiumdecoder.cpp"
 
       
     } 
@@ -35234,7 +35432,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35238 "pentiumdecoder.cpp"
+#line 35436 "pentiumdecoder.cpp"
 
       
     } 
@@ -35251,7 +35449,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35255 "pentiumdecoder.cpp"
+#line 35453 "pentiumdecoder.cpp"
 
       
     } 
@@ -35268,7 +35466,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35272 "pentiumdecoder.cpp"
+#line 35470 "pentiumdecoder.cpp"
 
       
     } 
@@ -35285,7 +35483,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35289 "pentiumdecoder.cpp"
+#line 35487 "pentiumdecoder.cpp"
 
       
     } 
@@ -35302,7 +35500,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35306 "pentiumdecoder.cpp"
+#line 35504 "pentiumdecoder.cpp"
 
       
     } 
@@ -35319,7 +35517,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35323 "pentiumdecoder.cpp"
+#line 35521 "pentiumdecoder.cpp"
 
       
     } 
@@ -35336,7 +35534,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35340 "pentiumdecoder.cpp"
+#line 35538 "pentiumdecoder.cpp"
 
       
     } 
@@ -35353,7 +35551,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35357 "pentiumdecoder.cpp"
+#line 35555 "pentiumdecoder.cpp"
 
       
     } 
@@ -35370,7 +35568,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35374 "pentiumdecoder.cpp"
+#line 35572 "pentiumdecoder.cpp"
 
       
     } 
@@ -35387,7 +35585,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35391 "pentiumdecoder.cpp"
+#line 35589 "pentiumdecoder.cpp"
 
       
     } 
@@ -35404,7 +35602,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35408 "pentiumdecoder.cpp"
+#line 35606 "pentiumdecoder.cpp"
 
       
     } 
@@ -35421,7 +35619,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35425 "pentiumdecoder.cpp"
+#line 35623 "pentiumdecoder.cpp"
 
       
     } 
@@ -35438,7 +35636,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35442 "pentiumdecoder.cpp"
+#line 35640 "pentiumdecoder.cpp"
 
       
     } 
@@ -35455,7 +35653,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35459 "pentiumdecoder.cpp"
+#line 35657 "pentiumdecoder.cpp"
 
       
     } 
@@ -35472,7 +35670,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35476 "pentiumdecoder.cpp"
+#line 35674 "pentiumdecoder.cpp"
 
       
     } 
@@ -35489,7 +35687,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35493 "pentiumdecoder.cpp"
+#line 35691 "pentiumdecoder.cpp"
 
       
     } 
@@ -35506,7 +35704,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35510 "pentiumdecoder.cpp"
+#line 35708 "pentiumdecoder.cpp"
 
       
     } 
@@ -35523,7 +35721,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35527 "pentiumdecoder.cpp"
+#line 35725 "pentiumdecoder.cpp"
 
       
     } 
@@ -35540,7 +35738,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35544 "pentiumdecoder.cpp"
+#line 35742 "pentiumdecoder.cpp"
 
       
     } 
@@ -35557,7 +35755,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35561 "pentiumdecoder.cpp"
+#line 35759 "pentiumdecoder.cpp"
 
       
     } 
@@ -35574,7 +35772,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35578 "pentiumdecoder.cpp"
+#line 35776 "pentiumdecoder.cpp"
 
       
     } 
@@ -35591,7 +35789,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35595 "pentiumdecoder.cpp"
+#line 35793 "pentiumdecoder.cpp"
 
       
     } 
@@ -35608,7 +35806,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35612 "pentiumdecoder.cpp"
+#line 35810 "pentiumdecoder.cpp"
 
       
     } 
@@ -35625,7 +35823,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35629 "pentiumdecoder.cpp"
+#line 35827 "pentiumdecoder.cpp"
 
       
     } 
@@ -35642,7 +35840,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35646 "pentiumdecoder.cpp"
+#line 35844 "pentiumdecoder.cpp"
 
       
     } 
@@ -35659,7 +35857,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35663 "pentiumdecoder.cpp"
+#line 35861 "pentiumdecoder.cpp"
 
       
     } 
@@ -35676,7 +35874,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35680 "pentiumdecoder.cpp"
+#line 35878 "pentiumdecoder.cpp"
 
       
     } 
@@ -35693,7 +35891,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35697 "pentiumdecoder.cpp"
+#line 35895 "pentiumdecoder.cpp"
 
       
     } 
@@ -35710,7 +35908,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35714 "pentiumdecoder.cpp"
+#line 35912 "pentiumdecoder.cpp"
 
       
     } 
@@ -35727,7 +35925,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35731 "pentiumdecoder.cpp"
+#line 35929 "pentiumdecoder.cpp"
 
       
     } 
@@ -35744,7 +35942,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35748 "pentiumdecoder.cpp"
+#line 35946 "pentiumdecoder.cpp"
 
       
     } 
@@ -35761,7 +35959,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35765 "pentiumdecoder.cpp"
+#line 35963 "pentiumdecoder.cpp"
 
       
     } 
@@ -35778,7 +35976,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35782 "pentiumdecoder.cpp"
+#line 35980 "pentiumdecoder.cpp"
 
       
     } 
@@ -35795,7 +35993,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35799 "pentiumdecoder.cpp"
+#line 35997 "pentiumdecoder.cpp"
 
       
     } 
@@ -35812,7 +36010,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35816 "pentiumdecoder.cpp"
+#line 36014 "pentiumdecoder.cpp"
 
       
     } 
@@ -35829,7 +36027,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35833 "pentiumdecoder.cpp"
+#line 36031 "pentiumdecoder.cpp"
 
       
     } 
@@ -35846,7 +36044,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35850 "pentiumdecoder.cpp"
+#line 36048 "pentiumdecoder.cpp"
 
       
     } 
@@ -35863,7 +36061,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35867 "pentiumdecoder.cpp"
+#line 36065 "pentiumdecoder.cpp"
 
       
     } 
@@ -35880,7 +36078,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35884 "pentiumdecoder.cpp"
+#line 36082 "pentiumdecoder.cpp"
 
       
     } 
@@ -35897,7 +36095,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35901 "pentiumdecoder.cpp"
+#line 36099 "pentiumdecoder.cpp"
 
       
     } 
@@ -35914,7 +36112,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35918 "pentiumdecoder.cpp"
+#line 36116 "pentiumdecoder.cpp"
 
       
     } 
@@ -35931,7 +36129,7 @@ hostPC
 		result.numBytes = 0;
 		return result;
 
-#line 35935 "pentiumdecoder.cpp"
+#line 36133 "pentiumdecoder.cpp"
 
       
     } 
@@ -35948,7 +36146,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 35952 "pentiumdecoder.cpp"
+#line 36150 "pentiumdecoder.cpp"
 
       
     } 
@@ -35965,7 +36163,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 35969 "pentiumdecoder.cpp"
+#line 36167 "pentiumdecoder.cpp"
 
       
     } 
@@ -35982,7 +36180,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 35986 "pentiumdecoder.cpp"
+#line 36184 "pentiumdecoder.cpp"
 
       
     } 
@@ -35999,7 +36197,7 @@ hostPC
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36003 "pentiumdecoder.cpp"
+#line 36201 "pentiumdecoder.cpp"
 
       
     } 
@@ -36016,7 +36214,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36020 "pentiumdecoder.cpp"
+#line 36218 "pentiumdecoder.cpp"
 
       
     } 
@@ -36033,7 +36231,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36037 "pentiumdecoder.cpp"
+#line 36235 "pentiumdecoder.cpp"
 
       
     } 
@@ -36050,7 +36248,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36054 "pentiumdecoder.cpp"
+#line 36252 "pentiumdecoder.cpp"
 
       
     } 
@@ -36067,7 +36265,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36071 "pentiumdecoder.cpp"
+#line 36269 "pentiumdecoder.cpp"
 
       
     } 
@@ -36084,7 +36282,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36088 "pentiumdecoder.cpp"
+#line 36286 "pentiumdecoder.cpp"
 
       
     } 
@@ -36101,7 +36299,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36105 "pentiumdecoder.cpp"
+#line 36303 "pentiumdecoder.cpp"
 
       
     } 
@@ -36118,7 +36316,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36122 "pentiumdecoder.cpp"
+#line 36320 "pentiumdecoder.cpp"
 
       
     } 
@@ -36135,7 +36333,7 @@ hostPC
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36139 "pentiumdecoder.cpp"
+#line 36337 "pentiumdecoder.cpp"
 
       
     } 
@@ -36152,7 +36350,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36156 "pentiumdecoder.cpp"
+#line 36354 "pentiumdecoder.cpp"
 
       
     } 
@@ -36169,7 +36367,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36173 "pentiumdecoder.cpp"
+#line 36371 "pentiumdecoder.cpp"
 
       
     } 
@@ -36186,7 +36384,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36190 "pentiumdecoder.cpp"
+#line 36388 "pentiumdecoder.cpp"
 
       
     } 
@@ -36203,7 +36401,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36207 "pentiumdecoder.cpp"
+#line 36405 "pentiumdecoder.cpp"
 
       
     } 
@@ -36220,7 +36418,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36224 "pentiumdecoder.cpp"
+#line 36422 "pentiumdecoder.cpp"
 
       
     } 
@@ -36237,7 +36435,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36241 "pentiumdecoder.cpp"
+#line 36439 "pentiumdecoder.cpp"
 
       
     } 
@@ -36254,7 +36452,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36258 "pentiumdecoder.cpp"
+#line 36456 "pentiumdecoder.cpp"
 
       
     } 
@@ -36271,7 +36469,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36275 "pentiumdecoder.cpp"
+#line 36473 "pentiumdecoder.cpp"
 
       
     } 
@@ -36288,7 +36486,7 @@ hostPC
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36292 "pentiumdecoder.cpp"
+#line 36490 "pentiumdecoder.cpp"
 
       
     } 
@@ -36305,7 +36503,7 @@ hostPC
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36309 "pentiumdecoder.cpp"
+#line 36507 "pentiumdecoder.cpp"
 
       
     } 
@@ -36322,7 +36520,7 @@ hostPC
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36326 "pentiumdecoder.cpp"
+#line 36524 "pentiumdecoder.cpp"
 
       
     } 
@@ -36339,7 +36537,7 @@ hostPC
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36343 "pentiumdecoder.cpp"
+#line 36541 "pentiumdecoder.cpp"
 
       
     } 
@@ -36356,7 +36554,7 @@ hostPC
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36360 "pentiumdecoder.cpp"
+#line 36558 "pentiumdecoder.cpp"
 
       
     } 
@@ -36373,7 +36571,7 @@ hostPC
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36377 "pentiumdecoder.cpp"
+#line 36575 "pentiumdecoder.cpp"
 
       
     } 
@@ -36390,7 +36588,7 @@ hostPC
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36394 "pentiumdecoder.cpp"
+#line 36592 "pentiumdecoder.cpp"
 
       
     } 
@@ -36407,7 +36605,7 @@ hostPC
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36411 "pentiumdecoder.cpp"
+#line 36609 "pentiumdecoder.cpp"
 
       
     } 
@@ -36424,7 +36622,7 @@ hostPC
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36428 "pentiumdecoder.cpp"
+#line 36626 "pentiumdecoder.cpp"
 
       
     } 
@@ -36441,7 +36639,7 @@ hostPC
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36445 "pentiumdecoder.cpp"
+#line 36643 "pentiumdecoder.cpp"
 
       
     } 
@@ -36458,7 +36656,7 @@ hostPC
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36462 "pentiumdecoder.cpp"
+#line 36660 "pentiumdecoder.cpp"
 
       
     } 
@@ -36475,7 +36673,7 @@ hostPC
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36479 "pentiumdecoder.cpp"
+#line 36677 "pentiumdecoder.cpp"
 
       
     } 
@@ -36493,7 +36691,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36497 "pentiumdecoder.cpp"
+#line 36695 "pentiumdecoder.cpp"
 
       
     } 
@@ -36511,7 +36709,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36515 "pentiumdecoder.cpp"
+#line 36713 "pentiumdecoder.cpp"
 
       
     } 
@@ -36529,7 +36727,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36533 "pentiumdecoder.cpp"
+#line 36731 "pentiumdecoder.cpp"
 
       
     } 
@@ -36547,7 +36745,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36551 "pentiumdecoder.cpp"
+#line 36749 "pentiumdecoder.cpp"
 
       
     } 
@@ -36565,7 +36763,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36569 "pentiumdecoder.cpp"
+#line 36767 "pentiumdecoder.cpp"
 
       
     } 
@@ -36583,7 +36781,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36587 "pentiumdecoder.cpp"
+#line 36785 "pentiumdecoder.cpp"
 
       
     } 
@@ -36601,7 +36799,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36605 "pentiumdecoder.cpp"
+#line 36803 "pentiumdecoder.cpp"
 
       
     } 
@@ -36619,7 +36817,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36623 "pentiumdecoder.cpp"
+#line 36821 "pentiumdecoder.cpp"
 
       
     } 
@@ -36636,7 +36834,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36640 "pentiumdecoder.cpp"
+#line 36838 "pentiumdecoder.cpp"
 
       
     } 
@@ -36653,7 +36851,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36657 "pentiumdecoder.cpp"
+#line 36855 "pentiumdecoder.cpp"
 
       
     } 
@@ -36670,7 +36868,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36674 "pentiumdecoder.cpp"
+#line 36872 "pentiumdecoder.cpp"
 
       
     } 
@@ -36687,7 +36885,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36691 "pentiumdecoder.cpp"
+#line 36889 "pentiumdecoder.cpp"
 
       
     } 
@@ -36704,7 +36902,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36708 "pentiumdecoder.cpp"
+#line 36906 "pentiumdecoder.cpp"
 
       
     } 
@@ -36721,7 +36919,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36725 "pentiumdecoder.cpp"
+#line 36923 "pentiumdecoder.cpp"
 
       
     } 
@@ -36738,7 +36936,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36742 "pentiumdecoder.cpp"
+#line 36940 "pentiumdecoder.cpp"
 
       
     } 
@@ -36755,7 +36953,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36759 "pentiumdecoder.cpp"
+#line 36957 "pentiumdecoder.cpp"
 
       
     } 
@@ -36772,7 +36970,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36776 "pentiumdecoder.cpp"
+#line 36974 "pentiumdecoder.cpp"
 
       
     } 
@@ -36789,7 +36987,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36793 "pentiumdecoder.cpp"
+#line 36991 "pentiumdecoder.cpp"
 
       
     } 
@@ -36806,7 +37004,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36810 "pentiumdecoder.cpp"
+#line 37008 "pentiumdecoder.cpp"
 
       
     } 
@@ -36823,7 +37021,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36827 "pentiumdecoder.cpp"
+#line 37025 "pentiumdecoder.cpp"
 
       
     } 
@@ -36840,7 +37038,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36844 "pentiumdecoder.cpp"
+#line 37042 "pentiumdecoder.cpp"
 
       
     } 
@@ -36857,7 +37055,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36861 "pentiumdecoder.cpp"
+#line 37059 "pentiumdecoder.cpp"
 
       
     } 
@@ -36874,7 +37072,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36878 "pentiumdecoder.cpp"
+#line 37076 "pentiumdecoder.cpp"
 
       
     } 
@@ -36891,7 +37089,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36895 "pentiumdecoder.cpp"
+#line 37093 "pentiumdecoder.cpp"
 
       
     } 
@@ -36909,7 +37107,7 @@ hostPC
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36913 "pentiumdecoder.cpp"
+#line 37111 "pentiumdecoder.cpp"
 
       
     } 
@@ -36927,7 +37125,7 @@ hostPC
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36931 "pentiumdecoder.cpp"
+#line 37129 "pentiumdecoder.cpp"
 
       
     } 
@@ -36945,7 +37143,7 @@ hostPC
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36949 "pentiumdecoder.cpp"
+#line 37147 "pentiumdecoder.cpp"
 
       
     } 
@@ -36963,7 +37161,7 @@ hostPC
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36967 "pentiumdecoder.cpp"
+#line 37165 "pentiumdecoder.cpp"
 
       
     } 
@@ -36981,7 +37179,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 36985 "pentiumdecoder.cpp"
+#line 37183 "pentiumdecoder.cpp"
 
       
     } 
@@ -36999,7 +37197,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 37003 "pentiumdecoder.cpp"
+#line 37201 "pentiumdecoder.cpp"
 
       
     } 
@@ -37017,7 +37215,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 37021 "pentiumdecoder.cpp"
+#line 37219 "pentiumdecoder.cpp"
 
       
     } 
@@ -37035,7 +37233,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 37039 "pentiumdecoder.cpp"
+#line 37237 "pentiumdecoder.cpp"
 
       
     } 
@@ -37053,7 +37251,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37057 "pentiumdecoder.cpp"
+#line 37255 "pentiumdecoder.cpp"
 
       
     } 
@@ -37071,7 +37269,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37075 "pentiumdecoder.cpp"
+#line 37273 "pentiumdecoder.cpp"
 
       
     } 
@@ -37089,7 +37287,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37093 "pentiumdecoder.cpp"
+#line 37291 "pentiumdecoder.cpp"
 
       
     } 
@@ -37107,7 +37305,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37111 "pentiumdecoder.cpp"
+#line 37309 "pentiumdecoder.cpp"
 
       
     } 
@@ -37125,7 +37323,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37129 "pentiumdecoder.cpp"
+#line 37327 "pentiumdecoder.cpp"
 
       
     } 
@@ -37143,7 +37341,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37147 "pentiumdecoder.cpp"
+#line 37345 "pentiumdecoder.cpp"
 
       
     } 
@@ -37161,7 +37359,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37165 "pentiumdecoder.cpp"
+#line 37363 "pentiumdecoder.cpp"
 
       
     } 
@@ -37179,7 +37377,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37183 "pentiumdecoder.cpp"
+#line 37381 "pentiumdecoder.cpp"
 
       
     } 
@@ -37196,7 +37394,7 @@ hostPC
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37200 "pentiumdecoder.cpp"
+#line 37398 "pentiumdecoder.cpp"
 
       
     } 
@@ -37213,7 +37411,7 @@ hostPC
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37217 "pentiumdecoder.cpp"
+#line 37415 "pentiumdecoder.cpp"
 
       
     } 
@@ -37230,7 +37428,7 @@ hostPC
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37234 "pentiumdecoder.cpp"
+#line 37432 "pentiumdecoder.cpp"
 
       
     } 
@@ -37247,7 +37445,7 @@ hostPC
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37251 "pentiumdecoder.cpp"
+#line 37449 "pentiumdecoder.cpp"
 
       
     } 
@@ -37264,7 +37462,7 @@ hostPC
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37268 "pentiumdecoder.cpp"
+#line 37466 "pentiumdecoder.cpp"
 
       
     } 
@@ -37281,7 +37479,7 @@ hostPC
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37285 "pentiumdecoder.cpp"
+#line 37483 "pentiumdecoder.cpp"
 
       
     } 
@@ -37298,7 +37496,7 @@ hostPC
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37302 "pentiumdecoder.cpp"
+#line 37500 "pentiumdecoder.cpp"
 
       
     } 
@@ -37315,7 +37513,7 @@ hostPC
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37319 "pentiumdecoder.cpp"
+#line 37517 "pentiumdecoder.cpp"
 
       
     } 
@@ -37357,7 +37555,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37361 "pentiumdecoder.cpp"
+#line 37559 "pentiumdecoder.cpp"
 
       
     } 
@@ -37399,7 +37597,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37403 "pentiumdecoder.cpp"
+#line 37601 "pentiumdecoder.cpp"
 
       
     } 
@@ -37441,7 +37639,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37445 "pentiumdecoder.cpp"
+#line 37643 "pentiumdecoder.cpp"
 
       
     } 
@@ -37483,7 +37681,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37487 "pentiumdecoder.cpp"
+#line 37685 "pentiumdecoder.cpp"
 
       
     } 
@@ -37502,7 +37700,7 @@ hostPC
 		return result;
 
 
-#line 37506 "pentiumdecoder.cpp"
+#line 37704 "pentiumdecoder.cpp"
 
       
     } 
@@ -37521,7 +37719,7 @@ hostPC
 		return result;
 
 
-#line 37525 "pentiumdecoder.cpp"
+#line 37723 "pentiumdecoder.cpp"
 
       
     } 
@@ -37540,7 +37738,7 @@ hostPC
 		return result;
 
 
-#line 37544 "pentiumdecoder.cpp"
+#line 37742 "pentiumdecoder.cpp"
 
       
     } 
@@ -37559,7 +37757,7 @@ hostPC
 		return result;
 
 
-#line 37563 "pentiumdecoder.cpp"
+#line 37761 "pentiumdecoder.cpp"
 
       
     } 
@@ -37576,7 +37774,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37580 "pentiumdecoder.cpp"
+#line 37778 "pentiumdecoder.cpp"
 
       
     } 
@@ -37593,7 +37791,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37597 "pentiumdecoder.cpp"
+#line 37795 "pentiumdecoder.cpp"
 
       
     } 
@@ -37610,7 +37808,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37614 "pentiumdecoder.cpp"
+#line 37812 "pentiumdecoder.cpp"
 
       
     } 
@@ -37627,7 +37825,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37631 "pentiumdecoder.cpp"
+#line 37829 "pentiumdecoder.cpp"
 
       
     } 
@@ -37644,7 +37842,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37648 "pentiumdecoder.cpp"
+#line 37846 "pentiumdecoder.cpp"
 
       
     } 
@@ -37661,7 +37859,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37665 "pentiumdecoder.cpp"
+#line 37863 "pentiumdecoder.cpp"
 
       
     } 
@@ -37678,7 +37876,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37682 "pentiumdecoder.cpp"
+#line 37880 "pentiumdecoder.cpp"
 
       
     } 
@@ -37695,7 +37893,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37699 "pentiumdecoder.cpp"
+#line 37897 "pentiumdecoder.cpp"
 
       
     } 
@@ -37712,7 +37910,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37716 "pentiumdecoder.cpp"
+#line 37914 "pentiumdecoder.cpp"
 
       
     } 
@@ -37729,7 +37927,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37733 "pentiumdecoder.cpp"
+#line 37931 "pentiumdecoder.cpp"
 
       
     } 
@@ -37746,7 +37944,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37750 "pentiumdecoder.cpp"
+#line 37948 "pentiumdecoder.cpp"
 
       
     } 
@@ -37763,7 +37961,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37767 "pentiumdecoder.cpp"
+#line 37965 "pentiumdecoder.cpp"
 
       
     } 
@@ -37780,7 +37978,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37784 "pentiumdecoder.cpp"
+#line 37982 "pentiumdecoder.cpp"
 
       
     } 
@@ -37797,7 +37995,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37801 "pentiumdecoder.cpp"
+#line 37999 "pentiumdecoder.cpp"
 
       
     } 
@@ -37814,7 +38012,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37818 "pentiumdecoder.cpp"
+#line 38016 "pentiumdecoder.cpp"
 
       
     } 
@@ -37831,7 +38029,7 @@ hostPC
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37835 "pentiumdecoder.cpp"
+#line 38033 "pentiumdecoder.cpp"
 
       
     } 
@@ -37848,7 +38046,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37852 "pentiumdecoder.cpp"
+#line 38050 "pentiumdecoder.cpp"
 
       
     } 
@@ -37865,7 +38063,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37869 "pentiumdecoder.cpp"
+#line 38067 "pentiumdecoder.cpp"
 
       
     } 
@@ -37882,7 +38080,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37886 "pentiumdecoder.cpp"
+#line 38084 "pentiumdecoder.cpp"
 
       
     } 
@@ -37899,7 +38097,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37903 "pentiumdecoder.cpp"
+#line 38101 "pentiumdecoder.cpp"
 
       
     } 
@@ -37916,7 +38114,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37920 "pentiumdecoder.cpp"
+#line 38118 "pentiumdecoder.cpp"
 
       
     } 
@@ -37933,7 +38131,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37937 "pentiumdecoder.cpp"
+#line 38135 "pentiumdecoder.cpp"
 
       
     } 
@@ -37950,7 +38148,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37954 "pentiumdecoder.cpp"
+#line 38152 "pentiumdecoder.cpp"
 
       
     } 
@@ -37967,7 +38165,7 @@ hostPC
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37971 "pentiumdecoder.cpp"
+#line 38169 "pentiumdecoder.cpp"
 
       
     } 
@@ -37984,7 +38182,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37988 "pentiumdecoder.cpp"
+#line 38186 "pentiumdecoder.cpp"
 
       
     } 
@@ -38001,7 +38199,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38005 "pentiumdecoder.cpp"
+#line 38203 "pentiumdecoder.cpp"
 
       
     } 
@@ -38018,7 +38216,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38022 "pentiumdecoder.cpp"
+#line 38220 "pentiumdecoder.cpp"
 
       
     } 
@@ -38035,7 +38233,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38039 "pentiumdecoder.cpp"
+#line 38237 "pentiumdecoder.cpp"
 
       
     } 
@@ -38052,7 +38250,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38056 "pentiumdecoder.cpp"
+#line 38254 "pentiumdecoder.cpp"
 
       
     } 
@@ -38069,7 +38267,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38073 "pentiumdecoder.cpp"
+#line 38271 "pentiumdecoder.cpp"
 
       
     } 
@@ -38086,7 +38284,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38090 "pentiumdecoder.cpp"
+#line 38288 "pentiumdecoder.cpp"
 
       
     } 
@@ -38103,7 +38301,7 @@ hostPC
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38107 "pentiumdecoder.cpp"
+#line 38305 "pentiumdecoder.cpp"
 
       
     } 
@@ -38120,7 +38318,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38124 "pentiumdecoder.cpp"
+#line 38322 "pentiumdecoder.cpp"
 
       
     } 
@@ -38137,7 +38335,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38141 "pentiumdecoder.cpp"
+#line 38339 "pentiumdecoder.cpp"
 
       
     } 
@@ -38154,7 +38352,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38158 "pentiumdecoder.cpp"
+#line 38356 "pentiumdecoder.cpp"
 
       
     } 
@@ -38171,7 +38369,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38175 "pentiumdecoder.cpp"
+#line 38373 "pentiumdecoder.cpp"
 
       
     } 
@@ -38188,7 +38386,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38192 "pentiumdecoder.cpp"
+#line 38390 "pentiumdecoder.cpp"
 
       
     } 
@@ -38205,7 +38403,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38209 "pentiumdecoder.cpp"
+#line 38407 "pentiumdecoder.cpp"
 
       
     } 
@@ -38222,7 +38420,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38226 "pentiumdecoder.cpp"
+#line 38424 "pentiumdecoder.cpp"
 
       
     } 
@@ -38239,7 +38437,7 @@ hostPC
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38243 "pentiumdecoder.cpp"
+#line 38441 "pentiumdecoder.cpp"
 
       
     } 
@@ -38256,7 +38454,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38260 "pentiumdecoder.cpp"
+#line 38458 "pentiumdecoder.cpp"
 
       
     } 
@@ -38273,7 +38471,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38277 "pentiumdecoder.cpp"
+#line 38475 "pentiumdecoder.cpp"
 
       
     } 
@@ -38290,7 +38488,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38294 "pentiumdecoder.cpp"
+#line 38492 "pentiumdecoder.cpp"
 
       
     } 
@@ -38307,7 +38505,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38311 "pentiumdecoder.cpp"
+#line 38509 "pentiumdecoder.cpp"
 
       
     } 
@@ -38324,7 +38522,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38328 "pentiumdecoder.cpp"
+#line 38526 "pentiumdecoder.cpp"
 
       
     } 
@@ -38341,7 +38539,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38345 "pentiumdecoder.cpp"
+#line 38543 "pentiumdecoder.cpp"
 
       
     } 
@@ -38358,7 +38556,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38362 "pentiumdecoder.cpp"
+#line 38560 "pentiumdecoder.cpp"
 
       
     } 
@@ -38375,7 +38573,7 @@ hostPC
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38379 "pentiumdecoder.cpp"
+#line 38577 "pentiumdecoder.cpp"
 
       
     } 
@@ -38392,7 +38590,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38396 "pentiumdecoder.cpp"
+#line 38594 "pentiumdecoder.cpp"
 
       
     } 
@@ -38409,7 +38607,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38413 "pentiumdecoder.cpp"
+#line 38611 "pentiumdecoder.cpp"
 
       
     } 
@@ -38426,7 +38624,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38430 "pentiumdecoder.cpp"
+#line 38628 "pentiumdecoder.cpp"
 
       
     } 
@@ -38443,7 +38641,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38447 "pentiumdecoder.cpp"
+#line 38645 "pentiumdecoder.cpp"
 
       
     } 
@@ -38460,7 +38658,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38464 "pentiumdecoder.cpp"
+#line 38662 "pentiumdecoder.cpp"
 
       
     } 
@@ -38477,7 +38675,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38481 "pentiumdecoder.cpp"
+#line 38679 "pentiumdecoder.cpp"
 
       
     } 
@@ -38494,7 +38692,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38498 "pentiumdecoder.cpp"
+#line 38696 "pentiumdecoder.cpp"
 
       
     } 
@@ -38511,7 +38709,7 @@ hostPC
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38515 "pentiumdecoder.cpp"
+#line 38713 "pentiumdecoder.cpp"
 
       
     } 
@@ -38528,7 +38726,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38532 "pentiumdecoder.cpp"
+#line 38730 "pentiumdecoder.cpp"
 
       
     } 
@@ -38545,7 +38743,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38549 "pentiumdecoder.cpp"
+#line 38747 "pentiumdecoder.cpp"
 
       
     } 
@@ -38562,7 +38760,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38566 "pentiumdecoder.cpp"
+#line 38764 "pentiumdecoder.cpp"
 
       
     } 
@@ -38579,7 +38777,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38583 "pentiumdecoder.cpp"
+#line 38781 "pentiumdecoder.cpp"
 
       
     } 
@@ -38598,7 +38796,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38602 "pentiumdecoder.cpp"
+#line 38800 "pentiumdecoder.cpp"
 
       
     } 
@@ -38617,7 +38815,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38621 "pentiumdecoder.cpp"
+#line 38819 "pentiumdecoder.cpp"
 
       
     } 
@@ -38636,7 +38834,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38640 "pentiumdecoder.cpp"
+#line 38838 "pentiumdecoder.cpp"
 
       
     } 
@@ -38655,7 +38853,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38659 "pentiumdecoder.cpp"
+#line 38857 "pentiumdecoder.cpp"
 
       
     } 
@@ -38674,7 +38872,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38678 "pentiumdecoder.cpp"
+#line 38876 "pentiumdecoder.cpp"
 
       
     } 
@@ -38693,7 +38891,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38697 "pentiumdecoder.cpp"
+#line 38895 "pentiumdecoder.cpp"
 
       
     } 
@@ -38712,7 +38910,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38716 "pentiumdecoder.cpp"
+#line 38914 "pentiumdecoder.cpp"
 
       
     } 
@@ -38731,7 +38929,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38735 "pentiumdecoder.cpp"
+#line 38933 "pentiumdecoder.cpp"
 
       
     } 
@@ -38749,7 +38947,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38753 "pentiumdecoder.cpp"
+#line 38951 "pentiumdecoder.cpp"
 
       
     } 
@@ -38767,7 +38965,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38771 "pentiumdecoder.cpp"
+#line 38969 "pentiumdecoder.cpp"
 
       
     } 
@@ -38785,7 +38983,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38789 "pentiumdecoder.cpp"
+#line 38987 "pentiumdecoder.cpp"
 
       
     } 
@@ -38803,7 +39001,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38807 "pentiumdecoder.cpp"
+#line 39005 "pentiumdecoder.cpp"
 
       
     } 
@@ -38821,7 +39019,7 @@ hostPC
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38825 "pentiumdecoder.cpp"
+#line 39023 "pentiumdecoder.cpp"
 
       
     } 
@@ -38839,7 +39037,7 @@ hostPC
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38843 "pentiumdecoder.cpp"
+#line 39041 "pentiumdecoder.cpp"
 
       
     } 
@@ -38857,7 +39055,7 @@ hostPC
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38861 "pentiumdecoder.cpp"
+#line 39059 "pentiumdecoder.cpp"
 
       
     } 
@@ -38875,7 +39073,7 @@ hostPC
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38879 "pentiumdecoder.cpp"
+#line 39077 "pentiumdecoder.cpp"
 
       
     } 
@@ -38893,7 +39091,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38897 "pentiumdecoder.cpp"
+#line 39095 "pentiumdecoder.cpp"
 
       
     } 
@@ -38911,7 +39109,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38915 "pentiumdecoder.cpp"
+#line 39113 "pentiumdecoder.cpp"
 
       
     } 
@@ -38929,7 +39127,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38933 "pentiumdecoder.cpp"
+#line 39131 "pentiumdecoder.cpp"
 
       
     } 
@@ -38947,7 +39145,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38951 "pentiumdecoder.cpp"
+#line 39149 "pentiumdecoder.cpp"
 
       
     } 
@@ -38965,7 +39163,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38969 "pentiumdecoder.cpp"
+#line 39167 "pentiumdecoder.cpp"
 
       
     } 
@@ -38983,7 +39181,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38987 "pentiumdecoder.cpp"
+#line 39185 "pentiumdecoder.cpp"
 
       
     } 
@@ -39001,7 +39199,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39005 "pentiumdecoder.cpp"
+#line 39203 "pentiumdecoder.cpp"
 
       
     } 
@@ -39019,7 +39217,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39023 "pentiumdecoder.cpp"
+#line 39221 "pentiumdecoder.cpp"
 
       
     } 
@@ -39037,7 +39235,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39041 "pentiumdecoder.cpp"
+#line 39239 "pentiumdecoder.cpp"
 
       
     } 
@@ -39055,7 +39253,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39059 "pentiumdecoder.cpp"
+#line 39257 "pentiumdecoder.cpp"
 
       
     } 
@@ -39073,7 +39271,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39077 "pentiumdecoder.cpp"
+#line 39275 "pentiumdecoder.cpp"
 
       
     } 
@@ -39091,7 +39289,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39095 "pentiumdecoder.cpp"
+#line 39293 "pentiumdecoder.cpp"
 
       
     } 
@@ -39109,7 +39307,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39113 "pentiumdecoder.cpp"
+#line 39311 "pentiumdecoder.cpp"
 
       
     } 
@@ -39127,7 +39325,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39131 "pentiumdecoder.cpp"
+#line 39329 "pentiumdecoder.cpp"
 
       
     } 
@@ -39145,7 +39343,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39149 "pentiumdecoder.cpp"
+#line 39347 "pentiumdecoder.cpp"
 
       
     } 
@@ -39163,7 +39361,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39167 "pentiumdecoder.cpp"
+#line 39365 "pentiumdecoder.cpp"
 
       
     } 
@@ -39181,7 +39379,7 @@ hostPC
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39185 "pentiumdecoder.cpp"
+#line 39383 "pentiumdecoder.cpp"
 
       
     } 
@@ -39199,7 +39397,7 @@ hostPC
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39203 "pentiumdecoder.cpp"
+#line 39401 "pentiumdecoder.cpp"
 
       
     } 
@@ -39217,7 +39415,7 @@ hostPC
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39221 "pentiumdecoder.cpp"
+#line 39419 "pentiumdecoder.cpp"
 
       
     } 
@@ -39235,7 +39433,7 @@ hostPC
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39239 "pentiumdecoder.cpp"
+#line 39437 "pentiumdecoder.cpp"
 
       
     } 
@@ -39253,7 +39451,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39257 "pentiumdecoder.cpp"
+#line 39455 "pentiumdecoder.cpp"
 
       
     } 
@@ -39271,7 +39469,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39275 "pentiumdecoder.cpp"
+#line 39473 "pentiumdecoder.cpp"
 
       
     } 
@@ -39289,7 +39487,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39293 "pentiumdecoder.cpp"
+#line 39491 "pentiumdecoder.cpp"
 
       
     } 
@@ -39307,7 +39505,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39311 "pentiumdecoder.cpp"
+#line 39509 "pentiumdecoder.cpp"
 
       
     } 
@@ -39324,7 +39522,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39328 "pentiumdecoder.cpp"
+#line 39526 "pentiumdecoder.cpp"
 
       
     } 
@@ -39341,7 +39539,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39345 "pentiumdecoder.cpp"
+#line 39543 "pentiumdecoder.cpp"
 
       
     } 
@@ -39358,7 +39556,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39362 "pentiumdecoder.cpp"
+#line 39560 "pentiumdecoder.cpp"
 
       
     } 
@@ -39375,7 +39573,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39379 "pentiumdecoder.cpp"
+#line 39577 "pentiumdecoder.cpp"
 
       
     } 
@@ -39393,7 +39591,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39397 "pentiumdecoder.cpp"
+#line 39595 "pentiumdecoder.cpp"
 
       
     } 
@@ -39411,7 +39609,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39415 "pentiumdecoder.cpp"
+#line 39613 "pentiumdecoder.cpp"
 
       
     } 
@@ -39429,7 +39627,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39433 "pentiumdecoder.cpp"
+#line 39631 "pentiumdecoder.cpp"
 
       
     } 
@@ -39447,7 +39645,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39451 "pentiumdecoder.cpp"
+#line 39649 "pentiumdecoder.cpp"
 
       
     } 
@@ -39465,7 +39663,7 @@ hostPC
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39469 "pentiumdecoder.cpp"
+#line 39667 "pentiumdecoder.cpp"
 
       
     } 
@@ -39483,7 +39681,7 @@ hostPC
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39487 "pentiumdecoder.cpp"
+#line 39685 "pentiumdecoder.cpp"
 
       
     } 
@@ -39501,7 +39699,7 @@ hostPC
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39505 "pentiumdecoder.cpp"
+#line 39703 "pentiumdecoder.cpp"
 
       
     } 
@@ -39519,7 +39717,7 @@ hostPC
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39523 "pentiumdecoder.cpp"
+#line 39721 "pentiumdecoder.cpp"
 
       
     } 
@@ -39537,7 +39735,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39541 "pentiumdecoder.cpp"
+#line 39739 "pentiumdecoder.cpp"
 
       
     } 
@@ -39555,7 +39753,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39559 "pentiumdecoder.cpp"
+#line 39757 "pentiumdecoder.cpp"
 
       
     } 
@@ -39573,7 +39771,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39577 "pentiumdecoder.cpp"
+#line 39775 "pentiumdecoder.cpp"
 
       
     } 
@@ -39591,7 +39789,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39595 "pentiumdecoder.cpp"
+#line 39793 "pentiumdecoder.cpp"
 
       
     } 
@@ -39609,7 +39807,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39613 "pentiumdecoder.cpp"
+#line 39811 "pentiumdecoder.cpp"
 
       
     } 
@@ -39627,7 +39825,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39631 "pentiumdecoder.cpp"
+#line 39829 "pentiumdecoder.cpp"
 
       
     } 
@@ -39645,7 +39843,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39649 "pentiumdecoder.cpp"
+#line 39847 "pentiumdecoder.cpp"
 
       
     } 
@@ -39663,7 +39861,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39667 "pentiumdecoder.cpp"
+#line 39865 "pentiumdecoder.cpp"
 
       
     } 
@@ -39681,7 +39879,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39685 "pentiumdecoder.cpp"
+#line 39883 "pentiumdecoder.cpp"
 
       
     } 
@@ -39699,7 +39897,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39703 "pentiumdecoder.cpp"
+#line 39901 "pentiumdecoder.cpp"
 
       
     } 
@@ -39717,7 +39915,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39721 "pentiumdecoder.cpp"
+#line 39919 "pentiumdecoder.cpp"
 
       
     } 
@@ -39735,7 +39933,7 @@ hostPC
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39739 "pentiumdecoder.cpp"
+#line 39937 "pentiumdecoder.cpp"
 
       
     } 
@@ -39753,7 +39951,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39757 "pentiumdecoder.cpp"
+#line 39955 "pentiumdecoder.cpp"
 
       
     } 
@@ -39771,7 +39969,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39775 "pentiumdecoder.cpp"
+#line 39973 "pentiumdecoder.cpp"
 
       
     } 
@@ -39789,7 +39987,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39793 "pentiumdecoder.cpp"
+#line 39991 "pentiumdecoder.cpp"
 
       
     } 
@@ -39807,7 +40005,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39811 "pentiumdecoder.cpp"
+#line 40009 "pentiumdecoder.cpp"
 
       
     } 
@@ -39825,7 +40023,7 @@ hostPC
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39829 "pentiumdecoder.cpp"
+#line 40027 "pentiumdecoder.cpp"
 
       
     } 
@@ -39843,7 +40041,7 @@ hostPC
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39847 "pentiumdecoder.cpp"
+#line 40045 "pentiumdecoder.cpp"
 
       
     } 
@@ -39861,7 +40059,7 @@ hostPC
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39865 "pentiumdecoder.cpp"
+#line 40063 "pentiumdecoder.cpp"
 
       
     } 
@@ -39879,7 +40077,7 @@ hostPC
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39883 "pentiumdecoder.cpp"
+#line 40081 "pentiumdecoder.cpp"
 
       
     } 
@@ -39897,7 +40095,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39901 "pentiumdecoder.cpp"
+#line 40099 "pentiumdecoder.cpp"
 
       
     } 
@@ -39915,7 +40113,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39919 "pentiumdecoder.cpp"
+#line 40117 "pentiumdecoder.cpp"
 
       
     } 
@@ -39933,7 +40131,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39937 "pentiumdecoder.cpp"
+#line 40135 "pentiumdecoder.cpp"
 
       
     } 
@@ -39951,7 +40149,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39955 "pentiumdecoder.cpp"
+#line 40153 "pentiumdecoder.cpp"
 
       
     } 
@@ -39968,7 +40166,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 39972 "pentiumdecoder.cpp"
+#line 40170 "pentiumdecoder.cpp"
 
       
     } 
@@ -39985,7 +40183,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 39989 "pentiumdecoder.cpp"
+#line 40187 "pentiumdecoder.cpp"
 
       
     } 
@@ -40002,7 +40200,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 40006 "pentiumdecoder.cpp"
+#line 40204 "pentiumdecoder.cpp"
 
       
     } 
@@ -40019,7 +40217,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 40023 "pentiumdecoder.cpp"
+#line 40221 "pentiumdecoder.cpp"
 
       
     } 
@@ -40036,7 +40234,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40040 "pentiumdecoder.cpp"
+#line 40238 "pentiumdecoder.cpp"
 
       
     } 
@@ -40053,7 +40251,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40057 "pentiumdecoder.cpp"
+#line 40255 "pentiumdecoder.cpp"
 
       
     } 
@@ -40070,7 +40268,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40074 "pentiumdecoder.cpp"
+#line 40272 "pentiumdecoder.cpp"
 
       
     } 
@@ -40087,7 +40285,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40091 "pentiumdecoder.cpp"
+#line 40289 "pentiumdecoder.cpp"
 
       
     } 
@@ -40104,7 +40302,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 40108 "pentiumdecoder.cpp"
+#line 40306 "pentiumdecoder.cpp"
 
       
     } 
@@ -40121,7 +40319,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 40125 "pentiumdecoder.cpp"
+#line 40323 "pentiumdecoder.cpp"
 
       
     } 
@@ -40138,7 +40336,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 40142 "pentiumdecoder.cpp"
+#line 40340 "pentiumdecoder.cpp"
 
       
     } 
@@ -40155,7 +40353,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40159 "pentiumdecoder.cpp"
+#line 40357 "pentiumdecoder.cpp"
 
       
     } 
@@ -40172,7 +40370,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40176 "pentiumdecoder.cpp"
+#line 40374 "pentiumdecoder.cpp"
 
       
     } 
@@ -40189,7 +40387,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40193 "pentiumdecoder.cpp"
+#line 40391 "pentiumdecoder.cpp"
 
       
     } 
@@ -40206,7 +40404,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40210 "pentiumdecoder.cpp"
+#line 40408 "pentiumdecoder.cpp"
 
       
     } 
@@ -40249,7 +40447,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40253 "pentiumdecoder.cpp"
+#line 40451 "pentiumdecoder.cpp"
 
       
     } 
@@ -40292,7 +40490,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40296 "pentiumdecoder.cpp"
+#line 40494 "pentiumdecoder.cpp"
 
       
     } 
@@ -40335,7 +40533,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40339 "pentiumdecoder.cpp"
+#line 40537 "pentiumdecoder.cpp"
 
       
     } 
@@ -40378,7 +40576,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40382 "pentiumdecoder.cpp"
+#line 40580 "pentiumdecoder.cpp"
 
       
     } 
@@ -40396,7 +40594,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40400 "pentiumdecoder.cpp"
+#line 40598 "pentiumdecoder.cpp"
 
       
     } 
@@ -40414,7 +40612,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40418 "pentiumdecoder.cpp"
+#line 40616 "pentiumdecoder.cpp"
 
       
     } 
@@ -40432,7 +40630,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40436 "pentiumdecoder.cpp"
+#line 40634 "pentiumdecoder.cpp"
 
       
     } 
@@ -40450,7 +40648,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40454 "pentiumdecoder.cpp"
+#line 40652 "pentiumdecoder.cpp"
 
       
     } 
@@ -40468,7 +40666,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40472 "pentiumdecoder.cpp"
+#line 40670 "pentiumdecoder.cpp"
 
       
     } 
@@ -40486,7 +40684,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40490 "pentiumdecoder.cpp"
+#line 40688 "pentiumdecoder.cpp"
 
       
     } 
@@ -40504,7 +40702,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40508 "pentiumdecoder.cpp"
+#line 40706 "pentiumdecoder.cpp"
 
       
     } 
@@ -40522,7 +40720,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40526 "pentiumdecoder.cpp"
+#line 40724 "pentiumdecoder.cpp"
 
       
     } 
@@ -40540,7 +40738,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40544 "pentiumdecoder.cpp"
+#line 40742 "pentiumdecoder.cpp"
 
       
     } 
@@ -40558,7 +40756,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40562 "pentiumdecoder.cpp"
+#line 40760 "pentiumdecoder.cpp"
 
       
     } 
@@ -40576,7 +40774,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40580 "pentiumdecoder.cpp"
+#line 40778 "pentiumdecoder.cpp"
 
       
     } 
@@ -40594,7 +40792,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40598 "pentiumdecoder.cpp"
+#line 40796 "pentiumdecoder.cpp"
 
       
     } 
@@ -40612,7 +40810,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40616 "pentiumdecoder.cpp"
+#line 40814 "pentiumdecoder.cpp"
 
       
     } 
@@ -40630,7 +40828,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40634 "pentiumdecoder.cpp"
+#line 40832 "pentiumdecoder.cpp"
 
       
     } 
@@ -40648,7 +40846,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40652 "pentiumdecoder.cpp"
+#line 40850 "pentiumdecoder.cpp"
 
       
     } 
@@ -40666,7 +40864,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40670 "pentiumdecoder.cpp"
+#line 40868 "pentiumdecoder.cpp"
 
       
     } 
@@ -40684,7 +40882,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40688 "pentiumdecoder.cpp"
+#line 40886 "pentiumdecoder.cpp"
 
       
     } 
@@ -40702,7 +40900,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40706 "pentiumdecoder.cpp"
+#line 40904 "pentiumdecoder.cpp"
 
       
     } 
@@ -40720,7 +40918,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40724 "pentiumdecoder.cpp"
+#line 40922 "pentiumdecoder.cpp"
 
       
     } 
@@ -40738,7 +40936,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40742 "pentiumdecoder.cpp"
+#line 40940 "pentiumdecoder.cpp"
 
       
     } 
@@ -40756,7 +40954,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40760 "pentiumdecoder.cpp"
+#line 40958 "pentiumdecoder.cpp"
 
       
     } 
@@ -40774,7 +40972,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40778 "pentiumdecoder.cpp"
+#line 40976 "pentiumdecoder.cpp"
 
       
     } 
@@ -40792,7 +40990,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40796 "pentiumdecoder.cpp"
+#line 40994 "pentiumdecoder.cpp"
 
       
     } 
@@ -40810,7 +41008,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40814 "pentiumdecoder.cpp"
+#line 41012 "pentiumdecoder.cpp"
 
       
     } 
@@ -40828,7 +41026,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40832 "pentiumdecoder.cpp"
+#line 41030 "pentiumdecoder.cpp"
 
       
     } 
@@ -40846,7 +41044,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40850 "pentiumdecoder.cpp"
+#line 41048 "pentiumdecoder.cpp"
 
       
     } 
@@ -40864,7 +41062,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40868 "pentiumdecoder.cpp"
+#line 41066 "pentiumdecoder.cpp"
 
       
     } 
@@ -40882,7 +41080,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40886 "pentiumdecoder.cpp"
+#line 41084 "pentiumdecoder.cpp"
 
       
     } 
@@ -40900,7 +41098,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40904 "pentiumdecoder.cpp"
+#line 41102 "pentiumdecoder.cpp"
 
       
     } 
@@ -40918,7 +41116,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40922 "pentiumdecoder.cpp"
+#line 41120 "pentiumdecoder.cpp"
 
       
     } 
@@ -40936,7 +41134,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40940 "pentiumdecoder.cpp"
+#line 41138 "pentiumdecoder.cpp"
 
       
     } 
@@ -40954,7 +41152,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40958 "pentiumdecoder.cpp"
+#line 41156 "pentiumdecoder.cpp"
 
       
     } 
@@ -40970,7 +41168,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 40974 "pentiumdecoder.cpp"
+#line 41172 "pentiumdecoder.cpp"
 
       
     } 
@@ -40986,7 +41184,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 40990 "pentiumdecoder.cpp"
+#line 41188 "pentiumdecoder.cpp"
 
       
     } 
@@ -41002,7 +41200,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41006 "pentiumdecoder.cpp"
+#line 41204 "pentiumdecoder.cpp"
 
       
     } 
@@ -41018,7 +41216,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41022 "pentiumdecoder.cpp"
+#line 41220 "pentiumdecoder.cpp"
 
       
     } 
@@ -41034,7 +41232,7 @@ hostPC
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41038 "pentiumdecoder.cpp"
+#line 41236 "pentiumdecoder.cpp"
 
       
     } 
@@ -41050,7 +41248,7 @@ hostPC
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41054 "pentiumdecoder.cpp"
+#line 41252 "pentiumdecoder.cpp"
 
       
     } 
@@ -41066,7 +41264,7 @@ hostPC
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41070 "pentiumdecoder.cpp"
+#line 41268 "pentiumdecoder.cpp"
 
       
     } 
@@ -41082,7 +41280,7 @@ hostPC
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41086 "pentiumdecoder.cpp"
+#line 41284 "pentiumdecoder.cpp"
 
       
     } 
@@ -41098,7 +41296,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41102 "pentiumdecoder.cpp"
+#line 41300 "pentiumdecoder.cpp"
 
       
     } 
@@ -41114,7 +41312,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41118 "pentiumdecoder.cpp"
+#line 41316 "pentiumdecoder.cpp"
 
       
     } 
@@ -41130,7 +41328,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41134 "pentiumdecoder.cpp"
+#line 41332 "pentiumdecoder.cpp"
 
       
     } 
@@ -41146,7 +41344,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41150 "pentiumdecoder.cpp"
+#line 41348 "pentiumdecoder.cpp"
 
       
     } 
@@ -41162,7 +41360,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41166 "pentiumdecoder.cpp"
+#line 41364 "pentiumdecoder.cpp"
 
       
     } 
@@ -41178,7 +41376,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41182 "pentiumdecoder.cpp"
+#line 41380 "pentiumdecoder.cpp"
 
       
     } 
@@ -41194,7 +41392,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41198 "pentiumdecoder.cpp"
+#line 41396 "pentiumdecoder.cpp"
 
       
     } 
@@ -41210,7 +41408,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41214 "pentiumdecoder.cpp"
+#line 41412 "pentiumdecoder.cpp"
 
       
     } 
@@ -41226,7 +41424,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41230 "pentiumdecoder.cpp"
+#line 41428 "pentiumdecoder.cpp"
 
       
     } 
@@ -41242,7 +41440,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41246 "pentiumdecoder.cpp"
+#line 41444 "pentiumdecoder.cpp"
 
       
     } 
@@ -41258,7 +41456,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41262 "pentiumdecoder.cpp"
+#line 41460 "pentiumdecoder.cpp"
 
       
     } 
@@ -41274,7 +41472,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41278 "pentiumdecoder.cpp"
+#line 41476 "pentiumdecoder.cpp"
 
       
     } 
@@ -41290,7 +41488,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41294 "pentiumdecoder.cpp"
+#line 41492 "pentiumdecoder.cpp"
 
       
     } 
@@ -41306,7 +41504,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41310 "pentiumdecoder.cpp"
+#line 41508 "pentiumdecoder.cpp"
 
       
     } 
@@ -41322,7 +41520,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41326 "pentiumdecoder.cpp"
+#line 41524 "pentiumdecoder.cpp"
 
       
     } 
@@ -41338,7 +41536,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41342 "pentiumdecoder.cpp"
+#line 41540 "pentiumdecoder.cpp"
 
       
     } 
@@ -41354,7 +41552,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41358 "pentiumdecoder.cpp"
+#line 41556 "pentiumdecoder.cpp"
 
       
     } 
@@ -41370,7 +41568,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41374 "pentiumdecoder.cpp"
+#line 41572 "pentiumdecoder.cpp"
 
       
     } 
@@ -41386,7 +41584,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41390 "pentiumdecoder.cpp"
+#line 41588 "pentiumdecoder.cpp"
 
       
     } 
@@ -41402,7 +41600,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41406 "pentiumdecoder.cpp"
+#line 41604 "pentiumdecoder.cpp"
 
       
     } 
@@ -41418,7 +41616,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41422 "pentiumdecoder.cpp"
+#line 41620 "pentiumdecoder.cpp"
 
       
     } 
@@ -41434,7 +41632,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41438 "pentiumdecoder.cpp"
+#line 41636 "pentiumdecoder.cpp"
 
       
     } 
@@ -41450,7 +41648,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41454 "pentiumdecoder.cpp"
+#line 41652 "pentiumdecoder.cpp"
 
       
     } 
@@ -41466,7 +41664,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41470 "pentiumdecoder.cpp"
+#line 41668 "pentiumdecoder.cpp"
 
       
     } 
@@ -41482,7 +41680,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41486 "pentiumdecoder.cpp"
+#line 41684 "pentiumdecoder.cpp"
 
       
     } 
@@ -41498,7 +41696,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41502 "pentiumdecoder.cpp"
+#line 41700 "pentiumdecoder.cpp"
 
       
     } 
@@ -41514,7 +41712,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41518 "pentiumdecoder.cpp"
+#line 41716 "pentiumdecoder.cpp"
 
       
     } 
@@ -41530,7 +41728,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41534 "pentiumdecoder.cpp"
+#line 41732 "pentiumdecoder.cpp"
 
       
     } 
@@ -41546,7 +41744,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41550 "pentiumdecoder.cpp"
+#line 41748 "pentiumdecoder.cpp"
 
       
     } 
@@ -41562,7 +41760,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41566 "pentiumdecoder.cpp"
+#line 41764 "pentiumdecoder.cpp"
 
       
     } 
@@ -41578,7 +41776,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41582 "pentiumdecoder.cpp"
+#line 41780 "pentiumdecoder.cpp"
 
       
     } 
@@ -41594,7 +41792,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41598 "pentiumdecoder.cpp"
+#line 41796 "pentiumdecoder.cpp"
 
       
     } 
@@ -41610,7 +41808,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41614 "pentiumdecoder.cpp"
+#line 41812 "pentiumdecoder.cpp"
 
       
     } 
@@ -41626,7 +41824,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41630 "pentiumdecoder.cpp"
+#line 41828 "pentiumdecoder.cpp"
 
       
     } 
@@ -41642,7 +41840,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41646 "pentiumdecoder.cpp"
+#line 41844 "pentiumdecoder.cpp"
 
       
     } 
@@ -41658,7 +41856,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41662 "pentiumdecoder.cpp"
+#line 41860 "pentiumdecoder.cpp"
 
       
     } 
@@ -41674,7 +41872,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41678 "pentiumdecoder.cpp"
+#line 41876 "pentiumdecoder.cpp"
 
       
     } 
@@ -41690,7 +41888,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41694 "pentiumdecoder.cpp"
+#line 41892 "pentiumdecoder.cpp"
 
       
     } 
@@ -41706,7 +41904,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41710 "pentiumdecoder.cpp"
+#line 41908 "pentiumdecoder.cpp"
 
       
     } 
@@ -41722,7 +41920,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41726 "pentiumdecoder.cpp"
+#line 41924 "pentiumdecoder.cpp"
 
       
     } 
@@ -41738,7 +41936,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41742 "pentiumdecoder.cpp"
+#line 41940 "pentiumdecoder.cpp"
 
       
     } 
@@ -41754,7 +41952,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41758 "pentiumdecoder.cpp"
+#line 41956 "pentiumdecoder.cpp"
 
       
     } 
@@ -41770,7 +41968,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41774 "pentiumdecoder.cpp"
+#line 41972 "pentiumdecoder.cpp"
 
       
     } 
@@ -41786,7 +41984,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41790 "pentiumdecoder.cpp"
+#line 41988 "pentiumdecoder.cpp"
 
       
     } 
@@ -41802,7 +42000,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41806 "pentiumdecoder.cpp"
+#line 42004 "pentiumdecoder.cpp"
 
       
     } 
@@ -41818,7 +42016,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41822 "pentiumdecoder.cpp"
+#line 42020 "pentiumdecoder.cpp"
 
       
     } 
@@ -41834,7 +42032,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41838 "pentiumdecoder.cpp"
+#line 42036 "pentiumdecoder.cpp"
 
       
     } 
@@ -41850,7 +42048,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41854 "pentiumdecoder.cpp"
+#line 42052 "pentiumdecoder.cpp"
 
       
     } 
@@ -41867,7 +42065,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41871 "pentiumdecoder.cpp"
+#line 42069 "pentiumdecoder.cpp"
 
       
     } 
@@ -41884,7 +42082,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41888 "pentiumdecoder.cpp"
+#line 42086 "pentiumdecoder.cpp"
 
       
     } 
@@ -41901,7 +42099,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41905 "pentiumdecoder.cpp"
+#line 42103 "pentiumdecoder.cpp"
 
       
     } 
@@ -41918,7 +42116,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41922 "pentiumdecoder.cpp"
+#line 42120 "pentiumdecoder.cpp"
 
       
     } 
@@ -41934,7 +42132,7 @@ hostPC
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41938 "pentiumdecoder.cpp"
+#line 42136 "pentiumdecoder.cpp"
 
       
     } 
@@ -41950,7 +42148,7 @@ hostPC
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41954 "pentiumdecoder.cpp"
+#line 42152 "pentiumdecoder.cpp"
 
       
     } 
@@ -41966,7 +42164,7 @@ hostPC
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41970 "pentiumdecoder.cpp"
+#line 42168 "pentiumdecoder.cpp"
 
       
     } 
@@ -41982,7 +42180,7 @@ hostPC
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41986 "pentiumdecoder.cpp"
+#line 42184 "pentiumdecoder.cpp"
 
       
     } 
@@ -41998,7 +42196,7 @@ hostPC
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42002 "pentiumdecoder.cpp"
+#line 42200 "pentiumdecoder.cpp"
 
       
     } 
@@ -42014,7 +42212,7 @@ hostPC
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42018 "pentiumdecoder.cpp"
+#line 42216 "pentiumdecoder.cpp"
 
       
     } 
@@ -42030,7 +42228,7 @@ hostPC
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42034 "pentiumdecoder.cpp"
+#line 42232 "pentiumdecoder.cpp"
 
       
     } 
@@ -42046,7 +42244,7 @@ hostPC
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42050 "pentiumdecoder.cpp"
+#line 42248 "pentiumdecoder.cpp"
 
       
     } 
@@ -42062,7 +42260,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42066 "pentiumdecoder.cpp"
+#line 42264 "pentiumdecoder.cpp"
 
       
     } 
@@ -42078,7 +42276,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42082 "pentiumdecoder.cpp"
+#line 42280 "pentiumdecoder.cpp"
 
       
     } 
@@ -42094,7 +42292,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42098 "pentiumdecoder.cpp"
+#line 42296 "pentiumdecoder.cpp"
 
       
     } 
@@ -42110,7 +42308,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42114 "pentiumdecoder.cpp"
+#line 42312 "pentiumdecoder.cpp"
 
       
     } 
@@ -42126,7 +42324,7 @@ hostPC
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42130 "pentiumdecoder.cpp"
+#line 42328 "pentiumdecoder.cpp"
 
       
     } 
@@ -42142,7 +42340,7 @@ hostPC
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42146 "pentiumdecoder.cpp"
+#line 42344 "pentiumdecoder.cpp"
 
       
     } 
@@ -42158,7 +42356,7 @@ hostPC
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42162 "pentiumdecoder.cpp"
+#line 42360 "pentiumdecoder.cpp"
 
       
     } 
@@ -42174,7 +42372,7 @@ hostPC
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42178 "pentiumdecoder.cpp"
+#line 42376 "pentiumdecoder.cpp"
 
       
     } 
@@ -42190,7 +42388,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42194 "pentiumdecoder.cpp"
+#line 42392 "pentiumdecoder.cpp"
 
       
     } 
@@ -42206,7 +42404,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42210 "pentiumdecoder.cpp"
+#line 42408 "pentiumdecoder.cpp"
 
       
     } 
@@ -42222,7 +42420,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42226 "pentiumdecoder.cpp"
+#line 42424 "pentiumdecoder.cpp"
 
       
     } 
@@ -42238,7 +42436,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42242 "pentiumdecoder.cpp"
+#line 42440 "pentiumdecoder.cpp"
 
       
     } 
@@ -42254,7 +42452,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42258 "pentiumdecoder.cpp"
+#line 42456 "pentiumdecoder.cpp"
 
       
     } 
@@ -42270,7 +42468,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42274 "pentiumdecoder.cpp"
+#line 42472 "pentiumdecoder.cpp"
 
       
     } 
@@ -42286,7 +42484,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42290 "pentiumdecoder.cpp"
+#line 42488 "pentiumdecoder.cpp"
 
       
     } 
@@ -42302,7 +42500,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42306 "pentiumdecoder.cpp"
+#line 42504 "pentiumdecoder.cpp"
 
       
     } 
@@ -42318,7 +42516,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42322 "pentiumdecoder.cpp"
+#line 42520 "pentiumdecoder.cpp"
 
       
     } 
@@ -42334,7 +42532,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42338 "pentiumdecoder.cpp"
+#line 42536 "pentiumdecoder.cpp"
 
       
     } 
@@ -42350,7 +42548,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42354 "pentiumdecoder.cpp"
+#line 42552 "pentiumdecoder.cpp"
 
       
     } 
@@ -42366,7 +42564,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42370 "pentiumdecoder.cpp"
+#line 42568 "pentiumdecoder.cpp"
 
       
     } 
@@ -42382,7 +42580,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42386 "pentiumdecoder.cpp"
+#line 42584 "pentiumdecoder.cpp"
 
       
     } 
@@ -42398,7 +42596,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42402 "pentiumdecoder.cpp"
+#line 42600 "pentiumdecoder.cpp"
 
       
     } 
@@ -42414,7 +42612,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42418 "pentiumdecoder.cpp"
+#line 42616 "pentiumdecoder.cpp"
 
       
     } 
@@ -42430,7 +42628,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42434 "pentiumdecoder.cpp"
+#line 42632 "pentiumdecoder.cpp"
 
       
     } 
@@ -42458,7 +42656,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42462 "pentiumdecoder.cpp"
+#line 42660 "pentiumdecoder.cpp"
 
       
     } 
@@ -42486,7 +42684,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42490 "pentiumdecoder.cpp"
+#line 42688 "pentiumdecoder.cpp"
 
       
     } 
@@ -42514,7 +42712,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42518 "pentiumdecoder.cpp"
+#line 42716 "pentiumdecoder.cpp"
 
       
     } 
@@ -42542,7 +42740,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42546 "pentiumdecoder.cpp"
+#line 42744 "pentiumdecoder.cpp"
 
       
     } 
@@ -42560,7 +42758,7 @@ hostPC
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42564 "pentiumdecoder.cpp"
+#line 42762 "pentiumdecoder.cpp"
 
       
     } 
@@ -42578,7 +42776,7 @@ hostPC
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42582 "pentiumdecoder.cpp"
+#line 42780 "pentiumdecoder.cpp"
 
       
     } 
@@ -42596,7 +42794,7 @@ hostPC
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42600 "pentiumdecoder.cpp"
+#line 42798 "pentiumdecoder.cpp"
 
       
     } 
@@ -42614,7 +42812,7 @@ hostPC
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42618 "pentiumdecoder.cpp"
+#line 42816 "pentiumdecoder.cpp"
 
       
     } 
@@ -42632,7 +42830,7 @@ hostPC
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42636 "pentiumdecoder.cpp"
+#line 42834 "pentiumdecoder.cpp"
 
       
     } 
@@ -42650,7 +42848,7 @@ hostPC
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42654 "pentiumdecoder.cpp"
+#line 42852 "pentiumdecoder.cpp"
 
       
     } 
@@ -42668,7 +42866,7 @@ hostPC
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42672 "pentiumdecoder.cpp"
+#line 42870 "pentiumdecoder.cpp"
 
       
     } 
@@ -42686,7 +42884,7 @@ hostPC
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42690 "pentiumdecoder.cpp"
+#line 42888 "pentiumdecoder.cpp"
 
       
     } 
@@ -42704,7 +42902,7 @@ hostPC
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42708 "pentiumdecoder.cpp"
+#line 42906 "pentiumdecoder.cpp"
 
       
     } 
@@ -42722,7 +42920,7 @@ hostPC
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42726 "pentiumdecoder.cpp"
+#line 42924 "pentiumdecoder.cpp"
 
       
     } 
@@ -42740,7 +42938,7 @@ hostPC
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42744 "pentiumdecoder.cpp"
+#line 42942 "pentiumdecoder.cpp"
 
       
     } 
@@ -42758,7 +42956,7 @@ hostPC
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42762 "pentiumdecoder.cpp"
+#line 42960 "pentiumdecoder.cpp"
 
       
     } 
@@ -42776,7 +42974,7 @@ hostPC
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42780 "pentiumdecoder.cpp"
+#line 42978 "pentiumdecoder.cpp"
 
       
     } 
@@ -42794,7 +42992,7 @@ hostPC
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42798 "pentiumdecoder.cpp"
+#line 42996 "pentiumdecoder.cpp"
 
       
     } 
@@ -42812,7 +43010,7 @@ hostPC
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42816 "pentiumdecoder.cpp"
+#line 43014 "pentiumdecoder.cpp"
 
       
     } 
@@ -42830,7 +43028,7 @@ hostPC
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42834 "pentiumdecoder.cpp"
+#line 43032 "pentiumdecoder.cpp"
 
       
     } 
@@ -42848,7 +43046,7 @@ hostPC
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42852 "pentiumdecoder.cpp"
+#line 43050 "pentiumdecoder.cpp"
 
       
     } 
@@ -42866,7 +43064,7 @@ hostPC
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42870 "pentiumdecoder.cpp"
+#line 43068 "pentiumdecoder.cpp"
 
       
     } 
@@ -42884,7 +43082,7 @@ hostPC
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42888 "pentiumdecoder.cpp"
+#line 43086 "pentiumdecoder.cpp"
 
       
     } 
@@ -42902,7 +43100,7 @@ hostPC
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42906 "pentiumdecoder.cpp"
+#line 43104 "pentiumdecoder.cpp"
 
       
     } 
@@ -42920,7 +43118,7 @@ hostPC
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42924 "pentiumdecoder.cpp"
+#line 43122 "pentiumdecoder.cpp"
 
       
     } 
@@ -42938,7 +43136,7 @@ hostPC
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42942 "pentiumdecoder.cpp"
+#line 43140 "pentiumdecoder.cpp"
 
       
     } 
@@ -42956,7 +43154,7 @@ hostPC
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42960 "pentiumdecoder.cpp"
+#line 43158 "pentiumdecoder.cpp"
 
       
     } 
@@ -42974,7 +43172,7 @@ hostPC
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42978 "pentiumdecoder.cpp"
+#line 43176 "pentiumdecoder.cpp"
 
       
     } 
@@ -42992,7 +43190,7 @@ hostPC
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42996 "pentiumdecoder.cpp"
+#line 43194 "pentiumdecoder.cpp"
 
       
     } 
@@ -43010,7 +43208,7 @@ hostPC
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43014 "pentiumdecoder.cpp"
+#line 43212 "pentiumdecoder.cpp"
 
       
     } 
@@ -43028,7 +43226,7 @@ hostPC
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43032 "pentiumdecoder.cpp"
+#line 43230 "pentiumdecoder.cpp"
 
       
     } 
@@ -43046,7 +43244,7 @@ hostPC
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43050 "pentiumdecoder.cpp"
+#line 43248 "pentiumdecoder.cpp"
 
       
     } 
@@ -43064,7 +43262,7 @@ hostPC
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43068 "pentiumdecoder.cpp"
+#line 43266 "pentiumdecoder.cpp"
 
       
     } 
@@ -43082,7 +43280,7 @@ hostPC
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43086 "pentiumdecoder.cpp"
+#line 43284 "pentiumdecoder.cpp"
 
       
     } 
@@ -43100,7 +43298,7 @@ hostPC
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43104 "pentiumdecoder.cpp"
+#line 43302 "pentiumdecoder.cpp"
 
       
     } 
@@ -43118,7 +43316,7 @@ hostPC
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43122 "pentiumdecoder.cpp"
+#line 43320 "pentiumdecoder.cpp"
 
       
     } 
@@ -43135,7 +43333,7 @@ hostPC
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43139 "pentiumdecoder.cpp"
+#line 43337 "pentiumdecoder.cpp"
 
       
     } 
@@ -43152,7 +43350,7 @@ hostPC
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43156 "pentiumdecoder.cpp"
+#line 43354 "pentiumdecoder.cpp"
 
       
     } 
@@ -43169,7 +43367,7 @@ hostPC
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43173 "pentiumdecoder.cpp"
+#line 43371 "pentiumdecoder.cpp"
 
       
     } 
@@ -43186,7 +43384,7 @@ hostPC
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43190 "pentiumdecoder.cpp"
+#line 43388 "pentiumdecoder.cpp"
 
       
     } 
@@ -43203,7 +43401,7 @@ hostPC
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43207 "pentiumdecoder.cpp"
+#line 43405 "pentiumdecoder.cpp"
 
       
     } 
@@ -43220,7 +43418,7 @@ hostPC
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43224 "pentiumdecoder.cpp"
+#line 43422 "pentiumdecoder.cpp"
 
       
     } 
@@ -43237,7 +43435,7 @@ hostPC
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43241 "pentiumdecoder.cpp"
+#line 43439 "pentiumdecoder.cpp"
 
       
     } 
@@ -43254,7 +43452,7 @@ hostPC
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43258 "pentiumdecoder.cpp"
+#line 43456 "pentiumdecoder.cpp"
 
       
     } 
@@ -43271,7 +43469,7 @@ hostPC
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43275 "pentiumdecoder.cpp"
+#line 43473 "pentiumdecoder.cpp"
 
       
     } 
@@ -43288,7 +43486,7 @@ hostPC
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43292 "pentiumdecoder.cpp"
+#line 43490 "pentiumdecoder.cpp"
 
       
     } 
@@ -43305,7 +43503,7 @@ hostPC
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43309 "pentiumdecoder.cpp"
+#line 43507 "pentiumdecoder.cpp"
 
       
     } 
@@ -43322,7 +43520,7 @@ hostPC
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43326 "pentiumdecoder.cpp"
+#line 43524 "pentiumdecoder.cpp"
 
       
     } 
@@ -43339,7 +43537,7 @@ hostPC
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43343 "pentiumdecoder.cpp"
+#line 43541 "pentiumdecoder.cpp"
 
       
     } 
@@ -43356,7 +43554,7 @@ hostPC
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43360 "pentiumdecoder.cpp"
+#line 43558 "pentiumdecoder.cpp"
 
       
     } 
@@ -43373,7 +43571,7 @@ hostPC
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43377 "pentiumdecoder.cpp"
+#line 43575 "pentiumdecoder.cpp"
 
       
     } 
@@ -43390,7 +43588,7 @@ hostPC
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43394 "pentiumdecoder.cpp"
+#line 43592 "pentiumdecoder.cpp"
 
       
     } 
@@ -43407,7 +43605,7 @@ hostPC
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43411 "pentiumdecoder.cpp"
+#line 43609 "pentiumdecoder.cpp"
 
       
     } 
@@ -43424,7 +43622,7 @@ hostPC
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43428 "pentiumdecoder.cpp"
+#line 43626 "pentiumdecoder.cpp"
 
       
     } 
@@ -43441,7 +43639,7 @@ hostPC
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43445 "pentiumdecoder.cpp"
+#line 43643 "pentiumdecoder.cpp"
 
       
     } 
@@ -43458,7 +43656,7 @@ hostPC
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43462 "pentiumdecoder.cpp"
+#line 43660 "pentiumdecoder.cpp"
 
       
     } 
@@ -43475,7 +43673,7 @@ hostPC
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43479 "pentiumdecoder.cpp"
+#line 43677 "pentiumdecoder.cpp"
 
       
     } 
@@ -43492,7 +43690,7 @@ hostPC
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43496 "pentiumdecoder.cpp"
+#line 43694 "pentiumdecoder.cpp"
 
       
     } 
@@ -43509,7 +43707,7 @@ hostPC
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43513 "pentiumdecoder.cpp"
+#line 43711 "pentiumdecoder.cpp"
 
       
     } 
@@ -43526,7 +43724,7 @@ hostPC
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43530 "pentiumdecoder.cpp"
+#line 43728 "pentiumdecoder.cpp"
 
       
     } 
@@ -43543,7 +43741,7 @@ hostPC
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43547 "pentiumdecoder.cpp"
+#line 43745 "pentiumdecoder.cpp"
 
       
     } 
@@ -43560,7 +43758,7 @@ hostPC
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43564 "pentiumdecoder.cpp"
+#line 43762 "pentiumdecoder.cpp"
 
       
     } 
@@ -43577,7 +43775,7 @@ hostPC
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43581 "pentiumdecoder.cpp"
+#line 43779 "pentiumdecoder.cpp"
 
       
     } 
@@ -43594,7 +43792,7 @@ hostPC
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43598 "pentiumdecoder.cpp"
+#line 43796 "pentiumdecoder.cpp"
 
       
     } 
@@ -43611,7 +43809,7 @@ hostPC
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43615 "pentiumdecoder.cpp"
+#line 43813 "pentiumdecoder.cpp"
 
       
     } 
@@ -43628,7 +43826,7 @@ hostPC
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43632 "pentiumdecoder.cpp"
+#line 43830 "pentiumdecoder.cpp"
 
       
     } 
@@ -43645,7 +43843,7 @@ hostPC
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43649 "pentiumdecoder.cpp"
+#line 43847 "pentiumdecoder.cpp"
 
       
     } 
@@ -43662,7 +43860,7 @@ hostPC
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43666 "pentiumdecoder.cpp"
+#line 43864 "pentiumdecoder.cpp"
 
       
     } 
@@ -43680,7 +43878,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43684 "pentiumdecoder.cpp"
+#line 43882 "pentiumdecoder.cpp"
 
       
     } 
@@ -43698,7 +43896,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43702 "pentiumdecoder.cpp"
+#line 43900 "pentiumdecoder.cpp"
 
       
     } 
@@ -43716,7 +43914,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43720 "pentiumdecoder.cpp"
+#line 43918 "pentiumdecoder.cpp"
 
       
     } 
@@ -43734,7 +43932,7 @@ hostPC
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43738 "pentiumdecoder.cpp"
+#line 43936 "pentiumdecoder.cpp"
 
       
     } 
@@ -43752,7 +43950,7 @@ hostPC
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43756 "pentiumdecoder.cpp"
+#line 43954 "pentiumdecoder.cpp"
 
       
     } 
@@ -43770,7 +43968,7 @@ hostPC
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43774 "pentiumdecoder.cpp"
+#line 43972 "pentiumdecoder.cpp"
 
       
     } 
@@ -43788,7 +43986,7 @@ hostPC
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43792 "pentiumdecoder.cpp"
+#line 43990 "pentiumdecoder.cpp"
 
       
     } 
@@ -43806,7 +44004,7 @@ hostPC
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43810 "pentiumdecoder.cpp"
+#line 44008 "pentiumdecoder.cpp"
 
       
     } 
@@ -43824,7 +44022,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43828 "pentiumdecoder.cpp"
+#line 44026 "pentiumdecoder.cpp"
 
       
     } 
@@ -43842,7 +44040,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43846 "pentiumdecoder.cpp"
+#line 44044 "pentiumdecoder.cpp"
 
       
     } 
@@ -43860,7 +44058,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43864 "pentiumdecoder.cpp"
+#line 44062 "pentiumdecoder.cpp"
 
       
     } 
@@ -43878,7 +44076,7 @@ hostPC
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43882 "pentiumdecoder.cpp"
+#line 44080 "pentiumdecoder.cpp"
 
       
     } 
@@ -43896,7 +44094,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43900 "pentiumdecoder.cpp"
+#line 44098 "pentiumdecoder.cpp"
 
       
     } 
@@ -43914,7 +44112,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43918 "pentiumdecoder.cpp"
+#line 44116 "pentiumdecoder.cpp"
 
       
     } 
@@ -43932,7 +44130,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43936 "pentiumdecoder.cpp"
+#line 44134 "pentiumdecoder.cpp"
 
       
     } 
@@ -43950,7 +44148,7 @@ hostPC
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43954 "pentiumdecoder.cpp"
+#line 44152 "pentiumdecoder.cpp"
 
       
     } 
@@ -43971,7 +44169,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43975 "pentiumdecoder.cpp"
+#line 44173 "pentiumdecoder.cpp"
 
       
     } 
@@ -43992,7 +44190,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43996 "pentiumdecoder.cpp"
+#line 44194 "pentiumdecoder.cpp"
 
       
     } 
@@ -44013,7 +44211,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44017 "pentiumdecoder.cpp"
+#line 44215 "pentiumdecoder.cpp"
 
       
     } 
@@ -44034,7 +44232,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44038 "pentiumdecoder.cpp"
+#line 44236 "pentiumdecoder.cpp"
 
       
     } 
@@ -44052,7 +44250,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44056 "pentiumdecoder.cpp"
+#line 44254 "pentiumdecoder.cpp"
 
       
     } 
@@ -44070,7 +44268,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44074 "pentiumdecoder.cpp"
+#line 44272 "pentiumdecoder.cpp"
 
       
     } 
@@ -44088,7 +44286,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44092 "pentiumdecoder.cpp"
+#line 44290 "pentiumdecoder.cpp"
 
       
     } 
@@ -44106,7 +44304,7 @@ hostPC
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44110 "pentiumdecoder.cpp"
+#line 44308 "pentiumdecoder.cpp"
 
       
     } 
@@ -44124,7 +44322,7 @@ hostPC
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44128 "pentiumdecoder.cpp"
+#line 44326 "pentiumdecoder.cpp"
 
       
     } 
@@ -44142,7 +44340,7 @@ hostPC
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44146 "pentiumdecoder.cpp"
+#line 44344 "pentiumdecoder.cpp"
 
       
     } 
@@ -44160,7 +44358,7 @@ hostPC
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44164 "pentiumdecoder.cpp"
+#line 44362 "pentiumdecoder.cpp"
 
       
     } 
@@ -44178,7 +44376,7 @@ hostPC
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44182 "pentiumdecoder.cpp"
+#line 44380 "pentiumdecoder.cpp"
 
       
     } 
@@ -44196,7 +44394,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44200 "pentiumdecoder.cpp"
+#line 44398 "pentiumdecoder.cpp"
 
       
     } 
@@ -44214,7 +44412,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44218 "pentiumdecoder.cpp"
+#line 44416 "pentiumdecoder.cpp"
 
       
     } 
@@ -44232,7 +44430,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44236 "pentiumdecoder.cpp"
+#line 44434 "pentiumdecoder.cpp"
 
       
     } 
@@ -44250,7 +44448,7 @@ hostPC
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44254 "pentiumdecoder.cpp"
+#line 44452 "pentiumdecoder.cpp"
 
       
     } 
@@ -44267,7 +44465,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44271 "pentiumdecoder.cpp"
+#line 44469 "pentiumdecoder.cpp"
 
       
     } 
@@ -44284,7 +44482,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44288 "pentiumdecoder.cpp"
+#line 44486 "pentiumdecoder.cpp"
 
       
     } 
@@ -44301,7 +44499,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44305 "pentiumdecoder.cpp"
+#line 44503 "pentiumdecoder.cpp"
 
       
     } 
@@ -44318,7 +44516,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44322 "pentiumdecoder.cpp"
+#line 44520 "pentiumdecoder.cpp"
 
       
     } 
@@ -44335,7 +44533,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44339 "pentiumdecoder.cpp"
+#line 44537 "pentiumdecoder.cpp"
 
       
     } 
@@ -44352,7 +44550,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44356 "pentiumdecoder.cpp"
+#line 44554 "pentiumdecoder.cpp"
 
       
     } 
@@ -44369,7 +44567,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44373 "pentiumdecoder.cpp"
+#line 44571 "pentiumdecoder.cpp"
 
       
     } 
@@ -44386,7 +44584,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44390 "pentiumdecoder.cpp"
+#line 44588 "pentiumdecoder.cpp"
 
       
     } 
@@ -44403,7 +44601,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44407 "pentiumdecoder.cpp"
+#line 44605 "pentiumdecoder.cpp"
 
       
     } 
@@ -44420,7 +44618,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44424 "pentiumdecoder.cpp"
+#line 44622 "pentiumdecoder.cpp"
 
       
     } 
@@ -44437,7 +44635,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44441 "pentiumdecoder.cpp"
+#line 44639 "pentiumdecoder.cpp"
 
       
     } 
@@ -44454,7 +44652,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44458 "pentiumdecoder.cpp"
+#line 44656 "pentiumdecoder.cpp"
 
       
     } 
@@ -44471,7 +44669,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44475 "pentiumdecoder.cpp"
+#line 44673 "pentiumdecoder.cpp"
 
       
     } 
@@ -44488,7 +44686,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44492 "pentiumdecoder.cpp"
+#line 44690 "pentiumdecoder.cpp"
 
       
     } 
@@ -44505,7 +44703,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44509 "pentiumdecoder.cpp"
+#line 44707 "pentiumdecoder.cpp"
 
       
     } 
@@ -44522,7 +44720,7 @@ hostPC
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44526 "pentiumdecoder.cpp"
+#line 44724 "pentiumdecoder.cpp"
 
       
     } 
@@ -44540,7 +44738,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44544 "pentiumdecoder.cpp"
+#line 44742 "pentiumdecoder.cpp"
 
       
     } 
@@ -44558,7 +44756,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44562 "pentiumdecoder.cpp"
+#line 44760 "pentiumdecoder.cpp"
 
       
     } 
@@ -44576,7 +44774,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44580 "pentiumdecoder.cpp"
+#line 44778 "pentiumdecoder.cpp"
 
       
     } 
@@ -44594,7 +44792,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44598 "pentiumdecoder.cpp"
+#line 44796 "pentiumdecoder.cpp"
 
       
     } 
@@ -44612,7 +44810,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44616 "pentiumdecoder.cpp"
+#line 44814 "pentiumdecoder.cpp"
 
       
     } 
@@ -44630,7 +44828,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44634 "pentiumdecoder.cpp"
+#line 44832 "pentiumdecoder.cpp"
 
       
     } 
@@ -44648,7 +44846,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44652 "pentiumdecoder.cpp"
+#line 44850 "pentiumdecoder.cpp"
 
       
     } 
@@ -44666,7 +44864,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44670 "pentiumdecoder.cpp"
+#line 44868 "pentiumdecoder.cpp"
 
       
     } 
@@ -44684,7 +44882,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44688 "pentiumdecoder.cpp"
+#line 44886 "pentiumdecoder.cpp"
 
       
     } 
@@ -44702,7 +44900,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44706 "pentiumdecoder.cpp"
+#line 44904 "pentiumdecoder.cpp"
 
       
     } 
@@ -44720,7 +44918,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44724 "pentiumdecoder.cpp"
+#line 44922 "pentiumdecoder.cpp"
 
       
     } 
@@ -44738,7 +44936,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44742 "pentiumdecoder.cpp"
+#line 44940 "pentiumdecoder.cpp"
 
       
     } 
@@ -44756,7 +44954,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44760 "pentiumdecoder.cpp"
+#line 44958 "pentiumdecoder.cpp"
 
       
     } 
@@ -44774,7 +44972,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44778 "pentiumdecoder.cpp"
+#line 44976 "pentiumdecoder.cpp"
 
       
     } 
@@ -44792,7 +44990,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44796 "pentiumdecoder.cpp"
+#line 44994 "pentiumdecoder.cpp"
 
       
     } 
@@ -44810,7 +45008,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44814 "pentiumdecoder.cpp"
+#line 45012 "pentiumdecoder.cpp"
 
       
     } 
@@ -44828,7 +45026,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44832 "pentiumdecoder.cpp"
+#line 45030 "pentiumdecoder.cpp"
 
       
     } 
@@ -44846,7 +45044,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44850 "pentiumdecoder.cpp"
+#line 45048 "pentiumdecoder.cpp"
 
       
     } 
@@ -44864,7 +45062,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44868 "pentiumdecoder.cpp"
+#line 45066 "pentiumdecoder.cpp"
 
       
     } 
@@ -44882,7 +45080,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44886 "pentiumdecoder.cpp"
+#line 45084 "pentiumdecoder.cpp"
 
       
     } 
@@ -44900,7 +45098,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44904 "pentiumdecoder.cpp"
+#line 45102 "pentiumdecoder.cpp"
 
       
     } 
@@ -44918,7 +45116,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44922 "pentiumdecoder.cpp"
+#line 45120 "pentiumdecoder.cpp"
 
       
     } 
@@ -44936,7 +45134,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44940 "pentiumdecoder.cpp"
+#line 45138 "pentiumdecoder.cpp"
 
       
     } 
@@ -44954,7 +45152,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44958 "pentiumdecoder.cpp"
+#line 45156 "pentiumdecoder.cpp"
 
       
     } 
@@ -44972,7 +45170,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44976 "pentiumdecoder.cpp"
+#line 45174 "pentiumdecoder.cpp"
 
       
     } 
@@ -44990,7 +45188,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44994 "pentiumdecoder.cpp"
+#line 45192 "pentiumdecoder.cpp"
 
       
     } 
@@ -45008,7 +45206,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45012 "pentiumdecoder.cpp"
+#line 45210 "pentiumdecoder.cpp"
 
       
     } 
@@ -45026,7 +45224,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45030 "pentiumdecoder.cpp"
+#line 45228 "pentiumdecoder.cpp"
 
       
     } 
@@ -45044,7 +45242,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45048 "pentiumdecoder.cpp"
+#line 45246 "pentiumdecoder.cpp"
 
       
     } 
@@ -45062,7 +45260,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45066 "pentiumdecoder.cpp"
+#line 45264 "pentiumdecoder.cpp"
 
       
     } 
@@ -45080,7 +45278,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45084 "pentiumdecoder.cpp"
+#line 45282 "pentiumdecoder.cpp"
 
       
     } 
@@ -45098,7 +45296,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45102 "pentiumdecoder.cpp"
+#line 45300 "pentiumdecoder.cpp"
 
       
     } 
@@ -45116,7 +45314,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45120 "pentiumdecoder.cpp"
+#line 45318 "pentiumdecoder.cpp"
 
       
     } 
@@ -45134,7 +45332,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45138 "pentiumdecoder.cpp"
+#line 45336 "pentiumdecoder.cpp"
 
       
     } 
@@ -45152,7 +45350,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45156 "pentiumdecoder.cpp"
+#line 45354 "pentiumdecoder.cpp"
 
       
     } 
@@ -45170,7 +45368,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45174 "pentiumdecoder.cpp"
+#line 45372 "pentiumdecoder.cpp"
 
       
     } 
@@ -45188,7 +45386,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45192 "pentiumdecoder.cpp"
+#line 45390 "pentiumdecoder.cpp"
 
       
     } 
@@ -45206,7 +45404,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45210 "pentiumdecoder.cpp"
+#line 45408 "pentiumdecoder.cpp"
 
       
     } 
@@ -45224,7 +45422,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45228 "pentiumdecoder.cpp"
+#line 45426 "pentiumdecoder.cpp"
 
       
     } 
@@ -45242,7 +45440,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45246 "pentiumdecoder.cpp"
+#line 45444 "pentiumdecoder.cpp"
 
       
     } 
@@ -45260,7 +45458,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45264 "pentiumdecoder.cpp"
+#line 45462 "pentiumdecoder.cpp"
 
       
     } 
@@ -45278,7 +45476,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45282 "pentiumdecoder.cpp"
+#line 45480 "pentiumdecoder.cpp"
 
       
     } 
@@ -45296,7 +45494,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45300 "pentiumdecoder.cpp"
+#line 45498 "pentiumdecoder.cpp"
 
       
     } 
@@ -45314,7 +45512,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45318 "pentiumdecoder.cpp"
+#line 45516 "pentiumdecoder.cpp"
 
       
     } 
@@ -45332,7 +45530,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45336 "pentiumdecoder.cpp"
+#line 45534 "pentiumdecoder.cpp"
 
       
     } 
@@ -45350,7 +45548,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45354 "pentiumdecoder.cpp"
+#line 45552 "pentiumdecoder.cpp"
 
       
     } 
@@ -45368,7 +45566,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45372 "pentiumdecoder.cpp"
+#line 45570 "pentiumdecoder.cpp"
 
       
     } 
@@ -45386,7 +45584,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45390 "pentiumdecoder.cpp"
+#line 45588 "pentiumdecoder.cpp"
 
       
     } 
@@ -45404,7 +45602,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45408 "pentiumdecoder.cpp"
+#line 45606 "pentiumdecoder.cpp"
 
       
     } 
@@ -45422,7 +45620,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45426 "pentiumdecoder.cpp"
+#line 45624 "pentiumdecoder.cpp"
 
       
     } 
@@ -45440,7 +45638,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45444 "pentiumdecoder.cpp"
+#line 45642 "pentiumdecoder.cpp"
 
       
     } 
@@ -45458,7 +45656,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45462 "pentiumdecoder.cpp"
+#line 45660 "pentiumdecoder.cpp"
 
       
     } 
@@ -45476,7 +45674,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45480 "pentiumdecoder.cpp"
+#line 45678 "pentiumdecoder.cpp"
 
       
     } 
@@ -45494,7 +45692,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45498 "pentiumdecoder.cpp"
+#line 45696 "pentiumdecoder.cpp"
 
       
     } 
@@ -45512,7 +45710,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45516 "pentiumdecoder.cpp"
+#line 45714 "pentiumdecoder.cpp"
 
       
     } 
@@ -45530,7 +45728,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45534 "pentiumdecoder.cpp"
+#line 45732 "pentiumdecoder.cpp"
 
       
     } 
@@ -45547,7 +45745,7 @@ hostPC
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 45551 "pentiumdecoder.cpp"
+#line 45749 "pentiumdecoder.cpp"
 
       
     } 
@@ -45564,7 +45762,7 @@ hostPC
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 45568 "pentiumdecoder.cpp"
+#line 45766 "pentiumdecoder.cpp"
 
       
     } 
@@ -45581,7 +45779,7 @@ hostPC
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 45585 "pentiumdecoder.cpp"
+#line 45783 "pentiumdecoder.cpp"
 
       
     } 
@@ -45598,7 +45796,7 @@ hostPC
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 45602 "pentiumdecoder.cpp"
+#line 45800 "pentiumdecoder.cpp"
 
       
     } 
@@ -45615,7 +45813,7 @@ hostPC
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 45619 "pentiumdecoder.cpp"
+#line 45817 "pentiumdecoder.cpp"
 
       
     } 
@@ -45632,7 +45830,7 @@ hostPC
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 45636 "pentiumdecoder.cpp"
+#line 45834 "pentiumdecoder.cpp"
 
       
     } 
@@ -45650,7 +45848,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45654 "pentiumdecoder.cpp"
+#line 45852 "pentiumdecoder.cpp"
 
       
     } 
@@ -45668,7 +45866,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45672 "pentiumdecoder.cpp"
+#line 45870 "pentiumdecoder.cpp"
 
       
     } 
@@ -45686,7 +45884,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45690 "pentiumdecoder.cpp"
+#line 45888 "pentiumdecoder.cpp"
 
       
     } 
@@ -45704,7 +45902,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45708 "pentiumdecoder.cpp"
+#line 45906 "pentiumdecoder.cpp"
 
       
     } 
@@ -45721,7 +45919,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45725 "pentiumdecoder.cpp"
+#line 45923 "pentiumdecoder.cpp"
 
       
     } 
@@ -45738,7 +45936,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45742 "pentiumdecoder.cpp"
+#line 45940 "pentiumdecoder.cpp"
 
       
     } 
@@ -45755,7 +45953,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45759 "pentiumdecoder.cpp"
+#line 45957 "pentiumdecoder.cpp"
 
       
     } 
@@ -45772,7 +45970,7 @@ hostPC
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45776 "pentiumdecoder.cpp"
+#line 45974 "pentiumdecoder.cpp"
 
       
     } 
@@ -45802,7 +46000,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45806 "pentiumdecoder.cpp"
+#line 46004 "pentiumdecoder.cpp"
 
       
     } 
@@ -45832,7 +46030,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45836 "pentiumdecoder.cpp"
+#line 46034 "pentiumdecoder.cpp"
 
       
     } 
@@ -45862,7 +46060,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45866 "pentiumdecoder.cpp"
+#line 46064 "pentiumdecoder.cpp"
 
       
     } 
@@ -45892,7 +46090,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45896 "pentiumdecoder.cpp"
+#line 46094 "pentiumdecoder.cpp"
 
       
     } 
@@ -45908,7 +46106,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45912 "pentiumdecoder.cpp"
+#line 46110 "pentiumdecoder.cpp"
 
       
     } 
@@ -45924,7 +46122,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45928 "pentiumdecoder.cpp"
+#line 46126 "pentiumdecoder.cpp"
 
       
     } 
@@ -45940,7 +46138,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45944 "pentiumdecoder.cpp"
+#line 46142 "pentiumdecoder.cpp"
 
       
     } 
@@ -45956,7 +46154,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45960 "pentiumdecoder.cpp"
+#line 46158 "pentiumdecoder.cpp"
 
       
     } 
@@ -45972,7 +46170,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 45976 "pentiumdecoder.cpp"
+#line 46174 "pentiumdecoder.cpp"
 
       
     } 
@@ -45988,7 +46186,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 45992 "pentiumdecoder.cpp"
+#line 46190 "pentiumdecoder.cpp"
 
       
     } 
@@ -46004,7 +46202,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 46008 "pentiumdecoder.cpp"
+#line 46206 "pentiumdecoder.cpp"
 
       
     } 
@@ -46020,7 +46218,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 46024 "pentiumdecoder.cpp"
+#line 46222 "pentiumdecoder.cpp"
 
       
     } 
@@ -46036,7 +46234,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46040 "pentiumdecoder.cpp"
+#line 46238 "pentiumdecoder.cpp"
 
       
     } 
@@ -46052,7 +46250,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46056 "pentiumdecoder.cpp"
+#line 46254 "pentiumdecoder.cpp"
 
       
     } 
@@ -46068,7 +46266,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46072 "pentiumdecoder.cpp"
+#line 46270 "pentiumdecoder.cpp"
 
       
     } 
@@ -46084,7 +46282,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46088 "pentiumdecoder.cpp"
+#line 46286 "pentiumdecoder.cpp"
 
       
     } 
@@ -46100,7 +46298,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46104 "pentiumdecoder.cpp"
+#line 46302 "pentiumdecoder.cpp"
 
       
     } 
@@ -46116,7 +46314,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46120 "pentiumdecoder.cpp"
+#line 46318 "pentiumdecoder.cpp"
 
       
     } 
@@ -46132,7 +46330,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46136 "pentiumdecoder.cpp"
+#line 46334 "pentiumdecoder.cpp"
 
       
     } 
@@ -46148,7 +46346,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46152 "pentiumdecoder.cpp"
+#line 46350 "pentiumdecoder.cpp"
 
       
     } 
@@ -46164,7 +46362,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46168 "pentiumdecoder.cpp"
+#line 46366 "pentiumdecoder.cpp"
 
       
     } 
@@ -46180,7 +46378,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46184 "pentiumdecoder.cpp"
+#line 46382 "pentiumdecoder.cpp"
 
       
     } 
@@ -46196,7 +46394,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46200 "pentiumdecoder.cpp"
+#line 46398 "pentiumdecoder.cpp"
 
       
     } 
@@ -46212,7 +46410,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46216 "pentiumdecoder.cpp"
+#line 46414 "pentiumdecoder.cpp"
 
       
     } 
@@ -46228,7 +46426,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46232 "pentiumdecoder.cpp"
+#line 46430 "pentiumdecoder.cpp"
 
       
     } 
@@ -46244,7 +46442,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46248 "pentiumdecoder.cpp"
+#line 46446 "pentiumdecoder.cpp"
 
       
     } 
@@ -46260,7 +46458,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46264 "pentiumdecoder.cpp"
+#line 46462 "pentiumdecoder.cpp"
 
       
     } 
@@ -46276,7 +46474,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46280 "pentiumdecoder.cpp"
+#line 46478 "pentiumdecoder.cpp"
 
       
     } 
@@ -46292,7 +46490,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46296 "pentiumdecoder.cpp"
+#line 46494 "pentiumdecoder.cpp"
 
       
     } 
@@ -46308,7 +46506,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46312 "pentiumdecoder.cpp"
+#line 46510 "pentiumdecoder.cpp"
 
       
     } 
@@ -46324,7 +46522,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46328 "pentiumdecoder.cpp"
+#line 46526 "pentiumdecoder.cpp"
 
       
     } 
@@ -46340,7 +46538,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46344 "pentiumdecoder.cpp"
+#line 46542 "pentiumdecoder.cpp"
 
       
     } 
@@ -46356,7 +46554,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46360 "pentiumdecoder.cpp"
+#line 46558 "pentiumdecoder.cpp"
 
       
     } 
@@ -46372,7 +46570,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46376 "pentiumdecoder.cpp"
+#line 46574 "pentiumdecoder.cpp"
 
       
     } 
@@ -46388,7 +46586,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46392 "pentiumdecoder.cpp"
+#line 46590 "pentiumdecoder.cpp"
 
       
     } 
@@ -46404,7 +46602,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46408 "pentiumdecoder.cpp"
+#line 46606 "pentiumdecoder.cpp"
 
       
     } 
@@ -46420,7 +46618,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46424 "pentiumdecoder.cpp"
+#line 46622 "pentiumdecoder.cpp"
 
       
     } 
@@ -46436,7 +46634,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46440 "pentiumdecoder.cpp"
+#line 46638 "pentiumdecoder.cpp"
 
       
     } 
@@ -46452,7 +46650,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46456 "pentiumdecoder.cpp"
+#line 46654 "pentiumdecoder.cpp"
 
       
     } 
@@ -46468,7 +46666,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46472 "pentiumdecoder.cpp"
+#line 46670 "pentiumdecoder.cpp"
 
       
     } 
@@ -46484,7 +46682,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46488 "pentiumdecoder.cpp"
+#line 46686 "pentiumdecoder.cpp"
 
       
     } 
@@ -46500,7 +46698,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46504 "pentiumdecoder.cpp"
+#line 46702 "pentiumdecoder.cpp"
 
       
     } 
@@ -46516,7 +46714,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46520 "pentiumdecoder.cpp"
+#line 46718 "pentiumdecoder.cpp"
 
       
     } 
@@ -46532,7 +46730,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46536 "pentiumdecoder.cpp"
+#line 46734 "pentiumdecoder.cpp"
 
       
     } 
@@ -46548,7 +46746,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46552 "pentiumdecoder.cpp"
+#line 46750 "pentiumdecoder.cpp"
 
       
     } 
@@ -46564,7 +46762,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46568 "pentiumdecoder.cpp"
+#line 46766 "pentiumdecoder.cpp"
 
       
     } 
@@ -46580,7 +46778,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46584 "pentiumdecoder.cpp"
+#line 46782 "pentiumdecoder.cpp"
 
       
     } 
@@ -46596,7 +46794,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46600 "pentiumdecoder.cpp"
+#line 46798 "pentiumdecoder.cpp"
 
       
     } 
@@ -46612,7 +46810,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46616 "pentiumdecoder.cpp"
+#line 46814 "pentiumdecoder.cpp"
 
       
     } 
@@ -46628,7 +46826,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46632 "pentiumdecoder.cpp"
+#line 46830 "pentiumdecoder.cpp"
 
       
     } 
@@ -46644,7 +46842,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46648 "pentiumdecoder.cpp"
+#line 46846 "pentiumdecoder.cpp"
 
       
     } 
@@ -46660,7 +46858,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46664 "pentiumdecoder.cpp"
+#line 46862 "pentiumdecoder.cpp"
 
       
     } 
@@ -46676,7 +46874,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46680 "pentiumdecoder.cpp"
+#line 46878 "pentiumdecoder.cpp"
 
       
     } 
@@ -46692,7 +46890,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46696 "pentiumdecoder.cpp"
+#line 46894 "pentiumdecoder.cpp"
 
       
     } 
@@ -46708,7 +46906,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46712 "pentiumdecoder.cpp"
+#line 46910 "pentiumdecoder.cpp"
 
       
     } 
@@ -46724,7 +46922,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46728 "pentiumdecoder.cpp"
+#line 46926 "pentiumdecoder.cpp"
 
       
     } 
@@ -46740,7 +46938,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46744 "pentiumdecoder.cpp"
+#line 46942 "pentiumdecoder.cpp"
 
       
     } 
@@ -46756,7 +46954,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46760 "pentiumdecoder.cpp"
+#line 46958 "pentiumdecoder.cpp"
 
       
     } 
@@ -46772,7 +46970,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46776 "pentiumdecoder.cpp"
+#line 46974 "pentiumdecoder.cpp"
 
       
     } 
@@ -46788,7 +46986,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46792 "pentiumdecoder.cpp"
+#line 46990 "pentiumdecoder.cpp"
 
       
     } 
@@ -46804,7 +47002,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46808 "pentiumdecoder.cpp"
+#line 47006 "pentiumdecoder.cpp"
 
       
     } 
@@ -46820,7 +47018,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46824 "pentiumdecoder.cpp"
+#line 47022 "pentiumdecoder.cpp"
 
       
     } 
@@ -46836,7 +47034,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46840 "pentiumdecoder.cpp"
+#line 47038 "pentiumdecoder.cpp"
 
       
     } 
@@ -46852,7 +47050,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46856 "pentiumdecoder.cpp"
+#line 47054 "pentiumdecoder.cpp"
 
       
     } 
@@ -46868,7 +47066,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46872 "pentiumdecoder.cpp"
+#line 47070 "pentiumdecoder.cpp"
 
       
     } 
@@ -46884,7 +47082,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46888 "pentiumdecoder.cpp"
+#line 47086 "pentiumdecoder.cpp"
 
       
     } 
@@ -46900,7 +47098,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46904 "pentiumdecoder.cpp"
+#line 47102 "pentiumdecoder.cpp"
 
       
     } 
@@ -46916,7 +47114,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46920 "pentiumdecoder.cpp"
+#line 47118 "pentiumdecoder.cpp"
 
       
     } 
@@ -46932,7 +47130,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46936 "pentiumdecoder.cpp"
+#line 47134 "pentiumdecoder.cpp"
 
       
     } 
@@ -46948,7 +47146,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46952 "pentiumdecoder.cpp"
+#line 47150 "pentiumdecoder.cpp"
 
       
     } 
@@ -46964,7 +47162,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46968 "pentiumdecoder.cpp"
+#line 47166 "pentiumdecoder.cpp"
 
       
     } 
@@ -46980,7 +47178,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46984 "pentiumdecoder.cpp"
+#line 47182 "pentiumdecoder.cpp"
 
       
     } 
@@ -46996,7 +47194,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47000 "pentiumdecoder.cpp"
+#line 47198 "pentiumdecoder.cpp"
 
       
     } 
@@ -47012,7 +47210,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47016 "pentiumdecoder.cpp"
+#line 47214 "pentiumdecoder.cpp"
 
       
     } 
@@ -47028,7 +47226,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47032 "pentiumdecoder.cpp"
+#line 47230 "pentiumdecoder.cpp"
 
       
     } 
@@ -47044,7 +47242,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47048 "pentiumdecoder.cpp"
+#line 47246 "pentiumdecoder.cpp"
 
       
     } 
@@ -47060,7 +47258,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47064 "pentiumdecoder.cpp"
+#line 47262 "pentiumdecoder.cpp"
 
       
     } 
@@ -47076,7 +47274,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47080 "pentiumdecoder.cpp"
+#line 47278 "pentiumdecoder.cpp"
 
       
     } 
@@ -47092,7 +47290,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47096 "pentiumdecoder.cpp"
+#line 47294 "pentiumdecoder.cpp"
 
       
     } 
@@ -47108,7 +47306,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47112 "pentiumdecoder.cpp"
+#line 47310 "pentiumdecoder.cpp"
 
       
     } 
@@ -47124,7 +47322,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47128 "pentiumdecoder.cpp"
+#line 47326 "pentiumdecoder.cpp"
 
       
     } 
@@ -47140,7 +47338,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47144 "pentiumdecoder.cpp"
+#line 47342 "pentiumdecoder.cpp"
 
       
     } 
@@ -47156,7 +47354,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47160 "pentiumdecoder.cpp"
+#line 47358 "pentiumdecoder.cpp"
 
       
     } 
@@ -47172,7 +47370,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47176 "pentiumdecoder.cpp"
+#line 47374 "pentiumdecoder.cpp"
 
       
     } 
@@ -47188,7 +47386,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47192 "pentiumdecoder.cpp"
+#line 47390 "pentiumdecoder.cpp"
 
       
     } 
@@ -47204,7 +47402,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47208 "pentiumdecoder.cpp"
+#line 47406 "pentiumdecoder.cpp"
 
       
     } 
@@ -47220,7 +47418,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47224 "pentiumdecoder.cpp"
+#line 47422 "pentiumdecoder.cpp"
 
       
     } 
@@ -47236,7 +47434,7 @@ hostPC
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47240 "pentiumdecoder.cpp"
+#line 47438 "pentiumdecoder.cpp"
 
       
     } 
@@ -47252,7 +47450,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47256 "pentiumdecoder.cpp"
+#line 47454 "pentiumdecoder.cpp"
 
       
     } 
@@ -47268,7 +47466,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47272 "pentiumdecoder.cpp"
+#line 47470 "pentiumdecoder.cpp"
 
       
     } 
@@ -47284,7 +47482,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47288 "pentiumdecoder.cpp"
+#line 47486 "pentiumdecoder.cpp"
 
       
     } 
@@ -47300,7 +47498,7 @@ hostPC
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47304 "pentiumdecoder.cpp"
+#line 47502 "pentiumdecoder.cpp"
 
       
     } 
@@ -47316,7 +47514,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47320 "pentiumdecoder.cpp"
+#line 47518 "pentiumdecoder.cpp"
 
       
     } 
@@ -47332,7 +47530,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47336 "pentiumdecoder.cpp"
+#line 47534 "pentiumdecoder.cpp"
 
       
     } 
@@ -47348,7 +47546,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47352 "pentiumdecoder.cpp"
+#line 47550 "pentiumdecoder.cpp"
 
       
     } 
@@ -47364,7 +47562,7 @@ hostPC
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47368 "pentiumdecoder.cpp"
+#line 47566 "pentiumdecoder.cpp"
 
       
     } 
@@ -47380,7 +47578,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47384 "pentiumdecoder.cpp"
+#line 47582 "pentiumdecoder.cpp"
 
       
     } 
@@ -47396,7 +47594,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47400 "pentiumdecoder.cpp"
+#line 47598 "pentiumdecoder.cpp"
 
       
     } 
@@ -47412,7 +47610,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47416 "pentiumdecoder.cpp"
+#line 47614 "pentiumdecoder.cpp"
 
       
     } 
@@ -47428,7 +47626,7 @@ hostPC
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47432 "pentiumdecoder.cpp"
+#line 47630 "pentiumdecoder.cpp"
 
       
     } 
@@ -47444,7 +47642,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47448 "pentiumdecoder.cpp"
+#line 47646 "pentiumdecoder.cpp"
 
       
     } 
@@ -47460,7 +47658,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47464 "pentiumdecoder.cpp"
+#line 47662 "pentiumdecoder.cpp"
 
       
     } 
@@ -47476,7 +47674,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47480 "pentiumdecoder.cpp"
+#line 47678 "pentiumdecoder.cpp"
 
       
     } 
@@ -47492,7 +47690,7 @@ hostPC
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47496 "pentiumdecoder.cpp"
+#line 47694 "pentiumdecoder.cpp"
 
       
     } 
@@ -47508,7 +47706,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47512 "pentiumdecoder.cpp"
+#line 47710 "pentiumdecoder.cpp"
 
       
     } 
@@ -47524,7 +47722,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47528 "pentiumdecoder.cpp"
+#line 47726 "pentiumdecoder.cpp"
 
       
     } 
@@ -47540,7 +47738,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47544 "pentiumdecoder.cpp"
+#line 47742 "pentiumdecoder.cpp"
 
       
     } 
@@ -47556,7 +47754,7 @@ hostPC
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47560 "pentiumdecoder.cpp"
+#line 47758 "pentiumdecoder.cpp"
 
       
     } 
@@ -47572,7 +47770,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47576 "pentiumdecoder.cpp"
+#line 47774 "pentiumdecoder.cpp"
 
       
     } 
@@ -47588,7 +47786,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47592 "pentiumdecoder.cpp"
+#line 47790 "pentiumdecoder.cpp"
 
       
     } 
@@ -47604,7 +47802,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47608 "pentiumdecoder.cpp"
+#line 47806 "pentiumdecoder.cpp"
 
       
     } 
@@ -47620,7 +47818,7 @@ hostPC
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47624 "pentiumdecoder.cpp"
+#line 47822 "pentiumdecoder.cpp"
 
       
     } 
@@ -47637,7 +47835,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47641 "pentiumdecoder.cpp"
+#line 47839 "pentiumdecoder.cpp"
 
       
     } 
@@ -47654,7 +47852,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47658 "pentiumdecoder.cpp"
+#line 47856 "pentiumdecoder.cpp"
 
       
     } 
@@ -47671,7 +47869,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47675 "pentiumdecoder.cpp"
+#line 47873 "pentiumdecoder.cpp"
 
       
     } 
@@ -47688,7 +47886,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47692 "pentiumdecoder.cpp"
+#line 47890 "pentiumdecoder.cpp"
 
       
     } 
@@ -47704,7 +47902,7 @@ hostPC
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47708 "pentiumdecoder.cpp"
+#line 47906 "pentiumdecoder.cpp"
 
       
     } 
@@ -47720,7 +47918,7 @@ hostPC
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47724 "pentiumdecoder.cpp"
+#line 47922 "pentiumdecoder.cpp"
 
       
     } 
@@ -47736,7 +47934,7 @@ hostPC
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47740 "pentiumdecoder.cpp"
+#line 47938 "pentiumdecoder.cpp"
 
       
     } 
@@ -47752,7 +47950,7 @@ hostPC
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47756 "pentiumdecoder.cpp"
+#line 47954 "pentiumdecoder.cpp"
 
       
     } 
@@ -47768,7 +47966,7 @@ hostPC
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47772 "pentiumdecoder.cpp"
+#line 47970 "pentiumdecoder.cpp"
 
       
     } 
@@ -47784,7 +47982,7 @@ hostPC
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47788 "pentiumdecoder.cpp"
+#line 47986 "pentiumdecoder.cpp"
 
       
     } 
@@ -47800,7 +47998,7 @@ hostPC
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47804 "pentiumdecoder.cpp"
+#line 48002 "pentiumdecoder.cpp"
 
       
     } 
@@ -47816,7 +48014,7 @@ hostPC
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47820 "pentiumdecoder.cpp"
+#line 48018 "pentiumdecoder.cpp"
 
       
     } 
@@ -47832,7 +48030,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47836 "pentiumdecoder.cpp"
+#line 48034 "pentiumdecoder.cpp"
 
       
     } 
@@ -47848,7 +48046,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47852 "pentiumdecoder.cpp"
+#line 48050 "pentiumdecoder.cpp"
 
       
     } 
@@ -47864,7 +48062,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47868 "pentiumdecoder.cpp"
+#line 48066 "pentiumdecoder.cpp"
 
       
     } 
@@ -47880,7 +48078,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47884 "pentiumdecoder.cpp"
+#line 48082 "pentiumdecoder.cpp"
 
       
     } 
@@ -47896,7 +48094,7 @@ hostPC
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47900 "pentiumdecoder.cpp"
+#line 48098 "pentiumdecoder.cpp"
 
       
     } 
@@ -47912,7 +48110,7 @@ hostPC
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47916 "pentiumdecoder.cpp"
+#line 48114 "pentiumdecoder.cpp"
 
       
     } 
@@ -47928,7 +48126,7 @@ hostPC
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47932 "pentiumdecoder.cpp"
+#line 48130 "pentiumdecoder.cpp"
 
       
     } 
@@ -47944,7 +48142,7 @@ hostPC
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47948 "pentiumdecoder.cpp"
+#line 48146 "pentiumdecoder.cpp"
 
       
     } 
@@ -47960,7 +48158,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 47964 "pentiumdecoder.cpp"
+#line 48162 "pentiumdecoder.cpp"
 
       
     } 
@@ -47976,7 +48174,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 47980 "pentiumdecoder.cpp"
+#line 48178 "pentiumdecoder.cpp"
 
       
     } 
@@ -47992,7 +48190,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 47996 "pentiumdecoder.cpp"
+#line 48194 "pentiumdecoder.cpp"
 
       
     } 
@@ -48008,7 +48206,7 @@ hostPC
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 48012 "pentiumdecoder.cpp"
+#line 48210 "pentiumdecoder.cpp"
 
       
     } 
@@ -48027,7 +48225,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48031 "pentiumdecoder.cpp"
+#line 48229 "pentiumdecoder.cpp"
 
       
     } 
@@ -48046,7 +48244,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48050 "pentiumdecoder.cpp"
+#line 48248 "pentiumdecoder.cpp"
 
       
     } 
@@ -48065,7 +48263,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48069 "pentiumdecoder.cpp"
+#line 48267 "pentiumdecoder.cpp"
 
       
     } 
@@ -48084,7 +48282,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48088 "pentiumdecoder.cpp"
+#line 48286 "pentiumdecoder.cpp"
 
       
     } 
@@ -48101,7 +48299,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48105 "pentiumdecoder.cpp"
+#line 48303 "pentiumdecoder.cpp"
 
       
     } 
@@ -48118,7 +48316,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48122 "pentiumdecoder.cpp"
+#line 48320 "pentiumdecoder.cpp"
 
       
     } 
@@ -48135,7 +48333,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48139 "pentiumdecoder.cpp"
+#line 48337 "pentiumdecoder.cpp"
 
       
     } 
@@ -48152,7 +48350,7 @@ hostPC
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48156 "pentiumdecoder.cpp"
+#line 48354 "pentiumdecoder.cpp"
 
       
     } 
@@ -48168,7 +48366,7 @@ hostPC
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48172 "pentiumdecoder.cpp"
+#line 48370 "pentiumdecoder.cpp"
 
       
     } 
@@ -48184,7 +48382,7 @@ hostPC
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48188 "pentiumdecoder.cpp"
+#line 48386 "pentiumdecoder.cpp"
 
       
     } 
@@ -48200,7 +48398,7 @@ hostPC
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48204 "pentiumdecoder.cpp"
+#line 48402 "pentiumdecoder.cpp"
 
       
     } 
@@ -48216,7 +48414,7 @@ hostPC
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48220 "pentiumdecoder.cpp"
+#line 48418 "pentiumdecoder.cpp"
 
       
     } 
@@ -48232,7 +48430,7 @@ hostPC
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48236 "pentiumdecoder.cpp"
+#line 48434 "pentiumdecoder.cpp"
 
       
     } 
@@ -48248,7 +48446,7 @@ hostPC
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48252 "pentiumdecoder.cpp"
+#line 48450 "pentiumdecoder.cpp"
 
       
     } 
@@ -48264,7 +48462,7 @@ hostPC
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48268 "pentiumdecoder.cpp"
+#line 48466 "pentiumdecoder.cpp"
 
       
     } 
@@ -48280,7 +48478,7 @@ hostPC
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48284 "pentiumdecoder.cpp"
+#line 48482 "pentiumdecoder.cpp"
 
       
     } 
@@ -48296,7 +48494,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48300 "pentiumdecoder.cpp"
+#line 48498 "pentiumdecoder.cpp"
 
       
     } 
@@ -48312,7 +48510,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48316 "pentiumdecoder.cpp"
+#line 48514 "pentiumdecoder.cpp"
 
       
     } 
@@ -48328,7 +48526,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48332 "pentiumdecoder.cpp"
+#line 48530 "pentiumdecoder.cpp"
 
       
     } 
@@ -48344,7 +48542,7 @@ hostPC
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48348 "pentiumdecoder.cpp"
+#line 48546 "pentiumdecoder.cpp"
 
       
     } 
@@ -48360,7 +48558,7 @@ hostPC
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48364 "pentiumdecoder.cpp"
+#line 48562 "pentiumdecoder.cpp"
 
       
     } 
@@ -48376,7 +48574,7 @@ hostPC
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48380 "pentiumdecoder.cpp"
+#line 48578 "pentiumdecoder.cpp"
 
       
     } 
@@ -48392,7 +48590,7 @@ hostPC
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48396 "pentiumdecoder.cpp"
+#line 48594 "pentiumdecoder.cpp"
 
       
     } 
@@ -48408,7 +48606,7 @@ hostPC
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48412 "pentiumdecoder.cpp"
+#line 48610 "pentiumdecoder.cpp"
 
       
     } 
@@ -48424,7 +48622,7 @@ hostPC
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48428 "pentiumdecoder.cpp"
+#line 48626 "pentiumdecoder.cpp"
 
       
     } 
@@ -48440,7 +48638,7 @@ hostPC
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48444 "pentiumdecoder.cpp"
+#line 48642 "pentiumdecoder.cpp"
 
       
     } 
@@ -48456,7 +48654,7 @@ hostPC
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48460 "pentiumdecoder.cpp"
+#line 48658 "pentiumdecoder.cpp"
 
       
     } 
@@ -48472,7 +48670,7 @@ hostPC
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48476 "pentiumdecoder.cpp"
+#line 48674 "pentiumdecoder.cpp"
 
       
     } 
@@ -48488,7 +48686,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48492 "pentiumdecoder.cpp"
+#line 48690 "pentiumdecoder.cpp"
 
       
     } 
@@ -48504,7 +48702,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48508 "pentiumdecoder.cpp"
+#line 48706 "pentiumdecoder.cpp"
 
       
     } 
@@ -48520,7 +48718,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48524 "pentiumdecoder.cpp"
+#line 48722 "pentiumdecoder.cpp"
 
       
     } 
@@ -48536,7 +48734,7 @@ hostPC
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48540 "pentiumdecoder.cpp"
+#line 48738 "pentiumdecoder.cpp"
 
       
     } 
@@ -48553,7 +48751,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48557 "pentiumdecoder.cpp"
+#line 48755 "pentiumdecoder.cpp"
 
       
     } 
@@ -48570,7 +48768,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48574 "pentiumdecoder.cpp"
+#line 48772 "pentiumdecoder.cpp"
 
       
     } 
@@ -48587,7 +48785,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48591 "pentiumdecoder.cpp"
+#line 48789 "pentiumdecoder.cpp"
 
       
     } 
@@ -48604,7 +48802,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48608 "pentiumdecoder.cpp"
+#line 48806 "pentiumdecoder.cpp"
 
       
     } 
@@ -48621,7 +48819,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48625 "pentiumdecoder.cpp"
+#line 48823 "pentiumdecoder.cpp"
 
       
     } 
@@ -48638,7 +48836,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48642 "pentiumdecoder.cpp"
+#line 48840 "pentiumdecoder.cpp"
 
       
     } 
@@ -48655,7 +48853,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48659 "pentiumdecoder.cpp"
+#line 48857 "pentiumdecoder.cpp"
 
       
     } 
@@ -48672,7 +48870,7 @@ hostPC
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48676 "pentiumdecoder.cpp"
+#line 48874 "pentiumdecoder.cpp"
 
       
     } 
@@ -48689,7 +48887,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48693 "pentiumdecoder.cpp"
+#line 48891 "pentiumdecoder.cpp"
 
       
     } 
@@ -48706,7 +48904,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48710 "pentiumdecoder.cpp"
+#line 48908 "pentiumdecoder.cpp"
 
       
     } 
@@ -48723,7 +48921,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48727 "pentiumdecoder.cpp"
+#line 48925 "pentiumdecoder.cpp"
 
       
     } 
@@ -48740,7 +48938,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48744 "pentiumdecoder.cpp"
+#line 48942 "pentiumdecoder.cpp"
 
       
     } 
@@ -48757,7 +48955,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48761 "pentiumdecoder.cpp"
+#line 48959 "pentiumdecoder.cpp"
 
       
     } 
@@ -48774,7 +48972,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48778 "pentiumdecoder.cpp"
+#line 48976 "pentiumdecoder.cpp"
 
       
     } 
@@ -48791,7 +48989,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48795 "pentiumdecoder.cpp"
+#line 48993 "pentiumdecoder.cpp"
 
       
     } 
@@ -48808,7 +49006,7 @@ hostPC
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48812 "pentiumdecoder.cpp"
+#line 49010 "pentiumdecoder.cpp"
 
       
     } 
@@ -48824,7 +49022,7 @@ hostPC
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48828 "pentiumdecoder.cpp"
+#line 49026 "pentiumdecoder.cpp"
 
       
     } 
@@ -48840,7 +49038,7 @@ hostPC
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48844 "pentiumdecoder.cpp"
+#line 49042 "pentiumdecoder.cpp"
 
       
     } 
@@ -48856,7 +49054,7 @@ hostPC
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48860 "pentiumdecoder.cpp"
+#line 49058 "pentiumdecoder.cpp"
 
       
     } 
@@ -48872,7 +49070,7 @@ hostPC
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48876 "pentiumdecoder.cpp"
+#line 49074 "pentiumdecoder.cpp"
 
       
     } 
@@ -48888,7 +49086,7 @@ hostPC
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 48892 "pentiumdecoder.cpp"
+#line 49090 "pentiumdecoder.cpp"
 
       
     } 
@@ -48904,7 +49102,7 @@ hostPC
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 48908 "pentiumdecoder.cpp"
+#line 49106 "pentiumdecoder.cpp"
 
       
     } 
@@ -48920,7 +49118,7 @@ hostPC
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 48924 "pentiumdecoder.cpp"
+#line 49122 "pentiumdecoder.cpp"
 
       
     } 
@@ -48936,7 +49134,7 @@ hostPC
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48940 "pentiumdecoder.cpp"
+#line 49138 "pentiumdecoder.cpp"
 
       
     } 
@@ -48952,7 +49150,7 @@ hostPC
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48956 "pentiumdecoder.cpp"
+#line 49154 "pentiumdecoder.cpp"
 
       
     } 
@@ -48968,7 +49166,7 @@ hostPC
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48972 "pentiumdecoder.cpp"
+#line 49170 "pentiumdecoder.cpp"
 
       
     } 
@@ -48984,7 +49182,7 @@ hostPC
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48988 "pentiumdecoder.cpp"
+#line 49186 "pentiumdecoder.cpp"
 
       
     } 
@@ -49000,7 +49198,7 @@ hostPC
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49004 "pentiumdecoder.cpp"
+#line 49202 "pentiumdecoder.cpp"
 
       
     } 
@@ -49016,7 +49214,7 @@ hostPC
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49020 "pentiumdecoder.cpp"
+#line 49218 "pentiumdecoder.cpp"
 
       
     } 
@@ -49032,7 +49230,7 @@ hostPC
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49036 "pentiumdecoder.cpp"
+#line 49234 "pentiumdecoder.cpp"
 
       
     } 
@@ -49048,7 +49246,7 @@ hostPC
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49052 "pentiumdecoder.cpp"
+#line 49250 "pentiumdecoder.cpp"
 
       
     } 
@@ -49064,7 +49262,7 @@ hostPC
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49068 "pentiumdecoder.cpp"
+#line 49266 "pentiumdecoder.cpp"
 
       
     } 
@@ -49080,7 +49278,7 @@ hostPC
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49084 "pentiumdecoder.cpp"
+#line 49282 "pentiumdecoder.cpp"
 
       
     } 
@@ -49096,7 +49294,7 @@ hostPC
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49100 "pentiumdecoder.cpp"
+#line 49298 "pentiumdecoder.cpp"
 
       
     } 
@@ -49112,7 +49310,7 @@ hostPC
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49116 "pentiumdecoder.cpp"
+#line 49314 "pentiumdecoder.cpp"
 
       
     } 
@@ -49129,7 +49327,7 @@ hostPC
 
 	// Sets are now in the high level instructions
 
-#line 49133 "pentiumdecoder.cpp"
+#line 49331 "pentiumdecoder.cpp"
 
       
     } 
@@ -49146,7 +49344,7 @@ hostPC
 
 	// Sets are now in the high level instructions
 
-#line 49150 "pentiumdecoder.cpp"
+#line 49348 "pentiumdecoder.cpp"
 
       
     } 
@@ -49163,7 +49361,7 @@ hostPC
 
 	// Sets are now in the high level instructions
 
-#line 49167 "pentiumdecoder.cpp"
+#line 49365 "pentiumdecoder.cpp"
 
       
     } 
@@ -49179,7 +49377,7 @@ hostPC
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 49183 "pentiumdecoder.cpp"
+#line 49381 "pentiumdecoder.cpp"
 
       
     } 
@@ -49195,7 +49393,7 @@ hostPC
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 49199 "pentiumdecoder.cpp"
+#line 49397 "pentiumdecoder.cpp"
 
       
     } 
@@ -49211,7 +49409,7 @@ hostPC
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 49215 "pentiumdecoder.cpp"
+#line 49413 "pentiumdecoder.cpp"
 
       
     } 
@@ -49227,7 +49425,7 @@ hostPC
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49231 "pentiumdecoder.cpp"
+#line 49429 "pentiumdecoder.cpp"
 
       
     } 
@@ -49243,7 +49441,7 @@ hostPC
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49247 "pentiumdecoder.cpp"
+#line 49445 "pentiumdecoder.cpp"
 
       
     } 
@@ -49259,7 +49457,7 @@ hostPC
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49263 "pentiumdecoder.cpp"
+#line 49461 "pentiumdecoder.cpp"
 
       
     } 
@@ -49275,7 +49473,7 @@ hostPC
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49279 "pentiumdecoder.cpp"
+#line 49477 "pentiumdecoder.cpp"
 
       
     } 
@@ -49291,7 +49489,7 @@ hostPC
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 49295 "pentiumdecoder.cpp"
+#line 49493 "pentiumdecoder.cpp"
 
       
     } 
@@ -49307,7 +49505,7 @@ hostPC
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 49311 "pentiumdecoder.cpp"
+#line 49509 "pentiumdecoder.cpp"
 
       
     } 
@@ -49323,7 +49521,7 @@ hostPC
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 49327 "pentiumdecoder.cpp"
+#line 49525 "pentiumdecoder.cpp"
 
       
     } 
@@ -49340,7 +49538,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49344 "pentiumdecoder.cpp"
+#line 49542 "pentiumdecoder.cpp"
 
       
     } 
@@ -49357,7 +49555,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49361 "pentiumdecoder.cpp"
+#line 49559 "pentiumdecoder.cpp"
 
       
     } 
@@ -49374,7 +49572,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49378 "pentiumdecoder.cpp"
+#line 49576 "pentiumdecoder.cpp"
 
       
     } 
@@ -49391,7 +49589,7 @@ hostPC
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49395 "pentiumdecoder.cpp"
+#line 49593 "pentiumdecoder.cpp"
 
       
     } 
@@ -49408,7 +49606,7 @@ hostPC
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49412 "pentiumdecoder.cpp"
+#line 49610 "pentiumdecoder.cpp"
 
       
     } 
@@ -49425,7 +49623,7 @@ hostPC
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49429 "pentiumdecoder.cpp"
+#line 49627 "pentiumdecoder.cpp"
 
       
     } 
@@ -49442,7 +49640,7 @@ hostPC
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49446 "pentiumdecoder.cpp"
+#line 49644 "pentiumdecoder.cpp"
 
       
     } 
@@ -49459,7 +49657,7 @@ hostPC
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49463 "pentiumdecoder.cpp"
+#line 49661 "pentiumdecoder.cpp"
 
       
     } 
@@ -49483,7 +49681,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49487 "pentiumdecoder.cpp"
+#line 49685 "pentiumdecoder.cpp"
 
       
     } 
@@ -49507,7 +49705,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49511 "pentiumdecoder.cpp"
+#line 49709 "pentiumdecoder.cpp"
 
       
     } 
@@ -49531,7 +49729,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49535 "pentiumdecoder.cpp"
+#line 49733 "pentiumdecoder.cpp"
 
       
     } 
@@ -49555,7 +49753,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49559 "pentiumdecoder.cpp"
+#line 49757 "pentiumdecoder.cpp"
 
       
     } 
@@ -49572,7 +49770,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49576 "pentiumdecoder.cpp"
+#line 49774 "pentiumdecoder.cpp"
 
       
     } 
@@ -49589,7 +49787,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49593 "pentiumdecoder.cpp"
+#line 49791 "pentiumdecoder.cpp"
 
       
     } 
@@ -49606,7 +49804,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49610 "pentiumdecoder.cpp"
+#line 49808 "pentiumdecoder.cpp"
 
       
     } 
@@ -49623,7 +49821,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49627 "pentiumdecoder.cpp"
+#line 49825 "pentiumdecoder.cpp"
 
       
     } 
@@ -49640,7 +49838,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49644 "pentiumdecoder.cpp"
+#line 49842 "pentiumdecoder.cpp"
 
       
     } 
@@ -49657,7 +49855,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49661 "pentiumdecoder.cpp"
+#line 49859 "pentiumdecoder.cpp"
 
       
     } 
@@ -49674,7 +49872,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49678 "pentiumdecoder.cpp"
+#line 49876 "pentiumdecoder.cpp"
 
       
     } 
@@ -49691,7 +49889,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49695 "pentiumdecoder.cpp"
+#line 49893 "pentiumdecoder.cpp"
 
       
     } 
@@ -49708,7 +49906,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49712 "pentiumdecoder.cpp"
+#line 49910 "pentiumdecoder.cpp"
 
       
     } 
@@ -49725,7 +49923,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49729 "pentiumdecoder.cpp"
+#line 49927 "pentiumdecoder.cpp"
 
       
     } 
@@ -49742,7 +49940,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49746 "pentiumdecoder.cpp"
+#line 49944 "pentiumdecoder.cpp"
 
       
     } 
@@ -49759,7 +49957,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49763 "pentiumdecoder.cpp"
+#line 49961 "pentiumdecoder.cpp"
 
       
     } 
@@ -49776,7 +49974,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49780 "pentiumdecoder.cpp"
+#line 49978 "pentiumdecoder.cpp"
 
       
     } 
@@ -49793,7 +49991,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49797 "pentiumdecoder.cpp"
+#line 49995 "pentiumdecoder.cpp"
 
       
     } 
@@ -49810,7 +50008,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49814 "pentiumdecoder.cpp"
+#line 50012 "pentiumdecoder.cpp"
 
       
     } 
@@ -49827,7 +50025,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49831 "pentiumdecoder.cpp"
+#line 50029 "pentiumdecoder.cpp"
 
       
     } 
@@ -49844,7 +50042,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49848 "pentiumdecoder.cpp"
+#line 50046 "pentiumdecoder.cpp"
 
       
     } 
@@ -49861,7 +50059,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49865 "pentiumdecoder.cpp"
+#line 50063 "pentiumdecoder.cpp"
 
       
     } 
@@ -49878,7 +50076,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49882 "pentiumdecoder.cpp"
+#line 50080 "pentiumdecoder.cpp"
 
       
     } 
@@ -49895,7 +50093,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49899 "pentiumdecoder.cpp"
+#line 50097 "pentiumdecoder.cpp"
 
       
     } 
@@ -49912,7 +50110,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49916 "pentiumdecoder.cpp"
+#line 50114 "pentiumdecoder.cpp"
 
       
     } 
@@ -49929,7 +50127,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49933 "pentiumdecoder.cpp"
+#line 50131 "pentiumdecoder.cpp"
 
       
     } 
@@ -49946,7 +50144,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49950 "pentiumdecoder.cpp"
+#line 50148 "pentiumdecoder.cpp"
 
       
     } 
@@ -49963,7 +50161,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49967 "pentiumdecoder.cpp"
+#line 50165 "pentiumdecoder.cpp"
 
       
     } 
@@ -49980,7 +50178,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 49984 "pentiumdecoder.cpp"
+#line 50182 "pentiumdecoder.cpp"
 
       
     } 
@@ -49997,7 +50195,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 50001 "pentiumdecoder.cpp"
+#line 50199 "pentiumdecoder.cpp"
 
       
     } 
@@ -50014,7 +50212,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 50018 "pentiumdecoder.cpp"
+#line 50216 "pentiumdecoder.cpp"
 
       
     } 
@@ -50031,7 +50229,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 50035 "pentiumdecoder.cpp"
+#line 50233 "pentiumdecoder.cpp"
 
       
     } 
@@ -50054,7 +50252,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50058 "pentiumdecoder.cpp"
+#line 50256 "pentiumdecoder.cpp"
 
       
     } 
@@ -50077,7 +50275,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50081 "pentiumdecoder.cpp"
+#line 50279 "pentiumdecoder.cpp"
 
       
     } 
@@ -50100,7 +50298,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50104 "pentiumdecoder.cpp"
+#line 50302 "pentiumdecoder.cpp"
 
       
     } 
@@ -50123,7 +50321,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50127 "pentiumdecoder.cpp"
+#line 50325 "pentiumdecoder.cpp"
 
       
     } 
@@ -50140,7 +50338,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50144 "pentiumdecoder.cpp"
+#line 50342 "pentiumdecoder.cpp"
 
       
     } 
@@ -50157,7 +50355,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50161 "pentiumdecoder.cpp"
+#line 50359 "pentiumdecoder.cpp"
 
       
     } 
@@ -50174,7 +50372,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50178 "pentiumdecoder.cpp"
+#line 50376 "pentiumdecoder.cpp"
 
       
     } 
@@ -50191,7 +50389,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50195 "pentiumdecoder.cpp"
+#line 50393 "pentiumdecoder.cpp"
 
       
     } 
@@ -50208,7 +50406,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50212 "pentiumdecoder.cpp"
+#line 50410 "pentiumdecoder.cpp"
 
       
     } 
@@ -50225,7 +50423,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50229 "pentiumdecoder.cpp"
+#line 50427 "pentiumdecoder.cpp"
 
       
     } 
@@ -50242,7 +50440,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50246 "pentiumdecoder.cpp"
+#line 50444 "pentiumdecoder.cpp"
 
       
     } 
@@ -50259,7 +50457,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50263 "pentiumdecoder.cpp"
+#line 50461 "pentiumdecoder.cpp"
 
       
     } 
@@ -50276,7 +50474,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50280 "pentiumdecoder.cpp"
+#line 50478 "pentiumdecoder.cpp"
 
       
     } 
@@ -50293,7 +50491,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50297 "pentiumdecoder.cpp"
+#line 50495 "pentiumdecoder.cpp"
 
       
     } 
@@ -50310,7 +50508,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50314 "pentiumdecoder.cpp"
+#line 50512 "pentiumdecoder.cpp"
 
       
     } 
@@ -50327,7 +50525,7 @@ hostPC
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50331 "pentiumdecoder.cpp"
+#line 50529 "pentiumdecoder.cpp"
 
       
     } 
@@ -50344,7 +50542,7 @@ hostPC
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50348 "pentiumdecoder.cpp"
+#line 50546 "pentiumdecoder.cpp"
 
       
     } 
@@ -50361,7 +50559,7 @@ hostPC
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50365 "pentiumdecoder.cpp"
+#line 50563 "pentiumdecoder.cpp"
 
       
     } 
@@ -50378,7 +50576,7 @@ hostPC
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50382 "pentiumdecoder.cpp"
+#line 50580 "pentiumdecoder.cpp"
 
       
     } 
@@ -50395,7 +50593,7 @@ hostPC
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50399 "pentiumdecoder.cpp"
+#line 50597 "pentiumdecoder.cpp"
 
       
     } 
@@ -50412,7 +50610,7 @@ hostPC
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50416 "pentiumdecoder.cpp"
+#line 50614 "pentiumdecoder.cpp"
 
       
     } 
@@ -50429,7 +50627,7 @@ hostPC
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50433 "pentiumdecoder.cpp"
+#line 50631 "pentiumdecoder.cpp"
 
       
     } 
@@ -50446,7 +50644,7 @@ hostPC
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50450 "pentiumdecoder.cpp"
+#line 50648 "pentiumdecoder.cpp"
 
       
     } 
@@ -50463,7 +50661,7 @@ hostPC
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50467 "pentiumdecoder.cpp"
+#line 50665 "pentiumdecoder.cpp"
 
       
     } 
@@ -50481,7 +50679,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50485 "pentiumdecoder.cpp"
+#line 50683 "pentiumdecoder.cpp"
 
       
     } 
@@ -50499,7 +50697,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50503 "pentiumdecoder.cpp"
+#line 50701 "pentiumdecoder.cpp"
 
       
     } 
@@ -50517,7 +50715,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50521 "pentiumdecoder.cpp"
+#line 50719 "pentiumdecoder.cpp"
 
       
     } 
@@ -50535,7 +50733,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50539 "pentiumdecoder.cpp"
+#line 50737 "pentiumdecoder.cpp"
 
       
     } 
@@ -50553,7 +50751,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50557 "pentiumdecoder.cpp"
+#line 50755 "pentiumdecoder.cpp"
 
       
     } 
@@ -50571,7 +50769,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50575 "pentiumdecoder.cpp"
+#line 50773 "pentiumdecoder.cpp"
 
       
     } 
@@ -50589,7 +50787,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50593 "pentiumdecoder.cpp"
+#line 50791 "pentiumdecoder.cpp"
 
       
     } 
@@ -50607,7 +50805,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50611 "pentiumdecoder.cpp"
+#line 50809 "pentiumdecoder.cpp"
 
       
     } 
@@ -50624,7 +50822,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50628 "pentiumdecoder.cpp"
+#line 50826 "pentiumdecoder.cpp"
 
       
     } 
@@ -50641,7 +50839,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50645 "pentiumdecoder.cpp"
+#line 50843 "pentiumdecoder.cpp"
 
       
     } 
@@ -50658,7 +50856,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50662 "pentiumdecoder.cpp"
+#line 50860 "pentiumdecoder.cpp"
 
       
     } 
@@ -50675,7 +50873,7 @@ hostPC
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50679 "pentiumdecoder.cpp"
+#line 50877 "pentiumdecoder.cpp"
 
       
     } 
@@ -50692,7 +50890,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50696 "pentiumdecoder.cpp"
+#line 50894 "pentiumdecoder.cpp"
 
       
     } 
@@ -50709,7 +50907,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50713 "pentiumdecoder.cpp"
+#line 50911 "pentiumdecoder.cpp"
 
       
     } 
@@ -50726,7 +50924,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50730 "pentiumdecoder.cpp"
+#line 50928 "pentiumdecoder.cpp"
 
       
     } 
@@ -50743,7 +50941,7 @@ hostPC
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50747 "pentiumdecoder.cpp"
+#line 50945 "pentiumdecoder.cpp"
 
       
     } 
@@ -50760,7 +50958,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50764 "pentiumdecoder.cpp"
+#line 50962 "pentiumdecoder.cpp"
 
       
     } 
@@ -50777,7 +50975,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50781 "pentiumdecoder.cpp"
+#line 50979 "pentiumdecoder.cpp"
 
       
     } 
@@ -50794,7 +50992,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50798 "pentiumdecoder.cpp"
+#line 50996 "pentiumdecoder.cpp"
 
       
     } 
@@ -50811,7 +51009,7 @@ hostPC
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50815 "pentiumdecoder.cpp"
+#line 51013 "pentiumdecoder.cpp"
 
       
     } 
@@ -50828,7 +51026,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50832 "pentiumdecoder.cpp"
+#line 51030 "pentiumdecoder.cpp"
 
       
     } 
@@ -50845,7 +51043,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50849 "pentiumdecoder.cpp"
+#line 51047 "pentiumdecoder.cpp"
 
       
     } 
@@ -50862,7 +51060,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50866 "pentiumdecoder.cpp"
+#line 51064 "pentiumdecoder.cpp"
 
       
     } 
@@ -50879,7 +51077,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50883 "pentiumdecoder.cpp"
+#line 51081 "pentiumdecoder.cpp"
 
       
     } 
@@ -50896,7 +51094,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50900 "pentiumdecoder.cpp"
+#line 51098 "pentiumdecoder.cpp"
 
       
     } 
@@ -50913,7 +51111,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50917 "pentiumdecoder.cpp"
+#line 51115 "pentiumdecoder.cpp"
 
       
     } 
@@ -50930,7 +51128,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50934 "pentiumdecoder.cpp"
+#line 51132 "pentiumdecoder.cpp"
 
       
     } 
@@ -50947,7 +51145,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50951 "pentiumdecoder.cpp"
+#line 51149 "pentiumdecoder.cpp"
 
       
     } 
@@ -50964,7 +51162,7 @@ hostPC
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 50968 "pentiumdecoder.cpp"
+#line 51166 "pentiumdecoder.cpp"
 
       
     } 
@@ -50981,7 +51179,7 @@ hostPC
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 50985 "pentiumdecoder.cpp"
+#line 51183 "pentiumdecoder.cpp"
 
       
     } 
@@ -50998,7 +51196,7 @@ hostPC
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 51002 "pentiumdecoder.cpp"
+#line 51200 "pentiumdecoder.cpp"
 
       
     } 
@@ -51015,7 +51213,7 @@ hostPC
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51019 "pentiumdecoder.cpp"
+#line 51217 "pentiumdecoder.cpp"
 
       
     } 
@@ -51032,7 +51230,7 @@ hostPC
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51036 "pentiumdecoder.cpp"
+#line 51234 "pentiumdecoder.cpp"
 
       
     } 
@@ -51049,7 +51247,7 @@ hostPC
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51053 "pentiumdecoder.cpp"
+#line 51251 "pentiumdecoder.cpp"
 
       
     } 
@@ -51066,7 +51264,7 @@ hostPC
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51070 "pentiumdecoder.cpp"
+#line 51268 "pentiumdecoder.cpp"
 
       
     } 
@@ -51083,7 +51281,7 @@ hostPC
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 51087 "pentiumdecoder.cpp"
+#line 51285 "pentiumdecoder.cpp"
 
       
     } 
@@ -51100,7 +51298,7 @@ hostPC
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 51104 "pentiumdecoder.cpp"
+#line 51302 "pentiumdecoder.cpp"
 
       
     } 
@@ -51117,7 +51315,7 @@ hostPC
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 51121 "pentiumdecoder.cpp"
+#line 51319 "pentiumdecoder.cpp"
 
       
     } 
@@ -51134,7 +51332,7 @@ hostPC
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 51138 "pentiumdecoder.cpp"
+#line 51336 "pentiumdecoder.cpp"
 
       
     } 
@@ -51151,7 +51349,7 @@ hostPC
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 51155 "pentiumdecoder.cpp"
+#line 51353 "pentiumdecoder.cpp"
 
       
     } 
@@ -51168,7 +51366,7 @@ hostPC
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 51172 "pentiumdecoder.cpp"
+#line 51370 "pentiumdecoder.cpp"
 
       
     } 
@@ -51185,7 +51383,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51189 "pentiumdecoder.cpp"
+#line 51387 "pentiumdecoder.cpp"
 
       
     } 
@@ -51202,7 +51400,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51206 "pentiumdecoder.cpp"
+#line 51404 "pentiumdecoder.cpp"
 
       
     } 
@@ -51219,7 +51417,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51223 "pentiumdecoder.cpp"
+#line 51421 "pentiumdecoder.cpp"
 
       
     } 
@@ -51236,7 +51434,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51240 "pentiumdecoder.cpp"
+#line 51438 "pentiumdecoder.cpp"
 
       
     } 
@@ -51253,7 +51451,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51257 "pentiumdecoder.cpp"
+#line 51455 "pentiumdecoder.cpp"
 
       
     } 
@@ -51270,7 +51468,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51274 "pentiumdecoder.cpp"
+#line 51472 "pentiumdecoder.cpp"
 
       
     } 
@@ -51287,7 +51485,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51291 "pentiumdecoder.cpp"
+#line 51489 "pentiumdecoder.cpp"
 
       
     } 
@@ -51304,7 +51502,7 @@ hostPC
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51308 "pentiumdecoder.cpp"
+#line 51506 "pentiumdecoder.cpp"
 
       
     } 
@@ -51322,7 +51520,7 @@ hostPC
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51326 "pentiumdecoder.cpp"
+#line 51524 "pentiumdecoder.cpp"
 
       
     } 
@@ -51340,7 +51538,7 @@ hostPC
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51344 "pentiumdecoder.cpp"
+#line 51542 "pentiumdecoder.cpp"
 
       
     } 
@@ -51358,7 +51556,7 @@ hostPC
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51362 "pentiumdecoder.cpp"
+#line 51560 "pentiumdecoder.cpp"
 
       
     } 
@@ -51376,7 +51574,7 @@ hostPC
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51380 "pentiumdecoder.cpp"
+#line 51578 "pentiumdecoder.cpp"
 
       
     } 
@@ -51394,7 +51592,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51398 "pentiumdecoder.cpp"
+#line 51596 "pentiumdecoder.cpp"
 
       
     } 
@@ -51412,7 +51610,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51416 "pentiumdecoder.cpp"
+#line 51614 "pentiumdecoder.cpp"
 
       
     } 
@@ -51430,7 +51628,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51434 "pentiumdecoder.cpp"
+#line 51632 "pentiumdecoder.cpp"
 
       
     } 
@@ -51448,7 +51646,7 @@ hostPC
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51452 "pentiumdecoder.cpp"
+#line 51650 "pentiumdecoder.cpp"
 
       
     } 
@@ -51466,7 +51664,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51470 "pentiumdecoder.cpp"
+#line 51668 "pentiumdecoder.cpp"
 
       
     } 
@@ -51484,7 +51682,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51488 "pentiumdecoder.cpp"
+#line 51686 "pentiumdecoder.cpp"
 
       
     } 
@@ -51502,7 +51700,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51506 "pentiumdecoder.cpp"
+#line 51704 "pentiumdecoder.cpp"
 
       
     } 
@@ -51520,7 +51718,7 @@ hostPC
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51524 "pentiumdecoder.cpp"
+#line 51722 "pentiumdecoder.cpp"
 
       
     } 
@@ -51538,7 +51736,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51542 "pentiumdecoder.cpp"
+#line 51740 "pentiumdecoder.cpp"
 
       
     } 
@@ -51556,7 +51754,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51560 "pentiumdecoder.cpp"
+#line 51758 "pentiumdecoder.cpp"
 
       
     } 
@@ -51574,7 +51772,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51578 "pentiumdecoder.cpp"
+#line 51776 "pentiumdecoder.cpp"
 
       
     } 
@@ -51592,7 +51790,7 @@ hostPC
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51596 "pentiumdecoder.cpp"
+#line 51794 "pentiumdecoder.cpp"
 
       
     } 
@@ -51609,7 +51807,7 @@ hostPC
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51613 "pentiumdecoder.cpp"
+#line 51811 "pentiumdecoder.cpp"
 
       
     } 
@@ -51626,7 +51824,7 @@ hostPC
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51630 "pentiumdecoder.cpp"
+#line 51828 "pentiumdecoder.cpp"
 
       
     } 
@@ -51643,7 +51841,7 @@ hostPC
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51647 "pentiumdecoder.cpp"
+#line 51845 "pentiumdecoder.cpp"
 
       
     } 
@@ -51660,7 +51858,7 @@ hostPC
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51664 "pentiumdecoder.cpp"
+#line 51862 "pentiumdecoder.cpp"
 
       
     } 
@@ -51679,7 +51877,7 @@ hostPC
 		return result;
 
 
-#line 51683 "pentiumdecoder.cpp"
+#line 51881 "pentiumdecoder.cpp"
 
       
     } 
@@ -51698,7 +51896,7 @@ hostPC
 		return result;
 
 
-#line 51702 "pentiumdecoder.cpp"
+#line 51900 "pentiumdecoder.cpp"
 
       
     } 
@@ -51717,7 +51915,7 @@ hostPC
 		return result;
 
 
-#line 51721 "pentiumdecoder.cpp"
+#line 51919 "pentiumdecoder.cpp"
 
       
     } 
@@ -51736,7 +51934,7 @@ hostPC
 		return result;
 
 
-#line 51740 "pentiumdecoder.cpp"
+#line 51938 "pentiumdecoder.cpp"
 
       
     } 
@@ -51756,7 +51954,7 @@ hostPC
 		return result;
 
 
-#line 51760 "pentiumdecoder.cpp"
+#line 51958 "pentiumdecoder.cpp"
 
       
     } 
@@ -51776,7 +51974,7 @@ hostPC
 		return result;
 
 
-#line 51780 "pentiumdecoder.cpp"
+#line 51978 "pentiumdecoder.cpp"
 
       
     } 
@@ -51796,7 +51994,7 @@ hostPC
 		return result;
 
 
-#line 51800 "pentiumdecoder.cpp"
+#line 51998 "pentiumdecoder.cpp"
 
       
     } 
@@ -51816,7 +52014,7 @@ hostPC
 		return result;
 
 
-#line 51820 "pentiumdecoder.cpp"
+#line 52018 "pentiumdecoder.cpp"
 
       
     } 
@@ -51833,7 +52031,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51837 "pentiumdecoder.cpp"
+#line 52035 "pentiumdecoder.cpp"
 
       
     } 
@@ -51850,7 +52048,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51854 "pentiumdecoder.cpp"
+#line 52052 "pentiumdecoder.cpp"
 
       
     } 
@@ -51867,7 +52065,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51871 "pentiumdecoder.cpp"
+#line 52069 "pentiumdecoder.cpp"
 
       
     } 
@@ -51884,7 +52082,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51888 "pentiumdecoder.cpp"
+#line 52086 "pentiumdecoder.cpp"
 
       
     } 
@@ -51901,7 +52099,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51905 "pentiumdecoder.cpp"
+#line 52103 "pentiumdecoder.cpp"
 
       
     } 
@@ -51918,7 +52116,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51922 "pentiumdecoder.cpp"
+#line 52120 "pentiumdecoder.cpp"
 
       
     } 
@@ -51935,7 +52133,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51939 "pentiumdecoder.cpp"
+#line 52137 "pentiumdecoder.cpp"
 
       
     } 
@@ -51952,7 +52150,7 @@ hostPC
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51956 "pentiumdecoder.cpp"
+#line 52154 "pentiumdecoder.cpp"
 
       
     } 
@@ -51969,7 +52167,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 51973 "pentiumdecoder.cpp"
+#line 52171 "pentiumdecoder.cpp"
 
       
     } 
@@ -51986,7 +52184,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 51990 "pentiumdecoder.cpp"
+#line 52188 "pentiumdecoder.cpp"
 
       
     } 
@@ -52003,7 +52201,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 52007 "pentiumdecoder.cpp"
+#line 52205 "pentiumdecoder.cpp"
 
       
     } 
@@ -52020,7 +52218,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 52024 "pentiumdecoder.cpp"
+#line 52222 "pentiumdecoder.cpp"
 
       
     } 
@@ -52037,7 +52235,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52041 "pentiumdecoder.cpp"
+#line 52239 "pentiumdecoder.cpp"
 
       
     } 
@@ -52054,7 +52252,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52058 "pentiumdecoder.cpp"
+#line 52256 "pentiumdecoder.cpp"
 
       
     } 
@@ -52071,7 +52269,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52075 "pentiumdecoder.cpp"
+#line 52273 "pentiumdecoder.cpp"
 
       
     } 
@@ -52088,7 +52286,7 @@ hostPC
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52092 "pentiumdecoder.cpp"
+#line 52290 "pentiumdecoder.cpp"
 
       
     } 
@@ -52104,7 +52302,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 52108 "pentiumdecoder.cpp"
+#line 52306 "pentiumdecoder.cpp"
 
       
     } 
@@ -52120,7 +52318,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 52124 "pentiumdecoder.cpp"
+#line 52322 "pentiumdecoder.cpp"
 
       
     } 
@@ -52136,7 +52334,7 @@ hostPC
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 52140 "pentiumdecoder.cpp"
+#line 52338 "pentiumdecoder.cpp"
 
       
     } 
@@ -52153,7 +52351,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52157 "pentiumdecoder.cpp"
+#line 52355 "pentiumdecoder.cpp"
 
       
     } 
@@ -52170,7 +52368,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52174 "pentiumdecoder.cpp"
+#line 52372 "pentiumdecoder.cpp"
 
       
     } 
@@ -52187,7 +52385,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52191 "pentiumdecoder.cpp"
+#line 52389 "pentiumdecoder.cpp"
 
       
     } 
@@ -52204,7 +52402,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52208 "pentiumdecoder.cpp"
+#line 52406 "pentiumdecoder.cpp"
 
       
     } 
@@ -52221,7 +52419,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52225 "pentiumdecoder.cpp"
+#line 52423 "pentiumdecoder.cpp"
 
       
     } 
@@ -52238,7 +52436,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52242 "pentiumdecoder.cpp"
+#line 52440 "pentiumdecoder.cpp"
 
       
     } 
@@ -52255,7 +52453,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52259 "pentiumdecoder.cpp"
+#line 52457 "pentiumdecoder.cpp"
 
       
     } 
@@ -52272,7 +52470,7 @@ hostPC
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52276 "pentiumdecoder.cpp"
+#line 52474 "pentiumdecoder.cpp"
 
       
     } 
@@ -52289,7 +52487,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52293 "pentiumdecoder.cpp"
+#line 52491 "pentiumdecoder.cpp"
 
       
     } 
@@ -52306,7 +52504,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52310 "pentiumdecoder.cpp"
+#line 52508 "pentiumdecoder.cpp"
 
       
     } 
@@ -52323,7 +52521,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52327 "pentiumdecoder.cpp"
+#line 52525 "pentiumdecoder.cpp"
 
       
     } 
@@ -52340,7 +52538,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52344 "pentiumdecoder.cpp"
+#line 52542 "pentiumdecoder.cpp"
 
       
     } 
@@ -52357,7 +52555,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52361 "pentiumdecoder.cpp"
+#line 52559 "pentiumdecoder.cpp"
 
       
     } 
@@ -52374,7 +52572,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52378 "pentiumdecoder.cpp"
+#line 52576 "pentiumdecoder.cpp"
 
       
     } 
@@ -52391,7 +52589,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52395 "pentiumdecoder.cpp"
+#line 52593 "pentiumdecoder.cpp"
 
       
     } 
@@ -52408,7 +52606,7 @@ hostPC
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52412 "pentiumdecoder.cpp"
+#line 52610 "pentiumdecoder.cpp"
 
       
     } 
@@ -52425,7 +52623,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52429 "pentiumdecoder.cpp"
+#line 52627 "pentiumdecoder.cpp"
 
       
     } 
@@ -52442,7 +52640,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52446 "pentiumdecoder.cpp"
+#line 52644 "pentiumdecoder.cpp"
 
       
     } 
@@ -52459,7 +52657,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52463 "pentiumdecoder.cpp"
+#line 52661 "pentiumdecoder.cpp"
 
       
     } 
@@ -52476,7 +52674,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52480 "pentiumdecoder.cpp"
+#line 52678 "pentiumdecoder.cpp"
 
       
     } 
@@ -52493,7 +52691,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52497 "pentiumdecoder.cpp"
+#line 52695 "pentiumdecoder.cpp"
 
       
     } 
@@ -52510,7 +52708,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52514 "pentiumdecoder.cpp"
+#line 52712 "pentiumdecoder.cpp"
 
       
     } 
@@ -52527,7 +52725,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52531 "pentiumdecoder.cpp"
+#line 52729 "pentiumdecoder.cpp"
 
       
     } 
@@ -52544,7 +52742,7 @@ hostPC
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52548 "pentiumdecoder.cpp"
+#line 52746 "pentiumdecoder.cpp"
 
       
     } 
@@ -52561,7 +52759,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52565 "pentiumdecoder.cpp"
+#line 52763 "pentiumdecoder.cpp"
 
       
     } 
@@ -52578,7 +52776,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52582 "pentiumdecoder.cpp"
+#line 52780 "pentiumdecoder.cpp"
 
       
     } 
@@ -52595,7 +52793,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52599 "pentiumdecoder.cpp"
+#line 52797 "pentiumdecoder.cpp"
 
       
     } 
@@ -52612,7 +52810,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52616 "pentiumdecoder.cpp"
+#line 52814 "pentiumdecoder.cpp"
 
       
     } 
@@ -52629,7 +52827,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52633 "pentiumdecoder.cpp"
+#line 52831 "pentiumdecoder.cpp"
 
       
     } 
@@ -52646,7 +52844,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52650 "pentiumdecoder.cpp"
+#line 52848 "pentiumdecoder.cpp"
 
       
     } 
@@ -52663,7 +52861,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52667 "pentiumdecoder.cpp"
+#line 52865 "pentiumdecoder.cpp"
 
       
     } 
@@ -52680,7 +52878,7 @@ hostPC
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52684 "pentiumdecoder.cpp"
+#line 52882 "pentiumdecoder.cpp"
 
       
     } 
@@ -52697,7 +52895,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52701 "pentiumdecoder.cpp"
+#line 52899 "pentiumdecoder.cpp"
 
       
     } 
@@ -52714,7 +52912,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52718 "pentiumdecoder.cpp"
+#line 52916 "pentiumdecoder.cpp"
 
       
     } 
@@ -52731,7 +52929,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52735 "pentiumdecoder.cpp"
+#line 52933 "pentiumdecoder.cpp"
 
       
     } 
@@ -52748,7 +52946,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52752 "pentiumdecoder.cpp"
+#line 52950 "pentiumdecoder.cpp"
 
       
     } 
@@ -52765,7 +52963,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52769 "pentiumdecoder.cpp"
+#line 52967 "pentiumdecoder.cpp"
 
       
     } 
@@ -52782,7 +52980,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52786 "pentiumdecoder.cpp"
+#line 52984 "pentiumdecoder.cpp"
 
       
     } 
@@ -52799,7 +52997,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52803 "pentiumdecoder.cpp"
+#line 53001 "pentiumdecoder.cpp"
 
       
     } 
@@ -52816,7 +53014,7 @@ hostPC
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52820 "pentiumdecoder.cpp"
+#line 53018 "pentiumdecoder.cpp"
 
       
     } 
@@ -52833,7 +53031,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52837 "pentiumdecoder.cpp"
+#line 53035 "pentiumdecoder.cpp"
 
       
     } 
@@ -52850,7 +53048,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52854 "pentiumdecoder.cpp"
+#line 53052 "pentiumdecoder.cpp"
 
       
     } 
@@ -52867,7 +53065,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52871 "pentiumdecoder.cpp"
+#line 53069 "pentiumdecoder.cpp"
 
       
     } 
@@ -52884,7 +53082,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52888 "pentiumdecoder.cpp"
+#line 53086 "pentiumdecoder.cpp"
 
       
     } 
@@ -52901,7 +53099,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52905 "pentiumdecoder.cpp"
+#line 53103 "pentiumdecoder.cpp"
 
       
     } 
@@ -52918,7 +53116,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52922 "pentiumdecoder.cpp"
+#line 53120 "pentiumdecoder.cpp"
 
       
     } 
@@ -52935,7 +53133,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52939 "pentiumdecoder.cpp"
+#line 53137 "pentiumdecoder.cpp"
 
       
     } 
@@ -52952,7 +53150,7 @@ hostPC
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52956 "pentiumdecoder.cpp"
+#line 53154 "pentiumdecoder.cpp"
 
       
     } 
@@ -52970,7 +53168,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 52974 "pentiumdecoder.cpp"
+#line 53172 "pentiumdecoder.cpp"
 
       
     } 
@@ -52988,7 +53186,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 52992 "pentiumdecoder.cpp"
+#line 53190 "pentiumdecoder.cpp"
 
       
     } 
@@ -53006,7 +53204,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 53010 "pentiumdecoder.cpp"
+#line 53208 "pentiumdecoder.cpp"
 
       
     } 
@@ -53024,7 +53222,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 53028 "pentiumdecoder.cpp"
+#line 53226 "pentiumdecoder.cpp"
 
       
     } 
@@ -53043,7 +53241,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53047 "pentiumdecoder.cpp"
+#line 53245 "pentiumdecoder.cpp"
 
       
     } 
@@ -53062,7 +53260,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53066 "pentiumdecoder.cpp"
+#line 53264 "pentiumdecoder.cpp"
 
       
     } 
@@ -53081,7 +53279,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53085 "pentiumdecoder.cpp"
+#line 53283 "pentiumdecoder.cpp"
 
       
     } 
@@ -53100,7 +53298,7 @@ hostPC
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53104 "pentiumdecoder.cpp"
+#line 53302 "pentiumdecoder.cpp"
 
       
     } 
@@ -53117,7 +53315,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53121 "pentiumdecoder.cpp"
+#line 53319 "pentiumdecoder.cpp"
 
       
     } 
@@ -53134,7 +53332,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53138 "pentiumdecoder.cpp"
+#line 53336 "pentiumdecoder.cpp"
 
       
     } 
@@ -53151,7 +53349,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53155 "pentiumdecoder.cpp"
+#line 53353 "pentiumdecoder.cpp"
 
       
     } 
@@ -53168,7 +53366,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53172 "pentiumdecoder.cpp"
+#line 53370 "pentiumdecoder.cpp"
 
       
     } 
@@ -53185,7 +53383,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53189 "pentiumdecoder.cpp"
+#line 53387 "pentiumdecoder.cpp"
 
       
     } 
@@ -53202,7 +53400,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53206 "pentiumdecoder.cpp"
+#line 53404 "pentiumdecoder.cpp"
 
       
     } 
@@ -53219,7 +53417,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53223 "pentiumdecoder.cpp"
+#line 53421 "pentiumdecoder.cpp"
 
       
     } 
@@ -53236,7 +53434,7 @@ hostPC
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53240 "pentiumdecoder.cpp"
+#line 53438 "pentiumdecoder.cpp"
 
       
     } 
@@ -53253,7 +53451,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53257 "pentiumdecoder.cpp"
+#line 53455 "pentiumdecoder.cpp"
 
       
     } 
@@ -53270,7 +53468,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53274 "pentiumdecoder.cpp"
+#line 53472 "pentiumdecoder.cpp"
 
       
     } 
@@ -53287,7 +53485,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53291 "pentiumdecoder.cpp"
+#line 53489 "pentiumdecoder.cpp"
 
       
     } 
@@ -53304,7 +53502,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53308 "pentiumdecoder.cpp"
+#line 53506 "pentiumdecoder.cpp"
 
       
     } 
@@ -53321,7 +53519,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53325 "pentiumdecoder.cpp"
+#line 53523 "pentiumdecoder.cpp"
 
       
     } 
@@ -53338,7 +53536,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53342 "pentiumdecoder.cpp"
+#line 53540 "pentiumdecoder.cpp"
 
       
     } 
@@ -53355,7 +53553,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53359 "pentiumdecoder.cpp"
+#line 53557 "pentiumdecoder.cpp"
 
       
     } 
@@ -53372,7 +53570,7 @@ hostPC
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53376 "pentiumdecoder.cpp"
+#line 53574 "pentiumdecoder.cpp"
 
       
     } 
@@ -53389,7 +53587,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 53393 "pentiumdecoder.cpp"
+#line 53591 "pentiumdecoder.cpp"
 
       
     } 
@@ -53406,7 +53604,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 53410 "pentiumdecoder.cpp"
+#line 53608 "pentiumdecoder.cpp"
 
       
     } 
@@ -53423,7 +53621,7 @@ hostPC
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 53427 "pentiumdecoder.cpp"
+#line 53625 "pentiumdecoder.cpp"
 
       
     } 
@@ -53439,7 +53637,7 @@ hostPC
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53443 "pentiumdecoder.cpp"
+#line 53641 "pentiumdecoder.cpp"
 
       
     } 
@@ -53455,7 +53653,7 @@ hostPC
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53459 "pentiumdecoder.cpp"
+#line 53657 "pentiumdecoder.cpp"
 
       
     } 
@@ -53471,7 +53669,7 @@ hostPC
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53475 "pentiumdecoder.cpp"
+#line 53673 "pentiumdecoder.cpp"
 
       
     } 
@@ -53487,7 +53685,7 @@ hostPC
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53491 "pentiumdecoder.cpp"
+#line 53689 "pentiumdecoder.cpp"
 
       
     } 
@@ -53503,7 +53701,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 53507 "pentiumdecoder.cpp"
+#line 53705 "pentiumdecoder.cpp"
 
       
     } 
@@ -53519,7 +53717,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 53523 "pentiumdecoder.cpp"
+#line 53721 "pentiumdecoder.cpp"
 
       
     } 
@@ -53535,7 +53733,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 53539 "pentiumdecoder.cpp"
+#line 53737 "pentiumdecoder.cpp"
 
       
     } 
@@ -53551,7 +53749,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 53555 "pentiumdecoder.cpp"
+#line 53753 "pentiumdecoder.cpp"
 
       
     } 
@@ -53567,7 +53765,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 53571 "pentiumdecoder.cpp"
+#line 53769 "pentiumdecoder.cpp"
 
       
     } 
@@ -53583,7 +53781,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 53587 "pentiumdecoder.cpp"
+#line 53785 "pentiumdecoder.cpp"
 
       
     } 
@@ -53599,7 +53797,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 53603 "pentiumdecoder.cpp"
+#line 53801 "pentiumdecoder.cpp"
 
       
     } 
@@ -53615,7 +53813,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 53619 "pentiumdecoder.cpp"
+#line 53817 "pentiumdecoder.cpp"
 
       
     } 
@@ -53631,7 +53829,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 53635 "pentiumdecoder.cpp"
+#line 53833 "pentiumdecoder.cpp"
 
       
     } 
@@ -53647,7 +53845,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 53651 "pentiumdecoder.cpp"
+#line 53849 "pentiumdecoder.cpp"
 
       
     } 
@@ -53663,7 +53861,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 53667 "pentiumdecoder.cpp"
+#line 53865 "pentiumdecoder.cpp"
 
       
     } 
@@ -53679,7 +53877,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 53683 "pentiumdecoder.cpp"
+#line 53881 "pentiumdecoder.cpp"
 
       
     } 
@@ -53695,7 +53893,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 53699 "pentiumdecoder.cpp"
+#line 53897 "pentiumdecoder.cpp"
 
       
     } 
@@ -53711,7 +53909,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 53715 "pentiumdecoder.cpp"
+#line 53913 "pentiumdecoder.cpp"
 
       
     } 
@@ -53727,7 +53925,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 53731 "pentiumdecoder.cpp"
+#line 53929 "pentiumdecoder.cpp"
 
       
     } 
@@ -53743,7 +53941,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 53747 "pentiumdecoder.cpp"
+#line 53945 "pentiumdecoder.cpp"
 
       
     } 
@@ -53759,7 +53957,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 53763 "pentiumdecoder.cpp"
+#line 53961 "pentiumdecoder.cpp"
 
       
     } 
@@ -53775,7 +53973,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 53779 "pentiumdecoder.cpp"
+#line 53977 "pentiumdecoder.cpp"
 
       
     } 
@@ -53791,7 +53989,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 53795 "pentiumdecoder.cpp"
+#line 53993 "pentiumdecoder.cpp"
 
       
     } 
@@ -53807,7 +54005,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 53811 "pentiumdecoder.cpp"
+#line 54009 "pentiumdecoder.cpp"
 
       
     } 
@@ -53823,7 +54021,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 53827 "pentiumdecoder.cpp"
+#line 54025 "pentiumdecoder.cpp"
 
       
     } 
@@ -53839,7 +54037,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 53843 "pentiumdecoder.cpp"
+#line 54041 "pentiumdecoder.cpp"
 
       
     } 
@@ -53855,7 +54053,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 53859 "pentiumdecoder.cpp"
+#line 54057 "pentiumdecoder.cpp"
 
       
     } 
@@ -53871,7 +54069,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 53875 "pentiumdecoder.cpp"
+#line 54073 "pentiumdecoder.cpp"
 
       
     } 
@@ -53887,7 +54085,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 53891 "pentiumdecoder.cpp"
+#line 54089 "pentiumdecoder.cpp"
 
       
     } 
@@ -53903,7 +54101,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 53907 "pentiumdecoder.cpp"
+#line 54105 "pentiumdecoder.cpp"
 
       
     } 
@@ -53919,7 +54117,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 53923 "pentiumdecoder.cpp"
+#line 54121 "pentiumdecoder.cpp"
 
       
     } 
@@ -53935,7 +54133,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 53939 "pentiumdecoder.cpp"
+#line 54137 "pentiumdecoder.cpp"
 
       
     } 
@@ -53951,7 +54149,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 53955 "pentiumdecoder.cpp"
+#line 54153 "pentiumdecoder.cpp"
 
       
     } 
@@ -53967,7 +54165,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 53971 "pentiumdecoder.cpp"
+#line 54169 "pentiumdecoder.cpp"
 
       
     } 
@@ -53983,7 +54181,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 53987 "pentiumdecoder.cpp"
+#line 54185 "pentiumdecoder.cpp"
 
       
     } 
@@ -53999,7 +54197,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 54003 "pentiumdecoder.cpp"
+#line 54201 "pentiumdecoder.cpp"
 
       
     } 
@@ -54015,7 +54213,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 54019 "pentiumdecoder.cpp"
+#line 54217 "pentiumdecoder.cpp"
 
       
     } 
@@ -54031,7 +54229,7 @@ hostPC
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 54035 "pentiumdecoder.cpp"
+#line 54233 "pentiumdecoder.cpp"
 
       
     } 
@@ -54047,7 +54245,7 @@ hostPC
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 54051 "pentiumdecoder.cpp"
+#line 54249 "pentiumdecoder.cpp"
 
       
     } 
@@ -54063,7 +54261,7 @@ hostPC
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 54067 "pentiumdecoder.cpp"
+#line 54265 "pentiumdecoder.cpp"
 
       
     } 
@@ -54079,7 +54277,7 @@ hostPC
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 54083 "pentiumdecoder.cpp"
+#line 54281 "pentiumdecoder.cpp"
 
       
     } 
@@ -54095,7 +54293,7 @@ hostPC
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 54099 "pentiumdecoder.cpp"
+#line 54297 "pentiumdecoder.cpp"
 
       
     } 
@@ -54111,7 +54309,7 @@ hostPC
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 54115 "pentiumdecoder.cpp"
+#line 54313 "pentiumdecoder.cpp"
 
       
     } 
@@ -54127,7 +54325,7 @@ hostPC
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 54131 "pentiumdecoder.cpp"
+#line 54329 "pentiumdecoder.cpp"
 
       
     } 
@@ -54143,7 +54341,7 @@ hostPC
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 54147 "pentiumdecoder.cpp"
+#line 54345 "pentiumdecoder.cpp"
 
       
     } 
@@ -54159,7 +54357,7 @@ hostPC
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 54163 "pentiumdecoder.cpp"
+#line 54361 "pentiumdecoder.cpp"
 
       
     } 
@@ -54175,7 +54373,7 @@ hostPC
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 54179 "pentiumdecoder.cpp"
+#line 54377 "pentiumdecoder.cpp"
 
       
     } 
@@ -54191,7 +54389,7 @@ hostPC
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 54195 "pentiumdecoder.cpp"
+#line 54393 "pentiumdecoder.cpp"
 
       
     } 
@@ -54207,7 +54405,7 @@ hostPC
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 54211 "pentiumdecoder.cpp"
+#line 54409 "pentiumdecoder.cpp"
 
       
     } 
@@ -54223,7 +54421,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 54227 "pentiumdecoder.cpp"
+#line 54425 "pentiumdecoder.cpp"
 
       
     } 
@@ -54239,7 +54437,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 54243 "pentiumdecoder.cpp"
+#line 54441 "pentiumdecoder.cpp"
 
       
     } 
@@ -54255,7 +54453,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 54259 "pentiumdecoder.cpp"
+#line 54457 "pentiumdecoder.cpp"
 
       
     } 
@@ -54271,7 +54469,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 54275 "pentiumdecoder.cpp"
+#line 54473 "pentiumdecoder.cpp"
 
       
     } 
@@ -54287,7 +54485,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 54291 "pentiumdecoder.cpp"
+#line 54489 "pentiumdecoder.cpp"
 
       
     } 
@@ -54303,7 +54501,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 54307 "pentiumdecoder.cpp"
+#line 54505 "pentiumdecoder.cpp"
 
       
     } 
@@ -54319,7 +54517,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 54323 "pentiumdecoder.cpp"
+#line 54521 "pentiumdecoder.cpp"
 
       
     } 
@@ -54335,7 +54533,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 54339 "pentiumdecoder.cpp"
+#line 54537 "pentiumdecoder.cpp"
 
       
     } 
@@ -54351,7 +54549,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 54355 "pentiumdecoder.cpp"
+#line 54553 "pentiumdecoder.cpp"
 
       
     } 
@@ -54367,7 +54565,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 54371 "pentiumdecoder.cpp"
+#line 54569 "pentiumdecoder.cpp"
 
       
     } 
@@ -54383,7 +54581,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 54387 "pentiumdecoder.cpp"
+#line 54585 "pentiumdecoder.cpp"
 
       
     } 
@@ -54399,7 +54597,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 54403 "pentiumdecoder.cpp"
+#line 54601 "pentiumdecoder.cpp"
 
       
     } 
@@ -54415,7 +54613,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 54419 "pentiumdecoder.cpp"
+#line 54617 "pentiumdecoder.cpp"
 
       
     } 
@@ -54431,7 +54629,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 54435 "pentiumdecoder.cpp"
+#line 54633 "pentiumdecoder.cpp"
 
       
     } 
@@ -54447,7 +54645,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 54451 "pentiumdecoder.cpp"
+#line 54649 "pentiumdecoder.cpp"
 
       
     } 
@@ -54463,7 +54661,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 54467 "pentiumdecoder.cpp"
+#line 54665 "pentiumdecoder.cpp"
 
       
     } 
@@ -54479,7 +54677,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 54483 "pentiumdecoder.cpp"
+#line 54681 "pentiumdecoder.cpp"
 
       
     } 
@@ -54495,7 +54693,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 54499 "pentiumdecoder.cpp"
+#line 54697 "pentiumdecoder.cpp"
 
       
     } 
@@ -54511,7 +54709,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 54515 "pentiumdecoder.cpp"
+#line 54713 "pentiumdecoder.cpp"
 
       
     } 
@@ -54527,7 +54725,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 54531 "pentiumdecoder.cpp"
+#line 54729 "pentiumdecoder.cpp"
 
       
     } 
@@ -54543,7 +54741,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 54547 "pentiumdecoder.cpp"
+#line 54745 "pentiumdecoder.cpp"
 
       
     } 
@@ -54559,7 +54757,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 54563 "pentiumdecoder.cpp"
+#line 54761 "pentiumdecoder.cpp"
 
       
     } 
@@ -54575,7 +54773,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 54579 "pentiumdecoder.cpp"
+#line 54777 "pentiumdecoder.cpp"
 
       
     } 
@@ -54591,7 +54789,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 54595 "pentiumdecoder.cpp"
+#line 54793 "pentiumdecoder.cpp"
 
       
     } 
@@ -54607,7 +54805,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 54611 "pentiumdecoder.cpp"
+#line 54809 "pentiumdecoder.cpp"
 
       
     } 
@@ -54623,7 +54821,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 54627 "pentiumdecoder.cpp"
+#line 54825 "pentiumdecoder.cpp"
 
       
     } 
@@ -54639,7 +54837,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 54643 "pentiumdecoder.cpp"
+#line 54841 "pentiumdecoder.cpp"
 
       
     } 
@@ -54655,7 +54853,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 54659 "pentiumdecoder.cpp"
+#line 54857 "pentiumdecoder.cpp"
 
       
     } 
@@ -54671,7 +54869,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 54675 "pentiumdecoder.cpp"
+#line 54873 "pentiumdecoder.cpp"
 
       
     } 
@@ -54687,7 +54885,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 54691 "pentiumdecoder.cpp"
+#line 54889 "pentiumdecoder.cpp"
 
       
     } 
@@ -54703,7 +54901,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 54707 "pentiumdecoder.cpp"
+#line 54905 "pentiumdecoder.cpp"
 
       
     } 
@@ -54719,7 +54917,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 54723 "pentiumdecoder.cpp"
+#line 54921 "pentiumdecoder.cpp"
 
       
     } 
@@ -54735,7 +54933,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 54739 "pentiumdecoder.cpp"
+#line 54937 "pentiumdecoder.cpp"
 
       
     } 
@@ -54756,7 +54954,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 54760 "pentiumdecoder.cpp"
+#line 54958 "pentiumdecoder.cpp"
 
       
     } 
@@ -54777,7 +54975,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 54781 "pentiumdecoder.cpp"
+#line 54979 "pentiumdecoder.cpp"
 
       
     } 
@@ -54798,7 +54996,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 54802 "pentiumdecoder.cpp"
+#line 55000 "pentiumdecoder.cpp"
 
       
     } 
@@ -54814,7 +55012,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 54818 "pentiumdecoder.cpp"
+#line 55016 "pentiumdecoder.cpp"
 
       
     } 
@@ -54830,7 +55028,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 54834 "pentiumdecoder.cpp"
+#line 55032 "pentiumdecoder.cpp"
 
       
     } 
@@ -54846,7 +55044,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 54850 "pentiumdecoder.cpp"
+#line 55048 "pentiumdecoder.cpp"
 
       
     } 
@@ -54862,7 +55060,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 54866 "pentiumdecoder.cpp"
+#line 55064 "pentiumdecoder.cpp"
 
       
     } 
@@ -54878,7 +55076,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 54882 "pentiumdecoder.cpp"
+#line 55080 "pentiumdecoder.cpp"
 
       
     } 
@@ -54894,7 +55092,7 @@ hostPC
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 54898 "pentiumdecoder.cpp"
+#line 55096 "pentiumdecoder.cpp"
 
       
     } 
@@ -54910,7 +55108,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 54914 "pentiumdecoder.cpp"
+#line 55112 "pentiumdecoder.cpp"
 
       
     } 
@@ -54926,7 +55124,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 54930 "pentiumdecoder.cpp"
+#line 55128 "pentiumdecoder.cpp"
 
       
     } 
@@ -54942,7 +55140,7 @@ hostPC
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 54946 "pentiumdecoder.cpp"
+#line 55144 "pentiumdecoder.cpp"
 
       
     } 
@@ -54958,7 +55156,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 54962 "pentiumdecoder.cpp"
+#line 55160 "pentiumdecoder.cpp"
 
       
     } 
@@ -54974,7 +55172,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 54978 "pentiumdecoder.cpp"
+#line 55176 "pentiumdecoder.cpp"
 
       
     } 
@@ -54990,7 +55188,7 @@ hostPC
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 54994 "pentiumdecoder.cpp"
+#line 55192 "pentiumdecoder.cpp"
 
       
     } 
@@ -55006,7 +55204,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 55010 "pentiumdecoder.cpp"
+#line 55208 "pentiumdecoder.cpp"
 
       
     } 
@@ -55022,7 +55220,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 55026 "pentiumdecoder.cpp"
+#line 55224 "pentiumdecoder.cpp"
 
       
     } 
@@ -55038,7 +55236,7 @@ hostPC
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 55042 "pentiumdecoder.cpp"
+#line 55240 "pentiumdecoder.cpp"
 
       
     } 
@@ -55054,7 +55252,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 55058 "pentiumdecoder.cpp"
+#line 55256 "pentiumdecoder.cpp"
 
       
     } 
@@ -55070,7 +55268,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 55074 "pentiumdecoder.cpp"
+#line 55272 "pentiumdecoder.cpp"
 
       
     } 
@@ -55086,7 +55284,7 @@ hostPC
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 55090 "pentiumdecoder.cpp"
+#line 55288 "pentiumdecoder.cpp"
 
       
     } 
@@ -55102,7 +55300,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 55106 "pentiumdecoder.cpp"
+#line 55304 "pentiumdecoder.cpp"
 
       
     } 
@@ -55118,7 +55316,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 55122 "pentiumdecoder.cpp"
+#line 55320 "pentiumdecoder.cpp"
 
       
     } 
@@ -55134,7 +55332,7 @@ hostPC
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 55138 "pentiumdecoder.cpp"
+#line 55336 "pentiumdecoder.cpp"
 
       
     } 
@@ -55150,7 +55348,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 55154 "pentiumdecoder.cpp"
+#line 55352 "pentiumdecoder.cpp"
 
       
     } 
@@ -55166,7 +55364,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 55170 "pentiumdecoder.cpp"
+#line 55368 "pentiumdecoder.cpp"
 
       
     } 
@@ -55182,7 +55380,7 @@ hostPC
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 55186 "pentiumdecoder.cpp"
+#line 55384 "pentiumdecoder.cpp"
 
       
     } 
@@ -55198,7 +55396,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 55202 "pentiumdecoder.cpp"
+#line 55400 "pentiumdecoder.cpp"
 
       
     } 
@@ -55214,7 +55412,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 55218 "pentiumdecoder.cpp"
+#line 55416 "pentiumdecoder.cpp"
 
       
     } 
@@ -55230,7 +55428,7 @@ hostPC
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 55234 "pentiumdecoder.cpp"
+#line 55432 "pentiumdecoder.cpp"
 
       
     } 
@@ -55246,7 +55444,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 55250 "pentiumdecoder.cpp"
+#line 55448 "pentiumdecoder.cpp"
 
       
     } 
@@ -55262,7 +55460,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 55266 "pentiumdecoder.cpp"
+#line 55464 "pentiumdecoder.cpp"
 
       
     } 
@@ -55278,7 +55476,7 @@ hostPC
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 55282 "pentiumdecoder.cpp"
+#line 55480 "pentiumdecoder.cpp"
 
       
     } 
@@ -55294,7 +55492,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 55298 "pentiumdecoder.cpp"
+#line 55496 "pentiumdecoder.cpp"
 
       
     } 
@@ -55310,7 +55508,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 55314 "pentiumdecoder.cpp"
+#line 55512 "pentiumdecoder.cpp"
 
       
     } 
@@ -55326,7 +55524,7 @@ hostPC
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 55330 "pentiumdecoder.cpp"
+#line 55528 "pentiumdecoder.cpp"
 
       
     } 
@@ -55342,7 +55540,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 55346 "pentiumdecoder.cpp"
+#line 55544 "pentiumdecoder.cpp"
 
       
     } 
@@ -55358,7 +55556,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 55362 "pentiumdecoder.cpp"
+#line 55560 "pentiumdecoder.cpp"
 
       
     } 
@@ -55374,7 +55572,7 @@ hostPC
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 55378 "pentiumdecoder.cpp"
+#line 55576 "pentiumdecoder.cpp"
 
       
     } 
@@ -55390,7 +55588,7 @@ hostPC
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 55394 "pentiumdecoder.cpp"
+#line 55592 "pentiumdecoder.cpp"
 
       
     } 
@@ -55406,7 +55604,7 @@ hostPC
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 55410 "pentiumdecoder.cpp"
+#line 55608 "pentiumdecoder.cpp"
 
       
     } 
@@ -55422,7 +55620,7 @@ hostPC
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 55426 "pentiumdecoder.cpp"
+#line 55624 "pentiumdecoder.cpp"
 
       
     } 
@@ -55438,7 +55636,7 @@ hostPC
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 55442 "pentiumdecoder.cpp"
+#line 55640 "pentiumdecoder.cpp"
 
       
     } 
@@ -55454,7 +55652,7 @@ hostPC
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 55458 "pentiumdecoder.cpp"
+#line 55656 "pentiumdecoder.cpp"
 
       
     } 
@@ -55470,7 +55668,7 @@ hostPC
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 55474 "pentiumdecoder.cpp"
+#line 55672 "pentiumdecoder.cpp"
 
       
     } 
@@ -55486,7 +55684,7 @@ hostPC
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 55490 "pentiumdecoder.cpp"
+#line 55688 "pentiumdecoder.cpp"
 
       
     } 
@@ -55502,7 +55700,7 @@ hostPC
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 55506 "pentiumdecoder.cpp"
+#line 55704 "pentiumdecoder.cpp"
 
       
     } 
@@ -55518,7 +55716,7 @@ hostPC
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 55522 "pentiumdecoder.cpp"
+#line 55720 "pentiumdecoder.cpp"
 
       
     } 
@@ -55534,7 +55732,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 55538 "pentiumdecoder.cpp"
+#line 55736 "pentiumdecoder.cpp"
 
       
     } 
@@ -55550,7 +55748,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 55554 "pentiumdecoder.cpp"
+#line 55752 "pentiumdecoder.cpp"
 
       
     } 
@@ -55566,7 +55764,7 @@ hostPC
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 55570 "pentiumdecoder.cpp"
+#line 55768 "pentiumdecoder.cpp"
 
       
     } 
@@ -55582,7 +55780,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 55586 "pentiumdecoder.cpp"
+#line 55784 "pentiumdecoder.cpp"
 
       
     } 
@@ -55598,7 +55796,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 55602 "pentiumdecoder.cpp"
+#line 55800 "pentiumdecoder.cpp"
 
       
     } 
@@ -55614,7 +55812,7 @@ hostPC
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 55618 "pentiumdecoder.cpp"
+#line 55816 "pentiumdecoder.cpp"
 
       
     } 
@@ -55630,7 +55828,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 55634 "pentiumdecoder.cpp"
+#line 55832 "pentiumdecoder.cpp"
 
       
     } 
@@ -55646,7 +55844,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 55650 "pentiumdecoder.cpp"
+#line 55848 "pentiumdecoder.cpp"
 
       
     } 
@@ -55662,7 +55860,7 @@ hostPC
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 55666 "pentiumdecoder.cpp"
+#line 55864 "pentiumdecoder.cpp"
 
       
     } 
@@ -55678,7 +55876,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 55682 "pentiumdecoder.cpp"
+#line 55880 "pentiumdecoder.cpp"
 
       
     } 
@@ -55694,7 +55892,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 55698 "pentiumdecoder.cpp"
+#line 55896 "pentiumdecoder.cpp"
 
       
     } 
@@ -55710,7 +55908,7 @@ hostPC
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 55714 "pentiumdecoder.cpp"
+#line 55912 "pentiumdecoder.cpp"
 
       
     } 
@@ -55726,7 +55924,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 55730 "pentiumdecoder.cpp"
+#line 55928 "pentiumdecoder.cpp"
 
       
     } 
@@ -55742,7 +55940,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 55746 "pentiumdecoder.cpp"
+#line 55944 "pentiumdecoder.cpp"
 
       
     } 
@@ -55758,7 +55956,7 @@ hostPC
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 55762 "pentiumdecoder.cpp"
+#line 55960 "pentiumdecoder.cpp"
 
       
     } 
@@ -55774,7 +55972,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 55778 "pentiumdecoder.cpp"
+#line 55976 "pentiumdecoder.cpp"
 
       
     } 
@@ -55790,7 +55988,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 55794 "pentiumdecoder.cpp"
+#line 55992 "pentiumdecoder.cpp"
 
       
     } 
@@ -55806,7 +56004,7 @@ hostPC
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 55810 "pentiumdecoder.cpp"
+#line 56008 "pentiumdecoder.cpp"
 
       
     } 
@@ -55822,7 +56020,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 55826 "pentiumdecoder.cpp"
+#line 56024 "pentiumdecoder.cpp"
 
       
     } 
@@ -55838,7 +56036,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 55842 "pentiumdecoder.cpp"
+#line 56040 "pentiumdecoder.cpp"
 
       
     } 
@@ -55854,7 +56052,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 55858 "pentiumdecoder.cpp"
+#line 56056 "pentiumdecoder.cpp"
 
       
     } 
@@ -55870,7 +56068,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 55874 "pentiumdecoder.cpp"
+#line 56072 "pentiumdecoder.cpp"
 
       
     } 
@@ -55886,7 +56084,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 55890 "pentiumdecoder.cpp"
+#line 56088 "pentiumdecoder.cpp"
 
       
     } 
@@ -55902,7 +56100,7 @@ hostPC
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 55906 "pentiumdecoder.cpp"
+#line 56104 "pentiumdecoder.cpp"
 
       
     } 
@@ -55918,7 +56116,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 55922 "pentiumdecoder.cpp"
+#line 56120 "pentiumdecoder.cpp"
 
       
     } 
@@ -55934,7 +56132,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 55938 "pentiumdecoder.cpp"
+#line 56136 "pentiumdecoder.cpp"
 
       
     } 
@@ -55950,7 +56148,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 55954 "pentiumdecoder.cpp"
+#line 56152 "pentiumdecoder.cpp"
 
       
     } 
@@ -55966,7 +56164,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 55970 "pentiumdecoder.cpp"
+#line 56168 "pentiumdecoder.cpp"
 
       
     } 
@@ -55982,7 +56180,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 55986 "pentiumdecoder.cpp"
+#line 56184 "pentiumdecoder.cpp"
 
       
     } 
@@ -55998,7 +56196,7 @@ hostPC
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 56002 "pentiumdecoder.cpp"
+#line 56200 "pentiumdecoder.cpp"
 
       
     } 
@@ -56014,7 +56212,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 56018 "pentiumdecoder.cpp"
+#line 56216 "pentiumdecoder.cpp"
 
       
     } 
@@ -56030,7 +56228,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 56034 "pentiumdecoder.cpp"
+#line 56232 "pentiumdecoder.cpp"
 
       
     } 
@@ -56046,7 +56244,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 56050 "pentiumdecoder.cpp"
+#line 56248 "pentiumdecoder.cpp"
 
       
     } 
@@ -56062,7 +56260,7 @@ hostPC
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 56066 "pentiumdecoder.cpp"
+#line 56264 "pentiumdecoder.cpp"
 
       
     } 
@@ -56078,7 +56276,7 @@ hostPC
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 56082 "pentiumdecoder.cpp"
+#line 56280 "pentiumdecoder.cpp"
 
       
     } 
@@ -56094,7 +56292,7 @@ hostPC
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 56098 "pentiumdecoder.cpp"
+#line 56296 "pentiumdecoder.cpp"
 
       
     } 
@@ -56110,7 +56308,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 56114 "pentiumdecoder.cpp"
+#line 56312 "pentiumdecoder.cpp"
 
       
     } 
@@ -56126,7 +56324,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 56130 "pentiumdecoder.cpp"
+#line 56328 "pentiumdecoder.cpp"
 
       
     } 
@@ -56142,7 +56340,7 @@ hostPC
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 56146 "pentiumdecoder.cpp"
+#line 56344 "pentiumdecoder.cpp"
 
       
     } 
@@ -56158,7 +56356,7 @@ hostPC
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 56162 "pentiumdecoder.cpp"
+#line 56360 "pentiumdecoder.cpp"
 
       
     } 
@@ -56174,7 +56372,7 @@ hostPC
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 56178 "pentiumdecoder.cpp"
+#line 56376 "pentiumdecoder.cpp"
 
       
     } 
@@ -56190,7 +56388,7 @@ hostPC
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 56194 "pentiumdecoder.cpp"
+#line 56392 "pentiumdecoder.cpp"
 
       
     } 
@@ -56206,7 +56404,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 56210 "pentiumdecoder.cpp"
+#line 56408 "pentiumdecoder.cpp"
 
       
     } 
@@ -56222,7 +56420,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 56226 "pentiumdecoder.cpp"
+#line 56424 "pentiumdecoder.cpp"
 
       
     } 
@@ -56238,7 +56436,7 @@ hostPC
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 56242 "pentiumdecoder.cpp"
+#line 56440 "pentiumdecoder.cpp"
 
       
     } 
@@ -56272,7 +56470,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56276 "pentiumdecoder.cpp"
+#line 56474 "pentiumdecoder.cpp"
 
       
     } 
@@ -56306,7 +56504,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56310 "pentiumdecoder.cpp"
+#line 56508 "pentiumdecoder.cpp"
 
       
     } 
@@ -56340,7 +56538,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56344 "pentiumdecoder.cpp"
+#line 56542 "pentiumdecoder.cpp"
 
       
     } 
@@ -56374,7 +56572,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56378 "pentiumdecoder.cpp"
+#line 56576 "pentiumdecoder.cpp"
 
       
     } 
@@ -56390,7 +56588,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56394 "pentiumdecoder.cpp"
+#line 56592 "pentiumdecoder.cpp"
 
       
     } 
@@ -56406,7 +56604,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56410 "pentiumdecoder.cpp"
+#line 56608 "pentiumdecoder.cpp"
 
       
     } 
@@ -56422,7 +56620,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56426 "pentiumdecoder.cpp"
+#line 56624 "pentiumdecoder.cpp"
 
       
     } 
@@ -56438,7 +56636,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56442 "pentiumdecoder.cpp"
+#line 56640 "pentiumdecoder.cpp"
 
       
     } 
@@ -56454,7 +56652,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56458 "pentiumdecoder.cpp"
+#line 56656 "pentiumdecoder.cpp"
 
       
     } 
@@ -56470,7 +56668,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56474 "pentiumdecoder.cpp"
+#line 56672 "pentiumdecoder.cpp"
 
       
     } 
@@ -56486,7 +56684,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56490 "pentiumdecoder.cpp"
+#line 56688 "pentiumdecoder.cpp"
 
       
     } 
@@ -56502,7 +56700,7 @@ hostPC
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56506 "pentiumdecoder.cpp"
+#line 56704 "pentiumdecoder.cpp"
 
       
     } 
@@ -56518,7 +56716,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56522 "pentiumdecoder.cpp"
+#line 56720 "pentiumdecoder.cpp"
 
       
     } 
@@ -56534,7 +56732,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56538 "pentiumdecoder.cpp"
+#line 56736 "pentiumdecoder.cpp"
 
       
     } 
@@ -56550,7 +56748,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56554 "pentiumdecoder.cpp"
+#line 56752 "pentiumdecoder.cpp"
 
       
     } 
@@ -56566,7 +56764,7 @@ hostPC
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56570 "pentiumdecoder.cpp"
+#line 56768 "pentiumdecoder.cpp"
 
       
     } 
@@ -56593,7 +56791,7 @@ hostPC
 		result.rtl->appendStmt(newCall);
 
 
-#line 56597 "pentiumdecoder.cpp"
+#line 56795 "pentiumdecoder.cpp"
 
       
     } 
@@ -56620,7 +56818,7 @@ hostPC
 		result.rtl->appendStmt(newCall);
 
 
-#line 56624 "pentiumdecoder.cpp"
+#line 56822 "pentiumdecoder.cpp"
 
       
     } 
@@ -56647,7 +56845,7 @@ hostPC
 		result.rtl->appendStmt(newCall);
 
 
-#line 56651 "pentiumdecoder.cpp"
+#line 56849 "pentiumdecoder.cpp"
 
       
     } 
@@ -56674,7 +56872,7 @@ hostPC
 		result.rtl->appendStmt(newCall);
 
 
-#line 56678 "pentiumdecoder.cpp"
+#line 56876 "pentiumdecoder.cpp"
 
       
     } 
@@ -56702,7 +56900,7 @@ hostPC
 	 * Unconditional branches
 	 */
 
-#line 56706 "pentiumdecoder.cpp"
+#line 56904 "pentiumdecoder.cpp"
 
       
     } 
@@ -56730,7 +56928,7 @@ hostPC
 	 * Unconditional branches
 	 */
 
-#line 56734 "pentiumdecoder.cpp"
+#line 56932 "pentiumdecoder.cpp"
 
       
     } 
@@ -56758,7 +56956,7 @@ hostPC
 	 * Unconditional branches
 	 */
 
-#line 56762 "pentiumdecoder.cpp"
+#line 56960 "pentiumdecoder.cpp"
 
       
     } 
@@ -56786,7 +56984,7 @@ hostPC
 	 * Unconditional branches
 	 */
 
-#line 56790 "pentiumdecoder.cpp"
+#line 56988 "pentiumdecoder.cpp"
 
       
     } 
@@ -56802,7 +57000,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56806 "pentiumdecoder.cpp"
+#line 57004 "pentiumdecoder.cpp"
 
       
     } 
@@ -56818,7 +57016,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56822 "pentiumdecoder.cpp"
+#line 57020 "pentiumdecoder.cpp"
 
       
     } 
@@ -56834,7 +57032,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56838 "pentiumdecoder.cpp"
+#line 57036 "pentiumdecoder.cpp"
 
       
     } 
@@ -56850,7 +57048,7 @@ hostPC
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56854 "pentiumdecoder.cpp"
+#line 57052 "pentiumdecoder.cpp"
 
       
     } 
@@ -56859,7 +57057,7 @@ hostPC
   MATCH_finished_c: (void)0; /*placeholder for label*/
   
 }
-#line 56863 "pentiumdecoder.cpp"
+#line 57061 "pentiumdecoder.cpp"
 
 #line 2112 "machine/pentium/decoder.m"
 
@@ -56885,7 +57083,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
 	lastDwordLc = (unsigned)-1;
 
 
-#line 56889 "pentiumdecoder.cpp"
+#line 57087 "pentiumdecoder.cpp"
 
 #line 2134 "machine/pentium/decoder.m"
 { 
@@ -56893,7 +57091,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
     
 #line 2134 "machine/pentium/decoder.m"
 pc
-#line 56897 "pentiumdecoder.cpp"
+#line 57095 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -56916,7 +57114,7 @@ pc
 		// m[ r[base] ]
 		expr = Location::memOf(dis_Reg(24 + base));
 
-#line 56920 "pentiumdecoder.cpp"
+#line 57118 "pentiumdecoder.cpp"
 
                   
                 }
@@ -56935,7 +57133,7 @@ pc
 		// [d] (Same as Abs32 using SIB)
 		expr = Location::memOf(addReloc(new Const(d)));
 
-#line 56939 "pentiumdecoder.cpp"
+#line 57137 "pentiumdecoder.cpp"
 
                       
                     }
@@ -56958,7 +57156,7 @@ pc
 		                                             new Const(1 << ss)),
 		                                  addReloc(new Const(d))));
 
-#line 56962 "pentiumdecoder.cpp"
+#line 57160 "pentiumdecoder.cpp"
 
                       
                     }
@@ -56973,7 +57171,7 @@ pc
 		// m[ r[base] ]
 		expr = Location::memOf(dis_Reg(24 + base));
 
-#line 56977 "pentiumdecoder.cpp"
+#line 57175 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/
@@ -56992,7 +57190,7 @@ pc
 		                                             dis_Reg(24 + index),
 		                                             new Const(1 << ss))));
 
-#line 56996 "pentiumdecoder.cpp"
+#line 57194 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -57008,7 +57206,7 @@ pc
 		// [a]
 		expr = Location::memOf(addReloc(new Const(a)));
 
-#line 57012 "pentiumdecoder.cpp"
+#line 57210 "pentiumdecoder.cpp"
 
                   
                 }
@@ -57035,7 +57233,7 @@ pc
 		                                  dis_Reg(24 + base),
 		                                  new Const(ds8)));
 
-#line 57039 "pentiumdecoder.cpp"
+#line 57237 "pentiumdecoder.cpp"
 
                 
               }
@@ -57061,7 +57259,7 @@ pc
 		                                                        new Const(1 << ss)),
 		                                             addReloc(new Const(d)))));
 
-#line 57065 "pentiumdecoder.cpp"
+#line 57263 "pentiumdecoder.cpp"
 
                 
               }
@@ -57083,7 +57281,7 @@ pc
 		                                  dis_Reg(24 + r32),
 		                                  addReloc(new Const(d))));
 
-#line 57087 "pentiumdecoder.cpp"
+#line 57285 "pentiumdecoder.cpp"
 
               
             }
@@ -57106,7 +57304,7 @@ pc
 		                                  dis_Reg(24 + base),
 		                                  addReloc(new Const(d))));
 
-#line 57110 "pentiumdecoder.cpp"
+#line 57308 "pentiumdecoder.cpp"
 
                 
               }
@@ -57131,7 +57329,7 @@ pc
 		                                                        new Const(1 << ss)),
 		                                             addReloc(new Const(d)))));
 
-#line 57135 "pentiumdecoder.cpp"
+#line 57333 "pentiumdecoder.cpp"
 
                 
               }
@@ -57152,7 +57350,7 @@ pc
 		                                  dis_Reg(24 + base),
 		                                  addReloc(new Const(d))));
 
-#line 57156 "pentiumdecoder.cpp"
+#line 57354 "pentiumdecoder.cpp"
 
               
             }
@@ -57169,7 +57367,7 @@ pc
   MATCH_finished_b: (void)0; /*placeholder for label*/
   
 }
-#line 57173 "pentiumdecoder.cpp"
+#line 57371 "pentiumdecoder.cpp"
 
 #line 2202 "machine/pentium/decoder.m"
 	return expr;
@@ -57188,7 +57386,7 @@ Exp *
 PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
 {
 
-#line 57192 "pentiumdecoder.cpp"
+#line 57390 "pentiumdecoder.cpp"
 
 #line 2217 "machine/pentium/decoder.m"
 { 
@@ -57196,7 +57394,7 @@ PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
     
 #line 2217 "machine/pentium/decoder.m"
 pc
-#line 57200 "pentiumdecoder.cpp"
+#line 57398 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -57216,7 +57414,7 @@ pc
 		}
 		return e;
 
-#line 57220 "pentiumdecoder.cpp"
+#line 57418 "pentiumdecoder.cpp"
 
       
     } /*opt-block*//*opt-block+*/
@@ -57233,7 +57431,7 @@ pc
 
 		return dis_Mem(mem);
 
-#line 57237 "pentiumdecoder.cpp"
+#line 57435 "pentiumdecoder.cpp"
 
       
     } 
@@ -57242,7 +57440,7 @@ pc
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 57246 "pentiumdecoder.cpp"
+#line 57444 "pentiumdecoder.cpp"
 
 #line 2230 "machine/pentium/decoder.m"
 }
@@ -57420,5 +57618,5 @@ PentiumDecoder::addReloc(Exp *e)
 	return e;
 }
 
-#line 57424 "pentiumdecoder.cpp"
+#line 57622 "pentiumdecoder.cpp"
 
