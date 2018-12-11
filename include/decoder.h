@@ -18,6 +18,7 @@
 #define DECODER_H
 
 #include "rtl.h"
+#include "statement.h"
 #include "types.h"
 
 #include <iostream>
@@ -135,6 +136,7 @@ protected:
 	void substituteCallArgs(const char *name, Exp *&exp, ...);
 
 	static void unconditionalJump(const char *name, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 	static void computedJump(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 	static void computedCall(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 
@@ -198,14 +200,6 @@ bool isFuncPrologue(ADDRESS hostPC);
  * and multiple copies may be made.
  * \{
  */
-#define COND_JUMP(name, relocd, cond) \
-	result.rtl = new RTL(pc, stmts); \
-	auto jump = new BranchStatement; \
-	result.rtl->appendStmt(jump); \
-	jump->setDest(relocd-delta); \
-	jump->setCondType(cond); \
-	SHOW_ASM(name << " " << relocd)
-
 /// This one is X86 specific.
 #define SETS(name, dest, cond) \
 	auto bs = new BoolAssign(8); \

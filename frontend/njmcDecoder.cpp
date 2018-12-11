@@ -22,7 +22,6 @@
 #include "decoder.h"
 #include "exp.h"
 #include "rtl.h"
-#include "statement.h"
 
 #include <cstdarg>  // For varargs
 #include <cassert>
@@ -225,6 +224,22 @@ NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ptrdiff_t delta
 	jump->setDest(relocd - delta);
 	result.rtl->appendStmt(jump);
 	SHOW_ASM(name << " 0x" << std::hex << relocd - delta)
+}
+
+/**
+ * Process a conditional jump instruction.
+ *
+ * \note This used to be the COND_JUMP macro.
+ */
+void
+NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+{
+	result.rtl = new RTL(pc, stmts);
+	auto jump = new BranchStatement();
+	jump->setDest(relocd - delta);
+	jump->setCondType(cond);
+	result.rtl->appendStmt(jump);
+	SHOW_ASM(name << " " << relocd - delta)
 }
 
 /**
