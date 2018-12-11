@@ -926,7 +926,7 @@ hostPC
                                   
 #line 320 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSL, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSL, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -949,7 +949,7 @@ hostPC
                                   
 #line 308 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSGE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSGE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -992,7 +992,7 @@ hostPC
                                   
 #line 312 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSG, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSG, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1015,7 +1015,7 @@ hostPC
                                   
 #line 324 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSLE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSLE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1058,7 +1058,7 @@ hostPC
                                   
 #line 328 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1081,7 +1081,7 @@ hostPC
                                   
 #line 316 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JNE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JNE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1124,7 +1124,7 @@ hostPC
                                   
 #line 336 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1147,7 +1147,7 @@ hostPC
                                   
 #line 332 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 

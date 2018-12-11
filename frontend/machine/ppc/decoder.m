@@ -306,35 +306,35 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.
 	| bltlr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSGE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSGE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| blelr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSG, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSG, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| beqlr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JNE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JNE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bgelr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSL, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSL, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bgtlr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JSLE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSLE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bnelr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, BRANCH_JE, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bsolr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bnslr(BIcr) [name] =>
-		PPC_COND_JUMP(name, 4, hostPC + 4, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, 4, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| ballr(_) [name] =>
