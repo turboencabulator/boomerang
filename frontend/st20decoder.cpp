@@ -99,7 +99,7 @@ hostPC + result.numBytes++
             
 #line 84 "machine/st20/decoder.m"
 
-			unconditionalJump("j", result.numBytes, hostPC + result.numBytes + total + oper, delta, pc, stmts, result);
+			unconditionalJump("j", hostPC + result.numBytes + total + oper, delta, pc, stmts, result);
 
 
 #line 106 "st20decoder.cpp"

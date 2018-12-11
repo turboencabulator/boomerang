@@ -288,8 +288,6 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 			// Set the destination expression
 			newCall->setDest(cEA(ea, pc, 32));
 			result.rtl = newCall;
-			// Only one instruction, so size of result is size of this decode
-			result.numBytes = nextPC - hostPC;
 
 		| regJmp(ea) =>
 			/*
@@ -301,61 +299,59 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 			// Set the destination expression
 			newJump->setDest(cEA(ea, pc, 32));
 			result.rtl = newJump;
-			// Only one instruction, so size of result is size of this decode
-			result.numBytes = nextPC - hostPC;
 
 		/*
 		 * Unconditional branches
 		 */
 		| bra(d) [name] =>
 			ss = BTA(d, result, pc);
-			UNCOND_JUMP(name, nextPC - hostPC, ss);
+			UNCOND_JUMP(name, ss);
 
 		/*
 		 * Conditional branches
 		 */
 		| bgt(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JSG)
+			COND_JUMP(name, ss, HLJCOND_JSG)
 		| ble(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JSLE)
+			COND_JUMP(name, ss, HLJCOND_JSLE)
 		| bge(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JSGE)
+			COND_JUMP(name, ss, HLJCOND_JSGE)
 		| blt(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JSL)
+			COND_JUMP(name, ss, HLJCOND_JSL)
 		| bpl(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JPOS)
+			COND_JUMP(name, ss, HLJCOND_JPOS)
 		| bmi(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JMI)
+			COND_JUMP(name, ss, HLJCOND_JMI)
 		| bhi(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JUG)
+			COND_JUMP(name, ss, HLJCOND_JUG)
 		| bls(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JULE)
+			COND_JUMP(name, ss, HLJCOND_JULE)
 		| bne(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JNE)
+			COND_JUMP(name, ss, HLJCOND_JNE)
 		| beq(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JE)
+			COND_JUMP(name, ss, HLJCOND_JE)
 		| bcc(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JUGE)
+			COND_JUMP(name, ss, HLJCOND_JUGE)
 		| bcs(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, HLJCOND_JUL)
+			COND_JUMP(name, ss, HLJCOND_JUL)
 		| bvc(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, (JCOND_TYPE)0)
+			COND_JUMP(name, ss, (JCOND_TYPE)0)
 		| bvs(d) [name] =>
 			ss = BTA(d, result, pc);
-			COND_JUMP(name, nextPC - hostPC, ss, (JCOND_TYPE)0)
+			COND_JUMP(name, ss, (JCOND_TYPE)0)
 
 
 		// MVE: I'm assuming that we won't ever see shi(-(a7)) or the like.
@@ -422,7 +418,9 @@ NJMCDecoder::decodeInstruction(ADDRESS pc, int delta, UserProc *proc = NULL)
 
 		else
 			result.rtl = new RTL(pc, decodeLowLevelInstruction(hostPC, pc, result));
+			return result;
 		endmatch
+		result.numBytes = nextPC - hostPC;
 	}
 	return result;
 }

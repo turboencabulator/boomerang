@@ -218,10 +218,9 @@ NJMCDecoder::dis_Num(unsigned num)
  * to other procedures.
  */
 void
-NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
-	result.numBytes = size;
 	auto jump = new GotoStatement();
 	jump->setDest(relocd - delta);
 	result.rtl->appendStmt(jump);
@@ -232,17 +231,15 @@ NJMCDecoder::unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdi
  * Process an indirect jump instruction.
  *
  * \param name    Name of instruction (for debugging).
- * \param size    Size of instruction in bytes.
  * \param dest    Destination Exp*.
  * \param pc      Native pc.
  * \param stmts   List of statements (?)
  * \param result  Ref to decoder result object.
  */
 void
-NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::computedJump(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
-	result.numBytes = size;
 	auto jump = new GotoStatement();
 	jump->setDest(dest);
 	jump->setIsComputed(true);
@@ -254,17 +251,15 @@ NJMCDecoder::computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std
  * Process an indirect call instruction.
  *
  * \param name    Name of instruction (for debugging).
- * \param size    Size of instruction in bytes.
  * \param dest    Destination Exp*.
  * \param pc      Native pc.
  * \param stmts   List of statements (?)
  * \param result  Ref to decoder result object.
  */
 void
-NJMCDecoder::computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::computedCall(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
 {
 	result.rtl = new RTL(pc, stmts);
-	result.numBytes = size;
 	auto call = new CallStatement();
 	call->setDest(dest);
 	call->setIsComputed(true);

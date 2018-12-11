@@ -126,8 +126,6 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		newCall->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	| JMP.Evod(Eaddr) =>
 		/*
@@ -140,126 +138,124 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newJump);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	/*
 	 * Unconditional branches
 	 */
 	| JMP.Jvod(relocd) [name] =>
-		unconditionalJump(name, 5, relocd, delta, pc, stmts, result);
+		unconditionalJump(name, relocd, delta, pc, stmts, result);
 	| JMP.Jvow(relocd) [name] =>
-		unconditionalJump(name, 3, relocd, delta, pc, stmts, result);
+		unconditionalJump(name, relocd, delta, pc, stmts, result);
 	| JMP.Jb(relocd) [name] =>
-		unconditionalJump(name, 2, relocd, delta, pc, stmts, result);
+		unconditionalJump(name, relocd, delta, pc, stmts, result);
 
 	/*
 	 * Conditional branches, 8 bit offset: 7X XX
 	 */
 	| Jb.NLE(relocd) =>
-		COND_JUMP("Jb.NLE", 2, relocd, BRANCH_JSG)
+		COND_JUMP("Jb.NLE", relocd, BRANCH_JSG)
 	| Jb.LE(relocd) =>
-		COND_JUMP("Jb.LE", 2, relocd, BRANCH_JSLE)
+		COND_JUMP("Jb.LE", relocd, BRANCH_JSLE)
 	| Jb.NL(relocd) =>
-		COND_JUMP("Jb.NL", 2, relocd, BRANCH_JSGE)
+		COND_JUMP("Jb.NL", relocd, BRANCH_JSGE)
 	| Jb.L(relocd) =>
-		COND_JUMP("Jb.L", 2, relocd, BRANCH_JSL)
+		COND_JUMP("Jb.L", relocd, BRANCH_JSL)
 	| Jb.NP(relocd) =>
-		COND_JUMP("Jb.NP", 2, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jb.NP", relocd, (BRANCH_TYPE)0)
 	| Jb.P(relocd) =>
-		COND_JUMP("Jb.P", 2, relocd, BRANCH_JPAR)
+		COND_JUMP("Jb.P", relocd, BRANCH_JPAR)
 	| Jb.NS(relocd) =>
-		COND_JUMP("Jb.NS", 2, relocd, BRANCH_JPOS)
+		COND_JUMP("Jb.NS", relocd, BRANCH_JPOS)
 	| Jb.S(relocd) =>
-		COND_JUMP("Jb.S", 2, relocd, BRANCH_JMI)
+		COND_JUMP("Jb.S", relocd, BRANCH_JMI)
 	| Jb.NBE(relocd) =>
-		COND_JUMP("Jb.NBE", 2, relocd, BRANCH_JUG)
+		COND_JUMP("Jb.NBE", relocd, BRANCH_JUG)
 	| Jb.BE(relocd) =>
-		COND_JUMP("Jb.BE", 2, relocd, BRANCH_JULE)
+		COND_JUMP("Jb.BE", relocd, BRANCH_JULE)
 	| Jb.NZ(relocd) =>
-		COND_JUMP("Jb.NZ", 2, relocd, BRANCH_JNE)
+		COND_JUMP("Jb.NZ", relocd, BRANCH_JNE)
 	| Jb.Z(relocd) =>
-		COND_JUMP("Jb.Z", 2, relocd, BRANCH_JE)
+		COND_JUMP("Jb.Z", relocd, BRANCH_JE)
 	| Jb.NB(relocd) =>
-		COND_JUMP("Jb.NB", 2, relocd, BRANCH_JUGE)
+		COND_JUMP("Jb.NB", relocd, BRANCH_JUGE)
 	| Jb.B(relocd) =>
-		COND_JUMP("Jb.B", 2, relocd, BRANCH_JUL)
+		COND_JUMP("Jb.B", relocd, BRANCH_JUL)
 	| Jb.NO(relocd) =>
-		COND_JUMP("Jb.NO", 2, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jb.NO", relocd, (BRANCH_TYPE)0)
 	| Jb.O(relocd) =>
-		COND_JUMP("Jb.O", 2, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jb.O", relocd, (BRANCH_TYPE)0)
 
 	/*
 	 * Conditional branches, 16 bit offset: 66 0F 8X XX XX
 	 */
 	| Jv.NLEow(relocd) =>
-		COND_JUMP("Jv.NLEow", 4, relocd, BRANCH_JSG)
+		COND_JUMP("Jv.NLEow", relocd, BRANCH_JSG)
 	| Jv.LEow(relocd) =>
-		COND_JUMP("Jv.LEow", 4, relocd, BRANCH_JSLE)
+		COND_JUMP("Jv.LEow", relocd, BRANCH_JSLE)
 	| Jv.NLow(relocd) =>
-		COND_JUMP("Jv.NLow", 4, relocd, BRANCH_JSGE)
+		COND_JUMP("Jv.NLow", relocd, BRANCH_JSGE)
 	| Jv.Low(relocd) =>
-		COND_JUMP("Jv.Low", 4, relocd, BRANCH_JSL)
+		COND_JUMP("Jv.Low", relocd, BRANCH_JSL)
 	| Jv.NPow(relocd) =>
-		COND_JUMP("Jv.NPow", 4, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NPow", relocd, (BRANCH_TYPE)0)
 	| Jv.Pow(relocd) =>
-		COND_JUMP("Jv.Pow", 4, relocd, BRANCH_JPAR)
+		COND_JUMP("Jv.Pow", relocd, BRANCH_JPAR)
 	| Jv.NSow(relocd) =>
-		COND_JUMP("Jv.NSow", 4, relocd, BRANCH_JPOS)
+		COND_JUMP("Jv.NSow", relocd, BRANCH_JPOS)
 	| Jv.Sow(relocd) =>
-		COND_JUMP("Jv.Sow", 4, relocd, BRANCH_JMI)
+		COND_JUMP("Jv.Sow", relocd, BRANCH_JMI)
 	| Jv.NBEow(relocd) =>
-		COND_JUMP("Jv.NBEow", 4, relocd, BRANCH_JUG)
+		COND_JUMP("Jv.NBEow", relocd, BRANCH_JUG)
 	| Jv.BEow(relocd) =>
-		COND_JUMP("Jv.BEow", 4, relocd, BRANCH_JULE)
+		COND_JUMP("Jv.BEow", relocd, BRANCH_JULE)
 	| Jv.NZow(relocd) =>
-		COND_JUMP("Jv.NZow", 4, relocd, BRANCH_JNE)
+		COND_JUMP("Jv.NZow", relocd, BRANCH_JNE)
 	| Jv.Zow(relocd) =>
-		COND_JUMP("Jv.Zow", 4, relocd, BRANCH_JE)
+		COND_JUMP("Jv.Zow", relocd, BRANCH_JE)
 	| Jv.NBow(relocd) =>
-		COND_JUMP("Jv.NBow", 4, relocd, BRANCH_JUGE)
+		COND_JUMP("Jv.NBow", relocd, BRANCH_JUGE)
 	| Jv.Bow(relocd) =>
-		COND_JUMP("Jv.Bow", 4, relocd, BRANCH_JUL)
+		COND_JUMP("Jv.Bow", relocd, BRANCH_JUL)
 	| Jv.NOow(relocd) =>
-		COND_JUMP("Jv.NOow", 4, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NOow", relocd, (BRANCH_TYPE)0)
 	| Jv.Oow(relocd) =>
-		COND_JUMP("Jv.Oow", 4, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.Oow", relocd, (BRANCH_TYPE)0)
 
 	/*
 	 * Conditional branches, 32 bit offset: 0F 8X XX XX XX XX
 	 */
 	| Jv.NLEod(relocd) =>
-		COND_JUMP("Jv.NLEod", 6, relocd, BRANCH_JSG)
+		COND_JUMP("Jv.NLEod", relocd, BRANCH_JSG)
 	| Jv.LEod(relocd) =>
-		COND_JUMP("Jv.LEod", 6, relocd, BRANCH_JSLE)
+		COND_JUMP("Jv.LEod", relocd, BRANCH_JSLE)
 	| Jv.NLod(relocd) =>
-		COND_JUMP("Jv.NLod", 6, relocd, BRANCH_JSGE)
+		COND_JUMP("Jv.NLod", relocd, BRANCH_JSGE)
 	| Jv.Lod(relocd) =>
-		COND_JUMP("Jv.Lod", 6, relocd, BRANCH_JSL)
+		COND_JUMP("Jv.Lod", relocd, BRANCH_JSL)
 	| Jv.NPod(relocd) =>
-		COND_JUMP("Jv.NPod", 6, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NPod", relocd, (BRANCH_TYPE)0)
 	| Jv.Pod(relocd) =>
-		COND_JUMP("Jv.Pod", 6, relocd, BRANCH_JPAR)
+		COND_JUMP("Jv.Pod", relocd, BRANCH_JPAR)
 	| Jv.NSod(relocd) =>
-		COND_JUMP("Jv.NSod", 6, relocd, BRANCH_JPOS)
+		COND_JUMP("Jv.NSod", relocd, BRANCH_JPOS)
 	| Jv.Sod(relocd) =>
-		COND_JUMP("Jv.Sod", 6, relocd, BRANCH_JMI)
+		COND_JUMP("Jv.Sod", relocd, BRANCH_JMI)
 	| Jv.NBEod(relocd) =>
-		COND_JUMP("Jv.NBEod", 6, relocd, BRANCH_JUG)
+		COND_JUMP("Jv.NBEod", relocd, BRANCH_JUG)
 	| Jv.BEod(relocd) =>
-		COND_JUMP("Jv.BEod", 6, relocd, BRANCH_JULE)
+		COND_JUMP("Jv.BEod", relocd, BRANCH_JULE)
 	| Jv.NZod(relocd) =>
-		COND_JUMP("Jv.NZod", 6, relocd, BRANCH_JNE)
+		COND_JUMP("Jv.NZod", relocd, BRANCH_JNE)
 	| Jv.Zod(relocd) =>
-		COND_JUMP("Jv.Zod", 6, relocd, BRANCH_JE)
+		COND_JUMP("Jv.Zod", relocd, BRANCH_JE)
 	| Jv.NBod(relocd) =>
-		COND_JUMP("Jv.NBod", 6, relocd, BRANCH_JUGE)
+		COND_JUMP("Jv.NBod", relocd, BRANCH_JUGE)
 	| Jv.Bod(relocd) =>
-		COND_JUMP("Jv.Bod", 6, relocd, BRANCH_JUL)
+		COND_JUMP("Jv.Bod", relocd, BRANCH_JUL)
 	| Jv.NOod(relocd) =>
-		COND_JUMP("Jv.NOod", 6, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NOod", relocd, (BRANCH_TYPE)0)
 	| Jv.Ood(relocd) =>
-		COND_JUMP("Jv.Ood", 6, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.Ood", relocd, (BRANCH_TYPE)0)
 
 	| SETb.NLE(Eaddr) [name] =>
 		stmts = instantiate(pc, name, DIS_EADDR8);

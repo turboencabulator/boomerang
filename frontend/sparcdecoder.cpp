@@ -385,7 +385,7 @@ hostPC
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		GotoStatement *jump = nullptr;
@@ -1788,7 +1788,7 @@ hostPC
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		GotoStatement *jump = nullptr;
@@ -1845,7 +1845,7 @@ hostPC
 		if (name[0] == 'C') {
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
@@ -1903,7 +1903,7 @@ hostPC
 		if (name[0] == 'C') {
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
@@ -2335,7 +2335,7 @@ hostPC
 }
 #line 2337 "sparcdecoder.cpp"
 
-#line 642 "machine/sparc/decoder.m"
+#line 641 "machine/sparc/decoder.m"
 
 	result.numBytes = nextPC - hostPC;
 	if (result.valid && !result.rtl)  // Don't override higher level res
@@ -2385,11 +2385,11 @@ SparcDecoder::dis_RegImm(unsigned pc)
 
 #line 2387 "sparcdecoder.cpp"
 
-#line 688 "machine/sparc/decoder.m"
+#line 687 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 688 "machine/sparc/decoder.m"
+#line 687 "machine/sparc/decoder.m"
 pc
 #line 2395 "sparcdecoder.cpp"
 ;
@@ -2400,7 +2400,7 @@ pc
       int /* [~4096..4095] */ i = 
         sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
       
-#line 689 "machine/sparc/decoder.m"
+#line 688 "machine/sparc/decoder.m"
 
 		Exp *expr = new Const(i);
 		return expr;
@@ -2412,7 +2412,7 @@ pc
     else { 
       unsigned rs2 = (MATCH_w_32_0 & 0x1f) /* rs2 at 0 */;
       
-#line 692 "machine/sparc/decoder.m"
+#line 691 "machine/sparc/decoder.m"
 
 		return dis_RegRhs(rs2);
 
@@ -2428,7 +2428,7 @@ pc
 }
 #line 2430 "sparcdecoder.cpp"
 
-#line 695 "machine/sparc/decoder.m"
+#line 694 "machine/sparc/decoder.m"
 }
 
 /**
@@ -2448,11 +2448,11 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
 
 #line 2450 "sparcdecoder.cpp"
 
-#line 711 "machine/sparc/decoder.m"
+#line 710 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 711 "machine/sparc/decoder.m"
+#line 710 "machine/sparc/decoder.m"
 pc
 #line 2458 "sparcdecoder.cpp"
 ;
@@ -2464,7 +2464,7 @@ pc
         int /* [~4096..4095] */ i = 
           sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
         
-#line 718 "machine/sparc/decoder.m"
+#line 717 "machine/sparc/decoder.m"
 
 		expr = new Const((int)i);
 
@@ -2477,7 +2477,7 @@ pc
           sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         
-#line 720 "machine/sparc/decoder.m"
+#line 719 "machine/sparc/decoder.m"
 
 		expr = new Binary(opPlus,
 		                  Location::regOf(rs1),
@@ -2491,7 +2491,7 @@ pc
       if ((MATCH_w_32_0 & 0x1f) /* rs2 at 0 */ == 0) { 
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         
-#line 712 "machine/sparc/decoder.m"
+#line 711 "machine/sparc/decoder.m"
 
 		expr = Location::regOf(rs1);
 
@@ -2503,7 +2503,7 @@ pc
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         unsigned rs2 = (MATCH_w_32_0 & 0x1f) /* rs2 at 0 */;
         
-#line 714 "machine/sparc/decoder.m"
+#line 713 "machine/sparc/decoder.m"
 
 		expr = new Binary(opPlus,
 		                  Location::regOf(rs1),
@@ -2521,7 +2521,7 @@ pc
 }
 #line 2523 "sparcdecoder.cpp"
 
-#line 725 "machine/sparc/decoder.m"
+#line 724 "machine/sparc/decoder.m"
 
 	return expr;
 }
@@ -2565,11 +2565,11 @@ SparcDecoder::isRestore(ADDRESS hostPC)
 
 #line 2567 "sparcdecoder.cpp"
 
-#line 765 "machine/sparc/decoder.m"
+#line 764 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 765 "machine/sparc/decoder.m"
+#line 764 "machine/sparc/decoder.m"
 hostPC
 #line 2575 "sparcdecoder.cpp"
 ;
@@ -2581,7 +2581,7 @@ hostPC
       (0 <= (MATCH_w_32_0 >> 13 & 0x1) /* i at 0 */ && 
       (MATCH_w_32_0 >> 13 & 0x1) /* i at 0 */ < 2)) 
       
-#line 766 "machine/sparc/decoder.m"
+#line 765 "machine/sparc/decoder.m"
 
 	//| RESTORE(a, b, c) =>
 		return true;
@@ -2595,7 +2595,7 @@ hostPC
   
   MATCH_label_a0: (void)0; /*placeholder for label*/ 
     
-#line 769 "machine/sparc/decoder.m"
+#line 768 "machine/sparc/decoder.m"
 
 		return false;
 
@@ -2608,7 +2608,7 @@ hostPC
 }
 #line 2610 "sparcdecoder.cpp"
 
-#line 772 "machine/sparc/decoder.m"
+#line 771 "machine/sparc/decoder.m"
 }
 
 /*

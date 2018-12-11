@@ -134,9 +134,9 @@ protected:
 	Exp *instantiateNamedParam(const char *name, ...);
 	void substituteCallArgs(const char *name, Exp *&exp, ...);
 
-	static void unconditionalJump(const char *name, int size, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
-	static void computedJump(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
-	static void computedCall(const char *name, int size, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void unconditionalJump(const char *name, ADDRESS relocd, ptrdiff_t delta, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void computedJump(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void computedCall(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
 
 #if 0 // Cruft?
 	/**
@@ -198,11 +198,10 @@ bool isFuncPrologue(ADDRESS hostPC);
  * and multiple copies may be made.
  * \{
  */
-#define COND_JUMP(name, size, relocd, cond) \
+#define COND_JUMP(name, relocd, cond) \
 	result.rtl = new RTL(pc, stmts); \
 	auto jump = new BranchStatement; \
 	result.rtl->appendStmt(jump); \
-	result.numBytes = size; \
 	jump->setDest(relocd-delta); \
 	jump->setCondType(cond); \
 	SHOW_ASM(name << " " << relocd)
@@ -215,7 +214,6 @@ bool isFuncPrologue(ADDRESS hostPC);
 	result.rtl = new RTL(pc, stmts); \
 	result.rtl->appendStmt(bs); \
 	bs->setCondType(cond); \
-	result.numBytes = 3; \
 	SHOW_ASM(name << " " << *dest)
 /** \} */
 

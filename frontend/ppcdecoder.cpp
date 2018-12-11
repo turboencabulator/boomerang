@@ -65,11 +65,10 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_FA      (dis_Reg(fa + 32))
 #define DIS_FB      (dis_Reg(fb + 32))
 
-#define PPC_COND_JUMP(name, size, relocd, cond, BIcr) \
+#define PPC_COND_JUMP(name, relocd, cond, BIcr) \
 	result.rtl = new RTL(pc, stmts); \
 	auto jump = new BranchStatement; \
 	result.rtl->appendStmt(jump); \
-	result.numBytes = size; \
 	jump->setDest(relocd - delta); \
 	jump->setCondType(cond); \
 	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd - delta)
@@ -122,15 +121,15 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	ADDRESS nextPC = NO_ADDRESS;
 
 
-#line 126 "ppcdecoder.cpp"
+#line 125 "ppcdecoder.cpp"
 
-#line 120 "machine/ppc/decoder.m"
+#line 119 "machine/ppc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 120 "machine/ppc/decoder.m"
+#line 119 "machine/ppc/decoder.m"
 hostPC
-#line 134 "ppcdecoder.cpp"
+#line 133 "ppcdecoder.cpp"
 ;
   const char *MATCH_name;
   static const char *MATCH_name_OPCD_0[] = {
@@ -402,7 +401,7 @@ hostPC
               sign_extend((MATCH_w_32_0 & 0xffff) /* SIMM at 0 */, 16);
             nextPC = 4 + MATCH_p; 
             
-#line 140 "machine/ppc/decoder.m"
+#line 139 "machine/ppc/decoder.m"
 
 		if (strcmp(name, "addi") == 0 || strcmp(name, "addis") == 0) {
 			// Note the DIS_RAZ, since rA could be constant zero
@@ -411,7 +410,7 @@ hostPC
 			stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_SIMM);
 		}
 
-#line 415 "ppcdecoder.cpp"
+#line 414 "ppcdecoder.cpp"
 
             
           }
@@ -427,13 +426,13 @@ hostPC
               unsigned uimm = (MATCH_w_32_0 & 0xffff) /* UIMM at 0 */;
               nextPC = 4 + MATCH_p; 
               
-#line 238 "machine/ppc/decoder.m"
+#line 237 "machine/ppc/decoder.m"
 
 	//| cmpli(crfd, l, ra, uimm) [name] =>
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
 
 
-#line 437 "ppcdecoder.cpp"
+#line 436 "ppcdecoder.cpp"
 
               
             }
@@ -454,12 +453,12 @@ hostPC
                 sign_extend((MATCH_w_32_0 & 0xffff) /* SIMM at 0 */, 16);
               nextPC = 4 + MATCH_p; 
               
-#line 235 "machine/ppc/decoder.m"
+#line 234 "machine/ppc/decoder.m"
 
 	//| cmpi(crfd, l, ra, simm) [name] =>
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_SIMM);
 
-#line 463 "ppcdecoder.cpp"
+#line 462 "ppcdecoder.cpp"
 
               
             }
@@ -485,7 +484,7 @@ hostPC
                                 14) + addressToPC(MATCH_p);
                   nextPC = 4 + MATCH_p; 
                   
-#line 211 "machine/ppc/decoder.m"
+#line 210 "machine/ppc/decoder.m"
   // Always "conditional" branch with link, test/OSX/hello has this
 		if (reladdr - delta - pc == 4) {  // Branch to next instr?
 			// Effectively %LR = %pc+4, but give the actual value for %pc
@@ -508,7 +507,7 @@ hostPC
 		}
 
 
-#line 512 "ppcdecoder.cpp"
+#line 511 "ppcdecoder.cpp"
 
                   
                 }
@@ -547,11 +546,11 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 275 "machine/ppc/decoder.m"
+#line 274 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSGE, BIcr);
+		PPC_COND_JUMP(name, reladdr, BRANCH_JSGE, BIcr);
 
-#line 555 "ppcdecoder.cpp"
+#line 554 "ppcdecoder.cpp"
 
                             
                           }
@@ -572,11 +571,11 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 269 "machine/ppc/decoder.m"
+#line 268 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSL, BIcr);
+		PPC_COND_JUMP(name, reladdr, BRANCH_JSL, BIcr);
 
-#line 580 "ppcdecoder.cpp"
+#line 579 "ppcdecoder.cpp"
 
                             
                           }
@@ -613,11 +612,11 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 271 "machine/ppc/decoder.m"
+#line 270 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSLE, BIcr);
+		PPC_COND_JUMP(name, reladdr, BRANCH_JSLE, BIcr);
 
-#line 621 "ppcdecoder.cpp"
+#line 620 "ppcdecoder.cpp"
 
                             
                           }
@@ -638,13 +637,13 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 277 "machine/ppc/decoder.m"
+#line 276 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSG, BIcr);
+		PPC_COND_JUMP(name, reladdr, BRANCH_JSG, BIcr);
 //	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
-//		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSGE, BIcr);
+//		PPC_COND_JUMP(name, reladdr, BRANCH_JSGE, BIcr);
 
-#line 648 "ppcdecoder.cpp"
+#line 647 "ppcdecoder.cpp"
 
                             
                           }
@@ -681,13 +680,13 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 281 "machine/ppc/decoder.m"
+#line 280 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JNE, BIcr);
+		PPC_COND_JUMP(name, reladdr, BRANCH_JNE, BIcr);
 //	| bng(BIcr, reladdr) [name] =>  // bng same as blt
-//		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JSLE, BIcr);
+//		PPC_COND_JUMP(name, reladdr, BRANCH_JSLE, BIcr);
 
-#line 691 "ppcdecoder.cpp"
+#line 690 "ppcdecoder.cpp"
 
                             
                           }
@@ -708,11 +707,11 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 273 "machine/ppc/decoder.m"
+#line 272 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, BRANCH_JE, BIcr);
+		PPC_COND_JUMP(name, reladdr, BRANCH_JE, BIcr);
 
-#line 716 "ppcdecoder.cpp"
+#line 715 "ppcdecoder.cpp"
 
                             
                           }
@@ -749,16 +748,16 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 287 "machine/ppc/decoder.m"
+#line 286 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);
 //	| bun(BIcr, reladdr) [name] =>
-//		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+//		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);
 //	| bnu(BIcr, reladdr) [name] =>
-//		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);
+//		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);
 
 
-#line 762 "ppcdecoder.cpp"
+#line 761 "ppcdecoder.cpp"
 
                             
                           }
@@ -779,11 +778,11 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 285 "machine/ppc/decoder.m"
+#line 284 "machine/ppc/decoder.m"
   // Branch on summary overflow
-		PPC_COND_JUMP(name, 4, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
+		PPC_COND_JUMP(name, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
 
-#line 787 "ppcdecoder.cpp"
+#line 786 "ppcdecoder.cpp"
 
                             
                           }
@@ -810,7 +809,7 @@ hostPC
                               24) + addressToPC(MATCH_p);
                 nextPC = 4 + MATCH_p; 
                 
-#line 194 "machine/ppc/decoder.m"
+#line 193 "machine/ppc/decoder.m"
 
 		Exp *dest = DIS_RELADDR;
 		stmts = instantiate(pc, name, dest);
@@ -826,7 +825,7 @@ hostPC
 		newCall->setDestProc(destProc);
 
 
-#line 830 "ppcdecoder.cpp"
+#line 829 "ppcdecoder.cpp"
 
                 
               }
@@ -838,12 +837,12 @@ hostPC
                             24) + addressToPC(MATCH_p);
               nextPC = 4 + MATCH_p; 
               
-#line 208 "machine/ppc/decoder.m"
+#line 207 "machine/ppc/decoder.m"
 
-		unconditionalJump("b", 4, reladdr, delta, pc, stmts, result);
+		unconditionalJump("b", reladdr, delta, pc, stmts, result);
 
 
-#line 847 "ppcdecoder.cpp"
+#line 846 "ppcdecoder.cpp"
 
               
             } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -924,13 +923,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 320 "machine/ppc/decoder.m"
+#line 319 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSL, BIcr);
+		PPC_COND_JUMP(name, nextPC, BRANCH_JSL, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 934 "ppcdecoder.cpp"
+#line 933 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -947,13 +946,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 308 "machine/ppc/decoder.m"
+#line 307 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSGE, BIcr);
+		PPC_COND_JUMP(name, nextPC, BRANCH_JSGE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 957 "ppcdecoder.cpp"
+#line 956 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -990,13 +989,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 312 "machine/ppc/decoder.m"
+#line 311 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSG, BIcr);
+		PPC_COND_JUMP(name, nextPC, BRANCH_JSG, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1000 "ppcdecoder.cpp"
+#line 999 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1013,13 +1012,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 324 "machine/ppc/decoder.m"
+#line 323 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JSLE, BIcr);
+		PPC_COND_JUMP(name, nextPC, BRANCH_JSLE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1023 "ppcdecoder.cpp"
+#line 1022 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1056,13 +1055,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 328 "machine/ppc/decoder.m"
+#line 327 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JE, BIcr);
+		PPC_COND_JUMP(name, nextPC, BRANCH_JE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1066 "ppcdecoder.cpp"
+#line 1065 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1079,13 +1078,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 316 "machine/ppc/decoder.m"
+#line 315 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, BRANCH_JNE, BIcr);
+		PPC_COND_JUMP(name, nextPC, BRANCH_JNE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1089 "ppcdecoder.cpp"
+#line 1088 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1122,13 +1121,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 336 "machine/ppc/decoder.m"
+#line 335 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1132 "ppcdecoder.cpp"
+#line 1131 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1145,13 +1144,13 @@ hostPC
                                           /* BIcr at 0 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 332 "machine/ppc/decoder.m"
+#line 331 "machine/ppc/decoder.m"
 
-		PPC_COND_JUMP(name, 4, nextPC, (BRANCH_TYPE)0, BIcr);
+		PPC_COND_JUMP(name, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1155 "ppcdecoder.cpp"
+#line 1154 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1257,13 +1256,13 @@ hostPC
                         const char *name = MATCH_name;
                         nextPC = 4 + MATCH_p; 
                         
-#line 298 "machine/ppc/decoder.m"
+#line 297 "machine/ppc/decoder.m"
 
 	//| balctrl(BIcr) [name] =>
-		computedCall(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
+		computedCall(name, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
 
 
-#line 1267 "ppcdecoder.cpp"
+#line 1266 "ppcdecoder.cpp"
 
                         
                       }
@@ -1275,13 +1274,13 @@ hostPC
                         const char *name = MATCH_name;
                         nextPC = 4 + MATCH_p; 
                         
-#line 294 "machine/ppc/decoder.m"
+#line 293 "machine/ppc/decoder.m"
 
 	//| balctr(BIcr) [name] =>
-		computedJump(name, 4, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
+		computedJump(name, new Unary(opMachFtr, new Const("%CTR")), pc, stmts, result);
 
 
-#line 1285 "ppcdecoder.cpp"
+#line 1284 "ppcdecoder.cpp"
 
                         
                       }
@@ -1315,11 +1314,11 @@ hostPC
             unsigned uimm = (MATCH_w_32_0 & 0xffff) /* UIMM at 0 */;
             nextPC = 4 + MATCH_p; 
             
-#line 138 "machine/ppc/decoder.m"
+#line 137 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
 
-#line 1323 "ppcdecoder.cpp"
+#line 1322 "ppcdecoder.cpp"
 
             
           }
@@ -1436,12 +1435,12 @@ hostPC
                     unsigned uimm = (MATCH_w_32_0 >> 11 & 0x1f) /* SH at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-#line 349 "machine/ppc/decoder.m"
+#line 348 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
 
-#line 1445 "ppcdecoder.cpp"
+#line 1444 "ppcdecoder.cpp"
 
                     
                   }
@@ -2363,11 +2362,11 @@ hostPC
                           (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 123 "machine/ppc/decoder.m"
+#line 122 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
 
-#line 2371 "ppcdecoder.cpp"
+#line 2370 "ppcdecoder.cpp"
 
                         
                       }
@@ -3136,7 +3135,7 @@ hostPC
             unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
             nextPC = 4 + MATCH_p; 
             
-#line 154 "machine/ppc/decoder.m"
+#line 153 "machine/ppc/decoder.m"
 
 		if (strcmp(name, "lmw") == 0) {
 			// Needs the third param d, which is the register number from rd
@@ -3154,7 +3153,7 @@ hostPC
 		result.rtl->appendStmt(new ReturnStatement);
 #endif
 
-#line 3158 "ppcdecoder.cpp"
+#line 3157 "ppcdecoder.cpp"
 
             
           }
@@ -3171,7 +3170,7 @@ hostPC
             unsigned rs = (MATCH_w_32_0 >> 21 & 0x1f) /* S at 0 */;
             nextPC = 4 + MATCH_p; 
             
-#line 130 "machine/ppc/decoder.m"
+#line 129 "machine/ppc/decoder.m"
 
 		if (strcmp(name, "stmw") == 0) {
 			// Needs the last param s, which is the register number from rs
@@ -3181,7 +3180,7 @@ hostPC
 		}
 
 
-#line 3185 "ppcdecoder.cpp"
+#line 3184 "ppcdecoder.cpp"
 
             
           }
@@ -3198,12 +3197,12 @@ hostPC
             unsigned ra = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
             nextPC = 4 + MATCH_p; 
             
-#line 242 "machine/ppc/decoder.m"
+#line 241 "machine/ppc/decoder.m"
    // Floating point loads (non indexed)
 		stmts = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
 
-#line 3207 "ppcdecoder.cpp"
+#line 3206 "ppcdecoder.cpp"
 
             
           }
@@ -3220,12 +3219,12 @@ hostPC
             unsigned ra = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
             nextPC = 4 + MATCH_p; 
             
-#line 248 "machine/ppc/decoder.m"
+#line 247 "machine/ppc/decoder.m"
    // Floating point stores (non indexed)
 		stmts = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
 
-#line 3229 "ppcdecoder.cpp"
+#line 3228 "ppcdecoder.cpp"
 
             
           }
@@ -3770,13 +3769,12 @@ hostPC
     { 
       nextPC = MATCH_p; 
       
-#line 352 "machine/ppc/decoder.m"
+#line 351 "machine/ppc/decoder.m"
 
 		stmts = nullptr;
 		result.valid = false;
-		result.numBytes = 4;
 
-#line 3780 "ppcdecoder.cpp"
+#line 3778 "ppcdecoder.cpp"
 
       
     } 
@@ -3789,15 +3787,15 @@ hostPC
         addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 302 "machine/ppc/decoder.m"
+#line 301 "machine/ppc/decoder.m"
 
 	//| bal(BIcr, reladdr) =>
-		unconditionalJump("bal", 4, reladdr, delta, pc, stmts, result);
+		unconditionalJump("bal", reladdr, delta, pc, stmts, result);
 
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.
 
-#line 3801 "ppcdecoder.cpp"
+#line 3799 "ppcdecoder.cpp"
 
       
     } 
@@ -3808,7 +3806,7 @@ hostPC
       const char *name = MATCH_name;
       nextPC = 4 + MATCH_p; 
       
-#line 340 "machine/ppc/decoder.m"
+#line 339 "machine/ppc/decoder.m"
 
 	//| ballr(BIcr) [name] =>
 		result.rtl = new RTL(pc, stmts);
@@ -3817,7 +3815,7 @@ hostPC
 
 	// Shift right arithmetic
 
-#line 3821 "ppcdecoder.cpp"
+#line 3819 "ppcdecoder.cpp"
 
       
     } 
@@ -3831,12 +3829,12 @@ hostPC
       unsigned crbD = (MATCH_w_32_0 >> 21 & 0x1f) /* crbD at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 170 "machine/ppc/decoder.m"
+#line 169 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
 
 
-#line 3840 "ppcdecoder.cpp"
+#line 3838 "ppcdecoder.cpp"
 
       
     } 
@@ -3852,13 +3850,13 @@ hostPC
       unsigned uimm = (MATCH_w_32_0 >> 11 & 0x1f) /* SH at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 190 "machine/ppc/decoder.m"
+#line 189 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM, DIS_BEG, DIS_END);
 
 
 
-#line 3862 "ppcdecoder.cpp"
+#line 3860 "ppcdecoder.cpp"
 
       
     } 
@@ -3872,12 +3870,12 @@ hostPC
       unsigned rb = (MATCH_w_32_0 >> 11 & 0x1f) /* B at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 232 "machine/ppc/decoder.m"
+#line 231 "machine/ppc/decoder.m"
 
 	//| Xcmp_(crfd, l, ra, rb) [name] =>
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
 
-#line 3881 "ppcdecoder.cpp"
+#line 3879 "ppcdecoder.cpp"
 
       
     } 
@@ -3889,12 +3887,12 @@ hostPC
       unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 187 "machine/ppc/decoder.m"
+#line 186 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD);
 
 
-#line 3898 "ppcdecoder.cpp"
+#line 3896 "ppcdecoder.cpp"
 
       
     } 
@@ -3908,11 +3906,11 @@ hostPC
       unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 149 "machine/ppc/decoder.m"
+#line 148 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
 
-#line 3916 "ppcdecoder.cpp"
+#line 3914 "ppcdecoder.cpp"
 
       
     } 
@@ -3926,11 +3924,11 @@ hostPC
       unsigned rd = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 147 "machine/ppc/decoder.m"
+#line 146 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 
-#line 3934 "ppcdecoder.cpp"
+#line 3932 "ppcdecoder.cpp"
 
       
     } 
@@ -3943,14 +3941,14 @@ hostPC
       unsigned rd = (MATCH_w_32_0 >> 16 & 0x1f) /* A at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 125 "machine/ppc/decoder.m"
+#line 124 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
 	// The number of parameters in these matcher arms has to agree with the number in core.spec
 	// The number of parameters passed to instantiate() after pc and name has to agree with ppc.ssl
 	// Stores and loads pass rA to instantiate twice: as part of DIS_DISP, and separately as DIS_NZRA
 
-#line 3954 "ppcdecoder.cpp"
+#line 3952 "ppcdecoder.cpp"
 
       
     } 
@@ -3964,12 +3962,12 @@ hostPC
       unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* S at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 151 "machine/ppc/decoder.m"
+#line 150 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
 	// Load instructions
 
-#line 3973 "ppcdecoder.cpp"
+#line 3971 "ppcdecoder.cpp"
 
       
     } 
@@ -3984,11 +3982,11 @@ hostPC
         (MATCH_w_32_0 >> 16 & 0x1f) /* sprL at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 173 "machine/ppc/decoder.m"
+#line 172 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_UIMM);
 
-#line 3992 "ppcdecoder.cpp"
+#line 3990 "ppcdecoder.cpp"
 
       
     } 
@@ -4002,7 +4000,7 @@ hostPC
         (MATCH_w_32_0 >> 16 & 0x1f) /* sprL at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 175 "machine/ppc/decoder.m"
+#line 174 "machine/ppc/decoder.m"
 
 		switch (uimm) {
 		case 1:
@@ -4016,7 +4014,7 @@ hostPC
 		}
 
 
-#line 4020 "ppcdecoder.cpp"
+#line 4018 "ppcdecoder.cpp"
 
       
     } 
@@ -4030,12 +4028,12 @@ hostPC
       unsigned rb = (MATCH_w_32_0 >> 11 & 0x1f) /* B at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 245 "machine/ppc/decoder.m"
+#line 244 "machine/ppc/decoder.m"
   // Floating point loads (indexed)
 		stmts = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
 
-#line 4039 "ppcdecoder.cpp"
+#line 4037 "ppcdecoder.cpp"
 
       
     } 
@@ -4049,13 +4047,13 @@ hostPC
       unsigned rb = (MATCH_w_32_0 >> 11 & 0x1f) /* B at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 251 "machine/ppc/decoder.m"
+#line 250 "machine/ppc/decoder.m"
   // Floating point stores (indexed)
 		stmts = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
 
 
-#line 4059 "ppcdecoder.cpp"
+#line 4057 "ppcdecoder.cpp"
 
       
     } 
@@ -4069,11 +4067,11 @@ hostPC
       unsigned uimm = (MATCH_w_32_0 >> 11 & 0x1f) /* SH at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 347 "machine/ppc/decoder.m"
+#line 346 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
-#line 4077 "ppcdecoder.cpp"
+#line 4075 "ppcdecoder.cpp"
 
       
     } 
@@ -4087,11 +4085,11 @@ hostPC
       unsigned rd = (MATCH_w_32_0 >> 21 & 0x1f) /* D at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 121 "machine/ppc/decoder.m"
+#line 120 "machine/ppc/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 
-#line 4095 "ppcdecoder.cpp"
+#line 4093 "ppcdecoder.cpp"
 
       
     } 
@@ -4105,7 +4103,7 @@ hostPC
       unsigned fd = (MATCH_w_32_0 >> 21 & 0x1f) /* fD at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 261 "machine/ppc/decoder.m"
+#line 260 "machine/ppc/decoder.m"
    // Floating point binary
 		stmts = instantiate(pc, name, DIS_FD, DIS_FA, DIS_FB);
 
@@ -4115,7 +4113,7 @@ hostPC
 	// Conditional branches
 	// bcc_ is blt | ble | beq | bge | bgt | bnl | bne | bng | bso | bns | bun | bnu | bal (branch always)
 
-#line 4119 "ppcdecoder.cpp"
+#line 4117 "ppcdecoder.cpp"
 
       
     } 
@@ -4129,12 +4127,12 @@ hostPC
       unsigned fb = (MATCH_w_32_0 >> 11 & 0x1f) /* fB at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 255 "machine/ppc/decoder.m"
+#line 254 "machine/ppc/decoder.m"
   // Floating point compare
 		stmts = instantiate(pc, name, DIS_CRFD, DIS_FA, DIS_FB);
 
 
-#line 4138 "ppcdecoder.cpp"
+#line 4136 "ppcdecoder.cpp"
 
       
     } 
@@ -4147,12 +4145,12 @@ hostPC
       unsigned fd = (MATCH_w_32_0 >> 21 & 0x1f) /* fD at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 258 "machine/ppc/decoder.m"
+#line 257 "machine/ppc/decoder.m"
      // Floating point unary
 		stmts = instantiate(pc, name, DIS_FD, DIS_FB);
 
 
-#line 4156 "ppcdecoder.cpp"
+#line 4154 "ppcdecoder.cpp"
 
       
     } 
@@ -4161,9 +4159,9 @@ hostPC
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 4165 "ppcdecoder.cpp"
+#line 4163 "ppcdecoder.cpp"
 
-#line 357 "machine/ppc/decoder.m"
+#line 355 "machine/ppc/decoder.m"
 
 	result.numBytes = nextPC - hostPC;
 	if (result.valid && !result.rtl)  // Don't override higher level res
@@ -4247,5 +4245,5 @@ crBit(int bitNum)
 	                   new Const(bitNum));
 }
 
-#line 4251 "ppcdecoder.cpp"
+#line 4249 "ppcdecoder.cpp"
 

@@ -279,7 +279,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (name[0] == 'C') {
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
@@ -321,7 +321,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		GotoStatement *jump = nullptr;
@@ -362,7 +362,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (name[0] == 'C') {
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
@@ -409,7 +409,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = 4;
+			result.numBytes = nextPC - hostPC;
 			return result;
 		}
 		GotoStatement *jump = nullptr;
@@ -637,7 +637,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	else
 		stmts = nullptr;
 		result.valid = false;
-		result.numBytes = 4;
 	endmatch
 
 	result.numBytes = nextPC - hostPC;

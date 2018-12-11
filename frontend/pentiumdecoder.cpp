@@ -215,7 +215,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1534 "machine/pentium/decoder.m"
+#line 1530 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
@@ -283,7 +283,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1504 "machine/pentium/decoder.m"
+#line 1500 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
@@ -351,7 +351,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1462 "machine/pentium/decoder.m"
+#line 1458 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
@@ -419,7 +419,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1432 "machine/pentium/decoder.m"
+#line 1428 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
@@ -456,7 +456,7 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1729 "machine/pentium/decoder.m"
+#line 1725 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiAL", DIS_I8);
 
@@ -473,7 +473,7 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1681 "machine/pentium/decoder.m"
+#line 1677 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiEAX", DIS_I32);
 
@@ -487,7 +487,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 815 "machine/pentium/decoder.m"
+#line 811 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.CS");
 
@@ -509,7 +509,7 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1096 "machine/pentium/decoder.m"
+#line 1092 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INVD");
 
@@ -571,7 +571,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 427 "machine/pentium/decoder.m"
+#line 423 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
@@ -620,7 +620,7 @@ hostPC
                                                       addressToPC(MATCH_p);
                                                     nextPC = 3 + MATCH_p; 
                                                     
-#line 403 "machine/pentium/decoder.m"
+#line 399 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
@@ -666,7 +666,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 403 "machine/pentium/decoder.m"
+#line 399 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
@@ -749,7 +749,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 1038 "machine/pentium/decoder.m"
+#line 1034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
@@ -830,7 +830,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 373 "machine/pentium/decoder.m"
+#line 369 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
@@ -911,7 +911,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 370 "machine/pentium/decoder.m"
+#line 366 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
@@ -955,7 +955,7 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 364 "machine/pentium/decoder.m"
+#line 360 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "WBINVD");
 
@@ -985,7 +985,7 @@ hostPC
                                                       addressToPC(MATCH_p);
                                                     nextPC = 3 + MATCH_p; 
                                                     
-#line 457 "machine/pentium/decoder.m"
+#line 453 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SGDT", DIS_MEM);
 
@@ -1032,7 +1032,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 457 "machine/pentium/decoder.m"
+#line 453 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SGDT", DIS_MEM);
 
@@ -1082,7 +1082,7 @@ hostPC
                                                       addressToPC(MATCH_p);
                                                     nextPC = 3 + MATCH_p; 
                                                     
-#line 454 "machine/pentium/decoder.m"
+#line 450 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
@@ -1128,7 +1128,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 454 "machine/pentium/decoder.m"
+#line 450 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
@@ -1211,7 +1211,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 424 "machine/pentium/decoder.m"
+#line 420 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
@@ -1260,7 +1260,7 @@ hostPC
                                                       addressToPC(MATCH_p);
                                                     nextPC = 3 + MATCH_p; 
                                                     
-#line 1093 "machine/pentium/decoder.m"
+#line 1089 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
@@ -1306,7 +1306,7 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 1093 "machine/pentium/decoder.m"
+#line 1089 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
@@ -1396,7 +1396,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1080 "machine/pentium/decoder.m"
+#line 1076 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
@@ -1481,7 +1481,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1044 "machine/pentium/decoder.m"
+#line 1040 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
@@ -1522,7 +1522,7 @@ hostPC
                                       /* page at 8 */ == 0) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1257 "machine/pentium/decoder.m"
+#line 1253 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CLTS");
 
@@ -1549,7 +1549,7 @@ hostPC
                                       /* page at 8 */ == 0) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 361 "machine/pentium/decoder.m"
+#line 357 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "WRMSR");
 
@@ -1569,7 +1569,7 @@ hostPC
                                       /* page at 8 */ == 0) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 594 "machine/pentium/decoder.m"
+#line 590 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RDMSR");
 
@@ -1597,9 +1597,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 245 "machine/pentium/decoder.m"
+#line 241 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Sod", 6, relocd, BRANCH_JMI)
+		COND_JUMP("Jv.Sod", relocd, BRANCH_JMI)
 
 #line 1605 "pentiumdecoder.cpp"
 
@@ -1615,9 +1615,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 243 "machine/pentium/decoder.m"
+#line 239 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NSod", 6, relocd, BRANCH_JPOS)
+		COND_JUMP("Jv.NSod", relocd, BRANCH_JPOS)
 
 #line 1623 "pentiumdecoder.cpp"
 
@@ -1633,9 +1633,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 241 "machine/pentium/decoder.m"
+#line 237 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Pod", 6, relocd, BRANCH_JPAR)
+		COND_JUMP("Jv.Pod", relocd, BRANCH_JPAR)
 
 #line 1641 "pentiumdecoder.cpp"
 
@@ -1651,9 +1651,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 239 "machine/pentium/decoder.m"
+#line 235 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NPod", 6, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NPod", relocd, (BRANCH_TYPE)0)
 
 #line 1659 "pentiumdecoder.cpp"
 
@@ -1669,9 +1669,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 237 "machine/pentium/decoder.m"
+#line 233 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Lod", 6, relocd, BRANCH_JSL)
+		COND_JUMP("Jv.Lod", relocd, BRANCH_JSL)
 
 #line 1677 "pentiumdecoder.cpp"
 
@@ -1687,9 +1687,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 235 "machine/pentium/decoder.m"
+#line 231 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NLod", 6, relocd, BRANCH_JSGE)
+		COND_JUMP("Jv.NLod", relocd, BRANCH_JSGE)
 
 #line 1695 "pentiumdecoder.cpp"
 
@@ -1705,9 +1705,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 233 "machine/pentium/decoder.m"
+#line 229 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.LEod", 6, relocd, BRANCH_JSLE)
+		COND_JUMP("Jv.LEod", relocd, BRANCH_JSLE)
 
 #line 1713 "pentiumdecoder.cpp"
 
@@ -1723,9 +1723,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 231 "machine/pentium/decoder.m"
+#line 227 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NLEod", 6, relocd, BRANCH_JSG)
+		COND_JUMP("Jv.NLEod", relocd, BRANCH_JSG)
 
 #line 1731 "pentiumdecoder.cpp"
 
@@ -1746,9 +1746,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 261 "machine/pentium/decoder.m"
+#line 257 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Ood", 6, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.Ood", relocd, (BRANCH_TYPE)0)
 
 
 #line 1755 "pentiumdecoder.cpp"
@@ -1765,9 +1765,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 259 "machine/pentium/decoder.m"
+#line 255 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NOod", 6, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NOod", relocd, (BRANCH_TYPE)0)
 
 #line 1773 "pentiumdecoder.cpp"
 
@@ -1783,9 +1783,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 257 "machine/pentium/decoder.m"
+#line 253 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Bod", 6, relocd, BRANCH_JUL)
+		COND_JUMP("Jv.Bod", relocd, BRANCH_JUL)
 
 #line 1791 "pentiumdecoder.cpp"
 
@@ -1801,9 +1801,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 255 "machine/pentium/decoder.m"
+#line 251 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NBod", 6, relocd, BRANCH_JUGE)
+		COND_JUMP("Jv.NBod", relocd, BRANCH_JUGE)
 
 #line 1809 "pentiumdecoder.cpp"
 
@@ -1819,9 +1819,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 253 "machine/pentium/decoder.m"
+#line 249 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Zod", 6, relocd, BRANCH_JE)
+		COND_JUMP("Jv.Zod", relocd, BRANCH_JE)
 
 #line 1827 "pentiumdecoder.cpp"
 
@@ -1837,9 +1837,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 251 "machine/pentium/decoder.m"
+#line 247 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NZod", 6, relocd, BRANCH_JNE)
+		COND_JUMP("Jv.NZod", relocd, BRANCH_JNE)
 
 #line 1845 "pentiumdecoder.cpp"
 
@@ -1855,9 +1855,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 249 "machine/pentium/decoder.m"
+#line 245 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.BEod", 6, relocd, BRANCH_JULE)
+		COND_JUMP("Jv.BEod", relocd, BRANCH_JULE)
 
 #line 1863 "pentiumdecoder.cpp"
 
@@ -1873,9 +1873,9 @@ hostPC
                                     addressToPC(MATCH_p);
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 247 "machine/pentium/decoder.m"
+#line 243 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NBEod", 6, relocd, BRANCH_JUG)
+		COND_JUMP("Jv.NBEod", relocd, BRANCH_JUG)
 
 #line 1881 "pentiumdecoder.cpp"
 
@@ -1949,7 +1949,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 285 "machine/pentium/decoder.m"
+#line 281 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
@@ -2055,7 +2055,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 282 "machine/pentium/decoder.m"
+#line 278 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
@@ -2163,7 +2163,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 273 "machine/pentium/decoder.m"
+#line 269 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSL)
@@ -2275,7 +2275,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 270 "machine/pentium/decoder.m"
+#line 266 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
@@ -2381,7 +2381,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 267 "machine/pentium/decoder.m"
+#line 263 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
@@ -2487,7 +2487,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 264 "machine/pentium/decoder.m"
+#line 260 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
@@ -2600,7 +2600,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 303 "machine/pentium/decoder.m"
+#line 299 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUL)
@@ -2713,7 +2713,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 300 "machine/pentium/decoder.m"
+#line 296 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
@@ -2819,7 +2819,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 297 "machine/pentium/decoder.m"
+#line 293 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
@@ -2925,7 +2925,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 294 "machine/pentium/decoder.m"
+#line 290 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
@@ -3031,7 +3031,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 291 "machine/pentium/decoder.m"
+#line 287 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
@@ -3137,7 +3137,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 288 "machine/pentium/decoder.m"
+#line 284 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
@@ -3195,7 +3195,7 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 800 "machine/pentium/decoder.m"
+#line 796 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.GS");
 
@@ -3207,7 +3207,7 @@ hostPC
                               else { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 803 "machine/pentium/decoder.m"
+#line 799 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.FS");
 
@@ -3223,7 +3223,7 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 854 "machine/pentium/decoder.m"
+#line 850 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.GS");
 
@@ -3235,7 +3235,7 @@ hostPC
                               else { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 857 "machine/pentium/decoder.m"
+#line 853 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.FS");
 
@@ -3251,7 +3251,7 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 473 "machine/pentium/decoder.m"
+#line 469 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RSM");
 
@@ -3263,7 +3263,7 @@ hostPC
                               else { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1230 "machine/pentium/decoder.m"
+#line 1226 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CPUID");
 
@@ -3323,7 +3323,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1307 "machine/pentium/decoder.m"
+#line 1303 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
@@ -3403,7 +3403,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1343 "machine/pentium/decoder.m"
+#line 1339 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
@@ -3507,7 +3507,7 @@ hostPC
                                                   /* reg_opcode at 16 */;
                                           nextPC = 6 + MATCH_p; 
                                           
-#line 448 "machine/pentium/decoder.m"
+#line 444 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
@@ -3622,7 +3622,7 @@ hostPC
                                                   /* reg_opcode at 16 */;
                                           nextPC = 6 + MATCH_p; 
                                           
-#line 442 "machine/pentium/decoder.m"
+#line 438 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
@@ -3719,7 +3719,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 436 "machine/pentium/decoder.m"
+#line 432 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
@@ -3799,7 +3799,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 430 "machine/pentium/decoder.m"
+#line 426 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
@@ -3884,7 +3884,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1164 "machine/pentium/decoder.m"
+#line 1160 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
@@ -4004,7 +4004,7 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1337 "machine/pentium/decoder.m"
+#line 1333 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
@@ -4123,7 +4123,7 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1301 "machine/pentium/decoder.m"
+#line 1297 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
@@ -4242,7 +4242,7 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1313 "machine/pentium/decoder.m"
+#line 1309 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
@@ -4361,7 +4361,7 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1325 "machine/pentium/decoder.m"
+#line 1321 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
@@ -4464,7 +4464,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1331 "machine/pentium/decoder.m"
+#line 1327 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
@@ -4544,7 +4544,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1363 "machine/pentium/decoder.m"
+#line 1359 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
 		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - hostPC);
@@ -4626,7 +4626,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1352 "machine/pentium/decoder.m"
+#line 1348 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
 		// Bit Scan Forward: need helper function
@@ -4709,7 +4709,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 947 "machine/pentium/decoder.m"
+#line 943 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
@@ -4789,7 +4789,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 944 "machine/pentium/decoder.m"
+#line 940 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
@@ -4874,7 +4874,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1242 "machine/pentium/decoder.m"
+#line 1238 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
@@ -4954,7 +4954,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1236 "machine/pentium/decoder.m"
+#line 1232 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
@@ -5006,7 +5006,7 @@ hostPC
                                                       /* reg_opcode at 16 */;
                                               nextPC = 3 + MATCH_p; 
                                               
-#line 1041 "machine/pentium/decoder.m"
+#line 1037 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
@@ -5052,7 +5052,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1041 "machine/pentium/decoder.m"
+#line 1037 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
@@ -5132,7 +5132,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1319 "machine/pentium/decoder.m"
+#line 1315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
@@ -5184,7 +5184,7 @@ hostPC
                                                       /* reg_opcode at 16 */;
                                               nextPC = 3 + MATCH_p; 
                                               
-#line 1062 "machine/pentium/decoder.m"
+#line 1058 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
@@ -5230,7 +5230,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1062 "machine/pentium/decoder.m"
+#line 1058 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
@@ -5282,7 +5282,7 @@ hostPC
                                                       /* reg_opcode at 16 */;
                                               nextPC = 3 + MATCH_p; 
                                               
-#line 1059 "machine/pentium/decoder.m"
+#line 1055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
@@ -5328,7 +5328,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1059 "machine/pentium/decoder.m"
+#line 1055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
@@ -5408,7 +5408,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 938 "machine/pentium/decoder.m"
+#line 934 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
@@ -5488,7 +5488,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 935 "machine/pentium/decoder.m"
+#line 931 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
@@ -5529,7 +5529,7 @@ hostPC
                           unsigned r32 = (MATCH_w_8_8 & 0x7) /* r32 at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 1349 "machine/pentium/decoder.m"
+#line 1345 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BSWAP", DIS_R32);
 
@@ -5588,7 +5588,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 358 "machine/pentium/decoder.m"
+#line 354 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
@@ -5668,7 +5668,7 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 352 "machine/pentium/decoder.m"
+#line 348 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
@@ -5721,7 +5721,7 @@ hostPC
                                                   2 + addressToPC(MATCH_p);
                                                 nextPC = 3 + MATCH_p; 
                                                 
-#line 1233 "machine/pentium/decoder.m"
+#line 1229 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
@@ -5764,7 +5764,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 1233 "machine/pentium/decoder.m"
+#line 1229 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
@@ -5850,7 +5850,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1528 "machine/pentium/decoder.m"
+#line 1524 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
@@ -5918,7 +5918,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1492 "machine/pentium/decoder.m"
+#line 1488 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
@@ -5986,7 +5986,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1456 "machine/pentium/decoder.m"
+#line 1452 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
@@ -6054,7 +6054,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1420 "machine/pentium/decoder.m"
+#line 1416 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
@@ -6091,7 +6091,7 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1723 "machine/pentium/decoder.m"
+#line 1719 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiAL", DIS_I8);
 
@@ -6108,7 +6108,7 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1675 "machine/pentium/decoder.m"
+#line 1671 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiEAX", DIS_I32);
 
@@ -6122,7 +6122,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 809 "machine/pentium/decoder.m"
+#line 805 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.DS");
 
@@ -6135,7 +6135,7 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 860 "machine/pentium/decoder.m"
+#line 856 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.DS");
 
@@ -6189,7 +6189,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1522 "machine/pentium/decoder.m"
+#line 1518 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
@@ -6257,7 +6257,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1480 "machine/pentium/decoder.m"
+#line 1476 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
@@ -6325,7 +6325,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1450 "machine/pentium/decoder.m"
+#line 1446 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
@@ -6393,7 +6393,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1408 "machine/pentium/decoder.m"
+#line 1404 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
@@ -6430,7 +6430,7 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1717 "machine/pentium/decoder.m"
+#line 1713 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiAL", DIS_I8);
 
@@ -6447,7 +6447,7 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1669 "machine/pentium/decoder.m"
+#line 1665 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiEAX", DIS_I32);
 
@@ -6461,7 +6461,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 328 "machine/pentium/decoder.m"
+#line 324 "machine/pentium/decoder.m"
   // For now, treat seg.cs as a 1 byte NOP
 		stmts = instantiate(pc, "NOP");
 
@@ -6474,7 +6474,7 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1218 "machine/pentium/decoder.m"
+#line 1214 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DAS");
 
@@ -6528,7 +6528,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1516 "machine/pentium/decoder.m"
+#line 1512 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
@@ -6596,7 +6596,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1468 "machine/pentium/decoder.m"
+#line 1464 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
@@ -6664,7 +6664,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1444 "machine/pentium/decoder.m"
+#line 1440 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
@@ -6732,7 +6732,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1396 "machine/pentium/decoder.m"
+#line 1392 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
@@ -6769,7 +6769,7 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1711 "machine/pentium/decoder.m"
+#line 1707 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiAL", DIS_I8);
 
@@ -6786,7 +6786,7 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1663 "machine/pentium/decoder.m"
+#line 1659 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiEAX", DIS_I32);
 
@@ -6800,7 +6800,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 331 "machine/pentium/decoder.m"
+#line 327 "machine/pentium/decoder.m"
   // For now, treat seg.ds as a 1 byte NOP
 		stmts = instantiate(pc, "NOP");
 
@@ -6820,7 +6820,7 @@ hostPC
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r32 at 0 */;
               nextPC = 1 + MATCH_p; 
               
-#line 1203 "machine/pentium/decoder.m"
+#line 1199 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DECod", DIS_R32);
 
@@ -6836,7 +6836,7 @@ hostPC
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r32 at 0 */;
               nextPC = 1 + MATCH_p; 
               
-#line 869 "machine/pentium/decoder.m"
+#line 865 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POPod", DIS_R32);
 
@@ -6856,7 +6856,7 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 818 "machine/pentium/decoder.m"
+#line 814 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Ivod", DIS_I32);
 
@@ -6920,7 +6920,7 @@ hostPC
                               (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                             nextPC = 8 + MATCH_p; 
                             
-#line 1152 "machine/pentium/decoder.m"
+#line 1148 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
@@ -6971,7 +6971,7 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 824 "machine/pentium/decoder.m"
+#line 820 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Ixob", DIS_I8);
 
@@ -7038,7 +7038,7 @@ hostPC
                               (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                             nextPC = 5 + MATCH_p; 
                             
-#line 1158 "machine/pentium/decoder.m"
+#line 1154 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
@@ -7098,9 +7098,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 173 "machine/pentium/decoder.m"
+#line 169 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.S", 2, relocd, BRANCH_JMI)
+		COND_JUMP("Jb.S", relocd, BRANCH_JMI)
 
 #line 7106 "pentiumdecoder.cpp"
 
@@ -7116,9 +7116,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 171 "machine/pentium/decoder.m"
+#line 167 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NS", 2, relocd, BRANCH_JPOS)
+		COND_JUMP("Jb.NS", relocd, BRANCH_JPOS)
 
 #line 7124 "pentiumdecoder.cpp"
 
@@ -7134,9 +7134,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 169 "machine/pentium/decoder.m"
+#line 165 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.P", 2, relocd, BRANCH_JPAR)
+		COND_JUMP("Jb.P", relocd, BRANCH_JPAR)
 
 #line 7142 "pentiumdecoder.cpp"
 
@@ -7152,9 +7152,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 167 "machine/pentium/decoder.m"
+#line 163 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NP", 2, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jb.NP", relocd, (BRANCH_TYPE)0)
 
 #line 7160 "pentiumdecoder.cpp"
 
@@ -7170,9 +7170,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 165 "machine/pentium/decoder.m"
+#line 161 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.L", 2, relocd, BRANCH_JSL)
+		COND_JUMP("Jb.L", relocd, BRANCH_JSL)
 
 #line 7178 "pentiumdecoder.cpp"
 
@@ -7188,9 +7188,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 163 "machine/pentium/decoder.m"
+#line 159 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NL", 2, relocd, BRANCH_JSGE)
+		COND_JUMP("Jb.NL", relocd, BRANCH_JSGE)
 
 #line 7196 "pentiumdecoder.cpp"
 
@@ -7206,9 +7206,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 161 "machine/pentium/decoder.m"
+#line 157 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.LE", 2, relocd, BRANCH_JSLE)
+		COND_JUMP("Jb.LE", relocd, BRANCH_JSLE)
 
 #line 7214 "pentiumdecoder.cpp"
 
@@ -7224,9 +7224,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 159 "machine/pentium/decoder.m"
+#line 155 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NLE", 2, relocd, BRANCH_JSG)
+		COND_JUMP("Jb.NLE", relocd, BRANCH_JSG)
 
 #line 7232 "pentiumdecoder.cpp"
 
@@ -7278,7 +7278,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1035 "machine/pentium/decoder.m"
+#line 1031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
@@ -7346,7 +7346,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1029 "machine/pentium/decoder.m"
+#line 1025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
@@ -7414,7 +7414,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1026 "machine/pentium/decoder.m"
+#line 1022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
@@ -7482,7 +7482,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1020 "machine/pentium/decoder.m"
+#line 1016 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
@@ -7529,7 +7529,7 @@ hostPC
                                         /* reg_opcode at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1071 "machine/pentium/decoder.m"
+#line 1067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
@@ -7569,7 +7569,7 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1071 "machine/pentium/decoder.m"
+#line 1067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
@@ -7637,7 +7637,7 @@ hostPC
                             unsigned Eaddr = 1 + addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 875 "machine/pentium/decoder.m"
+#line 871 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
@@ -7678,7 +7678,7 @@ hostPC
                 case 0: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1269 "machine/pentium/decoder.m"
+#line 1265 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CWDE");
 
@@ -7691,7 +7691,7 @@ hostPC
                 case 1: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1224 "machine/pentium/decoder.m"
+#line 1220 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CDQ");
 
@@ -7704,7 +7704,7 @@ hostPC
                 case 2: 
                   nextPC = 7 + MATCH_p; 
                   
-#line 1277 "machine/pentium/decoder.m"
+#line 1273 "machine/pentium/decoder.m"
 
 	//| CALL.aPod(seg, off) =>
 		stmts = instantiate(pc, "NOP");
@@ -7718,7 +7718,7 @@ hostPC
                 case 3: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 367 "machine/pentium/decoder.m"
+#line 363 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "WAIT");
 
@@ -7733,7 +7733,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 470 "machine/pentium/decoder.m"
+#line 466 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SAHF");
 
@@ -7746,7 +7746,7 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1086 "machine/pentium/decoder.m"
+#line 1082 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAHF");
 
@@ -7769,7 +7769,7 @@ hostPC
                     unsigned i8 = (MATCH_w_8_8 & 0xff) /* i8 at 8 */;
                     nextPC = 2 + MATCH_p; 
                     
-#line 400 "machine/pentium/decoder.m"
+#line 396 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.AL.Ib", DIS_I8);
 
@@ -7786,7 +7786,7 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 394 "machine/pentium/decoder.m"
+#line 390 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.eAX.Ivod", DIS_I32);
 
@@ -7800,7 +7800,7 @@ hostPC
                 case 2: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 412 "machine/pentium/decoder.m"
+#line 408 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STOSB");
 
@@ -7813,7 +7813,7 @@ hostPC
                 case 3: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 406 "machine/pentium/decoder.m"
+#line 402 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STOSvod");
 
@@ -7826,7 +7826,7 @@ hostPC
                 case 4: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1741 "machine/pentium/decoder.m"
+#line 1737 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LODSB");
 
@@ -7840,7 +7840,7 @@ hostPC
                 case 5: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1735 "machine/pentium/decoder.m"
+#line 1731 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LODSvod");
 
@@ -7853,7 +7853,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 467 "machine/pentium/decoder.m"
+#line 463 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SCASB");
 
@@ -7866,7 +7866,7 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 461 "machine/pentium/decoder.m"
+#line 457 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SCASvod");
 
@@ -7886,7 +7886,7 @@ hostPC
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r32 at 0 */;
               nextPC = 5 + MATCH_p; 
               
-#line 987 "machine/pentium/decoder.m"
+#line 983 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVid", DIS_R32, DIS_I32);
 
@@ -7909,7 +7909,7 @@ hostPC
                       sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
                     nextPC = 4 + MATCH_p; 
                     
-#line 1191 "machine/pentium/decoder.m"
+#line 1187 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ENTER", DIS_I16, DIS_I8);
 
@@ -7923,7 +7923,7 @@ hostPC
                 case 1: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1068 "machine/pentium/decoder.m"
+#line 1064 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEAVE");
 
@@ -7939,7 +7939,7 @@ hostPC
                     unsigned i16 = (MATCH_w_16_8 & 0xffff) /* i16 at 8 */;
                     nextPC = 3 + MATCH_p; 
                     
-#line 476 "machine/pentium/decoder.m"
+#line 472 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RET.far.Iw", DIS_I16);
 		auto ret = new ReturnStatement;
@@ -7956,7 +7956,7 @@ hostPC
                 case 3: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 488 "machine/pentium/decoder.m"
+#line 484 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RET.far");
 		result.rtl = new RTL(pc, stmts);
@@ -7977,7 +7977,7 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1102 "machine/pentium/decoder.m"
+#line 1098 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INT.Ib", DIS_I8);
 
@@ -8005,7 +8005,7 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1099 "machine/pentium/decoder.m"
+#line 1095 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INTO");
 
@@ -8018,7 +8018,7 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1090 "machine/pentium/decoder.m"
+#line 1086 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IRET");
 
@@ -8051,7 +8051,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1751 "machine/pentium/decoder.m"
+#line 1747 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
@@ -8090,7 +8090,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1751 "machine/pentium/decoder.m"
+#line 1747 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
@@ -8121,7 +8121,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1757 "machine/pentium/decoder.m"
+#line 1753 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.St.STi", DIS_IDX);
 
@@ -8148,7 +8148,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1945 "machine/pentium/decoder.m"
+#line 1941 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
@@ -8187,7 +8187,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1945 "machine/pentium/decoder.m"
+#line 1941 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
@@ -8218,7 +8218,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1951 "machine/pentium/decoder.m"
+#line 1947 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.ST.STi", DIS_IDX);
 
@@ -8245,7 +8245,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1784 "machine/pentium/decoder.m"
+#line 1780 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
@@ -8284,7 +8284,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1784 "machine/pentium/decoder.m"
+#line 1780 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
@@ -8315,7 +8315,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1802 "machine/pentium/decoder.m"
+#line 1798 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.ST.STi", DIS_IDX);
 
@@ -8342,7 +8342,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1796 "machine/pentium/decoder.m"
+#line 1792 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
@@ -8381,7 +8381,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1796 "machine/pentium/decoder.m"
+#line 1792 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
@@ -8412,7 +8412,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1805 "machine/pentium/decoder.m"
+#line 1801 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.ST.STi", DIS_IDX);
 
@@ -8439,7 +8439,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2035 "machine/pentium/decoder.m"
+#line 2031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
@@ -8478,7 +8478,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2035 "machine/pentium/decoder.m"
+#line 2031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
@@ -8509,7 +8509,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2041 "machine/pentium/decoder.m"
+#line 2037 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.ST.STi", DIS_IDX);
 
@@ -8536,7 +8536,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2056 "machine/pentium/decoder.m"
+#line 2052 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
@@ -8575,7 +8575,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2056 "machine/pentium/decoder.m"
+#line 2052 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
@@ -8606,7 +8606,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2062 "machine/pentium/decoder.m"
+#line 2058 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.ST.STi", DIS_IDX);
 
@@ -8633,7 +8633,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1829 "machine/pentium/decoder.m"
+#line 1825 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
@@ -8672,7 +8672,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1829 "machine/pentium/decoder.m"
+#line 1825 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
@@ -8703,7 +8703,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1835 "machine/pentium/decoder.m"
+#line 1831 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.ST.STi", DIS_IDX);
 
@@ -8730,7 +8730,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1850 "machine/pentium/decoder.m"
+#line 1846 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
@@ -8769,7 +8769,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1850 "machine/pentium/decoder.m"
+#line 1846 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
@@ -8800,7 +8800,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1856 "machine/pentium/decoder.m"
+#line 1852 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.ST.STi", DIS_IDX);
 
@@ -8835,7 +8835,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1901 "machine/pentium/decoder.m"
+#line 1897 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
@@ -8874,7 +8874,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1901 "machine/pentium/decoder.m"
+#line 1897 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
@@ -8905,7 +8905,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1915 "machine/pentium/decoder.m"
+#line 1911 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.STi", DIS_IDXP1);
 
@@ -8924,7 +8924,7 @@ hostPC
                           unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 2098 "machine/pentium/decoder.m"
+#line 2094 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FXCH", DIS_IDX);
 
@@ -8950,7 +8950,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2002 "machine/pentium/decoder.m"
+#line 1998 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
@@ -8989,7 +8989,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2002 "machine/pentium/decoder.m"
+#line 1998 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
@@ -9018,7 +9018,7 @@ hostPC
                               if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 0) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1966 "machine/pentium/decoder.m"
+#line 1962 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNOP");
 
@@ -9047,7 +9047,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2008 "machine/pentium/decoder.m"
+#line 2004 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
@@ -9086,7 +9086,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2008 "machine/pentium/decoder.m"
+#line 2004 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
@@ -9128,7 +9128,7 @@ hostPC
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1942 "machine/pentium/decoder.m"
+#line 1938 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
@@ -9167,7 +9167,7 @@ hostPC
                                 unsigned Mem = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1942 "machine/pentium/decoder.m"
+#line 1938 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
@@ -9198,7 +9198,7 @@ hostPC
                                   case 0: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1778 "machine/pentium/decoder.m"
+#line 1774 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCHS");
 
@@ -9211,7 +9211,7 @@ hostPC
                                   case 1: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1748 "machine/pentium/decoder.m"
+#line 1744 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FABS");
 
@@ -9226,7 +9226,7 @@ hostPC
                                   case 4: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 2077 "machine/pentium/decoder.m"
+#line 2073 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FTST");
 
@@ -9239,7 +9239,7 @@ hostPC
                                   case 5: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 2095 "machine/pentium/decoder.m"
+#line 2091 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FXAM");
 
@@ -9268,7 +9268,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1939 "machine/pentium/decoder.m"
+#line 1935 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
@@ -9307,7 +9307,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1939 "machine/pentium/decoder.m"
+#line 1935 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
@@ -9338,7 +9338,7 @@ hostPC
                                   case 0: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1918 "machine/pentium/decoder.m"
+#line 1914 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD1");
 
@@ -9351,7 +9351,7 @@ hostPC
                                   case 1: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1921 "machine/pentium/decoder.m"
+#line 1917 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDL2T");
 
@@ -9364,7 +9364,7 @@ hostPC
                                   case 2: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1924 "machine/pentium/decoder.m"
+#line 1920 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDL2E");
 
@@ -9377,7 +9377,7 @@ hostPC
                                   case 3: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1927 "machine/pentium/decoder.m"
+#line 1923 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDPI");
 
@@ -9390,7 +9390,7 @@ hostPC
                                   case 4: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1930 "machine/pentium/decoder.m"
+#line 1926 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDLG2");
 
@@ -9403,7 +9403,7 @@ hostPC
                                   case 5: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1933 "machine/pentium/decoder.m"
+#line 1929 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDLN2");
 
@@ -9416,7 +9416,7 @@ hostPC
                                   case 6: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1936 "machine/pentium/decoder.m"
+#line 1932 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDZ");
 
@@ -9446,7 +9446,7 @@ hostPC
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2026 "machine/pentium/decoder.m"
+#line 2022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
@@ -9485,7 +9485,7 @@ hostPC
                                 unsigned Mem = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2026 "machine/pentium/decoder.m"
+#line 2022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
@@ -9516,7 +9516,7 @@ hostPC
                                   case 0: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1745 "machine/pentium/decoder.m"
+#line 1741 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "F2XM1");
 
@@ -9529,7 +9529,7 @@ hostPC
                                   case 1: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 2104 "machine/pentium/decoder.m"
+#line 2100 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FYL2X");
 
@@ -9542,7 +9542,7 @@ hostPC
                                   case 2: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1978 "machine/pentium/decoder.m"
+#line 1974 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FPTAN");
 
@@ -9555,7 +9555,7 @@ hostPC
                                   case 3: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1969 "machine/pentium/decoder.m"
+#line 1965 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FPATAN");
 
@@ -9568,7 +9568,7 @@ hostPC
                                   case 4: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 2101 "machine/pentium/decoder.m"
+#line 2097 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FXTRACT");
 
@@ -9581,7 +9581,7 @@ hostPC
                                   case 5: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1975 "machine/pentium/decoder.m"
+#line 1971 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FPREM1");
 
@@ -9594,7 +9594,7 @@ hostPC
                                   case 6: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1826 "machine/pentium/decoder.m"
+#line 1822 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDECSTP");
 
@@ -9625,7 +9625,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2023 "machine/pentium/decoder.m"
+#line 2019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
@@ -9664,7 +9664,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2023 "machine/pentium/decoder.m"
+#line 2019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
@@ -9695,7 +9695,7 @@ hostPC
                                   case 0: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1972 "machine/pentium/decoder.m"
+#line 1968 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FPREM");
 
@@ -9708,7 +9708,7 @@ hostPC
                                   case 1: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 2107 "machine/pentium/decoder.m"
+#line 2103 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FYL2XP1");
 
@@ -9721,7 +9721,7 @@ hostPC
                                   case 2: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1999 "machine/pentium/decoder.m"
+#line 1995 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSQRT");
 
@@ -9734,7 +9734,7 @@ hostPC
                                   case 3: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1996 "machine/pentium/decoder.m"
+#line 1992 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSINCOS");
 
@@ -9747,7 +9747,7 @@ hostPC
                                   case 4: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1981 "machine/pentium/decoder.m"
+#line 1977 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FRNDINT");
 
@@ -9760,7 +9760,7 @@ hostPC
                                   case 5: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1990 "machine/pentium/decoder.m"
+#line 1986 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSCALE");
 
@@ -9773,7 +9773,7 @@ hostPC
                                   case 6: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1993 "machine/pentium/decoder.m"
+#line 1989 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSIN");
 
@@ -9786,7 +9786,7 @@ hostPC
                                   case 7: 
                                     nextPC = 2 + MATCH_p; 
                                     
-#line 1823 "machine/pentium/decoder.m"
+#line 1819 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOS");
 
@@ -9823,7 +9823,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1766 "machine/pentium/decoder.m"
+#line 1762 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
@@ -9862,7 +9862,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1766 "machine/pentium/decoder.m"
+#line 1762 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
@@ -9905,7 +9905,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1960 "machine/pentium/decoder.m"
+#line 1956 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
@@ -9944,7 +9944,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1960 "machine/pentium/decoder.m"
+#line 1956 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
@@ -9987,7 +9987,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1790 "machine/pentium/decoder.m"
+#line 1786 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
@@ -10026,7 +10026,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1790 "machine/pentium/decoder.m"
+#line 1786 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
@@ -10069,7 +10069,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1808 "machine/pentium/decoder.m"
+#line 1804 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
@@ -10108,7 +10108,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1808 "machine/pentium/decoder.m"
+#line 1804 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
@@ -10151,7 +10151,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2047 "machine/pentium/decoder.m"
+#line 2043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
@@ -10190,7 +10190,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2047 "machine/pentium/decoder.m"
+#line 2043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
@@ -10233,7 +10233,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2068 "machine/pentium/decoder.m"
+#line 2064 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
@@ -10272,7 +10272,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2068 "machine/pentium/decoder.m"
+#line 2064 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
@@ -10301,7 +10301,7 @@ hostPC
                               if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2086 "machine/pentium/decoder.m"
+#line 2082 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FUCOMPP");
 
@@ -10330,7 +10330,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1844 "machine/pentium/decoder.m"
+#line 1840 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
@@ -10369,7 +10369,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1844 "machine/pentium/decoder.m"
+#line 1840 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
@@ -10412,7 +10412,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1862 "machine/pentium/decoder.m"
+#line 1858 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
@@ -10451,7 +10451,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1862 "machine/pentium/decoder.m"
+#line 1858 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
@@ -10502,7 +10502,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1877 "machine/pentium/decoder.m"
+#line 1873 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
@@ -10541,7 +10541,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1877 "machine/pentium/decoder.m"
+#line 1873 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
@@ -10586,7 +10586,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1889 "machine/pentium/decoder.m"
+#line 1885 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
@@ -10625,7 +10625,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1889 "machine/pentium/decoder.m"
+#line 1885 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
@@ -10668,7 +10668,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1895 "machine/pentium/decoder.m"
+#line 1891 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
@@ -10707,7 +10707,7 @@ hostPC
                                 unsigned Mem32 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1895 "machine/pentium/decoder.m"
+#line 1891 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
@@ -10747,7 +10747,7 @@ hostPC
                                       /* mod at 8 */ == 3) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1781 "machine/pentium/decoder.m"
+#line 1777 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNCLEX");
 
@@ -10765,7 +10765,7 @@ hostPC
                                       /* mod at 8 */ == 3) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1883 "machine/pentium/decoder.m"
+#line 1879 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FINIT");
 
@@ -10794,7 +10794,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1907 "machine/pentium/decoder.m"
+#line 1903 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD80", DIS_MEM80);
 
@@ -10838,7 +10838,7 @@ hostPC
                                 unsigned Mem80 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1907 "machine/pentium/decoder.m"
+#line 1903 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD80", DIS_MEM80);
 
@@ -10876,7 +10876,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2089 "machine/pentium/decoder.m"
+#line 2085 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_IDX);
 
@@ -10898,7 +10898,7 @@ hostPC
                             unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                             nextPC = 2 + MATCH_p; 
                             
-#line 1817 "machine/pentium/decoder.m"
+#line 1813 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_IDX);
 
@@ -10926,7 +10926,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2014 "machine/pentium/decoder.m"
+#line 2010 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
@@ -10965,7 +10965,7 @@ hostPC
                                 unsigned Mem80 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2014 "machine/pentium/decoder.m"
+#line 2010 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
@@ -11016,7 +11016,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1754 "machine/pentium/decoder.m"
+#line 1750 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
@@ -11055,7 +11055,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1754 "machine/pentium/decoder.m"
+#line 1750 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
@@ -11086,7 +11086,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1760 "machine/pentium/decoder.m"
+#line 1756 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.STi.ST", DIS_IDX);
 
@@ -11113,7 +11113,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1948 "machine/pentium/decoder.m"
+#line 1944 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
@@ -11152,7 +11152,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1948 "machine/pentium/decoder.m"
+#line 1944 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
@@ -11183,7 +11183,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1954 "machine/pentium/decoder.m"
+#line 1950 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.STi.ST", DIS_IDX);
 
@@ -11210,7 +11210,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1787 "machine/pentium/decoder.m"
+#line 1783 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
@@ -11249,7 +11249,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1787 "machine/pentium/decoder.m"
+#line 1783 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
@@ -11292,7 +11292,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1799 "machine/pentium/decoder.m"
+#line 1795 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
@@ -11331,7 +11331,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1799 "machine/pentium/decoder.m"
+#line 1795 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
@@ -11374,7 +11374,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2038 "machine/pentium/decoder.m"
+#line 2034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
@@ -11413,7 +11413,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2038 "machine/pentium/decoder.m"
+#line 2034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
@@ -11444,7 +11444,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2065 "machine/pentium/decoder.m"
+#line 2061 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.STi.ST", DIS_IDX);
 
@@ -11471,7 +11471,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2059 "machine/pentium/decoder.m"
+#line 2055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
@@ -11510,7 +11510,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2059 "machine/pentium/decoder.m"
+#line 2055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
@@ -11541,7 +11541,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2044 "machine/pentium/decoder.m"
+#line 2040 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.STi.ST", DIS_IDX);
 
@@ -11568,7 +11568,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1832 "machine/pentium/decoder.m"
+#line 1828 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
@@ -11607,7 +11607,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1832 "machine/pentium/decoder.m"
+#line 1828 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
@@ -11638,7 +11638,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1859 "machine/pentium/decoder.m"
+#line 1855 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.STi.ST", DIS_IDX);
 
@@ -11665,7 +11665,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1853 "machine/pentium/decoder.m"
+#line 1849 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
@@ -11704,7 +11704,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1853 "machine/pentium/decoder.m"
+#line 1849 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
@@ -11735,7 +11735,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1838 "machine/pentium/decoder.m"
+#line 1834 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.STi.ST", DIS_IDX);
 
@@ -11770,7 +11770,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1904 "machine/pentium/decoder.m"
+#line 1900 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
@@ -11809,7 +11809,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1904 "machine/pentium/decoder.m"
+#line 1900 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
@@ -11840,7 +11840,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1871 "machine/pentium/decoder.m"
+#line 1867 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FFREE", DIS_IDX);
 
@@ -11869,7 +11869,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2005 "machine/pentium/decoder.m"
+#line 2001 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
@@ -11908,7 +11908,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2005 "machine/pentium/decoder.m"
+#line 2001 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
@@ -11939,7 +11939,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2017 "machine/pentium/decoder.m"
+#line 2013 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.st.STi", DIS_IDX);
 
@@ -11966,7 +11966,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2011 "machine/pentium/decoder.m"
+#line 2007 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
@@ -12005,7 +12005,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2011 "machine/pentium/decoder.m"
+#line 2007 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
@@ -12036,7 +12036,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2020 "machine/pentium/decoder.m"
+#line 2016 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.st.STi", DIS_IDX);
 
@@ -12062,7 +12062,7 @@ hostPC
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1984 "machine/pentium/decoder.m"
+#line 1980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
@@ -12101,7 +12101,7 @@ hostPC
                                 unsigned Mem = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1984 "machine/pentium/decoder.m"
+#line 1980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
@@ -12132,7 +12132,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2080 "machine/pentium/decoder.m"
+#line 2076 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FUCOM", DIS_IDX);
 
@@ -12151,7 +12151,7 @@ hostPC
                           unsigned idx = (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 2083 "machine/pentium/decoder.m"
+#line 2079 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FUCOMP", DIS_IDX);
 
@@ -12176,7 +12176,7 @@ hostPC
                                       unsigned Mem = 1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1987 "machine/pentium/decoder.m"
+#line 1983 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
@@ -12215,7 +12215,7 @@ hostPC
                                 unsigned Mem = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1987 "machine/pentium/decoder.m"
+#line 1983 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
@@ -12258,7 +12258,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2029 "machine/pentium/decoder.m"
+#line 2025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
@@ -12297,7 +12297,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2029 "machine/pentium/decoder.m"
+#line 2025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
@@ -12348,7 +12348,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1769 "machine/pentium/decoder.m"
+#line 1765 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
@@ -12387,7 +12387,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1769 "machine/pentium/decoder.m"
+#line 1765 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
@@ -12418,7 +12418,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1763 "machine/pentium/decoder.m"
+#line 1759 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADDP.STi.ST", DIS_IDX);
 
@@ -12445,7 +12445,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1963 "machine/pentium/decoder.m"
+#line 1959 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
@@ -12484,7 +12484,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1963 "machine/pentium/decoder.m"
+#line 1959 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
@@ -12515,7 +12515,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1957 "machine/pentium/decoder.m"
+#line 1953 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMULP.STi.ST", DIS_IDX);
 
@@ -12542,7 +12542,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1793 "machine/pentium/decoder.m"
+#line 1789 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
@@ -12581,7 +12581,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1793 "machine/pentium/decoder.m"
+#line 1789 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
@@ -12624,7 +12624,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1811 "machine/pentium/decoder.m"
+#line 1807 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
@@ -12663,7 +12663,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1811 "machine/pentium/decoder.m"
+#line 1807 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
@@ -12692,7 +12692,7 @@ hostPC
                               if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1814 "machine/pentium/decoder.m"
+#line 1810 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMPP");
 
@@ -12721,7 +12721,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2050 "machine/pentium/decoder.m"
+#line 2046 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
@@ -12760,7 +12760,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2050 "machine/pentium/decoder.m"
+#line 2046 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
@@ -12791,7 +12791,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2074 "machine/pentium/decoder.m"
+#line 2070 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBRP.STi.ST", DIS_IDX);
 
@@ -12818,7 +12818,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 2071 "machine/pentium/decoder.m"
+#line 2067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
@@ -12857,7 +12857,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 2071 "machine/pentium/decoder.m"
+#line 2067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
@@ -12888,7 +12888,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2053 "machine/pentium/decoder.m"
+#line 2049 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBP.STi.ST", DIS_IDX);
 
@@ -12915,7 +12915,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1847 "machine/pentium/decoder.m"
+#line 1843 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
@@ -12954,7 +12954,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1847 "machine/pentium/decoder.m"
+#line 1843 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
@@ -12985,7 +12985,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1868 "machine/pentium/decoder.m"
+#line 1864 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVRP.STi.ST", DIS_IDX);
 
@@ -13012,7 +13012,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1865 "machine/pentium/decoder.m"
+#line 1861 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
@@ -13051,7 +13051,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1865 "machine/pentium/decoder.m"
+#line 1861 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
@@ -13082,7 +13082,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1841 "machine/pentium/decoder.m"
+#line 1837 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVP.STi.ST", DIS_IDX);
 
@@ -13117,7 +13117,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1874 "machine/pentium/decoder.m"
+#line 1870 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
@@ -13156,7 +13156,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1874 "machine/pentium/decoder.m"
+#line 1870 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
@@ -13201,7 +13201,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1886 "machine/pentium/decoder.m"
+#line 1882 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
@@ -13240,7 +13240,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1886 "machine/pentium/decoder.m"
+#line 1882 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
@@ -13283,7 +13283,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1892 "machine/pentium/decoder.m"
+#line 1888 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
@@ -13322,7 +13322,7 @@ hostPC
                                 unsigned Mem16 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1892 "machine/pentium/decoder.m"
+#line 1888 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
@@ -13365,7 +13365,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1772 "machine/pentium/decoder.m"
+#line 1768 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
@@ -13404,7 +13404,7 @@ hostPC
                                 unsigned Mem80 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1772 "machine/pentium/decoder.m"
+#line 1768 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
@@ -13433,7 +13433,7 @@ hostPC
                               if ((MATCH_w_8_8 & 0x7) /* r_m at 8 */ == 0) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2032 "machine/pentium/decoder.m"
+#line 2028 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTSW.AX");
 
@@ -13462,7 +13462,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1880 "machine/pentium/decoder.m"
+#line 1876 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
@@ -13501,7 +13501,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1880 "machine/pentium/decoder.m"
+#line 1876 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
@@ -13534,7 +13534,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 2092 "machine/pentium/decoder.m"
+#line 2088 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_IDX);
 
@@ -13561,7 +13561,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1775 "machine/pentium/decoder.m"
+#line 1771 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
@@ -13600,7 +13600,7 @@ hostPC
                                 unsigned Mem80 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1775 "machine/pentium/decoder.m"
+#line 1771 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
@@ -13633,7 +13633,7 @@ hostPC
                                   (MATCH_w_8_8 & 0x7) /* r_m at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1820 "machine/pentium/decoder.m"
+#line 1816 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_IDX);
 
@@ -13660,7 +13660,7 @@ hostPC
                                         1 + addressToPC(MATCH_p);
                                       nextPC = 2 + MATCH_p; 
                                       
-#line 1898 "machine/pentium/decoder.m"
+#line 1894 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
@@ -13699,7 +13699,7 @@ hostPC
                                 unsigned Mem64 = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1898 "machine/pentium/decoder.m"
+#line 1894 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
@@ -13746,7 +13746,7 @@ hostPC
                       5 + MATCH_w_32_8 /* i32 at 8 */ + addressToPC(MATCH_p);
                     nextPC = 5 + MATCH_p; 
                     
-#line 1281 "machine/pentium/decoder.m"
+#line 1277 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - hostPC - 5));
 		ADDRESS nativeDest = relocd - delta;
@@ -13784,9 +13784,9 @@ hostPC
                       5 + MATCH_w_32_8 /* i32 at 8 */ + addressToPC(MATCH_p);
                     nextPC = 5 + MATCH_p; 
                     
-#line 149 "machine/pentium/decoder.m"
+#line 145 "machine/pentium/decoder.m"
 
-		unconditionalJump(name, 5, relocd, delta, pc, stmts, result);
+		unconditionalJump(name, relocd, delta, pc, stmts, result);
 
 #line 13792 "pentiumdecoder.cpp"
 
@@ -13807,9 +13807,9 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 153 "machine/pentium/decoder.m"
+#line 149 "machine/pentium/decoder.m"
 
-		unconditionalJump(name, 2, relocd, delta, pc, stmts, result);
+		unconditionalJump(name, relocd, delta, pc, stmts, result);
 
 	/*
 	 * Conditional branches, 8 bit offset: 7X XX
@@ -13830,7 +13830,7 @@ hostPC
                 case 0: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1266 "machine/pentium/decoder.m"
+#line 1262 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CLC");
 
@@ -13843,7 +13843,7 @@ hostPC
                 case 1: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 421 "machine/pentium/decoder.m"
+#line 417 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STC");
 
@@ -13856,7 +13856,7 @@ hostPC
                 case 2: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1260 "machine/pentium/decoder.m"
+#line 1256 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CLI");
 
@@ -13869,7 +13869,7 @@ hostPC
                 case 3: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 415 "machine/pentium/decoder.m"
+#line 411 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STI");
 
@@ -13882,7 +13882,7 @@ hostPC
                 case 4: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1263 "machine/pentium/decoder.m"
+#line 1259 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CLD");
 
@@ -13895,7 +13895,7 @@ hostPC
                 case 5: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 418 "machine/pentium/decoder.m"
+#line 414 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STD");
 
@@ -13946,7 +13946,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1131 "machine/pentium/decoder.m"
+#line 1127 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Eb", DIS_EADDR8);
 
@@ -14031,7 +14031,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1215 "machine/pentium/decoder.m"
+#line 1211 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
@@ -14108,7 +14108,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1125 "machine/pentium/decoder.m"
+#line 1121 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
@@ -14175,7 +14175,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1209 "machine/pentium/decoder.m"
+#line 1205 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
@@ -14256,11 +14256,9 @@ hostPC
 		newCall->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 
-#line 14264 "pentiumdecoder.cpp"
+#line 14262 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14324,7 +14322,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 132 "machine/pentium/decoder.m"
+#line 130 "machine/pentium/decoder.m"
 
 		/*
 		 * Register jump
@@ -14336,14 +14334,12 @@ hostPC
 		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newJump);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	/*
 	 * Unconditional branches
 	 */
 
-#line 14347 "pentiumdecoder.cpp"
+#line 14343 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14405,12 +14401,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 836 "machine/pentium/decoder.m"
+#line 832 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 14414 "pentiumdecoder.cpp"
+#line 14410 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -14488,12 +14484,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1537 "machine/pentium/decoder.m"
+#line 1533 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 14497 "pentiumdecoder.cpp"
+#line 14493 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14556,12 +14552,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1510 "machine/pentium/decoder.m"
+#line 1506 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 14565 "pentiumdecoder.cpp"
+#line 14561 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14624,12 +14620,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1465 "machine/pentium/decoder.m"
+#line 1461 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 14633 "pentiumdecoder.cpp"
+#line 14629 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14692,12 +14688,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1438 "machine/pentium/decoder.m"
+#line 1434 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 14701 "pentiumdecoder.cpp"
+#line 14697 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14729,12 +14725,12 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1732 "machine/pentium/decoder.m"
+#line 1728 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiAL", DIS_I8);
 
 
-#line 14738 "pentiumdecoder.cpp"
+#line 14734 "pentiumdecoder.cpp"
 
                     
                   }
@@ -14746,12 +14742,12 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1684 "machine/pentium/decoder.m"
+#line 1680 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiEAX", DIS_I32);
 
 
-#line 14755 "pentiumdecoder.cpp"
+#line 14751 "pentiumdecoder.cpp"
 
                     
                   }
@@ -14760,12 +14756,12 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 806 "machine/pentium/decoder.m"
+#line 802 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.ES");
 
 
-#line 14769 "pentiumdecoder.cpp"
+#line 14765 "pentiumdecoder.cpp"
 
                   
                   
@@ -14773,12 +14769,12 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 866 "machine/pentium/decoder.m"
+#line 862 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.ES");
 
 
-#line 14782 "pentiumdecoder.cpp"
+#line 14778 "pentiumdecoder.cpp"
 
                   
                   
@@ -14827,12 +14823,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1531 "machine/pentium/decoder.m"
+#line 1527 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 14836 "pentiumdecoder.cpp"
+#line 14832 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14895,12 +14891,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1498 "machine/pentium/decoder.m"
+#line 1494 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 14904 "pentiumdecoder.cpp"
+#line 14900 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -14963,12 +14959,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1459 "machine/pentium/decoder.m"
+#line 1455 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 14972 "pentiumdecoder.cpp"
+#line 14968 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15031,12 +15027,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1426 "machine/pentium/decoder.m"
+#line 1422 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 15040 "pentiumdecoder.cpp"
+#line 15036 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15068,12 +15064,12 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1726 "machine/pentium/decoder.m"
+#line 1722 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiAL", DIS_I8);
 
 
-#line 15077 "pentiumdecoder.cpp"
+#line 15073 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15085,12 +15081,12 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1678 "machine/pentium/decoder.m"
+#line 1674 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiEAX", DIS_I32);
 
 
-#line 15094 "pentiumdecoder.cpp"
+#line 15090 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15099,12 +15095,12 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 812 "machine/pentium/decoder.m"
+#line 808 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.SS");
 
 
-#line 15108 "pentiumdecoder.cpp"
+#line 15104 "pentiumdecoder.cpp"
 
                   
                   
@@ -15112,12 +15108,12 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 863 "machine/pentium/decoder.m"
+#line 859 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.SS");
 
 
-#line 15121 "pentiumdecoder.cpp"
+#line 15117 "pentiumdecoder.cpp"
 
                   
                   
@@ -15166,12 +15162,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1525 "machine/pentium/decoder.m"
+#line 1521 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 15175 "pentiumdecoder.cpp"
+#line 15171 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15234,12 +15230,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1486 "machine/pentium/decoder.m"
+#line 1482 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 15243 "pentiumdecoder.cpp"
+#line 15239 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15302,12 +15298,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1453 "machine/pentium/decoder.m"
+#line 1449 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 15311 "pentiumdecoder.cpp"
+#line 15307 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15370,12 +15366,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1414 "machine/pentium/decoder.m"
+#line 1410 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 15379 "pentiumdecoder.cpp"
+#line 15375 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15407,12 +15403,12 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1720 "machine/pentium/decoder.m"
+#line 1716 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiAL", DIS_I8);
 
 
-#line 15416 "pentiumdecoder.cpp"
+#line 15412 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15424,12 +15420,12 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1672 "machine/pentium/decoder.m"
+#line 1668 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiEAX", DIS_I32);
 
 
-#line 15433 "pentiumdecoder.cpp"
+#line 15429 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15438,12 +15434,12 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 334 "machine/pentium/decoder.m"
+#line 330 "machine/pentium/decoder.m"
   // For now, treat seg.es as a 1 byte NOP
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15447 "pentiumdecoder.cpp"
+#line 15443 "pentiumdecoder.cpp"
 
                   
                   
@@ -15451,12 +15447,12 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1221 "machine/pentium/decoder.m"
+#line 1217 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DAA");
 
 
-#line 15460 "pentiumdecoder.cpp"
+#line 15456 "pentiumdecoder.cpp"
 
                   
                   
@@ -15505,12 +15501,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1519 "machine/pentium/decoder.m"
+#line 1515 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 15514 "pentiumdecoder.cpp"
+#line 15510 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15573,12 +15569,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1474 "machine/pentium/decoder.m"
+#line 1470 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 15582 "pentiumdecoder.cpp"
+#line 15578 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15641,12 +15637,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1447 "machine/pentium/decoder.m"
+#line 1443 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 15650 "pentiumdecoder.cpp"
+#line 15646 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15709,12 +15705,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1402 "machine/pentium/decoder.m"
+#line 1398 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 15718 "pentiumdecoder.cpp"
+#line 15714 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -15746,12 +15742,12 @@ hostPC
                       sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1714 "machine/pentium/decoder.m"
+#line 1710 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiAL", DIS_I8);
 
 
-#line 15755 "pentiumdecoder.cpp"
+#line 15751 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15763,12 +15759,12 @@ hostPC
                     unsigned i32 = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1666 "machine/pentium/decoder.m"
+#line 1662 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiEAX", DIS_I32);
 
 
-#line 15772 "pentiumdecoder.cpp"
+#line 15768 "pentiumdecoder.cpp"
 
                     
                   }
@@ -15777,12 +15773,12 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 343 "machine/pentium/decoder.m"
+#line 339 "machine/pentium/decoder.m"
   // For now, treat seg.ss as a 1 byte NOP
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15786 "pentiumdecoder.cpp"
+#line 15782 "pentiumdecoder.cpp"
 
                   
                   
@@ -15797,12 +15793,12 @@ hostPC
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r32 at 0 */;
               nextPC = 1 + MATCH_p; 
               
-#line 1119 "machine/pentium/decoder.m"
+#line 1115 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INCod", DIS_R32);
 
 
-#line 15806 "pentiumdecoder.cpp"
+#line 15802 "pentiumdecoder.cpp"
 
               
             }
@@ -15813,12 +15809,12 @@ hostPC
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r32 at 0 */;
               nextPC = 1 + MATCH_p; 
               
-#line 830 "machine/pentium/decoder.m"
+#line 826 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSHod", DIS_R32);
 
 
-#line 15822 "pentiumdecoder.cpp"
+#line 15818 "pentiumdecoder.cpp"
 
               
             }
@@ -15832,12 +15828,12 @@ hostPC
                 case 4: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 337 "machine/pentium/decoder.m"
+#line 333 "machine/pentium/decoder.m"
   // For now, treat seg.fs as a 1 byte NOP
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15841 "pentiumdecoder.cpp"
+#line 15837 "pentiumdecoder.cpp"
 
                   
                   
@@ -15845,12 +15841,12 @@ hostPC
                 case 5: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 340 "machine/pentium/decoder.m"
+#line 336 "machine/pentium/decoder.m"
   // For now, treat seg.gs as a 1 byte NOP
 		stmts = instantiate(pc, "NOP");
 
 
-#line 15854 "pentiumdecoder.cpp"
+#line 15850 "pentiumdecoder.cpp"
 
                   
                   
@@ -15913,12 +15909,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1507 "machine/pentium/decoder.m"
+#line 1503 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 15922 "pentiumdecoder.cpp"
+#line 15918 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -15993,12 +15989,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1513 "machine/pentium/decoder.m"
+#line 1509 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 16002 "pentiumdecoder.cpp"
+#line 15998 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -16076,12 +16072,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1435 "machine/pentium/decoder.m"
+#line 1431 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16085 "pentiumdecoder.cpp"
+#line 16081 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -16156,12 +16152,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1441 "machine/pentium/decoder.m"
+#line 1437 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16165 "pentiumdecoder.cpp"
+#line 16161 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -16201,12 +16197,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1705 "machine/pentium/decoder.m"
+#line 1701 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiAX", DIS_I16);
 
 
-#line 16210 "pentiumdecoder.cpp"
+#line 16206 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -16221,12 +16217,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1708 "machine/pentium/decoder.m"
+#line 1704 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiAX", DIS_I16);
 
 
-#line 16230 "pentiumdecoder.cpp"
+#line 16226 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -16309,12 +16305,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1083 "machine/pentium/decoder.m"
+#line 1079 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16318 "pentiumdecoder.cpp"
+#line 16314 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -16407,12 +16403,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1047 "machine/pentium/decoder.m"
+#line 1043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 16416 "pentiumdecoder.cpp"
+#line 16412 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -16470,11 +16466,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 209 "machine/pentium/decoder.m"
+#line 205 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Sow", 4, relocd, BRANCH_JMI)
+		COND_JUMP("Jv.Sow", relocd, BRANCH_JMI)
 
-#line 16478 "pentiumdecoder.cpp"
+#line 16474 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16492,11 +16488,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 207 "machine/pentium/decoder.m"
+#line 203 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NSow", 4, relocd, BRANCH_JPOS)
+		COND_JUMP("Jv.NSow", relocd, BRANCH_JPOS)
 
-#line 16500 "pentiumdecoder.cpp"
+#line 16496 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16514,11 +16510,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 205 "machine/pentium/decoder.m"
+#line 201 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Pow", 4, relocd, BRANCH_JPAR)
+		COND_JUMP("Jv.Pow", relocd, BRANCH_JPAR)
 
-#line 16522 "pentiumdecoder.cpp"
+#line 16518 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16536,11 +16532,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 203 "machine/pentium/decoder.m"
+#line 199 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NPow", 4, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NPow", relocd, (BRANCH_TYPE)0)
 
-#line 16544 "pentiumdecoder.cpp"
+#line 16540 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16558,11 +16554,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 201 "machine/pentium/decoder.m"
+#line 197 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Low", 4, relocd, BRANCH_JSL)
+		COND_JUMP("Jv.Low", relocd, BRANCH_JSL)
 
-#line 16566 "pentiumdecoder.cpp"
+#line 16562 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16580,11 +16576,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 199 "machine/pentium/decoder.m"
+#line 195 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NLow", 4, relocd, BRANCH_JSGE)
+		COND_JUMP("Jv.NLow", relocd, BRANCH_JSGE)
 
-#line 16588 "pentiumdecoder.cpp"
+#line 16584 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16602,11 +16598,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 197 "machine/pentium/decoder.m"
+#line 193 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.LEow", 4, relocd, BRANCH_JSLE)
+		COND_JUMP("Jv.LEow", relocd, BRANCH_JSLE)
 
-#line 16610 "pentiumdecoder.cpp"
+#line 16606 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16624,11 +16620,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 195 "machine/pentium/decoder.m"
+#line 191 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NLEow", 4, relocd, BRANCH_JSG)
+		COND_JUMP("Jv.NLEow", relocd, BRANCH_JSG)
 
-#line 16632 "pentiumdecoder.cpp"
+#line 16628 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16653,15 +16649,15 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 225 "machine/pentium/decoder.m"
+#line 221 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Oow", 4, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.Oow", relocd, (BRANCH_TYPE)0)
 
 	/*
 	 * Conditional branches, 32 bit offset: 0F 8X XX XX XX XX
 	 */
 
-#line 16665 "pentiumdecoder.cpp"
+#line 16661 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16679,11 +16675,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 223 "machine/pentium/decoder.m"
+#line 219 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NOow", 4, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jv.NOow", relocd, (BRANCH_TYPE)0)
 
-#line 16687 "pentiumdecoder.cpp"
+#line 16683 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16701,11 +16697,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 221 "machine/pentium/decoder.m"
+#line 217 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Bow", 4, relocd, BRANCH_JUL)
+		COND_JUMP("Jv.Bow", relocd, BRANCH_JUL)
 
-#line 16709 "pentiumdecoder.cpp"
+#line 16705 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16723,11 +16719,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 219 "machine/pentium/decoder.m"
+#line 215 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NBow", 4, relocd, BRANCH_JUGE)
+		COND_JUMP("Jv.NBow", relocd, BRANCH_JUGE)
 
-#line 16731 "pentiumdecoder.cpp"
+#line 16727 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16745,11 +16741,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 217 "machine/pentium/decoder.m"
+#line 213 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.Zow", 4, relocd, BRANCH_JE)
+		COND_JUMP("Jv.Zow", relocd, BRANCH_JE)
 
-#line 16753 "pentiumdecoder.cpp"
+#line 16749 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16767,11 +16763,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 215 "machine/pentium/decoder.m"
+#line 211 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NZow", 4, relocd, BRANCH_JNE)
+		COND_JUMP("Jv.NZow", relocd, BRANCH_JNE)
 
-#line 16775 "pentiumdecoder.cpp"
+#line 16771 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16789,11 +16785,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 213 "machine/pentium/decoder.m"
+#line 209 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.BEow", 4, relocd, BRANCH_JULE)
+		COND_JUMP("Jv.BEow", relocd, BRANCH_JULE)
 
-#line 16797 "pentiumdecoder.cpp"
+#line 16793 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16811,11 +16807,11 @@ hostPC
                                                   addressToPC(MATCH_p);
                                                 nextPC = 5 + MATCH_p; 
                                                 
-#line 211 "machine/pentium/decoder.m"
+#line 207 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jv.NBEow", 4, relocd, BRANCH_JUG)
+		COND_JUMP("Jv.NBEow", relocd, BRANCH_JUG)
 
-#line 16819 "pentiumdecoder.cpp"
+#line 16815 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -16890,12 +16886,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1310 "machine/pentium/decoder.m"
+#line 1306 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 16899 "pentiumdecoder.cpp"
+#line 16895 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -16983,12 +16979,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1346 "machine/pentium/decoder.m"
+#line 1342 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 16992 "pentiumdecoder.cpp"
+#line 16988 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17105,12 +17101,12 @@ hostPC
                                                                 /* reg_opcode at 24 */;
                                                         nextPC = 7 + MATCH_p; 
                                                         
-#line 451 "machine/pentium/decoder.m"
+#line 447 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 17114 "pentiumdecoder.cpp"
+#line 17110 "pentiumdecoder.cpp"
 
                                                         
                                                       }
@@ -17240,12 +17236,12 @@ hostPC
                                                                 /* reg_opcode at 24 */;
                                                         nextPC = 7 + MATCH_p; 
                                                         
-#line 445 "machine/pentium/decoder.m"
+#line 441 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 17249 "pentiumdecoder.cpp"
+#line 17245 "pentiumdecoder.cpp"
 
                                                         
                                                       }
@@ -17352,12 +17348,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 439 "machine/pentium/decoder.m"
+#line 435 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 17361 "pentiumdecoder.cpp"
+#line 17357 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17445,12 +17441,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 433 "machine/pentium/decoder.m"
+#line 429 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 17454 "pentiumdecoder.cpp"
+#line 17450 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17541,12 +17537,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1167 "machine/pentium/decoder.m"
+#line 1163 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 17550 "pentiumdecoder.cpp"
+#line 17546 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17651,12 +17647,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1239 "machine/pentium/decoder.m"
+#line 1235 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 17660 "pentiumdecoder.cpp"
+#line 17656 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -17787,12 +17783,12 @@ hostPC
                                                               nextPC = 7 + 
                                                               MATCH_p; 
                                                               
-#line 1340 "machine/pentium/decoder.m"
+#line 1336 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 17796 "pentiumdecoder.cpp"
+#line 17792 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -17934,12 +17930,12 @@ hostPC
                                                               nextPC = 7 + 
                                                               MATCH_p; 
                                                               
-#line 1304 "machine/pentium/decoder.m"
+#line 1300 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 17943 "pentiumdecoder.cpp"
+#line 17939 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -18081,12 +18077,12 @@ hostPC
                                                               nextPC = 7 + 
                                                               MATCH_p; 
                                                               
-#line 1316 "machine/pentium/decoder.m"
+#line 1312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 18090 "pentiumdecoder.cpp"
+#line 18086 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -18228,12 +18224,12 @@ hostPC
                                                               nextPC = 7 + 
                                                               MATCH_p; 
                                                               
-#line 1328 "machine/pentium/decoder.m"
+#line 1324 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 18237 "pentiumdecoder.cpp"
+#line 18233 "pentiumdecoder.cpp"
 
                                                               
                                                             }
@@ -18356,12 +18352,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1334 "machine/pentium/decoder.m"
+#line 1330 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 18365 "pentiumdecoder.cpp"
+#line 18361 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18449,12 +18445,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1322 "machine/pentium/decoder.m"
+#line 1318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 18458 "pentiumdecoder.cpp"
+#line 18454 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18545,7 +18541,7 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1368 "machine/pentium/decoder.m"
+#line 1364 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - hostPC);
@@ -18575,7 +18571,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 18579 "pentiumdecoder.cpp"
+#line 18575 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18668,14 +18664,14 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 1358 "machine/pentium/decoder.m"
+#line 1354 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - hostPC);
 		return result;
 
 
-#line 18679 "pentiumdecoder.cpp"
+#line 18675 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18768,12 +18764,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 950 "machine/pentium/decoder.m"
+#line 946 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 18777 "pentiumdecoder.cpp"
+#line 18773 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18861,12 +18857,12 @@ hostPC
                                                               /* reg_opcode at 24 */;
                                                       nextPC = 6 + MATCH_p; 
                                                       
-#line 941 "machine/pentium/decoder.m"
+#line 937 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 18870 "pentiumdecoder.cpp"
+#line 18866 "pentiumdecoder.cpp"
 
                                                       
                                                     } /*opt-block*//*opt-block+*/
@@ -18961,12 +18957,12 @@ hostPC
                                                           /* reg_opcode at 24 */;
                                                   nextPC = 6 + MATCH_p; 
                                                   
-#line 355 "machine/pentium/decoder.m"
+#line 351 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 18970 "pentiumdecoder.cpp"
+#line 18966 "pentiumdecoder.cpp"
 
                                                   
                                                 } /*opt-block*//*opt-block+*/
@@ -19063,12 +19059,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1495 "machine/pentium/decoder.m"
+#line 1491 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19072 "pentiumdecoder.cpp"
+#line 19068 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19143,12 +19139,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1501 "machine/pentium/decoder.m"
+#line 1497 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19152 "pentiumdecoder.cpp"
+#line 19148 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19226,12 +19222,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1423 "machine/pentium/decoder.m"
+#line 1419 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19235 "pentiumdecoder.cpp"
+#line 19231 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19306,12 +19302,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1429 "machine/pentium/decoder.m"
+#line 1425 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19315 "pentiumdecoder.cpp"
+#line 19311 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19351,12 +19347,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1699 "machine/pentium/decoder.m"
+#line 1695 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiAX", DIS_I16);
 
 
-#line 19360 "pentiumdecoder.cpp"
+#line 19356 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19371,12 +19367,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1702 "machine/pentium/decoder.m"
+#line 1698 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiAX", DIS_I16);
 
 
-#line 19380 "pentiumdecoder.cpp"
+#line 19376 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19441,12 +19437,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1483 "machine/pentium/decoder.m"
+#line 1479 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19450 "pentiumdecoder.cpp"
+#line 19446 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19521,12 +19517,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1489 "machine/pentium/decoder.m"
+#line 1485 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19530 "pentiumdecoder.cpp"
+#line 19526 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19604,12 +19600,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1411 "machine/pentium/decoder.m"
+#line 1407 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19613 "pentiumdecoder.cpp"
+#line 19609 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19684,12 +19680,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1417 "machine/pentium/decoder.m"
+#line 1413 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19693 "pentiumdecoder.cpp"
+#line 19689 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19729,12 +19725,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1693 "machine/pentium/decoder.m"
+#line 1689 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiAX", DIS_I16);
 
 
-#line 19738 "pentiumdecoder.cpp"
+#line 19734 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19749,12 +19745,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1696 "machine/pentium/decoder.m"
+#line 1692 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiAX", DIS_I16);
 
 
-#line 19758 "pentiumdecoder.cpp"
+#line 19754 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -19819,12 +19815,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1471 "machine/pentium/decoder.m"
+#line 1467 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19828 "pentiumdecoder.cpp"
+#line 19824 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19899,12 +19895,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1477 "machine/pentium/decoder.m"
+#line 1473 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 19908 "pentiumdecoder.cpp"
+#line 19904 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -19982,12 +19978,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1399 "machine/pentium/decoder.m"
+#line 1395 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 19991 "pentiumdecoder.cpp"
+#line 19987 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -20062,12 +20058,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1405 "machine/pentium/decoder.m"
+#line 1401 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 20071 "pentiumdecoder.cpp"
+#line 20067 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -20107,12 +20103,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1687 "machine/pentium/decoder.m"
+#line 1683 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiAX", DIS_I16);
 
 
-#line 20116 "pentiumdecoder.cpp"
+#line 20112 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20127,12 +20123,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 1690 "machine/pentium/decoder.m"
+#line 1686 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiAX", DIS_I16);
 
 
-#line 20136 "pentiumdecoder.cpp"
+#line 20132 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20148,12 +20144,12 @@ hostPC
                           unsigned r32 = (MATCH_w_8_8 & 0x7) /* r32 at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 1206 "machine/pentium/decoder.m"
+#line 1202 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DECow", DIS_R32);
 
 
-#line 20157 "pentiumdecoder.cpp"
+#line 20153 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20161,12 +20157,12 @@ hostPC
                           unsigned r32 = (MATCH_w_8_8 & 0x7) /* r32 at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 1122 "machine/pentium/decoder.m"
+#line 1118 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INCow", DIS_R32);
 
 
-#line 20170 "pentiumdecoder.cpp"
+#line 20166 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20177,12 +20173,12 @@ hostPC
                           unsigned r32 = (MATCH_w_8_8 & 0x7) /* r32 at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 872 "machine/pentium/decoder.m"
+#line 868 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POPow", DIS_R32);  // Check!
 
 
-#line 20186 "pentiumdecoder.cpp"
+#line 20182 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20190,12 +20186,12 @@ hostPC
                           unsigned r32 = (MATCH_w_8_8 & 0x7) /* r32 at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 833 "machine/pentium/decoder.m"
+#line 829 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSHow", DIS_R32);  // Check!
 
 
-#line 20199 "pentiumdecoder.cpp"
+#line 20195 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -20214,12 +20210,12 @@ hostPC
                                                       /* i16 at 16 */, 16);
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 821 "machine/pentium/decoder.m"
+#line 817 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Ivow", DIS_I16);
 
 
-#line 20223 "pentiumdecoder.cpp"
+#line 20219 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20295,12 +20291,12 @@ hostPC
                                                   /* reg_opcode at 16 */;
                                           nextPC = 7 + MATCH_p; 
                                           
-#line 1155 "machine/pentium/decoder.m"
+#line 1151 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 20304 "pentiumdecoder.cpp"
+#line 20300 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -20351,12 +20347,12 @@ hostPC
                                                       /* i8 at 16 */, 8);
                                   nextPC = 3 + MATCH_p; 
                                   
-#line 827 "machine/pentium/decoder.m"
+#line 823 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Ixow", DIS_I8);
 
 
-#line 20360 "pentiumdecoder.cpp"
+#line 20356 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -20432,12 +20428,12 @@ hostPC
                                                   /* reg_opcode at 16 */;
                                           nextPC = 6 + MATCH_p; 
                                           
-#line 1161 "machine/pentium/decoder.m"
+#line 1157 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 20441 "pentiumdecoder.cpp"
+#line 20437 "pentiumdecoder.cpp"
 
                                           
                                         }
@@ -20542,12 +20538,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1032 "machine/pentium/decoder.m"
+#line 1028 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 20551 "pentiumdecoder.cpp"
+#line 20547 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -20648,12 +20644,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1636 "machine/pentium/decoder.m"
+#line 1632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 20657 "pentiumdecoder.cpp"
+#line 20653 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -20767,12 +20763,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1633 "machine/pentium/decoder.m"
+#line 1629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 20776 "pentiumdecoder.cpp"
+#line 20772 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -20886,12 +20882,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1630 "machine/pentium/decoder.m"
+#line 1626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 20895 "pentiumdecoder.cpp"
+#line 20891 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21005,12 +21001,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1627 "machine/pentium/decoder.m"
+#line 1623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21014 "pentiumdecoder.cpp"
+#line 21010 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21124,12 +21120,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1624 "machine/pentium/decoder.m"
+#line 1620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21133 "pentiumdecoder.cpp"
+#line 21129 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21243,12 +21239,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1621 "machine/pentium/decoder.m"
+#line 1617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21252 "pentiumdecoder.cpp"
+#line 21248 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21362,12 +21358,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1618 "machine/pentium/decoder.m"
+#line 1614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21371 "pentiumdecoder.cpp"
+#line 21367 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21481,12 +21477,12 @@ hostPC
                                                               16);
                                                 nextPC = 7 + MATCH_p; 
                                                 
-#line 1615 "machine/pentium/decoder.m"
+#line 1611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 21490 "pentiumdecoder.cpp"
+#line 21486 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21587,12 +21583,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1023 "machine/pentium/decoder.m"
+#line 1019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 21596 "pentiumdecoder.cpp"
+#line 21592 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -21693,12 +21689,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1588 "machine/pentium/decoder.m"
+#line 1584 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 21702 "pentiumdecoder.cpp"
+#line 21698 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21812,12 +21808,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1582 "machine/pentium/decoder.m"
+#line 1578 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 21821 "pentiumdecoder.cpp"
+#line 21817 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -21931,12 +21927,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1576 "machine/pentium/decoder.m"
+#line 1572 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 21940 "pentiumdecoder.cpp"
+#line 21936 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22050,12 +22046,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1570 "machine/pentium/decoder.m"
+#line 1566 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22059 "pentiumdecoder.cpp"
+#line 22055 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22169,12 +22165,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1564 "machine/pentium/decoder.m"
+#line 1560 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22178 "pentiumdecoder.cpp"
+#line 22174 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22288,12 +22284,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1555 "machine/pentium/decoder.m"
+#line 1551 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22297 "pentiumdecoder.cpp"
+#line 22293 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22407,12 +22403,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1549 "machine/pentium/decoder.m"
+#line 1545 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22416 "pentiumdecoder.cpp"
+#line 22412 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22526,12 +22522,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 1543 "machine/pentium/decoder.m"
+#line 1539 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 22535 "pentiumdecoder.cpp"
+#line 22531 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -22604,12 +22600,12 @@ hostPC
                                                       /* reg_opcode at 16 */;
                                               nextPC = 3 + MATCH_p; 
                                               
-#line 1074 "machine/pentium/decoder.m"
+#line 1070 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 22613 "pentiumdecoder.cpp"
+#line 22609 "pentiumdecoder.cpp"
 
                                               
                                             }
@@ -22650,12 +22646,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 1074 "machine/pentium/decoder.m"
+#line 1070 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 22659 "pentiumdecoder.cpp"
+#line 22655 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -22730,12 +22726,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 379 "machine/pentium/decoder.m"
+#line 375 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 22739 "pentiumdecoder.cpp"
+#line 22735 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -22812,7 +22808,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 878 "machine/pentium/decoder.m"
+#line 874 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evow", DIS_EADDR16);
 
@@ -22844,7 +22840,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 22848 "pentiumdecoder.cpp"
+#line 22844 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -22921,12 +22917,12 @@ hostPC
                                                 /* reg_opcode at 16 */;
                                         nextPC = 5 + MATCH_p; 
                                         
-#line 319 "machine/pentium/decoder.m"
+#line 315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 22930 "pentiumdecoder.cpp"
+#line 22926 "pentiumdecoder.cpp"
 
                                         
                                       } /*opt-block*//*opt-block+*/
@@ -22965,14 +22961,14 @@ hostPC
                               case 0: 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1272 "machine/pentium/decoder.m"
+#line 1268 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CBW");
 
 	/* Decode the following as a NOP. We see these in startup code, and anywhere
 	 * that calls the OS (as lcall 7, 0) */
 
-#line 22976 "pentiumdecoder.cpp"
+#line 22972 "pentiumdecoder.cpp"
 
                                 
                                 
@@ -22980,12 +22976,12 @@ hostPC
                               case 1: 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1227 "machine/pentium/decoder.m"
+#line 1223 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CWD");
 
 
-#line 22989 "pentiumdecoder.cpp"
+#line 22985 "pentiumdecoder.cpp"
 
                                 
                                 
@@ -22998,12 +22994,12 @@ hostPC
                           unsigned r32 = (MATCH_w_8_8 & 0x7) /* r32 at 8 */;
                           nextPC = 2 + MATCH_p; 
                           
-#line 349 "machine/pentium/decoder.m"
+#line 345 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHGeAXow", DIS_R32);
 
 
-#line 23007 "pentiumdecoder.cpp"
+#line 23003 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -23022,12 +23018,12 @@ hostPC
                                     (MATCH_w_16_16 & 0xffff) /* i16 at 16 */;
                                   nextPC = 4 + MATCH_p; 
                                   
-#line 397 "machine/pentium/decoder.m"
+#line 393 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.eAX.Ivow", DIS_I16);
 
 
-#line 23031 "pentiumdecoder.cpp"
+#line 23027 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -23040,12 +23036,12 @@ hostPC
                                     MATCH_w_32_16 /* i32 at 16 */;
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 1008 "machine/pentium/decoder.m"
+#line 1004 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.eAX.Ovow", DIS_OFF);
 
 
-#line 23049 "pentiumdecoder.cpp"
+#line 23045 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -23058,12 +23054,12 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 409 "machine/pentium/decoder.m"
+#line 405 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STOSvow");
 
 
-#line 23067 "pentiumdecoder.cpp"
+#line 23063 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23074,12 +23070,12 @@ hostPC
                                     MATCH_w_32_16 /* i32 at 16 */;
                                   nextPC = 6 + MATCH_p; 
                                   
-#line 999 "machine/pentium/decoder.m"
+#line 995 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ov.eAXow", DIS_OFF);
 
 
-#line 23083 "pentiumdecoder.cpp"
+#line 23079 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -23092,24 +23088,24 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1738 "machine/pentium/decoder.m"
+#line 1734 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LODSvow");
 
 
-#line 23101 "pentiumdecoder.cpp"
+#line 23097 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
                               else { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 956 "machine/pentium/decoder.m"
+#line 952 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSvow");
 
 
-#line 23113 "pentiumdecoder.cpp"
+#line 23109 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23120,24 +23116,24 @@ hostPC
                                       /* page at 8 */ == 1) { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 464 "machine/pentium/decoder.m"
+#line 460 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SCASvow");
 
 
-#line 23129 "pentiumdecoder.cpp"
+#line 23125 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
                               else { 
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1248 "machine/pentium/decoder.m"
+#line 1244 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPSvow");
 
 
-#line 23141 "pentiumdecoder.cpp"
+#line 23137 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -23157,12 +23153,12 @@ hostPC
                             unsigned r16 = (MATCH_w_8_8 & 0x7) /* r16 at 8 */;
                             nextPC = 4 + MATCH_p; 
                             
-#line 990 "machine/pentium/decoder.m"
+#line 986 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOViw", DIS_R16, DIS_I16);  // Check!
 
 
-#line 23166 "pentiumdecoder.cpp"
+#line 23162 "pentiumdecoder.cpp"
 
                             
                           }
@@ -23254,12 +23250,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 636 "machine/pentium/decoder.m"
+#line 632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23263 "pentiumdecoder.cpp"
+#line 23259 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23373,12 +23369,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 630 "machine/pentium/decoder.m"
+#line 626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23382 "pentiumdecoder.cpp"
+#line 23378 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23492,12 +23488,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 624 "machine/pentium/decoder.m"
+#line 620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23501 "pentiumdecoder.cpp"
+#line 23497 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23611,12 +23607,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 618 "machine/pentium/decoder.m"
+#line 614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23620 "pentiumdecoder.cpp"
+#line 23616 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23730,12 +23726,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 612 "machine/pentium/decoder.m"
+#line 608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23739 "pentiumdecoder.cpp"
+#line 23735 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23849,12 +23845,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 606 "machine/pentium/decoder.m"
+#line 602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23858 "pentiumdecoder.cpp"
+#line 23854 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -23970,12 +23966,12 @@ hostPC
                                                               8);
                                                 nextPC = 6 + MATCH_p; 
                                                 
-#line 600 "machine/pentium/decoder.m"
+#line 596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 23979 "pentiumdecoder.cpp"
+#line 23975 "pentiumdecoder.cpp"
 
                                                 
                                               }
@@ -24101,12 +24097,12 @@ hostPC
                                                           16);
                                             nextPC = 7 + MATCH_p; 
                                             
-#line 981 "machine/pentium/decoder.m"
+#line 977 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 24110 "pentiumdecoder.cpp"
+#line 24106 "pentiumdecoder.cpp"
 
                                             
                                           }
@@ -24219,12 +24215,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 741 "machine/pentium/decoder.m"
+#line 737 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24228 "pentiumdecoder.cpp"
+#line 24224 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24300,12 +24296,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 729 "machine/pentium/decoder.m"
+#line 725 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 24309 "pentiumdecoder.cpp"
+#line 24305 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24381,12 +24377,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 717 "machine/pentium/decoder.m"
+#line 713 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24390 "pentiumdecoder.cpp"
+#line 24386 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24462,12 +24458,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 705 "machine/pentium/decoder.m"
+#line 701 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24471 "pentiumdecoder.cpp"
+#line 24467 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24543,12 +24539,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 693 "machine/pentium/decoder.m"
+#line 689 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24552 "pentiumdecoder.cpp"
+#line 24548 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24624,12 +24620,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 681 "machine/pentium/decoder.m"
+#line 677 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24633 "pentiumdecoder.cpp"
+#line 24629 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24707,12 +24703,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 669 "machine/pentium/decoder.m"
+#line 665 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 24716 "pentiumdecoder.cpp"
+#line 24712 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24803,12 +24799,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 735 "machine/pentium/decoder.m"
+#line 731 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 24812 "pentiumdecoder.cpp"
+#line 24808 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24884,12 +24880,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 723 "machine/pentium/decoder.m"
+#line 719 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 24893 "pentiumdecoder.cpp"
+#line 24889 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -24965,12 +24961,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 711 "machine/pentium/decoder.m"
+#line 707 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 24974 "pentiumdecoder.cpp"
+#line 24970 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25046,12 +25042,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 699 "machine/pentium/decoder.m"
+#line 695 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25055 "pentiumdecoder.cpp"
+#line 25051 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25127,12 +25123,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 687 "machine/pentium/decoder.m"
+#line 683 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25136 "pentiumdecoder.cpp"
+#line 25132 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25208,12 +25204,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 675 "machine/pentium/decoder.m"
+#line 671 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25217 "pentiumdecoder.cpp"
+#line 25213 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25291,12 +25287,12 @@ hostPC
                                                 2 + addressToPC(MATCH_p);
                                               nextPC = 5 + MATCH_p; 
                                               
-#line 663 "machine/pentium/decoder.m"
+#line 659 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 25300 "pentiumdecoder.cpp"
+#line 25296 "pentiumdecoder.cpp"
 
                                               
                                             } /*opt-block*//*opt-block+*/
@@ -25349,11 +25345,11 @@ hostPC
                               addressToPC(MATCH_p);
                             nextPC = 4 + MATCH_p; 
                             
-#line 151 "machine/pentium/decoder.m"
+#line 147 "machine/pentium/decoder.m"
 
-		unconditionalJump(name, 3, relocd, delta, pc, stmts, result);
+		unconditionalJump(name, relocd, delta, pc, stmts, result);
 
-#line 25357 "pentiumdecoder.cpp"
+#line 25353 "pentiumdecoder.cpp"
 
                             
                           }
@@ -25414,12 +25410,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 1128 "machine/pentium/decoder.m"
+#line 1124 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 25423 "pentiumdecoder.cpp"
+#line 25419 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25489,12 +25485,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 1212 "machine/pentium/decoder.m"
+#line 1208 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 25498 "pentiumdecoder.cpp"
+#line 25494 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25566,7 +25562,7 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 839 "machine/pentium/decoder.m"
+#line 835 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evow", DIS_EADDR16);
 
@@ -25583,7 +25579,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 25587 "pentiumdecoder.cpp"
+#line 25583 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25685,12 +25681,12 @@ hostPC
                                                     /* i16 at 40 */;
                                             nextPC = 7 + MATCH_p; 
                                             
-#line 388 "machine/pentium/decoder.m"
+#line 384 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 25694 "pentiumdecoder.cpp"
+#line 25690 "pentiumdecoder.cpp"
 
                                             
                                           }
@@ -25779,12 +25775,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 911 "machine/pentium/decoder.m"
+#line 907 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 25788 "pentiumdecoder.cpp"
+#line 25784 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25854,12 +25850,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 920 "machine/pentium/decoder.m"
+#line 916 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 25863 "pentiumdecoder.cpp"
+#line 25859 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -25929,12 +25925,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 929 "machine/pentium/decoder.m"
+#line 925 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 25938 "pentiumdecoder.cpp"
+#line 25934 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26004,12 +26000,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 1173 "machine/pentium/decoder.m"
+#line 1169 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 26013 "pentiumdecoder.cpp"
+#line 26009 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26079,12 +26075,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 1197 "machine/pentium/decoder.m"
+#line 1193 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 26088 "pentiumdecoder.cpp"
+#line 26084 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26154,12 +26150,12 @@ hostPC
                                             2 + addressToPC(MATCH_p);
                                           nextPC = 5 + MATCH_p; 
                                           
-#line 1182 "machine/pentium/decoder.m"
+#line 1178 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 26163 "pentiumdecoder.cpp"
+#line 26159 "pentiumdecoder.cpp"
 
                                           
                                         } /*opt-block*//*opt-block+*/
@@ -26212,15 +26208,15 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 189 "machine/pentium/decoder.m"
+#line 185 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.O", 2, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jb.O", relocd, (BRANCH_TYPE)0)
 
 	/*
 	 * Conditional branches, 16 bit offset: 66 0F 8X XX XX
 	 */
 
-#line 26224 "pentiumdecoder.cpp"
+#line 26220 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26234,11 +26230,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 187 "machine/pentium/decoder.m"
+#line 183 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NO", 2, relocd, (BRANCH_TYPE)0)
+		COND_JUMP("Jb.NO", relocd, (BRANCH_TYPE)0)
 
-#line 26242 "pentiumdecoder.cpp"
+#line 26238 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26252,11 +26248,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 185 "machine/pentium/decoder.m"
+#line 181 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.B", 2, relocd, BRANCH_JUL)
+		COND_JUMP("Jb.B", relocd, BRANCH_JUL)
 
-#line 26260 "pentiumdecoder.cpp"
+#line 26256 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26270,11 +26266,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 183 "machine/pentium/decoder.m"
+#line 179 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NB", 2, relocd, BRANCH_JUGE)
+		COND_JUMP("Jb.NB", relocd, BRANCH_JUGE)
 
-#line 26278 "pentiumdecoder.cpp"
+#line 26274 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26288,11 +26284,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 181 "machine/pentium/decoder.m"
+#line 177 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.Z", 2, relocd, BRANCH_JE)
+		COND_JUMP("Jb.Z", relocd, BRANCH_JE)
 
-#line 26296 "pentiumdecoder.cpp"
+#line 26292 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26306,11 +26302,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 179 "machine/pentium/decoder.m"
+#line 175 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NZ", 2, relocd, BRANCH_JNE)
+		COND_JUMP("Jb.NZ", relocd, BRANCH_JNE)
 
-#line 26314 "pentiumdecoder.cpp"
+#line 26310 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26324,11 +26320,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 177 "machine/pentium/decoder.m"
+#line 173 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.BE", 2, relocd, BRANCH_JULE)
+		COND_JUMP("Jb.BE", relocd, BRANCH_JULE)
 
-#line 26332 "pentiumdecoder.cpp"
+#line 26328 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26342,11 +26338,11 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 175 "machine/pentium/decoder.m"
+#line 171 "machine/pentium/decoder.m"
 
-		COND_JUMP("Jb.NBE", 2, relocd, BRANCH_JUG)
+		COND_JUMP("Jb.NBE", relocd, BRANCH_JUG)
 
-#line 26350 "pentiumdecoder.cpp"
+#line 26346 "pentiumdecoder.cpp"
 
                     
                   }
@@ -26417,12 +26413,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1660 "machine/pentium/decoder.m"
+#line 1656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 26426 "pentiumdecoder.cpp"
+#line 26422 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26516,12 +26512,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1657 "machine/pentium/decoder.m"
+#line 1653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 26525 "pentiumdecoder.cpp"
+#line 26521 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26615,12 +26611,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1654 "machine/pentium/decoder.m"
+#line 1650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 26624 "pentiumdecoder.cpp"
+#line 26620 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26714,12 +26710,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1651 "machine/pentium/decoder.m"
+#line 1647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 26723 "pentiumdecoder.cpp"
+#line 26719 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26813,12 +26809,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1648 "machine/pentium/decoder.m"
+#line 1644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 26822 "pentiumdecoder.cpp"
+#line 26818 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -26912,12 +26908,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1645 "machine/pentium/decoder.m"
+#line 1641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 26921 "pentiumdecoder.cpp"
+#line 26917 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27011,12 +27007,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1642 "machine/pentium/decoder.m"
+#line 1638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 27020 "pentiumdecoder.cpp"
+#line 27016 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27110,12 +27106,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1639 "machine/pentium/decoder.m"
+#line 1635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 27119 "pentiumdecoder.cpp"
+#line 27115 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27215,12 +27211,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1612 "machine/pentium/decoder.m"
+#line 1608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 27224 "pentiumdecoder.cpp"
+#line 27220 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27312,12 +27308,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1609 "machine/pentium/decoder.m"
+#line 1605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 27321 "pentiumdecoder.cpp"
+#line 27317 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27409,12 +27405,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1606 "machine/pentium/decoder.m"
+#line 1602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 27418 "pentiumdecoder.cpp"
+#line 27414 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27506,12 +27502,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1603 "machine/pentium/decoder.m"
+#line 1599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 27515 "pentiumdecoder.cpp"
+#line 27511 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27603,12 +27599,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1600 "machine/pentium/decoder.m"
+#line 1596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 27612 "pentiumdecoder.cpp"
+#line 27608 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27700,12 +27696,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1597 "machine/pentium/decoder.m"
+#line 1593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 27709 "pentiumdecoder.cpp"
+#line 27705 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27797,12 +27793,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1594 "machine/pentium/decoder.m"
+#line 1590 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 27806 "pentiumdecoder.cpp"
+#line 27802 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -27894,12 +27890,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 1591 "machine/pentium/decoder.m"
+#line 1587 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 27903 "pentiumdecoder.cpp"
+#line 27899 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28003,12 +27999,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1585 "machine/pentium/decoder.m"
+#line 1581 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28012 "pentiumdecoder.cpp"
+#line 28008 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28102,12 +28098,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1579 "machine/pentium/decoder.m"
+#line 1575 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28111 "pentiumdecoder.cpp"
+#line 28107 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28201,12 +28197,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1573 "machine/pentium/decoder.m"
+#line 1569 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28210 "pentiumdecoder.cpp"
+#line 28206 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28300,12 +28296,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1567 "machine/pentium/decoder.m"
+#line 1563 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28309 "pentiumdecoder.cpp"
+#line 28305 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28399,7 +28395,7 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1558 "machine/pentium/decoder.m"
+#line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		Exp *oper = dis_Eaddr(Eaddr, 32);
@@ -28407,7 +28403,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28411 "pentiumdecoder.cpp"
+#line 28407 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28501,12 +28497,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1552 "machine/pentium/decoder.m"
+#line 1548 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28510 "pentiumdecoder.cpp"
+#line 28506 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28600,12 +28596,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1546 "machine/pentium/decoder.m"
+#line 1542 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28609 "pentiumdecoder.cpp"
+#line 28605 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28699,12 +28695,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 1540 "machine/pentium/decoder.m"
+#line 1536 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 28708 "pentiumdecoder.cpp"
+#line 28704 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -28785,12 +28781,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 382 "machine/pentium/decoder.m"
+#line 378 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 28794 "pentiumdecoder.cpp"
+#line 28790 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -28853,12 +28849,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 376 "machine/pentium/decoder.m"
+#line 372 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 28862 "pentiumdecoder.cpp"
+#line 28858 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -28921,12 +28917,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 322 "machine/pentium/decoder.m"
+#line 318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 28930 "pentiumdecoder.cpp"
+#line 28926 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -28989,12 +28985,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 316 "machine/pentium/decoder.m"
+#line 312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 28998 "pentiumdecoder.cpp"
+#line 28994 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -29026,12 +29022,12 @@ hostPC
             if ((MATCH_w_8_0 & 0x7) /* col at 0 */ == 0) { 
               nextPC = 1 + MATCH_p; 
               
-#line 325 "machine/pentium/decoder.m"
+#line 321 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOP");
 
 
-#line 29035 "pentiumdecoder.cpp"
+#line 29031 "pentiumdecoder.cpp"
 
               
             } /*opt-block*//*opt-block+*/
@@ -29039,12 +29035,12 @@ hostPC
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r32 at 0 */;
               nextPC = 1 + MATCH_p; 
               
-#line 346 "machine/pentium/decoder.m"
+#line 342 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHGeAXod", DIS_R32);
 
 
-#line 29048 "pentiumdecoder.cpp"
+#line 29044 "pentiumdecoder.cpp"
 
               
             } /*opt-block*//*opt-block+*/
@@ -29059,7 +29055,7 @@ hostPC
                     unsigned off = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1011 "machine/pentium/decoder.m"
+#line 1007 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.AL.Ob", DIS_OFF);
 
@@ -29070,7 +29066,7 @@ hostPC
 //		stmts = instantiate(pc, "MOV.Ew.Sw", DIS_MEM, DIS_SR16);
 
 
-#line 29074 "pentiumdecoder.cpp"
+#line 29070 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29082,12 +29078,12 @@ hostPC
                     unsigned off = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1005 "machine/pentium/decoder.m"
+#line 1001 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.eAX.Ovod", DIS_OFF);
 
 
-#line 29091 "pentiumdecoder.cpp"
+#line 29087 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29099,12 +29095,12 @@ hostPC
                     unsigned off = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 1002 "machine/pentium/decoder.m"
+#line 998 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ob.AL", DIS_OFF);
 
 
-#line 29108 "pentiumdecoder.cpp"
+#line 29104 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29116,12 +29112,12 @@ hostPC
                     unsigned off = MATCH_w_32_8 /* i32 at 8 */;
                     nextPC = 5 + MATCH_p; 
                     
-#line 996 "machine/pentium/decoder.m"
+#line 992 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ov.eAXod", DIS_OFF);
 
 
-#line 29125 "pentiumdecoder.cpp"
+#line 29121 "pentiumdecoder.cpp"
 
                     
                   }
@@ -29130,7 +29126,7 @@ hostPC
                 case 4: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 959 "machine/pentium/decoder.m"
+#line 955 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSB");
 
@@ -29151,7 +29147,7 @@ hostPC
 //		stmts = instantiate(pc, "UNIMP");
 
 
-#line 29155 "pentiumdecoder.cpp"
+#line 29151 "pentiumdecoder.cpp"
 
                   
                   
@@ -29159,12 +29155,12 @@ hostPC
                 case 5: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 953 "machine/pentium/decoder.m"
+#line 949 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSvod");
 
 
-#line 29168 "pentiumdecoder.cpp"
+#line 29164 "pentiumdecoder.cpp"
 
                   
                   
@@ -29172,12 +29168,12 @@ hostPC
                 case 6: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1251 "machine/pentium/decoder.m"
+#line 1247 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPSB");
 
 
-#line 29181 "pentiumdecoder.cpp"
+#line 29177 "pentiumdecoder.cpp"
 
                   
                   
@@ -29185,12 +29181,12 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1245 "machine/pentium/decoder.m"
+#line 1241 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPSvod");
 
 
-#line 29194 "pentiumdecoder.cpp"
+#line 29190 "pentiumdecoder.cpp"
 
                   
                   
@@ -29206,12 +29202,12 @@ hostPC
               unsigned r8 = (MATCH_w_8_0 & 0x7) /* r8 at 0 */;
               nextPC = 2 + MATCH_p; 
               
-#line 993 "machine/pentium/decoder.m"
+#line 989 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVib", DIS_R8, DIS_I8);
 
 
-#line 29215 "pentiumdecoder.cpp"
+#line 29211 "pentiumdecoder.cpp"
 
               
             }
@@ -29279,12 +29275,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 657 "machine/pentium/decoder.m"
+#line 653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29288 "pentiumdecoder.cpp"
+#line 29284 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29378,12 +29374,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 654 "machine/pentium/decoder.m"
+#line 650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29387 "pentiumdecoder.cpp"
+#line 29383 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29477,12 +29473,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 651 "machine/pentium/decoder.m"
+#line 647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29486 "pentiumdecoder.cpp"
+#line 29482 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29576,12 +29572,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 648 "machine/pentium/decoder.m"
+#line 644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29585 "pentiumdecoder.cpp"
+#line 29581 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29675,12 +29671,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 645 "machine/pentium/decoder.m"
+#line 641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29684 "pentiumdecoder.cpp"
+#line 29680 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29774,12 +29770,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 642 "machine/pentium/decoder.m"
+#line 638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29783 "pentiumdecoder.cpp"
+#line 29779 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29875,12 +29871,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 639 "machine/pentium/decoder.m"
+#line 635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 29884 "pentiumdecoder.cpp"
+#line 29880 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -29982,12 +29978,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 633 "machine/pentium/decoder.m"
+#line 629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 29991 "pentiumdecoder.cpp"
+#line 29987 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30081,12 +30077,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 627 "machine/pentium/decoder.m"
+#line 623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30090 "pentiumdecoder.cpp"
+#line 30086 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30180,12 +30176,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 621 "machine/pentium/decoder.m"
+#line 617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30189 "pentiumdecoder.cpp"
+#line 30185 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30279,12 +30275,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 615 "machine/pentium/decoder.m"
+#line 611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30288 "pentiumdecoder.cpp"
+#line 30284 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30378,12 +30374,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 609 "machine/pentium/decoder.m"
+#line 605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30387 "pentiumdecoder.cpp"
+#line 30383 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30477,12 +30473,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 603 "machine/pentium/decoder.m"
+#line 599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30486 "pentiumdecoder.cpp"
+#line 30482 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30578,12 +30574,12 @@ hostPC
                                                       /* i8 at 32 */, 8);
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 597 "machine/pentium/decoder.m"
+#line 593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 30587 "pentiumdecoder.cpp"
+#line 30583 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -30632,7 +30628,7 @@ hostPC
                     unsigned i16 = (MATCH_w_16_8 & 0xffff) /* i16 at 8 */;
                     nextPC = 3 + MATCH_p; 
                     
-#line 482 "machine/pentium/decoder.m"
+#line 478 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RET.Iw", DIS_I16);
 		auto ret = new ReturnStatement;
@@ -30640,7 +30636,7 @@ hostPC
 		result.rtl->appendStmt(ret);
 
 
-#line 30644 "pentiumdecoder.cpp"
+#line 30640 "pentiumdecoder.cpp"
 
                     
                   }
@@ -30649,7 +30645,7 @@ hostPC
                 case 3: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 493 "machine/pentium/decoder.m"
+#line 489 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RET");
 		result.rtl = new RTL(pc, stmts);
@@ -30662,7 +30658,7 @@ hostPC
 //		stmts = instantiate(pc, "REP");
 
 
-#line 30666 "pentiumdecoder.cpp"
+#line 30662 "pentiumdecoder.cpp"
 
                   
                   
@@ -30682,12 +30678,12 @@ hostPC
                                         /* reg_opcode at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1065 "machine/pentium/decoder.m"
+#line 1061 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 30691 "pentiumdecoder.cpp"
+#line 30687 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -30722,12 +30718,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1065 "machine/pentium/decoder.m"
+#line 1061 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 30731 "pentiumdecoder.cpp"
+#line 30727 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -30767,12 +30763,12 @@ hostPC
                                         /* reg_opcode at 8 */;
                                 nextPC = 2 + MATCH_p; 
                                 
-#line 1077 "machine/pentium/decoder.m"
+#line 1073 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 30776 "pentiumdecoder.cpp"
+#line 30772 "pentiumdecoder.cpp"
 
                                 
                               }
@@ -30807,12 +30803,12 @@ hostPC
                             (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
                           nextPC = 4 + MATCH_p; 
                           
-#line 1077 "machine/pentium/decoder.m"
+#line 1073 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 30816 "pentiumdecoder.cpp"
+#line 30812 "pentiumdecoder.cpp"
 
                           
                         } /*opt-block*//*opt-block+*/
@@ -30893,12 +30889,12 @@ hostPC
                                                   /* i8 at 32 */, 8);
                               nextPC = 5 + MATCH_p; 
                               
-#line 984 "machine/pentium/decoder.m"
+#line 980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 30902 "pentiumdecoder.cpp"
+#line 30898 "pentiumdecoder.cpp"
 
                               
                             }
@@ -30993,12 +30989,12 @@ hostPC
                               unsigned i32 = MATCH_w_32_32 /* i32 at 32 */;
                               nextPC = 8 + MATCH_p; 
                               
-#line 978 "machine/pentium/decoder.m"
+#line 974 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 31002 "pentiumdecoder.cpp"
+#line 30998 "pentiumdecoder.cpp"
 
                               
                             }
@@ -31087,7 +31083,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 783 "machine/pentium/decoder.m"
+#line 779 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.1", DIS_EADDR8);
 
@@ -31106,7 +31102,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 31110 "pentiumdecoder.cpp"
+#line 31106 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31168,12 +31164,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 777 "machine/pentium/decoder.m"
+#line 773 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 31177 "pentiumdecoder.cpp"
+#line 31173 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31235,12 +31231,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 771 "machine/pentium/decoder.m"
+#line 767 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 31244 "pentiumdecoder.cpp"
+#line 31240 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31302,12 +31298,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 765 "machine/pentium/decoder.m"
+#line 761 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 31311 "pentiumdecoder.cpp"
+#line 31307 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31369,12 +31365,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 759 "machine/pentium/decoder.m"
+#line 755 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 31378 "pentiumdecoder.cpp"
+#line 31374 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31436,12 +31432,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 753 "machine/pentium/decoder.m"
+#line 749 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 31445 "pentiumdecoder.cpp"
+#line 31441 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31505,12 +31501,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 747 "machine/pentium/decoder.m"
+#line 743 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 31514 "pentiumdecoder.cpp"
+#line 31510 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31580,12 +31576,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 738 "machine/pentium/decoder.m"
+#line 734 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 31589 "pentiumdecoder.cpp"
+#line 31585 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31647,12 +31643,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 726 "machine/pentium/decoder.m"
+#line 722 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 31656 "pentiumdecoder.cpp"
+#line 31652 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31714,12 +31710,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 714 "machine/pentium/decoder.m"
+#line 710 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 31723 "pentiumdecoder.cpp"
+#line 31719 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31781,12 +31777,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 702 "machine/pentium/decoder.m"
+#line 698 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 31790 "pentiumdecoder.cpp"
+#line 31786 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31848,12 +31844,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 690 "machine/pentium/decoder.m"
+#line 686 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 31857 "pentiumdecoder.cpp"
+#line 31853 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31915,12 +31911,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 678 "machine/pentium/decoder.m"
+#line 674 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 31924 "pentiumdecoder.cpp"
+#line 31920 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -31984,12 +31980,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 666 "machine/pentium/decoder.m"
+#line 662 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 31993 "pentiumdecoder.cpp"
+#line 31989 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32059,12 +32055,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 780 "machine/pentium/decoder.m"
+#line 776 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 32068 "pentiumdecoder.cpp"
+#line 32064 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32126,12 +32122,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 774 "machine/pentium/decoder.m"
+#line 770 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 32135 "pentiumdecoder.cpp"
+#line 32131 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32193,12 +32189,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 768 "machine/pentium/decoder.m"
+#line 764 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 32202 "pentiumdecoder.cpp"
+#line 32198 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32260,12 +32256,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 762 "machine/pentium/decoder.m"
+#line 758 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 32269 "pentiumdecoder.cpp"
+#line 32265 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32327,12 +32323,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 756 "machine/pentium/decoder.m"
+#line 752 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 32336 "pentiumdecoder.cpp"
+#line 32332 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32394,12 +32390,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 750 "machine/pentium/decoder.m"
+#line 746 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 32403 "pentiumdecoder.cpp"
+#line 32399 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32463,12 +32459,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 744 "machine/pentium/decoder.m"
+#line 740 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 32472 "pentiumdecoder.cpp"
+#line 32468 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32538,12 +32534,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 732 "machine/pentium/decoder.m"
+#line 728 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32547 "pentiumdecoder.cpp"
+#line 32543 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32605,12 +32601,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 720 "machine/pentium/decoder.m"
+#line 716 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32614 "pentiumdecoder.cpp"
+#line 32610 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32672,12 +32668,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 708 "machine/pentium/decoder.m"
+#line 704 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32681 "pentiumdecoder.cpp"
+#line 32677 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32739,12 +32735,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 696 "machine/pentium/decoder.m"
+#line 692 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32748 "pentiumdecoder.cpp"
+#line 32744 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32806,12 +32802,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 684 "machine/pentium/decoder.m"
+#line 680 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32815 "pentiumdecoder.cpp"
+#line 32811 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32873,12 +32869,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 672 "machine/pentium/decoder.m"
+#line 668 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32882 "pentiumdecoder.cpp"
+#line 32878 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32942,12 +32938,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 660 "machine/pentium/decoder.m"
+#line 656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 32951 "pentiumdecoder.cpp"
+#line 32947 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -32981,12 +32977,12 @@ hostPC
                 case 7: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 313 "machine/pentium/decoder.m"
+#line 309 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XLATB");
 
 
-#line 32990 "pentiumdecoder.cpp"
+#line 32986 "pentiumdecoder.cpp"
 
                   
                   
@@ -33005,12 +33001,12 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1050 "machine/pentium/decoder.m"
+#line 1046 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - hostPC - 2));
 
 
-#line 33014 "pentiumdecoder.cpp"
+#line 33010 "pentiumdecoder.cpp"
 
                     
                   }
@@ -33024,12 +33020,12 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1053 "machine/pentium/decoder.m"
+#line 1049 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - hostPC - 2));
 
 
-#line 33033 "pentiumdecoder.cpp"
+#line 33029 "pentiumdecoder.cpp"
 
                     
                   }
@@ -33043,12 +33039,12 @@ hostPC
                                   8) + addressToPC(MATCH_p);
                     nextPC = 2 + MATCH_p; 
                     
-#line 1056 "machine/pentium/decoder.m"
+#line 1052 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LOOP", dis_Num(relocd - hostPC - 2));
 
 
-#line 33052 "pentiumdecoder.cpp"
+#line 33048 "pentiumdecoder.cpp"
 
                     
                   }
@@ -33094,12 +33090,12 @@ hostPC
                                       const char *name = MATCH_name;
                                       nextPC = 3 + MATCH_p; 
                                       
-#line 588 "machine/pentium/decoder.m"
+#line 584 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33103 "pentiumdecoder.cpp"
+#line 33099 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -33121,12 +33117,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 561 "machine/pentium/decoder.m"
+#line 557 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33130 "pentiumdecoder.cpp"
+#line 33126 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33140,12 +33136,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 570 "machine/pentium/decoder.m"
+#line 566 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33149 "pentiumdecoder.cpp"
+#line 33145 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33166,12 +33162,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 579 "machine/pentium/decoder.m"
+#line 575 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33175 "pentiumdecoder.cpp"
+#line 33171 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33185,12 +33181,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 552 "machine/pentium/decoder.m"
+#line 548 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33194 "pentiumdecoder.cpp"
+#line 33190 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33221,12 +33217,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 585 "machine/pentium/decoder.m"
+#line 581 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33230 "pentiumdecoder.cpp"
+#line 33226 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33246,12 +33242,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 591 "machine/pentium/decoder.m"
+#line 587 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33255 "pentiumdecoder.cpp"
+#line 33251 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33271,12 +33267,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 558 "machine/pentium/decoder.m"
+#line 554 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33280 "pentiumdecoder.cpp"
+#line 33276 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33290,12 +33286,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 567 "machine/pentium/decoder.m"
+#line 563 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33299 "pentiumdecoder.cpp"
+#line 33295 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33313,12 +33309,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 564 "machine/pentium/decoder.m"
+#line 560 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33322 "pentiumdecoder.cpp"
+#line 33318 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33332,12 +33328,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 573 "machine/pentium/decoder.m"
+#line 569 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33341 "pentiumdecoder.cpp"
+#line 33337 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33355,12 +33351,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 576 "machine/pentium/decoder.m"
+#line 572 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33364 "pentiumdecoder.cpp"
+#line 33360 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33374,12 +33370,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 549 "machine/pentium/decoder.m"
+#line 545 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33383 "pentiumdecoder.cpp"
+#line 33379 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33397,12 +33393,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 582 "machine/pentium/decoder.m"
+#line 578 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33406 "pentiumdecoder.cpp"
+#line 33402 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33416,12 +33412,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 555 "machine/pentium/decoder.m"
+#line 551 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33425 "pentiumdecoder.cpp"
+#line 33421 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33466,12 +33462,12 @@ hostPC
                                       const char *name = MATCH_name;
                                       nextPC = 3 + MATCH_p; 
                                       
-#line 543 "machine/pentium/decoder.m"
+#line 539 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33475 "pentiumdecoder.cpp"
+#line 33471 "pentiumdecoder.cpp"
 
                                       
                                     }
@@ -33491,12 +33487,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 516 "machine/pentium/decoder.m"
+#line 512 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33500 "pentiumdecoder.cpp"
+#line 33496 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33510,12 +33506,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 525 "machine/pentium/decoder.m"
+#line 521 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33519 "pentiumdecoder.cpp"
+#line 33515 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33534,12 +33530,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 534 "machine/pentium/decoder.m"
+#line 530 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33543 "pentiumdecoder.cpp"
+#line 33539 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33553,12 +33549,12 @@ hostPC
                                         const char *name = MATCH_name;
                                         nextPC = 3 + MATCH_p; 
                                         
-#line 507 "machine/pentium/decoder.m"
+#line 503 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33562 "pentiumdecoder.cpp"
+#line 33558 "pentiumdecoder.cpp"
 
                                         
                                       }
@@ -33589,12 +33585,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 540 "machine/pentium/decoder.m"
+#line 536 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33598 "pentiumdecoder.cpp"
+#line 33594 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33612,12 +33608,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 546 "machine/pentium/decoder.m"
+#line 542 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33621 "pentiumdecoder.cpp"
+#line 33617 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33635,12 +33631,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 513 "machine/pentium/decoder.m"
+#line 509 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33644 "pentiumdecoder.cpp"
+#line 33640 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33654,12 +33650,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 522 "machine/pentium/decoder.m"
+#line 518 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33663 "pentiumdecoder.cpp"
+#line 33659 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33675,12 +33671,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 519 "machine/pentium/decoder.m"
+#line 515 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33684 "pentiumdecoder.cpp"
+#line 33680 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33694,12 +33690,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 528 "machine/pentium/decoder.m"
+#line 524 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33703 "pentiumdecoder.cpp"
+#line 33699 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33715,12 +33711,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 531 "machine/pentium/decoder.m"
+#line 527 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33724 "pentiumdecoder.cpp"
+#line 33720 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33734,12 +33730,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 504 "machine/pentium/decoder.m"
+#line 500 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33743 "pentiumdecoder.cpp"
+#line 33739 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33755,12 +33751,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 537 "machine/pentium/decoder.m"
+#line 533 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33764 "pentiumdecoder.cpp"
+#line 33760 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33774,12 +33770,12 @@ hostPC
                                   const char *name = MATCH_name;
                                   nextPC = 2 + MATCH_p; 
                                   
-#line 510 "machine/pentium/decoder.m"
+#line 506 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name);
 
 
-#line 33783 "pentiumdecoder.cpp"
+#line 33779 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33797,12 +33793,12 @@ hostPC
                 case 5: 
                   nextPC = 1 + MATCH_p; 
                   
-#line 1254 "machine/pentium/decoder.m"
+#line 1250 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMC");
 
 
-#line 33806 "pentiumdecoder.cpp"
+#line 33802 "pentiumdecoder.cpp"
 
                   
                   
@@ -33864,12 +33860,12 @@ hostPC
                                     (MATCH_w_8_32 & 0xff) /* i8 at 32 */;
                                   nextPC = 5 + MATCH_p; 
                                   
-#line 391 "machine/pentium/decoder.m"
+#line 387 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 33873 "pentiumdecoder.cpp"
+#line 33869 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -33947,12 +33943,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 914 "machine/pentium/decoder.m"
+#line 910 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 33956 "pentiumdecoder.cpp"
+#line 33952 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34014,12 +34010,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 923 "machine/pentium/decoder.m"
+#line 919 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 34023 "pentiumdecoder.cpp"
+#line 34019 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34081,12 +34077,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 932 "machine/pentium/decoder.m"
+#line 928 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 34090 "pentiumdecoder.cpp"
+#line 34086 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34148,12 +34144,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1176 "machine/pentium/decoder.m"
+#line 1172 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 34157 "pentiumdecoder.cpp"
+#line 34153 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34215,12 +34211,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1200 "machine/pentium/decoder.m"
+#line 1196 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 34224 "pentiumdecoder.cpp"
+#line 34220 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34282,7 +34278,7 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1185 "machine/pentium/decoder.m"
+#line 1181 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIV", DIS_EADDR8); /* ?? */
 
@@ -34290,7 +34286,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 34294 "pentiumdecoder.cpp"
+#line 34290 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34376,12 +34372,12 @@ hostPC
                                     MATCH_w_32_32 /* i32 at 32 */;
                                   nextPC = 8 + MATCH_p; 
                                   
-#line 385 "machine/pentium/decoder.m"
+#line 381 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 34385 "pentiumdecoder.cpp"
+#line 34381 "pentiumdecoder.cpp"
 
                                   
                                 }
@@ -34459,12 +34455,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 908 "machine/pentium/decoder.m"
+#line 904 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 34468 "pentiumdecoder.cpp"
+#line 34464 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34526,12 +34522,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 917 "machine/pentium/decoder.m"
+#line 913 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 34535 "pentiumdecoder.cpp"
+#line 34531 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34593,12 +34589,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 926 "machine/pentium/decoder.m"
+#line 922 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 34602 "pentiumdecoder.cpp"
+#line 34598 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34660,12 +34656,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1170 "machine/pentium/decoder.m"
+#line 1166 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 34669 "pentiumdecoder.cpp"
+#line 34665 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34727,12 +34723,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1194 "machine/pentium/decoder.m"
+#line 1190 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 34736 "pentiumdecoder.cpp"
+#line 34732 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34794,12 +34790,12 @@ hostPC
                                 unsigned Eaddr = 1 + addressToPC(MATCH_p);
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 1179 "machine/pentium/decoder.m"
+#line 1175 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 34803 "pentiumdecoder.cpp"
+#line 34799 "pentiumdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -34842,12 +34838,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1537 "machine/pentium/decoder.m"
+#line 1533 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34851 "pentiumdecoder.cpp"
+#line 34847 "pentiumdecoder.cpp"
 
       
     } 
@@ -34859,12 +34855,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1537 "machine/pentium/decoder.m"
+#line 1533 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34868 "pentiumdecoder.cpp"
+#line 34864 "pentiumdecoder.cpp"
 
       
     } 
@@ -34876,12 +34872,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1537 "machine/pentium/decoder.m"
+#line 1533 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34885 "pentiumdecoder.cpp"
+#line 34881 "pentiumdecoder.cpp"
 
       
     } 
@@ -34893,12 +34889,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1537 "machine/pentium/decoder.m"
+#line 1533 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 34902 "pentiumdecoder.cpp"
+#line 34898 "pentiumdecoder.cpp"
 
       
     } 
@@ -34910,12 +34906,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1510 "machine/pentium/decoder.m"
+#line 1506 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34919 "pentiumdecoder.cpp"
+#line 34915 "pentiumdecoder.cpp"
 
       
     } 
@@ -34927,12 +34923,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1510 "machine/pentium/decoder.m"
+#line 1506 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34936 "pentiumdecoder.cpp"
+#line 34932 "pentiumdecoder.cpp"
 
       
     } 
@@ -34944,12 +34940,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1510 "machine/pentium/decoder.m"
+#line 1506 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34953 "pentiumdecoder.cpp"
+#line 34949 "pentiumdecoder.cpp"
 
       
     } 
@@ -34961,12 +34957,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1510 "machine/pentium/decoder.m"
+#line 1506 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 34970 "pentiumdecoder.cpp"
+#line 34966 "pentiumdecoder.cpp"
 
       
     } 
@@ -34978,12 +34974,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1465 "machine/pentium/decoder.m"
+#line 1461 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 34987 "pentiumdecoder.cpp"
+#line 34983 "pentiumdecoder.cpp"
 
       
     } 
@@ -34995,12 +34991,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1465 "machine/pentium/decoder.m"
+#line 1461 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35004 "pentiumdecoder.cpp"
+#line 35000 "pentiumdecoder.cpp"
 
       
     } 
@@ -35012,12 +35008,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1465 "machine/pentium/decoder.m"
+#line 1461 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35021 "pentiumdecoder.cpp"
+#line 35017 "pentiumdecoder.cpp"
 
       
     } 
@@ -35029,12 +35025,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1465 "machine/pentium/decoder.m"
+#line 1461 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35038 "pentiumdecoder.cpp"
+#line 35034 "pentiumdecoder.cpp"
 
       
     } 
@@ -35046,12 +35042,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1438 "machine/pentium/decoder.m"
+#line 1434 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35055 "pentiumdecoder.cpp"
+#line 35051 "pentiumdecoder.cpp"
 
       
     } 
@@ -35063,12 +35059,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1438 "machine/pentium/decoder.m"
+#line 1434 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35072 "pentiumdecoder.cpp"
+#line 35068 "pentiumdecoder.cpp"
 
       
     } 
@@ -35080,12 +35076,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1438 "machine/pentium/decoder.m"
+#line 1434 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35089 "pentiumdecoder.cpp"
+#line 35085 "pentiumdecoder.cpp"
 
       
     } 
@@ -35097,12 +35093,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1438 "machine/pentium/decoder.m"
+#line 1434 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35106 "pentiumdecoder.cpp"
+#line 35102 "pentiumdecoder.cpp"
 
       
     } 
@@ -35114,12 +35110,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1531 "machine/pentium/decoder.m"
+#line 1527 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35123 "pentiumdecoder.cpp"
+#line 35119 "pentiumdecoder.cpp"
 
       
     } 
@@ -35131,12 +35127,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1531 "machine/pentium/decoder.m"
+#line 1527 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35140 "pentiumdecoder.cpp"
+#line 35136 "pentiumdecoder.cpp"
 
       
     } 
@@ -35148,12 +35144,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1531 "machine/pentium/decoder.m"
+#line 1527 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35157 "pentiumdecoder.cpp"
+#line 35153 "pentiumdecoder.cpp"
 
       
     } 
@@ -35165,12 +35161,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1531 "machine/pentium/decoder.m"
+#line 1527 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35174 "pentiumdecoder.cpp"
+#line 35170 "pentiumdecoder.cpp"
 
       
     } 
@@ -35182,12 +35178,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1498 "machine/pentium/decoder.m"
+#line 1494 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35191 "pentiumdecoder.cpp"
+#line 35187 "pentiumdecoder.cpp"
 
       
     } 
@@ -35199,12 +35195,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1498 "machine/pentium/decoder.m"
+#line 1494 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35208 "pentiumdecoder.cpp"
+#line 35204 "pentiumdecoder.cpp"
 
       
     } 
@@ -35216,12 +35212,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1498 "machine/pentium/decoder.m"
+#line 1494 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35225 "pentiumdecoder.cpp"
+#line 35221 "pentiumdecoder.cpp"
 
       
     } 
@@ -35233,12 +35229,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1498 "machine/pentium/decoder.m"
+#line 1494 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35242 "pentiumdecoder.cpp"
+#line 35238 "pentiumdecoder.cpp"
 
       
     } 
@@ -35250,12 +35246,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1459 "machine/pentium/decoder.m"
+#line 1455 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35259 "pentiumdecoder.cpp"
+#line 35255 "pentiumdecoder.cpp"
 
       
     } 
@@ -35267,12 +35263,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1459 "machine/pentium/decoder.m"
+#line 1455 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35276 "pentiumdecoder.cpp"
+#line 35272 "pentiumdecoder.cpp"
 
       
     } 
@@ -35284,12 +35280,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1459 "machine/pentium/decoder.m"
+#line 1455 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35293 "pentiumdecoder.cpp"
+#line 35289 "pentiumdecoder.cpp"
 
       
     } 
@@ -35301,12 +35297,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1459 "machine/pentium/decoder.m"
+#line 1455 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35310 "pentiumdecoder.cpp"
+#line 35306 "pentiumdecoder.cpp"
 
       
     } 
@@ -35318,12 +35314,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1426 "machine/pentium/decoder.m"
+#line 1422 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35327 "pentiumdecoder.cpp"
+#line 35323 "pentiumdecoder.cpp"
 
       
     } 
@@ -35335,12 +35331,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1426 "machine/pentium/decoder.m"
+#line 1422 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35344 "pentiumdecoder.cpp"
+#line 35340 "pentiumdecoder.cpp"
 
       
     } 
@@ -35352,12 +35348,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1426 "machine/pentium/decoder.m"
+#line 1422 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35361 "pentiumdecoder.cpp"
+#line 35357 "pentiumdecoder.cpp"
 
       
     } 
@@ -35369,12 +35365,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1426 "machine/pentium/decoder.m"
+#line 1422 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35378 "pentiumdecoder.cpp"
+#line 35374 "pentiumdecoder.cpp"
 
       
     } 
@@ -35386,12 +35382,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1525 "machine/pentium/decoder.m"
+#line 1521 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35395 "pentiumdecoder.cpp"
+#line 35391 "pentiumdecoder.cpp"
 
       
     } 
@@ -35403,12 +35399,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1525 "machine/pentium/decoder.m"
+#line 1521 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35412 "pentiumdecoder.cpp"
+#line 35408 "pentiumdecoder.cpp"
 
       
     } 
@@ -35420,12 +35416,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1525 "machine/pentium/decoder.m"
+#line 1521 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35429 "pentiumdecoder.cpp"
+#line 35425 "pentiumdecoder.cpp"
 
       
     } 
@@ -35437,12 +35433,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1525 "machine/pentium/decoder.m"
+#line 1521 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35446 "pentiumdecoder.cpp"
+#line 35442 "pentiumdecoder.cpp"
 
       
     } 
@@ -35454,12 +35450,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1486 "machine/pentium/decoder.m"
+#line 1482 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35463 "pentiumdecoder.cpp"
+#line 35459 "pentiumdecoder.cpp"
 
       
     } 
@@ -35471,12 +35467,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1486 "machine/pentium/decoder.m"
+#line 1482 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35480 "pentiumdecoder.cpp"
+#line 35476 "pentiumdecoder.cpp"
 
       
     } 
@@ -35488,12 +35484,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1486 "machine/pentium/decoder.m"
+#line 1482 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35497 "pentiumdecoder.cpp"
+#line 35493 "pentiumdecoder.cpp"
 
       
     } 
@@ -35505,12 +35501,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1486 "machine/pentium/decoder.m"
+#line 1482 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35514 "pentiumdecoder.cpp"
+#line 35510 "pentiumdecoder.cpp"
 
       
     } 
@@ -35522,12 +35518,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1453 "machine/pentium/decoder.m"
+#line 1449 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35531 "pentiumdecoder.cpp"
+#line 35527 "pentiumdecoder.cpp"
 
       
     } 
@@ -35539,12 +35535,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1453 "machine/pentium/decoder.m"
+#line 1449 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35548 "pentiumdecoder.cpp"
+#line 35544 "pentiumdecoder.cpp"
 
       
     } 
@@ -35556,12 +35552,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1453 "machine/pentium/decoder.m"
+#line 1449 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35565 "pentiumdecoder.cpp"
+#line 35561 "pentiumdecoder.cpp"
 
       
     } 
@@ -35573,12 +35569,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1453 "machine/pentium/decoder.m"
+#line 1449 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35582 "pentiumdecoder.cpp"
+#line 35578 "pentiumdecoder.cpp"
 
       
     } 
@@ -35590,12 +35586,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1414 "machine/pentium/decoder.m"
+#line 1410 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35599 "pentiumdecoder.cpp"
+#line 35595 "pentiumdecoder.cpp"
 
       
     } 
@@ -35607,12 +35603,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1414 "machine/pentium/decoder.m"
+#line 1410 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35616 "pentiumdecoder.cpp"
+#line 35612 "pentiumdecoder.cpp"
 
       
     } 
@@ -35624,12 +35620,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1414 "machine/pentium/decoder.m"
+#line 1410 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35633 "pentiumdecoder.cpp"
+#line 35629 "pentiumdecoder.cpp"
 
       
     } 
@@ -35641,12 +35637,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1414 "machine/pentium/decoder.m"
+#line 1410 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35650 "pentiumdecoder.cpp"
+#line 35646 "pentiumdecoder.cpp"
 
       
     } 
@@ -35658,12 +35654,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1519 "machine/pentium/decoder.m"
+#line 1515 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35667 "pentiumdecoder.cpp"
+#line 35663 "pentiumdecoder.cpp"
 
       
     } 
@@ -35675,12 +35671,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1519 "machine/pentium/decoder.m"
+#line 1515 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35684 "pentiumdecoder.cpp"
+#line 35680 "pentiumdecoder.cpp"
 
       
     } 
@@ -35692,12 +35688,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1519 "machine/pentium/decoder.m"
+#line 1515 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35701 "pentiumdecoder.cpp"
+#line 35697 "pentiumdecoder.cpp"
 
       
     } 
@@ -35709,12 +35705,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1519 "machine/pentium/decoder.m"
+#line 1515 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 35718 "pentiumdecoder.cpp"
+#line 35714 "pentiumdecoder.cpp"
 
       
     } 
@@ -35726,12 +35722,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1474 "machine/pentium/decoder.m"
+#line 1470 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35735 "pentiumdecoder.cpp"
+#line 35731 "pentiumdecoder.cpp"
 
       
     } 
@@ -35743,12 +35739,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1474 "machine/pentium/decoder.m"
+#line 1470 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35752 "pentiumdecoder.cpp"
+#line 35748 "pentiumdecoder.cpp"
 
       
     } 
@@ -35760,12 +35756,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1474 "machine/pentium/decoder.m"
+#line 1470 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35769 "pentiumdecoder.cpp"
+#line 35765 "pentiumdecoder.cpp"
 
       
     } 
@@ -35777,12 +35773,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1474 "machine/pentium/decoder.m"
+#line 1470 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 35786 "pentiumdecoder.cpp"
+#line 35782 "pentiumdecoder.cpp"
 
       
     } 
@@ -35794,12 +35790,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1447 "machine/pentium/decoder.m"
+#line 1443 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35803 "pentiumdecoder.cpp"
+#line 35799 "pentiumdecoder.cpp"
 
       
     } 
@@ -35811,12 +35807,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1447 "machine/pentium/decoder.m"
+#line 1443 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35820 "pentiumdecoder.cpp"
+#line 35816 "pentiumdecoder.cpp"
 
       
     } 
@@ -35828,12 +35824,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1447 "machine/pentium/decoder.m"
+#line 1443 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35837 "pentiumdecoder.cpp"
+#line 35833 "pentiumdecoder.cpp"
 
       
     } 
@@ -35845,12 +35841,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1447 "machine/pentium/decoder.m"
+#line 1443 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 35854 "pentiumdecoder.cpp"
+#line 35850 "pentiumdecoder.cpp"
 
       
     } 
@@ -35862,12 +35858,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1402 "machine/pentium/decoder.m"
+#line 1398 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35871 "pentiumdecoder.cpp"
+#line 35867 "pentiumdecoder.cpp"
 
       
     } 
@@ -35879,12 +35875,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1402 "machine/pentium/decoder.m"
+#line 1398 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35888 "pentiumdecoder.cpp"
+#line 35884 "pentiumdecoder.cpp"
 
       
     } 
@@ -35896,12 +35892,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1402 "machine/pentium/decoder.m"
+#line 1398 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35905 "pentiumdecoder.cpp"
+#line 35901 "pentiumdecoder.cpp"
 
       
     } 
@@ -35913,12 +35909,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1402 "machine/pentium/decoder.m"
+#line 1398 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 35922 "pentiumdecoder.cpp"
+#line 35918 "pentiumdecoder.cpp"
 
       
     } 
@@ -35928,14 +35924,14 @@ hostPC
     { 
       nextPC = MATCH_p; 
       
-#line 2110 "machine/pentium/decoder.m"
+#line 2106 "machine/pentium/decoder.m"
 
 		result.valid = false;  // Invalid instruction
 		result.rtl = nullptr;
 		result.numBytes = 0;
 		return result;
 
-#line 35939 "pentiumdecoder.cpp"
+#line 35935 "pentiumdecoder.cpp"
 
       
     } 
@@ -35947,12 +35943,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1513 "machine/pentium/decoder.m"
+#line 1509 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 35956 "pentiumdecoder.cpp"
+#line 35952 "pentiumdecoder.cpp"
 
       
     } 
@@ -35964,12 +35960,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1513 "machine/pentium/decoder.m"
+#line 1509 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 35973 "pentiumdecoder.cpp"
+#line 35969 "pentiumdecoder.cpp"
 
       
     } 
@@ -35981,12 +35977,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1513 "machine/pentium/decoder.m"
+#line 1509 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 35990 "pentiumdecoder.cpp"
+#line 35986 "pentiumdecoder.cpp"
 
       
     } 
@@ -35998,12 +35994,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1513 "machine/pentium/decoder.m"
+#line 1509 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36007 "pentiumdecoder.cpp"
+#line 36003 "pentiumdecoder.cpp"
 
       
     } 
@@ -36015,12 +36011,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1507 "machine/pentium/decoder.m"
+#line 1503 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36024 "pentiumdecoder.cpp"
+#line 36020 "pentiumdecoder.cpp"
 
       
     } 
@@ -36032,12 +36028,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1507 "machine/pentium/decoder.m"
+#line 1503 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36041 "pentiumdecoder.cpp"
+#line 36037 "pentiumdecoder.cpp"
 
       
     } 
@@ -36049,12 +36045,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1507 "machine/pentium/decoder.m"
+#line 1503 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36058 "pentiumdecoder.cpp"
+#line 36054 "pentiumdecoder.cpp"
 
       
     } 
@@ -36066,12 +36062,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1507 "machine/pentium/decoder.m"
+#line 1503 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36075 "pentiumdecoder.cpp"
+#line 36071 "pentiumdecoder.cpp"
 
       
     } 
@@ -36083,12 +36079,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1441 "machine/pentium/decoder.m"
+#line 1437 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36092 "pentiumdecoder.cpp"
+#line 36088 "pentiumdecoder.cpp"
 
       
     } 
@@ -36100,12 +36096,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1441 "machine/pentium/decoder.m"
+#line 1437 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36109 "pentiumdecoder.cpp"
+#line 36105 "pentiumdecoder.cpp"
 
       
     } 
@@ -36117,12 +36113,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1441 "machine/pentium/decoder.m"
+#line 1437 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36126 "pentiumdecoder.cpp"
+#line 36122 "pentiumdecoder.cpp"
 
       
     } 
@@ -36134,12 +36130,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1441 "machine/pentium/decoder.m"
+#line 1437 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36143 "pentiumdecoder.cpp"
+#line 36139 "pentiumdecoder.cpp"
 
       
     } 
@@ -36151,12 +36147,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1435 "machine/pentium/decoder.m"
+#line 1431 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36160 "pentiumdecoder.cpp"
+#line 36156 "pentiumdecoder.cpp"
 
       
     } 
@@ -36168,12 +36164,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1435 "machine/pentium/decoder.m"
+#line 1431 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36177 "pentiumdecoder.cpp"
+#line 36173 "pentiumdecoder.cpp"
 
       
     } 
@@ -36185,12 +36181,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1435 "machine/pentium/decoder.m"
+#line 1431 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36194 "pentiumdecoder.cpp"
+#line 36190 "pentiumdecoder.cpp"
 
       
     } 
@@ -36202,12 +36198,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1435 "machine/pentium/decoder.m"
+#line 1431 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36211 "pentiumdecoder.cpp"
+#line 36207 "pentiumdecoder.cpp"
 
       
     } 
@@ -36219,12 +36215,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1083 "machine/pentium/decoder.m"
+#line 1079 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36228 "pentiumdecoder.cpp"
+#line 36224 "pentiumdecoder.cpp"
 
       
     } 
@@ -36236,12 +36232,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1083 "machine/pentium/decoder.m"
+#line 1079 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36245 "pentiumdecoder.cpp"
+#line 36241 "pentiumdecoder.cpp"
 
       
     } 
@@ -36253,12 +36249,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1083 "machine/pentium/decoder.m"
+#line 1079 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36262 "pentiumdecoder.cpp"
+#line 36258 "pentiumdecoder.cpp"
 
       
     } 
@@ -36270,12 +36266,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1083 "machine/pentium/decoder.m"
+#line 1079 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36279 "pentiumdecoder.cpp"
+#line 36275 "pentiumdecoder.cpp"
 
       
     } 
@@ -36287,12 +36283,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1047 "machine/pentium/decoder.m"
+#line 1043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36296 "pentiumdecoder.cpp"
+#line 36292 "pentiumdecoder.cpp"
 
       
     } 
@@ -36304,12 +36300,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1047 "machine/pentium/decoder.m"
+#line 1043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36313 "pentiumdecoder.cpp"
+#line 36309 "pentiumdecoder.cpp"
 
       
     } 
@@ -36321,12 +36317,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1047 "machine/pentium/decoder.m"
+#line 1043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36330 "pentiumdecoder.cpp"
+#line 36326 "pentiumdecoder.cpp"
 
       
     } 
@@ -36338,12 +36334,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1047 "machine/pentium/decoder.m"
+#line 1043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36347 "pentiumdecoder.cpp"
+#line 36343 "pentiumdecoder.cpp"
 
       
     } 
@@ -36355,12 +36351,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1346 "machine/pentium/decoder.m"
+#line 1342 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36364 "pentiumdecoder.cpp"
+#line 36360 "pentiumdecoder.cpp"
 
       
     } 
@@ -36372,12 +36368,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1346 "machine/pentium/decoder.m"
+#line 1342 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36381 "pentiumdecoder.cpp"
+#line 36377 "pentiumdecoder.cpp"
 
       
     } 
@@ -36389,12 +36385,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1346 "machine/pentium/decoder.m"
+#line 1342 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36398 "pentiumdecoder.cpp"
+#line 36394 "pentiumdecoder.cpp"
 
       
     } 
@@ -36406,12 +36402,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1346 "machine/pentium/decoder.m"
+#line 1342 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36415 "pentiumdecoder.cpp"
+#line 36411 "pentiumdecoder.cpp"
 
       
     } 
@@ -36423,12 +36419,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1310 "machine/pentium/decoder.m"
+#line 1306 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36432 "pentiumdecoder.cpp"
+#line 36428 "pentiumdecoder.cpp"
 
       
     } 
@@ -36440,12 +36436,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1310 "machine/pentium/decoder.m"
+#line 1306 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36449 "pentiumdecoder.cpp"
+#line 36445 "pentiumdecoder.cpp"
 
       
     } 
@@ -36457,12 +36453,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1310 "machine/pentium/decoder.m"
+#line 1306 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36466 "pentiumdecoder.cpp"
+#line 36462 "pentiumdecoder.cpp"
 
       
     } 
@@ -36474,12 +36470,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1310 "machine/pentium/decoder.m"
+#line 1306 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36483 "pentiumdecoder.cpp"
+#line 36479 "pentiumdecoder.cpp"
 
       
     } 
@@ -36492,12 +36488,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 445 "machine/pentium/decoder.m"
+#line 441 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36501 "pentiumdecoder.cpp"
+#line 36497 "pentiumdecoder.cpp"
 
       
     } 
@@ -36510,12 +36506,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 6 + MATCH_p; 
       
-#line 445 "machine/pentium/decoder.m"
+#line 441 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36519 "pentiumdecoder.cpp"
+#line 36515 "pentiumdecoder.cpp"
 
       
     } 
@@ -36528,12 +36524,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 10 + MATCH_p; 
       
-#line 445 "machine/pentium/decoder.m"
+#line 441 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36537 "pentiumdecoder.cpp"
+#line 36533 "pentiumdecoder.cpp"
 
       
     } 
@@ -36546,12 +36542,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 445 "machine/pentium/decoder.m"
+#line 441 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36555 "pentiumdecoder.cpp"
+#line 36551 "pentiumdecoder.cpp"
 
       
     } 
@@ -36564,12 +36560,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 451 "machine/pentium/decoder.m"
+#line 447 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36573 "pentiumdecoder.cpp"
+#line 36569 "pentiumdecoder.cpp"
 
       
     } 
@@ -36582,12 +36578,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 6 + MATCH_p; 
       
-#line 451 "machine/pentium/decoder.m"
+#line 447 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36591 "pentiumdecoder.cpp"
+#line 36587 "pentiumdecoder.cpp"
 
       
     } 
@@ -36600,12 +36596,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 10 + MATCH_p; 
       
-#line 451 "machine/pentium/decoder.m"
+#line 447 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36609 "pentiumdecoder.cpp"
+#line 36605 "pentiumdecoder.cpp"
 
       
     } 
@@ -36618,12 +36614,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 451 "machine/pentium/decoder.m"
+#line 447 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
 
-#line 36627 "pentiumdecoder.cpp"
+#line 36623 "pentiumdecoder.cpp"
 
       
     } 
@@ -36635,12 +36631,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 433 "machine/pentium/decoder.m"
+#line 429 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36644 "pentiumdecoder.cpp"
+#line 36640 "pentiumdecoder.cpp"
 
       
     } 
@@ -36652,12 +36648,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 433 "machine/pentium/decoder.m"
+#line 429 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36661 "pentiumdecoder.cpp"
+#line 36657 "pentiumdecoder.cpp"
 
       
     } 
@@ -36669,12 +36665,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 433 "machine/pentium/decoder.m"
+#line 429 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36678 "pentiumdecoder.cpp"
+#line 36674 "pentiumdecoder.cpp"
 
       
     } 
@@ -36686,12 +36682,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 433 "machine/pentium/decoder.m"
+#line 429 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36695 "pentiumdecoder.cpp"
+#line 36691 "pentiumdecoder.cpp"
 
       
     } 
@@ -36703,12 +36699,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 439 "machine/pentium/decoder.m"
+#line 435 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36712 "pentiumdecoder.cpp"
+#line 36708 "pentiumdecoder.cpp"
 
       
     } 
@@ -36720,12 +36716,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 439 "machine/pentium/decoder.m"
+#line 435 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36729 "pentiumdecoder.cpp"
+#line 36725 "pentiumdecoder.cpp"
 
       
     } 
@@ -36737,12 +36733,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 439 "machine/pentium/decoder.m"
+#line 435 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36746 "pentiumdecoder.cpp"
+#line 36742 "pentiumdecoder.cpp"
 
       
     } 
@@ -36754,12 +36750,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 439 "machine/pentium/decoder.m"
+#line 435 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36763 "pentiumdecoder.cpp"
+#line 36759 "pentiumdecoder.cpp"
 
       
     } 
@@ -36771,12 +36767,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1167 "machine/pentium/decoder.m"
+#line 1163 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36780 "pentiumdecoder.cpp"
+#line 36776 "pentiumdecoder.cpp"
 
       
     } 
@@ -36788,12 +36784,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1167 "machine/pentium/decoder.m"
+#line 1163 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36797 "pentiumdecoder.cpp"
+#line 36793 "pentiumdecoder.cpp"
 
       
     } 
@@ -36805,12 +36801,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1167 "machine/pentium/decoder.m"
+#line 1163 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36814 "pentiumdecoder.cpp"
+#line 36810 "pentiumdecoder.cpp"
 
       
     } 
@@ -36822,12 +36818,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1167 "machine/pentium/decoder.m"
+#line 1163 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 36831 "pentiumdecoder.cpp"
+#line 36827 "pentiumdecoder.cpp"
 
       
     } 
@@ -36839,12 +36835,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1239 "machine/pentium/decoder.m"
+#line 1235 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36848 "pentiumdecoder.cpp"
+#line 36844 "pentiumdecoder.cpp"
 
       
     } 
@@ -36856,12 +36852,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1239 "machine/pentium/decoder.m"
+#line 1235 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36865 "pentiumdecoder.cpp"
+#line 36861 "pentiumdecoder.cpp"
 
       
     } 
@@ -36873,12 +36869,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1239 "machine/pentium/decoder.m"
+#line 1235 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36882 "pentiumdecoder.cpp"
+#line 36878 "pentiumdecoder.cpp"
 
       
     } 
@@ -36890,12 +36886,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1239 "machine/pentium/decoder.m"
+#line 1235 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 36899 "pentiumdecoder.cpp"
+#line 36895 "pentiumdecoder.cpp"
 
       
     } 
@@ -36908,12 +36904,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1340 "machine/pentium/decoder.m"
+#line 1336 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36917 "pentiumdecoder.cpp"
+#line 36913 "pentiumdecoder.cpp"
 
       
     } 
@@ -36926,12 +36922,12 @@ hostPC
         sign_extend((MATCH_w_8_40 & 0xff) /* i8 at 40 */, 8);
       nextPC = 6 + MATCH_p; 
       
-#line 1340 "machine/pentium/decoder.m"
+#line 1336 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36935 "pentiumdecoder.cpp"
+#line 36931 "pentiumdecoder.cpp"
 
       
     } 
@@ -36944,12 +36940,12 @@ hostPC
         sign_extend((MATCH_w_8_72 & 0xff) /* i8 at 72 */, 8);
       nextPC = 10 + MATCH_p; 
       
-#line 1340 "machine/pentium/decoder.m"
+#line 1336 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36953 "pentiumdecoder.cpp"
+#line 36949 "pentiumdecoder.cpp"
 
       
     } 
@@ -36962,12 +36958,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1340 "machine/pentium/decoder.m"
+#line 1336 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
 
 
-#line 36971 "pentiumdecoder.cpp"
+#line 36967 "pentiumdecoder.cpp"
 
       
     } 
@@ -36980,12 +36976,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1304 "machine/pentium/decoder.m"
+#line 1300 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 36989 "pentiumdecoder.cpp"
+#line 36985 "pentiumdecoder.cpp"
 
       
     } 
@@ -36998,12 +36994,12 @@ hostPC
         sign_extend((MATCH_w_8_40 & 0xff) /* i8 at 40 */, 8);
       nextPC = 6 + MATCH_p; 
       
-#line 1304 "machine/pentium/decoder.m"
+#line 1300 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 37007 "pentiumdecoder.cpp"
+#line 37003 "pentiumdecoder.cpp"
 
       
     } 
@@ -37016,12 +37012,12 @@ hostPC
         sign_extend((MATCH_w_8_72 & 0xff) /* i8 at 72 */, 8);
       nextPC = 10 + MATCH_p; 
       
-#line 1304 "machine/pentium/decoder.m"
+#line 1300 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 37025 "pentiumdecoder.cpp"
+#line 37021 "pentiumdecoder.cpp"
 
       
     } 
@@ -37034,12 +37030,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1304 "machine/pentium/decoder.m"
+#line 1300 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
 
 
-#line 37043 "pentiumdecoder.cpp"
+#line 37039 "pentiumdecoder.cpp"
 
       
     } 
@@ -37052,12 +37048,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1316 "machine/pentium/decoder.m"
+#line 1312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37061 "pentiumdecoder.cpp"
+#line 37057 "pentiumdecoder.cpp"
 
       
     } 
@@ -37070,12 +37066,12 @@ hostPC
         sign_extend((MATCH_w_8_40 & 0xff) /* i8 at 40 */, 8);
       nextPC = 6 + MATCH_p; 
       
-#line 1316 "machine/pentium/decoder.m"
+#line 1312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37079 "pentiumdecoder.cpp"
+#line 37075 "pentiumdecoder.cpp"
 
       
     } 
@@ -37088,12 +37084,12 @@ hostPC
         sign_extend((MATCH_w_8_72 & 0xff) /* i8 at 72 */, 8);
       nextPC = 10 + MATCH_p; 
       
-#line 1316 "machine/pentium/decoder.m"
+#line 1312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37097 "pentiumdecoder.cpp"
+#line 37093 "pentiumdecoder.cpp"
 
       
     } 
@@ -37106,12 +37102,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1316 "machine/pentium/decoder.m"
+#line 1312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37115 "pentiumdecoder.cpp"
+#line 37111 "pentiumdecoder.cpp"
 
       
     } 
@@ -37124,12 +37120,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1328 "machine/pentium/decoder.m"
+#line 1324 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37133 "pentiumdecoder.cpp"
+#line 37129 "pentiumdecoder.cpp"
 
       
     } 
@@ -37142,12 +37138,12 @@ hostPC
         sign_extend((MATCH_w_8_40 & 0xff) /* i8 at 40 */, 8);
       nextPC = 6 + MATCH_p; 
       
-#line 1328 "machine/pentium/decoder.m"
+#line 1324 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37151 "pentiumdecoder.cpp"
+#line 37147 "pentiumdecoder.cpp"
 
       
     } 
@@ -37160,12 +37156,12 @@ hostPC
         sign_extend((MATCH_w_8_72 & 0xff) /* i8 at 72 */, 8);
       nextPC = 10 + MATCH_p; 
       
-#line 1328 "machine/pentium/decoder.m"
+#line 1324 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37169 "pentiumdecoder.cpp"
+#line 37165 "pentiumdecoder.cpp"
 
       
     } 
@@ -37178,12 +37174,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1328 "machine/pentium/decoder.m"
+#line 1324 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
 
 
-#line 37187 "pentiumdecoder.cpp"
+#line 37183 "pentiumdecoder.cpp"
 
       
     } 
@@ -37195,12 +37191,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1322 "machine/pentium/decoder.m"
+#line 1318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37204 "pentiumdecoder.cpp"
+#line 37200 "pentiumdecoder.cpp"
 
       
     } 
@@ -37212,12 +37208,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1322 "machine/pentium/decoder.m"
+#line 1318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37221 "pentiumdecoder.cpp"
+#line 37217 "pentiumdecoder.cpp"
 
       
     } 
@@ -37229,12 +37225,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1322 "machine/pentium/decoder.m"
+#line 1318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37238 "pentiumdecoder.cpp"
+#line 37234 "pentiumdecoder.cpp"
 
       
     } 
@@ -37246,12 +37242,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1322 "machine/pentium/decoder.m"
+#line 1318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37255 "pentiumdecoder.cpp"
+#line 37251 "pentiumdecoder.cpp"
 
       
     } 
@@ -37263,12 +37259,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1334 "machine/pentium/decoder.m"
+#line 1330 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37272 "pentiumdecoder.cpp"
+#line 37268 "pentiumdecoder.cpp"
 
       
     } 
@@ -37280,12 +37276,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1334 "machine/pentium/decoder.m"
+#line 1330 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37289 "pentiumdecoder.cpp"
+#line 37285 "pentiumdecoder.cpp"
 
       
     } 
@@ -37297,12 +37293,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1334 "machine/pentium/decoder.m"
+#line 1330 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37306 "pentiumdecoder.cpp"
+#line 37302 "pentiumdecoder.cpp"
 
       
     } 
@@ -37314,12 +37310,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1334 "machine/pentium/decoder.m"
+#line 1330 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37323 "pentiumdecoder.cpp"
+#line 37319 "pentiumdecoder.cpp"
 
       
     } 
@@ -37331,7 +37327,7 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1368 "machine/pentium/decoder.m"
+#line 1364 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - hostPC);
@@ -37361,7 +37357,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37365 "pentiumdecoder.cpp"
+#line 37361 "pentiumdecoder.cpp"
 
       
     } 
@@ -37373,7 +37369,7 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1368 "machine/pentium/decoder.m"
+#line 1364 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - hostPC);
@@ -37403,7 +37399,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37407 "pentiumdecoder.cpp"
+#line 37403 "pentiumdecoder.cpp"
 
       
     } 
@@ -37415,7 +37411,7 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1368 "machine/pentium/decoder.m"
+#line 1364 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - hostPC);
@@ -37445,7 +37441,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37449 "pentiumdecoder.cpp"
+#line 37445 "pentiumdecoder.cpp"
 
       
     } 
@@ -37457,7 +37453,7 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1368 "machine/pentium/decoder.m"
+#line 1364 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - hostPC);
@@ -37487,7 +37483,7 @@ hostPC
 //		stmts = instantiate(pc, "AAA");
 
 
-#line 37491 "pentiumdecoder.cpp"
+#line 37487 "pentiumdecoder.cpp"
 
       
     } 
@@ -37499,14 +37495,14 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1358 "machine/pentium/decoder.m"
+#line 1354 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - hostPC);
 		return result;
 
 
-#line 37510 "pentiumdecoder.cpp"
+#line 37506 "pentiumdecoder.cpp"
 
       
     } 
@@ -37518,14 +37514,14 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1358 "machine/pentium/decoder.m"
+#line 1354 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - hostPC);
 		return result;
 
 
-#line 37529 "pentiumdecoder.cpp"
+#line 37525 "pentiumdecoder.cpp"
 
       
     } 
@@ -37537,14 +37533,14 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1358 "machine/pentium/decoder.m"
+#line 1354 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - hostPC);
 		return result;
 
 
-#line 37548 "pentiumdecoder.cpp"
+#line 37544 "pentiumdecoder.cpp"
 
       
     } 
@@ -37556,14 +37552,14 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1358 "machine/pentium/decoder.m"
+#line 1354 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
 		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - hostPC);
 		return result;
 
 
-#line 37567 "pentiumdecoder.cpp"
+#line 37563 "pentiumdecoder.cpp"
 
       
     } 
@@ -37575,12 +37571,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 941 "machine/pentium/decoder.m"
+#line 937 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37584 "pentiumdecoder.cpp"
+#line 37580 "pentiumdecoder.cpp"
 
       
     } 
@@ -37592,12 +37588,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 941 "machine/pentium/decoder.m"
+#line 937 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37601 "pentiumdecoder.cpp"
+#line 37597 "pentiumdecoder.cpp"
 
       
     } 
@@ -37609,12 +37605,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 941 "machine/pentium/decoder.m"
+#line 937 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37618 "pentiumdecoder.cpp"
+#line 37614 "pentiumdecoder.cpp"
 
       
     } 
@@ -37626,12 +37622,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 941 "machine/pentium/decoder.m"
+#line 937 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37635 "pentiumdecoder.cpp"
+#line 37631 "pentiumdecoder.cpp"
 
       
     } 
@@ -37643,12 +37639,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 950 "machine/pentium/decoder.m"
+#line 946 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37652 "pentiumdecoder.cpp"
+#line 37648 "pentiumdecoder.cpp"
 
       
     } 
@@ -37660,12 +37656,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 950 "machine/pentium/decoder.m"
+#line 946 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37669 "pentiumdecoder.cpp"
+#line 37665 "pentiumdecoder.cpp"
 
       
     } 
@@ -37677,12 +37673,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 950 "machine/pentium/decoder.m"
+#line 946 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37686 "pentiumdecoder.cpp"
+#line 37682 "pentiumdecoder.cpp"
 
       
     } 
@@ -37694,12 +37690,12 @@ hostPC
       unsigned r16 = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 950 "machine/pentium/decoder.m"
+#line 946 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
-#line 37703 "pentiumdecoder.cpp"
+#line 37699 "pentiumdecoder.cpp"
 
       
     } 
@@ -37711,12 +37707,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 355 "machine/pentium/decoder.m"
+#line 351 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37720 "pentiumdecoder.cpp"
+#line 37716 "pentiumdecoder.cpp"
 
       
     } 
@@ -37728,12 +37724,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 355 "machine/pentium/decoder.m"
+#line 351 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37737 "pentiumdecoder.cpp"
+#line 37733 "pentiumdecoder.cpp"
 
       
     } 
@@ -37745,12 +37741,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 9 + MATCH_p; 
       
-#line 355 "machine/pentium/decoder.m"
+#line 351 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37754 "pentiumdecoder.cpp"
+#line 37750 "pentiumdecoder.cpp"
 
       
     } 
@@ -37762,12 +37758,12 @@ hostPC
       unsigned reg = (MATCH_w_8_24 >> 3 & 0x7) /* reg_opcode at 24 */;
       nextPC = 8 + MATCH_p; 
       
-#line 355 "machine/pentium/decoder.m"
+#line 351 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37771 "pentiumdecoder.cpp"
+#line 37767 "pentiumdecoder.cpp"
 
       
     } 
@@ -37779,12 +37775,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1501 "machine/pentium/decoder.m"
+#line 1497 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37788 "pentiumdecoder.cpp"
+#line 37784 "pentiumdecoder.cpp"
 
       
     } 
@@ -37796,12 +37792,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1501 "machine/pentium/decoder.m"
+#line 1497 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37805 "pentiumdecoder.cpp"
+#line 37801 "pentiumdecoder.cpp"
 
       
     } 
@@ -37813,12 +37809,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1501 "machine/pentium/decoder.m"
+#line 1497 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37822 "pentiumdecoder.cpp"
+#line 37818 "pentiumdecoder.cpp"
 
       
     } 
@@ -37830,12 +37826,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1501 "machine/pentium/decoder.m"
+#line 1497 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37839 "pentiumdecoder.cpp"
+#line 37835 "pentiumdecoder.cpp"
 
       
     } 
@@ -37847,12 +37843,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1495 "machine/pentium/decoder.m"
+#line 1491 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37856 "pentiumdecoder.cpp"
+#line 37852 "pentiumdecoder.cpp"
 
       
     } 
@@ -37864,12 +37860,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1495 "machine/pentium/decoder.m"
+#line 1491 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37873 "pentiumdecoder.cpp"
+#line 37869 "pentiumdecoder.cpp"
 
       
     } 
@@ -37881,12 +37877,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1495 "machine/pentium/decoder.m"
+#line 1491 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37890 "pentiumdecoder.cpp"
+#line 37886 "pentiumdecoder.cpp"
 
       
     } 
@@ -37898,12 +37894,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1495 "machine/pentium/decoder.m"
+#line 1491 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 37907 "pentiumdecoder.cpp"
+#line 37903 "pentiumdecoder.cpp"
 
       
     } 
@@ -37915,12 +37911,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1429 "machine/pentium/decoder.m"
+#line 1425 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37924 "pentiumdecoder.cpp"
+#line 37920 "pentiumdecoder.cpp"
 
       
     } 
@@ -37932,12 +37928,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1429 "machine/pentium/decoder.m"
+#line 1425 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37941 "pentiumdecoder.cpp"
+#line 37937 "pentiumdecoder.cpp"
 
       
     } 
@@ -37949,12 +37945,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1429 "machine/pentium/decoder.m"
+#line 1425 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37958 "pentiumdecoder.cpp"
+#line 37954 "pentiumdecoder.cpp"
 
       
     } 
@@ -37966,12 +37962,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1429 "machine/pentium/decoder.m"
+#line 1425 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37975 "pentiumdecoder.cpp"
+#line 37971 "pentiumdecoder.cpp"
 
       
     } 
@@ -37983,12 +37979,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1423 "machine/pentium/decoder.m"
+#line 1419 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 37992 "pentiumdecoder.cpp"
+#line 37988 "pentiumdecoder.cpp"
 
       
     } 
@@ -38000,12 +37996,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1423 "machine/pentium/decoder.m"
+#line 1419 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38009 "pentiumdecoder.cpp"
+#line 38005 "pentiumdecoder.cpp"
 
       
     } 
@@ -38017,12 +38013,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1423 "machine/pentium/decoder.m"
+#line 1419 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38026 "pentiumdecoder.cpp"
+#line 38022 "pentiumdecoder.cpp"
 
       
     } 
@@ -38034,12 +38030,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1423 "machine/pentium/decoder.m"
+#line 1419 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38043 "pentiumdecoder.cpp"
+#line 38039 "pentiumdecoder.cpp"
 
       
     } 
@@ -38051,12 +38047,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1489 "machine/pentium/decoder.m"
+#line 1485 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38060 "pentiumdecoder.cpp"
+#line 38056 "pentiumdecoder.cpp"
 
       
     } 
@@ -38068,12 +38064,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1489 "machine/pentium/decoder.m"
+#line 1485 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38077 "pentiumdecoder.cpp"
+#line 38073 "pentiumdecoder.cpp"
 
       
     } 
@@ -38085,12 +38081,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1489 "machine/pentium/decoder.m"
+#line 1485 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38094 "pentiumdecoder.cpp"
+#line 38090 "pentiumdecoder.cpp"
 
       
     } 
@@ -38102,12 +38098,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1489 "machine/pentium/decoder.m"
+#line 1485 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38111 "pentiumdecoder.cpp"
+#line 38107 "pentiumdecoder.cpp"
 
       
     } 
@@ -38119,12 +38115,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1483 "machine/pentium/decoder.m"
+#line 1479 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38128 "pentiumdecoder.cpp"
+#line 38124 "pentiumdecoder.cpp"
 
       
     } 
@@ -38136,12 +38132,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1483 "machine/pentium/decoder.m"
+#line 1479 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38145 "pentiumdecoder.cpp"
+#line 38141 "pentiumdecoder.cpp"
 
       
     } 
@@ -38153,12 +38149,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1483 "machine/pentium/decoder.m"
+#line 1479 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38162 "pentiumdecoder.cpp"
+#line 38158 "pentiumdecoder.cpp"
 
       
     } 
@@ -38170,12 +38166,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1483 "machine/pentium/decoder.m"
+#line 1479 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38179 "pentiumdecoder.cpp"
+#line 38175 "pentiumdecoder.cpp"
 
       
     } 
@@ -38187,12 +38183,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1417 "machine/pentium/decoder.m"
+#line 1413 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38196 "pentiumdecoder.cpp"
+#line 38192 "pentiumdecoder.cpp"
 
       
     } 
@@ -38204,12 +38200,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1417 "machine/pentium/decoder.m"
+#line 1413 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38213 "pentiumdecoder.cpp"
+#line 38209 "pentiumdecoder.cpp"
 
       
     } 
@@ -38221,12 +38217,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1417 "machine/pentium/decoder.m"
+#line 1413 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38230 "pentiumdecoder.cpp"
+#line 38226 "pentiumdecoder.cpp"
 
       
     } 
@@ -38238,12 +38234,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1417 "machine/pentium/decoder.m"
+#line 1413 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38247 "pentiumdecoder.cpp"
+#line 38243 "pentiumdecoder.cpp"
 
       
     } 
@@ -38255,12 +38251,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1411 "machine/pentium/decoder.m"
+#line 1407 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38264 "pentiumdecoder.cpp"
+#line 38260 "pentiumdecoder.cpp"
 
       
     } 
@@ -38272,12 +38268,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1411 "machine/pentium/decoder.m"
+#line 1407 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38281 "pentiumdecoder.cpp"
+#line 38277 "pentiumdecoder.cpp"
 
       
     } 
@@ -38289,12 +38285,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1411 "machine/pentium/decoder.m"
+#line 1407 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38298 "pentiumdecoder.cpp"
+#line 38294 "pentiumdecoder.cpp"
 
       
     } 
@@ -38306,12 +38302,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1411 "machine/pentium/decoder.m"
+#line 1407 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38315 "pentiumdecoder.cpp"
+#line 38311 "pentiumdecoder.cpp"
 
       
     } 
@@ -38323,12 +38319,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1477 "machine/pentium/decoder.m"
+#line 1473 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38332 "pentiumdecoder.cpp"
+#line 38328 "pentiumdecoder.cpp"
 
       
     } 
@@ -38340,12 +38336,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1477 "machine/pentium/decoder.m"
+#line 1473 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38349 "pentiumdecoder.cpp"
+#line 38345 "pentiumdecoder.cpp"
 
       
     } 
@@ -38357,12 +38353,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1477 "machine/pentium/decoder.m"
+#line 1473 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38366 "pentiumdecoder.cpp"
+#line 38362 "pentiumdecoder.cpp"
 
       
     } 
@@ -38374,12 +38370,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1477 "machine/pentium/decoder.m"
+#line 1473 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38383 "pentiumdecoder.cpp"
+#line 38379 "pentiumdecoder.cpp"
 
       
     } 
@@ -38391,12 +38387,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1471 "machine/pentium/decoder.m"
+#line 1467 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38400 "pentiumdecoder.cpp"
+#line 38396 "pentiumdecoder.cpp"
 
       
     } 
@@ -38408,12 +38404,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1471 "machine/pentium/decoder.m"
+#line 1467 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38417 "pentiumdecoder.cpp"
+#line 38413 "pentiumdecoder.cpp"
 
       
     } 
@@ -38425,12 +38421,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1471 "machine/pentium/decoder.m"
+#line 1467 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38434 "pentiumdecoder.cpp"
+#line 38430 "pentiumdecoder.cpp"
 
       
     } 
@@ -38442,12 +38438,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1471 "machine/pentium/decoder.m"
+#line 1467 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 38451 "pentiumdecoder.cpp"
+#line 38447 "pentiumdecoder.cpp"
 
       
     } 
@@ -38459,12 +38455,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1405 "machine/pentium/decoder.m"
+#line 1401 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38468 "pentiumdecoder.cpp"
+#line 38464 "pentiumdecoder.cpp"
 
       
     } 
@@ -38476,12 +38472,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1405 "machine/pentium/decoder.m"
+#line 1401 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38485 "pentiumdecoder.cpp"
+#line 38481 "pentiumdecoder.cpp"
 
       
     } 
@@ -38493,12 +38489,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1405 "machine/pentium/decoder.m"
+#line 1401 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38502 "pentiumdecoder.cpp"
+#line 38498 "pentiumdecoder.cpp"
 
       
     } 
@@ -38510,12 +38506,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1405 "machine/pentium/decoder.m"
+#line 1401 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38519 "pentiumdecoder.cpp"
+#line 38515 "pentiumdecoder.cpp"
 
       
     } 
@@ -38527,12 +38523,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1399 "machine/pentium/decoder.m"
+#line 1395 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38536 "pentiumdecoder.cpp"
+#line 38532 "pentiumdecoder.cpp"
 
       
     } 
@@ -38544,12 +38540,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1399 "machine/pentium/decoder.m"
+#line 1395 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38553 "pentiumdecoder.cpp"
+#line 38549 "pentiumdecoder.cpp"
 
       
     } 
@@ -38561,12 +38557,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1399 "machine/pentium/decoder.m"
+#line 1395 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38570 "pentiumdecoder.cpp"
+#line 38566 "pentiumdecoder.cpp"
 
       
     } 
@@ -38578,12 +38574,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1399 "machine/pentium/decoder.m"
+#line 1395 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 38587 "pentiumdecoder.cpp"
+#line 38583 "pentiumdecoder.cpp"
 
       
     } 
@@ -38597,12 +38593,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1155 "machine/pentium/decoder.m"
+#line 1151 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38606 "pentiumdecoder.cpp"
+#line 38602 "pentiumdecoder.cpp"
 
       
     } 
@@ -38616,12 +38612,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1155 "machine/pentium/decoder.m"
+#line 1151 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38625 "pentiumdecoder.cpp"
+#line 38621 "pentiumdecoder.cpp"
 
       
     } 
@@ -38635,12 +38631,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1155 "machine/pentium/decoder.m"
+#line 1151 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38644 "pentiumdecoder.cpp"
+#line 38640 "pentiumdecoder.cpp"
 
       
     } 
@@ -38654,12 +38650,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1155 "machine/pentium/decoder.m"
+#line 1151 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
 
 
-#line 38663 "pentiumdecoder.cpp"
+#line 38659 "pentiumdecoder.cpp"
 
       
     } 
@@ -38673,12 +38669,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1161 "machine/pentium/decoder.m"
+#line 1157 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38682 "pentiumdecoder.cpp"
+#line 38678 "pentiumdecoder.cpp"
 
       
     } 
@@ -38692,12 +38688,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 5 + MATCH_p; 
       
-#line 1161 "machine/pentium/decoder.m"
+#line 1157 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38701 "pentiumdecoder.cpp"
+#line 38697 "pentiumdecoder.cpp"
 
       
     } 
@@ -38711,12 +38707,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 9 + MATCH_p; 
       
-#line 1161 "machine/pentium/decoder.m"
+#line 1157 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38720 "pentiumdecoder.cpp"
+#line 38716 "pentiumdecoder.cpp"
 
       
     } 
@@ -38730,12 +38726,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1161 "machine/pentium/decoder.m"
+#line 1157 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
 
 
-#line 38739 "pentiumdecoder.cpp"
+#line 38735 "pentiumdecoder.cpp"
 
       
     } 
@@ -38748,12 +38744,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1636 "machine/pentium/decoder.m"
+#line 1632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38757 "pentiumdecoder.cpp"
+#line 38753 "pentiumdecoder.cpp"
 
       
     } 
@@ -38766,12 +38762,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1636 "machine/pentium/decoder.m"
+#line 1632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38775 "pentiumdecoder.cpp"
+#line 38771 "pentiumdecoder.cpp"
 
       
     } 
@@ -38784,12 +38780,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1636 "machine/pentium/decoder.m"
+#line 1632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38793 "pentiumdecoder.cpp"
+#line 38789 "pentiumdecoder.cpp"
 
       
     } 
@@ -38802,12 +38798,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1636 "machine/pentium/decoder.m"
+#line 1632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38811 "pentiumdecoder.cpp"
+#line 38807 "pentiumdecoder.cpp"
 
       
     } 
@@ -38820,12 +38816,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1633 "machine/pentium/decoder.m"
+#line 1629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38829 "pentiumdecoder.cpp"
+#line 38825 "pentiumdecoder.cpp"
 
       
     } 
@@ -38838,12 +38834,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1633 "machine/pentium/decoder.m"
+#line 1629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38847 "pentiumdecoder.cpp"
+#line 38843 "pentiumdecoder.cpp"
 
       
     } 
@@ -38856,12 +38852,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1633 "machine/pentium/decoder.m"
+#line 1629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38865 "pentiumdecoder.cpp"
+#line 38861 "pentiumdecoder.cpp"
 
       
     } 
@@ -38874,12 +38870,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1633 "machine/pentium/decoder.m"
+#line 1629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38883 "pentiumdecoder.cpp"
+#line 38879 "pentiumdecoder.cpp"
 
       
     } 
@@ -38892,12 +38888,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1630 "machine/pentium/decoder.m"
+#line 1626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38901 "pentiumdecoder.cpp"
+#line 38897 "pentiumdecoder.cpp"
 
       
     } 
@@ -38910,12 +38906,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1630 "machine/pentium/decoder.m"
+#line 1626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38919 "pentiumdecoder.cpp"
+#line 38915 "pentiumdecoder.cpp"
 
       
     } 
@@ -38928,12 +38924,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1630 "machine/pentium/decoder.m"
+#line 1626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38937 "pentiumdecoder.cpp"
+#line 38933 "pentiumdecoder.cpp"
 
       
     } 
@@ -38946,12 +38942,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1630 "machine/pentium/decoder.m"
+#line 1626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38955 "pentiumdecoder.cpp"
+#line 38951 "pentiumdecoder.cpp"
 
       
     } 
@@ -38964,12 +38960,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1627 "machine/pentium/decoder.m"
+#line 1623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38973 "pentiumdecoder.cpp"
+#line 38969 "pentiumdecoder.cpp"
 
       
     } 
@@ -38982,12 +38978,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1627 "machine/pentium/decoder.m"
+#line 1623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 38991 "pentiumdecoder.cpp"
+#line 38987 "pentiumdecoder.cpp"
 
       
     } 
@@ -39000,12 +38996,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1627 "machine/pentium/decoder.m"
+#line 1623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39009 "pentiumdecoder.cpp"
+#line 39005 "pentiumdecoder.cpp"
 
       
     } 
@@ -39018,12 +39014,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1627 "machine/pentium/decoder.m"
+#line 1623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39027 "pentiumdecoder.cpp"
+#line 39023 "pentiumdecoder.cpp"
 
       
     } 
@@ -39036,12 +39032,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1624 "machine/pentium/decoder.m"
+#line 1620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39045 "pentiumdecoder.cpp"
+#line 39041 "pentiumdecoder.cpp"
 
       
     } 
@@ -39054,12 +39050,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1624 "machine/pentium/decoder.m"
+#line 1620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39063 "pentiumdecoder.cpp"
+#line 39059 "pentiumdecoder.cpp"
 
       
     } 
@@ -39072,12 +39068,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1624 "machine/pentium/decoder.m"
+#line 1620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39081 "pentiumdecoder.cpp"
+#line 39077 "pentiumdecoder.cpp"
 
       
     } 
@@ -39090,12 +39086,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1624 "machine/pentium/decoder.m"
+#line 1620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39099 "pentiumdecoder.cpp"
+#line 39095 "pentiumdecoder.cpp"
 
       
     } 
@@ -39108,12 +39104,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1621 "machine/pentium/decoder.m"
+#line 1617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39117 "pentiumdecoder.cpp"
+#line 39113 "pentiumdecoder.cpp"
 
       
     } 
@@ -39126,12 +39122,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1621 "machine/pentium/decoder.m"
+#line 1617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39135 "pentiumdecoder.cpp"
+#line 39131 "pentiumdecoder.cpp"
 
       
     } 
@@ -39144,12 +39140,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1621 "machine/pentium/decoder.m"
+#line 1617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39153 "pentiumdecoder.cpp"
+#line 39149 "pentiumdecoder.cpp"
 
       
     } 
@@ -39162,12 +39158,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1621 "machine/pentium/decoder.m"
+#line 1617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39171 "pentiumdecoder.cpp"
+#line 39167 "pentiumdecoder.cpp"
 
       
     } 
@@ -39180,12 +39176,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1618 "machine/pentium/decoder.m"
+#line 1614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39189 "pentiumdecoder.cpp"
+#line 39185 "pentiumdecoder.cpp"
 
       
     } 
@@ -39198,12 +39194,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1618 "machine/pentium/decoder.m"
+#line 1614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39207 "pentiumdecoder.cpp"
+#line 39203 "pentiumdecoder.cpp"
 
       
     } 
@@ -39216,12 +39212,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1618 "machine/pentium/decoder.m"
+#line 1614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39225 "pentiumdecoder.cpp"
+#line 39221 "pentiumdecoder.cpp"
 
       
     } 
@@ -39234,12 +39230,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1618 "machine/pentium/decoder.m"
+#line 1614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39243 "pentiumdecoder.cpp"
+#line 39239 "pentiumdecoder.cpp"
 
       
     } 
@@ -39252,12 +39248,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 1615 "machine/pentium/decoder.m"
+#line 1611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39261 "pentiumdecoder.cpp"
+#line 39257 "pentiumdecoder.cpp"
 
       
     } 
@@ -39270,12 +39266,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 1615 "machine/pentium/decoder.m"
+#line 1611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39279 "pentiumdecoder.cpp"
+#line 39275 "pentiumdecoder.cpp"
 
       
     } 
@@ -39288,12 +39284,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 1615 "machine/pentium/decoder.m"
+#line 1611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39297 "pentiumdecoder.cpp"
+#line 39293 "pentiumdecoder.cpp"
 
       
     } 
@@ -39306,12 +39302,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 1615 "machine/pentium/decoder.m"
+#line 1611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
 
 
-#line 39315 "pentiumdecoder.cpp"
+#line 39311 "pentiumdecoder.cpp"
 
       
     } 
@@ -39323,12 +39319,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1032 "machine/pentium/decoder.m"
+#line 1028 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39332 "pentiumdecoder.cpp"
+#line 39328 "pentiumdecoder.cpp"
 
       
     } 
@@ -39340,12 +39336,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1032 "machine/pentium/decoder.m"
+#line 1028 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39349 "pentiumdecoder.cpp"
+#line 39345 "pentiumdecoder.cpp"
 
       
     } 
@@ -39357,12 +39353,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1032 "machine/pentium/decoder.m"
+#line 1028 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39366 "pentiumdecoder.cpp"
+#line 39362 "pentiumdecoder.cpp"
 
       
     } 
@@ -39374,12 +39370,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1032 "machine/pentium/decoder.m"
+#line 1028 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
 
 
-#line 39383 "pentiumdecoder.cpp"
+#line 39379 "pentiumdecoder.cpp"
 
       
     } 
@@ -39392,12 +39388,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1588 "machine/pentium/decoder.m"
+#line 1584 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39401 "pentiumdecoder.cpp"
+#line 39397 "pentiumdecoder.cpp"
 
       
     } 
@@ -39410,12 +39406,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1588 "machine/pentium/decoder.m"
+#line 1584 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39419 "pentiumdecoder.cpp"
+#line 39415 "pentiumdecoder.cpp"
 
       
     } 
@@ -39428,12 +39424,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1588 "machine/pentium/decoder.m"
+#line 1584 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39437 "pentiumdecoder.cpp"
+#line 39433 "pentiumdecoder.cpp"
 
       
     } 
@@ -39446,12 +39442,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1588 "machine/pentium/decoder.m"
+#line 1584 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39455 "pentiumdecoder.cpp"
+#line 39451 "pentiumdecoder.cpp"
 
       
     } 
@@ -39464,12 +39460,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1582 "machine/pentium/decoder.m"
+#line 1578 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39473 "pentiumdecoder.cpp"
+#line 39469 "pentiumdecoder.cpp"
 
       
     } 
@@ -39482,12 +39478,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1582 "machine/pentium/decoder.m"
+#line 1578 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39491 "pentiumdecoder.cpp"
+#line 39487 "pentiumdecoder.cpp"
 
       
     } 
@@ -39500,12 +39496,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1582 "machine/pentium/decoder.m"
+#line 1578 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39509 "pentiumdecoder.cpp"
+#line 39505 "pentiumdecoder.cpp"
 
       
     } 
@@ -39518,12 +39514,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1582 "machine/pentium/decoder.m"
+#line 1578 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39527 "pentiumdecoder.cpp"
+#line 39523 "pentiumdecoder.cpp"
 
       
     } 
@@ -39536,12 +39532,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1576 "machine/pentium/decoder.m"
+#line 1572 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39545 "pentiumdecoder.cpp"
+#line 39541 "pentiumdecoder.cpp"
 
       
     } 
@@ -39554,12 +39550,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1576 "machine/pentium/decoder.m"
+#line 1572 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39563 "pentiumdecoder.cpp"
+#line 39559 "pentiumdecoder.cpp"
 
       
     } 
@@ -39572,12 +39568,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1576 "machine/pentium/decoder.m"
+#line 1572 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39581 "pentiumdecoder.cpp"
+#line 39577 "pentiumdecoder.cpp"
 
       
     } 
@@ -39590,12 +39586,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1576 "machine/pentium/decoder.m"
+#line 1572 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39599 "pentiumdecoder.cpp"
+#line 39595 "pentiumdecoder.cpp"
 
       
     } 
@@ -39608,12 +39604,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1570 "machine/pentium/decoder.m"
+#line 1566 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39617 "pentiumdecoder.cpp"
+#line 39613 "pentiumdecoder.cpp"
 
       
     } 
@@ -39626,12 +39622,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1570 "machine/pentium/decoder.m"
+#line 1566 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39635 "pentiumdecoder.cpp"
+#line 39631 "pentiumdecoder.cpp"
 
       
     } 
@@ -39644,12 +39640,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1570 "machine/pentium/decoder.m"
+#line 1566 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39653 "pentiumdecoder.cpp"
+#line 39649 "pentiumdecoder.cpp"
 
       
     } 
@@ -39662,12 +39658,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1570 "machine/pentium/decoder.m"
+#line 1566 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39671 "pentiumdecoder.cpp"
+#line 39667 "pentiumdecoder.cpp"
 
       
     } 
@@ -39680,12 +39676,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1564 "machine/pentium/decoder.m"
+#line 1560 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39689 "pentiumdecoder.cpp"
+#line 39685 "pentiumdecoder.cpp"
 
       
     } 
@@ -39698,12 +39694,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1564 "machine/pentium/decoder.m"
+#line 1560 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39707 "pentiumdecoder.cpp"
+#line 39703 "pentiumdecoder.cpp"
 
       
     } 
@@ -39716,12 +39712,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1564 "machine/pentium/decoder.m"
+#line 1560 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39725 "pentiumdecoder.cpp"
+#line 39721 "pentiumdecoder.cpp"
 
       
     } 
@@ -39734,12 +39730,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1564 "machine/pentium/decoder.m"
+#line 1560 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39743 "pentiumdecoder.cpp"
+#line 39739 "pentiumdecoder.cpp"
 
       
     } 
@@ -39752,12 +39748,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1555 "machine/pentium/decoder.m"
+#line 1551 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39761 "pentiumdecoder.cpp"
+#line 39757 "pentiumdecoder.cpp"
 
       
     } 
@@ -39770,12 +39766,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1555 "machine/pentium/decoder.m"
+#line 1551 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39779 "pentiumdecoder.cpp"
+#line 39775 "pentiumdecoder.cpp"
 
       
     } 
@@ -39788,12 +39784,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1555 "machine/pentium/decoder.m"
+#line 1551 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39797 "pentiumdecoder.cpp"
+#line 39793 "pentiumdecoder.cpp"
 
       
     } 
@@ -39806,12 +39802,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1555 "machine/pentium/decoder.m"
+#line 1551 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39815 "pentiumdecoder.cpp"
+#line 39811 "pentiumdecoder.cpp"
 
       
     } 
@@ -39824,12 +39820,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1549 "machine/pentium/decoder.m"
+#line 1545 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39833 "pentiumdecoder.cpp"
+#line 39829 "pentiumdecoder.cpp"
 
       
     } 
@@ -39842,12 +39838,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1549 "machine/pentium/decoder.m"
+#line 1545 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39851 "pentiumdecoder.cpp"
+#line 39847 "pentiumdecoder.cpp"
 
       
     } 
@@ -39860,12 +39856,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1549 "machine/pentium/decoder.m"
+#line 1545 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39869 "pentiumdecoder.cpp"
+#line 39865 "pentiumdecoder.cpp"
 
       
     } 
@@ -39878,12 +39874,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1549 "machine/pentium/decoder.m"
+#line 1545 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39887 "pentiumdecoder.cpp"
+#line 39883 "pentiumdecoder.cpp"
 
       
     } 
@@ -39896,12 +39892,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1543 "machine/pentium/decoder.m"
+#line 1539 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39905 "pentiumdecoder.cpp"
+#line 39901 "pentiumdecoder.cpp"
 
       
     } 
@@ -39914,12 +39910,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1543 "machine/pentium/decoder.m"
+#line 1539 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39923 "pentiumdecoder.cpp"
+#line 39919 "pentiumdecoder.cpp"
 
       
     } 
@@ -39932,12 +39928,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1543 "machine/pentium/decoder.m"
+#line 1539 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39941 "pentiumdecoder.cpp"
+#line 39937 "pentiumdecoder.cpp"
 
       
     } 
@@ -39950,12 +39946,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1543 "machine/pentium/decoder.m"
+#line 1539 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
 
 
-#line 39959 "pentiumdecoder.cpp"
+#line 39955 "pentiumdecoder.cpp"
 
       
     } 
@@ -39967,12 +39963,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1023 "machine/pentium/decoder.m"
+#line 1019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 39976 "pentiumdecoder.cpp"
+#line 39972 "pentiumdecoder.cpp"
 
       
     } 
@@ -39984,12 +39980,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1023 "machine/pentium/decoder.m"
+#line 1019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 39993 "pentiumdecoder.cpp"
+#line 39989 "pentiumdecoder.cpp"
 
       
     } 
@@ -40001,12 +39997,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1023 "machine/pentium/decoder.m"
+#line 1019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 40010 "pentiumdecoder.cpp"
+#line 40006 "pentiumdecoder.cpp"
 
       
     } 
@@ -40018,12 +40014,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1023 "machine/pentium/decoder.m"
+#line 1019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
 
 
-#line 40027 "pentiumdecoder.cpp"
+#line 40023 "pentiumdecoder.cpp"
 
       
     } 
@@ -40035,12 +40031,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 379 "machine/pentium/decoder.m"
+#line 375 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40044 "pentiumdecoder.cpp"
+#line 40040 "pentiumdecoder.cpp"
 
       
     } 
@@ -40052,12 +40048,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 379 "machine/pentium/decoder.m"
+#line 375 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40061 "pentiumdecoder.cpp"
+#line 40057 "pentiumdecoder.cpp"
 
       
     } 
@@ -40069,12 +40065,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 379 "machine/pentium/decoder.m"
+#line 375 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40078 "pentiumdecoder.cpp"
+#line 40074 "pentiumdecoder.cpp"
 
       
     } 
@@ -40086,12 +40082,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 379 "machine/pentium/decoder.m"
+#line 375 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40095 "pentiumdecoder.cpp"
+#line 40091 "pentiumdecoder.cpp"
 
       
     } 
@@ -40103,12 +40099,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1074 "machine/pentium/decoder.m"
+#line 1070 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 40112 "pentiumdecoder.cpp"
+#line 40108 "pentiumdecoder.cpp"
 
       
     } 
@@ -40120,12 +40116,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1074 "machine/pentium/decoder.m"
+#line 1070 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 40129 "pentiumdecoder.cpp"
+#line 40125 "pentiumdecoder.cpp"
 
       
     } 
@@ -40137,12 +40133,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1074 "machine/pentium/decoder.m"
+#line 1070 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
 
 
-#line 40146 "pentiumdecoder.cpp"
+#line 40142 "pentiumdecoder.cpp"
 
       
     } 
@@ -40154,12 +40150,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 319 "machine/pentium/decoder.m"
+#line 315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40163 "pentiumdecoder.cpp"
+#line 40159 "pentiumdecoder.cpp"
 
       
     } 
@@ -40171,12 +40167,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 319 "machine/pentium/decoder.m"
+#line 315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40180 "pentiumdecoder.cpp"
+#line 40176 "pentiumdecoder.cpp"
 
       
     } 
@@ -40188,12 +40184,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 319 "machine/pentium/decoder.m"
+#line 315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40197 "pentiumdecoder.cpp"
+#line 40193 "pentiumdecoder.cpp"
 
       
     } 
@@ -40205,12 +40201,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 319 "machine/pentium/decoder.m"
+#line 315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
 
 
-#line 40214 "pentiumdecoder.cpp"
+#line 40210 "pentiumdecoder.cpp"
 
       
     } 
@@ -40221,7 +40217,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 878 "machine/pentium/decoder.m"
+#line 874 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evow", DIS_EADDR16);
 
@@ -40253,7 +40249,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40257 "pentiumdecoder.cpp"
+#line 40253 "pentiumdecoder.cpp"
 
       
     } 
@@ -40264,7 +40260,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 878 "machine/pentium/decoder.m"
+#line 874 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evow", DIS_EADDR16);
 
@@ -40296,7 +40292,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40300 "pentiumdecoder.cpp"
+#line 40296 "pentiumdecoder.cpp"
 
       
     } 
@@ -40307,7 +40303,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 878 "machine/pentium/decoder.m"
+#line 874 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evow", DIS_EADDR16);
 
@@ -40339,7 +40335,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40343 "pentiumdecoder.cpp"
+#line 40339 "pentiumdecoder.cpp"
 
       
     } 
@@ -40350,7 +40346,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 878 "machine/pentium/decoder.m"
+#line 874 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evow", DIS_EADDR16);
 
@@ -40382,7 +40378,7 @@ hostPC
 //		stmts = instantiate(pc, "OUT.Ib.AL", DIS_I8);
 
 
-#line 40386 "pentiumdecoder.cpp"
+#line 40382 "pentiumdecoder.cpp"
 
       
     } 
@@ -40395,12 +40391,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 636 "machine/pentium/decoder.m"
+#line 632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40404 "pentiumdecoder.cpp"
+#line 40400 "pentiumdecoder.cpp"
 
       
     } 
@@ -40413,12 +40409,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 636 "machine/pentium/decoder.m"
+#line 632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40422 "pentiumdecoder.cpp"
+#line 40418 "pentiumdecoder.cpp"
 
       
     } 
@@ -40431,12 +40427,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 636 "machine/pentium/decoder.m"
+#line 632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40440 "pentiumdecoder.cpp"
+#line 40436 "pentiumdecoder.cpp"
 
       
     } 
@@ -40449,12 +40445,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 636 "machine/pentium/decoder.m"
+#line 632 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40458 "pentiumdecoder.cpp"
+#line 40454 "pentiumdecoder.cpp"
 
       
     } 
@@ -40467,12 +40463,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 630 "machine/pentium/decoder.m"
+#line 626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40476 "pentiumdecoder.cpp"
+#line 40472 "pentiumdecoder.cpp"
 
       
     } 
@@ -40485,12 +40481,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 630 "machine/pentium/decoder.m"
+#line 626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40494 "pentiumdecoder.cpp"
+#line 40490 "pentiumdecoder.cpp"
 
       
     } 
@@ -40503,12 +40499,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 630 "machine/pentium/decoder.m"
+#line 626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40512 "pentiumdecoder.cpp"
+#line 40508 "pentiumdecoder.cpp"
 
       
     } 
@@ -40521,12 +40517,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 630 "machine/pentium/decoder.m"
+#line 626 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40530 "pentiumdecoder.cpp"
+#line 40526 "pentiumdecoder.cpp"
 
       
     } 
@@ -40539,12 +40535,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 624 "machine/pentium/decoder.m"
+#line 620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40548 "pentiumdecoder.cpp"
+#line 40544 "pentiumdecoder.cpp"
 
       
     } 
@@ -40557,12 +40553,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 624 "machine/pentium/decoder.m"
+#line 620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40566 "pentiumdecoder.cpp"
+#line 40562 "pentiumdecoder.cpp"
 
       
     } 
@@ -40575,12 +40571,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 624 "machine/pentium/decoder.m"
+#line 620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40584 "pentiumdecoder.cpp"
+#line 40580 "pentiumdecoder.cpp"
 
       
     } 
@@ -40593,12 +40589,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 624 "machine/pentium/decoder.m"
+#line 620 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40602 "pentiumdecoder.cpp"
+#line 40598 "pentiumdecoder.cpp"
 
       
     } 
@@ -40611,12 +40607,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 618 "machine/pentium/decoder.m"
+#line 614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40620 "pentiumdecoder.cpp"
+#line 40616 "pentiumdecoder.cpp"
 
       
     } 
@@ -40629,12 +40625,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 618 "machine/pentium/decoder.m"
+#line 614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40638 "pentiumdecoder.cpp"
+#line 40634 "pentiumdecoder.cpp"
 
       
     } 
@@ -40647,12 +40643,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 618 "machine/pentium/decoder.m"
+#line 614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40656 "pentiumdecoder.cpp"
+#line 40652 "pentiumdecoder.cpp"
 
       
     } 
@@ -40665,12 +40661,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 618 "machine/pentium/decoder.m"
+#line 614 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40674 "pentiumdecoder.cpp"
+#line 40670 "pentiumdecoder.cpp"
 
       
     } 
@@ -40683,12 +40679,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 612 "machine/pentium/decoder.m"
+#line 608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40692 "pentiumdecoder.cpp"
+#line 40688 "pentiumdecoder.cpp"
 
       
     } 
@@ -40701,12 +40697,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 612 "machine/pentium/decoder.m"
+#line 608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40710 "pentiumdecoder.cpp"
+#line 40706 "pentiumdecoder.cpp"
 
       
     } 
@@ -40719,12 +40715,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 612 "machine/pentium/decoder.m"
+#line 608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40728 "pentiumdecoder.cpp"
+#line 40724 "pentiumdecoder.cpp"
 
       
     } 
@@ -40737,12 +40733,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 612 "machine/pentium/decoder.m"
+#line 608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40746 "pentiumdecoder.cpp"
+#line 40742 "pentiumdecoder.cpp"
 
       
     } 
@@ -40755,12 +40751,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 606 "machine/pentium/decoder.m"
+#line 602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40764 "pentiumdecoder.cpp"
+#line 40760 "pentiumdecoder.cpp"
 
       
     } 
@@ -40773,12 +40769,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 606 "machine/pentium/decoder.m"
+#line 602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40782 "pentiumdecoder.cpp"
+#line 40778 "pentiumdecoder.cpp"
 
       
     } 
@@ -40791,12 +40787,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 606 "machine/pentium/decoder.m"
+#line 602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40800 "pentiumdecoder.cpp"
+#line 40796 "pentiumdecoder.cpp"
 
       
     } 
@@ -40809,12 +40805,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 606 "machine/pentium/decoder.m"
+#line 602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40818 "pentiumdecoder.cpp"
+#line 40814 "pentiumdecoder.cpp"
 
       
     } 
@@ -40827,12 +40823,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 600 "machine/pentium/decoder.m"
+#line 596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40836 "pentiumdecoder.cpp"
+#line 40832 "pentiumdecoder.cpp"
 
       
     } 
@@ -40845,12 +40841,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 600 "machine/pentium/decoder.m"
+#line 596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40854 "pentiumdecoder.cpp"
+#line 40850 "pentiumdecoder.cpp"
 
       
     } 
@@ -40863,12 +40859,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 600 "machine/pentium/decoder.m"
+#line 596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40872 "pentiumdecoder.cpp"
+#line 40868 "pentiumdecoder.cpp"
 
       
     } 
@@ -40881,12 +40877,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 600 "machine/pentium/decoder.m"
+#line 596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
 
 
-#line 40890 "pentiumdecoder.cpp"
+#line 40886 "pentiumdecoder.cpp"
 
       
     } 
@@ -40899,12 +40895,12 @@ hostPC
         sign_extend((MATCH_w_16_24 & 0xffff) /* i16 at 24 */, 16);
       nextPC = 5 + MATCH_p; 
       
-#line 981 "machine/pentium/decoder.m"
+#line 977 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40908 "pentiumdecoder.cpp"
+#line 40904 "pentiumdecoder.cpp"
 
       
     } 
@@ -40917,12 +40913,12 @@ hostPC
         sign_extend((MATCH_w_16_32 & 0xffff) /* i16 at 32 */, 16);
       nextPC = 6 + MATCH_p; 
       
-#line 981 "machine/pentium/decoder.m"
+#line 977 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40926 "pentiumdecoder.cpp"
+#line 40922 "pentiumdecoder.cpp"
 
       
     } 
@@ -40935,12 +40931,12 @@ hostPC
         sign_extend((MATCH_w_16_64 & 0xffff) /* i16 at 64 */, 16);
       nextPC = 10 + MATCH_p; 
       
-#line 981 "machine/pentium/decoder.m"
+#line 977 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40944 "pentiumdecoder.cpp"
+#line 40940 "pentiumdecoder.cpp"
 
       
     } 
@@ -40953,12 +40949,12 @@ hostPC
         sign_extend((MATCH_w_16_56 & 0xffff) /* i16 at 56 */, 16);
       nextPC = 9 + MATCH_p; 
       
-#line 981 "machine/pentium/decoder.m"
+#line 977 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
 
 
-#line 40962 "pentiumdecoder.cpp"
+#line 40958 "pentiumdecoder.cpp"
 
       
     } 
@@ -40969,12 +40965,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 741 "machine/pentium/decoder.m"
+#line 737 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 40978 "pentiumdecoder.cpp"
+#line 40974 "pentiumdecoder.cpp"
 
       
     } 
@@ -40985,12 +40981,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 741 "machine/pentium/decoder.m"
+#line 737 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 40994 "pentiumdecoder.cpp"
+#line 40990 "pentiumdecoder.cpp"
 
       
     } 
@@ -41001,12 +40997,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 741 "machine/pentium/decoder.m"
+#line 737 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41010 "pentiumdecoder.cpp"
+#line 41006 "pentiumdecoder.cpp"
 
       
     } 
@@ -41017,12 +41013,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 741 "machine/pentium/decoder.m"
+#line 737 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41026 "pentiumdecoder.cpp"
+#line 41022 "pentiumdecoder.cpp"
 
       
     } 
@@ -41033,12 +41029,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 729 "machine/pentium/decoder.m"
+#line 725 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41042 "pentiumdecoder.cpp"
+#line 41038 "pentiumdecoder.cpp"
 
       
     } 
@@ -41049,12 +41045,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 729 "machine/pentium/decoder.m"
+#line 725 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41058 "pentiumdecoder.cpp"
+#line 41054 "pentiumdecoder.cpp"
 
       
     } 
@@ -41065,12 +41061,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 729 "machine/pentium/decoder.m"
+#line 725 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41074 "pentiumdecoder.cpp"
+#line 41070 "pentiumdecoder.cpp"
 
       
     } 
@@ -41081,12 +41077,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 729 "machine/pentium/decoder.m"
+#line 725 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
 
 
-#line 41090 "pentiumdecoder.cpp"
+#line 41086 "pentiumdecoder.cpp"
 
       
     } 
@@ -41097,12 +41093,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 717 "machine/pentium/decoder.m"
+#line 713 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41106 "pentiumdecoder.cpp"
+#line 41102 "pentiumdecoder.cpp"
 
       
     } 
@@ -41113,12 +41109,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 717 "machine/pentium/decoder.m"
+#line 713 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41122 "pentiumdecoder.cpp"
+#line 41118 "pentiumdecoder.cpp"
 
       
     } 
@@ -41129,12 +41125,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 717 "machine/pentium/decoder.m"
+#line 713 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41138 "pentiumdecoder.cpp"
+#line 41134 "pentiumdecoder.cpp"
 
       
     } 
@@ -41145,12 +41141,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 717 "machine/pentium/decoder.m"
+#line 713 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41154 "pentiumdecoder.cpp"
+#line 41150 "pentiumdecoder.cpp"
 
       
     } 
@@ -41161,12 +41157,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 705 "machine/pentium/decoder.m"
+#line 701 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41170 "pentiumdecoder.cpp"
+#line 41166 "pentiumdecoder.cpp"
 
       
     } 
@@ -41177,12 +41173,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 705 "machine/pentium/decoder.m"
+#line 701 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41186 "pentiumdecoder.cpp"
+#line 41182 "pentiumdecoder.cpp"
 
       
     } 
@@ -41193,12 +41189,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 705 "machine/pentium/decoder.m"
+#line 701 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41202 "pentiumdecoder.cpp"
+#line 41198 "pentiumdecoder.cpp"
 
       
     } 
@@ -41209,12 +41205,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 705 "machine/pentium/decoder.m"
+#line 701 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41218 "pentiumdecoder.cpp"
+#line 41214 "pentiumdecoder.cpp"
 
       
     } 
@@ -41225,12 +41221,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 693 "machine/pentium/decoder.m"
+#line 689 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41234 "pentiumdecoder.cpp"
+#line 41230 "pentiumdecoder.cpp"
 
       
     } 
@@ -41241,12 +41237,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 693 "machine/pentium/decoder.m"
+#line 689 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41250 "pentiumdecoder.cpp"
+#line 41246 "pentiumdecoder.cpp"
 
       
     } 
@@ -41257,12 +41253,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 693 "machine/pentium/decoder.m"
+#line 689 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41266 "pentiumdecoder.cpp"
+#line 41262 "pentiumdecoder.cpp"
 
       
     } 
@@ -41273,12 +41269,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 693 "machine/pentium/decoder.m"
+#line 689 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41282 "pentiumdecoder.cpp"
+#line 41278 "pentiumdecoder.cpp"
 
       
     } 
@@ -41289,12 +41285,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 681 "machine/pentium/decoder.m"
+#line 677 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41298 "pentiumdecoder.cpp"
+#line 41294 "pentiumdecoder.cpp"
 
       
     } 
@@ -41305,12 +41301,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 681 "machine/pentium/decoder.m"
+#line 677 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41314 "pentiumdecoder.cpp"
+#line 41310 "pentiumdecoder.cpp"
 
       
     } 
@@ -41321,12 +41317,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 681 "machine/pentium/decoder.m"
+#line 677 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41330 "pentiumdecoder.cpp"
+#line 41326 "pentiumdecoder.cpp"
 
       
     } 
@@ -41337,12 +41333,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 681 "machine/pentium/decoder.m"
+#line 677 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41346 "pentiumdecoder.cpp"
+#line 41342 "pentiumdecoder.cpp"
 
       
     } 
@@ -41353,12 +41349,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 669 "machine/pentium/decoder.m"
+#line 665 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41362 "pentiumdecoder.cpp"
+#line 41358 "pentiumdecoder.cpp"
 
       
     } 
@@ -41369,12 +41365,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 669 "machine/pentium/decoder.m"
+#line 665 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41378 "pentiumdecoder.cpp"
+#line 41374 "pentiumdecoder.cpp"
 
       
     } 
@@ -41385,12 +41381,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 669 "machine/pentium/decoder.m"
+#line 665 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41394 "pentiumdecoder.cpp"
+#line 41390 "pentiumdecoder.cpp"
 
       
     } 
@@ -41401,12 +41397,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 669 "machine/pentium/decoder.m"
+#line 665 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
 
 
-#line 41410 "pentiumdecoder.cpp"
+#line 41406 "pentiumdecoder.cpp"
 
       
     } 
@@ -41417,12 +41413,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 735 "machine/pentium/decoder.m"
+#line 731 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41426 "pentiumdecoder.cpp"
+#line 41422 "pentiumdecoder.cpp"
 
       
     } 
@@ -41433,12 +41429,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 735 "machine/pentium/decoder.m"
+#line 731 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41442 "pentiumdecoder.cpp"
+#line 41438 "pentiumdecoder.cpp"
 
       
     } 
@@ -41449,12 +41445,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 735 "machine/pentium/decoder.m"
+#line 731 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41458 "pentiumdecoder.cpp"
+#line 41454 "pentiumdecoder.cpp"
 
       
     } 
@@ -41465,12 +41461,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 735 "machine/pentium/decoder.m"
+#line 731 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41474 "pentiumdecoder.cpp"
+#line 41470 "pentiumdecoder.cpp"
 
       
     } 
@@ -41481,12 +41477,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 723 "machine/pentium/decoder.m"
+#line 719 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41490 "pentiumdecoder.cpp"
+#line 41486 "pentiumdecoder.cpp"
 
       
     } 
@@ -41497,12 +41493,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 723 "machine/pentium/decoder.m"
+#line 719 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41506 "pentiumdecoder.cpp"
+#line 41502 "pentiumdecoder.cpp"
 
       
     } 
@@ -41513,12 +41509,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 723 "machine/pentium/decoder.m"
+#line 719 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41522 "pentiumdecoder.cpp"
+#line 41518 "pentiumdecoder.cpp"
 
       
     } 
@@ -41529,12 +41525,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 723 "machine/pentium/decoder.m"
+#line 719 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41538 "pentiumdecoder.cpp"
+#line 41534 "pentiumdecoder.cpp"
 
       
     } 
@@ -41545,12 +41541,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 711 "machine/pentium/decoder.m"
+#line 707 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41554 "pentiumdecoder.cpp"
+#line 41550 "pentiumdecoder.cpp"
 
       
     } 
@@ -41561,12 +41557,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 711 "machine/pentium/decoder.m"
+#line 707 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41570 "pentiumdecoder.cpp"
+#line 41566 "pentiumdecoder.cpp"
 
       
     } 
@@ -41577,12 +41573,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 711 "machine/pentium/decoder.m"
+#line 707 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41586 "pentiumdecoder.cpp"
+#line 41582 "pentiumdecoder.cpp"
 
       
     } 
@@ -41593,12 +41589,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 711 "machine/pentium/decoder.m"
+#line 707 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41602 "pentiumdecoder.cpp"
+#line 41598 "pentiumdecoder.cpp"
 
       
     } 
@@ -41609,12 +41605,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 699 "machine/pentium/decoder.m"
+#line 695 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41618 "pentiumdecoder.cpp"
+#line 41614 "pentiumdecoder.cpp"
 
       
     } 
@@ -41625,12 +41621,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 699 "machine/pentium/decoder.m"
+#line 695 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41634 "pentiumdecoder.cpp"
+#line 41630 "pentiumdecoder.cpp"
 
       
     } 
@@ -41641,12 +41637,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 699 "machine/pentium/decoder.m"
+#line 695 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41650 "pentiumdecoder.cpp"
+#line 41646 "pentiumdecoder.cpp"
 
       
     } 
@@ -41657,12 +41653,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 699 "machine/pentium/decoder.m"
+#line 695 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41666 "pentiumdecoder.cpp"
+#line 41662 "pentiumdecoder.cpp"
 
       
     } 
@@ -41673,12 +41669,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 687 "machine/pentium/decoder.m"
+#line 683 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41682 "pentiumdecoder.cpp"
+#line 41678 "pentiumdecoder.cpp"
 
       
     } 
@@ -41689,12 +41685,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 687 "machine/pentium/decoder.m"
+#line 683 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41698 "pentiumdecoder.cpp"
+#line 41694 "pentiumdecoder.cpp"
 
       
     } 
@@ -41705,12 +41701,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 687 "machine/pentium/decoder.m"
+#line 683 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41714 "pentiumdecoder.cpp"
+#line 41710 "pentiumdecoder.cpp"
 
       
     } 
@@ -41721,12 +41717,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 687 "machine/pentium/decoder.m"
+#line 683 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41730 "pentiumdecoder.cpp"
+#line 41726 "pentiumdecoder.cpp"
 
       
     } 
@@ -41737,12 +41733,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 675 "machine/pentium/decoder.m"
+#line 671 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41746 "pentiumdecoder.cpp"
+#line 41742 "pentiumdecoder.cpp"
 
       
     } 
@@ -41753,12 +41749,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 675 "machine/pentium/decoder.m"
+#line 671 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41762 "pentiumdecoder.cpp"
+#line 41758 "pentiumdecoder.cpp"
 
       
     } 
@@ -41769,12 +41765,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 675 "machine/pentium/decoder.m"
+#line 671 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41778 "pentiumdecoder.cpp"
+#line 41774 "pentiumdecoder.cpp"
 
       
     } 
@@ -41785,12 +41781,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 675 "machine/pentium/decoder.m"
+#line 671 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41794 "pentiumdecoder.cpp"
+#line 41790 "pentiumdecoder.cpp"
 
       
     } 
@@ -41801,12 +41797,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 663 "machine/pentium/decoder.m"
+#line 659 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41810 "pentiumdecoder.cpp"
+#line 41806 "pentiumdecoder.cpp"
 
       
     } 
@@ -41817,12 +41813,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 663 "machine/pentium/decoder.m"
+#line 659 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41826 "pentiumdecoder.cpp"
+#line 41822 "pentiumdecoder.cpp"
 
       
     } 
@@ -41833,12 +41829,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 663 "machine/pentium/decoder.m"
+#line 659 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41842 "pentiumdecoder.cpp"
+#line 41838 "pentiumdecoder.cpp"
 
       
     } 
@@ -41849,12 +41845,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 663 "machine/pentium/decoder.m"
+#line 659 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
 
 
-#line 41858 "pentiumdecoder.cpp"
+#line 41854 "pentiumdecoder.cpp"
 
       
     } 
@@ -41866,12 +41862,12 @@ hostPC
       unsigned i16 = (MATCH_w_16_24 & 0xffff) /* i16 at 24 */;
       nextPC = 5 + MATCH_p; 
       
-#line 388 "machine/pentium/decoder.m"
+#line 384 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41875 "pentiumdecoder.cpp"
+#line 41871 "pentiumdecoder.cpp"
 
       
     } 
@@ -41883,12 +41879,12 @@ hostPC
       unsigned i16 = (MATCH_w_16_32 & 0xffff) /* i16 at 32 */;
       nextPC = 6 + MATCH_p; 
       
-#line 388 "machine/pentium/decoder.m"
+#line 384 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41892 "pentiumdecoder.cpp"
+#line 41888 "pentiumdecoder.cpp"
 
       
     } 
@@ -41900,12 +41896,12 @@ hostPC
       unsigned i16 = (MATCH_w_16_64 & 0xffff) /* i16 at 64 */;
       nextPC = 10 + MATCH_p; 
       
-#line 388 "machine/pentium/decoder.m"
+#line 384 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41909 "pentiumdecoder.cpp"
+#line 41905 "pentiumdecoder.cpp"
 
       
     } 
@@ -41917,12 +41913,12 @@ hostPC
       unsigned i16 = (MATCH_w_16_56 & 0xffff) /* i16 at 56 */;
       nextPC = 9 + MATCH_p; 
       
-#line 388 "machine/pentium/decoder.m"
+#line 384 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
 
 
-#line 41926 "pentiumdecoder.cpp"
+#line 41922 "pentiumdecoder.cpp"
 
       
     } 
@@ -41933,12 +41929,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 911 "machine/pentium/decoder.m"
+#line 907 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41942 "pentiumdecoder.cpp"
+#line 41938 "pentiumdecoder.cpp"
 
       
     } 
@@ -41949,12 +41945,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 911 "machine/pentium/decoder.m"
+#line 907 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41958 "pentiumdecoder.cpp"
+#line 41954 "pentiumdecoder.cpp"
 
       
     } 
@@ -41965,12 +41961,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 911 "machine/pentium/decoder.m"
+#line 907 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41974 "pentiumdecoder.cpp"
+#line 41970 "pentiumdecoder.cpp"
 
       
     } 
@@ -41981,12 +41977,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 911 "machine/pentium/decoder.m"
+#line 907 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTow", DIS_EADDR16);
 
 
-#line 41990 "pentiumdecoder.cpp"
+#line 41986 "pentiumdecoder.cpp"
 
       
     } 
@@ -41997,12 +41993,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 920 "machine/pentium/decoder.m"
+#line 916 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42006 "pentiumdecoder.cpp"
+#line 42002 "pentiumdecoder.cpp"
 
       
     } 
@@ -42013,12 +42009,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 920 "machine/pentium/decoder.m"
+#line 916 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42022 "pentiumdecoder.cpp"
+#line 42018 "pentiumdecoder.cpp"
 
       
     } 
@@ -42029,12 +42025,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 920 "machine/pentium/decoder.m"
+#line 916 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42038 "pentiumdecoder.cpp"
+#line 42034 "pentiumdecoder.cpp"
 
       
     } 
@@ -42045,12 +42041,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 920 "machine/pentium/decoder.m"
+#line 916 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGow", DIS_EADDR16);
 
 
-#line 42054 "pentiumdecoder.cpp"
+#line 42050 "pentiumdecoder.cpp"
 
       
     } 
@@ -42061,12 +42057,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 929 "machine/pentium/decoder.m"
+#line 925 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42070 "pentiumdecoder.cpp"
+#line 42066 "pentiumdecoder.cpp"
 
       
     } 
@@ -42077,12 +42073,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 929 "machine/pentium/decoder.m"
+#line 925 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42086 "pentiumdecoder.cpp"
+#line 42082 "pentiumdecoder.cpp"
 
       
     } 
@@ -42093,12 +42089,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 929 "machine/pentium/decoder.m"
+#line 925 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42102 "pentiumdecoder.cpp"
+#line 42098 "pentiumdecoder.cpp"
 
       
     } 
@@ -42109,12 +42105,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 929 "machine/pentium/decoder.m"
+#line 925 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXow", DIS_EADDR16);
 
 
-#line 42118 "pentiumdecoder.cpp"
+#line 42114 "pentiumdecoder.cpp"
 
       
     } 
@@ -42125,12 +42121,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1173 "machine/pentium/decoder.m"
+#line 1169 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42134 "pentiumdecoder.cpp"
+#line 42130 "pentiumdecoder.cpp"
 
       
     } 
@@ -42141,12 +42137,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1173 "machine/pentium/decoder.m"
+#line 1169 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42150 "pentiumdecoder.cpp"
+#line 42146 "pentiumdecoder.cpp"
 
       
     } 
@@ -42157,12 +42153,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1173 "machine/pentium/decoder.m"
+#line 1169 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42166 "pentiumdecoder.cpp"
+#line 42162 "pentiumdecoder.cpp"
 
       
     } 
@@ -42173,12 +42169,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1173 "machine/pentium/decoder.m"
+#line 1169 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULow", DIS_EADDR16);
 
 
-#line 42182 "pentiumdecoder.cpp"
+#line 42178 "pentiumdecoder.cpp"
 
       
     } 
@@ -42189,12 +42185,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1197 "machine/pentium/decoder.m"
+#line 1193 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42198 "pentiumdecoder.cpp"
+#line 42194 "pentiumdecoder.cpp"
 
       
     } 
@@ -42205,12 +42201,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1197 "machine/pentium/decoder.m"
+#line 1193 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42214 "pentiumdecoder.cpp"
+#line 42210 "pentiumdecoder.cpp"
 
       
     } 
@@ -42221,12 +42217,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1197 "machine/pentium/decoder.m"
+#line 1193 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42230 "pentiumdecoder.cpp"
+#line 42226 "pentiumdecoder.cpp"
 
       
     } 
@@ -42237,12 +42233,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1197 "machine/pentium/decoder.m"
+#line 1193 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAX", DIS_EADDR16);
 
 
-#line 42246 "pentiumdecoder.cpp"
+#line 42242 "pentiumdecoder.cpp"
 
       
     } 
@@ -42253,12 +42249,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1182 "machine/pentium/decoder.m"
+#line 1178 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42262 "pentiumdecoder.cpp"
+#line 42258 "pentiumdecoder.cpp"
 
       
     } 
@@ -42269,12 +42265,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1182 "machine/pentium/decoder.m"
+#line 1178 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42278 "pentiumdecoder.cpp"
+#line 42274 "pentiumdecoder.cpp"
 
       
     } 
@@ -42285,12 +42281,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1182 "machine/pentium/decoder.m"
+#line 1178 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42294 "pentiumdecoder.cpp"
+#line 42290 "pentiumdecoder.cpp"
 
       
     } 
@@ -42301,12 +42297,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1182 "machine/pentium/decoder.m"
+#line 1178 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVAX", DIS_EADDR16);
 
 
-#line 42310 "pentiumdecoder.cpp"
+#line 42306 "pentiumdecoder.cpp"
 
       
     } 
@@ -42317,12 +42313,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1128 "machine/pentium/decoder.m"
+#line 1124 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42326 "pentiumdecoder.cpp"
+#line 42322 "pentiumdecoder.cpp"
 
       
     } 
@@ -42333,12 +42329,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1128 "machine/pentium/decoder.m"
+#line 1124 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42342 "pentiumdecoder.cpp"
+#line 42338 "pentiumdecoder.cpp"
 
       
     } 
@@ -42349,12 +42345,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1128 "machine/pentium/decoder.m"
+#line 1124 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42358 "pentiumdecoder.cpp"
+#line 42354 "pentiumdecoder.cpp"
 
       
     } 
@@ -42365,12 +42361,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1128 "machine/pentium/decoder.m"
+#line 1124 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evow", DIS_EADDR16);
 
 
-#line 42374 "pentiumdecoder.cpp"
+#line 42370 "pentiumdecoder.cpp"
 
       
     } 
@@ -42381,12 +42377,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1212 "machine/pentium/decoder.m"
+#line 1208 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42390 "pentiumdecoder.cpp"
+#line 42386 "pentiumdecoder.cpp"
 
       
     } 
@@ -42397,12 +42393,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1212 "machine/pentium/decoder.m"
+#line 1208 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42406 "pentiumdecoder.cpp"
+#line 42402 "pentiumdecoder.cpp"
 
       
     } 
@@ -42413,12 +42409,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1212 "machine/pentium/decoder.m"
+#line 1208 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42422 "pentiumdecoder.cpp"
+#line 42418 "pentiumdecoder.cpp"
 
       
     } 
@@ -42429,12 +42425,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1212 "machine/pentium/decoder.m"
+#line 1208 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evow", DIS_EADDR16);
 
 
-#line 42438 "pentiumdecoder.cpp"
+#line 42434 "pentiumdecoder.cpp"
 
       
     } 
@@ -42445,7 +42441,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 839 "machine/pentium/decoder.m"
+#line 835 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evow", DIS_EADDR16);
 
@@ -42462,7 +42458,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42466 "pentiumdecoder.cpp"
+#line 42462 "pentiumdecoder.cpp"
 
       
     } 
@@ -42473,7 +42469,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 839 "machine/pentium/decoder.m"
+#line 835 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evow", DIS_EADDR16);
 
@@ -42490,7 +42486,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42494 "pentiumdecoder.cpp"
+#line 42490 "pentiumdecoder.cpp"
 
       
     } 
@@ -42501,7 +42497,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 839 "machine/pentium/decoder.m"
+#line 835 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evow", DIS_EADDR16);
 
@@ -42518,7 +42514,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42522 "pentiumdecoder.cpp"
+#line 42518 "pentiumdecoder.cpp"
 
       
     } 
@@ -42529,7 +42525,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 839 "machine/pentium/decoder.m"
+#line 835 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evow", DIS_EADDR16);
 
@@ -42546,7 +42542,7 @@ hostPC
 //		stmts = instantiate(pc, "POPAow");
 
 
-#line 42550 "pentiumdecoder.cpp"
+#line 42546 "pentiumdecoder.cpp"
 
       
     } 
@@ -42559,12 +42555,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1660 "machine/pentium/decoder.m"
+#line 1656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42568 "pentiumdecoder.cpp"
+#line 42564 "pentiumdecoder.cpp"
 
       
     } 
@@ -42577,12 +42573,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1660 "machine/pentium/decoder.m"
+#line 1656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42586 "pentiumdecoder.cpp"
+#line 42582 "pentiumdecoder.cpp"
 
       
     } 
@@ -42595,12 +42591,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1660 "machine/pentium/decoder.m"
+#line 1656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42604 "pentiumdecoder.cpp"
+#line 42600 "pentiumdecoder.cpp"
 
       
     } 
@@ -42613,12 +42609,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1660 "machine/pentium/decoder.m"
+#line 1656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42622 "pentiumdecoder.cpp"
+#line 42618 "pentiumdecoder.cpp"
 
       
     } 
@@ -42631,12 +42627,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1657 "machine/pentium/decoder.m"
+#line 1653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42640 "pentiumdecoder.cpp"
+#line 42636 "pentiumdecoder.cpp"
 
       
     } 
@@ -42649,12 +42645,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1657 "machine/pentium/decoder.m"
+#line 1653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42658 "pentiumdecoder.cpp"
+#line 42654 "pentiumdecoder.cpp"
 
       
     } 
@@ -42667,12 +42663,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1657 "machine/pentium/decoder.m"
+#line 1653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42676 "pentiumdecoder.cpp"
+#line 42672 "pentiumdecoder.cpp"
 
       
     } 
@@ -42685,12 +42681,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1657 "machine/pentium/decoder.m"
+#line 1653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
 
 
-#line 42694 "pentiumdecoder.cpp"
+#line 42690 "pentiumdecoder.cpp"
 
       
     } 
@@ -42703,12 +42699,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1654 "machine/pentium/decoder.m"
+#line 1650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42712 "pentiumdecoder.cpp"
+#line 42708 "pentiumdecoder.cpp"
 
       
     } 
@@ -42721,12 +42717,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1654 "machine/pentium/decoder.m"
+#line 1650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42730 "pentiumdecoder.cpp"
+#line 42726 "pentiumdecoder.cpp"
 
       
     } 
@@ -42739,12 +42735,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1654 "machine/pentium/decoder.m"
+#line 1650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42748 "pentiumdecoder.cpp"
+#line 42744 "pentiumdecoder.cpp"
 
       
     } 
@@ -42757,12 +42753,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1654 "machine/pentium/decoder.m"
+#line 1650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
 
 
-#line 42766 "pentiumdecoder.cpp"
+#line 42762 "pentiumdecoder.cpp"
 
       
     } 
@@ -42775,12 +42771,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1651 "machine/pentium/decoder.m"
+#line 1647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42784 "pentiumdecoder.cpp"
+#line 42780 "pentiumdecoder.cpp"
 
       
     } 
@@ -42793,12 +42789,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1651 "machine/pentium/decoder.m"
+#line 1647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42802 "pentiumdecoder.cpp"
+#line 42798 "pentiumdecoder.cpp"
 
       
     } 
@@ -42811,12 +42807,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1651 "machine/pentium/decoder.m"
+#line 1647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42820 "pentiumdecoder.cpp"
+#line 42816 "pentiumdecoder.cpp"
 
       
     } 
@@ -42829,12 +42825,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1651 "machine/pentium/decoder.m"
+#line 1647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42838 "pentiumdecoder.cpp"
+#line 42834 "pentiumdecoder.cpp"
 
       
     } 
@@ -42847,12 +42843,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1648 "machine/pentium/decoder.m"
+#line 1644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42856 "pentiumdecoder.cpp"
+#line 42852 "pentiumdecoder.cpp"
 
       
     } 
@@ -42865,12 +42861,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1648 "machine/pentium/decoder.m"
+#line 1644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42874 "pentiumdecoder.cpp"
+#line 42870 "pentiumdecoder.cpp"
 
       
     } 
@@ -42883,12 +42879,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1648 "machine/pentium/decoder.m"
+#line 1644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42892 "pentiumdecoder.cpp"
+#line 42888 "pentiumdecoder.cpp"
 
       
     } 
@@ -42901,12 +42897,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1648 "machine/pentium/decoder.m"
+#line 1644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
 
 
-#line 42910 "pentiumdecoder.cpp"
+#line 42906 "pentiumdecoder.cpp"
 
       
     } 
@@ -42919,12 +42915,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1645 "machine/pentium/decoder.m"
+#line 1641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42928 "pentiumdecoder.cpp"
+#line 42924 "pentiumdecoder.cpp"
 
       
     } 
@@ -42937,12 +42933,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1645 "machine/pentium/decoder.m"
+#line 1641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42946 "pentiumdecoder.cpp"
+#line 42942 "pentiumdecoder.cpp"
 
       
     } 
@@ -42955,12 +42951,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1645 "machine/pentium/decoder.m"
+#line 1641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42964 "pentiumdecoder.cpp"
+#line 42960 "pentiumdecoder.cpp"
 
       
     } 
@@ -42973,12 +42969,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1645 "machine/pentium/decoder.m"
+#line 1641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
 
 
-#line 42982 "pentiumdecoder.cpp"
+#line 42978 "pentiumdecoder.cpp"
 
       
     } 
@@ -42991,12 +42987,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1642 "machine/pentium/decoder.m"
+#line 1638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43000 "pentiumdecoder.cpp"
+#line 42996 "pentiumdecoder.cpp"
 
       
     } 
@@ -43009,12 +43005,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1642 "machine/pentium/decoder.m"
+#line 1638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43018 "pentiumdecoder.cpp"
+#line 43014 "pentiumdecoder.cpp"
 
       
     } 
@@ -43027,12 +43023,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1642 "machine/pentium/decoder.m"
+#line 1638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43036 "pentiumdecoder.cpp"
+#line 43032 "pentiumdecoder.cpp"
 
       
     } 
@@ -43045,12 +43041,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1642 "machine/pentium/decoder.m"
+#line 1638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
 
 
-#line 43054 "pentiumdecoder.cpp"
+#line 43050 "pentiumdecoder.cpp"
 
       
     } 
@@ -43063,12 +43059,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1639 "machine/pentium/decoder.m"
+#line 1635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43072 "pentiumdecoder.cpp"
+#line 43068 "pentiumdecoder.cpp"
 
       
     } 
@@ -43081,12 +43077,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1639 "machine/pentium/decoder.m"
+#line 1635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43090 "pentiumdecoder.cpp"
+#line 43086 "pentiumdecoder.cpp"
 
       
     } 
@@ -43099,12 +43095,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1639 "machine/pentium/decoder.m"
+#line 1635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43108 "pentiumdecoder.cpp"
+#line 43104 "pentiumdecoder.cpp"
 
       
     } 
@@ -43117,12 +43113,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1639 "machine/pentium/decoder.m"
+#line 1635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
 
 
-#line 43126 "pentiumdecoder.cpp"
+#line 43122 "pentiumdecoder.cpp"
 
       
     } 
@@ -43134,12 +43130,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1612 "machine/pentium/decoder.m"
+#line 1608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43143 "pentiumdecoder.cpp"
+#line 43139 "pentiumdecoder.cpp"
 
       
     } 
@@ -43151,12 +43147,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1612 "machine/pentium/decoder.m"
+#line 1608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43160 "pentiumdecoder.cpp"
+#line 43156 "pentiumdecoder.cpp"
 
       
     } 
@@ -43168,12 +43164,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1612 "machine/pentium/decoder.m"
+#line 1608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43177 "pentiumdecoder.cpp"
+#line 43173 "pentiumdecoder.cpp"
 
       
     } 
@@ -43185,12 +43181,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1612 "machine/pentium/decoder.m"
+#line 1608 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43194 "pentiumdecoder.cpp"
+#line 43190 "pentiumdecoder.cpp"
 
       
     } 
@@ -43202,12 +43198,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1609 "machine/pentium/decoder.m"
+#line 1605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43211 "pentiumdecoder.cpp"
+#line 43207 "pentiumdecoder.cpp"
 
       
     } 
@@ -43219,12 +43215,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1609 "machine/pentium/decoder.m"
+#line 1605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43228 "pentiumdecoder.cpp"
+#line 43224 "pentiumdecoder.cpp"
 
       
     } 
@@ -43236,12 +43232,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1609 "machine/pentium/decoder.m"
+#line 1605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43245 "pentiumdecoder.cpp"
+#line 43241 "pentiumdecoder.cpp"
 
       
     } 
@@ -43253,12 +43249,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1609 "machine/pentium/decoder.m"
+#line 1605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43262 "pentiumdecoder.cpp"
+#line 43258 "pentiumdecoder.cpp"
 
       
     } 
@@ -43270,12 +43266,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1606 "machine/pentium/decoder.m"
+#line 1602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43279 "pentiumdecoder.cpp"
+#line 43275 "pentiumdecoder.cpp"
 
       
     } 
@@ -43287,12 +43283,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1606 "machine/pentium/decoder.m"
+#line 1602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43296 "pentiumdecoder.cpp"
+#line 43292 "pentiumdecoder.cpp"
 
       
     } 
@@ -43304,12 +43300,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1606 "machine/pentium/decoder.m"
+#line 1602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43313 "pentiumdecoder.cpp"
+#line 43309 "pentiumdecoder.cpp"
 
       
     } 
@@ -43321,12 +43317,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1606 "machine/pentium/decoder.m"
+#line 1602 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
 
 
-#line 43330 "pentiumdecoder.cpp"
+#line 43326 "pentiumdecoder.cpp"
 
       
     } 
@@ -43338,12 +43334,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1603 "machine/pentium/decoder.m"
+#line 1599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43347 "pentiumdecoder.cpp"
+#line 43343 "pentiumdecoder.cpp"
 
       
     } 
@@ -43355,12 +43351,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1603 "machine/pentium/decoder.m"
+#line 1599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43364 "pentiumdecoder.cpp"
+#line 43360 "pentiumdecoder.cpp"
 
       
     } 
@@ -43372,12 +43368,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1603 "machine/pentium/decoder.m"
+#line 1599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43381 "pentiumdecoder.cpp"
+#line 43377 "pentiumdecoder.cpp"
 
       
     } 
@@ -43389,12 +43385,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1603 "machine/pentium/decoder.m"
+#line 1599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43398 "pentiumdecoder.cpp"
+#line 43394 "pentiumdecoder.cpp"
 
       
     } 
@@ -43406,12 +43402,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1600 "machine/pentium/decoder.m"
+#line 1596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43415 "pentiumdecoder.cpp"
+#line 43411 "pentiumdecoder.cpp"
 
       
     } 
@@ -43423,12 +43419,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1600 "machine/pentium/decoder.m"
+#line 1596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43432 "pentiumdecoder.cpp"
+#line 43428 "pentiumdecoder.cpp"
 
       
     } 
@@ -43440,12 +43436,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1600 "machine/pentium/decoder.m"
+#line 1596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43449 "pentiumdecoder.cpp"
+#line 43445 "pentiumdecoder.cpp"
 
       
     } 
@@ -43457,12 +43453,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1600 "machine/pentium/decoder.m"
+#line 1596 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
 
 
-#line 43466 "pentiumdecoder.cpp"
+#line 43462 "pentiumdecoder.cpp"
 
       
     } 
@@ -43474,12 +43470,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1597 "machine/pentium/decoder.m"
+#line 1593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43483 "pentiumdecoder.cpp"
+#line 43479 "pentiumdecoder.cpp"
 
       
     } 
@@ -43491,12 +43487,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1597 "machine/pentium/decoder.m"
+#line 1593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43500 "pentiumdecoder.cpp"
+#line 43496 "pentiumdecoder.cpp"
 
       
     } 
@@ -43508,12 +43504,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1597 "machine/pentium/decoder.m"
+#line 1593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43517 "pentiumdecoder.cpp"
+#line 43513 "pentiumdecoder.cpp"
 
       
     } 
@@ -43525,12 +43521,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1597 "machine/pentium/decoder.m"
+#line 1593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
 
 
-#line 43534 "pentiumdecoder.cpp"
+#line 43530 "pentiumdecoder.cpp"
 
       
     } 
@@ -43542,12 +43538,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1594 "machine/pentium/decoder.m"
+#line 1590 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43551 "pentiumdecoder.cpp"
+#line 43547 "pentiumdecoder.cpp"
 
       
     } 
@@ -43559,12 +43555,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1594 "machine/pentium/decoder.m"
+#line 1590 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43568 "pentiumdecoder.cpp"
+#line 43564 "pentiumdecoder.cpp"
 
       
     } 
@@ -43576,12 +43572,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1594 "machine/pentium/decoder.m"
+#line 1590 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43585 "pentiumdecoder.cpp"
+#line 43581 "pentiumdecoder.cpp"
 
       
     } 
@@ -43593,12 +43589,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1594 "machine/pentium/decoder.m"
+#line 1590 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
 
 
-#line 43602 "pentiumdecoder.cpp"
+#line 43598 "pentiumdecoder.cpp"
 
       
     } 
@@ -43610,12 +43606,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1591 "machine/pentium/decoder.m"
+#line 1587 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43619 "pentiumdecoder.cpp"
+#line 43615 "pentiumdecoder.cpp"
 
       
     } 
@@ -43627,12 +43623,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1591 "machine/pentium/decoder.m"
+#line 1587 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43636 "pentiumdecoder.cpp"
+#line 43632 "pentiumdecoder.cpp"
 
       
     } 
@@ -43644,12 +43640,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1591 "machine/pentium/decoder.m"
+#line 1587 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43653 "pentiumdecoder.cpp"
+#line 43649 "pentiumdecoder.cpp"
 
       
     } 
@@ -43661,12 +43657,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1591 "machine/pentium/decoder.m"
+#line 1587 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
 
 
-#line 43670 "pentiumdecoder.cpp"
+#line 43666 "pentiumdecoder.cpp"
 
       
     } 
@@ -43679,12 +43675,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1585 "machine/pentium/decoder.m"
+#line 1581 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43688 "pentiumdecoder.cpp"
+#line 43684 "pentiumdecoder.cpp"
 
       
     } 
@@ -43697,12 +43693,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1585 "machine/pentium/decoder.m"
+#line 1581 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43706 "pentiumdecoder.cpp"
+#line 43702 "pentiumdecoder.cpp"
 
       
     } 
@@ -43715,12 +43711,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1585 "machine/pentium/decoder.m"
+#line 1581 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43724 "pentiumdecoder.cpp"
+#line 43720 "pentiumdecoder.cpp"
 
       
     } 
@@ -43733,12 +43729,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1585 "machine/pentium/decoder.m"
+#line 1581 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43742 "pentiumdecoder.cpp"
+#line 43738 "pentiumdecoder.cpp"
 
       
     } 
@@ -43751,12 +43747,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1579 "machine/pentium/decoder.m"
+#line 1575 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43760 "pentiumdecoder.cpp"
+#line 43756 "pentiumdecoder.cpp"
 
       
     } 
@@ -43769,12 +43765,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1579 "machine/pentium/decoder.m"
+#line 1575 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43778 "pentiumdecoder.cpp"
+#line 43774 "pentiumdecoder.cpp"
 
       
     } 
@@ -43787,12 +43783,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1579 "machine/pentium/decoder.m"
+#line 1575 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43796 "pentiumdecoder.cpp"
+#line 43792 "pentiumdecoder.cpp"
 
       
     } 
@@ -43805,12 +43801,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1579 "machine/pentium/decoder.m"
+#line 1575 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43814 "pentiumdecoder.cpp"
+#line 43810 "pentiumdecoder.cpp"
 
       
     } 
@@ -43823,12 +43819,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1573 "machine/pentium/decoder.m"
+#line 1569 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43832 "pentiumdecoder.cpp"
+#line 43828 "pentiumdecoder.cpp"
 
       
     } 
@@ -43841,12 +43837,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1573 "machine/pentium/decoder.m"
+#line 1569 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43850 "pentiumdecoder.cpp"
+#line 43846 "pentiumdecoder.cpp"
 
       
     } 
@@ -43859,12 +43855,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1573 "machine/pentium/decoder.m"
+#line 1569 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43868 "pentiumdecoder.cpp"
+#line 43864 "pentiumdecoder.cpp"
 
       
     } 
@@ -43877,12 +43873,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1573 "machine/pentium/decoder.m"
+#line 1569 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43886 "pentiumdecoder.cpp"
+#line 43882 "pentiumdecoder.cpp"
 
       
     } 
@@ -43895,12 +43891,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1567 "machine/pentium/decoder.m"
+#line 1563 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43904 "pentiumdecoder.cpp"
+#line 43900 "pentiumdecoder.cpp"
 
       
     } 
@@ -43913,12 +43909,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1567 "machine/pentium/decoder.m"
+#line 1563 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43922 "pentiumdecoder.cpp"
+#line 43918 "pentiumdecoder.cpp"
 
       
     } 
@@ -43931,12 +43927,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1567 "machine/pentium/decoder.m"
+#line 1563 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43940 "pentiumdecoder.cpp"
+#line 43936 "pentiumdecoder.cpp"
 
       
     } 
@@ -43949,12 +43945,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1567 "machine/pentium/decoder.m"
+#line 1563 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43958 "pentiumdecoder.cpp"
+#line 43954 "pentiumdecoder.cpp"
 
       
     } 
@@ -43967,7 +43963,7 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1558 "machine/pentium/decoder.m"
+#line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		Exp *oper = dis_Eaddr(Eaddr, 32);
@@ -43975,7 +43971,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 43979 "pentiumdecoder.cpp"
+#line 43975 "pentiumdecoder.cpp"
 
       
     } 
@@ -43988,7 +43984,7 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1558 "machine/pentium/decoder.m"
+#line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		Exp *oper = dis_Eaddr(Eaddr, 32);
@@ -43996,7 +43992,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44000 "pentiumdecoder.cpp"
+#line 43996 "pentiumdecoder.cpp"
 
       
     } 
@@ -44009,7 +44005,7 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1558 "machine/pentium/decoder.m"
+#line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		Exp *oper = dis_Eaddr(Eaddr, 32);
@@ -44017,7 +44013,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44021 "pentiumdecoder.cpp"
+#line 44017 "pentiumdecoder.cpp"
 
       
     } 
@@ -44030,7 +44026,7 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1558 "machine/pentium/decoder.m"
+#line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		Exp *oper = dis_Eaddr(Eaddr, 32);
@@ -44038,7 +44034,7 @@ hostPC
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44042 "pentiumdecoder.cpp"
+#line 44038 "pentiumdecoder.cpp"
 
       
     } 
@@ -44051,12 +44047,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1552 "machine/pentium/decoder.m"
+#line 1548 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44060 "pentiumdecoder.cpp"
+#line 44056 "pentiumdecoder.cpp"
 
       
     } 
@@ -44069,12 +44065,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1552 "machine/pentium/decoder.m"
+#line 1548 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44078 "pentiumdecoder.cpp"
+#line 44074 "pentiumdecoder.cpp"
 
       
     } 
@@ -44087,12 +44083,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1552 "machine/pentium/decoder.m"
+#line 1548 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44096 "pentiumdecoder.cpp"
+#line 44092 "pentiumdecoder.cpp"
 
       
     } 
@@ -44105,12 +44101,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1552 "machine/pentium/decoder.m"
+#line 1548 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44114 "pentiumdecoder.cpp"
+#line 44110 "pentiumdecoder.cpp"
 
       
     } 
@@ -44123,12 +44119,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1546 "machine/pentium/decoder.m"
+#line 1542 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44132 "pentiumdecoder.cpp"
+#line 44128 "pentiumdecoder.cpp"
 
       
     } 
@@ -44141,12 +44137,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1546 "machine/pentium/decoder.m"
+#line 1542 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44150 "pentiumdecoder.cpp"
+#line 44146 "pentiumdecoder.cpp"
 
       
     } 
@@ -44159,12 +44155,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1546 "machine/pentium/decoder.m"
+#line 1542 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44168 "pentiumdecoder.cpp"
+#line 44164 "pentiumdecoder.cpp"
 
       
     } 
@@ -44177,12 +44173,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1546 "machine/pentium/decoder.m"
+#line 1542 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44186 "pentiumdecoder.cpp"
+#line 44182 "pentiumdecoder.cpp"
 
       
     } 
@@ -44195,12 +44191,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 1540 "machine/pentium/decoder.m"
+#line 1536 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44204 "pentiumdecoder.cpp"
+#line 44200 "pentiumdecoder.cpp"
 
       
     } 
@@ -44213,12 +44209,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1540 "machine/pentium/decoder.m"
+#line 1536 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44222 "pentiumdecoder.cpp"
+#line 44218 "pentiumdecoder.cpp"
 
       
     } 
@@ -44231,12 +44227,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1540 "machine/pentium/decoder.m"
+#line 1536 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44240 "pentiumdecoder.cpp"
+#line 44236 "pentiumdecoder.cpp"
 
       
     } 
@@ -44249,12 +44245,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 1540 "machine/pentium/decoder.m"
+#line 1536 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
 
 
-#line 44258 "pentiumdecoder.cpp"
+#line 44254 "pentiumdecoder.cpp"
 
       
     } 
@@ -44266,12 +44262,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 382 "machine/pentium/decoder.m"
+#line 378 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44275 "pentiumdecoder.cpp"
+#line 44271 "pentiumdecoder.cpp"
 
       
     } 
@@ -44283,12 +44279,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 382 "machine/pentium/decoder.m"
+#line 378 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44292 "pentiumdecoder.cpp"
+#line 44288 "pentiumdecoder.cpp"
 
       
     } 
@@ -44300,12 +44296,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 382 "machine/pentium/decoder.m"
+#line 378 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44309 "pentiumdecoder.cpp"
+#line 44305 "pentiumdecoder.cpp"
 
       
     } 
@@ -44317,12 +44313,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 382 "machine/pentium/decoder.m"
+#line 378 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44326 "pentiumdecoder.cpp"
+#line 44322 "pentiumdecoder.cpp"
 
       
     } 
@@ -44334,12 +44330,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 376 "machine/pentium/decoder.m"
+#line 372 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44343 "pentiumdecoder.cpp"
+#line 44339 "pentiumdecoder.cpp"
 
       
     } 
@@ -44351,12 +44347,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 376 "machine/pentium/decoder.m"
+#line 372 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44360 "pentiumdecoder.cpp"
+#line 44356 "pentiumdecoder.cpp"
 
       
     } 
@@ -44368,12 +44364,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 376 "machine/pentium/decoder.m"
+#line 372 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44377 "pentiumdecoder.cpp"
+#line 44373 "pentiumdecoder.cpp"
 
       
     } 
@@ -44385,12 +44381,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 376 "machine/pentium/decoder.m"
+#line 372 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44394 "pentiumdecoder.cpp"
+#line 44390 "pentiumdecoder.cpp"
 
       
     } 
@@ -44402,12 +44398,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 322 "machine/pentium/decoder.m"
+#line 318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44411 "pentiumdecoder.cpp"
+#line 44407 "pentiumdecoder.cpp"
 
       
     } 
@@ -44419,12 +44415,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 322 "machine/pentium/decoder.m"
+#line 318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44428 "pentiumdecoder.cpp"
+#line 44424 "pentiumdecoder.cpp"
 
       
     } 
@@ -44436,12 +44432,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 322 "machine/pentium/decoder.m"
+#line 318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44445 "pentiumdecoder.cpp"
+#line 44441 "pentiumdecoder.cpp"
 
       
     } 
@@ -44453,12 +44449,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 322 "machine/pentium/decoder.m"
+#line 318 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 44462 "pentiumdecoder.cpp"
+#line 44458 "pentiumdecoder.cpp"
 
       
     } 
@@ -44470,12 +44466,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 316 "machine/pentium/decoder.m"
+#line 312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44479 "pentiumdecoder.cpp"
+#line 44475 "pentiumdecoder.cpp"
 
       
     } 
@@ -44487,12 +44483,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 316 "machine/pentium/decoder.m"
+#line 312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44496 "pentiumdecoder.cpp"
+#line 44492 "pentiumdecoder.cpp"
 
       
     } 
@@ -44504,12 +44500,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 316 "machine/pentium/decoder.m"
+#line 312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44513 "pentiumdecoder.cpp"
+#line 44509 "pentiumdecoder.cpp"
 
       
     } 
@@ -44521,12 +44517,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 316 "machine/pentium/decoder.m"
+#line 312 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 44530 "pentiumdecoder.cpp"
+#line 44526 "pentiumdecoder.cpp"
 
       
     } 
@@ -44539,12 +44535,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 657 "machine/pentium/decoder.m"
+#line 653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44548 "pentiumdecoder.cpp"
+#line 44544 "pentiumdecoder.cpp"
 
       
     } 
@@ -44557,12 +44553,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 657 "machine/pentium/decoder.m"
+#line 653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44566 "pentiumdecoder.cpp"
+#line 44562 "pentiumdecoder.cpp"
 
       
     } 
@@ -44575,12 +44571,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 657 "machine/pentium/decoder.m"
+#line 653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44584 "pentiumdecoder.cpp"
+#line 44580 "pentiumdecoder.cpp"
 
       
     } 
@@ -44593,12 +44589,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 657 "machine/pentium/decoder.m"
+#line 653 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44602 "pentiumdecoder.cpp"
+#line 44598 "pentiumdecoder.cpp"
 
       
     } 
@@ -44611,12 +44607,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 654 "machine/pentium/decoder.m"
+#line 650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44620 "pentiumdecoder.cpp"
+#line 44616 "pentiumdecoder.cpp"
 
       
     } 
@@ -44629,12 +44625,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 654 "machine/pentium/decoder.m"
+#line 650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44638 "pentiumdecoder.cpp"
+#line 44634 "pentiumdecoder.cpp"
 
       
     } 
@@ -44647,12 +44643,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 654 "machine/pentium/decoder.m"
+#line 650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44656 "pentiumdecoder.cpp"
+#line 44652 "pentiumdecoder.cpp"
 
       
     } 
@@ -44665,12 +44661,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 654 "machine/pentium/decoder.m"
+#line 650 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44674 "pentiumdecoder.cpp"
+#line 44670 "pentiumdecoder.cpp"
 
       
     } 
@@ -44683,12 +44679,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 651 "machine/pentium/decoder.m"
+#line 647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44692 "pentiumdecoder.cpp"
+#line 44688 "pentiumdecoder.cpp"
 
       
     } 
@@ -44701,12 +44697,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 651 "machine/pentium/decoder.m"
+#line 647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44710 "pentiumdecoder.cpp"
+#line 44706 "pentiumdecoder.cpp"
 
       
     } 
@@ -44719,12 +44715,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 651 "machine/pentium/decoder.m"
+#line 647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44728 "pentiumdecoder.cpp"
+#line 44724 "pentiumdecoder.cpp"
 
       
     } 
@@ -44737,12 +44733,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 651 "machine/pentium/decoder.m"
+#line 647 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44746 "pentiumdecoder.cpp"
+#line 44742 "pentiumdecoder.cpp"
 
       
     } 
@@ -44755,12 +44751,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 648 "machine/pentium/decoder.m"
+#line 644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44764 "pentiumdecoder.cpp"
+#line 44760 "pentiumdecoder.cpp"
 
       
     } 
@@ -44773,12 +44769,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 648 "machine/pentium/decoder.m"
+#line 644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44782 "pentiumdecoder.cpp"
+#line 44778 "pentiumdecoder.cpp"
 
       
     } 
@@ -44791,12 +44787,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 648 "machine/pentium/decoder.m"
+#line 644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44800 "pentiumdecoder.cpp"
+#line 44796 "pentiumdecoder.cpp"
 
       
     } 
@@ -44809,12 +44805,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 648 "machine/pentium/decoder.m"
+#line 644 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44818 "pentiumdecoder.cpp"
+#line 44814 "pentiumdecoder.cpp"
 
       
     } 
@@ -44827,12 +44823,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 645 "machine/pentium/decoder.m"
+#line 641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44836 "pentiumdecoder.cpp"
+#line 44832 "pentiumdecoder.cpp"
 
       
     } 
@@ -44845,12 +44841,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 645 "machine/pentium/decoder.m"
+#line 641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44854 "pentiumdecoder.cpp"
+#line 44850 "pentiumdecoder.cpp"
 
       
     } 
@@ -44863,12 +44859,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 645 "machine/pentium/decoder.m"
+#line 641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44872 "pentiumdecoder.cpp"
+#line 44868 "pentiumdecoder.cpp"
 
       
     } 
@@ -44881,12 +44877,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 645 "machine/pentium/decoder.m"
+#line 641 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44890 "pentiumdecoder.cpp"
+#line 44886 "pentiumdecoder.cpp"
 
       
     } 
@@ -44899,12 +44895,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 642 "machine/pentium/decoder.m"
+#line 638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44908 "pentiumdecoder.cpp"
+#line 44904 "pentiumdecoder.cpp"
 
       
     } 
@@ -44917,12 +44913,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 642 "machine/pentium/decoder.m"
+#line 638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44926 "pentiumdecoder.cpp"
+#line 44922 "pentiumdecoder.cpp"
 
       
     } 
@@ -44935,12 +44931,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 642 "machine/pentium/decoder.m"
+#line 638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44944 "pentiumdecoder.cpp"
+#line 44940 "pentiumdecoder.cpp"
 
       
     } 
@@ -44953,12 +44949,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 642 "machine/pentium/decoder.m"
+#line 638 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44962 "pentiumdecoder.cpp"
+#line 44958 "pentiumdecoder.cpp"
 
       
     } 
@@ -44971,12 +44967,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 639 "machine/pentium/decoder.m"
+#line 635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44980 "pentiumdecoder.cpp"
+#line 44976 "pentiumdecoder.cpp"
 
       
     } 
@@ -44989,12 +44985,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 639 "machine/pentium/decoder.m"
+#line 635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 44998 "pentiumdecoder.cpp"
+#line 44994 "pentiumdecoder.cpp"
 
       
     } 
@@ -45007,12 +45003,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 639 "machine/pentium/decoder.m"
+#line 635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45016 "pentiumdecoder.cpp"
+#line 45012 "pentiumdecoder.cpp"
 
       
     } 
@@ -45025,12 +45021,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 639 "machine/pentium/decoder.m"
+#line 635 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45034 "pentiumdecoder.cpp"
+#line 45030 "pentiumdecoder.cpp"
 
       
     } 
@@ -45043,12 +45039,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 633 "machine/pentium/decoder.m"
+#line 629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45052 "pentiumdecoder.cpp"
+#line 45048 "pentiumdecoder.cpp"
 
       
     } 
@@ -45061,12 +45057,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 633 "machine/pentium/decoder.m"
+#line 629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45070 "pentiumdecoder.cpp"
+#line 45066 "pentiumdecoder.cpp"
 
       
     } 
@@ -45079,12 +45075,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 633 "machine/pentium/decoder.m"
+#line 629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45088 "pentiumdecoder.cpp"
+#line 45084 "pentiumdecoder.cpp"
 
       
     } 
@@ -45097,12 +45093,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 633 "machine/pentium/decoder.m"
+#line 629 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45106 "pentiumdecoder.cpp"
+#line 45102 "pentiumdecoder.cpp"
 
       
     } 
@@ -45115,12 +45111,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 627 "machine/pentium/decoder.m"
+#line 623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45124 "pentiumdecoder.cpp"
+#line 45120 "pentiumdecoder.cpp"
 
       
     } 
@@ -45133,12 +45129,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 627 "machine/pentium/decoder.m"
+#line 623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45142 "pentiumdecoder.cpp"
+#line 45138 "pentiumdecoder.cpp"
 
       
     } 
@@ -45151,12 +45147,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 627 "machine/pentium/decoder.m"
+#line 623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45160 "pentiumdecoder.cpp"
+#line 45156 "pentiumdecoder.cpp"
 
       
     } 
@@ -45169,12 +45165,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 627 "machine/pentium/decoder.m"
+#line 623 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45178 "pentiumdecoder.cpp"
+#line 45174 "pentiumdecoder.cpp"
 
       
     } 
@@ -45187,12 +45183,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 621 "machine/pentium/decoder.m"
+#line 617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45196 "pentiumdecoder.cpp"
+#line 45192 "pentiumdecoder.cpp"
 
       
     } 
@@ -45205,12 +45201,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 621 "machine/pentium/decoder.m"
+#line 617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45214 "pentiumdecoder.cpp"
+#line 45210 "pentiumdecoder.cpp"
 
       
     } 
@@ -45223,12 +45219,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 621 "machine/pentium/decoder.m"
+#line 617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45232 "pentiumdecoder.cpp"
+#line 45228 "pentiumdecoder.cpp"
 
       
     } 
@@ -45241,12 +45237,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 621 "machine/pentium/decoder.m"
+#line 617 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45250 "pentiumdecoder.cpp"
+#line 45246 "pentiumdecoder.cpp"
 
       
     } 
@@ -45259,12 +45255,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 615 "machine/pentium/decoder.m"
+#line 611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45268 "pentiumdecoder.cpp"
+#line 45264 "pentiumdecoder.cpp"
 
       
     } 
@@ -45277,12 +45273,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 615 "machine/pentium/decoder.m"
+#line 611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45286 "pentiumdecoder.cpp"
+#line 45282 "pentiumdecoder.cpp"
 
       
     } 
@@ -45295,12 +45291,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 615 "machine/pentium/decoder.m"
+#line 611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45304 "pentiumdecoder.cpp"
+#line 45300 "pentiumdecoder.cpp"
 
       
     } 
@@ -45313,12 +45309,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 615 "machine/pentium/decoder.m"
+#line 611 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45322 "pentiumdecoder.cpp"
+#line 45318 "pentiumdecoder.cpp"
 
       
     } 
@@ -45331,12 +45327,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 609 "machine/pentium/decoder.m"
+#line 605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45340 "pentiumdecoder.cpp"
+#line 45336 "pentiumdecoder.cpp"
 
       
     } 
@@ -45349,12 +45345,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 609 "machine/pentium/decoder.m"
+#line 605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45358 "pentiumdecoder.cpp"
+#line 45354 "pentiumdecoder.cpp"
 
       
     } 
@@ -45367,12 +45363,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 609 "machine/pentium/decoder.m"
+#line 605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45376 "pentiumdecoder.cpp"
+#line 45372 "pentiumdecoder.cpp"
 
       
     } 
@@ -45385,12 +45381,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 609 "machine/pentium/decoder.m"
+#line 605 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45394 "pentiumdecoder.cpp"
+#line 45390 "pentiumdecoder.cpp"
 
       
     } 
@@ -45403,12 +45399,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 603 "machine/pentium/decoder.m"
+#line 599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45412 "pentiumdecoder.cpp"
+#line 45408 "pentiumdecoder.cpp"
 
       
     } 
@@ -45421,12 +45417,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 603 "machine/pentium/decoder.m"
+#line 599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45430 "pentiumdecoder.cpp"
+#line 45426 "pentiumdecoder.cpp"
 
       
     } 
@@ -45439,12 +45435,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 603 "machine/pentium/decoder.m"
+#line 599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45448 "pentiumdecoder.cpp"
+#line 45444 "pentiumdecoder.cpp"
 
       
     } 
@@ -45457,12 +45453,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 603 "machine/pentium/decoder.m"
+#line 599 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45466 "pentiumdecoder.cpp"
+#line 45462 "pentiumdecoder.cpp"
 
       
     } 
@@ -45475,12 +45471,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 597 "machine/pentium/decoder.m"
+#line 593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45484 "pentiumdecoder.cpp"
+#line 45480 "pentiumdecoder.cpp"
 
       
     } 
@@ -45493,12 +45489,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 597 "machine/pentium/decoder.m"
+#line 593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45502 "pentiumdecoder.cpp"
+#line 45498 "pentiumdecoder.cpp"
 
       
     } 
@@ -45511,12 +45507,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 597 "machine/pentium/decoder.m"
+#line 593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45520 "pentiumdecoder.cpp"
+#line 45516 "pentiumdecoder.cpp"
 
       
     } 
@@ -45529,12 +45525,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 597 "machine/pentium/decoder.m"
+#line 593 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
 
 
-#line 45538 "pentiumdecoder.cpp"
+#line 45534 "pentiumdecoder.cpp"
 
       
     } 
@@ -45546,12 +45542,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1065 "machine/pentium/decoder.m"
+#line 1061 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 45555 "pentiumdecoder.cpp"
+#line 45551 "pentiumdecoder.cpp"
 
       
     } 
@@ -45563,12 +45559,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1065 "machine/pentium/decoder.m"
+#line 1061 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 45572 "pentiumdecoder.cpp"
+#line 45568 "pentiumdecoder.cpp"
 
       
     } 
@@ -45580,12 +45576,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1065 "machine/pentium/decoder.m"
+#line 1061 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
 
 
-#line 45589 "pentiumdecoder.cpp"
+#line 45585 "pentiumdecoder.cpp"
 
       
     } 
@@ -45597,12 +45593,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1077 "machine/pentium/decoder.m"
+#line 1073 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 45606 "pentiumdecoder.cpp"
+#line 45602 "pentiumdecoder.cpp"
 
       
     } 
@@ -45614,12 +45610,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1077 "machine/pentium/decoder.m"
+#line 1073 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 45623 "pentiumdecoder.cpp"
+#line 45619 "pentiumdecoder.cpp"
 
       
     } 
@@ -45631,12 +45627,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1077 "machine/pentium/decoder.m"
+#line 1073 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 
-#line 45640 "pentiumdecoder.cpp"
+#line 45636 "pentiumdecoder.cpp"
 
       
     } 
@@ -45649,12 +45645,12 @@ hostPC
         sign_extend((MATCH_w_8_16 & 0xff) /* i8 at 16 */, 8);
       nextPC = 3 + MATCH_p; 
       
-#line 984 "machine/pentium/decoder.m"
+#line 980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45658 "pentiumdecoder.cpp"
+#line 45654 "pentiumdecoder.cpp"
 
       
     } 
@@ -45667,12 +45663,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 984 "machine/pentium/decoder.m"
+#line 980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45676 "pentiumdecoder.cpp"
+#line 45672 "pentiumdecoder.cpp"
 
       
     } 
@@ -45685,12 +45681,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 984 "machine/pentium/decoder.m"
+#line 980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45694 "pentiumdecoder.cpp"
+#line 45690 "pentiumdecoder.cpp"
 
       
     } 
@@ -45703,12 +45699,12 @@ hostPC
         sign_extend((MATCH_w_8_48 & 0xff) /* i8 at 48 */, 8);
       nextPC = 7 + MATCH_p; 
       
-#line 984 "machine/pentium/decoder.m"
+#line 980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 45712 "pentiumdecoder.cpp"
+#line 45708 "pentiumdecoder.cpp"
 
       
     } 
@@ -45720,12 +45716,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 978 "machine/pentium/decoder.m"
+#line 974 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45729 "pentiumdecoder.cpp"
+#line 45725 "pentiumdecoder.cpp"
 
       
     } 
@@ -45737,12 +45733,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 978 "machine/pentium/decoder.m"
+#line 974 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45746 "pentiumdecoder.cpp"
+#line 45742 "pentiumdecoder.cpp"
 
       
     } 
@@ -45754,12 +45750,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 978 "machine/pentium/decoder.m"
+#line 974 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45763 "pentiumdecoder.cpp"
+#line 45759 "pentiumdecoder.cpp"
 
       
     } 
@@ -45771,12 +45767,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 978 "machine/pentium/decoder.m"
+#line 974 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
 
 
-#line 45780 "pentiumdecoder.cpp"
+#line 45776 "pentiumdecoder.cpp"
 
       
     } 
@@ -45787,7 +45783,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 783 "machine/pentium/decoder.m"
+#line 779 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.1", DIS_EADDR8);
 
@@ -45806,7 +45802,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45810 "pentiumdecoder.cpp"
+#line 45806 "pentiumdecoder.cpp"
 
       
     } 
@@ -45817,7 +45813,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 783 "machine/pentium/decoder.m"
+#line 779 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.1", DIS_EADDR8);
 
@@ -45836,7 +45832,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45840 "pentiumdecoder.cpp"
+#line 45836 "pentiumdecoder.cpp"
 
       
     } 
@@ -45847,7 +45843,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 783 "machine/pentium/decoder.m"
+#line 779 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.1", DIS_EADDR8);
 
@@ -45866,7 +45862,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45870 "pentiumdecoder.cpp"
+#line 45866 "pentiumdecoder.cpp"
 
       
     } 
@@ -45877,7 +45873,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 783 "machine/pentium/decoder.m"
+#line 779 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.1", DIS_EADDR8);
 
@@ -45896,7 +45892,7 @@ hostPC
 //		stmts = instantiate(pc, "PUSHAow");
 
 
-#line 45900 "pentiumdecoder.cpp"
+#line 45896 "pentiumdecoder.cpp"
 
       
     } 
@@ -45907,12 +45903,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 777 "machine/pentium/decoder.m"
+#line 773 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45916 "pentiumdecoder.cpp"
+#line 45912 "pentiumdecoder.cpp"
 
       
     } 
@@ -45923,12 +45919,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 777 "machine/pentium/decoder.m"
+#line 773 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45932 "pentiumdecoder.cpp"
+#line 45928 "pentiumdecoder.cpp"
 
       
     } 
@@ -45939,12 +45935,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 777 "machine/pentium/decoder.m"
+#line 773 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45948 "pentiumdecoder.cpp"
+#line 45944 "pentiumdecoder.cpp"
 
       
     } 
@@ -45955,12 +45951,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 777 "machine/pentium/decoder.m"
+#line 773 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
 
 
-#line 45964 "pentiumdecoder.cpp"
+#line 45960 "pentiumdecoder.cpp"
 
       
     } 
@@ -45971,12 +45967,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 771 "machine/pentium/decoder.m"
+#line 767 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 45980 "pentiumdecoder.cpp"
+#line 45976 "pentiumdecoder.cpp"
 
       
     } 
@@ -45987,12 +45983,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 771 "machine/pentium/decoder.m"
+#line 767 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 45996 "pentiumdecoder.cpp"
+#line 45992 "pentiumdecoder.cpp"
 
       
     } 
@@ -46003,12 +45999,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 771 "machine/pentium/decoder.m"
+#line 767 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 46012 "pentiumdecoder.cpp"
+#line 46008 "pentiumdecoder.cpp"
 
       
     } 
@@ -46019,12 +46015,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 771 "machine/pentium/decoder.m"
+#line 767 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
 
 
-#line 46028 "pentiumdecoder.cpp"
+#line 46024 "pentiumdecoder.cpp"
 
       
     } 
@@ -46035,12 +46031,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 765 "machine/pentium/decoder.m"
+#line 761 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46044 "pentiumdecoder.cpp"
+#line 46040 "pentiumdecoder.cpp"
 
       
     } 
@@ -46051,12 +46047,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 765 "machine/pentium/decoder.m"
+#line 761 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46060 "pentiumdecoder.cpp"
+#line 46056 "pentiumdecoder.cpp"
 
       
     } 
@@ -46067,12 +46063,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 765 "machine/pentium/decoder.m"
+#line 761 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46076 "pentiumdecoder.cpp"
+#line 46072 "pentiumdecoder.cpp"
 
       
     } 
@@ -46083,12 +46079,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 765 "machine/pentium/decoder.m"
+#line 761 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
 
 
-#line 46092 "pentiumdecoder.cpp"
+#line 46088 "pentiumdecoder.cpp"
 
       
     } 
@@ -46099,12 +46095,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 759 "machine/pentium/decoder.m"
+#line 755 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46108 "pentiumdecoder.cpp"
+#line 46104 "pentiumdecoder.cpp"
 
       
     } 
@@ -46115,12 +46111,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 759 "machine/pentium/decoder.m"
+#line 755 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46124 "pentiumdecoder.cpp"
+#line 46120 "pentiumdecoder.cpp"
 
       
     } 
@@ -46131,12 +46127,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 759 "machine/pentium/decoder.m"
+#line 755 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46140 "pentiumdecoder.cpp"
+#line 46136 "pentiumdecoder.cpp"
 
       
     } 
@@ -46147,12 +46143,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 759 "machine/pentium/decoder.m"
+#line 755 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
 
 
-#line 46156 "pentiumdecoder.cpp"
+#line 46152 "pentiumdecoder.cpp"
 
       
     } 
@@ -46163,12 +46159,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 753 "machine/pentium/decoder.m"
+#line 749 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46172 "pentiumdecoder.cpp"
+#line 46168 "pentiumdecoder.cpp"
 
       
     } 
@@ -46179,12 +46175,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 753 "machine/pentium/decoder.m"
+#line 749 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46188 "pentiumdecoder.cpp"
+#line 46184 "pentiumdecoder.cpp"
 
       
     } 
@@ -46195,12 +46191,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 753 "machine/pentium/decoder.m"
+#line 749 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46204 "pentiumdecoder.cpp"
+#line 46200 "pentiumdecoder.cpp"
 
       
     } 
@@ -46211,12 +46207,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 753 "machine/pentium/decoder.m"
+#line 749 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
 
 
-#line 46220 "pentiumdecoder.cpp"
+#line 46216 "pentiumdecoder.cpp"
 
       
     } 
@@ -46227,12 +46223,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 747 "machine/pentium/decoder.m"
+#line 743 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46236 "pentiumdecoder.cpp"
+#line 46232 "pentiumdecoder.cpp"
 
       
     } 
@@ -46243,12 +46239,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 747 "machine/pentium/decoder.m"
+#line 743 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46252 "pentiumdecoder.cpp"
+#line 46248 "pentiumdecoder.cpp"
 
       
     } 
@@ -46259,12 +46255,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 747 "machine/pentium/decoder.m"
+#line 743 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46268 "pentiumdecoder.cpp"
+#line 46264 "pentiumdecoder.cpp"
 
       
     } 
@@ -46275,12 +46271,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 747 "machine/pentium/decoder.m"
+#line 743 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
 
 
-#line 46284 "pentiumdecoder.cpp"
+#line 46280 "pentiumdecoder.cpp"
 
       
     } 
@@ -46291,12 +46287,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 738 "machine/pentium/decoder.m"
+#line 734 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46300 "pentiumdecoder.cpp"
+#line 46296 "pentiumdecoder.cpp"
 
       
     } 
@@ -46307,12 +46303,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 738 "machine/pentium/decoder.m"
+#line 734 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46316 "pentiumdecoder.cpp"
+#line 46312 "pentiumdecoder.cpp"
 
       
     } 
@@ -46323,12 +46319,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 738 "machine/pentium/decoder.m"
+#line 734 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46332 "pentiumdecoder.cpp"
+#line 46328 "pentiumdecoder.cpp"
 
       
     } 
@@ -46339,12 +46335,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 738 "machine/pentium/decoder.m"
+#line 734 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46348 "pentiumdecoder.cpp"
+#line 46344 "pentiumdecoder.cpp"
 
       
     } 
@@ -46355,12 +46351,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 726 "machine/pentium/decoder.m"
+#line 722 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46364 "pentiumdecoder.cpp"
+#line 46360 "pentiumdecoder.cpp"
 
       
     } 
@@ -46371,12 +46367,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 726 "machine/pentium/decoder.m"
+#line 722 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46380 "pentiumdecoder.cpp"
+#line 46376 "pentiumdecoder.cpp"
 
       
     } 
@@ -46387,12 +46383,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 726 "machine/pentium/decoder.m"
+#line 722 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46396 "pentiumdecoder.cpp"
+#line 46392 "pentiumdecoder.cpp"
 
       
     } 
@@ -46403,12 +46399,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 726 "machine/pentium/decoder.m"
+#line 722 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 
-#line 46412 "pentiumdecoder.cpp"
+#line 46408 "pentiumdecoder.cpp"
 
       
     } 
@@ -46419,12 +46415,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 714 "machine/pentium/decoder.m"
+#line 710 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46428 "pentiumdecoder.cpp"
+#line 46424 "pentiumdecoder.cpp"
 
       
     } 
@@ -46435,12 +46431,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 714 "machine/pentium/decoder.m"
+#line 710 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46444 "pentiumdecoder.cpp"
+#line 46440 "pentiumdecoder.cpp"
 
       
     } 
@@ -46451,12 +46447,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 714 "machine/pentium/decoder.m"
+#line 710 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46460 "pentiumdecoder.cpp"
+#line 46456 "pentiumdecoder.cpp"
 
       
     } 
@@ -46467,12 +46463,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 714 "machine/pentium/decoder.m"
+#line 710 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
 
 
-#line 46476 "pentiumdecoder.cpp"
+#line 46472 "pentiumdecoder.cpp"
 
       
     } 
@@ -46483,12 +46479,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 702 "machine/pentium/decoder.m"
+#line 698 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46492 "pentiumdecoder.cpp"
+#line 46488 "pentiumdecoder.cpp"
 
       
     } 
@@ -46499,12 +46495,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 702 "machine/pentium/decoder.m"
+#line 698 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46508 "pentiumdecoder.cpp"
+#line 46504 "pentiumdecoder.cpp"
 
       
     } 
@@ -46515,12 +46511,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 702 "machine/pentium/decoder.m"
+#line 698 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46524 "pentiumdecoder.cpp"
+#line 46520 "pentiumdecoder.cpp"
 
       
     } 
@@ -46531,12 +46527,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 702 "machine/pentium/decoder.m"
+#line 698 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46540 "pentiumdecoder.cpp"
+#line 46536 "pentiumdecoder.cpp"
 
       
     } 
@@ -46547,12 +46543,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 690 "machine/pentium/decoder.m"
+#line 686 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46556 "pentiumdecoder.cpp"
+#line 46552 "pentiumdecoder.cpp"
 
       
     } 
@@ -46563,12 +46559,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 690 "machine/pentium/decoder.m"
+#line 686 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46572 "pentiumdecoder.cpp"
+#line 46568 "pentiumdecoder.cpp"
 
       
     } 
@@ -46579,12 +46575,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 690 "machine/pentium/decoder.m"
+#line 686 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46588 "pentiumdecoder.cpp"
+#line 46584 "pentiumdecoder.cpp"
 
       
     } 
@@ -46595,12 +46591,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 690 "machine/pentium/decoder.m"
+#line 686 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
 
 
-#line 46604 "pentiumdecoder.cpp"
+#line 46600 "pentiumdecoder.cpp"
 
       
     } 
@@ -46611,12 +46607,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 678 "machine/pentium/decoder.m"
+#line 674 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46620 "pentiumdecoder.cpp"
+#line 46616 "pentiumdecoder.cpp"
 
       
     } 
@@ -46627,12 +46623,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 678 "machine/pentium/decoder.m"
+#line 674 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46636 "pentiumdecoder.cpp"
+#line 46632 "pentiumdecoder.cpp"
 
       
     } 
@@ -46643,12 +46639,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 678 "machine/pentium/decoder.m"
+#line 674 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46652 "pentiumdecoder.cpp"
+#line 46648 "pentiumdecoder.cpp"
 
       
     } 
@@ -46659,12 +46655,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 678 "machine/pentium/decoder.m"
+#line 674 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
 
 
-#line 46668 "pentiumdecoder.cpp"
+#line 46664 "pentiumdecoder.cpp"
 
       
     } 
@@ -46675,12 +46671,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 666 "machine/pentium/decoder.m"
+#line 662 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46684 "pentiumdecoder.cpp"
+#line 46680 "pentiumdecoder.cpp"
 
       
     } 
@@ -46691,12 +46687,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 666 "machine/pentium/decoder.m"
+#line 662 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46700 "pentiumdecoder.cpp"
+#line 46696 "pentiumdecoder.cpp"
 
       
     } 
@@ -46707,12 +46703,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 666 "machine/pentium/decoder.m"
+#line 662 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46716 "pentiumdecoder.cpp"
+#line 46712 "pentiumdecoder.cpp"
 
       
     } 
@@ -46723,12 +46719,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 666 "machine/pentium/decoder.m"
+#line 662 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
 
 
-#line 46732 "pentiumdecoder.cpp"
+#line 46728 "pentiumdecoder.cpp"
 
       
     } 
@@ -46739,12 +46735,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 780 "machine/pentium/decoder.m"
+#line 776 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46748 "pentiumdecoder.cpp"
+#line 46744 "pentiumdecoder.cpp"
 
       
     } 
@@ -46755,12 +46751,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 780 "machine/pentium/decoder.m"
+#line 776 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46764 "pentiumdecoder.cpp"
+#line 46760 "pentiumdecoder.cpp"
 
       
     } 
@@ -46771,12 +46767,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 780 "machine/pentium/decoder.m"
+#line 776 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46780 "pentiumdecoder.cpp"
+#line 46776 "pentiumdecoder.cpp"
 
       
     } 
@@ -46787,12 +46783,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 780 "machine/pentium/decoder.m"
+#line 776 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46796 "pentiumdecoder.cpp"
+#line 46792 "pentiumdecoder.cpp"
 
       
     } 
@@ -46803,12 +46799,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 774 "machine/pentium/decoder.m"
+#line 770 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46812 "pentiumdecoder.cpp"
+#line 46808 "pentiumdecoder.cpp"
 
       
     } 
@@ -46819,12 +46815,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 774 "machine/pentium/decoder.m"
+#line 770 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46828 "pentiumdecoder.cpp"
+#line 46824 "pentiumdecoder.cpp"
 
       
     } 
@@ -46835,12 +46831,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 774 "machine/pentium/decoder.m"
+#line 770 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46844 "pentiumdecoder.cpp"
+#line 46840 "pentiumdecoder.cpp"
 
       
     } 
@@ -46851,12 +46847,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 774 "machine/pentium/decoder.m"
+#line 770 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
 
 
-#line 46860 "pentiumdecoder.cpp"
+#line 46856 "pentiumdecoder.cpp"
 
       
     } 
@@ -46867,12 +46863,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 768 "machine/pentium/decoder.m"
+#line 764 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46876 "pentiumdecoder.cpp"
+#line 46872 "pentiumdecoder.cpp"
 
       
     } 
@@ -46883,12 +46879,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 768 "machine/pentium/decoder.m"
+#line 764 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46892 "pentiumdecoder.cpp"
+#line 46888 "pentiumdecoder.cpp"
 
       
     } 
@@ -46899,12 +46895,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 768 "machine/pentium/decoder.m"
+#line 764 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46908 "pentiumdecoder.cpp"
+#line 46904 "pentiumdecoder.cpp"
 
       
     } 
@@ -46915,12 +46911,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 768 "machine/pentium/decoder.m"
+#line 764 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
 
 
-#line 46924 "pentiumdecoder.cpp"
+#line 46920 "pentiumdecoder.cpp"
 
       
     } 
@@ -46931,12 +46927,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 762 "machine/pentium/decoder.m"
+#line 758 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46940 "pentiumdecoder.cpp"
+#line 46936 "pentiumdecoder.cpp"
 
       
     } 
@@ -46947,12 +46943,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 762 "machine/pentium/decoder.m"
+#line 758 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46956 "pentiumdecoder.cpp"
+#line 46952 "pentiumdecoder.cpp"
 
       
     } 
@@ -46963,12 +46959,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 762 "machine/pentium/decoder.m"
+#line 758 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46972 "pentiumdecoder.cpp"
+#line 46968 "pentiumdecoder.cpp"
 
       
     } 
@@ -46979,12 +46975,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 762 "machine/pentium/decoder.m"
+#line 758 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
 
 
-#line 46988 "pentiumdecoder.cpp"
+#line 46984 "pentiumdecoder.cpp"
 
       
     } 
@@ -46995,12 +46991,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 756 "machine/pentium/decoder.m"
+#line 752 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47004 "pentiumdecoder.cpp"
+#line 47000 "pentiumdecoder.cpp"
 
       
     } 
@@ -47011,12 +47007,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 756 "machine/pentium/decoder.m"
+#line 752 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47020 "pentiumdecoder.cpp"
+#line 47016 "pentiumdecoder.cpp"
 
       
     } 
@@ -47027,12 +47023,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 756 "machine/pentium/decoder.m"
+#line 752 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47036 "pentiumdecoder.cpp"
+#line 47032 "pentiumdecoder.cpp"
 
       
     } 
@@ -47043,12 +47039,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 756 "machine/pentium/decoder.m"
+#line 752 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
 
 
-#line 47052 "pentiumdecoder.cpp"
+#line 47048 "pentiumdecoder.cpp"
 
       
     } 
@@ -47059,12 +47055,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 750 "machine/pentium/decoder.m"
+#line 746 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47068 "pentiumdecoder.cpp"
+#line 47064 "pentiumdecoder.cpp"
 
       
     } 
@@ -47075,12 +47071,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 750 "machine/pentium/decoder.m"
+#line 746 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47084 "pentiumdecoder.cpp"
+#line 47080 "pentiumdecoder.cpp"
 
       
     } 
@@ -47091,12 +47087,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 750 "machine/pentium/decoder.m"
+#line 746 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47100 "pentiumdecoder.cpp"
+#line 47096 "pentiumdecoder.cpp"
 
       
     } 
@@ -47107,12 +47103,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 750 "machine/pentium/decoder.m"
+#line 746 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
 
 
-#line 47116 "pentiumdecoder.cpp"
+#line 47112 "pentiumdecoder.cpp"
 
       
     } 
@@ -47123,12 +47119,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 744 "machine/pentium/decoder.m"
+#line 740 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47132 "pentiumdecoder.cpp"
+#line 47128 "pentiumdecoder.cpp"
 
       
     } 
@@ -47139,12 +47135,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 744 "machine/pentium/decoder.m"
+#line 740 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47148 "pentiumdecoder.cpp"
+#line 47144 "pentiumdecoder.cpp"
 
       
     } 
@@ -47155,12 +47151,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 744 "machine/pentium/decoder.m"
+#line 740 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47164 "pentiumdecoder.cpp"
+#line 47160 "pentiumdecoder.cpp"
 
       
     } 
@@ -47171,12 +47167,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 744 "machine/pentium/decoder.m"
+#line 740 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
 
 
-#line 47180 "pentiumdecoder.cpp"
+#line 47176 "pentiumdecoder.cpp"
 
       
     } 
@@ -47187,12 +47183,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 732 "machine/pentium/decoder.m"
+#line 728 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47196 "pentiumdecoder.cpp"
+#line 47192 "pentiumdecoder.cpp"
 
       
     } 
@@ -47203,12 +47199,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 732 "machine/pentium/decoder.m"
+#line 728 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47212 "pentiumdecoder.cpp"
+#line 47208 "pentiumdecoder.cpp"
 
       
     } 
@@ -47219,12 +47215,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 732 "machine/pentium/decoder.m"
+#line 728 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47228 "pentiumdecoder.cpp"
+#line 47224 "pentiumdecoder.cpp"
 
       
     } 
@@ -47235,12 +47231,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 732 "machine/pentium/decoder.m"
+#line 728 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47244 "pentiumdecoder.cpp"
+#line 47240 "pentiumdecoder.cpp"
 
       
     } 
@@ -47251,12 +47247,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 720 "machine/pentium/decoder.m"
+#line 716 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47260 "pentiumdecoder.cpp"
+#line 47256 "pentiumdecoder.cpp"
 
       
     } 
@@ -47267,12 +47263,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 720 "machine/pentium/decoder.m"
+#line 716 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47276 "pentiumdecoder.cpp"
+#line 47272 "pentiumdecoder.cpp"
 
       
     } 
@@ -47283,12 +47279,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 720 "machine/pentium/decoder.m"
+#line 716 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47292 "pentiumdecoder.cpp"
+#line 47288 "pentiumdecoder.cpp"
 
       
     } 
@@ -47299,12 +47295,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 720 "machine/pentium/decoder.m"
+#line 716 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47308 "pentiumdecoder.cpp"
+#line 47304 "pentiumdecoder.cpp"
 
       
     } 
@@ -47315,12 +47311,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 708 "machine/pentium/decoder.m"
+#line 704 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47324 "pentiumdecoder.cpp"
+#line 47320 "pentiumdecoder.cpp"
 
       
     } 
@@ -47331,12 +47327,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 708 "machine/pentium/decoder.m"
+#line 704 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47340 "pentiumdecoder.cpp"
+#line 47336 "pentiumdecoder.cpp"
 
       
     } 
@@ -47347,12 +47343,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 708 "machine/pentium/decoder.m"
+#line 704 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47356 "pentiumdecoder.cpp"
+#line 47352 "pentiumdecoder.cpp"
 
       
     } 
@@ -47363,12 +47359,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 708 "machine/pentium/decoder.m"
+#line 704 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47372 "pentiumdecoder.cpp"
+#line 47368 "pentiumdecoder.cpp"
 
       
     } 
@@ -47379,12 +47375,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 696 "machine/pentium/decoder.m"
+#line 692 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47388 "pentiumdecoder.cpp"
+#line 47384 "pentiumdecoder.cpp"
 
       
     } 
@@ -47395,12 +47391,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 696 "machine/pentium/decoder.m"
+#line 692 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47404 "pentiumdecoder.cpp"
+#line 47400 "pentiumdecoder.cpp"
 
       
     } 
@@ -47411,12 +47407,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 696 "machine/pentium/decoder.m"
+#line 692 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47420 "pentiumdecoder.cpp"
+#line 47416 "pentiumdecoder.cpp"
 
       
     } 
@@ -47427,12 +47423,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 696 "machine/pentium/decoder.m"
+#line 692 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47436 "pentiumdecoder.cpp"
+#line 47432 "pentiumdecoder.cpp"
 
       
     } 
@@ -47443,12 +47439,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 684 "machine/pentium/decoder.m"
+#line 680 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47452 "pentiumdecoder.cpp"
+#line 47448 "pentiumdecoder.cpp"
 
       
     } 
@@ -47459,12 +47455,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 684 "machine/pentium/decoder.m"
+#line 680 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47468 "pentiumdecoder.cpp"
+#line 47464 "pentiumdecoder.cpp"
 
       
     } 
@@ -47475,12 +47471,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 684 "machine/pentium/decoder.m"
+#line 680 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47484 "pentiumdecoder.cpp"
+#line 47480 "pentiumdecoder.cpp"
 
       
     } 
@@ -47491,12 +47487,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 684 "machine/pentium/decoder.m"
+#line 680 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47500 "pentiumdecoder.cpp"
+#line 47496 "pentiumdecoder.cpp"
 
       
     } 
@@ -47507,12 +47503,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 672 "machine/pentium/decoder.m"
+#line 668 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47516 "pentiumdecoder.cpp"
+#line 47512 "pentiumdecoder.cpp"
 
       
     } 
@@ -47523,12 +47519,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 672 "machine/pentium/decoder.m"
+#line 668 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47532 "pentiumdecoder.cpp"
+#line 47528 "pentiumdecoder.cpp"
 
       
     } 
@@ -47539,12 +47535,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 672 "machine/pentium/decoder.m"
+#line 668 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47548 "pentiumdecoder.cpp"
+#line 47544 "pentiumdecoder.cpp"
 
       
     } 
@@ -47555,12 +47551,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 672 "machine/pentium/decoder.m"
+#line 668 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47564 "pentiumdecoder.cpp"
+#line 47560 "pentiumdecoder.cpp"
 
       
     } 
@@ -47571,12 +47567,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 660 "machine/pentium/decoder.m"
+#line 656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47580 "pentiumdecoder.cpp"
+#line 47576 "pentiumdecoder.cpp"
 
       
     } 
@@ -47587,12 +47583,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 660 "machine/pentium/decoder.m"
+#line 656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47596 "pentiumdecoder.cpp"
+#line 47592 "pentiumdecoder.cpp"
 
       
     } 
@@ -47603,12 +47599,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 660 "machine/pentium/decoder.m"
+#line 656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47612 "pentiumdecoder.cpp"
+#line 47608 "pentiumdecoder.cpp"
 
       
     } 
@@ -47619,12 +47615,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 660 "machine/pentium/decoder.m"
+#line 656 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
 
 
-#line 47628 "pentiumdecoder.cpp"
+#line 47624 "pentiumdecoder.cpp"
 
       
     } 
@@ -47636,12 +47632,12 @@ hostPC
       unsigned i8 = (MATCH_w_8_16 & 0xff) /* i8 at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 391 "machine/pentium/decoder.m"
+#line 387 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47645 "pentiumdecoder.cpp"
+#line 47641 "pentiumdecoder.cpp"
 
       
     } 
@@ -47653,12 +47649,12 @@ hostPC
       unsigned i8 = (MATCH_w_8_24 & 0xff) /* i8 at 24 */;
       nextPC = 4 + MATCH_p; 
       
-#line 391 "machine/pentium/decoder.m"
+#line 387 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47662 "pentiumdecoder.cpp"
+#line 47658 "pentiumdecoder.cpp"
 
       
     } 
@@ -47670,12 +47666,12 @@ hostPC
       unsigned i8 = (MATCH_w_8_56 & 0xff) /* i8 at 56 */;
       nextPC = 8 + MATCH_p; 
       
-#line 391 "machine/pentium/decoder.m"
+#line 387 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47679 "pentiumdecoder.cpp"
+#line 47675 "pentiumdecoder.cpp"
 
       
     } 
@@ -47687,12 +47683,12 @@ hostPC
       unsigned i8 = (MATCH_w_8_48 & 0xff) /* i8 at 48 */;
       nextPC = 7 + MATCH_p; 
       
-#line 391 "machine/pentium/decoder.m"
+#line 387 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
 
 
-#line 47696 "pentiumdecoder.cpp"
+#line 47692 "pentiumdecoder.cpp"
 
       
     } 
@@ -47703,12 +47699,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 914 "machine/pentium/decoder.m"
+#line 910 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47712 "pentiumdecoder.cpp"
+#line 47708 "pentiumdecoder.cpp"
 
       
     } 
@@ -47719,12 +47715,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 914 "machine/pentium/decoder.m"
+#line 910 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47728 "pentiumdecoder.cpp"
+#line 47724 "pentiumdecoder.cpp"
 
       
     } 
@@ -47735,12 +47731,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 914 "machine/pentium/decoder.m"
+#line 910 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47744 "pentiumdecoder.cpp"
+#line 47740 "pentiumdecoder.cpp"
 
       
     } 
@@ -47751,12 +47747,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 914 "machine/pentium/decoder.m"
+#line 910 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTb", DIS_EADDR8);
 
 
-#line 47760 "pentiumdecoder.cpp"
+#line 47756 "pentiumdecoder.cpp"
 
       
     } 
@@ -47767,12 +47763,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 923 "machine/pentium/decoder.m"
+#line 919 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47776 "pentiumdecoder.cpp"
+#line 47772 "pentiumdecoder.cpp"
 
       
     } 
@@ -47783,12 +47779,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 923 "machine/pentium/decoder.m"
+#line 919 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47792 "pentiumdecoder.cpp"
+#line 47788 "pentiumdecoder.cpp"
 
       
     } 
@@ -47799,12 +47795,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 923 "machine/pentium/decoder.m"
+#line 919 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47808 "pentiumdecoder.cpp"
+#line 47804 "pentiumdecoder.cpp"
 
       
     } 
@@ -47815,12 +47811,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 923 "machine/pentium/decoder.m"
+#line 919 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGb", DIS_EADDR8);
 
 
-#line 47824 "pentiumdecoder.cpp"
+#line 47820 "pentiumdecoder.cpp"
 
       
     } 
@@ -47831,12 +47827,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 932 "machine/pentium/decoder.m"
+#line 928 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47840 "pentiumdecoder.cpp"
+#line 47836 "pentiumdecoder.cpp"
 
       
     } 
@@ -47847,12 +47843,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 932 "machine/pentium/decoder.m"
+#line 928 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47856 "pentiumdecoder.cpp"
+#line 47852 "pentiumdecoder.cpp"
 
       
     } 
@@ -47863,12 +47859,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 932 "machine/pentium/decoder.m"
+#line 928 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47872 "pentiumdecoder.cpp"
+#line 47868 "pentiumdecoder.cpp"
 
       
     } 
@@ -47879,12 +47875,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 932 "machine/pentium/decoder.m"
+#line 928 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AL", DIS_EADDR8);
 
 
-#line 47888 "pentiumdecoder.cpp"
+#line 47884 "pentiumdecoder.cpp"
 
       
     } 
@@ -47895,12 +47891,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1176 "machine/pentium/decoder.m"
+#line 1172 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47904 "pentiumdecoder.cpp"
+#line 47900 "pentiumdecoder.cpp"
 
       
     } 
@@ -47911,12 +47907,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1176 "machine/pentium/decoder.m"
+#line 1172 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47920 "pentiumdecoder.cpp"
+#line 47916 "pentiumdecoder.cpp"
 
       
     } 
@@ -47927,12 +47923,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1176 "machine/pentium/decoder.m"
+#line 1172 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47936 "pentiumdecoder.cpp"
+#line 47932 "pentiumdecoder.cpp"
 
       
     } 
@@ -47943,12 +47939,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1176 "machine/pentium/decoder.m"
+#line 1172 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULb", DIS_EADDR8);
 
 
-#line 47952 "pentiumdecoder.cpp"
+#line 47948 "pentiumdecoder.cpp"
 
       
     } 
@@ -47959,12 +47955,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1200 "machine/pentium/decoder.m"
+#line 1196 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 47968 "pentiumdecoder.cpp"
+#line 47964 "pentiumdecoder.cpp"
 
       
     } 
@@ -47975,12 +47971,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1200 "machine/pentium/decoder.m"
+#line 1196 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 47984 "pentiumdecoder.cpp"
+#line 47980 "pentiumdecoder.cpp"
 
       
     } 
@@ -47991,12 +47987,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1200 "machine/pentium/decoder.m"
+#line 1196 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 48000 "pentiumdecoder.cpp"
+#line 47996 "pentiumdecoder.cpp"
 
       
     } 
@@ -48007,12 +48003,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1200 "machine/pentium/decoder.m"
+#line 1196 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVAL", DIS_EADDR8);
 
 
-#line 48016 "pentiumdecoder.cpp"
+#line 48012 "pentiumdecoder.cpp"
 
       
     } 
@@ -48023,7 +48019,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1185 "machine/pentium/decoder.m"
+#line 1181 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIV", DIS_EADDR8); /* ?? */
 
@@ -48031,7 +48027,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48035 "pentiumdecoder.cpp"
+#line 48031 "pentiumdecoder.cpp"
 
       
     } 
@@ -48042,7 +48038,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1185 "machine/pentium/decoder.m"
+#line 1181 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIV", DIS_EADDR8); /* ?? */
 
@@ -48050,7 +48046,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48054 "pentiumdecoder.cpp"
+#line 48050 "pentiumdecoder.cpp"
 
       
     } 
@@ -48061,7 +48057,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1185 "machine/pentium/decoder.m"
+#line 1181 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIV", DIS_EADDR8); /* ?? */
 
@@ -48069,7 +48065,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48073 "pentiumdecoder.cpp"
+#line 48069 "pentiumdecoder.cpp"
 
       
     } 
@@ -48080,7 +48076,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1185 "machine/pentium/decoder.m"
+#line 1181 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIV", DIS_EADDR8); /* ?? */
 
@@ -48088,7 +48084,7 @@ hostPC
 //		stmts = instantiate(pc, "HLT");
 
 
-#line 48092 "pentiumdecoder.cpp"
+#line 48088 "pentiumdecoder.cpp"
 
       
     } 
@@ -48100,12 +48096,12 @@ hostPC
       unsigned i32 = MATCH_w_32_16 /* i32 at 16 */;
       nextPC = 6 + MATCH_p; 
       
-#line 385 "machine/pentium/decoder.m"
+#line 381 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48109 "pentiumdecoder.cpp"
+#line 48105 "pentiumdecoder.cpp"
 
       
     } 
@@ -48117,12 +48113,12 @@ hostPC
       unsigned i32 = MATCH_w_32_24 /* i32 at 24 */;
       nextPC = 7 + MATCH_p; 
       
-#line 385 "machine/pentium/decoder.m"
+#line 381 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48126 "pentiumdecoder.cpp"
+#line 48122 "pentiumdecoder.cpp"
 
       
     } 
@@ -48134,12 +48130,12 @@ hostPC
       unsigned i32 = MATCH_w_32_56 /* i32 at 56 */;
       nextPC = 11 + MATCH_p; 
       
-#line 385 "machine/pentium/decoder.m"
+#line 381 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48143 "pentiumdecoder.cpp"
+#line 48139 "pentiumdecoder.cpp"
 
       
     } 
@@ -48151,12 +48147,12 @@ hostPC
       unsigned i32 = MATCH_w_32_48 /* i32 at 48 */;
       nextPC = 10 + MATCH_p; 
       
-#line 385 "machine/pentium/decoder.m"
+#line 381 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
 
 
-#line 48160 "pentiumdecoder.cpp"
+#line 48156 "pentiumdecoder.cpp"
 
       
     } 
@@ -48167,12 +48163,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 908 "machine/pentium/decoder.m"
+#line 904 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48176 "pentiumdecoder.cpp"
+#line 48172 "pentiumdecoder.cpp"
 
       
     } 
@@ -48183,12 +48179,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 908 "machine/pentium/decoder.m"
+#line 904 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48192 "pentiumdecoder.cpp"
+#line 48188 "pentiumdecoder.cpp"
 
       
     } 
@@ -48199,12 +48195,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 908 "machine/pentium/decoder.m"
+#line 904 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48208 "pentiumdecoder.cpp"
+#line 48204 "pentiumdecoder.cpp"
 
       
     } 
@@ -48215,12 +48211,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 908 "machine/pentium/decoder.m"
+#line 904 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NOTod", DIS_EADDR32);
 
 
-#line 48224 "pentiumdecoder.cpp"
+#line 48220 "pentiumdecoder.cpp"
 
       
     } 
@@ -48231,12 +48227,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 917 "machine/pentium/decoder.m"
+#line 913 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48240 "pentiumdecoder.cpp"
+#line 48236 "pentiumdecoder.cpp"
 
       
     } 
@@ -48247,12 +48243,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 917 "machine/pentium/decoder.m"
+#line 913 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48256 "pentiumdecoder.cpp"
+#line 48252 "pentiumdecoder.cpp"
 
       
     } 
@@ -48263,12 +48259,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 917 "machine/pentium/decoder.m"
+#line 913 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48272 "pentiumdecoder.cpp"
+#line 48268 "pentiumdecoder.cpp"
 
       
     } 
@@ -48279,12 +48275,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 917 "machine/pentium/decoder.m"
+#line 913 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "NEGod", DIS_EADDR32);
 
 
-#line 48288 "pentiumdecoder.cpp"
+#line 48284 "pentiumdecoder.cpp"
 
       
     } 
@@ -48295,12 +48291,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 926 "machine/pentium/decoder.m"
+#line 922 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48304 "pentiumdecoder.cpp"
+#line 48300 "pentiumdecoder.cpp"
 
       
     } 
@@ -48311,12 +48307,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 926 "machine/pentium/decoder.m"
+#line 922 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48320 "pentiumdecoder.cpp"
+#line 48316 "pentiumdecoder.cpp"
 
       
     } 
@@ -48327,12 +48323,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 926 "machine/pentium/decoder.m"
+#line 922 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48336 "pentiumdecoder.cpp"
+#line 48332 "pentiumdecoder.cpp"
 
       
     } 
@@ -48343,12 +48339,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 926 "machine/pentium/decoder.m"
+#line 922 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MUL.AXod", DIS_EADDR32);
 
 
-#line 48352 "pentiumdecoder.cpp"
+#line 48348 "pentiumdecoder.cpp"
 
       
     } 
@@ -48359,12 +48355,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1170 "machine/pentium/decoder.m"
+#line 1166 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48368 "pentiumdecoder.cpp"
+#line 48364 "pentiumdecoder.cpp"
 
       
     } 
@@ -48375,12 +48371,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1170 "machine/pentium/decoder.m"
+#line 1166 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48384 "pentiumdecoder.cpp"
+#line 48380 "pentiumdecoder.cpp"
 
       
     } 
@@ -48391,12 +48387,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1170 "machine/pentium/decoder.m"
+#line 1166 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48400 "pentiumdecoder.cpp"
+#line 48396 "pentiumdecoder.cpp"
 
       
     } 
@@ -48407,12 +48403,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1170 "machine/pentium/decoder.m"
+#line 1166 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULod", DIS_EADDR32);
 
 
-#line 48416 "pentiumdecoder.cpp"
+#line 48412 "pentiumdecoder.cpp"
 
       
     } 
@@ -48423,12 +48419,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1194 "machine/pentium/decoder.m"
+#line 1190 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48432 "pentiumdecoder.cpp"
+#line 48428 "pentiumdecoder.cpp"
 
       
     } 
@@ -48439,12 +48435,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1194 "machine/pentium/decoder.m"
+#line 1190 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48448 "pentiumdecoder.cpp"
+#line 48444 "pentiumdecoder.cpp"
 
       
     } 
@@ -48455,12 +48451,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1194 "machine/pentium/decoder.m"
+#line 1190 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48464 "pentiumdecoder.cpp"
+#line 48460 "pentiumdecoder.cpp"
 
       
     } 
@@ -48471,12 +48467,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1194 "machine/pentium/decoder.m"
+#line 1190 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DIVeAX", DIS_EADDR32);
 
 
-#line 48480 "pentiumdecoder.cpp"
+#line 48476 "pentiumdecoder.cpp"
 
       
     } 
@@ -48487,12 +48483,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1179 "machine/pentium/decoder.m"
+#line 1175 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48496 "pentiumdecoder.cpp"
+#line 48492 "pentiumdecoder.cpp"
 
       
     } 
@@ -48503,12 +48499,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1179 "machine/pentium/decoder.m"
+#line 1175 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48512 "pentiumdecoder.cpp"
+#line 48508 "pentiumdecoder.cpp"
 
       
     } 
@@ -48519,12 +48515,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1179 "machine/pentium/decoder.m"
+#line 1175 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48528 "pentiumdecoder.cpp"
+#line 48524 "pentiumdecoder.cpp"
 
       
     } 
@@ -48535,12 +48531,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1179 "machine/pentium/decoder.m"
+#line 1175 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IDIVeAX", DIS_EADDR32);
 
 
-#line 48544 "pentiumdecoder.cpp"
+#line 48540 "pentiumdecoder.cpp"
 
       
     } 
@@ -48552,12 +48548,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1534 "machine/pentium/decoder.m"
+#line 1530 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48561 "pentiumdecoder.cpp"
+#line 48557 "pentiumdecoder.cpp"
 
       
     } 
@@ -48569,12 +48565,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1534 "machine/pentium/decoder.m"
+#line 1530 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48578 "pentiumdecoder.cpp"
+#line 48574 "pentiumdecoder.cpp"
 
       
     } 
@@ -48586,12 +48582,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1534 "machine/pentium/decoder.m"
+#line 1530 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48595 "pentiumdecoder.cpp"
+#line 48591 "pentiumdecoder.cpp"
 
       
     } 
@@ -48603,12 +48599,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1534 "machine/pentium/decoder.m"
+#line 1530 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 48612 "pentiumdecoder.cpp"
+#line 48608 "pentiumdecoder.cpp"
 
       
     } 
@@ -48620,12 +48616,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1504 "machine/pentium/decoder.m"
+#line 1500 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48629 "pentiumdecoder.cpp"
+#line 48625 "pentiumdecoder.cpp"
 
       
     } 
@@ -48637,12 +48633,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1504 "machine/pentium/decoder.m"
+#line 1500 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48646 "pentiumdecoder.cpp"
+#line 48642 "pentiumdecoder.cpp"
 
       
     } 
@@ -48654,12 +48650,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1504 "machine/pentium/decoder.m"
+#line 1500 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48663 "pentiumdecoder.cpp"
+#line 48659 "pentiumdecoder.cpp"
 
       
     } 
@@ -48671,12 +48667,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1504 "machine/pentium/decoder.m"
+#line 1500 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 48680 "pentiumdecoder.cpp"
+#line 48676 "pentiumdecoder.cpp"
 
       
     } 
@@ -48688,12 +48684,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1462 "machine/pentium/decoder.m"
+#line 1458 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48697 "pentiumdecoder.cpp"
+#line 48693 "pentiumdecoder.cpp"
 
       
     } 
@@ -48705,12 +48701,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1462 "machine/pentium/decoder.m"
+#line 1458 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48714 "pentiumdecoder.cpp"
+#line 48710 "pentiumdecoder.cpp"
 
       
     } 
@@ -48722,12 +48718,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1462 "machine/pentium/decoder.m"
+#line 1458 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48731 "pentiumdecoder.cpp"
+#line 48727 "pentiumdecoder.cpp"
 
       
     } 
@@ -48739,12 +48735,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1462 "machine/pentium/decoder.m"
+#line 1458 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 48748 "pentiumdecoder.cpp"
+#line 48744 "pentiumdecoder.cpp"
 
       
     } 
@@ -48756,12 +48752,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1432 "machine/pentium/decoder.m"
+#line 1428 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48765 "pentiumdecoder.cpp"
+#line 48761 "pentiumdecoder.cpp"
 
       
     } 
@@ -48773,12 +48769,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1432 "machine/pentium/decoder.m"
+#line 1428 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48782 "pentiumdecoder.cpp"
+#line 48778 "pentiumdecoder.cpp"
 
       
     } 
@@ -48790,12 +48786,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1432 "machine/pentium/decoder.m"
+#line 1428 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48799 "pentiumdecoder.cpp"
+#line 48795 "pentiumdecoder.cpp"
 
       
     } 
@@ -48807,12 +48803,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1432 "machine/pentium/decoder.m"
+#line 1428 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 48816 "pentiumdecoder.cpp"
+#line 48812 "pentiumdecoder.cpp"
 
       
     } 
@@ -48823,12 +48819,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 427 "machine/pentium/decoder.m"
+#line 423 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48832 "pentiumdecoder.cpp"
+#line 48828 "pentiumdecoder.cpp"
 
       
     } 
@@ -48839,12 +48835,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 427 "machine/pentium/decoder.m"
+#line 423 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48848 "pentiumdecoder.cpp"
+#line 48844 "pentiumdecoder.cpp"
 
       
     } 
@@ -48855,12 +48851,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 427 "machine/pentium/decoder.m"
+#line 423 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48864 "pentiumdecoder.cpp"
+#line 48860 "pentiumdecoder.cpp"
 
       
     } 
@@ -48871,12 +48867,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 427 "machine/pentium/decoder.m"
+#line 423 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SLDT", DIS_EADDR32);
 
 
-#line 48880 "pentiumdecoder.cpp"
+#line 48876 "pentiumdecoder.cpp"
 
       
     } 
@@ -48887,12 +48883,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 403 "machine/pentium/decoder.m"
+#line 399 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 48896 "pentiumdecoder.cpp"
+#line 48892 "pentiumdecoder.cpp"
 
       
     } 
@@ -48903,12 +48899,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 403 "machine/pentium/decoder.m"
+#line 399 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 48912 "pentiumdecoder.cpp"
+#line 48908 "pentiumdecoder.cpp"
 
       
     } 
@@ -48919,12 +48915,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 403 "machine/pentium/decoder.m"
+#line 399 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "STR", DIS_MEM);
 
 
-#line 48928 "pentiumdecoder.cpp"
+#line 48924 "pentiumdecoder.cpp"
 
       
     } 
@@ -48935,12 +48931,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1038 "machine/pentium/decoder.m"
+#line 1034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48944 "pentiumdecoder.cpp"
+#line 48940 "pentiumdecoder.cpp"
 
       
     } 
@@ -48951,12 +48947,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1038 "machine/pentium/decoder.m"
+#line 1034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48960 "pentiumdecoder.cpp"
+#line 48956 "pentiumdecoder.cpp"
 
       
     } 
@@ -48967,12 +48963,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1038 "machine/pentium/decoder.m"
+#line 1034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48976 "pentiumdecoder.cpp"
+#line 48972 "pentiumdecoder.cpp"
 
       
     } 
@@ -48983,12 +48979,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1038 "machine/pentium/decoder.m"
+#line 1034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LTR", DIS_EADDR32);
 
 
-#line 48992 "pentiumdecoder.cpp"
+#line 48988 "pentiumdecoder.cpp"
 
       
     } 
@@ -48999,12 +48995,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 373 "machine/pentium/decoder.m"
+#line 369 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49008 "pentiumdecoder.cpp"
+#line 49004 "pentiumdecoder.cpp"
 
       
     } 
@@ -49015,12 +49011,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 373 "machine/pentium/decoder.m"
+#line 369 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49024 "pentiumdecoder.cpp"
+#line 49020 "pentiumdecoder.cpp"
 
       
     } 
@@ -49031,12 +49027,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 373 "machine/pentium/decoder.m"
+#line 369 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49040 "pentiumdecoder.cpp"
+#line 49036 "pentiumdecoder.cpp"
 
       
     } 
@@ -49047,12 +49043,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 373 "machine/pentium/decoder.m"
+#line 369 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERR", DIS_EADDR32);
 
 
-#line 49056 "pentiumdecoder.cpp"
+#line 49052 "pentiumdecoder.cpp"
 
       
     } 
@@ -49063,12 +49059,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 370 "machine/pentium/decoder.m"
+#line 366 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49072 "pentiumdecoder.cpp"
+#line 49068 "pentiumdecoder.cpp"
 
       
     } 
@@ -49079,12 +49075,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 370 "machine/pentium/decoder.m"
+#line 366 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49088 "pentiumdecoder.cpp"
+#line 49084 "pentiumdecoder.cpp"
 
       
     } 
@@ -49095,12 +49091,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 370 "machine/pentium/decoder.m"
+#line 366 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49104 "pentiumdecoder.cpp"
+#line 49100 "pentiumdecoder.cpp"
 
       
     } 
@@ -49111,12 +49107,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 370 "machine/pentium/decoder.m"
+#line 366 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "VERW", DIS_EADDR32);
 
 
-#line 49120 "pentiumdecoder.cpp"
+#line 49116 "pentiumdecoder.cpp"
 
       
     } 
@@ -49127,13 +49123,13 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 457 "machine/pentium/decoder.m"
+#line 453 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SGDT", DIS_MEM);
 
 	// Sets are now in the high level instructions
 
-#line 49137 "pentiumdecoder.cpp"
+#line 49133 "pentiumdecoder.cpp"
 
       
     } 
@@ -49144,13 +49140,13 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 457 "machine/pentium/decoder.m"
+#line 453 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SGDT", DIS_MEM);
 
 	// Sets are now in the high level instructions
 
-#line 49154 "pentiumdecoder.cpp"
+#line 49150 "pentiumdecoder.cpp"
 
       
     } 
@@ -49161,13 +49157,13 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 457 "machine/pentium/decoder.m"
+#line 453 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SGDT", DIS_MEM);
 
 	// Sets are now in the high level instructions
 
-#line 49171 "pentiumdecoder.cpp"
+#line 49167 "pentiumdecoder.cpp"
 
       
     } 
@@ -49178,12 +49174,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 454 "machine/pentium/decoder.m"
+#line 450 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 49187 "pentiumdecoder.cpp"
+#line 49183 "pentiumdecoder.cpp"
 
       
     } 
@@ -49194,12 +49190,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 454 "machine/pentium/decoder.m"
+#line 450 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 49203 "pentiumdecoder.cpp"
+#line 49199 "pentiumdecoder.cpp"
 
       
     } 
@@ -49210,12 +49206,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 454 "machine/pentium/decoder.m"
+#line 450 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SIDT", DIS_MEM);
 
 
-#line 49219 "pentiumdecoder.cpp"
+#line 49215 "pentiumdecoder.cpp"
 
       
     } 
@@ -49226,12 +49222,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 424 "machine/pentium/decoder.m"
+#line 420 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49235 "pentiumdecoder.cpp"
+#line 49231 "pentiumdecoder.cpp"
 
       
     } 
@@ -49242,12 +49238,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 424 "machine/pentium/decoder.m"
+#line 420 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49251 "pentiumdecoder.cpp"
+#line 49247 "pentiumdecoder.cpp"
 
       
     } 
@@ -49258,12 +49254,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 424 "machine/pentium/decoder.m"
+#line 420 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49267 "pentiumdecoder.cpp"
+#line 49263 "pentiumdecoder.cpp"
 
       
     } 
@@ -49274,12 +49270,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 424 "machine/pentium/decoder.m"
+#line 420 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SMSW", DIS_EADDR32);
 
 
-#line 49283 "pentiumdecoder.cpp"
+#line 49279 "pentiumdecoder.cpp"
 
       
     } 
@@ -49290,12 +49286,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1093 "machine/pentium/decoder.m"
+#line 1089 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 49299 "pentiumdecoder.cpp"
+#line 49295 "pentiumdecoder.cpp"
 
       
     } 
@@ -49306,12 +49302,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1093 "machine/pentium/decoder.m"
+#line 1089 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 49315 "pentiumdecoder.cpp"
+#line 49311 "pentiumdecoder.cpp"
 
       
     } 
@@ -49322,12 +49318,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1093 "machine/pentium/decoder.m"
+#line 1089 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INVLPG", DIS_MEM);
 
 
-#line 49331 "pentiumdecoder.cpp"
+#line 49327 "pentiumdecoder.cpp"
 
       
     } 
@@ -49339,12 +49335,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1080 "machine/pentium/decoder.m"
+#line 1076 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49348 "pentiumdecoder.cpp"
+#line 49344 "pentiumdecoder.cpp"
 
       
     } 
@@ -49356,12 +49352,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1080 "machine/pentium/decoder.m"
+#line 1076 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49365 "pentiumdecoder.cpp"
+#line 49361 "pentiumdecoder.cpp"
 
       
     } 
@@ -49373,12 +49369,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1080 "machine/pentium/decoder.m"
+#line 1076 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49382 "pentiumdecoder.cpp"
+#line 49378 "pentiumdecoder.cpp"
 
       
     } 
@@ -49390,12 +49386,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1080 "machine/pentium/decoder.m"
+#line 1076 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
 
 
-#line 49399 "pentiumdecoder.cpp"
+#line 49395 "pentiumdecoder.cpp"
 
       
     } 
@@ -49407,12 +49403,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1044 "machine/pentium/decoder.m"
+#line 1040 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49416 "pentiumdecoder.cpp"
+#line 49412 "pentiumdecoder.cpp"
 
       
     } 
@@ -49424,12 +49420,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1044 "machine/pentium/decoder.m"
+#line 1040 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49433 "pentiumdecoder.cpp"
+#line 49429 "pentiumdecoder.cpp"
 
       
     } 
@@ -49441,12 +49437,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1044 "machine/pentium/decoder.m"
+#line 1040 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49450 "pentiumdecoder.cpp"
+#line 49446 "pentiumdecoder.cpp"
 
       
     } 
@@ -49458,12 +49454,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1044 "machine/pentium/decoder.m"
+#line 1040 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
 
 
-#line 49467 "pentiumdecoder.cpp"
+#line 49463 "pentiumdecoder.cpp"
 
       
     } 
@@ -49475,7 +49471,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 303 "machine/pentium/decoder.m"
+#line 299 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUL)
@@ -49487,7 +49483,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49491 "pentiumdecoder.cpp"
+#line 49487 "pentiumdecoder.cpp"
 
       
     } 
@@ -49499,7 +49495,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 303 "machine/pentium/decoder.m"
+#line 299 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUL)
@@ -49511,7 +49507,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49515 "pentiumdecoder.cpp"
+#line 49511 "pentiumdecoder.cpp"
 
       
     } 
@@ -49523,7 +49519,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 303 "machine/pentium/decoder.m"
+#line 299 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUL)
@@ -49535,7 +49531,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49539 "pentiumdecoder.cpp"
+#line 49535 "pentiumdecoder.cpp"
 
       
     } 
@@ -49547,7 +49543,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 303 "machine/pentium/decoder.m"
+#line 299 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUL)
@@ -49559,7 +49555,7 @@ hostPC
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
 
-#line 49563 "pentiumdecoder.cpp"
+#line 49559 "pentiumdecoder.cpp"
 
       
     } 
@@ -49571,12 +49567,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 300 "machine/pentium/decoder.m"
+#line 296 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49580 "pentiumdecoder.cpp"
+#line 49576 "pentiumdecoder.cpp"
 
       
     } 
@@ -49588,12 +49584,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 300 "machine/pentium/decoder.m"
+#line 296 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49597 "pentiumdecoder.cpp"
+#line 49593 "pentiumdecoder.cpp"
 
       
     } 
@@ -49605,12 +49601,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 300 "machine/pentium/decoder.m"
+#line 296 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49614 "pentiumdecoder.cpp"
+#line 49610 "pentiumdecoder.cpp"
 
       
     } 
@@ -49622,12 +49618,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 300 "machine/pentium/decoder.m"
+#line 296 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUGE)
 
-#line 49631 "pentiumdecoder.cpp"
+#line 49627 "pentiumdecoder.cpp"
 
       
     } 
@@ -49639,12 +49635,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 297 "machine/pentium/decoder.m"
+#line 293 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49648 "pentiumdecoder.cpp"
+#line 49644 "pentiumdecoder.cpp"
 
       
     } 
@@ -49656,12 +49652,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 297 "machine/pentium/decoder.m"
+#line 293 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49665 "pentiumdecoder.cpp"
+#line 49661 "pentiumdecoder.cpp"
 
       
     } 
@@ -49673,12 +49669,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 297 "machine/pentium/decoder.m"
+#line 293 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49682 "pentiumdecoder.cpp"
+#line 49678 "pentiumdecoder.cpp"
 
       
     } 
@@ -49690,12 +49686,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 297 "machine/pentium/decoder.m"
+#line 293 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JE)
 
-#line 49699 "pentiumdecoder.cpp"
+#line 49695 "pentiumdecoder.cpp"
 
       
     } 
@@ -49707,12 +49703,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 294 "machine/pentium/decoder.m"
+#line 290 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49716 "pentiumdecoder.cpp"
+#line 49712 "pentiumdecoder.cpp"
 
       
     } 
@@ -49724,12 +49720,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 294 "machine/pentium/decoder.m"
+#line 290 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49733 "pentiumdecoder.cpp"
+#line 49729 "pentiumdecoder.cpp"
 
       
     } 
@@ -49741,12 +49737,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 294 "machine/pentium/decoder.m"
+#line 290 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49750 "pentiumdecoder.cpp"
+#line 49746 "pentiumdecoder.cpp"
 
       
     } 
@@ -49758,12 +49754,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 294 "machine/pentium/decoder.m"
+#line 290 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JNE)
 
-#line 49767 "pentiumdecoder.cpp"
+#line 49763 "pentiumdecoder.cpp"
 
       
     } 
@@ -49775,12 +49771,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 291 "machine/pentium/decoder.m"
+#line 287 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49784 "pentiumdecoder.cpp"
+#line 49780 "pentiumdecoder.cpp"
 
       
     } 
@@ -49792,12 +49788,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 291 "machine/pentium/decoder.m"
+#line 287 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49801 "pentiumdecoder.cpp"
+#line 49797 "pentiumdecoder.cpp"
 
       
     } 
@@ -49809,12 +49805,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 291 "machine/pentium/decoder.m"
+#line 287 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49818 "pentiumdecoder.cpp"
+#line 49814 "pentiumdecoder.cpp"
 
       
     } 
@@ -49826,12 +49822,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 291 "machine/pentium/decoder.m"
+#line 287 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JULE)
 
-#line 49835 "pentiumdecoder.cpp"
+#line 49831 "pentiumdecoder.cpp"
 
       
     } 
@@ -49843,12 +49839,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 288 "machine/pentium/decoder.m"
+#line 284 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49852 "pentiumdecoder.cpp"
+#line 49848 "pentiumdecoder.cpp"
 
       
     } 
@@ -49860,12 +49856,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 288 "machine/pentium/decoder.m"
+#line 284 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49869 "pentiumdecoder.cpp"
+#line 49865 "pentiumdecoder.cpp"
 
       
     } 
@@ -49877,12 +49873,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 288 "machine/pentium/decoder.m"
+#line 284 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49886 "pentiumdecoder.cpp"
+#line 49882 "pentiumdecoder.cpp"
 
       
     } 
@@ -49894,12 +49890,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 288 "machine/pentium/decoder.m"
+#line 284 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JUG)
 
-#line 49903 "pentiumdecoder.cpp"
+#line 49899 "pentiumdecoder.cpp"
 
       
     } 
@@ -49911,12 +49907,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 285 "machine/pentium/decoder.m"
+#line 281 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49920 "pentiumdecoder.cpp"
+#line 49916 "pentiumdecoder.cpp"
 
       
     } 
@@ -49928,12 +49924,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 285 "machine/pentium/decoder.m"
+#line 281 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49937 "pentiumdecoder.cpp"
+#line 49933 "pentiumdecoder.cpp"
 
       
     } 
@@ -49945,12 +49941,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 285 "machine/pentium/decoder.m"
+#line 281 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49954 "pentiumdecoder.cpp"
+#line 49950 "pentiumdecoder.cpp"
 
       
     } 
@@ -49962,12 +49958,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 285 "machine/pentium/decoder.m"
+#line 281 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JMI)
 
-#line 49971 "pentiumdecoder.cpp"
+#line 49967 "pentiumdecoder.cpp"
 
       
     } 
@@ -49979,12 +49975,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 282 "machine/pentium/decoder.m"
+#line 278 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 49988 "pentiumdecoder.cpp"
+#line 49984 "pentiumdecoder.cpp"
 
       
     } 
@@ -49996,12 +49992,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 282 "machine/pentium/decoder.m"
+#line 278 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 50005 "pentiumdecoder.cpp"
+#line 50001 "pentiumdecoder.cpp"
 
       
     } 
@@ -50013,12 +50009,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 282 "machine/pentium/decoder.m"
+#line 278 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 50022 "pentiumdecoder.cpp"
+#line 50018 "pentiumdecoder.cpp"
 
       
     } 
@@ -50030,12 +50026,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 282 "machine/pentium/decoder.m"
+#line 278 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JPOS)
 
-#line 50039 "pentiumdecoder.cpp"
+#line 50035 "pentiumdecoder.cpp"
 
       
     } 
@@ -50047,7 +50043,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 273 "machine/pentium/decoder.m"
+#line 269 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSL)
@@ -50058,7 +50054,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50062 "pentiumdecoder.cpp"
+#line 50058 "pentiumdecoder.cpp"
 
       
     } 
@@ -50070,7 +50066,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 273 "machine/pentium/decoder.m"
+#line 269 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSL)
@@ -50081,7 +50077,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50085 "pentiumdecoder.cpp"
+#line 50081 "pentiumdecoder.cpp"
 
       
     } 
@@ -50093,7 +50089,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 273 "machine/pentium/decoder.m"
+#line 269 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSL)
@@ -50104,7 +50100,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50108 "pentiumdecoder.cpp"
+#line 50104 "pentiumdecoder.cpp"
 
       
     } 
@@ -50116,7 +50112,7 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 273 "machine/pentium/decoder.m"
+#line 269 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSL)
@@ -50127,7 +50123,7 @@ hostPC
 //		stmts = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50131 "pentiumdecoder.cpp"
+#line 50127 "pentiumdecoder.cpp"
 
       
     } 
@@ -50139,12 +50135,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 270 "machine/pentium/decoder.m"
+#line 266 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50148 "pentiumdecoder.cpp"
+#line 50144 "pentiumdecoder.cpp"
 
       
     } 
@@ -50156,12 +50152,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 270 "machine/pentium/decoder.m"
+#line 266 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50165 "pentiumdecoder.cpp"
+#line 50161 "pentiumdecoder.cpp"
 
       
     } 
@@ -50173,12 +50169,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 270 "machine/pentium/decoder.m"
+#line 266 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50182 "pentiumdecoder.cpp"
+#line 50178 "pentiumdecoder.cpp"
 
       
     } 
@@ -50190,12 +50186,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 270 "machine/pentium/decoder.m"
+#line 266 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSGE)
 
-#line 50199 "pentiumdecoder.cpp"
+#line 50195 "pentiumdecoder.cpp"
 
       
     } 
@@ -50207,12 +50203,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 267 "machine/pentium/decoder.m"
+#line 263 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50216 "pentiumdecoder.cpp"
+#line 50212 "pentiumdecoder.cpp"
 
       
     } 
@@ -50224,12 +50220,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 267 "machine/pentium/decoder.m"
+#line 263 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50233 "pentiumdecoder.cpp"
+#line 50229 "pentiumdecoder.cpp"
 
       
     } 
@@ -50241,12 +50237,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 267 "machine/pentium/decoder.m"
+#line 263 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50250 "pentiumdecoder.cpp"
+#line 50246 "pentiumdecoder.cpp"
 
       
     } 
@@ -50258,12 +50254,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 267 "machine/pentium/decoder.m"
+#line 263 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSLE)
 
-#line 50267 "pentiumdecoder.cpp"
+#line 50263 "pentiumdecoder.cpp"
 
       
     } 
@@ -50275,12 +50271,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 264 "machine/pentium/decoder.m"
+#line 260 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50284 "pentiumdecoder.cpp"
+#line 50280 "pentiumdecoder.cpp"
 
       
     } 
@@ -50292,12 +50288,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 264 "machine/pentium/decoder.m"
+#line 260 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50301 "pentiumdecoder.cpp"
+#line 50297 "pentiumdecoder.cpp"
 
       
     } 
@@ -50309,12 +50305,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 264 "machine/pentium/decoder.m"
+#line 260 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50318 "pentiumdecoder.cpp"
+#line 50314 "pentiumdecoder.cpp"
 
       
     } 
@@ -50326,12 +50322,12 @@ hostPC
       unsigned Eaddr = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 264 "machine/pentium/decoder.m"
+#line 260 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, name, DIS_EADDR8);
 		SETS(name, DIS_EADDR8, BRANCH_JSG)
 
-#line 50335 "pentiumdecoder.cpp"
+#line 50331 "pentiumdecoder.cpp"
 
       
     } 
@@ -50343,12 +50339,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1343 "machine/pentium/decoder.m"
+#line 1339 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50352 "pentiumdecoder.cpp"
+#line 50348 "pentiumdecoder.cpp"
 
       
     } 
@@ -50360,12 +50356,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1343 "machine/pentium/decoder.m"
+#line 1339 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50369 "pentiumdecoder.cpp"
+#line 50365 "pentiumdecoder.cpp"
 
       
     } 
@@ -50377,12 +50373,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1343 "machine/pentium/decoder.m"
+#line 1339 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50386 "pentiumdecoder.cpp"
+#line 50382 "pentiumdecoder.cpp"
 
       
     } 
@@ -50394,12 +50390,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1343 "machine/pentium/decoder.m"
+#line 1339 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50403 "pentiumdecoder.cpp"
+#line 50399 "pentiumdecoder.cpp"
 
       
     } 
@@ -50411,12 +50407,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1307 "machine/pentium/decoder.m"
+#line 1303 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50420 "pentiumdecoder.cpp"
+#line 50416 "pentiumdecoder.cpp"
 
       
     } 
@@ -50428,12 +50424,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1307 "machine/pentium/decoder.m"
+#line 1303 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50437 "pentiumdecoder.cpp"
+#line 50433 "pentiumdecoder.cpp"
 
       
     } 
@@ -50445,12 +50441,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1307 "machine/pentium/decoder.m"
+#line 1303 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50454 "pentiumdecoder.cpp"
+#line 50450 "pentiumdecoder.cpp"
 
       
     } 
@@ -50462,12 +50458,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1307 "machine/pentium/decoder.m"
+#line 1303 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50471 "pentiumdecoder.cpp"
+#line 50467 "pentiumdecoder.cpp"
 
       
     } 
@@ -50480,12 +50476,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 442 "machine/pentium/decoder.m"
+#line 438 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50489 "pentiumdecoder.cpp"
+#line 50485 "pentiumdecoder.cpp"
 
       
     } 
@@ -50498,12 +50494,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 5 + MATCH_p; 
       
-#line 442 "machine/pentium/decoder.m"
+#line 438 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50507 "pentiumdecoder.cpp"
+#line 50503 "pentiumdecoder.cpp"
 
       
     } 
@@ -50516,12 +50512,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 9 + MATCH_p; 
       
-#line 442 "machine/pentium/decoder.m"
+#line 438 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50525 "pentiumdecoder.cpp"
+#line 50521 "pentiumdecoder.cpp"
 
       
     } 
@@ -50534,12 +50530,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 442 "machine/pentium/decoder.m"
+#line 438 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50543 "pentiumdecoder.cpp"
+#line 50539 "pentiumdecoder.cpp"
 
       
     } 
@@ -50552,12 +50548,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 448 "machine/pentium/decoder.m"
+#line 444 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50561 "pentiumdecoder.cpp"
+#line 50557 "pentiumdecoder.cpp"
 
       
     } 
@@ -50570,12 +50566,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 5 + MATCH_p; 
       
-#line 448 "machine/pentium/decoder.m"
+#line 444 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50579 "pentiumdecoder.cpp"
+#line 50575 "pentiumdecoder.cpp"
 
       
     } 
@@ -50588,12 +50584,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 9 + MATCH_p; 
       
-#line 448 "machine/pentium/decoder.m"
+#line 444 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50597 "pentiumdecoder.cpp"
+#line 50593 "pentiumdecoder.cpp"
 
       
     } 
@@ -50606,12 +50602,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 448 "machine/pentium/decoder.m"
+#line 444 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
 
-#line 50615 "pentiumdecoder.cpp"
+#line 50611 "pentiumdecoder.cpp"
 
       
     } 
@@ -50623,12 +50619,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 430 "machine/pentium/decoder.m"
+#line 426 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50632 "pentiumdecoder.cpp"
+#line 50628 "pentiumdecoder.cpp"
 
       
     } 
@@ -50640,12 +50636,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 430 "machine/pentium/decoder.m"
+#line 426 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50649 "pentiumdecoder.cpp"
+#line 50645 "pentiumdecoder.cpp"
 
       
     } 
@@ -50657,12 +50653,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 430 "machine/pentium/decoder.m"
+#line 426 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50666 "pentiumdecoder.cpp"
+#line 50662 "pentiumdecoder.cpp"
 
       
     } 
@@ -50674,12 +50670,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 430 "machine/pentium/decoder.m"
+#line 426 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50683 "pentiumdecoder.cpp"
+#line 50679 "pentiumdecoder.cpp"
 
       
     } 
@@ -50691,12 +50687,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 436 "machine/pentium/decoder.m"
+#line 432 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50700 "pentiumdecoder.cpp"
+#line 50696 "pentiumdecoder.cpp"
 
       
     } 
@@ -50708,12 +50704,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 436 "machine/pentium/decoder.m"
+#line 432 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50717 "pentiumdecoder.cpp"
+#line 50713 "pentiumdecoder.cpp"
 
       
     } 
@@ -50725,12 +50721,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 436 "machine/pentium/decoder.m"
+#line 432 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50734 "pentiumdecoder.cpp"
+#line 50730 "pentiumdecoder.cpp"
 
       
     } 
@@ -50742,12 +50738,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 436 "machine/pentium/decoder.m"
+#line 432 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50751 "pentiumdecoder.cpp"
+#line 50747 "pentiumdecoder.cpp"
 
       
     } 
@@ -50759,12 +50755,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1164 "machine/pentium/decoder.m"
+#line 1160 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50768 "pentiumdecoder.cpp"
+#line 50764 "pentiumdecoder.cpp"
 
       
     } 
@@ -50776,12 +50772,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1164 "machine/pentium/decoder.m"
+#line 1160 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50785 "pentiumdecoder.cpp"
+#line 50781 "pentiumdecoder.cpp"
 
       
     } 
@@ -50793,12 +50789,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1164 "machine/pentium/decoder.m"
+#line 1160 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50802 "pentiumdecoder.cpp"
+#line 50798 "pentiumdecoder.cpp"
 
       
     } 
@@ -50810,12 +50806,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1164 "machine/pentium/decoder.m"
+#line 1160 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 50819 "pentiumdecoder.cpp"
+#line 50815 "pentiumdecoder.cpp"
 
       
     } 
@@ -50827,12 +50823,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1242 "machine/pentium/decoder.m"
+#line 1238 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50836 "pentiumdecoder.cpp"
+#line 50832 "pentiumdecoder.cpp"
 
       
     } 
@@ -50844,12 +50840,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1242 "machine/pentium/decoder.m"
+#line 1238 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50853 "pentiumdecoder.cpp"
+#line 50849 "pentiumdecoder.cpp"
 
       
     } 
@@ -50861,12 +50857,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1242 "machine/pentium/decoder.m"
+#line 1238 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50870 "pentiumdecoder.cpp"
+#line 50866 "pentiumdecoder.cpp"
 
       
     } 
@@ -50878,12 +50874,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1242 "machine/pentium/decoder.m"
+#line 1238 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 50887 "pentiumdecoder.cpp"
+#line 50883 "pentiumdecoder.cpp"
 
       
     } 
@@ -50895,12 +50891,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1236 "machine/pentium/decoder.m"
+#line 1232 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50904 "pentiumdecoder.cpp"
+#line 50900 "pentiumdecoder.cpp"
 
       
     } 
@@ -50912,12 +50908,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1236 "machine/pentium/decoder.m"
+#line 1232 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50921 "pentiumdecoder.cpp"
+#line 50917 "pentiumdecoder.cpp"
 
       
     } 
@@ -50929,12 +50925,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1236 "machine/pentium/decoder.m"
+#line 1232 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50938 "pentiumdecoder.cpp"
+#line 50934 "pentiumdecoder.cpp"
 
       
     } 
@@ -50946,12 +50942,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1236 "machine/pentium/decoder.m"
+#line 1232 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 50955 "pentiumdecoder.cpp"
+#line 50951 "pentiumdecoder.cpp"
 
       
     } 
@@ -50963,12 +50959,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1041 "machine/pentium/decoder.m"
+#line 1037 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 50972 "pentiumdecoder.cpp"
+#line 50968 "pentiumdecoder.cpp"
 
       
     } 
@@ -50980,12 +50976,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1041 "machine/pentium/decoder.m"
+#line 1037 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 50989 "pentiumdecoder.cpp"
+#line 50985 "pentiumdecoder.cpp"
 
       
     } 
@@ -50997,12 +50993,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1041 "machine/pentium/decoder.m"
+#line 1037 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
 
 
-#line 51006 "pentiumdecoder.cpp"
+#line 51002 "pentiumdecoder.cpp"
 
       
     } 
@@ -51014,12 +51010,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1319 "machine/pentium/decoder.m"
+#line 1315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51023 "pentiumdecoder.cpp"
+#line 51019 "pentiumdecoder.cpp"
 
       
     } 
@@ -51031,12 +51027,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1319 "machine/pentium/decoder.m"
+#line 1315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51040 "pentiumdecoder.cpp"
+#line 51036 "pentiumdecoder.cpp"
 
       
     } 
@@ -51048,12 +51044,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1319 "machine/pentium/decoder.m"
+#line 1315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51057 "pentiumdecoder.cpp"
+#line 51053 "pentiumdecoder.cpp"
 
       
     } 
@@ -51065,12 +51061,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1319 "machine/pentium/decoder.m"
+#line 1315 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51074 "pentiumdecoder.cpp"
+#line 51070 "pentiumdecoder.cpp"
 
       
     } 
@@ -51082,12 +51078,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1062 "machine/pentium/decoder.m"
+#line 1058 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 51091 "pentiumdecoder.cpp"
+#line 51087 "pentiumdecoder.cpp"
 
       
     } 
@@ -51099,12 +51095,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1062 "machine/pentium/decoder.m"
+#line 1058 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 51108 "pentiumdecoder.cpp"
+#line 51104 "pentiumdecoder.cpp"
 
       
     } 
@@ -51116,12 +51112,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1062 "machine/pentium/decoder.m"
+#line 1058 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
 
 
-#line 51125 "pentiumdecoder.cpp"
+#line 51121 "pentiumdecoder.cpp"
 
       
     } 
@@ -51133,12 +51129,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1059 "machine/pentium/decoder.m"
+#line 1055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 51142 "pentiumdecoder.cpp"
+#line 51138 "pentiumdecoder.cpp"
 
       
     } 
@@ -51150,12 +51146,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1059 "machine/pentium/decoder.m"
+#line 1055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 51159 "pentiumdecoder.cpp"
+#line 51155 "pentiumdecoder.cpp"
 
       
     } 
@@ -51167,12 +51163,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1059 "machine/pentium/decoder.m"
+#line 1055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
 
 
-#line 51176 "pentiumdecoder.cpp"
+#line 51172 "pentiumdecoder.cpp"
 
       
     } 
@@ -51184,12 +51180,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 938 "machine/pentium/decoder.m"
+#line 934 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51193 "pentiumdecoder.cpp"
+#line 51189 "pentiumdecoder.cpp"
 
       
     } 
@@ -51201,12 +51197,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 938 "machine/pentium/decoder.m"
+#line 934 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51210 "pentiumdecoder.cpp"
+#line 51206 "pentiumdecoder.cpp"
 
       
     } 
@@ -51218,12 +51214,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 938 "machine/pentium/decoder.m"
+#line 934 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51227 "pentiumdecoder.cpp"
+#line 51223 "pentiumdecoder.cpp"
 
       
     } 
@@ -51235,12 +51231,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 938 "machine/pentium/decoder.m"
+#line 934 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51244 "pentiumdecoder.cpp"
+#line 51240 "pentiumdecoder.cpp"
 
       
     } 
@@ -51252,12 +51248,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 935 "machine/pentium/decoder.m"
+#line 931 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51261 "pentiumdecoder.cpp"
+#line 51257 "pentiumdecoder.cpp"
 
       
     } 
@@ -51269,12 +51265,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 935 "machine/pentium/decoder.m"
+#line 931 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51278 "pentiumdecoder.cpp"
+#line 51274 "pentiumdecoder.cpp"
 
       
     } 
@@ -51286,12 +51282,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 935 "machine/pentium/decoder.m"
+#line 931 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51295 "pentiumdecoder.cpp"
+#line 51291 "pentiumdecoder.cpp"
 
       
     } 
@@ -51303,12 +51299,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 935 "machine/pentium/decoder.m"
+#line 931 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51312 "pentiumdecoder.cpp"
+#line 51308 "pentiumdecoder.cpp"
 
       
     } 
@@ -51321,12 +51317,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1337 "machine/pentium/decoder.m"
+#line 1333 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51330 "pentiumdecoder.cpp"
+#line 51326 "pentiumdecoder.cpp"
 
       
     } 
@@ -51339,12 +51335,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1337 "machine/pentium/decoder.m"
+#line 1333 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51348 "pentiumdecoder.cpp"
+#line 51344 "pentiumdecoder.cpp"
 
       
     } 
@@ -51357,12 +51353,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1337 "machine/pentium/decoder.m"
+#line 1333 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51366 "pentiumdecoder.cpp"
+#line 51362 "pentiumdecoder.cpp"
 
       
     } 
@@ -51375,12 +51371,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1337 "machine/pentium/decoder.m"
+#line 1333 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51384 "pentiumdecoder.cpp"
+#line 51380 "pentiumdecoder.cpp"
 
       
     } 
@@ -51393,12 +51389,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1301 "machine/pentium/decoder.m"
+#line 1297 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51402 "pentiumdecoder.cpp"
+#line 51398 "pentiumdecoder.cpp"
 
       
     } 
@@ -51411,12 +51407,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1301 "machine/pentium/decoder.m"
+#line 1297 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51420 "pentiumdecoder.cpp"
+#line 51416 "pentiumdecoder.cpp"
 
       
     } 
@@ -51429,12 +51425,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1301 "machine/pentium/decoder.m"
+#line 1297 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51438 "pentiumdecoder.cpp"
+#line 51434 "pentiumdecoder.cpp"
 
       
     } 
@@ -51447,12 +51443,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1301 "machine/pentium/decoder.m"
+#line 1297 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
 
 
-#line 51456 "pentiumdecoder.cpp"
+#line 51452 "pentiumdecoder.cpp"
 
       
     } 
@@ -51465,12 +51461,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1313 "machine/pentium/decoder.m"
+#line 1309 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51474 "pentiumdecoder.cpp"
+#line 51470 "pentiumdecoder.cpp"
 
       
     } 
@@ -51483,12 +51479,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1313 "machine/pentium/decoder.m"
+#line 1309 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51492 "pentiumdecoder.cpp"
+#line 51488 "pentiumdecoder.cpp"
 
       
     } 
@@ -51501,12 +51497,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1313 "machine/pentium/decoder.m"
+#line 1309 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51510 "pentiumdecoder.cpp"
+#line 51506 "pentiumdecoder.cpp"
 
       
     } 
@@ -51519,12 +51515,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1313 "machine/pentium/decoder.m"
+#line 1309 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51528 "pentiumdecoder.cpp"
+#line 51524 "pentiumdecoder.cpp"
 
       
     } 
@@ -51537,12 +51533,12 @@ hostPC
         sign_extend((MATCH_w_8_24 & 0xff) /* i8 at 24 */, 8);
       nextPC = 4 + MATCH_p; 
       
-#line 1325 "machine/pentium/decoder.m"
+#line 1321 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51546 "pentiumdecoder.cpp"
+#line 51542 "pentiumdecoder.cpp"
 
       
     } 
@@ -51555,12 +51551,12 @@ hostPC
         sign_extend((MATCH_w_8_32 & 0xff) /* i8 at 32 */, 8);
       nextPC = 5 + MATCH_p; 
       
-#line 1325 "machine/pentium/decoder.m"
+#line 1321 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51564 "pentiumdecoder.cpp"
+#line 51560 "pentiumdecoder.cpp"
 
       
     } 
@@ -51573,12 +51569,12 @@ hostPC
         sign_extend((MATCH_w_8_64 & 0xff) /* i8 at 64 */, 8);
       nextPC = 9 + MATCH_p; 
       
-#line 1325 "machine/pentium/decoder.m"
+#line 1321 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51582 "pentiumdecoder.cpp"
+#line 51578 "pentiumdecoder.cpp"
 
       
     } 
@@ -51591,12 +51587,12 @@ hostPC
         sign_extend((MATCH_w_8_56 & 0xff) /* i8 at 56 */, 8);
       nextPC = 8 + MATCH_p; 
       
-#line 1325 "machine/pentium/decoder.m"
+#line 1321 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
 
 
-#line 51600 "pentiumdecoder.cpp"
+#line 51596 "pentiumdecoder.cpp"
 
       
     } 
@@ -51608,12 +51604,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1331 "machine/pentium/decoder.m"
+#line 1327 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51617 "pentiumdecoder.cpp"
+#line 51613 "pentiumdecoder.cpp"
 
       
     } 
@@ -51625,12 +51621,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1331 "machine/pentium/decoder.m"
+#line 1327 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51634 "pentiumdecoder.cpp"
+#line 51630 "pentiumdecoder.cpp"
 
       
     } 
@@ -51642,12 +51638,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1331 "machine/pentium/decoder.m"
+#line 1327 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51651 "pentiumdecoder.cpp"
+#line 51647 "pentiumdecoder.cpp"
 
       
     } 
@@ -51659,12 +51655,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1331 "machine/pentium/decoder.m"
+#line 1327 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
 
 
-#line 51668 "pentiumdecoder.cpp"
+#line 51664 "pentiumdecoder.cpp"
 
       
     } 
@@ -51676,14 +51672,14 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1363 "machine/pentium/decoder.m"
+#line 1359 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
 		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - hostPC);
 		return result;
 
 
-#line 51687 "pentiumdecoder.cpp"
+#line 51683 "pentiumdecoder.cpp"
 
       
     } 
@@ -51695,14 +51691,14 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1363 "machine/pentium/decoder.m"
+#line 1359 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
 		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - hostPC);
 		return result;
 
 
-#line 51706 "pentiumdecoder.cpp"
+#line 51702 "pentiumdecoder.cpp"
 
       
     } 
@@ -51714,14 +51710,14 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1363 "machine/pentium/decoder.m"
+#line 1359 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
 		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - hostPC);
 		return result;
 
 
-#line 51725 "pentiumdecoder.cpp"
+#line 51721 "pentiumdecoder.cpp"
 
       
     } 
@@ -51733,14 +51729,14 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1363 "machine/pentium/decoder.m"
+#line 1359 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
 		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - hostPC);
 		return result;
 
 
-#line 51744 "pentiumdecoder.cpp"
+#line 51740 "pentiumdecoder.cpp"
 
       
     } 
@@ -51752,7 +51748,7 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1352 "machine/pentium/decoder.m"
+#line 1348 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
 		// Bit Scan Forward: need helper function
@@ -51760,7 +51756,7 @@ hostPC
 		return result;
 
 
-#line 51764 "pentiumdecoder.cpp"
+#line 51760 "pentiumdecoder.cpp"
 
       
     } 
@@ -51772,7 +51768,7 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1352 "machine/pentium/decoder.m"
+#line 1348 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
 		// Bit Scan Forward: need helper function
@@ -51780,7 +51776,7 @@ hostPC
 		return result;
 
 
-#line 51784 "pentiumdecoder.cpp"
+#line 51780 "pentiumdecoder.cpp"
 
       
     } 
@@ -51792,7 +51788,7 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1352 "machine/pentium/decoder.m"
+#line 1348 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
 		// Bit Scan Forward: need helper function
@@ -51800,7 +51796,7 @@ hostPC
 		return result;
 
 
-#line 51804 "pentiumdecoder.cpp"
+#line 51800 "pentiumdecoder.cpp"
 
       
     } 
@@ -51812,7 +51808,7 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1352 "machine/pentium/decoder.m"
+#line 1348 "machine/pentium/decoder.m"
 
 		//stmts = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
 		// Bit Scan Forward: need helper function
@@ -51820,7 +51816,7 @@ hostPC
 		return result;
 
 
-#line 51824 "pentiumdecoder.cpp"
+#line 51820 "pentiumdecoder.cpp"
 
       
     } 
@@ -51832,12 +51828,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 947 "machine/pentium/decoder.m"
+#line 943 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51841 "pentiumdecoder.cpp"
+#line 51837 "pentiumdecoder.cpp"
 
       
     } 
@@ -51849,12 +51845,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 947 "machine/pentium/decoder.m"
+#line 943 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51858 "pentiumdecoder.cpp"
+#line 51854 "pentiumdecoder.cpp"
 
       
     } 
@@ -51866,12 +51862,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 947 "machine/pentium/decoder.m"
+#line 943 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51875 "pentiumdecoder.cpp"
+#line 51871 "pentiumdecoder.cpp"
 
       
     } 
@@ -51883,12 +51879,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 947 "machine/pentium/decoder.m"
+#line 943 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 
-#line 51892 "pentiumdecoder.cpp"
+#line 51888 "pentiumdecoder.cpp"
 
       
     } 
@@ -51900,12 +51896,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 944 "machine/pentium/decoder.m"
+#line 940 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51909 "pentiumdecoder.cpp"
+#line 51905 "pentiumdecoder.cpp"
 
       
     } 
@@ -51917,12 +51913,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 944 "machine/pentium/decoder.m"
+#line 940 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51926 "pentiumdecoder.cpp"
+#line 51922 "pentiumdecoder.cpp"
 
       
     } 
@@ -51934,12 +51930,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 944 "machine/pentium/decoder.m"
+#line 940 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51943 "pentiumdecoder.cpp"
+#line 51939 "pentiumdecoder.cpp"
 
       
     } 
@@ -51951,12 +51947,12 @@ hostPC
       unsigned r32 = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 944 "machine/pentium/decoder.m"
+#line 940 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
 
 
-#line 51960 "pentiumdecoder.cpp"
+#line 51956 "pentiumdecoder.cpp"
 
       
     } 
@@ -51968,12 +51964,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 358 "machine/pentium/decoder.m"
+#line 354 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 51977 "pentiumdecoder.cpp"
+#line 51973 "pentiumdecoder.cpp"
 
       
     } 
@@ -51985,12 +51981,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 358 "machine/pentium/decoder.m"
+#line 354 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 51994 "pentiumdecoder.cpp"
+#line 51990 "pentiumdecoder.cpp"
 
       
     } 
@@ -52002,12 +51998,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 358 "machine/pentium/decoder.m"
+#line 354 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 52011 "pentiumdecoder.cpp"
+#line 52007 "pentiumdecoder.cpp"
 
       
     } 
@@ -52019,12 +52015,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 358 "machine/pentium/decoder.m"
+#line 354 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
 
 
-#line 52028 "pentiumdecoder.cpp"
+#line 52024 "pentiumdecoder.cpp"
 
       
     } 
@@ -52036,12 +52032,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 3 + MATCH_p; 
       
-#line 352 "machine/pentium/decoder.m"
+#line 348 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52045 "pentiumdecoder.cpp"
+#line 52041 "pentiumdecoder.cpp"
 
       
     } 
@@ -52053,12 +52049,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 4 + MATCH_p; 
       
-#line 352 "machine/pentium/decoder.m"
+#line 348 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52062 "pentiumdecoder.cpp"
+#line 52058 "pentiumdecoder.cpp"
 
       
     } 
@@ -52070,12 +52066,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 8 + MATCH_p; 
       
-#line 352 "machine/pentium/decoder.m"
+#line 348 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52079 "pentiumdecoder.cpp"
+#line 52075 "pentiumdecoder.cpp"
 
       
     } 
@@ -52087,12 +52083,12 @@ hostPC
       unsigned reg = (MATCH_w_8_16 >> 3 & 0x7) /* reg_opcode at 16 */;
       nextPC = 7 + MATCH_p; 
       
-#line 352 "machine/pentium/decoder.m"
+#line 348 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52096 "pentiumdecoder.cpp"
+#line 52092 "pentiumdecoder.cpp"
 
       
     } 
@@ -52103,12 +52099,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 1233 "machine/pentium/decoder.m"
+#line 1229 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 52112 "pentiumdecoder.cpp"
+#line 52108 "pentiumdecoder.cpp"
 
       
     } 
@@ -52119,12 +52115,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 8 + MATCH_p; 
       
-#line 1233 "machine/pentium/decoder.m"
+#line 1229 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 52128 "pentiumdecoder.cpp"
+#line 52124 "pentiumdecoder.cpp"
 
       
     } 
@@ -52135,12 +52131,12 @@ hostPC
       unsigned Mem = 2 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1233 "machine/pentium/decoder.m"
+#line 1229 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPXCHG8B", DIS_MEM);
 
 
-#line 52144 "pentiumdecoder.cpp"
+#line 52140 "pentiumdecoder.cpp"
 
       
     } 
@@ -52152,12 +52148,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1528 "machine/pentium/decoder.m"
+#line 1524 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52161 "pentiumdecoder.cpp"
+#line 52157 "pentiumdecoder.cpp"
 
       
     } 
@@ -52169,12 +52165,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1528 "machine/pentium/decoder.m"
+#line 1524 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52178 "pentiumdecoder.cpp"
+#line 52174 "pentiumdecoder.cpp"
 
       
     } 
@@ -52186,12 +52182,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1528 "machine/pentium/decoder.m"
+#line 1524 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52195 "pentiumdecoder.cpp"
+#line 52191 "pentiumdecoder.cpp"
 
       
     } 
@@ -52203,12 +52199,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1528 "machine/pentium/decoder.m"
+#line 1524 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52212 "pentiumdecoder.cpp"
+#line 52208 "pentiumdecoder.cpp"
 
       
     } 
@@ -52220,12 +52216,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1492 "machine/pentium/decoder.m"
+#line 1488 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52229 "pentiumdecoder.cpp"
+#line 52225 "pentiumdecoder.cpp"
 
       
     } 
@@ -52237,12 +52233,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1492 "machine/pentium/decoder.m"
+#line 1488 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52246 "pentiumdecoder.cpp"
+#line 52242 "pentiumdecoder.cpp"
 
       
     } 
@@ -52254,12 +52250,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1492 "machine/pentium/decoder.m"
+#line 1488 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52263 "pentiumdecoder.cpp"
+#line 52259 "pentiumdecoder.cpp"
 
       
     } 
@@ -52271,12 +52267,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1492 "machine/pentium/decoder.m"
+#line 1488 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52280 "pentiumdecoder.cpp"
+#line 52276 "pentiumdecoder.cpp"
 
       
     } 
@@ -52288,12 +52284,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1456 "machine/pentium/decoder.m"
+#line 1452 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52297 "pentiumdecoder.cpp"
+#line 52293 "pentiumdecoder.cpp"
 
       
     } 
@@ -52305,12 +52301,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1456 "machine/pentium/decoder.m"
+#line 1452 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52314 "pentiumdecoder.cpp"
+#line 52310 "pentiumdecoder.cpp"
 
       
     } 
@@ -52322,12 +52318,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1456 "machine/pentium/decoder.m"
+#line 1452 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52331 "pentiumdecoder.cpp"
+#line 52327 "pentiumdecoder.cpp"
 
       
     } 
@@ -52339,12 +52335,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1456 "machine/pentium/decoder.m"
+#line 1452 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52348 "pentiumdecoder.cpp"
+#line 52344 "pentiumdecoder.cpp"
 
       
     } 
@@ -52356,12 +52352,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1420 "machine/pentium/decoder.m"
+#line 1416 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52365 "pentiumdecoder.cpp"
+#line 52361 "pentiumdecoder.cpp"
 
       
     } 
@@ -52373,12 +52369,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1420 "machine/pentium/decoder.m"
+#line 1416 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52382 "pentiumdecoder.cpp"
+#line 52378 "pentiumdecoder.cpp"
 
       
     } 
@@ -52390,12 +52386,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1420 "machine/pentium/decoder.m"
+#line 1416 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52399 "pentiumdecoder.cpp"
+#line 52395 "pentiumdecoder.cpp"
 
       
     } 
@@ -52407,12 +52403,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1420 "machine/pentium/decoder.m"
+#line 1416 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52416 "pentiumdecoder.cpp"
+#line 52412 "pentiumdecoder.cpp"
 
       
     } 
@@ -52424,12 +52420,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1522 "machine/pentium/decoder.m"
+#line 1518 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52433 "pentiumdecoder.cpp"
+#line 52429 "pentiumdecoder.cpp"
 
       
     } 
@@ -52441,12 +52437,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1522 "machine/pentium/decoder.m"
+#line 1518 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52450 "pentiumdecoder.cpp"
+#line 52446 "pentiumdecoder.cpp"
 
       
     } 
@@ -52458,12 +52454,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1522 "machine/pentium/decoder.m"
+#line 1518 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52467 "pentiumdecoder.cpp"
+#line 52463 "pentiumdecoder.cpp"
 
       
     } 
@@ -52475,12 +52471,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1522 "machine/pentium/decoder.m"
+#line 1518 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52484 "pentiumdecoder.cpp"
+#line 52480 "pentiumdecoder.cpp"
 
       
     } 
@@ -52492,12 +52488,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1480 "machine/pentium/decoder.m"
+#line 1476 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52501 "pentiumdecoder.cpp"
+#line 52497 "pentiumdecoder.cpp"
 
       
     } 
@@ -52509,12 +52505,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1480 "machine/pentium/decoder.m"
+#line 1476 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52518 "pentiumdecoder.cpp"
+#line 52514 "pentiumdecoder.cpp"
 
       
     } 
@@ -52526,12 +52522,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1480 "machine/pentium/decoder.m"
+#line 1476 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52535 "pentiumdecoder.cpp"
+#line 52531 "pentiumdecoder.cpp"
 
       
     } 
@@ -52543,12 +52539,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1480 "machine/pentium/decoder.m"
+#line 1476 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52552 "pentiumdecoder.cpp"
+#line 52548 "pentiumdecoder.cpp"
 
       
     } 
@@ -52560,12 +52556,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1450 "machine/pentium/decoder.m"
+#line 1446 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52569 "pentiumdecoder.cpp"
+#line 52565 "pentiumdecoder.cpp"
 
       
     } 
@@ -52577,12 +52573,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1450 "machine/pentium/decoder.m"
+#line 1446 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52586 "pentiumdecoder.cpp"
+#line 52582 "pentiumdecoder.cpp"
 
       
     } 
@@ -52594,12 +52590,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1450 "machine/pentium/decoder.m"
+#line 1446 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52603 "pentiumdecoder.cpp"
+#line 52599 "pentiumdecoder.cpp"
 
       
     } 
@@ -52611,12 +52607,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1450 "machine/pentium/decoder.m"
+#line 1446 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52620 "pentiumdecoder.cpp"
+#line 52616 "pentiumdecoder.cpp"
 
       
     } 
@@ -52628,12 +52624,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1408 "machine/pentium/decoder.m"
+#line 1404 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52637 "pentiumdecoder.cpp"
+#line 52633 "pentiumdecoder.cpp"
 
       
     } 
@@ -52645,12 +52641,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1408 "machine/pentium/decoder.m"
+#line 1404 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52654 "pentiumdecoder.cpp"
+#line 52650 "pentiumdecoder.cpp"
 
       
     } 
@@ -52662,12 +52658,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1408 "machine/pentium/decoder.m"
+#line 1404 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52671 "pentiumdecoder.cpp"
+#line 52667 "pentiumdecoder.cpp"
 
       
     } 
@@ -52679,12 +52675,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1408 "machine/pentium/decoder.m"
+#line 1404 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52688 "pentiumdecoder.cpp"
+#line 52684 "pentiumdecoder.cpp"
 
       
     } 
@@ -52696,12 +52692,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1516 "machine/pentium/decoder.m"
+#line 1512 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52705 "pentiumdecoder.cpp"
+#line 52701 "pentiumdecoder.cpp"
 
       
     } 
@@ -52713,12 +52709,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1516 "machine/pentium/decoder.m"
+#line 1512 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52722 "pentiumdecoder.cpp"
+#line 52718 "pentiumdecoder.cpp"
 
       
     } 
@@ -52730,12 +52726,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1516 "machine/pentium/decoder.m"
+#line 1512 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52739 "pentiumdecoder.cpp"
+#line 52735 "pentiumdecoder.cpp"
 
       
     } 
@@ -52747,12 +52743,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1516 "machine/pentium/decoder.m"
+#line 1512 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
 
 
-#line 52756 "pentiumdecoder.cpp"
+#line 52752 "pentiumdecoder.cpp"
 
       
     } 
@@ -52764,12 +52760,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1468 "machine/pentium/decoder.m"
+#line 1464 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52773 "pentiumdecoder.cpp"
+#line 52769 "pentiumdecoder.cpp"
 
       
     } 
@@ -52781,12 +52777,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1468 "machine/pentium/decoder.m"
+#line 1464 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52790 "pentiumdecoder.cpp"
+#line 52786 "pentiumdecoder.cpp"
 
       
     } 
@@ -52798,12 +52794,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1468 "machine/pentium/decoder.m"
+#line 1464 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52807 "pentiumdecoder.cpp"
+#line 52803 "pentiumdecoder.cpp"
 
       
     } 
@@ -52815,12 +52811,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1468 "machine/pentium/decoder.m"
+#line 1464 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 52824 "pentiumdecoder.cpp"
+#line 52820 "pentiumdecoder.cpp"
 
       
     } 
@@ -52832,12 +52828,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1444 "machine/pentium/decoder.m"
+#line 1440 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52841 "pentiumdecoder.cpp"
+#line 52837 "pentiumdecoder.cpp"
 
       
     } 
@@ -52849,12 +52845,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1444 "machine/pentium/decoder.m"
+#line 1440 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52858 "pentiumdecoder.cpp"
+#line 52854 "pentiumdecoder.cpp"
 
       
     } 
@@ -52866,12 +52862,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1444 "machine/pentium/decoder.m"
+#line 1440 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52875 "pentiumdecoder.cpp"
+#line 52871 "pentiumdecoder.cpp"
 
       
     } 
@@ -52883,12 +52879,12 @@ hostPC
       unsigned r8 = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1444 "machine/pentium/decoder.m"
+#line 1440 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
 
 
-#line 52892 "pentiumdecoder.cpp"
+#line 52888 "pentiumdecoder.cpp"
 
       
     } 
@@ -52900,12 +52896,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1396 "machine/pentium/decoder.m"
+#line 1392 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52909 "pentiumdecoder.cpp"
+#line 52905 "pentiumdecoder.cpp"
 
       
     } 
@@ -52917,12 +52913,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1396 "machine/pentium/decoder.m"
+#line 1392 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52926 "pentiumdecoder.cpp"
+#line 52922 "pentiumdecoder.cpp"
 
       
     } 
@@ -52934,12 +52930,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1396 "machine/pentium/decoder.m"
+#line 1392 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52943 "pentiumdecoder.cpp"
+#line 52939 "pentiumdecoder.cpp"
 
       
     } 
@@ -52951,12 +52947,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1396 "machine/pentium/decoder.m"
+#line 1392 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 52960 "pentiumdecoder.cpp"
+#line 52956 "pentiumdecoder.cpp"
 
       
     } 
@@ -52969,12 +52965,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1152 "machine/pentium/decoder.m"
+#line 1148 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 52978 "pentiumdecoder.cpp"
+#line 52974 "pentiumdecoder.cpp"
 
       
     } 
@@ -52987,12 +52983,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1152 "machine/pentium/decoder.m"
+#line 1148 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 52996 "pentiumdecoder.cpp"
+#line 52992 "pentiumdecoder.cpp"
 
       
     } 
@@ -53005,12 +53001,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 11 + MATCH_p; 
       
-#line 1152 "machine/pentium/decoder.m"
+#line 1148 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 53014 "pentiumdecoder.cpp"
+#line 53010 "pentiumdecoder.cpp"
 
       
     } 
@@ -53023,12 +53019,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 10 + MATCH_p; 
       
-#line 1152 "machine/pentium/decoder.m"
+#line 1148 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
 
 
-#line 53032 "pentiumdecoder.cpp"
+#line 53028 "pentiumdecoder.cpp"
 
       
     } 
@@ -53042,12 +53038,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1158 "machine/pentium/decoder.m"
+#line 1154 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53051 "pentiumdecoder.cpp"
+#line 53047 "pentiumdecoder.cpp"
 
       
     } 
@@ -53061,12 +53057,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 4 + MATCH_p; 
       
-#line 1158 "machine/pentium/decoder.m"
+#line 1154 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53070 "pentiumdecoder.cpp"
+#line 53066 "pentiumdecoder.cpp"
 
       
     } 
@@ -53080,12 +53076,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 8 + MATCH_p; 
       
-#line 1158 "machine/pentium/decoder.m"
+#line 1154 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53089 "pentiumdecoder.cpp"
+#line 53085 "pentiumdecoder.cpp"
 
       
     } 
@@ -53099,12 +53095,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1158 "machine/pentium/decoder.m"
+#line 1154 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
 
 
-#line 53108 "pentiumdecoder.cpp"
+#line 53104 "pentiumdecoder.cpp"
 
       
     } 
@@ -53116,12 +53112,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1035 "machine/pentium/decoder.m"
+#line 1031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53125 "pentiumdecoder.cpp"
+#line 53121 "pentiumdecoder.cpp"
 
       
     } 
@@ -53133,12 +53129,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1035 "machine/pentium/decoder.m"
+#line 1031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53142 "pentiumdecoder.cpp"
+#line 53138 "pentiumdecoder.cpp"
 
       
     } 
@@ -53150,12 +53146,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1035 "machine/pentium/decoder.m"
+#line 1031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53159 "pentiumdecoder.cpp"
+#line 53155 "pentiumdecoder.cpp"
 
       
     } 
@@ -53167,12 +53163,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1035 "machine/pentium/decoder.m"
+#line 1031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
 
 
-#line 53176 "pentiumdecoder.cpp"
+#line 53172 "pentiumdecoder.cpp"
 
       
     } 
@@ -53184,12 +53180,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1029 "machine/pentium/decoder.m"
+#line 1025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53193 "pentiumdecoder.cpp"
+#line 53189 "pentiumdecoder.cpp"
 
       
     } 
@@ -53201,12 +53197,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1029 "machine/pentium/decoder.m"
+#line 1025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53210 "pentiumdecoder.cpp"
+#line 53206 "pentiumdecoder.cpp"
 
       
     } 
@@ -53218,12 +53214,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1029 "machine/pentium/decoder.m"
+#line 1025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53227 "pentiumdecoder.cpp"
+#line 53223 "pentiumdecoder.cpp"
 
       
     } 
@@ -53235,12 +53231,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1029 "machine/pentium/decoder.m"
+#line 1025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
 
 
-#line 53244 "pentiumdecoder.cpp"
+#line 53240 "pentiumdecoder.cpp"
 
       
     } 
@@ -53252,12 +53248,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1026 "machine/pentium/decoder.m"
+#line 1022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53261 "pentiumdecoder.cpp"
+#line 53257 "pentiumdecoder.cpp"
 
       
     } 
@@ -53269,12 +53265,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1026 "machine/pentium/decoder.m"
+#line 1022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53278 "pentiumdecoder.cpp"
+#line 53274 "pentiumdecoder.cpp"
 
       
     } 
@@ -53286,12 +53282,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1026 "machine/pentium/decoder.m"
+#line 1022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53295 "pentiumdecoder.cpp"
+#line 53291 "pentiumdecoder.cpp"
 
       
     } 
@@ -53303,12 +53299,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1026 "machine/pentium/decoder.m"
+#line 1022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
 
 
-#line 53312 "pentiumdecoder.cpp"
+#line 53308 "pentiumdecoder.cpp"
 
       
     } 
@@ -53320,12 +53316,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 2 + MATCH_p; 
       
-#line 1020 "machine/pentium/decoder.m"
+#line 1016 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53329 "pentiumdecoder.cpp"
+#line 53325 "pentiumdecoder.cpp"
 
       
     } 
@@ -53337,12 +53333,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1020 "machine/pentium/decoder.m"
+#line 1016 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53346 "pentiumdecoder.cpp"
+#line 53342 "pentiumdecoder.cpp"
 
       
     } 
@@ -53354,12 +53350,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1020 "machine/pentium/decoder.m"
+#line 1016 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53363 "pentiumdecoder.cpp"
+#line 53359 "pentiumdecoder.cpp"
 
       
     } 
@@ -53371,12 +53367,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1020 "machine/pentium/decoder.m"
+#line 1016 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
 
 
-#line 53380 "pentiumdecoder.cpp"
+#line 53376 "pentiumdecoder.cpp"
 
       
     } 
@@ -53388,12 +53384,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 3 + MATCH_p; 
       
-#line 1071 "machine/pentium/decoder.m"
+#line 1067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 53397 "pentiumdecoder.cpp"
+#line 53393 "pentiumdecoder.cpp"
 
       
     } 
@@ -53405,12 +53401,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 7 + MATCH_p; 
       
-#line 1071 "machine/pentium/decoder.m"
+#line 1067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 53414 "pentiumdecoder.cpp"
+#line 53410 "pentiumdecoder.cpp"
 
       
     } 
@@ -53422,12 +53418,12 @@ hostPC
       unsigned reg = (MATCH_w_8_8 >> 3 & 0x7) /* reg_opcode at 8 */;
       nextPC = 6 + MATCH_p; 
       
-#line 1071 "machine/pentium/decoder.m"
+#line 1067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
 
 
-#line 53431 "pentiumdecoder.cpp"
+#line 53427 "pentiumdecoder.cpp"
 
       
     } 
@@ -53438,12 +53434,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 875 "machine/pentium/decoder.m"
+#line 871 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53447 "pentiumdecoder.cpp"
+#line 53443 "pentiumdecoder.cpp"
 
       
     } 
@@ -53454,12 +53450,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 875 "machine/pentium/decoder.m"
+#line 871 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53463 "pentiumdecoder.cpp"
+#line 53459 "pentiumdecoder.cpp"
 
       
     } 
@@ -53470,12 +53466,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 875 "machine/pentium/decoder.m"
+#line 871 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53479 "pentiumdecoder.cpp"
+#line 53475 "pentiumdecoder.cpp"
 
       
     } 
@@ -53486,12 +53482,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 875 "machine/pentium/decoder.m"
+#line 871 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "POP.Evod", DIS_EADDR32);
 
 
-#line 53495 "pentiumdecoder.cpp"
+#line 53491 "pentiumdecoder.cpp"
 
       
     } 
@@ -53502,12 +53498,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1751 "machine/pentium/decoder.m"
+#line 1747 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 53511 "pentiumdecoder.cpp"
+#line 53507 "pentiumdecoder.cpp"
 
       
     } 
@@ -53518,12 +53514,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1751 "machine/pentium/decoder.m"
+#line 1747 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 53527 "pentiumdecoder.cpp"
+#line 53523 "pentiumdecoder.cpp"
 
       
     } 
@@ -53534,12 +53530,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1751 "machine/pentium/decoder.m"
+#line 1747 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R32", DIS_MEM32);
 
 
-#line 53543 "pentiumdecoder.cpp"
+#line 53539 "pentiumdecoder.cpp"
 
       
     } 
@@ -53550,12 +53546,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1945 "machine/pentium/decoder.m"
+#line 1941 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 53559 "pentiumdecoder.cpp"
+#line 53555 "pentiumdecoder.cpp"
 
       
     } 
@@ -53566,12 +53562,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1945 "machine/pentium/decoder.m"
+#line 1941 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 53575 "pentiumdecoder.cpp"
+#line 53571 "pentiumdecoder.cpp"
 
       
     } 
@@ -53582,12 +53578,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1945 "machine/pentium/decoder.m"
+#line 1941 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R32", DIS_MEM32);
 
 
-#line 53591 "pentiumdecoder.cpp"
+#line 53587 "pentiumdecoder.cpp"
 
       
     } 
@@ -53598,12 +53594,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1784 "machine/pentium/decoder.m"
+#line 1780 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 53607 "pentiumdecoder.cpp"
+#line 53603 "pentiumdecoder.cpp"
 
       
     } 
@@ -53614,12 +53610,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1784 "machine/pentium/decoder.m"
+#line 1780 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 53623 "pentiumdecoder.cpp"
+#line 53619 "pentiumdecoder.cpp"
 
       
     } 
@@ -53630,12 +53626,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1784 "machine/pentium/decoder.m"
+#line 1780 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R32", DIS_MEM32);
 
 
-#line 53639 "pentiumdecoder.cpp"
+#line 53635 "pentiumdecoder.cpp"
 
       
     } 
@@ -53646,12 +53642,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1796 "machine/pentium/decoder.m"
+#line 1792 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 53655 "pentiumdecoder.cpp"
+#line 53651 "pentiumdecoder.cpp"
 
       
     } 
@@ -53662,12 +53658,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1796 "machine/pentium/decoder.m"
+#line 1792 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 53671 "pentiumdecoder.cpp"
+#line 53667 "pentiumdecoder.cpp"
 
       
     } 
@@ -53678,12 +53674,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1796 "machine/pentium/decoder.m"
+#line 1792 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R32", DIS_MEM32);
 
 
-#line 53687 "pentiumdecoder.cpp"
+#line 53683 "pentiumdecoder.cpp"
 
       
     } 
@@ -53694,12 +53690,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2035 "machine/pentium/decoder.m"
+#line 2031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 53703 "pentiumdecoder.cpp"
+#line 53699 "pentiumdecoder.cpp"
 
       
     } 
@@ -53710,12 +53706,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2035 "machine/pentium/decoder.m"
+#line 2031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 53719 "pentiumdecoder.cpp"
+#line 53715 "pentiumdecoder.cpp"
 
       
     } 
@@ -53726,12 +53722,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2035 "machine/pentium/decoder.m"
+#line 2031 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R32", DIS_MEM32);
 
 
-#line 53735 "pentiumdecoder.cpp"
+#line 53731 "pentiumdecoder.cpp"
 
       
     } 
@@ -53742,12 +53738,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2056 "machine/pentium/decoder.m"
+#line 2052 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 53751 "pentiumdecoder.cpp"
+#line 53747 "pentiumdecoder.cpp"
 
       
     } 
@@ -53758,12 +53754,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2056 "machine/pentium/decoder.m"
+#line 2052 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 53767 "pentiumdecoder.cpp"
+#line 53763 "pentiumdecoder.cpp"
 
       
     } 
@@ -53774,12 +53770,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2056 "machine/pentium/decoder.m"
+#line 2052 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R32", DIS_MEM32);
 
 
-#line 53783 "pentiumdecoder.cpp"
+#line 53779 "pentiumdecoder.cpp"
 
       
     } 
@@ -53790,12 +53786,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1829 "machine/pentium/decoder.m"
+#line 1825 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 53799 "pentiumdecoder.cpp"
+#line 53795 "pentiumdecoder.cpp"
 
       
     } 
@@ -53806,12 +53802,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1829 "machine/pentium/decoder.m"
+#line 1825 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 53815 "pentiumdecoder.cpp"
+#line 53811 "pentiumdecoder.cpp"
 
       
     } 
@@ -53822,12 +53818,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1829 "machine/pentium/decoder.m"
+#line 1825 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R32", DIS_MEM32);
 
 
-#line 53831 "pentiumdecoder.cpp"
+#line 53827 "pentiumdecoder.cpp"
 
       
     } 
@@ -53838,12 +53834,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1850 "machine/pentium/decoder.m"
+#line 1846 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 53847 "pentiumdecoder.cpp"
+#line 53843 "pentiumdecoder.cpp"
 
       
     } 
@@ -53854,12 +53850,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1850 "machine/pentium/decoder.m"
+#line 1846 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 53863 "pentiumdecoder.cpp"
+#line 53859 "pentiumdecoder.cpp"
 
       
     } 
@@ -53870,12 +53866,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1850 "machine/pentium/decoder.m"
+#line 1846 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R32", DIS_MEM32);
 
 
-#line 53879 "pentiumdecoder.cpp"
+#line 53875 "pentiumdecoder.cpp"
 
       
     } 
@@ -53886,12 +53882,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1901 "machine/pentium/decoder.m"
+#line 1897 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 53895 "pentiumdecoder.cpp"
+#line 53891 "pentiumdecoder.cpp"
 
       
     } 
@@ -53902,12 +53898,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1901 "machine/pentium/decoder.m"
+#line 1897 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 53911 "pentiumdecoder.cpp"
+#line 53907 "pentiumdecoder.cpp"
 
       
     } 
@@ -53918,12 +53914,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1901 "machine/pentium/decoder.m"
+#line 1897 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR32", DIS_MEM32);
 
 
-#line 53927 "pentiumdecoder.cpp"
+#line 53923 "pentiumdecoder.cpp"
 
       
     } 
@@ -53934,12 +53930,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2002 "machine/pentium/decoder.m"
+#line 1998 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 53943 "pentiumdecoder.cpp"
+#line 53939 "pentiumdecoder.cpp"
 
       
     } 
@@ -53950,12 +53946,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2002 "machine/pentium/decoder.m"
+#line 1998 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 53959 "pentiumdecoder.cpp"
+#line 53955 "pentiumdecoder.cpp"
 
       
     } 
@@ -53966,12 +53962,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2002 "machine/pentium/decoder.m"
+#line 1998 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR32", DIS_MEM32);
 
 
-#line 53975 "pentiumdecoder.cpp"
+#line 53971 "pentiumdecoder.cpp"
 
       
     } 
@@ -53982,12 +53978,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2008 "machine/pentium/decoder.m"
+#line 2004 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 53991 "pentiumdecoder.cpp"
+#line 53987 "pentiumdecoder.cpp"
 
       
     } 
@@ -53998,12 +53994,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2008 "machine/pentium/decoder.m"
+#line 2004 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 54007 "pentiumdecoder.cpp"
+#line 54003 "pentiumdecoder.cpp"
 
       
     } 
@@ -54014,12 +54010,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2008 "machine/pentium/decoder.m"
+#line 2004 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
 
 
-#line 54023 "pentiumdecoder.cpp"
+#line 54019 "pentiumdecoder.cpp"
 
       
     } 
@@ -54030,12 +54026,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1942 "machine/pentium/decoder.m"
+#line 1938 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 54039 "pentiumdecoder.cpp"
+#line 54035 "pentiumdecoder.cpp"
 
       
     } 
@@ -54046,12 +54042,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1942 "machine/pentium/decoder.m"
+#line 1938 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 54055 "pentiumdecoder.cpp"
+#line 54051 "pentiumdecoder.cpp"
 
       
     } 
@@ -54062,12 +54058,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1942 "machine/pentium/decoder.m"
+#line 1938 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDENV", DIS_MEM);
 
 
-#line 54071 "pentiumdecoder.cpp"
+#line 54067 "pentiumdecoder.cpp"
 
       
     } 
@@ -54078,12 +54074,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1939 "machine/pentium/decoder.m"
+#line 1935 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 54087 "pentiumdecoder.cpp"
+#line 54083 "pentiumdecoder.cpp"
 
       
     } 
@@ -54094,12 +54090,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1939 "machine/pentium/decoder.m"
+#line 1935 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 54103 "pentiumdecoder.cpp"
+#line 54099 "pentiumdecoder.cpp"
 
       
     } 
@@ -54110,12 +54106,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1939 "machine/pentium/decoder.m"
+#line 1935 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLDCW", DIS_MEM16);
 
 
-#line 54119 "pentiumdecoder.cpp"
+#line 54115 "pentiumdecoder.cpp"
 
       
     } 
@@ -54126,12 +54122,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2026 "machine/pentium/decoder.m"
+#line 2022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 54135 "pentiumdecoder.cpp"
+#line 54131 "pentiumdecoder.cpp"
 
       
     } 
@@ -54142,12 +54138,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2026 "machine/pentium/decoder.m"
+#line 2022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 54151 "pentiumdecoder.cpp"
+#line 54147 "pentiumdecoder.cpp"
 
       
     } 
@@ -54158,12 +54154,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2026 "machine/pentium/decoder.m"
+#line 2022 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTENV", DIS_MEM);
 
 
-#line 54167 "pentiumdecoder.cpp"
+#line 54163 "pentiumdecoder.cpp"
 
       
     } 
@@ -54174,12 +54170,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2023 "machine/pentium/decoder.m"
+#line 2019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 54183 "pentiumdecoder.cpp"
+#line 54179 "pentiumdecoder.cpp"
 
       
     } 
@@ -54190,12 +54186,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2023 "machine/pentium/decoder.m"
+#line 2019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 54199 "pentiumdecoder.cpp"
+#line 54195 "pentiumdecoder.cpp"
 
       
     } 
@@ -54206,12 +54202,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2023 "machine/pentium/decoder.m"
+#line 2019 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTCW", DIS_MEM16);
 
 
-#line 54215 "pentiumdecoder.cpp"
+#line 54211 "pentiumdecoder.cpp"
 
       
     } 
@@ -54222,12 +54218,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1766 "machine/pentium/decoder.m"
+#line 1762 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 54231 "pentiumdecoder.cpp"
+#line 54227 "pentiumdecoder.cpp"
 
       
     } 
@@ -54238,12 +54234,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1766 "machine/pentium/decoder.m"
+#line 1762 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 54247 "pentiumdecoder.cpp"
+#line 54243 "pentiumdecoder.cpp"
 
       
     } 
@@ -54254,12 +54250,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1766 "machine/pentium/decoder.m"
+#line 1762 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I32", DIS_MEM32);
 
 
-#line 54263 "pentiumdecoder.cpp"
+#line 54259 "pentiumdecoder.cpp"
 
       
     } 
@@ -54270,12 +54266,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1960 "machine/pentium/decoder.m"
+#line 1956 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 54279 "pentiumdecoder.cpp"
+#line 54275 "pentiumdecoder.cpp"
 
       
     } 
@@ -54286,12 +54282,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1960 "machine/pentium/decoder.m"
+#line 1956 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 54295 "pentiumdecoder.cpp"
+#line 54291 "pentiumdecoder.cpp"
 
       
     } 
@@ -54302,12 +54298,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1960 "machine/pentium/decoder.m"
+#line 1956 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I32", DIS_MEM32);
 
 
-#line 54311 "pentiumdecoder.cpp"
+#line 54307 "pentiumdecoder.cpp"
 
       
     } 
@@ -54318,12 +54314,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1790 "machine/pentium/decoder.m"
+#line 1786 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 54327 "pentiumdecoder.cpp"
+#line 54323 "pentiumdecoder.cpp"
 
       
     } 
@@ -54334,12 +54330,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1790 "machine/pentium/decoder.m"
+#line 1786 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 54343 "pentiumdecoder.cpp"
+#line 54339 "pentiumdecoder.cpp"
 
       
     } 
@@ -54350,12 +54346,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1790 "machine/pentium/decoder.m"
+#line 1786 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I32", DIS_MEM32);
 
 
-#line 54359 "pentiumdecoder.cpp"
+#line 54355 "pentiumdecoder.cpp"
 
       
     } 
@@ -54366,12 +54362,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1808 "machine/pentium/decoder.m"
+#line 1804 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 54375 "pentiumdecoder.cpp"
+#line 54371 "pentiumdecoder.cpp"
 
       
     } 
@@ -54382,12 +54378,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1808 "machine/pentium/decoder.m"
+#line 1804 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 54391 "pentiumdecoder.cpp"
+#line 54387 "pentiumdecoder.cpp"
 
       
     } 
@@ -54398,12 +54394,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1808 "machine/pentium/decoder.m"
+#line 1804 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I32", DIS_MEM32);
 
 
-#line 54407 "pentiumdecoder.cpp"
+#line 54403 "pentiumdecoder.cpp"
 
       
     } 
@@ -54414,12 +54410,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2047 "machine/pentium/decoder.m"
+#line 2043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 54423 "pentiumdecoder.cpp"
+#line 54419 "pentiumdecoder.cpp"
 
       
     } 
@@ -54430,12 +54426,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2047 "machine/pentium/decoder.m"
+#line 2043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 54439 "pentiumdecoder.cpp"
+#line 54435 "pentiumdecoder.cpp"
 
       
     } 
@@ -54446,12 +54442,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2047 "machine/pentium/decoder.m"
+#line 2043 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I32", DIS_MEM32);
 
 
-#line 54455 "pentiumdecoder.cpp"
+#line 54451 "pentiumdecoder.cpp"
 
       
     } 
@@ -54462,12 +54458,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2068 "machine/pentium/decoder.m"
+#line 2064 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 54471 "pentiumdecoder.cpp"
+#line 54467 "pentiumdecoder.cpp"
 
       
     } 
@@ -54478,12 +54474,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2068 "machine/pentium/decoder.m"
+#line 2064 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 54487 "pentiumdecoder.cpp"
+#line 54483 "pentiumdecoder.cpp"
 
       
     } 
@@ -54494,12 +54490,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2068 "machine/pentium/decoder.m"
+#line 2064 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I32", DIS_MEM32);
 
 
-#line 54503 "pentiumdecoder.cpp"
+#line 54499 "pentiumdecoder.cpp"
 
       
     } 
@@ -54510,12 +54506,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1844 "machine/pentium/decoder.m"
+#line 1840 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 54519 "pentiumdecoder.cpp"
+#line 54515 "pentiumdecoder.cpp"
 
       
     } 
@@ -54526,12 +54522,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1844 "machine/pentium/decoder.m"
+#line 1840 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 54535 "pentiumdecoder.cpp"
+#line 54531 "pentiumdecoder.cpp"
 
       
     } 
@@ -54542,12 +54538,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1844 "machine/pentium/decoder.m"
+#line 1840 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I32", DIS_MEM32);
 
 
-#line 54551 "pentiumdecoder.cpp"
+#line 54547 "pentiumdecoder.cpp"
 
       
     } 
@@ -54558,12 +54554,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1862 "machine/pentium/decoder.m"
+#line 1858 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 54567 "pentiumdecoder.cpp"
+#line 54563 "pentiumdecoder.cpp"
 
       
     } 
@@ -54574,12 +54570,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1862 "machine/pentium/decoder.m"
+#line 1858 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 54583 "pentiumdecoder.cpp"
+#line 54579 "pentiumdecoder.cpp"
 
       
     } 
@@ -54590,12 +54586,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1862 "machine/pentium/decoder.m"
+#line 1858 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
 
 
-#line 54599 "pentiumdecoder.cpp"
+#line 54595 "pentiumdecoder.cpp"
 
       
     } 
@@ -54606,12 +54602,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1877 "machine/pentium/decoder.m"
+#line 1873 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 54615 "pentiumdecoder.cpp"
+#line 54611 "pentiumdecoder.cpp"
 
       
     } 
@@ -54622,12 +54618,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1877 "machine/pentium/decoder.m"
+#line 1873 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 54631 "pentiumdecoder.cpp"
+#line 54627 "pentiumdecoder.cpp"
 
       
     } 
@@ -54638,12 +54634,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1877 "machine/pentium/decoder.m"
+#line 1873 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI32", DIS_MEM32);
 
 
-#line 54647 "pentiumdecoder.cpp"
+#line 54643 "pentiumdecoder.cpp"
 
       
     } 
@@ -54654,12 +54650,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1889 "machine/pentium/decoder.m"
+#line 1885 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 54663 "pentiumdecoder.cpp"
+#line 54659 "pentiumdecoder.cpp"
 
       
     } 
@@ -54670,12 +54666,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1889 "machine/pentium/decoder.m"
+#line 1885 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 54679 "pentiumdecoder.cpp"
+#line 54675 "pentiumdecoder.cpp"
 
       
     } 
@@ -54686,12 +54682,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1889 "machine/pentium/decoder.m"
+#line 1885 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI32", DIS_MEM32);
 
 
-#line 54695 "pentiumdecoder.cpp"
+#line 54691 "pentiumdecoder.cpp"
 
       
     } 
@@ -54702,12 +54698,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1895 "machine/pentium/decoder.m"
+#line 1891 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 54711 "pentiumdecoder.cpp"
+#line 54707 "pentiumdecoder.cpp"
 
       
     } 
@@ -54718,12 +54714,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1895 "machine/pentium/decoder.m"
+#line 1891 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 54727 "pentiumdecoder.cpp"
+#line 54723 "pentiumdecoder.cpp"
 
       
     } 
@@ -54734,12 +54730,12 @@ hostPC
       unsigned Mem32 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1895 "machine/pentium/decoder.m"
+#line 1891 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
 
 
-#line 54743 "pentiumdecoder.cpp"
+#line 54739 "pentiumdecoder.cpp"
 
       
     } 
@@ -54750,7 +54746,7 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1903 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD80", DIS_MEM80);
 
@@ -54760,7 +54756,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 54764 "pentiumdecoder.cpp"
+#line 54760 "pentiumdecoder.cpp"
 
       
     } 
@@ -54771,7 +54767,7 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1903 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD80", DIS_MEM80);
 
@@ -54781,7 +54777,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 54785 "pentiumdecoder.cpp"
+#line 54781 "pentiumdecoder.cpp"
 
       
     } 
@@ -54792,7 +54788,7 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1907 "machine/pentium/decoder.m"
+#line 1903 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD80", DIS_MEM80);
 
@@ -54802,7 +54798,7 @@ hostPC
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
 
-#line 54806 "pentiumdecoder.cpp"
+#line 54802 "pentiumdecoder.cpp"
 
       
     } 
@@ -54813,12 +54809,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2014 "machine/pentium/decoder.m"
+#line 2010 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 54822 "pentiumdecoder.cpp"
+#line 54818 "pentiumdecoder.cpp"
 
       
     } 
@@ -54829,12 +54825,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2014 "machine/pentium/decoder.m"
+#line 2010 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 54838 "pentiumdecoder.cpp"
+#line 54834 "pentiumdecoder.cpp"
 
       
     } 
@@ -54845,12 +54841,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2014 "machine/pentium/decoder.m"
+#line 2010 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP80", DIS_MEM80);
 
 
-#line 54854 "pentiumdecoder.cpp"
+#line 54850 "pentiumdecoder.cpp"
 
       
     } 
@@ -54861,12 +54857,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1754 "machine/pentium/decoder.m"
+#line 1750 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 54870 "pentiumdecoder.cpp"
+#line 54866 "pentiumdecoder.cpp"
 
       
     } 
@@ -54877,12 +54873,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1754 "machine/pentium/decoder.m"
+#line 1750 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 54886 "pentiumdecoder.cpp"
+#line 54882 "pentiumdecoder.cpp"
 
       
     } 
@@ -54893,12 +54889,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1754 "machine/pentium/decoder.m"
+#line 1750 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 
-#line 54902 "pentiumdecoder.cpp"
+#line 54898 "pentiumdecoder.cpp"
 
       
     } 
@@ -54909,12 +54905,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1948 "machine/pentium/decoder.m"
+#line 1944 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 54918 "pentiumdecoder.cpp"
+#line 54914 "pentiumdecoder.cpp"
 
       
     } 
@@ -54925,12 +54921,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1948 "machine/pentium/decoder.m"
+#line 1944 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 54934 "pentiumdecoder.cpp"
+#line 54930 "pentiumdecoder.cpp"
 
       
     } 
@@ -54941,12 +54937,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1948 "machine/pentium/decoder.m"
+#line 1944 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FMUL.R64", DIS_MEM64);
 
 
-#line 54950 "pentiumdecoder.cpp"
+#line 54946 "pentiumdecoder.cpp"
 
       
     } 
@@ -54957,12 +54953,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1787 "machine/pentium/decoder.m"
+#line 1783 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 54966 "pentiumdecoder.cpp"
+#line 54962 "pentiumdecoder.cpp"
 
       
     } 
@@ -54973,12 +54969,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1787 "machine/pentium/decoder.m"
+#line 1783 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 54982 "pentiumdecoder.cpp"
+#line 54978 "pentiumdecoder.cpp"
 
       
     } 
@@ -54989,12 +54985,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1787 "machine/pentium/decoder.m"
+#line 1783 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOM.R64", DIS_MEM64);
 
 
-#line 54998 "pentiumdecoder.cpp"
+#line 54994 "pentiumdecoder.cpp"
 
       
     } 
@@ -55005,12 +55001,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1799 "machine/pentium/decoder.m"
+#line 1795 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 55014 "pentiumdecoder.cpp"
+#line 55010 "pentiumdecoder.cpp"
 
       
     } 
@@ -55021,12 +55017,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1799 "machine/pentium/decoder.m"
+#line 1795 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 55030 "pentiumdecoder.cpp"
+#line 55026 "pentiumdecoder.cpp"
 
       
     } 
@@ -55037,12 +55033,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1799 "machine/pentium/decoder.m"
+#line 1795 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FCOMP.R64", DIS_MEM64);
 
 
-#line 55046 "pentiumdecoder.cpp"
+#line 55042 "pentiumdecoder.cpp"
 
       
     } 
@@ -55053,12 +55049,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2038 "machine/pentium/decoder.m"
+#line 2034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 55062 "pentiumdecoder.cpp"
+#line 55058 "pentiumdecoder.cpp"
 
       
     } 
@@ -55069,12 +55065,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2038 "machine/pentium/decoder.m"
+#line 2034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 55078 "pentiumdecoder.cpp"
+#line 55074 "pentiumdecoder.cpp"
 
       
     } 
@@ -55085,12 +55081,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2038 "machine/pentium/decoder.m"
+#line 2034 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUB.R64", DIS_MEM64);
 
 
-#line 55094 "pentiumdecoder.cpp"
+#line 55090 "pentiumdecoder.cpp"
 
       
     } 
@@ -55101,12 +55097,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2059 "machine/pentium/decoder.m"
+#line 2055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 55110 "pentiumdecoder.cpp"
+#line 55106 "pentiumdecoder.cpp"
 
       
     } 
@@ -55117,12 +55113,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2059 "machine/pentium/decoder.m"
+#line 2055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 55126 "pentiumdecoder.cpp"
+#line 55122 "pentiumdecoder.cpp"
 
       
     } 
@@ -55133,12 +55129,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2059 "machine/pentium/decoder.m"
+#line 2055 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSUBR.R64", DIS_MEM64);
 
 
-#line 55142 "pentiumdecoder.cpp"
+#line 55138 "pentiumdecoder.cpp"
 
       
     } 
@@ -55149,12 +55145,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1832 "machine/pentium/decoder.m"
+#line 1828 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 55158 "pentiumdecoder.cpp"
+#line 55154 "pentiumdecoder.cpp"
 
       
     } 
@@ -55165,12 +55161,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1832 "machine/pentium/decoder.m"
+#line 1828 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 55174 "pentiumdecoder.cpp"
+#line 55170 "pentiumdecoder.cpp"
 
       
     } 
@@ -55181,12 +55177,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1832 "machine/pentium/decoder.m"
+#line 1828 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIV.R64", DIS_MEM64);
 
 
-#line 55190 "pentiumdecoder.cpp"
+#line 55186 "pentiumdecoder.cpp"
 
       
     } 
@@ -55197,12 +55193,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1853 "machine/pentium/decoder.m"
+#line 1849 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 55206 "pentiumdecoder.cpp"
+#line 55202 "pentiumdecoder.cpp"
 
       
     } 
@@ -55213,12 +55209,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1853 "machine/pentium/decoder.m"
+#line 1849 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 55222 "pentiumdecoder.cpp"
+#line 55218 "pentiumdecoder.cpp"
 
       
     } 
@@ -55229,12 +55225,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1853 "machine/pentium/decoder.m"
+#line 1849 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FDIVR.R64", DIS_MEM64);
 
 
-#line 55238 "pentiumdecoder.cpp"
+#line 55234 "pentiumdecoder.cpp"
 
       
     } 
@@ -55245,12 +55241,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1904 "machine/pentium/decoder.m"
+#line 1900 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 55254 "pentiumdecoder.cpp"
+#line 55250 "pentiumdecoder.cpp"
 
       
     } 
@@ -55261,12 +55257,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1904 "machine/pentium/decoder.m"
+#line 1900 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 55270 "pentiumdecoder.cpp"
+#line 55266 "pentiumdecoder.cpp"
 
       
     } 
@@ -55277,12 +55273,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1904 "machine/pentium/decoder.m"
+#line 1900 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FLD.lsR64", DIS_MEM64);
 
 
-#line 55286 "pentiumdecoder.cpp"
+#line 55282 "pentiumdecoder.cpp"
 
       
     } 
@@ -55293,12 +55289,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2005 "machine/pentium/decoder.m"
+#line 2001 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 55302 "pentiumdecoder.cpp"
+#line 55298 "pentiumdecoder.cpp"
 
       
     } 
@@ -55309,12 +55305,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2005 "machine/pentium/decoder.m"
+#line 2001 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 55318 "pentiumdecoder.cpp"
+#line 55314 "pentiumdecoder.cpp"
 
       
     } 
@@ -55325,12 +55321,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2005 "machine/pentium/decoder.m"
+#line 2001 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FST.lsR64", DIS_MEM64);
 
 
-#line 55334 "pentiumdecoder.cpp"
+#line 55330 "pentiumdecoder.cpp"
 
       
     } 
@@ -55341,12 +55337,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2011 "machine/pentium/decoder.m"
+#line 2007 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 55350 "pentiumdecoder.cpp"
+#line 55346 "pentiumdecoder.cpp"
 
       
     } 
@@ -55357,12 +55353,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2011 "machine/pentium/decoder.m"
+#line 2007 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 55366 "pentiumdecoder.cpp"
+#line 55362 "pentiumdecoder.cpp"
 
       
     } 
@@ -55373,12 +55369,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2011 "machine/pentium/decoder.m"
+#line 2007 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
 
 
-#line 55382 "pentiumdecoder.cpp"
+#line 55378 "pentiumdecoder.cpp"
 
       
     } 
@@ -55389,12 +55385,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1984 "machine/pentium/decoder.m"
+#line 1980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 55398 "pentiumdecoder.cpp"
+#line 55394 "pentiumdecoder.cpp"
 
       
     } 
@@ -55405,12 +55401,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1984 "machine/pentium/decoder.m"
+#line 1980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 55414 "pentiumdecoder.cpp"
+#line 55410 "pentiumdecoder.cpp"
 
       
     } 
@@ -55421,12 +55417,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1984 "machine/pentium/decoder.m"
+#line 1980 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FRSTOR", DIS_MEM);
 
 
-#line 55430 "pentiumdecoder.cpp"
+#line 55426 "pentiumdecoder.cpp"
 
       
     } 
@@ -55437,12 +55433,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1987 "machine/pentium/decoder.m"
+#line 1983 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 55446 "pentiumdecoder.cpp"
+#line 55442 "pentiumdecoder.cpp"
 
       
     } 
@@ -55453,12 +55449,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1987 "machine/pentium/decoder.m"
+#line 1983 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 55462 "pentiumdecoder.cpp"
+#line 55458 "pentiumdecoder.cpp"
 
       
     } 
@@ -55469,12 +55465,12 @@ hostPC
       unsigned Mem = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1987 "machine/pentium/decoder.m"
+#line 1983 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FNSAVE", DIS_MEM);
 
 
-#line 55478 "pentiumdecoder.cpp"
+#line 55474 "pentiumdecoder.cpp"
 
       
     } 
@@ -55485,12 +55481,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2029 "machine/pentium/decoder.m"
+#line 2025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 55494 "pentiumdecoder.cpp"
+#line 55490 "pentiumdecoder.cpp"
 
       
     } 
@@ -55501,12 +55497,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2029 "machine/pentium/decoder.m"
+#line 2025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 55510 "pentiumdecoder.cpp"
+#line 55506 "pentiumdecoder.cpp"
 
       
     } 
@@ -55517,12 +55513,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2029 "machine/pentium/decoder.m"
+#line 2025 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FSTSW", DIS_MEM16);
 
 
-#line 55526 "pentiumdecoder.cpp"
+#line 55522 "pentiumdecoder.cpp"
 
       
     } 
@@ -55533,12 +55529,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1769 "machine/pentium/decoder.m"
+#line 1765 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 55542 "pentiumdecoder.cpp"
+#line 55538 "pentiumdecoder.cpp"
 
       
     } 
@@ -55549,12 +55545,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1769 "machine/pentium/decoder.m"
+#line 1765 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 55558 "pentiumdecoder.cpp"
+#line 55554 "pentiumdecoder.cpp"
 
       
     } 
@@ -55565,12 +55561,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1769 "machine/pentium/decoder.m"
+#line 1765 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIADD.I16", DIS_MEM16);
 
 
-#line 55574 "pentiumdecoder.cpp"
+#line 55570 "pentiumdecoder.cpp"
 
       
     } 
@@ -55581,12 +55577,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1963 "machine/pentium/decoder.m"
+#line 1959 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 55590 "pentiumdecoder.cpp"
+#line 55586 "pentiumdecoder.cpp"
 
       
     } 
@@ -55597,12 +55593,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1963 "machine/pentium/decoder.m"
+#line 1959 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 55606 "pentiumdecoder.cpp"
+#line 55602 "pentiumdecoder.cpp"
 
       
     } 
@@ -55613,12 +55609,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1963 "machine/pentium/decoder.m"
+#line 1959 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIMUL.I16", DIS_MEM16);
 
 
-#line 55622 "pentiumdecoder.cpp"
+#line 55618 "pentiumdecoder.cpp"
 
       
     } 
@@ -55629,12 +55625,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1793 "machine/pentium/decoder.m"
+#line 1789 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 55638 "pentiumdecoder.cpp"
+#line 55634 "pentiumdecoder.cpp"
 
       
     } 
@@ -55645,12 +55641,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1793 "machine/pentium/decoder.m"
+#line 1789 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 55654 "pentiumdecoder.cpp"
+#line 55650 "pentiumdecoder.cpp"
 
       
     } 
@@ -55661,12 +55657,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1793 "machine/pentium/decoder.m"
+#line 1789 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOM.I16", DIS_MEM16);
 
 
-#line 55670 "pentiumdecoder.cpp"
+#line 55666 "pentiumdecoder.cpp"
 
       
     } 
@@ -55677,12 +55673,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1811 "machine/pentium/decoder.m"
+#line 1807 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 55686 "pentiumdecoder.cpp"
+#line 55682 "pentiumdecoder.cpp"
 
       
     } 
@@ -55693,12 +55689,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1811 "machine/pentium/decoder.m"
+#line 1807 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 55702 "pentiumdecoder.cpp"
+#line 55698 "pentiumdecoder.cpp"
 
       
     } 
@@ -55709,12 +55705,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1811 "machine/pentium/decoder.m"
+#line 1807 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FICOMP.I16", DIS_MEM16);
 
 
-#line 55718 "pentiumdecoder.cpp"
+#line 55714 "pentiumdecoder.cpp"
 
       
     } 
@@ -55725,12 +55721,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2050 "machine/pentium/decoder.m"
+#line 2046 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 55734 "pentiumdecoder.cpp"
+#line 55730 "pentiumdecoder.cpp"
 
       
     } 
@@ -55741,12 +55737,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2050 "machine/pentium/decoder.m"
+#line 2046 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 55750 "pentiumdecoder.cpp"
+#line 55746 "pentiumdecoder.cpp"
 
       
     } 
@@ -55757,12 +55753,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2050 "machine/pentium/decoder.m"
+#line 2046 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUB.I16", DIS_MEM16);
 
 
-#line 55766 "pentiumdecoder.cpp"
+#line 55762 "pentiumdecoder.cpp"
 
       
     } 
@@ -55773,12 +55769,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 2071 "machine/pentium/decoder.m"
+#line 2067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 55782 "pentiumdecoder.cpp"
+#line 55778 "pentiumdecoder.cpp"
 
       
     } 
@@ -55789,12 +55785,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 2071 "machine/pentium/decoder.m"
+#line 2067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 55798 "pentiumdecoder.cpp"
+#line 55794 "pentiumdecoder.cpp"
 
       
     } 
@@ -55805,12 +55801,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 2071 "machine/pentium/decoder.m"
+#line 2067 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISUBR.I16", DIS_MEM16);
 
 
-#line 55814 "pentiumdecoder.cpp"
+#line 55810 "pentiumdecoder.cpp"
 
       
     } 
@@ -55821,12 +55817,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1847 "machine/pentium/decoder.m"
+#line 1843 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 55830 "pentiumdecoder.cpp"
+#line 55826 "pentiumdecoder.cpp"
 
       
     } 
@@ -55837,12 +55833,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1847 "machine/pentium/decoder.m"
+#line 1843 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 55846 "pentiumdecoder.cpp"
+#line 55842 "pentiumdecoder.cpp"
 
       
     } 
@@ -55853,12 +55849,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1847 "machine/pentium/decoder.m"
+#line 1843 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIV.I16", DIS_MEM16);
 
 
-#line 55862 "pentiumdecoder.cpp"
+#line 55858 "pentiumdecoder.cpp"
 
       
     } 
@@ -55869,12 +55865,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1865 "machine/pentium/decoder.m"
+#line 1861 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 55878 "pentiumdecoder.cpp"
+#line 55874 "pentiumdecoder.cpp"
 
       
     } 
@@ -55885,12 +55881,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1865 "machine/pentium/decoder.m"
+#line 1861 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 55894 "pentiumdecoder.cpp"
+#line 55890 "pentiumdecoder.cpp"
 
       
     } 
@@ -55901,12 +55897,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1865 "machine/pentium/decoder.m"
+#line 1861 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
 
 
-#line 55910 "pentiumdecoder.cpp"
+#line 55906 "pentiumdecoder.cpp"
 
       
     } 
@@ -55917,12 +55913,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1874 "machine/pentium/decoder.m"
+#line 1870 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 55926 "pentiumdecoder.cpp"
+#line 55922 "pentiumdecoder.cpp"
 
       
     } 
@@ -55933,12 +55929,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1874 "machine/pentium/decoder.m"
+#line 1870 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 55942 "pentiumdecoder.cpp"
+#line 55938 "pentiumdecoder.cpp"
 
       
     } 
@@ -55949,12 +55945,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1874 "machine/pentium/decoder.m"
+#line 1870 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI16", DIS_MEM16);
 
 
-#line 55958 "pentiumdecoder.cpp"
+#line 55954 "pentiumdecoder.cpp"
 
       
     } 
@@ -55965,12 +55961,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1886 "machine/pentium/decoder.m"
+#line 1882 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 55974 "pentiumdecoder.cpp"
+#line 55970 "pentiumdecoder.cpp"
 
       
     } 
@@ -55981,12 +55977,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1886 "machine/pentium/decoder.m"
+#line 1882 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 55990 "pentiumdecoder.cpp"
+#line 55986 "pentiumdecoder.cpp"
 
       
     } 
@@ -55997,12 +55993,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1886 "machine/pentium/decoder.m"
+#line 1882 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FIST.lsI16", DIS_MEM16);
 
 
-#line 56006 "pentiumdecoder.cpp"
+#line 56002 "pentiumdecoder.cpp"
 
       
     } 
@@ -56013,12 +56009,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1892 "machine/pentium/decoder.m"
+#line 1888 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 56022 "pentiumdecoder.cpp"
+#line 56018 "pentiumdecoder.cpp"
 
       
     } 
@@ -56029,12 +56025,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1892 "machine/pentium/decoder.m"
+#line 1888 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 56038 "pentiumdecoder.cpp"
+#line 56034 "pentiumdecoder.cpp"
 
       
     } 
@@ -56045,12 +56041,12 @@ hostPC
       unsigned Mem16 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1892 "machine/pentium/decoder.m"
+#line 1888 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
 
 
-#line 56054 "pentiumdecoder.cpp"
+#line 56050 "pentiumdecoder.cpp"
 
       
     } 
@@ -56061,12 +56057,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1772 "machine/pentium/decoder.m"
+#line 1768 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 56070 "pentiumdecoder.cpp"
+#line 56066 "pentiumdecoder.cpp"
 
       
     } 
@@ -56077,12 +56073,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1772 "machine/pentium/decoder.m"
+#line 1768 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 56086 "pentiumdecoder.cpp"
+#line 56082 "pentiumdecoder.cpp"
 
       
     } 
@@ -56093,12 +56089,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1772 "machine/pentium/decoder.m"
+#line 1768 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBLD", DIS_MEM80);
 
 
-#line 56102 "pentiumdecoder.cpp"
+#line 56098 "pentiumdecoder.cpp"
 
       
     } 
@@ -56109,12 +56105,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1880 "machine/pentium/decoder.m"
+#line 1876 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 56118 "pentiumdecoder.cpp"
+#line 56114 "pentiumdecoder.cpp"
 
       
     } 
@@ -56125,12 +56121,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1880 "machine/pentium/decoder.m"
+#line 1876 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 56134 "pentiumdecoder.cpp"
+#line 56130 "pentiumdecoder.cpp"
 
       
     } 
@@ -56141,12 +56137,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1880 "machine/pentium/decoder.m"
+#line 1876 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
 
-#line 56150 "pentiumdecoder.cpp"
+#line 56146 "pentiumdecoder.cpp"
 
       
     } 
@@ -56157,12 +56153,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1775 "machine/pentium/decoder.m"
+#line 1771 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 56166 "pentiumdecoder.cpp"
+#line 56162 "pentiumdecoder.cpp"
 
       
     } 
@@ -56173,12 +56169,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1775 "machine/pentium/decoder.m"
+#line 1771 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 56182 "pentiumdecoder.cpp"
+#line 56178 "pentiumdecoder.cpp"
 
       
     } 
@@ -56189,12 +56185,12 @@ hostPC
       unsigned Mem80 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1775 "machine/pentium/decoder.m"
+#line 1771 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FBSTP", DIS_MEM80);
 
 
-#line 56198 "pentiumdecoder.cpp"
+#line 56194 "pentiumdecoder.cpp"
 
       
     } 
@@ -56205,12 +56201,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1898 "machine/pentium/decoder.m"
+#line 1894 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 56214 "pentiumdecoder.cpp"
+#line 56210 "pentiumdecoder.cpp"
 
       
     } 
@@ -56221,12 +56217,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1898 "machine/pentium/decoder.m"
+#line 1894 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 56230 "pentiumdecoder.cpp"
+#line 56226 "pentiumdecoder.cpp"
 
       
     } 
@@ -56237,12 +56233,12 @@ hostPC
       unsigned Mem64 = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1898 "machine/pentium/decoder.m"
+#line 1894 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "FISTP64", DIS_MEM64);
 
 
-#line 56246 "pentiumdecoder.cpp"
+#line 56242 "pentiumdecoder.cpp"
 
       
     } 
@@ -56253,7 +56249,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1131 "machine/pentium/decoder.m"
+#line 1127 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Eb", DIS_EADDR8);
 
@@ -56276,7 +56272,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56280 "pentiumdecoder.cpp"
+#line 56276 "pentiumdecoder.cpp"
 
       
     } 
@@ -56287,7 +56283,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1131 "machine/pentium/decoder.m"
+#line 1127 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Eb", DIS_EADDR8);
 
@@ -56310,7 +56306,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56314 "pentiumdecoder.cpp"
+#line 56310 "pentiumdecoder.cpp"
 
       
     } 
@@ -56321,7 +56317,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1131 "machine/pentium/decoder.m"
+#line 1127 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Eb", DIS_EADDR8);
 
@@ -56344,7 +56340,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56348 "pentiumdecoder.cpp"
+#line 56344 "pentiumdecoder.cpp"
 
       
     } 
@@ -56355,7 +56351,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1131 "machine/pentium/decoder.m"
+#line 1127 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Eb", DIS_EADDR8);
 
@@ -56378,7 +56374,7 @@ hostPC
 //		stmts = instantiate(pc, "IN.AL.Ib", DIS_I8);
 
 
-#line 56382 "pentiumdecoder.cpp"
+#line 56378 "pentiumdecoder.cpp"
 
       
     } 
@@ -56389,12 +56385,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1215 "machine/pentium/decoder.m"
+#line 1211 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56398 "pentiumdecoder.cpp"
+#line 56394 "pentiumdecoder.cpp"
 
       
     } 
@@ -56405,12 +56401,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1215 "machine/pentium/decoder.m"
+#line 1211 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56414 "pentiumdecoder.cpp"
+#line 56410 "pentiumdecoder.cpp"
 
       
     } 
@@ -56421,12 +56417,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1215 "machine/pentium/decoder.m"
+#line 1211 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56430 "pentiumdecoder.cpp"
+#line 56426 "pentiumdecoder.cpp"
 
       
     } 
@@ -56437,12 +56433,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1215 "machine/pentium/decoder.m"
+#line 1211 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Eb", DIS_EADDR8);
 
 
-#line 56446 "pentiumdecoder.cpp"
+#line 56442 "pentiumdecoder.cpp"
 
       
     } 
@@ -56453,12 +56449,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1125 "machine/pentium/decoder.m"
+#line 1121 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56462 "pentiumdecoder.cpp"
+#line 56458 "pentiumdecoder.cpp"
 
       
     } 
@@ -56469,12 +56465,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1125 "machine/pentium/decoder.m"
+#line 1121 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56478 "pentiumdecoder.cpp"
+#line 56474 "pentiumdecoder.cpp"
 
       
     } 
@@ -56485,12 +56481,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1125 "machine/pentium/decoder.m"
+#line 1121 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56494 "pentiumdecoder.cpp"
+#line 56490 "pentiumdecoder.cpp"
 
       
     } 
@@ -56501,12 +56497,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1125 "machine/pentium/decoder.m"
+#line 1121 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "INC.Evod", DIS_EADDR32);
 
 
-#line 56510 "pentiumdecoder.cpp"
+#line 56506 "pentiumdecoder.cpp"
 
       
     } 
@@ -56517,12 +56513,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 1209 "machine/pentium/decoder.m"
+#line 1205 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56526 "pentiumdecoder.cpp"
+#line 56522 "pentiumdecoder.cpp"
 
       
     } 
@@ -56533,12 +56529,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 1209 "machine/pentium/decoder.m"
+#line 1205 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56542 "pentiumdecoder.cpp"
+#line 56538 "pentiumdecoder.cpp"
 
       
     } 
@@ -56549,12 +56545,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 1209 "machine/pentium/decoder.m"
+#line 1205 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56558 "pentiumdecoder.cpp"
+#line 56554 "pentiumdecoder.cpp"
 
       
     } 
@@ -56565,12 +56561,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 1209 "machine/pentium/decoder.m"
+#line 1205 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "DEC.Evod", DIS_EADDR32);
 
 
-#line 56574 "pentiumdecoder.cpp"
+#line 56570 "pentiumdecoder.cpp"
 
       
     } 
@@ -56595,11 +56591,9 @@ hostPC
 		newCall->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 
-#line 56603 "pentiumdecoder.cpp"
+#line 56597 "pentiumdecoder.cpp"
 
       
     } 
@@ -56624,11 +56618,9 @@ hostPC
 		newCall->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 
-#line 56632 "pentiumdecoder.cpp"
+#line 56624 "pentiumdecoder.cpp"
 
       
     } 
@@ -56653,11 +56645,9 @@ hostPC
 		newCall->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 
-#line 56661 "pentiumdecoder.cpp"
+#line 56651 "pentiumdecoder.cpp"
 
       
     } 
@@ -56682,11 +56672,9 @@ hostPC
 		newCall->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 
-#line 56690 "pentiumdecoder.cpp"
+#line 56678 "pentiumdecoder.cpp"
 
       
     } 
@@ -56697,7 +56685,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 132 "machine/pentium/decoder.m"
+#line 130 "machine/pentium/decoder.m"
 
 		/*
 		 * Register jump
@@ -56709,14 +56697,12 @@ hostPC
 		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newJump);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	/*
 	 * Unconditional branches
 	 */
 
-#line 56720 "pentiumdecoder.cpp"
+#line 56706 "pentiumdecoder.cpp"
 
       
     } 
@@ -56727,7 +56713,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 132 "machine/pentium/decoder.m"
+#line 130 "machine/pentium/decoder.m"
 
 		/*
 		 * Register jump
@@ -56739,14 +56725,12 @@ hostPC
 		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newJump);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	/*
 	 * Unconditional branches
 	 */
 
-#line 56750 "pentiumdecoder.cpp"
+#line 56734 "pentiumdecoder.cpp"
 
       
     } 
@@ -56757,7 +56741,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 132 "machine/pentium/decoder.m"
+#line 130 "machine/pentium/decoder.m"
 
 		/*
 		 * Register jump
@@ -56769,14 +56753,12 @@ hostPC
 		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newJump);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	/*
 	 * Unconditional branches
 	 */
 
-#line 56780 "pentiumdecoder.cpp"
+#line 56762 "pentiumdecoder.cpp"
 
       
     } 
@@ -56787,7 +56769,7 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 132 "machine/pentium/decoder.m"
+#line 130 "machine/pentium/decoder.m"
 
 		/*
 		 * Register jump
@@ -56799,14 +56781,12 @@ hostPC
 		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newJump);
-		// Only one instruction, so size of result is size of this decode
-		//result.numBytes = nextPC - hostPC;
 
 	/*
 	 * Unconditional branches
 	 */
 
-#line 56810 "pentiumdecoder.cpp"
+#line 56790 "pentiumdecoder.cpp"
 
       
     } 
@@ -56817,12 +56797,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 2 + MATCH_p; 
       
-#line 836 "machine/pentium/decoder.m"
+#line 832 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56826 "pentiumdecoder.cpp"
+#line 56806 "pentiumdecoder.cpp"
 
       
     } 
@@ -56833,12 +56813,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 3 + MATCH_p; 
       
-#line 836 "machine/pentium/decoder.m"
+#line 832 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56842 "pentiumdecoder.cpp"
+#line 56822 "pentiumdecoder.cpp"
 
       
     } 
@@ -56849,12 +56829,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 7 + MATCH_p; 
       
-#line 836 "machine/pentium/decoder.m"
+#line 832 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56858 "pentiumdecoder.cpp"
+#line 56838 "pentiumdecoder.cpp"
 
       
     } 
@@ -56865,12 +56845,12 @@ hostPC
       unsigned Eaddr = 1 + addressToPC(MATCH_p);
       nextPC = 6 + MATCH_p; 
       
-#line 836 "machine/pentium/decoder.m"
+#line 832 "machine/pentium/decoder.m"
 
 		stmts = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
 
 
-#line 56874 "pentiumdecoder.cpp"
+#line 56854 "pentiumdecoder.cpp"
 
       
     } 
@@ -56879,9 +56859,9 @@ hostPC
   MATCH_finished_c: (void)0; /*placeholder for label*/
   
 }
-#line 56883 "pentiumdecoder.cpp"
+#line 56863 "pentiumdecoder.cpp"
 
-#line 2116 "machine/pentium/decoder.m"
+#line 2112 "machine/pentium/decoder.m"
 
 	if (!result.rtl)
 		result.rtl = new RTL(pc, stmts);
@@ -56905,15 +56885,15 @@ PentiumDecoder::dis_Mem(ADDRESS pc)
 	lastDwordLc = (unsigned)-1;
 
 
-#line 56909 "pentiumdecoder.cpp"
+#line 56889 "pentiumdecoder.cpp"
 
-#line 2138 "machine/pentium/decoder.m"
+#line 2134 "machine/pentium/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 2138 "machine/pentium/decoder.m"
+#line 2134 "machine/pentium/decoder.m"
 pc
-#line 56917 "pentiumdecoder.cpp"
+#line 56897 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -56931,12 +56911,12 @@ pc
                 { 
                   unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
                   
-#line 2192 "machine/pentium/decoder.m"
+#line 2188 "machine/pentium/decoder.m"
 
 		// m[ r[base] ]
 		expr = Location::memOf(dis_Reg(24 + base));
 
-#line 56940 "pentiumdecoder.cpp"
+#line 56920 "pentiumdecoder.cpp"
 
                   
                 }
@@ -56950,12 +56930,12 @@ pc
                     { 
                       unsigned d = MATCH_w_32_16 /* i32 at 16 */;
                       
-#line 2202 "machine/pentium/decoder.m"
+#line 2198 "machine/pentium/decoder.m"
 
 		// [d] (Same as Abs32 using SIB)
 		expr = Location::memOf(addReloc(new Const(d)));
 
-#line 56959 "pentiumdecoder.cpp"
+#line 56939 "pentiumdecoder.cpp"
 
                       
                     }
@@ -56969,7 +56949,7 @@ pc
                         (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                       unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                       
-#line 2195 "machine/pentium/decoder.m"
+#line 2191 "machine/pentium/decoder.m"
 
 		// m[ r[index] * ss + d ]
 		expr = Location::memOf(new Binary(opPlus,
@@ -56978,7 +56958,7 @@ pc
 		                                             new Const(1 << ss)),
 		                                  addReloc(new Const(d))));
 
-#line 56982 "pentiumdecoder.cpp"
+#line 56962 "pentiumdecoder.cpp"
 
                       
                     }
@@ -56988,12 +56968,12 @@ pc
                   if ((MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */ == 4) { 
                     unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                     
-#line 2159 "machine/pentium/decoder.m"
+#line 2155 "machine/pentium/decoder.m"
 
 		// m[ r[base] ]
 		expr = Location::memOf(dis_Reg(24 + base));
 
-#line 56997 "pentiumdecoder.cpp"
+#line 56977 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/
@@ -57003,7 +56983,7 @@ pc
                       (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                     unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                     
-#line 2152 "machine/pentium/decoder.m"
+#line 2148 "machine/pentium/decoder.m"
 
 		// m[ r[base] + r[index] * ss]
 		expr = Location::memOf(new Binary(opPlus,
@@ -57012,7 +56992,7 @@ pc
 		                                             dis_Reg(24 + index),
 		                                             new Const(1 << ss))));
 
-#line 57016 "pentiumdecoder.cpp"
+#line 56996 "pentiumdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -57023,12 +57003,12 @@ pc
                 { 
                   unsigned a = MATCH_w_32_8 /* i32 at 8 */;
                   
-#line 2139 "machine/pentium/decoder.m"
+#line 2135 "machine/pentium/decoder.m"
 
 		// [a]
 		expr = Location::memOf(addReloc(new Const(a)));
 
-#line 57032 "pentiumdecoder.cpp"
+#line 57012 "pentiumdecoder.cpp"
 
                   
                 }
@@ -57046,7 +57026,7 @@ pc
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                 unsigned d = (MATCH_w_8_16 & 0xff) /* i8 at 16 */;
                 
-#line 2185 "machine/pentium/decoder.m"
+#line 2181 "machine/pentium/decoder.m"
 
 		// m[ r[ base] + d ]
 		// Note: d should be sign extended; we do it here manually
@@ -57055,7 +57035,7 @@ pc
 		                                  dis_Reg(24 + base),
 		                                  new Const(ds8)));
 
-#line 57059 "pentiumdecoder.cpp"
+#line 57039 "pentiumdecoder.cpp"
 
                 
               }
@@ -57070,7 +57050,7 @@ pc
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2176 "machine/pentium/decoder.m"
+#line 2172 "machine/pentium/decoder.m"
 
 		// m[ r[ base ] + r[ index ] * ss + d ]
 		expr = Location::memOf(new Binary(opPlus,
@@ -57081,7 +57061,7 @@ pc
 		                                                        new Const(1 << ss)),
 		                                             addReloc(new Const(d)))));
 
-#line 57085 "pentiumdecoder.cpp"
+#line 57065 "pentiumdecoder.cpp"
 
                 
               }
@@ -57096,14 +57076,14 @@ pc
                 sign_extend((MATCH_w_8_8 & 0xff) /* i8 at 8 */, 8);
               unsigned r32 = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               
-#line 2147 "machine/pentium/decoder.m"
+#line 2143 "machine/pentium/decoder.m"
 
 		// m[ r[ r32] + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + r32),
 		                                  addReloc(new Const(d))));
 
-#line 57107 "pentiumdecoder.cpp"
+#line 57087 "pentiumdecoder.cpp"
 
               
             }
@@ -57119,14 +57099,14 @@ pc
                 unsigned base = (MATCH_w_8_8 & 0x7) /* base at 8 */;
                 unsigned d = MATCH_w_32_16 /* i32 at 16 */;
                 
-#line 2171 "machine/pentium/decoder.m"
+#line 2167 "machine/pentium/decoder.m"
 
 		// m[ r[ base] + d ]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  addReloc(new Const(d))));
 
-#line 57130 "pentiumdecoder.cpp"
+#line 57110 "pentiumdecoder.cpp"
 
                 
               }
@@ -57140,7 +57120,7 @@ pc
                 unsigned index = (MATCH_w_8_8 >> 3 & 0x7) /* index at 8 */;
                 unsigned ss = (MATCH_w_8_8 >> 6 & 0x3) /* ss at 8 */;
                 
-#line 2162 "machine/pentium/decoder.m"
+#line 2158 "machine/pentium/decoder.m"
 
 		// m[ r[ base ] + r[ index ] * ss + d ]
 		expr = Location::memOf(new Binary(opPlus,
@@ -57151,7 +57131,7 @@ pc
 		                                                        new Const(1 << ss)),
 		                                             addReloc(new Const(d)))));
 
-#line 57155 "pentiumdecoder.cpp"
+#line 57135 "pentiumdecoder.cpp"
 
                 
               }
@@ -57165,14 +57145,14 @@ pc
               unsigned base = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
               unsigned d = MATCH_w_32_8 /* i32 at 8 */;
               
-#line 2142 "machine/pentium/decoder.m"
+#line 2138 "machine/pentium/decoder.m"
 
 		// m[ r[ base] + d]
 		expr = Location::memOf(new Binary(opPlus,
 		                                  dis_Reg(24 + base),
 		                                  addReloc(new Const(d))));
 
-#line 57176 "pentiumdecoder.cpp"
+#line 57156 "pentiumdecoder.cpp"
 
               
             }
@@ -57189,9 +57169,9 @@ pc
   MATCH_finished_b: (void)0; /*placeholder for label*/
   
 }
-#line 57193 "pentiumdecoder.cpp"
+#line 57173 "pentiumdecoder.cpp"
 
-#line 2206 "machine/pentium/decoder.m"
+#line 2202 "machine/pentium/decoder.m"
 	return expr;
 }
 
@@ -57208,15 +57188,15 @@ Exp *
 PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
 {
 
-#line 57212 "pentiumdecoder.cpp"
+#line 57192 "pentiumdecoder.cpp"
 
-#line 2221 "machine/pentium/decoder.m"
+#line 2217 "machine/pentium/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 2221 "machine/pentium/decoder.m"
+#line 2217 "machine/pentium/decoder.m"
 pc
-#line 57220 "pentiumdecoder.cpp"
+#line 57200 "pentiumdecoder.cpp"
 ;
   unsigned /* [0..255] */ MATCH_w_8_0;
   unsigned /* [0..255] */ MATCH_w_8_8;
@@ -57225,7 +57205,7 @@ pc
     if ((MATCH_w_8_0 >> 6 & 0x3) /* mod at 0 */ == 3) { 
       unsigned reg = (MATCH_w_8_0 & 0x7) /* r_m at 0 */;
       
-#line 2224 "machine/pentium/decoder.m"
+#line 2220 "machine/pentium/decoder.m"
 
 		Exp *e;
 		switch (size) {
@@ -57236,7 +57216,7 @@ pc
 		}
 		return e;
 
-#line 57240 "pentiumdecoder.cpp"
+#line 57220 "pentiumdecoder.cpp"
 
       
     } /*opt-block*//*opt-block+*/
@@ -57249,11 +57229,11 @@ pc
     { 
       unsigned mem = addressToPC(MATCH_p);
       
-#line 2222 "machine/pentium/decoder.m"
+#line 2218 "machine/pentium/decoder.m"
 
 		return dis_Mem(mem);
 
-#line 57257 "pentiumdecoder.cpp"
+#line 57237 "pentiumdecoder.cpp"
 
       
     } 
@@ -57262,9 +57242,9 @@ pc
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 57266 "pentiumdecoder.cpp"
+#line 57246 "pentiumdecoder.cpp"
 
-#line 2234 "machine/pentium/decoder.m"
+#line 2230 "machine/pentium/decoder.m"
 }
 
 #if 0 // Cruft?
@@ -57440,5 +57420,5 @@ PentiumDecoder::addReloc(Exp *e)
 	return e;
 }
 
-#line 57444 "pentiumdecoder.cpp"
+#line 57424 "pentiumdecoder.cpp"
 
