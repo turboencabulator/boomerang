@@ -28596,7 +28596,7 @@ hostPC
 #line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = dis_Eaddr(Eaddr, 32);
+		Exp *oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
@@ -44164,7 +44164,7 @@ hostPC
 #line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = dis_Eaddr(Eaddr, 32);
+		Exp *oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
@@ -44185,7 +44185,7 @@ hostPC
 #line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = dis_Eaddr(Eaddr, 32);
+		Exp *oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
@@ -44206,7 +44206,7 @@ hostPC
 #line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = dis_Eaddr(Eaddr, 32);
+		Exp *oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
@@ -44227,7 +44227,7 @@ hostPC
 #line 1554 "machine/pentium/decoder.m"
 
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = dis_Eaddr(Eaddr, 32);
+		Exp *oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
@@ -57405,16 +57405,14 @@ pc
       
 #line 2220 "machine/pentium/decoder.m"
 
-		Exp *e;
 		switch (size) {
-		case  8: e = dis_Reg(8 + reg); break;
-		case 16: e = dis_Reg(0 + reg); break;
+		case  8: return DIS_REG8;
+		case 16: return DIS_REG16;
 		default:
-		case 32: e = dis_Reg(24 + reg); break;
+		case 32: return DIS_REG32;
 		}
-		return e;
 
-#line 57418 "pentiumdecoder.cpp"
+#line 57416 "pentiumdecoder.cpp"
 
       
     } /*opt-block*//*opt-block+*/
@@ -57425,13 +57423,13 @@ pc
   
   MATCH_label_a0: (void)0; /*placeholder for label*/ 
     { 
-      unsigned mem = addressToPC(MATCH_p);
+      unsigned Mem = addressToPC(MATCH_p);
       
 #line 2218 "machine/pentium/decoder.m"
 
-		return dis_Mem(mem);
+		return DIS_MEM;
 
-#line 57435 "pentiumdecoder.cpp"
+#line 57433 "pentiumdecoder.cpp"
 
       
     } 
@@ -57440,9 +57438,9 @@ pc
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 57444 "pentiumdecoder.cpp"
+#line 57442 "pentiumdecoder.cpp"
 
-#line 2230 "machine/pentium/decoder.m"
+#line 2228 "machine/pentium/decoder.m"
 }
 
 #if 0 // Cruft?
@@ -57618,5 +57616,5 @@ PentiumDecoder::addReloc(Exp *e)
 	return e;
 }
 
-#line 57622 "pentiumdecoder.cpp"
+#line 57620 "pentiumdecoder.cpp"
 

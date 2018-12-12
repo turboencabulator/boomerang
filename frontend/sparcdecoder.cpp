@@ -2015,7 +2015,7 @@ hostPC
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(jump);
 		result.type = DD;
-		jump->setDest(dis_Eaddr(addr));
+		jump->setDest(DIS_ADDR);
 		SHOW_ASM("JMPL ")
 		DEBUG_STMTS
 
@@ -2049,12 +2049,12 @@ hostPC
 		newCall->setIsComputed();
 
 		// Set the destination expression
-		newCall->setDest(dis_Eaddr(addr));
+		newCall->setDest(DIS_ADDR);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
 		result.type = DD;
 
-		SHOW_ASM("call_ " << *dis_Eaddr(addr))
+		SHOW_ASM("call_ " << *DIS_ADDR)
 		DEBUG_STMTS
 
 

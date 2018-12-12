@@ -1553,7 +1553,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	| ANDiodb(Eaddr, i8) =>
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = dis_Eaddr(Eaddr, 32);
+		Exp *oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
 			stmts = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
 
@@ -2215,17 +2215,15 @@ Exp *
 PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
 {
 	match pc to
-	| E(mem) =>
-		return dis_Mem(mem);
+	| E(Mem) =>
+		return DIS_MEM;
 	| Reg(reg) =>
-		Exp *e;
 		switch (size) {
-		case  8: e = dis_Reg(8 + reg); break;
-		case 16: e = dis_Reg(0 + reg); break;
+		case  8: return DIS_REG8;
+		case 16: return DIS_REG16;
 		default:
-		case 32: e = dis_Reg(24 + reg); break;
+		case 32: return DIS_REG32;
 		}
-		return e;
 	endmatch
 }
 
