@@ -1044,13 +1044,13 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 	| LOOPNE(relocd) =>
-		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - pc - 2));
+		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - pc - (nextPC - hostPC)));
 
 	| LOOPE(relocd) =>
-		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - pc - 2));
+		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - pc - (nextPC - hostPC)));
 
 	| LOOP(relocd) =>
-		stmts = instantiate(pc, "LOOP", dis_Num(relocd - pc - 2));
+		stmts = instantiate(pc, "LOOP", dis_Num(relocd - pc - (nextPC - hostPC)));
 
 	| LGS(reg, Mem) =>
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
@@ -1275,9 +1275,9 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		stmts = instantiate(pc, "NOP");
 
 	| CALL.Jvod(relocd) =>
-		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - pc - 5));
+		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - pc - (nextPC - hostPC)));
 		ADDRESS nativeDest = relocd;
-		if (nativeDest == pc + 5) {
+		if (nativeDest == pc + (nextPC - hostPC)) {
 			// This is a call $+5
 			// Use the standard semantics, except for the last statement
 			// (just updates %pc)

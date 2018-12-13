@@ -13858,9 +13858,9 @@ hostPC
                     
 #line 1277 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - pc - 5));
+		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - pc - (nextPC - hostPC)));
 		ADDRESS nativeDest = relocd;
-		if (nativeDest == pc + 5) {
+		if (nativeDest == pc + (nextPC - hostPC)) {
 			// This is a call $+5
 			// Use the standard semantics, except for the last statement
 			// (just updates %pc)
@@ -33201,7 +33201,7 @@ hostPC
                     
 #line 1046 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - pc - 2));
+		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - pc - (nextPC - hostPC)));
 
 
 #line 33208 "pentiumdecoder.cpp"
@@ -33220,7 +33220,7 @@ hostPC
                     
 #line 1049 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - pc - 2));
+		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - pc - (nextPC - hostPC)));
 
 
 #line 33227 "pentiumdecoder.cpp"
@@ -33239,7 +33239,7 @@ hostPC
                     
 #line 1052 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "LOOP", dis_Num(relocd - pc - 2));
+		stmts = instantiate(pc, "LOOP", dis_Num(relocd - pc - (nextPC - hostPC)));
 
 
 #line 33246 "pentiumdecoder.cpp"
