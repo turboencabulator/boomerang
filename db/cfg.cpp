@@ -1661,7 +1661,7 @@ Cfg::generateDot(std::ostream &os) const
 #endif
 			os << first->getNumber() << " ";
 		} else {
-			os << "bb" << bb->getLowAddr() << " ";
+			os << "bb" << std::hex << bb->getLowAddr() << std::dec << " ";
 		}
 
 		switch (bb->getType()) {
