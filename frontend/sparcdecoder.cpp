@@ -31,8 +31,8 @@
 
 class Proc;
 
-#define DIS_ROI     (dis_RegImm(roi))
-#define DIS_ADDR    (dis_Eaddr(addr))
+#define DIS_ROI     (dis_RegImm(roi, delta))
+#define DIS_ADDR    (dis_Eaddr(addr, delta))
 #define DIS_RD      (dis_RegLhs(rd))
 #define DIS_RDR     (dis_RegRhs(rd))
 #define DIS_RS1     (dis_RegRhs(rs1))
@@ -2380,7 +2380,7 @@ SparcDecoder::dis_RegRhs(unsigned r)
  * \returns   The register or immediate at the given address.
  */
 Exp *
-SparcDecoder::dis_RegImm(unsigned pc)
+SparcDecoder::dis_RegImm(ADDRESS pc, ptrdiff_t delta)
 {
 
 #line 2387 "sparcdecoder.cpp"
@@ -2441,7 +2441,7 @@ pc
  * \returns  The Exp* representation of the given address.
  */
 Exp *
-SparcDecoder::dis_Eaddr(ADDRESS pc, int ignore /* = 0 */)
+SparcDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int ignore /* = 0 */)
 {
 	Exp *expr;
 
@@ -2556,11 +2556,11 @@ SparcDecoder::isFuncPrologue(ADDRESS hostPC)
  * Check to see if the instruction at the given offset is a restore
  * instruction.
  *
- * \param hostPC  Pointer to the code in question (host address).
+ * \param pc      Pointer to the code in question.
  * \returns       True if a match found.
  */
 bool
-SparcDecoder::isRestore(ADDRESS hostPC)
+SparcDecoder::isRestore(ADDRESS pc, ptrdiff_t delta)
 {
 
 #line 2567 "sparcdecoder.cpp"
@@ -2570,7 +2570,7 @@ SparcDecoder::isRestore(ADDRESS hostPC)
   ADDRESS MATCH_p = 
     
 #line 764 "machine/sparc/decoder.m"
-hostPC
+pc + delta
 #line 2575 "sparcdecoder.cpp"
 ;
   unsigned MATCH_w_32_0;

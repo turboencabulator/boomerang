@@ -31,15 +31,15 @@ public:
 	/*
 	 * Indicates whether the instruction at the given address is a restore instruction.
 	 */
-	static bool isRestore(ADDRESS hostPC);
+	static bool isRestore(ADDRESS pc, ptrdiff_t delta);
 
 private:
 	/**
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	static Exp *dis_Eaddr(ADDRESS pc, int size = 0);
-	static Exp *dis_RegImm(ADDRESS pc);
+	static Exp *dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int size = 0);
+	static Exp *dis_RegImm(ADDRESS pc, ptrdiff_t delta);
 	static Exp *dis_RegLhs(unsigned r);
 	static Exp *dis_RegRhs(unsigned r);
 	/** \} */

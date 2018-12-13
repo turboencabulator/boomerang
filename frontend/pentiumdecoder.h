@@ -31,8 +31,8 @@ private:
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	Exp *dis_Eaddr(ADDRESS pc, int size = 0);
-	Exp *dis_Mem(ADDRESS ps);
+	Exp *dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int size = 0);
+	Exp *dis_Mem(ADDRESS pc, ptrdiff_t delta);
 	Exp *addReloc(Exp *e);
 	/** \} */
 

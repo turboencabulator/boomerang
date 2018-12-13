@@ -42,14 +42,14 @@ class Proc;
 #define DIS_IDX   (dis_Reg(idx + 32))
 #define DIS_IDXP1 (dis_Reg((idx + 1) % 7 + 32))
 
-#define DIS_EADDR32 (dis_Eaddr(Eaddr, 32))
-#define DIS_EADDR16 (dis_Eaddr(Eaddr, 16))
-#define DIS_EADDR8  (dis_Eaddr(Eaddr,  8))
-#define DIS_MEM     (dis_Mem(Mem))
-#define DIS_MEM16   (dis_Mem(Mem16))    // Probably needs changing
-#define DIS_MEM32   (dis_Mem(Mem32))    // Probably needs changing
-#define DIS_MEM64   (dis_Mem(Mem64))    // Probably needs changing
-#define DIS_MEM80   (dis_Mem(Mem80))    // Probably needs changing
+#define DIS_EADDR32 (dis_Eaddr(Eaddr, delta, 32))
+#define DIS_EADDR16 (dis_Eaddr(Eaddr, delta, 16))
+#define DIS_EADDR8  (dis_Eaddr(Eaddr, delta,  8))
+#define DIS_MEM     (dis_Mem(Mem, delta))
+#define DIS_MEM16   (dis_Mem(Mem16, delta))    // Probably needs changing
+#define DIS_MEM32   (dis_Mem(Mem32, delta))    // Probably needs changing
+#define DIS_MEM64   (dis_Mem(Mem64, delta))    // Probably needs changing
+#define DIS_MEM80   (dis_Mem(Mem80, delta))    // Probably needs changing
 
 #define DIS_I32     (addReloc(new Const(i32)))
 #define DIS_I16     (new Const(i16))
@@ -57077,7 +57077,7 @@ hostPC
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
-PentiumDecoder::dis_Mem(ADDRESS pc)
+PentiumDecoder::dis_Mem(ADDRESS pc, ptrdiff_t delta)
 {
 	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
@@ -57383,7 +57383,7 @@ pc
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
-PentiumDecoder::dis_Eaddr(ADDRESS pc, int size)
+PentiumDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int size)
 {
 
 #line 57390 "pentiumdecoder.cpp"
