@@ -44,6 +44,8 @@ class Proc;
 #define DIS_FS1Q    (dis_RegRhs((fs1q >> 2) + 80))
 #define DIS_FS2Q    (dis_RegRhs((fs2q >> 2) + 80))
 
+#define addressToPC(pc) (pc - delta)
+
 SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
@@ -179,7 +181,6 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
 	return res;
 }
 
-
 /**
  * Attempt to decode the high level instruction at a given address and return
  * the corresponding HL type (e.g. CallStatement, GotoStatement etc).  If no
@@ -201,7 +202,6 @@ DecodeResult &
 SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	static DecodeResult result;
-	ADDRESS hostPC = pc + delta;
 
 	// Clear the result structure;
 	result.reset();
@@ -209,8 +209,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// The actual list of instantiated statements
 	std::list<Statement *> *stmts = nullptr;
 
+	ADDRESS hostPC = pc + delta;
 	ADDRESS nextPC = NO_ADDRESS;
-
 	match [nextPC] hostPC to
 
 	| call__(addr) =>
@@ -220,7 +220,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		auto newCall = new CallStatement;
 
 		// Set the destination
-		ADDRESS nativeDest = addr - delta;
+		ADDRESS nativeDest = addr;
 		newCall->setDest(nativeDest);
 		Proc *destProc = prog->setNewProc(nativeDest);
 		if (destProc == (Proc *)-1) destProc = nullptr;
@@ -308,8 +308,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		}
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 	| pbranch^",a"(cc01, tgt) [name] =>
@@ -349,8 +349,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		}
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 	| branch(tgt) [name] =>
@@ -390,8 +390,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			result.type = NCT;
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 	| BPA(_, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
@@ -401,8 +401,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		result.type = SD;
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(jump);
-		jump->setDest(tgt - delta);
-		SHOW_ASM("BPA " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM("BPA " << std::hex << tgt)
 		DEBUG_STMTS
 
 	| pbranch(cc01, tgt) [name] =>
@@ -438,8 +438,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 			result.type = NCT;
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 	| JMPL(addr, _) =>
@@ -684,7 +684,7 @@ SparcDecoder::dis_RegRhs(unsigned r)
 Exp *
 SparcDecoder::dis_RegImm(ADDRESS pc, ptrdiff_t delta)
 {
-	match pc to
+	match pc + delta to
 	| imode(i) =>
 		Exp *expr = new Const(i);
 		return expr;
@@ -707,7 +707,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int ignore /* = 0 */)
 {
 	Exp *expr;
 
-	match pc to
+	match pc + delta to
 	| indirectA(rs1) =>
 		expr = Location::regOf(rs1);
 	| indexA(rs1, rs2) =>

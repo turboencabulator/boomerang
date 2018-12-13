@@ -48,8 +48,7 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_D       (new Const(d))
 #define DIS_NZRA    (dis_Reg(ra))
 #define DIS_NZRB    (dis_Reg(rb))
-#define DIS_ADDR    (new Const(addr))
-#define DIS_RELADDR (new Const(reladdr - delta))
+#define DIS_RELADDR (new Const(reladdr))
 #define DIS_CRBD    (crBit(crbD))
 #define DIS_CRBA    (crBit(crbA))
 #define DIS_CRBB    (crBit(crbB))
@@ -64,6 +63,8 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_FS      (dis_Reg(fs + 32))
 #define DIS_FA      (dis_Reg(fa + 32))
 #define DIS_FB      (dis_Reg(fb + 32))
+
+#define addressToPC(pc) (pc - delta)
 
 PPCDecoder::PPCDecoder(Prog *prog) :
 	NJMCDecoder(prog)
@@ -102,7 +103,6 @@ DecodeResult &
 PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	static DecodeResult result;
-	ADDRESS hostPC = pc + delta;
 
 	// Clear the result structure;
 	result.reset();
@@ -110,8 +110,8 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// The actual list of instantiated statements
 	std::list<Statement *> *stmts = nullptr;
 
+	ADDRESS hostPC = pc + delta;
 	ADDRESS nextPC = NO_ADDRESS;
-
 
 #line 117 "ppcdecoder.cpp"
 
@@ -478,7 +478,7 @@ hostPC
                   
 #line 202 "machine/ppc/decoder.m"
   // Always "conditional" branch with link, test/OSX/hello has this
-		if (reladdr - delta - pc == 4) {  // Branch to next instr?
+		if (reladdr - pc == 4) {  // Branch to next instr?
 			// Effectively %LR = %pc+4, but give the actual value for %pc
 			auto as = new Assign(new IntegerType,
 			                     new Unary(opMachFtr, new Const("%LR")),
@@ -540,7 +540,7 @@ hostPC
                             
 #line 266 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr, pc, stmts, result);
 
 #line 546 "ppcdecoder.cpp"
 
@@ -565,7 +565,7 @@ hostPC
                             
 #line 260 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSL, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, BIcr, reladdr, pc, stmts, result);
 
 #line 571 "ppcdecoder.cpp"
 
@@ -606,7 +606,7 @@ hostPC
                             
 #line 262 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr, pc, stmts, result);
 
 #line 612 "ppcdecoder.cpp"
 
@@ -631,9 +631,9 @@ hostPC
                             
 #line 268 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSG, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, BIcr, reladdr, pc, stmts, result);
 //	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
-//		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr - delta, pc, stmts, result);
+//		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr, pc, stmts, result);
 
 #line 639 "ppcdecoder.cpp"
 
@@ -674,9 +674,9 @@ hostPC
                             
 #line 272 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JNE, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, BIcr, reladdr, pc, stmts, result);
 //	| bng(BIcr, reladdr) [name] =>  // bng same as blt
-//		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr - delta, pc, stmts, result);
+//		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr, pc, stmts, result);
 
 #line 682 "ppcdecoder.cpp"
 
@@ -701,7 +701,7 @@ hostPC
                             
 #line 264 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JE, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, BIcr, reladdr, pc, stmts, result);
 
 #line 707 "ppcdecoder.cpp"
 
@@ -742,11 +742,11 @@ hostPC
                             
 #line 278 "machine/ppc/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, stmts, result);
 //	| bun(BIcr, reladdr) [name] =>
-//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr - delta, pc, stmts, result);
+//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, stmts, result);
 //	| bnu(BIcr, reladdr) [name] =>
-//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr - delta, pc, stmts, result);
+//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, stmts, result);
 
 
 #line 753 "ppcdecoder.cpp"
@@ -772,7 +772,7 @@ hostPC
                             
 #line 276 "machine/ppc/decoder.m"
   // Branch on summary overflow
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr - delta, pc, stmts, result);  // MVE: Don't know these last 4 yet
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, stmts, result);  // MVE: Don't know these last 4 yet
 
 #line 778 "ppcdecoder.cpp"
 
@@ -812,7 +812,7 @@ hostPC
 		newCall->setDest(dest);
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
-		Proc *destProc = prog->setNewProc(reladdr - delta);
+		Proc *destProc = prog->setNewProc(reladdr);
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
 
@@ -831,7 +831,7 @@ hostPC
               
 #line 199 "machine/ppc/decoder.m"
 
-		unconditionalJump("b", reladdr - delta, pc, stmts, result);
+		unconditionalJump("b", reladdr, pc, stmts, result);
 
 
 #line 838 "ppcdecoder.cpp"
@@ -3782,7 +3782,7 @@ hostPC
 #line 293 "machine/ppc/decoder.m"
 
 	//| bal(BIcr, reladdr) =>
-		unconditionalJump("bal", reladdr - delta, pc, stmts, result);
+		unconditionalJump("bal", reladdr, pc, stmts, result);
 
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.

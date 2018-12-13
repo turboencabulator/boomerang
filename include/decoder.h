@@ -189,12 +189,6 @@ bool isFuncPrologue(ADDRESS hostPC);
 /** \} */
 
 /**
- * addressToPC returns the raw number as the address.  PC could be an
- * abstract type, in our case, PC is the raw address.
- */
-#define addressToPC(pc) pc
-
-/**
  * \name Macros for branches
  * \note Don't put inside a "match" statement, since the ordering is changed
  * and multiple copies may be made.

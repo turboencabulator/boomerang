@@ -48,6 +48,8 @@ class Proc;
 #define DIS_FS1Q    (dis_RegRhs((fs1q >> 2) + 80))
 #define DIS_FS2Q    (dis_RegRhs((fs2q >> 2) + 80))
 
+#define addressToPC(pc) (pc - delta)
+
 SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
@@ -183,7 +185,6 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
 	return res;
 }
 
-
 /**
  * Attempt to decode the high level instruction at a given address and return
  * the corresponding HL type (e.g. CallStatement, GotoStatement etc).  If no
@@ -205,7 +206,6 @@ DecodeResult &
 SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	static DecodeResult result;
-	ADDRESS hostPC = pc + delta;
 
 	// Clear the result structure;
 	result.reset();
@@ -213,8 +213,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// The actual list of instantiated statements
 	std::list<Statement *> *stmts = nullptr;
 
+	ADDRESS hostPC = pc + delta;
 	ADDRESS nextPC = NO_ADDRESS;
-
 
 #line 220 "sparcdecoder.cpp"
 
@@ -357,8 +357,8 @@ hostPC
 		result.type = SD;
 		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(jump);
-		jump->setDest(tgt - delta);
-		SHOW_ASM("BPA " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM("BPA " << std::hex << tgt)
 		DEBUG_STMTS
 
 
@@ -414,8 +414,8 @@ hostPC
 			result.type = NCT;
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 
@@ -554,7 +554,7 @@ hostPC
 		auto newCall = new CallStatement;
 
 		// Set the destination
-		ADDRESS nativeDest = addr - delta;
+		ADDRESS nativeDest = addr;
 		newCall->setDest(nativeDest);
 		Proc *destProc = prog->setNewProc(nativeDest);
 		if (destProc == (Proc *)-1) destProc = nullptr;
@@ -1816,8 +1816,8 @@ hostPC
 		}
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 
@@ -1873,8 +1873,8 @@ hostPC
 			result.type = NCT;
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 
@@ -1932,8 +1932,8 @@ hostPC
 		}
 
 		result.rtl = rtl;
-		jump->setDest(tgt - delta);
-		SHOW_ASM(name << " " << std::hex << tgt - delta)
+		jump->setDest(tgt);
+		SHOW_ASM(name << " " << std::hex << tgt)
 		DEBUG_STMTS
 
 
@@ -2390,7 +2390,7 @@ SparcDecoder::dis_RegImm(ADDRESS pc, ptrdiff_t delta)
   ADDRESS MATCH_p = 
     
 #line 687 "machine/sparc/decoder.m"
-pc
+pc + delta
 #line 2395 "sparcdecoder.cpp"
 ;
   unsigned MATCH_w_32_0;
@@ -2453,7 +2453,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int ignore /* = 0 */)
   ADDRESS MATCH_p = 
     
 #line 710 "machine/sparc/decoder.m"
-pc
+pc + delta
 #line 2458 "sparcdecoder.cpp"
 ;
   unsigned MATCH_w_32_0;
