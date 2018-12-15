@@ -103,10 +103,6 @@ public:
 	// list of UserProcs for entry point(s)
 	        std::list<UserProc *> entryProcs;
 
-	// Lookup the given native address in the code section, returning a host pointer corresponding to the same
-	// address
-	        const void *getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta) const;
-
 	        const char *getRegName(int idx) const { return pFE->getRegName(idx); }
 	        int         getRegSize(int idx) const { return pFE->getRegSize(idx); }
 

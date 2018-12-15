@@ -978,36 +978,6 @@ Prog::getNextUserProc(std::list<Proc *>::iterator &it)
 	return (UserProc *)*it;
 }
 
-/*==============================================================================
- * FUNCTION:    getCodeInfo
- * OVERVIEW:    Lookup the given native address in the code section, returning a host pointer corresponding to the same
- *               address
- * PARAMETERS:  uNative: Native address of the candidate string or constant
- *              last: will be set to one past end of the code section (host)
- *              delta: will be set to the difference between the host and native addresses
- * RETURNS:     Host pointer if in range; nullptr if not
- *              Also sets 2 reference parameters (see above)
- *============================================================================*/
-const void *
-Prog::getCodeInfo(ADDRESS uAddr, const char *&last, ptrdiff_t &delta) const
-{
-	delta = 0;
-	last = nullptr;
-	int n = pBF->getNumSections();
-	// Search all code and read-only sections
-	for (int i = 0; i < n; ++i) {
-		const SectionInfo *pSect = pBF->getSectionInfo(i);
-		if ((!pSect->bCode) && (!pSect->bReadOnly))
-			continue;
-		if ((uAddr < pSect->uNativeAddr) || (uAddr >= pSect->uNativeAddr + pSect->uSectionSize))
-			continue;  // Try the next section
-		delta = pSect->uHostAddr - (char *)pSect->uNativeAddr;
-		last = pSect->uHostAddr + pSect->uSectionSize;
-		return (const void *)(uAddr + delta);
-	}
-	return nullptr;
-}
-
 void
 Prog::decodeEntryPoint(ADDRESS a)
 {
