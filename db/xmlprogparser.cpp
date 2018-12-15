@@ -322,19 +322,18 @@ XMLProgParser::addId(const char **attr, void *x)
 {
 	if (auto val = getAttr(attr, "id")) {
 		//std::cerr << "map id " << val << " to " << std::hex << (int)x << std::dec << "\n";
-		idToX[atoi(val)] = x;
+		idToX[val] = x;
 	}
 }
 
 void *
 XMLProgParser::findId(const char *id) const
 {
-	if (!id)
+	if (!id
+	 || strcmp(id, "") == 0
+	 || strcmp(id, "0") == 0)
 		return nullptr;
-	int n = atoi(id);
-	if (n == 0)
-		return nullptr;
-	auto it = idToX.find(n);
+	auto it = idToX.find(id);
 	if (it == idToX.cend()) {
 		std::cerr << "findId could not find \"" << id << "\"\n";
 		assert(false);

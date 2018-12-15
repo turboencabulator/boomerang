@@ -19,6 +19,7 @@
 #ifdef ENABLE_XML_LOAD
 #include <map>
 #include <stack>
+#include <string>
 #endif
 
 class BasicBlock;
@@ -66,7 +67,7 @@ protected:
 	static int operFromString(const char *s);
 
 	std::stack<Context *> stack;
-	std::map<int, void *> idToX;
+	std::map<std::string, void *> idToX;
 	int phase;
 
 	void addChildStub(Context *node, const Context *child) const;
