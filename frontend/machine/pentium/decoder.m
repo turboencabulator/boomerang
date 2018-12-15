@@ -38,14 +38,14 @@ class Proc;
 #define DIS_IDX   (dis_Reg(idx + 32))
 #define DIS_IDXP1 (dis_Reg((idx + 1) % 7 + 32))
 
-#define DIS_EADDR32 (dis_Eaddr(Eaddr, delta, 32))
-#define DIS_EADDR16 (dis_Eaddr(Eaddr, delta, 16))
-#define DIS_EADDR8  (dis_Eaddr(Eaddr, delta,  8))
-#define DIS_MEM     (dis_Mem(Mem, delta))
-#define DIS_MEM16   (dis_Mem(Mem16, delta))    // Probably needs changing
-#define DIS_MEM32   (dis_Mem(Mem32, delta))    // Probably needs changing
-#define DIS_MEM64   (dis_Mem(Mem64, delta))    // Probably needs changing
-#define DIS_MEM80   (dis_Mem(Mem80, delta))    // Probably needs changing
+#define DIS_EADDR32 (dis_Eaddr(Eaddr, bf, 32))
+#define DIS_EADDR16 (dis_Eaddr(Eaddr, bf, 16))
+#define DIS_EADDR8  (dis_Eaddr(Eaddr, bf,  8))
+#define DIS_MEM     (dis_Mem(Mem, bf))
+#define DIS_MEM16   (dis_Mem(Mem16, bf))    // Probably needs changing
+#define DIS_MEM32   (dis_Mem(Mem32, bf))    // Probably needs changing
+#define DIS_MEM64   (dis_Mem(Mem64, bf))    // Probably needs changing
+#define DIS_MEM80   (dis_Mem(Mem80, bf))    // Probably needs changing
 
 #define DIS_I32     (addReloc(new Const(i32)))
 #define DIS_I16     (new Const(i16))
@@ -54,9 +54,9 @@ class Proc;
 #define DIS_OFF     (addReloc(new Const(off)))
 
 #define addressToPC(pc) (pc)
-#define fetch8(pc) getByte(pc, delta)
-#define fetch16(pc) getWord(pc, delta)
-#define fetch32(pc) getDword(pc, delta)
+#define fetch8(pc)  bf->readNative1(pc)
+#define fetch16(pc) bf->readNative2(pc)
+#define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
 
 static void genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
 
@@ -102,7 +102,7 @@ static DecodeResult result;
  *           during decoding.
  */
 DecodeResult &
-PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	// Clear the result structure;
 	result.reset();
@@ -2126,7 +2126,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
-PentiumDecoder::dis_Mem(ADDRESS pc, ptrdiff_t delta)
+PentiumDecoder::dis_Mem(ADDRESS pc, const BinaryFile *bf)
 {
 	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
@@ -2212,7 +2212,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc, ptrdiff_t delta)
  * \returns  The Exp* representation of the given Eaddr.
  */
 Exp *
-PentiumDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int size)
+PentiumDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int size)
 {
 	match pc to
 	| E(Mem) =>
@@ -2250,46 +2250,6 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
 	return false;
 }
 #endif
-
-
-/*
- * These are the fetch routines.
- */
-
-/**
- * \returns The next byte from image pointed to by lc.
- */
-uint8_t
-PentiumDecoder::getByte(ADDRESS lc, ptrdiff_t delta)
-{
-	return *(uint8_t *)(lc + delta);
-}
-
-/**
- * \returns The next 2-byte word from image pointed to by lc.
- */
-uint16_t
-PentiumDecoder::getWord(ADDRESS lc, ptrdiff_t delta)
-{
-	uint8_t *p = (uint8_t *)(lc + delta);
-	return p[0]
-	    + (p[1] << 8);
-}
-
-/**
- * \returns The next 4-byte word from image pointed to by lc.
- */
-uint32_t
-PentiumDecoder::getDword(ADDRESS lc, ptrdiff_t delta)
-{
-	lastDwordLc = lc;
-	uint8_t *p = (uint8_t *)(lc + delta);
-	return p[0]
-	    + (p[1] <<  8)
-	    + (p[2] << 16)
-	    + (p[3] << 24);
-}
-
 
 static int BSFRstate = 0;  // State number for this state machine
 

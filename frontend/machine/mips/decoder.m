@@ -57,7 +57,7 @@ MIPSDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 
 // Stub from PPC...
 DecodeResult &
-MIPSDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+MIPSDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	static DecodeResult result;
 

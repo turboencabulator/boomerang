@@ -518,7 +518,7 @@ FrontEnd::decodeInstruction(ADDRESS pc)
 		invalid.valid = false;
 		return invalid;
 	}
-	return getDecoder().decodeInstruction(pc, pBF->getTextDelta());
+	return getDecoder().decodeInstruction(pc, pBF);
 }
 
 /**

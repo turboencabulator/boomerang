@@ -21,7 +21,7 @@ class MIPSDecoder : public NJMCDecoder {
 public:
 	MIPSDecoder(Prog *prog);
 
-	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) override;
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 };
 

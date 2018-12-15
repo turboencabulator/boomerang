@@ -27,8 +27,8 @@
 
 class Proc;
 
-#define DIS_ROI     (dis_RegImm(roi, delta))
-#define DIS_ADDR    (dis_Eaddr(addr, delta))
+#define DIS_ROI     (dis_RegImm(roi, bf))
+#define DIS_ADDR    (dis_Eaddr(addr, bf))
 #define DIS_RD      (dis_RegLhs(rd))
 #define DIS_RDR     (dis_RegRhs(rd))
 #define DIS_RS1     (dis_RegRhs(rs1))
@@ -45,7 +45,7 @@ class Proc;
 #define DIS_FS2Q    (dis_RegRhs((fs2q >> 2) + 80))
 
 #define addressToPC(pc) (pc)
-#define fetch32(pc) getDword(pc, delta)
+#define fetch32(pc) bf->readNative4(pc)
 
 SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
@@ -200,7 +200,7 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
  *           during decoding.
  */
 DecodeResult &
-SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	static DecodeResult result;
 
@@ -682,7 +682,7 @@ SparcDecoder::dis_RegRhs(unsigned r)
  * \returns   The register or immediate at the given address.
  */
 Exp *
-SparcDecoder::dis_RegImm(ADDRESS pc, ptrdiff_t delta)
+SparcDecoder::dis_RegImm(ADDRESS pc, const BinaryFile *bf)
 {
 	match pc to
 	| imode(i) =>
@@ -703,7 +703,7 @@ SparcDecoder::dis_RegImm(ADDRESS pc, ptrdiff_t delta)
  * \returns  The Exp* representation of the given address.
  */
 Exp *
-SparcDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int ignore /* = 0 */)
+SparcDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int ignore /* = 0 */)
 {
 	Exp *expr;
 
@@ -759,7 +759,7 @@ SparcDecoder::isFuncPrologue(ADDRESS hostPC)
  * \returns       True if a match found.
  */
 bool
-SparcDecoder::isRestore(ADDRESS pc, ptrdiff_t delta)
+SparcDecoder::isRestore(ADDRESS pc, const BinaryFile *bf)
 {
 	match pc to
 	| RESTORE(_, _, _) =>
@@ -773,16 +773,3 @@ SparcDecoder::isRestore(ADDRESS pc, ptrdiff_t delta)
 /*
  * These are the fetch routines.
  */
-
-/**
- * \returns The next 4-byte word from image pointed to by lc.
- */
-uint32_t
-SparcDecoder::getDword(ADDRESS lc, ptrdiff_t delta)
-{
-	uint8_t *p = (uint8_t *)(lc + delta);
-	return (p[0] << 24)
-	     + (p[1] << 16)
-	     + (p[2] <<  8)
-	     +  p[3];
-}

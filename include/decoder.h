@@ -27,9 +27,9 @@
 #include <cstddef>
 #include <cstdint>
 
+class BinaryFile;
 class Exp;
 class Prog;
-
 
 /**
  * These are the instruction classes defined in "A Transformational Approach
@@ -115,7 +115,7 @@ public:
 	 * Decodes the machine instruction at pc and returns an RTL instance
 	 * for the instruction.
 	 */
-	virtual DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) = 0;
+	virtual DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) = 0;
 
 #if 0 // Cruft?
 	/**

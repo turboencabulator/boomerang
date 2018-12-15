@@ -21,12 +21,13 @@
 
 #include "st20decoder.h"
 
+#include "BinaryFile.h"
 #include "boomerang.h"
 #include "exp.h"
 #include "rtl.h"
 #include "statement.h"
 
-#define fetch8(pc) getByte(pc, delta)
+#define fetch8(pc) bf->readNative1(pc)
 
 /**
  * Constructor.  The code won't work without this (not sure why the default
@@ -66,7 +67,7 @@ static DecodeResult result;
  *           during decoding.
  */
 DecodeResult &
-ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
 	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
@@ -74,15 +75,15 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	while (1) {
 
-#line 78 "st20decoder.cpp"
+#line 79 "st20decoder.cpp"
 
-#line 72 "machine/st20/decoder.m"
+#line 73 "machine/st20/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 72 "machine/st20/decoder.m"
+#line 73 "machine/st20/decoder.m"
 pc + result.numBytes++
-#line 86 "st20decoder.cpp"
+#line 87 "st20decoder.cpp"
 ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
@@ -98,12 +99,12 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 85 "machine/st20/decoder.m"
+#line 86 "machine/st20/decoder.m"
 
 			unconditionalJump("j", pc + result.numBytes + total + oper, pc, stmts, result);
 
 
-#line 107 "st20decoder.cpp"
+#line 108 "st20decoder.cpp"
 
             
           }
@@ -117,12 +118,12 @@ pc + result.numBytes++
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 82 "machine/st20/decoder.m"
+#line 83 "machine/st20/decoder.m"
 
 			stmts = instantiate(pc, name, new Const(total + oper));
 
 
-#line 126 "st20decoder.cpp"
+#line 127 "st20decoder.cpp"
 
             
           }
@@ -132,13 +133,13 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 74 "machine/st20/decoder.m"
+#line 75 "machine/st20/decoder.m"
 
 			total = (total + oper) << 4;
 			continue;
 
 
-#line 142 "st20decoder.cpp"
+#line 143 "st20decoder.cpp"
 
             
           }
@@ -148,13 +149,13 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 78 "machine/st20/decoder.m"
+#line 79 "machine/st20/decoder.m"
 
 			total = (total + ~oper) << 4;
 			continue;
 
 
-#line 158 "st20decoder.cpp"
+#line 159 "st20decoder.cpp"
 
             
           }
@@ -164,7 +165,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 88 "machine/st20/decoder.m"
+#line 89 "machine/st20/decoder.m"
 
 			total += oper;
 			stmts = instantiate(pc, "call", new Const(total));
@@ -175,7 +176,7 @@ pc + result.numBytes++
 			result.rtl->appendStmt(newCall);
 
 
-#line 179 "st20decoder.cpp"
+#line 180 "st20decoder.cpp"
 
             
           }
@@ -185,7 +186,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 97 "machine/st20/decoder.m"
+#line 98 "machine/st20/decoder.m"
 
 			auto br = new BranchStatement();
 			//br->setCondType(BRANCH_JE);
@@ -196,7 +197,7 @@ pc + result.numBytes++
 			result.rtl->appendStmt(br);
 
 
-#line 200 "st20decoder.cpp"
+#line 201 "st20decoder.cpp"
 
             
           }
@@ -206,7 +207,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 106 "machine/st20/decoder.m"
+#line 107 "machine/st20/decoder.m"
 
 			total |= oper;
 			const char *name = nullptr;
@@ -394,7 +395,7 @@ pc + result.numBytes++
 			}
 
 
-#line 398 "st20decoder.cpp"
+#line 399 "st20decoder.cpp"
 
             
           }
@@ -408,9 +409,9 @@ pc + result.numBytes++
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 412 "st20decoder.cpp"
+#line 413 "st20decoder.cpp"
 
-#line 293 "machine/st20/decoder.m"
+#line 294 "machine/st20/decoder.m"
 		break;
 	}
 
@@ -419,18 +420,5 @@ pc + result.numBytes++
 	return result;
 }
 
-/*
- * These are the fetch routines.
- */
-
-/**
- * \returns The next byte from image pointed to by lc.
- */
-uint8_t
-ST20Decoder::getByte(ADDRESS lc, ptrdiff_t delta)
-{
-	return *(uint8_t *)(lc + delta);
-}
-
-#line 436 "st20decoder.cpp"
+#line 424 "st20decoder.cpp"
 

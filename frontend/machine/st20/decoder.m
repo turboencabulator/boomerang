@@ -17,12 +17,13 @@
 
 #include "st20decoder.h"
 
+#include "BinaryFile.h"
 #include "boomerang.h"
 #include "exp.h"
 #include "rtl.h"
 #include "statement.h"
 
-#define fetch8(pc) getByte(pc, delta)
+#define fetch8(pc) bf->readNative1(pc)
 
 /**
  * Constructor.  The code won't work without this (not sure why the default
@@ -62,7 +63,7 @@ static DecodeResult result;
  *           during decoding.
  */
 DecodeResult &
-ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
 	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
@@ -296,17 +297,4 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	if (!result.rtl)
 		result.rtl = new RTL(pc, stmts);
 	return result;
-}
-
-/*
- * These are the fetch routines.
- */
-
-/**
- * \returns The next byte from image pointed to by lc.
- */
-uint8_t
-ST20Decoder::getByte(ADDRESS lc, ptrdiff_t delta)
-{
-	return *(uint8_t *)(lc + delta);
 }

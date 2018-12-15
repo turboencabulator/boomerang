@@ -947,7 +947,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 						// e.g.
 						// 142c8:  40 00 5b 91        call         exit
 						// 142cc:  91 e8 3f ff        restore      %g0, -1, %o0
-						if (decoder.isRestore(address + 4, pBF->getTextDelta())) {
+						if (decoder.isRestore(address + 4, pBF)) {
 							// Give the address of the call; I think that this is actually important, if faintly annoying
 							delay_inst.rtl->updateAddress(address);
 							BB_rtls->push_back(delay_inst.rtl);

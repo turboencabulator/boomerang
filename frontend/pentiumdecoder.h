@@ -23,7 +23,7 @@ class PentiumDecoder : public NJMCDecoder {
 public:
 	PentiumDecoder(Prog *prog);
 
-	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) override;
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 private:
@@ -31,16 +31,12 @@ private:
 	 * \name Functions to decode instruction operands into Exp*s
 	 * \{
 	 */
-	Exp *dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int size = 0);
-	Exp *dis_Mem(ADDRESS pc, ptrdiff_t delta);
+	Exp *dis_Eaddr(ADDRESS, const BinaryFile *, int size = 0);
+	Exp *dis_Mem(ADDRESS, const BinaryFile *);
 	Exp *addReloc(Exp *e);
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
-
-	static uint8_t getByte(ADDRESS lc, ptrdiff_t delta);
-	static uint16_t getWord(ADDRESS lc, ptrdiff_t delta);
-	uint32_t getDword(ADDRESS lc, ptrdiff_t delta);
 
 	unsigned lastDwordLc;
 };

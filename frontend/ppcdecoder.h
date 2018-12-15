@@ -25,7 +25,7 @@ class PPCDecoder : public NJMCDecoder {
 public:
 	PPCDecoder(Prog *prog);
 
-	DecodeResult &decodeInstruction(ADDRESS pc, ptrdiff_t delta) override;
+	DecodeResult &decodeInstruction(ADDRESS, const BinaryFile *) override;
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 protected:
@@ -41,7 +41,6 @@ private:
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
-	static uint32_t getDword(ADDRESS lc, ptrdiff_t delta);
 };
 
 #endif

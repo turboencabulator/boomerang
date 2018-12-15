@@ -65,7 +65,7 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_FB      (dis_Reg(fb + 32))
 
 #define addressToPC(pc) (pc)
-#define fetch32(pc) getDword(pc, delta)
+#define fetch32(pc) bf->readNative4(pc)
 
 PPCDecoder::PPCDecoder(Prog *prog) :
 	NJMCDecoder(prog)
@@ -101,7 +101,7 @@ PPCDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
  *           during decoding.
  */
 DecodeResult &
-PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
+PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	static DecodeResult result;
 
@@ -4217,24 +4217,6 @@ PPCDecoder::isFuncPrologue(ADDRESS hostPC)
 }
 #endif
 
-
-/*
- * These are the fetch routines.
- */
-
-/**
- * \returns The next 4-byte word from image pointed to by lc.
- */
-uint32_t
-PPCDecoder::getDword(ADDRESS lc, ptrdiff_t delta)
-{
-	uint8_t *p = (uint8_t *)(lc + delta);
-	return (p[0] << 24)
-	     + (p[1] << 16)
-	     + (p[2] <<  8)
-	     +  p[3];
-}
-
 /**
  * Get an expression for a CR bit.
  * For example, if bitNum is 6, return r65@[2:2]
@@ -4251,5 +4233,5 @@ crBit(int bitNum)
 	                   new Const(bitNum));
 }
 
-#line 4255 "ppcdecoder.cpp"
+#line 4237 "ppcdecoder.cpp"
 
