@@ -14,6 +14,7 @@
 
 #include "ParserTest.h"
 
+#include "sslinst.h"
 #include "sslparser.h"
 
 #include <sstream>

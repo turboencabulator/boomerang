@@ -25,7 +25,7 @@
 #include <config.h>
 #endif
 
-#include "rtl.h"
+#include "sslinst.h"
 
 #include "boomerang.h"
 #include "exp.h"

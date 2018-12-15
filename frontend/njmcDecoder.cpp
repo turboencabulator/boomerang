@@ -18,10 +18,10 @@
 #include <config.h>
 #endif
 
-#include "boomerang.h"
 #include "decoder.h"
+
+#include "boomerang.h"
 #include "exp.h"
-#include "rtl.h"
 
 #include <cstdarg>  // For varargs
 #include <cassert>

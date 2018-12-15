@@ -17,7 +17,7 @@
 #ifndef DECODER_H
 #define DECODER_H
 
-#include "rtl.h"
+#include "sslinst.h"
 #include "statement.h"
 #include "types.h"
 

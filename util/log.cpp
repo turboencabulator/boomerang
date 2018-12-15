@@ -16,6 +16,7 @@
 #include "managed.h"
 #include "rtl.h"
 #include "statement.h"
+#include "type.h"
 
 #include <sstream>
 

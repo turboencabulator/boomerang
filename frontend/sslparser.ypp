@@ -32,6 +32,7 @@
 	#include "insnameelem.h"
 	#include "operator.h"
 	#include "rtl.h"
+	#include "sslinst.h"
 	#include "statement.h"
 	#include "type.h"
 	#include "types.h"

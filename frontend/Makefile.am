@@ -29,6 +29,7 @@ libfrontend_la_SOURCES = \
 	register.cpp \
 	$(top_srcdir)/include/register.h \
 	sslinst.cpp \
+	$(top_srcdir)/include/sslinst.h \
 	sslparser.ypp \
 	sslparser.h \
 	sslscanner.lpp \
