@@ -200,16 +200,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		unconditionalJump("b", reladdr, pc, stmts, result);
 
 	| ball(BIcr, reladdr) [name] =>  // Always "conditional" branch with link, test/OSX/hello has this
-		if (reladdr - pc == 4) {  // Branch to next instr?
+		Exp *dest = DIS_RELADDR;
+		if (reladdr == nextPC) {  // Branch to next instr?
 			// Effectively %LR = %pc+4, but give the actual value for %pc
 			auto as = new Assign(new IntegerType,
 			                     new Unary(opMachFtr, new Const("%LR")),
-			                     new Const(pc + 4));
+			                     dest);
 			stmts = new std::list<Statement *>;
 			stmts->push_back(as);
 			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4")
 		} else {
-			Exp *dest = DIS_RELADDR;
 			stmts = instantiate(pc, name, dest);
 			auto newCall = new CallStatement;
 			// Record the fact that this is not a computed call
