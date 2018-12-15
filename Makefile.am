@@ -65,10 +65,10 @@ testAll_LDADD = \
 	$(top_builddir)/db/libProgTest.la \
 	$(top_builddir)/db/libProcTest.la \
 	$(top_builddir)/db/libRtlTest.la \
-	$(top_builddir)/db/libParserTest.la \
 	$(top_builddir)/type/libTypeTest.la \
 	$(top_builddir)/frontend/libFrontSparcTest.la \
 	$(top_builddir)/frontend/libFrontPentTest.la \
+	$(top_builddir)/frontend/libParserTest.la \
 	$(top_builddir)/c/libCTest.la \
 	$(top_builddir)/db/libStatementTest.la \
 	$(top_builddir)/db/libCfgTest.la \
