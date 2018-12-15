@@ -64,7 +64,8 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_FA      (dis_Reg(fa + 32))
 #define DIS_FB      (dis_Reg(fb + 32))
 
-#define addressToPC(pc) (pc - delta)
+#define addressToPC(pc) (pc)
+#define fetch32(pc) getDword(pc, delta)
 
 PPCDecoder::PPCDecoder(Prog *prog) :
 	NJMCDecoder(prog)
@@ -110,7 +111,6 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// The actual list of instantiated statements
 	std::list<Statement *> *stmts = nullptr;
 
-	ADDRESS hostPC = pc + delta;
 	ADDRESS nextPC = NO_ADDRESS;
 
 #line 117 "ppcdecoder.cpp"
@@ -120,7 +120,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
   ADDRESS MATCH_p = 
     
 #line 111 "machine/ppc/decoder.m"
-hostPC
+pc
 #line 125 "ppcdecoder.cpp"
 ;
   const char *MATCH_name;
@@ -375,7 +375,7 @@ hostPC
   };
   unsigned MATCH_w_32_0;
   { 
-    MATCH_w_32_0 = getDword(MATCH_p); 
+    MATCH_w_32_0 = fetch32(MATCH_p); 
     
       switch((MATCH_w_32_0 >> 26 & 0x3f) /* OPCD at 0 */) {
         case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 9: 
@@ -917,7 +917,7 @@ hostPC
                                   
 #line 311 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSL, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -940,7 +940,7 @@ hostPC
                                   
 #line 299 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSGE, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -983,7 +983,7 @@ hostPC
                                   
 #line 303 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSG, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1006,7 +1006,7 @@ hostPC
                                   
 #line 315 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JSLE, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1049,7 +1049,7 @@ hostPC
                                   
 #line 319 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JE, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1072,7 +1072,7 @@ hostPC
                                   
 #line 307 "machine/ppc/decoder.m"
 
-		conditionalJump(name, BRANCH_JNE, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1115,7 +1115,7 @@ hostPC
                                   
 #line 327 "machine/ppc/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -1138,7 +1138,7 @@ hostPC
                                   
 #line 323 "machine/ppc/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC - delta, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC, pc, stmts, result);
 		result.rtl->appendStmt(new ReturnStatement);
 
 
@@ -4155,7 +4155,7 @@ hostPC
 
 #line 347 "machine/ppc/decoder.m"
 
-	result.numBytes = nextPC - hostPC;
+	result.numBytes = nextPC - pc;
 	if (result.valid && !result.rtl)  // Don't override higher level res
 		result.rtl = new RTL(pc, stmts);
 
@@ -4226,9 +4226,9 @@ PPCDecoder::isFuncPrologue(ADDRESS hostPC)
  * \returns The next 4-byte word from image pointed to by lc.
  */
 uint32_t
-PPCDecoder::getDword(ADDRESS lc)
+PPCDecoder::getDword(ADDRESS lc, ptrdiff_t delta)
 {
-	uint8_t *p = (uint8_t *)lc;
+	uint8_t *p = (uint8_t *)(lc + delta);
 	return (p[0] << 24)
 	     + (p[1] << 16)
 	     + (p[2] <<  8)

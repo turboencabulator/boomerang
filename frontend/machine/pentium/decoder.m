@@ -53,11 +53,12 @@ class Proc;
 #define DIS_COUNT   (new Const(count))
 #define DIS_OFF     (addReloc(new Const(off)))
 
-#define addressToPC(pc) (pc - delta)
+#define addressToPC(pc) (pc)
+#define fetch8(pc) getByte(pc, delta)
+#define fetch16(pc) getWord(pc, delta)
+#define fetch32(pc) getDword(pc, delta)
 
-
-void
-genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
+static void genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
 
 /**
  * Constructor.  The code won't work without this (not sure why the default
@@ -109,9 +110,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// The actual list of instantiated Statements
 	std::list<Statement *> *stmts = nullptr;
 
-	ADDRESS hostPC = pc + delta;
 	ADDRESS nextPC = NO_ADDRESS;
-	match [nextPC] hostPC to
+	match [nextPC] pc to
 
 	| CALL.Evod(Eaddr) =>
 		/*
@@ -1044,13 +1044,13 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 	| LOOPNE(relocd) =>
-		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - pc - (nextPC - hostPC)));
+		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - nextPC));
 
 	| LOOPE(relocd) =>
-		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - pc - (nextPC - hostPC)));
+		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - nextPC));
 
 	| LOOP(relocd) =>
-		stmts = instantiate(pc, "LOOP", dis_Num(relocd - pc - (nextPC - hostPC)));
+		stmts = instantiate(pc, "LOOP", dis_Num(relocd - nextPC));
 
 	| LGS(reg, Mem) =>
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
@@ -1275,9 +1275,9 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		stmts = instantiate(pc, "NOP");
 
 	| CALL.Jvod(relocd) =>
-		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - pc - (nextPC - hostPC)));
+		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - nextPC));
 		ADDRESS nativeDest = relocd;
-		if (nativeDest == pc + (nextPC - hostPC)) {
+		if (nativeDest == nextPC) {
 			// This is a call $+5
 			// Use the standard semantics, except for the last statement
 			// (just updates %pc)
@@ -1348,22 +1348,22 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	| BSRod(reg, Eaddr) =>
 		//stmts = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
 		// Bit Scan Forward: need helper function
-		genBSFR(pc, DIS_REG32, DIS_EADDR32, 32, 32, opMinus, nextPC - hostPC);
+		genBSFR(pc, DIS_REG32, DIS_EADDR32, 32, 32, opMinus, nextPC - pc);
 		return result;
 
 	| BSRow(reg, Eaddr) =>
 		//stmts = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
-		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - hostPC);
+		genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - pc);
 		return result;
 
 	| BSFod(reg, Eaddr) =>
 		//stmts = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
-		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - hostPC);
+		genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - pc);
 		return result;
 
 	| BSFow(reg, Eaddr) =>
 		//stmts = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
-		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - hostPC);
+		genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - pc);
 		return result;
 
 	// Not "user" instructions:
@@ -2112,7 +2112,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 
 	if (!result.rtl)
 		result.rtl = new RTL(pc, stmts);
-	result.numBytes = nextPC - hostPC;
+	result.numBytes = nextPC - pc;
 	return result;
 }
 
@@ -2131,7 +2131,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc, ptrdiff_t delta)
 	Exp *expr = nullptr;
 	lastDwordLc = (unsigned)-1;
 
-	match pc + delta to
+	match pc to
 	| Abs32(a) =>
 		// [a]
 		expr = Location::memOf(addReloc(new Const(a)));
@@ -2214,7 +2214,7 @@ PentiumDecoder::dis_Mem(ADDRESS pc, ptrdiff_t delta)
 Exp *
 PentiumDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int size)
 {
-	match pc + delta to
+	match pc to
 	| E(Mem) =>
 		return DIS_MEM;
 	| Reg(reg) =>
@@ -2260,32 +2260,34 @@ PentiumDecoder::isFuncPrologue(ADDRESS hostPC)
  * \returns The next byte from image pointed to by lc.
  */
 uint8_t
-PentiumDecoder::getByte(ADDRESS lc)
+PentiumDecoder::getByte(ADDRESS lc, ptrdiff_t delta)
 {
-	return *(uint8_t *)lc;
+	return *(uint8_t *)(lc + delta);
 }
 
 /**
  * \returns The next 2-byte word from image pointed to by lc.
  */
 uint16_t
-PentiumDecoder::getWord(ADDRESS lc)
+PentiumDecoder::getWord(ADDRESS lc, ptrdiff_t delta)
 {
-	return (uint16_t)(*(uint8_t *)lc
-	               + (*(uint8_t *)(lc + 1) << 8));
+	uint8_t *p = (uint8_t *)(lc + delta);
+	return p[0]
+	    + (p[1] << 8);
 }
 
 /**
  * \returns The next 4-byte word from image pointed to by lc.
  */
 uint32_t
-PentiumDecoder::getDword(ADDRESS lc)
+PentiumDecoder::getDword(ADDRESS lc, ptrdiff_t delta)
 {
-	lastDwordLc = lc - prog->getTextDelta();
-	return (uint32_t)(*(uint8_t *)lc
-	               + (*(uint8_t *)(lc + 1) <<  8)
-	               + (*(uint8_t *)(lc + 2) << 16)
-	               + (*(uint8_t *)(lc + 3) << 24));
+	lastDwordLc = lc;
+	uint8_t *p = (uint8_t *)(lc + delta);
+	return p[0]
+	    + (p[1] <<  8)
+	    + (p[2] << 16)
+	    + (p[3] << 24);
 }
 
 
@@ -2305,7 +2307,7 @@ static int BSFRstate = 0;  // State number for this state machine
  *
  * \returns  true if have to exit early (not in last state).
  */
-void
+static void
 genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int numBytes)
 {
 	// Note the horrible hack needed here. We need initialisation code, and an extra branch, so the %SKIP/%RPT won't

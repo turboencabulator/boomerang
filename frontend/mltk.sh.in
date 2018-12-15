@@ -77,9 +77,9 @@ eval "${SML_TOOLKIT}" <<EOF
 			, addressType = Type.VAR {interface=NONE, name="ADDRESS"}
 			, fetch = fn {address, width} =>
 				let val rtn = case width
-					of 8 => "getByte"
-					| 16 => "getWord"
-					| 32 => "getDword"
+					of 8 => "fetch8"
+					| 16 => "fetch16"
+					| 32 => "fetch32"
 					| _  => Impossible.impossible ("width = " ^ Int.toString width)
 				in  Exp.call [Exp.var rtn, address]
 				end

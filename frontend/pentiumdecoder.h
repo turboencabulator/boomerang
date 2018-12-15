@@ -38,9 +38,9 @@ private:
 
 	//bool isFuncPrologue(ADDRESS hostPC);
 
-	static uint8_t getByte(ADDRESS lc);
-	static uint16_t getWord(ADDRESS lc);
-	uint32_t getDword(ADDRESS lc);
+	static uint8_t getByte(ADDRESS lc, ptrdiff_t delta);
+	static uint16_t getWord(ADDRESS lc, ptrdiff_t delta);
+	uint32_t getDword(ADDRESS lc, ptrdiff_t delta);
 
 	unsigned lastDwordLc;
 };

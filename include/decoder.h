@@ -223,27 +223,6 @@ extern char *fp_names[];
  * scale factor they represent.
  */
 extern int scale[];
-
-
-/**
- * \name Fetch routines
- * \{
- */
-/**
- * \returns The byte (8 bits) starting at the given address.
- */
-uint8_t getByte(ADDRESS lc);
-
-/**
- * \returns The word (16 bits) starting at the given address.
- */
-uint16_t getWord(ADDRESS lc);
-
-/**
- * \returns The double (32 bits) starting at the given address.
- */
-uint32_t getDword(ADDRESS lc);
-/** \} */
 #endif
 
 #endif

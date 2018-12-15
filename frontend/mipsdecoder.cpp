@@ -64,16 +64,13 @@ DecodeResult &
 MIPSDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	static DecodeResult result;
-	ADDRESS hostPC = pc + delta;
 
 	// Clear the result structure;
 	result.reset();
 
 	// The actual list of instantiated statements
 	std::list<Statement *> *stmts = nullptr;
-
-	ADDRESS nextPC = NO_ADDRESS;
 }
 
-#line 79 "mipsdecoder.cpp"
+#line 76 "mipsdecoder.cpp"
 

@@ -46,7 +46,7 @@ private:
 
 	static RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
 	//bool isFuncPrologue(ADDRESS hostPC);
-	static uint32_t getDword(ADDRESS lc);
+	static uint32_t getDword(ADDRESS lc, ptrdiff_t delta);
 };
 
 #endif

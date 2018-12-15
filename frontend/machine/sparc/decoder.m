@@ -44,7 +44,8 @@ class Proc;
 #define DIS_FS1Q    (dis_RegRhs((fs1q >> 2) + 80))
 #define DIS_FS2Q    (dis_RegRhs((fs2q >> 2) + 80))
 
-#define addressToPC(pc) (pc - delta)
+#define addressToPC(pc) (pc)
+#define fetch32(pc) getDword(pc, delta)
 
 SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
@@ -209,9 +210,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 	// The actual list of instantiated statements
 	std::list<Statement *> *stmts = nullptr;
 
-	ADDRESS hostPC = pc + delta;
 	ADDRESS nextPC = NO_ADDRESS;
-	match [nextPC] hostPC to
+	match [nextPC] pc to
 
 	| call__(addr) =>
 		/*
@@ -279,7 +279,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (name[0] == 'C') {
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = nextPC - hostPC;
+			result.numBytes = nextPC - pc;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
@@ -321,7 +321,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = nextPC - hostPC;
+			result.numBytes = nextPC - pc;
 			return result;
 		}
 		GotoStatement *jump = nullptr;
@@ -362,7 +362,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (name[0] == 'C') {
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = nextPC - hostPC;
+			result.numBytes = nextPC - pc;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
@@ -409,7 +409,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL;
-			result.numBytes = nextPC - hostPC;
+			result.numBytes = nextPC - pc;
 			return result;
 		}
 		GotoStatement *jump = nullptr;
@@ -639,7 +639,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 		result.valid = false;
 	endmatch
 
-	result.numBytes = nextPC - hostPC;
+	result.numBytes = nextPC - pc;
 	if (result.valid && !result.rtl)  // Don't override higher level res
 		result.rtl = new RTL(pc, stmts);
 
@@ -684,7 +684,7 @@ SparcDecoder::dis_RegRhs(unsigned r)
 Exp *
 SparcDecoder::dis_RegImm(ADDRESS pc, ptrdiff_t delta)
 {
-	match pc + delta to
+	match pc to
 	| imode(i) =>
 		Exp *expr = new Const(i);
 		return expr;
@@ -707,7 +707,7 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, ptrdiff_t delta, int ignore /* = 0 */)
 {
 	Exp *expr;
 
-	match pc + delta to
+	match pc to
 	| indirectA(rs1) =>
 		expr = Location::regOf(rs1);
 	| indexA(rs1, rs2) =>
@@ -761,7 +761,7 @@ SparcDecoder::isFuncPrologue(ADDRESS hostPC)
 bool
 SparcDecoder::isRestore(ADDRESS pc, ptrdiff_t delta)
 {
-	match pc + delta to
+	match pc to
 	| RESTORE(_, _, _) =>
 	//| RESTORE(a, b, c) =>
 		return true;
@@ -778,9 +778,9 @@ SparcDecoder::isRestore(ADDRESS pc, ptrdiff_t delta)
  * \returns The next 4-byte word from image pointed to by lc.
  */
 uint32_t
-SparcDecoder::getDword(ADDRESS lc)
+SparcDecoder::getDword(ADDRESS lc, ptrdiff_t delta)
 {
-	uint8_t *p = (uint8_t *)lc;
+	uint8_t *p = (uint8_t *)(lc + delta);
 	return (p[0] << 24)
 	     + (p[1] << 16)
 	     + (p[2] <<  8)

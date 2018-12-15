@@ -22,6 +22,8 @@
 #include "rtl.h"
 #include "statement.h"
 
+#define fetch8(pc) getByte(pc, delta)
+
 /**
  * Constructor.  The code won't work without this (not sure why the default
  * constructor won't do...)
@@ -63,12 +65,11 @@ DecodeResult &
 ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
-	ADDRESS hostPC = pc + delta;
 	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
 	unsigned total = 0;  // Total value from all prefixes
 
 	while (1) {
-		match hostPC + result.numBytes++ to
+		match pc + result.numBytes++ to
 
 		| pfix(oper) =>
 			total = (total + oper) << 4;
@@ -305,31 +306,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
  * \returns The next byte from image pointed to by lc.
  */
 uint8_t
-ST20Decoder::getByte(ADDRESS lc)
+ST20Decoder::getByte(ADDRESS lc, ptrdiff_t delta)
 {
-	return *(uint8_t *)lc;
+	return *(uint8_t *)(lc + delta);
 }
-
-#if 0 // Cruft?
-/**
- * \returns The next 2-byte word from image pointed to by lc.
- */
-uint16_t
-ST20Decoder::getWord(ADDRESS lc)
-{
-	return (uint16_t)(*(uint8_t *)lc
-	               + (*(uint8_t *)(lc + 1) << 8));
-}
-
-/**
- * \returns The next 4-byte word from image pointed to by lc.
- */
-uint32_t
-ST20Decoder::getDword(ADDRESS lc)
-{
-	return (uint32_t)(*(uint8_t *)lc
-	               + (*(uint8_t *)(lc + 1) <<  8)
-	               + (*(uint8_t *)(lc + 2) << 16)
-	               + (*(uint8_t *)(lc + 3) << 24));
-}
-#endif

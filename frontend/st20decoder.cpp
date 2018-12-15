@@ -26,6 +26,8 @@
 #include "rtl.h"
 #include "statement.h"
 
+#define fetch8(pc) getByte(pc, delta)
+
 /**
  * Constructor.  The code won't work without this (not sure why the default
  * constructor won't do...)
@@ -67,21 +69,20 @@ DecodeResult &
 ST20Decoder::decodeInstruction(ADDRESS pc, ptrdiff_t delta)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
-	ADDRESS hostPC = pc + delta;
 	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
 	unsigned total = 0;  // Total value from all prefixes
 
 	while (1) {
 
-#line 77 "st20decoder.cpp"
+#line 78 "st20decoder.cpp"
 
-#line 71 "machine/st20/decoder.m"
+#line 72 "machine/st20/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 71 "machine/st20/decoder.m"
-hostPC + result.numBytes++
-#line 85 "st20decoder.cpp"
+#line 72 "machine/st20/decoder.m"
+pc + result.numBytes++
+#line 86 "st20decoder.cpp"
 ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
@@ -90,19 +91,19 @@ hostPC + result.numBytes++
   };
   unsigned /* [0..255] */ MATCH_w_8_0;
   { 
-    MATCH_w_8_0 = getByte(MATCH_p); 
+    MATCH_w_8_0 = fetch8(MATCH_p); 
     
       switch((MATCH_w_8_0 >> 4 & 0xf) /* fc at 0 */) {
         case 0: 
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 84 "machine/st20/decoder.m"
+#line 85 "machine/st20/decoder.m"
 
 			unconditionalJump("j", pc + result.numBytes + total + oper, pc, stmts, result);
 
 
-#line 106 "st20decoder.cpp"
+#line 107 "st20decoder.cpp"
 
             
           }
@@ -116,12 +117,12 @@ hostPC + result.numBytes++
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 81 "machine/st20/decoder.m"
+#line 82 "machine/st20/decoder.m"
 
 			stmts = instantiate(pc, name, new Const(total + oper));
 
 
-#line 125 "st20decoder.cpp"
+#line 126 "st20decoder.cpp"
 
             
           }
@@ -131,13 +132,13 @@ hostPC + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 73 "machine/st20/decoder.m"
+#line 74 "machine/st20/decoder.m"
 
 			total = (total + oper) << 4;
 			continue;
 
 
-#line 141 "st20decoder.cpp"
+#line 142 "st20decoder.cpp"
 
             
           }
@@ -147,13 +148,13 @@ hostPC + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 77 "machine/st20/decoder.m"
+#line 78 "machine/st20/decoder.m"
 
 			total = (total + ~oper) << 4;
 			continue;
 
 
-#line 157 "st20decoder.cpp"
+#line 158 "st20decoder.cpp"
 
             
           }
@@ -163,7 +164,7 @@ hostPC + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 87 "machine/st20/decoder.m"
+#line 88 "machine/st20/decoder.m"
 
 			total += oper;
 			stmts = instantiate(pc, "call", new Const(total));
@@ -174,7 +175,7 @@ hostPC + result.numBytes++
 			result.rtl->appendStmt(newCall);
 
 
-#line 178 "st20decoder.cpp"
+#line 179 "st20decoder.cpp"
 
             
           }
@@ -184,7 +185,7 @@ hostPC + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 96 "machine/st20/decoder.m"
+#line 97 "machine/st20/decoder.m"
 
 			auto br = new BranchStatement();
 			//br->setCondType(BRANCH_JE);
@@ -195,7 +196,7 @@ hostPC + result.numBytes++
 			result.rtl->appendStmt(br);
 
 
-#line 199 "st20decoder.cpp"
+#line 200 "st20decoder.cpp"
 
             
           }
@@ -205,7 +206,7 @@ hostPC + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 105 "machine/st20/decoder.m"
+#line 106 "machine/st20/decoder.m"
 
 			total |= oper;
 			const char *name = nullptr;
@@ -393,7 +394,7 @@ hostPC + result.numBytes++
 			}
 
 
-#line 397 "st20decoder.cpp"
+#line 398 "st20decoder.cpp"
 
             
           }
@@ -407,9 +408,9 @@ hostPC + result.numBytes++
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 411 "st20decoder.cpp"
+#line 412 "st20decoder.cpp"
 
-#line 292 "machine/st20/decoder.m"
+#line 293 "machine/st20/decoder.m"
 		break;
 	}
 
@@ -426,34 +427,10 @@ hostPC + result.numBytes++
  * \returns The next byte from image pointed to by lc.
  */
 uint8_t
-ST20Decoder::getByte(ADDRESS lc)
+ST20Decoder::getByte(ADDRESS lc, ptrdiff_t delta)
 {
-	return *(uint8_t *)lc;
+	return *(uint8_t *)(lc + delta);
 }
 
-#if 0 // Cruft?
-/**
- * \returns The next 2-byte word from image pointed to by lc.
- */
-uint16_t
-ST20Decoder::getWord(ADDRESS lc)
-{
-	return (uint16_t)(*(uint8_t *)lc
-	               + (*(uint8_t *)(lc + 1) << 8));
-}
-
-/**
- * \returns The next 4-byte word from image pointed to by lc.
- */
-uint32_t
-ST20Decoder::getDword(ADDRESS lc)
-{
-	return (uint32_t)(*(uint8_t *)lc
-	               + (*(uint8_t *)(lc + 1) <<  8)
-	               + (*(uint8_t *)(lc + 2) << 16)
-	               + (*(uint8_t *)(lc + 3) << 24));
-}
-#endif
-
-#line 459 "st20decoder.cpp"
+#line 436 "st20decoder.cpp"
 

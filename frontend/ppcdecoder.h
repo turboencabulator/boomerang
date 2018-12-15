@@ -41,7 +41,7 @@ private:
 	/** \} */
 
 	//bool isFuncPrologue(ADDRESS hostPC);
-	static uint32_t getDword(ADDRESS lc);
+	static uint32_t getDword(ADDRESS lc, ptrdiff_t delta);
 };
 
 #endif
