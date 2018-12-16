@@ -103,10 +103,10 @@ public:
 
 	bool appendToDict(const std::string &, const std::list<std::string> &, const RTL &);
 
-	std::list<Statement *> *instantiateRTL(const std::string &name, ADDRESS natPC, const std::vector<Exp *> &actuals);
-	std::list<Statement *> *instantiateRTL(const RTL &rtls, ADDRESS natPC, const std::list<std::string> &params, const std::vector<Exp *> &actuals);
+	RTL *instantiateRTL(ADDRESS, const std::string &, const std::vector<Exp *> &);
+	RTL *instantiateRTL(ADDRESS, const RTL &, const std::list<std::string> &, const std::vector<Exp *> &);
 
-	std::list<Statement *> *transformPostVars(std::list<Statement *> *rts, bool optimise);
+	void transformPostVars(RTL &, bool);
 
 	void print(std::ostream &os = std::cout) const;
 

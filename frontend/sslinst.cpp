@@ -403,8 +403,8 @@ RTLInstDict::partialType(Exp *exp, Type &ty)
  *
  * \returns The instantiated list of Exps.
  */
-std::list<Statement *> *
-RTLInstDict::instantiateRTL(const std::string &name, ADDRESS natPC, const std::vector<Exp *> &actuals)
+RTL *
+RTLInstDict::instantiateRTL(ADDRESS natPC, const std::string &name, const std::vector<Exp *> &actuals)
 {
 	// If -f is in force, use the fast (but not as precise) name instead
 	const std::string *lname = &name;
@@ -419,11 +419,11 @@ RTLInstDict::instantiateRTL(const std::string &name, ADDRESS natPC, const std::v
 	auto it = idict.find(*lname);
 	if (it == idict.end()) { /* lname is not in dictionary */
 		std::cerr << "ERROR: unknown instruction " << *lname << " at 0x" << std::hex << natPC << ", ignoring.\n";
-		return nullptr;
+		return new RTL(natPC);  // FIXME:  Just return nullptr instead?
 	}
-	TableEntry &entry = it->second;
+	auto &entry = it->second;
 
-	return instantiateRTL(entry.rtl, natPC, entry.params, actuals);
+	return instantiateRTL(natPC, entry.rtl, entry.params, actuals);
 }
 
 /**
@@ -434,23 +434,23 @@ RTLInstDict::instantiateRTL(const std::string &name, ADDRESS natPC, const std::v
  * rtlist with the given formals replaced with the actuals given as the third
  * parameter.
  *
- * \param rtl      A register transfer list.
+ * \param tmpl     A register transfer list template.
  * \param params   A list of formal parameters.
  * \param actuals  The actual parameter values.
  *
  * \returns The instantiated list of Exps.
  */
-std::list<Statement *> *
-RTLInstDict::instantiateRTL(const RTL &rtl, ADDRESS natPC, const std::list<std::string> &params, const std::vector<Exp *> &actuals)
+RTL *
+RTLInstDict::instantiateRTL(ADDRESS natPC, const RTL &tmpl, const std::list<std::string> &params, const std::vector<Exp *> &actuals)
 {
 	assert(params.size() == actuals.size());
 
 	// Get a deep copy of the template RTL
-	auto newList = new std::list<Statement *>();
-	rtl.deepCopyList(*newList);
+	auto rtl = tmpl.clone();
+	rtl->setAddress(natPC);
 
 	// Iterate through each Statement of the new list of stmts
-	for (const auto &ss : *newList) {
+	for (const auto &ss : *rtl) {
 		// Search for the formals and replace them with the actuals
 		auto param = params.cbegin();
 		auto actual = actuals.cbegin();
@@ -465,14 +465,14 @@ RTLInstDict::instantiateRTL(const RTL &rtl, ADDRESS natPC, const std::list<std::
 			std::cout << "\t\t\t" << *ss << "\n";
 	}
 
-	transformPostVars(newList, true);
+	transformPostVars(*rtl, true);
 
 	// Perform simplifications, e.g. *1 in Pentium addressing modes
-	for (const auto &ss : *newList) {
+	for (const auto &ss : *rtl) {
 		ss->simplify();
 	}
 
-	return newList;
+	return rtl;
 }
 
 /**
@@ -492,7 +492,7 @@ public:
 /**
  * Transform the given list into another list which doesn't have
  * post-variables, by either adding temporaries or just removing them where
- * possible.  Modifies the list passed, and also returns a pointer to it.
+ * possible.  Modifies the list passed.
  * Second parameter indicates whether the routine should attempt to optimize
  * the resulting output, i.e. to minimize the number of temporaries.  This is
  * recommended for fully expanded expressions (i.e. within uqbt), but unsafe
@@ -506,8 +506,8 @@ public:
  * we just force the temporary, which is always safe to do.  (The parameter
  * optimise is set to false for the emulator to achieve this.)
  */
-std::list<Statement *> *
-RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
+void
+RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 {
 	// Map from var (could be any expression really) to details
 	std::map<Exp *, transPost, lessExpStar> vars;
@@ -516,7 +516,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "Transforming from:\n";
-	for (const auto &rt : *rts) {
+	for (const auto &rt : rtl) {
 		std::cout << "\t";
 		rt->print(std::cout);
 		std::cout << "\n";
@@ -524,7 +524,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 #endif
 
 	// First pass: Scan for post-variables and usages of their referents
-	for (const auto &rt : *rts) {
+	for (const auto &rt : rtl) {
 		// ss appears to be a list of expressions to be searched
 		// It is either the LHS and RHS of an assignment, or it's the parameters of a flag call
 		Binary *ss;
@@ -607,7 +607,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 	}
 
 	// Second pass: Replace post-variables with temporaries where needed
-	for (const auto &rt : *rts) {
+	for (const auto &rt : rtl) {
 		for (const auto &sr : vars) {
 			if (sr.second.used) {
 				rt->searchAndReplace(sr.first, sr.second.tmp);
@@ -625,7 +625,7 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 			auto te = new Assign(sr.second.type,
 			                     sr.second.base->clone(),
 			                     sr.second.tmp);
-			rts->push_back(te);
+			rtl.getList().push_back(te);
 		} else {
 			// The temp is either used (uncloned) in the assignment, or is deleted here
 			//delete sr.second.tmp;
@@ -634,15 +634,13 @@ RTLInstDict::transformPostVars(std::list<Statement *> *rts, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "\nTo =>\n";
-	for (const auto &rt : *rts) {
+	for (const auto &rt : rtl) {
 		std::cout << "\t";
 		rt->print(std::cout);
 		std::cout << "\n";
 	}
 	std::cout << "\n";
 #endif
-
-	return rts;
 }
 
 /**

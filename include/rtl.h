@@ -75,8 +75,12 @@ public:
 	        Statement  *elementAt(unsigned i) const;
 	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
 	typedef std::list<Statement *>::iterator iterator;
+	typedef std::list<Statement *>::const_iterator const_iterator;
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
-
+	        const_iterator begin() const { return stmtList.begin(); }
+	        const_iterator end() const   { return stmtList.end(); }
+	        iterator    begin()          { return stmtList.begin(); }
+	        iterator    end()            { return stmtList.end(); }
 	/** \} */
 
 	/**

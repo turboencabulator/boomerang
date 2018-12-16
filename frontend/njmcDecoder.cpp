@@ -48,16 +48,16 @@ std::list<Statement *> *
 NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 {
 	// Get the signature of the instruction and extract its parts
-	std::pair<std::string, unsigned> sig = RTLDict.getSignature(name);
-	std::string opcode = sig.first;
+	auto sig = RTLDict.getSignature(name);
+	auto &opcode = sig.first;
+	auto actuals = std::vector<Exp *>(sig.second);
 
 	// Put the operands into a vector
-	std::vector<Exp *> actuals(sig.second);
-	va_list args;
-	va_start(args, name);
+	va_list ap;
+	va_start(ap, name);
 	for (auto &operand : actuals)
-		operand = va_arg(args, Exp *);
-	va_end(args);
+		operand = va_arg(ap, Exp *);
+	va_end(ap);
 
 	if (DEBUG_DECODER) {
 		// Display a disassembly of this instruction if requested
@@ -81,7 +81,7 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 		std::cout << std::endl;
 	}
 
-	return RTLDict.instantiateRTL(opcode, pc, actuals);
+	return &RTLDict.instantiateRTL(pc, opcode, actuals)->getList();
 }
 
 /**
