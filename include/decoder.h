@@ -135,10 +135,10 @@ protected:
 	Exp *instantiateNamedParam(const char *name, ...);
 	void substituteCallArgs(const char *name, Exp *&exp, ...);
 
-	static void unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
-	static void conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
-	static void computedJump(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
-	static void computedCall(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, DecodeResult &result);
+	static void conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, DecodeResult &result);
+	static void computedJump(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result);
+	static void computedCall(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result);
 
 #if 0 // Cruft?
 	/**

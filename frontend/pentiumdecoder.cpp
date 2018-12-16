@@ -1625,7 +1625,7 @@ pc
                                   
 #line 241 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JMI, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JMI, relocd, pc, result);
 
 #line 1631 "pentiumdecoder.cpp"
 
@@ -1647,7 +1647,7 @@ pc
                                   
 #line 239 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JPOS, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPOS, relocd, pc, result);
 
 #line 1653 "pentiumdecoder.cpp"
 
@@ -1669,7 +1669,7 @@ pc
                                   
 #line 237 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JPAR, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPAR, relocd, pc, result);
 
 #line 1675 "pentiumdecoder.cpp"
 
@@ -1691,7 +1691,7 @@ pc
                                   
 #line 235 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 #line 1697 "pentiumdecoder.cpp"
 
@@ -1713,7 +1713,7 @@ pc
                                   
 #line 233 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSL, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, relocd, pc, result);
 
 #line 1719 "pentiumdecoder.cpp"
 
@@ -1735,7 +1735,7 @@ pc
                                   
 #line 231 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSGE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, relocd, pc, result);
 
 #line 1741 "pentiumdecoder.cpp"
 
@@ -1757,7 +1757,7 @@ pc
                                   
 #line 229 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSLE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, relocd, pc, result);
 
 #line 1763 "pentiumdecoder.cpp"
 
@@ -1779,7 +1779,7 @@ pc
                                   
 #line 227 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSG, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, relocd, pc, result);
 
 #line 1785 "pentiumdecoder.cpp"
 
@@ -1806,7 +1806,7 @@ pc
                                   
 #line 257 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 
 #line 1813 "pentiumdecoder.cpp"
@@ -1829,7 +1829,7 @@ pc
                                   
 #line 255 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 #line 1835 "pentiumdecoder.cpp"
 
@@ -1851,7 +1851,7 @@ pc
                                   
 #line 253 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUL, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUL, relocd, pc, result);
 
 #line 1857 "pentiumdecoder.cpp"
 
@@ -1873,7 +1873,7 @@ pc
                                   
 #line 251 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUGE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUGE, relocd, pc, result);
 
 #line 1879 "pentiumdecoder.cpp"
 
@@ -1895,7 +1895,7 @@ pc
                                   
 #line 249 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, relocd, pc, result);
 
 #line 1901 "pentiumdecoder.cpp"
 
@@ -1917,7 +1917,7 @@ pc
                                   
 #line 247 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JNE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, relocd, pc, result);
 
 #line 1923 "pentiumdecoder.cpp"
 
@@ -1939,7 +1939,7 @@ pc
                                   
 #line 245 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JULE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JULE, relocd, pc, result);
 
 #line 1945 "pentiumdecoder.cpp"
 
@@ -1961,7 +1961,7 @@ pc
                                   
 #line 243 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUG, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUG, relocd, pc, result);
 
 #line 1967 "pentiumdecoder.cpp"
 
@@ -7189,7 +7189,7 @@ pc
                     
 #line 169 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JMI, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JMI, relocd, pc, result);
 
 #line 7195 "pentiumdecoder.cpp"
 
@@ -7210,7 +7210,7 @@ pc
                     
 #line 167 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JPOS, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPOS, relocd, pc, result);
 
 #line 7216 "pentiumdecoder.cpp"
 
@@ -7231,7 +7231,7 @@ pc
                     
 #line 165 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JPAR, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPAR, relocd, pc, result);
 
 #line 7237 "pentiumdecoder.cpp"
 
@@ -7252,7 +7252,7 @@ pc
                     
 #line 163 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 #line 7258 "pentiumdecoder.cpp"
 
@@ -7273,7 +7273,7 @@ pc
                     
 #line 161 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSL, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, relocd, pc, result);
 
 #line 7279 "pentiumdecoder.cpp"
 
@@ -7294,7 +7294,7 @@ pc
                     
 #line 159 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSGE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, relocd, pc, result);
 
 #line 7300 "pentiumdecoder.cpp"
 
@@ -7315,7 +7315,7 @@ pc
                     
 #line 157 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSLE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, relocd, pc, result);
 
 #line 7321 "pentiumdecoder.cpp"
 
@@ -7336,7 +7336,7 @@ pc
                     
 #line 155 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSG, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, relocd, pc, result);
 
 #line 7342 "pentiumdecoder.cpp"
 
@@ -13896,7 +13896,7 @@ pc
                     
 #line 145 "machine/pentium/decoder.m"
 
-		unconditionalJump(name, relocd, pc, stmts, result);
+		unconditionalJump(name, relocd, pc, result);
 
 #line 13902 "pentiumdecoder.cpp"
 
@@ -13919,7 +13919,7 @@ pc
                     
 #line 149 "machine/pentium/decoder.m"
 
-		unconditionalJump(name, relocd, pc, stmts, result);
+		unconditionalJump(name, relocd, pc, result);
 
 	/*
 	 * Conditional branches, 8 bit offset: 7X XX
@@ -16582,7 +16582,7 @@ pc
                                                 
 #line 205 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JMI, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JMI, relocd, pc, result);
 
 #line 16588 "pentiumdecoder.cpp"
 
@@ -16608,7 +16608,7 @@ pc
                                                 
 #line 203 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JPOS, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPOS, relocd, pc, result);
 
 #line 16614 "pentiumdecoder.cpp"
 
@@ -16634,7 +16634,7 @@ pc
                                                 
 #line 201 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JPAR, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JPAR, relocd, pc, result);
 
 #line 16640 "pentiumdecoder.cpp"
 
@@ -16660,7 +16660,7 @@ pc
                                                 
 #line 199 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 #line 16666 "pentiumdecoder.cpp"
 
@@ -16686,7 +16686,7 @@ pc
                                                 
 #line 197 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSL, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSL, relocd, pc, result);
 
 #line 16692 "pentiumdecoder.cpp"
 
@@ -16712,7 +16712,7 @@ pc
                                                 
 #line 195 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSGE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSGE, relocd, pc, result);
 
 #line 16718 "pentiumdecoder.cpp"
 
@@ -16738,7 +16738,7 @@ pc
                                                 
 #line 193 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSLE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSLE, relocd, pc, result);
 
 #line 16744 "pentiumdecoder.cpp"
 
@@ -16764,7 +16764,7 @@ pc
                                                 
 #line 191 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JSG, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JSG, relocd, pc, result);
 
 #line 16770 "pentiumdecoder.cpp"
 
@@ -16797,7 +16797,7 @@ pc
                                                 
 #line 221 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 	/*
 	 * Conditional branches, 32 bit offset: 0F 8X XX XX XX XX
@@ -16827,7 +16827,7 @@ pc
                                                 
 #line 219 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 #line 16833 "pentiumdecoder.cpp"
 
@@ -16853,7 +16853,7 @@ pc
                                                 
 #line 217 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUL, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUL, relocd, pc, result);
 
 #line 16859 "pentiumdecoder.cpp"
 
@@ -16879,7 +16879,7 @@ pc
                                                 
 #line 215 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUGE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUGE, relocd, pc, result);
 
 #line 16885 "pentiumdecoder.cpp"
 
@@ -16905,7 +16905,7 @@ pc
                                                 
 #line 213 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, relocd, pc, result);
 
 #line 16911 "pentiumdecoder.cpp"
 
@@ -16931,7 +16931,7 @@ pc
                                                 
 #line 211 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JNE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, relocd, pc, result);
 
 #line 16937 "pentiumdecoder.cpp"
 
@@ -16957,7 +16957,7 @@ pc
                                                 
 #line 209 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JULE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JULE, relocd, pc, result);
 
 #line 16963 "pentiumdecoder.cpp"
 
@@ -16983,7 +16983,7 @@ pc
                                                 
 #line 207 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUG, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUG, relocd, pc, result);
 
 #line 16989 "pentiumdecoder.cpp"
 
@@ -25520,7 +25520,7 @@ pc
                             
 #line 147 "machine/pentium/decoder.m"
 
-		unconditionalJump(name, relocd, pc, stmts, result);
+		unconditionalJump(name, relocd, pc, result);
 
 #line 25526 "pentiumdecoder.cpp"
 
@@ -26386,7 +26386,7 @@ pc
                     
 #line 185 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 	/*
 	 * Conditional branches, 16 bit offset: 66 0F 8X XX XX
@@ -26411,7 +26411,7 @@ pc
                     
 #line 183 "machine/pentium/decoder.m"
 
-		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, stmts, result);
+		conditionalJump(name, (BRANCH_TYPE)0, relocd, pc, result);
 
 #line 26417 "pentiumdecoder.cpp"
 
@@ -26432,7 +26432,7 @@ pc
                     
 #line 181 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUL, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUL, relocd, pc, result);
 
 #line 26438 "pentiumdecoder.cpp"
 
@@ -26453,7 +26453,7 @@ pc
                     
 #line 179 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUGE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUGE, relocd, pc, result);
 
 #line 26459 "pentiumdecoder.cpp"
 
@@ -26474,7 +26474,7 @@ pc
                     
 #line 177 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JE, relocd, pc, result);
 
 #line 26480 "pentiumdecoder.cpp"
 
@@ -26495,7 +26495,7 @@ pc
                     
 #line 175 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JNE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JNE, relocd, pc, result);
 
 #line 26501 "pentiumdecoder.cpp"
 
@@ -26516,7 +26516,7 @@ pc
                     
 #line 173 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JULE, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JULE, relocd, pc, result);
 
 #line 26522 "pentiumdecoder.cpp"
 
@@ -26537,7 +26537,7 @@ pc
                     
 #line 171 "machine/pentium/decoder.m"
 
-		conditionalJump(name, BRANCH_JUG, relocd, pc, stmts, result);
+		conditionalJump(name, BRANCH_JUG, relocd, pc, result);
 
 #line 26543 "pentiumdecoder.cpp"
 

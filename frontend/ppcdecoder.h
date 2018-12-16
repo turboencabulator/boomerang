@@ -16,8 +16,6 @@
 
 #include "decoder.h"
 
-#include <list>
-
 /**
  * \brief Instruction decoder for PPC.
  */
@@ -29,7 +27,7 @@ public:
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 protected:
-	static void conditionalJump(const char *name, BRANCH_TYPE cond, unsigned BIcr, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result);
+	static void conditionalJump(const char *name, BRANCH_TYPE cond, unsigned BIcr, ADDRESS relocd, ADDRESS pc, DecodeResult &result);
 
 private:
 	/**

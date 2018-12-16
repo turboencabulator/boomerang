@@ -84,7 +84,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			stmts = instantiate(pc, name, new Const(total + oper));
 
 		| j(oper) =>
-			unconditionalJump("j", pc + result.numBytes + total + oper, pc, stmts, result);
+			unconditionalJump("j", pc + result.numBytes + total + oper, pc, result);
 
 		| call(oper) =>
 			total += oper;

@@ -217,9 +217,9 @@ NJMCDecoder::dis_Num(unsigned num)
  * to other procedures.
  */
 void
-NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, DecodeResult &result)
 {
-	result.rtl = new RTL(pc, stmts);
+	result.rtl = new RTL(pc);
 	auto jump = new GotoStatement();
 	jump->setDest(relocd);
 	result.rtl->appendStmt(jump);
@@ -232,9 +232,9 @@ NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, std
  * \note This used to be the COND_JUMP macro.
  */
 void
-NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, DecodeResult &result)
 {
-	result.rtl = new RTL(pc, stmts);
+	result.rtl = new RTL(pc);
 	auto jump = new BranchStatement();
 	jump->setDest(relocd);
 	jump->setCondType(cond);
@@ -248,13 +248,12 @@ NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd,
  * \param name    Name of instruction (for debugging).
  * \param dest    Destination Exp*.
  * \param pc      Native pc.
- * \param stmts   List of statements (?)
  * \param result  Ref to decoder result object.
  */
 void
-NJMCDecoder::computedJump(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::computedJump(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result)
 {
-	result.rtl = new RTL(pc, stmts);
+	result.rtl = new RTL(pc);
 	auto jump = new GotoStatement();
 	jump->setDest(dest);
 	jump->setIsComputed(true);
@@ -268,13 +267,12 @@ NJMCDecoder::computedJump(const char *name, Exp *dest, ADDRESS pc, std::list<Sta
  * \param name    Name of instruction (for debugging).
  * \param dest    Destination Exp*.
  * \param pc      Native pc.
- * \param stmts   List of statements (?)
  * \param result  Ref to decoder result object.
  */
 void
-NJMCDecoder::computedCall(const char *name, Exp *dest, ADDRESS pc, std::list<Statement *> *stmts, DecodeResult &result)
+NJMCDecoder::computedCall(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result)
 {
-	result.rtl = new RTL(pc, stmts);
+	result.rtl = new RTL(pc);
 	auto call = new CallStatement();
 	call->setDest(dest);
 	call->setIsComputed(true);
