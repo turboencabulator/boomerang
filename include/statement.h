@@ -722,7 +722,7 @@ public:
 	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
 	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
 	// a hack for the SETS macro
-	void        setLeftFromList(std::list<Statement *> *stmts);
+	void        setLeftFromList(const std::list<Statement *> &stmts);
 
 	void        dfaTypeAnalysis(bool &ch) override;
 

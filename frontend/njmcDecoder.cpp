@@ -44,7 +44,7 @@ NJMCDecoder::NJMCDecoder(Prog *prog) :
  *
  * \returns An instantiated list of Exps.
  */
-std::list<Statement *> *
+RTL *
 NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 {
 	// Get the signature of the instruction and extract its parts
@@ -81,7 +81,7 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
 		std::cout << std::endl;
 	}
 
-	return &RTLDict.instantiateRTL(pc, opcode, actuals)->getList();
+	return RTLDict.instantiateRTL(pc, opcode, actuals);
 }
 
 /**
@@ -216,14 +216,15 @@ NJMCDecoder::dis_Num(unsigned num)
  * \note This used to be the UNCOND_JUMP macro; it's extended to handle jumps
  * to other procedures.
  */
-void
-NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, DecodeResult &result)
+RTL *
+NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS relocd)
 {
-	result.rtl = new RTL(pc);
+	auto rtl = new RTL(pc);
 	auto jump = new GotoStatement();
 	jump->setDest(relocd);
-	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " 0x" << std::hex << relocd)
+	rtl->appendStmt(jump);
+	SHOW_ASM(name << " 0x" << std::hex << relocd);
+	return rtl;
 }
 
 /**
@@ -231,51 +232,52 @@ NJMCDecoder::unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, Dec
  *
  * \note This used to be the COND_JUMP macro.
  */
-void
-NJMCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, DecodeResult &result)
+RTL *
+NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond)
 {
-	result.rtl = new RTL(pc);
+	auto rtl = new RTL(pc);
 	auto jump = new BranchStatement();
 	jump->setDest(relocd);
 	jump->setCondType(cond);
-	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " " << relocd)
+	rtl->appendStmt(jump);
+	SHOW_ASM(name << " " << relocd);
+	return rtl;
 }
 
 /**
  * Process an indirect jump instruction.
  *
+ * \param pc      Native pc.
  * \param name    Name of instruction (for debugging).
  * \param dest    Destination Exp*.
- * \param pc      Native pc.
- * \param result  Ref to decoder result object.
  */
-void
-NJMCDecoder::computedJump(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result)
+RTL *
+NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
 {
-	result.rtl = new RTL(pc);
+	auto rtl = new RTL(pc);
 	auto jump = new GotoStatement();
 	jump->setDest(dest);
 	jump->setIsComputed(true);
-	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " " << *dest)
+	rtl->appendStmt(jump);
+	SHOW_ASM(name << " " << *dest);
+	return rtl;
 }
 
 /**
  * Process an indirect call instruction.
  *
+ * \param pc      Native pc.
  * \param name    Name of instruction (for debugging).
  * \param dest    Destination Exp*.
- * \param pc      Native pc.
- * \param result  Ref to decoder result object.
  */
-void
-NJMCDecoder::computedCall(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result)
+RTL *
+NJMCDecoder::computedCall(ADDRESS pc, const char *name, Exp *dest)
 {
-	result.rtl = new RTL(pc);
+	auto rtl = new RTL(pc);
 	auto call = new CallStatement();
 	call->setDest(dest);
 	call->setIsComputed(true);
-	result.rtl->appendStmt(call);
-	SHOW_ASM(name << " " << *dest)
+	rtl->appendStmt(call);
+	SHOW_ASM(name << " " << *dest);
+	return rtl;
 }

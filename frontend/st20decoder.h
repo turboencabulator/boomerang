@@ -14,8 +14,6 @@
 
 #include "decoder.h"
 
-#include <list>
-
 /**
  * \brief Instruction decoder for ST20.
  */

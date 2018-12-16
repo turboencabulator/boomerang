@@ -67,15 +67,14 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
  * Create an RTL for a Bx instruction.
  *
  * \param pc     The location counter.
- * \param stmts  Ptr to list of Statement pointers.
  * \param name   Instruction name (e.g. "BNE,a", or "BPNE").
  *
  * \returns  Pointer to newly created RTL, or nullptr if invalid.
  */
 RTL *
-SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name)
+SparcDecoder::createBranchRtl(ADDRESS pc, const char *name)
 {
-	auto res = new RTL(pc, stmts);
+	auto res = new RTL(pc);
 	auto br = new BranchStatement();
 	res->appendStmt(br);
 	if (name[0] == 'F') {
@@ -175,7 +174,7 @@ SparcDecoder::createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const c
 		temp[0] = 'B';
 		strcpy(temp + 1, name + 2);
 		delete res;
-		return createBranchRtl(pc, stmts, temp);
+		return createBranchRtl(pc, temp);
 	default:
 		std::cerr << "unknown non-float branch " << name << std::endl;
 	}
@@ -207,9 +206,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	// Clear the result structure;
 	result.reset();
 
-	// The actual list of instantiated statements
-	std::list<Statement *> *stmts = nullptr;
-
 	ADDRESS nextPC = NO_ADDRESS;
 	match [nextPC] pc to
 
@@ -225,10 +221,10 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		Proc *destProc = prog->setNewProc(nativeDest);
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(newCall);
 		result.type = SD;
-		SHOW_ASM("call__ " << std::hex << (nativeDest))
+		SHOW_ASM("call__ " << std::hex << (nativeDest));
 		DEBUG_STMTS
 
 	| call_(addr) =>
@@ -242,31 +238,31 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 		// Set the destination expression
 		newCall->setDest(DIS_ADDR);
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(newCall);
 		result.type = DD;
 
-		SHOW_ASM("call_ " << *DIS_ADDR)
+		SHOW_ASM("call_ " << *DIS_ADDR);
 		DEBUG_STMTS
 
 	| ret() =>
 		/*
 		 * Just a ret (non leaf)
 		 */
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(new ReturnStatement);
 		result.type = DD;
-		SHOW_ASM("ret_")
+		SHOW_ASM("ret_");
 		DEBUG_STMTS
 
 	| retl() =>
 		/*
 		 * Just a ret (leaf; uses %o7 instead of %i7)
 		 */
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(new ReturnStatement);
 		result.type = DD;
-		SHOW_ASM("retl_")
+		SHOW_ASM("retl_");
 		DEBUG_STMTS
 
 	| branch^",a"(tgt) [name] =>
@@ -278,24 +274,23 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		// as far as we are concerned
 		if (name[0] == 'C') {
 			result.valid = false;
-			result.rtl = new RTL;
+			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		GotoStatement *jump = nullptr;
-		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
+		GotoStatement *jump;
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else if (strcmp(name, "BVS,a") == 0 || strcmp(name, "BVC,a") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else {
-			rtl = createBranchRtl(pc, stmts, name);
-			jump = (GotoStatement *)rtl->getList().back();
+			result.rtl = createBranchRtl(pc, name);
+			jump = (GotoStatement *)result.rtl->getList().back();
 		}
 
 		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
@@ -307,9 +302,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.type = SKIP;
 		}
 
-		result.rtl = rtl;
 		jump->setDest(tgt);
-		SHOW_ASM(name << " " << std::hex << tgt)
+		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| pbranch^",a"(cc01, tgt) [name] =>
@@ -320,23 +314,22 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
-			result.rtl = new RTL;
+			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
 		}
-		GotoStatement *jump = nullptr;
-		RTL *rtl = nullptr;  // Init to nullptr to suppress a warning
+		GotoStatement *jump;
 		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else {
-			rtl = createBranchRtl(pc, stmts, name);
-			jump = (GotoStatement *)rtl->getList().back();
+			result.rtl = createBranchRtl(pc, name);
+			jump = (GotoStatement *)result.rtl->getList().back();
 		}
 
 		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
@@ -348,9 +341,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.type = SKIP;
 		}
 
-		result.rtl = rtl;
 		jump->setDest(tgt);
-		SHOW_ASM(name << " " << std::hex << tgt)
+		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| branch(tgt) [name] =>
@@ -361,24 +353,23 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		// as far as we are concerned
 		if (name[0] == 'C') {
 			result.valid = false;
-			result.rtl = new RTL;
+			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
-		GotoStatement *jump = nullptr;
-		RTL *rtl = nullptr;
+		GotoStatement *jump;
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else if (strcmp(name, "BVS") == 0 || strcmp(name, "BVC") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else {
-			rtl = createBranchRtl(pc, stmts, name);
-			jump = (BranchStatement *)rtl->getList().back();
+			result.rtl = createBranchRtl(pc, name);
+			jump = (BranchStatement *)result.rtl->getList().back();
 		}
 
 		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
@@ -389,9 +380,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if ((strcmp(name, "BN") == 0) || (strcmp(name, "BVS") == 0))
 			result.type = NCT;
 
-		result.rtl = rtl;
 		jump->setDest(tgt);
-		SHOW_ASM(name << " " << std::hex << tgt)
+		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| BPA(_, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
@@ -399,33 +389,32 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		auto jump = new GotoStatement;
 
 		result.type = SD;
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(jump);
 		jump->setDest(tgt);
-		SHOW_ASM("BPA " << std::hex << tgt)
+		SHOW_ASM("BPA " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| pbranch(cc01, tgt) [name] =>
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
-			result.rtl = new RTL;
+			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
 		}
-		GotoStatement *jump = nullptr;
-		RTL *rtl = nullptr;
+		GotoStatement *jump;
 		if (strcmp(name, "BPN") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
 			jump = new GotoStatement;
-			rtl = new RTL(pc, stmts);
-			rtl->appendStmt(jump);
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(jump);
 		} else {
-			rtl = createBranchRtl(pc, stmts, name);
+			result.rtl = createBranchRtl(pc, name);
 			// The BranchStatement will be the last Stmt of the rtl
-			jump = (GotoStatement *)rtl->getList().back();
+			jump = (GotoStatement *)result.rtl->getList().back();
 		}
 
 		// The class of this instruction depends on whether or not
@@ -437,9 +426,8 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if ((strcmp(name, "BPN") == 0) || (strcmp(name, "BPVS") == 0))
 			result.type = NCT;
 
-		result.rtl = rtl;
 		jump->setDest(tgt);
-		SHOW_ASM(name << " " << std::hex << tgt)
+		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| JMPL(addr, _) =>
@@ -451,11 +439,11 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		auto jump = new CaseStatement;
 		// Record the fact that it is a computed jump
 		jump->setIsComputed();
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(jump);
 		result.type = DD;
 		jump->setDest(DIS_ADDR);
-		SHOW_ASM("JMPL ")
+		SHOW_ASM("JMPL ");
 		DEBUG_STMTS
 
 
@@ -469,180 +457,175 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		// Decided to treat SAVE as an ordinary instruction
 		// That is, use the large list of effects from the SSL file, and
 		// hope that optimisation will vastly help the common cases
-		stmts = instantiate(pc, "SAVE", DIS_RS1, DIS_ROI, DIS_RD);
+		result.rtl = instantiate(pc, "SAVE", DIS_RS1, DIS_ROI, DIS_RD);
 
 	| RESTORE(rs1, roi, rd) =>
 		// Decided to treat RESTORE as an ordinary instruction
-		stmts = instantiate(pc, "RESTORE", DIS_RS1, DIS_ROI, DIS_RD);
+		result.rtl = instantiate(pc, "RESTORE", DIS_RS1, DIS_ROI, DIS_RD);
 
 	| NOP [name] =>
 		result.type = NOP;
-		stmts = instantiate(pc, name);
+		result.rtl = instantiate(pc, name);
 
 	| sethi(imm22, rd) =>
-		stmts = instantiate(pc, "sethi", dis_Num(imm22), DIS_RD);
+		result.rtl = instantiate(pc, "sethi", dis_Num(imm22), DIS_RD);
 
 	| load_greg(addr, rd) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_RD);
 
 	| LDF(addr, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_FDS);
 
 	| LDDF(addr, fdd) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR, DIS_FDD);
+		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_FDD);
 
 	| load_asi(addr, _, rd) [name] =>
 	//| load_asi(addr, asi, rd) [name] => // Note: this could be serious!
-		stmts = instantiate(pc, name, DIS_RD, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_ADDR);
 
 	| sto_greg(rd, addr) [name] =>
 		// Note: RD is on the "right hand side" only for stores
-		stmts = instantiate(pc, name, DIS_RDR, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_RDR, DIS_ADDR);
 
 	| STF(fds, addr) [name] =>
-		stmts = instantiate(pc, name, DIS_FDS, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_FDS, DIS_ADDR);
 
 	| STDF(fdd, addr) [name] =>
-		stmts = instantiate(pc, name, DIS_FDD, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_FDD, DIS_ADDR);
 
 	| sto_asi(rd, addr, _) [name] =>
 	//| sto_asi(rd, addr, asi) [name] => // Note: this could be serious!
-		stmts = instantiate(pc, name, DIS_RDR, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_RDR, DIS_ADDR);
 
 	| LDFSR(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| LDCSR(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| STFSR(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| STCSR(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| STDFQ(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| STDCQ(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| RDY(rd) [name] =>
-		stmts = instantiate(pc, name, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RD);
 
 	| RDPSR(rd) [name] =>
-		stmts = instantiate(pc, name, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RD);
 
 	| RDWIM(rd) [name] =>
-		stmts = instantiate(pc, name, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RD);
 
 	| RDTBR(rd) [name] =>
-		stmts = instantiate(pc, name, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RD);
 
 	| WRY(rs1, roi) [name] =>
-		stmts = instantiate(pc, name, DIS_RS1, DIS_ROI);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 	| WRPSR(rs1, roi) [name] =>
-		stmts = instantiate(pc, name, DIS_RS1, DIS_ROI);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 	| WRWIM(rs1, roi) [name] =>
-		stmts = instantiate(pc, name, DIS_RS1, DIS_ROI);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 	| WRTBR(rs1, roi) [name] =>
-		stmts = instantiate(pc, name, DIS_RS1, DIS_ROI);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 	| alu(rs1, roi, rd) [name] =>
-		stmts = instantiate(pc, name, DIS_RS1, DIS_ROI, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI, DIS_RD);
 
 	| float2s(fs2s, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2S, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDS);
 
 	| float3s(fs1s, fs2s, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS1S, DIS_FS2S, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS1S, DIS_FS2S, DIS_FDS);
 
 	| float3d(fs1d, fs2d, fdd) [name] =>
-		stmts = instantiate(pc, name, DIS_FS1D, DIS_FS2D, DIS_FDD);
+		result.rtl = instantiate(pc, name, DIS_FS1D, DIS_FS2D, DIS_FDD);
 
 	| float3q(fs1q, fs2q, fdq) [name] =>
-		stmts = instantiate(pc, name, DIS_FS1Q, DIS_FS2Q, DIS_FDQ);
+		result.rtl = instantiate(pc, name, DIS_FS1Q, DIS_FS2Q, DIS_FDQ);
 
 	| fcompares(fs1s, fs2s) [name] =>
-		stmts = instantiate(pc, name, DIS_FS1S, DIS_FS2S);
+		result.rtl = instantiate(pc, name, DIS_FS1S, DIS_FS2S);
 
 	| fcompared(fs1d, fs2d) [name] =>
-		stmts = instantiate(pc, name, DIS_FS1D, DIS_FS2D);
+		result.rtl = instantiate(pc, name, DIS_FS1D, DIS_FS2D);
 
 	| fcompareq(fs1q, fs2q) [name] =>
-		stmts = instantiate(pc, name, DIS_FS1Q, DIS_FS2Q);
+		result.rtl = instantiate(pc, name, DIS_FS1Q, DIS_FS2Q);
 
 	| FTOs(fs2s, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2S, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDS);
 
 	// Note: itod and dtoi have different sized registers
 	| FiTOd(fs2s, fdd) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2S, DIS_FDD);
+		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDD);
 	| FdTOi(fs2d, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2D, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDS);
 
 	| FiTOq(fs2s, fdq) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2S, DIS_FDQ);
+		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDQ);
 	| FqTOi(fs2q, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2Q, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDS);
 
 	| FsTOd(fs2s, fdd) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2S, DIS_FDD);
+		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDD);
 	| FdTOs(fs2d, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2D, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDS);
 
 	| FsTOq(fs2s, fdq) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2S, DIS_FDQ);
+		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDQ);
 	| FqTOs(fs2q, fds) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2Q, DIS_FDS);
+		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDS);
 
 	| FdTOq(fs2d, fdq) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2D, DIS_FDQ);
+		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDQ);
 	| FqTOd(fs2q, fdd) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2Q, DIS_FDD);
+		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDD);
 
 
 	| FSQRTd(fs2d, fdd) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2D, DIS_FDD);
+		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDD);
 
 	| FSQRTq(fs2q, fdq) [name] =>
-		stmts = instantiate(pc, name, DIS_FS2Q, DIS_FDQ);
+		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDQ);
 
 
 	// In V9, the privileged RETT becomes user-mode RETURN
 	// It has the semantics of "ret restore" without the add part of the restore
 	| RETURN(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 		result.rtl->appendStmt(new ReturnStatement);
 		result.type = DD;
 
 	| trap(addr) [name] =>
-		stmts = instantiate(pc, name, DIS_ADDR);
+		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 	| UNIMP(_) =>
 	//| UNIMP(n) =>
-		stmts = nullptr;
 		result.valid = false;
 
 	| inst = _ =>
 	//| inst = n =>
 		// What does this mean?
 		result.valid = false;
-		stmts = nullptr;
 
 	else
-		stmts = nullptr;
 		result.valid = false;
 	endmatch
 
+	if (result.valid && !result.rtl)
+		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
-	if (result.valid && !result.rtl)  // Don't override higher level res
-		result.rtl = new RTL(pc, stmts);
-
 	return result;
 }
 

@@ -1001,7 +1001,7 @@ StatementTest::testAddUsedLocsBool()
 	std::list<Statement *> stmts;
 	auto a = new Assign(Location::memOf(Location::regOf(26)), new Terminal(opNil));
 	stmts.push_back(a);
-	bs->setLeftFromList(&stmts);
+	bs->setLeftFromList(stmts);
 	bs->addUsedLocs(l);
 	std::string expected("r24,\tr25,\tr26,\tm[r24]");
 	std::string actual(l.prints());

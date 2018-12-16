@@ -3176,10 +3176,10 @@ BoolAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 
 // This is for setting up SETcc instructions; see include/decoder.h macro SETS
 void
-BoolAssign::setLeftFromList(std::list<Statement *> *stmts)
+BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
 {
-	assert(stmts->size() == 1);
-	Assign *first = (Assign *)stmts->front();
+	assert(stmts.size() == 1);
+	Assign *first = (Assign *)stmts.front();
 	assert(first->getKind() == STMT_ASSIGN);
 	lhs = first->getLeft();
 }

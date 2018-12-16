@@ -66,7 +66,6 @@ DecodeResult &
 ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
-	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
 	unsigned total = 0;  // Total value from all prefixes
 
 	while (1) {
@@ -81,18 +80,17 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			continue;
 
 		| primary(oper) [name] =>
-			stmts = instantiate(pc, name, new Const(total + oper));
+			result.rtl = instantiate(pc, name, new Const(total + oper));
 
 		| j(oper) =>
-			unconditionalJump("j", pc + result.numBytes + total + oper, pc, result);
+			result.rtl = unconditionalJump(pc, "j", pc + result.numBytes + total + oper);
 
 		| call(oper) =>
 			total += oper;
-			stmts = instantiate(pc, "call", new Const(total));
+			result.rtl = instantiate(pc, "call", new Const(total));
 			auto newCall = new CallStatement;
 			newCall->setIsComputed(false);
 			newCall->setDest(pc + result.numBytes + total);
-			result.rtl = new RTL(pc, stmts);
 			result.rtl->appendStmt(newCall);
 
 		| cj(oper) =>
@@ -101,7 +99,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			br->setDest(pc + result.numBytes + total + oper);
 			//br->setCondExpr(dis_Reg(0));
 			br->setCondExpr(new Binary(opEquals, dis_Reg(0), new Const(0)));
-			result.rtl = new RTL(pc, stmts);
+			result.rtl = new RTL(pc);
 			result.rtl->appendStmt(br);
 
 		| opr(oper) =>
@@ -278,23 +276,18 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 				}
 			}
 			if (name) {
-				stmts = instantiate(pc, name);
-				if (isRet) {
-					result.rtl = new RTL(pc, stmts);
-					result.rtl->appendStmt(new ReturnStatement);
-				}
+				result.rtl = instantiate(pc, name);
+				if (isRet) result.rtl->appendStmt(new ReturnStatement);
 			} else {
 				result.valid = false;  // Invalid instruction
-				result.rtl = nullptr;
-				result.numBytes = 0;
-				return result;
+				result.numBytes = 0;  // FIXME:  Does this really need to be cleared?
 			}
 
 		endmatch
 		break;
 	}
 
-	if (!result.rtl)
-		result.rtl = new RTL(pc, stmts);
+	if (result.valid && !result.rtl)
+		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	return result;
 }

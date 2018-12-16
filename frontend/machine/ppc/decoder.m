@@ -104,100 +104,95 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	// Clear the result structure;
 	result.reset();
 
-	// The actual list of instantiated statements
-	std::list<Statement *> *stmts = nullptr;
-
 	ADDRESS nextPC = NO_ADDRESS;
 	match [nextPC] pc to
 	| XO_(rd, ra, rb) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 	| XOb_(rd, ra) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA);
 	| Xsax_^Rc(rd, ra) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_RA);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA);
 	// The number of parameters in these matcher arms has to agree with the number in core.spec
 	// The number of parameters passed to instantiate() after pc and name has to agree with ppc.ssl
 	// Stores and loads pass rA to instantiate twice: as part of DIS_DISP, and separately as DIS_NZRA
 	| Dsad_(rs, d, ra) [name] =>
 		if (strcmp(name, "stmw") == 0) {
 			// Needs the last param s, which is the register number from rs
-			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_RS_NUM);
+			result.rtl = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_RS_NUM);
 		} else {
-			stmts = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_NZRA);
+			result.rtl = instantiate(pc, name, DIS_RS, DIS_DISP, DIS_NZRA);
 		}
 
 	| Dsaui_(rd, ra, uimm) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
 	| Ddasi_(rd, ra, simm) [name] =>
 		if (strcmp(name, "addi") == 0 || strcmp(name, "addis") == 0) {
 			// Note the DIS_RAZ, since rA could be constant zero
-			stmts = instantiate(pc, name, DIS_RD, DIS_RAZ, DIS_SIMM);
+			result.rtl = instantiate(pc, name, DIS_RD, DIS_RAZ, DIS_SIMM);
 		} else {
-			stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_SIMM);
+			result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_SIMM);
 		}
 	| Xsabx_^Rc(rd, ra, rb) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 	| Xdab_(rd, ra, rb) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
 	| Xsab_(rd, ra, rb) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
 	// Load instructions
 	| Ddad_(rd, d, ra) [name] =>
 		if (strcmp(name, "lmw") == 0) {
 			// Needs the third param d, which is the register number from rd
-			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_RD_NUM);
+			result.rtl = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_RD_NUM);
 		} else {
-			stmts = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_NZRA);
+			result.rtl = instantiate(pc, name, DIS_RD, DIS_DISP, DIS_NZRA);
 		}
 //	| XLb_(_, _) [name] =>
 //	//| XLb_(b0, b1) [name] =>
 #if BCCTR_LONG  // Prefer to see bltctr instead of bcctr 12,0
                 // But also affects return instructions (bclr)
 		/* FIXME: since this is used for returns, do a jump to LR instead (ie ignoring control registers) */
-		stmts = instantiate(pc, name);
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = instantiate(pc, name);
 		result.rtl->appendStmt(new ReturnStatement);
 #endif
 	| XLc_(crbD, crbA, crbB) [name] =>
-		stmts = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
+		result.rtl = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
 
 	| mfspr(rd, uimm) [name] =>
-		stmts = instantiate(pc, name, DIS_RD, DIS_UIMM);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_UIMM);
 	| mtspr(uimm, rs) =>
 		switch (uimm) {
 		case 1:
-			stmts = instantiate(pc, "MTXER", DIS_RS); break;
+			result.rtl = instantiate(pc, "MTXER", DIS_RS); break;
 		case 8:
-			stmts = instantiate(pc, "MTLR", DIS_RS); break;
+			result.rtl = instantiate(pc, "MTLR", DIS_RS); break;
 		case 9:
-			stmts = instantiate(pc, "MTCTR", DIS_RS); break;
+			result.rtl = instantiate(pc, "MTCTR", DIS_RS); break;
 		default:
 			std::cerr << "ERROR: MTSPR instruction with invalid S field: " << uimm << "\n";
 		}
 
 	| Xd_(rd) [name] =>
-		stmts = instantiate(pc, name, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RD);
 
 	| M_^Rc(ra, rs, uimm, beg, end) [name] =>
-		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM, DIS_BEG, DIS_END);
+		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM, DIS_BEG, DIS_END);
 
 
 	| bl(reladdr) [name] =>
 		Exp *dest = DIS_RELADDR;
-		stmts = instantiate(pc, name, dest);
+		result.rtl = instantiate(pc, name, dest);
 		auto newCall = new CallStatement;
 		// Record the fact that this is not a computed call
 		newCall->setIsComputed(false);
 		// Set the destination expression
 		newCall->setDest(dest);
-		result.rtl = new RTL(pc, stmts);
 		result.rtl->appendStmt(newCall);
 		Proc *destProc = prog->setNewProc(reladdr);
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
 
 	| b(reladdr) =>
-		unconditionalJump("b", reladdr, pc, result);
+		result.rtl = unconditionalJump(pc, "b", reladdr);
 
 	| ball(BIcr, reladdr) [name] =>  // Always "conditional" branch with link, test/OSX/hello has this
 		Exp *dest = DIS_RELADDR;
@@ -206,51 +201,50 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			auto as = new Assign(new IntegerType,
 			                     new Unary(opMachFtr, new Const("%LR")),
 			                     dest);
-			stmts = new std::list<Statement *>;
-			stmts->push_back(as);
-			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4")
+			result.rtl = new RTL(pc);
+			result.rtl->appendStmt(as);
+			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4");
 		} else {
-			stmts = instantiate(pc, name, dest);
+			result.rtl = instantiate(pc, name, dest);
 			auto newCall = new CallStatement;
 			// Record the fact that this is not a computed call
 			newCall->setIsComputed(false);
 			// Set the destination expression
 			newCall->setDest(dest);
-			result.rtl = new RTL(pc, stmts);
 			result.rtl->appendStmt(newCall);
 		}
 
 	| Xcmp_(crfd, _, ra, rb) [name] =>
 	//| Xcmp_(crfd, l, ra, rb) [name] =>
-		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
+		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
 	| cmpi(crfd, _, ra, simm) [name] =>
 	//| cmpi(crfd, l, ra, simm) [name] =>
-		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_SIMM);
+		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_SIMM);
 	| cmpli(crfd, _, ra, uimm) [name] =>
 	//| cmpli(crfd, l, ra, uimm) [name] =>
-		stmts = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
+		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
 
 	| Ddaf_(fd, d, ra) [name] =>   // Floating point loads (non indexed)
-		stmts = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
 	| Xdaf_(fd, ra, rb) [name] =>  // Floating point loads (indexed)
-		stmts = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
 	| Dsaf_(fs, d, ra) [name] =>   // Floating point stores (non indexed)
-		stmts = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
 	| Xsaf_(fs, ra, rb) [name] =>  // Floating point stores (indexed)
-		stmts = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
 
 	| Xcab_(crfd, fa, fb) [name] =>  // Floating point compare
-		stmts = instantiate(pc, name, DIS_CRFD, DIS_FA, DIS_FB);
+		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_FA, DIS_FB);
 
 	| Xdbx_^Rc(fd, fb) [name] =>     // Floating point unary
-		stmts = instantiate(pc, name, DIS_FD, DIS_FB);
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_FB);
 
 	| Ac_^Rc(fd, fa, fb) [name] =>   // Floating point binary
-		stmts = instantiate(pc, name, DIS_FD, DIS_FA, DIS_FB);
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_FA, DIS_FB);
 
 
 
@@ -258,112 +252,111 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	// Conditional branches
 	// bcc_ is blt | ble | beq | bge | bgt | bnl | bne | bng | bso | bns | bun | bnu | bal (branch always)
 	| blt(BIcr, reladdr) [name] =>
-		conditionalJump(name, BRANCH_JSL, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSL, BIcr);
 	| ble(BIcr, reladdr) [name] =>
-		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSLE, BIcr);
 	| beq(BIcr, reladdr) [name] =>
-		conditionalJump(name, BRANCH_JE, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JE, BIcr);
 	| bge(BIcr, reladdr) [name] =>
-		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSGE, BIcr);
 	| bgt(BIcr, reladdr) [name] =>
-		conditionalJump(name, BRANCH_JSG, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSG, BIcr);
 //	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
-//		conditionalJump(name, BRANCH_JSGE, BIcr, reladdr, pc, result);
+//		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSGE, BIcr);
 	| bne(BIcr, reladdr) [name] =>
-		conditionalJump(name, BRANCH_JNE, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JNE, BIcr);
 //	| bng(BIcr, reladdr) [name] =>  // bng same as blt
-//		conditionalJump(name, BRANCH_JSLE, BIcr, reladdr, pc, result);
+//		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSLE, BIcr);
 	| bso(BIcr, reladdr) [name] =>  // Branch on summary overflow
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, result);  // MVE: Don't know these last 4 yet
+		result.rtl = conditionalJump(pc, name, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
 	| bns(BIcr, reladdr) [name] =>
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, result);
+		result.rtl = conditionalJump(pc, name, reladdr, (BRANCH_TYPE)0, BIcr);
 //	| bun(BIcr, reladdr) [name] =>
-//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, result);
+//		result.rtl = conditionalJump(pc, name, reladdr, (BRANCH_TYPE)0, BIcr);
 //	| bnu(BIcr, reladdr) [name] =>
-//		conditionalJump(name, (BRANCH_TYPE)0, BIcr, reladdr, pc, result);
+//		result.rtl = conditionalJump(pc, name, reladdr, (BRANCH_TYPE)0, BIcr);
 
 	| balctr(_) [name] =>
 	//| balctr(BIcr) [name] =>
-		computedJump(name, new Unary(opMachFtr, new Const("%CTR")), pc, result);
+		result.rtl = computedJump(pc, name, new Unary(opMachFtr, new Const("%CTR")));
 
 	| balctrl(_) [name] =>
 	//| balctrl(BIcr) [name] =>
-		computedCall(name, new Unary(opMachFtr, new Const("%CTR")), pc, result);
+		result.rtl = computedCall(pc, name, new Unary(opMachFtr, new Const("%CTR")));
 
 	| bal(_, reladdr) =>
 	//| bal(BIcr, reladdr) =>
-		unconditionalJump("bal", reladdr, pc, result);
+		result.rtl = unconditionalJump(pc, "bal", reladdr);
 
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.
 	| bltlr(BIcr) [name] =>
-		conditionalJump(name, BRANCH_JSGE, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, BRANCH_JSGE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| blelr(BIcr) [name] =>
-		conditionalJump(name, BRANCH_JSG, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, BRANCH_JSG, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| beqlr(BIcr) [name] =>
-		conditionalJump(name, BRANCH_JNE, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, BRANCH_JNE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bgelr(BIcr) [name] =>
-		conditionalJump(name, BRANCH_JSL, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, BRANCH_JSL, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bgtlr(BIcr) [name] =>
-		conditionalJump(name, BRANCH_JSLE, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, BRANCH_JSLE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bnelr(BIcr) [name] =>
-		conditionalJump(name, BRANCH_JE, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, BRANCH_JE, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bsolr(BIcr) [name] =>
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| bnslr(BIcr) [name] =>
-		conditionalJump(name, (BRANCH_TYPE)0, BIcr, nextPC, pc, result);
+		result.rtl = conditionalJump(pc, name, nextPC, (BRANCH_TYPE)0, BIcr);
 		result.rtl->appendStmt(new ReturnStatement);
 
 	| ballr(_) [name] =>
 	//| ballr(BIcr) [name] =>
-		result.rtl = new RTL(pc, stmts);
+		result.rtl = new RTL(pc);
 		result.rtl->appendStmt(new ReturnStatement);
 		SHOW_ASM(name << "\n");
 
 	// Shift right arithmetic
 	| srawi(ra, rs, uimm) [name] =>
-		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
+		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 	| srawiq(ra, rs, uimm) [name] =>
-		stmts = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
+		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
 	else
-		stmts = nullptr;
 		result.valid = false;
 	endmatch
 
+	if (result.valid && !result.rtl)
+		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	result.numBytes = nextPC - pc;
-	if (result.valid && !result.rtl)  // Don't override higher level res
-		result.rtl = new RTL(pc, stmts);
-
 	return result;
 }
 
 /**
  * Process a conditional jump instruction.
  */
-void
-PPCDecoder::conditionalJump(const char *name, BRANCH_TYPE cond, unsigned BIcr, ADDRESS relocd, ADDRESS pc, DecodeResult &result)
+RTL *
+PPCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond, unsigned BIcr)
 {
-	result.rtl = new RTL(pc);
+	auto rtl = new RTL(pc);
 	auto jump = new BranchStatement();
 	jump->setDest(relocd);
 	jump->setCondType(cond);
-	result.rtl->appendStmt(jump);
-	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd)
+	rtl->appendStmt(jump);
+	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd);
+	return rtl;
 }
 
 /**

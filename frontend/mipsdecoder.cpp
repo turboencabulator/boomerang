@@ -67,10 +67,7 @@ MIPSDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 	// Clear the result structure;
 	result.reset();
-
-	// The actual list of instantiated statements
-	std::list<Statement *> *stmts = nullptr;
 }
 
-#line 76 "mipsdecoder.cpp"
+#line 73 "mipsdecoder.cpp"
 

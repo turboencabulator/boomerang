@@ -22,7 +22,6 @@
 #include "types.h"
 
 #include <iostream>
-#include <list>
 
 #include <cstddef>
 #include <cstdint>
@@ -131,14 +130,14 @@ public:
 #endif
 
 protected:
-	std::list<Statement *> *instantiate(ADDRESS pc, const char *name, ...);
-	Exp *instantiateNamedParam(const char *name, ...);
-	void substituteCallArgs(const char *name, Exp *&exp, ...);
+	RTL *instantiate(ADDRESS, const char *, ...);
+	Exp *instantiateNamedParam(const char *, ...);
+	void substituteCallArgs(const char *, Exp *&, ...);
 
-	static void unconditionalJump(const char *name, ADDRESS relocd, ADDRESS pc, DecodeResult &result);
-	static void conditionalJump(const char *name, BRANCH_TYPE cond, ADDRESS relocd, ADDRESS pc, DecodeResult &result);
-	static void computedJump(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result);
-	static void computedCall(const char *name, Exp *dest, ADDRESS pc, DecodeResult &result);
+	static RTL *unconditionalJump(ADDRESS, const char *, ADDRESS);
+	static RTL *conditionalJump(ADDRESS, const char *, ADDRESS, BRANCH_TYPE);
+	static RTL *computedJump(ADDRESS, const char *, Exp *);
+	static RTL *computedCall(ADDRESS, const char *, Exp *);
 
 #if 0 // Cruft?
 	/**
@@ -186,23 +185,6 @@ bool isFuncPrologue(ADDRESS hostPC);
 		for (const auto &stmt : stmts) \
 			std::cout << "\t\t\t" << stmt << "\n"; \
 	}
-/** \} */
-
-/**
- * \name Macros for branches
- * \note Don't put inside a "match" statement, since the ordering is changed
- * and multiple copies may be made.
- * \{
- */
-/// This one is X86 specific.
-#define SETS(name, dest, cond) \
-	auto bs = new BoolAssign(8); \
-	bs->setLeftFromList(stmts); \
-	stmts->clear(); \
-	result.rtl = new RTL(pc, stmts); \
-	result.rtl->appendStmt(bs); \
-	bs->setCondType(cond); \
-	SHOW_ASM(name << " " << *dest)
 /** \} */
 
 

@@ -16,8 +16,6 @@
 
 #include "decoder.h"
 
-#include <list>
-
 /**
  * \brief Instruction decoder for SPARC.
  */
@@ -44,7 +42,7 @@ private:
 	static Exp *dis_RegRhs(unsigned r);
 	/** \} */
 
-	static RTL *createBranchRtl(ADDRESS pc, std::list<Statement *> *stmts, const char *name);
+	static RTL *createBranchRtl(ADDRESS pc, const char *name);
 	//bool isFuncPrologue(ADDRESS hostPC);
 };
 

@@ -70,20 +70,19 @@ DecodeResult &
 ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 {
 	result.reset();  // Clear the result structure (numBytes = 0 etc)
-	std::list<Statement *> *stmts = nullptr;  // The actual list of instantiated Statements
 	unsigned total = 0;  // Total value from all prefixes
 
 	while (1) {
 
-#line 79 "st20decoder.cpp"
+#line 78 "st20decoder.cpp"
 
-#line 73 "machine/st20/decoder.m"
+#line 72 "machine/st20/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 73 "machine/st20/decoder.m"
+#line 72 "machine/st20/decoder.m"
 pc + result.numBytes++
-#line 87 "st20decoder.cpp"
+#line 86 "st20decoder.cpp"
 ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
@@ -99,12 +98,12 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 86 "machine/st20/decoder.m"
+#line 85 "machine/st20/decoder.m"
 
-			unconditionalJump("j", pc + result.numBytes + total + oper, pc, result);
+			result.rtl = unconditionalJump(pc, "j", pc + result.numBytes + total + oper);
 
 
-#line 108 "st20decoder.cpp"
+#line 107 "st20decoder.cpp"
 
             
           }
@@ -118,12 +117,12 @@ pc + result.numBytes++
             const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 83 "machine/st20/decoder.m"
+#line 82 "machine/st20/decoder.m"
 
-			stmts = instantiate(pc, name, new Const(total + oper));
+			result.rtl = instantiate(pc, name, new Const(total + oper));
 
 
-#line 127 "st20decoder.cpp"
+#line 126 "st20decoder.cpp"
 
             
           }
@@ -133,13 +132,13 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 75 "machine/st20/decoder.m"
+#line 74 "machine/st20/decoder.m"
 
 			total = (total + oper) << 4;
 			continue;
 
 
-#line 143 "st20decoder.cpp"
+#line 142 "st20decoder.cpp"
 
             
           }
@@ -149,13 +148,13 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 79 "machine/st20/decoder.m"
+#line 78 "machine/st20/decoder.m"
 
 			total = (total + ~oper) << 4;
 			continue;
 
 
-#line 159 "st20decoder.cpp"
+#line 158 "st20decoder.cpp"
 
             
           }
@@ -165,18 +164,17 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 89 "machine/st20/decoder.m"
+#line 88 "machine/st20/decoder.m"
 
 			total += oper;
-			stmts = instantiate(pc, "call", new Const(total));
+			result.rtl = instantiate(pc, "call", new Const(total));
 			auto newCall = new CallStatement;
 			newCall->setIsComputed(false);
 			newCall->setDest(pc + result.numBytes + total);
-			result.rtl = new RTL(pc, stmts);
 			result.rtl->appendStmt(newCall);
 
 
-#line 180 "st20decoder.cpp"
+#line 178 "st20decoder.cpp"
 
             
           }
@@ -186,18 +184,18 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 98 "machine/st20/decoder.m"
+#line 96 "machine/st20/decoder.m"
 
 			auto br = new BranchStatement();
 			//br->setCondType(BRANCH_JE);
 			br->setDest(pc + result.numBytes + total + oper);
 			//br->setCondExpr(dis_Reg(0));
 			br->setCondExpr(new Binary(opEquals, dis_Reg(0), new Const(0)));
-			result.rtl = new RTL(pc, stmts);
+			result.rtl = new RTL(pc);
 			result.rtl->appendStmt(br);
 
 
-#line 201 "st20decoder.cpp"
+#line 199 "st20decoder.cpp"
 
             
           }
@@ -207,7 +205,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 107 "machine/st20/decoder.m"
+#line 105 "machine/st20/decoder.m"
 
 			total |= oper;
 			const char *name = nullptr;
@@ -382,20 +380,15 @@ pc + result.numBytes++
 				}
 			}
 			if (name) {
-				stmts = instantiate(pc, name);
-				if (isRet) {
-					result.rtl = new RTL(pc, stmts);
-					result.rtl->appendStmt(new ReturnStatement);
-				}
+				result.rtl = instantiate(pc, name);
+				if (isRet) result.rtl->appendStmt(new ReturnStatement);
 			} else {
 				result.valid = false;  // Invalid instruction
-				result.rtl = nullptr;
-				result.numBytes = 0;
-				return result;
+				result.numBytes = 0;  // FIXME:  Does this really need to be cleared?
 			}
 
 
-#line 399 "st20decoder.cpp"
+#line 392 "st20decoder.cpp"
 
             
           }
@@ -409,16 +402,16 @@ pc + result.numBytes++
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 413 "st20decoder.cpp"
+#line 406 "st20decoder.cpp"
 
-#line 294 "machine/st20/decoder.m"
+#line 287 "machine/st20/decoder.m"
 		break;
 	}
 
-	if (!result.rtl)
-		result.rtl = new RTL(pc, stmts);
+	if (result.valid && !result.rtl)
+		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
 	return result;
 }
 
-#line 424 "st20decoder.cpp"
+#line 417 "st20decoder.cpp"
 
