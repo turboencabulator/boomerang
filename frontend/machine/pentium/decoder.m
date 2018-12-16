@@ -1275,7 +1275,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		stmts = instantiate(pc, "NOP");
 
 	| CALL.Jvod(relocd) =>
-		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd));
 		ADDRESS nativeDest = relocd;
 		if (nativeDest == nextPC) {
 			// This is a call $+5

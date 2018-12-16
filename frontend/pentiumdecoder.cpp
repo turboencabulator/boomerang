@@ -13858,7 +13858,7 @@ pc
                     
 #line 1277 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "CALL.Jvod", dis_Num(relocd));
 		ADDRESS nativeDest = relocd;
 		if (nativeDest == nextPC) {
 			// This is a call $+5
