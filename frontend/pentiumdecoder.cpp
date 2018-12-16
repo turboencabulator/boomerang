@@ -33200,7 +33200,7 @@ pc
                     
 #line 1046 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 
 #line 33207 "pentiumdecoder.cpp"
@@ -33219,7 +33219,7 @@ pc
                     
 #line 1049 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "LOOPE", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 
 #line 33226 "pentiumdecoder.cpp"
@@ -33238,7 +33238,7 @@ pc
                     
 #line 1052 "machine/pentium/decoder.m"
 
-		stmts = instantiate(pc, "LOOP", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "LOOP", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 
 #line 33245 "pentiumdecoder.cpp"

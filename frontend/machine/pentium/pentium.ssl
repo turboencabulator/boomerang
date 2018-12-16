@@ -978,7 +978,7 @@ LOOPS := { "LOOP", "LOOPE", "LOOPZ", "LOOPNE", "LOOPNZ" };
 
 LOOPS[IDX] reloc
 	*32* %ecx := %ecx - 1
-	*32* %pc := [COND4[IDX] ? %pc + reloc : %pc];
+	*32* %pc := [COND4[IDX] ? reloc : %pc];
 
 MOV.EB.IB modrm, i8
 	*8* modrm := i8;

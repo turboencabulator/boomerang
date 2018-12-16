@@ -1044,13 +1044,13 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		stmts = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
 
 	| LOOPNE(relocd) =>
-		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "LOOPNE", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 	| LOOPE(relocd) =>
-		stmts = instantiate(pc, "LOOPE", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "LOOPE", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 	| LOOP(relocd) =>
-		stmts = instantiate(pc, "LOOP", dis_Num(relocd - nextPC));
+		stmts = instantiate(pc, "LOOP", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
 	| LGS(reg, Mem) =>
 		stmts = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
