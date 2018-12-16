@@ -900,7 +900,7 @@ JMP32S := {
 };
 
 JMP32S[IDX] reloc32
-	*32* %pc := [COND1[IDX] = 1 ? %pc + 6 + reloc32 : %pc];
+	*32* %pc := [COND1[IDX] = 1 ? reloc32 : %pc];
 
 COND2 := {
 	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
@@ -918,7 +918,7 @@ JMP16S := {
 };
 
 JMP16S[IDX] reloc16
-	*32* %pc := [COND2[IDX] = 1 ? %pc + 4 + reloc16 : %pc];
+	*32* %pc := [COND2[IDX] = 1 ? reloc16 : %pc];
 
 COND3 := {
 	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
@@ -936,16 +936,16 @@ JMP8S := {
 };
 
 JMP8S[IDX] reloc8
-	*32* %pc := [COND3[IDX] = 1 ? %pc + 2 + reloc8 : %pc];
+	*32* %pc := [COND3[IDX] = 1 ? reloc8 : %pc];
 
 JMP.JB reloc8
-	*32* %pc := %pc + 2 + reloc8;
+	*32* %pc := reloc8;
 
 JMP.JVOW reloc16
-	*32* %pc := %pc + 3 + reloc16;
+	*32* %pc := reloc16;
 
 JMP.JVOD reloc32
-	*32* %pc := %pc + 5 + reloc32;
+	*32* %pc := reloc32;
 
 JMP.EVOW modrm
 	*16* %pc := modrm;
