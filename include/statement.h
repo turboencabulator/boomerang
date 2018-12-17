@@ -778,7 +778,8 @@ protected:
 	                                   // properly.
 public:
 	            GotoStatement();
-	            GotoStatement(ADDRESS jumpDest);
+	            GotoStatement(Exp *);
+	            GotoStatement(ADDRESS);
 	virtual    ~GotoStatement();
 
 	// Make a deep copy, and make the copy a derived object if needed.
@@ -792,8 +793,8 @@ public:
 
 	// Set and return the destination of the jump. The destination is either an Exp, or an ADDRESS that is
 	// converted to a Exp.
-	void        setDest(Exp *pd);
-	void        setDest(ADDRESS addr);
+	void        setDest(Exp *);
+	void        setDest(ADDRESS);
 	virtual Exp *getDest() const;
 
 	// Return the fixed destination of this CTI. For dynamic CTIs, returns -1.
@@ -883,6 +884,8 @@ class BranchStatement: public GotoStatement {
 
 public:
 	            BranchStatement();
+	            BranchStatement(Exp *);
+	            BranchStatement(ADDRESS);
 	virtual    ~BranchStatement();
 
 	// Make a deep copy, and make the copy a derived object if needed.
@@ -968,6 +971,7 @@ class CaseStatement: public GotoStatement {
 	SWITCH_INFO *pSwitchInfo = nullptr;  // Ptr to struct with info about the switch
 public:
 	            CaseStatement();
+	            CaseStatement(Exp *);
 	virtual    ~CaseStatement();
 
 	// Make a deep copy, and make the copy a derived object if needed.
@@ -1044,6 +1048,8 @@ class CallStatement: public GotoStatement {
 
 public:
 	            CallStatement();
+	            CallStatement(Exp *);
+	            CallStatement(ADDRESS);
 	virtual    ~CallStatement();
 
 	void        setNumber(int num) override;

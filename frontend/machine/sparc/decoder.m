@@ -212,34 +212,31 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * A standard call
 		 */
-		auto newCall = new CallStatement;
+		auto newCall = new CallStatement(addr);
 
-		// Set the destination
-		ADDRESS nativeDest = addr;
-		newCall->setDest(nativeDest);
-		Proc *destProc = prog->setNewProc(nativeDest);
+		Proc *destProc = prog->setNewProc(addr);
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
 		result.rtl = new RTL(pc, newCall);
 		result.type = SD;
-		SHOW_ASM("call__ " << std::hex << (nativeDest));
+		SHOW_ASM("call__ " << std::hex << addr);
 		DEBUG_STMTS
 
 	| call_(addr) =>
 		/*
 		 * A JMPL with rd == %o7, i.e. a register call
 		 */
-		auto newCall = new CallStatement;
+		auto dest = DIS_ADDR;
+		auto newCall = new CallStatement(dest);
 
 		// Record the fact that this is a computed call
 		newCall->setIsComputed();
 
 		// Set the destination expression
-		newCall->setDest(DIS_ADDR);
 		result.rtl = new RTL(pc, newCall);
 		result.type = DD;
 
-		SHOW_ASM("call_ " << *DIS_ADDR);
+		SHOW_ASM("call_ " << *dest);
 		DEBUG_STMTS
 
 	| ret() =>
@@ -274,16 +271,14 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		GotoStatement *jump;
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else if (strcmp(name, "BVS,a") == 0 || strcmp(name, "BVC,a") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
 			result.rtl = createBranchRtl(pc, name);
-			jump = (GotoStatement *)result.rtl->getList().back();
+			auto jump = (GotoStatement *)result.rtl->getList().back();
+			jump->setDest(tgt);
 		}
 
 		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
@@ -295,7 +290,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.type = SKIP;
 		}
 
-		jump->setDest(tgt);
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
@@ -311,16 +305,14 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.numBytes = nextPC - pc;
 			return result;
 		}
-		GotoStatement *jump;
 		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
 			result.rtl = createBranchRtl(pc, name);
-			jump = (GotoStatement *)result.rtl->getList().back();
+			auto jump = (GotoStatement *)result.rtl->getList().back();
+			jump->setDest(tgt);
 		}
 
 		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
@@ -332,7 +324,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.type = SKIP;
 		}
 
-		jump->setDest(tgt);
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
@@ -349,16 +340,14 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			return result;
 		}
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
-		GotoStatement *jump;
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else if (strcmp(name, "BVS") == 0 || strcmp(name, "BVC") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
 			result.rtl = createBranchRtl(pc, name);
-			jump = (BranchStatement *)result.rtl->getList().back();
+			auto jump = (BranchStatement *)result.rtl->getList().back();
+			jump->setDest(tgt);
 		}
 
 		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
@@ -369,17 +358,13 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if ((strcmp(name, "BN") == 0) || (strcmp(name, "BVS") == 0))
 			result.type = NCT;
 
-		jump->setDest(tgt);
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| BPA(_, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
 	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
-		auto jump = new GotoStatement;
-
 		result.type = SD;
-		result.rtl = new RTL(pc, jump);
-		jump->setDest(tgt);
+		result.rtl = new RTL(pc, new GotoStatement(tgt));
 		SHOW_ASM("BPA " << std::hex << tgt);
 		DEBUG_STMTS
 
@@ -390,17 +375,15 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.numBytes = nextPC - pc;
 			return result;
 		}
-		GotoStatement *jump;
 		if (strcmp(name, "BPN") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
-			jump = new GotoStatement;
-			result.rtl = new RTL(pc, jump);
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			// The BranchStatement will be the last Stmt of the rtl
-			jump = (GotoStatement *)result.rtl->getList().back();
+			auto jump = (GotoStatement *)result.rtl->getList().back();
+			jump->setDest(tgt);
 		}
 
 		// The class of this instruction depends on whether or not
@@ -412,7 +395,6 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if ((strcmp(name, "BPN") == 0) || (strcmp(name, "BPVS") == 0))
 			result.type = NCT;
 
-		jump->setDest(tgt);
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
@@ -422,12 +404,11 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		 * JMPL, with rd != %o7, i.e. register jump
 		 * Note: if rd==%o7, then would be handled with the call_ arm
 		 */
-		auto jump = new CaseStatement;
+		auto jump = new CaseStatement(DIS_ADDR);
 		// Record the fact that it is a computed jump
 		jump->setIsComputed();
 		result.rtl = new RTL(pc, jump);
 		result.type = DD;
-		jump->setDest(DIS_ADDR);
 		SHOW_ASM("JMPL ");
 		DEBUG_STMTS
 

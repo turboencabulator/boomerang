@@ -179,13 +179,11 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 
 	| bl(reladdr) [name] =>
-		Exp *dest = DIS_RELADDR;
+		auto dest = DIS_RELADDR;
 		result.rtl = instantiate(pc, name, dest);
-		auto newCall = new CallStatement;
+		auto newCall = new CallStatement(dest);
 		// Record the fact that this is not a computed call
 		newCall->setIsComputed(false);
-		// Set the destination expression
-		newCall->setDest(dest);
 		result.rtl->appendStmt(newCall);
 		Proc *destProc = prog->setNewProc(reladdr);
 		if (destProc == (Proc *)-1) destProc = nullptr;
@@ -195,7 +193,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = unconditionalJump(pc, "b", reladdr);
 
 	| ball(BIcr, reladdr) [name] =>  // Always "conditional" branch with link, test/OSX/hello has this
-		Exp *dest = DIS_RELADDR;
+		auto dest = DIS_RELADDR;
 		if (reladdr == nextPC) {  // Branch to next instr?
 			// Effectively %LR = %pc+4, but give the actual value for %pc
 			auto as = new Assign(new IntegerType,
@@ -205,11 +203,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4");
 		} else {
 			result.rtl = instantiate(pc, name, dest);
-			auto newCall = new CallStatement;
+			auto newCall = new CallStatement(dest);
 			// Record the fact that this is not a computed call
 			newCall->setIsComputed(false);
-			// Set the destination expression
-			newCall->setDest(dest);
 			result.rtl->appendStmt(newCall);
 		}
 
@@ -348,8 +344,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 RTL *
 PPCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond, unsigned BIcr)
 {
-	auto jump = new BranchStatement();
-	jump->setDest(relocd);
+	auto jump = new BranchStatement(relocd);
 	jump->setCondType(cond);
 	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd);
 	return new RTL(pc, jump);

@@ -127,22 +127,18 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		 */
 		// Mike: there should probably be a HLNwayCall class for this!
 		result.rtl = instantiate(pc, "CALL.Evod", DIS_EADDR32);
-		auto newCall = new CallStatement;
+		auto newCall = new CallStatement(DIS_EADDR32);
 		// Record the fact that this is a computed call
 		newCall->setIsComputed();
-		// Set the destination expression
-		newCall->setDest(DIS_EADDR32);
 		result.rtl->appendStmt(newCall);
 
 	| JMP.Evod(Eaddr) =>
 		/*
 		 * Register jump
 		 */
-		auto newJump = new CaseStatement;
+		auto newJump = new CaseStatement(DIS_EADDR32);
 		// Record the fact that this is a computed call
 		newJump->setIsComputed();
-		// Set the destination expression
-		newJump->setDest(DIS_EADDR32);
 		result.rtl = new RTL(pc, newJump);
 
 	/*
@@ -1283,9 +1279,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.rtl->getList().pop_back();
 			// And don't make it a call statement
 		} else {
-			auto call = new CallStatement;
-			// Set the destination
-			call->setDest(relocd);
+			auto call = new CallStatement(relocd);
 			result.rtl->getList().push_back(call);
 			Proc *destProc = prog->setNewProc(relocd);
 			if (destProc == (Proc *)-1) destProc = nullptr;  // In case a deleted Proc
@@ -1546,9 +1540,9 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 	| ANDiodb(Eaddr, i8) =>
 		// Special hack to ignore and $0xfffffff0, %esp
-		Exp *oper = DIS_EADDR32;
+		auto oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
-			result.rtl = instantiate(pc, "ANDiodb", DIS_EADDR32, DIS_I8);
+			result.rtl = instantiate(pc, "ANDiodb", oper, DIS_I8);
 
 	| ANDiowb(Eaddr, i8) =>
 		result.rtl = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
@@ -2285,8 +2279,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		               new Terminal(opZF),
 		               new Const(1));
 		stmts.push_back(s);
-		b = new BranchStatement;
-		b->setDest(pc + numBytes);
+		b = new BranchStatement(pc + numBytes);
 		b->setCondType(BRANCH_JE);
 		b->setCondExpr(new Binary(opEquals,
 		                          modrm->clone(),
@@ -2310,8 +2303,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		                          dest->clone(),
 		                          new Const(1)));
 		stmts.push_back(s);
-		b = new BranchStatement;
-		b->setDest(pc + 2);
+		b = new BranchStatement(pc + 2);
 		b->setCondType(BRANCH_JE);
 		b->setCondExpr(new Binary(opEquals,
 		                          new Ternary(opAt,

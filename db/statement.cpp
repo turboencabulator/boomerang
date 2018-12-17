@@ -1021,15 +1021,21 @@ GotoStatement::GotoStatement()
 	kind = STMT_GOTO;
 }
 
+GotoStatement::GotoStatement(Exp *dest) :
+	pDest(dest)
+{
+	kind = STMT_GOTO;
+}
+
 /*==============================================================================
  * FUNCTION:        GotoStatement::GotoStatement
  * OVERVIEW:        Construct a jump to a fixed address
- * PARAMETERS:      uDest: native address of destination
+ * PARAMETERS:      dest: native address of destination
  *============================================================================*/
-GotoStatement::GotoStatement(ADDRESS uDest)
+GotoStatement::GotoStatement(ADDRESS dest)
 {
 	kind = STMT_GOTO;
-	pDest = new Const(uDest);
+	pDest = new Const(dest);
 }
 
 /*==============================================================================
@@ -1248,6 +1254,18 @@ GotoStatement::simplify()
  * OVERVIEW:        Constructor.
  *============================================================================*/
 BranchStatement::BranchStatement()
+{
+	kind = STMT_BRANCH;
+}
+
+BranchStatement::BranchStatement(Exp *dest) :
+	GotoStatement(dest)
+{
+	kind = STMT_BRANCH;
+}
+
+BranchStatement::BranchStatement(ADDRESS dest) :
+	GotoStatement(dest)
 {
 	kind = STMT_BRANCH;
 }
@@ -1824,6 +1842,12 @@ CaseStatement::CaseStatement()
 	kind = STMT_CASE;
 }
 
+CaseStatement::CaseStatement(Exp *dest) :
+	GotoStatement(dest)
+{
+	kind = STMT_CASE;
+}
+
 /*==============================================================================
  * FUNCTION:        CaseStatement::~CaseStatement
  * OVERVIEW:        Destructor
@@ -1972,6 +1996,18 @@ CaseStatement::simplify()
  * OVERVIEW:         Constructor for a call
  *============================================================================*/
 CallStatement::CallStatement()
+{
+	kind = STMT_CALL;
+}
+
+CallStatement::CallStatement(Exp *dest) :
+	GotoStatement(dest)
+{
+	kind = STMT_CALL;
+}
+
+CallStatement::CallStatement(ADDRESS dest) :
+	GotoStatement(dest)
 {
 	kind = STMT_CALL;
 }

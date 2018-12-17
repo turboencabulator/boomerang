@@ -653,7 +653,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 static void
 toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::iterator &it)
 {
-	auto br1 = new BranchStatement;
+	auto br1 = new BranchStatement(a + 2);
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
 	auto s1 = rtl->getList().front();
 	auto s6 = rtl->getList().back();
@@ -661,13 +661,11 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::ite
 		br1->setCondExpr(((Assign *)s1)->getRight());
 	else
 		br1->setCondExpr(nullptr);
-	br1->setDest(a + 2);
-	auto br2 = new BranchStatement;
+	auto br2 = new BranchStatement(a);
 	if (s6->isAssign())
 		br2->setCondExpr(((Assign *)s6)->getRight());
 	else
 		br2->setCondExpr(nullptr);
-	br2->setDest(a);
 	cfg->splitForBranch(bb, rtl, br1, br2, it);
 }
 

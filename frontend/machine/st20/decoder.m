@@ -80,23 +80,24 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			continue;
 
 		| primary(oper) [name] =>
-			result.rtl = instantiate(pc, name, new Const(total + oper));
+			total += oper;
+			result.rtl = instantiate(pc, name, new Const(total));
 
 		| j(oper) =>
-			result.rtl = unconditionalJump(pc, "j", pc + result.numBytes + total + oper);
+			total += oper;
+			result.rtl = unconditionalJump(pc, "j", pc + result.numBytes + total);
 
 		| call(oper) =>
 			total += oper;
 			result.rtl = instantiate(pc, "call", new Const(total));
-			auto newCall = new CallStatement;
+			auto newCall = new CallStatement(pc + result.numBytes + total);
 			newCall->setIsComputed(false);
-			newCall->setDest(pc + result.numBytes + total);
 			result.rtl->appendStmt(newCall);
 
 		| cj(oper) =>
-			auto br = new BranchStatement();
+			total += oper;
+			auto br = new BranchStatement(pc + result.numBytes + total);
 			//br->setCondType(BRANCH_JE);
-			br->setDest(pc + result.numBytes + total + oper);
 			//br->setCondExpr(dis_Reg(0));
 			br->setCondExpr(new Binary(opEquals, dis_Reg(0), new Const(0)));
 			result.rtl = new RTL(pc, br);

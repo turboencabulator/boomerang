@@ -217,11 +217,10 @@ NJMCDecoder::dis_Num(unsigned num)
  * to other procedures.
  */
 RTL *
-NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS relocd)
+NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS dest)
 {
-	auto jump = new GotoStatement();
-	jump->setDest(relocd);
-	SHOW_ASM(name << " 0x" << std::hex << relocd);
+	auto jump = new GotoStatement(dest);
+	SHOW_ASM(name << " 0x" << std::hex << dest << std::dec);
 	return new RTL(pc, jump);
 }
 
@@ -231,12 +230,11 @@ NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS relocd)
  * \note This used to be the COND_JUMP macro.
  */
 RTL *
-NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond)
+NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS dest, BRANCH_TYPE cond)
 {
-	auto jump = new BranchStatement();
-	jump->setDest(relocd);
+	auto jump = new BranchStatement(dest);
 	jump->setCondType(cond);
-	SHOW_ASM(name << " " << relocd);
+	SHOW_ASM(name << " 0x" << std::hex << dest << std::dec);
 	return new RTL(pc, jump);
 }
 
@@ -250,9 +248,8 @@ NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANC
 RTL *
 NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
 {
-	auto jump = new GotoStatement();
-	jump->setDest(dest);
-	jump->setIsComputed(true);
+	auto jump = new GotoStatement(dest);
+	jump->setIsComputed();
 	SHOW_ASM(name << " " << *dest);
 	return new RTL(pc, jump);
 }
@@ -267,9 +264,8 @@ NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
 RTL *
 NJMCDecoder::computedCall(ADDRESS pc, const char *name, Exp *dest)
 {
-	auto call = new CallStatement();
-	call->setDest(dest);
-	call->setIsComputed(true);
+	auto call = new CallStatement(dest);
+	call->setIsComputed();
 	SHOW_ASM(name << " " << *dest);
 	return new RTL(pc, call);
 }

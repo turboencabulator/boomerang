@@ -756,9 +756,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 								proc = prog->setNewProc(dest);
 						}
 						if (proc && proc != (Proc *)-1) {
-							s = new CallStatement();
+							s = new CallStatement(dest);
 							auto call = static_cast<CallStatement *>(s);
-							call->setDest(dest);
 							call->setDestProc(proc);
 							call->setReturnAfterCall(true);
 							// also need to change it in the actual RTL
