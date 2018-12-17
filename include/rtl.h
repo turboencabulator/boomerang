@@ -104,8 +104,6 @@ public:
 
 	        void        print(std::ostream &os = std::cout, bool html = false) const;
 
-	        void        updateAddress(ADDRESS addr);
-
 	        void        insertAssign(Exp *ssLhs, Exp *ssRhs, bool prep, Type *type = nullptr);
 	        void        insertAfterTemps(Exp *ssLhs, Exp *ssRhs, Type *type = nullptr);
 

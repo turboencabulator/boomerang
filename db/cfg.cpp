@@ -1881,9 +1881,9 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 	auto skipRtl = new RTL(a, br1);
 	pRtls->push_back(skipRtl);
 	auto skipBB = newBB(pRtls, TWOWAY, 2);
-	rtl->updateAddress(addr + 1);
+	rtl->setAddress(addr + 1);
 	if (!haveA) {
-		skipRtl->updateAddress(addr);
+		skipRtl->setAddress(addr);
 		// Address addr now refers to the splitBB
 		m_mapBB[addr] = skipBB;
 		// Fix all predecessors of pBB to point to splitBB instead

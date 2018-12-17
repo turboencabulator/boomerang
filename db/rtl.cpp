@@ -414,19 +414,6 @@ operator <<(std::ostream &os, const RTL &r)
 }
 
 /**
- * \brief Set the RTL's source address.
- *
- * Set the nativeAddr field.
- *
- * \param addr  Native address.
- */
-void
-RTL::updateAddress(ADDRESS addr)
-{
-	nativeAddr = addr;
-}
-
-/**
  * \brief Replace all instances of "search" with "replace".
  *
  * \param search   Ptr to an expression to search for.

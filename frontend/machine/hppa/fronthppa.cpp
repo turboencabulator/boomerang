@@ -282,7 +282,7 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 	if ((delay_inst.type != NOP)
 	 && !delayPattern
 	 && !call_rtl->isReturnAfterCall()) {
-		delay_rtl->updateAddress(address);
+		delay_rtl->setAddress(address);
 		BB_rtls->push_back(delay_rtl);
 		if (progOptions.rtl)
 			delay_rtl->print(os);
@@ -425,7 +425,7 @@ case_SD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		} else {
 			// Move the delay instruction before the SD. Must update the address
 			// in case there is a branch to the SD
-			delay_rtl->updateAddress(address);
+			delay_rtl->setAddress(address);
 			BB_rtls->push_back(delay_rtl);
 			// Display RTL representation if asked
 			if (progOptions.rtl)
@@ -489,7 +489,7 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 
 	if ((delay_inst.type != NOP) && !delayPattern) {
 		// Emit the delayed instruction, unless a pattern
-		delay_inst.rtl->updateAddress(address);
+		delay_inst.rtl->setAddress(address);
 		BB_rtls->push_back(delay_inst.rtl);
 	}
 
@@ -648,7 +648,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 			// This is in case we have an in-edge to the branch. If the BB
 			// is split, we want the split to happen here, so this delay
 			// instruction is active on this path
-			delay_inst.rtl->updateAddress(address);
+			delay_inst.rtl->setAddress(address);
 		}
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
@@ -693,7 +693,7 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		// orphan will often but not necessarily be the same, so we can't use
 		// the same orphan BB. newBB knows to consider BBs with address 0 as
 		// being in the map, so several BBs can exist with address 0
-		delay_inst.rtl->updateAddress(0);
+		delay_inst.rtl->setAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
 		// Again, we can't even give the jumps a special address like 1, since
 		// then the BB would have this getLowAddr.
@@ -776,7 +776,7 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		// Change the address to 0, since this code has no source address
 		// (else we may branch to here when we want to branch to the real
 		// BB with this instruction).
-		delay_inst.rtl->updateAddress(0);
+		delay_inst.rtl->setAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
 		pOrphan->push_back(new HLJump(0, uDest));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
@@ -1323,7 +1323,7 @@ emitNop(HRTLList *pRtls, ADDRESS uAddr)
 	// Emit a null RTL with the given address. Required to cope with
 	// SKIP instructions. Yes, they really happen, e.g. /usr/bin/vi 2.5
 	HRTL *pRtl = new RTL;
-	pRtl->updateAddress(uAddr);
+	pRtl->setAddress(uAddr);
 	pRtls->push_back(pRtl);
 }
 

@@ -261,7 +261,7 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &del
 	// Emit the delay instruction, unless the delay instruction is a nop, or we have a pattern, or are followed by a
 	// restore
 	if ((delay_inst.type != NOP) && !call_stmt->isReturnAfterCall()) {
-		delay_rtl->updateAddress(address);
+		delay_rtl->setAddress(address);
 		BB_rtls->push_back(delay_rtl);
 		if (Boomerang::get()->printRtl)
 			delay_rtl->print(os);
@@ -397,7 +397,7 @@ SparcFrontEnd::case_SD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, Dec
 			SD_stmt->adjustFixedDest(-4);
 		else {
 			// Move the delay instruction before the SD. Must update the address in case there is a branch to the SD
-			delay_rtl->updateAddress(address);
+			delay_rtl->setAddress(address);
 			BB_rtls->push_back(delay_rtl);
 			// Display RTL representation if asked
 			//if (progOptions.rtl)
@@ -453,7 +453,7 @@ SparcFrontEnd::case_DD(ADDRESS &address, ptrdiff_t delta, DecodeResult &inst, De
 
 	if (delay_inst.type != NOP) {
 		// Emit the delayed instruction, unless a NOP
-		delay_inst.rtl->updateAddress(address);
+		delay_inst.rtl->setAddress(address);
 		BB_rtls->push_back(delay_inst.rtl);
 	}
 
@@ -592,7 +592,7 @@ SparcFrontEnd::case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, De
 			BB_rtls->push_back(delay_inst.rtl);
 			// This is in case we have an in-edge to the branch. If the BB is split, we want the split to happen
 			// here, so this delay instruction is active on this path
-			delay_inst.rtl->updateAddress(address);
+			delay_inst.rtl->setAddress(address);
 		}
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
@@ -631,7 +631,7 @@ SparcFrontEnd::case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, De
 		// be several jumps to the same destination that all require an orphan. The instruction in the orphan will
 		// often but not necessarily be the same, so we can't use the same orphan BB. newBB knows to consider BBs
 		// with address 0 as being in the map, so several BBs can exist with address 0
-		delay_inst.rtl->updateAddress(0);
+		delay_inst.rtl->setAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch. Again, we can't even give the jumps
 		// a special address like 1, since then the BB would have this getLowAddr.
 		pOrphan->push_back(new RTL(0, new GotoStatement(uDest)));
@@ -703,7 +703,7 @@ SparcFrontEnd::case_SCDAN(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, 
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address (else we may branch to here when we want to
 		// branch to the real BB with this instruction).
-		delay_inst.rtl->updateAddress(0);
+		delay_inst.rtl->setAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
 		pOrphan->push_back(new RTL(0, new GotoStatement(uDest)));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
@@ -947,7 +947,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 						// 142cc:  91 e8 3f ff        restore      %g0, -1, %o0
 						if (decoder.isRestore(address + 4, pBF)) {
 							// Give the address of the call; I think that this is actually important, if faintly annoying
-							delay_inst.rtl->updateAddress(address);
+							delay_inst.rtl->setAddress(address);
 							BB_rtls->push_back(delay_inst.rtl);
 							// The restore means it is effectively followed by a return (since the resore semantics chop
 							// off one level of return address)
