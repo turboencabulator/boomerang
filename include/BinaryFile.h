@@ -193,7 +193,6 @@ public:
 
 	        ADDRESS     getLimitTextLow() const { return limitTextLow; }
 	        ADDRESS     getLimitTextHigh() const { return limitTextHigh; }
-	        ptrdiff_t   getTextDelta() const { return textDelta; }
 
 	        int         readNative1(ADDRESS a) const;
 	        int         readNative2(ADDRESS a) const;
@@ -295,13 +294,6 @@ protected:
 
 	        ADDRESS     limitTextLow;            ///< Lowest used native address (inclusive) in the text segment.
 	        ADDRESS     limitTextHigh;           ///< Highest used native address (not inclusive) in the text segment.
-
-	/**
-	 * Difference between the host and native addresses (host - native).
-	 * At this stage, we are assuming that the difference is the same for
-	 * all text sections of the BinaryFile image.
-	 */
-	        ptrdiff_t   textDelta;
 };
 
 #endif

@@ -43,10 +43,10 @@ public:
 private:
 
 	void warnDCTcouple(ADDRESS uAt, ADDRESS uDest);
-	bool optimise_DelayCopy(ADDRESS src, ADDRESS dest, ptrdiff_t delta, ADDRESS uUpper);
+	bool optimise_DelayCopy(ADDRESS src, ADDRESS dest);
 	BasicBlock *optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, UserProc *pProc);
 
-	void handleBranch(ADDRESS dest, ADDRESS hiAddress, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq);
+	void handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq);
 	void handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS address, int offset = 0);
 
 	void case_unhandled_stub(ADDRESS addr);
@@ -54,16 +54,16 @@ private:
 	bool case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
 	               UserProc *proc, std::list<CallStatement *> &callList, std::ofstream &os, bool isPattern = false);
 
-	void case_SD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, DecodeResult &inst, DecodeResult &delay_inst,
+	void case_SD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
 	             std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq, std::ofstream &os);
 
-	bool case_DD(ADDRESS &address, ptrdiff_t delta, DecodeResult &inst, DecodeResult &delay_inst,
+	bool case_DD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
 	             std::list<RTL *> *&BB_rtls, TargetQueue &tq, UserProc *proc, std::list<CallStatement *> &callList);
 
-	bool case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, DecodeResult &inst, DecodeResult &delay_inst,
+	bool case_SCD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
 	              std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq);
 
-	bool case_SCDAN(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, DecodeResult &inst, DecodeResult &delay_inst,
+	bool case_SCDAN(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
 	                std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq);
 
 	void emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr);

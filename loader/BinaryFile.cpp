@@ -381,7 +381,6 @@ BinaryFile::getTextLimits()
 {
 	limitTextLow = 0xFFFFFFFF;
 	limitTextHigh = 0;
-	textDelta = 0;
 	for (const auto &sect : sections) {
 		if (sect.bCode) {
 			// The .plt section is an anomaly. It's code, but we never want to
@@ -395,12 +394,6 @@ BinaryFile::getTextLimits()
 			ADDRESS hiAddress = sect.uNativeAddr + sect.uSectionSize;
 			if (limitTextHigh < hiAddress)
 				limitTextHigh = hiAddress;
-			if (textDelta == 0)
-				textDelta = sect.uHostAddr - (char *)sect.uNativeAddr;
-			else if (textDelta != sect.uHostAddr - (char *)sect.uNativeAddr)
-				std::cerr << "warning: textDelta different for section "
-				          << sect.name
-				          << " (ignoring).\n";
 		}
 	}
 }
