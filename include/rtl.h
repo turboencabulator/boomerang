@@ -48,8 +48,9 @@ class RTL {
 	        std::list<Statement *> stmtList;  ///< List of expressions in this RTL.
 public:
 	                    RTL();
-	                    RTL(ADDRESS instNativeAddr, const std::list<Statement *> *listStmt = nullptr);
-	                    RTL(const RTL &other);
+	                    RTL(ADDRESS);
+	                    RTL(ADDRESS, Statement *);
+	                    RTL(const RTL &);
 	                   ~RTL();
 
 	        RTL        *clone() const;

@@ -78,9 +78,8 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 RTL *
 SparcDecoder::createBranchRtl(ADDRESS pc, const char *name)
 {
-	auto res = new RTL(pc);
 	auto br = new BranchStatement();
-	res->appendStmt(br);
+	auto res = new RTL(pc, br);
 	if (name[0] == 'F') {
 		// fbranch is any of [ FBN FBNE FBLG FBUL FBL   FBUG FBG   FBU
 		//                     FBA FBE  FBUE FBGE FBUGE FBLE FBULE FBO ],
@@ -212,15 +211,15 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 	ADDRESS nextPC = NO_ADDRESS;
 
-#line 216 "sparcdecoder.cpp"
+#line 215 "sparcdecoder.cpp"
 
-#line 210 "machine/sparc/decoder.m"
+#line 209 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 210 "machine/sparc/decoder.m"
+#line 209 "machine/sparc/decoder.m"
 pc
-#line 224 "sparcdecoder.cpp"
+#line 223 "sparcdecoder.cpp"
 ;
   const char *MATCH_name;
   static const char *MATCH_name_cond_0[] = {
@@ -311,13 +310,13 @@ pc
               case 0: 
                 nextPC = 4 + MATCH_p; 
                 
-#line 613 "machine/sparc/decoder.m"
+#line 598 "machine/sparc/decoder.m"
 
 	//| UNIMP(n) =>
 		result.valid = false;
 
 
-#line 321 "sparcdecoder.cpp"
+#line 320 "sparcdecoder.cpp"
 
                 
                 
@@ -344,20 +343,19 @@ pc
                                   19) + addressToPC(MATCH_p);
                     nextPC = 4 + MATCH_p; 
                     
-#line 387 "machine/sparc/decoder.m"
+#line 376 "machine/sparc/decoder.m"
   /* Can see bpa xcc,tgt in 32 bit code */
 	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
 		auto jump = new GotoStatement;
 
 		result.type = SD;
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(jump);
+		result.rtl = new RTL(pc, jump);
 		jump->setDest(tgt);
 		SHOW_ASM("BPA " << std::hex << tgt);
 		DEBUG_STMTS
 
 
-#line 361 "sparcdecoder.cpp"
+#line 359 "sparcdecoder.cpp"
 
                     
                   } /*opt-block*//*opt-block+*/
@@ -375,7 +373,7 @@ pc
                         addressToPC(MATCH_p);
                       nextPC = 4 + MATCH_p; 
                       
-#line 398 "machine/sparc/decoder.m"
+#line 386 "machine/sparc/decoder.m"
 
 		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
@@ -386,12 +384,10 @@ pc
 		GotoStatement *jump;
 		if (strcmp(name, "BPN") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			// The BranchStatement will be the last Stmt of the rtl
@@ -412,7 +408,7 @@ pc
 		DEBUG_STMTS
 
 
-#line 416 "sparcdecoder.cpp"
+#line 412 "sparcdecoder.cpp"
 
                       
                     }
@@ -457,13 +453,13 @@ pc
                     const char *name = MATCH_name;
                     nextPC = 4 + MATCH_p; 
                     
-#line 466 "machine/sparc/decoder.m"
+#line 451 "machine/sparc/decoder.m"
 
 		result.type = NOP;
 		result.rtl = instantiate(pc, name);
 
 
-#line 467 "sparcdecoder.cpp"
+#line 463 "sparcdecoder.cpp"
 
                     
                   }
@@ -539,7 +535,7 @@ pc
                           30) + addressToPC(MATCH_p);
             nextPC = 4 + MATCH_p; 
             
-#line 212 "machine/sparc/decoder.m"
+#line 211 "machine/sparc/decoder.m"
 
 		/*
 		 * A standard call
@@ -552,14 +548,13 @@ pc
 		Proc *destProc = prog->setNewProc(nativeDest);
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(newCall);
+		result.rtl = new RTL(pc, newCall);
 		result.type = SD;
 		SHOW_ASM("call__ " << std::hex << (nativeDest));
 		DEBUG_STMTS
 
 
-#line 563 "sparcdecoder.cpp"
+#line 558 "sparcdecoder.cpp"
 
             
           }
@@ -651,12 +646,12 @@ pc
                     unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-#line 518 "machine/sparc/decoder.m"
+#line 503 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RD);
 
 
-#line 660 "sparcdecoder.cpp"
+#line 655 "sparcdecoder.cpp"
 
                     
                   }
@@ -674,12 +669,12 @@ pc
                   unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 521 "machine/sparc/decoder.m"
+#line 506 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RD);
 
 
-#line 683 "sparcdecoder.cpp"
+#line 678 "sparcdecoder.cpp"
 
                   
                 }
@@ -693,12 +688,12 @@ pc
                   unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 524 "machine/sparc/decoder.m"
+#line 509 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RD);
 
 
-#line 702 "sparcdecoder.cpp"
+#line 697 "sparcdecoder.cpp"
 
                   
                 }
@@ -712,12 +707,12 @@ pc
                   unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 527 "machine/sparc/decoder.m"
+#line 512 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RD);
 
 
-#line 721 "sparcdecoder.cpp"
+#line 716 "sparcdecoder.cpp"
 
                   
                 }
@@ -735,12 +730,12 @@ pc
                     unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
                     nextPC = 4 + MATCH_p; 
                     
-#line 530 "machine/sparc/decoder.m"
+#line 515 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 
-#line 744 "sparcdecoder.cpp"
+#line 739 "sparcdecoder.cpp"
 
                     
                   }
@@ -756,12 +751,12 @@ pc
                   unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 533 "machine/sparc/decoder.m"
+#line 518 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 
-#line 765 "sparcdecoder.cpp"
+#line 760 "sparcdecoder.cpp"
 
                   
                 }
@@ -775,12 +770,12 @@ pc
                   unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 536 "machine/sparc/decoder.m"
+#line 521 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 
-#line 784 "sparcdecoder.cpp"
+#line 779 "sparcdecoder.cpp"
 
                   
                 }
@@ -794,12 +789,12 @@ pc
                   unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 539 "machine/sparc/decoder.m"
+#line 524 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI);
 
 
-#line 803 "sparcdecoder.cpp"
+#line 798 "sparcdecoder.cpp"
 
                   
                 }
@@ -836,12 +831,12 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 545 "machine/sparc/decoder.m"
+#line 530 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDS);
 
 
-#line 845 "sparcdecoder.cpp"
+#line 840 "sparcdecoder.cpp"
 
                         
                       }
@@ -858,12 +853,12 @@ pc
                         unsigned fs2d = (MATCH_w_32_0 & 0x1f) /* fs2d at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 596 "machine/sparc/decoder.m"
+#line 581 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDD);
 
 
-#line 867 "sparcdecoder.cpp"
+#line 862 "sparcdecoder.cpp"
 
                         
                       }
@@ -880,7 +875,7 @@ pc
                         unsigned fs2q = (MATCH_w_32_0 & 0x1f) /* fs2q at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 599 "machine/sparc/decoder.m"
+#line 584 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDQ);
 
@@ -888,7 +883,7 @@ pc
 	// In V9, the privileged RETT becomes user-mode RETURN
 	// It has the semantics of "ret restore" without the add part of the restore
 
-#line 892 "sparcdecoder.cpp"
+#line 887 "sparcdecoder.cpp"
 
                         
                       }
@@ -907,12 +902,12 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 548 "machine/sparc/decoder.m"
+#line 533 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS1S, DIS_FS2S, DIS_FDS);
 
 
-#line 916 "sparcdecoder.cpp"
+#line 911 "sparcdecoder.cpp"
 
                         
                       }
@@ -931,12 +926,12 @@ pc
                         unsigned fs2d = (MATCH_w_32_0 & 0x1f) /* fs2d at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 551 "machine/sparc/decoder.m"
+#line 536 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS1D, DIS_FS2D, DIS_FDD);
 
 
-#line 940 "sparcdecoder.cpp"
+#line 935 "sparcdecoder.cpp"
 
                         
                       }
@@ -955,12 +950,12 @@ pc
                         unsigned fs2q = (MATCH_w_32_0 & 0x1f) /* fs2q at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 554 "machine/sparc/decoder.m"
+#line 539 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS1Q, DIS_FS2Q, DIS_FDQ);
 
 
-#line 964 "sparcdecoder.cpp"
+#line 959 "sparcdecoder.cpp"
 
                         
                       }
@@ -977,13 +972,13 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 566 "machine/sparc/decoder.m"
+#line 551 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDS);
 
 	// Note: itod and dtoi have different sized registers
 
-#line 987 "sparcdecoder.cpp"
+#line 982 "sparcdecoder.cpp"
 
                         
                       }
@@ -1000,12 +995,12 @@ pc
                         unsigned fs2d = (MATCH_w_32_0 & 0x1f) /* fs2d at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 582 "machine/sparc/decoder.m"
+#line 567 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDS);
 
 
-#line 1009 "sparcdecoder.cpp"
+#line 1004 "sparcdecoder.cpp"
 
                         
                       }
@@ -1022,12 +1017,12 @@ pc
                         unsigned fs2q = (MATCH_w_32_0 & 0x1f) /* fs2q at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 587 "machine/sparc/decoder.m"
+#line 572 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDS);
 
 
-#line 1031 "sparcdecoder.cpp"
+#line 1026 "sparcdecoder.cpp"
 
                         
                       }
@@ -1044,11 +1039,11 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 570 "machine/sparc/decoder.m"
+#line 555 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDD);
 
-#line 1052 "sparcdecoder.cpp"
+#line 1047 "sparcdecoder.cpp"
 
                         
                       }
@@ -1065,11 +1060,11 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 580 "machine/sparc/decoder.m"
+#line 565 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDD);
 
-#line 1073 "sparcdecoder.cpp"
+#line 1068 "sparcdecoder.cpp"
 
                         
                       }
@@ -1086,13 +1081,13 @@ pc
                         unsigned fs2q = (MATCH_w_32_0 & 0x1f) /* fs2q at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 592 "machine/sparc/decoder.m"
+#line 577 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDD);
 
 
 
-#line 1096 "sparcdecoder.cpp"
+#line 1091 "sparcdecoder.cpp"
 
                         
                       }
@@ -1109,11 +1104,11 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 575 "machine/sparc/decoder.m"
+#line 560 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDQ);
 
-#line 1117 "sparcdecoder.cpp"
+#line 1112 "sparcdecoder.cpp"
 
                         
                       }
@@ -1130,11 +1125,11 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 585 "machine/sparc/decoder.m"
+#line 570 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2S, DIS_FDQ);
 
-#line 1138 "sparcdecoder.cpp"
+#line 1133 "sparcdecoder.cpp"
 
                         
                       }
@@ -1151,11 +1146,11 @@ pc
                         unsigned fs2d = (MATCH_w_32_0 & 0x1f) /* fs2d at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 590 "machine/sparc/decoder.m"
+#line 575 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDQ);
 
-#line 1159 "sparcdecoder.cpp"
+#line 1154 "sparcdecoder.cpp"
 
                         
                       }
@@ -1172,12 +1167,12 @@ pc
                         unsigned fs2d = (MATCH_w_32_0 & 0x1f) /* fs2d at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 572 "machine/sparc/decoder.m"
+#line 557 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2D, DIS_FDS);
 
 
-#line 1181 "sparcdecoder.cpp"
+#line 1176 "sparcdecoder.cpp"
 
                         
                       }
@@ -1194,12 +1189,12 @@ pc
                         unsigned fs2q = (MATCH_w_32_0 & 0x1f) /* fs2q at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 577 "machine/sparc/decoder.m"
+#line 562 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS2Q, DIS_FDS);
 
 
-#line 1203 "sparcdecoder.cpp"
+#line 1198 "sparcdecoder.cpp"
 
                         
                       }
@@ -1229,12 +1224,12 @@ pc
                         unsigned fs2s = (MATCH_w_32_0 & 0x1f) /* fs2s at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 557 "machine/sparc/decoder.m"
+#line 542 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS1S, DIS_FS2S);
 
 
-#line 1238 "sparcdecoder.cpp"
+#line 1233 "sparcdecoder.cpp"
 
                         
                       }
@@ -1251,12 +1246,12 @@ pc
                         unsigned fs2d = (MATCH_w_32_0 & 0x1f) /* fs2d at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 560 "machine/sparc/decoder.m"
+#line 545 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS1D, DIS_FS2D);
 
 
-#line 1260 "sparcdecoder.cpp"
+#line 1255 "sparcdecoder.cpp"
 
                         
                       }
@@ -1273,12 +1268,12 @@ pc
                         unsigned fs2q = (MATCH_w_32_0 & 0x1f) /* fs2q at 0 */;
                         nextPC = 4 + MATCH_p; 
                         
-#line 563 "machine/sparc/decoder.m"
+#line 548 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FS1Q, DIS_FS2Q);
 
 
-#line 1282 "sparcdecoder.cpp"
+#line 1277 "sparcdecoder.cpp"
 
                         
                       }
@@ -1306,19 +1301,18 @@ pc
                                       /* simm13 at 0 */ == 8) { 
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 258 "machine/sparc/decoder.m"
+#line 254 "machine/sparc/decoder.m"
 
 		/*
 		 * Just a ret (leaf; uses %o7 instead of %i7)
 		 */
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(new ReturnStatement);
+		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
 		SHOW_ASM("retl_");
 		DEBUG_STMTS
 
 
-#line 1322 "sparcdecoder.cpp"
+#line 1316 "sparcdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -1331,19 +1325,18 @@ pc
                                       /* simm13 at 0 */ == 8) { 
                                 nextPC = 4 + MATCH_p; 
                                 
-#line 248 "machine/sparc/decoder.m"
+#line 245 "machine/sparc/decoder.m"
 
 		/*
 		 * Just a ret (non leaf)
 		 */
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(new ReturnStatement);
+		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
 		SHOW_ASM("ret_");
 		DEBUG_STMTS
 
 
-#line 1347 "sparcdecoder.cpp"
+#line 1340 "sparcdecoder.cpp"
 
                                 
                               } /*opt-block*//*opt-block+*/
@@ -1377,14 +1370,14 @@ pc
                   unsigned addr = addressToPC(MATCH_p);
                   nextPC = 4 + MATCH_p; 
                   
-#line 605 "machine/sparc/decoder.m"
+#line 590 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 		result.rtl->appendStmt(new ReturnStatement);
 		result.type = DD;
 
 
-#line 1388 "sparcdecoder.cpp"
+#line 1381 "sparcdecoder.cpp"
 
                   
                 }
@@ -1414,7 +1407,7 @@ pc
                   unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 456 "machine/sparc/decoder.m"
+#line 441 "machine/sparc/decoder.m"
 
 		// Decided to treat SAVE as an ordinary instruction
 		// That is, use the large list of effects from the SSL file, and
@@ -1422,7 +1415,7 @@ pc
 		result.rtl = instantiate(pc, "SAVE", DIS_RS1, DIS_ROI, DIS_RD);
 
 
-#line 1426 "sparcdecoder.cpp"
+#line 1419 "sparcdecoder.cpp"
 
                   
                 }
@@ -1435,13 +1428,13 @@ pc
                   unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
                   nextPC = 4 + MATCH_p; 
                   
-#line 462 "machine/sparc/decoder.m"
+#line 447 "machine/sparc/decoder.m"
 
 		// Decided to treat RESTORE as an ordinary instruction
 		result.rtl = instantiate(pc, "RESTORE", DIS_RS1, DIS_ROI, DIS_RD);
 
 
-#line 1445 "sparcdecoder.cpp"
+#line 1438 "sparcdecoder.cpp"
 
                   
                 }
@@ -1770,7 +1763,7 @@ pc
         addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 309 "machine/sparc/decoder.m"
+#line 302 "machine/sparc/decoder.m"
 
 		/*
 		 * Anulled, predicted branch (treat as for non predicted)
@@ -1786,12 +1779,10 @@ pc
 		GotoStatement *jump;
 		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			jump = (GotoStatement *)result.rtl->getList().back();
@@ -1811,7 +1802,7 @@ pc
 		DEBUG_STMTS
 
 
-#line 1815 "sparcdecoder.cpp"
+#line 1806 "sparcdecoder.cpp"
 
       
     } 
@@ -1825,7 +1816,7 @@ pc
         addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 348 "machine/sparc/decoder.m"
+#line 339 "machine/sparc/decoder.m"
 
 		/*
 		 * Non anulled branch
@@ -1842,12 +1833,10 @@ pc
 		GotoStatement *jump;
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BVS") == 0 || strcmp(name, "BVC") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			jump = (BranchStatement *)result.rtl->getList().back();
@@ -1866,7 +1855,7 @@ pc
 		DEBUG_STMTS
 
 
-#line 1870 "sparcdecoder.cpp"
+#line 1859 "sparcdecoder.cpp"
 
       
     } 
@@ -1880,7 +1869,7 @@ pc
         addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 268 "machine/sparc/decoder.m"
+#line 263 "machine/sparc/decoder.m"
 
 		/*
 		 * Anulled branch
@@ -1898,12 +1887,10 @@ pc
 		GotoStatement *jump;
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BVS,a") == 0 || strcmp(name, "BVC,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			jump = (GotoStatement *)result.rtl->getList().back();
@@ -1923,7 +1910,7 @@ pc
 		DEBUG_STMTS
 
 
-#line 1927 "sparcdecoder.cpp"
+#line 1914 "sparcdecoder.cpp"
 
       
     } 
@@ -1933,14 +1920,14 @@ pc
     { 
       nextPC = 4 + MATCH_p; 
       
-#line 617 "machine/sparc/decoder.m"
+#line 602 "machine/sparc/decoder.m"
 
 	//| inst = n =>
 		// What does this mean?
 		result.valid = false;
 
 
-#line 1944 "sparcdecoder.cpp"
+#line 1931 "sparcdecoder.cpp"
 
       
     } 
@@ -1952,12 +1939,12 @@ pc
       unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 470 "machine/sparc/decoder.m"
+#line 455 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, "sethi", dis_Num(imm22), DIS_RD);
 
 
-#line 1961 "sparcdecoder.cpp"
+#line 1948 "sparcdecoder.cpp"
 
       
     } 
@@ -1971,12 +1958,12 @@ pc
       unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 542 "machine/sparc/decoder.m"
+#line 527 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI, DIS_RD);
 
 
-#line 1980 "sparcdecoder.cpp"
+#line 1967 "sparcdecoder.cpp"
 
       
     } 
@@ -1987,7 +1974,7 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 433 "machine/sparc/decoder.m"
+#line 419 "machine/sparc/decoder.m"
 
 	//| JMPL(addr, rd) =>
 		/*
@@ -1997,8 +1984,7 @@ pc
 		auto jump = new CaseStatement;
 		// Record the fact that it is a computed jump
 		jump->setIsComputed();
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(jump);
+		result.rtl = new RTL(pc, jump);
 		result.type = DD;
 		jump->setDest(DIS_ADDR);
 		SHOW_ASM("JMPL ");
@@ -2012,7 +1998,7 @@ pc
 	//  //  //  //  //  //  //  //
 
 
-#line 2016 "sparcdecoder.cpp"
+#line 2002 "sparcdecoder.cpp"
 
       
     } 
@@ -2023,7 +2009,7 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 230 "machine/sparc/decoder.m"
+#line 228 "machine/sparc/decoder.m"
 
 		/*
 		 * A JMPL with rd == %o7, i.e. a register call
@@ -2035,15 +2021,14 @@ pc
 
 		// Set the destination expression
 		newCall->setDest(DIS_ADDR);
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(newCall);
+		result.rtl = new RTL(pc, newCall);
 		result.type = DD;
 
 		SHOW_ASM("call_ " << *DIS_ADDR);
 		DEBUG_STMTS
 
 
-#line 2047 "sparcdecoder.cpp"
+#line 2032 "sparcdecoder.cpp"
 
       
     } 
@@ -2055,12 +2040,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 610 "machine/sparc/decoder.m"
+#line 595 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2064 "sparcdecoder.cpp"
+#line 2049 "sparcdecoder.cpp"
 
       
     } 
@@ -2073,12 +2058,12 @@ pc
       unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 473 "machine/sparc/decoder.m"
+#line 458 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_RD);
 
 
-#line 2082 "sparcdecoder.cpp"
+#line 2067 "sparcdecoder.cpp"
 
       
     } 
@@ -2091,13 +2076,13 @@ pc
       unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 486 "machine/sparc/decoder.m"
+#line 471 "machine/sparc/decoder.m"
 
 		// Note: RD is on the "right hand side" only for stores
 		result.rtl = instantiate(pc, name, DIS_RDR, DIS_ADDR);
 
 
-#line 2101 "sparcdecoder.cpp"
+#line 2086 "sparcdecoder.cpp"
 
       
     } 
@@ -2110,13 +2095,13 @@ pc
       unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 482 "machine/sparc/decoder.m"
+#line 467 "machine/sparc/decoder.m"
 
 	//| load_asi(addr, asi, rd) [name] => // Note: this could be serious!
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_ADDR);
 
 
-#line 2120 "sparcdecoder.cpp"
+#line 2105 "sparcdecoder.cpp"
 
       
     } 
@@ -2129,13 +2114,13 @@ pc
       unsigned rd = (MATCH_w_32_0 >> 25 & 0x1f) /* rd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 496 "machine/sparc/decoder.m"
+#line 481 "machine/sparc/decoder.m"
 
 	//| sto_asi(rd, addr, asi) [name] => // Note: this could be serious!
 		result.rtl = instantiate(pc, name, DIS_RDR, DIS_ADDR);
 
 
-#line 2139 "sparcdecoder.cpp"
+#line 2124 "sparcdecoder.cpp"
 
       
     } 
@@ -2148,12 +2133,12 @@ pc
       unsigned fds = (MATCH_w_32_0 >> 25 & 0x1f) /* fds at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 476 "machine/sparc/decoder.m"
+#line 461 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_FDS);
 
 
-#line 2157 "sparcdecoder.cpp"
+#line 2142 "sparcdecoder.cpp"
 
       
     } 
@@ -2165,12 +2150,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 500 "machine/sparc/decoder.m"
+#line 485 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2174 "sparcdecoder.cpp"
+#line 2159 "sparcdecoder.cpp"
 
       
     } 
@@ -2183,12 +2168,12 @@ pc
       unsigned fdd = (MATCH_w_32_0 >> 25 & 0x1f) /* fdd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 479 "machine/sparc/decoder.m"
+#line 464 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_FDD);
 
 
-#line 2192 "sparcdecoder.cpp"
+#line 2177 "sparcdecoder.cpp"
 
       
     } 
@@ -2201,12 +2186,12 @@ pc
       unsigned fds = (MATCH_w_32_0 >> 25 & 0x1f) /* fds at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 490 "machine/sparc/decoder.m"
+#line 475 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FDS, DIS_ADDR);
 
 
-#line 2210 "sparcdecoder.cpp"
+#line 2195 "sparcdecoder.cpp"
 
       
     } 
@@ -2218,12 +2203,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 506 "machine/sparc/decoder.m"
+#line 491 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2227 "sparcdecoder.cpp"
+#line 2212 "sparcdecoder.cpp"
 
       
     } 
@@ -2235,12 +2220,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 512 "machine/sparc/decoder.m"
+#line 497 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2244 "sparcdecoder.cpp"
+#line 2229 "sparcdecoder.cpp"
 
       
     } 
@@ -2253,12 +2238,12 @@ pc
       unsigned fdd = (MATCH_w_32_0 >> 25 & 0x1f) /* fdd at 0 */;
       nextPC = 4 + MATCH_p; 
       
-#line 493 "machine/sparc/decoder.m"
+#line 478 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_FDD, DIS_ADDR);
 
 
-#line 2262 "sparcdecoder.cpp"
+#line 2247 "sparcdecoder.cpp"
 
       
     } 
@@ -2270,12 +2255,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 503 "machine/sparc/decoder.m"
+#line 488 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2279 "sparcdecoder.cpp"
+#line 2264 "sparcdecoder.cpp"
 
       
     } 
@@ -2287,12 +2272,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 509 "machine/sparc/decoder.m"
+#line 494 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2296 "sparcdecoder.cpp"
+#line 2281 "sparcdecoder.cpp"
 
       
     } 
@@ -2304,12 +2289,12 @@ pc
       unsigned addr = addressToPC(MATCH_p);
       nextPC = 4 + MATCH_p; 
       
-#line 515 "machine/sparc/decoder.m"
+#line 500 "machine/sparc/decoder.m"
 
 		result.rtl = instantiate(pc, name, DIS_ADDR);
 
 
-#line 2313 "sparcdecoder.cpp"
+#line 2298 "sparcdecoder.cpp"
 
       
     } 
@@ -2318,9 +2303,9 @@ pc
   MATCH_finished_d: (void)0; /*placeholder for label*/
   
 }
-#line 2322 "sparcdecoder.cpp"
+#line 2307 "sparcdecoder.cpp"
 
-#line 625 "machine/sparc/decoder.m"
+#line 610 "machine/sparc/decoder.m"
 
 	if (result.valid && !result.rtl)
 		result.rtl = new RTL(pc);  // FIXME:  Why return an empty RTL?
@@ -2367,15 +2352,15 @@ Exp *
 SparcDecoder::dis_RegImm(ADDRESS pc, const BinaryFile *bf)
 {
 
-#line 2371 "sparcdecoder.cpp"
+#line 2356 "sparcdecoder.cpp"
 
-#line 670 "machine/sparc/decoder.m"
+#line 655 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 670 "machine/sparc/decoder.m"
+#line 655 "machine/sparc/decoder.m"
 pc
-#line 2379 "sparcdecoder.cpp"
+#line 2364 "sparcdecoder.cpp"
 ;
   unsigned MATCH_w_32_0;
   { 
@@ -2384,23 +2369,23 @@ pc
       int /* [~4096..4095] */ i = 
         sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
       
-#line 671 "machine/sparc/decoder.m"
+#line 656 "machine/sparc/decoder.m"
 
 		Exp *expr = new Const(i);
 		return expr;
 
-#line 2393 "sparcdecoder.cpp"
+#line 2378 "sparcdecoder.cpp"
 
       
     } /*opt-block*//*opt-block+*/
     else { 
       unsigned rs2 = (MATCH_w_32_0 & 0x1f) /* rs2 at 0 */;
       
-#line 674 "machine/sparc/decoder.m"
+#line 659 "machine/sparc/decoder.m"
 
 		return dis_RegRhs(rs2);
 
-#line 2404 "sparcdecoder.cpp"
+#line 2389 "sparcdecoder.cpp"
 
       
     } /*opt-block*//*opt-block+*/
@@ -2410,9 +2395,9 @@ pc
   MATCH_finished_c: (void)0; /*placeholder for label*/
   
 }
-#line 2414 "sparcdecoder.cpp"
+#line 2399 "sparcdecoder.cpp"
 
-#line 677 "machine/sparc/decoder.m"
+#line 662 "machine/sparc/decoder.m"
 }
 
 /**
@@ -2430,15 +2415,15 @@ SparcDecoder::dis_Eaddr(ADDRESS pc, const BinaryFile *bf, int ignore /* = 0 */)
 	Exp *expr;
 
 
-#line 2434 "sparcdecoder.cpp"
+#line 2419 "sparcdecoder.cpp"
 
-#line 693 "machine/sparc/decoder.m"
+#line 678 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 693 "machine/sparc/decoder.m"
+#line 678 "machine/sparc/decoder.m"
 pc
-#line 2442 "sparcdecoder.cpp"
+#line 2427 "sparcdecoder.cpp"
 ;
   unsigned MATCH_w_32_0;
   { 
@@ -2448,11 +2433,11 @@ pc
         int /* [~4096..4095] */ i = 
           sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
         
-#line 700 "machine/sparc/decoder.m"
+#line 685 "machine/sparc/decoder.m"
 
 		expr = new Const((int)i);
 
-#line 2456 "sparcdecoder.cpp"
+#line 2441 "sparcdecoder.cpp"
 
         
       } /*opt-block*//*opt-block+*/
@@ -2461,13 +2446,13 @@ pc
           sign_extend((MATCH_w_32_0 & 0x1fff) /* simm13 at 0 */, 13);
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         
-#line 702 "machine/sparc/decoder.m"
+#line 687 "machine/sparc/decoder.m"
 
 		expr = new Binary(opPlus,
 		                  Location::regOf(rs1),
 		                  new Const((int)i));
 
-#line 2471 "sparcdecoder.cpp"
+#line 2456 "sparcdecoder.cpp"
 
         
       } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -2475,11 +2460,11 @@ pc
       if ((MATCH_w_32_0 & 0x1f) /* rs2 at 0 */ == 0) { 
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         
-#line 694 "machine/sparc/decoder.m"
+#line 679 "machine/sparc/decoder.m"
 
 		expr = Location::regOf(rs1);
 
-#line 2483 "sparcdecoder.cpp"
+#line 2468 "sparcdecoder.cpp"
 
         
       } /*opt-block*//*opt-block+*/
@@ -2487,13 +2472,13 @@ pc
         unsigned rs1 = (MATCH_w_32_0 >> 14 & 0x1f) /* rs1 at 0 */;
         unsigned rs2 = (MATCH_w_32_0 & 0x1f) /* rs2 at 0 */;
         
-#line 696 "machine/sparc/decoder.m"
+#line 681 "machine/sparc/decoder.m"
 
 		expr = new Binary(opPlus,
 		                  Location::regOf(rs1),
 		                  Location::regOf(rs2));
 
-#line 2497 "sparcdecoder.cpp"
+#line 2482 "sparcdecoder.cpp"
 
         
       } /*opt-block*//*opt-block+*/ /*opt-block+*/
@@ -2503,9 +2488,9 @@ pc
   MATCH_finished_b: (void)0; /*placeholder for label*/
   
 }
-#line 2507 "sparcdecoder.cpp"
+#line 2492 "sparcdecoder.cpp"
 
-#line 707 "machine/sparc/decoder.m"
+#line 692 "machine/sparc/decoder.m"
 
 	return expr;
 }
@@ -2547,15 +2532,15 @@ bool
 SparcDecoder::isRestore(ADDRESS pc, const BinaryFile *bf)
 {
 
-#line 2551 "sparcdecoder.cpp"
+#line 2536 "sparcdecoder.cpp"
 
-#line 747 "machine/sparc/decoder.m"
+#line 732 "machine/sparc/decoder.m"
 { 
   ADDRESS MATCH_p = 
     
-#line 747 "machine/sparc/decoder.m"
+#line 732 "machine/sparc/decoder.m"
 pc
-#line 2559 "sparcdecoder.cpp"
+#line 2544 "sparcdecoder.cpp"
 ;
   unsigned MATCH_w_32_0;
   { 
@@ -2565,12 +2550,12 @@ pc
       (0 <= (MATCH_w_32_0 >> 13 & 0x1) /* i at 0 */ && 
       (MATCH_w_32_0 >> 13 & 0x1) /* i at 0 */ < 2)) 
       
-#line 748 "machine/sparc/decoder.m"
+#line 733 "machine/sparc/decoder.m"
 
 	//| RESTORE(a, b, c) =>
 		return true;
 
-#line 2574 "sparcdecoder.cpp"
+#line 2559 "sparcdecoder.cpp"
  /*opt-block+*/
     else 
       goto MATCH_label_a0;  /*opt-block+*/
@@ -2579,25 +2564,25 @@ pc
   
   MATCH_label_a0: (void)0; /*placeholder for label*/ 
     
-#line 751 "machine/sparc/decoder.m"
+#line 736 "machine/sparc/decoder.m"
 
 		return false;
 
-#line 2587 "sparcdecoder.cpp"
+#line 2572 "sparcdecoder.cpp"
  
     goto MATCH_finished_a; 
     
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 2594 "sparcdecoder.cpp"
+#line 2579 "sparcdecoder.cpp"
 
-#line 754 "machine/sparc/decoder.m"
+#line 739 "machine/sparc/decoder.m"
 }
 
 /*
  * These are the fetch routines.
  */
 
-#line 2603 "sparcdecoder.cpp"
+#line 2588 "sparcdecoder.cpp"
 

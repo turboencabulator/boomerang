@@ -191,11 +191,10 @@ pc + result.numBytes++
 			br->setDest(pc + result.numBytes + total + oper);
 			//br->setCondExpr(dis_Reg(0));
 			br->setCondExpr(new Binary(opEquals, dis_Reg(0), new Const(0)));
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(br);
+			result.rtl = new RTL(pc, br);
 
 
-#line 199 "st20decoder.cpp"
+#line 198 "st20decoder.cpp"
 
             
           }
@@ -205,7 +204,7 @@ pc + result.numBytes++
           { 
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
-#line 105 "machine/st20/decoder.m"
+#line 104 "machine/st20/decoder.m"
 
 			total |= oper;
 			const char *name = nullptr;
@@ -388,7 +387,7 @@ pc + result.numBytes++
 			}
 
 
-#line 392 "st20decoder.cpp"
+#line 391 "st20decoder.cpp"
 
             
           }
@@ -402,9 +401,9 @@ pc + result.numBytes++
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 406 "st20decoder.cpp"
+#line 405 "st20decoder.cpp"
 
-#line 287 "machine/st20/decoder.m"
+#line 286 "machine/st20/decoder.m"
 		break;
 	}
 
@@ -413,5 +412,5 @@ pc + result.numBytes++
 	return result;
 }
 
-#line 417 "st20decoder.cpp"
+#line 416 "st20decoder.cpp"
 

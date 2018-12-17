@@ -1662,9 +1662,7 @@ BasicBlock::prependStmt(Statement *s, UserProc *proc)
 		}
 	}
 	// Otherwise, prepend a new RTL
-	std::list<Statement *> listStmt;
-	listStmt.push_back(s);
-	auto rtl = new RTL(0, &listStmt);
+	auto rtl = new RTL(0, s);
 	m_pRtls->push_front(rtl);
 }
 

@@ -219,12 +219,10 @@ NJMCDecoder::dis_Num(unsigned num)
 RTL *
 NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS relocd)
 {
-	auto rtl = new RTL(pc);
 	auto jump = new GotoStatement();
 	jump->setDest(relocd);
-	rtl->appendStmt(jump);
 	SHOW_ASM(name << " 0x" << std::hex << relocd);
-	return rtl;
+	return new RTL(pc, jump);
 }
 
 /**
@@ -235,13 +233,11 @@ NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS relocd)
 RTL *
 NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond)
 {
-	auto rtl = new RTL(pc);
 	auto jump = new BranchStatement();
 	jump->setDest(relocd);
 	jump->setCondType(cond);
-	rtl->appendStmt(jump);
 	SHOW_ASM(name << " " << relocd);
-	return rtl;
+	return new RTL(pc, jump);
 }
 
 /**
@@ -254,13 +250,11 @@ NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANC
 RTL *
 NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
 {
-	auto rtl = new RTL(pc);
 	auto jump = new GotoStatement();
 	jump->setDest(dest);
 	jump->setIsComputed(true);
-	rtl->appendStmt(jump);
 	SHOW_ASM(name << " " << *dest);
-	return rtl;
+	return new RTL(pc, jump);
 }
 
 /**
@@ -273,11 +267,9 @@ NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
 RTL *
 NJMCDecoder::computedCall(ADDRESS pc, const char *name, Exp *dest)
 {
-	auto rtl = new RTL(pc);
 	auto call = new CallStatement();
 	call->setDest(dest);
 	call->setIsComputed(true);
-	rtl->appendStmt(call);
 	SHOW_ASM(name << " " << *dest);
-	return rtl;
+	return new RTL(pc, call);
 }

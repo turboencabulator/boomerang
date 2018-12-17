@@ -833,9 +833,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 								LOG << "getLibraryProc returned nullptr, aborting\n";
 							assert(lp);
 							call->setDestProc(lp);
-							auto stmt_list = std::list<Statement *>();
-							stmt_list.push_back(call);
-							BB_rtls->push_back(new RTL(pRtl->getAddress(), &stmt_list));
+							BB_rtls->push_back(new RTL(pRtl->getAddress(), call));
 							pBB = pCfg->newBB(BB_rtls, CALL, 1);
 							appendSyntheticReturn(pBB, pProc, pRtl);
 							sequentialDecode = false;
@@ -1037,9 +1035,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 									// Constuct the RTLs for the new basic block
 									auto rtls = new std::list<RTL *>();
 									// The only RTL in the basic block is one with a ReturnStatement
-									auto sl = std::list<Statement *>();
-									sl.push_back(new ReturnStatement());
-									rtls->push_back(new RTL(pRtl->getAddress() + 1, &sl));
+									rtls->push_back(new RTL(pRtl->getAddress() + 1, new ReturnStatement()));
 
 									auto returnBB = pCfg->newBB(rtls, RET, 0);
 									// Add out edge from call to return
@@ -1320,11 +1316,8 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 void
 FrontEnd::appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl)
 {
-	auto ret = new ReturnStatement();
 	auto ret_rtls = new std::list<RTL *>();
-	auto stmt_list = std::list<Statement *>();
-	stmt_list.push_back(ret);
-	BasicBlock *pret = createReturnBlock(pProc, ret_rtls, new RTL(pRtl->getAddress() + 1, &stmt_list));
+	BasicBlock *pret = createReturnBlock(pProc, ret_rtls, new RTL(pRtl->getAddress() + 1, new ReturnStatement()));
 	pret->addInEdge(pCallBB);
 	pCallBB->setOutEdge(0, pret);
 }

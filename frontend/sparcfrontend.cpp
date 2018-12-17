@@ -142,12 +142,14 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 				ls.push_back(stmts.front());
 		}
 		ls.push_back(new ReturnStatement);
+		auto r = new RTL(rtl->getAddress() + 1);
+		r->append(ls);
 #if 0
-		rtls->push_back(new RTL(rtl->getAddress() + 1, &ls));
+		rtls->push_back(r);
 		Cfg *cfg = pProc->getCFG();
 		auto returnBB = cfg->newBB(rtls, RET, 0);
 #endif
-		BasicBlock *returnBB = createReturnBlock(pProc, rtls, new RTL(rtl->getAddress() + 1, &ls));
+		BasicBlock *returnBB = createReturnBlock(pProc, rtls, r);
 		return returnBB;
 	} else
 		// May want to put code here that checks whether or not the delay instruction redefines %o7
@@ -632,9 +634,7 @@ SparcFrontEnd::case_SCD(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, De
 		delay_inst.rtl->updateAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch. Again, we can't even give the jumps
 		// a special address like 1, since then the BB would have this getLowAddr.
-		auto gl = std::list<Statement *>();
-		gl.push_back(new GotoStatement(uDest));
-		pOrphan->push_back(new RTL(0, &gl));
+		pOrphan->push_back(new RTL(0, new GotoStatement(uDest)));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well
 		cfg->addOutEdge(pOrBB, uDest, true);
@@ -705,9 +705,7 @@ SparcFrontEnd::case_SCDAN(ADDRESS &address, ptrdiff_t delta, ADDRESS hiAddress, 
 		// branch to the real BB with this instruction).
 		delay_inst.rtl->updateAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
-		auto gl = std::list<Statement *>();
-		gl.push_back(new GotoStatement(uDest));
-		pOrphan->push_back(new RTL(0, &gl));
+		pOrphan->push_back(new RTL(0, new GotoStatement(uDest)));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well. Set a label there.
 		cfg->addOutEdge(pOrBB, uDest, true);
@@ -1253,9 +1251,7 @@ SparcFrontEnd::emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr)
 {
 	// Emit a null RTL with the given address. Required to cope with
 	// SKIP instructions. Yes, they really happen, e.g. /usr/bin/vi 2.5
-	auto pRtl = new RTL;
-	pRtl->updateAddress(uAddr);
-	pRtls->push_back(pRtl);
+	pRtls->push_back(new RTL(uAddr));
 }
 
 /**
@@ -1278,8 +1274,7 @@ SparcFrontEnd::emitCopyPC(std::list<RTL *> *pRtls, ADDRESS uAddr)
 	auto a = new Assign(Location::regOf(15),  // %o7 == r[15]
 	                    new Terminal(opPC));
 	// Add the Exp to an RTL
-	auto pRtl = new RTL(uAddr);
-	pRtl->appendStmt(a);
+	auto pRtl = new RTL(uAddr, a);
 	// Add the RTL to the list of RTLs, but to the second last position
 	pRtls->insert(--pRtls->end(), pRtl);
 }
@@ -1292,9 +1287,7 @@ SparcFrontEnd::appendAssignment(Exp *lhs, Exp *rhs, Type *type, ADDRESS addr, st
 {
 	auto a = new Assign(type, lhs, rhs);
 	// Create an RTL with this one Statement
-	auto lrt = std::list<Statement *>();
-	lrt.push_back(a);
-	auto rtl = new RTL(addr, &lrt);
+	auto rtl = new RTL(addr, a);
 	// Append this RTL to the list of RTLs for this BB
 	lrtl->push_back(rtl);
 }
@@ -1402,9 +1395,7 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 	Exp *lhs = Location::regOf(8);
 	auto a = new Assign(lhs, rhs);
 	// Create an RTL with this one Exp
-	auto lrt = std::list<Statement *>();
-	lrt.push_back(a);
-	auto rtl = new RTL(addr, &lrt);
+	auto rtl = new RTL(addr, a);
 	// Append this RTL to the list of RTLs for this BB
 	lrtl->push_back(rtl);
 	return true;
@@ -1467,7 +1458,8 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 	               new Unary(opMachFtr, new Const("%Y")));
 	ls.push_back(a);
 #endif /* V9_ONLY */
-	auto rtl = new RTL(addr, &ls);
+	auto rtl = new RTL(addr);
+	rtl->append(ls);
 	lrtl->push_back(rtl);
 }
 

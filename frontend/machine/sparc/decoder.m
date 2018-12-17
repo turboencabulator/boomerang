@@ -74,9 +74,8 @@ SparcDecoder::decodeAssemblyInstruction(ADDRESS, ptrdiff_t)
 RTL *
 SparcDecoder::createBranchRtl(ADDRESS pc, const char *name)
 {
-	auto res = new RTL(pc);
 	auto br = new BranchStatement();
-	res->appendStmt(br);
+	auto res = new RTL(pc, br);
 	if (name[0] == 'F') {
 		// fbranch is any of [ FBN FBNE FBLG FBUL FBL   FBUG FBG   FBU
 		//                     FBA FBE  FBUE FBGE FBUGE FBLE FBULE FBO ],
@@ -221,8 +220,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		Proc *destProc = prog->setNewProc(nativeDest);
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(newCall);
+		result.rtl = new RTL(pc, newCall);
 		result.type = SD;
 		SHOW_ASM("call__ " << std::hex << (nativeDest));
 		DEBUG_STMTS
@@ -238,8 +236,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 		// Set the destination expression
 		newCall->setDest(DIS_ADDR);
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(newCall);
+		result.rtl = new RTL(pc, newCall);
 		result.type = DD;
 
 		SHOW_ASM("call_ " << *DIS_ADDR);
@@ -249,8 +246,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * Just a ret (non leaf)
 		 */
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(new ReturnStatement);
+		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
 		SHOW_ASM("ret_");
 		DEBUG_STMTS
@@ -259,8 +255,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * Just a ret (leaf; uses %o7 instead of %i7)
 		 */
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(new ReturnStatement);
+		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
 		SHOW_ASM("retl_");
 		DEBUG_STMTS
@@ -282,12 +277,10 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		GotoStatement *jump;
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BVS,a") == 0 || strcmp(name, "BVC,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			jump = (GotoStatement *)result.rtl->getList().back();
@@ -321,12 +314,10 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		GotoStatement *jump;
 		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			jump = (GotoStatement *)result.rtl->getList().back();
@@ -361,12 +352,10 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		GotoStatement *jump;
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BVS") == 0 || strcmp(name, "BVC") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			jump = (BranchStatement *)result.rtl->getList().back();
@@ -389,8 +378,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		auto jump = new GotoStatement;
 
 		result.type = SD;
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(jump);
+		result.rtl = new RTL(pc, jump);
 		jump->setDest(tgt);
 		SHOW_ASM("BPA " << std::hex << tgt);
 		DEBUG_STMTS
@@ -405,12 +393,10 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		GotoStatement *jump;
 		if (strcmp(name, "BPN") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
 			jump = new GotoStatement;
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(jump);
+			result.rtl = new RTL(pc, jump);
 		} else {
 			result.rtl = createBranchRtl(pc, name);
 			// The BranchStatement will be the last Stmt of the rtl
@@ -439,8 +425,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		auto jump = new CaseStatement;
 		// Record the fact that it is a computed jump
 		jump->setIsComputed();
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(jump);
+		result.rtl = new RTL(pc, jump);
 		result.type = DD;
 		jump->setDest(DIS_ADDR);
 		SHOW_ASM("JMPL ");

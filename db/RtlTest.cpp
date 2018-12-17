@@ -62,7 +62,8 @@ RtlTest::testClone()
 	std::list<Statement *> ls;
 	ls.push_back(a1);
 	ls.push_back(a2);
-	auto r = new RTL(0x1234, &ls);
+	auto r = new RTL(0x1234);
+	r->append(ls);
 	RTL *r2 = r->clone();
 	std::string act1(r->prints());
 	delete r;  // And r2 should still stand!
@@ -242,7 +243,8 @@ RtlTest::testSetConscripts()
 	std::list<Statement *> list;
 	list.push_back(s1);
 	list.push_back(s2);
-	auto rtl = new RTL(0x1000, &list);
+	auto rtl = new RTL(0x1000);
+	rtl->append(list);
 	rtl->setConscripts(0, false);
 	std::string expected("00001000    0 *v* m[1000\\1\\] := m[1000\\2\\] + 1000\\3\\\n"
 	                     "            0 CALL printf(\n"

@@ -143,8 +143,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		newJump->setIsComputed();
 		// Set the destination expression
 		newJump->setDest(DIS_EADDR32);
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(newJump);
+		result.rtl = new RTL(pc, newJump);
 
 	/*
 	 * Unconditional branches
@@ -2277,7 +2276,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 	//  pc+2: branch pc+2 condition modrm@[dest:dest]=0
 	// exit:
 
-	result.rtl = new RTL(pc + BSFRstate);
+	auto stmts = std::list<Statement *>();
 	Statement *s;
 	BranchStatement *b;
 	switch (BSFRstate) {
@@ -2285,24 +2284,24 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		s = new Assign(new IntegerType(1),
 		               new Terminal(opZF),
 		               new Const(1));
-		result.rtl->getList().push_back(s);
+		stmts.push_back(s);
 		b = new BranchStatement;
 		b->setDest(pc + numBytes);
 		b->setCondType(BRANCH_JE);
 		b->setCondExpr(new Binary(opEquals,
 		                          modrm->clone(),
 		                          new Const(0)));
-		result.rtl->getList().push_back(b);
+		stmts.push_back(b);
 		break;
 	case 1:
 		s = new Assign(new IntegerType(1),
 		               new Terminal(opZF),
 		               new Const(0));
-		result.rtl->getList().push_back(s);
+		stmts.push_back(s);
 		s = new Assign(new IntegerType(size),
 		               dest->clone(),
 		               new Const(init));
-		result.rtl->getList().push_back(s);
+		stmts.push_back(s);
 		break;
 	case 2:
 		s = new Assign(new IntegerType(size),
@@ -2310,7 +2309,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		               new Binary(incdec,
 		                          dest->clone(),
 		                          new Const(1)));
-		result.rtl->getList().push_back(s);
+		stmts.push_back(s);
 		b = new BranchStatement;
 		b->setDest(pc + 2);
 		b->setCondType(BRANCH_JE);
@@ -2320,12 +2319,14 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		                                      dest->clone(),
 		                                      dest->clone()),
 		                          new Const(0)));
-		result.rtl->getList().push_back(b);
+		stmts.push_back(b);
 		break;
 	default:
 		// Should never happen
 		assert(BSFRstate - BSFRstate);
 	}
+	result.rtl = new RTL(pc + BSFRstate);
+	result.rtl->append(stmts);
 	// Keep numBytes == 0 until the last state, so we re-decode this instruction 3 times
 	if (BSFRstate != 3 - 1) {
 		// Let the number of bytes be 1. This is important at least for setting the fallthrough address for the branch

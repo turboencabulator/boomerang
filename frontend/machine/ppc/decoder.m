@@ -201,8 +201,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			auto as = new Assign(new IntegerType,
 			                     new Unary(opMachFtr, new Const("%LR")),
 			                     dest);
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(as);
+			result.rtl = new RTL(pc, as);
 			SHOW_ASM(name << " " << BIcr << ", .+4" << " %LR = %pc+4");
 		} else {
 			result.rtl = instantiate(pc, name, dest);
@@ -324,8 +323,7 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 	| ballr(_) [name] =>
 	//| ballr(BIcr) [name] =>
-		result.rtl = new RTL(pc);
-		result.rtl->appendStmt(new ReturnStatement);
+		result.rtl = new RTL(pc, new ReturnStatement);
 		SHOW_ASM(name << "\n");
 
 	// Shift right arithmetic
@@ -350,13 +348,11 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 RTL *
 PPCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond, unsigned BIcr)
 {
-	auto rtl = new RTL(pc);
 	auto jump = new BranchStatement();
 	jump->setDest(relocd);
 	jump->setCondType(cond);
-	rtl->appendStmt(jump);
 	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd);
-	return rtl;
+	return new RTL(pc, jump);
 }
 
 /**

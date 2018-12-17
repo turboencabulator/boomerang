@@ -1875,12 +1875,10 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 
 	// Make a BB for the br1 instruction
 	auto pRtls = new std::list<RTL *>;
-	auto ls = std::list<Statement *>();
-	ls.push_back(br1);
 	// Don't give this "instruction" the same address as the rest of the string instruction (causes problems when
 	// creating the rptBB). Or if there is no A, temporarily use 0
 	ADDRESS a = (haveA) ? addr : 0;
-	auto skipRtl = new RTL(a, &ls);
+	auto skipRtl = new RTL(a, br1);
 	pRtls->push_back(skipRtl);
 	auto skipBB = newBB(pRtls, TWOWAY, 2);
 	rtl->updateAddress(addr + 1);

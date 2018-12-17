@@ -40,14 +40,17 @@ RTL::RTL()
 }
 
 /**
- * \param instNativeAddr  The native address of the instruction.
- * \param listExp         Ptr to existing list of Exps.
+ * \param addr  The native address of the instruction.
  */
-RTL::RTL(ADDRESS instNativeAddr, const std::list<Statement *> *listStmt /*= nullptr*/) :
-	nativeAddr(instNativeAddr)
+RTL::RTL(ADDRESS addr) :
+	nativeAddr(addr)
 {
-	if (listStmt)
-		stmtList = *listStmt;
+}
+
+RTL::RTL(ADDRESS addr, Statement *stmt) :
+	nativeAddr(addr)
+{
+	stmtList.push_back(stmt);
 }
 
 /**

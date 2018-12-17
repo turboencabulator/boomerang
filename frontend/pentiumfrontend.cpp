@@ -467,8 +467,7 @@ PentiumFrontEnd::emitSet(std::list<RTL *> *BB_rtls, std::list<RTL *>::iterator &
 	                                         cond,
 	                                         new Const(1),
 	                                         new Const(0)));
-	auto pRtl = new RTL(uAddr);
-	pRtl->appendStmt(asgn);
+	auto pRtl = new RTL(uAddr, asgn);
 	//std::cout << "Emit "; pRtl->print(); std::cout << std::endl;
 	// Insert the new RTL before rit
 	BB_rtls->insert(rit, pRtl);
@@ -504,13 +503,13 @@ PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 		// r[tmpl] = ftoi(80, 64, r[32])
 		// r[24] = trunc(64, 32, r[tmpl])
 		// r[26] = r[tmpl] >> 32
+		auto pRtl = new RTL(addr);
 		Statement *a = new Assign(new IntegerType(64),
 		                          Location::tempOf(new Const("tmpl")),
 		                          new Ternary(opFtoi,
 		                                      new Const(64),
 		                                      new Const(32),
 		                                      Location::regOf(32)));
-		auto pRtl = new RTL(addr);
 		pRtl->appendStmt(a);
 		a = new Assign(Location::regOf(24),
 		               new Ternary(opTruncs,
@@ -966,33 +965,25 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 	int n = pBF->readNative1(pc);
 	if (n == (int)(char)0xee) {
 		// out dx, al
-		static DecodeResult r;
-		r.reset();
-		r.numBytes = 1;
-		r.valid = true;
-		r.type = NCT;
-		r.reDecode = false;
-		r.rtl = new RTL(pc);
 		Exp *dx = Location::regOf(decoder.getRTLDict().RegMap["%dx"]);
 		Exp *al = Location::regOf(decoder.getRTLDict().RegMap["%al"]);
 		auto call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("outp"));
 		call->setArgumentExp(0, dx);
 		call->setArgumentExp(1, al);
-		r.rtl->appendStmt(call);
+		static DecodeResult r;
+		r.reset();
+		r.numBytes = 1;
+		r.rtl = new RTL(pc, call);
 		return r;
 	}
 	if (n == (int)(char)0x0f && pBF->readNative1(pc + 1) == (int)(char)0x0b) {
+		auto call = new CallStatement();
+		call->setDestProc(prog->getLibraryProc("invalid_opcode"));
 		static DecodeResult r;
 		r.reset();
 		r.numBytes = 2;
-		r.valid = true;
-		r.type = NCT;
-		r.reDecode = false;
-		r.rtl = new RTL(pc);
-		auto call = new CallStatement();
-		call->setDestProc(prog->getLibraryProc("invalid_opcode"));
-		r.rtl->appendStmt(call);
+		r.rtl = new RTL(pc, call);
 		return r;
 	}
 	return FrontEnd::decodeInstruction(pc);

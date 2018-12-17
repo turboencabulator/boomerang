@@ -99,8 +99,7 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			br->setDest(pc + result.numBytes + total + oper);
 			//br->setCondExpr(dis_Reg(0));
 			br->setCondExpr(new Binary(opEquals, dis_Reg(0), new Const(0)));
-			result.rtl = new RTL(pc);
-			result.rtl->appendStmt(br);
+			result.rtl = new RTL(pc, br);
 
 		| opr(oper) =>
 			total |= oper;
