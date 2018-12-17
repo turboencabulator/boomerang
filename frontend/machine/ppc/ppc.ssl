@@ -363,6 +363,12 @@ LWZ  rd, eaddr, ra
 LWZX rd, eaddr, ra
 	*32* rd := m[eaddr];
 
+LHZ  rd, eaddr, ra
+	*32* rd := zfill(16, 32, m[eaddr]);
+
+LHZX rd, eaddr, ra
+	*32* rd := zfill(16, 32, m[eaddr]);
+
 LBZ  rd, eaddr, ra
 	*32* rd := zfill(8, 32, m[eaddr]);
 
