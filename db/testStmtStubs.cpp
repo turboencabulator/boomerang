@@ -54,10 +54,10 @@ FrontEnd::FrontEnd(BinaryFile *pBF) { }
 PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF) : FrontEnd(pBF) { }
 PentiumFrontEnd::~PentiumFrontEnd() { }
 FrontEnd::~FrontEnd() { }
-bool PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool spec /* = false */, PHELPER helperFunc /* = nullptr */) { return false; }
+bool PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag, bool spec) { return false; }
 ADDRESS PentiumFrontEnd::getMainEntryPoint(bool &gotMain) { return 0; }
 Prog *FrontEnd::decode() { return nullptr; }
-bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool spec /* = false */, PHELPER helperFunc) { return false; }
+bool FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag, bool spec) { return false; }
 
 // cfg
 BasicBlock *Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) { return nullptr; }

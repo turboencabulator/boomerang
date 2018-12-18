@@ -67,8 +67,6 @@ public:
 };
 
 
-typedef bool (*PHELPER)(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl);
-
 /**
  * The FrontEnd class implements the source independent parts of the front
  * end:  Decoding machine instructions into a control flow graph populated
