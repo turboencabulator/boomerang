@@ -30,6 +30,7 @@
 #include <QString>
 #include <QTableWidget>
 
+#include <algorithm>
 #include <sstream>
 
 #ifdef GARBAGE_COLLECTOR
@@ -105,11 +106,9 @@ Decompiler::addEntryPoint(ADDRESS a, const char *nam)
 void
 Decompiler::removeEntryPoint(ADDRESS a)
 {
-	for (auto it = user_entrypoints.begin(); it != user_entrypoints.end(); ++it)
-		if (*it == a) {
-			user_entrypoints.erase(it);
-			break;
-		}
+	auto it = std::find(user_entrypoints.begin(), user_entrypoints.end(), a);
+	if (it != user_entrypoints.end())
+		user_entrypoints.erase(it);
 }
 
 void
@@ -163,9 +162,9 @@ Decompiler::load()
 
 	QStringList entrypointStrings;
 	std::vector<ADDRESS> entrypoints = fe->getEntryPoints();
-	for (unsigned int i = 0; i < entrypoints.size(); ++i) {
-		user_entrypoints.push_back(entrypoints[i]);
-		emit newEntrypoint(entrypoints[i], fe->getBinaryFile()->getSymbolByAddress(entrypoints[i]));
+	for (const auto &ep : entrypoints) {
+		user_entrypoints.push_back(ep);
+		emit newEntrypoint(ep, fe->getBinaryFile()->getSymbolByAddress(ep));
 	}
 
 	for (int i = 1; i < fe->getBinaryFile()->getNumSections(); ++i) {
@@ -183,15 +182,12 @@ Decompiler::decode()
 
 	bool gotMain;
 	ADDRESS a = fe->getMainEntryPoint(gotMain);
-	for (unsigned int i = 0; i < user_entrypoints.size(); ++i)
-		if (user_entrypoints[i] == a) {
-			fe->decode(prog, true, nullptr);
-			break;
-		}
+	auto it = std::find(user_entrypoints.begin(), user_entrypoints.end(), a);
+	if (it != user_entrypoints.end())
+		fe->decode(prog, true, nullptr);
 
-	for (unsigned int i = 0; i < user_entrypoints.size(); ++i) {
-		prog->decodeEntryPoint(user_entrypoints[i]);
-	}
+	for (const auto &ep : user_entrypoints)
+		prog->decodeEntryPoint(ep);
 
 	if (!Boomerang::get()->noDecodeChildren) {
 		// decode anything undecoded
