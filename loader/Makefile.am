@@ -81,8 +81,7 @@ bffDump_LDADD = \
 
 
 check_LTLIBRARIES = \
-	libLoaderTest.la \
-	libBinaryFileStub.la
+	libLoaderTest.la
 
 libLoaderTest_la_SOURCES = \
 	LoaderTest.cpp \
@@ -95,12 +94,6 @@ libLoaderTest_la_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
 	$(CPPUNIT_CFLAGS) \
 	-DTESTDIR=\"$(top_srcdir)/test/\"
-
-libBinaryFileStub_la_SOURCES = \
-	BinaryFileStub.cpp \
-	$(top_srcdir)/include/BinaryFileStub.h
-libBinaryFileStub_la_LIBADD = \
-	$(top_builddir)/loader/libloader.la
 
 
 TESTS = $(check_PROGRAMS)
