@@ -14,7 +14,6 @@
 
 #include "FrontSparcTest.h"
 
-#include "BinaryFile.h"
 #include "cfg.h"
 #include "decoder.h"
 #include "frontend.h"
@@ -36,10 +35,9 @@ void
 FrontSparcTest::test1()
 {
 	auto prog = new Prog;
-	auto pBF = BinaryFile::open(HELLO_SPARC);
-	CPPUNIT_ASSERT(pBF);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	auto pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(HELLO_SPARC, prog);
+	CPPUNIT_ASSERT(pFE);
+	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -97,10 +95,9 @@ FrontSparcTest::test2()
 	std::string expected;
 
 	auto prog = new Prog;
-	auto pBF = BinaryFile::open(HELLO_SPARC);
-	CPPUNIT_ASSERT(pBF);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	auto pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(HELLO_SPARC, prog);
+	CPPUNIT_ASSERT(pFE);
+	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
 
 	inst = pFE->decodeInstruction(0x10690);
 	// This call is to out of range of the program's text limits (to the Program Linkage Table (PLT), calling printf)
@@ -133,10 +130,9 @@ FrontSparcTest::test3()
 	std::string expected;
 
 	auto prog = new Prog;
-	auto pBF = BinaryFile::open(HELLO_SPARC);
-	CPPUNIT_ASSERT(pBF);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	auto pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(HELLO_SPARC, prog);
+	CPPUNIT_ASSERT(pFE);
+	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
 
 	inst = pFE->decodeInstruction(0x106a0);
 	expected = std::string("000106a0\n");
@@ -189,10 +185,9 @@ FrontSparcTest::testBranch()
 	std::string expected;
 
 	auto prog = new Prog;
-	auto pBF = BinaryFile::open(BRANCH_SPARC);
-	CPPUNIT_ASSERT(pBF);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	auto pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(BRANCH_SPARC, prog);
+	CPPUNIT_ASSERT(pFE);
+	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
 
 	// bne
 	inst = pFE->decodeInstruction(0x10ab0);
@@ -220,10 +215,9 @@ void
 FrontSparcTest::testDelaySlot()
 {
 	auto prog = new Prog;
-	auto pBF = BinaryFile::open(BRANCH_SPARC);
-	CPPUNIT_ASSERT(pBF);
-	CPPUNIT_ASSERT(pBF->getMachine() == MACHINE_SPARC);
-	auto pFE = FrontEnd::open(pBF, prog);
+	auto pFE = FrontEnd::open(BRANCH_SPARC, prog);
+	CPPUNIT_ASSERT(pFE);
+	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared
 	Type::clearNamedTypes();
 	pFE->decode(prog);
