@@ -129,13 +129,7 @@ checkstrings_SOURCES = \
 
 
 EXTRA_DIST = \
-	signatureStubs.cpp \
 	testDbase.cpp \
 	testExp.cpp \
-	testExpStubs.cpp \
 	testRtl.cpp \
-	testRtlStubs.cpp \
-	testStmt.cpp \
-	testStmtStubs.cpp \
-	typeStubs.cpp \
-	utilStubs.cpp
+	testStmt.cpp
