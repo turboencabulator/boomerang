@@ -59,11 +59,9 @@ RtlTest::testClone()
 	auto a2 = new Assign(new IntegerType(16),
 	                     Location::param("x"),
 	                     Location::param("y"));
-	std::list<Statement *> ls;
-	ls.push_back(a1);
-	ls.push_back(a2);
 	auto r = new RTL(0x1234);
-	r->append(ls);
+	r->appendStmt(a1);
+	r->appendStmt(a2);
 	RTL *r2 = r->clone();
 	std::string act1(r->prints());
 	delete r;  // And r2 should still stand!
@@ -240,11 +238,9 @@ RtlTest::testSetConscripts()
 	args.append(new Assign(Location::regOf(9), e2));
 	s2->setArguments(args);
 
-	std::list<Statement *> list;
-	list.push_back(s1);
-	list.push_back(s2);
 	auto rtl = new RTL(0x1000);
-	rtl->append(list);
+	rtl->appendStmt(s1);
+	rtl->appendStmt(s2);
 	rtl->setConscripts(0, false);
 	std::string expected("00001000    0 *v* m[1000\\1\\] := m[1000\\2\\] + 1000\\3\\\n"
 	                     "            0 CALL printf(\n"

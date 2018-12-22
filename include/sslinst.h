@@ -40,21 +40,15 @@ class Statement;
 class TableEntry {
 public:
 	TableEntry();
-	TableEntry(const std::list<std::string> &p, const RTL &rtl);
+	TableEntry(const std::list<std::string> &, RTL &);
 
 	const TableEntry &operator =(const TableEntry &other);
 
-	void setParam(const std::list<std::string> &p);
-	void setRTL(const RTL &rtl);
-
-	bool appendRTL(const std::list<std::string> &, const RTL &);
+	bool appendRTL(const std::list<std::string> &, RTL &);
 
 public:
 	std::list<std::string> params;
 	RTL rtl;
-
-#define TEF_NEXTPC 1
-	int flags = 0;  // aka required capabilities
 };
 
 
@@ -101,7 +95,7 @@ public:
 
 	std::pair<std::string, unsigned> getSignature(const std::string &name) const;
 
-	bool appendToDict(const std::string &, const std::list<std::string> &, const RTL &);
+	bool appendToDict(const std::string &, const std::list<std::string> &, RTL &);
 
 	RTL *instantiateRTL(ADDRESS, const std::string &, const std::vector<Exp *> &);
 	RTL *instantiateRTL(ADDRESS, const RTL &, const std::list<std::string> &, const std::vector<Exp *> &);

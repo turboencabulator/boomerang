@@ -97,8 +97,8 @@ public:
 	        void        deleteLastStmt();
 	        void        replaceLastStmt(Statement *repl);
 	        void        clear();
-	        void        append(const std::list<Statement *> &);
-	        void        append(const RTL &);
+	        void        splice(std::list<Statement *> &);
+	        void        splice(RTL &);
 	/** \} */
 
 	        void        print(std::ostream &os = std::cout, bool html = false) const;

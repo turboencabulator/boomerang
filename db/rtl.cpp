@@ -163,33 +163,25 @@ RTL::prependStmt(Statement *s)
 }
 
 /**
- * \brief Append list of exps to end.
+ * \brief Transfers Statements from a list to the end of this RTL.
  *
- * Append a given list of Statements to this RTL.
- *
- * \note Does not make a deep copy of the Statements.
- *
- * \param l  List of Statements to insert.
+ * \param l  List of Statements to move.
  */
 void
-RTL::append(const std::list<Statement *> &l)
+RTL::splice(std::list<Statement *> &l)
 {
-	stmtList.insert(stmtList.end(), l.begin(), l.end());
+	stmtList.splice(stmtList.end(), l);
 }
 
 /**
- * \brief Append Statements from other RTL to end.
+ * \brief Transfers Statements from other RTL to the end of this RTL.
  *
- * Append the Statemens of another RTL to this object.
- *
- * \note Does not make a deep copy of the Statements.
- *
- * \param r  Reference to RTL whose Statements we are to insert.
+ * \param r  RTL whose Statements we are to move.
  */
 void
-RTL::append(const RTL &r)
+RTL::splice(RTL &r)
 {
-	append(r.stmtList);
+	splice(r.stmtList);
 }
 
 /**

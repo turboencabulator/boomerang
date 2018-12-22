@@ -48,28 +48,10 @@ TableEntry::TableEntry()
 {
 }
 
-TableEntry::TableEntry(const std::list<std::string> &p, const RTL &r) :
-	params(p),
-	rtl(r)
+TableEntry::TableEntry(const std::list<std::string> &p, RTL &r) :
+	params(p)
 {
-}
-
-/**
- * \brief Set the parameter list.
- */
-void
-TableEntry::setParam(const std::list<std::string> &p)
-{
-	params = p;
-}
-
-/**
- * \brief Set the RTL.
- */
-void
-TableEntry::setRTL(const RTL &r)
-{
-	rtl = r;
+	rtl.splice(r);
 }
 
 /**
@@ -92,19 +74,19 @@ TableEntry::operator =(const TableEntry &other)
 }
 
 /**
- * \brief Appends Statements in an RTL to an existing TableEntry.
+ * \brief Transfers Statements in an RTL to the end of an existing TableEntry.
  *
- * \param p  Reference to list of formal parameters (as strings).
- * \param r  Reference to RTL with list of Statements to append.
+ * \param[in] p  List of formal parameters (as strings).
+ * \param[in] r  RTL with list of Statements to move.
  *
  * \returns true for success, false for failure.
  */
 bool
-TableEntry::appendRTL(const std::list<std::string> &p, const RTL &r)
+TableEntry::appendRTL(const std::list<std::string> &p, RTL &r)
 {
 	if (params.size() == p.size()
 	 && std::equal(params.cbegin(), params.cend(), p.cbegin())) {
-		rtl.append(r);
+		rtl.splice(r);
 		return true;
 	}
 	return false;
@@ -122,16 +104,16 @@ RTLInstDict::~RTLInstDict()
  * \brief Appends one RTL to the dictionary.
  *
  * Adds the RTL to idict if an entry does not already exist, otherwise
- * appends the RTL's Statements to the existing entry.
+ * moves the RTL's Statements to the existing entry.
  *
- * \param n  Name of the instruction to add to.
- * \param p  List of formal parameters (as strings) for the RTL to add.
- * \param r  Reference to the RTL to add.
+ * \param[in] n  Name of the instruction to add to.
+ * \param[in] p  List of formal parameters (as strings) for the RTL to add.
+ * \param[in] r  The RTL to add.
  *
  * \returns true for success, false for failure.
  */
 bool
-RTLInstDict::appendToDict(const std::string &n, const std::list<std::string> &p, const RTL &r)
+RTLInstDict::appendToDict(const std::string &n, const std::list<std::string> &p, RTL &r)
 {
 	std::string opcode(n);
 	std::transform(n.begin(), n.end(), opcode.begin(), toupper);

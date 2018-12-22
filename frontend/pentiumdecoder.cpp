@@ -57489,7 +57489,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		assert(BSFRstate - BSFRstate);
 	}
 	result.rtl = new RTL(pc + BSFRstate);
-	result.rtl->append(stmts);
+	result.rtl->splice(stmts);
 	// Keep numBytes == 0 until the last state, so we re-decode this instruction 3 times
 	if (BSFRstate != 3 - 1) {
 		// Let the number of bytes be 1. This is important at least for setting the fallthrough address for the branch

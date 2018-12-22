@@ -141,7 +141,7 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 		}
 		ls.push_back(new ReturnStatement);
 		auto r = new RTL(rtl->getAddress() + 1);
-		r->append(ls);
+		r->splice(ls);
 #if 0
 		rtls->push_back(r);
 		Cfg *cfg = pProc->getCFG();
@@ -1442,7 +1442,7 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 	ls.push_back(a);
 #endif /* V9_ONLY */
 	auto rtl = new RTL(addr);
-	rtl->append(ls);
+	rtl->splice(ls);
 	lrtl->push_back(rtl);
 }
 
