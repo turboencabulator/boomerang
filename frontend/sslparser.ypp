@@ -665,9 +665,7 @@ list_actualparameter
 assign_rt
 	/*   Size   guard =>    lhs      :=   rhs */
 	: assigntype exp THEN location EQUATE exp {
-		auto a = new Assign($1, $4, $6);
-		a->setGuard($2);
-		$$ = a;
+		$$ = new Assign($1, $4, $6, $2);
 	  }
 	/*   Size      lhs      :=   rhs */
 	| assigntype location EQUATE exp {

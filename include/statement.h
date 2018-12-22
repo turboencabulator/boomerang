@@ -447,7 +447,7 @@ public:
 	// Default constructor, for XML parser
 	            Assign() : Assignment(nullptr) { }
 	// Copy constructor
-	            Assign(Assign &o);
+	            Assign(const Assign &);
 	// Destructor
 	           ~Assign() { }
 
@@ -563,8 +563,6 @@ public:
 	            PhiAssign(Exp *lhs) : Assignment(lhs) { kind = STMT_PHIASSIGN; }
 	// Constructor, type and subexpression
 	            PhiAssign(Type *ty, Exp *lhs) : Assignment(ty, lhs) { kind = STMT_PHIASSIGN; }
-	// Copy constructor (not currently used or implemented)
-	            PhiAssign(Assign &o);
 	// Destructor
 	virtual    ~PhiAssign() { }
 
@@ -636,7 +634,7 @@ public:
 	// Constructor, type, and subexpression
 	            ImplicitAssign(Type *ty, Exp *lhs);
 	// Copy constructor
-	            ImplicitAssign(ImplicitAssign &o);
+	            ImplicitAssign(const ImplicitAssign &o);
 	// Destructor
 	virtual    ~ImplicitAssign();
 

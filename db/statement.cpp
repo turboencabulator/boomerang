@@ -3262,8 +3262,8 @@ Assign::Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard) :
 	kind = STMT_ASSIGN;
 }
 
-Assign::Assign(Assign &o) :
-	Assignment(lhs->clone())
+Assign::Assign(const Assign &o) :
+	Assignment(o.lhs->clone())
 {
 	kind = STMT_ASSIGN;
 	rhs   = o.rhs->clone();
@@ -3285,8 +3285,8 @@ ImplicitAssign::ImplicitAssign(Type *ty, Exp *lhs) :
 	kind = STMT_IMPASSIGN;
 }
 
-ImplicitAssign::ImplicitAssign(ImplicitAssign &o) :
-	Assignment(type ? type->clone() : nullptr, lhs->clone())
+ImplicitAssign::ImplicitAssign(const ImplicitAssign &o) :
+	Assignment(o.type ? o.type->clone() : nullptr, o.lhs->clone())
 {
 	kind = STMT_IMPASSIGN;
 }
@@ -3299,7 +3299,7 @@ ImplicitAssign::~ImplicitAssign()
 Statement *
 Assign::clone() const
 {
-	auto a = new Assign(type ? type->clone() : nullptr, lhs->clone(), rhs->clone(), guard ? guard->clone() : nullptr);
+	auto a = new Assign(*this);
 	// Statement members
 	a->pbb = pbb;
 	a->proc = proc;
