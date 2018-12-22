@@ -1052,8 +1052,8 @@ Cfg::getCalls()
  * Replace all instances of search with replace.  Can be type sensitive if
  * required.
  *
- * \param search   A location to search for.
- * \param replace  The expression with which to replace it.
+ * \param[in] search   A location to search for.
+ * \param[in] replace  The expression with which to replace it.
  */
 void
 Cfg::searchAndReplace(Exp *search, Exp *replace)
@@ -1068,13 +1068,13 @@ Cfg::searchAndReplace(Exp *search, Exp *replace)
 bool
 Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 {
-	bool ch = false;
+	bool found = false;
 	for (const auto &bb : m_listBB) {
 		for (const auto &rtl : *bb->getRTLs()) {
-			ch |= rtl->searchAll(search, result);
+			found |= rtl->searchAll(search, result);
 		}
 	}
-	return ch;
+	return found;
 }
 
 /**

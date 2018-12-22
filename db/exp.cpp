@@ -1700,9 +1700,9 @@ Ternary::doSearchChildren(Exp *search, std::list<Exp **> &li, bool once)
  *
  * \note If the top level expression matches, return val != this.
  *
- * \param search   Ptr to Exp we are searching for.
- * \param replace  Ptr to Exp to replace it with.
- * \param change   Ref to boolean, set true if a change made (else cleared).
+ * \param[in] search   Ptr to Exp we are searching for.
+ * \param[in] replace  Ptr to Exp to replace it with.
+ * \param[out] change  Set true if a change made; cleared otherwise.
  *
  * \returns  true if a change made.
  */
@@ -1713,18 +1713,18 @@ Exp::searchReplace(Exp *search, Exp *replace, bool &change)
 }
 
 /**
- * Search for the given subexpression, and replace wherever found.
+ * Search this Exp for the given subexpression, and replace wherever found.
  *
  * \note If the top level expression matches, something other than "this" will
  *       be returned.
  * \note It is possible with wildcards that in very unusual circumstances a
  *       replacement will be made to something that is already deleted.
  * \note Replacements are cloned.  Caller to delete search and replace.
+ * \note change is ALWAYS assigned.  No need to clear beforehand.
  *
- * \param search   Ptr to ptr to Exp we are searching for.
- * \param replace  Ptr to Exp to replace it with.
- * \param change   Set true if a change made; cleared otherwise.
- * \note           change is ALWAYS assigned.  No need to clear beforehand.
+ * \param[in] search   Ptr to Exp we are searching for.
+ * \param[in] replace  Ptr to Exp to replace it with.
+ * \param[out] change  Set true if a change made; cleared otherwise.
  *
  * \returns  The result (often this, but possibly changed).
  */
@@ -1751,8 +1751,8 @@ Exp::searchReplaceAll(Exp *search, Exp *replace, bool &change, bool once /* = fa
  * true and return a pointer to the matched expression in result (useful when
  * there are wildcards, e.g. search pattern is r[?] result is r[2]).
  *
- * \param search  Ptr to Exp we are searching for.
- * \param result  Ref to ptr to Exp that matched.
+ * \param[in] search   Ptr to Exp we are searching for.
+ * \param[out] result  Ptr to Exp that matched.
  *
  * \returns  true if a match was found.
  */
@@ -1760,7 +1760,6 @@ bool
 Exp::search(Exp *search, Exp *&result)
 {
 	std::list<Exp **> li;
-	result = nullptr;  // In case it fails; don't leave it unassigned
 	// The search requires a reference to a pointer to this object.
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *top = this;
@@ -1769,6 +1768,7 @@ Exp::search(Exp *search, Exp *&result)
 		result = *li.front();
 		return true;
 	}
+	result = nullptr;  // In case it fails; don't leave it unassigned
 	return false;
 }
 
@@ -1778,8 +1778,8 @@ Exp::search(Exp *search, Exp *&result)
  *
  * \note Does NOT clear result on entry.
  *
- * \param search  Ptr to Exp we are searching for.
- * \param result  Ref to list of Exp that matched.
+ * \param[in] search   Ptr to Exp we are searching for.
+ * \param[out] result  List of Exp that matched.
  *
  * \returns  true if a match was found.
  */

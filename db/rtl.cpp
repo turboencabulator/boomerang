@@ -416,16 +416,16 @@ operator <<(std::ostream &os, const RTL &r)
 /**
  * \brief Replace all instances of "search" with "replace".
  *
- * \param search   Ptr to an expression to search for.
- * \param replace  Ptr to the expression with which to replace it.
+ * \param[in] search   Ptr to an expression to search for.
+ * \param[in] replace  Ptr to the expression with which to replace it.
  */
 bool
 RTL::searchAndReplace(Exp *search, Exp *replace)
 {
-	bool ch = false;
+	bool change = false;
 	for (const auto &stmt : stmtList)
-		ch |= stmt->searchAndReplace(search, replace);
-	return ch;
+		change |= stmt->searchAndReplace(search, replace);
+	return change;
 }
 
 /**
@@ -434,8 +434,9 @@ RTL::searchAndReplace(Exp *search, Exp *replace)
  * Searches for all instances of "search" and adds them to "result" in reverse
  * nesting order.  The search is optionally type sensitive.
  *
- * \param search  A location to search for.
- * \param result  A list which will have any matching exprs appended to it.
+ * \param[in] search   A location to search for.
+ * \param[out] result  A list which will have any matching expressions
+ *                     appended to it.
  *
  * \returns true if there were any matches.
  */

@@ -1122,9 +1122,9 @@ GotoStatement::adjustFixedDest(int delta)
 bool
 GotoStatement::search(Exp *search, Exp *&result)
 {
-	result = nullptr;
 	if (pDest)
 		return pDest->search(search, result);
+	result = nullptr;
 	return false;
 }
 
@@ -1140,9 +1140,8 @@ bool
 GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
 	bool change = false;
-	if (pDest) {
+	if (pDest)
 		pDest = pDest->searchReplaceAll(search, replace, change);
-	}
 	return change;
 }
 
@@ -1157,7 +1156,8 @@ GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 bool
 GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
-	if (pDest) return pDest->searchAll(search, result);
+	if (pDest)
+		return pDest->searchAll(search, result);
 	return false;
 }
 
@@ -1454,7 +1454,8 @@ BranchStatement::setTakenBB(BasicBlock *bb)
 bool
 BranchStatement::search(Exp *search, Exp *&result)
 {
-	if (pCond) return pCond->search(search, result);
+	if (pCond)
+		return pCond->search(search, result);
 	result = nullptr;
 	return false;
 }
@@ -1488,7 +1489,8 @@ BranchStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 bool
 BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
-	if (pCond) return pCond->searchAll(search, result);
+	if (pCond)
+		return pCond->searchAll(search, result);
 	return false;
 }
 
@@ -2139,8 +2141,8 @@ CallStatement::setSigArguments()
 bool
 CallStatement::search(Exp *search, Exp *&result)
 {
-	bool found = GotoStatement::search(search, result);
-	if (found) return true;
+	if (GotoStatement::search(search, result))
+		return true;
 	for (const auto &def : defines) {
 		if (def->search(search, result))
 			return true;
@@ -2187,14 +2189,10 @@ bool
 CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = GotoStatement::searchAll(search, result);
-	for (const auto &def : defines) {
-		if (def->searchAll(search, result))
-			found = true;
-	}
-	for (const auto &arg : arguments) {
-		if (arg->searchAll(search, result))
-			found = true;
-	}
+	for (const auto &def : defines)
+		found |= def->searchAll(search, result);
+	for (const auto &arg : arguments)
+		found |= arg->searchAll(search, result);
 	return found;
 }
 
@@ -2968,11 +2966,11 @@ ReturnStatement::addReturn(Assignment *a)
 bool
 ReturnStatement::search(Exp *search, Exp *&result)
 {
-	result = nullptr;
 	for (const auto &ret : returns) {
 		if (ret->search(search, result))
 			return true;
 	}
+	result = nullptr;
 	return false;
 }
 
@@ -2993,10 +2991,8 @@ bool
 ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	bool found = false;
-	for (const auto &ret : returns) {
-		if (ret->searchAll(search, result))
-			found = true;
-	}
+	for (const auto &ret : returns)
+		found |= ret->searchAll(search, result);
 	return found;
 }
 
@@ -3184,19 +3180,19 @@ bool
 BoolAssign::search(Exp *search, Exp *&result)
 {
 	assert(lhs);
-	if (lhs->search(search, result)) return true;
 	assert(pCond);
-	return pCond->search(search, result);
+	return lhs->search(search, result)
+	    || pCond->search(search, result);
 }
 
 bool
 BoolAssign::searchAll(Exp *search, std::list<Exp *> &result)
 {
-	bool ch = false;
 	assert(lhs);
-	if (lhs->searchAll(search, result)) ch = true;
 	assert(pCond);
-	return pCond->searchAll(search, result) || ch;
+	bool found = lhs->searchAll(search, result);
+	found |= pCond->searchAll(search, result);
+	return found;
 }
 
 bool
@@ -3535,9 +3531,8 @@ Assignment::getDefinitions(LocationSet &defs) const
 bool
 Assign::search(Exp *search, Exp *&result)
 {
-	if (lhs->search(search, result))
-		return true;
-	return rhs->search(search, result);
+	return lhs->search(search, result)
+	    || rhs->search(search, result);
 }
 bool
 PhiAssign::search(Exp *search, Exp *&result)
@@ -3561,13 +3556,9 @@ ImplicitAssign::search(Exp *search, Exp *&result)
 bool
 Assign::searchAll(Exp *search, std::list<Exp *> &result)
 {
-	bool res;
-	std::list<Exp *> leftResult;
-	res = lhs->searchAll(search, leftResult);
-	// Ugh: searchAll clears the list!
-	res |= rhs->searchAll(search, result);
-	result.splice(result.end(), leftResult);
-	return res;
+	bool found = lhs->searchAll(search, result);
+	found |= rhs->searchAll(search, result);
+	return found;
 }
 // FIXME: is this the right semantics for searching a phi statement, disregarding the RHS?
 bool
@@ -5314,7 +5305,6 @@ ImpRefStatement::accept(StmtPartModifier &v)
 bool
 ImpRefStatement::search(Exp *search, Exp *&result)
 {
-	result = nullptr;
 	return addressExp->search(search, result);
 }
 
