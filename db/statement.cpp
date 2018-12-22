@@ -1583,7 +1583,7 @@ BranchStatement::usesExp(Exp *e) const
 
 // Common to BranchStatement and BoolAssign
 // Return true if this is now a floating point Branch
-bool
+static bool
 condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 {
 	pCond = pCond->simplifyArith()->simplify();
