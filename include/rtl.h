@@ -103,9 +103,6 @@ public:
 
 	        void        print(std::ostream &os = std::cout, bool html = false) const;
 
-	        void        insertAssign(Exp *ssLhs, Exp *ssRhs, bool prep, Type *type = nullptr);
-	        void        insertAfterTemps(Exp *ssLhs, Exp *ssRhs, Type *type = nullptr);
-
 	        bool        searchAndReplace(Exp *search, Exp *replace);
 	        bool        searchAll(Exp *search, std::list<Exp *> &result);
 
