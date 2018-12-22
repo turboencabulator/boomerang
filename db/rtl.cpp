@@ -123,20 +123,6 @@ RTL::accept(StmtVisitor &v)
 }
 
 /**
- * \brief Make a deep copy of the list of Exp*
- *
- * Make a copy of this RTL's list of Exp* to the given list.
- *
- * \param dest  Ref to empty list to copy to.
- */
-void
-RTL::deepCopyList(std::list<Statement *> &dest) const
-{
-	for (const auto &stmt : stmtList)
-		dest.push_back(stmt->clone());
-}
-
-/**
  * \brief Add s to end of RTL.
  *
  * Append the given Statement at the end of this RTL.

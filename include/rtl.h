@@ -99,7 +99,6 @@ public:
 	        void        clear();
 	        void        append(const std::list<Statement *> &);
 	        void        append(const RTL &);
-	        void        deepCopyList(std::list<Statement *> &dest) const;
 	/** \} */
 
 	        void        print(std::ostream &os = std::cout, bool html = false) const;
