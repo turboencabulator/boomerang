@@ -60,6 +60,7 @@
 
 %{
 	#include "sslscanner.h"
+	#include "visitor.h"
 
 	#ifdef GARBAGE_COLLECTOR
 	#include <gc/gc.h>
@@ -1005,22 +1006,63 @@ listStrToExp(const std::list<std::string> &ls)
 	return e;
 }
 
-static Exp *srchExpr = new Binary(opExpTable,
-                                  new Terminal(opWild),
-                                  new Terminal(opWild));
-static Exp *srchOp = new Ternary(opOpTable,
-                                 new Terminal(opWild),
-                                 new Terminal(opWild),
-                                 new Terminal(opWild));
-#ifdef GARBAGE_COLLECTOR
-void
-init_sslparser()
+
+class ExpTableExpander : public ExpModifier {
+	typedef std::map<std::string, std::deque<Exp *> *> TABLES;
+	typedef std::map<std::string, const InsNameElem *> INSELEMS;
+	const TABLES &tables;
+	const INSELEMS &inselems;
+public:
+	ExpTableExpander(const TABLES &tables, const INSELEMS &inselems) : tables(tables), inselems(inselems) { }
+	Exp *postVisit(Binary *) override;
+};
+
+Exp *
+ExpTableExpander::postVisit(Binary *e)
 {
-	static Exp **gc_pointers = (Exp **)GC_MALLOC_UNCOLLECTABLE(2 * sizeof *gc_pointers);
-	gc_pointers[0] = srchExpr;
-	gc_pointers[1] = srchOp;
+	Exp *ret = e;
+	if (e->getOper() == opExpTable) {
+		const auto &tbl = tables.at(((Const *)e->getSubExp1())->getStr());
+		const auto &idx = inselems.at(((Const *)e->getSubExp2())->getStr());
+		ret = (*tbl)[idx->getvalue()];
+		ret = ret->clone();
+	}
+	return ret;
 }
-#endif
+
+
+class OpTableExpander : public ExpModifier {
+	typedef std::map<std::string, std::deque<OPER> *> TABLES;
+	typedef std::map<std::string, const InsNameElem *> INSELEMS;
+	const TABLES &tables;
+	const INSELEMS &inselems;
+public:
+	OpTableExpander(const TABLES &tables, const INSELEMS &inselems) : tables(tables), inselems(inselems) { }
+	Exp *postVisit(Ternary *) override;
+};
+
+Exp *
+OpTableExpander::postVisit(Ternary *e)
+{
+	Exp *ret = e;
+	if (e->getOper() == opOpTable) {
+		// The ternary opOpTable has a table and index name as strings, then a list of 2 expressions
+		// (and we want to replace it with e1 OP e2)
+		const auto &tbl = tables.at(((Const *)e->getSubExp1())->getStr());
+		const auto &idx = inselems.at(((Const *)e->getSubExp2())->getStr());
+		auto op = (*tbl)[idx->getvalue()];
+
+		// The expressions to operate on are in the list
+		auto b = (Binary *)e->getSubExp3();
+		assert(b->getOper() == opList);
+		auto e1 = b->getSubExp1();
+		b = (Binary *)b->getSubExp2();  // This should be an opList too
+		assert(b->getOper() == opList);
+		auto e2 = b->getSubExp1();
+		ret = new Binary(op, e1->clone(), e2->clone());  // FIXME!
+	}
+	return ret;
+}
 
 /*==============================================================================
  * FUNCTION:        SSLParser::expandTables
@@ -1037,48 +1079,19 @@ SSLParser::expandTables(InsNameElem &iname, const std::list<std::string> &params
 	assert(iname.ninstructions());
 	iname.reset();
 	// Expand the tables (if any) in this instruction
+	auto ete = ExpTableExpander(ExpTable, indexrefmap);
+	auto ote = OpTableExpander(OpTable, indexrefmap);
+	auto etm = StmtModifier(ete);
+	auto otm = StmtModifier(ote);
 	do {
-		std::string nam = iname.getinstruction();
 		// Need to make substitutions to a copy of the RTL
-		RTL *rtl = o_rtlist.clone();
+		auto rtl = o_rtlist.clone();
 		for (const auto &s : rtl->getList()) {
-			std::list<Exp *> le;
-			// Expression tables
-			assert(s->getKind() == STMT_ASSIGN);
-			if (((Assign *)s)->searchAll(srchExpr, le)) {
-				for (const auto &e : le) {
-					const char *tbl = ((Const *)((Binary *)e)->getSubExp1())->getStr();
-					const char *idx = ((Const *)((Binary *)e)->getSubExp2())->getStr();
-					Exp *repl = (*ExpTable[tbl])[indexrefmap[idx]->getvalue()];
-					s->searchAndReplace(e, repl);
-				}
-			}
-			// Operator tables
-			Exp *res;
-			while (s->search(srchOp, res)) {
-				Ternary *t;
-				if (res->isTypedExp())
-					t = (Ternary *)res->getSubExp1();
-				else
-					t = (Ternary *)res;
-				assert(t->getOper() == opOpTable);
-				// The ternary opOpTable has a table and index name as strings, then a list of 2 expressions
-				// (and we want to replace it with e1 OP e2)
-				const char *tbl = ((Const *)t->getSubExp1())->getStr();
-				const char *idx = ((Const *)t->getSubExp2())->getStr();
-				// The expressions to operate on are in the list
-				Binary *b = (Binary *)t->getSubExp3();
-				assert(b->getOper() == opList);
-				Exp *e1 = b->getSubExp1();
-				Exp *e2 = b->getSubExp2();  // This should be an opList too
-				assert(e2->getOper() == opList);
-				e2 = ((Binary *)e2)->getSubExp1();
-				OPER ops = (*OpTable[tbl])[indexrefmap[idx]->getvalue()];
-				Exp *repl = new Binary(ops, e1->clone(), e2->clone());  // FIXME!
-				s->searchAndReplace(res, repl);
-			}
+			s->accept(etm);
+			s->accept(otm);
 		}
 
+		auto nam = iname.getinstruction();
 		if (!Dict.appendToDict(nam, params, *rtl)) {
 			std::ostringstream o;
 			o << "Pattern " << iname.getinspattern() << " conflicts with an earlier declaration of " << nam;
