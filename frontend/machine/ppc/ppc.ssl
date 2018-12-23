@@ -548,17 +548,17 @@ LFDUX  fd, eaddr, ra
 	*32* ra := eaddr;
 
 LFS    fd, eaddr, ra
-	*32* fd := fsize(32, 64, m[eaddr]);
+	*64* fd := fsize(32, 64, m[eaddr]);
 
 LFSU   fd, eaddr, ra
-	*32* fd := fsize(32, 64, m[eaddr])
+	*64* fd := fsize(32, 64, m[eaddr])
 	*32* ra := eaddr;
 
 LFSX   fd, eaddr, ra
 	*64* fd := fsize(32, 64, m[eaddr]);
 
 LFSUX  fd, eaddr, ra
-	*32* fd := fsize(32, 64, m[eaddr])
+	*64* fd := fsize(32, 64, m[eaddr])
 	*32* ra := eaddr;
 
 # Floating point stores
