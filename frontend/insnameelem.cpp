@@ -123,7 +123,7 @@ std::string
 InsOptionElem::getinstruction() const
 {
 	std::string s;
-	if (getvalue() == 0)
+	if (value)
 		s = elemname;
 	if (nextelem)
 		s += nextelem->getinstruction();
@@ -155,7 +155,7 @@ InsListElem::ntokens() const
 std::string
 InsListElem::getinstruction() const
 {
-	std::string s = (*thetable)[getvalue()];
+	std::string s = (*thetable)[value];
 	if (nextelem)
 		s += nextelem->getinstruction();
 	return s;
