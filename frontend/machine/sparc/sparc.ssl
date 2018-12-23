@@ -355,7 +355,7 @@ UMULT[idx] rs1, reg_or_imm, rd
 	*64* tmpl := zfill(32, 64, rs1) * zfill(32, 64, reg_or_imm)
 	*32* rd := truncs(64, 32, tmpl)
 	*32* %Y := tmpl@[32:63];
-UMULTCC rs1, reg_or_imm, rd
+UMULCC rs1, reg_or_imm, rd
 	MULTFLAGS(tmp, reg_or_imm, rd);
 
 
