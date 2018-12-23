@@ -184,18 +184,14 @@ SETFFLAGSN(op1, op2, crfd) {
 
 #Arithmetic operations
 
-ADD     rd, ra, rb
+ADD'q'  rd, ra, rb
 	*32* rd := ra + rb;
-
 ADDq    rd, ra, rb
-	*32* rd := ra + rb
 	SETFLAGS0(rd);
 
-ADDE    rd, ra, rb
+ADDE'q' rd, ra, rb
 	*32* rd := ra + rb + %XERCA;
-
 ADDEq   rd, ra, rb
-	*32* rd := ra + rb + %XERCA
 	SETFLAGS0(rd);
 
 ADDI    rd, rs, simm
@@ -212,49 +208,34 @@ ADDICq  rd, rs, simm
 ADDIS   rd, rs, simm
 	*32* rd := rs + (simm << 16);
 
-ADDME   rd, ra
+ADDME'q'  rd, ra
 	*32* rd := ra + %XERCA - 1;
-
 ADDMEq  rd, ra
-	*32* rd := ra + %XERCA - 1
 	SETFLAGS0(rd);
 
-ADDZE   rd, ra
+ADDZE'q'  rd, ra
 	*32* rd := ra + %XERCA;
-
 ADDZEq  rd, ra
-	*32* rd := ra + %XERCA
 	SETFLAGS0(rd);
 
-DIVW    rd, ra, rb
+DIVW'U''q'  rd, ra, rb
 	*32* rd := ra / rb;
-
 DIVWq   rd, ra, rb
-	*32* rd := ra / rb
 	SETFLAGS0(rd);
-
-DIVWU   rd, ra, rb
-	*32* rd := ra / rb;
-
 DIVWUq  rd, ra, rb
-	*32* rd := ra / rb
 	SETFLAGS0(rd);
 
-EXTSB   rd, ra
+EXTSB'q'  rd, ra
 	*32* rd := sgnex(8, 32, ra);
-
 EXTSBq  rd, ra
-	*32* rd := sgnex(8, 32, ra)
 	SETFLAGS0(rd);
 
 MULLI   rd, ra, simm
 	*32* rd := rs * sgnex(16, 32, simm);
 
-MULLW   rd, ra, rb
+MULLW'q'  rd, ra, rb
 	*32* rd := ra * rb;
-
 MULLWq  rd, ra, rb
-	*32* rd := ra * rb
 	SETFLAGS0(rd);
 
 SUBF    rd, ra, rb
@@ -267,20 +248,15 @@ SUBFIC  rd, ra, simm
 	*32* rd := simm - ra
 	SUBFLAGSX(rd, simm, ra);
 
+SUBFC'O''Q'  rd, ra, rb
+	*32* rd := rb - ra;
 SUBFC   rd, ra, rb
-	*32* rd := rb - ra
 	SUBFLAGSX(rd, rb, ra);
-
 SUBFCQ  rd, ra, rb
-	*32* rd := rb - ra
 	SUBFLAGSX0(rd);
-
 SUBFCO  rd, ra, rb
-	*32* rd := rb - ra
 	SUBFLAGSX(rd, rb, ra);      # Also supposed to set overflow bits
-
 SUBFCOQ rd, ra, rb
-	*32* rd := rb - ra
 	SUBFLAGSX0(rd, rb, ra);     # Also supposed to set overflow bits
 
 NOP
@@ -289,112 +265,85 @@ NOP
 
 #Logical ops
 
-NEG  rd, ra
+NEG'q'  rd, ra
 	*32* rd := 0 - ra;
-
 NEGq rd, ra
-	*32* rd := 0 - ra
 	SETFLAGS0(rd);
 
-LOGDOT    := { "ANDq",     "ORq",      "XORq"  };         # Logicals that set flags as well
-LOG       := { "AND",      "OR",       "XOR",  LOGDOT };  # All logicals with uncomplemented operands
-LOGI      := {             "ORI",      "XORI"  };         # Immediate, NO dot (Note: ANDIq, but ORI, XORI)
-LOGIS     := {             "ORIS",     "XORIS" };         # Immediate with operand B shifted left 16 bits, NO dot
-NLOGDOT   := { "NANDq",    "NORq",     "EQVq"  };         # Negated logicals that set flags
-                                                          # Note: NXOR is called EQV
-NLOG      := { "NAND",     "NOR",      "EQV", NLOGDOT };  # All negated logicals
-LOGOP     := {  "&", "|", "^", "&", "|", "^"   };
-LOGC      := { "ANDC", "ORC", "ANDCq", "ORCq"  };           # Note: no XORCR
-LOGCOP    := { "&",    "|",   "&",     "|"     };
-LOGCDOT   := { "ANDCq", "ORCq" };                         # Note: no XORCRq
-LOGIDOTOP := { "|",     "^"    };                         # Note: no ANDI or ANDIS (ANDIq and ANDISq instead)
+LOGOP := { "&",      "|",    "^"     };
+LOG   := { "AND",    "OR",   "XOR"   };  # All logicals with uncomplemented operands
+NLOG  := { "NAND",   "NOR",  "EQV"   };  # All negated logicals
+                                         # Note: NXOR is called EQV
+
+LOGI  := { "ANDIq",  "ORI",  "XORI"  };  # Immediate, NO dot (Note: ANDIq, but ORI, XORI)
+LOGIS := { "ANDISq", "ORIS", "XORIS" };  # Immediate with operand B shifted left 16 bits, NO dot
+
+LOGC  := { "ANDC",   "ORC"           };  # Note: no XORC
 
 
-LOG[IDX]     rd, ra, rb
+LOG[IDX]'q'  rd, ra, rb
 	*32* rd := ra LOGOP[IDX] rb;
-LOGDOT[IDX]  rd, ra, rb
+LOG[IDX]"q"  rd, ra, rb
+	SETFLAGS0(rd);
+
+NLOG[IDX]'q'  rd, ra, rb
+	*32* rd := ~(ra LOGOP[IDX] rb);
+NLOG[IDX]"q"  rd, ra, rb
 	SETFLAGS0(rd);
 
 LOGI[IDX]    rd, rs, uimm
-	*32* rd := rs LOGIDOTOP[IDX] uimm;
-
+	*32* rd := rs LOGOP[IDX] uimm;
 ANDIq        rd, rs, uimm
-	*32* rd := rs & uimm
 	SETFLAGS0(rd);              # Only ANDIq sets flags
 
 LOGIS[IDX]   rd, rs, uimm
-	*32* rd := rs LOGIDOTOP[IDX] (uimm << 16);
-
+	*32* rd := rs LOGOP[IDX] (uimm << 16);
 ANDISq       rd, rs, uimm
-	*32* rd := rs & (uimm << 16)
 	SETFLAGS0(rd);              # Only ANDISq sets flags
 
-NLOG[IDX]    rd, ra, rb
-	*32* rd := ~(ra LOGOP[IDX] rb);
-NLOGDOT[IDX] rd, ra, rb
-	SETFLAGS0(rd);
-
-LOGC[IDX]    rd, ra, rb
-	*32* rd := ra LOGCOP[IDX] ~rb;
-LOGCDOT[IDX] rd, ra, rb
+LOGC[IDX]'q'  rd, ra, rb
+	*32* rd := ra LOGOP[IDX] ~rb;
+LOGC[IDX]"q"  rd, ra, rb
 	SETFLAGS0(rd);
 
 
 # Shifts
-SHIFTS_DOT := { "SLWq", "SRWq", "SRAWq", "SRAWIq" };
-SHIFTS     := { "SLW",  "SRW",  "SRAW",  "SRAWI", SHIFTS_DOT };
-SHIFT_OP   := { "<<",   ">>",   ">>A",   ">>A",
-                "<<",   ">>",   ">>A",   ">>A" };
+SHIFTS   := { "SLW", "SRW", "SRAW", "SRAWI" };
+SHIFT_OP := { "<<",  ">>",  ">>A",  ">>A"   };
 
-SHIFTS[IDX]     Rd, Rs, op2
+SHIFTS[IDX]'q'  Rd, Rs, op2
 	*32* Rd := Rs SHIFT_OP[IDX] op2;
 	# Note: SRAW/SRAWI also set the carry flag (%XERCA) in some weird way
-
-SHIFTS_DOT[IDX] Rd, Rs, op2
+SHIFTS[IDX]"q"  Rd, Rs, op2
 	SETFLAGS0(Rd);
 
 
 
 #Memory access. rA is passed twice; as part of eaddr, and by itself for the U versions (update rA)
 
-LWZ  rd, eaddr, ra
+LWZ'X'  rd, eaddr, ra
 	*32* rd := m[eaddr];
-
-LWZX rd, eaddr, ra
-	*32* rd := m[eaddr];
-
-LHZ  rd, eaddr, ra
+LHZ'X'  rd, eaddr, ra
 	*32* rd := zfill(16, 32, m[eaddr]);
-
-LHZX rd, eaddr, ra
-	*32* rd := zfill(16, 32, m[eaddr]);
-
-LBZ  rd, eaddr, ra
-	*32* rd := zfill(8, 32, m[eaddr]);
-
-LBZX rd, eaddr, ra
+LBZ'X'  rd, eaddr, ra
 	*32* rd := zfill(8, 32, m[eaddr]);
 
 STWU rs, eaddr, ra
 	*32* m[eaddr] := rs
 	*32* ra := eaddr;
 
-STW  rs, eaddr, ra
+STW     rs, eaddr, ra
 	*32* m[eaddr] := rs;
+STH     rs, eaddr, ra
+	*16* m[eaddr] := truncs(32, 16, rs);
+STB     rs, eaddr, ra
+	*8* m[eaddr] := truncs(32, 8, rs);
 
-STWX rs, eaddr
+STWX    rs, eaddr
 	*32* m[eaddr] := rs;
-
-STH  rs, eaddr, ra
+STHX    rs, eaddr
 	*16* m[eaddr] := truncs(32, 16, rs);
-
-STHX rs, eaddr
-	*16* m[eaddr] := truncs(32, 16, rs);
-
-STB  rs, eaddr, ra
-	*8*  m[eaddr] := truncs(32, 8, rs);
-
-STBX rs, eaddr
+STBX    rs, eaddr
 	*8* m[eaddr] := truncs(32, 8, rs);
 
 
@@ -533,63 +482,26 @@ STMW rs, eaddr, s
 	*32* s <= 31 => m[eaddr + (tmp*4)] := r[s + tmp];
 
 # Floating point loads
-LFD    fd, eaddr, ra
+LFD'U''X'  fd, eaddr, ra
 	*64* fd := m[eaddr];
-
-LFDU   fd, eaddr, ra
-	*64* fd := m[eaddr]
+LFDU'X'  fd, eaddr, ra
 	*32* ra := eaddr;
 
-LFDX   fd, eaddr, ra
-	*64* fd := m[eaddr];
-
-LFDUX  fd, eaddr, ra
-	*64* fd := m[eaddr]
-	*32* ra := eaddr;
-
-LFS    fd, eaddr, ra
+LFS'U''X'  fd, eaddr, ra
 	*64* fd := fsize(32, 64, m[eaddr]);
-
-LFSU   fd, eaddr, ra
-	*64* fd := fsize(32, 64, m[eaddr])
-	*32* ra := eaddr;
-
-LFSX   fd, eaddr, ra
-	*64* fd := fsize(32, 64, m[eaddr]);
-
-LFSUX  fd, eaddr, ra
-	*64* fd := fsize(32, 64, m[eaddr])
+LFSU'X'  fd, eaddr, ra
 	*32* ra := eaddr;
 
 # Floating point stores
-STFD   fd, eaddr, ra
+STFD'U''X'  fd, eaddr, ra
 	*64* m[eaddr] := fd;
-
-STFDU  fd, eaddr, ra
-	*64* m[eaddr] := fd
+STFDU'X'  fd, eaddr, ra
 	*32* ra := eaddr;
 
-STFDX  fd, eaddr, ra
-	*64* m[eaddr] := fd;
-
-STFDUX fd, eaddr, ra
-	*64* m[eaddr] := fd
-	*32* ra := eaddr;
-
-STFS   fd, eaddr, ra
+STFS'U''X'  fd, eaddr, ra
 	*32* m[eaddr] := fsize(64, 32, fd);
-
-STFSU  fd, eaddr, ra
-	*32* m[eaddr] := fsize(64, 32, fd)
+STFSU'X'  fd, eaddr, ra
 	*32* ra := eaddr;
-
-STFSX  fd, eaddr, ra
-	*32* m[eaddr] := fsize(64, 32, fd);
-
-STFSUX fd, eaddr, ra
-	*32* m[eaddr] := fsize(64, 32, fd)
-	*32* ra := eaddr;
-
 
 
 BALLR
@@ -611,22 +523,16 @@ MTXER rs
 MTCTR rs
 	*32* %CTR := rs;
 
-ROT_ANDS     := { "RLWINM",  "RLWINMq" };
-ROT_AND_ORS  := { "RLWIMI",  "RLWIMIq" };
-ROT_AND_DOTS := { "RLWINMq", "RLWIMIq" };
-ROT_AND_ALL  := { ROT_ANDS, ROT_AND_ORS };
+ROT_AND := { "RLWINM", "RLWIMI" };
 
-ROT_AND_ALL[IDX]  ra, rs, uimm, beg, end
+ROT_AND[IDX]'q'  ra, rs, uimm, beg, end
 	*32* tmp_mask := (1 << (32 - beg)) - (1 << (31 - end));
-
-ROT_ANDS[IDX]     ra, rs, uimm, beg, end
+RLWINM'q'  ra, rs, uimm, beg, end
 	*32* ra := rs rl uimm & tmp_mask;   # rl = rotate left
-
-ROT_AND_ORS[IDX]  ra, rs, uimm, beg, end
+RLWIMI'q'  ra, rs, uimm, beg, end
 	*32* tmp_r := rs rl uimm & tmp_mask
 	*32* ra := rs | (ra & ~tmp_mask);
-
-ROT_AND_DOTS[IDX] ra, rs, uimm, beg, end
+ROT_AND[IDX]"q"  ra, rs, uimm, beg, end
 	SETFLAGS0(ra);
 
 BL reloc
@@ -653,94 +559,55 @@ FCMPU crfd, fa, fb
 
 #condition register manipulation
 
-CRLOG   := { "CRAND",  "CROR",  "CRXOR" };
-CRNLOG  := { "CRNAND", "CRNOR", "CREQV" };  # Note: CRNXOR called CREQV
-CRLOGC  := { "CRANDC", "CRORC"          };  # Note: no CRXORC
-CR_OP   := { "&",      "|",     "^"     };
-
-CRLOG[IDX]  d, a, b
-	*1* d :=   a CR_OP[IDX]  b;
-CRNLOG[IDX] d, a, b
-	*1* d := ~(a CR_OP[IDX]  b);
-CRLOGC[IDX] d, a, b
-	*1* d :=   a CR_OP[IDX] ~b;
+"CR"LOG[IDX]  d, a, b
+	*1* d :=   a LOGOP[IDX]  b;
+"CR"NLOG[IDX] d, a, b
+	*1* d := ~(a LOGOP[IDX]  b);
+"CR"LOGC[IDX] d, a, b
+	*1* d :=   a LOGOP[IDX] ~b;
 
 # Floating point operations
 
-FMR     fd, fb
-	*64* fd := fb;
-FMRq    fd, fb
+FMR'q'  fd, fb
 	*64* fd := fb;
 
-FNEG    fd, fb
-	*64* fd := 0.0 -f fb;
-FNEGq   fd, fb
+FNEG'q'  fd, fb
 	*64* fd := 0.0 -f fb;
 
-FRSP    fd, fb
-	*32* tmpf := fsize(64, 32, fb)
-	*64* fd := fsize(32, 64, tmpf);
-FRSPq   fd, fb
+FRSP'q'  fd, fb
 	*32* tmpf := fsize(64, 32, fb)
 	*64* fd := fsize(32, 64, tmpf);
 
-FCTIW   fd, fb
-	*64* fd := zfill(32, 64, ftoi(64, 32, fb));
-FCTIWq  fd, fb
-	*64* fd := zfill(32, 64, ftoi(64, 32, fb));
-# The following are supposed to round towards 0 as well
-FCTIWZ  fd, fb
-	*64* fd := zfill(32, 64, ftoi(64, 32, fb));
-FCTIWZq fd, fb
-	*64* fd := zfill(32, 64, ftoi(64, 32, fb));
+FCTIW'Z''q'  fd, fb
+	*64* fd := zfill(32, 64, ftoi(64, 32, fb));  # Note: Variants differ in rounding modes
 
-FADD   fd, fa, fb
-	*64* fd := fa +f fb;
-FADDq  fd, fa, fb
+FADD'S''q'  fd, fa, fb
 	*64* fd := fa +f fb;    # Note: floating point flags not implemented yet
+	                        # Note: may only operate on 32 bits of precision
 
-FADDS  fd, fa, fb
-	*64* fd := fa +f fb;    # Note: may only operate on 32 bits of precision
-FADDSq fd, fa, fb
-	*64* fd := fa +f fb;
-
-FSUB   fd, fa, fb
-	*64* fd := fa -f fb;
-FSUBq  fd, fa, fb
-	*64* fd := fa -f fb;
-
-FSUBS  fd, fa, fb
+FSUB'S''q'  fd, fa, fb
 	*64* fd := fa -f fb;    # Note as above
-FSUBSq fd, fa, fb
-	*64* fd := fa -f fb;
 
-FDIV   fd, fa, fb
-	*64* fd := fa /f fb;
-FDIVq  fd, fa, fb
-	*64* fd := fa /f fb;
-
-FDIVS  fd, fa, fb
+FDIV'S''q'  fd, fa, fb
 	*64* fd := fa /f fb;    # Note: only operates on 64/32 bits of precision
-FDIVSq fd, fa, fb
-	*64* fd := fa /f fb;    # Yet result is in 64-bit format
+	                        # Yet result is in 64-bit format
 
 # conditional branch
 # MVE: Not sure if I have the bit numbers round the right way (is LT 3 or 0?)
-CONDBR     := { "%CR0@[3:3]", "~%CR0@[2:2]",  "%CR0@[1:1]", "~%CR0@[3:3]",
-                "%CR0@[2:2]", "~%CR0@[3:3]", "~%CR0@[1:1]", "~%CR0@[2:2]",
-                "%CR0@[0:0]", "~%CR0@[0:0]",  "%CR0@[0:0]", "~%CR0@[0:0]"  };
-BRCONDS    := { "blt",    "ble",    "beq",    "bge",    "bgt",    "bnl",
-                "bne",    "bng",    "bso",    "bns",    "bun",    "bnu"    };
-BRCONDSCTR := { "bltctr", "blectr", "beqctr", "bgectr", "bgtctr", "bnlctr",
-                "bnectr", "bngctr", "bsoctr", "bnsctr", "bunctr", "bnuctr" };
-BRCONDSLR  := { "bltlr",  "blelr",  "beqlr",  "bgelr",  "bgtlr",  "bnllr",
-                "bnelr",  "bnglr",  "bsolr",  "bnslr",  "bunlr",  "bnulr"  };
+CONDBR  := {
+	"%CR0@[3:3]", "~%CR0@[2:2]",  "%CR0@[1:1]", "~%CR0@[3:3]",
+	"%CR0@[2:2]", "~%CR0@[3:3]", "~%CR0@[1:1]", "~%CR0@[2:2]",
+	"%CR0@[0:0]", "~%CR0@[0:0]",  "%CR0@[0:0]", "~%CR0@[0:0]"
+};
+BRCONDS := {
+	"lt", "le", "eq", "ge",
+	"gt", "nl", "ne", "ng",
+	"so", "ns", "un", "nu"
+};
 
-BRCONDS[IDX] BIcr, reloc
+"b"BRCONDS[IDX]  BIcr, reloc
 	*32* %pc := [CONDBR[IDX] = 1 ? %pc+reloc : %pc];
-
-BRCONDSCTR[IDX] BIcr
+"b"BRCONDS[IDX]"ctr"  BIcr
 	*32* %pc := [CONDBR[IDX] = 1 ? %CTR : %pc];
-
-BRCONDSLR[IDX] BIcr
+"b"BRCONDS[IDX]"lr"  BIcr
 	*32* %pc := [CONDBR[IDX] = 1 ? %LR : %pc];
