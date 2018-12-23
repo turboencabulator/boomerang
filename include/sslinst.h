@@ -40,11 +40,12 @@ class Statement;
 class TableEntry {
 public:
 	TableEntry();
-	TableEntry(const std::list<std::string> &, RTL &);
+	TableEntry(const std::list<std::string> &);
 
 	const TableEntry &operator =(const TableEntry &other);
 
-	bool appendRTL(const std::list<std::string> &, RTL &);
+	bool compareParam(const std::list<std::string> &);
+	void appendRTL(RTL &);
 
 public:
 	std::list<std::string> params;

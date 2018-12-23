@@ -48,10 +48,9 @@ TableEntry::TableEntry()
 {
 }
 
-TableEntry::TableEntry(const std::list<std::string> &p, RTL &r) :
+TableEntry::TableEntry(const std::list<std::string> &p) :
 	params(p)
 {
-	rtl.splice(r);
 }
 
 /**
@@ -74,22 +73,28 @@ TableEntry::operator =(const TableEntry &other)
 }
 
 /**
- * \brief Transfers Statements in an RTL to the end of an existing TableEntry.
+ * \brief Check if the parameters in this TableEntry match the given list.
  *
  * \param[in] p  List of formal parameters (as strings).
- * \param[in] r  RTL with list of Statements to move.
  *
- * \returns true for success, false for failure.
+ * \returns true if the parameter lists match.
  */
 bool
-TableEntry::appendRTL(const std::list<std::string> &p, RTL &r)
+TableEntry::compareParam(const std::list<std::string> &p)
 {
-	if (params.size() == p.size()
-	 && std::equal(params.cbegin(), params.cend(), p.cbegin())) {
-		rtl.splice(r);
-		return true;
-	}
-	return false;
+	return params.size() == p.size()
+	    && std::equal(params.cbegin(), params.cend(), p.cbegin());
+}
+
+/**
+ * \brief Transfers Statements in an RTL to the end of this TableEntry.
+ *
+ * \param[in] r  RTL with list of Statements to move.
+ */
+void
+TableEntry::appendRTL(RTL &r)
+{
+	rtl.splice(r);
 }
 
 RTLInstDict::RTLInstDict()
@@ -120,10 +125,12 @@ RTLInstDict::appendToDict(const std::string &n, const std::list<std::string> &p,
 	opcode.erase(std::remove(opcode.begin(), opcode.end(), '.'), opcode.end());
 
 	if (!idict.count(opcode)) {
-		idict[opcode] = TableEntry(p, r);
-		return true;
+		idict[opcode] = TableEntry(p);
+	} else if (!idict[opcode].compareParam(p)) {
+		return false;
 	}
-	return idict[opcode].appendRTL(p, r);
+	idict[opcode].appendRTL(r);
+	return true;
 }
 
 /**
