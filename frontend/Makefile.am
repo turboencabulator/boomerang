@@ -13,11 +13,16 @@ nobase_dist_frontend_DATA = \
 	machine/st20/st20.ssl
 
 
+if DYNAMIC
 # Installing libfrontend.so in the same directory as the modules
 # has a side-effect of adding an RPATH to this directory for
 # everything that links against libfrontend.so.
 pkglib_LTLIBRARIES = \
 	libfrontend.la
+else
+noinst_LTLIBRARIES = \
+	libfrontend.la
+endif
 
 libfrontend_la_SOURCES = \
 	frontend.cpp \
@@ -37,9 +42,9 @@ libfrontend_la_SOURCES = \
 libfrontend_la_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
 	-I$(top_srcdir)/c
-libfrontend_la_LDFLAGS = -no-undefined -avoid-version
 
 if DYNAMIC
+libfrontend_la_LDFLAGS = -no-undefined -avoid-version
 libfrontend_la_LIBADD = -ldl
 
 pkglib_LTLIBRARIES += \

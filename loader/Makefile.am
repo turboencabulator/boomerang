@@ -9,11 +9,16 @@ libmicroX86dis_la_SOURCES = \
 	microX86dis.c
 
 
+if DYNAMIC
 # Installing libloader.so in the same directory as the modules
 # has a side-effect of adding an RPATH to this directory for
 # everything that links against libloader.so.
 pkglib_LTLIBRARIES = \
 	libloader.la
+else
+noinst_LTLIBRARIES += \
+	libloader.la
+endif
 
 libloader_la_SOURCES = \
 	BinaryFileFactory.cpp \
@@ -21,9 +26,9 @@ libloader_la_SOURCES = \
 	$(top_srcdir)/include/BinaryFile.h \
 	SymTab.cpp \
 	SymTab.h
-libloader_la_LDFLAGS = -no-undefined -avoid-version
 
 if DYNAMIC
+libloader_la_LDFLAGS = -no-undefined -avoid-version
 libloader_la_LIBADD = -ldl
 
 pkglib_LTLIBRARIES += \
