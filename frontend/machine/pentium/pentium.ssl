@@ -884,59 +884,51 @@ IMUL.Ibod reg32, modrm, i8
 INT3
 	_;      # Not expected to be seen in correct code, but decode anyway
 
-COND1 := {
-	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
-	"%CF", "%CF | %ZF", "%CF | %ZF", "%CF", "~%cx", "%ZF",
-	"%ZF", "~(%NF ^ %OF) & ~%ZF", "~(%NF ^ %OF) & ~%ZF",
-	"~(%NF ^ %OF)", "~(%NF ^ %OF)", "%NF ^ %OF", "%NF ^ %OF",
-	"(%NF ^ %OF) | %ZF", "(%NF ^ %ZF) | %ZF", "~%CF", "~%ZF",
-	"~%ZF", "~%OF", "~%PF", "~%PF", "~%NF", "%OF", "%PF", "%PF", "%NF"
+JCOND := {
+	"~%CF & ~%ZF",         "%CF | %ZF",
+	"%CF | %ZF",           "~%CF & ~%ZF",
+	"%CF",                 "~%CF",
+	"~%CF",                "%CF",
+	"~(%NF ^ %OF) & ~%ZF", "(%NF ^ %ZF) | %ZF",
+	"(%NF ^ %OF) | %ZF",   "~(%NF ^ %OF) & ~%ZF",
+	"%NF ^ %OF",           "~(%NF ^ %OF)",
+	"~(%NF ^ %OF)",        "%NF ^ %OF",
+	"%ZF",                 "~%ZF",
+	"%ZF",                 "~%ZF",
+	"%CF",                 "~%CF",
+	"%OF",                 "~%OF",
+	"%NF",                 "~%NF",
+	"%PF",                 "~%PF",
+	"%PF",                 "~%PF",
+	"~%cx"
 };
-JMP32S := {
-	"JVA", "JVNBE", "JVAE", "JVNB", "JVB", "JVNAE", "JVBE",
-	"JVNA", "JVC", "JVCXZ", "JVE", "JVZ", "JVG", "JVNLE", "JVGE",
-	"JVNL", "JVL", "JVNGE", "JVLE", "JVNG", "JVNC", "JVNE", "JVNZ",
-	"JVNO", "JVNP", "JVPO", "JVNS", "JVO", "JVP", "JVPE", "JVS"
-};
-
-JMP32S[IDX] reloc32
-	*32* %pc := [COND1[IDX] = 1 ? reloc32 : %pc];
-
-COND2 := {
-	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
-	"%CF", "%CF | %ZF", "%CF | %ZF", "%CF", "~%cx", "%ZF",
-	"%ZF", "~(%NF ^ %OF) & ~%ZF", "~(%NF ^ %OF) & ~%ZF", "~(%NF ^ %OF)",
-	"~(%NF ^ %OF)", "%NF ^ %OF", "%NF ^ %OF", "(%NF ^ %OF) | %ZF",
-	"(%NF ^ %ZF) | %ZF", "~%CF", "~%ZF", "~%ZF", "~%OF", "~%PF",
-	"~%PF", "~%NF", "%OF", "%PF", "%PF", "%NF"
-};
-JMP16S := {
-	"JWA", "JWNBE", "JWAE", "JWNB", "JWB", "JWNAE", "JWBE",
-	"JWNA", "JWC", "JWCXZ", "JWE", "JWZ", "JWG", "JWNLE", "JWGE",
-	"JWNL", "JWL", "JWNGE", "JWLE", "JWNG", "JWNC", "JWNE", "JWNZ",
-	"JWNO", "JWNP", "JWPO", "JWNS", "JWO", "JWP", "JWPE", "JWS"
-};
-
-JMP16S[IDX] reloc16
-	*32* %pc := [COND2[IDX] = 1 ? reloc16 : %pc];
-
-COND3 := {
-	"~%CF & ~%ZF", "~%CF & ~%ZF", "~%CF", "~%CF", "%CF",
-	"%CF", "%CF | %ZF", "%CF | %ZF", "%CF", "~%cx", "%ZF",
-	"%ZF", "~(%NF ^ %OF) & ~%ZF", "~(%NF ^ %OF) & ~%ZF", "~(%NF ^ %OF)",
-	"~(%NF ^ %OF)", "%NF ^ %OF", "%NF ^ %OF", "(%NF ^ %OF) | %ZF",
-	"(%NF ^ %ZF) | %ZF", "~%CF", "~%ZF", "~%ZF", "~%OF", "~%PF",
-	"~%PF", "~%NF", "%OF", "%PF", "%PF", "%NF"
-};
-JMP8S := {
-	"JBA", "JBNBE", "JBAE", "JBNB", "JBB", "JBNAE", "JBBE", "JBNA",
-	"JBC", "JBCXZ", "JBE", "JBZ", "JBG", "JBNLE", "JBGE", "JBNL",
-	"JBL", "JBNGE", "JBLE", "JBNG", "JBNC", "JBNE", "JBNZ", "JBNO",
-	"JBNP", "JBPO", "JBNS", "JBO", "JBP", "JBPE", "JBS"
+JUMPS := {
+	"A",  "NA",
+	"BE", "NBE",
+	"B",  "NB",
+	"AE", "NAE",
+	"G",  "NG",
+	"LE", "NLE",
+	"L",  "NL",
+	"GE", "NGE",
+	"E",  "NE",
+	"Z",  "NZ",
+	"C",  "NC",
+	"O",  "NO",
+	"S",  "NS",
+	"P",  "NP",
+	"PE", "PO",
+	"CXZ"
 };
 
-JMP8S[IDX] reloc8
-	*32* %pc := [COND3[IDX] = 1 ? reloc8 : %pc];
+"JV"JUMPS[IDX] reloc32
+	*32* %pc := [JCOND[IDX] = 1 ? reloc32 : %pc];
+
+"JW"JUMPS[IDX] reloc16
+	*32* %pc := [JCOND[IDX] = 1 ? reloc16 : %pc];
+
+"JB"JUMPS[IDX] reloc8
+	*32* %pc := [JCOND[IDX] = 1 ? reloc8 : %pc];
 
 JMP.JB reloc8
 	*32* %pc := reloc8;
@@ -967,18 +959,20 @@ LEAVE
 	*32* %ebp := m[%esp]
 	*32* %esp := %esp + 4;
 
-COND4 := {
-	"%ecx ~= 0",
-	"%ecx ~= 0 & %ZF",
-	"%ecx ~= 0 & %ZF",
-	"%ecx ~= 0 & ~%ZF",
-	"%ecx ~= 0 & ~%ZF"
+LCOND := {
+	"%ecx ~= 0 & %ZF", "%ecx ~= 0 & ~%ZF",
+	"%ecx ~= 0 & %ZF", "%ecx ~= 0 & ~%ZF",
+	"%ecx ~= 0"
 };
-LOOPS := { "LOOP", "LOOPE", "LOOPZ", "LOOPNE", "LOOPNZ" };
+LOOPS := {
+	"LOOPE", "LOOPNE",
+	"LOOPZ", "LOOPNZ",
+	"LOOP"
+};
 
 LOOPS[IDX] reloc
 	*32* %ecx := %ecx - 1
-	*32* %pc := [COND4[IDX] ? reloc : %pc];
+	*32* %pc := [LCOND[IDX] ? reloc : %pc];
 
 MOV.EB.IB modrm, i8
 	*8* modrm := i8;
