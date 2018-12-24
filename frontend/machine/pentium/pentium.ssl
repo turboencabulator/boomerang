@@ -360,7 +360,7 @@ SUB.IODB modrm, i8
 
 ARITH[IDX]^"MRB" modrm, reg8
 	*8* tmpb := modrm
-	*8* modrm := tmp1 ARITH_OP[IDX] reg8;
+	*8* modrm := modrm ARITH_OP[IDX] reg8;
 ADD.MRB modrm, reg8
 	ADDFLAGS8(tmpb, reg8, modrm);
 SUB.MRB modrm, reg8
@@ -368,7 +368,7 @@ SUB.MRB modrm, reg8
 
 ARITH[IDX]^"MROW" modrm, reg16
 	*16* tmph := modrm
-	*16* modrm := tmp1 ARITH_OP[IDX] reg16;
+	*16* modrm := modrm ARITH_OP[IDX] reg16;
 ADD.MROW modrm, reg16
 	ADDFLAGS16(tmph, reg16, modrm);
 SUB.MROW modrm, reg16
@@ -590,7 +590,7 @@ SBB.IODB reg32, i8
 
 ARITH_C[IDX]^"MRB" modrm, reg8
 	*8* tmp1 := modrm
-	*8* modrm := tmp1 ARITH_OP[IDX] reg8 ARITH_OP[IDX] %CF;
+	*8* modrm := modrm ARITH_OP[IDX] reg8 ARITH_OP[IDX] %CF;
 ADC.MRB modrm, reg8
 	ADDFLAGS8(tmp1, reg8, modrm);
 SBB.MRB modrm, reg8
@@ -598,7 +598,7 @@ SBB.MRB modrm, reg8
 
 ARITH_C[IDX]^"MROW" modrm, reg16
 	*16* tmp1 := modrm{16}
-	*16* modrm := tmp1 ARITH_OP[IDX] reg16 ARITH_OP[IDX] %CF;
+	*16* modrm := modrm ARITH_OP[IDX] reg16 ARITH_OP[IDX] %CF;
 ADC.MROW modrm, reg16
 	ADDFLAGS16(tmp1, reg16, modrm{16});
 SBB.MROW modrm, reg16
@@ -760,7 +760,7 @@ INC_DEC[IDX].EVOD modrm
 INC_DEC[IDX].OW reg16
 #	*16* tmph := reg16
 	*16* reg16 := reg16 ARITH_OP[IDX] 1
-	LOGICALFLAGS16(tmph, 1, reg16);
+	LOGICALFLAGS16(reg16);
 #INC.OW reg16
 #	ADDFLAGS16(tmph, 1, reg16);
 #DEC.OW reg16
@@ -1140,7 +1140,7 @@ ROLS := { "RCL", "ROL" };
 RORS := { "RCR", "ROR" };
 ROT[IDX].B.EV.1 modrm
 	*8* tmpb1 := modrm{8}
-	*8* tmpb2 := tmpb ROT_OP[IDX] 1
+	*8* tmpb2 := tmpb1 ROT_OP[IDX] 1
 	*8* modrm := tmpb2;
 ROLS[IDX].B.EV.1 modrm
 	ROLFLAGS8(tmpb2, tmpb1, 1);
@@ -1307,7 +1307,7 @@ SHIFT[IDX].B.EV.1OW modrm
 	*16* tmph := modrm{16}
 	*16* modrm := modrm{16} SHIFT_OP[IDX] 1;
 SHLSAL.B.EV.1OW modrm
-	SALFLAGS16(modrm{16}, modrm{16}, 1);
+	SALFLAGS16(modrm{16}, tmph, 1);
 SHR.B.EV.1OW modrm
 	SHRFLAGS16(modrm{16}, tmph, 1);
 SAR.B.EV.1OW modrm
