@@ -245,7 +245,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		 */
 		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
-		SHOW_ASM("ret_");
+		SHOW_ASM("ret");
 		DEBUG_STMTS
 
 	| retl() =>
@@ -254,7 +254,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		 */
 		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
-		SHOW_ASM("retl_");
+		SHOW_ASM("retl");
 		DEBUG_STMTS
 
 	| branch^",a"(tgt) [name] =>
@@ -409,7 +409,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		jump->setIsComputed();
 		result.rtl = new RTL(pc, jump);
 		result.type = DD;
-		SHOW_ASM("JMPL ");
+		SHOW_ASM("JMPL");
 		DEBUG_STMTS
 
 

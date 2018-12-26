@@ -1428,7 +1428,7 @@ pc
                                         
 #line 1072 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
+		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
 
 
 #line 1435 "pentiumdecoder.cpp"
@@ -7646,7 +7646,7 @@ pc
                                 
 #line 1063 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
 
 
 #line 7653 "pentiumdecoder.cpp"
@@ -7686,7 +7686,7 @@ pc
                           
 #line 1063 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
 
 
 #line 7693 "pentiumdecoder.cpp"
@@ -8235,7 +8235,7 @@ pc
                                 
 #line 1740 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "FADD.St.STi", DIS_IDX);
+		result.rtl = instantiate(pc, "FADD.ST.STi", DIS_IDX);
 
 
 #line 8242 "pentiumdecoder.cpp"
@@ -16409,7 +16409,7 @@ pc
                                                       
 #line 1075 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
+		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
 
 
 #line 16416 "pentiumdecoder.cpp"
@@ -18930,7 +18930,7 @@ pc
                                                       
 #line 942 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
 #line 18937 "pentiumdecoder.cpp"
@@ -22765,7 +22765,7 @@ pc
                                               
 #line 1066 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
 
 
 #line 22772 "pentiumdecoder.cpp"
@@ -22811,7 +22811,7 @@ pc
                                         
 #line 1066 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
 
 
 #line 22818 "pentiumdecoder.cpp"
@@ -24461,7 +24461,7 @@ pc
                                               
 #line 721 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
+		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
 
 
 #line 24468 "pentiumdecoder.cpp"
@@ -36398,7 +36398,7 @@ pc
       
 #line 1075 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
+		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
 
 
 #line 36405 "pentiumdecoder.cpp"
@@ -36415,7 +36415,7 @@ pc
       
 #line 1075 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
+		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
 
 
 #line 36422 "pentiumdecoder.cpp"
@@ -36432,7 +36432,7 @@ pc
       
 #line 1075 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
+		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
 
 
 #line 36439 "pentiumdecoder.cpp"
@@ -36449,7 +36449,7 @@ pc
       
 #line 1075 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
+		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
 
 
 #line 36456 "pentiumdecoder.cpp"
@@ -37814,7 +37814,7 @@ pc
       
 #line 942 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
 #line 37821 "pentiumdecoder.cpp"
@@ -37831,7 +37831,7 @@ pc
       
 #line 942 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
 #line 37838 "pentiumdecoder.cpp"
@@ -37848,7 +37848,7 @@ pc
       
 #line 942 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
 #line 37855 "pentiumdecoder.cpp"
@@ -37865,7 +37865,7 @@ pc
       
 #line 942 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 
 #line 37872 "pentiumdecoder.cpp"
@@ -40274,7 +40274,7 @@ pc
       
 #line 1066 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
 
 
 #line 40281 "pentiumdecoder.cpp"
@@ -40291,7 +40291,7 @@ pc
       
 #line 1066 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
 
 
 #line 40298 "pentiumdecoder.cpp"
@@ -40308,7 +40308,7 @@ pc
       
 #line 1066 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
 
 
 #line 40315 "pentiumdecoder.cpp"
@@ -41204,7 +41204,7 @@ pc
       
 #line 721 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
+		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
 
 
 #line 41211 "pentiumdecoder.cpp"
@@ -41220,7 +41220,7 @@ pc
       
 #line 721 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
+		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
 
 
 #line 41227 "pentiumdecoder.cpp"
@@ -41236,7 +41236,7 @@ pc
       
 #line 721 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
+		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
 
 
 #line 41243 "pentiumdecoder.cpp"
@@ -41252,7 +41252,7 @@ pc
       
 #line 721 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
+		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
 
 
 #line 41259 "pentiumdecoder.cpp"
@@ -49510,7 +49510,7 @@ pc
       
 #line 1072 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
+		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
 
 
 #line 49517 "pentiumdecoder.cpp"
@@ -49527,7 +49527,7 @@ pc
       
 #line 1072 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
+		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
 
 
 #line 49534 "pentiumdecoder.cpp"
@@ -49544,7 +49544,7 @@ pc
       
 #line 1072 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
+		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
 
 
 #line 49551 "pentiumdecoder.cpp"
@@ -49561,7 +49561,7 @@ pc
       
 #line 1072 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
+		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
 
 
 #line 49568 "pentiumdecoder.cpp"
@@ -53547,7 +53547,7 @@ pc
       
 #line 1063 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
 
 
 #line 53554 "pentiumdecoder.cpp"
@@ -53564,7 +53564,7 @@ pc
       
 #line 1063 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
 
 
 #line 53571 "pentiumdecoder.cpp"
@@ -53581,7 +53581,7 @@ pc
       
 #line 1063 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
 
 
 #line 53588 "pentiumdecoder.cpp"

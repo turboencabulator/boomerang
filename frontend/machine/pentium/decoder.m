@@ -719,7 +719,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
 
 	| RORB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "ORB.Ev.1owR", DIS_EADDR16);
+		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
 
 	| ROLB.Ev.CLod(Eaddr) =>
 		result.rtl = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
@@ -940,7 +940,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
 
 	| MOVSX.Gv.Ebow(r16, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
 
 	| MOVSvod() =>
 		result.rtl = instantiate(pc, "MOVSvod");
@@ -1061,19 +1061,19 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, "LEAVE");
 
 	| LEAod(reg, Mem) =>
-		result.rtl = instantiate(pc, "LEA.od", DIS_REG32, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
 
 	| LEAow(reg, Mem) =>
-		result.rtl = instantiate(pc, "LEA.ow", DIS_REG16, DIS_MEM);
+		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
 
 	| LDS(reg, Mem) =>
 		result.rtl = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
 
 	| LARod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "LAR.od", DIS_REG32, DIS_EADDR32);
+		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
 
 	| LARow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "LAR.ow", DIS_REG16, DIS_EADDR16);
+		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
 
 	| LAHF() =>
 		result.rtl = instantiate(pc, "LAHF");
@@ -1738,7 +1738,7 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, "FADD.R64", DIS_MEM64);
 
 	| FADD.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FADD.St.STi", DIS_IDX);
+		result.rtl = instantiate(pc, "FADD.ST.STi", DIS_IDX);
 
 	| FADD.STi.ST(idx) =>
 		result.rtl = instantiate(pc, "FADD.STi.ST", DIS_IDX);

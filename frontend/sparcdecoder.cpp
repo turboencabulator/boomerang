@@ -1299,7 +1299,7 @@ pc
 		 */
 		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
-		SHOW_ASM("retl_");
+		SHOW_ASM("retl");
 		DEBUG_STMTS
 
 
@@ -1323,7 +1323,7 @@ pc
 		 */
 		result.rtl = new RTL(pc, new ReturnStatement);
 		result.type = DD;
-		SHOW_ASM("ret_");
+		SHOW_ASM("ret");
 		DEBUG_STMTS
 
 
@@ -1968,7 +1968,7 @@ pc
 		jump->setIsComputed();
 		result.rtl = new RTL(pc, jump);
 		result.type = DD;
-		SHOW_ASM("JMPL ");
+		SHOW_ASM("JMPL");
 		DEBUG_STMTS
 
 
