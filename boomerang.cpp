@@ -43,7 +43,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <csignal>
-#include <ctime>
 
 Boomerang *Boomerang::boomerang = nullptr;
 
@@ -1091,8 +1090,6 @@ int
 Boomerang::decompile(const char *fname, const char *pname)
 {
 	Prog *prog = nullptr;
-	time_t start;
-	time(&start);
 
 	if (minsToStopAfter) {
 		std::cout << "stopping decompile after " << minsToStopAfter << " minutes.\n";
@@ -1152,18 +1149,6 @@ Boomerang::decompile(const char *fname, const char *pname)
 	delete prog;
 	if (Boomerang::get()->ofsIndCallReport)
 		ofsIndCallReport->close();
-
-	time_t end;
-	time(&end);
-	int hours = (int)((end - start) / 60 / 60);
-	int mins = (int)((end - start) / 60 - hours * 60);
-	int secs = (int)((end - start) - hours * 60 * 60 - mins * 60);
-	std::cout << "completed in " << std::dec;
-	if (hours)
-		std::cout << hours << " hours ";
-	if (hours || mins)
-		std::cout << mins << " mins ";
-	std::cout << secs << " sec" << (secs == 1 ? "" : "s") << ".\n";
 
 	return 0;
 }
