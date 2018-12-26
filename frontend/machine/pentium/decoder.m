@@ -121,12 +121,12 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	ADDRESS nextPC = NO_ADDRESS;
 	match [nextPC] pc to
 
-	| CALL.Evod(Eaddr) =>
+	| CALL.Evod(Eaddr) [name] =>
 		/*
 		 * Register call
 		 */
 		// Mike: there should probably be a HLNwayCall class for this!
-		result.rtl = instantiate(pc, "CALL.Evod", DIS_EADDR32);
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 		auto newCall = new CallStatement(DIS_EADDR32);
 		// Record the fact that this is a computed call
 		newCall->setIsComputed();
@@ -311,17 +311,17 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| XLATB() =>
 		result.rtl = instantiate(pc, "XLATB");
 
-	| XCHG.Ev.Gvod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
+	| XCHG.Ev.Gvod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| XCHG.Ev.Gvow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
+	| XCHG.Ev.Gvow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| XCHG.Eb.Gb(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
+	| XCHG.Eb.Gb(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
-	| NOP() =>
-		result.rtl = instantiate(pc, "NOP");
+	| NOP() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| SEG.CS() =>  // For now, treat seg.cs as a 1 byte NOP
 		result.rtl = instantiate(pc, "NOP");
@@ -341,157 +341,157 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| SEG.SS() =>  // For now, treat seg.ss as a 1 byte NOP
 		result.rtl = instantiate(pc, "NOP");
 
-	| XCHGeAXod(r32) =>
-		result.rtl = instantiate(pc, "XCHGeAXod", DIS_R32);
+	| XCHGeAXod(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| XCHGeAXow(r32) =>
-		result.rtl = instantiate(pc, "XCHGeAXow", DIS_R32);
+	| XCHGeAXow(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| XADD.Ev.Gvod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XADD.Ev.Gvod", DIS_EADDR32, DIS_REG32);
+	| XADD.Ev.Gvod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| XADD.Ev.Gvow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XADD.Ev.Gvow", DIS_EADDR16, DIS_REG16);
+	| XADD.Ev.Gvow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| XADD.Eb.Gb(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XADD.Eb.Gb", DIS_EADDR8, DIS_REG8);
+	| XADD.Eb.Gb(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
-	| WRMSR() =>
-		result.rtl = instantiate(pc, "WRMSR");
+	| WRMSR() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| WBINVD() =>
-		result.rtl = instantiate(pc, "WBINVD");
+	| WBINVD() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| WAIT() =>
-		result.rtl = instantiate(pc, "WAIT");
+	| WAIT() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| VERW(Eaddr) =>
-		result.rtl = instantiate(pc, "VERW", DIS_EADDR32);
+	| VERW(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| VERR(Eaddr) =>
-		result.rtl = instantiate(pc, "VERR", DIS_EADDR32);
+	| VERR(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| TEST.Ev.Gvod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "TEST.Ev.Gvod", DIS_EADDR32, DIS_REG32);
+	| TEST.Ev.Gvod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| TEST.Ev.Gvow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "TEST.Ev.Gvow", DIS_EADDR16, DIS_REG16);
+	| TEST.Ev.Gvow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| TEST.Eb.Gb(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "TEST.Eb.Gb", DIS_EADDR8, DIS_REG8);
+	| TEST.Eb.Gb(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
-	| TEST.Ed.Id(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "TEST.Ed.Id", DIS_EADDR32, DIS_I32);
+	| TEST.Ed.Id(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| TEST.Ew.Iw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "TEST.Ew.Iw", DIS_EADDR16, DIS_I16);
+	| TEST.Ew.Iw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| TEST.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "TEST.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| TEST.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| TEST.eAX.Ivod(i32) =>
-		result.rtl = instantiate(pc, "TEST.eAX.Ivod", DIS_I32);
+	| TEST.eAX.Ivod(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| TEST.eAX.Ivow(i16) =>
-		result.rtl = instantiate(pc, "TEST.eAX.Ivow", DIS_I16);
+	| TEST.eAX.Ivow(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| TEST.AL.Ib(i8) =>
-		result.rtl = instantiate(pc, "TEST.AL.Ib", DIS_I8);
+	| TEST.AL.Ib(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| STR(Mem) =>
-		result.rtl = instantiate(pc, "STR", DIS_MEM);
+	| STR(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| STOSvod() =>
-		result.rtl = instantiate(pc, "STOSvod");
+	| STOSvod() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| STOSvow() =>
-		result.rtl = instantiate(pc, "STOSvow");
+	| STOSvow() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| STOSB() =>
-		result.rtl = instantiate(pc, "STOSB");
+	| STOSB() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| STI() =>
-		result.rtl = instantiate(pc, "STI");
+	| STI() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| STD() =>
-		result.rtl = instantiate(pc, "STD");
+	| STD() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| STC() =>
-		result.rtl = instantiate(pc, "STC");
+	| STC() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SMSW(Eaddr) =>
-		result.rtl = instantiate(pc, "SMSW", DIS_EADDR32);
+	| SMSW(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SLDT(Eaddr) =>
-		result.rtl = instantiate(pc, "SLDT", DIS_EADDR32);
+	| SLDT(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SHLD.CLod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SHLD.CLod", DIS_EADDR32, DIS_REG32);
+	| SHLD.CLod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| SHLD.CLow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SHLD.CLow", DIS_EADDR16, DIS_REG16);
+	| SHLD.CLow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| SHRD.CLod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SHRD.CLod", DIS_EADDR32, DIS_REG32);
+	| SHRD.CLod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| SHRD.CLow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SHRD.CLow", DIS_EADDR16, DIS_REG16);
+	| SHRD.CLow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| SHLD.Ibod(Eaddr, reg, count) =>
-		result.rtl = instantiate(pc, "SHLD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
+	| SHLD.Ibod(Eaddr, reg, count) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
-	| SHLD.Ibow(Eaddr, reg, count) =>
-		result.rtl = instantiate(pc, "SHLD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
+	| SHLD.Ibow(Eaddr, reg, count) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
-	| SHRD.Ibod(Eaddr, reg, count) =>
-		result.rtl = instantiate(pc, "SHRD.Ibod", DIS_EADDR32, DIS_REG32, DIS_COUNT);
+	| SHRD.Ibod(Eaddr, reg, count) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32, DIS_COUNT);
 
-	| SHRD.Ibow(Eaddr, reg, count) =>
-		result.rtl = instantiate(pc, "SHRD.Ibow", DIS_EADDR16, DIS_REG16, DIS_COUNT);
+	| SHRD.Ibow(Eaddr, reg, count) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16, DIS_COUNT);
 
-	| SIDT(Mem) =>
-		result.rtl = instantiate(pc, "SIDT", DIS_MEM);
+	| SIDT(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| SGDT(Mem) =>
-		result.rtl = instantiate(pc, "SGDT", DIS_MEM);
+	| SGDT(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
 	// Sets are now in the high level instructions
-	| SCASvod() =>
-		result.rtl = instantiate(pc, "SCASvod");
+	| SCASvod() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SCASvow() =>
-		result.rtl = instantiate(pc, "SCASvow");
+	| SCASvow() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SCASB() =>
-		result.rtl = instantiate(pc, "SCASB");
+	| SCASB() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SAHF() =>
-		result.rtl = instantiate(pc, "SAHF");
+	| SAHF() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| RSM() =>
-		result.rtl = instantiate(pc, "RSM");
+	| RSM() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| RET.far.Iw(i16) =>
-		result.rtl = instantiate(pc, "RET.far.Iw", DIS_I16);
+	| RET.far.Iw(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 		result.rtl->appendStmt(new ReturnStatement);
 
-	| RET.Iw(i16) =>
-		result.rtl = instantiate(pc, "RET.Iw", DIS_I16);
+	| RET.Iw(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 		result.rtl->appendStmt(new ReturnStatement);
 
-	| RET.far() =>
-		result.rtl = instantiate(pc, "RET.far");
+	| RET.far() [name] =>
+		result.rtl = instantiate(pc, name);
 		result.rtl->appendStmt(new ReturnStatement);
 
-	| RET() =>
-		result.rtl = instantiate(pc, "RET");
+	| RET() [name] =>
+		result.rtl = instantiate(pc, name);
 		result.rtl->appendStmt(new ReturnStatement);
 
-//	| REPNE() =>
-//		result.rtl = instantiate(pc, "REPNE");
+//	| REPNE() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| REP() =>
-//		result.rtl = instantiate(pc, "REP");
+//	| REP() [name] =>
+//		result.rtl = instantiate(pc, name);
 
 	| REP.CMPSB() [name] =>
 		result.rtl = instantiate(pc, name);
@@ -583,373 +583,373 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| REPNE.STOSvod() [name] =>
 		result.rtl = instantiate(pc, name);
 
-	| RDMSR() =>
-		result.rtl = instantiate(pc, "RDMSR");
+	| RDMSR() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| SARB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SARB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| SARB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| SARB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SARB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| SARB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| SHRB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SHRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| SHRB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| SHRB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SHRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| SHRB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| SHLSALB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SHLSALB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| SHLSALB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| SHLSALB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SHLSALB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| SHLSALB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| RCRB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RCRB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| RCRB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| RCRB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RCRB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| RCRB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| RCLB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RCLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| RCLB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| RCLB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RCLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| RCLB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| RORB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RORB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| RORB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| RORB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RORB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| RORB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| ROLB.Ev.Ibod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ROLB.Ev.Ibod", DIS_EADDR32, DIS_I8);
+	| ROLB.Ev.Ibod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| ROLB.Ev.Ibow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ROLB.Ev.Ibow", DIS_EADDR16, DIS_I8);
+	| ROLB.Ev.Ibow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| SARB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SARB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| SARB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| SHRB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SHRB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| SHRB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| SHLSALB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SHLSALB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| SHLSALB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| RCRB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RCRB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| RCRB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| RCLB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RCLB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| RCLB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| RORB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "RORB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| RORB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| ROLB.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ROLB.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| ROLB.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| SARB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "SARB.Ev.CLod", DIS_EADDR32);
+	| SARB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SARB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "SARB.Ev.CLow", DIS_EADDR16);
+	| SARB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SARB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "SARB.Ev.1od", DIS_EADDR32);
+	| SARB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SARB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "SARB.Ev.1ow", DIS_EADDR16);
+	| SARB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SHRB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "SHRB.Ev.CLod", DIS_EADDR32);
+	| SHRB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SHRB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "SHRB.Ev.CLow", DIS_EADDR16);
+	| SHRB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SHRB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "SHRB.Ev.1od", DIS_EADDR32);
+	| SHRB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SHRB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "SHRB.Ev.1ow", DIS_EADDR16);
+	| SHRB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SHLSALB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "SHLSALB.Ev.CLod", DIS_EADDR32);
+	| SHLSALB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SHLSALB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "SHLSALB.Ev.CLow", DIS_EADDR16);
+	| SHLSALB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SHLSALB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "SHLSALB.Ev.1od", DIS_EADDR32);
+	| SHLSALB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SHLSALB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "SHLSALB.Ev.1ow", DIS_EADDR16);
+	| SHLSALB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| RCRB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "RCRB.Ev.CLod", DIS_EADDR32);
+	| RCRB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| RCRB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "RCRB.Ev.CLow", DIS_EADDR16);
+	| RCRB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| RCRB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "RCRB.Ev.1od", DIS_EADDR32);
+	| RCRB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| RCRB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "RCRB.Ev.1ow", DIS_EADDR16);
+	| RCRB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| RCLB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "RCLB.Ev.CLod", DIS_EADDR32);
+	| RCLB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| RCLB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "RCLB.Ev.CLow", DIS_EADDR16);
+	| RCLB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| RCLB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "RCLB.Ev.1od", DIS_EADDR32);
+	| RCLB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| RCLB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "RCLB.Ev.1ow", DIS_EADDR16);
+	| RCLB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| RORB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "RORB.Ev.CLod", DIS_EADDR32);
+	| RORB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| RORB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "RORB.Ev.CLow", DIS_EADDR16);
+	| RORB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| RORB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "RORB.Ev.1od", DIS_EADDR32);
+	| RORB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| RORB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "RORB.Ev.1ow", DIS_EADDR16);
+	| RORB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| ROLB.Ev.CLod(Eaddr) =>
-		result.rtl = instantiate(pc, "ROLB.Ev.CLod", DIS_EADDR32);
+	| ROLB.Ev.CLod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| ROLB.Ev.CLow(Eaddr) =>
-		result.rtl = instantiate(pc, "ROLB.Ev.CLow", DIS_EADDR16);
+	| ROLB.Ev.CLow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| ROLB.Ev.1od(Eaddr) =>
-		result.rtl = instantiate(pc, "ROLB.Ev.1od", DIS_EADDR32);
+	| ROLB.Ev.1od(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| ROLB.Ev.1ow(Eaddr) =>
-		result.rtl = instantiate(pc, "ROLB.Ev.1ow", DIS_EADDR16);
+	| ROLB.Ev.1ow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SARB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "SARB.Eb.CL", DIS_EADDR32);
+	| SARB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| SARB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "SARB.Eb.1", DIS_EADDR16);
+	| SARB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| SHRB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "SHRB.Eb.CL", DIS_EADDR8);
+	| SHRB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| SHRB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "SHRB.Eb.1", DIS_EADDR8);
+	| SHRB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| SHLSALB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "SHLSALB.Eb.CL", DIS_EADDR8);
+	| SHLSALB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| SHLSALB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "SHLSALB.Eb.1", DIS_EADDR8);
+	| SHLSALB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| RCRB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "RCRB.Eb.CL", DIS_EADDR8);
+	| RCRB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| RCRB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "RCRB.Eb.1", DIS_EADDR8);
+	| RCRB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| RCLB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "RCLB.Eb.CL", DIS_EADDR8);
+	| RCLB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| RCLB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "RCLB.Eb.1", DIS_EADDR8);
+	| RCLB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| RORB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "RORB.Eb.CL", DIS_EADDR8);
+	| RORB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| RORB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "RORB.Eb.1", DIS_EADDR8);
+	| RORB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| ROLB.Eb.CL(Eaddr) =>
-		result.rtl = instantiate(pc, "ROLB.Eb.CL", DIS_EADDR8);
+	| ROLB.Eb.CL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| ROLB.Eb.1(Eaddr) =>
-		result.rtl = instantiate(pc, "ROLB.Eb.1", DIS_EADDR8);
+	| ROLB.Eb.1(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
 	// There is no SSL for these, so don't call instantiate, it will only
 	// cause an assert failure. Also, may as well treat these as invalid instr
-//	| PUSHFod() =>
-//		result.rtl = instantiate(pc, "PUSHFod");
+//	| PUSHFod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| PUSHFow() =>
-//		result.rtl = instantiate(pc, "PUSHFow");
+//	| PUSHFow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| PUSHAod() =>
-//		result.rtl = instantiate(pc, "PUSHAod");
+//	| PUSHAod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| PUSHAow() =>
-//		result.rtl = instantiate(pc, "PUSHAow");
+//	| PUSHAow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-	| PUSH.GS() =>
-		result.rtl = instantiate(pc, "PUSH.GS");
+	| PUSH.GS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| PUSH.FS() =>
-		result.rtl = instantiate(pc, "PUSH.FS");
+	| PUSH.FS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| PUSH.ES() =>
-		result.rtl = instantiate(pc, "PUSH.ES");
+	| PUSH.ES() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| PUSH.DS() =>
-		result.rtl = instantiate(pc, "PUSH.DS");
+	| PUSH.DS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| PUSH.SS() =>
-		result.rtl = instantiate(pc, "PUSH.SS");
+	| PUSH.SS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| PUSH.CS() =>
-		result.rtl = instantiate(pc, "PUSH.CS");
+	| PUSH.CS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| PUSH.Ivod(i32) =>
-		result.rtl = instantiate(pc, "PUSH.Ivod", DIS_I32);
+	| PUSH.Ivod(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| PUSH.Ivow(i16) =>
-		result.rtl = instantiate(pc, "PUSH.Ivow", DIS_I16);
+	| PUSH.Ivow(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| PUSH.Ixob(i8) =>
-		result.rtl = instantiate(pc, "PUSH.Ixob", DIS_I8);
+	| PUSH.Ixob(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| PUSH.Ixow(i8) =>
-		result.rtl = instantiate(pc, "PUSH.Ixow", DIS_I8);
+	| PUSH.Ixow(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| PUSHod(r32) =>
-		result.rtl = instantiate(pc, "PUSHod", DIS_R32);
+	| PUSHod(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| PUSHow(r32) =>
-		result.rtl = instantiate(pc, "PUSHow", DIS_R32);  // Check!
+	| PUSHow(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);  // Check!
 
-	| PUSH.Evod(Eaddr) =>
-		result.rtl = instantiate(pc, "PUSH.Evod", DIS_EADDR32);
+	| PUSH.Evod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| PUSH.Evow(Eaddr) =>
-		result.rtl = instantiate(pc, "PUSH.Evow", DIS_EADDR16);
+	| PUSH.Evow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-//	| POPFod() =>
-//		result.rtl = instantiate(pc, "POPFod");
+//	| POPFod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| POPFow() =>
-//		result.rtl = instantiate(pc, "POPFow");
+//	| POPFow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| POPAod() =>
-//		result.rtl = instantiate(pc, "POPAod");
+//	| POPAod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| POPAow() =>
-//		result.rtl = instantiate(pc, "POPAow");
+//	| POPAow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-	| POP.GS() =>
-		result.rtl = instantiate(pc, "POP.GS");
+	| POP.GS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| POP.FS() =>
-		result.rtl = instantiate(pc, "POP.FS");
+	| POP.FS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| POP.DS() =>
-		result.rtl = instantiate(pc, "POP.DS");
+	| POP.DS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| POP.SS() =>
-		result.rtl = instantiate(pc, "POP.SS");
+	| POP.SS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| POP.ES() =>
-		result.rtl = instantiate(pc, "POP.ES");
+	| POP.ES() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| POPod(r32) =>
-		result.rtl = instantiate(pc, "POPod", DIS_R32);
+	| POPod(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| POPow(r32) =>
-		result.rtl = instantiate(pc, "POPow", DIS_R32);  // Check!
+	| POPow(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);  // Check!
 
-	| POP.Evod(Eaddr) =>
-		result.rtl = instantiate(pc, "POP.Evod", DIS_EADDR32);
+	| POP.Evod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| POP.Evow(Eaddr) =>
-		result.rtl = instantiate(pc, "POP.Evow", DIS_EADDR16);
+	| POP.Evow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-//	| OUTSvod() =>
-//		result.rtl = instantiate(pc, "OUTSvod");
+//	| OUTSvod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| OUTSvow() =>
-//		result.rtl = instantiate(pc, "OUTSvow");
+//	| OUTSvow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| OUTSB() =>
-//		result.rtl = instantiate(pc, "OUTSB");
+//	| OUTSB() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| OUT.DX.eAXod() =>
-//		result.rtl = instantiate(pc, "OUT.DX.eAXod");
+//	| OUT.DX.eAXod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| OUT.DX.eAXow() =>
-//		result.rtl = instantiate(pc, "OUT.DX.eAXow");
+//	| OUT.DX.eAXow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| OUT.DX.AL() =>
-//		result.rtl = instantiate(pc, "OUT.DX.AL");
+//	| OUT.DX.AL() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| OUT.Ib.eAXod(i8) =>
-//		result.rtl = instantiate(pc, "OUT.Ib.eAXod", DIS_I8);
+//	| OUT.Ib.eAXod(i8) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_I8);
 
-//	| OUT.Ib.eAXow(i8) =>
-//		result.rtl = instantiate(pc, "OUT.Ib.eAXow", DIS_I8);
+//	| OUT.Ib.eAXow(i8) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_I8);
 
-//	| OUT.Ib.AL(i8) =>
-//		result.rtl = instantiate(pc, "OUT.Ib.AL", DIS_I8);
+//	| OUT.Ib.AL(i8) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| NOTod(Eaddr) =>
-		result.rtl = instantiate(pc, "NOTod", DIS_EADDR32);
+	| NOTod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| NOTow(Eaddr) =>
-		result.rtl = instantiate(pc, "NOTow", DIS_EADDR16);
+	| NOTow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| NOTb(Eaddr) =>
-		result.rtl = instantiate(pc, "NOTb", DIS_EADDR8);
+	| NOTb(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| NEGod(Eaddr) =>
-		result.rtl = instantiate(pc, "NEGod", DIS_EADDR32);
+	| NEGod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| NEGow(Eaddr) =>
-		result.rtl = instantiate(pc, "NEGow", DIS_EADDR16);
+	| NEGow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| NEGb(Eaddr) =>
-		result.rtl = instantiate(pc, "NEGb", DIS_EADDR8);
+	| NEGb(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| MUL.AXod(Eaddr) =>
-		result.rtl = instantiate(pc, "MUL.AXod", DIS_EADDR32);
+	| MUL.AXod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| MUL.AXow(Eaddr) =>
-		result.rtl = instantiate(pc, "MUL.AXow", DIS_EADDR16);
+	| MUL.AXow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| MUL.AL(Eaddr) =>
-		result.rtl = instantiate(pc, "MUL.AL", DIS_EADDR8);
+	| MUL.AL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| MOVZX.Gv.Ew(r32, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ew", DIS_R32, DIS_EADDR16);
+	| MOVZX.Gv.Ew(r32, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
-	| MOVZX.Gv.Ebod(r32, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebod", DIS_R32, DIS_EADDR8);
+	| MOVZX.Gv.Ebod(r32, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
-	| MOVZX.Gv.Ebow(r16, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVZX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+	| MOVZX.Gv.Ebow(r16, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
-	| MOVSX.Gv.Ew(r32, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVSX.Gv.Ew", DIS_R32, DIS_EADDR16);
+	| MOVSX.Gv.Ew(r32, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR16);
 
-	| MOVSX.Gv.Ebod(r32, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVSX.Gv.Ebod", DIS_R32, DIS_EADDR8);
+	| MOVSX.Gv.Ebod(r32, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32, DIS_EADDR8);
 
-	| MOVSX.Gv.Ebow(r16, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVSX.Gv.Ebow", DIS_R16, DIS_EADDR8);
+	| MOVSX.Gv.Ebow(r16, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R16, DIS_EADDR8);
 
-	| MOVSvod() =>
-		result.rtl = instantiate(pc, "MOVSvod");
+	| MOVSvod() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| MOVSvow() =>
-		result.rtl = instantiate(pc, "MOVSvow");
+	| MOVSvow() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| MOVSB() =>
-		result.rtl = instantiate(pc, "MOVSB");
+	| MOVSB() [name] =>
+		result.rtl = instantiate(pc, name);
 
 //	| MOV.Rd.Dd(_, _) =>
 //	//| MOV.Rd.Dd(reg, dr) =>
@@ -967,302 +967,302 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 //	//| MOV.Cd.Rd(cr, reg) =>
 //		result.rtl = instantiate(pc, "UNIMP");
 
-	| MOV.Ed.Ivod(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "MOV.Ed.Ivod", DIS_EADDR32, DIS_I32);
+	| MOV.Ed.Ivod(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| MOV.Ew.Ivow(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "MOV.Ew.Ivow", DIS_EADDR16, DIS_I16);
+	| MOV.Ew.Ivow(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| MOV.Eb.Ib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "MOV.Eb.Ib", DIS_EADDR8, DIS_I8);
+	| MOV.Eb.Ib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| MOVid(r32, i32) =>
-		result.rtl = instantiate(pc, "MOVid", DIS_R32, DIS_I32);
+	| MOVid(r32, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32, DIS_I32);
 
-	| MOViw(r16, i16) =>
-		result.rtl = instantiate(pc, "MOViw", DIS_R16, DIS_I16);  // Check!
+	| MOViw(r16, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R16, DIS_I16);  // Check!
 
-	| MOVib(r8, i8) =>
-		result.rtl = instantiate(pc, "MOVib", DIS_R8, DIS_I8);
+	| MOVib(r8, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_I8);
 
-	| MOV.Ov.eAXod(off) =>
-		result.rtl = instantiate(pc, "MOV.Ov.eAXod", DIS_OFF);
+	| MOV.Ov.eAXod(off) [name] =>
+		result.rtl = instantiate(pc, name, DIS_OFF);
 
-	| MOV.Ov.eAXow(off) =>
-		result.rtl = instantiate(pc, "MOV.Ov.eAXow", DIS_OFF);
+	| MOV.Ov.eAXow(off) [name] =>
+		result.rtl = instantiate(pc, name, DIS_OFF);
 
-	| MOV.Ob.AL(off) =>
-		result.rtl = instantiate(pc, "MOV.Ob.AL", DIS_OFF);
+	| MOV.Ob.AL(off) [name] =>
+		result.rtl = instantiate(pc, name, DIS_OFF);
 
-	| MOV.eAX.Ovod(off) =>
-		result.rtl = instantiate(pc, "MOV.eAX.Ovod", DIS_OFF);
+	| MOV.eAX.Ovod(off) [name] =>
+		result.rtl = instantiate(pc, name, DIS_OFF);
 
-	| MOV.eAX.Ovow(off) =>
-		result.rtl = instantiate(pc, "MOV.eAX.Ovow", DIS_OFF);
+	| MOV.eAX.Ovow(off) [name] =>
+		result.rtl = instantiate(pc, name, DIS_OFF);
 
-	| MOV.AL.Ob(off) =>
-		result.rtl = instantiate(pc, "MOV.AL.Ob", DIS_OFF);
+	| MOV.AL.Ob(off) [name] =>
+		result.rtl = instantiate(pc, name, DIS_OFF);
 
-//	| MOV.Sw.Ew(Mem, sr16) =>
-//		result.rtl = instantiate(pc, "MOV.Sw.Ew", DIS_MEM, DIS_SR16);
+//	| MOV.Sw.Ew(Mem, sr16) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_MEM, DIS_SR16);
 
-//	| MOV.Ew.Sw(Mem, sr16) =>
-//		result.rtl = instantiate(pc, "MOV.Ew.Sw", DIS_MEM, DIS_SR16);
+//	| MOV.Ew.Sw(Mem, sr16) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_MEM, DIS_SR16);
 
-	| MOVrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVrmod", DIS_REG32, DIS_EADDR32);
+	| MOVrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| MOVrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVrmow", DIS_REG16, DIS_EADDR16);
+	| MOVrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| MOVrmb(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "MOVrmb", DIS_REG8, DIS_EADDR8);
+	| MOVrmb(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG8, DIS_EADDR8);
 
-	| MOVmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "MOVmrod", DIS_EADDR32, DIS_REG32);
+	| MOVmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| MOVmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "MOVmrow", DIS_EADDR16, DIS_REG16);
+	| MOVmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| MOVmrb(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "MOVmrb", DIS_EADDR8, DIS_REG8);
+	| MOVmrb(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
-	| LTR(Eaddr) =>
-		result.rtl = instantiate(pc, "LTR", DIS_EADDR32);
+	| LTR(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| LSS(reg, Mem) =>
-		result.rtl = instantiate(pc, "LSS", DIS_REG32, DIS_MEM);
+	| LSS(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-	| LSLod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "LSLod", DIS_REG32, DIS_EADDR32);
+	| LSLod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| LSLow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "LSLow", DIS_REG16, DIS_EADDR16);
+	| LSLow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| LOOPNE(relocd) =>
-		result.rtl = instantiate(pc, "LOOPNE", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
+	| LOOPNE(relocd) [name] =>
+		result.rtl = instantiate(pc, name, dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
-	| LOOPE(relocd) =>
-		result.rtl = instantiate(pc, "LOOPE", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
+	| LOOPE(relocd) [name] =>
+		result.rtl = instantiate(pc, name, dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
-	| LOOP(relocd) =>
-		result.rtl = instantiate(pc, "LOOP", dis_Num(relocd));  // FIXME:  Replace with a conditional jump
+	| LOOP(relocd) [name] =>
+		result.rtl = instantiate(pc, name, dis_Num(relocd));  // FIXME:  Replace with a conditional jump
 
-	| LGS(reg, Mem) =>
-		result.rtl = instantiate(pc, "LGS", DIS_REG32, DIS_MEM);
+	| LGS(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-	| LFS(reg, Mem) =>
-		result.rtl = instantiate(pc, "LFS", DIS_REG32, DIS_MEM);
+	| LFS(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-	| LES(reg, Mem) =>
-		result.rtl = instantiate(pc, "LES", DIS_REG32, DIS_MEM);
+	| LES(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-	| LEAVE() =>
-		result.rtl = instantiate(pc, "LEAVE");
+	| LEAVE() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| LEAod(reg, Mem) =>
-		result.rtl = instantiate(pc, "LEAod", DIS_REG32, DIS_MEM);
+	| LEAod(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-	| LEAow(reg, Mem) =>
-		result.rtl = instantiate(pc, "LEAow", DIS_REG16, DIS_MEM);
+	| LEAow(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_MEM);
 
-	| LDS(reg, Mem) =>
-		result.rtl = instantiate(pc, "LDS", DIS_REG32, DIS_MEM);
+	| LDS(reg, Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-	| LARod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "LARod", DIS_REG32, DIS_EADDR32);
+	| LARod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| LARow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "LARow", DIS_REG16, DIS_EADDR16);
+	| LARow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| LAHF() =>
-		result.rtl = instantiate(pc, "LAHF");
+	| LAHF() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	/* Branches have been handled in decodeInstruction() now */
-	| IRET() =>
-		result.rtl = instantiate(pc, "IRET");
+	| IRET() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| INVLPG(Mem) =>
-		result.rtl = instantiate(pc, "INVLPG", DIS_MEM);
+	| INVLPG(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| INVD() =>
-		result.rtl = instantiate(pc, "INVD");
+	| INVD() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| INTO() =>
-		result.rtl = instantiate(pc, "INTO");
+	| INTO() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| INT.Ib(i8) =>
-		result.rtl = instantiate(pc, "INT.Ib", DIS_I8);
+	| INT.Ib(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
 // Removing because an invalid instruction is better than trying to
 // instantiate this. -trent
-//	| INT3() =>
-//		result.rtl = instantiate(pc, "INT3");
+//	| INT3() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| INSvod() =>
-//		result.rtl = instantiate(pc, "INSvod");
+//	| INSvod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| INSvow() =>
-//		result.rtl = instantiate(pc, "INSvow");
+//	| INSvow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| INSB() =>
-//		result.rtl = instantiate(pc, "INSB");
+//	| INSB() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-	| INCod(r32) =>
-		result.rtl = instantiate(pc, "INCod", DIS_R32);
+	| INCod(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| INCow(r32) =>
-		result.rtl = instantiate(pc, "INCow", DIS_R32);
+	| INCow(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| INC.Evod(Eaddr) =>
-		result.rtl = instantiate(pc, "INC.Evod", DIS_EADDR32);
+	| INC.Evod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| INC.Evow(Eaddr) =>
-		result.rtl = instantiate(pc, "INC.Evow", DIS_EADDR16);
+	| INC.Evow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| INC.Eb(Eaddr) =>
-		result.rtl = instantiate(pc, "INC.Eb", DIS_EADDR8);
+	| INC.Eb(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-//	| IN.eAX.DXod() =>
-//		result.rtl = instantiate(pc, "IN.eAX.DXod");
+//	| IN.eAX.DXod() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| IN.eAX.DXow() =>
-//		result.rtl = instantiate(pc, "IN.eAX.DXow");
+//	| IN.eAX.DXow() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| IN.AL.DX() =>
-//		result.rtl = instantiate(pc, "IN.AL.DX");
+//	| IN.AL.DX() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| IN.eAX.Ibod(i8) =>
-//		result.rtl = instantiate(pc, "IN.eAX.Ibod", DIS_I8);
+//	| IN.eAX.Ibod(i8) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_I8);
 
-//	| IN.eAX.Ibow(i8) =>
-//		result.rtl = instantiate(pc, "IN.eAX.Ibow", DIS_I8);
+//	| IN.eAX.Ibow(i8) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_I8);
 
-//	| IN.AL.Ib(i8) =>
-//		result.rtl = instantiate(pc, "IN.AL.Ib", DIS_I8);
+//	| IN.AL.Ib(i8) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| IMUL.Ivd(reg, Eaddr, i32) =>
-		result.rtl = instantiate(pc, "IMUL.Ivd", DIS_REG32, DIS_EADDR32, DIS_I32);
+	| IMUL.Ivd(reg, Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I32);
 
-	| IMUL.Ivw(reg, Eaddr, i16) =>
-		result.rtl = instantiate(pc, "IMUL.Ivw", DIS_REG16, DIS_EADDR16, DIS_I16);
+	| IMUL.Ivw(reg, Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I16);
 
-	| IMUL.Ibod(reg, Eaddr, i8) =>
-		result.rtl = instantiate(pc, "IMUL.Ibod", DIS_REG32, DIS_EADDR32, DIS_I8);
+	| IMUL.Ibod(reg, Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32, DIS_I8);
 
-	| IMUL.Ibow(reg, Eaddr, i8) =>
-		result.rtl = instantiate(pc, "IMUL.Ibow", DIS_REG16, DIS_EADDR16, DIS_I8);
+	| IMUL.Ibow(reg, Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16, DIS_I8);
 
-	| IMULrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "IMULrmod", DIS_REG32, DIS_EADDR32);
+	| IMULrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| IMULrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "IMULrmow", DIS_REG16, DIS_EADDR16);
+	| IMULrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| IMULod(Eaddr) =>
-		result.rtl = instantiate(pc, "IMULod", DIS_EADDR32);
+	| IMULod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| IMULow(Eaddr) =>
-		result.rtl = instantiate(pc, "IMULow", DIS_EADDR16);
+	| IMULow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| IMULb(Eaddr) =>
-		result.rtl = instantiate(pc, "IMULb", DIS_EADDR8);
+	| IMULb(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| IDIVeAX(Eaddr) =>
-		result.rtl = instantiate(pc, "IDIVeAX", DIS_EADDR32);
+	| IDIVeAX(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| IDIVAX(Eaddr) =>
-		result.rtl = instantiate(pc, "IDIVAX", DIS_EADDR16);
+	| IDIVAX(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| IDIV(Eaddr) =>
-		result.rtl = instantiate(pc, "IDIV", DIS_EADDR8); /* ?? */
+	| IDIV(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8); /* ?? */
 
-//	| HLT() =>
-//		result.rtl = instantiate(pc, "HLT");
+//	| HLT() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-	| ENTER(i16, i8) =>
-		result.rtl = instantiate(pc, "ENTER", DIS_I16, DIS_I8);
+	| ENTER(i16, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16, DIS_I8);
 
-	| DIVeAX(Eaddr) =>
-		result.rtl = instantiate(pc, "DIVeAX", DIS_EADDR32);
+	| DIVeAX(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| DIVAX(Eaddr) =>
-		result.rtl = instantiate(pc, "DIVAX", DIS_EADDR16);
+	| DIVAX(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| DIVAL(Eaddr) =>
-		result.rtl = instantiate(pc, "DIVAL", DIS_EADDR8);
+	| DIVAL(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| DECod(r32) =>
-		result.rtl = instantiate(pc, "DECod", DIS_R32);
+	| DECod(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| DECow(r32) =>
-		result.rtl = instantiate(pc, "DECow", DIS_R32);
+	| DECow(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
-	| DEC.Evod(Eaddr) =>
-		result.rtl = instantiate(pc, "DEC.Evod", DIS_EADDR32);
+	| DEC.Evod(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32);
 
-	| DEC.Evow(Eaddr) =>
-		result.rtl = instantiate(pc, "DEC.Evow", DIS_EADDR16);
+	| DEC.Evow(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16);
 
-	| DEC.Eb(Eaddr) =>
-		result.rtl = instantiate(pc, "DEC.Eb", DIS_EADDR8);
+	| DEC.Eb(Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8);
 
-	| DAS() =>
-		result.rtl = instantiate(pc, "DAS");
+	| DAS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| DAA() =>
-		result.rtl = instantiate(pc, "DAA");
+	| DAA() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CDQ() =>
-		result.rtl = instantiate(pc, "CDQ");
+	| CDQ() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CWD() =>
-		result.rtl = instantiate(pc, "CWD");
+	| CWD() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CPUID() =>
-		result.rtl = instantiate(pc, "CPUID");
+	| CPUID() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CMPXCHG8B(Mem) =>
-		result.rtl = instantiate(pc, "CMPXCHG8B", DIS_MEM);
+	| CMPXCHG8B(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| CMPXCHG.Ev.Gvod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "CMPXCHG.Ev.Gvod", DIS_EADDR32, DIS_REG32);
+	| CMPXCHG.Ev.Gvod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| CMPXCHG.Ev.Gvow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "CMPXCHG.Ev.Gvow", DIS_EADDR16, DIS_REG16);
+	| CMPXCHG.Ev.Gvow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| CMPXCHG.Eb.Gb(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "CMPXCHG.Eb.Gb", DIS_EADDR8, DIS_REG8);
+	| CMPXCHG.Eb.Gb(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_REG8);
 
-	| CMPSvod() =>
-		result.rtl = instantiate(pc, "CMPSvod");
+	| CMPSvod() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CMPSvow() =>
-		result.rtl = instantiate(pc, "CMPSvow");
+	| CMPSvow() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CMPSB() =>
-		result.rtl = instantiate(pc, "CMPSB");
+	| CMPSB() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CMC() =>
-		result.rtl = instantiate(pc, "CMC");
+	| CMC() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CLTS() =>
-		result.rtl = instantiate(pc, "CLTS");
+	| CLTS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CLI() =>
-		result.rtl = instantiate(pc, "CLI");
+	| CLI() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CLD() =>
-		result.rtl = instantiate(pc, "CLD");
+	| CLD() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CLC() =>
-		result.rtl = instantiate(pc, "CLC");
+	| CLC() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CWDE() =>
-		result.rtl = instantiate(pc, "CWDE");
+	| CWDE() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| CBW() =>
-		result.rtl = instantiate(pc, "CBW");
+	| CBW() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	/* Decode the following as a NOP. We see these in startup code, and anywhere
 	 * that calls the OS (as lcall 7, 0) */
@@ -1270,8 +1270,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	//| CALL.aPod(seg, off) =>
 		result.rtl = instantiate(pc, "NOP");
 
-	| CALL.Jvod(relocd) =>
-		result.rtl = instantiate(pc, "CALL.Jvod", dis_Num(relocd));
+	| CALL.Jvod(relocd) [name] =>
+		result.rtl = instantiate(pc, name, dis_Num(relocd));
 		if (relocd == nextPC) {
 			// This is a call $+5
 			// Use the standard semantics, except for the last statement
@@ -1286,516 +1286,520 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			call->setDestProc(destProc);
 		}
 
-	| BTSiod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTSiod", DIS_I8, DIS_EADDR32);
+	| BTSiod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR32);
 
-	| BTSiow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTSiow", DIS_I8, DIS_EADDR16);
+	| BTSiow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8, DIS_EADDR16);
 
-	| BTSod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTSod", DIS_EADDR32, DIS_REG32);
+	| BTSod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| BTSow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTSow", DIS_EADDR16, DIS_REG16);
+	| BTSow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| BTRiod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTRiod", DIS_EADDR32, DIS_I8);
+	| BTRiod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| BTRiow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTRiow", DIS_EADDR16, DIS_I8);
+	| BTRiow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| BTRod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTRod", DIS_EADDR32, DIS_REG32);
+	| BTRod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| BTRow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTRow", DIS_EADDR16, DIS_REG16);
+	| BTRow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| BTCiod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTCiod", DIS_EADDR32, DIS_I8);
+	| BTCiod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| BTCiow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTCiow", DIS_EADDR16, DIS_I8);
+	| BTCiow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| BTCod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTCod", DIS_EADDR32, DIS_REG32);
+	| BTCod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| BTCow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTCow", DIS_EADDR16, DIS_REG16);
+	| BTCow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| BTiod(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTiod", DIS_EADDR32, DIS_I8);
+	| BTiod(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| BTiow(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "BTiow", DIS_EADDR16, DIS_I8);
+	| BTiow(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| BTod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTod", DIS_EADDR32, DIS_REG32);
+	| BTod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| BTow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "BTow", DIS_EADDR16, DIS_REG16);
+	| BTow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| BSWAP(r32) =>
-		result.rtl = instantiate(pc, "BSWAP", DIS_R32);
+	| BSWAP(r32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R32);
 
 	| BSRod(reg, Eaddr) =>
-		//result.rtl = instantiate(pc, "BSRod", DIS_REG32, DIS_EADDR32);
+	//| BSRod(reg, Eaddr) [name] =>
+		//result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 		return genBSFR(pc, DIS_REG32, DIS_EADDR32, 32, 32, opMinus, nextPC - pc);
 
 	| BSRow(reg, Eaddr) =>
-		//result.rtl = instantiate(pc, "BSRow", DIS_REG16, DIS_EADDR16);
+	//| BSRow(reg, Eaddr) [name] =>
+		//result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 		return genBSFR(pc, DIS_REG16, DIS_EADDR16, 16, 16, opMinus, nextPC - pc);
 
 	| BSFod(reg, Eaddr) =>
-		//result.rtl = instantiate(pc, "BSFod", DIS_REG32, DIS_EADDR32);
+	//| BSFod(reg, Eaddr) [name] =>
+		//result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 		return genBSFR(pc, DIS_REG32, DIS_EADDR32, -1, 32, opPlus, nextPC - pc);
 
 	| BSFow(reg, Eaddr) =>
-		//result.rtl = instantiate(pc, "BSFow", DIS_REG16, DIS_EADDR16);
+	//| BSFow(reg, Eaddr) [name] =>
+		//result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 		return genBSFR(pc, DIS_REG16, DIS_EADDR16, -1, 16, opPlus, nextPC - pc);
 
 	// Not "user" instructions:
-//	| BOUNDod(reg, Mem) =>
-//		result.rtl = instantiate(pc, "BOUNDod", DIS_REG32, DIS_MEM);
+//	| BOUNDod(reg, Mem) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_REG32, DIS_MEM);
 
-//	| BOUNDow(reg, Mem) =>
-//		result.rtl = instantiate(pc, "BOUNDow", DIS_REG16, DIS_MEM);
+//	| BOUNDow(reg, Mem) [name] =>
+//		result.rtl = instantiate(pc, name, DIS_REG16, DIS_MEM);
 
 //	| ARPL(_, _) =>
 //	//| ARPL(Eaddr, reg) =>
 //		result.rtl = instantiate(pc, "UNIMP");
 
-//	| AAS() =>
-//		result.rtl = instantiate(pc, "AAS");
+//	| AAS() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| AAM() =>
-//		result.rtl = instantiate(pc, "AAM");
+//	| AAM() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| AAD() =>
-//		result.rtl = instantiate(pc, "AAD");
+//	| AAD() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-//	| AAA() =>
-//		result.rtl = instantiate(pc, "AAA");
+//	| AAA() [name] =>
+//		result.rtl = instantiate(pc, name);
 
-	| CMPrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "CMPrmod", DIS_REG32, DIS_EADDR32);
+	| CMPrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| CMPrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "CMPrmow", DIS_REG16, DIS_EADDR16);
+	| CMPrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| XORrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "XORrmod", DIS_REG32, DIS_EADDR32);
+	| XORrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| XORrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "XORrmow", DIS_REG16, DIS_EADDR16);
+	| XORrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| SUBrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "SUBrmod", DIS_REG32, DIS_EADDR32);
+	| SUBrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| SUBrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "SUBrmow", DIS_REG16, DIS_EADDR16);
+	| SUBrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| ANDrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ANDrmod", DIS_REG32, DIS_EADDR32);
+	| ANDrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| ANDrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ANDrmow", DIS_REG16, DIS_EADDR16);
+	| ANDrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| SBBrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "SBBrmod", DIS_REG32, DIS_EADDR32);
+	| SBBrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| SBBrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "SBBrmow", DIS_REG16, DIS_EADDR16);
+	| SBBrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| ADCrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ADCrmod", DIS_REG32, DIS_EADDR32);
+	| ADCrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| ADCrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ADCrmow", DIS_REG16, DIS_EADDR16);
+	| ADCrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| ORrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ORrmod", DIS_REG32, DIS_EADDR32);
+	| ORrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| ORrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ORrmow", DIS_REG16, DIS_EADDR16);
+	| ORrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| ADDrmod(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ADDrmod", DIS_REG32, DIS_EADDR32);
+	| ADDrmod(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG32, DIS_EADDR32);
 
-	| ADDrmow(reg, Eaddr) =>
-		result.rtl = instantiate(pc, "ADDrmow", DIS_REG16, DIS_EADDR16);
+	| ADDrmow(reg, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_REG16, DIS_EADDR16);
 
-	| CMPrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "CMPrmb", DIS_R8, DIS_EADDR8);
+	| CMPrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| XORrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "XORrmb", DIS_R8, DIS_EADDR8);
+	| XORrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| SUBrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "SUBrmb", DIS_R8, DIS_EADDR8);
+	| SUBrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| ANDrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "ANDrmb", DIS_R8, DIS_EADDR8);
+	| ANDrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| SBBrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "SBBrmb", DIS_R8, DIS_EADDR8);
+	| SBBrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| ADCrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "ADCrmb", DIS_R8, DIS_EADDR8);
+	| ADCrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| ORrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "ORrmb", DIS_R8, DIS_EADDR8);
+	| ORrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| ADDrmb(r8, Eaddr) =>
-		result.rtl = instantiate(pc, "ADDrmb", DIS_R8, DIS_EADDR8);
+	| ADDrmb(r8, Eaddr) [name] =>
+		result.rtl = instantiate(pc, name, DIS_R8, DIS_EADDR8);
 
-	| CMPmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "CMPmrod", DIS_EADDR32, DIS_REG32);
+	| CMPmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| CMPmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "CMPmrow", DIS_EADDR16, DIS_REG16);
+	| CMPmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| XORmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XORmrod", DIS_EADDR32, DIS_REG32);
+	| XORmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| XORmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "XORmrow", DIS_EADDR16, DIS_REG16);
+	| XORmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| SUBmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SUBmrod", DIS_EADDR32, DIS_REG32);
+	| SUBmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| SUBmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SUBmrow", DIS_EADDR16, DIS_REG16);
+	| SUBmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| ANDmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ANDmrod", DIS_EADDR32, DIS_REG32);
+	| ANDmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| ANDmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ANDmrow", DIS_EADDR16, DIS_REG16);
+	| ANDmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| SBBmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SBBmrod", DIS_EADDR32, DIS_REG32);
+	| SBBmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| SBBmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "SBBmrow", DIS_EADDR16, DIS_REG16);
+	| SBBmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| ADCmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ADCmrod", DIS_EADDR32, DIS_REG32);
+	| ADCmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| ADCmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ADCmrow", DIS_EADDR16, DIS_REG16);
+	| ADCmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| ORmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ORmrod", DIS_EADDR32, DIS_REG32);
+	| ORmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| ORmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ORmrow", DIS_EADDR16, DIS_REG16);
+	| ORmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| ADDmrod(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ADDmrod", DIS_EADDR32, DIS_REG32);
+	| ADDmrod(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
 
-	| ADDmrow(Eaddr, reg) =>
-		result.rtl = instantiate(pc, "ADDmrow", DIS_EADDR16, DIS_REG16);
+	| ADDmrow(Eaddr, reg) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_REG16);
 
-	| CMPmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "CMPmrb", DIS_EADDR8, DIS_R8);
+	| CMPmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| XORmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "XORmrb", DIS_EADDR8, DIS_R8);
+	| XORmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| SUBmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "SUBmrb", DIS_EADDR8, DIS_R8);
+	| SUBmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| ANDmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "ANDmrb", DIS_EADDR8, DIS_R8);
+	| ANDmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| SBBmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "SBBmrb", DIS_EADDR8, DIS_R8);
+	| SBBmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| ADCmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "ADCmrb", DIS_EADDR8, DIS_R8);
+	| ADCmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| ORmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "ORmrb", DIS_EADDR8, DIS_R8);
+	| ORmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| ADDmrb(Eaddr, r8) =>
-		result.rtl = instantiate(pc, "ADDmrb", DIS_EADDR8, DIS_R8);
+	| ADDmrb(Eaddr, r8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_R8);
 
-	| CMPiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "CMPiodb", DIS_EADDR32, DIS_I8);
+	| CMPiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| CMPiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "CMPiowb", DIS_EADDR16, DIS_I8);
+	| CMPiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| XORiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "XORiodb", DIS_EADDR32, DIS_I8);
+	| XORiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| XORiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "XORiowb", DIS_EADDR16, DIS_I8);
+	| XORiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| SUBiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SUBiodb", DIS_EADDR32, DIS_I8);
+	| SUBiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| SUBiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SUBiowb", DIS_EADDR16, DIS_I8);
+	| SUBiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| ANDiodb(Eaddr, i8) =>
+	| ANDiodb(Eaddr, i8) [name] =>
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
 		if (i8 != -16 || !(*oper == *Location::regOf(28)))
-			result.rtl = instantiate(pc, "ANDiodb", oper, DIS_I8);
+			result.rtl = instantiate(pc, name, oper, DIS_I8);
 
-	| ANDiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ANDiowb", DIS_EADDR16, DIS_I8);
+	| ANDiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| SBBiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SBBiodb", DIS_EADDR32, DIS_I8);
+	| SBBiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| SBBiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SBBiowb", DIS_EADDR16, DIS_I8);
+	| SBBiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| ADCiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ADCiodb", DIS_EADDR32, DIS_I8);
+	| ADCiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| ADCiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ADCiowb", DIS_EADDR16, DIS_I8);
+	| ADCiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| ORiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ORiodb", DIS_EADDR32, DIS_I8);
+	| ORiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| ORiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ORiowb", DIS_EADDR16, DIS_I8);
+	| ORiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| ADDiodb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ADDiodb", DIS_EADDR32, DIS_I8);
+	| ADDiodb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I8);
 
-	| ADDiowb(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ADDiowb", DIS_EADDR16, DIS_I8);
+	| ADDiowb(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I8);
 
-	| CMPid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "CMPid", DIS_EADDR32, DIS_I32);
+	| CMPid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| XORid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "XORid", DIS_EADDR32, DIS_I32);
+	| XORid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| SUBid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "SUBid", DIS_EADDR32, DIS_I32);
+	| SUBid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| ANDid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "ANDid", DIS_EADDR32, DIS_I32);
+	| ANDid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| SBBid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "SBBid", DIS_EADDR32, DIS_I32);
+	| SBBid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| ADCid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "ADCid", DIS_EADDR32, DIS_I32);
+	| ADCid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| ORid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "ORid", DIS_EADDR32, DIS_I32);
+	| ORid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| ADDid(Eaddr, i32) =>
-		result.rtl = instantiate(pc, "ADDid", DIS_EADDR32, DIS_I32);
+	| ADDid(Eaddr, i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_I32);
 
-	| CMPiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "CMPiw", DIS_EADDR16, DIS_I16);
+	| CMPiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| XORiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "XORiw", DIS_EADDR16, DIS_I16);
+	| XORiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| SUBiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "SUBiw", DIS_EADDR16, DIS_I16);
+	| SUBiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| ANDiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "ANDiw", DIS_EADDR16, DIS_I16);
+	| ANDiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| SBBiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "SBBiw", DIS_EADDR16, DIS_I16);
+	| SBBiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| ADCiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "ADCiw", DIS_EADDR16, DIS_I16);
+	| ADCiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| ORiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "ORiw", DIS_EADDR16, DIS_I16);
+	| ORiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| ADDiw(Eaddr, i16) =>
-		result.rtl = instantiate(pc, "ADDiw", DIS_EADDR16, DIS_I16);
+	| ADDiw(Eaddr, i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR16, DIS_I16);
 
-	| CMPib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "CMPib", DIS_EADDR8, DIS_I8);
+	| CMPib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| XORib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "XORib", DIS_EADDR8, DIS_I8);
+	| XORib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| SUBib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SUBib", DIS_EADDR8, DIS_I8);
+	| SUBib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| ANDib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ANDib", DIS_EADDR8, DIS_I8);
+	| ANDib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| SBBib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "SBBib", DIS_EADDR8, DIS_I8);
+	| SBBib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| ADCib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ADCib", DIS_EADDR8, DIS_I8);
+	| ADCib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| ORib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ORib", DIS_EADDR8, DIS_I8);
+	| ORib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| ADDib(Eaddr, i8) =>
-		result.rtl = instantiate(pc, "ADDib", DIS_EADDR8, DIS_I8);
+	| ADDib(Eaddr, i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_EADDR8, DIS_I8);
 
-	| CMPiEAX(i32) =>
-		result.rtl = instantiate(pc, "CMPiEAX", DIS_I32);
+	| CMPiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| XORiEAX(i32) =>
-		result.rtl = instantiate(pc, "XORiEAX", DIS_I32);
+	| XORiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| SUBiEAX(i32) =>
-		result.rtl = instantiate(pc, "SUBiEAX", DIS_I32);
+	| SUBiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| ANDiEAX(i32) =>
-		result.rtl = instantiate(pc, "ANDiEAX", DIS_I32);
+	| ANDiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| SBBiEAX(i32) =>
-		result.rtl = instantiate(pc, "SBBiEAX", DIS_I32);
+	| SBBiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| ADCiEAX(i32) =>
-		result.rtl = instantiate(pc, "ADCiEAX", DIS_I32);
+	| ADCiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| ORiEAX(i32) =>
-		result.rtl = instantiate(pc, "ORiEAX", DIS_I32);
+	| ORiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| ADDiEAX(i32) =>
-		result.rtl = instantiate(pc, "ADDiEAX", DIS_I32);
+	| ADDiEAX(i32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I32);
 
-	| CMPiAX(i16) =>
-		result.rtl = instantiate(pc, "CMPiAX", DIS_I16);
+	| CMPiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| XORiAX(i16) =>
-		result.rtl = instantiate(pc, "XORiAX", DIS_I16);
+	| XORiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| SUBiAX(i16) =>
-		result.rtl = instantiate(pc, "SUBiAX", DIS_I16);
+	| SUBiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| ANDiAX(i16) =>
-		result.rtl = instantiate(pc, "ANDiAX", DIS_I16);
+	| ANDiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| SBBiAX(i16) =>
-		result.rtl = instantiate(pc, "SBBiAX", DIS_I16);
+	| SBBiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| ADCiAX(i16) =>
-		result.rtl = instantiate(pc, "ADCiAX", DIS_I16);
+	| ADCiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| ORiAX(i16) =>
-		result.rtl = instantiate(pc, "ORiAX", DIS_I16);
+	| ORiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| ADDiAX(i16) =>
-		result.rtl = instantiate(pc, "ADDiAX", DIS_I16);
+	| ADDiAX(i16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I16);
 
-	| CMPiAL(i8) =>
-		result.rtl = instantiate(pc, "CMPiAL", DIS_I8);
+	| CMPiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| XORiAL(i8) =>
-		result.rtl = instantiate(pc, "XORiAL", DIS_I8);
+	| XORiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| SUBiAL(i8) =>
-		result.rtl = instantiate(pc, "SUBiAL", DIS_I8);
+	| SUBiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| ANDiAL(i8) =>
-		result.rtl = instantiate(pc, "ANDiAL", DIS_I8);
+	| ANDiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| SBBiAL(i8) =>
-		result.rtl = instantiate(pc, "SBBiAL", DIS_I8);
+	| SBBiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| ADCiAL(i8) =>
-		result.rtl = instantiate(pc, "ADCiAL", DIS_I8);
+	| ADCiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| ORiAL(i8) =>
-		result.rtl = instantiate(pc, "ORiAL", DIS_I8);
+	| ORiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| ADDiAL(i8) =>
-		result.rtl = instantiate(pc, "ADDiAL", DIS_I8);
+	| ADDiAL(i8) [name] =>
+		result.rtl = instantiate(pc, name, DIS_I8);
 
-	| LODSvod() =>
-		result.rtl = instantiate(pc, "LODSvod");
+	| LODSvod() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| LODSvow() =>
-		result.rtl = instantiate(pc, "LODSvow");
+	| LODSvow() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| LODSB() =>
-		result.rtl = instantiate(pc, "LODSB");
+	| LODSB() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	/* Floating point instructions */
-	| F2XM1() =>
-		result.rtl = instantiate(pc, "F2XM1");
+	| F2XM1() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FABS() =>
-		result.rtl = instantiate(pc, "FABS");
+	| FABS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FADD.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FADD.R32", DIS_MEM32);
+	| FADD.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FADD.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FADD.R64", DIS_MEM64);
+	| FADD.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FADD.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FADD.ST.STi", DIS_IDX);
+	| FADD.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FADD.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FADD.STi.ST", DIS_IDX);
+	| FADD.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FADDP.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FADDP.STi.ST", DIS_IDX);
+	| FADDP.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FIADD.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FIADD.I32", DIS_MEM32);
+	| FIADD.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FIADD.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FIADD.I16", DIS_MEM16);
+	| FIADD.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FBLD(Mem80) =>
-		result.rtl = instantiate(pc, "FBLD", DIS_MEM80);
+	| FBLD(Mem80) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM80);
 
-	| FBSTP(Mem80) =>
-		result.rtl = instantiate(pc, "FBSTP", DIS_MEM80);
+	| FBSTP(Mem80) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM80);
 
-	| FCHS() =>
-		result.rtl = instantiate(pc, "FCHS");
+	| FCHS() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| FNCLEX() =>
 		result.rtl = instantiate(pc, "FNCLEX");
 
-	| FCOM.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FCOM.R32", DIS_MEM32);
+	| FCOM.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FCOM.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FCOM.R64", DIS_MEM64);
+	| FCOM.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FICOM.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FICOM.I32", DIS_MEM32);
+	| FICOM.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FICOM.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FICOM.I16", DIS_MEM16);
+	| FICOM.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FCOMP.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FCOMP.R32", DIS_MEM32);
+	| FCOMP.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FCOMP.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FCOMP.R64", DIS_MEM64);
+	| FCOMP.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FCOM.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FCOM.ST.STi", DIS_IDX);
+	| FCOM.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FCOMP.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FCOMP.ST.STi", DIS_IDX);
+	| FCOMP.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FICOMP.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FICOMP.I32", DIS_MEM32);
+	| FICOMP.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FICOMP.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FICOMP.I16", DIS_MEM16);
+	| FICOMP.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FCOMPP() =>
-		result.rtl = instantiate(pc, "FCOMPP");
+	| FCOMPP() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| FCOMI.ST.STi(idx) [name] =>
 		result.rtl = instantiate(pc, name, DIS_IDX);
@@ -1803,271 +1807,271 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| FCOMIP.ST.STi(idx) [name] =>
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FCOS() =>
-		result.rtl = instantiate(pc, "FCOS");
+	| FCOS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FDECSTP() =>
-		result.rtl = instantiate(pc, "FDECSTP");
+	| FDECSTP() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FDIV.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FDIV.R32", DIS_MEM32);
+	| FDIV.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FDIV.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FDIV.R64", DIS_MEM64);
+	| FDIV.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FDIV.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FDIV.ST.STi", DIS_IDX);
+	| FDIV.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FDIV.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FDIV.STi.ST", DIS_IDX);
+	| FDIV.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FDIVP.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FDIVP.STi.ST", DIS_IDX);
+	| FDIVP.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FIDIV.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FIDIV.I32", DIS_MEM32);
+	| FIDIV.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FIDIV.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FIDIV.I16", DIS_MEM16);
+	| FIDIV.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FDIVR.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FDIVR.R32", DIS_MEM32);
+	| FDIVR.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FDIVR.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FDIVR.R64", DIS_MEM64);
+	| FDIVR.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FDIVR.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FDIVR.ST.STi", DIS_IDX);
+	| FDIVR.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FDIVR.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FDIVR.STi.ST", DIS_IDX);
+	| FDIVR.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FIDIVR.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FIDIVR.I32", DIS_MEM32);
+	| FIDIVR.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FIDIVR.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FIDIVR.I16", DIS_MEM16);
+	| FIDIVR.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FDIVRP.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FDIVRP.STi.ST", DIS_IDX);
+	| FDIVRP.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FFREE(idx) =>
-		result.rtl = instantiate(pc, "FFREE", DIS_IDX);
+	| FFREE(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FILD.lsI16(Mem16) =>
-		result.rtl = instantiate(pc, "FILD.lsI16", DIS_MEM16);
+	| FILD.lsI16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FILD.lsI32(Mem32) =>
-		result.rtl = instantiate(pc, "FILD.lsI32", DIS_MEM32);
+	| FILD.lsI32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
 	| FILD64(Mem64) =>
 		result.rtl = instantiate(pc, "FILD.lsI64", DIS_MEM64);
 
-	| FINIT() =>
-		result.rtl = instantiate(pc, "FINIT");
+	| FINIT() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FIST.lsI16(Mem16) =>
-		result.rtl = instantiate(pc, "FIST.lsI16", DIS_MEM16);
+	| FIST.lsI16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FIST.lsI32(Mem32) =>
-		result.rtl = instantiate(pc, "FIST.lsI32", DIS_MEM32);
+	| FIST.lsI32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FISTP.lsI16(Mem16) =>
-		result.rtl = instantiate(pc, "FISTP.lsI16", DIS_MEM16);
+	| FISTP.lsI16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FISTP.lsI32(Mem32) =>
-		result.rtl = instantiate(pc, "FISTP.lsI32", DIS_MEM32);
+	| FISTP.lsI32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FISTP64(Mem64) =>
-		result.rtl = instantiate(pc, "FISTP64", DIS_MEM64);
+	| FISTP64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FLD.lsR32(Mem32) =>
-		result.rtl = instantiate(pc, "FLD.lsR32", DIS_MEM32);
+	| FLD.lsR32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FLD.lsR64(Mem64) =>
-		result.rtl = instantiate(pc, "FLD.lsR64", DIS_MEM64);
+	| FLD.lsR64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FLD80(Mem80) =>
-		result.rtl = instantiate(pc, "FLD80", DIS_MEM80);
+	| FLD80(Mem80) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM80);
 
 /* This is a bit tricky. The FPUSH logically comes between the read of STi and
  * the write to ST0. In particular, FLD ST0 is supposed to duplicate the TOS.
  * This problem only happens with this load instruction, so there is a work
  * around here that gives us the SSL a value of i that is one more than in
  * the instruction */
-	| FLD.STi(idx) =>
-		result.rtl = instantiate(pc, "FLD.STi", DIS_IDXP1);
+	| FLD.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDXP1);
 
-	| FLD1() =>
-		result.rtl = instantiate(pc, "FLD1");
+	| FLD1() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDL2T() =>
-		result.rtl = instantiate(pc, "FLDL2T");
+	| FLDL2T() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDL2E() =>
-		result.rtl = instantiate(pc, "FLDL2E");
+	| FLDL2E() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDPI() =>
-		result.rtl = instantiate(pc, "FLDPI");
+	| FLDPI() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDLG2() =>
-		result.rtl = instantiate(pc, "FLDLG2");
+	| FLDLG2() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDLN2() =>
-		result.rtl = instantiate(pc, "FLDLN2");
+	| FLDLN2() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDZ() =>
-		result.rtl = instantiate(pc, "FLDZ");
+	| FLDZ() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FLDCW(Mem16) =>
-		result.rtl = instantiate(pc, "FLDCW", DIS_MEM16);
+	| FLDCW(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FLDENV(Mem) =>
-		result.rtl = instantiate(pc, "FLDENV", DIS_MEM);
+	| FLDENV(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| FMUL.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FMUL.R32", DIS_MEM32);
+	| FMUL.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FMUL.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FMUL.R64", DIS_MEM64);
+	| FMUL.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FMUL.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FMUL.ST.STi", DIS_IDX);
+	| FMUL.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FMUL.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FMUL.STi.ST", DIS_IDX);
+	| FMUL.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FMULP.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FMULP.STi.ST", DIS_IDX);
+	| FMULP.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FIMUL.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FIMUL.I32", DIS_MEM32);
+	| FIMUL.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FIMUL.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FIMUL.I16", DIS_MEM16);
+	| FIMUL.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FNOP() =>
-		result.rtl = instantiate(pc, "FNOP");
+	| FNOP() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FPATAN() =>
-		result.rtl = instantiate(pc, "FPATAN");
+	| FPATAN() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FPREM() =>
-		result.rtl = instantiate(pc, "FPREM");
+	| FPREM() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FPREM1() =>
-		result.rtl = instantiate(pc, "FPREM1");
+	| FPREM1() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FPTAN() =>
-		result.rtl = instantiate(pc, "FPTAN");
+	| FPTAN() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FRNDINT() =>
-		result.rtl = instantiate(pc, "FRNDINT");
+	| FRNDINT() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FRSTOR(Mem) =>
-		result.rtl = instantiate(pc, "FRSTOR", DIS_MEM);
+	| FRSTOR(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| FNSAVE(Mem) =>
-		result.rtl = instantiate(pc, "FNSAVE", DIS_MEM);
+	| FNSAVE(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| FSCALE() =>
-		result.rtl = instantiate(pc, "FSCALE");
+	| FSCALE() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FSIN() =>
-		result.rtl = instantiate(pc, "FSIN");
+	| FSIN() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FSINCOS() =>
-		result.rtl = instantiate(pc, "FSINCOS");
+	| FSINCOS() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FSQRT() =>
-		result.rtl = instantiate(pc, "FSQRT");
+	| FSQRT() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FST.lsR32(Mem32) =>
-		result.rtl = instantiate(pc, "FST.lsR32", DIS_MEM32);
+	| FST.lsR32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FST.lsR64(Mem64) =>
-		result.rtl = instantiate(pc, "FST.lsR64", DIS_MEM64);
+	| FST.lsR64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FSTP.lsR32(Mem32) =>
-		result.rtl = instantiate(pc, "FSTP.lsR32", DIS_MEM32);
+	| FSTP.lsR32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FSTP.lsR64(Mem64) =>
-		result.rtl = instantiate(pc, "FSTP.lsR64", DIS_MEM64);
+	| FSTP.lsR64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FSTP80(Mem80) =>
-		result.rtl = instantiate(pc, "FSTP80", DIS_MEM80);
+	| FSTP80(Mem80) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM80);
 
-	| FST.st.STi(idx) =>
-		result.rtl = instantiate(pc, "FST.st.STi", DIS_IDX);
+	| FST.st.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FSTP.st.STi(idx) =>
-		result.rtl = instantiate(pc, "FSTP.st.STi", DIS_IDX);
+	| FSTP.st.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FSTCW(Mem16) =>
-		result.rtl = instantiate(pc, "FSTCW", DIS_MEM16);
+	| FSTCW(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FSTENV(Mem) =>
-		result.rtl = instantiate(pc, "FSTENV", DIS_MEM);
+	| FSTENV(Mem) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM);
 
-	| FSTSW(Mem16) =>
-		result.rtl = instantiate(pc, "FSTSW", DIS_MEM16);
+	| FSTSW(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FSTSW.AX() =>
-		result.rtl = instantiate(pc, "FSTSW.AX");
+	| FSTSW.AX() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FSUB.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FSUB.R32", DIS_MEM32);
+	| FSUB.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FSUB.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FSUB.R64", DIS_MEM64);
+	| FSUB.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FSUB.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FSUB.ST.STi", DIS_IDX);
+	| FSUB.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FSUB.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FSUB.STi.ST", DIS_IDX);
+	| FSUB.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FISUB.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FISUB.I32", DIS_MEM32);
+	| FISUB.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FISUB.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FISUB.I16", DIS_MEM16);
+	| FISUB.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FSUBP.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FSUBP.STi.ST", DIS_IDX);
+	| FSUBP.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FSUBR.R32(Mem32) =>
-		result.rtl = instantiate(pc, "FSUBR.R32", DIS_MEM32);
+	| FSUBR.R32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FSUBR.R64(Mem64) =>
-		result.rtl = instantiate(pc, "FSUBR.R64", DIS_MEM64);
+	| FSUBR.R64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
-	| FSUBR.ST.STi(idx) =>
-		result.rtl = instantiate(pc, "FSUBR.ST.STi", DIS_IDX);
+	| FSUBR.ST.STi(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FSUBR.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FSUBR.STi.ST", DIS_IDX);
+	| FSUBR.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FISUBR.I32(Mem32) =>
-		result.rtl = instantiate(pc, "FISUBR.I32", DIS_MEM32);
+	| FISUBR.I32(Mem32) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FISUBR.I16(Mem16) =>
-		result.rtl = instantiate(pc, "FISUBR.I16", DIS_MEM16);
+	| FISUBR.I16(Mem16) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM16);
 
-	| FSUBRP.STi.ST(idx) =>
-		result.rtl = instantiate(pc, "FSUBRP.STi.ST", DIS_IDX);
+	| FSUBRP.STi.ST(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FTST() =>
-		result.rtl = instantiate(pc, "FTST");
+	| FTST() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FUCOM(idx) =>
-		result.rtl = instantiate(pc, "FUCOM", DIS_IDX);
+	| FUCOM(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FUCOMP(idx) =>
-		result.rtl = instantiate(pc, "FUCOMP", DIS_IDX);
+	| FUCOMP(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FUCOMPP() =>
-		result.rtl = instantiate(pc, "FUCOMPP");
+	| FUCOMPP() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| FUCOMI.ST.STi(idx) [name] =>
 		result.rtl = instantiate(pc, name, DIS_IDX);
@@ -2075,20 +2079,20 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| FUCOMIP.ST.STi(idx) [name] =>
 		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FXAM() =>
-		result.rtl = instantiate(pc, "FXAM");
+	| FXAM() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FXCH(idx) =>
-		result.rtl = instantiate(pc, "FXCH", DIS_IDX);
+	| FXCH(idx) [name] =>
+		result.rtl = instantiate(pc, name, DIS_IDX);
 
-	| FXTRACT() =>
-		result.rtl = instantiate(pc, "FXTRACT");
+	| FXTRACT() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FYL2X() =>
-		result.rtl = instantiate(pc, "FYL2X");
+	| FYL2X() [name] =>
+		result.rtl = instantiate(pc, name);
 
-	| FYL2XP1() =>
-		result.rtl = instantiate(pc, "FYL2XP1");
+	| FYL2XP1() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	else
 		result.valid = false;

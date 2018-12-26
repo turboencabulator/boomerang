@@ -189,8 +189,8 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if (destProc == (Proc *)-1) destProc = nullptr;
 		newCall->setDestProc(destProc);
 
-	| b(reladdr) =>
-		result.rtl = unconditionalJump(pc, "b", reladdr);
+	| b(reladdr) [name] =>
+		result.rtl = unconditionalJump(pc, name, reladdr);
 
 	| ball(BIcr, reladdr) [name] =>  // Always "conditional" branch with link, test/OSX/hello has this
 		auto dest = DIS_RELADDR;
@@ -279,9 +279,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	//| balctrl(BIcr) [name] =>
 		result.rtl = computedCall(pc, name, new Unary(opMachFtr, new Const("%CTR")));
 
-	| bal(_, reladdr) =>
+	| bal(_, reladdr) [name] =>
 	//| bal(BIcr, reladdr) =>
-		result.rtl = unconditionalJump(pc, "bal", reladdr);
+		result.rtl = unconditionalJump(pc, name, reladdr);
 
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.

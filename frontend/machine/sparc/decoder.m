@@ -208,7 +208,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	ADDRESS nextPC = NO_ADDRESS;
 	match [nextPC] pc to
 
-	| call__(addr) =>
+	| call__(addr) [name] =>
 		/*
 		 * A standard call
 		 */
@@ -219,7 +219,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		newCall->setDestProc(destProc);
 		result.rtl = new RTL(pc, newCall);
 		result.type = SD;
-		SHOW_ASM("call__ " << std::hex << addr);
+		SHOW_ASM(name << " " << std::hex << addr);
 		DEBUG_STMTS
 
 	| call_(addr) =>
@@ -361,11 +361,11 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
-	| BPA(_, tgt) =>  /* Can see bpa xcc,tgt in 32 bit code */
+	| BPA(_, tgt) [name] =>  /* Can see bpa xcc,tgt in 32 bit code */
 	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
 		result.type = SD;
 		result.rtl = new RTL(pc, new GotoStatement(tgt));
-		SHOW_ASM("BPA " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
 	| pbranch(cc01, tgt) [name] =>
@@ -398,7 +398,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
-	| JMPL(addr, _) =>
+	| JMPL(addr, _) [name] =>
 	//| JMPL(addr, rd) =>
 		/*
 		 * JMPL, with rd != %o7, i.e. register jump
@@ -409,7 +409,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		jump->setIsComputed();
 		result.rtl = new RTL(pc, jump);
 		result.type = DD;
-		SHOW_ASM("JMPL");
+		SHOW_ASM(name);
 		DEBUG_STMTS
 
 
@@ -419,22 +419,22 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	//                          //
 	//  //  //  //  //  //  //  //
 
-	| SAVE(rs1, roi, rd) =>
+	| SAVE(rs1, roi, rd) [name] =>
 		// Decided to treat SAVE as an ordinary instruction
 		// That is, use the large list of effects from the SSL file, and
 		// hope that optimisation will vastly help the common cases
-		result.rtl = instantiate(pc, "SAVE", DIS_RS1, DIS_ROI, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI, DIS_RD);
 
-	| RESTORE(rs1, roi, rd) =>
+	| RESTORE(rs1, roi, rd) [name] =>
 		// Decided to treat RESTORE as an ordinary instruction
-		result.rtl = instantiate(pc, "RESTORE", DIS_RS1, DIS_ROI, DIS_RD);
+		result.rtl = instantiate(pc, name, DIS_RS1, DIS_ROI, DIS_RD);
 
 	| NOP [name] =>
 		result.type = NOP;
 		result.rtl = instantiate(pc, name);
 
-	| sethi(imm22, rd) =>
-		result.rtl = instantiate(pc, "sethi", dis_Num(imm22), DIS_RD);
+	| sethi(imm22, rd) [name] =>
+		result.rtl = instantiate(pc, name, dis_Num(imm22), DIS_RD);
 
 	| load_greg(addr, rd) [name] =>
 		result.rtl = instantiate(pc, name, DIS_ADDR, DIS_RD);

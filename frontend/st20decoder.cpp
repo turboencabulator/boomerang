@@ -86,7 +86,7 @@ pc + result.numBytes++
 ;
   const char *MATCH_name;
   static const char *MATCH_name_fc_0[] = {
-    NULL, "ldlp", NULL, "ldnl", "ldc", "ldnlp", NULL, "ldl", "adc", NULL, 
+    "j", "ldlp", NULL, "ldnl", "ldc", "ldnlp", NULL, "ldl", "adc", "call", 
     NULL, "ajw", "eqc", "stl", "stnl", 
   };
   unsigned /* [0..255] */ MATCH_w_8_0;
@@ -95,16 +95,19 @@ pc + result.numBytes++
     
       switch((MATCH_w_8_0 >> 4 & 0xf) /* fc at 0 */) {
         case 0: 
+          MATCH_name = 
+            MATCH_name_fc_0[(MATCH_w_8_0 >> 4 & 0xf) /* fc at 0 */]; 
           { 
+            const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
 #line 86 "machine/st20/decoder.m"
 
 			total += oper;
-			result.rtl = unconditionalJump(pc, "j", pc + result.numBytes + total);
+			result.rtl = unconditionalJump(pc, name, pc + result.numBytes + total);
 
 
-#line 108 "st20decoder.cpp"
+#line 111 "st20decoder.cpp"
 
             
           }
@@ -124,7 +127,7 @@ pc + result.numBytes++
 			result.rtl = instantiate(pc, name, new Const(total));
 
 
-#line 128 "st20decoder.cpp"
+#line 131 "st20decoder.cpp"
 
             
           }
@@ -140,7 +143,7 @@ pc + result.numBytes++
 			continue;
 
 
-#line 144 "st20decoder.cpp"
+#line 147 "st20decoder.cpp"
 
             
           }
@@ -156,26 +159,29 @@ pc + result.numBytes++
 			continue;
 
 
-#line 160 "st20decoder.cpp"
+#line 163 "st20decoder.cpp"
 
             
           }
           
           break;
         case 9: 
+          MATCH_name = 
+            MATCH_name_fc_0[(MATCH_w_8_0 >> 4 & 0xf) /* fc at 0 */]; 
           { 
+            const char *name = MATCH_name;
             unsigned oper = (MATCH_w_8_0 & 0xf) /* bot at 0 */;
             
 #line 90 "machine/st20/decoder.m"
 
 			total += oper;
-			result.rtl = instantiate(pc, "call", new Const(total));
+			result.rtl = instantiate(pc, name, new Const(total));
 			auto newCall = new CallStatement(pc + result.numBytes + total);
 			newCall->setIsComputed(false);
 			result.rtl->appendStmt(newCall);
 
 
-#line 179 "st20decoder.cpp"
+#line 185 "st20decoder.cpp"
 
             
           }
@@ -195,7 +201,7 @@ pc + result.numBytes++
 			result.rtl = new RTL(pc, br);
 
 
-#line 199 "st20decoder.cpp"
+#line 205 "st20decoder.cpp"
 
             
           }
@@ -388,7 +394,7 @@ pc + result.numBytes++
 			}
 
 
-#line 392 "st20decoder.cpp"
+#line 398 "st20decoder.cpp"
 
             
           }
@@ -402,7 +408,7 @@ pc + result.numBytes++
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 406 "st20decoder.cpp"
+#line 412 "st20decoder.cpp"
 
 #line 287 "machine/st20/decoder.m"
 		break;
@@ -413,5 +419,5 @@ pc + result.numBytes++
 	return result;
 }
 
-#line 417 "st20decoder.cpp"
+#line 423 "st20decoder.cpp"
 

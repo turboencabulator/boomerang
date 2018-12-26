@@ -83,13 +83,13 @@ ST20Decoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			total += oper;
 			result.rtl = instantiate(pc, name, new Const(total));
 
-		| j(oper) =>
+		| j(oper) [name] =>
 			total += oper;
-			result.rtl = unconditionalJump(pc, "j", pc + result.numBytes + total);
+			result.rtl = unconditionalJump(pc, name, pc + result.numBytes + total);
 
-		| call(oper) =>
+		| call(oper) [name] =>
 			total += oper;
-			result.rtl = instantiate(pc, "call", new Const(total));
+			result.rtl = instantiate(pc, name, new Const(total));
 			auto newCall = new CallStatement(pc + result.numBytes + total);
 			newCall->setIsComputed(false);
 			result.rtl->appendStmt(newCall);

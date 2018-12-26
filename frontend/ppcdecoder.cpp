@@ -129,35 +129,35 @@ pc
     "lhz", "lhzu", "lha", "lhau", "sth", "sthu", "lmw", "stmw", "lfs", 
     "lfsu", "lfd", "lfdu", "stfs", "stfsu", "stfd", "stfdu", 
   };
-  static const char *MATCH_name_BO4_3[] = {
+  static const char *MATCH_name_BO4_4[] = {
     NULL, NULL, "bge", NULL, NULL, NULL, "blt", 
   };
-  static const char *MATCH_name_BO4_4[] = {
+  static const char *MATCH_name_BO4_5[] = {
     NULL, NULL, "ble", NULL, NULL, NULL, "bgt", 
   };
-  static const char *MATCH_name_BO4_5[] = {
+  static const char *MATCH_name_BO4_6[] = {
     NULL, NULL, "bne", NULL, NULL, NULL, "beq", 
   };
-  static const char *MATCH_name_BO4_6[] = {
+  static const char *MATCH_name_BO4_7[] = {
     NULL, NULL, "bns", NULL, NULL, NULL, "bso", 
   };
-  static const char *MATCH_name_LK_8[] = {"crnor", "bl", };
-  static const char *MATCH_name_BO4_10[] = {
+  static const char *MATCH_name_LK_9[] = {"b", "bl", };
+  static const char *MATCH_name_BO4_11[] = {
     NULL, NULL, "bgelr", NULL, NULL, NULL, "bltlr", 
   };
-  static const char *MATCH_name_BO4_11[] = {
+  static const char *MATCH_name_BO4_12[] = {
     NULL, NULL, "blelr", NULL, NULL, NULL, "bgtlr", 
   };
-  static const char *MATCH_name_BO4_12[] = {
+  static const char *MATCH_name_BO4_13[] = {
     NULL, NULL, "bnelr", NULL, NULL, NULL, "beqlr", 
   };
-  static const char *MATCH_name_BO4_13[] = {
+  static const char *MATCH_name_BO4_14[] = {
     NULL, NULL, "bnslr", NULL, NULL, NULL, "bsolr", 
   };
-  static const char *MATCH_name_LK_14[] = {"crandc", "balctrl", };
-  static const char *MATCH_name_Rc_22[] = {"rlwimi", "rlwimiq", };
-  static const char *MATCH_name_Rc_23[] = {"rlwinm", "rlwinmq", };
-  static const char *MATCH_name_Xo1_26[] = {
+  static const char *MATCH_name_LK_15[] = {"crnor", "balctrl", };
+  static const char *MATCH_name_Rc_24[] = {"rlwimi", "rlwimiq", };
+  static const char *MATCH_name_Rc_25[] = {"rlwinm", "rlwinmq", };
+  static const char *MATCH_name_Xo1_28[] = {
     "fcmpu", NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL, "frsp", NULL, "fctiw", "fctiwz", NULL, NULL, NULL, NULL, "lwarx", 
     "ldx", NULL, "lwzx", "slw", NULL, "cntlzw", "sld", "and", NULL, NULL, 
@@ -245,7 +245,7 @@ pc
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     "stfiwx", NULL, NULL, "extsw", 
   };
-  static const char *MATCH_name_Xo9_29[] = {
+  static const char *MATCH_name_Xo9_31[] = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "subfc", NULL, "addc", 
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
@@ -289,7 +289,7 @@ pc
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL, NULL, NULL, NULL, NULL, "divd", NULL, "divw", 
   };
-  static const char *MATCH_name_Xo1_30[] = {
+  static const char *MATCH_name_Xo1_32[] = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     "frspq", NULL, "fctiwq", "fctiwzq", NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL, NULL, "slwq", NULL, NULL, "sldq", "andq", NULL, NULL, NULL, NULL, 
@@ -363,10 +363,10 @@ pc
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, "fcfidq", 
   };
-  static const char *MATCH_name_Rc_36[] = {"fdivs", "fdivsq", };
-  static const char *MATCH_name_Rc_37[] = {"fsubs", "fsubsq", };
-  static const char *MATCH_name_Rc_38[] = {"fadds", "faddsq", };
-  static const char *MATCH_name_Xo5_40[] = {
+  static const char *MATCH_name_Rc_38[] = {"fdivs", "fdivsq", };
+  static const char *MATCH_name_Rc_39[] = {"fsubs", "fsubsq", };
+  static const char *MATCH_name_Rc_40[] = {"fadds", "faddsq", };
+  static const char *MATCH_name_Xo5_42[] = {
     NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 
     NULL, NULL, NULL, NULL, NULL, NULL, "fdiv", NULL, "fsub", "fadd", 
   };
@@ -510,15 +510,18 @@ pc
                         case 8: case 9: case 10: case 11: case 12: case 13: 
                         case 14: case 15: 
                           if ((MATCH_w_32_0 >> 21 & 0x1f) 
-                                  /* BO at 0 */ == 20) 
-                            goto MATCH_label_a1;  /*opt-block+*/
+                                  /* BO at 0 */ == 20) { 
+                            MATCH_name = "bal"; 
+                            goto MATCH_label_a1; 
+                            
+                          } /*opt-block*/
                           else 
                             goto MATCH_label_a0;  /*opt-block+*/
                           
                           break;
                         case 2: 
                           MATCH_name = 
-                            MATCH_name_BO4_3[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_4[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -535,7 +538,7 @@ pc
 
 		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSGE, BIcr);
 
-#line 539 "ppcdecoder.cpp"
+#line 542 "ppcdecoder.cpp"
 
                             
                           }
@@ -543,7 +546,7 @@ pc
                           break;
                         case 6: 
                           MATCH_name = 
-                            MATCH_name_BO4_3[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_4[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -560,7 +563,7 @@ pc
 
 		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSL, BIcr);
 
-#line 564 "ppcdecoder.cpp"
+#line 567 "ppcdecoder.cpp"
 
                             
                           }
@@ -576,15 +579,18 @@ pc
                         case 8: case 9: case 10: case 11: case 12: case 13: 
                         case 14: case 15: 
                           if ((MATCH_w_32_0 >> 21 & 0x1f) 
-                                  /* BO at 0 */ == 20) 
-                            goto MATCH_label_a1;  /*opt-block+*/
+                                  /* BO at 0 */ == 20) { 
+                            MATCH_name = "bal"; 
+                            goto MATCH_label_a1; 
+                            
+                          } /*opt-block*/
                           else 
                             goto MATCH_label_a0;  /*opt-block+*/
                           
                           break;
                         case 2: 
                           MATCH_name = 
-                            MATCH_name_BO4_4[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_5[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -601,7 +607,7 @@ pc
 
 		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSLE, BIcr);
 
-#line 605 "ppcdecoder.cpp"
+#line 611 "ppcdecoder.cpp"
 
                             
                           }
@@ -609,7 +615,7 @@ pc
                           break;
                         case 6: 
                           MATCH_name = 
-                            MATCH_name_BO4_4[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_5[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -628,7 +634,7 @@ pc
 //	| bnl(BIcr, reladdr) [name] =>  // bnl same as bge
 //		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSGE, BIcr);
 
-#line 632 "ppcdecoder.cpp"
+#line 638 "ppcdecoder.cpp"
 
                             
                           }
@@ -644,15 +650,18 @@ pc
                         case 8: case 9: case 10: case 11: case 12: case 13: 
                         case 14: case 15: 
                           if ((MATCH_w_32_0 >> 21 & 0x1f) 
-                                  /* BO at 0 */ == 20) 
-                            goto MATCH_label_a1;  /*opt-block+*/
+                                  /* BO at 0 */ == 20) { 
+                            MATCH_name = "bal"; 
+                            goto MATCH_label_a1; 
+                            
+                          } /*opt-block*/
                           else 
                             goto MATCH_label_a0;  /*opt-block+*/
                           
                           break;
                         case 2: 
                           MATCH_name = 
-                            MATCH_name_BO4_5[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_6[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -671,7 +680,7 @@ pc
 //	| bng(BIcr, reladdr) [name] =>  // bng same as blt
 //		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JSLE, BIcr);
 
-#line 675 "ppcdecoder.cpp"
+#line 684 "ppcdecoder.cpp"
 
                             
                           }
@@ -679,7 +688,7 @@ pc
                           break;
                         case 6: 
                           MATCH_name = 
-                            MATCH_name_BO4_5[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_6[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -696,7 +705,7 @@ pc
 
 		result.rtl = conditionalJump(pc, name, reladdr, BRANCH_JE, BIcr);
 
-#line 700 "ppcdecoder.cpp"
+#line 709 "ppcdecoder.cpp"
 
                             
                           }
@@ -712,15 +721,18 @@ pc
                         case 8: case 9: case 10: case 11: case 12: case 13: 
                         case 14: case 15: 
                           if ((MATCH_w_32_0 >> 21 & 0x1f) 
-                                  /* BO at 0 */ == 20) 
-                            goto MATCH_label_a1;  /*opt-block+*/
+                                  /* BO at 0 */ == 20) { 
+                            MATCH_name = "bal"; 
+                            goto MATCH_label_a1; 
+                            
+                          } /*opt-block*/
                           else 
                             goto MATCH_label_a0;  /*opt-block+*/
                           
                           break;
                         case 2: 
                           MATCH_name = 
-                            MATCH_name_BO4_6[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_7[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -742,7 +754,7 @@ pc
 //		result.rtl = conditionalJump(pc, name, reladdr, (BRANCH_TYPE)0, BIcr);
 
 
-#line 746 "ppcdecoder.cpp"
+#line 758 "ppcdecoder.cpp"
 
                             
                           }
@@ -750,7 +762,7 @@ pc
                           break;
                         case 6: 
                           MATCH_name = 
-                            MATCH_name_BO4_6[(MATCH_w_32_0 >> 22 & 0xf) 
+                            MATCH_name_BO4_7[(MATCH_w_32_0 >> 22 & 0xf) 
                                 /* BO4 at 0 */]; 
                           { 
                             const char *name = MATCH_name;
@@ -767,7 +779,7 @@ pc
   // Branch on summary overflow
 		result.rtl = conditionalJump(pc, name, reladdr, (BRANCH_TYPE)0, BIcr);  // MVE: Don't know these last 4 yet
 
-#line 771 "ppcdecoder.cpp"
+#line 783 "ppcdecoder.cpp"
 
                             
                           }
@@ -785,7 +797,7 @@ pc
           else 
             if ((MATCH_w_32_0 & 0x1) /* LK at 0 */ == 1) { 
               MATCH_name = 
-                MATCH_name_LK_8[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
+                MATCH_name_LK_9[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
               { 
                 const char *name = MATCH_name;
                 unsigned reladdr = 
@@ -807,27 +819,34 @@ pc
 		newCall->setDestProc(destProc);
 
 
-#line 811 "ppcdecoder.cpp"
+#line 823 "ppcdecoder.cpp"
 
                 
               }
               
             } /*opt-block*/
             else { 
-              unsigned reladdr = 
-                4 * sign_extend((MATCH_w_32_0 >> 2 & 0xffffff) /* LI at 0 */, 
-                            24) + addressToPC(MATCH_p);
-              nextPC = 4 + MATCH_p; 
-              
+              MATCH_name = 
+                MATCH_name_LK_9[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
+              { 
+                const char *name = MATCH_name;
+                unsigned reladdr = 
+                  4 * sign_extend(
+                              (MATCH_w_32_0 >> 2 & 0xffffff) /* LI at 0 */, 
+                              24) + addressToPC(MATCH_p);
+                nextPC = 4 + MATCH_p; 
+                
 #line 192 "machine/ppc/decoder.m"
 
-		result.rtl = unconditionalJump(pc, "b", reladdr);
+		result.rtl = unconditionalJump(pc, name, reladdr);
 
 
-#line 828 "ppcdecoder.cpp"
+#line 845 "ppcdecoder.cpp"
 
+                
+              }
               
-            } /*opt-block*//*opt-block+*/ /*opt-block+*/
+            } /*opt-block*/ /*opt-block+*/
           break;
         case 19: 
           if (34 <= (MATCH_w_32_0 >> 1 & 0x3ff) /* Xo1 at 0 */ && 
@@ -896,7 +915,7 @@ pc
                                 break;
                               case 2: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_10[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_11[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -911,7 +930,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 915 "ppcdecoder.cpp"
+#line 934 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -919,7 +938,7 @@ pc
                                 break;
                               case 6: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_10[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_11[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -934,7 +953,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 938 "ppcdecoder.cpp"
+#line 957 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -962,7 +981,7 @@ pc
                                 break;
                               case 2: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_11[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_12[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -977,7 +996,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 981 "ppcdecoder.cpp"
+#line 1000 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -985,7 +1004,7 @@ pc
                                 break;
                               case 6: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_11[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_12[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -1000,7 +1019,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1004 "ppcdecoder.cpp"
+#line 1023 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1028,7 +1047,7 @@ pc
                                 break;
                               case 2: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_12[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_13[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -1043,7 +1062,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1047 "ppcdecoder.cpp"
+#line 1066 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1051,7 +1070,7 @@ pc
                                 break;
                               case 6: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_12[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_13[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -1066,7 +1085,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1070 "ppcdecoder.cpp"
+#line 1089 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1094,7 +1113,7 @@ pc
                                 break;
                               case 2: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_13[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_14[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -1109,7 +1128,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1113 "ppcdecoder.cpp"
+#line 1132 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1117,7 +1136,7 @@ pc
                                 break;
                               case 6: 
                                 MATCH_name = 
-                                  MATCH_name_BO4_13[(MATCH_w_32_0 >> 22 & 0xf) 
+                                  MATCH_name_BO4_14[(MATCH_w_32_0 >> 22 & 0xf) 
                                       /* BO4 at 0 */]; 
                                 { 
                                   const char *name = MATCH_name;
@@ -1132,7 +1151,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 
 
-#line 1136 "ppcdecoder.cpp"
+#line 1155 "ppcdecoder.cpp"
 
                                   
                                 }
@@ -1149,7 +1168,7 @@ pc
               case 33: 
                 if ((MATCH_w_32_0 & 0x1) /* LK at 0 */ == 0) { 
                   MATCH_name = 
-                    MATCH_name_LK_8[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
+                    MATCH_name_LK_15[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
                   goto MATCH_label_a3; 
                   
                 } /*opt-block*/
@@ -1159,8 +1178,7 @@ pc
                 break;
               case 129: 
                 if ((MATCH_w_32_0 & 0x1) /* LK at 0 */ == 0) { 
-                  MATCH_name = 
-                    MATCH_name_LK_14[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
+                  MATCH_name = "crandc"; 
                   goto MATCH_label_a3; 
                   
                 } /*opt-block*/
@@ -1233,7 +1251,7 @@ pc
                   if ((MATCH_w_32_0 >> 11 & 0x1f) /* crbB at 0 */ == 0) 
                     if ((MATCH_w_32_0 & 0x1) /* LK at 0 */ == 1) { 
                       MATCH_name = 
-                        MATCH_name_LK_14[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
+                        MATCH_name_LK_15[(MATCH_w_32_0 & 0x1) /* LK at 0 */]; 
                       { 
                         const char *name = MATCH_name;
                         nextPC = 4 + MATCH_p; 
@@ -1244,7 +1262,7 @@ pc
 		result.rtl = computedCall(pc, name, new Unary(opMachFtr, new Const("%CTR")));
 
 
-#line 1248 "ppcdecoder.cpp"
+#line 1266 "ppcdecoder.cpp"
 
                         
                       }
@@ -1262,7 +1280,7 @@ pc
 		result.rtl = computedJump(pc, name, new Unary(opMachFtr, new Const("%CTR")));
 
 
-#line 1266 "ppcdecoder.cpp"
+#line 1284 "ppcdecoder.cpp"
 
                         
                       }
@@ -1277,12 +1295,12 @@ pc
             } /* (MATCH_w_32_0 >> 1 & 0x3ff) -- Xo1 at 0 --*/ 
           break;
         case 20: 
-          MATCH_name = MATCH_name_Rc_22[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
+          MATCH_name = MATCH_name_Rc_24[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
           goto MATCH_label_a4; 
           
           break;
         case 21: 
-          MATCH_name = MATCH_name_Rc_23[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
+          MATCH_name = MATCH_name_Rc_25[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
           goto MATCH_label_a4; 
           
           break;
@@ -1300,7 +1318,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_UIMM);
 
-#line 1304 "ppcdecoder.cpp"
+#line 1322 "ppcdecoder.cpp"
 
             
           }
@@ -1376,7 +1394,7 @@ pc
                 case 24: case 27: case 28: case 60: case 124: case 284: 
                 case 316: case 412: case 444: case 476: case 536: case 539: 
                 case 792: case 794: 
-                  MATCH_name = MATCH_name_Xo1_30[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                  MATCH_name = MATCH_name_Xo1_32[(MATCH_w_32_0 >> 1 & 0x3ff) 
                         /* Xo1 at 0 */]; 
                   goto MATCH_label_a8; 
                   
@@ -1402,13 +1420,13 @@ pc
                   
                   break;
                 case 150: case 214: 
-                  MATCH_name = MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                  MATCH_name = MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                         /* Xo1 at 0 */]; 
                   goto MATCH_label_a10; 
                   
                   break;
                 case 824: 
-                  MATCH_name = MATCH_name_Xo1_30[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                  MATCH_name = MATCH_name_Xo1_32[(MATCH_w_32_0 >> 1 & 0x3ff) 
                         /* Xo1 at 0 */]; 
                   { 
                     const char *name = MATCH_name;
@@ -1422,7 +1440,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
 
-#line 1426 "ppcdecoder.cpp"
+#line 1444 "ppcdecoder.cpp"
 
                     
                   }
@@ -1650,7 +1668,7 @@ pc
                     case 341: case 343: case 373: case 375: case 533: 
                     case 534: case 790: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a7; 
                       
@@ -1659,14 +1677,14 @@ pc
                     case 316: case 412: case 444: case 476: case 536: 
                     case 539: case 792: case 794: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a8; 
                       
                       break;
                     case 26: case 58: case 922: case 954: case 986: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a9; 
                       
@@ -1695,14 +1713,14 @@ pc
                     case 247: case 407: case 438: case 439: case 661: 
                     case 662: case 918: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a10; 
                       
                       break;
                     case 339: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a11; 
                       
@@ -1711,21 +1729,21 @@ pc
                       goto MATCH_label_a12; break;
                     case 535: case 567: case 599: case 631: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a13; 
                       
                       break;
                     case 663: case 695: case 727: case 759: case 983: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a14; 
                       
                       break;
                     case 824: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a15; 
                       
@@ -1926,7 +1944,7 @@ pc
                       case 341: case 343: case 373: case 375: case 533: 
                       case 534: case 790: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a7; 
                         
@@ -1935,14 +1953,14 @@ pc
                       case 316: case 412: case 444: case 476: case 536: 
                       case 539: case 792: case 794: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a8; 
                         
                         break;
                       case 26: case 58: case 922: case 954: case 986: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a9; 
                         
@@ -1971,14 +1989,14 @@ pc
                       case 247: case 407: case 438: case 439: case 661: 
                       case 662: case 918: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a10; 
                         
                         break;
                       case 339: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a11; 
                         
@@ -1987,21 +2005,21 @@ pc
                         goto MATCH_label_a12; break;
                       case 535: case 567: case 599: case 631: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a13; 
                         
                         break;
                       case 663: case 695: case 727: case 759: case 983: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a14; 
                         
                         break;
                       case 824: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a15; 
                         
@@ -2238,7 +2256,7 @@ pc
                           case 311: case 341: case 343: case 373: case 375: 
                           case 533: case 534: case 790: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a7; 
                             
@@ -2247,14 +2265,14 @@ pc
                           case 284: case 316: case 412: case 444: case 476: 
                           case 536: case 539: case 792: case 794: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a8; 
                             
                             break;
                           case 26: case 58: case 922: case 954: case 986: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a9; 
                             
@@ -2285,14 +2303,14 @@ pc
                           case 247: case 407: case 438: case 439: case 661: 
                           case 662: case 918: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a10; 
                             
                             break;
                           case 339: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a11; 
                             
@@ -2301,21 +2319,21 @@ pc
                             goto MATCH_label_a12; break;
                           case 535: case 567: case 599: case 631: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a13; 
                             
                             break;
                           case 663: case 695: case 727: case 759: case 983: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a14; 
                             
                             break;
                           case 824: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a15; 
                             
@@ -2327,14 +2345,14 @@ pc
                     case 235: case 266: case 457: case 459: case 489: 
                     case 491: 
                       MATCH_name = 
-                        MATCH_name_Xo9_29[(MATCH_w_32_0 >> 1 & 0x1ff) 
+                        MATCH_name_Xo9_31[(MATCH_w_32_0 >> 1 & 0x1ff) 
                             /* Xo9 at 0 */]; 
                       goto MATCH_label_a16; 
                       
                       break;
                     case 104: case 200: case 202: case 232: case 234: 
                       MATCH_name = 
-                        MATCH_name_Xo9_29[(MATCH_w_32_0 >> 1 & 0x1ff) 
+                        MATCH_name_Xo9_31[(MATCH_w_32_0 >> 1 & 0x1ff) 
                             /* Xo9 at 0 */]; 
                       { 
                         const char *name = MATCH_name;
@@ -2348,7 +2366,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA);
 
-#line 2352 "ppcdecoder.cpp"
+#line 2370 "ppcdecoder.cpp"
 
                         
                       }
@@ -2525,7 +2543,7 @@ pc
                     case 341: case 343: case 373: case 375: case 533: 
                     case 534: case 790: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a7; 
                       
@@ -2534,7 +2552,7 @@ pc
                     case 316: case 412: case 444: case 476: case 536: 
                     case 539: case 792: case 794: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a8; 
                       
@@ -2553,14 +2571,14 @@ pc
                     case 247: case 407: case 438: case 439: case 661: 
                     case 662: case 918: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a10; 
                       
                       break;
                     case 339: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a11; 
                       
@@ -2569,21 +2587,21 @@ pc
                       goto MATCH_label_a12; break;
                     case 535: case 567: case 599: case 631: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a13; 
                       
                       break;
                     case 663: case 695: case 727: case 759: case 983: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a14; 
                       
                       break;
                     case 824: 
                       MATCH_name = 
-                        MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                        MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                             /* Xo1 at 0 */]; 
                       goto MATCH_label_a15; 
                       
@@ -2764,7 +2782,7 @@ pc
                       case 341: case 343: case 373: case 375: case 533: 
                       case 534: case 790: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a7; 
                         
@@ -2773,7 +2791,7 @@ pc
                       case 316: case 412: case 444: case 476: case 536: 
                       case 539: case 792: case 794: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a8; 
                         
@@ -2792,14 +2810,14 @@ pc
                       case 247: case 407: case 438: case 439: case 661: 
                       case 662: case 918: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a10; 
                         
                         break;
                       case 339: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a11; 
                         
@@ -2808,21 +2826,21 @@ pc
                         goto MATCH_label_a12; break;
                       case 535: case 567: case 599: case 631: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a13; 
                         
                         break;
                       case 663: case 695: case 727: case 759: case 983: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a14; 
                         
                         break;
                       case 824: 
                         MATCH_name = 
-                          MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                          MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                               /* Xo1 at 0 */]; 
                         goto MATCH_label_a15; 
                         
@@ -3026,7 +3044,7 @@ pc
                           case 311: case 341: case 343: case 373: case 375: 
                           case 533: case 534: case 790: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a7; 
                             
@@ -3035,7 +3053,7 @@ pc
                           case 284: case 316: case 412: case 444: case 476: 
                           case 536: case 539: case 792: case 794: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a8; 
                             
@@ -3055,14 +3073,14 @@ pc
                           case 247: case 407: case 438: case 439: case 661: 
                           case 662: case 918: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a10; 
                             
                             break;
                           case 339: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a11; 
                             
@@ -3071,21 +3089,21 @@ pc
                             goto MATCH_label_a12; break;
                           case 535: case 567: case 599: case 631: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a13; 
                             
                             break;
                           case 663: case 695: case 727: case 759: case 983: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a14; 
                             
                             break;
                           case 824: 
                             MATCH_name = 
-                              MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                              MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                   /* Xo1 at 0 */]; 
                             goto MATCH_label_a15; 
                             
@@ -3097,7 +3115,7 @@ pc
                     case 235: case 266: case 457: case 459: case 489: 
                     case 491: 
                       MATCH_name = 
-                        MATCH_name_Xo9_29[(MATCH_w_32_0 >> 1 & 0x1ff) 
+                        MATCH_name_Xo9_31[(MATCH_w_32_0 >> 1 & 0x1ff) 
                             /* Xo9 at 0 */]; 
                       goto MATCH_label_a16; 
                       
@@ -3134,7 +3152,7 @@ pc
 		result.rtl->appendStmt(new ReturnStatement);
 #endif
 
-#line 3138 "ppcdecoder.cpp"
+#line 3156 "ppcdecoder.cpp"
 
             
           }
@@ -3161,7 +3179,7 @@ pc
 		}
 
 
-#line 3165 "ppcdecoder.cpp"
+#line 3183 "ppcdecoder.cpp"
 
             
           }
@@ -3183,7 +3201,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
 
-#line 3187 "ppcdecoder.cpp"
+#line 3205 "ppcdecoder.cpp"
 
             
           }
@@ -3205,7 +3223,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
 
 
-#line 3209 "ppcdecoder.cpp"
+#line 3227 "ppcdecoder.cpp"
 
             
           }
@@ -3225,7 +3243,7 @@ pc
                   goto MATCH_label_a0;  /*opt-block+*/
                 else { 
                   MATCH_name = 
-                    MATCH_name_Rc_36[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
+                    MATCH_name_Rc_38[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
                   goto MATCH_label_a17; 
                   
                 } /*opt-block*/
@@ -3237,7 +3255,7 @@ pc
                   goto MATCH_label_a0;  /*opt-block+*/
                 else { 
                   MATCH_name = 
-                    MATCH_name_Rc_37[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
+                    MATCH_name_Rc_39[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
                   goto MATCH_label_a17; 
                   
                 } /*opt-block*/
@@ -3249,7 +3267,7 @@ pc
                   goto MATCH_label_a0;  /*opt-block+*/
                 else { 
                   MATCH_name = 
-                    MATCH_name_Rc_38[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
+                    MATCH_name_Rc_40[(MATCH_w_32_0 & 0x1) /* Rc at 0 */]; 
                   goto MATCH_label_a17; 
                   
                 } /*opt-block*/
@@ -3371,7 +3389,7 @@ pc
                   case 12: case 14: case 15: case 40: case 72: case 136: 
                   case 264: case 814: case 815: case 846: 
                     MATCH_name = 
-                      MATCH_name_Xo1_30[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                      MATCH_name_Xo1_32[(MATCH_w_32_0 >> 1 & 0x3ff) 
                           /* Xo1 at 0 */]; 
                     goto MATCH_label_a19; 
                     
@@ -3479,7 +3497,7 @@ pc
                           20 <= (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ && 
                           (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                           MATCH_name = 
-                            MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                            MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                                 /* Xo5 at 0 */]; 
                           goto MATCH_label_a17; 
                           
@@ -3494,7 +3512,7 @@ pc
                                   /* Xo5 at 0 */ && 
                             (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                             MATCH_name = 
-                              MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                              MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                                   /* Xo5 at 0 */]; 
                             goto MATCH_label_a17; 
                             
@@ -3577,7 +3595,7 @@ pc
                   case 12: case 14: case 15: case 40: case 72: case 136: 
                   case 264: case 814: case 815: case 846: 
                     MATCH_name = 
-                      MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                      MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                           /* Xo1 at 0 */]; 
                     goto MATCH_label_a19; 
                     
@@ -3590,7 +3608,7 @@ pc
                           20 <= (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ && 
                           (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                           MATCH_name = 
-                            MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                            MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                                 /* Xo5 at 0 */]; 
                           goto MATCH_label_a17; 
                           
@@ -3605,7 +3623,7 @@ pc
                                   /* Xo5 at 0 */ && 
                             (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                             MATCH_name = 
-                              MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                              MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                                   /* Xo5 at 0 */]; 
                             goto MATCH_label_a17; 
                             
@@ -3636,7 +3654,7 @@ pc
                   if ((MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ == 18 || 
                     20 <= (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ && 
                     (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
-                    MATCH_name = MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                    MATCH_name = MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                           /* Xo5 at 0 */]; 
                     goto MATCH_label_a17; 
                     
@@ -3649,7 +3667,7 @@ pc
                       20 <= (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ && 
                       (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                       MATCH_name = 
-                        MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                        MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                             /* Xo5 at 0 */]; 
                       goto MATCH_label_a17; 
                       
@@ -3663,7 +3681,7 @@ pc
                         20 <= (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ && 
                         (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                         MATCH_name = 
-                          MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                          MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                               /* Xo5 at 0 */]; 
                         goto MATCH_label_a17; 
                         
@@ -3674,7 +3692,7 @@ pc
                       switch((MATCH_w_32_0 >> 1 & 0x3ff) /* Xo1 at 0 */) {
                         case 0: case 32: 
                           MATCH_name = 
-                            MATCH_name_Xo1_26[(MATCH_w_32_0 >> 1 & 0x3ff) 
+                            MATCH_name_Xo1_28[(MATCH_w_32_0 >> 1 & 0x3ff) 
                                 /* Xo1 at 0 */]; 
                           goto MATCH_label_a18; 
                           
@@ -3691,7 +3709,7 @@ pc
                                   /* Xo5 at 0 */ && 
                             (MATCH_w_32_0 >> 1 & 0x1f) /* Xo5 at 0 */ < 22) { 
                             MATCH_name = 
-                              MATCH_name_Xo5_40[(MATCH_w_32_0 >> 1 & 0x1f) 
+                              MATCH_name_Xo5_42[(MATCH_w_32_0 >> 1 & 0x1f) 
                                   /* Xo5 at 0 */]; 
                             goto MATCH_label_a17; 
                             
@@ -3754,7 +3772,7 @@ pc
 
 		result.valid = false;
 
-#line 3758 "ppcdecoder.cpp"
+#line 3776 "ppcdecoder.cpp"
 
       
     } 
@@ -3762,6 +3780,7 @@ pc
     
   MATCH_label_a1: (void)0; /*placeholder for label*/ 
     { 
+      const char *name = MATCH_name;
       unsigned reladdr = 
         4 * sign_extend((MATCH_w_32_0 >> 2 & 0x3fff) /* BD at 0 */, 14) + 
         addressToPC(MATCH_p);
@@ -3770,12 +3789,12 @@ pc
 #line 282 "machine/ppc/decoder.m"
 
 	//| bal(BIcr, reladdr) =>
-		result.rtl = unconditionalJump(pc, "bal", reladdr);
+		result.rtl = unconditionalJump(pc, name, reladdr);
 
 	// b<cond>lr: Branch conditionally to the link register. Model this as a conditional branch around a return
 	// statement.
 
-#line 3779 "ppcdecoder.cpp"
+#line 3798 "ppcdecoder.cpp"
 
       
     } 
@@ -3794,7 +3813,7 @@ pc
 
 	// Shift right arithmetic
 
-#line 3798 "ppcdecoder.cpp"
+#line 3817 "ppcdecoder.cpp"
 
       
     } 
@@ -3813,7 +3832,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_CRBD, DIS_CRBA, DIS_CRBB);
 
 
-#line 3817 "ppcdecoder.cpp"
+#line 3836 "ppcdecoder.cpp"
 
       
     } 
@@ -3835,7 +3854,7 @@ pc
 
 
 
-#line 3839 "ppcdecoder.cpp"
+#line 3858 "ppcdecoder.cpp"
 
       
     } 
@@ -3854,7 +3873,7 @@ pc
 	//| Xcmp_(crfd, l, ra, rb) [name] =>
 		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_NZRB);
 
-#line 3858 "ppcdecoder.cpp"
+#line 3877 "ppcdecoder.cpp"
 
       
     } 
@@ -3871,7 +3890,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_RD);
 
 
-#line 3875 "ppcdecoder.cpp"
+#line 3894 "ppcdecoder.cpp"
 
       
     } 
@@ -3889,7 +3908,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
 
-#line 3893 "ppcdecoder.cpp"
+#line 3912 "ppcdecoder.cpp"
 
       
     } 
@@ -3907,7 +3926,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 
-#line 3911 "ppcdecoder.cpp"
+#line 3930 "ppcdecoder.cpp"
 
       
     } 
@@ -3927,7 +3946,7 @@ pc
 	// The number of parameters passed to instantiate() after pc and name has to agree with ppc.ssl
 	// Stores and loads pass rA to instantiate twice: as part of DIS_DISP, and separately as DIS_NZRA
 
-#line 3931 "ppcdecoder.cpp"
+#line 3950 "ppcdecoder.cpp"
 
       
     } 
@@ -3946,7 +3965,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
 	// Load instructions
 
-#line 3950 "ppcdecoder.cpp"
+#line 3969 "ppcdecoder.cpp"
 
       
     } 
@@ -3965,7 +3984,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_UIMM);
 
-#line 3969 "ppcdecoder.cpp"
+#line 3988 "ppcdecoder.cpp"
 
       
     } 
@@ -3993,7 +4012,7 @@ pc
 		}
 
 
-#line 3997 "ppcdecoder.cpp"
+#line 4016 "ppcdecoder.cpp"
 
       
     } 
@@ -4012,7 +4031,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
 
 
-#line 4016 "ppcdecoder.cpp"
+#line 4035 "ppcdecoder.cpp"
 
       
     } 
@@ -4032,7 +4051,7 @@ pc
 
 
 
-#line 4036 "ppcdecoder.cpp"
+#line 4055 "ppcdecoder.cpp"
 
       
     } 
@@ -4050,7 +4069,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RA, DIS_RS, DIS_UIMM);
 
-#line 4054 "ppcdecoder.cpp"
+#line 4073 "ppcdecoder.cpp"
 
       
     } 
@@ -4068,7 +4087,7 @@ pc
 
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 
-#line 4072 "ppcdecoder.cpp"
+#line 4091 "ppcdecoder.cpp"
 
       
     } 
@@ -4092,7 +4111,7 @@ pc
 	// Conditional branches
 	// bcc_ is blt | ble | beq | bge | bgt | bnl | bne | bng | bso | bns | bun | bnu | bal (branch always)
 
-#line 4096 "ppcdecoder.cpp"
+#line 4115 "ppcdecoder.cpp"
 
       
     } 
@@ -4111,7 +4130,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_FA, DIS_FB);
 
 
-#line 4115 "ppcdecoder.cpp"
+#line 4134 "ppcdecoder.cpp"
 
       
     } 
@@ -4129,7 +4148,7 @@ pc
 		result.rtl = instantiate(pc, name, DIS_FD, DIS_FB);
 
 
-#line 4133 "ppcdecoder.cpp"
+#line 4152 "ppcdecoder.cpp"
 
       
     } 
@@ -4138,7 +4157,7 @@ pc
   MATCH_finished_a: (void)0; /*placeholder for label*/
   
 }
-#line 4142 "ppcdecoder.cpp"
+#line 4161 "ppcdecoder.cpp"
 
 #line 334 "machine/ppc/decoder.m"
 
@@ -4217,5 +4236,5 @@ crBit(int bitNum)
 	                   new Const(bitNum));
 }
 
-#line 4221 "ppcdecoder.cpp"
+#line 4240 "ppcdecoder.cpp"
 
