@@ -457,9 +457,7 @@ RTLInstDict::instantiateRTL(ADDRESS natPC, const RTL &tmpl, const std::list<std:
 	transformPostVars(*rtl, true);
 
 	// Perform simplifications, e.g. *1 in Pentium addressing modes
-	for (const auto &ss : *rtl) {
-		ss->simplify();
-	}
+	rtl->simplify();
 
 	return rtl;
 }
