@@ -59,7 +59,7 @@ NOP is XCHG & col = 0
 MOVib is row = 11 & page = 0
 MOViv is row = 11 & page = 1
 [ B.Eb.Ib B.Ev.Ib RET.Iw  RET     LES LDS MOV.Eb.Ib MOV.Ev.Iv      	
-  B.Eb.1  B.Ev.1  B.Eb.CL B.Ev.CL AAM AAD _         XLAT
+  B.Eb.1  B.Ev.1  B.Eb.CL B.Ev.CL AAM AAD _         XLATB
 ]   is row = [12 13] & page = 0 & col = {0 to 7}
 [ ENTER LEAVE RET.far.Iw RET.far INT3 INT.Ib INTO IRET ]
     is row = 12      & page = 1 & col = {0 to 7}
@@ -130,7 +130,7 @@ patterns
   [ FIADD FIMUL FICOM FICOMP FISUB FISUBR FIDIV FIDIVR ] is reg_opcode = {0 to 7} ...
   FUCOMPP                          is DA; mod = 3 & reg_opcode = 5 & r_m = 1
   [ FILD _ FIST FISTP FBLD FLD.ext FBSTP FSTP.ext ] is reg_opcode = {0 to 7} ...
-  [ FCLEX FINIT ]                  is DB; mod = 3 & reg_opcode = 4 & r_m = [2 3]
+  [ FNCLEX FINIT ]                 is DB; mod = 3 & reg_opcode = 4 & r_m = [2 3]
   [ FRSTOR _ FSAVE FSTSW ]          is reg_opcode = {4 to 7} ...
   [ FFREE _ FST.st FSTP.st FUCOM FUCOMP  _ _ ]  is mod = 3 & reg_opcode = {0 to 7}
   [ FADDP _ FSUBRP FDIVRP FMULP _ FSUBP FDIVP ] is mod = 3 & reg_opcode = {0 to 7}
@@ -287,7 +287,8 @@ FIADD^Fint  Mem  is  Fint; Mem & FIADD ...
 FBLD        Mem  is  DF; Mem & FBLD
 FBSTP       Mem  is  DF; Mem & FBSTP
 FCHS
-FNCLEX           is  FCLEX
+FCLEX            is  WAIT; FNCLEX
+FNCLEX
    constructors
 FCOMs^Fmem     Mem  is  Fmem; Mem & FCOMs ...       # includes FICOM, FICOMP
 FCOMs^.ST.STi  idx  is  .ST.STi & ... (FCOMs   & r_m = idx)
@@ -538,5 +539,5 @@ XADD.Ev.Gv^ov  Eaddr, reg  is ov; XADD.Ev.Gv; Eaddr & reg_opcode = reg ...
 XCHG^"eAX"^ov  r32         is ov; XCHG & r32
 XCHG.Eb.Gb     Eaddr, reg  is     XCHG.Eb.Gb; Eaddr & reg_opcode = reg ...
 XCHG.Ev.Gv^ov  Eaddr, reg  is ov; XCHG.Ev.Gv; Eaddr & reg_opcode = reg ...
-XLATB is XLAT
+XLATB
 # XOR is in the arith group

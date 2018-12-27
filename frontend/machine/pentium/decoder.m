@@ -308,8 +308,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 //		result.rtl = instantiate(pc, name, DIS_EADDR8);
 //		SETS(name, DIS_EADDR8, BRANCH_JSG);
 
-	| XLATB() =>
-		result.rtl = instantiate(pc, "XLATB");
+	| XLATB() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| XCHG.Ev.Gvod(Eaddr, reg) [name] =>
 		result.rtl = instantiate(pc, name, DIS_EADDR32, DIS_REG32);
@@ -1765,8 +1765,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| FCHS() [name] =>
 		result.rtl = instantiate(pc, name);
 
-	| FNCLEX() =>
-		result.rtl = instantiate(pc, "FNCLEX");
+	| FNCLEX() [name] =>
+		result.rtl = instantiate(pc, name);
 
 	| FCOM.R32(Mem32) [name] =>
 		result.rtl = instantiate(pc, name, DIS_MEM32);
@@ -1864,8 +1864,8 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| FILD.lsI32(Mem32) [name] =>
 		result.rtl = instantiate(pc, name, DIS_MEM32);
 
-	| FILD64(Mem64) =>
-		result.rtl = instantiate(pc, "FILD.lsI64", DIS_MEM64);
+	| FILD64(Mem64) [name] =>
+		result.rtl = instantiate(pc, name, DIS_MEM64);
 
 	| FINIT() [name] =>
 		result.rtl = instantiate(pc, name);

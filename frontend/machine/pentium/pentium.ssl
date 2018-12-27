@@ -1811,7 +1811,7 @@ FILD.lsI32 modrm
 	FPUSH
 	*f80* %st := itof(32, 80, modrm);
 
-FILD.lsI64 modrm
+FILD64 modrm
 	FPUSH
 	*f80* %st := itof(64, 80, modrm);
 
