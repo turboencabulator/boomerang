@@ -569,7 +569,7 @@ BNA reloc
 # Call instruction- always executes delay instruction
 # PC relative transfer of control
 CALL__ reloc
-	*32* r[15] := %pc
+	*32* %o7  := %pc
 	*32* %pc  := %npc
 	*32* %npc := reloc
 	*1*  %CTI := 1;
@@ -578,8 +578,8 @@ CALL__ reloc
 # Register indirect transfer of control
 # Note: eaddr and rd could be the same register (e.g. jmpl %o7, %o7)
 JMPL eaddr, rd
-	*32* tmp := eaddr
-	*32* rd := %pc
+	*32* tmp  := eaddr
+	*32* rd   := %pc
 	*32* %pc  := %npc
 	*32* %npc := tmp
 	*1*  %CTI := 1;
