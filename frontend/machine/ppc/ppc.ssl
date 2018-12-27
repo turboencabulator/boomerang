@@ -321,30 +321,33 @@ SHIFTS[IDX]"q"  Rd, Rs, op2
 
 #Memory access. rA is passed twice; as part of eaddr, and by itself for the U versions (update rA)
 
-LWZ'X'  rd, eaddr, ra
+LWZ'U''X'  rd, eaddr, ra
 	*32* rd := m[eaddr];
-LHZ'X'  rd, eaddr, ra
+LHZ'U''X'  rd, eaddr, ra
 	*32* rd := zfill(16, 32, m[eaddr]);
-LBZ'X'  rd, eaddr, ra
+LBZ'U''X'  rd, eaddr, ra
 	*32* rd := zfill(8, 32, m[eaddr]);
 
-STWU rs, eaddr, ra
-	*32* m[eaddr] := rs
+LWZU'X'  rd, eaddr, ra
+	*32* ra := eaddr;
+LHZU'X'  rd, eaddr, ra
+	*32* ra := eaddr;
+LBZU'X'  rd, eaddr, ra
 	*32* ra := eaddr;
 
-STW     rs, eaddr, ra
+STW'U''X'  rs, eaddr, ra
 	*32* m[eaddr] := rs;
-STH     rs, eaddr, ra
+STH'U''X'  rs, eaddr, ra
 	*16* m[eaddr] := truncs(32, 16, rs);
-STB     rs, eaddr, ra
+STB'U''X'  rs, eaddr, ra
 	*8* m[eaddr] := truncs(32, 8, rs);
 
-STWX    rs, eaddr
-	*32* m[eaddr] := rs;
-STHX    rs, eaddr
-	*16* m[eaddr] := truncs(32, 16, rs);
-STBX    rs, eaddr
-	*8* m[eaddr] := truncs(32, 8, rs);
+STWU'X'  rs, eaddr, ra
+	*32* ra := eaddr;
+STHU'X'  rs, eaddr, ra
+	*32* ra := eaddr;
+STBU'X'  rs, eaddr, ra
+	*32* ra := eaddr;
 
 
 # Multi word load and store

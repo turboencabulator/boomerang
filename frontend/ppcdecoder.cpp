@@ -52,8 +52,8 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_CRBD    (crBit(crbD))
 #define DIS_CRBA    (crBit(crbA))
 #define DIS_CRBB    (crBit(crbB))
-#define DIS_DISP    (new Binary(opPlus, dis_RAmbz(ra), new Const(d)))
-#define DIS_INDEX   (new Binary(opPlus, DIS_RAZ, DIS_NZRB))
+#define DIS_DISP    (new Binary(opPlus, DIS_RAZ, DIS_D))
+#define DIS_INDEX   (new Binary(opPlus, DIS_RAZ, DIS_RB))
 #define DIS_BICR    (new Const(BIcr))
 #define DIS_RS_NUM  (new Const(rs))
 #define DIS_RD_NUM  (new Const(rd))
@@ -3198,7 +3198,7 @@ pc
             
 #line 222 "machine/ppc/decoder.m"
    // Floating point loads (non indexed)
-		result.rtl = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_NZRA);   // Pass RA twice (needed for update)
 
 
 #line 3205 "ppcdecoder.cpp"
@@ -3220,7 +3220,7 @@ pc
             
 #line 228 "machine/ppc/decoder.m"
    // Floating point stores (non indexed)
-		result.rtl = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_NZRA);   // Pass RA twice (needed for update)
 
 
 #line 3227 "ppcdecoder.cpp"
@@ -3906,7 +3906,7 @@ pc
       
 #line 137 "machine/ppc/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX, DIS_NZRA);
 
 #line 3912 "ppcdecoder.cpp"
 
@@ -3962,7 +3962,7 @@ pc
       
 #line 139 "machine/ppc/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX, DIS_NZRA);
 	// Load instructions
 
 #line 3969 "ppcdecoder.cpp"
@@ -4028,7 +4028,7 @@ pc
       
 #line 225 "machine/ppc/decoder.m"
   // Floating point loads (indexed)
-		result.rtl = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_NZRA);  // Pass RA twice (needed for update)
 
 
 #line 4035 "ppcdecoder.cpp"
@@ -4047,7 +4047,7 @@ pc
       
 #line 231 "machine/ppc/decoder.m"
   // Floating point stores (indexed)
-		result.rtl = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_NZRA);  // Pass RA twice (needed for update)
 
 
 

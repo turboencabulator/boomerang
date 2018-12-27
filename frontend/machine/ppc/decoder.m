@@ -48,8 +48,8 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 #define DIS_CRBD    (crBit(crbD))
 #define DIS_CRBA    (crBit(crbA))
 #define DIS_CRBB    (crBit(crbB))
-#define DIS_DISP    (new Binary(opPlus, dis_RAmbz(ra), new Const(d)))
-#define DIS_INDEX   (new Binary(opPlus, DIS_RAZ, DIS_NZRB))
+#define DIS_DISP    (new Binary(opPlus, DIS_RAZ, DIS_D))
+#define DIS_INDEX   (new Binary(opPlus, DIS_RAZ, DIS_RB))
 #define DIS_BICR    (new Const(BIcr))
 #define DIS_RS_NUM  (new Const(rs))
 #define DIS_RD_NUM  (new Const(rd))
@@ -135,9 +135,9 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 	| Xsabx_^Rc(rd, ra, rb) [name] =>
 		result.rtl = instantiate(pc, name, DIS_RD, DIS_RA, DIS_RB);
 	| Xdab_(rd, ra, rb) [name] =>
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX, DIS_NZRA);
 	| Xsab_(rd, ra, rb) [name] =>
-		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX);
+		result.rtl = instantiate(pc, name, DIS_RD, DIS_INDEX, DIS_NZRA);
 	// Load instructions
 	| Ddad_(rd, d, ra) [name] =>
 		if (strcmp(name, "lmw") == 0) {
@@ -220,16 +220,16 @@ PPCDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = instantiate(pc, name, DIS_CRFD, DIS_NZRA, DIS_UIMM);
 
 	| Ddaf_(fd, d, ra) [name] =>   // Floating point loads (non indexed)
-		result.rtl = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_DISP, DIS_NZRA);   // Pass RA twice (needed for update)
 
 	| Xdaf_(fd, ra, rb) [name] =>  // Floating point loads (indexed)
-		result.rtl = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FD, DIS_INDEX, DIS_NZRA);  // Pass RA twice (needed for update)
 
 	| Dsaf_(fs, d, ra) [name] =>   // Floating point stores (non indexed)
-		result.rtl = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_RA);   // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FS, DIS_DISP, DIS_NZRA);   // Pass RA twice (needed for update)
 
 	| Xsaf_(fs, ra, rb) [name] =>  // Floating point stores (indexed)
-		result.rtl = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_RA);  // Pass RA twice (needed for update)
+		result.rtl = instantiate(pc, name, DIS_FS, DIS_INDEX, DIS_NZRA);  // Pass RA twice (needed for update)
 
 
 	| Xcab_(crfd, fa, fb) [name] =>  // Floating point compare
