@@ -360,12 +360,12 @@ MachOBinaryFile::load(std::istream &ifs)
 		ifs.seekg(pos + cmd.cmdsize);
 	}
 
-	struct segment_command *lowest = &segments[0], *highest = &segments[0];
-	for (unsigned i = 1; i < segments.size(); ++i) {
-		if (segments[i].vmaddr < lowest->vmaddr)
-			lowest = &segments[i];
-		if (segments[i].vmaddr > highest->vmaddr)
-			highest = &segments[i];
+	const struct segment_command *lowest = &segments[0], *highest = &segments[0];
+	for (const auto &segment : segments) {
+		if (segment.vmaddr < lowest->vmaddr)
+			lowest = &segment;
+		if (segment.vmaddr > highest->vmaddr)
+			highest = &segment;
 	}
 
 	loaded_addr = lowest->vmaddr;
@@ -407,11 +407,11 @@ MachOBinaryFile::load(std::istream &ifs)
 	}
 
 	// process stubs_sects
-	for (unsigned j = 0; j < stubs_sects.size(); ++j) {
-		unsigned startidx = stubs_sects[j].reserved1;
-		for (unsigned i = 0; i < stubs_sects[j].size / stubs_sects[j].reserved2; ++i) {
+	for (const auto &stubs_sect : stubs_sects) {
+		unsigned startidx = stubs_sect.reserved1;
+		for (unsigned i = 0; i < stubs_sect.size / stubs_sect.reserved2; ++i) {
 			unsigned symbol = indirectsymtbl[startidx + i];
-			ADDRESS addr = stubs_sects[j].addr + i * stubs_sects[j].reserved2;
+			ADDRESS addr = stubs_sect.addr + i * stubs_sect.reserved2;
 			const char *name = strtbl + symbols[symbol].n_un.n_strx;
 #ifdef DEBUG_MACHO_LOADER
 			fprintf(stdout, "stub for %s at %x\n", name, addr);
@@ -424,18 +424,18 @@ MachOBinaryFile::load(std::istream &ifs)
 	}
 
 	// process the remaining symbols
-	for (unsigned i = 0; i < symbols.size(); ++i) {
-		const char *name = strtbl + symbols[i].n_un.n_strx;
-		if (symbols[i].n_un.n_strx != 0 && symbols[i].n_value != 0 && *name != 0) {
+	for (const auto &symbol : symbols) {
+		const char *name = strtbl + symbol.n_un.n_strx;
+		if (symbol.n_un.n_strx != 0 && symbol.n_value != 0 && *name != 0) {
 
 #ifdef DEBUG_MACHO_LOADER
 			fprintf(stdout, "symbol %s at %x type %x\n", name,
-			        symbols[i].n_value,
-			        symbols[i].n_type & N_TYPE);
+			        symbol.n_value,
+			        symbol.n_type & N_TYPE);
 #endif
 			if (*name == '_')  // we want main not _main
 				++name;
-			m_SymA[symbols[i].n_value] = name;
+			m_SymA[symbol.n_value] = name;
 		}
 	}
 
