@@ -301,7 +301,7 @@ reglist
 		delete $10;
 	  }
 
-	| REG_ID '[' NUM ']' INDEX NUM SHARES REG_ID '@' '[' NUM TO NUM ']' {
+	| REG_ID '[' NUM ']' INDEX NUM SHARES REG_ID '@' '[' NUM ':' NUM ']' {
 		if (Dict.RegMap.count(*$1))
 			yyerror("Name reglist declared twice");
 		if (Dict.DetRegMap.count($6))
