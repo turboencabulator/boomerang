@@ -82,7 +82,7 @@ const char *operStrings[] = {
 	"opSuccessor",          // Get the successor of this register parameter
 
 	"opTern",               // Ternary (i.e. ? : )
-	"opAt",                 // Bit extraction (expr@first:last)
+	"opAt",                 // Bit extraction (expr@[lo:hi] in that order)
 
 	"opRegOf",              // Represents r[]
 	"opMemOf",              // Represents m[]

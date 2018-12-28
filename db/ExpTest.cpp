@@ -219,9 +219,9 @@ ExpTest::testSearchReplace1()
 	// Null test: should not replace. Also tests Ternary class
 	Exp *p;
 	bool change;
-	p = new Ternary(opAt, m_rof2->clone(), new Const(15), new Const(8));
+	p = new Ternary(opAt, m_rof2->clone(), new Const(8), new Const(15));
 	p = p->searchReplace(m_99, m_rof2, change);
-	std::string expected("r2@[15:8]");
+	std::string expected("r2@[8:15]");
 	CPPUNIT_ASSERT_EQUAL(expected, p->prints());
 	Ternary t2(*(Ternary *)p);
 	CPPUNIT_ASSERT(*p == t2);
@@ -678,7 +678,7 @@ ExpTest::testSimplifyBinary()
 void
 ExpTest::testSimplifyAddr()
 {
-	// a[m[1000]] - a[m[r2]{64}]@0:15
+	// a[m[1000]] - a[m[r2]{64}]@[0:15]
 	Exp *e = new Binary(opMinus,
 	                    new Unary(opAddrOf,
 	                              Location::memOf(new Const(1000))),
@@ -1154,7 +1154,7 @@ ExpTest::testAddUsedLocs()
 	expected = "r24,\tr25";
 	CPPUNIT_ASSERT_EQUAL(expected, l.prints());
 
-	// Ternary: r24@r25:r26
+	// Ternary: r24@[r25:r26]
 	l.clear();
 	e = new Ternary(opAt,
 	                Location::regOf(24),

@@ -1389,7 +1389,7 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
  *
  *     *64* tmp[tmpl] = sgnex(32, 64, r8) op sgnex(32, 64, r9)
  *     *32* r8 = truncs(64, 32, tmp[tmpl])
- *     *32* r9 = r[tmpl]@32:63
+ *     *32* r9 = r[tmpl]@[32:63]
  *
  * or for v8:
  *
@@ -1414,7 +1414,7 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 	               Location::regOf(8),
 	               new Ternary(opTruncs, new Const(64), new Const(32), Location::tempOf(new Const("tmpl"))));
 	ls.push_back(a);
-	// r9 = r[tmpl]@32:63;
+	// r9 = r[tmpl]@[32:63];
 	a = new Assign(32,
 	               Location::regOf(9),
 	               new Ternary(opAt, Location::tempOf(new Const("tmpl")), new Const(32), new Const(63)));

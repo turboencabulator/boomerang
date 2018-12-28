@@ -412,7 +412,7 @@ UsedLocsVisitor::visit(Assign *s, bool &recurse)
 		subExp1->accept(ev);
 		Exp *subExp2 = ((Binary *)lhs)->getSubExp2();
 		subExp2->accept(ev);
-	} else if (lhs->getOper() == opAt) {  // foo@[first:last] uses foo, first, and last
+	} else if (lhs->getOper() == opAt) {  // foo@[lo:hi] uses foo, lo, and hi
 		Exp *subExp1 = ((Ternary *)lhs)->getSubExp1();
 		subExp1->accept(ev);
 		Exp *subExp2 = ((Ternary *)lhs)->getSubExp2();

@@ -788,29 +788,29 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				proc->insertStatementAfter(stmt, a);
 			}
 
-			// Emit *8* r<12+off> := r<24+off>@[15:8]
+			// Emit *8* r<12+off> := r<24+off>@[8:15]
 			if (usedRegs.count(12 + off)) {
 				a = new Assign(new IntegerType(8),
 				               Location::regOf(12 + off),
 				               new Ternary(opAt,
 				                           Location::regOf(24 + off),
-				                           new Const(15),
-				                           new Const(8)));
+				                           new Const(8),
+				                           new Const(15)));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
 
 		case 0: case 1: case 2: case 3:
 		//  ax      cx      dx      bx
-			// Emit *32* r<24+off> := r<24+off>@[31:16] | zfill(16, 32, r<off>)
+			// Emit *32* r<24+off> := r<24+off>@[16:31] | zfill(16, 32, r<off>)
 			if (usedRegs.count(24 + off)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
 				               new Binary(opBitOr,
 				                          new Ternary(opAt,
 				                                      Location::regOf(24 + off),
-				                                      new Const(31),
-				                                      new Const(16)),
+				                                      new Const(16),
+				                                      new Const(31)),
 				                          new Ternary(opZfill,
 				                                      new Const(16),
 				                                      new Const(32),
@@ -829,29 +829,29 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				proc->insertStatementAfter(stmt, a);
 			}
 
-			// Emit *8* r<12+off> := r<off>@[15:8]
+			// Emit *8* r<12+off> := r<off>@[8:15]
 			if (usedRegs.count(12 + off)) {
 				a = new Assign(new IntegerType(8),
 				               Location::regOf(12 + off),
 				               new Ternary(opAt,
 				                           Location::regOf(off),
-				                           new Const(15),
-				                           new Const(8)));
+				                           new Const(8),
+				                           new Const(15)));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
 
 		case 8: case 9: case 10: case 11:
 		//  al      cl       dl       bl
-			// Emit *32* r<24+off> := r<24+off>@[31:8] | zfill(8, 32, r<8+off>)
+			// Emit *32* r<24+off> := r<24+off>@[8:31] | zfill(8, 32, r<8+off>)
 			if (usedRegs.count(24 + off)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
 				               new Binary(opBitOr,
 				                          new Ternary(opAt,
 				                                      Location::regOf(24 + off),
-				                                      new Const(31),
-				                                      new Const(8)),
+				                                      new Const(8),
+				                                      new Const(31)),
 				                          new Ternary(opZfill,
 				                                      new Const(8),
 				                                      new Const(32),
@@ -859,15 +859,15 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				proc->insertStatementAfter(stmt, a);
 			}
 
-			// Emit *16* r<off> := r<off>@[15:8] | zfill(8, 16, r<8+off>)
+			// Emit *16* r<off> := r<off>@[8:15] | zfill(8, 16, r<8+off>)
 			if (usedRegs.count(off)) {
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off),
 				               new Binary(opBitOr,
 				                          new Ternary(opAt,
 				                                      Location::regOf(off),
-				                                      new Const(15),
-				                                      new Const(8)),
+				                                      new Const(8),
+				                                      new Const(15)),
 				                          new Ternary(opZfill,
 				                                      new Const(8),
 				                                      new Const(16),
@@ -919,15 +919,15 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 
 		case 5: case 6: case 7:
 		//  bp      si      di
-			// Emit *32* r<24+off_mod8> := r<24+off_mod8>@[31:16] | zfill(16, 32, r<off_mod8>)
+			// Emit *32* r<24+off_mod8> := r<24+off_mod8>@[16:31] | zfill(16, 32, r<off_mod8>)
 			if (usedRegs.count(24 + off_mod8)) {
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off_mod8),
 				               new Binary(opBitOr,
 				                          new Ternary(opAt,
 				                                      Location::regOf(24 + off_mod8),
-				                                      new Const(31),
-				                                      new Const(16)),
+				                                      new Const(16),
+				                                      new Const(31)),
 				                          new Ternary(opZfill,
 				                                      new Const(16),
 				                                      new Const(32),

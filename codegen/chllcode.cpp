@@ -342,16 +342,16 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 	case opAt:
 		{
 			// I guess that most people will find this easier to read
-			// s1 >> last & 0xMASK
+			// s1 >> lo & 0xMASK
 			openParen(str, curPrec, PREC_BIT_AND);
 			appendExp(str, t->getSubExp1(), PREC_BIT_SHIFT);
-			Const *first = (Const *)t->getSubExp2();
-			Const *last = (Const *)t->getSubExp3();
+			auto lo = (Const *)t->getSubExp2();
+			auto hi = (Const *)t->getSubExp3();
 			str << " >> ";
-			appendExp(str, last, PREC_BIT_SHIFT);
+			appendExp(str, lo, PREC_BIT_SHIFT);
 			str << " & ";
 
-			unsigned int mask = (1 << (first->getInt() - last->getInt() + 1)) - 1;
+			unsigned int mask = (1 << (hi->getInt() - lo->getInt() + 1)) - 1;
 			if (mask < 10)
 				// print 0x3 as 3
 				str << mask;
@@ -1313,20 +1313,20 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 	else if (lhs->getOper() == opAt
 	      && ((Ternary *)lhs)->getSubExp2()->isIntConst()
 	      && ((Ternary *)lhs)->getSubExp3()->isIntConst()) {
-		// exp1@[n:m] := rhs -> exp1 = exp1 & mask | rhs << m  where mask = ~((1 << m-n+1)-1)
+		// exp1@[lo:hi] := rhs -> exp1 = (exp1 & mask) | (rhs << lo)  where mask = ~(((1 << hi-lo+1)-1) << lo)
 		Exp *exp1 = ((Ternary *)lhs)->getSubExp1();
-		int n = ((Const *)((Ternary *)lhs)->getSubExp2())->getInt();
-		int m = ((Const *)((Ternary *)lhs)->getSubExp3())->getInt();
+		int lo = ((Const *)((Ternary *)lhs)->getSubExp2())->getInt();
+		int hi = ((Const *)((Ternary *)lhs)->getSubExp3())->getInt();
 		appendExp(s, exp1, PREC_ASSIGN);
 		s << " = ";
-		int mask = ~(((1 << (m - n + 1)) - 1) << m); // MSVC winges without most of these parentheses
-		rhs = new Binary(opBitAnd,
-		                 exp1,
-		                 new Binary(opBitOr,
-		                            new Const(mask),
-		                            new Binary(opShiftL,
-		                                       rhs,
-		                                       new Const(m))));
+		int mask = ~(((1 << (hi - lo + 1)) - 1) << lo);
+		rhs = new Binary(opBitOr,
+		                 new Binary(opBitAnd,
+		                            exp1,
+		                            new Const(mask)),
+		                 new Binary(opShiftL,
+		                            rhs,
+		                            new Const(lo)));
 		rhs = rhs->simplify();
 		appendExp(s, rhs, PREC_ASSIGN);
 		s << ";";

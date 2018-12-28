@@ -3517,7 +3517,7 @@ ImplicitAssign::printCompact(std::ostream &os, bool html) const
 void
 Assignment::getDefinitions(LocationSet &defs) const
 {
-	if (lhs->getOper() == opAt)  // foo@[m:n] really only defines foo
+	if (lhs->getOper() == opAt)  // foo@[lo:hi] really only defines foo
 		defs.insert(((Ternary *)lhs)->getSubExp1());
 	else
 		defs.insert(lhs);
@@ -4490,7 +4490,7 @@ CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
 bool
 Assignment::definesLoc(Exp *loc) const
 {
-	if (lhs->getOper() == opAt)  // For foo@[x:y], match of foo==loc OR whole thing == loc
+	if (lhs->getOper() == opAt)  // For foo@[lo:hi], match of foo==loc OR whole thing == loc
 		if (*((Ternary *)lhs)->getSubExp1() == *loc) return true;
 	return *lhs == *loc;
 }

@@ -95,7 +95,7 @@ enum OPER {
 	opSuccessor,            // Get the successor register of this parameter
 
 	opTern,                 // Ternary (i.e. ? : )
-	opAt,                   // Bit extraction (expr@first:last in that order)
+	opAt,                   // Bit extraction (expr@[lo:hi] in that order)
 
 	opRegOf,                // Represents r[]
 	opMemOf,                // Represents m[]
