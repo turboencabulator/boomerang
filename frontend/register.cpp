@@ -40,10 +40,9 @@ Register::Register()
 Register::Register(const Register &r) :
 	name(r.name),
 	size(r.size),
-	address(r.address),
+	flt(r.flt),
 	mappedIndex(r.mappedIndex),
-	mappedOffset(r.mappedOffset),
-	flt(r.flt)
+	mappedOffset(r.mappedOffset)
 {
 }
 
@@ -59,10 +58,9 @@ Register::operator =(const Register &r2)
 	if (this != &r2) {
 		name         = r2.name;
 		size         = r2.size;
-		address      = r2.address;
+		flt          = r2.flt;
 		mappedIndex  = r2.mappedIndex;
 		mappedOffset = r2.mappedOffset;
-		flt          = r2.flt;
 	}
 	return *this;
 }

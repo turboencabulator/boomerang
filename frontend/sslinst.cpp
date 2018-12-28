@@ -193,14 +193,12 @@ RTLInstDict::addRegister(const std::string &name, int id, int size, bool flt)
 		SpecialRegMap[name].s_name(name);
 		SpecialRegMap[name].s_size(size);
 		SpecialRegMap[name].s_float(flt);
-		SpecialRegMap[name].s_address(nullptr);
 		SpecialRegMap[name].s_mappedIndex(-1);
 		SpecialRegMap[name].s_mappedOffset(-1);
 	} else {
 		DetRegMap[id].s_name(name);
 		DetRegMap[id].s_size(size);
 		DetRegMap[id].s_float(flt);
-		DetRegMap[id].s_address(nullptr);
 		DetRegMap[id].s_mappedIndex(-1);
 		DetRegMap[id].s_mappedOffset(-1);
 	}
@@ -239,13 +237,13 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 	for (const auto &rr : DetRegMap) {
 		int n = rr.first;
 		auto &pr = rr.second;
-		os << "number " << n
+		os << std::dec
+		   << "number " << n
 		   << " name " << pr.g_name()
-		   << " size " << std::dec << pr.g_size()
-		   << " address 0x" << std::hex << (unsigned)pr.g_address()
-		   << " mappedIndex " << std::dec << pr.g_mappedIndex()
+		   << " size " << pr.g_size()
+		   << " flt " << pr.g_float()
+		   << " mappedIndex " << pr.g_mappedIndex()
 		   << " mappedOffset " << pr.g_mappedOffset()
-		   << " flt " << pr.isFloat()
 		   << "\n";
 	}
 #endif

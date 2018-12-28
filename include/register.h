@@ -40,13 +40,12 @@ public:
 	void s_name(const std::string &s) { name = s; }
 	void s_size(int s) { size = s; }
 	void s_float(bool f) { flt = f; }
-	void s_address(void *p) { address = p; }
 
 	/* These are only used in the interpreter */
 	const std::string &g_name() const { return name; }
-	void *g_address() const { return address; }
-
 	int g_size() const { return size; }
+	bool g_float() const { return flt; }
+
 	Type *g_type() const;
 
 	/* Set the mapped index. For COVERS registers, this is the lower register
@@ -63,16 +62,13 @@ public:
 	int g_mappedIndex() const { return mappedIndex; }
 	/* Get the mapped offset (see above) */
 	int g_mappedOffset() const { return mappedOffset; }
-	/* Get a bool which is true if this is a floating point register */
-	bool isFloat() const { return flt; }
 
 private:
 	std::string name;
 	short size;
-	void *address = nullptr;
+	bool flt = false;  // True if this is a floating point register
 	int mappedIndex = -1;
 	int mappedOffset = -1;
-	bool flt = false;  // True if this is a floating point register
 };
 
 #endif
