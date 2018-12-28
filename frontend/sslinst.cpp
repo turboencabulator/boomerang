@@ -43,6 +43,7 @@
 #include <cctype>
 
 //#define DEBUG_SSLPARSER 1
+//#define DEBUG_POSTVAR 1
 
 TableEntry::TableEntry()
 {
@@ -436,17 +437,16 @@ RTLInstDict::instantiateRTL(ADDRESS natPC, const RTL &tmpl, const std::list<std:
 	auto rtl = tmpl.clone();
 	rtl->setAddress(natPC);
 
-	// Iterate through each Statement of the new list of stmts
+	// Search for the formals and replace them with the actuals
+	auto actual = actuals.cbegin();
+	for (const auto &param : params) {
+		/* Simple parameter - just construct the formal to search for */
+		Exp *formal = Location::param(param);
+		rtl->searchAndReplace(formal, *actual++);
+		//delete formal;
+	}
+
 	for (const auto &ss : *rtl) {
-		// Search for the formals and replace them with the actuals
-		auto param = params.cbegin();
-		auto actual = actuals.cbegin();
-		for (; param != params.cend(); ++param, ++actual) {
-			/* Simple parameter - just construct the formal to search for */
-			Exp *formal = Location::param(param->c_str());
-			ss->searchAndReplace(formal, *actual);
-			//delete formal;
-		}
 		ss->fixSuccessor();
 		if (Boomerang::get()->debugDecoder)
 			std::cout << "\t\t\t" << *ss << "\n";
@@ -497,15 +497,10 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 	// Map from var (could be any expression really) to details
 	std::map<Exp *, transPost, lessExpStar> vars;
 	int tmpcount = 1;  // For making temp names unique
-	// Exp *matchParam(1, idParam);  // ? Was never used anyway
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "Transforming from:\n";
-	for (const auto &rt : rtl) {
-		std::cout << "\t";
-		rt->print(std::cout);
-		std::cout << "\n";
-	}
+	rtl.print(std::cout);
 #endif
 
 	// First pass: Scan for post-variables and usages of their referents
@@ -554,8 +549,9 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 		} else if (rt->isFlagAssgn()) {
 			// An opFlagCall is assumed to be a Binary with a string and an opList of parameters
 			ss = (Binary *)((Binary *)rt)->getSubExp2();
-		} else
+		} else {
 			ss = nullptr;
+		}
 
 		/* Look for usages of post-variables' referents
 		 * Trickier than you'd think, as we need to make sure to skip over the post-variables themselves. ie match
@@ -571,9 +567,9 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 				sr.second.isNew = false;
 				continue;
 			}
+			if (sr.second.used)
+				continue;  // Don't bother; already know it's used
 			for (Binary *cur = ss; !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
-				if (sr.second.used)
-					break;  // Don't bother; already know it's used
 				Exp *s = cur->getSubExp1();
 				if (!s) continue;
 				if (*s == *sr.second.base) {
@@ -585,20 +581,20 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 				s->searchAll(sr.second.post, res2);
 				// Each match of a post will also match the base.
 				// But if there is a bare (non-post) use of the base, there will be a result in res1 that is not in res2
-				if (res1.size() > res2.size())
+				if (res1.size() > res2.size()) {
 					sr.second.used = true;
+					break;
+				}
 			}
 		}
 	}
 
 	// Second pass: Replace post-variables with temporaries where needed
-	for (const auto &rt : rtl) {
-		for (const auto &sr : vars) {
-			if (sr.second.used) {
-				rt->searchAndReplace(sr.first, sr.second.tmp);
-			} else {
-				rt->searchAndReplace(sr.first, sr.second.base);
-			}
+	for (const auto &sr : vars) {
+		if (sr.second.used) {
+			rtl.searchAndReplace(sr.first, sr.second.tmp);
+		} else {
+			rtl.searchAndReplace(sr.first, sr.second.base);
 		}
 	}
 
@@ -619,11 +615,7 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 
 #ifdef DEBUG_POSTVAR
 	std::cout << "\nTo =>\n";
-	for (const auto &rt : rtl) {
-		std::cout << "\t";
-		rt->print(std::cout);
-		std::cout << "\n";
-	}
+	rtl.print(std::cout);
 	std::cout << "\n";
 #endif
 }
