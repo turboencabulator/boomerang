@@ -1067,10 +1067,11 @@ Ternary::print(std::ostream &os, bool html) const
 		os << " : ";  // Need wide spacing here
 		if (p3) p3->print(os, html); else os << "<NULL>";
 	} else if (op == opAt) {
-		os << "@";
+		os << "@[";
 		if (p2) p2->printr(os, html); else os << "<NULL>";
 		os << ":";
 		if (p3) p3->printr(os, html); else os << "<NULL>";
+		os << "]";
 	} else {
 		LOG << "Ternary::print invalid operator " << operStrings[op] << "\n";
 		assert(0);

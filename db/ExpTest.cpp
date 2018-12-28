@@ -221,7 +221,7 @@ ExpTest::testSearchReplace1()
 	bool change;
 	p = new Ternary(opAt, m_rof2->clone(), new Const(15), new Const(8));
 	p = p->searchReplace(m_99, m_rof2, change);
-	std::string expected("r2@15:8");
+	std::string expected("r2@[15:8]");
 	CPPUNIT_ASSERT_EQUAL(expected, p->prints());
 	Ternary t2(*(Ternary *)p);
 	CPPUNIT_ASSERT(*p == t2);
@@ -690,7 +690,7 @@ ExpTest::testSimplifyAddr()
 	                                new Const(0),
 	                                new Const(15)));
 	e = e->simplifyAddr();
-	std::string expected("1000 - (r2@0:15)");
+	std::string expected("1000 - (r2@[0:15])");
 	CPPUNIT_ASSERT_EQUAL(expected, e->prints());
 
 	// Now test at top level
