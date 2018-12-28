@@ -270,6 +270,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.numBytes = nextPC - pc;
 			return result;
 		}
+
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
 		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BN,a") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
@@ -281,10 +282,11 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			jump->setDest(tgt);
 		}
 
-		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
+		// The class of this instruction depends on whether or not
+		// it is one of the 'unconditional' conditional branches
 		// "BA,A" or "BN,A"
 		result.type = SCDAN;
-		if ((strcmp(name, "BA,a") == 0) || (strcmp(name, "BVC,a") == 0)) {
+		if (strcmp(name, "BA,a") == 0 || strcmp(name, "BVC,a") == 0) {
 			result.type = SU;
 		} else {
 			result.type = SKIP;
@@ -299,14 +301,13 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		 */
 
 		// Instantiate a GotoStatement for the unconditional branches, HLJconds for the rest.
-		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
+		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
+		} else if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
-		}
-		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPN,a") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else if (strcmp(name, "BPVS,a") == 0 || strcmp(name, "BPVC,a") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
@@ -315,10 +316,11 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			jump->setDest(tgt);
 		}
 
-		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
+		// The class of this instruction depends on whether or not
+		// it is one of the 'unconditional' conditional branches
 		// "BPA,A" or "BPN,A"
 		result.type = SCDAN;
-		if ((strcmp(name, "BPA,a") == 0) || (strcmp(name, "BPVC,a") == 0)) {
+		if (strcmp(name, "BPA,a") == 0 || strcmp(name, "BPVC,a") == 0) {
 			result.type = SU;
 		} else {
 			result.type = SKIP;
@@ -331,6 +333,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		/*
 		 * Non anulled branch
 		 */
+
 		// First, check for CBxxx branches (branches that depend on co-processor instructions). These are invalid,
 		// as far as we are concerned
 		if (name[0] == 'C') {
@@ -339,6 +342,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.numBytes = nextPC - pc;
 			return result;
 		}
+
 		// Instantiate a GotoStatement for the unconditional branches, BranchStatement for the rest
 		if (strcmp(name, "BA") == 0 || strcmp(name, "BN") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
@@ -350,33 +354,26 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			jump->setDest(tgt);
 		}
 
-		// The class of this instruction depends on whether or not it is one of the 'unconditional' conditional branches
+		// The class of this instruction depends on whether or not
+		// it is one of the 'unconditional' conditional branches
 		// "BA" or "BN" (or the pseudo unconditionals BVx)
 		result.type = SCD;
-		if ((strcmp(name, "BA") == 0) || (strcmp(name, "BVC") == 0))
+		if (strcmp(name, "BA") == 0 || strcmp(name, "BVC") == 0)
 			result.type = SD;
-		if ((strcmp(name, "BN") == 0) || (strcmp(name, "BVS") == 0))
+		if (strcmp(name, "BN") == 0 || strcmp(name, "BVS") == 0)
 			result.type = NCT;
 
 		SHOW_ASM(name << " " << std::hex << tgt);
 		DEBUG_STMTS
 
-	| BPA(_, tgt) [name] =>  /* Can see bpa xcc,tgt in 32 bit code */
-	//| BPA(cc01, tgt) => // cc01 does not matter because is unconditional
-		result.type = SD;
-		result.rtl = new RTL(pc, new GotoStatement(tgt));
-		SHOW_ASM(name << " " << std::hex << tgt);
-		DEBUG_STMTS
-
 	| pbranch(cc01, tgt) [name] =>
-		if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
+		if (strcmp(name, "BPA") == 0 || strcmp(name, "BPN") == 0) {
+			result.rtl = new RTL(pc, new GotoStatement(tgt));
+		} else if (cc01 != 0) {  /* If 64 bit cc used, can't handle */
 			result.valid = false;
 			result.rtl = new RTL(pc);  // FIXME:  Is this needed when invalid?
 			result.numBytes = nextPC - pc;
 			return result;
-		}
-		if (strcmp(name, "BPN") == 0) {
-			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else if (strcmp(name, "BPVS") == 0 || strcmp(name, "BPVC") == 0) {
 			result.rtl = new RTL(pc, new GotoStatement(tgt));
 		} else {
@@ -388,11 +385,11 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 
 		// The class of this instruction depends on whether or not
 		// it is one of the 'unconditional' conditional branches
-		// "BPN" (or the pseudo unconditionals BPVx)
+		// "BPA" or "BPN" (or the pseudo unconditionals BPVx)
 		result.type = SCD;
-		if (strcmp(name, "BPVC") == 0)
+		if (strcmp(name, "BPA") == 0 || strcmp(name, "BPVC") == 0)
 			result.type = SD;
-		if ((strcmp(name, "BPN") == 0) || (strcmp(name, "BPVS") == 0))
+		if (strcmp(name, "BPN") == 0 || strcmp(name, "BPVS") == 0)
 			result.type = NCT;
 
 		SHOW_ASM(name << " " << std::hex << tgt);
@@ -718,7 +715,3 @@ SparcDecoder::isRestore(ADDRESS pc, const BinaryFile *bf)
 		return false;
 	endmatch
 }
-
-/*
- * These are the fetch routines.
- */
