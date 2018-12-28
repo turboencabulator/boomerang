@@ -963,6 +963,7 @@ Unary::print(std::ostream &os, bool html) const
 	case opLog10:
 	case opLoge:
 	case opExecute:
+	case opPostVar:
 	case opMachFtr:
 	case opSuccessor:
 	case opPhi:
@@ -984,10 +985,13 @@ Unary::print(std::ostream &os, bool html) const
 		case opMachFtr:   os << "machine("; break;
 		case opSuccessor: os << "succ(";    break;
 		case opPhi:       os << "phi(";     break;
-		default:                            break;  // For warning
+		default:                            break;
 		}
 		p1->print(os, html);
-		os << ")";
+		switch (op) {
+		case opPostVar:   os << "'"; break;
+		default:          os << ")"; break;
+		}
 		return;
 
 	default:
