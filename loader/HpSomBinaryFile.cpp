@@ -423,11 +423,11 @@ HpSomBinaryFile::getSymbolByAddress(ADDRESS a)
 }
 
 ADDRESS
-HpSomBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
+HpSomBinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	// For now, we ignore the symbol table and do a linear search of our
 	// SymTab table
-	ADDRESS res = symbols.find(pName);
+	ADDRESS res = symbols.find(name);
 	if (res != NO_ADDRESS)
 		return res;
 	return 0;  // Till the failure return value is fixed

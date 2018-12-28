@@ -106,7 +106,7 @@ IntelCoffFile::load(std::istream &ifs)
 		if (len != sectname.npos)
 			sectname.erase(len);
 
-		int sidx = getSectionIndexByName(sectname.c_str());
+		int sidx = getSectionIndexByName(sectname);
 		if (sidx == -1) {
 			sidx = sections.size();
 			auto sect = SectionInfo();
@@ -169,24 +169,25 @@ IntelCoffFile::load(std::istream &ifs)
 	printf("Size of one symbol: %u\n", sizeof *pSymbols);
 	for (unsigned int iSym = 0; iSym < m_Header.coff_num_syment; iSym += pSymbols[iSym].csym_numaux + 1) {
 		char tmp_name[9]; tmp_name[8] = 0;
-		char *name = tmp_name;
+		std::string name;
 		if (pSymbols[iSym].csym_zeros == 0) {
 			// TODO: the symbol is found in a string table behind the symbol table at offset csym_offset
 			//snprintf(tmp_name, 8, "n%07lx", pSymbols[iSym].csym_offset);
 			name = pStrings + pSymbols[iSym].csym_offset;
 		} else {
-			memcpy(tmp_name, pSymbols[iSym].csym_name, 8);
+			strncpy(tmp_name, pSymbols[iSym].csym_name, 8);
+			name = tmp_name;
 		}
 
 		if (!(pSymbols[iSym].csym_loadclass & 0x60) && (pSymbols[iSym].csym_sectnum <= m_Header.coff_sections)) {
 			if (pSymbols[iSym].csym_sectnum > 0) {
 				const SectionInfo *psi = getSectionInfo(psh[pSymbols[iSym].csym_sectnum - 1].sch_physaddr);
 				pSymbols[iSym].csym_value += psh[pSymbols[iSym].csym_sectnum - 1].sch_virtaddr + psi->uNativeAddr;
-				if (strcmp(name, ".strip."))
+				if (name != ".strip.")
 					m_Symbols.Add(pSymbols[iSym].csym_value, name);
 				if (pSymbols[iSym].csym_type & 0x20 && psi->bCode) {
 					m_EntryPoints.push_back(pSymbols[iSym].csym_value);
-					//printf("Made '%s' an entry point.\n", name);
+					//printf("Made '%s' an entry point.\n", name.c_str());
 				}
 			} else {
 				if (pSymbols[iSym].csym_type & 0x20) {
@@ -203,7 +204,7 @@ IntelCoffFile::load(std::istream &ifs)
 			}
 
 		}
-		printf("Symbol %d: %s %08lx\n", iSym, name, pSymbols[iSym].csym_value);
+		printf("Symbol %d: %s %08lx\n", iSym, name.c_str(), pSymbols[iSym].csym_value);
 	}
 
 	for (int iSection = 0; iSection < m_Header.coff_sections; ++iSection) {

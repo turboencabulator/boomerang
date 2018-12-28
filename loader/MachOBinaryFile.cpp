@@ -519,21 +519,21 @@ MachOBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 ADDRESS
-MachOBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
+MachOBinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	for (const auto &sym : m_SymA) {
 		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
-		if (sym.second == pName)
+		if (sym.second == name)
 			return sym.first;
 	}
 	return NO_ADDRESS;
 }
 
 void
-MachOBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+MachOBinaryFile::addSymbol(ADDRESS uNative, const std::string &name)
 {
-	m_SymA[uNative] = pName;
+	m_SymA[uNative] = name;
 }
 
 unsigned int

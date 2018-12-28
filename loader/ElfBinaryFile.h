@@ -14,7 +14,6 @@
 #define ELFBINARYFILE_H
 
 #include "BinaryFile.h"
-#include "SymTab.h"  // For SymTab (probably unused)
 
 #include <map>
 #include <string>
@@ -193,14 +192,14 @@ public:
 	 * \name Symbol table functions
 	 * \{
 	 */
-	void        addSymbol(ADDRESS uNative, const char *pName) override;
+	void        addSymbol(ADDRESS, const std::string &) override;
 	//void        dumpSymbols() const;
 	const char *getSymbolByAddress(ADDRESS uAddr) override;
-	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const override;
-	int         getSizeByName(const char *pName, bool bNoTypeOK = false) const override;
-	const char *getFilenameSymbolFor(const std::string &sym) override;
-	//int         getDistanceByName(const char *pName, const char *pSectName);
-	//int         getDistanceByName(const char *pName);
+	ADDRESS     getAddressByName(const std::string &, bool = false) const override;
+	int         getSizeByName(const std::string &, bool = false) const override;
+	const char *getFilenameSymbolFor(const std::string &) override;
+	//int         getDistanceByName(const std::string &, const std::string &);
+	//int         getDistanceByName(const std::string &);
 	//ADDRESS    *getImportStubs(int &numImports) override;
 	//std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) override;
 	//std::map<ADDRESS, const char *> *getDynamicGlobalMap() override;
@@ -258,9 +257,9 @@ private:
 #endif
 	void        AddSyms(int secIndex);
 	void        applyRelocations();
-	bool        ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK = false) const;
-	bool        SearchValueByName(const char *pName, SymValue *pVal) const;
-	bool        SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName) const;
+	bool        ValueByName(const std::string &, SymValue *, bool = false) const;
+	bool        SearchValueByName(const std::string &, SymValue *) const;
+	bool        SearchValueByName(const std::string &, SymValue *, const std::string &, const std::string &) const;
 	ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt) const;
 
 	char       *m_pImage = nullptr;         ///< Pointer to the loaded image.
@@ -276,7 +275,6 @@ private:
 	 */
 	std::map<ADDRESS, std::string> m_SymTab;
 
-	SymTab      m_Reloc;                    ///< Object to store the reloc syms.
 	const Elf32_Rel *m_pReloc = nullptr;    ///< Pointer to the relocation section.
 	const Elf32_Sym *m_pSym = nullptr;      ///< Pointer to loaded symbol section.
 	bool        m_bAddend;                  ///< true if reloc table has addend.

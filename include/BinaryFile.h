@@ -209,9 +209,9 @@ protected:
 	        char       *getSectionData(ADDRESS a, ADDRESS range) const;
 public:
 	        int         getNumSections() const;
-	        int         getSectionIndexByName(const char *sName) const;
+	        int         getSectionIndexByName(const std::string &) const;
 	        const SectionInfo *getSectionInfo(int idx) const;
-	        const SectionInfo *getSectionInfoByName(const char *sName) const;
+	        const SectionInfo *getSectionInfoByName(const std::string &) const;
 	        const SectionInfo *getSectionInfoByAddr(ADDRESS uEntry) const;
 	        bool        isReadOnly(ADDRESS uEntry) const;
 	/** \} */
@@ -220,10 +220,10 @@ public:
 	 * \name Symbol table functions
 	 * \{
 	 */
-	virtual void        addSymbol(ADDRESS uNative, const char *pName);
+	virtual void        addSymbol(ADDRESS, const std::string &);
 	virtual const char *getSymbolByAddress(ADDRESS uNative);
-	virtual ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const;
-	virtual int         getSizeByName(const char *pName, bool bTypeOK = false) const;
+	virtual ADDRESS     getAddressByName(const std::string &, bool = false) const;
+	virtual int         getSizeByName(const std::string &, bool = false) const;
 	virtual const char *getFilenameSymbolFor(const std::string &sym) { return nullptr; }
 	//virtual ADDRESS    *getImportStubs(int &numImports);
 	//virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }

@@ -56,10 +56,10 @@ BinaryFile::getNumSections() const
  * \brief Find section index given name, or -1 if not found.
  */
 int
-BinaryFile::getSectionIndexByName(const char *sName) const
+BinaryFile::getSectionIndexByName(const std::string &name) const
 {
 	for (int i = 0; i < sections.size(); ++i) {
-		if (sections[i].name == sName) {
+		if (sections[i].name == name) {
 			return i;
 		}
 	}
@@ -97,10 +97,10 @@ BinaryFile::getSectionInfoByAddr(ADDRESS uEntry) const
  * \brief Find section info given name, or nullptr if not found.
  */
 const SectionInfo *
-BinaryFile::getSectionInfoByName(const char *sName) const
+BinaryFile::getSectionInfoByName(const std::string &name) const
 {
 	for (const auto &sect : sections) {
-		if (sect.name == sName) {
+		if (sect.name == name) {
 			return &sect;
 		}
 	}
@@ -246,7 +246,7 @@ BinaryFile::readNativeFloat8(ADDRESS a) const
  * \brief Add an extra symbol.
  */
 void
-BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+BinaryFile::addSymbol(ADDRESS uNative, const std::string &name)
 {
 }
 
@@ -269,7 +269,7 @@ BinaryFile::getSymbolByAddress(ADDRESS uNative)
  * \returns NO_ADDRESS if not found.
  */
 ADDRESS
-BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK) const
+BinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	return 0;
 }
@@ -278,7 +278,7 @@ BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK) const
  * \brief Get the size associated with the symbol.
  */
 int
-BinaryFile::getSizeByName(const char *pName, bool bNoTypeOK) const
+BinaryFile::getSizeByName(const std::string &name, bool bNoTypeOK) const
 {
 	return 0;
 }

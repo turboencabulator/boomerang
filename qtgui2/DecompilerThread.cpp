@@ -97,10 +97,10 @@ Decompiler::setNoDecodeChildren(bool d)
 }
 
 void
-Decompiler::addEntryPoint(ADDRESS a, const char *nam)
+Decompiler::addEntryPoint(ADDRESS a, const QString &name)
 {
 	user_entrypoints.push_back(a);
-	fe->addSymbol(a, nam);
+	fe->addSymbol(a, name.toStdString());
 }
 
 void

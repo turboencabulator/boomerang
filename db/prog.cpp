@@ -158,7 +158,7 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 				for (int j = 0; sections[j]; ++j) {
 					std::string str = ".";
 					str += sections[j];
-					const SectionInfo *info = pBF->getSectionInfoByName(str.c_str());
+					const SectionInfo *info = pBF->getSectionInfoByName(str);
 					str = "start_";
 					str += sections[j];
 					code->AddGlobal(str.c_str(), new IntegerType(32, -1), new Const(info ? info->uNativeAddr : (unsigned int)-1));
@@ -1407,7 +1407,7 @@ Prog::readSymbolFile(const char *fname)
 	}
 
 	for (const auto &ref : par.refs) {
-		pFE->addRefHint(ref->addr, ref->nam.c_str());
+		pFE->addRefHint(ref->addr, ref->nam);
 	}
 }
 
@@ -1824,10 +1824,10 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 				// check for accesses into the middle of symbols
 				for (const auto &symbol : symbols) {
 					if (a > symbol.first
-					 && a < symbol.first + pBF->getSizeByName(symbol.second.c_str())) {
+					 && a < symbol.first + pBF->getSizeByName(symbol.second)) {
 						int off = a - symbol.first;
 						e = new Binary(opPlus,
-						               new Unary(opAddrOf, Location::global(symbol.second.c_str(), nullptr)),
+						               new Unary(opAddrOf, Location::global(symbol.second, nullptr)),
 						               new Const(off));
 						break;
 					}

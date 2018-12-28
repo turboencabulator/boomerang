@@ -632,21 +632,21 @@ Win32BinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 ADDRESS
-Win32BinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
+Win32BinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	for (const auto &sym : dlprocptrs) {
 		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
-		if (sym.second == pName)
+		if (sym.second == name)
 			return sym.first;
 	}
 	return NO_ADDRESS;
 }
 
 void
-Win32BinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+Win32BinaryFile::addSymbol(ADDRESS uNative, const std::string &name)
 {
-	dlprocptrs[uNative] = pName;
+	dlprocptrs[uNative] = name;
 }
 
 bool

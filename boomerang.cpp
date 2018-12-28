@@ -1017,7 +1017,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 
 	// Add symbols from -s switch(es)
 	for (const auto &symbol : symbols) {
-		fe->addSymbol(symbol.first, symbol.second.c_str());
+		fe->addSymbol(symbol.first, symbol.second);
 	}
 	fe->readLibraryCatalog();  // Needed before readSymbolFile()
 

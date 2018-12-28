@@ -152,10 +152,10 @@ public:
 	 * \name Symbol table functions
 	 * \{
 	 */
-	void        addSymbol(ADDRESS uNative, const char *pName) override;
+	void        addSymbol(ADDRESS, const std::string &) override;
 	//void        dumpSymbols() const;
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
-	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) const override;
+	ADDRESS     getAddressByName(const std::string &, bool = false) const override;
 	const std::map<ADDRESS, std::string> &getSymbols() const override { return dlprocptrs; }
 	/** \} */
 

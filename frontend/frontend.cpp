@@ -318,7 +318,7 @@ FrontEnd::getEntryPoints()
 				auto name = std::string(p);
 				name.erase(name.length() - 6);
 				name += "ModuleData";
-				ADDRESS a = pBF->getAddressByName(name.c_str(), true);
+				ADDRESS a = pBF->getAddressByName(name, true);
 				if (a != NO_ADDRESS) {
 					//ADDRESS vers = pBF->readNative4(a);
 					ADDRESS setup = pBF->readNative4(a + 4);

@@ -480,7 +480,7 @@ ElfBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 bool
-ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* = false */) const
+ElfBinaryFile::ValueByName(const std::string &name, SymValue *pVal, bool bNoTypeOK /* = false */) const
 {
 	const SectionInfo *pSect = getSectionInfoByName(".dynsym");
 	if (!pSect) {
@@ -488,7 +488,7 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
 		// It seems that the only alternative is to linearly search the symbol tables.
 		// This must be one of the big reasons that linking is so slow! (at least, for statically linked files)
 		// Note MVE: We can't use m_SymTab because we may need the size
-		return SearchValueByName(pName, pVal);
+		return SearchValueByName(name, pVal);
 	}
 	auto pSym = (const Elf32_Sym *)pSect->uHostAddr;
 	if (!pSym) return false;
@@ -506,14 +506,14 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
 	const int *pChains  = &pBuckets[numBucket];
 
 	// Hash the symbol
-	int hash = elf_hash(pName) % numBucket;
+	int hash = elf_hash(name.c_str()) % numBucket;
 	int y = elfRead4(&pBuckets[hash]);  // Look it up in the bucket list
 	// Beware of symbol tables with 0 in the buckets, e.g. libstdc++.
 	// In that case, set found to false.
 	bool found = false;
 	while (y) {
-		const char *name = getStrPtr(iStr, elfRead4(&pSym[y].st_name));
-		if (name && strcmp(pName, name) == 0) {
+		const char *pName = getStrPtr(iStr, elfRead4(&pSym[y].st_name));
+		if (pName && pName == name) {
 			found = true;
 			break;
 		}
@@ -534,7 +534,7 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
 	} else {
 		// We may as well do a linear search of the main symbol table. Some symbols (e.g. init_dummy) are
 		// in the main symbol table, but not in the hash table
-		return SearchValueByName(pName, pVal);
+		return SearchValueByName(name, pVal);
 	}
 }
 
@@ -543,13 +543,13 @@ ElfBinaryFile::ValueByName(const char *pName, SymValue *pVal, bool bNoTypeOK /* 
  * See comments above for why this appears to be needed.
  */
 bool
-ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *pSectName, const char *pStrName) const
+ElfBinaryFile::SearchValueByName(const std::string &name, SymValue *pVal, const std::string &sectName, const std::string &strName) const
 {
 	// Note: this assumes .symtab. Many files don't have this section!!!
 
-	const SectionInfo *pSect = getSectionInfoByName(pSectName);
+	const SectionInfo *pSect = getSectionInfoByName(sectName);
 	if (!pSect) return false;
-	const SectionInfo *pStrSect = getSectionInfoByName(pStrName);
+	const SectionInfo *pStrSect = getSectionInfoByName(strName);
 	if (!pStrSect) return false;
 	const char *pStr = pStrSect->uHostAddr;
 	// Find number of symbols
@@ -558,7 +558,7 @@ ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *
 	// Search all the symbols. It may be possible to start later than index 0
 	for (int i = 0; i < n; ++i) {
 		int idx = elfRead4(&pSym[i].st_name);
-		if (strcmp(pName, pStr + idx) == 0) {
+		if (name == pStr + idx) {
 			// We have found the symbol
 			pVal->uSymAddr = elfRead4((const int *)&pSym[i].st_value);
 			int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
@@ -579,28 +579,27 @@ ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal, const char *
  * found or the table has been stripped, search .dynstr.
  */
 bool
-ElfBinaryFile::SearchValueByName(const char *pName, SymValue *pVal) const
+ElfBinaryFile::SearchValueByName(const std::string &name, SymValue *pVal) const
 {
-	if (SearchValueByName(pName, pVal, ".symtab", ".strtab"))
-		return true;
-	return SearchValueByName(pName, pVal, ".dynsym", ".dynstr");
+	return SearchValueByName(name, pVal, ".symtab", ".strtab")
+	    || SearchValueByName(name, pVal, ".dynsym", ".dynstr");
 }
 
 
 ADDRESS
-ElfBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
+ElfBinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	SymValue Val;
-	if (ValueByName(pName, &Val, bNoTypeOK))
+	if (ValueByName(name, &Val, bNoTypeOK))
 		return Val.uSymAddr;
 	return NO_ADDRESS;
 }
 
 int
-ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */) const
+ElfBinaryFile::getSizeByName(const std::string &name, bool bNoTypeOK) const
 {
 	SymValue Val;
-	if (ValueByName(pName, &Val, bNoTypeOK))
+	if (ValueByName(name, &Val, bNoTypeOK))
 		return Val.iSymSize;
 	return 0;
 }
@@ -616,17 +615,17 @@ ElfBinaryFile::getSizeByName(const char *pName, bool bNoTypeOK /* = false */) co
  * ALL symbols in the symbol table.
  */
 int
-ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
+ElfBinaryFile::getDistanceByName(const std::string &name, const std::string &sectName)
 {
-	if (int size = getSizeByName(sName))
+	if (int size = getSizeByName(name))
 		return size;  // No need to guess!
 	// No need to guess, but if there are fillers, then subtracting labels will give a better answer for coverage
 	// purposes. For example, switch_cc. But some programs (e.g. switch_ps) have the switch tables between the
 	// end of _start and main! So we are better off overall not trying to guess the size of _start
-	unsigned value = getAddressByName(sName);
+	unsigned value = getAddressByName(name);
 	if (value == 0) return 0;  // Symbol doesn't even exist!
 
-	const SectionInfo *pSect = getSectionInfoByName(pSectName);
+	const SectionInfo *pSect = getSectionInfoByName(sectName);
 	if (!pSect) return 0;
 	// Find number of symbols
 	int n = pSect->uSectionSize / pSect->uSectionEntrySize;
@@ -656,11 +655,11 @@ ElfBinaryFile::getDistanceByName(const char *sName, const char *pSectName)
  * \overload
  */
 int
-ElfBinaryFile::getDistanceByName(const char *sName)
+ElfBinaryFile::getDistanceByName(const std::string &name)
 {
-	if (int val = getDistanceByName(sName, ".symtab"))
+	if (int val = getDistanceByName(name, ".symtab"))
 		return val;
-	return getDistanceByName(sName, ".dynsym");
+	return getDistanceByName(name, ".dynsym");
 }
 #endif
 
@@ -1202,9 +1201,9 @@ ElfBinaryFile::getFilenameSymbolFor(const std::string &sym)
  * A map for extra symbols, those not in the usual Elf symbol tables.
  */
 void
-ElfBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+ElfBinaryFile::addSymbol(ADDRESS uNative, const std::string &name)
 {
-	m_SymTab[uNative] = pName;
+	m_SymTab[uNative] = name;
 }
 
 #if 0 // Cruft?

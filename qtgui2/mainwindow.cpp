@@ -911,7 +911,7 @@ MainWindow::on_addButton_pressed()
 	ADDRESS a = ui.addressEdit->text().toInt(&ok, 16);
 	if (!ok)
 		return;
-	decompilerThread->getDecompiler()->addEntryPoint(a, (const char *)ui.nameEdit->text().toAscii());
+	decompilerThread->getDecompiler()->addEntryPoint(a, ui.nameEdit->text());
 	int nrows = ui.entrypoints->rowCount();
 	ui.entrypoints->setRowCount(nrows + 1);
 	ui.entrypoints->setItem(nrows, 0, new QTableWidgetItem(ui.addressEdit->text()));

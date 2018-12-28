@@ -39,9 +39,9 @@ public:
 	            SymTab();
 	           ~SymTab();
 
-	void        Add(ADDRESS a, const char *s);
-	const char *find(ADDRESS a) const;
-	ADDRESS     find(const char *s) const;
+	void        Add(ADDRESS, const std::string &);
+	const char *find(ADDRESS) const;
+	ADDRESS     find(const std::string &) const;
 #if 0
 	char       *FindAfter(ADDRESS &dwAddr);     // Find entry with >= given value
 	char       *FindNext(ADDRESS &dwAddr);      // Find next entry (after a Find())

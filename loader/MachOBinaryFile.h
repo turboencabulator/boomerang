@@ -45,9 +45,9 @@ public:
 	 * \name Symbol table functions
 	 * \{
 	 */
-	void        addSymbol(ADDRESS uNative, const char *pName) override;
+	void        addSymbol(ADDRESS, const std::string &) override;
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
-	ADDRESS     getAddressByName(const char *name, bool bNoTypeOK = false) const override;
+	ADDRESS     getAddressByName(const std::string &, bool = false) const override;
 	const std::map<ADDRESS, std::string> &getSymbols() const override { return m_SymA; }
 	const std::map<std::string, ObjcModule> &getObjcModules() const override { return modules; }
 	/** \} */

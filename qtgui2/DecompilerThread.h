@@ -50,7 +50,7 @@ public:
 	void setUseDFTA(bool d);
 	void setNoDecodeChildren(bool d);
 
-	void addEntryPoint(ADDRESS a, const char *nam);
+	void addEntryPoint(ADDRESS a, const QString &);
 	void removeEntryPoint(ADDRESS a);
 
 public slots:

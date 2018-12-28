@@ -66,11 +66,6 @@ struct plt_record {
 	ADDRESS     r19value;                   // r19 value needed
 };
 
-struct symElem {
-	const char *name;                       // Simple symbol table entry
-	ADDRESS     value;
-};
-
 /**
  * \brief Loader for PA/RISC SOM executable files.
  */
@@ -91,7 +86,7 @@ public:
 	 * \{
 	 */
 	const char *getSymbolByAddress(ADDRESS dwAddr) override;
-	ADDRESS     getAddressByName(const char *pName, bool bNoTypeOK = false) const override;
+	ADDRESS     getAddressByName(const std::string &, bool = false) const override;
 	//std::map<ADDRESS, const char *> *getDynamicGlobalMap() override;
 	/** \} */
 

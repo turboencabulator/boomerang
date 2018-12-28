@@ -107,10 +107,10 @@ protected:
 
 public:
 	/// Add a symbol to the loader.
-	void addSymbol(ADDRESS addr, const char *nam) { pBF->addSymbol(addr, nam); }
+	void addSymbol(ADDRESS addr, const std::string &nam) { pBF->addSymbol(addr, nam); }
 
 	/// Add a "hint" that an instruction at the given address references a named global.
-	void addRefHint(ADDRESS addr, const char *nam) { refHints[addr] = nam; }
+	void addRefHint(ADDRESS addr, const std::string &nam) { refHints[addr] = nam; }
 
 	const char *getRegName(int idx);
 	int         getRegSize(int idx);

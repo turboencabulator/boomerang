@@ -312,21 +312,21 @@ DOS4GWBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
 }
 
 ADDRESS
-DOS4GWBinaryFile::getAddressByName(const char *pName, bool bNoTypeOK /* = false */) const
+DOS4GWBinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	for (const auto &sym : dlprocptrs) {
 		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
-		if (sym.second == pName)
+		if (sym.second == name)
 			return sym.first;
 	}
 	return NO_ADDRESS;
 }
 
 void
-DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const char *pName)
+DOS4GWBinaryFile::addSymbol(ADDRESS uNative, const std::string &name)
 {
-	dlprocptrs[uNative] = pName;
+	dlprocptrs[uNative] = name;
 }
 
 bool
