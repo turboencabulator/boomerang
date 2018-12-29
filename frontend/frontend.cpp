@@ -321,29 +321,25 @@ FrontEnd::getEntryPoints()
 				ADDRESS a = pBF->getAddressByName(name, true);
 				if (a != NO_ADDRESS) {
 					//ADDRESS vers = pBF->readNative4(a);
-					ADDRESS setup = pBF->readNative4(a + 4);
-					ADDRESS teardown = pBF->readNative4(a + 8);
-					if (setup) {
+					if (ADDRESS setup = pBF->readNative4(a + 4)) {
 						Type *ty = Type::getNamedType("ModuleSetupProc");
 						assert(ty->isFunc());
 						UserProc *proc = (UserProc *)prog->setNewProc(setup);
 						assert(proc);
 						Signature *sig = ty->asFunc()->getSignature()->clone();
-						const char *sym = pBF->getSymbolByAddress(setup);
-						if (sym)
+						if (auto sym = pBF->getSymbolByAddress(setup))
 							sig->setName(sym);
 						sig->setForced(true);
 						proc->setSignature(sig);
 						entrypoints.push_back(setup);
 					}
-					if (teardown) {
+					if (ADDRESS teardown = pBF->readNative4(a + 8)) {
 						Type *ty = Type::getNamedType("ModuleTearDownProc");
 						assert(ty->isFunc());
 						UserProc *proc = (UserProc *)prog->setNewProc(teardown);
 						assert(proc);
 						Signature *sig = ty->asFunc()->getSignature()->clone();
-						const char *sym = pBF->getSymbolByAddress(teardown);
-						if (sym)
+						if (auto sym = pBF->getSymbolByAddress(teardown))
 							sig->setName(sym);
 						sig->setForced(true);
 						proc->setSignature(sig);
@@ -401,25 +397,23 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 			name = mainName[0];
 		for (size_t i = 0; i < sizeof mainName / sizeof *mainName; ++i) {
 			if (!strcmp(name, mainName[i])) {
-				Proc *proc = prog->findProc(a);
-				if (!proc) {
+				if (auto proc = prog->findProc(a)) {
+					if (auto fty = dynamic_cast<FuncType *>(Type::getNamedType(name))) {
+						proc->setSignature(fty->getSignature()->clone());
+						proc->getSignature()->setName(name);
+						//proc->getSignature()->setFullSig(true);  // Don't add or remove parameters
+						proc->getSignature()->setForced(true);   // Don't add or remove parameters
+					} else {
+						LOG << "unable to find signature for known entrypoint " << name << "\n";
+					}
+				} else {
 					if (VERBOSE)
 						LOG << "no proc found for address " << a << "\n";
-					return;
-				}
-				if (auto fty = dynamic_cast<FuncType *>(Type::getNamedType(name))) {
-					proc->setSignature(fty->getSignature()->clone());
-					proc->getSignature()->setName(name);
-					//proc->getSignature()->setFullSig(true);  // Don't add or remove parameters
-					proc->getSignature()->setForced(true);   // Don't add or remove parameters
-				} else {
-					LOG << "unable to find signature for known entrypoint " << name << "\n";
 				}
 				break;
 			}
 		}
 	}
-	return;
 }
 
 /**
@@ -434,20 +428,20 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 		prog->setNewProc(a);
 		if (VERBOSE)
 			LOG << "starting decode at address " << a << "\n";
-		auto proc = prog->findProc(a);
-		if (!proc) {
+		if (auto proc = prog->findProc(a)) {
+			if (proc->isLib()) {
+				LOG << "NOT decoding library proc at address 0x" << a << "\n";
+				return;
+			}
+			auto p = (UserProc *)proc;
+			std::ofstream os;
+			processProc(a, p, os);
+			p->setDecoded();
+		} else {
 			if (VERBOSE)
 				LOG << "no proc found at address " << a << "\n";
 			return;
 		}
-		if (proc->isLib()) {
-			LOG << "NOT decoding library proc at address 0x" << a << "\n";
-			return;
-		}
-		auto p = (UserProc *)proc;
-		std::ofstream os;
-		processProc(a, p, os);
-		p->setDecoded();
 
 	} else {  // a == NO_ADDRESS
 		bool change = true;
@@ -745,19 +739,17 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 
 				// Check for a call to an already existing procedure (including self recursive jumps), or to the PLT
 				// (note that a LibProc entry for the PLT function may not yet exist)
-				ADDRESS dest;
-				Proc *proc;
 				if (s->getKind() == STMT_GOTO) {
-					dest = stmt_jump->getFixedDest();
+					ADDRESS dest = stmt_jump->getFixedDest();
 					if (dest != NO_ADDRESS) {
-						proc = prog->findProc(dest);
+						Proc *proc = prog->findProc(dest);
 						if (!proc) {
 							if (pBF->isDynamicLinkedProc(dest))
 								proc = prog->setNewProc(dest);
 						}
 						if (proc && proc != (Proc *)-1) {
-							s = new CallStatement(dest);
-							auto call = static_cast<CallStatement *>(s);
+							auto call = new CallStatement(dest);
+							s = call;
 							call->setDestProc(proc);
 							call->setReturnAfterCall(true);
 							// also need to change it in the actual RTL
@@ -816,17 +808,16 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 							break;                          // Just leave it alone
 						}
 						// Check for indirect calls to library functions, especially in Win32 programs
-						if (pDest
-						 && pDest->isMemOf()
+						if (pDest->isMemOf()
 						 && pDest->getSubExp1()->isIntConst()
 						 && pBF->isDynamicLinkedProcPointer(((Const *)pDest->getSubExp1())->getAddr())) {
 							if (VERBOSE)
 								LOG << "jump to a library function: " << *stmt_jump << ", replacing with a call/ret.\n";
 							// jump to a library function
 							// replace with a call ret
-							std::string func = pBF->getDynamicProcName(((Const *)stmt_jump->getDest()->getSubExp1())->getAddr());
+							std::string func = pBF->getDynamicProcName(((Const *)pDest->getSubExp1())->getAddr());
 							auto call = new CallStatement;
-							call->setDest(stmt_jump->getDest()->clone());
+							call->setDest(pDest->clone());
 							LibProc *lp = pProc->getProg()->getLibraryProc(func.c_str());
 							if (!lp)
 								LOG << "getLibraryProc returned nullptr, aborting\n";
@@ -1108,9 +1099,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 			if (sequentialDecode && pCfg->existsBB(uAddr)) {
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
-					auto pBB = pCfg->newBB(BB_rtls, FALL, 1);
 					// Add an out edge to this address
-					if (pBB) {
+					if (auto pBB = pCfg->newBB(BB_rtls, FALL, 1)) {
 						pCfg->addOutEdge(pBB, uAddr);
 						BB_rtls = nullptr;  // Need new list of RTLs
 					}
