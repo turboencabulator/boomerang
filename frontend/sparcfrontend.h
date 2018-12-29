@@ -38,7 +38,7 @@ public:
 	std::vector<Exp *> &getDefaultParams() override;
 	std::vector<Exp *> &getDefaultReturns() override;
 
-	bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false) override;
+	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
 
 private:
 
@@ -51,20 +51,20 @@ private:
 
 	void case_unhandled_stub(ADDRESS addr);
 
-	bool case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
-	               UserProc *proc, std::list<CallStatement *> &callList, std::ofstream &os, bool isPattern = false);
+	bool case_CALL(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	               UserProc *, std::list<CallStatement *> &, bool = false);
 
-	void case_SD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
-	             std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq, std::ofstream &os);
+	void case_SD(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	             Cfg *, TargetQueue &);
 
-	bool case_DD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
-	             std::list<RTL *> *&BB_rtls, TargetQueue &tq, UserProc *proc, std::list<CallStatement *> &callList);
+	bool case_DD(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	             TargetQueue &, UserProc *, std::list<CallStatement *> &);
 
-	bool case_SCD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
-	              std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq);
+	bool case_SCD(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	              Cfg *, TargetQueue &);
 
-	bool case_SCDAN(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
-	                std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq);
+	bool case_SCDAN(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	                Cfg *, TargetQueue &);
 
 	void emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr);
 	void emitCopyPC(std::list<RTL *> *pRtls, ADDRESS uAddr);

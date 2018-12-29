@@ -61,10 +61,10 @@ PPCFrontEnd::getDefaultReturns()
 }
 
 bool
-PPCFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
+PPCFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag, bool spec)
 {
 	// Call the base class to do most of the work
-	if (!FrontEnd::processProc(uAddr, pProc, os, frag, spec))
+	if (!FrontEnd::processProc(uAddr, pProc, frag, spec))
 		return false;
 	// This will get done twice; no harm
 	pProc->setEntryBB();

@@ -228,8 +228,7 @@ FrontSparcTest::testDelaySlot()
 
 	std::string name("testDelaySlot");
 	auto pProc = new UserProc(prog, name, addr);
-	std::ofstream dummy;
-	bool res = pFE->processProc(addr, pProc, dummy, false);
+	bool res = pFE->processProc(addr, pProc, false);
 
 	CPPUNIT_ASSERT(res == 1);
 	Cfg::iterator it = pProc->getCFG()->begin();

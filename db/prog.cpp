@@ -1552,8 +1552,7 @@ Global::meetType(Type *ty)
 void
 Prog::reDecode(UserProc *proc)
 {
-	std::ofstream os;
-	pFE->processProc(proc->getNativeAddress(), proc, os);
+	pFE->processProc(proc->getNativeAddress(), proc);
 }
 
 #ifdef USING_MEMO

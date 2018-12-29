@@ -29,7 +29,7 @@ public:
 	std::vector<Exp *> &getDefaultParams() override;
 	std::vector<Exp *> &getDefaultReturns() override;
 
-	bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false) override;
+	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
 };
 
 #endif

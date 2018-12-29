@@ -114,14 +114,13 @@ getCond(const SemStr *pCond)
  * PARAMETERS:    address - the address at which the procedure starts
  *                pProc - the procedure object
  *                spec - true if a speculative decode
- *                os - output stream for rtl output
  * RETURNS:       True if successful decode
  *============================================================================*/
 bool
-FrontEndSrc::processProc(ADDRESS uAddr, UserProc *pProc, ofstream &os, bool spec /* = false */)
+FrontEndSrc::processProc(ADDRESS uAddr, UserProc *pProc, bool spec)
 {
 	// Call the base class to do all of the work
-	return FrontEnd::processProc(uAddr, pProc, os, spec);
+	return FrontEnd::processProc(uAddr, pProc, spec);
 }
 
 #if 0

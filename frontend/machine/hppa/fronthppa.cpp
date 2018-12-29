@@ -257,7 +257,6 @@ case_unhandled_stub(ADDRESS addr)
  *                     be processed
  *                   isPattern - true if the call is an idiomatic pattern (e.g.
  *                      a move_call_move pattern)
- *                   os - output stream for rtls
  * SIDE EFFECTS:     address may change; BB_rtls may be appended to or set NULL
  * RETURNS:          true if next instruction is to be fetched sequentially from
  *                      this one
@@ -265,7 +264,7 @@ case_unhandled_stub(ADDRESS addr)
 bool
 case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
               DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
-              UserProc *proc, std::list<CallStatement *> &callList, ofstream &os, bool isPattern = false)
+              UserProc *proc, std::list<CallStatement *> &callList, bool isPattern = false)
 {
 	// Aliases for the call and delay RTLs
 	auto call_rtl = static_cast<HLCall *>(inst.rtl);
@@ -285,7 +284,7 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 		delay_rtl->setAddress(address);
 		BB_rtls->push_back(delay_rtl);
 		if (progOptions.rtl)
-			delay_rtl->print(os);
+			LOG << *delay_rtl;
 	}
 
 	{
@@ -404,14 +403,13 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
  *                     construction
  *                   cfg - the CFG of the enclosing procedure
  *                   targets: queue of targets still to be processed
- *                   os - output stream for rtls
  * SIDE EFFECTS:     address may change; BB_rtls may be appended to or set NULL
  * RETURNS:          <nothing>
  *============================================================================*/
 void
 case_SD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
             DecodeResult &inst, DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
-            Cfg *cfg, TARGETS &targets, ofstream &os)
+            Cfg *cfg, TARGETS &targets)
 {
 	// Aliases for the SD and delay RTLs
 	auto SD_rtl = static_cast<HLJump *>(inst.rtl);
@@ -429,7 +427,7 @@ case_SD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 			BB_rtls->push_back(delay_rtl);
 			// Display RTL representation if asked
 			if (progOptions.rtl)
-				delay_rtl->print(os);
+				LOG << *delay_rtl;
 		}
 	}
 
@@ -810,11 +808,10 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
  * PARAMETERS:       address - the address at which the procedure starts
  *                   proc - the procedure object
  *                   spec - if true, this is a speculative decode
- *                   os - output stream for rtl output
  * RETURNS:          True if a good decode
  *============================================================================*/
 bool
-FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spec /* = false */)
+FrontEndSrc::processProc(ADDRESS address, UserProc *proc, bool spec)
 {
 	// Declare a queue of targets not yet processed yet. This has to be
 	// individual to the procedure! (so not a global)
@@ -961,7 +958,7 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 				// Ordinary, non-delay branch or call/return
 				if (rtl->getKind() == CALL_HRTL) {
 					// This is a call followed by a return, e.g. a BL to printf
-					case_CALL_NCT(address, inst, nop_inst, BB_rtls, proc, callList, os);
+					case_CALL_NCT(address, inst, nop_inst, BB_rtls, proc, callList);
 				} else {
 					BB_rtls->push_back(rtl_jump);
 					auto pBB = cfg->newBB(BB_rtls, ONEWAY, 1);
@@ -988,10 +985,10 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 						// instruction before the jump or call
 						if (rtl->getKind() == CALL_HRTL) {
 							// This is a call followed by an NCT/NOP
-							sequentialDecode = case_CALL_NCT(address, inst, delay_inst, BB_rtls, proc, callList, os);
+							sequentialDecode = case_CALL_NCT(address, inst, delay_inst, BB_rtls, proc, callList);
 						} else {
 							// This is a non-call followed by an NCT/NOP
-							case_SD_NCT(address, delta, uUpper, inst, delay_inst, BB_rtls, cfg, targets, os);
+							case_SD_NCT(address, delta, uUpper, inst, delay_inst, BB_rtls, cfg, targets);
 
 							// There is no fall through branch.
 							sequentialDecode = false;
@@ -1072,8 +1069,8 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 					HRTL *delay_rtl = delay_inst.rtl;
 
 					// Display RTL representation if asked
-					if (progOptions.rtl && delay_rtl != NULL)
-						delay_rtl->print(os);
+					if (progOptions.rtl && delay_rtl)
+						LOG << *delay_rtl;
 
 					switch (delay_inst.type) {
 					case NOP:
@@ -1116,8 +1113,8 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 					delay_rtl->updateNumBytes(delay_inst.numBytes);
 
 					// Display low level RTL representation if asked
-					if (progOptions.rtl && delay_rtl != NULL)
-						delay_rtl->print(os);
+					if (progOptions.rtl && delay_rtl)
+						LOG << *delay_rtl;
 
 					switch (delay_inst.type) {
 					case NOP:
@@ -1140,8 +1137,8 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 					delay_rtl->updateNumBytes(delay_inst.numBytes);
 
 					// Display RTL representation if asked
-					if (progOptions.rtl && delay_rtl != NULL)
-						delay_rtl->print(os);
+					if (progOptions.rtl && delay_rtl)
+						LOG << *delay_rtl;
 
 					switch (delay_inst.type) {
 					case NOP:
@@ -1219,8 +1216,8 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 
 					BB_rtls->push_back(follow_rtl);         // Add the follow instr
 					// Display low level RTL representation if asked
-					if (progOptions.rtl && follow_rtl != NULL)
-						follow_rtl->print(os);
+					if (progOptions.rtl && follow_rtl)
+						LOG << *follow_rtl;
 
 					address += 8;           // Skip NCTA and following instr
 				}
@@ -1228,8 +1225,8 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, ofstream &os, bool spe
 			}   // switch inst.type
 
 			// Display RTL representation if asked
-			if (progOptions.rtl && (inst.rtl != NULL))
-				inst.rtl->print(os);
+			if (progOptions.rtl && inst.rtl)
+				LOG << *inst.rtl;
 
 			// If sequentially decoding, check if the next address happens to
 			// be the start of an existing BB. If so, finish off the current BB

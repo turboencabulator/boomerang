@@ -49,6 +49,7 @@
 #include "st20frontend.h"
 #endif
 
+#include <fstream>
 #include <queue>
 #include <sstream>
 
@@ -434,8 +435,7 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 				return;
 			}
 			auto p = (UserProc *)proc;
-			std::ofstream os;
-			processProc(a, p, os);
+			processProc(a, p);
 			p->setDecoded();
 		} else {
 			if (VERBOSE)
@@ -455,8 +455,7 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 
 				// undecoded userproc.. decode it
 				change = true;
-				std::ofstream os;
-				int res = processProc(p->getNativeAddress(), p, os);
+				int res = processProc(p->getNativeAddress(), p);
 				if (res == 1)
 					p->setDecoded();
 				else
@@ -483,8 +482,7 @@ FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
 	auto proc = prog->setNewProc(a);
 	assert(!proc->isLib());
 	auto p = (UserProc *)proc;
-	std::ofstream os;
-	if (processProc(p->getNativeAddress(), p, os))
+	if (processProc(p->getNativeAddress(), p))
 		p->setDecoded();
 	prog->wellForm();
 }
@@ -498,8 +496,7 @@ FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 {
 	if (Boomerang::get()->traceDecoder)
 		LOG << "decoding fragment at 0x" << a << "\n";
-	std::ofstream os;
-	processProc(a, proc, os, true);
+	processProc(a, proc, true);
 }
 
 DecodeResult &
@@ -585,7 +582,6 @@ FrontEnd::getLibSignature(const char *name)
  *
  * \param uAddr  The address at which the procedure starts.
  * \param pProc  The procedure object.
- * \param os     The output stream for .rtl output.
  * \param frag   If true, we are decoding only a fragment of a procedure
  *               (e.g. each arm of a switch statement is decoded).
  * \param spec   If true, this is a speculative decode
@@ -598,7 +594,7 @@ FrontEnd::getLibSignature(const char *name)
  * \returns true on a good decode (no illegal instructions).
  */
 bool
-FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag /* = false */, bool spec /* = false */)
+FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, bool spec /* = false */)
 {
 	BasicBlock *pBB;  // Pointer to the current basic block
 
@@ -697,11 +693,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool fr
 			}
 
 			// Display RTL representation if asked
-			if (Boomerang::get()->printRtl) {
-				std::ostringstream st;
-				pRtl->print(st);
-				LOG << st.str();
-			}
+			if (Boomerang::get()->printRtl)
+				LOG << *pRtl;
 
 			ADDRESS uDest;
 

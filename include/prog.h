@@ -217,7 +217,7 @@ public:
 	        bool        isDynamicLinkedProcPointer(ADDRESS dest) const { return pBF->isDynamicLinkedProcPointer(dest); }
 	        const char *getDynamicProcName(ADDRESS uNative) const { return pBF->getDynamicProcName(uNative); }
 
-	        bool        processProc(int addr, UserProc *proc) { std::ofstream os; return pFE->processProc((unsigned)addr, proc, os); }  // Decode a proc
+	        bool        processProc(ADDRESS addr, UserProc *proc) { return pFE->processProc(addr, proc); }  // Decode a proc
 
 	        void        readSymbolFile(const char *fname);
 

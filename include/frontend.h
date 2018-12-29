@@ -21,7 +21,6 @@
 #include "sigenum.h"   // For enums platform and cc
 #include "types.h"
 
-#include <fstream>
 #include <list>
 #include <map>
 #include <queue>
@@ -145,7 +144,7 @@ public:
 	void decodeOnly(Prog *prog, ADDRESS a);
 	void decodeFragment(UserProc *proc, ADDRESS a);
 
-	virtual bool processProc(ADDRESS uAddr, UserProc *pProc, std::ofstream &os, bool frag = false, bool spec = false);
+	virtual bool processProc(ADDRESS, UserProc *, bool = false, bool = false);
 
 	/**
 	 * Given the dest of a call, determine if this is a machine specific

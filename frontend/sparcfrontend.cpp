@@ -237,7 +237,6 @@ SparcFrontEnd::case_unhandled_stub(ADDRESS addr)
  * \param proc        The enclosing procedure.
  * \param callList    A list of pointers to CallStatements
  *                    for procs yet to be processed.
- * \param os          Output stream for rtls.
  * \param isPattern   true if the call is an idiomatic pattern
  *                    (e.g. a move_call_move pattern).
  *
@@ -248,8 +247,9 @@ SparcFrontEnd::case_unhandled_stub(ADDRESS addr)
  * one.
  */
 bool
-SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
-                         UserProc *proc, std::list<CallStatement *> &callList, std::ofstream &os, bool isPattern/* = false*/)
+SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst,
+                         DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
+                         UserProc *proc, std::list<CallStatement *> &callList, bool isPattern)
 {
 	// Aliases for the call and delay RTLs
 	auto call_stmt = (CallStatement *)inst.rtl->getList().back();
@@ -261,7 +261,7 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &del
 		delay_rtl->setAddress(address);
 		BB_rtls->push_back(delay_rtl);
 		if (Boomerang::get()->printRtl)
-			delay_rtl->print(os);
+			LOG << *delay_rtl;
 	}
 
 	// Get the new return basic block for the special case where the delay instruction is a restore
@@ -371,14 +371,14 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst, DecodeResult &del
  *                    for the BB under construction.
  * \param cfg         The CFG of the enclosing procedure.
  * \param tq          Object managing the target queue.
- * \param os          Output stream for rtls.
  *
  * \par Side Effects
  * address may change; BB_rtls may be appended to or set to nullptr.
  */
 void
-SparcFrontEnd::case_SD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
-                       std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq, std::ofstream &os)
+SparcFrontEnd::case_SD(ADDRESS &address, DecodeResult &inst,
+                       DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
+                       Cfg *cfg, TargetQueue &tq)
 {
 	// Aliases for the SD and delay RTLs
 	auto SD_stmt = static_cast<GotoStatement *>(inst.rtl->getList().back());
@@ -396,7 +396,7 @@ SparcFrontEnd::case_SD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay
 			// Display RTL representation if asked
 			//if (progOptions.rtl)
 			if (0)  // SETTINGS!
-				delay_rtl->print(os);
+				LOG << *delay_rtl;
 		}
 	}
 
@@ -437,8 +437,9 @@ SparcFrontEnd::case_SD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay
  * one.
  */
 bool
-SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay_inst,
-                       std::list<RTL *> *&BB_rtls, TargetQueue &tq, UserProc *proc, std::list<CallStatement *> &callList)
+SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst,
+                       DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
+                       TargetQueue &tq, UserProc *proc, std::list<CallStatement *> &callList)
 {
 	Cfg *cfg = proc->getCFG();
 
@@ -546,7 +547,8 @@ SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst, DecodeResult &delay
  */
 bool
 SparcFrontEnd::case_SCD(ADDRESS &address, DecodeResult &inst,
-                        DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq)
+                        DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
+                        Cfg *cfg, TargetQueue &tq)
 {
 	auto stmt_jump = static_cast<GotoStatement *>(inst.rtl->getList().back());
 	ADDRESS uDest = stmt_jump->getFixedDest();
@@ -657,7 +659,8 @@ SparcFrontEnd::case_SCD(ADDRESS &address, DecodeResult &inst,
  */
 bool
 SparcFrontEnd::case_SCDAN(ADDRESS &address, DecodeResult &inst,
-                          DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls, Cfg *cfg, TargetQueue &tq)
+                          DecodeResult &delay_inst, std::list<RTL *> *&BB_rtls,
+                          Cfg *cfg, TargetQueue &tq)
 {
 	// We may have to move the delay instruction to an orphan BB, which then branches to the target of the jump.
 	// Instead of moving the delay instruction to an orphan BB, we may have a duplicate of the delay instruction just
@@ -749,7 +752,7 @@ SparcFrontEnd::getDefaultReturns()
  * base class implementation can't be re-used.
  */
 bool
-SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, bool fragment /* = false */, bool spec /* = false */)
+SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool spec)
 {
 	// Declare an object to manage the queue of targets not yet processed yet.
 	// This has to be individual to the procedure! (so not a global)
@@ -936,7 +939,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 							// off one level of return address)
 							((CallStatement *)last)->setReturnAfterCall(true);
 							sequentialDecode = false;
-							case_CALL(address, inst, nop_inst, BB_rtls, proc, callList, os, true);
+							case_CALL(address, inst, nop_inst, BB_rtls, proc, callList, true);
 							break;
 						}
 						// Next class of interest is if it assigns to %o7 (could be a move, add, and possibly others). E.g.:
@@ -964,7 +967,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 								 && (*((Binary *)rhs)->getSubExp1() == *o7)) {
 									// Get the constant
 									int K = ((Const *)((Binary *)rhs)->getSubExp2())->getInt();
-									case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, os, true);
+									case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
 									// We don't generate a goto; instead, we just decode from the new address
 									// Note: the call to case_CALL has already incremented address by 8, so don't do again
 									address += K;
@@ -974,7 +977,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 									// pop one return address, we we emit a return after this call
 									((CallStatement *)last)->setReturnAfterCall(true);
 									sequentialDecode = false;
-									case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, os, true);
+									case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
 									break;
 								}
 							}
@@ -991,10 +994,10 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 							if (last->getKind() == STMT_CALL) {
 
 								// This is a call followed by an NCT/NOP
-								sequentialDecode = case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, os);
+								sequentialDecode = case_CALL(address, inst, delay_inst, BB_rtls, proc, callList);
 							} else {
 								// This is a non-call followed by an NCT/NOP
-								case_SD(address, inst, delay_inst, BB_rtls, cfg, targetQueue, os);
+								case_SD(address, inst, delay_inst, BB_rtls, cfg, targetQueue);
 
 								// There is no fall through branch.
 								sequentialDecode = false;
@@ -1072,7 +1075,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 					// Display RTL representation if asked
 					if (Boomerang::get()->printRtl && delay_rtl)
-						delay_rtl->print(os);
+						LOG << *delay_rtl;
 
 					switch (delay_inst.type) {
 					case NOP:
@@ -1103,7 +1106,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 					// Display low level RTL representation if asked
 					if (Boomerang::get()->printRtl && delay_rtl)
-						delay_rtl->print(os);
+						LOG << *delay_rtl;
 
 					switch (delay_inst.type) {
 					case NOP:
@@ -1133,7 +1136,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, std::ofstream &os, b
 
 					// Display RTL representation if asked
 					if (Boomerang::get()->printRtl && delay_rtl)
-						delay_rtl->print(os);
+						LOG << *delay_rtl;
 
 					switch (delay_inst.type) {
 					case NOP:
