@@ -271,7 +271,7 @@ BinaryFile::getSymbolByAddress(ADDRESS uNative)
 ADDRESS
 BinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
-	return 0;
+	return NO_ADDRESS;
 }
 
 /**

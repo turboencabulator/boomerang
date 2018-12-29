@@ -175,8 +175,7 @@ UserProc::dfaTypeAnalysis()
 				        || baseType->resolvesToSize()) {
 					ADDRESS addr = (ADDRESS) con->getInt();
 					prog->globalUsed(addr, baseType);
-					const char *gloName = prog->getGlobalName(addr);
-					if (gloName) {
+					if (auto gloName = prog->getGlobalName(addr)) {
 						ADDRESS r = addr - prog->getGlobalAddr(gloName);
 						Exp *ne;
 						if (r) {

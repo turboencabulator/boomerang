@@ -649,10 +649,9 @@ Prog::getGlobalName(ADDRESS uaddr) const
 {
 	// FIXME: inefficient
 	for (const auto &global : globals) {
-		if (global->getAddress() == uaddr)
-			return global->getName();
-		else if (global->getAddress() < uaddr
-		      && global->getAddress() + global->getType()->getSize() / 8 > uaddr)
+		if (global->getAddress() == uaddr
+		 || (global->getAddress() < uaddr
+		  && global->getAddress() + global->getType()->getSize() / 8 > uaddr))
 			return global->getName();
 	}
 	if (pBF)

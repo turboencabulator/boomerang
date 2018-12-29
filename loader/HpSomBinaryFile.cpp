@@ -379,7 +379,7 @@ ADDRESS
 HpSomBinaryFile::getEntryPoint() const
 {
 	assert(0); /* FIXME: Someone who understands this file please implement */
-	return 0;
+	return NO_ADDRESS;
 }
 
 #if 0 // Cruft?
@@ -427,10 +427,7 @@ HpSomBinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	// For now, we ignore the symbol table and do a linear search of our
 	// SymTab table
-	ADDRESS res = symbols.find(name);
-	if (res != NO_ADDRESS)
-		return res;
-	return 0;  // Till the failure return value is fixed
+	return symbols.find(name);
 }
 
 /**

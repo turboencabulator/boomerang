@@ -645,7 +645,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	// Not ideal; we must return start
 	std::cerr << "main function not found\n";
 
-	this->addSymbol(start, "_start");
+	pBF->addSymbol(start, "_start");
 
 	return start;
 }
@@ -1046,15 +1046,17 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				continue;
 
 			ADDRESS a;
-			if (found->isIntConst())
+			if (found->isIntConst()) {
 				a = ((Const *)found)->getInt();
-			else if (found->isAddrOf() && found->getSubExp1()->isGlobal()) {
+			} else if (found->isAddrOf() && found->getSubExp1()->isGlobal()) {
 				const char *name = ((Const *)found->getSubExp1()->getSubExp1())->getStr();
-				if (!prog->getGlobal(name))
+				if (auto global = prog->getGlobal(name))
+					a = global->getAddress();
+				else
 					continue;
-				a = prog->getGlobalAddr(name);
-			} else
+			} else {
 				continue;
+			}
 
 			// found one.
 			if (paramIsFuncPointer) {

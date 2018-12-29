@@ -304,9 +304,9 @@ FrontEnd::getEntryPoints()
 	std::vector<ADDRESS> entrypoints;
 	bool gotMain = false;
 	ADDRESS a = getMainEntryPoint(gotMain);
-	if (a != NO_ADDRESS)
+	if (a != NO_ADDRESS) {
 		entrypoints.push_back(a);
-	else {  // try some other tricks
+	} else {  // try some other tricks
 		const char *fname = pBF->getFilename();
 		// X11 Module
 		if (!strcmp(fname + strlen(fname) - 6, "_drv.o")) {

@@ -1983,7 +1983,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 			const char *gloName = ((Const *)con)->getStr();
 			UserProc *p = ((Location *)base)->getProc();
 			Prog *prog = p->getProg();
-			T = (ADDRESS)prog->getGlobalAddr(gloName);
+			T = prog->getGlobalAddr(gloName);
 			expr = ((Binary *)e)->getSubExp2();
 		}
 		break;
