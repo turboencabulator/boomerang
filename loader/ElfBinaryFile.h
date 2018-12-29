@@ -186,8 +186,15 @@ private:
 	int         elfRead4(const int *pi) const;
 	void        elfWrite4(int *pi, int val);
 	//const char *NativeToHostAddress(ADDRESS uNative) const;
-public:
 
+	/**
+	 * \name Section functions
+	 * \{
+	 */
+	const SectionInfo *getSectionInfo(const Elf32_Sym *) const;
+	/** \} */
+
+public:
 	/**
 	 * \name Symbol table functions
 	 * \{
@@ -197,7 +204,7 @@ public:
 	const char *getSymbolByAddress(ADDRESS uAddr) override;
 	ADDRESS     getAddressByName(const std::string &, bool = false) const override;
 	int         getSizeByName(const std::string &, bool = false) const override;
-	const char *getFilenameSymbolFor(const std::string &) override;
+	const char *getFilenameSymbolFor(const std::string &) const override;
 	//int         getDistanceByName(const std::string &, const std::string &);
 	//int         getDistanceByName(const std::string &);
 	//ADDRESS    *getImportStubs(int &numImports) override;
@@ -258,9 +265,9 @@ private:
 #endif
 	void        AddSyms(size_t);
 	void        applyRelocations();
-	bool        ValueByName(const std::string &, SymValue *, bool = false) const;
-	bool        SearchValueByName(const std::string &, SymValue *) const;
-	bool        SearchValueByName(const std::string &, SymValue *, const std::string &, const std::string &) const;
+	bool        ValueByName(const std::string &, SymValue &, bool = false) const;
+	bool        SearchValueByName(const std::string &, SymValue &) const;
+	bool        SearchValueByName(const std::string &, SymValue &, const std::string &, const std::string &) const;
 	ADDRESS     findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, int numRelPlt, ADDRESS addrPlt) const;
 
 	char       *m_pImage = nullptr;         ///< Pointer to the loaded image.
@@ -276,12 +283,11 @@ private:
 	 */
 	std::map<ADDRESS, std::string> m_SymTab;
 
-	const Elf32_Rel *m_pReloc = nullptr;    ///< Pointer to the relocation section.
-	const Elf32_Sym *m_pSym = nullptr;      ///< Pointer to loaded symbol section.
-	bool        m_bAddend;                  ///< true if reloc table has addend.
+	//const Elf32_Rel *m_pReloc = nullptr;    ///< Pointer to the relocation section.
+	//bool        m_bAddend;                  ///< true if reloc table has addend.
 	ADDRESS     m_uPltMin = 0;              ///< Min address of PLT table.
 	ADDRESS     m_uPltMax = 0;              ///< Max address (1 past last) of PLT.
-	ADDRESS    *m_pImportStubs = nullptr;   ///< An array of import stubs.
+	//ADDRESS    *m_pImportStubs = nullptr;   ///< An array of import stubs.
 	//ADDRESS     m_uBaseAddr;                ///< Base image virtual address.
 	//size_t      m_uImageSize;               ///< Total image size (bytes).
 	ADDRESS     first_extern;               ///< Where the first extern will be placed.

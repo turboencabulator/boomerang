@@ -223,7 +223,7 @@ public:
 	virtual const char *getSymbolByAddress(ADDRESS uNative);
 	virtual ADDRESS     getAddressByName(const std::string &, bool = false) const;
 	virtual int         getSizeByName(const std::string &, bool = false) const;
-	virtual const char *getFilenameSymbolFor(const std::string &sym) { return nullptr; }
+	virtual const char *getFilenameSymbolFor(const std::string &sym) const { return nullptr; }
 	//virtual ADDRESS    *getImportStubs(int &numImports);
 	//virtual std::vector<ADDRESS> getExportedAddresses(bool funcsOnly = true) { return std::vector<ADDRESS>(); }
 	//virtual std::map<ADDRESS, const char *> *getDynamicGlobalMap();
