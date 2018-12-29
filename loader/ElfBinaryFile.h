@@ -233,7 +233,8 @@ protected:
 
 private:
 	// Not meant to be used externally, but sometimes you just have to have it.
-	const char *getStrPtr(int idx, int offset) const;
+	const char *getStrPtr(int, int) const;
+	const char *getStrPtr(const SectionInfo *, int) const;
 
 #if 0 // Cruft?
 	// Similarly here; sometimes you just need to change a section's link
@@ -252,10 +253,10 @@ private:
 
 	int         ProcessElfFile();         // Does most of the work
 	bool        getNextMember();          // Load next member of archive
-	void        AddRelocsAsSyms(int secIndex);
+	void        AddRelocsAsSyms(size_t);
 	void        SetRelocInfo(SectionInfo *pSect);
 #endif
-	void        AddSyms(int secIndex);
+	void        AddSyms(size_t);
 	void        applyRelocations();
 	bool        ValueByName(const std::string &, SymValue *, bool = false) const;
 	bool        SearchValueByName(const std::string &, SymValue *) const;

@@ -196,7 +196,7 @@ ElfBinaryFile::load(std::istream &ifs)
 
 	// Add symbol info. Note that some symbols will be in the main table only, and others in the dynamic table only.
 	// So the best idea is to add symbols for all sections of the appropriate type
-	for (int i = 1; i < sections.size(); ++i) {
+	for (size_t i = 1; i < sections.size(); ++i) {
 		unsigned uType = sections[i].uType;
 		if (uType == SHT_SYMTAB || uType == SHT_DYNSYM)
 			AddSyms(i);
@@ -241,13 +241,19 @@ ElfBinaryFile::load(std::istream &ifs)
 const char *
 ElfBinaryFile::getStrPtr(int idx, int offset) const
 {
-	if (idx < 0) {
-		// Most commonly, this will be an index of -1, because a call to getSectionIndexByName() failed
+	if (idx < 0 || (size_t)idx >= sections.size()) {
 		fprintf(stderr, "Error! getStrPtr passed index of %d\n", idx);
 		return nullptr;
 	}
+	return getStrPtr(&sections[idx], offset);
+}
+const char *
+ElfBinaryFile::getStrPtr(const SectionInfo *si, int offset) const
+{
+	if (!si)
+		return nullptr;
 	// Get a pointer to the start of the string table
-	const char *pSym = sections[idx].uHostAddr;
+	const char *pSym = si->uHostAddr;
 	// Just add the offset
 	return pSym + offset;
 }
@@ -290,7 +296,7 @@ ElfBinaryFile::findRelPltOffset(int i, const char *addrRelPlt, int sizeRelPlt, i
  * \param secIndex  The section index of the symbol table.
  */
 void
-ElfBinaryFile::AddSyms(int secIndex)
+ElfBinaryFile::AddSyms(size_t secIndex)
 {
 	int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 	const auto &sect = sections[secIndex];
@@ -337,8 +343,9 @@ ElfBinaryFile::AddSyms(int secIndex)
 				val = findRelPltOffset(i, addrRelPlt, sizeRelPlt, numRelPlt, addrPlt);
 			} else if (e_type == E_REL) {
 				int nsec = elfRead2(&m_pSym[i].st_shndx);
-				if (nsec >= 0 && nsec < getNumSections())
-					val += getSectionInfo(nsec)->uNativeAddr;
+				if (nsec >= 0)
+					if (auto si = getSectionInfo(nsec))
+						val += si->uNativeAddr;
 			}
 
 #define ECHO_SYMS 0
@@ -353,7 +360,6 @@ ElfBinaryFile::AddSyms(int secIndex)
 		// Ugh - main mustn't have the STT_FUNC attribute. Add it
 		m_SymTab[uMain] = "main";
 	}
-	return;
 }
 
 #if 0 // Cruft?
@@ -362,8 +368,8 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 {
 	std::vector<ADDRESS> exported;
 
-	int secIndex = 0;
-	for (int i = 1; i < sections.size(); ++i) {
+	size_t secIndex = 0;
+	for (size_t i = 1; i < sections.size(); ++i) {
 		unsigned uType = sections[i].uType;
 		if (uType == SHT_SYMTAB) {
 			secIndex = i;
@@ -396,8 +402,9 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
 			if (!funcsOnly || ELF32_ST_TYPE(m_pSym[i].st_info) == STT_FUNC) {
 				if (e_type == E_REL) {
 					int nsec = elfRead2(&m_pSym[i].st_shndx);
-					if (nsec >= 0 && nsec < getNumSections())
-						val += getSectionInfo(nsec)->uNativeAddr;
+					if (nsec >= 0)
+						if (auto si = getSectionInfo(nsec))
+							val += si->uNativeAddr;
 				}
 				exported.push_back(val);
 			}
@@ -414,7 +421,7 @@ ElfBinaryFile::getExportedAddresses(bool funcsOnly)
  * invalid for SPARC, and most X86 relocations!  So currently not called.
  */
 void
-ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
+ElfBinaryFile::AddRelocsAsSyms(size_t relSecIdx)
 {
 	if (relSecIdx >= sections.size()) return;
 	const auto &sect = sections[relSecIdx];
@@ -462,7 +469,6 @@ ElfBinaryFile::AddRelocsAsSyms(int relSecIdx)
 		}
 		writeNative4(val, it->first - val - 4);
 	}
-	return;
 }
 #endif
 
@@ -497,7 +503,7 @@ ElfBinaryFile::ValueByName(const std::string &name, SymValue *pVal, bool bNoType
 	if (!pSect) return false;
 	auto pHash = (const int *)pSect->uHostAddr;
 
-	int iStr = getSectionIndexByName(".dynstr");
+	auto strtab = getSectionInfoByName(".dynstr");
 
 	// First organise the hash table
 	int numBucket = elfRead4(&pHash[0]);
@@ -512,7 +518,7 @@ ElfBinaryFile::ValueByName(const std::string &name, SymValue *pVal, bool bNoType
 	// In that case, set found to false.
 	bool found = false;
 	while (y) {
-		const char *pName = getStrPtr(iStr, elfRead4(&pSym[y].st_name));
+		const char *pName = getStrPtr(strtab, elfRead4(&pSym[y].st_name));
 		if (pName && pName == name) {
 			found = true;
 			break;
@@ -526,8 +532,9 @@ ElfBinaryFile::ValueByName(const std::string &name, SymValue *pVal, bool bNoType
 		int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 		if (e_type == E_REL) {
 			int nsec = elfRead2(&pSym[y].st_shndx);
-			if (nsec >= 0 && nsec < getNumSections())
-				pVal->uSymAddr += getSectionInfo(nsec)->uNativeAddr;
+			if (nsec >= 0)
+				if (auto si = getSectionInfo(nsec))
+					pVal->uSymAddr += si->uNativeAddr;
 		}
 		pVal->iSymSize = elfRead4(&pSym[y].st_size);
 		return true;
@@ -564,8 +571,9 @@ ElfBinaryFile::SearchValueByName(const std::string &name, SymValue *pVal, const 
 			int e_type = elfRead2(&((Elf32_Ehdr *)m_pImage)->e_type);
 			if (e_type == E_REL) {
 				int nsec = elfRead2(&pSym[i].st_shndx);
-				if (nsec >= 0 && nsec < getNumSections())
-					pVal->uSymAddr += getSectionInfo(nsec)->uNativeAddr;
+				if (nsec >= 0)
+					if (auto si = getSectionInfo(nsec))
+						pVal->uSymAddr += si->uNativeAddr;
 			}
 			pVal->iSymSize = elfRead4(&pSym[i].st_size);
 			return true;
@@ -871,8 +879,8 @@ ElfBinaryFile::getDynamicGlobalMap()
 	}
 	const Elf32_Sym *pSym = (const Elf32_Sym *)sym->uHostAddr;
 
-	int idxStr = getSectionIndexByName(".dynstr");
-	if (idxStr == -1) {
+	auto strtab = getSectionInfoByName(".dynstr");
+	if (!strtab) {
 		fprintf(stderr, "Could not find section .dynstr in source binary file");
 		return ret;
 	}
@@ -880,7 +888,7 @@ ElfBinaryFile::getDynamicGlobalMap()
 	for (int i = 0; i < numEnt; ++i) {
 		// The ugly p[1] below is because it p might point to an Elf32_Rela struct, or an Elf32_Rel struct
 		int sym = ELF32_R_SYM(((const int *)p)[1]);
-		const char *s = getStrPtr(idxStr, pSym[sym].st_name);
+		const char *s = getStrPtr(strtab, pSym[sym].st_name);
 		ADDRESS val = ((const int *)p)[0];
 		(*ret)[val] = s;  // Add the (val, s) mapping to ret
 		p += pSect->uSectionEntrySize;
@@ -981,7 +989,7 @@ ElfBinaryFile::applyRelocations()
 		break;  // Not implemented yet
 	case EM_386:
 		{
-			for (int i = 1; i < sections.size(); ++i) {
+			for (size_t i = 1; i < sections.size(); ++i) {
 				const auto &sect = sections[i];
 				if (sect.uType == SHT_REL) {
 					// A section such as .rel.dyn or .rel.plt (without an addend field).
@@ -1026,8 +1034,9 @@ ElfBinaryFile::applyRelocations()
 							S = elfRead4((const int *)&symOrigin[symTabIndex].st_value);
 							if (e_type == E_REL) {
 								int nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-								if (nsec >= 0 && nsec < getNumSections())
-									S += getSectionInfo(nsec)->uNativeAddr;
+								if (nsec >= 0)
+									if (auto si = getSectionInfo(nsec))
+										S += si->uNativeAddr;
 							}
 							A = elfRead4(pRelWord);
 							elfWrite4(pRelWord, S + A);
@@ -1035,8 +1044,9 @@ ElfBinaryFile::applyRelocations()
 						case 2:  // R_386_PC32: S + A - P
 							if (ELF32_ST_TYPE(symOrigin[symTabIndex].st_info) == STT_SECTION) {
 								int nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-								if (nsec >= 0 && nsec < getNumSections())
-									S = getSectionInfo(nsec)->uNativeAddr;
+								if (nsec >= 0)
+									if (auto si = getSectionInfo(nsec))
+										S = si->uNativeAddr;
 							} else {
 								S = elfRead4((const int *)&symOrigin[symTabIndex].st_value);
 								if (S == 0) {
@@ -1056,8 +1066,9 @@ ElfBinaryFile::applyRelocations()
 									//}
 								} else if (e_type == E_REL) {
 									int nsec = elfRead2(&symOrigin[symTabIndex].st_shndx);
-									if (nsec >= 0 && nsec < getNumSections())
-										S += getSectionInfo(nsec)->uNativeAddr;
+									if (nsec >= 0)
+										if (auto si = getSectionInfo(nsec))
+											S += si->uNativeAddr;
 								}
 							}
 							A = elfRead4(pRelWord);
@@ -1092,7 +1103,7 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative) const
 		break;  // Not implemented yet
 	case EM_386:
 		{
-			for (int i = 1; i < sections.size(); ++i) {
+			for (size_t i = 1; i < sections.size(); ++i) {
 				const auto &sect = sections[i];
 				if (sect.uType == SHT_REL) {
 					// A section such as .rel.dyn or .rel.plt (without an addend field).
@@ -1154,8 +1165,8 @@ ElfBinaryFile::isRelocationAt(ADDRESS uNative) const
 const char *
 ElfBinaryFile::getFilenameSymbolFor(const std::string &sym)
 {
-	int secIndex = 0;
-	for (int i = 1; i < sections.size(); ++i) {
+	size_t secIndex = 0;
+	for (size_t i = 1; i < sections.size(); ++i) {
 		unsigned uType = sections[i].uType;
 		if (uType == SHT_SYMTAB) {
 			secIndex = i;

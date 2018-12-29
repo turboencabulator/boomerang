@@ -106,8 +106,10 @@ IntelCoffFile::load(std::istream &ifs)
 		if (len != sectname.npos)
 			sectname.erase(len);
 
-		int sidx = getSectionIndexByName(sectname);
-		if (sidx == -1) {
+		size_t sidx;
+		if (auto si = getSectionInfoByName(sectname)) {
+			sidx = si - &sections.front();
+		} else {
 			sidx = sections.size();
 			auto sect = SectionInfo();
 			sect.name      = sectname;

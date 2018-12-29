@@ -42,7 +42,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	}
 
 	std::streamsize cb;
-	unsigned numreloc;
+	size_t numreloc;
 
 	// Check for the "MZ" exe header
 	if (m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z') {
@@ -100,7 +100,7 @@ ExeBinaryFile::load(std::istream &ifs)
 			ifs.seekg(m_pHeader->relocTabOffset);
 
 			/* Read in seg:offset pairs and convert to Image ptrs */
-			for (int i = 0; i < numreloc; ++i) {
+			for (size_t i = 0; i < numreloc; ++i) {
 				uint8_t buf[4];
 				ifs.read((char *)buf, 4);
 				m_pRelocTable[i] = LH16(buf) + ((int)LH16(buf + 2) << 4);
@@ -142,7 +142,7 @@ ExeBinaryFile::load(std::istream &ifs)
 	}
 
 	/* Relocate segment constants */
-	for (int i = 0; i < numreloc; ++i) {
+	for (size_t i = 0; i < numreloc; ++i) {
 		uint8_t *p = &m_pImage[m_pRelocTable[i]];
 		uint16_t w = (uint16_t)LH16(p);
 		*p++       = (uint8_t)(w & 0x00FF);

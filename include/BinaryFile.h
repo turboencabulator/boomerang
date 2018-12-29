@@ -208,9 +208,8 @@ public:
 protected:
 	        char       *getSectionData(ADDRESS a, ADDRESS range) const;
 public:
-	        int         getNumSections() const;
-	        int         getSectionIndexByName(const std::string &) const;
-	        const SectionInfo *getSectionInfo(int idx) const;
+	        size_t      getNumSections() const;
+	        const SectionInfo *getSectionInfo(size_t) const;
 	        const SectionInfo *getSectionInfoByName(const std::string &) const;
 	        const SectionInfo *getSectionInfoByAddr(ADDRESS uEntry) const;
 	        bool        isReadOnly(ADDRESS uEntry) const;

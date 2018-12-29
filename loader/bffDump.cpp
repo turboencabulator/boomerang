@@ -61,7 +61,7 @@ main(int argc, char *argv[])
 	// Display the code section(s) in raw hexadecimal notation.
 	// Note: this is traditionally the ".text" section in Elf binaries.
 	// In the case of Prc files (Palm), the code section is named "code0".
-	for (int i = 0; i < bf->getNumSections(); ++i) {
+	for (size_t i = 0; i < bf->getNumSections(); ++i) {
 		const SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bCode) {
 			printf("  Code section: %s\n", pSect->name.c_str());
@@ -71,7 +71,7 @@ main(int argc, char *argv[])
 	}
 
 	// Display the data section(s) in raw hexadecimal notation.
-	for (int i = 0; i < bf->getNumSections(); ++i) {
+	for (size_t i = 0; i < bf->getNumSections(); ++i) {
 		const SectionInfo *pSect = bf->getSectionInfo(i);
 		if (pSect->bData) {
 			printf("  Data section: %s\n", pSect->name.c_str());

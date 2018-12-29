@@ -46,31 +46,17 @@ BinaryFile::~BinaryFile()
 /**
  * \brief Return number of sections.
  */
-int
+size_t
 BinaryFile::getNumSections() const
 {
 	return sections.size();
 }
 
 /**
- * \brief Find section index given name, or -1 if not found.
- */
-int
-BinaryFile::getSectionIndexByName(const std::string &name) const
-{
-	for (int i = 0; i < sections.size(); ++i) {
-		if (sections[i].name == name) {
-			return i;
-		}
-	}
-	return -1;
-}
-
-/**
  * \brief Return section struct.
  */
 const SectionInfo *
-BinaryFile::getSectionInfo(int idx) const
+BinaryFile::getSectionInfo(size_t idx) const
 {
 	if (idx < sections.size()) {
 		return &sections[idx];

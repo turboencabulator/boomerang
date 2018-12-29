@@ -52,8 +52,8 @@ LoaderTest::testSparcLoad()
 	auto bf = BinaryFile::open(HELLO_SPARC);
 	CPPUNIT_ASSERT(bf);
 
-	int n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(29, n);
+	auto n = bf->getNumSections();
+	CPPUNIT_ASSERT_EQUAL(29u, n);
 
 	// Just use the first (real one) and last sections
 	std::ostringstream actual;
@@ -75,8 +75,8 @@ LoaderTest::testPentiumLoad()
 	auto bf = BinaryFile::open(HELLO_PENTIUM);
 	CPPUNIT_ASSERT(bf);
 
-	int n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(34, n);
+	auto n = bf->getNumSections();
+	CPPUNIT_ASSERT_EQUAL(34u, n);
 
 	std::ostringstream actual;
 	actual << bf->getSectionInfo(1)->name << "\n";
@@ -98,11 +98,11 @@ LoaderTest::testHppaLoad()
 	auto bf = BinaryFile::open(HELLO_HPPA);
 	CPPUNIT_ASSERT(bf);
 
-	int n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(4, n);
+	auto n = bf->getNumSections();
+	CPPUNIT_ASSERT_EQUAL(4u, n);
 
 	std::ostringstream actual;
-	for (int i = 0; i < n; ++i) {
+	for (size_t i = 0; i < n; ++i) {
 		actual << bf->getSectionInfo(i)->name << "\n";
 	}
 	std::string expected("$HEADER$\n$TEXT$\n$DATA$\n$BSS$\n");
@@ -121,11 +121,11 @@ LoaderTest::testPalmLoad()
 	auto bf = BinaryFile::open(STARTER_PALM);
 	CPPUNIT_ASSERT(bf);
 
-	int n = bf->getNumSections();
-	CPPUNIT_ASSERT_EQUAL(8, n);
+	auto n = bf->getNumSections();
+	CPPUNIT_ASSERT_EQUAL(8u, n);
 
 	std::ostringstream actual;
-	for (int i = 0; i < n; ++i)
+	for (size_t i = 0; i < n; ++i)
 		actual << bf->getSectionInfo(i)->name << "\n";
 	std::string expected("code1\nMBAR1000\ntFRM1000\nTalt1001\n"
 	                     "data0\ncode0\ntAIN1000\ntver1000\n");
@@ -146,12 +146,12 @@ LoaderTest::testWinLoad()
 		auto bf = BinaryFile::open(CALC_WINDOWS);
 		CPPUNIT_ASSERT(bf);
 
-		int n = bf->getNumSections();
-		CPPUNIT_ASSERT_EQUAL(5, n);
+		auto n = bf->getNumSections();
+		CPPUNIT_ASSERT_EQUAL(5u, n);
 
 		{
 			std::ostringstream actual;
-			for (int i = 0; i < n; ++i)
+			for (size_t i = 0; i < n; ++i)
 				actual << bf->getSectionInfo(i)->name << "\n";
 			std::string expected(".text\n.rdata\n.data\n.rsrc\n.reloc\n");
 			CPPUNIT_ASSERT_EQUAL(expected, actual.str());
