@@ -27,7 +27,7 @@ public:
 	//int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) override;
 
 protected:
-	static RTL *conditionalJump(ADDRESS, const char *, ADDRESS, BRANCH_TYPE, unsigned);
+	static RTL *conditionalJump(ADDRESS, const std::string &, ADDRESS, BRANCH_TYPE, unsigned);
 
 private:
 	/**

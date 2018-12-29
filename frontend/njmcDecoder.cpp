@@ -45,7 +45,7 @@ NJMCDecoder::NJMCDecoder(Prog *prog) :
  * \returns An instantiated list of Exps.
  */
 RTL *
-NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
+NJMCDecoder::instantiate(ADDRESS pc, const std::string &name, ...)
 {
 	// Get the signature of the instruction and extract its parts
 	auto sig = RTLDict.getSignature(name);
@@ -97,7 +97,7 @@ NJMCDecoder::instantiate(ADDRESS pc, const char *name, ...)
  * \returns An instantiated list of Exps.
  */
 Exp *
-NJMCDecoder::instantiateNamedParam(const char *name, ...)
+NJMCDecoder::instantiateNamedParam(const std::string &name, ...)
 {
 	if (!RTLDict.ParamSet.count(name)) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
@@ -142,7 +142,7 @@ NJMCDecoder::instantiateNamedParam(const char *name, ...)
  * \returns an instantiated list of Exps.
  */
 void
-NJMCDecoder::substituteCallArgs(const char *name, Exp *&exp, ...)
+NJMCDecoder::substituteCallArgs(const std::string &name, Exp *&exp, ...)
 {
 	if (!RTLDict.ParamSet.count(name)) {
 		std::cerr << "No entry for named parameter '" << name << "'\n";
@@ -217,7 +217,7 @@ NJMCDecoder::dis_Num(unsigned num)
  * to other procedures.
  */
 RTL *
-NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS dest)
+NJMCDecoder::unconditionalJump(ADDRESS pc, const std::string &name, ADDRESS dest)
 {
 	auto jump = new GotoStatement(dest);
 	SHOW_ASM(name << " 0x" << std::hex << dest << std::dec);
@@ -230,7 +230,7 @@ NJMCDecoder::unconditionalJump(ADDRESS pc, const char *name, ADDRESS dest)
  * \note This used to be the COND_JUMP macro.
  */
 RTL *
-NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS dest, BRANCH_TYPE cond)
+NJMCDecoder::conditionalJump(ADDRESS pc, const std::string &name, ADDRESS dest, BRANCH_TYPE cond)
 {
 	auto jump = new BranchStatement(dest);
 	jump->setCondType(cond);
@@ -246,7 +246,7 @@ NJMCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS dest, BRANCH_
  * \param dest    Destination Exp*.
  */
 RTL *
-NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
+NJMCDecoder::computedJump(ADDRESS pc, const std::string &name, Exp *dest)
 {
 	auto jump = new GotoStatement(dest);
 	jump->setIsComputed();
@@ -262,7 +262,7 @@ NJMCDecoder::computedJump(ADDRESS pc, const char *name, Exp *dest)
  * \param dest    Destination Exp*.
  */
 RTL *
-NJMCDecoder::computedCall(ADDRESS pc, const char *name, Exp *dest)
+NJMCDecoder::computedCall(ADDRESS pc, const std::string &name, Exp *dest)
 {
 	auto call = new CallStatement(dest);
 	call->setIsComputed();

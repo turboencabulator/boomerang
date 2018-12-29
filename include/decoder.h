@@ -22,6 +22,7 @@
 #include "types.h"
 
 #include <iostream>
+#include <string>
 
 #include <cstddef>
 #include <cstdint>
@@ -130,14 +131,14 @@ public:
 #endif
 
 protected:
-	RTL *instantiate(ADDRESS, const char *, ...);
-	Exp *instantiateNamedParam(const char *, ...);
-	void substituteCallArgs(const char *, Exp *&, ...);
+	RTL *instantiate(ADDRESS, const std::string &, ...);
+	Exp *instantiateNamedParam(const std::string &, ...);
+	void substituteCallArgs(const std::string &, Exp *&, ...);
 
-	static RTL *unconditionalJump(ADDRESS, const char *, ADDRESS);
-	static RTL *conditionalJump(ADDRESS, const char *, ADDRESS, BRANCH_TYPE);
-	static RTL *computedJump(ADDRESS, const char *, Exp *);
-	static RTL *computedCall(ADDRESS, const char *, Exp *);
+	static RTL *unconditionalJump(ADDRESS, const std::string &, ADDRESS);
+	static RTL *conditionalJump(ADDRESS, const std::string &, ADDRESS, BRANCH_TYPE);
+	static RTL *computedJump(ADDRESS, const std::string &, Exp *);
+	static RTL *computedCall(ADDRESS, const std::string &, Exp *);
 
 #if 0 // Cruft?
 	/**

@@ -4171,7 +4171,7 @@ pc
  * Process a conditional jump instruction.
  */
 RTL *
-PPCDecoder::conditionalJump(ADDRESS pc, const char *name, ADDRESS relocd, BRANCH_TYPE cond, unsigned BIcr)
+PPCDecoder::conditionalJump(ADDRESS pc, const std::string &name, ADDRESS relocd, BRANCH_TYPE cond, unsigned BIcr)
 {
 	auto jump = new BranchStatement(relocd);
 	jump->setCondType(cond);
