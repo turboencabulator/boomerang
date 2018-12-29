@@ -48,11 +48,11 @@ static DecodeResult nop_inst;
 /*==============================================================================
  * Forward declarations.
  *============================================================================*/
-void emitNop(HRTLList *pRtls, ADDRESS uAddr);
-void emitCopyPC(HRTLList *pRtls, ADDRESS uAddr);
+void emitNop(HRTLList &, ADDRESS);
+void emitCopyPC(HRTLList &, ADDRESS);
 void initCti();             // Imp in ctisparc.cc
-void setReturnLocations(CalleeEpilogue *epilogue, int iReg);
-bool helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl);
+void setReturnLocations(CalleeEpilogue *, int);
+bool helperFunc(HRTLList &, ADDRESS, ADDRESS);
 
 /*==============================================================================
  * FUNCTION:        initFront
@@ -290,7 +290,7 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 	{
 		ADDRESS dest = call_rtl->getFixedDest();
 		// First check for helper functions
-		if (helperFunc(dest, address, BB_rtls)) {
+		if (helperFunc(*BB_rtls, address, dest)) {
 			address += 8;           // Skip call, delay slot
 			return true;
 		}
@@ -1310,18 +1310,15 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, bool spec)
 /*==============================================================================
  * FUNCTION:      emitNop
  * OVERVIEW:      Emit a null RTL with the given address.
- * PARAMETERS:    pRtls - List of RTLs to append this instruction to
- *                uAddr - Native address of this instruction
- * RETURNS:       <nothing>
+ * PARAMETERS:    rtls - List of RTLs to append this instruction to
+ *                addr - Native address of this instruction
  *============================================================================*/
 void
-emitNop(HRTLList *pRtls, ADDRESS uAddr)
+emitNop(HRTLList &rtls, ADDRESS addr)
 {
 	// Emit a null RTL with the given address. Required to cope with
 	// SKIP instructions. Yes, they really happen, e.g. /usr/bin/vi 2.5
-	HRTL *pRtl = new RTL;
-	pRtl->setAddress(uAddr);
-	pRtls->push_back(pRtl);
+	rtls.push_back(new RTL(addr));
 }
 
 /*==============================================================================
@@ -1333,12 +1330,11 @@ emitNop(HRTLList *pRtls, ADDRESS uAddr)
  *                  slot instruction may use %o7. Example:
  *                  CALL $+8            ! This code is common in startup code
  *                  ADD  %o7, 20, %o0
- * PARAMETERS:    pRtls - list of RTLs to append to
- *                uAddr - native address for the RTL
- * RETURNS:       <nothing>
+ * PARAMETERS:    rtls - list of RTLs to append to
+ *                addr - native address for the RTL
  *============================================================================*/
 void
-emitCopyPC(HRTLList *pRtls, ADDRESS uAddr)
+emitCopyPC(HRTLList &rtls, ADDRESS addr)
 {
 	// Emit %o7 = %pc
 	auto pssSrc = new SemStr;
@@ -1350,26 +1346,15 @@ emitCopyPC(HRTLList *pRtls, ADDRESS uAddr)
 	// Make an assignment RT
 	auto pRt = new RTAssgn(pssDest, pssSrc, 32);
 	// Add the RT to an RTL
-	HRTL *pRtl = new RTL(uAddr);
+	HRTL *pRtl = new RTL(addr);
 	pRtl->appendRT(pRt);
 	// Add the RTL to the list of RTLs, but to the second last position
-	pRtls->insert(--pRtls->end(), pRtl);
+	rtls.insert(--rtls.end(), pRtl);
 }
 
-/*==============================================================================
- * FUNCTION:        helperFunc
- * OVERVIEW:        Checks for sparc specific helper functions like .urem,
- *                      which have specific sematics.
- * NOTE:            This needs to be handled in a resourcable way.
- * PARAMETERS:      dest: destination of the call (native address)
- *                  addr: address of current instruction (native addr)
- *                  lrtl: list of RTL* for current BB
- * RETURNS:         True if a helper function was found and handled; false
- *                      otherwise
- *============================================================================*/
 // Append one assignment to a list of RTLs
 void
-appendAssignment(SemStr *lhs, SemStr *rhs, int size, ADDRESS addr, HRTLList *lrtl)
+appendAssignment(HRTLList &rtls, ADDRESS addr, SemStr *lhs, SemStr *rhs, int size)
 {
 	auto rta = new RTAssgn(lhs, rhs, size);
 	// Create an RTL with this one RT
@@ -1377,23 +1362,33 @@ appendAssignment(SemStr *lhs, SemStr *rhs, int size, ADDRESS addr, HRTLList *lrt
 	lrt->push_back(rta);
 	HRTL *rtl = new RTL(addr, lrt);
 	// Append this RTL to the list of RTLs for this BB
-	lrtl->push_back(rtl);
+	rtls.push_back(rtl);
 }
 
-
+/*==============================================================================
+ * FUNCTION:        helperFunc
+ * OVERVIEW:        Checks for sparc specific helper functions like .urem,
+ *                      which have specific semantics.
+ * NOTE:            This needs to be handled in a resourcable way.
+ * PARAMETERS:      dest: destination of the call (native address)
+ *                  addr: address of current instruction (native addr)
+ *                  rtls: list of RTL* for current BB
+ * RETURNS:         True if a helper function was found and handled; false
+ *                      otherwise
+ *============================================================================*/
 // Determine if this is a helper function, e.g. .mul. If so, append the
-// appropriate RTLs to lrtl, and return true
+// appropriate RTLs to rtls, and return true
 bool
-helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
+helperFunc(HRTLList &rtls, ADDRESS addr, ADDRESS dest)
 {
 	// Helper functions are millicode, and don't seem to appear in the imports
 	// section. So they don't appear to be dynamically linked
 //	if (!prog.pBF->isDynamicLinkedProc(dest)) return false;
-	const char *pName =  prog.pBF->getSymbolByAddress(dest);
-	if (pName == 0) return false;
-	string name(pName);
-//	if (progOptions.fastInstr == false)
-//		return helperFuncLong(dest, addr, lrtl, name);
+	const char *p = prog.pBF->getSymbolByAddress(dest);
+	if (!p) return false;
+	auto name = std::string(p);
+//	if (!progOptions.fastInstr)
+//		return helperFuncLong(rtls, addr, name);
 	auto rhs = new SemStr;
 	if (name == "$$remU") {
 		// %r26 % %r25
@@ -1423,7 +1418,7 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 		*dest << idMemOf << idRegOf << idIntConst << 22;
 		call->setDest(dest);
 		// Append this RTL to the list of RTLs for this BB
-		lrtl->push_back(call);
+		rtls.push_back(call);
 		return true;
 	} else {
 		// Not a (known) helper function
@@ -1441,7 +1436,7 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 	lrt->push_back(rta);
 	HRTL *rtl = new RTL(addr, lrt);
 	// Append this RTL to the list of RTLs for this BB
-	lrtl->push_back(rtl);
+	rtls.push_back(rtl);
 	return true;
 }
 
@@ -1449,7 +1444,7 @@ helperFunc(ADDRESS dest, ADDRESS addr, HRTLList *lrtl)
 /* Small "local" function to build an expression with
  * *128* m[m[r[14]+64]] = m[r[8]] OP m[r[9]] */
 void
-quadOperation(ADDRESS addr, HRTLList *lrtl, int op)
+quadOperation(HRTLList &rtls, ADDRESS addr, int op)
 {
 	auto lhs = new SemStr(Type(FLOATP, 128, true));
 	auto rhs = new SemStr(Type(FLOATP, 128, true));
@@ -1470,12 +1465,12 @@ quadOperation(ADDRESS addr, HRTLList *lrtl, int op)
 	rhs->push(idRegOf);
 	rhs->push(idIntConst);
 	rhs->push(9);
-	appendAssignment(lhs, rhs, 128, addr, lrtl);
+	appendAssignment(rtls, addr, lhs, rhs, 128);
 }
 // This is the long version of helperFunc (i.e. -f not used). This does the
 // complete 64 bit semantics
 bool
-helperFuncLong(ADDRESS dest, ADDRESS addr, HRTLList *lrtl, string &name)
+helperFuncLong(HRTLList &rtls, ADDRESS addr, const std::string &name)
 {
 	auto rhs = new SemStr;
 	auto lhs = new SemStr;
@@ -1501,7 +1496,7 @@ helperFuncLong(ADDRESS dest, ADDRESS addr, HRTLList *lrtl, string &name)
 		*rhs << idAt << idRegOf << idTemp << tmpl << idIntConst << 32 << idIntConst << 63;
 		lrt->push_back(new RTAssgn(lhs, rhs, 32));
 		HRTL *rtl = new RTL(addr, lrt);
-		lrtl->push_back(rtl);
+		rtls.push_back(rtl);
 		return true;
 	} else if (name == ".mul") {
 		// r[tmpl] = sgnex(32, 64, r8) *! sgnex(32, 64, r9)
@@ -1523,7 +1518,7 @@ helperFuncLong(ADDRESS dest, ADDRESS addr, HRTLList *lrtl, string &name)
 		*rhs << idAt << idRegOf << idTemp << tmpl << idIntConst << 32 << idIntConst << 63;
 		lrt->push_back(new RTAssgn(lhs, rhs, 32));
 		HRTL *rtl = new RTL(addr, lrt);
-		lrtl->push_back(rtl);
+		rtls.push_back(rtl);
 		return true;
 	} else if (name == ".udiv") {
 		// %o0 / %o1
@@ -1553,16 +1548,16 @@ helperFuncLong(ADDRESS dest, ADDRESS addr, HRTLList *lrtl, string &name)
 	} else if (name == "_Q_mul") {
 		// Pointers to args are in %o0 and %o1; ptr to result at [%sp+64]
 		// So semantics is m[m[r[14]] = m[r[8]] *f m[r[9]]
-		quadOperation(addr, lrtl, idFMult);
+		quadOperation(rtls, addr, idFMult);
 		return true;
 	} else if (name == "_Q_div") {
-		quadOperation(addr, lrtl, idFDiv);
+		quadOperation(rtls, addr, idFDiv);
 		return true;
 	} else if (name == "_Q_add") {
-		quadOperation(addr, lrtl, idFPlus);
+		quadOperation(rtls, addr, idFPlus);
 		return true;
 	} else if (name == "_Q_sub") {
-		quadOperation(addr, lrtl, idFMinus);
+		quadOperation(rtls, addr, idFMinus);
 		return true;
 	} else {
 		// Not a (known) helper function
@@ -1573,7 +1568,7 @@ helperFuncLong(ADDRESS dest, ADDRESS addr, HRTLList *lrtl, string &name)
 	}
 	// Need to make an RTAssgn with %o0 = rhs
 	*lhs << idRegOf << idIntConst << 8;
-	appendAssignment(lhs, rhs, 32, addr, lrtl);
+	appendAssignment(rtls, addr, lhs, rhs, 32);
 	return true;
 }
 #endif

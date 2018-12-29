@@ -55,14 +55,15 @@ SparcFrontEnd::~SparcFrontEnd()
 /**
  * \brief Emit a warning when encountering a DCTI couple.
  *
- * \param uAt    The address of the couple.
- * \param uDest  The address of the first DCTI in the couple.
+ * \param at    The address of the couple.
+ * \param dest  The address of the first DCTI in the couple.
  */
 void
-SparcFrontEnd::warnDCTcouple(ADDRESS uAt, ADDRESS uDest)
+SparcFrontEnd::warnDCTcouple(ADDRESS at, ADDRESS dest)
 {
-	std::cerr << "Error: DCTI couple at " << std::hex << uAt << " points to delayed branch at " << uDest << "...\n";
-	std::cerr << "Decompilation will likely be incorrect\n";
+	std::cerr << "Error: DCTI couple at " << std::hex << at
+	          << " points to delayed branch at " << dest << "...\n"
+	          << "Decompilation will likely be incorrect\n";
 }
 
 /**
@@ -80,7 +81,7 @@ SparcFrontEnd::warnDCTcouple(ADDRESS uAt, ADDRESS uDest)
  * \returns Can optimise away the delay instruction.
  */
 bool
-SparcFrontEnd::optimise_DelayCopy(ADDRESS src, ADDRESS dest)
+SparcFrontEnd::optimise_DelayCopy(ADDRESS src, ADDRESS dest) const
 {
 	// Check that the destination is within the main test section; may not be when we speculatively decode junk
 	if ((dest - 4) >= pBF->getLimitTextHigh())
@@ -275,7 +276,7 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst,
 		// This is the idiomatic case where the destination is 1 or 2 instructions after the delayed instruction.
 		// Only emit the side effect of the call (%o7 := %pc) in this case.  Note that the side effect occurs before the
 		// delay slot instruction (which may use the value of %o7)
-		emitCopyPC(BB_rtls, address);
+		emitCopyPC(*BB_rtls, address);
 		address += disp30 << 2;
 		return true;
 	} else {
@@ -288,7 +289,7 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst,
 			// This is one of those. Flag this as an invalid instruction
 			inst.valid = false;
 		}
-		if (helperFunc(dest, address, BB_rtls)) {
+		if (helperFunc(*BB_rtls, address, dest)) {
 			address += 8;  // Skip call, delay slot
 			return true;
 		}
@@ -1229,15 +1230,15 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 /**
  * Emit a null RTL with the given address.
  *
- * \param pRtls  List of RTLs to append this instruction to.
- * \param uAddr  Native address of this instruction.
+ * \param rtls  List of RTLs to append this instruction to.
+ * \param addr  Native address of this instruction.
  */
 void
-SparcFrontEnd::emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr)
+SparcFrontEnd::emitNop(std::list<RTL *> &rtls, ADDRESS addr)
 {
 	// Emit a null RTL with the given address. Required to cope with
 	// SKIP instructions. Yes, they really happen, e.g. /usr/bin/vi 2.5
-	pRtls->push_back(new RTL(uAddr));
+	rtls.push_back(new RTL(addr));
 }
 
 /**
@@ -1250,32 +1251,32 @@ SparcFrontEnd::emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr)
  *     CALL $+8            ! This code is common in startup code
  *     ADD  %o7, 20, %o0
  *
- * \param pRtls  List of RTLs to append to.
- * \param uAddr  Native address for the RTL.
+ * \param rtls  List of RTLs to append to.
+ * \param addr  Native address for the RTL.
  */
 void
-SparcFrontEnd::emitCopyPC(std::list<RTL *> *pRtls, ADDRESS uAddr)
+SparcFrontEnd::emitCopyPC(std::list<RTL *> &rtls, ADDRESS addr)
 {
 	// Emit %o7 = %pc
 	auto a = new Assign(Location::regOf(15),  // %o7 == r[15]
 	                    new Terminal(opPC));
 	// Add the Exp to an RTL
-	auto pRtl = new RTL(uAddr, a);
+	auto rtl = new RTL(addr, a);
 	// Add the RTL to the list of RTLs, but to the second last position
-	pRtls->insert(--pRtls->end(), pRtl);
+	rtls.insert(--rtls.end(), rtl);
 }
 
 /**
  * \brief Append one assignment to a list of RTLs.
  */
 void
-SparcFrontEnd::appendAssignment(Exp *lhs, Exp *rhs, Type *type, ADDRESS addr, std::list<RTL *> *lrtl)
+SparcFrontEnd::appendAssignment(std::list<RTL *> &rtls, ADDRESS addr, Type *type, Exp *lhs, Exp *rhs)
 {
 	auto a = new Assign(type, lhs, rhs);
 	// Create an RTL with this one Statement
 	auto rtl = new RTL(addr, a);
 	// Append this RTL to the list of RTLs for this BB
-	lrtl->push_back(rtl);
+	rtls.push_back(rtl);
 }
 
 /**
@@ -1284,34 +1285,34 @@ SparcFrontEnd::appendAssignment(Exp *lhs, Exp *rhs, Type *type, ADDRESS addr, st
  *     *128* m[m[r[14]+64]] = m[r[8]] OP m[r[9]]
  */
 void
-SparcFrontEnd::quadOperation(ADDRESS addr, std::list<RTL *> *lrtl, OPER op)
+SparcFrontEnd::quadOperation(std::list<RTL *> &rtls, ADDRESS addr, OPER op)
 {
-	Exp *lhs = Location::memOf(Location::memOf(new Binary(opPlus,
+	auto lhs = Location::memOf(Location::memOf(new Binary(opPlus,
 	                                                      Location::regOf(14),
 	                                                      new Const(64))));
-	Exp *rhs = new Binary(op,
+	auto rhs = new Binary(op,
 	                      Location::memOf(Location::regOf(8)),
 	                      Location::memOf(Location::regOf(9)));
-	appendAssignment(lhs, rhs, new FloatType(128), addr, lrtl);
+	appendAssignment(rtls, addr, new FloatType(128), lhs, rhs);
 }
 
 /**
  * \brief Checks for sparc specific helper functions like .urem, which have
- * specific sematics.
+ * specific semantics.
  *
  * Determine if this is a helper function, e.g. .mul.
- * If so, append the appropriate RTLs to lrtl, and return true.
+ * If so, append the appropriate RTLs to rtls, and return true.
  *
  * \note This needs to be handled in a resourcable way.
  *
- * \param dest  Destination of the call (native address).
+ * \param rtls  List of RTL* for current BB.
  * \param addr  Address of current instruction (native addr).
- * \param lrtl  List of RTL* for current BB.
+ * \param dest  Destination of the call (native address).
  *
  * \returns true if a helper function was found and handled; false otherwise.
  */
 bool
-SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
+SparcFrontEnd::helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest)
 {
 	if (!pBF->isDynamicLinkedProc(dest)) return false;
 	const char *p = pBF->getSymbolByAddress(dest);
@@ -1319,10 +1320,10 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 		std::cerr << "Error: Can't find symbol for PLT address " << std::hex << dest << std::endl;
 		return false;
 	}
-	std::string name(p);
-	//if (progOptions.fastInstr == false)
+	auto name = std::string(p);
+	//if (!progOptions.fastInstr)
 	if (0)  // SETTINGS!
-		return helperFuncLong(dest, addr, lrtl, name);
+		return helperFuncLong(rtls, addr, name);
 	Exp *rhs;
 	if (name == ".umul") {
 		// %o0 * %o1
@@ -1362,28 +1363,28 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 	} else if (name == "_Q_mul") {
 		// Pointers to args are in %o0 and %o1; ptr to result at [%sp+64]
 		// So semantics is m[m[r[14]] = m[r[8]] *f m[r[9]]
-		quadOperation(addr, lrtl, opFMult);
+		quadOperation(rtls, addr, opFMult);
 		return true;
 	} else if (name == "_Q_div") {
-		quadOperation(addr, lrtl, opFDiv);
+		quadOperation(rtls, addr, opFDiv);
 		return true;
 	} else if (name == "_Q_add") {
-		quadOperation(addr, lrtl, opFPlus);
+		quadOperation(rtls, addr, opFPlus);
 		return true;
 	} else if (name == "_Q_sub") {
-		quadOperation(addr, lrtl, opFMinus);
+		quadOperation(rtls, addr, opFMinus);
 		return true;
 	} else {
 		// Not a (known) helper function
 		return false;
 	}
 	// Need to make an RTAssgn with %o0 = rhs
-	Exp *lhs = Location::regOf(8);
+	auto lhs = Location::regOf(8);
 	auto a = new Assign(lhs, rhs);
 	// Create an RTL with this one Exp
 	auto rtl = new RTL(addr, a);
 	// Append this RTL to the list of RTLs for this BB
-	lrtl->push_back(rtl);
+	rtls.push_back(rtl);
 	return true;
 }
 
@@ -1401,27 +1402,24 @@ SparcFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
  *     *32* r9 = %Y
  */
 void
-SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
+SparcFrontEnd::gen32op32gives64(std::list<RTL *> &rtls, ADDRESS addr, OPER op)
 {
 	auto ls = std::list<Statement *>();
 #ifdef V9_ONLY
 	// tmp[tmpl] = sgnex(32, 64, r8) op sgnex(32, 64, r9)
-	Statement *a = new Assign(64,
-	                          Location::tempOf(new Const("tmpl")),
-	                          new Binary(op,  // opMult or opMults
-	                                     new Ternary(opSgnEx, Const(32), Const(64), Location::regOf(8)),
-	                                     new Ternary(opSgnEx, Const(32), Const(64), Location::regOf(9))));
-	ls.push_back(a);
+	ls.push_back(new Assign(64,
+	                        Location::tempOf(new Const("tmpl")),
+	                        new Binary(op,  // opMult or opMults
+	                                   new Ternary(opSgnEx, Const(32), Const(64), Location::regOf(8)),
+	                                   new Ternary(opSgnEx, Const(32), Const(64), Location::regOf(9)))));
 	// r8 = truncs(64, 32, tmp[tmpl]);
-	a = new Assign(32,
-	               Location::regOf(8),
-	               new Ternary(opTruncs, new Const(64), new Const(32), Location::tempOf(new Const("tmpl"))));
-	ls.push_back(a);
+	ls.push_back(new Assign(32,
+	                        Location::regOf(8),
+	                        new Ternary(opTruncs, new Const(64), new Const(32), Location::tempOf(new Const("tmpl")))));
 	// r9 = r[tmpl]@[32:63];
-	a = new Assign(32,
-	               Location::regOf(9),
-	               new Ternary(opAt, Location::tempOf(new Const("tmpl")), new Const(32), new Const(63)));
-	ls.push_back(a);
+	ls.push_back(new Assign(32,
+	                        Location::regOf(9),
+	                        new Ternary(opAt, Location::tempOf(new Const("tmpl")), new Const(32), new Const(63))));
 #else
 	// BTL: The .umul and .mul support routines are used in V7 code. We implsment these using the V8 UMUL and SMUL
 	// instructions.
@@ -1430,23 +1428,20 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
 	//      on V9 although the high-order bits are also written into the 32 high-order bits of the 64 bit r[rd].
 
 	// r[tmp] = r8 op r9
-	auto a = new Assign(Location::tempOf(new Const("tmp")),
-	                    new Binary(op,  // opMult or opMults
-	                               Location::regOf(8),
-	                               Location::regOf(9)));
-	ls.push_back(a);
+	ls.push_back(new Assign(Location::tempOf(new Const("tmp")),
+	                        new Binary(op,  // opMult or opMults
+	                                   Location::regOf(8),
+	                                   Location::regOf(9))));
 	// r8 = r[tmp];  /* low-order bits */
-	a = new Assign(Location::regOf(8),
-	               Location::tempOf(new Const("tmp")));
-	ls.push_back(a);
+	ls.push_back(new Assign(Location::regOf(8),
+	                        Location::tempOf(new Const("tmp"))));
 	// r9 = %Y;      /* high-order bits */
-	a = new Assign(Location::regOf(8),
-	               new Unary(opMachFtr, new Const("%Y")));
-	ls.push_back(a);
-#endif /* V9_ONLY */
+	ls.push_back(new Assign(Location::regOf(8),
+	                        new Unary(opMachFtr, new Const("%Y"))));
+#endif
 	auto rtl = new RTL(addr);
 	rtl->splice(ls);
-	lrtl->push_back(rtl);
+	rtls.push_back(rtl);
 }
 
 /**
@@ -1454,15 +1449,14 @@ SparcFrontEnd::gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr)
  * complete 64 bit semantics.
  */
 bool
-SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl, std::string &name)
+SparcFrontEnd::helperFuncLong(std::list<RTL *> &rtls, ADDRESS addr, const std::string &name)
 {
 	Exp *rhs;
-	Exp *lhs;
 	if (name == ".umul") {
-		gen32op32gives64(opMult, lrtl, addr);
+		gen32op32gives64(rtls, addr, opMult);
 		return true;
 	} else if (name == ".mul") {
-		gen32op32gives64(opMults, lrtl, addr);
+		gen32op32gives64(rtls, addr, opMults);
 		return true;
 	} else if (name == ".udiv") {
 		// %o0 / %o1
@@ -1492,24 +1486,24 @@ SparcFrontEnd::helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl
 	} else if (name == "_Q_mul") {
 		// Pointers to args are in %o0 and %o1; ptr to result at [%sp+64]
 		// So semantics is m[m[r[14]] = m[r[8]] *f m[r[9]]
-		quadOperation(addr, lrtl, opFMult);
+		quadOperation(rtls, addr, opFMult);
 		return true;
 	} else if (name == "_Q_div") {
-		quadOperation(addr, lrtl, opFDiv);
+		quadOperation(rtls, addr, opFDiv);
 		return true;
 	} else if (name == "_Q_add") {
-		quadOperation(addr, lrtl, opFPlus);
+		quadOperation(rtls, addr, opFPlus);
 		return true;
 	} else if (name == "_Q_sub") {
-		quadOperation(addr, lrtl, opFMinus);
+		quadOperation(rtls, addr, opFMinus);
 		return true;
 	} else {
 		// Not a (known) helper function
 		return false;
 	}
 	// Need to make an RTAssgn with %o0 = rhs
-	lhs = Location::regOf(8);
-	appendAssignment(lhs, rhs, new IntegerType(32), addr, lrtl);
+	auto lhs = Location::regOf(8);
+	appendAssignment(rtls, addr, new IntegerType(32), lhs, rhs);
 	return true;
 }
 

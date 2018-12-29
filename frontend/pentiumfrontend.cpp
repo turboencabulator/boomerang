@@ -59,7 +59,7 @@ bool
 PentiumFrontEnd::isStoreFsw(Statement *s)
 {
 	if (!s->isAssign()) return false;
-	Exp *rhs = ((Assign *)s)->getRight();
+	auto rhs = ((Assign *)s)->getRight();
 	Exp *result;
 	bool res = rhs->search(Location::regOf(FSW), result);
 	return res;
@@ -78,8 +78,8 @@ PentiumFrontEnd::isDecAh(RTL *r)
 	if (r->getList().size() != 3) return false;
 	auto mid = *(++r->getList().begin());
 	if (!mid->isAssign()) return false;
-	Assign *asgn = (Assign *)mid;
-	Exp *rhs = asgn->getRight();
+	auto asgn = (Assign *)mid;
+	auto rhs = asgn->getRight();
 	Binary ahm1(opMinus,
 	            new Binary(opSize,
 	                       new Const(8),
@@ -100,14 +100,14 @@ PentiumFrontEnd::isSetX(Statement *s)
 	// Check for SETX, i.e. <exp> ? 1 : 0
 	// i.e. ?: <exp> Const 1 Const 0
 	if (!s->isAssign()) return false;
-	Assign *asgn = (Assign *)s;
-	Exp *lhs = asgn->getLeft();
+	auto asgn = (Assign *)s;
+	auto lhs = asgn->getLeft();
 	// LHS must be a register
 	if (!lhs->isRegOf()) return false;
-	Exp *rhs = asgn->getRight();
+	auto rhs = asgn->getRight();
 	if (rhs->getOper() != opTern) return false;
-	Exp *s2 = ((Ternary *)rhs)->getSubExp2();
-	Exp *s3 = ((Ternary *)rhs)->getSubExp3();
+	auto s2 = ((Ternary *)rhs)->getSubExp2();
+	auto s3 = ((Ternary *)rhs)->getSubExp3();
 	if (!s2->isIntConst() || s3->isIntConst()) return false;
 	return ((Const *)s2)->getInt() == 1 && ((Const *)s3)->getInt() == 0;
 }
@@ -123,8 +123,8 @@ bool
 PentiumFrontEnd::isAssignFromTern(Statement *s)
 {
 	if (!s->isAssign()) return false;
-	Assign *asgn = (Assign *)s;
-	Exp *rhs = asgn->getRight();
+	auto asgn = (Assign *)s;
+	auto rhs = asgn->getRight();
 	return rhs->getOper() == opTern;
 }
 
@@ -148,7 +148,7 @@ void
 PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 {
 	std::list<Exp **> li;
-	Exp *exp = e;
+	auto exp = e;
 	// Use doSearch, which is normally an internal method of Exp, to avoid problems of replacing the wrong
 	// subexpression (in some odd cases)
 	Exp::doSearch(Location::regOf(new Terminal(opWild)), exp, li, false);
@@ -157,7 +157,7 @@ PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 		if ((min <= reg) && (reg <= max)) {
 			// Replace the K in r[ K] with a new K
 			// *sub is a reg[K]
-			Const *K = (Const *)((Unary *)*sub)->getSubExp1();
+			auto K = (Const *)((Unary *)*sub)->getSubExp1();
 			K->setInt(min + ((reg - min + delta) & mask));
 		}
 	}
@@ -460,17 +460,17 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
  * Insert before rit.
  */
 void
-PentiumFrontEnd::emitSet(std::list<RTL *> *BB_rtls, std::list<RTL *>::iterator &rit, ADDRESS uAddr, Exp *lhs, Exp *cond)
+PentiumFrontEnd::emitSet(std::list<RTL *> &rtls, std::list<RTL *>::iterator &rit, ADDRESS addr, Exp *lhs, Exp *cond)
 {
-	Statement *asgn = new Assign(lhs,
-	                             new Ternary(opTern,
-	                                         cond,
-	                                         new Const(1),
-	                                         new Const(0)));
-	auto pRtl = new RTL(uAddr, asgn);
-	//std::cout << "Emit "; pRtl->print(); std::cout << std::endl;
+	auto a = new Assign(lhs,
+	                    new Ternary(opTern,
+	                                cond,
+	                                new Const(1),
+	                                new Const(0)));
+	auto rtl = new RTL(addr, a);
+	//std::cout << "Emit "; rtl->print(); std::cout << std::endl;
 	// Insert the new RTL before rit
-	BB_rtls->insert(rit, pRtl);
+	rtls.insert(rit, rtl);
 }
 
 /**
@@ -482,14 +482,14 @@ PentiumFrontEnd::emitSet(std::list<RTL *> *BB_rtls, std::list<RTL *>::iterator &
  *
  * \note This needs to be handled in a resourcable way.
  *
- * \param dest  The native destination of this call.
+ * \param rtls  List of RTL pointers for this BB.
  * \param addr  The native address of this call instruction.
- * \param lrtl  Pointer to a list of RTL pointers for this BB.
+ * \param dest  The native destination of this call.
  *
  * \returns true if a helper function is converted; false otherwise.
  */
 bool
-PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
+PentiumFrontEnd::helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest)
 {
 	if (dest == NO_ADDRESS) return false;
 
@@ -497,52 +497,53 @@ PentiumFrontEnd::helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl)
 	if (!p) return false;
 	std::string name(p);
 	// I believe that __xtol is for gcc, _ftol for earlier MSVC compilers, _ftol2 for MSVC V7
-	if (name == "__xtol" || name == "_ftol" || name == "_ftol2") {
+	if (name == "__xtol"
+	 || name == "_ftol"
+	 || name == "_ftol2") {
 		// This appears to pop the top of stack, and converts the result to a 64 bit integer in edx:eax.
 		// Truncates towards zero
 		// r[tmpl] = ftoi(80, 64, r[32])
 		// r[24] = trunc(64, 32, r[tmpl])
 		// r[26] = r[tmpl] >> 32
-		auto pRtl = new RTL(addr);
-		Statement *a = new Assign(new IntegerType(64),
-		                          Location::tempOf(new Const("tmpl")),
-		                          new Ternary(opFtoi,
-		                                      new Const(64),
-		                                      new Const(32),
-		                                      Location::regOf(32)));
-		pRtl->appendStmt(a);
-		a = new Assign(Location::regOf(24),
-		               new Ternary(opTruncs,
-		                           new Const(64),
-		                           new Const(32),
-		                           Location::tempOf(new Const("tmpl"))));
-		pRtl->appendStmt(a);
-		a = new Assign(Location::regOf(26),
-		               new Binary(opShiftR,
-		                          Location::tempOf(new Const("tmpl")),
-		                          new Const(32)));
-		pRtl->appendStmt(a);
+		auto ls = std::list<Statement *>();
+		ls.push_back(new Assign(new IntegerType(64),
+		                        Location::tempOf(new Const("tmpl")),
+		                        new Ternary(opFtoi,
+		                                    new Const(64),
+		                                    new Const(32),
+		                                    Location::regOf(32))));
+		ls.push_back(new Assign(Location::regOf(24),
+		                        new Ternary(opTruncs,
+		                                    new Const(64),
+		                                    new Const(32),
+		                                    Location::tempOf(new Const("tmpl")))));
+		ls.push_back(new Assign(Location::regOf(26),
+		                        new Binary(opShiftR,
+		                                   Location::tempOf(new Const("tmpl")),
+		                                   new Const(32))));
 		// Append this RTL to the list of RTLs for this BB
-		lrtl->push_back(pRtl);
+		auto rtl = new RTL(addr);
+		rtl->splice(ls);
+		rtls.push_back(rtl);
 		// Return true, so the caller knows not to create a HLCall
 		return true;
-
-	} else if (name == "__mingw_allocstack") {
-		auto pRtl = new RTL(addr);
-		Statement *a = new Assign(Location::regOf(28),
-		                          new Binary(opMinus,
-		                                     Location::regOf(28),
-		                                     Location::regOf(24)));
-		pRtl->appendStmt(a);
-		lrtl->push_back(pRtl);
+	}
+	if (name == "__mingw_allocstack") {
+		auto a = new Assign(Location::regOf(28),
+		                    new Binary(opMinus,
+		                               Location::regOf(28),
+		                               Location::regOf(24)));
+		auto rtl = new RTL(addr, a);
+		rtls.push_back(rtl);
 		prog->removeProc(name.c_str());
 		return true;
-	} else if (name == "__mingw_frame_init" || name == "__mingw_cleanup_setup" || name == "__mingw_frame_end") {
+	}
+	if (name == "__mingw_frame_init"
+	 || name == "__mingw_cleanup_setup"
+	 || name == "__mingw_frame_end") {
 		LOG << "found removable call to static lib proc " << name << " at " << addr << "\n";
 		prog->removeProc(name.c_str());
 		return true;
-	} else {
-		// Will be other cases in future
 	}
 	return false;
 }

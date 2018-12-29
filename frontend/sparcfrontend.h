@@ -42,14 +42,14 @@ public:
 
 private:
 
-	void warnDCTcouple(ADDRESS uAt, ADDRESS uDest);
-	bool optimise_DelayCopy(ADDRESS src, ADDRESS dest);
+	static void warnDCTcouple(ADDRESS, ADDRESS);
+	bool optimise_DelayCopy(ADDRESS src, ADDRESS dest) const;
 	BasicBlock *optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, UserProc *pProc);
 
 	void handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq);
 	void handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS address, int offset = 0);
 
-	void case_unhandled_stub(ADDRESS addr);
+	static void case_unhandled_stub(ADDRESS addr);
 
 	bool case_CALL(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
 	               UserProc *, std::list<CallStatement *> &, bool = false);
@@ -66,14 +66,14 @@ private:
 	bool case_SCDAN(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
 	                Cfg *, TargetQueue &);
 
-	void emitNop(std::list<RTL *> *pRtls, ADDRESS uAddr);
-	void emitCopyPC(std::list<RTL *> *pRtls, ADDRESS uAddr);
-	void appendAssignment(Exp *lhs, Exp *rhs, Type *type, ADDRESS addr, std::list<RTL *> *lrtl);
-	void quadOperation(ADDRESS addr, std::list<RTL *> *lrtl, OPER op);
+	static void emitNop(std::list<RTL *> &, ADDRESS);
+	static void emitCopyPC(std::list<RTL *> &, ADDRESS);
+	static void appendAssignment(std::list<RTL *> &, ADDRESS, Type *, Exp *, Exp *);
+	static void quadOperation(std::list<RTL *> &, ADDRESS, OPER);
 
-	bool helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl);
-	void gen32op32gives64(OPER op, std::list<RTL *> *lrtl, ADDRESS addr);
-	bool helperFuncLong(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl, std::string &name);
+	bool helperFunc(std::list<RTL *> &, ADDRESS, ADDRESS) override;
+	static void gen32op32gives64(std::list<RTL *> &, ADDRESS, OPER);
+	static bool helperFuncLong(std::list<RTL *> &, ADDRESS, const std::string &);
 	//void setReturnLocations(CalleeEpilogue *epilogue, int iReg);
 
 	/**

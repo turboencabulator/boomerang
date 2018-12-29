@@ -45,7 +45,7 @@ private:
 	bool processStsw(std::list<RTL *>::iterator &rit, std::list<RTL *> *pRtls, BasicBlock *pBB, Cfg *pCfg);
 #endif
 
-	void emitSet(std::list<RTL *> *pRtls, std::list<RTL *>::iterator &itRtl, ADDRESS uAddr, Exp *pLHS, Exp *cond);
+	static void emitSet(std::list<RTL *> &, std::list<RTL *>::iterator &, ADDRESS, Exp *, Exp *);
 
 #if 0 // Cruft?
 	/**
@@ -61,13 +61,13 @@ private:
 	void processStringInst(UserProc *proc);
 	void processOverlapped(UserProc *proc);
 
-	bool helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl);
+	bool helperFunc(std::list<RTL *> &, ADDRESS, ADDRESS) override;
 
-	bool isStoreFsw(Statement *s);
-	bool isDecAh(RTL *r);
-	bool isSetX(Statement *e);
-	bool isAssignFromTern(Statement *s);
-	void bumpRegisterAll(Exp *e, int min, int max, int delta, int mask);
+	static bool isStoreFsw(Statement *s);
+	static bool isDecAh(RTL *r);
+	static bool isSetX(Statement *e);
+	static bool isAssignFromTern(Statement *s);
+	static void bumpRegisterAll(Exp *e, int min, int max, int delta, int mask);
 
 protected:
 	DecodeResult &decodeInstruction(ADDRESS pc) override;

@@ -152,7 +152,7 @@ public:
 	 * the semantics in lrtl.  addr is the native address of the call
 	 * instruction.
 	 */
-	virtual bool helperFunc(ADDRESS dest, ADDRESS addr, std::list<RTL *> *lrtl) { return false; }
+	virtual bool helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest) { return false; }
 
 	/**
 	 * \brief Locate the starting address of "main" in the code section.

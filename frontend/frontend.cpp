@@ -971,7 +971,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 
 							// Call the virtual helper function. If implemented, will check for machine specific funcion
 							// calls
-							if (helperFunc(uNewAddr, uAddr, BB_rtls)) {
+							if (helperFunc(*BB_rtls, uAddr, uNewAddr)) {
 								// We have already added to BB_rtls
 								pRtl = nullptr;  // Discard the call semantics
 								break;
