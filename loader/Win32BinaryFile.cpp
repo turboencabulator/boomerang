@@ -162,7 +162,9 @@ Win32BinaryFile::getMainEntryPoint()
 				unsigned addr = LH32(&base[p + 2]);
 				//const char *c = dlprocptrs[addr].c_str();
 				//printf("Checking %x finding %s\n", addr, c);
-				if (dlprocptrs[addr] == "exit") {
+				auto it = dlprocptrs.find(addr);
+				if (it != dlprocptrs.end()
+				 && it->second == "exit") {
 					if (gap <= 10) {
 						// This is it. The instruction at lastOrdCall is (win)main
 						addr = LH32(&base[lastOrdCall + 1]);
