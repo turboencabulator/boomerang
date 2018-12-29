@@ -185,16 +185,6 @@ ExeBinaryFile::load(std::istream &ifs)
 	return true;
 }
 
-const char *
-ExeBinaryFile::getSymbolByAddress(ADDRESS dwAddr)
-{
-	if (dwAddr == getMainEntryPoint())
-		return "main";
-
-	// No symbol table handled at present
-	return nullptr;
-}
-
 #if 0 // Cruft?
 bool
 ExeBinaryFile::PostLoad(void *handle)

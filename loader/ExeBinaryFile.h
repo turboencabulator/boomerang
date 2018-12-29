@@ -83,13 +83,6 @@ public:
 	//size_t      getImageSize() const override;
 
 	/**
-	 * \name Symbol table functions
-	 * \{
-	 */
-	const char *getSymbolByAddress(ADDRESS a) override;
-	/** \} */
-
-	/**
 	 * \name Analysis functions
 	 * \{
 	 */
