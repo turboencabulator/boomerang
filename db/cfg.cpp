@@ -935,7 +935,7 @@ Cfg::findRetNode() const
 			break;
 		} else if (bb->getType() == CALL) {
 			Proc *p = bb->getCallDestProc();
-			if (p && !strcmp(p->getName(), "exit"))
+			if (p && p->getName() == "exit")
 				retNode = bb;
 		}
 	}

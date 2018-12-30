@@ -158,22 +158,22 @@ public:
 
 	// sequential statements
 	void AddAssignmentStatement(int indLevel, Assign *asgn) override;
-	void AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results) override;
+	void AddCallStatement(int indLevel, Proc *proc, const std::string &name, const StatementList &args, StatementList *results) override;
 	void AddIndCallStatement(int indLevel, Exp *exp, const StatementList &args, StatementList *results) override;
 	void AddReturnStatement(int indLevel, StatementList *rets) override;
 
 	// proc related
 	void AddProcStart(UserProc *proc) override;
 	void AddProcEnd() override;
-	void AddLocal(const char *name, Type *type, bool last = false) override;
-	void AddGlobal(const char *name, Type *type, Exp *init = nullptr) override;
+	void AddLocal(const std::string &name, Type *type, bool last = false) override;
+	void AddGlobal(const std::string &name, Type *type, Exp *init = nullptr) override;
 	void AddPrototype(UserProc *proc) override;
 private:
 	void AddProcDec(UserProc *proc, bool open);  // Implement AddProcStart and AddPrototype
 public:
 
 	// comments
-	void AddLineComment(const char *cmt) override;
+	void AddLineComment(const std::string &cmt) override;
 
 	/*
 	 * output functions

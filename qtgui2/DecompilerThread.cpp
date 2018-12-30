@@ -120,7 +120,7 @@ Decompiler::changeInputFile(const QString &f)
 void
 Decompiler::changeOutputPath(const QString &path)
 {
-	Boomerang::get()->setOutputDirectory((const char *)path.toAscii());
+	Boomerang::get()->setOutputDirectory(path.toStdString());
 }
 
 void
@@ -229,7 +229,7 @@ Decompiler::generateCode()
 		emitClusterAndChildren(root);
 	std::list<Proc *>::iterator it;
 	for (UserProc *p = prog->getFirstUserProc(it); p; p = prog->getNextUserProc(it)) {
-		emit newProcInCluster(QString(p->getName()), QString::fromStdString(p->getCluster()->getName()));
+		emit newProcInCluster(QString::fromStdString(p->getName()), QString::fromStdString(p->getCluster()->getName()));
 	}
 
 	emit generateCodeCompleted();
@@ -264,13 +264,13 @@ Decompiler::procStatus(UserProc *p)
 void
 Decompiler::alert_considering(Proc *parent, Proc *p)
 {
-	emit consideringProc(QString(parent ? parent->getName() : ""), QString(p->getName()));
+	emit consideringProc(parent ? QString::fromStdString(parent->getName()) : QString(""), QString::fromStdString(p->getName()));
 }
 
 void
 Decompiler::alert_decompiling(UserProc *p)
 {
-	emit decompilingProc(QString(p->getName()));
+	emit decompilingProc(QString::fromStdString(p->getName()));
 }
 
 void
@@ -290,9 +290,9 @@ Decompiler::alert_new(Proc *p)
 					params.append(", ");
 			}
 		}
-		emit newLibProc(QString(p->getName()), params);
+		emit newLibProc(QString::fromStdString(p->getName()), params);
 	} else {
-		emit newUserProc(QString(p->getName()), p->getNativeAddress());
+		emit newUserProc(QString::fromStdString(p->getName()), p->getNativeAddress());
 	}
 }
 
@@ -300,9 +300,9 @@ void
 Decompiler::alert_remove(Proc *p)
 {
 	if (p->isLib()) {
-		emit removeLibProc(QString(p->getName()));
+		emit removeLibProc(QString::fromStdString(p->getName()));
 	} else {
-		emit removeUserProc(QString(p->getName()), p->getNativeAddress());
+		emit removeUserProc(QString::fromStdString(p->getName()), p->getNativeAddress());
 	}
 }
 
@@ -315,7 +315,7 @@ Decompiler::alert_update_signature(Proc *p)
 bool
 Decompiler::getRtlForProc(const QString &name, QString &rtl)
 {
-	Proc *p = prog->findProc((const char *)name.toAscii());
+	Proc *p = prog->findProc(name.toStdString());
 	if (p->isLib())
 		return false;
 	UserProc *up = (UserProc *)p;
@@ -326,12 +326,12 @@ Decompiler::getRtlForProc(const QString &name, QString &rtl)
 }
 
 void
-Decompiler::alert_decompile_debug_point(UserProc *p, const char *description)
+Decompiler::alert_decompile_debug_point(UserProc *p, const std::string &description)
 {
 	LOG << p->getName() << ": " << description << "\n";
 	if (debugging) {
 		waiting = true;
-		emit debuggingPoint(QString(p->getName()), QString(description));
+		emit debuggingPoint(QString::fromStdString(p->getName()), QString::fromStdString(description));
 		while (waiting) {
 			thread()->wait(10);
 		}
@@ -347,9 +347,9 @@ Decompiler::stopWaiting()
 QString
 Decompiler::getSigFile(const QString &name)
 {
-	Proc *p = prog->findProc((const char *)name.toAscii());
+	Proc *p = prog->findProc(name.toStdString());
 	if (p && p->isLib() && p->getSignature())
-		return QString(p->getSignature()->getSigFile());
+		return QString::fromStdString(p->getSignature()->getSigFile());
 	return QString();
 }
 
@@ -371,9 +371,9 @@ Decompiler::rereadLibSignatures()
 void
 Decompiler::renameProc(const QString &oldName, const QString &newName)
 {
-	Proc *p = prog->findProc((const char *)oldName.toAscii());
+	Proc *p = prog->findProc(oldName.toStdString());
 	if (p)
-		p->setName((const char *)newName.toAscii());
+		p->setName(newName.toStdString());
 }
 
 void

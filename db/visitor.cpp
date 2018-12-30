@@ -1186,12 +1186,13 @@ StmtSsaXformer::visit(CallStatement *s, bool &recurse)
 		Proc *procDest = s->getDestProc();
 		if (procDest && procDest->isLib() && e->isLocal()) {
 			UserProc *proc = s->getProc();  // Enclosing proc
-			Type *lty = proc->getLocalType(((Const *)e->getSubExp1())->getStr());
+			const char *name = ((Const *)e->getSubExp1())->getStr();
+			Type *lty = proc->getLocalType(name);
 			Type *ty = as->getType();
 			if (ty && lty && *ty != *lty) {
 				LOG << "local " << *e << " has type " << lty->getCtype()
 				    << " that doesn't agree with type of define " << ty->getCtype() << " of a library, why?\n";
-				proc->setLocalType(((Const *)e->getSubExp1())->getStr(), ty);
+				proc->setLocalType(name, ty);
 			}
 		}
 		as->setLeft(e);

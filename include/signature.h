@@ -44,13 +44,13 @@ public:
 
 	        Type       *getType() const { return type; }
 	        void        setType(Type *ty) { type = ty; }
-	        const char *getName() const { return name.c_str(); }
+	        const std::string &getName() const { return name; }
 	        void        setName(const std::string &nam) { name = nam; }
 	        Exp        *getExp() const { return exp; }
 	        void        setExp(Exp *e) { exp = e; }
 
 	// this parameter is the bound of another parameter with name nam
-	        const char  *getBoundMax() const { return boundMax.c_str(); }
+	        const std::string &getBoundMax() const { return boundMax; }
 	        void        setBoundMax(const std::string &nam);
 
 protected:
@@ -130,10 +130,10 @@ public:
 	        Type       *getTypeFor(Exp *e);
 
 	// get/set the name
-	virtual const char *getName();
-	virtual void        setName(const char *nam);
+	virtual const std::string &getName();
+	virtual void        setName(const std::string &);
 	// get/set the signature file
-	        const char *getSigFile() { return sigFile.c_str(); }
+	        const std::string &getSigFile() { return sigFile; }
 	        void        setSigFile(const std::string &nam) { sigFile = nam; }
 
 	// add a new parameter to this signature
@@ -154,9 +154,9 @@ public:
 	virtual Exp        *getParamExp(int n);
 	virtual Type       *getParamType(int n);
 	virtual const char *getParamBoundMax(int n);
-	virtual void        setParamType(int n, Type *ty);
-	virtual void        setParamType(const std::string &nam, Type *ty);
-	virtual void        setParamType(Exp *e, Type *ty);
+	virtual void        setParamType(int, Type *);
+	virtual void        setParamType(const std::string &, Type *);
+	virtual void        setParamType(Exp *, Type *);
 	virtual void        setParamName(int n, const std::string &nam);
 	virtual void        setParamExp(int n, Exp *e);
 	virtual int         findParam(Exp *e);
@@ -224,7 +224,7 @@ public:
 	        void        setPreferedName(const std::string &nam) { preferedName = nam; }
 	        void        addPreferedParameter(int n) { preferedParams.push_back(n); }
 	        Type       *getPreferedReturn() { return preferedReturn; }
-	        const char *getPreferedName() { return preferedName.c_str(); }
+	        const std::string &getPreferedName() { return preferedName; }
 	        unsigned int getNumPreferedParams() const { return preferedParams.size(); }
 	        int         getPreferedParam(int n) { return preferedParams[n]; }
 

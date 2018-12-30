@@ -535,14 +535,14 @@ PentiumFrontEnd::helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest)
 		                               Location::regOf(24)));
 		auto rtl = new RTL(addr, a);
 		rtls.push_back(rtl);
-		prog->removeProc(name.c_str());
+		prog->removeProc(name);
 		return true;
 	}
 	if (name == "__mingw_frame_init"
 	 || name == "__mingw_cleanup_setup"
 	 || name == "__mingw_frame_end") {
 		LOG << "found removable call to static lib proc " << name << " at " << addr << "\n";
-		prog->removeProc(name.c_str());
+		prog->removeProc(name);
 		return true;
 	}
 	return false;

@@ -72,7 +72,7 @@ Proc::Proc(Prog *prog, ADDRESS uNative, Signature *sig) :
  * OVERVIEW:        Returns the name of this procedure
  * RETURNS:         the name of this procedure
  *============================================================================*/
-const char *
+const std::string &
 Proc::getName() const
 {
 	assert(signature);
@@ -85,7 +85,7 @@ Proc::getName() const
  * PARAMETERS:      new name
  *============================================================================*/
 void
-Proc::setName(const char *nam)
+Proc::setName(const std::string &nam)
 {
 	assert(signature);
 	signature->setName(nam);
@@ -181,15 +181,15 @@ UserProc::setParamType(int idx, Type *ty)
 }
 
 void
-UserProc::renameLocal(const char *oldName, const char *newName)
+UserProc::renameLocal(const std::string &oldName, const std::string &newName)
 {
 	Type *ty = locals[oldName];
 	Exp *oldExp = expFromSymbol(oldName);
 	locals.erase(oldName);
 	Exp *oldLoc = getSymbolFor(oldExp, ty);
-	Exp *newLoc = Location::local(strdup(newName), this);
+	Exp *newLoc = Location::local(newName, this);
 	mapSymbolToRepl(oldExp, oldLoc, newLoc);
-	locals[strdup(newName)] = ty;
+	locals[newName] = ty;
 	cfg->searchAndReplace(oldLoc, newLoc);
 }
 
@@ -346,10 +346,10 @@ Proc::getFirstCaller()
  * PARAMETERS:      name - Name of procedure
  *                  uNative - Native address of entry point of procedure
  *============================================================================*/
-LibProc::LibProc(Prog *prog, std::string &name, ADDRESS uNative) :
+LibProc::LibProc(Prog *prog, const std::string &name, ADDRESS uNative) :
 	Proc(prog, uNative, nullptr)
 {
-	Signature *sig = prog->getLibSignature(name.c_str());
+	Signature *sig = prog->getLibSignature(name);
 	signature = sig;
 }
 
@@ -381,9 +381,9 @@ UserProc::UserProc()
 	localTable.setProc(this);
 }
 
-UserProc::UserProc(Prog *prog, std::string &name, ADDRESS uNative) :
+UserProc::UserProc(Prog *prog, const std::string &name, ADDRESS uNative) :
 	// Not quite ready for the below fix:
-	// Proc(prog, uNative, prog->getDefaultSignature(name.c_str())),
+	// Proc(prog, uNative, prog->getDefaultSignature(name)),
 	Proc(prog, uNative, new Signature(name.c_str())),
 	cfg(new Cfg())
 {
@@ -488,7 +488,7 @@ UserProc::printAST(SyntaxNode *a) const
 	char s[1024];
 	if (!a)
 		a = getAST();
-	sprintf(s, "ast%i-%s.dot", count++, getName());
+	sprintf(s, "ast%i-%s.dot", count++, getName().c_str());
 	std::ofstream of(s);
 	of << "digraph " << getName() << " {\n";
 	of << "\tlabel=\"score: " << a->evaluate(a) << "\";\n";
@@ -581,14 +581,14 @@ UserProc::generateCode(HLLCode *hll)
 
 	// Local variables; print everything in the locals map
 	for (auto it = locals.begin(); it != locals.end(); ) {
-		const char *locName = it->first.c_str();
+		const auto &locName = it->first;
 		Type *locType = it->second;
 		if (!locType || locType->isVoid())
 			locType = new IntegerType();
 		hll->AddLocal(locName, locType, ++it == locals.end());
 	}
 
-	if (Boomerang::get()->noDecompile && std::string(getName()) == "main") {
+	if (Boomerang::get()->noDecompile && getName() == "main") {
 		StatementList args, results;
 		if (prog->getFrontEndId() == PLAT_PENTIUM)
 			hll->AddCallStatement(1, nullptr, "PENTIUMSETUP", args, &results);
@@ -678,7 +678,7 @@ void
 UserProc::printDFG()
 {
 	char fname[1024];
-	sprintf(fname, "%s%s-%i-dfg.dot", Boomerang::get()->getOutputPath().c_str(), getName(), DFGcount);
+	sprintf(fname, "%s%s-%i-dfg.dot", Boomerang::get()->getOutputPath().c_str(), getName().c_str(), DFGcount);
 	++DFGcount;
 	if (VERBOSE)
 		LOG << "outputting DFG to " << fname << "\n";
@@ -1980,7 +1980,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 
 	std::ostringstream str;
 	str << "before removing matching assigns (" << *e << ").";
-	Boomerang::get()->alert_decompile_debug_point(this, str.str().c_str());
+	Boomerang::get()->alert_decompile_debug_point(this, str.str());
 	if (VERBOSE)
 		LOG << str.str() << "\n";
 
@@ -1998,7 +1998,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 
 	str.str("");
 	str << "after removing matching assigns (" << *e << ").";
-	Boomerang::get()->alert_decompile_debug_point(this, str.str().c_str());
+	Boomerang::get()->alert_decompile_debug_point(this, str.str());
 	LOG << str.str() << "\n";
 }
 
@@ -2688,7 +2688,7 @@ UserProc::promoteSignature()
 	signature = signature->promote(this);
 }
 
-const char *
+std::string
 UserProc::newLocalName(Exp *e)
 {
 	std::ostringstream ost;
@@ -2700,42 +2700,42 @@ UserProc::newLocalName(Exp *e)
 			ost.str("");
 			ost << regName << "_" << ++tag;
 		} while (locals.count(ost.str()));
-		return strdup(ost.str().c_str());
+		return ost.str();
 	}
 	ost << "local" << nextLocal++;
-	return strdup(ost.str().c_str());
+	return ost.str();
 }
 
 Exp *
-UserProc::newLocal(Type *ty, Exp *e, const char *nam /* = nullptr */)
+UserProc::newLocal(Type *ty, Exp *e)
 {
-	std::string name;
-	if (!nam)
-		name = newLocalName(e);
-	else
-		name = nam;  // Use provided name
-	locals[name] = ty;
+	return newLocal(ty, e, newLocalName(e));
+}
+Exp *
+UserProc::newLocal(Type *ty, Exp *e, const std::string &nam)
+{
+	locals[nam] = ty;
 	if (!ty) {
 		std::cerr << "null type passed to newLocal\n";
 		assert(false);
 	}
 	if (VERBOSE)
-		LOG << "assigning type " << ty->getCtype() << " to new " << name << "\n";
-	return Location::local(name, this);
+		LOG << "assigning type " << ty->getCtype() << " to new " << nam << "\n";
+	return Location::local(nam, this);
 }
 
 void
-UserProc::addLocal(Type *ty, const char *nam, Exp *e)
+UserProc::addLocal(Type *ty, const std::string &nam, Exp *e)
 {
 	// symbolMap is a multimap now; you might have r8->o0 for integers and r8->o0_1 for char*
 	//assert(symbolMap.find(e) == symbolMap.end());
-	mapSymbolTo(e, Location::local(strdup(nam), this));
+	mapSymbolTo(e, Location::local(nam, this));
 	//assert(locals.find(nam) == locals.end());  // Could be r10{20} -> o2, r10{30}->o2 now
 	locals[nam] = ty;
 }
 
 Type *
-UserProc::getLocalType(const char *nam) const
+UserProc::getLocalType(const std::string &nam) const
 {
 	auto it = locals.find(nam);
 	if (it != locals.end())
@@ -2744,7 +2744,7 @@ UserProc::getLocalType(const char *nam) const
 }
 
 void
-UserProc::setLocalType(const char *nam, Type *ty)
+UserProc::setLocalType(const std::string &nam, Type *ty)
 {
 	locals[nam] = ty;
 	if (VERBOSE)
@@ -2752,18 +2752,18 @@ UserProc::setLocalType(const char *nam, Type *ty)
 }
 
 Type *
-UserProc::getParamType(const char *nam) const
+UserProc::getParamType(const std::string &nam) const
 {
 	for (unsigned int i = 0; i < signature->getNumParams(); ++i)
-		if (std::string(nam) == signature->getParamName(i))
+		if (nam == signature->getParamName(i))
 			return signature->getParamType(i);
 	return nullptr;
 }
 
 void
-UserProc::setExpSymbol(const char *nam, Exp *e, Type *ty)
+UserProc::setExpSymbol(const std::string &nam, Exp *e, Type *ty)
 {
-	auto te = new TypedExp(ty, Location::local(strdup(nam), this));
+	auto te = new TypedExp(ty, Location::local(nam, this));
 	mapSymbolTo(e, te);
 }
 
@@ -2821,11 +2821,12 @@ UserProc::removeSymbolMapping(Exp *from, Exp *to)
 
 // NOTE: linear search!!
 Exp *
-UserProc::expFromSymbol(const char *nam) const
+UserProc::expFromSymbol(const std::string &nam) const
 {
 	for (const auto &symbol : symbolMap) {
 		Exp *e = symbol.second;
-		if (e->isLocal() && !strcmp(((Const *)((Location *)e)->getSubExp1())->getStr(), nam))
+		if (e->isLocal()
+		 && ((Const *)((Location *)e)->getSubExp1())->getStr() == nam)
 			return symbol.first;
 	}
 	return nullptr;
@@ -3958,7 +3959,7 @@ UserProc::dumpLocals(std::ostream &os, bool html) const
 	os << "locals:\n";
 	for (const auto &local : locals) {
 		os << local.second->getCtype() << " " << local.first << " ";
-		Exp *e = expFromSymbol(local.first.c_str());
+		Exp *e = expFromSymbol(local.first);
 		// Beware: for some locals, expFromSymbol() returns nullptr (? No longer?)
 		if (e)
 			os << *e << "\n";
@@ -4801,7 +4802,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 	// FIXME: this needs to be more sensible when we don't decompile down from main! Probably should assume just the
 	// first return is valid, for example (presently assume none are valid)
 	LocationSet unionOfCallerLiveLocs;
-	if (strcmp(getName(), "main") == 0)  // Probably not needed: main is forced so handled above
+	if (getName() == "main")  // Probably not needed: main is forced so handled above
 		// Just insert one return for main. Note: at present, the first parameter is still the stack pointer
 		unionOfCallerLiveLocs.insert(signature->getReturnExp(1));
 	else {
@@ -5377,10 +5378,9 @@ UserProc::nameParameterPhis()
 }
 
 bool
-UserProc::existsLocal(const char *name) const
+UserProc::existsLocal(const std::string &name) const
 {
-	std::string s(name);
-	return !!locals.count(s);
+	return !!locals.count(name);
 }
 
 void
@@ -5397,13 +5397,12 @@ UserProc::checkLocalFor(RefExp *r)
 			// Create a new local, for the base name if it doesn't exist yet, so we don't need several names for the
 			// same combination of location and type. However if it does already exist, addLocal will allocate a
 			// new name. Example: r8{0}->argc type int, r8->o0 type int, now r8->o0_1 type char*.
-			if (existsLocal(regName))
-				regName = newLocalName(r);
-			addLocal(ty, regName, base);
-		} else {
-			const char *locName = newLocalName(r);
-			addLocal(ty, locName, base);
+			if (!existsLocal(regName)) {
+				addLocal(ty, regName, base);
+				return;
+			}
 		}
+		addLocal(ty, newLocalName(r), base);
 	}
 }
 

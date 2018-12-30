@@ -68,7 +68,7 @@ protected:
 	CompoundType *type;
 
 public:
-	Class(const std::string &name) : Cluster(name) { type = new CompoundType(); }
+	Class(const std::string &name) : Cluster(name), type(new CompoundType()) { }
 
 	// A Class tends to be aggregated into the parent Module,
 	// this isn't the case with Java, but hey, we're not doing that yet.

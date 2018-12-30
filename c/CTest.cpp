@@ -28,7 +28,7 @@ CTest::testSignature()
 	p.yyparse(PLAT_PENTIUM, CONV_C);
 	CPPUNIT_ASSERT_EQUAL(1, (int)p.signatures.size());
 	Signature *sig = p.signatures.front();
-	CPPUNIT_ASSERT_EQUAL(std::string("printf"), std::string(sig->getName()));
+	CPPUNIT_ASSERT_EQUAL(std::string("printf"), sig->getName());
 	CPPUNIT_ASSERT(sig->getReturnType(0)->resolvesToInteger());
 	Type *t = new PointerType(new CharType());
 	// Pentium signatures used to have esp prepended to the list of parameters; no more?

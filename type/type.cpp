@@ -206,7 +206,7 @@ CompoundType::clone() const
 {
 	auto t = new CompoundType();
 	for (unsigned i = 0; i < types.size(); ++i)
-		t->addType(types[i]->clone(), names[i].c_str());
+		t->addType(types[i]->clone(), names[i]);
 	return t;
 }
 
@@ -215,7 +215,7 @@ UnionType::clone() const
 {
 	auto u = new UnionType();
 	for (const auto &elem : li)
-		u->addType(elem.type, elem.name.c_str());
+		u->addType(elem.type, elem.name);
 	return u;
 }
 
@@ -322,7 +322,7 @@ SizeType::getSize() const
 
 
 Type *
-CompoundType::getType(const char *nam) const
+CompoundType::getType(const std::string &nam) const
 {
 	for (unsigned i = 0; i < types.size(); ++i)
 		if (names[i] == nam)
@@ -369,7 +369,7 @@ CompoundType::setTypeAtOffset(unsigned n, Type *ty)
 }
 
 void
-CompoundType::setNameAtOffset(unsigned n, const char *nam)
+CompoundType::setNameAtOffset(unsigned n, const std::string &nam)
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < types.size(); ++i) {
@@ -407,7 +407,7 @@ CompoundType::getOffsetTo(unsigned n) const
 }
 
 unsigned
-CompoundType::getOffsetTo(const char *member) const
+CompoundType::getOffsetTo(const std::string &member) const
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < types.size(); ++i) {
@@ -438,7 +438,7 @@ CompoundType::getOffsetRemainder(unsigned n) const
  * PARAMETERS:      str: string to parse
  *============================================================================*/
 Type *
-Type::parseType(const char *str)
+Type::parseType(const std::string &str)
 {
 	return nullptr;
 }
@@ -1095,7 +1095,7 @@ PointerType::pointsToAlpha()
 	// void* counts as alpha* (and may replace it soon)
 	if (points_to->isVoid()) return true;
 	if (!points_to->isNamed()) return false;
-	return strncmp(((NamedType *)points_to)->getName(), "alpha", 5) == 0;
+	return ((NamedType *)points_to)->getName().compare(0, 5, "alpha") == 0;
 }
 
 int
@@ -1696,7 +1696,7 @@ Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 }
 
 void
-UnionType::addType(Type *n, const char *str)
+UnionType::addType(Type *n, const std::string &str)
 {
 	if (n->isUnion()) {
 		UnionType *utp = (UnionType *)n;
@@ -1727,7 +1727,7 @@ CompoundType::updateGenericMember(int off, Type *ty, bool &ch)
 		std::ostringstream ost;
 		ost << "member" << std::dec << nextGenericMemberNum++;
 		setTypeAtOffset(off * 8, ty);
-		setNameAtOffset(off * 8, ost.str().c_str());
+		setNameAtOffset(off * 8, ost.str());
 	}
 }
 

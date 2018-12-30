@@ -706,7 +706,6 @@ void
 MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 {
 	QString name = "";
-	QString sigFile;
 	QString params = ui.libProcs->item(row, 1)->text();
 	bool existing = true;
 	if (params == "<unknown>") {
@@ -724,7 +723,7 @@ MainWindow::on_libProcs_cellDoubleClicked(int row, int column)
 	} else
 		name = ui.libProcs->item(row, 0)->text();
 
-	sigFile = decompilerThread->getDecompiler()->getSigFile(name);
+	QString sigFile = decompilerThread->getDecompiler()->getSigFile(name);
 	QString filename = sigFile;
 
 	int pos = sigFile.lastIndexOf(QRegExp("[/\\\\]"));

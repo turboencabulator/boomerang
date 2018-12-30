@@ -226,13 +226,13 @@ FrontEnd::isWin32() const
 }
 
 bool
-FrontEnd::noReturnCallDest(const char *name)
+FrontEnd::noReturnCallDest(const std::string &name)
 {
-	return (strcmp(name, "_exit") == 0
-	     || strcmp(name, "exit") == 0
-	     || strcmp(name, "ExitProcess") == 0
-	     || strcmp(name, "abort") == 0
-	     || strcmp(name, "_assert") == 0);
+	return name == "_exit"
+	    || name == "exit"
+	    || name == "ExitProcess"
+	    || name == "abort"
+	    || name == "_assert";
 }
 
 /**
@@ -545,33 +545,31 @@ FrontEnd::readLibrarySignatures(const std::string &sPath, callconv cc)
  * \brief Return a signature that matches the architecture best.
  */
 Signature *
-FrontEnd::getDefaultSignature(const char *name)
+FrontEnd::getDefaultSignature(const std::string &name) const
 {
 	// Get a default library signature
 	if (isWin32())
-		return Signature::instantiate(PLAT_PENTIUM, CONV_PASCAL, name);
+		return Signature::instantiate(PLAT_PENTIUM, CONV_PASCAL, name.c_str());
 	else
-		return Signature::instantiate(getFrontEndId(), CONV_C, name);
+		return Signature::instantiate(getFrontEndId(), CONV_C, name.c_str());
 }
 
 /**
  * \brief Lookup a library signature by name.
  */
 Signature *
-FrontEnd::getLibSignature(const char *name)
+FrontEnd::getLibSignature(const std::string &name) const
 {
-	Signature *signature;
 	// Look up the name in the librarySignatures map
 	auto it = librarySignatures.find(name);
-	if (it == librarySignatures.end()) {
-		LOG << "Unknown library function " << name << "\n";
-		signature = getDefaultSignature(name);
-	} else {
+	if (it != librarySignatures.end()) {
 		// Don't clone here; cloned in CallStatement::setSigArguments
-		signature = it->second;
+		auto signature = it->second;
 		signature->setUnknown(false);
+		return signature;
 	}
-	return signature;
+	LOG << "Unknown library function " << name << "\n";
+	return getDefaultSignature(name);
 }
 
 /**
@@ -721,7 +719,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 				s->setProc(pProc);  // let's do this really early!
 				auto it = refHints.find(pRtl->getAddress());
 				if (it != refHints.end()) {
-					const char *nam = it->second.c_str();
+					const auto &nam = it->second;
 					ADDRESS gu = prog->getGlobalAddr(nam);
 					if (gu != NO_ADDRESS) {
 						s->searchAndReplace(new Const((int)gu), new Unary(opAddrOf, Location::global(nam, pProc)));
@@ -811,7 +809,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 							std::string func = pBF->getDynamicProcName(((Const *)pDest->getSubExp1())->getAddr());
 							auto call = new CallStatement;
 							call->setDest(pDest->clone());
-							LibProc *lp = pProc->getProg()->getLibraryProc(func.c_str());
+							LibProc *lp = pProc->getProg()->getLibraryProc(func);
 							if (!lp)
 								LOG << "getLibraryProc returned nullptr, aborting\n";
 							assert(lp);
@@ -823,10 +821,10 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 							BB_rtls = nullptr;
 							if (pRtl->getAddress() == pProc->getNativeAddress()) {
 								// it's a thunk
-								// Proc *lp = prog->findProc(func.c_str());
+								// Proc *lp = prog->findProc(func);
 								func = std::string("__imp_") + func;
-								pProc->setName(func.c_str());
-								//lp->setName(func.c_str());
+								pProc->setName(func);
+								//lp->setName(func);
 								Boomerang::get()->alert_update_signature(pProc);
 							}
 							callList.push_back(call);

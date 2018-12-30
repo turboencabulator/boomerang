@@ -46,14 +46,14 @@ private:
 	        std::string nam = "";
 
 public:
-	                    Global(Type *type, ADDRESS uaddr, const char *nam) : type(type), uaddr(uaddr), nam(nam) { }
+	                    Global(Type *type, ADDRESS uaddr, const std::string &nam) : type(type), uaddr(uaddr), nam(nam) { }
 	virtual            ~Global();
 
 	        Type       *getType() const { return type; }
 	        void        setType(Type *ty) { type = ty; }
 	        void        meetType(Type *ty);
 	        ADDRESS     getAddress() const { return uaddr; }
-	        const char *getName() const { return nam.c_str(); }
+	        const std::string &getName() const { return nam; }
 	        Exp        *getInitialValue(Prog *prog) const;  // Get the initial value as an expression (or nullptr if not initialised)
 	        void        print(std::ostream &os, Prog *prog) const;  // Print to stream os
 
@@ -66,24 +66,24 @@ class Prog {
 public:
 	                    Prog();                         // Default constructor
 	virtual            ~Prog();
-	                    Prog(const char *name);         // Constructor with name
+	                    Prog(const std::string &);      // Constructor with name
 	        void        setFrontEnd(FrontEnd *fe);
-	        void        setName(const std::string &name);  // Set the name of this program
+	        void        setName(const std::string &);   // Set the name of this program
 	        Proc       *setNewProc(ADDRESS uNative);    // Set up new proc
 	// Return a pointer to a new proc
-	        Proc       *newProc(const char *name, ADDRESS uNative, bool bLib = false);
+	        Proc       *newProc(const std::string &, ADDRESS, bool = false);
 	        void        remProc(UserProc *proc);        // Remove the given UserProc
-	        void        removeProc(const char *name);
-	        const char *getName() const { return m_name.c_str(); }  // Get the name of this program
-	        const char *getPath() const { return m_path.c_str(); }
-	        const char *getPathAndName() const { return (m_path + m_name).c_str(); }
+	        void        removeProc(const std::string &);
+	        const std::string &getName() const { return m_name; }  // Get the name of this program
+	        const std::string &getPath() const { return m_path; }
+	        std::string getPathAndName() const { return m_path + m_name; }
 	        int         getNumProcs() const;            // # of procedures stored in prog
 	        int         getNumUserProcs() const;        // # of user procedures stored in prog
 	        Proc       *getProc(int i) const;           // returns pointer to indexed proc
 	// Find the Proc with given address, nullptr if none, -1 if deleted
-	        Proc       *findProc(ADDRESS uAddr) const;
+	        Proc       *findProc(ADDRESS) const;
 	// Find the Proc with the given name
-	        Proc       *findProc(const char *name) const;
+	        Proc       *findProc(const std::string &) const;
 	// Find the Proc that contains the given address
 	        Proc       *findContainingProc(ADDRESS uAddr) const;
 	        bool        isProcLabel(ADDRESS addr);      // Checks if addr is a label or not
@@ -154,10 +154,10 @@ public:
 	        void        print(std::ostream &out) const;
 
 	// lookup a library procedure by name; create if does not exist
-	        LibProc    *getLibraryProc(const char *nam);
+	        LibProc    *getLibraryProc(const std::string &);
 
 	// Get a library signature for a given name (used when creating a new library proc.
-	        Signature  *getLibSignature(const char *name) const;
+	        Signature  *getLibSignature(const std::string &) const;
 	        void        rereadLibSignatures();
 
 	        Statement  *getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const;
@@ -167,7 +167,7 @@ public:
 
 	        const std::map<ADDRESS, std::string> &getSymbols() const;
 
-	        Signature  *getDefaultSignature(const char *name) const;
+	        Signature  *getDefaultSignature(const std::string &) const;
 
 	        std::vector<Exp *> &getDefaultParams() const;
 	        std::vector<Exp *> &getDefaultReturns() const;
@@ -176,15 +176,15 @@ public:
 	        bool        isWin32() const;
 
 	// Get a global variable if possible, looking up the loader's symbol table if necessary
-	        const char *getGlobalName(ADDRESS uaddr) const;
-	        ADDRESS     getGlobalAddr(const char *nam) const;
-	        Global     *getGlobal(const char *nam) const;
+	        const char *getGlobalName(ADDRESS) const;
+	        ADDRESS     getGlobalAddr(const std::string &) const;
+	        Global     *getGlobal(const std::string &) const;
 
-	// Make up a name for a new global at address uaddr (or return an existing name if address already used)
-	        const char *newGlobalName(ADDRESS uaddr);
+	// Make up a name for a new global at address addr (or return an existing name if address already used)
+		std::string newGlobalName(ADDRESS);
 
 	// Guess a global's type based on its name and address
-	        Type       *guessGlobalType(const char *nam, ADDRESS u) const;
+	        Type       *guessGlobalType(const std::string &, ADDRESS) const;
 
 	// Make an array type for the global array at u. Mainly, set the length sensibly
 	        ArrayType  *makeArrayType(ADDRESS u, Type *t);
@@ -193,10 +193,10 @@ public:
 	        bool        globalUsed(ADDRESS uaddr, Type *knownType = nullptr);
 
 	// Get the type of a global variable
-	        Type       *getGlobalType(const char *nam) const;
+	        Type       *getGlobalType(const std::string &) const;
 
 	// Set the type of a global variable
-	        void        setGlobalType(const char *name, Type *ty);
+	        void        setGlobalType(const std::string &, Type *);
 
 	// get a string constant at a give address if appropriate
 	        const char *getStringConstant(ADDRESS uaddr, bool knownString = false) const;
@@ -217,7 +217,7 @@ public:
 	        bool        isDynamicLinkedProcPointer(ADDRESS dest) const { return pBF->isDynamicLinkedProcPointer(dest); }
 	        const char *getDynamicProcName(ADDRESS uNative) const { return pBF->getDynamicProcName(uNative); }
 
-	        void        readSymbolFile(const char *fname);
+	        void        readSymbolFile(const std::string &);
 
 	// Public booleans that are set if and when a register jump or call is
 	// found, respectively
@@ -230,7 +230,7 @@ public:
 
 	        Cluster    *getRootCluster() const { return m_rootCluster; }
 	        Cluster    *findCluster(const std::string &name) const { return m_rootCluster->find(name); }
-	        Cluster    *getDefaultCluster(const std::string &name) const;
+	        Cluster    *getDefaultCluster(const std::string &) const;
 	        bool        clusterUsed(Cluster *c) const;
 
 	// Add the given RTL to the front end's map from address to aldready-decoded-RTL

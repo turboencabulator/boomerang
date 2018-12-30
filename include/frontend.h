@@ -122,7 +122,7 @@ public:
 
 	bool isWin32() const;
 
-	static bool noReturnCallDest(const char *name);
+	static bool noReturnCallDest(const std::string &);
 
 	BinaryFile *getBinaryFile() const { return pBF; }
 
@@ -133,8 +133,8 @@ public:
 	void readLibraryCatalog(const std::string &sPath);
 	void readLibraryCatalog();
 
-	Signature *getLibSignature(const char *name);
-	Signature *getDefaultSignature(const char *name);
+	Signature *getLibSignature(const std::string &) const;
+	Signature *getDefaultSignature(const std::string &) const;
 
 	virtual std::vector<Exp *> &getDefaultParams() = 0;
 	virtual std::vector<Exp *> &getDefaultReturns() = 0;

@@ -46,7 +46,7 @@ ProcTest::testName()
 	pFE->readLibraryCatalog();              // Since we are not decoding
 	m_proc = new UserProc(prog, nm, 20000); // Will print in decimal if error
 	std::string actual(m_proc->getName());
-	CPPUNIT_ASSERT_EQUAL(std::string("default name"), actual);
+	CPPUNIT_ASSERT_EQUAL(nm, actual);
 
 	std::string name("printf");
 	LibProc lp(prog, name, 30000);

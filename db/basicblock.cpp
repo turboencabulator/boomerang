@@ -1396,7 +1396,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 				auto gs = (GotoStatement *)stmts.back();
 				std::ostringstream ost;
 				ost << "goto " << *gs->getDest();
-				hll->AddLineComment(ost.str().c_str());
+				hll->AddLineComment(ost.str());
 			}
 			return;
 		}

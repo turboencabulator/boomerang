@@ -59,12 +59,12 @@ public:
 	/**
 	 * Gets name of this procedure.
 	 */
-	        const char *getName() const;
+	        const std::string &getName() const;
 
 	/**
 	 * Gets sets the name of this procedure.
 	 */
-	        void        setName(const char *nam);
+	        void        setName(const std::string &);
 
 	/**
 	 * Get the native address.
@@ -94,7 +94,7 @@ public:
 	        Signature  *getSignature() const { return signature; }
 	        void        setSignature(Signature *sig) { signature = sig; }
 
-	virtual void        renameParam(const std::string &oldName, const std::string &newName);
+	virtual void        renameParam(const std::string &, const std::string &);
 
 	/**
 	 * Return true if this is a library proc
@@ -181,7 +181,7 @@ protected:
 
 class LibProc : public Proc {
 public:
-	            LibProc(Prog *prog, std::string &name, ADDRESS address);
+	            LibProc(Prog *, const std::string &, ADDRESS);
 	virtual    ~LibProc();
 
 	/**
@@ -310,7 +310,7 @@ private:
 
 public:
 
-	            UserProc(Prog *prog, std::string &name, ADDRESS address);
+	            UserProc(Prog *, const std::string &, ADDRESS);
 	virtual    ~UserProc();
 
 	/**
@@ -460,7 +460,7 @@ public:
 	bool        isLocal(Exp *e) const;              ///< True if e represents a stack local variable
 	bool        isLocalOrParam(Exp *e) const;       ///< True if e represents a stack local or stack param
 	bool        isLocalOrParamPattern(Exp *e) const;///< True if e could represent a stack local or stack param
-	bool        existsLocal(const char *name) const;///< True if a local exists with name \a name
+	bool        existsLocal(const std::string &) const;///< True if a local exists with name \a name
 	bool        isAddressEscapedVar(Exp *e) const { return addressEscapedVars.exists(e); }
 	bool        isPropagatable(Exp *e) const;       ///< True if e can be propagated
 
@@ -575,28 +575,28 @@ public:
 	/*
 	 * Return a string for a new local suitable for e
 	 */
-	const char *newLocalName(Exp *e);
+	std::string newLocalName(Exp *e);
 
 	/**
 	 * Return the next available local variable; make it the given type. Note: was returning TypedExp*.
-	 * If nam is non null, use that name
 	 */
-	Exp        *newLocal(Type *ty, Exp *e, const char *nam = nullptr);
+	Exp        *newLocal(Type *, Exp *);
+	Exp        *newLocal(Type *, Exp *, const std::string &);
 
 	/**
 	 * Add a new local supplying all needed information.
 	 */
-	void        addLocal(Type *ty, const char *nam, Exp *e);
+	void        addLocal(Type *, const std::string &, Exp *);
 
 	/// return a local's type
-	Type       *getLocalType(const char *nam) const;
-	void        setLocalType(const char *nam, Type *ty);
+	Type       *getLocalType(const std::string &) const;
+	void        setLocalType(const std::string &, Type *);
 
-	Type       *getParamType(const char *nam) const;
+	Type       *getParamType(const std::string &) const;
 
 	/// return a symbol's exp (note: the original exp, like r24, not local1)
-	Exp        *expFromSymbol(const char *nam) const;
-	void        setExpSymbol(const char *nam, Exp *e, Type *ty);
+	Exp        *expFromSymbol(const std::string &) const;
+	void        setExpSymbol(const std::string &, Exp *, Type *);
 	void        mapSymbolTo(Exp *from, Exp *to);
 	/// As above but with replacement
 	void        mapSymbolToRepl(Exp *from, Exp *oldTo, Exp *newTo);
@@ -618,12 +618,12 @@ public:
 	int         getNumLocals() const { return (int)locals.size(); }
 	const char *getLocalName(int n) const;
 	const char *getSymbolName(Exp *e) const;  ///< As getLocalName, but look for expression e
-	void        renameLocal(const char *oldName, const char *newName);
-	void        renameParam(const std::string &oldName, const std::string &newName) override;
+	void        renameLocal(const std::string &, const std::string &);
+	void        renameParam(const std::string &, const std::string &) override;
 
 	const char *getRegName(Exp *r) const;  /// Get a name like eax or o2 from r24 or r8
-	void        setParamType(const std::string &nam, Type *ty);
-	void        setParamType(int idx, Type *ty);
+	void        setParamType(const std::string &, Type *);
+	void        setParamType(int, Type *);
 
 	/**
 	 * Get the BB that is the entry point (not always the first BB)

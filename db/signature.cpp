@@ -1189,14 +1189,14 @@ Signature::operator ==(const Signature &other) const
 	return true;
 }
 
-const char *
+const std::string &
 Signature::getName()
 {
-	return name.c_str();
+	return name;
 }
 
 void
-Signature::setName(const char *nam)
+Signature::setName(const std::string &nam)
 {
 	name = nam;
 }
@@ -1250,14 +1250,14 @@ void
 Signature::addParameter(Parameter *param)
 {
 	Type *ty = param->getType();
-	const char *nam = param->getName();
+	const char *nam = param->getName().c_str();
 	Exp *e = param->getExp();
 
 	if (strlen(nam) == 0)
 		nam = nullptr;
 
 	if (!ty || !e || !nam) {
-		addParameter(ty, nam, e, param->getBoundMax());
+		addParameter(ty, nam, e, param->getBoundMax().c_str());
 	} else
 		params.push_back(param);
 }
@@ -1291,7 +1291,7 @@ const char *
 Signature::getParamName(int n)
 {
 	assert(n < (int)params.size());
-	return params[n]->getName();
+	return params[n]->getName().c_str();
 }
 
 Exp *
@@ -1314,10 +1314,10 @@ const char *
 Signature::getParamBoundMax(int n)
 {
 	if (n >= (int)params.size()) return nullptr;
-	const char *s = params[n]->getBoundMax();
-	if (strlen(s) == 0)
+	const auto &s = params[n]->getBoundMax();
+	if (s.empty())
 		return nullptr;
-	return s;
+	return s.c_str();
 }
 
 void

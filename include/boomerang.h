@@ -77,7 +77,7 @@ public:
 	virtual void        alert_load(Proc *p) { }
 	virtual void        alert_considering(Proc *parent, Proc *p) { }
 	virtual void        alert_decompiling(UserProc *p) { }
-	virtual void        alert_decompile_debug_point(UserProc *p, const char *description) { }
+	virtual void        alert_decompile_debug_point(UserProc *p, const std::string &description) { }
 };
 
 /**
@@ -119,18 +119,18 @@ public:
 	static  const char *getVersionStr();
 	        Log        &log();
 	        void        setLogger(Log *l) { logger = l; }
-	        bool        setOutputDirectory(const char *path);
+	        bool        setOutputDirectory(const std::string &);
 
 	        /// \return The HLLCode for the specified UserProc.
 	static  HLLCode    *getHLLCode(UserProc *p = nullptr);
 
 	        int         commandLine(int argc, const char *argv[]);
 	        /// Set the path to the %Boomerang executable.
-	        void        setProgPath(const char *p) { progPath = p; }
+	        void        setProgPath(const std::string &p) { progPath = p; }
 	        /// Get the path to the %Boomerang executable.
 	        const std::string &getProgPath() { return progPath; }
 	        /// Set the path where the output files are saved.
-	        void        setOutputPath(const char *p) { outputPath = p; }
+	        void        setOutputPath(const std::string &p) { outputPath = p; }
 	        /// Returns the path to where the output files are saved.
 	        const std::string &getOutputPath() { return outputPath; }
 
@@ -141,7 +141,7 @@ public:
 
 	static  void        persistToXML(Prog *prog);
 #ifdef ENABLE_XML_LOAD
-	static  Prog       *loadFromXML(const char *fname);
+	static  Prog       *loadFromXML(const std::string &);
 #endif
 
 	static  void        objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *prog);
@@ -232,7 +232,7 @@ public:
 		                    for (const auto &watcher : watchers)
 			                    watcher->alert_decompiling(p);
 	                    }
-	virtual void        alert_decompile_debug_point(UserProc *p, const char *description);
+	virtual void        alert_decompile_debug_point(UserProc *p, const std::string &description);
 
 	        // Command line flags
 	        bool        vFlag = false;

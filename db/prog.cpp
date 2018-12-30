@@ -68,12 +68,11 @@ Prog::setFrontEnd(FrontEnd *pFE)
 	}
 }
 
-Prog::Prog(const char *name) :
+Prog::Prog(const std::string &name) :
 	m_name(name),
+	m_path(name),
 	m_rootCluster(new Cluster(getNameNoPathNoExt()))
 {
-	// Constructor taking a name. Technically, the allocation of the space for the name could fail, but this is unlikely
-	m_path = m_name;
 }
 
 Prog::~Prog()
@@ -161,10 +160,10 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 					const SectionInfo *info = pBF->getSectionInfoByName(str);
 					str = "start_";
 					str += sections[j];
-					code->AddGlobal(str.c_str(), new IntegerType(32, -1), new Const(info ? info->uNativeAddr : (unsigned int)-1));
+					code->AddGlobal(str, new IntegerType(32, -1), new Const(info ? info->uNativeAddr : (unsigned int)-1));
 					str = sections[j];
 					str += "_size";
-					code->AddGlobal(str.c_str(), new IntegerType(32, -1), new Const(info ? info->uSectionSize : (unsigned int)-1));
+					code->AddGlobal(str, new IntegerType(32, -1), new Const(info ? info->uSectionSize : (unsigned int)-1));
 					Exp *l = new Terminal(opNil);
 					for (unsigned int i = 0; info && i < info->uSectionSize; ++i) {
 						int n = pBF->readNative1(info->uNativeAddr + info->uSectionSize - 1 - i);
@@ -446,17 +445,19 @@ Prog::setNewProc(ADDRESS uAddr)
 	ADDRESS other = pBF->isJumpToAnotherAddr(uAddr);
 	if (other != NO_ADDRESS)
 		uAddr = other;
-	const char *pName = pBF->getSymbolByAddress(uAddr);
-	bool bLib = pBF->isDynamicLinkedProc(uAddr) | pBF->isStaticLinkedLibProc(uAddr);
-	if (!pName) {
+	auto name = std::string();
+	if (const char *pName = pBF->getSymbolByAddress(uAddr)) {
+		name = pName;
+	} else {
 		// No name. Give it a numbered name
 		std::ostringstream ost;
 		ost << "proc" << m_iNumberedProc++;
-		pName = strdup(ost.str().c_str());
+		name = ost.str();
 		if (VERBOSE)
-			LOG << "assigning name " << pName << " to addr " << uAddr << "\n";
+			LOG << "assigning name " << name << " to addr " << uAddr << "\n";
 	}
-	pProc = newProc(pName, uAddr, bLib);
+	bool bLib = pBF->isDynamicLinkedProc(uAddr) | pBF->isStaticLinkedLibProc(uAddr);
+	pProc = newProc(name, uAddr, bLib);
 	return pProc;
 }
 
@@ -470,14 +471,13 @@ Prog::setNewProc(ADDRESS uAddr)
  * RETURNS:     A pointer to the new Proc object
  *============================================================================*/
 Proc *
-Prog::newProc(const char *name, ADDRESS uNative, bool bLib /*= false*/)
+Prog::newProc(const std::string &name, ADDRESS uNative, bool bLib /*= false*/)
 {
 	Proc *pProc;
-	std::string sname(name);
 	if (bLib)
-		pProc = new LibProc(this, sname, uNative);
+		pProc = new LibProc(this, name, uNative);
 	else
-		pProc = new UserProc(this, sname, uNative);
+		pProc = new UserProc(this, name, uNative);
 
 	m_procs.push_back(pProc);  // Append this to list of procs
 	m_procLabels[uNative] = pProc;
@@ -509,10 +509,10 @@ Prog::remProc(UserProc *uProc)
 }
 
 void
-Prog::removeProc(const char *name)
+Prog::removeProc(const std::string &name)
 {
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
-		if (std::string(name) == (*it)->getName()) {
+		if (name == (*it)->getName()) {
 			Boomerang::get()->alert_remove(*it);
 			m_procs.erase(it);
 			break;
@@ -566,26 +566,26 @@ Prog::getProc(int idx) const
  * RETURNS:     Pointer to the Proc object, or 0 if none, or -1 if deleted
  *============================================================================*/
 Proc *
-Prog::findProc(ADDRESS uAddr) const
+Prog::findProc(ADDRESS addr) const
 {
-	auto it = m_procLabels.find(uAddr);
+	auto it = m_procLabels.find(addr);
 	if (it != m_procLabels.cend())
 		return it->second;
 	return nullptr;
 }
 
 Proc *
-Prog::findProc(const char *name) const
+Prog::findProc(const std::string &name) const
 {
 	for (const auto &proc : m_procs)
-		if (!strcmp(proc->getName(), name))
+		if (proc->getName() == name)
 			return proc;
 	return nullptr;
 }
 
 // get a library procedure by name; create if does not exist
 LibProc *
-Prog::getLibraryProc(const char *nam)
+Prog::getLibraryProc(const std::string &nam)
 {
 	Proc *p = findProc(nam);
 	if (p && p->isLib())
@@ -594,7 +594,7 @@ Prog::getLibraryProc(const char *nam)
 }
 
 Signature *
-Prog::getLibSignature(const char *nam) const
+Prog::getLibSignature(const std::string &nam) const
 {
 	return pFE->getLibSignature(nam);
 }
@@ -621,7 +621,7 @@ Prog::getFrontEndId() const
 }
 
 Signature *
-Prog::getDefaultSignature(const char *name) const
+Prog::getDefaultSignature(const std::string &name) const
 {
 	return pFE->getDefaultSignature(name);
 }
@@ -645,35 +645,35 @@ Prog::isWin32() const
 }
 
 const char *
-Prog::getGlobalName(ADDRESS uaddr) const
+Prog::getGlobalName(ADDRESS addr) const
 {
 	// FIXME: inefficient
 	for (const auto &global : globals) {
-		if (global->getAddress() == uaddr
-		 || (global->getAddress() < uaddr
-		  && global->getAddress() + global->getType()->getSize() / 8 > uaddr))
-			return global->getName();
+		if (global->getAddress() == addr
+		 || (global->getAddress() < addr
+		  && global->getAddress() + global->getType()->getSize() / 8 > addr))
+			return global->getName().c_str();
 	}
 	if (pBF)
-		return pBF->getSymbolByAddress(uaddr);
+		return pBF->getSymbolByAddress(addr);
 	return nullptr;
 }
 
 ADDRESS
-Prog::getGlobalAddr(const char *nam) const
+Prog::getGlobalAddr(const std::string &nam) const
 {
 	for (const auto &global : globals) {
-		if (!strcmp(global->getName(), nam))
+		if (global->getName() == nam)
 			return global->getAddress();
 	}
 	return pBF->getAddressByName(nam);
 }
 
 Global *
-Prog::getGlobal(const char *nam) const
+Prog::getGlobal(const std::string &nam) const
 {
 	for (const auto &global : globals) {
-		if (!strcmp(global->getName(), nam))
+		if (global->getName() == nam)
 			return global;
 	}
 	return nullptr;
@@ -698,7 +698,7 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 		return false;
 	}
 
-	const char *nam = newGlobalName(uaddr);
+	auto nam = newGlobalName(uaddr);
 	Type *ty;
 	if (knownType) {
 		ty = knownType;
@@ -732,7 +732,7 @@ Prog::getSymbols() const
 ArrayType *
 Prog::makeArrayType(ADDRESS u, Type *t)
 {
-	const char *nam = newGlobalName(u);
+	auto nam = newGlobalName(u);
 	int sz = pBF->getSizeByName(nam);
 	if (sz == 0)
 		return new ArrayType(t);  // An "unbounded" array
@@ -742,7 +742,7 @@ Prog::makeArrayType(ADDRESS u, Type *t)
 }
 
 Type *
-Prog::guessGlobalType(const char *nam, ADDRESS u) const
+Prog::guessGlobalType(const std::string &nam, ADDRESS u) const
 {
 	int sz = pBF->getSizeByName(nam);
 	if (sz == 0) {
@@ -760,35 +760,34 @@ Prog::guessGlobalType(const char *nam, ADDRESS u) const
 	}
 }
 
-const char *
-Prog::newGlobalName(ADDRESS uaddr)
+std::string
+Prog::newGlobalName(ADDRESS addr)
 {
-	const char *nam = getGlobalName(uaddr);
-	if (!nam) {
-		std::ostringstream os;
-		os << "global" << globals.size();
-		nam = strdup(os.str().c_str());
-		if (VERBOSE)
-			LOG << "naming new global: " << nam << " at address " << uaddr << "\n";
-	}
-	return nam;
+	if (auto nam = getGlobalName(addr))
+		return std::string(nam);
+
+	std::ostringstream os;
+	os << "global" << globals.size();
+	if (VERBOSE)
+		LOG << "naming new global: " << os.str() << " at address " << addr << "\n";
+	return os.str();
 }
 
 Type *
-Prog::getGlobalType(const char *nam) const
+Prog::getGlobalType(const std::string &nam) const
 {
 	for (const auto &global : globals)
-		if (!strcmp(global->getName(), nam))
+		if (global->getName() == nam)
 			return global->getType();
 	return nullptr;
 }
 
 void
-Prog::setGlobalType(const char *nam, Type *ty)
+Prog::setGlobalType(const std::string &nam, Type *ty)
 {
 	// FIXME: inefficient
 	for (const auto &global : globals) {
-		if (!strcmp(global->getName(), nam)) {
+		if (global->getName() == nam) {
 			global->setType(ty);
 			return;
 		}
@@ -1366,7 +1365,7 @@ Prog::printCallGraphXML() const
 }
 
 void
-Prog::readSymbolFile(const char *fname)
+Prog::readSymbolFile(const std::string &fname)
 {
 	std::ifstream ifs(fname);
 	if (!ifs.good()) {
@@ -1393,8 +1392,8 @@ Prog::readSymbolFile(const char *fname)
 				p->getSignature()->setForced(true);
 			}
 		} else {
-			const char *nam = sym->nam.c_str();
-			if (strlen(nam) == 0) {
+			auto nam = sym->nam;
+			if (nam.empty()) {
 				nam = newGlobalName(sym->addr);
 			}
 			Type *ty = sym->ty;
@@ -1809,7 +1808,7 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 		const auto &symbols = pBF->getSymbols();
 		auto sym = symbols.find(a);
 		if (sym != symbols.end()) {
-			const char *n = sym->second.c_str();
+			const auto &n = sym->second;
 			unsigned int sz = pBF->getSizeByName(n);
 			if (!getGlobal(n))
 				globals.insert(new Global(new SizeType(sz * 8), a, n));

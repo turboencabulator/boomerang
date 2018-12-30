@@ -32,7 +32,7 @@ class Decompiler : public QObject, public Watcher {
 public:
 	Decompiler() { }
 
-	void alert_decompile_debug_point(UserProc *p, const char *description) override;
+	void alert_decompile_debug_point(UserProc *p, const std::string &description) override;
 	void alert_considering(Proc *parent, Proc *p) override;
 	void alert_decompiling(UserProc *p) override;
 	void alert_new(Proc *p) override;

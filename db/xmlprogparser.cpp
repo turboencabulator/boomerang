@@ -232,7 +232,7 @@ XMLProgParser::addChildStub(Context *node, const Context *child) const
 }
 
 Prog *
-XMLProgParser::parse(const char *filename)
+XMLProgParser::parse(const std::string &filename)
 {
 	auto f = std::ifstream(filename);
 	if (!f)
@@ -251,13 +251,13 @@ XMLProgParser::parse(const char *filename)
 	}
 	if (!prog)
 		return nullptr;
-	//auto pFE = FrontEnd::open(prog->getPath(), prog);  // Path is usually empty!?
-	auto pFE = FrontEnd::open(prog->getPathAndName(), prog);
+	//auto pFE = FrontEnd::open(prog->getPath().c_str(), prog);  // Path is usually empty!?
+	auto pFE = FrontEnd::open(strdup(prog->getPathAndName().c_str()), prog);
 	return prog;
 }
 
 void
-XMLProgParser::parseFile(const char *filename)
+XMLProgParser::parseFile(const std::string &filename)
 {
 	auto f = std::ifstream(filename);
 	if (!f)
@@ -303,7 +303,7 @@ XMLProgParser::parseChildren(Cluster *c)
 	std::string path = c->makeDirs();
 	for (const auto &child : c->children) {
 		std::string d = path + "/" + child->getName() + ".xml";
-		parseFile(d.c_str());
+		parseFile(d);
 		parseChildren(child);
 	}
 }

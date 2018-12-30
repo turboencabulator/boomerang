@@ -99,19 +99,19 @@ public:
 
 	// sequential statements
 	virtual void    AddAssignmentStatement(int indLevel, Assign *s) = 0;
-	virtual void    AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results) = 0;
+	virtual void    AddCallStatement(int indLevel, Proc *proc, const std::string &name, const StatementList &args, StatementList *results) = 0;
 	virtual void    AddIndCallStatement(int indLevel, Exp *exp, const StatementList &args, StatementList *results) = 0;
 	virtual void    AddReturnStatement(int indLevel, StatementList *rets) = 0;
 
 	// procedure related
 	virtual void    AddProcStart(UserProc *proc) = 0;
 	virtual void    AddProcEnd() = 0;
-	virtual void    AddLocal(const char *name, Type *type, bool last = false) = 0;
-	virtual void    AddGlobal(const char *name, Type *type, Exp *init = nullptr) = 0;
+	virtual void    AddLocal(const std::string &name, Type *type, bool last = false) = 0;
+	virtual void    AddGlobal(const std::string &name, Type *type, Exp *init = nullptr) = 0;
 	virtual void    AddPrototype(UserProc *proc) = 0;
 
 	// comments
-	virtual void    AddLineComment(const char *cmt) = 0;
+	virtual void    AddLineComment(const std::string &cmt) = 0;
 
 	/*
 	 * output functions, pure virtual.

@@ -3838,7 +3838,7 @@ Location::getDefinitions(LocationSet &defs) const
 const char *
 Const::getFuncName() const
 {
-	return u.pp->getName();
+	return u.pp->getName().c_str();
 }
 
 Exp *

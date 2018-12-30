@@ -226,8 +226,7 @@ FrontSparcTest::testDelaySlot()
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
-	std::string name("testDelaySlot");
-	auto pProc = new UserProc(prog, name, addr);
+	auto pProc = new UserProc(prog, "testDelaySlot", addr);
 	bool res = pFE->processProc(addr, pProc, false);
 
 	CPPUNIT_ASSERT(res == 1);

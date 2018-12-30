@@ -1368,7 +1368,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
  * \todo                Add assignment for when the function returns a struct.
  */
 void
-CHLLCode::AddCallStatement(int indLevel, Proc *proc, const char *name, const StatementList &args, StatementList *results)
+CHLLCode::AddCallStatement(int indLevel, Proc *proc, const std::string &name, const StatementList &args, StatementList *results)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
@@ -1616,11 +1616,11 @@ CHLLCode::AddProcEnd()
  * \param last  true if an empty line should be added.
  */
 void
-CHLLCode::AddLocal(const char *name, Type *type, bool last)
+CHLLCode::AddLocal(const std::string &name, Type *type, bool last)
 {
 	std::ostringstream s;
 	indent(s, 1);
-	appendTypeIdent(s, type, name);
+	appendTypeIdent(s, type, name.c_str());
 	Exp *e = m_proc->expFromSymbol(name);
 	if (e) {
 		// ? Should never see subscripts in the back end!
@@ -1649,7 +1649,7 @@ CHLLCode::AddLocal(const char *name, Type *type, bool last)
  * \param init  The initial value of the global.
  */
 void
-CHLLCode::AddGlobal(const char *name, Type *type, Exp *init)
+CHLLCode::AddGlobal(const std::string &name, Type *type, Exp *init)
 {
 	std::ostringstream s;
 	// Check for array types. These are declared differently in C than
@@ -1694,7 +1694,7 @@ CHLLCode::print(std::ostream &os) const
 
 /// Adds one line of comment to the code.
 void
-CHLLCode::AddLineComment(const char *cmt)
+CHLLCode::AddLineComment(const std::string &cmt)
 {
 	std::ostringstream s;
 	s << "/* " << cmt << "*/";

@@ -52,9 +52,9 @@ public:
 
 #ifdef ENABLE_XML_LOAD
 public:
-	Prog *parse(const char *filename);
+	Prog *parse(const std::string &);
 protected:
-	void parseFile(const char *filename);
+	void parseFile(const std::string &);
 	void parseChildren(Cluster *c);
 
 public:

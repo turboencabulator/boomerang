@@ -248,7 +248,7 @@ param
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($1);
 		for (const auto &param : *$7) {
-			if (std::string(param->getName()) != "...") {
+			if (param->getName() != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -273,7 +273,7 @@ type_decl
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($2);
 		for (const auto &param : *$8) {
-			if (std::string(param->getName()) != "...") {
+			if (param->getName() != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -288,7 +288,7 @@ type_decl
 		Signature *sig = Signature::instantiate(plat, cc, $2->nam.c_str());
 		sig->addReturn($2->ty);
 		for (const auto &param : *$4) {
-			if (std::string(param->getName()) != "...") {
+			if (param->getName() != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -302,7 +302,7 @@ type_decl
 	| STRUCT IDENTIFIER '{' type_ident_list '}' ';' {
 		auto t = new CompoundType();
 		for (const auto &type_ident : *$4) {
-			t->addType(type_ident->ty, type_ident->nam.c_str());
+			t->addType(type_ident->ty, type_ident->nam);
 		}
 		delete $4;
 		$2->insert(0, "struct ");
@@ -334,7 +334,7 @@ signature
 		sig->addReturn($1->ty);
 		delete $1;
 		for (const auto &param : *$3) {
-			if (std::string(param->getName()) != "...") {
+			if (param->getName() != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -349,7 +349,7 @@ signature
 		sig->addReturn($2->ty);
 		delete $2;
 		for (const auto &param : *$4) {
-			if (std::string(param->getName()) != "...") {
+			if (param->getName() != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -368,7 +368,7 @@ signature
 		delete $2;
 		delete $3;
 		for (const auto &param : *$5) {
-			if (std::string(param->getName()) != "...") {
+			if (param->getName() != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -484,7 +484,7 @@ type
 	| STRUCT '{' type_ident_list '}' {
 		auto t = new CompoundType();
 		for (const auto &type_ident : *$3) {
-			t->addType(type_ident->ty, type_ident->nam.c_str());
+			t->addType(type_ident->ty, type_ident->nam);
 		}
 		delete $3;
 		$$ = t;

@@ -93,7 +93,7 @@ public:
 
 	// Return type for given temporary variable name
 	static Type        *getTempType(const std::string &name);
-	static Type        *parseType(const char *str); // parse a C type
+	static Type        *parseType(const std::string &); // parse a C type
 
 	bool                isCString();
 
@@ -472,7 +472,7 @@ public:
 	            NamedType(const std::string &name);
 	virtual    ~NamedType();
 	bool        isNamed() const override { return true; }
-	const char *getName() const { return name.c_str(); }
+	const std::string &getName() const { return name; }
 	Type       *resolvesTo() const;
 	// Get a new type variable, e.g. alpha0, alpha55
 	static NamedType *getAlpha();
@@ -509,7 +509,7 @@ public:
 	virtual    ~CompoundType();
 	bool        isCompound() const override { return true; }
 
-	void        addType(Type *n, const char *str) {
+	void        addType(Type *n, const std::string &str) {
 		            // check if it is a user defined type (typedef)
 		            Type *t = getNamedType(n->getCtype());
 		            if (t) n = t;
@@ -518,16 +518,16 @@ public:
 	            }
 	unsigned    getNumTypes() const { return types.size(); }
 	Type       *getType(unsigned n) const { assert(n < getNumTypes()); return types[n]; }
-	Type       *getType(const char *nam) const;
+	Type       *getType(const std::string &) const;
 	const char *getName(unsigned n) const { assert(n < getNumTypes()); return names[n].c_str(); }
 	void        setTypeAtOffset(unsigned n, Type *ty);
 	Type       *getTypeAtOffset(unsigned n) const;
-	void        setNameAtOffset(unsigned n, const char *nam);
+	void        setNameAtOffset(unsigned n, const std::string &);
 	const char *getNameAtOffset(unsigned n) const;
 	bool        isGeneric() const { return generic; }
 	void        updateGenericMember(int off, Type *ty, bool &ch);   // Add a new generic member if necessary
 	unsigned    getOffsetTo(unsigned n) const;
-	unsigned    getOffsetTo(const char *member) const;
+	unsigned    getOffsetTo(const std::string &) const;
 	unsigned    getOffsetRemainder(unsigned n) const;
 
 	Type       *clone() const override;
@@ -571,11 +571,11 @@ public:
 	virtual    ~UnionType();
 	bool        isUnion() const override { return true; }
 
-	void        addType(Type *n, const char *str);
+	void        addType(Type *, const std::string &);
 	int         getNumTypes() const { return li.size(); }
 	bool        findType(Type *ty);             // Return true if ty is already in the union
 	//Type       *getType(int n) { assert(n < getNumTypes()); return types[n]; }
-	//Type       *getType(const char *nam);
+	//Type       *getType(const std::string &);
 	//const char *getName(int n) { assert(n < getNumTypes()); return names[n].c_str(); }
 
 	Type       *clone() const override;

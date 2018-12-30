@@ -71,7 +71,6 @@ StatementTest::testEmpty()
 	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
-	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
@@ -370,7 +369,6 @@ StatementTest::testUseOverBB()
 	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
-	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
@@ -441,7 +439,6 @@ StatementTest::testUseKill()
 	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
-	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
@@ -505,7 +502,6 @@ StatementTest::testEndlessLoop()
 	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
-	std::string name = "test";
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
@@ -679,8 +675,7 @@ StatementTest::testRecursion()
 	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
 
 	// create UserProc
-	std::string name = "test";
-	auto proc = new UserProc(prog, name, 0);
+	auto proc = new UserProc(prog, "test", 0);
 	// create CFG
 	Cfg *cfg = proc->getCFG();
 	auto pRtls = new std::list<RTL *>();
@@ -1112,8 +1107,7 @@ StatementTest::testSubscriptVars()
 	ca->setArguments(argl);
 	ca->addDefine(new ImplicitAssign(Location::regOf(28)));
 	ca->addDefine(new ImplicitAssign(Location::memOf(Location::regOf(28))));
-	std::string name("dest");
-	ca->setDestProc(new UserProc(new Prog(), name, 0x2000));  // Must have a dest to be non-childless
+	ca->setDestProc(new UserProc(new Prog(), "dest", 0x2000));  // Must have a dest to be non-childless
 	ca->setCalleeReturn(new ReturnStatement);  // So it's not a childless call, and we can see the defs and params
 	std::ostringstream ost5;
 	ca->subscriptVar(srch, &s9);
@@ -1137,7 +1131,7 @@ StatementTest::testSubscriptVars()
 	ca->setArguments(argl);
 	ca->addDefine(new ImplicitAssign(Location::regOf(31)));
 	ca->addDefine(new ImplicitAssign(Location::memOf(Location::regOf(31))));
-	ca->setDestProc(new UserProc(new Prog(), name, 0x2000));  // Must have a dest to be non-childless
+	ca->setDestProc(new UserProc(new Prog(), "dest", 0x2000));  // Must have a dest to be non-childless
 	ca->setCalleeReturn(new ReturnStatement);  // So it's not a childless call, and we can see the defs and params
 	std::ostringstream ost5a;
 	ca->subscriptVar(srch, &s9);

@@ -323,7 +323,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		}
 		const char *fname = argv[1];
 		Prog *p = loadFromXML(fname);
-		if (!p) p = loadFromXML((outputPath + fname + "/" + fname + ".xml").c_str());  // try guessing
+		if (!p) p = loadFromXML(outputPath + fname + "/" + fname + ".xml");  // try guessing
 		if (!p) {
 			std::cerr << "failed to read xml " << fname << "\n";
 			return 1;
@@ -928,7 +928,7 @@ Boomerang::commandLine(int argc, const char *argv[])
 		}
 	}
 
-	setOutputDirectory(outputPath.c_str());
+	setOutputDirectory(outputPath);
 
 	if (kmd)
 		return cmdLine();
@@ -945,7 +945,7 @@ Boomerang::commandLine(int argc, const char *argv[])
  * \retval false The directory could not be created.
  */
 bool
-Boomerang::setOutputDirectory(const char *path)
+Boomerang::setOutputDirectory(const std::string &path)
 {
 	outputPath = path;
 	// Create the output directory, if needed
@@ -984,7 +984,7 @@ Boomerang::objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *pr
 			for (const auto &method : c.methods) {
 				const ObjcMethod &m = method.second;
 				// TODO: parse :'s in names
-				Proc *p = prog->newProc(m.name.c_str(), m.addr);
+				Proc *p = prog->newProc(m.name, m.addr);
 				p->setCluster(cl);
 				// TODO: decode types in m.types
 				if (VERBOSE)
@@ -1023,7 +1023,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 
 	for (const auto &file : symbolFiles) {
 		std::cout << "reading symbol file " << file << "\n";
-		prog->readSymbolFile(file.c_str());
+		prog->readSymbolFile(file);
 	}
 
 	const std::map<std::string, ObjcModule> &objcmodules = fe->getBinaryFile()->getObjcModules();
@@ -1171,7 +1171,7 @@ Boomerang::persistToXML(Prog *prog)
  * \return The loaded Prog object.
  */
 Prog *
-Boomerang::loadFromXML(const char *fname)
+Boomerang::loadFromXML(const std::string &fname)
 {
 	LOG << "loading persisted state...\n";
 	XMLProgParser p;
@@ -1180,13 +1180,13 @@ Boomerang::loadFromXML(const char *fname)
 #endif
 
 void
-Boomerang::alert_decompile_debug_point(UserProc *p, const char *description)
+Boomerang::alert_decompile_debug_point(UserProc *p, const std::string &description)
 {
 	if (stopAtDebugPoints) {
 		std::cout << "decompiling " << p->getName() << ": " << description << "\n";
 		static char *stopAt = nullptr;
 		static std::set<Statement *> watches;
-		if (!stopAt || !strcmp(p->getName(), stopAt)) {
+		if (!stopAt || p->getName() == stopAt) {
 			// This is a mini command line debugger.  Feel free to expand it.
 			for (const auto &watch : watches) {
 				watch->print(std::cout);

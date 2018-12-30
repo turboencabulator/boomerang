@@ -258,9 +258,7 @@ UserProc::dfaTypeAnalysis()
 			ADDRESS K2 = (ADDRESS)((Const *)r)->getInt();
 			Exp *idx = ((Binary *)l)->getSubExp1();
 			// Replace with the array expression
-			const char *nam = prog->getGlobalName(K2);
-			if (!nam)
-				nam = prog->newGlobalName(K2);
+			auto nam = prog->newGlobalName(K2);
 			Exp *arr = new Binary(opArrayIndex,
 			                      Location::global(nam, this),
 			                      idx);
