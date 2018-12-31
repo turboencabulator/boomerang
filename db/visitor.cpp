@@ -118,8 +118,7 @@ bool
 StmtConscriptSetter::visit(CaseStatement *stmt)
 {
 	SetConscripts sc(curConscript, bClear);
-	SWITCH_INFO *si = stmt->getSwitchInfo();
-	if (si) {
+	if (auto si = stmt->getSwitchInfo()) {
 		si->pSwitchVar->accept(sc);
 		curConscript = sc.getLast();
 	}
@@ -384,8 +383,7 @@ UsedLocalFinder::visit(Terminal *e)
 {
 	if (e->getOper() == opDefineAll)
 		all = true;
-	const char *sym = proc->findFirstSymbol(e);
-	if (sym)
+	if (proc->findFirstSymbol(e))
 		used->insert(e);
 	return true;  // Always continue recursion
 }
@@ -482,8 +480,7 @@ UsedLocsVisitor::visit(ImplicitAssign *s, bool &recurse)
 bool
 UsedLocsVisitor::visit(CallStatement *s, bool &recurse)
 {
-	Exp *pDest = s->getDest();
-	if (pDest)
+	if (auto pDest = s->getDest())
 		pDest->accept(ev);
 	StatementList &arguments = s->getArguments();
 	for (const auto &arg : arguments) {
@@ -525,8 +522,7 @@ UsedLocsVisitor::visit(ReturnStatement *s, bool &recurse)
 bool
 UsedLocsVisitor::visit(BoolAssign *s, bool &recurse)
 {
-	Exp *pCond = s->getCondExpr();
-	if (pCond)
+	if (auto pCond = s->getCondExpr())
 		pCond->accept(ev);  // Condition is used
 	Exp *lhs = s->getLeft();
 	if (lhs && lhs->isMemOf()) {  // If dest is of form m[x]...
@@ -629,8 +625,7 @@ StmtSubscripter::visit(BoolAssign *s, bool &recurse)
 void
 StmtSubscripter::visit(CallStatement *s, bool &recurse)
 {
-	Exp *pDest = s->getDest();
-	if (pDest)
+	if (auto pDest = s->getDest())
 		s->setDest(pDest->accept(mod));
 	// Subscript the ordinary arguments
 	StatementList &arguments = s->getArguments();
@@ -718,8 +713,7 @@ Localiser::postVisit(Location *e)
 	Exp *ret = e;
 	if (!(unchanged & mask)) ret = e->simplify();
 	mask >>= 1;
-	Exp *r = call->findDefFor(ret);
-	if (r) {
+	if (auto r = call->findDefFor(ret)) {
 		ret = r->clone();
 		if (0 && EXPERIMENTAL) {  // FIXME: check if sometimes needed
 			// The trouble with the below is that you can propagate to say a call statement's argument expression and
@@ -742,8 +736,7 @@ Localiser::postVisit(Terminal *e)
 	Exp *ret = e;
 	if (!(unchanged & mask)) ret = e->simplify();
 	mask >>= 1;
-	Exp *r = call->findDefFor(ret);
-	if (r) {
+	if (auto r = call->findDefFor(ret)) {
 		ret = r->clone()->bypass();
 		unchanged &= ~mask;
 		mod = true;
@@ -1102,8 +1095,7 @@ StmtCastInserter::common(Assignment *s)
 Exp *
 ExpSsaXformer::postVisit(RefExp *e)
 {
-	const char *sym = proc->lookupSymFromRefAny(e);
-	if (sym)
+	if (auto sym = proc->lookupSymFromRefAny(e))
 		return Location::local(sym, proc);
 	// We should not get here: all locations should be replaced with Locals or Parameters
 	//LOG << "ERROR! Could not find local or parameter for " << e << " !!\n";
@@ -1117,8 +1109,7 @@ StmtSsaXformer::commonLhs(Assignment *as)
 	Exp *lhs = as->getLeft();
 	lhs = lhs->accept((ExpSsaXformer &)mod);  // In case the LHS has say m[r28{0}+8] -> m[esp+8]
 	auto re = new RefExp(lhs, as);
-	const char *sym = proc->lookupSymFromRefAny(re);
-	if (sym)
+	if (auto sym = proc->lookupSymFromRefAny(re))
 		as->setLeft(Location::local(sym, proc));
 }
 
@@ -1157,8 +1148,7 @@ StmtSsaXformer::visit(PhiAssign *s, bool &recurse)
 	for (auto &uu : *s) {
 		if (!uu.e) continue;
 		auto r = new RefExp(uu.e, uu.def);
-		const char *sym = proc->lookupSymFromRefAny(r);
-		if (sym)
+		if (auto sym = proc->lookupSymFromRefAny(r))
 			uu.e = Location::local(sym, proc);  // Some may be parameters, but hopefully it won't matter
 	}
 }
@@ -1166,8 +1156,7 @@ StmtSsaXformer::visit(PhiAssign *s, bool &recurse)
 void
 StmtSsaXformer::visit(CallStatement *s, bool &recurse)
 {
-	Exp *pDest = s->getDest();
-	if (pDest) {
+	if (auto pDest = s->getDest()) {
 		pDest = pDest->accept((ExpSsaXformer &)mod);
 		s->setDest(pDest);
 	}

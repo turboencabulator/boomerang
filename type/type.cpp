@@ -287,8 +287,7 @@ ArrayType::getSize() const
 unsigned
 NamedType::getSize() const
 {
-	Type *ty = resolvesTo();
-	if (ty)
+	if (auto ty = resolvesTo())
 		return ty->getSize();
 	if (VERBOSE)
 		LOG << "WARNING: Unknown size for named type " << name << "\n";
@@ -915,7 +914,7 @@ CompoundType::getCtype(bool final) const
 	std::string tmp = "struct { ";
 	for (unsigned i = 0; i < types.size(); ++i) {
 		tmp += types[i]->getCtype(final);
-		if (names[i] != "") {
+		if (!names[i].empty()) {
 			tmp += " ";
 			tmp += names[i];
 		}
@@ -931,7 +930,7 @@ UnionType::getCtype(bool final) const
 	std::string tmp = "union { ";
 	for (const auto &elem : li) {
 		tmp += elem.type->getCtype(final);
-		if (elem.name != "") {
+		if (!elem.name.empty()) {
 			tmp += " ";
 			tmp += elem.name;
 		}
@@ -1720,8 +1719,7 @@ void
 CompoundType::updateGenericMember(int off, Type *ty, bool &ch)
 {
 	assert(generic);
-	Type *existingType = getTypeAtOffset(off);
-	if (existingType) {
+	if (auto existingType = getTypeAtOffset(off)) {
 		existingType = existingType->meetWith(ty, ch);
 	} else {
 		std::ostringstream ost;

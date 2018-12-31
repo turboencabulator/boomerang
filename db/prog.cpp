@@ -157,7 +157,7 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 				for (int j = 0; sections[j]; ++j) {
 					std::string str = ".";
 					str += sections[j];
-					const SectionInfo *info = pBF->getSectionInfoByName(str);
+					auto info = pBF->getSectionInfoByName(str);
 					str = "start_";
 					str += sections[j];
 					code->AddGlobal(str, new IntegerType(32, -1), new Const(info ? info->uNativeAddr : (unsigned int)-1));
@@ -259,8 +259,7 @@ Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const
 			continue;
 
 		if (p->getCluster() == cluster) {
-			Statement *s = p->getStmtAtLex(begin, end);
-			if (s)
+			if (auto s = p->getStmtAtLex(begin, end))
 				return s;
 		}
 	}
@@ -306,8 +305,7 @@ Cluster::find(const std::string &nam)
 	if (name == nam)
 		return this;
 	for (const auto &child : children) {
-		Cluster *c = child->find(nam);
-		if (c)
+		if (auto c = child->find(nam))
 			return c;
 	}
 	return nullptr;
@@ -361,20 +359,20 @@ Prog::clusterUsed(Cluster *c) const
 Cluster *
 Prog::getDefaultCluster(const std::string &name) const
 {
-	const char *cfname = nullptr;
-	if (pBF) cfname = pBF->getFilenameSymbolFor(name);
-	if (cfname) {
-		std::string fname = cfname;
-		auto len = fname.length();
-		if (len >= 2 && fname.compare(len - 2, fname.npos, ".c") == 0) {
-			LOG << "got filename " << fname << " for " << name << "\n";
-			fname.erase(len - 2);
-			Cluster *c = findCluster(fname);
-			if (!c) {
-				c = new Cluster(fname);
-				m_rootCluster->addChild(c);
+	if (pBF) {
+		if (auto cfname = pBF->getFilenameSymbolFor(name)) {
+			auto fname = std::string(cfname);
+			auto len = fname.length();
+			if (len >= 2 && fname.compare(len - 2, fname.npos, ".c") == 0) {
+				LOG << "got filename " << fname << " for " << name << "\n";
+				fname.erase(len - 2);
+				auto c = findCluster(fname);
+				if (!c) {
+					c = new Cluster(fname);
+					m_rootCluster->addChild(c);
+				}
+				return c;
 			}
-			return c;
 		}
 	}
 	return m_rootCluster;
@@ -386,8 +384,7 @@ Prog::generateCode(std::ostream &os)
 	HLLCode *code = Boomerang::get()->getHLLCode();
 	for (const auto &global : globals) {
 		// Check for an initial value
-		Exp *e = global->getInitialValue(this);
-		if (e)
+		if (auto e = global->getInitialValue(this))
 			code->AddGlobal(global->getName(), global->getType(), e);
 	}
 	code->print(os);
@@ -446,7 +443,7 @@ Prog::setNewProc(ADDRESS uAddr)
 	if (other != NO_ADDRESS)
 		uAddr = other;
 	auto name = std::string();
-	if (const char *pName = pBF->getSymbolByAddress(uAddr)) {
+	if (auto pName = pBF->getSymbolByAddress(uAddr)) {
 		name = pName;
 	} else {
 		// No name. Give it a numbered name
@@ -747,8 +744,7 @@ Prog::guessGlobalType(const std::string &nam, ADDRESS u) const
 	int sz = pBF->getSizeByName(nam);
 	if (sz == 0) {
 		// Check if it might be a string
-		const char *str = getStringConstant(u);
-		if (str)
+		if (getStringConstant(u))
 			// return char* and hope it is dealt with properly
 			return new PointerType(new CharType());
 	}
@@ -799,7 +795,7 @@ Prog::setGlobalType(const std::string &nam, Type *ty)
 const char *
 Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */) const
 {
-	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
+	auto si = pBF->getSectionInfoByAddr(uaddr);
 	// Too many compilers put constants, including string constants, into read/write sections
 	//if (si && si->bReadOnly)
 	if (si && !si->isAddressBss(uaddr)) {
@@ -830,7 +826,7 @@ double
 Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits) const
 {
 	ok = true;
-	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
+	auto si = pBF->getSectionInfoByAddr(uaddr);
 	if (si && si->bReadOnly) {
 		if (bits == 64) {
 			return pBF->readNativeFloat8(uaddr);
@@ -916,9 +912,9 @@ Prog::getFirstProc(PROGMAP::const_iterator &it)
 	it = m_procLabels.begin();
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
 		++it;
-	if (it == m_procLabels.end())
-		return nullptr;
-	return it->second;
+	if (it != m_procLabels.end())
+		return it->second;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -934,9 +930,9 @@ Prog::getNextProc(PROGMAP::const_iterator &it)
 	++it;
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
 		++it;
-	if (it == m_procLabels.end())
-		return nullptr;
-	return it->second;
+	if (it != m_procLabels.end())
+		return it->second;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -952,9 +948,9 @@ Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 	it = m_procs.begin();
 	while (it != m_procs.end() && (*it)->isLib())
 		++it;
-	if (it == m_procs.end())
-		return nullptr;
-	return (UserProc *)*it;
+	if (it != m_procs.end())
+		return (UserProc *)*it;
+	return nullptr;
 }
 
 /*==============================================================================
@@ -971,9 +967,9 @@ Prog::getNextUserProc(std::list<Proc *>::iterator &it)
 	++it;
 	while (it != m_procs.end() && (*it)->isLib())
 		++it;
-	if (it == m_procs.end())
-		return nullptr;
-	return (UserProc *)*it;
+	if (it != m_procs.end())
+		return (UserProc *)*it;
+	return nullptr;
 }
 
 void
@@ -1417,7 +1413,7 @@ Global::~Global()
 Exp *
 Global::getInitialValue(Prog *prog) const
 {
-	const SectionInfo *si = prog->getSectionInfoByAddr(uaddr);
+	auto si = prog->getSectionInfoByAddr(uaddr);
 	if (!si || si->isAddressBss(uaddr))
 		// This global is in the BSS, so it can't be initialised
 		return nullptr;
@@ -1436,20 +1432,18 @@ Exp *
 Prog::readNativeAs(ADDRESS uaddr, Type *type) const
 {
 	Exp *e = nullptr;
-	const SectionInfo *si = pBF->getSectionInfoByAddr(uaddr);
+	auto si = pBF->getSectionInfoByAddr(uaddr);
 	if (!si)
 		return nullptr;
 	if (type->resolvesToPointer()) {
 		ADDRESS init = pBF->readNative4(uaddr);
 		if (init == 0)
 			return new Const(0);
-		const char *nam = getGlobalName(init);
-		if (nam)
+		if (auto nam = getGlobalName(init))
 			// TODO: typecast?
 			return Location::global(nam, nullptr);
 		if (type->asPointer()->getPointsTo()->resolvesToChar()) {
-			const char *str = getStringConstant(init);
-			if (str)
+			if (auto str = getStringConstant(init))
 				return new Const(str);
 		}
 	}
@@ -1476,17 +1470,15 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type) const
 		return e;
 	}
 	if (type->resolvesToArray() && type->asArray()->getBaseType()->resolvesToChar()) {
-		const char *str = getStringConstant(uaddr, true);
-		if (str) {
+		if (auto str = getStringConstant(uaddr, true)) {
 			// Make a global string
 			return new Const(str);
 		}
 	}
 	if (type->resolvesToArray()) {
 		int nelems = -1;
-		const char *nam = getGlobalName(uaddr);
 		int base_sz = type->asArray()->getBaseType()->getSize() / 8;
-		if (nam)
+		if (auto nam = getGlobalName(uaddr))
 			nelems = pBF->getSizeByName(nam) / base_sz;
 		Exp *n = e = new Terminal(opNil);
 		for (int i = 0; nelems == -1 || i < nelems; ++i) {
@@ -1814,10 +1806,9 @@ Prog::addReloc(Exp *e, ADDRESS lc)
 				globals.insert(new Global(new SizeType(sz * 8), a, n));
 			e = new Unary(opAddrOf, Location::global(n, nullptr));
 		} else {
-			const char *str = getStringConstant(a);
-			if (str)
+			if (auto str = getStringConstant(a)) {
 				e = new Const(str);
-			else {
+			} else {
 				// check for accesses into the middle of symbols
 				for (const auto &symbol : symbols) {
 					if (a > symbol.first

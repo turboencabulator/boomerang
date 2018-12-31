@@ -223,8 +223,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		if (a_rhs->isMemOf() && a_rhs->getSubExp1()->isIntConst()) {
 			ADDRESS c = ((Const *)a_rhs->getSubExp1())->getInt();
 			if (proc->getProg()->isDynamicLinkedProcPointer(c)) {
-				const char *nam = proc->getProg()->getDynamicProcName(c);
-				if (nam) {
+				if (auto nam = proc->getProg()->getDynamicProcName(c)) {
 					a_rhs = new Const(nam);
 					if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 						LOG << "a_rhs is a dynamic proc pointer to " << nam << "\n";
@@ -809,8 +808,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 						Exp *rhsBase = ((RefExp *)rc)->getSubExp1();
 						// We don't know the statement number for the one definition in usedInDomPhi that might exist,
 						// so we use findNS()
-						Exp *OW = usedByDomPhi->findNS(rhsBase);
-						if (OW) {
+						if (auto OW = usedByDomPhi->findNS(rhsBase)) {
 							Statement *OWdef = ((RefExp *)OW)->getDef();
 							if (!OWdef->isAssign()) continue;
 							Exp *lhsOWdef = ((Assign *)OWdef)->getLeft();
@@ -831,7 +829,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 									doNotPropagate = true;
 								break;
 							}
-							if (OW) std::cerr << "Ow is " << *OW << "\n";
+							std::cerr << "Ow is " << *OW << "\n";
 						}
 					}
 					if (doNotPropagate) {
@@ -2605,16 +2603,14 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 			if (t->isCString()) {
 				ADDRESS u = ((Const *)e)->getAddr();
 				if (u != 0) {   // can't do anything with NULL
-					const char *str = prog->getStringConstant(u, true);
-					if (str) {
+					if (auto str = prog->getStringConstant(u, true)) {
 						e = new Const(str);
 						// Check if we may have guessed this global incorrectly (usually as an array of char)
-						const char *nam = prog->getGlobalName(u);
-						if (nam) prog->setGlobalType(nam, new PointerType(new CharType()));
+						if (auto nam = prog->getGlobalName(u))
+							prog->setGlobalType(nam, new PointerType(new CharType()));
 					} else {
 						proc->getProg()->globalUsed(u);
-						const char *nam = proc->getProg()->getGlobalName(u);
-						if (nam)
+						if (auto nam = proc->getProg()->getGlobalName(u))
 							e = Location::global(nam, proc);
 					}
 				}
@@ -2628,8 +2624,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 				if (a != 0) {
 					if (!Boomerang::get()->noDecodeChildren)
 						prog->decodeEntryPoint(a);
-					Proc *p = prog->findProc(a);
-					if (p) {
+					if (auto p = prog->findProc(a)) {
 						Signature *sig = points_to->asFunc()->getSignature()->clone();
 						if (sig->getName().empty()
 						 || sig->getName() == "<ANON>"
@@ -2673,8 +2668,7 @@ Type *
 CallStatement::getTypeFor(Exp *e) const
 {
 	// The defines "cache" what the destination proc is defining
-	Assignment *as = defines.findOnLeft(e);
-	if (as)
+	if (auto as = defines.findOnLeft(e))
 		return as->getType();
 	if (e->isPC())
 		// Special case: just return void*
@@ -2685,15 +2679,13 @@ CallStatement::getTypeFor(Exp *e) const
 void
 CallStatement::setTypeFor(Exp *e, Type *ty)
 {
-	Assignment *as = defines.findOnLeft(e);
-	if (as)
+	if (auto as = defines.findOnLeft(e))
 		return as->setType(ty);
 	// See if it is in our reaching definitions
 	Exp *ref = defCol.findDefFor(e);
 	if (!ref || !ref->isSubscript()) return;
-	Statement *def = ((RefExp *)ref)->getDef();
-	if (!def) return;
-	def->setTypeFor(e, ty);
+	if (auto def = ((RefExp *)ref)->getDef())
+		def->setTypeFor(e, ty);
 }
 
 // This function has two jobs. One is to truncate the list of arguments based on the format string.
@@ -2729,27 +2721,27 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	}
 	if (formatExp->isSubscript()) {
 		// Maybe it's defined to be a Const string
-		Statement *def = ((RefExp *)formatExp)->getDef();
-		if (!def) return false;  // Not all nullptr refs get converted to implicits
-		if (def->isAssign()) {
-			// This would be unusual; propagation would normally take care of this
-			Exp *rhs = ((Assign *)def)->getRight();
-			if (!rhs || !rhs->isStrConst()) return false;
-			formatStr = ((Const *)rhs)->getStr();
-		} else if (def->isPhi()) {
-			// More likely. Example: switch_gcc. Only need ONE candidate format string
-			PhiAssign *pa = (PhiAssign *)def;
-			int n = pa->getNumDefs();
-			for (int i = 0; i < n; ++i) {
-				def = pa->getStmtAt(i);
-				if (!def) continue;
-				if (!def->isAssign()) continue;
+		if (auto def = ((RefExp *)formatExp)->getDef()) {  // Not all nullptr refs get converted to implicits
+			if (def->isAssign()) {
+				// This would be unusual; propagation would normally take care of this
 				Exp *rhs = ((Assign *)def)->getRight();
-				if (!rhs || !rhs->isStrConst()) continue;
+				if (!rhs || !rhs->isStrConst()) return false;
 				formatStr = ((Const *)rhs)->getStr();
-				break;
-			}
-			if (!formatStr) return false;
+			} else if (def->isPhi()) {
+				// More likely. Example: switch_gcc. Only need ONE candidate format string
+				PhiAssign *pa = (PhiAssign *)def;
+				int n = pa->getNumDefs();
+				for (int i = 0; i < n; ++i) {
+					def = pa->getStmtAt(i);
+					if (!def) continue;
+					if (!def->isAssign()) continue;
+					Exp *rhs = ((Assign *)def)->getRight();
+					if (!rhs || !rhs->isStrConst()) continue;
+					formatStr = ((Const *)rhs)->getStr();
+					break;
+				}
+				if (!formatStr) return false;
+			} else return false;
 		} else return false;
 	} else if (formatExp->isStrConst()) {
 		formatStr = ((Const *)formatExp)->getStr();
@@ -4591,8 +4583,7 @@ ReturnStatement::print(std::ostream &os, bool html) const
 	for (const auto &mod : modifieds) {
 		std::ostringstream ost;
 		Assign *as = (Assign *)mod;
-		Type *ty = as->getType();
-		if (ty)
+		if (auto ty = as->getType())
 			ost << "*" << *ty << "* ";
 		ost << *as->getLeft();
 		unsigned len = ost.str().length();
@@ -4686,16 +4677,11 @@ ReturnStatement::updateModifieds()
 			continue;  // Filtered out: delete it
 
 		// Insert as, in order, into the existing set of modifications
-		bool inserted = false;
-		for (auto nn = modifieds.begin(); nn != modifieds.end(); ++nn) {
-			if (sig->returnCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
-				nn = modifieds.insert(nn, as);  // then insert before this position
-				inserted = true;
-				break;
-			}
-		}
-		if (!inserted)
-			modifieds.insert(modifieds.end(), as);  // In case larger than all existing elements
+		auto nn = modifieds.begin();
+		for (; nn != modifieds.end(); ++nn)
+			if (sig->returnCompare(*as, *(Assign *)*nn))  // If the new assignment is less than the current one
+				break;  // then insert before this position
+		modifieds.insert(nn, as);
 	}
 }
 
@@ -4755,16 +4741,11 @@ ReturnStatement::updateReturns()
 #endif
 
 		// Insert as, in order, into the existing set of returns
-		bool inserted = false;
-		for (auto nn = returns.begin(); nn != returns.end(); ++nn) {
-			if (sig->returnCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
-				nn = returns.insert(nn, as);  // then insert before this position
-				inserted = true;
-				break;
-			}
-		}
-		if (!inserted)
-			returns.insert(returns.end(), as);  // In case larger than all existing elements
+		auto nn = returns.begin();
+		for (; nn != returns.end(); ++nn)
+			if (sig->returnCompare(*as, *(Assign *)*nn))  // If the new assignment is less than the current one
+				break;  // then insert before this position
+		returns.insert(nn, as);
 	}
 }
 
@@ -4835,16 +4816,11 @@ CallStatement::updateDefines()
 			continue;  // Filtered out: delete it
 
 		// Insert as, in order, into the existing set of definitions
-		bool inserted = false;
-		for (auto nn = defines.begin(); nn != defines.end(); ++nn) {
-			if (sig->returnCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
-				nn = defines.insert(nn, as);  // then insert before this position
-				inserted = true;
-				break;
-			}
-		}
-		if (!inserted)
-			defines.insert(defines.end(), as);  // In case larger than all existing elements
+		auto nn = defines.begin();
+		for (; nn != defines.end(); ++nn)
+			if (sig->returnCompare(*as, *(Assign *)*nn))  // If the new assignment is less than the current one
+				break;  // then insert before this position
+		defines.insert(nn, as);
 	}
 }
 
@@ -5065,16 +5041,11 @@ CallStatement::updateArguments()
 			continue;  // Filtered out: delete it
 
 		// Insert as, in order, into the existing set of definitions
-		bool inserted = false;
-		for (auto nn = arguments.begin(); nn != arguments.end(); ++nn) {
-			if (sig->argumentCompare(*as, *(Assign *)*nn)) {  // If the new assignment is less than the current one
-				nn = arguments.insert(nn, as);  // then insert before this position
-				inserted = true;
-				break;
-			}
-		}
-		if (!inserted)
-			arguments.insert(arguments.end(), as);  // In case larger than all existing elements
+		auto nn = arguments.begin();
+		for (; nn != arguments.end(); ++nn)
+			if (sig->argumentCompare(*as, *(Assign *)*nn))  // If the new assignment is less than the current one
+				break;  // then insert before this position
+		arguments.insert(nn, as);
 	}
 }
 
@@ -5124,16 +5095,11 @@ CallStatement::calcResults()
 			if (proc->filterReturns(loc)) continue;        // Ignore filtered locations
 			if (loc->isRegN(sp)) continue;                 // Ignore the stack pointer
 			auto as = new ImplicitAssign(loc);  // Create an implicit assignment
-			bool inserted = false;
-			for (auto nn = ret->begin(); nn != ret->end(); ++nn) {  // Iterates through new results // If the new assignment is less than the current one,
-				if (sig->returnCompare(*as, *(Assignment *)*nn)) {
-					nn = ret->insert(nn, as);  // then insert before this position
-					inserted = true;
-					break;
-				}
-			}
-			if (!inserted)
-				ret->insert(ret->end(), as);  // In case larger than all existing elements
+			auto nn = ret->begin();
+			for (; nn != ret->end(); ++nn)  // Iterates through new results
+				if (sig->returnCompare(*as, *(Assignment *)*nn))  // If the new assignment is less than the current one,
+					break;  // then insert before this position
+			ret->insert(nn, as);
 		}
 	}
 	return ret;

@@ -2587,8 +2587,7 @@ UserProc::searchRegularLocals(OPER minusOrPlus, bool lastPass, int sp, Statement
 		stmt->searchAll(l, results);
 		for (const auto &res : results) {
 			Type *ty = stmt->getTypeFor(res);
-			Exp *e = getSymbolExp(res, ty, lastPass);
-			if (e) {
+			if (auto e = getSymbolExp(res, ty, lastPass)) {
 				Exp *search = res->clone();
 				if (VERBOSE)
 					LOG << "mapping " << *search << " to " << *e << " in " << *stmt << "\n";
@@ -2949,18 +2948,17 @@ UserProc::removeUnusedLocals()
 		stmt->getDefinitions(ls);
 		for (const auto &loc : ls) {
 			Type *ty = stmt->getTypeFor(loc);
-			const char *name = findLocal(loc, ty);
-			if (!name) continue;
-			std::string str(name);
-			if (removes.count(str)) {
-				// Remove it. If an assign, delete it; otherwise (call), remove the define
-				if (stmt->isAssignment()) {
-					removeStatement(stmt);
-					break;  // Break to next statement
-				} else if (stmt->isCall())
-					// Remove just this define. May end up removing several defines from this call.
-					((CallStatement *)stmt)->removeDefine(loc);
-				// else if a ReturnStatement, don't attempt to remove it. The definition is used *outside* this proc.
+			if (auto name = findLocal(loc, ty)) {
+				if (removes.count(name)) {
+					// Remove it. If an assign, delete it; otherwise (call), remove the define
+					if (stmt->isAssignment()) {
+						removeStatement(stmt);
+						break;  // Break to next statement
+					} else if (stmt->isCall())
+						// Remove just this define. May end up removing several defines from this call.
+						((CallStatement *)stmt)->removeDefine(loc);
+					// else if a ReturnStatement, don't attempt to remove it. The definition is used *outside* this proc.
+				}
 			}
 		}
 	}
@@ -3276,16 +3274,16 @@ UserProc::mapParameters()
 	// Replace the parameters with their mappings
 	for (const auto &param : parameters) {
 		Exp *lhs = ((Assignment *)param)->getLeft();
-		const char *mappedName = lookupParam(lhs);
-		if (!mappedName) {
+		if (auto mappedName = lookupParam(lhs)) {
+			((Assignment *)param)->setLeft(Location::param(mappedName, this));
+		} else {
 			LOG << "WARNING! No symbol mapping for parameter " << *lhs << "\n";
 			bool allZero;
 			Exp *clean = lhs->clone()->removeSubscripts(allZero);
 			if (allZero)
 				((Assignment *)param)->setLeft(clean);
 			// Else leave them alone
-		} else
-			((Assignment *)param)->setLeft(Location::param(mappedName, this));
+		}
 	}
 }
 
@@ -3363,8 +3361,7 @@ UserProc::prove(Exp *query, bool conditional /* = false */)
 		bool gotDef = false;
 		// replace expression from return set with expression in the collector of the return
 		if (theReturnStatement) {
-			Exp *def = theReturnStatement->findDefFor(query->getSubExp1());
-			if (def) {
+			if (auto def = theReturnStatement->findDefFor(query->getSubExp1())) {
 				query->setSubExp1(def);
 				gotDef = true;
 			}
@@ -3521,8 +3518,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 
 					} // End call involved in this recursion group
 					// Seems reasonable that recursive procs need protection from call loops too
-					Exp *right = call->getProven(r->getSubExp1());  // getProven returns the right side of what is
-					if (right) {                                    //  proven about r (the LHS of query)
+					if (auto right = call->getProven(r->getSubExp1())) {  // getProven returns the right side of what is proven about r (the LHS of query)
 						right = right->clone();
 						auto it = called.find(call);
 						if (it != called.end() && *it->second == *query) {
@@ -3760,8 +3756,7 @@ UserProc::conTypeAnalysis()
 					con->setFlt(*(float *)&val);
 				} else if (ty->isCString()) {
 					// Convert to a string
-					const char *str = prog->getStringConstant(val, true);
-					if (str) {
+					if (auto str = prog->getStringConstant(val, true)) {
 						// Make a string
 						con->setStr(str);
 					}
@@ -3903,8 +3898,7 @@ UserProc::lookupSymFromRefAny(RefExp *r) const
 	Statement *def = r->getDef();
 	Exp *base = r->getSubExp1();
 	Type *ty = def->getTypeFor(base);
-	const char *ret = lookupSym(r, ty);
-	if (ret)
+	if (auto ret = lookupSym(r, ty))
 		return ret;  // Found a specific symbol
 	return lookupSym(base, ty);  // Check for a general symbol
 }
@@ -4089,17 +4083,11 @@ UserProc::insertParameter(Exp *e, Type *ty)
 	// Wrap it in an implicit assignment; DFA based TA should update the type later
 	auto as = new ImplicitAssign(ty->clone(), e->clone());
 	// Insert as, in order, into the existing set of parameters
-	bool inserted = false;
-	for (auto nn = parameters.begin(); nn != parameters.end(); ++nn) {
-		// If the new assignment is less than the current one ...
-		if (signature->argumentCompare(*as, *(Assignment *)*nn)) {
-			parameters.insert(nn, as);  // ... then insert before this position
-			inserted = true;
-			break;
-		}
-	}
-	if (!inserted)
-		parameters.append(as);  // In case larger than all existing elements
+	auto nn = parameters.begin();
+	for (; nn != parameters.end(); ++nn)
+		if (signature->argumentCompare(*as, *(Assignment *)*nn))  // If the new assignment is less than the current one ...
+			break;  // ... then insert before this position
+	parameters.insert(nn, as);
 
 	// update the signature
 	signature->setNumParams(0);
@@ -4184,13 +4172,11 @@ UserProc::findLocal(Exp *e, Type *ty) const
 	if (e->isLocal())
 		return ((Const *)((Unary *)e)->getSubExp1())->getStr();
 	// Look it up in the symbol map
-	const char *name = lookupSym(e, ty);
-	if (!name)
-		return nullptr;
-	// Now make sure it is a local; some symbols (e.g. parameters) are in the symbol map but not locals
-	std::string str(name);
-	if (locals.count(str))
-		return name;
+	if (auto name = lookupSym(e, ty)) {
+		// Now make sure it is a local; some symbols (e.g. parameters) are in the symbol map but not locals
+		if (locals.count(name))
+			return name;
+	}
 	return nullptr;
 }
 
@@ -4200,13 +4186,11 @@ UserProc::findLocalFromRef(RefExp *r) const
 	Statement *def = r->getDef();
 	Exp *base = r->getSubExp1();
 	Type *ty = def->getTypeFor(base);
-	const char *name = lookupSym(r, ty);
-	if (!name)
-		return nullptr;
-	// Now make sure it is a local; some symbols (e.g. parameters) are in the symbol map but not locals
-	std::string str(name);
-	if (locals.count(str))
-		return name;
+	if (auto name = lookupSym(r, ty)) {
+		// Now make sure it is a local; some symbols (e.g. parameters) are in the symbol map but not locals
+		if (locals.count(name))
+			return name;
+	}
 	return nullptr;
 }
 
@@ -4563,8 +4547,7 @@ UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 				visited->insert(this);
 				if (visited->count(dest)) {
 					// Recurse to the next proc
-					bool res = dest->doesParamChainToCall(param, p, visited);
-					if (res)
+					if (dest->doesParamChainToCall(param, p, visited))
 						return true;
 					// Else consider more calls this proc
 				}
@@ -5362,8 +5345,7 @@ UserProc::nameParameterPhis()
 		for (const auto &pp : *pi) {
 			if (pp.def->isImplicit()) {
 				auto phiArg = new RefExp(pp.e, pp.def);
-				const char *name = lookupSym(phiArg, ty);
-				if (name) {
+				if (auto name = lookupSym(phiArg, ty)) {
 					if (firstName && strcmp(firstName, name) != 0) {
 						multiple = true;
 						break;
@@ -5387,8 +5369,7 @@ void
 UserProc::checkLocalFor(RefExp *r)
 {
 	if (lookupSymFromRefAny(r)) return;  // Already have a symbol for r
-	Statement *def = r->getDef();
-	if (def) {
+	if (auto def = r->getDef()) {
 		Exp *base = r->getSubExp1();
 		Type *ty = def->getTypeFor(base);
 		// No, get its name from the front end

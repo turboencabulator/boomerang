@@ -356,7 +356,7 @@ BasicBlock::getLowAddr() const
 {
 	if (!m_pRtls || m_pRtls->empty()) return 0;
 	ADDRESS a = m_pRtls->front()->getAddress();
-	if ((a == 0) && (m_pRtls->size() > 1)) {
+	if (a == 0 && m_pRtls->size() > 1) {
 		auto it = m_pRtls->begin();
 		ADDRESS add2 = (*++it)->getAddress();
 		// This is a bit of a hack for 286 programs, whose main actually starts at offset 0. A better solution would be
@@ -827,8 +827,7 @@ BasicBlock::getDest() const throw (LastStatementNotAGotoError)
 	Statement *lastStmt = lastRtl->getHlStmt();
 	if (auto cs = dynamic_cast<CaseStatement *>(lastStmt)) {
 		// Get the expression from the switch info
-		SWITCH_INFO *si = cs->getSwitchInfo();
-		if (si)
+		if (auto si = cs->getSwitchInfo())
 			return si->pSwitchVar;
 	} else if (auto gs = dynamic_cast<GotoStatement *>(lastStmt)) {
 		return gs->getDest();
@@ -2229,8 +2228,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 					std::list<int> dests;
 					findConstantValues(((RefExp *)e)->getDef(), dests);
 					// The switch info wants an array of native addresses
-					int n = dests.size();
-					if (n) {
+					if (int n = dests.size()) {
 						auto destArray = new int[n];
 						auto ii = dests.begin();
 						for (int i = 0; i < n; ++i)
@@ -2467,7 +2465,7 @@ BasicBlock::processSwitch(UserProc *proc)
 		} else {
 			uSwitch = prog->readNative4(si->uTable + i*4);
 		}
-		if ((si->chForm == 'O') || (si->chForm == 'R') || (si->chForm == 'r'))
+		if (si->chForm == 'O' || si->chForm == 'R' || si->chForm == 'r')
 			// Offset: add table address to make a real pointer to code.  For type R, the table is relative to the
 			// branch, so take iOffset. For others, iOffset is 0, so no harm
 			uSwitch += si->uTable - si->iOffset;

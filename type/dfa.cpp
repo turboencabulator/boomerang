@@ -165,8 +165,7 @@ UserProc::dfaTypeAnalysis()
 				if (baseType->resolvesToChar()) {
 					// Convert to a string  MVE: check for read-only?
 					// Also, distinguish between pointer to one char, and ptr to many?
-					const char *str = prog->getStringConstant(val, true);
-					if (str) {
+					if (auto str = prog->getStringConstant(val, true)) {
 						// Make a string
 						con->setStr(str);
 					}
@@ -176,21 +175,22 @@ UserProc::dfaTypeAnalysis()
 					ADDRESS addr = (ADDRESS) con->getInt();
 					prog->globalUsed(addr, baseType);
 					if (auto gloName = prog->getGlobalName(addr)) {
-						ADDRESS r = addr - prog->getGlobalAddr(gloName);
+						auto gname = std::string(gloName);
+						ADDRESS r = addr - prog->getGlobalAddr(gname);
 						Exp *ne;
 						if (r) {
-							Location *g = Location::global(strdup(gloName), this);
+							Location *g = Location::global(gname, this);
 							ne = Location::memOf(new Binary(opPlus,
 							                                new Unary(opAddrOf, g),
 							                                new Const(r)), this);
 						} else {
-							Type *ty = prog->getGlobalType(gloName);
+							Type *ty = prog->getGlobalType(gname);
 							if (stmt->isAssign() && ((Assign *)stmt)->getType()) {
 								int bits = ((Assign *)stmt)->getType()->getSize();
 								if (!ty || ty->getSize() == 0)
-									prog->setGlobalType(gloName, new IntegerType(bits));
+									prog->setGlobalType(gname, new IntegerType(bits));
 							}
-							Location *g = Location::global(strdup(gloName), this);
+							Location *g = Location::global(gname, this);
 							if (ty && ty->resolvesToArray())
 								ne = new Binary(opArrayIndex, g, new Const(0));
 							else
@@ -542,8 +542,7 @@ ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	Type *rt = resolvesTo();
-	if (rt) {
+	if (auto rt = resolvesTo()) {
 		Type *ret = rt->meetWith(other, ch, bHighestPtr);
 		if (ret == rt)
 			return this;  // Retain the named type, much better than some compound type
@@ -1422,8 +1421,7 @@ Signature::dfaTypeAnalysis(Cfg *cfg)
 	bool ch = false;
 	for (const auto &param : params) {
 		// Parameters should be defined in an implicit assignment
-		Statement *def = cfg->findImplicitParamAssign(param);
-		if (def) {  // But sometimes they are not used, and hence have no implicit definition
+		if (auto def = cfg->findImplicitParamAssign(param)) {  // But sometimes they are not used, and hence have no implicit definition
 			bool thisCh = false;
 			def->meetWithFor(param->getType(), param->getExp(), thisCh);
 			if (thisCh) {
@@ -1544,9 +1542,8 @@ NamedType::isCompatible(Type *other, bool all)
 {
 	if (other->isNamed() && name == ((NamedType *)other)->getName())
 		return true;
-	Type *resTo = resolvesTo();
-	if (resTo)
-		return resolvesTo()->isCompatibleWith(other);
+	if (auto rt = resolvesTo())
+		return rt->isCompatibleWith(other);
 	if (other->resolvesToVoid()) return true;
 	return (*this == *other);
 }
