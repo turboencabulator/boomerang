@@ -88,8 +88,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 #if SYMS_IN_BACK_END  // Should no longer be any unmapped symbols by the back end
 	// Check if it's mapped to a symbol
 	if (m_proc && !exp->isTypedExp()) {  // Beware: lookupSym will match (cast)r24 to local0, stripping the cast!
-		const char *sym = m_proc->lookupSym(exp);
-		if (sym) {
+		if (auto sym = m_proc->lookupSym(exp)) {
 			str << sym;
 			return;
 		}
@@ -398,9 +397,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				break;
 			}
 			assert(u->getSubExp1()->isIntConst());
-			const char *n = m_proc->getProg()->getRegName(
-			                    ((Const *)u->getSubExp1())->getInt());
-			if (n) {
+			if (auto n = m_proc->getProg()->getRegName(((Const *)u->getSubExp1())->getInt())) {
 				if (n[0] == '%')
 					str << n + 1;
 				else
@@ -686,8 +683,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		{
 #if SYMS_IN_BACK_END
 			Exp *b = u->getSubExp1();            // Base expression
-			const char *sym = m_proc->lookupSym(exp);  // Check for (cast)sym
-			if (sym) {
+			if (auto sym = m_proc->lookupSym(exp)) {  // Check for (cast)sym
 				str << "(";
 				appendType(str, ((TypedExp *)u)->getType());
 				str << ")" << sym;
@@ -709,17 +705,17 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				Type *tt = ((TypedExp *)u)->getType();
 				if (pty
 				 && (*pty->getPointsTo() == *tt
-				  || (tt->isSize() && pty->getPointsTo()->getSize() == tt->getSize())))
+				  || (tt->isSize() && pty->getPointsTo()->getSize() == tt->getSize()))) {
 					str << "*";
-				else {
+				} else {
 					if (Boomerang::get()->noDecompile) {
 						if (tt && tt->isFloat()) {
 							if (tt->asFloat()->getSize() == 32)
-								str << "FLOAT_MEMOF";
+								str << "FLOAT_";
 							else
-								str << "DOUBLE_MEMOF";
-						} else
-							str << "MEMOF";
+								str << "DOUBLE_";
+						}
+						str << "MEMOF";
 					} else {
 						str << "*(";
 						appendType(str, tt);
@@ -735,8 +731,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				Type *tt = ((TypedExp *)u)->getType();
 				if (dynamic_cast<PointerType *>(tt)) {
 #if SYMS_IN_BACK_END
-					const char *sym = m_proc->lookupSym(Location::memOf(b));
-					if (sym) {
+					if (auto sym = m_proc->lookupSym(Location::memOf(b))) {
 						openParen(str, curPrec, PREC_UNARY);
 						str << "&" << sym;
 						closeParen(str, curPrec, PREC_UNARY);
@@ -878,13 +873,15 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 #endif
 			if (ty
 			 && ty->resolvesToPointer()
-			 && ty->asPointer()->getPointsTo()->resolvesToArray())
+			 && ty->asPointer()->getPointsTo()->resolvesToArray()) {
 				// a pointer to an array is automatically dereferenced in C
 				appendExp(str, b->getSubExp1()->getSubExp1(), PREC_PRIM);
-			else
+			} else {
 				appendExp(str, b->getSubExp1(), PREC_PRIM);
-		} else
+			}
+		} else {
 			appendExp(str, b->getSubExp1(), PREC_PRIM);
+		}
 		closeParen(str, curPrec, PREC_PRIM);
 		str << "[";
 		appendExp(str, b->getSubExp2(), PREC_PRIM);
@@ -1301,18 +1298,18 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 		return;
 	}
 
-	if (isBareMemof(lhs, proc) && asgnType && !asgnType->isVoid())
+	if (isBareMemof(lhs, proc) && asgnType && !asgnType->isVoid()) {
 		appendExp(s,
 		          new TypedExp(
 		              asgnType,
 		              lhs), PREC_ASSIGN);
-	else if (lhs->isGlobal() && asgn->getType()->isArray())
+	} else if (lhs->isGlobal() && asgn->getType()->isArray()) {
 		appendExp(s, new Binary(opArrayIndex,
 		                        lhs,
 		                        new Const(0)), PREC_ASSIGN);
-	else if (lhs->getOper() == opAt
-	      && ((Ternary *)lhs)->getSubExp2()->isIntConst()
-	      && ((Ternary *)lhs)->getSubExp3()->isIntConst()) {
+	} else if (lhs->getOper() == opAt
+	        && ((Ternary *)lhs)->getSubExp2()->isIntConst()
+	        && ((Ternary *)lhs)->getSubExp3()->isIntConst()) {
 		// exp1@[lo:hi] := rhs -> exp1 = (exp1 & mask) | (rhs << lo)  where mask = ~(((1 << hi-lo+1)-1) << lo)
 		Exp *exp1 = ((Ternary *)lhs)->getSubExp1();
 		int lo = ((Const *)((Ternary *)lhs)->getSubExp2())->getInt();
@@ -1332,8 +1329,9 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 		s << ";";
 		appendLine(s);
 		return;
-	} else
+	} else {
 		appendExp(s, lhs, PREC_ASSIGN);  // Ordinary LHS
+	}
 	if (rhs->getOper() == opPlus
 	 && *rhs->getSubExp1() == *lhs) {
 		// C has special syntax for this, eg += and ++
@@ -1341,9 +1339,9 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 		if (rhs->getSubExp2()->isIntConst()
 		 && (((Const *)rhs->getSubExp2())->getInt() == 1
 		  || (asgn->getType()->isPointer()
-		   && asgn->getType()->asPointer()->getPointsTo()->getSize() == (unsigned)((Const *)rhs->getSubExp2())->getInt() * 8)))
+		   && asgn->getType()->asPointer()->getPointsTo()->getSize() == (unsigned)((Const *)rhs->getSubExp2())->getInt() * 8))) {
 			s << "++";
-		else {
+		} else {
 			s << " += ";
 			appendExp(s, rhs->getSubExp2(), PREC_ASSIGN);
 		}
@@ -1390,8 +1388,7 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const std::string &name, co
 		Exp *arg = ((Assign *)stmt)->getRight();
 		bool ok = true;
 		if (t && t->isPointer() && ((PointerType *)t)->getPointsTo()->isFunc() && arg->isIntConst()) {
-			Proc *p = proc->getProg()->findProc(((Const *)arg)->getInt());
-			if (p) {
+			if (auto p = proc->getProg()->findProc(((Const *)arg)->getInt())) {
 				s << p->getName();
 				ok = false;
 			}
@@ -1529,9 +1526,9 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 	ReturnStatement *returns = proc->getTheReturnStatement();
 	Type *retType = nullptr;
 	if (proc->getSignature()->isForced()) {
-		if (proc->getSignature()->getNumReturns() == 0)
+		if (proc->getSignature()->getNumReturns() == 0) {
 			s << "void ";
-		else {
+		} else {
 			unsigned int n = 0;
 			Exp *e = proc->getSignature()->getReturnExp(0);
 			if (e->isRegN(Signature::getStackRegister(proc->getProg())))
@@ -1578,9 +1575,9 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 			ty = new IntegerType();
 		}
 		const char *name;
-		if (left->isParam())
+		if (left->isParam()) {
 			name = ((Const *)((Location *)left)->getSubExp1())->getStr();
-		else {
+		} else {
 			LOG << "ERROR: parameter " << *left << " is not opParam!\n";
 			name = "??";
 		}
@@ -1621,8 +1618,7 @@ CHLLCode::AddLocal(const std::string &name, Type *type, bool last)
 	std::ostringstream s;
 	indent(s, 1);
 	appendTypeIdent(s, type, name.c_str());
-	Exp *e = m_proc->expFromSymbol(name);
-	if (e) {
+	if (auto e = m_proc->expFromSymbol(name)) {
 		// ? Should never see subscripts in the back end!
 		if (e->isSubscript()
 		 && ((RefExp *)e)->isImplicitDef()
@@ -1636,8 +1632,9 @@ CHLLCode::AddLocal(const std::string &name, Type *type, bool last)
 			e->print(s);
 			s << " */";
 		}
-	} else
+	} else {
 		s << ";";
+	}
 	appendLine(s);
 	locals[name] = type->clone();
 	if (last)
