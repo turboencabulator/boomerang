@@ -2206,10 +2206,14 @@ XMLProgParser::persistToXML(std::ostream &out, Cluster *c)
 void
 XMLProgParser::persistToXML(std::ostream &out, Proc *proc)
 {
-	if (proc->isLib())
-		persistToXML(out, (LibProc *)proc);
-	else
-		persistToXML(out, (UserProc *)proc);
+	if (auto lp = dynamic_cast<LibProc *>(proc)) {
+		persistToXML(out, lp);
+		return;
+	}
+	if (auto up = dynamic_cast<UserProc *>(proc)) {
+		persistToXML(out, up);
+		return;
+	}
 }
 
 void

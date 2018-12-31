@@ -97,11 +97,6 @@ public:
 	virtual void        renameParam(const std::string &, const std::string &);
 
 	/**
-	 * Return true if this is a library proc
-	 */
-	virtual bool        isLib() const { return false; }
-
-	/**
 	 * Return true if this procedure doesn't return
 	 */
 	virtual bool        isNoReturn() const = 0;
@@ -183,11 +178,6 @@ class LibProc : public Proc {
 public:
 	            LibProc(Prog *, const std::string &, ADDRESS);
 	virtual    ~LibProc();
-
-	/**
-	 * Return true, since is a library proc
-	 */
-	bool        isLib() const override { return true; }
 
 	bool        isNoReturn() const override;
 
@@ -644,11 +634,6 @@ public:
 	 * Add to the set of callees.
 	 */
 	void        addCallee(Proc *callee);
-
-	/**
-	 * Add to a set of callee Procs.
-	 */
-	void        addCallees(std::list<UserProc *> &callees);
 
 	/**
 	 * return true if this procedure contains the given address.

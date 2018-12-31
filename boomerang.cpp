@@ -339,17 +339,18 @@ Boomerang::parseCmd(int argc, const char *argv[])
 		persistToXML(prog);
 	} else if (!strcmp(argv[0], "decompile")) {
 		if (argc > 1) {
-			Proc *proc = prog->findProc(argv[1]);
+			auto proc = prog->findProc(argv[1]);
 			if (!proc) {
 				std::cerr << "cannot find proc " << argv[1] << "\n";
 				return 1;
 			}
-			if (proc->isLib()) {
+			auto up = dynamic_cast<UserProc *>(proc);
+			if (!up) {
 				std::cerr << "cannot decompile a lib proc\n";
 				return 1;
 			}
 			int indent = 0;
-			((UserProc *)proc)->decompile(new ProcList, indent);
+			up->decompile(new ProcList, indent);
 		} else {
 			prog->decompile();
 		}
@@ -536,11 +537,11 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			std::cout << "\n\tlibprocs:\n";
 			PROGMAP::const_iterator it;
 			for (Proc *p = prog->getFirstProc(it); p; p = prog->getNextProc(it))
-				if (p->isLib())
+				if (dynamic_cast<LibProc *>(p))
 					std::cout << "\t\t" << p->getName() << "\n";
 			std::cout << "\n\tuserprocs:\n";
 			for (Proc *p = prog->getFirstProc(it); p; p = prog->getNextProc(it))
-				if (!p->isLib())
+				if (dynamic_cast<UserProc *>(p))
 					std::cout << "\t\t" << p->getName() << "\n";
 			std::cout << "\n";
 
@@ -585,17 +586,16 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			std::cout << "proc " << proc->getName() << ":\n";
 			std::cout << "\tbelongs to cluster " << proc->getCluster()->getName() << "\n";
 			std::cout << "\tnative address " << std::hex << proc->getNativeAddress() << std::dec << "\n";
-			if (proc->isLib())
-				std::cout << "\tis a library proc.\n";
-			else {
+			if (auto up = dynamic_cast<UserProc *>(proc)) {
 				std::cout << "\tis a user proc.\n";
-				UserProc *p = (UserProc *)proc;
-				if (p->isDecoded())
+				if (up->isDecoded())
 					std::cout << "\thas been decoded.\n";
 #if 0
-				if (p->isAnalysed())
+				if (up->isAnalysed())
 					std::cout << "\thas been analysed.\n";
 #endif
+			} else {
+				std::cout << "\tis a library proc.\n";
 			}
 			std::cout << "\n";
 
@@ -610,17 +610,18 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			return 1;
 		}
 
-		Proc *proc = prog->findProc(argv[1]);
+		auto proc = prog->findProc(argv[1]);
 		if (!proc) {
 			std::cerr << "cannot find proc " << argv[1] << "\n";
 			return 1;
 		}
-		if (proc->isLib()) {
+		auto up = dynamic_cast<UserProc *>(proc);
+		if (!up) {
 			std::cerr << "cannot print a libproc.\n";
 			return 1;
 		}
 
-		((UserProc *)proc)->print(std::cout);
+		up->print(std::cout);
 		std::cout << "\n";
 		return 0;
 	} else if (!strcmp(argv[0], "exit")) {
@@ -1132,11 +1133,10 @@ Boomerang::decompile(const char *fname, const char *pname)
 	if (printAST) {
 		std::cout << "printing AST...\n";
 		PROGMAP::const_iterator it;
-		for (Proc *p = prog->getFirstProc(it); p; p = prog->getNextProc(it)) {
-			if (!p->isLib()) {
-				UserProc *u = (UserProc *)p;
-				u->getCFG()->compressCfg();
-				u->printAST();
+		for (auto p = prog->getFirstProc(it); p; p = prog->getNextProc(it)) {
+			if (auto up = dynamic_cast<UserProc *>(p)) {
+				up->getCFG()->compressCfg();
+				up->printAST();
 			}
 		}
 	}

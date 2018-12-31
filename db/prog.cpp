@@ -96,11 +96,10 @@ Prog::wellForm()
 {
 	bool wellformed = true;
 
-	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto u = (UserProc *)proc;
-		wellformed &= u->getCFG()->wellFormCfg();
-	}
+	for (const auto &proc : m_procs)
+		if (auto up = dynamic_cast<UserProc *>(proc))
+			wellformed &= up->getCFG()->wellFormCfg();
+
 	return wellformed;
 }
 
@@ -110,12 +109,12 @@ void
 Prog::finishDecode()
 {
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto p = (UserProc *)proc;
-		if (!p->isDecoded()) continue;
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
 
-		p->assignProcsToCalls();
-		p->finalSimplify();
+			up->assignProcsToCalls();
+			up->finalSimplify();
+		}
 	}
 }
 
@@ -125,14 +124,14 @@ Prog::generateDot(std::ostream &os) const
 	os << "digraph Cfg {\n";
 
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto p = (UserProc *)proc;
-		if (!p->isDecoded()) continue;
-		// Subgraph for the proc name
-		os << "\tsubgraph cluster_" << p->getName() << " {\n"
-		   << "\t\tcolor=gray;\n\t\tlabel=\"" << p->getName() << "\";\n";
-		// Generate dotty CFG for this proc
-		p->getCFG()->generateDot(os);
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			// Subgraph for the proc name
+			os << "\tsubgraph cluster_" << up->getName() << " {\n"
+			   << "\t\tcolor=gray;\n\t\tlabel=\"" << up->getName() << "\";\n";
+			// Generate dotty CFG for this proc
+			up->getCFG()->generateDot(os);
+		}
 	}
 
 	os << "}\n";
@@ -192,37 +191,37 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 	// First declare prototypes for all but the first proc
 	bool first = true, proto = false;
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		if (first) {
-			first = false;
-			continue;
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (first) {
+				first = false;
+				continue;
+			}
+			proto = true;
+			HLLCode *code = Boomerang::get()->getHLLCode(up);
+			code->AddPrototype(up);  // May be the wrong signature if up has ellipsis
+			if (!cluster || cluster == m_rootCluster)
+				code->print(os);
 		}
-		proto = true;
-		auto up = (UserProc *)proc;
-		HLLCode *code = Boomerang::get()->getHLLCode(up);
-		code->AddPrototype(up);  // May be the wrong signature if up has ellipsis
-		if (!cluster || cluster == m_rootCluster)
-			code->print(os);
 	}
 	if ((proto && !cluster) || cluster == m_rootCluster)
 		os << "\n";  // Separate prototype(s) from first proc
 
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (!up->isDecoded()) continue;
-		if (uProc && up != uProc)
-			continue;
-		up->getCFG()->compressCfg();
-		HLLCode *code = Boomerang::get()->getHLLCode(up);
-		up->generateCode(code);
-		if (up->getCluster() == m_rootCluster) {
-			if (!cluster || cluster == m_rootCluster)
-				code->print(os);
-		} else {
-			if (!cluster || cluster == up->getCluster()) {
-				up->getCluster()->openStream("c");
-				code->print(up->getCluster()->getStream());
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			if (uProc && up != uProc)
+				continue;
+			up->getCFG()->compressCfg();
+			HLLCode *code = Boomerang::get()->getHLLCode(up);
+			up->generateCode(code);
+			if (up->getCluster() == m_rootCluster) {
+				if (!cluster || cluster == m_rootCluster)
+					code->print(os);
+			} else {
+				if (!cluster || cluster == up->getCluster()) {
+					up->getCluster()->openStream("c");
+					code->print(up->getCluster()->getStream());
+				}
 			}
 		}
 	}
@@ -234,16 +233,16 @@ void
 Prog::generateRTL(Cluster *cluster, UserProc *uProc) const
 {
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto p = (UserProc *)proc;
-		if (!p->isDecoded()) continue;
-		if (uProc && p != uProc)
-			continue;
-		if (cluster && p->getCluster() != cluster)
-			continue;
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			if (uProc && up != uProc)
+				continue;
+			if (cluster && up->getCluster() != cluster)
+				continue;
 
-		p->getCluster()->openStream("rtl");
-		p->print(p->getCluster()->getStream());
+			up->getCluster()->openStream("rtl");
+			up->print(up->getCluster()->getStream());
+		}
 	}
 	m_rootCluster->closeStreams();
 }
@@ -252,15 +251,15 @@ Statement *
 Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const
 {
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto p = (UserProc *)proc;
-		if (!p->isDecoded()) continue;
-		if (cluster && p->getCluster() != cluster)
-			continue;
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			if (cluster && up->getCluster() != cluster)
+				continue;
 
-		if (p->getCluster() == cluster) {
-			if (auto s = p->getStmtAtLex(begin, end))
-				return s;
+			if (up->getCluster() == cluster) {
+				if (auto s = up->getStmtAtLex(begin, end))
+					return s;
+			}
 		}
 	}
 	return nullptr;
@@ -390,14 +389,14 @@ Prog::generateCode(std::ostream &os)
 	code->print(os);
 	delete code;
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto p = (UserProc *)proc;
-		if (!p->isDecoded()) continue;
-		p->getCFG()->compressCfg();
-		code = Boomerang::get()->getHLLCode(p);
-		p->generateCode(code);
-		code->print(os);
-		delete code;
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			up->getCFG()->compressCfg();
+			code = Boomerang::get()->getHLLCode(up);
+			up->generateCode(code);
+			code->print(os);
+			delete code;
+		}
 	}
 }
 
@@ -406,12 +405,12 @@ void
 Prog::print(std::ostream &out) const
 {
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto p = (UserProc *)proc;
-		if (!p->isDecoded()) continue;
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
 
-		// decoded userproc.. print it
-		p->print(out);
+			// decoded userproc.. print it
+			up->print(out);
+		}
 	}
 }
 
@@ -533,7 +532,7 @@ Prog::getNumUserProcs() const
 {
 	int n = 0;
 	for (const auto &proc : m_procs)
-		if (!proc->isLib())
+		if (dynamic_cast<UserProc *>(proc))
 			++n;
 	return n;
 }
@@ -584,9 +583,9 @@ Prog::findProc(const std::string &name) const
 LibProc *
 Prog::getLibraryProc(const std::string &nam)
 {
-	Proc *p = findProc(nam);
-	if (p && p->isLib())
-		return (LibProc *)p;
+	if (auto p = findProc(nam))
+		if (auto lp = dynamic_cast<LibProc *>(p))
+			return lp;
 	return (LibProc *)newProc(nam, NO_ADDRESS, true);
 }
 
@@ -601,7 +600,7 @@ Prog::rereadLibSignatures()
 {
 	pFE->readLibraryCatalog();
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) {
+		if (dynamic_cast<LibProc *>(proc)) {
 			proc->setSignature(getLibSignature(proc->getName()));
 			const auto &callers = proc->getCallers();
 			for (const auto &caller : callers)
@@ -852,11 +851,9 @@ Prog::findContainingProc(ADDRESS uAddr) const
 	for (const auto &proc : m_procs) {
 		if (proc->getNativeAddress() == uAddr)
 			return proc;
-		if (proc->isLib()) continue;
-
-		auto u = (UserProc *)proc;
-		if (u->containsAddr(uAddr))
-			return proc;
+		if (auto up = dynamic_cast<UserProc *>(proc))
+			if (up->containsAddr(uAddr))
+				return proc;
 	}
 	return nullptr;
 }
@@ -945,11 +942,9 @@ Prog::getNextProc(PROGMAP::const_iterator &it)
 UserProc *
 Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 {
-	it = m_procs.begin();
-	while (it != m_procs.end() && (*it)->isLib())
-		++it;
-	if (it != m_procs.end())
-		return (UserProc *)*it;
+	for (it = m_procs.begin(); it != m_procs.end(); ++it)
+		if (auto up = dynamic_cast<UserProc *>(*it))
+			return up;
 	return nullptr;
 }
 
@@ -964,19 +959,18 @@ Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 UserProc *
 Prog::getNextUserProc(std::list<Proc *>::iterator &it)
 {
-	++it;
-	while (it != m_procs.end() && (*it)->isLib())
-		++it;
-	if (it != m_procs.end())
-		return (UserProc *)*it;
+	for (++it; it != m_procs.end(); ++it)
+		if (auto up = dynamic_cast<UserProc *>(*it))
+			return up;
 	return nullptr;
 }
 
 void
 Prog::decodeEntryPoint(ADDRESS a)
 {
-	Proc *p = findProc(a);
-	if (!p || (!p->isLib() && !((UserProc *)p)->isDecoded())) {
+	auto p = findProc(a);
+	auto up = dynamic_cast<UserProc *>(p);
+	if (!p || (up && !up->isDecoded())) {
 		if (a < pBF->getLimitTextLow() || a >= pBF->getLimitTextHigh()) {
 			std::cerr << "attempt to decode entrypoint at address outside text area, addr=" << a << "\n";
 			if (VERBOSE)
@@ -985,20 +979,24 @@ Prog::decodeEntryPoint(ADDRESS a)
 		}
 		pFE->decode(this, a);
 		finishDecode();
+
+		if (!p) {
+			p = findProc(a);
+			assert(p);
+			up = dynamic_cast<UserProc *>(p);
+		}
 	}
-	if (!p)
-		p = findProc(a);
-	assert(p);
-	if (!p->isLib())  // -sf procs marked as __nodecode are treated as library procs (?)
-		entryProcs.push_back((UserProc *)p);
+
+	if (up)  // -sf procs marked as __nodecode are treated as library procs (?)
+		entryProcs.push_back(up);
 }
 
 void
 Prog::setEntryPoint(ADDRESS a)
 {
-	Proc *p = findProc(a);
-	if (p && !p->isLib())
-		entryProcs.push_back((UserProc *)p);
+	if (auto p = findProc(a))
+		if (auto up = dynamic_cast<UserProc *>(p))
+			entryProcs.push_back(up);
 }
 
 void
@@ -1006,10 +1004,10 @@ Prog::decodeEverythingUndecoded()
 {
 	for (const auto &proc : m_procs) {
 		if (!proc) continue;  // Probably not needed
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (up->isDecoded()) continue;
-		pFE->decode(this, up->getNativeAddress());
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (up->isDecoded()) continue;
+			pFE->decode(this, up->getNativeAddress());
+		}
 	}
 	finishDecode();
 }
@@ -1037,12 +1035,12 @@ Prog::decompile()
 		while (foundone) {
 			foundone = false;
 			for (const auto &proc : m_procs) {
-				if (proc->isLib()) continue;
-				auto up = (UserProc *)proc;
-				if (up->isDecompiled()) continue;
-				int indent = 0;
-				up->decompile(new ProcList, indent);
-				foundone = true;
+				if (auto up = dynamic_cast<UserProc *>(proc)) {
+					if (up->isDecompiled()) continue;
+					int indent = 0;
+					up->decompile(new ProcList, indent);
+					foundone = true;
+				}
 			}
 		}
 	}
@@ -1066,9 +1064,9 @@ Prog::decompile()
 
 		// print XML after removing returns
 		for (const auto &proc : m_procs) {
-			if (proc->isLib()) continue;
-			auto up = (UserProc *)proc;
-			up->printXML();
+			if (auto up = dynamic_cast<UserProc *>(proc)) {
+				up->printXML();
+			}
 		}
 	}
 
@@ -1092,18 +1090,18 @@ Prog::removeUnusedGlobals()
 	// seach for used globals
 	std::list<Exp *> usedGlobals;
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto u = (UserProc *)proc;
-		Exp *search = new Location(opGlobal, new Terminal(opWild), u);
-		// Search each statement in u, excepting implicit assignments (their uses don't count, since they don't really
-		// exist in the program representation)
-		StatementList stmts;
-		u->getStatements(stmts);
-		for (const auto &s : stmts) {
-			if (s->isImplicit()) continue;  // Ignore the uses in ImplicitAssigns
-			bool found = s->searchAll(search, usedGlobals);
-			if (found && DEBUG_UNUSED)
-				LOG << " a global is used by stmt " << s->getNumber() << "\n";
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			Exp *search = new Location(opGlobal, new Terminal(opWild), up);
+			// Search each statement in up, excepting implicit assignments (their uses don't count, since they don't really
+			// exist in the program representation)
+			StatementList stmts;
+			up->getStatements(stmts);
+			for (const auto &s : stmts) {
+				if (s->isImplicit()) continue;  // Ignore the uses in ImplicitAssigns
+				bool found = s->searchAll(search, usedGlobals);
+				if (found && DEBUG_UNUSED)
+					LOG << " a global is used by stmt " << s->getNumber() << "\n";
+			}
 		}
 	}
 
@@ -1145,10 +1143,10 @@ Prog::removeUnusedReturns()
 	// This will be all user procs, except those undecoded (-sf says just trust the given signature)
 	std::set<UserProc *> removeRetSet;
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (!up->isDecoded()) continue;  // e.g. use -sf file to just prototype the proc
-		removeRetSet.insert(up);
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;  // e.g. use -sf file to just prototype the proc
+			removeRetSet.insert(up);
+		}
 	}
 	// The workset is processed in arbitrary order. May be able to do better, but note that sometimes changes propagate
 	// down the call tree (no caller uses potential returns for child), and sometimes up the call tree (removal of
@@ -1169,20 +1167,20 @@ void
 Prog::fromSSAform()
 {
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (VERBOSE) {
-			LOG << "===== before transformation from SSA form for " << up->getName() << " =====\n";
-			up->printToLog();
-			LOG << "===== end before transformation from SSA for " << up->getName() << " =====\n\n";
-			if (Boomerang::get()->dotFile)
-				up->printDFG();
-		}
-		up->fromSSAform();
-		if (VERBOSE) {
-			LOG << "===== after transformation from SSA form for " << up->getName() << " =====\n";
-			up->printToLog();
-			LOG << "===== end after transformation from SSA for " << up->getName() << " =====\n\n";
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (VERBOSE) {
+				LOG << "===== before transformation from SSA form for " << up->getName() << " =====\n";
+				up->printToLog();
+				LOG << "===== end before transformation from SSA for " << up->getName() << " =====\n\n";
+				if (Boomerang::get()->dotFile)
+					up->printDFG();
+			}
+			up->fromSSAform();
+			if (VERBOSE) {
+				LOG << "===== after transformation from SSA form for " << up->getName() << " =====\n";
+				up->printToLog();
+				LOG << "===== end after transformation from SSA for " << up->getName() << " =====\n\n";
+			}
 		}
 	}
 }
@@ -1195,10 +1193,10 @@ Prog::conTypeAnalysis()
 	// FIXME: This needs to be done bottom of the call-tree first, with repeat until no change for cycles
 	// in the call graph
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (!up->isDecoded()) continue;
-		up->conTypeAnalysis();
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			up->conTypeAnalysis();
+		}
 	}
 	if (VERBOSE || DEBUG_TA)
 		LOG << "=== end type analysis ===\n";
@@ -1210,13 +1208,13 @@ Prog::globalTypeAnalysis()
 	if (VERBOSE || DEBUG_TA)
 		LOG << "### start global data-flow-based type analysis ###\n";
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (!up->isDecoded()) continue;
-		// FIXME: this just does local TA again. Need to meet types for all parameter/arguments, and return/results!
-		// This will require a repeat until no change loop
-		std::cout << "global type analysis for " << up->getName() << "\n";
-		up->typeAnalysis();
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			// FIXME: this just does local TA again. Need to meet types for all parameter/arguments, and return/results!
+			// This will require a repeat until no change loop
+			std::cout << "global type analysis for " << up->getName() << "\n";
+			up->typeAnalysis();
+		}
 	}
 	if (VERBOSE || DEBUG_TA)
 		LOG << "### end type analysis ###\n";
@@ -1226,11 +1224,11 @@ void
 Prog::rangeAnalysis()
 {
 	for (const auto &proc : m_procs) {
-		if (proc->isLib()) continue;
-		auto up = (UserProc *)proc;
-		if (!up->isDecoded()) continue;
-		up->rangeAnalysis();
-		up->logSuspectMemoryDefs();
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			if (!up->isDecoded()) continue;
+			up->rangeAnalysis();
+			up->logSuspectMemoryDefs();
+		}
 	}
 }
 
@@ -1265,10 +1263,9 @@ Prog::printCallGraph() const
 			if (it != parent.end())
 				f1 << " [parent=" << it->second->getName() << "]";
 			f1 << std::endl;
-			if (!p->isLib()) {
+			if (auto up = dynamic_cast<UserProc *>(p)) {
 				++n;
-				auto u = (UserProc *)p;
-				const auto &calleeList = u->getCallees();
+				const auto &calleeList = up->getCallees();
 				for (auto it1 = calleeList.crbegin(); it1 != calleeList.crend(); ++it1) {
 					procList.push_front(*it1);
 					spaces[*it1] = n;
@@ -1288,25 +1285,25 @@ Prog::printCallGraph() const
 static void
 printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &seen)
 {
-	bool fisttime = false;
+	bool firsttime = false;
 	if (!seen.count(proc)) {
 		seen.insert(proc);
-		fisttime = true;
+		firsttime = true;
 	}
 	for (int i = 0; i < indent; ++i)
-		f << "\t ";
+		f << "\t";
 
-	if (!proc->isLib() && fisttime) { // seen lib proc
+	auto up = dynamic_cast<UserProc *>(proc);
+	if (up && firsttime) { // seen lib proc
 		f << "0x" << std::hex << proc->getNativeAddress();
 		f << " __nodecode __incomplete void " << proc->getName() << "();\n";
 
-		auto u = (UserProc *)proc;
-		const auto &calleeList = u->getCallees();
+		const auto &calleeList = up->getCallees();
 		for (const auto &callee : calleeList) {
 			printProcsRecursive(callee, indent + 1, f, seen);
 		}
 		for (int i = 0; i < indent; ++i)
-			f << "\t ";
+			f << "\t";
 		f << "// End of " << proc->getName() << "\n";
 	} else {
 		f << "// " << proc->getName() << "();\n";
@@ -1329,7 +1326,7 @@ Prog::printSymbolsToFile() const
 
 	f << "/* Leftovers: */\n"; // don't forget the rest
 	for (const auto &proc : m_procs)
-		if (!proc->isLib() && !seen.count(proc))
+		if (dynamic_cast<UserProc *>(proc) && !seen.count(proc))
 			printProcsRecursive(proc, 0, f, seen);
 
 	f.close();
@@ -1352,7 +1349,7 @@ Prog::printCallGraphXML() const
 	for (const auto &proc : entryProcs)
 		proc->printCallGraphXML(f, 2);
 	for (const auto &proc : m_procs)
-		if (!proc->isVisited() && !proc->isLib())
+		if (dynamic_cast<UserProc *>(proc) && !proc->isVisited())
 			proc->printCallGraphXML(f, 2);
 	f << "\t</callgraph>\n";
 	f << "</prog>\n";

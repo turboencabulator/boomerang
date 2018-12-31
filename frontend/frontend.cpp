@@ -430,13 +430,13 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 		if (VERBOSE)
 			LOG << "starting decode at address " << a << "\n";
 		if (auto proc = prog->findProc(a)) {
-			if (proc->isLib()) {
+			if (auto up = dynamic_cast<UserProc *>(proc)) {
+				processProc(a, up);
+				up->setDecoded();
+			} else {
 				LOG << "NOT decoding library proc at address 0x" << a << "\n";
 				return;
 			}
-			auto p = (UserProc *)proc;
-			processProc(a, p);
-			p->setDecoded();
 		} else {
 			if (VERBOSE)
 				LOG << "no proc found at address " << a << "\n";
@@ -448,21 +448,21 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 		while (change) {
 			change = false;
 			PROGMAP::const_iterator it;
-			for (Proc *pProc = prog->getFirstProc(it); pProc; pProc = prog->getNextProc(it)) {
-				if (pProc->isLib()) continue;
-				auto p = (UserProc *)pProc;
-				if (p->isDecoded()) continue;
+			for (auto proc = prog->getFirstProc(it); proc; proc = prog->getNextProc(it)) {
+				if (auto up = dynamic_cast<UserProc *>(proc)) {
+					if (up->isDecoded()) continue;
 
-				// undecoded userproc.. decode it
-				change = true;
-				int res = processProc(p->getNativeAddress(), p);
-				if (res == 1)
-					p->setDecoded();
-				else
-					break;
-				// Break out of the loops if not decoding children
-				if (Boomerang::get()->noDecodeChildren)
-					break;
+					// undecoded userproc.. decode it
+					change = true;
+					int res = processProc(up->getNativeAddress(), up);
+					if (res == 1)
+						up->setDecoded();
+					else
+						break;
+					// Break out of the loops if not decoding children
+					if (Boomerang::get()->noDecodeChildren)
+						break;
+				}
 			}
 			if (Boomerang::get()->noDecodeChildren)
 				break;
@@ -480,10 +480,10 @@ void
 FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
 {
 	auto proc = prog->setNewProc(a);
-	assert(!proc->isLib());
-	auto p = (UserProc *)proc;
-	if (processProc(p->getNativeAddress(), p))
-		p->setDecoded();
+	auto up = dynamic_cast<UserProc *>(proc);
+	assert(up);
+	if (processProc(up->getNativeAddress(), up))
+		up->setDecoded();
 	prog->wellForm();
 }
 

@@ -411,8 +411,9 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			input.unionwith(((BranchStatement *)last)->getRangesForOutEdgeTo(pbb));
 		} else {
 			if (last->isCall()) {
-				Proc *d = ((CallStatement *)last)->getDestProc();
-				if (d && !d->isLib() && !((UserProc *)d)->getCFG()->findRetNode()) {
+				auto d = ((CallStatement *)last)->getDestProc();
+				auto up = dynamic_cast<UserProc *>(d);
+				if (up && !up->getCFG()->findRetNode()) {
 					if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 						LOG << "ignoring ranges from call to proc with no ret node\n";
 				} else
@@ -505,17 +506,16 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 		} else if (procDest->getName().compare(0, 6, "__imp_") == 0) {
 			Statement *first = ((UserProc *)procDest)->getCFG()->getEntryBB()->getFirstStmt();
 			assert(first && first->isCall());
-			Proc *d = ((CallStatement *)first)->getDestProc();
+			auto d = ((CallStatement *)first)->getDestProc();
 			if (d->getSignature()->getConvention() == CONV_PASCAL)
 				c += d->getSignature()->getNumParams() * 4;
-		} else if (!procDest->isLib()) {
-			UserProc *p = (UserProc *)procDest;
+		} else if (auto up = dynamic_cast<UserProc *>(procDest)) {
 			if (VERBOSE) {
 				LOG << "== checking for number of bytes popped ==\n";
-				p->printToLog();
+				up->printToLog();
 				LOG << "== end it ==\n";
 			}
-			Exp *eq = p->getProven(Location::regOf(28));
+			Exp *eq = up->getProven(Location::regOf(28));
 			if (eq) {
 				if (VERBOSE)
 					LOG << "found proven " << *eq << "\n";
@@ -526,7 +526,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				} else
 					eq = nullptr;
 			}
-			BasicBlock *retbb = p->getCFG()->findRetNode();
+			BasicBlock *retbb = up->getCFG()->findRetNode();
 			if (retbb && !eq) {
 				Statement *last = retbb->getLastStmt();
 				assert(last);
@@ -542,7 +542,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 							break;
 					}
 					if (last->isCall()) {
-						Proc *d = ((CallStatement *)last)->getDestProc();
+						auto d = ((CallStatement *)last)->getDestProc();
 						if (d && d->getSignature()->getConvention() == CONV_PASCAL)
 							c += d->getSignature()->getNumParams() * 4;
 					}
@@ -2113,7 +2113,7 @@ CallStatement::setSigArguments()
 	signature = procDest->getSignature()->clone();
 	procDest->addCaller(this);
 
-	if (!procDest->isLib())
+	if (!dynamic_cast<LibProc *>(procDest))
 		return;  // Using dataflow analysis now
 	int n = signature->getNumParams();
 	int i;
@@ -2331,7 +2331,7 @@ CallStatement::setDestProc(Proc *dest)
 void
 CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 {
-	Proc *p = getDestProc();
+	auto p = getDestProc();
 
 	if (!p && isComputed()) {
 		hll->AddIndCallStatement(indLevel, pDest, arguments, calcResults());
@@ -2369,7 +2369,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 			}
 		}
 	}
-	if (p->isLib() && !p->getSignature()->getPreferedName().empty())
+	if (dynamic_cast<LibProc *>(p) && !p->getSignature()->getPreferedName().empty())
 		hll->AddCallStatement(indLevel, p, p->getSignature()->getPreferedName(), arguments, results);
 	else
 		hll->AddCallStatement(indLevel, p, p->getName(), arguments, results);
@@ -3717,7 +3717,7 @@ PhiAssign::genConstraints(LocationSet &cons)
 void
 CallStatement::genConstraints(LocationSet &cons)
 {
-	Proc *dest = getDestProc();
+	auto dest = getDestProc();
 	if (!dest) return;
 	Signature *destSig = dest->getSignature();
 	// Generate a constraint for the type of each actual argument to be equal to the type of each formal parameter
@@ -3742,7 +3742,7 @@ CallStatement::genConstraints(LocationSet &cons)
 		++p;
 	}
 
-	if (dest->isLib()) {
+	if (dynamic_cast<LibProc *>(dest)) {
 		// A library procedure... check for two special cases
 		const auto &name = dest->getName();
 		// Note: might have to chase back via a phi statement to get a sample
@@ -4761,7 +4761,7 @@ CallStatement::updateDefines()
 		// Else just use the enclosing proc's signature
 		sig = proc->getSignature();
 
-	if (procDest && procDest->isLib()) {
+	if (dynamic_cast<LibProc *>(procDest)) {
 		sig->setLibraryDefines(&defines);  // Set the locations defined
 		return;
 	} else if (Boomerang::get()->assumeABI) {
@@ -4847,8 +4847,8 @@ public:
 ArgSourceProvider::ArgSourceProvider(CallStatement *call) :
 	call(call)
 {
-	Proc *procDest = call->getDestProc();
-	if (procDest && procDest->isLib()) {
+	auto procDest = call->getDestProc();
+	if (dynamic_cast<LibProc *>(procDest)) {
 		src = SRC_LIB;
 		callSig = call->getSignature();
 		n = callSig->getNumParams();
@@ -5057,8 +5057,8 @@ CallStatement::calcResults()
 {
 	auto ret = new StatementList;
 	if (procDest) {
-		Signature *sig = procDest->getSignature();
-		if (procDest && procDest->isLib()) {
+		if (dynamic_cast<LibProc *>(procDest)) {
+			auto sig = procDest->getSignature();
 			int n = sig->getNumReturns();
 			for (int i = 1; i < n; ++i) {  // Ignore first (stack pointer) return
 				Exp *sigReturn = sig->getReturnExp(i);
@@ -5088,7 +5088,7 @@ CallStatement::calcResults()
 	} else {
 		// For a call with no destination at this late stage, use everything live at the call except for the stack
 		// pointer register. Needs to be sorted
-		Signature *sig = proc->getSignature();
+		auto sig = proc->getSignature();
 		int sp = sig->getStackRegister();
 		for (const auto &use : useCol) {  // Iterates through reaching definitions
 			Exp *loc = use;
@@ -5130,9 +5130,10 @@ bool
 CallStatement::isChildless() const
 {
 	if (!procDest) return true;
-	if (procDest->isLib()) return false;
+	auto up = dynamic_cast<UserProc *>(procDest);
+	if (!up) return false;
 	// Early in the decompile process, recursive calls are treated as childless, so they use and define all
-	if (((UserProc *)procDest)->isEarlyRecursive())
+	if (up->isEarlyRecursive())
 		return true;
 	return !calleeReturn;
 }
@@ -5143,8 +5144,8 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 	Exp *base = r->getSubExp1();
 	Exp *proven;
 	ch = false;
-	if (procDest && procDest->isLib()) {
-		Signature *sig = procDest->getSignature();
+	if (dynamic_cast<LibProc *>(procDest)) {
+		auto sig = procDest->getSignature();
 		proven = sig->getProven(base);
 		if (!proven) {  // Not (known to be) preserved
 			if (sig->findReturn(base) != -1)
@@ -5158,7 +5159,8 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 			return r;  // Childless callees transmit nothing
 		//if (procDest->isLocal(base))  // ICK! Need to prove locals and parameters through calls...
 		// FIXME: temporary HACK! Ignores alias issues.
-		if (!procDest->isLib() && ((UserProc *)procDest)->isLocalOrParamPattern(base)) {
+		auto up = dynamic_cast<UserProc *>(procDest);
+		if (up && up->isLocalOrParamPattern(base)) {
 			Exp *ret = localiseExp(base->clone());  // Assume that it is proved as preserved
 			ch = true;
 			if (VERBOSE)

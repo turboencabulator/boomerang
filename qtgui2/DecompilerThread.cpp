@@ -276,33 +276,40 @@ Decompiler::alert_decompiling(UserProc *p)
 void
 Decompiler::alert_new(Proc *p)
 {
-	if (p->isLib()) {
+	if (auto lp = dynamic_cast<LibProc *>(p)) {
 		QString params;
-		if (!p->getSignature() || p->getSignature()->isUnknown())
+		auto sig = lp->getSignature();
+		if (!sig || sig->isUnknown()) {
 			params = "<unknown>";
-		else {
-			for (unsigned int i = 0; i < p->getSignature()->getNumParams(); ++i) {
-				Type *ty = p->getSignature()->getParamType(i);
+		} else {
+			for (unsigned int i = 0; i < sig->getNumParams(); ++i) {
+				Type *ty = sig->getParamType(i);
 				params.append(ty->getCtype().c_str());
 				params.append(" ");
-				params.append(p->getSignature()->getParamName(i));
-				if (i != p->getSignature()->getNumParams() - 1)
+				params.append(sig->getParamName(i));
+				if (i != sig->getNumParams() - 1)
 					params.append(", ");
 			}
 		}
-		emit newLibProc(QString::fromStdString(p->getName()), params);
-	} else {
-		emit newUserProc(QString::fromStdString(p->getName()), p->getNativeAddress());
+		emit newLibProc(QString::fromStdString(lp->getName()), params);
+		return;
+	}
+	if (auto up = dynamic_cast<UserProc *>(p)) {
+		emit newUserProc(QString::fromStdString(up->getName()), up->getNativeAddress());
+		return;
 	}
 }
 
 void
 Decompiler::alert_remove(Proc *p)
 {
-	if (p->isLib()) {
-		emit removeLibProc(QString::fromStdString(p->getName()));
-	} else {
-		emit removeUserProc(QString::fromStdString(p->getName()), p->getNativeAddress());
+	if (auto lp = dynamic_cast<LibProc *>(p)) {
+		emit removeLibProc(QString::fromStdString(lp->getName()));
+		return;
+	}
+	if (auto up = dynamic_cast<UserProc *>(p)) {
+		emit removeUserProc(QString::fromStdString(up->getName()), up->getNativeAddress());
+		return;
 	}
 }
 
@@ -315,10 +322,10 @@ Decompiler::alert_update_signature(Proc *p)
 bool
 Decompiler::getRtlForProc(const QString &name, QString &rtl)
 {
-	Proc *p = prog->findProc(name.toStdString());
-	if (p->isLib())
+	auto p = prog->findProc(name.toStdString());
+	auto up = dynamic_cast<UserProc *>(p);
+	if (!up)
 		return false;
-	UserProc *up = (UserProc *)p;
 	std::ostringstream os;
 	up->print(os, true);
 	rtl = os.str().c_str();
@@ -347,9 +354,10 @@ Decompiler::stopWaiting()
 QString
 Decompiler::getSigFile(const QString &name)
 {
-	Proc *p = prog->findProc(name.toStdString());
-	if (p && p->isLib() && p->getSignature())
-		return QString::fromStdString(p->getSignature()->getSigFile());
+	if (auto p = prog->findProc(name.toStdString()))
+		if (auto lp = dynamic_cast<LibProc *>(p))
+			if (auto sig = lp->getSignature())
+				return QString::fromStdString(sig->getSigFile());
 	return QString();
 }
 
