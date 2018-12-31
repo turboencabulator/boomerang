@@ -653,11 +653,16 @@ TypeVal::operator *=(const Exp &e) const
  */
 /**
  * \fn void Exp::printr(std::ostream &os, bool html) const
- * \brief Recursive print:  Does not emit parens at the top level.
+ * \brief Wrapper for print that adds outer parentheses when necessary.
  *
  * The "r" is for recursive:  The idea is that we don't want parentheses at
  * the outer level, but a subexpression (recursed from a higher level), we
  * want the parens (at least for standard infix operators).
+ *
+ * Call printr() when recursing over subexpressions, else call print() for any
+ * exceptional situations where the extra parens are not desired.
+ *
+ * operator << calls printt() calls print(), which does not have outer parens.
  *
  * \param[in] os    Ref to an output stream.
  * \param[in] html  Print in HTML format.
@@ -715,13 +720,12 @@ Binary::printr(std::ostream &os, bool html) const
 		print(os, html);
 		return;
 	default:
-		break;
+		// Normal case: we want the parens
+		os << "(";
+		print(os, html);
+		os << ")";
+		return;
 	}
-	// Normal case: we want the parens
-	// std::ostream::operator << uses print(), which does not have the parens
-	os << "(";
-	this->print(os, html);
-	os << ")";
 }
 
 void
@@ -761,13 +765,13 @@ Binary::print(std::ostream &os, bool html) const
 		return;
 
 	case opMemberAccess:
-		p1->print(os, html);
+		p1->printr(os, html);
 		os << ".";
 		((Const *)p2)->printNoQuotes(os);
 		return;
 
 	case opArrayIndex:
-		p1->print(os, html);
+		p1->printr(os, html);
 		os << "[";
 		p2->print(os, html);
 		os << "]";
@@ -778,59 +782,57 @@ Binary::print(std::ostream &os, bool html) const
 	}
 
 	// Ordinary infix operators. Emit parens around the binary
-	if (!p1)
-		os << "<NULL>";
-	else
-		p1->printr(os, html);
-	switch (op) {
-	case opPlus:      os << " + ";   break;
-	case opMinus:     os << " - ";   break;
-	case opMult:      os << " * ";   break;
-	case opMults:     os << " *! ";  break;
-	case opDiv:       os << " / ";   break;
-	case opDivs:      os << " /! ";  break;
-	case opMod:       os << " % ";   break;
-	case opMods:      os << " %! ";  break;
-	case opFPlus:     os << " +f ";  break;
-	case opFMinus:    os << " -f ";  break;
-	case opFMult:     os << " *f ";  break;
-	case opFDiv:      os << " /f ";  break;
-	case opPow:       os << " pow "; break;  // Raising to power
+	if (p1) p1->printr(os, html); else os << "<NULL>";
+	os << " ";
 
-	case opAnd:       os << " and "; break;
-	case opOr:        os << " or ";  break;
-	case opBitAnd:    os << " & ";   break;
-	case opBitOr:     os << " | ";   break;
-	case opBitXor:    os << " ^ ";   break;
-	case opEquals:    os << " = ";   break;
-	case opNotEqual:  os << " ~= ";  break;
-	case opLess:      os << (html ? " &lt; "   : " < ");   break;
-	case opGtr:       os << (html ? " &gt; "   : " > ");   break;
-	case opLessEq:    os << (html ? " &lt;= "  : " <= ");  break;
-	case opGtrEq:     os << (html ? " &gt;= "  : " >= ");  break;
-	case opLessUns:   os << (html ? " &lt;u "  : " <u ");  break;
-	case opGtrUns:    os << (html ? " &gt;u "  : " >u ");  break;
-	case opLessEqUns: os << (html ? " &lt;u "  : " <=u "); break;
-	case opGtrEqUns:  os << (html ? " &gt;=u " : " >=u "); break;
-	case opUpper:     os << " GT "; break;
-	case opLower:     os << " LT "; break;
-	case opShiftL:    os << (html ? " &lt;&lt; "  : " << ");  break;
-	case opShiftR:    os << (html ? " &gt;&gt; "  : " >> ");  break;
-	case opShiftRA:   os << (html ? " &gt;&gt;A " : " >>A "); break;
-	case opRotateL:   os << " rl ";  break;
-	case opRotateR:   os << " rr ";  break;
-	case opRotateLC:  os << " rlc "; break;
-	case opRotateRC:  os << " rrc "; break;
+	switch (op) {
+	case opPlus:      os << "+";   break;
+	case opMinus:     os << "-";   break;
+	case opMult:      os << "*";   break;
+	case opMults:     os << "*!";  break;
+	case opDiv:       os << "/";   break;
+	case opDivs:      os << "/!";  break;
+	case opMod:       os << "%";   break;
+	case opMods:      os << "%!";  break;
+	case opFPlus:     os << "+f";  break;
+	case opFMinus:    os << "-f";  break;
+	case opFMult:     os << "*f";  break;
+	case opFDiv:      os << "/f";  break;
+	case opPow:       os << "pow"; break;  // Raising to power
+
+	case opAnd:       os << "and"; break;
+	case opOr:        os << "or";  break;
+	case opBitAnd:    os << "&";   break;
+	case opBitOr:     os << "|";   break;
+	case opBitXor:    os << "^";   break;
+	case opEquals:    os << "=";   break;
+	case opNotEqual:  os << "~=";  break;
+	case opLess:      os << (html ? "&lt;"   : "<");   break;
+	case opGtr:       os << (html ? "&gt;"   : ">");   break;
+	case opLessEq:    os << (html ? "&lt;="  : "<=");  break;
+	case opGtrEq:     os << (html ? "&gt;="  : ">=");  break;
+	case opLessUns:   os << (html ? "&lt;u"  : "<u");  break;
+	case opGtrUns:    os << (html ? "&gt;u"  : ">u");  break;
+	case opLessEqUns: os << (html ? "&lt;u"  : "<=u"); break;
+	case opGtrEqUns:  os << (html ? "&gt;=u" : ">=u"); break;
+	case opUpper:     os << "GT"; break;
+	case opLower:     os << "LT"; break;
+
+	case opShiftL:    os << (html ? "&lt;&lt;"  : "<<");  break;
+	case opShiftR:    os << (html ? "&gt;&gt;"  : ">>");  break;
+	case opShiftRA:   os << (html ? "&gt;&gt;A" : ">>A"); break;
+	case opRotateL:   os << "rl";  break;
+	case opRotateR:   os << "rr";  break;
+	case opRotateLC:  os << "rlc"; break;
+	case opRotateRC:  os << "rrc"; break;
 
 	default:
 		LOG << "Binary::print invalid operator " << operStrings[op] << "\n";
 		assert(0);
 	}
 
-	if (!p2)
-		os << "<NULL>";
-	else
-		p2->printr(os, html);
+	os << " ";
+	if (p2) p2->printr(os, html); else os << "<NULL>";
 }
 
 void
@@ -940,6 +942,7 @@ Unary::print(std::ostream &os, bool html) const
 
 	case opSignExt:
 	case opInitValueOf:
+	case opPostVar:
 		p1->printr(os, html);
 		if (op == opSignExt) os << "!";  // Operator after expression
 		else                 os << "'";
@@ -963,7 +966,6 @@ Unary::print(std::ostream &os, bool html) const
 	case opLog10:
 	case opLoge:
 	case opExecute:
-	case opPostVar:
 	case opMachFtr:
 	case opSuccessor:
 	case opPhi:
@@ -985,13 +987,10 @@ Unary::print(std::ostream &os, bool html) const
 		case opMachFtr:   os << "machine("; break;
 		case opSuccessor: os << "succ(";    break;
 		case opPhi:       os << "phi(";     break;
-		default:                            break;
+		default:                            break;  // For warning
 		}
 		p1->print(os, html);
-		switch (op) {
-		case opPostVar:   os << "'"; break;
-		default:          os << ")"; break;
-		}
+		os << ")";
 		return;
 
 	default:
@@ -1016,13 +1015,15 @@ Ternary::printr(std::ostream &os, bool html) const
 	case opFround:
 	case opOpTable:
 		// No paren case
-		print(os);
+		print(os, html);
 		return;
 	default:
-		break;
+		// All other cases, we use the parens
+		os << "(";
+		print(os, html);
+		os << ")";
+		return;
 	}
-	// All other cases, we use the parens
-	os << "(" << *this << ")";
 }
 
 void
