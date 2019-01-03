@@ -162,7 +162,7 @@ PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 	Exp::doSearch(Location::regOf(new Terminal(opWild)), exp, li, false);
 	for (const auto &sub : li) {
 		int reg = ((Const *)((Unary *)*sub)->getSubExp1())->getInt();
-		if ((min <= reg) && (reg <= max)) {
+		if (min <= reg && reg <= max) {
 			// Replace the K in r[ K] with a new K
 			// *sub is a reg[K]
 			auto K = (Const *)((Unary *)*sub)->getSubExp1();
@@ -181,7 +181,7 @@ PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag, bool spe
 	// Need a post-cfg pass to remove the FPUSH and FPOP instructions, and to transform various code after floating
 	// point compares to generate floating point branches.
 	// processFloatCode() will recurse to process its out-edge BBs (if not already processed)
-	Cfg *pCfg = pProc->getCFG();
+	auto pCfg = pProc->getCFG();
 	pCfg->unTraverse();  // Reset all the "traversed" flags (needed soon)
 	// This will get done twice; no harm
 	pProc->setEntryBB();
@@ -251,19 +251,16 @@ void
 PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 {
 	for (const auto &pBB : *pCfg) {
-		Statement *st;
-
 		// Loop through each RTL this BB
-		std::list<RTL *> *BB_rtls = pBB->getRTLs();
+		auto BB_rtls = pBB->getRTLs();
 		if (!BB_rtls) {
 			// For example, incomplete BB
 			return;
 		}
-		auto rit = BB_rtls->begin();
-		while (rit != BB_rtls->end()) {
+		for (auto rit = BB_rtls->begin(); rit != BB_rtls->end(); ++rit) {
 			for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
-				// Get the current Exp
-				st = (*rit)->elementAt(i);
+				// Get the current Statement
+				auto st = (*rit)->elementAt(i);
 				if (st->isFpush()) {
 					(*rit)->insertStmt(new Assign(new FloatType(80),
 					                              Location::tempOf(new Const("tmpD9")),
@@ -330,7 +327,6 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 					continue;
 				}
 			}
-			++rit;
 		}
 	}
 }
@@ -353,10 +349,8 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 void
 PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 {
-	Statement *st;
-
 	// Loop through each RTL this BB
-	std::list<RTL *> *BB_rtls = pBB->getRTLs();
+	auto BB_rtls = pBB->getRTLs();
 	if (!BB_rtls) {
 		// For example, incomplete BB
 		return;
@@ -374,10 +368,8 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 		// Check for f(n)stsw
 		if (isStoreFsw((*rit)->getList().front())) {
 			// Check the register - at present we only handle AX
-			Exp *lhs = ((Assign *)(*rit)->getList().front())->getLeft();
-			Exp *ax = Location::regOf(0);
-			assert(*lhs == *ax);
-			delete ax;
+			auto lhs = ((Assign *)(*rit)->getList().front())->getLeft();
+			assert(lhs->isRegN(0));
 
 			// Process it
 			if (processStsw(rit, BB_rtls, pBB, pCfg)) {
@@ -391,7 +383,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 #endif
 		for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
 			// Get the current Exp
-			st = (*rit)->elementAt(i);
+			auto st = (*rit)->elementAt(i);
 			if (!st->isFlagAssgn()) {
 				// We are interested in either FPUSH/FPOP, or r[32..39] appearing in either the left or right hand
 				// sides, or calls
@@ -408,9 +400,9 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 					--i;  // Adjust the index
 					continue;
 				} else if (st->isAssign()) {
-					Assign *asgn = (Assign *)st;
-					Exp *lhs = asgn->getLeft();
-					Exp *rhs = asgn->getRight();
+					auto asgn = (Assign *)st;
+					auto lhs = asgn->getLeft();
+					auto rhs = asgn->getRight();
 					if (tos != 0) {
 						// Substitute all occurrences of r[x] (where 32 <= x <= 39) with r[y] where
 						// y = 32 + (x + tos) & 7
@@ -421,19 +413,18 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 			} else {
 				// st is a flagcall
 				// We are interested in any register parameters in the range 32 - 39
-				Binary *cur;
-				for (cur = (Binary *)((Assign *)st)->getRight(); !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
+				for (auto cur = (Binary *)((Assign *)st)->getRight(); !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
 					// I dont understand why we want typed exps in the flag calls so much. If we're going to replace opSize with TypedExps
 					// then we need to do it for everything, not just the flag calls.. so that should be in the sslparser.  If that is the
 					// case then we cant assume that opLists of flag calls will always contain TypedExps, so this code is wrong.
 					// - trent 9/6/2002
 					//TypedExp *te = (TypedExp *)cur->getSubExp1();
-					Exp *s = cur->getSubExp1();
+					auto s = cur->getSubExp1();
 					if (s->isRegOfK()) {
-						Const *c = (Const *)((Unary *)s)->getSubExp1();
+						auto c = (Const *)((Unary *)s)->getSubExp1();
 						int K = c->getInt();  // Old register number
 						// Change to new register number, if in range
-						if ((K >= 32) && (K <= 39))
+						if (32 <= K && K <= 39)
 							s->setSubExp1(new Const(32 + ((K - 32 + tos) & 7)));
 					}
 				}
@@ -444,12 +435,12 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 	pBB->setTraversed(true);
 
 	// Now recurse to process my out edges, if not already processed
-	const std::vector<BasicBlock *> &outs = pBB->getOutEdges();
+	const auto &outs = pBB->getOutEdges();
 	unsigned n;
 	do {
 		n = outs.size();
 		for (unsigned o = 0; o < n; ++o) {
-			BasicBlock *anOut = outs[o];
+			auto anOut = outs[o];
 			if (!anOut->isTraversed()) {
 				processFloatCode(anOut, tos, pCfg);
 				if (outs.size() != n)
@@ -503,7 +494,7 @@ PentiumFrontEnd::helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest)
 {
 	if (dest == NO_ADDRESS) return false;
 
-	const char *p = pBF->getSymbolByAddress(dest);
+	auto p = pBF->getSymbolByAddress(dest);
 	if (!p) return false;
 	std::string name(p);
 	// I believe that __xtol is for gcc, _ftol for earlier MSVC compilers, _ftol2 for MSVC V7
@@ -602,7 +593,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 			inst = decodeInstruction(addr + oNumBytes);
 			if (inst.valid && inst.rtl->getList().size() == 2) {
 				auto a = dynamic_cast<Assign *>(inst.rtl->getList().back());
-				if (a && *a->getRight() == *Location::regOf(24)) {
+				if (a && a->getRight()->isRegN(24)) {
 #if 0
 					std::cerr << "is followed by push eax.. " << "good" << std::endl;
 #endif
@@ -624,8 +615,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 				gotMain = true;
 				return cs->getFixedDest();
 			}
-			if (pBF->getSymbolByAddress(dest)
-			 && strcmp(pBF->getSymbolByAddress(dest), "__libc_start_main") == 0) {
+			auto sym = pBF->getSymbolByAddress(dest);
+			if (sym && strcmp(sym, "__libc_start_main") == 0) {
 				// This is a gcc 3 pattern. The first parameter will be a pointer to main.
 				// Assume it's the 5 byte push immediately preceeding this instruction
 				// Note: the RTL changed recently from esp = esp-4; m[esp] = K tp m[esp-4] = K; esp = esp-4
@@ -633,14 +624,15 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 				assert(inst.valid);
 				assert(inst.rtl->getList().size() == 2);
 				auto a = (Assign *)inst.rtl->getList().front();  // Get m[esp-4] = K
-				Exp *rhs = a->getRight();
+				auto rhs = a->getRight();
 				assert(rhs->isIntConst());
 				gotMain = true;
 				return (ADDRESS)((Const *)rhs)->getInt();
 			}
-		} else
+		} else {
 			conseq = 0;  // Must be consequitive
-		GotoStatement *gs = (GotoStatement *)cs;
+		}
+		auto gs = (GotoStatement *)cs;
 		if (gs && gs->getKind() == STMT_GOTO)
 			// Example: Borland often starts with a branch around some debug
 			// info
@@ -686,12 +678,12 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::ite
 void
 PentiumFrontEnd::processStringInst(UserProc *proc)
 {
-	Cfg *cfg = proc->getCFG();
+	auto cfg = proc->getCFG();
 	// For each BB this proc
 	for (auto it = cfg->begin(); it != cfg->end(); /* no increment! */) {
 		bool noinc = false;
-		BasicBlock *bb = *it;
-		std::list<RTL *> *rtls = bb->getRTLs();
+		auto bb = *it;
+		auto rtls = bb->getRTLs();
 		if (!rtls)
 			break;
 		ADDRESS addr = 0;
@@ -703,10 +695,10 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 			if (!rtl->getList().empty()) {
 				auto firstStmt = rtl->getList().front();
 				if (firstStmt->isAssign()) {
-					Exp *lhs = ((Assign *)firstStmt)->getLeft();
+					auto lhs = ((Assign *)firstStmt)->getLeft();
 					if (lhs->isMachFtr()) {
-						Const *sub = (Const *)((Unary *)lhs)->getSubExp1();
-						const char *str = sub->getStr();
+						auto sub = (Const *)((Unary *)lhs)->getSubExp1();
+						auto str = sub->getStr();
 						if (strncmp(str, "%SKIP", 5) == 0) {
 							toBranches(addr, lastRtl, cfg, rtl, bb, it);
 							noinc = true;  // toBranches inc's it
@@ -766,47 +758,46 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			continue;
 		bbs.insert(stmt->getBB());
 		if (!stmt->isAssignment()) continue;
-		Exp *lhs = ((Assignment *)stmt)->getLeft();
+		auto lhs = ((Assignment *)stmt)->getLeft();
 		if (!lhs->isRegOf()) continue;
-		Const *c = (Const *)((Location *)lhs)->getSubExp1();
+		auto c = (Const *)((Location *)lhs)->getSubExp1();
 		assert(c->isIntConst());
 		int r = c->getInt();
 		int off = r & 3;        // Offset into the array of 4 registers
 		int off_mod8 = r & 7;   // Offset into the array of 8 registers; for ebp, esi, edi
-		Assign *a;
 		switch (r) {
 		case 24: case 25: case 26: case 27:
 		//  eax      ecx      edx      ebx
 			// Emit *16* r<off> := trunc(32, 16, r<24+off>)
 			if (usedRegs.count(off)) {
-				a = new Assign(new IntegerType(16),
-				               Location::regOf(off),
-				               new Ternary(opTruncu,
-				                           new Const(32),
-				                           new Const(16),
-				                           Location::regOf(24 + off)));
+				auto a = new Assign(new IntegerType(16),
+				                    Location::regOf(off),
+				                    new Ternary(opTruncu,
+				                                new Const(32),
+				                                new Const(16),
+				                                Location::regOf(24 + off)));
 				proc->insertStatementAfter(stmt, a);
 			}
 
 			// Emit *8* r<8+off> := trunc(32, 8, r<24+off>)
 			if (usedRegs.count(8 + off)) {
-				a = new Assign(new IntegerType(8),
-				               Location::regOf(8 + off),
-				               new Ternary(opTruncu,
-				                           new Const(32),
-				                           new Const(8),
-				                           Location::regOf(24 + off)));
+				auto a = new Assign(new IntegerType(8),
+				                    Location::regOf(8 + off),
+				                    new Ternary(opTruncu,
+				                                new Const(32),
+				                                new Const(8),
+				                                Location::regOf(24 + off)));
 				proc->insertStatementAfter(stmt, a);
 			}
 
 			// Emit *8* r<12+off> := r<24+off>@[8:15]
 			if (usedRegs.count(12 + off)) {
-				a = new Assign(new IntegerType(8),
-				               Location::regOf(12 + off),
-				               new Ternary(opAt,
-				                           Location::regOf(24 + off),
-				                           new Const(8),
-				                           new Const(15)));
+				auto a = new Assign(new IntegerType(8),
+				                    Location::regOf(12 + off),
+				                    new Ternary(opAt,
+				                                Location::regOf(24 + off),
+				                                new Const(8),
+				                                new Const(15)));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
@@ -815,39 +806,39 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		//  ax      cx      dx      bx
 			// Emit *32* r<24+off> := r<24+off>@[16:31] | zfill(16, 32, r<off>)
 			if (usedRegs.count(24 + off)) {
-				a = new Assign(new IntegerType(32),
-				               Location::regOf(24 + off),
-				               new Binary(opBitOr,
-				                          new Ternary(opAt,
-				                                      Location::regOf(24 + off),
-				                                      new Const(16),
-				                                      new Const(31)),
-				                          new Ternary(opZfill,
-				                                      new Const(16),
-				                                      new Const(32),
-				                                      Location::regOf(off))));
+				auto a = new Assign(new IntegerType(32),
+				                    Location::regOf(24 + off),
+				                    new Binary(opBitOr,
+				                               new Ternary(opAt,
+				                                           Location::regOf(24 + off),
+				                                           new Const(16),
+				                                           new Const(31)),
+				                               new Ternary(opZfill,
+				                                           new Const(16),
+				                                           new Const(32),
+				                                           Location::regOf(off))));
 				proc->insertStatementAfter(stmt, a);
 			}
 
 			// Emit *8* r<8+off> := trunc(16, 8, r<off>)
 			if (usedRegs.count(8 + off)) {
-				a = new Assign(new IntegerType(8),
-				               Location::regOf(8 + off),
-				               new Ternary(opTruncu,
-				                           new Const(16),
-				                           new Const(8),
-				                           Location::regOf(24 + off)));
+				auto a = new Assign(new IntegerType(8),
+				                    Location::regOf(8 + off),
+				                    new Ternary(opTruncu,
+				                                new Const(16),
+				                                new Const(8),
+				                                Location::regOf(24 + off)));
 				proc->insertStatementAfter(stmt, a);
 			}
 
 			// Emit *8* r<12+off> := r<off>@[8:15]
 			if (usedRegs.count(12 + off)) {
-				a = new Assign(new IntegerType(8),
-				               Location::regOf(12 + off),
-				               new Ternary(opAt,
-				                           Location::regOf(off),
-				                           new Const(8),
-				                           new Const(15)));
+				auto a = new Assign(new IntegerType(8),
+				                    Location::regOf(12 + off),
+				                    new Ternary(opAt,
+				                                Location::regOf(off),
+				                                new Const(8),
+				                                new Const(15)));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
@@ -856,33 +847,33 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		//  al      cl       dl       bl
 			// Emit *32* r<24+off> := r<24+off>@[8:31] | zfill(8, 32, r<8+off>)
 			if (usedRegs.count(24 + off)) {
-				a = new Assign(new IntegerType(32),
-				               Location::regOf(24 + off),
-				               new Binary(opBitOr,
-				                          new Ternary(opAt,
-				                                      Location::regOf(24 + off),
-				                                      new Const(8),
-				                                      new Const(31)),
-				                          new Ternary(opZfill,
-				                                      new Const(8),
-				                                      new Const(32),
-				                                      Location::regOf(8 + off))));
+				auto a = new Assign(new IntegerType(32),
+				                    Location::regOf(24 + off),
+				                    new Binary(opBitOr,
+				                               new Ternary(opAt,
+				                                           Location::regOf(24 + off),
+				                                           new Const(8),
+				                                           new Const(31)),
+				                               new Ternary(opZfill,
+				                                           new Const(8),
+				                                           new Const(32),
+				                                           Location::regOf(8 + off))));
 				proc->insertStatementAfter(stmt, a);
 			}
 
 			// Emit *16* r<off> := r<off>@[8:15] | zfill(8, 16, r<8+off>)
 			if (usedRegs.count(off)) {
-				a = new Assign(new IntegerType(16),
-				               Location::regOf(off),
-				               new Binary(opBitOr,
-				                          new Ternary(opAt,
-				                                      Location::regOf(off),
-				                                      new Const(8),
-				                                      new Const(15)),
-				                          new Ternary(opZfill,
-				                                      new Const(8),
-				                                      new Const(16),
-				                                      Location::regOf(8 + off))));
+				auto a = new Assign(new IntegerType(16),
+				                    Location::regOf(off),
+				                    new Binary(opBitOr,
+				                               new Ternary(opAt,
+				                                           Location::regOf(off),
+				                                           new Const(8),
+				                                           new Const(15)),
+				                               new Ternary(opZfill,
+				                                           new Const(8),
+				                                           new Const(16),
+				                                           Location::regOf(8 + off))));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
@@ -892,13 +883,13 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			// Emit *32* r<24+off> := r<24+off> & 0xFFFF00FF
 			//      *32* r<24+off> := r<24+off> | r<12+off> << 8
 			if (usedRegs.count(24 + off)) {
-				a = new Assign(new IntegerType(32),
-				               Location::regOf(24 + off),
-				               new Binary(opBitOr,
-				                          Location::regOf(24 + off),
-				                          new Binary(opShiftL,
-				                                     Location::regOf(12 + off),
-				                                     new Const(8))));
+				auto a = new Assign(new IntegerType(32),
+				                    Location::regOf(24 + off),
+				                    new Binary(opBitOr,
+				                               Location::regOf(24 + off),
+				                               new Binary(opShiftL,
+				                                          Location::regOf(12 + off),
+				                                          new Const(8))));
 				proc->insertStatementAfter(stmt, a);
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
@@ -911,13 +902,13 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 			// Emit *16* r<off> := r<off> & 0x00FF
 			//      *16* r<off> := r<off> | r<12+off> << 8
 			if (usedRegs.count(off)) {
-				a = new Assign(new IntegerType(16),
-				               Location::regOf(off),
-				               new Binary(opBitOr,
-				                          Location::regOf(off),
-				                          new Binary(opShiftL,
-				                                     Location::regOf(12 + off),
-				                                     new Const(8))));
+				auto a = new Assign(new IntegerType(16),
+				                    Location::regOf(off),
+				                    new Binary(opBitOr,
+				                               Location::regOf(off),
+				                               new Binary(opShiftL,
+				                                          Location::regOf(12 + off),
+				                                          new Const(8))));
 				proc->insertStatementAfter(stmt, a);
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off),
@@ -932,17 +923,17 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		//  bp      si      di
 			// Emit *32* r<24+off_mod8> := r<24+off_mod8>@[16:31] | zfill(16, 32, r<off_mod8>)
 			if (usedRegs.count(24 + off_mod8)) {
-				a = new Assign(new IntegerType(32),
-				               Location::regOf(24 + off_mod8),
-				               new Binary(opBitOr,
-				                          new Ternary(opAt,
-				                                      Location::regOf(24 + off_mod8),
-				                                      new Const(16),
-				                                      new Const(31)),
-				                          new Ternary(opZfill,
-				                                      new Const(16),
-				                                      new Const(32),
-				                                      Location::regOf(off_mod8))));
+				auto a = new Assign(new IntegerType(32),
+				                    Location::regOf(24 + off_mod8),
+				                    new Binary(opBitOr,
+				                               new Ternary(opAt,
+				                                           Location::regOf(24 + off_mod8),
+				                                           new Const(16),
+				                                           new Const(31)),
+				                               new Ternary(opZfill,
+				                                           new Const(16),
+				                                           new Const(32),
+				                                           Location::regOf(off_mod8))));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
@@ -951,12 +942,12 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		//  ebp      esi      edi
 			// Emit *16* r<off_mod8> := trunc(32, 16, r<24+off_mod8>)
 			if (usedRegs.count(off_mod8)) {
-				a = new Assign(new IntegerType(16),
-				               Location::regOf(off_mod8),
-				               new Ternary(opTruncu,
-				                           new Const(32),
-				                           new Const(16),
-				                           Location::regOf(24 + off_mod8)));
+				auto a = new Assign(new IntegerType(16),
+				                    Location::regOf(off_mod8),
+				                    new Ternary(opTruncu,
+				                                new Const(32),
+				                                new Const(16),
+				                                Location::regOf(24 + off_mod8)));
 				proc->insertStatementAfter(stmt, a);
 			}
 			break;
@@ -971,16 +962,14 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 DecodeResult &
 PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 {
+	static DecodeResult r;
 	int n = pBF->readNative1(pc);
 	if (n == (int)(char)0xee) {
 		// out dx, al
-		Exp *dx = Location::regOf(decoder.getRTLDict().RegMap["%dx"]);
-		Exp *al = Location::regOf(decoder.getRTLDict().RegMap["%al"]);
 		auto call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("outp"));
-		call->setArgumentExp(0, dx);
-		call->setArgumentExp(1, al);
-		static DecodeResult r;
+		call->setArgumentExp(0, Location::regOf(decoder.getRTLDict().RegMap["%dx"]));
+		call->setArgumentExp(1, Location::regOf(decoder.getRTLDict().RegMap["%al"]));
 		r.reset();
 		r.numBytes = 1;
 		r.rtl = new RTL(pc, call);
@@ -989,7 +978,6 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 	if (n == (int)(char)0x0f && pBF->readNative1(pc + 1) == (int)(char)0x0b) {
 		auto call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("invalid_opcode"));
-		static DecodeResult r;
 		r.reset();
 		r.numBytes = 2;
 		r.rtl = new RTL(pc, call);
@@ -1008,22 +996,22 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 	if (call->getDestProc()) {
 
 		// looking for function pointers
-		Signature *calledSig = call->getDestProc()->getSignature();
+		auto calledSig = call->getDestProc()->getSignature();
 		for (unsigned int i = 0; i < calledSig->getNumParams(); ++i) {
 			// check param type
-			Type *paramType = calledSig->getParamType(i);
-			Type *points_to;
 			CompoundType *compound = nullptr;
 			bool paramIsFuncPointer = false, paramIsCompoundWithFuncPointers = false;
+			auto paramType = calledSig->getParamType(i);
 			if (paramType->resolvesToPointer()) {
-				points_to = paramType->asPointer()->getPointsTo();
-				if (points_to->resolvesToFunc())
+				auto points_to = paramType->asPointer()->getPointsTo();
+				if (points_to->resolvesToFunc()) {
 					paramIsFuncPointer = true;
-				else if (points_to->resolvesToCompound()) {
+				} else if (points_to->resolvesToCompound()) {
 					compound = points_to->asCompound();
 					for (unsigned int n = 0; n < compound->getNumTypes(); ++n) {
-						if (compound->getType(n)->resolvesToPointer()
-						 && compound->getType(n)->asPointer()->getPointsTo()->resolvesToFunc())
+						auto ty = compound->getType(n);
+						if (ty->resolvesToPointer()
+						 && ty->asPointer()->getPointsTo()->resolvesToFunc())
 							paramIsCompoundWithFuncPointers = true;
 					}
 				}
@@ -1040,14 +1028,16 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 					auto stmt = *srit;
 					if (stmt->isAssign()) {
 						auto asgn = (Assign *)stmt;
-						if (asgn->getLeft()->isRegN(28) && asgn->getRight()->getOper() == opMinus)
+						auto lhs = asgn->getLeft();
+						auto rhs = asgn->getRight();
+						if (lhs->isRegN(28) && rhs->getOper() == opMinus) {
 							++pushcount;
-						else if (pushcount == i + 2
-						      && asgn->getLeft()->isMemOf()
-						      && asgn->getLeft()->getSubExp1()->getOper() == opMinus
-						      && asgn->getLeft()->getSubExp1()->getSubExp1()->isRegN(28)
-						      && asgn->getLeft()->getSubExp1()->getSubExp2()->isIntConst()) {
-							found = asgn->getRight();
+						} else if (pushcount == i + 2
+						        && lhs->isMemOf()
+						        && lhs->getSubExp1()->getOper() == opMinus
+						        && lhs->getSubExp1()->getSubExp1()->isRegN(28)
+						        && lhs->getSubExp1()->getSubExp2()->isIntConst()) {
+							found = rhs;
 							break;
 						}
 					}
@@ -1090,19 +1080,20 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 #endif
 
 			for (unsigned int n = 0; n < compound->getNumTypes(); ++n) {
-				if (compound->getType(n)->resolvesToPointer()
-				 && compound->getType(n)->asPointer()->getPointsTo()->resolvesToFunc()) {
+				auto ty = compound->getType(n);
+				if (ty->resolvesToPointer()
+				 && ty->asPointer()->getPointsTo()->resolvesToFunc()) {
 					ADDRESS d = pBF->readNative4(a);
 					if (VERBOSE)
 						LOG << "found a new procedure at address " << d
 						    << " from inspecting parameters of call to " << call->getDestProc()->getName() << ".\n";
 					Proc *proc = prog->setNewProc(d);
-					Signature *sig = compound->getType(n)->asPointer()->getPointsTo()->asFunc()->getSignature()->clone();
+					Signature *sig = ty->asPointer()->getPointsTo()->asFunc()->getSignature()->clone();
 					sig->setName(proc->getName());
 					sig->setForced(true);
 					proc->setSignature(sig);
 				}
-				a += compound->getType(n)->getSize() / 8;
+				a += ty->getSize() / 8;
 			}
 		}
 
@@ -1117,14 +1108,16 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 					auto stmt = *srit;
 					if (stmt->isAssign()) {
 						auto asgn = (Assign *)stmt;
-						if (asgn->getLeft()->isRegN(28) && asgn->getRight()->getOper() == opMinus)
+						auto lhs = asgn->getLeft();
+						auto rhs = asgn->getRight();
+						if (lhs->isRegN(28) && rhs->getOper() == opMinus) {
 							++pushcount;
-						else if (asgn->getLeft()->isMemOf()
-						      && asgn->getLeft()->getSubExp1()->getOper() == opMinus
-						      && asgn->getLeft()->getSubExp1()->getSubExp1()->isRegN(28)
-						      && asgn->getLeft()->getSubExp1()->getSubExp2()->isIntConst()) {
-							if (asgn->getRight()->isIntConst()) {
-								int n = ((Const *)asgn->getRight())->getInt();
+						} else if (lhs->isMemOf()
+						        && lhs->getSubExp1()->getOper() == opMinus
+						        && lhs->getSubExp1()->getSubExp1()->isRegN(28)
+						        && lhs->getSubExp1()->getSubExp2()->isIntConst()) {
+							if (rhs->isIntConst()) {
+								int n = ((Const *)rhs)->getInt();
 								if (n == 0) {
 									found = true;
 									break;
