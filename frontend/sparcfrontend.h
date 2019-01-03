@@ -42,7 +42,7 @@ public:
 
 private:
 
-	static void warnDCTcouple(ADDRESS, ADDRESS);
+	//static void warnDCTcouple(ADDRESS, ADDRESS);
 	bool optimise_DelayCopy(ADDRESS src, ADDRESS dest) const;
 	BasicBlock *optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, UserProc *pProc);
 
@@ -66,7 +66,7 @@ private:
 	bool case_SCDAN(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
 	                Cfg *, TargetQueue &);
 
-	static void emitNop(std::list<RTL *> &, ADDRESS);
+	//static void emitNop(std::list<RTL *> &, ADDRESS);
 	static void emitCopyPC(std::list<RTL *> &, ADDRESS);
 	static void appendAssignment(std::list<RTL *> &, ADDRESS, Type *, Exp *, Exp *);
 	static void quadOperation(std::list<RTL *> &, ADDRESS, OPER);

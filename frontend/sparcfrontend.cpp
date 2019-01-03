@@ -52,6 +52,7 @@ SparcFrontEnd::~SparcFrontEnd()
 {
 }
 
+#if 0 // Cruft?
 /**
  * \brief Emit a warning when encountering a DCTI couple.
  *
@@ -65,6 +66,7 @@ SparcFrontEnd::warnDCTcouple(ADDRESS at, ADDRESS dest)
 	          << " points to delayed branch at " << dest << "...\n"
 	          << "Decompilation will likely be incorrect\n";
 }
+#endif
 
 /**
  * Determines if a delay instruction is exactly the same as the instruction
@@ -1227,6 +1229,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 	return true;
 }
 
+#if 0 // Cruft?
 /**
  * Emit a null RTL with the given address.
  *
@@ -1240,6 +1243,7 @@ SparcFrontEnd::emitNop(std::list<RTL *> &rtls, ADDRESS addr)
 	// SKIP instructions. Yes, they really happen, e.g. /usr/bin/vi 2.5
 	rtls.push_back(new RTL(addr));
 }
+#endif
 
 /**
  * Emit the RTL for a call $+8 instruction, which is merely %o7 = %pc.

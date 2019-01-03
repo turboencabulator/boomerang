@@ -48,6 +48,7 @@ PentiumFrontEnd::~PentiumFrontEnd()
 {
 }
 
+#if PROCESS_FNSTSW
 /**
  * Return true if the given Statement is an assignment that stores the FSW
  * (Floating point Status Word) reg.
@@ -64,7 +65,9 @@ PentiumFrontEnd::isStoreFsw(Statement *s)
 	bool res = rhs->search(Location::regOf(FSW), result);
 	return res;
 }
+#endif
 
+#if 0 // Cruft?
 /**
  * Return true if the given RTL is a decrement of register AH.
  *
@@ -87,7 +90,9 @@ PentiumFrontEnd::isDecAh(RTL *r)
 	            new Const(1));
 	return *rhs == ahm1;
 }
+#endif
 
+#if 0 // Cruft?
 /**
  * Return true if the given Statement is a setX instruction.
  *
@@ -111,7 +116,9 @@ PentiumFrontEnd::isSetX(Statement *s)
 	if (!s2->isIntConst() || s3->isIntConst()) return false;
 	return ((Const *)s2)->getInt() == 1 && ((Const *)s3)->getInt() == 0;
 }
+#endif
 
+#if 0 // Cruft?
 /**
  * Return true if the given Statement is an expression whose RHS is a
  * ?: ternary.
@@ -127,6 +134,7 @@ PentiumFrontEnd::isAssignFromTern(Statement *s)
 	auto rhs = asgn->getRight();
 	return rhs->getOper() == opTern;
 }
+#endif
 
 /**
  * Finds a subexpression within this expression of the form
@@ -453,6 +461,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 	} while (outs.size() != n);
 }
 
+#if 0 // Cruft?
 /**
  * \brief Emit a set instruction.
  *
@@ -472,6 +481,7 @@ PentiumFrontEnd::emitSet(std::list<RTL *> &rtls, std::list<RTL *>::iterator &rit
 	// Insert the new RTL before rit
 	rtls.insert(rit, rtl);
 }
+#endif
 
 /**
  * \brief Checks for pentium specific helper functions like __xtol which have

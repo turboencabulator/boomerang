@@ -681,6 +681,7 @@ Statement::prints() const
 }
 
 
+#if 0 // Cruft?
 /* This function is designed to find basic flag calls, plus in addition two variations seen with Pentium FP code.
    These variations involve ANDing and/or XORing with constants. So it should return true for these values of e:
    ADDFLAGS(...)
@@ -688,7 +689,7 @@ Statement::prints() const
    (SETFFLAGS(...) & 0x45) ^ 0x40
    FIXME: this may not be needed any more...
 */
-bool
+static bool
 hasSetFlags(Exp *e)
 {
 	if (e->isFlagCall()) return true;
@@ -711,6 +712,7 @@ hasSetFlags(Exp *e)
 		std::cerr << "hasSetFlags returns true with " << *e << "\n";
 	return ret;
 }
+#endif
 
 // Return true if can propagate to Exp* e (must be a RefExp to return true)
 // Note: does not consider whether e is able to be renamed (from a memory Primitive point of view), only if the

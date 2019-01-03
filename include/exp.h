@@ -180,7 +180,7 @@ public:
 	// True if this is a typeof
 	        bool        isTypeOf() const { return op == opTypeOf; }
 	// Get the index for this var
-	        int         getVarIndex() const;
+	//        int         getVarIndex() const;
 	// True if this is a terminal
 	virtual bool        isTerminal() const { return false; }
 	// True if this is the constant "true"
@@ -234,7 +234,7 @@ public:
 	virtual void        doSearchChildren(Exp *search, std::list<Exp **> &li, bool once);
 	/** \} */
 
-	        Exp        *getGuard() const;
+	//        Exp        *getGuard() const;
 
 	/**
 	 * \name Expression simplification

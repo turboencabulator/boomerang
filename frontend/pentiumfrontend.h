@@ -43,9 +43,10 @@ private:
 	 * Process an F(n)STSW instruction.
 	 */
 	bool processStsw(std::list<RTL *>::iterator &rit, std::list<RTL *> *pRtls, BasicBlock *pBB, Cfg *pCfg);
+	static bool isStoreFsw(Statement *s);
 #endif
 
-	static void emitSet(std::list<RTL *> &, std::list<RTL *>::iterator &, ADDRESS, Exp *, Exp *);
+	//static void emitSet(std::list<RTL *> &, std::list<RTL *>::iterator &, ADDRESS, Exp *, Exp *);
 
 #if 0 // Cruft?
 	/**
@@ -63,10 +64,9 @@ private:
 
 	bool helperFunc(std::list<RTL *> &, ADDRESS, ADDRESS) override;
 
-	static bool isStoreFsw(Statement *s);
-	static bool isDecAh(RTL *r);
-	static bool isSetX(Statement *e);
-	static bool isAssignFromTern(Statement *s);
+	//static bool isDecAh(RTL *r);
+	//static bool isSetX(Statement *e);
+	//static bool isAssignFromTern(Statement *s);
 	static void bumpRegisterAll(Exp *e, int min, int max, int delta, int mask);
 
 protected:

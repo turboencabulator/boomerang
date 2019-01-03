@@ -1315,6 +1315,7 @@ Exp::isAfpTerm() const
 	return ((subOp1 == opAFP) && (subOp2 == opIntConst));
 }
 
+#if 0 // Cruft?
 /**
  * \returns  The index for this var, e.g. if v[2], return 2.
  */
@@ -1325,7 +1326,9 @@ Exp::getVarIndex() const
 	const Exp *sub = ((const Unary *)this)->getSubExp1();
 	return ((const Const *)sub)->getInt();
 }
+#endif
 
+#if 0 // Cruft?
 /**
  * \returns  A ptr to the guard expression, or nullptr if none.
  */
@@ -1335,6 +1338,7 @@ Exp::getGuard() const
 	if (op == opGuard) return ((const Unary *)this)->getSubExp1();
 	return nullptr;
 }
+#endif
 
 /**
  * Matches this expression to the given pattern.
