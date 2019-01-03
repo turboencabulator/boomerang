@@ -520,7 +520,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				if (VERBOSE)
 					LOG << "found proven " << *eq << "\n";
 				if (eq->getOper() == opPlus
-				 && *eq->getSubExp1() == *Location::regOf(28)
+				 && eq->getSubExp1()->isRegN(28)
 				 && eq->getSubExp2()->isIntConst()) {
 					c = ((Const *)eq->getSubExp2())->getInt();
 				} else

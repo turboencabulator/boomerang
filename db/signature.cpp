@@ -410,7 +410,7 @@ Exp *
 CallingConvention::Win32Signature::getProven(Exp *left)
 {
 	int nparams = params.size();
-	if (nparams > 0 && *params[0]->getExp() == *Location::regOf(28)) {
+	if (nparams > 0 && params[0]->getExp()->isRegN(28)) {
 		--nparams;
 	}
 	if (left->isRegOfK()) {
@@ -484,7 +484,7 @@ CallingConvention::Win32TcSignature::getProven(Exp *left)
 	if (left->isRegOfK()) {
 		if (((Const *)left->getSubExp1())->getInt() == 28) {
 			int nparams = params.size();
-			if (nparams > 0 && *params[0]->getExp() == *Location::regOf(28)) {
+			if (nparams > 0 && params[0]->getExp()->isRegN(28)) {
 				--nparams;
 			}
 			// r28 += 4 + nparams*4 - 4     (-4 because ecx is register param)

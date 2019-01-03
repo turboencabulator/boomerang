@@ -36065,7 +36065,7 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (i8 != -16 || !(*oper == *Location::regOf(28)))
+		if (!(i8 == -16 && oper->isRegN(28)))
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
 
 
@@ -53759,7 +53759,7 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (i8 != -16 || !(*oper == *Location::regOf(28)))
+		if (!(i8 == -16 && oper->isRegN(28)))
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
 
 
@@ -53781,7 +53781,7 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (i8 != -16 || !(*oper == *Location::regOf(28)))
+		if (!(i8 == -16 && oper->isRegN(28)))
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
 
 
@@ -53803,7 +53803,7 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (i8 != -16 || !(*oper == *Location::regOf(28)))
+		if (!(i8 == -16 && oper->isRegN(28)))
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
 
 
@@ -53825,7 +53825,7 @@ pc
 
 		// Special hack to ignore and $0xfffffff0, %esp
 		auto oper = DIS_EADDR32;
-		if (i8 != -16 || !(*oper == *Location::regOf(28)))
+		if (!(i8 == -16 && oper->isRegN(28)))
 			result.rtl = instantiate(pc, name, oper, DIS_I8);
 
 
