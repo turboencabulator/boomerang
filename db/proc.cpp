@@ -748,7 +748,7 @@ UserProc::numberStatements()
 		BasicBlock::rtlit rit;
 		BasicBlock::stlit sit;
 		for (auto stmt = bb->getFirstStmt(rit, sit); stmt; stmt = bb->getNextStmt(rit, sit))
-			if (!stmt->isImplicit()      // Don't renumber implicits (remain number 0)
+			if (!dynamic_cast<ImplicitAssign *>(stmt)  // Don't renumber implicits (remain number 0)
 			 && stmt->getNumber() == 0)  // Don't renumber existing (or waste numbers)
 				stmt->setNumber(++stmtNumber);
 	}
@@ -2105,10 +2105,11 @@ UserProc::findFinalParameters()
 	for (const auto &stmt : stmts) {
 		// Assume that all parameters will be m[]{0} or r[]{0}, and in the implicit definitions at the start of the
 		// program
-		if (!stmt->isImplicit())
+		auto ia = dynamic_cast<ImplicitAssign *>(stmt);
+		if (!ia)
 			// Note: phis can get converted to assignments, but I hope that this is only later on: check this!
 			break;  // Stop after reading all implicit assignments
-		Exp *e = ((ImplicitAssign *)stmt)->getLeft();
+		Exp *e = ia->getLeft();
 		if (signature->findParam(e) == -1) {
 			if (VERBOSE || DEBUG_PARAMS)
 				LOG << "potential param " << *e << "\n";
@@ -2170,7 +2171,7 @@ UserProc::findFinalParameters()
 			if (VERBOSE || DEBUG_PARAMS)
 				LOG << "found new parameter " << *e << "\n";
 
-			Type *ty = ((ImplicitAssign *)stmt)->getType();
+			Type *ty = ia->getType();
 			// Add this parameter to the signature (for now; creates parameter names)
 			addParameter(e, ty);
 			// Insert it into the parameters StatementList, in sensible order
@@ -2861,7 +2862,7 @@ UserProc::countRefs(RefCounter &refCounts)
 	for (const auto &stmt : stmts) {
 		// Don't count uses in implicit statements. There is no RHS of course, but you can still have x from m[x] on the
 		// LHS and so on, and these are not real uses
-		if (stmt->isImplicit()) continue;
+		if (dynamic_cast<ImplicitAssign *>(stmt)) continue;
 		if (DEBUG_UNUSED)
 			LOG << "counting references in " << *stmt << "\n";
 		LocationSet refs;
@@ -2919,8 +2920,8 @@ UserProc::removeUnusedLocals()
 					LOG << "counted local " << name << " in " << *stmt << "\n";
 			}
 		}
-		if (stmt->isAssignment() && !stmt->isImplicit() && ((Assignment *)stmt)->getLeft()->isLocal()) {
-			auto as = (Assignment *)stmt;
+		auto as = dynamic_cast<Assignment *>(stmt);
+		if (as && !dynamic_cast<ImplicitAssign *>(as) && as->getLeft()->isLocal()) {
 			auto c = (Const *)((Unary *)as->getLeft())->getSubExp1();
 			std::string name(c->getStr());
 			usedLocals.insert(name);
@@ -4244,8 +4245,7 @@ UserProc::fixCallAndPhiRefs()
 						if (e->getSubExp2()->isIntConst()) {
 							if (e->getSubExp1()->isSubscript()
 							 && e->getSubExp1()->getSubExp1()->isRegN(signature->getStackRegister())
-							 && (!((RefExp *)e->getSubExp1())->getDef()
-							  || ((RefExp *)e->getSubExp1())->getDef()->isImplicit())) {
+							 && ((RefExp *)e->getSubExp1())->isImplicitDef()) {
 								a->setRight(new Unary(opAddrOf, Location::memOf(e->clone())));
 								found = true;
 							}
@@ -5331,7 +5331,7 @@ UserProc::nameParameterPhis()
 		const char *firstName = nullptr;  // The name for the first parameter found
 		Type *ty = pi->getType();
 		for (const auto &pp : *pi) {
-			if (pp.def->isImplicit()) {
+			if (dynamic_cast<ImplicitAssign *>(pp.def)) {
 				auto phiArg = new RefExp(pp.e, pp.def);
 				if (auto name = lookupSym(phiArg, ty)) {
 					if (firstName && strcmp(firstName, name) != 0) {

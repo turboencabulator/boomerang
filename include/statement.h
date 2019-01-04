@@ -178,8 +178,6 @@ public:
 	virtual bool        isAssignment() const { return false; }
 	// true if this statement is a phi assignment
 	virtual bool        isPhi() const { return false; }
-	// true if this statement is an implicit assignment
-	virtual bool        isImplicit() const { return false; }
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
@@ -650,7 +648,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_IMPASSIGN; }
-	bool        isImplicit() const override { return true; }
 
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &ch) override;

@@ -421,7 +421,7 @@ RefExp::operator ==(const Exp &e) const
 	return def == (Statement *)-1  // Allow a def of (Statement *)-1 as a wild card
 	    || o.def == (Statement *)-1
 	    || (!def && o.isImplicitDef())  // Allow a def of nullptr to match a def of an implicit assignment
-	    || (!o.def && def && def->isImplicit())
+	    || (!o.def && dynamic_cast<ImplicitAssign *>(def))
 	    || def == o.def;
 }
 bool
@@ -4273,7 +4273,7 @@ Exp::expSubscriptAllNull(/*Cfg *cfg*/)
 bool
 RefExp::isImplicitDef() const
 {
-	return !def || def->getKind() == STMT_IMPASSIGN;
+	return !def || dynamic_cast<ImplicitAssign *>(def);
 }
 
 Exp *

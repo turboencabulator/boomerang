@@ -217,15 +217,15 @@ UserProc::dfaTypeAnalysis()
 						                                Location::global(prog->getGlobalName(K), this),
 						                                idx));
 						// Beware of changing expressions in implicit assignments... map can become invalid
-						bool isImplicit = stmt->isImplicit();
-						if (isImplicit)
-							cfg->removeImplicitAssign(((ImplicitAssign *)stmt)->getLeft());
+						auto ia = dynamic_cast<ImplicitAssign *>(stmt);
+						if (ia)
+							cfg->removeImplicitAssign(ia->getLeft());
 						stmt->searchAndReplace(unscaledArrayPat, arr);
 						// stmt will likely have an m[a[array]], so simplify
 						stmt->simplifyAddr();
-						if (isImplicit)
+						if (ia)
 							// Replace the implicit assignment entry. Note that stmt's lhs has changed
-							cfg->findImplicitAssign(((ImplicitAssign *)stmt)->getLeft());
+							cfg->findImplicitAssign(ia->getLeft());
 						// Ensure that the global is declared
 						// Ugh... I think that arrays and pointers to arrays are muddled!
 						prog->globalUsed(K, baseType);
@@ -263,16 +263,16 @@ UserProc::dfaTypeAnalysis()
 			                      Location::global(nam, this),
 			                      idx);
 			if (stmt->searchAndReplace(scaledArrayPat, arr)) {
-				if (stmt->isImplicit())
+				if (auto ia = dynamic_cast<ImplicitAssign *>(stmt))
 					// Register an array of appropriate type
-					prog->globalUsed(K2, new ArrayType(((ImplicitAssign *)stmt)->getType()));
+					prog->globalUsed(K2, new ArrayType(ia->getType()));
 			}
 		}
 
 		// 3) Check implicit assigns for parameter and global types.
-		if (stmt->isImplicit()) {
-			Exp *lhs = ((ImplicitAssign *)stmt)->getLeft();
-			Type *iType = ((ImplicitAssign *)stmt)->getType();
+		if (auto ia = dynamic_cast<ImplicitAssign *>(stmt)) {
+			Exp *lhs = ia->getLeft();
+			Type *iType = ia->getType();
 			// Note: parameters are not explicit any more
 			//if (lhs->isParam()) { // }
 			bool allZero;

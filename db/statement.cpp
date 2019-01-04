@@ -2411,8 +2411,7 @@ CallStatement::convertToDirect()
 	bool convertIndirect = false;
 	Exp *e = pDest;
 	if (e->isSubscript()) {
-		Statement *def = ((RefExp *)e)->getDef();
-		if (def && !def->isImplicit())
+		if (!((RefExp *)e)->isImplicitDef())
 			return false;  // If an already defined global, don't convert
 		e = ((RefExp *)e)->getSubExp1();
 	}
@@ -4422,7 +4421,7 @@ PhiAssign::simplify()
 		bool onlyOneNotThis = true;
 		Statement *notthis = (Statement *)-1;
 		for (const auto &def : defVec) {
-			if (!def.def || def.def->isImplicit() || !def.def->isPhi() || def.def != this) {
+			if (!def.def || dynamic_cast<ImplicitAssign *>(def.def) || !def.def->isPhi() || def.def != this) {
 				if (notthis != (Statement *)-1) {
 					onlyOneNotThis = false;
 					break;

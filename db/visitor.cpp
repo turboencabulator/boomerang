@@ -891,9 +891,8 @@ bool StmtRegMapper::visit(    BoolAssign *stmt, bool &recurse) { return common(s
 Exp *
 ConstGlobalConverter::preVisit(RefExp *e, bool &recurse)
 {
-	Statement *def = e->getDef();
 	Exp *base, *addr, *idx, *glo;
-	if (!def || def->isImplicit()) {
+	if (e->isImplicitDef()) {
 		if ((base = e->getSubExp1(), base->isMemOf())
 		 && (addr = ((Location *)base)->getSubExp1(), addr->isIntConst())) {
 			// We have a m[K]{-}

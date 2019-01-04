@@ -1097,7 +1097,7 @@ Prog::removeUnusedGlobals()
 			StatementList stmts;
 			up->getStatements(stmts);
 			for (const auto &s : stmts) {
-				if (s->isImplicit()) continue;  // Ignore the uses in ImplicitAssigns
+				if (dynamic_cast<ImplicitAssign *>(s)) continue;  // Ignore the uses in ImplicitAssigns
 				bool found = s->searchAll(search, usedGlobals);
 				if (found && DEBUG_UNUSED)
 					LOG << " a global is used by stmt " << s->getNumber() << "\n";
