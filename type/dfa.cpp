@@ -184,10 +184,12 @@ UserProc::dfaTypeAnalysis()
 							                                new Const(r)), this);
 						} else {
 							Type *ty = prog->getGlobalType(gname);
-							if (stmt->isAssign() && ((Assign *)stmt)->getType()) {
-								int bits = ((Assign *)stmt)->getType()->getSize();
-								if (!ty || ty->getSize() == 0)
-									prog->setGlobalType(gname, new IntegerType(bits));
+							if (auto as = dynamic_cast<Assign *>(stmt)) {
+								if (auto ast = as->getType()) {
+									int bits = ast->getSize();
+									if (!ty || ty->getSize() == 0)
+										prog->setGlobalType(gname, new IntegerType(bits));
+								}
 							}
 							Location *g = Location::global(gname, this);
 							if (ty && ty->resolvesToArray())

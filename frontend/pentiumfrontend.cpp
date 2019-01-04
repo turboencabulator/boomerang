@@ -59,8 +59,9 @@ PentiumFrontEnd::~PentiumFrontEnd()
 bool
 PentiumFrontEnd::isStoreFsw(Statement *s)
 {
-	if (!s->isAssign()) return false;
-	auto rhs = ((Assign *)s)->getRight();
+	auto asgn = dynamic_cast<Assign *>(s);
+	if (!asgn) return false;
+	auto rhs = asgn->getRight();
 	Exp *result;
 	bool res = rhs->search(Location::regOf(FSW), result);
 	return res;
@@ -80,8 +81,8 @@ PentiumFrontEnd::isDecAh(RTL *r)
 	// Check for decrement; RHS of middle Exp will be r[12]{8} - 1
 	if (r->getList().size() != 3) return false;
 	auto mid = *(++r->getList().begin());
-	if (!mid->isAssign()) return false;
-	auto asgn = (Assign *)mid;
+	auto asgn = dynamic_cast<Assign *>(mid);
+	if (!asgn) return false;
 	auto rhs = asgn->getRight();
 	Binary ahm1(opMinus,
 	            new Binary(opSize,
@@ -104,8 +105,8 @@ PentiumFrontEnd::isSetX(Statement *s)
 {
 	// Check for SETX, i.e. <exp> ? 1 : 0
 	// i.e. ?: <exp> Const 1 Const 0
-	if (!s->isAssign()) return false;
-	auto asgn = (Assign *)s;
+	auto asgn = dynamic_cast<Assign *>(s);
+	if (!asgn) return false;
 	auto lhs = asgn->getLeft();
 	// LHS must be a register
 	if (!lhs->isRegOf()) return false;
@@ -129,8 +130,8 @@ PentiumFrontEnd::isSetX(Statement *s)
 bool
 PentiumFrontEnd::isAssignFromTern(Statement *s)
 {
-	if (!s->isAssign()) return false;
-	auto asgn = (Assign *)s;
+	auto asgn = dynamic_cast<Assign *>(s);
+	if (!asgn) return false;
 	auto rhs = asgn->getRight();
 	return rhs->getOper() == opTern;
 }
@@ -425,8 +426,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 				// Remove the FPOP
 				sit = rtl->deleteStmt(sit);
 				continue;
-			} else if (stmt->isAssign()) {
-				auto asgn = (Assign *)stmt;
+			} else if (auto asgn = dynamic_cast<Assign *>(stmt)) {
 				auto lhs = asgn->getLeft();
 				auto rhs = asgn->getRight();
 				if (tos != 0) {
@@ -668,13 +668,13 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::ite
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
 	auto s1 = rtl->getList().front();
 	auto s6 = rtl->getList().back();
-	if (s1->isAssign())
-		br1->setCondExpr(((Assign *)s1)->getRight());
+	if (auto a1 = dynamic_cast<Assign *>(s1))
+		br1->setCondExpr(a1->getRight());
 	else
 		br1->setCondExpr(nullptr);
 	auto br2 = new BranchStatement(a);
-	if (s6->isAssign())
-		br2->setCondExpr(((Assign *)s6)->getRight());
+	if (auto a6 = dynamic_cast<Assign *>(s6))
+		br2->setCondExpr(a6->getRight());
 	else
 		br2->setCondExpr(nullptr);
 	cfg->splitForBranch(bb, rtl, br1, br2, it);
@@ -701,9 +701,8 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 			//ADDRESS prev = addr;
 			addr = rtl->getAddress();
 			if (!rtl->getList().empty()) {
-				auto firstStmt = rtl->getList().front();
-				if (firstStmt->isAssign()) {
-					auto lhs = ((Assign *)firstStmt)->getLeft();
+				if (auto firstStmt = dynamic_cast<Assign *>(rtl->getList().front())) {
+					auto lhs = firstStmt->getLeft();
 					if (lhs->isMachFtr()) {
 						auto sub = (Const *)((Unary *)lhs)->getSubExp1();
 						auto str = sub->getStr();
@@ -1035,8 +1034,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				const auto &stmts = (*rrit)->getList();
 				for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
 					auto stmt = *srit;
-					if (stmt->isAssign()) {
-						auto asgn = (Assign *)stmt;
+					if (auto asgn = dynamic_cast<Assign *>(stmt)) {
 						auto lhs = asgn->getLeft();
 						auto rhs = asgn->getRight();
 						if (lhs->isRegN(28) && rhs->getOper() == opMinus) {
@@ -1115,8 +1113,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				const auto &stmts = (*rrit)->getList();
 				for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
 					auto stmt = *srit;
-					if (stmt->isAssign()) {
-						auto asgn = (Assign *)stmt;
+					if (auto asgn = dynamic_cast<Assign *>(stmt)) {
 						auto lhs = asgn->getLeft();
 						auto rhs = asgn->getRight();
 						if (lhs->isRegN(28) && rhs->getOper() == opMinus) {

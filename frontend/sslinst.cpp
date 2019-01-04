@@ -508,9 +508,9 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 		// ss appears to be a list of expressions to be searched
 		// It is either the LHS and RHS of an assignment, or it's the parameters of a flag call
 		Binary *ss;
-		if (rt->isAssign()) {
-			Exp *lhs = ((Assign *)rt)->getLeft();
-			Exp *rhs = ((Assign *)rt)->getRight();
+		if (auto as = dynamic_cast<Assign *>(rt)) {
+			Exp *lhs = as->getLeft();
+			Exp *rhs = as->getRight();
 
 			// Look for assignments to post-variables
 			if (lhs && lhs->isPostVar()) {
@@ -518,7 +518,7 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 					// Add a record in the map for this postvar
 					transPost &el = vars[lhs];
 					el.used = false;
-					el.type = ((Assign *)rt)->getType();
+					el.type = as->getType();
 
 					// Constuct a temporary. We should probably be smarter and actually check that it's not otherwise
 					// used here.
@@ -546,9 +546,11 @@ RTLInstDict::transformPostVars(RTL &rtl, bool optimise)
 			                new Binary(opList,
 			                           rhs->clone(),
 			                           new Terminal(opNil)));
+#if 0  // FIXME:  Can't get here, FlagAssign is an Assign.  Also can't cast from Statement to Binary.
 		} else if (rt->isFlagAssgn()) {
 			// An opFlagCall is assumed to be a Binary with a string and an opList of parameters
 			ss = (Binary *)((Binary *)rt)->getSubExp2();
+#endif
 		} else {
 			ss = nullptr;
 		}

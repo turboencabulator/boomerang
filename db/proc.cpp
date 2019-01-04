@@ -1781,8 +1781,7 @@ UserProc::fixUglyBranches()
 				Statement *n = ((RefExp *)hl->getSubExp1()->getSubExp1())->getDef();
 				if (auto p = dynamic_cast<PhiAssign *>(n)) {
 					for (int i = 0; i < p->getNumDefs(); ++i) {
-						if (p->getStmtAt(i)->isAssign()) {
-							auto a = (Assign *)p->getStmtAt(i);
+						if (auto a = dynamic_cast<Assign *>(p->getStmtAt(i))) {
 							if (*a->getRight() == *hl->getSubExp1()) {
 								hl->setSubExp1(new RefExp(a->getLeft(), a));
 								break;
@@ -1912,8 +1911,9 @@ UserProc::removeSpAssignsIfPossible()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isAssign() && *((Assign *)stmt)->getLeft() == *sp)
-			foundone = true;
+		if (auto a = dynamic_cast<Assign *>(stmt))
+			if (*a->getLeft() == *sp)
+				foundone = true;
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
 		for (const auto &ref : refs) {
@@ -1930,14 +1930,10 @@ UserProc::removeSpAssignsIfPossible()
 
 	Boomerang::get()->alert_decompile_debug_point(this, "before removing stack pointer assigns.");
 
-	for (const auto &stmt : stmts) {
-		if (stmt->isAssign()) {
-			auto a = (Assign *)stmt;
-			if (*a->getLeft() == *sp) {
+	for (const auto &stmt : stmts)
+		if (auto a = dynamic_cast<Assign *>(stmt))
+			if (*a->getLeft() == *sp)
 				removeStatement(a);
-			}
-		}
-	}
 
 	Boomerang::get()->alert_decompile_debug_point(this, "after removing stack pointer assigns.");
 }
@@ -1954,8 +1950,9 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isAssign() && *((Assign *)stmt)->getLeft() == *e)
-			foundone = true;
+		if (auto a = dynamic_cast<Assign *>(stmt))
+			if (*a->getLeft() == *e)
+				foundone = true;
 		if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
 			if (*pa->getLeft() == *e)
 				foundone = true;
@@ -1982,8 +1979,7 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 		LOG << str.str() << "\n";
 
 	for (const auto &stmt : stmts) {
-		if (stmt->isAssign()) {
-			auto a = (Assign *)stmt;
+		if (auto a = dynamic_cast<Assign *>(stmt)) {
 			if (*a->getLeft() == *e)
 				removeStatement(a);
 		} else if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
@@ -2535,10 +2531,12 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 			int n = ((Const *)res->getSubExp1()->getSubExp2())->getInt();
 			arr->setProc(this);
 			//Type *base = new IntegerType();
-			//if (stmt->isAssign() && ((Assign *)stmt)->getLeft() == res) {
-			//	Type *at = ((Assign *)stmt)->getType();
-			//	if (at && at->getSize() != 0)
-			//		base = ((Assign *)stmt)->getType()->clone();
+			//if (auto a = dynamic_cast<Assign *>(stmt) {
+			//	if (a->getLeft() == res) {
+			//		Type *at = a->getType();
+			//		if (at && at->getSize() != 0)
+			//			base = at->clone();
+			//	}
 			//}
 			//arr->setType(new ArrayType(base, n / (base->getSize() / 8)));
 			if (VERBOSE)
@@ -3566,17 +3564,17 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 					}
 					query = new Terminal(ok ? opTrue : opFalse);
 					change = true;
-				} else if (s && s->isAssign()) {
-					if (s && refsTo.count(s)) {
-						LOG << "detected ref loop " << *s << "\n";
+				} else if (auto as = dynamic_cast<Assign *>(s)) {
+					if (refsTo.count(as)) {
+						LOG << "detected ref loop " << *as << "\n";
 						LOG << "refsTo: ";
 						for (const auto &rt : refsTo)
 							LOG << rt->getNumber() << ", ";
 						LOG << "\n";
 						assert(false);
 					} else {
-						refsTo.insert(s);
-						query->setSubExp1(((Assign *)s)->getRight()->clone());
+						refsTo.insert(as);
+						query->setSubExp1(as->getRight()->clone());
 						change = true;
 					}
 				}
@@ -3610,8 +3608,8 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 				StatementList stmts;
 				getStatements(stmts);
 				for (const auto &stmt : stmts) {
-					auto s = (Assign *)stmt;
-					if (s->isAssign()
+					auto s = dynamic_cast<Assign *>(stmt);
+					if (s
 					 && *s->getRight() == *query->getSubExp2()
 					 && s->getLeft()->isMemOf()) {
 						query->setSubExp2(s->getLeft()->clone());
@@ -4010,8 +4008,7 @@ UserProc::reverseStrengthReduction()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isAssign()) {
-			auto as = (Assign *)stmt;
+		if (auto as = dynamic_cast<Assign *>(stmt)) {
 			// of the form x = x{p} + c
 			if (as->getRight()->getOper() == opPlus
 			 && as->getRight()->getSubExp1()->isSubscript()
@@ -4030,10 +4027,10 @@ UserProc::reverseStrengthReduction()
 							second = tmp;
 						}
 						// first must be of form x := 0
-						if (first
-						 && first->isAssign()
-						 && ((Assign *)first)->getRight()->isIntConst()
-						 && ((Const *)((Assign *)first)->getRight())->getInt() == 0) {
+						auto af = dynamic_cast<Assign *>(first);
+						if (af
+						 && af->getRight()->isIntConst()
+						 && ((Const *)af->getRight())->getInt() == 0) {
 							// ok, fun, now we need to find every reference to p and
 							// replace with x{p} * c
 							StatementList stmts2;
@@ -4268,12 +4265,8 @@ UserProc::fixCallAndPhiRefs()
 					continue;
 				}
 				// Chase the definition
-				if (p->def) {
-					if (!p->def->isAssign()) {
-						++p;
-						continue;
-					}
-					Exp *rhs = ((Assign *)p->def)->getRight();
+				if (auto as = dynamic_cast<Assign *>(p->def)) {
+					Exp *rhs = as->getRight();
 					if (*rhs == *r) {  // Check if RHS is a single reference to ps
 						p = ps->erase(p);  // Yes, erase this phi parameter
 						continue;
@@ -4340,7 +4333,7 @@ UserProc::fixCallAndPhiRefs()
 						best = current;
 						break;
 					}
-					if (p->def->isAssign())
+					if (dynamic_cast<Assign *>(p->def))
 						best = current;
 					// If p->def is a call, this is the worst case; keep only (via first) if all parameters are calls
 				}
@@ -4396,8 +4389,8 @@ UserProc::propagateToCollector()
 			for (const auto &loc : used) {
 				auto r = (RefExp *)loc;
 				if (!r->isSubscript()) continue;
-				auto as = (Assign *)r->getDef();
-				if (!as || !as->isAssign()) continue;
+				auto as = dynamic_cast<Assign *>(r->getDef());
+				if (!as) continue;
 				bool ch;
 				Exp *res = addr->clone()->searchReplaceAll(r, as->getRight(), ch);
 				if (!ch) continue;  // No change
@@ -5030,8 +5023,7 @@ UserProc::logSuspectMemoryDefs()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isAssign()) {
-			auto a = (Assign *)stmt;
+		if (auto a = dynamic_cast<Assign *>(stmt)) {
 			if (a->getLeft()->isMemOf()) {
 				RangeMap &rm = a->getRanges();
 				Exp *p = rm.substInto(a->getLeft()->getSubExp1()->clone());

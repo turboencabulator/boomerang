@@ -2100,15 +2100,17 @@ BasicBlock::findNumCases()
 static void
 findConstantValues(Statement *s, std::list<int> &dests)
 {
-	if (!s) return;
 	if (auto pa = dynamic_cast<PhiAssign *>(s)) {
 		// For each definition, recurse
 		for (const auto &def : *pa)
 			findConstantValues(def.def, dests);
-	} else if (s->isAssign()) {
-		Exp *rhs = ((Assign *)s)->getRight();
+		return;
+	}
+	if (auto as = dynamic_cast<Assign *>(s)) {
+		Exp *rhs = as->getRight();
 		if (rhs->isIntConst())
 			dests.push_back(((Const *)rhs)->getInt());
+		return;
 	}
 }
 

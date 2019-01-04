@@ -825,16 +825,16 @@ StatementTest::testIsAssign()
 {
 	std::ostringstream ost;
 	// r2 := 99
-	Assign a(Location::regOf(2), new Const(99));
+	auto a = Assign(Location::regOf(2), new Const(99));
 	a.print(ost);
 	std::string expected("   0 *v* r2 := 99");
 	std::string actual(ost.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 	//CPPUNIT_ASSERT_EQUAL(std::string("*v* r2 := 99"), std::string(ost.str()));
-	CPPUNIT_ASSERT(a.isAssign());
+	CPPUNIT_ASSERT(dynamic_cast<Assign *>(&a));
 
-	auto c = new CallStatement;
-	CPPUNIT_ASSERT(!c->isAssign());
+	auto c = CallStatement();
+	CPPUNIT_ASSERT(!dynamic_cast<Assign *>(&c));
 }
 
 /**

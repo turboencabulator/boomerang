@@ -3116,11 +3116,11 @@ RefExp::polySimplify(bool &bMod)
 
 	// another hack, this time for aliasing
 	// FIXME: do we really want this now? Pentium specific, and only handles ax/eax (not al or ah)
+	auto as = dynamic_cast<Assign *>(def);
 	if (subExp1->isRegN(0)  // r0 (ax)
-	 && def
-	 && def->isAssign()
-	 && ((Assign *)def)->getLeft()->isRegN(24)) {  // r24 (eax)
-		res = new TypedExp(new IntegerType(16), new RefExp(Location::regOf(24), def));
+	 && as
+	 && as->getLeft()->isRegN(24)) {  // r24 (eax)
+		res = new TypedExp(new IntegerType(16), new RefExp(Location::regOf(24), as));
 		bMod = true;
 		return res;
 	}

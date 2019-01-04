@@ -171,8 +171,6 @@ public:
 	// true if is a null statement
 	virtual bool        isNullStatement() const { return false; }
 
-	// true if this statement is a standard assign
-	virtual bool        isAssign() const { return false; }
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
@@ -425,7 +423,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_ASSIGN; }
-	bool        isAssign() const override { return true; }
 	bool        isFlagAssgn() const override;
 	bool        isNullStatement() const override;
 	bool        isFpush() const override;

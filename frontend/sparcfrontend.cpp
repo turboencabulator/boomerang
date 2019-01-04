@@ -136,12 +136,10 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 		// If the delay slot is a single assignment to %o7, we want to see the semantics for it, so that preservation
 		// or otherwise of %o7 is correct
 		const auto &stmts = delay->getList();
-		if (stmts.size() == 1
-		 && stmts.front()->isAssign()) {
-			auto as = (Assign *)stmts.front();
-			if (as->getLeft()->isRegN(15))
-				ls.push_back(stmts.front());
-		}
+		if (stmts.size() == 1)
+			if (auto as = dynamic_cast<Assign *>(stmts.front()))
+				if (as->getLeft()->isRegN(15))
+					ls.push_back(as);
 		ls.push_back(new ReturnStatement);
 		auto r = new RTL(rtl->getAddress() + 1);
 		r->splice(ls);
@@ -954,34 +952,33 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 						// (to be likely removed by dataflow analysis) and merely insert a return BB after the call
 						// Note that if an add, there may be an assignment to a temp register first. So look at last RT
 						const auto &stmts = delay_inst.rtl->getList();
-						if (!stmts.empty()
-						 && stmts.back()->isAssign()) {
-							auto as = (Assign *)stmts.back();
-							Exp *lhs = as->getLeft();
-							if (lhs->isRegN(15)) {  // %o7 is r[15]
-								// If it's an add, this is special. Example:
-								//   call foo
-								//   add %o7, K, %o7
-								// is equivalent to call foo / ba .+K
-								Exp *rhs = as->getRight();
-								Location *o7 = Location::regOf(15);
-								if (rhs->getOper() == opPlus
-								 && (((Binary *)rhs)->getSubExp2()->isIntConst())
-								 && (*((Binary *)rhs)->getSubExp1() == *o7)) {
-									// Get the constant
-									int K = ((Const *)((Binary *)rhs)->getSubExp2())->getInt();
-									case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
-									// We don't generate a goto; instead, we just decode from the new address
-									// Note: the call to case_CALL has already incremented address by 8, so don't do again
-									address += K;
-									break;
-								} else {
-									// We assume this is some sort of move/x/call/move pattern. The overall effect is to
-									// pop one return address, we we emit a return after this call
-									((CallStatement *)last)->setReturnAfterCall(true);
-									sequentialDecode = false;
-									case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
-									break;
+						if (!stmts.empty()) {
+							if (auto as = dynamic_cast<Assign *>(stmts.back())) {
+								if (as->getLeft()->isRegN(15)) {  // %o7 is r[15]
+									// If it's an add, this is special. Example:
+									//   call foo
+									//   add %o7, K, %o7
+									// is equivalent to call foo / ba .+K
+									Exp *rhs = as->getRight();
+									Location *o7 = Location::regOf(15);
+									if (rhs->getOper() == opPlus
+									 && (((Binary *)rhs)->getSubExp2()->isIntConst())
+									 && (*((Binary *)rhs)->getSubExp1() == *o7)) {
+										// Get the constant
+										int K = ((Const *)((Binary *)rhs)->getSubExp2())->getInt();
+										case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
+										// We don't generate a goto; instead, we just decode from the new address
+										// Note: the call to case_CALL has already incremented address by 8, so don't do again
+										address += K;
+										break;
+									} else {
+										// We assume this is some sort of move/x/call/move pattern. The overall effect is to
+										// pop one return address, we we emit a return after this call
+										((CallStatement *)last)->setReturnAfterCall(true);
+										sequentialDecode = false;
+										case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
+										break;
+									}
 								}
 							}
 						}

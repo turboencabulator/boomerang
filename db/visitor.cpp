@@ -776,11 +776,10 @@ ExpPropagator::postVisit(RefExp *e)
 	// have been renamed, and we never would get here
 	if (!Statement::canPropagateToExp(e))  // Check of the definition statement is suitable for propagating
 		return e;
-	Statement *def = e->getDef();
 	Exp *res = e;
-	if (def && def->isAssign()) {
-		Exp *lhs = ((Assign *)def)->getLeft();
-		Exp *rhs = ((Assign *)def)->getRight();
+	if (auto def = dynamic_cast<Assign *>(e->getDef())) {
+		Exp *lhs = def->getLeft();
+		Exp *rhs = def->getRight();
 		bool ch;
 		res = e->searchReplaceAll(new RefExp(lhs, def), rhs->clone(), ch);
 		if (ch) {

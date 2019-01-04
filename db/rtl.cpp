@@ -380,8 +380,8 @@ Type *
 RTL::getType() const
 {
 	for (const auto &stmt : stmtList) {
-		if (stmt->isAssign())
-			return ((Assign *)stmt)->getType();
+		if (auto as = dynamic_cast<Assign *>(stmt))
+			return as->getType();
 	}
 	return new IntegerType();  // Default to 32 bit integer if no assignments
 }

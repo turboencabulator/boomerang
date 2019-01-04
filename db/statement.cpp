@@ -493,12 +493,14 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			LOG << "using push count hack to guess number of params\n";
 			Statement *prev = this->getPreviousStatementInBB();
 			while (prev) {
-				if (prev->isAssign()
-				 && ((Assign *)prev)->getLeft()->isMemOf()
-				 && ((Assign *)prev)->getLeft()->getSubExp1()->isRegOfK()
-				 && ((Const *)((Assign *)prev)->getLeft()->getSubExp1()->getSubExp1())->getInt() == 28
-				 && !((Assign *)prev)->getRight()->isPC()) {
-					c += 4;
+				if (auto as = dynamic_cast<Assign *>(prev)) {
+					auto lhs = as->getLeft();
+					auto rhs = as->getRight();
+					if (lhs->isMemOf()
+					 && lhs->getSubExp1()->isRegN(28)
+					 && !rhs->isPC()) {
+						c += 4;
+					}
 				}
 				prev = prev->getPreviousStatementInBB();
 			}
@@ -550,16 +552,13 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 					}
 					last = nullptr;
 				}
-				if (last && last->isAssign()) {
+				if (auto as = dynamic_cast<Assign *>(last)) {
 					//LOG << "checking last statement " << last << " for number of bytes popped\n";
-					Assign *a = (Assign *)last;
-					assert(a->getLeft()->isRegOfK()
-					    && ((Const *)a->getLeft()->getSubExp1())->getInt() == 28);
-					Exp *t = a->getRight()->clone()->simplifyArith();
+					assert(as->getLeft()->isRegN(28));
+					Exp *t = as->getRight()->clone()->simplifyArith();
 					assert(t->getOper() == opPlus
-					    && t->getSubExp1()->isRegOfK()
-					    && ((Const *)t->getSubExp1()->getSubExp1())->getInt() == 28);
-					assert(t->getSubExp2()->isIntConst());
+					    && t->getSubExp1()->isRegN(28)
+					    && t->getSubExp2()->isIntConst());
 					c = ((Const *)t->getSubExp2())->getInt();
 				}
 			}
@@ -734,8 +733,8 @@ Statement::canPropagateToExp(Exp *e)
 	if (def->isNullStatement())
 		// Don't propagate a null statement! Can happen with %pc's (would have no effect, and would infinitely loop)
 		return false;
-	if (!def->isAssign()) return false;  // Only propagate ordinary assignments (so far)
-	Assign *adef = (Assign *)def;
+	auto adef = dynamic_cast<Assign *>(def);
+	if (!adef) return false;  // Only propagate ordinary assignments (so far)
 
 	if (adef->getType()->isArray()) {
 		// Assigning to an array, don't propagate (Could be alias problems?)
@@ -811,9 +810,9 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 						// We don't know the statement number for the one definition in usedInDomPhi that might exist,
 						// so we use findNS()
 						if (auto OW = usedByDomPhi->findNS(rhsBase)) {
-							Statement *OWdef = ((RefExp *)OW)->getDef();
-							if (!OWdef->isAssign()) continue;
-							Exp *lhsOWdef = ((Assign *)OWdef)->getLeft();
+							auto OWdef = dynamic_cast<Assign *>(((RefExp *)OW)->getDef());
+							if (!OWdef) continue;
+							auto lhsOWdef = OWdef->getLeft();
 							LocationSet OWcomps;
 							def->addUsedLocs(OWcomps);
 							bool isOverwrite = false;
@@ -874,8 +873,8 @@ Statement::propagateFlagsTo()
 		addUsedLocs(exps, true);
 		for (const auto &e : exps) {
 			if (!e->isSubscript()) continue;  // e.g. %pc
-			Assign *def = (Assign *)((RefExp *)e)->getDef();
-			if (!def || !def->isAssign()) continue;
+			auto def = dynamic_cast<Assign *>(((RefExp *)e)->getDef());
+			if (!def) continue;
 			Exp *base = ((RefExp *)e)->getSubExp1();
 			if (base->isFlags() || base->isMainFlag()) {
 				change |= doPropagateTo(e, def, convert);
@@ -2208,8 +2207,8 @@ CallStatement::print(std::ostream &os, bool html) const
 			else
 				os << ", ";
 			os << "*" << as->getType() << "* " << *as->getLeft();
-			if (as->isAssign())
-				os << " := " << *((Assign *)as)->getRight();
+			if (auto asgn = dynamic_cast<Assign *>(as))
+				os << " := " << *asgn->getRight();
 		}
 		if (defines.size() > 1) os << "}";
 		os << " := ";
@@ -2709,9 +2708,9 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	if (formatExp->isSubscript()) {
 		// Maybe it's defined to be a Const string
 		if (auto def = ((RefExp *)formatExp)->getDef()) {  // Not all nullptr refs get converted to implicits
-			if (def->isAssign()) {
+			if (auto as = dynamic_cast<Assign *>(def)) {
 				// This would be unusual; propagation would normally take care of this
-				Exp *rhs = ((Assign *)def)->getRight();
+				auto rhs = as->getRight();
 				if (!rhs || !rhs->isStrConst()) return false;
 				formatStr = ((Const *)rhs)->getStr();
 			} else if (auto pa = dynamic_cast<PhiAssign *>(def)) {
@@ -2719,9 +2718,9 @@ CallStatement::ellipsisProcessing(Prog *prog)
 				int n = pa->getNumDefs();
 				for (int i = 0; i < n; ++i) {
 					def = pa->getStmtAt(i);
-					if (!def) continue;
-					if (!def->isAssign()) continue;
-					Exp *rhs = ((Assign *)def)->getRight();
+					as = dynamic_cast<Assign *>(def);
+					if (!as) continue;
+					Exp *rhs = as->getRight();
 					if (!rhs || !rhs->isStrConst()) continue;
 					formatStr = ((Const *)rhs)->getStr();
 					break;
@@ -3186,8 +3185,8 @@ void
 BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
 {
 	assert(stmts.size() == 1);
-	Assign *first = (Assign *)stmts.front();
-	assert(first->isAssign());
+	auto first = dynamic_cast<Assign *>(stmts.front());
+	assert(first);
 	lhs = first->getLeft();
 }
 
@@ -3627,17 +3626,18 @@ Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 void addPhiReferences(StatementSet &stmts, PhiAssign *def);
 
 static void
-addSimpleCopyReferences(StatementSet &stmts, Statement *def)
+addSimpleCopyReferences(StatementSet &stmts, Assign *def)
 {
-	if (!(*((Assign *)def)->getLeft() == *((Assign *)def)->getRight()->getSubExp1()))
+	if (!(*def->getLeft() == *def->getRight()->getSubExp1()))
 		return;
-	Statement *copy = ((RefExp *)((Assign *)def)->getRight())->getDef();
+	auto copy = ((RefExp *)def->getRight())->getDef();
 	if (!stmts.exists(copy)) {
 		stmts.insert(copy);
 		if (auto pa = dynamic_cast<PhiAssign *>(copy))
 			addPhiReferences(stmts, pa);
-		else if (copy->isAssign() && ((Assign *)copy)->getRight()->isSubscript())
-			addSimpleCopyReferences(stmts, copy);
+		else if (auto as = dynamic_cast<Assign *>(copy))
+			if (as->getRight()->isSubscript())
+				addSimpleCopyReferences(stmts, as);
 	}
 }
 
@@ -3646,12 +3646,13 @@ addPhiReferences(StatementSet &stmts, PhiAssign *def)
 {
 	for (const auto &it : *def) {
 		auto pa = dynamic_cast<PhiAssign *>(it.def);
+		auto as = dynamic_cast<Assign *>(it.def);
 		if (pa && !stmts.exists(pa)) {
 			stmts.insert(pa);
 			addPhiReferences(stmts, pa);
-		} else if (it.def->isAssign() && ((Assign *)it.def)->getRight()->isSubscript()) {
-			stmts.insert(it.def);
-			addSimpleCopyReferences(stmts, it.def);
+		} else if (as && as->getRight()->isSubscript()) {
+			stmts.insert(as);
+			addSimpleCopyReferences(stmts, as);
 		} else
 			stmts.insert(it.def);
 	}
