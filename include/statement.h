@@ -169,46 +169,46 @@ public:
 	virtual bool        isDefinition() const = 0;
 
 	// true if is a null statement
-	        bool        isNullStatement() const;
+	virtual bool        isNullStatement() const { return false; }
 
 	virtual bool        isTyping() const { return false; }  // Return true if a TypingStatement
 	// true if this statement is a standard assign
-	        bool        isAssign() const { return getKind() == STMT_ASSIGN; }
+	virtual bool        isAssign() const { return false; }
 	// true if this statement is a any kind of assignment
-	        bool        isAssignment() const { return getKind() == STMT_ASSIGN || getKind() == STMT_PHIASSIGN || getKind() == STMT_IMPASSIGN || getKind() == STMT_BOOLASSIGN; }
+	virtual bool        isAssignment() const { return false; }
 	// true if this statement is a phi assignment
-	        bool        isPhi() const { return getKind() == STMT_PHIASSIGN; }
+	virtual bool        isPhi() const { return false; }
 	// true if this statement is an implicit assignment
-	        bool        isImplicit() const { return getKind() == STMT_IMPASSIGN; }
+	virtual bool        isImplicit() const { return false; }
 	// true if this statment is a flags assignment
-	        bool        isFlagAssgn() const;
+	virtual bool        isFlagAssgn() const { return false; }
 	// true of this statement is an implicit reference
-	        bool        isImpRef() const { return getKind() == STMT_IMPREF; }
+	virtual bool        isImpRef() const { return false; }
 
-	virtual bool        isGoto() const { return getKind() == STMT_GOTO; }
-	virtual bool        isBranch() const { return getKind() == STMT_BRANCH; }
+	virtual bool        isGoto() const { return false; }
+	virtual bool        isBranch() const { return false; }
 
 	// true if this statement is a junction
-	        bool        isJunction() const { return getKind() == STMT_JUNCTION; }
+	virtual bool        isJunction() const { return false; }
 
 	// true if this statement is a call
-	        bool        isCall() const { return getKind() == STMT_CALL; }
+	virtual bool        isCall() const { return false; }
 
 	// true if this statement is a BoolAssign
-	        bool        isBool() const { return getKind() == STMT_BOOLASSIGN; }
+	virtual bool        isBool() const { return false; }
 
 	// true if this statement is a ReturnStatement
-	        bool        isReturn() const { return getKind() == STMT_RET; }
+	virtual bool        isReturn() const { return false; }
 
 	// true if this statement is a decoded ICT.
 	// NOTE: for now, it only represents decoded indirect jump instructions
 	        bool        isHL_ICT() const { return getKind() == STMT_CASE; }
 
-	        bool        isCase() const { return getKind() == STMT_CASE; }
+	virtual bool        isCase() const { return false; }
 
 	// true if this is a fpush/fpop
-	        bool        isFpush() const;
-	        bool        isFpop() const;
+	virtual bool        isFpush() const { return false; }
+	virtual bool        isFpop() const { return false; }
 
 	// returns a set of locations defined by this statement
 	// Classes with no definitions (e.g. GotoStatement and children) don't override this
@@ -381,6 +381,8 @@ public:
 	// Clone
 	Statement  *clone() const override = 0;
 
+	bool        isAssignment() const override { return true; }
+
 	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated
 	// Assume that we won't want sets of assignments differing by anything other than LHSs
@@ -453,6 +455,11 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_ASSIGN; }
+	bool        isAssign() const override { return true; }
+	bool        isFlagAssgn() const override;
+	bool        isNullStatement() const override;
+	bool        isFpush() const override;
+	bool        isFpop() const override;
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() const { return rhs; }
@@ -570,6 +577,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_PHIASSIGN; }
+	bool        isPhi() const override { return true; }
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() const { return nullptr; }
@@ -644,6 +652,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_IMPASSIGN; }
+	bool        isImplicit() const override { return true; }
 
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &ch) override;
@@ -687,6 +696,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_BOOLASSIGN; }
+	bool        isBool() const override { return true; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -751,6 +761,7 @@ public:
 	// Virtuals
 	Statement  *clone() const override;
 	STMT_KIND   getKind() const override { return STMT_IMPREF; }
+	bool        isImpRef() const override { return true; }
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
@@ -791,6 +802,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_GOTO; }
+	bool        isGoto() const override { return getKind() == STMT_GOTO; }  // FIXME:  What about derived classes?
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -847,6 +859,7 @@ public:
 	Statement  *clone() const override { return new JunctionStatement(); }
 
 	STMT_KIND   getKind() const override { return STMT_JUNCTION; }
+	bool        isJunction() const override { return true; }
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	bool        accept(StmtVisitor &) override;
@@ -901,6 +914,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_BRANCH; }
+	bool        isBranch() const override { return true; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -989,6 +1003,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_CASE; }
+	bool        isCase() const override { return true; }
 
 	// Accept a visitor to this Statememt
 	bool        accept(StmtVisitor &) override;
@@ -1070,6 +1085,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_CALL; }
+	bool        isCall() const override { return true; }
 
 	// Accept a visitor to this stmt
 	bool        accept(StmtVisitor &) override;
@@ -1297,6 +1313,7 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_RET; }
+	bool        isReturn() const override { return true; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;

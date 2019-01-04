@@ -665,11 +665,9 @@ operator <<(std::ostream &os, const Statement &s)
 }
 
 bool
-Statement::isFlagAssgn() const
+Assign::isFlagAssgn() const
 {
-	if (getKind() != STMT_ASSIGN)
-		return false;
-	return (((Assign *)this)->getRight()->isFlagCall());
+	return getRight()->isFlagCall();
 }
 
 std::string
@@ -974,29 +972,26 @@ Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 }
 
 bool
-Statement::isNullStatement() const
+Assign::isNullStatement() const
 {
-	if (getKind() != STMT_ASSIGN) return false;
-	Exp *right = ((Assign *)this)->getRight();
+	Exp *right = getRight();
 	if (right->isSubscript())
 		// Must refer to self to be null
 		return this == ((RefExp *)right)->getDef();
 	else
 		// Null if left == right
-		return *((Assign *)this)->getLeft() == *right;
+		return *getLeft() == *right;
 }
 
 bool
-Statement::isFpush() const
+Assign::isFpush() const
 {
-	if (getKind() != STMT_ASSIGN) return false;
-	return ((Assign *)this)->getRight()->getOper() == opFpush;
+	return getRight()->getOper() == opFpush;
 }
 bool
-Statement::isFpop() const
+Assign::isFpop() const
 {
-	if (getKind() != STMT_ASSIGN) return false;
-	return ((Assign *)this)->getRight()->getOper() == opFpop;
+	return getRight()->getOper() == opFpop;
 }
 
 
@@ -3192,7 +3187,7 @@ BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
 {
 	assert(stmts.size() == 1);
 	Assign *first = (Assign *)stmts.front();
-	assert(first->getKind() == STMT_ASSIGN);
+	assert(first->isAssign());
 	lhs = first->getLeft();
 }
 
