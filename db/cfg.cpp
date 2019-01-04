@@ -1610,7 +1610,7 @@ void
 Cfg::addJunctionStatements()
 {
 	for (const auto &bb : m_listBB) {
-		if (bb->getNumInEdges() > 1 && (!bb->getFirstStmt() || !bb->getFirstStmt()->isJunction())) {
+		if (bb->getNumInEdges() > 1 && !dynamic_cast<JunctionStatement *>(bb->getFirstStmt())) {
 			assert(bb->getRTLs());
 			auto j = new JunctionStatement();
 			j->setBB(bb);
@@ -1623,7 +1623,7 @@ void
 Cfg::removeJunctionStatements()
 {
 	for (const auto &bb : m_listBB) {
-		if (bb->getFirstStmt() && bb->getFirstStmt()->isJunction()) {
+		if (dynamic_cast<JunctionStatement *>(bb->getFirstStmt())) {
 			assert(bb->getRTLs());
 			bb->getRTLs()->front()->deleteFirstStmt();
 		}

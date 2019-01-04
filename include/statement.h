@@ -184,9 +184,6 @@ public:
 	virtual bool        isGoto() const { return false; }
 	virtual bool        isBranch() const { return false; }
 
-	// true if this statement is a junction
-	virtual bool        isJunction() const { return false; }
-
 	// true if this statement is a call
 	virtual bool        isCall() const { return false; }
 
@@ -849,7 +846,6 @@ public:
 	Statement  *clone() const override { return new JunctionStatement(); }
 
 	STMT_KIND   getKind() const override { return STMT_JUNCTION; }
-	bool        isJunction() const override { return true; }
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	bool        accept(StmtVisitor &) override;

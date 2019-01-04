@@ -4986,7 +4986,6 @@ UserProc::rangeAnalysis()
 	}
 
 	std::list<Statement *> execution_paths;
-	std::list<Statement *> junctions;
 
 	assert(cfg->getEntryBB());
 	assert(cfg->getEntryBB()->getFirstStmt());
@@ -4995,24 +4994,22 @@ UserProc::rangeAnalysis()
 	int watchdog = 0;
 
 	while (!execution_paths.empty()) {
+		std::list<JunctionStatement *> junctions;
 		while (!execution_paths.empty()) {
-			Statement *stmt = execution_paths.front();
+			auto stmt = execution_paths.front();
 			execution_paths.pop_front();
-			if (!stmt)
-				continue;  // ??
-			if (stmt->isJunction())
-				junctions.push_back(stmt);
-			else
+			if (auto junction = dynamic_cast<JunctionStatement *>(stmt))
+				junctions.push_back(junction);
+			else if (stmt)  // ?? Is this ever null?
 				stmt->rangeAnalysis(execution_paths);
 		}
 		if (watchdog > 45)
 			LOG << "processing execution paths resulted in " << (int)junctions.size() << " junctions to process\n";
 		while (!junctions.empty()) {
-			Statement *junction = junctions.front();
+			auto junction = junctions.front();
 			junctions.pop_front();
 			if (watchdog > 45)
 				LOG << "processing junction " << *junction << "\n";
-			assert(junction->isJunction());
 			junction->rangeAnalysis(execution_paths);
 		}
 
