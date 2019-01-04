@@ -181,8 +181,6 @@ public:
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
-	virtual bool        isBranch() const { return false; }
-
 	// true if this statement is a call
 	virtual bool        isCall() const { return false; }
 
@@ -898,7 +896,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_BRANCH; }
-	bool        isBranch() const override { return true; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;

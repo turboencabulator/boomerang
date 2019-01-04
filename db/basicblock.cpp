@@ -806,8 +806,7 @@ BasicBlock::getCond() const throw (LastStatementNotABranchError)
 	assert(m_pRtls);
 	const auto &last = m_pRtls->back();
 	// it should contain a BranchStatement
-	BranchStatement *bs = (BranchStatement *)last->getHlStmt();
-	if (bs && bs->getKind() == STMT_BRANCH)
+	if (auto bs = dynamic_cast<BranchStatement *>(last->getHlStmt()))
 		return bs->getCondExpr();
 	if (VERBOSE)
 		LOG << "throwing LastStatementNotABranchError\n";
@@ -849,8 +848,8 @@ BasicBlock::setCond(Exp *e) throw (LastStatementNotABranchError)
 	const auto &stmts = m_pRtls->back()->getList();
 	assert(!stmts.empty());
 	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
-		if ((*srit)->getKind() == STMT_BRANCH) {
-			((BranchStatement *)(*srit))->setCondExpr(e);
+		if (auto bs = dynamic_cast<BranchStatement *>(*srit)) {
+			bs->setCondExpr(e);
 			return;
 		}
 	}
@@ -869,8 +868,8 @@ BasicBlock::isJmpZ(BasicBlock *dest) const
 	const auto &stmts = m_pRtls->back()->getList();
 	assert(!stmts.empty());
 	for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
-		if ((*srit)->getKind() == STMT_BRANCH) {
-			BRANCH_TYPE jt = ((BranchStatement *)(*srit))->getCond();
+		if (auto bs = dynamic_cast<BranchStatement *>(*srit)) {
+			BRANCH_TYPE jt = bs->getCond();
 			if (jt == BRANCH_JE) {
 				const auto &trueEdge = m_OutEdges[0];
 				return dest == trueEdge;

@@ -152,8 +152,9 @@ Statement::getInputRanges()
 			input = last->getRanges();
 		} else {
 			assert(pred->getNumOutEdges() == 2);
-			assert(last->isBranch());
-			input = ((BranchStatement *)last)->getRangesForOutEdgeTo(pbb);
+			auto branch = dynamic_cast<BranchStatement *>(last);
+			assert(branch);
+			input = branch->getRangesForOutEdgeTo(pbb);
 		}
 	}
 
@@ -173,8 +174,8 @@ Statement::updateRanges(RangeMap &output, std::list<Statement *> &execution_path
 		if (isLastStatementInBB()) {
 			if (pbb->getNumOutEdges()) {
 				int arc = 0;
-				if (isBranch()) {
-					if (pbb->getOutEdge(0)->getLowAddr() != ((BranchStatement *)this)->getFixedDest())
+				if (auto branch = dynamic_cast<BranchStatement *>(this)) {
+					if (pbb->getOutEdge(0)->getLowAddr() != branch->getFixedDest())
 						arc = 1;
 					if (notTaken)
 						arc ^= 1;
@@ -407,8 +408,8 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 		Statement *last = edge->getLastStmt();
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 			LOG << "  in BB: " << edge->getLowAddr() << " " << *last << "\n";
-		if (last->isBranch()) {
-			input.unionwith(((BranchStatement *)last)->getRangesForOutEdgeTo(pbb));
+		if (auto branch = dynamic_cast<BranchStatement *>(last)) {
+			input.unionwith(branch->getRangesForOutEdgeTo(pbb));
 		} else {
 			if (last->isCall()) {
 				auto d = ((CallStatement *)last)->getDestProc();

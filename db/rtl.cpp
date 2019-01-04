@@ -423,26 +423,26 @@ RTL::simplify()
 	for (auto it = stmtList.begin(); it != stmtList.end(); /*++it*/) {
 		const auto &stmt = *it;
 		stmt->simplify();
-		if (stmt->isBranch()) {
-			Exp *cond = ((BranchStatement *)stmt)->getCondExpr();
+		if (auto branch = dynamic_cast<BranchStatement *>(stmt)) {
+			auto cond = branch->getCondExpr();
 			if (cond && cond->isIntConst()) {
 				if (((Const *)cond)->getInt() == 0) {
 					if (VERBOSE)
-						LOG << "removing branch with false condition at " << getAddress() << " " << *stmt << "\n";
+						LOG << "removing branch with false condition at " << getAddress() << " " << *branch << "\n";
 					it = stmtList.erase(it);
 					continue;
 				} else {
 					if (VERBOSE)
-						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << *stmt << "\n";
-					*it = new GotoStatement(((BranchStatement *)stmt)->getFixedDest());
+						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << *branch << "\n";
+					*it = new GotoStatement(branch->getFixedDest());
 				}
 			}
-		} else if (stmt->isAssign()) {
-			Exp *guard = ((Assign *)stmt)->getGuard();
+		} else if (auto assign = dynamic_cast<Assign *>(stmt)) {
+			auto guard = assign->getGuard();
 			if (guard && (guard->isFalse() || (guard->isIntConst() && !((Const *)guard)->getInt()))) {
 				// This assignment statement can be deleted
 				if (VERBOSE)
-					LOG << "removing assignment with false guard at " << getAddress() << " " << *stmt << "\n";
+					LOG << "removing assignment with false guard at " << getAddress() << " " << *assign << "\n";
 				it = stmtList.erase(it);
 				continue;
 			}

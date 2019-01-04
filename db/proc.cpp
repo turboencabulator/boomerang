@@ -687,11 +687,11 @@ UserProc::printDFG()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isPhi())
+		if (dynamic_cast<PhiAssign *>(stmt))
 			out << "\t" << stmt->getNumber() << " [shape=triangle];\n";
-		if (stmt->isCall())
+		else if (dynamic_cast<CallStatement *>(stmt))
 			out << "\t" << stmt->getNumber() << " [shape=box];\n";
-		if (stmt->isBranch())
+		else if (dynamic_cast<BranchStatement *>(stmt))
 			out << "\t" << stmt->getNumber() << " [shape=diamond];\n";
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
@@ -1705,12 +1705,11 @@ UserProc::branchAnalysis()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isBranch()) {
-			auto branch = (BranchStatement *)stmt;
+		if (auto branch = dynamic_cast<BranchStatement *>(stmt)) {
 			if (branch->getFallBB() && branch->getTakenBB()) {
 				StatementList fallstmts;
 				branch->getFallBB()->getStatements(fallstmts);
-				if (fallstmts.size() == 1 && (*fallstmts.begin())->isBranch()) {
+				if (fallstmts.size() == 1 && dynamic_cast<BranchStatement *>(*fallstmts.begin())) {
 					auto fallto = (BranchStatement *)*fallstmts.begin();
 					//   branch to A if cond1
 					//   branch to B if cond2
@@ -1770,8 +1769,8 @@ UserProc::fixUglyBranches()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isBranch()) {
-			Exp *hl = ((BranchStatement *)stmt)->getCondExpr();
+		if (auto branch = dynamic_cast<BranchStatement *>(stmt)) {
+			auto hl = branch->getCondExpr();
 			// of the form: x{n} - 1 >= 0
 			if (hl && hl->getOper() == opGtrEq
 			 && hl->getSubExp2()->isIntConst()
