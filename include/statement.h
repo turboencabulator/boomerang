@@ -190,9 +190,6 @@ public:
 	// true if this statement is a call
 	virtual bool        isCall() const { return false; }
 
-	// true if this statement is a BoolAssign
-	virtual bool        isBool() const { return false; }
-
 	// true if this statement is a ReturnStatement
 	virtual bool        isReturn() const { return false; }
 
@@ -691,7 +688,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_BOOLASSIGN; }
-	bool        isBool() const override { return true; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
