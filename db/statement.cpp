@@ -667,7 +667,7 @@ operator <<(std::ostream &os, const Statement &s)
 bool
 Statement::isFlagAssgn() const
 {
-	if (kind != STMT_ASSIGN)
+	if (getKind() != STMT_ASSIGN)
 		return false;
 	return (((Assign *)this)->getRight()->isFlagCall());
 }
@@ -976,7 +976,7 @@ Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 bool
 Statement::isNullStatement() const
 {
-	if (kind != STMT_ASSIGN) return false;
+	if (getKind() != STMT_ASSIGN) return false;
 	Exp *right = ((Assign *)this)->getRight();
 	if (right->isSubscript())
 		// Must refer to self to be null
@@ -989,13 +989,13 @@ Statement::isNullStatement() const
 bool
 Statement::isFpush() const
 {
-	if (kind != STMT_ASSIGN) return false;
+	if (getKind() != STMT_ASSIGN) return false;
 	return ((Assign *)this)->getRight()->getOper() == opFpush;
 }
 bool
 Statement::isFpop() const
 {
-	if (kind != STMT_ASSIGN) return false;
+	if (getKind() != STMT_ASSIGN) return false;
 	return ((Assign *)this)->getRight()->getOper() == opFpop;
 }
 
@@ -1018,13 +1018,11 @@ Statement::isFpop() const
  *============================================================================*/
 GotoStatement::GotoStatement()
 {
-	kind = STMT_GOTO;
 }
 
 GotoStatement::GotoStatement(Exp *dest) :
 	pDest(dest)
 {
-	kind = STMT_GOTO;
 }
 
 /*==============================================================================
@@ -1032,10 +1030,9 @@ GotoStatement::GotoStatement(Exp *dest) :
  * OVERVIEW:        Construct a jump to a fixed address
  * PARAMETERS:      dest: native address of destination
  *============================================================================*/
-GotoStatement::GotoStatement(ADDRESS dest)
+GotoStatement::GotoStatement(ADDRESS dest) :
+	pDest(new Const(dest))
 {
-	kind = STMT_GOTO;
-	pDest = new Const(dest);
 }
 
 /*==============================================================================
@@ -1255,19 +1252,16 @@ GotoStatement::simplify()
  *============================================================================*/
 BranchStatement::BranchStatement()
 {
-	kind = STMT_BRANCH;
 }
 
 BranchStatement::BranchStatement(Exp *dest) :
 	GotoStatement(dest)
 {
-	kind = STMT_BRANCH;
 }
 
 BranchStatement::BranchStatement(ADDRESS dest) :
 	GotoStatement(dest)
 {
-	kind = STMT_BRANCH;
 }
 
 /*==============================================================================
@@ -1841,13 +1835,11 @@ BranchStatement::simplify()
  *============================================================================*/
 CaseStatement::CaseStatement()
 {
-	kind = STMT_CASE;
 }
 
 CaseStatement::CaseStatement(Exp *dest) :
 	GotoStatement(dest)
 {
-	kind = STMT_CASE;
 }
 
 /*==============================================================================
@@ -1999,19 +1991,16 @@ CaseStatement::simplify()
  *============================================================================*/
 CallStatement::CallStatement()
 {
-	kind = STMT_CALL;
 }
 
 CallStatement::CallStatement(Exp *dest) :
 	GotoStatement(dest)
 {
-	kind = STMT_CALL;
 }
 
 CallStatement::CallStatement(ADDRESS dest) :
 	GotoStatement(dest)
 {
-	kind = STMT_CALL;
 }
 
 /*==============================================================================
@@ -2888,7 +2877,6 @@ CallStatement::addSigParam(Type *ty, bool isScanf)
  *============================================================================*/
 ReturnStatement::ReturnStatement()
 {
-	kind = STMT_RET;
 }
 
 /*==============================================================================
@@ -3023,7 +3011,6 @@ BoolAssign::BoolAssign(int sz) :
 	Assignment(nullptr),
 	size(sz)
 {
-	kind = STMT_BOOLASSIGN;
 }
 
 /*==============================================================================
@@ -3240,7 +3227,6 @@ Assign::Assign(Exp *lhs, Exp *rhs, Exp *guard) :
 	rhs(rhs),
 	guard(guard)
 {
-	kind = STMT_ASSIGN;
 }
 
 Assign::Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard) :
@@ -3248,13 +3234,11 @@ Assign::Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard) :
 	rhs(rhs),
 	guard(guard)
 {
-	kind = STMT_ASSIGN;
 }
 
 Assign::Assign(const Assign &o) :
 	Assignment(o.lhs->clone())
 {
-	kind = STMT_ASSIGN;
 	rhs   = o.rhs->clone();
 	type  = o.type  ? o.type->clone()  : nullptr;
 	guard = o.guard ? o.guard->clone() : nullptr;
@@ -3265,19 +3249,16 @@ Assign::Assign(const Assign &o) :
 ImplicitAssign::ImplicitAssign(Exp *lhs) :
 	Assignment(lhs)
 {
-	kind = STMT_IMPASSIGN;
 }
 // Constructor, type, and subexpression
 ImplicitAssign::ImplicitAssign(Type *ty, Exp *lhs) :
 	Assignment(ty, lhs)
 {
-	kind = STMT_IMPASSIGN;
 }
 
 ImplicitAssign::ImplicitAssign(const ImplicitAssign &o) :
 	Assignment(o.type ? o.type->clone() : nullptr, o.lhs->clone())
 {
-	kind = STMT_IMPASSIGN;
 }
 
 // The first virtual function (here the destructor) can't be in statement.h file for gcc

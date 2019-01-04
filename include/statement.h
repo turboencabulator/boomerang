@@ -119,7 +119,6 @@ public:
 	        void        setDomNumber(int dn) { dominanceNum = dn; }
 protected:
 #endif
-	        STMT_KIND   kind;              // Statement kind (e.g. STMT_BRANCH)
 	        Statement  *parent = nullptr;  // The statement that contains this one
 	        RangeMap    ranges;            // overestimation of ranges of locations
 	        RangeMap    savedInputRanges;  // saved overestimation of ranges of locations
@@ -143,8 +142,7 @@ public:
 	        int         getNumber() const { return number; }
 	virtual void        setNumber(int num) { number = num; }  // Overridden for calls (and maybe later returns)
 
-	        STMT_KIND   getKind() const { return kind; }
-	        void        setKind(STMT_KIND k) { kind = k; }
+	virtual STMT_KIND   getKind() const = 0;
 
 	        void        setParent(Statement *par) { parent = par; }
 	        Statement  *getParent() const { return parent; }
@@ -175,38 +173,38 @@ public:
 
 	virtual bool        isTyping() const { return false; }  // Return true if a TypingStatement
 	// true if this statement is a standard assign
-	        bool        isAssign() const { return kind == STMT_ASSIGN; }
+	        bool        isAssign() const { return getKind() == STMT_ASSIGN; }
 	// true if this statement is a any kind of assignment
-	        bool        isAssignment() const { return kind == STMT_ASSIGN || kind == STMT_PHIASSIGN || kind == STMT_IMPASSIGN || kind == STMT_BOOLASSIGN; }
+	        bool        isAssignment() const { return getKind() == STMT_ASSIGN || getKind() == STMT_PHIASSIGN || getKind() == STMT_IMPASSIGN || getKind() == STMT_BOOLASSIGN; }
 	// true if this statement is a phi assignment
-	        bool        isPhi() const { return kind == STMT_PHIASSIGN; }
+	        bool        isPhi() const { return getKind() == STMT_PHIASSIGN; }
 	// true if this statement is an implicit assignment
-	        bool        isImplicit() const { return kind == STMT_IMPASSIGN; }
+	        bool        isImplicit() const { return getKind() == STMT_IMPASSIGN; }
 	// true if this statment is a flags assignment
 	        bool        isFlagAssgn() const;
 	// true of this statement is an implicit reference
-	        bool        isImpRef() const { return kind == STMT_IMPREF; }
+	        bool        isImpRef() const { return getKind() == STMT_IMPREF; }
 
-	virtual bool        isGoto() const { return kind == STMT_GOTO; }
-	virtual bool        isBranch() const { return kind == STMT_BRANCH; }
+	virtual bool        isGoto() const { return getKind() == STMT_GOTO; }
+	virtual bool        isBranch() const { return getKind() == STMT_BRANCH; }
 
 	// true if this statement is a junction
-	        bool        isJunction() const { return kind == STMT_JUNCTION; }
+	        bool        isJunction() const { return getKind() == STMT_JUNCTION; }
 
 	// true if this statement is a call
-	        bool        isCall() const { return kind == STMT_CALL; }
+	        bool        isCall() const { return getKind() == STMT_CALL; }
 
 	// true if this statement is a BoolAssign
-	        bool        isBool() const { return kind == STMT_BOOLASSIGN; }
+	        bool        isBool() const { return getKind() == STMT_BOOLASSIGN; }
 
 	// true if this statement is a ReturnStatement
-	        bool        isReturn() const { return kind == STMT_RET; }
+	        bool        isReturn() const { return getKind() == STMT_RET; }
 
 	// true if this statement is a decoded ICT.
 	// NOTE: for now, it only represents decoded indirect jump instructions
-	        bool        isHL_ICT() const { return kind == STMT_CASE; }
+	        bool        isHL_ICT() const { return getKind() == STMT_CASE; }
 
-	        bool        isCase() const { return kind == STMT_CASE; }
+	        bool        isCase() const { return getKind() == STMT_CASE; }
 
 	// true if this is a fpush/fpop
 	        bool        isFpush() const;
@@ -454,6 +452,8 @@ public:
 	// Clone
 	Statement  *clone() const override;
 
+	STMT_KIND   getKind() const override { return STMT_ASSIGN; }
+
 	// get how to replace this statement in a use
 	virtual Exp *getRight() const { return rhs; }
 	Exp       *&getRightRef() { return rhs; }
@@ -560,14 +560,16 @@ private:
 	Definitions defVec;  // A vector of information about definitions
 public:
 	// Constructor, subexpression
-	            PhiAssign(Exp *lhs) : Assignment(lhs) { kind = STMT_PHIASSIGN; }
+	            PhiAssign(Exp *lhs) : Assignment(lhs) { }
 	// Constructor, type and subexpression
-	            PhiAssign(Type *ty, Exp *lhs) : Assignment(ty, lhs) { kind = STMT_PHIASSIGN; }
+	            PhiAssign(Type *ty, Exp *lhs) : Assignment(ty, lhs) { }
 	// Destructor
 	virtual    ~PhiAssign() { }
 
 	// Clone
 	Statement  *clone() const override;
+
+	STMT_KIND   getKind() const override { return STMT_PHIASSIGN; }
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() const { return nullptr; }
@@ -641,6 +643,8 @@ public:
 	// Clone
 	Statement  *clone() const override;
 
+	STMT_KIND   getKind() const override { return STMT_IMPASSIGN; }
+
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &ch) override;
 
@@ -681,6 +685,8 @@ public:
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
+
+	STMT_KIND   getKind() const override { return STMT_BOOLASSIGN; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -738,12 +744,13 @@ class ImpRefStatement : public TypingStatement {
 	Exp        *addressExp;  // The expression representing the address of the location referenced
 public:
 	// Constructor, subexpression
-	            ImpRefStatement(Type *ty, Exp *a) : TypingStatement(ty), addressExp(a) { kind = STMT_IMPREF; }
+	            ImpRefStatement(Type *ty, Exp *a) : TypingStatement(ty), addressExp(a) { }
 	Exp        *getAddressExp() const { return addressExp; }
 	void        meetWith(Type *ty, bool &ch);  // Meet the internal type with ty. Set ch if a change
 
 	// Virtuals
 	Statement  *clone() const override;
+	STMT_KIND   getKind() const override { return STMT_IMPREF; }
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
@@ -782,6 +789,8 @@ public:
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
+
+	STMT_KIND   getKind() const override { return STMT_GOTO; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -833,9 +842,11 @@ public:
 
 class JunctionStatement: public Statement {
 public:
-	            JunctionStatement() { kind = STMT_JUNCTION; }
+	            JunctionStatement() { }
 
 	Statement  *clone() const override { return new JunctionStatement(); }
+
+	STMT_KIND   getKind() const override { return STMT_JUNCTION; }
 
 	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	bool        accept(StmtVisitor &) override;
@@ -888,6 +899,8 @@ public:
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
+
+	STMT_KIND   getKind() const override { return STMT_BRANCH; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -975,6 +988,8 @@ public:
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
+	STMT_KIND   getKind() const override { return STMT_CASE; }
+
 	// Accept a visitor to this Statememt
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
@@ -1053,6 +1068,8 @@ public:
 	void        setNumber(int num) override;
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
+
+	STMT_KIND   getKind() const override { return STMT_CALL; }
 
 	// Accept a visitor to this stmt
 	bool        accept(StmtVisitor &) override;
@@ -1278,6 +1295,8 @@ public:
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
+
+	STMT_KIND   getKind() const override { return STMT_RET; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
