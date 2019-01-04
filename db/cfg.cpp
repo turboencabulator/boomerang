@@ -840,7 +840,7 @@ Cfg::compressCfg()
 			 && pSucc->m_OutEdges.size() == 1
 			 && pSucc->m_pRtls->size() == 1
 			 && pSucc->m_pRtls->front()->getList().size() == 1
-			 && pSucc->m_pRtls->front()->getList().front()->isGoto()) {
+			 && pSucc->m_pRtls->front()->getList().front()->getKind() == STMT_GOTO) {
 				// Found an out-edge to an only-jump BB
 #if 0
 				std::cout << "outedge to jump detected at " << std::hex << bb->getLowAddr()

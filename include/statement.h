@@ -181,7 +181,6 @@ public:
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
-	virtual bool        isGoto() const { return false; }
 	virtual bool        isBranch() const { return false; }
 
 	// true if this statement is a call
@@ -789,7 +788,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_GOTO; }
-	bool        isGoto() const override { return getKind() == STMT_GOTO; }  // FIXME:  What about derived classes?
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;

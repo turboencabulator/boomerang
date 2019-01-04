@@ -930,12 +930,10 @@ BasicBlock::simplify()
 		if (!m_pRtls || m_pRtls->empty()) {
 			m_nodeType = FALL;
 		} else {
-			const auto &stmts = m_pRtls->back()->getList();
-			if (stmts.empty()) {
-				m_nodeType = FALL;
-			} else if (stmts.back()->isGoto()) {
+			const auto &rtl = m_pRtls->back();
+			if (rtl->isGoto()) {
 				m_nodeType = ONEWAY;
-			} else if (!stmts.back()->isBranch()) {
+			} else if (!rtl->isBranch()) {
 				m_nodeType = FALL;
 			}
 		}
