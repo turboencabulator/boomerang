@@ -2200,8 +2200,8 @@ CallStatement::print(std::ostream &os, bool html) const
 		if (defines.size() > 1) os << "{";
 		bool first = true;
 		for (const auto &def : defines) {
-			assert(def->isAssignment());
-			Assignment *as = (Assignment *)def;
+			auto as = dynamic_cast<Assignment *>(def);
+			assert(as);
 			if (first)
 				first = false;
 			else

@@ -297,11 +297,11 @@ UserProc::dfaTypeAnalysis()
 		if (stmt->isTyping()) {
 			Exp *addrExp = nullptr;
 			Type *typeExp = nullptr;
-			if (stmt->isAssignment()) {
-				Exp *lhs = ((Assignment *)stmt)->getLeft();
+			if (auto as = dynamic_cast<Assignment *>(stmt)) {
+				auto lhs = as->getLeft();
 				if (lhs->isMemOf()) {
 					addrExp = ((Location *)lhs)->getSubExp1();
-					typeExp = ((Assignment *)stmt)->getType();
+					typeExp = as->getType();
 				}
 			} else {
 				// Assume an implicit reference

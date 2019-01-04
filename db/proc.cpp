@@ -1547,16 +1547,15 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 	bool change;
 	do {  // FIXME: check if this is ever needed
 		change = false;
-		auto ll = stmts.begin();
-		while (ll != stmts.end()) {
-			Statement *s = *ll;
-			if (!s->isAssignment()) {
+		for (auto ll = stmts.begin(); ll != stmts.end(); ) {
+			auto s = *ll;
+			auto as = dynamic_cast<Assignment *>(s);
+			if (!as) {
 				// Never delete a statement other than an assignment (e.g. nothing "uses" a Jcond)
 				++ll;
 				continue;
 			}
-			Assignment *as = (Assignment *)s;
-			Exp *asLeft = as->getLeft();
+			auto asLeft = as->getLeft();
 			// If depth < 0, consider all depths
 #if 0
 			if (asLeft && depth >= 0 && asLeft->getMemDepth() > depth) {
@@ -2951,7 +2950,7 @@ UserProc::removeUnusedLocals()
 			if (auto name = findLocal(loc, ty)) {
 				if (removes.count(name)) {
 					// Remove it. If an assign, delete it; otherwise (call), remove the define
-					if (stmt->isAssignment()) {
+					if (dynamic_cast<Assignment *>(stmt)) {
 						removeStatement(stmt);
 						break;  // Break to next statement
 					} else if (stmt->isCall())

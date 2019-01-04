@@ -765,8 +765,9 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 		if (stmt->getBB()->overlappedRegProcessingDone)   // never redo processing
 			continue;
 		bbs.insert(stmt->getBB());
-		if (!stmt->isAssignment()) continue;
-		auto lhs = ((Assignment *)stmt)->getLeft();
+		auto as = dynamic_cast<Assignment *>(stmt);
+		if (!as) continue;
+		auto lhs = as->getLeft();
 		if (!lhs->isRegOf()) continue;
 		auto c = (Const *)((Location *)lhs)->getSubExp1();
 		assert(c->isIntConst());
@@ -784,7 +785,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                new Const(32),
 				                                new Const(16),
 				                                Location::regOf(24 + off)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 
 			// Emit *8* r<8+off> := trunc(32, 8, r<24+off>)
@@ -795,7 +796,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                new Const(32),
 				                                new Const(8),
 				                                Location::regOf(24 + off)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 
 			// Emit *8* r<12+off> := r<24+off>@[8:15]
@@ -806,7 +807,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                Location::regOf(24 + off),
 				                                new Const(8),
 				                                new Const(15)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 			break;
 
@@ -825,7 +826,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                           new Const(16),
 				                                           new Const(32),
 				                                           Location::regOf(off))));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 
 			// Emit *8* r<8+off> := trunc(16, 8, r<off>)
@@ -836,7 +837,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                new Const(16),
 				                                new Const(8),
 				                                Location::regOf(24 + off)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 
 			// Emit *8* r<12+off> := r<off>@[8:15]
@@ -847,7 +848,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                Location::regOf(off),
 				                                new Const(8),
 				                                new Const(15)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 			break;
 
@@ -866,7 +867,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                           new Const(8),
 				                                           new Const(32),
 				                                           Location::regOf(8 + off))));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 
 			// Emit *16* r<off> := r<off>@[8:15] | zfill(8, 16, r<8+off>)
@@ -882,7 +883,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                           new Const(8),
 				                                           new Const(16),
 				                                           Location::regOf(8 + off))));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 			break;
 
@@ -898,13 +899,13 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                               new Binary(opShiftL,
 				                                          Location::regOf(12 + off),
 				                                          new Const(8))));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 				a = new Assign(new IntegerType(32),
 				               Location::regOf(24 + off),
 				               new Binary(opBitAnd,
 				                          Location::regOf(24 + off),
 				                          new Const(0xFFFF00FF)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 
 			// Emit *16* r<off> := r<off> & 0x00FF
@@ -917,13 +918,13 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                               new Binary(opShiftL,
 				                                          Location::regOf(12 + off),
 				                                          new Const(8))));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 				a = new Assign(new IntegerType(16),
 				               Location::regOf(off),
 				               new Binary(opBitAnd,
 				                          Location::regOf(off),
 				                          new Const(0x00FF)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 			break;
 
@@ -942,7 +943,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                           new Const(16),
 				                                           new Const(32),
 				                                           Location::regOf(off_mod8))));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 			break;
 
@@ -956,7 +957,7 @@ PentiumFrontEnd::processOverlapped(UserProc *proc)
 				                                new Const(32),
 				                                new Const(16),
 				                                Location::regOf(24 + off_mod8)));
-				proc->insertStatementAfter(stmt, a);
+				proc->insertStatementAfter(as, a);
 			}
 			break;
 		}

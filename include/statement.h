@@ -174,8 +174,6 @@ public:
 	virtual bool        isTyping() const { return false; }  // Return true if a TypingStatement
 	// true if this statement is a standard assign
 	virtual bool        isAssign() const { return false; }
-	// true if this statement is a any kind of assignment
-	virtual bool        isAssignment() const { return false; }
 	// true if this statement is a phi assignment
 	virtual bool        isPhi() const { return false; }
 	// true if this statment is a flags assignment
@@ -365,8 +363,6 @@ public:
 
 	// Clone
 	Statement  *clone() const override = 0;
-
-	bool        isAssignment() const override { return true; }
 
 	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated

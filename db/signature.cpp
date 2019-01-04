@@ -1575,8 +1575,8 @@ Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 			if (checkreach) {
 				bool hasDef = false;
 				for (const auto &ri : reachin) {
-					auto as = (Assignment *)ri;
-					if (as->isAssignment() && *as->getLeft() == *getParamExp(i)) {
+					auto as = dynamic_cast<Assignment *>(ri);
+					if (as && *as->getLeft() == *getParamExp(i)) {
 						hasDef = true;
 						break;
 					}
