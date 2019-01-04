@@ -337,11 +337,10 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
 		// if S is not a phi function (per Appel)
-		/* if (!S->isPhi()) */ {
+		/* if (!dynamic_cast<PhiAssign *>(S)) */ {
 			// For each use of some variable x in S (not just assignments)
 			LocationSet locs;
-			if (S->isPhi()) {
-				PhiAssign *pa = (PhiAssign *)S;
+			if (auto pa = dynamic_cast<PhiAssign *>(S)) {
 				Exp *phiLeft = pa->getLeft();
 				if (phiLeft->isMemOf() || phiLeft->isRegOf())
 					phiLeft->getSubExp1()->addUsedLocs(locs);
@@ -393,8 +392,8 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 					call->useBeforeDefine(x->clone());
 				// Replace the use of x with x{def} in S
 				changed = true;
-				if (S->isPhi()) {
-					Exp *phiLeft = ((PhiAssign *)S)->getLeft();
+				if (auto pa = dynamic_cast<PhiAssign *>(S)) {
+					Exp *phiLeft = pa->getLeft();
 					phiLeft->setSubExp1(phiLeft->getSubExp1()->expSubscriptVar(x, def /*, this*/));
 				} else {
 					S->subscriptVar(x, def /*, this */);
@@ -718,9 +717,8 @@ DataFlow::findLiveAtDomPhi(int n, LocationSet &usedByDomPhi, LocationSet &usedBy
 	BasicBlock *bb = BBs[n];
 	Statement *S;
 	for (S = bb->getFirstStmt(rit, sit); S; S = bb->getNextStmt(rit, sit)) {
-		if (S->isPhi()) {
+		if (auto pa = dynamic_cast<PhiAssign *>(S)) {
 			// For each phi parameter, insert an entry into usedByDomPhi0
-			PhiAssign *pa = (PhiAssign *)S;
 			for (const auto &pp : *pa) {
 				if (pp.e) {
 					usedByDomPhi0.insert(new RefExp(pp.e, pp.def));

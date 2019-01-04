@@ -173,8 +173,6 @@ public:
 
 	// true if this statement is a standard assign
 	virtual bool        isAssign() const { return false; }
-	// true if this statement is a phi assignment
-	virtual bool        isPhi() const { return false; }
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
@@ -549,7 +547,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_PHIASSIGN; }
-	bool        isPhi() const override { return true; }
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() const { return nullptr; }

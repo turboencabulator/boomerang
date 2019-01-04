@@ -313,7 +313,7 @@ UserProc::printUseGraph()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		if (stmt->isPhi())
+		if (dynamic_cast<PhiAssign *>(stmt))
 			out << "\t" << stmt->getNumber() << " [shape=diamond];\n";
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
@@ -1779,8 +1779,7 @@ UserProc::fixUglyBranches()
 			 && ((Const *)hl->getSubExp1()->getSubExp2())->getInt() == 1
 			 && hl->getSubExp1()->getSubExp1()->isSubscript()) {
 				Statement *n = ((RefExp *)hl->getSubExp1()->getSubExp1())->getDef();
-				if (n && n->isPhi()) {
-					auto p = (PhiAssign *)n;
+				if (auto p = dynamic_cast<PhiAssign *>(n)) {
 					for (int i = 0; i < p->getNumDefs(); ++i) {
 						if (p->getStmtAt(i)->isAssign()) {
 							auto a = (Assign *)p->getStmtAt(i);
@@ -1957,8 +1956,8 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 	for (const auto &stmt : stmts) {
 		if (stmt->isAssign() && *((Assign *)stmt)->getLeft() == *e)
 			foundone = true;
-		if (stmt->isPhi()) {
-			if (*((PhiAssign *)stmt)->getLeft() == *e)
+		if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
+			if (*pa->getLeft() == *e)
 				foundone = true;
 			continue;
 		}
@@ -1987,10 +1986,9 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 			auto a = (Assign *)stmt;
 			if (*a->getLeft() == *e)
 				removeStatement(a);
-		} else if (stmt->isPhi()) {
-			auto a = (PhiAssign *)stmt;
-			if (*a->getLeft() == *e)
-				removeStatement(a);
+		} else if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
+			if (*pa->getLeft() == *e)
+				removeStatement(pa);
 		}
 	}
 
@@ -2233,18 +2231,18 @@ void UserProc::trimParameters(int depth)
 						LOG << "parameter " << p << " used by statement " << stmt->getNumber() << " : " << stmt->getKind() << "\n";
 					}
 				}
+				auto pa = dynamic_cast<PhiAssign *>(stmt);
 				if (!referenced[i]
 				 && !excluded.count(stmt)
-				 && stmt->isPhi()
-				 && *((PhiAssign *)stmt)->getLeft() == *pe) {
+				 && pa
+				 && *pa->getLeft() == *pe) {
 					if (DEBUG_UNUSED)
-						LOG << "searching " << stmt << " for uses of " << params[i] << "\n";
-					auto pa = (PhiAssign *)stmt;
+						LOG << "searching " << pa << " for uses of " << params[i] << "\n";
 					for (const auto &def : *pa) {
 						if (!def.def) {
 							referenced[i] = true;
 							if (DEBUG_UNUSED)
-								LOG << "parameter " << p << " used by phi statement " << stmt->getNumber() << "\n";
+								LOG << "parameter " << p << " used by phi statement " << pa->getNumber() << "\n";
 							break;
 						}
 					}
@@ -2644,13 +2642,13 @@ UserProc::propagateStatements(bool &convert, int pass)
 	// A fourth pass to propagate only the flags (these must be propagated even if it results in extra locals)
 	bool change = false;
 	for (const auto &stmt : stmts) {
-		if (stmt->isPhi()) continue;
+		if (dynamic_cast<PhiAssign *>(stmt)) continue;
 		change |= stmt->propagateFlagsTo();
 	}
 	// Finally the actual propagation
 	convert = false;
 	for (const auto &stmt : stmts) {
-		if (stmt->isPhi()) continue;
+		if (dynamic_cast<PhiAssign *>(stmt)) continue;
 		change |= stmt->propagateTo(convert, &destCounts, &usedByDomPhi);
 	}
 	simplify();
@@ -3108,8 +3106,7 @@ UserProc::fromSSAform()
 			int n2 = pu.count(r2);
 			if (n2 <= n1)
 #else
-			Statement *def2 = r2->getDef();
-			if (def2->isPhi())  // Prefer the destinations of phis
+			if (dynamic_cast<PhiAssign *>(r2->getDef()))  // Prefer the destinations of phis
 #endif
 				rename = r2;
 			else
@@ -3140,13 +3137,11 @@ UserProc::fromSSAform()
 			// replacing the phi with one copy doesn't work. The result is an extra copy.
 			// So check of r1 is a phi and r2 one of its operands, and all other operands for the phi have the same
 			// name. If so, don't rename.
-			Statement *def1 = r1->getDef();
-			if (def1->isPhi()) {
+			if (auto pa = dynamic_cast<PhiAssign *>(r1->getDef())) {
 				bool allSame = true;
 				bool r2IsOperand = false;
 				const char *firstName = nullptr;
-				PhiAssign *pi = (PhiAssign *)def1;
-				for (const auto &rr : *pi) {
+				for (const auto &rr : *pa) {
 					auto re = new RefExp(rr.e, rr.def);
 					if (*re == *r2)
 						r2IsOperand = true;
@@ -3189,14 +3184,14 @@ UserProc::fromSSAform()
 
 	// Now remove the phis
 	for (const auto &stmt : stmts) {
-		if (!stmt->isPhi()) continue;
+		auto pa = dynamic_cast<PhiAssign *>(stmt);
+		if (!pa) continue;
 		// Check if the base variables are all the same
-		auto pa = (PhiAssign *)stmt;
 		if (pa->begin() == pa->end()) {
 			// no params to this phi, just remove it
 			if (VERBOSE)
-				LOG << "phi with no params, removing: " << *stmt << "\n";
-			removeStatement(stmt);
+				LOG << "phi with no params, removing: " << *pa << "\n";
+			removeStatement(pa);
 			continue;
 		}
 		LocationSet refs;
@@ -3217,10 +3212,10 @@ UserProc::fromSSAform()
 			// Is the left of the phi assignment the same base variable as all the operands?
 			if (*pa->getLeft() == *first) {
 				if (DEBUG_LIVENESS || DEBUG_UNUSED)
-					LOG << "removing phi: left and all refs same or 0: " << *stmt << "\n";
+					LOG << "removing phi: left and all refs same or 0: " << *pa << "\n";
 				// Just removing the refs will work, or removing the whole phi
 				// NOTE: Removing the phi here may cause other statments to be not used.
-				removeStatement(stmt);
+				removeStatement(pa);
 			} else
 				// Need to replace the phi by an expression,
 				// e.g. local0 = phi(r24{3}, r24{5}) becomes
@@ -3250,7 +3245,7 @@ UserProc::fromSSAform()
 			// Exp *tempLoc = newLocal(pa->getType());
 			Exp *tempLoc = getSymbolExp(new RefExp(pa->getLeft(), pa), pa->getType());
 			if (DEBUG_LIVENESS)
-				LOG << "phi statement " << *stmt << " requires local, using " << *tempLoc << "\n";
+				LOG << "phi statement " << *pa << " requires local, using " << *tempLoc << "\n";
 			// For each definition ref'd in the phi
 			for (const auto &rr : *pa) {
 				if (!rr.e) continue;
@@ -3537,9 +3532,8 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 							change = true;
 						}
 					}
-				} else if (s && s->isPhi()) {
+				} else if (auto pa = dynamic_cast<PhiAssign *>(s)) {
 					// for a phi, we have to prove the query for every statement
-					auto pa = (PhiAssign *)s;
 					bool ok = true;
 					if (lastPhis.count(pa) || pa == lastPhi) {
 						if (DEBUG_PROOF)
@@ -3551,7 +3545,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 							LOG << "(set false " << *query->getSubExp2() << " != " << *phiInd << ")\n";
 					} else {
 						if (DEBUG_PROOF)
-							LOG << "found " << *s << " prove for each\n";
+							LOG << "found " << *pa << " prove for each\n";
 						for (const auto &def : *pa) {
 							Exp *e = query->clone();
 							RefExp *r1 = (RefExp *)e->getSubExp1();
@@ -4025,8 +4019,7 @@ UserProc::reverseStrengthReduction()
 			 && as->getRight()->getSubExp2()->isIntConst()) {
 				int c = ((Const *)as->getRight()->getSubExp2())->getInt();
 				auto r = (RefExp *)as->getRight()->getSubExp1();
-				if (r->getDef() && r->getDef()->isPhi()) {
-					auto p = (PhiAssign *)r->getDef();
+				if (auto p = dynamic_cast<PhiAssign *>(r->getDef())) {
 					if (p->getNumDefs() == 2) {
 						Statement *first = p->getDefs().front().def;
 						Statement *second = p->getDefs().back().def;
@@ -4262,8 +4255,7 @@ UserProc::fixCallAndPhiRefs()
 	// 26 r28 := r28{56}
 	// So we can remove the second parameter, then reduce the phi to an assignment, then propagate it
 	for (const auto &stmt : stmts) {
-		if (stmt->isPhi()) {
-			auto ps = (PhiAssign *)stmt;
+		if (auto ps = dynamic_cast<PhiAssign *>(stmt)) {
 			auto r = new RefExp(ps->getLeft(), ps);
 			for (auto p = ps->begin(); p != ps->end(); ) {
 				if (!p->e) {  // Can happen due to PhiAssign::setAt
@@ -4294,8 +4286,7 @@ UserProc::fixCallAndPhiRefs()
 
 	// Second pass
 	for (const auto &stmt : stmts) {
-		if (stmt->isPhi()) {
-			auto ps = (PhiAssign *)stmt;
+		if (auto ps = dynamic_cast<PhiAssign *>(stmt)) {
 			if (ps->getNumDefs() == 0) continue;  // Can happen e.g. for m[...] := phi {} when this proc is involved in a recursion group
 			Exp *lhs = ps->getLeft();
 			bool allSame = true;
@@ -4633,22 +4624,24 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 		} else if (dynamic_cast<ReturnStatement *>(stmt)) {
 			if (cycleGrp && !cycleGrp->empty())  // If this function is involved in recursion
 				continue;  //  then ignore this return statement
-		} else if (stmt->isPhi() && theReturnStatement && cycleGrp && !cycleGrp->empty()) {
-			Exp *phiLeft = ((PhiAssign *)stmt)->getLeft();
-			auto refPhi = new RefExp(phiLeft, stmt);
-			bool foundPhi = false;
-			for (const auto &rr : *theReturnStatement) {
-				Exp *rhs = ((Assign *)rr)->getRight();
-				LocationSet uses;
-				rhs->addUsedLocs(uses);
-				if (uses.exists(refPhi)) {
-					// stmt is a phi that defines a component of a recursive return. Ignore it
-					foundPhi = true;
-					break;
+		} else if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
+			if (theReturnStatement && cycleGrp && !cycleGrp->empty()) {
+				Exp *phiLeft = pa->getLeft();
+				auto refPhi = new RefExp(phiLeft, pa);
+				bool foundPhi = false;
+				for (const auto &rr : *theReturnStatement) {
+					Exp *rhs = ((Assign *)rr)->getRight();
+					LocationSet uses;
+					rhs->addUsedLocs(uses);
+					if (uses.exists(refPhi)) {
+						// stmt is a phi that defines a component of a recursive return. Ignore it
+						foundPhi = true;
+						break;
+					}
 				}
+				if (foundPhi)
+					continue;  // Ignore this phi
 			}
-			if (foundPhi)
-				continue;  // Ignore this phi
 		}
 
 		// Otherwise, consider uses in stmt
@@ -5264,14 +5257,14 @@ UserProc::findPhiUnites(ConnectionGraph &pu)
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		auto pa = (PhiAssign *)stmt;
-		if (!pa->isPhi()) continue;
-		Exp *lhs = pa->getLeft();
-		auto reLhs = new RefExp(lhs, pa);
-		for (const auto &pp : *pa) {
-			if (!pp.e) continue;
-			auto re = new RefExp(pp.e, pp.def);
-			pu.connect(reLhs, re);
+		if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
+			Exp *lhs = pa->getLeft();
+			auto reLhs = new RefExp(lhs, pa);
+			for (const auto &pp : *pa) {
+				if (!pp.e) continue;
+				auto re = new RefExp(pp.e, pp.def);
+				pu.connect(reLhs, re);
+			}
 		}
 	}
 }
@@ -5311,17 +5304,17 @@ UserProc::nameParameterPhis()
 	StatementList stmts;
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
-		auto pi = (PhiAssign *)stmt;
-		if (!pi->isPhi()) continue;  // Might be able to optimise this a bit
+		auto pa = dynamic_cast<PhiAssign *>(stmt);
+		if (!pa) continue;  // Might be able to optimise this a bit
 		// See if the destination has a symbol already
-		Exp *lhs = pi->getLeft();
-		auto lhsRef = new RefExp(lhs, pi);
+		Exp *lhs = pa->getLeft();
+		auto lhsRef = new RefExp(lhs, pa);
 		if (findFirstSymbol(lhsRef))
 			continue;  // Already mapped to something
 		bool multiple = false;   // True if find more than one unique parameter
 		const char *firstName = nullptr;  // The name for the first parameter found
-		Type *ty = pi->getType();
-		for (const auto &pp : *pi) {
+		Type *ty = pa->getType();
+		for (const auto &pp : *pa) {
 			if (dynamic_cast<ImplicitAssign *>(pp.def)) {
 				auto phiArg = new RefExp(pp.e, pp.def);
 				if (auto name = lookupSym(phiArg, ty)) {

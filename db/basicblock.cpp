@@ -1721,7 +1721,7 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 				// This check is done at the "bottom" of the statement, i.e. before we add s's uses and remove s's
 				// definitions to liveLocs
 				// Note that phi assignments don't count
-				if (!s->isPhi())
+				if (!dynamic_cast<PhiAssign *>(s))
 					checkForOverlap(liveLocs, defs, ig, myProc, false);
 #endif
 				// Definitions kill uses. Now we are moving to the "top" of statement s
@@ -1730,7 +1730,7 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 				// with each other (since they come via different BBs). However, we don't want to put these uses into
 				// liveLocs, because then the livenesses will flow to all predecessors. Only the appropriate livenesses
 				// from the appropriate phi parameter should flow to the predecessor. This is done in getLiveOut()
-				if (s->isPhi()) continue;
+				if (dynamic_cast<PhiAssign *>(s)) continue;
 				// Check for livenesses that overlap
 				LocationSet uses;
 				s->addUsedLocs(uses);
@@ -1769,16 +1769,16 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 		const auto &stmts = currBB->m_pRtls->front()->getList();
 		for (const auto &stmt : stmts) {
 			// Only interested in phi assignments. Note that it is possible that some phi assignments have been
-			// converted to ordinary assignments. So the below is a continue, not a break.
-			if (!stmt->isPhi()) continue;
-			PhiAssign *pa = (PhiAssign *)stmt;
-			// Get the jth operand to the phi function; it has a use from BB *this
-			Statement *def = pa->getStmtAt(j);
-			auto r = new RefExp(pa->getLeft()->clone(), def);
-			liveout.insert(r);
-			phiLocs.insert(r);
-			if (DEBUG_LIVENESS)
-				LOG << " ## Liveness: adding " << *r << " due to ref to phi " << *stmt << " in BB at " << getLowAddr() << "\n";
+			// converted to ordinary assignments.
+			if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
+				// Get the jth operand to the phi function; it has a use from BB *this
+				Statement *def = pa->getStmtAt(j);
+				auto r = new RefExp(pa->getLeft()->clone(), def);
+				liveout.insert(r);
+				phiLocs.insert(r);
+				if (DEBUG_LIVENESS)
+					LOG << " ## Liveness: adding " << *r << " due to ref to phi " << *pa << " in BB at " << getLowAddr() << "\n";
+			}
 		}
 	}
 }
@@ -2101,9 +2101,9 @@ static void
 findConstantValues(Statement *s, std::list<int> &dests)
 {
 	if (!s) return;
-	if (s->isPhi()) {
+	if (auto pa = dynamic_cast<PhiAssign *>(s)) {
 		// For each definition, recurse
-		for (const auto &def : *(PhiAssign *)s)
+		for (const auto &def : *pa)
 			findConstantValues(def.def, dests);
 	} else if (s->isAssign()) {
 		Exp *rhs = ((Assign *)s)->getRight();
@@ -2126,7 +2126,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 	rtlit rit;
 	stlit sit;
 	for (Statement *s = getFirstStmt(rit, sit); s; s = getNextStmt(rit, sit)) {
-		if (!s->isPhi()) continue;
+		if (!dynamic_cast<PhiAssign *>(s)) continue;
 		Statement *originalPhi = s;
 		StatementSet workSet, seenSet;
 		workSet.insert(s);
@@ -2135,8 +2135,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			PhiAssign *pi = (PhiAssign *)*workSet.begin();
 			workSet.remove(pi);
 			for (const auto &def : *pi) {
-				if (!def.def) continue;
-				if (!def.def->isPhi()) continue;
+				if (!dynamic_cast<PhiAssign *>(def.def)) continue;
 				if (seenSet.exists(def.def)) {
 					std::cerr << "Real phi loop involving statements " << originalPhi->getNumber() << " and " << pi->getNumber() << "\n";
 					break;

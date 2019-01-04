@@ -2714,9 +2714,8 @@ CallStatement::ellipsisProcessing(Prog *prog)
 				Exp *rhs = ((Assign *)def)->getRight();
 				if (!rhs || !rhs->isStrConst()) return false;
 				formatStr = ((Const *)rhs)->getStr();
-			} else if (def->isPhi()) {
+			} else if (auto pa = dynamic_cast<PhiAssign *>(def)) {
 				// More likely. Example: switch_gcc. Only need ONE candidate format string
-				PhiAssign *pa = (PhiAssign *)def;
 				int n = pa->getNumDefs();
 				for (int i = 0; i < n; ++i) {
 					def = pa->getStmtAt(i);
@@ -3625,9 +3624,9 @@ Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return lhs->match(left, bindings) && rhs->match(right, bindings);
 }
 
-void addPhiReferences(StatementSet &stmts, Statement *def);
+void addPhiReferences(StatementSet &stmts, PhiAssign *def);
 
-void
+static void
 addSimpleCopyReferences(StatementSet &stmts, Statement *def)
 {
 	if (!(*((Assign *)def)->getLeft() == *((Assign *)def)->getRight()->getSubExp1()))
@@ -3635,21 +3634,21 @@ addSimpleCopyReferences(StatementSet &stmts, Statement *def)
 	Statement *copy = ((RefExp *)((Assign *)def)->getRight())->getDef();
 	if (!stmts.exists(copy)) {
 		stmts.insert(copy);
-		if (copy->isPhi())
-			addPhiReferences(stmts, copy);
+		if (auto pa = dynamic_cast<PhiAssign *>(copy))
+			addPhiReferences(stmts, pa);
 		else if (copy->isAssign() && ((Assign *)copy)->getRight()->isSubscript())
 			addSimpleCopyReferences(stmts, copy);
 	}
 }
 
-void
-addPhiReferences(StatementSet &stmts, Statement *def)
+static void
+addPhiReferences(StatementSet &stmts, PhiAssign *def)
 {
-	PhiAssign *p = (PhiAssign *)def;
-	for (const auto &it : *p) {
-		if (it.def->isPhi() && !stmts.exists(it.def)) {
-			stmts.insert(it.def);
-			addPhiReferences(stmts, it.def);
+	for (const auto &it : *def) {
+		auto pa = dynamic_cast<PhiAssign *>(it.def);
+		if (pa && !stmts.exists(pa)) {
+			stmts.insert(pa);
+			addPhiReferences(stmts, pa);
 		} else if (it.def->isAssign() && ((Assign *)it.def)->getRight()->isSubscript()) {
 			stmts.insert(it.def);
 			addSimpleCopyReferences(stmts, it.def);
@@ -4423,7 +4422,7 @@ PhiAssign::simplify()
 		bool onlyOneNotThis = true;
 		Statement *notthis = (Statement *)-1;
 		for (const auto &def : defVec) {
-			if (!def.def || dynamic_cast<ImplicitAssign *>(def.def) || !def.def->isPhi() || def.def != this) {
+			if (!def.def || dynamic_cast<ImplicitAssign *>(def.def) || !dynamic_cast<PhiAssign *>(def.def) || def.def != this) {
 				if (notthis != (Statement *)-1) {
 					onlyOneNotThis = false;
 					break;

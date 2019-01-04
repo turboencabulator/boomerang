@@ -2796,8 +2796,7 @@ Binary::polySimplify(bool &bMod)
 					LOG << "replacing " << this << " with " << res << "\n";
 				if (l->isSubscript()) {
 					RefExp *r = (RefExp *)l;
-					if (r->getDef() && r->getDef()->isPhi()) {
-						PhiAssign *pa = (PhiAssign *)r->getDef();
+					if (auto pa = dynamic_cast<PhiAssign *>(r->getDef())) {
 						LOG << "argh: " << pa->getStmtAt(1) << "\n";
 					}
 				}
