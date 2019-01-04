@@ -294,21 +294,21 @@ UserProc::dfaTypeAnalysis()
 		}
 
 		// 4) Add the locals (soon globals as well) to the localTable, to sort out the overlaps
-		if (stmt->isTyping()) {
+		if (auto ts = dynamic_cast<TypingStatement *>(stmt)) {
 			Exp *addrExp = nullptr;
 			Type *typeExp = nullptr;
-			if (auto as = dynamic_cast<Assignment *>(stmt)) {
+			if (auto as = dynamic_cast<Assignment *>(ts)) {
 				auto lhs = as->getLeft();
 				if (lhs->isMemOf()) {
 					addrExp = ((Location *)lhs)->getSubExp1();
 					typeExp = as->getType();
 				}
-			} else {
+			} else if (auto irs = dynamic_cast<ImpRefStatement *>(ts)) {
 				// Assume an implicit reference
-				addrExp = ((ImpRefStatement *)stmt)->getAddressExp();
+				addrExp = irs->getAddressExp();
 				if (addrExp->isTypedExp() && ((TypedExp *)addrExp)->getType()->resolvesToPointer())
 					addrExp = ((Unary *)addrExp)->getSubExp1();
-				typeExp = ((ImpRefStatement *)stmt)->getType();
+				typeExp = irs->getType();
 				// typeExp should be a pointer expression, or a union of pointer types
 				if (typeExp->resolvesToUnion())
 					typeExp = typeExp->asUnion()->dereferenceUnion();
@@ -328,7 +328,7 @@ UserProc::dfaTypeAnalysis()
 					}
 				}
 				LOG << "in proc " << getName() << " adding addrExp " << *addrExp << " to local table\n";
-				Type *ty = ((TypingStatement *)stmt)->getType();
+				Type *ty = ts->getType();
 				localTable.addItem(addr, lookupSym(Location::memOf(addrExp), ty), typeExp);
 			}
 		}

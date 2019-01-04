@@ -171,7 +171,6 @@ public:
 	// true if is a null statement
 	virtual bool        isNullStatement() const { return false; }
 
-	virtual bool        isTyping() const { return false; }  // Return true if a TypingStatement
 	// true if this statement is a standard assign
 	virtual bool        isAssign() const { return false; }
 	// true if this statement is a phi assignment
@@ -343,8 +342,6 @@ public:
 	// Get and set the type.
 	Type       *getType() const { return type; }
 	void        setType(Type *ty) { type = ty; }
-
-	bool        isTyping() const override { return true; }
 };
 
 /**
