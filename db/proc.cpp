@@ -5078,7 +5078,7 @@ UserProc::processDecodedICTs()
 		prog->addDecodedRtl(bb->getHiAddr(), rtl);
 		// Now decode those new targets, adding out edges as well
 #if 0
-		if (last->isCase())
+		if (dynamic_cast<CaseStatement *>(last))
 			bb->processSwitch(this);
 #endif
 	}

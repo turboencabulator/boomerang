@@ -191,8 +191,6 @@ public:
 	// NOTE: for now, it only represents decoded indirect jump instructions
 	        bool        isHL_ICT() const { return getKind() == STMT_CASE; }
 
-	virtual bool        isCase() const { return false; }
-
 	// true if this is a fpush/fpop
 	virtual bool        isFpush() const { return false; }
 	virtual bool        isFpop() const { return false; }
@@ -984,7 +982,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_CASE; }
-	bool        isCase() const override { return true; }
 
 	// Accept a visitor to this Statememt
 	bool        accept(StmtVisitor &) override;
