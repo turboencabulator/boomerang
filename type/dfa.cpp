@@ -113,8 +113,7 @@ UserProc::dfaTypeAnalysis()
 				LOG << "\n";
 			}
 			// If stmt is a call, also display its return types
-			if (stmt->isCall()) {
-				CallStatement *call = (CallStatement *)stmt;
+			if (auto call = dynamic_cast<CallStatement *>(stmt)) {
 				ReturnStatement *rs = call->getCalleeReturn();
 				if (!rs) continue;
 				UseCollector *uc = call->getUseCollector();

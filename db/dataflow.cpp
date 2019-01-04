@@ -244,7 +244,8 @@ DataFlow::placePhiFunctions(UserProc *proc)
 		for (Statement *s = bb->getFirstStmt(rit, sit); s; s = bb->getNextStmt(rit, sit)) {
 			LocationSet ls;
 			s->getDefinitions(ls);
-			if (s->isCall() && ((CallStatement *)s)->isChildless())  // If this is a childless call
+			auto call = dynamic_cast<CallStatement *>(s);
+			if (call && call->isChildless())  // If this is a childless call
 				defallsites.insert(n);  // then this block defines every variable
 			for (const auto &loc : ls) {
 				if (canRename(loc, proc)) {
@@ -347,8 +348,8 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 				// A phi statement may use a location defined in a childless call, in which case its use collector
 				// needs updating
 				for (const auto &pp : *pa) {
-					if (pp.def && pp.def->isCall())
-						((CallStatement *)pp.def)->useBeforeDefine(phiLeft->clone());
+					if (auto call = dynamic_cast<CallStatement *>(pp.def))
+						call->useBeforeDefine(phiLeft->clone());
 				}
 			} else {  // Not a phi assignment
 				S->addUsedLocs(locs);
@@ -363,9 +364,9 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 					// Update use information in calls, and in the proc (for parameters)
 					Exp *base = ((RefExp *)x)->getSubExp1();
 					def = ((RefExp *)x)->getDef();
-					if (def && def->isCall()) {
+					if (auto call = dynamic_cast<CallStatement *>(def)) {
 						// Calls have UseCollectors for locations that are used before definition at the call
-						((CallStatement *)def)->useBeforeDefine(base->clone());
+						call->useBeforeDefine(base->clone());
 						continue;
 					}
 					// Update use collector in the proc (for parameters)
@@ -387,9 +388,9 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 					}
 				} else
 					def = Stacks[x].top();
-				if (def && def->isCall())
+				if (auto call = dynamic_cast<CallStatement *>(def))
 					// Calls have UseCollectors for locations that are used before definition at the call
-					((CallStatement *)def)->useBeforeDefine(x->clone());
+					call->useBeforeDefine(x->clone());
 				// Replace the use of x with x{def} in S
 				changed = true;
 				if (S->isPhi()) {
@@ -437,7 +438,8 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 		}
 		// Special processing for define-alls (presently, only childless calls).
 		// But note that only everythings at the current memory level are defined!
-		if (S->isCall() && ((CallStatement *)S)->isChildless() && !Boomerang::get()->assumeABI) {
+		auto cs = dynamic_cast<CallStatement *>(S);
+		if (cs && cs->isChildless() && !Boomerang::get()->assumeABI) {
 			// S is a childless call (and we're not assuming ABI compliance)
 			Stacks[defineAll];  // Ensure that there is an entry for defineAll
 			for (auto &stack : Stacks) {
@@ -501,7 +503,8 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 			}
 		}
 		// Pop all defs due to childless calls
-		if (S->isCall() && ((CallStatement *)S)->isChildless()) {
+		auto cs = dynamic_cast<CallStatement *>(S);
+		if (cs && cs->isChildless()) {
 			for (auto &stack : Stacks) {
 				if (!stack.second.empty() && stack.second.top() == S) {
 					stack.second.pop();

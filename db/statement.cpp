@@ -411,14 +411,14 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 		if (auto branch = dynamic_cast<BranchStatement *>(last)) {
 			input.unionwith(branch->getRangesForOutEdgeTo(pbb));
 		} else {
-			if (last->isCall()) {
-				auto d = ((CallStatement *)last)->getDestProc();
+			if (auto call = dynamic_cast<CallStatement *>(last)) {
+				auto d = call->getDestProc();
 				auto up = dynamic_cast<UserProc *>(d);
 				if (up && !up->getCFG()->findRetNode()) {
 					if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 						LOG << "ignoring ranges from call to proc with no ret node\n";
 				} else
-					input.unionwith(last->getRanges());
+					input.unionwith(call->getRanges());
 			} else
 				input.unionwith(last->getRanges());
 		}
@@ -506,8 +506,9 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			c += procDest->getSignature()->getNumParams() * 4;
 		} else if (procDest->getName().compare(0, 6, "__imp_") == 0) {
 			Statement *first = ((UserProc *)procDest)->getCFG()->getEntryBB()->getFirstStmt();
-			assert(first && first->isCall());
-			auto d = ((CallStatement *)first)->getDestProc();
+			auto call = dynamic_cast<CallStatement *>(first);
+			assert(call);
+			auto d = call->getDestProc();
 			if (d->getSignature()->getConvention() == CONV_PASCAL)
 				c += d->getSignature()->getNumParams() * 4;
 		} else if (auto up = dynamic_cast<UserProc *>(procDest)) {
@@ -539,11 +540,11 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 					// call followed by a ret, sigh
 					for (const auto &edge : retbb->getInEdges()) {
 						last = edge->getLastStmt();
-						if (last->isCall())
+						if (dynamic_cast<CallStatement *>(last))
 							break;
 					}
-					if (last->isCall()) {
-						auto d = ((CallStatement *)last)->getDestProc();
+					if (auto call = dynamic_cast<CallStatement *>(last)) {
+						auto d = call->getDestProc();
 						if (d && d->getSignature()->getConvention() == CONV_PASCAL)
 							c += d->getSignature()->getNumParams() * 4;
 					}
@@ -966,9 +967,9 @@ Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 	bool ret = searchAndReplace(e, rhs, true);  // Last parameter true to change collectors
 	// assert(ret);
 
-	if (ret && isCall()) {
-		convert |= ((CallStatement *)this)->convertToDirect();
-	}
+	if (ret)
+		if (auto call = dynamic_cast<CallStatement *>(this))
+			convert |= call->convertToDirect();
 	return ret;
 }
 
@@ -4613,11 +4614,11 @@ ReturnStatement::updateModifieds()
 	auto oldMods = StatementList();
 	oldMods.swap(modifieds);
 
-	if (pbb->getNumInEdges() == 1 && pbb->getInEdges()[0]->getLastStmt()->isCall()) {
-		CallStatement *call = (CallStatement *)pbb->getInEdges()[0]->getLastStmt();
-		if (call->getDestProc() && FrontEnd::noReturnCallDest(call->getDestProc()->getName()))
-			return;
-	}
+	if (pbb->getNumInEdges() == 1)
+		if (auto call = dynamic_cast<CallStatement *>(pbb->getInEdges()[0]->getLastStmt()))
+			if (call->getDestProc() && FrontEnd::noReturnCallDest(call->getDestProc()->getName()))
+				return;
+
 	// For each location in the collector, make sure that there is an assignment in the old modifieds, which will
 	// be filtered and sorted to become the new modifieds
 	// Ick... O(N*M) (N existing modifeds, M collected locations)

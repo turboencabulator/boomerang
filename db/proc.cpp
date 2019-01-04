@@ -126,8 +126,8 @@ UserProc::isNoReturn() const
 		return true;
 	if (exitbb->getNumInEdges() == 1) {
 		Statement *s = exitbb->getInEdges()[0]->getLastStmt();
-		CallStatement *call = (CallStatement *)s;
-		if (s->isCall() && call->getDestProc() && call->getDestProc()->isNoReturn())
+		auto call = dynamic_cast<CallStatement *>(s);
+		if (call && call->getDestProc() && call->getDestProc()->isNoReturn())
 			return true;
 	}
 	return false;
@@ -939,11 +939,11 @@ UserProc::decompile(ProcList *path, int &indent)
 		for (const auto &bb : *cfg) {
 			if (bb->getType() == CALL) {
 				// The call Statement will be in the last RTL in this BB
-				auto call = (CallStatement *)bb->getRTLs()->back()->getHlStmt();
-				if (!call->isCall()) {
+				auto call = dynamic_cast<CallStatement *>(bb->getRTLs()->back()->getHlStmt());
+				if (!call) {
 					LOG << "bb at " << bb->getLowAddr() << " is a CALL but last stmt is not a call: " << *call << "\n";
 				}
-				assert(call->isCall());
+				assert(call);
 				auto proc = call->getDestProc();
 				auto c = dynamic_cast<UserProc *>(proc);
 				if (!c) continue;
@@ -2208,7 +2208,8 @@ void UserProc::trimParameters(int depth)
 	std::set<Statement *> excluded;
 
 	for (const auto &stmt : stmts) {
-		if (!stmt->isCall() || ((CallStatement *)stmt)->getDestProc() != this) {
+		auto call = dynamic_cast<CallStatement *>(stmt);
+		if (!call || call->getDestProc() != this) {
 			for (int i = 0; i < totparams; ++i) {
 				Exp *p, *pe;
 #if 0
@@ -2466,8 +2467,7 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 
 	// start with calls because that's where we have the most types
 	for (const auto &stmt : stmts) {
-		if (stmt->isCall()) {
-			auto call = (CallStatement *)stmt;
+		if (auto call = dynamic_cast<CallStatement *>(stmt)) {
 			for (int i = 0; i < call->getNumArguments(); ++i) {
 				Type *ty = call->getArgumentType(i);
 				Exp *e = call->getArgumentExp(i);
@@ -2955,10 +2955,10 @@ UserProc::removeUnusedLocals()
 					if (dynamic_cast<Assignment *>(stmt)) {
 						removeStatement(stmt);
 						break;  // Break to next statement
-					} else if (stmt->isCall())
+					} else if (auto call = dynamic_cast<CallStatement *>(stmt)) {
 						// Remove just this define. May end up removing several defines from this call.
-						((CallStatement *)stmt)->removeDefine(loc);
-					// else if a ReturnStatement, don't attempt to remove it. The definition is used *outside* this proc.
+						call->removeDefine(loc);
+					} // else if a ReturnStatement, don't attempt to remove it. The definition is used *outside* this proc.
 				}
 			}
 		}
@@ -3823,10 +3823,9 @@ UserProc::ellipsisProcessing()
 {
 	bool ch = false;
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
-		if (!c || !c->isCall()) continue;
-		ch |= c->ellipsisProcessing(prog);
+		if (auto c = dynamic_cast<CallStatement *>(bb->getLastStmt()))
+			ch |= c->ellipsisProcessing(prog);
 	}
 	if (ch)
 		fixCallAndPhiRefs();
@@ -3984,13 +3983,13 @@ UserProc::updateArguments()
 		LOG << "### update arguments for " << getName() << " ###\n";
 	Boomerang::get()->alert_decompile_debug_point(this, "before updating arguments");
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
-		if (!c || !c->isCall()) continue;
-		c->updateArguments();
-		//c->bypass();
-		if (VERBOSE)
-			LOG << c->prints() << "\n";
+		if (auto c = dynamic_cast<CallStatement *>(bb->getLastStmt())) {
+			c->updateArguments();
+			//c->bypass();
+			if (VERBOSE)
+				LOG << c->prints() << "\n";
+		}
 	}
 	if (VERBOSE)
 		LOG << "=== end update arguments for " << getName() << "\n";
@@ -4235,8 +4234,7 @@ UserProc::fixCallAndPhiRefs()
 	// a[m[]] hack, aint nothing better.
 	bool found = true;
 	for (const auto &stmt : stmts) {
-		if (stmt->isCall()) {
-			auto call = (CallStatement *)stmt;
+		if (auto call = dynamic_cast<CallStatement *>(stmt)) {
 			for (const auto &arg : call->getArguments()) {
 				auto a = (Assign *)arg;
 				if (a->getType()->resolvesToPointer()) {
@@ -4385,8 +4383,8 @@ void
 UserProc::markAsNonChildless(ProcSet *cs)
 {
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
-		if (c && c->isCall() && c->isChildless()) {
+		auto c = dynamic_cast<CallStatement *>(bb->getLastStmt());
+		if (c && c->isChildless()) {
 			auto dest = (UserProc *)c->getDestProc();
 			if (cs->count(dest))  // Part of the cycle?
 				// Yes, set the callee return statement (making it non childless)
@@ -4511,8 +4509,8 @@ bool
 UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 {
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
-		if (!c || !c->isCall()) continue;  // Only interested in calls
+		auto c = dynamic_cast<CallStatement *>(bb->getLastStmt());
+		if (!c) continue;  // Only interested in calls
 		auto proc = c->getDestProc();
 		auto dest = dynamic_cast<UserProc *>(proc);
 		if (!dest) continue;  // Only interested in calls to UserProcs
@@ -4568,10 +4566,11 @@ UserProc::isRetNonFakeUsed(CallStatement *c, Exp *retLoc, UserProc *p, ProcSet *
 		}
 		if (!found)
 			continue;
-		if (!stmt->isCall())
+		auto call = dynamic_cast<CallStatement *>(stmt);
+		if (!call)
 			// This non-call uses the return; return true as it is non-fake used
 			return true;
-		auto proc = ((CallStatement *)stmt)->getDestProc();
+		auto proc = call->getDestProc();
 		if (!proc)
 			// This childless call seems to use the return. Count it as a non-fake use
 			return true;
@@ -4607,8 +4606,7 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 	getStatements(stmts);
 	for (const auto &stmt : stmts) {
 		// Special checking for recursive calls
-		if (stmt->isCall()) {
-			auto c = (CallStatement *)stmt;
+		if (auto c = dynamic_cast<CallStatement *>(stmt)) {
 			auto proc = c->getDestProc();
 			auto dest = dynamic_cast<UserProc *>(proc);
 			if (dest && dest->doesRecurseTo(this)) {
@@ -4859,13 +4857,11 @@ UserProc::updateForUseChange(std::set<UserProc *> &removeRetSet)
 	StatementList oldParameters(parameters);
 	std::map<CallStatement *, UseCollector> callLiveness;
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
-		if (!c || !c->isCall()) continue;
-		auto dest = c->getDestProc();
-		// Not interested in unanalysed indirect calls (not sure) or calls to lib procs
-		if (!dynamic_cast<UserProc *>(dest)) continue;
-		callLiveness[c].makeCloneOf(*c->getUseCollector());
+		if (auto c = dynamic_cast<CallStatement *>(bb->getLastStmt()))
+			// Not interested in unanalysed indirect calls (not sure) or calls to lib procs
+			if (dynamic_cast<UserProc *>(c->getDestProc()))
+				callLiveness[c].makeCloneOf(*c->getUseCollector());
 	}
 
 	// Have to redo dataflow to get the liveness at the calls correct
@@ -4908,10 +4904,9 @@ UserProc::clearUses()
 		LOG << "### clearing usage for " << getName() << " ###\n";
 	col.clear();
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
-		if (!c || !c->isCall()) continue;
-		c->clearUseCollector();
+		if (auto c = dynamic_cast<CallStatement *>(bb->getLastStmt()))
+			c->clearUseCollector();
 	}
 }
 
@@ -5157,10 +5152,9 @@ UserProc::eliminateDuplicateArgs()
 	if (VERBOSE)
 		LOG << "### eliminate duplicate args for " << getName() << " ###\n";
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
-		if (!c || !c->isCall()) continue;
-		c->eliminateDuplicateArgs();
+		if (auto c = dynamic_cast<CallStatement *>(bb->getLastStmt()))
+			c->eliminateDuplicateArgs();
 	}
 }
 
@@ -5170,10 +5164,9 @@ UserProc::removeCallLiveness()
 	if (VERBOSE)
 		LOG << "### removing call livenesses for " << getName() << " ###\n";
 	for (const auto &bb : *cfg) {
-		auto c = (CallStatement *)bb->getLastStmt();
 		// Note: we may have removed some statements, so there may no longer be a last statement!
-		if (!c || !c->isCall()) continue;
-		c->removeAllLive();
+		if (auto c = dynamic_cast<CallStatement *>(bb->getLastStmt()))
+			c->removeAllLive();
 	}
 }
 

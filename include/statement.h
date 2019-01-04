@@ -178,9 +178,6 @@ public:
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
-	// true if this statement is a call
-	virtual bool        isCall() const { return false; }
-
 	// true if this statement is a decoded ICT.
 	// NOTE: for now, it only represents decoded indirect jump instructions
 	        bool        isHL_ICT() const { return getKind() == STMT_CASE; }
@@ -1053,7 +1050,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_CALL; }
-	bool        isCall() const override { return true; }
 
 	// Accept a visitor to this stmt
 	bool        accept(StmtVisitor &) override;

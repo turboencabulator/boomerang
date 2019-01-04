@@ -178,8 +178,7 @@ CallBypasser::postVisit(RefExp *r)
 	mask >>= 1;
 	// Note: r (the pointer) will always == ret (also the pointer) here, so the below is safe and avoids a cast
 	Statement *def = r->getDef();
-	CallStatement *call = (CallStatement *)def;
-	if (call && call->isCall()) {
+	if (auto call = dynamic_cast<CallStatement *>(def)) {
 		bool ch;
 		ret = call->bypassRef((RefExp *)ret, ch);
 		if (ch) {
@@ -815,7 +814,7 @@ PrimitiveTester::visit(RefExp *e, bool &recurse)
 {
 	Statement *def = e->getDef();
 	// If defined by a call, e had better not be a memory location (crude approximation for now)
-	if (!def || def->getNumber() == 0 || (def->isCall() && !e->getSubExp1()->isMemOf())) {
+	if (!def || def->getNumber() == 0 || (dynamic_cast<CallStatement *>(def) && !e->getSubExp1()->isMemOf())) {
 		// Implicit definitions are always primitive
 		// The results of calls are always primitive
 		recurse = false;  // Don't recurse into the reference
