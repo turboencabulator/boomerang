@@ -182,8 +182,6 @@ public:
 	virtual bool        isImplicit() const { return false; }
 	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
-	// true of this statement is an implicit reference
-	virtual bool        isImpRef() const { return false; }
 
 	virtual bool        isGoto() const { return false; }
 	virtual bool        isBranch() const { return false; }
@@ -761,7 +759,6 @@ public:
 	// Virtuals
 	Statement  *clone() const override;
 	STMT_KIND   getKind() const override { return STMT_IMPREF; }
-	bool        isImpRef() const override { return true; }
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;

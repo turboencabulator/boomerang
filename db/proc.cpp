@@ -5108,8 +5108,8 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 				bool found = false;
 				bool searchEarlierRtls = true;
 				while (it != stmts.begin()) {
-					auto irs = (ImpRefStatement *)*--it;
-					if (!irs->isImpRef()) {
+					auto irs = dynamic_cast<ImpRefStatement *>(*--it);
+					if (!irs) {
 						searchEarlierRtls = false;
 						break;
 					}
@@ -5124,8 +5124,8 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 						auto &stmts2 = (*revit)->getList();
 						it = stmts2.end();
 						while (it != stmts2.begin()) {
-							ImpRefStatement *irs = (ImpRefStatement *)*--it;
-							if (!irs->isImpRef()) {
+							auto irs = dynamic_cast<ImpRefStatement *>(*--it);
+							if (!irs) {
 								searchEarlierRtls = false;
 								break;
 							}
