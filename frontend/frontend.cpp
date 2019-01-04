@@ -1260,7 +1260,7 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 		// (RTLs).
 		BasicBlock *retBB = pProc->getCFG()->findRetNode();
 		assert(retBB);
-		if (retBB->getFirstStmt()->isReturn())
+		if (dynamic_cast<ReturnStatement *>(retBB->getFirstStmt()))
 			// ret node has no semantics, clearly we need to keep ours
 			pRtl->deleteLastStmt();
 		else

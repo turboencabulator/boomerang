@@ -181,9 +181,6 @@ public:
 	// true if this statement is a call
 	virtual bool        isCall() const { return false; }
 
-	// true if this statement is a ReturnStatement
-	virtual bool        isReturn() const { return false; }
-
 	// true if this statement is a decoded ICT.
 	// NOTE: for now, it only represents decoded indirect jump instructions
 	        bool        isHL_ICT() const { return getKind() == STMT_CASE; }
@@ -1284,7 +1281,6 @@ public:
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_RET; }
-	bool        isReturn() const override { return true; }
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;

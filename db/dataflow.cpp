@@ -403,12 +403,11 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 
 		// MVE: Check for Call and Return Statements; these have DefCollector objects that need to be updated
 		// Do before the below, so CallStatements have not yet processed their defines
-		if (S->isCall() || S->isReturn()) {
-			DefCollector *col;
-			if (S->isCall())
-				col = ((CallStatement *)S)->getDefCollector();
-			else
-				col = ((ReturnStatement *)S)->getCollector();
+		if (auto cs = dynamic_cast<CallStatement *>(S)) {
+			auto col = cs->getDefCollector();
+			col->updateDefs(Stacks, proc);
+		} else if (auto rs = dynamic_cast<ReturnStatement *>(S)) {
+			auto col = rs->getCollector();
 			col->updateDefs(Stacks, proc);
 		}
 

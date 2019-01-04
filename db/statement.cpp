@@ -531,7 +531,7 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			if (retbb && !eq) {
 				Statement *last = retbb->getLastStmt();
 				assert(last);
-				if (last->isReturn()) {
+				if (dynamic_cast<ReturnStatement *>(last)) {
 					last->setBB(retbb);
 					last = last->getPreviousStatementInBB();
 				}

@@ -703,7 +703,7 @@ UserProc::printDFG()
 				else
 					out << "input";
 				out << " -> ";
-				if (stmt->isReturn())
+				if (dynamic_cast<ReturnStatement *>(stmt))
 					out << "output";
 				else
 					out << stmt->getNumber();
@@ -2910,7 +2910,9 @@ UserProc::removeUnusedLocals()
 			// return local7 = local7+1 and local7 = call(local7+1), where in all cases, local7 is not used elsewhere
 			// outside this procedure. With the assign, it can be deleted, but with the return or call statements, it
 			// can't.
-			if ((stmt->isReturn() || stmt->isCall() || !stmt->definesLoc(loc))) {
+			if (dynamic_cast<ReturnStatement *>(stmt)
+			 || dynamic_cast<CallStatement *>(stmt)
+			 || !stmt->definesLoc(loc)) {
 				if (!loc->isLocal()) continue;
 				std::string name(((Const *)((Location *)loc)->getSubExp1())->getStr());
 				usedLocals.insert(name);
@@ -4630,7 +4632,7 @@ UserProc::checkForGainfulUse(Exp *bparam, ProcSet &visited)
 				// If get to here, then none of the arguments is of this form, and we can ignore this call
 				continue;
 			}
-		} else if (stmt->isReturn()) {
+		} else if (dynamic_cast<ReturnStatement *>(stmt)) {
 			if (cycleGrp && !cycleGrp->empty())  // If this function is involved in recursion
 				continue;  //  then ignore this return statement
 		} else if (stmt->isPhi() && theReturnStatement && cycleGrp && !cycleGrp->empty()) {
@@ -5096,7 +5098,8 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 			if (*it == s
 			    // Not the searched for statement. But if it is a call or return statement, it will be the last, and
 			    // s must be a substatement (e.g. argument, return, define, etc).
-			 || ((*it)->isCall() || (*it)->isReturn())) {
+			 || dynamic_cast<CallStatement *>(*it)
+			 || dynamic_cast<ReturnStatement *>(*it)) {
 				// Found s. Search preceeding statements for an implicit reference with address a
 				auto itForS = it;
 				auto rtlForS = *rit;
