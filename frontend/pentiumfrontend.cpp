@@ -258,73 +258,84 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
 			return;
 		}
 		for (auto rit = BB_rtls->begin(); rit != BB_rtls->end(); ++rit) {
-			for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
+			auto rtl = *rit;
+			for (auto sit = rtl->begin(); sit != rtl->end(); ++sit) {
 				// Get the current Statement
-				auto st = (*rit)->elementAt(i);
-				if (st->isFpush()) {
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::tempOf(new Const("tmpD9")),
-					                              Location::regOf(39)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(39),
-					                              Location::regOf(38)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(38),
-					                              Location::regOf(37)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(37),
-					                              Location::regOf(36)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(36),
-					                              Location::regOf(35)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(35),
-					                              Location::regOf(34)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(34),
-					                              Location::regOf(33)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(33),
-					                              Location::regOf(32)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(32),
-					                              Location::tempOf(new Const("tmpD9"))), i++);
-					// Remove the FPUSH
-					(*rit)->deleteStmt(i);
-					--i;
-					continue;
-				} else if (st->isFpop()) {
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::tempOf(new Const("tmpD9")),
-					                              Location::regOf(32)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(32),
-					                              Location::regOf(33)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(33),
-					                              Location::regOf(34)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(34),
-					                              Location::regOf(35)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(35),
-					                              Location::regOf(36)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(36),
-					                              Location::regOf(37)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(37),
-					                              Location::regOf(38)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(38),
-					                              Location::regOf(39)), i++);
-					(*rit)->insertStmt(new Assign(new FloatType(80),
-					                              Location::regOf(39),
-					                              Location::tempOf(new Const("tmpD9"))), i++);
-					// Remove the FPOP
-					(*rit)->deleteStmt(i);
-					--i;
-					continue;
+				auto stmt = *sit;
+				if (stmt->isFpush()) {
+					sit = rtl->deleteStmt(sit);
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::tempOf(new Const("tmpD9")),
+					                                      Location::regOf(39)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(39),
+					                                      Location::regOf(38)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(38),
+					                                      Location::regOf(37)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(37),
+					                                      Location::regOf(36)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(36),
+					                                      Location::regOf(35)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(35),
+					                                      Location::regOf(34)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(34),
+					                                      Location::regOf(33)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(33),
+					                                      Location::regOf(32)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(32),
+					                                      Location::tempOf(new Const("tmpD9"))));
+				} else if (stmt->isFpop()) {
+					sit = rtl->deleteStmt(sit);
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::tempOf(new Const("tmpD9")),
+					                                      Location::regOf(32)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(32),
+					                                      Location::regOf(33)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(33),
+					                                      Location::regOf(34)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(34),
+					                                      Location::regOf(35)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(35),
+					                                      Location::regOf(36)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(36),
+					                                      Location::regOf(37)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(37),
+					                                      Location::regOf(38)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(38),
+					                                      Location::regOf(39)));
+					++sit;
+					sit = rtl->insertStmt(sit, new Assign(new FloatType(80),
+					                                      Location::regOf(39),
+					                                      Location::tempOf(new Const("tmpD9"))));
 				}
 			}
 		}
@@ -355,20 +366,20 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 		// For example, incomplete BB
 		return;
 	}
-	auto rit = BB_rtls->begin();
-	while (rit != BB_rtls->end()) {
+	for (auto rit = BB_rtls->begin(); rit != BB_rtls->end(); ) {
+		auto rtl = *rit;
 		// Check for call.
-		if ((*rit)->isCall()) {
+		if (rtl->isCall()) {
 			// Reset the "top of stack" index. If this is not done, then after a sequence of calls to functions
 			// returning floats, the value will appear to be returned in registers r[32], then r[33], etc.
 			tos = 0;
 		}
-		if ((*rit)->getList().empty()) { ++rit; continue; }
 #if PROCESS_FNSTSW
 		// Check for f(n)stsw
-		if (isStoreFsw((*rit)->getList().front())) {
+		if (rtl->getList().empty()) { ++rit; continue; }
+		if (isStoreFsw(rtl->getList().front())) {
 			// Check the register - at present we only handle AX
-			auto lhs = ((Assign *)(*rit)->getList().front())->getLeft();
+			auto lhs = ((Assign *)rtl->getList().front())->getLeft();
 			assert(lhs->isRegN(0));
 
 			// Process it
@@ -381,39 +392,13 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 			continue;
 		}
 #endif
-		for (int i = 0; i < (*rit)->getNumStmt(); ++i) {
+		for (auto sit = rtl->begin(); sit != rtl->end(); ) {
 			// Get the current Exp
-			auto st = (*rit)->elementAt(i);
-			if (!st->isFlagAssgn()) {
-				// We are interested in either FPUSH/FPOP, or r[32..39] appearing in either the left or right hand
-				// sides, or calls
-				if (st->isFpush()) {
-					tos = (tos - 1) & 7;
-					// Remove the FPUSH
-					(*rit)->deleteStmt(i);
-					--i;  // Adjust the index
-					continue;
-				} else if (st->isFpop()) {
-					tos = (tos + 1) & 7;
-					// Remove the FPOP
-					(*rit)->deleteStmt(i);
-					--i;  // Adjust the index
-					continue;
-				} else if (st->isAssign()) {
-					auto asgn = (Assign *)st;
-					auto lhs = asgn->getLeft();
-					auto rhs = asgn->getRight();
-					if (tos != 0) {
-						// Substitute all occurrences of r[x] (where 32 <= x <= 39) with r[y] where
-						// y = 32 + (x + tos) & 7
-						bumpRegisterAll(lhs, 32, 39, tos, 7);
-						bumpRegisterAll(rhs, 32, 39, tos, 7);
-					}
-				}
-			} else {
-				// st is a flagcall
+			auto stmt = *sit;
+			if (stmt->isFlagAssgn()) {
+				// stmt is a flagcall
 				// We are interested in any register parameters in the range 32 - 39
-				for (auto cur = (Binary *)((Assign *)st)->getRight(); !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
+				for (auto cur = (Binary *)((Assign *)stmt)->getRight(); !cur->isNil(); cur = (Binary *)cur->getSubExp2()) {
 					// I dont understand why we want typed exps in the flag calls so much. If we're going to replace opSize with TypedExps
 					// then we need to do it for everything, not just the flag calls.. so that should be in the sslparser.  If that is the
 					// case then we cant assume that opLists of flag calls will always contain TypedExps, so this code is wrong.
@@ -428,7 +413,30 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 							s->setSubExp1(new Const(32 + ((K - 32 + tos) & 7)));
 					}
 				}
+				// Else we are interested in either FPUSH/FPOP, or r[32..39] appearing in either the left or right hand
+				// sides, or calls
+			} else if (stmt->isFpush()) {
+				tos = (tos - 1) & 7;
+				// Remove the FPUSH
+				sit = rtl->deleteStmt(sit);
+				continue;
+			} else if (stmt->isFpop()) {
+				tos = (tos + 1) & 7;
+				// Remove the FPOP
+				sit = rtl->deleteStmt(sit);
+				continue;
+			} else if (stmt->isAssign()) {
+				auto asgn = (Assign *)stmt;
+				auto lhs = asgn->getLeft();
+				auto rhs = asgn->getRight();
+				if (tos != 0) {
+					// Substitute all occurrences of r[x] (where 32 <= x <= 39) with r[y] where
+					// y = 32 + (x + tos) & 7
+					bumpRegisterAll(lhs, 32, 39, tos, 7);
+					bumpRegisterAll(rhs, 32, 39, tos, 7);
+				}
 			}
+			++sit;
 		}
 		++rit;
 	}

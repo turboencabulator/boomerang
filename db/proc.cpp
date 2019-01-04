@@ -5093,11 +5093,10 @@ UserProc::processDecodedICTs()
 void
 UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 {
-	BasicBlock *bb = s->getBB();  // Get s' enclosing BB
-	std::list<RTL *> *rtls = bb->getRTLs();
+	auto bb = s->getBB();  // Get s' enclosing BB
+	auto rtls = bb->getRTLs();
 	for (auto rit = rtls->begin(); rit != rtls->end(); ++rit) {
-		std::list<Statement *> &stmts = (*rit)->getList();
-		RTL *rtlForS;
+		auto &stmts = (*rit)->getList();
 		for (auto it = stmts.begin(); it != stmts.end(); ++it) {
 			if (*it == s
 			    // Not the searched for statement. But if it is a call or return statement, it will be the last, and
@@ -5105,11 +5104,11 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 			 || ((*it)->isCall() || (*it)->isReturn())) {
 				// Found s. Search preceeding statements for an implicit reference with address a
 				auto itForS = it;
-				rtlForS = *rit;
+				auto rtlForS = *rit;
 				bool found = false;
 				bool searchEarlierRtls = true;
 				while (it != stmts.begin()) {
-					ImpRefStatement *irs = (ImpRefStatement *)*--it;
+					auto irs = (ImpRefStatement *)*--it;
 					if (!irs->isImpRef()) {
 						searchEarlierRtls = false;
 						break;
@@ -5122,7 +5121,7 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 				}
 				while (searchEarlierRtls && rit != rtls->begin()) {
 					for (auto revit = rtls->rbegin(); revit != rtls->rend(); ++revit) {
-						std::list<Statement *> &stmts2 = (*revit)->getList();
+						auto &stmts2 = (*revit)->getList();
 						it = stmts2.end();
 						while (it != stmts2.begin()) {
 							ImpRefStatement *irs = (ImpRefStatement *)*--it;
@@ -5140,12 +5139,12 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 					}
 				}
 				if (found) {
-					ImpRefStatement *irs = (ImpRefStatement *)*it;
+					auto irs = (ImpRefStatement *)*it;
 					bool ch;
 					irs->meetWith(ty, ch);
 				} else {
 					auto irs = new ImpRefStatement(ty, a);
-					rtlForS->insertStmt(irs, itForS);
+					itForS = rtlForS->insertStmt(itForS, irs);
 				}
 				return;
 			}

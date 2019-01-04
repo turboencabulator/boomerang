@@ -30,7 +30,6 @@
 #include "visitor.h"
 
 #include <iomanip>      // For std::setw
-#include <iterator>
 #include <sstream>
 
 #include <cassert>
@@ -185,79 +184,38 @@ RTL::splice(RTL &r)
 }
 
 /**
- * \brief Insert s before expression at position i.
+ * \brief Insert s before position it.
  *
- * Insert the given Statement before index i.
+ * Insert the given Statement before iterator it.
  *
  * \note No copy of stmt is made. This is different to UQBT.
  *
- * \param s  Pointer to the Statement to insert.
- * \param i  Position to insert before (0 = first).
+ * \param it  Position to insert before.
+ * \param s   Statement to insert.
  */
-void
-RTL::insertStmt(Statement *s, unsigned i)
+RTL::iterator
+RTL::insertStmt(const_iterator it, Statement *s)
 {
-	// Check that position i is not out of bounds
-	assert(i < stmtList.size() || stmtList.empty());
-
-	// Find the position
-	auto it = stmtList.begin();
-	std::advance(it, i);
-
-	// Do the insertion
-	stmtList.insert(it, s);
+	return stmtList.insert(it, s);
 }
 
 /**
- * \brief Insert s before iterator it.
+ * \brief Delete statement at position it.
  */
-void
-RTL::insertStmt(Statement *s, iterator it)
+RTL::iterator
+RTL::deleteStmt(const_iterator it)
 {
-	stmtList.insert(it, s);
+	return stmtList.erase(it);
 }
 
 /**
- * \brief Change stmt at position i.
- *
- * Replace the ith Statement with the given one.
- *
- * \param s  Pointer to the new Exp.
- * \param i  Index of Exp position (0 = first).
+ * \brief Delete the first statement.
  */
 void
-RTL::updateStmt(Statement *s, unsigned i)
+RTL::deleteFirstStmt()
 {
-	// Check that position i is not out of bounds
-	assert(i < stmtList.size());
-
-	// Find the position
-	auto it = stmtList.begin();
-	std::advance(it, i);
-
-	// Note that sometimes we might update even when we don't know if it's
-	// needed, e.g. after a searchReplace.
-	// In that case, don't update, and especially don't delete the existing
-	// statement (because it's also the one we are updating!)
-	if (*it != s) {
-		// Do the update
-		;//delete *it;
-		*it = s;
-	}
-}
-
-/**
- * \brief Delete expression at position i.
- */
-void
-RTL::deleteStmt(unsigned i)
-{
-	// check that position i is not out of bounds
-	assert(i < stmtList.size());
-
-	auto it = stmtList.begin();
-	std::advance(it, i);
-	stmtList.erase(it);
+	assert(!stmtList.empty());
+	stmtList.pop_front();
 }
 
 /**
@@ -278,41 +236,6 @@ RTL::replaceLastStmt(Statement *repl)
 {
 	assert(!stmtList.empty());
 	stmtList.back() = repl;
-}
-
-/**
- * \brief Return the number of Stmts in RTL.
- *
- * Get the number of Statements in this RTL
- *
- * \returns Integer number of Statements.
- */
-int
-RTL::getNumStmt() const
-{
-	return stmtList.size();
-}
-
-/**
- * \brief Return the i'th element in RTL.
- *
- * Provides indexing on a list.  Changed from operator [] so that we keep in
- * mind it is linear in its execution time.
- *
- * \param i  The index of the element we want (0 = first).
- *
- * \returns The element at the given index
- *          or nullptr if the index is out of bounds.
- */
-Statement *
-RTL::elementAt(unsigned i) const
-{
-	if (i < stmtList.size()) {
-		auto it = stmtList.begin();
-		std::advance(it, i);
-		return *it;
-	}
-	return nullptr;
 }
 
 /**

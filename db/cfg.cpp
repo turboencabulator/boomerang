@@ -1625,7 +1625,7 @@ Cfg::removeJunctionStatements()
 	for (const auto &bb : m_listBB) {
 		if (bb->getFirstStmt() && bb->getFirstStmt()->isJunction()) {
 			assert(bb->getRTLs());
-			bb->getRTLs()->front()->deleteStmt(0);
+			bb->getRTLs()->front()->deleteFirstStmt();
 		}
 	}
 }

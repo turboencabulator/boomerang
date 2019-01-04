@@ -72,8 +72,6 @@ public:
 	 * \name Statement list enquiry methods
 	 * \{
 	 */
-	        int         getNumStmt() const;
-	        Statement  *elementAt(unsigned i) const;
 	        std::list<Statement *> &getList() { return stmtList; }  ///< Direct access to the list of expressions.
 	typedef std::list<Statement *>::iterator iterator;
 	typedef std::list<Statement *>::const_iterator const_iterator;
@@ -90,10 +88,9 @@ public:
 	 */
 	        void        appendStmt(Statement *s);
 	        void        prependStmt(Statement *s);
-	        void        insertStmt(Statement *s, unsigned i);
-	        void        insertStmt(Statement *s, iterator it);
-	        void        updateStmt(Statement *s, unsigned i);
-	        void        deleteStmt(unsigned int);
+	        iterator    insertStmt(const_iterator, Statement *);
+	        iterator    deleteStmt(const_iterator);
+	        void        deleteFirstStmt();
 	        void        deleteLastStmt();
 	        void        replaceLastStmt(Statement *repl);
 	        void        clear();
