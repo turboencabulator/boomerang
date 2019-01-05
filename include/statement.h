@@ -577,12 +577,10 @@ public:
 //
 
 	// Get or put the statement at index idx
-	Statement  *getStmtAt(int idx) const { return defVec[idx].def; }
-	PhiInfo    &getAt(int idx) { return defVec[idx]; }
+	const PhiInfo &getAt(int idx) const { return defVec[idx]; }
 	void        putAt(int idx, Statement *d, Exp *e);
 	void        simplifyRefs();
-	virtual int getNumDefs() const { return defVec.size(); }
-	Definitions &getDefs() { return defVec; }
+	const Definitions &getDefs() const { return defVec; }
 
 	iterator    begin() { return defVec.begin(); }
 	iterator    end()   { return defVec.end(); }

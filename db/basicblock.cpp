@@ -1772,7 +1772,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 			// converted to ordinary assignments.
 			if (auto pa = dynamic_cast<PhiAssign *>(stmt)) {
 				// Get the jth operand to the phi function; it has a use from BB *this
-				Statement *def = pa->getStmtAt(j);
+				auto def = pa->getAt(j).def;
 				auto r = new RefExp(pa->getLeft()->clone(), def);
 				liveout.insert(r);
 				phiLocs.insert(r);

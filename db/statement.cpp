@@ -2695,7 +2695,6 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	else return false;
 	if (VERBOSE)
 		LOG << "ellipsis processing for " << name << "\n";
-	const char *formatStr = nullptr;
 	Exp *formatExp = getArgumentExp(format);
 	// We sometimes see a[m[blah{...}]]
 	if (formatExp->isAddrOf()) {
@@ -2705,32 +2704,32 @@ CallStatement::ellipsisProcessing(Prog *prog)
 		if (formatExp->isMemOf())
 			formatExp = ((Unary *)formatExp)->getSubExp1();
 	}
+	const char *formatStr = nullptr;
 	if (formatExp->isSubscript()) {
 		// Maybe it's defined to be a Const string
 		if (auto def = ((RefExp *)formatExp)->getDef()) {  // Not all nullptr refs get converted to implicits
-			if (auto as = dynamic_cast<Assign *>(def)) {
+			if (auto pa = dynamic_cast<PhiAssign *>(def)) {
+				// More likely. Example: switch_gcc. Only need ONE candidate format string
+				for (const auto &pi : *pa) {
+					if (auto as = dynamic_cast<Assign *>(pi.def)) {
+						auto rhs = as->getRight();
+						if (rhs && rhs->isStrConst()) {
+							formatStr = ((Const *)rhs)->getStr();
+							break;
+						}
+					}
+				}
+			} else if (auto as = dynamic_cast<Assign *>(def)) {
 				// This would be unusual; propagation would normally take care of this
 				auto rhs = as->getRight();
-				if (!rhs || !rhs->isStrConst()) return false;
-				formatStr = ((Const *)rhs)->getStr();
-			} else if (auto pa = dynamic_cast<PhiAssign *>(def)) {
-				// More likely. Example: switch_gcc. Only need ONE candidate format string
-				int n = pa->getNumDefs();
-				for (int i = 0; i < n; ++i) {
-					def = pa->getStmtAt(i);
-					as = dynamic_cast<Assign *>(def);
-					if (!as) continue;
-					Exp *rhs = as->getRight();
-					if (!rhs || !rhs->isStrConst()) continue;
+				if (rhs && rhs->isStrConst())
 					formatStr = ((Const *)rhs)->getStr();
-					break;
-				}
-				if (!formatStr) return false;
-			} else return false;
-		} else return false;
+			}
+		}
 	} else if (formatExp->isStrConst()) {
 		formatStr = ((Const *)formatExp)->getStr();
-	} else return false;
+	}
+	if (!formatStr) return false;
 	// actually have to parse it
 	// Format string is: % [flags] [width] [.precision] [size] type
 	int n = 1;  // Count the format string itself (may also be "format" more arguments)
@@ -3323,24 +3322,22 @@ Assign::simplify()
 		PhiAssign *phi = nullptr;
 		if (phist /* && phist->getRight() */)  // ?
 			phi = dynamic_cast<PhiAssign *>(phist);
-		for (int i = 0; phi && i < phi->getNumDefs(); ++i) {
-			if (phi->getStmtAt(i)) {
-				auto def = dynamic_cast<Assign *>(phi->getStmtAt(i));
+		if (!phi) return;
+		for (const auto &pi : *phi) {
+			if (auto def = dynamic_cast<Assign *>(pi.def)) {
 				// Look for rX{-} - K or K
-				if (def
-				 && (def->rhs->isIntConst()
-				  || (def->rhs->getOper() == opMinus
-				   && def->rhs->getSubExp1()->isSubscript()
-				   && ((RefExp *)def->rhs->getSubExp1())->isImplicitDef()
-				   && def->rhs->getSubExp1()->getSubExp1()->isRegOf()
-				   && def->rhs->getSubExp2()->isIntConst()))) {
+				if (def->rhs->isIntConst()
+				 || (def->rhs->getOper() == opMinus
+				  && def->rhs->getSubExp1()->isSubscript()
+				  && ((RefExp *)def->rhs->getSubExp1())->isImplicitDef()
+				  && def->rhs->getSubExp1()->getSubExp1()->isRegOf()
+				  && def->rhs->getSubExp2()->isIntConst())) {
 					Exp *ne = new Unary(opAddrOf, Location::memOf(def->rhs, proc));
 					if (VERBOSE)
-						LOG << "replacing " << def->rhs << " with " << ne << " in " << def << "\n";
+						LOG << "replacing " << *def->rhs << " with " << *ne << " in " << *def << "\n";
 					def->rhs = ne;
 				}
-				if (def
-				 && def->rhs->isAddrOf()
+				if (def->rhs->isAddrOf()
 				 && def->rhs->getSubExp1()->isSubscript()
 				 && def->rhs->getSubExp1()->getSubExp1()->isGlobal()
 				 && rhs->getOper() != opPhi  // MVE: opPhi!!
@@ -3354,10 +3351,10 @@ Assign::simplify()
 						Type *bty = ((ArrayType *)ty)->getBaseType();
 						if (bty->isFloat()) {
 							if (VERBOSE)
-								LOG << "replacing " << rhs << " with ";
+								LOG << "replacing " << *rhs << " with ";
 							rhs = new Ternary(opItof, new Const(32), new Const(bty->getSize()), rhs);
 							if (VERBOSE)
-								LOG << rhs << " (assign indicates float type)\n";
+								LOG << *rhs << " (assign indicates float type)\n";
 						}
 					}
 				}

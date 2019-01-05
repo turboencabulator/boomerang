@@ -2793,11 +2793,11 @@ Binary::polySimplify(bool &bMod)
 				                                      new Binary(opDiv, x->clone(), new Const(b)))),
 				                 new Binary(opMod, x->clone(), new Const(b)));
 				if (VERBOSE)
-					LOG << "replacing " << this << " with " << res << "\n";
+					LOG << "replacing " << *this << " with " << *res << "\n";
 				if (l->isSubscript()) {
 					RefExp *r = (RefExp *)l;
 					if (auto pa = dynamic_cast<PhiAssign *>(r->getDef())) {
-						LOG << "argh: " << pa->getStmtAt(1) << "\n";
+						LOG << "argh: " << *pa->getAt(1).def << "\n";
 					}
 				}
 				bMod = true;

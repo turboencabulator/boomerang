@@ -1780,8 +1780,8 @@ UserProc::fixUglyBranches()
 			 && hl->getSubExp1()->getSubExp1()->isSubscript()) {
 				Statement *n = ((RefExp *)hl->getSubExp1()->getSubExp1())->getDef();
 				if (auto p = dynamic_cast<PhiAssign *>(n)) {
-					for (int i = 0; i < p->getNumDefs(); ++i) {
-						if (auto a = dynamic_cast<Assign *>(p->getStmtAt(i))) {
+					for (const auto &pi : *p) {
+						if (auto a = dynamic_cast<Assign *>(pi.def)) {
 							if (*a->getRight() == *hl->getSubExp1()) {
 								hl->setSubExp1(new RefExp(a->getLeft(), a));
 								break;
@@ -3196,7 +3196,7 @@ UserProc::fromSSAform()
 		pa->addUsedLocs(refs);
 		bool phiParamsSame = true;
 		Exp *first = nullptr;
-		if (pa->getNumDefs() > 1) {
+		if (pa->getDefs().size() > 1) {
 			for (const auto &uu : *pa) {
 				if (!uu.e) continue;
 				if (!first) { first = uu.e; continue; }
@@ -4017,7 +4017,7 @@ UserProc::reverseStrengthReduction()
 				int c = ((Const *)as->getRight()->getSubExp2())->getInt();
 				auto r = (RefExp *)as->getRight()->getSubExp1();
 				if (auto p = dynamic_cast<PhiAssign *>(r->getDef())) {
-					if (p->getNumDefs() == 2) {
+					if (p->getDefs().size() == 2) {
 						Statement *first = p->getDefs().front().def;
 						Statement *second = p->getDefs().back().def;
 						if (first == as) {
@@ -4280,7 +4280,7 @@ UserProc::fixCallAndPhiRefs()
 	// Second pass
 	for (const auto &stmt : stmts) {
 		if (auto ps = dynamic_cast<PhiAssign *>(stmt)) {
-			if (ps->getNumDefs() == 0) continue;  // Can happen e.g. for m[...] := phi {} when this proc is involved in a recursion group
+			if (ps->getDefs().empty()) continue;  // Can happen e.g. for m[...] := phi {} when this proc is involved in a recursion group
 			Exp *lhs = ps->getLeft();
 			bool allSame = true;
 			// Let first be a reference built from the first parameter
