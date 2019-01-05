@@ -216,8 +216,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		Exp *a_rhs = output.substInto(rhs->clone());
 		if (a_rhs->isMemOf()
 		 && a_rhs->getSubExp1()->getOper() == opInitValueOf
-		 && a_rhs->getSubExp1()->getSubExp1()->isRegOfK()
-		 && ((Const *)a_rhs->getSubExp1()->getSubExp1()->getSubExp1())->getInt() == 28)
+		 && a_rhs->getSubExp1()->getSubExp1()->isRegN(28))
 			a_rhs = new Unary(opInitValueOf, new Terminal(opPC));   // nice hack
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 			LOG << "a_rhs is " << *a_rhs << "\n";

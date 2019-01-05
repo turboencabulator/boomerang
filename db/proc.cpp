@@ -5031,8 +5031,7 @@ UserProc::logSuspectMemoryDefs()
 					Range &r = rm.getRange(p);
 					LOG << "got p " << *p << " with range " << r << "\n";
 					if (r.getBase()->getOper() == opInitValueOf
-					 && r.getBase()->getSubExp1()->isRegOfK()
-					 && ((Const *)r.getBase()->getSubExp1()->getSubExp1())->getInt() == 28) {
+					 && r.getBase()->getSubExp1()->isRegN(28)) {
 						RTL *rtl = a->getBB()->getRTLWithStatement(a);
 						LOG << "interesting stack reference at " << rtl->getAddress() << " " << *a << "\n";
 					}

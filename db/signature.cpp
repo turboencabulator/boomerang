@@ -481,15 +481,13 @@ CallingConvention::Win32Signature::setLibraryDefines(StatementList *defs)
 Exp *
 CallingConvention::Win32TcSignature::getProven(Exp *left)
 {
-	if (left->isRegOfK()) {
-		if (((Const *)left->getSubExp1())->getInt() == 28) {
-			int nparams = params.size();
-			if (nparams > 0 && params[0]->getExp()->isRegN(28)) {
-				--nparams;
-			}
-			// r28 += 4 + nparams*4 - 4     (-4 because ecx is register param)
-			return new Binary(opPlus, Location::regOf(28), new Const(4 + nparams * 4 - 4));
+	if (left->isRegN(28)) {
+		int nparams = params.size();
+		if (nparams > 0 && params[0]->getExp()->isRegN(28)) {
+			--nparams;
 		}
+		// r28 += 4 + nparams*4 - 4     (-4 because ecx is register param)
+		return new Binary(opPlus, Location::regOf(28), new Const(4 + nparams * 4 - 4));
 	}
 	// Else same as for standard Win32 signature
 	return Win32Signature::getProven(left);
@@ -559,8 +557,7 @@ CallingConvention::StdC::PentiumSignature::qualified(UserProc *p, Signature &can
 						std::cerr << "got pc = m[r[28]]" << std::endl;
 					gotcorrectret1 = true;
 				}
-			} else if (e->getLeft()->isRegOfK()
-			        && ((Const *)e->getLeft()->getSubExp1())->getInt() == 28) {
+			} else if (e->getLeft()->isRegN(28)) {
 				if (e->getRight()->getOper() == opPlus
 				 && e->getRight()->getSubExp1()->isRegOfN(28)
 				 && e->getRight()->getSubExp2()->isIntConst()
@@ -906,8 +903,7 @@ CallingConvention::StdC::PPCSignature::isAddrOfStackLocal(Prog *prog, Exp *e)
 	if (e->getOper() == opPlus
 	 && e->getSubExp1()->isSubscript()
 	 && ((RefExp *)(e->getSubExp1()))->isImplicitDef()
-	 && e->getSubExp1()->getSubExp1()->isRegOfK()
-	 && ((Const *)e->getSubExp1()->getSubExp1()->getSubExp1())->getInt() == 1
+	 && e->getSubExp1()->getSubExp1()->isRegN(1)
 	 && e->getSubExp2()->isIntConst()
 	 && ((Const *)e->getSubExp2())->getInt() == 4)
 		return true;
