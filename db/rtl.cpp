@@ -480,8 +480,9 @@ RTL::isCompare(int &iReg, Exp *&expOperand) const
 	// a register (whether a temporary or a machine register)
 	Exp *rhs = nullptr;
 	for (const auto &cur : stmtList) {
-		if (cur->getKind() != STMT_ASSIGN) return false;
-		rhs = ((Assign *)cur)->getRight();
+		auto as = dynamic_cast<Assign *>(cur);
+		if (!as) return false;
+		rhs = as->getRight();
 		if (rhs->getOper() == opMinus)
 			break;
 	}

@@ -111,8 +111,9 @@ NJMCDecoder::instantiateNamedParam(const std::string &name, ...)
 		return nullptr;
 	}
 	// Start with the RHS
-	assert(ent.asgn->getKind() == STMT_ASSIGN);
-	Exp *result = ((Assign *)ent.asgn)->getRight()->clone();
+	auto as = dynamic_cast<Assign *>(ent.asgn);
+	assert(as);
+	Exp *result = as->getRight()->clone();
 
 	va_list args;
 	va_start(args, name);

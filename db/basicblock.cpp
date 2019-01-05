@@ -669,8 +669,8 @@ BasicBlock::getCallDest() const
 	if (m_nodeType == CALL && !m_pRtls->empty()) {
 		const auto &stmts = m_pRtls->back()->getList();
 		for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
-			if ((*srit)->getKind() == STMT_CALL)
-				return ((CallStatement *)(*srit))->getFixedDest();
+			if (auto call = dynamic_cast<CallStatement *>(*srit))
+				return call->getFixedDest();
 		}
 	}
 	return NO_ADDRESS;
@@ -682,8 +682,8 @@ BasicBlock::getCallDestProc() const
 	if (m_nodeType == CALL && !m_pRtls->empty()) {
 		const auto &stmts = m_pRtls->back()->getList();
 		for (auto srit = stmts.crbegin(); srit != stmts.crend(); ++srit) {
-			if ((*srit)->getKind() == STMT_CALL)
-				return ((CallStatement *)(*srit))->getDestProc();
+			if (auto call = dynamic_cast<CallStatement *>(*srit))
+				return call->getDestProc();
 		}
 	}
 	return nullptr;
@@ -1449,8 +1449,8 @@ Proc *
 BasicBlock::getDestProc() const
 {
 	// The last Statement of the last RTL should be a CallStatement
-	CallStatement *call = (CallStatement *)(m_pRtls->back()->getHlStmt());
-	assert(call->getKind() == STMT_CALL);
+	auto call = dynamic_cast<CallStatement *>(m_pRtls->back()->getHlStmt());
+	assert(call);
 	Proc *proc = call->getDestProc();
 	if (!proc) {
 		std::cerr << "Indirect calls not handled yet\n";

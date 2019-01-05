@@ -492,10 +492,9 @@ SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst,
 
 	auto last = inst.rtl->getList().back();
 	// Do extra processing for for special types of DD
-	if (last->getKind() == STMT_CALL) {
+	if (auto call_stmt = dynamic_cast<CallStatement *>(last)) {
 
 		// Attempt to add a return BB if the delay instruction is a RESTORE
-		auto call_stmt = (CallStatement *)inst.rtl->getList().back();
 		BasicBlock *returnBB = optimise_CallReturn(call_stmt, inst.rtl, delay_inst.rtl, proc);
 		if (returnBB) {
 			cfg->addOutEdge(newBB, returnBB);
@@ -884,7 +883,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 				BB_rtls->push_back(rtl);
 				address += inst.numBytes;
 				// Ret/restore epilogues are handled as ordinary RTLs now
-				if (last->getKind() == STMT_RET)
+				if (dynamic_cast<ReturnStatement *>(last))
 					sequentialDecode = false;
 				break;
 
@@ -927,7 +926,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 					DecodeResult delay_inst = decodeInstruction(address + 4);
 					if (Boomerang::get()->traceDecoder)
 						LOG << "*" << address + 4 << "\t\n";
-					if (last->getKind() == STMT_CALL) {
+					if (auto call = dynamic_cast<CallStatement *>(last)) {
 						// Check the delay slot of this call. First case of interest is when the instruction is a restore,
 						// e.g.
 						// 142c8:  40 00 5b 91        call         exit
@@ -938,7 +937,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 							BB_rtls->push_back(delay_inst.rtl);
 							// The restore means it is effectively followed by a return (since the resore semantics chop
 							// off one level of return address)
-							((CallStatement *)last)->setReturnAfterCall(true);
+							call->setReturnAfterCall(true);
 							sequentialDecode = false;
 							case_CALL(address, inst, nop_inst, BB_rtls, proc, callList, true);
 							break;
@@ -974,7 +973,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 									} else {
 										// We assume this is some sort of move/x/call/move pattern. The overall effect is to
 										// pop one return address, we we emit a return after this call
-										((CallStatement *)last)->setReturnAfterCall(true);
+										call->setReturnAfterCall(true);
 										sequentialDecode = false;
 										case_CALL(address, inst, delay_inst, BB_rtls, proc, callList, true);
 										break;
@@ -991,7 +990,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 						{
 							// Ordinary delayed instruction. Since NCT's can't affect unconditional jumps, we put the delay
 							// instruction before the jump or call
-							if (last->getKind() == STMT_CALL) {
+							if (dynamic_cast<CallStatement *>(last)) {
 
 								// This is a call followed by an NCT/NOP
 								sequentialDecode = case_CALL(address, inst, delay_inst, BB_rtls, proc, callList);
@@ -1031,7 +1030,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 							BB_rtls->push_back(inst.rtl);
 
 							// Create the appropriate BB
-							if (last->getKind() == STMT_CALL) {
+							if (dynamic_cast<CallStatement *>(last)) {
 								handleCall(proc, dest, cfg->newBB(BB_rtls, CALL, 1), cfg, address, 8);
 
 								// Set the address of the lexical successor of the call that is to be decoded next. Set RTLs
@@ -1116,7 +1115,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 						}
 						break;
 					default:
-						if (delay_inst.rtl->getList().back()->getKind() == STMT_CALL) {
+						if (dynamic_cast<CallStatement *>(delay_inst.rtl->getList().back())) {
 							// Assume it's the move/call/move pattern
 							sequentialDecode = case_SCD(address, inst, delay_inst, BB_rtls, cfg, targetQueue);
 							break;

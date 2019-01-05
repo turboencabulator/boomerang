@@ -586,9 +586,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 			break;
 		CallStatement *cs = nullptr;
 		if (!inst.rtl->getList().empty())
-			cs = (CallStatement *)(inst.rtl->getList().back());
+			cs = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
 		if (cs
-		 && cs->getKind() == STMT_CALL
 		 && cs->getDest()->isMemOf()
 		 && cs->getDest()->getSubExp1()->isIntConst()
 		 && pBF->isDynamicLinkedProcPointer(((Const *)cs->getDest()->getSubExp1())->getAddr())
@@ -617,7 +616,8 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 				}
 			}
 		}
-		if ((cs && cs->getKind() == STMT_CALL) && ((dest = (cs->getFixedDest())) != NO_ADDRESS)) {
+		if (cs
+		 && (dest = (cs->getFixedDest())) != NO_ADDRESS) {
 			if (++conseq == 3 && 0) { // FIXME: this isn't working!
 				// Success. Return the target of the last call
 				gotMain = true;
