@@ -831,10 +831,6 @@ StatementTest::testIsAssign()
 	std::string actual(ost.str());
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 	//CPPUNIT_ASSERT_EQUAL(std::string("*v* r2 := 99"), std::string(ost.str()));
-	CPPUNIT_ASSERT(dynamic_cast<Assign *>(&a));
-
-	auto c = CallStatement();
-	CPPUNIT_ASSERT(!dynamic_cast<Assign *>(&c));
 }
 
 /**
