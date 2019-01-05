@@ -430,12 +430,9 @@ public:
 
 	// get how to replace this statement in a use
 	virtual Exp *getRight() const { return rhs; }
-	Exp       *&getRightRef() { return rhs; }
 
 	// set the rhs to something new
 	void        setRight(Exp *e) { rhs = e; }
-
-
 
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
@@ -545,9 +542,6 @@ public:
 
 	STMT_KIND   getKind() const override { return STMT_PHIASSIGN; }
 
-	// get how to replace this statement in a use
-	virtual Exp *getRight() const { return nullptr; }
-
 	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
@@ -630,7 +624,6 @@ public:
 	void        printCompact(std::ostream &os, bool html = false) const override;
 
 	// Statement and Assignment functions
-	virtual Exp *getRight() const { return nullptr; }
 	void        simplify() override { }
 
 	// Visitation
@@ -692,7 +685,6 @@ public:
 	// Statement functions
 	bool        isDefinition() const override { return true; }
 	void        getDefinitions(LocationSet &def) const override;
-	virtual Exp *getRight() const { return getCondExpr(); }
 	bool        usesExp(Exp *e) const override;
 	bool        search(Exp *search, Exp *&result) override;
 	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
@@ -1132,8 +1124,6 @@ public:
 
 	bool        definesLoc(Exp *loc) const override;  // True if this Statement defines loc
 	void        setLeftFor(Exp *forExp, Exp *newExp) override;
-	// get how to replace this statement in a use
-	//virtual Exp *getRight() const { return nullptr; }
 
 	// simplify all the uses/defs in this Statement
 	void        simplify() override;

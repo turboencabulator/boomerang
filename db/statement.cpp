@@ -2524,8 +2524,7 @@ CallStatement::setArgumentExp(int i, Exp *e)
 	assert(i < (int)arguments.size());
 	auto aa = arguments.begin();
 	std::advance(aa, i);
-	Exp *&a = ((Assign *)*aa)->getRightRef();
-	a = e->clone();
+	((Assign *)*aa)->setRight(e->clone());
 }
 
 int
@@ -3316,11 +3315,8 @@ Assign::simplify()
 #if 0
 	if (DFA_TYPE_ANALYSIS) return;
 	if (lhs->isMemOf() && lhs->getSubExp1()->isSubscript()) {
-		RefExp *ref = (RefExp *)lhs->getSubExp1();
-		Statement *phist = ref->getDef();
-		PhiAssign *phi = nullptr;
-		if (phist /* && phist->getRight() */)  // ?
-			phi = dynamic_cast<PhiAssign *>(phist);
+		auto ref = (RefExp *)lhs->getSubExp1();
+		auto phi = dynamic_cast<PhiAssign *>(ref->getDef());
 		if (!phi) return;
 		for (const auto &pi : *phi) {
 			if (auto def = dynamic_cast<Assign *>(pi.def)) {
