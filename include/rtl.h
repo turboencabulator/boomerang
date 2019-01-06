@@ -44,8 +44,11 @@ class Type;
  * Statements that mark the current native address.
  */
 class RTL {
+	friend class XMLProgParser;
+
 	        ADDRESS     nativeAddr = 0;           ///< RTL's source program instruction address.
 	        std::list<Statement *> stmtList;  ///< List of expressions in this RTL.
+
 public:
 	                    RTL();
 	                    RTL(ADDRESS);
@@ -117,9 +120,6 @@ public:
 	        std::string prints() const;
 
 	        int         setConscripts(int n, bool bClear);
-protected:
-
-	friend class XMLProgParser;
 };
 
 std::ostream & operator <<(std::ostream &, const RTL *) __attribute__((deprecated));

@@ -77,6 +77,8 @@ struct ComplexTypeComp {
 typedef std::list<ComplexTypeComp> ComplexTypeCompList;
 
 class Type {
+	friend class XMLProgParser;
+
 protected:
 	        eType       id;  // For operator < mostly
 private:
@@ -207,12 +209,11 @@ public:
 	// Dereference this type. For most cases, return null unless you are a pointer type. But for a
 	// union of pointers, return a new union with the dereference of all members. In dfa.cpp
 	        Type       *dereference();
-
-protected:
-	friend class XMLProgParser;
 };
 
 class VoidType : public Type {
+	friend class XMLProgParser;
+
 public:
 	            VoidType();
 	virtual    ~VoidType();
@@ -231,14 +232,13 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class FuncType : public Type {
-private:
+	friend class XMLProgParser;
+
 	Signature  *signature;
+
 public:
 	            FuncType(Signature *sig = nullptr);
 	virtual    ~FuncType();
@@ -264,13 +264,11 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class IntegerType : public Type {
-private:
+	friend class XMLProgParser;
+
 	unsigned    size;           // Size in bits, e.g. 16
 	int         signedness;     // pos=signed, neg=unsigned, 0=unknown or evenly matched
 
@@ -307,13 +305,11 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class FloatType : public Type {
-private:
+	friend class XMLProgParser;
+
 	unsigned    size;               // Size in bits, e.g. 64
 
 public:
@@ -337,12 +333,11 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class BooleanType : public Type {
+	friend class XMLProgParser;
+
 public:
 	            BooleanType();
 	virtual    ~BooleanType();
@@ -361,12 +356,11 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class CharType : public Type {
+	friend class XMLProgParser;
+
 public:
 	            CharType();
 	virtual    ~CharType();
@@ -385,13 +379,11 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class PointerType : public Type {
-private:
+	friend class XMLProgParser;
+
 	Type        *points_to;
 
 public:
@@ -420,16 +412,16 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class ArrayType : public Type {
-private:
+	friend class XMLProgParser;
+
 	Type       *base_type = nullptr;
 	unsigned    length = 0;
 
+protected:
+	            ArrayType() : Type(eArray) { }
 public:
 	            ArrayType(Type *p, unsigned length);
 	            ArrayType(Type *p);
@@ -457,14 +449,11 @@ public:
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
-	            ArrayType() : Type(eArray) { }
 };
 
 class NamedType : public Type {
-private:
+	friend class XMLProgParser;
+
 	std::string name;
 	static int  nextAlpha;
 
@@ -490,9 +479,6 @@ public:
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 struct CompoundElement {
@@ -504,10 +490,12 @@ struct CompoundElement {
  * The compound type represents structures, not unions.
  */
 class CompoundType : public Type {
-private:
+	friend class XMLProgParser;
+
 	std::vector<CompoundElement> elems;
 	int         nextGenericMemberNum = 1;
 	bool        generic;
+
 public:
 	            CompoundType(bool generic = false);
 	virtual    ~CompoundType();
@@ -545,9 +533,6 @@ public:
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
 	bool        isCompatible(Type *other, bool all) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 struct UnionElement {
@@ -559,7 +544,8 @@ struct UnionElement {
  * The union type represents the union of any number of any other types.
  */
 class UnionType : public Type {
-private:
+	friend class XMLProgParser;
+
 	// Note: list, not vector, as it is occasionally desirable to insert elements without affecting iterators
 	// (e.g. meetWith(another Union))
 	std::list<UnionElement> elems;
@@ -592,9 +578,6 @@ public:
 	bool        isCompatible(Type *other, bool all) override;
 	// if this is a union of pointer types, get the union of things they point to. In dfa.cpp
 	Type       *dereferenceUnion() const;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
@@ -602,8 +585,10 @@ protected:
  * or only know the size (e.g. width of a register or memory transfer).
  */
 class SizeType : public Type {
-private:
+	friend class XMLProgParser;
+
 	unsigned    size;               // Size in bits, e.g. 16
+
 public:
 	            SizeType() : Type(eSize) { }
 	            SizeType(unsigned sz) : Type(eSize), size(sz) { }
@@ -621,8 +606,6 @@ public:
 	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
-
-	friend class XMLProgParser;
 };
 
 /**

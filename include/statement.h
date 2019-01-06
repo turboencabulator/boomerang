@@ -108,6 +108,8 @@ enum BRANCH_TYPE {
  * "definition" in the Dragon Book.
  */
 class Statement {
+	friend class XMLProgParser;
+
 protected:
 	        BasicBlock *pbb = nullptr;     // contains a pointer to the enclosing BB
 	        UserProc   *proc = nullptr;    // procedure containing this statement
@@ -126,7 +128,6 @@ protected:
 	        unsigned int lexBegin, lexEnd;
 
 public:
-
 	                    Statement() { }
 	virtual            ~Statement() { }
 
@@ -312,8 +313,6 @@ public:
 	        bool        doPropagateTo(Exp *e, Assign *def, bool &convert);
 	static  bool        calcMayAlias(Exp *e1, Exp *e2, int size);
 	static  bool        mayAlias(Exp *e1, Exp *e2, int size);
-
-	friend class XMLProgParser;
 };
 
 std::ostream &operator <<(std::ostream &, const Statement *);
@@ -326,6 +325,7 @@ std::ostream &operator <<(std::ostream &, const Statement &);
 class TypingStatement : public Statement {
 protected:
 	Type       *type;  // The type for this assignment or reference
+
 public:
 	            TypingStatement(Type *ty);  // Constructor
 
@@ -338,8 +338,11 @@ public:
  * Assignment is an abstract subclass of TypingStatement, holding a location.
  */
 class Assignment : public TypingStatement {
+	friend class XMLProgParser;
+
 protected:
 	Exp        *lhs;  // The left hand side
+
 public:
 	// Constructor, subexpression
 	            Assignment(Exp *lhs);
@@ -395,8 +398,6 @@ public:
 
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &ch) override;
-
-	friend class XMLProgParser;
 };
 
 
@@ -404,6 +405,8 @@ public:
  * An ordinary assignment with left and right sides.
  */
 class Assign : public Assignment {
+	friend class XMLProgParser;
+
 	Exp        *rhs = nullptr;
 	Exp        *guard = nullptr;
 
@@ -485,8 +488,6 @@ public:
 	// FIXME: I suspect that this was only used by adhoc TA, and can be deleted
 	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
 #endif
-
-	friend class XMLProgParser;
 };
 
 /**
@@ -523,12 +524,16 @@ struct PhiInfo {
  * locations.
  */
 class PhiAssign : public Assignment {
+	friend class XMLProgParser;
+
 public:
 	typedef std::vector<PhiInfo> Definitions;
 	typedef Definitions::iterator iterator;
 	typedef Definitions::const_iterator const_iterator;
+
 private:
 	Definitions defVec;  // A vector of information about definitions
+
 public:
 	// Constructor, subexpression
 	            PhiAssign(Exp *lhs) : Assignment(lhs) { }
@@ -585,9 +590,6 @@ public:
 
 	// Generate a list of references for the parameters
 	void        enumerateParams(std::list<Exp *> &le);
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
@@ -639,11 +641,14 @@ public:
  * similar to the BranchStatement class.
  */
 class BoolAssign: public Assignment {
+	friend class XMLProgParser;
+
 	BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // the condition for setting true
 	Exp        *pCond = nullptr; // Exp representation of the high level
 	                             // condition: e.g. r[8] == 5
 	bool        bFloat = false;  // True if condition uses floating point CC
 	int         size;            // The size of the dest
+
 public:
 	            BoolAssign(int size);
 	virtual    ~BoolAssign();
@@ -693,8 +698,6 @@ public:
 	void        setLeftFromList(const std::list<Statement *> &stmts);
 
 	void        dfaTypeAnalysis(bool &ch) override;
-
-	friend class XMLProgParser;
 };
 
 /**
@@ -706,6 +709,7 @@ public:
  */
 class ImpRefStatement : public TypingStatement {
 	Exp        *addressExp;  // The expression representing the address of the location referenced
+
 public:
 	// Constructor, subexpression
 	            ImpRefStatement(Type *ty, Exp *a) : TypingStatement(ty), addressExp(a) { }
@@ -739,12 +743,15 @@ public:
  * on SPARC).
  */
 class GotoStatement: public Statement {
+	friend class XMLProgParser;
+
 protected:
 	Exp        *pDest = nullptr;       // Destination of a jump or call. This is the absolute destination for both static
 	                                   // and dynamic CTIs.
 	bool        m_isComputed = false;  // True if this is a CTI with a computed destination address.
 	                                   // NOTE: This should be removed, once CaseStatement and HLNwayCall are implemented
 	                                   // properly.
+
 public:
 	            GotoStatement();
 	            GotoStatement(Exp *);
@@ -800,8 +807,6 @@ public:
 	// Statement virtual functions
 	bool        isDefinition() const override { return false; }
 	bool        usesExp(Exp *) const override;
-
-	friend class XMLProgParser;
 };
 
 class JunctionStatement: public Statement {
@@ -847,6 +852,8 @@ public:
  * jump.
  */
 class BranchStatement: public GotoStatement {
+	friend class XMLProgParser;
+
 	BRANCH_TYPE jtCond = (BRANCH_TYPE)0;  // The condition for jumping
 	Exp        *pCond = nullptr; // The Exp representation of the high level condition: e.g., r[8] == 5
 	bool        bFloat = false;  // True if uses floating point CC
@@ -923,8 +930,6 @@ public:
 
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &ch) override;
-
-	friend class XMLProgParser;
 };
 
 struct SWITCH_INFO {
@@ -943,7 +948,10 @@ struct SWITCH_INFO {
  * destination of the jump, it has a switch variable Exp.
  */
 class CaseStatement: public GotoStatement {
+	friend class XMLProgParser;
+
 	SWITCH_INFO *pSwitchInfo = nullptr;  // Ptr to struct with info about the switch
+
 public:
 	            CaseStatement();
 	            CaseStatement(Exp *);
@@ -978,12 +986,9 @@ public:
 
 	// dataflow analysis
 	bool        usesExp(Exp *e) const override;
-public:
 
 	// simplify all the uses/defs in this Statement
 	void        simplify() override;
-
-	friend class XMLProgParser;
 };
 
 /**
@@ -991,6 +996,8 @@ public:
  * are stored here.
  */
 class CallStatement: public GotoStatement {
+	friend class XMLProgParser;
+
 	bool        returnAfterCall = false;// True if call is effectively followed by a return.
 
 	// The list of arguments passed by this call, actually a list of Assign statements (location := expr)
@@ -1155,15 +1162,15 @@ private:
 	Assign     *makeArgAssign(Type *ty, Exp *e);
 
 protected:
-
 	void        appendArgument(Assignment *as) { arguments.append(as); }
-	friend class XMLProgParser;
 };
 
 /**
  * Represents an ordinary high level return.
  */
 class ReturnStatement : public Statement {
+	friend class XMLProgParser;
+
 protected:
 	// Native address of the (only) return instruction. Needed for branching to this only return statement
 	ADDRESS     retAddr = NO_ADDRESS;
@@ -1287,8 +1294,6 @@ public:
 
 	// Temporary hack (not neccesary anymore)
 	//void        specialProcessing();
-
-	friend class XMLProgParser;
 };
 
 #endif

@@ -48,6 +48,10 @@ class UserProc;
  * about variables in the procedure such as parameters and locals.
  */
 class Proc {
+	friend class XMLProgParser;
+
+protected:
+	                    Proc() { }
 public:
 	/**
 	 * Constructor with name, native address and optional bLib.
@@ -137,7 +141,6 @@ public:
 	        void        setCluster(Cluster *c) { cluster = c; }
 
 protected:
-
 	        bool        visited = false;  ///< For printCallGraphXML
 
 	        Prog       *prog = nullptr;  ///< Program containing this procedure.
@@ -168,13 +171,13 @@ protected:
 
 	        std::set<CallStatement *> callerSet;  ///< Set of callers (CallStatements that call this procedure).
 	        Cluster    *cluster = nullptr;        ///< Cluster this procedure is contained within.
-
-	friend class XMLProgParser;
-	                    Proc() { }
-
 };
 
 class LibProc : public Proc {
+	friend class XMLProgParser;
+
+protected:
+	            LibProc() { }
 public:
 	            LibProc(Prog *, const std::string &, ADDRESS);
 	virtual    ~LibProc();
@@ -186,10 +189,6 @@ public:
 	bool        isPreserved(Exp *e) const override;                        ///< Return whether e is preserved by this proc
 
 	void        getInternalStatements(StatementList &internal);
-protected:
-
-	friend class XMLProgParser;
-	            LibProc() { }
 };
 
 enum ProcStatus {
@@ -209,6 +208,8 @@ typedef std::set<UserProc *> ProcSet;
 typedef std::list<UserProc *> ProcList;
 
 class UserProc : public Proc {
+	friend class XMLProgParser;
+
 	/**
 	 * The control flow graph.
 	 */
@@ -298,8 +299,9 @@ private:
 	 */
 	ProcSet    *cycleGrp = nullptr;
 
+protected:
+	            UserProc();
 public:
-
 	            UserProc(Prog *, const std::string &, ADDRESS);
 	virtual    ~UserProc();
 
@@ -317,6 +319,9 @@ public:
 	 * Returns a pointer to the CFG object.
 	 */
 	Cfg        *getCFG() const { return cfg; }
+protected:
+	void        setCFG(Cfg *c) { cfg = c; }
+public:
 
 	/**
 	 * Returns a pointer to the DataFlow object.
@@ -697,11 +702,6 @@ public:
 
 	/// Find and if necessary insert an implicit reference before s whose address expression is a and type is t.
 	void        setImplicitRef(Statement *s, Exp *a, Type *ty);
-
-protected:
-	friend class XMLProgParser;
-	            UserProc();
-	void        setCFG(Cfg *c) { cfg = c; }
 };
 
 #endif

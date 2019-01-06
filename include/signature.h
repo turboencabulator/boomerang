@@ -30,12 +30,16 @@ class StatementList;
 class UserProc;
 
 class Parameter {
+	friend class XMLProgParser;
+
 private:
 	        Type       *type = nullptr;
 	        std::string name;
 	        Exp        *exp = nullptr;
 	        std::string boundMax;
 
+protected:
+	                    Parameter() { }
 public:
 	                    Parameter(Type *type, const std::string &name, Exp *exp = nullptr, const std::string &boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
@@ -52,27 +56,25 @@ public:
 	// this parameter is the bound of another parameter with name nam
 	        const std::string &getBoundMax() const { return boundMax; }
 	        void        setBoundMax(const std::string &nam);
-
-protected:
-	friend class XMLProgParser;
-	                    Parameter() { }
 };
 
 class Return {
+	friend class XMLProgParser;
+
 public:
 	        Type       *type = nullptr;
 	        Exp        *exp = nullptr;
 
+	                    Return() { }
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
 	virtual            ~Return() { }
 	        bool        operator ==(const Return &other) const;
 	        Return     *clone() const;
-
-	                    Return() { }
-	friend class XMLProgParser;
 };
 
 class Signature {
+	friend class XMLProgParser;
+
 protected:
 	        std::string name;  // name of procedure
 	        std::string sigFile;  // signature file this signature was read from (for libprocs)
@@ -95,6 +97,7 @@ protected:
 	        //void        addImplicitParametersFor(Parameter *p);
 	        //void        addImplicitParameter(Type *type, const char *name, Exp *e, Parameter *parent);
 
+	                    Signature() { }
 public:
 	                    Signature(const char *nam);
 	// Platform plat, calling convention cc (both enums)
@@ -232,10 +235,7 @@ public:
 	virtual bool        argumentCompare(const Assignment &a, const Assignment &b);
 	virtual bool        returnCompare(const Assignment &a, const Assignment &b);
 
-
 protected:
-	friend class XMLProgParser;
-	                    Signature() { }
 	        void        appendParameter(Parameter *p) { params.push_back(p); }
 	        //void        appendImplicitParameter(ImplicitParameter *p) { implicitParams.push_back(p); }
 	        void        appendReturn(Return *r) { returns.push_back(r); }

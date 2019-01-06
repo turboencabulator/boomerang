@@ -25,6 +25,8 @@
 #include <vector>
 
 class Cluster {
+	friend class XMLProgParser;
+
 protected:
 	        std::string name;
 	        std::vector<Cluster *> children;
@@ -53,9 +55,6 @@ public:
 	virtual bool        isAggregate() const { return false; }
 
 	        void        printTree(std::ostream &out) const;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class Module : public Cluster {

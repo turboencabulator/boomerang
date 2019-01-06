@@ -59,12 +59,13 @@ class UserProc;
  * derived classes can be called.
  */
 class Exp {
+	friend class XMLProgParser;
+
 protected:
 	        OPER        op;  // The operator (e.g. opPlus)
 
 	// Constructor, with ID
 	                    Exp(OPER op) : op(op) { }
-
 public:
 	// Virtual destructor
 	virtual            ~Exp() { }
@@ -298,9 +299,6 @@ public:
 	virtual Type       *ascendType() { assert(0); return nullptr; }
 	// Push type information down the expression tree
 	virtual void        descendType(Type *parentType, bool &ch, Statement *s) { assert(0); }
-
-protected:
-	friend class XMLProgParser;
 };
 
 // Not part of the Exp class, but logically belongs with it:
@@ -312,6 +310,8 @@ std::ostream &operator <<(std::ostream &, const Exp &);
  * string, or address constant.
  */
 class Const : public Exp {
+	friend class XMLProgParser;
+
 	union {
 		int         i;      // Integer
 		// Note: although we have i and a as unions, both often use the same operator (opIntConst).
@@ -325,6 +325,7 @@ class Const : public Exp {
 	} u;
 	int         conscript = 0;  // like a subscript for constants
 	Type       *type;           // Constants need types during type analysis
+
 public:
 	// Special constructors overloaded for the various constants
 	            Const(int);
@@ -385,9 +386,6 @@ public:
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
@@ -395,6 +393,8 @@ protected:
  * opFlags (abstract flags register).
  */
 class Terminal : public Exp {
+	friend class XMLProgParser;
+
 public:
 	// Constructors
 	            Terminal(OPER op);
@@ -422,15 +422,14 @@ public:
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
 
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
  * Unary is a subclass of Exp, holding one subexpression.
  */
 class Unary : public Exp {
+	friend class XMLProgParser;
+
 protected:
 	Exp        *subExp1 = nullptr;  // One subexpression pointer
 
@@ -488,21 +487,19 @@ public:
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
  * Binary is a subclass of Unary, holding two subexpressions.
  */
 class Binary : public Unary {
+	friend class XMLProgParser;
+
 protected:
 	Exp        *subExp2 = nullptr;  // Second subexpression pointer
 
 	// Constructor, with ID
 	            Binary(OPER op);
-
 public:
 	// Constructor, with ID and subexpressions
 	            Binary(OPER op, Exp *e1, Exp *e2);
@@ -559,20 +556,18 @@ public:
 
 private:
 	Exp        *constrainSub(TypeVal *typeVal1, TypeVal *typeVal2);
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
  * Ternary is a subclass of Binary, holding three subexpressions.
  */
 class Ternary : public Binary {
+	friend class XMLProgParser;
+
 	Exp        *subExp3 = nullptr;  // Third subexpression pointer
 
 	// Constructor, with operator
 	            Ternary(OPER op);
-
 public:
 	// Constructor, with operator and subexpressions
 	            Ternary(OPER op, Exp *e1, Exp *e2, Exp *e3);
@@ -622,16 +617,16 @@ public:
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
  * TypedExp is a subclass of Unary, holding one subexpression and a Type.
  */
 class TypedExp : public Unary {
+	friend class XMLProgParser;
+
 	Type       *type = nullptr;
+
 public:
 	// Constructor
 	            TypedExp();
@@ -671,9 +666,6 @@ public:
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
@@ -681,7 +673,10 @@ protected:
  * subexpression), and a pointer to an RTL.
  */
 class FlagDef : public Unary {
+	friend class XMLProgParser;
+
 	RTL        *rtl;
+
 public:
 	            FlagDef(Exp *params, RTL *rtl);  // Constructor
 	virtual    ~FlagDef();                       // Destructor
@@ -692,9 +687,6 @@ public:
 	// Visitation
 	bool        accept(ExpVisitor &) override;
 	Exp        *accept(ExpModifier &) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 /**
@@ -709,8 +701,12 @@ protected:
  * statement number for compactness.
  */
 class RefExp : public Unary {
+	friend class XMLProgParser;
+
 	Statement  *def = nullptr;  // The defining statement
 
+protected:
+	            RefExp() : Unary(opSubscript) { }
 public:
 	// Constructor with expression (e) and statement defining it (def)
 	            RefExp(Exp *e, Statement *def);
@@ -741,16 +737,14 @@ public:
 
 	Type       *ascendType() override;
 	void        descendType(Type *parentType, bool &ch, Statement *s) override;
-
-protected:
-	            RefExp() : Unary(opSubscript) { }
-	friend class XMLProgParser;
 };
 
 /**
  * Just a Terminal with a Type.  Used for type values in constraints.
  */
 class TypeVal : public Terminal {
+	friend class XMLProgParser;
+
 	Type       *val;
 
 public:
@@ -771,15 +765,15 @@ public:
 	// Visitation
 	bool        accept(ExpVisitor &) override;
 	Exp        *accept(ExpModifier &) override;
-
-protected:
-	friend class XMLProgParser;
 };
 
 class Location : public Unary {
+	friend class XMLProgParser;
+
 protected:
 	UserProc   *proc = nullptr;
 
+	            Location(OPER op) : Unary(op) { }
 public:
 	// Constructor with ID, subexpression, and UserProc*
 	            Location(OPER op, Exp *e, UserProc *proc);
@@ -809,10 +803,6 @@ public:
 	bool        accept(ExpVisitor &) override;
 	Exp        *accept(ExpModifier &) override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;
-
-protected:
-	friend class XMLProgParser;
-	            Location(OPER op) : Unary(op) { }
 };
 
 #endif
