@@ -495,13 +495,17 @@ protected:
 	friend class XMLProgParser;
 };
 
+struct CompoundElement {
+	Type       *type;
+	std::string name;
+};
+
 /**
  * The compound type represents structures, not unions.
  */
 class CompoundType : public Type {
 private:
-	std::vector<Type *> types;
-	std::vector<std::string> names;
+	std::vector<CompoundElement> elems;
 	int         nextGenericMemberNum = 1;
 	bool        generic;
 public:
@@ -509,17 +513,11 @@ public:
 	virtual    ~CompoundType();
 	bool        isCompound() const override { return true; }
 
-	void        addType(Type *n, const std::string &str) {
-		            // check if it is a user defined type (typedef)
-		            Type *t = getNamedType(n->getCtype());
-		            if (t) n = t;
-		            types.push_back(n);
-		            names.push_back(str);
-	            }
-	unsigned    getNumTypes() const { return types.size(); }
-	Type       *getType(unsigned n) const { assert(n < getNumTypes()); return types[n]; }
+	void        addType(Type *, const std::string &);
+	unsigned    getNumTypes() const { return elems.size(); }
+	Type       *getType(unsigned n) const { assert(n < elems.size()); return elems[n].type; }
 	Type       *getType(const std::string &) const;
-	const char *getName(unsigned n) const { assert(n < getNumTypes()); return names[n].c_str(); }
+	const char *getName(unsigned n) const { assert(n < elems.size()); return elems[n].name.c_str(); }
 	void        setTypeAtOffset(unsigned n, Type *ty);
 	Type       *getTypeAtOffset(unsigned n) const;
 	void        setNameAtOffset(unsigned n, const std::string &);
@@ -541,8 +539,8 @@ public:
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
 
-	bool        isSuperStructOf(Type *other);       // True if this is a superstructure of other
-	bool        isSubStructOf(Type *other);         // True if this is a substructure of other
+	bool        isSuperStructOf(Type *other) const;  // True if this is a superstructure of other
+	bool        isSubStructOf(Type *other) const;    // True if this is a substructure of other
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
@@ -564,7 +562,7 @@ class UnionType : public Type {
 private:
 	// Note: list, not vector, as it is occasionally desirable to insert elements without affecting iterators
 	// (e.g. meetWith(another Union))
-	std::list<UnionElement> li;
+	std::list<UnionElement> elems;
 
 public:
 	            UnionType();
@@ -572,11 +570,11 @@ public:
 	bool        isUnion() const override { return true; }
 
 	void        addType(Type *, const std::string &);
-	int         getNumTypes() const { return li.size(); }
-	bool        findType(Type *ty);             // Return true if ty is already in the union
-	//Type       *getType(int n) { assert(n < getNumTypes()); return types[n]; }
-	//Type       *getType(const std::string &);
-	//const char *getName(int n) { assert(n < getNumTypes()); return names[n].c_str(); }
+	unsigned    getNumTypes() const { return elems.size(); }
+	bool        findType(Type *ty) const;  // Return true if ty is already in the union
+	//Type       *getType(unsigned n) const { assert(n < elems.size()); return elems[n].type; }
+	//Type       *getType(const std::string &) const;
+	//const char *getName(unsigned n) const { assert(n < elems.size()); return elems[n].name.c_str(); }
 
 	Type       *clone() const override;
 
@@ -593,7 +591,7 @@ public:
 	bool        isCompatibleWith(Type *other, bool all) override { return isCompatible(other, all); }
 	bool        isCompatible(Type *other, bool all) override;
 	// if this is a union of pointer types, get the union of things they point to. In dfa.cpp
-	Type       *dereferenceUnion();
+	Type       *dereferenceUnion() const;
 
 protected:
 	friend class XMLProgParser;

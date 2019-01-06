@@ -205,8 +205,8 @@ Type *
 CompoundType::clone() const
 {
 	auto t = new CompoundType();
-	for (unsigned i = 0; i < types.size(); ++i)
-		t->addType(types[i]->clone(), names[i]);
+	for (const auto &elem : elems)
+		t->addType(elem.type->clone(), elem.name);
 	return t;
 }
 
@@ -214,7 +214,7 @@ Type *
 UnionType::clone() const
 {
 	auto u = new UnionType();
-	for (const auto &elem : li)
+	for (const auto &elem : elems)
 		u->addType(elem.type, elem.name);
 	return u;
 }
@@ -296,18 +296,18 @@ NamedType::getSize() const
 unsigned
 CompoundType::getSize() const
 {
-	int n = 0;
-	for (const auto &type : types)
+	unsigned n = 0;
+	for (const auto &elem : elems)
 		// NOTE: this assumes no padding... perhaps explicit padding will be needed
-		n += type->getSize();
+		n += elem.type->getSize();
 	return n;
 }
 unsigned
 UnionType::getSize() const
 {
-	int max = 0;
-	for (const auto &elem : li) {
-		int sz = elem.type->getSize();
+	unsigned max = 0;
+	for (const auto &elem : elems) {
+		unsigned sz = elem.type->getSize();
 		if (sz > max) max = sz;
 	}
 	return max;
@@ -323,9 +323,9 @@ SizeType::getSize() const
 Type *
 CompoundType::getType(const std::string &nam) const
 {
-	for (unsigned i = 0; i < types.size(); ++i)
-		if (names[i] == nam)
-			return types[i];
+	for (const auto &elem : elems)
+		if (elem.name == nam)
+			return elem.type;
 	return nullptr;
 }
 
@@ -334,10 +334,11 @@ Type *
 CompoundType::getTypeAtOffset(unsigned n) const
 {
 	unsigned offset = 0;
-	for (const auto &type : types) {
-		if (offset <= n && n < offset + type->getSize())
-			return type;
-		offset += type->getSize();
+	for (const auto &elem : elems) {
+		unsigned sz = elem.type->getSize();
+		if (offset <= n && n < offset + sz)
+			return elem.type;
+		offset += sz;
 	}
 	return nullptr;
 }
@@ -347,23 +348,20 @@ void
 CompoundType::setTypeAtOffset(unsigned n, Type *ty)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); ++i) {
-		if (offset <= n && n < offset + types[i]->getSize()) {
-			unsigned oldsz = types[i]->getSize();
-			types[i] = ty;
-			if (ty->getSize() < oldsz) {
-				types.push_back(types[types.size() - 1]);
-				names.push_back(names[names.size() - 1]);
-				for (unsigned n = types.size() - 1; n > i; --n) {
-					types[n] = types[n - 1];
-					names[n] = names[n - 1];
-				}
-				types[i + 1] = new SizeType(oldsz - ty->getSize());
-				names[i + 1] = "pad";
+	for (auto it = elems.begin(); it != elems.end(); ++it) {
+		unsigned sz = it->type->getSize();
+		if (offset <= n && n < offset + sz) {
+			it->type = ty;
+			unsigned newsz = ty->getSize();
+			if (newsz < sz) {
+				CompoundElement ce;
+				ce.type = new SizeType(sz - newsz);
+				ce.name = "pad";
+				it = elems.insert(++it, ce);
 			}
 			return;
 		}
-		offset += types[i]->getSize();
+		offset += sz;
 	}
 }
 
@@ -371,12 +369,13 @@ void
 CompoundType::setNameAtOffset(unsigned n, const std::string &nam)
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); ++i) {
-		if (offset <= n && n < offset + types[i]->getSize()) {
-			names[i] = nam;
+	for (auto &elem : elems) {
+		unsigned sz = elem.type->getSize();
+		if (offset <= n && n < offset + sz) {
+			elem.name = nam;
 			return;
 		}
-		offset += types[i]->getSize();
+		offset += sz;
 	}
 }
 
@@ -385,12 +384,11 @@ const char *
 CompoundType::getNameAtOffset(unsigned n) const
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); ++i) {
-		//if (offset >= n && n < offset + types[i]->getSize())
-		if (offset <= n && n < offset + types[i]->getSize())
-			//return getName(offset == n ? i : i - 1);
-			return names[i].c_str();
-		offset += types[i]->getSize();
+	for (const auto &elem : elems) {
+		unsigned sz = elem.type->getSize();
+		if (offset <= n && n < offset + sz)
+			return elem.name.c_str();
+		offset += sz;
 	}
 	return nullptr;
 }
@@ -400,7 +398,7 @@ CompoundType::getOffsetTo(unsigned n) const
 {
 	unsigned offset = 0;
 	for (unsigned i = 0; i < n; ++i) {
-		offset += types[i]->getSize();
+		offset += elems[i].type->getSize();
 	}
 	return offset;
 }
@@ -409,10 +407,10 @@ unsigned
 CompoundType::getOffsetTo(const std::string &member) const
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < types.size(); ++i) {
-		if (names[i] == member)
+	for (const auto &elem : elems) {
+		if (elem.name == member)
 			return offset;
-		offset += types[i]->getSize();
+		offset += elem.type->getSize();
 	}
 	return (unsigned)-1;
 }
@@ -422,11 +420,12 @@ CompoundType::getOffsetRemainder(unsigned n) const
 {
 	unsigned r = n;
 	unsigned offset = 0;
-	for (const auto &type : types) {
-		offset += type->getSize();
+	for (const auto &elem : elems) {
+		unsigned sz = elem.type->getSize();
+		offset += sz;
 		if (offset > n)
 			break;
-		r -= type->getSize();
+		r -= sz;
 	}
 	return r;
 }
@@ -535,9 +534,9 @@ CompoundType::operator ==(const Type &other) const
 {
 	if (!other.isCompound()) return false;
 	const CompoundType &o = (const CompoundType &)other;
-	if (types.size() != o.types.size()) return false;
-	for (auto it1 = types.cbegin(), it2 = o.types.cbegin(); it1 != types.cend(); ++it1, ++it2)
-		if (**it1 != **it2)
+	if (elems.size() != o.elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+		if (*it1->type != *it2->type)
 			return false;
 	return true;
 }
@@ -547,8 +546,8 @@ UnionType::operator ==(const Type &other) const
 {
 	if (!other.isUnion()) return false;
 	const UnionType &o = (const UnionType &)other;
-	if (li.size() != o.li.size()) return false;
-	for (auto it1 = li.cbegin(), it2 = o.li.cbegin(); it1 != li.cend(); ++it1, ++it2)
+	if (elems.size() != o.elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
@@ -912,11 +911,11 @@ std::string
 CompoundType::getCtype(bool final) const
 {
 	std::string tmp = "struct { ";
-	for (unsigned i = 0; i < types.size(); ++i) {
-		tmp += types[i]->getCtype(final);
-		if (!names[i].empty()) {
+	for (const auto &elem : elems) {
+		tmp += elem.type->getCtype(final);
+		if (!elem.name.empty()) {
 			tmp += " ";
-			tmp += names[i];
+			tmp += elem.name;
 		}
 		tmp += "; ";
 	}
@@ -928,7 +927,7 @@ std::string
 UnionType::getCtype(bool final) const
 {
 	std::string tmp = "union { ";
-	for (const auto &elem : li) {
+	for (const auto &elem : elems) {
 		tmp += elem.type->getCtype(final);
 		if (!elem.name.empty()) {
 			tmp += " ";
@@ -1355,35 +1354,35 @@ LowerType::mergeWith(Type *other)
 
 // Return true if this is a superstructure of other, i.e. we have the same types at the same offsets as other
 bool
-CompoundType::isSuperStructOf(Type *other)
+CompoundType::isSuperStructOf(Type *other) const
 {
 	if (!other->isCompound()) return false;
-	CompoundType *otherCmp = other->asCompound();
-	unsigned n = otherCmp->types.size();
-	if (n > types.size()) return false;
-	for (unsigned i = 0; i < n; ++i)
-		if (otherCmp->types[i] != types[i]) return false;
+	CompoundType *o = other->asCompound();
+	if (elems.size() < o->elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it2 != o->elems.cend(); ++it1, ++it2)
+		if (*it1->type != *it2->type)
+			return false;
 	return true;
 }
 
 // Return true if this is a substructure of other, i.e. other has the same types at the same offsets as this
 bool
-CompoundType::isSubStructOf(Type *other)
+CompoundType::isSubStructOf(Type *other) const
 {
 	if (!other->isCompound()) return false;
-	CompoundType *otherCmp = other->asCompound();
-	unsigned n = types.size();
-	if (n > otherCmp->types.size()) return false;
-	for (unsigned i = 0; i < n; ++i)
-		if (otherCmp->types[i] != types[i]) return false;
+	CompoundType *o = other->asCompound();
+	if (elems.size() > o->elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+		if (*it1->type != *it2->type)
+			return false;
 	return true;
 }
 
 // Return true if this type is already in the union. Note: linear search, but number of types is usually small
 bool
-UnionType::findType(Type *ty)
+UnionType::findType(Type *ty) const
 {
-	for (const auto &elem : li) {
+	for (const auto &elem : elems) {
 		if (*elem.type == *ty)
 			return true;
 	}
@@ -1695,12 +1694,24 @@ Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 }
 
 void
+CompoundType::addType(Type *n, const std::string &str)
+{
+	// check if it is a user defined type (typedef)
+	Type *t = getNamedType(n->getCtype());
+	if (t) n = t;
+	CompoundElement ce;
+	ce.type = n;
+	ce.name = str;
+	elems.push_back(ce);
+}
+
+void
 UnionType::addType(Type *n, const std::string &str)
 {
 	if (n->isUnion()) {
 		UnionType *utp = (UnionType *)n;
 		// Note: need to check for name clashes eventually
-		li.insert(li.end(), utp->li.begin(), utp->li.end());
+		elems.insert(elems.end(), utp->elems.begin(), utp->elems.end());
 	} else {
 		if (n->isPointer() && n->asPointer()->getPointsTo() == this) {  // Note: pointer comparison
 			n = new PointerType(new VoidType);
@@ -1710,7 +1721,7 @@ UnionType::addType(Type *n, const std::string &str)
 		UnionElement ue;
 		ue.type = n;
 		ue.name = str;
-		li.push_back(ue);
+		elems.push_back(ue);
 	}
 }
 
@@ -1883,19 +1894,17 @@ NamedType::readMemo(Memo *mm, bool dec)
 class CompoundTypeMemo : public Memo {
 public:
 	CompoundTypeMemo(int m) : Memo(m) { }
-	std::vector<Type *> types;
-	std::vector<std::string> names;
+	std::vector<CompoundElement> elems;
 };
 
 Memo *
 CompoundType::makeMemo(int mId)
 {
 	auto m = new CompoundTypeMemo(mId);
-	m->types = types;
-	m->names = names;
+	m->elems = elems;
 
-	for (const auto &type : types)
-		type->takeMemo(mId);
+	for (const auto &elem : elems)
+		elem.type->takeMemo(mId);
 	return m;
 }
 
@@ -1903,11 +1912,10 @@ void
 CompoundType::readMemo(Memo *mm, bool dec)
 {
 	auto m = dynamic_cast<CompoundTypeMemo *>(mm);
-	types = m->types;
-	names = m->names;
+	elems = m->elems;
 
-	for (const auto &type : types)
-		type->restoreMemo(m->mId, dec);
+	for (const auto &elem : elems)
+		elem.type->restoreMemo(m->mId, dec);
 }
 
 class UnionTypeMemo : public Memo {
@@ -1920,9 +1928,9 @@ Memo *
 UnionType::makeMemo(int mId)
 {
 	auto m = new UnionTypeMemo(mId);
-	m->li = li;
+	m->elems = elems;
 
-	for (const auto &elem : li)
+	for (const auto &elem : elems)
 		elem.type->takeMemo(mId);  // Is this right? What about the names? MVE
 	return m;
 }
@@ -1931,9 +1939,9 @@ void
 UnionType::readMemo(Memo *mm, bool dec)
 {
 	auto m = dynamic_cast<UnionTypeMemo *>(mm);
-	li = m->li;
+	elems = m->elems;
 
-	for (const auto &elem : li)
+	for (const auto &elem : elems)
 		elem.type->restoreMemo(m->mId, dec);
 }
 

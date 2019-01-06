@@ -562,7 +562,7 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (!other->resolvesToCompound()) {
-		if (types[0]->isCompatibleWith(other))
+		if (elems[0].type->isCompatibleWith(other))
 			// struct meet first element = struct
 			return this;
 		return createUnion(other, ch, bHighestPtr);
@@ -602,7 +602,7 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		auto otherUnion = (UnionType *)other;
 		// Always return this, never other, (even if other is larger than this) because otherwise iterators can become
 		// invalid below
-		for (const auto &elem : otherUnion->li) {
+		for (const auto &elem : otherUnion->elems) {
 			meetWith(elem.type, ch, bHighestPtr);
 			return this;
 		}
@@ -613,7 +613,7 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		LOG << "WARNING! attempt to union " << getCtype() << " with pointer to self!\n";
 		return this;
 	}
-	for (auto &elem : li) {
+	for (auto &elem : elems) {
 		Type *curr = elem.type->clone();
 		if (curr->isCompatibleWith(other)) {
 			elem.type = curr->meetWith(other, ch, bHighestPtr);
@@ -1566,20 +1566,23 @@ UnionType::isCompatible(Type *other, bool all)
 	if (other->resolvesToUnion()) {
 		if (this == other)  // Note: pointer comparison
 			return true;  // Avoid infinite recursion
-		auto otherUnion = (UnionType *)other;
+		auto o = (UnionType *)other;
 		// Unions are compatible if one is a subset of the other
-		if (li.size() < otherUnion->li.size()) {
-			for (const auto &elem : li)
-				if (!otherUnion->isCompatible(elem.type, all)) return false;
+		if (elems.size() < o->elems.size()) {
+			for (const auto &elem : elems)
+				if (!o->isCompatible(elem.type, all))
+					return false;
 		} else {
-			for (const auto &elem : otherUnion->li)
-				if (!isCompatible(elem.type, all)) return false;
+			for (const auto &elem : o->elems)
+				if (!isCompatible(elem.type, all))
+					return false;
 		}
 		return true;
 	}
 	// Other is not a UnionType
-	for (const auto &elem : li)
-		if (other->isCompatibleWith(elem.type), all) return true;
+	for (const auto &elem : elems)
+		if (other->isCompatibleWith(elem.type), all)
+			return true;
 	return false;
 }
 
@@ -1590,12 +1593,12 @@ CompoundType::isCompatible(Type *other, bool all)
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
 	if (!other->resolvesToCompound())
 		// Used to always return false here. But in fact, a struct is compatible with its first member (if all is false)
-		return !all && types[0]->isCompatibleWith(other);
-	CompoundType *otherComp = other->asCompound();
-	int n = otherComp->getNumTypes();
-	if (n != (int)types.size()) return false;  // Is a subcompound compatible with a supercompound?
-	for (int i = 0; i < n; ++i)
-		if (!types[i]->isCompatibleWith(otherComp->types[i])) return false;
+		return !all && elems[0].type->isCompatibleWith(other);
+	CompoundType *o = other->asCompound();
+	if (elems.size() != o->elems.size()) return false;  // Is a subcompound compatible with a supercompound?
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+		if (!it1->type->isCompatibleWith(it2->type))
+			return false;
 	return true;
 }
 
@@ -1641,11 +1644,11 @@ Type::dereference()
 // Dereference this union. If it is a union of pointers, return a union of the dereferenced items. Else return VoidType
 // (note: should probably be bottom)
 Type *
-UnionType::dereferenceUnion()
+UnionType::dereferenceUnion() const
 {
 	auto ret = new UnionType;
 	char name[20];
-	for (const auto &elem : li) {
+	for (const auto &elem : elems) {
 		Type *ty = elem.type->dereference();
 		if (ty->resolvesToVoid())
 			return ty;  // Return void for the whole thing

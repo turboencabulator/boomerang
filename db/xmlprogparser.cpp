@@ -2401,9 +2401,9 @@ XMLProgParser::persistToXML(std::ostream &out, Type *ty)
 	}
 	if (auto co = dynamic_cast<CompoundType *>(ty)) {
 		out << "<compoundtype id=\"" << (void *)co << "\">\n";
-		for (unsigned i = 0; i < co->names.size(); ++i) {
-			out << "<member name=\"" << co->names[i] << "\">\n";
-			persistToXML(out, co->types[i]);
+		for (const auto &elem : co->elems) {
+			out << "<member name=\"" << elem.name << "\">\n";
+			persistToXML(out, elem.type);
 			out << "</member>\n";
 		}
 		out << "</compoundtype>\n";
