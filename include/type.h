@@ -642,7 +642,7 @@ class LowerType : public Type {
 	Type       *base_type;
 
 public:
-	            LowerType(Type *base) : Type(eUpper), base_type(base) { }
+	            LowerType(Type *base) : Type(eLower), base_type(base) { }
 	virtual    ~LowerType() { }
 	Type       *clone() const override;
 	bool        operator ==(const Type &other) const override;
