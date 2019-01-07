@@ -308,7 +308,7 @@ UserProc::dfaTypeAnalysis()
 				// Assume an implicit reference
 				addrExp = irs->getAddressExp();
 				if (addrExp->isTypedExp() && ((TypedExp *)addrExp)->getType()->resolvesToPointer())
-					addrExp = ((Unary *)addrExp)->getSubExp1();
+					addrExp = ((TypedExp *)addrExp)->getSubExp1();
 				typeExp = irs->getType();
 				// typeExp should be a pointer expression, or a union of pointer types
 				if (typeExp->resolvesToUnion())
@@ -382,7 +382,7 @@ IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToInteger()) {
-		IntegerType *otherInt = other->asInteger();
+		auto otherInt = other->asInteger();
 		// Signedness
 		int oldSignedness = signedness;
 		if (otherInt->signedness > 0)
@@ -419,7 +419,7 @@ FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToFloat()) {
-		FloatType *otherFlt = other->asFloat();
+		auto otherFlt = other->asFloat();
 		unsigned oldSize = size;
 		size = std::max(size, otherFlt->size);
 		ch |= size != oldSize;
@@ -469,7 +469,7 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToSize() && other->getSize() == getSize())
 		return this;
 	if (other->resolvesToPointer()) {
-		PointerType *otherPtr = other->asPointer();
+		auto otherPtr = other->asPointer();
 		if (pointsToAlpha() && !otherPtr->pointsToAlpha()) {
 			setPointsTo(otherPtr->getPointsTo());
 			ch = true;
@@ -523,15 +523,15 @@ ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToArray()) {
-		ArrayType *otherArr = other->asArray();
+		auto otherArr = other->asArray();
 		Type *newBase = base_type->clone()->meetWith(otherArr->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
 			ch = true;
 			// base_type = newBase;  // No: call setBaseType to adjust length
 			setBaseType(newBase);
 		}
-		if (other->asArray()->getLength() < getLength()) {
-			this->setLength(other->asArray()->getLength());
+		if (otherArr->getLength() < getLength()) {
+			this->setLength(otherArr->getLength());
 		}
 		return this;
 	}
@@ -568,7 +568,7 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 			return this;
 		return createUnion(other, ch, bHighestPtr);
 	}
-	CompoundType *otherCmp = other->asCompound();
+	auto otherCmp = other->asCompound();
 	if (otherCmp->isSuperStructOf(*this)) {
 		// The other structure has a superset of my struct's offsets. Preserve the names etc of the bigger struct.
 		ch = true;
@@ -600,7 +600,7 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		if (this == other)  // Note: pointer comparison
 			return this;  // Avoid infinite recursion
 		ch = true;
-		auto otherUnion = (UnionType *)other;
+		auto otherUnion = other->asUnion();
 		// Always return this, never other, (even if other is larger than this) because otherwise iterators can become
 		// invalid below
 		for (const auto &elem : otherUnion->elems) {
@@ -644,10 +644,11 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToSize()) {
-		if (((SizeType *)other)->size != size) {
-			LOG << "size " << size << " meet with size " << ((SizeType *)other)->size << "!\n";
+		unsigned otherSize = other->getSize();
+		if (otherSize != size) {
+			LOG << "size " << size << " meet with size " << otherSize << "!\n";
 			unsigned oldSize = size;
-			size = std::max(size, ((SizeType *)other)->size);
+			size = std::max(size, otherSize);
 			ch = size != oldSize;
 		}
 		return this;
@@ -658,7 +659,7 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	 || other->resolvesToPointer()) {
 		unsigned otherSize = other->getSize();
 		if (otherSize == 0) {
-			other->setSize(size);
+			other->setSize(size);  // FIXME:  Won't work if other->isNamed().  Stuff below probably makes similar assumptions.
 			return other->clone();
 		}
 		if (otherSize == size)
@@ -675,7 +676,7 @@ UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToUpper()) {
-		UpperType *otherUpp = other->asUpper();
+		auto otherUpp = other->asUpper();
 		Type *newBase = base_type->clone()->meetWith(otherUpp->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
 			ch = true;
@@ -693,7 +694,7 @@ LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToUpper()) {
-		LowerType *otherLow = other->asLower();
+		auto otherLow = other->asLower();
 		Type *newBase = base_type->clone()->meetWith(otherLow->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
 			ch = true;
@@ -726,7 +727,7 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 		return other->meetWith(this, ch, bHighestPtr)->clone();  // Put all the hard union logic in one place
 	// Check for anytype meet compound with anytype as first element
 	if (other->resolvesToCompound()) {
-		CompoundType *otherComp = other->asCompound();
+		auto otherComp = other->asCompound();
 		Type *firstType = otherComp->getType((unsigned)0);
 		if (firstType->isCompatibleWith(this))
 			// struct meet first element = struct
@@ -734,7 +735,7 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 	}
 	// Check for anytype meet array of anytype
 	if (other->resolvesToArray()) {
-		ArrayType *otherArr = other->asArray();
+		auto otherArr = other->asArray();
 		Type *elemTy = otherArr->getBaseType();
 		if (elemTy->isCompatibleWith(this))
 			// array meet element = array
@@ -1465,7 +1466,7 @@ SizeType::isCompatible(Type *other, bool all)
 	unsigned otherSize = other->getSize();
 	if (otherSize == size || otherSize == 0) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToArray()) return isCompatibleWith(((ArrayType *)other)->getBaseType());
+	if (other->resolvesToArray()) return isCompatibleWith(other->asArray()->getBaseType());
 	//return false;
 	// For now, size32 and double will be considered compatible (helps test/pentium/global2)
 	return true;
@@ -1488,7 +1489,7 @@ FloatType::isCompatible(Type *other, bool all)
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToFloat()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToArray()) return isCompatibleWith(((ArrayType *)other)->getBaseType());
+	if (other->resolvesToArray()) return isCompatibleWith(other->asArray()->getBaseType());
 	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	return false;
 }
@@ -1501,7 +1502,7 @@ CharType::isCompatible(Type *other, bool all)
 	if (other->resolvesToInteger()) return true;
 	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToArray()) return isCompatibleWith(((ArrayType *)other)->getBaseType());
+	if (other->resolvesToArray()) return isCompatibleWith(other->asArray()->getBaseType());
 	return false;
 }
 
@@ -1568,7 +1569,7 @@ UnionType::isCompatible(Type *other, bool all)
 	if (other->resolvesToUnion()) {
 		if (this == other)  // Note: pointer comparison
 			return true;  // Avoid infinite recursion
-		auto o = (UnionType *)other;
+		auto o = other->asUnion();
 		// Unions are compatible if one is a subset of the other
 		if (elems.size() < o->elems.size()) {
 			for (const auto &elem : elems)
@@ -1596,7 +1597,7 @@ CompoundType::isCompatible(Type *other, bool all)
 	if (!other->resolvesToCompound())
 		// Used to always return false here. But in fact, a struct is compatible with its first member (if all is false)
 		return !all && elems[0].type->isCompatibleWith(other);
-	CompoundType *o = other->asCompound();
+	auto o = other->asCompound();
 	if (elems.size() != o->elems.size()) return false;  // Is a subcompound compatible with a supercompound?
 	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
 		if (!it1->type->isCompatibleWith(it2->type))
