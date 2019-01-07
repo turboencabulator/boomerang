@@ -626,7 +626,7 @@ public:
 	void        setBaseType(Type *b) { base_type = b; }
 
 	unsigned    getSize() const override { return base_type->getSize() / 2; }
-	void        setSize(int sz) override;        // Does this make sense?
+	//void        setSize(int sz) override;  // Does this make sense?
 	bool        isUpper() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
 	std::string getCtype(bool final = false) const override;
@@ -652,7 +652,7 @@ public:
 	void        setBaseType(Type *b) { base_type = b; }
 
 	unsigned    getSize() const override { return base_type->getSize() / 2; }
-	void        setSize(int sz) override;        // Does this make sense?
+	//void        setSize(int sz) override;  // Does this make sense?
 	bool        isLower() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
 	std::string getCtype(bool final = false) const override;

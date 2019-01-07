@@ -1390,20 +1390,6 @@ UnionType::findType(Type *ty) const
 	return false;
 }
 
-void
-UpperType::setSize(int size)
-{
-	// Does this make sense?
-	assert(0);
-}
-
-void
-LowerType::setSize(int size)
-{
-	// Does this make sense?
-	assert(0);
-}
-
 Type *
 Type::newIntegerLikeType(int size, int signedness)
 {
