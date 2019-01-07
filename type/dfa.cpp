@@ -27,8 +27,6 @@
 #include <gc/gc.h>
 #endif
 
-#include <algorithm>    // For std::max()
-
 #include <cstring>
 
 static int nextUnionNumber = 0;
@@ -389,25 +387,27 @@ IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 			++signedness;
 		else if (otherInt->signedness < 0)
 			--signedness;
-		ch |= ((signedness > 0) != (oldSignedness > 0));  // Changed from signed to not necessarily signed
-		ch |= ((signedness < 0) != (oldSignedness < 0));  // Changed from unsigned to not necessarily unsigned
+		ch |= (signedness > 0) != (oldSignedness > 0);  // Changed from signed to not necessarily signed
+		ch |= (signedness < 0) != (oldSignedness < 0);  // Changed from unsigned to not necessarily unsigned
 		// Size. Assume 0 indicates unknown size
-		unsigned oldSize = size;
-		size = std::max(size, otherInt->size);
-		ch |= (size != oldSize);
+		if (size < otherInt->size) {
+			size = otherInt->size;
+			ch = true;
+		}
 		return this;
 	}
 	if (other->resolvesToSize()) {
 		unsigned otherSize = other->getSize();
 		if (size == 0) {  // Doubt this will ever happen
-			size = otherSize;
+			size = otherSize;  // FIXME:  Need to set ch = true here?
 			return this;
 		}
 		if (size == otherSize) return this;
 		LOG << "integer size " << size << " meet with SizeType size " << otherSize << "!\n";
-		unsigned oldSize = size;
-		size = std::max(size, otherSize);
-		ch = size != oldSize;
+		if (size < otherSize) {
+			size = otherSize;
+			ch = true;
+		}
 		return this;
 	}
 	return createUnion(other, ch, bHighestPtr);
@@ -420,15 +420,18 @@ FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;
 	if (other->resolvesToFloat()) {
 		auto otherFlt = other->asFloat();
-		unsigned oldSize = size;
-		size = std::max(size, otherFlt->size);
-		ch |= size != oldSize;
+		if (size < otherFlt->size) {
+			size = otherFlt->size;
+			ch = true;
+		}
 		return this;
 	}
 	if (other->resolvesToSize()) {
 		unsigned otherSize = other->getSize();
-		ch |= size != otherSize;
-		size = std::max(size, otherSize);
+		if (size < otherSize) {
+			size = otherSize;
+			ch = true;
+		}
 		return this;
 	}
 	return createUnion(other, ch, bHighestPtr);
@@ -647,9 +650,10 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		unsigned otherSize = other->getSize();
 		if (otherSize != size) {
 			LOG << "size " << size << " meet with size " << otherSize << "!\n";
-			unsigned oldSize = size;
-			size = std::max(size, otherSize);
-			ch = size != oldSize;
+			if (size < otherSize) {
+				size = otherSize;
+				ch = true;
+			}
 		}
 		return this;
 	}
