@@ -527,8 +527,8 @@ public:
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
 
-	bool        isSuperStructOf(Type *other) const;  // True if this is a superstructure of other
-	bool        isSubStructOf(Type *other) const;    // True if this is a substructure of other
+	bool        isSuperStructOf(const Type &other) const;  // True if this is a superstructure of other
+	bool        isSubStructOf(const Type &other) const;    // True if this is a substructure of other
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }

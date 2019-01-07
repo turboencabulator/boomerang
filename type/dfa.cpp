@@ -568,12 +568,12 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return createUnion(other, ch, bHighestPtr);
 	}
 	CompoundType *otherCmp = other->asCompound();
-	if (otherCmp->isSuperStructOf(this)) {
+	if (otherCmp->isSuperStructOf(*this)) {
 		// The other structure has a superset of my struct's offsets. Preserve the names etc of the bigger struct.
 		ch = true;
 		return other;
 	}
-	if (isSubStructOf(otherCmp)) {
+	if (isSubStructOf(*otherCmp)) {
 		// This is a superstruct of other
 		ch = true;
 		return this;
@@ -1626,7 +1626,7 @@ Type::isSubTypeOrEqual(Type *other)
 	if (resolvesToVoid()) return true;
 	if (*this == *other) return true;
 	if (this->resolvesToCompound() && other->resolvesToCompound())
-		return this->asCompound()->isSubStructOf(other);
+		return this->asCompound()->isSubStructOf(*other);
 	// Not really sure here
 	return false;
 }

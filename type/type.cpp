@@ -1355,12 +1355,12 @@ LowerType::mergeWith(Type *other)
 
 // Return true if this is a superstructure of other, i.e. we have the same types at the same offsets as other
 bool
-CompoundType::isSuperStructOf(Type *other) const
+CompoundType::isSuperStructOf(const Type &other) const
 {
-	if (!other->isCompound()) return false;
-	CompoundType *o = other->asCompound();
-	if (elems.size() < o->elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it2 != o->elems.cend(); ++it1, ++it2)
+	if (!other.isCompound()) return false;
+	const CompoundType &o = (const CompoundType &)other;
+	if (elems.size() < o.elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it2 != o.elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
@@ -1368,12 +1368,12 @@ CompoundType::isSuperStructOf(Type *other) const
 
 // Return true if this is a substructure of other, i.e. other has the same types at the same offsets as this
 bool
-CompoundType::isSubStructOf(Type *other) const
+CompoundType::isSubStructOf(const Type &other) const
 {
-	if (!other->isCompound()) return false;
-	CompoundType *o = other->asCompound();
-	if (elems.size() > o->elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+	if (!other.isCompound()) return false;
+	const CompoundType &o = (const CompoundType &)other;
+	if (elems.size() > o.elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
