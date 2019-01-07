@@ -333,7 +333,7 @@ public:
 	            Const(ADDRESS);
 	            Const(double);
 	            Const(const char *);
-		    Const(const std::string &);
+	            Const(const std::string &);
 	            Const(Proc *);
 	// Copy constructor
 	            Const(const Const &);

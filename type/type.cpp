@@ -582,7 +582,7 @@ LowerType::operator ==(const Type &other) const
  * FUNCTION:        Type::operator !=
  * OVERVIEW:        Inequality comparsion.
  * PARAMETERS:      other - Type being compared to
- * RETURNS:         this == other
+ * RETURNS:         this != other
  *============================================================================*/
 bool
 Type::operator !=(const Type &other) const
@@ -600,19 +600,19 @@ Type::operator !=(const Type &other) const
  * RETURNS:         this == other (ignoring sign)
  *============================================================================*/
 bool
-IntegerType::operator -=(const Type& other) const
+IntegerType::operator -=(const Type &other) const
 {
 	if (!other.isInteger()) return false;
-	return size == ((IntegerType&)other).size;
+	return size == ((const IntegerType &)other).size;
 }
 
 bool
-FloatType::operator -=(const Type& other) const
+FloatType::operator -=(const Type &other) const
 {
 	if (!other.isFloat()) return false;
-	if (size > 64 && ((FloatType&)other).size > 64)
+	if (size > 64 && ((const FloatType &)other).size > 64)
 	return true;
-	return size == ((FloatType&)other).size;
+	return size == ((const FloatType &)other).size;
 }
 #endif
 
@@ -1118,7 +1118,8 @@ PointerType::getFinalPointsTo()
 	return pt;
 }
 
-Type *NamedType::resolvesTo() const
+Type *
+NamedType::resolvesTo() const
 {
 	Type *ty = getNamedType(name);
 	if (ty && ty->isNamed())
