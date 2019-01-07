@@ -398,14 +398,15 @@ IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;
 	}
 	if (other->resolvesToSize()) {
+		unsigned otherSize = other->getSize();
 		if (size == 0) {  // Doubt this will ever happen
-			size = ((SizeType *)other)->getSize();
+			size = otherSize;
 			return this;
 		}
-		if (size == ((SizeType *)other)->getSize()) return this;
-		LOG << "integer size " << size << " meet with SizeType size " << ((SizeType *)other)->getSize() << "!\n";
+		if (size == otherSize) return this;
+		LOG << "integer size " << size << " meet with SizeType size " << otherSize << "!\n";
 		unsigned oldSize = size;
-		size = std::max(size, ((SizeType *)other)->getSize());
+		size = std::max(size, otherSize);
 		ch = size != oldSize;
 		return this;
 	}
@@ -455,7 +456,7 @@ CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		ch = true;
 		return other->clone();
 	}
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == 8)
+	if (other->resolvesToSize() && other->getSize() == getSize())
 		return this;
 	return createUnion(other, ch, bHighestPtr);
 }
@@ -465,7 +466,7 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid())
 		return this;
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == STD_SIZE)
+	if (other->resolvesToSize() && other->getSize() == getSize())
 		return this;
 	if (other->resolvesToPointer()) {
 		PointerType *otherPtr = other->asPointer();
@@ -655,11 +656,12 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToInteger()
 	 || other->resolvesToFloat()
 	 || other->resolvesToPointer()) {
-		if (other->getSize() == 0) {
+		unsigned otherSize = other->getSize();
+		if (otherSize == 0) {
 			other->setSize(size);
 			return other->clone();
 		}
-		if (other->getSize() == size)
+		if (otherSize == size)
 			return other->clone();
 		LOG << "WARNING: size " << size << " meet with " << other->getCtype() << "; allowing temporarily\n";
 		return other->clone();
@@ -1458,9 +1460,9 @@ bool
 SizeType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
-	unsigned otherSize = other->getSize();
 	if (other->resolvesToFunc()) return false;
 	// FIXME: why is there a test for size 0 here?
+	unsigned otherSize = other->getSize();
 	if (otherSize == size || otherSize == 0) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
 	if (other->resolvesToArray()) return isCompatibleWith(((ArrayType *)other)->getBaseType());
@@ -1476,7 +1478,7 @@ IntegerType::isCompatible(Type *other, bool all)
 	if (other->resolvesToInteger()) return true;
 	if (other->resolvesToChar()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == size) return true;
+	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	return false;
 }
 
@@ -1487,7 +1489,7 @@ FloatType::isCompatible(Type *other, bool all)
 	if (other->resolvesToFloat()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
 	if (other->resolvesToArray()) return isCompatibleWith(((ArrayType *)other)->getBaseType());
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == size) return true;
+	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	return false;
 }
 
@@ -1497,7 +1499,7 @@ CharType::isCompatible(Type *other, bool all)
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToChar()) return true;
 	if (other->resolvesToInteger()) return true;
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == 8) return true;
+	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
 	if (other->resolvesToArray()) return isCompatibleWith(((ArrayType *)other)->getBaseType());
 	return false;
@@ -1509,7 +1511,7 @@ BooleanType::isCompatible(Type *other, bool all)
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToBoolean()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == 1) return true;
+	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	return false;
 }
 
@@ -1520,7 +1522,7 @@ FuncType::isCompatible(Type *other, bool all)
 	if (other->resolvesToVoid()) return true;
 	if (*this == *other) return true;  // MVE: should not compare names!
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == STD_SIZE) return true;
+	if (other->resolvesToSize() && other->getSize() == STD_SIZE) return true;  // FIXME:  FuncType::getSize() != STD_SIZE, is this right?
 	if (other->resolvesToFunc()) {
 		assert(other->asFunc()->signature);
 		if (*other->asFunc()->signature == *signature) return true;
@@ -1533,7 +1535,7 @@ PointerType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && ((SizeType *)other)->getSize() == STD_SIZE) return true;
+	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
 	if (!other->resolvesToPointer()) return false;
 	return points_to->isCompatibleWith(other->asPointer()->points_to);
 }
