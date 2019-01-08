@@ -57,9 +57,9 @@ VoidType::VoidType() : Type(eVoid) { }
 
 FuncType::FuncType(Signature *sig) : Type(eFunc), signature(sig) { }
 
-IntegerType::IntegerType(int sz, int sign) : Type(eInteger), size(sz), signedness(sign) { }
+IntegerType::IntegerType(unsigned sz, int sign) : Type(eInteger), size(sz), signedness(sign) { }
 
-FloatType::FloatType(int sz) : Type(eFloat), size(sz) { }
+FloatType::FloatType(unsigned sz) : Type(eFloat), size(sz) { }
 
 BooleanType::BooleanType() : Type(eBoolean) { }
 
@@ -1404,7 +1404,7 @@ UnionType::findType(Type *ty) const
 }
 
 Type *
-Type::newIntegerLikeType(int size, int signedness)
+Type::newIntegerLikeType(unsigned size, int signedness)
 {
 	if (size == 1)
 		return new BooleanType();
@@ -1770,7 +1770,7 @@ FuncType::readMemo(Memo *mm, bool dec)
 class IntegerTypeMemo : public Memo {
 public:
 	IntegerTypeMemo(int m) : Memo(m) { }
-	int size;
+	unsigned size;
 	int signedness;
 };
 
@@ -1794,7 +1794,7 @@ IntegerType::readMemo(Memo *mm, bool dec)
 class FloatTypeMemo : public Memo {
 public:
 	FloatTypeMemo(int m) : Memo(m) { }
-	int size;
+	unsigned size;
 };
 
 Memo *

@@ -202,7 +202,7 @@ public:
 	        bool        isSubTypeOrEqual(Type *other);
 	// Create a union of this Type and other. Set ch true if any change
 	        Type       *createUnion(Type *other, bool &ch, bool bHighestPtr = false);
-	static  Type       *newIntegerLikeType(int size, int signedness);   // Return a new Bool/Char/Int
+	static  Type       *newIntegerLikeType(unsigned size, int signedness);   // Return a new Bool/Char/Int
 	// From a complex type like an array of structs with a float, return a list of components so you
 	// can construct e.g. myarray1[8].mystruct2.myfloat7
 	        ComplexTypeCompList &compForAddress(ADDRESS addr, DataIntervalMap &dim);
@@ -273,7 +273,7 @@ class IntegerType : public Type {
 	int         signedness;     // pos=signed, neg=unsigned, 0=unknown or evenly matched
 
 public:
-	            IntegerType(int sz = STD_SIZE, int sign = 0);
+	            IntegerType(unsigned sz = STD_SIZE, int sign = 0);
 	virtual    ~IntegerType();
 	bool        isInteger() const override { return true; }
 	bool        isComplete() const override { return signedness != 0 && size != 0; }
@@ -313,7 +313,7 @@ class FloatType : public Type {
 	unsigned    size;               // Size in bits, e.g. 64
 
 public:
-	            FloatType(int sz = 64);
+	            FloatType(unsigned sz = 64);
 	virtual    ~FloatType();
 	bool        isFloat() const override { return true; }
 
