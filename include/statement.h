@@ -351,9 +351,6 @@ public:
 	// Destructor
 	virtual    ~Assignment();
 
-	// Clone
-	Statement  *clone() const override = 0;
-
 	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated
 	// Assume that we won't want sets of assignments differing by anything other than LHSs
@@ -378,17 +375,7 @@ public:
 	// set the lhs to something new
 	void        setLeft(Exp *e) { lhs = e; }
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override = 0;
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override = 0;
-
-	// general search and replace
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override = 0;
-
 	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override { }
-
-	// simpify internal expressions
-	void        simplify() override = 0;
 
 	// simplify address expressions
 	void        simplifyAddr() override;
