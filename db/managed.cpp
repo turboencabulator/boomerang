@@ -514,6 +514,7 @@ StatementList::prints() const
 	return ost.str();
 }
 
+#if 0 // Cruft?
 //
 // StatementVec methods
 //
@@ -553,6 +554,7 @@ StatementVec::printNums(std::ostream &os) const
 			os << "-";  // Special case for no definition
 	}
 }
+#endif
 
 
 // Special intersection method: this := a intersect b

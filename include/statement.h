@@ -506,7 +506,7 @@ struct PhiInfo {
 
 /**
  * PhiAssign is a subclass of Assignment, having a left hand side, and a
- * StatementVec with the references.
+ * vector of PhiInfo with the references.
  *
  * \par Example
  * `m[1000] := phi{3 7 10}`\n

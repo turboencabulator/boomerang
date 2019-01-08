@@ -157,6 +157,7 @@ public:
 	Assignment *findOnLeft(Exp *loc) const;         // Return the first stmt with loc on the LHS
 };
 
+#if 0 // Cruft?
 class StatementVec {
 	std::vector<Statement *> svec;  // For now, use use standard vector
 
@@ -178,6 +179,7 @@ public:
 	void        append(Statement *s) { svec.push_back(s); }
 	iterator    erase(const_iterator it) { return svec.erase(it); }
 };
+#endif
 
 /**
  * For various purposes, we need sets of locations (registers or memory).
