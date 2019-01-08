@@ -1019,12 +1019,7 @@ checkSignedness(Exp *e, int reqSignedness)
 	//if (!isInt || currSignedness != reqSignedness) { // }
 	// Don't want to cast e.g. floats to integer
 	if (isInt && currSignedness != reqSignedness) {
-		IntegerType *newtype;
-		if (!isInt)
-			newtype = new IntegerType(STD_SIZE, reqSignedness);
-		else
-			newtype = new IntegerType(((IntegerType *)ty)->getSize(), reqSignedness);  // Transfer size
-		newtype->setSigned(reqSignedness);
+		auto newtype = new IntegerType(isInt ? ty->asInteger()->getSize() : STD_SIZE, reqSignedness);  // Transfer size
 		return new TypedExp(newtype, e);
 	}
 	return e;
