@@ -167,7 +167,7 @@ public:
 	// Acccess functions
 	virtual unsigned    getSize() const = 0;
 	        unsigned    getBytes() const { return (getSize() + 7) / 8; }
-	virtual void        setSize(int sz) { assert(0); }
+	virtual void        setSize(unsigned sz) { assert(0); }
 
 	// Print and format functions
 	// Get the C type, e.g. "unsigned int". If not final, include comment for lack of sign information.
@@ -286,7 +286,7 @@ public:
 	Type       *mergeWith(Type *other) override;
 
 	unsigned    getSize() const override;            // Get size in bits
-	void        setSize(int sz) override { size = sz; }
+	void        setSize(unsigned sz) override { size = sz; }
 	// Is it signed? 0=unknown, pos=yes, neg = no
 	bool        isSigned() const   { return signedness >= 0; }  // True if not unsigned
 	bool        isUnsigned() const { return signedness <= 0; }  // True if not definitely signed
@@ -324,7 +324,7 @@ public:
 	bool        operator < (const Type &other) const override;
 
 	unsigned    getSize() const override;
-	void        setSize(int sz) override { size = sz; }
+	void        setSize(unsigned sz) override { size = sz; }
 
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
@@ -405,7 +405,7 @@ public:
 	Exp        *match(Type *pattern) override;
 
 	unsigned    getSize() const override;
-	void        setSize(int sz) override { assert(sz == STD_SIZE); }
+	void        setSize(unsigned sz) override { assert(sz == STD_SIZE); }
 
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
@@ -599,7 +599,7 @@ public:
 	Type       *mergeWith(Type *other) override;
 
 	unsigned    getSize() const override;
-	void        setSize(unsigned sz) /* override */ { size = sz; }  // FIXME: different parameter type
+	void        setSize(unsigned sz) override { size = sz; }
 	bool        isSize() const override { return true; }
 	bool        isComplete() const override { return false; }    // Basic type is unknown
 	std::string getCtype(bool final = false) const override;
@@ -627,7 +627,7 @@ public:
 	void        setBaseType(Type *b) { base_type = b; }
 
 	unsigned    getSize() const override { return base_type->getSize() / 2; }
-	//void        setSize(int sz) override;  // Does this make sense?
+	//void        setSize(unsigned sz) override;  // Does this make sense?
 	bool        isUpper() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
 	std::string getCtype(bool final = false) const override;
@@ -653,7 +653,7 @@ public:
 	void        setBaseType(Type *b) { base_type = b; }
 
 	unsigned    getSize() const override { return base_type->getSize() / 2; }
-	//void        setSize(int sz) override;  // Does this make sense?
+	//void        setSize(unsigned sz) override;  // Does this make sense?
 	bool        isLower() const override { return true; }
 	bool        isComplete() const override { return base_type->isComplete(); }
 	std::string getCtype(bool final = false) const override;
