@@ -732,7 +732,7 @@ Prog::makeArrayType(ADDRESS u, Type *t)
 	int sz = pBF->getSizeByName(nam);
 	if (sz == 0)
 		return new ArrayType(t);  // An "unbounded" array
-	int n = t->getSize() / 8;
+	int n = t->getBytes();
 	if (n == 0) n = 1;
 	return new ArrayType(t, sz / n);
 }

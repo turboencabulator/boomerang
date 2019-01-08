@@ -102,10 +102,10 @@ ArrayType::setBaseType(Type *b)
 {
 	// MVE: not sure if this is always the right thing to do
 	if (length != NO_BOUND) {
-		unsigned baseSize = base_type->getSize() / 8; // Old base size (one element) in bytes
+		unsigned baseSize = base_type->getBytes(); // Old base size (one element) in bytes
 		if (baseSize == 0) baseSize = 1;  // Count void as size 1
 		baseSize *= length;  // Old base size (length elements) in bytes
-		unsigned newSize = b->getSize() / 8;
+		unsigned newSize = b->getBytes();
 		if (newSize == 0) newSize = 1;
 		length = baseSize / newSize;  // Preserve same byte size for array
 	}
@@ -1571,7 +1571,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 		}
 	} else {
 		// Just make sure it doesn't overlap anything
-		if (!isClear(addr, (ty->getSize() + 7) / 8)) {
+		if (!isClear(addr, ty->getBytes())) {
 			LOG << "TYPE ERROR: at address " << addr << ", overlapping type " << ty->getCtype()
 			    << " does not resolve to compound or array\n";
 			return;
