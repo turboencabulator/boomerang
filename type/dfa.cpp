@@ -674,6 +674,7 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	return createUnion(other, ch, bHighestPtr);
 }
 
+#if 0 // Cruft?
 Type *
 UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -709,6 +710,7 @@ LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	// Needs work?
 	return createUnion(other, ch, bHighestPtr);
 }
+#endif
 
 Type *
 Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
@@ -1609,6 +1611,7 @@ CompoundType::isCompatible(Type *other, bool all)
 	return true;
 }
 
+#if 0 // Cruft?
 bool
 UpperType::isCompatible(Type *other, bool all)
 {
@@ -1626,6 +1629,7 @@ LowerType::isCompatible(Type *other, bool all)
 	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
 	return false;
 }
+#endif
 
 bool
 Type::isSubTypeOrEqual(Type *other)

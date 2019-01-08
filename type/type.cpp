@@ -225,6 +225,7 @@ SizeType::clone() const
 	return new SizeType(size);
 }
 
+#if 0 // Cruft?
 Type *
 UpperType::clone() const
 {
@@ -236,6 +237,7 @@ LowerType::clone() const
 {
 	return new LowerType(base_type->clone());
 }
+#endif
 
 
 /*==============================================================================
@@ -561,6 +563,7 @@ SizeType::operator ==(const Type &other) const
 	return size == o.size;
 }
 
+#if 0 // Cruft?
 bool
 UpperType::operator ==(const Type &other) const
 {
@@ -576,6 +579,7 @@ LowerType::operator ==(const Type &other) const
 	const LowerType &o = (const LowerType &)other;
 	return *base_type == *o.base_type;
 }
+#endif
 
 
 /*==============================================================================
@@ -726,6 +730,7 @@ SizeType::operator <(const Type &other) const
 	return size < o.size;
 }
 
+#if 0 // Cruft?
 bool
 UpperType::operator <(const Type &other) const
 {
@@ -743,6 +748,7 @@ LowerType::operator <(const Type &other) const
 	const LowerType &o = (const LowerType &)other;
 	return *base_type < *o.base_type;
 }
+#endif
 
 /*==============================================================================
  * FUNCTION:        *Type::match
@@ -948,6 +954,7 @@ SizeType::getCtype(bool final) const
 	return ost.str();
 }
 
+#if 0 // Cruft?
 std::string
 UpperType::getCtype(bool final) const
 {
@@ -962,6 +969,7 @@ LowerType::getCtype(bool final) const
 	ost << "/*lower*/(" << base_type << ")";
 	return ost.str();
 }
+#endif
 
 std::string
 Type::prints() const
@@ -1161,8 +1169,9 @@ AS_TYPE(Array)
 AS_TYPE(Compound)
 AS_TYPE(Size)
 AS_TYPE(Union)
-AS_TYPE(Upper)
-AS_TYPE(Lower)
+//AS_TYPE(Upper)
+//AS_TYPE(Lower)
+
 // Note: don't want to call this->resolve() for this case, since then we (probably) won't have a NamedType and the
 // assert will fail
 NamedType *
@@ -1196,8 +1205,8 @@ RESOLVES_TO_TYPE(Array)
 RESOLVES_TO_TYPE(Compound)
 RESOLVES_TO_TYPE(Union)
 RESOLVES_TO_TYPE(Size)
-RESOLVES_TO_TYPE(Upper)
-RESOLVES_TO_TYPE(Lower)
+//RESOLVES_TO_TYPE(Upper)
+//RESOLVES_TO_TYPE(Lower)
 
 bool
 Type::isPointerToAlpha()
@@ -1291,6 +1300,7 @@ SizeType::print(std::ostream &os) const
 	os << std::dec << getSize();
 }
 
+#if 0 // Cruft?
 void
 UpperType::print(std::ostream &os) const
 {
@@ -1302,6 +1312,7 @@ LowerType::print(std::ostream &os) const
 {
 	os << "L(" << getBaseType() << ')';
 }
+#endif
 
 std::ostream &
 operator <<(std::ostream &os, const Type *t)
@@ -1339,6 +1350,7 @@ SizeType::mergeWith(Type *other)
 	return ret;
 }
 
+#if 0 // Cruft?
 Type *
 UpperType::mergeWith(Type *other)
 {
@@ -1352,6 +1364,7 @@ LowerType::mergeWith(Type *other)
 	// FIXME: TBC
 	return this;
 }
+#endif
 
 // Return true if this is a superstructure of other, i.e. we have the same types at the same offsets as other
 bool

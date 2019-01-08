@@ -41,8 +41,8 @@ class ArrayType;
 class CompoundType;
 class UnionType;
 class SizeType;
-class UpperType;
-class LowerType;
+//class UpperType;
+//class LowerType;
 
 class DataIntervalMap;
 class Exp;
@@ -62,8 +62,8 @@ enum eType {
 	eCompound,
 	eUnion,
 	eSize,
-	eUpper,
-	eLower
+	//eUpper,
+	//eLower,
 };
 
 // The following two are for Type::compForAddress()
@@ -112,8 +112,8 @@ public:
 	virtual bool        isCompound()    const { return false; }
 	virtual bool        isUnion()       const { return false; }
 	virtual bool        isSize()        const { return false; }
-	virtual bool        isUpper()       const { return false; }
-	virtual bool        isLower()       const { return false; }
+	//virtual bool        isUpper()       const { return false; }
+	//virtual bool        isLower()       const { return false; }
 
 	// Return false if some info is missing, e.g. unknown sign, size or basic type
 	virtual bool        isComplete() const { return true; }
@@ -131,8 +131,8 @@ public:
 	        CompoundType *asCompound();
 	        UnionType    *asUnion();
 	        SizeType     *asSize();
-	        UpperType    *asUpper();
-	        LowerType    *asLower();
+	//        UpperType    *asUpper();
+	//        LowerType    *asLower();
 
 	// These replace calls to isNamed() and resolvesTo()
 	        bool        resolvesToVoid() const;
@@ -146,8 +146,8 @@ public:
 	        bool        resolvesToCompound() const;
 	        bool        resolvesToUnion() const;
 	        bool        resolvesToSize() const;
-	        bool        resolvesToUpper() const;
-	        bool        resolvesToLower() const;
+	//        bool        resolvesToUpper() const;
+	//        bool        resolvesToLower() const;
 
 	// cloning
 	virtual Type       *clone() const = 0;
@@ -608,6 +608,7 @@ public:
 	bool        isCompatible(Type *other, bool all) override;
 };
 
+#if 0 // Cruft?
 /**
  * This class represents the upper half of its base type.
  * Mainly needed to represent the upper and lower half for type double.
@@ -660,6 +661,7 @@ public:
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
 	bool        isCompatible(Type *other, bool all) override;
 };
+#endif
 
 
 /**
