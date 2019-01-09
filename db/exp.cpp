@@ -3229,32 +3229,6 @@ Exp::printt(std::ostream &os /*= cout*/) const
 }
 
 /**
- * \brief Print with v[5] as v5.
- *
- * Print an infix representation of the object to the given file stream, but
- * convert r[10] to r10 and v[5] to v5.
- *
- * \note Never modify this function to emit debugging info; the back ends rely
- *       on this being clean to emit correct C.  If debugging is desired, use
- *       operator <<.
- *
- * \param[in] os  Output stream to send the output to.
- */
-void
-Exp::printAsHL(std::ostream &os /*= cout*/) const
-{
-	std::ostringstream ost;
-	ost << *this;  // Print to the string stream
-	std::string s(ost.str());
-	if ((s.length() >= 4) && (s[1] == '[')) {
-		// r[nn]; change to rnn
-		s.erase(1, 1);  // '['
-		s.pop_back();   // ']'
-	}
-	os << s;  // Print to the output stream
-}
-
-/**
  * Output operator for Exp*.
  *
  * \param[in] os  Output stream to send to.
