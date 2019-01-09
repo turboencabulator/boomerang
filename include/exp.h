@@ -84,7 +84,6 @@ public:
 	 */
 	virtual void        print(std::ostream &os, bool html = false) const = 0;
 	virtual void        printr(std::ostream &os, bool html = false) const { print(os, html); }
-	        void        printt(std::ostream &os = std::cout) const;
 	        std::string prints() const;
 	virtual void        printx(int ind) const = 0;
 

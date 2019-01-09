@@ -662,7 +662,7 @@ TypeVal::operator *=(const Exp &e) const
  * Call printr() when recursing over subexpressions, else call print() for any
  * exceptional situations where the extra parens are not desired.
  *
- * operator << calls printt() calls print(), which does not have outer parens.
+ * operator << calls print(), which does not have outer parens.
  *
  * \param[in] os    Ref to an output stream.
  * \param[in] html  Print in HTML format.
@@ -3195,40 +3195,6 @@ Ternary::simplifyAddr()
 }
 
 /**
- * \brief Print with \<type\>.
- *
- * Print an infix representation of the object to the given file stream, with
- * its type in \<angle brackets\>.
- *
- * \param[in] os  Output stream to send the output to.
- */
-void
-Exp::printt(std::ostream &os /*= cout*/) const
-{
-	print(os);
-	if (!isTypedExp()) return;
-	Type *t = ((const TypedExp *)this)->getType();
-	os << "<" << std::dec << t->getSize();
-#if 0
-	switch (t->getType()) {
-	case INTEGER:
-		if (t->getSigned())
-			           os << "i";          // Integer
-		else
-			           os << "u";  break;  // Unsigned
-	case FLOATP:       os << "f";  break;
-	case DATA_ADDRESS: os << "pd"; break;  // Pointer to Data
-	case FUNC_ADDRESS: os << "pc"; break;  // Pointer to Code
-	case VARARGS:      os << "v";  break;
-	case TBOOLEAN:     os << "b";  break;
-	case UNKNOWN:      os << "?";  break;
-	case TVOID:                    break;
-	}
-#endif
-	os << ">";
-}
-
-/**
  * Output operator for Exp*.
  *
  * \param[in] os  Output stream to send to.
@@ -3244,12 +3210,7 @@ operator <<(std::ostream &os, const Exp *p)
 std::ostream &
 operator <<(std::ostream &os, const Exp &p)
 {
-#if 1
-	// Useful for debugging, but can clutter the output
-	p.printt(os);
-#else
 	p.print(os);
-#endif
 	return os;
 }
 
