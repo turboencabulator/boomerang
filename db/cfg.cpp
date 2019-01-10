@@ -407,7 +407,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 			break;
 	}
 	if (ri == pBB->m_pRtls->end()) {
-		std::cerr << "could not split BB at " << std::hex << pBB->getLowAddr() << " at split address " << uNativeAddr << std::endl;
+		std::cerr << "could not split BB at " << std::hex << pBB->getLowAddr() << " at split address " << uNativeAddr << std::dec << std::endl;
 		return pBB;
 	}
 
@@ -655,7 +655,7 @@ Cfg::wellFormCfg()
 			if (itm == m_mapBB.end())
 				std::cerr << "WellFormCfg: incomplete BB not even in map!\n";
 			else
-				std::cerr << "WellFormCfg: BB with native address " << std::hex << itm->first
+				std::cerr << "WellFormCfg: BB with native address " << std::hex << itm->first << std::dec
 				          << " is incomplete\n";
 		} else {
 			// Complete. Test the out edges
@@ -670,7 +670,7 @@ Cfg::wellFormCfg()
 					if (!outedge) {
 						m_bWellFormed = false;  // At least one problem
 						ADDRESS addr = bb->getLowAddr();
-						std::cerr << "WellFormCfg: BB with native address " << std::hex << addr
+						std::cerr << "WellFormCfg: BB with native address " << std::hex << addr << std::dec
 						          << " is missing outedge " << i << std::endl;
 					} else {
 						// Check that there is a corresponding in edge from the
@@ -678,7 +678,7 @@ Cfg::wellFormCfg()
 						auto ii = std::find(outedge->m_InEdges.begin(), outedge->m_InEdges.end(), bb);
 						if (ii == outedge->m_InEdges.end()) {
 							std::cerr << "WellFormCfg: No in edge to BB at " << std::hex << bb->getLowAddr()
-							          << " from successor BB at " << outedge->getLowAddr() << std::endl;
+							          << " from successor BB at " << outedge->getLowAddr() << std::dec << std::endl;
 							m_bWellFormed = false;  // At least one problem
 						}
 					}
@@ -690,7 +690,7 @@ Cfg::wellFormCfg()
 				auto oo = std::find(inedge->m_OutEdges.begin(), inedge->m_OutEdges.end(), bb);
 				if (oo == inedge->m_OutEdges.end()) {
 					std::cerr << "WellFormCfg: No out edge to BB at " << std::hex << bb->getLowAddr()
-					          << " from predecessor BB at " << inedge->getLowAddr() << std::endl;
+					          << " from predecessor BB at " << inedge->getLowAddr() << std::dec << std::endl;
 					m_bWellFormed = false;  // At least one problem
 				}
 			}
@@ -1808,7 +1808,7 @@ Cfg::appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workse
 static void
 dumpBB(BasicBlock *bb)
 {
-	std::cerr << "For BB at " << std::hex << bb << ":\nIn edges: ";
+	std::cerr << "For BB at " << bb << ":\nIn edges: ";
 	const auto &ins = bb->getInEdges();
 	const auto &outs = bb->getOutEdges();
 	for (const auto &edge : ins)
@@ -1968,7 +1968,7 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 		}
 
 #if DEBUG_SPLIT_FOR_BRANCH
-		std::cerr << "About to delete pBB: " << std::hex << pBB << "\n";
+		std::cerr << "About to delete pBB: " << pBB << "\n";
 		dumpBB(pBB);
 		dumpBB(skipBB);
 		dumpBB(rptBB);

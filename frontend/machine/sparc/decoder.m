@@ -219,7 +219,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		newCall->setDestProc(destProc);
 		result.rtl = new RTL(pc, newCall);
 		result.type = SD;
-		SHOW_ASM(name << " " << std::hex << addr);
+		SHOW_ASM(name << " " << std::hex << addr << std::dec);
 		DEBUG_STMTS
 
 	| call_(addr) =>
@@ -292,7 +292,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.type = SKIP;
 		}
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 	| pbranch^",a"(cc01, tgt) [name] =>
@@ -326,7 +326,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 			result.type = SKIP;
 		}
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 	| branch(tgt) [name] =>
@@ -363,7 +363,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if (strcmp(name, "BN") == 0 || strcmp(name, "BVS") == 0)
 			result.type = NCT;
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 	| pbranch(cc01, tgt) [name] =>
@@ -392,7 +392,7 @@ SparcDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		if (strcmp(name, "BPN") == 0 || strcmp(name, "BPVS") == 0)
 			result.type = NCT;
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 	| JMPL(addr, _) [name] =>

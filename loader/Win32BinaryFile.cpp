@@ -595,7 +595,7 @@ Win32BinaryFile::findJumps(ADDRESS curr)
 		std::string sym = it->second;
 		dlprocptrs[operand] = "__imp_" + sym;
 		dlprocptrs[curr] = sym;   // Add new entry
-		// std::cerr << "Added " << sym << " at 0x" << std::hex << curr << "\n";
+		// std::cerr << "Added " << sym << " at 0x" << std::hex << curr << std::dec << "\n";
 		curr -= 4;  // Next match is at least 4+2 bytes away
 		cnt = 0;
 	}
@@ -638,7 +638,7 @@ Win32BinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) const
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	for (const auto &sym : dlprocptrs) {
-		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
+		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << std::dec << "\n";
 		if (sym.second == name)
 			return sym.first;
 	}

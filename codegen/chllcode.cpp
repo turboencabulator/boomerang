@@ -114,7 +114,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 					str << num << "U";
 				} else {
 					// Output it in 0xF0000000 style
-					str << "0x" << std::hex << K;
+					str << "0x" << std::hex << K << std::dec;
 				}
 			} else {
 				if (c->getType() && c->getType()->isChar()) {
@@ -146,20 +146,20 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 					// More heuristics
 					int K = c->getInt();
 					if (-2048 < K && K < 2048)
-						str << std::dec << K;           // Just a plain vanilla int
+						str << K;  // Just a plain vanilla int
 					else
-						str << "0x" << std::hex << K;   // 0x2000 style
+						str << "0x" << std::hex << K << std::dec;  // 0x2000 style
 				}
 			}
 		}
 		break;
 	case opLongConst:
-		//str << std::dec << c->getLong() << "LL"; break;
+		//str << c->getLong() << "LL"; break;
 		if ((long long)c->getLong() < -1000LL
 		 || (long long)c->getLong() >  1000LL)
 			str << "0x" << std::hex << c->getLong() << std::dec << "LL";
 		else
-			str << std::dec << c->getLong() << "LL";
+			str << c->getLong() << "LL";
 		break;
 	case opFltConst:
 		{
@@ -302,7 +302,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		str << " & ";
 		if (b->getSubExp2()->isIntConst())
 			// print it 0x2000 style
-			str << "0x" << std::hex << ((Const *)b->getSubExp2())->getInt();
+			str << "0x" << std::hex << ((Const *)b->getSubExp2())->getInt() << std::dec;
 		else
 			appendExp(str, b->getSubExp2(), PREC_BIT_AND);
 		closeParen(str, curPrec, PREC_BIT_AND);
@@ -355,7 +355,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				// print 0x3 as 3
 				str << mask;
 			else
-				str << "0x" << std::hex << mask;
+				str << "0x" << std::hex << mask << std::dec;
 			closeParen(str, curPrec, PREC_BIT_AND);
 		}
 		break;
@@ -1146,7 +1146,7 @@ CHLLCode::AddGoto(int indLevel, int ord)
 {
 	std::ostringstream s;
 	indent(s, indLevel);
-	s << "goto L" << std::dec << ord << ";";
+	s << "goto L" << ord << ";";
 	appendLine(s);
 	usedLabels.insert(ord);
 }
@@ -1197,7 +1197,7 @@ void
 CHLLCode::AddLabel(int indLevel, int ord)
 {
 	std::ostringstream s;
-	s << "L" << std::dec << ord << ":";
+	s << "L" << ord << ":";
 	appendLine(s);
 }
 
@@ -1206,7 +1206,7 @@ void
 CHLLCode::RemoveLabel(int ord)
 {
 	std::ostringstream s;
-	s << "L" << std::dec << ord << ":";
+	s << "L" << ord << ":";
 	for (auto it = lines.begin(); it != lines.end(); ++it) {
 		if (*it == s.str()) {
 			lines.erase(it);
@@ -1655,7 +1655,7 @@ CHLLCode::AddGlobal(const std::string &name, Type *type, Exp *init)
 		// Get the component type
 		Type *base = ((ArrayType *)type)->getBaseType();
 		appendType(s, base);
-		s << " " << name << "[" << std::dec << ((ArrayType *)type)->getLength() << "]";
+		s << " " << name << "[" << ((ArrayType *)type)->getLength() << "]";
 	} else if (type->isPointer()
 	        && ((PointerType *)type)->getPointsTo()->resolvesToFunc()) {
 		// These are even more different to declare than to print. Example:

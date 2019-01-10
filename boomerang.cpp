@@ -1033,7 +1033,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 
 	// Entry points from -e (and -E) switch(es)
 	for (const auto &entrypoint : entrypoints) {
-		std::cout << "decoding specified entrypoint " << std::hex << entrypoint << "\n";
+		std::cout << "decoding specified entrypoint " << std::hex << entrypoint << std::dec << "\n";
 		prog->decodeEntryPoint(entrypoint);
 	}
 
@@ -1054,7 +1054,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 
 	Boomerang::get()->alert_end_decode();
 
-	std::cout << "found " << std::dec << prog->getNumUserProcs() << " procs\n";
+	std::cout << "found " << prog->getNumUserProcs() << " procs\n";
 
 	// GK: The analysis which was performed was not exactly very "analysing", and so it has been moved to
 	// prog::finishDecode, UserProc::assignProcsToCalls and UserProc::finalSimplify

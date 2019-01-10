@@ -63,7 +63,7 @@ void
 SparcFrontEnd::warnDCTcouple(ADDRESS at, ADDRESS dest)
 {
 	std::cerr << "Error: DCTI couple at " << std::hex << at
-	          << " points to delayed branch at " << dest << "...\n"
+	          << " points to delayed branch at " << dest << std::dec << "...\n"
 	          << "Decompilation will likely be incorrect\n";
 }
 #endif
@@ -180,7 +180,7 @@ SparcFrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQu
 		tq.visit(cfg, dest, newBB);
 		cfg->addOutEdge(newBB, dest, true);
 	} else
-		std::cerr << "Error: branch to " << std::hex << dest << " goes beyond section.\n";
+		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";
 }
 
 /**
@@ -207,7 +207,7 @@ SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg 
 		// We don't want to call prog.visitProc just yet, in case this is a speculative decode that failed. Instead, we
 		// use the set of CallStatements (not in this procedure) that is needed by CSR
 		if (Boomerang::get()->traceDecoder)
-			std::cout << "p" << std::hex << dest << "\t";
+			std::cout << "p" << std::hex << dest << std::dec << "\t";
 	}
 
 	// Add the out edge if required
@@ -224,7 +224,7 @@ SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg 
 void
 SparcFrontEnd::case_unhandled_stub(ADDRESS addr)
 {
-	std::cerr << "Error: DCTI couple at " << std::hex << addr << std::endl;
+	std::cerr << "Error: DCTI couple at " << std::hex << addr << std::dec << std::endl;
 }
 
 /**
@@ -569,7 +569,7 @@ SparcFrontEnd::case_SCD(ADDRESS &address, DecodeResult &inst,
 		address += 4;  // Skip the SCD only
 		// Start a new list of RTLs for the next BB
 		BB_rtls = nullptr;
-		std::cerr << "Warning: instruction at " << std::hex << address
+		std::cerr << "Warning: instruction at " << std::hex << address << std::dec
 		          << " not copied to true leg of preceeding branch\n";
 		return true;
 	}
@@ -861,7 +861,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 					 || ((bits31_30 == 0x00) && (bits23_22 == 0x02) && (bits29_25 != 0x18))) { // Branch, but not (f)ba,a
 						// The above test includes floating point branches
 						std::cerr << "Target of branch at " << std::hex << rtl->getAddress()
-						          << " is delay slot of CTI at " << dest - 4 << std::endl;
+						          << " is delay slot of CTI at " << dest - 4 << std::dec << std::endl;
 					}
 				}
 			}
@@ -1317,7 +1317,7 @@ SparcFrontEnd::helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest)
 	if (!pBF->isDynamicLinkedProc(dest)) return false;
 	const char *p = pBF->getSymbolByAddress(dest);
 	if (!p) {
-		std::cerr << "Error: Can't find symbol for PLT address " << std::hex << dest << std::endl;
+		std::cerr << "Error: Can't find symbol for PLT address " << std::hex << dest << std::dec << std::endl;
 		return false;
 	}
 	auto name = std::string(p);

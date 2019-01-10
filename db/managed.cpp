@@ -144,7 +144,6 @@ StatementSet::prints() const
 void
 StatementSet::printNums(std::ostream &os) const
 {
-	os << std::dec;
 	bool first = true;
 	for (const auto &s : sset) {
 		if (first)
@@ -256,7 +255,6 @@ AssignSet::prints() const
 void
 AssignSet::printNums(std::ostream &os) const
 {
-	os << std::dec;
 	bool first = true;
 	for (const auto &a : aset) {
 		if (first)
@@ -540,7 +538,6 @@ StatementVec::prints() const
 void
 StatementVec::printNums(std::ostream &os) const
 {
-	os << std::dec;
 	bool first = true;
 	for (const auto &s : svec) {
 		if (first)

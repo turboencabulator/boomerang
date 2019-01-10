@@ -346,7 +346,7 @@ PPCDecoder::conditionalJump(ADDRESS pc, const std::string &name, ADDRESS relocd,
 {
 	auto jump = new BranchStatement(relocd);
 	jump->setCondType(cond);
-	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd);
+	SHOW_ASM(name << " " << BIcr << ", 0x" << std::hex << relocd << std::dec);
 	return new RTL(pc, jump);
 }
 

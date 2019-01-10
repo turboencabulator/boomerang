@@ -115,7 +115,7 @@ BlockSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " [label=\"";
 	if (pbb) {
 		switch (pbb->getType()) {
@@ -131,7 +131,7 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 		case COMPCALL: os << "Computed call"; break;
 		case INVALID:  os << "Invalid";       break;
 		}
-		os << " " << std::hex << pbb->getLowAddr();
+		os << " " << std::hex << pbb->getLowAddr() << std::dec;
 	} else
 		os << "block";
 	os << "\"];\n";
@@ -140,7 +140,7 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 			BasicBlock *out = pbb->getOutEdge(i);
 			const SyntaxNode *to = root->findNodeFor(out);
 			assert(to);
-			os << "\t" << std::dec << nodenum
+			os << "\t" << nodenum
 			   << " -> " << to->getNumber()
 			   << " [style=dotted";
 			if (pbb->getNumOutEdges() > 1)
@@ -151,7 +151,7 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 		for (unsigned i = 0; i < statements.size(); ++i)
 			statements[i]->printAST(root, os);
 		for (unsigned i = 0; i < statements.size(); ++i)
-			os << "\t" << std::dec << nodenum
+			os << "\t" << nodenum
 			   << " -> " << statements[i]->getNumber()
 			   << " [label=\"" << i << "\"];\n";
 	}
@@ -488,14 +488,14 @@ IfThenSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 IfThenSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " [label=\"if " << *cond << "\"];\n";
 	pThen->printAST(root, os);
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << pThen->getNumber()
 	   << " [label=\"then\"];\n";
 	const SyntaxNode *follows = root->findNodeFor(pbb->getOutEdge(0));
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << follows->getNumber()
 	   << " [style=dotted];\n";
 }
@@ -592,14 +592,14 @@ IfThenElseSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 IfThenElseSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " [label=\"if " << *cond << "\"];\n";
 	pThen->printAST(root, os);
 	pElse->printAST(root, os);
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << pThen->getNumber()
 	   << " [label=\"then\"];\n";
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << pElse->getNumber()
 	   << " [label=\"else\"];\n";
 }
@@ -682,13 +682,13 @@ PretestedLoopSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 PretestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " [label=\"loop pretested " << *cond << "\"];\n";
 	pBody->printAST(root, os);
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << pBody->getNumber()
 	   << ";\n";
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << getOutEdge(root, 0)->getNumber()
 	   << " [style=dotted];\n";
 }
@@ -772,13 +772,13 @@ PostTestedLoopSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 PostTestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " [label=\"loop posttested " << *cond << "\"];\n";
 	pBody->printAST(root, os);
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << pBody->getNumber()
 	   << ";\n";
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " -> " << getOutEdge(root, 0)->getNumber()
 	   << " [style=dotted];\n";
 }
@@ -854,12 +854,12 @@ InfiniteLoopSyntaxNode::findNodeFor(BasicBlock *bb) const
 void
 InfiniteLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 {
-	os << "\t" << std::dec << nodenum
+	os << "\t" << nodenum
 	   << " [label=\"loop infinite\"];\n";
 	if (pBody)
 		pBody->printAST(root, os);
 	if (pBody)
-		os << "\t" << std::dec << nodenum
+		os << "\t" << nodenum
 		   << " -> " << pBody->getNumber()
 		   << ";\n";
 }

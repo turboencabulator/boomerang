@@ -675,13 +675,13 @@ Const::print(std::ostream &os, bool html) const
 		if (u.i < -1000 || u.i > 1000)
 			os << "0x" << std::hex << u.i << std::dec;
 		else
-			os << std::dec << u.i;
+			os << u.i;
 		break;
 	case opLongConst:
 		if ((long long)u.ll < -1000LL || (long long)u.ll > 1000LL)
 			os << "0x" << std::hex << u.ll << std::dec << "LL";
 		else
-			os << std::dec << u.ll << "LL";
+			os << u.ll << "LL";
 		break;
 	case opFltConst:
 		char buf[64];
@@ -696,7 +696,7 @@ Const::print(std::ostream &os, bool html) const
 		assert(0);
 	}
 	if (conscript)
-		os << "\\" << std::dec << conscript << "\\";
+		os << "\\" << conscript << "\\";
 }
 
 void
@@ -879,7 +879,7 @@ Unary::print(std::ostream &os, bool html) const
 	case opRegOf:
 		// Make a special case for the very common case of r[intConst]
 		if (p1->isIntConst()) {
-			os << "r" << std::dec << ((Const *)p1)->getInt();
+			os << "r" << ((Const *)p1)->getInt();
 			break;
 		} else if (p1->isTemp()) {
 			// Just print the temp {   // balance }s
@@ -1104,7 +1104,7 @@ RefExp::print(std::ostream &os, bool html) const
 		os << "WILD";
 	} else if (def) {
 		if (html)
-			os << "<a href=\"#stmt" << std::dec << def->getNumber() << "\">";
+			os << "<a href=\"#stmt" << def->getNumber() << "\">";
 		def->printNum(os);
 		if (html)
 			os << "</a>";
@@ -4091,7 +4091,7 @@ Const::printx(int ind) const
 	std::cerr << std::setw(ind) << "" << operStrings[op] << " ";
 	switch (op) {
 	case opIntConst:
-		std::cerr << std::dec << u.i;
+		std::cerr << u.i;
 		break;
 	case opStrConst:
 		std::cerr << "\"" << u.p << "\"";
@@ -4103,10 +4103,10 @@ Const::printx(int ind) const
 		std::cerr << u.pp->getName();
 		break;
 	default:
-		std::cerr << std::hex << "?" << (int)op << "?";
+		std::cerr << std::hex << "?" << (int)op << "?" << std::dec;
 	}
 	if (conscript)
-		std::cerr << " \\" << std::dec << conscript << "\\";
+		std::cerr << " \\" << conscript << "\\";
 	std::cerr << "\n";
 }
 void

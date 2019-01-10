@@ -571,7 +571,7 @@ Constraints::alphaSubst()
 void
 Constraints::print(std::ostream &os) const
 {
-	os << "\n" << std::dec << (int)disjunctions.size() << " disjunctions: ";
+	os << "\n" << (int)disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
 		os << *dis << ",\n";
 	os << "\n";

@@ -1163,7 +1163,7 @@ GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 GotoStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -1174,7 +1174,7 @@ GotoStatement::print(std::ostream &os, bool html) const
 	else if (!pDest->isIntConst())
 		pDest->print(os);
 	else
-		os << "0x" << std::hex << getFixedDest();
+		os << "0x" << std::hex << getFixedDest() << std::dec;
 	if (html)
 		os << "</a></td>";
 }
@@ -1492,7 +1492,7 @@ BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 BranchStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -1504,7 +1504,7 @@ BranchStatement::print(std::ostream &os, bool html) const
 		os << *pDest;
 	else
 		// Really we'd like to display the destination label here...
-		os << "0x" << std::hex << getFixedDest();
+		os << "0x" << std::hex << getFixedDest() << std::dec;
 	os << ", condition ";
 	switch (jtCond) {
 	case BRANCH_JE:   os << "equals"; break;
@@ -1791,12 +1791,12 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 							op = (condOp == opEquals) ? opEquals : opNotEqual;
 							break;
 						default:
-							std::cerr << "BranchStatement::simplify: k is " << std::hex << k << "\n";
+							std::cerr << "BranchStatement::simplify: k is " << std::hex << k << std::dec << "\n";
 							assert(0);
 						}
 						break;
 					default:
-						std::cerr << "BranchStatement::simplify: Mask is " << std::hex << mask << "\n";
+						std::cerr << "BranchStatement::simplify: Mask is " << std::hex << mask << std::dec << "\n";
 						assert(0);
 					}
 				}
@@ -1911,7 +1911,7 @@ CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 CaseStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -2188,7 +2188,7 @@ CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 void
 CallStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -2222,7 +2222,7 @@ CallStatement::print(std::ostream &os, bool html) const
 		os << "*no dest*";
 	else {
 		if (pDest->isIntConst())
-			os << "0x" << std::hex << ((Const *)pDest)->getInt();
+			os << "0x" << std::hex << ((Const *)pDest)->getInt() << std::dec;
 		else
 			pDest->print(os, html);  // Could still be an expression
 	}
@@ -3382,7 +3382,7 @@ Assign::fixSuccessor()
 void
 Assignment::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html)
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -3423,7 +3423,7 @@ PhiAssign::printCompact(std::ostream &os, bool html) const
 		}
 	}
 	if (simple) {
-		os << "{" << std::dec;
+		os << "{";
 		bool first = true;
 		for (const auto &def : defVec) {
 			if (first)
@@ -3433,7 +3433,7 @@ PhiAssign::printCompact(std::ostream &os, bool html) const
 
 			if (def.def) {
 				if (html)
-					os << "<a href=\"#stmt" << std::dec << def.def->getNumber() << "\">";
+					os << "<a href=\"#stmt" << def.def->getNumber() << "\">";
 				os << def.def->getNumber();
 				if (html)
 					os << "</a>";
@@ -3456,7 +3456,7 @@ PhiAssign::printCompact(std::ostream &os, bool html) const
 			else
 				os << *e << "{";
 			if (def.def)
-				os << std::dec << def.def->getNumber();
+				os << def.def->getNumber();
 			else
 				os << "-";
 			os << "}";
@@ -4521,7 +4521,7 @@ ReturnStatement::setTypeFor(Exp *e, Type *ty)
 void
 ReturnStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -5174,7 +5174,7 @@ TypingStatement::TypingStatement(Type *ty) :
 void
 ImpRefStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << "     *";  // No statement number
+	os << "     *";  // No statement number
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
@@ -5319,20 +5319,19 @@ JunctionStatement::accept(StmtPartModifier &v)
 void
 JunctionStatement::print(std::ostream &os, bool html) const
 {
-	os << std::dec << std::setw(4) << number << " ";
+	os << std::setw(4) << number << " ";
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
 	}
-	os << "JUNCTION" << std::hex;
+	os << "JUNCTION";
 	for (int i = 0; i < pbb->getNumInEdges(); ++i) {
-		os << " " << pbb->getInEdges()[i]->getHiAddr();
+		os << " " << std::hex << pbb->getInEdges()[i]->getHiAddr() << std::dec;
 		if (pbb->isBackEdge(i))
 			os << "*";
 	}
 	if (isLoopJunction())
 		os << " LOOP";
-	os << std::dec;
 	os << "\n\t\t\tranges: " << ranges;
 	if (html)
 		os << "</a></td>";

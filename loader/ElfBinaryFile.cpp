@@ -753,7 +753,7 @@ ElfBinaryFile::getMachine() const
 	}
 	// An unknown machine type
 	std::cerr << "Error: ElfBinaryFile::getMachine: Unsupported machine type: "
-	          << machine << " (0x" << std::hex << machine << ")\n";
+	          << machine << " (0x" << std::hex << machine << std::dec << ")\n";
 	std::cerr << "(Please add a description for this type, thanks!)\n";
 	return (MACHINE)-1;
 }

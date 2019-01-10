@@ -127,7 +127,7 @@ escapeStr(const char *str)
 			if (!escapedSucessfully) {
 				// it isn't so just use the \xhh escape
 				auto fill = out.fill('0');
-				out << "\\x" << std::hex << std::setw(2) << (int)*str;
+				out << "\\x" << std::hex << std::setw(2) << (int)*str << std::dec;
 				out.fill(fill);
 			}
 		}

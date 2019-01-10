@@ -190,7 +190,7 @@ LoaderTest::testWinLoad()
 
 		ADDRESS addr = bf->getMainEntryPoint();
 		std::ostringstream actual;
-		actual << std::hex << addr;
+		actual << std::hex << addr << std::dec;
 		std::string expected("1001f51");
 		CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 
@@ -204,7 +204,7 @@ LoaderTest::testWinLoad()
 
 		ADDRESS addr = bf->getMainEntryPoint();
 		std::ostringstream actual;
-		actual << std::hex << addr;
+		actual << std::hex << addr << std::dec;
 		std::string expected("1001680");
 		CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 
@@ -218,7 +218,7 @@ LoaderTest::testWinLoad()
 
 		ADDRESS addr = bf->getMainEntryPoint();
 		std::ostringstream actual;
-		actual << std::hex << addr;
+		actual << std::hex << addr << std::dec;
 		std::string expected("18c1000");
 		CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 
@@ -233,7 +233,7 @@ LoaderTest::testWinLoad()
 
 		ADDRESS addr = bf->getMainEntryPoint();
 		std::ostringstream actual;
-		actual << std::hex << addr;
+		actual << std::hex << addr << std::dec;
 		std::string expected("401150");
 		CPPUNIT_ASSERT_EQUAL(expected, actual.str());
 
@@ -517,7 +517,7 @@ LoaderTest::testMicroDis1()
 		size_t size = microX86Dis(p);
 		if (size >= 0x40) {
 			std::cout << "Not handled instruction at offset 0x" << std::hex
-			          << (ADDRESS)p - (ADDRESS)pent_hello_text << std::endl;
+			          << (ADDRESS)p - (ADDRESS)pent_hello_text << std::dec << std::endl;
 			CPPUNIT_ASSERT(size != 0x40);
 			return;
 		}

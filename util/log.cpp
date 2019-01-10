@@ -97,7 +97,7 @@ Log &
 Log::operator <<(int i)
 {
 	std::ostringstream st;
-	st << std::dec << i;
+	st << i;
 	return *this << st.str();
 }
 
@@ -121,7 +121,7 @@ Log &
 Log::operator <<(ADDRESS a)
 {
 	std::ostringstream st;
-	st << "0x" << std::hex << a;
+	st << "0x" << std::hex << a << std::dec;
 	return *this << st.str();
 }
 

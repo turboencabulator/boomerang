@@ -27,7 +27,7 @@
 #include "managed.h"
 #include "types.h"
 
-#include <iostream>     // For std::cout, std::dec
+#include <iostream>     // For std::cout
 #include <ostream>
 #include <memory>
 #include <list>
@@ -196,9 +196,9 @@ public:
 
 	// statements should be printable (for debugging)
 	virtual void        print(std::ostream &os, bool html = false) const = 0;
-	        void        printAsUse(std::ostream &os) const   { os << std::dec << number; }
-	        void        printAsUseBy(std::ostream &os) const { os << std::dec << number; }
-	        void        printNum(std::ostream &os) const     { os << std::dec << number; }
+	        void        printAsUse(std::ostream &os) const   { os << number; }
+	        void        printAsUseBy(std::ostream &os) const { os << number; }
+	        void        printNum(std::ostream &os) const     { os << number; }
 	        std::string prints() const;  // For logging, was also for debugging
 
 	// general search

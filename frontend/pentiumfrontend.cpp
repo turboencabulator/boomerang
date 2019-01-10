@@ -593,7 +593,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 		 && pBF->isDynamicLinkedProcPointer(((Const *)cs->getDest()->getSubExp1())->getAddr())
 		 && !strcmp(pBF->getDynamicProcName(((Const *)cs->getDest()->getSubExp1())->getAddr()), "GetModuleHandleA")) {
 #if 0
-			std::cerr << "consider " << std::hex << addr << " "
+			std::cerr << "consider " << std::hex << addr << std::dec << " "
 			          << pBF->getDynamicProcName(((Const *)cs->getDest()->getSubExp1())->getAddr()) << std::endl;
 #endif
 			int oNumBytes = inst.numBytes;

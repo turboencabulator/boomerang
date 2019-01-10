@@ -79,7 +79,7 @@ DOS4GWBinaryFile::getMainEntryPoint()
 			if (gotSubEbp) {
 				// This is the call we want. Get the offset from the call instruction
 				unsigned addr = nativeOrigin + p + 5 + LH32(&base[p + 1]);
-				// std::cerr << "__CMain at " << std::hex << addr << "\n";
+				// std::cerr << "__CMain at " << std::hex << addr << std::dec << "\n";
 				return addr;
 			}
 			lastWasCall = true;
@@ -316,7 +316,7 @@ DOS4GWBinaryFile::getAddressByName(const std::string &name, bool bNoTypeOK) cons
 {
 	// This is "looking up the wrong way" and hopefully is uncommon.  Use linear search
 	for (const auto &sym : dlprocptrs) {
-		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << "\n";
+		// std::cerr << "Symbol: " << sym.second << " at 0x" << std::hex << sym.first << std::dec << "\n";
 		if (sym.second == name)
 			return sym.first;
 	}

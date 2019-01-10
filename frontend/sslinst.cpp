@@ -238,8 +238,7 @@ RTLInstDict::print(std::ostream &os /*= std::cout*/) const
 	for (const auto &rr : DetRegMap) {
 		int n = rr.first;
 		auto &pr = rr.second;
-		os << std::dec
-		   << "number " << n
+		os << "number " << n
 		   << " name " << pr.g_name()
 		   << " size " << pr.g_size()
 		   << " flt " << pr.g_float()
@@ -406,7 +405,7 @@ RTLInstDict::instantiateRTL(ADDRESS natPC, const std::string &name, const std::v
 	// Retrieve the dictionary entry for the named instruction
 	auto it = idict.find(*lname);
 	if (it == idict.end()) { /* lname is not in dictionary */
-		std::cerr << "ERROR: unknown instruction " << *lname << " at 0x" << std::hex << natPC << ", ignoring.\n";
+		std::cerr << "ERROR: unknown instruction " << *lname << " at 0x" << std::hex << natPC << std::dec << ", ignoring.\n";
 		return new RTL(natPC);  // FIXME:  Just return nullptr instead?
 	}
 	auto &entry = it->second;

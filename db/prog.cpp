@@ -1258,7 +1258,7 @@ Prog::printCallGraph() const
 			int n = spaces[p];
 			for (int i = 0; i < n; ++i)
 				f1 << "\t ";
-			f1 << p->getName() << " @ " << std::hex << p->getNativeAddress();
+			f1 << p->getName() << " @ " << std::hex << p->getNativeAddress() << std::dec;
 			auto it = parent.find(p);
 			if (it != parent.end())
 				f1 << " [parent=" << it->second->getName() << "]";
@@ -1295,7 +1295,7 @@ printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &
 
 	auto up = dynamic_cast<UserProc *>(proc);
 	if (up && firsttime) { // seen lib proc
-		f << "0x" << std::hex << proc->getNativeAddress();
+		f << "0x" << std::hex << proc->getNativeAddress() << std::dec;
 		f << " __nodecode __incomplete void " << proc->getName() << "();\n";
 
 		const auto &calleeList = up->getCallees();

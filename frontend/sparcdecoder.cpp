@@ -381,7 +381,7 @@ pc
 			result.type = SKIP;
 		}
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 
@@ -431,7 +431,7 @@ pc
 		if (strcmp(name, "BPN") == 0 || strcmp(name, "BPVS") == 0)
 			result.type = NCT;
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 
@@ -553,7 +553,7 @@ pc
 		newCall->setDestProc(destProc);
 		result.rtl = new RTL(pc, newCall);
 		result.type = SD;
-		SHOW_ASM(name << " " << std::hex << addr);
+		SHOW_ASM(name << " " << std::hex << addr << std::dec);
 		DEBUG_STMTS
 
 
@@ -1823,7 +1823,7 @@ pc
 		if (strcmp(name, "BN") == 0 || strcmp(name, "BVS") == 0)
 			result.type = NCT;
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 
@@ -1877,7 +1877,7 @@ pc
 			result.type = SKIP;
 		}
 
-		SHOW_ASM(name << " " << std::hex << tgt);
+		SHOW_ASM(name << " " << std::hex << tgt << std::dec);
 		DEBUG_STMTS
 
 

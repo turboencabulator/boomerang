@@ -950,7 +950,7 @@ SizeType::getCtype(bool final) const
 {
 	// Emit a comment and the size
 	std::ostringstream ost;
-	ost << "__size" << std::dec << size;
+	ost << "__size" << size;
 	return ost.str();
 }
 
@@ -1250,14 +1250,13 @@ IntegerType::print(std::ostream &os) const
 {
 	int sg = getSignedness();
 	// 'j' for either i or u, don't know which
-	os << (sg == 0 ? 'j' : sg > 0 ? 'i' : 'u');
-	os << std::dec << getSize();
+	os << (sg == 0 ? 'j' : sg > 0 ? 'i' : 'u') << getSize();
 }
 
 void
 FloatType::print(std::ostream &os) const
 {
-	os << 'f'; os << std::dec << getSize();
+	os << 'f' << getSize();
 }
 
 void
@@ -1297,7 +1296,7 @@ UnionType::print(std::ostream &os) const
 void
 SizeType::print(std::ostream &os) const
 {
-	os << std::dec << getSize();
+	os << getSize();
 }
 
 #if 0 // Cruft?
@@ -1734,7 +1733,7 @@ CompoundType::updateGenericMember(int off, Type *ty, bool &ch)
 		existingType = existingType->meetWith(ty, ch);
 	} else {
 		std::ostringstream ost;
-		ost << "member" << std::dec << nextGenericMemberNum++;
+		ost << "member" << nextGenericMemberNum++;
 		setTypeAtOffset(off * 8, ty);
 		setNameAtOffset(off * 8, ost.str());
 	}

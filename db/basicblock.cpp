@@ -280,7 +280,7 @@ BasicBlock::print(std::ostream &os, bool html) const
 {
 	if (html)
 		os << "<br>";
-	if (m_iLabelNum) os << std::dec << "L" << m_iLabelNum << ": ";
+	if (m_iLabelNum) os << "L" << m_iLabelNum << ": ";
 	switch (m_nodeType) {
 	case ONEWAY:    os << "Oneway BB";        break;
 	case TWOWAY:    os << "Twoway BB";        break;
@@ -312,7 +312,7 @@ BasicBlock::print(std::ostream &os, bool html) const
 	if (m_bJumpReqd) {
 		if (html)
 			os << "<br>";
-		os << "Synthetic out edge(s) to" << std::dec;
+		os << "Synthetic out edge(s) to";
 		for (int i = 0; i < m_iNumOutEdges; ++i) {
 			const auto &outEdge = m_OutEdges[i];
 			if (outEdge && outEdge->m_iLabelNum)

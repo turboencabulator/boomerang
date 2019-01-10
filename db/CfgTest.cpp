@@ -69,17 +69,19 @@ CfgTest::testDominators()
 	         << FRONTIER_FIVE << " "
 	         << FRONTIER_THIRTEEN << " "
 	         << FRONTIER_TWELVE << " "
-	         << FRONTIER_FOUR << " ";
+	         << FRONTIER_FOUR << " "
+	         << std::dec;
 #endif
 	expected << std::hex
 	         << FRONTIER_THIRTEEN << " "
 	         << FRONTIER_FOUR << " "
 	         << FRONTIER_TWELVE << " "
-	         << FRONTIER_FIVE << " ";
+	         << FRONTIER_FIVE << " "
+	         << std::dec;
 	int n5 = df->pbbToNode(bb);
 	std::set<int> &DFset = df->getDF(n5);
 	for (const auto &ii : DFset)
-		actual << std::hex << (unsigned)df->nodeToBB(ii)->getLowAddr() << " ";
+		actual << std::hex << (unsigned)df->nodeToBB(ii)->getLowAddr() << std::dec << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
 	delete prog;
 }
@@ -132,12 +134,12 @@ CfgTest::testSemiDominators()
 	// Check the final dominator frontier as well; should be M and B
 	std::ostringstream expected, actual;
 #if 0
-	expected << std::hex << SEMI_M << " " << SEMI_B << " ";
+	expected << std::hex << SEMI_M << " " << SEMI_B << " " << std::dec;
 #endif
-	expected << std::hex << SEMI_B << " " << SEMI_M << " ";
+	expected << std::hex << SEMI_B << " " << SEMI_M << " " << std::dec;
 	std::set<int> &DFset = df->getDF(nL);
 	for (const auto &ii : DFset)
-		actual << std::hex << (unsigned)df->nodeToBB(ii)->getLowAddr() << " ";
+		actual << std::hex << (unsigned)df->nodeToBB(ii)->getLowAddr() << std::dec << " ";
 	CPPUNIT_ASSERT_EQUAL(expected.str(), actual.str());
 	delete prog;
 }
