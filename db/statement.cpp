@@ -433,7 +433,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			if (r.getLowerBound() != r.getUpperBound() && r.getLowerBound() != Range::MIN) {
 				if (VERBOSE)
 					LOG << "stack height assumption violated " << r << " my bb: " << pbb->getLowAddr() << "\n";
-				proc->printToLog();
+				LOG << *proc;
 				assert(false);
 			}
 		}
@@ -514,9 +514,9 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 				c += d->getSignature()->getNumParams() * 4;
 		} else if (auto up = dynamic_cast<UserProc *>(procDest)) {
 			if (VERBOSE) {
-				LOG << "== checking for number of bytes popped ==\n";
-				up->printToLog();
-				LOG << "== end it ==\n";
+				LOG << "== checking for number of bytes popped ==\n"
+				    << *up
+				    << "== end it ==\n";
 			}
 			Exp *eq = up->getProven(Location::regOf(28));
 			if (eq) {

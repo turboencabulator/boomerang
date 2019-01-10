@@ -575,7 +575,7 @@ UserProc::generateCode(HLLCode *hll)
 	// RefExps, which are all gone now (transformed out of SSA form)!
 
 	if (VERBOSE || Boomerang::get()->printRtl)
-		printToLog();
+		LOG << *this;
 
 	hll->AddProcStart(this);
 
@@ -668,10 +668,11 @@ UserProc::prints() const
 	return ost.str();
 }
 
-void
-UserProc::printToLog() const
+std::ostream &
+operator <<(std::ostream &os, const UserProc &up)
 {
-	LOG << prints();
+	up.print(os);
+	return os;
 }
 
 void
@@ -1070,9 +1071,9 @@ UserProc::initialiseDecompile()
 	initStatements();
 
 	if (VERBOSE) {
-		LOG << "--- debug print before SSA for " << getName() << " ---\n";
-		printToLog();
-		LOG << "=== end debug print before SSA for " << getName() << " ===\n\n";
+		LOG << "--- debug print before SSA for " << getName() << " ---\n"
+		    << *this
+		    << "=== end debug print before SSA for " << getName() << " ===\n\n";
 	}
 
 	// Compute dominance frontier
@@ -1091,9 +1092,9 @@ UserProc::initialiseDecompile()
 	}
 
 	if (VERBOSE) {
-		LOG << "--- debug initial print after decoding for " << getName() << " ---\n";
-		printToLog();
-		LOG << "=== end initial debug print after decoding for " << getName() << " ===\n\n";
+		LOG << "--- debug initial print after decoding for " << getName() << " ---\n"
+		    << *this
+		    << "=== end initial debug print after decoding for " << getName() << " ===\n\n";
 	}
 
 	Boomerang::get()->alert_decompile_debug_point(this, "after initialise");
@@ -1135,17 +1136,17 @@ UserProc::earlyDecompile()
 	// Rename variables
 	doRenameBlockVars(1, true);
 	if (VERBOSE) {
-		LOG << "\n--- after rename (1) for " << getName() << " 1st pass\n";
-		printToLog();
-		LOG << "\n=== done after rename (1) for " << getName() << " 1st pass\n\n";
+		LOG << "\n--- after rename (1) for " << getName() << " 1st pass\n"
+		    << *this
+		    << "\n=== done after rename (1) for " << getName() << " 1st pass\n\n";
 	}
 
 	bool convert;
 	propagateStatements(convert, 1);
 	if (VERBOSE) {
-		LOG << "\n--- after propagation (1) for " << getName() << " 1st pass ---\n";
-		printToLog();
-		LOG << "\n=== done after propagation (1) for " << getName() << " 1st pass ===\n\n";
+		LOG << "\n--- after propagation (1) for " << getName() << " 1st pass ---\n"
+		    << *this
+		    << "\n=== done after propagation (1) for " << getName() << " 1st pass ===\n\n";
 	}
 
 	Boomerang::get()->alert_decompile_debug_point(this, "after early");
@@ -1165,9 +1166,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 	if (status != PROC_INCYCLE)  // FIXME: need this test?
 		propagateStatements(convert, 2);
 	if (VERBOSE) {
-		LOG << "\n--- after call and phi bypass (1) of " << getName() << " ---\n";
-		printToLog();
-		LOG << "\n=== done after call and phi bypass (1) of " << getName() << " ===\n\n";
+		LOG << "\n--- after call and phi bypass (1) of " << getName() << " ---\n"
+		    << *this
+		    << "\n=== done after call and phi bypass (1) of " << getName() << " ===\n\n";
 	}
 
 	// This part used to be calle middleDecompile():
@@ -1179,9 +1180,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 	findPreserveds();
 	fixCallAndPhiRefs();  // Propagate and bypass sp
 	if (VERBOSE) {
-		LOG << "--- after preservation, bypass and propagation ---\n";
-		printToLog();
-		LOG << "=== end after preservation, bypass and propagation ===\n";
+		LOG << "--- after preservation, bypass and propagation ---\n"
+		    << *this
+		    << "=== end after preservation, bypass and propagation ===\n";
 	}
 	// Oh, no, we keep doing preservations till almost the end...
 	//setStatus(PROC_PRESERVEDS);  // Preservation done
@@ -1236,9 +1237,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 
 		// Print if requested
 		if (VERBOSE) {  // was if debugPrintSSA
-			LOG << "--- debug print SSA for " << getName() << " pass " << pass << " (no propagations) ---\n";
-			printToLog();
-			LOG << "=== end debug print SSA for " << getName() << " pass " << pass << " (no propagations) ===\n\n";
+			LOG << "--- debug print SSA for " << getName() << " pass " << pass << " (no propagations) ---\n"
+			    << *this
+			    << "=== end debug print SSA for " << getName() << " pass " << pass << " (no propagations) ===\n\n";
 		}
 
 		if (Boomerang::get()->dotFile)
@@ -1262,9 +1263,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 			}
 			printXML();
 			if (VERBOSE) {
-				LOG << "--- debug print SSA for " << getName() << " at pass " << pass << " (after updating returns) ---\n";
-				printToLog();
-				LOG << "=== end debug print SSA for " << getName() << " at pass " << pass << " ===\n\n";
+				LOG << "--- debug print SSA for " << getName() << " at pass " << pass << " (after updating returns) ---\n"
+				    << *this
+				    << "=== end debug print SSA for " << getName() << " at pass " << pass << " ===\n\n";
 			}
 		}
 #endif
@@ -1272,9 +1273,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 		printXML();
 		// Print if requested
 		if (VERBOSE) {  // was if debugPrintSSA
-			LOG << "--- debug print SSA for " << getName() << " at pass " << pass << " (after trimming return set) ---\n";
-			printToLog();
-			LOG << "=== end debug print SSA for " << getName() << " at pass " << pass << " ===\n\n";
+			LOG << "--- debug print SSA for " << getName() << " at pass " << pass << " (after trimming return set) ---\n"
+			    << *this
+			    << "=== end debug print SSA for " << getName() << " at pass " << pass << " ===\n\n";
 		}
 
 		Boomerang::get()->alert_decompile_beforePropagate(this, pass);
@@ -1298,17 +1299,17 @@ UserProc::middleDecompile(ProcList *path, int indent)
 					    << " due to conversion of indirect to direct call(s)\n\n";
 				df.setRenameLocalsParams(false);
 				change |= doRenameBlockVars(0, true);  // Initial dataflow level 0
-				LOG << "\nafter rename (2) of " << getName() << ":\n";
-				printToLog();
-				LOG << "\ndone after rename (2) of " << getName() << ":\n\n";
+				LOG << "\nafter rename (2) of " << getName() << ":\n"
+				    << *this
+				    << "\ndone after rename (2) of " << getName() << ":\n\n";
 			}
 		} while (convert);
 
 		printXML();
 		if (VERBOSE) {
-			LOG << "--- after propagate for " << getName() << " at pass " << pass << " ---\n";
-			printToLog();
-			LOG << "=== end propagate for " << getName() << " at pass " << pass << " ===\n\n";
+			LOG << "--- after propagate for " << getName() << " at pass " << pass << " ---\n"
+			    << *this
+			    << "=== end propagate for " << getName() << " at pass " << pass << " ===\n\n";
 		}
 
 		Boomerang::get()->alert_decompile_afterPropagate(this, pass);
@@ -1348,9 +1349,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 	if (change) numberStatements();  // Number the new statements
 	doRenameBlockVars(pass, false);  // MVE: do we want this parameter false or not?
 	if (VERBOSE) {
-		LOG << "--- after setting phis for memofs, renaming them for " << getName() << "\n";
-		printToLog();
-		LOG << "=== done after setting phis for memofs, renaming them for " << getName() << "\n";
+		LOG << "--- after setting phis for memofs, renaming them for " << getName() << "\n"
+		    << *this
+		    << "=== done after setting phis for memofs, renaming them for " << getName() << "\n";
 	}
 	propagateStatements(convert, pass);
 	// Now that memofs are renamed, the bypassing for memofs can work
@@ -1408,9 +1409,9 @@ UserProc::middleDecompile(ProcList *path, int indent)
 		//fixCallBypass();   // FIXME: surely this is not necessary now?
 		//trimParameters();  // FIXME: surely there aren't any parameters to trim yet?
 		if (VERBOSE) {
-			LOG << "--- after replacing expressions, trimming params and returns for " << getName() << " ---\n";
-			printToLog();
-			LOG << "=== end after replacing expressions, trimming params and returns for " << getName() << " ===\n";
+			LOG << "--- after replacing expressions, trimming params and returns for " << getName() << " ---\n"
+			    << *this
+			    << "=== end after replacing expressions, trimming params and returns for " << getName() << " ===\n";
 		}
 	}
 
@@ -1464,9 +1465,9 @@ UserProc::remUnusedStmtEtc()
 		bool convert;
 		propagateStatements(convert, 20);   // Surely need propagation too
 		if (VERBOSE) {
-			LOG << "--- after propagating locals for " << getName() << " ---\n";
-			printToLog();
-			LOG << "=== end after propagating locals for " << getName() << " ===\n\n";
+			LOG << "--- after propagating locals for " << getName() << " ---\n"
+			    << *this
+			    << "=== end after propagating locals for " << getName() << " ===\n\n";
 		}
 #if 0
 		// Note: processConstants is also where ellipsis processing is done
@@ -1494,9 +1495,9 @@ UserProc::remUnusedStmtEtc()
 
 	printXML();
 	if (VERBOSE && !Boomerang::get()->noRemoveNull) {
-		LOG << "--- after removing unused and null statements pass " << 1 << " for " << getName() << " ---\n";
-		printToLog();
-		LOG << "=== end after removing unused statements for " << getName() << " ===\n\n";
+		LOG << "--- after removing unused and null statements pass " << 1 << " for " << getName() << " ---\n"
+		    << *this
+		    << "=== end after removing unused statements for " << getName() << " ===\n\n";
 	}
 	Boomerang::get()->alert_decompile_afterRemoveStmts(this, 1);
 
@@ -1507,9 +1508,9 @@ UserProc::remUnusedStmtEtc()
 		addParameterSymbols();
 
 		if (VERBOSE) {
-			LOG << "--- after adding new parameters ---\n";
-			printToLog();
-			LOG << "=== end after adding new parameters ===\n";
+			LOG << "--- after adding new parameters ---\n"
+			    << *this
+			    << "=== end after adding new parameters ===\n";
 		}
 	}
 
@@ -1517,9 +1518,9 @@ UserProc::remUnusedStmtEtc()
 	bool convert;
 	propagateStatements(convert, 222);  // This is the first opportunity to safely propagate memory parameters
 	if (VERBOSE) {
-		LOG << "--- after propagating new parameters ---\n";
-		printToLog();
-		LOG << "=== end after propagating new parameters ===\n";
+		LOG << "--- after propagating new parameters ---\n"
+		    << *this
+		    << "=== end after propagating new parameters ===\n";
 	}
 #endif
 
@@ -1529,9 +1530,9 @@ UserProc::remUnusedStmtEtc()
 	fixUglyBranches();
 
 	if (VERBOSE) {
-		LOG << "--- after remove unused statements etc for " << getName() << "\n";
-		printToLog();
-		LOG << "=== after remove unused statements etc for " << getName() << "\n";
+		LOG << "--- after remove unused statements etc for " << getName() << "\n"
+		    << *this
+		    << "=== after remove unused statements etc for " << getName() << "\n";
 	}
 
 	Boomerang::get()->alert_decompile_debug_point(this, "after final");
@@ -1690,9 +1691,9 @@ UserProc::updateCalls()
 	updateCallDefines();
 	updateArguments();
 	if (VERBOSE) {
-		LOG << "--- after update calls for " << getName() << "\n";
-		printToLog();
-		LOG << "=== after update calls for " << getName() << "\n";
+		LOG << "--- after update calls for " << getName() << "\n"
+		    << *this
+		    << "=== after update calls for " << getName() << "\n";
 	}
 }
 
@@ -1794,9 +1795,9 @@ UserProc::fixUglyBranches()
 	}
 
 	if (VERBOSE) {
-		LOG << "--- after fixUglyBranches for " << getName() << "\n";
-		printToLog();
-		LOG << "=== after fixUglyBranches for " << getName() << "\n";
+		LOG << "--- after fixUglyBranches for " << getName() << "\n"
+		    << *this
+		    << "=== after fixUglyBranches for " << getName() << "\n";
 	}
 }
 
@@ -4961,9 +4962,9 @@ UserProc::rangeAnalysis()
 	clearRanges();
 
 	if (VERBOSE) {
-		LOG << "=== Before performing range analysis for " << getName() << " ===\n";
-		printToLog();
-		LOG << "=== end before performing range analysis for " << getName() << " ===\n\n";
+		LOG << "=== Before performing range analysis for " << getName() << " ===\n"
+		    << *this
+		    << "=== end before performing range analysis for " << getName() << " ===\n\n";
 	}
 
 	std::list<Statement *> execution_paths;
@@ -4998,10 +4999,10 @@ UserProc::rangeAnalysis()
 		if (watchdog > 10) {
 			LOG << "  watchdog " << watchdog << "\n";
 			if (watchdog > 45) {
-				LOG << (int)execution_paths.size() << " execution paths remaining.\n";
-				LOG << "=== After range analysis watchdog " << watchdog << " for " << getName() << " ===\n";
-				printToLog();
-				LOG << "=== end after range analysis watchdog " << watchdog << " for " << getName() << " ===\n\n";
+				LOG << (int)execution_paths.size() << " execution paths remaining.\n"
+				    << "=== After range analysis watchdog " << watchdog << " for " << getName() << " ===\n"
+				    << *this
+				    << "=== end after range analysis watchdog " << watchdog << " for " << getName() << " ===\n\n";
 			}
 		}
 		if (watchdog > 50) {
@@ -5010,9 +5011,9 @@ UserProc::rangeAnalysis()
 		}
 	}
 
-	LOG << "=== After range analysis for " << getName() << " ===\n";
-	printToLog();
-	LOG << "=== end after range analysis for " << getName() << " ===\n\n";
+	LOG << "=== After range analysis for " << getName() << " ===\n"
+	    << *this
+	    << "=== end after range analysis for " << getName() << " ===\n\n";
 
 	cfg->removeJunctionStatements();
 }

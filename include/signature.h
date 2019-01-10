@@ -180,7 +180,6 @@ public:
 	virtual Signature  *promote(UserProc *p);
 	        void        print(std::ostream &out, bool html = false) const;
 	        std::string prints() const;  // For debugging
-	        void        printToLog() const;
 
 	// Get a wildcard to find stack locations
 	virtual Exp        *getStackWildcard() { return nullptr; }

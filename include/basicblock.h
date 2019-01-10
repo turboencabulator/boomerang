@@ -161,7 +161,6 @@ public:
 	 * Don't use = std::cout, because gdb doesn't know about std::
 	 */
 	        void        print(std::ostream &os, bool html = false) const;
-	        void        printToLog() const;
 	        std::string prints() const;  // For debugging
 
 	        void        setJumpReqd();

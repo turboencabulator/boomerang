@@ -21,6 +21,7 @@ class Range;
 class RangeMap;
 class Statement;
 class Type;
+class UserProc;
 
 class Log {
 public:
@@ -28,6 +29,7 @@ public:
 	virtual ~Log() { }
 
 	virtual Log &operator <<(const char *) = 0;
+	virtual Log &operator <<(const UserProc &);
 	virtual Log &operator <<(const Statement &);
 	virtual Log &operator <<(const Exp &);
 	virtual Log &operator <<(const Type *);

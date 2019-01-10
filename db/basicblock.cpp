@@ -322,12 +322,6 @@ BasicBlock::print(std::ostream &os, bool html) const
 	}
 }
 
-void
-BasicBlock::printToLog() const
-{
-	LOG << prints();
-}
-
 bool
 BasicBlock::isBackEdge(int inEdge) const
 {

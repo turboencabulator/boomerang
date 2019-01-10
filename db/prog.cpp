@@ -1169,17 +1169,17 @@ Prog::fromSSAform()
 	for (const auto &proc : m_procs) {
 		if (auto up = dynamic_cast<UserProc *>(proc)) {
 			if (VERBOSE) {
-				LOG << "===== before transformation from SSA form for " << up->getName() << " =====\n";
-				up->printToLog();
-				LOG << "===== end before transformation from SSA for " << up->getName() << " =====\n\n";
+				LOG << "===== before transformation from SSA form for " << up->getName() << " =====\n"
+				    << *up
+				    << "===== end before transformation from SSA for " << up->getName() << " =====\n\n";
 				if (Boomerang::get()->dotFile)
 					up->printDFG();
 			}
 			up->fromSSAform();
 			if (VERBOSE) {
-				LOG << "===== after transformation from SSA form for " << up->getName() << " =====\n";
-				up->printToLog();
-				LOG << "===== end after transformation from SSA for " << up->getName() << " =====\n\n";
+				LOG << "===== after transformation from SSA form for " << up->getName() << " =====\n"
+				    << *up
+				    << "===== end after transformation from SSA for " << up->getName() << " =====\n\n";
 			}
 		}
 	}

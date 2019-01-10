@@ -335,9 +335,9 @@ UserProc::dfaTypeAnalysis()
 
 
 	if (VERBOSE) {
-		LOG << "### after application of dfa type analysis for " << getName() << " ###\n";
-		printToLog();
-		LOG << "### end application of dfa type analysis for " << getName() << " ###\n";
+		LOG << "### after application of dfa type analysis for " << getName() << " ###\n"
+		    << *this
+		    << "### end application of dfa type analysis for " << getName() << " ###\n";
 	}
 
 	Boomerang::get()->alert_decompile_debug_point(this, "after dfa type analysis");

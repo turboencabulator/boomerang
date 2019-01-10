@@ -365,7 +365,6 @@ public:
 	void        print(std::ostream &out, bool html = false) const;
 	void        printParams(std::ostream &out, bool html = false) const;
 	std::string prints() const;
-	void        printToLog() const;
 	void        printDFG();
 	void        printSymbolMap(std::ostream &out, bool html = false) const;  ///< Print just the symbol map
 	void        testSymbolMap();   ///< For debugging
@@ -703,5 +702,7 @@ public:
 	/// Find and if necessary insert an implicit reference before s whose address expression is a and type is t.
 	void        setImplicitRef(Statement *s, Exp *a, Type *ty);
 };
+
+std::ostream & operator <<(std::ostream &, const UserProc &);
 
 #endif

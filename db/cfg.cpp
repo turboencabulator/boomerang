@@ -31,7 +31,6 @@
 #include "types.h"
 
 #include <algorithm>    // For std::find()
-#include <sstream>
 
 #include <cassert>
 #include <cstring>
@@ -1142,14 +1141,6 @@ Cfg::print(std::ostream &out, bool html) const
 	for (const auto &bb : m_listBB)
 		bb->print(out, html);
 	out << std::endl;
-}
-
-void
-Cfg::printToLog() const
-{
-	std::ostringstream ost;
-	print(ost);
-	LOG << ost.str();
 }
 
 void

@@ -1548,12 +1548,6 @@ Signature::prints() const
 	return ost.str();
 }
 
-void
-Signature::printToLog() const
-{
-	LOG << prints();
-}
-
 bool
 Signature::usesNewParam(UserProc *p, Statement *stmt, bool checkreach, int &n)
 {

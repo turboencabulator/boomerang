@@ -227,7 +227,6 @@ public:
 	void        addNewOutEdge(BasicBlock *fromBB, BasicBlock *newOutEdge);
 
 	void        print(std::ostream &out, bool html = false) const;
-	void        printToLog() const;
 
 	bool        decodeIndirectJmp(UserProc *proc);
 

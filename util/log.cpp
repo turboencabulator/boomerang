@@ -14,6 +14,7 @@
 
 #include "exp.h"
 #include "managed.h"
+#include "proc.h"
 #include "rtl.h"
 #include "statement.h"
 #include "type.h"
@@ -21,10 +22,18 @@
 #include <sstream>
 
 Log &
+Log::operator <<(const UserProc &up)
+{
+	std::ostringstream st;
+	st << up;
+	return *this << st.str();
+}
+
+Log &
 Log::operator <<(const Statement &s)
 {
 	std::ostringstream st;
-	s.print(st);
+	st << s;
 	return *this << st.str();
 }
 
@@ -32,7 +41,7 @@ Log &
 Log::operator <<(const Exp &e)
 {
 	std::ostringstream st;
-	e.print(st);
+	st << e;
 	return *this << st.str();
 }
 
@@ -72,7 +81,7 @@ Log &
 Log::operator <<(const RTL &r)
 {
 	std::ostringstream st;
-	r.print(st);
+	st << r;
 	return *this << st.str();
 }
 
@@ -121,7 +130,7 @@ Log &
 Log::operator <<(size_t s)
 {
 	std::ostringstream st;
-	st << st;
+	st << s;
 	return *this << st.str();
 }
 #endif
