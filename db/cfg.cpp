@@ -1853,7 +1853,8 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 {
 #if 0
 	std::cerr << "splitForBranch before:\n";
-	std::cerr << pBB->prints() << "\n";
+	pBB->print(std::cerr);
+	std::cerr << "\n";
 #endif
 
 	// First find which RTL has the split address
@@ -1982,10 +1983,11 @@ Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchState
 
 #if 0
 	std::cerr << "splitForBranch after:\n";
-	if (pBB) std::cerr << pBB->prints(); else std::cerr << "<null>\n";
-	std::cerr << skipBB->prints();
-	std::cerr << rptBB->prints();
-	std::cerr << newBb->prints() << "\n";
+	if (pBB) pBB->print(std::cerr); else std::cerr << "<null>\n";
+	skipBB->print(std::cerr);
+	rptBB->print(std::cerr);
+	newBb->print(std::cerr);
+	std::cerr << "\n";
 #endif
 	return newBb;
 }

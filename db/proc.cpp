@@ -3981,7 +3981,7 @@ UserProc::updateArguments()
 			c->updateArguments();
 			//c->bypass();
 			if (VERBOSE)
-				LOG << c->prints() << "\n";
+				LOG << *c << "\n";
 		}
 	}
 	if (VERBOSE)

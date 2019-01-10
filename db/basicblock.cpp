@@ -1730,7 +1730,7 @@ BasicBlock::calcLiveness(ConnectionGraph &ig, UserProc *myProc)
 				s->addUsedLocs(uses);
 				checkForOverlap(liveLocs, uses, ig, myProc);
 				if (DEBUG_LIVENESS)
-					LOG << " ## liveness: at top of " << *s << ", liveLocs is " << liveLocs.prints() << "\n";
+					LOG << " ## liveness: at top of " << *s << ", liveLocs is " << liveLocs << "\n";
 			}
 		}
 	// liveIn is what we calculated last time
@@ -2147,7 +2147,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 	if (m_nodeType == COMPJUMP) {
 		assert(!m_pRtls->empty());
 		if (DEBUG_SWITCH)
-			LOG << "decodeIndirectJmp: " << m_pRtls->back()->prints();
+			LOG << "decodeIndirectJmp: " << *m_pRtls->back();
 		const auto &stmts = m_pRtls->back()->getList();
 		assert(!stmts.empty());
 		auto lastStmt = (CaseStatement *)stmts.back();
@@ -2242,7 +2242,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 	} else if (m_nodeType == COMPCALL) {
 		assert(!m_pRtls->empty());
 		if (DEBUG_SWITCH)
-			LOG << "decodeIndirectJmp: COMPCALL:\n" << m_pRtls->back()->prints() << "\n";
+			LOG << "decodeIndirectJmp: COMPCALL:\n" << *m_pRtls->back() << "\n";
 		const auto &stmts = m_pRtls->back()->getList();
 		assert(!stmts.empty());
 		auto lastStmt = (CallStatement *)stmts.back();
