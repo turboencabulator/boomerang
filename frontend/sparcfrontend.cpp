@@ -27,7 +27,6 @@
 #include "boomerang.h"
 #include "cfg.h"
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "rtl.h"
@@ -796,7 +795,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 		while (sequentialDecode) {
 
 			if (Boomerang::get()->traceDecoder)
-				LOG << "*" << address << "\t";
+				LOG << "*0x" << std::hex << address << std::dec << "\t";
 
 			// Check if this is an already decoded jump instruction (from a previous pass with propagation etc)
 			// If so, we don't need to decode this instruction
@@ -925,7 +924,7 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 					// This includes "call" and "ba". If a "call", it might be a move_call_move idiom, or a call to .stret4
 					DecodeResult delay_inst = decodeInstruction(address + 4);
 					if (Boomerang::get()->traceDecoder)
-						LOG << "*" << address + 4 << "\t\n";
+						LOG << "*0x" << std::hex << address + 4 << std::dec << "\t\n";
 					if (auto call = dynamic_cast<CallStatement *>(last)) {
 						// Check the delay slot of this call. First case of interest is when the instruction is a restore,
 						// e.g.

@@ -28,7 +28,6 @@
 #include "constraint.h"
 #include "frontend.h"
 #include "hllcode.h"
-#include "log.h"
 #include "prog.h"
 #include "rtl.h"
 #include "signature.h"
@@ -942,7 +941,7 @@ UserProc::decompile(ProcList *path, int &indent)
 				// The call Statement will be in the last RTL in this BB
 				auto call = dynamic_cast<CallStatement *>(bb->getRTLs()->back()->getHlStmt());
 				if (!call) {
-					LOG << "bb at " << bb->getLowAddr() << " is a CALL but last stmt is not a call: " << *call << "\n";
+					LOG << "bb at 0x" << std::hex << bb->getLowAddr() << std::dec << " is a CALL but last stmt is not a call: " << *call << "\n";
 				}
 				assert(call);
 				auto proc = call->getDestProc();
@@ -2933,7 +2932,7 @@ UserProc::removeUnusedLocals()
 		// LOG << "Considering local " << name << "\n";
 		if (VERBOSE && all && !removes.empty())
 			LOG << "WARNING: defineall seen in procedure " << name
-			    << " so not removing " << (int)removes.size() << " locals\n";
+			    << " so not removing " << removes.size() << " locals\n";
 		if (!usedLocals.count(name) && !all) {
 			if (VERBOSE)
 				LOG << "removed unused local " << name << "\n";
@@ -3697,7 +3696,7 @@ UserProc::conTypeAnalysis()
 			LOG << "** could not solve type constraints for proc " << getName() << "!\n";
 		else if (solns.size() > 1)
 			// Note: require cast to unsigned for OS X and 64-bit hosts
-			LOG << "** " << (unsigned)solns.size() << " solutions to type constraints for proc " << getName() << "!\n";
+			LOG << "** " << solns.size() << " solutions to type constraints for proc " << getName() << "!\n";
 	}
 
 	int solnNum = 0;
@@ -4986,7 +4985,7 @@ UserProc::rangeAnalysis()
 				stmt->rangeAnalysis(execution_paths);
 		}
 		if (watchdog > 45)
-			LOG << "processing execution paths resulted in " << (int)junctions.size() << " junctions to process\n";
+			LOG << "processing execution paths resulted in " << junctions.size() << " junctions to process\n";
 		while (!junctions.empty()) {
 			auto junction = junctions.front();
 			junctions.pop_front();
@@ -4999,7 +4998,7 @@ UserProc::rangeAnalysis()
 		if (watchdog > 10) {
 			LOG << "  watchdog " << watchdog << "\n";
 			if (watchdog > 45) {
-				LOG << (int)execution_paths.size() << " execution paths remaining.\n"
+				LOG << execution_paths.size() << " execution paths remaining.\n"
 				    << "=== After range analysis watchdog " << watchdog << " for " << getName() << " ===\n"
 				    << *this
 				    << "=== end after range analysis watchdog " << watchdog << " for " << getName() << " ===\n\n";
@@ -5034,7 +5033,7 @@ UserProc::logSuspectMemoryDefs()
 					if (r.getBase()->getOper() == opInitValueOf
 					 && r.getBase()->getSubExp1()->isRegN(28)) {
 						RTL *rtl = a->getBB()->getRTLWithStatement(a);
-						LOG << "interesting stack reference at " << rtl->getAddress() << " " << *a << "\n";
+						LOG << "interesting stack reference at 0x" << std::hex << rtl->getAddress() << std::dec << " " << *a << "\n";
 					}
 				}
 			}

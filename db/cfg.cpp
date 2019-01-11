@@ -23,7 +23,6 @@
 #include "boomerang.h"
 #include "exp.h"
 #include "hllcode.h"
-#include "log.h"
 #include "proc.h"
 #include "rtl.h"
 #include "signature.h"
@@ -1194,8 +1193,8 @@ Cfg::commonPDom(BasicBlock *curImmPDom, BasicBlock *succImmPDom)
 
 	if (giveup >= GIVEUP) {
 		if (VERBOSE)
-			LOG << "failed to find commonPDom for " << oldCurImmPDom->getLowAddr()
-			    << " and " << oldSuccImmPDom->getLowAddr() << "\n";
+			LOG << "failed to find commonPDom for 0x" << std::hex << oldCurImmPDom->getLowAddr() << std::dec
+			    << " and 0x" << std::hex << oldSuccImmPDom->getLowAddr() << std::dec << "\n";
 		return oldCurImmPDom;  // no change
 	}
 

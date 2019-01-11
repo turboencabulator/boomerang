@@ -19,7 +19,6 @@
 
 #include "boomerang.h"  // For EXPERIMENTAL
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "signature.h"

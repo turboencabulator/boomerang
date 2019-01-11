@@ -24,7 +24,6 @@
 #include "cfg.h"
 #include "exp.h"
 #include "hllcode.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "rtl.h"
@@ -934,49 +933,49 @@ BasicBlock::simplify()
 			// set out edges to be the second one
 			if (VERBOSE)
 				LOG << "turning TWOWAY into FALL: "
-				    << m_OutEdges[0]->getLowAddr() << " "
-				    << m_OutEdges[1]->getLowAddr() << "\n";
+				    << "0x" << std::hex << m_OutEdges[0]->getLowAddr() << std::dec << " "
+				    << "0x" << std::hex << m_OutEdges[1]->getLowAddr() << std::dec << "\n";
 			auto redundant = m_OutEdges[0];
 			m_OutEdges[0] = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
-				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
+				LOG << "redundant edge to 0x" << std::hex << redundant->getLowAddr() << std::dec << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
 			rinedges.swap(redundant->m_InEdges);
 			for (const auto &edge : rinedges) {
 				if (VERBOSE)
-					LOG << edge->getLowAddr() << " ";
+					LOG << "0x" << std::hex << edge->getLowAddr() << std::dec << " ";
 				if (edge != this)
 					redundant->m_InEdges.push_back(edge);
 				else if (VERBOSE)
 					LOG << "(ignored) ";
 			}
 			if (VERBOSE)
-				LOG << "\n   after: " << m_OutEdges[0]->getLowAddr() << "\n";
+				LOG << "\n   after: 0x" << std::hex << m_OutEdges[0]->getLowAddr() << std::dec << "\n";
 		} else if (m_nodeType == ONEWAY) {
 			// set out edges to be the first one
 			if (VERBOSE)
 				LOG << "turning TWOWAY into ONEWAY: "
-				    << m_OutEdges[0]->getLowAddr() << " "
-				    << m_OutEdges[1]->getLowAddr() << "\n";
+				    << "0x" << std::hex << m_OutEdges[0]->getLowAddr() << std::dec << " "
+				    << "0x" << std::hex << m_OutEdges[1]->getLowAddr() << std::dec << "\n";
 			auto redundant = m_OutEdges[1];
 			m_OutEdges.resize(1);
 			m_iNumOutEdges = 1;
 			if (VERBOSE)
-				LOG << "redundant edge to " << redundant->getLowAddr() << " inedges: ";
+				LOG << "redundant edge to 0x" << std::hex << redundant->getLowAddr() << std::dec << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
 			rinedges.swap(redundant->m_InEdges);
 			for (const auto &edge : rinedges) {
 				if (VERBOSE)
-					LOG << edge->getLowAddr() << " ";
+					LOG << "0x" << std::hex << edge->getLowAddr() << std::dec << " ";
 				if (edge != this)
 					redundant->m_InEdges.push_back(edge);
 				else if (VERBOSE)
 					LOG << "(ignored) ";
 			}
 			if (VERBOSE)
-				LOG << "\n   after: " << m_OutEdges[0]->getLowAddr() << "\n";
+				LOG << "\n   after: 0x" << std::hex << m_OutEdges[0]->getLowAddr() << std::dec << "\n";
 		}
 	}
 }
@@ -1036,7 +1035,7 @@ void
 BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 {
 	if (DEBUG_GEN)
-		LOG << "Generating code for BB at " << getLowAddr() << "\n";
+		LOG << "Generating code for BB at 0x" << std::hex << getLowAddr() << std::dec << "\n";
 
 	// Allocate space for a label to be generated for this node and add this to the generated code. The actual label can
 	// then be generated now or back patched later
@@ -1045,7 +1044,7 @@ BasicBlock::WriteBB(HLLCode *hll, int indLevel)
 	if (m_pRtls) {
 		for (const auto &rtl : *m_pRtls) {
 			if (DEBUG_GEN)
-				LOG << rtl->getAddress() << "\t";
+				LOG << "0x" << std::hex << rtl->getAddress() << std::dec << "\t";
 			rtl->generateCode(hll, this, indLevel);
 		}
 		if (DEBUG_GEN)
@@ -1771,7 +1770,7 @@ BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 				liveout.insert(r);
 				phiLocs.insert(r);
 				if (DEBUG_LIVENESS)
-					LOG << " ## Liveness: adding " << *r << " due to ref to phi " << *pa << " in BB at " << getLowAddr() << "\n";
+					LOG << " ## Liveness: adding " << *r << " due to ref to phi " << *pa << " in BB at 0x" << std::hex << getLowAddr() << std::dec << "\n";
 			}
 		}
 	}
@@ -2083,7 +2082,7 @@ BasicBlock::findNumCases()
 		if (op == opLessEq || op == opLessEqUns)
 			return k + 1;
 	}
-	LOG << "Could not find number of cases for n-way at address " << getLowAddr() << "\n";
+	LOG << "Could not find number of cases for n-way at address 0x" << std::hex << getLowAddr() << std::dec << "\n";
 	return 3;   // Bald faced guess if all else fails
 }
 
@@ -2422,7 +2421,7 @@ BasicBlock::processSwitch(UserProc *proc)
 	SWITCH_INFO *si = lastStmt->getSwitchInfo();
 
 	if (DEBUG_SWITCH) {
-		LOG << "processing switch statement type " << si->chForm << " with table at 0x" << si->uTable << ", ";
+		LOG << "processing switch statement type " << si->chForm << " with table at 0x" << std::hex << si->uTable << std::dec << ", ";
 		if (si->iNumTable)
 			LOG << si->iNumTable << " entries, ";
 		LOG << "lo= " << si->iLower << ", hi= " << si->iUpper << "\n";
@@ -2469,7 +2468,7 @@ BasicBlock::processSwitch(UserProc *proc)
 			// hackthissite.org)
 			dests.push_back(uSwitch);
 		} else {
-			LOG << "switch table entry branches to past end of text section " << uSwitch << "\n";
+			LOG << "switch table entry branches to past end of text section 0x" << std::hex << uSwitch << std::dec << "\n";
 #if 1
 			// TMN: If we reached an array entry pointing outside the program text, we can be quite confident the array
 			// has ended. Don't try to pull any more data from it.

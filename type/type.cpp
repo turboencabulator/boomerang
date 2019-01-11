@@ -23,7 +23,6 @@
 #include "boomerang.h"
 #include "cfg.h"
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "signature.h"
 #include "types.h"
@@ -71,7 +70,7 @@ PointerType::setPointsTo(Type *p)
 	if (p == this) {  // Note: comparing pointers
 		points_to = new VoidType();  // Can't point to self; impossible to compare, print, etc
 		if (VERBOSE)
-			LOG << "Warning: attempted to create pointer to self: " << (unsigned)this << "\n";
+			LOG << "Warning: attempted to create pointer to self: " << (void *)this << "\n";
 	} else
 		points_to = p;
 }
@@ -1476,8 +1475,8 @@ DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /
 	if (pdie->first < addr) {
 		// The existing entry comes first. Make sure it ends last (possibly equal last)
 		if (pdie->first + pdie->second.size < addr + ty->getSize() / 8) {
-			LOG << "TYPE ERROR: attempt to insert item " << name << " at " << addr << " of type " << ty->getCtype()
-			    << " which weaves after " << pdie->second.name << " at " << pdie->first << " of type " << pdie->second.type->getCtype() << "\n";
+			LOG << "TYPE ERROR: attempt to insert item " << name << " at 0x" << std::hex << addr << std::dec << " of type " << ty->getCtype()
+			    << " which weaves after " << pdie->second.name << " at 0x" << std::hex << pdie->first << std::dec << " of type " << pdie->second.type->getCtype() << "\n";
 			return;
 		}
 		enterComponent(pdie, addr, name, ty, forced);
@@ -1494,8 +1493,8 @@ DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /
 	} else {
 		// Old starts after new; check it also ends first
 		if (pdie->first + pdie->second.size > addr + ty->getSize() / 8) {
-			LOG << "TYPE ERROR: attempt to insert item " << name << " at " << addr << " of type " << ty->getCtype()
-			    << " which weaves before " << pdie->second.name << " at " << pdie->first << " of type " << pdie->second.type->getCtype() << "\n";
+			LOG << "TYPE ERROR: attempt to insert item " << name << " at 0x" << std::hex << addr << std::dec << " of type " << ty->getCtype()
+			    << " which weaves before " << pdie->second.name << " at 0x" << std::hex << pdie->first << std::dec << " of type " << pdie->second.type->getCtype() << "\n";
 			return;
 		}
 		replaceComponents(addr, name, ty, forced);
@@ -1514,7 +1513,7 @@ DataIntervalMap::enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const cha
 			memberType = memberType->meetWith(ty, ch);
 			pdie->second.type->asCompound()->setTypeAtOffset(bitOffset, memberType);
 		} else
-			LOG << "TYPE ERROR: At address " << addr << " type " << ty->getCtype()
+			LOG << "TYPE ERROR: At address 0x" << std::hex << addr << std::dec << " type " << ty->getCtype()
 			    << " is not compatible with existing structure member type " << memberType->getCtype() << "\n";
 	} else if (pdie->second.type->resolvesToArray()) {
 		Type *memberType = pdie->second.type->asArray()->getBaseType();
@@ -1523,10 +1522,10 @@ DataIntervalMap::enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const cha
 			memberType = memberType->meetWith(ty, ch);
 			pdie->second.type->asArray()->setBaseType(memberType);
 		} else
-			LOG << "TYPE ERROR: At address " << addr << " type " << ty->getCtype()
+			LOG << "TYPE ERROR: At address 0x" << std::hex << addr << std::dec << " type " << ty->getCtype()
 			    << " is not compatible with existing array member type " << memberType->getCtype() << "\n";
 	} else
-		LOG << "TYPE ERROR: Existing type at address " << pdie->first << " is not structure or array type\n";
+		LOG << "TYPE ERROR: Existing type at address 0x" << std::hex << pdie->first << std::dec << " is not structure or array type\n";
 }
 
 // We are entering a struct or array that overlaps existing components. Check for compatibility, and move the
@@ -1548,7 +1547,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 				memberType = it->second.type->meetWith(memberType, ch);
 				ty->asCompound()->setTypeAtOffset(bitOffset, memberType);
 			} else {
-				LOG << "TYPE ERROR: At address " << addr << " struct type " << ty->getCtype()
+				LOG << "TYPE ERROR: At address 0x" << std::hex << addr << std::dec << " struct type " << ty->getCtype()
 				    << " is not compatible with existing type " << it->second.type->getCtype() << "\n";
 				return;
 			}
@@ -1563,7 +1562,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 				memberType = memberType->meetWith(it->second.type, ch);
 				ty->asArray()->setBaseType(memberType);
 			} else {
-				LOG << "TYPE ERROR: At address " << addr << " array type " << ty->getCtype()
+				LOG << "TYPE ERROR: At address 0x" << std::hex << addr << std::dec << " array type " << ty->getCtype()
 				    << " is not compatible with existing type " << it->second.type->getCtype() << "\n";
 				return;
 			}
@@ -1571,7 +1570,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 	} else {
 		// Just make sure it doesn't overlap anything
 		if (!isClear(addr, ty->getBytes())) {
-			LOG << "TYPE ERROR: at address " << addr << ", overlapping type " << ty->getCtype()
+			LOG << "TYPE ERROR: at address 0x" << std::hex << addr << std::dec << ", overlapping type " << ty->getCtype()
 			    << " does not resolve to compound or array\n";
 			return;
 		}
@@ -1634,7 +1633,7 @@ DataIntervalMap::checkMatching(DataIntervalEntry *pdie, ADDRESS addr, const char
 		pdie->second.type = pdie->second.type->meetWith(ty, ch);
 		return;
 	}
-	LOG << "TYPE DIFFERENCE (could be OK): At address " << addr
+	LOG << "TYPE DIFFERENCE (could be OK): At address 0x" << std::hex << addr << std::dec
 	    << " existing type " << pdie->second.type->getCtype()
 	    << " but added type " << ty->getCtype() << "\n";
 }
@@ -1685,7 +1684,7 @@ Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 			ctc.u.index = index;
 			res->push_back(ctc);
 		} else {
-			LOG << "TYPE ERROR: no struct or array at byte address " << addr << "\n";
+			LOG << "TYPE ERROR: no struct or array at byte address 0x" << std::hex << addr << std::dec << "\n";
 			return *res;
 		}
 	}

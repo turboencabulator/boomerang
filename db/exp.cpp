@@ -17,7 +17,6 @@
 #include "exp.h"
 
 #include "boomerang.h"
-#include "log.h"
 #include "operstrings.h"
 #include "proc.h"
 #include "prog.h"

@@ -29,7 +29,6 @@
 #include "exp.h"
 #include "frontend.h"
 #include "hllcode.h"
-#include "log.h"
 #include "managed.h"
 #include "proc.h"
 #include "signature.h"
@@ -450,7 +449,7 @@ Prog::setNewProc(ADDRESS uAddr)
 		ost << "proc" << m_iNumberedProc++;
 		name = ost.str();
 		if (VERBOSE)
-			LOG << "assigning name " << name << " to addr " << uAddr << "\n";
+			LOG << "assigning name " << name << " to addr 0x" << std::hex << uAddr << std::dec << "\n";
 	}
 	bool bLib = pBF->isDynamicLinkedProc(uAddr) | pBF->isStaticLinkedLibProc(uAddr);
 	pProc = newProc(name, uAddr, bLib);
@@ -690,7 +689,7 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 
 	if (!pBF->getSectionInfoByAddr(uaddr)) {
 		if (VERBOSE)
-			LOG << "refusing to create a global at address that is in no known section of the binary: " << uaddr << "\n";
+			LOG << "refusing to create a global at address that is in no known section of the binary: 0x" << std::hex << uaddr << std::dec << "\n";
 		return false;
 	}
 
@@ -714,7 +713,7 @@ Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 
 	if (VERBOSE)
 		LOG << "globalUsed: name " << nam
-		    << ", address " << uaddr
+		    << ", address 0x" << std::hex << uaddr << std::dec
 		    << (knownType ? ", known type " : ", guessed type ") << ty->getCtype() << "\n";
 	return true;
 }
@@ -764,7 +763,7 @@ Prog::newGlobalName(ADDRESS addr)
 	std::ostringstream os;
 	os << "global" << globals.size();
 	if (VERBOSE)
-		LOG << "naming new global: " << os.str() << " at address " << addr << "\n";
+		LOG << "naming new global: " << os.str() << " at address 0x" << std::hex << addr << std::dec << "\n";
 	return os.str();
 }
 
@@ -972,9 +971,9 @@ Prog::decodeEntryPoint(ADDRESS a)
 	auto up = dynamic_cast<UserProc *>(p);
 	if (!p || (up && !up->isDecoded())) {
 		if (a < pBF->getLimitTextLow() || a >= pBF->getLimitTextHigh()) {
-			std::cerr << "attempt to decode entrypoint at address outside text area, addr=" << a << "\n";
+			std::cerr << "attempt to decode entrypoint at address outside text area, addr=0x" << std::hex << a << std::dec << "\n";
 			if (VERBOSE)
-				LOG << "attempt to decode entrypoint at address outside text area, addr=" << a << "\n";
+				LOG << "attempt to decode entrypoint at address outside text area, addr=0x" << std::hex << a << std::dec << "\n";
 			return;
 		}
 		pFE->decode(this, a);
@@ -1018,7 +1017,7 @@ Prog::decompile()
 	assert(!m_procs.empty());
 
 	if (VERBOSE)
-		LOG << (int)m_procs.size() << " procedures\n";
+		LOG << m_procs.size() << " procedures\n";
 
 	// Start decompiling each entry point
 	for (const auto &proc : entryProcs) {
@@ -1452,7 +1451,7 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type) const
 			Type *t = c->getType(i);
 			Exp *v = readNativeAs(addr, t);
 			if (!v) {
-				LOG << "unable to read native address " << addr << " as type " << t->getCtype() << "\n";
+				LOG << "unable to read native address 0x" << std::hex << addr << std::dec << " as type " << t->getCtype() << "\n";
 				v = new Const(-1);
 			}
 			if (n->isNil()) {
@@ -1776,9 +1775,9 @@ Prog::decodeFragment(UserProc *proc, ADDRESS a)
 	if (a >= pBF->getLimitTextLow() && a < pBF->getLimitTextHigh())
 		pFE->decodeFragment(proc, a);
 	else {
-		std::cerr << "attempt to decode fragment outside text area, addr=" << a << "\n";
+		std::cerr << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
 		if (VERBOSE)
-			LOG << "attempt to decode fragment outside text area, addr=" << a << "\n";
+			LOG << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
 	}
 }
 

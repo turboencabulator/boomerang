@@ -18,7 +18,6 @@
 
 #include "boomerang.h"
 #include "exp.h"
-#include "log.h"
 #include "type.h"
 
 #include <cassert>

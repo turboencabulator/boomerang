@@ -15,21 +15,11 @@
 #include "DfaTest.h"
 
 //#include "boomerang.h"
-#include "log.h"
 #include "type.h"
 
 #include <iostream>     // For std::cerr
 #include <sstream>
 #include <string>
-
-class ErrLogger : public Log {
-public:
-	Log & operator <<(const char *str) override {
-		std::cerr << str;
-		return *this;
-	}
-	virtual ~ErrLogger() { };
-};
 
 /**
  * Test meeting IntegerTypes with various other types.
@@ -148,8 +138,8 @@ DfaTest::testMeetSize()
 	CPPUNIT_ASSERT(!ch);
 
 #if 0
-	// There is a known failure here; to show the warning, use ErrLogger
-	Boomerang::get()->setLogger(new ErrLogger);
+	// There is a known failure here; to show the warning, use std::cerr
+	Boomerang::get()->setLogger(&std::cerr);
 
 	res = s16.meetWith(&flt, ch, false);
 	CPPUNIT_ASSERT(ch);

@@ -21,7 +21,6 @@
 
 #include "boomerang.h"
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "signature.h"
@@ -1557,7 +1556,7 @@ CHLLCode::AddProcDec(UserProc *proc, bool open)
 
 	if (parameters.size() > 10 && open) {
 		LOG << "Warning: CHLLCode::AddProcDec: Proc " << proc->getName()
-		    << " has " << (int)parameters.size() << " parameters\n";
+		    << " has " << parameters.size() << " parameters\n";
 	}
 
 	bool first = true;

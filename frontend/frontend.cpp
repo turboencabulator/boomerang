@@ -29,7 +29,6 @@
 #include "cfg.h"
 #include "decoder.h"
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "register.h"
@@ -380,7 +379,7 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 	bool gotMain;
 	ADDRESS a = getMainEntryPoint(gotMain);
 	if (VERBOSE)
-		LOG << "start: " << a << " gotmain: " << (gotMain ? "true" : "false") << "\n";
+		LOG << "start: 0x" << std::hex << a << std::dec << " gotmain: " << (gotMain ? "true" : "false") << "\n";
 	if (a == NO_ADDRESS) {
 		std::vector<ADDRESS> entrypoints = getEntryPoints();
 		for (const auto &entrypoint : entrypoints)
@@ -409,7 +408,7 @@ FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
 					}
 				} else {
 					if (VERBOSE)
-						LOG << "no proc found for address " << a << "\n";
+						LOG << "no proc found for address 0x" << std::hex << a << std::dec << "\n";
 				}
 				break;
 			}
@@ -428,18 +427,18 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
 	if (a != NO_ADDRESS) {
 		prog->setNewProc(a);
 		if (VERBOSE)
-			LOG << "starting decode at address " << a << "\n";
+			LOG << "starting decode at address 0x" << std::hex << a << std::dec << "\n";
 		if (auto proc = prog->findProc(a)) {
 			if (auto up = dynamic_cast<UserProc *>(proc)) {
 				processProc(a, up);
 				up->setDecoded();
 			} else {
-				LOG << "NOT decoding library proc at address 0x" << a << "\n";
+				LOG << "NOT decoding library proc at address 0x" << std::hex << a << std::dec << "\n";
 				return;
 			}
 		} else {
 			if (VERBOSE)
-				LOG << "no proc found at address " << a << "\n";
+				LOG << "no proc found at address 0x" << std::hex << a << std::dec << "\n";
 			return;
 		}
 
@@ -495,7 +494,7 @@ void
 FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 {
 	if (Boomerang::get()->traceDecoder)
-		LOG << "decoding fragment at 0x" << a << "\n";
+		LOG << "decoding fragment at 0x" << std::hex << a << std::dec << "\n";
 	processProc(a, proc, true);
 }
 
@@ -503,7 +502,7 @@ DecodeResult &
 FrontEnd::decodeInstruction(ADDRESS pc)
 {
 	if (!pBF->getSectionInfoByAddr(pc)) {
-		LOG << "ERROR: attempted to decode outside any known segment " << pc << "\n";
+		LOG << "ERROR: attempted to decode outside any known segment 0x" << std::hex << pc << std::dec << "\n";
 		static DecodeResult invalid;
 		invalid.reset();
 		invalid.valid = false;
@@ -637,7 +636,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 
 			// Decode and classify the current source instruction
 			if (Boomerang::get()->traceDecoder)
-				LOG << "*" << uAddr << "\t";
+				LOG << "*0x" << std::hex << uAddr << std::dec << "\t";
 
 			// Decode the inst at uAddr.
 			inst = decodeInstruction(uAddr);
@@ -659,11 +658,11 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 				// An invalid instruction. Most likely because a call did not return (e.g. call _exit()), etc.
 				// Best thing is to emit a INVALID BB, and continue with valid instructions
 				if (VERBOSE) {
-					LOG << "Warning: invalid instruction at " << uAddr << ": ";
+					LOG << "Warning: invalid instruction at 0x" << std::hex << uAddr << ": ";
 					// Emit the next 4 bytes for debugging
 					for (int ii = 0; ii < 4; ++ii)
 						LOG << (unsigned)(pBF->readNative1(uAddr + ii) & 0xFF) << " ";
-					LOG << "\n";
+					LOG << std::dec << "\n";
 				}
 				// Emit the RTL anyway, so we have the address and maybe some other clues
 				BB_rtls->push_back(new RTL(uAddr));
@@ -779,8 +778,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 								targetQueue.visit(pCfg, uDest, pBB);
 								pCfg->addOutEdge(pBB, uDest, true);
 							} else {
-								LOG << "Error: Instruction at " << uAddr
-								    << " branches beyond end of section, to " << uDest << "\n";
+								LOG << "Error: Instruction at 0x" << std::hex << uAddr << std::dec
+								    << " branches beyond end of section, to 0x" << std::hex << uDest << std::dec << "\n";
 							}
 						}
 					}
@@ -834,7 +833,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 						BB_rtls->push_back(pRtl);
 						// We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
 						pBB = pCfg->newBB(BB_rtls, COMPJUMP, 0);
-						LOG << "COMPUTED JUMP at " << uAddr << ", pDest = " << *pDest << "\n";
+						LOG << "COMPUTED JUMP at 0x" << std::hex << uAddr << std::dec << ", pDest = " << *pDest << "\n";
 						if (Boomerang::get()->noDecompile) {
 							// try some hacks
 							if (pDest->isMemOf()
@@ -846,7 +845,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 								for (i = 0; ; ++i) {
 									ADDRESS uDest = pBF->readNative4(jmptbl + i * 4);
 									if (pBF->getLimitTextLow() <= uDest && uDest < pBF->getLimitTextHigh()) {
-										LOG << "  guessed uDest " << uDest << "\n";
+										LOG << "  guessed uDest 0x" << std::hex << uDest << std::dec << "\n";
 										targetQueue.visit(pCfg, uDest, pBB);
 										pCfg->addOutEdge(pBB, uDest, true);
 									} else
@@ -876,8 +875,8 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 								targetQueue.visit(pCfg, uDest, pBB);
 								pCfg->addOutEdge(pBB, uDest, true);
 							} else {
-								LOG << "Error: Instruction at " << uAddr
-								    << " branches beyond end of section, to " << uDest << "\n";
+								LOG << "Error: Instruction at 0x" << std::hex << uAddr << std::dec
+								    << " branches beyond end of section, to 0x" << std::hex << uDest << std::dec << "\n";
 							}
 
 							// Add the fall-through outedge
@@ -986,7 +985,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 								callList.push_back(call);
 								//newProc(pProc->getProg(), uNewAddr);
 								if (Boomerang::get()->traceDecoder)
-									LOG << "p" << uNewAddr << "\t";
+									LOG << "p0x" << std::hex << uNewAddr << std::dec << "\t";
 							}
 
 							// Check if this is the _exit or exit function. May prevent us from attempting to decode
@@ -1139,7 +1138,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 	Boomerang::get()->alert_decode(pProc, startAddr, lastAddr, nTotalBytes);
 
 	if (VERBOSE)
-		LOG << "finished processing proc " << pProc->getName() << " at address " << pProc->getNativeAddress() << "\n";
+		LOG << "finished processing proc " << pProc->getName() << " at address 0x" << std::hex << pProc->getNativeAddress() << std::dec << "\n";
 
 	return true;
 }
@@ -1171,7 +1170,7 @@ TargetQueue::visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB)
 	if (!bParsed) {
 		targets.push(uNewAddr);
 		if (Boomerang::get()->traceDecoder)
-			LOG << ">" << uNewAddr << "\t";
+			LOG << ">0x" << std::hex << uNewAddr << std::dec << "\t";
 	}
 }
 
@@ -1205,7 +1204,7 @@ TargetQueue::nextAddress(Cfg *cfg)
 		ADDRESS address = targets.front();
 		targets.pop();
 		if (Boomerang::get()->traceDecoder)
-			LOG << "<" << address << "\t";
+			LOG << "<0x" << std::hex << address << std::dec << "\t";
 
 		// If no label there at all, or if there is a BB, it's incomplete, then we can parse this address next
 		if (!cfg->existsBB(address) || cfg->isIncomplete(address))
@@ -1275,7 +1274,7 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 			targetQueue.visit(pCfg, retAddr, pBB);
 		} catch (Cfg::BBAlreadyExistsError &) {
 			if (VERBOSE)
-				LOG << "not visiting " << retAddr << " due to exception\n";
+				LOG << "not visiting 0x" << std::hex << retAddr << std::dec << " due to exception\n";
 		}
 	}
 	return pBB;

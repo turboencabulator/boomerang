@@ -22,7 +22,6 @@
 #include "dataflow.h"
 #include "exp.h"
 #include "hllcode.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "rtl.h"        // For debugging code
@@ -244,7 +243,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 				}
 			} else
 				if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-					LOG << c << " is not dynamically linked proc pointer or in read only memory\n";
+					LOG << "0x" << std::hex << c << std::dec << " is not dynamically linked proc pointer or in read only memory\n";
 		}
 		if ((a_rhs->getOper() == opPlus || a_rhs->getOper() == opMinus)
 		 && a_rhs->getSubExp2()->isIntConst()
@@ -406,7 +405,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 	for (const auto &edge : pbb->getInEdges()) {
 		Statement *last = edge->getLastStmt();
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
-			LOG << "  in BB: " << edge->getLowAddr() << " " << *last << "\n";
+			LOG << "  in BB: 0x" << std::hex << edge->getLowAddr() << std::dec << " " << *last << "\n";
 		if (auto branch = dynamic_cast<BranchStatement *>(last)) {
 			input.unionwith(branch->getRangesForOutEdgeTo(pbb));
 		} else {
@@ -432,7 +431,7 @@ JunctionStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 			Range &r = output.getRange(Location::regOf(28));
 			if (r.getLowerBound() != r.getUpperBound() && r.getLowerBound() != Range::MIN) {
 				if (VERBOSE)
-					LOG << "stack height assumption violated " << r << " my bb: " << pbb->getLowAddr() << "\n";
+					LOG << "stack height assumption violated " << r << " my bb: 0x" << std::hex << pbb->getLowAddr() << std::dec << "\n";
 				LOG << *proc;
 				assert(false);
 			}
@@ -2579,7 +2578,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 		if (nt && (nt->getName() == "LPCWSTR")) {
 			ADDRESS u = ((Const *)e)->getAddr();
 			// TODO
-			LOG << "possible wide char string at " << u << "\n";
+			LOG << "possible wide char string at 0x" << std::hex << u << std::dec << "\n";
 		}
 		if (t->resolvesToPointer()) {
 			PointerType *pt = t->asPointer();
@@ -2603,7 +2602,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 				ADDRESS a = ((Const *)e)->getAddr();
 				if (VERBOSE || 1)
 					LOG << "found function pointer with constant value " << "of type " << pt->getCtype()
-					    << " in statement at addr " << stmt << ".  Decoding address " << a << "\n";
+					    << " in statement at addr 0x" << std::hex << stmt << std::dec << ".  Decoding address 0x" << std::hex << a << std::dec << "\n";
 				// the address can be zero, i.e., NULL, if so, ignore it.
 				if (a != 0) {
 					if (!Boomerang::get()->noDecodeChildren)

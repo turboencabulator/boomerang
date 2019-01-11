@@ -18,13 +18,13 @@
 #include "cfg.h"
 #include "exp.h"
 #include "frontend.h"
-#include "log.h"
 #include "managed.h"
 #include "proc.h"
 #include "prog.h"
 #include "rtl.h"
 #include "signature.h"
 
+#include <fstream>
 #include <iostream>
 #include <sstream>
 #include <list>
@@ -32,15 +32,6 @@
 
 #define HELLO_PENTIUM      "test/pentium/hello"
 #define GLOBAL1_PENTIUM    "test/pentium/global1"
-
-class NullLogger : public Log {
-public:
-	Log & operator <<(const char *str) override {
-		// std::cerr << str;
-		return *this;
-	}
-	virtual ~NullLogger() { };
-};
 
 /**
  * Set up some expressions for use with all the tests.
@@ -53,7 +44,9 @@ StatementTest::setUp()
 	static bool logset = false;
 	if (!logset) {
 		logset = true;
-		Boomerang::get()->setLogger(new NullLogger());
+		// Null logger.  Discard the logging output by not opening a file.
+		auto nulllogger = new std::ofstream();
+		Boomerang::get()->setLogger(nulllogger);
 	}
 }
 
@@ -64,7 +57,11 @@ StatementTest::testEmpty()
 	Boomerang *boo = Boomerang::get();
 	boo->vFlag = true;
 	boo->setOutputDirectory("./unit_test/");
-	boo->setLogger(new FileLogger());
+
+	auto filelogger = new std::ofstream();
+	filelogger->rdbuf()->pubsetbuf(nullptr, 0);
+	filelogger->open(Boomerang::get()->getOutputPath() + "log");
+	boo->setLogger(filelogger);
 
 	// create Prog
 	auto prog = new Prog;

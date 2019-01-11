@@ -35,18 +35,16 @@
 
 #include <fstream>
 #include <map>
+#include <ostream>
 #include <set>
 #include <string>
 #include <vector>
 
 class HLLCode;
-class Log;
 class ObjcModule;
 class Proc;
 class Prog;
 class UserProc;
-
-#define LOG Boomerang::get()->log()
 
 #define DEBUG_RANGE_ANALYSIS 0
 
@@ -92,7 +90,7 @@ private:
 	        /// The path where all output files are created.
 	        std::string outputPath;
 	        /// Takes care of the log messages.
-	        Log        *logger = nullptr;
+		std::ostream *logger = nullptr;
 	        /// The watchers which are interested in this decompilation.
 	        std::set<Watcher *> watchers;
 
@@ -117,8 +115,8 @@ public:
 	                    }
 
 	static  const char *getVersionStr();
-	        Log        &log();
-	        void        setLogger(Log *l) { logger = l; }
+	        std::ostream &log();
+	        void        setLogger(std::ostream *l) { logger = l; }
 	        bool        setOutputDirectory(const std::string &);
 
 	        /// \return The HLLCode for the specified UserProc.
@@ -291,6 +289,7 @@ public:
 	        int         minsToStopAfter = 0;
 };
 
+#define LOG                 (Boomerang::get()->log())
 #define VERBOSE             (Boomerang::get()->vFlag)
 #define DEBUG_TA            (Boomerang::get()->debugTA)
 #define DEBUG_PROOF         (Boomerang::get()->debugProof)

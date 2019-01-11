@@ -18,7 +18,6 @@
 
 #include "boomerang.h"
 #include "exp.h"
-#include "log.h"
 #include "managed.h"
 #include "type.h"
 
@@ -344,7 +343,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 		}
 	}
 
-	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
+	LOG << "\n" << disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
 		LOG << *dis << ",\n";
 	LOG << "\n";
@@ -359,7 +358,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	substIntoEquates(fixed);
 
 	LOG << "\nAfter substitute fixed into equates:\n";
-	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
+	LOG << "\n" << disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
 		LOG << *dis << ",\n";
 	LOG << "\n";
@@ -371,7 +370,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	substIntoDisjuncts(fixed);
 
 	LOG << "\nAfter second substitute fixed into disjunctions:\n";
-	LOG << "\n" << (unsigned)disjunctions.size() << " disjunctions: ";
+	LOG << "\n" << disjunctions.size() << " disjunctions: ";
 	for (const auto &dis : disjunctions)
 		LOG << *dis << ",\n";
 	LOG << "\n";

@@ -16,7 +16,6 @@
 
 #include "boomerang.h"
 #include "frontend.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "signature.h"
@@ -56,7 +55,12 @@ TypeTest::testCompound()
 {
 	auto prog = new Prog;
 	auto pFE = FrontEnd::open(HELLO_WINDOWS, prog);
-	Boomerang::get()->setLogger(new FileLogger());  // May try to output some messages to LOG
+
+	auto filelogger = new std::ofstream();
+	filelogger->rdbuf()->pubsetbuf(nullptr, 0);
+	filelogger->open(Boomerang::get()->getOutputPath() + "log");
+	Boomerang::get()->setLogger(filelogger);  // May try to output some messages to LOG
+
 	pFE->readLibraryCatalog();  // Read definitions
 
 	Signature *paintSig = pFE->getLibSignature("BeginPaint");

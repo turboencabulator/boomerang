@@ -23,7 +23,6 @@
 
 #include "boomerang.h"
 #include "exp.h"
-#include "log.h"
 #include "statement.h"
 #include "type.h"
 #include "types.h"
@@ -428,12 +427,12 @@ RTL::simplify()
 			if (cond && cond->isIntConst()) {
 				if (((Const *)cond)->getInt() == 0) {
 					if (VERBOSE)
-						LOG << "removing branch with false condition at " << getAddress() << " " << *branch << "\n";
+						LOG << "removing branch with false condition at 0x" << std::hex << getAddress() << std::dec << " " << *branch << "\n";
 					it = stmtList.erase(it);
 					continue;
 				} else {
 					if (VERBOSE)
-						LOG << "replacing branch with true condition with goto at " << getAddress() << " " << *branch << "\n";
+						LOG << "replacing branch with true condition with goto at 0x" << std::hex << getAddress() << std::dec << " " << *branch << "\n";
 					*it = new GotoStatement(branch->getFixedDest());
 				}
 			}
@@ -442,7 +441,7 @@ RTL::simplify()
 			if (guard && (guard->isFalse() || (guard->isIntConst() && !((Const *)guard)->getInt()))) {
 				// This assignment statement can be deleted
 				if (VERBOSE)
-					LOG << "removing assignment with false guard at " << getAddress() << " " << *assign << "\n";
+					LOG << "removing assignment with false guard at 0x" << std::hex << getAddress() << std::dec << " " << *assign << "\n";
 				it = stmtList.erase(it);
 				continue;
 			}

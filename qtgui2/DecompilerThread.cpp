@@ -15,7 +15,6 @@
 #include "boomerang.h"
 #include "cluster.h"
 #include "frontend.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "signature.h"

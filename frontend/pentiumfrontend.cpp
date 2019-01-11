@@ -24,7 +24,6 @@
 #include "boomerang.h"
 #include "cfg.h"
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 #include "rtl.h"
@@ -550,7 +549,7 @@ PentiumFrontEnd::helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest)
 	if (name == "__mingw_frame_init"
 	 || name == "__mingw_cleanup_setup"
 	 || name == "__mingw_frame_end") {
-		LOG << "found removable call to static lib proc " << name << " at " << addr << "\n";
+		LOG << "found removable call to static lib proc " << name << " at 0x" << std::hex << addr << std::dec << "\n";
 		prog->removeProc(name);
 		return true;
 	}
@@ -1069,7 +1068,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 			// found one.
 			if (paramIsFuncPointer) {
 				if (VERBOSE)
-					LOG << "found a new procedure at address " << a
+					LOG << "found a new procedure at address 0x" << std::hex << a << std::dec
 					    << " from inspecting parameters of call to " << call->getDestProc()->getName() << ".\n";
 				Proc *proc = prog->setNewProc(a);
 				Signature *sig = paramType->asPointer()->getPointsTo()->asFunc()->getSignature()->clone();
@@ -1092,7 +1091,7 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				 && ty->asPointer()->getPointsTo()->resolvesToFunc()) {
 					ADDRESS d = pBF->readNative4(a);
 					if (VERBOSE)
-						LOG << "found a new procedure at address " << d
+						LOG << "found a new procedure at address 0x" << std::hex << d << std::dec
 						    << " from inspecting parameters of call to " << call->getDestProc()->getName() << ".\n";
 					Proc *proc = prog->setNewProc(d);
 					Signature *sig = ty->asPointer()->getPointsTo()->asFunc()->getSignature()->clone();

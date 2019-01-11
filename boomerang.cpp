@@ -19,7 +19,6 @@
 #include "cluster.h"
 #include "codegen/chllcode.h"
 #include "frontend.h"
-#include "log.h"
 #include "proc.h"
 #include "prog.h"
 //#include "transformer.h"
@@ -70,20 +69,12 @@ Boomerang::Boomerang() :
 }
 
 /**
- * Returns the Log object associated with the object.
+ * Returns the log stream associated with the object.
  */
-Log &
+std::ostream &
 Boomerang::log()
 {
 	return *logger;
-}
-
-/**
- * Sets the outputfile to be the file "log" in the default output directory.
- */
-FileLogger::FileLogger() :
-	out(Boomerang::get()->getOutputPath() + "log")
-{
 }
 
 /**
@@ -954,8 +945,13 @@ Boomerang::setOutputDirectory(const std::string &path)
 		std::cerr << "Warning! Could not create path " << outputPath << "!\n";
 		return false;
 	}
-	if (!logger)
-		setLogger(new FileLogger());
+	if (!logger) {
+		// Send output to the file "log" in the default output directory, unbuffered.
+		auto filelogger = new std::ofstream();
+		filelogger->rdbuf()->pubsetbuf(nullptr, 0);
+		filelogger->open(Boomerang::get()->getOutputPath() + "log");
+		setLogger(filelogger);
+	}
 	return true;
 }
 

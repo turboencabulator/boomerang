@@ -19,7 +19,6 @@
 
 #include "boomerang.h"
 #include "exp.h"
-#include "log.h"
 #include "proc.h"
 #include "statement.h"
 

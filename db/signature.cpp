@@ -18,7 +18,6 @@
 
 #include "boomerang.h"
 #include "exp.h"
-#include "log.h"
 #include "managed.h"
 #include "proc.h"
 #include "prog.h"
