@@ -648,6 +648,18 @@ FloatType::operator <(const Type &other) const
 }
 
 bool
+BooleanType::operator <(const Type &other) const
+{
+	return id < other.getId();
+}
+
+bool
+CharType::operator <(const Type &other) const
+{
+	return id < other.getId();
+}
+
+bool
 VoidType::operator <(const Type &other) const
 {
 	return id < other.getId();
@@ -660,20 +672,6 @@ FuncType::operator <(const Type &other) const
 	if (!o) return id < other.getId();
 	// FIXME: Need to compare signatures
 	return true;
-}
-
-bool
-BooleanType::operator <(const Type &other) const
-{
-	auto o = dynamic_cast<const BooleanType *>(&other);
-	if (!o) return id < other.getId();
-	return true;
-}
-
-bool
-CharType::operator <(const Type &other) const
-{
-	return id < other.getId();
 }
 
 bool
