@@ -1447,12 +1447,28 @@ Signature::dfaTypeAnalysis(Cfg *cfg)
 // Note: to prevent infinite recursion, CompoundType, ArrayType, and UnionType implement this function as a delegation
 // to isCompatible()
 bool
-Type::isCompatibleWith(Type *other, bool all /* = false */)
+Type::isCompatibleWith(Type *other, bool all)
 {
-	if (other->resolvesToCompound()
-	 || other->resolvesToArray()
-	 || other->resolvesToUnion())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<CompoundType *>(ort)
+	 || dynamic_cast<ArrayType *>(ort)
+	 || dynamic_cast<UnionType *>(ort))
 		return other->isCompatible(this, all);
+	return isCompatible(other, all);
+}
+bool
+CompoundType::isCompatibleWith(Type *other, bool all)
+{
+	return isCompatible(other, all);
+}
+bool
+ArrayType::isCompatibleWith(Type *other, bool all)
+{
+	return isCompatible(other, all);
+}
+bool
+UnionType::isCompatibleWith(Type *other, bool all)
+{
 	return isCompatible(other, all);
 }
 
@@ -1465,13 +1481,14 @@ VoidType::isCompatible(Type *other, bool all)
 bool
 SizeType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToFunc()) return false;
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (dynamic_cast<FuncType *>(ort)) return false;
 	// FIXME: why is there a test for size 0 here?
 	unsigned otherSize = other->getSize();
 	if (otherSize == size || otherSize == 0) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToArray()) return isCompatibleWith(other->asArray()->getBaseType());
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<ArrayType *>(ort)) return isCompatibleWith(o->getBaseType());
 	//return false;
 	// For now, size32 and double will be considered compatible (helps test/pentium/global2)
 	return true;
@@ -1480,44 +1497,48 @@ SizeType::isCompatible(Type *other, bool all)
 bool
 IntegerType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToInteger()) return true;
-	if (other->resolvesToChar()) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (dynamic_cast<IntegerType *>(ort)) return true;
+	if (dynamic_cast<CharType *>(ort)) return true;
+	if (auto o = dynamic_cast<SizeType *>(ort)) return o->getSize() == getSize();
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
 	return false;
 }
 
 bool
 FloatType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToFloat()) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToArray()) return isCompatibleWith(other->asArray()->getBaseType());
-	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (dynamic_cast<FloatType *>(ort)) return true;
+	if (auto o = dynamic_cast<SizeType *>(ort)) return o->getSize() == getSize();
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<ArrayType *>(ort)) return isCompatibleWith(o->getBaseType());
 	return false;
 }
 
 bool
 CharType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToChar()) return true;
-	if (other->resolvesToInteger()) return true;
-	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToArray()) return isCompatibleWith(other->asArray()->getBaseType());
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (dynamic_cast<CharType *>(ort)) return true;
+	if (dynamic_cast<IntegerType *>(ort)) return true;
+	if (auto o = dynamic_cast<SizeType *>(ort)) return o->getSize() == getSize();
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<ArrayType *>(ort)) return isCompatibleWith(o->getBaseType());
 	return false;
 }
 
 bool
 BooleanType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToBoolean()) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (dynamic_cast<BooleanType *>(ort)) return true;
+	if (auto o = dynamic_cast<SizeType *>(ort)) return o->getSize() == getSize();
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
 	return false;
 }
 
@@ -1525,13 +1546,14 @@ bool
 FuncType::isCompatible(Type *other, bool all)
 {
 	assert(signature);
-	if (other->resolvesToVoid()) return true;
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
 	if (*this == *other) return true;  // MVE: should not compare names!
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && other->getSize() == STD_SIZE) return true;  // FIXME:  FuncType::getSize() != STD_SIZE, is this right?
-	if (other->resolvesToFunc()) {
-		assert(other->asFunc()->signature);
-		if (*other->asFunc()->signature == *signature) return true;
+	if (auto o = dynamic_cast<SizeType *>(ort)) return o->getSize() == STD_SIZE;  // FIXME:  FuncType::getSize() != STD_SIZE, is this right?
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<FuncType *>(ort)) {
+		assert(o->signature);
+		if (*o->signature == *signature) return true;
 	}
 	return false;
 }
@@ -1539,18 +1561,21 @@ FuncType::isCompatible(Type *other, bool all)
 bool
 PointerType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (other->resolvesToSize() && other->getSize() == getSize()) return true;
-	if (!other->resolvesToPointer()) return false;
-	return points_to->isCompatibleWith(other->asPointer()->points_to);
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<SizeType *>(ort)) return o->getSize() == getSize();
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<PointerType *>(ort))
+		return points_to->isCompatibleWith(o->points_to);
+	return false;
 }
 
 bool
 NamedType::isCompatible(Type *other, bool all)
 {
-	if (other->isNamed() && name == ((NamedType *)other)->getName())
-		return true;
+	if (auto o = dynamic_cast<NamedType *>(other))
+		if (name == o->getName())
+			return true;
 	if (auto rt = resolvesTo())
 		return rt->isCompatibleWith(other);
 	if (other->resolvesToVoid()) return true;
@@ -1560,9 +1585,11 @@ NamedType::isCompatible(Type *other, bool all)
 bool
 ArrayType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToArray() && base_type->isCompatibleWith(other->asArray()->base_type)) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<ArrayType *>(ort))
+		if (base_type->isCompatibleWith(o->base_type)) return true;
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
 	if (!all && base_type->isCompatibleWith(other)) return true;  // An array of x is compatible with x
 	return false;
 }
@@ -1570,9 +1597,9 @@ ArrayType::isCompatible(Type *other, bool all)
 bool
 UnionType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToUnion()) {
-		auto o = other->asUnion();
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<UnionType *>(ort)) {
 		if (this == o)  // Note: pointer comparison
 			return true;  // Avoid infinite recursion
 		// Unions are compatible if one is a subset of the other
@@ -1597,35 +1624,38 @@ UnionType::isCompatible(Type *other, bool all)
 bool
 CompoundType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
-	if (!other->resolvesToCompound())
-		// Used to always return false here. But in fact, a struct is compatible with its first member (if all is false)
-		return !all && elems[0].type->isCompatibleWith(other);
-	auto o = other->asCompound();
-	if (elems.size() != o->elems.size()) return false;  // Is a subcompound compatible with a supercompound?
-	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
-		if (!it1->type->isCompatibleWith(it2->type))
-			return false;
-	return true;
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<CompoundType *>(ort)) {
+		if (elems.size() != o->elems.size()) return false;  // Is a subcompound compatible with a supercompound?
+		for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+			if (!it1->type->isCompatibleWith(it2->type))
+				return false;
+		return true;
+	}
+	// Used to always return false here. But in fact, a struct is compatible with its first member (if all is false)
+	return !all && elems[0].type->isCompatibleWith(other);
 }
 
 #if 0 // Cruft?
 bool
 UpperType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToUpper() && base_type->isCompatibleWith(other->asUpper()->base_type)) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<UpperType *>(ort)) return base_type->isCompatibleWith(o->base_type);
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
 	return false;
 }
 
 bool
 LowerType::isCompatible(Type *other, bool all)
 {
-	if (other->resolvesToVoid()) return true;
-	if (other->resolvesToLower() && base_type->isCompatibleWith(other->asLower()->base_type)) return true;
-	if (other->resolvesToUnion()) return other->isCompatibleWith(this);
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<LowerType *>(ort)) return base_type->isCompatibleWith(o->base_type);
+	if (auto o = dynamic_cast<UnionType *>(ort)) return o->isCompatibleWith(this);
 	return false;
 }
 #endif

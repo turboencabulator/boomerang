@@ -198,9 +198,11 @@ public:
 	// the types are considered compatible. With all set to true, if one or both types is compound, all
 	// corresponding elements must be compatible
 	virtual bool        isCompatibleWith(Type *other, bool all = false);
+protected:
 	// isCompatible does most of the work; isCompatibleWith looks for complex types in other, and if so
 	// reverses the parameters (this and other) to prevent many tedious repetitions
 	virtual bool        isCompatible(Type *other, bool all) = 0;
+public:
 	// Return true if this is a subset or equal to other
 	        bool        isSubTypeOrEqual(Type *other);
 	// Create a union of this Type and other. Set ch true if any change
@@ -234,7 +236,8 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class FuncType : public Type {
@@ -266,7 +269,8 @@ public:
 	std::string getParam(bool final = false) const;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class IntegerType : public Type {
@@ -307,7 +311,8 @@ public:
 	std::string getTempName() const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class FloatType : public Type {
@@ -335,7 +340,8 @@ public:
 	std::string getTempName() const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class BooleanType : public Type {
@@ -358,7 +364,8 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class CharType : public Type {
@@ -381,7 +388,8 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class PointerType : public Type {
@@ -414,7 +422,8 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class ArrayType : public Type {
@@ -450,8 +459,9 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
-	bool        isCompatible(Type *other, bool all) override;
+	bool        isCompatibleWith(Type *, bool = false) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 class NamedType : public Type {
@@ -481,7 +491,8 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 struct CompoundElement {
@@ -537,8 +548,9 @@ public:
 	bool        isSubStructOf(const Type &other) const;    // True if this is a substructure of other
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatibleWith(Type *other, bool all = false) override { return isCompatible(other, all); }
-	bool        isCompatible(Type *other, bool all) override;
+	bool        isCompatibleWith(Type *, bool = false) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 struct UnionElement {
@@ -576,8 +588,11 @@ public:
 	void        print(std::ostream &) const override;
 
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatibleWith(Type *other, bool all) override { return isCompatible(other, all); }
-	bool        isCompatible(Type *other, bool all) override;
+	bool        isCompatibleWith(Type *, bool = false) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
+
+public:
 	// if this is a union of pointer types, get the union of things they point to. In dfa.cpp
 	Type       *dereferenceUnion() const;
 };
@@ -607,7 +622,8 @@ public:
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 #if 0 // Cruft?
@@ -635,7 +651,8 @@ public:
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 
 /**
@@ -661,7 +678,8 @@ public:
 	std::string getCtype(bool final = false) const override;
 	void        print(std::ostream &) const override;
 	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatible(Type *other, bool all) override;
+protected:
+	bool        isCompatible(Type *, bool) override;
 };
 #endif
 
