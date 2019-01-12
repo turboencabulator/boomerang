@@ -599,10 +599,10 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (other->resolvesToVoid())
 		return this;
 	if (other->resolvesToUnion()) {
-		if (this == other)  // Note: pointer comparison
+		auto otherUnion = other->asUnion();
+		if (this == otherUnion)  // Note: pointer comparison
 			return this;  // Avoid infinite recursion
 		ch = true;
-		auto otherUnion = other->asUnion();
 		// Always return this, never other, (even if other is larger than this) because otherwise iterators can become
 		// invalid below
 		for (const auto &elem : otherUnion->elems) {
@@ -697,7 +697,7 @@ LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	if (other->resolvesToVoid())
 		return this;
-	if (other->resolvesToUpper()) {
+	if (other->resolvesToLower()) {
 		auto otherLow = other->asLower();
 		Type *newBase = base_type->clone()->meetWith(otherLow->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
@@ -1572,9 +1572,9 @@ UnionType::isCompatible(Type *other, bool all)
 {
 	if (other->resolvesToVoid()) return true;
 	if (other->resolvesToUnion()) {
-		if (this == other)  // Note: pointer comparison
-			return true;  // Avoid infinite recursion
 		auto o = other->asUnion();
+		if (this == o)  // Note: pointer comparison
+			return true;  // Avoid infinite recursion
 		// Unions are compatible if one is a subset of the other
 		if (elems.size() < o->elems.size()) {
 			for (const auto &elem : elems)
