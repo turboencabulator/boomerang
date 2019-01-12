@@ -125,7 +125,7 @@ protected:
 	        RangeMap    ranges;            // overestimation of ranges of locations
 	        RangeMap    savedInputRanges;  // saved overestimation of ranges of locations
 
-	        unsigned int lexBegin, lexEnd;
+	//        unsigned int lexBegin, lexEnd;
 
 public:
 	                    Statement() { }
@@ -159,11 +159,11 @@ public:
 	virtual bool        accept(StmtModifier &) = 0;
 	virtual bool        accept(StmtPartModifier &) = 0;
 
-	        void        setLexBegin(unsigned int n) { lexBegin = n; }
-	        void        setLexEnd(unsigned int n) { lexEnd = n; }
-	        unsigned    int getLexBegin() const { return lexBegin; }
-	        unsigned    int getLexEnd() const { return lexEnd; }
-	        Exp        *getExpAtLex(unsigned int begin, unsigned int end) const;
+	//        void        setLexBegin(unsigned int n) { lexBegin = n; }
+	//        void        setLexEnd(unsigned int n) { lexEnd = n; }
+	//        unsigned    int getLexBegin() const { return lexBegin; }
+	//        unsigned    int getLexEnd() const { return lexEnd; }
+	//        Exp        *getExpAtLex(unsigned int begin, unsigned int end) const;
 
 
 	// returns true if this statement defines anything

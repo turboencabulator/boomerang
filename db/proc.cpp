@@ -2656,6 +2656,7 @@ UserProc::propagateStatements(bool &convert, int pass)
 	return change;
 }
 
+#if 0 // Cruft?
 Statement *
 UserProc::getStmtAtLex(unsigned int begin, unsigned int end)
 {
@@ -2675,6 +2676,7 @@ UserProc::getStmtAtLex(unsigned int begin, unsigned int end)
 	}
 	return loweststmt;
 }
+#endif
 
 void
 UserProc::promoteSignature()

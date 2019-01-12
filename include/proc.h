@@ -419,7 +419,7 @@ public:
 	//int         getMaxDepth() { return maxDepth; }  // FIXME: needed?
 	bool        canRename(Exp *e) { return df.canRename(e, this); }
 
-	Statement  *getStmtAtLex(unsigned int begin, unsigned int end);
+	//Statement  *getStmtAtLex(unsigned int begin, unsigned int end);
 
 	/// Initialise the statements, e.g. proc, bb pointers
 	void        initStatements();

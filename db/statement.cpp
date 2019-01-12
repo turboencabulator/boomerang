@@ -50,11 +50,13 @@ Statement::setProc(UserProc *p)
 	}
 }
 
+#if 0 // Cruft?
 Exp *
 Statement::getExpAtLex(unsigned int begin, unsigned int end) const
 {
 	return nullptr;
 }
+#endif
 
 bool
 Statement::mayAlias(Exp *e1, Exp *e2, int size)

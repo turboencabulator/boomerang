@@ -160,7 +160,7 @@ public:
 	        Signature  *getLibSignature(const std::string &) const;
 	        void        rereadLibSignatures();
 
-	        Statement  *getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const;
+	//        Statement  *getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const;
 
 	// Get the front end id used to make this prog
 	        platform    getFrontEndId() const;

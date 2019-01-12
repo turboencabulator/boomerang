@@ -246,6 +246,7 @@ Prog::generateRTL(Cluster *cluster, UserProc *uProc) const
 	m_rootCluster->closeStreams();
 }
 
+#if 0 // Cruft?
 Statement *
 Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const
 {
@@ -263,6 +264,7 @@ Prog::getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const
 	}
 	return nullptr;
 }
+#endif
 
 std::string
 Cluster::makeDirs() const
