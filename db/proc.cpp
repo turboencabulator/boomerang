@@ -2479,9 +2479,7 @@ UserProc::mapExpressionsToLocals(bool lastPass)
 						pty = a;
 						a->setLength(1024);  // just something arbitrary
 						if (i + 1 < call->getNumArguments()) {
-							Type *nt = call->getArgumentType(i + 1);
-							if (nt->isNamed())
-								nt = ((NamedType *)nt)->resolvesTo();
+							Type *nt = call->getArgumentType(i + 1)->resolvesTo();
 							if (nt->isInteger() && call->getArgumentExp(i + 1)->isIntConst())
 								a->setLength(((Const *)call->getArgumentExp(i + 1)) ->getInt());
 						}

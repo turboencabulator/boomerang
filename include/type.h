@@ -134,6 +134,9 @@ public:
 	//        UpperType    *asUpper();
 	//        LowerType    *asLower();
 
+	        Type *      resolvesTo();
+	        const Type *resolvesTo() const;
+
 	// These replace calls to isNamed() and resolvesTo()
 	        bool        resolvesToVoid() const;
 	        bool        resolvesToFunc() const;

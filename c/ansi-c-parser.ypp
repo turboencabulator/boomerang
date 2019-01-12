@@ -221,10 +221,7 @@ optional_bound
 
 param
 	: type_ident optional_bound {
-		if ($1->ty->isArray()
-		 || ($1->ty->isNamed()
-		  && ((NamedType *)$1->ty)->resolvesTo()
-		  && ((NamedType *)$1->ty)->resolvesTo()->isArray())) {
+		if ($1->ty->resolvesToArray()) {
 			/*
 			 * C has complex semantics for passing arrays.. seeing as
 			 * we're supposedly parsing C, then we should deal with this.

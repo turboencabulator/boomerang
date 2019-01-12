@@ -1126,6 +1126,22 @@ NamedType::resolvesTo() const
 	return ty;
 }
 
+Type *
+Type::resolvesTo()
+{
+	if (auto nt = dynamic_cast<const NamedType *>(this))
+		return nt->resolvesTo();
+	return this;
+}
+
+const Type *
+Type::resolvesTo() const
+{
+	if (auto nt = dynamic_cast<const NamedType *>(this))
+		return nt->resolvesTo();
+	return this;
+}
+
 void
 ArrayType::fixBaseType(Type *b)
 {
@@ -1142,10 +1158,7 @@ ArrayType::fixBaseType(Type *b)
 x##Type * \
 Type::as##x() \
 { \
-	Type *ty = this; \
-	if (auto nt = dynamic_cast<NamedType *>(ty)) \
-		ty = nt->resolvesTo(); \
-	auto res = dynamic_cast<x##Type *>(ty); \
+	auto res = dynamic_cast<x##Type *>(resolvesTo()); \
 	assert(res); \
 	return res; \
 }
@@ -1180,10 +1193,7 @@ Type::asNamed()
 bool \
 Type::resolvesTo##x() const \
 { \
-	const Type *ty = this; \
-	if (auto nt = dynamic_cast<const NamedType *>(ty)) \
-		ty = nt->resolvesTo(); \
-	return !!dynamic_cast<const x##Type *>(ty); \
+	return !!dynamic_cast<const x##Type *>(resolvesTo()); \
 }
 
 RESOLVES_TO_TYPE(Void)

@@ -2568,11 +2568,9 @@ CallStatement::removeArgument(int i)
 Exp *
 processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 {
-	if (!t) return e;
-	NamedType *nt = nullptr;
-	if (t->isNamed()) {
-		nt = (NamedType *)t;
-		t = ((NamedType *)t)->resolvesTo();
+	auto nt = dynamic_cast<NamedType *>(t);
+	if (nt) {
+		t = nt->resolvesTo();
 	}
 	if (!t) return e;
 	// char* and a constant
@@ -2582,8 +2580,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 			// TODO
 			LOG << "possible wide char string at 0x" << std::hex << u << std::dec << "\n";
 		}
-		if (t->resolvesToPointer()) {
-			PointerType *pt = t->asPointer();
+		if (auto pt = dynamic_cast<PointerType *>(t)) {
 			Type *points_to = pt->getPointsTo();
 			if (t->isCString()) {
 				ADDRESS u = ((Const *)e)->getAddr();
@@ -2623,8 +2620,8 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 					}
 				}
 			}
-		} else if (t->resolvesToFloat()) {
-			e = new Ternary(opItof, new Const(32), new Const(t->getSize()), e);
+		} else if (auto ft = dynamic_cast<FloatType *>(t)) {
+			e = new Ternary(opItof, new Const(32), new Const(ft->getSize()), e);
 		}
 	}
 
