@@ -608,17 +608,18 @@ Type::operator !=(const Type &other) const
 bool
 IntegerType::operator -=(const Type &other) const
 {
-	if (!other.isInteger()) return false;
-	return size == ((const IntegerType &)other).size;
+	auto o = dynamic_cast<const IntegerType *>(&other);
+	if (!o) return false;
+	return size == o->size;
 }
 
 bool
 FloatType::operator -=(const Type &other) const
 {
-	if (!other.isFloat()) return false;
-	if (size > 64 && ((const FloatType &)other).size > 64)
-	return true;
-	return size == ((const FloatType &)other).size;
+	auto o = dynamic_cast<const FloatType *>(&other);
+	if (!o) return false;
+	if (size > 64 && o->size > 64) return true;
+	return size == o->size;
 }
 #endif
 
@@ -749,12 +750,12 @@ LowerType::operator <(const Type &other) const
 Exp *
 Type::match(Type *pattern)
 {
-	if (pattern->isNamed()) {
-		LOG << "type match: " << this->getCtype() << " to " << pattern->getCtype() << "\n";
+	if (auto p = dynamic_cast<NamedType *>(pattern)) {
+		LOG << "type match: " << this->getCtype() << " to " << p->getCtype() << "\n";
 		return new Binary(opList,
 		                  new Binary(opEquals,
 		                             new Unary(opVar,
-		                                       new Const(pattern->asNamed()->getName())),
+		                                       new Const(p->getName())),
 		                             new TypeVal(this->clone())),
 		                  new Terminal(opNil));
 	}
@@ -764,9 +765,9 @@ Type::match(Type *pattern)
 Exp *
 PointerType::match(Type *pattern)
 {
-	if (pattern->isPointer()) {
-		LOG << "got pointer match: " << this->getCtype() << " to " << pattern->getCtype() << "\n";
-		return points_to->match(pattern->asPointer()->getPointsTo());
+	if (auto p = dynamic_cast<PointerType *>(pattern)) {
+		LOG << "got pointer match: " << this->getCtype() << " to " << p->getCtype() << "\n";
+		return points_to->match(p->getPointsTo());
 	}
 	return Type::match(pattern);
 }
@@ -774,8 +775,8 @@ PointerType::match(Type *pattern)
 Exp *
 ArrayType::match(Type *pattern)
 {
-	if (pattern->isArray())
-		return base_type->match(pattern);
+	if (auto p = dynamic_cast<ArrayType *>(pattern))
+		return base_type->match(p);
 	return Type::match(pattern);
 }
 
@@ -879,7 +880,7 @@ std::string
 PointerType::getCtype(bool final) const
 {
 	std::string s = points_to->getCtype(final);
-	if (points_to->isPointer())
+	if (dynamic_cast<PointerType *>(points_to))
 		s += "*";
 	else
 		s += " *";
@@ -1089,18 +1090,19 @@ bool
 PointerType::pointsToAlpha()
 {
 	// void* counts as alpha* (and may replace it soon)
-	if (points_to->isVoid()) return true;
-	if (!points_to->isNamed()) return false;
-	return ((NamedType *)points_to)->getName().compare(0, 5, "alpha") == 0;
+	if (dynamic_cast<VoidType *>(points_to)) return true;
+	if (auto pt = dynamic_cast<NamedType *>(points_to))
+		return pt->getName().compare(0, 5, "alpha") == 0;
+	return false;
 }
 
 int
 PointerType::pointerDepth()
 {
 	int d = 1;
-	Type *pt = points_to;
-	while (pt->isPointer()) {
-		pt = pt->asPointer()->getPointsTo();
+	auto pt = dynamic_cast<PointerType *>(points_to);
+	while (pt) {
+		pt = dynamic_cast<PointerType *>(pt->points_to);
 		++d;
 	}
 	return d;
@@ -1109,30 +1111,30 @@ PointerType::pointerDepth()
 Type *
 PointerType::getFinalPointsTo()
 {
-	Type *pt = points_to;
-	while (pt->isPointer()) {
-		pt = pt->asPointer()->getPointsTo();
-	}
-	return pt;
+	Type *ty = points_to;
+	if (auto pt = dynamic_cast<PointerType *>(ty))
+		return pt->getFinalPointsTo();
+	return ty;
 }
 
 Type *
 NamedType::resolvesTo() const
 {
 	Type *ty = getNamedType(name);
-	if (ty && ty->isNamed())
-		return ((NamedType *)ty)->resolvesTo();
+	if (auto nt = dynamic_cast<NamedType *>(ty))
+		return nt->resolvesTo();
 	return ty;
 }
 
 void
 ArrayType::fixBaseType(Type *b)
 {
-	if (!base_type)
+	if (!base_type) {
 		base_type = b;
-	else {
-		assert(base_type->isArray());
-		base_type->asArray()->fixBaseType(b);
+	} else {
+		auto bt = dynamic_cast<ArrayType *>(base_type);
+		assert(bt);
+		bt->fixBaseType(b);
 	}
 }
 
@@ -1141,8 +1143,8 @@ x##Type * \
 Type::as##x() \
 { \
 	Type *ty = this; \
-	if (isNamed()) \
-		ty = ((NamedType *)ty)->resolvesTo(); \
+	if (auto nt = dynamic_cast<NamedType *>(ty)) \
+		ty = nt->resolvesTo(); \
 	auto res = dynamic_cast<x##Type *>(ty); \
 	assert(res); \
 	return res; \
@@ -1179,9 +1181,9 @@ bool \
 Type::resolvesTo##x() const \
 { \
 	const Type *ty = this; \
-	if (ty->isNamed()) \
-		ty = ((const NamedType *)ty)->resolvesTo(); \
-	return ty && ty->is##x(); \
+	if (auto nt = dynamic_cast<const NamedType *>(ty)) \
+		ty = nt->resolvesTo(); \
+	return !!dynamic_cast<const x##Type *>(ty); \
 }
 
 RESOLVES_TO_TYPE(Void)
@@ -1201,7 +1203,8 @@ RESOLVES_TO_TYPE(Size)
 bool
 Type::isPointerToAlpha()
 {
-	return isPointer() && asPointer()->pointsToAlpha();
+	auto pt = dynamic_cast<PointerType *>(this);
+	return pt && pt->pointsToAlpha();
 }
 
 void
@@ -1322,11 +1325,11 @@ Type *
 IntegerType::mergeWith(Type *other)
 {
 	if (*this == *other) return this;
-	if (!other->isInteger()) return nullptr;  // Can you merge with a pointer?
-	IntegerType *oth = (IntegerType *)other;
-	IntegerType *ret = (IntegerType *)this->clone();
-	if (size == 0) ret->setSize(oth->getSize());
-	if (signedness == 0) ret->setSigned(oth->getSignedness());
+	auto o = dynamic_cast<IntegerType *>(other);
+	if (!o) return nullptr;  // Can you merge with a pointer?
+	auto ret = (IntegerType *)this->clone();
+	if (ret->size == 0) ret->size = o->size;
+	if (ret->signedness == 0) ret->signedness = o->signedness;
 	return ret;
 }
 
@@ -1359,10 +1362,10 @@ LowerType::mergeWith(Type *other)
 bool
 CompoundType::isSuperStructOf(const Type &other) const
 {
-	if (!other.isCompound()) return false;
-	const CompoundType &o = (const CompoundType &)other;
-	if (elems.size() < o.elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it2 != o.elems.cend(); ++it1, ++it2)
+	auto o = dynamic_cast<const CompoundType *>(&other);
+	if (!o) return false;
+	if (elems.size() < o->elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it2 != o->elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
@@ -1372,10 +1375,10 @@ CompoundType::isSuperStructOf(const Type &other) const
 bool
 CompoundType::isSubStructOf(const Type &other) const
 {
-	if (!other.isCompound()) return false;
-	const CompoundType &o = (const CompoundType &)other;
-	if (elems.size() > o.elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+	auto o = dynamic_cast<const CompoundType *>(&other);
+	if (!o) return false;
+	if (elems.size() > o->elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
@@ -1442,10 +1445,12 @@ DataIntervalMap::isClear(ADDRESS addr, unsigned size)
 		end = it->first + it->second.size;
 	if (end <= addr)
 		return true;
-	if (it->second.type->isArray() && it->second.type->asArray()->isUnbounded()) {
-		it->second.size = addr - it->first;
-		LOG << "shrinking size of unbound array to " << it->second.size << " bytes\n";
-		return true;
+	if (auto at = dynamic_cast<ArrayType *>(it->second.type)) {
+		if (at->isUnbounded()) {
+			it->second.size = addr - it->first;
+			LOG << "shrinking size of unbound array to " << it->second.size << " bytes\n";
+			return true;
+		}
 	}
 	return false;
 }
@@ -1656,8 +1661,7 @@ Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 	Type *curType = pdie->second.type;
 	while (startCurrent < addr) {
 		unsigned bitOffset = (addr - startCurrent) * 8;
-		if (curType->isCompound()) {
-			CompoundType *compCurType = curType->asCompound();
+		if (auto compCurType = dynamic_cast<CompoundType *>(curType)) {
 			unsigned rem = compCurType->getOffsetRemainder(bitOffset);
 			startCurrent = addr - (rem / 8);
 			ComplexTypeComp ctc;
@@ -1665,8 +1669,8 @@ Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 			ctc.u.memberName = strdup(compCurType->getNameAtOffset(bitOffset));
 			res->push_back(ctc);
 			curType = compCurType->getTypeAtOffset(bitOffset);
-		} else if (curType->isArray()) {
-			curType = curType->asArray()->getBaseType();
+		} else if (auto arrCurType = dynamic_cast<ArrayType *>(curType)) {
+			curType = arrCurType->getBaseType();
 			unsigned baseSize = curType->getSize();
 			unsigned index = bitOffset / baseSize;
 			startCurrent += index * baseSize / 8;
@@ -1697,15 +1701,16 @@ CompoundType::addType(Type *n, const std::string &str)
 void
 UnionType::addType(Type *n, const std::string &str)
 {
-	if (n->isUnion()) {
-		UnionType *utp = (UnionType *)n;
+	if (auto ut = dynamic_cast<UnionType *>(n)) {
 		// Note: need to check for name clashes eventually
-		elems.insert(elems.end(), utp->elems.begin(), utp->elems.end());
+		elems.insert(elems.end(), ut->elems.begin(), ut->elems.end());
 	} else {
-		if (n->isPointer() && n->asPointer()->getPointsTo() == this) {  // Note: pointer comparison
-			n = new PointerType(new VoidType);
-			if (VERBOSE)
-				LOG << "Warning: attempt to union with pointer to self!\n";
+		if (auto pt = dynamic_cast<PointerType *>(n)) {
+			if (pt->getPointsTo() == this) {  // Note: pointer comparison
+				n = new PointerType(new VoidType);
+				if (VERBOSE)
+					LOG << "Warning: attempt to union with pointer to self!\n";
+			}
 		}
 		UnionElement ue;
 		ue.type = n;
