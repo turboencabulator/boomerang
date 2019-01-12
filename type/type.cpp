@@ -451,64 +451,67 @@ Type::parseType(const std::string &str)
 bool
 IntegerType::operator ==(const Type &other) const
 {
-	if (!other.isInteger()) return false;
-	const IntegerType &o = (const IntegerType &)other;
+	auto o = dynamic_cast<const IntegerType *>(&other);
+	if (!o) return false;
 	// Note: zero size matches any other size (wild, or unknown, size)
 	// Note: actual value of signedness is disregarded, just whether less than, equal to, or greater than 0
-	return (size == 0 || o.size == 0 || size == o.size)
-	    && ((signedness <  0 && o.signedness <  0)
-	     || (signedness == 0 && o.signedness == 0)
-	     || (signedness >  0 && o.signedness >  0));
+	return (size == 0 || o->size == 0 || size == o->size)
+	    && ((signedness <  0 && o->signedness <  0)
+	     || (signedness == 0 && o->signedness == 0)
+	     || (signedness >  0 && o->signedness >  0));
 }
 
 bool
 FloatType::operator ==(const Type &other) const
 {
-	if (!other.isFloat()) return false;
-	const FloatType &o = (const FloatType &)other;
-	return (size == 0 || o.size == 0 || size == o.size);
+	auto o = dynamic_cast<const FloatType *>(&other);
+	if (!o) return false;
+	return (size == 0 || o->size == 0 || size == o->size);
 }
 
 bool
 BooleanType::operator ==(const Type &other) const
 {
-	return other.isBoolean();
+	auto o = dynamic_cast<const BooleanType *>(&other);
+	return !!o;
 }
 
 bool
 CharType::operator ==(const Type &other) const
 {
-	return other.isChar();
+	auto o = dynamic_cast<const CharType *>(&other);
+	return !!o;
 }
 
 bool
 VoidType::operator ==(const Type &other) const
 {
-	return other.isVoid();
+	auto o = dynamic_cast<const VoidType *>(&other);
+	return !!o;
 }
 
 bool
 FuncType::operator ==(const Type &other) const
 {
-	if (!other.isFunc()) return false;
-	const FuncType &o = (const FuncType &)other;
+	auto o = dynamic_cast<const FuncType *>(&other);
+	if (!o) return false;
 	// Note: some functions don't have a signature (e.g. indirect calls that have not yet been successfully analysed)
-	if (!signature) return !o.signature;
-	return *signature == *o.signature;
+	if (!signature) return !o->signature;
+	return *signature == *o->signature;
 }
 
 static int pointerCompareNest = 0;
 bool
 PointerType::operator ==(const Type &other) const
 {
-	// return other.isPointer() && (*points_to == *((PointerType&)other).points_to);
-	if (!other.isPointer()) return false;
-	const PointerType &o = (const PointerType &)other;
+	auto o = dynamic_cast<const PointerType *>(&other);
+	// return o && (*points_to == *o->points_to);
+	if (!o) return false;
 	if (++pointerCompareNest >= 20) {
 		std::cerr << "PointerType operator == nesting depth exceeded!\n";
 		return true;
 	}
-	bool ret = (*points_to == *o.points_to);
+	bool ret = (*points_to == *o->points_to);
 	--pointerCompareNest;
 	return ret;
 }
@@ -516,27 +519,27 @@ PointerType::operator ==(const Type &other) const
 bool
 ArrayType::operator ==(const Type &other) const
 {
-	if (!other.isArray()) return false;
-	const ArrayType &o = (const ArrayType &)other;
-	return *base_type == *o.base_type
-	    && o.length == length;
+	auto o = dynamic_cast<const ArrayType *>(&other);
+	if (!o) return false;
+	return *base_type == *o->base_type
+	    && length == o->length;
 }
 
 bool
 NamedType::operator ==(const Type &other) const
 {
-	if (!other.isNamed()) return false;
-	const NamedType &o = (const NamedType &)other;
-	return name == o.name;
+	auto o = dynamic_cast<const NamedType *>(&other);
+	if (!o) return false;
+	return name == o->name;
 }
 
 bool
 CompoundType::operator ==(const Type &other) const
 {
-	if (!other.isCompound()) return false;
-	const CompoundType &o = (const CompoundType &)other;
-	if (elems.size() != o.elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+	auto o = dynamic_cast<const CompoundType *>(&other);
+	if (!o) return false;
+	if (elems.size() != o->elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
@@ -545,10 +548,10 @@ CompoundType::operator ==(const Type &other) const
 bool
 UnionType::operator ==(const Type &other) const
 {
-	if (!other.isUnion()) return false;
-	const UnionType &o = (const UnionType &)other;
-	if (elems.size() != o.elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o.elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
+	auto o = dynamic_cast<const UnionType *>(&other);
+	if (!o) return false;
+	if (elems.size() != o->elems.size()) return false;
+	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
 		if (*it1->type != *it2->type)
 			return false;
 	return true;
@@ -557,26 +560,26 @@ UnionType::operator ==(const Type &other) const
 bool
 SizeType::operator ==(const Type &other) const
 {
-	if (!other.isSize()) return false;
-	const SizeType &o = (const SizeType &)other;
-	return size == o.size;
+	auto o = dynamic_cast<const SizeType *>(&other);
+	if (!o) return false;
+	return size == o->size;
 }
 
 #if 0 // Cruft?
 bool
 UpperType::operator ==(const Type &other) const
 {
-	if (!other.isUpper()) return false;
-	const UpperType &o = (const UpperType &)other;
-	return *base_type == *o.base_type;
+	auto o = dynamic_cast<const UpperType *>(&other);
+	if (!o) return false;
+	return *base_type == *o->base_type;
 }
 
 bool
 LowerType::operator ==(const Type &other) const
 {
-	if (!other.isLower()) return false;
-	const LowerType &o = (const LowerType &)other;
-	return *base_type == *o.base_type;
+	auto o = dynamic_cast<const LowerType *>(&other);
+	if (!o) return false;
+	return *base_type == *o->base_type;
 }
 #endif
 
@@ -630,21 +633,18 @@ FloatType::operator -=(const Type &other) const
 bool
 IntegerType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const IntegerType &o = (const IntegerType &)other;
-	if (size < o.size) return true;
-	if (size > o.size) return false;
-	return signedness < o.signedness;
+	auto o = dynamic_cast<const IntegerType *>(&other);
+	if (!o) return id < other.getId();
+	if (size != o->size) return size < o->size;
+	return signedness < o->signedness;
 }
 
 bool
 FloatType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const FloatType &o = (const FloatType &)other;
-	return size < o.size;
+	auto o = dynamic_cast<const FloatType *>(&other);
+	if (!o) return id < other.getId();
+	return size < o->size;
 }
 
 bool
@@ -656,8 +656,8 @@ VoidType::operator <(const Type &other) const
 bool
 FuncType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
+	auto o = dynamic_cast<const FuncType *>(&other);
+	if (!o) return id < other.getId();
 	// FIXME: Need to compare signatures
 	return true;
 }
@@ -665,8 +665,8 @@ FuncType::operator <(const Type &other) const
 bool
 BooleanType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
+	auto o = dynamic_cast<const BooleanType *>(&other);
+	if (!o) return id < other.getId();
 	return true;
 }
 
@@ -679,73 +679,66 @@ CharType::operator <(const Type &other) const
 bool
 PointerType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const PointerType &o = (const PointerType &)other;
-	return *points_to < *o.points_to;
+	auto o = dynamic_cast<const PointerType *>(&other);
+	if (!o) return id < other.getId();
+	return *points_to < *o->points_to;
 }
 
 bool
 ArrayType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const ArrayType &o = (const ArrayType &)other;
-	return *base_type < *o.base_type;
+	auto o = dynamic_cast<const ArrayType *>(&other);
+	if (!o) return id < other.getId();
+	return *base_type < *o->base_type;
 }
 
 bool
 NamedType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const NamedType &o = (const NamedType &)other;
-	return name < o.name;
+	auto o = dynamic_cast<const NamedType *>(&other);
+	if (!o) return id < other.getId();
+	return name < o->name;
 }
 
 bool
 CompoundType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	return getSize() < other.getSize();  // This won't separate structs of the same size!! MVE
+	auto o = dynamic_cast<const CompoundType *>(&other);
+	if (!o) return id < other.getId();
+	return getSize() < o->getSize();  // This won't separate structs of the same size!! MVE
 }
 
 bool
 UnionType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const UnionType &o = (const UnionType &)other;
-	return elems.size() < o.elems.size();
+	auto o = dynamic_cast<const UnionType *>(&other);
+	if (!o) return id < other.getId();
+	return elems.size() < o->elems.size();
 }
 
 bool
 SizeType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const SizeType &o = (const SizeType &)other;
-	return size < o.size;
+	auto o = dynamic_cast<const SizeType *>(&other);
+	if (!o) return id < other.getId();
+	return size < o->size;
 }
 
 #if 0 // Cruft?
 bool
 UpperType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const UpperType &o = (const UpperType &)other;
-	return *base_type < *o.base_type;
+	auto o = dynamic_cast<const UpperType *>(&other);
+	if (!o) return id < other.getId();
+	return *base_type < *o->base_type;
 }
 
 bool
 LowerType::operator <(const Type &other) const
 {
-	if (id < other.getId()) return true;
-	if (id > other.getId()) return false;
-	const LowerType &o = (const LowerType &)other;
-	return *base_type < *o.base_type;
+	auto o = dynamic_cast<const LowerType *>(&other);
+	if (!o) return id < other.getId();
+	return *base_type < *o->base_type;
 }
 #endif
 
