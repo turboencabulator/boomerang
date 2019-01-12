@@ -391,11 +391,11 @@ Decompiler::getCompoundMembers(const QString &name, QTableWidget *tbl)
 	if (!ty || !ty->resolvesToCompound())
 		return;
 	CompoundType *c = ty->asCompound();
-	for (unsigned int i = 0; i < c->getNumTypes(); ++i) {
+	for (auto it = c->cbegin(); it != c->cend(); ++it) {
 		tbl->setRowCount(tbl->rowCount() + 1);
-		tbl->setItem(tbl->rowCount() - 1, 0, new QTableWidgetItem(tr("%1").arg(c->getOffsetTo(i))));
-		tbl->setItem(tbl->rowCount() - 1, 1, new QTableWidgetItem(tr("%1").arg(c->getOffsetTo(i) / 8)));
-		tbl->setItem(tbl->rowCount() - 1, 2, new QTableWidgetItem(QString(c->getName(i))));
-		tbl->setItem(tbl->rowCount() - 1, 3, new QTableWidgetItem(tr("%1").arg(c->getType(i)->getSize())));
+		tbl->setItem(tbl->rowCount() - 1, 0, new QTableWidgetItem(tr("%1").arg(c->getOffsetTo(it))));
+		tbl->setItem(tbl->rowCount() - 1, 1, new QTableWidgetItem(tr("%1").arg(c->getOffsetTo(it) / 8)));
+		tbl->setItem(tbl->rowCount() - 1, 2, new QTableWidgetItem(QString(c->getName(it))));
+		tbl->setItem(tbl->rowCount() - 1, 3, new QTableWidgetItem(tr("%1").arg(c->getType(it)->getSize())));
 	}
 }

@@ -1448,9 +1448,9 @@ Prog::readNativeAs(ADDRESS uaddr, Type *type) const
 	if (type->resolvesToCompound()) {
 		CompoundType *c = type->asCompound();
 		Exp *n = e = new Terminal(opNil);
-		for (unsigned int i = 0; i < c->getNumTypes(); ++i) {
-			ADDRESS addr = uaddr + c->getOffsetTo(i) / 8;
-			Type *t = c->getType(i);
+		for (auto it = c->cbegin(); it != c->cend(); ++it) {
+			ADDRESS addr = uaddr + c->getOffsetTo(it) / 8;
+			Type *t = c->getType(it);
 			Exp *v = readNativeAs(addr, t);
 			if (!v) {
 				LOG << "unable to read native address 0x" << std::hex << addr << std::dec << " as type " << t->getCtype() << "\n";

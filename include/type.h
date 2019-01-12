@@ -501,20 +501,23 @@ public:
 	virtual    ~CompoundType();
 	bool        isCompound() const override { return true; }
 
+	typedef std::vector<CompoundElement>::const_iterator const_iterator;
+	const_iterator cbegin() const { return elems.cbegin(); }
+	const_iterator cend()   const { return elems.cend(); }
+
 	void        addType(Type *, const std::string &);
-	unsigned    getNumTypes() const { return elems.size(); }
-	Type       *getType(unsigned n) const { assert(n < elems.size()); return elems[n].type; }
+	Type       *getType(const_iterator it) const { assert(it != cend()); return it->type; }
 	Type       *getType(const std::string &) const;
-	const char *getName(unsigned n) const { assert(n < elems.size()); return elems[n].name.c_str(); }
-	void        setTypeAtOffset(unsigned n, Type *ty);
-	Type       *getTypeAtOffset(unsigned n) const;
-	void        setNameAtOffset(unsigned n, const std::string &);
-	const char *getNameAtOffset(unsigned n) const;
+	const char *getName(const_iterator it) const { assert(it != cend()); return it->name.c_str(); }
+	void        setTypeAtOffset(unsigned, Type *);
+	Type       *getTypeAtOffset(unsigned) const;
+	void        setNameAtOffset(unsigned, const std::string &);
+	const char *getNameAtOffset(unsigned) const;
 	bool        isGeneric() const { return generic; }
-	void        updateGenericMember(int off, Type *ty, bool &ch);   // Add a new generic member if necessary
-	unsigned    getOffsetTo(unsigned n) const;
+	void        updateGenericMember(unsigned, Type *, bool &);   // Add a new generic member if necessary
+	unsigned    getOffsetTo(const_iterator) const;
 	unsigned    getOffsetTo(const std::string &) const;
-	unsigned    getOffsetRemainder(unsigned n) const;
+	unsigned    getOffsetRemainder(unsigned) const;
 
 	Type       *clone() const override;
 
@@ -556,11 +559,7 @@ public:
 	bool        isUnion() const override { return true; }
 
 	void        addType(Type *, const std::string &);
-	unsigned    getNumTypes() const { return elems.size(); }
 	bool        findType(Type *ty) const;  // Return true if ty is already in the union
-	//Type       *getType(unsigned n) const { assert(n < elems.size()); return elems[n].type; }
-	//Type       *getType(const std::string &) const;
-	//const char *getName(unsigned n) const { assert(n < elems.size()); return elems[n].name.c_str(); }
 
 	Type       *clone() const override;
 

@@ -1015,8 +1015,8 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 					paramIsFuncPointer = true;
 				} else if (points_to->resolvesToCompound()) {
 					compound = points_to->asCompound();
-					for (unsigned int n = 0; n < compound->getNumTypes(); ++n) {
-						auto ty = compound->getType(n);
+					for (auto it = compound->cbegin(); it != compound->cend(); ++it) {
+						auto ty = compound->getType(it);
 						if (ty->resolvesToPointer()
 						 && ty->asPointer()->getPointsTo()->resolvesToFunc())
 							paramIsCompoundWithFuncPointers = true;
@@ -1085,8 +1085,8 @@ PentiumFrontEnd::extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls
 				continue;
 #endif
 
-			for (unsigned int n = 0; n < compound->getNumTypes(); ++n) {
-				auto ty = compound->getType(n);
+			for (auto it = compound->cbegin(); it != compound->cend(); ++it) {
+				auto ty = compound->getType(it);
 				if (ty->resolvesToPointer()
 				 && ty->asPointer()->getPointsTo()->resolvesToFunc()) {
 					ADDRESS d = pBF->readNative4(a);

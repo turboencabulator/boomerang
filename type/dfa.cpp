@@ -733,7 +733,7 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 	// Check for anytype meet compound with anytype as first element
 	if (other->resolvesToCompound()) {
 		auto otherComp = other->asCompound();
-		Type *firstType = otherComp->getType((unsigned)0);
+		Type *firstType = otherComp->getType(otherComp->cbegin());
 		if (firstType->isCompatibleWith(this))
 			// struct meet first element = struct
 			return other->clone();

@@ -297,11 +297,11 @@ NamedType::getSize() const
 unsigned
 CompoundType::getSize() const
 {
-	unsigned n = 0;
+	unsigned sz = 0;
 	for (const auto &elem : elems)
 		// NOTE: this assumes no padding... perhaps explicit padding will be needed
-		n += elem.type->getSize();
-	return n;
+		sz += elem.type->getSize();
+	return sz;
 }
 unsigned
 UnionType::getSize() const
@@ -330,28 +330,28 @@ CompoundType::getType(const std::string &nam) const
 	return nullptr;
 }
 
-// Note: n is a BIT offset
+// Note: off is a BIT offset
 Type *
-CompoundType::getTypeAtOffset(unsigned n) const
+CompoundType::getTypeAtOffset(unsigned off) const
 {
 	unsigned offset = 0;
 	for (const auto &elem : elems) {
 		unsigned sz = elem.type->getSize();
-		if (offset <= n && n < offset + sz)
+		if (offset <= off && off < offset + sz)
 			return elem.type;
 		offset += sz;
 	}
 	return nullptr;
 }
 
-// Note: n is a BIT offset
+// Note: off is a BIT offset
 void
-CompoundType::setTypeAtOffset(unsigned n, Type *ty)
+CompoundType::setTypeAtOffset(unsigned off, Type *ty)
 {
 	unsigned offset = 0;
 	for (auto it = elems.begin(); it != elems.end(); ++it) {
 		unsigned sz = it->type->getSize();
-		if (offset <= n && n < offset + sz) {
+		if (offset <= off && off < offset + sz) {
 			it->type = ty;
 			unsigned newsz = ty->getSize();
 			if (newsz < sz) {
@@ -367,12 +367,12 @@ CompoundType::setTypeAtOffset(unsigned n, Type *ty)
 }
 
 void
-CompoundType::setNameAtOffset(unsigned n, const std::string &nam)
+CompoundType::setNameAtOffset(unsigned off, const std::string &nam)
 {
 	unsigned offset = 0;
 	for (auto &elem : elems) {
 		unsigned sz = elem.type->getSize();
-		if (offset <= n && n < offset + sz) {
+		if (offset <= off && off < offset + sz) {
 			elem.name = nam;
 			return;
 		}
@@ -382,12 +382,12 @@ CompoundType::setNameAtOffset(unsigned n, const std::string &nam)
 
 
 const char *
-CompoundType::getNameAtOffset(unsigned n) const
+CompoundType::getNameAtOffset(unsigned off) const
 {
 	unsigned offset = 0;
 	for (const auto &elem : elems) {
 		unsigned sz = elem.type->getSize();
-		if (offset <= n && n < offset + sz)
+		if (offset <= off && off < offset + sz)
 			return elem.name.c_str();
 		offset += sz;
 	}
@@ -395,11 +395,11 @@ CompoundType::getNameAtOffset(unsigned n) const
 }
 
 unsigned
-CompoundType::getOffsetTo(unsigned n) const
+CompoundType::getOffsetTo(const_iterator it) const
 {
 	unsigned offset = 0;
-	for (unsigned i = 0; i < n; ++i) {
-		offset += elems[i].type->getSize();
+	for (auto ii = elems.cbegin(); ii != it; ++ii) {
+		offset += ii->type->getSize();
 	}
 	return offset;
 }
@@ -417,14 +417,14 @@ CompoundType::getOffsetTo(const std::string &member) const
 }
 
 unsigned
-CompoundType::getOffsetRemainder(unsigned n) const
+CompoundType::getOffsetRemainder(unsigned off) const
 {
-	unsigned r = n;
+	unsigned r = off;
 	unsigned offset = 0;
 	for (const auto &elem : elems) {
 		unsigned sz = elem.type->getSize();
 		offset += sz;
-		if (offset > n)
+		if (offset > off)
 			break;
 		r -= sz;
 	}
@@ -717,7 +717,7 @@ UnionType::operator <(const Type &other) const
 	if (id < other.getId()) return true;
 	if (id > other.getId()) return false;
 	const UnionType &o = (const UnionType &)other;
-	return getNumTypes() < o.getNumTypes();
+	return elems.size() < o.elems.size();
 }
 
 bool
@@ -1725,7 +1725,7 @@ UnionType::addType(Type *n, const std::string &str)
 
 // Update this compound to use the fact that offset off has type ty
 void
-CompoundType::updateGenericMember(int off, Type *ty, bool &ch)
+CompoundType::updateGenericMember(unsigned off, Type *ty, bool &ch)
 {
 	assert(generic);
 	if (auto existingType = getTypeAtOffset(off)) {
