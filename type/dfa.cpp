@@ -1616,7 +1616,7 @@ UnionType::isCompatible(Type *other, bool all)
 	}
 	// Other is not a UnionType
 	for (const auto &elem : elems)
-		if (other->isCompatibleWith(elem.type), all)
+		if (other->isCompatibleWith(elem.type, all))
 			return true;
 	return false;
 }
