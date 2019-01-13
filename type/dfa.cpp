@@ -359,14 +359,16 @@ Type *
 VoidType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
 	// void meet x = x
-	ch |= !other->resolvesToVoid();
+	auto ort = other->resolvesTo();
+	ch |= !dynamic_cast<VoidType *>(ort);
 	return other->clone();
 }
 
 Type *
 FuncType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
 	if (*this == *other)
 		return this;  // NOTE: at present, compares names as well as types and num parameters
@@ -376,26 +378,26 @@ FuncType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToInteger()) {
-		auto otherInt = other->asInteger();
+	if (auto o = dynamic_cast<IntegerType *>(ort)) {
 		// Signedness
 		int oldSignedness = signedness;
-		if (otherInt->signedness > 0)
+		if (o->signedness > 0)
 			++signedness;
-		else if (otherInt->signedness < 0)
+		else if (o->signedness < 0)
 			--signedness;
 		ch |= (signedness > 0) != (oldSignedness > 0);  // Changed from signed to not necessarily signed
 		ch |= (signedness < 0) != (oldSignedness < 0);  // Changed from unsigned to not necessarily unsigned
 		// Size. Assume 0 indicates unknown size
-		if (size < otherInt->size) {
-			size = otherInt->size;
+		if (size < o->size) {
+			size = o->size;
 			ch = true;
 		}
 		return this;
 	}
-	if (other->resolvesToSize()) {
+	if (dynamic_cast<SizeType *>(ort)) {
 		unsigned otherSize = other->getSize();
 		if (size == 0) {  // Doubt this will ever happen
 			size = otherSize;  // FIXME:  Need to set ch = true here?
@@ -415,17 +417,17 @@ IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToFloat()) {
-		auto otherFlt = other->asFloat();
-		if (size < otherFlt->size) {
-			size = otherFlt->size;
+	if (auto o = dynamic_cast<FloatType *>(ort)) {
+		if (size < o->size) {
+			size = o->size;
 			ch = true;
 		}
 		return this;
 	}
-	if (other->resolvesToSize()) {
+	if (dynamic_cast<SizeType *>(ort)) {
 		unsigned otherSize = other->getSize();
 		if (size < otherSize) {
 			size = otherSize;
@@ -439,9 +441,10 @@ FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToBoolean())
+	if (dynamic_cast<BooleanType *>(ort))
 		return this;
 	return createUnion(other, ch, bHighestPtr);
 }
@@ -449,16 +452,17 @@ BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToChar())
+	if (dynamic_cast<CharType *>(ort))
 		return this;
 	// Also allow char to merge with integer
-	if (other->resolvesToInteger()) {
+	if (dynamic_cast<IntegerType *>(ort)) {
 		ch = true;
 		return other->clone();
 	}
-	if (other->resolvesToSize() && other->getSize() == getSize())
+	if (dynamic_cast<SizeType *>(ort) && other->getSize() == getSize())
 		return this;
 	return createUnion(other, ch, bHighestPtr);
 }
@@ -466,19 +470,19 @@ CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToSize() && other->getSize() == getSize())
+	if (dynamic_cast<SizeType *>(ort) && other->getSize() == getSize())
 		return this;
-	if (other->resolvesToPointer()) {
-		auto otherPtr = other->asPointer();
-		if (pointsToAlpha() && !otherPtr->pointsToAlpha()) {
-			setPointsTo(otherPtr->getPointsTo());
+	if (auto o = dynamic_cast<PointerType *>(ort)) {
+		if (pointsToAlpha() && !o->pointsToAlpha()) {
+			setPointsTo(o->getPointsTo());
 			ch = true;
 		} else {
 			// We have a meeting of two pointers.
 			Type *thisBase = points_to;
-			Type *otherBase = otherPtr->points_to;
+			Type *otherBase = o->points_to;
 			if (bHighestPtr) {
 				// We want the greatest type of thisBase and otherBase
 				if (thisBase->isSubTypeOrEqual(otherBase))
@@ -498,10 +502,10 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 					return this;  // Crude attempt to prevent stack overflow
 				if (*thisBase == *otherBase)
 					return this;
-				if (pointerDepth() == otherPtr->pointerDepth()) {
+				if (pointerDepth() == o->pointerDepth()) {
 					Type *fType = getFinalPointsTo();
 					if (fType->resolvesToVoid()) return other->clone();
-					Type *ofType = otherPtr->getFinalPointsTo();
+					Type *ofType = o->getFinalPointsTo();
 					if (ofType->resolvesToVoid()) return this;
 					if (*fType == *ofType) return this;
 				}
@@ -522,18 +526,18 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToArray()) {
-		auto otherArr = other->asArray();
-		Type *newBase = base_type->clone()->meetWith(otherArr->base_type, ch, bHighestPtr);
+	if (auto o = dynamic_cast<ArrayType *>(ort)) {
+		Type *newBase = base_type->clone()->meetWith(o->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
 			ch = true;
 			// base_type = newBase;  // No: call setBaseType to adjust length
 			setBaseType(newBase);
 		}
-		if (otherArr->getLength() < getLength()) {
-			this->setLength(otherArr->getLength());
+		if (o->getLength() < getLength()) {
+			this->setLength(o->getLength());
 		}
 		return this;
 	}
@@ -552,7 +556,8 @@ NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 			return this;  // Retain the named type, much better than some compound type
 		return ret;  // Otherwise, whatever the result is
 	}
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
 	if (*this == *other)
 		return this;
@@ -562,29 +567,29 @@ NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (!other->resolvesToCompound()) {
-		if (elems[0].type->isCompatibleWith(other))
-			// struct meet first element = struct
+	if (auto o = dynamic_cast<CompoundType *>(ort)) {
+		if (o->isSuperStructOf(*this)) {
+			// The other structure has a superset of my struct's offsets. Preserve the names etc of the bigger struct.
+			ch = true;
+			return other;
+		}
+		if (isSubStructOf(*o)) {
+			// This is a superstruct of other
+			ch = true;
 			return this;
+		}
+		if (*this == *other)
+			return this;
+		// Not compatible structs. Create a union of both complete structs.
+		// NOTE: may be possible to take advantage of some overlaps of the two structures some day.
 		return createUnion(other, ch, bHighestPtr);
 	}
-	auto otherCmp = other->asCompound();
-	if (otherCmp->isSuperStructOf(*this)) {
-		// The other structure has a superset of my struct's offsets. Preserve the names etc of the bigger struct.
-		ch = true;
-		return other;
-	}
-	if (isSubStructOf(*otherCmp)) {
-		// This is a superstruct of other
-		ch = true;
+	if (elems[0].type->isCompatibleWith(other))
+		// struct meet first element = struct
 		return this;
-	}
-	if (*this == *other)
-		return this;
-	// Not compatible structs. Create a union of both complete structs.
-	// NOTE: may be possible to take advantage of some overlaps of the two structures some day.
 	return createUnion(other, ch, bHighestPtr);
 }
 
@@ -596,25 +601,27 @@ unsigned unionCount = 0;
 Type *
 UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToUnion()) {
-		auto otherUnion = other->asUnion();
-		if (this == otherUnion)  // Note: pointer comparison
+	if (auto o = dynamic_cast<UnionType *>(ort)) {
+		if (this == o)  // Note: pointer comparison
 			return this;  // Avoid infinite recursion
 		ch = true;
 		// Always return this, never other, (even if other is larger than this) because otherwise iterators can become
 		// invalid below
-		for (const auto &elem : otherUnion->elems) {
+		for (const auto &elem : o->elems) {
 			meetWith(elem.type, ch, bHighestPtr);
 			return this;
 		}
 	}
 
 	// Other is a non union type
-	if (other->resolvesToPointer() && other->asPointer()->getPointsTo() == this) {
-		LOG << "WARNING! attempt to union " << getCtype() << " with pointer to self!\n";
-		return this;
+	if (auto o = dynamic_cast<PointerType *>(ort)) {
+		if (o->getPointsTo() == this) {
+			LOG << "WARNING! attempt to union " << getCtype() << " with pointer to self!\n";
+			return this;
+		}
 	}
 	for (auto &elem : elems) {
 		Type *curr = elem.type->clone();
@@ -643,9 +650,10 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToSize()) {
+	if (dynamic_cast<SizeType *>(ort)) {
 		unsigned otherSize = other->getSize();
 		if (otherSize != size) {
 			LOG << "size " << size << " meet with size " << otherSize << "!\n";
@@ -657,9 +665,9 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;
 	}
 	ch = true;
-	if (other->resolvesToInteger()
-	 || other->resolvesToFloat()
-	 || other->resolvesToPointer()) {
+	if (dynamic_cast<IntegerType *>(ort)
+	 || dynamic_cast<FloatType *>(ort)
+	 || dynamic_cast<PointerType *>(ort)) {
 		unsigned otherSize = other->getSize();
 		if (otherSize == 0) {
 			other->setSize(size);  // FIXME:  Won't work if other->isNamed().  Stuff below probably makes similar assumptions.
@@ -677,11 +685,11 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToUpper()) {
-		auto otherUpp = other->asUpper();
-		Type *newBase = base_type->clone()->meetWith(otherUpp->base_type, ch, bHighestPtr);
+	if (auto o = dynamic_cast<UpperType *>(ort)) {
+		Type *newBase = base_type->clone()->meetWith(o->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
 			ch = true;
 			base_type = newBase;
@@ -695,11 +703,11 @@ UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 Type *
 LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
-	if (other->resolvesToVoid())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<VoidType *>(ort))
 		return this;
-	if (other->resolvesToLower()) {
-		auto otherLow = other->asLower();
-		Type *newBase = base_type->clone()->meetWith(otherLow->base_type, ch, bHighestPtr);
+	if (auto o = dynamic_cast<LowerType *>(ort)) {
+		Type *newBase = base_type->clone()->meetWith(o->base_type, ch, bHighestPtr);
 		if (*newBase != *base_type) {
 			ch = true;
 			base_type = newBase;
@@ -728,20 +736,19 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
 {
 
 	assert(!resolvesToUnion());  // `this' should not be a UnionType
-	if (other->resolvesToUnion())
+	auto ort = other->resolvesTo();
+	if (dynamic_cast<UnionType *>(ort))
 		return other->meetWith(this, ch, bHighestPtr)->clone();  // Put all the hard union logic in one place
 	// Check for anytype meet compound with anytype as first element
-	if (other->resolvesToCompound()) {
-		auto otherComp = other->asCompound();
-		Type *firstType = otherComp->getType(otherComp->cbegin());
+	if (auto o = dynamic_cast<CompoundType *>(ort)) {
+		Type *firstType = o->getType(o->cbegin());
 		if (firstType->isCompatibleWith(this))
 			// struct meet first element = struct
 			return other->clone();
 	}
 	// Check for anytype meet array of anytype
-	if (other->resolvesToArray()) {
-		auto otherArr = other->asArray();
-		Type *elemTy = otherArr->getBaseType();
+	if (auto o = dynamic_cast<ArrayType *>(ort)) {
+		Type *elemTy = o->getBaseType();
 		if (elemTy->isCompatibleWith(this))
 			// array meet element = array
 			return other->clone();
@@ -900,21 +907,23 @@ BoolAssign::dfaTypeAnalysis(bool &ch)
 // beta*    bottom  void*   void*
 // int      void*   int     pi
 // pi       void*   pi      pi
-Type *
+static Type *
 sigmaSum(Type *ta, Type *tb)
 {
 	bool ch;
-	if (ta->resolvesToPointer()) {
-		if (tb->resolvesToPointer())
+	auto tart = ta->resolvesTo();
+	auto tbrt = tb->resolvesTo();
+	if (dynamic_cast<PointerType *>(tart)) {
+		if (dynamic_cast<PointerType *>(tbrt))
 			return ta->createUnion(tb, ch);
 		return new PointerType(new VoidType);
 	}
-	if (ta->resolvesToInteger()) {
-		if (tb->resolvesToPointer())
+	if (dynamic_cast<IntegerType *>(tart)) {
+		if (dynamic_cast<PointerType *>(tbrt))
 			return new PointerType(new VoidType);
 		return tb->clone();
 	}
-	if (tb->resolvesToPointer())
+	if (dynamic_cast<PointerType *>(tbrt))
 		return new PointerType(new VoidType);
 	return ta->clone();
 }
@@ -925,23 +934,25 @@ sigmaSum(Type *ta, Type *tb)
 // alpha*   int     bottom  int
 // int      void*   int     pi
 // pi       pi      pi      pi
-Type *
+static Type *
 sigmaAddend(Type *tc, Type *to)
 {
 	bool ch;
-	if (tc->resolvesToPointer()) {
-		if (to->resolvesToPointer())
+	auto tcrt = tc->resolvesTo();
+	auto tort = to->resolvesTo();
+	if (dynamic_cast<PointerType *>(tcrt)) {
+		if (dynamic_cast<PointerType *>(tort))
 			return new IntegerType;
-		if (to->resolvesToInteger())
+		if (dynamic_cast<IntegerType *>(tort))
 			return new PointerType(new VoidType);
 		return to->clone();
 	}
-	if (tc->resolvesToInteger()) {
-		if (to->resolvesToPointer())
+	if (dynamic_cast<IntegerType *>(tcrt)) {
+		if (dynamic_cast<PointerType *>(tort))
 			return tc->createUnion(to, ch);
 		return to->clone();
 	}
-	if (to->resolvesToPointer())
+	if (dynamic_cast<PointerType *>(tort))
 		return new IntegerType;
 	return tc->clone();
 }
@@ -951,21 +962,23 @@ sigmaAddend(Type *tc, Type *to)
 // alpha*   bottom  void*   void*
 // int      void*   int     pi
 // pi       void*   int     pi
-Type *
+static Type *
 deltaMinuend(Type *tc, Type *tb)
 {
 	bool ch;
-	if (tc->resolvesToPointer()) {
-		if (tb->resolvesToPointer())
+	auto tcrt = tc->resolvesTo();
+	auto tbrt = tb->resolvesTo();
+	if (dynamic_cast<PointerType *>(tcrt)) {
+		if (dynamic_cast<PointerType *>(tbrt))
 			return tc->createUnion(tb, ch);
 		return new PointerType(new VoidType);
 	}
-	if (tc->resolvesToInteger()) {
-		if (tb->resolvesToPointer())
+	if (dynamic_cast<IntegerType *>(tcrt)) {
+		if (dynamic_cast<PointerType *>(tbrt))
 			return new PointerType(new VoidType);
 		return tc->clone();
 	}
-	if (tb->resolvesToPointer())
+	if (dynamic_cast<PointerType *>(tbrt))
 		return new PointerType(new VoidType);
 	return tc->clone();
 }
@@ -975,23 +988,25 @@ deltaMinuend(Type *tc, Type *tb)
 // alpha*   int     void*   pi
 // int      bottom  int     int
 // pi       int     pi      pi
-Type *
+static Type *
 deltaSubtrahend(Type *tc, Type *ta)
 {
 	bool ch;
-	if (tc->resolvesToPointer()) {
-		if (ta->resolvesToPointer())
+	auto tcrt = tc->resolvesTo();
+	auto tart = ta->resolvesTo();
+	if (dynamic_cast<PointerType *>(tcrt)) {
+		if (dynamic_cast<PointerType *>(tart))
 			return new IntegerType;
-		if (ta->resolvesToInteger())
+		if (dynamic_cast<IntegerType *>(tart))
 			return tc->createUnion(ta, ch);
 		return new IntegerType;
 	}
-	if (tc->resolvesToInteger()) {
-		if (ta->resolvesToPointer())
+	if (dynamic_cast<IntegerType *>(tcrt)) {
+		if (dynamic_cast<PointerType *>(tart))
 			return new PointerType(new VoidType);
 		return ta->clone();
 	}
-	if (ta->resolvesToPointer())
+	if (dynamic_cast<PointerType *>(tart))
 		return tc->clone();
 	return ta->clone();
 }
@@ -1001,23 +1016,25 @@ deltaSubtrahend(Type *tc, Type *ta)
 // beta*    int     bottom  int
 // int      void*   int     pi
 // pi       pi      int     pi
-Type *
+static Type *
 deltaDifference(Type *ta, Type *tb)
 {
 	bool ch;
-	if (ta->resolvesToPointer()) {
-		if (tb->resolvesToPointer())
+	auto tart = ta->resolvesTo();
+	auto tbrt = tb->resolvesTo();
+	if (dynamic_cast<PointerType *>(tart)) {
+		if (dynamic_cast<PointerType *>(tbrt))
 			return new IntegerType;
-		if (tb->resolvesToInteger())
+		if (dynamic_cast<IntegerType *>(tbrt))
 			return new PointerType(new VoidType);
 		return tb->clone();
 	}
-	if (ta->resolvesToInteger()) {
-		if (tb->resolvesToPointer())
+	if (dynamic_cast<IntegerType *>(tart)) {
+		if (dynamic_cast<PointerType *>(tbrt))
 			return ta->createUnion(tb, ch);
 		return new IntegerType;
 	}
-	if (tb->resolvesToPointer())
+	if (dynamic_cast<PointerType *>(tbrt))
 		return new IntegerType;
 	return ta->clone();
 }
@@ -1654,10 +1671,11 @@ Type::isSubTypeOrEqual(Type *other)
 Type *
 Type::dereference()
 {
-	if (resolvesToPointer())
-		return asPointer()->getPointsTo();
-	if (resolvesToUnion())
-		return asUnion()->dereferenceUnion();
+	auto rt = resolvesTo();
+	if (auto pt = dynamic_cast<PointerType *>(rt))
+		return pt->getPointsTo();
+	if (auto ut = dynamic_cast<UnionType *>(rt))
+		return ut->dereferenceUnion();
 	return new VoidType();  // Can't dereference this type. Note: should probably be bottom
 }
 
