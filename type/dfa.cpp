@@ -986,10 +986,11 @@ deltaSubtrahend(Type *tc, Type *ta)
 			return tc->createUnion(ta, ch);
 		return new IntegerType;
 	}
-	if (tc->resolvesToInteger())
+	if (tc->resolvesToInteger()) {
 		if (ta->resolvesToPointer())
 			return new PointerType(new VoidType);
-	return ta->clone();
+		return ta->clone();
+	}
 	if (ta->resolvesToPointer())
 		return tc->clone();
 	return ta->clone();
