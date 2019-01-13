@@ -1368,19 +1368,6 @@ LowerType::mergeWith(Type *other)
 }
 #endif
 
-// Return true if this is a superstructure of other, i.e. we have the same types at the same offsets as other
-bool
-CompoundType::isSuperStructOf(const Type &other) const
-{
-	auto o = dynamic_cast<const CompoundType *>(&other);
-	if (!o) return false;
-	if (elems.size() < o->elems.size()) return false;
-	for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it2 != o->elems.cend(); ++it1, ++it2)
-		if (*it1->type != *it2->type)
-			return false;
-	return true;
-}
-
 // Return true if this is a substructure of other, i.e. other has the same types at the same offsets as this
 bool
 CompoundType::isSubStructOf(const Type &other) const

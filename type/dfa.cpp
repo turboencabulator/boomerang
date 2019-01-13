@@ -571,17 +571,14 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	if (dynamic_cast<VoidType *>(ort))
 		return this;
 	if (auto o = dynamic_cast<CompoundType *>(ort)) {
-		if (o->isSuperStructOf(*this)) {
+		if (o->isSubStructOf(*this)) {
+			return this;
+		}
+		if (isSubStructOf(*o)) {
 			// The other structure has a superset of my struct's offsets. Preserve the names etc of the bigger struct.
 			ch = true;
 			return other;
 		}
-		if (isSuperStructOf(*o)) {
-			// This is a superstruct of other
-			return this;
-		}
-		if (*this == *other)
-			return this;
 		// Not compatible structs. Create a union of both complete structs.
 		// NOTE: may be possible to take advantage of some overlaps of the two structures some day.
 		return createUnion(other, ch, bHighestPtr);
