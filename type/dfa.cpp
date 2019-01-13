@@ -576,9 +576,8 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 			ch = true;
 			return other;
 		}
-		if (isSubStructOf(*o)) {
+		if (isSuperStructOf(*o)) {
 			// This is a superstruct of other
-			ch = true;
 			return this;
 		}
 		if (*this == *other)
