@@ -1549,8 +1549,6 @@ FuncType::isCompatible(const Type *other, bool all) const
 {
 	assert(signature);
 	auto ort = other->resolvesTo();
-	if (*this == *other) return true;  // MVE: should not compare names!
-	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == STD_SIZE;  // FIXME:  FuncType::getSize() != STD_SIZE, is this right?
 	if (auto o = dynamic_cast<const FuncType *>(ort)) {
 		assert(o->signature);
 		if (*o->signature == *signature) return true;
@@ -1572,11 +1570,11 @@ bool
 NamedType::isCompatible(const Type *other, bool all) const
 {
 	if (auto o = dynamic_cast<const NamedType *>(other))
-		if (name == o->getName())
+		if (name == o->name)
 			return true;
 	if (auto rt = resolvesTo())
 		return rt->isCompatibleWith(other);
-	return (*this == *other);
+	return false;
 }
 
 bool
