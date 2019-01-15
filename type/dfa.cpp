@@ -1562,7 +1562,7 @@ PointerType::isCompatible(const Type *other, bool all) const
 	auto ort = other->resolvesTo();
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	if (auto o = dynamic_cast<const PointerType *>(ort))
-		return points_to->isCompatibleWith(o->points_to);
+		return points_to->isCompatibleWith(o->points_to, all);
 	return false;
 }
 
@@ -1573,7 +1573,7 @@ NamedType::isCompatible(const Type *other, bool all) const
 		if (name == o->name)
 			return true;
 	if (auto rt = resolvesTo())
-		return rt->isCompatibleWith(other);
+		return rt->isCompatibleWith(other, all);
 	return false;
 }
 
@@ -1582,10 +1582,10 @@ ArrayType::isCompatible(const Type *other, bool all) const
 {
 	auto ort = other->resolvesTo();
 	if (dynamic_cast<const VoidType *>(ort)) return true;
+	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(this, all);
 	if (auto o = dynamic_cast<const ArrayType *>(ort))
-		if (base_type->isCompatibleWith(o->base_type)) return true;
-	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(this);
-	if (!all && base_type->isCompatibleWith(other)) return true;  // An array of x is compatible with x
+		if (base_type->isCompatibleWith(o->base_type, all)) return true;
+	if (!all && base_type->isCompatibleWith(other, true)) return true;  // An array of x is compatible with x
 	return false;
 }
 
@@ -1621,16 +1621,16 @@ CompoundType::isCompatible(const Type *other, bool all) const
 {
 	auto ort = other->resolvesTo();
 	if (dynamic_cast<const VoidType *>(ort)) return true;
-	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(this);
+	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(this, all);
 	if (auto o = dynamic_cast<const CompoundType *>(ort)) {
 		if (elems.size() != o->elems.size()) return false;  // Is a subcompound compatible with a supercompound?
 		for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
-			if (!it1->type->isCompatibleWith(it2->type))
+			if (!it1->type->isCompatibleWith(it2->type, true))
 				return false;
 		return true;
 	}
 	// Used to always return false here. But in fact, a struct is compatible with its first member (if all is false)
-	return !all && elems[0].type->isCompatibleWith(other);
+	return !all && elems[0].type->isCompatibleWith(other, true);
 }
 
 #if 0 // Cruft?
@@ -1638,7 +1638,7 @@ bool
 UpperType::isCompatible(const Type *other, bool all) const
 {
 	auto ort = other->resolvesTo();
-	if (auto o = dynamic_cast<const UpperType *>(ort)) return base_type->isCompatibleWith(o->base_type);
+	if (auto o = dynamic_cast<const UpperType *>(ort)) return base_type->isCompatibleWith(o->base_type, all);
 	return false;
 }
 
@@ -1646,7 +1646,7 @@ bool
 LowerType::isCompatible(const Type *other, bool all) const
 {
 	auto ort = other->resolvesTo();
-	if (auto o = dynamic_cast<const LowerType *>(ort)) return base_type->isCompatibleWith(o->base_type);
+	if (auto o = dynamic_cast<const LowerType *>(ort)) return base_type->isCompatibleWith(o->base_type, all);
 	return false;
 }
 #endif
