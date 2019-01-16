@@ -1402,8 +1402,13 @@ Type::newIntegerLikeType(unsigned size, int signedness)
 	return new IntegerType(size, signedness);
 }
 
-// Find the entry that overlaps with addr. If none, return end(). We have to use upper_bound and decrement the iterator,
-// because we might want an entry that starts earlier than addr yet still overlaps it
+/**
+ * \brief Return an iterator to the entry for it, or end() if none.
+ *
+ * Find the entry that overlaps with addr.  If none, return end().  We have to
+ * use upper_bound and decrement the iterator, because we might want an entry
+ * that starts earlier than addr yet still overlaps it.
+ */
 DataIntervalMap::iterator
 DataIntervalMap::find_it(ADDRESS addr)
 {
@@ -1417,6 +1422,9 @@ DataIntervalMap::find_it(ADDRESS addr)
 	return dimap.end();
 }
 
+/**
+ * \brief Find the DataInterval at address addr, or null if none.
+ */
 DataIntervalMap::value_type *
 DataIntervalMap::find(ADDRESS addr)
 {
@@ -1426,6 +1434,9 @@ DataIntervalMap::find(ADDRESS addr)
 	return &*it;
 }
 
+/**
+ * \brief True if from addr for size bytes is clear.
+ */
 bool
 DataIntervalMap::isClear(ADDRESS addr, unsigned size)
 {
@@ -1452,9 +1463,14 @@ DataIntervalMap::isClear(ADDRESS addr, unsigned size)
 	return false;
 }
 
-// With the forced parameter: are we forcing the name, the type, or always both?
+/**
+ * \brief Add a new data item.
+ *
+ * With the forced parameter:  Are we forcing the name, the type, or always
+ * both?
+ */
 void
-DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /* = false */)
+DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced)
 {
 	if (!name)
 		name = "<noname>";
@@ -1494,7 +1510,10 @@ DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /
 	}
 }
 
-// We are entering an item that already exists in a larger type. Check for compatibility, meet if necessary.
+/**
+ * We are entering an item that already exists in a larger type.  Check for
+ * compatibility, meet if necessary.
+ */
 void
 DataIntervalMap::enterComponent(value_type *pdie, ADDRESS addr, const char *name, Type *ty, bool forced)
 {
@@ -1521,8 +1540,11 @@ DataIntervalMap::enterComponent(value_type *pdie, ADDRESS addr, const char *name
 		LOG << "TYPE ERROR: Existing type at address 0x" << std::hex << pdie->first << std::dec << " is not structure or array type\n";
 }
 
-// We are entering a struct or array that overlaps existing components. Check for compatibility, and move the
-// components out of the way, meeting if necessary
+/**
+ * We are entering a struct or array that overlaps existing components.  Check
+ * for compatibility, and move the components out of the way, meeting if
+ * necessary.
+ */
 void
 DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, bool forced)
 {
@@ -1631,6 +1653,9 @@ DataIntervalMap::checkMatching(value_type *pdie, ADDRESS addr, const char *name,
 	    << " but added type " << ty->getCtype() << "\n";
 }
 
+/**
+ * \brief Mainly for testing?
+ */
 void
 DataIntervalMap::deleteItem(ADDRESS addr)
 {
@@ -1639,6 +1664,9 @@ DataIntervalMap::deleteItem(ADDRESS addr)
 		dimap.erase(it);
 }
 
+/**
+ * \brief For test and debug.
+ */
 std::string
 DataIntervalMap::prints() const
 {
