@@ -1417,7 +1417,7 @@ DataIntervalMap::find_it(ADDRESS addr)
 	return dimap.end();
 }
 
-DataIntervalEntry *
+DataIntervalMap::value_type *
 DataIntervalMap::find(ADDRESS addr)
 {
 	auto it = find_it(addr);
@@ -1458,7 +1458,7 @@ DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /
 {
 	if (!name)
 		name = "<noname>";
-	DataIntervalEntry *pdie = find(addr);
+	auto pdie = find(addr);
 	if (!pdie) {
 		// Check that this new item is compatible with any items it overlaps with, and insert it
 		replaceComponents(addr, name, ty, forced);
@@ -1496,7 +1496,7 @@ DataIntervalMap::addItem(ADDRESS addr, const char *name, Type *ty, bool forced /
 
 // We are entering an item that already exists in a larger type. Check for compatibility, meet if necessary.
 void
-DataIntervalMap::enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced)
+DataIntervalMap::enterComponent(value_type *pdie, ADDRESS addr, const char *name, Type *ty, bool forced)
 {
 	if (pdie->second.type->resolvesToCompound()) {
 		unsigned bitOffset = (addr - pdie->first) * 8;
@@ -1611,14 +1611,14 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 	for (auto it = it1; it != it2 && it != dimap.end(); )
 		it = dimap.erase(it);
 
-	DataInterval *pdi = &dimap[addr];  // Finally add the new entry
-	pdi->size = ty->getBytes();
-	pdi->name = name;
-	pdi->type = ty;
+	auto &di = dimap[addr];  // Finally add the new entry
+	di.size = ty->getBytes();
+	di.name = name;
+	di.type = ty;
 }
 
 void
-DataIntervalMap::checkMatching(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced)
+DataIntervalMap::checkMatching(value_type *pdie, ADDRESS addr, const char *name, Type *ty, bool forced)
 {
 	if (pdie->second.type->isCompatibleWith(ty)) {
 		// Just merge the types and exit
@@ -1651,7 +1651,7 @@ DataIntervalMap::prints() const
 ComplexTypeCompList &
 Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 {
-	DataIntervalEntry *pdie = dim.find(addr);
+	auto pdie = dim.find(addr);
 	auto res = new ComplexTypeCompList;
 	if (!pdie) return *res;
 	ADDRESS startCurrent = pdie->first;

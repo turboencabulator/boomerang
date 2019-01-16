@@ -697,22 +697,24 @@ protected:
  * class.  A multimap is not needed, as the type of the entry specifies the
  * overlapping.
  */
-struct DataInterval {
-	unsigned    size;               // The size of this type in bytes
-	std::string name;               // The name of the variable
-	Type       *type;               // The type of the variable
-};
-
-typedef std::pair<const ADDRESS, DataInterval> DataIntervalEntry;       // For result of find() below
-
 class DataIntervalMap {
+public:
+	struct DataInterval {
+		unsigned    size;  // The size of this type in bytes
+		std::string name;  // The name of the variable
+		Type       *type;  // The type of the variable
+	};
+	typedef std::map<ADDRESS, DataInterval>::iterator iterator;
+	typedef std::map<ADDRESS, DataInterval>::value_type value_type;
+
+private:
 	std::map<ADDRESS, DataInterval> dimap;
 	UserProc   *proc;                             // If used for locals, has ptr to UserProc, else nullptr
+
 public:
 	            DataIntervalMap() { }
-	typedef std::map<ADDRESS, DataInterval>::iterator iterator;
 	void        setProc(UserProc *p) { proc = p; }// Initialise the proc pointer
-	DataIntervalEntry *find(ADDRESS addr);        // Find the DataInterval at address addr, or nullptr if none
+	value_type *find(ADDRESS addr);               // Find the DataInterval at address addr, or nullptr if none
 	iterator    find_it(ADDRESS addr);            // Return an iterator to the entry for it, or end() if none
 	bool        isClear(ADDRESS addr, unsigned size);       // True if from addr for size bytes is clear
 	// Add a new data item
@@ -722,9 +724,9 @@ public:
 	std::string prints() const;                 // For test and debug
 
 private:
-	void        enterComponent(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
+	void        enterComponent(value_type *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
 	void        replaceComponents(ADDRESS addr, const char *name, Type *ty, bool forced);
-	void        checkMatching(DataIntervalEntry *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
+	void        checkMatching(value_type *pdie, ADDRESS addr, const char *name, Type *ty, bool forced);
 };
 
 // Not part of the Type class, but logically belongs with it:

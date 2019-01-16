@@ -129,7 +129,7 @@ TypeTest::testDataInterval()
 	                     "0x1004 second double\n");
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
-	DataIntervalEntry *pdie = dim.find(0x1000);
+	auto pdie = dim.find(0x1000);
 	expected = "first";
 	CPPUNIT_ASSERT(pdie);
 	actual = pdie->second.name;
@@ -224,7 +224,7 @@ TypeTest::testDataIntervalOverlaps()
 	ctu.addType(new FloatType(32), "newFloat");
 	dim.addItem(0x1008, "replacementStruct", &ctu);
 
-	DataIntervalEntry *pdie = dim.find(0x1008);
+	auto pdie = dim.find(0x1008);
 	std::string expected = "struct { int newInt; float newFloat; }";
 	std::string actual = pdie->second.type->getCtype();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
