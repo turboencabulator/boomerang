@@ -430,7 +430,7 @@ PointerType::getPointsTo() const
  * \brief Return x for \*\*x
  */
 Type *
-PointerType::getFinalPointsTo()
+PointerType::getFinalPointsTo() const
 {
 	Type *ty = points_to;
 	if (auto pt = dynamic_cast<PointerType *>(ty))
@@ -442,7 +442,7 @@ PointerType::getFinalPointsTo()
  * \brief Return 2 for \*\*x
  */
 int
-PointerType::pointerDepth()
+PointerType::pointerDepth() const
 {
 	int d = 1;
 	auto pt = dynamic_cast<PointerType *>(points_to);
@@ -1338,7 +1338,7 @@ PointerType::newPtrAlpha()
 }
 
 bool
-PointerType::pointsToAlpha()
+PointerType::pointsToAlpha() const
 {
 	// void* counts as alpha* (and may replace it soon)
 	if (dynamic_cast<VoidType *>(points_to)) return true;

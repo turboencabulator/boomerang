@@ -534,12 +534,12 @@ public:
 
 	void        setPointsTo(Type *);
 	Type       *getPointsTo() const;
-	Type       *getFinalPointsTo();
-	int         pointerDepth();
+	Type       *getFinalPointsTo() const;
+	int         pointerDepth() const;
 	/** \} */
 
 	static PointerType *newPtrAlpha();
-	bool        pointsToAlpha();
+	bool        pointsToAlpha() const;
 
 	Exp        *match(Type *) override;
 	Type       *clone() const override;
