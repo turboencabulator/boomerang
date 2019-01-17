@@ -1,9 +1,6 @@
 /**
  * \file
- * \brief Definition of the Type class:  Low-level type information.
- *
- * Note that we may have a completely different system for recording
- * high-level types.
+ * \brief Definition of the Type class.
  *
  * \authors
  * Copyright (C) 2000-2001, The University of Queensland
@@ -24,10 +21,7 @@
 #include <list>
 #include <map>
 #include <string>
-#include <utility>
 #include <vector>
-
-#include <cassert>
 
 class VoidType;
 class FuncType;
@@ -76,30 +70,30 @@ struct ComplexTypeComp {
 };
 typedef std::list<ComplexTypeComp> ComplexTypeCompList;
 
+/**
+ * Low-level type information.
+ *
+ * Note that we may have a completely different system for recording
+ * high-level types.
+ */
 class Type {
 	friend class XMLProgParser;
 
 protected:
-	        eType       id;  // For operator < mostly
+	        eType       id;  ///< For operator < mostly
 private:
 	static  std::map<std::string, Type *> namedTypes;
 
 public:
-	// Constructors
-	                    Type(eType id);
+	                    Type(eType);
 	virtual            ~Type();
-	        eType       getId() const { return id; }
 
-	static void         addNamedType(const std::string &name, Type *type);
-	static Type        *getNamedType(const std::string &name);
-
-	// Return type for given temporary variable name
-	static Type        *getTempType(const std::string &name);
-	static Type        *parseType(const std::string &); // parse a C type
-
-	bool                isCString();
-
-	// runtime type information. Deprecated for most situations; use resolvesToTYPE()
+	/**
+	 * \name Runtime type information
+	 * Deprecated for most situations; use resolvesToTYPE().
+	 * \{
+	 */
+	        eType       getId()         const { return id; }
 	virtual bool        isVoid()        const { return false; }
 	virtual bool        isFunc()        const { return false; }
 	virtual bool        isBoolean()     const { return false; }
@@ -114,11 +108,16 @@ public:
 	virtual bool        isSize()        const { return false; }
 	//virtual bool        isUpper()       const { return false; }
 	//virtual bool        isLower()       const { return false; }
+	/** \} */
 
-	// Return false if some info is missing, e.g. unknown sign, size or basic type
-	virtual bool        isComplete() const { return true; }
+	virtual bool        isComplete() const;
+	        bool        isCString();
+	        bool        isPointerToAlpha();
 
-	// These replace type casts
+	/**
+	 * \name These replace type casts
+	 * \{
+	 */
 	        VoidType     *asVoid();
 	        FuncType     *asFunc();
 	        BooleanType  *asBoolean();
@@ -133,11 +132,14 @@ public:
 	        SizeType     *asSize();
 	//        UpperType    *asUpper();
 	//        LowerType    *asLower();
+	/** \} */
 
+	/**
+	 * \name These replace calls to isNamed() and NamedType::resolvesTo()
+	 * \{
+	 */
 	        Type *      resolvesTo();
 	        const Type *resolvesTo() const;
-
-	// These replace calls to isNamed() and resolvesTo()
 	        bool        resolvesToVoid() const;
 	        bool        resolvesToFunc() const;
 	        bool        resolvesToBoolean() const;
@@ -151,71 +153,71 @@ public:
 	        bool        resolvesToSize() const;
 	//        bool        resolvesToUpper() const;
 	//        bool        resolvesToLower() const;
+	/** \} */
 
-	// cloning
-	virtual Type       *clone() const = 0;
-
-	// Comparisons
-	virtual bool        operator ==(const Type &other) const = 0;    // Considers sign
-	virtual bool        operator !=(const Type &other) const;        // Considers sign
-	//virtual bool        operator -=(const Type &other) const = 0;    // Ignores sign
-	virtual bool        operator < (const Type &other) const = 0;    // Considers sign
-	        bool        operator *=(const Type &other) const {       // Consider only broad type
-		                    return id == other.id;
-	                    }
-	virtual Exp        *match(Type *pattern);
-	// Constraint-based TA: merge one type with another, e.g. size16 with integer-of-size-0 -> int16
-	virtual Type       *mergeWith(Type *other) { assert(0); return nullptr; }
-
-	// Acccess functions
-	virtual unsigned    getSize() const = 0;
-	        unsigned    getBytes() const { return (getSize() + 7) / 8; }
-	virtual void        setSize(unsigned sz) { assert(0); }
-
-	// Print and format functions
-	// Get the C type, e.g. "unsigned int". If not final, include comment for lack of sign information.
-	// When final, choose a signedness etc
-	virtual std::string getCtype(bool final = false) const = 0;
-	// Print in *i32* format
-	        void        starPrint(std::ostream &os) const;
-	virtual void        print(std::ostream &) const = 0;
-	        std::string prints() const;     // For debugging
-
-	virtual std::string getTempName() const; // Get a temporary name for the type
-
-	// Clear the named type map. This is necessary when testing; the
-	// type for the first parameter to 'main' is different for sparc and pentium
-	static  void        clearNamedTypes() { namedTypes.clear(); }
-
-	        bool        isPointerToAlpha();
-
-	// For data-flow-based type analysis only: implement the meet operator. Set ch true if any change
-	// If bHighestPtr is true, then if this and other are non void* pointers, set the result to the
-	// *highest* possible type compatible with both (i.e. this JOIN other)
-	virtual Type       *meetWith(Type *other, bool &ch, bool bHighestPtr = false) = 0;
-	// When all=false (default), return true if can use this and other interchangeably; in particular,
-	// if at most one of the types is compound and the first element is compatible with the other, then
-	// the types are considered compatible. With all set to true, if one or both types is compound, all
-	// corresponding elements must be compatible
-	virtual bool        isCompatibleWith(const Type *other, bool all = false) const;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	virtual bool        operator ==(const Type &) const = 0;
+	virtual bool        operator !=(const Type &) const;
+	//virtual bool        operator -=(const Type &) const = 0;
+	virtual bool        operator < (const Type &) const = 0;
+	        bool        operator *=(const Type &) const;
+	        bool        isSubTypeOrEqual(Type *);
+	virtual bool        isCompatibleWith(const Type *, bool = false) const;
 protected:
-	// isCompatible does most of the work; isCompatibleWith looks for complex types in other, and if so
-	// reverses the parameters (this and other) to prevent many tedious repetitions
-	virtual bool        isCompatible(const Type *other, bool all) const = 0;
+	virtual bool        isCompatible(const Type *, bool) const = 0;
 public:
-	// Return true if this is a subset or equal to other
-	        bool        isSubTypeOrEqual(Type *other);
-	// Create a union of this Type and other. Set ch true if any change
-	        Type       *createUnion(Type *other, bool &ch, bool bHighestPtr = false);
-	static  Type       *newIntegerLikeType(unsigned size, int signedness);   // Return a new Bool/Char/Int
-	// From a complex type like an array of structs with a float, return a list of components so you
-	// can construct e.g. myarray1[8].mystruct2.myfloat7
-	        ComplexTypeCompList &compForAddress(ADDRESS addr, DataIntervalMap &dim);
-	// Dereference this type. For most cases, return null unless you are a pointer type. But for a
-	// union of pointers, return a new union with the dereference of all members. In dfa.cpp
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	        void        starPrint(std::ostream &) const;
+	virtual void        print(std::ostream &) const = 0;
+	        std::string prints() const;
+
+	virtual std::string getCtype(bool = false) const = 0;
+	static  Type       *parseType(const std::string &);
+
+	virtual std::string getTempName() const;
+	static  Type       *getTempType(const std::string &);
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	        unsigned    getBytes() const;
+	virtual unsigned    getSize() const = 0;
+	virtual void        setSize(unsigned);
+	/** \} */
+
+	/**
+	 * \name Named type accessors
+	 * \{
+	 */
+	static  void        addNamedType(const std::string &, Type *);
+	static  Type       *getNamedType(const std::string &);
+	static  void        clearNamedTypes();
+	/** \} */
+
+	virtual Exp        *match(Type *);
+	virtual Type       *clone() const = 0;
+	virtual Type       *mergeWith(Type *);
+	virtual Type       *meetWith(Type *, bool &, bool = false) = 0;
+	        Type       *createUnion(Type *, bool &, bool = false);
+	static  Type       *newIntegerLikeType(unsigned, int);
 	        Type       *dereference();
+
+	        ComplexTypeCompList &compForAddress(ADDRESS, DataIntervalMap &);
 };
 
+/**
+ * \brief No type information?
+ */
 class VoidType : public Type {
 	friend class XMLProgParser;
 
@@ -224,126 +226,191 @@ public:
 	virtual    ~VoidType();
 	bool        isVoid() const override { return true; }
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents a function.
+ */
 class FuncType : public Type {
 	friend class XMLProgParser;
 
 	Signature  *signature;
 
 public:
-	            FuncType(Signature *sig = nullptr);
+	            FuncType(Signature * = nullptr);
 	virtual    ~FuncType();
 	bool        isFunc() const override { return true; }
 
-	Type       *clone() const override;
-
-	Signature  *getSignature() const { return signature; }
-	void        setSignature(Signature *sig) { signature = sig; }
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	// Split the C type into return and parameter parts
-	std::string getReturn(bool final = false) const;
-	std::string getParam(bool final = false) const;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	// Split the C type into return and parameter parts
+	std::string getReturn(bool = false) const;
+	std::string getParam(bool = false) const;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+
+	Signature  *getSignature() const;
+	void        setSignature(Signature *);
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents an integer.
+ */
 class IntegerType : public Type {
 	friend class XMLProgParser;
 
-	unsigned    size;           // Size in bits, e.g. 16
-	int         signedness;     // pos=signed, neg=unsigned, 0=unknown or evenly matched
+	unsigned    size;        ///< Size in bits, e.g. 16
+	int         signedness;  ///< pos=signed, neg=unsigned, 0=unknown or evenly matched
 
 public:
-	            IntegerType(unsigned sz = STD_SIZE, int sign = 0);
+	            IntegerType(unsigned = STD_SIZE, int = 0);
 	virtual    ~IntegerType();
 	bool        isInteger() const override { return true; }
-	bool        isComplete() const override { return signedness != 0 && size != 0; }
+	bool        isComplete() const override;
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-	Type       *mergeWith(Type *other) override;
-
-	unsigned    getSize() const override;            // Get size in bits
-	void        setSize(unsigned sz) override { size = sz; }
-	// Is it signed? 0=unknown, pos=yes, neg = no
-	bool        isSigned() const   { return signedness >= 0; }  // True if not unsigned
-	bool        isUnsigned() const { return signedness <= 0; }  // True if not definitely signed
-	// A hint for signedness
-	void        bumpSigned(int sg) { signedness += sg; }
-	// Set absolute signedness
-	void        setSigned(int sg)  { signedness = sg; }
-	// Get the signedness
-	int         getSignedness() const { return signedness; }
-
-	// Get the C type as a string. If full, output comments re the lack of sign information (in IntegerTypes).
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	std::string getTempName() const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	std::string getTempName() const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	void        setSize(unsigned) override;
+
+	bool        isSigned() const;
+	bool        isUnsigned() const;
+	void        bumpSigned(int);
+	void        setSigned(int);
+	int         getSignedness() const;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
+	Type       *mergeWith(Type *) override;
 };
 
+/**
+ * \brief Represents a float.
+ */
 class FloatType : public Type {
 	friend class XMLProgParser;
 
-	unsigned    size;               // Size in bits, e.g. 64
+	unsigned    size;  ///< Size in bits, e.g. 64
 
 public:
-	            FloatType(unsigned sz = 64);
+	            FloatType(unsigned = 64);
 	virtual    ~FloatType();
 	bool        isFloat() const override { return true; }
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-	void        setSize(unsigned sz) override { size = sz; }
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	std::string getTempName() const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	std::string getTempName() const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	void        setSize(unsigned) override;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents a bool.
+ */
 class BooleanType : public Type {
 	friend class XMLProgParser;
 
@@ -352,22 +419,40 @@ public:
 	virtual    ~BooleanType();
 	bool        isBoolean() const override { return true; }
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents a string character.
+ */
 class CharType : public Type {
 	friend class XMLProgParser;
 
@@ -376,56 +461,94 @@ public:
 	virtual    ~CharType();
 	bool        isChar() const override { return true; }
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents a pointer to another Type.
+ */
 class PointerType : public Type {
 	friend class XMLProgParser;
 
 	Type        *points_to;
 
 public:
-	            PointerType(Type *p);
+	            PointerType(Type *);
 	virtual    ~PointerType();
 	bool        isPointer() const override { return true; }
-	void        setPointsTo(Type *p);
-	Type       *getPointsTo() const { return points_to; }
-	static PointerType *newPtrAlpha();
-	bool        pointsToAlpha();
-	int         pointerDepth();     // Return 2 for **x
-	Type       *getFinalPointsTo(); // Return x for **x
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
-
-	unsigned    getSize() const override;
-	void        setSize(unsigned sz) override { assert(sz == STD_SIZE); }
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	void        setSize(unsigned) override;
+
+	void        setPointsTo(Type *);
+	Type       *getPointsTo() const;
+	Type       *getFinalPointsTo();
+	int         pointerDepth();
+	/** \} */
+
+	static PointerType *newPtrAlpha();
+	bool        pointsToAlpha();
+
+	Exp        *match(Type *) override;
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents an array of another Type.
+ */
 class ArrayType : public Type {
 	friend class XMLProgParser;
 
@@ -433,37 +556,57 @@ class ArrayType : public Type {
 	unsigned    length = 0;
 
 protected:
-	            ArrayType() : Type(eArray) { }
+	            ArrayType();
 public:
-	            ArrayType(Type *p, unsigned length);
-	            ArrayType(Type *p);
+	            ArrayType(Type *, unsigned);
+	            ArrayType(Type *);
 	virtual    ~ArrayType();
 	bool        isArray() const override { return true; }
-	Type       *getBaseType() const { return base_type; }
-	void        setBaseType(Type *b);
-	void        fixBaseType(Type *b);
-	unsigned    getLength() const { return length; }
-	void        setLength(unsigned n) { length = n; }
-	bool        isUnbounded() const;
 
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-	Exp        *match(Type *pattern) override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 	bool        isCompatibleWith(const Type *, bool = false) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+
+	Type       *getBaseType() const;
+	void        setBaseType(Type *);
+	void        fixBaseType(Type *);
+
+	unsigned    getLength() const;
+	void        setLength(unsigned);
+	bool        isUnbounded() const;
+	/** \} */
+
+	Exp        *match(Type *) override;
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
+/**
+ * \brief Represents a Type in the namedTypes map.
+ */
 class NamedType : public Type {
 	friend class XMLProgParser;
 
@@ -474,25 +617,41 @@ public:
 	            NamedType(const std::string &name);
 	virtual    ~NamedType();
 	bool        isNamed() const override { return true; }
-	const std::string &getName() const { return name; }
+
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
+protected:
+	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+
+	const std::string &getName() const;
 	Type       *resolvesTo() const;
-	// Get a new type variable, e.g. alpha0, alpha55
+	/** \} */
+
 	static NamedType *getAlpha();
 
 	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-protected:
-	bool        isCompatible(const Type *, bool) const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
 struct CompoundElement {
@@ -511,45 +670,62 @@ class CompoundType : public Type {
 	bool        generic;
 
 public:
-	            CompoundType(bool generic = false);
+	            CompoundType(bool = false);
 	virtual    ~CompoundType();
 	bool        isCompound() const override { return true; }
 
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
+	bool        isCompatibleWith(const Type *, bool = false) const override;
+protected:
+	bool        isCompatible(const Type *, bool) const override;
+public:
+	bool        isSubStructOf(const Type &) const;
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+
 	typedef std::vector<CompoundElement>::const_iterator const_iterator;
-	const_iterator cbegin() const { return elems.cbegin(); }
-	const_iterator cend()   const { return elems.cend(); }
+	const_iterator cbegin() const;
+	const_iterator cend() const;
 
 	void        addType(Type *, const std::string &);
-	Type       *getType(const_iterator it) const { assert(it != cend()); return it->type; }
+	Type       *getType(const_iterator it) const;
 	Type       *getType(const std::string &) const;
-	const char *getName(const_iterator it) const { assert(it != cend()); return it->name.c_str(); }
-	void        setTypeAtOffset(unsigned, Type *);
-	Type       *getTypeAtOffset(unsigned) const;
-	void        setNameAtOffset(unsigned, const std::string &);
-	const char *getNameAtOffset(unsigned) const;
-	bool        isGeneric() const { return generic; }
-	void        updateGenericMember(unsigned, Type *, bool &);   // Add a new generic member if necessary
+	const char *getName(const_iterator it) const;
+
 	unsigned    getOffsetTo(const_iterator) const;
 	unsigned    getOffsetTo(const std::string &) const;
 	unsigned    getOffsetRemainder(unsigned) const;
 
+	void        setTypeAtOffset(unsigned, Type *);
+	Type       *getTypeAtOffset(unsigned) const;
+	void        setNameAtOffset(unsigned, const std::string &);
+	const char *getNameAtOffset(unsigned) const;
+
+	bool        isGeneric() const;
+	void        updateGenericMember(unsigned, Type *, bool &);
+	/** \} */
+
 	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	bool        isSubStructOf(const Type &other) const;    // True if this is a substructure of other
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
-	bool        isCompatibleWith(const Type *, bool = false) const override;
-protected:
-	bool        isCompatible(const Type *, bool) const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
 struct UnionElement {
@@ -563,8 +739,10 @@ struct UnionElement {
 class UnionType : public Type {
 	friend class XMLProgParser;
 
-	// Note: list, not vector, as it is occasionally desirable to insert elements without affecting iterators
-	// (e.g. meetWith(another Union))
+	/**
+	 * \note list, not vector, as it is occasionally desirable to insert
+	 * elements without affecting iterators (e.g. meetWith(another Union))
+	 */
 	std::list<UnionElement> elems;
 
 public:
@@ -572,57 +750,89 @@ public:
 	virtual    ~UnionType();
 	bool        isUnion() const override { return true; }
 
-	void        addType(Type *, const std::string &);
-	bool        findType(Type *ty) const;  // Return true if ty is already in the union
-
-	Type       *clone() const override;
-
-	bool        operator ==(const Type &other) const override;
-	//bool        operator -=(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-
-	unsigned    getSize() const override;
-
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	//bool        operator -=(const Type &) const override;
+	bool        operator < (const Type &) const override;
 	bool        isCompatibleWith(const Type *, bool = false) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
-
 public:
-	// if this is a union of pointer types, get the union of things they point to. In dfa.cpp
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+
+	void        addType(Type *, const std::string &);
+	bool        findType(Type *) const;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *meetWith(Type *, bool &, bool) override;
 	Type       *dereferenceUnion() const;
 };
 
 /**
- * This class is for before type analysis.  Typically, you have no info at all,
- * or only know the size (e.g. width of a register or memory transfer).
+ * This class is for before type analysis.  Typically, you have no info at
+ * all, or only know the size (e.g. width of a register or memory transfer).
  */
 class SizeType : public Type {
 	friend class XMLProgParser;
 
-	unsigned    size;               // Size in bits, e.g. 16
+	unsigned    size;  ///< Size in bits, e.g. 16
 
 public:
-	            SizeType() : Type(eSize) { }
-	            SizeType(unsigned sz) : Type(eSize), size(sz) { }
-	virtual    ~SizeType() { }
-	Type       *clone() const override;
-	bool        operator ==(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-	Type       *mergeWith(Type *other) override;
-
-	unsigned    getSize() const override;
-	void        setSize(unsigned sz) override { size = sz; }
+	            SizeType();
+	            SizeType(unsigned);
+	virtual    ~SizeType();
 	bool        isSize() const override { return true; }
-	bool        isComplete() const override { return false; }    // Basic type is unknown
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isComplete() const override;
+
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	void        setSize(unsigned) override;
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *mergeWith(Type *) override;
+	Type       *meetWith(Type *, bool &, bool) override;
+
 };
 
 #if 0 // Cruft?
@@ -634,24 +844,44 @@ class UpperType : public Type {
 	Type       *base_type;
 
 public:
-	            UpperType(Type *base) : Type(eUpper), base_type(base) { }
-	virtual    ~UpperType() { }
-	Type       *clone() const override;
-	bool        operator ==(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-	Type       *mergeWith(Type *other) override;
-	Type       *getBaseType() const { return base_type; }
-	void        setBaseType(Type *b) { base_type = b; }
-
-	unsigned    getSize() const override { return base_type->getSize() / 2; }
-	//void        setSize(unsigned sz) override;  // Does this make sense?
+	            UpperType(Type *);
+	virtual    ~UpperType();
 	bool        isUpper() const override { return true; }
-	bool        isComplete() const override { return base_type->isComplete(); }
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isComplete() const override;
+
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	//void        setSize(unsigned sz) override;  // Does this make sense?
+
+	Type       *getBaseType() const;
+	void        setBaseType(Type *);
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *mergeWith(Type *) override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 
 /**
@@ -661,24 +891,44 @@ class LowerType : public Type {
 	Type       *base_type;
 
 public:
-	            LowerType(Type *base) : Type(eLower), base_type(base) { }
-	virtual    ~LowerType() { }
-	Type       *clone() const override;
-	bool        operator ==(const Type &other) const override;
-	bool        operator < (const Type &other) const override;
-	Type       *mergeWith(Type *other) override;
-	Type       *getBaseType() const { return base_type; }
-	void        setBaseType(Type *b) { base_type = b; }
-
-	unsigned    getSize() const override { return base_type->getSize() / 2; }
-	//void        setSize(unsigned sz) override;  // Does this make sense?
+	            LowerType(Type *);
+	virtual    ~LowerType();
 	bool        isLower() const override { return true; }
-	bool        isComplete() const override { return base_type->isComplete(); }
-	std::string getCtype(bool final = false) const override;
-	void        print(std::ostream &) const override;
-	Type       *meetWith(Type *other, bool &ch, bool bHighestPtr) override;
+	bool        isComplete() const override;
+
+	/**
+	 * \name Comparisons
+	 * \{
+	 */
+	bool        operator ==(const Type &) const override;
+	bool        operator < (const Type &) const override;
 protected:
 	bool        isCompatible(const Type *, bool) const override;
+public:
+	/** \} */
+
+	/**
+	 * \name Print and format methods
+	 * \{
+	 */
+	void        print(std::ostream &) const override;
+	std::string getCtype(bool = false) const override;
+	/** \} */
+
+	/**
+	 * \name Accessors
+	 * \{
+	 */
+	unsigned    getSize() const override;
+	//void        setSize(unsigned sz) override;  // Does this make sense?
+
+	Type       *getBaseType() const;
+	void        setBaseType(Type *);
+	/** \} */
+
+	Type       *clone() const override;
+	Type       *mergeWith(Type *) override;
+	Type       *meetWith(Type *, bool &, bool) override;
 };
 #endif
 

@@ -342,19 +342,28 @@ UserProc::dfaTypeAnalysis()
 	Boomerang::get()->alert_decompile_debug_point(this, "after dfa type analysis");
 }
 
-// This is the core of the data-flow-based type analysis algorithm: implementing the meet operator.
-// In classic lattice-based terms, the TOP type is void; there is no BOTTOM type since we handle overconstraints with
-// unions.
-// Consider various pieces of knowledge about the types. There could be:
-// a) void: no information. Void meet x = x.
-// b) size only: find a size large enough to contain the two types.
-// c) broad type only, e.g. floating point
-// d) signedness, no size
-// e) size, no signedness
-// f) broad type, size, and (for integer broad type), signedness
-
-// ch set true if any change
-
+/**
+ * \fn Type *Type::meetWith(Type *other, bool &ch, bool bHighestPtr)
+ * \brief Meet operator.  For data-flow-based type analysis only.
+ *
+ * This is the core of the data-flow-based type analysis algorithm:
+ * Implementing the meet operator.  In classic lattice-based terms, the TOP
+ * type is void; there is no BOTTOM type since we handle overconstraints with
+ * unions.
+ *
+ * Consider various pieces of knowledge about the types.  There could be:
+ * - void:  No information.  Void meet x = x.
+ * - size only:  Find a size large enough to contain the two types.
+ * - broad type only, e.g. floating point
+ * - signedness, no size
+ * - size, no signedness
+ * - broad type, size, and (for integer broad type), signedness
+ *
+ * \param[out] ch          Set true if any change.
+ * \param[in] bHighestPtr  If true, then if this and other are non void*
+ *                         pointers, set the result to the *highest* possible
+ *                         type compatible with both (i.e. this JOIN other).
+ */
 Type *
 VoidType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -363,7 +372,6 @@ VoidType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	ch |= !dynamic_cast<VoidType *>(ort);
 	return other->clone();
 }
-
 Type *
 FuncType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -374,7 +382,6 @@ FuncType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;  // NOTE: at present, compares names as well as types and num parameters
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -413,7 +420,6 @@ IntegerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	}
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -437,7 +443,6 @@ FloatType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	}
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -448,7 +453,6 @@ BooleanType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -466,7 +470,6 @@ CharType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -522,7 +525,6 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	// Would be good to understand class hierarchys, so we know if a* is the same as b* when b is a subclass of a
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -546,7 +548,6 @@ ArrayType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	// Needs work?
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -563,7 +564,6 @@ NamedType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		return this;
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -593,7 +593,6 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 #ifdef PRINT_UNION
 unsigned unionCount = 0;
 #endif
-
 Type *
 UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -642,7 +641,6 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	ch = true;
 	return this;
 }
-
 Type *
 SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -676,7 +674,6 @@ SizeType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	}
 	return createUnion(other, ch, bHighestPtr);
 }
-
 #if 0 // Cruft?
 Type *
 UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
@@ -695,7 +692,6 @@ UpperType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	// Needs work?
 	return createUnion(other, ch, bHighestPtr);
 }
-
 Type *
 LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 {
@@ -727,8 +723,13 @@ Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
 	return newType;
 }
 
+/**
+ * \brief Create a union of this Type and other.
+ *
+ * \param[out] ch  Set true if any change.
+ */
 Type *
-Type::createUnion(Type *other, bool &ch, bool bHighestPtr /* = false */)
+Type::createUnion(Type *other, bool &ch, bool bHighestPtr)
 {
 
 	assert(!resolvesToUnion());  // `this' should not be a UnionType
@@ -1458,8 +1459,18 @@ Signature::dfaTypeAnalysis(Cfg *cfg)
 }
 
 
-// Note: to prevent infinite recursion, CompoundType, ArrayType, and UnionType implement this function as a delegation
-// to isCompatible()
+/**
+ * \note To prevent infinite recursion, CompoundType, ArrayType, and UnionType
+ * implement this function as a delegation to isCompatible().
+ *
+ * \param[in] all  When false (default), return true if can use this and other
+ *                 interchangeably; in particular, if at most one of the types
+ *                 is compound and the first element is compatible with the
+ *                 other, then the types are considered compatible.  When true,
+ *                 if one or both types is compound, all corresponding elements
+ *                 must be compatible.
+ *
+ */
 bool
 Type::isCompatibleWith(const Type *other, bool all) const
 {
@@ -1487,12 +1498,18 @@ UnionType::isCompatibleWith(const Type *other, bool all) const
 	return isCompatible(other, all);
 }
 
+/**
+ * \fn bool Type::isCompatible(const Type *other, bool all) const
+ *
+ * isCompatible() does most of the work; isCompatibleWith() looks for complex
+ * types in other, and if so reverses the parameters (this and other) to
+ * prevent many tedious repetitions.
+ */
 bool
 VoidType::isCompatible(const Type *other, bool all) const
 {
 	return true;  // Void is compatible with any type
 }
-
 bool
 SizeType::isCompatible(const Type *other, bool all) const
 {
@@ -1505,7 +1522,6 @@ SizeType::isCompatible(const Type *other, bool all) const
 	// For now, size32 and double will be considered compatible (helps test/pentium/global2)
 	return true;
 }
-
 bool
 IntegerType::isCompatible(const Type *other, bool all) const
 {
@@ -1515,7 +1531,6 @@ IntegerType::isCompatible(const Type *other, bool all) const
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
-
 bool
 FloatType::isCompatible(const Type *other, bool all) const
 {
@@ -1524,7 +1539,6 @@ FloatType::isCompatible(const Type *other, bool all) const
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
-
 bool
 CharType::isCompatible(const Type *other, bool all) const
 {
@@ -1534,7 +1548,6 @@ CharType::isCompatible(const Type *other, bool all) const
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
-
 bool
 BooleanType::isCompatible(const Type *other, bool all) const
 {
@@ -1543,7 +1556,6 @@ BooleanType::isCompatible(const Type *other, bool all) const
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
-
 bool
 FuncType::isCompatible(const Type *other, bool all) const
 {
@@ -1555,7 +1567,6 @@ FuncType::isCompatible(const Type *other, bool all) const
 	}
 	return false;
 }
-
 bool
 PointerType::isCompatible(const Type *other, bool all) const
 {
@@ -1565,7 +1576,6 @@ PointerType::isCompatible(const Type *other, bool all) const
 		return points_to->isCompatibleWith(o->points_to, all);
 	return false;
 }
-
 bool
 NamedType::isCompatible(const Type *other, bool all) const
 {
@@ -1576,7 +1586,6 @@ NamedType::isCompatible(const Type *other, bool all) const
 		return rt->isCompatibleWith(other, all);
 	return false;
 }
-
 bool
 ArrayType::isCompatible(const Type *other, bool all) const
 {
@@ -1588,7 +1597,6 @@ ArrayType::isCompatible(const Type *other, bool all) const
 	if (!all && base_type->isCompatibleWith(other, true)) return true;  // An array of x is compatible with x
 	return false;
 }
-
 bool
 UnionType::isCompatible(const Type *other, bool all) const
 {
@@ -1615,7 +1623,6 @@ UnionType::isCompatible(const Type *other, bool all) const
 			return true;
 	return false;
 }
-
 bool
 CompoundType::isCompatible(const Type *other, bool all) const
 {
@@ -1632,7 +1639,6 @@ CompoundType::isCompatible(const Type *other, bool all) const
 	// Used to always return false here. But in fact, a struct is compatible with its first member (if all is false)
 	return !all && elems[0].type->isCompatibleWith(other, true);
 }
-
 #if 0 // Cruft?
 bool
 UpperType::isCompatible(const Type *other, bool all) const
@@ -1641,7 +1647,6 @@ UpperType::isCompatible(const Type *other, bool all) const
 	if (auto o = dynamic_cast<const UpperType *>(ort)) return base_type->isCompatibleWith(o->base_type, all);
 	return false;
 }
-
 bool
 LowerType::isCompatible(const Type *other, bool all) const
 {
@@ -1651,6 +1656,9 @@ LowerType::isCompatible(const Type *other, bool all) const
 }
 #endif
 
+/**
+ * \brief Return true if this is a subset or equal to other.
+ */
 bool
 Type::isSubTypeOrEqual(Type *other)
 {
@@ -1662,6 +1670,11 @@ Type::isSubTypeOrEqual(Type *other)
 	return false;
 }
 
+/**
+ * Dereference this type.  For most cases, return null unless you are a
+ * pointer type.  But for a union of pointers, return a new union with the
+ * dereference of all members.
+ */
 Type *
 Type::dereference()
 {
@@ -1673,8 +1686,14 @@ Type::dereference()
 	return new VoidType();  // Can't dereference this type. Note: should probably be bottom
 }
 
-// Dereference this union. If it is a union of pointers, return a union of the dereferenced items. Else return VoidType
-// (note: should probably be bottom)
+/**
+ * \brief If this is a union of pointer types, get the union of things they
+ * point to.
+ *
+ * Dereference this union.  If it is a union of pointers, return a union of
+ * the dereferenced items.  Else return VoidType (note: should probably be
+ * bottom).
+ */
 Type *
 UnionType::dereferenceUnion() const
 {
