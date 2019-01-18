@@ -177,9 +177,7 @@ public:
 	        void        starPrint(std::ostream &) const;
 	virtual void        print(std::ostream &) const = 0;
 	        std::string prints() const;
-
 	virtual std::string getCtype(bool = false) const = 0;
-	static  Type       *parseType(const std::string &);
 
 	virtual std::string getTempName() const;
 	static  Type       *getTempType(const std::string &);

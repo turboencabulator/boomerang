@@ -1000,19 +1000,6 @@ ArrayType::match(Type *pattern)
 }
 
 /**
- * \brief Static constructor from string.
- *
- * Parse a C type.
- *
- * \param[in] str  String to parse.
- */
-Type *
-Type::parseType(const std::string &str)
-{
-	return nullptr;
-}
-
-/**
  * \fn std::string Type::getCtype(bool final) const
  * \brief Return a string representing this Type.
  *
