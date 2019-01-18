@@ -611,10 +611,10 @@ CompoundType::setTypeAtOffset(unsigned off, Type *ty)
 			it->type = ty;
 			unsigned newsz = ty->getSize();
 			if (newsz < sz) {
-				CompoundElement ce;
-				ce.type = new SizeType(sz - newsz);
-				ce.name = "pad";
-				it = elems.insert(++it, ce);
+				Element e;
+				e.type = new SizeType(sz - newsz);
+				e.name = "pad";
+				it = elems.insert(++it, e);
 			}
 			return;
 		}
@@ -1947,10 +1947,10 @@ CompoundType::addType(Type *n, const std::string &str)
 	// check if it is a user defined type (typedef)
 	Type *t = getNamedType(n->getCtype());
 	if (t) n = t;
-	CompoundElement ce;
-	ce.type = n;
-	ce.name = str;
-	elems.push_back(ce);
+	Element e;
+	e.type = n;
+	e.name = str;
+	elems.push_back(e);
 }
 
 void
@@ -1967,10 +1967,10 @@ UnionType::addType(Type *n, const std::string &str)
 					LOG << "Warning: attempt to union with pointer to self!\n";
 			}
 		}
-		UnionElement ue;
-		ue.type = n;
-		ue.name = str;
-		elems.push_back(ue);
+		Element e;
+		e.type = n;
+		e.name = str;
+		elems.push_back(e);
 	}
 }
 
@@ -2153,7 +2153,7 @@ NamedType::readMemo(Memo *mm, bool dec)
 class CompoundTypeMemo : public Memo {
 public:
 	CompoundTypeMemo(int m) : Memo(m) { }
-	std::vector<CompoundElement> elems;
+	std::vector<CompoundType::Element> elems;
 };
 
 Memo *
@@ -2180,7 +2180,7 @@ CompoundType::readMemo(Memo *mm, bool dec)
 class UnionTypeMemo : public Memo {
 public:
 	UnionTypeMemo(int m) : Memo(m) { }
-	std::list<UnionElement> li;
+	std::list<UnionType::Element> li;
 };
 
 Memo *

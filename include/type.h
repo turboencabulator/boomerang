@@ -654,18 +654,21 @@ public:
 	Type       *meetWith(Type *, bool &, bool) override;
 };
 
-struct CompoundElement {
-	Type       *type;
-	std::string name;
-};
-
 /**
  * The compound type represents structures, not unions.
  */
 class CompoundType : public Type {
 	friend class XMLProgParser;
 
-	std::vector<CompoundElement> elems;
+public:
+	struct Element {
+		Type       *type;
+		std::string name;
+	};
+	typedef std::vector<Element>::const_iterator const_iterator;
+
+private:
+	std::vector<Element> elems;
 	int         nextGenericMemberNum = 1;
 	bool        generic;
 
@@ -702,7 +705,6 @@ public:
 	 */
 	unsigned    getSize() const override;
 
-	typedef std::vector<CompoundElement>::const_iterator const_iterator;
 	const_iterator cbegin() const;
 	const_iterator cend() const;
 
@@ -728,22 +730,24 @@ public:
 	Type       *meetWith(Type *, bool &, bool) override;
 };
 
-struct UnionElement {
-	Type       *type;
-	std::string name;
-};
-
 /**
  * The union type represents the union of any number of any other types.
  */
 class UnionType : public Type {
 	friend class XMLProgParser;
 
+public:
+	struct Element {
+		Type       *type;
+		std::string name;
+	};
+
+private:
 	/**
 	 * \note list, not vector, as it is occasionally desirable to insert
 	 * elements without affecting iterators (e.g. meetWith(another Union))
 	 */
-	std::list<UnionElement> elems;
+	std::list<Element> elems;
 
 public:
 	            UnionType();
