@@ -43,23 +43,6 @@ class Exp;
 class Signature;
 class UserProc;
 
-enum eType {
-	eVoid,
-	eFunc,
-	eBoolean,
-	eChar,
-	eInteger,
-	eFloat,
-	ePointer,
-	eArray,
-	eNamed,
-	eCompound,
-	eUnion,
-	eSize,
-	//eUpper,
-	//eLower,
-};
-
 // The following two are for Type::compForAddress()
 struct ComplexTypeComp {
 	bool isArray;
@@ -80,7 +63,23 @@ class Type {
 	friend class XMLProgParser;
 
 protected:
-	        eType       id;  ///< For operator < mostly
+	enum eType {
+		eVoid,
+		eFunc,
+		eBoolean,
+		eChar,
+		eInteger,
+		eFloat,
+		ePointer,
+		eArray,
+		eNamed,
+		eCompound,
+		eUnion,
+		eSize,
+		//eUpper,
+		//eLower,
+	} id;  ///< For operator < mostly
+
 private:
 	static  std::map<std::string, Type *> namedTypes;
 
