@@ -43,16 +43,6 @@ class Exp;
 class Signature;
 class UserProc;
 
-// The following two are for Type::compForAddress()
-struct ComplexTypeComp {
-	bool isArray;
-	union {
-		char *memberName;           // Member name if offset
-		unsigned index;             // Constant index if array
-	} u;
-};
-typedef std::list<ComplexTypeComp> ComplexTypeCompList;
-
 /**
  * Low-level type information.
  *
@@ -209,6 +199,14 @@ public:
 	static  Type       *newIntegerLikeType(unsigned, int);
 	        Type       *dereference();
 
+	struct ComplexTypeComp {
+		bool isArray;
+		union {
+			const char *memberName;  ///< Member name if offset
+			unsigned index;          ///< Constant index if array
+		} u;
+	};
+	typedef std::list<ComplexTypeComp> ComplexTypeCompList;
 	        ComplexTypeCompList &compForAddress(ADDRESS, DataIntervalMap &);
 };
 

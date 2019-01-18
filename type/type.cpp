@@ -1892,7 +1892,7 @@ DataIntervalMap::prints() const
  * From a complex type like an array of structs with a float, return a list of
  * components so you can construct e.g. myarray1[8].mystruct2.myfloat7
  */
-ComplexTypeCompList &
+Type::ComplexTypeCompList &
 Type::compForAddress(ADDRESS addr, DataIntervalMap &dim)
 {
 	auto pdie = dim.find(addr);

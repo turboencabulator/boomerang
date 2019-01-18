@@ -158,11 +158,11 @@ TypeTest::testDataInterval()
 	ct.addType(new FloatType(32), "float1");
 	dim.addItem(0x1010, "struct1", &ct);
 
-	ComplexTypeCompList &ctcl = ct.compForAddress(0x1012, dim);
+	auto &ctcl = ct.compForAddress(0x1012, dim);
 	unsigned ua = ctcl.size();
 	unsigned ue = 1;
 	CPPUNIT_ASSERT_EQUAL(ue, ua);
-	ComplexTypeComp &ctc = ctcl.front();
+	auto &ctc = ctcl.front();
 	ue = 0;
 	ua = ctc.isArray;
 	CPPUNIT_ASSERT_EQUAL(ue, ua);
@@ -173,13 +173,13 @@ TypeTest::testDataInterval()
 	// An array of 10 struct1's
 	ArrayType at(&ct, 10);
 	dim.addItem(0x1020, "array1", &at);
-	ComplexTypeCompList &ctcl2 = at.compForAddress(0x1020 + 0x3C + 8, dim);
+	auto &ctcl2 = at.compForAddress(0x1020 + 0x3C + 8, dim);
 	// Should be 2 components: [5] and .float1
 	ue = 2;
 	ua = ctcl2.size();
 	CPPUNIT_ASSERT_EQUAL(ue, ua);
-	ComplexTypeComp &ctc0 = ctcl2.front();
-	ComplexTypeComp &ctc1 = ctcl2.back();
+	auto &ctc0 = ctcl2.front();
+	auto &ctc1 = ctcl2.back();
 	ue = 1;
 	ua = ctc0.isArray;
 	CPPUNIT_ASSERT_EQUAL(ue, ua);
