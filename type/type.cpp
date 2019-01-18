@@ -54,14 +54,6 @@ PointerType::PointerType(Type *p) :
 
 ArrayType::ArrayType() : Type(eArray) { }
 ArrayType::ArrayType(Type *p, unsigned length) : Type(eArray), base_type(p), length(length) { }
-
-/**
- * We actually want unbounded arrays to still work correctly when computing
- * aliases.  As such, we give them a very large bound and hope that no-one
- * tries to alias beyond them.
- */
-#define NO_BOUND 9999999
-
 ArrayType::ArrayType(Type *p) : Type(eArray), base_type(p), length(NO_BOUND) { }
 
 NamedType::NamedType(const std::string &name) : Type(eNamed), name(name) { }
@@ -463,7 +455,7 @@ void
 ArrayType::setBaseType(Type *b)
 {
 	// MVE: not sure if this is always the right thing to do
-	if (length != NO_BOUND) {
+	if (!isUnbounded()) {
 		unsigned baseSize = base_type->getBytes(); // Old base size (one element) in bytes
 		if (baseSize == 0) baseSize = 1;  // Count void as size 1
 		baseSize *= length;  // Old base size (length elements) in bytes
@@ -497,6 +489,13 @@ ArrayType::setLength(unsigned n)
 {
 	length = n;
 }
+
+/**
+ * We actually want unbounded arrays to still work correctly when computing
+ * aliases.  As such, we give them a very large bound and hope that no-one
+ * tries to alias beyond them.
+ */
+const unsigned ArrayType::NO_BOUND = 9999999;
 
 bool
 ArrayType::isUnbounded() const

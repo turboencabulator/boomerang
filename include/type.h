@@ -554,6 +554,7 @@ class ArrayType : public Type {
 
 	Type       *base_type = nullptr;
 	unsigned    length = 0;
+	static const unsigned NO_BOUND;
 
 protected:
 	            ArrayType();
