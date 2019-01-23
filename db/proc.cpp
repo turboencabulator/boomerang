@@ -2793,7 +2793,7 @@ UserProc::getSymbolFor(Exp *from, Type *ty) const
 		const char *name = ((Const *)((Location *)currTo)->getSubExp1())->getStr();
 		Type *currTy = getLocalType(name);
 		if (!currTy) currTy = getParamType(name);
-		if (currTy && currTy->isCompatibleWith(ty))
+		if (currTy && currTy->isCompatibleWith(*ty))
 			return currTo;
 	}
 	return nullptr;
@@ -3049,7 +3049,7 @@ UserProc::fromSSAform()
 				fte.first = ty;
 				fte.second = ref;
 				firstTypes[base] = fte;
-			} else if (ff->second.first && !ty->isCompatibleWith(ff->second.first)) {
+			} else if (ff->second.first && !ty->isCompatibleWith(*ff->second.first)) {
 				if (DEBUG_LIVENESS)
 					LOG << "def of " << *base << " at " << stmt->getNumber() << " type " << *ty
 					    << " is not compatible with first type " << ff->second.first << ".\n";
@@ -3896,7 +3896,7 @@ UserProc::lookupSym(Exp *e, Type *ty) const
 		const char *name = ((Const *)((Location *)sym)->getSubExp1())->getStr();
 		Type *type = getLocalType(name);
 		if (!type) type = getParamType(name);  // Ick currently linear search
-		if (type && type->isCompatibleWith(ty))
+		if (type && type->isCompatibleWith(*ty))
 			return name;
 	}
 #if 0

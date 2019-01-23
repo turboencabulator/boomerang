@@ -986,7 +986,7 @@ ExpCastInserter::checkMemofType(Exp *memof, Type *memofType)
 		Exp *addrBase = ((RefExp *)addr)->getSubExp1();
 		Type *actType = ((RefExp *)addr)->getDef()->getTypeFor(addrBase);
 		Type *expectedType = new PointerType(memofType);
-		if (!actType->isCompatibleWith(expectedType)) {
+		if (!actType->isCompatibleWith(*expectedType)) {
 			((Unary *)memof)->setSubExp1(new TypedExp(expectedType, addrBase));
 		}
 	}

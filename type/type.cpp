@@ -1732,7 +1732,7 @@ DataIntervalMap::enterComponent(value_type *pdie, ADDRESS addr, const char *name
 	if (pdie->second.type->resolvesToCompound()) {
 		unsigned bitOffset = (addr - pdie->first) * 8;
 		Type *memberType = pdie->second.type->asCompound()->getTypeAtOffset(bitOffset);
-		if (memberType->isCompatibleWith(ty)) {
+		if (memberType->isCompatibleWith(*ty)) {
 			bool ch;
 			memberType = memberType->meetWith(ty, ch);
 			pdie->second.type->asCompound()->setTypeAtOffset(bitOffset, memberType);
@@ -1741,7 +1741,7 @@ DataIntervalMap::enterComponent(value_type *pdie, ADDRESS addr, const char *name
 			    << " is not compatible with existing structure member type " << memberType->getCtype() << "\n";
 	} else if (pdie->second.type->resolvesToArray()) {
 		Type *memberType = pdie->second.type->asArray()->getBaseType();
-		if (memberType->isCompatibleWith(ty)) {
+		if (memberType->isCompatibleWith(*ty)) {
 			bool ch;
 			memberType = memberType->meetWith(ty, ch);
 			pdie->second.type->asArray()->setBaseType(memberType);
@@ -1769,7 +1769,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 		for (auto it = it1; it != it2; ++it) {
 			unsigned bitOffset = (it->first - addr) * 8;
 			Type *memberType = ty->asCompound()->getTypeAtOffset(bitOffset);
-			if (memberType->isCompatibleWith(it->second.type, true)) {
+			if (memberType->isCompatibleWith(*it->second.type, true)) {
 				bool ch;
 				memberType = it->second.type->meetWith(memberType, ch);
 				ty->asCompound()->setTypeAtOffset(bitOffset, memberType);
@@ -1784,7 +1784,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 		auto it1 = dimap.lower_bound(addr);
 		auto it2 = dimap.upper_bound(pastLast - 1);
 		for (auto it = it1; it != it2; ++it) {
-			if (memberType->isCompatibleWith(it->second.type, true)) {
+			if (memberType->isCompatibleWith(*it->second.type, true)) {
 				bool ch;
 				memberType = memberType->meetWith(it->second.type, ch);
 				ty->asArray()->setBaseType(memberType);
@@ -1854,7 +1854,7 @@ DataIntervalMap::replaceComponents(ADDRESS addr, const char *name, Type *ty, boo
 void
 DataIntervalMap::checkMatching(value_type *pdie, ADDRESS addr, const char *name, Type *ty, bool forced)
 {
-	if (pdie->second.type->isCompatibleWith(ty)) {
+	if (pdie->second.type->isCompatibleWith(*ty)) {
 		// Just merge the types and exit
 		bool ch;
 		pdie->second.type = pdie->second.type->meetWith(ty, ch);

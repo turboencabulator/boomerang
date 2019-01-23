@@ -153,10 +153,10 @@ public:
 	//virtual bool        operator -=(const Type &) const = 0;
 	virtual bool        operator < (const Type &) const = 0;
 	        bool        operator *=(const Type &) const;
-	        bool        isSubTypeOrEqual(Type *);
-	virtual bool        isCompatibleWith(const Type *, bool = false) const;
+	        bool        isSubTypeOrEqual(const Type &);
+	virtual bool        isCompatibleWith(const Type &, bool = false) const;
 protected:
-	virtual bool        isCompatible(const Type *, bool) const = 0;
+	virtual bool        isCompatible(const Type &, bool) const = 0;
 public:
 	/** \} */
 
@@ -229,7 +229,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -273,7 +273,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -325,7 +325,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -378,7 +378,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -422,7 +422,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -464,7 +464,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -508,7 +508,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -566,9 +566,9 @@ public:
 	bool        operator ==(const Type &) const override;
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
-	bool        isCompatibleWith(const Type *, bool = false) const override;
+	bool        isCompatibleWith(const Type &, bool = false) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -622,7 +622,7 @@ public:
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -680,9 +680,9 @@ public:
 	bool        operator ==(const Type &) const override;
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
-	bool        isCompatibleWith(const Type *, bool = false) const override;
+	bool        isCompatibleWith(const Type &, bool = false) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	bool        isSubStructOf(const Type &) const;
 	/** \} */
@@ -757,9 +757,9 @@ public:
 	bool        operator ==(const Type &) const override;
 	//bool        operator -=(const Type &) const override;
 	bool        operator < (const Type &) const override;
-	bool        isCompatibleWith(const Type *, bool = false) const override;
+	bool        isCompatibleWith(const Type &, bool = false) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -809,7 +809,7 @@ public:
 	bool        operator ==(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -856,7 +856,7 @@ public:
 	bool        operator ==(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 
@@ -903,7 +903,7 @@ public:
 	bool        operator ==(const Type &) const override;
 	bool        operator < (const Type &) const override;
 protected:
-	bool        isCompatible(const Type *, bool) const override;
+	bool        isCompatible(const Type &, bool) const override;
 public:
 	/** \} */
 

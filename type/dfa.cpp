@@ -488,9 +488,9 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 			Type *otherBase = o->points_to;
 			if (bHighestPtr) {
 				// We want the greatest type of thisBase and otherBase
-				if (thisBase->isSubTypeOrEqual(otherBase))
+				if (thisBase->isSubTypeOrEqual(*otherBase))
 					return other->clone();
-				if (otherBase->isSubTypeOrEqual(thisBase))
+				if (otherBase->isSubTypeOrEqual(*thisBase))
 					return this;
 				// There may be another type that is a superset of this and other; for now return void*
 				return new PointerType(new VoidType);
@@ -513,7 +513,7 @@ PointerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 					if (*fType == *ofType) return this;
 				}
 			}
-			if (thisBase->isCompatibleWith(otherBase)) {
+			if (thisBase->isCompatibleWith(*otherBase)) {
 				points_to = points_to->meetWith(otherBase, ch, bHighestPtr);
 				return this;
 			}
@@ -583,7 +583,7 @@ CompoundType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 		// NOTE: may be possible to take advantage of some overlaps of the two structures some day.
 		return createUnion(other, ch, bHighestPtr);
 	}
-	if (elems[0].type->isCompatibleWith(other))
+	if (elems[0].type->isCompatibleWith(*other))
 		// struct meet first element = struct
 		return this;
 	return createUnion(other, ch, bHighestPtr);
@@ -620,7 +620,7 @@ UnionType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 	}
 	for (auto &elem : elems) {
 		Type *curr = elem.type->clone();
-		if (curr->isCompatibleWith(other)) {
+		if (curr->isCompatibleWith(*other)) {
 			elem.type = curr->meetWith(other, ch, bHighestPtr);
 			return this;
 		}
@@ -739,14 +739,14 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr)
 	// Check for anytype meet compound with anytype as first element
 	if (auto o = dynamic_cast<CompoundType *>(ort)) {
 		Type *firstType = o->getType(o->cbegin());
-		if (firstType->isCompatibleWith(this))
+		if (firstType->isCompatibleWith(*this))
 			// struct meet first element = struct
 			return other->clone();
 	}
 	// Check for anytype meet array of anytype
 	if (auto o = dynamic_cast<ArrayType *>(ort)) {
 		Type *elemTy = o->getBaseType();
-		if (elemTy->isCompatibleWith(this))
+		if (elemTy->isCompatibleWith(*this))
 			// array meet element = array
 			return other->clone();
 	}
@@ -1472,95 +1472,95 @@ Signature::dfaTypeAnalysis(Cfg *cfg)
  *
  */
 bool
-Type::isCompatibleWith(const Type *other, bool all) const
+Type::isCompatibleWith(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const VoidType *>(ort)) return true;
 	if (dynamic_cast<const CompoundType *>(ort)
 	 || dynamic_cast<const ArrayType *>(ort)
 	 || dynamic_cast<const UnionType *>(ort))
-		return other->isCompatible(this, all);
+		return other.isCompatible(*this, all);
 	return isCompatible(other, all);
 }
 bool
-CompoundType::isCompatibleWith(const Type *other, bool all) const
+CompoundType::isCompatibleWith(const Type &other, bool all) const
 {
 	return isCompatible(other, all);
 }
 bool
-ArrayType::isCompatibleWith(const Type *other, bool all) const
+ArrayType::isCompatibleWith(const Type &other, bool all) const
 {
 	return isCompatible(other, all);
 }
 bool
-UnionType::isCompatibleWith(const Type *other, bool all) const
+UnionType::isCompatibleWith(const Type &other, bool all) const
 {
 	return isCompatible(other, all);
 }
 
 /**
- * \fn bool Type::isCompatible(const Type *other, bool all) const
+ * \fn bool Type::isCompatible(const Type &other, bool all) const
  *
  * isCompatible() does most of the work; isCompatibleWith() looks for complex
  * types in other, and if so reverses the parameters (this and other) to
  * prevent many tedious repetitions.
  */
 bool
-VoidType::isCompatible(const Type *other, bool all) const
+VoidType::isCompatible(const Type &other, bool all) const
 {
 	return true;  // Void is compatible with any type
 }
 bool
-SizeType::isCompatible(const Type *other, bool all) const
+SizeType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const FuncType *>(ort)) return false;
 	// FIXME: why is there a test for size 0 here?
-	unsigned otherSize = other->getSize();
+	unsigned otherSize = other.getSize();
 	if (otherSize == size || otherSize == 0) return true;
 	//return false;
 	// For now, size32 and double will be considered compatible (helps test/pentium/global2)
 	return true;
 }
 bool
-IntegerType::isCompatible(const Type *other, bool all) const
+IntegerType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const IntegerType *>(ort)) return true;
 	if (dynamic_cast<const CharType *>(ort)) return true;
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
 bool
-FloatType::isCompatible(const Type *other, bool all) const
+FloatType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const FloatType *>(ort)) return true;
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
 bool
-CharType::isCompatible(const Type *other, bool all) const
+CharType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const CharType *>(ort)) return true;
 	if (dynamic_cast<const IntegerType *>(ort)) return true;
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
 bool
-BooleanType::isCompatible(const Type *other, bool all) const
+BooleanType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const BooleanType *>(ort)) return true;
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	return false;
 }
 bool
-FuncType::isCompatible(const Type *other, bool all) const
+FuncType::isCompatible(const Type &other, bool all) const
 {
 	assert(signature);
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (auto o = dynamic_cast<const FuncType *>(ort)) {
 		assert(o->signature);
 		if (*o->signature == *signature) return true;
@@ -1568,18 +1568,18 @@ FuncType::isCompatible(const Type *other, bool all) const
 	return false;
 }
 bool
-PointerType::isCompatible(const Type *other, bool all) const
+PointerType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (auto o = dynamic_cast<const SizeType *>(ort)) return o->getSize() == getSize();
 	if (auto o = dynamic_cast<const PointerType *>(ort))
-		return points_to->isCompatibleWith(o->points_to, all);
+		return points_to->isCompatibleWith(*o->points_to, all);
 	return false;
 }
 bool
-NamedType::isCompatible(const Type *other, bool all) const
+NamedType::isCompatible(const Type &other, bool all) const
 {
-	if (auto o = dynamic_cast<const NamedType *>(other))
+	if (auto o = dynamic_cast<const NamedType *>(&other))
 		if (name == o->name)
 			return true;
 	if (auto rt = resolvesTo())
@@ -1587,20 +1587,20 @@ NamedType::isCompatible(const Type *other, bool all) const
 	return false;
 }
 bool
-ArrayType::isCompatible(const Type *other, bool all) const
+ArrayType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const VoidType *>(ort)) return true;
-	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(this, all);
+	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(*this, all);
 	if (auto o = dynamic_cast<const ArrayType *>(ort))
-		if (base_type->isCompatibleWith(o->base_type, all)) return true;
+		if (base_type->isCompatibleWith(*o->base_type, all)) return true;
 	if (!all && base_type->isCompatibleWith(other, true)) return true;  // An array of x is compatible with x
 	return false;
 }
 bool
-UnionType::isCompatible(const Type *other, bool all) const
+UnionType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const VoidType *>(ort)) return true;
 	if (auto o = dynamic_cast<const UnionType *>(ort)) {
 		if (this == o)  // Note: pointer comparison
@@ -1608,31 +1608,31 @@ UnionType::isCompatible(const Type *other, bool all) const
 		// Unions are compatible if one is a subset of the other
 		if (elems.size() < o->elems.size()) {
 			for (const auto &elem : elems)
-				if (!o->isCompatibleWith(elem.type, all))
+				if (!o->isCompatibleWith(*elem.type, all))
 					return false;
 		} else {
 			for (const auto &elem : o->elems)
-				if (!isCompatibleWith(elem.type, all))
+				if (!isCompatibleWith(*elem.type, all))
 					return false;
 		}
 		return true;
 	}
 	// Other is not a UnionType
 	for (const auto &elem : elems)
-		if (other->isCompatibleWith(elem.type, all))
+		if (other.isCompatibleWith(*elem.type, all))
 			return true;
 	return false;
 }
 bool
-CompoundType::isCompatible(const Type *other, bool all) const
+CompoundType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
+	auto ort = other.resolvesTo();
 	if (dynamic_cast<const VoidType *>(ort)) return true;
-	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(this, all);
+	if (auto o = dynamic_cast<const UnionType *>(ort)) return o->isCompatibleWith(*this, all);
 	if (auto o = dynamic_cast<const CompoundType *>(ort)) {
 		if (elems.size() != o->elems.size()) return false;  // Is a subcompound compatible with a supercompound?
 		for (auto it1 = elems.cbegin(), it2 = o->elems.cbegin(); it1 != elems.cend(); ++it1, ++it2)
-			if (!it1->type->isCompatibleWith(it2->type, true))
+			if (!it1->type->isCompatibleWith(*it2->type, true))
 				return false;
 		return true;
 	}
@@ -1641,17 +1641,17 @@ CompoundType::isCompatible(const Type *other, bool all) const
 }
 #if 0 // Cruft?
 bool
-UpperType::isCompatible(const Type *other, bool all) const
+UpperType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
-	if (auto o = dynamic_cast<const UpperType *>(ort)) return base_type->isCompatibleWith(o->base_type, all);
+	auto ort = other.resolvesTo();
+	if (auto o = dynamic_cast<const UpperType *>(ort)) return base_type->isCompatibleWith(*o->base_type, all);
 	return false;
 }
 bool
-LowerType::isCompatible(const Type *other, bool all) const
+LowerType::isCompatible(const Type &other, bool all) const
 {
-	auto ort = other->resolvesTo();
-	if (auto o = dynamic_cast<const LowerType *>(ort)) return base_type->isCompatibleWith(o->base_type, all);
+	auto ort = other.resolvesTo();
+	if (auto o = dynamic_cast<const LowerType *>(ort)) return base_type->isCompatibleWith(*o->base_type, all);
 	return false;
 }
 #endif
@@ -1660,12 +1660,12 @@ LowerType::isCompatible(const Type *other, bool all) const
  * \brief Return true if this is a subset or equal to other.
  */
 bool
-Type::isSubTypeOrEqual(Type *other)
+Type::isSubTypeOrEqual(const Type &other)
 {
 	if (resolvesToVoid()) return true;
-	if (*this == *other) return true;
-	if (this->resolvesToCompound() && other->resolvesToCompound())
-		return this->asCompound()->isSubStructOf(*other);
+	if (*this == other) return true;
+	if (this->resolvesToCompound() && other.resolvesToCompound())
+		return this->asCompound()->isSubStructOf(other);
 	// Not really sure here
 	return false;
 }
