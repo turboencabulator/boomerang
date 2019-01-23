@@ -32,42 +32,41 @@
 #include <cstring>
 #include <cassert>
 
-Type::Type(eType id) : id(id) { }
+Type::Type() { }
 
-VoidType::VoidType() : Type(eVoid) { }
+VoidType::VoidType() { }
 
-FuncType::FuncType(Signature *sig) : Type(eFunc), signature(sig) { }
+FuncType::FuncType(Signature *sig) : signature(sig) { }
 
-IntegerType::IntegerType(unsigned sz, int sign) : Type(eInteger), size(sz), signedness(sign) { }
+IntegerType::IntegerType(unsigned sz, int sign) : size(sz), signedness(sign) { }
 
-FloatType::FloatType(unsigned sz) : Type(eFloat), size(sz) { }
+FloatType::FloatType(unsigned sz) : size(sz) { }
 
-BooleanType::BooleanType() : Type(eBoolean) { }
+BooleanType::BooleanType() { }
 
-CharType::CharType() : Type(eChar) { }
+CharType::CharType() { }
 
-PointerType::PointerType(Type *p) :
-	Type(ePointer)
+PointerType::PointerType(Type *p)
 {
 	setPointsTo(p);
 }
 
-ArrayType::ArrayType() : Type(eArray) { }
-ArrayType::ArrayType(Type *p, unsigned length) : Type(eArray), base_type(p), length(length) { }
-ArrayType::ArrayType(Type *p) : Type(eArray), base_type(p), length(NO_BOUND) { }
+ArrayType::ArrayType() { }
+ArrayType::ArrayType(Type *p, unsigned length) : base_type(p), length(length) { }
+ArrayType::ArrayType(Type *p) : base_type(p), length(NO_BOUND) { }
 
-NamedType::NamedType(const std::string &name) : Type(eNamed), name(name) { }
+NamedType::NamedType(const std::string &name) : name(name) { }
 
-CompoundType::CompoundType(bool generic) : Type(eCompound), generic(generic) { }
+CompoundType::CompoundType(bool generic) : generic(generic) { }
 
-UnionType::UnionType() : Type(eUnion) { }
+UnionType::UnionType() { }
 
-SizeType::SizeType() : Type(eSize) { }
-SizeType::SizeType(unsigned sz) : Type(eSize), size(sz) { }
+SizeType::SizeType() { }
+SizeType::SizeType(unsigned sz) : size(sz) { }
 
 #if 0 // Cruft?
-UpperType::UpperType(Type *base) : Type(eUpper), base_type(base) { }
-LowerType::LowerType(Type *base) : Type(eLower), base_type(base) { }
+UpperType::UpperType(Type *base) : base_type(base) { }
+LowerType::LowerType(Type *base) : base_type(base) { }
 #endif
 
 
@@ -824,7 +823,7 @@ Type::operator !=(const Type &other) const
 bool
 Type::operator *=(const Type &other) const
 {
-	return id == other.id;
+	return getId() == other.getId();
 }
 
 #if 0
@@ -869,7 +868,7 @@ bool
 IntegerType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const IntegerType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	if (size != o->size) return size < o->size;
 	return signedness < o->signedness;
 }
@@ -877,29 +876,29 @@ bool
 FloatType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const FloatType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return size < o->size;
 }
 bool
 BooleanType::operator <(const Type &other) const
 {
-	return id < other.getId();
+	return getId() < other.getId();
 }
 bool
 CharType::operator <(const Type &other) const
 {
-	return id < other.getId();
+	return getId() < other.getId();
 }
 bool
 VoidType::operator <(const Type &other) const
 {
-	return id < other.getId();
+	return getId() < other.getId();
 }
 bool
 FuncType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const FuncType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	// FIXME: Need to compare signatures
 	return true;
 }
@@ -907,42 +906,42 @@ bool
 PointerType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const PointerType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return *points_to < *o->points_to;
 }
 bool
 ArrayType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const ArrayType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return *base_type < *o->base_type;
 }
 bool
 NamedType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const NamedType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return name < o->name;
 }
 bool
 CompoundType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const CompoundType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return getSize() < o->getSize();  // This won't separate structs of the same size!! MVE
 }
 bool
 UnionType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const UnionType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return elems.size() < o->elems.size();
 }
 bool
 SizeType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const SizeType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return size < o->size;
 }
 #if 0 // Cruft?
@@ -950,14 +949,14 @@ bool
 UpperType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const UpperType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return *base_type < *o->base_type;
 }
 bool
 LowerType::operator <(const Type &other) const
 {
 	auto o = dynamic_cast<const LowerType *>(&other);
-	if (!o) return id < other.getId();
+	if (!o) return getId() < other.getId();
 	return *base_type < *o->base_type;
 }
 #endif
