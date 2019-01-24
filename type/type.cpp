@@ -53,7 +53,7 @@ PointerType::PointerType(Type *p)
 
 ArrayType::ArrayType() { }
 ArrayType::ArrayType(Type *p, unsigned length) : base_type(p), length(length) { }
-ArrayType::ArrayType(Type *p) : base_type(p), length(NO_BOUND) { }
+ArrayType::ArrayType(Type *p) : ArrayType(p, NO_BOUND) { }
 
 NamedType::NamedType(const std::string &name) : name(name) { }
 
