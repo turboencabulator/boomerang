@@ -25,7 +25,6 @@ class PentiumFrontEnd : public FrontEnd {
 
 public:
 	PentiumFrontEnd(BinaryFile *pBF, Prog *prog);
-	virtual ~PentiumFrontEnd();
 
 	platform getFrontEndId() const override { return PLAT_PENTIUM; }
 	NJMCDecoder &getDecoder() override { return decoder; }

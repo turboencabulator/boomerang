@@ -51,14 +51,14 @@ class Proc {
 	friend class XMLProgParser;
 
 protected:
-	                    Proc() { }
+	                    Proc() = default;
 public:
 	/**
 	 * Constructor with name, native address and optional bLib.
 	 */
 	                    Proc(Prog *prog, ADDRESS uNative, Signature *sig);
 
-	virtual            ~Proc();
+	virtual            ~Proc() = default;
 
 	/**
 	 * Gets name of this procedure.
@@ -177,10 +177,9 @@ class LibProc : public Proc {
 	friend class XMLProgParser;
 
 protected:
-	            LibProc() { }
+	            LibProc() = default;
 public:
 	            LibProc(Prog *, const std::string &, ADDRESS);
-	virtual    ~LibProc();
 
 	bool        isNoReturn() const override;
 
@@ -303,7 +302,7 @@ protected:
 	            UserProc();
 public:
 	            UserProc(Prog *, const std::string &, ADDRESS);
-	virtual    ~UserProc();
+	           ~UserProc() override;
 
 	/**
 	 * Records that this procedure has been decoded.

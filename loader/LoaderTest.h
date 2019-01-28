@@ -28,8 +28,6 @@ class LoaderTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	LoaderTest() { }
-
 	void testSparcLoad();
 	void testPentiumLoad();
 	void testHppaLoad();

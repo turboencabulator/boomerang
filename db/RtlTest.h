@@ -23,8 +23,6 @@ class RtlTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	RtlTest() { }
-
 	void testAppend();
 	void testClone();
 	void testVisitor();

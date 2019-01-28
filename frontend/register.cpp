@@ -24,29 +24,6 @@
 #include "type.h"
 
 /**
- * \brief Constructor.
- *
- * Needed for use in stl classes.
- */
-Register::Register()
-{
-}
-
-/**
- * \brief Copy constructor.
- *
- * \param[in] r  Reference to another Register object to construct from.
- */
-Register::Register(const Register &r) :
-	name(r.name),
-	size(r.size),
-	flt(r.flt),
-	mappedIndex(r.mappedIndex),
-	mappedOffset(r.mappedOffset)
-{
-}
-
-/**
  * \brief Copy operator.
  *
  * \param[in] r2  Reference to another Register object (to be copied).

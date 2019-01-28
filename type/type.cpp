@@ -32,26 +32,17 @@
 #include <cstring>
 #include <cassert>
 
-Type::Type() { }
-
-VoidType::VoidType() { }
-
 FuncType::FuncType(Signature *sig) : signature(sig) { }
 
 IntegerType::IntegerType(unsigned sz, int sign) : size(sz), signedness(sign) { }
 
 FloatType::FloatType(unsigned sz) : size(sz) { }
 
-BooleanType::BooleanType() { }
-
-CharType::CharType() { }
-
 PointerType::PointerType(Type *p)
 {
 	setPointsTo(p);
 }
 
-ArrayType::ArrayType() { }
 ArrayType::ArrayType(Type *p, unsigned length) : base_type(p), length(length) { }
 ArrayType::ArrayType(Type *p) : ArrayType(p, NO_BOUND) { }
 
@@ -59,9 +50,6 @@ NamedType::NamedType(const std::string &name) : name(name) { }
 
 CompoundType::CompoundType(bool generic) : generic(generic) { }
 
-UnionType::UnionType() { }
-
-SizeType::SizeType() { }
 SizeType::SizeType(unsigned sz) : size(sz) { }
 
 #if 0 // Cruft?
@@ -70,13 +58,6 @@ LowerType::LowerType(Type *base) : base_type(base) { }
 #endif
 
 
-Type::~Type() { }
-VoidType::~VoidType() { }
-FuncType::~FuncType() { }
-IntegerType::~IntegerType() { }
-FloatType::~FloatType() { }
-BooleanType::~BooleanType() { }
-CharType::~CharType() { }
 PointerType::~PointerType()
 {
 	// delete points_to;  // Easier for test code (which doesn't use garbage collection)
@@ -85,14 +66,6 @@ ArrayType::~ArrayType()
 {
 	// delete base_type;
 }
-NamedType::~NamedType() { }
-CompoundType::~CompoundType() { }
-UnionType::~UnionType() { }
-SizeType::~SizeType() { }
-#if 0 // Cruft?
-UpperType::~UpperType() { }
-LowerType::~LowerType() { }
-#endif
 
 /**
  * \fn Type *Type::clone()

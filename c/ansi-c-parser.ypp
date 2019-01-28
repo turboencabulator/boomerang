@@ -37,8 +37,6 @@
 	public:
 		bool noDecode = false;
 		bool incomplete = false;
-
-		SymbolMods() { }
 	};
 
 	class Symbol {
@@ -56,8 +54,6 @@
 	public:
 		Exp *exp = nullptr;
 		int sp = 0;
-
-		CustomOptions() { }
 	};
 
 	class SymbolRef {

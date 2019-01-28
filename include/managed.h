@@ -51,7 +51,6 @@ public:
 	typedef std::set<Statement *>::const_iterator const_iterator;
 	typedef std::set<Statement *>::size_type size_type;
 
-	           ~StatementSet() { }
 	void        makeUnion(const StatementSet &other);   // Set union
 	void        makeDiff(const StatementSet &other);    // Set difference
 	void        makeIsect(const StatementSet &other);   // Set intersection
@@ -90,7 +89,6 @@ public:
 	typedef std::set<Assign *, lessAssign>::const_iterator const_iterator;
 	typedef std::set<Assign *, lessAssign>::size_type size_type;
 
-	           ~AssignSet() { }
 	void        makeUnion(const AssignSet &other);     // Set union
 	void        makeDiff(const AssignSet &other);      // Set difference
 	void        makeIsect(const AssignSet &other);     // Set intersection
@@ -126,7 +124,6 @@ public:
 	typedef std::list<Statement *>::reverse_iterator reverse_iterator;
 	typedef std::list<Statement *>::size_type size_type;
 
-	           ~StatementList() { }
 	size_type   size() const     { return slist.size(); }   // Number of elements
 	bool        empty() const    { return slist.empty(); }
 	const_iterator begin() const { return slist.begin(); }
@@ -195,8 +192,7 @@ public:
 	typedef std::set<Exp *, lessExpStar>::const_iterator const_iterator;
 	typedef std::set<Exp *, lessExpStar>::size_type size_type;
 
-	            LocationSet() { }                       // Default constructor
-	           ~LocationSet() { }                       // virtual destructor kills warning
+	            LocationSet() = default;                // Default constructor
 	            LocationSet(const LocationSet &o);      // Copy constructor
 	LocationSet &operator =(const LocationSet &o);      // Assignment
 	void        makeUnion(const LocationSet &other);    // Set union
@@ -259,7 +255,6 @@ protected:
 	std::map<Exp *, Range, lessExpStar> ranges;
 
 public:
-	            RangeMap() { }
 	void        addRange(Exp *loc, Range &r) { ranges[loc] = r; }
 	bool        hasRange(Exp *loc) const { return !!ranges.count(loc); }
 	Range      &getRange(Exp *loc);
@@ -288,7 +283,6 @@ class ConnectionGraph {
 	std::multimap<Exp *, Exp *, lessExpStar> emap;  // The map
 public:
 	typedef std::multimap<Exp *, Exp *, lessExpStar>::iterator iterator;
-	            ConnectionGraph() { }
 
 	void        add(Exp *a, Exp *b);            // Add pair with check for existing
 	void        connect(Exp *a, Exp *b);

@@ -23,8 +23,6 @@ class FrontSparcTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	FrontSparcTest() { }
-
 	void test1();
 	void test2();
 	void test3();

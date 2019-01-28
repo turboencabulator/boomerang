@@ -109,7 +109,7 @@ protected:
 	Prog *prog;
 public:
 	NJMCDecoder(Prog *prog);
-	virtual ~NJMCDecoder() { };
+	virtual ~NJMCDecoder() = default;
 
 	/**
 	 * Decodes the machine instruction at pc and returns an RTL instance

@@ -116,7 +116,7 @@ typedef struct __attribute__((packed)) {
 class DOS4GWBinaryFile : public BinaryFile {
 public:
 	            DOS4GWBinaryFile();
-	virtual    ~DOS4GWBinaryFile();
+	           ~DOS4GWBinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_LX; }
 	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }

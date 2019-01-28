@@ -67,10 +67,6 @@ FrontEnd::FrontEnd(BinaryFile *pBF, Prog *prog) :
 {
 }
 
-FrontEnd::~FrontEnd()
-{
-}
-
 /**
  * \brief Creates and returns an instance of the appropriate subclass.
  *

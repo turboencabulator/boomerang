@@ -46,10 +46,6 @@
 
 typedef std::map<Statement *, int> RefCounter;
 
-Proc::~Proc()
-{
-}
-
 /*==============================================================================
  * FUNCTION:        Proc::Proc
  * OVERVIEW:        Constructor with name, native address.
@@ -350,10 +346,6 @@ LibProc::LibProc(Prog *prog, const std::string &name, ADDRESS uNative) :
 {
 	Signature *sig = prog->getLibSignature(name);
 	signature = sig;
-}
-
-LibProc::~LibProc()
-{
 }
 
 Exp *

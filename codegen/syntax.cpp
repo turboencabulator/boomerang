@@ -42,10 +42,6 @@ SyntaxNode::SyntaxNode()
 	nodenum = nodecount++;
 }
 
-SyntaxNode::~SyntaxNode()
-{
-}
-
 int
 SyntaxNode::getScore()
 {
@@ -64,10 +60,6 @@ bool
 SyntaxNode::isBranch() const
 {
 	return pbb && pbb->getType() == TWOWAY;
-}
-
-BlockSyntaxNode::BlockSyntaxNode()
-{
 }
 
 BlockSyntaxNode::~BlockSyntaxNode()
@@ -422,11 +414,6 @@ BlockSyntaxNode::replace(const SyntaxNode *from, SyntaxNode *to)
 	return this;
 }
 
-IfThenSyntaxNode::IfThenSyntaxNode()
-{
-}
-
-
 IfThenSyntaxNode::~IfThenSyntaxNode()
 {
 	delete pThen;
@@ -498,10 +485,6 @@ IfThenSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 	os << "\t" << nodenum
 	   << " -> " << follows->getNumber()
 	   << " [style=dotted];\n";
-}
-
-IfThenElseSyntaxNode::IfThenElseSyntaxNode()
-{
 }
 
 IfThenElseSyntaxNode::~IfThenElseSyntaxNode()
@@ -605,10 +588,6 @@ IfThenElseSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 }
 
 
-PretestedLoopSyntaxNode::PretestedLoopSyntaxNode()
-{
-}
-
 PretestedLoopSyntaxNode::~PretestedLoopSyntaxNode()
 {
 	delete pBody;
@@ -691,10 +670,6 @@ PretestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) cons
 	os << "\t" << nodenum
 	   << " -> " << getOutEdge(root, 0)->getNumber()
 	   << " [style=dotted];\n";
-}
-
-PostTestedLoopSyntaxNode::PostTestedLoopSyntaxNode()
-{
 }
 
 PostTestedLoopSyntaxNode::~PostTestedLoopSyntaxNode()
@@ -781,10 +756,6 @@ PostTestedLoopSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) con
 	os << "\t" << nodenum
 	   << " -> " << getOutEdge(root, 0)->getNumber()
 	   << " [style=dotted];\n";
-}
-
-InfiniteLoopSyntaxNode::InfiniteLoopSyntaxNode()
-{
 }
 
 InfiniteLoopSyntaxNode::~InfiniteLoopSyntaxNode()

@@ -1006,16 +1006,6 @@ Assign::isFpop() const
  * GotoStatement methods
  *****************************************************************************/
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::GotoStatement
- * OVERVIEW:        Constructor.
- * PARAMETERS:      listStmt: a list of Statements (not the same as an RTL)
- *                    to serve as the initial list of statements
- *============================================================================*/
-GotoStatement::GotoStatement()
-{
-}
-
 GotoStatement::GotoStatement(Exp *dest) :
 	pDest(dest)
 {
@@ -1246,10 +1236,6 @@ GotoStatement::simplify()
  * FUNCTION:        BranchStatement::BranchStatement
  * OVERVIEW:        Constructor.
  *============================================================================*/
-BranchStatement::BranchStatement()
-{
-}
-
 BranchStatement::BranchStatement(Exp *dest) :
 	GotoStatement(dest)
 {
@@ -1825,13 +1811,6 @@ BranchStatement::simplify()
 /**********************************
  * CaseStatement methods
  **********************************/
-/*==============================================================================
- * FUNCTION:        CaseStatement::CaseStatement
- * OVERVIEW:        Constructor.
- *============================================================================*/
-CaseStatement::CaseStatement()
-{
-}
 
 CaseStatement::CaseStatement(Exp *dest) :
 	GotoStatement(dest)
@@ -1981,14 +1960,6 @@ CaseStatement::simplify()
  *      CallStatement methods
  **********************************/
 
-/*==============================================================================
- * FUNCTION:         CallStatement::CallStatement
- * OVERVIEW:         Constructor for a call
- *============================================================================*/
-CallStatement::CallStatement()
-{
-}
-
 CallStatement::CallStatement(Exp *dest) :
 	GotoStatement(dest)
 {
@@ -1996,14 +1967,6 @@ CallStatement::CallStatement(Exp *dest) :
 
 CallStatement::CallStatement(ADDRESS dest) :
 	GotoStatement(dest)
-{
-}
-
-/*==============================================================================
- * FUNCTION:      CallStatement::~CallStatement
- * OVERVIEW:      Destructor
- *============================================================================*/
-CallStatement::~CallStatement()
 {
 }
 
@@ -2861,22 +2824,6 @@ CallStatement::addSigParam(Type *ty, bool isScanf)
  **********************************/
 
 /*==============================================================================
- * FUNCTION:         ReturnStatement::ReturnStatement
- * OVERVIEW:         Constructor.
- *============================================================================*/
-ReturnStatement::ReturnStatement()
-{
-}
-
-/*==============================================================================
- * FUNCTION:         ReturnStatement::~ReturnStatement
- * OVERVIEW:         Destructor.
- *============================================================================*/
-ReturnStatement::~ReturnStatement()
-{
-}
-
-/*==============================================================================
  * FUNCTION:        ReturnStatement::clone
  * OVERVIEW:        Deep copy clone
  * RETURNS:         Pointer to a new Statement, a clone of this ReturnStatement
@@ -3207,10 +3154,6 @@ Assignment::Assignment(Type *ty, Exp *lhs) :
 {
 }
 
-Assignment::~Assignment()
-{
-}
-
 Assign::Assign(Exp *lhs, Exp *rhs, Exp *guard) :
 	Assignment(lhs),
 	rhs(rhs),
@@ -3247,11 +3190,6 @@ ImplicitAssign::ImplicitAssign(Type *ty, Exp *lhs) :
 
 ImplicitAssign::ImplicitAssign(const ImplicitAssign &o) :
 	Assignment(o.type ? o.type->clone() : nullptr, o.lhs->clone())
-{
-}
-
-// The first virtual function (here the destructor) can't be in statement.h file for gcc
-ImplicitAssign::~ImplicitAssign()
 {
 }
 

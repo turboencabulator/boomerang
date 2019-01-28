@@ -30,8 +30,6 @@ class Type;
 class Register {
 public:
 
-	Register();
-	Register(const Register &);
 	Register operator =(const Register &r2);
 	bool operator ==(const Register &r2) const;
 	bool operator <(const Register &r2) const;

@@ -25,10 +25,6 @@ MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog) :
 {
 }
 
-MIPSFrontEnd::~MIPSFrontEnd()
-{
-}
-
 std::vector<Exp *> &
 MIPSFrontEnd::getDefaultParams()
 {

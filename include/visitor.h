@@ -64,8 +64,7 @@ class lessExpStar;
  */
 class ExpVisitor {
 public:
-	                    ExpVisitor() { }
-	virtual            ~ExpVisitor() { }
+	virtual            ~ExpVisitor() = default;
 
 	// visitor functions return false to abandon iterating through the expression (terminate the search)
 	// Set recurse to false to not do the usual recursion into children
@@ -103,7 +102,6 @@ class GetProcVisitor : public ExpVisitor {
 	UserProc   *proc = nullptr;  // The result (or nullptr)
 
 public:
-	            GetProcVisitor() { }  // Constructor
 	UserProc   *getProc() const { return proc; }
 	bool        visit(Location *, bool &) override;
 	// All others inherit and visit their children
@@ -136,8 +134,7 @@ class ExpModifier {
 protected:
 	        bool        mod = false;  // Set if there is any change. Don't have to implement
 public:
-	                    ExpModifier() { }
-	virtual            ~ExpModifier() { }
+	virtual            ~ExpModifier() = default;
 	        bool        isMod() const { return mod; }
 	        void        clearMod() { mod = false; }
 
@@ -177,8 +174,7 @@ public:
  */
 class StmtVisitor {
 public:
-	                    StmtVisitor() { }
-	virtual            ~StmtVisitor() { }
+	virtual            ~StmtVisitor() = default;
 
 	// visitor functions,
 	// returns true to continue iterating the container
@@ -223,7 +219,7 @@ class StmtExpVisitor {
 public:
 	        ExpVisitor &ev;
 	                    StmtExpVisitor(ExpVisitor &v, bool ignoreCol = true) : ignoreCol(ignoreCol), ev(v) { }
-	virtual            ~StmtExpVisitor() { }
+	virtual            ~StmtExpVisitor() = default;
 	virtual bool        visit(         Assign *, bool &) { return true; }
 	virtual bool        visit(      PhiAssign *, bool &) { return true; }
 	virtual bool        visit( ImplicitAssign *, bool &) { return true; }
@@ -259,7 +255,7 @@ protected:
 public:
 	        ExpModifier &mod;  // The expression modifier object
 	                    StmtModifier(ExpModifier &em, bool ic = false) : ignoreCol(ic), mod(em) { }// Constructor
-	virtual            ~StmtModifier() { }
+	virtual            ~StmtModifier() = default;
 	        bool        ignoreCollector() const { return ignoreCol; }
 	// This class' visitor functions don't return anything. Maybe we'll need return values at a later stage.
 	virtual void        visit(         Assign *, bool &) { }
@@ -285,7 +281,7 @@ class StmtPartModifier {
 public:
 	        ExpModifier &mod;  // The expression modifier object
 	                    StmtPartModifier(ExpModifier &em, bool ic = false) : ignoreCol(ic), mod(em) { }  // Constructor
-	virtual            ~StmtPartModifier() { }
+	virtual            ~StmtPartModifier() = default;
 	        bool        ignoreCollector() const { return ignoreCol; }
 	// This class' visitor functions don't return anything. Maybe we'll need return values at a later stage.
 	virtual void        visit(         Assign *, bool &) { }
@@ -321,7 +317,6 @@ protected:
 	unsigned    mask = 1;
 	unsigned    unchanged = (unsigned)-1;
 public:
-	            SimpExpModifier() { }
 	unsigned    getUnchanged() const { return unchanged; }
 	bool        isTopChanged() const { return !(unchanged & mask); }
 	Exp        *preVisit(    Unary *e, bool &) override { mask <<= 1; return e; }
@@ -373,7 +368,6 @@ class UsedLocsFinder : public ExpVisitor {
 	bool        memOnly;  // If true, only look inside m[...]
 public:
 	            UsedLocsFinder(LocationSet &used, bool memOnly) : used(&used), memOnly(memOnly) { }
-	           ~UsedLocsFinder() { }
 
 	LocationSet *getLocSet() const { return used; }
 	void        setMemOnly(bool b) { memOnly = b; }
@@ -396,7 +390,6 @@ class UsedLocalFinder : public ExpVisitor {
 	bool        all = false;  // True if see opDefineAll
 public:
 	            UsedLocalFinder(LocationSet &used, UserProc *proc) : used(&used), proc(proc) { }
-	           ~UsedLocalFinder() { }
 
 	LocationSet *getLocSet() const { return used; }
 	bool        wasAllFound() const { return all; }
@@ -410,7 +403,6 @@ class UsedLocsVisitor : public StmtExpVisitor {
 	bool        countCol;  // True to count uses in collectors
 public:
 	            UsedLocsVisitor(ExpVisitor &v, bool cc) : StmtExpVisitor(v), countCol(cc) { }
-	virtual    ~UsedLocsVisitor() { }
 	// Needs special attention because the lhs of an assignment isn't used (except where it's m[blah], when blah is
 	// used)
 	bool        visit(         Assign *, bool &) override;
@@ -440,7 +432,6 @@ public:
 class StmtSubscripter : public StmtModifier {
 public:
 	            StmtSubscripter(ExpSubscripter &es) : StmtModifier(es) { }
-	virtual    ~StmtSubscripter() { }
 
 	void        visit(        Assign *, bool &) override;
 	void        visit(     PhiAssign *, bool &) override;
@@ -451,9 +442,6 @@ public:
 
 class SizeStripper : public ExpModifier {
 public:
-	            SizeStripper() { }
-	virtual    ~SizeStripper() { }
-
 	Exp        *preVisit(Binary *, bool &) override;
 };
 
@@ -463,7 +451,6 @@ class ExpConstCaster: public ExpModifier {
 	bool        changed = false;
 public:
 	            ExpConstCaster(int num, Type *ty) : num(num), ty(ty) { }
-	virtual    ~ExpConstCaster() { }
 	bool        isChanged() const { return changed; }
 
 	Exp        *preVisit(Const *) override;
@@ -473,7 +460,6 @@ class ConstFinder : public ExpVisitor {
 	std::list<Const *> &lc;
 public:
 	            ConstFinder(std::list<Const *> &lc) : lc(lc) { }
-	virtual    ~ConstFinder() { }
 
 	bool        visit(Location *, bool &) override;
 	bool        visit(   Const *) override;
@@ -572,7 +558,6 @@ public:
 class MemDepthFinder : public ExpVisitor {
 	int         depth = 0;
 public:
-	            MemDepthFinder() { }
 	bool        visit(Location *, bool &) override;
 	int         getDepth() const { return depth; }
 };
@@ -586,7 +571,6 @@ public:
 class ExpPropagator : public SimpExpModifier {
 	bool        change = false;
 public:
-	            ExpPropagator() { }
 	bool        isChanged() const { return change; }
 	void        clearChanged() { change = false; }
 	Exp        *postVisit(RefExp *) override;
@@ -601,7 +585,6 @@ public:
 class PrimitiveTester : public ExpVisitor {
 	bool        result = true;
 public:
-	            PrimitiveTester() { }  // Initialise result true: need AND of all components
 	bool        getResult() const { return result; }
 	bool        visit(  RefExp *, bool &) override;
 	bool        visit(Location *, bool &) override;
@@ -684,7 +667,6 @@ public:
 class FlagsFinder : public ExpVisitor {
 	bool        found = false;
 public:
-	            FlagsFinder() { }
 	bool        isFound() const { return found; }
 private:
 	bool        visit(Binary *, bool &) override;
@@ -719,7 +701,6 @@ public:
 class StmtCastInserter : public StmtVisitor {
 	ExpCastInserter *ema;
 public:
-	            StmtCastInserter() { }
 	bool        common(   Assignment *);
 	bool        visit(        Assign *) override;
 	bool        visit(     PhiAssign *) override;
@@ -748,7 +729,6 @@ class StmtSsaXformer : public StmtModifier {
 	UserProc   *proc;
 public:
 	            StmtSsaXformer(ExpSsaXformer &esx, UserProc *proc) : StmtModifier(esx), proc(proc) { }
-	//virtual    ~StmtSsaXformer() { }
 	void        commonLhs(Assignment *);
 
 	void        visit(        Assign *, bool &) override;

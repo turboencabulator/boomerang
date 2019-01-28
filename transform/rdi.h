@@ -19,7 +19,6 @@
 class RDIExpTransformer : public ExpTransformer
 {
 public:
-	RDIExpTransformer() { }
 	Exp *applyTo(Exp *e, bool &bMod) override;
 };
 

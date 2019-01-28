@@ -73,7 +73,7 @@ typedef struct {
 class ExeBinaryFile : public BinaryFile {
 public:
 	            ExeBinaryFile();
-	virtual    ~ExeBinaryFile();
+	           ~ExeBinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_EXE; }
 	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }

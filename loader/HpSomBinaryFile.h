@@ -72,7 +72,7 @@ struct plt_record {
 class HpSomBinaryFile : public BinaryFile {
 public:
 	            HpSomBinaryFile();
-	virtual    ~HpSomBinaryFile();
+	           ~HpSomBinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_PAR; }
 	MACHINE     getMachine() const override { return MACHINE_HPRISC; }

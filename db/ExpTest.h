@@ -74,8 +74,6 @@ protected:
 	Location *m_rof2;
 
 public:
-	ExpTest() { }
-
 	void setUp();
 	void tearDown();
 

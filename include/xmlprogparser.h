@@ -47,9 +47,6 @@ typedef struct {
 #endif
 
 class XMLProgParser {
-public:
-	XMLProgParser() { }
-
 #ifdef ENABLE_XML_LOAD
 public:
 	Prog *parse(const std::string &);

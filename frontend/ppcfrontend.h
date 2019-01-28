@@ -21,7 +21,6 @@ class PPCFrontEnd : public FrontEnd {
 
 public:
 	PPCFrontEnd(BinaryFile *pBF, Prog *prog);
-	virtual ~PPCFrontEnd();
 
 	platform getFrontEndId() const override { return PLAT_PPC; }
 	NJMCDecoder &getDecoder() override { return decoder; }

@@ -105,11 +105,8 @@ private:
 
 public:
 	// constructor
-	CHLLCode();
+	CHLLCode() = default;
 	CHLLCode(UserProc *p);
-
-	// destructor
-	virtual ~CHLLCode();
 
 	// clear this class, calls the base
 	void reset() override;

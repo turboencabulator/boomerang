@@ -74,7 +74,7 @@ public:
 class FrontEnd {
 protected:
 	FrontEnd(BinaryFile *pBF, Prog *prog);
-	virtual ~FrontEnd();
+	virtual ~FrontEnd() = default;
 public:
 	static FrontEnd *open(const char *name, Prog *prog);
 	static FrontEnd *open(BinaryFile *bf, Prog *prog);

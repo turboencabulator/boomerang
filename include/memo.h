@@ -20,13 +20,13 @@ public:
 	Memo(int m) : mId(m) { }
 	int mId;
 	virtual void doNothing() { }
-	virtual ~Memo() { }  // Kill gcc warning
+	virtual ~Memo() = default;
 };
 
 class Memoisable {
 public:
 	Memoisable() { cur_memo = memos.begin(); }
-	virtual ~Memoisable() { }
+	virtual ~Memoisable() = default;
 
 	void takeMemo(int mId);
 	void restoreMemo(int mId, bool dec = false);

@@ -57,7 +57,7 @@
  */
 struct SectionInfo {
 	            SectionInfo();
-	virtual    ~SectionInfo();      // Quell a warning in gcc
+	virtual    ~SectionInfo() = default;
 
 	/**
 	 * Windows's PE file sections can contain any combination of code,
@@ -143,7 +143,7 @@ class BinaryFile {
 
 protected:
 	                    BinaryFile(bool bArchive = false);
-	virtual            ~BinaryFile();
+	virtual            ~BinaryFile() = default;
 public:
 	// Creates and returns an instance of the appropriate subclass.
 	static  BinaryFile *open(const char *name);

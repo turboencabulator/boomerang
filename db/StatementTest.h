@@ -44,8 +44,6 @@ class StatementTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	StatementTest() { }
-
 	void setUp();
 
 	void testEmpty();

@@ -32,10 +32,6 @@ ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :
 {
 }
 
-ST20FrontEnd::~ST20FrontEnd()
-{
-}
-
 std::vector<Exp *> &
 ST20FrontEnd::getDefaultParams()
 {

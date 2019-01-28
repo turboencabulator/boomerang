@@ -16,14 +16,6 @@
 
 #include "SymTab.h"
 
-SymTab::SymTab()
-{
-}
-
-SymTab::~SymTab()
-{
-}
-
 /**
  * \brief Add a new entry.
  */

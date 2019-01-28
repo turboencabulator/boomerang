@@ -171,7 +171,7 @@ typedef struct {
 class ElfBinaryFile : public BinaryFile {
 public:
 	            ElfBinaryFile(bool bArchive = false);
-	virtual    ~ElfBinaryFile();
+	           ~ElfBinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_ELF; }
 	MACHINE     getMachine() const override;

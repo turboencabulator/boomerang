@@ -30,7 +30,6 @@ class SparcFrontEnd : public FrontEnd {
 
 public:
 	SparcFrontEnd(BinaryFile *pBF, Prog *prog);
-	virtual ~SparcFrontEnd();
 
 	platform getFrontEndId() const override { return PLAT_SPARC; }
 	NJMCDecoder &getDecoder() override { return decoder; }

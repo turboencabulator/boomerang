@@ -53,8 +53,7 @@ class UserProc;
  */
 class Watcher {
 public:
-	        Watcher() { }
-	virtual ~Watcher() { };  // Prevent gcc4 warning
+	virtual            ~Watcher() = default;
 
 	virtual void        alert_complete() { }
 	virtual void        alert_new(Proc *p) { }
@@ -104,7 +103,7 @@ private:
 
 	                    Boomerang();
 	        /// The destructor is virtual to force this object to be created on the heap (with \em new).
-	virtual            ~Boomerang() { }
+	virtual            ~Boomerang() = default;
 public:
 	        /**
 	         * \return The global boomerang object. It will be created if it didn't already exist.

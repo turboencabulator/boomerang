@@ -25,8 +25,6 @@ protected:
 	Proc *m_proc;
 
 public:
-	ProcTest() { }
-
 	void tearDown();
 
 	void testName();

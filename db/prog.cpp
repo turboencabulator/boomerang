@@ -1403,11 +1403,6 @@ Prog::readSymbolFile(const std::string &fname)
 	}
 }
 
-Global::~Global()
-{
-	// Do-nothing d'tor
-}
-
 Exp *
 Global::getInitialValue(Prog *prog) const
 {

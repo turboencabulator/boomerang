@@ -50,11 +50,10 @@ class RTL {
 	        std::list<Statement *> stmtList;  ///< List of expressions in this RTL.
 
 public:
-	                    RTL();
+	                    RTL() = default;
 	                    RTL(ADDRESS);
 	                    RTL(ADDRESS, Statement *);
 	                    RTL(const RTL &);
-	                   ~RTL();
 
 	        RTL        *clone() const;
 	        RTL        &operator =(const RTL &other);

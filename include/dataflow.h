@@ -81,7 +81,6 @@ class DataFlow {
 	bool        renameLocalsAndParams = false;
 
 public:
-	            DataFlow() { }  // Constructor
 	/*
 	 * Dominance frontier and SSA code
 	 */
@@ -130,11 +129,6 @@ class DefCollector {
 	 */
 	AssignSet   defs;
 public:
-	/**
-	 * Constructor
-	 */
-	            DefCollector() { }
-
 	/**
 	 * makeCloneOf(): clone the given Collector into this one
 	 */
@@ -209,11 +203,6 @@ class UseCollector {
 	 */
 	LocationSet locs;
 public:
-	/**
-	 * Constructor
-	 */
-	            UseCollector() { }
-
 	/**
 	 * makeCloneOf(): clone the given Collector into this one
 	 */

@@ -20,8 +20,6 @@ class ParserTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	ParserTest() { }
-
 	void testRead();
 	void testExp();
 };

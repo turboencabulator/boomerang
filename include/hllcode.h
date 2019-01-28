@@ -42,11 +42,11 @@ protected:
 
 public:
 	// constructors
-	                HLLCode() { }
+	                HLLCode() = default;
 	                HLLCode(UserProc *p) : m_proc(p) { }
 
 	// destructor
-	virtual        ~HLLCode() { }
+	virtual        ~HLLCode() = default;
 
 	// clear the hllcode object (derived classes should call the base)
 	virtual void    reset() { }
@@ -130,7 +130,7 @@ protected:
 
 public:
 	                SyntaxNode();
-	virtual        ~SyntaxNode();
+	virtual        ~SyntaxNode() = default;
 
 	virtual bool    isBlock() const { return false; }
 	virtual bool    isGoto() const;
@@ -170,8 +170,7 @@ private:
 	std::vector<SyntaxNode *> statements;
 
 public:
-	BlockSyntaxNode();
-	virtual ~BlockSyntaxNode();
+	~BlockSyntaxNode() override;
 
 	bool isBlock() const override { return !pbb; }
 
@@ -237,8 +236,7 @@ protected:
 	Exp *cond = nullptr;
 
 public:
-	IfThenSyntaxNode();
-	virtual ~IfThenSyntaxNode();
+	~IfThenSyntaxNode() override;
 
 	bool    isGoto() const override { return false; }
 	bool    isBranch() const override { return false; }
@@ -272,8 +270,7 @@ protected:
 	Exp *cond = nullptr;
 
 public:
-	IfThenElseSyntaxNode();
-	virtual ~IfThenElseSyntaxNode();
+	~IfThenElseSyntaxNode() override;
 
 	bool    isGoto() const override { return false; }
 	bool    isBranch() const override { return false; }
@@ -312,8 +309,7 @@ protected:
 	Exp *cond = nullptr;
 
 public:
-	PretestedLoopSyntaxNode();
-	virtual ~PretestedLoopSyntaxNode();
+	~PretestedLoopSyntaxNode() override;
 
 	bool    isGoto() const override { return false; }
 	bool    isBranch() const override { return false; }
@@ -344,8 +340,7 @@ protected:
 	Exp *cond = nullptr;
 
 public:
-	PostTestedLoopSyntaxNode();
-	virtual ~PostTestedLoopSyntaxNode();
+	~PostTestedLoopSyntaxNode() override;
 
 	bool    isGoto() const override { return false; }
 	bool    isBranch() const override { return false; }
@@ -375,8 +370,7 @@ protected:
 	SyntaxNode *pBody = nullptr;
 
 public:
-	InfiniteLoopSyntaxNode();
-	virtual ~InfiniteLoopSyntaxNode();
+	~InfiniteLoopSyntaxNode() override;
 
 	bool    isGoto() const override { return false; }
 	bool    isBranch() const override { return false; }

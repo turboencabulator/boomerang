@@ -26,7 +26,7 @@
 class MachOBinaryFile : public BinaryFile {
 public:
 	            MachOBinaryFile();
-	virtual    ~MachOBinaryFile();
+	           ~MachOBinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_MACHO; }
 	MACHINE     getMachine() const override { return machine; }

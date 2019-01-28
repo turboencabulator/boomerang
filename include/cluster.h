@@ -34,9 +34,9 @@ protected:
 	        std::ofstream out;
 
 public:
-	                    Cluster() { }
+	                    Cluster() = default;
 	                    Cluster(const std::string &name) : name(name) { }
-	virtual            ~Cluster() { }
+	virtual            ~Cluster() = default;
 	        const std::string &getName() const { return name; }
 	        void        setName(const std::string &nam) { name = nam; }
 	        unsigned int getNumChildren() const { return children.size(); }

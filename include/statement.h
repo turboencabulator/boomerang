@@ -128,8 +128,7 @@ protected:
 	//        unsigned int lexBegin, lexEnd;
 
 public:
-	                    Statement() { }
-	virtual            ~Statement() { }
+	virtual            ~Statement() = default;
 
 	// get/set the enclosing BB, etc
 	        BasicBlock *getBB() const { return pbb; }
@@ -348,8 +347,6 @@ public:
 	            Assignment(Exp *lhs);
 	// Constructor, type, and subexpression
 	            Assignment(Type *ty, Exp *lhs);
-	// Destructor
-	virtual    ~Assignment();
 
 	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated
@@ -406,8 +403,6 @@ public:
 	            Assign() : Assignment(nullptr) { }
 	// Copy constructor
 	            Assign(const Assign &);
-	// Destructor
-	           ~Assign() { }
 
 	// Clone
 	Statement  *clone() const override;
@@ -484,9 +479,6 @@ public:
  * public.
  */
 struct PhiInfo {
-	// A default constructor is required because CFG changes (?) can cause access to elements of the vector that
-	// are beyond the current end, creating gaps which have to be initialised to zeroes so that they can be skipped
-	            PhiInfo() { }
 	Statement  *def = nullptr;  // The defining statement
 	Exp        *e = nullptr;    // The expression for the thing being defined (never subscripted)
 };
@@ -526,8 +518,6 @@ public:
 	            PhiAssign(Exp *lhs) : Assignment(lhs) { }
 	// Constructor, type and subexpression
 	            PhiAssign(Type *ty, Exp *lhs) : Assignment(ty, lhs) { }
-	// Destructor
-	virtual    ~PhiAssign() { }
 
 	// Clone
 	Statement  *clone() const override;
@@ -592,8 +582,6 @@ public:
 	            ImplicitAssign(Type *ty, Exp *lhs);
 	// Copy constructor
 	            ImplicitAssign(const ImplicitAssign &o);
-	// Destructor
-	virtual    ~ImplicitAssign();
 
 	// Clone
 	Statement  *clone() const override;
@@ -638,7 +626,7 @@ class BoolAssign: public Assignment {
 
 public:
 	            BoolAssign(int size);
-	virtual    ~BoolAssign();
+	           ~BoolAssign() override;
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
@@ -740,10 +728,10 @@ protected:
 	                                   // properly.
 
 public:
-	            GotoStatement();
+	            GotoStatement() = default;
 	            GotoStatement(Exp *);
 	            GotoStatement(ADDRESS);
-	virtual    ~GotoStatement();
+	           ~GotoStatement() override;
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
@@ -798,8 +786,6 @@ public:
 
 class JunctionStatement: public Statement {
 public:
-	            JunctionStatement() { }
-
 	Statement  *clone() const override { return new JunctionStatement(); }
 
 	STMT_KIND   getKind() const override { return STMT_JUNCTION; }
@@ -850,10 +836,10 @@ class BranchStatement: public GotoStatement {
 	RangeMap    ranges2;         // ranges for the not taken edge
 
 public:
-	            BranchStatement();
+	            BranchStatement() = default;
 	            BranchStatement(Exp *);
 	            BranchStatement(ADDRESS);
-	virtual    ~BranchStatement();
+	           ~BranchStatement() override;
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
@@ -940,9 +926,9 @@ class CaseStatement: public GotoStatement {
 	SWITCH_INFO *pSwitchInfo = nullptr;  // Ptr to struct with info about the switch
 
 public:
-	            CaseStatement();
+	            CaseStatement() = default;
 	            CaseStatement(Exp *);
-	virtual    ~CaseStatement();
+	           ~CaseStatement() override;
 
 	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
@@ -1018,10 +1004,9 @@ class CallStatement: public GotoStatement {
 	ReturnStatement *calleeReturn = nullptr;
 
 public:
-	            CallStatement();
+	            CallStatement() = default;
 	            CallStatement(Exp *);
 	            CallStatement(ADDRESS);
-	virtual    ~CallStatement();
 
 	void        setNumber(int num) override;
 	// Make a deep copy, and make the copy a derived object if needed.
@@ -1205,9 +1190,6 @@ protected:
 	StatementList returns;
 
 public:
-	            ReturnStatement();
-	virtual    ~ReturnStatement();
-
 	typedef StatementList::iterator iterator;
 	typedef StatementList::const_iterator const_iterator;
 	const_iterator begin() const    { return returns.begin(); }

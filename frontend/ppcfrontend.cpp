@@ -32,10 +32,6 @@ PPCFrontEnd::PPCFrontEnd(BinaryFile *pBF, Prog *prog) :
 {
 }
 
-PPCFrontEnd::~PPCFrontEnd()
-{
-}
-
 std::vector<Exp *> &
 PPCFrontEnd::getDefaultParams()
 {

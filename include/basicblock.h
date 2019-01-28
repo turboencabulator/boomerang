@@ -139,7 +139,7 @@ class BasicBlock {
 	friend class Cfg;
 
 public:
-	                    BasicBlock();
+	                    BasicBlock() = default;
 	                   ~BasicBlock();
 	                    BasicBlock(const BasicBlock &bb);
 

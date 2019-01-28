@@ -90,8 +90,6 @@ public:
 	     h = false;
 
 	void clear() { a = b = c = d = e = f = g = h = false; }
-	StmtVisitorStub() { }
-	virtual ~StmtVisitorStub() { }
 	bool visit(            RTL *s) override { a = true; return false; }
 	bool visit(  GotoStatement *s) override { b = true; return false; }
 	bool visit(BranchStatement *s) override { c = true; return false; }

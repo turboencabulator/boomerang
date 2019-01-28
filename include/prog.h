@@ -47,7 +47,7 @@ private:
 
 public:
 	                    Global(Type *type, ADDRESS uaddr, const std::string &nam) : type(type), uaddr(uaddr), nam(nam) { }
-	virtual            ~Global();
+	virtual            ~Global() = default;
 
 	        Type       *getType() const { return type; }
 	        void        setType(Type *ty) { type = ty; }
@@ -58,7 +58,7 @@ public:
 	        void        print(std::ostream &os, Prog *prog) const;  // Print to stream os
 
 protected:
-	                    Global() { }
+	                    Global() = default;
 	friend class XMLProgParser;
 };
 

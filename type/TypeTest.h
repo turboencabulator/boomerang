@@ -23,8 +23,6 @@ class TypeTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	TypeTest() { }
-
 	void testTypeLong();
 	void testNotEqual();
 	void testCompound();

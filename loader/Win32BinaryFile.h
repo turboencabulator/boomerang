@@ -139,7 +139,7 @@ typedef struct __attribute__((packed)) {
 class Win32BinaryFile : public BinaryFile {
 public:
 	            Win32BinaryFile();
-	virtual    ~Win32BinaryFile();
+	           ~Win32BinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_PE; }
 	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }

@@ -30,16 +30,8 @@ SectionInfo::SectionInfo() :
 {
 }
 
-SectionInfo::~SectionInfo()
-{
-}
-
 BinaryFile::BinaryFile(bool bArch /*= false*/) :
 	m_bArchive(bArch)  // Remember whether an archive member
-{
-}
-
-BinaryFile::~BinaryFile()
 {
 }
 

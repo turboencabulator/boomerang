@@ -39,7 +39,7 @@ class Statement;
  */
 class TableEntry {
 public:
-	TableEntry();
+	TableEntry() = default;
 	TableEntry(const std::list<std::string> &);
 
 	const TableEntry &operator =(const TableEntry &other);
@@ -60,7 +60,6 @@ typedef enum { PARAM_SIMPLE, PARAM_ASGN, PARAM_LAMBDA, PARAM_VARIANT } ParamKind
  */
 class ParamEntry {
 public:
-	ParamEntry() { }
 	~ParamEntry() {
 		delete type;
 		delete regType;
@@ -87,9 +86,6 @@ public:
  */
 class RTLInstDict {
 public:
-	RTLInstDict();
-	~RTLInstDict();
-
 	bool readSSLFile(const std::string &SSLFileName);
 
 	void reset();

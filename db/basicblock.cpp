@@ -41,13 +41,6 @@
 #include <cassert>
 
 /**
- * \brief Constructor.
- */
-BasicBlock::BasicBlock()
-{
-}
-
-/**
  * \brief Destructor.
  */
 BasicBlock::~BasicBlock()

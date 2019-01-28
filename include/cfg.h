@@ -102,7 +102,6 @@ class Cfg {
 	                                     // ad-hoc global assignment)
 
 public:
-	            Cfg();
 	           ~Cfg();
 
 	void        setProc(UserProc *proc);

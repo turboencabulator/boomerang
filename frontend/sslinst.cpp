@@ -45,10 +45,6 @@
 //#define DEBUG_SSLPARSER 1
 //#define DEBUG_POSTVAR 1
 
-TableEntry::TableEntry()
-{
-}
-
 TableEntry::TableEntry(const std::list<std::string> &p) :
 	params(p)
 {
@@ -96,14 +92,6 @@ void
 TableEntry::appendRTL(RTL &r)
 {
 	rtl.splice(r);
-}
-
-RTLInstDict::RTLInstDict()
-{
-}
-
-RTLInstDict::~RTLInstDict()
-{
 }
 
 /**

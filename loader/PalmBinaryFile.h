@@ -23,7 +23,7 @@
 class PalmBinaryFile : public BinaryFile {
 public:
 	            PalmBinaryFile();
-	virtual    ~PalmBinaryFile();
+	           ~PalmBinaryFile() override;
 
 	LOADFMT     getFormat() const override { return LOADFMT_PALM; }
 	MACHINE     getMachine() const override { return MACHINE_PALM; }

@@ -33,10 +33,6 @@
 
 #include <cassert>
 
-RTL::RTL()
-{
-}
-
 /**
  * \param addr  The native address of the instruction.
  */
@@ -64,10 +60,6 @@ RTL::RTL(const RTL &other) :
 {
 	for (const auto &stmt : other.stmtList)
 		stmtList.push_back(stmt->clone());
-}
-
-RTL::~RTL()
-{
 }
 
 /**

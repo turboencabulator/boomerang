@@ -36,9 +36,6 @@ class SymTab {
 	std::map<std::string, ADDRESS> smap;
 
 public:
-	            SymTab();
-	           ~SymTab();
-
 	void        Add(ADDRESS, const std::string &);
 	const char *find(ADDRESS) const;
 	ADDRESS     find(const std::string &) const;

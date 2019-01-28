@@ -142,7 +142,6 @@ class Constraints {
 	EquateMap equates;
 
 public:
-	Constraints() { }
 	~Constraints();
 
 	void print(std::ostream &os) const;

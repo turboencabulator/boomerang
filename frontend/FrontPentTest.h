@@ -23,8 +23,6 @@ class FrontPentTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	FrontPentTest() { }
-
 	void test1();
 	void test2();
 	void test3();

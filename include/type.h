@@ -74,8 +74,7 @@ private:
 	static  std::map<std::string, Type *> namedTypes;
 
 public:
-	                    Type();
-	virtual            ~Type();
+	virtual            ~Type() = default;
 
 	/**
 	 * \name Runtime type information
@@ -217,8 +216,6 @@ class VoidType : public Type {
 	friend class XMLProgParser;
 
 public:
-	            VoidType();
-	virtual    ~VoidType();
 	eType       getId() const override { return eVoid; }
 	bool        isVoid() const override { return true; }
 
@@ -263,7 +260,6 @@ class FuncType : public Type {
 
 public:
 	            FuncType(Signature * = nullptr);
-	virtual    ~FuncType();
 	eType       getId() const override { return eFunc; }
 	bool        isFunc() const override { return true; }
 
@@ -315,7 +311,6 @@ class IntegerType : public Type {
 
 public:
 	            IntegerType(unsigned = STD_SIZE, int = 0);
-	virtual    ~IntegerType();
 	eType       getId() const override { return eInteger; }
 	bool        isInteger() const override { return true; }
 	bool        isComplete() const override;
@@ -370,7 +365,6 @@ class FloatType : public Type {
 
 public:
 	            FloatType(unsigned = 64);
-	virtual    ~FloatType();
 	eType       getId() const override { return eFloat; }
 	bool        isFloat() const override { return true; }
 
@@ -414,8 +408,6 @@ class BooleanType : public Type {
 	friend class XMLProgParser;
 
 public:
-	            BooleanType();
-	virtual    ~BooleanType();
 	eType       getId() const override { return eBoolean; }
 	bool        isBoolean() const override { return true; }
 
@@ -457,8 +449,6 @@ class CharType : public Type {
 	friend class XMLProgParser;
 
 public:
-	            CharType();
-	virtual    ~CharType();
 	eType       getId() const override { return eChar; }
 	bool        isChar() const override { return true; }
 
@@ -503,7 +493,7 @@ class PointerType : public Type {
 
 public:
 	            PointerType(Type *);
-	virtual    ~PointerType();
+	           ~PointerType() override;
 	eType       getId() const override { return ePointer; }
 	bool        isPointer() const override { return true; }
 
@@ -559,11 +549,11 @@ class ArrayType : public Type {
 	static const unsigned NO_BOUND;
 
 protected:
-	            ArrayType();
+	            ArrayType() = default;
 public:
 	            ArrayType(Type *, unsigned);
 	            ArrayType(Type *);
-	virtual    ~ArrayType();
+	           ~ArrayType() override;
 	eType       getId() const override { return eArray; }
 	bool        isArray() const override { return true; }
 
@@ -619,7 +609,6 @@ class NamedType : public Type {
 
 public:
 	            NamedType(const std::string &name);
-	virtual    ~NamedType();
 	eType       getId() const override { return eNamed; }
 	bool        isNamed() const override { return true; }
 
@@ -679,7 +668,6 @@ private:
 
 public:
 	            CompoundType(bool = false);
-	virtual    ~CompoundType();
 	eType       getId() const override { return eCompound; }
 	bool        isCompound() const override { return true; }
 
@@ -756,8 +744,6 @@ private:
 	std::list<Element> elems;
 
 public:
-	            UnionType();
-	virtual    ~UnionType();
 	eType       getId() const override { return eUnion; }
 	bool        isUnion() const override { return true; }
 
@@ -807,9 +793,8 @@ class SizeType : public Type {
 	unsigned    size;  ///< Size in bits, e.g. 16
 
 public:
-	            SizeType();
+	            SizeType() = default;
 	            SizeType(unsigned);
-	virtual    ~SizeType();
 	eType       getId() const override { return eSize; }
 	bool        isSize() const override { return true; }
 	bool        isComplete() const override;
@@ -857,7 +842,6 @@ class UpperType : public Type {
 
 public:
 	            UpperType(Type *);
-	virtual    ~UpperType();
 	eType       getId() const override { return eUpper; }
 	bool        isUpper() const override { return true; }
 	bool        isComplete() const override;
@@ -905,7 +889,6 @@ class LowerType : public Type {
 
 public:
 	            LowerType(Type *);
-	virtual    ~LowerType();
 	eType       getId() const override { return eLower; }
 	bool        isLower() const override { return true; }
 	bool        isComplete() const override;
@@ -976,7 +959,6 @@ private:
 	UserProc   *proc;  ///< If used for locals, has ptr to UserProc, else null.
 
 public:
-	            DataIntervalMap() { }
 	void        setProc(UserProc *p) { proc = p; }  ///< Initialise the proc pointer.
 	value_type *find(ADDRESS);
 	iterator    find_it(ADDRESS);

@@ -22,8 +22,6 @@ class DfaTest : public CppUnit::TestFixture {
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	DfaTest() { }
-
 	void testMeetInt();
 	void testMeetSize();
 	void testMeetPointer();

@@ -30,7 +30,6 @@ struct __attribute__((packed)) coff_header {
 class IntelCoffFile : public BinaryFile {
 public:
 	            IntelCoffFile();
-	virtual    ~IntelCoffFile();
 
 	LOADFMT     getFormat() const override { return LOADFMT_COFF; }
 	MACHINE     getMachine() const override { return MACHINE_PENTIUM; }

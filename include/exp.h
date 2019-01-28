@@ -68,7 +68,7 @@ protected:
 	                    Exp(OPER op) : op(op) { }
 public:
 	// Virtual destructor
-	virtual            ~Exp() { }
+	virtual            ~Exp() = default;
 
 	// Clone
 	virtual Exp        *clone() const = 0;
@@ -440,7 +440,7 @@ public:
 	            Unary(const Unary &o);
 
 	// Destructor
-	virtual    ~Unary();
+	           ~Unary() override;
 
 	// Clone
 	Exp        *clone() const override;
@@ -505,7 +505,7 @@ public:
 	            Binary(const Binary &o);
 
 	// Destructor
-	virtual    ~Binary();
+	           ~Binary() override;
 
 	// Clone
 	Exp        *clone() const override;
@@ -573,7 +573,7 @@ public:
 	            Ternary(const Ternary &o);
 
 	// Destructor
-	virtual    ~Ternary();
+	           ~Ternary() override;
 
 	// Clone
 	Exp        *clone() const override;
@@ -677,7 +677,7 @@ class FlagDef : public Unary {
 
 public:
 	            FlagDef(Exp *params, RTL *rtl);  // Constructor
-	virtual    ~FlagDef();                       // Destructor
+	           ~FlagDef() override;              // Destructor
 	void        appendDot(std::ostream &os) const override;
 	RTL        *getRtl() const { return rtl; }
 	void        setRtl(RTL *r) { rtl = r; }
@@ -747,7 +747,7 @@ class TypeVal : public Terminal {
 
 public:
 	            TypeVal(Type *ty);
-	           ~TypeVal();
+	           ~TypeVal() override;
 
 	virtual Type *getType() const { return val; }
 	virtual void setType(Type *t) { val = t; }

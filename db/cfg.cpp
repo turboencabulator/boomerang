@@ -35,13 +35,6 @@
 #include <cstring>
 
 /**
- * \brief Constructor.
- */
-Cfg::Cfg()
-{
-}
-
-/**
  * \brief Destructor.
  * \note Destructs the component BBs as well.
  */

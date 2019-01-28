@@ -73,10 +73,6 @@ IntelCoffFile::IntelCoffFile()
 	bigendian = false;
 }
 
-IntelCoffFile::~IntelCoffFile()
-{
-}
-
 bool
 IntelCoffFile::load(std::istream &ifs)
 {

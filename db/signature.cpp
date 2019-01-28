@@ -61,7 +61,6 @@ namespace CallingConvention {
 	public:
 		            Win32Signature(const char *nam);
 		            Win32Signature(Signature &old);
-		virtual    ~Win32Signature() { }
 		Signature  *clone() const override;
 		bool        operator ==(const Signature &other) const override;
 		static bool qualified(UserProc *p, Signature &candidate);
@@ -101,7 +100,6 @@ namespace CallingConvention {
 		public:
 			            PentiumSignature(const char *nam);
 			            PentiumSignature(Signature &old);
-			virtual    ~PentiumSignature() { }
 			Signature  *clone() const override;
 			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
@@ -127,7 +125,6 @@ namespace CallingConvention {
 		public:
 			            SparcSignature(const char *nam);
 			            SparcSignature(Signature &old);
-			virtual    ~SparcSignature() { }
 			Signature  *clone() const override;
 			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);
@@ -165,7 +162,6 @@ namespace CallingConvention {
 		public:
 			            PPCSignature(const char *name);
 			            PPCSignature(Signature &old);
-			virtual    ~PPCSignature() { }
 			Signature  *clone() const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 			void        addReturn(Type *type, Exp *e = nullptr) override;
@@ -186,7 +182,6 @@ namespace CallingConvention {
 		public:
 			            MIPSSignature(const char *name);
 			            MIPSSignature(Signature &old);
-			virtual    ~MIPSSignature() { }
 			Signature  *clone() const override;
 			static bool qualified(UserProc *p, Signature &candidate);
 			void        addReturn(Type *type, Exp *e = nullptr) override;
@@ -207,7 +202,6 @@ namespace CallingConvention {
 		public:
 			            ST20Signature(const char *name);
 			            ST20Signature(Signature &old);
-			virtual    ~ST20Signature() { }
 			Signature  *clone() const override;
 			bool        operator ==(const Signature &other) const override;
 			static bool qualified(UserProc *p, Signature &candidate);

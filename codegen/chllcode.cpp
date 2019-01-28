@@ -36,19 +36,9 @@
 
 extern const char *operStrings[];
 
-/// Empty constructor
-CHLLCode::CHLLCode()
-{
-}
-
 /// Empty constructor, calls HLLCode(p)
 CHLLCode::CHLLCode(UserProc *p) :
 	HLLCode(p)
-{
-}
-
-/// Empty destructor
-CHLLCode::~CHLLCode()
 {
 }
 

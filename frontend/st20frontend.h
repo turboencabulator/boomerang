@@ -21,7 +21,6 @@ class ST20FrontEnd : public FrontEnd {
 
 public:
 	ST20FrontEnd(BinaryFile *pBF, Prog *prog);
-	virtual ~ST20FrontEnd();
 
 	platform getFrontEndId() const override { return PLAT_ST20; }
 	NJMCDecoder &getDecoder() override { return decoder; }

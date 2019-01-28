@@ -39,7 +39,7 @@ private:
 	        std::string boundMax;
 
 protected:
-	                    Parameter() { }
+	                    Parameter() = default;
 public:
 	                    Parameter(Type *type, const std::string &name, Exp *exp = nullptr, const std::string &boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
@@ -65,9 +65,9 @@ public:
 	        Type       *type = nullptr;
 	        Exp        *exp = nullptr;
 
-	                    Return() { }
+	                    Return() = default;
 	                    Return(Type *type, Exp *exp) : type(type), exp(exp) { }
-	virtual            ~Return() { }
+	virtual            ~Return() = default;
 	        bool        operator ==(const Return &other) const;
 	        Return     *clone() const;
 };
@@ -97,13 +97,13 @@ protected:
 	        //void        addImplicitParametersFor(Parameter *p);
 	        //void        addImplicitParameter(Type *type, const char *name, Exp *e, Parameter *parent);
 
-	                    Signature() { }
+	                    Signature() = default;
 public:
 	                    Signature(const char *nam);
 	// Platform plat, calling convention cc (both enums)
 	// nam is name of the procedure (no longer stored in the Proc)
 	static  Signature  *instantiate(platform plat, callconv cc, const char *nam);
-	virtual            ~Signature() { }
+	virtual            ~Signature() = default;
 
 	virtual bool        operator ==(const Signature &other) const;
 
@@ -245,7 +245,6 @@ protected:
 	int         sp = 0;
 public:
 	            CustomSignature(const char *nam);
-	virtual    ~CustomSignature() { }
 	bool        isPromoted() override { return true; }
 	Signature  *clone() const override;
 	void        setSP(int nsp);

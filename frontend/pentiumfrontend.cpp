@@ -43,10 +43,6 @@ PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
 {
 }
 
-PentiumFrontEnd::~PentiumFrontEnd()
-{
-}
-
 #if PROCESS_FNSTSW
 /**
  * Return true if the given Statement is an assignment that stores the FSW

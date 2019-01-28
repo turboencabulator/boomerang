@@ -25,7 +25,6 @@ class MIPSFrontEnd : public FrontEnd {
 
 public:
 	MIPSFrontEnd(BinaryFile *pBF, Prog *prog);
-	virtual ~MIPSFrontEnd();
 
 	platform getFrontEndId() const override { return PLAT_MIPS; }
 	NJMCDecoder &getDecoder() override { return decoder; }

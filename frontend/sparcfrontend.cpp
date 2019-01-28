@@ -47,10 +47,6 @@ SparcFrontEnd::SparcFrontEnd(BinaryFile *pBF, Prog *prog) :
 	nop_inst.rtl = new RTL();
 }
 
-SparcFrontEnd::~SparcFrontEnd()
-{
-}
-
 #if 0 // Cruft?
 /**
  * \brief Emit a warning when encountering a DCTI couple.
