@@ -22,14 +22,6 @@
 
 #include <iostream>
 
-SectionInfo::SectionInfo() :
-	bCode(false),
-	bData(false),
-	bBss(false),
-	bReadOnly(false)
-{
-}
-
 BinaryFile::BinaryFile(bool bArch /*= false*/) :
 	m_bArchive(bArch)  // Remember whether an archive member
 {

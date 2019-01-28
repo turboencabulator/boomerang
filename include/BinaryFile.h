@@ -56,7 +56,6 @@
  * All information about the sections is contained in these structures.
  */
 struct SectionInfo {
-	            SectionInfo();
 	virtual    ~SectionInfo() = default;
 
 	/**
@@ -73,10 +72,10 @@ struct SectionInfo {
 	ADDRESS     uSectionSize = 0;       ///< Size of section in bytes.
 	ADDRESS     uSectionEntrySize = 0;  ///< Size of one section entry (if applic).
 	unsigned    uType = 0;              ///< Type of section (format dependent).
-	unsigned    bCode     : 1;          ///< Set if section contains instructions.
-	unsigned    bData     : 1;          ///< Set if section contains data.
-	unsigned    bBss      : 1;          ///< Set if section is BSS (allocated only).
-	unsigned    bReadOnly : 1;          ///< Set if this is a read only section.
+	bool        bCode = false;          ///< Set if section contains instructions.
+	bool        bData = false;          ///< Set if section contains data.
+	bool        bBss = false;           ///< Set if section is BSS (allocated only).
+	bool        bReadOnly = false;      ///< Set if this is a read only section.
 };
 
 
