@@ -81,7 +81,7 @@ Cfg::clear()
 /**
  * \brief Copy constructor.
  */
-const Cfg &
+Cfg &
 Cfg::operator =(const Cfg &other)
 {
 	if (this != &other) {

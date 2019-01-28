@@ -42,7 +42,7 @@ public:
 	TableEntry() = default;
 	TableEntry(const std::list<std::string> &);
 
-	const TableEntry &operator =(const TableEntry &other);
+	TableEntry &operator =(const TableEntry &);
 
 	bool compareParam(const std::list<std::string> &);
 	void appendRTL(RTL &);

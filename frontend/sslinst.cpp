@@ -59,7 +59,7 @@ TableEntry::TableEntry(const std::list<std::string> &p) :
  *
  * \returns A reference to this object.
  */
-const TableEntry &
+TableEntry &
 TableEntry::operator =(const TableEntry &other)
 {
 	if (this != &other) {

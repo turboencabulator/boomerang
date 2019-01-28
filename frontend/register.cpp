@@ -24,25 +24,6 @@
 #include "type.h"
 
 /**
- * \brief Copy operator.
- *
- * \param[in] r2  Reference to another Register object (to be copied).
- * \returns       This object.
- */
-Register
-Register::operator =(const Register &r2)
-{
-	if (this != &r2) {
-		name         = r2.name;
-		size         = r2.size;
-		flt          = r2.flt;
-		mappedIndex  = r2.mappedIndex;
-		mappedOffset = r2.mappedOffset;
-	}
-	return *this;
-}
-
-/**
  * \brief Equality operator.
  *
  * \param[in] r2  Reference to another Register object.

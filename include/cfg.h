@@ -113,7 +113,7 @@ public:
 	 */
 	unsigned    getNumBBs() const { return m_listBB.size(); }
 
-	const Cfg  &operator =(const Cfg &other);
+	Cfg        &operator =(const Cfg &);
 
 	class BBAlreadyExistsError : public std::exception {
 	public:
