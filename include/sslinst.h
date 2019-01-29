@@ -37,8 +37,7 @@ class Statement;
 /**
  * Represents a single instruction - a string/RTL pair.
  */
-class TableEntry {
-public:
+struct TableEntry {
 	TableEntry() = default;
 	TableEntry(const std::list<std::string> &);
 
@@ -47,7 +46,6 @@ public:
 	bool compareParam(const std::list<std::string> &);
 	void appendRTL(RTL &);
 
-public:
 	std::list<std::string> params;
 	RTL rtl;
 };
@@ -58,8 +56,7 @@ typedef enum { PARAM_SIMPLE, PARAM_ASGN, PARAM_LAMBDA, PARAM_VARIANT } ParamKind
 /**
  * Represents the details of a single parameter.
  */
-class ParamEntry {
-public:
+struct ParamEntry {
 	~ParamEntry() {
 		delete type;
 		delete regType;
@@ -84,8 +81,7 @@ public:
  * dictionary entries as well as instantiation of an Exp list for a given
  * instruction name and list of actual parameters.
  */
-class RTLInstDict {
-public:
+struct RTLInstDict {
 	bool readSSLFile(const std::string &SSLFileName);
 
 	void reset();
@@ -108,7 +104,6 @@ public:
 	void fixupParams();
 	void fixupParamsSub(std::string s, std::list<std::string> &funcParams, bool &haveCount, int mark);
 
-public:
 	/**
 	 * A map from the symbolic representation of a register (e.g. "%g0")
 	 * to its index within an array of registers.
