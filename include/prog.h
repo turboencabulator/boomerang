@@ -43,7 +43,7 @@ class Global {
 private:
 	        Type       *type = nullptr;
 	        ADDRESS     uaddr = 0;
-	        std::string nam = "";
+	        std::string nam;
 
 public:
 	                    Global(Type *type, ADDRESS uaddr, const std::string &nam) : type(type), uaddr(uaddr), nam(nam) { }
