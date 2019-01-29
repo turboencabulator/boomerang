@@ -253,7 +253,7 @@ RTLInstDict::fixupParams()
 	for (const auto &param : DetParamMap) {
 		std::list<std::string> funcParams;
 		bool haveCount = false;
-		if (param.second.kind == PARAM_VARIANT) {
+		if (param.second.kind == ParamEntry::VARIANT) {
 			fixupParamsSub(param.first, funcParams, haveCount, mark++);
 		}
 	}
@@ -275,7 +275,7 @@ RTLInstDict::fixupParamsSub(std::string s, std::list<std::string> &funcParams, b
 
 	for (const auto &p : param.params) {
 		ParamEntry &sub = DetParamMap[p];
-		if (sub.kind == PARAM_VARIANT) {
+		if (sub.kind == ParamEntry::VARIANT) {
 			fixupParamsSub(p, funcParams, haveCount, mark);
 			if (!haveCount) { /* Empty branch? */
 				continue;

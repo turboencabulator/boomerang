@@ -51,8 +51,6 @@ struct TableEntry {
 };
 
 
-typedef enum { PARAM_SIMPLE, PARAM_ASGN, PARAM_LAMBDA, PARAM_VARIANT } ParamKind;
-
 /**
  * Represents the details of a single parameter.
  */
@@ -62,11 +60,13 @@ struct ParamEntry {
 		delete regType;
 	}
 
-	std::list<std::string> params;      ///< PARAM_VARIANT & PARAM_ASGN only.
-	std::list<std::string> funcParams;  ///< PARAM_LAMBDA - late bound params.
-	Statement  *asgn = nullptr;         ///< PARAM_ASGN only.
+	typedef enum { SIMPLE, ASGN, LAMBDA, VARIANT } ParamKind;
+
+	std::list<std::string> params;      ///< VARIANT & ASGN only.
+	std::list<std::string> funcParams;  ///< LAMBDA - late bound params.
+	Statement  *asgn = nullptr;         ///< ASGN only.
 	bool        lhs = false;            ///< True if this param ever appears on the LHS of an expression.
-	ParamKind   kind = PARAM_SIMPLE;
+	ParamKind   kind = SIMPLE;
 	Type       *type = nullptr;
 	Type       *regType = nullptr;      ///< Type of r[this], if any (void otherwise).
 	std::set<int> regIdx;               ///< Values this param can take as an r[param].

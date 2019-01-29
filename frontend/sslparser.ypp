@@ -210,16 +210,16 @@ operand
 	: param EQUATE '{' list_parameter '}' {
 		// Note: the below copies the list of strings!
 		Dict.DetParamMap[*$1].params = *$4;
-		Dict.DetParamMap[*$1].kind = PARAM_VARIANT;
+		Dict.DetParamMap[*$1].kind = ParamEntry::VARIANT;
 		delete $1;
 		//delete $4;
 	  }
 
 	/* In the documentation, these are the second and third kinds
 	 * The third kind is described as the functional, or lambda, form
-	 * In terms of DetParamMap[].kind, they are PARAM_EXP unless there
+	 * In terms of DetParamMap[].kind, they are ParamEntry::ASGN unless there
 	 * actually are parameters in square brackets, in which case it is
-	 * PARAM_LAMBDA
+	 * ParamEntry::LAMBDA
 	 * Example: indexA  rs1, rs2 *i32* r[rs1] + r[rs2] */
 	| param list_parameter func_parameter assigntype exp {
 		ParamEntry &param = Dict.DetParamMap[*$1];
@@ -228,10 +228,7 @@ operand
 		param.params = *$2;
 		param.funcParams = *$3;
 		param.asgn = asgn;
-		param.kind = PARAM_ASGN;
-
-		if (!param.funcParams.empty())
-			param.kind = PARAM_LAMBDA;
+		param.kind = param.funcParams.empty() ? ParamEntry::ASGN : ParamEntry::LAMBDA;
 		delete $1;
 		//delete $2;
 		//delete $3;

@@ -106,7 +106,7 @@ NJMCDecoder::instantiateNamedParam(const std::string &name, ...)
 	auto it = RTLDict.DetParamMap.find(name);
 	assert(it != RTLDict.DetParamMap.end());
 	ParamEntry &ent = it->second;
-	if (ent.kind != PARAM_ASGN && ent.kind != PARAM_LAMBDA) {
+	if (ent.kind != ParamEntry::ASGN && ent.kind != ParamEntry::LAMBDA) {
 		std::cerr << "Attempt to instantiate expressionless parameter '" << name << "'\n";
 		return nullptr;
 	}
@@ -151,7 +151,7 @@ NJMCDecoder::substituteCallArgs(const std::string &name, Exp *&exp, ...)
 	}
 	ParamEntry &ent = RTLDict.DetParamMap[name];
 #if 0
-	if (ent.kind != PARAM_ASGN && ent.kind != PARAM_LAMBDA) {
+	if (ent.kind != ParamEntry::ASGN && ent.kind != ParamEntry::LAMBDA) {
 		std::cerr << "Attempt to instantiate expressionless parameter '" << name << "'\n";
 		return;
 	}
