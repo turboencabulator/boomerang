@@ -23,7 +23,6 @@
 #include "types.h"
 
 #include <iostream>
-#include <ostream>
 #include <list>
 #include <map>
 #include <set>
