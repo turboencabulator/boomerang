@@ -157,12 +157,6 @@ UserProc::renameParam(const std::string &oldName, const std::string &newName)
 }
 
 void
-UserProc::setParamType(const std::string &nam, Type *ty)
-{
-	signature->setParamType(nam, ty);
-}
-
-void
 UserProc::setParamType(int idx, Type *ty)
 {
 	if (idx >= 0 && idx < parameters.size()) {

@@ -615,7 +615,6 @@ public:
 	void        renameParam(const std::string &, const std::string &) override;
 
 	const char *getRegName(Exp *r) const;  /// Get a name like eax or o2 from r24 or r8
-	void        setParamType(const std::string &, Type *);
 	void        setParamType(int, Type *);
 
 	/**
