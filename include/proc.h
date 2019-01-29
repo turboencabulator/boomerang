@@ -608,9 +608,6 @@ public:
 	const char *findLocal(Exp *e, Type *ty) const;
 	const char *findLocalFromRef(RefExp *r) const;
 	const char *findFirstSymbol(Exp *e) const;
-	int         getNumLocals() const { return (int)locals.size(); }
-	const char *getLocalName(int n) const;
-	const char *getSymbolName(Exp *e) const;  ///< As getLocalName, but look for expression e
 	void        renameLocal(const std::string &, const std::string &);
 	void        renameParam(const std::string &, const std::string &) override;
 

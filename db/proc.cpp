@@ -2812,26 +2812,6 @@ UserProc::expFromSymbol(const std::string &nam) const
 	return nullptr;
 }
 
-const char *
-UserProc::getLocalName(int n) const
-{
-	int i = 0;
-	for (const auto &local : locals)
-		if (i++ == n)
-			return local.first.c_str();
-	return nullptr;
-}
-
-const char *
-UserProc::getSymbolName(Exp *e) const
-{
-	auto it = symbolMap.find(e);
-	if (it == symbolMap.end()) return nullptr;
-	Exp *loc = it->second;
-	if (!loc->isLocal() && !loc->isParam()) return nullptr;
-	return ((Const *)loc->getSubExp1())->getStr();
-}
-
 // Count references to the things that are under SSA control. For each SSA subscripting, increment a counter for that
 // definition
 void
