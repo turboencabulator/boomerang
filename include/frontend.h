@@ -39,6 +39,7 @@ class Signature;
 class UserProc;
 
 
+#if 0 // Cruft?
 /**
  * \brief Control flow types.
  */
@@ -51,6 +52,7 @@ enum INSTTYPE {
 	I_COMPJUMP,     ///< computed jump
 	I_COMPCALL      ///< computed call
 };
+#endif
 
 
 /**
