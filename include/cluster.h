@@ -34,24 +34,31 @@ protected:
 	        std::ofstream out;
 
 public:
+	typedef std::vector<Cluster *>::const_iterator const_iterator;
+
 	                    Cluster() = default;
 	                    Cluster(const std::string &name) : name(name) { }
 	virtual            ~Cluster() = default;
+
 	        const std::string &getName() const { return name; }
 	        void        setName(const std::string &nam) { name = nam; }
-	        unsigned int getNumChildren() const { return children.size(); }
-	        Cluster    *getChild(int n) const { return children[n]; }
+	        Cluster    *find(const std::string &nam);
+
 	        void        addChild(Cluster *n);
 	        void        removeChild(Cluster *n);
-	        Cluster    *getParent() const { return parent; }
 	        bool        hasChildren() const { return !children.empty(); }
+		const_iterator begin() const { return children.begin(); }
+		const_iterator end()   const { return children.end(); }
+
+	        Cluster    *getParent() const { return parent; }
+
 	        void        openStream(const std::string &ext);
 	        void        openStreams(const std::string &ext);
 	        void        closeStreams();
 	        std::ofstream &getStream() { return out; }
 	        std::string makeDirs() const;
 	        std::string getOutPath(const std::string &ext) const;
-	        Cluster    *find(const std::string &nam);
+
 	virtual bool        isAggregate() const { return false; }
 
 	        void        printTree(std::ostream &out) const;

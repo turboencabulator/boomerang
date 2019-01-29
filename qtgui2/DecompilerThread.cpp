@@ -212,8 +212,8 @@ void
 Decompiler::emitClusterAndChildren(Cluster *root)
 {
 	emit newCluster(QString::fromStdString(root->getName()));
-	for (unsigned int i = 0; i < root->getNumChildren(); ++i)
-		emitClusterAndChildren(root->getChild(i));
+	for (const auto &child : *root)
+		emitClusterAndChildren(child);
 }
 
 void

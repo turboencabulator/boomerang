@@ -274,7 +274,7 @@ Cluster::makeDirs() const
 		path = parent->makeDirs();
 	else
 		path = Boomerang::get()->getOutputPath();
-	if (getNumChildren() > 0 || !parent) {
+	if (hasChildren() || !parent) {
 		path = path + name;
 		mkdir(path.c_str(), 0777);
 	}
