@@ -1182,8 +1182,8 @@ StatementTest::testBypass()
 	auto prog = new Prog;
 	auto pFE = FrontEnd::open(GLOBAL1_PENTIUM, prog);
 	Type::clearNamedTypes();
-	pFE->decode(prog);              // Decode main
-	pFE->decode(prog, NO_ADDRESS);  // Decode anything undecoded
+	pFE->decode();            // Decode main
+	pFE->decode(NO_ADDRESS);  // Decode anything undecoded
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);

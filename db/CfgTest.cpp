@@ -42,7 +42,7 @@ CfgTest::testDominators()
 	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
-	pFE->decode(prog);
+	pFE->decode();
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -102,7 +102,7 @@ CfgTest::testSemiDominators()
 	auto pFE = FrontEnd::open(SEMI_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
-	pFE->decode(prog);
+	pFE->decode();
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
@@ -154,7 +154,7 @@ CfgTest::testPlacePhi()
 	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
-	pFE->decode(prog);
+	pFE->decode();
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
 	Cfg *cfg = pProc->getCFG();
@@ -192,7 +192,7 @@ CfgTest::testPlacePhi2()
 	auto pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
-	pFE->decode(prog);
+	pFE->decode();
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
 	Cfg *cfg = pProc->getCFG();
@@ -249,7 +249,7 @@ CfgTest::testRenameVars()
 	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
 	CPPUNIT_ASSERT(pFE);
 	Type::clearNamedTypes();
-	pFE->decode(prog);
+	pFE->decode();
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
 	Cfg *cfg = pProc->getCFG();

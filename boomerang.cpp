@@ -1039,13 +1039,13 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	if (entrypoints.empty()) {  // no -e or -E given
 		if (decodeMain) {
 			std::cout << "decoding entry point...\n";
-			fe->decode(prog);
+			fe->decode();
 		}
 
 		if (!noDecodeChildren) {
 			// this causes any undecoded userprocs to be decoded
 			std::cout << "decoding anything undecoded...\n";
-			fe->decode(prog, NO_ADDRESS);
+			fe->decode(NO_ADDRESS);
 		}
 	}
 

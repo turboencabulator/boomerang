@@ -220,7 +220,7 @@ FrontSparcTest::testDelaySlot()
 	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared
 	Type::clearNamedTypes();
-	pFE->decode(prog);
+	pFE->decode();
 
 	bool gotMain;
 	ADDRESS addr = pFE->getMainEntryPoint(gotMain);

@@ -183,14 +183,14 @@ Decompiler::decode()
 	ADDRESS a = fe->getMainEntryPoint(gotMain);
 	auto it = std::find(user_entrypoints.begin(), user_entrypoints.end(), a);
 	if (it != user_entrypoints.end())
-		fe->decode(prog);
+		fe->decode();
 
 	for (const auto &ep : user_entrypoints)
 		prog->decodeEntryPoint(ep);
 
 	if (!Boomerang::get()->noDecodeChildren) {
 		// decode anything undecoded
-		fe->decode(prog, NO_ADDRESS);
+		fe->decode(NO_ADDRESS);
 	}
 
 	prog->finishDecode();

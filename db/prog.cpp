@@ -978,7 +978,7 @@ Prog::decodeEntryPoint(ADDRESS a)
 				LOG << "attempt to decode entrypoint at address outside text area, addr=0x" << std::hex << a << std::dec << "\n";
 			return;
 		}
-		pFE->decode(this, a);
+		pFE->decode(a);
 		finishDecode();
 
 		if (!p) {
@@ -1007,7 +1007,7 @@ Prog::decodeEverythingUndecoded()
 		if (!proc) continue;  // Probably not needed
 		if (auto up = dynamic_cast<UserProc *>(proc)) {
 			if (up->isDecoded()) continue;
-			pFE->decode(this, up->getNativeAddress());
+			pFE->decode(up->getNativeAddress());
 		}
 	}
 	finishDecode();

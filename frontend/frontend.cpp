@@ -358,11 +358,10 @@ FrontEnd::getEntryPoints()
 }
 
 /**
- * \brief Decode all undecoded procedures and return a new program containing
- * them.
+ * \brief Decode all undecoded procedures.
  */
 void
-FrontEnd::decode(Prog *prog)
+FrontEnd::decode()
 {
 	Boomerang::get()->alert_start_decode(pBF->getLimitTextLow(), pBF->getLimitTextHigh() - pBF->getLimitTextLow());
 
@@ -373,11 +372,11 @@ FrontEnd::decode(Prog *prog)
 	if (a == NO_ADDRESS) {
 		std::vector<ADDRESS> entrypoints = getEntryPoints();
 		for (const auto &entrypoint : entrypoints)
-			decode(prog, entrypoint);
+			decode(entrypoint);
 		return;
 	}
 
-	decode(prog, a);
+	decode(a);
 	prog->setEntryPoint(a);
 
 	if (gotMain) {
@@ -412,7 +411,7 @@ FrontEnd::decode(Prog *prog)
  * Somehow, a == NO_ADDRESS has come to mean decode anything not already decoded.
  */
 void
-FrontEnd::decode(Prog *prog, ADDRESS a)
+FrontEnd::decode(ADDRESS a)
 {
 	if (a != NO_ADDRESS) {
 		prog->setNewProc(a);
@@ -466,7 +465,7 @@ FrontEnd::decode(Prog *prog, ADDRESS a)
  * \param a  Should be the address of a UserProc.
  */
 void
-FrontEnd::decodeOnly(Prog *prog, ADDRESS a)
+FrontEnd::decodeOnly(ADDRESS a)
 {
 	auto proc = prog->setNewProc(a);
 	auto up = dynamic_cast<UserProc *>(proc);
