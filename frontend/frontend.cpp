@@ -439,8 +439,7 @@ FrontEnd::decode(ADDRESS a)
 
 					// undecoded userproc.. decode it
 					change = true;
-					int res = processProc(up->getNativeAddress(), up);
-					if (res == 1)
+					if (processProc(up->getNativeAddress(), up))
 						up->setDecoded();
 					else
 						break;
