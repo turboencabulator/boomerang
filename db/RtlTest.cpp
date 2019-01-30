@@ -169,20 +169,22 @@ RtlTest::testVisitor()
 void
 RtlTest::testIsCompare()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(SWITCH_SPARC, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_SPARC);
+	auto prog = Prog::open(SWITCH_SPARC);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getBinaryFile()->getMachine() == MACHINE_SPARC);
 
 	// Decode second instruction: "sub      %i0, 2, %o1"
 	int iReg;
 	Exp *eOperand = nullptr;
-	DecodeResult inst = pFE->decodeInstruction(0x10910);
+	DecodeResult inst = fe->decodeInstruction(0x10910);
 	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
 
 	// Decode fifth instruction: "cmp       %o1, 5"
-	inst = pFE->decodeInstruction(0x1091c);
+	inst = fe->decodeInstruction(0x1091c);
 	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(9, iReg);
@@ -190,20 +192,22 @@ RtlTest::testIsCompare()
 	CPPUNIT_ASSERT_EQUAL(expected, eOperand->prints());
 	delete prog;
 
-	prog = new Prog;
-	pFE = FrontEnd::open(SWITCH_PENT, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getBinaryFile()->getMachine() == MACHINE_PENTIUM);
+	prog = Prog::open(SWITCH_PENT);
+	CPPUNIT_ASSERT(prog);
+
+	fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getBinaryFile()->getMachine() == MACHINE_PENTIUM);
 
 	// Decode fifth instruction: "cmp   $0x5,%eax"
-	inst = pFE->decodeInstruction(0x80488fb);
+	inst = fe->decodeInstruction(0x80488fb);
 	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
 	CPPUNIT_ASSERT_EQUAL(24, iReg);
 	CPPUNIT_ASSERT_EQUAL(expected, eOperand->prints());
 
 	// Decode instruction: "add     $0x4,%esp"
-	inst = pFE->decodeInstruction(0x804890c);
+	inst = fe->decodeInstruction(0x804890c);
 	CPPUNIT_ASSERT(inst.rtl);
 	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
 	delete prog;

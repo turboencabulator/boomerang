@@ -127,12 +127,13 @@ Decompiler::load()
 {
 	emit loading();
 
-	prog = new Prog();
-	fe = FrontEnd::open(strdup(filename.toAscii()), prog);
-	if (!fe) {
+	prog = Prog::open(strdup(filename.toAscii()));
+	if (!prog) {
 		emit machineType(QString("unavailable: Load Failed!"));
 		return;
 	}
+
+	fe = prog->getFrontEnd();
 	fe->readLibraryCatalog();
 
 	switch (prog->getMachine()) {

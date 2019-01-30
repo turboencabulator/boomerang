@@ -165,8 +165,6 @@ public:
 
 	std::vector<ADDRESS> getEntryPoints();
 
-	Prog *getProg() const;
-
 	BasicBlock *createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl);
 
 	void appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl);

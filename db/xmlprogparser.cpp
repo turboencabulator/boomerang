@@ -250,8 +250,11 @@ XMLProgParser::parse(const std::string &filename)
 	}
 	if (!prog)
 		return nullptr;
-	//auto pFE = FrontEnd::open(prog->getPath().c_str(), prog);  // Path is usually empty!?
-	auto pFE = FrontEnd::open(strdup(prog->getPathAndName().c_str()), prog);
+	// FIXME:  Wny do we need a FrontEnd when restoring from XML?
+	//auto fe = FrontEnd::open(prog->getPath().c_str(), prog);  // Path is usually empty!?
+	auto fe = FrontEnd::open(strdup(prog->getPathAndName().c_str()), prog);
+	if (fe)
+		prog->setFrontEnd(fe);
 	return prog;
 }
 

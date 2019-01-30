@@ -38,14 +38,15 @@ CfgTest::testDominators()
 #define FRONTIER_TWELVE   0x080483b2
 #define FRONTIER_THIRTEEN 0x080483b9
 
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE);
+	auto prog = Prog::open(FRONTIER_PENTIUM);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
 	Type::clearNamedTypes();
-	pFE->decode();
+	fe->decode();
 
 	bool gotMain;
-	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
+	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
@@ -98,14 +99,15 @@ CfgTest::testSemiDominators()
 #define SEMI_D  0x8048354
 #define SEMI_M  0x80483e2
 
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(SEMI_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE);
+	auto prog = Prog::open(SEMI_PENTIUM);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
 	Type::clearNamedTypes();
-	pFE->decode();
+	fe->decode();
 
 	bool gotMain;
-	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
+	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
@@ -150,11 +152,12 @@ CfgTest::testSemiDominators()
 void
 CfgTest::testPlacePhi()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE);
+	auto prog = Prog::open(FRONTIER_PENTIUM);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
 	Type::clearNamedTypes();
-	pFE->decode();
+	fe->decode();
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
 	Cfg *cfg = pProc->getCFG();
@@ -188,11 +191,12 @@ CfgTest::testPlacePhi()
 void
 CfgTest::testPlacePhi2()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(IFTHEN_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE);
+	auto prog = Prog::open(IFTHEN_PENTIUM);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
 	Type::clearNamedTypes();
-	pFE->decode();
+	fe->decode();
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
 	Cfg *cfg = pProc->getCFG();
@@ -245,11 +249,12 @@ CfgTest::testPlacePhi2()
 void
 CfgTest::testRenameVars()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(FRONTIER_PENTIUM, prog);
-	CPPUNIT_ASSERT(pFE);
+	auto prog = Prog::open(FRONTIER_PENTIUM);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
 	Type::clearNamedTypes();
-	pFE->decode();
+	fe->decode();
 
 	UserProc *pProc = (UserProc *)prog->getProc(0);
 	Cfg *cfg = pProc->getCFG();

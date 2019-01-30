@@ -67,7 +67,9 @@ public:
 	                    Prog();                         // Default constructor
 	virtual            ~Prog();
 	                    Prog(const std::string &);      // Constructor with name
-	        void        setFrontEnd(FrontEnd *fe);
+	static  Prog       *open(const char *);
+	        FrontEnd   *getFrontEnd() const { return pFE; }
+	        void        setFrontEnd(FrontEnd *);
 	        void        setName(const std::string &);   // Set the name of this program
 	        Proc       *setNewProc(ADDRESS uNative);    // Set up new proc
 	// Return a pointer to a new proc

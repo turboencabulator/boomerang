@@ -53,17 +53,17 @@ TypeTest::testNotEqual()
 void
 TypeTest::testCompound()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_WINDOWS, prog);
+	auto prog = Prog::open(HELLO_WINDOWS);
+	auto fe = prog->getFrontEnd();
 
 	auto filelogger = new std::ofstream();
 	filelogger->rdbuf()->pubsetbuf(nullptr, 0);
 	filelogger->open(Boomerang::get()->getOutputPath() + "log");
 	Boomerang::get()->setLogger(filelogger);  // May try to output some messages to LOG
 
-	pFE->readLibraryCatalog();  // Read definitions
+	fe->readLibraryCatalog();  // Read definitions
 
-	Signature *paintSig = pFE->getLibSignature("BeginPaint");
+	Signature *paintSig = fe->getLibSignature("BeginPaint");
 	// Second argument should be an LPPAINTSTRUCT
 	Type *ty = paintSig->getParamType(1);
 	std::string expected("LPPAINTSTRUCT");

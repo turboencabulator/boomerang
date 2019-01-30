@@ -27,8 +27,7 @@
 void
 ProgTest::testName()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 	std::string actual(prog->getName());
 	std::string expected(HELLO_PENTIUM);
 	CPPUNIT_ASSERT_EQUAL(expected, actual);

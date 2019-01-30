@@ -56,17 +56,6 @@ Prog::Prog() :
 	// Default constructor
 }
 
-void
-Prog::setFrontEnd(FrontEnd *pFE)
-{
-	pBF = pFE->getBinaryFile();
-	this->pFE = pFE;
-	if (pBF && pBF->getFilename()) {
-		m_name = pBF->getFilename();
-		m_rootCluster = new Cluster(getNameNoPathNoExt());
-	}
-}
-
 Prog::Prog(const std::string &name) :
 	m_name(name),
 	m_path(name),
@@ -80,6 +69,29 @@ Prog::~Prog()
 	if (pBF) BinaryFile::close(pBF);
 	for (const auto &proc : m_procs)
 		delete proc;
+}
+
+Prog *
+Prog::open(const char *name)
+{
+	auto prog = new Prog();
+	if (auto fe = FrontEnd::open(name, prog)) {
+		prog->setFrontEnd(fe);
+		return prog;
+	}
+	delete prog;
+	return nullptr;
+}
+
+void
+Prog::setFrontEnd(FrontEnd *fe)
+{
+	pFE = fe;
+	pBF = fe->getBinaryFile();
+	if (pBF && pBF->getFilename()) {
+		m_name = pBF->getFilename();
+		m_rootCluster = new Cluster(getNameNoPathNoExt());
+	}
 }
 
 void

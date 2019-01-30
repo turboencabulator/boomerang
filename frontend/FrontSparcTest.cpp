@@ -34,17 +34,19 @@
 void
 FrontSparcTest::test1()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_SPARC, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
+	auto prog = Prog::open(HELLO_SPARC);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 
 	bool gotMain;
-	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
+	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	// Decode first instruction
-	DecodeResult inst = pFE->decodeInstruction(addr);
+	DecodeResult inst = fe->decodeInstruction(addr);
 	CPPUNIT_ASSERT(inst.rtl);
 
 	std::string expected("00010684    0 *32* tmp := r14 - 112\n"
@@ -76,12 +78,12 @@ FrontSparcTest::test1()
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	addr += inst.numBytes;
-	inst = pFE->decodeInstruction(addr);
+	inst = fe->decodeInstruction(addr);
 	expected = std::string("00010688    0 *32* r8 := 0x10400\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	addr += inst.numBytes;
-	inst = pFE->decodeInstruction(addr);
+	inst = fe->decodeInstruction(addr);
 	expected = std::string("0001068c    0 *32* r8 := r8 | 848\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -94,12 +96,14 @@ FrontSparcTest::test2()
 	DecodeResult inst;
 	std::string expected;
 
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_SPARC, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
+	auto prog = Prog::open(HELLO_SPARC);
+	CPPUNIT_ASSERT(prog);
 
-	inst = pFE->decodeInstruction(0x10690);
+	auto fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
+
+	inst = fe->decodeInstruction(0x10690);
 	// This call is to out of range of the program's text limits (to the Program Linkage Table (PLT), calling printf)
 	// This is quite normal.
 	expected = std::string("00010690    0 CALL printf(\n"
@@ -108,15 +112,15 @@ FrontSparcTest::test2()
 	                       "              Live variables: \n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = pFE->decodeInstruction(0x10694);
+	inst = fe->decodeInstruction(0x10694);
 	expected = std::string("00010694\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = pFE->decodeInstruction(0x10698);
+	inst = fe->decodeInstruction(0x10698);
 	expected = std::string("00010698    0 *32* r8 := 0\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = pFE->decodeInstruction(0x1069c);
+	inst = fe->decodeInstruction(0x1069c);
 	expected = std::string("0001069c    0 *32* r24 := r8\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -129,22 +133,24 @@ FrontSparcTest::test3()
 	DecodeResult inst;
 	std::string expected;
 
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_SPARC, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
+	auto prog = Prog::open(HELLO_SPARC);
+	CPPUNIT_ASSERT(prog);
 
-	inst = pFE->decodeInstruction(0x106a0);
+	auto fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
+
+	inst = fe->decodeInstruction(0x106a0);
 	expected = std::string("000106a0\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = pFE->decodeInstruction(0x106a4);
+	inst = fe->decodeInstruction(0x106a4);
 	expected = std::string("000106a4    0 RET\n"
 	                       "              Modifieds: \n"
 	                       "              Reaching definitions: \n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
-	inst = pFE->decodeInstruction(0x106a8);
+	inst = fe->decodeInstruction(0x106a8);
 	expected = std::string("000106a8    0 *32* tmp := 0\n"
 	                       "            0 *32* r8 := r24\n"
 	                       "            0 *32* r9 := r25\n"
@@ -184,26 +190,28 @@ FrontSparcTest::testBranch()
 	DecodeResult inst;
 	std::string expected;
 
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(BRANCH_SPARC, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
+	auto prog = Prog::open(BRANCH_SPARC);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 
 	// bne
-	inst = pFE->decodeInstruction(0x10ab0);
+	inst = fe->decodeInstruction(0x10ab0);
 	expected = std::string("00010ab0    0 BRANCH 0x10ac8, condition not equals\n"
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bg
-	inst = pFE->decodeInstruction(0x10af8);
+	inst = fe->decodeInstruction(0x10af8);
 	expected = std::string("00010af8    0 BRANCH 0x10b10, condition "
 	                       "signed greater\n"
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bleu
-	inst = pFE->decodeInstruction(0x10b44);
+	inst = fe->decodeInstruction(0x10b44);
 	expected = std::string("00010b44    0 BRANCH 0x10b54, condition unsigned less or equals\n"
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
@@ -214,20 +222,22 @@ FrontSparcTest::testBranch()
 void
 FrontSparcTest::testDelaySlot()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(BRANCH_SPARC, prog);
-	CPPUNIT_ASSERT(pFE);
-	CPPUNIT_ASSERT(pFE->getFrontEndId() == PLAT_SPARC);
+	auto prog = Prog::open(BRANCH_SPARC);
+	CPPUNIT_ASSERT(prog);
+
+	auto fe = prog->getFrontEnd();
+	CPPUNIT_ASSERT(fe);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 	// decode calls readLibraryCatalog(), which needs to have definitions for non-sparc architectures cleared
 	Type::clearNamedTypes();
-	pFE->decode();
+	fe->decode();
 
 	bool gotMain;
-	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
+	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	auto pProc = new UserProc(prog, "testDelaySlot", addr);
-	bool res = pFE->processProc(addr, pProc, false);
+	bool res = fe->processProc(addr, pProc, false);
 
 	CPPUNIT_ASSERT(res == 1);
 	Cfg::iterator it = pProc->getCFG()->begin();

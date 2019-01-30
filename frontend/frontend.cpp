@@ -149,22 +149,19 @@ FrontEnd::open(BinaryFile *bf, Prog *prog)
 	fe->dlHandle = handle;
 	fe->destruct = destruct;
 
+	return fe;
 #else
-	FrontEnd *fe;
 	switch (machine) {
-	case MACHINE_PENTIUM: fe = new PentiumFrontEnd(bf, prog); break;
-	case MACHINE_SPARC:   fe = new   SparcFrontEnd(bf, prog); break;
-	case MACHINE_PPC:     fe = new     PPCFrontEnd(bf, prog); break;
-	case MACHINE_ST20:    fe = new    ST20FrontEnd(bf, prog); break;
-	case MACHINE_MIPS:    fe = new    MIPSFrontEnd(bf, prog); break;
+	case MACHINE_PENTIUM: return new PentiumFrontEnd(bf, prog);
+	case MACHINE_SPARC:   return new   SparcFrontEnd(bf, prog);
+	case MACHINE_PPC:     return new     PPCFrontEnd(bf, prog);
+	case MACHINE_ST20:    return new    ST20FrontEnd(bf, prog);
+	case MACHINE_MIPS:    return new    MIPSFrontEnd(bf, prog);
 	default:
 		std::cerr << "Machine architecture not supported!\n";
 		return nullptr;
 	}
 #endif
-
-	prog->setFrontEnd(fe);
-	return fe;
 }
 
 /**
@@ -1200,17 +1197,6 @@ TargetQueue::nextAddress(Cfg *cfg)
 			return address;
 	}
 	return NO_ADDRESS;
-}
-
-/**
- * \brief Get a Prog object (mainly for testing and not decoding).
- *
- * \returns Pointer to a Prog object (with pFE and pBF filled in).
- */
-Prog *
-FrontEnd::getProg() const
-{
-	return prog;
 }
 
 /**

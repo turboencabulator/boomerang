@@ -1005,9 +1005,8 @@ Prog *
 Boomerang::loadAndDecode(const char *fname, const char *pname)
 {
 	std::cout << "loading...\n";
-	auto prog = new Prog();
-	auto fe = FrontEnd::open(fname, prog);
-	if (!fe) {
+	auto prog = Prog::open(fname);
+	if (!prog) {
 		std::cerr << "failed.\n";
 		return nullptr;
 	}
@@ -1016,6 +1015,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	}
 
 	// Add symbols from -s switch(es)
+	auto fe = prog->getFrontEnd();
 	for (const auto &symbol : symbols) {
 		fe->addSymbol(symbol.first, symbol.second);
 	}

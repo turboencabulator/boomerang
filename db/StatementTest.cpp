@@ -64,8 +64,7 @@ StatementTest::testEmpty()
 	boo->setLogger(filelogger);
 
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
@@ -100,8 +99,7 @@ void
 StatementTest::testFlow()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	std::string name = "test";
@@ -163,8 +161,7 @@ void
 StatementTest::testKill()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	std::string name = "test";
@@ -228,8 +225,7 @@ void
 StatementTest::testUse()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	std::string name = "test";
@@ -293,8 +289,7 @@ void
 StatementTest::testUseOverKill()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	std::string name = "test";
@@ -362,8 +357,7 @@ void
 StatementTest::testUseOverBB()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
@@ -432,8 +426,7 @@ void
 StatementTest::testUseKill()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
@@ -495,8 +488,7 @@ void
 StatementTest::testEndlessLoop()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	UserProc *proc = (UserProc *)prog->newProc("test", 0x123);
@@ -668,8 +660,7 @@ void
 StatementTest::testRecursion()
 {
 	// create Prog
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(HELLO_PENTIUM, prog);  // Don't actually use it
+	auto prog = Prog::open(HELLO_PENTIUM);
 
 	// create UserProc
 	auto proc = new UserProc(prog, "test", 0);
@@ -1179,13 +1170,13 @@ StatementTest::testSubscriptVars()
 void
 StatementTest::testBypass()
 {
-	auto prog = new Prog;
-	auto pFE = FrontEnd::open(GLOBAL1_PENTIUM, prog);
+	auto prog = Prog::open(GLOBAL1_PENTIUM);
+	auto fe = prog->getFrontEnd();
 	Type::clearNamedTypes();
-	pFE->decode();            // Decode main
-	pFE->decode(NO_ADDRESS);  // Decode anything undecoded
+	fe->decode();            // Decode main
+	fe->decode(NO_ADDRESS);  // Decode anything undecoded
 	bool gotMain;
-	ADDRESS addr = pFE->getMainEntryPoint(gotMain);
+	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 	UserProc *proc = (UserProc *)prog->findProc("foo2");
 	assert(proc);
