@@ -183,7 +183,7 @@ Decompiler::decode()
 	ADDRESS a = fe->getMainEntryPoint(gotMain);
 	auto it = std::find(user_entrypoints.begin(), user_entrypoints.end(), a);
 	if (it != user_entrypoints.end())
-		fe->decode(prog, true, nullptr);
+		fe->decode(prog);
 
 	for (const auto &ep : user_entrypoints)
 		prog->decodeEntryPoint(ep);

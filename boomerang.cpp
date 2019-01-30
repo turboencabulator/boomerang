@@ -1011,6 +1011,9 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 		std::cerr << "failed.\n";
 		return nullptr;
 	}
+	if (pname) {
+		prog->setName(pname);
+	}
 
 	// Add symbols from -s switch(es)
 	for (const auto &symbol : symbols) {
@@ -1034,9 +1037,10 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	}
 
 	if (entrypoints.empty()) {  // no -e or -E given
-		if (decodeMain)
+		if (decodeMain) {
 			std::cout << "decoding entry point...\n";
-		fe->decode(prog, decodeMain, pname);
+			fe->decode(prog);
+		}
 
 		if (!noDecodeChildren) {
 			// this causes any undecoded userprocs to be decoded

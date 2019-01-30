@@ -141,7 +141,7 @@ public:
 	virtual std::vector<Exp *> &getDefaultParams() = 0;
 	virtual std::vector<Exp *> &getDefaultReturns() = 0;
 
-	void decode(Prog *prog, bool decodeMain = true, const char *pname = nullptr);
+	void decode(Prog *prog);
 	void decode(Prog *prog, ADDRESS a);
 	void decodeOnly(Prog *prog, ADDRESS a);
 	void decodeFragment(UserProc *proc, ADDRESS a);

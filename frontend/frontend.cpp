@@ -362,14 +362,8 @@ FrontEnd::getEntryPoints()
  * them.
  */
 void
-FrontEnd::decode(Prog *prog, bool decodeMain, const char *pname)
+FrontEnd::decode(Prog *prog)
 {
-	if (pname)
-		prog->setName(pname);
-
-	if (!decodeMain)
-		return;
-
 	Boomerang::get()->alert_start_decode(pBF->getLimitTextLow(), pBF->getLimitTextHigh() - pBF->getLimitTextLow());
 
 	bool gotMain;
