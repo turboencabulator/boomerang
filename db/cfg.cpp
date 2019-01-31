@@ -852,7 +852,7 @@ Cfg::compressCfg()
 				// Remove the in-edge from J to A. First find the in-edge
 				auto it2 = std::find(pSucc->m_InEdges.begin(), pSucc->m_InEdges.end(), bb);
 				assert(it2 != pSucc->m_InEdges.end());
-				pSucc->deleteInEdge(it2);
+				pSucc->m_InEdges.erase(it2);
 				// If nothing else uses this BB (J), remove it from the CFG
 				if (pSucc->m_InEdges.size() == 0) {
 					for (auto it3 = m_listBB.begin(); it3 != m_listBB.end(); ++it3) {

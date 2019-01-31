@@ -500,22 +500,7 @@ BasicBlock::addInEdge(BasicBlock *pNewInEdge)
  *
  * Delete the in-edge from the given BB.  Needed for example when duplicating
  * BBs.
- *
- * \param it  Iterator to BB that will no longer be a parent.
- *
- * \par Side Effects
- * The iterator argument is incremented.
- *
- * \par Usage
- * It should be used like this:
- *     if (pred) deleteInEdge(it) else ++it;
  */
-void
-BasicBlock::deleteInEdge(std::vector<BasicBlock *>::iterator &it)
-{
-	it = m_InEdges.erase(it);
-}
-
 void
 BasicBlock::deleteInEdge(BasicBlock *edge)
 {

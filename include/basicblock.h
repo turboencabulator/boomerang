@@ -185,7 +185,6 @@ public:
 
 	        void        addInEdge(BasicBlock *newInEdge);
 
-	        void        deleteInEdge(std::vector<BasicBlock *>::iterator &it);
 	        void        deleteInEdge(BasicBlock *edge);
 	        void        deleteEdge(BasicBlock *edge);
 
