@@ -148,10 +148,6 @@ public:
 
 	        int         getLabel() const;
 
-	        const std::string &getLabelStr() const { return m_labelStr; }
-	        void        setLabelStr(std::string &s) { m_labelStr = s; }
-	        bool        isLabelNeeded() const { return m_labelneeded; }
-	        void        setLabelNeeded(bool b) { m_labelneeded = b; }
 	        bool        isCaseOption() const;
 
 	        bool        isTraversed() const;
@@ -255,8 +251,6 @@ protected:
 	        BBTYPE      m_nodeType = INVALID;   // type of basic block
 	        std::list<RTL *> *m_pRtls = nullptr;// Ptr to list of RTLs
 	        int         m_iLabelNum = 0;        // Nonzero if start of BB needs label
-	        std::string m_labelStr;             // string label of this bb.
-	        bool        m_labelneeded = false;
 	        bool        m_bIncomplete = true;   // True if not yet complete
 	        bool        m_bJumpReqd = false;    // True if jump required for "fall through"
 
@@ -303,7 +297,6 @@ protected:
 	        int         loopStamps[2], revLoopStamps[2]; // used for structuring analysis
 	        travType    traversed = UNTRAVERSED; // traversal flag for the numerous DFS's
 	        bool        hllLabel = false; // emit a label for this node when generating HL code?
-	        char       *labelStr; // the high level label for this node (if needed)
 	        int         indentLevel = 0; // the indentation level of this node in the final code
 
 	// analysis information

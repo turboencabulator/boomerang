@@ -1002,10 +1002,6 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 		bb->m_nodeType = (BBTYPE)atoi(str);
 	if (auto str = getAttr(attr, "labelNum"))
 		bb->m_iLabelNum = atoi(str);
-	if (auto str = getAttr(attr, "label"))
-		bb->m_labelStr = strdup(str);
-	if (auto str = getAttr(attr, "labelneeded"))
-		bb->m_labelneeded = atoi(str) > 0;
 	if (auto str = getAttr(attr, "incomplete"))
 		bb->m_bIncomplete = atoi(str) > 0;
 	if (auto str = getAttr(attr, "jumpreqd"))
@@ -1044,8 +1040,6 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 		bb->traversed = (travType)atoi(str);
 	if (auto str = getAttr(attr, "hllLabel"))
 		bb->hllLabel = atoi(str) > 0;
-	if (auto str = getAttr(attr, "labelStr"))
-		bb->labelStr = strdup(str);
 	if (auto str = getAttr(attr, "indentLevel"))
 		bb->indentLevel = atoi(str);
 	if (auto str = getAttr(attr, "sType"))
@@ -2587,8 +2581,6 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 	out << "<bb id=\"" << (void *)bb
 	    << "\" nodeType=\"" << bb->m_nodeType
 	    << "\" labelNum=\"" << bb->m_iLabelNum
-	    << "\" label=\"" << bb->m_labelStr
-	    << "\" labelneeded=\"" << (int)bb->m_labelneeded
 	    << "\" incomplete=\"" << (int)bb->m_bIncomplete
 	    << "\" jumpreqd=\"" << (int)bb->m_bJumpReqd
 	    << "\" m_traversed=\"" << bb->m_iTraversed
@@ -2618,8 +2610,6 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 	    << "\" revLoopStamp2=\"" << bb->revLoopStamps[1]
 	    << "\" traversed=\"" << (int)bb->traversed
 	    << "\" hllLabel=\"" << (int)bb->hllLabel;
-	if (bb->labelStr)
-		out << "\" labelStr=\"" << bb->labelStr;
 	out << "\" indentLevel=\"" << bb->indentLevel;
 	// note the ridiculous duplication here
 	if (bb->immPDom)
