@@ -178,8 +178,7 @@ public:
 	        BasicBlock *getOutEdge(unsigned int i);
 	        BasicBlock *getCorrectOutEdge(ADDRESS a) const;
 
-	        void        setInEdge(int i, BasicBlock *newIn);
-	        void        setOutEdge(int i, BasicBlock *newInEdge);
+	        void        setOutEdge(int, BasicBlock *);
 
 	        int         whichPred(BasicBlock *pred) const;
 

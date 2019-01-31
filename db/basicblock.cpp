@@ -413,21 +413,6 @@ BasicBlock::getOutEdges() const
 }
 
 /**
- * \brief Set an in edge to a new value; same number of in edges as before.
- *
- * Change the given in-edge (0 is first) to the given value.  Needed for
- * example when duplicating BBs.
- *
- * \param i           Index (0 based) of in-edge to change.
- * \param pNewInEdge  Pointer to BB that will be a new parent.
- */
-void
-BasicBlock::setInEdge(int i, BasicBlock *pNewInEdge)
-{
-	m_InEdges[i] = pNewInEdge;
-}
-
-/**
  * \brief Set an out edge to a new value; same number of out edges as before.
  *
  * Change the given out-edge (0 is first) to the given value.  Needed for
