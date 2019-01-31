@@ -1271,6 +1271,5 @@ FrontEnd::appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl)
 {
 	auto ret_rtls = new std::list<RTL *>();
 	BasicBlock *pret = createReturnBlock(pProc, ret_rtls, new RTL(pRtl->getAddress() + 1, new ReturnStatement()));
-	pret->addInEdge(pCallBB);
 	pCallBB->setOutEdge(0, pret);
 }

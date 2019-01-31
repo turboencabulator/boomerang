@@ -1383,11 +1383,9 @@ BranchStatement::setFallBB(BasicBlock *bb)
 	if (pbb->getOutEdge(0)->getLowAddr() == a) {
 		pbb->getOutEdge(1)->deleteInEdge(pbb);
 		pbb->setOutEdge(1, bb);
-		bb->addInEdge(pbb);
 	} else {
 		pbb->getOutEdge(0)->deleteInEdge(pbb);
 		pbb->setOutEdge(0, bb);
-		bb->addInEdge(pbb);
 	}
 }
 
@@ -1419,11 +1417,9 @@ BranchStatement::setTakenBB(BasicBlock *bb)
 	if (pbb->getOutEdge(0)->getLowAddr() == a) {
 		pbb->getOutEdge(0)->deleteInEdge(pbb);
 		pbb->setOutEdge(0, bb);
-		bb->addInEdge(pbb);
 	} else {
 		pbb->getOutEdge(1)->deleteInEdge(pbb);
 		pbb->setOutEdge(1, bb);
-		bb->addInEdge(pbb);
 	}
 }
 

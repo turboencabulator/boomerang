@@ -182,7 +182,7 @@ public:
 
 	        int         whichPred(BasicBlock *pred) const;
 
-	        void        addInEdge(BasicBlock *newInEdge);
+	        void        addInEdge(BasicBlock *);
 
 	        void        deleteInEdge(BasicBlock *edge);
 	        void        deleteEdge(BasicBlock *edge);

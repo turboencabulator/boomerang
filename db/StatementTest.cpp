@@ -126,7 +126,6 @@ StatementTest::testFlow()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
-	ret->addInEdge(first);
 	cfg->setEntryBB(first);  // Also sets exitBB; important!
 	proc->setDecoded();
 	// compute dataflow
@@ -192,7 +191,6 @@ StatementTest::testKill()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
-	ret->addInEdge(first);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -256,7 +254,6 @@ StatementTest::testUse()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
-	ret->addInEdge(first);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -324,7 +321,6 @@ StatementTest::testUseOverKill()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
-	ret->addInEdge(first);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -392,7 +388,6 @@ StatementTest::testUseOverBB()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
-	ret->addInEdge(first);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -455,7 +450,6 @@ StatementTest::testUseKill()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	first->setOutEdge(0, ret);
-	ret->addInEdge(first);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -511,9 +505,7 @@ StatementTest::testEndlessLoop()
 	pRtls->push_back(rtl);
 	auto body = cfg->newBB(pRtls, ONEWAY, 1);
 	first->setOutEdge(0, body);
-	body->addInEdge(first);
 	body->setOutEdge(0, body);
-	body->addInEdge(body);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -727,9 +719,7 @@ StatementTest::testRecursion()
 	c->setDestProc(proc);  // Just call self
 	auto callbb = cfg->newBB(pRtls, CALL, 1);
 	first->setOutEdge(0, callbb);
-	callbb->addInEdge(first);
 	callbb->setOutEdge(0, callbb);
-	callbb->addInEdge(callbb);
 
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
@@ -745,7 +735,6 @@ StatementTest::testRecursion()
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET, 0);
 	callbb->setOutEdge(0, ret);
-	ret->addInEdge(callbb);
 	cfg->setEntryBB(first);
 
 	// decompile the "proc"

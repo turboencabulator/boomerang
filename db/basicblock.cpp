@@ -421,19 +421,20 @@ BasicBlock::getOutEdges() const
  * \note Cannot add an additional out-edge with this function; use addOutEdge
  * for this rare case.
  *
- * \param i            Index (0 based) of out-edge to change.
- * \param pNewOutEdge  Pointer to BB that will be the new successor.
+ * \param i     Index (0 based) of out-edge to change.
+ * \param succ  BB that will be the new successor.
  */
 void
-BasicBlock::setOutEdge(int i, BasicBlock *pNewOutEdge)
+BasicBlock::setOutEdge(int i, BasicBlock *succ)
 {
 	if (m_OutEdges.empty()) {
 		assert(i == 0);
-		m_OutEdges.push_back(pNewOutEdge);
+		m_OutEdges.push_back(succ);
 	} else {
 		assert(i < (int)m_OutEdges.size());
-		m_OutEdges[i] = pNewOutEdge;
+		m_OutEdges[i] = succ;
 	}
+	succ->addInEdge(this);
 }
 
 /**
@@ -472,12 +473,12 @@ BasicBlock::getCorrectOutEdge(ADDRESS a) const
  *
  * Add the given in-edge.  Needed for example when duplicating BBs.
  *
- * \param pNewInEdge  Pointer to BB that will be a new parent.
+ * \param pred  BB that will be a new predecessor.
  */
 void
-BasicBlock::addInEdge(BasicBlock *pNewInEdge)
+BasicBlock::addInEdge(BasicBlock *pred)
 {
-	m_InEdges.push_back(pNewInEdge);
+	m_InEdges.push_back(pred);
 }
 
 /**
