@@ -716,10 +716,9 @@ UserProc::initStatements()
 				if (call->getDestProc()
 				 && call->getDestProc()->isNoReturn()
 				 && bb->getNumOutEdges() == 1) {
-					BasicBlock *out = bb->getOutEdge(0);
-					if (out != cfg->getExitBB() || cfg->getExitBB()->getNumInEdges() != 1) {
-						out->deleteInEdge(bb);
-						bb->getOutEdges().clear();
+					auto succ = bb->getOutEdge(0);
+					if (succ != cfg->getExitBB() || succ->getNumInEdges() != 1) {
+						bb->deleteEdge(succ);
 					}
 				}
 			}
