@@ -169,8 +169,8 @@ public:
 
 	        RTL        *getRTLWithStatement(Statement *stmt) const;
 
-	        std::vector<BasicBlock *> &getInEdges();
-	        std::vector<BasicBlock *> &getOutEdges();
+	        const std::vector<BasicBlock *> &getInEdges() const;
+	        const std::vector<BasicBlock *> &getOutEdges() const;
 
 	        int         getNumInEdges() const { return m_InEdges.size(); }
 	        int         getNumOutEdges() const { return m_iNumOutEdges; }

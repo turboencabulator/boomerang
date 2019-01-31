@@ -393,8 +393,8 @@ BasicBlock::getRTLWithStatement(Statement *stmt) const
  *
  * \returns  A constant reference to the vector of in edges.
  */
-std::vector<BasicBlock *> &
-BasicBlock::getInEdges()
+const std::vector<BasicBlock *> &
+BasicBlock::getInEdges() const
 {
 	return m_InEdges;
 }
@@ -406,8 +406,8 @@ BasicBlock::getInEdges()
  *
  * \returns  A constant reference to the vector of out edges.
  */
-std::vector<BasicBlock *> &
-BasicBlock::getOutEdges()
+const std::vector<BasicBlock *> &
+BasicBlock::getOutEdges() const
 {
 	return m_OutEdges;
 }
