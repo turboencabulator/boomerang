@@ -123,9 +123,10 @@ Statement::getInputRanges()
 		return savedInputRanges;
 	}
 
-	assert(pbb && pbb->getNumInEdges() <= 1);
+	assert(pbb);
+	const auto &inedges = pbb->getInEdges();
 	RangeMap input;
-	if (pbb->getNumInEdges() == 0) {
+	if (inedges.empty()) {
 		// setup input for start of procedure
 		Range ra24(1, 0, 0, new Unary(opInitValueOf, Location::regOf(24)));
 		Range ra25(1, 0, 0, new Unary(opInitValueOf, Location::regOf(25)));
@@ -146,7 +147,8 @@ Statement::getInputRanges()
 		input.addRange(Location::regOf(31), ra31);
 		input.addRange(new Terminal(opPC), rpc);
 	} else {
-		BasicBlock *pred = pbb->getInEdges()[0];
+		assert(inedges.size() == 1);
+		auto pred = inedges[0];
 		Statement *last = pred->getLastStmt();
 		assert(last);
 		if (pred->getNumOutEdges() != 2) {
@@ -575,8 +577,8 @@ CallStatement::rangeAnalysis(std::list<Statement *> &execution_paths)
 bool
 JunctionStatement::isLoopJunction() const
 {
-	for (int i = 0; i < pbb->getNumInEdges(); ++i)
-		if (pbb->isBackEdge(i))
+	for (const auto &pred : pbb->getInEdges())
+		if (pbb->isBackEdge(pred))
 			return true;
 	return false;
 }
@@ -4538,8 +4540,9 @@ ReturnStatement::updateModifieds()
 	auto oldMods = StatementList();
 	oldMods.swap(modifieds);
 
-	if (pbb->getNumInEdges() == 1)
-		if (auto call = dynamic_cast<CallStatement *>(pbb->getInEdges()[0]->getLastStmt()))
+	const auto &inedges = pbb->getInEdges();
+	if (inedges.size() == 1)
+		if (auto call = dynamic_cast<CallStatement *>(inedges[0]->getLastStmt()))
 			if (call->getDestProc() && FrontEnd::noReturnCallDest(call->getDestProc()->getName()))
 				return;
 
@@ -5257,9 +5260,9 @@ JunctionStatement::print(std::ostream &os, bool html) const
 		   << "<a name=\"stmt" << number << "\">";
 	}
 	os << "JUNCTION";
-	for (int i = 0; i < pbb->getNumInEdges(); ++i) {
-		os << " " << std::hex << pbb->getInEdges()[i]->getHiAddr() << std::dec;
-		if (pbb->isBackEdge(i))
+	for (const auto &pred : pbb->getInEdges()) {
+		os << " " << std::hex << pred->getHiAddr() << std::dec;
+		if (pbb->isBackEdge(pred))
 			os << "*";
 	}
 	if (isLoopJunction())

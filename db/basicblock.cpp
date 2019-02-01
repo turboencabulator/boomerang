@@ -315,10 +315,9 @@ BasicBlock::print(std::ostream &os, bool html) const
 }
 
 bool
-BasicBlock::isBackEdge(int inEdge) const
+BasicBlock::isBackEdge(const BasicBlock *pred) const
 {
-	const auto &in = m_InEdges[inEdge];
-	return this == in || (m_DFTfirst < in->m_DFTfirst && m_DFTlast > in->m_DFTlast);
+	return this == pred || (m_DFTfirst < pred->m_DFTfirst && m_DFTlast > pred->m_DFTlast);
 }
 
 /**

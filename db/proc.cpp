@@ -119,8 +119,9 @@ UserProc::isNoReturn() const
 	BasicBlock *exitbb = cfg->getExitBB();
 	if (!exitbb)
 		return true;
-	if (exitbb->getNumInEdges() == 1) {
-		Statement *s = exitbb->getInEdges()[0]->getLastStmt();
+	const auto &inedges = exitbb->getInEdges();
+	if (inedges.size() == 1) {
+		Statement *s = inedges[0]->getLastStmt();
 		auto call = dynamic_cast<CallStatement *>(s);
 		if (call && call->getDestProc() && call->getDestProc()->isNoReturn())
 			return true;

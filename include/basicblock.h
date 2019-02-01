@@ -352,7 +352,7 @@ protected:
 	                    }
 
 public:
-	        bool        isBackEdge(int inEdge) const;
+	        bool        isBackEdge(const BasicBlock *) const;
 
 protected:
 	        bool        isAncestorOf(const BasicBlock *other) const;
