@@ -766,48 +766,41 @@ Cfg::compressCfg()
 
 	// Find A -> J -> B where J is a BB that is only a jump
 	// Then A -> B
-	for (const auto &bb : m_listBB) {  // Pointer to A
-		for (auto it1 = bb->m_OutEdges.begin(); it1 != bb->m_OutEdges.end(); ++it1) {
-			BasicBlock *pSucc = (*it1);  // Pointer to J
-			if (pSucc->m_InEdges.size() == 1
-			 && pSucc->m_OutEdges.size() == 1
-			 && pSucc->m_pRtls->size() == 1
-			 && pSucc->m_pRtls->front()->getList().size() == 1
-			 && pSucc->m_pRtls->front()->getList().front()->getKind() == STMT_GOTO) {
-				// Found an out-edge to an only-jump BB
+	auto removes = std::list<BasicBlock *>();
+	for (const auto &bbJ : m_listBB) {
+		if (bbJ->m_OutEdges.size() == 1
+		 && bbJ->m_pRtls->size() == 1
+		 && bbJ->m_pRtls->front()->getList().size() == 1
+		 && bbJ->m_pRtls->front()->getList().front()->getKind() == STMT_GOTO) {
+			// Found an only-jump BB
+			auto bbB = bbJ->m_OutEdges.front();
+			bbJ->deleteEdge(bbB);
+			for (const auto &bbA : bbJ->m_InEdges) {
 #if 0
-				std::cout << "outedge to jump detected at " << std::hex << bb->getLowAddr()
-				          << " to " << pSucc->getLowAddr()
-				          << " to " << pSucc->m_OutEdges.front()->getLowAddr() << std::dec << std::endl;
+				std::cout << "outedge to jump detected at " << std::hex << bbA->getLowAddr()
+				          << " to " << bbJ->getLowAddr()
+				          << " to " << bbB->getLowAddr() << std::dec << std::endl;
 #endif
-				// Point this outedge of A to the dest of the jump (B)
-				*it1 = pSucc->m_OutEdges.front();
-				// Now pSucc still points to J; *it1 points to B.  Almost certainly, we will need a jump in the low
-				// level C that may be generated. Also force a label for B
-				bb->m_bJumpReqd = true;
-				setLabel(*it1);
-				// Find the in-edge from B to J; replace this with an in-edge to A
-				for (auto &edge : (*it1)->m_InEdges) {
-					if (edge == pSucc)
-						edge = bb;  // Point to A
-				}
-				// Remove the in-edge from J to A. First find the in-edge
-				auto it2 = std::find(pSucc->m_InEdges.begin(), pSucc->m_InEdges.end(), bb);
-				assert(it2 != pSucc->m_InEdges.end());
-				pSucc->m_InEdges.erase(it2);
-				// If nothing else uses this BB (J), remove it from the CFG
-				if (pSucc->m_InEdges.size() == 0) {
-					for (auto it3 = m_listBB.begin(); it3 != m_listBB.end(); ++it3) {
-						if (*it3 == pSucc) {
-							m_listBB.erase(it3);  // FIXME:  Invalidates iterators
-							// And delete the BB
-							delete pSucc;
-							break;
-						}
-					}
-				}
+				auto it = std::find(bbA->m_OutEdges.begin(), bbA->m_OutEdges.end(), bbJ);
+				assert(it != bbA->m_OutEdges.end());
+				// Replace A -> J edge with A -> B.
+				*it = bbB;
+				bbB->addInEdge(bbA);
+				// Almost certainly, we will need a jump in the low level C that may be generated.
+				bbA->m_bJumpReqd = true;
 			}
+			// Also force a label for B
+			setLabel(bbB);
+			bbJ->m_InEdges.clear();
+			// Remove J from the CFG
+			removes.push_back(bbJ);
 		}
+	}
+	// Separate removal loop to avoid invalidating iterators in the previous loop.
+	for (const auto &bb : removes) {
+		removeBB(bb);
+		// And delete the BB
+		delete bb;
 	}
 	return true;
 }
