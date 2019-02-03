@@ -41,9 +41,8 @@
 Cfg::~Cfg()
 {
 	// Delete the BBs
-	for (const auto &bb : m_listBB) {
+	for (const auto &bb : m_listBB)
 		delete bb;
-	}
 }
 
 /**
@@ -237,13 +236,12 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we want to return nullptr, since
 		// the out edges are already created.
 		if (++mi != m_mapBB.end()) {
-			BasicBlock *pNextBB = mi->second;
 			ADDRESS uNext = mi->first;
-			bool bIncomplete = pNextBB->m_bIncomplete;
+			bool bIncomplete = mi->second->m_bIncomplete;
 			if (uNext <= pRtls->back()->getAddress()) {
 				// Need to truncate the current BB. We use splitBB(), but pass it pNextBB so it doesn't create a new BB
 				// for the "bottom" BB of the split pair
-				splitBB(pBB, uNext, pNextBB);
+				auto pNextBB = splitBB(pBB, uNext);
 				// If the overlapped BB was incomplete, return the "bottom" part of the BB, so adding out edges will
 				// work properly.
 				if (bIncomplete) {
@@ -260,7 +258,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		//  |   |   |   | =>    |   |
 		//  |   |   |   |       |   | New; rest of existing discarded
 		//  +---+   +---+       +---+
-		// Note: no need to check the other way around, because in this case, we will have called Cfg::Label(), and it
+		// Note: no need to check the other way around, because in this case, we will have called Cfg::label(), and it
 		// will have split the existing BB already.
 	}
 	assert(pBB);
@@ -373,23 +371,15 @@ Cfg::existsBB(ADDRESS uNativeAddr) const
  * the original basic block (pBB), and its out-edges are those of the original
  * basic block.  In edges of the new BB's descendants are changed.
  *
- * If pNewBB is non-null, it is retained as the "bottom" part of the split,
- * i.e. splitBB just changes the "top" BB to not overlap the existing one.
- *
  * \pre Assumes uNativeAddr is an address within the boundaries of the given
  * basic block.
  *
  * \param pBB          Pointer to the BB to be split.
  * \param uNativeAddr  Address of RTL to become the start of the new BB.
- * \param pNewBB       If non-null, it remains as the "bottom" part of the BB,
- *                     and splitBB only modifies the top part to not overlap.
- * \param bDelRtls     If true, deletes the RTLs removed from the existing BB
- *                     after the split point.  Only used if there is an
- *                     overlap with existing instructions
  * \returns            A pointer to the "bottom" (new) part of the split BB.
  */
 BasicBlock *
-Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullptr */, bool bDelRtls /* = false */)
+Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr)
 {
 	// First find which RTL has the split address; note that this could fail (e.g. label in the middle of an
 	// instruction, or some weird delay slot effects)
@@ -402,6 +392,15 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		std::cerr << "could not split BB at " << std::hex << pBB->getLowAddr() << " at split address " << uNativeAddr << std::dec << std::endl;
 		return pBB;
 	}
+	// Split the RTLs at ri.
+	auto bottom = new std::list<RTL *>();
+	bottom->splice(bottom->begin(), *pBB->m_pRtls, ri, pBB->m_pRtls->end());
+
+	// Check for an existing BB at the split address.
+	BasicBlock *pNewBB = nullptr;
+	auto mi = m_mapBB.find(uNativeAddr);
+	if (mi != m_mapBB.end())
+		pNewBB = mi->second;
 
 	// If necessary, set up a new basic block with information from the original bb
 	if (!pNewBB) {
@@ -415,10 +414,8 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		pNewBB->m_InEdges.clear();
 		// There must be a label here; else would not be splitting.  Give it a new label
 		pNewBB->m_iLabelNum = ++lastLabel;
-		// The "bottom" BB now starts at the implicit label, so we create a new list that starts at ri. We need a new
-		// list, since it is different from the original BB's list. We don't have to "deep copy" the RTLs themselves,
-		// since they will never overlap
-		pNewBB->setRTLs(new std::list<RTL *>(ri, pBB->m_pRtls->end()));
+		// The "bottom" BB now starts at the implicit label.
+		pNewBB->setRTLs(bottom);
 	} else if (pNewBB->m_bIncomplete) {
 		// We have an existing BB and a map entry, but no details except for in-edges and m_bHasLabel.
 		// First save the in-edges and m_iLabelNum
@@ -431,9 +428,8 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		pNewBB->m_InEdges = ins;
 		// Replace the label (must be one, since we are splitting this BB!)
 		pNewBB->m_iLabelNum = label;
-		// The "bottom" BB now starts at the implicit label
-		// We need to create a new list of RTLs, as per above
-		pNewBB->setRTLs(new std::list<RTL *>(ri, pBB->m_pRtls->end()));
+		// The "bottom" BB now starts at the implicit label.
+		pNewBB->setRTLs(bottom);
 	}
 	// else pNewBB exists and is complete. We don't want to change the complete BB in any way, except to later add one
 	// in-edge
@@ -455,21 +451,11 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB /* = nullp
 		assert(found);
 	}
 
-	// The old BB needs to have part of its list of RTLs erased, since the instructions overlap
-	if (bDelRtls) {
-		// Delete the RTLs they point to
-		for (auto it = ri; it != pBB->m_pRtls->end(); ++it) {
-			delete *it;
-		}
-	}
-	// Delete the list of pointers
-	pBB->m_pRtls->erase(ri, pBB->m_pRtls->end());
-
 	// Update original ("top") basic block's info and make it a fall-through
 	pBB->updateType(FALL, 1);
 	// Erase any existing out edges
 	pBB->m_OutEdges.clear();
-	addOutEdge(pBB, uNativeAddr);
+	addOutEdge(pBB, pNewBB);
 	return pNewBB;
 }
 
@@ -506,29 +492,29 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 {
 	// check if the native address is in the map already (explicit label)
 	auto mi = m_mapBB.find(uNativeAddr);
-	if (mi == m_mapBB.end()) {  // not in the map
-		// If not an explicit label, temporarily add the address to the map
-		m_mapBB[uNativeAddr] = (BasicBlock *)0;  // no BasicBlock* yet
-
-		// get an iterator to the new native address and check if the previous element in the (sorted) map overlaps
-		// this new native address; if so, it's a non-explicit label which needs to be made explicit by splitting the
-		// previous BB.
-		mi = m_mapBB.find(uNativeAddr);
-
-		auto newi = mi;
-		bool bSplit = false;
-		BasicBlock *pPrevBB = nullptr;
-		if (newi != m_mapBB.begin()) {
-			pPrevBB = (*--mi).second;
-			if (!pPrevBB->m_bIncomplete
-			 && (pPrevBB->getLowAddr() <  uNativeAddr)
-			 && (pPrevBB->getHiAddr()  >= uNativeAddr)) {
-				bSplit = true;
-			}
+	if (mi != m_mapBB.end()) {
+		if (mi->second && !mi->second->m_bIncomplete) {
+			// There is a complete BB here. Return true.
+			return true;
 		}
-		if (bSplit) {
-			// Non-explicit label. Split the previous BB
-			BasicBlock *pNewBB = splitBB(pPrevBB, uNativeAddr);
+	} else {
+		// If not an explicit label, temporarily add the address to the map.
+		// We don't have to erase this map entry.  Having a null BasicBlock pointer is coped with in newBB() and
+		// addOutEdge(); when eventually the BB is created, it will replace this entry.  We should be currently
+		// processing this BB.  The map will be corrected when newBB is called with this address.
+		m_mapBB[uNativeAddr] = nullptr;
+		mi = m_mapBB.find(uNativeAddr);
+	}
+	// We are finalising an incomplete BB.  Check if the previous element in the (sorted) map overlaps
+	// this new native address; if so, it's a non-explicit label which needs to be made explicit by splitting the
+	// previous BB.
+	if (mi != m_mapBB.begin()) {
+		BasicBlock *pPrevBB = (*--mi).second;
+		if (!pPrevBB->m_bIncomplete
+		 && (pPrevBB->getLowAddr() <  uNativeAddr)
+		 && (pPrevBB->getHiAddr()  >= uNativeAddr)) {
+			// Non-explicit label.  Split the previous BB.
+			auto pNewBB = splitBB(pPrevBB, uNativeAddr);
 			if (pCurBB == pPrevBB) {
 				// This means that the BB that we are expecting to use, usually to add out edges, has changed. We must
 				// change this pointer so that the right BB gets the out edges. However, if the new BB is not the BB of
@@ -536,38 +522,10 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 				pCurBB = pNewBB;
 			}
 			return true;  // wasn't a label, but already parsed
-		} else {  // not a non-explicit label
-			// We don't have to erase this map entry. Having a null BasicBlock pointer is coped with in newBB() and
-			// addOutEdge(); when eventually the BB is created, it will replace this entry.  We should be currently
-			// processing this BB. The map will be corrected when newBB is called with this address.
-			return false;  // was not already parsed
 		}
-	} else {  // We already have uNativeAddr in the map
-		if (mi->second && !mi->second->m_bIncomplete) {
-			// There is a complete BB here. Return true.
-			return true;
-		}
-
-		// We are finalising an incomplete BB. Still need to check previous map entry to see if there is a complete BB
-		// overlapping
-		bool bSplit = false;
-		BasicBlock *pPrevBB, *pBB = mi->second;
-		if (mi != m_mapBB.begin()) {
-			pPrevBB = (*--mi).second;
-			if (!pPrevBB->m_bIncomplete
-			 && (pPrevBB->getLowAddr() <  uNativeAddr)
-			 && (pPrevBB->getHiAddr()  >= uNativeAddr))
-				bSplit = true;
-		}
-		if (bSplit) {
-			// Pass the third parameter to splitBB, because we already have an (incomplete) BB for the "bottom" BB of
-			// the split
-			splitBB(pPrevBB, uNativeAddr, pBB);  // non-explicit label
-			return true;  // wasn't a label, but already parsed
-		}
-		// A non overlapping, incomplete entry is in the map.
-		return false;
 	}
+	// A non overlapping, incomplete entry is in the map.
+	return false;  // was not already parsed
 }
 
 /**
@@ -740,17 +698,8 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 	// Now we replace pb2's in edges by pb1's inedges
 	pb2->m_InEdges = pb1->m_InEdges;
 
-	if (bDelete) {
-		// Finally, we delete pb1 from the BB list. Note: remove(pb1) should also work, but it would involve member
-		// comparison (not implemented), and also would attempt to remove ALL elements of the list with this value (so
-		// it has to search the whole list, instead of an average of half the list as we have here).
-		for (auto it = m_listBB.begin(); it != m_listBB.end(); ++it) {
-			if (*it == pb1) {
-				m_listBB.erase(it);
-				break;
-			}
-		}
-	}
+	if (bDelete)
+		removeBB(pb1);
 }
 
 /**
@@ -773,16 +722,9 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 	const auto &v = pb1->getOutEdges();
 	if (v.size() != 2 || v[1] != pb2)
 		return false;
-	// Prepend the RTLs for pb1 to those of pb2. Since they will be pushed to the front of pb2, push them in reverse
-	// order
-	for (auto it = pb1->m_pRtls->rbegin(); it != pb1->m_pRtls->rend(); ++it) {
-		pb2->m_pRtls->push_front(*it);
-	}
-	completeMerge(pb1, pb2);  // Mash them together
-	// pb1 no longer needed. Remove it from the list of BBs.  This will also delete *pb1. It will be a shallow delete,
-	// but that's good because we only did shallow copies to *pb2
-	auto bbit = std::find(m_listBB.begin(), m_listBB.end(), pb1);
-	m_listBB.erase(bbit);
+	// Prepend the RTLs for pb1 to those of pb2.
+	pb2->m_pRtls->splice(pb2->m_pRtls->begin(), *pb1->m_pRtls);
+	completeMerge(pb1, pb2, true);  // Mash them together
 	return true;
 }
 
@@ -905,13 +847,11 @@ Cfg::establishDFTOrder()
 	// Reset all the traversed flags
 	unTraverse();
 
-	int first = 0;
-	int last = 0;
-	unsigned numTraversed;
-
 	if (checkEntryBB()) return false;
 
-	numTraversed = entryBB->DFTOrder(first, last);
+	int first = 0;
+	int last = 0;
+	unsigned numTraversed = entryBB->DFTOrder(first, last);
 
 	return numTraversed == m_listBB.size();
 }
@@ -962,9 +902,7 @@ Cfg::establishRevDFTOrder()
 
 	int first = 0;
 	int last = 0;
-	unsigned numTraversed;
-
-	numTraversed = retNode->RevDFTOrder(first, last);
+	unsigned numTraversed = retNode->RevDFTOrder(first, last);
 
 	return numTraversed == m_listBB.size();
 }

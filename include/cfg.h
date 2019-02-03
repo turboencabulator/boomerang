@@ -186,7 +186,7 @@ public:
 
 private:
 
-	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr, BasicBlock *pNewBB = nullptr, bool bDelRtls = false);
+	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr);
 
 	void        completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete);
 
