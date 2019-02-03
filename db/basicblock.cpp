@@ -57,45 +57,6 @@ BasicBlock::~BasicBlock()
 }
 
 /**
- * \brief Copy constructor.
- * \param bb  The BB to copy from.
- */
-BasicBlock::BasicBlock(const BasicBlock &bb) :
-	m_structType(bb.m_structType),
-	m_loopCondType(bb.m_loopCondType),
-	m_loopHead(bb.m_loopHead),
-	m_caseHead(bb.m_caseHead),
-	m_condFollow(bb.m_condFollow),
-	m_loopFollow(bb.m_loopFollow),
-	m_latchNode(bb.m_latchNode),
-	m_nodeType(bb.m_nodeType),
-	m_iLabelNum(bb.m_iLabelNum),
-	m_bIncomplete(bb.m_bIncomplete),
-	m_bJumpReqd(bb.m_bJumpReqd),
-	m_InEdges(bb.m_InEdges),
-	m_OutEdges(bb.m_OutEdges),
-	m_iNumOutEdges(bb.m_iNumOutEdges),
-// From Doug's code
-	ord(bb.ord),
-	revOrd(bb.revOrd),
-	inEdgesVisited(bb.inEdgesVisited),
-	numForwardInEdges(bb.numForwardInEdges),
-	traversed(bb.traversed),
-	hllLabel(bb.hllLabel),
-	indentLevel(bb.indentLevel),
-	immPDom(bb.immPDom),
-	loopHead(bb.loopHead),
-	caseHead(bb.caseHead),
-	condFollow(bb.condFollow),
-	loopFollow(bb.loopFollow),
-	latchNode(bb.latchNode),
-	sType(bb.sType),
-	usType(bb.usType)
-{
-	setRTLs(bb.m_pRtls);
-}
-
-/**
  * \brief Private constructor.  Called by Cfg::newBB.
  * \param pRtls
  * \param bbType

@@ -141,7 +141,7 @@ class BasicBlock {
 public:
 	                    BasicBlock() = default;
 	                   ~BasicBlock();
-	                    BasicBlock(const BasicBlock &bb);
+	                    BasicBlock(const BasicBlock &) = default;
 
 	        BBTYPE      getType() const;
 	        void        updateType(BBTYPE bbType, int iNumOutEdges);
