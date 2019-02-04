@@ -378,8 +378,8 @@ BasicBlock::getOutEdges() const
  * Change the given out-edge (0 is first) to the given value.  Needed for
  * example when duplicating BBs.
  *
- * \note Cannot add an additional out-edge with this function; use addOutEdge
- * for this rare case.
+ * \note Cannot add an additional out-edge with this function; use
+ * Cfg::addOutEdge() for this rare case.
  *
  * \param i     Index (0 based) of out-edge to change.
  * \param succ  BB that will be the new successor.
@@ -387,13 +387,8 @@ BasicBlock::getOutEdges() const
 void
 BasicBlock::setOutEdge(int i, BasicBlock *succ)
 {
-	if (m_OutEdges.empty()) {
-		assert(i == 0);
-		m_OutEdges.push_back(succ);
-	} else {
-		assert(i < (int)m_OutEdges.size());
-		m_OutEdges[i] = succ;
-	}
+	assert(i < (int)m_OutEdges.size());
+	m_OutEdges[i] = succ;
 	succ->addInEdge(this);
 }
 
