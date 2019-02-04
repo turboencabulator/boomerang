@@ -50,6 +50,8 @@ class UserProc;
  * traversing the Cfg, one traverses the whole procedure.
  */
 class Cfg {
+	friend class XMLProgParser;
+
 	/**
 	 * Pointer to the UserProc object that contains this CFG object.
 	 */
@@ -239,10 +241,6 @@ public:
 
 	void        findInterferences(ConnectionGraph &ig);
 	void        appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workset);
-
-protected:
-	void        addBB(BasicBlock *bb) { m_listBB.push_back(bb); }
-	friend class XMLProgParser;
 };
 
 #endif

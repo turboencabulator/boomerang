@@ -951,7 +951,7 @@ XMLProgParser::addChildTo_cfg(Context *node, const Context *child) const
 	}
 	switch (child->tag) {
 	case e_bb:
-		node->cfg->addBB(child->bb);
+		node->cfg->m_listBB.push_back(child->bb);
 		break;
 	case e_order:
 		break;
@@ -1058,10 +1058,11 @@ XMLProgParser::addChildTo_bb(Context *node, const Context *child) const
 	if (phase == 1) {
 		switch (child->tag) {
 		case e_inedge:
-			node->bb->addInEdge(child->bb);
+			node->bb->m_InEdges.push_back(child->bb);
 			break;
 		case e_outedge:
-			node->bb->addOutEdge(child->bb);
+			node->bb->m_OutEdges.push_back(child->bb);
+			++node->bb->m_iNumOutEdges;
 			break;
 		}
 		return;
@@ -1072,10 +1073,12 @@ XMLProgParser::addChildTo_bb(Context *node, const Context *child) const
 	case e_outedge:
 		break;
 	case e_livein:
-		node->bb->addLiveIn((Location *)child->exp);
+		node->bb->liveIn.insert((Location *)child->exp);
 		break;
 	case e_rtl:
-		node->bb->addRTL(child->rtl);
+		if (!node->bb->m_pRtls)
+			node->bb->m_pRtls = new std::list<RTL *>();
+		node->bb->m_pRtls->push_back(child->rtl);
 		break;
 	default:
 		addChildStub(node, child);

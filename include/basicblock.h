@@ -137,6 +137,7 @@ class BasicBlock {
 	 * Objects of class Cfg can access the internals of a BasicBlock object.
 	 */
 	friend class Cfg;
+	friend class XMLProgParser;
 
 public:
 	                    BasicBlock() = default;
@@ -387,19 +388,6 @@ public:
 	// true if processing for overlapped registers on statements in this BB
 	// has been completed.
 	        bool        overlappedRegProcessingDone = false;
-
-protected:
-	friend class XMLProgParser;
-	        void        addOutEdge(BasicBlock *bb) {
-		                    m_OutEdges.push_back(bb);
-		                    ++m_iNumOutEdges;
-	                    }
-	        void        addRTL(RTL *rtl) {
-		                    if (!m_pRtls)
-			                    m_pRtls = new std::list<RTL *>;
-		                    m_pRtls->push_back(rtl);
-	                    }
-	        void        addLiveIn(Exp *e) { liveIn.insert(e); }
 };
 
 #endif
