@@ -195,7 +195,7 @@ private:
 	bool        checkEntryBB();
 
 public:
-	BasicBlock *splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, iterator &it);
+	BasicBlock *splitForBranch(iterator &, RTL *, BranchStatement *, BranchStatement *);
 
 	/*
 	 * Control flow analysis stuff, lifted from Doug Simon's honours thesis.

@@ -657,12 +657,13 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 }
 
 static void
-toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::iterator &it)
+toBranches(Cfg *cfg, Cfg::iterator &it, RTL *rtl)
 {
-	auto br1 = new BranchStatement(a + 2);
+	ADDRESS a = rtl->getAddress();
 	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
 	auto s1 = rtl->getList().front();
 	auto s6 = rtl->getList().back();
+	auto br1 = new BranchStatement(a + 2);
 	if (auto a1 = dynamic_cast<Assign *>(s1))
 		br1->setCondExpr(a1->getRight());
 	else
@@ -672,7 +673,7 @@ toBranches(ADDRESS a, bool lastRtl, Cfg *cfg, RTL *rtl, BasicBlock *bb, Cfg::ite
 		br2->setCondExpr(a6->getRight());
 	else
 		br2->setCondExpr(nullptr);
-	cfg->splitForBranch(bb, rtl, br1, br2, it);
+	cfg->splitForBranch(it, rtl, br1, br2);
 }
 
 /**
@@ -689,12 +690,8 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 		auto rtls = bb->getRTLs();
 		if (!rtls)
 			break;
-		ADDRESS addr = 0;
-		bool lastRtl = true;
 		// For each RTL this BB
 		for (const auto &rtl : *rtls) {
-			//ADDRESS prev = addr;
-			addr = rtl->getAddress();
 			if (!rtl->getList().empty()) {
 				if (auto firstStmt = dynamic_cast<Assign *>(rtl->getList().front())) {
 					auto lhs = firstStmt->getLeft();
@@ -702,7 +699,7 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 						auto sub = (Const *)((Unary *)lhs)->getSubExp1();
 						auto str = sub->getStr();
 						if (strncmp(str, "%SKIP", 5) == 0) {
-							toBranches(addr, lastRtl, cfg, rtl, bb, it);
+							toBranches(cfg, it, rtl);
 							noinc = true;  // toBranches inc's it
 							// Abandon this BB; if there are other string instr this BB, they will appear in new BBs
 							// near the end of the list
@@ -712,7 +709,6 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 					}
 				}
 			}
-			lastRtl = false;
 		}
 		if (!noinc) ++it;
 	}

@@ -1744,8 +1744,9 @@ dumpBB(BasicBlock *bb)
  * parts of string instructions).
  */
 BasicBlock *
-Cfg::splitForBranch(BasicBlock *pBB, RTL *rtl, BranchStatement *br1, BranchStatement *br2, iterator &it)
+Cfg::splitForBranch(iterator &it, RTL *rtl, BranchStatement *br1, BranchStatement *br2)
 {
+	BasicBlock *pBB = *it;
 #if 0
 	std::cerr << "splitForBranch before:\n";
 	pBB->print(std::cerr);
