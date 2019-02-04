@@ -36,6 +36,7 @@
 #include <gc/gc.h>
 #endif
 
+#include <algorithm>
 #include <sstream>
 
 #include <cassert>
@@ -446,24 +447,19 @@ BasicBlock::addInEdge(BasicBlock *pred)
 void
 BasicBlock::deleteInEdge(BasicBlock *edge)
 {
-	for (auto it = m_InEdges.begin(); it != m_InEdges.end(); ++it) {
-		if (*it == edge) {
-			m_InEdges.erase(it);
-			break;
-		}
-	}
+	auto it = std::find(m_InEdges.begin(), m_InEdges.end(), edge);
+	if (it != m_InEdges.end())
+		m_InEdges.erase(it);
 }
 
 void
 BasicBlock::deleteEdge(BasicBlock *edge)
 {
 	edge->deleteInEdge(this);
-	for (auto it = m_OutEdges.begin(); it != m_OutEdges.end(); ++it) {
-		if (*it == edge) {
-			m_OutEdges.erase(it);
-			--m_iNumOutEdges;
-			break;
-		}
+	auto it = std::find(m_OutEdges.begin(), m_OutEdges.end(), edge);
+	if (it != m_OutEdges.end()) {
+		m_OutEdges.erase(it);
+		--m_iNumOutEdges;
 	}
 }
 
