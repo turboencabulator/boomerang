@@ -223,8 +223,6 @@ public:
 
 	BasicBlock *findRetNode() const;
 
-	void        addNewOutEdge(BasicBlock *fromBB, BasicBlock *newOutEdge);
-
 	void        print(std::ostream &out, bool html = false) const;
 
 	bool        decodeIndirectJmp(UserProc *proc);

@@ -294,7 +294,7 @@ Cfg::newIncompleteBB(ADDRESS addr)
  * here.
  *
  * \note Does not increment m_iNumOutEdges; this is supposed to be constant
- * for a BB.  (But see BasicBlock::addNewOutEdge().)
+ * for a BB.
  *
  * \param pBB      Source BB (to have the out edge added to).
  * \param pDestBB  Destination BB (to have the out edge point to).
@@ -1013,34 +1013,6 @@ Cfg::setLabel(BasicBlock *pBB)
 {
 	if (pBB->m_iLabelNum == 0)
 		pBB->m_iLabelNum = ++lastLabel;
-}
-
-/**
- * \brief Set an additional new out edge to a given value.
- *
- * Append a new out-edge from the given BB to the other given BB.  Needed for
- * example when converting a one-way BB to a two-way BB.
- *
- * \note Use BasicBlock::setOutEdge() for the common case where an existing
- * out edge is merely changed.
- *
- * \note Use Cfg::addOutEdge for ordinary BB creation; this is for unusual cfg
- * manipulation.
- *
- * \param pFromBB      Pointer to the BB getting the new out edge.
- * \param pNewOutEdge  Pointer to BB that will be the new successor.
- *
- * \par Side effects
- * Increments m_iNumOutEdges.
- */
-void
-Cfg::addNewOutEdge(BasicBlock *pFromBB, BasicBlock *pNewOutEdge)
-{
-	pFromBB->addOutEdge(pNewOutEdge);
-	// Since this is a new out-edge, set the "jump required" flag
-	pFromBB->m_bJumpReqd = true;
-	// Make sure that there is a label there
-	setLabel(pNewOutEdge);
 }
 
 /**
