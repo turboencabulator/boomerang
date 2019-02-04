@@ -388,6 +388,7 @@ void
 BasicBlock::setOutEdge(int i, BasicBlock *succ)
 {
 	assert(i < (int)m_OutEdges.size());
+	m_OutEdges[i]->deleteInEdge(this);
 	m_OutEdges[i] = succ;
 	succ->addInEdge(this);
 }
