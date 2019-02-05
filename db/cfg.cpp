@@ -1744,7 +1744,7 @@ dumpBB(BasicBlock *bb)
  * parts of string instructions).
  */
 BasicBlock *
-Cfg::splitForBranch(iterator &it, RTL *rtl, BranchStatement *br1, BranchStatement *br2)
+Cfg::splitForBranch(iterator &it, RTL *rtl)
 {
 	BasicBlock *pBB = *it;
 #if 0
@@ -1760,6 +1760,15 @@ Cfg::splitForBranch(iterator &it, RTL *rtl, BranchStatement *br1, BranchStatemen
 	bool haveA = (ri != pBB->m_pRtls->begin());
 
 	ADDRESS addr = rtl->getAddress();
+	auto &stmts = rtl->getList();
+	assert(stmts.size() >= 4);  // They vary; at least 5 or 6
+
+	auto br1 = new BranchStatement(addr + 2);
+	if (auto as = dynamic_cast<Assign *>(stmts.front()))
+		br1->setCondExpr(as->getRight());
+	auto br2 = new BranchStatement(addr);
+	if (auto as = dynamic_cast<Assign *>(stmts.back()))
+		br2->setCondExpr(as->getRight());
 
 	// Make a BB for the br1 instruction
 	auto pRtls = new std::list<RTL *>;
@@ -1787,8 +1796,6 @@ Cfg::splitForBranch(iterator &it, RTL *rtl, BranchStatement *br1, BranchStatemen
 	}
 
 	// Remove the SKIP from the start of the string instruction RTL
-	auto &stmts = rtl->getList();
-	assert(stmts.size() >= 4);
 	stmts.pop_front();
 	// Replace the last statement with br2
 	stmts.pop_back();

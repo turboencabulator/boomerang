@@ -656,26 +656,6 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 	return start;
 }
 
-static void
-toBranches(Cfg *cfg, Cfg::iterator &it, RTL *rtl)
-{
-	ADDRESS a = rtl->getAddress();
-	assert(rtl->getList().size() >= 4);  // They vary; at least 5 or 6
-	auto s1 = rtl->getList().front();
-	auto s6 = rtl->getList().back();
-	auto br1 = new BranchStatement(a + 2);
-	if (auto a1 = dynamic_cast<Assign *>(s1))
-		br1->setCondExpr(a1->getRight());
-	else
-		br1->setCondExpr(nullptr);
-	auto br2 = new BranchStatement(a);
-	if (auto a6 = dynamic_cast<Assign *>(s6))
-		br2->setCondExpr(a6->getRight());
-	else
-		br2->setCondExpr(nullptr);
-	cfg->splitForBranch(it, rtl, br1, br2);
-}
-
 /**
  * \brief Process away %rpt and %skip in string instructions.
  */
@@ -699,8 +679,8 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 						auto sub = (Const *)((Unary *)lhs)->getSubExp1();
 						auto str = sub->getStr();
 						if (strncmp(str, "%SKIP", 5) == 0) {
-							toBranches(cfg, it, rtl);
-							noinc = true;  // toBranches inc's it
+							cfg->splitForBranch(it, rtl);
+							noinc = true;  // splitForBranch inc's it
 							// Abandon this BB; if there are other string instr this BB, they will appear in new BBs
 							// near the end of the list
 							break;
