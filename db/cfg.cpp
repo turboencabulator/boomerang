@@ -1651,10 +1651,9 @@ Cfg::findInterferences(ConnectionGraph &cg)
 {
 	if (m_listBB.empty()) return;
 
-	std::list<BasicBlock *> workList;  // List of BBs still to be processed
+	auto workList = std::list<BasicBlock *>(m_listBB);  // List of BBs still to be processed
 	// Set of the same; used for quick membership test
-	std::set<BasicBlock *> workSet;
-	appendBBs(workList, workSet);
+	auto workSet = std::set<BasicBlock *>(m_listBB.begin(), m_listBB.end());
 
 	bool change;
 	int count = 0;
@@ -1687,16 +1686,6 @@ Cfg::findInterferences(ConnectionGraph &cg)
 			updateWorkListRev(currBB, workList, workSet);
 		}
 	}
-}
-
-void
-Cfg::appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workset)
-{
-	// Append my list of BBs to the worklist
-	worklist.insert(worklist.end(), m_listBB.begin(), m_listBB.end());
-	// Do the same for the workset
-	for (const auto &bb : m_listBB)
-		workset.insert(bb);
 }
 
 #if DEBUG_SPLIT_FOR_BRANCH

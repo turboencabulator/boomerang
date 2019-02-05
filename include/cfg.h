@@ -240,7 +240,6 @@ public:
 	void        setImplicitsDone() { bImplicitsDone = true; }    // Call when implicits have been created
 
 	void        findInterferences(ConnectionGraph &ig);
-	void        appendBBs(std::list<BasicBlock *> &worklist, std::set<BasicBlock *> &workset);
 };
 
 #endif
