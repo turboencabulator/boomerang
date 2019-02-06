@@ -175,15 +175,16 @@ Statement::updateRanges(RangeMap &output, std::list<Statement *> &execution_path
 		else
 			ranges = output;
 		if (isLastStatementInBB()) {
-			if (pbb->getNumOutEdges()) {
+			const auto &outedges = pbb->getOutEdges();
+			if (!outedges.empty()) {
 				int arc = 0;
 				if (auto branch = dynamic_cast<BranchStatement *>(this)) {
-					if (pbb->getOutEdge(0)->getLowAddr() != branch->getFixedDest())
+					if (outedges[0]->getLowAddr() != branch->getFixedDest())
 						arc = 1;
 					if (notTaken)
 						arc ^= 1;
 				}
-				execution_paths.push_back(pbb->getOutEdge(arc)->getFirstStmt());
+				execution_paths.push_back(outedges[arc]->getFirstStmt());
 			}
 		} else
 			execution_paths.push_back(getNextStatementInBB());

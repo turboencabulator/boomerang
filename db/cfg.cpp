@@ -1792,18 +1792,13 @@ Cfg::splitForBranch(iterator &it, RTL *rtl)
 
 	// Move the remaining RTLs (if any) to a new list of RTLs
 	BasicBlock *newBb;
-	unsigned oldOutEdges = 0;
 	bool haveB = (ri != pBB->m_pRtls->end());
 	if (haveB) {
 		pRtls = new std::list<RTL *>;
 		pRtls->splice(pRtls->end(), *pBB->m_pRtls, ri, pBB->m_pRtls->end());
-		oldOutEdges = pBB->getNumOutEdges();
-		newBb = newBB(pRtls, pBB->getType(), oldOutEdges);
+		newBb = newBB(pRtls, pBB->getType(), pBB->getNumOutEdges());
 		// Transfer the out edges from A to B (pBB to newBb)
-		for (unsigned i = 0; i < oldOutEdges; ++i)
-			// Don't use addOutEdge, since it will also add in-edges back to pBB
-			newBb->m_OutEdges.push_back(pBB->getOutEdge(i));
-			//addOutEdge(newBb, pBB->getOutEdge(i));
+		newBb->m_OutEdges = pBB->m_OutEdges;
 	} else {
 		// The "B" part of the above diagram is empty.
 		// Don't create a new BB; just point newBB to the successor of pBB
@@ -1824,8 +1819,7 @@ Cfg::splitForBranch(iterator &it, RTL *rtl)
 
 	// For each out edge of newBb, change any in-edges from pBB to instead come from newBb
 	if (haveB) {
-		for (unsigned i = 0; i < oldOutEdges; ++i) {
-			BasicBlock *succ = newBb->m_OutEdges[i];
+		for (const auto &succ : newBb->m_OutEdges) {
 			for (auto &pred : succ->m_InEdges) {
 				if (pred == pBB) {
 					pred = newBb;
