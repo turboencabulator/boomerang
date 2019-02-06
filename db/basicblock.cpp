@@ -267,8 +267,7 @@ BasicBlock::print(std::ostream &os, bool html) const
 		if (html)
 			os << "<br>";
 		os << "Synthetic out edge(s) to";
-		for (int i = 0; i < m_iNumOutEdges; ++i) {
-			const auto &outEdge = m_OutEdges[i];
+		for (const auto &outEdge : m_OutEdges) {
 			if (outEdge && outEdge->m_iLabelNum)
 				os << " L" << outEdge->m_iLabelNum;
 		}
@@ -801,7 +800,7 @@ BasicBlock *
 BasicBlock::getLoopBody() const
 {
 	assert(m_structType == PRETESTLOOP || m_structType == POSTTESTLOOP || m_structType == ENDLESSLOOP);
-	assert(m_iNumOutEdges == 2);
+	assert(m_OutEdges.size() == 2);
 	if (m_OutEdges[0] != m_loopFollow)
 		return m_OutEdges[0];
 	return m_OutEdges[1];

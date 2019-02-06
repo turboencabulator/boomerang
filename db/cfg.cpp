@@ -610,29 +610,25 @@ Cfg::wellFormCfg()
 		} else {
 			// Complete. Test the out edges
 			assert((int)bb->m_OutEdges.size() == bb->m_iNumOutEdges);
-			for (int i = 0; i < bb->m_iNumOutEdges; ++i) {
-				// check if address is interprocedural
-				//if (!bb->m_OutEdgeInterProc[i])
-				{
-					const auto &outedge = bb->m_OutEdges[i];
-
-					// Check that the out edge has been written (i.e. nonzero)
-					if (!outedge) {
+			int i = 0;
+			for (const auto &outedge : bb->m_OutEdges) {
+				// Check that the out edge has been written (i.e. nonzero)
+				if (!outedge) {
+					m_bWellFormed = false;  // At least one problem
+					ADDRESS addr = bb->getLowAddr();
+					std::cerr << "WellFormCfg: BB with native address " << std::hex << addr << std::dec
+					          << " is missing outedge " << i << std::endl;
+				} else {
+					// Check that there is a corresponding in edge from the
+					// child to here
+					auto ii = std::find(outedge->m_InEdges.begin(), outedge->m_InEdges.end(), bb);
+					if (ii == outedge->m_InEdges.end()) {
+						std::cerr << "WellFormCfg: No in edge to BB at " << std::hex << bb->getLowAddr()
+						          << " from successor BB at " << outedge->getLowAddr() << std::dec << std::endl;
 						m_bWellFormed = false;  // At least one problem
-						ADDRESS addr = bb->getLowAddr();
-						std::cerr << "WellFormCfg: BB with native address " << std::hex << addr << std::dec
-						          << " is missing outedge " << i << std::endl;
-					} else {
-						// Check that there is a corresponding in edge from the
-						// child to here
-						auto ii = std::find(outedge->m_InEdges.begin(), outedge->m_InEdges.end(), bb);
-						if (ii == outedge->m_InEdges.end()) {
-							std::cerr << "WellFormCfg: No in edge to BB at " << std::hex << bb->getLowAddr()
-							          << " from successor BB at " << outedge->getLowAddr() << std::dec << std::endl;
-							m_bWellFormed = false;  // At least one problem
-						}
 					}
 				}
+				++i;
 			}
 			// Also check that each in edge has a corresponding out edge to here (could have an extra in-edge, for
 			// example)
@@ -664,7 +660,7 @@ Cfg::mergeBBs(BasicBlock *pb1, BasicBlock *pb2)
 	// Can only merge if pb1 has only one outedge to pb2, and pb2 has only one in-edge, from pb1. This can only be done
 	// after the in-edges are done, which can only be done on a well formed CFG.
 	if (!m_bWellFormed) return false;
-	if (pb1->m_iNumOutEdges != 1) return false;
+	if (pb1->m_OutEdges.size() != 1) return false;
 	if (pb2->m_InEdges.size() != 1) return false;
 	if (pb1->m_OutEdges[0] != pb2) return false;
 	if (pb2->m_InEdges[0] != pb1) return false;
@@ -688,12 +684,10 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 {
 	// First we replace all of pb1's predecessors' out edges that used to point to pb1 (usually only one of these) with
 	// pb2
-	for (const auto &pPred : pb1->m_InEdges) {
-		for (int j = 0; j < pPred->m_iNumOutEdges; ++j) {
-			if (pPred->m_OutEdges[j] == pb1)
-				pPred->m_OutEdges[j] = pb2;
-		}
-	}
+	for (const auto &pred : pb1->m_InEdges)
+		for (auto &succ : pred->m_OutEdges)
+			if (succ == pb1)
+				succ = pb2;
 
 	// Now we replace pb2's in edges by pb1's inedges
 	pb2->m_InEdges = pb1->m_InEdges;
