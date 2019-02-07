@@ -229,15 +229,16 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		//  +---+   +---+       +---+
 		//
 		// Check for overlap of the just added BB with the next BB (address wise).  If there is an overlap, truncate the
-		// std::list<Exp*> for the new BB to not overlap, and make this a fall through BB.
+		// RTL for the new BB to not overlap, and make this a fall through BB.
 		// We still want to do this even if the new BB overlaps with an incomplete BB, though in this case,
 		// splitBB needs to fill in the details for the "bottom" BB of the split.
 		// Also, in this case, we return a pointer to the newly completed BB, so it will get out edges added
 		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we want to return nullptr, since
 		// the out edges are already created.
+		// FIXME:  What if the "bottom" should be split in the same way, e.g. multiple labels pointing into this BB?
 		if (++mi != m_mapBB.end()) {
 			ADDRESS uNext = mi->first;
-			bool bIncomplete = mi->second->m_bIncomplete;
+			bool bIncomplete = !mi->second || mi->second->m_bIncomplete;
 			if (uNext <= pRtls->back()->getAddress()) {
 				// Need to truncate the current BB. We use splitBB(), but pass it pNextBB so it doesn't create a new BB
 				// for the "bottom" BB of the split pair
