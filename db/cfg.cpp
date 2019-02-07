@@ -396,7 +396,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr)
 	auto bottom = new std::list<RTL *>();
 	bottom->splice(bottom->begin(), *pBB->m_pRtls, ri, pBB->m_pRtls->end());
 
-	// Check for an existing BB at the split address.
+	// Check for an existing (usually incomplete) BB at the split address.
 	BasicBlock *pNewBB = nullptr;
 	auto mi = m_mapBB.find(uNativeAddr);
 	if (mi != m_mapBB.end())
@@ -417,7 +417,7 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr)
 		// The "bottom" BB now starts at the implicit label.
 		pNewBB->setRTLs(bottom);
 	} else if (pNewBB->m_bIncomplete) {
-		// We have an existing BB and a map entry, but no details except for in-edges and m_bHasLabel.
+		// We have an existing BB and a map entry, but no details except for in-edges and m_iLabelNum.
 		// First save the in-edges and m_iLabelNum
 		auto ins = pNewBB->m_InEdges;
 		auto label = pNewBB->m_iLabelNum;
@@ -430,25 +430,30 @@ Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr)
 		pNewBB->m_iLabelNum = label;
 		// The "bottom" BB now starts at the implicit label.
 		pNewBB->setRTLs(bottom);
-	}
-	// else pNewBB exists and is complete. We don't want to change the complete BB in any way, except to later add one
-	// in-edge
+	} else {
+		// pNewBB already exists and is complete, and pBB overlaps it.
+		// Discard the overlapping portion of pBB.  We don't want to
+		// change the complete BB in any way, except to later add an
+		// edge from pBB to pNewBB.
+		for (const auto &rtl : *bottom)
+			delete rtl;
+		delete bottom;
 
-	// Fix the in-edges of pBB's descendants. They are now pNewBB
-	// Note: you can't believe m_iNumOutEdges at the time that this function may get called
-	for (const auto &pDescendant : pBB->m_OutEdges) {
-		// Search through the in edges for pBB (old ancestor)
-		bool found = false;
-		for (auto &edge : pDescendant->m_InEdges) {
-			if (edge == pBB) {
-				// Replace with a pointer to the new ancestor
-				edge = pNewBB;
-				found = true;
+		// Remove edges from pBB to its successors.  If any exist,
+		// they should duplicate those in pNewBB.
+		for (const auto &succ : pBB->m_OutEdges)
+			succ->deleteInEdge(pBB);
+		pBB->m_OutEdges.clear();
+	}
+
+	// Fix the in-edges of pBB's successors.  They are now pNewBB.
+	for (const auto &succ : pBB->m_OutEdges) {
+		for (auto &pred : succ->m_InEdges) {
+			if (pred == pBB) {
+				pred = pNewBB;
 				break;
 			}
 		}
-		// That pointer should have been found!
-		assert(found);
 	}
 
 	// Update original ("top") basic block's info and make it a fall-through
@@ -667,20 +672,19 @@ Cfg::mergeBBs(BasicBlock *pb1, BasicBlock *pb2)
 
 	// Merge them! We remove pb1 rather than pb2, since this is also what is needed for many optimisations, e.g. jump to
 	// jump.
-	completeMerge(pb1, pb2, true);
+	completeMerge(pb1, pb2);
 	return true;
 }
 
 /**
  * Completes the merge of pb1 and pb2 by adjusting in and out edges.  No
  * checks are made that the merge is valid (hence this is a private function).
- * Deletes pb1 if bDelete is true.
+ * Removes pb1 from this CFG.
  *
  * \param pb1,pb2  Pointers to the two BBs to merge.
- * \param bDelete  If true, pb1 is deleted as well.
  */
 void
-Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
+Cfg::completeMerge(const BasicBlock *pb1, BasicBlock *pb2)
 {
 	// First we replace all of pb1's predecessors' out edges that used to point to pb1 (usually only one of these) with
 	// pb2
@@ -692,8 +696,7 @@ Cfg::completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete = false)
 	// Now we replace pb2's in edges by pb1's inedges
 	pb2->m_InEdges = pb1->m_InEdges;
 
-	if (bDelete)
-		removeBB(pb1);
+	removeBB(pb1);
 }
 
 /**
@@ -718,7 +721,7 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
 		return false;
 	// Prepend the RTLs for pb1 to those of pb2.
 	pb2->m_pRtls->splice(pb2->m_pRtls->begin(), *pb1->m_pRtls);
-	completeMerge(pb1, pb2, true);  // Mash them together
+	completeMerge(pb1, pb2);  // Mash them together
 	return true;
 }
 
@@ -726,10 +729,16 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
  * \brief Completely remove a BB from the CFG.
  */
 void
-Cfg::removeBB(BasicBlock *bb)
+Cfg::removeBB(const BasicBlock *bb)
 {
-	auto bbit = std::find(m_listBB.begin(), m_listBB.end(), bb);
-	m_listBB.erase(bbit);
+	for (auto it = m_mapBB.begin(); it != m_mapBB.end(); ++it) {
+		if (bb == it->second) {
+			m_mapBB.erase(it);
+			break;
+		}
+	}
+	auto it = std::find(m_listBB.begin(), m_listBB.end(), bb);
+	m_listBB.erase(it);
 }
 
 /**

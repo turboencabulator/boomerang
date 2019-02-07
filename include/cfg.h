@@ -168,7 +168,7 @@ public:
 
 	bool        joinBB(BasicBlock *pb1, BasicBlock *pb2);
 
-	void        removeBB(BasicBlock *bb);
+	void        removeBB(const BasicBlock *);
 
 	void        addCall(CallStatement *call);
 
@@ -190,7 +190,7 @@ private:
 
 	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr);
 
-	void        completeMerge(BasicBlock *pb1, BasicBlock *pb2, bool bDelete);
+	void        completeMerge(const BasicBlock *, BasicBlock *);
 
 	bool        checkEntryBB();
 
