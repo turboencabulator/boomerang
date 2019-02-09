@@ -307,10 +307,8 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst,
 			handleCall(proc, call_stmt->getFixedDest(), callBB, cfg, address);
 
 			// Now add the out edge
-			cfg->addOutEdge(callBB, returnBB);
 			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->setLabel(returnBB);
-			callBB->setJumpReqd();
+			cfg->addOutEdge(callBB, returnBB, true, true);
 
 			address += inst.numBytes;  // For coverage
 			// This is a CTI block that doesn't fall through and so must
@@ -492,7 +490,8 @@ SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst,
 		// Attempt to add a return BB if the delay instruction is a RESTORE
 		BasicBlock *returnBB = optimise_CallReturn(call_stmt, inst.rtl, delay_inst.rtl, proc);
 		if (returnBB) {
-			cfg->addOutEdge(newBB, returnBB);
+			// Put a label on the return BB; indicate that a jump is reqd
+			cfg->addOutEdge(newBB, returnBB, true, true);
 
 			// We have to set the epilogue for the enclosing procedure (all proc's must have an
 			// epilogue) and remove the RESTORE in the delay slot that has just been pushed to the list of RTLs
@@ -500,10 +499,6 @@ SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst,
 			// Set the return location; this is now always %o0
 			//setReturnLocations(proc->getEpilogue(), 8 /* %o0 */);
 			newBB->getRTLs()->remove(delay_inst.rtl);
-
-			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->setLabel(returnBB);
-			newBB->setJumpReqd();
 
 			// Add this call to the list of calls to analyse. We won't be able to analyse its callee(s), of course.
 			callList.push_back(call_stmt);
@@ -696,9 +691,8 @@ SparcFrontEnd::case_SCDAN(ADDRESS &address, DecodeResult &inst,
 	}
 	// Both cases (orphan or not)
 	// Add the "false" leg: point past delay inst. Set a label there (see below)
-	cfg->addOutEdge(pBB, address + 8, true);
 	// Could need a jump to the following BB, e.g. if uDest is the delay slot instruction itself! e.g. beq,a $+8
-	pBB->setJumpReqd();
+	cfg->addOutEdge(pBB, address + 8, true, true);
 	address += 8;       // Skip branch and delay
 	BB_rtls = nullptr;  // Start new BB return true;
 	return true;

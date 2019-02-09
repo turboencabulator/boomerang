@@ -291,46 +291,24 @@ Cfg::newIncompleteBB(ADDRESS addr)
  * Adds an out-edge to the basic block pBB by filling in the first slot that
  * is empty.
  *
- * \note Overloaded with address as 2nd argument.  A pointer to a BB is given
- * here.
- *
  * \note Does not increment m_iNumOutEdges; this is supposed to be constant
  * for a BB.
  *
- * \param pBB      Source BB (to have the out edge added to).
- * \param pDestBB  Destination BB (to have the out edge point to).
- */
-void
-Cfg::addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel /* = false */)
-{
-	// Add the given BB pointer to the list of out edges
-	pBB->m_OutEdges.push_back(pDestBB);
-	// Note that the number of out edges is set at constructor time, not incremented here.
-	// Add the in edge to the destination BB
-	pDestBB->m_InEdges.push_back(pBB);
-	if (bSetLabel) setLabel(pDestBB);   // Indicate "label required"
-}
-
-/**
- * \brief Add an out edge to this BB (and the in-edge to the dest BB).  May
- * also set a label.
- *
- * Adds an out-edge to the basic block pBB by filling in the first slot that
- * is empty.
- *
- * \note Calls the above.  An address is given here; the out edge will be
- * filled in as a pointer to a BB.  An incomplete BB will be created if
- * required.  If bSetLabel is true, the destination BB will have its "label
- * required" bit set.
- *
  * \param pBB        Source BB (to have the out edge added to).
- * \param addr       Source address of destination (the out edge is to point
- *                   to the BB whose lowest address is addr).
- * \param bSetLabel  If true, set a label at the destination address.  Set
- *                   true on "true" branches of labels.
+ * \param addr       Source address of destination BB (the out edge is to point
+ *                   to the BB whose lowest address is addr).  An incomplete BB
+ *                   will be created if required.
+ * \param bSetLabel  If true, sets the "label required" bit on the destination
+ *                   BB.  Set true on "true" branches of labels.
+ * \param jumpReqd   If true, sets the "jump required" bit on the source BB.
+ *                   This means that this BB is an orphan (not generated from
+ *                   input code, not part of the original program), and that
+ *                   the "fall through" out edge (m_OutEdges[1]) needs to be
+ *                   implemented as a jump.  The back end needs to take heed
+ *                   of this bit.
  */
 void
-Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel /* = false */)
+Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel, bool jumpReqd)
 {
 	// Check to see if the address is in the map, i.e. we already have a BB for this address
 	BasicBlock *pDestBB;
@@ -342,7 +320,23 @@ Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel /* = false */)
 		// Else, create a new incomplete BB, add that to the map, and add the new BB as the out edge
 		pDestBB = newIncompleteBB(addr);
 	}
-	addOutEdge(pBB, pDestBB, bSetLabel);
+	addOutEdge(pBB, pDestBB, bSetLabel, jumpReqd);
+}
+
+/**
+ * \overload
+ * \param pDestBB  Destination BB (to have the out edge point to).
+ */
+void
+Cfg::addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel, bool jumpReqd)
+{
+	// Add the given BB pointer to the list of out edges
+	pBB->m_OutEdges.push_back(pDestBB);
+	// Note that the number of out edges is set at constructor time, not incremented here.
+	// Add the in edge to the destination BB
+	pDestBB->m_InEdges.push_back(pBB);
+	if (bSetLabel) setLabel(pDestBB);   // Indicate "label required"
+	if (jumpReqd) pBB->m_bJumpReqd = true;
 }
 
 /**
@@ -1025,8 +1019,8 @@ Cfg::searchAll(Exp *search, std::list<Exp *> &result)
  * Sets a flag indicating that this BB has a label, in the sense that a label
  * is required in the translated source code.
  *
- * Add a label for the given basicblock.  The label number must be a non-zero
- * integer.
+ * Add a label for the given basic block.  The label number is a non-zero
+ * integer (zero represents no label).
  *
  * \param pBB  Pointer to the BB whose label will be set.
  */

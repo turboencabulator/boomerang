@@ -83,21 +83,6 @@ BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges)
 	setRTLs(pRtls);
 }
 
-/**
- * \brief Returns nonzero if this BB has a label, in the sense that a label is
- * required in the translated source code.
- *
- * Check if this BB has a label. If so, return the numeric value of the label
- * (nonzero integer).  If not, returns zero.  See also Cfg::setLabel().
- *
- * \returns  An integer unique to this BB, or zero.
- */
-int
-BasicBlock::getLabel() const
-{
-	return m_iLabelNum;
-}
-
 bool
 BasicBlock::isCaseOption() const
 {
@@ -181,31 +166,6 @@ BasicBlock::updateType(BBTYPE bbType, int iNumOutEdges)
 	m_nodeType = bbType;
 	m_iNumOutEdges = iNumOutEdges;
 	//m_OutEdges.resize(iNumOutEdges);
-}
-
-/**
- * Sets the "jump required" bit.  This means that this BB is an orphan (not
- * generated from input code, not part of the original program), and that the
- * "fall through" out edge (m_OutEdges[1]) needs to be implemented as a jump.
- * The back end needs to take heed of this bit.
- */
-void
-BasicBlock::setJumpReqd()
-{
-	m_bJumpReqd = true;
-}
-
-/**
- * \brief Check if jump is required (see above).
- *
- * Returns the "jump required" bit.  See above for details.
- *
- * \returns  true if a jump is required.
- */
-bool
-BasicBlock::isJumpReqd() const
-{
-	return m_bJumpReqd;
 }
 
 /**

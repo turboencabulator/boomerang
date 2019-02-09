@@ -359,11 +359,8 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 								auto returnBB = pCfg->newBB(rtls, RET, 0);
 								// Add out edge from call to return
-								pCfg->addOutEdge(pBB, returnBB);
-								// Put a label on the return BB (since it's an
-								// orphan); a jump will be reqd
-								pCfg->setLabel(returnBB);
-								pBB->setJumpReqd();
+								// Put a label on the return BB (since it's an orphan); a jump will be reqd
+								pCfg->addOutEdge(pBB, returnBB, true, true);
 								// Give the enclosing proc a dummy callee epilogue
 								pProc->setEpilogue(new CalleeEpilogue("__dummy", list<string>()));
 								// Mike: do we need to set return locations?

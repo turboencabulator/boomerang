@@ -127,8 +127,8 @@ public:
 
 	BasicBlock *newIncompleteBB(ADDRESS addr);
 
-	void        addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel = false);
-	void        addOutEdge(BasicBlock *pBB, ADDRESS adr, bool bSetLabel = false);
+	void        addOutEdge(BasicBlock *, ADDRESS, bool = false, bool = false);
+	void        addOutEdge(BasicBlock *, BasicBlock *, bool = false, bool = false);
 
 	void        setLabel(BasicBlock *pBB);
 

@@ -322,10 +322,8 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 			auto returnBB = cfg->newBB(rtls, RET, 0);
 
 			// Now add the out edge
-			cfg->addOutEdge(callBB, returnBB);
 			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->setLabel(returnBB);
-			callBB->setJumpReqd();
+			cfg->addOutEdge(callBB, returnBB, true, true);
 
 			// Note that we get here for certain types of patterns as well as
 			// for call/return pairs. This could all go away if we could
@@ -527,7 +525,8 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 #if 0  // Sparc specific code, but we may need something similar
 		BasicBlock *returnBB = optimise_CallReturn(rtl_call, delay_inst.rtl, cfg);
 		if (returnBB != NULL) {
-			cfg->addOutEdge(newBB, returnBB);
+			// Put a label on the return BB; indicate that a jump is reqd
+			cfg->addOutEdge(newBB, returnBB, true, true);
 
 			// We have to set the epilogue
 			// for the enclosing procedure (all proc's must have an
@@ -537,10 +536,6 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 			// Set the return location; this is now always %r28
 			setReturnLocations(proc->getEpilogue(), 28);
 			newBB->getHRTLs()->remove(delay_inst.rtl);
-
-			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->setLabel(returnBB);
-			newBB->setJumpReqd();
 
 			// Add this call to the list of calls to analyse. We won't be able
 			// to analyse it's callee(s), of course.
@@ -786,10 +781,8 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 	}
 	// Both cases (orphan or not)
 	// Add the "false" leg: point past delay inst. Set a label there (see below)
-	cfg->addOutEdge(pBB, address + 8, true);
-	// Could need a jump to the following BB, e.g. if uDest is the delay slot
-	// instruction itself! e.g. beq,a $+8
-	pBB->setJumpReqd();
+	// Could need a jump to the following BB, e.g. if uDest is the delay slot instruction itself! e.g. beq,a $+8
+	cfg->addOutEdge(pBB, address + 8, true, true);
 	address += 8;           // Skip branch and delay
 	BB_rtls = NULL;         // Start new BB return true;
 	return true;

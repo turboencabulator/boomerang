@@ -147,8 +147,6 @@ public:
 	        BBTYPE      getType() const;
 	        void        updateType(BBTYPE bbType, int iNumOutEdges);
 
-	        int         getLabel() const;
-
 	        bool        isCaseOption() const;
 
 	        bool        isTraversed() const;
@@ -159,9 +157,6 @@ public:
 	 */
 	        void        print(std::ostream &os, bool html = false) const;
 	        std::string prints() const;  // For debugging
-
-	        void        setJumpReqd();
-	        bool        isJumpReqd() const;
 
 	        ADDRESS     getLowAddr() const;
 	        ADDRESS     getHiAddr() const;
