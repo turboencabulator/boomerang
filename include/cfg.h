@@ -188,7 +188,8 @@ public:
 
 private:
 
-	BasicBlock *splitBB(BasicBlock *pBB, ADDRESS uNativeAddr);
+	BasicBlock *splitBB(BasicBlock *, ADDRESS);
+	BasicBlock *splitBB(BasicBlock *, std::list<RTL *>::iterator);
 
 	void        completeMerge(const BasicBlock *, BasicBlock *);
 

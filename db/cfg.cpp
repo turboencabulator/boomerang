@@ -366,103 +366,121 @@ Cfg::existsBB(ADDRESS uNativeAddr) const
 }
 
 /**
- * Split the given basic block at the RTL associated with uNativeAddr.  The
- * first node's type becomes fall-through and ends at the RTL prior to that
- * associated with uNativeAddr.  The second node's type becomes the type of
- * the original basic block (pBB), and its out-edges are those of the original
- * basic block.  In edges of the new BB's descendants are changed.
+ * Split the given basic block at the RTL associated with addr.  The first
+ * node's type becomes fall-through and ends at the RTL prior to that
+ * associated with addr.  The second node's type becomes the type of the
+ * original basic block (orig), and its out-edges are those of the original
+ * basic block.  In-edges of the new BB's descendants are changed.
  *
- * \pre Assumes uNativeAddr is an address within the boundaries of the given
+ * \pre Assumes addr is an address within the boundaries of the given
  * basic block.
  *
- * \param pBB          Pointer to the BB to be split.
- * \param uNativeAddr  Address of RTL to become the start of the new BB.
- * \returns            A pointer to the "bottom" (new) part of the split BB.
+ * \param orig  The basic block to split.
+ * \param addr  Address of RTL to become the start of the new BB.
+ * \returns     The "bottom" (new) part of the split BB.
  */
 BasicBlock *
-Cfg::splitBB(BasicBlock *pBB, ADDRESS uNativeAddr)
+Cfg::splitBB(BasicBlock *orig, ADDRESS addr)
 {
-	// First find which RTL has the split address; note that this could fail (e.g. label in the middle of an
-	// instruction, or some weird delay slot effects)
-	auto ri = pBB->m_pRtls->begin();
-	for (; ri != pBB->m_pRtls->end(); ++ri) {
-		if ((*ri)->getAddress() == uNativeAddr)
+	// First find which RTL has the split address; note that this could
+	// fail (e.g. label in the middle of an instruction, or some weird
+	// delay slot effects)
+	auto &rtls = *orig->m_pRtls;
+	auto ri = rtls.begin();
+	for (; ri != rtls.end(); ++ri) {
+		if ((*ri)->getAddress() == addr)
 			break;
 	}
-	if (ri == pBB->m_pRtls->end()) {
-		std::cerr << "could not split BB at " << std::hex << pBB->getLowAddr() << " at split address " << uNativeAddr << std::dec << std::endl;
-		return pBB;
+	if (ri == rtls.end()) {
+		std::cerr << "could not split BB at " << std::hex << orig->getLowAddr()
+		          << " at split address " << addr << std::dec << std::endl;
+		return orig;
 	}
+	return splitBB(orig, ri);
+}
+
+/**
+ * \overload
+ * \param orig  The basic block to split.
+ * \param ri    Where to split orig's RTL.
+ *              This iterator will remain valid after the call.
+ */
+BasicBlock *
+Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
+{
 	// Split the RTLs at ri.
-	auto bottom = new std::list<RTL *>();
-	bottom->splice(bottom->begin(), *pBB->m_pRtls, ri, pBB->m_pRtls->end());
+	auto &head = *orig->m_pRtls;
+	auto tail = new std::list<RTL *>();
+	tail->splice(tail->begin(), head, ri, head.end());
 
 	// Check for an existing (usually incomplete) BB at the split address.
-	BasicBlock *pNewBB = nullptr;
-	auto mi = m_mapBB.find(uNativeAddr);
+	ADDRESS addr = (*ri)->getAddress();
+	BasicBlock *bot = nullptr;
+	auto mi = m_mapBB.find(addr);
 	if (mi != m_mapBB.end())
-		pNewBB = mi->second;
+		bot = mi->second;
 
-	// If necessary, set up a new basic block with information from the original bb
-	if (!pNewBB) {
-		pNewBB = new BasicBlock(*pBB);
-		// Put it in the graph
-		m_listBB.push_back(pNewBB);
-		// Put the implicit label into the map. Need to do this before the addOutEdge() below
-		m_mapBB[uNativeAddr] = pNewBB;
+	if (!bot) {
+		// Set up a new BB with information from the original BB.
+		bot = new BasicBlock(*orig);
+		// Put it in the graph.
+		m_listBB.push_back(bot);
+		m_mapBB[addr] = bot;
 
-		// But we don't want the top BB's in edges; our only in-edge should be the out edge from the top BB
-		pNewBB->m_InEdges.clear();
-		// There must be a label here; else would not be splitting.  Give it a new label
-		pNewBB->m_iLabelNum = ++lastLabel;
+		// But we don't want the top BB's in-edges;
+		// our only in-edge should be the out-edge from the top BB
+		bot->m_InEdges.clear();
+		// There must be a label here; else would not be splitting.
+		// Give it a new label.
+		bot->m_iLabelNum = ++lastLabel;
 		// The "bottom" BB now starts at the implicit label.
-		pNewBB->setRTLs(bottom);
-	} else if (pNewBB->m_bIncomplete) {
-		// We have an existing BB and a map entry, but no details except for in-edges and m_iLabelNum.
-		// First save the in-edges and m_iLabelNum
-		auto ins = pNewBB->m_InEdges;
-		auto label = pNewBB->m_iLabelNum;
-		// Copy over the details now, completing the bottom BB
-		*pNewBB = *pBB;  // Assign the BB, copying fields. This will set m_bIncomplete false
+		bot->setRTLs(tail);
+	} else if (bot->m_bIncomplete) {
+		// We have an existing BB and a map entry, but no details
+		// except for in-edges and m_iLabelNum.  Save them.
+		auto ins = bot->m_InEdges;
+		auto label = bot->m_iLabelNum;
+		// Copy over the details now, completing the bottom BB.
+		*bot = *orig;  // This will set m_bIncomplete false.
 
-		// Replace the in edges (likely only one)
-		pNewBB->m_InEdges = ins;
-		// Replace the label (must be one, since we are splitting this BB!)
-		pNewBB->m_iLabelNum = label;
+		// Replace the in-edges (likely only one).
+		bot->m_InEdges = ins;
+		// Replace the label (must be one, since we are splitting this BB!).
+		bot->m_iLabelNum = label;
 		// The "bottom" BB now starts at the implicit label.
-		pNewBB->setRTLs(bottom);
+		bot->setRTLs(tail);
 	} else {
-		// pNewBB already exists and is complete, and pBB overlaps it.
-		// Discard the overlapping portion of pBB.  We don't want to
+		// bot already exists and is complete, and orig overlaps it.
+		// Discard the overlapping portion of orig.  We don't want to
 		// change the complete BB in any way, except to later add an
-		// edge from pBB to pNewBB.
-		for (const auto &rtl : *bottom)
+		// edge from orig to bot.
+		for (const auto &rtl : *tail)
 			delete rtl;
-		delete bottom;
+		delete tail;
 
-		// Remove edges from pBB to its successors.  If any exist,
-		// they should duplicate those in pNewBB.
-		for (const auto &succ : pBB->m_OutEdges)
-			succ->deleteInEdge(pBB);
-		pBB->m_OutEdges.clear();
+		// Remove edges from orig to its successors.
+		// If any exist, they should duplicate those in bot.
+		for (const auto &succ : orig->m_OutEdges)
+			succ->deleteInEdge(orig);
+		orig->m_OutEdges.clear();
 	}
 
-	// Fix the in-edges of pBB's successors.  They are now pNewBB.
-	for (const auto &succ : pBB->m_OutEdges) {
+	// Fix the in-edges of orig's successors.  They are now bot.
+	for (const auto &succ : orig->m_OutEdges) {
 		for (auto &pred : succ->m_InEdges) {
-			if (pred == pBB) {
-				pred = pNewBB;
+			if (pred == orig) {
+				pred = bot;
 				break;
 			}
 		}
 	}
 
-	// Update original ("top") basic block's info and make it a fall-through
-	pBB->updateType(FALL, 1);
-	// Erase any existing out edges
-	pBB->m_OutEdges.clear();
-	addOutEdge(pBB, pNewBB);
-	return pNewBB;
+	// Update original ("top") BB's info and make it a fall-through.
+	orig->updateType(FALL, 1);
+	// Erase any existing out-edges.
+	orig->m_OutEdges.clear();
+	addOutEdge(orig, bot);
+	return bot;
 }
 
 /**
