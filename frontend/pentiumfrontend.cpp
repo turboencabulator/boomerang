@@ -664,14 +664,14 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 {
 	auto cfg = proc->getCFG();
 	// For each BB this proc
-	for (auto it = cfg->begin(); it != cfg->end(); /* no increment! */) {
-		bool noinc = false;
+	for (auto it = cfg->begin(); it != cfg->end(); ++it) {  // cfg is modified in the loop
 		auto bb = *it;
 		auto rtls = bb->getRTLs();
 		if (!rtls)
 			break;
 		// For each RTL this BB
-		for (const auto &rtl : *rtls) {
+		for (auto ri = rtls->begin(); ri != rtls->end(); ++ri) {
+			const auto &rtl = *ri;
 			if (!rtl->getList().empty()) {
 				if (auto firstStmt = dynamic_cast<Assign *>(rtl->getList().front())) {
 					auto lhs = firstStmt->getLeft();
@@ -679,10 +679,9 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 						auto sub = (Const *)((Unary *)lhs)->getSubExp1();
 						auto str = sub->getStr();
 						if (strncmp(str, "%SKIP", 5) == 0) {
-							cfg->splitForBranch(it, rtl);
-							noinc = true;  // splitForBranch inc's it
-							// Abandon this BB; if there are other string instr this BB, they will appear in new BBs
-							// near the end of the list
+							cfg->splitForBranch(bb, ri);
+							// Abandon this BB; if there are other string instr this BB,
+							// they will appear in new BBs near the end of the list.
 							break;
 						} else
 							LOG << "Unhandled machine feature " << str << "\n";
@@ -690,7 +689,6 @@ PentiumFrontEnd::processStringInst(UserProc *proc)
 				}
 			}
 		}
-		if (!noinc) ++it;
 	}
 }
 

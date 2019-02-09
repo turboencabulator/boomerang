@@ -1710,42 +1710,26 @@ Cfg::findInterferences(ConnectionGraph &cg)
 	}
 }
 
-#if DEBUG_SPLIT_FOR_BRANCH
-static void
-dumpBB(BasicBlock *bb)
-{
-	std::cerr << "For BB at " << bb << ":\nIn edges: ";
-	const auto &ins = bb->getInEdges();
-	const auto &outs = bb->getOutEdges();
-	for (const auto &edge : ins)
-		std::cerr << edge << " ";
-	std::cerr << "\nOut Edges: ";
-	for (const auto &edge : outs)
-		std::cerr << edge << " ";
-	std::cerr << "\n";
-}
-#endif
-
 /**
  * Split the given BB at the RTL given, and turn it into the BranchStatement
- * given.  Sort out all the in and out edges.
+ * given.  Sort out all the in- and out-edges.
  *
- *  pBB-> +----+    +----+ <-pBB
- * Change | A  | to | A  | where A and B could be empty. S is the string
- *        |    |    |    | instruction (with will branch to itself and to the
- *        +----+    +----+ start of the next instruction, i.e. the start of B,
- *        | S  |      |    if B is non empty).
+ *  bbA-> +----+    +----+ <-bbA
+ * Change | A  | to | A  | where A and B could be empty.  S is the string
+ *        |    |    |    | instruction (which will branch to itself and to the
+ *  *ri-> +----+    +----+ start of the next instruction, i.e. the start of B,
+ *        | S  |      |    if B is non-empty).
  *        +----+      V
- *        | B  |    +----+ <-skipBB
- *        |    |    +-b1-+            b1 is just a branch for the skip part
- *        +----+      |
+ *        | B  |    +----+ <-bbS
+ *        |    |    +-b1-+            b1 is a branch for the skip part
+ *        +----+      |               (taken edge to bbB, fall edge to bbR).
  *                    V
- *                  +----+ <-rptBB
- *                  | S' |            S' = S less the skip and repeat parts
+ *                  +----+ <-bbR
+ *                  | S' |            S' = S less the skip and repeat parts.
  *                  +-b2-+            b2 is a branch for the repeat part
- *                    |
+ *                    |               (taken edge to bbS, fall edge to bbB).
  *                    V
- *                  +----+ <-newBb
+ *                  +----+ <-bbB
  *                  | B  |
  *                  |    |
  *                  +----+
@@ -1754,150 +1738,78 @@ dumpBB(BasicBlock *bb)
  * function is highly specialised for the job of replacing the %SKIP and %RPT
  * parts of string instructions).
  */
-BasicBlock *
-Cfg::splitForBranch(iterator &it, RTL *rtl)
+void
+Cfg::splitForBranch(BasicBlock *bbA, std::list<RTL *>::iterator ri)
 {
-	BasicBlock *pBB = *it;
 #if 0
 	std::cerr << "splitForBranch before:\n";
-	pBB->print(std::cerr);
+	bbA->print(std::cerr);
 	std::cerr << "\n";
 #endif
 
-	// First find which RTL has the split address
-	auto ri = std::find(pBB->m_pRtls->begin(), pBB->m_pRtls->end(), rtl);
-	assert(ri != pBB->m_pRtls->end());
+	assert(ri != bbA->m_pRtls->end());
+	auto rtl = *ri;
 
-	bool haveA = (ri != pBB->m_pRtls->begin());
+	// Split off A if it exists.
+	BasicBlock *bbS = bbA;
+	if (ri != bbA->m_pRtls->begin()) {
+		bbS = splitBB(bbA, ri);
+		bbS->m_iLabelNum = 0;
+	} else {
+		bbA = nullptr;
+	}
 
 	ADDRESS addr = rtl->getAddress();
 	auto &stmts = rtl->getList();
 	assert(stmts.size() >= 4);  // They vary; at least 5 or 6
 
-	auto br1 = new BranchStatement(addr + 2);
+	// Replace %SKIP and %RPT assignments with b1 and b2, respectively.
+	auto b1 = new BranchStatement(addr + 2);  // FIXME:  Assumes string instruction is 2 bytes long.
 	if (auto as = dynamic_cast<Assign *>(stmts.front()))
-		br1->setCondExpr(as->getRight());
-	auto br2 = new BranchStatement(addr);
+		b1->setCondExpr(as->getRight());
+	stmts.front() = b1;  // FIXME:  Leaks the old statement.
+	auto b2 = new BranchStatement(addr);
 	if (auto as = dynamic_cast<Assign *>(stmts.back()))
-		br2->setCondExpr(as->getRight());
+		b2->setCondExpr(as->getRight());
+	stmts.back() = b2;  // FIXME:  Leaks the old statement.
 
-	// Make a BB for the br1 instruction
-	auto pRtls = new std::list<RTL *>;
-	// Don't give this "instruction" the same address as the rest of the string instruction (causes problems when
-	// creating the rptBB). Or if there is no A, temporarily use 0
-	ADDRESS a = (haveA) ? addr : 0;
-	auto skipRtl = new RTL(a, br1);
-	pRtls->push_back(skipRtl);
-	auto skipBB = newBB(pRtls, TWOWAY, 2);
-	rtl->setAddress(addr + 1);
-	if (!haveA) {
-		skipRtl->setAddress(addr);
-		// Address addr now refers to the splitBB
-		m_mapBB[addr] = skipBB;
-		// Fix all predecessors of pBB to point to splitBB instead
-		for (const auto &pred : pBB->m_InEdges) {
-			for (auto &succ : pred->m_OutEdges) {
-				if (succ == pBB) {
-					succ = skipBB;
-					skipBB->addInEdge(pred);
-					break;
-				}
-			}
-		}
-	}
+	// Split S's RTL after b1.  New RTL contains S'.
+	auto rtlR = new RTL(addr + 1);  // FIXME:  Assumes string instruction is > 1 byte long.
+	auto &tail = rtlR->getList();
+	tail.splice(tail.begin(), stmts, ++stmts.begin(), stmts.end());
+	bbS->m_pRtls->insert(++ri, rtlR);
+	auto bbR = splitBB(bbS, --ri);
+	bbR->m_iLabelNum = 0;
 
-	// Remove the SKIP from the start of the string instruction RTL
-	stmts.pop_front();
-	// Replace the last statement with br2
-	stmts.pop_back();
-	stmts.push_back(br2);
-
-	// Move the remainder of the string RTL into a new BB
-	pRtls = new std::list<RTL *>;
-	pRtls->push_back(*ri);
-	auto rptBB = newBB(pRtls, TWOWAY, 2);
-	ri = pBB->m_pRtls->erase(ri);
-
-	// Move the remaining RTLs (if any) to a new list of RTLs
-	BasicBlock *newBb;
-	bool haveB = (ri != pBB->m_pRtls->end());
-	if (haveB) {
-		pRtls = new std::list<RTL *>;
-		pRtls->splice(pRtls->end(), *pBB->m_pRtls, ri, pBB->m_pRtls->end());
-		newBb = newBB(pRtls, pBB->getType(), pBB->getNumOutEdges());
-		// Transfer the out edges from A to B (pBB to newBb)
-		newBb->m_OutEdges = pBB->m_OutEdges;
+	// Split off B if it exists.
+	BasicBlock *bbB;
+	if (++ri != bbR->m_pRtls->end()) {
+		bbB = splitBB(bbR, ri);
+		bbB->m_iLabelNum = 0;
 	} else {
-		// The "B" part of the above diagram is empty.
-		// Don't create a new BB; just point newBB to the successor of pBB
-		newBb = pBB->getOutEdge(0);
+		// Assume original BB is a fall BB and falls to an existing B.
+		assert(bbR->m_OutEdges.size() == 1);
+		bbB = bbR->m_OutEdges[0];
 	}
 
-	// Change pBB to a FALL bb
-	pBB->updateType(FALL, 1);
-	// Set the first out-edge to be skipBB
-	pBB->m_OutEdges.clear();
-	addOutEdge(pBB, skipBB);
-	// Set the out edges for skipBB. First is the taken (true) leg.
-	addOutEdge(skipBB, newBb);
-	addOutEdge(skipBB, rptBB);
-	// Set the out edges for the rptBB
-	addOutEdge(rptBB, skipBB);
-	addOutEdge(rptBB, newBb);
+	// Set the out-edges for S.  First is the taken (true) leg.
+	bbS->updateType(TWOWAY, 2);
+	addOutEdge(bbS, bbB);
+	std::swap(bbS->m_OutEdges[0], bbS->m_OutEdges[1]);
 
-	// For each out edge of newBb, change any in-edges from pBB to instead come from newBb
-	if (haveB) {
-		for (const auto &succ : newBb->m_OutEdges) {
-			for (auto &pred : succ->m_InEdges) {
-				if (pred == pBB) {
-					pred = newBb;
-					break;
-				}
-			}
-		}
-	} else {
-		// There is no "B" bb (newBb is just the successor of pBB) Fix that one out-edge to point to rptBB
-		for (auto &pred : newBb->m_InEdges) {
-			if (pred == pBB) {
-				pred = rptBB;
-				break;
-			}
-		}
-	}
-	if (!haveA) {
-		// There is no A any more. All A's in-edges have been copied to the skipBB. It is possible that the original BB
-		// had a self edge (branch to start of self). If so, this edge, now in to skipBB, must now come from newBb (if
-		// there is a B) or rptBB if none.  Both of these will already exist, so delete it.
-		for (const auto &pred : skipBB->m_InEdges) {
-			if (pred == pBB) {
-				skipBB->deleteInEdge(pBB);
-				break;
-			}
-		}
-
-#if DEBUG_SPLIT_FOR_BRANCH
-		std::cerr << "About to delete pBB: " << pBB << "\n";
-		dumpBB(pBB);
-		dumpBB(skipBB);
-		dumpBB(rptBB);
-		dumpBB(newBb);
-#endif
-
-		// Must delete pBB. Note that this effectively "increments" iterator it
-		it = m_listBB.erase(it);
-		pBB = nullptr;
-	} else
-		++it;
+	// Set the out-edges for R.
+	bbR->updateType(TWOWAY, 2);
+	addOutEdge(bbR, bbS);
+	std::swap(bbR->m_OutEdges[0], bbR->m_OutEdges[1]);
 
 #if 0
 	std::cerr << "splitForBranch after:\n";
-	if (pBB) pBB->print(std::cerr); else std::cerr << "<null>\n";
-	skipBB->print(std::cerr);
-	rptBB->print(std::cerr);
-	newBb->print(std::cerr);
+	if (bbA) bbA->print(std::cerr); else std::cerr << "<null>\n";
+	bbS->print(std::cerr);
+	bbR->print(std::cerr);
+	bbB->print(std::cerr);
 	std::cerr << "\n";
 #endif
-	return newBb;
 }
 
 /*
