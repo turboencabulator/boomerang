@@ -74,7 +74,6 @@ Cfg::clear()
 	exitBB = nullptr;
 	m_bWellFormed = false;
 	callSites.clear();
-	lastLabel = 0;
 }
 
 /**
@@ -288,55 +287,40 @@ Cfg::newIncompleteBB(ADDRESS addr)
  * \brief Add an out edge to this BB (and the in-edge to the dest BB).  May
  * also set a label.
  *
- * Adds an out-edge to the basic block pBB by filling in the first slot that
+ * Adds an out-edge to the basic block src by filling in the first slot that
  * is empty.
  *
  * \note Does not increment m_iNumOutEdges; this is supposed to be constant
  * for a BB.
  *
- * \param pBB        Source BB (to have the out edge added to).
- * \param addr       Source address of destination BB (the out edge is to point
- *                   to the BB whose lowest address is addr).  An incomplete BB
- *                   will be created if required.
- * \param bSetLabel  If true, sets the "label required" bit on the destination
- *                   BB.  Set true on "true" branches of labels.
- * \param jumpReqd   If true, sets the "jump required" bit on the source BB.
- *                   This means that this BB is an orphan (not generated from
- *                   input code, not part of the original program), and that
- *                   the "fall through" out edge (m_OutEdges[1]) needs to be
- *                   implemented as a jump.  The back end needs to take heed
- *                   of this bit.
+ * \param src   Source BB (to have the out edge added to).
+ * \param addr  Source address of destination BB (the out edge is to point to
+ *              the BB whose lowest address is addr).  An incomplete BB will
+ *              be created if required.
  */
 void
-Cfg::addOutEdge(BasicBlock *pBB, ADDRESS addr, bool bSetLabel, bool jumpReqd)
+Cfg::addOutEdge(BasicBlock *src, ADDRESS addr)
 {
-	// Check to see if the address is in the map, i.e. we already have a BB for this address
-	BasicBlock *pDestBB;
+	// Check to see if the address is in the map,
+	// i.e. we already have a BB for this address.
+	BasicBlock *dst;
 	auto it = m_mapBB.find(addr);
-	if (it != m_mapBB.end() && it->second) {
-		// Just add this BasicBlock* to the list of out edges
-		pDestBB = it->second;
-	} else {
-		// Else, create a new incomplete BB, add that to the map, and add the new BB as the out edge
-		pDestBB = newIncompleteBB(addr);
-	}
-	addOutEdge(pBB, pDestBB, bSetLabel, jumpReqd);
+	if (it != m_mapBB.end() && it->second)
+		dst = it->second;
+	else
+		dst = newIncompleteBB(addr);
+	addOutEdge(src, dst);
 }
 
 /**
  * \overload
- * \param pDestBB  Destination BB (to have the out edge point to).
+ * \param dst  Destination BB (to have the out edge point to).
  */
 void
-Cfg::addOutEdge(BasicBlock *pBB, BasicBlock *pDestBB, bool bSetLabel, bool jumpReqd)
+Cfg::addOutEdge(BasicBlock *src, BasicBlock *dst)
 {
-	// Add the given BB pointer to the list of out edges
-	pBB->m_OutEdges.push_back(pDestBB);
-	// Note that the number of out edges is set at constructor time, not incremented here.
-	// Add the in edge to the destination BB
-	pDestBB->m_InEdges.push_back(pBB);
-	if (bSetLabel) setLabel(pDestBB);   // Indicate "label required"
-	if (jumpReqd) pBB->m_bJumpReqd = true;
+	src->m_OutEdges.push_back(dst);
+	dst->m_InEdges.push_back(src);
 }
 
 /**
@@ -424,23 +408,17 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 		// But we don't want the top BB's in-edges;
 		// our only in-edge should be the out-edge from the top BB
 		bot->m_InEdges.clear();
-		// There must be a label here; else would not be splitting.
-		// Give it a new label.
-		bot->m_iLabelNum = ++lastLabel;
 		// The "bottom" BB now starts at the implicit label.
 		bot->setRTLs(tail);
 	} else if (bot->m_bIncomplete) {
 		// We have an existing BB and a map entry, but no details
-		// except for in-edges and m_iLabelNum.  Save them.
+		// except for in-edges.  Save them.
 		auto ins = bot->m_InEdges;
-		auto label = bot->m_iLabelNum;
 		// Copy over the details now, completing the bottom BB.
 		*bot = *orig;  // This will set m_bIncomplete false.
 
 		// Replace the in-edges (likely only one).
 		bot->m_InEdges = ins;
-		// Replace the label (must be one, since we are splitting this BB!).
-		bot->m_iLabelNum = label;
 		// The "bottom" BB now starts at the implicit label.
 		bot->setRTLs(tail);
 	} else {
@@ -802,11 +780,7 @@ Cfg::compressCfg()
 				// Replace A -> J edge with A -> B.
 				*it = bbB;
 				bbB->addInEdge(bbA);
-				// Almost certainly, we will need a jump in the low level C that may be generated.
-				bbA->m_bJumpReqd = true;
 			}
-			// Also force a label for B
-			setLabel(bbB);
 			bbJ->m_InEdges.clear();
 			// Remove J from the CFG
 			removes.push_back(bbJ);
@@ -1013,22 +987,6 @@ Cfg::searchAll(Exp *search, std::list<Exp *> &result)
 		}
 	}
 	return found;
-}
-
-/**
- * Sets a flag indicating that this BB has a label, in the sense that a label
- * is required in the translated source code.
- *
- * Add a label for the given basic block.  The label number is a non-zero
- * integer (zero represents no label).
- *
- * \param pBB  Pointer to the BB whose label will be set.
- */
-void
-Cfg::setLabel(BasicBlock *pBB)
-{
-	if (pBB->m_iLabelNum == 0)
-		pBB->m_iLabelNum = ++lastLabel;
 }
 
 /**
@@ -1748,7 +1706,6 @@ Cfg::splitForBranch(BasicBlock *bbA, std::list<RTL *>::iterator ri)
 	BasicBlock *bbS = bbA;
 	if (ri != bbA->m_pRtls->begin()) {
 		bbS = splitBB(bbA, ri);
-		bbS->m_iLabelNum = 0;
 	} else {
 		bbA = nullptr;
 	}
@@ -1773,13 +1730,11 @@ Cfg::splitForBranch(BasicBlock *bbA, std::list<RTL *>::iterator ri)
 	tail.splice(tail.begin(), stmts, ++stmts.begin(), stmts.end());
 	bbS->m_pRtls->insert(++ri, rtlR);
 	auto bbR = splitBB(bbS, --ri);
-	bbR->m_iLabelNum = 0;
 
 	// Split off B if it exists.
 	BasicBlock *bbB;
 	if (++ri != bbR->m_pRtls->end()) {
 		bbB = splitBB(bbR, ri);
-		bbB->m_iLabelNum = 0;
 	} else {
 		// Assume original BB is a fall BB and falls to an existing B.
 		assert(bbR->m_OutEdges.size() == 1);

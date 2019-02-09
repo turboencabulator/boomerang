@@ -244,9 +244,7 @@ protected:
 	/* general basic block information */
 	        BBTYPE      m_nodeType = INVALID;   // type of basic block
 	        std::list<RTL *> *m_pRtls = nullptr;// Ptr to list of RTLs
-	        int         m_iLabelNum = 0;        // Nonzero if start of BB needs label
 	        bool        m_bIncomplete = true;   // True if not yet complete
-	        bool        m_bJumpReqd = false;    // True if jump required for "fall through"
 
 	/* in-edges and out-edges */
 	        std::vector<BasicBlock *> m_InEdges; // Vector of in-edges

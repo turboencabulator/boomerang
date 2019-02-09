@@ -194,7 +194,6 @@ BasicBlock::print(std::ostream &os, bool html) const
 {
 	if (html)
 		os << "<br>";
-	if (m_iLabelNum) os << "L" << m_iLabelNum << ": ";
 	switch (m_nodeType) {
 	case ONEWAY:    os << "Oneway BB";        break;
 	case TWOWAY:    os << "Twoway BB";        break;
@@ -222,16 +221,6 @@ BasicBlock::print(std::ostream &os, bool html) const
 			rtl->print(os, html);
 		if (html)
 			os << "</table>\n";
-	}
-	if (m_bJumpReqd) {
-		if (html)
-			os << "<br>";
-		os << "Synthetic out edge(s) to";
-		for (const auto &outEdge : m_OutEdges) {
-			if (outEdge && outEdge->m_iLabelNum)
-				os << " L" << outEdge->m_iLabelNum;
-		}
-		os << "\n";
 	}
 }
 
@@ -2337,7 +2326,7 @@ BasicBlock::processSwitch(UserProc *proc)
 			uSwitch += si->uTable - si->iOffset;
 		if (uSwitch < prog->getLimitTextHigh()) {
 			//tq.visit(cfg, uSwitch, this);
-			cfg->addOutEdge(this, uSwitch, true);
+			cfg->addOutEdge(this, uSwitch);
 			// Remember to decode the newly discovered switch code arms, if necessary
 			// Don't do it right now, in case there are recursive switch statements (e.g. app7win.exe from
 			// hackthissite.org)

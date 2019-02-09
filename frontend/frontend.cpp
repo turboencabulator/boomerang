@@ -761,7 +761,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 							// procedure
 							if (uDest < pBF->getLimitTextHigh()) {
 								targetQueue.visit(pCfg, uDest, pBB);
-								pCfg->addOutEdge(pBB, uDest, true);
+								pCfg->addOutEdge(pBB, uDest);
 							} else {
 								LOG << "Error: Instruction at 0x" << std::hex << uAddr << std::dec
 								    << " branches beyond end of section, to 0x" << std::hex << uDest << std::dec << "\n";
@@ -832,7 +832,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 									if (pBF->getLimitTextLow() <= uDest && uDest < pBF->getLimitTextHigh()) {
 										LOG << "  guessed uDest 0x" << std::hex << uDest << std::dec << "\n";
 										targetQueue.visit(pCfg, uDest, pBB);
-										pCfg->addOutEdge(pBB, uDest, true);
+										pCfg->addOutEdge(pBB, uDest);
 									} else
 										break;
 								}
@@ -858,7 +858,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 							// Add the out edge if it is to a destination within the procedure
 							if (uDest < pBF->getLimitTextHigh()) {
 								targetQueue.visit(pCfg, uDest, pBB);
-								pCfg->addOutEdge(pBB, uDest, true);
+								pCfg->addOutEdge(pBB, uDest);
 							} else {
 								LOG << "Error: Instruction at 0x" << std::hex << uAddr << std::dec
 								    << " branches beyond end of section, to 0x" << std::hex << uDest << std::dec << "\n";
@@ -1004,8 +1004,7 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 
 									auto returnBB = pCfg->newBB(rtls, RET, 0);
 									// Add out edge from call to return
-									// Put a label on the return BB (since it's an orphan); a jump will be reqd
-									pCfg->addOutEdge(pBB, returnBB, true, true);
+									pCfg->addOutEdge(pBB, returnBB);
 									// Mike: do we need to set return locations?
 									// This ends the function
 									sequentialDecode = false;
@@ -1240,7 +1239,7 @@ FrontEnd::createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRt
 		try {
 			pBB = pCfg->newBB(BB_rtls, ONEWAY, 1);
 			// if BB already exists but is incomplete, exception is thrown
-			pCfg->addOutEdge(pBB, retAddr, true);
+			pCfg->addOutEdge(pBB, retAddr);
 			// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
 			// instructions before the return instruction).
 			targetQueue.visit(pCfg, retAddr, pBB);

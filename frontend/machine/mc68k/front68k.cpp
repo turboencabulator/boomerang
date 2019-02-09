@@ -232,7 +232,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 						// procedure
 						if (uDest < uUpper) {
 							visit(pCfg, uDest, targets, pBB);
-							pCfg->addOutEdge(pBB, uDest, true);
+							pCfg->addOutEdge(pBB, uDest);
 						} else {
 							ostrstream ost;
 							ost << "Error: Instruction at " << hex << uAddr;
@@ -282,7 +282,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 						// procedure
 						if (uDest < uUpper) {
 							visit(pCfg, uDest, targets, pBB);
-							pCfg->addOutEdge(pBB, uDest, true);
+							pCfg->addOutEdge(pBB, uDest);
 						} else {
 							ostrstream ost;
 							ost << "Error: Instruction at " << hex << uAddr;
@@ -359,8 +359,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 								auto returnBB = pCfg->newBB(rtls, RET, 0);
 								// Add out edge from call to return
-								// Put a label on the return BB (since it's an orphan); a jump will be reqd
-								pCfg->addOutEdge(pBB, returnBB, true, true);
+								pCfg->addOutEdge(pBB, returnBB);
 								// Give the enclosing proc a dummy callee epilogue
 								pProc->setEpilogue(new CalleeEpilogue("__dummy", list<string>()));
 								// Mike: do we need to set return locations?

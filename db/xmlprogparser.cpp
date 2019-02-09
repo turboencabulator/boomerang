@@ -931,8 +931,6 @@ XMLProgParser::start_cfg(Context *node, const char **attr)
 
 	if (auto str = getAttr(attr, "wellformed"))
 		cfg->m_bWellFormed = atoi(str) > 0;
-	if (auto str = getAttr(attr, "lastLabel"))
-		cfg->lastLabel = atoi(str);
 }
 
 void
@@ -1000,12 +998,8 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 
 	if (auto str = getAttr(attr, "nodeType"))
 		bb->m_nodeType = (BBTYPE)atoi(str);
-	if (auto str = getAttr(attr, "labelNum"))
-		bb->m_iLabelNum = atoi(str);
 	if (auto str = getAttr(attr, "incomplete"))
 		bb->m_bIncomplete = atoi(str) > 0;
-	if (auto str = getAttr(attr, "jumpreqd"))
-		bb->m_bJumpReqd = atoi(str) > 0;
 	if (auto str = getAttr(attr, "m_traversed"))
 		bb->m_iTraversed = atoi(str) > 0;
 	if (auto str = getAttr(attr, "DFTfirst"))
@@ -2555,7 +2549,6 @@ XMLProgParser::persistToXML(std::ostream &out, Cfg *cfg)
 {
 	out << "<cfg id=\"" << (void *)cfg
 	    << "\" wellformed=\"" << (int)cfg->m_bWellFormed
-	    << "\" lastLabel=\"" << cfg->lastLabel
 	    << "\" entryBB=\"" << (void *)cfg->entryBB
 	    << "\" exitBB=\"" << (void *)cfg->exitBB
 	    << "\">\n";
@@ -2583,9 +2576,7 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 {
 	out << "<bb id=\"" << (void *)bb
 	    << "\" nodeType=\"" << bb->m_nodeType
-	    << "\" labelNum=\"" << bb->m_iLabelNum
 	    << "\" incomplete=\"" << (int)bb->m_bIncomplete
-	    << "\" jumpreqd=\"" << (int)bb->m_bJumpReqd
 	    << "\" m_traversed=\"" << bb->m_iTraversed
 	    << "\" DFTfirst=\"" << bb->m_DFTfirst
 	    << "\" DFTlast=\"" << bb->m_DFTlast

@@ -90,11 +90,6 @@ class Cfg {
 	std::set<CallStatement *> callSites;
 
 	/**
-	 * Last label (positive integer) used by any BB this Cfg.
-	 */
-	int         lastLabel = 0;
-
-	/**
 	 * Map from expression to implicit assignment.  The purpose is to
 	 * prevent multiple implicit assignments for the same location.
 	 */
@@ -127,10 +122,8 @@ public:
 
 	BasicBlock *newIncompleteBB(ADDRESS addr);
 
-	void        addOutEdge(BasicBlock *, ADDRESS, bool = false, bool = false);
-	void        addOutEdge(BasicBlock *, BasicBlock *, bool = false, bool = false);
-
-	void        setLabel(BasicBlock *pBB);
+	void        addOutEdge(BasicBlock *, ADDRESS);
+	void        addOutEdge(BasicBlock *, BasicBlock *);
 
 	/*
 	 * Allow iteration over the list of BBs.

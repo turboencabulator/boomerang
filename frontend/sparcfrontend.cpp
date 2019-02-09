@@ -173,7 +173,7 @@ SparcFrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQu
 
 	if (dest < pBF->getLimitTextHigh()) {
 		tq.visit(cfg, dest, newBB);
-		cfg->addOutEdge(newBB, dest, true);
+		cfg->addOutEdge(newBB, dest);
 	} else
 		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";
 }
@@ -307,8 +307,7 @@ SparcFrontEnd::case_CALL(ADDRESS &address, DecodeResult &inst,
 			handleCall(proc, call_stmt->getFixedDest(), callBB, cfg, address);
 
 			// Now add the out edge
-			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->addOutEdge(callBB, returnBB, true, true);
+			cfg->addOutEdge(callBB, returnBB);
 
 			address += inst.numBytes;  // For coverage
 			// This is a CTI block that doesn't fall through and so must
@@ -490,8 +489,7 @@ SparcFrontEnd::case_DD(ADDRESS &address, DecodeResult &inst,
 		// Attempt to add a return BB if the delay instruction is a RESTORE
 		BasicBlock *returnBB = optimise_CallReturn(call_stmt, inst.rtl, delay_inst.rtl, proc);
 		if (returnBB) {
-			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->addOutEdge(newBB, returnBB, true, true);
+			cfg->addOutEdge(newBB, returnBB);
 
 			// We have to set the epilogue for the enclosing procedure (all proc's must have an
 			// epilogue) and remove the RESTORE in the delay slot that has just been pushed to the list of RTLs
@@ -616,9 +614,9 @@ SparcFrontEnd::case_SCD(ADDRESS &address, DecodeResult &inst,
 		pOrphan->push_back(new RTL(0, new GotoStatement(uDest)));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well
-		cfg->addOutEdge(pOrBB, uDest, true);
-		// Add an out edge from the current RTL to the orphan. Put a label at the orphan
-		cfg->addOutEdge(pBB, pOrBB, true);
+		cfg->addOutEdge(pOrBB, uDest);
+		// Add an out edge from the current RTL to the orphan.
+		cfg->addOutEdge(pBB, pOrBB);
 		// Add the "false" leg to the NCT
 		cfg->addOutEdge(pBB, address + 4);
 		// Don't skip the delay instruction, so it will be decoded next.
@@ -683,16 +681,14 @@ SparcFrontEnd::case_SCDAN(ADDRESS &address, DecodeResult &inst,
 		// Add a branch from the orphan instruction to the dest of the branch
 		pOrphan->push_back(new RTL(0, new GotoStatement(uDest)));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
-		// Add an out edge from the orphan as well. Set a label there.
-		cfg->addOutEdge(pOrBB, uDest, true);
-		// Add an out edge from the current RTL to
-		// the orphan. Set a label there.
-		cfg->addOutEdge(pBB, pOrBB, true);
+		// Add an out edge from the orphan as well.
+		cfg->addOutEdge(pOrBB, uDest);
+		// Add an out edge from the current RTL to the orphan.
+		cfg->addOutEdge(pBB, pOrBB);
 	}
 	// Both cases (orphan or not)
-	// Add the "false" leg: point past delay inst. Set a label there (see below)
-	// Could need a jump to the following BB, e.g. if uDest is the delay slot instruction itself! e.g. beq,a $+8
-	cfg->addOutEdge(pBB, address + 8, true, true);
+	// Add the "false" leg: point past delay inst.
+	cfg->addOutEdge(pBB, address + 8);
 	address += 8;       // Skip branch and delay
 	BB_rtls = nullptr;  // Start new BB return true;
 	return true;

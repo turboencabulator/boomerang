@@ -179,7 +179,7 @@ handleBranch(ADDRESS dest, ADDRESS hiAddress, BasicBlock *&newBB, Cfg *cfg, TARG
 
 	if (dest < hiAddress) {
 		visit(cfg, dest, targets, newBB);
-		cfg->addOutEdge(newBB, dest, true);
+		cfg->addOutEdge(newBB, dest);
 	} else {
 		ostrstream ost;
 		ost << "branch to " << hex << dest << " goes beyond section.";
@@ -322,8 +322,7 @@ case_CALL_NCT(ADDRESS &address, DecodeResult &inst,
 			auto returnBB = cfg->newBB(rtls, RET, 0);
 
 			// Now add the out edge
-			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->addOutEdge(callBB, returnBB, true, true);
+			cfg->addOutEdge(callBB, returnBB);
 
 			// Note that we get here for certain types of patterns as well as
 			// for call/return pairs. This could all go away if we could
@@ -525,8 +524,7 @@ case_DD_NCT(ADDRESS &address, int delta, DecodeResult &inst,
 #if 0  // Sparc specific code, but we may need something similar
 		BasicBlock *returnBB = optimise_CallReturn(rtl_call, delay_inst.rtl, cfg);
 		if (returnBB != NULL) {
-			// Put a label on the return BB; indicate that a jump is reqd
-			cfg->addOutEdge(newBB, returnBB, true, true);
+			cfg->addOutEdge(newBB, returnBB);
 
 			// We have to set the epilogue
 			// for the enclosing procedure (all proc's must have an
@@ -693,10 +691,9 @@ case_SCD_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		pOrphan->push_back(new HLJump(0, uDest));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
 		// Add an out edge from the orphan as well
-		cfg->addOutEdge(pOrBB, uDest, true);
-		// Add an out edge from the current RTL to
-		// the orphan. Put a label at the orphan
-		cfg->addOutEdge(pBB, pOrBB, true);
+		cfg->addOutEdge(pOrBB, uDest);
+		// Add an out edge from the current RTL to the orphan.
+		cfg->addOutEdge(pBB, pOrBB);
 		// Add the "false" leg to the NCT
 		cfg->addOutEdge(pBB, address + 4);
 		// Don't skip the delay instruction, so it will
@@ -773,16 +770,14 @@ case_SCDAN_NCT(ADDRESS &address, int delta, ADDRESS hiAddress,
 		// Add a branch from the orphan instruction to the dest of the branch
 		pOrphan->push_back(new HLJump(0, uDest));
 		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
-		// Add an out edge from the orphan as well. Set a label there.
-		cfg->addOutEdge(pOrBB, uDest, true);
-		// Add an out edge from the current RTL to
-		// the orphan. Set a label there.
-		cfg->addOutEdge(pBB, pOrBB, true);
+		// Add an out edge from the orphan as well.
+		cfg->addOutEdge(pOrBB, uDest);
+		// Add an out edge from the current RTL to the orphan.
+		cfg->addOutEdge(pBB, pOrBB);
 	}
 	// Both cases (orphan or not)
-	// Add the "false" leg: point past delay inst. Set a label there (see below)
-	// Could need a jump to the following BB, e.g. if uDest is the delay slot instruction itself! e.g. beq,a $+8
-	cfg->addOutEdge(pBB, address + 8, true, true);
+	// Add the "false" leg: point past delay inst.
+	cfg->addOutEdge(pBB, address + 8);
 	address += 8;           // Skip branch and delay
 	BB_rtls = NULL;         // Start new BB return true;
 	return true;
