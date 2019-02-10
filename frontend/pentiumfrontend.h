@@ -24,7 +24,7 @@ class PentiumFrontEnd : public FrontEnd {
 	PentiumDecoder decoder;
 
 public:
-	PentiumFrontEnd(BinaryFile *pBF, Prog *prog);
+	PentiumFrontEnd(BinaryFile *, Prog *);
 
 	platform getFrontEndId() const override { return PLAT_PENTIUM; }
 	NJMCDecoder &getDecoder() override { return decoder; }
@@ -34,15 +34,15 @@ public:
 
 	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
 
-	ADDRESS getMainEntryPoint(bool &gotMain) override;
+	ADDRESS getMainEntryPoint(bool &) override;
 
 private:
 #if PROCESS_FNSTSW
 	/**
 	 * Process an F(n)STSW instruction.
 	 */
-	bool processStsw(std::list<RTL *>::iterator &rit, std::list<RTL *> *pRtls, BasicBlock *pBB, Cfg *pCfg);
-	static bool isStoreFsw(Statement *s);
+	bool processStsw(std::list<RTL *>::iterator &, std::list<RTL *> *, BasicBlock *, Cfg *);
+	static bool isStoreFsw(Statement *);
 #endif
 
 	//static void emitSet(std::list<RTL *> &, std::list<RTL *>::iterator &, ADDRESS, Exp *, Exp *);
@@ -51,26 +51,26 @@ private:
 	/**
 	 * Handle the case of being in state 23 and encountering a set instruction.
 	 */
-	void State25(Exp *pLHS, Exp *pRHS, std::list<RTL *> *pRtls, std::list<RTL *>::iterator &rit, ADDRESS uAddr);
+	void State25(Exp *lhs, Exp *rhs, std::list<RTL *> *rtls, std::list<RTL *>::iterator &rit, ADDRESS addr);
 #endif
 
 	int idPF = -1;  ///< Parity flag.
 
-	void processFloatCode(Cfg *pCfg);
-	void processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg);
-	void processStringInst(UserProc *proc);
-	void processOverlapped(UserProc *proc);
+	void processFloatCode(Cfg *);
+	void processFloatCode(BasicBlock *, int &, Cfg *);
+	void processStringInst(UserProc *);
+	void processOverlapped(UserProc *);
 
 	bool helperFunc(std::list<RTL *> &, ADDRESS, ADDRESS) override;
 
-	//static bool isDecAh(RTL *r);
-	//static bool isSetX(Statement *e);
-	//static bool isAssignFromTern(Statement *s);
-	static void bumpRegisterAll(Exp *e, int min, int max, int delta, int mask);
+	//static bool isDecAh(RTL *);
+	//static bool isSetX(Statement *);
+	//static bool isAssignFromTern(Statement *);
+	static void bumpRegisterAll(Exp *, int, int, int, int);
 
 protected:
-	DecodeResult &decodeInstruction(ADDRESS pc) override;
-	void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) override;
+	DecodeResult &decodeInstruction(ADDRESS) override;
+	void extraProcessCall(CallStatement *, std::list<RTL *> *) override;
 };
 
 #endif

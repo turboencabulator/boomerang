@@ -29,7 +29,7 @@ class SparcFrontEnd : public FrontEnd {
 	SparcDecoder decoder;
 
 public:
-	SparcFrontEnd(BinaryFile *pBF, Prog *prog);
+	SparcFrontEnd(BinaryFile *, Prog *);
 
 	platform getFrontEndId() const override { return PLAT_SPARC; }
 	NJMCDecoder &getDecoder() override { return decoder; }
@@ -42,27 +42,27 @@ public:
 private:
 
 	//static void warnDCTcouple(ADDRESS, ADDRESS);
-	bool optimise_DelayCopy(ADDRESS src, ADDRESS dest) const;
-	BasicBlock *optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, UserProc *pProc);
+	bool optimise_DelayCopy(ADDRESS, ADDRESS) const;
+	BasicBlock *optimise_CallReturn(CallStatement *, RTL *, RTL *, UserProc *);
 
-	void handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq);
-	void handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS address, int offset = 0);
+	void handleBranch(ADDRESS, BasicBlock *&, Cfg *, TargetQueue &);
+	void handleCall(UserProc *, ADDRESS, BasicBlock *callBB, Cfg *, ADDRESS, int = 0);
 
-	static void case_unhandled_stub(ADDRESS addr);
+	static void case_unhandled_stub(ADDRESS);
 
-	bool case_CALL(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	bool case_CALL(ADDRESS &, DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
 	               UserProc *, std::list<CallStatement *> &, bool = false);
 
-	void case_SD(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	void case_SD(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
 	             Cfg *, TargetQueue &);
 
-	bool case_DD(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	bool case_DD(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
 	             TargetQueue &, UserProc *, std::list<CallStatement *> &);
 
-	bool case_SCD(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	bool case_SCD(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
 	              Cfg *, TargetQueue &);
 
-	bool case_SCDAN(ADDRESS &, DecodeResult &, DecodeResult &, std::list<RTL *> *&,
+	bool case_SCDAN(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
 	                Cfg *, TargetQueue &);
 
 	//static void emitNop(std::list<RTL *> &, ADDRESS);

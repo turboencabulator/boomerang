@@ -112,15 +112,15 @@ getCond(const SemStr *pCond)
  * FUNCTION:      FrontEndSrc::processProc
  * OVERVIEW:      Process a procedure, given a native (source machine) address.
  * PARAMETERS:    address - the address at which the procedure starts
- *                pProc - the procedure object
+ *                proc - the procedure object
  *                spec - true if a speculative decode
  * RETURNS:       True if successful decode
  *============================================================================*/
 bool
-FrontEndSrc::processProc(ADDRESS uAddr, UserProc *pProc, bool spec)
+FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
 	// Call the base class to do all of the work
-	return FrontEnd::processProc(uAddr, pProc, spec);
+	return FrontEnd::processProc(addr, proc, spec);
 }
 
 #if 0
@@ -131,113 +131,104 @@ FrontEndSrc::processProc(ADDRESS uAddr, UserProc *pProc, bool spec)
  *                delta - the offset of the above address from the logical
  *                  address at which the procedure starts (i.e. the one
  *                  given by dis)
- *                uUpper - the highest address of the text segment
- *                pProc - the procedure object
+ *                upper - the highest address of the text segment
+ *                proc - the procedure object
  *                decoder - NJMCDecoder object
  * RETURNS:       <nothing>
  *============================================================================*/
 void
-processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecoder &decoder)
+processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder &decoder)
 {
-	BasicBlock *pBB;            // Pointer to the current basic block
 	INSTTYPE type;              // Cfg type of instruction (e.g. IRET)
 
 	// Declare a queue of targets not yet processed yet. This has to be
 	// individual to the procedure!
 	TARGETS targets;
 
-	// Indicates whether or not the next instruction to be decoded is the
-	// lexical successor of the current one. Will be true for all NCTs and for
-	// CTIs with a fall through branch.
-	bool sequentialDecode = true;
-
-	Cfg *pCfg = pProc->getCFG();
+	Cfg *cfg = proc->getCFG();
 
 	// Initialise the queue of control flow targets that have yet to be decoded.
-	targets.push(uAddr);
+	targets.push(addr);
 
 	// Clear the pointer used by the caller prologue code to access the last
 	// call rtl of this procedure
 	//decoder.resetLastCall();
 
-	while ((uAddr = nextAddress(targets, pCfg)) != 0) {
-
+	while ((addr = nextAddress(targets, cfg)) != 0) {
 		// The list of RTLs for the current basic block
 		auto BB_rtls = new list<HRTL *>();
 
-		// Keep decoding sequentially until a CTI without a fall through branch
-		// is decoded
-		ADDRESS start = uAddr;
-		DecodeResult inst;
+		ADDRESS start = addr;
+
+		// Indicates whether or not the next instruction to be decoded is the lexical successor of the current one.
+		// Will be true for all NCTs and for CTIs with a fall through branch.
+		// Keep decoding sequentially until a CTI without a fall through branch is decoded
+		bool sequentialDecode = true;
 		while (sequentialDecode) {
 
 			// Decode and classify the current instruction
 			if (progOptions.trace)
-				cout << "*" << hex << uAddr << "\t" << flush;
+				cout << "*" << hex << addr << "\t" << flush;
 
-			// Decode the inst at uAddr.
-			inst = decoder.decodeInstruction(uAddr, delta, pProc);
+			// Decode the inst at addr.
+			auto inst = decoder.decodeInstruction(addr, delta, proc);
 
 			// Need to construct a new list of RTLs if a basic block has just
 			// been finished but decoding is continuing from its lexical
 			// successor
-			if (BB_rtls == NULL)
+			if (!BB_rtls)
 				BB_rtls = new list<HRTL *>();
 
-			HRTL *pRtl = inst.rtl;
 			if (inst.numBytes == 0) {
 				// An invalid instruction. Most likely because a call did
 				// not return (e.g. call _exit()), etc. Best thing is to
 				// emit a INVALID BB, and continue with valid instructions
 				ostrstream ost;
-				ost << "invalid instruction at " << hex << uAddr;
+				ost << "invalid instruction at " << hex << addr;
 				warning(str(ost));
 				// Emit the RTL anyway, so we have the address and maybe
 				// some other clues
-				BB_rtls->push_back(new RTL(uAddr));
-				pBB = pCfg->newBB(BB_rtls, INVALID, 0);
+				BB_rtls->push_back(new RTL(addr));
+				auto bb = cfg->newBB(BB_rtls, INVALID, 0);
 				sequentialDecode = false;
-				BB_rtls = NULL;
+				BB_rtls = nullptr;
 				continue;
 			}
 
-			auto rtl_jump = static_cast<HLJump *>(pRtl);
-
 			// Display RTL representation if asked
-			if (progOptions.rtl) pRtl->print();
+			if (progOptions.rtl) inst.rtl->print();
 
-			ADDRESS uDest;
-
-			switch (pRtl->getKind()) {
+			switch (inst.rtl->getKind()) {
 			case JUMP_HRTL:
 				{
-					uDest = rtl_jump->getFixedDest();
+					auto rtl_jump = static_cast<HLJump *>(inst.rtl);
+					auto dest = rtl_jump->getFixedDest();
 
 					// Handle one way jumps and computed jumps separately
-					if (uDest != NO_ADDRESS) {
-						BB_rtls->push_back(pRtl);
+					if (dest != NO_ADDRESS) {
+						BB_rtls->push_back(inst.rtl);
 						sequentialDecode = false;
 
-						pBB = pCfg->newBB(BB_rtls, ONEWAY, 1);
+						auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 
 						// Exit the switch now and stop decoding sequentially if the
 						// basic block already existed
-						if (pBB == 0) {
+						if (!bb) {
 							sequentialDecode = false;
-							BB_rtls = NULL;
+							BB_rtls = nullptr;
 							break;
 						}
 
 						// Add the out edge if it is to a destination within the
 						// procedure
-						if (uDest < uUpper) {
-							visit(pCfg, uDest, targets, pBB);
-							pCfg->addOutEdge(pBB, uDest);
+						if (dest < upper) {
+							visit(cfg, dest, targets, bb);
+							cfg->addOutEdge(bb, dest);
 						} else {
 							ostrstream ost;
-							ost << "Error: Instruction at " << hex << uAddr;
+							ost << "Error: Instruction at " << hex << addr;
 							ost << " branches beyond end of section, to ";
-							ost << uDest;
+							ost << dest;
 							error(str(ost));
 						}
 					}
@@ -246,21 +237,22 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 			case NWAYJUMP_HRTL:
 				{
-					BB_rtls->push_back(pRtl);
+					auto rtl_jump = static_cast<HLJump *>(inst.rtl);
+					BB_rtls->push_back(inst.rtl);
 					// We create the BB as a COMPJUMP type, then change
 					// to an NWAY if it turns out to be a switch stmt
-					pBB = pCfg->newBB(BB_rtls, COMPJUMP, 0);
-					if (isSwitch(pBB, rtl_jump->getDest(), pProc, pBF)) {
-						processSwitch(pBB, delta, pCfg, targets, pBF);
+					auto bb = cfg->newBB(BB_rtls, COMPJUMP, 0);
+					if (isSwitch(bb, rtl_jump->getDest(), proc, pBF)) {
+						processSwitch(bb, delta, cfg, targets, pBF);
 					} else { // Computed jump
 						// Not a switch statement
 						ostrstream ost;
 						string sKind("JUMP");
 						if (type == I_COMPCALL) sKind = "CALL";
 						ost << "COMPUTED " << sKind
-						    << " at " << hex << uAddr << endl;
+						    << " at " << hex << addr << endl;
 						warning(str(ost));
-						BB_rtls = NULL;    // New HRTLList for next BB
+						BB_rtls = nullptr;  // New HRTLList for next BB
 					}
 					sequentialDecode = false;
 				}
@@ -268,115 +260,116 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 			case JCOND_HRTL:
 				{
-					uDest = rtl_jump->getFixedDest();
-					BB_rtls->push_back(pRtl);
-					pBB = pCfg->newBB(BB_rtls, TWOWAY, 2);
+					auto rtl_jump = static_cast<HLJump *>(inst.rtl);
+					auto dest = rtl_jump->getFixedDest();
+					BB_rtls->push_back(inst.rtl);
+					auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
 
 					// Stop decoding sequentially if the basic block already existed
 					// otherwise complete the basic block
-					if (pBB == 0) {
+					if (!bb) {
 						sequentialDecode = false;
 					} else {
 
 						// Add the out edge if it is to a destination within the
 						// procedure
-						if (uDest < uUpper) {
-							visit(pCfg, uDest, targets, pBB);
-							pCfg->addOutEdge(pBB, uDest);
+						if (dest < upper) {
+							visit(cfg, dest, targets, bb);
+							cfg->addOutEdge(bb, dest);
 						} else {
 							ostrstream ost;
-							ost << "Error: Instruction at " << hex << uAddr;
+							ost << "Error: Instruction at " << hex << addr;
 							ost << " branches beyond end of section, to ";
-							ost << uDest;
+							ost << dest;
 							error(str(ost));
 						}
 
 						// Add the fall-through outedge
-						pCfg->addOutEdge(pBB, uAddr + inst.numBytes);
+						cfg->addOutEdge(bb, addr + inst.numBytes);
 					}
 
 					// Create the list of RTLs for the next basic block and continue
 					// with the next instruction.
-					BB_rtls = NULL;
+					BB_rtls = nullptr;
 				}
 				break;
 
 			case CALL_HRTL:
 				{
-					auto call = static_cast<HLCall *>(pRtl);
+					auto call = static_cast<HLCall *>(inst.rtl);
 
 					// Treat computed and static calls seperately
 					if (call->isComputed()) {
-						BB_rtls->push_back(pRtl);
-						pBB = pCfg->newBB(BB_rtls, COMPCALL, 1);
+						BB_rtls->push_back(inst.rtl);
+						auto bb = cfg->newBB(BB_rtls, COMPCALL, 1);
 
 						// Stop decoding sequentially if the basic block already
 						// existed otherwise complete the basic block
-						if (pBB == 0)
+						if (!bb)
 							sequentialDecode = false;
 						else
-							pCfg->addOutEdge(pBB, uAddr + inst.numBytes);
+							cfg->addOutEdge(bb, addr + inst.numBytes);
 
 					} else {      // Static call
 
-						BB_rtls->push_back(pRtl);
+						BB_rtls->push_back(inst.rtl);
 
 						// Find the address of the callee.
-						ADDRESS uNewAddr = call->getFixedDest();
+						ADDRESS newAddr = call->getFixedDest();
 
 						// Add this non computed call site to the set of call
 						// sites which need to be analysed later.
-						//pCfg->addCall(call);
+						//cfg->addCall(call);
 
 						// Record the called address as the start of a new
 						// procedure if it didn't already exist.
-						if ((uNewAddr != NO_ADDRESS)
-						 && prog.findProc(uNewAddr) == NULL) {
-							prog.visitProc(uNewAddr);
+						if ((newAddr != NO_ADDRESS)
+						 && !prog.findProc(newAddr)) {
+							prog.visitProc(newAddr);
 							if (progOptions.trace)
-								cout << "p" << hex << uNewAddr << "\t" << flush;
+								cout << "p" << hex << newAddr << "\t" << flush;
 						}
 
 						// Check if this is the _exit function. May prevent us from
 						// attempting to decode invalid instructions.
-						char *name = prog.pBF->getSymbolByAddress(uNewAddr);
+						char *name = prog.pBF->getSymbolByAddress(newAddr);
 						if (name && strcmp(name, "_exit") == 0) {
 							// Create the new basic block
-							pBB = pCfg->newBB(BB_rtls, CALL, 0);
+							auto bb = cfg->newBB(BB_rtls, CALL, 0);
 
 							// Stop decoding sequentially
 							sequentialDecode = false;
 						} else {
 							// Create the new basic block
-							pBB = pCfg->newBB(BB_rtls, CALL, 1);
+							auto bb = cfg->newBB(BB_rtls, CALL, 1);
 
 							if (call->isReturnAfterCall()) {
 								// Constuct the RTLs for the new basic block
 								auto rtls = new list<HRTL *>();
 								// The only RTL in the basic block is a high level
 								// return that doesn't have any RTs.
-								rtls->push_back(new HLReturn(0, NULL));
+								rtls->push_back(new HLReturn(0, nullptr));
 
-								auto returnBB = pCfg->newBB(rtls, RET, 0);
+								auto returnBB = cfg->newBB(rtls, RET, 0);
 								// Add out edge from call to return
-								pCfg->addOutEdge(pBB, returnBB);
+								cfg->addOutEdge(bb, returnBB);
 								// Give the enclosing proc a dummy callee epilogue
-								pProc->setEpilogue(new CalleeEpilogue("__dummy", list<string>()));
+								proc->setEpilogue(new CalleeEpilogue("__dummy", list<string>()));
 								// Mike: do we need to set return locations?
 								// This ends the function
 								sequentialDecode = false;
 							} else {
 								// Add the fall through edge if the block didn't
 								// already exist
-								if (pBB != NULL)
-									pCfg->addOutEdge(pBB, uAddr + inst.numBytes);
+								if (bb)
+									cfg->addOutEdge(bb, addr + inst.numBytes);
 							}
 						}
 					}
 
 					// Create the list of RTLs for the next basic block and continue
 					// with the next instruction.
-					BB_rtls = NULL;
+					BB_rtls = nullptr;
 				}
 				break;
 
@@ -385,13 +378,13 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 				sequentialDecode = false;
 
 				// Add the RTL to the list
-				BB_rtls->push_back(pRtl);
+				BB_rtls->push_back(inst.rtl);
 				// Create the basic block
-				pBB = pCfg->newBB(BB_rtls, RET, 0);
+				auto bb = cfg->newBB(BB_rtls, RET, 0);
 
 				// Create the list of RTLs for the next basic block and continue
 				// with the next instruction.
-				BB_rtls = NULL;    // New HRTLList for next BB
+				BB_rtls = nullptr;  // New HRTLList for next BB
 				break;
 
 			case SCOND_HRTL:
@@ -401,12 +394,12 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 				// We must emit empty RTLs for NOPs, because they could be the
 				// destinations of jumps (and splitBB won't work)
 				// Just emit the current instr to the current BB
-				BB_rtls->push_back(pRtl);
+				BB_rtls->push_back(inst.rtl);
 				break;
 
-			} // switch (pRtl->getKind())
+			} // switch (inst.rtl->getKind())
 
-			uAddr += inst.numBytes;
+			addr += inst.numBytes;
 			// Update the RTL's number of bytes for coverage analysis (only)
 			inst.rtl->updateNumBytes(inst.numBytes);
 
@@ -418,28 +411,24 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 			// coverage, but also will cause subtle problems like add a call
 			// to the list of calls to be processed, then delete the call RTL
 			// (e.g. Pentium 134.perl benchmark)
-			if (sequentialDecode && pCfg->existsBB(uAddr)) {
+			if (sequentialDecode && cfg->existsBB(addr)) {
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
-					auto pBB = pCfg->newBB(BB_rtls, FALL, 1);
 					// Add an out edge to this address
-					if (pBB) {
-						pCfg->addOutEdge(pBB, uAddr);
-						BB_rtls = NULL;         // Need new list of RTLs
+					if (auto bb = cfg->newBB(BB_rtls, FALL, 1)) {
+						cfg->addOutEdge(bb, addr);
+						BB_rtls = nullptr;      // Need new list of RTLs
 					}
 				}
 				// Pick a new address to decode from, if the BB is complete
-				if (!pCfg->isIncomplete(uAddr))
+				if (!cfg->isIncomplete(addr))
 					sequentialDecode = false;
 			}
 
 		}   // while sequentialDecode
 
 		// Add this range to the coverage
-		pProc->addRange(start, uAddr);
-
-		// Must set sequentialDecode back to true
-		sequentialDecode = true;
+		proc->addRange(start, addr);
 
 	}   // while nextAddress()
 
@@ -449,7 +438,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 	ADDRESS a1, a2;
 	COV_CIT ii;
 	Coverage temp;
-	if (pProc->getFirstGap(a1, a2, ii)) {
+	if (proc->getFirstGap(a1, a2, ii)) {
 		do {
 			int gap = a2 - a1;
 			if (gap < 8) {
@@ -467,9 +456,9 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 					// the range into a temp Coverage object to be added later
 					temp.addRange(a1, a2);
 			}
-		} while (pProc->getNextGap(a1, a2, ii));
+		} while (proc->getNextGap(a1, a2, ii));
 	}
 	// Now add the ranges in temp
-	pProc->addRanges(temp);
+	proc->addRanges(temp);
 }
 #endif

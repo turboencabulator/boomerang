@@ -62,9 +62,9 @@ class TargetQueue {
 	std::queue<ADDRESS> targets;
 
 public:
-	void visit(Cfg *pCfg, ADDRESS uNewAddr, BasicBlock *&pNewBB);
-	void initial(ADDRESS uAddr);
-	ADDRESS nextAddress(Cfg *cfg);
+	void visit(Cfg *, ADDRESS, BasicBlock *&);
+	void initial(ADDRESS);
+	ADDRESS nextAddress(Cfg *);
 };
 
 
@@ -75,18 +75,18 @@ public:
  */
 class FrontEnd {
 protected:
-	FrontEnd(BinaryFile *pBF, Prog *prog);
+	FrontEnd(BinaryFile *, Prog *);
 	virtual ~FrontEnd() = default;
 public:
-	static FrontEnd *open(const char *name, Prog *prog);
-	static FrontEnd *open(BinaryFile *bf, Prog *prog);
-	static void close(FrontEnd *fe);
+	static FrontEnd *open(const char *, Prog *);
+	static FrontEnd *open(BinaryFile *, Prog *);
+	static void close(FrontEnd *);
 
 #ifdef DYNAMIC
 private:
 	// Needed by FrontEnd::close to destroy an instance and unload its library.
-	typedef FrontEnd *(*constructFcn)(BinaryFile *bf, Prog *prog);
-	typedef void (*destructFcn)(FrontEnd *fe);
+	typedef FrontEnd *(*constructFcn)(BinaryFile *, Prog *);
+	typedef void (*destructFcn)(FrontEnd *);
 	void *dlHandle = nullptr;
 	destructFcn destruct = nullptr;
 #endif
@@ -113,8 +113,8 @@ public:
 	/// Add a "hint" that an instruction at the given address references a named global.
 	void addRefHint(ADDRESS addr, const std::string &nam) { refHints[addr] = nam; }
 
-	const char *getRegName(int idx);
-	int         getRegSize(int idx);
+	const char *getRegName(int);
+	int         getRegSize(int);
 
 	/// Returns an enum identifer for this frontend's platform.
 	virtual platform getFrontEndId() const = 0;
@@ -128,11 +128,11 @@ public:
 
 	BinaryFile *getBinaryFile() const { return pBF; }
 
-	virtual DecodeResult &decodeInstruction(ADDRESS pc);
+	virtual DecodeResult &decodeInstruction(ADDRESS);
 	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
 
-	void readLibrarySignatures(const std::string &sPath, callconv cc);
-	void readLibraryCatalog(const std::string &sPath);
+	void readLibrarySignatures(const std::string &, callconv);
+	void readLibraryCatalog(const std::string &);
 	void readLibraryCatalog();
 
 	Signature *getLibSignature(const std::string &) const;
@@ -142,9 +142,9 @@ public:
 	virtual std::vector<Exp *> &getDefaultReturns() = 0;
 
 	void decode();
-	void decode(ADDRESS a);
-	void decodeOnly(ADDRESS a);
-	void decodeFragment(UserProc *proc, ADDRESS a);
+	void decode(ADDRESS);
+	void decodeOnly(ADDRESS);
+	void decodeFragment(UserProc *, ADDRESS);
 
 	virtual bool processProc(ADDRESS, UserProc *, bool = false, bool = false);
 
@@ -156,18 +156,13 @@ public:
 	 */
 	virtual bool helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest) { return false; }
 
-	/**
-	 * \brief Locate the starting address of "main" in the code section.
-	 *
-	 * \returns Native pointer if found; NO_ADDRESS if not.
-	 */
-	virtual ADDRESS getMainEntryPoint(bool &gotMain);
+	virtual ADDRESS getMainEntryPoint(bool &);
 
 	std::vector<ADDRESS> getEntryPoints();
 
-	BasicBlock *createReturnBlock(UserProc *pProc, std::list<RTL *> *BB_rtls, RTL *pRtl);
+	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
 
-	void appendSyntheticReturn(BasicBlock *pCallBB, UserProc *pProc, RTL *pRtl);
+	void appendSyntheticReturn(BasicBlock *, UserProc *, RTL *);
 
 	/**
 	 * Add an RTL to the map from native address to

@@ -24,7 +24,7 @@ class MIPSFrontEnd : public FrontEnd {
 	MIPSDecoder decoder;
 
 public:
-	MIPSFrontEnd(BinaryFile *pBF, Prog *prog);
+	MIPSFrontEnd(BinaryFile *, Prog *);
 
 	platform getFrontEndId() const override { return PLAT_MIPS; }
 	NJMCDecoder &getDecoder() override { return decoder; }

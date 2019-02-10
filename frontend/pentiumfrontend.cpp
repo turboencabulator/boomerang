@@ -37,8 +37,8 @@
 #define FSW 40  // Numeric registers
 #define AH 12
 
-PentiumFrontEnd::PentiumFrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog),
+PentiumFrontEnd::PentiumFrontEnd(BinaryFile *bf, Prog *prog) :
+	FrontEnd(bf, prog),
 	decoder(prog)
 {
 }
@@ -168,30 +168,30 @@ PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 }
 
 bool
-PentiumFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag, bool spec)
+PentiumFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 {
 	// Call the base class to do most of the work
-	if (!FrontEnd::processProc(uAddr, pProc, frag, spec))
+	if (!FrontEnd::processProc(addr, proc, frag, spec))
 		return false;
 
 	// Need a post-cfg pass to remove the FPUSH and FPOP instructions, and to transform various code after floating
 	// point compares to generate floating point branches.
 	// processFloatCode() will recurse to process its out-edge BBs (if not already processed)
-	auto pCfg = pProc->getCFG();
-	pCfg->unTraverse();  // Reset all the "traversed" flags (needed soon)
+	auto cfg = proc->getCFG();
+	cfg->unTraverse();  // Reset all the "traversed" flags (needed soon)
 	// This will get done twice; no harm
-	pProc->setEntryBB();
+	proc->setEntryBB();
 
-	processFloatCode(pCfg);
+	processFloatCode(cfg);
 
 	int tos = 0;
-	processFloatCode(pProc->getEntryBB(), tos, pCfg);
+	processFloatCode(proc->getEntryBB(), tos, cfg);
 
 	// Process away %rpt and %skip
-	processStringInst(pProc);
+	processStringInst(proc);
 
 	// Process code for side effects of overlapped registers
-	processOverlapped(pProc);
+	processOverlapped(proc);
 
 	return true;
 }
@@ -244,11 +244,11 @@ PentiumFrontEnd::getDefaultReturns()
  * Little simpler, just replaces FPUSH and FPOP with more complex semantics.
  */
 void
-PentiumFrontEnd::processFloatCode(Cfg *pCfg)
+PentiumFrontEnd::processFloatCode(Cfg *cfg)
 {
-	for (const auto &pBB : *pCfg) {
+	for (const auto &bb : *cfg) {
 		// Loop through each RTL this BB
-		auto BB_rtls = pBB->getRTLs();
+		auto BB_rtls = bb->getRTLs();
 		if (!BB_rtls) {
 			// For example, incomplete BB
 			return;
@@ -346,7 +346,7 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
  * \note tos has to be a parameter, not a global, to get the right value at
  * any point in the call tree.
  *
- * \param pBB  Pointer to the current BB.
+ * \param bb   The current BB.
  * \param tos  Reference to the value of the "top of stack" pointer currently.
  *             Starts at zero, and is decremented to 7 with the first load, so
  *             r[39] should be used first, then r[38] etc.  However, it is
@@ -354,10 +354,10 @@ PentiumFrontEnd::processFloatCode(Cfg *pCfg)
  *             then it will always appear in r[32].
  */
 void
-PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
+PentiumFrontEnd::processFloatCode(BasicBlock *bb, int &tos, Cfg *cfg)
 {
 	// Loop through each RTL this BB
-	auto BB_rtls = pBB->getRTLs();
+	auto BB_rtls = bb->getRTLs();
 	if (!BB_rtls) {
 		// For example, incomplete BB
 		return;
@@ -379,7 +379,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 			assert(lhs->isRegN(0));
 
 			// Process it
-			if (processStsw(rit, BB_rtls, pBB, pCfg)) {
+			if (processStsw(rit, BB_rtls, bb, cfg)) {
 				// If returned true, must abandon this BB.
 				break;
 			}
@@ -435,17 +435,17 @@ PentiumFrontEnd::processFloatCode(BasicBlock *pBB, int &tos, Cfg *pCfg)
 		}
 		++rit;
 	}
-	pBB->setTraversed(true);
+	bb->setTraversed(true);
 
 	// Now recurse to process my out edges, if not already processed
-	const auto &outs = pBB->getOutEdges();
+	const auto &outs = bb->getOutEdges();
 	unsigned n;
 	do {
 		n = outs.size();
 		for (unsigned o = 0; o < n; ++o) {
 			auto anOut = outs[o];
 			if (!anOut->isTraversed()) {
-				processFloatCode(anOut, tos, pCfg);
+				processFloatCode(anOut, tos, cfg);
 				if (outs.size() != n)
 					// During the processing, we have added or more likely deleted a BB, and the vector of out edges
 					// has changed.  It's safe to just start the inner for loop again

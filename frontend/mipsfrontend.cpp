@@ -19,8 +19,8 @@
 #include "exp.h"
 #include "proc.h"
 
-MIPSFrontEnd::MIPSFrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog),
+MIPSFrontEnd::MIPSFrontEnd(BinaryFile *bf, Prog *prog) :
+	FrontEnd(bf, prog),
 	decoder(prog)
 {
 }
@@ -50,13 +50,13 @@ MIPSFrontEnd::getDefaultReturns()
 }
 
 bool
-MIPSFrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag, bool spec)
+MIPSFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 {
 	// Call the base class to do most of the work
-	if (!FrontEnd::processProc(uAddr, pProc, frag, spec))
+	if (!FrontEnd::processProc(addr, proc, frag, spec))
 		return false;
 	// This will get done twice; no harm
-	pProc->setEntryBB();
+	proc->setEntryBB();
 
 	return true;
 }

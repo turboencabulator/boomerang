@@ -26,8 +26,8 @@
 #include "exp.h"
 #include "proc.h"
 
-ST20FrontEnd::ST20FrontEnd(BinaryFile *pBF, Prog *prog) :
-	FrontEnd(pBF, prog),
+ST20FrontEnd::ST20FrontEnd(BinaryFile *bf, Prog *prog) :
+	FrontEnd(bf, prog),
 	decoder(prog)
 {
 }
@@ -60,13 +60,13 @@ ST20FrontEnd::getDefaultReturns()
 }
 
 bool
-ST20FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag, bool spec)
+ST20FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 {
 	// Call the base class to do most of the work
-	if (!FrontEnd::processProc(uAddr, pProc, frag, spec))
+	if (!FrontEnd::processProc(addr, proc, frag, spec))
 		return false;
 	// This will get done twice; no harm
-	pProc->setEntryBB();
+	proc->setEntryBB();
 
 	return true;
 }
