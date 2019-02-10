@@ -1694,7 +1694,9 @@ UserProc::branchAnalysis()
 			if (branch->getFallBB() && branch->getTakenBB()) {
 				StatementList fallstmts;
 				branch->getFallBB()->getStatements(fallstmts);
-				if (fallstmts.size() == 1 && dynamic_cast<BranchStatement *>(*fallstmts.begin())) {
+				if (branch->getFallBB()->getNumInEdges() == 1
+				 && fallstmts.size() == 1
+				 && dynamic_cast<BranchStatement *>(*fallstmts.begin())) {
 					auto fallto = (BranchStatement *)*fallstmts.begin();
 					//   branch to A if cond1
 					//   branch to B if cond2
@@ -1704,7 +1706,7 @@ UserProc::branchAnalysis()
 					//   branch to B if !cond1 && cond2
 					// A: something
 					// B:
-					if (fallto->getFallBB() == branch->getTakenBB() && fallto->getBB()->getNumInEdges() == 1) {
+					if (fallto->getFallBB() == branch->getTakenBB()) {
 						branch->setFallBB(fallto->getFallBB());
 						branch->setTakenBB(fallto->getTakenBB());
 						branch->setDest(fallto->getFixedDest());
@@ -1726,7 +1728,7 @@ UserProc::branchAnalysis()
 					//   branch to B if cond1 || cond2
 					// A: something
 					// B:
-					if (fallto->getTakenBB() == branch->getTakenBB() && fallto->getBB()->getNumInEdges() == 1) {
+					if (fallto->getTakenBB() == branch->getTakenBB()) {
 						branch->setFallBB(fallto->getFallBB());
 						branch->setCondExpr(new Binary(opOr,
 						                               branch->getCondExpr(),
