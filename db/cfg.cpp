@@ -330,16 +330,16 @@ Cfg::addOutEdge(BasicBlock *src, BasicBlock *dst)
  * Just checks to see if there exists a BB starting with this native address.
  * If not, the address is NOT added to the map of labels to BBs.
  *
- * \param uNativeAddr  Native address to look up.
- * \returns            true if uNativeAddr starts a BB.
+ * \param addr  Native address to look up.
+ * \returns     true if addr starts a BB.
  *
  * \note Must ignore entries with a null pBB, since these are caused by calls
  * to Label that failed, i.e. the instruction is not decoded yet.
  */
 bool
-Cfg::existsBB(ADDRESS uNativeAddr) const
+Cfg::existsBB(ADDRESS addr) const
 {
-	auto mi = m_mapBB.find(uNativeAddr);
+	auto mi = m_mapBB.find(addr);
 	return (mi != m_mapBB.end() && mi->second);
 }
 
@@ -476,18 +476,17 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
  * overlaps with a completed address, the completed BB is split and the BB for
  * this address is completed.
  *
- * \param uNativeAddr  Native (source) address to check.
- * \param pCurBB       See above.
- * \returns            true if uNativeAddr is a label, i.e. (now) the start of
- *                     a BB.
+ * \param addr    Native (source) address to check.
+ * \param pCurBB  See above.
+ * \returns       true if addr is a label, i.e. (now) the start of a BB.
  *
  * \note pCurBB may be modified (as above).
  */
 bool
-Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
+Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 {
 	// check if the native address is in the map already (explicit label)
-	auto mi = m_mapBB.find(uNativeAddr);
+	auto mi = m_mapBB.find(addr);
 	if (mi != m_mapBB.end()) {
 		if (mi->second && !mi->second->m_bIncomplete) {
 			// There is a complete BB here. Return true.
@@ -498,8 +497,8 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 		// We don't have to erase this map entry.  Having a null BasicBlock pointer is coped with in newBB() and
 		// addOutEdge(); when eventually the BB is created, it will replace this entry.  We should be currently
 		// processing this BB.  The map will be corrected when newBB is called with this address.
-		m_mapBB[uNativeAddr] = nullptr;
-		mi = m_mapBB.find(uNativeAddr);
+		m_mapBB[addr] = nullptr;
+		mi = m_mapBB.find(addr);
 	}
 	// We are finalising an incomplete BB.  Check if the previous element in the (sorted) map overlaps
 	// this new native address; if so, it's a non-explicit label which needs to be made explicit by splitting the
@@ -507,10 +506,10 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
 	if (mi != m_mapBB.begin()) {
 		BasicBlock *pPrevBB = (*--mi).second;
 		if (!pPrevBB->m_bIncomplete
-		 && (pPrevBB->getLowAddr() <  uNativeAddr)
-		 && (pPrevBB->getHiAddr()  >= uNativeAddr)) {
+		 && (pPrevBB->getLowAddr() <  addr)
+		 && (pPrevBB->getHiAddr()  >= addr)) {
 			// Non-explicit label.  Split the previous BB.
-			auto pNewBB = splitBB(pPrevBB, uNativeAddr);
+			auto pNewBB = splitBB(pPrevBB, addr);
 			if (pCurBB == pPrevBB) {
 				// This means that the BB that we are expecting to use, usually to add out edges, has changed. We must
 				// change this pointer so that the right BB gets the out edges. However, if the new BB is not the BB of
@@ -530,13 +529,13 @@ Cfg::label(ADDRESS uNativeAddr, BasicBlock *&pCurBB)
  * Checks whether the given native address is in the map.  If not, returns
  * false.  If so, returns true if it is incomplete.  Otherwise, returns false.
  *
- * \param uAddr  Address to look up.
- * \returns      true if uAddr starts an incomplete BB.
+ * \param addr  Address to look up.
+ * \returns     true if addr starts an incomplete BB.
  */
 bool
-Cfg::isIncomplete(ADDRESS uAddr) const
+Cfg::isIncomplete(ADDRESS addr) const
 {
-	auto mi = m_mapBB.find(uAddr);
+	auto mi = m_mapBB.find(addr);
 	if (mi == m_mapBB.end())
 		// No entry at all
 		return false;
@@ -607,20 +606,19 @@ Cfg::wellFormCfg()
 			// Complete. Test the out edges
 			assert((int)bb->m_OutEdges.size() == bb->m_iNumOutEdges);
 			int i = 0;
-			for (const auto &outedge : bb->m_OutEdges) {
-				// Check that the out edge has been written (i.e. nonzero)
-				if (!outedge) {
+			for (const auto &succ : bb->m_OutEdges) {
+				// Check that the out edge has been written (i.e. non-null)
+				if (!succ) {
 					m_bWellFormed = false;  // At least one problem
-					ADDRESS addr = bb->getLowAddr();
-					std::cerr << "WellFormCfg: BB with native address " << std::hex << addr << std::dec
+					std::cerr << "WellFormCfg: BB with native address " << std::hex << bb->getLowAddr() << std::dec
 					          << " is missing outedge " << i << std::endl;
 				} else {
 					// Check that there is a corresponding in edge from the
 					// child to here
-					auto ii = std::find(outedge->m_InEdges.begin(), outedge->m_InEdges.end(), bb);
-					if (ii == outedge->m_InEdges.end()) {
+					auto ii = std::find(succ->m_InEdges.begin(), succ->m_InEdges.end(), bb);
+					if (ii == succ->m_InEdges.end()) {
 						std::cerr << "WellFormCfg: No in edge to BB at " << std::hex << bb->getLowAddr()
-						          << " from successor BB at " << outedge->getLowAddr() << std::dec << std::endl;
+						          << " from successor BB at " << succ->getLowAddr() << std::dec << std::endl;
 						m_bWellFormed = false;  // At least one problem
 					}
 				}
@@ -628,11 +626,11 @@ Cfg::wellFormCfg()
 			}
 			// Also check that each in edge has a corresponding out edge to here (could have an extra in-edge, for
 			// example)
-			for (const auto &inedge : bb->m_InEdges) {
-				auto oo = std::find(inedge->m_OutEdges.begin(), inedge->m_OutEdges.end(), bb);
-				if (oo == inedge->m_OutEdges.end()) {
+			for (const auto &pred : bb->m_InEdges) {
+				auto oo = std::find(pred->m_OutEdges.begin(), pred->m_OutEdges.end(), bb);
+				if (oo == pred->m_OutEdges.end()) {
 					std::cerr << "WellFormCfg: No out edge to BB at " << std::hex << bb->getLowAddr()
-					          << " from predecessor BB at " << inedge->getLowAddr() << std::dec << std::endl;
+					          << " from predecessor BB at " << pred->getLowAddr() << std::dec << std::endl;
 					m_bWellFormed = false;  // At least one problem
 				}
 			}
@@ -904,9 +902,9 @@ Cfg::isWellFormed() const
  *           orphan, i.e. RTL::getAddress() returns 0.
  */
 bool
-Cfg::isOrphan(ADDRESS uAddr) const
+Cfg::isOrphan(ADDRESS addr) const
 {
-	auto mi = m_mapBB.find(uAddr);
+	auto mi = m_mapBB.find(addr);
 	if (mi == m_mapBB.end())
 		// No entry at all
 		return false;

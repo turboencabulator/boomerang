@@ -87,8 +87,8 @@ bool
 BasicBlock::isCaseOption() const
 {
 	if (caseHead)
-		for (const auto &edge : caseHead->m_OutEdges)
-			if (edge == this)
+		for (const auto &succ : caseHead->m_OutEdges)
+			if (succ == this)
 				return true;
 	return false;
 }
@@ -207,12 +207,12 @@ BasicBlock::print(std::ostream &os, bool html) const
 	}
 	os << ":\n";
 	os << "in edges:" << std::hex;
-	for (const auto &edge : m_InEdges)
-		os << " " << edge->getHiAddr();
+	for (const auto &pred : m_InEdges)
+		os << " " << pred->getHiAddr();
 	os << std::dec << "\n";
 	os << "out edges:" << std::hex;
-	for (const auto &edge : m_OutEdges)
-		os << " " << edge->getLowAddr();
+	for (const auto &succ : m_OutEdges)
+		os << " " << succ->getLowAddr();
 	os << std::dec << "\n";
 	if (m_pRtls) {  // Can be zero if e.g. INVALID
 		if (html)
@@ -360,16 +360,16 @@ BasicBlock::getOutEdge(unsigned int i)
 
 /**
  * Given an address, returns the outedge which corresponds to that address or
- * 0 if there was no such outedge.
+ * null if there was no such outedge.
  *
- * \param a  The address.
+ * \param addr  The address.
  */
 BasicBlock *
-BasicBlock::getCorrectOutEdge(ADDRESS a) const
+BasicBlock::getCorrectOutEdge(ADDRESS addr) const
 {
-	for (const auto &edge : m_OutEdges)
-		if (edge->getLowAddr() == a)
-			return edge;
+	for (const auto &succ : m_OutEdges)
+		if (succ->getLowAddr() == addr)
+			return succ;
 	return nullptr;
 }
 
@@ -393,18 +393,18 @@ BasicBlock::addInEdge(BasicBlock *pred)
  * BBs.
  */
 void
-BasicBlock::deleteInEdge(BasicBlock *edge)
+BasicBlock::deleteInEdge(BasicBlock *pred)
 {
-	auto it = std::find(m_InEdges.begin(), m_InEdges.end(), edge);
+	auto it = std::find(m_InEdges.begin(), m_InEdges.end(), pred);
 	if (it != m_InEdges.end())
 		m_InEdges.erase(it);
 }
 
 void
-BasicBlock::deleteEdge(BasicBlock *edge)
+BasicBlock::deleteEdge(BasicBlock *succ)
 {
-	edge->deleteInEdge(this);
-	auto it = std::find(m_OutEdges.begin(), m_OutEdges.end(), edge);
+	succ->deleteInEdge(this);
+	auto it = std::find(m_OutEdges.begin(), m_OutEdges.end(), succ);
 	if (it != m_OutEdges.end()) {
 		m_OutEdges.erase(it);
 		--m_iNumOutEdges;
@@ -430,9 +430,9 @@ BasicBlock::DFTOrder(int &first, int &last)
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (const auto &child : m_OutEdges) {
-		if (!child->m_iTraversed)
-			numTraversed += child->DFTOrder(first, last);
+	for (const auto &succ : m_OutEdges) {
+		if (!succ->m_iTraversed)
+			numTraversed += succ->DFTOrder(first, last);
 	}
 
 	++last;
@@ -461,9 +461,9 @@ BasicBlock::RevDFTOrder(int &first, int &last)
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
 
-	for (const auto &parent : m_InEdges) {
-		if (!parent->m_iTraversed)
-			numTraversed += parent->RevDFTOrder(first, last);
+	for (const auto &pred : m_InEdges) {
+		if (!pred->m_iTraversed)
+			numTraversed += pred->RevDFTOrder(first, last);
 	}
 
 	++last;
@@ -807,11 +807,11 @@ BasicBlock::simplify()
 				LOG << "redundant edge to 0x" << std::hex << redundant->getLowAddr() << std::dec << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
 			rinedges.swap(redundant->m_InEdges);
-			for (const auto &edge : rinedges) {
+			for (const auto &pred : rinedges) {
 				if (VERBOSE)
-					LOG << "0x" << std::hex << edge->getLowAddr() << std::dec << " ";
-				if (edge != this)
-					redundant->m_InEdges.push_back(edge);
+					LOG << "0x" << std::hex << pred->getLowAddr() << std::dec << " ";
+				if (pred != this)
+					redundant->m_InEdges.push_back(pred);
 				else if (VERBOSE)
 					LOG << "(ignored) ";
 			}
@@ -830,11 +830,11 @@ BasicBlock::simplify()
 				LOG << "redundant edge to 0x" << std::hex << redundant->getLowAddr() << std::dec << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
 			rinedges.swap(redundant->m_InEdges);
-			for (const auto &edge : rinedges) {
+			for (const auto &pred : rinedges) {
 				if (VERBOSE)
-					LOG << "0x" << std::hex << edge->getLowAddr() << std::dec << " ";
-				if (edge != this)
-					redundant->m_InEdges.push_back(edge);
+					LOG << "0x" << std::hex << pred->getLowAddr() << std::dec << " ";
+				if (pred != this)
+					redundant->m_InEdges.push_back(pred);
 				else if (VERBOSE)
 					LOG << "(ignored) ";
 			}
@@ -861,9 +861,9 @@ BasicBlock::hasBackEdgeTo(const BasicBlock *dest) const
 bool
 BasicBlock::allParentsGenerated() const
 {
-	for (const auto &edge : m_InEdges)
-		if (!edge->hasBackEdgeTo(this)
-		 &&  edge->traversed != DFS_CODEGEN)
+	for (const auto &pred : m_InEdges)
+		if (!pred->hasBackEdgeTo(this)
+		 &&  pred->traversed != DFS_CODEGEN)
 			return false;
 	return true;
 }
@@ -963,7 +963,6 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		}
 	}
 
-	BasicBlock *child = nullptr;
 	switch (sType) {
 	case Loop:
 	case LoopCond:
@@ -1146,7 +1145,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 
 			// write code for the body of the conditional
 			if (cType != Case) {
-				BasicBlock *succ = (cType == IfElse ? m_OutEdges[BELSE] : m_OutEdges[BTHEN]);
+				BasicBlock *succ = m_OutEdges[cType == IfElse ? BELSE : BTHEN];
 
 				// emit a goto statement if the first clause has already been
 				// generated or it is the follow of this node's enclosing loop
@@ -1227,70 +1226,72 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 		}
 		break;
 	case Seq:
-		// generate code for the body of this block
-		WriteBB(hll, indLevel);
+		{
+			// generate code for the body of this block
+			WriteBB(hll, indLevel);
 
-		// return if this is the 'return' block (i.e. has no out edges) after emmitting a 'return' statement
-		if (getType() == RET) {
-			// This should be emited now, like a normal statement
-			//hll->AddReturnStatement(indLevel, getReturnVal());
-			return;
-		}
-
-		// return if this doesn't have any out edges (emit a warning)
-		if (m_OutEdges.empty()) {
-			std::cerr << "WARNING: no out edge for this BB in " << proc->getName() << ":\n";
-			this->print(std::cerr);
-			std::cerr << "\n";
-			if (m_nodeType == COMPJUMP) {
-				assert(!m_pRtls->empty());
-				const auto &stmts = m_pRtls->back()->getList();
-				assert(!stmts.empty());
-				auto gs = (GotoStatement *)stmts.back();
-				std::ostringstream ost;
-				ost << "goto " << *gs->getDest();
-				hll->AddLineComment(ost.str());
-			}
-			return;
-		}
-
-		child = m_OutEdges[0];
-		if (m_OutEdges.size() != 1) {
-			BasicBlock *other = m_OutEdges[1];
-			LOG << "found seq with more than one outedge!\n";
-			if (getDest()->isIntConst()
-			 && ((Const *)getDest())->getInt() == (int)child->getLowAddr()) {
-				other = child;
-				child = m_OutEdges[1];
-				LOG << "taken branch is first out edge\n";
+			// return if this is the 'return' block (i.e. has no out edges) after emmitting a 'return' statement
+			if (getType() == RET) {
+				// This should be emited now, like a normal statement
+				//hll->AddReturnStatement(indLevel, getReturnVal());
+				return;
 			}
 
-			try {
-				hll->AddIfCondHeader(indLevel, getCond());
-				if (other->traversed == DFS_CODEGEN)
-					emitGotoAndLabel(hll, indLevel + 1, other);
-				else
-					other->generateCode(hll, indLevel + 1, latch, followSet, gotoSet, proc);
-				hll->AddIfCondEnd(indLevel);
-			} catch (LastStatementNotABranchError &) {
-				LOG << "last statement is not a cond, don't know what to do with this.\n";
+			// return if this doesn't have any out edges (emit a warning)
+			if (m_OutEdges.empty()) {
+				std::cerr << "WARNING: no out edge for this BB in " << proc->getName() << ":\n";
+				this->print(std::cerr);
+				std::cerr << "\n";
+				if (m_nodeType == COMPJUMP) {
+					assert(!m_pRtls->empty());
+					const auto &stmts = m_pRtls->back()->getList();
+					assert(!stmts.empty());
+					auto gs = (GotoStatement *)stmts.back();
+					std::ostringstream ost;
+					ost << "goto " << *gs->getDest();
+					hll->AddLineComment(ost.str());
+				}
+				return;
 			}
-		}
 
-		// generate code for its successor if it hasn't already been visited and is in the same loop/case and is not
-		// the latch for the current most enclosing loop.  The only exception for generating it when it is not in
-		// the same loop is when it is only reached from this node
-		if (child->traversed == DFS_CODEGEN
-		 || ((child->loopHead != loopHead) && (!child->allParentsGenerated() || isIn(followSet, child)))
-		 || (latch && latch->loopHead && latch->loopHead->loopFollow == child)
-		 || !(caseHead == child->caseHead || (caseHead && child == caseHead->condFollow)))
-			emitGotoAndLabel(hll, indLevel, child);
-		else {
-			if (caseHead && child == caseHead->condFollow) {
-				// generate the 'break' statement
-				hll->AddCaseCondOptionEnd(indLevel);
-			} else if (!caseHead || caseHead != child->caseHead || !child->isCaseOption())
-				child->generateCode(hll, indLevel, latch, followSet, gotoSet, proc);
+			auto succ = m_OutEdges[0];
+			if (m_OutEdges.size() != 1) {
+				BasicBlock *other = m_OutEdges[1];
+				LOG << "found seq with more than one outedge!\n";
+				if (getDest()->isIntConst()
+				 && ((Const *)getDest())->getInt() == (int)succ->getLowAddr()) {
+					other = succ;
+					succ = m_OutEdges[1];
+					LOG << "taken branch is first out edge\n";
+				}
+
+				try {
+					hll->AddIfCondHeader(indLevel, getCond());
+					if (other->traversed == DFS_CODEGEN)
+						emitGotoAndLabel(hll, indLevel + 1, other);
+					else
+						other->generateCode(hll, indLevel + 1, latch, followSet, gotoSet, proc);
+					hll->AddIfCondEnd(indLevel);
+				} catch (LastStatementNotABranchError &) {
+					LOG << "last statement is not a cond, don't know what to do with this.\n";
+				}
+			}
+
+			// generate code for its successor if it hasn't already been visited and is in the same loop/case and is not
+			// the latch for the current most enclosing loop.  The only exception for generating it when it is not in
+			// the same loop is when it is only reached from this node
+			if (succ->traversed == DFS_CODEGEN
+			 || ((succ->loopHead != loopHead) && (!succ->allParentsGenerated() || isIn(followSet, succ)))
+			 || (latch && latch->loopHead && latch->loopHead->loopFollow == succ)
+			 || !(caseHead == succ->caseHead || (caseHead && succ == caseHead->condFollow)))
+				emitGotoAndLabel(hll, indLevel, succ);
+			else {
+				if (caseHead && succ == caseHead->condFollow) {
+					// generate the 'break' statement
+					hll->AddCaseCondOptionEnd(indLevel);
+				} else if (!caseHead || caseHead != succ->caseHead || !succ->isCaseOption())
+					succ->generateCode(hll, indLevel, latch, followSet, gotoSet, proc);
+			}
 		}
 		break;
 	default:
@@ -1325,14 +1326,14 @@ BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 	loopStamps[0] = time;
 
 	// recurse on unvisited children and set inedges for all children
-	for (const auto &edge : m_OutEdges) {
+	for (const auto &succ : m_OutEdges) {
 		// set the in edge from this child to its parent (the current node)
 		// (not done here, might be a problem)
 		// outEdges[i]->inEdges.Add(this);
 
 		// recurse on this child if it hasn't already been visited
-		if (edge->traversed != DFS_LNUM)
-			edge->setLoopStamps(++time, order);
+		if (succ->traversed != DFS_LNUM)
+			succ->setLoopStamps(++time, order);
 	}
 
 	// set the the second loopStamp value
@@ -1352,10 +1353,10 @@ BasicBlock::setRevLoopStamps(int &time)
 
 	// recurse on the unvisited children in reverse order
 	for (auto rit = m_OutEdges.rbegin(); rit != m_OutEdges.rend(); ++rit) {
-		const auto &edge = *rit;
+		const auto &succ = *rit;
 		// recurse on this child if it hasn't already been visited
-		if (edge->traversed != DFS_RNUM)
-			edge->setRevLoopStamps(++time);
+		if (succ->traversed != DFS_RNUM)
+			succ->setRevLoopStamps(++time);
 	}
 
 	// set the the second loopStamp value
@@ -1369,9 +1370,9 @@ BasicBlock::setRevOrder(std::vector<BasicBlock *> &order)
 	traversed = DFS_PDOM;
 
 	// recurse on unvisited children
-	for (const auto &edge : m_InEdges)
-		if (edge->traversed != DFS_PDOM)
-			edge->setRevOrder(order);
+	for (const auto &pred : m_InEdges)
+		if (pred->traversed != DFS_PDOM)
+			pred->setRevOrder(order);
 
 	// add this node to the ordering structure and record the post dom. order of this node as its index within this
 	// ordering structure
@@ -1402,11 +1403,11 @@ BasicBlock::setCaseHead(BasicBlock *head, BasicBlock *follow)
 		//   i) isn't on a back-edge,
 		//  ii) hasn't already been traversed in a case tagging traversal and,
 		// iii) isn't the follow node.
-		for (const auto &edge : m_OutEdges)
-			if (!hasBackEdgeTo(edge)
-			 && edge->traversed != DFS_CASE
-			 && edge != follow)
-				edge->setCaseHead(head, follow);
+		for (const auto &succ : m_OutEdges)
+			if (!hasBackEdgeTo(succ)
+			 && succ->traversed != DFS_CASE
+			 && succ != follow)
+				succ->setCaseHead(head, follow);
 	}
 }
 
@@ -1616,14 +1617,14 @@ void
 BasicBlock::getLiveOut(LocationSet &liveout, LocationSet &phiLocs)
 {
 	liveout.clear();
-	for (const auto &currBB : m_OutEdges) {
+	for (const auto &succ : m_OutEdges) {
 		// First add the non-phi liveness
-		liveout.makeUnion(currBB->liveIn);
-		int j = currBB->whichPred(this);
+		liveout.makeUnion(succ->liveIn);
+		int j = succ->whichPred(this);
 		// The first RTL will have the phi functions, if any
-		if (!currBB->m_pRtls || currBB->m_pRtls->empty())
+		if (!succ->m_pRtls || succ->m_pRtls->empty())
 			continue;
-		const auto &stmts = currBB->m_pRtls->front()->getList();
+		const auto &stmts = succ->m_pRtls->front()->getList();
 		for (const auto &stmt : stmts) {
 			// Only interested in phi assignments. Note that it is possible that some phi assignments have been
 			// converted to ordinary assignments.
@@ -1924,11 +1925,11 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 int
 BasicBlock::findNumCases()
 {
-	for (const auto &edge : m_InEdges) {
-		if (edge->m_nodeType != TWOWAY)  // look for a two-way BB
+	for (const auto &pred : m_InEdges) {
+		if (pred->m_nodeType != TWOWAY)  // look for a two-way BB
 			continue;  // Ignore all others
-		assert(!edge->m_pRtls->empty());
-		const auto &stmts = edge->m_pRtls->back()->getList();
+		assert(!pred->m_pRtls->empty());
+		const auto &stmts = pred->m_pRtls->back()->getList();
 		assert(!stmts.empty());
 		auto lastStmt = (BranchStatement *)stmts.back();
 		Exp *pCond = lastStmt->getCondExpr();

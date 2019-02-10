@@ -145,17 +145,17 @@ public:
 	                    BasicBlock(const BasicBlock &) = default;
 
 	        BBTYPE      getType() const;
-	        void        updateType(BBTYPE bbType, int iNumOutEdges);
+	        void        updateType(BBTYPE, int);
 
 	        bool        isCaseOption() const;
 
 	        bool        isTraversed() const;
-	        void        setTraversed(bool bTraversed);
+	        void        setTraversed(bool);
 
 	/*
 	 * Don't use = std::cout, because gdb doesn't know about std::
 	 */
-	        void        print(std::ostream &os, bool html = false) const;
+	        void        print(std::ostream &, bool = false) const;
 	        std::string prints() const;  // For debugging
 
 	        ADDRESS     getLowAddr() const;
@@ -163,7 +163,7 @@ public:
 
 	        std::list<RTL *> *getRTLs() const;
 
-	        RTL        *getRTLWithStatement(Statement *stmt) const;
+	        RTL        *getRTLWithStatement(Statement *) const;
 
 	        const std::vector<BasicBlock *> &getInEdges() const;
 	        const std::vector<BasicBlock *> &getOutEdges() const;
@@ -171,27 +171,27 @@ public:
 	        int         getNumInEdges() const { return m_InEdges.size(); }
 	        int         getNumOutEdges() const { return m_iNumOutEdges; }
 
-	        BasicBlock *getOutEdge(unsigned int i);
-	        BasicBlock *getCorrectOutEdge(ADDRESS a) const;
+	        BasicBlock *getOutEdge(unsigned int);
+	        BasicBlock *getCorrectOutEdge(ADDRESS) const;
 
 	        void        setOutEdge(int, BasicBlock *);
 
-	        int         whichPred(BasicBlock *pred) const;
+	        int         whichPred(BasicBlock *) const;
 
 	        void        addInEdge(BasicBlock *);
 
-	        void        deleteInEdge(BasicBlock *edge);
-	        void        deleteEdge(BasicBlock *edge);
+	        void        deleteInEdge(BasicBlock *);
+	        void        deleteEdge(BasicBlock *);
 
 	        ADDRESS     getCallDest() const;
 	        Proc       *getCallDestProc() const;
 
-	        unsigned    DFTOrder(int &first, int &last);
-	        unsigned    RevDFTOrder(int &first, int &last);
+	        unsigned    DFTOrder(int &, int &);
+	        unsigned    RevDFTOrder(int &, int &);
 
-	static  bool        lessAddress(BasicBlock *bb1, BasicBlock *bb2);
-	static  bool        lessFirstDFT(BasicBlock *bb1, BasicBlock *bb2);
-	static  bool        lessLastDFT(BasicBlock *bb1, BasicBlock *bb2);
+	static  bool        lessAddress(BasicBlock *, BasicBlock *);
+	static  bool        lessFirstDFT(BasicBlock *, BasicBlock *);
+	static  bool        lessLastDFT(BasicBlock *, BasicBlock *);
 
 	class LastStatementNotABranchError : public std::exception {
 	public:
@@ -200,7 +200,7 @@ public:
 	};
 	        Exp        *getCond() const throw (LastStatementNotABranchError);
 
-	        void        setCond(Exp *e) throw (LastStatementNotABranchError);
+	        void        setCond(Exp *) throw (LastStatementNotABranchError);
 
 	class LastStatementNotAGotoError : public std::exception {
 	public:
@@ -209,7 +209,7 @@ public:
 	};
 	        Exp        *getDest() const throw (LastStatementNotAGotoError);
 
-	        bool        isJmpZ(BasicBlock *dest) const;
+	        bool        isJmpZ(BasicBlock *) const;
 
 	        BasicBlock *getLoopBody() const;
 
@@ -225,9 +225,9 @@ public:
 	        int         m_DFTrevlast;   // reverse depth-first traversal last visit
 
 private:
-	                    BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges);
+	                    BasicBlock(std::list<RTL *> *, BBTYPE, int);
 
-	        void        setRTLs(std::list<RTL *> *rtls);
+	        void        setRTLs(std::list<RTL *> *);
 
 public:
 
@@ -269,15 +269,15 @@ public:
 	typedef std::list<RTL *>::reverse_iterator rtlrit;
 	typedef RTL::iterator stlit;
 	typedef RTL::reverse_iterator stlrit;
-	        Statement  *getFirstStmt(rtlit &rit, stlit &sit);
-	        Statement  *getNextStmt(rtlit &rit, stlit &sit);
-	        Statement  *getLastStmt(rtlrit &rrit, stlrit &srit);
-	        Statement  *getPrevStmt(rtlrit &rrit, stlrit &srit);
+	        Statement  *getFirstStmt(rtlit &, stlit &);
+	        Statement  *getNextStmt(rtlit &, stlit &);
+	        Statement  *getLastStmt(rtlrit &, stlrit &);
+	        Statement  *getPrevStmt(rtlrit &, stlrit &);
 	        Statement  *getFirstStmt();
 	        Statement  *getLastStmt();
 	        RTL        *getLastRtl() { return m_pRtls->back(); }
 
-	        void        getStatements(StatementList &stmts);
+	        void        getStatements(StatementList &);
 
 protected:
 	/* Control flow analysis stuff, lifted from Doug Simon's honours thesis.
@@ -305,9 +305,9 @@ protected:
 	        loopType    lType; // the loop type of a loop header
 	        condType    cType; // the conditional type of a conditional header
 
-	        void        setLoopStamps(int &time, std::vector<BasicBlock *> &order);
-	        void        setRevLoopStamps(int &time);
-	        void        setRevOrder(std::vector<BasicBlock *> &order);
+	        void        setLoopStamps(int &, std::vector<BasicBlock *> &);
+	        void        setRevLoopStamps(int &);
+	        void        setRevOrder(std::vector<BasicBlock *> &);
 
 	        void        setLoopHead(BasicBlock *head) { loopHead = head; }
 	        BasicBlock *getLoopHead() const { return loopHead; }
@@ -315,19 +315,19 @@ protected:
 	        bool        isLatchNode() const { return loopHead && loopHead->latchNode == this; }
 	        BasicBlock *getLatchNode() const { return latchNode; }
 	        BasicBlock *getCaseHead() const { return caseHead; }
-	        void        setCaseHead(BasicBlock *head, BasicBlock *follow);
+	        void        setCaseHead(BasicBlock *, BasicBlock *);
 
 	        structType  getStructType() const { return sType; }
-	        void        setStructType(structType s);
+	        void        setStructType(structType);
 
 	        unstructType getUnstructType() const;
-	        void        setUnstructType(unstructType us);
+	        void        setUnstructType(unstructType);
 
 	        loopType    getLoopType() const;
-	        void        setLoopType(loopType l);
+	        void        setLoopType(loopType);
 
 	        condType    getCondType() const;
-	        void        setCondType(condType l);
+	        void        setCondType(condType);
 
 	        void        setLoopFollow(BasicBlock *other) { loopFollow = other; }
 	        BasicBlock *getLoopFollow() const { return loopFollow; }
@@ -335,12 +335,12 @@ protected:
 	        void        setCondFollow(BasicBlock *other) { condFollow = other; }
 	        BasicBlock *getCondFollow() const { return condFollow; }
 
-	        bool        hasBackEdgeTo(const BasicBlock *dest) const;
+	        bool        hasBackEdgeTo(const BasicBlock *) const;
 
 	// establish if this bb has any back edges leading FROM it
 	        bool        hasBackEdge() const {
-		                    for (const auto &edge : m_OutEdges)
-			                    if (hasBackEdgeTo(edge))
+		                    for (const auto &succ : m_OutEdges)
+			                    if (hasBackEdgeTo(succ))
 				                    return true;
 		                    return false;
 	                    }
@@ -349,9 +349,9 @@ public:
 	        bool        isBackEdge(const BasicBlock *) const;
 
 protected:
-	        bool        isAncestorOf(const BasicBlock *other) const;
+	        bool        isAncestorOf(const BasicBlock *) const;
 
-	        bool        inLoop(BasicBlock *header, BasicBlock *latch) const;
+	        bool        inLoop(BasicBlock *, BasicBlock *) const;
 
 	        bool        isIn(std::list<BasicBlock *> &set, BasicBlock *bb) const {
 		                    for (const auto &elem : set)
@@ -361,22 +361,22 @@ protected:
 	                    }
 
 	        bool        allParentsGenerated() const;
-	        void        emitGotoAndLabel(HLLCode *hll, int indLevel, BasicBlock *dest);
-	        void        WriteBB(HLLCode *hll, int indLevel);
+	        void        emitGotoAndLabel(HLLCode *, int, BasicBlock *);
+	        void        WriteBB(HLLCode *, int);
 
 public:
-	        void        generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::list<BasicBlock *> &followSet, std::list<BasicBlock *> &gotoSet, UserProc *proc);
-	        void        prependStmt(Statement *s, UserProc *proc);
+	        void        generateCode(HLLCode *, int, BasicBlock *, std::list<BasicBlock *> &, std::list<BasicBlock *> &, UserProc *);
+	        void        prependStmt(Statement *, UserProc *);
 
 	// Liveness
-	        bool        calcLiveness(ConnectionGraph &ig, UserProc *proc);
-	        void        getLiveOut(LocationSet &live, LocationSet &phiLocs);
+	        bool        calcLiveness(ConnectionGraph &, UserProc *);
+	        void        getLiveOut(LocationSet &, LocationSet &);
 
-	        bool        decodeIndirectJmp(UserProc *proc);
-	        void        processSwitch(UserProc *proc);
+	        bool        decodeIndirectJmp(UserProc *);
+	        void        processSwitch(UserProc *);
 	        int         findNumCases();
 
-	        bool        undoComputedBB(Statement *stmt);
+	        bool        undoComputedBB(Statement *);
 
 	// true if processing for overlapped registers on statements in this BB
 	// has been completed.

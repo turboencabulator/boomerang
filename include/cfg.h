@@ -95,7 +95,7 @@ class Cfg {
 public:
 	           ~Cfg();
 
-	void        setProc(UserProc *proc);
+	void        setProc(UserProc *);
 
 	void        clear();
 
@@ -112,9 +112,9 @@ public:
 		BBAlreadyExistsError(BasicBlock *pBB) : pBB(pBB) { }
 	};
 
-	BasicBlock *newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError);
+	BasicBlock *newBB(std::list<RTL *> *, BBTYPE, int) throw (BBAlreadyExistsError);
 
-	BasicBlock *newIncompleteBB(ADDRESS addr);
+	BasicBlock *newIncompleteBB(ADDRESS);
 
 	void        addOutEdge(BasicBlock *, ADDRESS);
 	void        addOutEdge(BasicBlock *, BasicBlock *);
@@ -126,11 +126,11 @@ public:
 	iterator    begin() { return m_listBB.begin(); }
 	iterator    end()   { return m_listBB.end(); }
 
-	bool        label(ADDRESS uNativeAddr, BasicBlock *&pNewBB);
+	bool        label(ADDRESS, BasicBlock *&);
 
-	bool        isIncomplete(ADDRESS uNativeAddr) const;
+	bool        isIncomplete(ADDRESS) const;
 
-	bool        existsBB(ADDRESS uNativeAddr) const;
+	bool        existsBB(ADDRESS) const;
 
 	void        sortByAddress();
 	void        sortByFirstDFT();
@@ -138,27 +138,27 @@ public:
 
 	bool        wellFormCfg();
 
-	bool        mergeBBs(BasicBlock *pb1, BasicBlock *pb2);
+	bool        mergeBBs(BasicBlock *, BasicBlock *);
 
 	bool        compressCfg();
 
 	bool        establishDFTOrder();
 	bool        establishRevDFTOrder();
 
-	int         pbbToIndex(BasicBlock *pBB) const;
+	int         pbbToIndex(BasicBlock *) const;
 
 	void        unTraverse();
 
 	bool        isWellFormed() const;
 
-	bool        isOrphan(ADDRESS uAddr) const;
+	bool        isOrphan(ADDRESS) const;
 
-	bool        joinBB(BasicBlock *pb1, BasicBlock *pb2);
+	bool        joinBB(BasicBlock *, BasicBlock *);
 
 	void        removeBB(const BasicBlock *);
 
-	void        searchAndReplace(Exp *search, Exp *replace);
-	bool        searchAll(Exp *search, std::list<Exp *> &result);
+	void        searchAndReplace(Exp *, Exp *);
+	bool        searchAll(Exp *, std::list<Exp *> &);
 
 	void        structure();
 
@@ -167,7 +167,7 @@ public:
 
 	void        simplify();
 
-	void        undoComputedBB(Statement *stmt);
+	void        undoComputedBB(Statement *);
 
 private:
 
@@ -185,17 +185,17 @@ public:
 	 * Control flow analysis stuff, lifted from Doug Simon's honours thesis.
 	 */
 	void        setTimeStamps();
-	BasicBlock *commonPDom(BasicBlock *curImmPDom, BasicBlock *succImmPDom);
+	BasicBlock *commonPDom(BasicBlock *, BasicBlock *);
 	void        findImmedPDom();
 	void        structConds();
 	void        structLoops();
 	void        checkConds();
-	void        determineLoopType(BasicBlock *header, bool *&loopNodes);
-	void        findLoopFollow(BasicBlock *header, bool *&loopNodes);
-	void        tagNodesInLoop(BasicBlock *header, bool *&loopNodes);
+	void        determineLoopType(BasicBlock *, bool *&);
+	void        findLoopFollow(BasicBlock *, bool *&);
+	void        tagNodesInLoop(BasicBlock *, bool *&);
 
-	void        removeUnneededLabels(HLLCode *hll);
-	void        generateDot(std::ostream &os) const;
+	void        removeUnneededLabels(HLLCode *);
+	void        generateDot(std::ostream &) const;
 
 
 	/*
@@ -204,26 +204,26 @@ public:
 	BasicBlock *getEntryBB() const { return entryBB; }
 	BasicBlock *getExitBB() const  { return exitBB; }
 
-	void        setEntryBB(BasicBlock *bb);
-	void        setExitBB(BasicBlock *bb);
+	void        setEntryBB(BasicBlock *);
+	void        setExitBB(BasicBlock *);
 
 	BasicBlock *findRetNode() const;
 
-	void        print(std::ostream &out, bool html = false) const;
+	void        print(std::ostream &, bool = false) const;
 
-	bool        decodeIndirectJmp(UserProc *proc);
+	bool        decodeIndirectJmp(UserProc *);
 
 	/*
 	 * Implicit assignments
 	 */
-	Statement  *findImplicitAssign(Exp *x);
-	Statement  *findTheImplicitAssign(Exp *x);
-	Statement  *findImplicitParamAssign(Parameter *p);
-	void        removeImplicitAssign(Exp *x);
+	Statement  *findImplicitAssign(Exp *);
+	Statement  *findTheImplicitAssign(Exp *);
+	Statement  *findImplicitParamAssign(Parameter *);
+	void        removeImplicitAssign(Exp *);
 	bool        implicitsDone() const { return bImplicitsDone; } // True if implicits have been created
 	void        setImplicitsDone() { bImplicitsDone = true; }    // Call when implicits have been created
 
-	void        findInterferences(ConnectionGraph &ig);
+	void        findInterferences(ConnectionGraph &);
 };
 
 #endif
