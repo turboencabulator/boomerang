@@ -1197,7 +1197,6 @@ SparcFrontEnd::processProc(ADDRESS address, UserProc *proc, bool fragment, bool 
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically linked
 		// ones (in the .plt)
 		if (pBF->isDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
-			cfg->addCall(call);
 			// Don't visit the destination of a register call
 			//if (dest != NO_ADDRESS) newProc(proc->getProg(), dest);
 			if (dest != NO_ADDRESS) proc->getProg()->setNewProc(dest);

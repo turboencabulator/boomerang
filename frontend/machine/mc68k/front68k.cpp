@@ -326,7 +326,7 @@ processProc(ADDRESS uAddr, int delta, ADDRESS uUpper, UserProc *pProc, NJMCDecod
 
 						// Add this non computed call site to the set of call
 						// sites which need to be analysed later.
-						pCfg->addCall(call);
+						//pCfg->addCall(call);
 
 						// Record the called address as the start of a new
 						// procedure if it didn't already exist.

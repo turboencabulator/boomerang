@@ -30,6 +30,7 @@
 #include "types.h"
 
 #include <algorithm>    // For std::find()
+#include <set>
 
 #include <cassert>
 #include <cstring>
@@ -73,7 +74,6 @@ Cfg::clear()
 	entryBB = nullptr;
 	exitBB = nullptr;
 	m_bWellFormed = false;
-	callSites.clear();
 }
 
 /**
@@ -936,28 +936,6 @@ Cfg::pbbToIndex(BasicBlock *pBB) const
 		++i;
 	}
 	return -1;
-}
-
-/**
- * Add a call to the set of calls within this procedure.
- *
- * \param call  A call instruction.
- */
-void
-Cfg::addCall(CallStatement *call)
-{
-	callSites.insert(call);
-}
-
-/**
- * Get the set of calls within this procedure.
- *
- * \returns  The set of calls within this procedure.
- */
-std::set<CallStatement *> &
-Cfg::getCalls()
-{
-	return callSites;
 }
 
 /**

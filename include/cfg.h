@@ -26,7 +26,6 @@
 #include <exception>
 #include <list>
 #include <map>
-#include <set>
 #include <vector>
 
 class BranchStatement;
@@ -83,11 +82,6 @@ class Cfg {
 	 * True if well formed.
 	 */
 	bool        m_bWellFormed = false, structured = false;
-
-	/**
-	 * Set of the call instructions in this procedure.
-	 */
-	std::set<CallStatement *> callSites;
 
 	/**
 	 * Map from expression to implicit assignment.  The purpose is to
@@ -162,10 +156,6 @@ public:
 	bool        joinBB(BasicBlock *pb1, BasicBlock *pb2);
 
 	void        removeBB(const BasicBlock *);
-
-	void        addCall(CallStatement *call);
-
-	std::set<CallStatement *> &getCalls();
 
 	void        searchAndReplace(Exp *search, Exp *replace);
 	bool        searchAll(Exp *search, std::list<Exp *> &result);

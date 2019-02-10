@@ -1287,7 +1287,6 @@ FrontEndSrc::processProc(ADDRESS address, UserProc *proc, bool spec)
 		// Don't speculatively decode procs that are outside of the main text
 		// section, apart from dynamically linked ones (in the .plt)
 		if (prog.pBF->isDynamicLinkedProc(dest) || !spec || (dest < uUpper)) {
-			cfg->addCall(*it);
 			// Don't visit the destination of a register call
 			if (dest != NO_ADDRESS) prog.visitProc(dest);
 		}

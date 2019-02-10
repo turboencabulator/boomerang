@@ -962,7 +962,6 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 							BB_rtls->push_back(pRtl);
 
 							// Add this non computed call site to the set of call sites which need to be analysed later.
-							//pCfg->addCall(call);
 							callList.push_back(call);
 
 							// Record the called address as the start of a new procedure if it didn't already exist.
@@ -1103,7 +1102,6 @@ FrontEnd::processProc(ADDRESS uAddr, UserProc *pProc, bool frag /* = false */, b
 		// Don't speculatively decode procs that are outside of the main text section, apart from dynamically
 		// linked ones (in the .plt)
 		if (pBF->isDynamicLinkedProc(dest) || !spec || (dest < pBF->getLimitTextHigh())) {
-			pCfg->addCall(call);
 			// Don't visit the destination of a register call
 			Proc *np = call->getDestProc();
 			if (!np && dest != NO_ADDRESS) {

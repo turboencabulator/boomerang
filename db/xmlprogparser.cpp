@@ -2564,7 +2564,6 @@ XMLProgParser::persistToXML(std::ostream &out, Cfg *cfg)
 
 	// TODO
 	// std::map<ADDRESS, BasicBlock *> m_mapBB;
-	// std::set<CallStatement *> callSites;
 	// std::vector<BasicBlock *> BBs;        // Pointers to BBs from indices
 	// std::map<BasicBlock *, int> indices;  // Indices from pointers to BBs
 	// more
