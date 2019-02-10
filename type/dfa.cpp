@@ -1160,8 +1160,9 @@ Unary::ascendType()
 			return new VoidType();  // NOT SURE! Really should be bottom
 	case opAddrOf:
 		return new PointerType(ta);
+	default:
+		return new VoidType;
 	}
-	return new VoidType;
 }
 
 Type *
@@ -1172,12 +1173,10 @@ Ternary::ascendType()
 		return new FloatType(((Const *)subExp2)->getInt());
 	case opZfill:
 	case opSgnEx:
-		{
-			int toSize = ((Const *)subExp2)->getInt();
-			return Type::newIntegerLikeType(toSize, op == opZfill ? -1 : 1);
-		}
+		return Type::newIntegerLikeType(((Const *)subExp2)->getInt(), op == opZfill ? -1 : 1);
+	default:
+		return new VoidType;
 	}
-	return new VoidType;
 }
 
 Type *
