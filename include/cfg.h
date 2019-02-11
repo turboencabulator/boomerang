@@ -108,7 +108,7 @@ public:
 
 	class BBAlreadyExistsError : public std::exception {
 	public:
-		BasicBlock *pBB;
+		BasicBlock *pBB;  ///< The existing BB
 		BBAlreadyExistsError(BasicBlock *pBB) : pBB(pBB) { }
 	};
 

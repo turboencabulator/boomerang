@@ -152,15 +152,18 @@ Cfg::checkEntryBB()
  * BB will have the RTL associated with pStart as its first RTL, since the BB
  * could be split.  You can however assume that the returned BB is suitable
  * for adding out edges (i.e. if the BB is split, you get the "bottom" part of
- * the BB, not the "top" (with lower addresses at the "top").  Returns null if
- * not successful, or if there already exists a completed BB at this address
- * (this can happen with certain kinds of forward branches).
+ * the BB, not the "top" (with lower addresses at the "top")).
  *
  * \param pRtls         List of pointers to RTLs to initialise the BB with.
  * \param bbType        The type of the BB (e.g. TWOWAY).
  * \param iNumOutEdges  Number of out edges this BB will eventually have.
- * \returns             Pointer to the newly created BB, or null if there is
- *                      already an incomplete BB with the same address.
+ * \returns             Pointer to the newly-created BB, or to an existing
+ *                      incomplete BB that is then completed by splitting the
+ *                      newly-created BB.
+ *
+ * \throws BBAlreadyExistsError
+ * The new BB partially or fully overlaps an existing completed BB.
+ * (This can happen with certain kinds of forward branches.)
  */
 BasicBlock *
 Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError)
@@ -232,23 +235,21 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 		// We still want to do this even if the new BB overlaps with an incomplete BB, though in this case,
 		// splitBB needs to fill in the details for the "bottom" BB of the split.
 		// Also, in this case, we return a pointer to the newly completed BB, so it will get out edges added
-		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we want to return nullptr, since
-		// the out edges are already created.
+		// (if required). In the other case (i.e. we overlap with an exising, completed BB), we do not want to return a
+		// pointer to the completed BB, since the out edges are already created.
 		// FIXME:  What if the "bottom" should be split in the same way, e.g. multiple labels pointing into this BB?
 		if (++mi != m_mapBB.end()) {
-			ADDRESS uNext = mi->first;
-			bool bIncomplete = !mi->second || mi->second->m_bIncomplete;
-			if (uNext <= pRtls->back()->getAddress()) {
-				// Need to truncate the current BB. We use splitBB(), but pass it pNextBB so it doesn't create a new BB
-				// for the "bottom" BB of the split pair
-				auto pNextBB = splitBB(pBB, uNext);
-				// If the overlapped BB was incomplete, return the "bottom" part of the BB, so adding out edges will
-				// work properly.
-				if (bIncomplete) {
-					return pNextBB;
-				}
-				// However, if the overlapping BB was already complete, return nullptr, so out edges won't be added twice
-				throw BBAlreadyExistsError(pNextBB);
+			auto nextAddr = mi->first;
+			if (nextAddr <= pRtls->back()->getAddress()) {
+				// Need to truncate the current BB.  Determine completeness of the existing BB
+				// before calling splitBB() since it will be completed by the call.
+				bool complete = mi->second && !mi->second->m_bIncomplete;
+				pBB = splitBB(pBB, nextAddr);
+				// If the existing BB was incomplete, return the "bottom" part of the BB,
+				// so adding out edges will work properly.  However, if the overlapping BB
+				// was already complete, throw it so out edges won't be added twice.
+				if (complete)
+					throw BBAlreadyExistsError(pBB);
 			}
 		}
 
