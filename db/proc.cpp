@@ -1002,7 +1002,7 @@ UserProc::decompile(ProcList *path, int &indent)
 	if (child->empty()) {
 		remUnusedStmtEtc();  // Do the whole works
 		setStatus(PROC_FINAL);
-		Boomerang::get()->alert_end_decompile(this);
+		Boomerang::get()->alert_decompile_end(this);
 	} else {
 		// this proc's children, and hence this proc, is/are involved in recursion
 		// find first element f in path that is also in cycleGrp
@@ -1015,7 +1015,7 @@ UserProc::decompile(ProcList *path, int &indent)
 			// Yes, process these procs as a group
 			recursionGroupAnalysis(path, indent);// Includes remUnusedStmtEtc on all procs in cycleGrp
 			setStatus(PROC_FINAL);
-			Boomerang::get()->alert_end_decompile(this);
+			Boomerang::get()->alert_decompile_end(this);
 			child = new ProcSet;
 		}
 	}
@@ -1043,7 +1043,7 @@ UserProc::decompile(ProcList *path, int &indent)
 void
 UserProc::initialiseDecompile()
 {
-	Boomerang::get()->alert_start_decompile(this);
+	Boomerang::get()->alert_decompile_start(this);
 
 	Boomerang::get()->alert_decompile_debug_point(this, "before initialise");
 
@@ -1665,7 +1665,7 @@ UserProc::recursionGroupAnalysis(ProcList *path, int indent)
 	}
 	if (VERBOSE)
 		LOG << "=== end recursion group analysis ===\n";
-	Boomerang::get()->alert_end_decompile(this);
+	Boomerang::get()->alert_decompile_end(this);
 }
 
 void

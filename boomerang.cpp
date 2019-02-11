@@ -1052,7 +1052,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	std::cout << "finishing decode...\n";
 	prog->finishDecode();
 
-	Boomerang::get()->alert_end_decode();
+	Boomerang::get()->alert_decode_end();
 
 	std::cout << "found " << prog->getNumUserProcs() << " procs\n";
 
@@ -1178,6 +1178,159 @@ Boomerang::loadFromXML(const std::string &fname)
 	return p.parse(fname);
 }
 #endif
+
+/**
+ * Alert the watchers we have found a new %Proc.
+ */
+void
+Boomerang::alert_new(Proc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_new(p);
+}
+
+/**
+ * Alert the watchers we have loaded the Proc.
+ */
+void
+Boomerang::alert_load(Proc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_load(p);
+}
+
+/**
+ * Alert the watchers we have removed a %Proc.
+ */
+void
+Boomerang::alert_remove(Proc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_remove(p);
+}
+
+/**
+ * Alert the watchers we have updated this Proc's signature
+ */
+void
+Boomerang::alert_update_signature(Proc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_update_signature(p);
+}
+
+/**
+ * Alert the watchers we are starting to decode.
+ */
+void
+Boomerang::alert_decode_start(ADDRESS start, int nBytes)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decode_start(start, nBytes);
+}
+
+/**
+ * Alert the watchers of a bad decode of an instruction at \a pc.
+ */
+void
+Boomerang::alert_decode_bad(ADDRESS pc)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decode_bad(pc);
+}
+
+/**
+ * Alert the watchers we are currently decoding \a nBytes at address \a pc.
+ */
+void
+Boomerang::alert_decode_inst(ADDRESS pc, int nBytes)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decode_inst(pc, nBytes);
+}
+
+/**
+ * Alert the watchers we have succesfully decoded this function
+ */
+void
+Boomerang::alert_decode_proc(Proc *p, ADDRESS pc, ADDRESS last, int nBytes)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decode_proc(p, pc, last, nBytes);
+}
+
+/**
+ * Alert the watchers we finished decoding.
+ */
+void
+Boomerang::alert_decode_end()
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decode_end();
+}
+
+void
+Boomerang::alert_considering(Proc *parent, Proc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_considering(parent, p);
+}
+
+void
+Boomerang::alert_proc_status_change(UserProc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_proc_status_change(p);
+}
+
+void
+Boomerang::alert_decompiling(UserProc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompiling(p);
+}
+
+void
+Boomerang::alert_decompile_start(UserProc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_start(p);
+}
+
+void
+Boomerang::alert_decompile_SSADepth(UserProc *p, int depth)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_SSADepth(p, depth);
+}
+
+void
+Boomerang::alert_decompile_beforePropagate(UserProc *p, int depth)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_beforePropagate(p, depth);
+}
+
+void
+Boomerang::alert_decompile_afterPropagate(UserProc *p, int depth)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_afterPropagate(p, depth);
+}
+
+void
+Boomerang::alert_decompile_afterRemoveStmts(UserProc *p, int depth)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_afterRemoveStmts(p, depth);
+}
+
+void
+Boomerang::alert_decompile_end(UserProc *p)
+{
+	for (const auto &watcher : watchers)
+		watcher->alert_decompile_end(p);
+}
 
 void
 Boomerang::alert_decompile_debug_point(UserProc *p, const std::string &description)

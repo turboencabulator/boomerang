@@ -55,26 +55,25 @@ class Watcher {
 public:
 	virtual            ~Watcher() = default;
 
-	virtual void        alert_complete() { }
-	virtual void        alert_new(Proc *p) { }
-	virtual void        alert_remove(Proc *p) { }
-	virtual void        alert_update_signature(Proc *p) { }
-	virtual void        alert_decode(ADDRESS pc, int nBytes) { }
-	virtual void        alert_baddecode(ADDRESS pc) { }
-	virtual void        alert_start_decode(ADDRESS start, int nBytes) { }
-	virtual void        alert_end_decode() { }
-	virtual void        alert_decode(Proc *p, ADDRESS pc, ADDRESS last, int nBytes) { }
-	virtual void        alert_start_decompile(UserProc *p) { }
-	virtual void        alert_proc_status_change(UserProc *p) { }
-	virtual void        alert_decompile_SSADepth(UserProc *p, int depth) { }
-	virtual void        alert_decompile_beforePropagate(UserProc *p, int depth) { }
-	virtual void        alert_decompile_afterPropagate(UserProc *p, int depth) { }
-	virtual void        alert_decompile_afterRemoveStmts(UserProc *p, int depth) { }
-	virtual void        alert_end_decompile(UserProc *p) { }
-	virtual void        alert_load(Proc *p) { }
-	virtual void        alert_considering(Proc *parent, Proc *p) { }
-	virtual void        alert_decompiling(UserProc *p) { }
-	virtual void        alert_decompile_debug_point(UserProc *p, const std::string &description) { }
+	virtual void        alert_new(Proc *) { }
+	virtual void        alert_load(Proc *) { }
+	virtual void        alert_remove(Proc *) { }
+	virtual void        alert_update_signature(Proc *) { }
+	virtual void        alert_decode_start(ADDRESS, int) { }
+	virtual void        alert_decode_bad(ADDRESS) { }
+	virtual void        alert_decode_inst(ADDRESS, int) { }
+	virtual void        alert_decode_proc(Proc *, ADDRESS, ADDRESS, int) { }
+	virtual void        alert_decode_end() { }
+	virtual void        alert_considering(Proc *, Proc *) { }
+	virtual void        alert_proc_status_change(UserProc *) { }
+	virtual void        alert_decompiling(UserProc *) { }
+	virtual void        alert_decompile_start(UserProc *) { }
+	virtual void        alert_decompile_SSADepth(UserProc *, int) { }
+	virtual void        alert_decompile_beforePropagate(UserProc *, int) { }
+	virtual void        alert_decompile_afterPropagate(UserProc *, int) { }
+	virtual void        alert_decompile_afterRemoveStmts(UserProc *, int) { }
+	virtual void        alert_decompile_end(UserProc *) { }
+	virtual void        alert_decompile_debug_point(UserProc *, const std::string &) { }
 };
 
 /**
@@ -143,93 +142,25 @@ public:
 
 	static  void        objcDecode(const std::map<std::string, ObjcModule> &modules, Prog *prog);
 
-	        /// Alert the watchers that decompilation has completed.
-	        void        alert_complete() {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_complete();
-	                    }
-	        /// Alert the watchers we have found a new %Proc.
-	        void        alert_new(Proc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_new(p);
-	                    }
-	        /// Alert the watchers we have removed a %Proc.
-	        void        alert_remove(Proc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_remove(p);
-	                    }
-	        /// Alert the watchers we have updated this Procs signature
-	        void        alert_update_signature(Proc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_update_signature(p);
-	                    }
-	        /// Alert the watchers we are currently decoding \a nBytes bytes at address \a pc.
-	        void        alert_decode(ADDRESS pc, int nBytes) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decode(pc, nBytes);
-	                    }
-	        /// Alert the watchers of a bad decode of an instruction at \a pc.
-	        void        alert_baddecode(ADDRESS pc) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_baddecode(pc);
-	                    }
-	        /// Alert the watchers we have succesfully decoded this function
-	        void        alert_decode(Proc *p, ADDRESS pc, ADDRESS last, int nBytes) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decode(p, pc, last, nBytes);
-	                    }
-	        /// Alert the watchers we have loaded the Proc.
-	        void        alert_load(Proc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_load(p);
-	                    }
-	        /// Alert the watchers we are starting to decode.
-	        void        alert_start_decode(ADDRESS start, int nBytes) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_start_decode(start, nBytes);
-	                    }
-	        /// Alert the watchers we finished decoding.
-	        void        alert_end_decode() {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_end_decode();
-	                    }
-	virtual void        alert_start_decompile(UserProc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_start_decompile(p);
-	                    }
-	virtual void        alert_proc_status_change(UserProc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_proc_status_change(p);
-	                    }
-	virtual void        alert_decompile_SSADepth(UserProc *p, int depth) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decompile_SSADepth(p, depth);
-	                    }
-	virtual void        alert_decompile_beforePropagate(UserProc *p, int depth) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decompile_beforePropagate(p, depth);
-	                    }
-	virtual void        alert_decompile_afterPropagate(UserProc *p, int depth) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decompile_afterPropagate(p, depth);
-	                    }
-	virtual void        alert_decompile_afterRemoveStmts(UserProc *p, int depth) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decompile_afterRemoveStmts(p, depth);
-	                    }
-	virtual void        alert_end_decompile(UserProc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_end_decompile(p);
-	                    }
-	virtual void        alert_considering(Proc *parent, Proc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_considering(parent, p);
-	                    }
-	virtual void        alert_decompiling(UserProc *p) {
-		                    for (const auto &watcher : watchers)
-			                    watcher->alert_decompiling(p);
-	                    }
-	virtual void        alert_decompile_debug_point(UserProc *p, const std::string &description);
+	        void        alert_new(Proc *);
+	        void        alert_load(Proc *);
+	        void        alert_remove(Proc *);
+	        void        alert_update_signature(Proc *);
+	        void        alert_decode_start(ADDRESS, int);
+	        void        alert_decode_bad(ADDRESS);
+	        void        alert_decode_inst(ADDRESS, int);
+	        void        alert_decode_proc(Proc *, ADDRESS, ADDRESS, int);
+	        void        alert_decode_end();
+	        void        alert_considering(Proc *, Proc *);
+	        void        alert_proc_status_change(UserProc *);
+	        void        alert_decompiling(UserProc *);
+	        void        alert_decompile_start(UserProc *);
+	        void        alert_decompile_SSADepth(UserProc *, int);
+	        void        alert_decompile_beforePropagate(UserProc *, int);
+	        void        alert_decompile_afterPropagate(UserProc *, int);
+	        void        alert_decompile_afterRemoveStmts(UserProc *, int);
+	        void        alert_decompile_end(UserProc *);
+	        void        alert_decompile_debug_point(UserProc *, const std::string &);
 
 	        // Command line flags
 	        bool        vFlag = false;

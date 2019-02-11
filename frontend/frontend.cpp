@@ -365,7 +365,7 @@ FrontEnd::getEntryPoints()
 void
 FrontEnd::decode()
 {
-	Boomerang::get()->alert_start_decode(pBF->getLimitTextLow(), pBF->getLimitTextHigh() - pBF->getLimitTextLow());
+	Boomerang::get()->alert_decode_start(pBF->getLimitTextLow(), pBF->getLimitTextHigh() - pBF->getLimitTextLow());
 
 	bool gotMain;
 	ADDRESS a = getMainEntryPoint(gotMain);
@@ -604,7 +604,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 	// Clear the pointer used by the caller prologue code to access the last call rtl of this procedure
 	//getDecoder().resetLastCall();
 
-	// ADDRESS initAddr = addr;
 	int nTotalBytes = 0;
 	ADDRESS startAddr = addr;
 	ADDRESS lastAddr = addr;
@@ -637,10 +636,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 			if (!BB_rtls)
 				BB_rtls = new std::list<RTL *>();
 
-			RTL *rtl = inst.rtl;
 			if (!inst.valid) {
 				// Alert the watchers to the problem
-				Boomerang::get()->alert_baddecode(addr);
+				Boomerang::get()->alert_decode_bad(addr);
 
 				// An invalid instruction. Most likely because a call did not return (e.g. call _exit()), etc.
 				// Best thing is to emit a INVALID BB, and continue with valid instructions
@@ -651,6 +649,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						LOG << (unsigned)(pBF->readNative1(addr + ii) & 0xFF) << " ";
 					LOG << std::dec << "\n";
 				}
+
 				// Emit the RTL anyway, so we have the address and maybe some other clues
 				BB_rtls->push_back(new RTL(addr));
 				auto bb = cfg->newBB(BB_rtls, INVALID, 0);
@@ -658,12 +657,13 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 			}
 
 			// alert the watchers that we have decoded an instruction
-			Boomerang::get()->alert_decode(addr, inst.numBytes);
+			Boomerang::get()->alert_decode_inst(addr, inst.numBytes);
 			nTotalBytes += inst.numBytes;
 
 			// Check if this is an already decoded jump instruction (from a previous pass with propagation etc)
 			// If so, we throw away the just decoded RTL (but we still may have needed to calculate the number
 			// of bytes.. ick.)
+			RTL *rtl = inst.rtl;
 			auto ff = previouslyDecoded.find(addr);
 			if (ff != previouslyDecoded.end())
 				rtl = ff->second;
@@ -1090,12 +1090,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 	} // while nextAddress() != NO_ADDRESS
 
-#if 0
-	ProgWatcher *w = prog->getWatcher();
-	if (w)
-		w->alert_done(proc, initAddr, lastAddr, nTotalBytes);
-#endif
-
 	// Add the callees to the set of CallStatements, and also to the Prog object
 	for (const auto &call : callList) {
 		auto dest = call->getFixedDest();
@@ -1115,7 +1109,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		}
 	}
 
-	Boomerang::get()->alert_decode(proc, startAddr, lastAddr, nTotalBytes);
+	Boomerang::get()->alert_decode_proc(proc, startAddr, lastAddr, nTotalBytes);
 
 	if (VERBOSE)
 		LOG << "finished processing proc " << proc->getName() << " at address 0x" << std::hex << proc->getNativeAddress() << std::dec << "\n";

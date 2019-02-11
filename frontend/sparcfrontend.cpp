@@ -790,14 +790,19 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 			// Check for invalid instructions
 			if (!inst.valid) {
+				Boomerang::get()->alert_decode_bad(addr);
+
 				std::cerr << "Invalid instruction at " << std::hex << addr << ":";
 				auto fill = std::cerr.fill('0');
 				for (int j = 0; j < inst.numBytes; ++j)
 					std::cerr << " " << std::setw(2) << pBF->readNative1(addr + j);
 				std::cerr << "\n" << std::dec;
 				std::cerr.fill(fill);
+
 				return false;
 			}
+
+			Boomerang::get()->alert_decode_inst(addr, inst.numBytes);
 
 			// Don't display the RTL here; do it after the switch statement in case the delay slot instruction is moved
 			// before this one
