@@ -28,13 +28,13 @@ libfrontend_la_SOURCES = \
 	frontend.cpp \
 	$(top_srcdir)/include/frontend.h \
 	njmcDecoder.cpp \
-	$(top_srcdir)/include/decoder.h \
+	decoder.h \
 	insnameelem.cpp \
 	insnameelem.h \
 	register.cpp \
-	$(top_srcdir)/include/register.h \
+	register.h \
 	sslinst.cpp \
-	$(top_srcdir)/include/sslinst.h \
+	sslinst.h \
 	sslparser.ypp \
 	sslparser.h \
 	sslscanner.lpp \

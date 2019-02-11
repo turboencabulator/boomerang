@@ -3117,7 +3117,7 @@ BoolAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return chl | chr;
 }
 
-// This is for setting up SETcc instructions; see include/decoder.h macro SETS
+// This is for setting up SETcc instructions; see frontend/pentiumdecoder.cpp macro SETS
 void
 BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
 {

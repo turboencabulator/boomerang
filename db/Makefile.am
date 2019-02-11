@@ -108,6 +108,7 @@ libRtlTest_la_LIBADD = \
 	$(CPPUNIT_LIBS)
 libRtlTest_la_CPPFLAGS = \
 	$(AM_CPPFLAGS) \
+	-I$(top_srcdir)/frontend \
 	$(CPPUNIT_CFLAGS)
 
 libStatementTest_la_SOURCES = \
