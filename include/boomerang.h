@@ -88,7 +88,7 @@ private:
 	        /// The path where all output files are created.
 	        std::string outputPath;
 	        /// Takes care of the log messages.
-		std::ostream *logger = nullptr;
+	        std::ostream *logger = nullptr;
 	        /// The watchers which are interested in this decompilation.
 	        std::set<Watcher *> watchers;
 
@@ -99,10 +99,9 @@ private:
 	        int         parseCmd(int argc, const char *argv[]);
 	        int         cmdLine();
 
-
+	        // constructor & destructor are private for the singleton pattern.
 	                    Boomerang();
-	        /// The destructor is virtual to force this object to be created on the heap (with \em new).
-	virtual            ~Boomerang() = default;
+	                   ~Boomerang() = default;
 public:
 	        /**
 	         * \return The global boomerang object. It will be created if it didn't already exist.
