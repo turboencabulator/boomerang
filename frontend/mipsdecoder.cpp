@@ -28,7 +28,7 @@ class Statement;
 MIPSDecoder::MIPSDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
-	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/mips/mips.ssl";
+	std::string file = Boomerang::get().getProgPath() + "frontend/machine/mips/mips.ssl";
 	RTLDict.readSSLFile(file);
 }
 

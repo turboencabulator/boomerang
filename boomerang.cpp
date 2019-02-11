@@ -69,6 +69,17 @@ Boomerang::Boomerang() :
 }
 
 /**
+ * \returns  The global boomerang object.
+ *           It will be created if it didn't already exist.
+ */
+Boomerang &
+Boomerang::get()
+{
+	if (!boomerang) boomerang = new Boomerang();
+	return *boomerang;
+}
+
+/**
  * Returns the log stream associated with the object.
  */
 std::ostream &
@@ -949,7 +960,7 @@ Boomerang::setOutputDirectory(const std::string &path)
 		// Send output to the file "log" in the default output directory, unbuffered.
 		auto filelogger = new std::ofstream();
 		filelogger->rdbuf()->pubsetbuf(nullptr, 0);
-		filelogger->open(Boomerang::get()->getOutputPath() + "log");
+		filelogger->open(Boomerang::get().getOutputPath() + "log");
 		setLogger(filelogger);
 	}
 	return true;
@@ -1052,7 +1063,7 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	std::cout << "finishing decode...\n";
 	prog->finishDecode();
 
-	Boomerang::get()->alert_decode_end();
+	Boomerang::get().alert_decode_end();
 
 	std::cout << "found " << prog->getNumUserProcs() << " procs\n";
 
@@ -1147,7 +1158,7 @@ Boomerang::decompile(const char *fname, const char *pname)
 	std::cout << "output written to " << outputPath << prog->getRootCluster()->getName() << "\n";
 
 	delete prog;
-	if (Boomerang::get()->ofsIndCallReport)
+	if (Boomerang::get().ofsIndCallReport)
 		ofsIndCallReport->close();
 
 	return 0;

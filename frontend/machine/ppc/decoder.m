@@ -66,7 +66,7 @@ crBit(int bitNum);  // Get an expression for a CR bit access
 PPCDecoder::PPCDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
-	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/ppc/ppc.ssl";
+	std::string file = Boomerang::get().getProgPath() + "frontend/machine/ppc/ppc.ssl";
 	RTLDict.readSSLFile(file);
 }
 

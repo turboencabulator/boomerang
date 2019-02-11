@@ -761,7 +761,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 	int changes = 0;
 	// int sp = proc->getSignature()->getStackRegister(proc->getProg());
 	// Exp *regSp = Location::regOf(sp);
-	int propMaxDepth = Boomerang::get()->propMaxDepth;
+	int propMaxDepth = Boomerang::get().propMaxDepth;
 	do {
 		LocationSet exps;
 		addUsedLocs(exps, true);  // True to also add uses from collectors. For example, want to propagate into
@@ -897,9 +897,9 @@ bool
 Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 {
 	// Respect the -p N switch
-	if (Boomerang::get()->numToPropagate >= 0) {
-		if (Boomerang::get()->numToPropagate == 0) return false;
-		--Boomerang::get()->numToPropagate;
+	if (Boomerang::get().numToPropagate >= 0) {
+		if (Boomerang::get().numToPropagate == 0) return false;
+		--Boomerang::get().numToPropagate;
 	}
 
 	if (VERBOSE)
@@ -1328,7 +1328,7 @@ BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 	}
 	// this is such a hack.. preferably we should actually recognise SUBFLAGS32(..,..,..) > 0 instead of just
 	// SUBFLAGS32(..,..,..) but I'll leave this in here for the moment as it actually works.
-	if (!Boomerang::get()->noDecompile)
+	if (!Boomerang::get().noDecompile)
 		p = new Terminal(usesFloat ? opFflags : opFlags);
 	assert(p);
 	setCondExpr(p);
@@ -2289,7 +2289,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	LOG << " in proc " << proc->getName() << "\n";
 #endif
 	assert(p);
-	if (Boomerang::get()->noDecompile) {
+	if (Boomerang::get().noDecompile) {
 		if (procDest->getSignature()->getNumReturns() > 0) {
 			auto as = new Assign(new IntegerType(), new Unary(opRegOf, new Const(24)), new Unary(opRegOf, new Const(24)));
 			as->setProc(proc);
@@ -2355,7 +2355,7 @@ CallStatement::getDefinitions(LocationSet &defs) const
 		defs.insert(((Assignment *)def)->getLeft());
 	// Childless calls are supposed to define everything. In practice they don't really define things like %pc, so we
 	// need some extra logic in getTypeFor()
-	if (isChildless() && !Boomerang::get()->assumeABI)
+	if (isChildless() && !Boomerang::get().assumeABI)
 		defs.insert(new Terminal(opDefineAll));
 }
 
@@ -2562,7 +2562,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 					    << " in statement at addr 0x" << std::hex << stmt << std::dec << ".  Decoding address 0x" << std::hex << a << std::dec << "\n";
 				// the address can be zero, i.e., NULL, if so, ignore it.
 				if (a != 0) {
-					if (!Boomerang::get()->noDecodeChildren)
+					if (!Boomerang::get().noDecodeChildren)
 						prog->decodeEntryPoint(a);
 					if (auto p = prog->findProc(a)) {
 						Signature *sig = points_to->asFunc()->getSignature()->clone();
@@ -3220,7 +3220,7 @@ void
 Assign::simplify()
 {
 	// simplify arithmetic of assignment
-	if (Boomerang::get()->noBranchSimplify) {
+	if (Boomerang::get().noBranchSimplify) {
 		OPER leftop = lhs->getOper();
 		if (leftop == opZF || leftop == opCF || leftop == opOF || leftop == opNF)
 			return;
@@ -4667,7 +4667,7 @@ CallStatement::updateDefines()
 	if (dynamic_cast<LibProc *>(procDest)) {
 		sig->setLibraryDefines(&defines);  // Set the locations defined
 		return;
-	} else if (Boomerang::get()->assumeABI) {
+	} else if (Boomerang::get().assumeABI) {
 		// Risky: just assume the ABI caller save registers are defined
 		Signature::setABIdefines(proc->getProg(), &defines);
 		return;

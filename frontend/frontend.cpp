@@ -250,7 +250,7 @@ FrontEnd::readLibraryCatalog(const std::string &path)
 			name.erase(j + 1);
 		else
 			continue;
-		std::string path = Boomerang::get()->getProgPath() + "signatures/" + name;
+		std::string path = Boomerang::get().getProgPath() + "signatures/" + name;
 		callconv cc = CONV_C;  // Most APIs are C calling convention
 		if (name == "windows.h") cc = CONV_PASCAL;    // One exception
 		if (name == "mfc.h")     cc = CONV_THISCALL;  // Another exception
@@ -266,7 +266,7 @@ void
 FrontEnd::readLibraryCatalog()
 {
 	librarySignatures.clear();
-	std::string path = Boomerang::get()->getProgPath() + "signatures/";
+	std::string path = Boomerang::get().getProgPath() + "signatures/";
 	readLibraryCatalog(path + "common.hs");
 	readLibraryCatalog(path + Signature::platformName(getFrontEndId()) + ".hs");
 	if (isWin32()) {
@@ -365,7 +365,7 @@ FrontEnd::getEntryPoints()
 void
 FrontEnd::decode()
 {
-	Boomerang::get()->alert_decode_start(pBF->getLimitTextLow(), pBF->getLimitTextHigh() - pBF->getLimitTextLow());
+	Boomerang::get().alert_decode_start(pBF->getLimitTextLow(), pBF->getLimitTextHigh() - pBF->getLimitTextLow());
 
 	bool gotMain;
 	ADDRESS a = getMainEntryPoint(gotMain);
@@ -449,11 +449,11 @@ FrontEnd::decode(ADDRESS a)
 					else
 						break;
 					// Break out of the loops if not decoding children
-					if (Boomerang::get()->noDecodeChildren)
+					if (Boomerang::get().noDecodeChildren)
 						break;
 				}
 			}
-			if (Boomerang::get()->noDecodeChildren)
+			if (Boomerang::get().noDecodeChildren)
 				break;
 		}
 	}
@@ -483,7 +483,7 @@ FrontEnd::decodeOnly(ADDRESS a)
 void
 FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 {
-	if (Boomerang::get()->traceDecoder)
+	if (Boomerang::get().traceDecoder)
 		LOG << "decoding fragment at 0x" << std::hex << a << std::dec << "\n";
 	processProc(a, proc, true);
 }
@@ -584,7 +584,7 @@ bool
 FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 {
 	// just in case you missed it
-	Boomerang::get()->alert_new(proc);
+	Boomerang::get().alert_new(proc);
 
 	// We have a set of CallStatement pointers. These may be disregarded if this is a speculative decode
 	// that fails (i.e. an illegal instruction is found). If not, this set will be used to add to the set of calls
@@ -621,7 +621,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		while (sequentialDecode) {
 
 			// Decode and classify the current source instruction
-			if (Boomerang::get()->traceDecoder)
+			if (Boomerang::get().traceDecoder)
 				LOG << "*0x" << std::hex << addr << std::dec << "\t";
 
 			// Decode the inst at addr.
@@ -638,7 +638,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 			if (!inst.valid) {
 				// Alert the watchers to the problem
-				Boomerang::get()->alert_decode_bad(addr);
+				Boomerang::get().alert_decode_bad(addr);
 
 				// An invalid instruction. Most likely because a call did not return (e.g. call _exit()), etc.
 				// Best thing is to emit a INVALID BB, and continue with valid instructions
@@ -657,7 +657,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 			}
 
 			// alert the watchers that we have decoded an instruction
-			Boomerang::get()->alert_decode_inst(addr, inst.numBytes);
+			Boomerang::get().alert_decode_inst(addr, inst.numBytes);
 			nTotalBytes += inst.numBytes;
 
 			// Check if this is an already decoded jump instruction (from a previous pass with propagation etc)
@@ -677,7 +677,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 			}
 
 			// Display RTL representation if asked
-			if (Boomerang::get()->printRtl)
+			if (Boomerang::get().printRtl)
 				LOG << *rtl;
 
 			// For each Statement in the RTL
@@ -811,7 +811,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 								func = std::string("__imp_") + func;
 								proc->setName(func);
 								//lp->setName(func);
-								Boomerang::get()->alert_update_signature(proc);
+								Boomerang::get().alert_update_signature(proc);
 							}
 							callList.push_back(call);
 							ss = sl.end(); --ss;  // get out of the loop
@@ -821,7 +821,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						// We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
 						auto bb = cfg->newBB(BB_rtls, COMPJUMP, 0);
 						LOG << "COMPUTED JUMP at 0x" << std::hex << addr << std::dec << ", dest = " << *dest << "\n";
-						if (Boomerang::get()->noDecompile) {
+						if (Boomerang::get().noDecompile) {
 							// try some hacks
 							if (dest->isMemOf()
 							 && dest->getSubExp1()->getOper() == opPlus
@@ -971,7 +971,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							if (newAddr && newAddr != NO_ADDRESS && !proc->getProg()->findProc(newAddr)) {
 								callList.push_back(call);
 								//newProc(proc->getProg(), newAddr);
-								if (Boomerang::get()->traceDecoder)
+								if (Boomerang::get().traceDecoder)
 									LOG << "p0x" << std::hex << newAddr << std::dec << "\t";
 							}
 
@@ -1109,7 +1109,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		}
 	}
 
-	Boomerang::get()->alert_decode_proc(proc, startAddr, lastAddr, nTotalBytes);
+	Boomerang::get().alert_decode_proc(proc, startAddr, lastAddr, nTotalBytes);
 
 	if (VERBOSE)
 		LOG << "finished processing proc " << proc->getName() << " at address 0x" << std::hex << proc->getNativeAddress() << std::dec << "\n";
@@ -1143,7 +1143,7 @@ TargetQueue::visit(Cfg *cfg, ADDRESS newAddr, BasicBlock *&newBB)
 	// if not already processed
 	if (!bParsed) {
 		targets.push(newAddr);
-		if (Boomerang::get()->traceDecoder)
+		if (Boomerang::get().traceDecoder)
 			LOG << ">0x" << std::hex << newAddr << std::dec << "\t";
 	}
 }
@@ -1177,7 +1177,7 @@ TargetQueue::nextAddress(Cfg *cfg)
 	while (!targets.empty()) {
 		ADDRESS address = targets.front();
 		targets.pop();
-		if (Boomerang::get()->traceDecoder)
+		if (Boomerang::get().traceDecoder)
 			LOG << "<0x" << std::hex << address << std::dec << "\t";
 
 		// If no label there at all, or if there is a BB, it's incomplete, then we can parse this address next

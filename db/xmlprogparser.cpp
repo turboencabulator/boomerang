@@ -367,7 +367,7 @@ XMLProgParser::addChildTo_prog(Context *node, const Context *child) const
 		switch (child->tag) {
 		case e_libproc:
 		case e_userproc:
-			Boomerang::get()->alert_load(child->proc);
+			Boomerang::get().alert_load(child->proc);
 			break;
 		}
 		return;
@@ -387,7 +387,7 @@ XMLProgParser::addChildTo_prog(Context *node, const Context *child) const
 		for (const auto &proc : child->procs) {
 			node->prog->m_procs.push_back(proc);
 			node->prog->m_procLabels[proc->getNativeAddress()] = proc;
-			Boomerang::get()->alert_load(proc);
+			Boomerang::get().alert_load(proc);
 		}
 		break;
 	case e_cluster:

@@ -160,9 +160,9 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 	if (!cluster || cluster == m_rootCluster) {
 		os.open(m_rootCluster->getOutPath("c"));
 		if (!uProc) {
-			HLLCode *code = Boomerang::get()->getHLLCode();
+			HLLCode *code = Boomerang::get().getHLLCode();
 			bool global_added = false;
-			if (Boomerang::get()->noDecompile) {
+			if (Boomerang::get().noDecompile) {
 				const char *sections[] = { "rodata", "data", "data1", nullptr };
 				for (int j = 0; sections[j]; ++j) {
 					std::string str = ".";
@@ -208,7 +208,7 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 				continue;
 			}
 			proto = true;
-			HLLCode *code = Boomerang::get()->getHLLCode(up);
+			HLLCode *code = Boomerang::get().getHLLCode(up);
 			code->AddPrototype(up);  // May be the wrong signature if up has ellipsis
 			if (!cluster || cluster == m_rootCluster)
 				code->print(os);
@@ -223,7 +223,7 @@ Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 			if (uProc && up != uProc)
 				continue;
 			up->getCFG()->compressCfg();
-			HLLCode *code = Boomerang::get()->getHLLCode(up);
+			HLLCode *code = Boomerang::get().getHLLCode(up);
 			up->generateCode(code);
 			if (up->getCluster() == m_rootCluster) {
 				if (!cluster || cluster == m_rootCluster)
@@ -285,7 +285,7 @@ Cluster::makeDirs() const
 	if (parent)
 		path = parent->makeDirs();
 	else
-		path = Boomerang::get()->getOutputPath();
+		path = Boomerang::get().getOutputPath();
 	if (hasChildren() || !parent) {
 		path = path + name;
 		mkdir(path.c_str(), 0777);
@@ -393,7 +393,7 @@ Prog::getDefaultCluster(const std::string &name) const
 void
 Prog::generateCode(std::ostream &os)
 {
-	HLLCode *code = Boomerang::get()->getHLLCode();
+	HLLCode *code = Boomerang::get().getHLLCode();
 	for (const auto &global : globals) {
 		// Check for an initial value
 		if (auto e = global->getInitialValue(this))
@@ -405,7 +405,7 @@ Prog::generateCode(std::ostream &os)
 		if (auto up = dynamic_cast<UserProc *>(proc)) {
 			if (!up->isDecoded()) continue;
 			up->getCFG()->compressCfg();
-			code = Boomerang::get()->getHLLCode(up);
+			code = Boomerang::get().getHLLCode(up);
 			up->generateCode(code);
 			code->print(os);
 			delete code;
@@ -491,7 +491,7 @@ Prog::newProc(const std::string &name, ADDRESS uNative, bool bLib /*= false*/)
 	m_procs.push_back(pProc);  // Append this to list of procs
 	m_procLabels[uNative] = pProc;
 	// alert the watchers of a new proc
-	Boomerang::get()->alert_new(pProc);
+	Boomerang::get().alert_new(pProc);
 	return pProc;
 }
 
@@ -522,7 +522,7 @@ Prog::removeProc(const std::string &name)
 {
 	for (auto it = m_procs.begin(); it != m_procs.end(); ++it) {
 		if (name == (*it)->getName()) {
-			Boomerang::get()->alert_remove(*it);
+			Boomerang::get().alert_remove(*it);
 			m_procs.erase(it);
 			break;
 		}
@@ -618,7 +618,7 @@ Prog::rereadLibSignatures()
 			const auto &callers = proc->getCallers();
 			for (const auto &caller : callers)
 				caller->setSigArguments();
-			Boomerang::get()->alert_update_signature(proc);
+			Boomerang::get().alert_update_signature(proc);
 		}
 	}
 }
@@ -1043,7 +1043,7 @@ Prog::decompile()
 	}
 
 	// Just in case there are any Procs not in the call graph.
-	if (Boomerang::get()->decodeMain && !Boomerang::get()->noDecodeChildren) {
+	if (Boomerang::get().decodeMain && !Boomerang::get().noDecodeChildren) {
 		bool foundone = true;
 		while (foundone) {
 			foundone = false;
@@ -1066,8 +1066,8 @@ Prog::decompile()
 	globalTypeAnalysis();
 
 
-	if (!Boomerang::get()->noDecompile) {
-		if (!Boomerang::get()->noRemoveReturns) {
+	if (!Boomerang::get().noDecompile) {
+		if (!Boomerang::get().noRemoveReturns) {
 			// A final pass to remove returns not used by any caller
 			if (VERBOSE)
 				LOG << "prog: global removing unused returns\n";
@@ -1185,7 +1185,7 @@ Prog::fromSSAform()
 				LOG << "===== before transformation from SSA form for " << up->getName() << " =====\n"
 				    << *up
 				    << "===== end before transformation from SSA for " << up->getName() << " =====\n\n";
-				if (Boomerang::get()->dotFile)
+				if (Boomerang::get().dotFile)
 					up->printDFG();
 			}
 			up->fromSSAform();
@@ -1248,8 +1248,8 @@ Prog::rangeAnalysis()
 void
 Prog::printCallGraph() const
 {
-	std::string fname1 = Boomerang::get()->getOutputPath() + "callgraph.out";
-	std::string fname2 = Boomerang::get()->getOutputPath() + "callgraph.dot";
+	std::string fname1 = Boomerang::get().getOutputPath() + "callgraph.out";
+	std::string fname2 = Boomerang::get().getOutputPath() + "callgraph.dot";
 	int fd1 = lockFileWrite(fname1);
 	int fd2 = lockFileWrite(fname2);
 	std::ofstream f1(fname1);
@@ -1327,7 +1327,7 @@ void
 Prog::printSymbolsToFile() const
 {
 	std::cerr << "entering Prog::printSymbolsToFile\n";
-	std::string fname = Boomerang::get()->getOutputPath() + "symbols.h";
+	std::string fname = Boomerang::get().getOutputPath() + "symbols.h";
 	int fd = lockFileWrite(fname);
 	std::ofstream f(fname);
 
@@ -1354,7 +1354,7 @@ Prog::printCallGraphXML() const
 		return;
 	for (const auto &proc : m_procs)
 		proc->clearVisited();
-	std::string fname = Boomerang::get()->getOutputPath() + "callgraph.xml";
+	std::string fname = Boomerang::get().getOutputPath() + "callgraph.xml";
 	int fd = lockFileWrite(fname);
 	std::ofstream f(fname);
 	f << "<prog name=\"" << getName() << "\">\n";

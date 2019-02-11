@@ -200,7 +200,7 @@ SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg 
 	if ((dest != address) && !proc->getProg()->findProc(dest)) {
 		// We don't want to call prog.visitProc just yet, in case this is a speculative decode that failed. Instead, we
 		// use the set of CallStatements (not in this procedure) that is needed by CSR
-		if (Boomerang::get()->traceDecoder)
+		if (Boomerang::get().traceDecoder)
 			std::cout << "p" << std::hex << dest << std::dec << "\t";
 	}
 
@@ -254,7 +254,7 @@ SparcFrontEnd::case_CALL(ADDRESS &addr, DecodeResult &inst,
 	if ((delay_inst.type != NOP) && !call_stmt->isReturnAfterCall()) {
 		delay_inst.rtl->setAddress(addr);
 		BB_rtls->push_back(delay_inst.rtl);
-		if (Boomerang::get()->printRtl)
+		if (Boomerang::get().printRtl)
 			LOG << *delay_inst.rtl;
 	}
 
@@ -770,7 +770,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		bool sequentialDecode = true;
 		while (sequentialDecode) {
 
-			if (Boomerang::get()->traceDecoder)
+			if (Boomerang::get().traceDecoder)
 				LOG << "*0x" << std::hex << addr << std::dec << "\t";
 
 			// Check if this is an already decoded jump instruction (from a previous pass with propagation etc)
@@ -790,7 +790,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 			// Check for invalid instructions
 			if (!inst.valid) {
-				Boomerang::get()->alert_decode_bad(addr);
+				Boomerang::get().alert_decode_bad(addr);
 
 				std::cerr << "Invalid instruction at " << std::hex << addr << ":";
 				auto fill = std::cerr.fill('0');
@@ -802,7 +802,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				return false;
 			}
 
-			Boomerang::get()->alert_decode_inst(addr, inst.numBytes);
+			Boomerang::get().alert_decode_inst(addr, inst.numBytes);
 
 			// Don't display the RTL here; do it after the switch statement in case the delay slot instruction is moved
 			// before this one
@@ -903,7 +903,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				{
 					// This includes "call" and "ba". If a "call", it might be a move_call_move idiom, or a call to .stret4
 					auto delay_inst = decodeInstruction(addr + 4);
-					if (Boomerang::get()->traceDecoder)
+					if (Boomerang::get().traceDecoder)
 						LOG << "*0x" << std::hex << addr + 4 << std::dec << "\t\n";
 					if (auto call = dynamic_cast<CallStatement *>(last)) {
 						// Check the delay slot of this call. First case of interest is when the instruction is a restore,
@@ -1047,7 +1047,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 					}
 
 					// Display RTL representation if asked
-					if (Boomerang::get()->printRtl && delay_inst.rtl)
+					if (Boomerang::get().printRtl && delay_inst.rtl)
 						LOG << *delay_inst.rtl;
 
 					switch (delay_inst.type) {
@@ -1075,7 +1075,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 					auto delay_inst = decodeInstruction(addr + 4);
 
 					// Display low level RTL representation if asked
-					if (Boomerang::get()->printRtl && delay_inst.rtl)
+					if (Boomerang::get().printRtl && delay_inst.rtl)
 						LOG << *delay_inst.rtl;
 
 					switch (delay_inst.type) {
@@ -1102,7 +1102,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 					auto delay_inst = decodeInstruction(addr + 4);
 
 					// Display RTL representation if asked
-					if (Boomerang::get()->printRtl && delay_inst.rtl)
+					if (Boomerang::get().printRtl && delay_inst.rtl)
 						LOG << *delay_inst.rtl;
 
 					switch (delay_inst.type) {

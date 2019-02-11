@@ -58,8 +58,8 @@ TypeTest::testCompound()
 
 	auto filelogger = new std::ofstream();
 	filelogger->rdbuf()->pubsetbuf(nullptr, 0);
-	filelogger->open(Boomerang::get()->getOutputPath() + "log");
-	Boomerang::get()->setLogger(filelogger);  // May try to output some messages to LOG
+	filelogger->open(Boomerang::get().getOutputPath() + "log");
+	Boomerang::get().setLogger(filelogger);  // May try to output some messages to LOG
 
 	fe->readLibraryCatalog();  // Read definitions
 

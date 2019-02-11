@@ -176,7 +176,7 @@ bool isFuncPrologue(ADDRESS hostPC);
  * \name Macros that each of the .m files depend upon
  * \{
  */
-#define DEBUG_DECODER (Boomerang::get()->debugDecoder)
+#define DEBUG_DECODER (Boomerang::get().debugDecoder)
 #define SHOW_ASM(output) \
 	if (DEBUG_DECODER) \
 		std::cout << std::hex << pc << std::dec << ": " << output << std::endl;

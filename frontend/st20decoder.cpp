@@ -36,7 +36,7 @@
 ST20Decoder::ST20Decoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
-	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/st20/st20.ssl";
+	std::string file = Boomerang::get().getProgPath() + "frontend/machine/st20/st20.ssl";
 	RTLDict.readSSLFile(file);
 }
 

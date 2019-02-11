@@ -50,7 +50,7 @@ class Proc;
 SparcDecoder::SparcDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
-	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/sparc/sparc.ssl";
+	std::string file = Boomerang::get().getProgPath() + "frontend/machine/sparc/sparc.ssl";
 	RTLDict.readSSLFile(file);
 }
 

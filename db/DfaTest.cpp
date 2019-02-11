@@ -139,7 +139,7 @@ DfaTest::testMeetSize()
 
 #if 0
 	// There is a known failure here; to show the warning, use std::cerr
-	Boomerang::get()->setLogger(&std::cerr);
+	Boomerang::get().setLogger(&std::cerr);
 
 	res = s16.meetWith(&flt, ch, false);
 	CPPUNIT_ASSERT(ch);

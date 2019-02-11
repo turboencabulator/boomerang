@@ -82,7 +82,7 @@ static DecodeResult &genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int siz
 PentiumDecoder::PentiumDecoder(Prog *prog) :
 	NJMCDecoder(prog)
 {
-	std::string file = Boomerang::get()->getProgPath() + "frontend/machine/pentium/pentium.ssl";
+	std::string file = Boomerang::get().getProgPath() + "frontend/machine/pentium/pentium.ssl";
 	RTLDict.readSSLFile(file);
 }
 

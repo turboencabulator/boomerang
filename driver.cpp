@@ -42,7 +42,7 @@ main(int argc, const char *argv[])
 	init_basicblock();
 #endif
 
-	return Boomerang::get()->commandLine(argc, argv);
+	return Boomerang::get().commandLine(argc, argv);
 }
 #endif
 

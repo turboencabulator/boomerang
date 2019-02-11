@@ -103,13 +103,7 @@ private:
 	                    Boomerang();
 	                   ~Boomerang() = default;
 public:
-	        /**
-	         * \return The global boomerang object. It will be created if it didn't already exist.
-	         */
-	static  Boomerang  *get() {
-		                    if (!boomerang) boomerang = new Boomerang();
-		                    return boomerang;
-	                    }
+	static  Boomerang  &get();
 
 	static  const char *getVersionStr();
 	        std::ostream &log();
@@ -218,18 +212,18 @@ public:
 	        int         minsToStopAfter = 0;
 };
 
-#define LOG                 (Boomerang::get()->log())
-#define VERBOSE             (Boomerang::get()->vFlag)
-#define DEBUG_TA            (Boomerang::get()->debugTA)
-#define DEBUG_PROOF         (Boomerang::get()->debugProof)
-#define DEBUG_UNUSED        (Boomerang::get()->debugUnused)
-#define DEBUG_LIVENESS      (Boomerang::get()->debugLiveness)
-#define DFA_TYPE_ANALYSIS   (Boomerang::get()->dfaTypeAnalysis)
-#define CON_TYPE_ANALYSIS   (Boomerang::get()->conTypeAnalysis)
+#define LOG                 (Boomerang::get().log())
+#define VERBOSE             (Boomerang::get().vFlag)
+#define DEBUG_TA            (Boomerang::get().debugTA)
+#define DEBUG_PROOF         (Boomerang::get().debugProof)
+#define DEBUG_UNUSED        (Boomerang::get().debugUnused)
+#define DEBUG_LIVENESS      (Boomerang::get().debugLiveness)
+#define DFA_TYPE_ANALYSIS   (Boomerang::get().dfaTypeAnalysis)
+#define CON_TYPE_ANALYSIS   (Boomerang::get().conTypeAnalysis)
 #define ADHOC_TYPE_ANALYSIS (!DFA_TYPE_ANALYSIS && !CON_TYPE_ANALYSIS)
-#define DEBUG_GEN           (Boomerang::get()->debugGen)
-#define DUMP_XML            (Boomerang::get()->dumpXML)
-#define DEBUG_SWITCH        (Boomerang::get()->debugSwitch)
-#define EXPERIMENTAL        (Boomerang::get()->experimental)
+#define DEBUG_GEN           (Boomerang::get().debugGen)
+#define DUMP_XML            (Boomerang::get().dumpXML)
+#define DEBUG_SWITCH        (Boomerang::get().debugSwitch)
+#define EXPERIMENTAL        (Boomerang::get().experimental)
 
 #endif

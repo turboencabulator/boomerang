@@ -61,14 +61,14 @@ DecompilerThread::run()
 	threadToCollect = QThread::currentThreadId();
 #endif
 
-	Boomerang::get()->setOutputDirectory("./output/");
-	//Boomerang::get()->vFlag = true;
-	//Boomerang::get()->traceDecoder = true;
+	Boomerang::get().setOutputDirectory("./output/");
+	//Boomerang::get().vFlag = true;
+	//Boomerang::get().traceDecoder = true;
 
 	decompiler = new Decompiler();
 	decompiler->moveToThread(this);
 
-	Boomerang::get()->addWatcher(decompiler);
+	Boomerang::get().addWatcher(decompiler);
 
 	this->setPriority(QThread::LowPriority);
 
@@ -86,13 +86,13 @@ DecompilerThread::getDecompiler()
 void
 Decompiler::setUseDFTA(bool d)
 {
-	Boomerang::get()->dfaTypeAnalysis = d;
+	Boomerang::get().dfaTypeAnalysis = d;
 }
 
 void
 Decompiler::setNoDecodeChildren(bool d)
 {
-	Boomerang::get()->noDecodeChildren = d;
+	Boomerang::get().noDecodeChildren = d;
 }
 
 void
@@ -119,7 +119,7 @@ Decompiler::changeInputFile(const QString &f)
 void
 Decompiler::changeOutputPath(const QString &path)
 {
-	Boomerang::get()->setOutputDirectory(path.toStdString());
+	Boomerang::get().setOutputDirectory(path.toStdString());
 }
 
 void
@@ -189,7 +189,7 @@ Decompiler::decode()
 	for (const auto &ep : user_entrypoints)
 		prog->decodeEntryPoint(ep);
 
-	if (!Boomerang::get()->noDecodeChildren) {
+	if (!Boomerang::get().noDecodeChildren) {
 		// decode anything undecoded
 		fe->decode(NO_ADDRESS);
 	}

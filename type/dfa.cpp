@@ -65,7 +65,7 @@ static int progress = 0;
 void
 UserProc::dfaTypeAnalysis()
 {
-	Boomerang::get()->alert_decompile_debug_point(this, "before dfa type analysis");
+	Boomerang::get().alert_decompile_debug_point(this, "before dfa type analysis");
 
 	// First use the type information from the signature. Sometimes needed to split variables (e.g. argc as a
 	// int and char* in sparc/switch_gcc)
@@ -135,7 +135,7 @@ UserProc::dfaTypeAnalysis()
 
 	// Now use the type information gathered
 #if 0
-	Boomerang::get()->alert_decompile_debug_point(this, "before mapping locals from dfa type analysis");
+	Boomerang::get().alert_decompile_debug_point(this, "before mapping locals from dfa type analysis");
 	if (DEBUG_TA)
 		LOG << " ### mapping expressions to local variables for " << getName() << " ###\n";
 	for (const auto &stmt : stmts) {
@@ -145,7 +145,7 @@ UserProc::dfaTypeAnalysis()
 		LOG << " ### end mapping expressions to local variables for " << getName() << " ###\n";
 #endif
 
-	Boomerang::get()->alert_decompile_debug_point(this, "before other uses of dfa type analysis");
+	Boomerang::get().alert_decompile_debug_point(this, "before other uses of dfa type analysis");
 
 	Prog *prog = getProg();
 	for (const auto &stmt : stmts) {
@@ -339,7 +339,7 @@ UserProc::dfaTypeAnalysis()
 		    << "### end application of dfa type analysis for " << getName() << " ###\n";
 	}
 
-	Boomerang::get()->alert_decompile_debug_point(this, "after dfa type analysis");
+	Boomerang::get().alert_decompile_debug_point(this, "after dfa type analysis");
 }
 
 /**

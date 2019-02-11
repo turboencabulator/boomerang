@@ -363,7 +363,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		closeParen(str, curPrec, PREC_ADD);
 		break;
 	case opMemOf:
-		if (Boomerang::get()->noDecompile) {
+		if (Boomerang::get().noDecompile) {
 			str << "MEMOF(";
 			appendExp(str, u->getSubExp1(), PREC_NONE);
 			str << ")";
@@ -415,7 +415,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		break;
 	case opFsize:
 		// MVE: needs work!
-		if (Boomerang::get()->noDecompile && t->getSubExp3()->isMemOf()) {
+		if (Boomerang::get().noDecompile && t->getSubExp3()->isMemOf()) {
 			assert(t->getSubExp1()->isIntConst());
 			if (((Const *)t->getSubExp1())->getInt() == 32)
 				str << "FLOAT_MEMOF(";
@@ -697,7 +697,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				  || (tt->isSize() && pty->getPointsTo()->getSize() == tt->getSize()))) {
 					str << "*";
 				} else {
-					if (Boomerang::get()->noDecompile) {
+					if (Boomerang::get().noDecompile) {
 						if (tt && tt->isFloat()) {
 							if (tt->asFloat()->getSize() == 32)
 								str << "FLOAT_";
@@ -1244,7 +1244,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 	if (*lhs == *rhs)
 		return;    // never want to see a = a;
 
-	if (Boomerang::get()->noDecompile
+	if (Boomerang::get().noDecompile
 	 && isBareMemof(rhs, proc)
 	 && lhs->isRegOf()
 	 && m_proc->getProg()->getFrontEndId() == PLAT_SPARC) {
@@ -1257,7 +1257,7 @@ CHLLCode::AddAssignmentStatement(int indLevel, Assign *asgn)
 			rhs = new Ternary(opFsize, new Const(64), new Const(64), rhs);
 	}
 
-	if (Boomerang::get()->noDecompile && isBareMemof(lhs, proc)) {
+	if (Boomerang::get().noDecompile && isBareMemof(lhs, proc)) {
 		if (asgnType && asgnType->isFloat()) {
 			if (asgnType->asFloat()->getSize() == 32)
 				s << "FLOAT_";
@@ -1384,7 +1384,7 @@ CHLLCode::AddCallStatement(int indLevel, Proc *proc, const std::string &name, co
 		}
 		if (ok) {
 			bool needclose = false;
-			if (Boomerang::get()->noDecompile
+			if (Boomerang::get().noDecompile
 			 && proc->getSignature()->getParamType(n)
 			 && proc->getSignature()->getParamType(n)->isPointer()) {
 				s << "ADDR(";
@@ -1457,7 +1457,7 @@ CHLLCode::AddReturnStatement(int indLevel, StatementList *rets)
 	s << "return";
 	int n = rets->size();
 
-	if (n == 0 && Boomerang::get()->noDecompile && m_proc->getSignature()->getNumReturns() > 0)
+	if (n == 0 && Boomerang::get().noDecompile && m_proc->getSignature()->getNumReturns() > 0)
 		s << " eax";
 
 	if (n >= 1) {

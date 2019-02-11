@@ -2248,13 +2248,13 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			LOG << "VT expression boils down to this: " << *vtExp << "\n";
 
 		// Danger. For now, only do if -ic given
-		bool decodeThru = Boomerang::get()->decodeThruIndCall;
+		bool decodeThru = Boomerang::get().decodeThruIndCall;
 		if (decodeThru && vtExp && vtExp->isIntConst()) {
 			int addr = ((Const *)vtExp)->getInt();
 			ADDRESS pfunc = prog->readNative4(addr);
 			if (!prog->findProc(pfunc)) {
 				// A new, undecoded procedure
-				if (Boomerang::get()->noDecodeChildren)
+				if (Boomerang::get().noDecodeChildren)
 					return false;
 				prog->decodeEntryPoint(pfunc);
 				// Since this was not decoded, this is a significant change, and we want to redecode the current
@@ -2353,7 +2353,7 @@ BasicBlock::processSwitch(UserProc *proc)
 	for (const auto &dest : dests) {
 		char tmp[1024];
 		sprintf(tmp, "before decoding fragment %i of %i (%x)", ++count, dests.size(), dest);
-		Boomerang::get()->alert_decompile_debug_point(proc, tmp);
+		Boomerang::get().alert_decompile_debug_point(proc, tmp);
 		prog->decodeFragment(proc, dest);
 	}
 }

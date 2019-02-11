@@ -160,7 +160,7 @@ RTLInstDict::readSSLFile(const std::string &SSLFileName)
 
 	fixupParams();
 
-	if (Boomerang::get()->debugDecoder) {
+	if (Boomerang::get().debugDecoder) {
 		std::cout << "\n=======Expanded RTL template dictionary=======\n";
 		print();
 		std::cout << "\n==============================================\n\n";
@@ -435,7 +435,7 @@ RTLInstDict::instantiateRTL(ADDRESS natPC, const RTL &tmpl, const std::list<std:
 
 	for (const auto &ss : *rtl) {
 		ss->fixSuccessor();
-		if (Boomerang::get()->debugDecoder)
+		if (Boomerang::get().debugDecoder)
 			std::cout << "\t\t\t" << *ss << "\n";
 	}
 

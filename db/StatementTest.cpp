@@ -46,7 +46,7 @@ StatementTest::setUp()
 		logset = true;
 		// Null logger.  Discard the logging output by not opening a file.
 		auto nulllogger = new std::ofstream();
-		Boomerang::get()->setLogger(nulllogger);
+		Boomerang::get().setLogger(nulllogger);
 	}
 }
 
@@ -54,14 +54,14 @@ void
 StatementTest::testEmpty()
 {
 	// Force "verbose" flag (-v)
-	Boomerang *boo = Boomerang::get();
-	boo->vFlag = true;
-	boo->setOutputDirectory("./unit_test/");
+	Boomerang &boo = Boomerang::get();
+	boo.vFlag = true;
+	boo.setOutputDirectory("./unit_test/");
 
 	auto filelogger = new std::ofstream();
 	filelogger->rdbuf()->pubsetbuf(nullptr, 0);
-	filelogger->open(Boomerang::get()->getOutputPath() + "log");
-	boo->setLogger(filelogger);
+	filelogger->open(boo.getOutputPath() + "log");
+	boo.setLogger(filelogger);
 
 	// create Prog
 	auto prog = Prog::open(HELLO_PENTIUM);
