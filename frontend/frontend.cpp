@@ -1209,12 +1209,12 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 			rtl->clear();
 		rtl->appendStmt(new GotoStatement(retAddr));
 		try {
-			bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 			// Exception is thrown if overlapping an existing complete BB
-			cfg->addOutEdge(bb, retAddr);
+			bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 			// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
 			// instructions before the return instruction).
 			targetQueue.visit(cfg, retAddr, bb);
+			cfg->addOutEdge(bb, retAddr);
 		} catch (Cfg::BBAlreadyExistsError &) {
 			if (VERBOSE)
 				LOG << "not visiting 0x" << std::hex << retAddr << std::dec << " due to exception\n";
