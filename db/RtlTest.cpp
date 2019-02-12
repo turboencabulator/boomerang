@@ -174,7 +174,7 @@ RtlTest::testIsCompare()
 
 	auto fe = prog->getFrontEnd();
 	CPPUNIT_ASSERT(fe);
-	CPPUNIT_ASSERT(fe->getBinaryFile()->getMachine() == MACHINE_SPARC);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
 
 	// Decode second instruction: "sub      %i0, 2, %o1"
 	int iReg;
@@ -197,7 +197,7 @@ RtlTest::testIsCompare()
 
 	fe = prog->getFrontEnd();
 	CPPUNIT_ASSERT(fe);
-	CPPUNIT_ASSERT(fe->getBinaryFile()->getMachine() == MACHINE_PENTIUM);
+	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_PENTIUM);
 
 	// Decode fifth instruction: "cmp   $0x5,%eax"
 	inst = fe->decodeInstruction(0x80488fb);
