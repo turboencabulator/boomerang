@@ -113,23 +113,25 @@ public:
 	/// Add a "hint" that an instruction at the given address references a named global.
 	void addRefHint(ADDRESS addr, const std::string &nam) { refHints[addr] = nam; }
 
-	const char *getRegName(int);
-	int         getRegSize(int);
-
-	/// Returns an enum identifer for this frontend's platform.
-	virtual platform getFrontEndId() const = 0;
-
-	/// Accessor function to get the decoder.
-	virtual NJMCDecoder &getDecoder() = 0;
-
-	bool isWin32() const;
-
-	static bool noReturnCallDest(const std::string &);
+	/**
+	 * Add an RTL to the map from native address to
+	 * previously-decoded-RTLs.  Used to restore case statements and
+	 * decoded indirect call statements in a new decode following analysis
+	 * of such instructions.  The CFG is incomplete in these cases, and
+	 * needs to be restarted from scratch.
+	 */
+	void addDecodedRtl(ADDRESS a, RTL *rtl) { previouslyDecoded[a] = rtl; }
 
 	BinaryFile *getBinaryFile() const { return pBF; }
 
-	virtual DecodeResult &decodeInstruction(ADDRESS);
-	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
+	bool isWin32() const;
+
+	/// Returns an enum identifer for this frontend's platform.
+	virtual platform getFrontEndId() const = 0;
+	virtual std::vector<Exp *> &getDefaultParams() = 0;
+	virtual std::vector<Exp *> &getDefaultReturns() = 0;
+	const char *getRegName(int);
+	int         getRegSize(int);
 
 	void readLibrarySignatures(const std::string &, callconv);
 	void readLibraryCatalog(const std::string &);
@@ -137,9 +139,12 @@ public:
 
 	Signature *getLibSignature(const std::string &) const;
 	Signature *getDefaultSignature(const std::string &) const;
+	static bool noReturnCallDest(const std::string &);
 
-	virtual std::vector<Exp *> &getDefaultParams() = 0;
-	virtual std::vector<Exp *> &getDefaultReturns() = 0;
+	virtual ADDRESS getMainEntryPoint(bool &);
+	std::vector<ADDRESS> getEntryPoints();
+
+	virtual DecodeResult &decodeInstruction(ADDRESS);
 
 	void decode();
 	void decode(ADDRESS);
@@ -147,6 +152,10 @@ public:
 	void decodeFragment(UserProc *, ADDRESS);
 
 	virtual bool processProc(ADDRESS, UserProc *, bool = false, bool = false);
+
+private:
+	/// Accessor function to get the decoder.
+	virtual NJMCDecoder &getDecoder() = 0;
 
 	/**
 	 * Given the dest of a call, determine if this is a machine specific
@@ -156,22 +165,12 @@ public:
 	 */
 	virtual bool helperFunc(std::list<RTL *> &rtls, ADDRESS addr, ADDRESS dest) { return false; }
 
-	virtual ADDRESS getMainEntryPoint(bool &);
-
-	std::vector<ADDRESS> getEntryPoints();
-
-	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
+	virtual void extraProcessCall(CallStatement *call, std::list<RTL *> *BB_rtls) { }
 
 	void appendSyntheticReturn(BasicBlock *, UserProc *, RTL *);
 
-	/**
-	 * Add an RTL to the map from native address to
-	 * previously-decoded-RTLs.  Used to restore case statements and
-	 * decoded indirect call statements in a new decode following analysis
-	 * of such instructions.  The CFG is incomplete in these cases, and
-	 * needs to be restarted from scratch.
-	 */
-	void addDecodedRtl(ADDRESS a, RTL *rtl) { previouslyDecoded[a] = rtl; }
+protected:
+	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
 };
 
 

@@ -27,15 +27,14 @@ class CallStatement;
  */
 class SparcFrontEnd : public FrontEnd {
 	SparcDecoder decoder;
+	NJMCDecoder &getDecoder() override { return decoder; }
+
+	platform getFrontEndId() const override { return PLAT_SPARC; }
+	std::vector<Exp *> &getDefaultParams() override;
+	std::vector<Exp *> &getDefaultReturns() override;
 
 public:
 	SparcFrontEnd(BinaryFile *, Prog *);
-
-	platform getFrontEndId() const override { return PLAT_SPARC; }
-	NJMCDecoder &getDecoder() override { return decoder; }
-
-	std::vector<Exp *> &getDefaultParams() override;
-	std::vector<Exp *> &getDefaultReturns() override;
 
 	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
 

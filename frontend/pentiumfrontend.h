@@ -22,15 +22,14 @@ class Statement;
  */
 class PentiumFrontEnd : public FrontEnd {
 	PentiumDecoder decoder;
+	NJMCDecoder &getDecoder() override { return decoder; }
+
+	platform getFrontEndId() const override { return PLAT_PENTIUM; }
+	std::vector<Exp *> &getDefaultParams() override;
+	std::vector<Exp *> &getDefaultReturns() override;
 
 public:
 	PentiumFrontEnd(BinaryFile *, Prog *);
-
-	platform getFrontEndId() const override { return PLAT_PENTIUM; }
-	NJMCDecoder &getDecoder() override { return decoder; }
-
-	std::vector<Exp *> &getDefaultParams() override;
-	std::vector<Exp *> &getDefaultReturns() override;
 
 	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
 
