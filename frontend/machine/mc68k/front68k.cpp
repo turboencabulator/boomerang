@@ -211,14 +211,6 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 
 						auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 
-						// Exit the switch now and stop decoding sequentially if the
-						// basic block already existed
-						if (!bb) {
-							sequentialDecode = false;
-							BB_rtls = nullptr;
-							break;
-						}
-
 						// Add the out edge if it is to a destination within the
 						// procedure
 						if (dest < upper) {
@@ -265,28 +257,21 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					BB_rtls->push_back(inst.rtl);
 					auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
 
-					// Stop decoding sequentially if the basic block already existed
-					// otherwise complete the basic block
-					if (!bb) {
-						sequentialDecode = false;
+					// Add the out edge if it is to a destination within the
+					// procedure
+					if (dest < upper) {
+						visit(cfg, dest, targets, bb);
+						cfg->addOutEdge(bb, dest);
 					} else {
-
-						// Add the out edge if it is to a destination within the
-						// procedure
-						if (dest < upper) {
-							visit(cfg, dest, targets, bb);
-							cfg->addOutEdge(bb, dest);
-						} else {
-							ostrstream ost;
-							ost << "Error: Instruction at " << hex << addr;
-							ost << " branches beyond end of section, to ";
-							ost << dest;
-							error(str(ost));
-						}
-
-						// Add the fall-through outedge
-						cfg->addOutEdge(bb, addr + inst.numBytes);
+						ostrstream ost;
+						ost << "Error: Instruction at " << hex << addr;
+						ost << " branches beyond end of section, to ";
+						ost << dest;
+						error(str(ost));
 					}
+
+					// Add the fall-through outedge
+					cfg->addOutEdge(bb, addr + inst.numBytes);
 
 					// Create the list of RTLs for the next basic block and continue
 					// with the next instruction.
@@ -303,12 +288,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						BB_rtls->push_back(inst.rtl);
 						auto bb = cfg->newBB(BB_rtls, COMPCALL, 1);
 
-						// Stop decoding sequentially if the basic block already
-						// existed otherwise complete the basic block
-						if (!bb)
-							sequentialDecode = false;
-						else
-							cfg->addOutEdge(bb, addr + inst.numBytes);
+						cfg->addOutEdge(bb, addr + inst.numBytes);
 
 					} else {      // Static call
 
@@ -359,10 +339,8 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 								// This ends the function
 								sequentialDecode = false;
 							} else {
-								// Add the fall through edge if the block didn't
-								// already exist
-								if (bb)
-									cfg->addOutEdge(bb, addr + inst.numBytes);
+								// Add the fall through edge
+								cfg->addOutEdge(bb, addr + inst.numBytes);
 							}
 						}
 					}
@@ -415,10 +393,9 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
 					// Add an out edge to this address
-					if (auto bb = cfg->newBB(BB_rtls, FALL, 1)) {
-						cfg->addOutEdge(bb, addr);
-						BB_rtls = nullptr;      // Need new list of RTLs
-					}
+					auto bb = cfg->newBB(BB_rtls, FALL, 1);
+					cfg->addOutEdge(bb, addr);
+					BB_rtls = nullptr;      // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))

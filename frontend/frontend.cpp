@@ -753,11 +753,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 							BB_rtls = nullptr;  // Clear when make new BB
 
-							// Exit the switch now if the basic block already existed
-							if (!bb) {
-								break;
-							}
-
 							// Add the out edge if it is to a destination within the
 							// procedure
 							if (dest < pBF->getLimitTextHigh()) {
@@ -853,23 +848,17 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						BB_rtls->push_back(rtl);
 						auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
 
-						// Stop decoding sequentially if the basic block already existed otherwise complete the basic block
-						if (!bb)
-							sequentialDecode = false;
-						else {
-
-							// Add the out edge if it is to a destination within the procedure
-							if (dest < pBF->getLimitTextHigh()) {
-								targetQueue.visit(cfg, dest, bb);
-								cfg->addOutEdge(bb, dest);
-							} else {
-								LOG << "Error: Instruction at 0x" << std::hex << addr << std::dec
-								    << " branches beyond end of section, to 0x" << std::hex << dest << std::dec << "\n";
-							}
-
-							// Add the fall-through outedge
-							cfg->addOutEdge(bb, addr + inst.numBytes);
+						// Add the out edge if it is to a destination within the procedure
+						if (dest < pBF->getLimitTextHigh()) {
+							targetQueue.visit(cfg, dest, bb);
+							cfg->addOutEdge(bb, dest);
+						} else {
+							LOG << "Error: Instruction at 0x" << std::hex << addr << std::dec
+							    << " branches beyond end of section, to 0x" << std::hex << dest << std::dec << "\n";
 						}
+
+						// Add the fall-through outedge
+						cfg->addOutEdge(bb, addr + inst.numBytes);
 
 						// Create the list of RTLs for the next basic block and continue with the next instruction.
 						BB_rtls = nullptr;
@@ -935,13 +924,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						if (call->isComputed()) {
 							BB_rtls->push_back(rtl);
 							auto bb = cfg->newBB(BB_rtls, COMPCALL, 1);
+							cfg->addOutEdge(bb, addr + inst.numBytes);
 
-							// Stop decoding sequentially if the basic block already
-							// existed otherwise complete the basic block
-							if (!bb)
-								sequentialDecode = false;
-							else
-								cfg->addOutEdge(bb, addr + inst.numBytes);
 							// Add this call to the list of calls to analyse. We won't
 							// be able to analyse it's callee(s), of course.
 							callList.push_back(call);
@@ -1011,10 +995,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 									// This ends the function
 									sequentialDecode = false;
 								} else {
-									// Add the fall through edge if the block didn't
-									// already exist
-									if (bb)
-										cfg->addOutEdge(bb, addr + inst.numBytes);
+									// Add the fall through edge
+									cfg->addOutEdge(bb, addr + inst.numBytes);
 								}
 							}
 						}
@@ -1074,10 +1056,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
 					// Add an out edge to this address
-					if (auto bb = cfg->newBB(BB_rtls, FALL, 1)) {
-						cfg->addOutEdge(bb, addr);
-						BB_rtls = nullptr;  // Need new list of RTLs
-					}
+					auto bb = cfg->newBB(BB_rtls, FALL, 1);
+					cfg->addOutEdge(bb, addr);
+					BB_rtls = nullptr;  // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))
@@ -1229,7 +1210,7 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 		rtl->appendStmt(new GotoStatement(retAddr));
 		try {
 			bb = cfg->newBB(BB_rtls, ONEWAY, 1);
-			// if BB already exists but is incomplete, exception is thrown
+			// Exception is thrown if overlapping an existing complete BB
 			cfg->addOutEdge(bb, retAddr);
 			// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
 			// instructions before the return instruction).

@@ -167,9 +167,6 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 void
 SparcFrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq)
 {
-	if (!newBB)
-		return;
-
 	if (dest < pBF->getLimitTextHigh()) {
 		tq.visit(cfg, dest, newBB);
 		cfg->addOutEdge(newBB, dest);
@@ -192,9 +189,6 @@ SparcFrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQu
 void
 SparcFrontEnd::handleCall(UserProc *proc, ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS address, int offset)
 {
-	if (!callBB)
-		return;
-
 	// If the destination address is the same as this very instruction, we have a call with iDisp30 == 0. Don't treat
 	// this as the start of a real procedure.
 	if ((dest != address) && !proc->getProg()->findProc(dest)) {
@@ -293,8 +287,6 @@ SparcFrontEnd::case_CALL(ADDRESS &addr, DecodeResult &inst,
 		// End the current basic block
 		auto cfg = proc->getCFG();
 		auto callBB = cfg->newBB(BB_rtls, CALL, 1);
-		if (!callBB)
-			return false;
 
 		// Add this call site to the set of call sites which need to be analysed later.
 		// This set will be used later to call prog.visitProc (so the proc will get decoded)
@@ -397,7 +389,6 @@ SparcFrontEnd::case_SD(ADDRESS &addr, const DecodeResult &inst,
 
 	// Add the one-way branch BB
 	auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
-	if (!bb) { BB_rtls = nullptr; return; }
 
 	// Visit the destination, and add the out-edge
 	handleBranch(SD_stmt->getFixedDest(), bb, cfg, tq);
@@ -459,23 +450,18 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 		bRet = false;
 		break;
 	case STMT_CASE:
-		{
-			BB_rtls->push_back(inst.rtl);
-			newBB = cfg->newBB(BB_rtls, COMPJUMP, 0);
-			bRet = false;
-			Exp *dest = ((CaseStatement *)lastStmt)->getDest();
-			if (!dest) {  // Happens if already analysed (we are now redecoding)
-				//SWITCH_INFO *psi = ((CaseStatement *)lastStmt)->getSwitchInfo();
-				// processSwitch will update the BB type and number of outedges, decode arms, set out edges, etc
-				newBB->processSwitch(proc);
-			}
+		BB_rtls->push_back(inst.rtl);
+		newBB = cfg->newBB(BB_rtls, COMPJUMP, 0);
+		bRet = false;
+		if (!((CaseStatement *)lastStmt)->getDest()) {  // Happens if already analysed (we are now redecoding)
+			//SWITCH_INFO *psi = ((CaseStatement *)lastStmt)->getSwitchInfo();
+			// processSwitch will update the BB type and number of outedges, decode arms, set out edges, etc
+			newBB->processSwitch(proc);
 		}
 		break;
 	default:
-		newBB = nullptr;
-		break;
+		return false;
 	}
-	if (!newBB) return false;
 
 	auto last = inst.rtl->getList().back();
 	// Do extra processing for for special types of DD
@@ -544,7 +530,6 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Assumes the first instruction of the pattern is not used in the true leg
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!bb) return false;
 		handleBranch(dest, bb, cfg, tq);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
@@ -568,7 +553,6 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!bb) return false;
 		handleBranch(dest, bb, cfg, tq);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
@@ -580,7 +564,6 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!bb) return false;
 		handleBranch(dest - 4, bb, cfg, tq);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
@@ -591,7 +574,6 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs. We want to do this first, else ordering can go silly
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!bb) return false;
 		// Visit the target of the branch
 		tq.visit(cfg, dest, bb);
 		auto pOrphan = new std::list<RTL *>;
@@ -657,14 +639,12 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!bb) return false;
 		handleBranch(dest - 4, bb, cfg, tq);
 	} else {  // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan. First add the branch.
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs.  We want to do this first, else ordering can go silly
 		bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		if (!bb) return false;
 		// Visit the target of the branch
 		tq.visit(cfg, dest, bb);
 		auto pOrphan = new std::list<RTL *>;
@@ -1112,10 +1092,6 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							BB_rtls->push_back(inst.rtl);
 							// Create the BB and add it to the CFG
 							auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-							if (!bb) {
-								sequentialDecode = false;
-								break;
-							}
 							// Visit the destination of the branch; add "true" leg
 							auto dest = stmt_jump->getFixedDest();
 							handleBranch(dest, bb, cfg, targetQueue);
@@ -1151,10 +1127,9 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
 					// Add an out edge to this address
-					if (auto bb = cfg->newBB(BB_rtls, FALL, 1)) {
-						cfg->addOutEdge(bb, addr);
-						BB_rtls = nullptr;  // Need new list of RTLs
-					}
+					auto bb = cfg->newBB(BB_rtls, FALL, 1);
+					cfg->addOutEdge(bb, addr);
+					BB_rtls = nullptr;  // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))
