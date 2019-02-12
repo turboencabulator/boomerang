@@ -752,16 +752,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 							auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 							BB_rtls = nullptr;  // Clear when make new BB
-
-							// Add the out edge if it is to a destination within the
-							// procedure
-							if (dest < pBF->getLimitTextHigh()) {
-								targetQueue.visit(cfg, dest, bb);
-								cfg->addOutEdge(bb, dest);
-							} else {
-								LOG << "Error: Instruction at 0x" << std::hex << addr << std::dec
-								    << " branches beyond end of section, to 0x" << std::hex << dest << std::dec << "\n";
-							}
+							handleBranch(dest, bb, cfg, targetQueue);
 						}
 					}
 					break;
@@ -847,15 +838,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						auto dest = branch->getFixedDest();
 						BB_rtls->push_back(rtl);
 						auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-
-						// Add the out edge if it is to a destination within the procedure
-						if (dest < pBF->getLimitTextHigh()) {
-							targetQueue.visit(cfg, dest, bb);
-							cfg->addOutEdge(bb, dest);
-						} else {
-							LOG << "Error: Instruction at 0x" << std::hex << addr << std::dec
-							    << " branches beyond end of section, to 0x" << std::hex << dest << std::dec << "\n";
-						}
+						handleBranch(dest, bb, cfg, targetQueue);
 
 						// Add the fall-through outedge
 						cfg->addOutEdge(bb, addr + inst.numBytes);
@@ -1168,6 +1151,25 @@ TargetQueue::nextAddress(Cfg *cfg)
 	return NO_ADDRESS;
 }
 
+/*
+ * \brief Add a synthetic return instruction and basic block (or a branch to
+ * the existing return instruction).
+ *
+ * \param callBB  The call BB that will be followed by the return or jump.
+ * \param proc    The enclosing UserProc.
+ * \param rtl     The current RTL with the call instruction.
+ *
+ * \note The call BB should be created with one out edge (the return or branch
+ * BB).
+ */
+void
+FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc, RTL *rtl)
+{
+	auto cfg = proc->getCFG();
+	auto pret = createReturnBlock(proc, nullptr, new RTL(rtl->getAddress() + 1, new ReturnStatement()));
+	cfg->addOutEdge(callBB, pret);
+}
+
 /**
  * \brief Create a Return or a Oneway BB if a return statement already exists.
  *
@@ -1223,21 +1225,28 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 	return bb;
 }
 
-/*
- * \brief Add a synthetic return instruction and basic block (or a branch to
- * the existing return instruction).
+/**
+ * Adds the destination of a branch to the queue of address that must be
+ * decoded (if this destination has not already been visited).
  *
- * \param callBB  The call BB that will be followed by the return or jump.
- * \param proc    The enclosing UserProc.
- * \param rtl     The current RTL with the call instruction.
+ * \param dest       The destination being branched to.
+ * \param newBB      The new basic block delimited by the branch instruction.
+ *                   May be nullptr if this block has been built before.
+ * \param cfg        The CFG of the current procedure.
+ * \param tq         Object managing the target queue.
  *
- * \note The call BB should be created with one out edge (the return or branch
- * BB).
+ * \par Side Effect
+ * newBB may be changed if the destination of the branch is in the middle of
+ * an existing BB.  It will then be changed to point to a new BB beginning
+ * with the dest.
  */
 void
-FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc, RTL *rtl)
+FrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq)
 {
-	auto cfg = proc->getCFG();
-	auto pret = createReturnBlock(proc, nullptr, new RTL(rtl->getAddress() + 1, new ReturnStatement()));
-	cfg->addOutEdge(callBB, pret);
+	if (dest < pBF->getLimitTextHigh()) {
+		tq.visit(cfg, dest, newBB);
+		cfg->addOutEdge(newBB, dest);
+	} else {
+		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";
+	}
 }

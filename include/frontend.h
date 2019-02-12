@@ -171,6 +171,8 @@ private:
 
 protected:
 	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
+
+	void handleBranch(ADDRESS, BasicBlock *&, Cfg *, TargetQueue &);
 };
 
 

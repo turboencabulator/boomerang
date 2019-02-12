@@ -150,31 +150,6 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 }
 
 /**
- * Adds the destination of a branch to the queue of address that must be
- * decoded (if this destination has not already been visited).
- *
- * \param dest       The destination being branched to.
- * \param newBB      The new basic block delimited by the branch instruction.
- *                   May be nullptr if this block has been built before.
- * \param cfg        The CFG of the current procedure.
- * \param tq         Object managing the target queue.
- *
- * \par Side Effect
- * newBB may be changed if the destination of the branch is in the middle of
- * an existing BB.  It will then be changed to point to a new BB beginning
- * with the dest.
- */
-void
-SparcFrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq)
-{
-	if (dest < pBF->getLimitTextHigh()) {
-		tq.visit(cfg, dest, newBB);
-		cfg->addOutEdge(newBB, dest);
-	} else
-		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";
-}
-
-/**
  * Records the fact that there is a procedure at a given address.  Also adds
  * the out edge to the lexical successor of the call site (taking into
  * consideration the delay slot and possible UNIMP instruction).
