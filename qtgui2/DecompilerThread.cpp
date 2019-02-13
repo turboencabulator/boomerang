@@ -167,7 +167,7 @@ Decompiler::load()
 		emit newEntrypoint(ep, fe->getBinaryFile()->getSymbolByAddress(ep));
 	}
 
-	for (size_t i = 1; i < fe->getBinaryFile()->getNumSections(); ++i) {
+	for (size_t i = 0; i < fe->getBinaryFile()->getNumSections(); ++i) {
 		const SectionInfo *section = fe->getBinaryFile()->getSectionInfo(i);
 		emit newSection(QString::fromStdString(section->name), section->uNativeAddr, section->uNativeAddr + section->uSectionSize);
 	}
