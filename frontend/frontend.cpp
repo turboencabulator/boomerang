@@ -460,6 +460,7 @@ FrontEnd::decode(ADDRESS a)
 	prog->wellForm();
 }
 
+#if 0 // Cruft?
 /**
  * \brief Decode one proc starting at a given address in a given program.
  *
@@ -475,6 +476,7 @@ FrontEnd::decodeOnly(ADDRESS a)
 		up->setDecoded();
 	prog->wellForm();
 }
+#endif
 
 /**
  * \brief Decode a fragment of a procedure, e.g. for each destination of a

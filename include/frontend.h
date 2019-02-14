@@ -148,7 +148,7 @@ public:
 
 	void decode();
 	void decode(ADDRESS);
-	void decodeOnly(ADDRESS);
+	//void decodeOnly(ADDRESS);
 	void decodeFragment(UserProc *, ADDRESS);
 
 	virtual bool processProc(ADDRESS, UserProc *, bool = false, bool = false);
