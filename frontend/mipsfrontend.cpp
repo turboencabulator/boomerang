@@ -25,6 +25,7 @@ MIPSFrontEnd::MIPSFrontEnd(BinaryFile *bf, Prog *prog) :
 {
 }
 
+#if 0 // Cruft?
 std::vector<Exp *> &
 MIPSFrontEnd::getDefaultParams()
 {
@@ -48,6 +49,7 @@ MIPSFrontEnd::getDefaultReturns()
 	}
 	return returns;
 }
+#endif
 
 bool
 MIPSFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)

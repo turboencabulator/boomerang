@@ -171,8 +171,8 @@ public:
 
 	        Signature  *getDefaultSignature(const std::string &) const;
 
-	        std::vector<Exp *> &getDefaultParams() const;
-	        std::vector<Exp *> &getDefaultReturns() const;
+	        //std::vector<Exp *> &getDefaultParams() const;
+	        //std::vector<Exp *> &getDefaultReturns() const;
 
 	// Returns true if this is a win32 program
 	        bool        isWin32() const;

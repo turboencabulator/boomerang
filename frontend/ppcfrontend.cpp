@@ -32,6 +32,7 @@ PPCFrontEnd::PPCFrontEnd(BinaryFile *bf, Prog *prog) :
 {
 }
 
+#if 0 // Cruft?
 std::vector<Exp *> &
 PPCFrontEnd::getDefaultParams()
 {
@@ -55,6 +56,7 @@ PPCFrontEnd::getDefaultReturns()
 	}
 	return returns;
 }
+#endif
 
 bool
 PPCFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)

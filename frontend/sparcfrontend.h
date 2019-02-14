@@ -30,8 +30,8 @@ class SparcFrontEnd : public FrontEnd {
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	platform getFrontEndId() const override { return PLAT_SPARC; }
-	std::vector<Exp *> &getDefaultParams() override;
-	std::vector<Exp *> &getDefaultReturns() override;
+	//std::vector<Exp *> &getDefaultParams() override;
+	//std::vector<Exp *> &getDefaultReturns() override;
 
 public:
 	SparcFrontEnd(BinaryFile *, Prog *);

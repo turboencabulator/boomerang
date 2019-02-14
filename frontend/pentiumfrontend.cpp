@@ -196,6 +196,7 @@ PentiumFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 	return true;
 }
 
+#if 0 // Cruft?
 std::vector<Exp *> &
 PentiumFrontEnd::getDefaultParams()
 {
@@ -239,6 +240,7 @@ PentiumFrontEnd::getDefaultReturns()
 	}
 	return returns;
 }
+#endif
 
 /**
  * Little simpler, just replaces FPUSH and FPOP with more complex semantics.

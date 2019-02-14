@@ -25,8 +25,8 @@ class MIPSFrontEnd : public FrontEnd {
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	platform getFrontEndId() const override { return PLAT_MIPS; }
-	std::vector<Exp *> &getDefaultParams() override;
-	std::vector<Exp *> &getDefaultReturns() override;
+	//std::vector<Exp *> &getDefaultParams() override;
+	//std::vector<Exp *> &getDefaultReturns() override;
 
 public:
 	MIPSFrontEnd(BinaryFile *, Prog *);

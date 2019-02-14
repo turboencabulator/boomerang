@@ -128,8 +128,8 @@ public:
 
 	/// Returns an enum identifer for this frontend's platform.
 	virtual platform getFrontEndId() const = 0;
-	virtual std::vector<Exp *> &getDefaultParams() = 0;
-	virtual std::vector<Exp *> &getDefaultReturns() = 0;
+	//virtual std::vector<Exp *> &getDefaultParams() = 0;
+	//virtual std::vector<Exp *> &getDefaultReturns() = 0;
 	const char *getRegName(int);
 	int         getRegSize(int);
 

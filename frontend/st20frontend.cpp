@@ -32,6 +32,7 @@ ST20FrontEnd::ST20FrontEnd(BinaryFile *bf, Prog *prog) :
 {
 }
 
+#if 0 // Cruft?
 std::vector<Exp *> &
 ST20FrontEnd::getDefaultParams()
 {
@@ -58,6 +59,7 @@ ST20FrontEnd::getDefaultReturns()
 	}
 	return returns;
 }
+#endif
 
 bool
 ST20FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)

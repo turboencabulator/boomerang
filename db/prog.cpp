@@ -635,6 +635,7 @@ Prog::getDefaultSignature(const std::string &name) const
 	return pFE->getDefaultSignature(name);
 }
 
+#if 0 // Cruft?
 std::vector<Exp *> &
 Prog::getDefaultParams() const
 {
@@ -646,6 +647,7 @@ Prog::getDefaultReturns() const
 {
 	return pFE->getDefaultReturns();
 }
+#endif
 
 bool
 Prog::isWin32() const

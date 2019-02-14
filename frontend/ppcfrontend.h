@@ -21,8 +21,8 @@ class PPCFrontEnd : public FrontEnd {
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	platform getFrontEndId() const override { return PLAT_PPC; }
-	std::vector<Exp *> &getDefaultParams() override;
-	std::vector<Exp *> &getDefaultReturns() override;
+	//std::vector<Exp *> &getDefaultParams() override;
+	//std::vector<Exp *> &getDefaultReturns() override;
 
 public:
 	PPCFrontEnd(BinaryFile *, Prog *);

@@ -643,6 +643,7 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 	return true;
 }
 
+#if 0 // Cruft?
 std::vector<Exp *> &
 SparcFrontEnd::getDefaultParams()
 {
@@ -675,6 +676,7 @@ SparcFrontEnd::getDefaultReturns()
 	}
 	return returns;
 }
+#endif
 
 /**
  * Builds the CFG for a procedure out of the RTLs constructed during decoding.

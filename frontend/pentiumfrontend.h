@@ -25,8 +25,8 @@ class PentiumFrontEnd : public FrontEnd {
 	NJMCDecoder &getDecoder() override { return decoder; }
 
 	platform getFrontEndId() const override { return PLAT_PENTIUM; }
-	std::vector<Exp *> &getDefaultParams() override;
-	std::vector<Exp *> &getDefaultReturns() override;
+	//std::vector<Exp *> &getDefaultParams() override;
+	//std::vector<Exp *> &getDefaultReturns() override;
 
 public:
 	PentiumFrontEnd(BinaryFile *, Prog *);
