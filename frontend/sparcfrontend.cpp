@@ -719,8 +719,6 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		// The list of RTLs for the current basic block
 		auto BB_rtls = new std::list<RTL *>();
 
-		//ADDRESS start = addr;
-
 		// Indicates whether or not the next instruction to be decoded is the lexical successor of the current one.
 		// Will be true for all NCTs and for CTIs with a fall through branch.
 		// Keep decoding sequentially until a CTI without a fall through branch is decoded
@@ -1114,10 +1112,6 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 			}
 
 		} // while (sequentialDecode)
-
-		// Add this range to the coverage
-		//proc->addRange(start, addr);
-
 	} // End huge while loop
 
 

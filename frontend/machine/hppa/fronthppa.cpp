@@ -807,8 +807,6 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 		// The list of RTLs for the current basic block
 		auto BB_rtls = new list<HRTL *>();
 
-		ADDRESS start = addr;
-
 		// Indicates whether or not the next instruction to be decoded is the lexical successor of the current one.
 		// Will be true for all NCTs and for CTIs with a fall through branch.
 		// Keep decoding sequentially until a CTI without a fall through branch is decoded
@@ -1198,43 +1196,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 			}
 
 		}       // while (sequentialDecode)
-
-		// Add this range to the coverage
-		proc->addRange(start, addr);
-
 	}
-
-	// This pass is to remove single nops between ranges.
-	// These will be assumed to be padding for alignments of BBs
-	// Possibly removes a lot of ranges that could otherwise be combined
-	ADDRESS a1, a2;
-	COV_CIT ii;
-	Coverage temp;
-	if (proc->getFirstGap(a1, a2, ii)) {
-		do {
-			int gap = a2 - a1;
-			if (gap < 8) {
-				bool allNops = true;
-				for (int i = 0; i < gap; i += 4) {
-					// Beware endianness! getDword will work properly
-					if (getDword(a1 + i + delta) != 0x08000240) {
-						allNops = false;
-						break;
-					}
-				}
-				if (allNops)
-					// Remove this gap, by adding a range equal to the gap
-					// Note: it's not safe to add the range now, so we put
-					// the range into a temp Coverage object to be added later
-					temp.addRange(a1, a2);
-			}
-		} while (proc->getNextGap(a1, a2, ii));
-	}
-	// Now add the ranges in temp
-	proc->addRanges(temp);
-
-	// Add the resultant coverage to the program's coverage
-	proc->addProcCoverage();
 
 	// Add the callees to the set of HLCalls to proces for CSR, and also
 	// to the Prog object
