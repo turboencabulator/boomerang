@@ -728,9 +728,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							call->setDestProc(destProc);
 							call->setReturnAfterCall(true);
 							// also need to change it in the actual RTL
-							auto ss1 = ss;
-							++ss1;
-							assert(ss1 == sl.end());
+							assert(ss == --sl.end());
 							rtl->replaceLastStmt(s);
 							*ss = s;
 						}
