@@ -786,7 +786,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							call->setDestProc(lp);
 							BB_rtls->push_back(new RTL(rtl->getAddress(), call));
 							auto bb = cfg->newBB(BB_rtls, CALL, 1);
-							appendSyntheticReturn(bb, proc, rtl);
+							appendSyntheticReturn(bb, proc);
 							sequentialDecode = false;
 							BB_rtls = nullptr;
 							if (rtl->getAddress() == proc->getNativeAddress()) {
@@ -955,7 +955,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 								//call->setReturnAfterCall(true);  // I think only the Sparc frontend cares
 								// Create the new basic block
 								auto bb = cfg->newBB(BB_rtls, CALL, 1);
-								appendSyntheticReturn(bb, proc, rtl);
+								appendSyntheticReturn(bb, proc);
 
 								// Stop decoding sequentially
 								sequentialDecode = false;
@@ -1151,16 +1151,15 @@ TargetQueue::nextAddress(Cfg *cfg)
  *
  * \param callBB  The call BB that will be followed by the return or jump.
  * \param proc    The enclosing UserProc.
- * \param rtl     The current RTL with the call instruction.
  *
  * \note The call BB should be created with one out edge (the return or branch
  * BB).
  */
 void
-FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc, RTL *rtl)
+FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc)
 {
 	auto cfg = proc->getCFG();
-	auto pret = createReturnBlock(proc, nullptr, new RTL(rtl->getAddress() + 1, new ReturnStatement()));
+	auto pret = createReturnBlock(proc, nullptr, new RTL(callBB->getLastRtl()->getAddress() + 1, new ReturnStatement()));
 	cfg->addOutEdge(callBB, pret);
 }
 
