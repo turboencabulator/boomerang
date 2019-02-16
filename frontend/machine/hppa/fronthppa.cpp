@@ -341,10 +341,9 @@ case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
 			int offset = inst.forceOutEdge ? 0 : 8;
 
 			bool ret = true;
-			// Check for _exit; probably should check for other "never return"
-			// functions
+			// Check for "never return" functions
 			const char *name = prog.pBF->getSymbolByAddress(dest);
-			if (name && strcmp(name, "_exit") == 0) {
+			if (name && noReturnCallDest(name)) {
 				// Don't keep decoding after this call
 				ret = false;
 				// Also don't add an out-edge; setting offset to 0 will do this
