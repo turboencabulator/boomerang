@@ -312,18 +312,20 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		break;
 	case opNot:
 		openParen(str, curPrec, PREC_UNARY);
-		str << " !";
+		str << "~";
 		appendExp(str, u->getSubExp1(), PREC_UNARY);
 		closeParen(str, curPrec, PREC_UNARY);
 		break;
 	case opLNot:
 		openParen(str, curPrec, PREC_UNARY);
+		str << "!";
 		appendExp(str, u->getSubExp1(), PREC_UNARY);
 		closeParen(str, curPrec, PREC_UNARY);
 		break;
 	case opNeg:
 	case opFNeg:
 		openParen(str, curPrec, PREC_UNARY);
+		str << "-";
 		appendExp(str, u->getSubExp1(), PREC_UNARY);
 		closeParen(str, curPrec, PREC_UNARY);
 		break;
@@ -349,6 +351,9 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		}
 		break;
 	case opPlus:
+	case opFPlus:
+	case opFPlusd:
+	case opFPlusq:
 		openParen(str, curPrec, PREC_ADD);
 		appendExp(str, b->getSubExp1(), PREC_ADD);
 		str << " + ";
@@ -356,6 +361,9 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		closeParen(str, curPrec, PREC_ADD);
 		break;
 	case opMinus:
+	case opFMinus:
+	case opFMinusd:
+	case opFMinusq:
 		openParen(str, curPrec, PREC_ADD);
 		appendExp(str, b->getSubExp1(), PREC_ADD);
 		str << " - ";
@@ -429,6 +437,9 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		break;
 	case opMult:
 	case opMults:  // FIXME: check types
+	case opFMult:
+	case opFMultd:
+	case opFMultq:
 		openParen(str, curPrec, PREC_MULT);
 		appendExp(str, b->getSubExp1(), PREC_MULT);
 		str << " * ";
@@ -437,6 +448,9 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		break;
 	case opDiv:
 	case opDivs:  // FIXME: check types
+	case opFDiv:
+	case opFDivd:
+	case opFDivq:
 		openParen(str, curPrec, PREC_MULT);
 		appendExp(str, b->getSubExp1(), PREC_MULT);
 		str << " / ";
@@ -475,42 +489,6 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		str << " : ";
 		appendExp(str, t->getSubExp3(), PREC_COND);
 		closeParen(str, curPrec, PREC_COND);
-		break;
-	case opFPlus:
-	case opFPlusd:
-	case opFPlusq:
-		openParen(str, curPrec, PREC_ADD);
-		appendExp(str, b->getSubExp1(), PREC_ADD);
-		str << " + ";
-		appendExp(str, b->getSubExp2(), PREC_ADD);
-		closeParen(str, curPrec, PREC_ADD);
-		break;
-	case opFMinus:
-	case opFMinusd:
-	case opFMinusq:
-		openParen(str, curPrec, PREC_ADD);
-		appendExp(str, b->getSubExp1(), PREC_ADD);
-		str << " - ";
-		appendExp(str, b->getSubExp2(), PREC_ADD);
-		closeParen(str, curPrec, PREC_ADD);
-		break;
-	case opFMult:
-	case opFMultd:
-	case opFMultq:
-		openParen(str, curPrec, PREC_MULT);
-		appendExp(str, b->getSubExp1(), PREC_MULT);
-		str << " * ";
-		appendExp(str, b->getSubExp2(), PREC_MULT);
-		closeParen(str, curPrec, PREC_MULT);
-		break;
-	case opFDiv:
-	case opFDivd:
-	case opFDivq:
-		openParen(str, curPrec, PREC_MULT);
-		appendExp(str, b->getSubExp1(), PREC_MULT);
-		str << " / ";
-		appendExp(str, b->getSubExp2(), PREC_MULT);
-		closeParen(str, curPrec, PREC_MULT);
 		break;
 	case opFround:
 		// Note: we need roundf or roundl depending on size of operands
