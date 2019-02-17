@@ -415,10 +415,6 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 		newBB = cfg->newBB(BB_rtls, COMPCALL, 1);
 		break;
 	case STMT_RET:
-#if 0
-		newBB = cfg->newBB(BB_rtls, RET, 0);
-		proc->setTheReturnAddr((ReturnStatement *)inst.rtl->getList().back(), inst.rtl->getAddress());
-#endif
 		newBB = createReturnBlock(proc, BB_rtls, inst.rtl);
 		bRet = false;
 		break;

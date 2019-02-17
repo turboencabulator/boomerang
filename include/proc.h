@@ -684,7 +684,6 @@ private:
 	ReturnStatement *theReturnStatement = nullptr;
 	int         DFGcount = 0;
 public:
-	ADDRESS     getTheReturnAddr() const { return !theReturnStatement ? NO_ADDRESS : theReturnStatement->getRetAddr(); }
 	void        setTheReturnAddr(ReturnStatement *s, ADDRESS r) {
 		            assert(!theReturnStatement);
 		            theReturnStatement = s;

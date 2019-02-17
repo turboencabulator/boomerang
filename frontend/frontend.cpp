@@ -1166,13 +1166,11 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 	// The last Statement may get replaced with a GotoStatement
 	if (!BB_rtls) BB_rtls = new std::list<RTL *>;  // In case no other semantics
 	BB_rtls->push_back(rtl);
-	ADDRESS retAddr = proc->getTheReturnAddr();
-	// LOG << "retAddr = " << retAddr << " rtl = " << rtl->getAddress() << "\n";
-	if (retAddr == NO_ADDRESS) {
-		// Create the basic block
+	auto s = proc->getTheReturnStatement();
+	if (!s) {
+		s = (ReturnStatement *)rtl->getList().back();
 		bb = cfg->newBB(BB_rtls, RET, 0);
-		auto s = rtl->getList().back();  // The last statement should be the ReturnStatement
-		proc->setTheReturnAddr((ReturnStatement *)s, rtl->getAddress());
+		proc->setTheReturnAddr(s, rtl->getAddress());
 	} else {
 		// We want to replace the *whole* RTL with a branch to THE first return's RTL. There can sometimes be extra
 		// semantics associated with a return (e.g. Pentium return adds to the stack pointer before setting %pc and
@@ -1187,6 +1185,7 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 			rtl->deleteLastStmt();
 		else
 			rtl->clear();
+		ADDRESS retAddr = s->getRetAddr();
 		rtl->appendStmt(new GotoStatement(retAddr));
 		try {
 			// Exception is thrown if overlapping an existing complete BB
