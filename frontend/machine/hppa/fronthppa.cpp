@@ -302,17 +302,7 @@ case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
 		if (call_rtl->isReturnAfterCall()) {
 			// Handle the call but don't add any outedges from it just yet.
 			handleCall(call_rtl->getFixedDest(), callBB, cfg, addr);
-
-			// Constuct the RTLs for the new basic block
-			auto rtls = new list<HRTL *>();
-
-			// The only RTL in the basic block is a high level return that
-			// doesn't have any RTs.
-			rtls->push_back(new HLReturn(0, nullptr));
-			auto returnBB = cfg->newBB(rtls, RET, 0);
-
-			// Now add the out edge
-			cfg->addOutEdge(callBB, returnBB);
+			appendSyntheticReturn(callBB, proc);
 
 			// Note that we get here for certain types of patterns as well as
 			// for call/return pairs. This could all go away if we could

@@ -964,16 +964,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 								auto bb = cfg->newBB(BB_rtls, CALL, 1);
 
 								if (call->isReturnAfterCall()) {
-									// Constuct the RTLs for the new basic block
-									auto rtls = new std::list<RTL *>();
-									// The only RTL in the basic block is one with a ReturnStatement
-									rtls->push_back(new RTL(rtl->getAddress() + 1, new ReturnStatement()));
-
-									auto returnBB = cfg->newBB(rtls, RET, 0);
-									// Add out edge from call to return
-									cfg->addOutEdge(bb, returnBB);
-									// Mike: do we need to set return locations?
-									// This ends the function
+									appendSyntheticReturn(bb, proc);
 									sequentialDecode = false;
 								} else {
 									// Add the fall through edge

@@ -322,15 +322,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 							auto bb = cfg->newBB(BB_rtls, CALL, 1);
 
 							if (call->isReturnAfterCall()) {
-								// Constuct the RTLs for the new basic block
-								auto rtls = new list<HRTL *>();
-								// The only RTL in the basic block is a high level
-								// return that doesn't have any RTs.
-								rtls->push_back(new HLReturn(0, nullptr));
-
-								auto returnBB = cfg->newBB(rtls, RET, 0);
-								// Add out edge from call to return
-								cfg->addOutEdge(bb, returnBB);
+								appendSyntheticReturn(bb, proc);
 								// Give the enclosing proc a dummy callee epilogue
 								proc->setEpilogue(new CalleeEpilogue("__dummy", list<string>()));
 								// Mike: do we need to set return locations?

@@ -123,9 +123,6 @@ BasicBlock *
 SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, UserProc *proc)
 {
 	if (call->isReturnAfterCall()) {
-		// Constuct the RTLs for the new basic block
-		auto rtls = new std::list<RTL *>();
-
 		// The only RTL in the basic block is a ReturnStatement
 		auto ls = std::list<Statement *>();
 		// If the delay slot is a single assignment to %o7, we want to see the semantics for it, so that preservation
@@ -139,11 +136,12 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 		auto r = new RTL(rtl->getAddress() + 1);
 		r->splice(ls);
 #if 0
+		auto rtls = new std::list<RTL *>();
 		rtls->push_back(r);
 		auto cfg = proc->getCFG();
 		return cfg->newBB(rtls, RET, 0);
 #endif
-		return createReturnBlock(proc, rtls, r);
+		return createReturnBlock(proc, nullptr, r);
 	} else
 		// May want to put code here that checks whether or not the delay instruction redefines %o7
 		return nullptr;
