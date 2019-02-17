@@ -981,7 +981,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 			// write the 'while' predicate
 			Exp *cond = getCond();
 			if (m_OutEdges[BTHEN] == loopFollow) {
-				cond = new Unary(opNot, cond);
+				cond = new Unary(opLNot, cond);
 				cond = cond->simplify();
 			}
 			hll->AddPretestedLoopHeader(indLevel, cond);
@@ -1136,7 +1136,7 @@ BasicBlock::generateCode(HLLCode *hll, int indLevel, BasicBlock *latch, std::lis
 				if (!cond)
 					cond = new Const(0xfeedface);  // hack, but better than a crash
 				if (cType == IfElse) {
-					cond = new Unary(opNot, cond->clone());
+					cond = new Unary(opLNot, cond->clone());
 					cond = cond->simplify();
 				}
 				if (cType == IfThenElse)
