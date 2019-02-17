@@ -1478,7 +1478,7 @@ Cfg::removeUnneededLabels(HLLCode *hll)
 void
 Cfg::generateDot(std::ostream &os) const
 {
-	ADDRESS aret = NO_ADDRESS;
+	const BasicBlock *ret = nullptr;
 
 	// The nodes
 	for (const auto &bb : m_listBB) {
@@ -1523,8 +1523,8 @@ Cfg::generateDot(std::ostream &os) const
 			break;
 		case RET:
 			os << "ret\",shape=triangle];\n";
-			// Remember the (unique) return BB's address
-			aret = bb->getLowAddr();
+			// Remember the (unique) return BB
+			ret = bb;
 			continue;
 		case ONEWAY:   os << "oneway";   break;
 		case FALL:     os << "fall";     break;
@@ -1537,10 +1537,8 @@ Cfg::generateDot(std::ostream &os) const
 
 	// Force the one return node to be at the bottom (max rank).
 	// Otherwise, with all its in-edges, it will end up in the middle.
-	if (aret)
-		os << std::hex
-		   << "\t\t{rank=max; bb" << aret << "}\n"
-		   << std::dec;
+	if (ret)
+		os << "\t\t{rank=max; bb" << std::hex << ret->getLowAddr() << std::dec << "}\n";
 
 	// Close the subgraph
 	os << "\t}\n";
