@@ -142,8 +142,8 @@ public:
 
 	bool        compressCfg();
 
-	bool        establishDFTOrder();
-	bool        establishRevDFTOrder();
+	//bool        establishDFTOrder();
+	//bool        establishRevDFTOrder();
 
 	int         pbbToIndex(BasicBlock *) const;
 

@@ -186,8 +186,8 @@ public:
 	        ADDRESS     getCallDest() const;
 	        Proc       *getCallDestProc() const;
 
-	        unsigned    DFTOrder(int &, int &);
-	        unsigned    RevDFTOrder(int &, int &);
+	//        unsigned    DFTOrder(int &, int &);
+	//        unsigned    RevDFTOrder(int &, int &);
 
 	static  bool        lessAddress(BasicBlock *, BasicBlock *);
 	//static  bool        lessFirstDFT(BasicBlock *, BasicBlock *);
@@ -219,10 +219,10 @@ public:
 	 * Depth first traversal of all bbs, numbering as we go and as we come back, forward and reverse passes.
 	 * Use Cfg::establishDFTOrder() and CFG::establishRevDFTOrder to create these values.
 	 */
-	        int         m_DFTfirst = 0; // depth-first traversal first visit
-	        int         m_DFTlast = 0;  // depth-first traversal last visit
-	        int         m_DFTrevfirst;  // reverse depth-first traversal first visit
-	        int         m_DFTrevlast;   // reverse depth-first traversal last visit
+	//        int         m_DFTfirst = 0; // depth-first traversal first visit
+	//        int         m_DFTlast = 0;  // depth-first traversal last visit
+	//        int         m_DFTrevfirst;  // reverse depth-first traversal first visit
+	//        int         m_DFTrevlast;   // reverse depth-first traversal last visit
 
 private:
 	                    BasicBlock(std::list<RTL *> *, BBTYPE, int);

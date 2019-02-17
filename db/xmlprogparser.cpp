@@ -1002,14 +1002,14 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 		bb->m_bIncomplete = atoi(str) > 0;
 	if (auto str = getAttr(attr, "m_traversed"))
 		bb->m_iTraversed = atoi(str) > 0;
-	if (auto str = getAttr(attr, "DFTfirst"))
-		bb->m_DFTfirst = atoi(str);
-	if (auto str = getAttr(attr, "DFTlast"))
-		bb->m_DFTlast = atoi(str);
-	if (auto str = getAttr(attr, "DFTrevfirst"))
-		bb->m_DFTrevfirst = atoi(str);
-	if (auto str = getAttr(attr, "DFTrevlast"))
-		bb->m_DFTrevlast = atoi(str);
+	//if (auto str = getAttr(attr, "DFTfirst"))
+	//	bb->m_DFTfirst = atoi(str);
+	//if (auto str = getAttr(attr, "DFTlast"))
+	//	bb->m_DFTlast = atoi(str);
+	//if (auto str = getAttr(attr, "DFTrevfirst"))
+	//	bb->m_DFTrevfirst = atoi(str);
+	//if (auto str = getAttr(attr, "DFTrevlast"))
+	//	bb->m_DFTrevlast = atoi(str);
 	if (auto str = getAttr(attr, "structType"))
 		bb->m_structType = (SBBTYPE)atoi(str);
 	if (auto str = getAttr(attr, "loopCondType"))
@@ -2577,10 +2577,10 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 	    << "\" nodeType=\"" << bb->m_nodeType
 	    << "\" incomplete=\"" << (int)bb->m_bIncomplete
 	    << "\" m_traversed=\"" << bb->m_iTraversed
-	    << "\" DFTfirst=\"" << bb->m_DFTfirst
-	    << "\" DFTlast=\"" << bb->m_DFTlast
-	    << "\" DFTrevfirst=\"" << bb->m_DFTrevfirst
-	    << "\" DFTrevlast=\"" << bb->m_DFTrevlast
+	//    << "\" DFTfirst=\"" << bb->m_DFTfirst
+	//    << "\" DFTlast=\"" << bb->m_DFTlast
+	//    << "\" DFTrevfirst=\"" << bb->m_DFTrevfirst
+	//    << "\" DFTrevlast=\"" << bb->m_DFTrevlast
 	    << "\" structType=\"" << bb->m_structType
 	    << "\" loopCondType=\"" << bb->m_loopCondType;
 	if (bb->m_loopHead)

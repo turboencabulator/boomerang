@@ -224,11 +224,13 @@ BasicBlock::print(std::ostream &os, bool html) const
 	}
 }
 
+#if 0 // Cruft?
 bool
 BasicBlock::isBackEdge(const BasicBlock *pred) const
 {
 	return this == pred || (m_DFTfirst < pred->m_DFTfirst && m_DFTlast > pred->m_DFTlast);
 }
+#endif
 
 /**
  * \brief Get the address associated with the BB.  Note that this is not
@@ -411,6 +413,7 @@ BasicBlock::deleteEdge(BasicBlock *succ)
 	}
 }
 
+#if 0 // Cruft?
 /**
  * Traverse this node and recurse on its children in a depth first manner.
  * Records the times at which this node was first visited and last visited.
@@ -467,6 +470,7 @@ BasicBlock::RevDFTOrder(int &first, int &last)
 
 	return numTraversed;
 }
+#endif
 
 /**
  * Static comparison function that returns true if the first BB has an address

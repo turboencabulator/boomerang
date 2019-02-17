@@ -811,6 +811,7 @@ Cfg::unTraverse()
 	}
 }
 
+#if 0 // Cruft?
 /**
  * Given a well-formed cfg graph, a partial ordering is established between
  * the nodes.  The ordering is based on the final visit to each node during a
@@ -839,6 +840,7 @@ Cfg::establishDFTOrder()
 
 	return numTraversed == m_listBB.size();
 }
+#endif
 
 BasicBlock *
 Cfg::findRetNode() const
@@ -857,6 +859,7 @@ Cfg::findRetNode() const
 	return retNode;
 }
 
+#if 0 // Cruft?
 /**
  * \brief Performs establishDFTOrder on the inverse of the graph (i.e. flips the
  * graph).
@@ -890,6 +893,7 @@ Cfg::establishRevDFTOrder()
 
 	return numTraversed == m_listBB.size();
 }
+#endif
 
 /**
  * \returns  true if the CFG is well formed.
