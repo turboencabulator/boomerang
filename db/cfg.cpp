@@ -999,12 +999,12 @@ Cfg::setTimeStamps()
 		bb->traversed = DFS_TAG;
 
 	// set the parenthesis for the nodes as well as setting the post-order ordering between the nodes
-	int time = 1;
+	int time = 0;
 	Ordering.clear();
 	entryBB->setLoopStamps(time, Ordering);
 
 	// set the reverse parenthesis for the nodes
-	time = 1;
+	time = 0;
 	entryBB->setRevLoopStamps(time);
 
 	BasicBlock *retNode = findRetNode();

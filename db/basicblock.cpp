@@ -424,8 +424,7 @@ BasicBlock::deleteEdge(BasicBlock *succ)
 unsigned
 BasicBlock::DFTOrder(int &first, int &last)
 {
-	++first;
-	m_DFTfirst = first;
+	m_DFTfirst = ++first;
 
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
@@ -435,8 +434,7 @@ BasicBlock::DFTOrder(int &first, int &last)
 			numTraversed += succ->DFTOrder(first, last);
 	}
 
-	++last;
-	m_DFTlast = last;
+	m_DFTlast = ++last;
 
 	return numTraversed;
 }
@@ -455,8 +453,7 @@ BasicBlock::DFTOrder(int &first, int &last)
 unsigned
 BasicBlock::RevDFTOrder(int &first, int &last)
 {
-	++first;
-	m_DFTrevfirst = first;
+	m_DFTrevfirst = ++first;
 
 	unsigned numTraversed = 1;
 	m_iTraversed = true;
@@ -466,8 +463,7 @@ BasicBlock::RevDFTOrder(int &first, int &last)
 			numTraversed += pred->RevDFTOrder(first, last);
 	}
 
-	++last;
-	m_DFTrevlast = last;
+	m_DFTrevlast = ++last;
 
 	return numTraversed;
 }
@@ -1325,7 +1321,7 @@ BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 	// timestamp the current node with the current time and set its traversed
 	// flag
 	traversed = DFS_LNUM;
-	loopStamps[0] = time;
+	loopStamps[0] = ++time;
 
 	// recurse on unvisited children and set inedges for all children
 	for (const auto &succ : m_OutEdges) {
@@ -1335,7 +1331,7 @@ BasicBlock::setLoopStamps(int &time, std::vector<BasicBlock *> &order)
 
 		// recurse on this child if it hasn't already been visited
 		if (succ->traversed != DFS_LNUM)
-			succ->setLoopStamps(++time, order);
+			succ->setLoopStamps(time, order);
 	}
 
 	// set the the second loopStamp value
@@ -1351,14 +1347,14 @@ BasicBlock::setRevLoopStamps(int &time)
 {
 	// timestamp the current node with the current time and set its traversed flag
 	traversed = DFS_RNUM;
-	revLoopStamps[0] = time;
+	revLoopStamps[0] = ++time;
 
 	// recurse on the unvisited children in reverse order
 	for (auto rit = m_OutEdges.rbegin(); rit != m_OutEdges.rend(); ++rit) {
 		const auto &succ = *rit;
 		// recurse on this child if it hasn't already been visited
 		if (succ->traversed != DFS_RNUM)
-			succ->setRevLoopStamps(++time);
+			succ->setRevLoopStamps(time);
 	}
 
 	// set the the second loopStamp value
