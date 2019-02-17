@@ -951,13 +951,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 									name = pBF->getDynamicProcName(a);
 							}
 							if (name && noReturnCallDest(name)) {
-								// Make sure it has a return appended (so there is only one exit from the function)
-								//call->setReturnAfterCall(true);  // I think only the Sparc frontend cares
-								// Create the new basic block
-								auto bb = cfg->newBB(BB_rtls, CALL, 1);
-								appendSyntheticReturn(bb, proc);
-
-								// Stop decoding sequentially
+								auto bb = cfg->newBB(BB_rtls, CALL, 0);
 								sequentialDecode = false;
 							} else {
 								// Create the new basic block

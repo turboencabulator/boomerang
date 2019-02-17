@@ -311,11 +311,8 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						// Check if this is the _exit function. May prevent us from
 						// attempting to decode invalid instructions.
 						char *name = prog.pBF->getSymbolByAddress(newAddr);
-						if (name && strcmp(name, "_exit") == 0) {
-							// Create the new basic block
+						if (name && noReturnCallDest(name)) {
 							auto bb = cfg->newBB(BB_rtls, CALL, 0);
-
-							// Stop decoding sequentially
 							sequentialDecode = false;
 						} else {
 							// Create the new basic block
