@@ -115,6 +115,7 @@ Statement::calcMayAlias(Exp *e1, Exp *e2, int size)
 	return true;
 }
 
+#if 0 // Cruft?
 RangeMap
 Statement::getInputRanges()
 {
@@ -592,6 +593,7 @@ BranchStatement::getRangesForOutEdgeTo(BasicBlock *out)
 		return ranges;
 	return ranges2;
 }
+#endif
 
 bool
 Statement::isFirstStatementInBB() const
@@ -3320,8 +3322,8 @@ Assignment::print(std::ostream &os, bool html) const
 	printCompact(os, html);
 	if (html)
 		os << "</a>";
-	if (!ranges.empty())
-		os << "\n\t\t\tranges: " << ranges;
+	//if (!ranges.empty())
+	//	os << "\n\t\t\tranges: " << ranges;
 }
 
 void
@@ -5224,6 +5226,7 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 	}
 }
 
+#if 0 // Cruft?
 bool
 JunctionStatement::accept(StmtVisitor &v)
 {
@@ -5268,6 +5271,7 @@ JunctionStatement::print(std::ostream &os, bool html) const
 	if (html)
 		os << "</a></td>";
 }
+#endif
 
 // Map registers and temporaries to locals
 void

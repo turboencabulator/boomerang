@@ -1235,6 +1235,7 @@ Prog::globalTypeAnalysis()
 		LOG << "### end type analysis ###\n";
 }
 
+#if 0 // Cruft?
 void
 Prog::rangeAnalysis()
 {
@@ -1246,6 +1247,7 @@ Prog::rangeAnalysis()
 		}
 	}
 }
+#endif
 
 void
 Prog::printCallGraph() const

@@ -4906,6 +4906,7 @@ UserProc::typeAnalysis()
 	printXML();
 }
 
+#if 0 // Cruft?
 void
 UserProc::clearRanges()
 {
@@ -5008,6 +5009,7 @@ UserProc::logSuspectMemoryDefs()
 		}
 	}
 }
+#endif
 
 // Copy the RTLs for the already decoded Indirect Control Transfer instructions, and decode any new targets in this CFG
 // Note that we have to delay the new target decoding till now, because otherwise we will attempt to decode nested

@@ -46,7 +46,7 @@ class Proc;
 class Prog;
 class UserProc;
 
-#define DEBUG_RANGE_ANALYSIS 0
+//#define DEBUG_RANGE_ANALYSIS 0
 
 /**
  * \brief Virtual class to monitor the decompilation.

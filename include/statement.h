@@ -122,8 +122,8 @@ public:
 protected:
 #endif
 	        Statement  *parent = nullptr;  // The statement that contains this one
-	        RangeMap    ranges;            // overestimation of ranges of locations
-	        RangeMap    savedInputRanges;  // saved overestimation of ranges of locations
+	//        RangeMap    ranges;            // overestimation of ranges of locations
+	//        RangeMap    savedInputRanges;  // saved overestimation of ranges of locations
 
 	//        unsigned int lexBegin, lexEnd;
 
@@ -147,8 +147,8 @@ public:
 	        void        setParent(Statement *par) { parent = par; }
 	        Statement  *getParent() const { return parent; }
 
-	        RangeMap   &getRanges() { return ranges; }
-	        void        clearRanges() { ranges.clear(); }
+	//        RangeMap   &getRanges() { return ranges; }
+	//        void        clearRanges() { ranges.clear(); }
 
 	virtual Statement  *clone() const = 0;  // Make copy of self
 
@@ -249,11 +249,11 @@ public:
 
 	// Range analysis
 protected:
-	        void        updateRanges(RangeMap &output, std::list<Statement *> &execution_paths, bool notTaken = false);
+	//        void        updateRanges(RangeMap &output, std::list<Statement *> &execution_paths, bool notTaken = false);
 public:
-	        RangeMap   &getSavedInputRanges() { return savedInputRanges; }
-	        RangeMap    getInputRanges();
-	virtual void        rangeAnalysis(std::list<Statement *> &execution_paths);
+	//        RangeMap   &getSavedInputRanges() { return savedInputRanges; }
+	//        RangeMap    getInputRanges();
+	//virtual void        rangeAnalysis(std::list<Statement *> &execution_paths);
 
 	// helper functions
 	        bool        isFirstStatementInBB() const;
@@ -464,7 +464,7 @@ public:
 	void        dfaTypeAnalysis(bool &ch) override;
 
 	// Range analysis
-	void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
 
 #if 0
 	// FIXME: I suspect that this was only used by adhoc TA, and can be deleted
@@ -784,6 +784,7 @@ public:
 	bool        usesExp(Exp *) const override;
 };
 
+#if 0 // Cruft?
 class JunctionStatement: public Statement {
 public:
 	Statement  *clone() const override { return new JunctionStatement(); }
@@ -816,9 +817,10 @@ public:
 	// simpify internal expressions
 	void        simplify() override { }
 
-	void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
 	bool        isLoopJunction() const;
 };
+#endif
 
 /**
  * BranchStatement has a condition Exp in addition to the destination of the
@@ -833,7 +835,7 @@ class BranchStatement: public GotoStatement {
 	// jtCond seems to be mainly needed for the Pentium weirdness.
 	// Perhaps bFloat, jtCond, and size could one day be merged into a type
 	int         size = 0;        // Size of the operands, in bits
-	RangeMap    ranges2;         // ranges for the not taken edge
+	//RangeMap    ranges2;         // ranges for the not taken edge
 
 public:
 	            BranchStatement() = default;
@@ -889,11 +891,11 @@ public:
 	bool        usesExp(Exp *e) const override;
 
 	// Range analysis
-	void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
-	RangeMap   &getRangesForOutEdgeTo(BasicBlock *out);
-	RangeMap   &getRanges2Ref() { return ranges2; }
-	void        setRanges2(RangeMap &r) { ranges2 = r; }
-	void        limitOutputWithCondition(RangeMap &output, Exp *e);
+	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//RangeMap   &getRangesForOutEdgeTo(BasicBlock *out);
+	//RangeMap   &getRanges2Ref() { return ranges2; }
+	//void        setRanges2(RangeMap &r) { ranges2 = r; }
+	//void        limitOutputWithCondition(RangeMap &output, Exp *e);
 
 	// simplify all the uses/defs in this Statememt
 	void        simplify() override;
@@ -1057,7 +1059,7 @@ public:
 	void        eliminateDuplicateArgs();
 
 	// Range analysis
-	void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
 
 	void        print(std::ostream &os = std::cout, bool html = false) const override;
 

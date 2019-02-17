@@ -162,8 +162,8 @@ public:
 
 	void        structure();
 
-	void        addJunctionStatements();
-	void        removeJunctionStatements();
+	//void        addJunctionStatements();
+	//void        removeJunctionStatements();
 
 	void        simplify();
 

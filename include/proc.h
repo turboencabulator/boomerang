@@ -393,9 +393,9 @@ public:
 	/// Inserting casts as needed (for this procedure)
 	void        insertCasts();
 	// Range analysis (for this procedure).
-	void        rangeAnalysis();
+	//void        rangeAnalysis();
 	// Detect and log possible buffer overflows
-	void        logSuspectMemoryDefs();
+	//void        logSuspectMemoryDefs();
 	// Split the set of cycle-associated procs into individual subcycles.
 	//void        findSubCycles(CycleList &path, CycleSet &cs, CycleSetSet &sset);
 	// The inductive preservation analysis.
@@ -489,7 +489,7 @@ public:
 #endif
 	void        propagateToCollector();
 	void        clearUses();  ///< Clear the useCollectors (in this Proc, and all calls).
-	void        clearRanges();
+	//void        clearRanges();
 	//int         findMaxDepth();  ///< Find max memory nesting depth.
 
 	void        fromSSAform();

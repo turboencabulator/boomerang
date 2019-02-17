@@ -1443,6 +1443,7 @@ Cfg::structure()
 	structured = true;
 }
 
+#if 0 // Cruft?
 void
 Cfg::addJunctionStatements()
 {
@@ -1466,6 +1467,7 @@ Cfg::removeJunctionStatements()
 		}
 	}
 }
+#endif
 
 void
 Cfg::removeUnneededLabels(HLLCode *hll)

@@ -225,6 +225,7 @@ public:
 	void        addSubscript(Statement *def /* , Cfg *cfg */);  // Add a subscript to all elements
 };
 
+#if 0 // Cruft?
 class Range {
 public:
 	static const int MAX = 2147483647;
@@ -267,6 +268,7 @@ public:
 	bool        isSubset(RangeMap &other) const;
 	bool        empty() const { return ranges.empty(); }
 };
+#endif
 
 /**
  * A class to store connections in a graph, e.g. for interferences of types or

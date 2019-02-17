@@ -649,6 +649,7 @@ LocationSet::diff(const LocationSet &o)
 		std::cerr << "\n";
 }
 
+#if 0 // Cruft?
 Range::Range()
 {
 	base = new Const(0);
@@ -903,6 +904,7 @@ RangeMap::isSubset(RangeMap &other) const
 	}
 	return true;
 }
+#endif
 
 
 // class ConnectionGraph

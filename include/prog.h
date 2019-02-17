@@ -142,7 +142,7 @@ public:
 	        void        conTypeAnalysis();
 
 	// Range analysis
-	        void        rangeAnalysis();
+	//        void        rangeAnalysis();
 
 	// Generate dotty file
 	        void        generateDot(std::ostream &os) const;
