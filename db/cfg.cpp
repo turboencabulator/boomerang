@@ -847,14 +847,10 @@ Cfg::findRetNode() const
 {
 	BasicBlock *retNode = nullptr;
 	for (const auto &bb : m_listBB) {
-		if (bb->getType() == RET) {
+		if (bb->getType() == RET)
+			return bb;
+		if (bb->getType() == CALL && bb->getNumOutEdges() == 0)
 			retNode = bb;
-			break;
-		} else if (bb->getType() == CALL) {
-			Proc *p = bb->getCallDestProc();
-			if (p && p->getName() == "exit")
-				retNode = bb;
-		}
 	}
 	return retNode;
 }
