@@ -486,6 +486,7 @@ BasicBlock::lessAddress(BasicBlock *bb1, BasicBlock *bb2)
 	return bb1->getLowAddr() < bb2->getLowAddr();
 }
 
+#if 0 // Cruft?
 /**
  * Static comparison function that returns true if the first BB has DFT first
  * order less than the second BB.
@@ -513,6 +514,7 @@ BasicBlock::lessLastDFT(BasicBlock *bb1, BasicBlock *bb2)
 {
 	return bb1->m_DFTlast < bb2->m_DFTlast;
 }
+#endif
 
 /**
  * Get the destination of the call, if this is a CALL BB with a fixed dest.

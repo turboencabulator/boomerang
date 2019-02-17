@@ -559,6 +559,7 @@ Cfg::sortByAddress()
 	m_listBB.sort(BasicBlock::lessAddress);
 }
 
+#if 0 // Cruft?
 /**
  * \brief Sorts the BBs in the CFG by their first DFT numbers.
  */
@@ -576,6 +577,7 @@ Cfg::sortByLastDFT()
 {
 	m_listBB.sort(BasicBlock::lessLastDFT);
 }
+#endif
 
 /**
  * Transforms the input machine-dependent cfg, which has ADDRESS labels for

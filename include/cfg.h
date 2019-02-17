@@ -133,8 +133,8 @@ public:
 	bool        existsBB(ADDRESS) const;
 
 	void        sortByAddress();
-	void        sortByFirstDFT();
-	void        sortByLastDFT();
+	//void        sortByFirstDFT();
+	//void        sortByLastDFT();
 
 	bool        wellFormCfg();
 

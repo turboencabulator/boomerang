@@ -190,8 +190,8 @@ public:
 	        unsigned    RevDFTOrder(int &, int &);
 
 	static  bool        lessAddress(BasicBlock *, BasicBlock *);
-	static  bool        lessFirstDFT(BasicBlock *, BasicBlock *);
-	static  bool        lessLastDFT(BasicBlock *, BasicBlock *);
+	//static  bool        lessFirstDFT(BasicBlock *, BasicBlock *);
+	//static  bool        lessLastDFT(BasicBlock *, BasicBlock *);
 
 	class LastStatementNotABranchError : public std::exception {
 	public:
