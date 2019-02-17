@@ -995,9 +995,13 @@ Cfg::print(std::ostream &out, bool html) const
 	out << std::endl;
 }
 
-void
+bool
 Cfg::setTimeStamps()
 {
+	auto retNode = findRetNode();
+	if (!retNode)
+		return false;
+
 	// set DFS tag
 	for (const auto &bb : m_listBB)
 		bb->traversed = DFS_TAG;
@@ -1011,10 +1015,9 @@ Cfg::setTimeStamps()
 	time = 0;
 	entryBB->setRevLoopStamps(time);
 
-	BasicBlock *retNode = findRetNode();
-	assert(retNode);
 	revOrdering.clear();
 	retNode->setRevOrder(revOrdering);
+	return true;
 }
 
 /**
@@ -1437,9 +1440,8 @@ Cfg::structure()
 		unTraverse();
 		return;
 	}
-	if (!findRetNode())
+	if (!setTimeStamps())
 		return;
-	setTimeStamps();
 	findImmedPDom();
 	if (!Boomerang::get().noDecompile) {
 		structConds();

@@ -184,7 +184,7 @@ public:
 	/*
 	 * Control flow analysis stuff, lifted from Doug Simon's honours thesis.
 	 */
-	void        setTimeStamps();
+	bool        setTimeStamps();
 	BasicBlock *commonPDom(BasicBlock *, BasicBlock *);
 	void        findImmedPDom();
 	void        structConds();
