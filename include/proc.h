@@ -684,11 +684,7 @@ private:
 	ReturnStatement *theReturnStatement = nullptr;
 	int         DFGcount = 0;
 public:
-	void        setTheReturnAddr(ReturnStatement *s, ADDRESS r) {
-		            assert(!theReturnStatement);
-		            theReturnStatement = s;
-		            theReturnStatement->setRetAddr(r);
-	}
+	void        setTheReturnStatement(ReturnStatement *s) { theReturnStatement = s; }
 	ReturnStatement *getTheReturnStatement() const { return theReturnStatement; }
 	bool        filterReturns(Exp *e);  ///< Decide whether to filter out e (return true) or keep it
 	bool        filterParams(Exp *e);   ///< As above but for parameters and arguments

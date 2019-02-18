@@ -1146,9 +1146,6 @@ class ReturnStatement : public Statement {
 	friend class XMLProgParser;
 
 protected:
-	// Native address of the (only) return instruction. Needed for branching to this only return statement
-	ADDRESS     retAddr = NO_ADDRESS;
-
 	/**
 	 * \brief A DefCollector object to collect the reaching definitions.
 	 *
@@ -1253,10 +1250,6 @@ public:
 	//void        setReturnExp(int n, Exp *e) { returns[n] = e; }
 	//void        setSigArguments();  // Set returns based on signature
 	DefCollector *getCollector() { return &col; }  // Return pointer to the collector object
-
-	// Get and set the native address for the first and only return statement
-	ADDRESS     getRetAddr() const { return retAddr; }
-	void        setRetAddr(ADDRESS r) { retAddr = r; }
 
 	// Find definition for e (in the collector)
 	Exp        *findDefFor(Exp *e) const { return col.findDefFor(e); }

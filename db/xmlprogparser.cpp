@@ -1426,8 +1426,6 @@ XMLProgParser::start_returnstmt(Context *node, const char **attr)
 	addId(attr, ret);
 	if (auto n = getAttr(attr, "number"))
 		ret->number = atoi(n);
-	if (auto n = getAttr(attr, "retAddr"))
-		ret->retAddr = atoi(n);
 }
 
 void
@@ -2684,8 +2682,7 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 			out << "\" parent=\"" << (void *)r->parent;
 		if (r->proc)
 			out << "\" proc=\"" << (void *)r->proc;
-		out << "\" retAddr=\"" << (int)r->retAddr
-		    << "\">\n";
+		out << "\">\n";
 
 		for (const auto &mod : r->modifieds) {
 			out << "<modifieds>\n";

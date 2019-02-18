@@ -1169,8 +1169,8 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 	auto s = proc->getTheReturnStatement();
 	if (!s) {
 		s = (ReturnStatement *)rtl->getList().back();
+		proc->setTheReturnStatement(s);
 		bb = cfg->newBB(BB_rtls, RET, 0);
-		proc->setTheReturnAddr(s, rtl->getAddress());
 	} else {
 		// We want to replace the *whole* RTL with a branch to THE first return's RTL. There can sometimes be extra
 		// semantics associated with a return (e.g. Pentium return adds to the stack pointer before setting %pc and
@@ -1178,26 +1178,22 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 		// appear in a previous RTL. It is assumed that THE return statement will have the same semantics (NOTE: may
 		// not always be valid). To avoid this assumption, we need branches to statements, not just to native addresses
 		// (RTLs).
-		BasicBlock *retBB = proc->getCFG()->findRetNode();
+		auto retBB = cfg->findRetNode();
 		assert(retBB);
-		if (dynamic_cast<ReturnStatement *>(retBB->getFirstStmt()))
+		auto retRTL = retBB->getRTLWithStatement(s);
+		assert(retRTL);
+		auto retAddr = retRTL->getAddress();
+		if (retRTL->getList().size() == 1)
 			// ret node has no semantics, clearly we need to keep ours
 			rtl->deleteLastStmt();
 		else
 			rtl->clear();
-		ADDRESS retAddr = s->getRetAddr();
 		rtl->appendStmt(new GotoStatement(retAddr));
-		try {
-			// Exception is thrown if overlapping an existing complete BB
-			bb = cfg->newBB(BB_rtls, ONEWAY, 1);
-			// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
-			// instructions before the return instruction).
-			targetQueue.visit(cfg, retAddr, bb);
-			cfg->addOutEdge(bb, retAddr);
-		} catch (Cfg::BBAlreadyExistsError &) {
-			if (VERBOSE)
-				LOG << "not visiting 0x" << std::hex << retAddr << std::dec << " due to exception\n";
-		}
+		bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+		// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
+		// instructions before the return instruction).
+		targetQueue.visit(cfg, retAddr, bb);
+		cfg->addOutEdge(bb, retAddr);
 	}
 	return bb;
 }

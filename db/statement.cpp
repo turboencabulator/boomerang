@@ -2833,7 +2833,6 @@ ReturnStatement::clone() const
 		rs->modifieds.append((ImplicitAssign *)mod->clone());
 	for (const auto &ret : returns)
 		rs->returns.append((Assignment *)ret->clone());
-	rs->retAddr = retAddr;
 	rs->col.makeCloneOf(col);
 	// Statement members
 	rs->pbb = pbb;
