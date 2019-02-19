@@ -920,9 +920,9 @@ XMLProgParser::start_cfg(Context *node, const char **attr)
 	if (phase == 1) {
 		node->cfg = (Cfg *)findId(getAttr(attr, "id"));
 		if (auto entryBB = (BasicBlock *)findId(getAttr(attr, "entryBB")))
-			node->cfg->setEntryBB(entryBB);
+			node->cfg->entryBB = entryBB;
 		if (auto exitBB = (BasicBlock *)findId(getAttr(attr, "exitBB")))
-			node->cfg->setExitBB(exitBB);
+			node->cfg->exitBB = exitBB;
 		return;
 	}
 	auto cfg = new Cfg();
