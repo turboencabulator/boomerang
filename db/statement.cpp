@@ -2637,11 +2637,12 @@ CallStatement::removeArgument(int i)
 	arguments.erase(aa);
 }
 
+#if 0 // Cruft?
 /**
  * Processes each argument of a CallStatement, and the RHS of an Assign.
  * Ad-hoc type analysis only.
  */
-Exp *
+static Exp *
 processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 {
 	auto nt = dynamic_cast<NamedType *>(t);
@@ -2703,6 +2704,7 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 
 	return e;
 }
+#endif
 
 /**
  * \brief Get the type for this assignment.  It should define e.
