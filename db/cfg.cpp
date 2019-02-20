@@ -1647,6 +1647,7 @@ Cfg::findInterferences(ConnectionGraph &cg)
  * Split the given BB at the RTL given, and turn it into the BranchStatement
  * given.  Sort out all the in- and out-edges.
  *
+ * \code
  *  bbA-> +----+    +----+ <-bbA
  * Change | A  | to | A  | where A and B could be empty.  S is the string
  *        |    |    |    | instruction (which will branch to itself and to the
@@ -1666,6 +1667,7 @@ Cfg::findInterferences(ConnectionGraph &cg)
  *                  | B  |
  *                  |    |
  *                  +----+
+ * \endcode
  *
  * S is an RTL with 6 statements representing one string instruction (so this
  * function is highly specialised for the job of replacing the %SKIP and %RPT

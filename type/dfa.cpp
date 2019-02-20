@@ -905,12 +905,21 @@ BoolAssign::dfaTypeAnalysis(bool &ch)
 	Assignment::dfaTypeAnalysis(ch);
 }
 
-// Special operators for handling addition and subtraction in a data flow based type analysis
-//                  ta=
-//  tb=     alpha*  int     pi
-// beta*    bottom  void*   void*
-// int      void*   int     pi
-// pi       void*   pi      pi
+/**
+ * \name Special operators
+ * For handling addition and subtraction in a data flow based type analysis.
+ * \{
+ */
+/**
+ * \code
+ * |       ||         ta=            |
+ * |  tb=  || alpha* | int   | pi    |
+ * | ----- || ------ | ----- | ----- |
+ * | beta* || bottom | void* | void* |
+ * | int   || void*  | int   | pi    |
+ * | pi    || void*  | pi    | pi    |
+ * \endcode
+ */
 static Type *
 sigmaSum(Type *ta, Type *tb)
 {
@@ -932,12 +941,16 @@ sigmaSum(Type *ta, Type *tb)
 	return ta->clone();
 }
 
-
-//                  tc=
-//  to=     beta*   int     pi
-// alpha*   int     bottom  int
-// int      void*   int     pi
-// pi       pi      pi      pi
+/**
+ * \code
+ * |        ||        tc=           |
+ * |  to=   || beta* | int    | pi  |
+ * | ------ || ----- | ------ | --- |
+ * | alpha* || int   | bottom | int |
+ * | int    || void* | int    | pi  |
+ * | pi     || pi    | pi     | pi  |
+ * \endcode
+ */
 static Type *
 sigmaAddend(Type *tc, Type *to)
 {
@@ -961,11 +974,16 @@ sigmaAddend(Type *tc, Type *to)
 	return tc->clone();
 }
 
-//                  tc=
-//  tb=     beta*   int     pi
-// alpha*   bottom  void*   void*
-// int      void*   int     pi
-// pi       void*   int     pi
+/**
+ * \code
+ * |        ||         tc=            |
+ * |  tb=   || beta*  | int   | pi    |
+ * | ------ || ------ | ----- | ----- |
+ * | alpha* || bottom | void* | void* |
+ * | int    || void*  | int   | pi    |
+ * | pi     || void*  | int   | pi    |
+ * \endcode
+ */
 static Type *
 deltaMinuend(Type *tc, Type *tb)
 {
@@ -987,11 +1005,16 @@ deltaMinuend(Type *tc, Type *tb)
 	return tc->clone();
 }
 
-//                  tc=
-//  ta=     beta*   int     pi
-// alpha*   int     void*   pi
-// int      bottom  int     int
-// pi       int     pi      pi
+/**
+ * \code
+ * |        ||         tc=          |
+ * |  ta=   || beta*  | int   | pi  |
+ * | ------ || ------ | ----- | --- |
+ * | alpha* || int    | void* | pi  |
+ * | int    || bottom | int   | int |
+ * | pi     || int    | pi    | pi  |
+ * \endcode
+ */
 static Type *
 deltaSubtrahend(Type *tc, Type *ta)
 {
@@ -1015,11 +1038,16 @@ deltaSubtrahend(Type *tc, Type *ta)
 	return ta->clone();
 }
 
-//                  ta=
-//  tb=     alpha*  int     pi
-// beta*    int     bottom  int
-// int      void*   int     pi
-// pi       pi      int     pi
+/**
+ * \code
+ * |       ||         ta=           |
+ * |  tb=  || alpha* | int    | pi  |
+ * | ----- || ------ | ------ | --- |
+ * | beta* || int    | bottom | int |
+ * | int   || void*  | int    | pi  |
+ * | pi    || pi     | int    | pi  |
+ * \endcode
+ */
 static Type *
 deltaDifference(Type *ta, Type *tb)
 {
@@ -1042,6 +1070,7 @@ deltaDifference(Type *ta, Type *tb)
 		return new IntegerType;
 	return ta->clone();
 }
+/** \} */
 
 //  //  //  //  //  //  //  //  //  //  //
 //                                      //

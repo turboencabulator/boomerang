@@ -2,6 +2,7 @@
  * \file
  * \brief The Statement and related classes (was dataflow.h)
  *
+ * \code
  *     Class hierarchy:     Statement@            (@ = abstract)
  *                        __/   |   \________________________
  *                       /      |            \               \
@@ -10,6 +11,7 @@
  *     CaseStatement__/  Assignment@   ImpRefStatement
  *     CallStatement_/  /   /    \ \________
  *           PhiAssign_/ Assign  BoolAssign \_ImplicitAssign
+ * \endcode
  *
  * \authors
  * Copyright (C) 2002, Trent Waddington

@@ -2,6 +2,7 @@
  * \file
  * \brief Provides the definition for the Exp class and its subclasses.
  *
+ * \code
  *     Main class hierarchy:    Exp (abstract)
  *                        _____/ | \
  *                       /       |  \
@@ -10,6 +11,7 @@
  *        FlagDef___/ Binary Location  TypeVal
  *         RefExp__/    |
  *                   Ternary
+ * \endcode
  *
  * \authors
  * Copyright (C) 2002-2006, Trent Waddington and Mike Van Emmerik
