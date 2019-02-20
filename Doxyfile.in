@@ -130,8 +130,7 @@ EXCLUDE                = frontend/machine/ \
                          test/ \
                          transformations/
 EXCLUDE_SYMLINKS       = NO
-EXCLUDE_PATTERNS       = *Stub.* \
-                         *Stubs.*
+EXCLUDE_PATTERNS       =
 EXCLUDE_SYMBOLS        =
 EXAMPLE_PATH           =
 EXAMPLE_PATTERNS       = *
