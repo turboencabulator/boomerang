@@ -5521,7 +5521,7 @@ ImpRefStatement::search(Exp *search, Exp *&result)
 }
 
 bool
-ImpRefStatement::searchAll(Exp *search, std::list<Exp *, std::allocator<Exp *> > &result)
+ImpRefStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	return addressExp->searchAll(search, result);
 }

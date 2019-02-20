@@ -641,7 +641,7 @@ public:
 	bool        isDefinition() const override { return false; }
 	bool        usesExp(Exp *) const override { return false; }
 	bool        search(Exp *, Exp *&) override;
-	bool        searchAll(Exp *, std::list<Exp *, std::allocator<Exp *> > &) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
 	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 	void        simplify() override;
