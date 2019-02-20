@@ -38,7 +38,7 @@ public:
 };
 
 /**
- * Compare assignments by their left hand sides (only).
+ * Compare Assignments by their left hand sides (only).
  * Implemented in statement.cpp
  */
 class lessAssignment : public std::binary_function<Assignment *, Assignment *, bool> {

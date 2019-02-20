@@ -70,7 +70,9 @@ Statement::mayAlias(Exp *e1, Exp *e2, int size)
 	return b;
 }
 
-// returns true if e1 may alias e2
+/**
+ * \returns  true if e1 may alias e2.
+ */
 bool
 Statement::calcMayAlias(Exp *e1, Exp *e2, int size)
 {
@@ -648,14 +650,15 @@ Statement::getNextStatementInBB() const
 	return nullptr;
 }
 
-/*==============================================================================
- * FUNCTION:        operator <<
- * OVERVIEW:        Output operator for Statement*
- *                  Just makes it easier to use e.g. std::cerr << myStmtStar
- * PARAMETERS:      os: output stream to send to
- *                  s: ptr to Statement to print to the stream
- * RETURNS:         copy of os (for concatenation)
- *============================================================================*/
+/**
+ * \brief Output operator for Statements.
+ *
+ * Just makes it easier to use e.g. std::cerr << myStmt.
+ *
+ * \param os  Output stream to send to.
+ * \param s   Statement to print to the stream.
+ * \returns   os (for concatenation).
+ */
 std::ostream &
 operator <<(std::ostream &os, const Statement *s)
 {
@@ -676,6 +679,9 @@ Assign::isFlagAssgn() const
 	return getRight()->isFlagCall();
 }
 
+/**
+ * \brief For logging, was also for debugging.
+ */
 std::string
 Statement::prints() const
 {
@@ -686,13 +692,17 @@ Statement::prints() const
 
 
 #if 0 // Cruft?
-/* This function is designed to find basic flag calls, plus in addition two variations seen with Pentium FP code.
-   These variations involve ANDing and/or XORing with constants. So it should return true for these values of e:
-   ADDFLAGS(...)
-   SETFFLAGS(...) & 0x45
-   (SETFFLAGS(...) & 0x45) ^ 0x40
-   FIXME: this may not be needed any more...
-*/
+/**
+ * This function is designed to find basic flag calls, plus two additional
+ * variations seen with Pentium FP code.  These variations involve ANDing
+ * and/or XORing with constants.  So it should return true for these values of
+ * e:
+ * - ADDFLAGS(...)
+ * - SETFFLAGS(...) & 0x45
+ * - (SETFFLAGS(...) & 0x45) ^ 0x40
+ *
+ * FIXME: this may not be needed any more...
+ */
 static bool
 hasSetFlags(Exp *e)
 {
@@ -718,10 +728,16 @@ hasSetFlags(Exp *e)
 }
 #endif
 
-// Return true if can propagate to Exp* e (must be a RefExp to return true)
-// Note: does not consider whether e is able to be renamed (from a memory Primitive point of view), only if the
-// definition can be propagated TO this stmt
-// Note: static member function
+/**
+ * Returns true if can propagate to Exp* e in this Statement (must be a RefExp
+ * to return true).
+ *
+ * \note Does not consider whether e is able to be renamed (from a memory
+ * Primitive point of view), only if the definition can be propagated TO this
+ * stmt.
+ *
+ * \note Static member function.
+ */
 bool
 Statement::canPropagateToExp(Exp *e)
 {
@@ -748,12 +764,22 @@ Statement::canPropagateToExp(Exp *e)
 	return true;
 }
 
-// Return true if any change; set convert if an indirect call statement is converted to direct (else unchanged)
-// destCounts is a set of maps from location to number of times it is used this proc
-// usedByDomPhi is a set of subscripted locations used in phi statements
 static int progress = 0;
+/**
+ * \brief Propagate to this statement.  Return true if a change.
+ *
+ * \param[out] convert  Set if an indirect call statement is converted to
+ *                      direct (otherwise, no change).
+ * \param destCounts    A map that indicates how may times a statement's
+ *                      definition is used in this proc.
+ * \param usedByDomPhi  A set of subscripted locations used in phi statements.
+ * \param force         Set to true to propagate even memofs
+ *                      (for switch analysis).
+ *
+ * \returns  true if any change.
+ */
 bool
-Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts /* = nullptr */, LocationSet *usedByDomPhi /* = nullptr */, bool force /* = false */)
+Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts, LocationSet *usedByDomPhi, bool force)
 {
 	if (++progress > 1000) {
 		std::cerr << 'p' << std::flush;
@@ -867,7 +893,10 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 	return changes > 0;  // Note: change is only for the last time around the do/while loop
 }
 
-// Experimental: may want to propagate flags first, without tests about complexity or the propagation limiting heuristic
+/**
+ * Experimental:  May want to propagate flags first, without tests about
+ * complexity or the propagation limiting heuristic.
+ */
 bool
 Statement::propagateFlagsTo()
 {
@@ -890,11 +919,17 @@ Statement::propagateFlagsTo()
 	return change;
 }
 
-// Parameter convert is set true if an indirect call is converted to direct
-// Return true if a change made
-// Note: this procedure does not control what part of this statement is propagated to
-// Propagate to e from definition statement def.
-// Set convert to true if convert a call from indirect to direct.
+/**
+ * Propagate to e from definition statement def.
+ *
+ * \note This procedure does not control what part of this statement is
+ * propagated to.
+ *
+ * \param[out] convert  Set to true if an indirect call is converted to
+ *                      direct.
+ *
+ * \returns true if a change made.
+ */
 bool
 Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 {
@@ -915,8 +950,15 @@ Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
 	return change;
 }
 
-// replace a use of def->getLeft() by def->getRight() in this statement
-// return true if change
+/**
+ * \brief Replace a use of def->getLeft() by def->getRight() in this
+ * statement.
+ *
+ * Replaces a use in this statement with an expression from an ordinary
+ * assignment.  Internal use only.
+ *
+ * \returns true if change.
+ */
 bool
 Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 {
@@ -1016,33 +1058,32 @@ GotoStatement::GotoStatement(Exp *dest) :
 {
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::GotoStatement
- * OVERVIEW:        Construct a jump to a fixed address
- * PARAMETERS:      dest: native address of destination
- *============================================================================*/
+/**
+ * \brief Construct a jump to a fixed address.
+ *
+ * \param dest  Native address of destination.
+ */
 GotoStatement::GotoStatement(ADDRESS dest) :
 	pDest(new Const(dest))
 {
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::~GotoStatement
- * OVERVIEW:        Destructor
- *============================================================================*/
 GotoStatement::~GotoStatement()
 {
 	;//delete pDest;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::getFixedDest
- * OVERVIEW:        Get the fixed destination of this CTI. Assumes destination
- *                  simplication has already been done so that a fixed dest will
- *                  be of the Exp form:
- *                     opIntConst dest
- * RETURNS:         Fixed dest or NO_ADDRESS if there isn't one
- *============================================================================*/
+/**
+ * \brief Return the fixed destination of this CTI.  For dynamic CTIs, returns
+ * NO_ADDRESS.
+ *
+ * Get the fixed destination of this CTI.  Assumes destination simplification
+ * has already been done so that a fixed dest will be of the Exp form:
+ *
+ *     opIntConst dest
+ *
+ * \returns Fixed dest, or NO_ADDRESS if there isn't one.
+ */
 ADDRESS
 GotoStatement::getFixedDest() const
 {
@@ -1050,22 +1091,22 @@ GotoStatement::getFixedDest() const
 	return ((Const *)pDest)->getAddr();
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::setDest
- * OVERVIEW:        Set the destination of this jump to be a given expression.
- * PARAMETERS:      addr - the new fixed address
- *============================================================================*/
+/**
+ * \brief Set the destination of this jump.
+ */
 void
 GotoStatement::setDest(Exp *pd)
 {
 	pDest = pd;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::setDest
- * OVERVIEW:        Set the destination of this jump to be a given fixed address.
- * PARAMETERS:      addr - the new fixed address
- *============================================================================*/
+/**
+ * \overload
+ *
+ * The destination is an ADDRESS that is converted to an Exp.
+ *
+ * \param addr  The new fixed address.
+ */
 void
 GotoStatement::setDest(ADDRESS addr)
 {
@@ -1077,25 +1118,26 @@ GotoStatement::setDest(ADDRESS addr)
 	pDest = new Const(addr);
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::getDest
- * OVERVIEW:        Returns the destination of this CTI.
- * RETURNS:         Pointer to the SS representing the dest of this jump
- *============================================================================*/
+/**
+ * \brief Returns the destination of this CTI.
+ *
+ * \returns  The Exp representing the destination of this jump.
+ */
 Exp *
 GotoStatement::getDest() const
 {
 	return pDest;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::adjustFixedDest
- * OVERVIEW:        Adjust the destination of this CTI by a given amount. Causes
- *                  an error is this destination is not a fixed destination
- *                  (i.e. a constant offset).
- * PARAMETERS:      delta - the amount to add to the destination (can be
- *                  negative)
- *============================================================================*/
+/**
+ * \brief Adjust the fixed destination by a given amount.  Invalid for dynamic
+ * CTIs.
+ *
+ * Adjust the destination of this CTI by a given amount.  Causes an error if
+ * this destination is not a fixed destination (i.e. a constant offset).
+ *
+ * \param delta  The amount to add to the destination (can be negative)
+ */
 void
 GotoStatement::adjustFixedDest(int delta)
 {
@@ -1107,6 +1149,9 @@ GotoStatement::adjustFixedDest(int delta)
 	((Const *)pDest)->setAddr(dest + delta);
 }
 
+/**
+ * \brief General search.
+ */
 bool
 GotoStatement::search(Exp *search, Exp *&result)
 {
@@ -1116,14 +1161,15 @@ GotoStatement::search(Exp *search, Exp *&result)
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::searchAndReplace
- * OVERVIEW:        Replace all instances of search with replace.
- * PARAMETERS:      search - a location to search for
- *                  replace - the expression with which to replace it
- *                  cc - ignored
- * RETURNS:         True if any change
- *============================================================================*/
+/**
+ * \brief Replace all instances of search with replace.
+ *
+ * \param search   A location to search for.
+ * \param replace  The expression with which to replace it.
+ * \param cc       Ignored.
+ *
+ * \returns  true if any change.
+ */
 bool
 GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -1133,14 +1179,17 @@ GotoStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return change;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::searchAll
- * OVERVIEW:        Find all instances of the search expression
- * PARAMETERS:      search - a location to search for
- *                  result - a list which will have any matching exprs
- *                           appended to it
- * RETURNS:         true if there were any matches
- *============================================================================*/
+/**
+ * \brief Find all instances of the search expression.
+ *
+ * Searches for all instances of a given subexpression within this expression
+ * and adds them to a given list in reverse nesting order.
+ *
+ * \param search  A location to search for.
+ * \param result  A list which will have any matching exprs appended to it.
+ *
+ * \returns  true if there were any matches.
+ */
 bool
 GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
@@ -1149,13 +1198,14 @@ GotoStatement::searchAll(Exp *search, std::list<Exp *> &result)
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::print
- * OVERVIEW:        Display a text reprentation of this RTL to the given stream
- * NOTE:            Usually called from RTL::print, in which case the first 9
- *                    chars of the print have already been output to os
- * PARAMETERS:      os: stream to write to
- *============================================================================*/
+/**
+ * \brief Display a text reprentation of this Statement to the given stream.
+ *
+ * \note Usually called from RTL::print(), in which case the first 9 chars of
+ * the print have already been output to os.
+ *
+ * \param os  Stream to write to.
+ */
 void
 GotoStatement::print(std::ostream &os, bool html) const
 {
@@ -1175,36 +1225,39 @@ GotoStatement::print(std::ostream &os, bool html) const
 		os << "</a></td>";
 }
 
-/*==============================================================================
- * FUNCTION:      GotoStatement::setIsComputed
- * OVERVIEW:      Sets the fact that this call is computed.
- * NOTE:          This should really be removed, once CaseStatement and
- *                  HLNwayCall are implemented properly
- *============================================================================*/
+/**
+ * \brief Sets whether the destination of this CTI is computed.
+ *
+ * \note This should really be removed, once CaseStatement and HLNwayCall are
+ * implemented properly.
+ */
 void
 GotoStatement::setIsComputed(bool b)
 {
 	m_isComputed = b;
 }
 
-/*==============================================================================
- * FUNCTION:      GotoStatement::isComputed
- * OVERVIEW:      Returns whether or not this call is computed.
- * NOTE:          This should really be removed, once CaseStatement and HLNwayCall
- *                  are implemented properly
- * RETURNS:       this call is computed
- *============================================================================*/
+/**
+ * \brief Returns whether or not this call is computed.
+ *
+ * \note This should really be removed, once CaseStatement and HLNwayCall are
+ * implemented properly.
+ *
+ * \returns  this call is computed.
+ */
 bool
 GotoStatement::isComputed() const
 {
 	return m_isComputed;
 }
 
-/*==============================================================================
- * FUNCTION:        GotoStatement::clone
- * OVERVIEW:        Deep copy clone
- * RETURNS:         Pointer to a new Statement, a clone of this GotoStatement
- *============================================================================*/
+/**
+ * \brief Deep copy clone.
+ *
+ * Make a deep copy, and make the copy a derived object if needed.
+ *
+ * \returns  A new Statement, a clone of this GotoStatement.
+ */
 Statement *
 GotoStatement::clone() const
 {
@@ -1224,6 +1277,9 @@ GotoStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	// dont generate any code for jumps, they will be handled by the BB
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 GotoStatement::simplify()
 {
@@ -1237,10 +1293,6 @@ GotoStatement::simplify()
  * BranchStatement methods
  **********************************/
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::BranchStatement
- * OVERVIEW:        Constructor.
- *============================================================================*/
 BranchStatement::BranchStatement(Exp *dest) :
 	GotoStatement(dest)
 {
@@ -1251,27 +1303,21 @@ BranchStatement::BranchStatement(ADDRESS dest) :
 {
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::~BranchStatement
- * OVERVIEW:        Destructor
- *============================================================================*/
 BranchStatement::~BranchStatement()
 {
 	;//delete pCond;
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::setCondType
- * OVERVIEW:        Sets the BRANCH_TYPE of this jcond as well as the flag
- *                  indicating whether or not the floating point condition codes
- *                  are used.
- * PARAMETERS:      cond - the BRANCH_TYPE
- *                  usesFloat - this condional jump checks the floating point
- *                    condition codes
- * RETURNS:         a semantic string
- *============================================================================*/
+/**
+ * Sets the BRANCH_TYPE of this jcond as well as the flag indicating whether
+ * or not the floating point condition codes are used.
+ *
+ * \param cond       The BRANCH_TYPE.
+ * \param usesFloat  This conditional jump checks the floating point condition
+ *                   codes.
+ */
 void
-BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
+BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat)
 {
 	jtCond = cond;
 	bFloat = usesFloat;
@@ -1336,22 +1382,18 @@ BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
 	setCondExpr(p);
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::getCondExpr
- * OVERVIEW:        Return the SemStr expression containing the HL condition.
- * RETURNS:         ptr to an expression
- *============================================================================*/
+/**
+ * \brief Return the Exp representing the HL condition.
+ */
 Exp *
 BranchStatement::getCondExpr() const
 {
 	return pCond;
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::setCondExpr
- * OVERVIEW:        Set the SemStr expression containing the HL condition.
- * PARAMETERS:      Pointer to Exp to set
- *============================================================================*/
+/**
+ * \brief Set the Exp representing the HL condition.
+ */
 void
 BranchStatement::setCondExpr(Exp *e)
 {
@@ -1374,7 +1416,10 @@ BranchStatement::getFallBB() const
 	return pbb->getOutEdge(0);
 }
 
-// not that if you set the taken BB or fixed dest first, you will not be able to set the fall BB
+/**
+ * \note If you set the taken BB or fixed dest first, you will not be able to
+ * set the fall BB.
+ */
 void
 BranchStatement::setFallBB(BasicBlock *bb)
 {
@@ -1424,6 +1469,9 @@ BranchStatement::setTakenBB(BasicBlock *bb)
 	}
 }
 
+/**
+ * \brief General search.
+ */
 bool
 BranchStatement::search(Exp *search, Exp *&result)
 {
@@ -1433,14 +1481,15 @@ BranchStatement::search(Exp *search, Exp *&result)
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::searchAndReplace
- * OVERVIEW:        Replace all instances of search with replace.
- * PARAMETERS:      search - a location to search for
- *                  replace - the expression with which to replace it
- *                  cc - ignored
- * RETURNS:         True if any change
- *============================================================================*/
+/**
+ * \brief Replace all instances of search with replace.
+ *
+ * \param search   A location to search for.
+ * \param replace  The expression with which to replace it.
+ * \param cc       Ignored.
+ *
+ * \returns  true if any change.
+ */
 bool
 BranchStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -1451,14 +1500,17 @@ BranchStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return change;
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::searchAll
- * OVERVIEW:        Find all instances of the search expression
- * PARAMETERS:      search - a location to search for
- *                  result - a list which will have any matching exprs
- *                           appended to it
- * RETURNS:         true if there were any matches
- *============================================================================*/
+/**
+ * \brief Find all instances of the search expression.
+ *
+ * Searches for all instances of a given subexpression within this expression
+ * and adds them to a given list in reverse nesting order.
+ *
+ * \param search  A location to search for.
+ * \param result  A list which will have any matching exprs appended to it.
+ *
+ * \returns  true if there were any matches.
+ */
 bool
 BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
@@ -1467,12 +1519,10 @@ BranchStatement::searchAll(Exp *search, std::list<Exp *> &result)
 	return false;
 }
 
-
-/*==============================================================================
- * FUNCTION:        BranchStatement::print
- * OVERVIEW:        Write a text representation to the given stream
- * PARAMETERS:      os: stream
- *============================================================================*/
+/**
+ * \brief Write a text representation to the given stream.
+ * \param os  Stream.
+ */
 void
 BranchStatement::print(std::ostream &os, bool html) const
 {
@@ -1519,11 +1569,13 @@ BranchStatement::print(std::ostream &os, bool html) const
 		os << "</a></td>";
 }
 
-/*==============================================================================
- * FUNCTION:        BranchStatement::clone
- * OVERVIEW:        Deep copy clone
- * RETURNS:         Pointer to a new Statement, a clone of this BranchStatement
- *============================================================================*/
+/**
+ * \brief Deep copy clone.
+ *
+ * Make a deep copy, and make the copy a derived object if needed.
+ *
+ * \returns  A new Statement, a clone of this BranchStatement.
+ */
 Statement *
 BranchStatement::clone() const
 {
@@ -1553,9 +1605,10 @@ BranchStatement::usesExp(Exp *e) const
 	return pCond && pCond->search(e, tmp);
 }
 
-
-// Common to BranchStatement and BoolAssign
-// Return true if this is now a floating point Branch
+/**
+ * Common to BranchStatement and BoolAssign.
+ * \returns  true if this is now a floating point Branch.
+ */
 static bool
 condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 {
@@ -1796,6 +1849,9 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 	return false;
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 BranchStatement::simplify()
 {
@@ -1814,46 +1870,42 @@ CaseStatement::CaseStatement(Exp *dest) :
 {
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::~CaseStatement
- * OVERVIEW:        Destructor
- * NOTE:            Don't delete the pSwitchVar; it's always a copy of something else (so don't delete twice)
- *============================================================================*/
+/**
+ * \note Don't delete the pSwitchVar; it's always a copy of something else (so
+ * don't delete twice).
+ */
 CaseStatement::~CaseStatement()
 {
 	;//delete pSwitchInfo;
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::getSwitchInfo
- * OVERVIEW:        Return a pointer to a struct with switch information in it
- * RETURNS:         a semantic string
- *============================================================================*/
+/**
+ * \brief Return a struct with switch information in it.
+ */
 SWITCH_INFO *
 CaseStatement::getSwitchInfo() const
 {
 	return pSwitchInfo;
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::setSwitchInfo
- * OVERVIEW:        Set a pointer to a SWITCH_INFO struct
- * PARAMETERS:      Pointer to SWITCH_INFO struct
- *============================================================================*/
+/**
+ * \brief Set a pointer to a SWITCH_INFO struct.
+ */
 void
 CaseStatement::setSwitchInfo(SWITCH_INFO *psi)
 {
 	pSwitchInfo = psi;
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::searchAndReplace
- * OVERVIEW:        Replace all instances of search with replace.
- * PARAMETERS:      search - a location to search for
- *                  replace - the expression with which to replace it
- *                  cc - ignored
- * RETURNS:         True if any change
- *============================================================================*/
+/**
+ * \brief Replace all instances of search with replace.
+ *
+ * \param search   A location to search for.
+ * \param replace  The expression with which to replace it.
+ * \param cc       Ignored.
+ *
+ * \returns  true if any change.
+ */
 bool
 CaseStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -1864,14 +1916,19 @@ CaseStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return ch | ch2;
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::searchAll
- * OVERVIEW:        Find all instances of the search expression
- * PARAMETERS:      search - a location to search for
- *                  result - a list which will have any matching exprs appended to it
- * NOTES:           search can't easily be made const
- * RETURNS:         true if there were any matches
- *============================================================================*/
+/**
+ * \brief Find all instances of the search expression.
+ *
+ * Searches for all instances of a given subexpression within this expression
+ * and adds them to a given list in reverse nesting order.
+ *
+ * \note search can't easily be made const.
+ *
+ * \param search  A location to search for.
+ * \param result  A list which will have any matching exprs appended to it.
+ *
+ * \returns  true if there were any matches.
+ */
 bool
 CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
@@ -1879,12 +1936,10 @@ CaseStatement::searchAll(Exp *search, std::list<Exp *> &result)
 	    || (pSwitchInfo && pSwitchInfo->pSwitchVar && pSwitchInfo->pSwitchVar->searchAll(search, result));
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::print
- * OVERVIEW:        Write a text representation to the given stream
- * PARAMETERS:      os: stream
- *                  indent: number of columns to skip
- *============================================================================*/
+/**
+ * \brief Write a text representation to the given stream.
+ * \param os  Stream.
+ */
 void
 CaseStatement::print(std::ostream &os, bool html) const
 {
@@ -1905,11 +1960,13 @@ CaseStatement::print(std::ostream &os, bool html) const
 		os << "</a></td>";
 }
 
-/*==============================================================================
- * FUNCTION:        CaseStatement::clone
- * OVERVIEW:        Deep copy clone
- * RETURNS:         Pointer to a new Statement that is a clone of this one
- *============================================================================*/
+/**
+ * \brief Deep copy clone.
+ *
+ * Make a deep copy, and make the copy a derived object if needed.
+ *
+ * \returns  A new Statement that is a clone of this one.
+ */
 Statement *
 CaseStatement::clone() const
 {
@@ -1944,6 +2001,9 @@ CaseStatement::usesExp(Exp *e) const
 	return false;
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 CaseStatement::simplify()
 {
@@ -1967,7 +2027,9 @@ CallStatement::CallStatement(ADDRESS dest) :
 {
 }
 
-// Temporarily needed for ad-hoc type analysis
+/**
+ * \brief Still needed temporarily for ad-hoc type analysis.
+ */
 int
 CallStatement::findDefine(Exp *e)
 {
@@ -1989,7 +2051,9 @@ CallStatement::getProven(Exp *e) const
 	return nullptr;
 }
 
-// Localise only components of e, i.e. xxx if e is m[xxx]
+/**
+ * \brief Localise only components of e, i.e. xxx if e is m[xxx].
+ */
 void
 CallStatement::localiseComp(Exp *e)
 {
@@ -1997,9 +2061,21 @@ CallStatement::localiseComp(Exp *e)
 		((Location *)e)->setSubExp1(localiseExp(((Location *)e)->getSubExp1()));
 	}
 }
-// Substitute the various components of expression e with the appropriate reaching definitions.
-// Used in e.g. fixCallBypass (via the CallBypasser). Locations defined in this call are replaced with their proven
-// values, which are in terms of the initial values at the start of the call (reaching definitions at the call)
+
+/**
+ * \brief Localise the various components of expression e with reaching
+ * definitions to this call.
+ *
+ * Substitute the various components of expression e with the appropriate
+ * reaching definitions.  Used in e.g. fixCallBypass (via the CallBypasser).
+ * Locations defined in this call are replaced with their proven values, which
+ * are in terms of the initial values at the start of the call (reaching
+ * definitions at the call).
+ *
+ * \note Can change e so usually need to clone the argument.
+ *
+ * \note Was called substituteParams().
+ */
 Exp *
 CallStatement::localiseExp(Exp *e)
 {
@@ -2010,9 +2086,18 @@ CallStatement::localiseExp(Exp *e)
 	return e;
 }
 
-// Find the definition for the given expression, using the embedded Collector object
-// Was called findArgument(), and used implicit arguments and signature parameters
-// Note: must only operator on unsubscripted locations, otherwise it is invalid
+/**
+ * \brief Find the reaching definition for expression e.
+ *
+ * Find the definition for the given expression, using the embedded Collector
+ * object.
+ *
+ * \note Was called findArgument(), and used implicit arguments and signature
+ * parameters.
+ *
+ * \note Must only operator on unsubscripted locations, otherwise it is
+ * invalid.
+ */
 Exp *
 CallStatement::findDefFor(Exp *e) const
 {
@@ -2028,11 +2113,11 @@ CallStatement::getArgumentType(int i) const
 	return ((Assign *)(*aa))->getType();
 }
 
-/*==============================================================================
- * FUNCTION:      CallStatement::setArguments
- * OVERVIEW:      Set the arguments of this call.
- * PARAMETERS:    arguments - the list of locations to set the arguments to (for testing)
- *============================================================================*/
+/**
+ * \brief Set the arguments of this call.
+ *
+ * \param args  The list of locations to set the arguments to (for testing).
+ */
 void
 CallStatement::setArguments(StatementList &args)
 {
@@ -2044,11 +2129,13 @@ CallStatement::setArguments(StatementList &args)
 	}
 }
 
-/*==============================================================================
- * FUNCTION:      CallStatement::setSigArguments
- * OVERVIEW:      Set the arguments of this call based on signature info
- * NOTE:          Should only be called for calls to library functions
- *============================================================================*/
+/**
+ * \brief Set arguments based on signature.
+ *
+ * Set the arguments of this call based on signature info.
+ *
+ * \note Should only be called for calls to library functions.
+ */
 void
 CallStatement::setSigArguments()
 {
@@ -2083,6 +2170,9 @@ CallStatement::setSigArguments()
 	// FIXME: anything needed here?
 }
 
+/**
+ * \brief General search.
+ */
 bool
 CallStatement::search(Exp *search, Exp *&result)
 {
@@ -2099,14 +2189,15 @@ CallStatement::search(Exp *search, Exp *&result)
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:        CallStatement::searchAndReplace
- * OVERVIEW:        Replace all instances of search with replace.
- * PARAMETERS:      search - a location to search for
- *                  replace - the expression with which to replace it
- *                  cc - true to replace in collectors
- * RETURNS:         True if any change
- *============================================================================*/
+/**
+ * \brief Replace all instances of search with replace.
+ *
+ * \param search   A location to search for.
+ * \param replace  The expression with which to replace it.
+ * \param cc       true to replace in collectors.
+ *
+ * \returns  true if any change.
+ */
 bool
 CallStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -2123,13 +2214,17 @@ CallStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return change;
 }
 
-/*==============================================================================
- * FUNCTION:        CallStatement::searchAll
- * OVERVIEW:        Find all instances of the search expression
- * PARAMETERS:      search - a location to search for
- *                  result - a list which will have any matching exprs appended to it
- * RETURNS:         true if there were any matches
- *============================================================================*/
+/**
+ * \brief Find all instances of the search expression.
+ *
+ * Searches for all instances of a given subexpression within this expression
+ * and adds them to a given list in reverse nesting order.
+ *
+ * \param search  A location to search for.
+ * \param result  A list which will have any matching exprs appended to it.
+ *
+ * \returns  true if there were any matches.
+ */
 bool
 CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
@@ -2141,11 +2236,11 @@ CallStatement::searchAll(Exp *search, std::list<Exp *> &result)
 	return found;
 }
 
-/*==============================================================================
- * FUNCTION:        CallStatement::print
- * OVERVIEW:        Write a text representation of this RTL to the given stream
- * PARAMETERS:      os: stream to write to
- *============================================================================*/
+/**
+ * \brief Write a text representation of this RTL to the given stream.
+ *
+ * \param os  Stream to write to.
+ */
 void
 CallStatement::print(std::ostream &os, bool html) const
 {
@@ -2215,35 +2310,39 @@ CallStatement::print(std::ostream &os, bool html) const
 		os << "</a></td>";
 }
 
-/*==============================================================================
- * FUNCTION:         CallStatement::setReturnAfterCall
- * OVERVIEW:         Sets a bit that says that this call is effectively followed by a return. This happens e.g. on
- *                      Sparc when there is a restore in the delay slot of the call
- * PARAMETERS:       b: true if this is to be set; false to clear the bit
- *============================================================================*/
+/**
+ * Sets a bit that says that this call is effectively followed by a return.
+ * This happens e.g. on Sparc when there is a restore in the delay slot of the
+ * call.
+ *
+ * \param b  true if this is to be set; false to clear the bit.
+ */
 void
 CallStatement::setReturnAfterCall(bool b)
 {
 	returnAfterCall = b;
 }
 
-/*==============================================================================
- * FUNCTION:         CallStatement::isReturnAfterCall
- * OVERVIEW:         Tests a bit that says that this call is effectively followed by a return. This happens e.g. on
- *                      Sparc when there is a restore in the delay slot of the call
- * RETURNS:          True if this call is effectively followed by a return
- *============================================================================*/
+/**
+ * Tests a bit that says that this call is effectively followed by a return.
+ * This happens e.g. on Sparc when there is a restore in the delay slot of the
+ * call.
+ *
+ * \returns  true if this call is effectively followed by a return.
+ */
 bool
 CallStatement::isReturnAfterCall() const
 {
 	return returnAfterCall;
 }
 
-/*==============================================================================
- * FUNCTION:        CallStatement::clone
- * OVERVIEW:        Deep copy clone
- * RETURNS:         Pointer to a new Statement, a clone of this CallStatement
- *============================================================================*/
+/**
+ * \brief Deep copy clone.
+ *
+ * Make a deep copy, and make the copy a derived object if needed.
+ *
+ * \returns  A new Statement, a clone of this CallStatement.
+ */
 Statement *
 CallStatement::clone() const
 {
@@ -2261,12 +2360,18 @@ CallStatement::clone() const
 	return ret;
 }
 
+/**
+ * \brief Return the destination proc.
+ */
 Proc *
 CallStatement::getDestProc() const
 {
 	return procDest;
 }
 
+/**
+ * \brief Set the destination proc.
+ */
 void
 CallStatement::setDestProc(Proc *dest)
 {
@@ -2322,6 +2427,9 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 		hll->AddCallStatement(indLevel, p, p->getName(), arguments, results);
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 CallStatement::simplify()
 {
@@ -2361,9 +2469,14 @@ CallStatement::getDefinitions(LocationSet &defs) const
 		defs.insert(new Terminal(opDefineAll));
 }
 
-// Attempt to convert this call, if indirect, to a direct call.
-// NOTE: at present, we igore the possibility that some other statement will modify the global. This is a serious
-// limitation!!
+/**
+ * \brief Internal function:  Attempt to convert an indirect to a direct call.
+ *
+ * Attempt to convert this call, if indirect, to a direct call.
+ *
+ * \note At present, we igore the possibility that some other statement will
+ * modify the global.  This is a serious limitation!!
+ */
 bool
 CallStatement::convertToDirect()
 {
@@ -2524,7 +2637,10 @@ CallStatement::removeArgument(int i)
 	arguments.erase(aa);
 }
 
-// Processes each argument of a CallStatement, and the RHS of an Assign. Ad-hoc type analysis only.
+/**
+ * Processes each argument of a CallStatement, and the RHS of an Assign.
+ * Ad-hoc type analysis only.
+ */
 Exp *
 processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 {
@@ -2588,6 +2704,9 @@ processConstant(Exp *e, Type *t, Prog *prog, UserProc *proc, ADDRESS stmt)
 	return e;
 }
 
+/**
+ * \brief Get the type for this assignment.  It should define e.
+ */
 Type *
 Assignment::getTypeFor(Exp *e) const
 {
@@ -2595,6 +2714,9 @@ Assignment::getTypeFor(Exp *e) const
 	return type;
 }
 
+/**
+ * \brief Set the type for this assignment.  It should define e.
+ */
 void
 Assignment::setTypeFor(Exp *e, Type *ty)
 {
@@ -2605,7 +2727,12 @@ Assignment::setTypeFor(Exp *e, Type *ty)
 		LOG << "    changed type of " << *this << "  (type was " << oldType->getCtype() << ")\n";
 }
 
-// Scan the returns for e. If found, return the type associated with that return
+/**
+ * \brief Get the type defined by this Statement for this location.
+ *
+ * Scan the returns for e.  If found, return the type associated with that
+ * return.
+ */
 Type *
 CallStatement::getTypeFor(Exp *e) const
 {
@@ -2618,6 +2745,9 @@ CallStatement::getTypeFor(Exp *e) const
 	return new VoidType;
 }
 
+/**
+ * \brief Set the type for this location, defined in this statement.
+ */
 void
 CallStatement::setTypeFor(Exp *e, Type *ty)
 {
@@ -2630,9 +2760,17 @@ CallStatement::setTypeFor(Exp *e, Type *ty)
 		def->setTypeFor(e, ty);
 }
 
-// This function has two jobs. One is to truncate the list of arguments based on the format string.
-// The second is to add parameter types to the signature.
-// If -Td is used, type analysis will be rerun with these changes.
+/**
+ * Process this call for ellipsis parameters.  If found, in a printf/scanf
+ * call, truncate the number of parameters if needed, and return true if any
+ * signature parameters added.
+ *
+ * This function has two jobs.  One is to truncate the list of arguments based
+ * on the format string.  The second is to add parameter types to the
+ * signature.
+ *
+ * If -Td is used, type analysis will be rerun with these changes.
+ */
 bool
 CallStatement::ellipsisProcessing(Prog *prog)
 {
@@ -2781,7 +2919,10 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	return true;
 }
 
-// Make an assign suitable for use as an argument from a callee context expression
+/**
+ * Make an assign suitable for use as an argument from a callee context
+ * expression.
+ */
 Assign *
 CallStatement::makeArgAssign(Type *ty, Exp *e)
 {
@@ -2801,7 +2942,9 @@ CallStatement::makeArgAssign(Type *ty, Exp *e)
 	return as;
 }
 
-// Helper function for the above
+/**
+ * \note Helper function for the above.
+ */
 void
 CallStatement::addSigParam(Type *ty, bool isScanf)
 {
@@ -2820,11 +2963,13 @@ CallStatement::addSigParam(Type *ty, bool isScanf)
  * ReturnStatement methods
  **********************************/
 
-/*==============================================================================
- * FUNCTION:        ReturnStatement::clone
- * OVERVIEW:        Deep copy clone
- * RETURNS:         Pointer to a new Statement, a clone of this ReturnStatement
- *============================================================================*/
+/**
+ * \brief Deep copy clone.
+ *
+ * Make a deep copy, and make the copy a derived object if needed.
+ *
+ * \returns  A new Statement, a clone of this ReturnStatement.
+ */
 Statement *
 ReturnStatement::clone() const
 {
@@ -2847,6 +2992,9 @@ ReturnStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	hll->AddReturnStatement(indLevel, &getReturns());
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 ReturnStatement::simplify()
 {
@@ -2856,7 +3004,12 @@ ReturnStatement::simplify()
 		ret->simplify();
 }
 
-// Remove the return (if any) related to loc. Loc may or may not be subscripted
+/**
+ * \brief Remove from returns only.
+ *
+ * Remove the return (if any) related to loc.  Loc may or may not be
+ * subscripted.
+ */
 void
 ReturnStatement::removeReturn(Exp *loc)
 {
@@ -2876,6 +3029,9 @@ ReturnStatement::addReturn(Assignment *a)
 	returns.append(a);
 }
 
+/**
+ * \brief General search.
+ */
 bool
 ReturnStatement::search(Exp *search, Exp *&result)
 {
@@ -2887,6 +3043,9 @@ ReturnStatement::search(Exp *search, Exp *&result)
 	return false;
 }
 
+/**
+ * \brief Replace all instances of "search" with "replace".
+ */
 bool
 ReturnStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -2900,6 +3059,10 @@ ReturnStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return change;
 }
 
+/**
+ * Searches for all instances of a given subexpression within this statement
+ * and adds them to a given list.
+ */
 bool
 ReturnStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
@@ -2917,6 +3080,9 @@ CallStatement::isDefinition() const
 	return defs.size() != 0;
 }
 
+/**
+ * \brief Returns true if this statement uses the given expression.
+ */
 bool
 ReturnStatement::usesExp(Exp *e) const
 {
@@ -2930,64 +3096,50 @@ ReturnStatement::usesExp(Exp *e) const
 
 /**********************************************************************
  * BoolAssign methods
- * These are for statements that set a destination (usually to 1 or 0)
- * depending in a condition code (e.g. Pentium)
  **********************************************************************/
 
-/*==============================================================================
- * FUNCTION:         BoolAssign::BoolAssign
- * OVERVIEW:         Constructor.
- * PARAMETERS:       sz: size of the assignment
- *============================================================================*/
+/**
+ * \param sz  Size of the assignment.
+ */
 BoolAssign::BoolAssign(int sz) :
 	Assignment(nullptr),
 	size(sz)
 {
 }
 
-/*==============================================================================
- * FUNCTION:        BoolAssign::~BoolAssign
- * OVERVIEW:        Destructor
- *============================================================================*/
 BoolAssign::~BoolAssign()
 {
 	;//delete pCond;
 }
 
-/*==============================================================================
- * FUNCTION:        BoolAssign::setCondType
- * OVERVIEW:        Sets the BRANCH_TYPE of this jcond as well as the flag
- *                  indicating whether or not the floating point condition codes
- *                  are used.
- * PARAMETERS:      cond - the BRANCH_TYPE
- *                  usesFloat - this condional jump checks the floating point
- *                    condition codes
- * RETURNS:         a semantic string
- *============================================================================*/
+/**
+ * Sets the BRANCH_TYPE of this jcond as well as the flag indicating whether
+ * or not the floating point condition codes are used.
+ *
+ * \param cond       The BRANCH_TYPE.
+ * \param usesFloat  This conditional jump checks the floating point condition
+ *                   codes.
+ */
 void
-BoolAssign::setCondType(BRANCH_TYPE cond, bool usesFloat /*= false*/)
+BoolAssign::setCondType(BRANCH_TYPE cond, bool usesFloat)
 {
 	jtCond = cond;
 	bFloat = usesFloat;
 	setCondExpr(new Terminal(opFlags));
 }
 
-/*==============================================================================
- * FUNCTION:        BoolAssign::getCondExpr
- * OVERVIEW:        Return the Exp expression containing the HL condition.
- * RETURNS:         a semantic string
- *============================================================================*/
+/**
+ * \brief Return the Exp representing the HL condition.
+ */
 Exp *
 BoolAssign::getCondExpr() const
 {
 	return pCond;
 }
 
-/*==============================================================================
- * FUNCTION:        BoolAssign::setCondExpr
- * OVERVIEW:        Set the Exp expression containing the HL condition.
- * PARAMETERS:      Pointer to semantic string to set
- *============================================================================*/
+/**
+ * \brief Set the Exp representing the HL condition.
+ */
 void
 BoolAssign::setCondExpr(Exp *pss)
 {
@@ -2995,13 +3147,13 @@ BoolAssign::setCondExpr(Exp *pss)
 	pCond = pss;
 }
 
-/*==============================================================================
- * FUNCTION:        BoolAssign::print
- * OVERVIEW:        Write a text representation to the given stream
- * PARAMETERS:      os: stream
- *============================================================================*/
+/**
+ * \brief Write a text representation to the given stream.
+ *
+ * \param os  Stream.
+ */
 void
-BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html) const
+BoolAssign::printCompact(std::ostream &os, bool html) const
 {
 	os << "BOOL ";
 	lhs->print(os);
@@ -3037,11 +3189,13 @@ BoolAssign::printCompact(std::ostream &os /*= cout*/, bool html) const
 	}
 }
 
-/*==============================================================================
- * FUNCTION:        BoolAssign::clone
- * OVERVIEW:        Deep copy clone
- * RETURNS:         Pointer to a new Statement, a clone of this BoolAssign
- *============================================================================*/
+/**
+ * \brief Deep copy clone.
+ *
+ * Make a deep copy, and make the copy a derived object if needed.
+ *
+ * \returns  A new Statement, a clone of this BoolAssign.
+ */
 Statement *
 BoolAssign::clone() const
 {
@@ -3067,6 +3221,9 @@ BoolAssign::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	hll->AddAssignmentStatement(indLevel, &as);
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 BoolAssign::simplify()
 {
@@ -3118,7 +3275,12 @@ BoolAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	return chl | chr;
 }
 
-// This is for setting up SETcc instructions; see frontend/pentiumdecoder.cpp macro SETS
+/**
+ * \brief A hack for the SETS macro.
+ *
+ * This is for setting up SETcc instructions; see frontend/pentiumdecoder.cpp
+ * macro SETS.
+ */
 void
 BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
 {
@@ -3132,6 +3294,9 @@ BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
 // Assign //
 //  //  //  //
 
+/**
+ * \brief Constructor, subexpression.
+ */
 Assignment::Assignment(Exp *lhs) :
 	TypingStatement(new VoidType),
 	lhs(lhs)
@@ -3144,12 +3309,18 @@ Assignment::Assignment(Exp *lhs) :
 	}
 }
 
+/**
+ * \brief Constructor, type, and subexpression.
+ */
 Assignment::Assignment(Type *ty, Exp *lhs) :
 	TypingStatement(ty),
 	lhs(lhs)
 {
 }
 
+/**
+ * \brief Constructor, subexpressions.
+ */
 Assign::Assign(Exp *lhs, Exp *rhs, Exp *guard) :
 	Assignment(lhs),
 	rhs(rhs),
@@ -3157,6 +3328,9 @@ Assign::Assign(Exp *lhs, Exp *rhs, Exp *guard) :
 {
 }
 
+/**
+ * Constructor, type and subexpressions.
+ */
 Assign::Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard) :
 	Assignment(ty, lhs),
 	rhs(rhs),
@@ -3164,6 +3338,9 @@ Assign::Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard) :
 {
 }
 
+/**
+ * \brief Copy constructor.
+ */
 Assign::Assign(const Assign &o) :
 	Assignment(o.lhs->clone())
 {
@@ -3172,18 +3349,25 @@ Assign::Assign(const Assign &o) :
 	guard = o.guard ? o.guard->clone() : nullptr;
 }
 
-// Implicit Assignment
-// Constructor and subexpression
+/**
+ * \brief Constructor, subexpression.
+ */
 ImplicitAssign::ImplicitAssign(Exp *lhs) :
 	Assignment(lhs)
 {
 }
-// Constructor, type, and subexpression
+
+/**
+ * \brief Constructor, type, and subexpression.
+ */
 ImplicitAssign::ImplicitAssign(Type *ty, Exp *lhs) :
 	Assignment(ty, lhs)
 {
 }
 
+/**
+ * \brief Copy constructor.
+ */
 ImplicitAssign::ImplicitAssign(const ImplicitAssign &o) :
 	Assignment(o.type ? o.type->clone() : nullptr, o.lhs->clone())
 {
@@ -3217,6 +3401,9 @@ ImplicitAssign::clone() const
 	return new ImplicitAssign(type, lhs);
 }
 
+/**
+ * \brief Simpify internal expressions.
+ */
 void
 Assign::simplify()
 {
@@ -3291,6 +3478,9 @@ Assign::simplify()
 #endif
 }
 
+/**
+ * \brief Simplify address expressions.
+ */
 void
 Assign::simplifyAddr()
 {
@@ -3298,12 +3488,18 @@ Assign::simplifyAddr()
 	rhs = rhs->simplifyAddr();
 }
 
+/**
+ * \brief Simplify address expressions.
+ */
 void
 Assignment::simplifyAddr()
 {
 	lhs = lhs->simplifyAddr();
 }
 
+/**
+ * \brief fixSuccessor (succ(r2) -> r3).
+ */
 void
 Assign::fixSuccessor()
 {
@@ -3325,6 +3521,9 @@ Assignment::print(std::ostream &os, bool html) const
 	//	os << "\n\t\t\tranges: " << ranges;
 }
 
+/**
+ * \brief Without statement number.
+ */
 void
 Assign::printCompact(std::ostream &os, bool html) const
 {
@@ -3405,7 +3604,9 @@ ImplicitAssign::printCompact(std::ostream &os, bool html) const
 	os << " := -";
 }
 
-// All the Assignment-derived classes have the same definitions: the lhs
+/**
+ * All the Assignment-derived classes have the same definitions:  the lhs.
+ */
 void
 Assignment::getDefinitions(LocationSet &defs) const
 {
@@ -3420,12 +3621,19 @@ Assignment::getDefinitions(LocationSet &defs) const
 	}
 }
 
+/**
+ * \brief General search.
+ */
 bool
 Assign::search(Exp *search, Exp *&result)
 {
 	return lhs->search(search, result)
 	    || rhs->search(search, result);
 }
+
+/**
+ * \brief General search.
+ */
 bool
 PhiAssign::search(Exp *search, Exp *&result)
 {
@@ -3439,6 +3647,10 @@ PhiAssign::search(Exp *search, Exp *&result)
 	}
 	return false;
 }
+
+/**
+ * \brief General search.
+ */
 bool
 ImplicitAssign::search(Exp *search, Exp *&result)
 {
@@ -3452,10 +3664,10 @@ Assign::searchAll(Exp *search, std::list<Exp *> &result)
 	found |= rhs->searchAll(search, result);
 	return found;
 }
-// FIXME: is this the right semantics for searching a phi statement, disregarding the RHS?
 bool
 PhiAssign::searchAll(Exp *search, std::list<Exp *> &result)
 {
+	// FIXME: is this the right semantics for searching a phi statement, disregarding the RHS?
 	return lhs->searchAll(search, result);
 }
 bool
@@ -3464,6 +3676,9 @@ ImplicitAssign::searchAll(Exp *search, std::list<Exp *> &result)
 	return lhs->searchAll(search, result);
 }
 
+/**
+ * \brief General search and replace.
+ */
 bool
 Assign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -3474,6 +3689,10 @@ Assign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 		guard = guard->searchReplaceAll(search, replace, chg);
 	return chl | chr | chg;
 }
+
+/**
+ * \brief General search and replace.
+ */
 bool
 PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -3488,6 +3707,10 @@ PhiAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	}
 	return change;
 }
+
+/**
+ * \brief General search and replace.
+ */
 bool
 ImplicitAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -3511,7 +3734,9 @@ Assign::getMemDepth() const
 	return d2;
 }
 
-// PhiExp and ImplicitExp:
+/**
+ * PhiAssign and ImplicitAssign don't override.
+ */
 bool
 Assignment::usesExp(Exp *e) const
 {
@@ -3547,7 +3772,7 @@ Assign::match(const char *pattern, std::map<std::string, Exp *> &bindings)
 	return lhs->match(left, bindings) && rhs->match(right, bindings);
 }
 
-void addPhiReferences(StatementSet &stmts, PhiAssign *def);
+void addPhiReferences(StatementSet &, PhiAssign *);
 
 static void
 addSimpleCopyReferences(StatementSet &stmts, Assign *def)
@@ -3594,7 +3819,6 @@ Assignment::genConstraints(LocationSet &cons)
 		                       new TypeVal(type)));
 }
 
-// generate constraints
 void
 Assign::genConstraints(LocationSet &cons)
 {
@@ -3769,6 +3993,9 @@ BranchStatement::genConstraints(LocationSet &cons)
 	cons.insert(con);
 }
 
+/**
+ * \brief Set the constant subscripts (using a visitor).
+ */
 int
 Statement::setConscripts(int n)
 {
@@ -3777,6 +4004,9 @@ Statement::setConscripts(int n)
 	return scs.getLast();
 }
 
+/**
+ * \brief Clear the constant subscripts (using a visitor).
+ */
 void
 Statement::clearConscripts()
 {
@@ -3784,7 +4014,10 @@ Statement::clearConscripts()
 	accept(scs);
 }
 
-// Cast the constant num to be of type ty. Return true if a change made
+/**
+ * \brief Cast the constant num to be of type ty.  Return true if a change was
+ * made.
+ */
 bool
 Statement::castConst(int num, Type *ty)
 {
@@ -3794,6 +4027,9 @@ Statement::castConst(int num, Type *ty)
 	return ecc.isChanged();
 }
 
+/**
+ * \brief Strip all size casts.
+ */
 void
 Statement::stripSizes()
 {
@@ -3802,7 +4038,12 @@ Statement::stripSizes()
 	accept(sm);
 }
 
-// visit this Statement
+/**
+ * \fn bool Statement::accept(StmtVisitor &v)
+ * \brief Accept a StmtVisitor visitor to this Statement.
+ *
+ * \returns true to continue visiting.
+ */
 bool
 Assign::accept(StmtVisitor &v)
 {
@@ -3849,8 +4090,15 @@ ReturnStatement::accept(StmtVisitor &v)
 	return v.visit(this);
 }
 
+/**
+ * \fn bool Statement::accept(StmtExpVisitor &v)
+ * \brief Accept a StmtExpVisitor visitor to this Statement.
+ *
+ * Visit all the various expressions in a statement.
+ *
+ * \returns true to continue visiting.
+ */
 // Visiting from class StmtExpVisitor
-// Visit all the various expressions in a statement
 bool
 Assign::accept(StmtExpVisitor &v)
 {
@@ -3972,8 +4220,14 @@ BoolAssign::accept(StmtExpVisitor &v)
 	return (!pCond || pCond->accept(v.ev));
 }
 
-// Visiting from class StmtModifier
-// Modify all the various expressions in a statement
+/**
+ * \fn bool Statement::accept(StmtModifier &v)
+ * \brief Accept a StmtModifier visitor to this Statement.
+ *
+ * Modify all the various expressions in a statement.
+ *
+ * \returns true to continue visiting.
+ */
 bool
 Assign::accept(StmtModifier &v)
 {
@@ -4107,8 +4361,15 @@ ReturnStatement::accept(StmtModifier &v)
 	return true;
 }
 
-// Visiting from class StmtPartModifier
-// Modify all the various expressions in a statement, except for the top level of the LHS of assignments
+/**
+ * \fn bool Statement::accept(StmtPartModifier &v)
+ * \brief Accept a StmtPartModifier visitor to this Statement.
+ *
+ * Modify all the various expressions in a statement, except for the top level
+ * of the LHS of assignments.
+ *
+ * \returns true to continue visiting.
+ */
 bool
 Assign::accept(StmtPartModifier &v)
 {
@@ -4244,7 +4505,11 @@ BoolAssign::accept(StmtPartModifier &v)
 	return true;
 }
 
-// Fix references to the returns of call statements
+/**
+ * \brief Bypass calls for references in this statement.
+ *
+ * Fix references to the returns of call statements.
+ */
 void
 Statement::bypass()
 {
@@ -4255,17 +4520,27 @@ Statement::bypass()
 		simplify();  // E.g. m[esp{20}] := blah -> m[esp{-}-20+4] := blah
 }
 
-// Find the locations used by expressions in this Statement.
-// Use the StmtExpVisitor and UsedLocsFinder visitor classes
-// cc = count collectors
+/**
+ * \brief Adds (inserts) all locations (registers or memory etc) used by this
+ * statement.
+ *
+ * Find the locations used by expressions in this Statement.
+ * Use the StmtExpVisitor and UsedLocsFinder visitor classes.
+ *
+ * \param cc  Count Collectors.  Set to true to count the uses in collectors.
+ */
 void
-Statement::addUsedLocs(LocationSet &used, bool cc /* = false */, bool memOnly /*= false */)
+Statement::addUsedLocs(LocationSet &used, bool cc, bool memOnly)
 {
 	UsedLocsFinder ulf(used, memOnly);
 	UsedLocsVisitor ulv(ulf, cc);
 	accept(ulv);
 }
 
+/**
+ * Special version of the above for finding used locations.  Returns true if
+ * defineAll was found.
+ */
 bool
 Statement::addUsedLocals(LocationSet &used)
 {
@@ -4275,7 +4550,10 @@ Statement::addUsedLocals(LocationSet &used)
 	return ulf.wasAllFound();
 }
 
-// For all expressions in this Statement, replace any e with e{def}
+/**
+ * \brief For all expressions in this Statement, replace any/all e with
+ * e{def}.
+ */
 void
 Statement::subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */)
 {
@@ -4284,7 +4562,9 @@ Statement::subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */)
 	accept(ss);
 }
 
-// Find all constants in this Statement
+/**
+ * \brief Find all constants in this Statement.
+ */
 void
 Statement::findConstants(std::list<Const *> &lc)
 {
@@ -4293,9 +4573,13 @@ Statement::findConstants(std::list<Const *> &lc)
 	accept(scf);
 }
 
-// Convert this PhiAssignment to an ordinary Assignment.  Hopefully, this is the only place that Statements change from
-// one class to another.  All throughout the code, we assume that the addresses of Statement objects do not change,
-// so we need this slight hack to overwrite one object with another
+/**
+ * Convert this PhiAssignment to an ordinary Assignment.  Hopefully, this is
+ * the only place that Statements change from one class to another.  All
+ * throughout the code, we assume that the addresses of Statement objects do
+ * not change, so we need this slight hack to overwrite one object with
+ * another.
+ */
 void
 PhiAssign::convertToAssign(Exp *rhs)
 {
@@ -4321,6 +4605,9 @@ PhiAssign::convertToAssign(Exp *rhs)
 #endif
 }
 
+/**
+ * \brief Simplify all the uses/defs in this Statement.
+ */
 void
 PhiAssign::simplify()
 {
@@ -4381,6 +4668,9 @@ CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
 	assert(0);
 }
 
+/**
+ * \returns  true if this Statement defines loc.
+ */
 bool
 Assignment::definesLoc(Exp *loc) const
 {
@@ -4389,6 +4679,9 @@ Assignment::definesLoc(Exp *loc) const
 	return *lhs == *loc;
 }
 
+/**
+ * \returns  true if this Statement defines loc.
+ */
 bool
 CallStatement::definesLoc(Exp *loc) const
 {
@@ -4400,10 +4693,17 @@ CallStatement::definesLoc(Exp *loc) const
 	return false;
 }
 
-// Does a ReturnStatement define anything? Not really, the locations are already defined earlier in the procedure.
-// However, nothing comes after the return statement, so it doesn't hurt to pretend it does, and this is a place to
-// store the return type(s) for example.
-// FIXME: seems it would be cleaner to say that Return Statements don't define anything.
+/**
+ * \returns  true if this Statement defines loc.
+ *
+ * Does a ReturnStatement define anything?  Not really, the locations are
+ * already defined earlier in the procedure.  However, nothing comes after the
+ * return statement, so it doesn't hurt to pretend it does, and this is a
+ * place to store the return type(s) for example.
+ *
+ * FIXME:  Seems it would be cleaner to say that ReturnStatements don't define
+ * anything.
+ */
 bool
 ReturnStatement::definesLoc(Exp *loc) const
 {
@@ -4511,7 +4811,6 @@ ReturnStatement::print(std::ostream &os, bool html) const
 #endif
 }
 
-// A helper class for comparing Assignment*'s sensibly
 bool
 lessAssignment::operator ()(const Assignment *x, const Assignment *y) const
 {
@@ -4520,7 +4819,6 @@ lessAssignment::operator ()(const Assignment *x, const Assignment *y) const
 	return (*xx->getLeft() < *yy->getLeft());  // Compare the LHS expressions
 }
 
-// Repeat the above for Assign's; sometimes the compiler doesn't (yet) understand that Assign's are Assignment's
 bool
 lessAssign::operator ()(const Assign *x, const Assign *y) const
 {
@@ -4529,8 +4827,13 @@ lessAssign::operator ()(const Assign *x, const Assign *y) const
 	return (*xx->getLeft() < *yy->getLeft());  // Compare the LHS expressions
 }
 
-// Update the modifieds, in case the signature and hence ordering and filtering has changed, or the locations in the
-// collector have changed. Does NOT remove preserveds (deferred until updating returns).
+/**
+ * \brief Update modifieds from the collector.
+ *
+ * Update the modifieds, in case the signature and hence ordering and
+ * filtering has changed, or the locations in the collector have changed.
+ * Does NOT remove preserveds (deferred until updating returns).
+ */
 void
 ReturnStatement::updateModifieds()
 {
@@ -4589,8 +4892,12 @@ ReturnStatement::updateModifieds()
 	}
 }
 
-// Update the returns, in case the signature and hence ordering and filtering has changed, or the locations in the
-// modifieds list
+/**
+ * \brief Update returns from the modifieds.
+ *
+ * Update the returns, in case the signature and hence ordering and filtering
+ * has changed, or the locations in the modifieds list.
+ */
 void
 ReturnStatement::updateReturns()
 {
@@ -4653,7 +4960,12 @@ ReturnStatement::updateReturns()
 	}
 }
 
-// Set the defines to the set of locations modified by the callee, or if no callee, to all variables live at this call
+/**
+ * \brief Update the defines based on a callee change.
+ *
+ * Set the defines to the set of locations modified by the callee, or if no
+ * callee, to all variables live at this call.
+ */
 void
 CallStatement::updateDefines()
 {
@@ -4728,8 +5040,11 @@ CallStatement::updateDefines()
 	}
 }
 
-// A helper class for updateArguments. It just dishes out a new argument from one of the three sources: the signature,
-// the callee parameters, or the defCollector in the call
+/**
+ * A helper class for updateArguments.  It just dishes out a new argument from
+ * one of the three sources:  The signature, the callee parameters, or the
+ * defCollector in the call.
+ */
 class ArgSourceProvider {
 	enum Src { SRC_LIB, SRC_CALLEE, SRC_COL };
 	Src src;
@@ -4741,11 +5056,11 @@ class ArgSourceProvider {
 	DefCollector::iterator cc;   // For SRC_COL
 	DefCollector *defCol;
 public:
-	ArgSourceProvider(CallStatement *call);
-	Exp *nextArgLoc();      // Get the next location (not subscripted)
-	Type *curType(Exp *e);  // Get the current location's type
-	bool exists(Exp *loc);  // True if the given location (not subscripted) exists as a source
-	Exp *localise(Exp *e);  // Localise to this call if necessary
+	ArgSourceProvider(CallStatement *);
+	Exp *nextArgLoc();
+	Type *curType(Exp *);
+	bool exists(Exp *);
+	Exp *localise(Exp *);
 };
 
 ArgSourceProvider::ArgSourceProvider(CallStatement *call) :
@@ -4778,6 +5093,9 @@ ArgSourceProvider::ArgSourceProvider(CallStatement *call) :
 	}
 }
 
+/**
+ * \brief Get the next location (not subscripted).
+ */
 Exp *
 ArgSourceProvider::nextArgLoc()
 {
@@ -4804,6 +5122,9 @@ ArgSourceProvider::nextArgLoc()
 	return nullptr;  // Suppress warning
 }
 
+/**
+ * \brief Localise to this call if necessary.
+ */
 Exp *
 ArgSourceProvider::localise(Exp *e)
 {
@@ -4817,6 +5138,9 @@ ArgSourceProvider::localise(Exp *e)
 	return call->localiseExp(e);
 }
 
+/**
+ * \brief Get the current location's type.
+ */
 Type *
 ArgSourceProvider::curType(Exp *e)
 {
@@ -4840,6 +5164,9 @@ ArgSourceProvider::curType(Exp *e)
 	return nullptr;  // Suppress warning
 }
 
+/**
+ * \brief True if the given location (not subscripted) exists as a source.
+ */
 bool
 ArgSourceProvider::exists(Exp *e)
 {
@@ -4872,6 +5199,9 @@ ArgSourceProvider::exists(Exp *e)
 	return false;  // Suppress warning
 }
 
+/**
+ * \brief Update the arguments based on a callee change.
+ */
 void
 CallStatement::updateArguments()
 {
@@ -4953,9 +5283,14 @@ CallStatement::updateArguments()
 	}
 }
 
-// Calculate results(this) = defines(this) isect live(this)
-// Note: could use a LocationList for this, but then there is nowhere to store the types (for DFA based TA)
-// So the RHS is just ignored
+/**
+ * \brief Calculate defines(this) isect live(this).
+ *
+ * Calculate results(this) = defines(this) isect live(this).
+ *
+ * \note Could use a LocationList for this, but then there is nowhere to store
+ * the types (for DFA based TA).  So the RHS is just ignored.
+ */
 StatementList *
 CallStatement::calcResults()
 {
@@ -5009,14 +5344,6 @@ CallStatement::calcResults()
 	return ret;
 }
 
-#if 0
-void
-TypingStatement::setType(Type *ty)
-{
-	type = ty;
-}
-#endif
-
 void
 CallStatement::removeDefine(Exp *e)
 {
@@ -5042,6 +5369,12 @@ CallStatement::isChildless() const
 	return !calleeReturn;
 }
 
+/**
+ * Do the call bypass logic e.g. r28{20} -> r28{17} + 4 (where 20 is this
+ * CallStatement).
+ *
+ * \param[out] ch  Set if changed (bypassed).
+ */
 Exp *
 CallStatement::bypassRef(RefExp *r, bool &ch)
 {
@@ -5085,6 +5418,9 @@ CallStatement::bypassRef(RefExp *r, bool &ch)
 	return proven;
 }
 
+/**
+ * \brief Remove from modifieds AND from returns.
+ */
 void
 ReturnStatement::removeModified(Exp *loc)
 {
@@ -5092,6 +5428,9 @@ ReturnStatement::removeModified(Exp *loc)
 	returns.removeDefOf(loc);
 }
 
+/**
+ * \brief For testing.
+ */
 void
 CallStatement::addDefine(ImplicitAssign *as)
 {
@@ -5103,7 +5442,6 @@ TypingStatement::TypingStatement(Type *ty) :
 {
 }
 
-// NOTE: ImpRefStatement not yet used
 void
 ImpRefStatement::print(std::ostream &os, bool html) const
 {
@@ -5117,6 +5455,9 @@ ImpRefStatement::print(std::ostream &os, bool html) const
 		os << "</a></td>";
 }
 
+/**
+ * \brief Meet the internal type with ty.  Set ch if a change.
+ */
 void
 ImpRefStatement::meetWith(Type *ty, bool &ch)
 {
@@ -5215,6 +5556,9 @@ CallStatement::eliminateDuplicateArgs()
 	}
 }
 
+/**
+ * \brief Generate a list of references for the parameters.
+ */
 void
 PhiAssign::enumerateParams(std::list<Exp *> &le)
 {
@@ -5272,7 +5616,9 @@ JunctionStatement::print(std::ostream &os, bool html) const
 }
 #endif
 
-// Map registers and temporaries to locals
+/**
+ * \brief Map registers and temporaries to local variables.
+ */
 void
 Statement::mapRegistersToLocals()
 {
@@ -5281,6 +5627,9 @@ Statement::mapRegistersToLocals()
 	accept(srm);
 }
 
+/**
+ * Insert casts where needed, since fromSSA will erase type information.
+ */
 void
 Statement::insertCasts()
 {
@@ -5293,6 +5642,10 @@ Statement::insertCasts()
 	accept(sci);
 }
 
+/**
+ * The last part of the fromSSA logic:  Replace subscripted locations with
+ * suitable local variables.
+ */
 void
 Statement::replaceSubscriptsWithLocals()
 {
@@ -5301,6 +5654,9 @@ Statement::replaceSubscriptsWithLocals()
 	accept(ssx);
 }
 
+/**
+ * \brief Map expressions to locals.
+ */
 void
 Statement::dfaMapLocals()
 {

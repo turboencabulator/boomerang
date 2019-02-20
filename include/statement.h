@@ -61,8 +61,6 @@ typedef std::set<UserProc *> CycleSet;
 
 /**
  * Kinds of Statements, or high-level register transfer lists.
- *
- * Changing the order of these will result in save files not working - trent
  */
 enum STMT_KIND {
 	STMT_ASSIGN = 0,
@@ -87,7 +85,7 @@ enum STMT_KIND {
  */
 enum BRANCH_TYPE {
 	BRANCH_JE = 0,          ///< Jump if equals.
-	BRANCH_JNE,             ///< Jump if not equals.
+	BRANCH_JNE,             ///< Jump if not equal.
 	BRANCH_JSL,             ///< Jump if signed less.
 	BRANCH_JSLE,            ///< Jump if signed less or equal.
 	BRANCH_JSGE,            ///< Jump if signed greater or equal.
@@ -152,7 +150,6 @@ public:
 
 	virtual Statement  *clone() const = 0;  // Make copy of self
 
-	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	virtual bool        accept(StmtVisitor &) = 0;
 	virtual bool        accept(StmtExpVisitor &) = 0;
 	virtual bool        accept(StmtModifier &) = 0;
@@ -162,7 +159,7 @@ public:
 	//        void        setLexEnd(unsigned int n) { lexEnd = n; }
 	//        unsigned    int getLexBegin() const { return lexBegin; }
 	//        unsigned    int getLexEnd() const { return lexEnd; }
-	//        Exp        *getExpAtLex(unsigned int begin, unsigned int end) const;
+	//        Exp        *getExpAtLex(unsigned int, unsigned int) const;
 
 
 	// returns true if this statement defines anything
@@ -198,7 +195,7 @@ public:
 	        void        printAsUse(std::ostream &os) const   { os << number; }
 	        void        printAsUseBy(std::ostream &os) const { os << number; }
 	        void        printNum(std::ostream &os) const     { os << number; }
-	        std::string prints() const;  // For logging, was also for debugging
+	        std::string prints() const;
 
 	// general search
 	virtual bool        search(Exp *search, Exp *&result) = 0;
@@ -207,14 +204,8 @@ public:
 	// general search and replace. Set cc true to change collectors as well. Return true if any change
 	virtual bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) = 0;
 
-	// True if can propagate to expression e in this Statement.
-	static  bool        canPropagateToExp(Exp *e);
-	// Propagate to this statement. Return true if a change
-	// destCounts is a map that indicates how may times a statement's definition is used
-	// dnp is a StatementSet with statements that should not be propagated
-	// Set convert if an indirect call is changed to direct (otherwise, no change)
-	// Set force to true to propagate even memofs (for switch analysis)
-	        bool        propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCounts = nullptr, LocationSet *usedByDomPhi = nullptr, bool force = false);
+	static  bool        canPropagateToExp(Exp *);
+	        bool        propagateTo(bool &, std::map<Exp *, int, lessExpStar> * = nullptr, LocationSet * = nullptr, bool = false);
 	        bool        propagateFlagsTo();
 
 	// code generation
@@ -227,13 +218,10 @@ public:
 	// Only Assignments override at present
 	virtual void        simplifyAddr() { }
 
-	// map registers and temporaries to local variables
 	        void        mapRegistersToLocals();
 
-	// The last part of the fromSSA logic: replace subscripted locations with suitable local variables
 	        void        replaceSubscriptsWithLocals();
 
-	// insert casts where needed, since fromSSA will erase type information
 	        void        insertCasts();
 
 	// fixSuccessor
@@ -244,16 +232,16 @@ public:
 	virtual void        genConstraints(LocationSet &cons) { }
 
 	// Data flow based type analysis
-	virtual void        dfaTypeAnalysis(bool &ch) { }  // Use the type information in this Statement
-	        Type       *meetWithFor(Type *ty, Exp *e, bool &ch);// Meet the type associated with e with ty
+	virtual void        dfaTypeAnalysis(bool &) { }
+	        Type       *meetWithFor(Type *, Exp *, bool &);
 
 	// Range analysis
 protected:
-	//        void        updateRanges(RangeMap &output, std::list<Statement *> &execution_paths, bool notTaken = false);
+	//        void        updateRanges(RangeMap &, std::list<Statement *> &, bool = false);
 public:
 	//        RangeMap   &getSavedInputRanges() { return savedInputRanges; }
 	//        RangeMap    getInputRanges();
-	//virtual void        rangeAnalysis(std::list<Statement *> &execution_paths);
+	//virtual void        rangeAnalysis(std::list<Statement *> &);
 
 	// helper functions
 	        bool        isFirstStatementInBB() const;
@@ -268,36 +256,23 @@ public:
 //                                  //
 //  //  //  //  //  //  //  //  //  //
 
-	// Adds (inserts) all locations (registers or memory etc) used by this statement
-	// Set cc to true to count the uses in collectors
-	        void        addUsedLocs(LocationSet &used, bool cc = false, bool memOnly = false);
-	// Special version of the above for finding used locations. Returns true if defineAll was found
-	        bool        addUsedLocals(LocationSet &used);
-	// Bypass calls for references in this statement
+	        void        addUsedLocs(LocationSet &, bool = false, bool = false);
+	        bool        addUsedLocals(LocationSet &);
 	        void        bypass();
 
+	        bool        replaceRef(Exp *, Assign *, bool &);
 
-	// replaces a use in this statement with an expression from an ordinary assignment
-	// Internal use only
-	        bool        replaceRef(Exp *e, Assign *def, bool &convert);
+	        void        findConstants(std::list<Const *> &);
 
-	// Find all constants in this statement
-	        void        findConstants(std::list<Const *> &lc);
-
-	// Set or clear the constant subscripts (using a visitor)
-	        int         setConscripts(int n);
+	        int         setConscripts(int);
 	        void        clearConscripts();
 
-	// Strip all size casts
 	        void        stripSizes();
 
-	// For all expressions in this Statement, replace all e with e{def}
-	        void        subscriptVar(Exp *e, Statement *def /*, Cfg *cfg */);
+	        void        subscriptVar(Exp *, Statement * /*, Cfg * */);
 
-	// Cast the constant num to type ty. If a change was made, return true
-	        bool        castConst(int num, Type *ty);
+	        bool        castConst(int, Type *);
 
-	// Map expressions to locals
 	        void        dfaMapLocals();
 
 	// End Statement visitation functions
@@ -309,9 +284,9 @@ public:
 	// Set the type for the definition of e in this Statement
 	virtual void        setTypeFor(Exp *e, Type *ty) { assert(0); }
 
-	        bool        doPropagateTo(Exp *e, Assign *def, bool &convert);
-	static  bool        calcMayAlias(Exp *e1, Exp *e2, int size);
-	static  bool        mayAlias(Exp *e1, Exp *e2, int size);
+	        bool        doPropagateTo(Exp *, Assign *, bool &);
+	static  bool        calcMayAlias(Exp *, Exp *, int);
+	static  bool        mayAlias(Exp *, Exp *, int);
 };
 
 std::ostream &operator <<(std::ostream &, const Statement *);
@@ -326,7 +301,7 @@ protected:
 	Type       *type;  // The type for this assignment or reference
 
 public:
-	            TypingStatement(Type *ty);  // Constructor
+	            TypingStatement(Type *);
 
 	// Get and set the type.
 	Type       *getType() const { return type; }
@@ -343,27 +318,25 @@ protected:
 	Exp        *lhs;  // The left hand side
 
 public:
-	// Constructor, subexpression
-	            Assignment(Exp *lhs);
-	// Constructor, type, and subexpression
-	            Assignment(Type *ty, Exp *lhs);
+	            Assignment(Exp *);
+	            Assignment(Type *, Exp *);
 
 	// We also want operator < for assignments. For example, we want ReturnStatement to contain a set of (pointers
 	// to) Assignments, so we can automatically make sure that existing assignments are not duplicated
 	// Assume that we won't want sets of assignments differing by anything other than LHSs
 	bool        operator <(const Assignment &o) const { return lhs < o.lhs; }
 
-	void        print(std::ostream &os, bool html = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 	virtual void printCompact(std::ostream &os, bool html = false) const = 0;  // Without statement number
 
-	Type       *getTypeFor(Exp *e) const override;      // Get the type for this assignment. It should define e
-	void        setTypeFor(Exp *e, Type *ty) override;  // Set the type for this assignment. It should define e
+	Type       *getTypeFor(Exp *) const override;
+	void        setTypeFor(Exp *, Type *) override;
 
-	bool        usesExp(Exp *e) const override;  // PhiAssign and ImplicitAssign don't override
+	bool        usesExp(Exp *) const override;
 
 	bool        isDefinition() const override { return true; }
-	void        getDefinitions(LocationSet &defs) const override;
-	bool        definesLoc(Exp *loc) const override;  // True if this Statement defines loc
+	void        getDefinitions(LocationSet &) const override;
+	bool        definesLoc(Exp *) const override;
 
 	// get how to access this lvalue
 	virtual Exp *getLeft() const { return lhs; }  // Note: now only defined for Assignments, not all Statements
@@ -374,14 +347,13 @@ public:
 
 	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override { }
 
-	// simplify address expressions
 	void        simplifyAddr() override;
 
 	// generate Constraints
-	void        genConstraints(LocationSet &cons) override;
+	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 };
 
 
@@ -395,16 +367,12 @@ class Assign : public Assignment {
 	Exp        *guard = nullptr;
 
 public:
-	// Constructor, subexpressions
-	            Assign(Exp *lhs, Exp *rhs, Exp *guard = nullptr);
-	// Constructor, type and subexpressions
-	            Assign(Type *ty, Exp *lhs, Exp *rhs, Exp *guard = nullptr);
+	            Assign(Exp *, Exp *, Exp * = nullptr);
+	            Assign(Type *, Exp *, Exp *, Exp * = nullptr);
 	// Default constructor, for XML parser
 	            Assign() : Assignment(nullptr) { }
-	// Copy constructor
 	            Assign(const Assign &);
 
-	// Clone
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_ASSIGN; }
@@ -419,56 +387,47 @@ public:
 	// set the rhs to something new
 	void        setRight(Exp *e) { rhs = e; }
 
-	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
 	bool        accept(StmtPartModifier &) override;
 
-	void        printCompact(std::ostream &os, bool html = false) const override;  // Without statement number
+	void        printCompact(std::ostream &, bool = false) const override;
 
 	// Guard
 	void        setGuard(Exp *g) { guard = g; }
 	Exp        *getGuard() const { return guard; }
 	bool        isGuarded() const { return !!guard; }
 
-	bool        usesExp(Exp *e) const override;
+	bool        usesExp(Exp *) const override;
 	bool        isDefinition() const override { return true; }
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override;
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
-
-	// general search and replace
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
+	bool        search(Exp *, Exp *&) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
 	// memory depth
 	int         getMemDepth() const;
 
 	// Generate code
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
-	// simpify internal expressions
 	void        simplify() override;
-
-	// simplify address expressions
 	void        simplifyAddr() override;
-
-	// fixSuccessor (succ(r2) -> r3)
 	void        fixSuccessor() override;
 
 	// generate Constraints
-	void        genConstraints(LocationSet &cons) override;
+	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 
 	// Range analysis
-	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//void        rangeAnalysis(std::list<Statement *> &) override;
 
 #if 0
 	// FIXME: I suspect that this was only used by adhoc TA, and can be deleted
-	bool        match(const char *pattern, std::map<std::string, Exp *> &bindings);
+	bool        match(const char *, std::map<std::string, Exp *> &);
 #endif
 };
 
@@ -519,34 +478,28 @@ public:
 	// Constructor, type and subexpression
 	            PhiAssign(Type *ty, Exp *lhs) : Assignment(ty, lhs) { }
 
-	// Clone
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_PHIASSIGN; }
 
-	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
 	bool        accept(StmtPartModifier &) override;
 
-	void        printCompact(std::ostream &os, bool html = false) const override;
+	void        printCompact(std::ostream &, bool = false) const override;
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override;
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
+	bool        search(Exp *, Exp *&) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
-	// general search and replace
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-
-	// simplify all the uses/defs in this Statement
 	void        simplify() override;
 
 	// Generate constraints
-	void        genConstraints(LocationSet &cons) override;
+	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 
 //
 // Phi specific functions
@@ -554,7 +507,7 @@ public:
 
 	// Get or put the statement at index idx
 	const PhiInfo &getAt(int idx) const { return defVec[idx]; }
-	void        putAt(int idx, Statement *d, Exp *e);
+	void        putAt(int, Statement *, Exp *);
 	void        simplifyRefs();
 	const Definitions &getDefs() const { return defVec; }
 
@@ -562,11 +515,9 @@ public:
 	iterator    end()   { return defVec.end(); }
 	iterator    erase(const_iterator it) { return defVec.erase(it); }
 
-	// Convert this phi assignment to an ordinary assignment
-	void        convertToAssign(Exp *rhs);
+	void        convertToAssign(Exp *);
 
-	// Generate a list of references for the parameters
-	void        enumerateParams(std::list<Exp *> &le);
+	void        enumerateParams(std::list<Exp *> &);
 };
 
 /**
@@ -576,34 +527,26 @@ public:
  */
 class ImplicitAssign : public Assignment {
 public:
-	// Constructor, subexpression
-	            ImplicitAssign(Exp *lhs);
-	// Constructor, type, and subexpression
-	            ImplicitAssign(Type *ty, Exp *lhs);
-	// Copy constructor
-	            ImplicitAssign(const ImplicitAssign &o);
+	            ImplicitAssign(Exp *);
+	            ImplicitAssign(Type *, Exp *);
+	            ImplicitAssign(const ImplicitAssign &);
 
-	// Clone
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_IMPASSIGN; }
 
 	// Data flow based type analysis
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override;
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
+	bool        search(Exp *, Exp *&) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
-	// general search and replace
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-
-	void        printCompact(std::ostream &os, bool html = false) const override;
+	void        printCompact(std::ostream &, bool = false) const override;
 
 	// Statement and Assignment functions
 	void        simplify() override { }
 
-	// Visitation
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
@@ -628,12 +571,10 @@ public:
 	            BoolAssign(int size);
 	           ~BoolAssign() override;
 
-	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_BOOLASSIGN; }
 
-	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
@@ -641,41 +582,40 @@ public:
 
 	// Set and return the BRANCH_TYPE of this scond as well as whether the
 	// floating point condition codes are used.
-	void        setCondType(BRANCH_TYPE cond, bool usesFloat = false);
+	void        setCondType(BRANCH_TYPE, bool = false);
 	BRANCH_TYPE getCond() const { return jtCond; }
 	bool        isFloat() const { return bFloat; }
 	void        setFloat(bool b) { bFloat = b; }
 
-	// Set and return the Exp representing the HL condition
 	Exp        *getCondExpr() const;
-	void        setCondExpr(Exp *pss);
+	void        setCondExpr(Exp *);
 	// As above, no delete (for subscripting)
 	void        setCondExprND(Exp *e) { pCond = e; }
 
 	int         getSize() const { return size; }  // Return the size of the assignment
 
-	void        printCompact(std::ostream &os = std::cout, bool html = false) const override;
+	void        printCompact(std::ostream & = std::cout, bool = false) const override;
 
 	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
-	// simplify all the uses/defs in this Statement
 	void        simplify() override;
 
 	// Statement functions
 	bool        isDefinition() const override { return true; }
-	void        getDefinitions(LocationSet &def) const override;
-	bool        usesExp(Exp *e) const override;
-	bool        search(Exp *search, Exp *&result) override;
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-	// a hack for the SETS macro
-	void        setLeftFromList(const std::list<Statement *> &stmts);
+	void        getDefinitions(LocationSet &) const override;
+	bool        usesExp(Exp *) const override;
+	bool        search(Exp *, Exp *&) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
+	void        setLeftFromList(const std::list<Statement *> &);
 
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 };
 
 /**
+ * \note ImpRefStatement not yet used.
+ *
  * An implicit reference has only an expression.  It holds the type
  * information that results from taking the address of a location.  Note that
  * dataflow can't decide which local variable (in the decompiled output) is
@@ -689,7 +629,7 @@ public:
 	// Constructor, subexpression
 	            ImpRefStatement(Type *ty, Exp *a) : TypingStatement(ty), addressExp(a) { }
 	Exp        *getAddressExp() const { return addressExp; }
-	void        meetWith(Type *ty, bool &ch);  // Meet the internal type with ty. Set ch if a change
+	void        meetWith(Type *, bool &);
 
 	// Virtuals
 	Statement  *clone() const override;
@@ -702,7 +642,7 @@ public:
 	bool        usesExp(Exp *) const override { return false; }
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *, std::allocator<Exp *> > &) override;
-	bool        searchAndReplace(Exp *, Exp *, bool cc = false) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 	void        simplify() override;
 	void        print(std::ostream &os, bool html = false) const override;
@@ -713,7 +653,7 @@ public:
  * jump's destination (an integer constant for direct jumps; an expression for
  * register jumps).  An instance of this class will never represent a return
  * or computed call as these are distinguished by the decoder and are
- * instantiated as CallStatements and ReturnStatements respectively.  This
+ * instantiated as ReturnStatements and CallStatements respectively.  This
  * class also represents unconditional jumps with a fixed offset (e.g BN, Ba
  * on SPARC).
  */
@@ -721,11 +661,19 @@ class GotoStatement: public Statement {
 	friend class XMLProgParser;
 
 protected:
-	Exp        *pDest = nullptr;       // Destination of a jump or call. This is the absolute destination for both static
-	                                   // and dynamic CTIs.
-	bool        m_isComputed = false;  // True if this is a CTI with a computed destination address.
-	                                   // NOTE: This should be removed, once CaseStatement and HLNwayCall are implemented
-	                                   // properly.
+	/**
+	 * Destination of a jump or call.  This is the absolute destination
+	 * for both static and dynamic CTIs.
+	 */
+	Exp        *pDest = nullptr;
+
+	/**
+	 * True if this is a CTI with a computed destination address.
+	 *
+	 * \note This should be removed, once CaseStatement and HLNwayCall are
+	 * implemented properly.
+	 */
+	bool        m_isComputed = false;
 
 public:
 	            GotoStatement() = default;
@@ -733,50 +681,35 @@ public:
 	            GotoStatement(ADDRESS);
 	           ~GotoStatement() override;
 
-	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_GOTO; }
 
-	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
 	bool        accept(StmtPartModifier &) override;
 
-	// Set and return the destination of the jump. The destination is either an Exp, or an ADDRESS that is
-	// converted to a Exp.
 	void        setDest(Exp *);
 	void        setDest(ADDRESS);
 	virtual Exp *getDest() const;
 
-	// Return the fixed destination of this CTI. For dynamic CTIs, returns -1.
 	ADDRESS     getFixedDest() const;
 
-	// Adjust the fixed destination by a given amount. Invalid for dynamic CTIs.
-	void        adjustFixedDest(int delta);
+	void        adjustFixedDest(int);
 
-	// Set and return whether the destination of this CTI is computed.
-	// NOTE: These should really be removed, once CaseStatement and HLNwayCall are implemented properly.
-	void        setIsComputed(bool b = true);
+	void        setIsComputed(bool = true);
 	bool        isComputed() const;
 
-	void        print(std::ostream &os = std::cout, bool html = false) const override;
+	void        print(std::ostream & = std::cout, bool = false) const override;
 
-	// general search
 	bool        search(Exp *, Exp *&) override;
-
-	// Replace all instances of "search" with "replace".
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-
-	// Searches for all instances of a given subexpression within this
-	// expression and adds them to a given list in reverse nesting order.
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
 
 	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
-	// simplify all the uses/defs in this Statement
 	void        simplify() override;
 
 	// Statement virtual functions
@@ -791,7 +724,6 @@ public:
 
 	STMT_KIND   getKind() const override { return STMT_JUNCTION; }
 
-	// Accept a visitor (of various kinds) to this Statement. Return true to continue visiting
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
@@ -802,7 +734,7 @@ public:
 
 	bool        usesExp(Exp *e) const override { return false; }
 
-	void        print(std::ostream &os, bool html = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 
 	// general search
 	bool        search(Exp *search, Exp *&result) override { return false; }
@@ -817,7 +749,7 @@ public:
 	// simpify internal expressions
 	void        simplify() override { }
 
-	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//void        rangeAnalysis(std::list<Statement *> &) override;
 	bool        isLoopJunction() const;
 };
 #endif
@@ -843,12 +775,10 @@ public:
 	            BranchStatement(ADDRESS);
 	           ~BranchStatement() override;
 
-	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_BRANCH; }
 
-	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
@@ -856,55 +786,47 @@ public:
 
 	// Set and return the BRANCH_TYPE of this jcond as well as whether the
 	// floating point condition codes are used.
-	void        setCondType(BRANCH_TYPE cond, bool usesFloat = false);
+	void        setCondType(BRANCH_TYPE, bool = false);
 	BRANCH_TYPE getCond() const { return jtCond; }
 	bool        isFloat() const { return bFloat; }
 	void        setFloat(bool b) { bFloat = b; }
 
-	// Set and return the Exp representing the HL condition
 	Exp        *getCondExpr() const;
-	void        setCondExpr(Exp *pe);
+	void        setCondExpr(Exp *);
 	// As above, no delete (for subscripting)
 	void        setCondExprND(Exp *e) { pCond = e; }
 
 	BasicBlock *getFallBB() const;
 	BasicBlock *getTakenBB() const;
-	void        setFallBB(BasicBlock *bb);
-	void        setTakenBB(BasicBlock *bb);
+	void        setFallBB(BasicBlock *);
+	void        setTakenBB(BasicBlock *);
 
-	void        print(std::ostream &os = std::cout, bool html = false) const override;
+	void        print(std::ostream & = std::cout, bool = false) const override;
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override;
-
-	// Replace all instances of "search" with "replace".
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-
-	// Searches for all instances of a given subexpression within this
-	// expression and adds them to a given list in reverse nesting order.
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
+	bool        search(Exp *, Exp *&) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
 
 	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	// dataflow analysis
-	bool        usesExp(Exp *e) const override;
+	bool        usesExp(Exp *) const override;
 
 	// Range analysis
-	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
-	//RangeMap   &getRangesForOutEdgeTo(BasicBlock *out);
+	//void        rangeAnalysis(std::list<Statement *> &) override;
+	//RangeMap   &getRangesForOutEdgeTo(BasicBlock *);
 	//RangeMap   &getRanges2Ref() { return ranges2; }
 	//void        setRanges2(RangeMap &r) { ranges2 = r; }
-	//void        limitOutputWithCondition(RangeMap &output, Exp *e);
+	//void        limitOutputWithCondition(RangeMap &, Exp *);
 
-	// simplify all the uses/defs in this Statememt
 	void        simplify() override;
 
 	// Generate constraints
-	void        genConstraints(LocationSet &cons) override;
+	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 };
 
 struct SWITCH_INFO {
@@ -925,44 +847,39 @@ struct SWITCH_INFO {
 class CaseStatement: public GotoStatement {
 	friend class XMLProgParser;
 
-	SWITCH_INFO *pSwitchInfo = nullptr;  // Ptr to struct with info about the switch
+	/**
+	 * \brief Struct with info about the switch.
+	 */
+	SWITCH_INFO *pSwitchInfo = nullptr;
 
 public:
 	            CaseStatement() = default;
 	            CaseStatement(Exp *);
 	           ~CaseStatement() override;
 
-	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_CASE; }
 
-	// Accept a visitor to this Statememt
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
 	bool        accept(StmtPartModifier &) override;
 
-	// Set and return the Exp representing the switch variable
 	SWITCH_INFO *getSwitchInfo() const;
-	void        setSwitchInfo(SWITCH_INFO *pss);
+	void        setSwitchInfo(SWITCH_INFO *);
 
-	void        print(std::ostream &os = std::cout, bool html = false) const override;
+	void        print(std::ostream & = std::cout, bool = false) const override;
 
-	// Replace all instances of "search" with "replace".
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-
-	// Searches for all instances of a given subexpression within this
-	// expression and adds them to a given list in reverse nesting order.
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
 
 	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	// dataflow analysis
-	bool        usesExp(Exp *e) const override;
+	bool        usesExp(Exp *) const override;
 
-	// simplify all the uses/defs in this Statement
 	void        simplify() override;
 };
 
@@ -973,36 +890,60 @@ public:
 class CallStatement: public GotoStatement {
 	friend class XMLProgParser;
 
-	bool        returnAfterCall = false;// True if call is effectively followed by a return.
+	/**
+	 * True if call is effectively followed by a return.
+	 */
+	bool        returnAfterCall = false;
 
-	// The list of arguments passed by this call, actually a list of Assign statements (location := expr)
+	/**
+	 * The list of arguments passed by this call, actually a list of
+	 * Assign statements (location := expr).
+	 */
 	StatementList arguments;
 
-	// The list of defines for this call, a list of ImplicitAssigns (used to be called returns).
-	// Essentially a localised copy of the modifies of the callee, so the callee could be deleted. Stores types and
-	// locations.  Note that not necessarily all of the defines end up being declared as results.
+	/**
+	 * The list of defines for this call, a list of ImplicitAssigns (used
+	 * to be called returns).  Essentially a localised copy of the
+	 * modifies of the callee, so the callee could be deleted.  Stores
+	 * types and locations.  Note that not necessarily all of the defines
+	 * end up being declared as results.
+	 */
 	StatementList defines;
 
-	// Destination of call. In the case of an analysed indirect call, this will be ONE target's return statement.
-	// For an unanalysed indirect call, or a call whose callee is not yet sufficiently decompiled due to recursion,
-	// this will be nullptr
+	/**
+	 * Destination of call.  In the case of an analysed indirect call,
+	 * this will be ONE target's return statement.  For an unanalysed
+	 * indirect call, or a call whose callee is not yet sufficiently
+	 * decompiled due to recursion, this will be null.
+	 */
 	Proc       *procDest = nullptr;
 
-	// The signature for this call. NOTE: this used to be stored in the Proc, but this does not make sense when
-	// the proc happens to have varargs
+	/**
+	 * The signature for this call.
+	 * \note This used to be stored in the Proc, but this does not make
+	 * sense when the proc happens to have varargs.
+	 */
 	Signature  *signature = nullptr;
 
-	// A UseCollector object to collect the live variables at this call. Used as part of the calculation of
-	// results
+	/**
+	 * A UseCollector object to collect the live variables at this call.
+	 * Used as part of the calculation of results.
+	 */
 	UseCollector useCol;
 
-	// A DefCollector object to collect the reaching definitions; used for bypassAndPropagate/localiseExp etc; also
-	// the basis for arguments if this is an unanlysed indirect call
+	/**
+	 * A DefCollector object to collect the reaching definitions; used for
+	 * bypassAndPropagate/localiseExp, etc.; also the basis for arguments
+	 * if this is an unanalysed indirect call.
+	 */
 	DefCollector defCol;
 
-	// Pointer to the callee ReturnStatement. If the callee is unanlysed, this will be a special ReturnStatement
-	// with ImplicitAssigns. Callee could be unanalysed because of an unanalysed indirect call, or a "recursion
-	// break".
+	/**
+	 * Pointer to the callee ReturnStatement.  If the callee is
+	 * unanalysed, this will be a special ReturnStatement with
+	 * ImplicitAssigns.  Callee could be unanalysed because of an
+	 * unanalysed indirect call, or a "recursion break".
+	 */
 	ReturnStatement *calleeReturn = nullptr;
 
 public:
@@ -1010,72 +951,57 @@ public:
 	            CallStatement(Exp *);
 	            CallStatement(ADDRESS);
 
-	void        setNumber(int num) override;
-	// Make a deep copy, and make the copy a derived object if needed.
+	void        setNumber(int) override;
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_CALL; }
 
-	// Accept a visitor to this stmt
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
 	bool        accept(StmtPartModifier &) override;
 
-	void        setArguments(StatementList &args);
+	void        setArguments(StatementList &);
 	// Set implicit arguments: so far, for testing only:
 	//void        setImpArguments(std::vector<Exp *> &arguments);
 	//void        setReturns(std::vector<Exp *> &returns);// Set call's return locs
-	void        setSigArguments();  // Set arguments based on signature
+	void        setSigArguments();
 	StatementList &getArguments() { return arguments; }  // Return call's arguments
-	void        updateArguments();  // Update the arguments based on a callee change
-	int         findDefine(Exp *e);  // Still needed temporarily for ad hoc type analysis
-	void        removeDefine(Exp *e);
-	void        addDefine(ImplicitAssign *as);  // For testing
+	void        updateArguments();
+	int         findDefine(Exp *);
+	void        removeDefine(Exp *);
+	void        addDefine(ImplicitAssign *);
 	//void        addReturn(Exp *e, Type *ty = nullptr);
-	void        updateDefines();  // Update the defines based on a callee change
-	StatementList *calcResults();  // Calculate defines(this) isect live(this)
+	void        updateDefines();
+	StatementList *calcResults();
 	ReturnStatement *getCalleeReturn() const { return calleeReturn; }
 	void        setCalleeReturn(ReturnStatement *ret) { calleeReturn = ret; }
 	bool        isChildless() const;
-	Exp        *getProven(Exp *e) const;
+	Exp        *getProven(Exp *) const;
 	Signature  *getSignature() const { return signature; }
-	// Localise the various components of expression e with reaching definitions to this call
-	// Note: can change e so usually need to clone the argument
-	// Was called substituteParams
-	Exp        *localiseExp(Exp *e);
-	void        localiseComp(Exp *e);  // Localise only xxx of m[xxx]
-	// Do the call bypass logic e.g. r28{20} -> r28{17} + 4 (where 20 is this CallStatement)
-	// Set ch if changed (bypassed)
-	Exp        *bypassRef(RefExp *r, bool &ch);
+	Exp        *localiseExp(Exp *);
+	void        localiseComp(Exp *);
+	Exp        *bypassRef(RefExp *, bool &);
 	void        clearUseCollector() { useCol.clear(); }
-	Exp        *findDefFor(Exp *e) const;  // Find the reaching definition for expression e
-	Exp        *getArgumentExp(int i) const;
-	void        setArgumentExp(int i, Exp *e);
-	void        setNumArguments(int i);
+	Exp        *findDefFor(Exp *) const;
+	Exp        *getArgumentExp(int) const;
+	void        setArgumentExp(int, Exp *);
+	void        setNumArguments(int);
 	int         getNumArguments() const;
-	void        removeArgument(int i);
-	Type       *getArgumentType(int i) const;
+	void        removeArgument(int);
+	Type       *getArgumentType(int) const;
 	void        eliminateDuplicateArgs();
 
 	// Range analysis
-	//void        rangeAnalysis(std::list<Statement *> &execution_paths) override;
+	//void        rangeAnalysis(std::list<Statement *> &) override;
 
-	void        print(std::ostream &os = std::cout, bool html = false) const override;
+	void        print(std::ostream & = std::cout, bool = false) const override;
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override;
+	bool        search(Exp *, Exp *&) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
 
-	// Replace all instances of "search" with "replace".
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
-
-	// Searches for all instances of a given subexpression within this
-	// expression and adds them to a given list in reverse nesting order.
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
-
-	// Set and return whether the call is effectively followed by a return.
-	// E.g. on Sparc, whether there is a restore in the delay slot.
-	void        setReturnAfterCall(bool b);
+	void        setReturnAfterCall(bool);
 	bool        isReturnAfterCall() const;
 
 	// Set and return the list of Exps that occur *after* the call (the
@@ -1083,30 +1009,28 @@ public:
 	void        setPostCallExpList(std::list<Exp *> *le);
 	std::list<Exp *> *getPostCallExpList();
 
-	// Set and return the destination proc.
-	void        setDestProc(Proc *dest);
+	void        setDestProc(Proc *);
 	Proc       *getDestProc() const;
 
 	// Generate constraints
-	void        genConstraints(LocationSet &cons) override;
+	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 
 	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	// dataflow analysis
-	bool        usesExp(Exp *e) const override;
+	bool        usesExp(Exp *) const override;
 
 	// dataflow related functions
 	bool        isDefinition() const override;
-	void        getDefinitions(LocationSet &defs) const override;
+	void        getDefinitions(LocationSet &) const override;
 
-	bool        definesLoc(Exp *loc) const override;  // True if this Statement defines loc
-	void        setLeftFor(Exp *forExp, Exp *newExp) override;
+	bool        definesLoc(Exp *) const override;
+	void        setLeftFor(Exp *, Exp *) override;
 
-	// simplify all the uses/defs in this Statement
 	void        simplify() override;
 
 	//void        setIgnoreReturnLoc(bool b);
@@ -1116,8 +1040,8 @@ public:
 	// Insert actual arguments to match formal parameters
 	//void        insertArguments(StatementSet &rs);
 
-	Type       *getTypeFor(Exp *e) const override;           // Get the type defined by this Statement for this location
-	void        setTypeFor(Exp *e, Type *ty) override;       // Set the type for this location, defined in this statement
+	Type       *getTypeFor(Exp *) const override;
+	void        setTypeFor(Exp *, Type *) override;
 	DefCollector *getDefCollector() { return &defCol; }         // Return pointer to the def collector object
 	UseCollector *getUseCollector() { return &useCol; }         // Return pointer to the use collector object
 	void        useBeforeDefine(Exp *x) { useCol.insert(x); }   // Add x to the UseCollector for this call
@@ -1125,15 +1049,13 @@ public:
 	void        removeAllLive() { useCol.clear(); }             // Remove all livenesses
 	//Exp        *fromCalleeContext(Exp *e);          // Convert e from callee to caller (this) context
 	StatementList &getDefines() { return defines; } // Get list of locations defined by this call
-	// Process this call for ellipsis parameters. If found, in a printf/scanf call, truncate the number of
-	// parameters if needed, and return true if any signature parameters added
-	bool        ellipsisProcessing(Prog *prog);
-	bool        convertToDirect();  // Internal function: attempt to convert an indirect to a direct call
+	bool        ellipsisProcessing(Prog *);
+	bool        convertToDirect();
 	void        useColFromSsaForm(Statement *s) { useCol.fromSSAform(proc, s); }
 private:
 	// Private helper functions for the above
-	void        addSigParam(Type *ty, bool isScanf);
-	Assign     *makeArgAssign(Type *ty, Exp *e);
+	void        addSigParam(Type *, bool);
+	Assign     *makeArgAssign(Type *, Exp *);
 
 protected:
 	void        appendArgument(Assignment *as) { arguments.append(as); }
@@ -1199,52 +1121,43 @@ public:
 	StatementList &getModifieds()   { return modifieds; }
 	StatementList &getReturns()     { return returns; }
 	unsigned    getNumReturns() const { return returns.size(); }
-	void        updateModifieds();  // Update modifieds from the collector
-	void        updateReturns();    // Update returns from the modifieds
+	void        updateModifieds();
+	void        updateReturns();
 
-	void        print(std::ostream &os = std::cout, bool html = false) const override;
+	void        print(std::ostream & = std::cout, bool = false) const override;
 
-	// general search
 	bool        search(Exp *, Exp *&) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
+	bool        searchAll(Exp *, std::list<Exp *> &) override;
 
-	// Replace all instances of "search" with "replace".
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override;
+	bool        usesExp(Exp *) const override;
 
-	// Searches for all instances of a given subexpression within this statement and adds them to a given list
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override;
+	void        getDefinitions(LocationSet &) const override;
 
-	// returns true if this statement uses the given expression
-	bool        usesExp(Exp *e) const override;
+	void        removeModified(Exp *);
+	void        removeReturn(Exp *);
+	void        addReturn(Assignment *);
 
-	void        getDefinitions(LocationSet &defs) const override;
+	Type       *getTypeFor(Exp *) const override;
+	void        setTypeFor(Exp *, Type *) override;
 
-	void        removeModified(Exp *loc);  // Remove from modifieds AND from returns
-	void        removeReturn(Exp *loc);    // Remove from returns only
-	void        addReturn(Assignment *a);
-
-	Type       *getTypeFor(Exp *e) const override;
-	void        setTypeFor(Exp *e, Type *ty) override;
-
-	// simplify all the uses/defs in this Statement
 	void        simplify() override;
 
 	bool        isDefinition() const override { return true; }
 
-	// Make a deep copy, and make the copy a derived object if needed.
 	Statement  *clone() const override;
 
 	STMT_KIND   getKind() const override { return STMT_RET; }
 
-	// Accept a visitor to this Statement
 	bool        accept(StmtVisitor &) override;
 	bool        accept(StmtExpVisitor &) override;
 	bool        accept(StmtModifier &) override;
 	bool        accept(StmtPartModifier &) override;
 
-	bool        definesLoc(Exp *loc) const override;  // True if this Statement defines loc
+	bool        definesLoc(Exp *) const override;
 
 	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override;
+	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	//Exp        *getReturnExp(int n) { return returns[n]; }
 	//void        setReturnExp(int n, Exp *e) { returns[n] = e; }
@@ -1254,7 +1167,7 @@ public:
 	// Find definition for e (in the collector)
 	Exp        *findDefFor(Exp *e) const { return col.findDefFor(e); }
 
-	void        dfaTypeAnalysis(bool &ch) override;
+	void        dfaTypeAnalysis(bool &) override;
 
 	// Temporary hack (not neccesary anymore)
 	//void        specialProcessing();

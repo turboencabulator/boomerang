@@ -711,6 +711,9 @@ LowerType::meetWith(Type *other, bool &ch, bool bHighestPtr)
 }
 #endif
 
+/**
+ * \brief Meet the type associated with e with ty.
+ */
 Type *
 Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
 {
@@ -770,6 +773,10 @@ Type::createUnion(Type *other, bool &ch, bool bHighestPtr)
 	return u;
 }
 
+/**
+ * \fn void Statement::dfaTypeAnalysis(bool &ch)
+ * \brief Use the type information in this Statement.
+ */
 void
 CallStatement::dfaTypeAnalysis(bool &ch)
 {
