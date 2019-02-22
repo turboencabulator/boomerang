@@ -135,12 +135,11 @@ public:
 	        void        setBB(BasicBlock *bb) { pbb = bb; }
 
 	        //bool        operator ==(Statement &o);
-	// Get and set *enclosing* proc (not destination proc)
-	        void        setProc(UserProc *p);
+	        void        setProc(UserProc *);
 	        UserProc   *getProc() const { return proc; }
 
 	        int         getNumber() const { return number; }
-	virtual void        setNumber(int num) { number = num; }  // Overridden for calls (and maybe later returns)
+	virtual void        setNumber(int num) { number = num; }
 
 	virtual STMT_KIND   getKind() const = 0;
 
@@ -150,7 +149,7 @@ public:
 	//        RangeMap   &getRanges() { return ranges; }
 	//        void        clearRanges() { ranges.clear(); }
 
-	virtual Statement  *clone() const = 0;  // Make copy of self
+	virtual Statement  *clone() const = 0;
 
 	virtual bool        accept(StmtVisitor &) = 0;
 	virtual bool        accept(StmtExpVisitor &) = 0;
@@ -163,61 +162,43 @@ public:
 	//        unsigned    int getLexEnd() const { return lexEnd; }
 	//        Exp        *getExpAtLex(unsigned int, unsigned int) const;
 
-
-	// returns true if this statement defines anything
 	virtual bool        isDefinition() const = 0;
 
-	// true if is a null statement
 	virtual bool        isNullStatement() const { return false; }
 
-	// true if this statment is a flags assignment
 	virtual bool        isFlagAssgn() const { return false; }
 
 	// true if this statement is a decoded ICT.
 	// NOTE: for now, it only represents decoded indirect jump instructions
 	        bool        isHL_ICT() const { return getKind() == STMT_CASE; }
 
-	// true if this is a fpush/fpop
 	virtual bool        isFpush() const { return false; }
 	virtual bool        isFpop() const { return false; }
 
-	// returns a set of locations defined by this statement
-	// Classes with no definitions (e.g. GotoStatement and children) don't override this
-	virtual void        getDefinitions(LocationSet &def) const { }
+	virtual void        getDefinitions(LocationSet &) const { }
 
-	// set the left for forExp to newExp
-	virtual void        setLeftFor(Exp *forExp, Exp *newExp) { assert(0); }
-	virtual bool        definesLoc(Exp *loc) const { return false; }  // True if this Statement defines loc
+	virtual void        setLeftFor(Exp *, Exp *) { assert(0); }
+	virtual bool        definesLoc(Exp *) const { return false; }
 
-	// returns true if this statement uses the given expression
-	virtual bool        usesExp(Exp *e) const = 0;
+	virtual bool        usesExp(Exp *) const = 0;
 
-	// statements should be printable (for debugging)
-	virtual void        print(std::ostream &os, bool html = false) const = 0;
+	virtual void        print(std::ostream &, bool = false) const = 0;
 	        void        printAsUse(std::ostream &os) const   { os << number; }
 	        void        printAsUseBy(std::ostream &os) const { os << number; }
 	        void        printNum(std::ostream &os) const     { os << number; }
 	        std::string prints() const;
 
-	// general search
-	virtual bool        search(Exp *search, Exp *&result) = 0;
-	virtual bool        searchAll(Exp *search, std::list<Exp *> &result) = 0;
-
-	// general search and replace. Set cc true to change collectors as well. Return true if any change
-	virtual bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) = 0;
+	virtual bool        search(Exp *, Exp *&) = 0;
+	virtual bool        searchAll(Exp *, std::list<Exp *> &) = 0;
+	virtual bool        searchAndReplace(Exp *, Exp *, bool = false) = 0;
 
 	static  bool        canPropagateToExp(Exp *);
 	        bool        propagateTo(bool &, std::map<Exp *, int, lessExpStar> * = nullptr, LocationSet * = nullptr, bool = false);
 	        bool        propagateFlagsTo();
 
-	// code generation
-	virtual void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) = 0;
+	virtual void        generateCode(HLLCode *, BasicBlock *, int) = 0;
 
-	// simpify internal expressions
 	virtual void        simplify() = 0;
-
-	// simplify internal address expressions (a[m[x]] -> x) etc
-	// Only Assignments override at present
 	virtual void        simplifyAddr() { }
 
 	        void        mapRegistersToLocals();
@@ -226,12 +207,9 @@ public:
 
 	        void        insertCasts();
 
-	// fixSuccessor
-	// Only Assign overrides at present
 	virtual void        fixSuccessor() { }
 
-	// Generate constraints (for constraint based type analysis)
-	virtual void        genConstraints(LocationSet &cons) { }
+	virtual void        genConstraints(LocationSet &) { }
 
 	// Data flow based type analysis
 	virtual void        dfaTypeAnalysis(bool &) { }
@@ -279,12 +257,8 @@ public:
 
 	// End Statement visitation functions
 
-
-	// Get the type for the definition, if any, for expression e in this statement
-	// Overridden only by Assignment and CallStatement, and ReturnStatement.
-	virtual Type       *getTypeFor(Exp *e) const { return nullptr; }
-	// Set the type for the definition of e in this Statement
-	virtual void        setTypeFor(Exp *e, Type *ty) { assert(0); }
+	virtual Type       *getTypeFor(Exp *) const { return nullptr; }
+	virtual void        setTypeFor(Exp *, Type *) { assert(0); }
 
 	        bool        doPropagateTo(Exp *, Assign *, bool &);
 	//static  bool        calcMayAlias(Exp *, Exp *, int);
@@ -329,7 +303,7 @@ public:
 	bool        operator <(const Assignment &o) const { return lhs < o.lhs; }
 
 	void        print(std::ostream &, bool = false) const override;
-	virtual void printCompact(std::ostream &os, bool html = false) const = 0;  // Without statement number
+	virtual void printCompact(std::ostream &, bool = false) const = 0;
 
 	Type       *getTypeFor(Exp *) const override;
 	void        setTypeFor(Exp *, Type *) override;
@@ -347,11 +321,10 @@ public:
 	// set the lhs to something new
 	void        setLeft(Exp *e) { lhs = e; }
 
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override { }
+	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 
 	void        simplifyAddr() override;
 
-	// generate Constraints
 	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
@@ -408,17 +381,14 @@ public:
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
 	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
-	// memory depth
 	int         getMemDepth() const;
 
-	// Generate code
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	void        simplify() override;
 	void        simplifyAddr() override;
 	void        fixSuccessor() override;
 
-	// generate Constraints
 	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
@@ -497,7 +467,6 @@ public:
 
 	void        simplify() override;
 
-	// Generate constraints
 	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
@@ -598,7 +567,6 @@ public:
 
 	void        printCompact(std::ostream & = std::cout, bool = false) const override;
 
-	// code generation
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	void        simplify() override;
@@ -695,9 +663,7 @@ public:
 	void        setDest(Exp *);
 	void        setDest(ADDRESS);
 	virtual Exp *getDest() const;
-
 	ADDRESS     getFixedDest() const;
-
 	void        adjustFixedDest(int);
 
 	void        setIsComputed(bool = true);
@@ -706,10 +672,9 @@ public:
 	void        print(std::ostream & = std::cout, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
-	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
-	// code generation
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	void        simplify() override;
@@ -734,19 +699,15 @@ public:
 	// returns true if this statement defines anything
 	bool        isDefinition() const override { return false; }
 
-	bool        usesExp(Exp *e) const override { return false; }
+	bool        usesExp(Exp *) const override { return false; }
 
 	void        print(std::ostream &, bool = false) const override;
 
-	// general search
-	bool        search(Exp *search, Exp *&result) override { return false; }
-	bool        searchAll(Exp *search, std::list<Exp *> &result) override { return false; }
+	bool        search(Exp *, Exp *&) override { return false; }
+	bool        searchAll(Exp *, std::list<Exp *> &) override { return false; }
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override { return false; }
 
-	// general search and replace. Set cc true to change collectors as well. Return true if any change
-	bool        searchAndReplace(Exp *search, Exp *replace, bool cc = false) override { return false; }
-
-	// code generation
-	void        generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel) override { }
+	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 
 	// simpify internal expressions
 	void        simplify() override { }
@@ -806,10 +767,9 @@ public:
 	void        print(std::ostream & = std::cout, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
-	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
-	// code generation
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	// dataflow analysis
@@ -824,7 +784,6 @@ public:
 
 	void        simplify() override;
 
-	// Generate constraints
 	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
@@ -873,10 +832,9 @@ public:
 
 	void        print(std::ostream & = std::cout, bool = false) const override;
 
-	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
-	// code generation
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	// dataflow analysis
@@ -1000,8 +958,8 @@ public:
 	void        print(std::ostream & = std::cout, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
-	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
 	void        setReturnAfterCall(bool);
 	bool        isReturnAfterCall() const;
@@ -1014,13 +972,11 @@ public:
 	void        setDestProc(Proc *);
 	Proc       *getDestProc() const;
 
-	// Generate constraints
 	void        genConstraints(LocationSet &) override;
 
 	// Data flow based type analysis
 	void        dfaTypeAnalysis(bool &) override;
 
-	// code generation
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	// dataflow analysis
@@ -1129,8 +1085,8 @@ public:
 	void        print(std::ostream & = std::cout, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
-	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
+	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 
 	bool        usesExp(Exp *) const override;
 
@@ -1158,7 +1114,6 @@ public:
 
 	bool        definesLoc(Exp *) const override;
 
-	// code generation
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
 	//Exp        *getReturnExp(int n) { return returns[n]; }
