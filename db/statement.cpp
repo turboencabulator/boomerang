@@ -56,7 +56,6 @@ Statement::getExpAtLex(unsigned int begin, unsigned int end) const
 {
 	return nullptr;
 }
-#endif
 
 bool
 Statement::mayAlias(Exp *e1, Exp *e2, int size)
@@ -117,7 +116,6 @@ Statement::calcMayAlias(Exp *e1, Exp *e2, int size)
 	return true;
 }
 
-#if 0 // Cruft?
 RangeMap
 Statement::getInputRanges()
 {

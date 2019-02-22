@@ -287,8 +287,8 @@ public:
 	virtual void        setTypeFor(Exp *e, Type *ty) { assert(0); }
 
 	        bool        doPropagateTo(Exp *, Assign *, bool &);
-	static  bool        calcMayAlias(Exp *, Exp *, int);
-	static  bool        mayAlias(Exp *, Exp *, int);
+	//static  bool        calcMayAlias(Exp *, Exp *, int);
+	//static  bool        mayAlias(Exp *, Exp *, int);
 };
 
 std::ostream &operator <<(std::ostream &, const Statement *);
