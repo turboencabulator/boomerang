@@ -3366,22 +3366,6 @@ CaseStatement::setSwitchInfo(SWITCH_INFO *psi)
 	pSwitchInfo = psi;
 }
 
-/**
- * \brief Still needed temporarily for ad-hoc type analysis.
- */
-int
-CallStatement::findDefine(Exp *e)
-{
-	int i = 0;
-	for (const auto &def : defines) {
-		Exp *ret = ((Assignment *)def)->getLeft();
-		if (*ret == *e)
-			return i;
-		++i;
-	}
-	return -1;
-}
-
 Exp *
 CallStatement::getProven(Exp *e) const
 {

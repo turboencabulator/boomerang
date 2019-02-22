@@ -922,16 +922,11 @@ public:
 	bool        accept(StmtPartModifier &) override;
 
 	void        setArguments(StatementList &);
-	// Set implicit arguments: so far, for testing only:
-	//void        setImpArguments(std::vector<Exp *> &arguments);
-	//void        setReturns(std::vector<Exp *> &returns);// Set call's return locs
 	void        setSigArguments();
 	StatementList &getArguments() { return arguments; }  // Return call's arguments
 	void        updateArguments();
-	int         findDefine(Exp *);
 	void        removeDefine(Exp *);
 	void        addDefine(ImplicitAssign *);
-	//void        addReturn(Exp *e, Type *ty = nullptr);
 	void        updateDefines();
 	StatementList *calcResults();
 	ReturnStatement *getCalleeReturn() const { return calleeReturn; }
@@ -964,11 +959,6 @@ public:
 	void        setReturnAfterCall(bool);
 	bool        isReturnAfterCall() const;
 
-	// Set and return the list of Exps that occur *after* the call (the
-	// list of exps in the RTL occur before the call). Useful for odd patterns.
-	void        setPostCallExpList(std::list<Exp *> *le);
-	std::list<Exp *> *getPostCallExpList();
-
 	void        setDestProc(Proc *);
 	Proc       *getDestProc() const;
 
@@ -990,13 +980,6 @@ public:
 	void        setLeftFor(Exp *, Exp *) override;
 
 	void        simplify() override;
-
-	//void        setIgnoreReturnLoc(bool b);
-
-	void        decompile();
-
-	// Insert actual arguments to match formal parameters
-	//void        insertArguments(StatementSet &rs);
 
 	Type       *getTypeFor(Exp *) const override;
 	void        setTypeFor(Exp *, Type *) override;
