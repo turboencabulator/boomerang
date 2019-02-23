@@ -4465,17 +4465,6 @@ PhiAssign::putAt(int i, Statement *def, Exp *e)
 }
 
 /**
- * \fn void Statement::setLeftFor(Exp *forExp, Exp *newExp)
- * \brief Set the left for forExp to newExp.
- */
-void
-CallStatement::setLeftFor(Exp *forExp, Exp *newExp)
-{
-	std::cerr << "! Attempt to setLeftFor this call statement! forExp is " << *forExp << ", newExp is " << *newExp << "\n";
-	assert(0);
-}
-
-/**
  * \fn bool Statement::isDefinition() const
  * \returns  true if this statement defines anything.
  */

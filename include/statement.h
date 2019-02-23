@@ -177,7 +177,6 @@ public:
 
 	virtual void        getDefinitions(LocationSet &) const { }
 
-	virtual void        setLeftFor(Exp *, Exp *) { assert(0); }
 	virtual bool        definesLoc(Exp *) const { return false; }
 
 	virtual bool        usesExp(Exp *) const = 0;
@@ -316,7 +315,6 @@ public:
 
 	// get how to access this lvalue
 	virtual Exp *getLeft() const { return lhs; }  // Note: now only defined for Assignments, not all Statements
-	void        setLeftFor(Exp *forExp, Exp *newExp) override { lhs = newExp; }
 
 	// set the lhs to something new
 	void        setLeft(Exp *e) { lhs = e; }
@@ -973,7 +971,6 @@ public:
 	void        getDefinitions(LocationSet &) const override;
 
 	bool        definesLoc(Exp *) const override;
-	void        setLeftFor(Exp *, Exp *) override;
 
 	void        simplify() override;
 
