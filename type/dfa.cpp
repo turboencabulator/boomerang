@@ -727,6 +727,15 @@ Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
 }
 
 /**
+ * \brief Meet the internal type with ty.  Set ch if a change.
+ */
+void
+ImpRefStatement::meetWith(Type *ty, bool &ch)
+{
+	type = type->meetWith(ty, ch);
+}
+
+/**
  * \brief Create a union of this Type and other.
  *
  * \param[out] ch  Set true if any change.

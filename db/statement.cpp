@@ -5271,15 +5271,6 @@ CallStatement::addDefine(ImplicitAssign *as)
 	defines.append(as);
 }
 
-/**
- * \brief Meet the internal type with ty.  Set ch if a change.
- */
-void
-ImpRefStatement::meetWith(Type *ty, bool &ch)
-{
-	type = type->meetWith(ty, ch);
-}
-
 void
 CallStatement::eliminateDuplicateArgs()
 {
