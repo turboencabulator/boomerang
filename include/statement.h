@@ -373,7 +373,6 @@ public:
 	bool        isGuarded() const { return !!guard; }
 
 	bool        usesExp(Exp *) const override;
-	bool        isDefinition() const override { return true; }
 
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
@@ -567,7 +566,6 @@ public:
 	void        simplify() override;
 
 	// Statement functions
-	bool        isDefinition() const override { return true; }
 	void        getDefinitions(LocationSet &) const override;
 	bool        usesExp(Exp *) const override;
 	bool        search(Exp *, Exp *&) override;
