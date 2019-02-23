@@ -1406,12 +1406,12 @@ Assignment::print(std::ostream &os, bool html) const
 void
 ImpRefStatement::print(std::ostream &os, bool html) const
 {
-	os << "     *";  // No statement number
+	os << "     ";  // No statement number
 	if (html) {
 		os << "</td><td>"
 		   << "<a name=\"stmt" << number << "\">";
 	}
-	os << type << "* IMP REF " << *addressExp;
+	os << "*" << type << "* IMP REF " << *addressExp;
 	if (html)
 		os << "</a></td>";
 }
