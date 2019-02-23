@@ -623,8 +623,7 @@ Boomerang::parseCmd(int argc, const char *argv[])
 			return 1;
 		}
 
-		up->print(std::cout);
-		std::cout << "\n";
+		std::cout << *up << "\n";
 		return 0;
 	} else if (!strcmp(argv[0], "exit")) {
 		return 2;
@@ -1352,20 +1351,18 @@ Boomerang::alert_decompile_debug_point(UserProc *p, const std::string &descripti
 		static std::set<Statement *> watches;
 		if (!stopAt || p->getName() == stopAt) {
 			// This is a mini command line debugger.  Feel free to expand it.
-			for (const auto &watch : watches) {
-				watch->print(std::cout);
-				std::cout << "\n";
-			}
+			for (const auto &watch : watches)
+				std::cout << *watch << "\n";
 			std::cout << " <press enter to continue> \n";
 			char line[1024];
 			while (1) {
 				*line = 0;
 				fgets(line, 1024, stdin);
 				if (!strncmp(line, "print", 5))
-					p->print(std::cout);
+					std::cout << *p;
 				else if (!strncmp(line, "fprint", 6)) {
 					std::ofstream of("out.proc");
-					p->print(of);
+					of << *p;
 					of.close();
 				} else if (!strncmp(line, "run ", 4)) {
 					stopAt = strdup(line + 4);
