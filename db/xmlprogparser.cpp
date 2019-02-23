@@ -1612,9 +1612,7 @@ XMLProgParser::start_boolasgn(Context *node, const char **attr)
 			((Statement *)node->stmt)->parent = s;
 		return;
 	}
-	auto size = getAttr(attr, "size");
-	assert(size);
-	auto boo = new BoolAssign(atoi(size));
+	auto boo = new BoolAssign();
 	node->stmt = boo;
 	addId(attr, boo);
 	if (auto n = getAttr(attr, "number"))
@@ -2665,7 +2663,6 @@ XMLProgParser::persistToXML(std::ostream &out, Statement *stmt)
 			out << "\" proc=\"" << (void *)b->proc;
 		out << "\" jtcond=\"" << b->jtCond
 		    << "\" float=\"" << (int)b->bFloat
-		    << "\" size=\"" << b->size
 		    << "\">\n";
 		if (b->pCond) {
 			out << "<cond>\n";

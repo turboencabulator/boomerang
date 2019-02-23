@@ -89,12 +89,8 @@ Assignment::Assignment(Exp *lhs) :
 	}
 }
 
-/**
- * \param sz  Size of the assignment.
- */
-BoolAssign::BoolAssign(int sz) :
-	Assignment(nullptr),
-	size(sz)
+BoolAssign::BoolAssign() :
+	Assignment(nullptr)
 {
 }
 
@@ -270,11 +266,10 @@ ReturnStatement::clone() const
 Statement *
 BoolAssign::clone() const
 {
-	auto ret = new BoolAssign(size);
+	auto ret = new BoolAssign();
 	ret->jtCond = jtCond;
 	ret->pCond = pCond ? pCond->clone() : nullptr;
 	ret->bFloat = bFloat;
-	ret->size = size;
 	// Statement members
 	ret->pbb = pbb;
 	ret->proc = proc;

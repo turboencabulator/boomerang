@@ -536,10 +536,9 @@ class BoolAssign: public Assignment {
 	Exp        *pCond = nullptr; // Exp representation of the high level
 	                             // condition: e.g. r[8] == 5
 	bool        bFloat = false;  // True if condition uses floating point CC
-	int         size;            // The size of the dest
 
 public:
-	            BoolAssign(int size);
+	            BoolAssign();
 	           ~BoolAssign() override;
 
 	Statement  *clone() const override;
@@ -562,8 +561,6 @@ public:
 	void        setCondExpr(Exp *);
 	// As above, no delete (for subscripting)
 	void        setCondExprND(Exp *e) { pCond = e; }
-
-	int         getSize() const { return size; }  // Return the size of the assignment
 
 	void        printCompact(std::ostream & = std::cout, bool = false) const override;
 
@@ -728,8 +725,7 @@ class BranchStatement: public GotoStatement {
 	Exp        *pCond = nullptr; // The Exp representation of the high level condition: e.g., r[8] == 5
 	bool        bFloat = false;  // True if uses floating point CC
 	// jtCond seems to be mainly needed for the Pentium weirdness.
-	// Perhaps bFloat, jtCond, and size could one day be merged into a type
-	int         size = 0;        // Size of the operands, in bits
+	// Perhaps bFloat and jtCond could one day be merged into a type
 	//RangeMap    ranges2;         // ranges for the not taken edge
 
 public:

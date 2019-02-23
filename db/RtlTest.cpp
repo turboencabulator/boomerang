@@ -145,7 +145,7 @@ RtlTest::testVisitor()
 	delete ret;
 
 	/* "bool" assgn */
-	auto scond = new BoolAssign(0);
+	auto scond = new BoolAssign();
 	scond->accept(visitor);
 	CPPUNIT_ASSERT(visitor.g);
 	delete scond;

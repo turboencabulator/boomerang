@@ -963,7 +963,7 @@ StatementTest::testAddUsedLocsBool()
 {
 	// Boolstatement with condition m[r24] = r25, dest m[r26]
 	LocationSet l;
-	auto bs = new BoolAssign(8);
+	auto bs = new BoolAssign();
 	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(24)), Location::regOf(25)));
 	std::list<Statement *> stmts;
 	auto a = new Assign(Location::memOf(Location::regOf(26)), new Terminal(opNil));
@@ -1139,7 +1139,7 @@ StatementTest::testSubscriptVars()
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 
 	// Boolstatement with condition m[r28] = r28, dest m[r28]
-	auto bs = new BoolAssign(8);
+	auto bs = new BoolAssign();
 	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(28)), Location::regOf(28)));
 	bs->setLeft(Location::memOf(Location::regOf(28)));
 	std::ostringstream ost7;

@@ -63,7 +63,7 @@ class Proc;
  * since multiple copies may be made.
  */
 #define SETS(name, dest, cond) \
-	auto bs = new BoolAssign(8); \
+	auto bs = new BoolAssign(); \
 	bs->setLeftFromList(result.rtl->getList()); \
 	result.rtl->getList().front() = bs; \
 	bs->setCondType(cond); \
