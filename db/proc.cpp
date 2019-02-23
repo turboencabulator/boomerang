@@ -3020,7 +3020,7 @@ UserProc::fromSSAform()
 			} else if (ff->second.first && !ty->isCompatibleWith(*ff->second.first)) {
 				if (DEBUG_LIVENESS)
 					LOG << "def of " << *base << " at " << stmt->getNumber() << " type " << *ty
-					    << " is not compatible with first type " << ff->second.first << ".\n";
+					    << " is not compatible with first type " << *ff->second.first << ".\n";
 				// There already is a type for base, and it is different to the type for this definition.
 				// Record an "interference" so it will get a new variable
 				if (!ty->isVoid())  // just ignore void interferences ??!!
