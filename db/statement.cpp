@@ -4436,15 +4436,14 @@ PhiAssign::convertToAssign(Exp *rhs)
 	// I believe we always want to propagate to these ex-phi's; check!:
 	rhs = rhs->propagateAll();
 	// Thanks to tamlin for this cleaner way of implementing this hack
-	assert(sizeof (Assign) <= sizeof (PhiAssign));
-	int n = number;  // These items disappear with the destructor below
-	BasicBlock *bb = pbb;
-	UserProc *p = proc;
-	Exp *lhs_ = lhs;
-	Exp *rhs_ = rhs;
-	Type *type_ = type;
+	static_assert(sizeof (Assign) <= sizeof (PhiAssign), "");
+	auto n = number;  // These items disappear with the destructor below
+	auto bb = pbb;
+	auto p = proc;
+	auto type_ = type;
+	auto lhs_ = lhs;
 	this->~PhiAssign();                             // Explicitly destroy this, but keep the memory allocated.
-	Assign *a = new(this) Assign(type_, lhs_, rhs_);// construct in-place. Note that 'a' == 'this'
+	auto a = new(this) Assign(type_, lhs_, rhs);// construct in-place. Note that 'a' == 'this'
 	a->setNumber(n);
 	a->setProc(p);
 	a->setBB(bb);
