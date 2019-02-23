@@ -62,18 +62,18 @@ class Proc;
 #define fetch16(pc) bf->readNative2(pc)
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
 
-/**
- * \todo Don't use macros like this inside matcher arms,
- * since multiple copies may be made.
- */
-#define SETS(name, dest, cond) \
-	auto bs = new BoolAssign(); \
-	bs->setLeftFromList(result.rtl->getList()); \
-	result.rtl->getList().front() = bs; \
-	bs->setCondType(cond); \
-	SHOW_ASM(name << " " << *dest)
 
 static DecodeResult &genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
+
+static RTL *
+SETS(ADDRESS pc, const std::string &name, Exp *dest, BRANCH_TYPE cond)
+{
+	auto bs = new BoolAssign();
+	bs->setLeft(dest);
+	bs->setCondType(cond);
+	SHOW_ASM(name << " " << *dest);
+	return new RTL(pc, bs);
+}
 
 /**
  * Constructor.  The code won't work without this (not sure why the default
@@ -2779,8 +2779,8 @@ pc
                                           
 #line 283 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JMI);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
 #line 2786 "pentiumdecoder.cpp"
 
@@ -2885,8 +2885,8 @@ pc
                                           
 #line 280 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JPOS);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
 #line 2892 "pentiumdecoder.cpp"
 
@@ -2993,14 +2993,14 @@ pc
                                           
 #line 271 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSL);
 //	| SETb.NP(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.P(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 3006 "pentiumdecoder.cpp"
 
@@ -3105,8 +3105,8 @@ pc
                                           
 #line 268 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
 #line 3112 "pentiumdecoder.cpp"
 
@@ -3211,8 +3211,8 @@ pc
                                           
 #line 265 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSLE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
 #line 3218 "pentiumdecoder.cpp"
 
@@ -3317,8 +3317,8 @@ pc
                                           
 #line 262 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 3324 "pentiumdecoder.cpp"
 
@@ -3430,14 +3430,14 @@ pc
                                           
 #line 301 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUL);
 //	| SETb.NO(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.O(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
 #line 3444 "pentiumdecoder.cpp"
@@ -3543,8 +3543,8 @@ pc
                                           
 #line 298 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
 #line 3550 "pentiumdecoder.cpp"
 
@@ -3649,8 +3649,8 @@ pc
                                           
 #line 295 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
 #line 3656 "pentiumdecoder.cpp"
 
@@ -3755,8 +3755,8 @@ pc
                                           
 #line 292 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JNE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
 #line 3762 "pentiumdecoder.cpp"
 
@@ -3861,8 +3861,8 @@ pc
                                           
 #line 289 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JULE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
 #line 3868 "pentiumdecoder.cpp"
 
@@ -3967,8 +3967,8 @@ pc
                                           
 #line 286 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
 #line 3974 "pentiumdecoder.cpp"
 
@@ -59590,14 +59590,14 @@ pc
       
 #line 301 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUL);
 //	| SETb.NO(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.O(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
 #line 59604 "pentiumdecoder.cpp"
@@ -59614,14 +59614,14 @@ pc
       
 #line 301 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUL);
 //	| SETb.NO(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.O(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
 #line 59628 "pentiumdecoder.cpp"
@@ -59638,14 +59638,14 @@ pc
       
 #line 301 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUL);
 //	| SETb.NO(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.O(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
 #line 59652 "pentiumdecoder.cpp"
@@ -59662,14 +59662,14 @@ pc
       
 #line 301 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUL);
 //	| SETb.NO(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.O(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 
 #line 59676 "pentiumdecoder.cpp"
@@ -59686,8 +59686,8 @@ pc
       
 #line 298 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
 #line 59693 "pentiumdecoder.cpp"
 
@@ -59703,8 +59703,8 @@ pc
       
 #line 298 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
 #line 59710 "pentiumdecoder.cpp"
 
@@ -59720,8 +59720,8 @@ pc
       
 #line 298 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
 #line 59727 "pentiumdecoder.cpp"
 
@@ -59737,8 +59737,8 @@ pc
       
 #line 298 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 
 #line 59744 "pentiumdecoder.cpp"
 
@@ -59754,8 +59754,8 @@ pc
       
 #line 295 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
 #line 59761 "pentiumdecoder.cpp"
 
@@ -59771,8 +59771,8 @@ pc
       
 #line 295 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
 #line 59778 "pentiumdecoder.cpp"
 
@@ -59788,8 +59788,8 @@ pc
       
 #line 295 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
 #line 59795 "pentiumdecoder.cpp"
 
@@ -59805,8 +59805,8 @@ pc
       
 #line 295 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 
 #line 59812 "pentiumdecoder.cpp"
 
@@ -59822,8 +59822,8 @@ pc
       
 #line 292 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JNE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
 #line 59829 "pentiumdecoder.cpp"
 
@@ -59839,8 +59839,8 @@ pc
       
 #line 292 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JNE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
 #line 59846 "pentiumdecoder.cpp"
 
@@ -59856,8 +59856,8 @@ pc
       
 #line 292 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JNE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
 #line 59863 "pentiumdecoder.cpp"
 
@@ -59873,8 +59873,8 @@ pc
       
 #line 292 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JNE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 
 #line 59880 "pentiumdecoder.cpp"
 
@@ -59890,8 +59890,8 @@ pc
       
 #line 289 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JULE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
 #line 59897 "pentiumdecoder.cpp"
 
@@ -59907,8 +59907,8 @@ pc
       
 #line 289 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JULE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
 #line 59914 "pentiumdecoder.cpp"
 
@@ -59924,8 +59924,8 @@ pc
       
 #line 289 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JULE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
 #line 59931 "pentiumdecoder.cpp"
 
@@ -59941,8 +59941,8 @@ pc
       
 #line 289 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JULE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 
 #line 59948 "pentiumdecoder.cpp"
 
@@ -59958,8 +59958,8 @@ pc
       
 #line 286 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
 #line 59965 "pentiumdecoder.cpp"
 
@@ -59975,8 +59975,8 @@ pc
       
 #line 286 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
 #line 59982 "pentiumdecoder.cpp"
 
@@ -59992,8 +59992,8 @@ pc
       
 #line 286 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
 #line 59999 "pentiumdecoder.cpp"
 
@@ -60009,8 +60009,8 @@ pc
       
 #line 286 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 
 #line 60016 "pentiumdecoder.cpp"
 
@@ -60026,8 +60026,8 @@ pc
       
 #line 283 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JMI);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
 #line 60033 "pentiumdecoder.cpp"
 
@@ -60043,8 +60043,8 @@ pc
       
 #line 283 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JMI);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
 #line 60050 "pentiumdecoder.cpp"
 
@@ -60060,8 +60060,8 @@ pc
       
 #line 283 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JMI);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
 #line 60067 "pentiumdecoder.cpp"
 
@@ -60077,8 +60077,8 @@ pc
       
 #line 283 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JMI);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 
 #line 60084 "pentiumdecoder.cpp"
 
@@ -60094,8 +60094,8 @@ pc
       
 #line 280 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JPOS);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
 #line 60101 "pentiumdecoder.cpp"
 
@@ -60111,8 +60111,8 @@ pc
       
 #line 280 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JPOS);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
 #line 60118 "pentiumdecoder.cpp"
 
@@ -60128,8 +60128,8 @@ pc
       
 #line 280 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JPOS);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
 #line 60135 "pentiumdecoder.cpp"
 
@@ -60145,8 +60145,8 @@ pc
       
 #line 280 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JPOS);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 
 #line 60152 "pentiumdecoder.cpp"
 
@@ -60162,14 +60162,14 @@ pc
       
 #line 271 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSL);
 //	| SETb.NP(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.P(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60175 "pentiumdecoder.cpp"
 
@@ -60185,14 +60185,14 @@ pc
       
 #line 271 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSL);
 //	| SETb.NP(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.P(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60198 "pentiumdecoder.cpp"
 
@@ -60208,14 +60208,14 @@ pc
       
 #line 271 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSL);
 //	| SETb.NP(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.P(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60221 "pentiumdecoder.cpp"
 
@@ -60231,14 +60231,14 @@ pc
       
 #line 271 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSL);
 //	| SETb.NP(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.P(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60244 "pentiumdecoder.cpp"
 
@@ -60254,8 +60254,8 @@ pc
       
 #line 268 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
 #line 60261 "pentiumdecoder.cpp"
 
@@ -60271,8 +60271,8 @@ pc
       
 #line 268 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
 #line 60278 "pentiumdecoder.cpp"
 
@@ -60288,8 +60288,8 @@ pc
       
 #line 268 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
 #line 60295 "pentiumdecoder.cpp"
 
@@ -60305,8 +60305,8 @@ pc
       
 #line 268 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 
 #line 60312 "pentiumdecoder.cpp"
 
@@ -60322,8 +60322,8 @@ pc
       
 #line 265 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSLE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
 #line 60329 "pentiumdecoder.cpp"
 
@@ -60339,8 +60339,8 @@ pc
       
 #line 265 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSLE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
 #line 60346 "pentiumdecoder.cpp"
 
@@ -60356,8 +60356,8 @@ pc
       
 #line 265 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSLE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
 #line 60363 "pentiumdecoder.cpp"
 
@@ -60373,8 +60373,8 @@ pc
       
 #line 265 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSLE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 
 #line 60380 "pentiumdecoder.cpp"
 
@@ -60390,8 +60390,8 @@ pc
       
 #line 262 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60397 "pentiumdecoder.cpp"
 
@@ -60407,8 +60407,8 @@ pc
       
 #line 262 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60414 "pentiumdecoder.cpp"
 
@@ -60424,8 +60424,8 @@ pc
       
 #line 262 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60431 "pentiumdecoder.cpp"
 
@@ -60441,8 +60441,8 @@ pc
       
 #line 262 "machine/pentium/decoder.m"
 
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 #line 60448 "pentiumdecoder.cpp"
 

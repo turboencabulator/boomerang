@@ -573,7 +573,6 @@ public:
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
 	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
-	void        setLeftFromList(const std::list<Statement *> &);
 
 	void        dfaTypeAnalysis(bool &) override;
 };

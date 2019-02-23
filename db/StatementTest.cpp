@@ -965,10 +965,7 @@ StatementTest::testAddUsedLocsBool()
 	LocationSet l;
 	auto bs = new BoolAssign();
 	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(24)), Location::regOf(25)));
-	std::list<Statement *> stmts;
-	auto a = new Assign(Location::memOf(Location::regOf(26)), new Terminal(opNil));
-	stmts.push_back(a);
-	bs->setLeftFromList(stmts);
+	bs->setLeft(Location::memOf(Location::regOf(26)));
 	bs->addUsedLocs(l);
 	std::string expected("r24,\tr25,\tr26,\tm[r24]");
 	std::string actual(l.prints());

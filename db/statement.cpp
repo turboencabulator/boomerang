@@ -4031,21 +4031,6 @@ BoolAssign::setCondExpr(Exp *pss)
 }
 
 /**
- * \brief A hack for the SETS macro.
- *
- * This is for setting up SETcc instructions; see frontend/pentiumdecoder.cpp
- * macro SETS.
- */
-void
-BoolAssign::setLeftFromList(const std::list<Statement *> &stmts)
-{
-	assert(stmts.size() == 1);
-	auto first = dynamic_cast<Assign *>(stmts.front());
-	assert(first);
-	lhs = first->getLeft();
-}
-
-/**
  * \fn void Statement::fixSuccessor()
  * \brief fixSuccessor (succ(r2) -> r3).
  */

@@ -58,18 +58,18 @@ class Proc;
 #define fetch16(pc) bf->readNative2(pc)
 #define fetch32(pc) (lastDwordLc = pc, bf->readNative4(pc))
 
-/**
- * \todo Don't use macros like this inside matcher arms,
- * since multiple copies may be made.
- */
-#define SETS(name, dest, cond) \
-	auto bs = new BoolAssign(); \
-	bs->setLeftFromList(result.rtl->getList()); \
-	result.rtl->getList().front() = bs; \
-	bs->setCondType(cond); \
-	SHOW_ASM(name << " " << *dest)
 
 static DecodeResult &genBSFR(ADDRESS pc, Exp *reg, Exp *modrm, int init, int size, OPER incdec, int numBytes);
+
+static RTL *
+SETS(ADDRESS pc, const std::string &name, Exp *dest, BRANCH_TYPE cond)
+{
+	auto bs = new BoolAssign();
+	bs->setLeft(dest);
+	bs->setCondType(cond);
+	SHOW_ASM(name << " " << *dest);
+	return new RTL(pc, bs);
+}
 
 /**
  * Constructor.  The code won't work without this (not sure why the default
@@ -260,53 +260,53 @@ PentiumDecoder::decodeInstruction(ADDRESS pc, const BinaryFile *bf)
 		result.rtl = conditionalJump(pc, name, relocd, (BRANCH_TYPE)0);
 
 	| SETb.NLE(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 	| SETb.LE(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSLE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSLE);
 	| SETb.NL(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSGE);
 	| SETb.L(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JSL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSL);
 //	| SETb.NP(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.P(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 	| SETb.NS(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JPOS);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JPOS);
 	| SETb.S(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JMI);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JMI);
 	| SETb.NBE(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUG);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUG);
 	| SETb.BE(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JULE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JULE);
 	| SETb.NZ(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JNE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JNE);
 	| SETb.Z(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JE);
 	| SETb.NB(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUGE);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUGE);
 	| SETb.B(Eaddr) [name] =>
-		result.rtl = instantiate(pc, name, DIS_EADDR8);
-		SETS(name, DIS_EADDR8, BRANCH_JUL);
+		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JUL);
 //	| SETb.NO(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 //	| SETb.O(Eaddr) [name] =>
-//		result.rtl = instantiate(pc, name, DIS_EADDR8);
-//		SETS(name, DIS_EADDR8, BRANCH_JSG);
+//		//result.rtl = instantiate(pc, name, DIS_EADDR8);
+//		result.rtl = SETS(pc, name, DIS_EADDR8, BRANCH_JSG);
 
 	| XLATB() [name] =>
 		result.rtl = instantiate(pc, name);
