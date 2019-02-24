@@ -195,9 +195,9 @@ public:
 	// True if this is a boolean constant
 	        bool        isBoolConst() const { return op == opTrue || op == opFalse; }
 	// True if this is an equality (== or !=)
-	        bool        isEquality() const { return op == opEquals /*|| op == opNotEqual*/; }
+	        bool        isEquality() const { return op == opEqual /*|| op == opNotEqual*/; }
 	// True if this is a comparison
-	        bool        isComparison() const { return op == opEquals   || op == opNotEqual
+	        bool        isComparison() const { return op == opEqual    || op == opNotEqual
 	                                               || op == opGtr      || op == opLess
 	                                               || op == opGtrUns   || op == opLessUns
 	                                               || op == opGtrEq    || op == opLessEq

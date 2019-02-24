@@ -2285,7 +2285,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		stmts.push_back(s);
 		b = new BranchStatement(pc + numBytes);
 		b->setCondType(BRANCH_JE);
-		b->setCondExpr(new Binary(opEquals,
+		b->setCondExpr(new Binary(opEqual,
 		                          modrm->clone(),
 		                          new Const(0)));
 		stmts.push_back(b);
@@ -2309,7 +2309,7 @@ genBSFR(ADDRESS pc, Exp *dest, Exp *modrm, int init, int size, OPER incdec, int 
 		stmts.push_back(s);
 		b = new BranchStatement(pc + 2);
 		b->setCondType(BRANCH_JE);
-		b->setCondExpr(new Binary(opEquals,
+		b->setCondExpr(new Binary(opEqual,
 		                          new Ternary(opAt,
 		                                      modrm->clone(),
 		                                      dest->clone(),

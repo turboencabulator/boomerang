@@ -86,7 +86,7 @@ enum STMT_KIND {
  * Changing the order of these will result in save files not working - trent
  */
 enum BRANCH_TYPE {
-	BRANCH_JE = 0,          ///< Jump if equals.
+	BRANCH_JE = 0,          ///< Jump if equal.
 	BRANCH_JNE,             ///< Jump if not equal.
 	BRANCH_JSL,             ///< Jump if signed less.
 	BRANCH_JSLE,            ///< Jump if signed less or equal.

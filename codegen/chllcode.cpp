@@ -209,7 +209,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		assert(c && c->isStrConst());
 		str << c->getStr();
 		break;
-	case opEquals:
+	case opEqual:
 		{
 			openParen(str, curPrec, PREC_EQUAL);
 			appendExp(str, b->getSubExp1(), PREC_EQUAL);

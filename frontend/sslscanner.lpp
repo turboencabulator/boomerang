@@ -70,7 +70,7 @@
 "or"    { yylval.op = opOr;        return SSLParser::LOG_OP; }
 "and"   { yylval.op = opAnd;       return SSLParser::LOG_OP; }
 
-"="     { yylval.op = opEquals;    return SSLParser::COND_OP; }
+"="     { yylval.op = opEqual;     return SSLParser::COND_OP; }
 "~="    { yylval.op = opNotEqual;  return SSLParser::COND_OP; }
 "<"     { yylval.op = opLess;      return SSLParser::COND_OP; }
 ">"     { yylval.op = opGtr;       return SSLParser::COND_OP; }

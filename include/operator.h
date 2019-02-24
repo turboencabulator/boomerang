@@ -49,7 +49,7 @@ enum OPER {
 
 	opAnd,                  // Logical and
 	opOr,                   // Logical or
-	opEquals,               // Equality (logical)
+	opEqual,                // Equality (logical)
 	opNotEqual,             // Logical !=
 	opLess,                 // Logical less than (signed)
 	opGtr,                  // Logical greater than (signed)

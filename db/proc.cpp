@@ -1817,7 +1817,7 @@ UserProc::findSpPreservation()
 		for (int p = 0; !stdsp && p < 8; ++p) {
 			if (DEBUG_PROOF)
 				LOG << "attempting to prove sp = sp + " << p * 4 << " for " << getName() << "\n";
-			stdsp = prove(new Binary(opEquals,
+			stdsp = prove(new Binary(opEqual,
 			                         Location::regOf(sp),
 			                         new Binary(opPlus,
 			                                    Location::regOf(sp),
@@ -1853,7 +1853,7 @@ UserProc::findPreserveds()
 	StatementList &modifieds = theReturnStatement->getModifieds();
 	for (const auto &mod : modifieds) {
 		Exp *lhs = ((Assignment *)mod)->getLeft();
-		Exp *equation = new Binary(opEquals, lhs, lhs);
+		Exp *equation = new Binary(opEqual, lhs, lhs);
 		if (DEBUG_PROOF)
 			LOG << "attempting to prove " << *equation << " is preserved by " << getName() << "\n";
 		if (prove(equation)) {
@@ -3282,7 +3282,7 @@ UserProc::removeSubscriptsFromParameters()
 	}
 }
 
-static Binary allEqAll(opEquals, new Terminal(opDefineAll), new Terminal(opDefineAll));
+static Binary allEqAll(opEqual, new Terminal(opDefineAll), new Terminal(opDefineAll));
 
 // this function was non-reentrant, but now reentrancy is frequently used
 bool
@@ -3392,7 +3392,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 		}
 
 		change = false;
-		if (query->getOper() == opEquals) {
+		if (query->getOper() == opEqual) {
 
 			// same left and right means true
 			if (*query->getSubExp1() == *query->getSubExp2()) {
@@ -3453,7 +3453,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 								// another premise! Example: try to prove esp, depends on whether ebp is preserved, so
 								// recurse to check ebp's preservation. Won't infinitely loop because of the premise map
 								// FIXME: what if it needs a rx = rx + K preservation?
-								Exp *newQuery = new Binary(opEquals, base->clone(), base->clone());
+								Exp *newQuery = new Binary(opEqual, base->clone(), base->clone());
 								destProc->setPremise(base);
 								if (DEBUG_PROOF)
 									LOG << "new required premise " << *newQuery

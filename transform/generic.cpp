@@ -114,7 +114,7 @@ GenericExpTransformer::checkCond(Exp *cond, Exp *bindings)
 	case opAnd:
 		return checkCond(cond->getSubExp1(), bindings)
 		    && checkCond(cond->getSubExp2(), bindings);
-	case opEquals:
+	case opEqual:
 		{
 			Exp *lhs = cond->getSubExp1(), *rhs = cond->getSubExp2();
 			for (Exp *l = bindings; !l->isNil(); l = l->getSubExp2()) {
@@ -165,7 +165,7 @@ GenericExpTransformer::checkCond(Exp *cond, Exp *bindings)
 				for (le = bindings; !le->isNil() && !le->getSubExp2()->isNil(); le = le->getSubExp2())
 					;
 				assert(!le->isNil());
-				le->setSubExp2(new Binary(opList, new Binary(opEquals, lhs->clone(), rhs->clone()), new Terminal(opNil)));
+				le->setSubExp2(new Binary(opList, new Binary(opEqual, lhs->clone(), rhs->clone()), new Terminal(opNil)));
 #if 0
 				LOG << "bindings now: " << bindings << "\n";
 #endif

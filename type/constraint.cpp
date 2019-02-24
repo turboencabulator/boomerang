@@ -213,7 +213,7 @@ Constraints::substIntoEquates(ConstraintMap &in)
 					// Remove the equate, and generate more fixed
 					// e.g. Ta = Tb,Tc and Ta = K => Tb=K, Tc=K
 					for (const auto &loc : ls) {
-						Exp *newFixed = new Binary(opEquals,
+						Exp *newFixed = new Binary(opEqual,
 						                           loc,     // e.g. Tb
 						                           val);    // e.g. K
 						extra.insert(newFixed);

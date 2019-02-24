@@ -946,7 +946,7 @@ Type::match(Type *pattern)
 	if (auto p = dynamic_cast<NamedType *>(pattern)) {
 		LOG << "type match: " << this->getCtype() << " to " << p->getCtype() << "\n";
 		return new Binary(opList,
-		                  new Binary(opEquals,
+		                  new Binary(opEqual,
 		                             new Unary(opVar,
 		                                       new Const(p->getName())),
 		                             new TypeVal(this->clone())),

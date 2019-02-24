@@ -144,7 +144,7 @@ FrontPentTest::testBranch()
 
 	// jne
 	inst = fe->decodeInstruction(0x8048979);
-	expected = std::string("08048979    0 BRANCH 0x8048988, condition not equals\n"
+	expected = std::string("08048979    0 BRANCH 0x8048988, condition not equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -156,7 +156,7 @@ FrontPentTest::testBranch()
 
 	// jbe
 	inst = fe->decodeInstruction(0x8048a1b);
-	expected = std::string("08048a1b    0 BRANCH 0x8048a2a, condition unsigned less or equals\n"
+	expected = std::string("08048a1b    0 BRANCH 0x8048a2a, condition unsigned less or equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 

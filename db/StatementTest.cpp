@@ -964,7 +964,7 @@ StatementTest::testAddUsedLocsBool()
 	// Boolstatement with condition m[r24] = r25, dest m[r26]
 	LocationSet l;
 	auto bs = new BoolAssign();
-	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(24)), Location::regOf(25)));
+	bs->setCondExpr(new Binary(opEqual, Location::memOf(Location::regOf(24)), Location::regOf(25)));
 	bs->setLeft(Location::memOf(Location::regOf(26)));
 	bs->addUsedLocs(l);
 	std::string expected("r24,\tr25,\tr26,\tm[r24]");
@@ -1039,7 +1039,7 @@ StatementTest::testSubscriptVars()
 	b->subscriptVar(srchb, &s9);  // Should be ignored now: new behaviour
 	b->subscriptVar(new Terminal(opFlags), g);
 	ost3 << *b;
-	expected = "  99 BRANCH m[r26{99}]{55}, condition equals\n"
+	expected = "  99 BRANCH m[r26{99}]{55}, condition equal\n"
 	           "              High level: %flags{55}";
 	actual = ost3.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -1137,12 +1137,12 @@ StatementTest::testSubscriptVars()
 
 	// Boolstatement with condition m[r28] = r28, dest m[r28]
 	auto bs = new BoolAssign();
-	bs->setCondExpr(new Binary(opEquals, Location::memOf(Location::regOf(28)), Location::regOf(28)));
+	bs->setCondExpr(new Binary(opEqual, Location::memOf(Location::regOf(28)), Location::regOf(28)));
 	bs->setLeft(Location::memOf(Location::regOf(28)));
 	std::ostringstream ost7;
 	bs->subscriptVar(srch, &s9);
 	ost7 << *bs;
-	expected = "   0 BOOL m[r28{9}] := CC(equals)\n"
+	expected = "   0 BOOL m[r28{9}] := CC(equal)\n"
 	           "High level: m[r28{9}] = r28{9}\n";
 	actual = ost7.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
@@ -1200,7 +1200,7 @@ StatementTest::testBypass()
 #if 0  // No longer needed, but could maybe expand the test one day
 	// Fake it to be known that r29 is preserved
 	Exp *r29 = Location::regOf(29);
-	proc->setProven(new Binary(opEquals, r29, r29->clone()));
+	proc->setProven(new Binary(opEqual, r29, r29->clone()));
 	(*it)->bypass();
 	// Now expect r29{30} to be r29{3}
 	expected = "  22 *32* r24 := m[r29{3} + 8]{-}";

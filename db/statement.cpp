@@ -1221,15 +1221,15 @@ BranchStatement::print(std::ostream &os, bool html) const
 		os << "0x" << std::hex << getFixedDest() << std::dec;
 	os << ", condition ";
 	switch (jtCond) {
-	case BRANCH_JE:   os << "equals"; break;
-	case BRANCH_JNE:  os << "not equals"; break;
+	case BRANCH_JE:   os << "equal"; break;
+	case BRANCH_JNE:  os << "not equal"; break;
 	case BRANCH_JSL:  os << "signed less"; break;
-	case BRANCH_JSLE: os << "signed less or equals"; break;
-	case BRANCH_JSGE: os << "signed greater or equals"; break;
+	case BRANCH_JSLE: os << "signed less or equal"; break;
+	case BRANCH_JSGE: os << "signed greater or equal"; break;
 	case BRANCH_JSG:  os << "signed greater"; break;
 	case BRANCH_JUL:  os << "unsigned less"; break;
-	case BRANCH_JULE: os << "unsigned less or equals"; break;
-	case BRANCH_JUGE: os << "unsigned greater or equals"; break;
+	case BRANCH_JULE: os << "unsigned less or equal"; break;
+	case BRANCH_JUGE: os << "unsigned greater or equal"; break;
 	case BRANCH_JUG:  os << "unsigned greater"; break;
 	case BRANCH_JMI:  os << "minus"; break;
 	case BRANCH_JPOS: os << "plus"; break;
@@ -1447,15 +1447,15 @@ BoolAssign::printCompact(std::ostream &os, bool html) const
 	lhs->print(os);
 	os << " := CC(";
 	switch (jtCond) {
-	case BRANCH_JE:   os << "equals"; break;
-	case BRANCH_JNE:  os << "not equals"; break;
+	case BRANCH_JE:   os << "equal"; break;
+	case BRANCH_JNE:  os << "not equal"; break;
 	case BRANCH_JSL:  os << "signed less"; break;
-	case BRANCH_JSLE: os << "signed less or equals"; break;
-	case BRANCH_JSGE: os << "signed greater or equals"; break;
+	case BRANCH_JSLE: os << "signed less or equal"; break;
+	case BRANCH_JSGE: os << "signed greater or equal"; break;
 	case BRANCH_JSG:  os << "signed greater"; break;
 	case BRANCH_JUL:  os << "unsigned less"; break;
-	case BRANCH_JULE: os << "unsigned less or equals"; break;
-	case BRANCH_JUGE: os << "unsigned greater or equals"; break;
+	case BRANCH_JULE: os << "unsigned less or equal"; break;
+	case BRANCH_JUGE: os << "unsigned greater or equal"; break;
 	case BRANCH_JUG:  os << "unsigned greater"; break;
 	case BRANCH_JMI:  os << "minus"; break;
 	case BRANCH_JPOS: os << "plus"; break;
@@ -1658,7 +1658,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 		// Special for PPC unsigned compares; may be other cases in the future
 		bool makeUns = strncmp(((Const *)pCond->getSubExp1())->getStr(), "SUBFLAGSNL", 10) == 0;
 		switch (jtCond) {
-		case BRANCH_JE:   op = opEquals;   break;
+		case BRANCH_JE:   op = opEqual;    break;
 		case BRANCH_JNE:  op = opNotEqual; break;
 		case BRANCH_JSL:  op = (makeUns ? opLessUns   : opLess);   break;
 		case BRANCH_JSLE: op = (makeUns ? opLessEqUns : opLessEq); break;
@@ -1701,7 +1701,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 		// Exp *e = pCond;
 		OPER op = opWild;
 		switch (jtCond) {
-		case BRANCH_JE:   op = opEquals; break;
+		case BRANCH_JE:   op = opEqual; break;
 		case BRANCH_JNE:  op = opNotEqual; break;
 		case BRANCH_JMI:  op = opLess; break;
 		case BRANCH_JPOS: op = opGtrEq; break;
@@ -1761,7 +1761,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 					op = opLess;
 					break;
 				case 0x40:
-					op = opEquals;
+					op = opEqual;
 					break;
 				case 0x41:
 					op = opLessEq;
@@ -1786,7 +1786,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 		// Exp *e = pCond;
 		OPER op = opWild;
 		switch (jtCond) {
-		case BRANCH_JE:   op = opEquals; break;
+		case BRANCH_JE:   op = opEqual; break;
 		case BRANCH_JNE:  op = opNotEqual; break;
 		case BRANCH_JMI:  op = opLess; break;
 		case BRANCH_JPOS: op = opGtrEq; break;
@@ -1814,7 +1814,7 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 	// Example: (SETTFLAGS(...) & 1) ~= 0
 	// left = SETFFLAGS(...) & 1
 	// left1 = SETFFLAGS(...) left2 = int 1, k = 0, mask = 1
-	else if (condOp == opEquals || condOp == opNotEqual) {
+	else if (condOp == opEqual || condOp == opNotEqual) {
 		Exp *left  = ((Binary *)pCond)->getSubExp1();
 		Exp *right = ((Binary *)pCond)->getSubExp2();
 		bool hasXor40 = false;
@@ -1845,21 +1845,21 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				} else {
 					switch (mask) {
 					case 1:
-						op = ((condOp == opEquals && k == 0) || (condOp == opNotEqual && k == 1)) ? opGtrEq : opLess;
+						op = ((condOp == opEqual && k == 0) || (condOp == opNotEqual && k == 1)) ? opGtrEq : opLess;
 						break;
 					case 0x40:
-						op = ((condOp == opEquals && k == 0) || (condOp == opNotEqual && k == 0x40)) ? opNotEqual : opEquals;
+						op = ((condOp == opEqual && k == 0) || (condOp == opNotEqual && k == 0x40)) ? opNotEqual : opEqual;
 						break;
 					case 0x41:
 						switch (k) {
 						case 0:
-							op = (condOp == opEquals) ? opGtr : opLessEq;
+							op = (condOp == opEqual) ? opGtr : opLessEq;
 							break;
 						case 1:
-							op = (condOp == opEquals) ? opLess : opGtrEq;
+							op = (condOp == opEqual) ? opLess : opGtrEq;
 							break;
 						case 0x40:
-							op = (condOp == opEquals) ? opEquals : opNotEqual;
+							op = (condOp == opEqual) ? opEqual : opNotEqual;
 							break;
 						default:
 							std::cerr << "BranchStatement::simplify: k is " << std::hex << k << std::dec << "\n";
@@ -2372,7 +2372,7 @@ BranchStatement::limitOutputWithCondition(RangeMap &output, Exp *e)
 					output.addRange(e->getSubExp1(), ra);
 				}
 				break;
-			case opEquals:
+			case opEqual:
 				{
 					Range ra(r.getStride(), c, c, r.getBase());
 					output.addRange(e->getSubExp1(), ra);
@@ -3035,7 +3035,7 @@ Statement::replaceRef(Exp *e, Assign *def, bool &convert)
 		const char *str = ((Const *)((Binary *)rhs)->getSubExp1())->getStr();
 		if (strncmp("SUBFLAGS", str, 8) == 0) {
 			// for zf we're only interested in if the result part of the subflags is equal to zero
-			Exp *relExp = new Binary(opEquals,
+			Exp *relExp = new Binary(opEqual,
 			                         ((Binary *)rhs)->getSubExp2()->getSubExp2()->getSubExp2()->getSubExp1(),
 			                         new Const(0));
 			searchAndReplace(new RefExp(new Terminal(opZF), def), relExp, true);
@@ -3220,7 +3220,7 @@ BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat)
 	Exp *p = nullptr;
 	switch (cond) {
 	case BRANCH_JE:
-		p = new Binary(opEquals, new Terminal(opFlags), new Const(0));
+		p = new Binary(opEqual, new Terminal(opFlags), new Const(0));
 		break;
 	case BRANCH_JNE:
 		p = new Binary(opNotEqual, new Terminal(opFlags), new Const(0));
@@ -3265,7 +3265,7 @@ BranchStatement::setCondType(BRANCH_TYPE cond, bool usesFloat)
 		// Can't handle this properly here; leave an impossible expression involving %flags so propagation will
 		// still happen, and we can recognise this later in condToRelational()
 		// Update: these expressions seem to get ignored ???
-		p = new Binary(opEquals, new Terminal(opFlags), new Const(999));
+		p = new Binary(opEqual, new Terminal(opFlags), new Const(999));
 		break;
 	}
 	// this is such a hack.. preferably we should actually recognise SUBFLAGS32(..,..,..) > 0 instead of just
@@ -4175,9 +4175,9 @@ BranchStatement::genConstraints(LocationSet &cons)
 	} else
 		Tb = new Unary(opTypeOf, b);
 	// Constrain that Ta == opsType and Tb == opsType
-	Exp *con = new Binary(opEquals, Ta, new TypeVal(opsType));
+	Exp *con = new Binary(opEqual, Ta, new TypeVal(opsType));
 	cons.insert(con);
-	con = new Binary(opEquals, Tb, new TypeVal(opsType));
+	con = new Binary(opEqual, Tb, new TypeVal(opsType));
 	cons.insert(con);
 }
 void
@@ -4200,7 +4200,7 @@ CallStatement::genConstraints(LocationSet &cons)
 				arg = ((Location *)sub)->getSubExp1();
 		}
 		if (arg->isRegOf() || arg->isMemOf() || arg->isSubscript() || arg->isLocal() || arg->isGlobal()) {
-			Exp *con = new Binary(opEquals,
+			Exp *con = new Binary(opEqual,
 			                      new Unary(opTypeOf, arg->clone()),
 			                      new TypeVal(destSig->getParamType(p)->clone()));
 			cons.insert(con);
@@ -4290,7 +4290,7 @@ Assignment::genConstraints(LocationSet &cons)
 	// Almost every assignment has at least a size from decoding
 	// MVE: do/will PhiAssign's have a valid type? Why not?
 	if (type)
-		cons.insert(new Binary(opEquals,
+		cons.insert(new Binary(opEqual,
 		                       new Unary(opTypeOf, new RefExp(lhs, this)),
 		                       new TypeVal(type)));
 }
@@ -4308,7 +4308,7 @@ PhiAssign::genConstraints(LocationSet &cons)
 	// result
 	Exp *result = new Unary(opTypeOf, new RefExp(lhs, this));
 	for (const auto &def : defVec) {
-		Exp *conjunct = new Binary(opEquals,
+		Exp *conjunct = new Binary(opEqual,
 		                           result,
 		                           new Unary(opTypeOf, new RefExp(def.e, def.def)));
 		cons.insert(conjunct);

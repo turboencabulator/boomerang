@@ -662,7 +662,7 @@ ExpTest::testSimplifyBinary()
 	               new Binary(opAnd,
 	                          new Terminal(opFalse),
 	                          new Terminal(opTrue)),
-	               new Binary(opEquals,
+	               new Binary(opEqual,
 	                          new Unary(opTypeOf, Location::regOf(24)),
 	                          new TypeVal(new IntegerType(32, 1))));
 	e = e->simplify();
@@ -715,10 +715,10 @@ ExpTest::testSimpConstr()
 	// it should simplify to
 	//  <char*> = <alpha2*>
 	Exp *e = new Binary(opOr,
-	                    new Binary(opEquals,
+	                    new Binary(opEqual,
 	                               new TypeVal(new PointerType(new CharType())),
 	                               new TypeVal(new IntegerType())),
-	                    new Binary(opEquals,
+	                    new Binary(opEqual,
 	                               new TypeVal(new PointerType(new CharType())),
 	                               new TypeVal(PointerType::newPtrAlpha())));
 	e = e->simplifyConstraint();
@@ -733,10 +733,10 @@ ExpTest::testSimpConstr()
 	// which should simplify to
 	//   T[134517848\1\] = <char*>
 	e = new Binary(opAnd,
-	               new Binary(opEquals,
+	               new Binary(opEqual,
 	                          new TypeVal(new PointerType(new CharType())),
 	                          new TypeVal(new PointerType(new CharType()))),
-	               new Binary(opEquals,
+	               new Binary(opEqual,
 	                          new Unary(opTypeOf, new Const(0x123456)),
 	                          new TypeVal(new PointerType(new CharType()))));
 	e = e->simplifyConstraint();
@@ -1039,7 +1039,7 @@ ExpTest::testTypeOf()
 	Statement *s9 = new Assign;
 	s5->setNumber(5);
 	s9->setNumber(9);
-	Exp *e = new Binary(opEquals,
+	Exp *e = new Binary(opEqual,
 	                    new Unary(opTypeOf, new RefExp(Location::regOf(24), s5)),
 	                    new Unary(opTypeOf, new RefExp(Location::regOf(25), s9)));
 	std::ostringstream actual1;
@@ -1050,7 +1050,7 @@ ExpTest::testTypeOf()
 	std::string expected2("T[r24{5}] = <float>");
 	delete e;
 	Type *t = new FloatType(32);
-	e = new Binary(opEquals,
+	e = new Binary(opEqual,
 	               new Unary(opTypeOf, new RefExp(Location::regOf(24), s5)),
 	               new TypeVal(t));
 	std::ostringstream actual2;

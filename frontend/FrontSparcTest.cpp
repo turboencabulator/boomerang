@@ -199,7 +199,7 @@ FrontSparcTest::testBranch()
 
 	// bne
 	inst = fe->decodeInstruction(0x10ab0);
-	expected = std::string("00010ab0    0 BRANCH 0x10ac8, condition not equals\n"
+	expected = std::string("00010ab0    0 BRANCH 0x10ac8, condition not equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -211,7 +211,7 @@ FrontSparcTest::testBranch()
 
 	// bleu
 	inst = fe->decodeInstruction(0x10b44);
-	expected = std::string("00010b44    0 BRANCH 0x10b54, condition unsigned less or equals\n"
+	expected = std::string("00010b44    0 BRANCH 0x10b54, condition unsigned less or equal\n"
 	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
@@ -306,7 +306,7 @@ FrontSparcTest::testDelaySlot()
 	                       "            0 *32* r0 := r16 - r8\n"
 	                       "            0 *v* %flags := SUBFLAGS( tmp, r8, r0 )\n"
 	                       "00010ab0    0 *32* r8 := 0x11400\n"
-	                       "00010ab0    0 BRANCH 0x10ac8, condition not equals\n"
+	                       "00010ab0    0 BRANCH 0x10ac8, condition not equal\n"
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
@@ -316,7 +316,7 @@ FrontSparcTest::testDelaySlot()
 	                       "in edges: 10ab0 10ac4 \n"
 	                       "out edges: 10ad8 10ad0 \n"
 	                       "00010ac8    0 *32* r8 := 0x11400\n"
-	                       "00010ac8    0 BRANCH 0x10ad8, condition equals\n"
+	                       "00010ac8    0 BRANCH 0x10ad8, condition equal\n"
 	                       "High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, bb->prints());
 
