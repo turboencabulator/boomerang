@@ -5033,8 +5033,14 @@ UserProc::processDecodedICTs()
 	}
 }
 
-// Find or insert a new implicit reference just before statement s, for address expression a with type t.
-// Meet types if necessary
+#if 0 // Cruft?
+/**
+ * \brief Find and if necessary insert an implicit reference before s whose
+ * address expression is a and type is t.
+ *
+ * Find or insert a new implicit reference just before statement s, for
+ * address expression a with type t.  Meet types if necessary.
+ */
 void
 UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 {
@@ -5098,6 +5104,7 @@ UserProc::setImplicitRef(Statement *s, Exp *a, Type *ty)
 	}
 	assert(0);  // Could not find s withing its enclosing BB
 }
+#endif
 
 void
 UserProc::eliminateDuplicateArgs()
