@@ -1435,6 +1435,31 @@ ImpRefStatement::print(std::ostream &os, bool html) const
 	if (html)
 		os << "</td>";
 }
+#if 0 // Cruft?
+void
+JunctionStatement::print(std::ostream &os, bool html) const
+{
+	if (html) {
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
+	}
+
+	os << "JUNCTION";
+	for (const auto &pred : pbb->getInEdges()) {
+		os << " " << std::hex << pred->getHiAddr() << std::dec;
+		if (pbb->isBackEdge(pred))
+			os << "*";
+	}
+	if (isLoopJunction())
+		os << " LOOP";
+	os << "\n\t\t\tranges: " << ranges;
+	if (html)
+		os << "</td>";
+}
+#endif
 
 /**
  * \fn void Assignment::printCompact(std::ostream &os, bool html) const
@@ -5304,53 +5329,6 @@ PhiAssign::enumerateParams(std::list<Exp *> &le)
 		le.push_back(r);
 	}
 }
-
-#if 0 // Cruft?
-bool
-JunctionStatement::accept(StmtVisitor &v)
-{
-	return true;
-}
-
-bool
-JunctionStatement::accept(StmtExpVisitor &v)
-{
-	return true;
-}
-
-bool
-JunctionStatement::accept(StmtModifier &v)
-{
-	return true;
-}
-
-bool
-JunctionStatement::accept(StmtPartModifier &v)
-{
-	return true;
-}
-
-void
-JunctionStatement::print(std::ostream &os, bool html) const
-{
-	os << std::setw(4) << number << " ";
-	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
-	}
-	os << "JUNCTION";
-	for (const auto &pred : pbb->getInEdges()) {
-		os << " " << std::hex << pred->getHiAddr() << std::dec;
-		if (pbb->isBackEdge(pred))
-			os << "*";
-	}
-	if (isLoopJunction())
-		os << " LOOP";
-	os << "\n\t\t\tranges: " << ranges;
-	if (html)
-		os << "</a></td>";
-}
-#endif
 
 /**
  * \brief Map registers and temporaries to local variables.

@@ -683,12 +683,11 @@ public:
 
 	STMT_KIND   getKind() const override { return STMT_JUNCTION; }
 
-	bool        accept(StmtVisitor &) override;
-	bool        accept(StmtExpVisitor &) override;
-	bool        accept(StmtModifier &) override;
-	bool        accept(StmtPartModifier &) override;
+	bool        accept(StmtVisitor &) override { return true; }
+	bool        accept(StmtExpVisitor &) override { return true; }
+	bool        accept(StmtModifier &) override { return true; }
+	bool        accept(StmtPartModifier &) override { return true; }
 
-	// returns true if this statement defines anything
 	bool        isDefinition() const override { return false; }
 
 	bool        usesExp(Exp *) const override { return false; }
@@ -701,7 +700,6 @@ public:
 
 	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 
-	// simpify internal expressions
 	void        simplify() override { }
 
 	//void        rangeAnalysis(std::list<Statement *> &) override;
