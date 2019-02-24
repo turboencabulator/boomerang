@@ -751,7 +751,11 @@ Binary::print(std::ostream &os, bool html) const
 		os << ")";
 		return;
 	case opExpTable:
-		os << "exptable(" << *p1 << ", " << *p2 << ")";
+		os << "exptable(";
+		p1->print(os, html);
+		os << ", ";
+		p2->print(os, html);
+		os << ")";
 		return;
 
 	case opList:
@@ -781,7 +785,7 @@ Binary::print(std::ostream &os, bool html) const
 	}
 
 	// Ordinary infix operators. Emit parens around the binary
-	if (p1) p1->printr(os, html); else os << "<NULL>";
+	if (p1) p1->printr(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 	os << " ";
 
 	switch (op) {
@@ -801,7 +805,7 @@ Binary::print(std::ostream &os, bool html) const
 
 	case opAnd:       os << "and"; break;
 	case opOr:        os << "or";  break;
-	case opBitAnd:    os << "&";   break;
+	case opBitAnd:    os << (html ? "&amp;" : "&"); break;
 	case opBitOr:     os << "|";   break;
 	case opBitXor:    os << "^";   break;
 	case opEqual:     os << "=";   break;
@@ -831,7 +835,7 @@ Binary::print(std::ostream &os, bool html) const
 	}
 
 	os << " ";
-	if (p2) p2->printr(os, html); else os << "<NULL>";
+	if (p2) p2->printr(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 }
 
 void
@@ -860,7 +864,7 @@ Terminal::print(std::ostream &os, bool html) const
 	case opNil:                           break;
 	case opTrue:         os << "true";    break;
 	case opFalse:        os << "false";   break;
-	case opDefineAll:    os << "<all>";   break;
+	case opDefineAll:    os << (html ? "&lt;all&gt;" : "<all>"); break;
 	default:
 		LOG << "Terminal::print invalid operator " << operStrings[op] << "\n";
 		assert(0);
@@ -1056,25 +1060,25 @@ Ternary::print(std::ostream &os, bool html) const
 		}
 		// Use print not printr here, since , has the lowest precendence of all.
 		// Also it makes it the same as UQBT, so it's easier to test
-		if (p1) p1->print(os, html); else os << "<NULL>"; os << ", ";
-		if (p2) p2->print(os, html); else os << "<NULL>"; os << ", ";
-		if (p3) p3->print(os, html); else os << "<NULL>"; os << ")";
+		if (p1) p1->print(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>"); os << ", ";
+		if (p2) p2->print(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>"); os << ", ";
+		if (p3) p3->print(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>"); os << ")";
 		return;
 	default:
 		break;
 	}
 	// Else must be ?: or @ (traditional ternary operators)
-	if (p1) p1->printr(os, html); else os << "<NULL>";
+	if (p1) p1->printr(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 	if (op == opTern) {
 		os << " ? ";
-		if (p2) p2->printr(os, html); else os << "<NULL>";
+		if (p2) p2->printr(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 		os << " : ";  // Need wide spacing here
-		if (p3) p3->print(os, html); else os << "<NULL>";
+		if (p3) p3->print(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 	} else if (op == opAt) {
 		os << "@[";
-		if (p2) p2->printr(os, html); else os << "<NULL>";
+		if (p2) p2->printr(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 		os << ":";
-		if (p3) p3->printr(os, html); else os << "<NULL>";
+		if (p3) p3->printr(os, html); else os << (html ? "&lt;NULL&gt;" : "<NULL>");
 		os << "]";
 	} else {
 		LOG << "Ternary::print invalid operator " << operStrings[op] << "\n";
@@ -1097,16 +1101,16 @@ RefExp::print(std::ostream &os, bool html) const
 	if (subExp1)
 		subExp1->print(os, html);
 	else
-		os << "<NULL>";
+		os << (html ? "&lt;NULL&gt;" : "<NULL>");
 	os << (html ? "<sub>" : "{");
 	if (def == (Statement *)-1) {
 		os << "WILD";
 	} else if (def) {
+		auto num = def->getNumber();
 		if (html)
-			os << "<a href=\"#stmt" << def->getNumber() << "\">";
-		def->printNum(os);
-		if (html)
-			os << "</a>";
+			os << "<a href=\"#stmt" << num << "\">" << num << "</a>";
+		else
+			os << num;
 	} else {
 		os << "-";  // So you can tell the difference with {0}
 	}
@@ -1117,9 +1121,9 @@ void
 TypeVal::print(std::ostream &os, bool html) const
 {
 	if (val)
-		os << "<" << val->getCtype() << ">";
+		os << (html ? "&lt;" : "<") << val->getCtype() << (html ? "&gt;" : ">");
 	else
-		os << "<NULL>";
+		os << (html ? "&lt;NULL&gt;" : "<NULL>");
 }
 
 /**
