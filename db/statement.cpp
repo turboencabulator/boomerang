@@ -2055,11 +2055,11 @@ PhiAssign::simplify()
 {
 	lhs = lhs->simplify();
 
-	if (defVec.begin() != defVec.end()) {
+	if (!defVec.empty()) {
 		bool allSame = true;
 		auto uu = defVec.begin();
-		Statement *first;
-		for (first = (uu++)->def; uu != defVec.end(); ++uu) {
+		auto first = uu->def;
+		for (++uu; uu != defVec.end(); ++uu) {
 			if (uu->def != first) {
 				allSame = false;
 				break;
@@ -2073,20 +2073,18 @@ PhiAssign::simplify()
 			return;
 		}
 
-		bool onlyOneNotThis = true;
-		Statement *notthis = (Statement *)-1;
+		int n = 0;
+		Statement *notthis = nullptr;
 		for (const auto &def : defVec) {
-			if (!def.def || dynamic_cast<ImplicitAssign *>(def.def) || !dynamic_cast<PhiAssign *>(def.def) || def.def != this) {
-				if (notthis != (Statement *)-1) {
-					onlyOneNotThis = false;
-					break;
-				} else notthis = def.def;
+			if (def.def != this) {
+				if (++n != 1) break;
+				notthis = def.def;
 			}
 		}
 
-		if (onlyOneNotThis && notthis != (Statement *)-1) {
+		if (n == 1) {
 			if (VERBOSE)
-				LOG << "all but one not this in " << *this << "\n";
+				LOG << "only one not this in " << *this << "\n";
 			convertToAssign(new RefExp(lhs, notthis));
 			return;
 		}
