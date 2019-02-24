@@ -1210,7 +1210,7 @@ GotoStatement::print(std::ostream &os, bool html) const
 	if (!pDest)
 		os << "*no dest*";
 	else if (!pDest->isIntConst())
-		pDest->print(os);
+		pDest->print(os, html);
 	else
 		os << "0x" << std::hex << getFixedDest() << std::dec;
 	if (html)
@@ -1231,7 +1231,7 @@ BranchStatement::print(std::ostream &os, bool html) const
 	if (!pDest)
 		os << "*no dest*";
 	else if (!pDest->isIntConst())
-		os << *pDest;
+		pDest->print(os, html);
 	else
 		// Really we'd like to display the destination label here...
 		os << "0x" << std::hex << getFixedDest() << std::dec;
@@ -1251,7 +1251,7 @@ BranchStatement::print(std::ostream &os, bool html) const
 	case BRANCH_JPOS: os << "plus"; break;
 	case BRANCH_JOF:  os << "overflow"; break;
 	case BRANCH_JNOF: os << "no overflow"; break;
-	case BRANCH_JPAR: os << "parity"; break;
+	case BRANCH_JPAR: os << "even parity"; break;
 	}
 	if (bFloat) os << " float";
 	if (pCond) {
@@ -1277,10 +1277,14 @@ CaseStatement::print(std::ostream &os, bool html) const
 		os << "CASE [";
 		if (!pDest)
 			os << "*no dest*";
-		else os << *pDest;
+		else
+			pDest->print(os, html);
 		os << "]";
-	} else
-		os << "SWITCH(" << *pSwitchInfo->pSwitchVar << ")\n";
+	} else {
+		os << "SWITCH(";
+		pSwitchInfo->pSwitchVar->print(os, html);
+		os << ")\n";
+	}
 	if (html)
 		os << "</td>";
 }
@@ -1306,9 +1310,12 @@ CallStatement::print(std::ostream &os, bool html) const
 				first = false;
 			else
 				os << ", ";
-			os << "*" << as->getType() << "* " << *as->getLeft();
-			if (auto asgn = dynamic_cast<Assign *>(as))
-				os << " := " << *asgn->getRight();
+			os << "*" << as->getType() << "* ";
+			as->getLeft()->print(os, html);
+			if (auto asgn = dynamic_cast<Assign *>(as)) {
+				os << " := ";
+				asgn->getRight()->print(os, html);
+			}
 		}
 		if (defines.size() > 1) os << "}";
 		os << " := ";
@@ -1448,7 +1455,8 @@ ImpRefStatement::print(std::ostream &os, bool html) const
 		os << "     ";  // No statement number
 	}
 
-	os << "*" << type << "* IMP REF " << *addressExp;
+	os << "*" << type << "* IMP REF ";
+	addressExp->print(os, html);
 	if (html)
 		os << "</td>";
 }
@@ -1485,7 +1493,7 @@ void
 BoolAssign::printCompact(std::ostream &os, bool html) const
 {
 	os << "*" << type << "* ";
-	lhs->print(os);
+	lhs->print(os, html);
 	os << " := CC(";
 	switch (jtCond) {
 	case BRANCH_JE:   os << "equal"; break;
@@ -1502,10 +1510,10 @@ BoolAssign::printCompact(std::ostream &os, bool html) const
 	case BRANCH_JPOS: os << "plus"; break;
 	case BRANCH_JOF:  os << "overflow"; break;
 	case BRANCH_JNOF: os << "no overflow"; break;
-	case BRANCH_JPAR: os << "ev parity"; break;
+	case BRANCH_JPAR: os << "even parity"; break;
 	}
+	if (bFloat) os << " float";
 	os << ")";
-	if (bFloat) os << ", float";
 	if (html)
 		os << "<br>";
 	os << "\n";
@@ -1521,8 +1529,10 @@ void
 Assign::printCompact(std::ostream &os, bool html) const
 {
 	os << "*" << type << "* ";
-	if (guard)
-		os << *guard << " => ";
+	if (guard) {
+		guard->print(os, html);
+		os << " => ";
+	}
 	if (lhs) lhs->print(os, html);
 	os << " := ";
 	if (rhs) rhs->print(os, html);
@@ -1573,11 +1583,11 @@ PhiAssign::printCompact(std::ostream &os, bool html) const
 			else
 				os << " ";
 
-			Exp *e = def.e;
-			if (!e)
-				os << "NULL{";
+			if (def.e)
+				def.e->print(os, html);
 			else
-				os << *e << "{";
+				os << "NULL";
+			os << "{";
 			if (def.def)
 				os << def.def->getNumber();
 			else
