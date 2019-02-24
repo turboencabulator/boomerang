@@ -1484,7 +1484,7 @@ JunctionStatement::print(std::ostream &os, bool html) const
 void
 BoolAssign::printCompact(std::ostream &os, bool html) const
 {
-	os << "BOOL ";
+	os << "*" << type << "* ";
 	lhs->print(os);
 	os << " := CC(";
 	switch (jtCond) {

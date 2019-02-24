@@ -1142,7 +1142,7 @@ StatementTest::testSubscriptVars()
 	std::ostringstream ost7;
 	bs->subscriptVar(srch, &s9);
 	ost7 << *bs;
-	expected = "   0 BOOL m[r28{9}] := CC(equal)\n"
+	expected = "   0 *v* m[r28{9}] := CC(equal)\n"
 	           "High level: m[r28{9}] = r28{9}\n";
 	actual = ost7.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
