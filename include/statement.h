@@ -575,6 +575,7 @@ public:
 	void        dfaTypeAnalysis(bool &) override;
 };
 
+#if 0 // Cruft?
 /**
  * \note ImpRefStatement not yet used.
  *
@@ -609,6 +610,7 @@ public:
 	void        simplify() override;
 	void        print(std::ostream &os, bool html = false) const override;
 };
+#endif
 
 /**
  * GotoStatement has just one member variable, an expression representing the

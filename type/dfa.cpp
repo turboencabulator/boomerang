@@ -301,6 +301,7 @@ UserProc::dfaTypeAnalysis()
 					addrExp = ((Location *)lhs)->getSubExp1();
 					typeExp = as->getType();
 				}
+#if 0 // Cruft?
 			} else if (auto irs = dynamic_cast<ImpRefStatement *>(ts)) {
 				// Assume an implicit reference
 				addrExp = irs->getAddressExp();
@@ -314,6 +315,7 @@ UserProc::dfaTypeAnalysis()
 					assert(typeExp->resolvesToPointer());
 					typeExp = typeExp->asPointer()->getPointsTo();
 				}
+#endif
 			}
 			if (addrExp && signature->isAddrOfStackLocal(prog, addrExp)) {
 				int addr = 0;
@@ -726,6 +728,7 @@ Statement::meetWithFor(Type *ty, Exp *e, bool &ch)
 	return newType;
 }
 
+#if 0 // Cruft?
 /**
  * \brief Meet the internal type with ty.  Set ch if a change.
  */
@@ -734,6 +737,7 @@ ImpRefStatement::meetWith(Type *ty, bool &ch)
 {
 	type = type->meetWith(ty, ch);
 }
+#endif
 
 /**
  * \brief Create a union of this Type and other.

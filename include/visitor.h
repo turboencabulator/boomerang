@@ -47,7 +47,7 @@ class CallStatement;
 class ReturnStatement;
 class GotoStatement;
 class BranchStatement;
-class ImpRefStatement;
+//class ImpRefStatement;
 
 class Cfg;
 class LocationSet;
@@ -188,7 +188,7 @@ public:
 	virtual bool        visit(  CaseStatement *) { return true; }
 	virtual bool        visit(  CallStatement *) { return true; }
 	virtual bool        visit(ReturnStatement *) { return true; }
-	virtual bool        visit(ImpRefStatement *) { return true; }
+	//virtual bool        visit(ImpRefStatement *) { return true; }
 };
 
 class StmtConscriptSetter : public StmtVisitor {
@@ -206,7 +206,7 @@ public:
 	bool        visit(  CaseStatement *) override;
 	bool        visit(  CallStatement *) override;
 	bool        visit(ReturnStatement *) override;
-	bool        visit(ImpRefStatement *) override;
+	//bool        visit(ImpRefStatement *) override;
 };
 
 /**
@@ -229,7 +229,7 @@ public:
 	virtual bool        visit(  CaseStatement *, bool &) { return true; }
 	virtual bool        visit(  CallStatement *, bool &) { return true; }
 	virtual bool        visit(ReturnStatement *, bool &) { return true; }
-	virtual bool        visit(ImpRefStatement *, bool &) { return true; }
+	//virtual bool        visit(ImpRefStatement *, bool &) { return true; }
 
 	        bool        isIgnoreCol() const { return ignoreCol; }
 };
@@ -267,7 +267,7 @@ public:
 	virtual void        visit(  CaseStatement *, bool &) { }
 	virtual void        visit(  CallStatement *, bool &) { }
 	virtual void        visit(ReturnStatement *, bool &) { }
-	virtual void        visit(ImpRefStatement *, bool &) { }
+	//virtual void        visit(ImpRefStatement *, bool &) { }
 };
 
 /**
@@ -293,7 +293,7 @@ public:
 	virtual void        visit(  CaseStatement *, bool &) { }
 	virtual void        visit(  CallStatement *, bool &) { }
 	virtual void        visit(ReturnStatement *, bool &) { }
-	virtual void        visit(ImpRefStatement *, bool &) { }
+	//virtual void        visit(ImpRefStatement *, bool &) { }
 };
 
 class PhiStripper : public StmtModifier {
@@ -502,7 +502,7 @@ public:
 	void        visit(  CaseStatement *, bool &) override;
 	void        visit(  CallStatement *, bool &) override;
 	void        visit(ReturnStatement *, bool &) override;
-	void        visit(ImpRefStatement *, bool &) override;
+	//void        visit(ImpRefStatement *, bool &) override;
 };
 #endif
 

@@ -153,6 +153,7 @@ StmtConscriptSetter::visit(BranchStatement *stmt)
 	return true;
 }
 
+#if 0 // Cruft?
 bool
 StmtConscriptSetter::visit(ImpRefStatement *stmt)
 {
@@ -161,6 +162,7 @@ StmtConscriptSetter::visit(ImpRefStatement *stmt)
 	curConscript = sc.getLast();
 	return true;
 }
+#endif
 
 void
 PhiStripper::visit(PhiAssign *s, bool &recurse)

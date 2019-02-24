@@ -303,11 +303,13 @@ ImplicitAssign::clone() const
 {
 	return new ImplicitAssign(type, lhs);
 }
+#if 0 // Cruft?
 Statement *
 ImpRefStatement::clone() const
 {
 	return new ImpRefStatement(type->clone(), addressExp->clone());
 }
+#endif
 
 /**
  * \fn bool Statement::accept(StmtVisitor &v)
@@ -360,11 +362,13 @@ ImplicitAssign::accept(StmtVisitor &v)
 {
 	return v.visit(this);
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::accept(StmtVisitor &v)
 {
 	return v.visit(this);
 }
+#endif
 
 /**
  * \fn bool Statement::accept(StmtExpVisitor &v)
@@ -495,6 +499,7 @@ ImplicitAssign::accept(StmtExpVisitor &v)
 		return ret;
 	return (!lhs || lhs->accept(v.ev));
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::accept(StmtExpVisitor &v)
 {
@@ -504,6 +509,7 @@ ImpRefStatement::accept(StmtExpVisitor &v)
 		return ret;
 	return addressExp->accept(v.ev);
 }
+#endif
 
 /**
  * \fn bool Statement::accept(StmtModifier &v)
@@ -645,6 +651,7 @@ ImplicitAssign::accept(StmtModifier &v)
 		LOG << "ImplicitAssign changed: now " << *this << "\n";
 	return true;
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::accept(StmtModifier &v)
 {
@@ -658,6 +665,7 @@ ImpRefStatement::accept(StmtModifier &v)
 		LOG << "ImplicitRef changed: now " << *this << "\n";
 	return true;
 }
+#endif
 
 /**
  * \fn bool Statement::accept(StmtPartModifier &v)
@@ -802,6 +810,7 @@ ImplicitAssign::accept(StmtPartModifier &v)
 		LOG << "ImplicitAssign changed: now " << *this << "\n";
 	return true;
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::accept(StmtPartModifier &v)
 {
@@ -815,6 +824,7 @@ ImpRefStatement::accept(StmtPartModifier &v)
 		LOG << "ImplicitRef changed: now " << *this << "\n";
 	return true;
 }
+#endif
 
 /**
  * \fn bool Statement::usesExp(Exp *e) const
@@ -962,11 +972,13 @@ ImplicitAssign::search(Exp *search, Exp *&result)
 {
 	return lhs->search(search, result);
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::search(Exp *search, Exp *&result)
 {
 	return addressExp->search(search, result);
 }
+#endif
 
 /**
  * \fn bool Statement::searchAll(Exp *search, std::list<Exp *> &result)
@@ -1047,11 +1059,13 @@ ImplicitAssign::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	return lhs->searchAll(search, result);
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::searchAll(Exp *search, std::list<Exp *> &result)
 {
 	return addressExp->searchAll(search, result);
 }
+#endif
 
 /**
  * \fn bool Statement::searchAndReplace(Exp *search, Exp *replace, bool cc)
@@ -1162,6 +1176,7 @@ ImplicitAssign::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	lhs = lhs->searchReplaceAll(search, replace, change);
 	return change;
 }
+#if 0 // Cruft?
 bool
 ImpRefStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 {
@@ -1169,6 +1184,7 @@ ImpRefStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
 	addressExp = addressExp->searchReplaceAll(search, replace, change);
 	return change;
 }
+#endif
 
 /**
  * \fn void Statement::print(std::ostream &os, bool html) const
@@ -1421,6 +1437,7 @@ Assignment::print(std::ostream &os, bool html) const
 	if (html)
 		os << "</td>";
 }
+#if 0 // Cruft?
 void
 ImpRefStatement::print(std::ostream &os, bool html) const
 {
@@ -1435,7 +1452,6 @@ ImpRefStatement::print(std::ostream &os, bool html) const
 	if (html)
 		os << "</td>";
 }
-#if 0 // Cruft?
 void
 JunctionStatement::print(std::ostream &os, bool html) const
 {
@@ -2076,11 +2092,13 @@ PhiAssign::simplify()
 		}
 	}
 }
+#if 0 // Cruft?
 void
 ImpRefStatement::simplify()
 {
 	addressExp = addressExp->simplify();
 }
+#endif
 
 /**
  * \fn void Statement::simplifyAddr()
