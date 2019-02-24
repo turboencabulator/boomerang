@@ -559,7 +559,7 @@ public:
 	// As above, no delete (for subscripting)
 	void        setCondExprND(Exp *e) { pCond = e; }
 
-	void        printCompact(std::ostream & = std::cout, bool = false) const override;
+	void        printCompact(std::ostream &, bool = false) const override;
 
 	void        generateCode(HLLCode *, BasicBlock *, int) override;
 
@@ -608,7 +608,7 @@ public:
 	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
 	void        generateCode(HLLCode *, BasicBlock *, int) override { }
 	void        simplify() override;
-	void        print(std::ostream &os, bool html = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 };
 #endif
 
@@ -663,7 +663,7 @@ public:
 	void        setIsComputed(bool = true);
 	bool        isComputed() const;
 
-	void        print(std::ostream & = std::cout, bool = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
@@ -755,7 +755,7 @@ public:
 	void        setFallBB(BasicBlock *);
 	void        setTakenBB(BasicBlock *);
 
-	void        print(std::ostream & = std::cout, bool = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
@@ -821,7 +821,7 @@ public:
 	SWITCH_INFO *getSwitchInfo() const;
 	void        setSwitchInfo(SWITCH_INFO *);
 
-	void        print(std::ostream & = std::cout, bool = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
 	bool        searchAndReplace(Exp *, Exp *, bool = false) override;
@@ -941,7 +941,7 @@ public:
 	// Range analysis
 	//void        rangeAnalysis(std::list<Statement *> &) override;
 
-	void        print(std::ostream & = std::cout, bool = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
@@ -1055,7 +1055,7 @@ public:
 	void        updateModifieds();
 	void        updateReturns();
 
-	void        print(std::ostream & = std::cout, bool = false) const override;
+	void        print(std::ostream &, bool = false) const override;
 
 	bool        search(Exp *, Exp *&) override;
 	bool        searchAll(Exp *, std::list<Exp *> &) override;
