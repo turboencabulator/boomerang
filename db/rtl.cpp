@@ -254,7 +254,6 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/) const
 	for (const auto &stmt : stmtList) {
 		if (html) {
 			if (!bFirst) os << "<tr><td></td>";
-			os << "<td width=\"50\" align=\"center\">";
 		} else {
 			if (bFirst) os << " ";
 			else        os << std::setw(9) << " ";
@@ -263,7 +262,7 @@ RTL::print(std::ostream &os /*= cout*/, bool html /*=false*/) const
 		// Note: we only put newlines where needed. So none at the end of
 		// Statement::print; one here to separate from other statements
 		if (html)
-			os << "</td></tr>";
+			os << "</tr>";
 		os << "\n";
 		bFirst = false;
 	}

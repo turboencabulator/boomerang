@@ -1175,18 +1175,21 @@ ImpRefStatement::searchAndReplace(Exp *search, Exp *replace, bool cc)
  * \brief Display a text reprentation of this Statement to the given stream.
  *
  * \note Usually called from RTL::print(), in which case the first 9 chars of
- * the print have already been output to os.
+ * the line (or first table cell, for HTML) have already been output to os.
  *
  * \param os  Stream to write to.
  */
 void
 GotoStatement::print(std::ostream &os, bool html) const
 {
-	os << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
 	}
+
 	os << "GOTO ";
 	if (!pDest)
 		os << "*no dest*";
@@ -1195,16 +1198,19 @@ GotoStatement::print(std::ostream &os, bool html) const
 	else
 		os << "0x" << std::hex << getFixedDest() << std::dec;
 	if (html)
-		os << "</a></td>";
+		os << "</td>";
 }
 void
 BranchStatement::print(std::ostream &os, bool html) const
 {
-	os << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
 	}
+
 	os << "BRANCH ";
 	if (!pDest)
 		os << "*no dest*";
@@ -1240,16 +1246,19 @@ BranchStatement::print(std::ostream &os, bool html) const
 		pCond->print(os, html);
 	}
 	if (html)
-		os << "</a></td>";
+		os << "</td>";
 }
 void
 CaseStatement::print(std::ostream &os, bool html) const
 {
-	os << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
 	}
+
 	if (!pSwitchInfo) {
 		os << "CASE [";
 		if (!pDest)
@@ -1259,15 +1268,17 @@ CaseStatement::print(std::ostream &os, bool html) const
 	} else
 		os << "SWITCH(" << *pSwitchInfo->pSwitchVar << ")\n";
 	if (html)
-		os << "</a></td>";
+		os << "</td>";
 }
 void
 CallStatement::print(std::ostream &os, bool html) const
 {
-	os << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
 	}
 
 	// Define(s), if any
@@ -1327,17 +1338,20 @@ CallStatement::print(std::ostream &os, bool html) const
 #endif
 
 	if (html)
-		os << "</a></td>";
+		os << "</td>";
 }
 #define RETSTMT_COLS 120
 void
 ReturnStatement::print(std::ostream &os, bool html) const
 {
-	os << std::setw(4) << number << " ";
 	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
 	}
+
 	os << "RET";
 	bool first = true;
 	unsigned column = 19;
@@ -1359,7 +1373,7 @@ ReturnStatement::print(std::ostream &os, bool html) const
 		os << ost.str();
 		column += len;
 	}
-	os << (html ? "</a><br>" : "\n              ")
+	os << (html ? "<br>" : "\n              ")
 	   << "Modifieds: ";
 	first = true;
 	column = 25;
@@ -1389,31 +1403,39 @@ ReturnStatement::print(std::ostream &os, bool html) const
 	   << "Reaching definitions: ";
 	col.print(os, html);
 #endif
+	if (html)
+		os << "</td>";
 }
 void
 Assignment::print(std::ostream &os, bool html) const
 {
-	os << std::setw(4) << number << " ";
-	if (html)
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+	if (html) {
+		os << "<td width=\"50\" align=\"center\">"
+		   << "<a name=\"stmt" << number << "\">" << number << "</a>"
+		   << "</td><td>";
+	} else {
+		os << std::setw(4) << number << " ";
+	}
+
 	printCompact(os, html);
-	if (html)
-		os << "</a>";
 	//if (!ranges.empty())
 	//	os << "\n\t\t\tranges: " << ranges;
+	if (html)
+		os << "</td>";
 }
 void
 ImpRefStatement::print(std::ostream &os, bool html) const
 {
-	os << "     ";  // No statement number
 	if (html) {
-		os << "</td><td>"
-		   << "<a name=\"stmt" << number << "\">";
+		os << "<td width=\"50\" align=\"center\">"
+		   << "</td><td>";
+	} else {
+		os << "     ";  // No statement number
 	}
+
 	os << "*" << type << "* IMP REF " << *addressExp;
 	if (html)
-		os << "</a></td>";
+		os << "</td>";
 }
 
 /**
