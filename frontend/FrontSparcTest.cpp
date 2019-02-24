@@ -200,20 +200,19 @@ FrontSparcTest::testBranch()
 	// bne
 	inst = fe->decodeInstruction(0x10ab0);
 	expected = std::string("00010ab0    0 BRANCH 0x10ac8, condition not equals\n"
-	                       "High level: %flags\n");
+	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bg
 	inst = fe->decodeInstruction(0x10af8);
-	expected = std::string("00010af8    0 BRANCH 0x10b10, condition "
-	                       "signed greater\n"
-	                       "High level: %flags\n");
+	expected = std::string("00010af8    0 BRANCH 0x10b10, condition signed greater\n"
+	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// bleu
 	inst = fe->decodeInstruction(0x10b44);
 	expected = std::string("00010b44    0 BRANCH 0x10b54, condition unsigned less or equals\n"
-	                       "High level: %flags\n");
+	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	delete prog;

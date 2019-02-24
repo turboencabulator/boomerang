@@ -1238,11 +1238,9 @@ BranchStatement::print(std::ostream &os, bool html) const
 	case BRANCH_JPAR: os << "parity"; break;
 	}
 	if (bFloat) os << " float";
-	os << "\n";
 	if (pCond) {
-		if (html)
-			os << "<br>";
-		os << "High level: ";
+		os << (html ? "<br>" : "\n              ")
+		   << "High level: ";
 		pCond->print(os, html);
 	}
 	if (html)

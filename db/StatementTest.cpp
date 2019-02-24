@@ -1040,7 +1040,7 @@ StatementTest::testSubscriptVars()
 	b->subscriptVar(new Terminal(opFlags), g);
 	ost3 << *b;
 	expected = "  99 BRANCH m[r26{99}]{55}, condition equals\n"
-	           "High level: %flags{55}";
+	           "              High level: %flags{55}";
 	actual = ost3.str();
 	CPPUNIT_ASSERT_EQUAL(expected, actual);
 

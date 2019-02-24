@@ -145,19 +145,19 @@ FrontPentTest::testBranch()
 	// jne
 	inst = fe->decodeInstruction(0x8048979);
 	expected = std::string("08048979    0 BRANCH 0x8048988, condition not equals\n"
-	                       "High level: %flags\n");
+	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// jg
 	inst = fe->decodeInstruction(0x80489c1);
 	expected = std::string("080489c1    0 BRANCH 0x80489d5, condition signed greater\n"
-	                       "High level: %flags\n");
+	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	// jbe
 	inst = fe->decodeInstruction(0x8048a1b);
 	expected = std::string("08048a1b    0 BRANCH 0x8048a2a, condition unsigned less or equals\n"
-	                       "High level: %flags\n");
+	                       "              High level: %flags\n");
 	CPPUNIT_ASSERT_EQUAL(expected, inst.rtl->prints());
 
 	delete prog;
