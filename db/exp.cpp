@@ -1236,7 +1236,7 @@ void
 TypedExp::appendDot(std::ostream &os) const
 {
 	os << "\te" << (void *)this
-	   << " [shape=record,label=\"{ " << "opTypedExp"
+	   << " [shape=record,label=\"{ " << operStrings[op]
 	   << "\\n" << (void *)this
 	// Just display the C type for now
 	   << " | " << type->getCtype() << " | <p1> }\"];\n";
@@ -1250,7 +1250,7 @@ void
 FlagDef::appendDot(std::ostream &os) const
 {
 	os << "\te" << (void *)this
-	   << " [shape=record,label=\"{ " << "opFlagDef"
+	   << " [shape=record,label=\"{ " << operStrings[op]
 	   << "\\n" << (void *)this
 	// Display the RTL as "RTL <r0> <r1>..." vertically (curly brackets)
 	   << " | { RTL ";
