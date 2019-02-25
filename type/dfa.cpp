@@ -305,8 +305,9 @@ UserProc::dfaTypeAnalysis()
 			} else if (auto irs = dynamic_cast<ImpRefStatement *>(ts)) {
 				// Assume an implicit reference
 				addrExp = irs->getAddressExp();
-				if (addrExp->isTypedExp() && ((TypedExp *)addrExp)->getType()->resolvesToPointer())
-					addrExp = ((TypedExp *)addrExp)->getSubExp1();
+				if (auto te = dynamic_cast<TypedExp *>(addrExp))
+					if (te->getType()->resolvesToPointer())
+						addrExp = te->getSubExp1();
 				typeExp = irs->getType();
 				// typeExp should be a pointer expression, or a union of pointer types
 				if (typeExp->resolvesToUnion())

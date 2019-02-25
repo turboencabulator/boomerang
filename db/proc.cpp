@@ -3855,8 +3855,8 @@ UserProc::lookupSymFromRefAny(RefExp *r) const
 const char *
 UserProc::lookupSym(Exp *e, Type *ty) const
 {
-	if (e->isTypedExp())
-		e = ((TypedExp *)e)->getSubExp1();
+	if (auto te = dynamic_cast<TypedExp *>(e))
+		e = te->getSubExp1();
 	auto ra = symbolMap.equal_range(e);
 	for (auto it = ra.first; it != ra.second; ++it) {
 		Exp *sym = it->second;

@@ -403,10 +403,9 @@ TypedExp::operator ==(const Exp &e) const
 	const TypedExp &o = (const TypedExp &)e;
 	if (o.op == opWild)
 		return true;
-	if (!o.isTypedExp()
-	 || *type != *o.type)  // This is the strict type version
-		return false;
-	return *getSubExp1() == *o.getSubExp1();
+	return op == o.op
+	    && *type == *o.type  // This is the strict type version
+	    && *getSubExp1() == *o.getSubExp1();
 }
 bool
 RefExp::operator ==(const Exp &e) const
@@ -612,10 +611,9 @@ TypedExp::operator *=(const Exp &e) const
 	const TypedExp *o = (const TypedExp *)other;
 	if (o->op == opWild)
 		return true;
-	if (!o->isTypedExp()
-	 || *type != *o->type)  // This is the strict type version
-		return false;
-	return (*getSubExp1() *= *o->getSubExp1());
+	return op == o->op
+	    && *type == *o->type  // This is the strict type version
+	    && (*getSubExp1() *= *o->getSubExp1());
 }
 bool
 RefExp::operator *=(const Exp &e) const
@@ -1295,8 +1293,8 @@ bool
 Exp::isAfpTerm() const
 {
 	const Exp *cur = this;
-	if (isTypedExp())
-		cur = ((const TypedExp *)this)->getSubExp1();
+	if (auto te = dynamic_cast<const TypedExp *>(this))
+		cur = te->getSubExp1();
 	const Exp *p;
 	if ((cur->isAddrOf()) && ((p = ((const Unary *)cur)->getSubExp1()), p->isMemOf()))
 		cur = ((const Unary *)p)->getSubExp1();

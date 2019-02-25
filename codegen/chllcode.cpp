@@ -76,7 +76,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 
 #if SYMS_IN_BACK_END  // Should no longer be any unmapped symbols by the back end
 	// Check if it's mapped to a symbol
-	if (m_proc && !exp->isTypedExp()) {  // Beware: lookupSym will match (cast)r24 to local0, stripping the cast!
+	if (m_proc && !dynamic_cast<TypedExp *>(exp)) {  // Beware: lookupSym will match (cast)r24 to local0, stripping the cast!
 		if (auto sym = m_proc->lookupSym(exp)) {
 			str << sym;
 			return;
@@ -657,7 +657,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				break;
 			}
 #endif
-			if (u->getSubExp1()->isTypedExp()
+			if (dynamic_cast<TypedExp *>(u->getSubExp1())
 			 && *((TypedExp *)u)->getType() == *((TypedExp *)u->getSubExp1())->getType()) {
 				// We have (type)(type)x: recurse with type(x)
 				appendExp(str, u->getSubExp1(), curPrec);

@@ -213,9 +213,6 @@ public:
 	        bool        isLocation() const { return op == opMemOf  || op == opRegOf
 	                                             || op == opGlobal || op == opLocal
 	                                             || op == opParam; }
-
-	// True if this is a typed expression
-	        bool        isTypedExp() const { return op == opTypedExp; }
 	/** \} */
 
 
