@@ -158,9 +158,9 @@ ExpTest::testIsAfpTerm()
 	CPPUNIT_ASSERT(!m_rof2->isAfpTerm());
 	// Now with typed expressions
 	TypedExp tafp(new IntegerType(), afp.clone());
-	//Unary tafp(opTypedExp, afp.clone());
-	Unary tplus(opTypedExp, plus.clone());
-	Unary tminus(opTypedExp, minus.clone());
+	//TypedExp tafp(afp.clone());
+	TypedExp tplus(plus.clone());
+	TypedExp tminus(minus.clone());
 	CPPUNIT_ASSERT(tafp.isAfpTerm());
 	CPPUNIT_ASSERT(tplus.isAfpTerm());
 	CPPUNIT_ASSERT(tminus.isAfpTerm());
