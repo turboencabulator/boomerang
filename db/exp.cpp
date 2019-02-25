@@ -455,8 +455,7 @@ bool
 Const::operator <(const Exp &e) const
 {
 	const Const &o = (const Const &)e;
-	if (op < o.op) return true;
-	if (op > o.op) return false;
+	if (op != o.op) return op < o.op;
 	if (conscript) {
 		if (conscript < o.conscript) return true;
 		if (conscript > o.conscript) return false;
@@ -475,14 +474,13 @@ bool
 Terminal::operator <(const Exp &e) const
 {
 	const Terminal &o = (const Terminal &)e;
-	return (op < o.op);
+	return op < o.op;
 }
 bool
 Unary::operator <(const Exp &e) const
 {
 	const Unary &o = (const Unary &)e;
-	if (op < o.op) return true;
-	if (op > o.op) return false;
+	if (op != o.op) return op < o.op;
 	return *subExp1 < *o.getSubExp1();
 }
 bool
@@ -490,8 +488,7 @@ Binary::operator <(const Exp &e) const
 {
 	assert(subExp1 && subExp2);
 	const Binary &o = (const Binary &)e;
-	if (op < o.op) return true;
-	if (op > o.op) return false;
+	if (op != o.op) return op < o.op;
 	if (*subExp1 < *o.getSubExp1()) return true;
 	if (*o.getSubExp1() < *subExp1) return false;
 	return *subExp2 < *o.getSubExp2();
@@ -500,8 +497,7 @@ bool
 Ternary::operator <(const Exp &e) const
 {
 	const Ternary &o = (const Ternary &)e;
-	if (op < o.op) return true;
-	if (op > o.op) return false;
+	if (op != o.op) return op < o.op;
 	if (*subExp1 < *o.getSubExp1()) return true;
 	if (*o.getSubExp1() < *subExp1) return false;
 	if (*subExp2 < *o.getSubExp2()) return true;
@@ -512,16 +508,14 @@ bool
 TypedExp::operator <<(const Exp &e) const
 {
 	const TypedExp &o = (const TypedExp &)e;
-	if (op < o.op) return true;
-	if (op > o.op) return false;
+	if (op != o.op) return op < o.op;
 	return *subExp1 << *o.getSubExp1();
 }
 bool
 TypedExp::operator <(const Exp &e) const
 {
 	const TypedExp &o = (const TypedExp &)e;
-	if (op < o.op) return true;
-	if (op > o.op) return false;
+	if (op != o.op) return op < o.op;
 	if (*type < *o.type) return true;
 	if (*o.type < *type) return false;
 	return *subExp1 < *o.getSubExp1();
@@ -530,8 +524,7 @@ bool
 RefExp::operator <(const Exp &e) const
 {
 	const RefExp &o = (const RefExp &)e;
-	if (opSubscript < o.op) return true;
-	if (opSubscript > o.op) return false;
+	if (op != o.op) return op < o.op;
 	if (*subExp1 < *o.getSubExp1()) return true;
 	if (*o.getSubExp1() < *subExp1) return false;
 	// Allow a wildcard def to match any
@@ -544,8 +537,7 @@ bool
 TypeVal::operator <(const Exp &e) const
 {
 	const TypeVal &o = (const TypeVal &)e;
-	if (opTypeVal < o.op) return true;
-	if (opTypeVal > o.op) return false;
+	if (op != o.op) return op < o.op;
 	return *val < *o.val;
 }
 
