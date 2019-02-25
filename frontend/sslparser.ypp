@@ -725,14 +725,14 @@ exp
 			auto it = Dict.DetParamMap.find(*$1);
 			if (it != Dict.DetParamMap.end()) {
 				ParamEntry &param = it->second;
-				if ($2->size() != param.funcParams.size()) {
+				if ($2->size() == param.funcParams.size()) {
+					// Everything checks out. *phew*
+					// Note: the below may not be right! (MVE)
+					$$ = new Binary(opFlagCall, new Const(*$1), listExpToExp(*$2));
+				} else {
 					std::ostringstream o;
 					o << *$1 << " requires " << param.funcParams.size() << " parameters, but received " << $2->size();
 					yyerror(o.str().c_str());
-				} else {
-					// Everything checks out. *phew*
-					// Note: the below may not be right! (MVE)
-					$$ = new Binary(opFlagDef, new Const(*$1), listExpToExp(*$2));
 				}
 			} else {
 				std::ostringstream o;
