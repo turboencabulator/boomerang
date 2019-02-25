@@ -170,7 +170,7 @@ CfgTest::testPlacePhi()
 	df->placePhiFunctions(pProc);
 
 	// m[r29 - 8] (x for this program)
-	Exp *e = new Unary(opMemOf,
+	Exp *e = Location::memOf(
 	    new Binary(opMinus,
 	        Location::regOf(29),
 	        new Const(4)));
@@ -217,7 +217,7 @@ CfgTest::testPlacePhi2()
 	std::string expected = "4 ";
 	std::ostringstream actual;
 	// m[r29 - 8]
-	Exp *e = new Unary(opMemOf,
+	Exp *e = Location::memOf(
 	    new Binary(opMinus,
 	        Location::regOf(29),
 	        new Const(8)));
@@ -230,7 +230,7 @@ CfgTest::testPlacePhi2()
 	expected = "";
 	std::ostringstream actual2;
 	// m[r29 - 12]
-	e = new Unary(opMemOf,
+	e = Location::memOf(
 	    new Binary(opMinus,
 	        Location::regOf(29),
 	        new Const(12)));

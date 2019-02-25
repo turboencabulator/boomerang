@@ -1901,7 +1901,7 @@ CallingConvention::StdC::PentiumSignature::returnCompare(const Assignment &a, co
 	return *la < *lb;
 }
 
-static Unary spPlus64(opMemOf, new Binary(opPlus, Location::regOf(14), new Const(64)));
+static Location spPlus64(opMemOf, new Binary(opPlus, Location::regOf(14), new Const(64)), nullptr);
 bool
 CallingConvention::StdC::SparcSignature::returnCompare(const Assignment &a, const Assignment &b)
 {

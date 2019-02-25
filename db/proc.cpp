@@ -1305,7 +1305,7 @@ UserProc::middleDecompile(ProcList *path, int indent)
 		// The problem with removing %flags and %CF is that %CF is a subset of %flags
 		//removeMatchingAssignsIfPossible(new Terminal(opFlags));
 		//removeMatchingAssignsIfPossible(new Terminal(opCF));
-		removeMatchingAssignsIfPossible(new Unary(opTemp, new Terminal(opWildStrConst)));
+		removeMatchingAssignsIfPossible(Location::tempOf(new Terminal(opWildStrConst)));
 		removeMatchingAssignsIfPossible(new Terminal(opPC));
 
 		//processTypes();

@@ -1642,7 +1642,7 @@ CallStatement::generateCode(HLLCode *hll, BasicBlock *pbb, int indLevel)
 	assert(p);
 	if (Boomerang::get().noDecompile) {
 		if (procDest->getSignature()->getNumReturns() > 0) {
-			auto as = new Assign(new IntegerType(), new Unary(opRegOf, new Const(24)), new Unary(opRegOf, new Const(24)));
+			auto as = new Assign(new IntegerType(), Location::regOf(24), Location::regOf(24));
 			as->setProc(proc);
 			as->setBB(pbb);
 			results->append(as);
@@ -2351,8 +2351,8 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 			} else {
 				Exp *result;
 				if (a_rhs->getMemDepth() == 0
-				 && !a_rhs->search(new Unary(opRegOf, new Terminal(opWild)), result)
-				 && !a_rhs->search(new Unary(opTemp, new Terminal(opWild)), result)) {
+				 && !a_rhs->search(Location::regOf(new Terminal(opWild)), result)
+				 && !a_rhs->search(Location::tempOf(new Terminal(opWild)), result)) {
 					if (a_rhs->isIntConst()) {
 						Range ra(1, ((Const *)a_rhs)->getInt(), ((Const *)a_rhs)->getInt(), new Const(0));
 						output.addRange(a_lhs, ra);
