@@ -190,7 +190,7 @@ DataFlow::computeDF(int n)
 bool
 DataFlow::canRename(Exp *e, UserProc *proc) const
 {
-	if (e->isSubscript()) e = ((RefExp *)e)->getSubExp1();  // Look inside refs
+	if (auto re = dynamic_cast<RefExp *>(e)) e = re->getSubExp1();  // Look inside refs
 	if (e->isRegOf())    return true;   // Always rename registers
 	if (e->isTemp())     return true;   // Always rename temps (always want to propagate away)
 	if (e->isFlags())    return true;   // Always rename flags
@@ -357,12 +357,12 @@ DataFlow::renameBlockVars(UserProc *proc, int n, bool clearStacks /* = false */)
 				// Don't rename memOfs that are not renamable according to the current policy
 				if (!canRename(x, proc)) continue;
 				Statement *def = nullptr;
-				if (x->isSubscript()) {  // Already subscripted?
+				if (auto re = dynamic_cast<RefExp *>(x)) {  // Already subscripted?
 					// No renaming required, but redo the usage analysis, in case this is a new return, and also because
 					// we may have just removed all call livenesses
 					// Update use information in calls, and in the proc (for parameters)
-					Exp *base = ((RefExp *)x)->getSubExp1();
-					def = ((RefExp *)x)->getDef();
+					Exp *base = re->getSubExp1();
+					def = re->getDef();
 					if (auto call = dynamic_cast<CallStatement *>(def)) {
 						// Calls have UseCollectors for locations that are used before definition at the call
 						call->useBeforeDefine(base->clone());

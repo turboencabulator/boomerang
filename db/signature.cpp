@@ -1638,8 +1638,8 @@ bool
 Signature::isStackLocal(Prog *prog, Exp *e)
 {
 	// e must be m[...]
-	if (e->isSubscript())
-		return isStackLocal(prog, e->getSubExp1());
+	if (auto re = dynamic_cast<RefExp *>(e))
+		return isStackLocal(prog, re->getSubExp1());
 	if (!e->isMemOf()) return false;
 	Exp *addr = ((Location *)e)->getSubExp1();
 	return isAddrOfStackLocal(prog, addr);
@@ -1664,9 +1664,9 @@ Signature::isAddrOfStackLocal(Prog *prog, Exp *e)
 	// e must be <sub1> +- K
 	if (!sub2->isIntConst()) return false;
 	// first operand must be sp or sp{0} or sp{-}
-	if (sub1->isSubscript()) {
-		if (!((RefExp *)sub1)->isImplicitDef()) return false;
-		sub1 = ((RefExp *)sub1)->getSubExp1();
+	if (auto re = dynamic_cast<RefExp *>(sub1)) {
+		if (!re->isImplicitDef()) return false;
+		sub1 = re->getSubExp1();
 	}
 	return *sub1 == *sp;
 }
@@ -1689,9 +1689,9 @@ CallingConvention::StdC::SparcSignature::isAddrOfStackLocal(Prog *prog, Exp *e)
 	// e must be <sub1> +- K
 	if (!sub2->isIntConst()) return false;
 	// first operand must be sp or sp{0} or sp{-}
-	if (sub1->isSubscript()) {
-		if (!((RefExp *)sub1)->isImplicitDef()) return false;
-		sub1 = ((RefExp *)sub1)->getSubExp1();
+	if (auto re = dynamic_cast<RefExp *>(sub1)) {
+		if (!re->isImplicitDef()) return false;
+		sub1 = re->getSubExp1();
 	}
 	if (!(*sub1 == *sp)) return false;
 	// SPARC specific test: K must be < 92; else it is a parameter
@@ -1938,8 +1938,8 @@ stackOffset(Exp *e, int sp)
 		OPER op = sub->getOper();
 		if (op == opPlus || op == opMinus) {
 			Exp *op1 = ((Binary *)sub)->getSubExp1();
-			if (op1->isSubscript())
-				op1 = ((RefExp *)op1)->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(op1))
+				op1 = re->getSubExp1();
 			if (op1->isRegN(sp)) {
 				Exp *op2 = ((Binary *)sub)->getSubExp2();
 				if (op2->isIntConst())

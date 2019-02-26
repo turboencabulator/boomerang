@@ -379,12 +379,13 @@ LocationSet::existsImplicit(Exp *e) const
 	RefExp r(e, nullptr);
 	// Note: the below relies on the fact that nullptr is less than any other pointer. Try later entries in the set:
 	for (auto it = lset.lower_bound(&r); it != lset.end(); ++it) {
-		if (!(*it)->isSubscript())                      // Looking for e{something} (could be e.g. %pc)
+		auto re = dynamic_cast<RefExp *>(*it);
+		if (!re)                         // Looking for e{something} (could be e.g. %pc)
 			return false;
-		if (!(*((RefExp *)*it)->getSubExp1() == *e))    // Gone past e{anything}?
-			return false;                               // Yes, then e{-} or e{0} cannot exist
-		if (((RefExp *)*it)->isImplicitDef())           // Check for e{-} or e{0}
-			return true;                                // Found
+		if (!(*re->getSubExp1() == *e))  // Gone past e{anything}?
+			return false;                // Yes, then e{-} or e{0} cannot exist
+		if (re->isImplicitDef())         // Check for e{-} or e{0}
+			return true;                 // Found
 	}
 	return false;
 }

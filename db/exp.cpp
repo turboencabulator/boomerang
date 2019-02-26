@@ -413,7 +413,7 @@ RefExp::operator ==(const Exp &e) const
 	const RefExp &o = (const RefExp &)e;
 	if (o.op == opWild)
 		return true;
-	if (!o.isSubscript()
+	if (op != o.op
 	 || !(*subExp1 == *o.subExp1))
 		return false;
 	return def == (Statement *)-1  // Allow a def of (Statement *)-1 as a wild card
@@ -553,14 +553,14 @@ bool
 Const::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	return *this == *other;
 }
 bool
 Unary::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	const Unary *o = (const Unary *)other;
 	if ((o->op == opWild)
 	 || (o->op == opWildRegOf  && op == opRegOf)
@@ -575,7 +575,7 @@ Binary::operator *=(const Exp &e) const
 {
 	assert(subExp1 && subExp2);
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	const Binary *o = (const Binary *)other;
 	if (o->op == opWild)
 		return true;
@@ -587,7 +587,7 @@ bool
 Ternary::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	const Ternary *o = (const Ternary *)other;
 	if (o->op == opWild)
 		return true;
@@ -600,14 +600,14 @@ bool
 Terminal::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	return *this == *other;
 }
 bool
 TypedExp::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	const TypedExp *o = (const TypedExp *)other;
 	if (o->op == opWild)
 		return true;
@@ -619,14 +619,14 @@ bool
 RefExp::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	return (*subExp1 *= *other);
 }
 bool
 TypeVal::operator *=(const Exp &e) const
 {
 	const Exp *other = &e;
-	if (e.isSubscript()) other = e.getSubExp1();
+	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	return *this == *other;
 }
 
@@ -2730,11 +2730,9 @@ Binary::polySimplify(bool &bMod)
 	// check for exp + n where exp is a pointer to a compound type
 	// becomes &m[exp].m + r where m is the member at offset n and r is n - the offset to member m
 	Type *ty = nullptr;  // Type of subExp1
-	if (subExp1->isSubscript()) {
-		Statement *def = ((RefExp *)subExp1)->getDef();
-		if (def)
-			ty = def->getTypeFor(((RefExp *)subExp1)->getSubExp1());
-	}
+	if (auto re = dynamic_cast<RefExp *>(subExp1))
+		if (auto def = re->getDef())
+			ty = def->getTypeFor(re->getSubExp1());
 	if (op == opPlus
 	 && ty
 	 && ty->resolvesToPointer()
@@ -2787,8 +2785,7 @@ Binary::polySimplify(bool &bMod)
 				                 new Binary(opMod, x->clone(), new Const(b)));
 				if (VERBOSE)
 					LOG << "replacing " << *this << " with " << *res << "\n";
-				if (l->isSubscript()) {
-					RefExp *r = (RefExp *)l;
+				if (auto r = dynamic_cast<RefExp *>(l)) {
 					if (auto pa = dynamic_cast<PhiAssign *>(r->getDef())) {
 						LOG << "argh: " << *pa->getAt(1).def << "\n";
 					}
@@ -3289,14 +3286,13 @@ Exp::removeSubscripts(bool &allZero)
 	e->addUsedLocs(locs);
 	allZero = true;
 	for (const auto &xx : locs) {
-		if (xx->isSubscript()) {
-			auto r1 = (RefExp *)xx;
+		if (auto r1 = dynamic_cast<RefExp *>(xx)) {
 			Statement *def = r1->getDef();
 			if (!(!def || def->getNumber() == 0)) {
 				allZero = false;
 			}
 			bool change;
-			e = e->searchReplaceAll(xx, r1->getSubExp1()/*->clone()*/, change);
+			e = e->searchReplaceAll(r1, r1->getSubExp1()/*->clone()*/, change);
 		}
 	}
 	return e;
@@ -4136,8 +4132,8 @@ Exp::getAnyStrConst() const
 	const Exp *e = this;
 	if (isAddrOf()) {
 		e = ((const Location *)this)->getSubExp1();
-		if (e->isSubscript())
-			e = ((const RefExp *)e)->getSubExp1();
+		if (auto re = dynamic_cast<const RefExp *>(e))
+			e = re->getSubExp1();
 		if (e->isMemOf())
 			e = ((const Location *)e)->getSubExp1();
 	}

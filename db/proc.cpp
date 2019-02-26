@@ -308,8 +308,7 @@ UserProc::printUseGraph()
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
 		for (const auto &ref : refs) {
-			if (ref->isSubscript()) {
-				RefExp *r = (RefExp *)ref;
+			if (auto r = dynamic_cast<RefExp *>(ref)) {
 				if (r->getDef())
 					out << "\t" << r->getDef()->getNumber() << " -> " << stmt->getNumber() << ";\n";
 			}
@@ -765,9 +764,11 @@ UserProc::removeStatement(Statement *stmt)
 		it->first->addUsedLocs(refs);  // Could be say m[esp{99} - 4] on LHS and we are deleting stmt 99
 		bool usesIt = false;
 		for (const auto &ref : refs) {
-			if (ref->isSubscript() && ((RefExp *)ref)->getDef() == stmt) {
-				usesIt = true;
-				break;
+			if (auto re = dynamic_cast<RefExp *>(ref)) {
+				if (re->getDef() == stmt) {
+					usesIt = true;
+					break;
+				}
 			}
 		}
 		if (usesIt) {
@@ -1573,8 +1574,8 @@ UserProc::remUnusedStmtEtc(RefCounter &refCounts)
 				LocationSet components;
 				s->addUsedLocs(components, false);  // Second parameter false to ignore uses in collectors
 				for (const auto &cc : components) {
-					if (cc->isSubscript()) {
-						stmtsRefdByUnused.insert(((RefExp *)cc)->getDef());
+					if (auto re = dynamic_cast<RefExp *>(cc)) {
+						stmtsRefdByUnused.insert(re->getDef());
 					}
 				}
 				for (const auto &dd : stmtsRefdByUnused) {
@@ -1905,8 +1906,9 @@ UserProc::removeSpAssignsIfPossible()
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
 		for (const auto &ref : refs) {
-			if (ref->isSubscript() && *ref->getSubExp1() == *sp) {
-				Statement *def = ((RefExp *)ref)->getDef();
+			auto re = dynamic_cast<RefExp *>(ref);
+			if (re && *re->getSubExp1() == *sp) {
+				auto def = re->getDef();
 				if (def && def->getProc() == this)
 					return;
 			}
@@ -1949,8 +1951,9 @@ UserProc::removeMatchingAssignsIfPossible(Exp *e)
 		LocationSet refs;
 		stmt->addUsedLocs(refs);
 		for (const auto &ref : refs) {
-			if (ref->isSubscript() && *ref->getSubExp1() == *e) {
-				Statement *def = ((RefExp *)ref)->getDef();
+			auto re = dynamic_cast<RefExp *>(ref);
+			if (re && *re->getSubExp1() == *e) {
+				auto def = re->getDef();
 				if (def && def->getProc() == this)
 					return;
 			}
@@ -2385,7 +2388,7 @@ UserProc::getSymbolExp(Exp *le, Type *ty, bool lastPass)
 		// type early results in aliases to this local not being recognised
 		if (ty) {
 			Exp *base = le;
-			if (le->isSubscript()) base = ((RefExp *)le)->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(le)) base = re->getSubExp1();
 			e = newLocal(ty->clone(), le);
 			mapSymbolTo(le->clone(), e);
 			e = e->clone();
@@ -2674,9 +2677,10 @@ std::string
 UserProc::newLocalName(Exp *e)
 {
 	std::ostringstream ost;
-	if (e->isSubscript() && ((RefExp *)e)->getSubExp1()->isRegOf()) {
+	auto re = dynamic_cast<RefExp *>(e);
+	if (re && re->getSubExp1()->isRegOf()) {
 		// Assume that it's better to know what register this location was created from
-		const char *regName = getRegName(((RefExp *)e)->getSubExp1());
+		const char *regName = getRegName(re->getSubExp1());
 		int tag = 0;
 		do {
 			ost.str("");
@@ -2830,15 +2834,15 @@ UserProc::countRefs(RefCounter &refCounts)
 		LocationSet refs;
 		stmt->addUsedLocs(refs, false);  // Ignore uses in collectors
 		for (const auto &ref : refs) {
-			if (((Exp *)ref)->isSubscript()) {
-				Statement *def = ((RefExp *)ref)->getDef();
+			if (auto re = dynamic_cast<RefExp *>(ref)) {
+				auto def = re->getDef();
 				// Used to not count implicit refs here (def->getNumber() == 0), meaning that implicit definitions get
 				// removed as dead code! But these are the ideal place to read off final parameters, and it is
 				// guaranteed now that implicit statements are sorted out for us by now (for dfa type analysis)
 				if (def /* && def->getNumber() */) {
 					++refCounts[def];
 					if (DEBUG_UNUSED)
-						LOG << "counted ref to " << *ref << "\n";
+						LOG << "counted ref to " << *re << "\n";
 				}
 			}
 		}
@@ -3261,9 +3265,8 @@ UserProc::removeSubscriptsFromSymbols()
 	ExpSsaXformer esx(this);
 	for (const auto &sym : sm2) {
 		Exp *from = sym.first;
-		if (from->isSubscript()) {
+		if (auto sub = dynamic_cast<RefExp *>(from)) {
 			// As noted above, don't touch the outer level of subscripts
-			auto sub = static_cast<RefExp *>(from);
 			sub->setSubExp1(sub->getSubExp1()->accept(esx));
 		} else
 			from = from->accept(esx);
@@ -3688,8 +3691,8 @@ UserProc::conTypeAnalysis()
 			Exp *loc = ((Unary *)cc.first)->getSubExp1();
 			assert(cc.second->isTypeVal());
 			Type *ty = ((TypeVal *)cc.second)->getType();
-			if (loc->isSubscript())
-				loc = ((RefExp *)loc)->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(loc))
+				loc = re->getSubExp1();
 			if (loc->isGlobal()) {
 				const char *nam = ((Const *)((Unary *)loc)->getSubExp1())->getStr();
 				if (!ty->resolvesToVoid())
@@ -3868,10 +3871,10 @@ UserProc::lookupSym(Exp *e, Type *ty) const
 			return name;
 	}
 #if 0
-	if (e->isSubscript())
+	if (auto re = dynamic_cast<RefExp *>(e))
 		// A subscripted location, where there was no specific mapping. Check for a general mapping covering all
 		// versions of the location
-		return lookupSym(((RefExp *)e)->getSubExp1(), ty);
+		return lookupSym(re->getSubExp1(), ty);
 #endif
 	// Else there is no symbol
 	return nullptr;
@@ -4096,8 +4099,9 @@ UserProc::filterParams(Exp *e)
 			Exp *addr = ((Location *)e)->getSubExp1();
 			if (addr->isIntConst())
 				return true;  // Global memory location
-			if (addr->isSubscript() && ((RefExp *)addr)->isImplicitDef()) {
-				Exp *reg = ((RefExp *)addr)->getSubExp1();
+			auto re = dynamic_cast<RefExp *>(addr);
+			if (re && re->isImplicitDef()) {
+				Exp *reg = re->getSubExp1();
 				int sp = 999;
 				if (signature) sp = signature->getStackRegister(prog);
 				if (reg->isRegN(sp))
@@ -4265,9 +4269,10 @@ UserProc::fixCallAndPhiRefs()
 			first = first->propagateAll();  // Propagate everything repeatedly
 			if (cb.isMod()) {  // Modified?
 				// if first is of the form lhs{x}
-				if (first->isSubscript() && *((RefExp *)first)->getSubExp1() == *lhs)
+				auto re = dynamic_cast<RefExp *>(first);
+				if (re && *re->getSubExp1() == *lhs)
 					// replace first with x
-					p->def = ((RefExp *)first)->getDef();
+					p->def = re->getDef();
 			}
 			// For each parameter p of ps after the first
 			for (++p; p != ps->end(); ++p) {
@@ -4278,11 +4283,13 @@ UserProc::fixCallAndPhiRefs()
 				if (cb2.isTopChanged())
 					current = current->simplify();
 				current = current->propagateAll();
-				if (cb2.isMod())  // Modified?
+				if (cb2.isMod()) {  // Modified?
 					// if current is of the form lhs{x}
-					if (current->isSubscript() && *((RefExp *)current)->getSubExp1() == *lhs)
+					auto re = dynamic_cast<RefExp *>(current);
+					if (re && *re->getSubExp1() == *lhs)
 						// replace current with x
-						p->def = ((RefExp *)current)->getDef();
+						p->def = re->getDef();
+				}
 				if (!(*first == *current))
 					allSame = false;
 			}
@@ -4355,8 +4362,8 @@ UserProc::propagateToCollector()
 			LocationSet used;
 			addr->addUsedLocs(used);
 			for (const auto &loc : used) {
-				auto r = (RefExp *)loc;
-				if (!r->isSubscript()) continue;
+				auto r = dynamic_cast<RefExp *>(loc);
+				if (!r) continue;
 				auto as = dynamic_cast<Assign *>(r->getDef());
 				if (!as) continue;
 				bool ch;
@@ -4471,13 +4478,16 @@ UserProc::doesParamChainToCall(Exp *param, UserProc *p, ProcSet *visited)
 			// component
 			StatementList &args = c->getArguments();
 			for (const auto &arg : args) {
-				Exp *rhs = ((Assign *)arg)->getRight();
-				if (rhs && rhs->isSubscript() && ((RefExp *)rhs)->isImplicitDef()) {
-					Exp *base = ((RefExp *)rhs)->getSubExp1();
-					// Check if this argument location matches loc
-					if (*base == *param)
-						// We have a call to p that takes param{-} as an argument
-						return true;
+				if (auto rhs = ((Assign *)arg)->getRight()) {
+					if (auto re = dynamic_cast<RefExp *>(rhs)) {
+						if (re->isImplicitDef()) {
+							Exp *base = re->getSubExp1();
+							// Check if this argument location matches loc
+							if (*base == *param)
+								// We have a call to p that takes param{-} as an argument
+								return true;
+						}
+					}
 				}
 			}
 		} else {
@@ -4508,10 +4518,11 @@ UserProc::isRetNonFakeUsed(CallStatement *c, Exp *retLoc, UserProc *p, ProcSet *
 		stmt->addUsedLocs(ls);
 		bool found = false;
 		for (const auto &loc : ls) {
-			if (!loc->isSubscript()) continue;
-			Statement *def = ((RefExp *)loc)->getDef();
+			auto re = dynamic_cast<RefExp *>(loc);
+			if (!re) continue;
+			auto def = re->getDef();
 			if (def != c) continue;  // Not defined at c, ignore
-			Exp *base = ((RefExp *)loc)->getSubExp1();
+			auto base = re->getSubExp1();
 			if (!(*base == *retLoc)) continue;  // Defined at c, but not the right location
 			found = true;
 			break;

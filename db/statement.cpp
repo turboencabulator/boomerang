@@ -1789,8 +1789,8 @@ condToRelational(Exp *&pCond, BRANCH_TYPE jtCond)
 				*/
 				Exp *flagsParam = ((Binary *)((Binary *)pCond)->getSubExp2())->getSubExp1();
 				Exp *test = flagsParam;
-				if (test->isSubscript())
-					test = ((RefExp *)test)->getSubExp1();
+				if (auto re = dynamic_cast<RefExp *>(test))
+					test = re->getSubExp1();
 				if (test->isTemp())
 					return false;  // Just not propagated yet
 				int mask = 0;
@@ -2827,11 +2827,12 @@ hasSetFlags(Exp *e)
 bool
 Statement::canPropagateToExp(Exp *e)
 {
-	if (!e->isSubscript()) return false;
-	if (((RefExp *)e)->isImplicitDef())
+	auto re = dynamic_cast<RefExp *>(e);
+	if (!re) return false;
+	if (re->isImplicitDef())
 		// Can't propagate statement "-" or "0" (implicit assignments)
 		return false;
-	Statement *def = ((RefExp *)e)->getDef();
+	Statement *def = re->getDef();
 #if 0
 	if (def == this)
 		// Don't propagate to self! Can happen with %pc's (?!)
@@ -2922,8 +2923,9 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 					rhs->addUsedLocs(rhsComps);
 					bool doNotPropagate = false;
 					for (const auto &rc : rhsComps) {
-						if (!rc->isSubscript()) continue;  // Sometimes %pc sneaks in
-						Exp *rhsBase = ((RefExp *)rc)->getSubExp1();
+						auto re = dynamic_cast<RefExp *>(rc);
+						if (!re) continue;  // Sometimes %pc sneaks in
+						Exp *rhsBase = re->getSubExp1();
 						// We don't know the statement number for the one definition in usedInDomPhi that might exist,
 						// so we use findNS()
 						if (auto OW = usedByDomPhi->findNS(rhsBase)) {
@@ -2992,12 +2994,13 @@ Statement::propagateFlagsTo()
 		LocationSet exps;
 		addUsedLocs(exps, true);
 		for (const auto &e : exps) {
-			if (!e->isSubscript()) continue;  // e.g. %pc
-			auto def = dynamic_cast<Assign *>(((RefExp *)e)->getDef());
+			auto re = dynamic_cast<RefExp *>(e);
+			if (!re) continue;  // e.g. %pc
+			auto def = dynamic_cast<Assign *>(re->getDef());
 			if (!def) continue;
-			Exp *base = ((RefExp *)e)->getSubExp1();
+			Exp *base = re->getSubExp1();
 			if (base->isFlags() || base->isMainFlag()) {
-				change |= doPropagateTo(e, def, convert);
+				change |= doPropagateTo(re, def, convert);
 			}
 		}
 	} while (change && ++changes < 10);
@@ -3113,9 +3116,9 @@ bool
 Assign::isNullStatement() const
 {
 	Exp *right = getRight();
-	if (right->isSubscript())
+	if (auto re = dynamic_cast<RefExp *>(right))
 		// Must refer to self to be null
-		return this == ((RefExp *)right)->getDef();
+		return this == re->getDef();
 	else
 		// Null if left == right
 		return *getLeft() == *right;
@@ -3620,18 +3623,18 @@ CallStatement::convertToDirect()
 		return false;
 	bool convertIndirect = false;
 	Exp *e = pDest;
-	if (e->isSubscript()) {
-		if (!((RefExp *)e)->isImplicitDef())
+	if (auto re = dynamic_cast<RefExp *>(e)) {
+		if (!re->isImplicitDef())
 			return false;  // If an already defined global, don't convert
-		e = ((RefExp *)e)->getSubExp1();
+		e = re->getSubExp1();
 	}
 	if (e->isArrayIndex()
 	 && ((Binary *)e)->getSubExp2()->isIntConst()
 	 && ((Const *)(((Binary *)e)->getSubExp2()))->getInt() == 0)
 		e = ((Binary *)e)->getSubExp1();
 	// Can actually have name{0}[0]{0} !!
-	if (e->isSubscript())
-		e = ((RefExp *)e)->getSubExp1();
+	if (auto re = dynamic_cast<RefExp *>(e))
+		e = re->getSubExp1();
 	if (e->isIntConst()) {
 		// ADDRESS u = (ADDRESS)((Const *)e)->getInt();
 		// Just convert it to a direct call!
@@ -3875,15 +3878,15 @@ CallStatement::ellipsisProcessing(Prog *prog)
 	// We sometimes see a[m[blah{...}]]
 	if (formatExp->isAddrOf()) {
 		formatExp = ((Unary *)formatExp)->getSubExp1();
-		if (formatExp->isSubscript())
-			formatExp = ((RefExp *)formatExp)->getSubExp1();
+		if (auto re = dynamic_cast<RefExp *>(formatExp))
+			formatExp = re->getSubExp1();
 		if (formatExp->isMemOf())
 			formatExp = ((Unary *)formatExp)->getSubExp1();
 	}
 	const char *formatStr = nullptr;
-	if (formatExp->isSubscript()) {
+	if (auto re = dynamic_cast<RefExp *>(formatExp)) {
 		// Maybe it's defined to be a Const string
-		if (auto def = ((RefExp *)formatExp)->getDef()) {  // Not all nullptr refs get converted to implicits
+		if (auto def = re->getDef()) {  // Not all nullptr refs get converted to implicits
 			if (auto pa = dynamic_cast<PhiAssign *>(def)) {
 				// More likely. Example: switch_gcc. Only need ONE candidate format string
 				for (const auto &pi : *pa) {
@@ -4050,8 +4053,8 @@ CallStatement::addSigParam(Type *ty, bool isScanf)
 void
 ReturnStatement::removeReturn(Exp *loc)
 {
-	if (loc->isSubscript())
-		loc = ((RefExp *)loc)->getSubExp1();
+	if (auto re = dynamic_cast<RefExp *>(loc))
+		loc = re->getSubExp1();
 	for (auto rr = returns.begin(); rr != returns.end(); ++rr) {
 		if (*((Assignment *)*rr)->getLeft() == *loc) {
 			returns.erase(rr);
@@ -4245,8 +4248,8 @@ CallStatement::genConstraints(LocationSet &cons)
 		// Handle a[m[x]]
 		if (arg->isAddrOf()) {
 			Exp *sub = arg->getSubExp1();
-			if (sub->isSubscript())
-				sub = ((RefExp *)sub)->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(sub))
+				sub = re->getSubExp1();
 			if (sub->isMemOf())
 				arg = ((Location *)sub)->getSubExp1();
 		}
@@ -4668,9 +4671,9 @@ CallStatement::setTypeFor(Exp *e, Type *ty)
 		return as->setType(ty);
 	// See if it is in our reaching definitions
 	Exp *ref = defCol.findDefFor(e);
-	if (!ref || !ref->isSubscript()) return;
-	if (auto def = ((RefExp *)ref)->getDef())
-		def->setTypeFor(e, ty);
+	if (auto re = dynamic_cast<RefExp *>(ref))
+		if (auto def = re->getDef())
+			def->setTypeFor(e, ty);
 }
 void
 ReturnStatement::setTypeFor(Exp *e, Type *ty)
@@ -4836,8 +4839,8 @@ ReturnStatement::updateReturns()
 #if 1
 		// Preserveds are NOT returns (nothing changes, so what are we returning?)
 		// Check if it is a preserved location, e.g. r29 := r29{-}
-		Exp *rhs = as->getRight();
-		if (rhs->isSubscript() && ((RefExp *)rhs)->isImplicitDef() && *((RefExp *)rhs)->getSubExp1() == *lhs)
+		auto rhs = dynamic_cast<RefExp *>(as->getRight());
+		if (rhs && rhs->isImplicitDef() && *rhs->getSubExp1() == *lhs)
 			continue;  // Filter out the preserveds
 #endif
 

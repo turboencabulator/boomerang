@@ -1533,8 +1533,8 @@ checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, Use
 {
 	// For each location to be considered
 	for (const auto &u : ls) {
-		if (!u->isSubscript()) continue;  // Only interested in subscripted vars
-		RefExp *r = (RefExp *)u;
+		auto r = dynamic_cast<RefExp *>(u);
+		if (!r) continue;  // Only interested in subscripted vars
 		// Interference if we can find a live variable which differs only in the reference
 		Exp *dr;
 		if (liveLocs.findDifferentRef(r, dr)) {
@@ -1545,7 +1545,7 @@ checkForOverlap(LocationSet &liveLocs, LocationSet &ls, ConnectionGraph &ig, Use
 		}
 		// Add the uses one at a time. Note: don't use makeUnion, because then we don't discover interferences
 		// from the same statement, e.g.  blah := r24{2} + r24{3}
-		liveLocs.insert(u);
+		liveLocs.insert(r);
 	}
 }
 
@@ -1833,8 +1833,8 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 			// Pattern: <base>{}[<index>]{}
 			e = ((RefExp *)e)->getSubExp1();
 			Exp *base = ((Binary *)e)->getSubExp1();
-			if (base->isSubscript())
-				base = ((RefExp *)base)->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(base))
+				base = re->getSubExp1();
 			Exp *con = ((Location *)base)->getSubExp1();
 			const char *gloName = ((Const *)con)->getStr();
 			UserProc *p = ((Location *)base)->getProc();
@@ -1846,7 +1846,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 	case 'A':
 		{
 			// Pattern: m[<expr> * 4 + T ]
-			if (e->isSubscript()) e = e->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(e)) e = re->getSubExp1();
 			// b will be (<expr> * 4) + T
 			Binary *b = (Binary *)((Location *)e)->getSubExp1();
 			Const *TT = (Const *)b->getSubExp2();
@@ -1861,7 +1861,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 			T = ((Const *)((Binary *)e)->getSubExp2())->getInt();
 			// l = m[<expr> * 4 + T ]:
 			Exp *l = ((Binary *)e)->getSubExp1();
-			if (l->isSubscript()) l = l->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(l)) l = re->getSubExp1();
 			// b = <expr> * 4 + T:
 			Binary *b = (Binary *)((Location *)l)->getSubExp1();
 			// b = <expr> * 4:
@@ -1876,7 +1876,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 			T = 0;  // ?
 			// l = m[%pc  + (<expr> * 4) + k]:
 			Exp *l = ((Binary *)e)->getSubExp2();
-			if (l->isSubscript()) l = l->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(l)) l = re->getSubExp1();
 			// b = %pc + (<expr> * 4) + k:
 			Binary *b = (Binary *)((Location *)l)->getSubExp1();
 			// b = (<expr> * 4) + k:
@@ -1895,7 +1895,7 @@ findSwParams(char form, Exp *e, Exp *&expr, ADDRESS &T)
 			Binary *b = (Binary *)((Binary *)e)->getSubExp1();
 			// l = m[%pc + ((<expr> * 4) - k)]:
 			Exp *l = b->getSubExp2();
-			if (l->isSubscript()) l = l->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(l)) l = re->getSubExp1();
 			// b = %pc + ((<expr> * 4) - k)
 			b = (Binary *)((Location *)l)->getSubExp1();
 			// b = ((<expr> * 4) - k):
@@ -2078,13 +2078,13 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		} else {
 			// Did not match a switch pattern. Perhaps it is a Fortran style goto with constants at the leaves of the
 			// phi tree. Basically, a location with a reference, e.g. m[r28{-} - 16]{87}
-			if (e->isSubscript()) {
-				Exp *sub = ((RefExp *)e)->getSubExp1();
+			if (auto re = dynamic_cast<RefExp *>(e)) {
+				Exp *sub = re->getSubExp1();
 				if (sub->isLocation()) {
 					// Yes, we have <location>{ref}. Follow the tree and store the constant values that <location>
 					// could be assigned to in dests
 					std::list<int> dests;
-					findConstantValues(((RefExp *)e)->getDef(), dests);
+					findConstantValues(re->getDef(), dests);
 					// The switch info wants an array of native addresses
 					if (int n = dests.size()) {
 						auto destArray = new int[n];
@@ -2093,7 +2093,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 							destArray[i] = *ii++;
 						auto swi = new SWITCH_INFO;
 						swi->chForm = 'F';  // The "Fortran" form
-						swi->pSwitchVar = e;
+						swi->pSwitchVar = re;
 						swi->uTable = (ADDRESS)destArray;  // Abuse the uTable member as a pointer
 						swi->iNumTable = n;
 						swi->iLower = 1;  // Not used, except to compute
@@ -2150,13 +2150,13 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 				// decodable entry point.  Note: it could also be a library function (e.g. Windows)
 				// Pattern 0: global<name>{0}[0]{0}
 				K2 = 0;
-				if (e->isSubscript()) e = e->getSubExp1();
+				if (auto re = dynamic_cast<RefExp *>(e)) e = re->getSubExp1();
 				e = ((Binary *)e)->getSubExp1();  // e is global<name>{0}[0]
 				if (e->isArrayIndex()
 				 && (t1 = ((Binary *)e)->getSubExp2(), t1->isIntConst())
 				 && ((Const *)t1)->getInt() == 0)
 					e = ((Binary *)e)->getSubExp1();            // e is global<name>{0}
-				if (e->isSubscript()) e = e->getSubExp1();  // e is global<name>
+				if (auto re = dynamic_cast<RefExp *>(e)) e = re->getSubExp1();  // e is global<name>
 				Const *con = (Const *)((Location *)e)->getSubExp1(); // e is <name>
 				Global *glo = prog->getGlobal(con->getStr());
 				assert(glo);
@@ -2175,14 +2175,14 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		case 1:
 			{
 				// Example pattern: e = m[m[r27{25} + 8]{-} + 8]{-}
-				if (e->isSubscript())
-					e = ((RefExp *)e)->getSubExp1();
+				if (auto re = dynamic_cast<RefExp *>(e))
+					e = re->getSubExp1();
 				e = ((Location *)e)->getSubExp1();       // e = m[r27{25} + 8]{-} + 8
 				Exp *rhs = ((Binary *)e)->getSubExp2();  // rhs = 8
 				K2 = ((Const *)rhs)->getInt();
 				Exp *lhs = ((Binary *)e)->getSubExp1();  // lhs = m[r27{25} + 8]{-}
-				if (lhs->isSubscript())
-					lhs = ((RefExp *)lhs)->getSubExp1(); // lhs = m[r27{25} + 8]
+				if (auto re = dynamic_cast<RefExp *>(lhs))
+					lhs = re->getSubExp1(); // lhs = m[r27{25} + 8]
 				vtExp = lhs;
 				lhs = ((Unary *)lhs)->getSubExp1();      // lhs =   r27{25} + 8
 				//Exp *object = ((Binary *)lhs)->getSubExp1();
@@ -2193,14 +2193,14 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		case 2:
 			{
 				// Example pattern: e = m[m[r27{25}]{-} + 8]{-}
-				if (e->isSubscript())
-					e = ((RefExp *)e)->getSubExp1();
+				if (auto re = dynamic_cast<RefExp *>(e))
+					e = re->getSubExp1();
 				e = ((Location *)e)->getSubExp1();       // e = m[r27{25}]{-} + 8
 				Exp *rhs = ((Binary *)e)->getSubExp2();  // rhs = 8
 				K2 = ((Const *)rhs)->getInt();
 				Exp *lhs = ((Binary *)e)->getSubExp1();  // lhs = m[r27{25}]{-}
-				if (lhs->isSubscript())
-					lhs = ((RefExp *)lhs)->getSubExp1(); // lhs = m[r27{25}]
+				if (auto re = dynamic_cast<RefExp *>(lhs))
+					lhs = re->getSubExp1(); // lhs = m[r27{25}]
 				vtExp = lhs;
 				K1 = 0;
 			}
@@ -2208,12 +2208,12 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		case 3:
 			{
 				// Example pattern: e = m[m[r27{25} + 8]{-}]{-}
-				if (e->isSubscript())
-					e = ((RefExp *)e)->getSubExp1();
+				if (auto re = dynamic_cast<RefExp *>(e))
+					e = re->getSubExp1();
 				e = ((Location *)e)->getSubExp1();          // e = m[r27{25} + 8]{-}
 				K2 = 0;
-				if (e->isSubscript())
-					e = ((RefExp *)e)->getSubExp1();        // e = m[r27{25} + 8]
+				if (auto re = dynamic_cast<RefExp *>(e))
+					e = re->getSubExp1();        // e = m[r27{25} + 8]
 				vtExp = e;
 				Exp *lhs = ((Unary *)e)->getSubExp1();    // lhs =   r27{25} + 8
 				// Exp *object = ((Binary *)lhs)->getSubExp1();
@@ -2224,12 +2224,12 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 		case 4:
 			{
 				// Example pattern: e = m[m[r27{25}]{-}]{-}
-				if (e->isSubscript())
-					e = ((RefExp *)e)->getSubExp1();
+				if (auto re = dynamic_cast<RefExp *>(e))
+					e = re->getSubExp1();
 				e = ((Location *)e)->getSubExp1();    // e = m[r27{25}]{-}
 				K2 = 0;
-				if (e->isSubscript())
-					e = ((RefExp *)e)->getSubExp1();  // e = m[r27{25}]
+				if (auto re = dynamic_cast<RefExp *>(e))
+					e = re->getSubExp1();  // e = m[r27{25}]
 				vtExp = e;
 				K1 = 0;
 				// Exp *object = ((Unary *)e)->getSubExp1();

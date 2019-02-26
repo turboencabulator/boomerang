@@ -786,8 +786,8 @@ ExpPropagator::postVisit(RefExp *e)
 		if (ch) {
 			change = true;       // Record this change
 			unchanged &= ~mask;  // Been changed now (so simplify parent)
-			if (res->isSubscript())
-				res = postVisit((RefExp *)res);  // Recursively propagate more if possible
+			if (auto re = dynamic_cast<RefExp *>(res))
+				res = postVisit(re);  // Recursively propagate more if possible
 		}
 	}
 	return res;
@@ -984,9 +984,9 @@ void
 ExpCastInserter::checkMemofType(Exp *memof, Type *memofType)
 {
 	Exp *addr = ((Unary *)memof)->getSubExp1();
-	if (addr->isSubscript()) {
-		Exp *addrBase = ((RefExp *)addr)->getSubExp1();
-		Type *actType = ((RefExp *)addr)->getDef()->getTypeFor(addrBase);
+	if (auto re = dynamic_cast<RefExp *>(addr)) {
+		Exp *addrBase = re->getSubExp1();
+		Type *actType = re->getDef()->getTypeFor(addrBase);
 		Type *expectedType = new PointerType(memofType);
 		if (!actType->isCompatibleWith(*expectedType)) {
 			((Unary *)memof)->setSubExp1(new TypedExp(expectedType, addrBase));

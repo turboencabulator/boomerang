@@ -1587,12 +1587,13 @@ CHLLCode::AddLocal(const std::string &name, Type *type, bool last)
 	appendTypeIdent(s, type, name.c_str());
 	if (auto e = m_proc->expFromSymbol(name)) {
 		// ? Should never see subscripts in the back end!
-		if (e->isSubscript()
-		 && ((RefExp *)e)->isImplicitDef()
-		 && (e->getSubExp1()->isParam()
-		  || e->getSubExp1()->isGlobal())) {
+		auto re = dynamic_cast<RefExp *>(e);
+		if (re
+		 && re->isImplicitDef()
+		 && (re->getSubExp1()->isParam()
+		  || re->getSubExp1()->isGlobal())) {
 			s << " = ";
-			appendExp(s, e->getSubExp1(), PREC_NONE);
+			appendExp(s, re->getSubExp1(), PREC_NONE);
 			s << ";";
 		} else {
 			s << "; /* ";
