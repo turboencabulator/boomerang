@@ -1638,8 +1638,7 @@ Location::match(const char *pattern, std::map<std::string, const Exp *> &binding
 void
 Exp::doSearch(Exp *search, Exp *&pSrc, std::list<Exp **> &li, bool once)
 {
-	bool compare;
-	compare = (*search == *pSrc);
+	bool compare = (*search == *pSrc);
 	if (compare) {
 		li.push_back(&pSrc);  // Success
 		if (once)
@@ -1759,7 +1758,7 @@ Exp::search(Exp *search, Exp *&result)
 	// The search requires a reference to a pointer to this object.
 	// This isn't needed for searches, only for replacements, but we want to re-use the same search routine
 	Exp *top = this;
-	doSearch(search, top, li, false);
+	doSearch(search, top, li, true);
 	if (!li.empty()) {
 		result = *li.front();
 		return true;
