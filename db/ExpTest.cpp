@@ -290,13 +290,13 @@ ExpTest::testSearch1()
 	CPPUNIT_ASSERT(*result == two);
 
 	// Test for false positives
-	CPPUNIT_ASSERT(! m_99->search(&two, result));
-	CPPUNIT_ASSERT(! m_rof2->search(m_99, result));
+	CPPUNIT_ASSERT(!m_99->search(&two, result));
+	CPPUNIT_ASSERT(!m_rof2->search(m_99, result));
 
 	// Note: opDiv's enum has value 3
 	Binary e(opMult, m_rof2->clone(), m_99->clone());  // r2 / 99
 	Const three(3);
-	CPPUNIT_ASSERT(! e.search(&three, result));
+	CPPUNIT_ASSERT(!e.search(&three, result));
 }
 
 void
@@ -305,12 +305,12 @@ ExpTest::testSearch2()
 	// Search using wildcards
 	Binary e(opDivs, m_rof2->clone(), m_99->clone());  // r2 /! 99
 	Exp *result;
-	Location search(opRegOf, new Terminal(opWild), nullptr);  // r[?]
+	Terminal search(opWildRegOf);  // r[?]
 	CPPUNIT_ASSERT(e.search(&search, result));
 	CPPUNIT_ASSERT(*result == *m_rof2);  // Should be r2
 
 	Const three(3);
-	CPPUNIT_ASSERT(! e.search(&three, result));
+	CPPUNIT_ASSERT(!e.search(&three, result));
 	CPPUNIT_ASSERT(e.search(m_99, result));
 }
 
@@ -343,7 +343,7 @@ ExpTest::testSearchAll()
 {
 	// A more complex expression:
 	// (r2 * 99) + (r8 * 4)
-	Location search(opRegOf, new Terminal(opWild), nullptr);  // r[?]
+	Terminal search(opWildRegOf);  // r[?]
 	std::list<Exp *> result;
 	Binary e(opPlus,
 	         new Binary(opMult,

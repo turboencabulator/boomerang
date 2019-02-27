@@ -1802,8 +1802,7 @@ static Location *vfc_both = Location::memOf(
  */
 static Location *vfc_vto = Location::memOf(
     new Binary(opPlus,
-        Location::memOf(
-            new Terminal(opWild)),
+        new Terminal(opWildMemOf),
         new Terminal(opWildIntConst)));
 
 /**
@@ -1819,8 +1818,7 @@ static Location *vfc_vfo = Location::memOf(
  * Pattern 4: m[ m[ \<expr\> ] ]
  */
 static Location *vfc_none = Location::memOf(
-    Location::memOf(
-        new Terminal(opWild)));
+    new Terminal(opWildMemOf));
 
 static Exp *hlVfc[] = { vfc_funcptr, vfc_both, vfc_vto, vfc_vfo, vfc_none };
 

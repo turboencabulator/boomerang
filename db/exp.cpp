@@ -3207,7 +3207,7 @@ Exp::fixSuccessor()
 	Exp *result;
 	// Assume only one successor function in any 1 expression
 	if (search(new Unary(opSuccessor,
-	                     Location::regOf(new Terminal(opWild))), result)) {
+	                     new Terminal(opWildRegOf)), result)) {
 		// Result has the matching expression, i.e. succ(r[K])
 		Exp *sub1 = ((Unary *)result)->getSubExp1();
 		assert(sub1->isRegOf());

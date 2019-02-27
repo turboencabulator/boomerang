@@ -2351,7 +2351,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 			} else {
 				Exp *result;
 				if (a_rhs->getMemDepth() == 0
-				 && !a_rhs->search(Location::regOf(new Terminal(opWild)), result)
+				 && !a_rhs->search(new Terminal(opWildRegOf), result)
 				 && !a_rhs->search(Location::tempOf(new Terminal(opWild)), result)) {
 					if (a_rhs->isIntConst()) {
 						Range ra(1, ((Const *)a_rhs)->getInt(), ((Const *)a_rhs)->getInt(), new Const(0));

@@ -2036,12 +2036,6 @@ UserProc::finalSimplify()
 	}
 }
 
-
-// m[WILD]{-}
-static RefExp *memOfWild = new RefExp(Location::memOf(new Terminal(opWild)), nullptr);
-// r[WILD INT]{-}
-static RefExp *regOfWild = new RefExp(Location::regOf(new Terminal(opWildIntConst)), nullptr);
-
 // Search for expressions without explicit definitions (i.e. WILDCARD{0}), which represent parameters (use before
 // definition).
 // These are called final parameters, because they are determined from implicit references, not from the use collector
@@ -2297,7 +2291,7 @@ UserProc::processFloatConstants()
 	Exp *match = new Ternary(opFsize,
 	                         new Terminal(opWild),
 	                         new Terminal(opWild),
-	                         Location::memOf(new Terminal(opWild)));
+	                         new Terminal(opWildMemOf));
 
 	for (const auto &stmt : stmts) {
 		std::list<Exp *> results;
