@@ -622,13 +622,6 @@ RefExp::operator *=(const Exp &e) const
 	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
 	return (*subExp1 *= *other);
 }
-bool
-TypeVal::operator *=(const Exp &e) const
-{
-	const Exp *other = &e;
-	if (auto re = dynamic_cast<const RefExp *>(other)) other = re->getSubExp1();
-	return *this == *other;
-}
 
 /**
  * \fn void Exp::print(std::ostream &os, bool html) const

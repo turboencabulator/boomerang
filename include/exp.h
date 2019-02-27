@@ -753,7 +753,6 @@ public:
 	Exp        *clone() const override;
 	bool        operator ==(const Exp &) const override;
 	bool        operator < (const Exp &) const override;
-	bool        operator *=(const Exp &) const override;
 	void        print(std::ostream &os, bool html = false) const override;
 	void        printx(int ind) const override;
 	Exp        *genConstraints(Exp *restrictTo) override { assert(0); return nullptr; }  // Should not be constraining constraints
