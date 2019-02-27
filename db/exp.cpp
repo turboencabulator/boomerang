@@ -321,10 +321,6 @@ Location::clone() const
  *
  * Compare myself for equality with another Exp.
  *
- * \note The test for a wildcard is only with this object, not the other
- * object (e).  So when searching and there could be wildcards, use
- * search == *this not *this == search.
- *
  * \param[in] e  Ref to other Exp.
  * \returns      true if equal.
  */
