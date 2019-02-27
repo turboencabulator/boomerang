@@ -2815,8 +2815,7 @@ hasSetFlags(Exp *e)
 #endif
 
 /**
- * Returns true if can propagate to Exp* e in this Statement (must be a RefExp
- * to return true).
+ * Returns true if can propagate to RefExp* e in this Statement.
  *
  * \note Does not consider whether e is able to be renamed (from a memory
  * Primitive point of view), only if the definition can be propagated TO this
@@ -2825,14 +2824,12 @@ hasSetFlags(Exp *e)
  * \note Static member function.
  */
 bool
-Statement::canPropagateToExp(Exp *e)
+Statement::canPropagateToExp(RefExp *e)
 {
-	auto re = dynamic_cast<RefExp *>(e);
-	if (!re) return false;
-	if (re->isImplicitDef())
+	if (e->isImplicitDef())
 		// Can't propagate statement "-" or "0" (implicit assignments)
 		return false;
-	Statement *def = re->getDef();
+	Statement *def = e->getDef();
 #if 0
 	if (def == this)
 		// Don't propagate to self! Can happen with %pc's (?!)
@@ -2886,9 +2883,10 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 		// Example: m[r24{10}] := r25{20} + m[r26{30}]
 		// exps has r24{10}, r25{30}, m[r26{30}], r26{30}
 		for (const auto &e : exps) {
-			if (!canPropagateToExp(e))
+			auto r = dynamic_cast<RefExp *>(e);
+			if (!r || !canPropagateToExp(r))
 				continue;
-			Assign *def = (Assign *)((RefExp *)e)->getDef();
+			Assign *def = (Assign *)r->getDef();
 			Exp *rhs = def->getRight();
 			// If force is true, ignore the fact that a memof should not be propagated (for switch analysis)
 			if (rhs->containsBadMemof(proc) && !(force && rhs->isMemOf()))
@@ -2964,7 +2962,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 
 			// Check if the -l flag (propMaxDepth) prevents this propagation
 			if (destCounts && !lhs->isFlags()) {  // Always propagate to %flags
-				auto ff = destCounts->find(e);
+				auto ff = destCounts->find(r);
 				if (ff != destCounts->end() && ff->second > 1 && rhs->getComplexityDepth(proc) >= propMaxDepth) {
 					if (!def->getRight()->containsFlags()) {
 						// This propagation is prevented by the -l limit
@@ -2972,7 +2970,7 @@ Statement::propagateTo(bool &convert, std::map<Exp *, int, lessExpStar> *destCou
 					}
 				}
 			}
-			change |= doPropagateTo(e, def, convert);
+			change |= doPropagateTo(r, def, convert);
 		}
 	} while (change && ++changes < 10);
 	// Simplify is very costly, especially for calls. I hope that doing one simplify at the end will not affect any
@@ -3020,7 +3018,7 @@ Statement::propagateFlagsTo()
  * \returns true if a change made.
  */
 bool
-Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
+Statement::doPropagateTo(RefExp *e, Assign *def, bool &convert)
 {
 	// Respect the -p N switch
 	if (Boomerang::get().numToPropagate >= 0) {
@@ -3049,12 +3047,12 @@ Statement::doPropagateTo(Exp *e, Assign *def, bool &convert)
  * \returns true if change.
  */
 bool
-Statement::replaceRef(Exp *e, Assign *def, bool &convert)
+Statement::replaceRef(RefExp *e, Assign *def, bool &convert)
 {
 	Exp *rhs = def->getRight();
 	assert(rhs);
 
-	Exp *base = ((RefExp *)e)->getSubExp1();
+	Exp *base = e->getSubExp1();
 	// Could be propagating %flags into %CF
 	Exp *lhs = def->getLeft();
 	if (base->getOper() == opCF && lhs->isFlags()) {

@@ -191,7 +191,7 @@ public:
 	virtual bool        searchAll(Exp *, std::list<Exp *> &) = 0;
 	virtual bool        searchAndReplace(Exp *, Exp *, bool = false) = 0;
 
-	static  bool        canPropagateToExp(Exp *);
+	static  bool        canPropagateToExp(RefExp *);
 	        bool        propagateTo(bool &, std::map<Exp *, int, lessExpStar> * = nullptr, LocationSet * = nullptr, bool = false);
 	        bool        propagateFlagsTo();
 
@@ -239,7 +239,7 @@ public:
 	        bool        addUsedLocals(LocationSet &);
 	        void        bypass();
 
-	        bool        replaceRef(Exp *, Assign *, bool &);
+	        bool        replaceRef(RefExp *, Assign *, bool &);
 
 	        void        findConstants(std::list<Const *> &);
 
@@ -259,7 +259,7 @@ public:
 	virtual Type       *getTypeFor(Exp *) const { return nullptr; }
 	virtual void        setTypeFor(Exp *, Type *) { assert(0); }
 
-	        bool        doPropagateTo(Exp *, Assign *, bool &);
+	        bool        doPropagateTo(RefExp *, Assign *, bool &);
 	//static  bool        calcMayAlias(Exp *, Exp *, int);
 	//static  bool        mayAlias(Exp *, Exp *, int);
 };
