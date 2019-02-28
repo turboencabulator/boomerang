@@ -895,7 +895,7 @@ Unary::print(std::ostream &os, bool html) const
 	case opTemp:
 		if (p1->getOper() == opWildStrConst) {
 			os << "t[";
-			((Const *)p1)->printNoQuotes(os);
+			p1->print(os, html);
 			os << "]";
 			return;
 		}
