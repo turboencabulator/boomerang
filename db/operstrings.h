@@ -135,7 +135,6 @@ const char *operStrings[] = {
 	"opLongConst",          // long integer constant
 	"opFltConst",           // floating point constant
 	"opStrConst",           // string constant
-	"opFuncConst",          // function constant (pointer to function)
 	"opWildIntConst",       // an integer constant whose value is wild
 	"opWildStrConst",       // a string constant whose value is wild
 

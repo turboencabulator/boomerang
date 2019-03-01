@@ -317,8 +317,6 @@ class Const : public Exp {
 		uint64_t    ll;     // 64 bit integer
 		double      d;      // Double precision float
 		const char *p;      // Pointer to string
-		                    // Don't store string: function could be renamed
-		Proc       *pp;     // Pointer to function
 	} u;
 	int         conscript = 0;  // like a subscript for constants
 	Type       *type;           // Constants need types during type analysis
@@ -331,7 +329,6 @@ public:
 	            Const(double);
 	            Const(const char *);
 	            Const(const std::string &);
-	            Const(Proc *);
 	// Copy constructor
 	            Const(const Const &);
 
@@ -351,7 +348,6 @@ public:
 	double      getFlt()  const { return u.d;  }
 	const char *getStr()  const { return u.p;  }
 	ADDRESS     getAddr() const { return u.a;  }
-	const char *getFuncName() const;
 
 	// Set the constant
 	void        setInt(int i)         { u.i  = i;  op = opIntConst;  }

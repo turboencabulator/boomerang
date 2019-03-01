@@ -165,9 +165,6 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 		// escape string:
 		str << "\"" << escapeStr(c->getStr()) << "\"";
 		break;
-	case opFuncConst:
-		str << c->getFuncName();
-		break;
 	case opAddrOf:
 		{
 			Exp *sub = u->getSubExp1();

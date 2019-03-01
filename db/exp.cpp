@@ -42,7 +42,6 @@ Const::Const(uint64_t ll)          : Exp(opLongConst), type(new VoidType) { u.ll
 Const::Const(double d)             : Exp(opFltConst),  type(new VoidType) { u.d  = d;  }
 Const::Const(const char *p)        : Exp(opStrConst),  type(new VoidType) { u.p  = p;  }
 Const::Const(const std::string &s) : Exp(opStrConst),  type(new VoidType) { u.p  = strdup(s.c_str()); }
-Const::Const(Proc *pp)             : Exp(opFuncConst), type(new VoidType) { u.pp = pp; }
 /// \remark This is bad. We need a way of constructing true unsigned constants
 Const::Const(ADDRESS a)            : Exp(opIntConst),  type(new VoidType) { u.a  = a;  }
 
@@ -1151,8 +1150,6 @@ Const::appendDot(std::ostream &os) const
 	case opIntConst:  os << u.i; break;
 	case opFltConst:  os << u.d; break;
 	case opStrConst:  os << "\\\"" << u.p << "\\\""; break;
-	// Might want to distinguish this better, e.g. "(func *)myProc"
-	case opFuncConst: os << u.pp->getName(); break;
 	default:
 		break;
 	}
@@ -3751,12 +3748,6 @@ Location::getDefinitions(LocationSet &defs) const
 	}
 }
 
-const char *
-Const::getFuncName() const
-{
-	return u.pp->getName().c_str();
-}
-
 Exp *
 Unary::simplifyConstraint()
 {
@@ -4075,9 +4066,6 @@ Const::printx(int ind) const
 		break;
 	case opFltConst:
 		std::cerr << u.d;
-		break;
-	case opFuncConst:
-		std::cerr << u.pp->getName();
 		break;
 	default:
 		std::cerr << std::hex << "?" << (int)op << "?" << std::dec;

@@ -2433,16 +2433,14 @@ XMLProgParser::persistToXML(std::ostream &out, Exp *e)
 		    << "\" conscript=\"" << c->conscript;
 		if (c->op == opIntConst)
 			out << "\" value=\"" << c->u.i;
-		else if (c->op == opFuncConst)
-			out << "\" value=\"" << c->u.a;
 		else if (c->op == opFltConst)
 			out << "\" value=\"" << c->u.d;
 		else if (c->op == opStrConst)
 			out << "\" value=\"" << c->u.p;
 		else {
 			// TODO
+			// ADDRESS a;
 			// uint64_t ll;
-			// Proc *pp;
 			assert(false);
 		}
 		out << "\"/>\n";

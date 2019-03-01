@@ -1168,9 +1168,6 @@ Const::ascendType()
 		case opStrConst:
 			type = new PointerType(new CharType);
 			break;
-		case opFuncConst:
-			type = new FuncType;  // More needed here?
-			break;
 		default:
 			assert(0);  // Bad Const
 		}
