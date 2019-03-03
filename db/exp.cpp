@@ -3097,6 +3097,22 @@ RefExp::polySimplify(bool &bMod)
 	return res;
 }
 
+Exp *
+Location::polySimplify(bool &bMod)
+{
+	Exp *res = Unary::polySimplify(bMod);
+
+	if (res->isMemOf() && res->getSubExp1()->isAddrOf()) {
+		if (VERBOSE)
+			LOG << "polySimplify " << *res << "\n";
+		res = res->getSubExp1()->getSubExp1();
+		bMod = true;
+		return res;
+	}
+
+	return res;
+}
+
 /**
  * \fn Exp *Exp::simplifyAddr()
  * \brief Just the address simplification.
@@ -3691,22 +3707,6 @@ Binary::genConstraints(Exp *result)
 		break;
 	}
 	return new Terminal(opTrue);
-}
-
-Exp *
-Location::polySimplify(bool &bMod)
-{
-	Exp *res = Unary::polySimplify(bMod);
-
-	if (res->isMemOf() && res->getSubExp1()->isAddrOf()) {
-		if (VERBOSE)
-			LOG << "polySimplify " << *res << "\n";
-		res = res->getSubExp1()->getSubExp1();
-		bMod = true;
-		return res;
-	}
-
-	return res;
 }
 
 void
