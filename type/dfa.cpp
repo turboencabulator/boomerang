@@ -883,7 +883,7 @@ Assignment::dfaTypeAnalysis(bool &ch)
 	// Don't do this for the common case of an ordinary local, since it generates hundreds of implicit references,
 	// without any new type information
 	if (lhs->isMemOf() && !sig->isStackLocal(proc->getProg(), lhs)) {
-		Exp *addr = ((Unary *)lhs)->getSubExp1();
+		Exp *addr = ((Location *)lhs)->getSubExp1();
 		// Meet the assignment type with *(type of the address)
 		Type *addrType = addr->ascendType();
 		Type *memofType;

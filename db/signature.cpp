@@ -545,14 +545,14 @@ CallingConvention::StdC::PentiumSignature::qualified(UserProc *p, Signature &can
 	for (Statement *s = internal.getFirst(it); s; s = internal.getNext(it)) {
 		if (auto e = dynamic_cast<Assign *>(s)) {
 			if (e->getLeft()->isPC()) {
-				if (e->getRight()->isMemOf() && e->getRight()->getSubExp1()->isRegOfN(28)) {
+				if (e->getRight()->isMemOf() && e->getRight()->getSubExp1()->isRegN(28)) {
 					if (VERBOSE)
 						std::cerr << "got pc = m[r[28]]" << std::endl;
 					gotcorrectret1 = true;
 				}
 			} else if (e->getLeft()->isRegN(28)) {
 				if (e->getRight()->getOper() == opPlus
-				 && e->getRight()->getSubExp1()->isRegOfN(28)
+				 && e->getRight()->getSubExp1()->isRegN(28)
 				 && e->getRight()->getSubExp2()->isIntConst()
 				 && ((Const *)e->getRight()->getSubExp2())->getInt() == 4) {
 					if (VERBOSE)

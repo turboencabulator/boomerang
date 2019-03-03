@@ -2300,7 +2300,7 @@ UserProc::processFloatConstants()
 			auto fsize = (Ternary *)res;
 			if (fsize->getSubExp3()->isMemOf()
 			 && fsize->getSubExp3()->getSubExp1()->isIntConst()) {
-				Exp *memof = fsize->getSubExp3();
+				auto memof = (Location *)fsize->getSubExp3();
 				ADDRESS u = ((Const *)memof->getSubExp1())->getInt();
 				bool ok;
 				double d = prog->getFloatConstant(u, ok);
@@ -3549,8 +3549,8 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 			if (!change
 			 && query->getSubExp1()->isMemOf()
 			 && query->getSubExp2()->isMemOf()) {
-				query->setSubExp1(((Unary *)query->getSubExp1())->getSubExp1());
-				query->setSubExp2(((Unary *)query->getSubExp2())->getSubExp1());
+				query->setSubExp1(((Location *)query->getSubExp1())->getSubExp1());
+				query->setSubExp2(((Location *)query->getSubExp2())->getSubExp1());
 				change = true;
 			}
 
@@ -3562,8 +3562,8 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 			 && query->getSubExp2()->isSubscript()
 			 && query->getSubExp2()->getSubExp1()->isMemOf()
 			 && !((RefExp *)query->getSubExp2())->getDef()) {
-				query->setSubExp1(((Unary *)query->getSubExp1()->getSubExp1())->getSubExp1());
-				query->setSubExp2(((Unary *)query->getSubExp2()->getSubExp1())->getSubExp1());
+				query->setSubExp1(((Location *)query->getSubExp1()->getSubExp1())->getSubExp1());
+				query->setSubExp2(((Location *)query->getSubExp2()->getSubExp1())->getSubExp1());
 				change = true;
 			}
 

@@ -1257,7 +1257,7 @@ bool
 Exp::isRegOfK() const
 {
 	if (!isRegOf()) return false;
-	return ((const Unary *)this)->getSubExp1()->isIntConst();
+	return ((const Location *)this)->getSubExp1()->isIntConst();
 }
 
 /**
@@ -1268,7 +1268,7 @@ bool
 Exp::isRegN(int N) const
 {
 	if (!isRegOf()) return false;
-	const Exp *sub = ((const Unary *)this)->getSubExp1();
+	const Exp *sub = ((const Location *)this)->getSubExp1();
 	return (sub->isIntConst() && ((const Const *)sub)->getInt() == N);
 }
 
@@ -2995,10 +2995,9 @@ Ternary::polySimplify(bool &bMod)
 	if (op == opFsize
 	 && subExp3->isMemOf()
 	 && subExp3->getSubExp1()->isIntConst()) {
-		unsigned u = ((Const *)subExp3->getSubExp1())->getInt();
-		auto l = dynamic_cast<Location *>(subExp3);
-		UserProc *p = l->getProc();
-		if (p) {
+		auto l = static_cast<Location *>(subExp3);
+		unsigned u = ((Const *)l->getSubExp1())->getInt();
+		if (auto p = l->getProc()) {
 			Prog *prog = p->getProg();
 			bool ok;
 			double d = prog->getFloatConstant(u, ok, ((Const *)subExp1)->getInt());
@@ -3060,7 +3059,7 @@ TypedExp::polySimplify(bool &bMod)
 
 	if (subExp1->isRegOf()) {
 		// type cast on a reg of.. hmm.. let's remove this
-		res = ((Unary *)res)->getSubExp1();
+		res = ((Location *)res)->getSubExp1();
 		bMod = true;
 		return res;
 	}
@@ -3203,22 +3202,18 @@ Exp::fixSuccessor()
 	bool change;
 	Exp *result;
 	// Assume only one successor function in any 1 expression
-	if (search(new Unary(opSuccessor,
-	                     new Terminal(opWildRegOf)), result)) {
+	if (search(new Unary(opSuccessor, new Terminal(opWildRegOf)), result)) {
 		// Result has the matching expression, i.e. succ(r[K])
-		Exp *sub1 = ((Unary *)result)->getSubExp1();
-		assert(sub1->isRegOf());
-		Exp *sub2 = ((Unary *)sub1)->getSubExp1();
-		assert(sub2->isIntConst());
+		auto sub1 = ((Unary *)result)->getSubExp1();
+		assert(sub1->isRegOfK());
 		// result    sub1   sub2
 		// succ(      r[   Const K  ])
 		// Note: we need to clone the r[K] part, since it will be ;//deleted as
 		// part of the searchReplace below
-		Unary *replace = (Unary *)sub1->clone();
-		Const *c = (Const *)replace->getSubExp1();
+		auto replace = (Location *)sub1->clone();
+		auto c = (Const *)replace->getSubExp1();
 		c->setInt(c->getInt() + 1);  // Do the increment
-		Exp *res = searchReplace(result, replace, change);
-		return res;
+		return searchReplace(result, replace, change);
 	}
 	return this;
 }
@@ -3255,7 +3250,7 @@ Exp::isTemp() const
 	if (op == opTemp) return true;
 	if (!isRegOf()) return false;
 	// Some old code has r[tmpb] instead of just tmpb
-	const Exp *sub = ((const Unary *)this)->getSubExp1();
+	const Exp *sub = ((const Location *)this)->getSubExp1();
 	return sub->op == opTemp;
 }
 
@@ -3743,7 +3738,7 @@ Location::getDefinitions(LocationSet &defs) const
 {
 	// This is a hack to fix aliasing (replace with something general)
 	// FIXME! This is x86 specific too. Use -O for overlapped registers!
-	if (isRegOf() && ((const Const *)subExp1)->getInt() == 24) {
+	if (isRegN(24)) {
 		defs.insert(Location::regOf(0));
 	}
 }

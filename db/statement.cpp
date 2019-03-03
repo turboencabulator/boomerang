@@ -81,7 +81,7 @@ Assignment::Assignment(Exp *lhs) :
 	TypingStatement(new VoidType),
 	lhs(lhs)
 {
-	if (lhs && lhs->isRegOf()) {
+	if (lhs && lhs->isRegOfK()) {
 		int n = ((Const *)lhs->getSubExp1())->getInt();
 		if (((Location *)lhs)->getProc()) {
 			type = new SizeType(((Location *)lhs)->getProc()->getProg()->getRegSize(n));
@@ -879,20 +879,20 @@ bool
 Assignment::usesExp(Exp *e) const
 {
 	Exp *where = nullptr;
-	return (lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where);
+	return (lhs->isMemOf() || lhs->isRegOf()) && ((Location *)lhs)->getSubExp1()->search(e, where);
 }
 bool
 BoolAssign::usesExp(Exp *e) const
 {
 	assert(lhs && pCond);
 	Exp *where = nullptr;
-	return (pCond->search(e, where) || (lhs->isMemOf() && ((Unary *)lhs)->getSubExp1()->search(e, where)));
+	return (pCond->search(e, where) || (lhs->isMemOf() && ((Location *)lhs)->getSubExp1()->search(e, where)));
 }
 bool
 Assign::usesExp(Exp *e) const
 {
 	Exp *where = nullptr;
-	return (rhs->search(e, where) || ((lhs->isMemOf() || lhs->isRegOf()) && ((Unary *)lhs)->getSubExp1()->search(e, where)));
+	return (rhs->search(e, where) || ((lhs->isMemOf() || lhs->isRegOf()) && ((Location *)lhs)->getSubExp1()->search(e, where)));
 }
 
 /**
@@ -3639,7 +3639,7 @@ CallStatement::convertToDirect()
 		// FIXME: to be completed
 	} else if (e->isMemOf()) {
 		// It might be a global that has not been processed yet
-		Exp *sub = ((Unary *)e)->getSubExp1();
+		Exp *sub = ((Location *)e)->getSubExp1();
 		if (sub->isIntConst()) {
 			// m[K]: convert it to a global right here
 			ADDRESS u = (ADDRESS)((Const *)sub)->getInt();
@@ -3879,7 +3879,7 @@ CallStatement::ellipsisProcessing(Prog *prog)
 		if (auto re = dynamic_cast<RefExp *>(formatExp))
 			formatExp = re->getSubExp1();
 		if (formatExp->isMemOf())
-			formatExp = ((Unary *)formatExp)->getSubExp1();
+			formatExp = ((Location *)formatExp)->getSubExp1();
 	}
 	const char *formatStr = nullptr;
 	if (auto re = dynamic_cast<RefExp *>(formatExp)) {

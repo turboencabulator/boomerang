@@ -404,7 +404,7 @@ PentiumFrontEnd::processFloatCode(BasicBlock *bb, int &tos, Cfg *cfg)
 					//TypedExp *te = (TypedExp *)cur->getSubExp1();
 					auto s = cur->getSubExp1();
 					if (s->isRegOfK()) {
-						auto c = (Const *)((Unary *)s)->getSubExp1();
+						auto c = (Const *)((Location *)s)->getSubExp1();
 						int K = c->getInt();  // Old register number
 						// Change to new register number, if in range
 						if (32 <= K && K <= 39)
