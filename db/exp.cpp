@@ -3706,15 +3706,6 @@ Location::polySimplify(bool &bMod)
 		return res;
 	}
 
-	// check for m[a[loc.x]] becomes loc.x
-	if (res->isMemOf()
-	 && res->getSubExp1()->isAddrOf()
-	 && res->getSubExp1()->getSubExp1()->isMemberOf()) {
-		res = subExp1->getSubExp1();
-		bMod = true;
-		return res;
-	}
-
 	return res;
 }
 
