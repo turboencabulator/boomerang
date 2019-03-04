@@ -414,27 +414,27 @@ RTL::simplify()
 		const auto &stmt = *it;
 		stmt->simplify();
 		if (auto branch = dynamic_cast<BranchStatement *>(stmt)) {
-			auto cond = branch->getCondExpr();
-			if (cond && cond->isIntConst()) {
-				if (((Const *)cond)->getInt() == 0) {
+			if (auto cond = branch->getCondExpr()) {
+				if (cond->isFalse() || (cond->isIntConst() && !((Const *)cond)->getInt())) {
 					if (VERBOSE)
 						LOG << "removing branch with false condition at 0x" << std::hex << getAddress() << std::dec << " " << *branch << "\n";
 					it = stmtList.erase(it);
 					continue;
-				} else {
+				} else if (cond->isTrue() || (cond->isIntConst() && !!((Const *)cond)->getInt())) {
 					if (VERBOSE)
 						LOG << "replacing branch with true condition with goto at 0x" << std::hex << getAddress() << std::dec << " " << *branch << "\n";
 					*it = new GotoStatement(branch->getFixedDest());
 				}
 			}
 		} else if (auto assign = dynamic_cast<Assign *>(stmt)) {
-			auto guard = assign->getGuard();
-			if (guard && (guard->isFalse() || (guard->isIntConst() && !((Const *)guard)->getInt()))) {
-				// This assignment statement can be deleted
-				if (VERBOSE)
-					LOG << "removing assignment with false guard at 0x" << std::hex << getAddress() << std::dec << " " << *assign << "\n";
-				it = stmtList.erase(it);
-				continue;
+			if (auto guard = assign->getGuard()) {
+				if (guard->isFalse() || (guard->isIntConst() && !((Const *)guard)->getInt())) {
+					// This assignment statement can be deleted
+					if (VERBOSE)
+						LOG << "removing assignment with false guard at 0x" << std::hex << getAddress() << std::dec << " " << *assign << "\n";
+					it = stmtList.erase(it);
+					continue;
+				}
 			}
 		}
 		++it;
