@@ -2572,16 +2572,6 @@ Binary::polySimplify(bool &bMod)
 		return subExp1;
 	}
 
-	// check for a + a*n, becomes a*(n+1) where n is an int
-	if (op == opPlus
-	 && opSub2 == opMult
-	 && *subExp1 == *subExp2->getSubExp1()
-	 && subExp2->getSubExp2()->isIntConst()) {
-		((Const *)subExp2->getSubExp2())->setInt(((Const *)subExp2->getSubExp2())->getInt() + 1);
-		bMod = true;
-		return subExp2;
-	}
-
 	// check for a*n*m, becomes a*(n*m) where n and m are ints
 	if (op == opMult
 	 && opSub1 == opMult
