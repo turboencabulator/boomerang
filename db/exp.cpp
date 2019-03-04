@@ -32,6 +32,7 @@
 #include <numeric>      // For std::accumulate()
 #include <list>
 #include <string>
+#include <utility>
 
 #include <cassert>
 #include <cstdlib>
@@ -251,9 +252,7 @@ Ternary::getSubExp3() const
 void
 Binary::commute()
 {
-	Exp *t = subExp1;
-	subExp1 = subExp2;
-	subExp2 = t;
+	std::swap(subExp1, subExp2);
 	assert(subExp1 && subExp2);
 }
 
@@ -2157,8 +2156,8 @@ Binary::polySimplify(bool &bMod)
 	subExp1 = subExp1->polySimplify(bMod);
 	subExp2 = subExp2->polySimplify(bMod);
 
-	OPER opSub1 = subExp1->getOper();
-	OPER opSub2 = subExp2->getOper();
+	auto opSub1 = subExp1->getOper();
+	auto opSub2 = subExp2->getOper();
 
 	if (opSub1 == opIntConst
 	 && opSub2 == opIntConst) {
@@ -2228,9 +2227,7 @@ Binary::polySimplify(bool &bMod)
 	 && (op == opPlus || op == opMult || op == opMults || op == opBitOr || op == opBitAnd)) {
 		commute();
 		// Swap opSub1 and opSub2 as well
-		OPER t = opSub1;
-		opSub1 = opSub2;
-		opSub2 = t;
+		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
 	}
 
@@ -2240,9 +2237,7 @@ Binary::polySimplify(bool &bMod)
 	 && (op == opAnd || op == opOr)) {
 		commute();
 		// Swap opSub1 and opSub2 as well
-		OPER t = opSub1;
-		opSub1 = opSub2;
-		opSub2 = t;
+		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
 	}
 
@@ -2253,9 +2248,7 @@ Binary::polySimplify(bool &bMod)
 	 && op == opPlus) {
 		commute();
 		// Swap opSub1 and opSub2 as well
-		OPER t = opSub1;
-		opSub1 = opSub2;
-		opSub2 = t;
+		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
 	}
 
