@@ -2565,13 +2565,6 @@ Binary::polySimplify(bool &bMod)
 		return this;
 	}
 
-	// check for (x & x), becomes x
-	if (op == opBitAnd
-	 && *subExp1 == *subExp2) {
-		bMod = true;
-		return subExp1;
-	}
-
 	// check for a*n*m, becomes a*(n*m) where n and m are ints
 	if (op == opMult
 	 && opSub1 == opMult
