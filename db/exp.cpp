@@ -2593,22 +2593,6 @@ Binary::polySimplify(bool &bMod)
 		return subExp1;
 	}
 
-	// check for !(a == b) becomes a != b
-	if (op == opLNot
-	 && opSub1 == opEqual) {
-		subExp1->setOper(opNotEqual);
-		bMod = true;
-		return subExp1;
-	}
-
-	// check for !(a != b) becomes a == b
-	if (op == opLNot
-	 && opSub1 == opNotEqual) {
-		subExp1->setOper(opEqual);
-		bMod = true;
-		return subExp1;
-	}
-
 #if 0  // FIXME! ADHOC TA assumed!
 	// check for (exp + x) + n where exp is a pointer to a compound type becomes (exp + n) + x
 	if (op == opPlus
