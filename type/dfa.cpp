@@ -1181,14 +1181,19 @@ Terminal::ascendType()
 {
 	switch (op) {
 	case opPC:
+	case opFlags:
+	case opFflags:
 		return new IntegerType(STD_SIZE, -1);
-	case opCF:
+	case opTrue:
+	case opFalse:
 	case opZF:
+	case opCF:
+	case opNF:
+	case opOF:
+	case opDF:
 		return new BooleanType;
 	case opDefineAll:
 		return new VoidType;
-	case opFlags:
-		return new IntegerType(STD_SIZE, -1);
 	default:
 		std::cerr << "ascendType() for terminal " << *this << " not implemented!\n";
 		return new VoidType;
