@@ -314,8 +314,8 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 	// Constraint terms of the form Tx = Ty go into a map of LocationSets
 	// called equates for fast lookup
 	for (const auto &con : conSet) {
-		if (con->isTrue()) continue;
-		if (con->isFalse()) {
+		if (con->isBoolTrue()) continue;
+		if (con->isBoolFalse()) {
 			if (VERBOSE || DEBUG_TA)
 				LOG << "Constraint failure: always false constraint\n";
 			return false;
@@ -429,7 +429,7 @@ Constraints::doSolve(std::list<Exp *>::iterator it, ConstraintMap &soln, std::li
 		bool unified = true;
 		while (!!(c = nextConjunct(rem2))) {
 			LOG << "   $$ c is " << *c << ", rem2 is " << (!rem2 ? "NULL" : rem2->prints()) << " $$\n";
-			if (c->isFalse()) {
+			if (c->isBoolFalse()) {
 				unified = false;
 				break;
 			}

@@ -184,16 +184,20 @@ public:
 	//        int         getVarIndex() const;
 	// True if this is a terminal
 	virtual bool        isTerminal() const { return false; }
-	// True if this is the constant "true"
-	        bool        isTrue() const { return op == opTrue; }
-	// True if this is the constant "false"
-	        bool        isFalse() const { return op == opFalse; }
 	// True if this is a disjunction, i.e. x or y
 	        bool        isDisjunction() const { return op == opOr; }
 	// True if this is a conjunction, i.e. x and y
 	        bool        isConjunction() const { return op == opAnd; }
 	// True if this is a boolean constant
 	        bool        isBoolConst() const { return op == opTrue || op == opFalse; }
+	// True if this is the constant "true"
+	        bool        isBoolTrue() const { return op == opTrue; }
+	// True if this is the constant "false"
+	        bool        isBoolFalse() const { return op == opFalse; }
+	// True if this is a constant that evaluates to true
+	        bool        isTrue() const;
+	// True if this is a constant that evaluates to false
+	        bool        isFalse() const;
 	// True if this is an equality (== or !=)
 	        bool        isEquality() const { return op == opEqual /*|| op == opNotEqual*/; }
 	// True if this is a comparison

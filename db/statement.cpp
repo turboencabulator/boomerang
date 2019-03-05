@@ -2006,7 +2006,7 @@ Assign::simplify()
 	if (guard) guard = guard->simplify();
 
 	// Perhaps the guard can go away
-	if (guard && (guard->isTrue() || (guard->isIntConst() && !!((Const *)guard)->getInt())))
+	if (guard && guard->isTrue())
 		guard = nullptr;  // No longer a guarded assignment
 
 	if (lhs->isMemOf()) {

@@ -1286,6 +1286,18 @@ Exp::isAfpTerm() const
 	return ((subOp1 == opAFP) && (subOp2 == opIntConst));
 }
 
+bool
+Exp::isTrue() const
+{
+	return op == opTrue || (op == opIntConst && !!((Const *)this)->getInt());
+}
+
+bool
+Exp::isFalse() const
+{
+	return op == opFalse || (op == opIntConst && !((Const *)this)->getInt());
+}
+
 #if 0 // Cruft?
 /**
  * \returns  The index for this var, e.g. if v[2], return 2.
@@ -2436,7 +2448,7 @@ Binary::polySimplify(bool &bMod)
 
 	// Check for exp || true
 	if (op == opOr
-	 && (opSub2 == opTrue || (opSub2 == opIntConst && !!((Const *)subExp2)->getInt()))) {
+	 && subExp2->isTrue()) {
 		//delete this;
 		bMod = true;
 		return new Terminal(opTrue);
@@ -2444,7 +2456,7 @@ Binary::polySimplify(bool &bMod)
 
 	// Check for exp && true
 	if (op == opAnd
-	 && (opSub2 == opTrue || (opSub2 == opIntConst && !!((Const *)subExp2)->getInt()))) {
+	 && subExp2->isTrue()) {
 		bMod = true;
 		return subExp1;
 	}

@@ -3608,7 +3608,7 @@ UserProc::prover(Exp *query, std::set<PhiAssign *> &lastPhis, std::map<PhiAssign
 		//delete old;
 	}
 
-	return query->isTrue();
+	return query->isBoolTrue();
 }
 
 // Get the set of locations defined by this proc. In other words, the define set, currently called returns
