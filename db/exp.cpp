@@ -2449,42 +2449,40 @@ Binary::polySimplify(bool &bMod)
 		return subExp1;
 	}
 
-	// Check for (x == y) == 1, becomes x == y
+	// Check for (x compare y) == 1, becomes x compare y
 	if (op == opEqual
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 1
-	 && opSub1 == opEqual) {
+	 && subExp1->isComparison()) {
 		bMod = true;
 		return subExp1;
 	}
 
-	// Check for (x == y) == 0, becomes x != y
-	if (op == opEqual
+	// Check for (x compare y) != 0, becomes x compare y
+	if (op == opNotEqual
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 0
-	 && opSub1 == opEqual) {
-		subExp1->setOper(opNotEqual);
+	 && subExp1->isComparison()) {
 		bMod = true;
 		return subExp1;
 	}
 
-	// Check for (x == y) != 1, becomes x != y
+	// Check for (x compare y) != 1, becomes !(x compare y)
 	if (op == opNotEqual
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 1
-	 && opSub1 == opEqual) {
-		subExp1->setOper(opNotEqual);
+	 && subExp1->isComparison()) {
 		bMod = true;
-		return subExp1;
+		return new Unary(opLNot, subExp1->clone());
 	}
 
-	// Check for (x == y) != 0, becomes x == y
-	if (op == opNotEqual
+	// Check for (x compare y) == 0, becomes !(x compare y)
+	if (op == opEqual
 	 && opSub2 == opIntConst
 	 && ((Const *)subExp2)->getInt() == 0
-	 && opSub1 == opEqual) {
+	 && subExp1->isComparison()) {
 		bMod = true;
-		return subExp1;
+		return new Unary(opLNot, subExp1->clone());
 	}
 
 	// Check for x + -y == 0, becomes x == y
