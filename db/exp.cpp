@@ -2403,6 +2403,68 @@ Binary::polySimplify(bool &bMod)
 		return this;
 	}
 
+	// Check for exp || false
+	if (op == opOr
+	 && subExp2->isFalse()) {
+		bMod = true;
+		return subExp1;
+	}
+
+	// Check for exp && false
+	if (op == opAnd
+	 && subExp2->isFalse()) {
+		;//delete this;
+		bMod = true;
+		return new Terminal(opFalse);
+	}
+
+	// Check for exp || true
+	if (op == opOr
+	 && subExp2->isTrue()) {
+		//delete this;
+		bMod = true;
+		return new Terminal(opTrue);
+	}
+
+	// Check for exp && true
+	if (op == opAnd
+	 && subExp2->isTrue()) {
+		bMod = true;
+		return subExp1;
+	}
+
+	// Check for (x compare y) == true, becomes x compare y
+	if (op == opEqual
+	 && subExp2->isTrue()
+	 && subExp1->isComparison()) {
+		bMod = true;
+		return subExp1;
+	}
+
+	// Check for (x compare y) != false, becomes x compare y
+	if (op == opNotEqual
+	 && subExp2->isFalse()
+	 && subExp1->isComparison()) {
+		bMod = true;
+		return subExp1;
+	}
+
+	// Check for (x compare y) != true, becomes !(x compare y)
+	if (op == opNotEqual
+	 && subExp2->isTrue()
+	 && subExp1->isComparison()) {
+		bMod = true;
+		return new Unary(opLNot, subExp1->clone());
+	}
+
+	// Check for (x compare y) == false, becomes !(x compare y)
+	if (op == opEqual
+	 && subExp2->isFalse()
+	 && subExp1->isComparison()) {
+		bMod = true;
+		return new Unary(opLNot, subExp1->clone());
+	}
+
 #if 0
 	// Check for -x compare y, becomes x compare -y
 	// doesn't count as a change
@@ -2430,72 +2492,6 @@ Binary::polySimplify(bool &bMod)
 		return this;
 	}
 #endif
-
-	// Check for exp || false
-	if (op == opOr
-	 && opSub2 == opFalse) {
-		bMod = true;
-		return subExp1;
-	}
-
-	// Check for exp && false
-	if (op == opAnd
-	 && opSub2 == opFalse) {
-		;//delete this;
-		bMod = true;
-		return new Terminal(opFalse);
-	}
-
-	// Check for exp || true
-	if (op == opOr
-	 && subExp2->isTrue()) {
-		//delete this;
-		bMod = true;
-		return new Terminal(opTrue);
-	}
-
-	// Check for exp && true
-	if (op == opAnd
-	 && subExp2->isTrue()) {
-		bMod = true;
-		return subExp1;
-	}
-
-	// Check for (x compare y) == 1, becomes x compare y
-	if (op == opEqual
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 1
-	 && subExp1->isComparison()) {
-		bMod = true;
-		return subExp1;
-	}
-
-	// Check for (x compare y) != 0, becomes x compare y
-	if (op == opNotEqual
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0
-	 && subExp1->isComparison()) {
-		bMod = true;
-		return subExp1;
-	}
-
-	// Check for (x compare y) != 1, becomes !(x compare y)
-	if (op == opNotEqual
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 1
-	 && subExp1->isComparison()) {
-		bMod = true;
-		return new Unary(opLNot, subExp1->clone());
-	}
-
-	// Check for (x compare y) == 0, becomes !(x compare y)
-	if (op == opEqual
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0
-	 && subExp1->isComparison()) {
-		bMod = true;
-		return new Unary(opLNot, subExp1->clone());
-	}
 
 	// Check for x + -y == 0, becomes x == y
 	if (op == opEqual
@@ -2527,26 +2523,6 @@ Binary::polySimplify(bool &bMod)
 	 && ((Const *)subExp1->getSubExp1())->getInt() == 0) {
 		bMod = true;
 		return new Binary(opNotEqual, subExp1->getSubExp2()->clone(), subExp2->clone());
-	}
-
-	// Check for (x > y) == 0, becomes x <= y
-	if (op == opEqual
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0
-	 && opSub1 == opGtr) {
-		subExp1->setOper(opLessEq);
-		bMod = true;
-		return subExp1;
-	}
-
-	// Check for (x >u y) == 0, becomes x <=u y
-	if (op == opEqual
-	 && opSub2 == opIntConst
-	 && ((Const *)subExp2)->getInt() == 0
-	 && opSub1 == opGtrUns) {
-		subExp1->setOper(opLessEqUns);
-		bMod = true;
-		return subExp1;
 	}
 
 	Binary *b1 = (Binary *)subExp1;
@@ -2816,16 +2792,14 @@ Ternary::polySimplify(bool &bMod)
 
 	// 1 ? x : y -> x
 	if (op == opTern
-	 && subExp1->isIntConst()
-	 && ((Const *)subExp1)->getInt() == 1) {
+	 && subExp1->isTrue()) {
 		bMod = true;
 		return subExp2;
 	}
 
 	// 0 ? x : y -> y
 	if (op == opTern
-	 && subExp1->isIntConst()
-	 && ((Const *)subExp1)->getInt() == 0) {
+	 && subExp1->isFalse()) {
 		bMod = true;
 		return subExp3;
 	}
