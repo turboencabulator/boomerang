@@ -442,54 +442,6 @@ RTL::simplify()
 }
 
 /**
- * \brief Is this RTL a compare instruction?  If so, the passed register and
- * compared value (a semantic string) are set.
- *
- * Return true if this is an unmodified compare instruction of a register with
- * an operand.
- *
- * \note Will also match a subtract if the flags are set.
- * \note expOperand, if set, is not cloned.
- * \note Assumes that the first subtract on the RHS is the actual compare
- * operation.
- *
- * \param iReg        Ref to integer to set with the register index.
- * \param expOperand  Ref to ptr to expression of operand.
- *
- * \returns true if found.
- */
-bool
-RTL::isCompare(int &iReg, Exp *&expOperand) const
-{
-	// Expect to see a subtract, then a setting of the flags
-	// Dest of subtract should be a register (could be the always zero register)
-	if (stmtList.size() < 2) return false;
-	// Could be first some assignments to temporaries
-	// But the actual compare could also be an assignment to a temporary
-	// So we search for the first RHS with an opMinus, that has a LHS to
-	// a register (whether a temporary or a machine register)
-	Exp *rhs = nullptr;
-	for (const auto &cur : stmtList) {
-		auto as = dynamic_cast<Assign *>(cur);
-		if (!as) return false;
-		rhs = as->getRight();
-		if (rhs->getOper() == opMinus)
-			break;
-	}
-	if (rhs->getOper() != opMinus) return false;
-	// We have a subtract assigning to a register.
-	// Check if there is a subflags last
-	if (!stmtList.back()->isFlagAssgn()) return false;
-	Exp *sub = ((Binary *)rhs)->getSubExp1();
-	// Should be a compare of a register and something (probably a constant)
-	if (!sub->isRegOf()) return false;
-	// Set the register and operand expression, and return true
-	iReg = ((Const *)((Unary *)sub)->getSubExp1())->getInt();
-	expOperand = ((Binary *)rhs)->getSubExp2();
-	return true;
-}
-
-/**
  * \brief True if this RTL ends in a GotoStatement.
  */
 bool

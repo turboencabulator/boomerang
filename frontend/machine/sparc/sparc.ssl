@@ -313,8 +313,6 @@ SHIFTS[IDX] rs1, reg_or_imm, rd
 
 
 # Arithmetic operators- uses OP3 table for correct operator.
-# NOTE: The format of these (number of RTLs, etc) must agree with the
-# isCompare function in rtl/ctisparc.cc.
 
 OP3   := { "+",   "-",   "+",     "-",     "+",      "-"      };
 ARITH := { "ADD", "SUB", "ADDCC", "SUBCC", "TADDCC", "TSUBCC" };

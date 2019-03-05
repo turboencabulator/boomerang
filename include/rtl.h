@@ -109,7 +109,6 @@ public:
 
 	        void        simplify();
 
-	        bool        isCompare(int &iReg, Exp *&pTerm) const;
 	        bool        isGoto() const;
 	        bool        isCall() const;
 	        bool        isBranch() const;

@@ -14,21 +14,14 @@
 
 #include "RtlTest.h"
 
-#include "decoder.h"
 #include "exp.h"
-#include "frontend.h"
 #include "proc.h"
 #include "prog.h"
 #include "rtl.h"
 #include "statement.h"
 #include "visitor.h"
 
-#include <sstream>
-#include <list>
 #include <string>
-
-#define SWITCH_SPARC        "test/sparc/switch_cc"
-#define SWITCH_PENT         "test/pentium/switch_cc"
 
 /**
  * Test appendExp and printing of RTLs.
@@ -161,56 +154,6 @@ RtlTest::testVisitor()
 	s->accept(visitor);
 	CPPUNIT_ASSERT(visitor.e);
 	delete s;
-}
-
-/**
- * Test the isCompare function.
- */
-void
-RtlTest::testIsCompare()
-{
-	auto prog = Prog::open(SWITCH_SPARC);
-	CPPUNIT_ASSERT(prog);
-
-	auto fe = prog->getFrontEnd();
-	CPPUNIT_ASSERT(fe);
-	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_SPARC);
-
-	// Decode second instruction: "sub      %i0, 2, %o1"
-	int iReg;
-	Exp *eOperand = nullptr;
-	DecodeResult inst = fe->decodeInstruction(0x10910);
-	CPPUNIT_ASSERT(inst.rtl);
-	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
-
-	// Decode fifth instruction: "cmp       %o1, 5"
-	inst = fe->decodeInstruction(0x1091c);
-	CPPUNIT_ASSERT(inst.rtl);
-	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
-	CPPUNIT_ASSERT_EQUAL(9, iReg);
-	std::string expected("5");
-	CPPUNIT_ASSERT_EQUAL(expected, eOperand->prints());
-	delete prog;
-
-	prog = Prog::open(SWITCH_PENT);
-	CPPUNIT_ASSERT(prog);
-
-	fe = prog->getFrontEnd();
-	CPPUNIT_ASSERT(fe);
-	CPPUNIT_ASSERT(fe->getFrontEndId() == PLAT_PENTIUM);
-
-	// Decode fifth instruction: "cmp   $0x5,%eax"
-	inst = fe->decodeInstruction(0x80488fb);
-	CPPUNIT_ASSERT(inst.rtl);
-	CPPUNIT_ASSERT(inst.rtl->isCompare(iReg, eOperand));
-	CPPUNIT_ASSERT_EQUAL(24, iReg);
-	CPPUNIT_ASSERT_EQUAL(expected, eOperand->prints());
-
-	// Decode instruction: "add     $0x4,%esp"
-	inst = fe->decodeInstruction(0x804890c);
-	CPPUNIT_ASSERT(inst.rtl);
-	CPPUNIT_ASSERT(!inst.rtl->isCompare(iReg, eOperand));
-	delete prog;
 }
 
 void
