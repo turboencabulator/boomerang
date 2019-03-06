@@ -127,12 +127,10 @@ RTL::accept(StmtVisitor &v)
 void
 RTL::appendStmt(Statement *s)
 {
-	if (!stmtList.empty()) {
-		if (stmtList.back()->isFlagAssgn()) {
-			auto it = stmtList.end();
-			stmtList.insert(--it, s);
-			return;
-		}
+	if (areFlagsAffected()) {
+		auto it = stmtList.end();
+		stmtList.insert(--it, s);
+		return;
 	}
 	stmtList.push_back(s);
 }
@@ -388,9 +386,8 @@ RTL::getType() const
 bool
 RTL::areFlagsAffected() const
 {
-	if (stmtList.empty()) return false;
 	// If it is a flag call, then the CCs are affected
-	return stmtList.back()->isFlagAssgn();
+	return !stmtList.empty() && stmtList.back()->isFlagAssgn();
 }
 
 /**
