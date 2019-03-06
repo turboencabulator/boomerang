@@ -527,7 +527,6 @@ public:
 	void        setSubExp2(Exp *e) override;
 	// Get second subexpression
 	Exp        *getSubExp2() const override;
-	void        commute();
 
 	Exp        *match(const Exp *pattern) const override;
 	bool        match(const char *pattern, std::map<std::string, const Exp *> &bindings) const override;

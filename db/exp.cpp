@@ -247,16 +247,6 @@ Ternary::getSubExp3() const
 }
 
 /**
- * \brief Swap the two subexpressions.
- */
-void
-Binary::commute()
-{
-	std::swap(subExp1, subExp2);
-	assert(subExp1 && subExp2);
-}
-
-/**
  * \fn Exp *Exp::clone() const
  * \brief Make copy of self that can be deleted without affecting self.
  *
@@ -2242,7 +2232,7 @@ Binary::polySimplify(bool &bMod)
 	 && (op == opPlus   || op == opMult  || op == opMults
 	  || op == opBitAnd || op == opBitOr || op == opBitXor
 	  || op == opAnd    || op == opOr    || op == opEqual  || op == opNotEqual)) {
-		commute();
+		std::swap(subExp1, subExp2);
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
@@ -2252,7 +2242,7 @@ Binary::polySimplify(bool &bMod)
 	if (subExp1->isBoolConst()
 	 && !subExp2->isBoolConst()
 	 && (op == opAnd || op == opOr || op == opEqual || op == opNotEqual)) {
-		commute();
+		std::swap(subExp1, subExp2);
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
@@ -2263,7 +2253,7 @@ Binary::polySimplify(bool &bMod)
 	 && subExp2->getSubExp1()->isSubscript()
 	 && subExp2->getSubExp1()->getSubExp1()->isGlobal()
 	 && op == opPlus) {
-		commute();
+		std::swap(subExp1, subExp2);
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
 		// This is not counted as a modification
