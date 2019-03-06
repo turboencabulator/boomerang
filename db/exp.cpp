@@ -2168,23 +2168,45 @@ Binary::polySimplify(bool &bMod)
 	subExp1 = subExp1->polySimplify(bMod);
 	subExp2 = subExp2->polySimplify(bMod);
 
+	// x & x or x | x: result is x
+	if ((op == opBitAnd || op == opBitOr)
+	 && *subExp1 == *subExp2) {
+		bMod = true;
+		return subExp1;
+	}
+
+	// x ^ x or x - x: result is zero
+	if ((op == opBitXor || op == opMinus)
+	 && *subExp1 == *subExp2) {
+		bMod = true;
+		return new Const(0);
+	}
+
+	// x == x: result is true
+	if (op == opEqual
+	 && *subExp1 == *subExp2) {
+		;//delete this;
+		bMod = true;
+		return new Terminal(opTrue);
+	}
+
 	auto opSub1 = subExp1->getOper();
 	auto opSub2 = subExp2->getOper();
 
 	if (opSub1 == opIntConst
 	 && opSub2 == opIntConst) {
 		// k1 op k2, where k1 and k2 are integer constants
-		int k1 = ((Const *)subExp1)->getInt();
-		int k2 = ((Const *)subExp2)->getInt();
+		auto k1 = ((Const *)subExp1)->getInt();
+		auto k2 = ((Const *)subExp2)->getInt();
 		bool change = true;
 		switch (op) {
 		case opPlus:      k1 = k1 + k2; break;
 		case opMinus:     k1 = k1 - k2; break;
-		case opDiv:       k1 = (int)((unsigned)k1 / (unsigned)k2); break;
+		case opDiv:       k1 = (unsigned)k1 / (unsigned)k2; break;
 		case opDivs:      k1 = k1 / k2; break;
-		case opMod:       k1 = (int)((unsigned)k1 % (unsigned)k2); break;
+		case opMod:       k1 = (unsigned)k1 % (unsigned)k2; break;
 		case opMods:      k1 = k1 % k2; break;
-		case opMult:      k1 = (int)((unsigned)k1 * (unsigned)k2); break;
+		case opMult:      k1 = (unsigned)k1 * (unsigned)k2; break;
 		case opMults:     k1 = k1 * k2; break;
 		case opShiftL:    k1 = k1 << k2; break;
 		case opShiftR:    k1 = k1 >> k2; break;
@@ -2192,51 +2214,34 @@ Binary::polySimplify(bool &bMod)
 		case opBitOr:     k1 = k1 | k2; break;
 		case opBitAnd:    k1 = k1 & k2; break;
 		case opBitXor:    k1 = k1 ^ k2; break;
-		case opEqual:     k1 = (k1 == k2); break;
-		case opNotEqual:  k1 = (k1 != k2); break;
-		case opLess:      k1 = (k1 <  k2); break;
-		case opGtr:       k1 = (k1 >  k2); break;
-		case opLessEq:    k1 = (k1 <= k2); break;
-		case opGtrEq:     k1 = (k1 >= k2); break;
-		case opLessUns:   k1 = ((unsigned)k1 <  (unsigned)k2); break;
-		case opGtrUns:    k1 = ((unsigned)k1 >  (unsigned)k2); break;
-		case opLessEqUns: k1 = ((unsigned)k1 <= (unsigned)k2); break;
-		case opGtrEqUns:  k1 = ((unsigned)k1 >= (unsigned)k2); break;
+		case opEqual:     k1 = k1 == k2; break;
+		case opNotEqual:  k1 = k1 != k2; break;
+		case opLess:      k1 = k1 <  k2; break;
+		case opGtr:       k1 = k1 >  k2; break;
+		case opLessEq:    k1 = k1 <= k2; break;
+		case opGtrEq:     k1 = k1 >= k2; break;
+		case opLessUns:   k1 = (unsigned)k1 <  (unsigned)k2; break;
+		case opGtrUns:    k1 = (unsigned)k1 >  (unsigned)k2; break;
+		case opLessEqUns: k1 = (unsigned)k1 <= (unsigned)k2; break;
+		case opGtrEqUns:  k1 = (unsigned)k1 >= (unsigned)k2; break;
 		default: change = false;
 		}
 		if (change) {
 			;//delete this;
 			bMod = true;
+			if (isComparison())
+				return new Terminal(k1 ? opTrue : opFalse);
 			return new Const(k1);
 		}
-	}
-
-	if ((op == opBitXor || op == opMinus)
-	 && *subExp1 == *subExp2) {
-		// x ^ x or x - x: result is zero
-		bMod = true;
-		return new Const(0);
-	}
-
-	if ((op == opBitOr || op == opBitAnd)
-	 && *subExp1 == *subExp2) {
-		// x | x or x & x: result is x
-		bMod = true;
-		return subExp1;
-	}
-
-	if (op == opEqual
-	 && *subExp1 == *subExp2) {
-		// x == x: result is true
-		;//delete this;
-		bMod = true;
-		return new Terminal(opTrue);
 	}
 
 	// Might want to commute to put an integer constant on the RHS
 	// Later simplifications can rely on this (ADD other ops as necessary)
 	if (opSub1 == opIntConst
-	 && (op == opPlus || op == opMult || op == opMults || op == opBitOr || op == opBitAnd)) {
+	 && opSub2 != opIntConst
+	 && (op == opPlus   || op == opMult  || op == opMults
+	  || op == opBitAnd || op == opBitOr || op == opBitXor
+	  || op == opAnd    || op == opOr    || op == opEqual  || op == opNotEqual)) {
 		commute();
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
@@ -2246,7 +2251,7 @@ Binary::polySimplify(bool &bMod)
 	// Similarly for boolean constants
 	if (subExp1->isBoolConst()
 	 && !subExp2->isBoolConst()
-	 && (op == opAnd || op == opOr)) {
+	 && (op == opAnd || op == opOr || op == opEqual || op == opNotEqual)) {
 		commute();
 		// Swap opSub1 and opSub2 as well
 		std::swap(opSub1, opSub2);
@@ -2535,13 +2540,6 @@ Binary::polySimplify(bool &bMod)
 	  || (*b1->subExp1 == *b2->subExp2 && *b1->subExp2 == *b2->subExp1))) {
 		bMod = true;
 		return subExp1;
-	}
-
-	// For (a || b) or (a && b) recurse on a and b
-	if (op == opOr || op == opAnd) {
-		subExp1 = subExp1->polySimplify(bMod);
-		subExp2 = subExp2->polySimplify(bMod);
-		return this;
 	}
 
 	// check for a*n*m, becomes a*(n*m) where n and m are ints
