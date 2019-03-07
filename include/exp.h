@@ -208,11 +208,6 @@ public:
 	        bool        isMachFtr() const { return op == opMachFtr; }
 	// True if this is a parameter. Note: opParam has two meanings: a SSL parameter, or a function parameter
 	        bool        isParam() const { return op == opParam; }
-
-	// True if this is a location
-	        bool        isLocation() const { return op == opMemOf  || op == opRegOf
-	                                             || op == opGlobal || op == opLocal
-	                                             || op == opParam; }
 	/** \} */
 
 

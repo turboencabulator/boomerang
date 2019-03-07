@@ -1416,7 +1416,7 @@ Unary::descendType(Type *parentType, bool &ch, Statement *s)
 			constK2->descendType(prog->makeArrayType(intK2, parentType), ch, s);
 		} else if (subExp1->getOper() == opPlus
 		      && ((Binary *)subExp1)->getSubExp1()->isSubscript()
-		      && ((RefExp *)((Binary *)subExp1)->getSubExp1())->isLocation()
+		      && dynamic_cast<Location *>((RefExp *)((Binary *)subExp1)->getSubExp1())
 		      && ((Binary *)subExp1)->getSubExp2()->isIntConst()) {
 			// m[l1 + K]
 			Location *l1 = (Location *)((RefExp *)((Binary *)subExp1)->getSubExp1());  // FIXME: This casting looks suspicious

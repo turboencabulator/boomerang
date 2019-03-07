@@ -2077,8 +2077,7 @@ BasicBlock::decodeIndirectJmp(UserProc *proc)
 			// Did not match a switch pattern. Perhaps it is a Fortran style goto with constants at the leaves of the
 			// phi tree. Basically, a location with a reference, e.g. m[r28{-} - 16]{87}
 			if (auto re = dynamic_cast<RefExp *>(e)) {
-				Exp *sub = re->getSubExp1();
-				if (sub->isLocation()) {
+				if (dynamic_cast<Location *>(re->getSubExp1())) {
 					// Yes, we have <location>{ref}. Follow the tree and store the constant values that <location>
 					// could be assigned to in dests
 					std::list<int> dests;

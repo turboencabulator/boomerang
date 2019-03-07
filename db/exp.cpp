@@ -2741,7 +2741,7 @@ Binary::polySimplify(bool &bMod)
 
 	// Replace opSize(n, loc) with loc and set the type if needed
 	if (op == opSize
-	 && subExp2->isLocation()) {
+	 && dynamic_cast<Location *>(subExp2)) {
 #if 0  // FIXME: ADHOC TA assumed here
 		Location *loc = (Location *)subExp2;
 		unsigned n = (unsigned)((Const *)subExp1)->getInt();
