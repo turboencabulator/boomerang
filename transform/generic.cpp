@@ -32,7 +32,7 @@ GenericExpTransformer::applyFuncs(Exp *rhs)
 		assert(call->getSubExp2()->getOper() == opList);
 		Exp *p1 = applyFuncs(call->getSubExp2()->getSubExp1());
 		Exp *p2 = applyFuncs(call->getSubExp2()->getSubExp2()->getSubExp1());
-		assert(p1->isTypeVal());
+		assert(dynamic_cast<TypeVal *>(p1));
 		assert(p2->isIntConst());
 #if 0
 		Type *ty = p1->getType();
@@ -56,7 +56,7 @@ GenericExpTransformer::applyFuncs(Exp *rhs)
 		assert(call->getSubExp2()->getOper() == opList);
 		Exp *p1 = applyFuncs(call->getSubExp2()->getSubExp1());
 		Exp *p2 = applyFuncs(call->getSubExp2()->getSubExp2()->getSubExp1());
-		assert(p1->isTypeVal());
+		assert(dynamic_cast<TypeVal *>(p1));
 		assert(p2->isStrConst());
 #if 0 // ADHOC TA
 		Type *ty = p1->getType();
@@ -176,8 +176,8 @@ GenericExpTransformer::checkCond(Exp *cond, Exp *bindings)
 				return true;
 
 #if 0 // ADHOC TA
-			if (lhs->isTypeVal()
-			 && rhs->isTypeVal()
+			if (dynamic_cast<TypeVal *>(lhs)
+			 && dynamic_cast<TypeVal *>(rhs)
 			 && lhs->getType()->resolvesToCompound()
 			 && rhs->getType()->isCompound())
 				return true;

@@ -412,7 +412,7 @@ TypeVal::operator ==(const Exp &e) const
 	const TypeVal &o = (const TypeVal &)e;
 	if (o.op == opWild)
 		return true;
-	return o.op == opTypeVal
+	return op == o.op
 	    && *val == *o.val;
 }
 
@@ -3160,9 +3160,9 @@ Exp::genConstraints(Exp *result)
 Exp *
 Const::genConstraints(Exp *result)
 {
-	if (result->isTypeVal()) {
+	if (auto tv = dynamic_cast<TypeVal *>(result)) {
 		// result is a constant type, or possibly a partial type such as ptr(alpha)
-		Type *t = ((TypeVal *)result)->getType();
+		auto t = tv->getType();
 		bool match = false;
 		switch (op) {
 		case opLongConst:
@@ -3194,7 +3194,7 @@ Const::genConstraints(Exp *result)
 			// Don't clone 'this', so it can be co-erced after type analysis
 			return new Binary(opEqual,
 			                  new Unary(opTypeOf, this),
-			                  result->clone());
+			                  tv->clone());
 		else
 			// Doesn't match
 			return new Terminal(opFalse);
@@ -3247,7 +3247,7 @@ Const::genConstraints(Exp *result)
 Exp *
 Unary::genConstraints(Exp *result)
 {
-	if (result->isTypeVal()) {
+	if (dynamic_cast<TypeVal *>(result)) {
 		// TODO: need to check for conflicts
 		return new Terminal(opTrue);
 	}
@@ -3308,10 +3308,10 @@ Ternary::genConstraints(Exp *result)
 	}
 	Exp *res = nullptr;
 	if (retHasToBe) {
-		if (result->isTypeVal()) {
+		if (auto tv = dynamic_cast<TypeVal *>(result)) {
 			// result is a constant type, or possibly a partial type such as
 			// ptr(alpha)
-			Type *t = ((TypeVal *)result)->getType();
+			auto t = tv->getType();
 			// Compare broad types
 			if (!(*retHasToBe *= *t))
 				return new Terminal(opFalse);
@@ -3369,8 +3369,8 @@ Binary::genConstraints(Exp *result)
 	assert(subExp1 && subExp2);
 
 	Type *restrictTo = nullptr;
-	if (result->isTypeVal())
-		restrictTo = ((TypeVal *)result)->getType();
+	if (auto tv = dynamic_cast<TypeVal *>(result))
+		restrictTo = tv->getType();
 	Exp *res = nullptr;
 	auto intType = new IntegerType(0);  // Wild size (=0)
 	TypeVal intVal(intType);
@@ -3561,10 +3561,12 @@ Binary::simplifyConstraint()
 	switch (op) {
 	case opEqual:
 		{
-			if (subExp1->isTypeVal() && subExp2->isTypeVal()) {
+			auto tv1 = dynamic_cast<TypeVal *>(subExp1);
+			auto tv2 = dynamic_cast<TypeVal *>(subExp2);
+			if (tv1 && tv2) {
 				// FIXME: ADHOC TA assumed
-				Type *t1 = ((TypeVal *)subExp1)->getType();
-				Type *t2 = ((TypeVal *)subExp2)->getType();
+				auto t1 = tv1->getType();
+				auto t2 = tv2->getType();
 				if (!t1->isPointerToAlpha() && !t2->isPointerToAlpha()) {
 					delete this;
 					return new Terminal(*t1 == *t2 ? opTrue : opFalse);

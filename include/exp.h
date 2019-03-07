@@ -204,8 +204,6 @@ public:
 	                                               || op == opGtrUns   || op == opLessUns
 	                                               || op == opGtrEq    || op == opLessEq
 	                                               || op == opGtrEqUns || op == opLessEqUns; }
-	// True if this is a TypeVal
-	        bool        isTypeVal() const { return op == opTypeVal; }
 	// True if this is a machine feature
 	        bool        isMachFtr() const { return op == opMachFtr; }
 	// True if this is a parameter. Note: opParam has two meanings: a SSL parameter, or a function parameter

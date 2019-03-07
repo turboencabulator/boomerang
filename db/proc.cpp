@@ -3683,7 +3683,7 @@ UserProc::conTypeAnalysis()
 			//assert(cc.first->isTypeOf());
 			if (!cc.first->isTypeOf()) continue;
 			Exp *loc = ((Unary *)cc.first)->getSubExp1();
-			assert(cc.second->isTypeVal());
+			assert(dynamic_cast<TypeVal *>(cc.second));
 			Type *ty = ((TypeVal *)cc.second)->getType();
 			if (auto re = dynamic_cast<RefExp *>(loc))
 				loc = re->getSubExp1();

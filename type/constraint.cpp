@@ -127,11 +127,12 @@ ConstraintMap::substAlpha()
 	ConstraintMap alphaDefs;
 	for (const auto &con : cmap) {
 		// Looking for entries with two TypeVals, where exactly one is an alpha
-		if (!con.first->isTypeVal() || !con.second->isTypeVal())
+		auto tv1 = dynamic_cast<TypeVal *>(con.first);
+		auto tv2 = dynamic_cast<TypeVal *>(con.second);
+		if (!tv1 || !tv2)
 			continue;
-		Type *t1, *t2;
-		t1 = ((TypeVal *)con.first)->getType();
-		t2 = ((TypeVal *)con.second)->getType();
+		auto t1 = tv1->getType();
+		auto t2 = tv2->getType();
 		int numAlpha = 0;
 		if (t1->isPointerToAlpha()) ++numAlpha;
 		if (t2->isPointerToAlpha()) ++numAlpha;
@@ -285,9 +286,9 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 		if (!left->isTypeOf()) continue;
 		Exp *leftSub = ((Unary *)left)->getSubExp1();
 		if (!leftSub->isAddrOf()) continue;
-		Exp *right = ((Binary *)con)->getSubExp2();
-		if (!right->isTypeVal()) continue;
-		Type *t = ((TypeVal *)right)->getType();
+		auto right = dynamic_cast<TypeVal *>(((Binary *)con)->getSubExp2());
+		if (!right) continue;
+		auto t = right->getType();
 		if (!t->isPointer()) continue;
 		// Don't modify a key in a map
 		Exp *clone = con->clone();
@@ -299,9 +300,9 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 		((Unary *)leftSub)->setSubExp1ND(nullptr);
 		delete leftSub;
 		// right is <alpha*> -> <alpha>
-		right = ((Binary *)clone)->getSubExp2();
-		t = ((TypeVal *)right)->getType();
-		((TypeVal *)right)->setType(((PointerType *)t)->getPointsTo()->clone());
+		right = (TypeVal *)((Binary *)clone)->getSubExp2();
+		t = right->getType();
+		right->setType(((PointerType *)t)->getPointsTo()->clone());
 		delete t;
 		conSet.remove(con);  // FIXME:  Invalidates iterators
 		conSet.insert(clone);
@@ -337,7 +338,7 @@ Constraints::solve(std::list<ConstraintMap> &solns)
 			} else {
 				// Of the form typeof(x) = <typeval>
 				// Insert into fixed
-				assert(rhs->isTypeVal());
+				assert(dynamic_cast<TypeVal *>(rhs));
 				fixed[lhs] = rhs;
 			}
 		}
@@ -474,8 +475,8 @@ bool
 Constraints::unify(Exp *x, Exp *y, ConstraintMap &extra)
 {
 	LOG << "Unifying " << *x << " with " << *y << " result ";
-	assert(x->isTypeVal());
-	assert(y->isTypeVal());
+	assert(dynamic_cast<TypeVal *>(x));
+	assert(dynamic_cast<TypeVal *>(y));
 	Type *xtype = ((TypeVal *)x)->getType();
 	Type *ytype = ((TypeVal *)y)->getType();
 	if (xtype->isPointer() && ytype->isPointer()) {
@@ -528,23 +529,23 @@ Constraints::alphaSubst()
 		Exp *temp = dis->clone();
 		Exp *term;
 		bool found = false;
-		Exp *trm1 = nullptr;
-		Exp *trm2 = nullptr;
+		TypeVal *trm1 = nullptr;
+		TypeVal *trm2 = nullptr;
 		Type *t1 = nullptr, *t2;
 		while (!!(term = nextConjunct(temp))) {
 			if (!term->isEquality())
 				continue;
-			trm1 = ((Binary *)term)->getSubExp1();
-			if (!trm1->isTypeVal()) continue;
-			trm2 = ((Binary *)term)->getSubExp2();
-			if (!trm2->isTypeVal()) continue;
+			trm1 = dynamic_cast<TypeVal *>(((Binary *)term)->getSubExp1());
+			if (!trm1) continue;
+			trm2 = dynamic_cast<TypeVal *>(((Binary *)term)->getSubExp2());
+			if (!trm2) continue;
 			// One of them has to be a pointer to an alpha
-			t1 = ((TypeVal *)trm1)->getType();
+			t1 = trm1->getType();
 			if (t1->isPointerToAlpha()) {
 				found = true;
 				break;
 			}
-			t2 = ((TypeVal *)trm2)->getType();
+			t2 = trm2->getType();
 			if (t2->isPointerToAlpha()) {
 				found = true;
 				break;
@@ -552,7 +553,7 @@ Constraints::alphaSubst()
 		}
 		if (!found) continue;
 		// We have a alpha value; get the value
-		Exp *val, *alpha;
+		TypeVal *val, *alpha;
 		if (t1->isPointerToAlpha()) {
 			alpha = trm1;
 			val = trm2;
