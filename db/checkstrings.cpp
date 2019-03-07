@@ -38,7 +38,7 @@ static const struct {
 	checkpoint(opFpop),
 	checkpoint(opExecute),
 	checkpoint(opWildStrConst),
-	checkpoint(opAnull),
+	checkpoint(opTrue),
 };
 
 int

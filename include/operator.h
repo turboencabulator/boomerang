@@ -166,11 +166,6 @@ enum OPER {
 	// This is the abstracted floating point flags terminal
 	opFflags,
 
-	// This is an abstract boolean that if true causes the following instruction to be anulled
-	opAnull,                // Anull "variable"
-	// This is a special terminal representing "all locations", which in practice means "every location whose definition
-	// reaches here".
-
 
 	// Added for type analysis
 	opTrue,

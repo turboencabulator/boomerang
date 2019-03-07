@@ -817,7 +817,6 @@ Terminal::print(std::ostream &os, bool html) const
 	case opDF:           os << "%DF";     break;
 	case opAFP:          os << "%afp";    break;
 	case opAGP:          os << "%agp";    break;
-	case opAnull:        os << "%anul";   break;
 	case opFpush:        os << "FPUSH";   break;
 	case opFpop:         os << "FPOP";    break;
 	case opWild:         os << "WILD";    break;

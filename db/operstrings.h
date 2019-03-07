@@ -146,9 +146,6 @@ const char *operStrings[] = {
 	"opFlags",              // Integer flags
 	"opFflags",             // Floating point flags
 
-	"opAnull",              // Anull "variable"
-
-
 	"opTrue",               // Logical true
 	"opFalse",              // Logical false
 	"opTypeOf",             // Makes a type variable from a location
