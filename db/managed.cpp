@@ -440,7 +440,7 @@ LocationSet::substitute(Assign &a)
 	for (const auto &l : lset) {
 		Exp *replace;
 		if (l->search(lhs, replace)) {
-			if (rhs->isTerminal()) {
+			if (dynamic_cast<Terminal *>(rhs)) {
 				// This is no longer a location of interest (e.g. %pc)
 				removeSet.insert(l);
 				continue;

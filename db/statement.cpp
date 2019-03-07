@@ -2286,7 +2286,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 		Exp *a_rhs = rhs->clone();
 		if (a_rhs->getSubExp2()->getSubExp1()->isMemOf())
 			a_rhs->getSubExp2()->getSubExp1()->setSubExp1(output.substInto(a_rhs->getSubExp2()->getSubExp1()->getSubExp1()));
-		if (!a_rhs->getSubExp2()->getSubExp2()->isTerminal()
+		if (!dynamic_cast<Terminal *>(a_rhs->getSubExp2()->getSubExp2())
 		 && a_rhs->getSubExp2()->getSubExp2()->getSubExp1()->isMemOf())
 			a_rhs->getSubExp2()->getSubExp2()->getSubExp1()->setSubExp1(output.substInto(a_rhs->getSubExp2()->getSubExp2()->getSubExp1()->getSubExp1()));
 		Range ra(1, 0, 0, a_rhs);

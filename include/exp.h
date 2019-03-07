@@ -182,8 +182,6 @@ public:
 	        bool        isTypeOf() const { return op == opTypeOf; }
 	// Get the index for this var
 	//        int         getVarIndex() const;
-	// True if this is a terminal
-	virtual bool        isTerminal() const { return false; }
 	// True if this is a disjunction, i.e. x or y
 	        bool        isDisjunction() const { return op == opOr; }
 	// True if this is a conjunction, i.e. x and y
@@ -408,8 +406,6 @@ public:
 	void        print(std::ostream &os, bool html = false) const override;
 	void        appendDot(std::ostream &os) const override;
 	void        printx(int ind) const override;
-
-	bool        isTerminal() const override { return true; }
 
 	// Visitation
 	bool        accept(ExpVisitor &) override;
