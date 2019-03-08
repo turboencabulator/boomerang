@@ -1817,9 +1817,9 @@ Statement *
 Cfg::findImplicitParamAssign(Parameter *param)
 {
 	// As per the above, but for parameters (signatures don't get updated with opParams)
-	auto it = implicitMap.find(param->getExp());
+	auto it = implicitMap.find(param->exp);
 	if (it == implicitMap.end()) {
-		Exp *eParam = Location::param(param->getName());
+		Exp *eParam = Location::param(param->name);
 		it = implicitMap.find(eParam);
 	}
 	if (it == implicitMap.end())

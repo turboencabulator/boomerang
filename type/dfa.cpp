@@ -1498,11 +1498,11 @@ Signature::dfaTypeAnalysis(Cfg *cfg)
 		// Parameters should be defined in an implicit assignment
 		if (auto def = cfg->findImplicitParamAssign(param)) {  // But sometimes they are not used, and hence have no implicit definition
 			bool thisCh = false;
-			def->meetWithFor(param->getType(), param->getExp(), thisCh);
+			def->meetWithFor(param->type, param->exp, thisCh);
 			if (thisCh) {
 				ch = true;
 				if (DEBUG_TA)
-					LOG << "  sig caused change: " << param->getType()->getCtype() << " " << param->getName() << "\n";
+					LOG << "  sig caused change: " << param->type->getCtype() << " " << param->name << "\n";
 			}
 		}
 	}

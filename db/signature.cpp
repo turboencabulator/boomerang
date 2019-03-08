@@ -270,12 +270,6 @@ Parameter::clone() const
 	return new Parameter(type->clone(), name, exp->clone(), boundMax);
 }
 
-void
-Parameter::setBoundMax(const std::string &nam)
-{
-	boundMax = nam;
-}
-
 Signature *
 CallingConvention::Win32Signature::clone() const
 {
@@ -364,7 +358,7 @@ CallingConvention::Win32Signature::getArgumentExp(int n)
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
-	if (!params.empty() && *params[0]->getExp() == *esp)
+	if (!params.empty() && *params[0]->exp == *esp)
 		--n;
 	return Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 }
@@ -375,7 +369,7 @@ CallingConvention::Win32TcSignature::getArgumentExp(int n)
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
-	if (!params.empty() && *params[0]->getExp() == *esp)
+	if (!params.empty() && *params[0]->exp == *esp)
 		--n;
 	if (n == 0)
 		// It's the first parameter, register ecx
@@ -403,7 +397,7 @@ Exp *
 CallingConvention::Win32Signature::getProven(Exp *left)
 {
 	int nparams = params.size();
-	if (nparams > 0 && params[0]->getExp()->isRegN(28)) {
+	if (nparams > 0 && params[0]->exp->isRegN(28)) {
 		--nparams;
 	}
 	if (left->isRegOfK()) {
@@ -476,7 +470,7 @@ CallingConvention::Win32TcSignature::getProven(Exp *left)
 {
 	if (left->isRegN(28)) {
 		int nparams = params.size();
-		if (nparams > 0 && params[0]->getExp()->isRegN(28)) {
+		if (nparams > 0 && params[0]->exp->isRegN(28)) {
 			--nparams;
 		}
 		// r28 += 4 + nparams*4 - 4     (-4 because ecx is register param)
@@ -592,7 +586,7 @@ CallingConvention::StdC::PentiumSignature::getArgumentExp(int n)
 	if (n < (int)params.size())
 		return Signature::getArgumentExp(n);
 	Exp *esp = Location::regOf(28);
-	if (!params.empty() && *params[0]->getExp() == *esp)
+	if (!params.empty() && *params[0]->exp == *esp)
 		--n;
 	return Location::memOf(new Binary(opPlus, esp, new Const((n + 1) * 4)));
 }
@@ -813,7 +807,7 @@ CallingConvention::StdC::ST20Signature::getArgumentExp(int n)
 		return Signature::getArgumentExp(n);
 	// m[%sp+4], etc.
 	Exp *sp = Location::regOf(3);
-	if (!params.empty() && *params[0]->getExp() == *sp)
+	if (!params.empty() && *params[0]->exp == *sp)
 		--n;
 	return Location::memOf(new Binary(opPlus, sp, new Const((n + 1) * 4)));
 }
@@ -1238,15 +1232,15 @@ Signature::addParameter(Type *type, const char *nam /*= nullptr*/, Exp *e /*= nu
 void
 Signature::addParameter(Parameter *param)
 {
-	Type *ty = param->getType();
-	const char *nam = param->getName().c_str();
-	Exp *e = param->getExp();
+	Type *ty = param->type;
+	const char *nam = param->name.c_str();
+	Exp *e = param->exp;
 
 	if (strlen(nam) == 0)
 		nam = nullptr;
 
 	if (!ty || !e || !nam) {
-		addParameter(ty, nam, e, param->getBoundMax().c_str());
+		addParameter(ty, nam, e, param->boundMax.c_str());
 	} else
 		params.push_back(param);
 }
@@ -1280,14 +1274,14 @@ const char *
 Signature::getParamName(int n)
 {
 	assert(n < (int)params.size());
-	return params[n]->getName().c_str();
+	return params[n]->name.c_str();
 }
 
 Exp *
 Signature::getParamExp(int n)
 {
 	assert(n < (int)params.size());
-	return params[n]->getExp();
+	return params[n]->exp;
 }
 
 Type *
@@ -1296,14 +1290,14 @@ Signature::getParamType(int n)
 	//assert(n < (int)params.size() || ellipsis);
 	// With recursion, parameters not set yet. Hack for now:
 	if (n >= (int)params.size()) return nullptr;
-	return params[n]->getType();
+	return params[n]->type;
 }
 
 const char *
 Signature::getParamBoundMax(int n)
 {
 	if (n >= (int)params.size()) return nullptr;
-	const auto &s = params[n]->getBoundMax();
+	const auto &s = params[n]->boundMax;
 	if (s.empty())
 		return nullptr;
 	return s.c_str();
@@ -1312,7 +1306,7 @@ Signature::getParamBoundMax(int n)
 void
 Signature::setParamType(int n, Type *ty)
 {
-	params[n]->setType(ty);
+	params[n]->type = ty;
 }
 
 void
@@ -1323,7 +1317,7 @@ Signature::setParamType(const std::string &nam, Type *ty)
 		LOG << "could not set type for unknown parameter " << nam << "\n";
 		return;
 	}
-	params[idx]->setType(ty);
+	params[idx]->type = ty;
 }
 
 void
@@ -1334,19 +1328,19 @@ Signature::setParamType(Exp *e, Type *ty)
 		LOG << "could not set type for unknown parameter expression " << *e << "\n";
 		return;
 	}
-	params[idx]->setType(ty);
+	params[idx]->type = ty;
 }
 
 void
 Signature::setParamName(int n, const std::string &name)
 {
-	params[n]->setName(name);
+	params[n]->name = name;
 }
 
 void
 Signature::setParamExp(int n, Exp *e)
 {
-	params[n]->setExp(e);
+	params[n]->exp = e;
 }
 
 // Return the index for the given expression, or -1 if not found
@@ -1355,7 +1349,7 @@ Signature::findParam(Exp *e)
 {
 	unsigned i = 0;
 	for (const auto &param : params) {
-		if (*param->getExp() == *e)
+		if (*param->exp == *e)
 			return (int)i;
 		++i;
 	}
@@ -1366,8 +1360,8 @@ void
 Signature::renameParam(const std::string &oldName, const std::string &newName)
 {
 	for (const auto &param : params) {
-		if (param->getName() == oldName) {
-			param->setName(newName);
+		if (param->name == oldName) {
+			param->name = newName;
 			break;
 		}
 	}
@@ -1378,7 +1372,7 @@ Signature::findParam(const std::string &nam)
 {
 	unsigned i = 0;
 	for (const auto &param : params) {
-		if (param->getName() == nam)
+		if (param->name == nam)
 			return (int)i;
 		++i;
 	}
@@ -1528,7 +1522,7 @@ Signature::print(std::ostream &out, bool html) const
 			first = false;
 		else
 			out << ", ";
-		out << param->getType()->getCtype() << " " << param->getName() << " " << *param->getExp();
+		out << param->type->getCtype() << " " << param->name << " " << *param->exp;
 	}
 	out << ")\n";
 }

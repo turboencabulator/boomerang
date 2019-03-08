@@ -810,7 +810,7 @@ XMLProgParser::start_param(Context *node, const char **attr)
 	node->param = new Parameter();
 	addId(attr, node->param);
 	if (auto n = getAttr(attr, "name"))
-		node->param->setName(n);
+		node->param->name = n;
 }
 
 void
@@ -821,10 +821,10 @@ XMLProgParser::addChildTo_param(Context *node, const Context *child) const
 	}
 	switch (child->tag) {
 	case e_type:
-		node->param->setType(child->type);
+		node->param->type = child->type;
 		break;
 	case e_exp:
-		node->param->setExp(child->exp);
+		node->param->exp = child->exp;
 		break;
 	default:
 		addChildStub(node, child);
@@ -2297,13 +2297,13 @@ XMLProgParser::persistToXML(std::ostream &out, Signature *sig)
 	out << "\">\n";
 	for (const auto &param : sig->params) {
 		out << "<param id=\"" << (void *)param
-		    << "\" name=\"" << param->getName()
+		    << "\" name=\"" << param->name
 		    << "\">\n";
 		out << "<type>\n";
-		persistToXML(out, param->getType());
+		persistToXML(out, param->type);
 		out << "</type>\n";
 		out << "<exp>\n";
-		persistToXML(out, param->getExp());
+		persistToXML(out, param->exp);
 		out << "</exp>\n";
 		out << "</param>\n";
 	}

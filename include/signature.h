@@ -29,39 +29,20 @@ class Statement;
 class StatementList;
 class UserProc;
 
-class Parameter {
-	friend class XMLProgParser;
-
-private:
+struct Parameter {
 	        Type       *type = nullptr;
 	        std::string name;
 	        Exp        *exp = nullptr;
-	        std::string boundMax;
+	        std::string boundMax;  // this parameter is the bound of another parameter with name nam
 
-protected:
 	                    Parameter() = default;
-public:
 	                    Parameter(Type *type, const std::string &name, Exp *exp = nullptr, const std::string &boundMax = "") : type(type), name(name), exp(exp), boundMax(boundMax) { }
 	virtual            ~Parameter() { delete type; delete exp; }
 	        bool        operator ==(const Parameter &other) const;
 	        Parameter  *clone() const;
-
-	        Type       *getType() const { return type; }
-	        void        setType(Type *ty) { type = ty; }
-	        const std::string &getName() const { return name; }
-	        void        setName(const std::string &nam) { name = nam; }
-	        Exp        *getExp() const { return exp; }
-	        void        setExp(Exp *e) { exp = e; }
-
-	// this parameter is the bound of another parameter with name nam
-	        const std::string &getBoundMax() const { return boundMax; }
-	        void        setBoundMax(const std::string &nam);
 };
 
-class Return {
-	friend class XMLProgParser;
-
-public:
+struct Return {
 	        Type       *type = nullptr;
 	        Exp        *exp = nullptr;
 

@@ -198,7 +198,7 @@ param_list
 	;
 
 param_exp
-	: exp ':' param { $$ = $3; $$->setExp($1); }
+	: exp ':' param { $$ = $3; $$->exp = $1; }
 	| param         { $$ = $1; }
 	;
 
@@ -232,7 +232,7 @@ param
 		delete $1;
 		if ($2) {
 			switch ($2->kind) {
-			case 0: $$->setBoundMax($2->nam);
+			case 0: $$->boundMax = $2->nam;
 			}
 		}
 		delete $2;
@@ -241,7 +241,7 @@ param
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($1);
 		for (const auto &param : *$7) {
-			if (param->getName() != "...") {
+			if (param->name != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -266,7 +266,7 @@ type_decl
 		Signature *sig = Signature::instantiate(plat, cc, nullptr);
 		sig->addReturn($2);
 		for (const auto &param : *$8) {
-			if (param->getName() != "...") {
+			if (param->name != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -281,7 +281,7 @@ type_decl
 		Signature *sig = Signature::instantiate(plat, cc, $2->nam.c_str());
 		sig->addReturn($2->ty);
 		for (const auto &param : *$4) {
-			if (param->getName() != "...") {
+			if (param->name != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -327,7 +327,7 @@ signature
 		sig->addReturn($1->ty);
 		delete $1;
 		for (const auto &param : *$3) {
-			if (param->getName() != "...") {
+			if (param->name != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -342,7 +342,7 @@ signature
 		sig->addReturn($2->ty);
 		delete $2;
 		for (const auto &param : *$4) {
-			if (param->getName() != "...") {
+			if (param->name != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
@@ -361,7 +361,7 @@ signature
 		delete $2;
 		delete $3;
 		for (const auto &param : *$5) {
-			if (param->getName() != "...") {
+			if (param->name != "...") {
 				sig->addParameter(param);
 			} else {
 				sig->addEllipsis();
