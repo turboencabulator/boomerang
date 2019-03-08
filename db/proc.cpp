@@ -393,7 +393,7 @@ UserProc::deleteCFG()
 	cfg = nullptr;
 }
 
-class lessEvaluate : public std::binary_function<SyntaxNode *, SyntaxNode *, bool> {
+class lessEvaluate : public std::less<SyntaxNode *> {
 public:
 	bool operator ()(const SyntaxNode *x, const SyntaxNode *y) const {
 		return ((SyntaxNode *)x)->getScore() > ((SyntaxNode *)y)->getScore();
