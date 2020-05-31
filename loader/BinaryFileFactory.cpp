@@ -30,6 +30,7 @@
 #include  "MachOBinaryFile.h"
 #include "DOS4GWBinaryFile.h"
 #include    "IntelCoffFile.h"
+#include    "ComBinaryFile.h"
 #endif
 
 #include <fstream>
@@ -140,6 +141,7 @@ BinaryFile::open(const char *name)
 	case LOADFMT_MACHO: libname = MODPREFIX  "MachOBinaryFile" MODSUFFIX; break;
 	case LOADFMT_LX:    libname = MODPREFIX "DOS4GWBinaryFile" MODSUFFIX; break;
 	case LOADFMT_COFF:  libname = MODPREFIX    "IntelCoffFile" MODSUFFIX; break;
+	case LOADFMT_COM:   libname = MODPREFIX    "ComBinaryFile" MODSUFFIX; break;
 	default:            libname = nullptr; assert(0);  // found a LOADFMT not listed above
 	}
 
@@ -192,6 +194,7 @@ BinaryFile::open(const char *name)
 	case LOADFMT_MACHO: bf = new  MachOBinaryFile; break;
 	case LOADFMT_LX:    bf = new DOS4GWBinaryFile; break;
 	case LOADFMT_COFF:  bf = new    IntelCoffFile; break;
+	case LOADFMT_COM:   bf = new    ComBinaryFile; break;
 	default:            bf = nullptr; assert(0);  // found a LOADFMT not listed above
 	}
 #endif

@@ -97,7 +97,6 @@ protected:
 private:
 	exeHeader  *m_pHeader = nullptr;      ///< Pointer to header.
 	uint8_t    *m_pImage = nullptr;       ///< Pointer to image.
-	uint32_t   *m_pRelocTable = nullptr;  ///< The relocation table.
 	//ADDRESS     m_uInitPC;                ///< Initial program counter.
 	//ADDRESS     m_uInitSP;                ///< Initial stack pointer.
 };

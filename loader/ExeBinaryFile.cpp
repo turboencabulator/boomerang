@@ -26,128 +26,89 @@ ExeBinaryFile::~ExeBinaryFile()
 {
 	delete    m_pHeader;
 	delete [] m_pImage;
-	delete [] m_pRelocTable;
 }
 
 bool
 ExeBinaryFile::load(std::istream &ifs)
 {
 	m_pHeader = new exeHeader;
-
-	/* Read in first 2 bytes to check EXE signature */
-	ifs.read((char *)m_pHeader, 2);
+	ifs.read((char *)m_pHeader, sizeof *m_pHeader);
 	if (!ifs.good()) {
 		fprintf(stderr, "Cannot read file %s\n", getFilename());
 		return false;
 	}
 
-	std::streamsize cb;
-	size_t numreloc;
+	m_pHeader->lastPageSize   = LH16(&m_pHeader->lastPageSize);
+	m_pHeader->numPages       = LH16(&m_pHeader->numPages);
+	m_pHeader->numReloc       = LH16(&m_pHeader->numReloc);
+	m_pHeader->numParaHeader  = LH16(&m_pHeader->numParaHeader);
+	m_pHeader->minAlloc       = LH16(&m_pHeader->minAlloc);
+	m_pHeader->maxAlloc       = LH16(&m_pHeader->maxAlloc);
+	m_pHeader->initSS         = LH16(&m_pHeader->initSS);
+	m_pHeader->initSP         = LH16(&m_pHeader->initSP);
+	m_pHeader->checkSum       = LH16(&m_pHeader->checkSum);
+	m_pHeader->initIP         = LH16(&m_pHeader->initIP);
+	m_pHeader->initCS         = LH16(&m_pHeader->initCS);
+	m_pHeader->relocTabOffset = LH16(&m_pHeader->relocTabOffset);
+	m_pHeader->overlayNum     = LH16(&m_pHeader->overlayNum);
 
-	// Check for the "MZ" exe header
-	if (m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z') {
-		/* Read rest of m_pHeader */
-		ifs.seekg(0);
-		ifs.read((char *)m_pHeader, sizeof *m_pHeader);
-		if (!ifs.good()) {
-			fprintf(stderr, "Cannot read file %s\n", getFilename());
-			return false;
-		}
-		m_pHeader->lastPageSize   = LH16(&m_pHeader->lastPageSize);
-		m_pHeader->numPages       = LH16(&m_pHeader->numPages);
-		m_pHeader->numReloc       = LH16(&m_pHeader->numReloc);
-		m_pHeader->numParaHeader  = LH16(&m_pHeader->numParaHeader);
-		m_pHeader->minAlloc       = LH16(&m_pHeader->minAlloc);
-		m_pHeader->maxAlloc       = LH16(&m_pHeader->maxAlloc);
-		m_pHeader->initSS         = LH16(&m_pHeader->initSS);
-		m_pHeader->initSP         = LH16(&m_pHeader->initSP);
-		m_pHeader->checkSum       = LH16(&m_pHeader->checkSum);
-		m_pHeader->initIP         = LH16(&m_pHeader->initIP);
-		m_pHeader->initCS         = LH16(&m_pHeader->initCS);
-		m_pHeader->relocTabOffset = LH16(&m_pHeader->relocTabOffset);
-		m_pHeader->overlayNum     = LH16(&m_pHeader->overlayNum);
-
-		/* This is a typical DOS kludge! */
-		if (m_pHeader->relocTabOffset == 0x40) {
-			fprintf(stderr, "Error - NE format executable\n");
-			return false;
-		}
-
-		/* Calculate the load module size.
-		 * This is the number of pages in the file
-		 * less the length of the m_pHeader and reloc table
-		 * less the number of bytes unused on last page
-		 */
-		cb = m_pHeader->numPages * 512
-		   - m_pHeader->numParaHeader * 16;
-		if (m_pHeader->lastPageSize) {
-			cb -= 512 - m_pHeader->lastPageSize;
-		}
-
-		/* We quietly ignore minAlloc and maxAlloc since for our
-		 * purposes it doesn't really matter where in real memory
-		 * the m_am would end up.  EXE m_ams can't really rely on
-		 * their load location so setting the PSP segment to 0 is fine.
-		 * Certainly m_ams that prod around in DOS or BIOS are going
-		 * to have to load DS from a constant so it'll be pretty
-		 * obvious.
-		 */
-		numreloc = m_pHeader->numReloc;
-
-		/* Allocate the relocation table */
-		if (numreloc) {
-			m_pRelocTable = new uint32_t[numreloc];
-			ifs.seekg(m_pHeader->relocTabOffset);
-
-			/* Read in seg:offset pairs and convert to Image ptrs */
-			for (size_t i = 0; i < numreloc; ++i) {
-				uint8_t buf[4];
-				ifs.read((char *)buf, 4);
-				m_pRelocTable[i] = LH16(buf) + ((int)LH16(buf + 2) << 4);
-			}
-		}
-
-		/* Seek to start of image */
-		ifs.seekg(m_pHeader->numParaHeader * 16);
-
-		// Initial PC and SP. Note that we fake the seg:offset by putting
-		// the segment in the top half, and offset in the bottom
-		//m_uInitPC = (m_pHeader->initCS << 16) + m_pHeader->initIP;
-		//m_uInitSP = (m_pHeader->initSS << 16) + m_pHeader->initSP;
-	} else {
-		/* COM file
-		 * In this case the load module size is just the file length
-		 */
-		ifs.seekg(0, ifs.end);
-		cb = ifs.tellg();
-
-		/* COM programs start off with an ORG 100H (to leave room for a PSP)
-		 * This is also the implied start address so if we load the image
-		 * at offset 100H addresses should all line up properly again.
-		 */
-		//m_uInitPC = 0x100;
-		//m_uInitSP = 0xFFFE;
-		numreloc = 0;
-
-		ifs.seekg(0, ifs.beg);
+	/* Check for the "MZ" exe header */
+	if (m_pHeader->sigLo != 'M' || m_pHeader->sigHi != 'Z') {
+		return false;
 	}
 
-	/* Allocate a block of memory for the image. */
+	/* This is a typical DOS kludge! */
+	if (m_pHeader->relocTabOffset == 0x40) {
+		fprintf(stderr, "Error - NE format executable\n");
+		return false;
+	}
+
+	/* Calculate the load module size.
+	 * This is the number of pages in the file
+	 * less the length of the m_pHeader and reloc table
+	 * less the number of bytes unused on last page. */
+	std::streamsize cb = m_pHeader->numPages * 512
+	                   - m_pHeader->numParaHeader * 16;
+	if (m_pHeader->lastPageSize) {
+		cb -= 512 - m_pHeader->lastPageSize;
+	}
 	m_pImage = new uint8_t[cb];
 
+	ifs.seekg(m_pHeader->numParaHeader * 16);
 	ifs.read((char *)m_pImage, cb);
 	if (!ifs.good()) {
 		fprintf(stderr, "Cannot read file %s\n", getFilename());
 		return false;
 	}
 
+	/* We quietly ignore minAlloc and maxAlloc since for our
+	 * purposes it doesn't really matter where in real memory
+	 * the m_am would end up.  EXE m_ams can't really rely on
+	 * their load location so setting the PSP segment to 0 is fine.
+	 * Certainly m_ams that prod around in DOS or BIOS are going
+	 * to have to load DS from a constant so it'll be pretty
+	 * obvious. */
+
 	/* Relocate segment constants */
-	for (size_t i = 0; i < numreloc; ++i) {
-		uint8_t *p = &m_pImage[m_pRelocTable[i]];
+#if 0  // This code is a no-op
+	ifs.seekg(m_pHeader->relocTabOffset);
+	for (size_t i = 0; i < m_pHeader->numReloc; ++i) {
+		/* Read in seg:offset pairs and convert to Image ptrs */
+		uint8_t buf[4];
+		ifs.read((char *)buf, 4);
+		uint32_t addr = LH16(buf) + ((int)LH16(buf + 2) << 4);
+
+		uint8_t *p = &m_pImage[addr];
 		uint16_t w = (uint16_t)LH16(p);
 		*p++       = (uint8_t)(w & 0x00FF);
 		*p         = (uint8_t)((w & 0xFF00) >> 8);
 	}
+#endif
+
+	// Initial PC and SP. Note that we fake the seg:offset by putting
+	// the segment in the top half, and offset in the bottom
+	//m_uInitPC = (m_pHeader->initCS << 16) + m_pHeader->initIP;
+	//m_uInitSP = (m_pHeader->initSS << 16) + m_pHeader->initSP;
 
 	sections.reserve(1);
 

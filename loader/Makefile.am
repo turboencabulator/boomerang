@@ -32,6 +32,7 @@ libloader_la_LDFLAGS = -no-undefined -avoid-version
 libloader_la_LIBADD = -ldl
 
 pkglib_LTLIBRARIES += \
+	ComBinaryFile.la \
 	DOS4GWBinaryFile.la \
 	ElfBinaryFile.la \
 	ExeBinaryFile.la \
@@ -41,6 +42,7 @@ pkglib_LTLIBRARIES += \
 	PalmBinaryFile.la \
 	Win32BinaryFile.la
 
+ComBinaryFile_la_SOURCES    = ComBinaryFile.cpp    ComBinaryFile.h
 DOS4GWBinaryFile_la_SOURCES = DOS4GWBinaryFile.cpp DOS4GWBinaryFile.h
 ElfBinaryFile_la_SOURCES    = ElfBinaryFile.cpp    ElfBinaryFile.h
 ExeBinaryFile_la_SOURCES    = ExeBinaryFile.cpp    ExeBinaryFile.h
@@ -53,6 +55,7 @@ Win32BinaryFile_la_SOURCES  = Win32BinaryFile.cpp  Win32BinaryFile.h
 DOS4GWBinaryFile_la_LIBADD = libmicroX86dis.la
 Win32BinaryFile_la_LIBADD  = libmicroX86dis.la
 
+ComBinaryFile_la_LDFLAGS    = -no-undefined -avoid-version -module -shared
 DOS4GWBinaryFile_la_LDFLAGS = -no-undefined -avoid-version -module -shared
 ElfBinaryFile_la_LDFLAGS    = -no-undefined -avoid-version -module -shared
 ExeBinaryFile_la_LDFLAGS    = -no-undefined -avoid-version -module -shared
@@ -63,6 +66,7 @@ PalmBinaryFile_la_LDFLAGS   = -no-undefined -avoid-version -module -shared
 Win32BinaryFile_la_LDFLAGS  = -no-undefined -avoid-version -module -shared
 else
 libloader_la_SOURCES += \
+	ComBinaryFile.cpp \
 	DOS4GWBinaryFile.cpp \
 	ElfBinaryFile.cpp \
 	ExeBinaryFile.cpp \
