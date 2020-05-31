@@ -149,38 +149,17 @@ ExeBinaryFile::load(std::istream &ifs)
 		*p         = (uint8_t)((w & 0xFF00) >> 8);
 	}
 
-	// Always just 3 sections
-	// FIXME:  Should $HEADER and $RELOC be sections?
-	//         We've converted them to host endianness.
-	sections.reserve(3);
+	sections.reserve(1);
 
-	auto sect0 = SectionInfo();
-	sect0.name = "$HEADER";  // Special header section
-	//sect0.fSectionFlags = ST_HEADER;
-	sect0.uNativeAddr = 0;  // Not applicable
-	sect0.uHostAddr = (char *)m_pHeader;
-	sect0.uSectionSize = sizeof *m_pHeader;
-	sect0.uSectionEntrySize = 1;  // Not applicable
-	sections.push_back(sect0);
-
-	auto sect1 = SectionInfo();
-	sect1.name = ".text";  // The text and data section
-	sect1.bCode = true;
-	sect1.bData = true;
-	sect1.uNativeAddr = 0;
-	sect1.uHostAddr = (char *)m_pImage;
-	sect1.uSectionSize = cb;
-	sect1.uSectionEntrySize = 1;  // Not applicable
-	sections.push_back(sect1);
-
-	auto sect2 = SectionInfo();
-	sect2.name = "$RELOC";  // Special relocation section
-	//sect2.fSectionFlags = ST_RELOC;  // Give it a special flag
-	sect2.uNativeAddr = 0;  // Not applicable
-	sect2.uHostAddr = (char *)m_pRelocTable;
-	sect2.uSectionSize =  numreloc * sizeof *m_pRelocTable;
-	sect2.uSectionEntrySize = sizeof *m_pRelocTable;
-	sections.push_back(sect2);
+	auto sect = SectionInfo();
+	sect.name = ".text";  // The text and data section
+	sect.bCode = true;
+	sect.bData = true;
+	sect.uNativeAddr = 0;
+	sect.uHostAddr = (char *)m_pImage;
+	sect.uSectionSize = cb;
+	sect.uSectionEntrySize = 1;  // Not applicable
+	sections.push_back(sect);
 
 	return true;
 }
