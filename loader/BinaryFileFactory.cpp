@@ -54,6 +54,7 @@
  * Detect the file type and return the loader format.
  *
  * \param ifs  Opened stream to perform detection on.
+ *             The caller should reset the stream state after the call.
  */
 static LOADFMT
 magic(std::istream &ifs)
@@ -128,6 +129,7 @@ BinaryFile::open(const char *name)
 		ifs.close();
 		return nullptr;
 	}
+	ifs.clear();
 	ifs.seekg(0);
 
 #ifdef DYNAMIC
