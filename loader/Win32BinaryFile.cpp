@@ -387,16 +387,10 @@ Win32BinaryFile::load(std::istream &ifs)
 	ifs.read((char *)base, tmphdr.HeaderSize);
 
 	m_pHeader = (Header *)base;
-	if (m_pHeader->sigLo != 'M' || m_pHeader->sigHi != 'Z') {
-		fprintf(stderr, "error loading file %s, bad magic\n", getFilename());
-		return false;
-	}
+	assert(m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z');
 
 	m_pPEHeader = (PEHeader *)&base[peoff];
-	if (m_pPEHeader->sigLo != 'P' || m_pPEHeader->sigHi != 'E') {
-		fprintf(stderr, "error loading file %s, bad PE magic\n", getFilename());
-		return false;
-	}
+	assert(m_pPEHeader->sigLo == 'P' && m_pPEHeader->sigHi == 'E');
 
 	m_pPEHeader->sigver                 = LH16(&m_pPEHeader->sigver);
 	m_pPEHeader->cputype                = LH16(&m_pPEHeader->cputype);

@@ -16,6 +16,7 @@
 
 #include "ExeBinaryFile.h"
 
+#include <cassert>
 #include <cstdio>
 
 ExeBinaryFile::ExeBinaryFile()
@@ -38,6 +39,9 @@ ExeBinaryFile::load(std::istream &ifs)
 		return false;
 	}
 
+	/* Check for the "MZ" exe header */
+	assert(m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z');
+
 	m_pHeader->lastPageSize   = LH16(&m_pHeader->lastPageSize);
 	m_pHeader->numPages       = LH16(&m_pHeader->numPages);
 	m_pHeader->numReloc       = LH16(&m_pHeader->numReloc);
@@ -51,17 +55,6 @@ ExeBinaryFile::load(std::istream &ifs)
 	m_pHeader->initCS         = LH16(&m_pHeader->initCS);
 	m_pHeader->relocTabOffset = LH16(&m_pHeader->relocTabOffset);
 	m_pHeader->overlayNum     = LH16(&m_pHeader->overlayNum);
-
-	/* Check for the "MZ" exe header */
-	if (m_pHeader->sigLo != 'M' || m_pHeader->sigHi != 'Z') {
-		return false;
-	}
-
-	/* This is a typical DOS kludge! */
-	if (m_pHeader->relocTabOffset == 0x40) {
-		fprintf(stderr, "Error - NE format executable\n");
-		return false;
-	}
 
 	/* Calculate the load module size.
 	 * This is the number of pages in the file

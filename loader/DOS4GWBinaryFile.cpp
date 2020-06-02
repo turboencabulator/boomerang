@@ -121,6 +121,9 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	m_pLXHeader = new LXHeader;
 	ifs.seekg(lxoff);
 	ifs.read((char *)m_pLXHeader, sizeof *m_pLXHeader);
+
+	assert(m_pLXHeader->sigLo == 'L' && (m_pLXHeader->sigHi == 'X' || m_pLXHeader->sigHi == 'E'));
+
 	m_pLXHeader->formatlvl               = LH32(&m_pLXHeader->formatlvl);
 	m_pLXHeader->cputype                 = LH16(&m_pLXHeader->cputype);
 	m_pLXHeader->ostype                  = LH16(&m_pLXHeader->ostype);
@@ -164,11 +167,6 @@ DOS4GWBinaryFile::load(std::istream &ifs)
 	m_pLXHeader->numinstancepreload      = LH32(&m_pLXHeader->numinstancepreload);
 	m_pLXHeader->numinstancedemand       = LH32(&m_pLXHeader->numinstancedemand);
 	m_pLXHeader->heapsize                = LH32(&m_pLXHeader->heapsize);
-
-	if (m_pLXHeader->sigLo != 'L' || (m_pLXHeader->sigHi != 'X' && m_pLXHeader->sigHi != 'E')) {
-		fprintf(stderr, "error loading file %s, bad LE/LX magic\n", getFilename());
-		return false;
-	}
 
 	m_pLXObjects = new LXObject[m_pLXHeader->numobjsinmodule];
 	ifs.seekg(lxoff + m_pLXHeader->objtbloffset);

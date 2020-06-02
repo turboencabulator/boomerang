@@ -87,11 +87,13 @@ magic(std::istream &ifs)
 				return LOADFMT_PE;
 			} else if (TESTMAGIC2(buf, 0, 'N', 'E')) {
 				/* Win16 / Old OS/2 Binary */
+				return LOADFMT_UNKNOWN;  // Not yet implemented
 			} else if (TESTMAGIC2(buf, 0, 'L', 'E')) {
 				/* Win32 VxD (Linear Executable) or DOS4GW app */
 				return LOADFMT_LX;
 			} else if (TESTMAGIC2(buf, 0, 'L', 'X')) {
 				/* New OS/2 Binary */
+				return LOADFMT_LX;
 			}
 		}
 		/* Assume MS-DOS Real-mode binary. */
