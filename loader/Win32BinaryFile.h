@@ -18,14 +18,6 @@
 
 #include "BinaryFile.h"
 
-/**
- * \brief EXE file header, just the signature really.
- */
-typedef struct {
-	uint8_t sigLo;  ///< .EXE signature: 0x4D 0x5A
-	uint8_t sigHi;
-} Header;
-
 typedef struct __attribute__((packed)) {
 	uint8_t  sigLo;
 	uint8_t  sigHi;
@@ -184,7 +176,6 @@ private:
 
 	void        findJumps(ADDRESS curr);
 
-	Header     *m_pHeader;          ///< Pointer to header.
 	PEHeader   *m_pPEHeader;        ///< Pointer to pe header.
 	unsigned char *base = nullptr;  ///< Beginning of the loaded image.
 	std::map<ADDRESS, std::string> dlprocptrs;  ///< Map from address of dynamic pointers to library procedure names.

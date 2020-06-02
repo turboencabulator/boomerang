@@ -21,14 +21,6 @@
 #include <map>
 #include <string>
 
-#if 0
-/* exe file header, just the signature really */
-typedef struct {
-	uint8_t sigLo;  /* .EXE signature: 0x4D 0x5A */
-	uint8_t sigHi;
-} Header;
-#endif
-
 typedef struct __attribute__((packed)) {
 	uint8_t  sigLo;
 	uint8_t  sigHi;
@@ -151,7 +143,6 @@ protected:
 	//bool        PostLoad(void *handle) override;
 
 private:
-	//Header     *m_pHeader;               ///< Pointer to header.
 	LXHeader   *m_pLXHeader = nullptr;   ///< Pointer to lx header.
 	LXObject   *m_pLXObjects = nullptr;  ///< Pointer to lx objects.
 	LXPage     *m_pLXPages = nullptr;    ///< Pointer to lx pages.

@@ -386,9 +386,6 @@ Win32BinaryFile::load(std::istream &ifs)
 	ifs.seekg(0);
 	ifs.read((char *)base, tmphdr.HeaderSize);
 
-	m_pHeader = (Header *)base;
-	assert(m_pHeader->sigLo == 'M' && m_pHeader->sigHi == 'Z');
-
 	m_pPEHeader = (PEHeader *)&base[peoff];
 	assert(m_pPEHeader->sigLo == 'P' && m_pPEHeader->sigHi == 'E');
 
