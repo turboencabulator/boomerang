@@ -189,7 +189,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	std::vector<struct segment_command> segments;
 	std::vector<struct nlist> symbols;
 	std::vector<struct section> stubs_sects;
-	char *strtbl = nullptr;
+	const char *strtbl = nullptr;
 	uint32_t *indirectsymtbl = nullptr;
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
@@ -279,7 +279,7 @@ MachOBinaryFile::load(std::istream &ifs)
 
 				ifs.seekg(syms.stroff);
 				strtbl = new char[syms.strsize];
-				ifs.read(strtbl, syms.strsize);
+				ifs.read((char *)strtbl, syms.strsize);
 
 				ifs.seekg(syms.symoff);
 				for (unsigned n = 0; n < syms.nsyms; ++n) {
@@ -410,9 +410,9 @@ MachOBinaryFile::load(std::istream &ifs)
 	for (const auto &stubs_sect : stubs_sects) {
 		unsigned startidx = stubs_sect.reserved1;
 		for (unsigned i = 0; i < stubs_sect.size / stubs_sect.reserved2; ++i) {
-			auto symbol = indirectsymtbl[startidx + i];
 			ADDRESS addr = stubs_sect.addr + i * stubs_sect.reserved2;
-			const char *name = strtbl + symbols[symbol].n_un.n_strx;
+			const auto &symbol = symbols[indirectsymtbl[startidx + i]];
+			auto name = strtbl + symbol.n_un.n_strx;
 #ifdef DEBUG_MACHO_LOADER
 			fprintf(stdout, "stub for %s at %x\n", name, addr);
 #endif
@@ -425,8 +425,8 @@ MachOBinaryFile::load(std::istream &ifs)
 
 	// process the remaining symbols
 	for (const auto &symbol : symbols) {
-		const char *name = strtbl + symbol.n_un.n_strx;
-		if (symbol.n_un.n_strx != 0 && symbol.n_value != 0 && *name != 0) {
+		auto name = strtbl + symbol.n_un.n_strx;
+		if (symbol.n_un.n_strx != 0 && symbol.n_value != 0 && *name != '\0') {
 
 #ifdef DEBUG_MACHO_LOADER
 			fprintf(stdout, "symbol %s at %x type %x\n", name,
@@ -445,48 +445,48 @@ MachOBinaryFile::load(std::istream &ifs)
 		fprintf(stdout, "processing objective-c section\n");
 #endif
 		for (unsigned i = 0; i < objc_modules_size;) {
-			struct objc_module *module = (struct objc_module *)&base[objc_modules - loaded_addr];
-			const char *name = (const char *)&base[BMMH(module->name) - loaded_addr];
-			Symtab symtab = (Symtab)&base[BMMH(module->symtab) - loaded_addr];
+			auto module = (const struct objc_module *)&base[objc_modules - loaded_addr];
+			auto name = (const char *)&base[BMMH(module->name) - loaded_addr];
+			auto symtab = (Symtab)&base[BMMH(module->symtab) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
 			fprintf(stdout, "module %s (%i classes)\n", name, BMMHW(symtab->cls_def_cnt));
 #endif
-			ObjcModule *m = &modules[name];
-			m->name = name;
+			auto &m = modules[name];
+			m.name = name;
 			for (unsigned j = 0; j < BMMHW(symtab->cls_def_cnt); ++j) {
-				struct objc_class *def = (struct objc_class *)&base[BMMH(symtab->defs[j]) - loaded_addr];
-				const char *name = (const char *)&base[BMMH(def->name) - loaded_addr];
+				auto def = (const struct objc_class *)&base[BMMH(symtab->defs[j]) - loaded_addr];
+				auto name = (const char *)&base[BMMH(def->name) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
 				fprintf(stdout, "  class %s\n", name);
 #endif
-				ObjcClass *cl = &m->classes[name];
-				cl->name = name;
-				struct objc_ivar_list *ivars = (struct objc_ivar_list *)&base[BMMH(def->ivars) - loaded_addr];
+				auto &cl = m.classes[name];
+				cl.name = name;
+				auto ivars = (const struct objc_ivar_list *)&base[BMMH(def->ivars) - loaded_addr];
 				for (unsigned k = 0; k < BMMH(ivars->ivar_count); ++k) {
-					struct objc_ivar *ivar = &ivars->ivar_list[k];
-					const char *name = (const char *)&base[BMMH(ivar->ivar_name) - loaded_addr];
-					const char *types = (const char *)&base[BMMH(ivar->ivar_type) - loaded_addr];
+					const auto &ivar = ivars->ivar_list[k];
+					auto name = (const char *)&base[BMMH(ivar.ivar_name) - loaded_addr];
+					auto types = (const char *)&base[BMMH(ivar.ivar_type) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
-					fprintf(stdout, "    ivar %s %s %x\n", name, types, BMMH(ivar->ivar_offset));
+					fprintf(stdout, "    ivar %s %s %x\n", name, types, BMMH(ivar.ivar_offset));
 #endif
-					ObjcIvar *iv = &cl->ivars[name];
-					iv->name = name;
-					iv->type = types;
-					iv->offset = BMMH(ivar->ivar_offset);
+					auto &iv = cl.ivars[name];
+					iv.name = name;
+					iv.type = types;
+					iv.offset = BMMH(ivar.ivar_offset);
 				}
 				// this is weird, why is it defined as a ** in the struct but used as a * in otool?
-				struct objc_method_list *methods = (struct objc_method_list *)&base[BMMH(def->methodLists) - loaded_addr];
+				auto methods = (const struct objc_method_list *)&base[BMMH(def->methodLists) - loaded_addr];
 				for (unsigned k = 0; k < BMMH(methods->method_count); ++k) {
-					struct objc_method *method = &methods->method_list[k];
-					const char *name = (const char *)&base[BMMH(method->method_name) - loaded_addr];
-					const char *types = (const char *)&base[BMMH(method->method_types) - loaded_addr];
+					const auto &method = methods->method_list[k];
+					auto name = (const char *)&base[BMMH(method.method_name) - loaded_addr];
+					auto types = (const char *)&base[BMMH(method.method_types) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
-					fprintf(stdout, "    method %s %s %x\n", name, types, BMMH((void *)method->method_imp));
+					fprintf(stdout, "    method %s %s %x\n", name, types, BMMH((void *)method.method_imp));
 #endif
-					ObjcMethod *me = &cl->methods[name];
-					me->name = name;
-					me->types = types;
-					me->addr = BMMH((void *)method->method_imp);
+					auto &me = cl.methods[name];
+					me.name = name;
+					me.types = types;
+					me.addr = BMMH((void *)method.method_imp);
 				}
 			}
 			objc_modules += BMMH(module->size);
