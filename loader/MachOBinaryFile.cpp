@@ -221,7 +221,10 @@ MachOBinaryFile::load(std::istream &ifs)
 				segments.push_back(seg);
 
 #ifdef DEBUG_MACHO_LOADER
-				fprintf(stdout, "seg addr %x size %i fileoff %x filesize %i flags %x\n", seg.vmaddr, seg.vmsize, seg.fileoff, seg.filesize, seg.flags);
+				char segname[sizeof seg.segname + 1];
+				memcpy(segname, seg.segname, sizeof seg.segname);
+				segname[sizeof seg.segname] = '\0';
+				fprintf(stdout, "seg %s addr %x size %x fileoff %x filesize %x flags %x\n", segname, seg.vmaddr, seg.vmsize, seg.fileoff, seg.filesize, seg.flags);
 #endif
 				for (unsigned n = 0; n < seg.nsects; ++n) {
 					struct section sect;
@@ -237,28 +240,31 @@ MachOBinaryFile::load(std::istream &ifs)
 					sect.reserved2 = BMMH(sect.reserved2);
 
 #ifdef DEBUG_MACHO_LOADER
-					fprintf(stdout, "    sectname %s segname %s addr %x size %i flags %x\n", sect.sectname, sect.segname, sect.addr, sect.size, sect.flags);
+					char sectname[sizeof sect.sectname + 1];
+					memcpy(sectname, sect.sectname, sizeof sect.sectname);
+					sectname[sizeof sect.sectname] = '\0';
+					fprintf(stdout, "\tsect %s addr %x size %x flags %x\n", sectname, sect.addr, sect.size, sect.flags);
 #endif
 					if ((sect.flags & SECTION_TYPE) == S_SYMBOL_STUBS) {
 						stubs_sects.push_back(sect);
 #ifdef DEBUG_MACHO_LOADER
-						fprintf(stdout, "        symbol stubs section, start index %i, stub size %i\n", sect.reserved1, sect.reserved2);
+						fprintf(stdout, "\t\tsymbol stubs section, start index %x, stub size %x\n", sect.reserved1, sect.reserved2);
 #endif
 					}
-					if (!strcmp(sect.sectname, SECT_OBJC_SYMBOLS)) {
+					if (!strncmp(sect.sectname, SECT_OBJC_SYMBOLS, sizeof sect.sectname)) {
 						assert(objc_symbols == NO_ADDRESS);
 						objc_symbols = sect.addr;
 					}
-					if (!strcmp(sect.sectname, SECT_OBJC_MODULES)) {
+					if (!strncmp(sect.sectname, SECT_OBJC_MODULES, sizeof sect.sectname)) {
 						assert(objc_modules == NO_ADDRESS);
 						objc_modules = sect.addr;
 						objc_modules_size = sect.size;
 					}
-					if (!strcmp(sect.sectname, SECT_OBJC_STRINGS)) {
+					if (!strncmp(sect.sectname, SECT_OBJC_STRINGS, sizeof sect.sectname)) {
 						assert(objc_strings == NO_ADDRESS);
 						objc_strings = sect.addr;
 					}
-					if (!strcmp(sect.sectname, SECT_OBJC_REFS)) {
+					if (!strncmp(sect.sectname, SECT_OBJC_REFS, sizeof sect.sectname)) {
 						assert(objc_refs == NO_ADDRESS);
 						objc_refs = sect.addr;
 					}
@@ -328,11 +334,10 @@ MachOBinaryFile::load(std::istream &ifs)
 				syms.nlocrel        = BMMH(syms.nlocrel);
 
 #ifdef DEBUG_MACHO_LOADER
-				fprintf(stdout, "dysymtab local %i %i defext %i %i undef %i %i\n",
+				fprintf(stdout, "dysymtab local %i %i extdef %i %i undef %i %i\n",
 				        syms.ilocalsym, syms.nlocalsym,
 				        syms.iextdefsym, syms.nextdefsym,
 				        syms.iundefsym, syms.nundefsym);
-				fprintf(stdout, "dysymtab has %i indirect symbols: ", syms.nindirectsyms);
 #endif
 				ifs.seekg(syms.indirectsymoff);
 				indirectsymtbl = new uint32_t[syms.nindirectsyms];
@@ -341,6 +346,7 @@ MachOBinaryFile::load(std::istream &ifs)
 					indirectsymtbl[j] = BMMH(indirectsymtbl[j]);
 				}
 #ifdef DEBUG_MACHO_LOADER
+				fprintf(stdout, "dysymtab has %i indirect symbols: ", syms.nindirectsyms);
 				for (unsigned j = 0; j < syms.nindirectsyms; ++j) {
 					fprintf(stdout, "%i ", indirectsymtbl[j]);
 				}
@@ -373,10 +379,8 @@ MachOBinaryFile::load(std::istream &ifs)
 
 	base = new char[loaded_size];
 
-	auto numSections = segments.size();
-	sections.reserve(numSections);
-	for (unsigned i = 0; i < numSections; ++i) {
-		const auto &seg = segments[i];
+	sections.reserve(segments.size());
+	for (const auto &seg : segments) {
 		ifs.seekg(seg.fileoff);
 		ADDRESS a = seg.vmaddr;
 		unsigned sz = seg.vmsize;
@@ -384,7 +388,7 @@ MachOBinaryFile::load(std::istream &ifs)
 		memset(&base[a - loaded_addr], 0, sz);
 		ifs.read(&base[a - loaded_addr], fsz);
 #ifdef DEBUG_MACHO_LOADER
-		fprintf(stderr, "loaded segment %x %i in mem %i in file\n", a, sz, fsz);
+		fprintf(stderr, "loaded segment %x %x in mem %x in file\n", a, sz, fsz);
 #endif
 
 		auto name = std::string(seg.segname, sizeof seg.segname);
