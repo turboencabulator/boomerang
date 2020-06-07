@@ -190,7 +190,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	std::vector<struct nlist> symbols;
 	std::vector<struct section> stubs_sects;
 	char *strtbl = nullptr;
-	unsigned *indirectsymtbl = nullptr;
+	uint32_t *indirectsymtbl = nullptr;
 	ADDRESS objc_symbols = NO_ADDRESS, objc_modules = NO_ADDRESS, objc_strings = NO_ADDRESS, objc_refs = NO_ADDRESS;
 	unsigned objc_modules_size = 0;
 
@@ -335,7 +335,7 @@ MachOBinaryFile::load(std::istream &ifs)
 				fprintf(stdout, "dysymtab has %i indirect symbols: ", syms.nindirectsyms);
 #endif
 				ifs.seekg(syms.indirectsymoff);
-				indirectsymtbl = new unsigned[syms.nindirectsyms];
+				indirectsymtbl = new uint32_t[syms.nindirectsyms];
 				ifs.read((char *)indirectsymtbl, sizeof *indirectsymtbl * syms.nindirectsyms);
 				for (unsigned j = 0; j < syms.nindirectsyms; ++j) {
 					indirectsymtbl[j] = BMMH(indirectsymtbl[j]);
@@ -410,7 +410,7 @@ MachOBinaryFile::load(std::istream &ifs)
 	for (const auto &stubs_sect : stubs_sects) {
 		unsigned startidx = stubs_sect.reserved1;
 		for (unsigned i = 0; i < stubs_sect.size / stubs_sect.reserved2; ++i) {
-			unsigned symbol = indirectsymtbl[startidx + i];
+			auto symbol = indirectsymtbl[startidx + i];
 			ADDRESS addr = stubs_sect.addr + i * stubs_sect.reserved2;
 			const char *name = strtbl + symbols[symbol].n_un.n_strx;
 #ifdef DEBUG_MACHO_LOADER
