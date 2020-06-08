@@ -36,9 +36,8 @@ public:
 	//size_t      getImageSize() const override;
 
 private:
-	unsigned int   BMMH(const void *x) const;
-	uint32_t       BMMH(uint32_t x) const;
-	unsigned short BMMHW(unsigned short x) const;
+	uint32_t    BMMH(uint32_t x) const;
+	uint16_t    BMMHW(uint16_t x) const;
 public:
 
 	/**

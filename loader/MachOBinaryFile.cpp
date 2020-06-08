@@ -43,7 +43,7 @@ typedef uint32_t vm_prot_t;
 
 #if 0
 #include <objc/runtime.h>
-#else
+#elif 0  // Structure/member sizes become host-width, not native-width
 typedef struct objc_class *Class;
 struct objc_class {
 	Class isa;
@@ -117,6 +117,59 @@ struct objc_module {
 	unsigned long size;
 	const char *name;
 	Symtab symtab;
+};
+#else  // Assume ILP32 for native-width items
+struct objc_class {
+	uint32_t isa;
+	uint32_t super_class;
+	uint32_t name;
+	int32_t version;
+	int32_t info;
+	int32_t instance_size;
+	uint32_t ivars;
+	uint32_t methodLists;
+	uint32_t cache;
+	uint32_t protocols;
+};
+
+struct objc_ivar {
+	uint32_t ivar_name;
+	uint32_t ivar_type;
+	int32_t ivar_offset;
+};
+
+struct objc_ivar_list {
+	int32_t ivar_count;
+	/* variable length structure */
+	struct objc_ivar ivar_list[1];
+};
+
+struct objc_method {
+	uint32_t method_name;
+	uint32_t method_types;
+	uint32_t method_imp;
+};
+
+struct objc_method_list {
+	uint32_t obsolete;
+	int32_t method_count;
+	/* variable length structure */
+	struct objc_method method_list[1];
+};
+
+struct objc_symtab {
+	uint32_t sel_ref_cnt;
+	uint32_t refs;
+	uint16_t cls_def_cnt;
+	uint16_t cat_def_cnt;
+	uint32_t defs[1];  /* variable size */
+};
+
+struct objc_module {
+	uint32_t version;
+	uint32_t size;
+	uint32_t name;
+	uint32_t symtab;
 };
 #endif
 
@@ -450,51 +503,57 @@ MachOBinaryFile::load(std::istream &ifs)
 #endif
 		for (unsigned i = 0; i < objc_modules_size;) {
 			auto module = (const struct objc_module *)&base[objc_modules - loaded_addr];
+			auto size = BMMH(module->size);
 			auto name = (const char *)&base[BMMH(module->name) - loaded_addr];
-			auto symtab = (Symtab)&base[BMMH(module->symtab) - loaded_addr];
+			auto symtab = (const struct objc_symtab *)&base[BMMH(module->symtab) - loaded_addr];
+			auto cls_def_cnt = BMMHW(symtab->cls_def_cnt);
 #ifdef DEBUG_MACHO_LOADER_OBJC
-			fprintf(stdout, "module %s (%i classes)\n", name, BMMHW(symtab->cls_def_cnt));
+			fprintf(stdout, "module %s (%i classes)\n", name, cls_def_cnt);
 #endif
 			auto &m = modules[name];
 			m.name = name;
-			for (unsigned j = 0; j < BMMHW(symtab->cls_def_cnt); ++j) {
+			for (unsigned j = 0; j < cls_def_cnt; ++j) {
 				auto def = (const struct objc_class *)&base[BMMH(symtab->defs[j]) - loaded_addr];
 				auto name = (const char *)&base[BMMH(def->name) - loaded_addr];
 #ifdef DEBUG_MACHO_LOADER_OBJC
-				fprintf(stdout, "  class %s\n", name);
+				fprintf(stdout, "\tclass %s\n", name);
 #endif
 				auto &cl = m.classes[name];
 				cl.name = name;
 				auto ivars = (const struct objc_ivar_list *)&base[BMMH(def->ivars) - loaded_addr];
-				for (unsigned k = 0; k < BMMH(ivars->ivar_count); ++k) {
+				auto ivar_count = BMMH(ivars->ivar_count);
+				for (unsigned k = 0; k < ivar_count; ++k) {
 					const auto &ivar = ivars->ivar_list[k];
 					auto name = (const char *)&base[BMMH(ivar.ivar_name) - loaded_addr];
-					auto types = (const char *)&base[BMMH(ivar.ivar_type) - loaded_addr];
+					auto type = (const char *)&base[BMMH(ivar.ivar_type) - loaded_addr];
+					auto offset = BMMH(ivar.ivar_offset);
 #ifdef DEBUG_MACHO_LOADER_OBJC
-					fprintf(stdout, "    ivar %s %s %x\n", name, types, BMMH(ivar.ivar_offset));
+					fprintf(stdout, "\t\tivar %s %s %x\n", name, type, offset);
 #endif
 					auto &iv = cl.ivars[name];
 					iv.name = name;
-					iv.type = types;
-					iv.offset = BMMH(ivar.ivar_offset);
+					iv.type = type;
+					iv.offset = offset;
 				}
 				// this is weird, why is it defined as a ** in the struct but used as a * in otool?
 				auto methods = (const struct objc_method_list *)&base[BMMH(def->methodLists) - loaded_addr];
-				for (unsigned k = 0; k < BMMH(methods->method_count); ++k) {
+				auto method_count = BMMH(methods->method_count);
+				for (unsigned k = 0; k < method_count; ++k) {
 					const auto &method = methods->method_list[k];
 					auto name = (const char *)&base[BMMH(method.method_name) - loaded_addr];
 					auto types = (const char *)&base[BMMH(method.method_types) - loaded_addr];
+					auto imp = BMMH(method.method_imp);
 #ifdef DEBUG_MACHO_LOADER_OBJC
-					fprintf(stdout, "    method %s %s %x\n", name, types, BMMH((void *)method.method_imp));
+					fprintf(stdout, "\t\tmethod %s %s %x\n", name, types, imp);
 #endif
 					auto &me = cl.methods[name];
 					me.name = name;
 					me.types = types;
-					me.addr = BMMH((void *)method.method_imp);
+					me.addr = imp;
 				}
 			}
-			objc_modules += BMMH(module->size);
-			i += BMMH(module->size);
+			objc_modules += size;
+			i += size;
 		}
 	}
 
@@ -540,13 +599,6 @@ MachOBinaryFile::addSymbol(ADDRESS uNative, const std::string &name)
 	m_SymA[uNative] = name;
 }
 
-unsigned int
-MachOBinaryFile::BMMH(const void *x) const
-{
-	if (swap_bytes) return (unsigned int)BH32(&x);
-	else return (unsigned int)x;
-}
-
 uint32_t
 MachOBinaryFile::BMMH(uint32_t x) const
 {
@@ -554,8 +606,8 @@ MachOBinaryFile::BMMH(uint32_t x) const
 	else return x;
 }
 
-unsigned short
-MachOBinaryFile::BMMHW(unsigned short x) const
+uint16_t
+MachOBinaryFile::BMMHW(uint16_t x) const
 {
 	if (swap_bytes) return BH16(&x);
 	else return x;
