@@ -246,8 +246,6 @@ HpSomBinaryFile::load(std::istream &ifs)
 
 	// Work through the imports, and find those for which there are stubs using that import entry.
 	// Add the addresses of any such stubs.
-	ptrdiff_t deltaText = sections[1].uHostAddr - (char *)sections[1].uNativeAddr;
-	ptrdiff_t deltaData = sections[2].uHostAddr - (char *)sections[2].uNativeAddr;
 	// The "end of data" where r27 points is not necessarily the same as
 	// the end of the $DATA$ space. So we have to call getSubSpaceInfo
 	std::pair<unsigned, int> pr = getSubspaceInfo("$GLOBAL$");
@@ -277,8 +275,8 @@ HpSomBinaryFile::load(std::istream &ifs)
 				u = (offset - minPLT) / sizeof(plt_record);
 				// Add an offset for the DLT entries
 				u += numDLT;
-				symbols[import_list[u].name + pDlStrings] = host - deltaText;
-				cout << "Added sym " << (import_list[u].name + pDlStrings) << ", value " << hex << (host - deltaText) << endl;
+				symbols[import_list[u].name + pDlStrings] = sections[1].uNativeAddr + (host - startText);
+				cout << "Added sym " << (import_list[u].name + pDlStrings) << ", value " << hex << (sections[1].uNativeAddr + (host - startText)) << endl;
 			}
 		}
 	}
@@ -289,7 +287,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 	// There should be a one to one correspondance between (DLT + PLT) entries and import table entries.
 	// The DLT entries always come first in the import table
 	unsigned u = (unsigned)numDLT, v = 0;
-	plt_record *PLTs = (plt_record *)(pltStart + deltaData);
+	plt_record *PLTs = (plt_record *)&sections[2].uHostAddr[pltStart - sections[2].uNativeAddr];
 	for (; u < numImports; ++u, ++v) {
 		//cout << "Importing " << (pDlStrings+import_list[u].name) << endl;
 		symbols.Add(PLTs[v].value, pDlStrings + BH32(&import_list[u].name));
@@ -315,7 +313,7 @@ HpSomBinaryFile::load(std::istream &ifs)
 			// +----------------------+--------+-----+----------+
 			//  31                  16|15    11| 10  |9        0
 
-			unsigned bincall = *(unsigned *)(BH32(&export_list[u].value) + deltaText);
+			unsigned bincall = *(unsigned *)&sections[1].uHostAddr[BH32(&export_list[u].value) - sections[1].uNativeAddr];
 			int offset = (((bincall & 1) << 31) >> 15)     // w
 			           | ((bincall & 0x1f0000) >> 5)       // w1
 			           | ((bincall &        4) << 8)       // w2@10
@@ -503,7 +501,7 @@ HpSomBinaryFile::getDynamicGlobalMap()
 
 	unsigned numDLT = BH32(DLTable + 0x40);
 	// Offset 0x38 in the DL table has the offset relative to $DATA$ (section 2)
-	unsigned *p = (unsigned *)(BH32(DLTable + 0x38) + sections[2].uHostAddr);
+	unsigned *p = (unsigned *)&sections[2].uHostAddr[BH32(DLTable + 0x38)];
 
 	// The DLT is paralelled by the first <numDLT> entries in the import table;
 	// the import table has the symbolic names
@@ -535,7 +533,7 @@ HpSomBinaryFile::getMainEntryPoint()
 		return 0;
 	}
 	// Expect a bl <main>, rp instruction
-	unsigned instr = BH32(sections[1].uHostAddr + mainExport - sections[1].uNativeAddr);
+	unsigned instr = BH32(&sections[1].uHostAddr[mainExport - sections[1].uNativeAddr]);
 	int disp;
 	// Standard form: sub-opcode 0, target register = 2
 	if (instr >> 26 == 0x3A

@@ -574,13 +574,11 @@ Win32BinaryFile::findJumps(ADDRESS curr)
 	const SectionInfo *sec = getSectionInfoByName(".text");
 	if (!sec) sec = getSectionInfoByName("CODE");
 	assert(sec);
-	// Add to native addr to get host:
-	ptrdiff_t delta = sec->uHostAddr - (char *)sec->uNativeAddr;
 	while (cnt < 0x60) {  // Max of 0x60 bytes without a match
 		curr -= 2;  // Has to be on 2-byte boundary
 		cnt += 2;
-		if (LH16(delta + curr) != 0xFF + (0x25 << 8)) continue;
-		ADDRESS operand = LH32(delta + curr + 2);
+		if (LH16(&sec->uHostAddr[curr - sec->uNativeAddr]) != 0xFF + (0x25 << 8)) continue;
+		ADDRESS operand = LH32(&sec->uHostAddr[curr + 2 - sec->uNativeAddr]);
 		auto it = dlprocptrs.find(operand);
 		if (it == dlprocptrs.end()) continue;
 		std::string sym = it->second;
