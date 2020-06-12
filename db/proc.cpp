@@ -381,6 +381,7 @@ UserProc::~UserProc()
 	delete cfg;
 }
 
+#if 0 // Cruft?
 /*==============================================================================
  * FUNCTION:        UserProc::deleteCFG
  * OVERVIEW:        Deletes the whole CFG for this proc object. Also clears the
@@ -392,6 +393,7 @@ UserProc::deleteCFG()
 	delete cfg;
 	cfg = nullptr;
 }
+#endif
 
 class lessEvaluate : public std::less<SyntaxNode *> {
 public:

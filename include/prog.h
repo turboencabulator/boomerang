@@ -74,7 +74,7 @@ public:
 	        Proc       *setNewProc(ADDRESS uNative);    // Set up new proc
 	// Return a pointer to a new proc
 	        Proc       *newProc(const std::string &, ADDRESS, bool = false);
-	        void        remProc(UserProc *proc);        // Remove the given UserProc
+	        //void        remProc(UserProc *proc);        // Remove the given UserProc
 	        void        removeProc(const std::string &);
 	        const std::string &getName() const { return m_name; }  // Get the name of this program
 	        const std::string &getPath() const { return m_path; }

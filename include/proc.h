@@ -331,7 +331,7 @@ public:
 	 * Deletes the whole CFG and all the RTLs and Exps associated with it. Also nulls the internal cfg
 	 * pointer (to prevent strange errors)
 	 */
-	void        deleteCFG();
+	//void        deleteCFG();
 
 	bool        isNoReturn() const override;
 

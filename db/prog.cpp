@@ -495,6 +495,7 @@ Prog::newProc(const std::string &name, ADDRESS uNative, bool bLib /*= false*/)
 	return pProc;
 }
 
+#if 0 // Cruft?
 /*==============================================================================
  * FUNCTION:       Prog::remProc
  * OVERVIEW:       Removes the UserProc from this Prog object's list, and deletes as much as possible of the Proc
@@ -516,6 +517,7 @@ Prog::remProc(UserProc *uProc)
 	// Delete the UserProc object as well
 	delete uProc;
 }
+#endif
 
 void
 Prog::removeProc(const std::string &name)
