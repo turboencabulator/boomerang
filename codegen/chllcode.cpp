@@ -397,7 +397,7 @@ CHLLCode::appendExp(std::ostringstream &str, Exp *exp, PREC curPrec, bool uns /*
 				break;
 			}
 			assert(u->getSubExp1()->isIntConst());
-			if (auto n = m_proc->getProg()->getRegName(((Const *)u->getSubExp1())->getInt())) {
+			if (auto n = m_proc->getProg()->getFrontEnd()->getRegName(((Const *)u->getSubExp1())->getInt())) {
 				if (n[0] == '%')
 					str << n + 1;
 				else

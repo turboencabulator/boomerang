@@ -5246,7 +5246,7 @@ UserProc::getRegName(Exp *r) const
 {
 	assert(r->isRegOf());
 	int regNum = ((Const *)((Location *)r)->getSubExp1())->getInt();
-	const char *regName = prog->getRegName(regNum);
+	const char *regName = prog->getFrontEnd()->getRegName(regNum);
 	if (regName[0] == '%') ++regName;  // Skip % if %eax
 	return regName;
 }

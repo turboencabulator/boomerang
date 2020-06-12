@@ -947,8 +947,8 @@ PentiumFrontEnd::decodeInstruction(ADDRESS pc)
 		// out dx, al
 		auto call = new CallStatement();
 		call->setDestProc(prog->getLibraryProc("outp"));
-		call->setArgumentExp(0, Location::regOf(decoder.getRTLDict().RegMap["%dx"]));
-		call->setArgumentExp(1, Location::regOf(decoder.getRTLDict().RegMap["%al"]));
+		call->setArgumentExp(0, Location::regOf(decoder.getRegNum("%dx")));
+		call->setArgumentExp(1, Location::regOf(decoder.getRegNum("%al")));
 		r.reset();
 		r.numBytes = 1;
 		r.rtl = new RTL(pc, call);

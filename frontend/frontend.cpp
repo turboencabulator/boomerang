@@ -187,28 +187,6 @@ FrontEnd::close(FrontEnd *fe)
 }
 
 /**
- * \brief Returns a symbolic name for a register index.
- */
-const char *
-FrontEnd::getRegName(int idx)
-{
-	for (const auto &reg : getDecoder().getRTLDict().RegMap)
-		if (reg.second == idx)
-			return reg.first.c_str();
-	return nullptr;
-}
-
-int
-FrontEnd::getRegSize(int idx)
-{
-	const auto &map = getDecoder().getRTLDict().DetRegMap;
-	auto it = map.find(idx);
-	if (it != map.end())
-		return it->second.g_size();
-	return 32;
-}
-
-/**
  * \brief Is this a win32 frontend?
  */
 bool
@@ -501,6 +479,21 @@ FrontEnd::decodeInstruction(ADDRESS pc)
 		return invalid;
 	}
 	return getDecoder().decodeInstruction(pc, pBF);
+}
+
+/**
+ * \brief Returns a symbolic name for a register index.
+ */
+const char *
+FrontEnd::getRegName(int idx)
+{
+	return getDecoder().getRegName(idx);
+}
+
+int
+FrontEnd::getRegSize(int idx)
+{
+	return getDecoder().getRegSize(idx);
 }
 
 /**

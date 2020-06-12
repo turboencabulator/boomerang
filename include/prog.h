@@ -105,9 +105,6 @@ public:
 	// list of UserProcs for entry point(s)
 	        std::list<UserProc *> entryProcs;
 
-	        const char *getRegName(int idx) const { return pFE->getRegName(idx); }
-	        int         getRegSize(int idx) const { return pFE->getRegSize(idx); }
-
 	        void        decodeEntryPoint(ADDRESS a);
 	        void        setEntryPoint(ADDRESS a);  // As per the above, but don't decode
 	        void        decodeEverythingUndecoded();

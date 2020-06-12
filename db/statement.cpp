@@ -84,7 +84,7 @@ Assignment::Assignment(Exp *lhs) :
 	if (lhs && lhs->isRegOfK()) {
 		int n = ((Const *)lhs->getSubExp1())->getInt();
 		if (((Location *)lhs)->getProc()) {
-			type = new SizeType(((Location *)lhs)->getProc()->getProg()->getRegSize(n));
+			type = new SizeType(((Location *)lhs)->getProc()->getProg()->getFrontEnd()->getRegSize(n));
 		}
 	}
 }

@@ -125,7 +125,10 @@ public:
 	virtual int decodeAssemblyInstruction(ADDRESS pc, ptrdiff_t delta) = 0;
 #endif
 
-	RTLInstDict &getRTLDict() { return RTLDict; }
+	int         getRegNum(const std::string &) const;
+	const char *getRegName(int) const;
+	int         getRegSize(int) const;
+
 #if 0 // Cruft?
 	Prog *getProg() { return prog; }
 #endif

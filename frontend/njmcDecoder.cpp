@@ -31,6 +31,30 @@ NJMCDecoder::NJMCDecoder(Prog *prog) :
 {
 }
 
+int
+NJMCDecoder::getRegNum(const std::string &name) const
+{
+	return RTLDict.RegMap.at(name);
+}
+
+/**
+ * \brief Returns a symbolic name for a register index.
+ */
+const char *
+NJMCDecoder::getRegName(int idx) const
+{
+	for (const auto &reg : RTLDict.RegMap)
+		if (reg.second == idx)
+			return reg.first.c_str();
+	return nullptr;
+}
+
+int
+NJMCDecoder::getRegSize(int idx) const
+{
+	return RTLDict.DetRegMap.at(idx).g_size();
+}
+
 /**
  * Given an instruction name and a variable list of Exps representing the
  * actual operands of the instruction, use the RTL template dictionary to
