@@ -141,20 +141,16 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 {
 	INSTTYPE type;              // Cfg type of instruction (e.g. IRET)
 
-	// Declare a queue of targets not yet processed yet. This has to be
-	// individual to the procedure!
-	TARGETS targets;
-
 	Cfg *cfg = proc->getCFG();
 
 	// Initialise the queue of control flow targets that have yet to be decoded.
-	targets.push(addr);
+	cfg->enqueue(addr);
 
 	// Clear the pointer used by the caller prologue code to access the last
 	// call rtl of this procedure
 	//decoder.resetLastCall();
 
-	while ((addr = nextAddress(targets, cfg)) != 0) {
+	while ((addr = cfg->dequeue()) != NO_ADDRESS) {
 		// The list of RTLs for the current basic block
 		auto BB_rtls = new list<HRTL *>();
 
@@ -212,7 +208,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						// Add the out edge if it is to a destination within the
 						// procedure
 						if (dest < upper) {
-							visit(cfg, dest, targets, bb);
+							cfg->visit(dest, bb);
 							cfg->addOutEdge(bb, dest);
 						} else {
 							ostrstream ost;
@@ -233,7 +229,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					// to an NWAY if it turns out to be a switch stmt
 					auto bb = cfg->newBB(BB_rtls, COMPJUMP, 0);
 					if (isSwitch(bb, rtl_jump->getDest(), proc, pBF)) {
-						processSwitch(bb, delta, cfg, targets, pBF);
+						processSwitch(bb, delta, cfg, pBF);
 					} else { // Computed jump
 						// Not a switch statement
 						ostrstream ost;
@@ -258,7 +254,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					// Add the out edge if it is to a destination within the
 					// procedure
 					if (dest < upper) {
-						visit(cfg, dest, targets, bb);
+						cfg->visit(dest, bb);
 						cfg->addOutEdge(bb, dest);
 					} else {
 						ostrstream ost;
@@ -390,6 +386,6 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 			}
 
 		}   // while sequentialDecode
-	}   // while nextAddress()
+	}   // while cfg->dequeue()
 }
 #endif

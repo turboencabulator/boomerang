@@ -26,6 +26,7 @@
 #include <exception>
 #include <list>
 #include <map>
+#include <queue>
 #include <vector>
 
 class BranchStatement;
@@ -55,6 +56,11 @@ class Cfg {
 	 * Pointer to the UserProc object that contains this CFG object.
 	 */
 	UserProc   *myProc;
+
+	/**
+	 * The queue of addresses still to be processed.
+	 */
+	std::queue<ADDRESS> targets;
 
 	/**
 	 * The list of pointers to BBs.
@@ -127,6 +133,13 @@ public:
 	iterator    end()   { return m_listBB.end(); }
 
 	bool        label(ADDRESS, BasicBlock *&);
+	void        visit(ADDRESS, BasicBlock *&);
+
+	/*
+	 * Target queue logic
+	 */
+	void        enqueue(ADDRESS);
+	ADDRESS     dequeue();
 
 	bool        isIncomplete(ADDRESS) const;
 

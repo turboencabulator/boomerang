@@ -525,6 +525,71 @@ Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 }
 
 /**
+ * \brief Visit a destination as a label, i.e. check whether we need to queue
+ * it as a new BB to create later.
+ *
+ * \note At present, it is important to visit an address BEFORE an out edge is
+ * added to that address.  This is because adding an out edge enters the
+ * address into the Cfg's BB map, and it looks like the BB has already been
+ * visited, and it gets overlooked. It would be better to have a scheme
+ * whereby the order of calling these functions (i.e. visit() and
+ * addOutEdge()) did not matter.
+ *
+ * \param addr  The address to be checked.
+ * \param bb    Set to the lower part of the BB if the address already exists
+ *              as a non explicit label (i.e. the BB has to be split).
+ */
+void
+Cfg::visit(ADDRESS addr, BasicBlock *&bb)
+{
+	// Find out if we've already parsed the destination.
+	// Add this address to the back of the local queue,
+	// if not already processed.
+	if (!label(addr, bb))
+		enqueue(addr);
+}
+
+/**
+ * \brief Seed the queue with an initial address.
+ *
+ * Provide an initial address (can call several times if there are several
+ * entry points).
+ *
+ * \note Can be some targets already in the queue now.
+ *
+ * \param addr  Address to seed the queue with.
+ */
+void
+Cfg::enqueue(ADDRESS addr)
+{
+	targets.push(addr);
+	if (Boomerang::get().traceDecoder)
+		LOG << ">0x" << std::hex << addr << std::dec << "\t";
+}
+
+/**
+ * \brief Return the next target from the queue of non-processed targets.
+ *
+ * \returns  The next address to process,
+ *           or NO_ADDRESS if none (queue is empty).
+ */
+ADDRESS
+Cfg::dequeue()
+{
+	while (!targets.empty()) {
+		ADDRESS addr = targets.front();
+		targets.pop();
+		if (Boomerang::get().traceDecoder)
+			LOG << "<0x" << std::hex << addr << std::dec << "\t";
+
+		// If no label there at all, or if there is a BB, it's incomplete, then we can parse this address next
+		if (!existsBB(addr) || isIncomplete(addr))
+			return addr;
+	}
+	return NO_ADDRESS;
+}
+
+/**
  * \brief Return true if there is an incomplete BB already at this address.
  *
  * Checks whether the given native address is in the map.  If not, returns

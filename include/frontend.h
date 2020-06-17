@@ -23,7 +23,6 @@
 
 #include <list>
 #include <map>
-#include <queue>
 #include <string>
 #include <vector>
 
@@ -56,19 +55,6 @@ enum INSTTYPE {
 
 
 /**
- * \brief Contains the target queue logic.
- */
-class TargetQueue {
-	std::queue<ADDRESS> targets;
-
-public:
-	void visit(Cfg *, ADDRESS, BasicBlock *&);
-	void initial(ADDRESS);
-	ADDRESS nextAddress(Cfg *);
-};
-
-
-/**
  * The FrontEnd class implements the source independent parts of the front
  * end:  Decoding machine instructions into a control flow graph populated
  * with low- and high-level RTLs.
@@ -97,8 +83,6 @@ protected:
 	BinaryFile *pBF;            ///< The binary file.
 	Prog *prog;                 ///< The Prog object.
 
-	/// The queue of addresses still to be processed.
-	TargetQueue targetQueue;
 	/// Public map from function name (string) to signature.
 	std::map<std::string, Signature *> librarySignatures;
 	/// Map from address to meaningful name.
@@ -172,7 +156,7 @@ private:
 protected:
 	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
 
-	void handleBranch(ADDRESS, BasicBlock *&, Cfg *, TargetQueue &);
+	void handleBranch(ADDRESS, BasicBlock *&, Cfg *);
 };
 
 

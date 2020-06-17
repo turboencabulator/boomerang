@@ -166,16 +166,15 @@ optimise_DelayCopy(ADDRESS src, ADDRESS dest, int delta, ADDRESS upper)
  *                  dest - the destination being branched to
  *                  upper - the last address in the current procedure
  *                  cfg - the CFG of the current procedure
- *                  targets: queue of targets still to be processed
  * RETURNS:         <nothing>, but newBB may be changed if the destination of
  *                  the branch is in the middle of an existing BB. It will then
  *                  be changed to point to a new BB beginning with the dest
  *============================================================================*/
 void
-handleBranch(ADDRESS dest, ADDRESS upper, BasicBlock *&newBB, Cfg *cfg, TARGETS &targets)
+handleBranch(ADDRESS dest, ADDRESS upper, BasicBlock *&newBB, Cfg *cfg)
 {
 	if (dest < upper) {
-		visit(cfg, dest, targets, newBB);
+		cfg->visit(dest, newBB);
 		cfg->addOutEdge(newBB, dest);
 	} else {
 		ostrstream ost;
@@ -378,14 +377,13 @@ case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
  *                   BB_rtls - the list of RTLs currently built for the BB under
  *                     construction
  *                   cfg - the CFG of the enclosing procedure
- *                   targets: queue of targets still to be processed
  * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
  * RETURNS:          <nothing>
  *============================================================================*/
 void
 case_SD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
             const DecodeResult &inst, const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
-            Cfg *cfg, TARGETS &targets)
+            Cfg *cfg)
 {
 	auto SD_rtl = static_cast<HLJump *>(inst.rtl);
 
@@ -415,7 +413,7 @@ case_SD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 	auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 
 	// Visit the destination, and add the out-edge
-	handleBranch(SD_rtl->getFixedDest(), upper, bb, cfg, targets);
+	handleBranch(SD_rtl->getFixedDest(), upper, bb, cfg);
 	BB_rtls = nullptr;
 }
 
@@ -436,7 +434,6 @@ case_SD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
  *                   BB_rtls - the list of RTLs currently built for the BB under
  *                     construction
  *                   cfg - the CFG of the enclosing procedure
- *                   targets: queue of targets still to be processed
  *                   proc: pointer to the current Proc object
  *                   callSet - a set of pointers to HLCalls for procs yet to
  *                     be processed
@@ -448,7 +445,7 @@ case_SD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 bool
 case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
             const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls, Cfg *cfg,
-            TARGETS &targets, UserProc *proc, std::list<CallStatement *> &callList, int size)
+            UserProc *proc, std::list<CallStatement *> &callList, int size)
 {
 	// Assume that if we find a call in the delay slot, it's actually a pattern
 	// such as move/call/move
@@ -529,7 +526,7 @@ case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
 		// really be merged into one
 		auto rtl_jump = static_cast<HLNwayJump *>(inst.rtl);
 		if (isSwitch(newBB, rtl_jump->getDest(), proc, pBF)) {
-			processSwitch(newBB, delta, cfg, targets, pBF);
+			processSwitch(newBB, delta, cfg, pBF);
 		} else {
 			ostrstream os;
 			os << "COMPUTED JUMP at " << hex << addr - 8;
@@ -563,7 +560,6 @@ case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
  *                   BB_rtls - the list of RTLs currently built for the BB under
  *                     construction
  *                   cfg - the CFG of the enclosing procedure
- *                   targets: queue of targets still to be processed
  * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
  * RETURNS:          true if next instruction is to be fetched sequentially from
  *                      this one
@@ -571,7 +567,7 @@ case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
 bool
 case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
              const DecodeResult &inst, const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
-             Cfg *cfg, TARGETS &targets)
+             Cfg *cfg)
 {
 	auto rtl_jump = static_cast<HLJump *>(inst.rtl);
 	auto dest = rtl_jump->getFixedDest();
@@ -587,7 +583,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// not used in the true leg
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		handleBranch(dest, upper, bb, cfg, targets);
+		handleBranch(dest, upper, bb, cfg);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;           // Skip the SCD only
@@ -614,7 +610,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		handleBranch(dest, upper, bb, cfg, targets);
+		handleBranch(dest, upper, bb, cfg);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
 		// Skip the NCT/NOP instruction
@@ -626,7 +622,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		handleBranch(dest - 4, upper, bb, cfg, targets);
+		handleBranch(dest - 4, upper, bb, cfg);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;           // Skip branch but not delay
@@ -639,7 +635,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// We want to do this first, else ordering can go silly
 		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
 		// Visit the target of the branch
-		visit(cfg, dest, targets, bb);
+		cfg->visit(dest, bb);
 		auto pOrphan = new HRTLList;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address
@@ -689,7 +685,6 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
  *                   BB_rtls - the list of RTLs currently built for the BB under
  *                     construction
  *                   cfg - the CFG of the enclosing procedure
- *                   targets: queue of targets still to be processed
  * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
  * RETURNS:          true if next instruction is to be fetched sequentially from
  *                      this one
@@ -697,7 +692,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 bool
 case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
                const DecodeResult &inst, const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
-               Cfg *cfg, TARGETS &targets)
+               Cfg *cfg)
 {
 	// We may have to move the delay instruction to an orphan
 	// BB, which then branches to the target of the jump.
@@ -716,7 +711,7 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-		handleBranch(dest - 4, upper, bb, cfg, targets);
+		handleBranch(dest - 4, upper, bb, cfg);
 	} else { // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan
 		// First add the branch.
@@ -725,7 +720,7 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// We want to do this first, else ordering can go silly
 		bb = cfg->newBB(BB_rtls, TWOWAY, 2);
 		// Visit the target of the branch
-		visit(cfg, dest, targets, bb);
+		cfg->visit(dest, bb);
 		auto pOrphan = new HRTLList;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address
@@ -766,10 +761,6 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 bool
 FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
-	// Declare a queue of targets not yet processed yet. This has to be
-	// individual to the procedure! (so not a global)
-	TARGETS targets;
-
 	// Similarly, we have a set of HLCall pointers. These may be disregarded
 	// if this is a speculative decode that fails (i.e. an illegal instruction
 	// is found). If not, this set will be used to add to the set of calls to
@@ -786,12 +777,12 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 	assert(cfg);
 
 	// Initialise the queue of control flow targets that have yet to be decoded.
-	targets.push(addr);
+	cfg->enqueue(addr);
 
 	// Get the next address from which to continue decoding and go from
 	// there. Exit the loop if there are no more addresses or they all
 	// correspond to locations that have been decoded.
-	while ((addr = nextAddress(targets, cfg)) != NO_ADDRESS) {
+	while ((addr = cfg->dequeue()) != NO_ADDRESS) {
 
 		// The list of RTLs for the current basic block
 		auto BB_rtls = new list<HRTL *>();
@@ -894,7 +885,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					// Construct the new basic block and save its destination
 					// address if it hasn't been visited already
 					auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
-					handleBranch(addr + 8, upper, bb, cfg, targets);
+					handleBranch(addr + 8, upper, bb, cfg);
 
 					// There is no fall through branch.
 					sequentialDecode = false;
@@ -910,7 +901,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				} else {
 					BB_rtls->push_back(rtl_jump);
 					auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
-					handleBranch(rtl_jump->getFixedDest(), upper, bb, cfg, targets);
+					handleBranch(rtl_jump->getFixedDest(), upper, bb, cfg);
 					addr += inst.numBytes;    // Update address for coverage
 				}
 
@@ -935,7 +926,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							sequentialDecode = case_CALL_NCT(addr, inst, delay_inst, BB_rtls, proc, callList);
 						} else {
 							// This is a non-call followed by an NCT/NOP
-							case_SD_NCT(addr, delta, upper, inst, delay_inst, BB_rtls, cfg, targets);
+							case_SD_NCT(addr, delta, upper, inst, delay_inst, BB_rtls, cfg);
 
 							// There is no fall through branch.
 							sequentialDecode = false;
@@ -984,7 +975,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 								callList.push_back((HLCall *)inst.rtl);
 							} else {
 								auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
-								handleBranch(dest, upper, bb, cfg, targets);
+								handleBranch(dest, upper, bb, cfg);
 
 								// There is no fall through branch.
 								sequentialDecode = false;
@@ -1020,7 +1011,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					switch (delay_inst.type) {
 					case NOP:
 					case NCT:
-						sequentialDecode = case_DD_NCT(addr, delta, inst, delay_inst, BB_rtls, cfg, targets, proc, callList, 8);
+						sequentialDecode = case_DD_NCT(addr, delta, inst, delay_inst, BB_rtls, cfg, proc, callList, 8);
 						break;
 					default:
 						case_unhandled_stub(addr);
@@ -1034,7 +1025,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					// Same as DD case, but no delay slot to worry about
 					DecodeResult delay_inst = nop_inst;
 
-					sequentialDecode = case_DD_NCT(addr, delta, inst, delay_inst, BB_rtls, cfg, targets, proc, callList, 4);
+					sequentialDecode = case_DD_NCT(addr, delta, inst, delay_inst, BB_rtls, cfg, proc, callList, 4);
 				}
 				break;
 
@@ -1063,7 +1054,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					switch (delay_inst.type) {
 					case NOP:
 					case NCT:
-						sequentialDecode = case_SCD_NCT(addr, delta, upper, inst, delay_inst, BB_rtls, cfg, targets);
+						sequentialDecode = case_SCD_NCT(addr, delta, upper, inst, delay_inst, BB_rtls, cfg);
 						break;
 					default:
 						case_unhandled_stub(addr);
@@ -1093,7 +1084,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
 							// Visit the destination of the branch; add "true" leg
 							auto dest = rtl_jump->getFixedDest();
-							handleBranch(dest, upper, bb, cfg, targets);
+							handleBranch(dest, upper, bb, cfg);
 							// Add the "false" leg: point past the delay inst
 							cfg->addOutEdge(bb, addr + 8);
 							addr += 8;          // Skip branch and delay
@@ -1102,7 +1093,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 						break;
 
 					case NCT:
-						sequentialDecode = case_SCDAN_NCT(addr, delta, upper, inst, delay_inst, BB_rtls, cfg, targets);
+						sequentialDecode = case_SCDAN_NCT(addr, delta, upper, inst, delay_inst, BB_rtls, cfg);
 						break;
 
 					default:
@@ -1121,7 +1112,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					BB_rtls->push_back(rtl);        // Add the jump
 					auto dest = ((HLJump *)rtl)->getFixedDest();
 					auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-					handleBranch(dest, upper, bb, cfg, targets);
+					handleBranch(dest, upper, bb, cfg);
 					addr += 4;          // "Delay slot" instruction is next
 					cfg->addOutEdge(bb, addr);  // False leg
 					BB_rtls = nullptr;  // Start new list of RTLs for next BB

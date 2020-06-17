@@ -593,9 +593,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		return false;
 	assert(cfg);
 
-	// Initialise the queue of control flow targets that have yet to be decoded.
-	targetQueue.initial(addr);
-
 	// Clear the pointer used by the caller prologue code to access the last call rtl of this procedure
 	//getDecoder().resetLastCall();
 
@@ -603,7 +600,10 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 	ADDRESS startAddr = addr;
 	ADDRESS lastAddr = addr;
 
-	while ((addr = targetQueue.nextAddress(cfg)) != NO_ADDRESS) {
+	// Initialise the queue of control flow targets that have yet to be decoded.
+	cfg->enqueue(addr);
+
+	while ((addr = cfg->dequeue()) != NO_ADDRESS) {
 		// The list of RTLs for the current basic block
 		auto BB_rtls = new std::list<RTL *>();
 
@@ -743,7 +743,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 							auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 							BB_rtls = nullptr;  // Clear when make new BB
-							handleBranch(dest, bb, cfg, targetQueue);
+							handleBranch(dest, bb, cfg);
 						}
 					}
 					break;
@@ -810,7 +810,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 									auto dest = pBF->readNative4(jmptbl + i * 4);
 									if (pBF->getLimitTextLow() <= dest && dest < pBF->getLimitTextHigh()) {
 										LOG << "  guessed dest 0x" << std::hex << dest << std::dec << "\n";
-										targetQueue.visit(cfg, dest, bb);
+										cfg->visit(dest, bb);
 										cfg->addOutEdge(bb, dest);
 									} else
 										break;
@@ -829,7 +829,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						auto dest = branch->getFixedDest();
 						BB_rtls->push_back(rtl);
 						auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
-						handleBranch(dest, bb, cfg, targetQueue);
+						handleBranch(dest, bb, cfg);
 
 						// Add the fall-through outedge
 						cfg->addOutEdge(bb, addr + inst.numBytes);
@@ -1024,7 +1024,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 					sequentialDecode = false;
 			}
 		} // while sequentialDecode
-	} // while nextAddress() != NO_ADDRESS
+	} // while cfg->dequeue() != NO_ADDRESS
 
 	// Add the callees to the set of CallStatements, and also to the Prog object
 	for (const auto &call : callList) {
@@ -1051,76 +1051,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 		LOG << "finished processing proc " << proc->getName() << " at address 0x" << std::hex << proc->getNativeAddress() << std::dec << "\n";
 
 	return true;
-}
-
-/**
- * \brief Visit a destination as a label, i.e. check whether we need to queue
- * it as a new BB to create later.
- *
- * \note At present, it is important to visit an address BEFORE an out edge is
- * added to that address.  This is because adding an out edge enters the
- * address into the Cfg's BB map, and it looks like the BB has already been
- * visited, and it gets overlooked. It would be better to have a scheme
- * whereby the order of calling these functions (i.e. visit() and
- * addOutEdge()) did not matter.
- *
- * \param cfg      The enclosing CFG.
- * \param newAddr  The address to be checked.
- * \param newBB    Set to the lower part of the BB if the address already
- *                 exists as a non explicit label
- *                 (i.e. the BB has to be split).
- */
-void
-TargetQueue::visit(Cfg *cfg, ADDRESS newAddr, BasicBlock *&newBB)
-{
-	// Find out if we've already parsed the destination
-	bool bParsed = cfg->label(newAddr, newBB);
-	// Add this address to the back of the local queue,
-	// if not already processed
-	if (!bParsed) {
-		targets.push(newAddr);
-		if (Boomerang::get().traceDecoder)
-			LOG << ">0x" << std::hex << newAddr << std::dec << "\t";
-	}
-}
-
-/**
- * \brief Seed the queue with an initial address.
- *
- * Provide an initial address (can call several times if there are several
- * entry points).
- *
- * \note Can be some targets already in the queue now.
- *
- * \param addr  Native address to seed the queue with.
- */
-void
-TargetQueue::initial(ADDRESS addr)
-{
-	targets.push(addr);
-}
-
-/**
- * \brief Return the next target from the queue of non-processed targets.
- *
- * \param cfg  The enclosing CFG.
- * \returns    The next address to process,
- *             or NO_ADDRESS if none (queue is empty).
- */
-ADDRESS
-TargetQueue::nextAddress(Cfg *cfg)
-{
-	while (!targets.empty()) {
-		ADDRESS address = targets.front();
-		targets.pop();
-		if (Boomerang::get().traceDecoder)
-			LOG << "<0x" << std::hex << address << std::dec << "\t";
-
-		// If no label there at all, or if there is a BB, it's incomplete, then we can parse this address next
-		if (!cfg->existsBB(address) || cfg->isIncomplete(address))
-			return address;
-	}
-	return NO_ADDRESS;
 }
 
 /*
@@ -1185,7 +1115,7 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 		bb = cfg->newBB(BB_rtls, ONEWAY, 1);
 		// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
 		// instructions before the return instruction).
-		targetQueue.visit(cfg, retAddr, bb);
+		cfg->visit(retAddr, bb);
 		cfg->addOutEdge(bb, retAddr);
 	}
 	return bb;
@@ -1199,7 +1129,6 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
  * \param newBB      The new basic block delimited by the branch instruction.
  *                   May be nullptr if this block has been built before.
  * \param cfg        The CFG of the current procedure.
- * \param tq         Object managing the target queue.
  *
  * \par Side Effect
  * newBB may be changed if the destination of the branch is in the middle of
@@ -1207,10 +1136,10 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
  * with the dest.
  */
 void
-FrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg, TargetQueue &tq)
+FrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg)
 {
 	if (dest < pBF->getLimitTextHigh()) {
-		tq.visit(cfg, dest, newBB);
+		cfg->visit(dest, newBB);
 		cfg->addOutEdge(newBB, dest);
 	} else {
 		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";

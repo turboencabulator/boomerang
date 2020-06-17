@@ -52,16 +52,16 @@ private:
 	               UserProc *, std::list<CallStatement *> &, bool = false);
 
 	void case_SD(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
-	             Cfg *, TargetQueue &);
+	             Cfg *);
 
 	bool case_DD(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
-	             TargetQueue &, UserProc *, std::list<CallStatement *> &);
+	             UserProc *, std::list<CallStatement *> &);
 
 	bool case_SCD(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
-	              Cfg *, TargetQueue &);
+	              Cfg *);
 
 	bool case_SCDAN(ADDRESS &, const DecodeResult &, const DecodeResult &, std::list<RTL *> *&,
-	                Cfg *, TargetQueue &);
+	                Cfg *);
 
 	//static void emitNop(std::list<RTL *> &, ADDRESS);
 	static void emitCopyPC(std::list<RTL *> &, ADDRESS);
