@@ -703,7 +703,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 	// correspond to locations that have been decoded.
 	while ((addr = cfg->dequeue()) != NO_ADDRESS) {
 		// The list of RTLs for the current basic block
-		auto BB_rtls = new std::list<RTL *>();
+		auto BB_rtls = (std::list<RTL *> *)nullptr;
 
 		// Indicates whether or not the next instruction to be decoded is the lexical successor of the current one.
 		// Will be true for all NCTs and for CTIs with a fall through branch.

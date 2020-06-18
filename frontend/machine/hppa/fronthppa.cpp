@@ -785,7 +785,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 	while ((addr = cfg->dequeue()) != NO_ADDRESS) {
 
 		// The list of RTLs for the current basic block
-		auto BB_rtls = new list<HRTL *>();
+		auto BB_rtls = (list<HRTL *> *)nullptr;
 
 		// Indicates whether or not the next instruction to be decoded is the lexical successor of the current one.
 		// Will be true for all NCTs and for CTIs with a fall through branch.
