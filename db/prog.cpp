@@ -1787,13 +1787,7 @@ Memoisable::restoreMemo(bool dec)
 void
 Prog::decodeFragment(UserProc *proc, ADDRESS a)
 {
-	if (a >= pBF->getLimitTextLow() && a < pBF->getLimitTextHigh())
-		pFE->decodeFragment(proc, a);
-	else {
-		std::cerr << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
-		if (VERBOSE)
-			LOG << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
-	}
+	pFE->decodeFragment(proc, a);
 }
 
 Exp *

@@ -463,9 +463,15 @@ FrontEnd::decodeOnly(ADDRESS a)
 void
 FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 {
-	if (Boomerang::get().traceDecoder)
-		LOG << "decoding fragment at 0x" << std::hex << a << std::dec << "\n";
-	processProc(a, proc, true);
+	if (a >= pBF->getLimitTextLow() && a < pBF->getLimitTextHigh()) {
+		if (Boomerang::get().traceDecoder)
+			LOG << "decoding fragment at 0x" << std::hex << a << std::dec << "\n";
+		processProc(a, proc, true);
+	} else {
+		std::cerr << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
+		if (VERBOSE)
+			LOG << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
+	}
 }
 
 DecodeResult &
