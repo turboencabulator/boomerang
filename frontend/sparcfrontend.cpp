@@ -356,13 +356,11 @@ SparcFrontEnd::case_SD(ADDRESS &addr, const DecodeResult &inst,
 
 	// Add the SD
 	BB_rtls->push_back(inst.rtl);
-
-	// Add the one-way branch BB
 	auto bb = cfg->newBB(BB_rtls, ONEWAY);
+	BB_rtls = nullptr;
 
 	// Visit the destination, and add the out-edge
 	handleBranch(SD_stmt->getFixedDest(), bb, cfg);
-	BB_rtls = nullptr;
 }
 
 
@@ -494,12 +492,11 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Assumes the first instruction of the pattern is not used in the true leg
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest, bb, cfg);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;  // Skip the SCD only
-		// Start a new list of RTLs for the next BB
-		BB_rtls = nullptr;
 		std::cerr << "Warning: instruction at " << std::hex << addr << std::dec
 		          << " not copied to true leg of preceeding branch\n";
 		return true;
@@ -517,6 +514,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest, bb, cfg);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
@@ -528,6 +526,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest - 4, bb, cfg);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
@@ -538,6 +537,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs. We want to do this first, else ordering can go silly
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		// Visit the target of the branch
 		cfg->visit(dest, bb);
 		auto pOrphan = new std::list<RTL *>;
@@ -562,8 +562,6 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Don't skip the delay instruction, so it will be decoded next.
 		addr += 4;
 	}
-	// Start a new list of RTLs for the next BB
-	BB_rtls = nullptr;
 	return true;
 }
 
@@ -602,12 +600,14 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest - 4, bb, cfg);
 	} else {  // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan. First add the branch.
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs.  We want to do this first, else ordering can go silly
 		bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		// Visit the target of the branch
 		cfg->visit(dest, bb);
 		auto pOrphan = new std::list<RTL *>;
@@ -627,7 +627,6 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 	// Add the "false" leg: point past delay inst.
 	cfg->addOutEdge(bb, addr + 8);
 	addr += 8;          // Skip branch and delay
-	BB_rtls = nullptr;  // Start new BB return true;
 	return true;
 }
 
@@ -947,11 +946,10 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							// Create the appropriate BB
 							if (dynamic_cast<CallStatement *>(last)) {
 								auto bb = cfg->newBB(BB_rtls, CALL);
+								BB_rtls = nullptr;
 								handleCall(proc, dest, bb, cfg, addr, 8);
 
-								// Set the address of the lexical successor of the call that is to be decoded next. Set RTLs
-								// to nullptr so that a new list of RTLs will be created for the next BB.
-								BB_rtls = nullptr;
+								// Set the address of the lexical successor of the call that is to be decoded next.
 								addr += 8;
 
 								// Add this call site to the set of call sites which need to be analysed later.
@@ -1050,15 +1048,14 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						{
 							// This is an ordinary two-way branch.  Add the branch to the list of RTLs for this BB
 							BB_rtls->push_back(inst.rtl);
-							// Create the BB and add it to the CFG
 							auto bb = cfg->newBB(BB_rtls, TWOWAY);
+							BB_rtls = nullptr;
 							// Visit the destination of the branch; add "true" leg
 							auto dest = stmt_jump->getFixedDest();
 							handleBranch(dest, bb, cfg);
 							// Add the "false" leg: point past the delay inst
 							cfg->addOutEdge(bb, addr + 8);
 							addr += 8;          // Skip branch and delay
-							BB_rtls = nullptr;  // Start new BB
 						}
 						break;
 
@@ -1088,8 +1085,8 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				if (BB_rtls) {
 					// Add an out edge to this address
 					auto bb = cfg->newBB(BB_rtls, FALL);
+					BB_rtls = nullptr;
 					cfg->addOutEdge(bb, addr);
-					BB_rtls = nullptr;  // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))

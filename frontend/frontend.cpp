@@ -652,7 +652,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				// Emit the RTL anyway, so we have the address and maybe some other clues
 				BB_rtls->push_back(new RTL(addr));
 				auto bb = cfg->newBB(BB_rtls, INVALID);
-				sequentialDecode = false; BB_rtls = nullptr; continue;
+				BB_rtls = nullptr;
+				sequentialDecode = false;
+				continue;
 			}
 
 			// alert the watchers that we have decoded an instruction
@@ -745,10 +747,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						if (dest != NO_ADDRESS) {
 
 							BB_rtls->push_back(rtl);
-							sequentialDecode = false;
-
 							auto bb = cfg->newBB(BB_rtls, ONEWAY);
 							BB_rtls = nullptr;  // Clear when make new BB
+							sequentialDecode = false;
 							handleBranch(dest, bb, cfg);
 						}
 					}
@@ -762,15 +763,12 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							// SWITCH_INFO *psi = jump->getSwitchInfo();
 							BB_rtls->push_back(rtl);
 							auto bb = cfg->newBB(BB_rtls, NWAY);
+							BB_rtls = nullptr;
+							sequentialDecode = false;
 							bb->processSwitch(proc);        // decode arms, set out edges, etc
-							sequentialDecode = false;       // Don't decode after the jump
-							BB_rtls = nullptr;              // New RTLList for next BB
-							break;                          // Just leave it alone
-						}
-						// Check for indirect calls to library functions, especially in Win32 programs
-						if (dest->isMemOf()
-						 && dest->getSubExp1()->isIntConst()
-						 && pBF->isDynamicLinkedProcPointer(((Const *)dest->getSubExp1())->getAddr())) {
+						} else if (dest->isMemOf()  // Check for indirect calls to library functions, especially in Win32 programs
+						        && dest->getSubExp1()->isIntConst()
+						        && pBF->isDynamicLinkedProcPointer(((Const *)dest->getSubExp1())->getAddr())) {
 							if (VERBOSE)
 								LOG << "jump to a library function: " << *jump << ", replacing with a call/ret.\n";
 							// jump to a library function
@@ -785,9 +783,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							call->setDestProc(lp);
 							BB_rtls->push_back(new RTL(rtl->getAddress(), call));
 							auto bb = cfg->newBB(BB_rtls, CALL);
-							appendSyntheticReturn(bb, proc);
-							sequentialDecode = false;
 							BB_rtls = nullptr;
+							sequentialDecode = false;
+							appendSyntheticReturn(bb, proc);
 							if (rtl->getAddress() == proc->getNativeAddress()) {
 								// it's a thunk
 								// Proc *lp = prog->findProc(func);
@@ -798,33 +796,31 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							}
 							callList.push_back(call);
 							ss = sl.end(); --ss;  // get out of the loop
-							break;
-						}
-						BB_rtls->push_back(rtl);
-						// We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
-						auto bb = cfg->newBB(BB_rtls, COMPJUMP);
-						LOG << "COMPUTED JUMP at 0x" << std::hex << addr << std::dec << ", dest = " << *dest << "\n";
-						if (Boomerang::get().noDecompile) {
-							// try some hacks
-							if (dest->isMemOf()
-							 && dest->getSubExp1()->getOper() == opPlus
-							 && dest->getSubExp1()->getSubExp2()->isIntConst()) {
-								// assume subExp2 is a jump table
-								bb->updateType(NWAY);
-								ADDRESS jmptbl = ((Const *)dest->getSubExp1()->getSubExp2())->getInt();
-								for (unsigned int i = 0; ; ++i) {
-									auto dest = pBF->readNative4(jmptbl + i * 4);
-									if (pBF->getLimitTextLow() <= dest && dest < pBF->getLimitTextHigh()) {
+						} else {  // We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
+							BB_rtls->push_back(rtl);
+							auto bb = cfg->newBB(BB_rtls, COMPJUMP);
+							BB_rtls = nullptr;  // New RTLList for next BB
+							sequentialDecode = false;
+
+							LOG << "COMPUTED JUMP at 0x" << std::hex << addr << std::dec << ", dest = " << *dest << "\n";
+							if (Boomerang::get().noDecompile) {
+								// try some hacks
+								if (dest->isMemOf()
+								 && dest->getSubExp1()->getOper() == opPlus
+								 && dest->getSubExp1()->getSubExp2()->isIntConst()) {
+									// assume subExp2 is a jump table
+									bb->updateType(NWAY);
+									for (ADDRESS jmptbl = ((Const *)dest->getSubExp1()->getSubExp2())->getInt(); ; jmptbl += 4) {
+										auto dest = pBF->readNative4(jmptbl);
+										if (dest < pBF->getLimitTextLow() || dest >= pBF->getLimitTextHigh())
+											break;
 										LOG << "  guessed dest 0x" << std::hex << dest << std::dec << "\n";
 										cfg->visit(dest, bb);
 										cfg->addOutEdge(bb, dest);
-									} else
-										break;
+									}
 								}
 							}
 						}
-						sequentialDecode = false;
-						BB_rtls = nullptr;  // New RTLList for next BB
 					}
 					break;
 
@@ -834,13 +830,13 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						auto dest = branch->getFixedDest();
 						BB_rtls->push_back(rtl);
 						auto bb = cfg->newBB(BB_rtls, TWOWAY);
+						BB_rtls = nullptr;
 						handleBranch(dest, bb, cfg);
 
 						// Add the fall-through outedge
 						cfg->addOutEdge(bb, addr + inst.numBytes);
 
-						// Create the list of RTLs for the next basic block and continue with the next instruction.
-						BB_rtls = nullptr;
+						// Continue with the next instruction.
 					}
 					break;
 
@@ -971,14 +967,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 				case STMT_RET:
 					{
-						// Stop decoding sequentially
-						sequentialDecode = false;
-
 						auto bb = createReturnBlock(proc, BB_rtls, rtl);
-
-						// Create the list of RTLs for the next basic block and
-						// continue with the next instruction.
-						BB_rtls = nullptr;  // New RTLList for next BB
+						BB_rtls = nullptr;
+						sequentialDecode = false;
 					}
 					break;
 
@@ -1018,8 +1009,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				if (BB_rtls) {
 					// Add an out edge to this address
 					auto bb = cfg->newBB(BB_rtls, FALL);
+					BB_rtls = nullptr;
 					cfg->addOutEdge(bb, addr);
-					BB_rtls = nullptr;  // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))

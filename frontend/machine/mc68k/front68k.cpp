@@ -1,19 +1,19 @@
-/*
+/**
+ * \file
+ *
+ * This file contains routines to manage the decoding of mc68k instructions
+ * and the instantiation to RTLs.  These functions replace Frontend.cc for
+ * decoding mc68k instructions.
+ *
+ * \authors
  * Copyright (C) 2000-2001, The University of Queensland
+ * \authors
  * Copyright (C) 2000-2001, Sun Microsystems, Inc
  *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
-
-/*==============================================================================
- * FILE:       front68k.cc
- * OVERVIEW:   This file contains routines to manage the decoding of mc68k
- *             instructions and the instantiation to RTLs. These functions
- *             replace Frontend.cc for decoding mc68k instructions.
- *============================================================================*/
 
 #include "global.h"
 #include "frontend.h"
@@ -27,20 +27,9 @@
 #include "BinaryFile.h"     // For getSymbolByAddress()
 #include "csr.h"            // For class CalleeEpilogue
 
-/*==============================================================================
- * Forward declarations.
- *============================================================================*/
-
-/*==============================================================================
- * File globals.
- *============================================================================*/
-
 // Queues used by various functions
 queue<ADDRESS> qLabels;     // Queue of labels this procedure
 
-/*==============================================================================
- * Forward declarations.
- *============================================================================*/
 void initCti();             // Imp in cti68k.cc
 
 struct SemCmp {
@@ -74,12 +63,9 @@ int arrConds[12][7] = {
 // Ugly. The lengths of the above arrays.
 int condLengths[12] = { 1, 2, 3, 5, 4, 7, 1, 3, 2, 5, 1, 2 };
 
-/*==============================================================================
- * FUNCTION:      initFront
- * OVERVIEW:      Initialise the front end.
- * PARAMETERS:    <none>
- * RETURNS:       <nothing>
- *============================================================================*/
+/**
+ * \brief Initialise the front end.
+ */
 void
 initFront()
 {
@@ -90,7 +76,9 @@ initFront()
 	}
 }
 
-// Get the condition, given that it's something like %NF ^ %OF
+/**
+ * \brief Get the condition, given that it's something like %NF ^ %OF.
+ */
 JCOND_TYPE
 getCond(const SemStr *pCond)
 {
@@ -108,14 +96,14 @@ getCond(const SemStr *pCond)
 	return (JCOND_TYPE)(*mit).second;
 }
 
-/*==============================================================================
- * FUNCTION:      FrontEndSrc::processProc
- * OVERVIEW:      Process a procedure, given a native (source machine) address.
- * PARAMETERS:    address - the address at which the procedure starts
- *                proc - the procedure object
- *                spec - true if a speculative decode
- * RETURNS:       True if successful decode
- *============================================================================*/
+/**
+ * \brief Process a procedure, given a native (source machine) address.
+ *
+ * \param addr  The address at which the procedure starts.
+ * \param proc  The procedure object.
+ * \param spec  true if a speculative decode.
+ * \returns     true if successful decode.
+ */
 bool
 FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
@@ -124,18 +112,16 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 }
 
 #if 0
-/*==============================================================================
- * FUNCTION:      processProc
- * OVERVIEW:      Process a procedure, given a native (source machine) address.
- * PARAMETERS:    address - the address at which the procedure starts
- *                delta - the offset of the above address from the logical
- *                  address at which the procedure starts (i.e. the one
- *                  given by dis)
- *                upper - the highest address of the text segment
- *                proc - the procedure object
- *                decoder - NJMCDecoder object
- * RETURNS:       <nothing>
- *============================================================================*/
+/**
+ * \brief Process a procedure, given a native (source machine) address.
+ *
+ * \param addr     The address at which the procedure starts.
+ * \param delta    The offset of the above address from the logical address at
+ *                 which the procedure starts (i.e. the one given by dis).
+ * \param upper    The highest address of the text segment.
+ * \param proc     The procedure object.
+ * \param decoder  NJMCDecoder object.
+ */
 void
 processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder &decoder)
 {
@@ -184,8 +170,8 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 				// some other clues
 				BB_rtls->push_back(new RTL(addr));
 				auto bb = cfg->newBB(BB_rtls, INVALID);
-				sequentialDecode = false;
 				BB_rtls = nullptr;
+				sequentialDecode = false;
 				continue;
 			}
 
@@ -201,9 +187,8 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					// Handle one way jumps and computed jumps separately
 					if (dest != NO_ADDRESS) {
 						BB_rtls->push_back(inst.rtl);
-						sequentialDecode = false;
-
 						auto bb = cfg->newBB(BB_rtls, ONEWAY);
+						sequentialDecode = false;
 
 						// Add the out edge if it is to a destination within the
 						// procedure
@@ -224,10 +209,11 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 			case NWAYJUMP_HRTL:
 				{
 					auto rtl_jump = static_cast<HLJump *>(inst.rtl);
-					BB_rtls->push_back(inst.rtl);
 					// We create the BB as a COMPJUMP type, then change
 					// to an NWAY if it turns out to be a switch stmt
+					BB_rtls->push_back(inst.rtl);
 					auto bb = cfg->newBB(BB_rtls, COMPJUMP);
+					sequentialDecode = false;
 					if (isSwitch(bb, rtl_jump->getDest(), proc, pBF)) {
 						processSwitch(bb, delta, cfg, pBF);
 					} else { // Computed jump
@@ -240,7 +226,6 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						warning(str(ost));
 						BB_rtls = nullptr;  // New HRTLList for next BB
 					}
-					sequentialDecode = false;
 				}
 				break;
 
@@ -250,6 +235,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					auto dest = rtl_jump->getFixedDest();
 					BB_rtls->push_back(inst.rtl);
 					auto bb = cfg->newBB(BB_rtls, TWOWAY);
+					BB_rtls = nullptr;
 
 					// Add the out edge if it is to a destination within the
 					// procedure
@@ -267,9 +253,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					// Add the fall-through outedge
 					cfg->addOutEdge(bb, addr + inst.numBytes);
 
-					// Create the list of RTLs for the next basic block and continue
-					// with the next instruction.
-					BB_rtls = nullptr;
+					// Continue with the next instruction.
 				}
 				break;
 
@@ -281,6 +265,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					if (call->isComputed()) {
 						BB_rtls->push_back(inst.rtl);
 						auto bb = cfg->newBB(BB_rtls, COMPCALL);
+						BB_rtls = nullptr;
 
 						cfg->addOutEdge(bb, addr + inst.numBytes);
 
@@ -288,6 +273,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 
 						BB_rtls->push_back(inst.rtl);
 						auto bb = cfg->newBB(BB_rtls, CALL);
+						BB_rtls = nullptr;
 
 						// Find the address of the callee.
 						ADDRESS newAddr = call->getFixedDest();
@@ -325,24 +311,17 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						}
 					}
 
-					// Create the list of RTLs for the next basic block and continue
-					// with the next instruction.
-					BB_rtls = nullptr;
+					// Continue with the next instruction.
 				}
 				break;
 
 			case RET_HRTL:
-				// Stop decoding sequentially
-				sequentialDecode = false;
-
-				// Add the RTL to the list
-				BB_rtls->push_back(inst.rtl);
-				// Create the basic block
-				auto bb = cfg->newBB(BB_rtls, RET);
-
-				// Create the list of RTLs for the next basic block and continue
-				// with the next instruction.
-				BB_rtls = nullptr;  // New HRTLList for next BB
+				{
+					BB_rtls->push_back(inst.rtl);
+					auto bb = cfg->newBB(BB_rtls, RET);
+					BB_rtls = nullptr;
+					sequentialDecode = false;
+				}
 				break;
 
 			case SCOND_HRTL:
@@ -374,8 +353,8 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 				if (BB_rtls) {
 					// Add an out edge to this address
 					auto bb = cfg->newBB(BB_rtls, FALL);
+					BB_rtls = nullptr;
 					cfg->addOutEdge(bb, addr);
-					BB_rtls = nullptr;      // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))

@@ -1,23 +1,19 @@
-/*
+/**
+ * \file
+ *
+ * This file contains routines to manage the decoding of HP pc-risc
+ * instructions and the instantiation to RTLs.  These functions replace
+ * Frontend.cc for decoding hppa instructions.
+ *
+ * \authors
  * Copyright (C) 2001, The University of Queensland
+ * \authors
  * Copyright (C) 2001, Sun Microsystems, Inc
  *
- * See the file "LICENSE.TERMS" for information on usage and
- * redistribution of this file, and for a DISCLAIMER OF ALL
- * WARRANTIES.
- *
+ * \copyright
+ * See the file "LICENSE.TERMS" for information on usage and redistribution of
+ * this file, and for a DISCLAIMER OF ALL WARRANTIES.
  */
-
-/*==============================================================================
- * FILE:       fronthppa.cc
- * OVERVIEW:   This file contains routines to manage the decoding of HP pc-risc
- *             instructions and the instantiation to RTLs. These functions
- *             replace Frontend.cc for decoding hppa instructions.
- *============================================================================*/
-
-/*==============================================================================
- * Dependencies.
- *============================================================================*/
 
 #include "global.h"
 #include "ss.h"
@@ -31,10 +27,6 @@
 #include "decoder.h"
 #include "BinaryFile.h"
 
-/*==============================================================================
- * Globals and enumerated types used for decoding.
- *============================================================================*/
-
 // These are indexes to the most common control/status registers.
 int idNPC = -1;
 int idCWP = -1;
@@ -44,23 +36,15 @@ int idTmp = -1;
 // delay slot instruction
 static DecodeResult nop_inst;
 
-
-/*==============================================================================
- * Forward declarations.
- *============================================================================*/
 void emitNop(HRTLList &, ADDRESS);
 void emitCopyPC(HRTLList &, ADDRESS);
 void initCti();             // Imp in ctisparc.cc
 void setReturnLocations(CalleeEpilogue *, int);
 bool helperFunc(HRTLList &, ADDRESS, ADDRESS);
 
-/*==============================================================================
- * FUNCTION:        initFront
- * OVERVIEW:        Initialise any globals used by the front end.
- * PARAMETERS:      <none>
- * RETURNS:         <nothing>
- *============================================================================*/
-// Initialise the front end
+/**
+ * \brief Initialise any globals used by the front end.
+ */
 void
 initFront()
 {
@@ -78,13 +62,12 @@ initFront()
 	nop_inst.rtl = new RTL();
 }
 
-/*==============================================================================
- * FUNCTION:         warnDCTcouple
- * OVERVIEW:         Emit a warning when encountering a DCTI couple.
- * PARAMETERS:       at - the address of the couple
- *                   dest - the address of the first DCTI in the couple
- * RETURNS:          <nothing>
- *============================================================================*/
+/**
+ * \brief Emit a warning when encountering a DCTI couple.
+ *
+ * \param at    The address of the couple.
+ * \param dest  The address of the first DCTI in the couple.
+ */
 void
 warnDCTcouple(ADDRESS at, ADDRESS dest)
 {
@@ -95,14 +78,14 @@ warnDCTcouple(ADDRESS at, ADDRESS dest)
 	error(str(ost));
 }
 
-/*==============================================================================
- * FUNCTION:         interferes
- * OVERVIEW:         Return true if the delay slot instruction interferes with
- *                      a register used by the main instruction
- * PARAMETERS:       delayRtl: pointer to the HRTL for the delay slot instr
- *                   mainRtl: pointer to the HRTL for the main instruction
- * RETURNS:          true if interference detected
- *============================================================================*/
+/**
+ * Return true if the delay slot instruction interferes with a register used
+ * by the main instruction.
+ *
+ * \param delayRtl  Pointer to the HRTL for the delay slot instr.
+ * \param mainRtl   Pointer to the HRTL for the main instruction.
+ * \returns         true if interference detected.
+ */
 bool
 interferes(HRTL *delayRtl, HRTL *mainRtl)
 {
@@ -128,21 +111,22 @@ interferes(HRTL *delayRtl, HRTL *mainRtl)
 	return false;
 }
 
-/*==============================================================================
- * FUNCTION:        optimise_DelayCopy
- * OVERVIEW:        Determines if a delay instruction is exactly the same as the
- *                  instruction immediately preceding the destination of a CTI;
- *                  i.e. has been copied from the real destination to the delay
- *                  slot as an optimisation
- * PARAMETERS:      src - the logical source address of a CTI
- *                  dest - the logical destination address of the CTI
- *                  delta - used to convert logical to real addresses
- *                  upper - first address past the end of the main text
- *                    section
- * SIDE EFFECT:     Optionally displays an error message if the target of the
- *                    branch is the delay slot of another delayed CTI
- * RETURNS:         can optimise away the delay instruction
- *============================================================================*/
+/**
+ * Determines if a delay instruction is exactly the same as the instruction
+ * immediately preceding the destination of a CTI; i.e. has been copied from
+ * the real destination to the delay slot as an optimisation.
+ *
+ * \param src    The logical source address of a CTI.
+ * \param dest   The logical destination address of the CTI.
+ * \param delta  Used to convert logical to real addresses.
+ * \param upper  First address past the end of the main text section.
+ *
+ * \par Side Effects
+ * Optionally displays an error message if the target of the branch is the
+ * delay slot of another delayed CTI.
+ *
+ * \returns Can optimise away the delay instruction.
+ */
 bool
 optimise_DelayCopy(ADDRESS src, ADDRESS dest, int delta, ADDRESS upper)
 {
@@ -155,21 +139,21 @@ optimise_DelayCopy(ADDRESS src, ADDRESS dest, int delta, ADDRESS upper)
 	return (delay_inst == inst_before_dest);
 }
 
-/*==============================================================================
- * FUNCTION:        handleBranch
- * OVERVIEW:        Adds the destination of a branch to the queue of address
- *                  that must be decoded (if this destination has not already
- *                  been visited).
- * PARAMETERS:      newBB - the new basic block delimited by the branch
- *                    instruction. May be null if this block has been built
- *                    before.
- *                  dest - the destination being branched to
- *                  upper - the last address in the current procedure
- *                  cfg - the CFG of the current procedure
- * RETURNS:         <nothing>, but newBB may be changed if the destination of
- *                  the branch is in the middle of an existing BB. It will then
- *                  be changed to point to a new BB beginning with the dest
- *============================================================================*/
+/**
+ * Adds the destination of a branch to the queue of address that must be
+ * decoded (if this destination has not already been visited).
+ *
+ * \param newBB  The new basic block delimited by the branch instruction.
+ *               May be null if this block has been built before.
+ * \param dest   The destination being branched to.
+ * \param upper  The last address in the current procedure.
+ * \param cfg    The CFG of the current procedure.
+ *
+ * \par Side Effects
+ * newBB may be changed if the destination of the branch is in the middle of
+ * an existing BB.  It will then be changed to point to a new BB beginning
+ * with the dest.
+ */
 void
 handleBranch(ADDRESS dest, ADDRESS upper, BasicBlock *&newBB, Cfg *cfg)
 {
@@ -183,22 +167,18 @@ handleBranch(ADDRESS dest, ADDRESS upper, BasicBlock *&newBB, Cfg *cfg)
 	}
 }
 
-/*==============================================================================
- * FUNCTION:          handleCall
- * OVERVIEW:          Records the fact that there is a procedure at a given
- *                    address. Also adds the out edge to the
- *                    lexical successor of the call site (taking into
- *                    consideration the delay slot and possible UNIMP
- *                    instruction).
- * PARAMETERS:        dest - the address of the callee
- *                    callBB - the basic block delimited by the call
- *                    cfg - CFG of the enclosing procedure
- *                    addr - the address of the call instruction
- *                    offset - the offset from the call instruction to which an
- *                      outedge must be added. A value of 0 means no edge is to
- *                      be added.
- * RETURNS:           <nothing>
- *============================================================================*/
+/**
+ * Records the fact that there is a procedure at a given address.  Also adds
+ * the out edge to the lexical successor of the call site (taking into
+ * consideration the delay slot and possible UNIMP instruction).
+ *
+ * \param dest    The address of the callee.
+ * \param callBB  The basic block delimited by the call.
+ * \param cfg     CFG of the enclosing procedure.
+ * \param addr    The address of the call instruction.
+ * \param offset  The offset from the call instruction to which an outedge
+ *                must be added.  A value of 0 means no edge is to be added.
+ */
 void
 handleCall(ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS addr, int offset = 0)
 {
@@ -218,14 +198,12 @@ handleCall(ADDRESS dest, BasicBlock *callBB, Cfg *cfg, ADDRESS addr, int offset 
 		cfg->addOutEdge(callBB, addr + offset);
 }
 
-/*==============================================================================
- * FUNCTION:         case_unhandled_stub
- * OVERVIEW:         This is the stub for cases of DCTI couples that we haven't
- *                   written analysis code for yet. It simply displays an
- *                   informative warning and returns.
- * PARAMETERS:       addr - the address of the first CTI in the couple
- * RETURNS:          <nothing>
- *============================================================================*/
+/**
+ * This is the stub for cases of DCTI couples that we haven't written analysis
+ * code for yet.  It simply displays an informative warning and returns.
+ *
+ * \param addr  The address of the first CTI in the couple.
+ */
 void
 case_unhandled_stub(ADDRESS addr)
 {
@@ -234,26 +212,26 @@ case_unhandled_stub(ADDRESS addr)
 	error(str(ost));
 }
 
-/*==============================================================================
- * FUNCTION:         case_CALL_NCT
- * OVERVIEW:         Handles a call instruction followed by an NCT or NOP
- *                   instruction.
- * PARAMETERS:       addr - the native address of the call instruction
- *                   inst - the info summaries when decoding the call
- *                     instruction
- *                   delay_inst - the info summaries when decoding the delay
- *                     instruction
- *                   BB_rtls - the list of RTLs currently built for the BB under
- *                     construction
- *                   proc - the enclosing procedure
- *                   callSet - a set of pointers to HLCalls for procs yet to
- *                     be processed
- *                   isPattern - true if the call is an idiomatic pattern (e.g.
- *                      a move_call_move pattern)
- * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
- * RETURNS:          true if next instruction is to be fetched sequentially from
- *                      this one
- *============================================================================*/
+/**
+ * Handles a call instruction followed by an NCT or NOP instruction.
+ *
+ * \param addr        The native address of the call instruction.
+ * \param inst        The info summaries when decoding the call instruction.
+ * \param delay_inst  The info summaries when decoding the delay instruction.
+ * \param BB_rtls     The list of RTLs currently built for the BB under
+ *                    construction.
+ * \param proc        The enclosing procedure.
+ * \param callList    A set of pointers to HLCalls for procs yet to be
+ *                    processed.
+ * \param isPattern   true if the call is an idiomatic pattern
+ *                    (e.g. a move_call_move pattern).
+ *
+ * \par Side Effects
+ * addr may change; BB_rtls may be appended to or set to null.
+ *
+ * \returns true if next instruction is to be fetched sequentially from this
+ * one.
+ */
 bool
 case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
               const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
@@ -360,24 +338,23 @@ case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
 	}
 }
 
-/*==============================================================================
- * FUNCTION:         case_SD_NCT
- * OVERVIEW:         Handles a non-call, static delayed (SD) instruction
- *                   followed by an NCT or NOP instruction.
- * PARAMETERS:       addr - the native address of the SD
- *                   delta - the offset of the above address from the logical
- *                     address at which the procedure starts (i.e. the one
- *                     given by dis)
- *                   inst - the info summaries when decoding the SD
- *                     instruction
- *                   delay_inst - the info summaries when decoding the delay
- *                     instruction
- *                   BB_rtls - the list of RTLs currently built for the BB under
- *                     construction
- *                   cfg - the CFG of the enclosing procedure
- * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
- * RETURNS:          <nothing>
- *============================================================================*/
+/**
+ * Handles a non-call, static delayed (SD) instruction followed by an NCT or
+ * NOP instruction.
+ *
+ * \param addr        The native address of the SD.
+ * \param delta       The offset of the above address from the logical address
+ *                    at which the procedure starts
+ *                    (i.e. the one given by dis).
+ * \param inst        The info summaries when decoding the SD instruction.
+ * \param delay_inst  The info summaries when decoding the delay instruction.
+ * \param BB_rtls     The list of RTLs currently built for the BB under
+ *                    construction.
+ * \param cfg         The CFG of the enclosing procedure.
+ *
+ * \par Side Effects
+ * addr may change; BB_rtls may be appended to or set to null.
+ */
 void
 case_SD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
             const DecodeResult &inst, const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
@@ -406,40 +383,40 @@ case_SD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 
 	// Add the SD
 	BB_rtls->push_back(SD_rtl);
-
-	// Add the one-way branch BB
 	auto bb = cfg->newBB(BB_rtls, ONEWAY);
+	BB_rtls = nullptr;
 
 	// Visit the destination, and add the out-edge
 	handleBranch(SD_rtl->getFixedDest(), upper, bb, cfg);
-	BB_rtls = nullptr;
 }
 
 
-/*==============================================================================
- * FUNCTION:         case_DD_NCT
- * OVERVIEW:         Handles all dynamic delayed jumps (jmpl, also dynamic
- *                    calls) followed by an NCT or NOP instruction.
- * NOTE:             Also handles DU, if delay_inst is assigned nop_inst
- * PARAMETERS:       addr - the native address of the DD
- *                   delta - the offset of the above address from the logical
- *                     address at which the procedure starts (i.e. the one
- *                     given by dis)
- *                   inst - the info summaries when decoding the SD
- *                     instruction
- *                   delay_inst - the info summaries when decoding the delay
- *                     instruction
- *                   BB_rtls - the list of RTLs currently built for the BB under
- *                     construction
- *                   cfg - the CFG of the enclosing procedure
- *                   proc: pointer to the current Proc object
- *                   callSet - a set of pointers to HLCalls for procs yet to
- *                     be processed
- *                   size: size of this instruction (8 if delay slot)
- * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
- * RETURNS:          true if next instruction is to be fetched sequentially from
- *                      this one
- *============================================================================*/
+/**
+ * Handles all dynamic delayed jumps (jmpl, also dynamic calls) followed by an
+ * NCT or NOP instruction.
+ *
+ * \note Also handles DU, if delay_inst is assigned nop_inst.
+ *
+ * \param addr         The native address of the DD.
+ * \param delta        The offset of the above address from the logical
+ *                     address at which the procedure starts
+ *                     (i.e. the one given by dis).
+ * \param inst         The info summaries when decoding the SD instruction.
+ * \param delay_inst   The info summaries when decoding the delay instruction.
+ * \param BB_rtls      The list of RTLs currently built for the BB under
+ *                     construction.
+ * \param cfg          The CFG of the enclosing procedure.
+ * \param proc         Pointer to the current Proc object.
+ * \param callList     A set of pointers to HLCalls for procs yet to be
+ *                     processed.
+ * \param size         Size of this instruction (8 if delay slot).
+ *
+ * \par Side Effects
+ * addr may change; BB_rtls may be appended to or set to null.
+ *
+ * \returns true if next instruction is to be fetched sequentially from this
+ * one.
+ */
 bool
 case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
             const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls, Cfg *cfg,
@@ -542,26 +519,27 @@ case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
 	return bRet;
 }
 
-/*==============================================================================
- * FUNCTION:         case_SCD_NCT
- * OVERVIEW:         Handles all static conditional delayed non-anulled branches
- *                     followed by an NCT or NOP instruction.
- * PARAMETERS:       addr - the native address of the DD
- *                   delta - the offset of the above address from the logical
- *                     address at which the procedure starts (i.e. the one
- *                     given by dis)
-                     upper - first address outside this code section
- *                   inst - the info summaries when decoding the SD
- *                     instruction
- *                   delay_inst - the info summaries when decoding the delay
- *                     instruction
- *                   BB_rtls - the list of RTLs currently built for the BB under
- *                     construction
- *                   cfg - the CFG of the enclosing procedure
- * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
- * RETURNS:          true if next instruction is to be fetched sequentially from
- *                      this one
- *============================================================================*/
+/**
+ * Handles all static conditional delayed non-anulled branches followed by an
+ * NCT or NOP instruction.
+ *
+ * \param addr        The native address of the DD.
+ * \param delta       The offset of the above address from the logical address
+ *                    at which the procedure starts
+ *                    (i.e. the one given by dis).
+ * \param upper       First address outside this code section.
+ * \param inst        The info summaries when decoding the SD instruction.
+ * \param delay_inst  The info summaries when decoding the delay instruction.
+ * \param BB_rtls     The list of RTLs currently built for the BB under
+ *                    construction.
+ * \param cfg         The CFG of the enclosing procedure.
+ *
+ * \par Side Effects
+ * addr may change; BB_rtls may be appended to or set to null.
+ *
+ * \returns true if next instruction is to be fetched sequentially from this
+ * one.
+ */
 bool
 case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
              const DecodeResult &inst, const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
@@ -581,12 +559,11 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// not used in the true leg
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest, upper, bb, cfg);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;           // Skip the SCD only
-		// Start a new list of RTLs for the next BB
-		BB_rtls = nullptr;
 		ostrstream ost;
 		ost << "instruction at " << hex << addr;
 		ost << " not copied to true leg of preceeding branch";
@@ -608,6 +585,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest, upper, bb, cfg);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
@@ -620,6 +598,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest - 4, upper, bb, cfg);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
@@ -632,6 +611,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Make a BB for the current list of RTLs
 		// We want to do this first, else ordering can go silly
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		// Visit the target of the branch
 		cfg->visit(dest, bb);
 		auto pOrphan = new HRTLList;
@@ -661,32 +641,30 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// be decoded next.
 		addr += 4;
 	}
-
-	// Start a new list of RTLs for the next BB
-	BB_rtls = nullptr;
 	return true;
 }
 
-/*==============================================================================
- * FUNCTION:         case_SCDAN_NCT
- * OVERVIEW:         Handles all static conditional delayed anulled branches
- *                     followed by an NCT (but not NOP) instruction.
- * PARAMETERS:       addr - the native address of the DD
- *                   delta - the offset of the above address from the logical
- *                     address at which the procedure starts (i.e. the one
- *                     given by dis)
-                     upper - first address outside this code section
- *                   inst - the info summaries when decoding the SD
- *                     instruction
- *                   delay_inst - the info summaries when decoding the delay
- *                     instruction
- *                   BB_rtls - the list of RTLs currently built for the BB under
- *                     construction
- *                   cfg - the CFG of the enclosing procedure
- * SIDE EFFECTS:     addr may change; BB_rtls may be appended to or set to null
- * RETURNS:          true if next instruction is to be fetched sequentially from
- *                      this one
- *============================================================================*/
+/**
+ * Handles all static conditional delayed anulled branches followed by an NCT
+ * (but not NOP) instruction.
+ *
+ * \param addr        The native address of the DD.
+ * \param delta       The offset of the above address from the logical address
+ *                    at which the procedure starts
+ *                    (i.e. the one given by dis).
+ * \param upper       First address outside this code section.
+ * \param inst        The info summaries when decoding the SD instruction.
+ * \param delay_inst  The info summaries when decoding the delay instruction.
+ * \param BB_rtls     The list of RTLs currently built for the BB under
+ *                    construction.
+ * \param cfg         The CFG of the enclosing procedure.
+ *
+ * \par Side Effects
+ * addr may change; BB_rtls may be appended to or set to null.
+ *
+ * \returns true if next instruction is to be fetched sequentially from this
+ * one.
+ */
 bool
 case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
                const DecodeResult &inst, const DecodeResult &delay_inst, list<HRTL *> *&BB_rtls,
@@ -709,6 +687,7 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
 		bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		handleBranch(dest - 4, upper, bb, cfg);
 	} else { // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan
@@ -717,6 +696,7 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Make a BB for the current list of RTLs
 		// We want to do this first, else ordering can go silly
 		bb = cfg->newBB(BB_rtls, TWOWAY);
+		BB_rtls = nullptr;
 		// Visit the target of the branch
 		cfg->visit(dest, bb);
 		auto pOrphan = new HRTLList;
@@ -737,25 +717,23 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 	// Add the "false" leg: point past delay inst.
 	cfg->addOutEdge(bb, addr + 8);
 	addr += 8;              // Skip branch and delay
-	BB_rtls = nullptr;      // Start new BB return true;
 	return true;
 }
 
-
-/*==============================================================================
- * FUNCTION:         FrontEndSrc::processProc
- * OVERVIEW:         Builds the CFG for a procedure out of the RTLs constructed
- *                   during decoding. The semantics of delayed CTIs are
- *                   transformed into CTIs that aren't delayed.
- * NOTE:             This function overrides (and replaces) the function with
- *                     the same name in class FrontEnd. The required actions
- *                     are so different that the base class implementation
- *                     can't be re-used
- * PARAMETERS:       addr - the address at which the procedure starts
- *                   proc - the procedure object
- *                   spec - if true, this is a speculative decode
- * RETURNS:          True if a good decode
- *============================================================================*/
+/**
+ * Builds the CFG for a procedure out of the RTLs constructed during decoding.
+ * The semantics of delayed CTIs are transformed into CTIs that aren't
+ * delayed.
+ *
+ * \note This function overrides (and replaces) the function with the same
+ * name in class FrontEnd. The required actions are so different that the base
+ * class implementation can't be re-used.
+ *
+ * \param addr  The address at which the procedure starts.
+ * \param proc  The procedure object.
+ * \param spec  If true, this is a speculative decode.
+ * \returns     true if a good decode.
+ */
 bool
 FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
@@ -960,13 +938,11 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// Create the appropriate BB
 							if (rtl->getKind() == CALL_HRTL) {
 								auto bb = cfg->newBB(BB_rtls, CALL);
+								BB_rtls = nullptr;
 								handleCall(dest, bb, cfg, addr, 8);
 
 								// Set the address of the lexical successor of the
-								// call that is to be decoded next. Set RTLs to
-								// null so that a new list of RTLs will be created
-								// for the next BB.
-								BB_rtls = nullptr;
+								// call that is to be decoded next.
 								addr += 8;
 
 								// Add this call site to the set of call sites which
@@ -1079,15 +1055,14 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// This is an ordinary two-way branch.
 							// Add the branch to the list of RTLs for this BB
 							BB_rtls->push_back(rtl);
-							// Create the BB and add it to the CFG
 							auto bb = cfg->newBB(BB_rtls, TWOWAY);
+							BB_rtls = nullptr;
 							// Visit the destination of the branch; add "true" leg
 							auto dest = rtl_jump->getFixedDest();
 							handleBranch(dest, upper, bb, cfg);
 							// Add the "false" leg: point past the delay inst
 							cfg->addOutEdge(bb, addr + 8);
 							addr += 8;          // Skip branch and delay
-							BB_rtls = nullptr;  // Start new BB
 						}
 						break;
 
@@ -1111,10 +1086,10 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					BB_rtls->push_back(rtl);        // Add the jump
 					auto dest = ((HLJump *)rtl)->getFixedDest();
 					auto bb = cfg->newBB(BB_rtls, TWOWAY);
+					BB_rtls = nullptr;
 					handleBranch(dest, upper, bb, cfg);
 					addr += 4;          // "Delay slot" instruction is next
 					cfg->addOutEdge(bb, addr);  // False leg
-					BB_rtls = nullptr;  // Start new list of RTLs for next BB
 				}
 				break;
 
@@ -1166,8 +1141,8 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				if (BB_rtls) {
 					// Add an out edge to this address
 					auto bb = cfg->newBB(BB_rtls, FALL);
+					BB_rtls = nullptr;
 					cfg->addOutEdge(bb, addr);
-					BB_rtls = nullptr;      // Need new list of RTLs
 				}
 				// Pick a new address to decode from, if the BB is complete
 				if (!cfg->isIncomplete(addr))
@@ -1191,12 +1166,12 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 	return true;
 }
 
-/*==============================================================================
- * FUNCTION:      emitNop
- * OVERVIEW:      Emit a null RTL with the given address.
- * PARAMETERS:    rtls - List of RTLs to append this instruction to
- *                addr - Native address of this instruction
- *============================================================================*/
+/**
+ * \brief Emit a null RTL with the given address.
+ *
+ * \param rtls  List of RTLs to append this instruction to.
+ * \param addr  Native address of this instruction.
+ */
 void
 emitNop(HRTLList &rtls, ADDRESS addr)
 {
@@ -1205,18 +1180,18 @@ emitNop(HRTLList &rtls, ADDRESS addr)
 	rtls.push_back(new RTL(addr));
 }
 
-/*==============================================================================
- * FUNCTION:      emitCopyPC
- * OVERVIEW:      Emit the RTL for a call $+8 instruction, which is merely
- *                  %o7 = %pc
- * NOTE:          Assumes that the delay slot RTL has already been pushed; we
- *                  must push the semantics BEFORE that RTL, since the delay
- *                  slot instruction may use %o7. Example:
- *                  CALL $+8            ! This code is common in startup code
- *                  ADD  %o7, 20, %o0
- * PARAMETERS:    rtls - list of RTLs to append to
- *                addr - native address for the RTL
- *============================================================================*/
+/**
+ * Emit the RTL for a call $+8 instruction, which is merely %o7 = %pc.
+ *
+ * \note Assumes that the delay slot RTL has already been pushed; we must push
+ * the semantics BEFORE that RTL, since the delay slot instruction may use
+ * %o7.  Example:
+ *     CALL $+8            ! This code is common in startup code
+ *     ADD  %o7, 20, %o0
+ *
+ * \param rtls  List of RTLs to append to.
+ * \param addr  Native address for the RTL.
+ */
 void
 emitCopyPC(HRTLList &rtls, ADDRESS addr)
 {
@@ -1236,7 +1211,9 @@ emitCopyPC(HRTLList &rtls, ADDRESS addr)
 	rtls.insert(--rtls.end(), rtl);
 }
 
-// Append one assignment to a list of RTLs
+/**
+ * \brief Append one assignment to a list of RTLs.
+ */
 void
 appendAssignment(HRTLList &rtls, ADDRESS addr, SemStr *lhs, SemStr *rhs, int size)
 {
@@ -1249,19 +1226,22 @@ appendAssignment(HRTLList &rtls, ADDRESS addr, SemStr *lhs, SemStr *rhs, int siz
 	rtls.push_back(rtl);
 }
 
-/*==============================================================================
- * FUNCTION:        helperFunc
- * OVERVIEW:        Checks for sparc specific helper functions like .urem,
- *                      which have specific semantics.
- * NOTE:            This needs to be handled in a resourcable way.
- * PARAMETERS:      dest: destination of the call (native address)
- *                  addr: address of current instruction (native addr)
- *                  rtls: list of RTL* for current BB
- * RETURNS:         True if a helper function was found and handled; false
- *                      otherwise
- *============================================================================*/
-// Determine if this is a helper function, e.g. .mul. If so, append the
-// appropriate RTLs to rtls, and return true
+/**
+ * \brief Checks for sparc specific helper functions like .urem, which have
+ * specific semantics.
+ *
+ * Determine if this is a helper function, e.g. .mul.  If so, append the
+ * appropriate RTLs to rtls, and return true.
+ *
+ * \note This needs to be handled in a resourcable way.
+ *
+ * \param dest  Destination of the call (native address).
+ * \param addr  Address of current instruction (native addr).
+ * \param rtls  List of RTL* for current BB.
+ *
+ * \returns     true if a helper function was found and handled;
+ *              false otherwise.
+ */
 bool
 helperFunc(HRTLList &rtls, ADDRESS addr, ADDRESS dest)
 {
@@ -1325,8 +1305,10 @@ helperFunc(HRTLList &rtls, ADDRESS addr, ADDRESS dest)
 }
 
 #if 0
-/* Small "local" function to build an expression with
- * *128* m[m[r[14]+64]] = m[r[8]] OP m[r[9]] */
+/**
+ * Small "local" function to build an expression with
+ *     *128* m[m[r[14]+64]] = m[r[8]] OP m[r[9]]
+ */
 void
 quadOperation(HRTLList &rtls, ADDRESS addr, int op)
 {
@@ -1351,8 +1333,11 @@ quadOperation(HRTLList &rtls, ADDRESS addr, int op)
 	rhs->push(9);
 	appendAssignment(rtls, addr, lhs, rhs, 128);
 }
-// This is the long version of helperFunc (i.e. -f not used). This does the
-// complete 64 bit semantics
+
+/**
+ * This is the long version of helperFunc (i.e. -f not used).  This does the
+ * complete 64 bit semantics.
+ */
 bool
 helperFuncLong(HRTLList &rtls, ADDRESS addr, const std::string &name)
 {
@@ -1457,18 +1442,17 @@ helperFuncLong(HRTLList &rtls, ADDRESS addr, const std::string &name)
 }
 #endif
 
-/*==============================================================================
- * FUNCTION:        setReturnLocations
- * OVERVIEW:        Set the return location for the given callee epilogue
- *                      to be the standard set of Hppa locations, using iReg
- *                      (always 28) to return integers
- * NOTE:            This is part of a hack that would go away if we could have
- *                  Logues that were both caller-prologues and callee-epilogues
- * PARAMETERS:      epilogue: pointer to a CalleeEpilogue object that is to
- *                      have it's return spec set
- *                  iReg: The register that integers are returned in
- * RETURNS:         nothing
- *============================================================================*/
+/**
+ * Set the return location for the given callee epilogue to be the standard
+ * set of Hppa locations, using iReg (always 28) to return integers.
+ *
+ * \note This is part of a hack that would go away if we could have Logues
+ * that were both caller-prologues and callee-epilogues.
+ *
+ * \param epilogue  Pointer to a CalleeEpilogue object that is to have its
+ *                  return spec set.
+ * \param iReg      The register that integers are returned in.
+ */
 void
 setReturnLocations(CalleeEpilogue *epilogue, int iReg)
 {
