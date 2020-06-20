@@ -143,9 +143,7 @@ Cfg::checkEntryBB()
  * Checks to see if the address associated with pRtls is already in the map as
  * an incomplete BB; if so, it is completed now and a pointer to that BB is
  * returned.  Otherwise, allocates memory for a new basic block node,
- * initializes its list of RTLs with pRtls, its type to the given type, and
- * allocates enough space to hold pointers to the out-edges (based on given
- * numOutEdges).
+ * initializes its list of RTLs with pRtls, and its type to the given type.
  *
  * The native address associated with the start of the BB is taken from pRtls,
  * and added to the map (unless 0).  NOTE: You cannot assume that the returned
@@ -154,19 +152,18 @@ Cfg::checkEntryBB()
  * for adding out edges (i.e. if the BB is split, you get the "bottom" part of
  * the BB, not the "top" (with lower addresses at the "top")).
  *
- * \param pRtls         List of pointers to RTLs to initialise the BB with.
- * \param bbType        The type of the BB (e.g. TWOWAY).
- * \param iNumOutEdges  Number of out edges this BB will eventually have.
- * \returns             Pointer to the newly-created BB, or to an existing
- *                      incomplete BB that is then completed by splitting the
- *                      newly-created BB.
+ * \param pRtls   List of pointers to RTLs to initialise the BB with.
+ * \param bbType  The type of the BB (e.g. TWOWAY).
+ * \returns       Pointer to the newly-created BB, or to an existing
+ *                incomplete BB that is then completed by splitting the
+ *                newly-created BB.
  *
  * \throws BBAlreadyExistsError
  * The new BB partially or fully overlaps an existing completed BB.
  * (This can happen with certain kinds of forward branches.)
  */
 BasicBlock *
-Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAlreadyExistsError)
+Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 {
 	// First find the native address of the first RTL
 	// Can't use BasicBlock::GetLowAddr(), since we don't yet have a BB!
@@ -211,7 +208,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 	}
 	if (!pBB) {
 		// Else add a new BB to the back of the current list.
-		pBB = new BasicBlock(pRtls, bbType, iNumOutEdges);
+		pBB = new BasicBlock(pRtls, bbType);
 		m_listBB.push_back(pBB);
 
 		// Also add the address to the map from native (source) address to
@@ -666,6 +663,21 @@ Cfg::wellFormCfg()
 				          << " is incomplete\n";
 		} else {
 			// Complete. Test the out edges
+			auto type = bb->m_nodeType;
+			auto n = bb->m_OutEdges.size();
+			if ((type == ONEWAY   && n != 1)
+			 || (type == TWOWAY   && n != 2)
+			 || (type == CALL     && n >  1)
+			 || (type == RET      && n != 0)
+			 || (type == FALL     && n != 1)
+			 || (type == COMPJUMP && n != 0)
+			 || (type == COMPCALL && n != 1)
+			 || (type == INVALID  && n != 0)) {
+				m_bWellFormed = false;
+				std::cerr << "WellFormCfg: BB with native address " << std::hex << bb->getLowAddr() << std::dec
+				          << " has " << n << " outedges\n";
+			}
+
 			int i = 0;
 			for (const auto &succ : bb->m_OutEdges) {
 				// Check that the out edge has been written (i.e. non-null)

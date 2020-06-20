@@ -139,7 +139,7 @@ SparcFrontEnd::optimise_CallReturn(CallStatement *call, RTL *rtl, RTL *delay, Us
 		auto rtls = new std::list<RTL *>();
 		rtls->push_back(r);
 		auto cfg = proc->getCFG();
-		return cfg->newBB(rtls, RET, 0);
+		return cfg->newBB(rtls, RET);
 #endif
 		return createReturnBlock(proc, nullptr, r);
 	} else
@@ -259,7 +259,7 @@ SparcFrontEnd::case_CALL(ADDRESS &addr, DecodeResult &inst,
 
 		// End the current basic block
 		auto cfg = proc->getCFG();
-		auto callBB = cfg->newBB(BB_rtls, CALL, 1);
+		auto callBB = cfg->newBB(BB_rtls, CALL);
 
 		// Add this call site to the set of call sites which need to be analysed later.
 		// This set will be used later to call prog.visitProc (so the proc will get decoded)
@@ -358,7 +358,7 @@ SparcFrontEnd::case_SD(ADDRESS &addr, const DecodeResult &inst,
 	BB_rtls->push_back(inst.rtl);
 
 	// Add the one-way branch BB
-	auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+	auto bb = cfg->newBB(BB_rtls, ONEWAY);
 
 	// Visit the destination, and add the out-edge
 	handleBranch(SD_stmt->getFixedDest(), bb, cfg);
@@ -408,7 +408,7 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 	case STMT_CALL:
 		// Will be a computed call
 		BB_rtls->push_back(inst.rtl);
-		newBB = cfg->newBB(BB_rtls, COMPCALL, 1);
+		newBB = cfg->newBB(BB_rtls, COMPCALL);
 		break;
 	case STMT_RET:
 		newBB = createReturnBlock(proc, BB_rtls, inst.rtl);
@@ -416,11 +416,11 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 		break;
 	case STMT_CASE:
 		BB_rtls->push_back(inst.rtl);
-		newBB = cfg->newBB(BB_rtls, COMPJUMP, 0);
+		newBB = cfg->newBB(BB_rtls, COMPJUMP);
 		bRet = false;
 		if (!((CaseStatement *)lastStmt)->getDest()) {  // Happens if already analysed (we are now redecoding)
 			//SWITCH_INFO *psi = ((CaseStatement *)lastStmt)->getSwitchInfo();
-			// processSwitch will update the BB type and number of outedges, decode arms, set out edges, etc
+			// processSwitch will update the BB type, decode arms, set out edges, etc
 			newBB->processSwitch(proc);
 		}
 		break;
@@ -493,7 +493,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Just emit the branch, and decode the instruction immediately following next.
 		// Assumes the first instruction of the pattern is not used in the true leg
 		BB_rtls->push_back(inst.rtl);
-		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		handleBranch(dest, bb, cfg);
 		// Add the "false" leg
 		cfg->addOutEdge(bb, addr + 4);
@@ -516,7 +516,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		}
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
-		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		handleBranch(dest, bb, cfg);
 		// Add the "false" leg; skips the NCT
 		cfg->addOutEdge(bb, addr + 8);
@@ -527,7 +527,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		stmt_jump->adjustFixedDest(-4);
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
-		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		handleBranch(dest - 4, bb, cfg);
 		// Add the "false" leg: point to the delay inst
 		cfg->addOutEdge(bb, addr + 4);
@@ -537,7 +537,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Copy the delay instruction to the dest of the branch, as an orphan. First add the branch.
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs. We want to do this first, else ordering can go silly
-		auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		// Visit the target of the branch
 		cfg->visit(dest, bb);
 		auto pOrphan = new std::list<RTL *>;
@@ -552,7 +552,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Add a branch from the orphan instruction to the dest of the branch. Again, we can't even give the jumps
 		// a special address like 1, since then the BB would have this getLowAddr.
 		pOrphan->push_back(new RTL(0, new GotoStatement(dest)));
-		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
+		auto pOrBB = cfg->newBB(pOrphan, ONEWAY);
 		// Add an out edge from the orphan as well
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
@@ -601,13 +601,13 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		stmt_jump->adjustFixedDest(-4);
 		// Now emit the branch
 		BB_rtls->push_back(inst.rtl);
-		bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+		bb = cfg->newBB(BB_rtls, TWOWAY);
 		handleBranch(dest - 4, bb, cfg);
 	} else {  // SCDAN; must move delay instr to orphan. Assume it's not a NOP (though if it is, no harm done)
 		// Move the delay instruction to the dest of the branch, as an orphan. First add the branch.
 		BB_rtls->push_back(inst.rtl);
 		// Make a BB for the current list of RTLs.  We want to do this first, else ordering can go silly
-		bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+		bb = cfg->newBB(BB_rtls, TWOWAY);
 		// Visit the target of the branch
 		cfg->visit(dest, bb);
 		auto pOrphan = new std::list<RTL *>;
@@ -617,7 +617,7 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		delay_inst.rtl->setAddress(0);
 		// Add a branch from the orphan instruction to the dest of the branch
 		pOrphan->push_back(new RTL(0, new GotoStatement(dest)));
-		auto pOrBB = cfg->newBB(pOrphan, ONEWAY, 1);
+		auto pOrBB = cfg->newBB(pOrphan, ONEWAY);
 		// Add an out edge from the orphan as well.
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
@@ -815,7 +815,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 					// Construct the new basic block and save its destination
 					// address if it hasn't been visited already
-					auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+					auto bb = cfg->newBB(BB_rtls, ONEWAY);
 					handleBranch(addr + 8, bb, cfg);
 
 					// There is no fall through branch.
@@ -829,7 +829,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 					// Ordinary, non-delay branch.
 					BB_rtls->push_back(inst.rtl);
 
-					auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+					auto bb = cfg->newBB(BB_rtls, ONEWAY);
 					handleBranch(stmt_jump->getFixedDest(), bb, cfg);
 
 					// There is no fall through branch.
@@ -946,7 +946,8 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 							// Create the appropriate BB
 							if (dynamic_cast<CallStatement *>(last)) {
-								handleCall(proc, dest, cfg->newBB(BB_rtls, CALL, 1), cfg, addr, 8);
+								auto bb = cfg->newBB(BB_rtls, CALL);
+								handleCall(proc, dest, bb, cfg, addr, 8);
 
 								// Set the address of the lexical successor of the call that is to be decoded next. Set RTLs
 								// to nullptr so that a new list of RTLs will be created for the next BB.
@@ -956,7 +957,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 								// Add this call site to the set of call sites which need to be analysed later.
 								callList.push_back((CallStatement *)inst.rtl->getList().back());
 							} else {
-								auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+								auto bb = cfg->newBB(BB_rtls, ONEWAY);
 								handleBranch(dest, bb, cfg);
 
 								// There is no fall through branch.
@@ -1050,7 +1051,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							// This is an ordinary two-way branch.  Add the branch to the list of RTLs for this BB
 							BB_rtls->push_back(inst.rtl);
 							// Create the BB and add it to the CFG
-							auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+							auto bb = cfg->newBB(BB_rtls, TWOWAY);
 							// Visit the destination of the branch; add "true" leg
 							auto dest = stmt_jump->getFixedDest();
 							handleBranch(dest, bb, cfg);
@@ -1086,7 +1087,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
 					// Add an out edge to this address
-					auto bb = cfg->newBB(BB_rtls, FALL, 1);
+					auto bb = cfg->newBB(BB_rtls, FALL);
 					cfg->addOutEdge(bb, addr);
 					BB_rtls = nullptr;  // Need new list of RTLs
 				}

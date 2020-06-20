@@ -61,24 +61,11 @@ BasicBlock::~BasicBlock()
  * \brief Private constructor.  Called by Cfg::newBB.
  * \param pRtls
  * \param bbType
- * \param iNumOutEdges
  */
-BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) :
+BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType) :
 	m_nodeType(bbType),
 	m_bIncomplete(false)
 {
-	assert(bbType != ONEWAY   || iNumOutEdges == 1);
-	assert(bbType != TWOWAY   || iNumOutEdges == 2);
-	assert(bbType != CALL     || iNumOutEdges <= 1);
-	assert(bbType != RET      || iNumOutEdges == 0);
-	assert(bbType != FALL     || iNumOutEdges == 1);
-	assert(bbType != COMPJUMP || iNumOutEdges == 0);
-	assert(bbType != COMPCALL || iNumOutEdges == 1);
-	assert(bbType != INVALID  || iNumOutEdges == 0);
-
-	m_OutEdges.reserve(iNumOutEdges);  // Reserve the space; values added with Cfg::addOutEdge()
-
-	// Set the RTLs
 	setRTLs(pRtls);
 }
 

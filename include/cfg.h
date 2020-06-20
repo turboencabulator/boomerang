@@ -118,7 +118,7 @@ public:
 		BBAlreadyExistsError(BasicBlock *pBB) : pBB(pBB) { }
 	};
 
-	BasicBlock *newBB(std::list<RTL *> *, BBTYPE, int) throw (BBAlreadyExistsError);
+	BasicBlock *newBB(std::list<RTL *> *, BBTYPE) throw (BBAlreadyExistsError);
 
 	BasicBlock *newIncompleteBB(ADDRESS);
 

@@ -225,7 +225,7 @@ public:
 	//        int         m_DFTrevlast;   // reverse depth-first traversal last visit
 
 private:
-	                    BasicBlock(std::list<RTL *> *, BBTYPE, int);
+	                    BasicBlock(std::list<RTL *> *, BBTYPE);
 
 	        void        setRTLs(std::list<RTL *> *);
 

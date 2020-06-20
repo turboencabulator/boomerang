@@ -183,7 +183,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 				// Emit the RTL anyway, so we have the address and maybe
 				// some other clues
 				BB_rtls->push_back(new RTL(addr));
-				auto bb = cfg->newBB(BB_rtls, INVALID, 0);
+				auto bb = cfg->newBB(BB_rtls, INVALID);
 				sequentialDecode = false;
 				BB_rtls = nullptr;
 				continue;
@@ -203,7 +203,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						BB_rtls->push_back(inst.rtl);
 						sequentialDecode = false;
 
-						auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+						auto bb = cfg->newBB(BB_rtls, ONEWAY);
 
 						// Add the out edge if it is to a destination within the
 						// procedure
@@ -227,7 +227,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					BB_rtls->push_back(inst.rtl);
 					// We create the BB as a COMPJUMP type, then change
 					// to an NWAY if it turns out to be a switch stmt
-					auto bb = cfg->newBB(BB_rtls, COMPJUMP, 0);
+					auto bb = cfg->newBB(BB_rtls, COMPJUMP);
 					if (isSwitch(bb, rtl_jump->getDest(), proc, pBF)) {
 						processSwitch(bb, delta, cfg, pBF);
 					} else { // Computed jump
@@ -249,7 +249,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					auto rtl_jump = static_cast<HLJump *>(inst.rtl);
 					auto dest = rtl_jump->getFixedDest();
 					BB_rtls->push_back(inst.rtl);
-					auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+					auto bb = cfg->newBB(BB_rtls, TWOWAY);
 
 					// Add the out edge if it is to a destination within the
 					// procedure
@@ -280,13 +280,14 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					// Treat computed and static calls seperately
 					if (call->isComputed()) {
 						BB_rtls->push_back(inst.rtl);
-						auto bb = cfg->newBB(BB_rtls, COMPCALL, 1);
+						auto bb = cfg->newBB(BB_rtls, COMPCALL);
 
 						cfg->addOutEdge(bb, addr + inst.numBytes);
 
 					} else {      // Static call
 
 						BB_rtls->push_back(inst.rtl);
+						auto bb = cfg->newBB(BB_rtls, CALL);
 
 						// Find the address of the callee.
 						ADDRESS newAddr = call->getFixedDest();
@@ -308,12 +309,8 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						// attempting to decode invalid instructions.
 						char *name = prog.pBF->getSymbolByAddress(newAddr);
 						if (name && noReturnCallDest(name)) {
-							auto bb = cfg->newBB(BB_rtls, CALL, 0);
 							sequentialDecode = false;
 						} else {
-							// Create the new basic block
-							auto bb = cfg->newBB(BB_rtls, CALL, 1);
-
 							if (call->isReturnAfterCall()) {
 								appendSyntheticReturn(bb, proc);
 								// Give the enclosing proc a dummy callee epilogue
@@ -341,7 +338,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 				// Add the RTL to the list
 				BB_rtls->push_back(inst.rtl);
 				// Create the basic block
-				auto bb = cfg->newBB(BB_rtls, RET, 0);
+				auto bb = cfg->newBB(BB_rtls, RET);
 
 				// Create the list of RTLs for the next basic block and continue
 				// with the next instruction.
@@ -376,7 +373,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
 					// Add an out edge to this address
-					auto bb = cfg->newBB(BB_rtls, FALL, 1);
+					auto bb = cfg->newBB(BB_rtls, FALL);
 					cfg->addOutEdge(bb, addr);
 					BB_rtls = nullptr;      // Need new list of RTLs
 				}

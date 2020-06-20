@@ -651,7 +651,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 
 				// Emit the RTL anyway, so we have the address and maybe some other clues
 				BB_rtls->push_back(new RTL(addr));
-				auto bb = cfg->newBB(BB_rtls, INVALID, 0);
+				auto bb = cfg->newBB(BB_rtls, INVALID);
 				sequentialDecode = false; BB_rtls = nullptr; continue;
 			}
 
@@ -747,7 +747,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							BB_rtls->push_back(rtl);
 							sequentialDecode = false;
 
-							auto bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+							auto bb = cfg->newBB(BB_rtls, ONEWAY);
 							BB_rtls = nullptr;  // Clear when make new BB
 							handleBranch(dest, bb, cfg);
 						}
@@ -761,7 +761,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						if (!dest) {  // Happens if already analysed (now redecoding)
 							// SWITCH_INFO *psi = jump->getSwitchInfo();
 							BB_rtls->push_back(rtl);
-							auto bb = cfg->newBB(BB_rtls, NWAY, 0);  // processSwitch will update num outedges
+							auto bb = cfg->newBB(BB_rtls, NWAY);
 							bb->processSwitch(proc);        // decode arms, set out edges, etc
 							sequentialDecode = false;       // Don't decode after the jump
 							BB_rtls = nullptr;              // New RTLList for next BB
@@ -784,7 +784,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							assert(lp);
 							call->setDestProc(lp);
 							BB_rtls->push_back(new RTL(rtl->getAddress(), call));
-							auto bb = cfg->newBB(BB_rtls, CALL, 1);
+							auto bb = cfg->newBB(BB_rtls, CALL);
 							appendSyntheticReturn(bb, proc);
 							sequentialDecode = false;
 							BB_rtls = nullptr;
@@ -802,7 +802,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						}
 						BB_rtls->push_back(rtl);
 						// We create the BB as a COMPJUMP type, then change to an NWAY if it turns out to be a switch stmt
-						auto bb = cfg->newBB(BB_rtls, COMPJUMP, 0);
+						auto bb = cfg->newBB(BB_rtls, COMPJUMP);
 						LOG << "COMPUTED JUMP at 0x" << std::hex << addr << std::dec << ", dest = " << *dest << "\n";
 						if (Boomerang::get().noDecompile) {
 							// try some hacks
@@ -833,7 +833,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						auto branch = static_cast<BranchStatement *>(s);
 						auto dest = branch->getFixedDest();
 						BB_rtls->push_back(rtl);
-						auto bb = cfg->newBB(BB_rtls, TWOWAY, 2);
+						auto bb = cfg->newBB(BB_rtls, TWOWAY);
 						handleBranch(dest, bb, cfg);
 
 						// Add the fall-through outedge
@@ -902,7 +902,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 						// Treat computed and static calls separately
 						if (call->isComputed()) {
 							BB_rtls->push_back(rtl);
-							auto bb = cfg->newBB(BB_rtls, COMPCALL, 1);
+							auto bb = cfg->newBB(BB_rtls, COMPCALL);
 							cfg->addOutEdge(bb, addr + inst.numBytes);
 
 							// Add this call to the list of calls to analyse. We won't
@@ -926,6 +926,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							}
 
 							BB_rtls->push_back(rtl);
+							auto bb = cfg->newBB(BB_rtls, CALL);
 
 							// Add this non computed call site to the set of call sites which need to be analysed later.
 							callList.push_back(call);
@@ -949,12 +950,8 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 									name = pBF->getDynamicProcName(a);
 							}
 							if (name && noReturnCallDest(name)) {
-								auto bb = cfg->newBB(BB_rtls, CALL, 0);
 								sequentialDecode = false;
 							} else {
-								// Create the new basic block
-								auto bb = cfg->newBB(BB_rtls, CALL, 1);
-
 								if (call->isReturnAfterCall()) {
 									appendSyntheticReturn(bb, proc);
 									sequentialDecode = false;
@@ -1020,7 +1017,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 				// Create the fallthrough BB, if there are any RTLs at all
 				if (BB_rtls) {
 					// Add an out edge to this address
-					auto bb = cfg->newBB(BB_rtls, FALL, 1);
+					auto bb = cfg->newBB(BB_rtls, FALL);
 					cfg->addOutEdge(bb, addr);
 					BB_rtls = nullptr;  // Need new list of RTLs
 				}
@@ -1098,7 +1095,7 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 	if (!s) {
 		s = (ReturnStatement *)rtl->getList().back();
 		proc->setTheReturnStatement(s);
-		bb = cfg->newBB(BB_rtls, RET, 0);
+		bb = cfg->newBB(BB_rtls, RET);
 	} else {
 		// We want to replace the *whole* RTL with a branch to THE first return's RTL. There can sometimes be extra
 		// semantics associated with a return (e.g. Pentium return adds to the stack pointer before setting %pc and
@@ -1117,7 +1114,7 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 		else
 			rtl->clear();
 		rtl->appendStmt(new GotoStatement(retAddr));
-		bb = cfg->newBB(BB_rtls, ONEWAY, 1);
+		bb = cfg->newBB(BB_rtls, ONEWAY);
 		// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
 		// instructions before the return instruction).
 		cfg->visit(retAddr, bb);
