@@ -65,8 +65,7 @@ BasicBlock::~BasicBlock()
  */
 BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) :
 	m_nodeType(bbType),
-	m_bIncomplete(false),
-	m_iNumOutEdges(iNumOutEdges)
+	m_bIncomplete(false)
 {
 	assert(bbType != ONEWAY   || iNumOutEdges == 1);
 	assert(bbType != TWOWAY   || iNumOutEdges == 2);
@@ -145,27 +144,15 @@ BasicBlock::getType() const
 /**
  * \brief Set the type of the basic block.
  *
- * Update the type and number of out edges.  Used for example where a COMPJUMP
- * type is updated to an NWAY when a switch idiom is discovered.
+ * Update the type.  Used for example where a COMPJUMP type is updated to an
+ * NWAY when a switch idiom is discovered.
  *
- * \param[in] bbType        The new type.
- * \param[in] iNumOutEdges  New number of outedges.
+ * \param[in] bbType  The new type.
  */
 void
-BasicBlock::updateType(BBTYPE bbType, int iNumOutEdges)
+BasicBlock::updateType(BBTYPE bbType)
 {
-	assert(bbType != ONEWAY   || iNumOutEdges == 1);
-	assert(bbType != TWOWAY   || iNumOutEdges == 2);
-	assert(bbType != CALL     || iNumOutEdges <= 1);
-	assert(bbType != RET      || iNumOutEdges == 0);
-	assert(bbType != FALL     || iNumOutEdges == 1);
-	assert(bbType != COMPJUMP || iNumOutEdges == 0);
-	assert(bbType != COMPCALL || iNumOutEdges == 1);
-	assert(bbType != INVALID  || iNumOutEdges == 0);
-
 	m_nodeType = bbType;
-	m_iNumOutEdges = iNumOutEdges;
-	//m_OutEdges.resize(iNumOutEdges);
 }
 
 /**
@@ -407,10 +394,8 @@ BasicBlock::deleteEdge(BasicBlock *succ)
 {
 	succ->deleteInEdge(this);
 	auto it = std::find(m_OutEdges.begin(), m_OutEdges.end(), succ);
-	if (it != m_OutEdges.end()) {
+	if (it != m_OutEdges.end())
 		m_OutEdges.erase(it);
-		--m_iNumOutEdges;
-	}
 }
 
 #if 0 // Cruft?
@@ -804,7 +789,6 @@ BasicBlock::simplify()
 			auto redundant = m_OutEdges[0];
 			m_OutEdges[0] = m_OutEdges[1];
 			m_OutEdges.resize(1);
-			m_iNumOutEdges = 1;
 			if (VERBOSE)
 				LOG << "redundant edge to 0x" << std::hex << redundant->getLowAddr() << std::dec << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
@@ -827,7 +811,6 @@ BasicBlock::simplify()
 				    << "0x" << std::hex << m_OutEdges[1]->getLowAddr() << std::dec << "\n";
 			auto redundant = m_OutEdges[1];
 			m_OutEdges.resize(1);
-			m_iNumOutEdges = 1;
 			if (VERBOSE)
 				LOG << "redundant edge to 0x" << std::hex << redundant->getLowAddr() << std::dec << " inedges: ";
 			auto rinedges = std::vector<BasicBlock *>();
@@ -2290,9 +2273,8 @@ BasicBlock::processSwitch(UserProc *proc)
 			LOG << si->iNumTable << " entries, ";
 		LOG << "lo= " << si->iLower << ", hi= " << si->iUpper << "\n";
 	}
-	int iNum = si->iUpper - si->iLower + 1;
-	// Emit an NWAY BB instead of the COMPJUMP. Also update the number of out edges.
-	updateType(NWAY, iNum);
+	// Emit an NWAY BB instead of the COMPJUMP.
+	updateType(NWAY);
 
 	Prog *prog = proc->getProg();
 	Cfg *cfg = proc->getCFG();
@@ -2308,6 +2290,7 @@ BasicBlock::processSwitch(UserProc *proc)
 	// for the ith zero-based case. It may be that the code for case 5 above will be a goto to the code for case 3,
 	// but a smarter back end could group them
 	std::list<ADDRESS> dests;
+	int iNum = si->iUpper - si->iLower + 1;
 	for (int i = 0; i < iNum; ++i) {
 		ADDRESS uSwitch;
 		// Get the destination address from the switch table.
@@ -2338,12 +2321,7 @@ BasicBlock::processSwitch(UserProc *proc)
 			// has ended. Don't try to pull any more data from it.
 			LOG << "Assuming the end of the pointer-array has been reached at index " << i << "\n";
 			// TODO: Elevate this logic to the code calculating iNumTable, but still leave this code as a safeguard.
-			// Q: Should m_iNumOutEdges really be adjusted (iNum - i) ?
-			assert(m_iNumOutEdges >= (iNum - i));
-			m_iNumOutEdges -= (iNum - i);
 			break;
-#else
-			--m_iNumOutEdges;  // FIXME: where is this set?
 #endif
 		}
 	}

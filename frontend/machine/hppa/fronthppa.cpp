@@ -337,8 +337,6 @@ case_CALL_NCT(ADDRESS &addr, const DecodeResult &inst,
 				ret = false;
 				// Also don't add an out-edge; setting offset to 0 will do this
 				offset = 0;
-				// But we have already set the number of out-edges to 1
-				callBB->updateType(CALL, 0);
 			}
 
 			// Handle the call (register the destination as a proc)

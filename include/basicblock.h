@@ -145,7 +145,7 @@ public:
 	                    BasicBlock(const BasicBlock &) = default;
 
 	        BBTYPE      getType() const;
-	        void        updateType(BBTYPE, int);
+	        void        updateType(BBTYPE);
 
 	        bool        isCaseOption() const;
 
@@ -169,7 +169,7 @@ public:
 	        const std::vector<BasicBlock *> &getOutEdges() const;
 
 	        int         getNumInEdges() const { return m_InEdges.size(); }
-	        int         getNumOutEdges() const { return m_iNumOutEdges; }
+	        int         getNumOutEdges() const { return m_OutEdges.size(); }
 
 	        BasicBlock *getOutEdge(unsigned int);
 	        BasicBlock *getCorrectOutEdge(ADDRESS) const;
@@ -249,7 +249,6 @@ protected:
 	/* in-edges and out-edges */
 	        std::vector<BasicBlock *> m_InEdges; // Vector of in-edges
 	        std::vector<BasicBlock *> m_OutEdges;// Vector of out-edges
-	        int         m_iNumOutEdges = 0; // We need this because GCC doesn't support resize() of vectors!
 
 	/* for traversal */
 	        bool        m_iTraversed = false;  // traversal marker

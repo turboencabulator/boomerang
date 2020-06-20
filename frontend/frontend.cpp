@@ -810,9 +810,9 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 							 && dest->getSubExp1()->getOper() == opPlus
 							 && dest->getSubExp1()->getSubExp2()->isIntConst()) {
 								// assume subExp2 is a jump table
+								bb->updateType(NWAY);
 								ADDRESS jmptbl = ((Const *)dest->getSubExp1()->getSubExp2())->getInt();
-								unsigned int i;
-								for (i = 0; ; ++i) {
+								for (unsigned int i = 0; ; ++i) {
 									auto dest = pBF->readNative4(jmptbl + i * 4);
 									if (pBF->getLimitTextLow() <= dest && dest < pBF->getLimitTextHigh()) {
 										LOG << "  guessed dest 0x" << std::hex << dest << std::dec << "\n";
@@ -821,7 +821,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
 									} else
 										break;
 								}
-								bb->updateType(NWAY, i);
 							}
 						}
 						sequentialDecode = false;

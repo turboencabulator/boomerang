@@ -1056,7 +1056,6 @@ XMLProgParser::addChildTo_bb(Context *node, const Context *child) const
 			break;
 		case e_outedge:
 			node->bb->m_OutEdges.push_back(child->bb);
-			++node->bb->m_iNumOutEdges;
 			break;
 		}
 		return;

@@ -197,7 +197,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType, int iNumOutEdges) throw (BBAl
 			if (pBB->m_bIncomplete) {
 				// Fill in the details, and return it
 				pBB->setRTLs(pRtls);
-				pBB->updateType(bbType, iNumOutEdges);
+				pBB->updateType(bbType);
 				pBB->m_bIncomplete = false;
 			} else {
 				// This list of RTLs is not needed now
@@ -287,12 +287,6 @@ Cfg::newIncompleteBB(ADDRESS addr)
 /**
  * \brief Add an out edge to this BB (and the in-edge to the dest BB).  May
  * also set a label.
- *
- * Adds an out-edge to the basic block src by filling in the first slot that
- * is empty.
- *
- * \note Does not increment m_iNumOutEdges; this is supposed to be constant
- * for a BB.
  *
  * \param src   Source BB (to have the out edge added to).
  * \param addr  Source address of destination BB (the out edge is to point to
@@ -449,7 +443,7 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 	}
 
 	// Update original ("top") BB's info and make it a fall-through.
-	orig->updateType(FALL, 1);
+	orig->updateType(FALL);
 	// Erase any existing out-edges.
 	orig->m_OutEdges.clear();
 	addOutEdge(orig, bot);
@@ -672,7 +666,6 @@ Cfg::wellFormCfg()
 				          << " is incomplete\n";
 		} else {
 			// Complete. Test the out edges
-			assert((int)bb->m_OutEdges.size() == bb->m_iNumOutEdges);
 			int i = 0;
 			for (const auto &succ : bb->m_OutEdges) {
 				// Check that the out edge has been written (i.e. non-null)
@@ -1790,12 +1783,12 @@ Cfg::splitForBranch(BasicBlock *bbA, std::list<RTL *>::iterator ri)
 	}
 
 	// Set the out-edges for S.  First is the taken (true) leg.
-	bbS->updateType(TWOWAY, 2);
+	bbS->updateType(TWOWAY);
 	addOutEdge(bbS, bbB);
 	std::swap(bbS->m_OutEdges[0], bbS->m_OutEdges[1]);
 
 	// Set the out-edges for R.
-	bbR->updateType(TWOWAY, 2);
+	bbR->updateType(TWOWAY);
 	addOutEdge(bbR, bbS);
 	std::swap(bbR->m_OutEdges[0], bbR->m_OutEdges[1]);
 
