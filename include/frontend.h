@@ -135,7 +135,7 @@ public:
 	//void decodeOnly(ADDRESS);
 	void decodeFragment(UserProc *, ADDRESS);
 
-	virtual bool processProc(ADDRESS, UserProc *, bool = false, bool = false);
+	virtual bool processProc(ADDRESS, UserProc *, bool = false);
 
 private:
 	/// Accessor function to get the decoder.

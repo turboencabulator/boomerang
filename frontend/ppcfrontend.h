@@ -27,7 +27,7 @@ class PPCFrontEnd : public FrontEnd {
 public:
 	PPCFrontEnd(BinaryFile *, Prog *);
 
-	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
+	bool processProc(ADDRESS, UserProc *, bool = false) override;
 };
 
 #endif

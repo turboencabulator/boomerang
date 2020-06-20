@@ -36,7 +36,7 @@ class SparcFrontEnd : public FrontEnd {
 public:
 	SparcFrontEnd(BinaryFile *, Prog *);
 
-	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
+	bool processProc(ADDRESS, UserProc *, bool = false) override;
 
 private:
 

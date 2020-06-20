@@ -466,7 +466,7 @@ FrontEnd::decodeFragment(UserProc *proc, ADDRESS a)
 	if (a >= pBF->getLimitTextLow() && a < pBF->getLimitTextHigh()) {
 		if (Boomerang::get().traceDecoder)
 			LOG << "decoding fragment at 0x" << std::hex << a << std::dec << "\n";
-		processProc(a, proc, true);
+		processProc(a, proc);
 	} else {
 		std::cerr << "attempt to decode fragment outside text area, addr=0x" << std::hex << a << std::dec << "\n";
 		if (VERBOSE)
@@ -570,8 +570,6 @@ FrontEnd::getLibSignature(const std::string &name) const
  *
  * \param addr  The address at which the procedure starts.
  * \param proc  The procedure object.
- * \param frag  If true, we are decoding only a fragment of a procedure
- *              (e.g. each arm of a switch statement is decoded).
  * \param spec  If true, this is a speculative decode
  *              (so give up on any invalid instruction).
  *
@@ -582,7 +580,7 @@ FrontEnd::getLibSignature(const std::string &name) const
  * \returns true on a good decode (no illegal instructions).
  */
 bool
-FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
+FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
 	// just in case you missed it
 	Boomerang::get().alert_new(proc);

@@ -168,10 +168,10 @@ PentiumFrontEnd::bumpRegisterAll(Exp *e, int min, int max, int delta, int mask)
 }
 
 bool
-PentiumFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
+PentiumFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
 	// Call the base class to do most of the work
-	if (!FrontEnd::processProc(addr, proc, frag, spec))
+	if (!FrontEnd::processProc(addr, proc, spec))
 		return false;
 
 	// Need a post-cfg pass to remove the FPUSH and FPOP instructions, and to transform various code after floating

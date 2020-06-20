@@ -675,7 +675,7 @@ SparcFrontEnd::getDefaultReturns()
  * base class implementation can't be re-used.
  */
 bool
-SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
+SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
 	// Similarly, we have a set of CallStatement pointers. These may be
 	// disregarded if this is a speculative decode that fails (i.e. an illegal

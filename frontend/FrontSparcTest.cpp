@@ -236,7 +236,7 @@ FrontSparcTest::testDelaySlot()
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
 	auto pProc = new UserProc(prog, "testDelaySlot", addr);
-	bool res = fe->processProc(addr, pProc, false);
+	bool res = fe->processProc(addr, pProc);
 
 	CPPUNIT_ASSERT(res == 1);
 	Cfg::iterator it = pProc->getCFG()->begin();

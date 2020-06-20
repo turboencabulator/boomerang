@@ -27,7 +27,7 @@ class ST20FrontEnd : public FrontEnd {
 public:
 	ST20FrontEnd(BinaryFile *, Prog *);
 
-	bool processProc(ADDRESS, UserProc *, bool = false, bool = false) override;
+	bool processProc(ADDRESS, UserProc *, bool = false) override;
 };
 
 #endif

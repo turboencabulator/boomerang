@@ -52,10 +52,10 @@ MIPSFrontEnd::getDefaultReturns()
 #endif
 
 bool
-MIPSFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool frag, bool spec)
+MIPSFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 {
 	// Call the base class to do most of the work
-	if (!FrontEnd::processProc(addr, proc, frag, spec))
+	if (!FrontEnd::processProc(addr, proc, spec))
 		return false;
 	// This will get done twice; no harm
 	proc->setEntryBB();
