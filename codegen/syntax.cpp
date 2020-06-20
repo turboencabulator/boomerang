@@ -72,7 +72,7 @@ int
 BlockSyntaxNode::getNumOutEdges() const
 {
 	if (pbb)
-		return pbb->getNumOutEdges();
+		return pbb->getOutEdges().size();
 	if (!statements.empty())
 		return statements.back()->getNumOutEdges();
 	return 0;
@@ -128,14 +128,14 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 		os << "block";
 	os << "\"];\n";
 	if (pbb) {
-		for (int i = 0; i < pbb->getNumOutEdges(); ++i) {
+		for (int i = 0; i < pbb->getOutEdges().size(); ++i) {
 			BasicBlock *out = pbb->getOutEdge(i);
 			const SyntaxNode *to = root->findNodeFor(out);
 			assert(to);
 			os << "\t" << nodenum
 			   << " -> " << to->getNumber()
 			   << " [style=dotted";
-			if (pbb->getNumOutEdges() > 1)
+			if (pbb->getOutEdges().size() > 1)
 				os << ",label=\"" << i << "\"";
 			os << "];\n";
 		}
@@ -163,7 +163,7 @@ BlockSyntaxNode::evaluate(const SyntaxNode *root) const
 	int n = 1;
 	if (statements.size() == 1) {
 		const SyntaxNode *out = statements[0]->getOutEdge(root, 0);
-		if (out->getBB() && out->getBB()->getNumInEdges() > 1) {
+		if (out->getBB() && out->getBB()->getInEdges().size() > 1) {
 #if DEBUG_EVAL
 			std::cerr << "add 15" << std::endl;
 #endif

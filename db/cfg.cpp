@@ -919,7 +919,7 @@ Cfg::findRetNode() const
 	for (const auto &bb : m_listBB) {
 		if (bb->getType() == RET)
 			return bb;
-		if (bb->getType() == CALL && bb->getNumOutEdges() == 0)
+		if (bb->getType() == CALL && bb->getOutEdges().empty())
 			retNode = bb;
 	}
 	return retNode;
@@ -1522,7 +1522,7 @@ void
 Cfg::addJunctionStatements()
 {
 	for (const auto &bb : m_listBB) {
-		if (bb->getNumInEdges() > 1 && !dynamic_cast<JunctionStatement *>(bb->getFirstStmt())) {
+		if (bb->getInEdges().size() > 1 && !dynamic_cast<JunctionStatement *>(bb->getFirstStmt())) {
 			assert(bb->getRTLs());
 			auto j = new JunctionStatement();
 			j->setBB(bb);

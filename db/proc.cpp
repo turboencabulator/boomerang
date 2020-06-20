@@ -717,9 +717,9 @@ UserProc::initStatements()
 				call->setSigArguments();
 				if (call->getDestProc()
 				 && call->getDestProc()->isNoReturn()
-				 && bb->getNumOutEdges() == 1) {
+				 && bb->getOutEdges().size() == 1) {
 					auto succ = bb->getOutEdge(0);
-					if (succ != cfg->getExitBB() || succ->getNumInEdges() != 1) {
+					if (succ != cfg->getExitBB() || succ->getInEdges().size() != 1) {
 						bb->deleteEdge(succ);
 					}
 				}
@@ -1697,7 +1697,7 @@ UserProc::branchAnalysis()
 			if (branch->getFallBB() && branch->getTakenBB()) {
 				StatementList fallstmts;
 				branch->getFallBB()->getStatements(fallstmts);
-				if (branch->getFallBB()->getNumInEdges() == 1
+				if (branch->getFallBB()->getInEdges().size() == 1
 				 && fallstmts.size() == 1
 				 && dynamic_cast<BranchStatement *>(*fallstmts.begin())) {
 					auto fallto = (BranchStatement *)*fallstmts.begin();
@@ -1717,10 +1717,10 @@ UserProc::branchAnalysis()
 						                       new Unary(opNot, branch->getCondExpr()),
 						                       fallto->getCondExpr()->clone());
 						branch->setCondExpr(cond->simplify());
-						assert(fallto->getBB()->getNumInEdges() == 0);
+						assert(fallto->getBB()->getInEdges().empty());
 						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
 						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
-						assert(fallto->getBB()->getNumOutEdges() == 0);
+						assert(fallto->getBB()->getOutEdges().empty());
 						cfg->removeBB(fallto->getBB());
 					}
 					//   branch to B if cond1
@@ -1736,10 +1736,10 @@ UserProc::branchAnalysis()
 						branch->setCondExpr(new Binary(opOr,
 						                               branch->getCondExpr(),
 						                               fallto->getCondExpr()->clone()));
-						assert(fallto->getBB()->getNumInEdges() == 0);
+						assert(fallto->getBB()->getInEdges().empty());
 						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
 						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
-						assert(fallto->getBB()->getNumOutEdges() == 0);
+						assert(fallto->getBB()->getOutEdges().empty());
 						cfg->removeBB(fallto->getBB());
 					}
 				}

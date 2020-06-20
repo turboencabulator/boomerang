@@ -168,9 +168,6 @@ public:
 	        const std::vector<BasicBlock *> &getInEdges() const;
 	        const std::vector<BasicBlock *> &getOutEdges() const;
 
-	        int         getNumInEdges() const { return m_InEdges.size(); }
-	        int         getNumOutEdges() const { return m_OutEdges.size(); }
-
 	        BasicBlock *getOutEdge(unsigned int);
 	        BasicBlock *getCorrectOutEdge(ADDRESS) const;
 

@@ -2228,10 +2228,9 @@ Statement::getInputRanges()
 		auto pred = inedges[0];
 		Statement *last = pred->getLastStmt();
 		assert(last);
-		if (pred->getNumOutEdges() != 2) {
+		if (pred->getOutEdges().size() != 2) {
 			input = last->getRanges();
 		} else {
-			assert(pred->getNumOutEdges() == 2);
 			auto branch = dynamic_cast<BranchStatement *>(last);
 			assert(branch);
 			input = branch->getRangesForOutEdgeTo(pbb);
@@ -3355,7 +3354,7 @@ BranchStatement::getFallBB() const
 		return nullptr;
 	if (!pbb)
 		return nullptr;
-	if (pbb->getNumOutEdges() != 2)
+	if (pbb->getOutEdges().size() != 2)
 		return nullptr;
 	if (pbb->getOutEdge(0)->getLowAddr() == a)
 		return pbb->getOutEdge(1);
@@ -3374,7 +3373,7 @@ BranchStatement::setFallBB(BasicBlock *bb)
 		return;
 	if (!pbb)
 		return;
-	if (pbb->getNumOutEdges() != 2)
+	if (pbb->getOutEdges().size() != 2)
 		return;
 	if (pbb->getOutEdge(0)->getLowAddr() == a) {
 		pbb->setOutEdge(1, bb);
@@ -3391,7 +3390,7 @@ BranchStatement::getTakenBB() const
 		return nullptr;
 	if (!pbb)
 		return nullptr;
-	if (pbb->getNumOutEdges() != 2)
+	if (pbb->getOutEdges().size() != 2)
 		return nullptr;
 	if (pbb->getOutEdge(0)->getLowAddr() == a)
 		return pbb->getOutEdge(0);
@@ -3406,7 +3405,7 @@ BranchStatement::setTakenBB(BasicBlock *bb)
 		return;
 	if (!pbb)
 		return;
-	if (pbb->getNumOutEdges() != 2)
+	if (pbb->getOutEdges().size() != 2)
 		return;
 	if (pbb->getOutEdge(0)->getLowAddr() == a) {
 		pbb->setOutEdge(0, bb);
