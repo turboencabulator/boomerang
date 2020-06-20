@@ -419,7 +419,7 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 		if (!((CaseStatement *)lastStmt)->getDest()) {  // Happens if already analysed (we are now redecoding)
 			//SWITCH_INFO *psi = ((CaseStatement *)lastStmt)->getSwitchInfo();
 			// processSwitch will update the BB type, decode arms, set out edges, etc
-			newBB->processSwitch(proc);
+			processSwitch(newBB, proc);
 		}
 		break;
 	default:

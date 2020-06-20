@@ -5018,9 +5018,13 @@ UserProc::logSuspectMemoryDefs()
 }
 #endif
 
-// Copy the RTLs for the already decoded Indirect Control Transfer instructions, and decode any new targets in this CFG
-// Note that we have to delay the new target decoding till now, because otherwise we will attempt to decode nested
-// switch statements without having any SSA renaming, propagation, etc
+/**
+ * Copy the RTLs for the already decoded Indirect Control Transfer
+ * instructions, and decode any new targets in this CFG.  Note that we have to
+ * delay the new target decoding till now, because otherwise we will attempt
+ * to decode nested switch statements without having any SSA renaming,
+ * propagation, etc.
+ */
 void
 UserProc::processDecodedICTs()
 {
@@ -5035,7 +5039,7 @@ UserProc::processDecodedICTs()
 		// Now decode those new targets, adding out edges as well
 #if 0
 		if (dynamic_cast<CaseStatement *>(last))
-			bb->processSwitch(this);
+			prog->getFrontEnd()->processSwitch(bb, this);
 #endif
 	}
 }

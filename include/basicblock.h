@@ -369,7 +369,6 @@ public:
 	        void        getLiveOut(LocationSet &, LocationSet &);
 
 	        bool        decodeIndirectJmp(UserProc *);
-	        void        processSwitch(UserProc *);
 	        int         findNumCases();
 
 	        bool        undoComputedBB(Statement *);

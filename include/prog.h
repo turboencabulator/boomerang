@@ -108,7 +108,6 @@ public:
 	        void        decodeEntryPoint(ADDRESS a);
 	        void        setEntryPoint(ADDRESS a);  // As per the above, but don't decode
 	        void        decodeEverythingUndecoded();
-	        void        decodeFragment(UserProc *proc, ADDRESS a);
 
 	// Re-decode this proc from scratch
 	        void        reDecode(UserProc *proc);

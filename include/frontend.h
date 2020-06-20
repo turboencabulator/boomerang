@@ -157,6 +157,7 @@ protected:
 	BasicBlock *createReturnBlock(UserProc *, std::list<RTL *> *, RTL *);
 
 	void handleBranch(ADDRESS, BasicBlock *&, Cfg *);
+	void processSwitch(BasicBlock *&, UserProc *);
 };
 
 

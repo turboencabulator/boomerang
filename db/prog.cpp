@@ -1784,12 +1784,6 @@ Memoisable::restoreMemo(bool dec)
 }
 #endif
 
-void
-Prog::decodeFragment(UserProc *proc, ADDRESS a)
-{
-	pFE->decodeFragment(proc, a);
-}
-
 Exp *
 Prog::addReloc(Exp *e, ADDRESS lc)
 {
