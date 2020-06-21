@@ -41,6 +41,7 @@
 #include <sys/types.h>
 
 #include <algorithm>
+#include <deque>
 #include <fstream>
 #include <iterator>
 #include <sstream>
@@ -1254,51 +1255,31 @@ Prog::rangeAnalysis()
 void
 Prog::printCallGraph() const
 {
-	std::string fname1 = Boomerang::get().getOutputPath() + "callgraph.out";
-	std::string fname2 = Boomerang::get().getOutputPath() + "callgraph.dot";
-	int fd1 = lockFileWrite(fname1);
-	int fd2 = lockFileWrite(fname2);
-	std::ofstream f1(fname1);
-	std::ofstream f2(fname2);
+	std::string fname = Boomerang::get().getOutputPath() + "callgraph.dot";
+	int fd = lockFileWrite(fname);
+	std::ofstream ofs(fname);
 	std::set<Proc *> seen;
-	std::map<Proc *, int> spaces;
-	std::map<Proc *, Proc *> parent;
-	std::list<Proc *> procList;
-	f2 << "digraph callgraph {\n";
-	procList.insert(procList.end(), entryProcs.begin(), entryProcs.end());
-	spaces[procList.front()] = 0;
-	while (!procList.empty()) {
-		auto p = procList.front();
-		procList.pop_front();
-		if ((unsigned)p == NO_ADDRESS)
-			continue;
+	std::deque<Proc *> queue;
+	ofs << "digraph callgraph {\n";
+	queue.insert(queue.end(), entryProcs.begin(), entryProcs.end());
+	while (!queue.empty()) {
+		auto p = queue.front();
+		queue.pop_front();
 		if (!seen.count(p)) {
 			seen.insert(p);
-			int n = spaces[p];
-			for (int i = 0; i < n; ++i)
-				f1 << "\t";
-			f1 << p->getName() << " @ " << std::hex << p->getNativeAddress() << std::dec;
-			auto it = parent.find(p);
-			if (it != parent.end())
-				f1 << " [parent=" << it->second->getName() << "]";
-			f1 << std::endl;
+			ofs << "\t//" << p->getName() << " [label=\"" << p->getName() << "\\n" << std::hex << p->getNativeAddress() << std::dec << "\"];\n";
 			if (auto up = dynamic_cast<UserProc *>(p)) {
-				++n;
 				const auto &calleeList = up->getCallees();
-				for (auto it1 = calleeList.crbegin(); it1 != calleeList.crend(); ++it1) {
-					procList.push_front(*it1);
-					spaces[*it1] = n;
-					parent[*it1] = p;
-					f2 << "\t" << p->getName() << " -> " << (*it1)->getName() << ";\n";
+				for (const auto &callee : calleeList) {
+					queue.push_back(callee);
+					ofs << "\t" << p->getName() << " -> " << callee->getName() << ";\n";
 				}
 			}
 		}
 	}
-	f2 << "}\n";
-	f1.close();
-	f2.close();
-	unlockFile(fd1);
-	unlockFile(fd2);
+	ofs << "}\n";
+	ofs.close();
+	unlockFile(fd);
 }
 
 static void

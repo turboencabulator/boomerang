@@ -177,7 +177,7 @@ Boomerang::help()
 		"  -x               : Dump XML files\n"
 		"  -r               : Print RTL for each proc to log before code generation\n"
 		"  -gd              : Generate a dotty graph of the program's CFG and DFG\n"
-		"  -gc              : Generate a call graph (callgraph.out and callgraph.dot)\n"
+		"  -gc              : Generate a call graph (callgraph.dot)\n"
 		"  -gs              : Generate a symbol file (symbols.h)\n"
 		"  -iw              : Write indirect call report to output/indirect.txt\n"
 		"\n"
