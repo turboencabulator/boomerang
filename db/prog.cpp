@@ -41,7 +41,6 @@
 #include <sys/types.h>
 
 #include <algorithm>
-#include <deque>
 #include <fstream>
 #include <iterator>
 #include <sstream>
@@ -1252,38 +1251,44 @@ Prog::rangeAnalysis()
 }
 #endif
 
+static void
+printCallGraphRecursive(Proc *proc, std::ostream &f, std::set<Proc *> &seen)
+{
+	if (!seen.count(proc)) {
+		seen.insert(proc);
+		f << "\t//" << proc->getName()
+		  << " [label=\"" << proc->getName() << "\\n"
+		  << std::hex << proc->getNativeAddress() << std::dec << "\"];\n";
+		if (auto up = dynamic_cast<UserProc *>(proc)) {
+			const auto &calleeList = up->getCallees();
+			for (const auto &callee : calleeList)
+				f << "\t" << proc->getName() << " -> " << callee->getName() << ";\n";
+			for (const auto &callee : calleeList)
+				printCallGraphRecursive(callee, f, seen);
+		}
+	}
+}
+
 void
 Prog::printCallGraph() const
 {
 	std::string fname = Boomerang::get().getOutputPath() + "callgraph.dot";
 	int fd = lockFileWrite(fname);
-	std::ofstream ofs(fname);
+	std::ofstream f(fname);
 	std::set<Proc *> seen;
-	std::deque<Proc *> queue;
-	ofs << "digraph callgraph {\n";
-	queue.insert(queue.end(), entryProcs.begin(), entryProcs.end());
-	while (!queue.empty()) {
-		auto p = queue.front();
-		queue.pop_front();
-		if (!seen.count(p)) {
-			seen.insert(p);
-			ofs << "\t//" << p->getName() << " [label=\"" << p->getName() << "\\n" << std::hex << p->getNativeAddress() << std::dec << "\"];\n";
-			if (auto up = dynamic_cast<UserProc *>(p)) {
-				const auto &calleeList = up->getCallees();
-				for (const auto &callee : calleeList) {
-					queue.push_back(callee);
-					ofs << "\t" << p->getName() << " -> " << callee->getName() << ";\n";
-				}
-			}
-		}
-	}
-	ofs << "}\n";
-	ofs.close();
+	f << "digraph callgraph {\n";
+	for (const auto &proc : entryProcs)
+		printCallGraphRecursive(proc, f, seen);
+	for (const auto &proc : m_procs)
+		if (dynamic_cast<UserProc *>(proc) && !seen.count(proc))
+			printCallGraphRecursive(proc, f, seen);
+	f << "}\n";
+	f.close();
 	unlockFile(fd);
 }
 
 static void
-printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &seen)
+printProcsRecursive(Proc *proc, int indent, std::ostream &f, std::set<Proc *> &seen)
 {
 	bool firsttime = false;
 	if (!seen.count(proc)) {
@@ -1299,9 +1304,8 @@ printProcsRecursive(Proc *proc, int indent, std::ofstream &f, std::set<Proc *> &
 		f << " __nodecode __incomplete void " << proc->getName() << "();\n";
 
 		const auto &calleeList = up->getCallees();
-		for (const auto &callee : calleeList) {
+		for (const auto &callee : calleeList)
 			printProcsRecursive(callee, indent + 1, f, seen);
-		}
 		for (int i = 0; i < indent; ++i)
 			f << "\t";
 		f << "// End of " << proc->getName() << "\n";
