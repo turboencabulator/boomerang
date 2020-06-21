@@ -224,7 +224,6 @@ public:
 
 	        void        printSymbolsToFile() const;
 	        void        printCallGraph() const;
-	        void        printCallGraphXML() const;
 
 	        Cluster    *getRootCluster() const { return m_rootCluster; }
 	        Cluster    *findCluster(const std::string &name) const { return m_rootCluster->find(name); }

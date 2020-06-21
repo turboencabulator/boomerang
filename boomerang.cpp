@@ -1076,7 +1076,6 @@ Boomerang::loadAndDecode(const char *fname, const char *pname)
 	}
 	if (generateCallGraph) {
 		prog->printCallGraph();
-		prog->printCallGraphXML();
 	}
 	return prog;
 }

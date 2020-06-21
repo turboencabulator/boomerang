@@ -190,34 +190,6 @@ UserProc::searchAll(Exp *search, std::list<Exp *> &result)
 }
 
 void
-Proc::printCallGraphXML(std::ostream &os, int depth, bool recurse)
-{
-	if (!DUMP_XML)
-		return;
-	visited = true;
-	for (int i = 0; i < depth; ++i) os << "\t";
-	os << "<proc name=\"" << getName() << "\"/>\n";
-}
-
-void
-UserProc::printCallGraphXML(std::ostream &os, int depth, bool recurse)
-{
-	if (!DUMP_XML)
-		return;
-	bool wasVisited = visited;
-	visited = true;
-	int i;
-	for (i = 0; i < depth; ++i) os << "\t";
-	os << "<proc name=\"" << getName() << "\">\n";
-	if (recurse) {
-		for (const auto &callee : calleeList)
-			callee->printCallGraphXML(os, depth + 1, !wasVisited && !callee->isVisited());
-	}
-	for (i = 0; i < depth; ++i) os << "\t";
-	os << "</proc>\n";
-}
-
-void
 Proc::printDetailsXML() const
 {
 	if (!DUMP_XML)
@@ -291,7 +263,7 @@ UserProc::printXML()
 		return;
 	printDetailsXML();
 	printSSAXML();
-	prog->printCallGraphXML();
+	prog->printCallGraph();
 	printUseGraph();
 }
 

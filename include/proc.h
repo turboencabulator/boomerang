@@ -132,17 +132,12 @@ public:
 	virtual void        removeReturn(Exp *e);
 	//virtual void        addReturn(Exp *e);
 
-	virtual void        printCallGraphXML(std::ostream &os, int depth, bool recurse = true);
 	        void        printDetailsXML() const;
-	        void        clearVisited() { visited = false; }
-	        bool        isVisited() const { return visited; }
 
 	        Cluster    *getCluster() const { return cluster; }
 	        void        setCluster(Cluster *c) { cluster = c; }
 
 protected:
-	        bool        visited = false;  ///< For printCallGraphXML
-
 	        Prog       *prog = nullptr;  ///< Program containing this procedure.
 
 	/**
@@ -657,7 +652,6 @@ public:
 	void        killPremise(Exp *e) { recurPremises.erase(e); }
 	bool        isPreserved(Exp *e) const override;  ///< Return whether e is preserved by this proc
 
-	void        printCallGraphXML(std::ostream &os, int depth, bool recurse = true) override;
 	void        printDecodedXML() const;
 	void        printAnalysedXML() const;
 	void        printSSAXML() const;

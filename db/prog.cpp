@@ -1339,29 +1339,6 @@ Prog::printSymbolsToFile() const
 }
 
 void
-Prog::printCallGraphXML() const
-{
-	if (!DUMP_XML)
-		return;
-	for (const auto &proc : m_procs)
-		proc->clearVisited();
-	std::string fname = Boomerang::get().getOutputPath() + "callgraph.xml";
-	int fd = lockFileWrite(fname);
-	std::ofstream f(fname);
-	f << "<prog name=\"" << getName() << "\">\n";
-	f << "\t<callgraph>\n";
-	for (const auto &proc : entryProcs)
-		proc->printCallGraphXML(f, 2);
-	for (const auto &proc : m_procs)
-		if (dynamic_cast<UserProc *>(proc) && !proc->isVisited())
-			proc->printCallGraphXML(f, 2);
-	f << "\t</callgraph>\n";
-	f << "</prog>\n";
-	f.close();
-	unlockFile(fd);
-}
-
-void
 Prog::readSymbolFile(const std::string &fname)
 {
 	std::ifstream ifs(fname);
