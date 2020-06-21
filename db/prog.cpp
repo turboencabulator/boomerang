@@ -1277,29 +1277,27 @@ Prog::printCallGraph() const
 	std::ofstream f(fname);
 	std::set<Proc *> seen;
 	f << "digraph callgraph {\n";
-	for (const auto &proc : entryProcs)
-		printCallGraphRecursive(proc, f, seen);
-	for (const auto &proc : m_procs)
-		if (dynamic_cast<UserProc *>(proc) && !seen.count(proc))
-			printCallGraphRecursive(proc, f, seen);
+	for (const auto &up : entryProcs)
+		printCallGraphRecursive(up, f, seen);
+	for (const auto &proc : m_procs) {
+		auto up = dynamic_cast<UserProc *>(proc);
+		if (up && !seen.count(up))
+			printCallGraphRecursive(up, f, seen);
+	}
 	f << "}\n";
 	f.close();
 	unlockFile(fd);
 }
 
 static void
-printProcsRecursive(Proc *proc, int indent, std::ostream &f, std::set<Proc *> &seen)
+printProcsRecursive(Proc *proc, int indent, std::ostream &f, std::set<UserProc *> &seen)
 {
-	bool firsttime = false;
-	if (!seen.count(proc)) {
-		seen.insert(proc);
-		firsttime = true;
-	}
 	for (int i = 0; i < indent; ++i)
 		f << "\t";
 
 	auto up = dynamic_cast<UserProc *>(proc);
-	if (up && firsttime) { // seen lib proc
+	if (up && !seen.count(up)) {
+		seen.insert(up);
 		f << "0x" << std::hex << proc->getNativeAddress() << std::dec;
 		f << " __nodecode __incomplete void " << proc->getName() << "();\n";
 
@@ -1324,14 +1322,16 @@ Prog::printSymbolsToFile() const
 
 	/* Print procs */
 	f << "/* Functions: */\n";
-	std::set<Proc *> seen;
-	for (const auto &proc : entryProcs)
-		printProcsRecursive(proc, 0, f, seen);
+	std::set<UserProc *> seen;
+	for (const auto &up : entryProcs)
+		printProcsRecursive(up, 0, f, seen);
 
 	f << "/* Leftovers: */\n"; // don't forget the rest
-	for (const auto &proc : m_procs)
-		if (dynamic_cast<UserProc *>(proc) && !seen.count(proc))
-			printProcsRecursive(proc, 0, f, seen);
+	for (const auto &proc : m_procs) {
+		auto up = dynamic_cast<UserProc *>(proc);
+		if (up && !seen.count(up))
+			printProcsRecursive(up, 0, f, seen);
+	}
 
 	f.close();
 	unlockFile(fd);
