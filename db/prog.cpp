@@ -1276,7 +1276,7 @@ Prog::printCallGraph() const
 			seen.insert(p);
 			int n = spaces[p];
 			for (int i = 0; i < n; ++i)
-				f1 << "\t ";
+				f1 << "\t";
 			f1 << p->getName() << " @ " << std::hex << p->getNativeAddress() << std::dec;
 			auto it = parent.find(p);
 			if (it != parent.end())
@@ -1289,7 +1289,7 @@ Prog::printCallGraph() const
 					procList.push_front(*it1);
 					spaces[*it1] = n;
 					parent[*it1] = p;
-					f2 << p->getName() << " -> " << (*it1)->getName() << ";\n";
+					f2 << "\t" << p->getName() << " -> " << (*it1)->getName() << ";\n";
 				}
 			}
 		}
