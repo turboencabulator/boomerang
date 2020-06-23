@@ -94,7 +94,7 @@ public:
 	 * \note The callers will be in a random order (determined by memory
 	 * allocation).
 	 */
-	        std::set<CallStatement *> &getCallers() { return callerSet; }
+	        const std::set<CallStatement *> &getCallers() const { return callerSet; }
 
 	/**
 	 * Add to the set of callers.
@@ -536,7 +536,7 @@ public:
 	/**
 	 * Get the callees.
 	 */
-	std::list<Proc *> &getCallees() { return calleeList; }
+	const std::list<Proc *> &getCallees() const { return calleeList; }
 	void        addCallee(Proc *callee);
 
 	bool        containsAddr(ADDRESS uAddr) const;

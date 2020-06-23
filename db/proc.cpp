@@ -5020,8 +5020,7 @@ UserProc::removeRedundantReturns(std::set<UserProc *> &removeRetSet)
 		unionOfCallerLiveLocs.insert(signature->getReturnExp(1));
 	else {
 		// For each caller
-		std::set<CallStatement *> &callers = getCallers();
-		for (const auto &caller : callers) {
+		for (const auto &caller : callerSet) {
 			// Union in the set of locations live at this call
 			UseCollector *useCol = caller->getUseCollector();
 			unionOfCallerLiveLocs.makeUnion(useCol->getLocSet());
@@ -5129,8 +5128,7 @@ UserProc::updateForUseChange(std::set<UserProc *> &removeRetSet)
 	if (parameters.size() != oldParameters.size()) {
 		if (DEBUG_UNUSED)
 			LOG << "%%%  parameters changed for " << getName() << "\n";
-		std::set<CallStatement *> &callers = getCallers();
-		for (const auto &caller : callers) {
+		for (const auto &caller : callerSet) {
 			caller->updateArguments();
 			// Schedule the callers for analysis
 			removeRetSet.insert(caller->getProc());
