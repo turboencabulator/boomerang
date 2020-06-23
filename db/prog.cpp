@@ -1,7 +1,6 @@
 /**
  * \file
- * \brief Implementation of the program class.  Holds information of interest
- *        to the whole program.
+ * \brief Implementation of the program class.
  *
  * \authors
  * Copyright (C) 1998-2001, The University of Queensland
@@ -50,12 +49,17 @@
 #include <cstdlib>
 #include <cstring>
 
+/**
+ * \brief Default constructor.
+ */
 Prog::Prog() :
 	m_rootCluster(new Cluster("prog"))
 {
-	// Default constructor
 }
 
+/**
+ * \brief Constructor with name.
+ */
 Prog::Prog(const std::string &name) :
 	m_name(name),
 	m_path(name),
@@ -94,14 +98,21 @@ Prog::setFrontEnd(FrontEnd *fe)
 	}
 }
 
+/**
+ * \brief Assign a name to this program.
+ */
 void
-Prog::setName(const std::string &name)  // Assign a name to this program
+Prog::setName(const std::string &name)
 {
 	m_name = name;
 	m_rootCluster->setName(name);
 }
 
-// well form the entire program
+/**
+ * \brief Well form the entire program.
+ *
+ * Well form all the procedures/cfgs in this program.
+ */
 bool
 Prog::wellForm()
 {
@@ -114,8 +125,11 @@ Prog::wellForm()
 	return wellformed;
 }
 
-// last fixes after decoding everything
-// was in analysis.cpp
+/**
+ * \brief Last fixes after decoding everything.
+ *
+ * \note Was in analysis.cpp.
+ */
 void
 Prog::finishDecode()
 {
@@ -129,6 +143,9 @@ Prog::finishDecode()
 	}
 }
 
+/**
+ * \brief Generate dotty file.
+ */
 void
 Prog::generateDot(std::ostream &os) const
 {
@@ -148,6 +165,9 @@ Prog::generateDot(std::ostream &os) const
 	os << "}\n";
 }
 
+/**
+ * \brief Generate code.
+ */
 void
 Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
 {
@@ -413,7 +433,9 @@ Prog::generateCode(std::ostream &os)
 	}
 }
 
-// Print this program, mainly for debugging
+/**
+ * \brief Print this program (primarily for debugging).
+ */
 void
 Prog::print(std::ostream &out) const
 {
@@ -427,17 +449,19 @@ Prog::print(std::ostream &out) const
 	}
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::setNewProc
- * NOTE:        Formally Frontend::newProc
- * OVERVIEW:    Call this function when a procedure is discovered (usually by
- *                decoding a call instruction). That way, it is given a name
- *                that can be displayed in the dot file, etc. If we assign it
- *                a number now, then it will retain this number always
- * PARAMETERS:  uAddr - Native address of the procedure entry point
- * RETURNS:     Pointer to the Proc object, or nullptr if this is a deleted (not to
- *                be decoded) address
- *============================================================================*/
+/**
+ * Call this function when a procedure is discovered (usually by decoding a
+ * call instruction).  That way, it is given a name that can be displayed in
+ * the dot file, etc.  If we assign it a number now, then it will retain this
+ * number always.
+ *
+ * \note Formerly Frontend::newProc.
+ *
+ * \param uAddr  Native address of the procedure entry point.
+ *
+ * \returns  Pointer to the Proc object,
+ *           or null if this is a deleted (not to be decoded) address.
+ */
 Proc *
 Prog::setNewProc(ADDRESS uAddr)
 {
@@ -470,15 +494,18 @@ Prog::setNewProc(ADDRESS uAddr)
 	return pProc;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::newProc
- * OVERVIEW:    Creates a new Proc object, adds it to the list of procs in this Prog object, and adds the address to
- *                  the list
- * PARAMETERS:  name: Name for the proc
- *              uNative: Native address of the entry point of the proc
- *              bLib: If true, this will be a libProc; else a UserProc
- * RETURNS:     A pointer to the new Proc object
- *============================================================================*/
+/**
+ * \brief Return a pointer to a new proc.
+ *
+ * Creates a new Proc object, adds it to the list of procs in this Prog
+ * object, and adds the address to the list.
+ *
+ * \param name     Name for the proc.
+ * \param uNative  Native address of the entry point of the proc.
+ * \param bLib     If true, this will be a LibProc; else a UserProc.
+ *
+ * \returns  A pointer to the new Proc object.
+ */
 Proc *
 Prog::newProc(const std::string &name, ADDRESS uNative, bool bLib /*= false*/)
 {
@@ -496,11 +523,14 @@ Prog::newProc(const std::string &name, ADDRESS uNative, bool bLib /*= false*/)
 }
 
 #if 0 // Cruft?
-/*==============================================================================
- * FUNCTION:       Prog::remProc
- * OVERVIEW:       Removes the UserProc from this Prog object's list, and deletes as much as possible of the Proc
- * PARAMETERS:     proc: pointer to the UserProc object to be removed
- *============================================================================*/
+/**
+ * \brief Remove the given UserProc.
+ *
+ * Removes the UserProc from this Prog object's list, and deletes as much as
+ * possible of the Proc.
+ *
+ * \param uProc  Pointer to the UserProc object to be removed.
+ */
 void
 Prog::remProc(UserProc *uProc)
 {
@@ -531,17 +561,22 @@ Prog::removeProc(const std::string &name)
 	}
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getNumProcs
- * OVERVIEW:    Return the number of real (non deleted) procedures
- * RETURNS:     The number of procedures
- *============================================================================*/
+/**
+ * \brief Get # of procedures stored in prog.
+ *
+ * Return the number of real (non deleted) procedures.
+ *
+ * \returns  The number of procedures.
+ */
 int
 Prog::getNumProcs() const
 {
 	return m_procs.size();
 }
 
+/**
+ * \brief Get # of user procedures stored in prog.
+ */
 int
 Prog::getNumUserProcs() const
 {
@@ -552,12 +587,13 @@ Prog::getNumUserProcs() const
 	return n;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getProc
- * OVERVIEW:    Return a pointer to the indexed Proc object
- * PARAMETERS:  Index of the proc
- * RETURNS:     Pointer to the Proc object, or nullptr if index invalid
- *============================================================================*/
+/**
+ * Return a pointer to the indexed Proc object.
+ *
+ * \param idx  Index of the proc.
+ *
+ * \returns  Pointer to the Proc object, or null if index invalid.
+ */
 Proc *
 Prog::getProc(int idx) const
 {
@@ -569,13 +605,17 @@ Prog::getProc(int idx) const
 	return *it;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::findProc
- * OVERVIEW:    Return a pointer to the associated Proc object, or nullptr if none
- * NOTE:        Could return -1 for a deleted Proc
- * PARAMETERS:  Native address of the procedure entry point
- * RETURNS:     Pointer to the Proc object, or 0 if none, or -1 if deleted
- *============================================================================*/
+/**
+ * \brief Find the Proc with given address, null if none, -1 if deleted.
+ *
+ * Return a pointer to the associated Proc object.
+ *
+ * \note Could return -1 for a deleted Proc.
+ *
+ * \param addr  Native address of the procedure entry point.
+ *
+ * \returns  Pointer to the Proc object, or null if none, or -1 if deleted.
+ */
 Proc *
 Prog::findProc(ADDRESS addr) const
 {
@@ -585,6 +625,9 @@ Prog::findProc(ADDRESS addr) const
 	return nullptr;
 }
 
+/**
+ * \brief Find the Proc with the given name.
+ */
 Proc *
 Prog::findProc(const std::string &name) const
 {
@@ -594,7 +637,9 @@ Prog::findProc(const std::string &name) const
 	return nullptr;
 }
 
-// get a library procedure by name; create if does not exist
+/**
+ * \brief Lookup a library procedure by name; create if does not exist.
+ */
 LibProc *
 Prog::getLibraryProc(const std::string &nam)
 {
@@ -604,6 +649,10 @@ Prog::getLibraryProc(const std::string &nam)
 	return (LibProc *)newProc(nam, NO_ADDRESS, true);
 }
 
+/**
+ * Get a library signature for a given name
+ * (used when creating a new library proc).
+ */
 Signature *
 Prog::getLibSignature(const std::string &nam) const
 {
@@ -625,6 +674,9 @@ Prog::rereadLibSignatures()
 	}
 }
 
+/**
+ * Get the front end id used to make this prog.
+ */
 platform
 Prog::getFrontEndId() const
 {
@@ -651,12 +703,19 @@ Prog::getDefaultReturns() const
 }
 #endif
 
+/**
+ * \brief Returns true if this is a win32 program.
+ */
 bool
 Prog::isWin32() const
 {
 	return pFE->isWin32();
 }
 
+/**
+ * Get a global variable if possible, looking up the loader's symbol table if
+ * necessary.
+ */
 const char *
 Prog::getGlobalName(ADDRESS addr) const
 {
@@ -692,6 +751,9 @@ Prog::getGlobal(const std::string &nam) const
 	return nullptr;
 }
 
+/**
+ * Indicate that a given global has been seen used in the program.
+ */
 bool
 Prog::globalUsed(ADDRESS uaddr, Type *knownType)
 {
@@ -742,6 +804,10 @@ Prog::getSymbols() const
 	return pBF->getSymbols();
 }
 
+/**
+ * Make an array type for the global array at u.
+ * Mainly, set the length sensibly.
+ */
 ArrayType *
 Prog::makeArrayType(ADDRESS u, Type *t)
 {
@@ -754,6 +820,9 @@ Prog::makeArrayType(ADDRESS u, Type *t)
 	return new ArrayType(t, sz / n);
 }
 
+/**
+ * Guess a global's type based on its name and address.
+ */
 Type *
 Prog::guessGlobalType(const std::string &nam, ADDRESS u) const
 {
@@ -772,6 +841,10 @@ Prog::guessGlobalType(const std::string &nam, ADDRESS u) const
 	}
 }
 
+/**
+ * Make up a name for a new global at address addr
+ * (or return an existing name if address already used).
+ */
 std::string
 Prog::newGlobalName(ADDRESS addr)
 {
@@ -785,6 +858,9 @@ Prog::newGlobalName(ADDRESS addr)
 	return os.str();
 }
 
+/**
+ * \brief Get the type of a global variable.
+ */
 Type *
 Prog::getGlobalType(const std::string &nam) const
 {
@@ -794,6 +870,9 @@ Prog::getGlobalType(const std::string &nam) const
 	return nullptr;
 }
 
+/**
+ * \brief Set the type of a global variable.
+ */
 void
 Prog::setGlobalType(const std::string &nam, Type *ty)
 {
@@ -806,8 +885,10 @@ Prog::setGlobalType(const std::string &nam, Type *ty)
 	}
 }
 
-// get a string constant at a given address if appropriate
-// if knownString, it is already known to be a char*
+/**
+ * Get a string constant at a given address if appropriate.
+ * If knownString, it is already known to be a char*.
+ */
 const char *
 Prog::getStringConstant(ADDRESS uaddr, bool knownString /* = false */) const
 {
@@ -855,13 +936,17 @@ Prog::getFloatConstant(ADDRESS uaddr, bool &ok, int bits) const
 	return 0.0;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::findContainingProc
- * OVERVIEW:    Return a pointer to the Proc object containing uAddr, or 0 if none
- * NOTE:        Could return -1 for a deleted Proc
- * PARAMETERS:  Native address to search for
- * RETURNS:     Pointer to the Proc object, or 0 if none, or -1 if deleted
- *============================================================================*/
+/**
+ * \brief Find the Proc that contains the given address.
+ *
+ * Return a pointer to the Proc object containing uAddr.
+ *
+ * \note Could return -1 for a deleted Proc.
+ *
+ * \param uAddr  Native address to search for.
+ *
+ * \returns  Pointer to the Proc object, or null if none, or -1 if deleted.
+ */
 Proc *
 Prog::findContainingProc(ADDRESS uAddr) const
 {
@@ -875,24 +960,28 @@ Prog::findContainingProc(ADDRESS uAddr) const
 	return nullptr;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::isProcLabel
- * OVERVIEW:    Return true if this is a real procedure
- * PARAMETERS:  Native address of the procedure entry point
- * RETURNS:     True if a real (non deleted) proc
- *============================================================================*/
+/**
+ * \brief Checks if addr is a label or not.
+ *
+ * Return true if this is a real procedure.
+ *
+ * \param addr  Native address of the procedure entry point.
+ *
+ * \returns  True if a real (non deleted) proc.
+ */
 bool
 Prog::isProcLabel(ADDRESS addr)
 {
 	return !!m_procLabels[addr];
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getNameNoPath
- * OVERVIEW:    Get the name for the progam, without any path at the front
- * PARAMETERS:  None
- * RETURNS:     A string with the name
- *============================================================================*/
+/**
+ * \brief Get the filename of this program.
+ *
+ * Get the name for the progam, without any path at the front.
+ *
+ * \returns  A string with the name.
+ */
 std::string
 Prog::getNameNoPath() const
 {
@@ -913,13 +1002,15 @@ Prog::getNameNoPathNoExt() const
 	return nopath.substr(0, n);
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getFirstProc
- * OVERVIEW:    Return a pointer to the first Proc object for this program
- * NOTE:        The it parameter must be passed to getNextProc
- * PARAMETERS:  it: An uninitialised PROGMAP::const_iterator
- * RETURNS:     A pointer to the first Proc object; could be 0 if none
- *============================================================================*/
+/**
+ * Return a pointer to the first Proc object for this program.
+ *
+ * \note The it parameter must be passed to getNextProc().
+ *
+ * \param it  An uninitialised PROGMAP::const_iterator.
+ *
+ * \returns  A pointer to the first Proc object; could be null if none.
+ */
 Proc *
 Prog::getFirstProc(PROGMAP::const_iterator &it)
 {
@@ -931,13 +1022,16 @@ Prog::getFirstProc(PROGMAP::const_iterator &it)
 	return nullptr;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getNextProc
- * OVERVIEW:    Return a pointer to the next Proc object for this program
- * NOTE:        The it parameter must be from a previous call to getFirstProc or getNextProc
- * PARAMETERS:  it: A PROGMAP::const_iterator as above
- * RETURNS:     A pointer to the next Proc object; could be 0 if no more
- *============================================================================*/
+/**
+ * Return a pointer to the next Proc object for this program.
+ *
+ * \note The it parameter must be from a previous call to getFirstProc() or
+ * getNextProc().
+ *
+ * \param it  A PROGMAP::const_iterator as above.
+ *
+ * \returns  A pointer to the next Proc object; could be null if no more.
+ */
 Proc *
 Prog::getNextProc(PROGMAP::const_iterator &it)
 {
@@ -949,13 +1043,15 @@ Prog::getNextProc(PROGMAP::const_iterator &it)
 	return nullptr;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getFirstUserProc
- * OVERVIEW:    Return a pointer to the first UserProc object for this program
- * NOTE:        The it parameter must be passed to getNextUserProc
- * PARAMETERS:  it: An uninitialised std::list<Proc*>::iterator
- * RETURNS:     A pointer to the first UserProc object; could be 0 if none
- *============================================================================*/
+/**
+ * Return a pointer to the first UserProc object for this program.
+ *
+ * \note The it parameter must be passed to getNextUserProc().
+ *
+ * \param it  An uninitialised std::list<Proc*>::iterator.
+ *
+ * \returns  A pointer to the first UserProc object; could be null if none.
+ */
 UserProc *
 Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 {
@@ -965,14 +1061,16 @@ Prog::getFirstUserProc(std::list<Proc *>::iterator &it)
 	return nullptr;
 }
 
-/*==============================================================================
- * FUNCTION:    Prog::getNextUserProc
- * OVERVIEW:    Return a pointer to the next UserProc object for this program
- * NOTE:        The it parameter must be from a previous call to
- *                getFirstUserProc or getNextUserProc
- * PARAMETERS:  it: A std::list<Proc*>::iterator
- * RETURNS:     A pointer to the next UserProc object; could be 0 if no more
- *============================================================================*/
+/**
+ * Return a pointer to the next UserProc object for this program.
+ *
+ * \note The it parameter must be from a previous call to getFirstUserProc()
+ * or getNextUserProc().
+ *
+ * \param it  A std::list<Proc*>::iterator.
+ *
+ * \returns  A pointer to the next UserProc object; could be null if no more.
+ */
 UserProc *
 Prog::getNextUserProc(std::list<Proc *>::iterator &it)
 {
@@ -1008,6 +1106,9 @@ Prog::decodeEntryPoint(ADDRESS a)
 		entryProcs.push_back(up);
 }
 
+/**
+ * As per the above, but don't decode.
+ */
 void
 Prog::setEntryPoint(ADDRESS a)
 {
@@ -1029,6 +1130,9 @@ Prog::decodeEverythingUndecoded()
 	finishDecode();
 }
 
+/**
+ * Do the main non-global decompilation steps.
+ */
 void
 Prog::decompile()
 {
@@ -1142,15 +1246,27 @@ Prog::removeUnusedGlobals()
 	}
 }
 
-// This is the global removing of unused and redundant returns. The initial idea is simple enough: remove some returns
-// according to the formula returns(p) = modifieds(p) isect union(live at c) for all c calling p.
-// However, removing returns reduces the uses, leading to three effects:
-// 1) The statement that defines the return, if only used by that return, becomes unused
-// 2) if the return is implicitly defined, then the parameters may be reduced, which affects all callers
-// 3) if the return is defined at a call, the location may no longer be live at the call. If not, you need to check
-//   the child, and do the union again (hence needing a list of callers) to find out if this change also affects that
-//   child.
-// Return true if any change
+/**
+ * \brief Remove unused return locations.
+ *
+ * This is the global removing of unused and redundant returns.  The initial
+ * idea is simple enough: remove some returns according to the formula
+ *     returns(p) = modifieds(p) isect union(live at c)
+ * for all c calling p.
+ *
+ * However, removing returns reduces the uses, leading
+ * to three effects:
+ * 1. The statement that defines the return, if only used by that return,
+ *    becomes unused.
+ * 2. If the return is implicitly defined, then the parameters may be reduced,
+ *    which affects all callers.
+ * 3. If the return is defined at a call, the location may no longer be live
+ *    at the call.  If not, you need to check the child, and do the union
+ *    again (hence needing a list of callers) to find out if this change also
+ *    affects that child.
+ *
+ * \returns  true if any returns are removed.
+ */
 bool
 Prog::removeUnusedReturns()
 {
@@ -1179,7 +1295,11 @@ Prog::removeUnusedReturns()
 	return change;
 }
 
-// Have to transform out of SSA form after the above final pass
+/**
+ * \brief Convert from SSA form.
+ *
+ * Have to transform out of SSA form after the above final pass.
+ */
 void
 Prog::fromSSAform()
 {
@@ -1202,6 +1322,9 @@ Prog::fromSSAform()
 	}
 }
 
+/**
+ * \brief Type analysis.
+ */
 void
 Prog::conTypeAnalysis()
 {
@@ -1219,6 +1342,9 @@ Prog::conTypeAnalysis()
 		LOG << "=== end type analysis ===\n";
 }
 
+/**
+ * \brief Type analysis.
+ */
 void
 Prog::globalTypeAnalysis()
 {
@@ -1238,6 +1364,9 @@ Prog::globalTypeAnalysis()
 }
 
 #if 0 // Cruft?
+/**
+ * \brief Range analysis.
+ */
 void
 Prog::rangeAnalysis()
 {
@@ -1383,6 +1512,9 @@ Prog::readSymbolFile(const std::string &fname)
 	}
 }
 
+/**
+ * Get the initial value as an expression (or null if not initialised).
+ */
 Exp *
 Global::getInitialValue(Prog *prog) const
 {
@@ -1393,6 +1525,9 @@ Global::getInitialValue(Prog *prog) const
 	return prog->readNativeAs(uaddr, type);
 }
 
+/**
+ * Print to stream os.
+ */
 void
 Global::print(std::ostream &os, Prog *prog) const
 {
@@ -1513,6 +1648,9 @@ Global::meetType(Type *ty)
 	type = type->meetWith(ty, ch);
 }
 
+/**
+ * \brief Re-decode this proc from scratch.
+ */
 void
 Prog::reDecode(UserProc *proc)
 {
@@ -1746,6 +1884,11 @@ Memoisable::restoreMemo(bool dec)
 }
 #endif
 
+/**
+ * This does extra processing on a constant.  The Exp* is expected to be a
+ * Const, and the ADDRESS is the native location from which the constant was
+ * read.
+ */
 Exp *
 Prog::addReloc(Exp *e, ADDRESS lc)
 {

@@ -39,6 +39,9 @@ class UserProc;
 
 typedef std::map<ADDRESS, Proc *> PROGMAP;
 
+/**
+ * Holds information about a global variable.
+ */
 class Global {
 private:
 	        Type       *type = nullptr;
@@ -54,42 +57,40 @@ public:
 	        void        meetType(Type *ty);
 	        ADDRESS     getAddress() const { return uaddr; }
 	        const std::string &getName() const { return nam; }
-	        Exp        *getInitialValue(Prog *prog) const;  // Get the initial value as an expression (or nullptr if not initialised)
-	        void        print(std::ostream &os, Prog *prog) const;  // Print to stream os
+	        Exp        *getInitialValue(Prog *prog) const;
+	        void        print(std::ostream &os, Prog *prog) const;
 
 protected:
 	                    Global() = default;
 	friend class XMLProgParser;
 };
 
+/**
+ * Holds information of interest to the whole program.
+ */
 class Prog {
 public:
-	                    Prog();                         // Default constructor
+	                    Prog();
 	virtual            ~Prog();
-	                    Prog(const std::string &);      // Constructor with name
+	                    Prog(const std::string &);
 	static  Prog       *open(const char *);
 	        FrontEnd   *getFrontEnd() const { return pFE; }
 	        void        setFrontEnd(FrontEnd *);
-	        void        setName(const std::string &);   // Set the name of this program
-	        Proc       *setNewProc(ADDRESS uNative);    // Set up new proc
-	// Return a pointer to a new proc
+	        void        setName(const std::string &);
+	        Proc       *setNewProc(ADDRESS uNative);
 	        Proc       *newProc(const std::string &, ADDRESS, bool = false);
-	        //void        remProc(UserProc *proc);        // Remove the given UserProc
+	        //void        remProc(UserProc *proc);
 	        void        removeProc(const std::string &);
-	        const std::string &getName() const { return m_name; }  // Get the name of this program
+	        const std::string &getName() const { return m_name; }  ///< Get the name of this program.
 	        const std::string &getPath() const { return m_path; }
 	        std::string getPathAndName() const { return m_path + m_name; }
-	        int         getNumProcs() const;            // # of procedures stored in prog
-	        int         getNumUserProcs() const;        // # of user procedures stored in prog
-	        Proc       *getProc(int i) const;           // returns pointer to indexed proc
-	// Find the Proc with given address, nullptr if none, -1 if deleted
+	        int         getNumProcs() const;
+	        int         getNumUserProcs() const;
+	        Proc       *getProc(int i) const;
 	        Proc       *findProc(ADDRESS) const;
-	// Find the Proc with the given name
 	        Proc       *findProc(const std::string &) const;
-	// Find the Proc that contains the given address
 	        Proc       *findContainingProc(ADDRESS uAddr) const;
-	        bool        isProcLabel(ADDRESS addr);      // Checks if addr is a label or not
-	// get the filename of this program
+	        bool        isProcLabel(ADDRESS addr);
 	        std::string getNameNoPath() const;
 	        std::string getNameNoPathNoExt() const;
 	// This pair of functions allows the user to iterate through all the procs
@@ -106,61 +107,45 @@ public:
 	        std::list<UserProc *> entryProcs;
 
 	        void        decodeEntryPoint(ADDRESS a);
-	        void        setEntryPoint(ADDRESS a);  // As per the above, but don't decode
+	        void        setEntryPoint(ADDRESS a);
 	        void        decodeEverythingUndecoded();
 
-	// Re-decode this proc from scratch
 	        void        reDecode(UserProc *proc);
 
-	// Well form all the procedures/cfgs in this program
 	        bool        wellForm();
 
-	// last fixes after decoding everything
 	        void        finishDecode();
 
-	// Do the main non-global decompilation steps
 	        void        decompile();
 
 	        void        removeUnusedGlobals();
 	        void        removeUnusedLocals();
 
-	// Type analysis
 	        void        globalTypeAnalysis();
 
-	/// Remove unused return locations
-	/// \return true if any returns are removed
 	        bool        removeUnusedReturns();
 
-	// Convert from SSA form
 	        void        fromSSAform();
 
-	// Type analysis
 	        void        conTypeAnalysis();
 
-	// Range analysis
 	//        void        rangeAnalysis();
 
-	// Generate dotty file
 	        void        generateDot(std::ostream &os) const;
 
-	// Generate code
 	        void        generateCode(std::ostream &os);
 	        void        generateCode(Cluster *cluster = nullptr, UserProc *proc = nullptr, bool intermixRTL = false);
 	        void        generateRTL(Cluster *cluster = nullptr, UserProc *proc = nullptr) const;
 
-	// Print this program (primarily for debugging)
 	        void        print(std::ostream &out) const;
 
-	// lookup a library procedure by name; create if does not exist
 	        LibProc    *getLibraryProc(const std::string &);
 
-	// Get a library signature for a given name (used when creating a new library proc.
 	        Signature  *getLibSignature(const std::string &) const;
 	        void        rereadLibSignatures();
 
 	//        Statement  *getStmtAtLex(Cluster *cluster, unsigned int begin, unsigned int end) const;
 
-	// Get the front end id used to make this prog
 	        platform    getFrontEndId() const;
 
 	        const std::map<ADDRESS, std::string> &getSymbols() const;
@@ -170,38 +155,29 @@ public:
 	        //std::vector<Exp *> &getDefaultParams() const;
 	        //std::vector<Exp *> &getDefaultReturns() const;
 
-	// Returns true if this is a win32 program
 	        bool        isWin32() const;
 
-	// Get a global variable if possible, looking up the loader's symbol table if necessary
 	        const char *getGlobalName(ADDRESS) const;
 	        ADDRESS     getGlobalAddr(const std::string &) const;
 	        Global     *getGlobal(const std::string &) const;
 
-	// Make up a name for a new global at address addr (or return an existing name if address already used)
 		std::string newGlobalName(ADDRESS);
 
-	// Guess a global's type based on its name and address
 	        Type       *guessGlobalType(const std::string &, ADDRESS) const;
 
-	// Make an array type for the global array at u. Mainly, set the length sensibly
 	        ArrayType  *makeArrayType(ADDRESS u, Type *t);
 
-	// Indicate that a given global has been seen used in the program.
 	        bool        globalUsed(ADDRESS uaddr, Type *knownType = nullptr);
 
-	// Get the type of a global variable
 	        Type       *getGlobalType(const std::string &) const;
 
-	// Set the type of a global variable
 	        void        setGlobalType(const std::string &, Type *);
 
-	// get a string constant at a give address if appropriate
 	        const char *getStringConstant(ADDRESS uaddr, bool knownString = false) const;
 	        double      getFloatConstant(ADDRESS uaddr, bool &ok, int bits = 64) const;
 
 	// Hacks for Mike
-	        MACHINE     getMachine() const { return pBF->getMachine(); }  // Get a code for the machine e.g. MACHINE_SPARC
+	        MACHINE     getMachine() const { return pBF->getMachine(); }  ///< Get a code for the machine e.g. MACHINE_SPARC.
 	        const SectionInfo *getSectionInfoByAddr(ADDRESS a) const { return pBF->getSectionInfoByAddr(a); }
 	        ADDRESS     getLimitTextLow() const { return pBF->getLimitTextLow(); }
 	        ADDRESS     getLimitTextHigh() const { return pBF->getLimitTextHigh(); }
@@ -230,27 +206,29 @@ public:
 	        Cluster    *getDefaultCluster(const std::string &) const;
 	        bool        clusterUsed(Cluster *c) const;
 
-	// Add the given RTL to the front end's map from address to aldready-decoded-RTL
+	/**
+	 * Add the given RTL to the front end's map from address to
+	 * already-decoded-RTL.
+	 */
 	        void        addDecodedRtl(ADDRESS a, RTL *rtl) { pFE->addDecodedRtl(a, rtl); }
 
-	// This does extra processing on a constant.  The Exp* is expected to be a Const,
-	// and the ADDRESS is the native location from which the constant was read.
 	        Exp        *addReloc(Exp *e, ADDRESS lc);
 
 protected:
-	        BinaryFile *pBF = nullptr;      // Pointer to the BinaryFile object for the program
-	        FrontEnd   *pFE = nullptr;      // Pointer to the FrontEnd object for the project
+	        BinaryFile *pBF = nullptr;      ///< Pointer to the BinaryFile object for the program.
+	        FrontEnd   *pFE = nullptr;      ///< Pointer to the FrontEnd object for the project.
 
 	/* Persistent state */
-	        std::string m_name, m_path;     // name of the program and its full path
-	        std::list<Proc *> m_procs;      // list of procedures
-	        PROGMAP     m_procLabels;       // map from address to Proc*
+	        std::string m_name;             ///< Name of the program.
+	        std::string m_path;             ///< The program's full path.
+	        std::list<Proc *> m_procs;      ///< List of procedures.
+	        PROGMAP     m_procLabels;       ///< Map from address to Proc*.
 	// FIXME: is a set of Globals the most appropriate data structure? Surely not.
-	        std::set<Global *> globals;     // globals to print at code generation time
-	        //std::map<ADDRESS, const char *> *globalMap; // Map of addresses to global symbols
-	        DataIntervalMap globalMap;      // Map from address to DataInterval (has size, name, type)
-	        int         m_iNumberedProc = 1;// Next numbered proc will use this
-	        Cluster    *m_rootCluster;      // Root of the cluster tree
+	        std::set<Global *> globals;     ///< Globals to print at code generation time.
+	        //std::map<ADDRESS, const char *> *globalMap; ///< Map of addresses to global symbols.
+	        DataIntervalMap globalMap;      ///< Map from address to DataInterval (has size, name, type).
+	        int         m_iNumberedProc = 1;///< Next numbered proc will use this.
+	        Cluster    *m_rootCluster;      ///< Root of the cluster tree.
 
 	friend class XMLProgParser;
 };
