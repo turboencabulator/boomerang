@@ -88,7 +88,7 @@ public:
 	        Proc       *findProc(ADDRESS) const;
 	        Proc       *findProc(const std::string &) const;
 	        Proc       *findContainingProc(ADDRESS uAddr) const;
-	        bool        isProcLabel(ADDRESS addr);
+	//        bool        isProcLabel(ADDRESS addr);
 	        std::string getNameNoPath() const;
 	        std::string getNameNoPathNoExt() const;
 	// This pair of functions allows the user to iterate through all the procs

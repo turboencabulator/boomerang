@@ -928,6 +928,7 @@ Prog::findContainingProc(ADDRESS uAddr) const
 	return nullptr;
 }
 
+#if 0 // Cruft?
 /**
  * \brief Checks if addr is a label or not.
  *
@@ -942,6 +943,7 @@ Prog::isProcLabel(ADDRESS addr)
 {
 	return !!m_procLabels[addr];
 }
+#endif
 
 /**
  * \brief Get the filename of this program.
