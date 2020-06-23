@@ -168,7 +168,7 @@ Prog::generateDot(std::ostream &os) const
  * \brief Generate code.
  */
 void
-Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL)
+Prog::generateCode(Cluster *cluster, UserProc *uProc, bool intermixRTL) const
 {
 	std::string basedir = m_rootCluster->makeDirs();
 	std::ofstream os;
@@ -379,7 +379,7 @@ Cluster::closeStreams()
 }
 
 bool
-Prog::clusterUsed(Cluster *c) const
+Prog::clusterUsed(const Cluster *c) const
 {
 	for (const auto &proc : m_procs)
 		if (proc->getCluster() == c)
@@ -410,7 +410,7 @@ Prog::getDefaultCluster(const std::string &name) const
 }
 
 void
-Prog::generateCode(std::ostream &os)
+Prog::generateCode(std::ostream &os) const
 {
 	HLLCode *code = Boomerang::get().getHLLCode();
 	for (const auto &global : globals) {
@@ -980,7 +980,7 @@ Prog::getNameNoPathNoExt() const
  * \returns  A pointer to the first Proc object; could be null if none.
  */
 Proc *
-Prog::getFirstProc(PROGMAP::const_iterator &it)
+Prog::getFirstProc(PROGMAP::const_iterator &it) const
 {
 	it = m_procLabels.begin();
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
@@ -1001,7 +1001,7 @@ Prog::getFirstProc(PROGMAP::const_iterator &it)
  * \returns  A pointer to the next Proc object; could be null if no more.
  */
 Proc *
-Prog::getNextProc(PROGMAP::const_iterator &it)
+Prog::getNextProc(PROGMAP::const_iterator &it) const
 {
 	++it;
 	while (it != m_procLabels.end() && (it->second == (Proc *)-1))
@@ -1484,7 +1484,7 @@ Prog::readSymbolFile(const std::string &fname)
  * Get the initial value as an expression (or null if not initialised).
  */
 Exp *
-Global::getInitialValue(Prog *prog) const
+Global::getInitialValue(const Prog *prog) const
 {
 	auto si = prog->getSectionInfoByAddr(uaddr);
 	if (!si || si->isAddressBss(uaddr))
@@ -1497,7 +1497,7 @@ Global::getInitialValue(Prog *prog) const
  * Print to stream os.
  */
 void
-Global::print(std::ostream &os, Prog *prog) const
+Global::print(std::ostream &os, const Prog *prog) const
 {
 	Exp *init = getInitialValue(prog);
 	os << type << " " << nam << " at " << std::hex << uaddr << std::dec

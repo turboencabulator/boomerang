@@ -57,8 +57,8 @@ public:
 	        void        meetType(Type *ty);
 	        ADDRESS     getAddress() const { return uaddr; }
 	        const std::string &getName() const { return nam; }
-	        Exp        *getInitialValue(Prog *prog) const;
-	        void        print(std::ostream &os, Prog *prog) const;
+	        Exp        *getInitialValue(const Prog *prog) const;
+	        void        print(std::ostream &os, const Prog *prog) const;
 
 protected:
 	                    Global() = default;
@@ -93,8 +93,8 @@ public:
 	        std::string getNameNoPathNoExt() const;
 	// This pair of functions allows the user to iterate through all the procs
 	// The procs will appear in order of native address
-	        Proc       *getFirstProc(PROGMAP::const_iterator &it);
-	        Proc       *getNextProc(PROGMAP::const_iterator &it);
+	        Proc       *getFirstProc(PROGMAP::const_iterator &it) const;
+	        Proc       *getNextProc(PROGMAP::const_iterator &it) const;
 
 	// This pair of functions allows the user to iterate through all the UserProcs
 	// The procs will appear in topdown order
@@ -131,8 +131,8 @@ public:
 
 	        void        generateDot(std::ostream &os) const;
 
-	        void        generateCode(std::ostream &os);
-	        void        generateCode(Cluster *cluster = nullptr, UserProc *proc = nullptr, bool intermixRTL = false);
+	        void        generateCode(std::ostream &os) const;
+	        void        generateCode(Cluster *cluster = nullptr, UserProc *proc = nullptr, bool intermixRTL = false) const;
 	        void        generateRTL(Cluster *cluster = nullptr, UserProc *proc = nullptr) const;
 
 	        void        print(std::ostream &out) const;
@@ -197,13 +197,13 @@ public:
 	        Cluster    *getRootCluster() const { return m_rootCluster; }
 	        Cluster    *findCluster(const std::string &name) const { return m_rootCluster->find(name); }
 	        Cluster    *getDefaultCluster(const std::string &) const;
-	        bool        clusterUsed(Cluster *c) const;
+	        bool        clusterUsed(const Cluster *c) const;
 
 	/**
 	 * Add the given RTL to the front end's map from address to
 	 * already-decoded-RTL.
 	 */
-	        void        addDecodedRtl(ADDRESS a, RTL *rtl) { pFE->addDecodedRtl(a, rtl); }
+	        void        addDecodedRtl(ADDRESS a, RTL *rtl) const { pFE->addDecodedRtl(a, rtl); }
 
 	        Exp        *addReloc(Exp *e, ADDRESS lc);
 
