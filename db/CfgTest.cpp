@@ -49,7 +49,8 @@ CfgTest::testDominators()
 	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
-	UserProc *pProc = (UserProc *)prog->getProc(0);
+	std::list<Proc *>::iterator it;
+	auto pProc = prog->getFirstUserProc(it);
 	Cfg *cfg = pProc->getCFG();
 	DataFlow *df = pProc->getDataFlow();
 	df->dominators(cfg);
@@ -110,7 +111,8 @@ CfgTest::testSemiDominators()
 	ADDRESS addr = fe->getMainEntryPoint(gotMain);
 	CPPUNIT_ASSERT(addr != NO_ADDRESS);
 
-	UserProc *pProc = (UserProc *)prog->getProc(0);
+	std::list<Proc *>::iterator it;
+	auto pProc = prog->getFirstUserProc(it);
 	Cfg *cfg = pProc->getCFG();
 
 	DataFlow *df = pProc->getDataFlow();
@@ -159,7 +161,8 @@ CfgTest::testPlacePhi()
 	Type::clearNamedTypes();
 	fe->decode();
 
-	UserProc *pProc = (UserProc *)prog->getProc(0);
+	std::list<Proc *>::iterator it;
+	auto pProc = prog->getFirstUserProc(it);
 	Cfg *cfg = pProc->getCFG();
 
 	// Simplify expressions (e.g. m[ebp + -8] -> m[ebp - 8]
@@ -198,7 +201,8 @@ CfgTest::testPlacePhi2()
 	Type::clearNamedTypes();
 	fe->decode();
 
-	UserProc *pProc = (UserProc *)prog->getProc(0);
+	std::list<Proc *>::iterator it;
+	auto pProc = prog->getFirstUserProc(it);
 	Cfg *cfg = pProc->getCFG();
 	DataFlow *df = pProc->getDataFlow();
 
@@ -256,7 +260,8 @@ CfgTest::testRenameVars()
 	Type::clearNamedTypes();
 	fe->decode();
 
-	UserProc *pProc = (UserProc *)prog->getProc(0);
+	std::list<Proc *>::iterator it;
+	auto pProc = prog->getFirstUserProc(it);
 	Cfg *cfg = pProc->getCFG();
 	DataFlow *df = pProc->getDataFlow();
 

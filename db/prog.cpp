@@ -41,7 +41,6 @@
 
 #include <algorithm>
 #include <fstream>
-#include <iterator>
 #include <sstream>
 #include <vector>
 
@@ -562,19 +561,6 @@ Prog::removeProc(const std::string &name)
 }
 
 /**
- * \brief Get # of procedures stored in prog.
- *
- * Return the number of real (non deleted) procedures.
- *
- * \returns  The number of procedures.
- */
-int
-Prog::getNumProcs() const
-{
-	return m_procs.size();
-}
-
-/**
  * \brief Get # of user procedures stored in prog.
  */
 int
@@ -585,24 +571,6 @@ Prog::getNumUserProcs() const
 		if (dynamic_cast<UserProc *>(proc))
 			++n;
 	return n;
-}
-
-/**
- * Return a pointer to the indexed Proc object.
- *
- * \param idx  Index of the proc.
- *
- * \returns  Pointer to the Proc object, or null if index invalid.
- */
-Proc *
-Prog::getProc(int idx) const
-{
-	// Return the indexed procedure. If this is used often, we should use a vector instead of a list
-	// If index is invalid, result will be nullptr
-	if ((idx < 0) || (idx >= (int)m_procs.size())) return nullptr;
-	auto it = m_procs.cbegin();
-	std::advance(it, idx);
-	return *it;
 }
 
 /**

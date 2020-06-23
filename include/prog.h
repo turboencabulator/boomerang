@@ -84,9 +84,7 @@ public:
 	        const std::string &getName() const { return m_name; }  ///< Get the name of this program.
 	        const std::string &getPath() const { return m_path; }
 	        std::string getPathAndName() const { return m_path + m_name; }
-	        int         getNumProcs() const;
 	        int         getNumUserProcs() const;
-	        Proc       *getProc(int i) const;
 	        Proc       *findProc(ADDRESS) const;
 	        Proc       *findProc(const std::string &) const;
 	        Proc       *findContainingProc(ADDRESS uAddr) const;
