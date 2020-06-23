@@ -193,11 +193,6 @@ public:
 
 	        void        readSymbolFile(const std::string &);
 
-	// Public booleans that are set if and when a register jump or call is
-	// found, respectively
-	        bool        bRegisterJump;
-	        bool        bRegisterCall;
-
 	        void        printSymbolsToFile() const;
 	        void        printCallGraph() const;
 
