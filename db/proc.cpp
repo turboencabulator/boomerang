@@ -2708,7 +2708,7 @@ UserProc::propagateStatements(bool &convert, int pass)
 		if (dynamic_cast<PhiAssign *>(stmt)) continue;
 		change |= stmt->propagateTo(convert, &destCounts, &usedByDomPhi);
 	}
-	simplify();
+	cfg->simplify();
 	propagateToCollector();
 	if (VERBOSE)
 		LOG << "=== end propagating statements at pass " << pass << " ===\n";
@@ -5163,7 +5163,7 @@ UserProc::typeAnalysis()
 			// so do it just before translating from SSA form (which is the where type information becomes inaccessible)
 
 		} while (ellipsisProcessing());
-		simplify();  // In case there are new struct members
+		cfg->simplify();  // In case there are new struct members
 		if (VERBOSE || DEBUG_TA)
 			LOG << "=== end type analysis for " << getName() << " ===\n";
 	} else if (CON_TYPE_ANALYSIS) {

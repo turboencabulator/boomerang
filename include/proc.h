@@ -346,9 +346,6 @@ public:
 	void        testSymbolMap();
 	void        dumpLocals(std::ostream &os, bool html = false) const;
 
-	/// simplify the statements in this proc
-	void        simplify() { cfg->simplify(); }
-
 	ProcSet    *decompile(ProcList *path, int &indent);
 	void        initialiseDecompile();
 	/// Prepare for preservation analysis only.
