@@ -140,6 +140,8 @@ public:
 	        bool        isRegN(int n) const;
 	// True if this is a memory location (any memory nesting depth)
 	        bool        isMemOf() const { return op == opMemOf; }
+	// True if this is a memory location with a constant index
+	        bool        isMemOfK() const;
 	// True if this is an address of
 	        bool        isAddrOf() const { return op == opAddrOf; }
 	// True if this is an array expression

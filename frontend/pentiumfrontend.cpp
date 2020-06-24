@@ -585,8 +585,7 @@ PentiumFrontEnd::getMainEntryPoint(bool &gotMain)
 		if (!inst.rtl->getList().empty())
 			cs = dynamic_cast<CallStatement *>(inst.rtl->getList().back());
 		if (cs
-		 && cs->getDest()->isMemOf()
-		 && cs->getDest()->getSubExp1()->isIntConst()
+		 && cs->getDest()->isMemOfK()
 		 && pBF->isDynamicLinkedProcPointer(((Const *)cs->getDest()->getSubExp1())->getAddr())
 		 && !strcmp(pBF->getDynamicProcName(((Const *)cs->getDest()->getSubExp1())->getAddr()), "GetModuleHandleA")) {
 #if 0

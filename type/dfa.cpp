@@ -278,13 +278,10 @@ UserProc::dfaTypeAnalysis()
 			int i = signature->findParam(slhs);
 			if (i != -1)
 				setParamType(i, iType);
-			else if (lhs->isMemOf()) {
-				Exp *sub = ((Location *)lhs)->getSubExp1();
-				if (sub->isIntConst()) {
-					// We have a m[K] := -
-					int K = ((Const *)sub)->getInt();
-					prog->globalUsed(K, iType);
-				}
+			else if (lhs->isMemOfK()) {
+				// We have a m[K] := -
+				int K = ((Const *)((Location *)lhs)->getSubExp1())->getInt();
+				prog->globalUsed(K, iType);
 			} else if (lhs->isGlobal()) {
 				const char *gname = ((Const *)((Location *)lhs)->getSubExp1())->getStr();
 				prog->setGlobalType(gname, iType);

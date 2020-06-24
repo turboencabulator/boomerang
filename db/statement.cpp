@@ -2300,7 +2300,7 @@ Assign::rangeAnalysis(std::list<Statement *> &execution_paths)
 			a_rhs = new Unary(opInitValueOf, new Terminal(opPC));   // nice hack
 		if (VERBOSE && DEBUG_RANGE_ANALYSIS)
 			LOG << "a_rhs is " << *a_rhs << "\n";
-		if (a_rhs->isMemOf() && a_rhs->getSubExp1()->isIntConst()) {
+		if (a_rhs->isMemOfK()) {
 			ADDRESS c = ((Const *)a_rhs->getSubExp1())->getInt();
 			if (proc->getProg()->isDynamicLinkedProcPointer(c)) {
 				if (auto nam = proc->getProg()->getDynamicProcName(c)) {
@@ -3636,17 +3636,14 @@ CallStatement::convertToDirect()
 		// ADDRESS u = (ADDRESS)((Const *)e)->getInt();
 		// Just convert it to a direct call!
 		// FIXME: to be completed
-	} else if (e->isMemOf()) {
+	} else if (e->isMemOfK()) {
 		// It might be a global that has not been processed yet
-		Exp *sub = ((Location *)e)->getSubExp1();
-		if (sub->isIntConst()) {
-			// m[K]: convert it to a global right here
-			ADDRESS u = (ADDRESS)((Const *)sub)->getInt();
-			proc->getProg()->globalUsed(u);
-			const char *nam = proc->getProg()->getGlobalName(u);
-			e = Location::global(nam, proc);
-			pDest = new RefExp(e, nullptr);
-		}
+		// m[K]: convert it to a global right here
+		ADDRESS u = (ADDRESS)((Const *)((Location *)e)->getSubExp1())->getInt();
+		proc->getProg()->globalUsed(u);
+		const char *nam = proc->getProg()->getGlobalName(u);
+		e = Location::global(nam, proc);
+		pDest = new RefExp(e, nullptr);
 	}
 	if (!e->isGlobal()) {
 		return false;

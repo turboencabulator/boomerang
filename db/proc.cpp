@@ -2188,7 +2188,7 @@ UserProc::findFinalParameters()
 					LOG << "ignoring stack pointer register\n";
 				continue;
 			}
-			if (e->isMemOf() && e->getSubExp1()->isConst()) {
+			if (e->isMemOfK()) {
 				if (VERBOSE || DEBUG_PARAMS)
 					LOG << "ignoring m[const]\n";
 				continue;
@@ -2359,8 +2359,7 @@ UserProc::processFloatConstants()
 		stmt->searchAll(match, results);
 		for (const auto &res : results) {
 			auto fsize = (Ternary *)res;
-			if (fsize->getSubExp3()->isMemOf()
-			 && fsize->getSubExp3()->getSubExp1()->isIntConst()) {
+			if (fsize->getSubExp3()->isMemOfK()) {
 				auto memof = (Location *)fsize->getSubExp3();
 				ADDRESS u = ((Const *)memof->getSubExp1())->getInt();
 				bool ok;

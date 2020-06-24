@@ -890,12 +890,11 @@ bool StmtRegMapper::visit(    BoolAssign *stmt, bool &recurse) { return common(s
 Exp *
 ConstGlobalConverter::preVisit(RefExp *e, bool &recurse)
 {
-	Exp *base, *addr, *idx, *glo;
+	Exp *base, *idx, *glo;
 	if (e->isImplicitDef()) {
-		if ((base = e->getSubExp1(), base->isMemOf())
-		 && (addr = ((Location *)base)->getSubExp1(), addr->isIntConst())) {
+		if ((base = e->getSubExp1(), base->isMemOfK())) {
 			// We have a m[K]{-}
-			int K = ((Const *)addr)->getInt();
+			int K = ((Const *)((Location *)base)->getSubExp1())->getInt();
 			int value = prog->readNative4(K);
 			recurse = false;
 			return new Const(value);

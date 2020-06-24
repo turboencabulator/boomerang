@@ -1254,6 +1254,16 @@ Exp::isRegN(int N) const
 }
 
 /**
+ * \returns  true if the expression is m[K] where K is int const.
+ */
+bool
+Exp::isMemOfK() const
+{
+	if (!isMemOf()) return false;
+	return ((const Location *)this)->getSubExp1()->isIntConst();
+}
+
+/**
  * \returns  true if is \%afp, \%afp+k, \%afp-k, or a[m[\<any of these\>]].
  */
 bool
@@ -2821,8 +2831,7 @@ Ternary::polySimplify(bool &bMod)
 	}
 
 	if (op == opFsize
-	 && subExp3->isMemOf()
-	 && subExp3->getSubExp1()->isIntConst()) {
+	 && subExp3->isMemOfK()) {
 		auto l = static_cast<Location *>(subExp3);
 		unsigned u = ((Const *)l->getSubExp1())->getInt();
 		if (auto p = l->getProc()) {

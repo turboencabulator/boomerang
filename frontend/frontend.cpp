@@ -764,8 +764,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							BB_rtls = nullptr;
 							sequentialDecode = false;
 							processSwitch(bb, proc);        // decode arms, set out edges, etc
-						} else if (dest->isMemOf()  // Check for indirect calls to library functions, especially in Win32 programs
-						        && dest->getSubExp1()->isIntConst()
+						} else if (dest->isMemOfK()  // Check for indirect calls to library functions, especially in Win32 programs
 						        && pBF->isDynamicLinkedProcPointer(((Const *)dest->getSubExp1())->getAddr())) {
 							if (VERBOSE)
 								LOG << "jump to a library function: " << *jump << ", replacing with a call/ret.\n";
@@ -844,8 +843,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 						auto dest = call->getDest();
 
 						// Check for a dynamic linked library function
-						if (dest->isMemOf()
-						 && dest->getSubExp1()->isIntConst()
+						if (dest->isMemOfK()
 						 && pBF->isDynamicLinkedProcPointer(((Const *)dest->getSubExp1())->getAddr())) {
 							// Dynamic linked proc pointers are treated as static.
 							const char *nam = pBF->getDynamicProcName(((Const *)dest->getSubExp1())->getAddr());
@@ -872,8 +870,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 										// In fact it's a computed (looked up) jump, so the jump seems to be a case statement.
 										auto jump = dynamic_cast<CaseStatement *>(first_statement);
 										if (jump
-										 && jump->getDest()->isMemOf()
-										 && jump->getDest()->getSubExp1()->isIntConst()
+										 && jump->getDest()->isMemOfK()
 										 && pBF->isDynamicLinkedProcPointer(((Const *)jump->getDest()->getSubExp1())->getAddr())) {  // Is it an "DynamicLinkedProcPointer"?
 											// Yes, it's a library function. Look up it's name.
 											ADDRESS a = ((Const *)jump->getDest()->getSubExp1())->getAddr();
@@ -937,8 +934,7 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// invalid instructions, and getting invalid stack height errors
 							const char *name = pBF->getSymbolByAddress(newAddr);
 							if (!name
-							 && call->getDest()->isMemOf()
-							 && call->getDest()->getSubExp1()->isIntConst()) {
+							 && call->getDest()->isMemOfK()) {
 								ADDRESS a = ((Const *)call->getDest()->getSubExp1())->getInt();
 								if (pBF->isDynamicLinkedProcPointer(a))
 									name = pBF->getDynamicProcName(a);
