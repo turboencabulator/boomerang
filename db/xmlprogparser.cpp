@@ -493,8 +493,6 @@ XMLProgParser::start_libproc(Context *node, const char **attr)
 {
 	if (phase == 1) {
 		node->proc = (Proc *)findId(getAttr(attr, "id"));
-		if (auto p = (Proc *)findId(getAttr(attr, "firstCaller")))
-			node->proc->m_firstCaller = p;
 		if (auto c = (Cluster *)findId(getAttr(attr, "cluster")))
 			node->proc->cluster = c;
 		return;
@@ -503,8 +501,6 @@ XMLProgParser::start_libproc(Context *node, const char **attr)
 	addId(attr, node->proc);
 	if (auto address = getAttr(attr, "address"))
 		node->proc->address = atoi(address);
-	if (auto address = getAttr(attr, "firstCallerAddress"))
-		node->proc->m_firstCallerAddr = atoi(address);
 }
 
 void
@@ -542,8 +538,6 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 		node->proc = (Proc *)findId(getAttr(attr, "id"));
 		auto u = dynamic_cast<UserProc *>(node->proc);
 		assert(u);
-		if (auto p = (Proc *)findId(getAttr(attr, "firstCaller")))
-			u->m_firstCaller = p;
 		if (auto c = (Cluster *)findId(getAttr(attr, "cluster")))
 			u->cluster = c;
 		if (auto r = (ReturnStatement *)findId(getAttr(attr, "retstmt")))
@@ -558,8 +552,6 @@ XMLProgParser::start_userproc(Context *node, const char **attr)
 		proc->address = atoi(address);
 	if (auto status = getAttr(attr, "status"))
 		proc->status = (ProcStatus)atoi(status);
-	if (auto address = getAttr(attr, "firstCallerAddress"))
-		proc->m_firstCallerAddr = atoi(address);
 }
 
 void
@@ -2208,10 +2200,7 @@ void
 XMLProgParser::persistToXML(std::ostream &out, LibProc *proc)
 {
 	out << "<libproc id=\"" << (void *)proc
-	    << "\" address=\"" << (int)proc->address
-	    << "\" firstCallerAddress=\"" << proc->m_firstCallerAddr;
-	if (proc->m_firstCaller)
-		out << "\" firstCaller=\"" << (void *)proc->m_firstCaller;
+	    << "\" address=\"" << (int)proc->address;
 	if (proc->cluster)
 		out << "\" cluster=\"" << (void *)proc->cluster;
 	out << "\">\n";
@@ -2234,10 +2223,7 @@ XMLProgParser::persistToXML(std::ostream &out, UserProc *proc)
 {
 	out << "<userproc id=\"" << (void *)proc
 	    << "\" address=\"" << (int)proc->address
-	    << "\" status=\"" << (int)proc->status
-	    << "\" firstCallerAddress=\"" << proc->m_firstCallerAddr;
-	if (proc->m_firstCaller)
-		out << "\" firstCaller=\"" << (void *)proc->m_firstCaller;
+	    << "\" status=\"" << (int)proc->status;
 	if (proc->cluster)
 		out << "\" cluster=\"" << (void *)proc->cluster;
 	if (proc->theReturnStatement)

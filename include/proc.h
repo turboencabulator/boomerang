@@ -69,9 +69,6 @@ public:
 	        Prog       *getProg() const { return prog; }
 	        void        setProg(Prog *p) { prog = p; }
 
-	        Proc       *getFirstCaller();
-	        void        setFirstCaller(Proc *p) { if (!m_firstCaller) m_firstCaller = p; }
-
 	/**
 	 * Returns a pointer to the Signature.
 	 */
@@ -127,8 +124,6 @@ protected:
 
 	/** Persistent state */
 	        ADDRESS     address = 0;              ///< Procedure's address.
-	        Proc       *m_firstCaller = nullptr;  ///< first procedure to call this procedure.
-	        ADDRESS     m_firstCallerAddr = 0;    ///< can only be used once.
 	/// All the expressions that have been proven true. (Could perhaps do with a list of some that are proven false)
 	// FIXME: shouldn't this be in UserProc, with logic associated with the signature doing the equivalent thing
 	// for LibProcs?

@@ -297,20 +297,6 @@ UserProc::printUseGraph()
 }
 
 /**
- * Get the first procedure that calls this procedure (or null for main/start).
- */
-Proc *
-Proc::getFirstCaller()
-{
-	if (!m_firstCaller && m_firstCallerAddr != NO_ADDRESS) {
-		m_firstCaller = prog->findProc(m_firstCallerAddr);
-		m_firstCallerAddr = NO_ADDRESS;
-	}
-
-	return m_firstCaller;
-}
-
-/**
  * \brief Constructor with name, native address.
  *
  * \param name     Name of procedure.
@@ -5690,8 +5676,6 @@ public:
 	Prog *prog;
 	Signature *signature;  // r
 	ADDRESS address;
-	Proc *m_firstCaller;
-	ADDRESS m_firstCallerAddr;
 	std::set<Exp *, lessExpStar> provenTrue;  // r
 	std::set<CallStatement *> callerSet;
 	Cluster *cluster;
@@ -5705,8 +5689,6 @@ LibProc::makeMemo(int mId)
 	m->prog = prog;
 	m->signature = signature;
 	m->address = address;
-	m->m_firstCaller = m_firstCaller;
-	m->m_firstCallerAddr = m_firstCallerAddr;
 	m->provenTrue = provenTrue;
 	m->callerSet = callerSet;
 	m->cluster = cluster;
@@ -5728,8 +5710,6 @@ LibProc::readMemo(Memo *mm, bool dec)
 	prog = m->prog;
 	signature = m->signature;
 	address = m->address;
-	m_firstCaller = m->m_firstCaller;
-	m_firstCallerAddr = m->m_firstCallerAddr;
 	provenTrue = m->provenTrue;
 	callerSet = m->callerSet;
 	cluster = m->cluster;
@@ -5749,8 +5729,6 @@ public:
 	Prog *prog;
 	Signature *signature;  // r
 	ADDRESS address;
-	Proc *m_firstCaller;
-	ADDRESS m_firstCallerAddr;
 	std::set<Exp *, lessExpStar> provenTrue;  // r
 	std::set<CallStatement *> callerSet;
 	Cluster *cluster;
@@ -5770,8 +5748,6 @@ UserProc::makeMemo(int mId)
 	m->prog = prog;
 	m->signature = signature;
 	m->address = address;
-	m->m_firstCaller = m_firstCaller;
-	m->m_firstCallerAddr = m_firstCallerAddr;
 	m->provenTrue = provenTrue;
 	m->callerSet = callerSet;
 	m->cluster = cluster;
@@ -5805,8 +5781,6 @@ UserProc::readMemo(Memo *mm, bool dec)
 	prog = m->prog;
 	signature = m->signature;
 	address = m->address;
-	m_firstCaller = m->m_firstCaller;
-	m_firstCallerAddr = m->m_firstCallerAddr;
 	provenTrue = m->provenTrue;
 	callerSet = m->callerSet;
 	cluster = m->cluster;

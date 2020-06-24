@@ -1030,7 +1030,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 				np = proc->getProg()->setNewProc(dest);
 			}
 			if (np) {
-				np->setFirstCaller(proc);
 				proc->addCallee(np);
 			}
 		}
