@@ -3747,18 +3747,6 @@ UserProc::getDefinitions(LocationSet &ls) const
 	}
 }
 
-/**
- * Add to a set of caller Procs.
- */
-void
-Proc::addCallers(std::set<UserProc *> &callers)
-{
-	for (const auto &caller : callerSet) {
-		UserProc *callerProc = caller->getProc();
-		callers.insert(callerProc);
-	}
-}
-
 void
 UserProc::conTypeAnalysis()
 {

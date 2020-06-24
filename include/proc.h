@@ -96,7 +96,6 @@ public:
 	 * Add to the set of callers.
 	 */
 	        void        addCaller(CallStatement *caller) { callerSet.insert(caller); }
-	        void        addCallers(std::set<UserProc *> &callers);
 
 	        void        removeParameter(Exp *e);
 	virtual void        removeReturn(Exp *e);
