@@ -61,7 +61,6 @@ public:
 	        void        setName(const std::string &);
 
 	        ADDRESS     getNativeAddress() const;
-	        void        setNativeAddress(ADDRESS a);
 
 	/**
 	 * Get the program this procedure belongs to.

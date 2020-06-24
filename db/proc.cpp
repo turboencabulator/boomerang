@@ -97,15 +97,6 @@ Proc::getNativeAddress() const
 }
 
 /**
- * \brief Sets the native address.
- */
-void
-Proc::setNativeAddress(ADDRESS a)
-{
-	address = a;
-}
-
-/**
  * \fn bool Proc::isNoReturn() const
  * \brief Returns true if this procedure doesn't return.
  */
