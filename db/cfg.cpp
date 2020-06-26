@@ -574,31 +574,26 @@ Cfg::dequeue()
 		if (Boomerang::get().traceDecoder)
 			LOG << "<0x" << std::hex << addr << std::dec << "\t";
 
-		// If no label there at all, or if there is a BB, it's incomplete, then we can parse this address next
-		if (!existsBB(addr) || isIncomplete(addr))
+		// Skip parsing any addresses that contain a completed BB.
+		if (!isComplete(addr))
 			return addr;
 	}
 	return NO_ADDRESS;
 }
 
 /**
- * \brief Return true if there is an incomplete BB already at this address.
- *
- * Checks whether the given native address is in the map.  If not, returns
- * false.  If so, returns true if it is incomplete.  Otherwise, returns false.
+ * \brief Return true if there is a completed BB already at this address.
  *
  * \param addr  Address to look up.
- * \returns     true if addr starts an incomplete BB.
+ * \returns     true if addr starts a completed BB.
  */
 bool
-Cfg::isIncomplete(ADDRESS addr) const
+Cfg::isComplete(ADDRESS addr) const
 {
 	auto mi = m_mapBB.find(addr);
 	if (mi == m_mapBB.end())
-		// No entry at all
 		return false;
-	// Else, there is a BB there. If it's incomplete, return true
-	return mi->second->m_bIncomplete;
+	return !mi->second->m_bIncomplete;
 }
 
 /**

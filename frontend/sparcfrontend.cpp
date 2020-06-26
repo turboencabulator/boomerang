@@ -1089,7 +1089,7 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					cfg->addOutEdge(bb, addr);
 				}
 				// Pick a new address to decode from, if the BB is complete
-				if (!cfg->isIncomplete(addr))
+				if (cfg->isComplete(addr))
 					sequentialDecode = false;
 			}
 

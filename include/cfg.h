@@ -141,7 +141,7 @@ public:
 	void        enqueue(ADDRESS);
 	ADDRESS     dequeue();
 
-	bool        isIncomplete(ADDRESS) const;
+	bool        isComplete(ADDRESS) const;
 
 	bool        existsBB(ADDRESS) const;
 
