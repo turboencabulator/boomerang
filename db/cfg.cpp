@@ -196,6 +196,9 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 				pBB->updateType(bbType);
 				pBB->m_bIncomplete = false;
 			} else {
+				// Shouldn't get here unless we've accidentally re-decoded a BB.
+				assert(false);
+
 				// This list of RTLs is not needed now
 				for (const auto &rtl : *pRtls)
 					delete rtl;
@@ -236,6 +239,10 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 		while (++mi != m_mapBB.end()) {
 			auto nextAddr = mi->first;
 			if (nextAddr <= pBB->getHiAddr()) {
+				// Shouldn't get here as long as pRtls doesn't span an existing label.
+				// FrontEnd::processProc() creates a fall BB when it encounters a label.
+				assert(false);
+
 				// Need to truncate the current BB.  Determine completeness of the existing BB
 				// before calling splitBB() since it will be completed by the call.
 				bool complete = !mi->second->m_bIncomplete;
@@ -260,7 +267,6 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 		// Note: no need to check the other way around, because in this case, we will have called Cfg::label(), and it
 		// will have split the existing BB already.
 	}
-	assert(pBB);
 	return pBB;
 }
 
@@ -411,6 +417,10 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 		// The "bottom" BB now starts at the implicit label.
 		bot->setRTLs(tail);
 	} else {
+		// Shouldn't get here, except potentially from newBB()
+		// when it truncates its RTLs at a complete BB.
+		assert(false);
+
 		// bot already exists and is complete, and orig overlaps it.
 		// Discard the overlapping portion of orig.  We don't want to
 		// change the complete BB in any way, except to later add an
