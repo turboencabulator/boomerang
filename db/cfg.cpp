@@ -186,11 +186,10 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 	BasicBlock *pBB = nullptr;
 	if (addr != 0) {
 		mi = m_mapBB.find(addr);
-		if (mi != m_mapBB.end() && mi->second) {
+		if (mi != m_mapBB.end()) {
 			pBB = mi->second;
-			// It should be incomplete, or the pBB there should be zero (we have called Label but not yet created the BB
-			// for it).  Else we have duplicated BBs. Note: this can happen with forward jumps into the middle of a
-			// loop, so not error
+			// It should be incomplete, else we have duplicated BBs.
+			// Note: this can happen with forward jumps into the middle of a loop, so not error
 			if (pBB->m_bIncomplete) {
 				// Fill in the details, and return it
 				pBB->setRTLs(pRtls);
@@ -240,7 +239,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 			if (nextAddr <= pRtls->back()->getAddress()) {
 				// Need to truncate the current BB.  Determine completeness of the existing BB
 				// before calling splitBB() since it will be completed by the call.
-				bool complete = mi->second && !mi->second->m_bIncomplete;
+				bool complete = !mi->second->m_bIncomplete;
 				pBB = splitBB(pBB, nextAddr);
 				// If the existing BB was incomplete, return the "bottom" part of the BB,
 				// so adding out edges will work properly.  However, if the overlapping BB
@@ -297,7 +296,7 @@ Cfg::addOutEdge(BasicBlock *src, ADDRESS addr)
 	// i.e. we already have a BB for this address.
 	BasicBlock *dst;
 	auto it = m_mapBB.find(addr);
-	if (it != m_mapBB.end() && it->second)
+	if (it != m_mapBB.end())
 		dst = it->second;
 	else
 		dst = newIncompleteBB(addr);
@@ -324,15 +323,11 @@ Cfg::addOutEdge(BasicBlock *src, BasicBlock *dst)
  *
  * \param addr  Native address to look up.
  * \returns     true if addr starts a BB.
- *
- * \note Must ignore entries with a null pBB, since these are caused by calls
- * to Label that failed, i.e. the instruction is not decoded yet.
  */
 bool
 Cfg::existsBB(ADDRESS addr) const
 {
-	auto mi = m_mapBB.find(addr);
-	return (mi != m_mapBB.end() && mi->second);
+	return !!m_mapBB.count(addr);
 }
 
 /**
@@ -477,20 +472,14 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 bool
 Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 {
-	// check if the native address is in the map already (explicit label)
 	auto mi = m_mapBB.find(addr);
-	if (mi != m_mapBB.end()) {
-		if (mi->second && !mi->second->m_bIncomplete) {
-			// There is a complete BB here. Return true.
-			return true;
-		}
-	} else {
-		// If not an explicit label, temporarily add the address to the map.
-		// We don't have to erase this map entry.  Having a null BasicBlock pointer is coped with in newBB() and
-		// addOutEdge(); when eventually the BB is created, it will replace this entry.  We should be currently
-		// processing this BB.  The map will be corrected when newBB is called with this address.
-		m_mapBB[addr] = nullptr;
+	if (mi == m_mapBB.end()) {
+		// Native address is an implicit label.  Make it an explicit label.
+		newIncompleteBB(addr);
 		mi = m_mapBB.find(addr);
+	} else if (!mi->second->m_bIncomplete) {
+		// Else it's already an explicit label.  Return true if BB is already complete.
+		return true;
 	}
 	// We are finalising an incomplete BB.  Check if the previous element in the (sorted) map overlaps
 	// this new native address; if so, it's a non-explicit label which needs to be made explicit by splitting the
@@ -597,8 +586,7 @@ Cfg::isIncomplete(ADDRESS addr) const
 		// No entry at all
 		return false;
 	// Else, there is a BB there. If it's incomplete, return true
-	BasicBlock *pBB = mi->second;
-	return pBB->m_bIncomplete;
+	return mi->second->m_bIncomplete;
 }
 
 /**
@@ -653,13 +641,13 @@ Cfg::wellFormCfg()
 		// Check that it's complete
 		if (bb->m_bIncomplete) {
 			m_bWellFormed = false;
-			auto itm = m_mapBB.begin();
-			for (; itm != m_mapBB.end(); ++itm)
-				if (itm->second == bb) break;
-			if (itm == m_mapBB.end())
+			auto mi = m_mapBB.begin();
+			for (; mi != m_mapBB.end(); ++mi)
+				if (mi->second == bb) break;
+			if (mi == m_mapBB.end())
 				std::cerr << "WellFormCfg: incomplete BB not even in map!\n";
 			else
-				std::cerr << "WellFormCfg: BB with native address " << std::hex << itm->first << std::dec
+				std::cerr << "WellFormCfg: BB with native address " << std::hex << mi->first << std::dec
 				          << " is incomplete\n";
 		} else {
 			// Complete. Test the out edges
@@ -984,8 +972,7 @@ Cfg::isOrphan(ADDRESS addr) const
 	// Return true if the first RTL at this address has an address set to 0
 	BasicBlock *pBB = mi->second;
 	// If it's incomplete, it can't be an orphan
-	if (pBB->m_bIncomplete) return false;
-	return pBB->m_pRtls->front()->getAddress() == 0;
+	return !pBB->m_bIncomplete && pBB->m_pRtls->front()->getAddress() == 0;
 }
 
 /**
