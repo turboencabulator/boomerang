@@ -36,11 +36,11 @@
   <xsl:apply-templates select="./bb"/>
 </xsl:template>
 
-<xsl:template match="bb[@nodeType='3']">
+<xsl:template match="bb[@nodeType='8']">
 <br/><br/>CallBB:<xsl:apply-templates select="./rtl/stmt/*"/>
 </xsl:template>
 
-<xsl:template match="bb[@nodeType='4']">
+<xsl:template match="bb[@nodeType='9']">
 <br/><br/>RetBB:<xsl:apply-templates select="./rtl/stmt/*"/>
 </xsl:template>
 

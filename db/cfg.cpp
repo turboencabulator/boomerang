@@ -165,6 +165,9 @@ Cfg::checkEntryBB()
 BasicBlock *
 Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 {
+	assert(pRtls);
+	assert(bbType != INCOMPLETE);
+
 	// First find the native address of the first RTL
 	// Can't use BasicBlock::GetLowAddr(), since we don't yet have a BB!
 	ADDRESS addr = pRtls->front()->getAddress();
@@ -190,11 +193,10 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 			pBB = mi->second;
 			// It should be incomplete, else we have duplicated BBs.
 			// Note: this can happen with forward jumps into the middle of a loop, so not error
-			if (pBB->m_bIncomplete) {
+			if (!pBB->isComplete()) {
 				// Fill in the details, and return it
 				pBB->setRTLs(pRtls);
 				pBB->updateType(bbType);
-				pBB->m_bIncomplete = false;
 			} else {
 				// Shouldn't get here unless we've accidentally re-decoded a BB.
 				assert(false);
@@ -245,7 +247,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 
 				// Need to truncate the current BB.  Determine completeness of the existing BB
 				// before calling splitBB() since it will be completed by the call.
-				bool complete = !mi->second->m_bIncomplete;
+				auto complete = mi->second->isComplete();
 				pBB = splitBB(pBB, nextAddr);
 				mi = m_mapBB.find(nextAddr);
 				// If the existing BB was incomplete, return the "bottom" part of the BB,
@@ -405,12 +407,12 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 		bot->m_InEdges.clear();
 		// The "bottom" BB now starts at the implicit label.
 		bot->setRTLs(tail);
-	} else if (bot->m_bIncomplete) {
+	} else if (!bot->isComplete()) {
 		// We have an existing BB and a map entry, but no details
 		// except for in-edges.  Save them.
 		auto ins = bot->m_InEdges;
 		// Copy over the details now, completing the bottom BB.
-		*bot = *orig;  // This will set m_bIncomplete false.
+		*bot = *orig;
 
 		// Replace the in-edges (likely only one).
 		bot->m_InEdges = ins;
@@ -489,7 +491,7 @@ Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 		// Native address is an implicit label.  Make it an explicit label.
 		newIncompleteBB(addr);
 		mi = m_mapBB.find(addr);
-	} else if (!mi->second->m_bIncomplete) {
+	} else if (mi->second->isComplete()) {
 		// Else it's already an explicit label.  Return true if BB is already complete.
 		return true;
 	}
@@ -498,9 +500,9 @@ Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 	// previous BB.
 	if (mi != m_mapBB.begin()) {
 		BasicBlock *pPrevBB = (*--mi).second;
-		if (!pPrevBB->m_bIncomplete
-		 && (pPrevBB->getLowAddr() <  addr)
-		 && (pPrevBB->getHiAddr()  >= addr)) {
+		if (pPrevBB->isComplete()
+		 && pPrevBB->getLowAddr() <  addr
+		 && pPrevBB->getHiAddr()  >= addr) {
 			// Non-explicit label.  Split the previous BB.
 			auto pNewBB = splitBB(pPrevBB, addr);
 			if (pCurBB == pPrevBB) {
@@ -593,7 +595,7 @@ Cfg::isComplete(ADDRESS addr) const
 	auto mi = m_mapBB.find(addr);
 	if (mi == m_mapBB.end())
 		return false;
-	return !mi->second->m_bIncomplete;
+	return mi->second->isComplete();
 }
 
 /**
@@ -646,7 +648,8 @@ Cfg::wellFormCfg()
 	m_bWellFormed = true;
 	for (const auto &bb : m_listBB) {
 		// Check that it's complete
-		if (bb->m_bIncomplete) {
+		auto type = bb->getType();
+		if (type == INCOMPLETE) {
 			m_bWellFormed = false;
 			auto mi = m_mapBB.begin();
 			for (; mi != m_mapBB.end(); ++mi)
@@ -658,16 +661,15 @@ Cfg::wellFormCfg()
 				          << " is incomplete\n";
 		} else {
 			// Complete. Test the out edges
-			auto type = bb->m_nodeType;
 			auto n = bb->m_OutEdges.size();
-			if ((type == ONEWAY   && n != 1)
-			 || (type == TWOWAY   && n != 2)
-			 || (type == CALL     && n >  1)
-			 || (type == RET      && n != 0)
+			if ((type == INVALID  && n != 0)
 			 || (type == FALL     && n != 1)
+			 || (type == ONEWAY   && n != 1)
+			 || (type == TWOWAY   && n != 2)
 			 || (type == COMPJUMP && n != 0)
 			 || (type == COMPCALL && n != 1)
-			 || (type == INVALID  && n != 0)) {
+			 || (type == CALL     && n >  1)
+			 || (type == RET      && n != 0)) {
 				m_bWellFormed = false;
 				std::cerr << "WellFormCfg: BB with native address " << std::hex << bb->getLowAddr() << std::dec
 				          << " has " << n << " outedges\n";
@@ -979,7 +981,7 @@ Cfg::isOrphan(ADDRESS addr) const
 	// Return true if the first RTL at this address has an address set to 0
 	BasicBlock *pBB = mi->second;
 	// If it's incomplete, it can't be an orphan
-	return !pBB->m_bIncomplete && pBB->m_pRtls->front()->getAddress() == 0;
+	return pBB->isComplete() && pBB->m_pRtls->front()->getAddress() == 0;
 }
 
 /**
@@ -1572,6 +1574,10 @@ Cfg::generateDot(std::ostream &os) const
 		}
 
 		switch (bb->getType()) {
+		case INCOMPLETE: os << "incomplete"; break;
+		case INVALID:    os << "invalid";    break;
+		case FALL:       os << "fall";       break;
+		case ONEWAY:     os << "oneway";     break;
 		case TWOWAY:
 			os << "twoway";
 			if (bb->getCond()) {
@@ -1586,6 +1592,8 @@ Cfg::generateDot(std::ostream &os) const
 				os << "\\n" << *dest;
 			os << "\",shape=trapezium];\n";
 			continue;
+		case COMPJUMP:   os << "compjump";   break;
+		case COMPCALL:   os << "compcall";   break;
 		case CALL:
 			os << "call";
 			if (auto dest = bb->getDestProc())
@@ -1596,11 +1604,6 @@ Cfg::generateDot(std::ostream &os) const
 			// Remember the (unique) return BB
 			ret = bb;
 			continue;
-		case ONEWAY:   os << "oneway";   break;
-		case FALL:     os << "fall";     break;
-		case COMPJUMP: os << "compjump"; break;
-		case COMPCALL: os << "compcall"; break;
-		case INVALID:  os << "invalid";  break;
 		}
 		os << "\"];\n";
 	}

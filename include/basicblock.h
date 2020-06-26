@@ -104,15 +104,16 @@ enum loopType {
  * Reordering these will break the save files - trent
  */
 enum BBTYPE {
+	INCOMPLETE,     ///< Not yet complete.
+	INVALID,        ///< Invalid instruction.
+	FALL,           ///< Fall-through node.
 	ONEWAY,         ///< Unconditional branch.
 	TWOWAY,         ///< Conditional branch.
 	NWAY,           ///< Case branch.
-	CALL,           ///< Procedure call.
-	RET,            ///< Return.
-	FALL,           ///< Fall-through node.
 	COMPJUMP,       ///< Computed jump.
 	COMPCALL,       ///< Computed call.
-	INVALID         ///< Invalid instruction.
+	CALL,           ///< Procedure call.
+	RET             ///< Return.
 };
 
 enum SBBTYPE {
@@ -144,6 +145,7 @@ public:
 	                   ~BasicBlock();
 	                    BasicBlock(const BasicBlock &) = default;
 
+	        bool        isComplete() const;
 	        BBTYPE      getType() const;
 	        void        updateType(BBTYPE);
 
@@ -239,9 +241,8 @@ public:
 
 protected:
 	/* general basic block information */
-	        BBTYPE      m_nodeType = INVALID;   // type of basic block
+	        BBTYPE      m_nodeType = INCOMPLETE;// type of basic block
 	        std::list<RTL *> *m_pRtls = nullptr;// Ptr to list of RTLs
-	        bool        m_bIncomplete = true;   // True if not yet complete
 
 	/* in-edges and out-edges */
 	        std::vector<BasicBlock *> m_InEdges; // Vector of in-edges

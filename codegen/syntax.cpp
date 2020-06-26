@@ -111,17 +111,18 @@ BlockSyntaxNode::printAST(const SyntaxNode *root, std::ostream &os) const
 	   << " [label=\"";
 	if (pbb) {
 		switch (pbb->getType()) {
-		case ONEWAY:   os << "Oneway";
+		case INCOMPLETE: os << "Incomplete";    break;
+		case INVALID:    os << "Invalid";       break;
+		case FALL:       os << "Fall";          break;
+		case ONEWAY:     os << "Oneway";
 			if (notGoto) os << " (ignored)";
 			break;
-		case TWOWAY:   os << "Twoway";        break;
-		case NWAY:     os << "Nway";          break;
-		case CALL:     os << "Call";          break;
-		case RET:      os << "Ret";           break;
-		case FALL:     os << "Fall";          break;
-		case COMPJUMP: os << "Computed jump"; break;
-		case COMPCALL: os << "Computed call"; break;
-		case INVALID:  os << "Invalid";       break;
+		case TWOWAY:     os << "Twoway";        break;
+		case NWAY:       os << "Nway";          break;
+		case COMPJUMP:   os << "Computed jump"; break;
+		case COMPCALL:   os << "Computed call"; break;
+		case CALL:       os << "Call";          break;
+		case RET:        os << "Ret";           break;
 		}
 		os << " " << std::hex << pbb->getLowAddr() << std::dec;
 	} else

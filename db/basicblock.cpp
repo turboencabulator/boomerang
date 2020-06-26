@@ -63,9 +63,10 @@ BasicBlock::~BasicBlock()
  * \param bbType
  */
 BasicBlock::BasicBlock(std::list<RTL *> *pRtls, BBTYPE bbType) :
-	m_nodeType(bbType),
-	m_bIncomplete(false)
+	m_nodeType(bbType)
 {
+	assert(pRtls);
+	assert(bbType != INCOMPLETE);
 	setRTLs(pRtls);
 }
 
@@ -118,6 +119,17 @@ BasicBlock::setRTLs(std::list<RTL *> *rtls)
 }
 
 /**
+ * BBs are complete after being populated with RTLs and a type.
+ *
+ * \returns  true if this basic block is complete.
+ */
+bool
+BasicBlock::isComplete() const
+{
+	return m_nodeType != INCOMPLETE;
+}
+
+/**
  * \brief Return the type of the basic block.
  *
  * \returns  The type of the basic block.
@@ -139,6 +151,8 @@ BasicBlock::getType() const
 void
 BasicBlock::updateType(BBTYPE bbType)
 {
+	assert(m_pRtls);
+	assert(bbType != INCOMPLETE);
 	m_nodeType = bbType;
 }
 
@@ -169,17 +183,18 @@ BasicBlock::print(std::ostream &os, bool html) const
 	if (html)
 		os << "<br>";
 	switch (m_nodeType) {
-	case ONEWAY:    os << "Oneway BB";        break;
-	case TWOWAY:    os << "Twoway BB";        break;
-	case NWAY:      os << "Nway BB";          break;
-	case CALL:      os << "Call BB";          break;
-	case RET:       os << "Ret BB";           break;
-	case FALL:      os << "Fall BB";          break;
-	case COMPJUMP:  os << "Computed jump BB"; break;
-	case COMPCALL:  os << "Computed call BB"; break;
-	case INVALID:   os << "Invalid BB";       break;
+	case INCOMPLETE: os << "Incomplete";    break;
+	case INVALID:    os << "Invalid";       break;
+	case FALL:       os << "Fall";          break;
+	case ONEWAY:     os << "Oneway";        break;
+	case TWOWAY:     os << "Twoway";        break;
+	case NWAY:       os << "Nway";          break;
+	case COMPJUMP:   os << "Computed jump"; break;
+	case COMPCALL:   os << "Computed call"; break;
+	case CALL:       os << "Call";          break;
+	case RET:        os << "Ret";           break;
 	}
-	os << ":\n";
+	os << " BB:\n";
 	os << "in edges:" << std::hex;
 	for (const auto &pred : m_InEdges)
 		os << " " << pred->getHiAddr();

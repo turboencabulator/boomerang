@@ -990,8 +990,6 @@ XMLProgParser::start_bb(Context *node, const char **attr)
 
 	if (auto str = getAttr(attr, "nodeType"))
 		bb->m_nodeType = (BBTYPE)atoi(str);
-	if (auto str = getAttr(attr, "incomplete"))
-		bb->m_bIncomplete = atoi(str) > 0;
 	if (auto str = getAttr(attr, "m_traversed"))
 		bb->m_iTraversed = atoi(str) > 0;
 	//if (auto str = getAttr(attr, "DFTfirst"))
@@ -2554,7 +2552,6 @@ XMLProgParser::persistToXML(std::ostream &out, BasicBlock *bb)
 {
 	out << "<bb id=\"" << (void *)bb
 	    << "\" nodeType=\"" << bb->m_nodeType
-	    << "\" incomplete=\"" << (int)bb->m_bIncomplete
 	    << "\" m_traversed=\"" << bb->m_iTraversed
 	//    << "\" DFTfirst=\"" << bb->m_DFTfirst
 	//    << "\" DFTlast=\"" << bb->m_DFTlast
