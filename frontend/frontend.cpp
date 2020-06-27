@@ -812,7 +812,6 @@ FrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 										if (dest < pBF->getLimitTextLow() || dest >= pBF->getLimitTextHigh())
 											break;
 										LOG << "  guessed dest 0x" << std::hex << dest << std::dec << "\n";
-										cfg->visit(dest, bb);
 										cfg->addOutEdge(bb, dest);
 									}
 								}
@@ -1099,17 +1098,14 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 			rtl->clear();
 		rtl->appendStmt(new GotoStatement(retAddr));
 		bb = cfg->newBB(BB_rtls, ONEWAY);
-		// Visit the return instruction. This will be needed in most cases to split the return BB (if it has other
-		// instructions before the return instruction).
-		cfg->visit(retAddr, bb);
 		cfg->addOutEdge(bb, retAddr);
 	}
 	return bb;
 }
 
 /**
- * Adds the destination of a branch to the queue of address that must be
- * decoded (if this destination has not already been visited).
+ * Adds the destination of a branch to the queue of addresses that must be
+ * decoded.
  *
  * \param dest       The destination being branched to.
  * \param newBB      The new basic block delimited by the branch instruction.
@@ -1124,12 +1120,10 @@ FrontEnd::createReturnBlock(UserProc *proc, std::list<RTL *> *BB_rtls, RTL *rtl)
 void
 FrontEnd::handleBranch(ADDRESS dest, BasicBlock *&newBB, Cfg *cfg)
 {
-	if (dest < pBF->getLimitTextHigh()) {
-		cfg->visit(dest, newBB);
+	if (dest < pBF->getLimitTextHigh())
 		cfg->addOutEdge(newBB, dest);
-	} else {
+	else
 		std::cerr << "Error: branch to " << std::hex << dest << std::dec << " goes beyond section.\n";
-	}
 }
 
 /**
@@ -1190,7 +1184,6 @@ FrontEnd::processSwitch(BasicBlock *&newBB, UserProc *proc)
 			// branch, so take iOffset. For others, iOffset is 0, so no harm
 			uSwitch += si->uTable - si->iOffset;
 		if (uSwitch < pBF->getLimitTextHigh()) {
-			//cfg->visit(uSwitch, newBB);
 			cfg->addOutEdge(newBB, uSwitch);
 			// Remember to decode the newly discovered switch code arms, if necessary
 			// Don't do it right now, in case there are recursive switch statements (e.g. app7win.exe from

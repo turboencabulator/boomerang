@@ -27,9 +27,6 @@
 #include "BinaryFile.h"     // For getSymbolByAddress()
 #include "csr.h"            // For class CalleeEpilogue
 
-// Queues used by various functions
-queue<ADDRESS> qLabels;     // Queue of labels this procedure
-
 void initCti();             // Imp in cti68k.cc
 
 struct SemCmp {
@@ -193,7 +190,6 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 						// Add the out edge if it is to a destination within the
 						// procedure
 						if (dest < upper) {
-							cfg->visit(dest, bb);
 							cfg->addOutEdge(bb, dest);
 						} else {
 							ostrstream ost;
@@ -240,7 +236,6 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 					// Add the out edge if it is to a destination within the
 					// procedure
 					if (dest < upper) {
-						cfg->visit(dest, bb);
 						cfg->addOutEdge(bb, dest);
 					} else {
 						ostrstream ost;

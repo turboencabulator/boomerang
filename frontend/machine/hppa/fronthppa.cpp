@@ -140,8 +140,8 @@ optimise_DelayCopy(ADDRESS src, ADDRESS dest, int delta, ADDRESS upper)
 }
 
 /**
- * Adds the destination of a branch to the queue of address that must be
- * decoded (if this destination has not already been visited).
+ * Adds the destination of a branch to the queue of addresses that must be
+ * decoded.
  *
  * \param newBB  The new basic block delimited by the branch instruction.
  *               May be null if this block has been built before.
@@ -158,7 +158,6 @@ void
 handleBranch(ADDRESS dest, ADDRESS upper, BasicBlock *&newBB, Cfg *cfg)
 {
 	if (dest < upper) {
-		cfg->visit(dest, newBB);
 		cfg->addOutEdge(newBB, dest);
 	} else {
 		ostrstream ost;
@@ -612,8 +611,6 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// We want to do this first, else ordering can go silly
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		// Visit the target of the branch
-		cfg->visit(dest, bb);
 		auto pOrphan = new HRTLList;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address
@@ -697,8 +694,6 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// We want to do this first, else ordering can go silly
 		bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		// Visit the target of the branch
-		cfg->visit(dest, bb);
 		auto pOrphan = new HRTLList;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address

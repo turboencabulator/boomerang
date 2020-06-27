@@ -291,7 +291,7 @@ Cfg::addOutEdge(BasicBlock *&src, ADDRESS addr)
 	// i.e. we already have a BB for this address.
 	auto it = m_mapBB.find(addr);
 	if (it == m_mapBB.end()) {
-		visit(addr, src);
+		label(src, addr);
 		it = m_mapBB.find(addr);
 		assert(it != m_mapBB.end());
 	}
@@ -299,19 +299,58 @@ Cfg::addOutEdge(BasicBlock *&src, ADDRESS addr)
 }
 
 /**
- * \brief Return true if the given address is the start of a basic block,
- * complete or not.
+ * Visit a destination as a label, i.e. queue it as a new BB to create later.
  *
- * Just checks to see if there exists a BB starting with this native address.
- * If not, the address is NOT added to the map of labels to BBs.
+ * This should be called when a control transfer to addr is found, usually
+ * from addOutEdge() when adding an edge from src to addr.  There are three
+ * scenarios:
+ * 1. addr refers to the start of an existing (complete or incomplete) BB.  If
+ *    incomplete, it should already be in the queue.  If complete, it has
+ *    already been processed.  In either case, there is nothing we need to do.
+ * 2. addr refers to the middle of an existing (complete) BB.  Split this BB.
+ *    If this is src, src is updated to point to the bottom BB after the
+ *    split.  Presumably the caller will add more out-edges to src; these
+ *    edges need to emanate from the bottom BB.
+ * 3. There is no existing BB at addr.  Create an incomplete BB and queue it
+ *    for later.
  *
- * \param addr  Native address to look up.
- * \returns     true if addr starts a BB.
+ * \sa addOutEdge()
  */
-bool
-Cfg::existsBB(ADDRESS addr) const
+void
+Cfg::label(BasicBlock *&src, ADDRESS addr)
 {
-	return !!m_mapBB.count(addr);
+	auto mi = m_mapBB.find(addr);
+	if (mi != m_mapBB.end())
+		return;
+
+	// New label.  Create a new incomplete BB for it.
+	auto incBB = new BasicBlock();
+	// Add it to the list and map.
+	m_listBB.push_back(incBB);
+	m_mapBB[addr] = incBB;
+
+	// Check if the previous element in the (sorted) map overlaps this new label.
+	// If so, split the previous BB at the label to complete the new BB.
+	mi = m_mapBB.find(addr);
+	if (mi != m_mapBB.begin()) {
+		auto prevBB = (*--mi).second;
+		if (prevBB->isComplete()
+		 && prevBB->getLowAddr() <  addr
+		 && prevBB->getHiAddr()  >= addr) {
+			auto botBB = splitBB(prevBB, addr);
+			if (src == prevBB) {
+				// This means that the BB that we are expecting to use, usually to add out edges, has changed. We must
+				// change this pointer so that the right BB gets the out edges. However, if the new BB is not the BB of
+				// interest, we mustn't change src
+				src = botBB;
+			}
+			assert(incBB == botBB);  // splitBB() should have completed this BB.
+			return;
+		}
+	}
+
+	// A non-overlapping incomplete BB is now in the map.  Queue it for later.
+	enqueue(addr);
 }
 
 /**
@@ -431,89 +470,6 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 }
 
 /**
- * Checks whether the given native address is a label (explicit or non
- * explicit) or not.  Returns true if the native address is that of an
- * explicit or non explicit label, false otherwise.  Returns false for
- * incomplete BBs.  So it returns true iff the address has already been
- * decoded in some BB.  If it was not already a label (i.e. the first
- * instruction of some BB), the BB is split so that it becomes a label.
- *
- * Explicit labels are addresses that have already been tagged as being labels
- * due to transfers of control to that address, and are therefore the start of
- * some BB.  Non explicit labels are those that belong to basic blocks that
- * have already been constructed (i.e. have previously been parsed) and now
- * need to be made explicit labels.  In the case of non explicit labels, the
- * basic block is split into two and types and edges are adjusted accordingly.
- * If pCurBB is the BB that gets split, it is changed to point to the address
- * of the new (lower) part of the split BB.
- *
- * If there is an incomplete entry in the table for this address which
- * overlaps with a completed address, the completed BB is split and the BB for
- * this address is completed.
- *
- * \param addr    Native (source) address to check.
- * \param pCurBB  See above.
- * \returns       true if addr is a label, i.e. (now) the start of a BB.
- *
- * \note pCurBB may be modified (as above).
- */
-bool
-Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
-{
-	auto mi = m_mapBB.find(addr);
-	if (mi != m_mapBB.end())
-		return true;  // Already an explicit label.
-
-	// Else make it an explicit label.
-	// Create a new incomplete BB
-	auto incBB = new BasicBlock();
-	// Add it to the list and map
-	m_listBB.push_back(incBB);
-	m_mapBB[addr] = incBB;
-
-	// We are finalising an incomplete BB.  Check if the previous element in the (sorted) map overlaps
-	// this new native address; if so, it's a non-explicit label which needs to be made explicit by splitting the
-	// previous BB.
-	mi = m_mapBB.find(addr);
-	if (mi != m_mapBB.begin()) {
-		BasicBlock *pPrevBB = (*--mi).second;
-		if (pPrevBB->isComplete()
-		 && pPrevBB->getLowAddr() <  addr
-		 && pPrevBB->getHiAddr()  >= addr) {
-			// Non-explicit label.  Split the previous BB.
-			auto pNewBB = splitBB(pPrevBB, addr);
-			if (pCurBB == pPrevBB) {
-				// This means that the BB that we are expecting to use, usually to add out edges, has changed. We must
-				// change this pointer so that the right BB gets the out edges. However, if the new BB is not the BB of
-				// interest, we mustn't change pCurBB
-				pCurBB = pNewBB;
-			}
-			return true;  // wasn't a label, but already parsed
-		}
-	}
-	// A non overlapping, incomplete entry is in the map.
-	return false;  // was not already parsed
-}
-
-/**
- * \brief Visit a destination as a label, i.e. check whether we need to queue
- * it as a new BB to create later.
- *
- * \param addr  The address to be checked.
- * \param bb    Set to the lower part of the BB if the address already exists
- *              as a non explicit label (i.e. the BB has to be split).
- */
-void
-Cfg::visit(ADDRESS addr, BasicBlock *&bb)
-{
-	// Find out if we've already parsed the destination.
-	// Add this address to the back of the local queue,
-	// if not already processed.
-	if (!label(addr, bb))
-		enqueue(addr);
-}
-
-/**
  * \brief Seed the queue with an initial address.
  *
  * Provide an initial address (can call several times if there are several
@@ -551,6 +507,22 @@ Cfg::dequeue()
 			return addr;
 	}
 	return NO_ADDRESS;
+}
+
+/**
+ * \brief Return true if the given address is the start of a basic block,
+ * complete or not.
+ *
+ * Just checks to see if there exists a BB starting with this native address.
+ * If not, the address is NOT added to the map of labels to BBs.
+ *
+ * \param addr  Native address to look up.
+ * \returns     true if addr starts a BB.
+ */
+bool
+Cfg::existsBB(ADDRESS addr) const
+{
+	return !!m_mapBB.count(addr);
 }
 
 /**

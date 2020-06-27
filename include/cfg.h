@@ -119,8 +119,8 @@ public:
 	};
 
 	BasicBlock *newBB(std::list<RTL *> *, BBTYPE) throw (BBAlreadyExistsError);
-
 	void        addOutEdge(BasicBlock *&, ADDRESS);
+	void        label(BasicBlock *&, ADDRESS);
 
 	/*
 	 * Allow iteration over the list of BBs.
@@ -129,18 +129,14 @@ public:
 	iterator    begin() { return m_listBB.begin(); }
 	iterator    end()   { return m_listBB.end(); }
 
-	bool        label(ADDRESS, BasicBlock *&);
-	void        visit(ADDRESS, BasicBlock *&);
-
 	/*
 	 * Target queue logic
 	 */
 	void        enqueue(ADDRESS);
 	ADDRESS     dequeue();
 
-	bool        isComplete(ADDRESS) const;
-
 	bool        existsBB(ADDRESS) const;
+	bool        isComplete(ADDRESS) const;
 
 	void        sortByAddress();
 	//void        sortByFirstDFT();

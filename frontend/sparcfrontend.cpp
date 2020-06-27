@@ -538,8 +538,6 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Make a BB for the current list of RTLs. We want to do this first, else ordering can go silly
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		// Visit the target of the branch
-		cfg->visit(dest, bb);
 		auto pOrphan = new std::list<RTL *>;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address (else we may branch to here when we want
@@ -608,8 +606,6 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		// Make a BB for the current list of RTLs.  We want to do this first, else ordering can go silly
 		bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
-		// Visit the target of the branch
-		cfg->visit(dest, bb);
 		auto pOrphan = new std::list<RTL *>;
 		pOrphan->push_back(delay_inst.rtl);
 		// Change the address to 0, since this code has no source address (else we may branch to here when we want to
