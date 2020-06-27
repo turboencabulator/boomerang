@@ -699,32 +699,6 @@ Cfg::wellFormCfg()
 }
 
 /**
- * Given two basic blocks that belong to a well-formed graph, merges the
- * second block onto the first one and returns the new block.  The in and out
- * edges links are updated accordingly.  Note that two basic blocks can only
- * be merged if each has a unique out-edge and in-edge respectively, and these
- * edges correspond to each other.
- *
- * \returns  true if the blocks are merged.
- */
-bool
-Cfg::mergeBBs(BasicBlock *pb1, BasicBlock *pb2)
-{
-	// Can only merge if pb1 has only one outedge to pb2, and pb2 has only one in-edge, from pb1. This can only be done
-	// after the in-edges are done, which can only be done on a well formed CFG.
-	if (!m_bWellFormed) return false;
-	if (pb1->m_OutEdges.size() != 1) return false;
-	if (pb2->m_InEdges.size() != 1) return false;
-	if (pb1->m_OutEdges[0] != pb2) return false;
-	if (pb2->m_InEdges[0] != pb1) return false;
-
-	// Merge them! We remove pb1 rather than pb2, since this is also what is needed for many optimisations, e.g. jump to
-	// jump.
-	completeMerge(pb1, pb2);
-	return true;
-}
-
-/**
  * Completes the merge of pb1 and pb2 by adjusting in and out edges.  No
  * checks are made that the merge is valid (hence this is a private function).
  * Removes pb1 from this CFG.
@@ -971,27 +945,6 @@ Cfg::isOrphan(ADDRESS addr) const
 	BasicBlock *pBB = mi->second;
 	// If it's incomplete, it can't be an orphan
 	return pBB->isComplete() && pBB->m_pRtls->front()->getAddress() == 0;
-}
-
-/**
- * \brief Return an index for the given BasicBlock*.
- *
- * Given a pointer to a basic block, return an index (e.g. 0 for the first
- * basic block, 1 for the next, ... n-1 for the last BB.
- *
- * \note     Linear search:  O(N) complexity.
- * \returns  Index, or -1 for unknown BasicBlock*.
- */
-int
-Cfg::pbbToIndex(BasicBlock *pBB) const
-{
-	int i = 0;
-	for (const auto &bb : m_listBB) {
-		if (bb == pBB)
-			return i;
-		++i;
-	}
-	return -1;
 }
 
 /**

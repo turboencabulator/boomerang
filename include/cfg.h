@@ -150,14 +150,10 @@ public:
 
 	bool        wellFormCfg();
 
-	bool        mergeBBs(BasicBlock *, BasicBlock *);
-
 	bool        compressCfg();
 
 	//bool        establishDFTOrder();
 	//bool        establishRevDFTOrder();
-
-	int         pbbToIndex(BasicBlock *) const;
 
 	void        unTraverse();
 
