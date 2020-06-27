@@ -729,8 +729,15 @@ Cfg::joinBB(BasicBlock *pb1, BasicBlock *pb2)
  * \brief Completely remove a BB from the CFG.
  */
 void
-Cfg::removeBB(const BasicBlock *bb)
+Cfg::removeBB(BasicBlock *bb)
 {
+	// All in-edges should have been removed by now.
+	// Out-edges can be left in and they will be deleted here.
+	assert(bb->m_InEdges.empty());
+	for (const auto &succ : bb->m_OutEdges)
+		succ->deleteInEdge(bb);
+	bb->m_OutEdges.clear();
+
 	for (auto it = m_mapBB.begin(); it != m_mapBB.end(); ++it) {
 		if (bb == it->second) {
 			m_mapBB.erase(it);
@@ -777,7 +784,6 @@ Cfg::compressCfg()
 		 && bbJ->m_pRtls->front()->getList().front()->getKind() == STMT_GOTO) {
 			// Found an only-jump BB
 			auto bbB = bbJ->m_OutEdges.front();
-			bbJ->deleteEdge(bbB);
 			bbJ->bypass(bbB);
 			removes.push_back(bbJ);
 		}

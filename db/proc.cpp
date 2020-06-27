@@ -1752,10 +1752,6 @@ UserProc::branchAnalysis()
 						                       new Unary(opNot, branch->getCondExpr()),
 						                       fallto->getCondExpr()->clone());
 						branch->setCondExpr(cond->simplify());
-						assert(fallto->getBB()->getInEdges().empty());
-						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
-						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
-						assert(fallto->getBB()->getOutEdges().empty());
 						cfg->removeBB(fallto->getBB());
 					}
 					//   branch to B if cond1
@@ -1771,10 +1767,6 @@ UserProc::branchAnalysis()
 						branch->setCondExpr(new Binary(opOr,
 						                               branch->getCondExpr(),
 						                               fallto->getCondExpr()->clone()));
-						assert(fallto->getBB()->getInEdges().empty());
-						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
-						fallto->getBB()->deleteEdge(fallto->getBB()->getOutEdge(0));
-						assert(fallto->getBB()->getOutEdges().empty());
 						cfg->removeBB(fallto->getBB());
 					}
 				}

@@ -163,7 +163,7 @@ public:
 
 	bool        joinBB(BasicBlock *, BasicBlock *);
 
-	void        removeBB(const BasicBlock *);
+	void        removeBB(BasicBlock *);
 
 	void        searchAndReplace(Exp *, Exp *);
 	bool        searchAll(Exp *, std::list<Exp *> &);
