@@ -310,18 +310,7 @@ Cfg::addOutEdge(BasicBlock *src, ADDRESS addr)
 		dst = it->second;
 	else
 		dst = newIncompleteBB(addr);
-	addOutEdge(src, dst);
-}
-
-/**
- * \overload
- * \param dst  Destination BB (to have the out edge point to).
- */
-void
-Cfg::addOutEdge(BasicBlock *src, BasicBlock *dst)
-{
-	src->m_OutEdges.push_back(dst);
-	dst->m_InEdges.push_back(src);
+	src->addEdge(dst);
 }
 
 /**
@@ -452,7 +441,7 @@ Cfg::splitBB(BasicBlock *orig, std::list<RTL *>::iterator ri)
 	orig->updateType(FALL);
 	// Erase any existing out-edges.
 	orig->m_OutEdges.clear();
-	addOutEdge(orig, bot);
+	orig->addEdge(bot);
 	return bot;
 }
 
@@ -1793,12 +1782,12 @@ Cfg::splitForBranch(BasicBlock *bbA, std::list<RTL *>::iterator ri)
 
 	// Set the out-edges for S.  First is the taken (true) leg.
 	bbS->updateType(TWOWAY);
-	addOutEdge(bbS, bbB);
+	bbS->addEdge(bbB);
 	std::swap(bbS->m_OutEdges[0], bbS->m_OutEdges[1]);
 
 	// Set the out-edges for R.
 	bbR->updateType(TWOWAY);
-	addOutEdge(bbR, bbS);
+	bbR->addEdge(bbS);
 	std::swap(bbR->m_OutEdges[0], bbR->m_OutEdges[1]);
 
 #if 0

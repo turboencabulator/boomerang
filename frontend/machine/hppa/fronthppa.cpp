@@ -467,7 +467,7 @@ case_DD_NCT(ADDRESS &addr, int delta, const DecodeResult &inst,
 #if 0  // Sparc specific code, but we may need something similar
 		auto returnBB = optimise_CallReturn(rtl_call, delay_inst.rtl, cfg);
 		if (returnBB) {
-			cfg->addOutEdge(newBB, returnBB);
+			newBB->addEdge(returnBB);
 
 			// We have to set the epilogue
 			// for the enclosing procedure (all proc's must have an
@@ -634,7 +634,7 @@ case_SCD_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Add an out edge from the orphan as well
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
-		cfg->addOutEdge(bb, pOrBB);
+		bb->addEdge(pOrBB);
 		// Add the "false" leg to the NCT
 		cfg->addOutEdge(bb, addr + 4);
 		// Don't skip the delay instruction, so it will
@@ -711,7 +711,7 @@ case_SCDAN_NCT(ADDRESS &addr, int delta, ADDRESS upper,
 		// Add an out edge from the orphan as well.
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
-		cfg->addOutEdge(bb, pOrBB);
+		bb->addEdge(pOrBB);
 	}
 	// Both cases (orphan or not)
 	// Add the "false" leg: point past delay inst.

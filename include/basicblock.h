@@ -172,14 +172,15 @@ public:
 
 	        BasicBlock *getOutEdge(unsigned int) const;
 	        BasicBlock *getCorrectOutEdge(ADDRESS) const;
-
 	        void        setOutEdge(int, BasicBlock *);
 
 	        int         whichPred(BasicBlock *) const;
 
+private:
 	        void        addInEdge(BasicBlock *);
-
 	        void        deleteInEdge(BasicBlock *);
+public:
+	        void        addEdge(BasicBlock *);
 	        void        deleteEdge(BasicBlock *);
 
 	        ADDRESS     getCallDest() const;

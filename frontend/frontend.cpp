@@ -1054,7 +1054,7 @@ FrontEnd::appendSyntheticReturn(BasicBlock *callBB, UserProc *proc)
 {
 	auto cfg = proc->getCFG();
 	auto pret = createReturnBlock(proc, nullptr, new RTL(callBB->getLastRtl()->getAddress() + 1, new ReturnStatement()));
-	cfg->addOutEdge(callBB, pret);
+	callBB->addEdge(pret);
 }
 
 /**

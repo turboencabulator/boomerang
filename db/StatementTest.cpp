@@ -125,7 +125,7 @@ StatementTest::testFlow()
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(first, ret);
+	first->addEdge(ret);
 	cfg->setEntryBB(first);  // Also sets exitBB; important!
 	proc->setDecoded();
 	// compute dataflow
@@ -190,7 +190,7 @@ StatementTest::testKill()
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(first, ret);
+	first->addEdge(ret);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -253,7 +253,7 @@ StatementTest::testUse()
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(first, ret);
+	first->addEdge(ret);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -320,7 +320,7 @@ StatementTest::testUseOverKill()
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(first, ret);
+	first->addEdge(ret);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -387,7 +387,7 @@ StatementTest::testUseOverBB()
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(first, ret);
+	first->addEdge(ret);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -449,7 +449,7 @@ StatementTest::testUseKill()
 	rtl->appendStmt(rs);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(first, ret);
+	first->addEdge(ret);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -504,8 +504,8 @@ StatementTest::testEndlessLoop()
 	rtl->appendStmt(e);
 	pRtls->push_back(rtl);
 	auto body = cfg->newBB(pRtls, ONEWAY);
-	cfg->addOutEdge(first, body);
-	cfg->addOutEdge(body, body);
+	first->addEdge(body);
+	body->addEdge(body);
 	cfg->setEntryBB(first);
 	proc->setDecoded();
 	// compute dataflow
@@ -718,7 +718,7 @@ StatementTest::testRecursion()
 #endif
 	c->setDestProc(proc);  // Just call self
 	auto callbb = cfg->newBB(pRtls, CALL);
-	cfg->addOutEdge(first, callbb);
+	first->addEdge(callbb);
 
 	pRtls = new std::list<RTL *>();
 	rtl = new RTL(0x123);
@@ -733,7 +733,7 @@ StatementTest::testRecursion()
 	rtl->appendStmt(a);
 	pRtls->push_back(rtl);
 	auto ret = cfg->newBB(pRtls, RET);
-	cfg->addOutEdge(callbb, ret);
+	callbb->addEdge(ret);
 	cfg->setEntryBB(first);
 
 	// decompile the "proc"

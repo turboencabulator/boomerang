@@ -270,7 +270,7 @@ SparcFrontEnd::case_CALL(ADDRESS &addr, DecodeResult &inst,
 			handleCall(proc, call_stmt->getFixedDest(), callBB, cfg, addr);
 
 			// Now add the out edge
-			cfg->addOutEdge(callBB, returnBB);
+			callBB->addEdge(returnBB);
 
 			addr += inst.numBytes;  // For coverage
 			// This is a CTI block that doesn't fall through and so must
@@ -432,7 +432,7 @@ SparcFrontEnd::case_DD(ADDRESS &addr, const DecodeResult &inst,
 
 		// Attempt to add a return BB if the delay instruction is a RESTORE
 		if (auto returnBB = optimise_CallReturn(call_stmt, inst.rtl, delay_inst.rtl, proc)) {
-			cfg->addOutEdge(newBB, returnBB);
+			newBB->addEdge(returnBB);
 
 			// We have to set the epilogue for the enclosing procedure (all proc's must have an
 			// epilogue) and remove the RESTORE in the delay slot that has just been pushed to the list of RTLs
@@ -556,7 +556,7 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		// Add an out edge from the orphan as well
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
-		cfg->addOutEdge(bb, pOrBB);
+		bb->addEdge(pOrBB);
 		// Add the "false" leg to the NCT
 		cfg->addOutEdge(bb, addr + 4);
 		// Don't skip the delay instruction, so it will be decoded next.
@@ -621,7 +621,7 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		// Add an out edge from the orphan as well.
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
-		cfg->addOutEdge(bb, pOrBB);
+		bb->addEdge(pOrBB);
 	}
 	// Both cases (orphan or not)
 	// Add the "false" leg: point past delay inst.

@@ -313,13 +313,10 @@ BasicBlock::getOutEdges() const
 }
 
 /**
- * \brief Set an out edge to a new value; same number of out edges as before.
+ * \brief Change an existing out-edge to a new value.
  *
- * Change the given out-edge (0 is first) to the given value.  Needed for
- * example when duplicating BBs.
- *
- * \note Cannot add an additional out-edge with this function; use
- * Cfg::addOutEdge() for this rare case.
+ * Change the given out-edge (0 is first) to the given successor.
+ * Also updates the in-edges of the old and new successors.
  *
  * \param i     Index (0 based) of out-edge to change.
  * \param succ  BB that will be the new successor.
@@ -391,6 +388,21 @@ BasicBlock::deleteInEdge(BasicBlock *pred)
 		m_InEdges.erase(it);
 }
 
+/**
+ * Add a new out-edge to this BB.
+ * Also add a corresponding in-edge to the successor BB.
+ */
+void
+BasicBlock::addEdge(BasicBlock *succ)
+{
+	m_OutEdges.push_back(succ);
+	succ->addInEdge(this);
+}
+
+/**
+ * Remove an out-edge from this BB.
+ * Also remove a corresponding in-edge from the successor BB.
+ */
 void
 BasicBlock::deleteEdge(BasicBlock *succ)
 {
