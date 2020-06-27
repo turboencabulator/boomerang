@@ -170,7 +170,7 @@ public:
 	        const std::vector<BasicBlock *> &getInEdges() const;
 	        const std::vector<BasicBlock *> &getOutEdges() const;
 
-	        BasicBlock *getOutEdge(unsigned int);
+	        BasicBlock *getOutEdge(unsigned int) const;
 	        BasicBlock *getCorrectOutEdge(ADDRESS) const;
 
 	        void        setOutEdge(int, BasicBlock *);

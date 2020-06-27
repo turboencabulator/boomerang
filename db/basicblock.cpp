@@ -334,15 +334,15 @@ BasicBlock::setOutEdge(int i, BasicBlock *succ)
 }
 
 /**
- * \brief Get the n-th out edge, or 0 if it does not exist.
+ * \brief Get the n-th out edge, or null if it does not exist.
  *
  * Returns the i-th out edge of this BB; counting starts at 0.
  *
  * \param i  Index (0 based) of the desired out edge.
- * \returns  The i-th out edge; 0 if there is no such out edge.
+ * \returns  The i-th out edge; null if there is no such out edge.
  */
 BasicBlock *
-BasicBlock::getOutEdge(unsigned int i)
+BasicBlock::getOutEdge(unsigned int i) const
 {
 	if (i < m_OutEdges.size())
 		return m_OutEdges[i];
