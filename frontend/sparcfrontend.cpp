@@ -496,9 +496,8 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
 		handleBranch(bb, dest, cfg);
-		// Add the "false" leg
-		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;  // Skip the SCD only
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg
 		std::cerr << "Warning: instruction at " << std::hex << addr << std::dec
 		          << " not copied to true leg of preceeding branch\n";
 		return true;
@@ -518,10 +517,8 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
 		handleBranch(bb, dest, cfg);
-		// Add the "false" leg; skips the NCT
-		cfg->addOutEdge(bb, addr + 8);
-		// Skip the NCT/NOP instruction
-		addr += 8;
+		addr += 8;  // Skip the NCT/NOP instruction
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg; skips the NCT
 	} else if (optimise_DelayCopy(addr, dest)) {
 		// We can just branch to the instr before dest. Adjust the destination of the branch
 		stmt_jump->adjustFixedDest(-4);
@@ -530,9 +527,8 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
 		handleBranch(bb, dest - 4, cfg);
-		// Add the "false" leg: point to the delay inst
-		cfg->addOutEdge(bb, addr + 4);
 		addr += 4;  // Skip branch but not delay
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg: point to the delay inst
 	} else { // The CCs are affected, and we can't use the copy delay slot trick
 		// SCD, must copy delay instr to orphan
 		// Copy the delay instruction to the dest of the branch, as an orphan. First add the branch.
@@ -557,10 +553,8 @@ SparcFrontEnd::case_SCD(ADDRESS &addr, const DecodeResult &inst,
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
 		bb->addEdge(pOrBB);
-		// Add the "false" leg to the NCT
-		cfg->addOutEdge(bb, addr + 4);
-		// Don't skip the delay instruction, so it will be decoded next.
-		addr += 4;
+		addr += 4;  // Don't skip the delay instruction, so it will be decoded next.
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg to the NCT
 	}
 	return true;
 }
@@ -622,9 +616,8 @@ SparcFrontEnd::case_SCDAN(ADDRESS &addr, const DecodeResult &inst,
 		bb->addEdge(pOrBB);
 	}
 	// Both cases (orphan or not)
-	// Add the "false" leg: point past delay inst.
-	cfg->addOutEdge(bb, addr + 8);
-	addr += 8;          // Skip branch and delay
+	addr += 8;  // Skip branch and delay
+	cfg->addOutEdge(bb, addr);  // Add the "false" leg: point past delay inst.
 	return true;
 }
 
@@ -1051,9 +1044,8 @@ SparcFrontEnd::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// Visit the destination of the branch; add "true" leg
 							auto dest = stmt_jump->getFixedDest();
 							handleBranch(bb, dest, cfg);
-							// Add the "false" leg: point past the delay inst
-							cfg->addOutEdge(bb, addr + 8);
-							addr += 8;          // Skip branch and delay
+							addr += 8;  // Skip branch and delay
+							cfg->addOutEdge(bb, addr);  // Add the "false" leg: point past the delay inst
 						}
 						break;
 

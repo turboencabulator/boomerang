@@ -531,9 +531,8 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
 		handleBranch(bb, dest, cfg);
-		// Add the "false" leg
-		cfg->addOutEdge(bb, addr + 4);
-		addr += 4;           // Skip the SCD only
+		addr += 4;  // Skip the SCD only
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg
 		ostrstream ost;
 		ost << "instruction at " << hex << addr;
 		ost << " not copied to true leg of preceeding branch";
@@ -557,10 +556,8 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
 		handleBranch(bb, dest, cfg);
-		// Add the "false" leg; skips the NCT
-		cfg->addOutEdge(bb, addr + 8);
-		// Skip the NCT/NOP instruction
-		addr += 8;
+		addr += 8;  // Skip the NCT/NOP instruction
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg; skips the NCT
 	} else if (optimise_DelayCopy(addr, dest, delta)) {
 		// We can just branch to the instr before dest.
 		// Adjust the destination of the branch
@@ -570,9 +567,8 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		auto bb = cfg->newBB(BB_rtls, TWOWAY);
 		BB_rtls = nullptr;
 		handleBranch(bb, dest - 4, cfg);
-		// Add the "false" leg: point to the delay inst
-		cfg->addOutEdge(bb, addr + 4);
-		addr += 4;           // Skip branch but not delay
+		addr += 4;  // Skip branch but not delay
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg: point to the delay inst
 	} else { // There is interference, and we can't use the copy delay slot trick
 		// SCD, must copy delay instr to orphan
 		// Copy the delay instruction to the dest of the branch, as an orphan
@@ -603,11 +599,8 @@ case_SCD_NCT(ADDRESS &addr, int delta,
 		cfg->addOutEdge(pOrBB, dest);
 		// Add an out edge from the current RTL to the orphan.
 		bb->addEdge(pOrBB);
-		// Add the "false" leg to the NCT
-		cfg->addOutEdge(bb, addr + 4);
-		// Don't skip the delay instruction, so it will
-		// be decoded next.
-		addr += 4;
+		addr += 4;  // Don't skip the delay instruction, so it will be decoded next.
+		cfg->addOutEdge(bb, addr);  // Add the "false" leg to the NCT
 	}
 	return true;
 }
@@ -679,9 +672,8 @@ case_SCDAN_NCT(ADDRESS &addr, int delta,
 		bb->addEdge(pOrBB);
 	}
 	// Both cases (orphan or not)
-	// Add the "false" leg: point past delay inst.
-	cfg->addOutEdge(bb, addr + 8);
-	addr += 8;              // Skip branch and delay
+	addr += 8;  // Skip branch and delay
+	cfg->addOutEdge(bb, addr);  // Add the "false" leg: point past delay inst.
 	return true;
 }
 
@@ -1025,9 +1017,8 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 							// Visit the destination of the branch; add "true" leg
 							auto dest = rtl_jump->getFixedDest();
 							handleBranch(bb, dest, cfg);
-							// Add the "false" leg: point past the delay inst
-							cfg->addOutEdge(bb, addr + 8);
-							addr += 8;          // Skip branch and delay
+							addr += 8;  // Skip branch and delay
+							cfg->addOutEdge(bb, addr);  // Add the "false" leg: point past the delay inst
 						}
 						break;
 
@@ -1053,7 +1044,7 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
 					auto bb = cfg->newBB(BB_rtls, TWOWAY);
 					BB_rtls = nullptr;
 					handleBranch(bb, dest, cfg);
-					addr += 4;          // "Delay slot" instruction is next
+					addr += 4;  // "Delay slot" instruction is next
 					cfg->addOutEdge(bb, addr);  // False leg
 				}
 				break;
