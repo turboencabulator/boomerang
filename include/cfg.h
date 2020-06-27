@@ -122,7 +122,7 @@ public:
 
 	BasicBlock *newIncompleteBB(ADDRESS);
 
-	void        addOutEdge(BasicBlock *, ADDRESS);
+	void        addOutEdge(BasicBlock *&, ADDRESS);
 
 	/*
 	 * Allow iteration over the list of BBs.

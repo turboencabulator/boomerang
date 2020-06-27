@@ -275,7 +275,7 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 /**
  * Allocates space for a new, incomplete BB, and the given address is added to
  * the map.  This BB will have to be completed before calling wellFormCfg().
- * This function will commonly be called via addOutEdge().
+ * This function will commonly be called via label().
  *
  * Use this function when there are outedges to BBs that are not created yet.
  */
@@ -291,26 +291,29 @@ Cfg::newIncompleteBB(ADDRESS addr)
 }
 
 /**
- * \brief Add an out edge to this BB (and the in-edge to the dest BB).  May
- * also set a label.
+ * Add an out-edge from a source BB to a destination address (a label; a new
+ * BB will be created here if one does not already exist).  Also adds the
+ * corresponding in-edge to the destination BB.
  *
- * \param src   Source BB (to have the out edge added to).
- * \param addr  Source address of destination BB (the out edge is to point to
- *              the BB whose lowest address is addr).  An incomplete BB will
- *              be created if required.
+ * \param[in,out] src  Source BB.  This BB may be split (if addr is a location
+ *                     inside it), in which case src will then point to the
+ *                     bottom BB.
+ * \param[in] addr     Destination address (the out edge is to point to the BB
+ *                     whose lowest address is addr).  An incomplete BB will
+ *                     be created if required.
  */
 void
-Cfg::addOutEdge(BasicBlock *src, ADDRESS addr)
+Cfg::addOutEdge(BasicBlock *&src, ADDRESS addr)
 {
 	// Check to see if the address is in the map,
 	// i.e. we already have a BB for this address.
-	BasicBlock *dst;
 	auto it = m_mapBB.find(addr);
-	if (it != m_mapBB.end())
-		dst = it->second;
-	else
-		dst = newIncompleteBB(addr);
-	src->addEdge(dst);
+	if (it == m_mapBB.end()) {
+		visit(addr, src);
+		it = m_mapBB.find(addr);
+		assert(it != m_mapBB.end());
+	}
+	src->addEdge(it->second);
 }
 
 /**
@@ -510,13 +513,6 @@ Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 /**
  * \brief Visit a destination as a label, i.e. check whether we need to queue
  * it as a new BB to create later.
- *
- * \note At present, it is important to visit an address BEFORE an out edge is
- * added to that address.  This is because adding an out edge enters the
- * address into the Cfg's BB map, and it looks like the BB has already been
- * visited, and it gets overlooked. It would be better to have a scheme
- * whereby the order of calling these functions (i.e. visit() and
- * addOutEdge()) did not matter.
  *
  * \param addr  The address to be checked.
  * \param bb    Set to the lower part of the BB if the address already exists
