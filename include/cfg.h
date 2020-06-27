@@ -120,8 +120,6 @@ public:
 
 	BasicBlock *newBB(std::list<RTL *> *, BBTYPE) throw (BBAlreadyExistsError);
 
-	BasicBlock *newIncompleteBB(ADDRESS);
-
 	void        addOutEdge(BasicBlock *&, ADDRESS);
 
 	/*

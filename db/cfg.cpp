@@ -273,24 +273,6 @@ Cfg::newBB(std::list<RTL *> *pRtls, BBTYPE bbType) throw (BBAlreadyExistsError)
 }
 
 /**
- * Allocates space for a new, incomplete BB, and the given address is added to
- * the map.  This BB will have to be completed before calling wellFormCfg().
- * This function will commonly be called via label().
- *
- * Use this function when there are outedges to BBs that are not created yet.
- */
-BasicBlock *
-Cfg::newIncompleteBB(ADDRESS addr)
-{
-	// Create a new (basically empty) BB
-	auto pBB = new BasicBlock();
-	// Add it to the list
-	m_listBB.push_back(pBB);
-	m_mapBB[addr] = pBB;  // Insert the mapping
-	return pBB;
-}
-
-/**
  * Add an out-edge from a source BB to a destination address (a label; a new
  * BB will be created here if one does not already exist).  Also adds the
  * corresponding in-edge to the destination BB.
@@ -481,7 +463,11 @@ Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 	auto mi = m_mapBB.find(addr);
 	if (mi == m_mapBB.end()) {
 		// Native address is an implicit label.  Make it an explicit label.
-		newIncompleteBB(addr);
+		// Create a new (basically empty) BB
+		auto bb = new BasicBlock();
+		// Add it to the list and map
+		m_listBB.push_back(bb);
+		m_mapBB[addr] = bb;
 		mi = m_mapBB.find(addr);
 	} else if (mi->second->isComplete()) {
 		// Else it's already an explicit label.  Return true if BB is already complete.
