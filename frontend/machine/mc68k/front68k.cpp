@@ -115,12 +115,11 @@ FrontEndSrc::processProc(ADDRESS addr, UserProc *proc, bool spec)
  * \param addr     The address at which the procedure starts.
  * \param delta    The offset of the above address from the logical address at
  *                 which the procedure starts (i.e. the one given by dis).
- * \param upper    The highest address of the text segment.
  * \param proc     The procedure object.
  * \param decoder  NJMCDecoder object.
  */
 void
-processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder &decoder)
+processProc(ADDRESS addr, int delta, UserProc *proc, NJMCDecoder &decoder)
 {
 	INSTTYPE type;              // Cfg type of instruction (e.g. IRET)
 
@@ -189,7 +188,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 
 						// Add the out edge if it is to a destination within the
 						// procedure
-						if (dest < upper) {
+						if (dest < pBF->getLimitTextHigh()) {
 							cfg->addOutEdge(bb, dest);
 						} else {
 							ostrstream ost;
@@ -235,7 +234,7 @@ processProc(ADDRESS addr, int delta, ADDRESS upper, UserProc *proc, NJMCDecoder 
 
 					// Add the out edge if it is to a destination within the
 					// procedure
-					if (dest < upper) {
+					if (dest < pBF->getLimitTextHigh()) {
 						cfg->addOutEdge(bb, dest);
 					} else {
 						ostrstream ost;
