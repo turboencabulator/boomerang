@@ -461,21 +461,20 @@ bool
 Cfg::label(ADDRESS addr, BasicBlock *&pCurBB)
 {
 	auto mi = m_mapBB.find(addr);
-	if (mi == m_mapBB.end()) {
-		// Native address is an implicit label.  Make it an explicit label.
-		// Create a new (basically empty) BB
-		auto bb = new BasicBlock();
-		// Add it to the list and map
-		m_listBB.push_back(bb);
-		m_mapBB[addr] = bb;
-		mi = m_mapBB.find(addr);
-	} else if (mi->second->isComplete()) {
-		// Else it's already an explicit label.  Return true if BB is already complete.
-		return true;
-	}
+	if (mi != m_mapBB.end())
+		return true;  // Already an explicit label.
+
+	// Else make it an explicit label.
+	// Create a new incomplete BB
+	auto incBB = new BasicBlock();
+	// Add it to the list and map
+	m_listBB.push_back(incBB);
+	m_mapBB[addr] = incBB;
+
 	// We are finalising an incomplete BB.  Check if the previous element in the (sorted) map overlaps
 	// this new native address; if so, it's a non-explicit label which needs to be made explicit by splitting the
 	// previous BB.
+	mi = m_mapBB.find(addr);
 	if (mi != m_mapBB.begin()) {
 		BasicBlock *pPrevBB = (*--mi).second;
 		if (pPrevBB->isComplete()
